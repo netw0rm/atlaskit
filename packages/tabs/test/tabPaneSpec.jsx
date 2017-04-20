@@ -27,7 +27,7 @@ describe(name, () => {
       it('should render a container wrapping the content', () => {
         const content = <span>My content</span>;
         const wrapper = shallow(<TabPane>{content}</TabPane>);
-        const container = wrapper.find(`.${styles.locals.akTabPane}`);
+        const container = wrapper.find(`.${styles.akTabPane}`);
         expect(container.props().children).to.equal(content);
       });
     });
@@ -37,13 +37,13 @@ describe(name, () => {
         it('should default to false and set aria-hidden to true', () => {
           const wrapper = shallow(<TabPane />);
           expect(wrapper.props()['aria-hidden']).to.equal('true');
-          expect(wrapper.find(`.${styles.locals.akTabPane}`).props().className).to.not.contain(styles.locals.selected);
+          expect(wrapper.find(`.${styles.akTabPane}`).props().className).to.not.contain(styles.selected);
         });
 
         it('should set aria attribute and styles', () => {
           const wrapper = shallow(<TabPane isSelected />);
           expect(wrapper.props()['aria-hidden']).to.equal('false');
-          expect(wrapper.find(`.${styles.locals.akTabPane}`).props().className).to.contain(styles.locals.selected);
+          expect(wrapper.find(`.${styles.akTabPane}`).props().className).to.contain(styles.selected);
         });
       });
     });

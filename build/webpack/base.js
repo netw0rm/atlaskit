@@ -68,6 +68,7 @@ const standardConfig = {
         {
           test: /\.less$/,
           loader: loaderChain({
+            'style-loader': {},
             'css-loader': css,
             'postcss-loader': {},
             'less-loader': {},

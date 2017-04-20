@@ -1,6 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import style from 'style!../src/components/less/GlobalPrimaryActions.less';
+import styles from '../src/components/less/GlobalPrimaryActions.less';
 import GlobalPrimaryActions from '../src/components/js/GlobalPrimaryActions';
 
 describe('<GlobalPrimaryActions />', () => {
@@ -59,7 +59,7 @@ describe('<GlobalPrimaryActions />', () => {
       />).find('DrawerTrigger').at(1).props().onActivate).to.equal(handler);
     });
     it('isVisible applies the isVisible class', () => {
-      expect(mount(<GlobalPrimaryActions isVisible />).find(`.${style.isVisible}`).length).to.equal(1);
+      expect(mount(<GlobalPrimaryActions isVisible />).find(`.${styles.isVisible}`).length).to.equal(1);
     });
   });
 });

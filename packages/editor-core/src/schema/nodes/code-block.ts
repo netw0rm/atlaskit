@@ -36,14 +36,14 @@ export const codeBlock: NodeSpec = {
   code: true,
   defining: true,
   parseDOM: [{
-    tag: 'pre', preserveWhitespace: true, getAttrs: (dom: Element) => {
+    tag: 'pre', preserveWhitespace: 'full', getAttrs: (dom: Element) => {
       const language = (
         getLanguageFromBitbucketStyle((dom as dom.Node).parentElement!) ||
         getLanguageFromEditorStyle((dom as dom.Node).parentElement!) ||
         dom.getAttribute('data-language')!
       );
       dom = removeLastNewLine(dom as HTMLElement);
-      return { language, preserveWhitespace: true };
+      return { language, preserveWhitespace: 'full' };
     }
   }],
   toDOM(node): [string, any, number] {

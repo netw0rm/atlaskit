@@ -7,3 +7,4 @@ export * from './collection';
 export * from './trello';
 export * from './providers';
 export * from './services';
+export * from './utils';

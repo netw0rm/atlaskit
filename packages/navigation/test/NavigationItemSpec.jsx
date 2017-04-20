@@ -6,7 +6,7 @@ import {
   isCompact,
   navigationItemOuter,
   link,
-} from 'style!../src/components/less/NavigationItem.less';
+} from '../src/components/less/NavigationItem.less';
 import NavigationItem from '../src/components/js/NavigationItem';
 
 describe('<NavigationItem />', () => {

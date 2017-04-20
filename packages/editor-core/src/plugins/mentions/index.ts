@@ -3,7 +3,6 @@ import {
   EditorState,
   EditorView,
   Schema,
-  Fragment,
   Plugin,
   PluginKey,
 } from '../../prosemirror';
@@ -52,7 +51,6 @@ export class MentionsState {
       return;
     }
 
-    const { docView } = this.view;
     const { mentionQuery } = state.schema.marks;
     const { doc, selection } = state;
     const { from, to } = selection;
@@ -78,7 +76,7 @@ export class MentionsState {
       return;
     }
 
-    const newAnchorElement = docView.dom.querySelector('[data-mention-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector('[data-mention-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;
@@ -150,11 +148,10 @@ export class MentionsState {
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
-      const node = mention.create({ displayName: `@${renderName}`, id: mentionData.id });
+      const node = mention.create({ text: `@${renderName}`, id: mentionData.id });
       const textNode = state.schema.text(' ');
-      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
       view.dispatch(
-        state.tr.replaceWith(start, end, fragment)
+        state.tr.replaceWith(start, end, [node, textNode])
       );
     } else {
       this.dismiss();

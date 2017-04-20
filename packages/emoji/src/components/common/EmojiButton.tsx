@@ -1,6 +1,6 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { MouseEvent } from 'react';
 
 import * as styles from './styles';
 import Emoji from './Emoji';
@@ -15,41 +15,39 @@ export interface Props {
   selected?: boolean;
 }
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class EmojiButton extends PureComponent<Props, undefined> {
-
-  handleMouseDown = (event) => {
-    const { emoji, onSelected } = this.props;
-    event.preventDefault();
-    if (onSelected && leftClick(event)) {
-      onSelected(toEmojiId(emoji), emoji, event);
-    }
+const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
+  const { emoji, onSelected } = props;
+  event.preventDefault();
+  if (onSelected && leftClick(event)) {
+    onSelected(toEmojiId(emoji), emoji, event);
   }
+};
 
-  handleMouseMove = (event) => {
-    const { emoji, onMouseMove } = this.props;
-    if (onMouseMove) {
-      onMouseMove(toEmojiId(emoji), emoji, event);
-    }
+const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
+  const { emoji, onMouseMove } = props;
+  if (onMouseMove) {
+    onMouseMove(toEmojiId(emoji), emoji, event);
   }
+};
 
-  render() {
-    // eslint-disable-next-line no-unused-vars
-    const { emoji, selected } = this.props;
+// tslint:disable-next-line:variable-name
+export const EmojiButton = (props: Props) => {
+  const { emoji, selected } = props;
 
-    const classes = [styles.emojiButton];
+  const classes = [styles.emojiButton];
 
-    return (
-      <button
-        className={classNames(classes)}
-        onMouseDown={this.handleMouseDown}
-        onMouseMove={this.handleMouseMove}
-      >
-        <Emoji
-          emoji={emoji}
-          selected={selected}
-        />
-      </button>
-    );
-  }
-}
+  return (
+    <button
+      className={classNames(classes)}
+      onMouseDown={(event) => { handleMouseDown(props, event); }}
+      onMouseMove={(event) => { handleMouseMove(props, event); }}
+    >
+      <Emoji
+        emoji={emoji}
+        selected={selected}
+      />
+    </button>
+  );
+};
+
+export default EmojiButton;

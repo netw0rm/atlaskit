@@ -39,6 +39,10 @@ export class MediaFileAttributesFactory {
     return MediaFileAttributesFactory.create(item.details.occurrenceKey, item.details, serviceHost);
   }
 
+  static fromFileItemList(items: Array<FileItem>, serviceHost: string): Array<MediaFileAttributes> {
+    return items.map(item => MediaFileAttributesFactory.fromFileItem(item, serviceHost));
+  }
+
   static fromMediaCollection(collection: MediaCollection, serviceHost: string): Array<MediaFileAttributes> {
     const collectionFileItemFilter = (item: MediaCollectionItem) => item.type === 'file';
     return collection.items

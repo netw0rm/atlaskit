@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import className from 'classnames';
-import styles from 'style!../less/ContainerTitle.less';
+import styles from '../less/ContainerTitle.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class ContainerTitle extends PureComponent {

@@ -42,6 +42,13 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(p('hello', strong('text'), 'there')));
     });
+
+    it('should not be inclusive right after autoformatting conversion', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '**text**', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'), 'text')));
+    });
   });
 
   describe('em rule', () => {
@@ -52,11 +59,11 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
     });
 
-    it('should limit mark to surrounded text', () => {
+    it('should not be inclusive right after autoformatting conversion', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '*italic*', sel);
-      insertText(editorView, 'm', editorView.state.selection.$from.pos);
-      expect(editorView.state.doc).to.deep.equal(doc(p(em('italic'), 'm')));
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('italic'), 'text')));
     });
 
     it('should keep current marks when converting from markdown', () => {
@@ -90,6 +97,13 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('~~text~~')));
     });
+
+    it('should not be inclusive right after autoformatting conversion', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '~~text~~', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'), 'text')));
+    });
   });
 
   describe('code rule', () => {
@@ -101,7 +115,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should convert mention to plaint text', () => {
-      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' });
       const { editorView, sel } = editor(
         doc(p(
           'hey! `hello, ',
@@ -114,7 +128,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should cleanup other formatting', () => {
-      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' });
       const { editorView, sel } = editor(
         doc(p(
           '`',
@@ -134,6 +148,13 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '`text`', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('`text`')));
+    });
+
+    it('should not be inclusive right after autoformatting conversion', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '`text`', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(code('text'), 'text')));
     });
   });
 

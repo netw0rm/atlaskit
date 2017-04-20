@@ -1,16 +1,21 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { style } from 'typestyle';
-import { EmojiProvider } from '@atlaskit/emoji';
+import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
 import { ReactionsProvider, ReactionSummary } from './reactions-resource';
+import { compareEmojiId } from './internal/helpers';
+
+export interface OnEmoji {
+  (emojiId: EmojiId): any;
+}
 
 export interface Props {
   ari: string;
   reactionsProvider: ReactionsProvider;
   emojiProvider: Promise<EmojiProvider>;
-  onReactionClick: Function;
+  onReactionClick: OnEmoji;
   boundariesElement?: string;
 }
 
@@ -42,7 +47,7 @@ export default class Reactions extends Component<Props, State> {
     };
   }
 
-  private onEmojiClick = (emojiId) => {
+  private onEmojiClick = (emojiId: EmojiId) => {
     this.props.onReactionClick(emojiId);
   }
 
@@ -86,9 +91,11 @@ export default class Reactions extends Component<Props, State> {
 
     return (
       <div className={reactionsStyle}>
-        {reactions.sort((a, b) => a.emojiId > b.emojiId ? 1 : 0).map(reaction => {
+        {reactions.sort((a, b) => compareEmojiId(a.emojiId, b.emojiId)).map(reaction => {
+          const { emojiId } = reaction;
+          const key = emojiId.id || emojiId.shortName;
           return (
-            <div style={{ display: 'inline-block' }} key={reaction.emojiId}>
+            <div style={{ display: 'inline-block' }} key={key}>
               <Reaction
                 reaction={reaction}
                 emojiProvider={emojiProvider}

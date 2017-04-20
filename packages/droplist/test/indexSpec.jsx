@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import Layer from '@atlaskit/layer';
 
 import { name } from '../package.json';
-import { locals as styles } from '../src/styles.less';
+import styles from '../src/styles.less';
 
 import Droplist, { Item, Group } from '../src';
 
@@ -36,7 +36,7 @@ describe(`${name} - core`, () => {
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
       expect(layer.prop('offset')).to.equal('0 8px');
       expect(layer.prop('position')).to.equal('bottom left');
-      expect(layer.prop('autoPosition')).to.equal(wrapper.props().shouldFlip);
+      expect(layer.prop('autoFlip')).to.equal(wrapper.props().shouldFlip);
       expect(layer.prop('content')).to.not.equal(undefined);
     });
 

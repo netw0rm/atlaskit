@@ -6,7 +6,7 @@ import {
   separator,
   hasGlobalAppearance,
   hasSettingsAppearance,
-} from 'style!../src/components/less/ContainerItemGroup.less';
+} from '../src/components/less/ContainerItemGroup.less';
 import ContainerItemGroup from '../src/components/js/ContainerItemGroup';
 
 describe('<ContainerItemGroup />', () => {

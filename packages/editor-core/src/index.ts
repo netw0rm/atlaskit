@@ -34,3 +34,4 @@ export {
   baseKeymap,
   keymap,
 } from './prosemirror';
+export { toJSON } from './utils';

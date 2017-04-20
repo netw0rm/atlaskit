@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import Blanket from '@atlaskit/blanket';
-import styles from 'style!../less/Drawer.less';
+import styles from '../less/Drawer.less';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
 import ContainerHeader from './ContainerHeader';

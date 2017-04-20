@@ -5,7 +5,7 @@ import naturalSort from 'javascript-natural-sort';
 import wcagContrast from 'wcag-contrast';
 import uid from 'uid';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 import Block from './Block';
 import * as lessVars from '../../src';

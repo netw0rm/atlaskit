@@ -16,6 +16,7 @@ export class DOMParser {
 export interface ParseRule {
   tag?: string;
   style?: string;
+  context?: string;
   node?: string;
   mark?: string;
   priority?: number;

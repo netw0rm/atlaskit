@@ -10,17 +10,17 @@ import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
-interface Props {
+export interface Props {
   imageSource: string;
   onLoad?: OnLoadHandler;
 }
 
-interface Position {
+export interface Position {
   x: number;
   y: number;
 }
 
-interface State {
+export interface State {
   imageWidth?: number;
   imageHeight?: number;
   imagePos: Position;

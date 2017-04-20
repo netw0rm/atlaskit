@@ -17,6 +17,7 @@ export interface State {
 }
 
 export default class ResourcedEmoji extends PureComponent<Props, State> {
+  private ready = false;
 
   constructor(props) {
     super(props);
@@ -34,19 +35,27 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
       });
       emojiProviderPromise.then(emojiProvider => {
         emojiProvider.findByEmojiId(emojiId).then(emoji => {
-          this.setState({
-            emoji,
-            loaded: true,
-          });
+          if (this.ready) {
+            // don't update state if component was unmounted
+            this.setState({
+              emoji,
+              loaded: true,
+            });
+          }
         });
       });
     }
   }
 
   componentWillMount() {
+    this.ready = true;
     if (!this.state.emoji) {
       this.refreshEmoji(this.props.emojiProvider, this.props.emojiId);
     }
+  }
+
+  componentWillUnmount() {
+    this.ready = false;
   }
 
   componentWillReceiveProps(nextProps: Props) {

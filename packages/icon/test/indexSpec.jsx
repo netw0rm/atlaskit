@@ -367,12 +367,13 @@ describe(name, () => {
       it('icons are properly defined in bundle', () => {
         const bundleKeys = Object
           .keys(bundle)
-          .filter(key => key !== 'size');
+          .filter(key => key !== 'size' && key !== 'default');
 
         bundleKeys.should.be.deep.equal(Object
               .keys(components)
               .map(pathToDashed)
-              .map(x => iconNameToComponentName(x)));
+              .map(x => iconNameToComponentName(x))
+        );
 
         bundleKeys.forEach((key) => {
           expect(typeof bundle[key]).to.equal('function');

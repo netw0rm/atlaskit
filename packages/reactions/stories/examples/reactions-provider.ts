@@ -1,8 +1,10 @@
 import { Promise } from 'es6-promise';
-import { findIndex } from '../../src/internal/helpers';
+import { EmojiId } from '@atlaskit/emoji';
+
+import { equalEmojiId, findIndex } from '../../src/internal/helpers';
 import { default as AbstractReactionsProvider } from '../../src/reactions-resource';
 import { Reactions, ReactionSummary } from '../../src/reactions-resource';
-import { defaultReactionsByShortcut } from '../../src/internal/selector';
+import { defaultReactionsByShortName } from '../../src/internal/selector';
 
 export default class MockReactionsProvider extends AbstractReactionsProvider {
 
@@ -10,19 +12,19 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     'ari:cloud:demo:123:123': [
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('grinning') as string,
+        emojiId: defaultReactionsByShortName.get(':grinning:') as EmojiId,
         count: 1,
         reacted: true
       },
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('thumbsup') as string,
+        emojiId: defaultReactionsByShortName.get(':thumbsup:') as EmojiId,
         count: 5,
         reacted: false
       },
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('grin') as string,
+        emojiId: defaultReactionsByShortName.get(':heart:') as EmojiId,
         count: 100,
         reacted: false
       }
@@ -35,12 +37,12 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  toggleReaction(ari: string, emojiId: string) {
+  toggleReaction(ari: string, emojiId: EmojiId) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
 
-    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => r.emojiId === emojiId);
+    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, emojiId));
     const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
 
     if (hasReacted) {
@@ -56,9 +58,9 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     }
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
+      const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
 
       if (index !== -1) {
         const reaction = this.cachedReactions[ari][index];
@@ -77,9 +79,9 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
+      const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
       const reaction = this.cachedReactions[ari][index];
 
       reaction.reacted = false;

@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Result } from '../Result';
+import Result from '../Result';
 
 export default class NoScrollResultsBox extends PureComponent {
   static propTypes = {
@@ -23,7 +23,13 @@ export default class NoScrollResultsBox extends PureComponent {
       {
         this.props.results
         && this.props.results.length
-        && this.props.results.slice(0, Math.max(this.props.minItems, this.itemsTheresSpaceFor()))
+        && this.props.results.slice(
+          0,
+          Math.max(
+            this.props.minItems,
+            this.itemsTheresSpaceFor()
+          )
+        )
       }
     </div>
   );

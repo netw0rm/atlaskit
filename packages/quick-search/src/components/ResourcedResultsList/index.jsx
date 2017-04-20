@@ -24,6 +24,7 @@ export default class ResourcedResultsList extends Component {
     this.state = {
       items: null,
       resultType: 'recent',
+      innerHeight: window.innerHeight,
     };
     this.searchSubscriber = new SearchSubscriber({
       subscriberKey: uniqueId('ak-quick-search-resourced-results'),
@@ -37,12 +38,13 @@ export default class ResourcedResultsList extends Component {
 
   componentDidMount = () => {
     this.searchSubscriber.subscribe(this.props.searchResource);
-    window.addEventListener('resize', () => {
-      this.setState({ innerHeight: this.getNoScrollHeight() });
-    });
+    this.setNoScrollHeight();
+
+    window.addEventListener('resize', this.setNoScrollHeight);
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.setNoScrollHeight);
     this.searchSubscriber.unsubscribe(this.props.searchResource);
   }
 
@@ -50,10 +52,11 @@ export default class ResourcedResultsList extends Component {
     this.setState({ resultType, items });
   }
 
-  getNoScrollHeight = () => {
-    const cmpnt = document.getElementById('resourced-results-list');
-    const cmpntY = cmpnt.getBoundingClientRect().top;
-    return window.innerHeight - cmpntY;
+  setNoScrollHeight = () => {
+    const cmpntY = this.ref && this.ref.getBoundingClientRect().top;
+    this.setState({
+      innerHeight: window.innerHeight - (cmpntY || 0),
+    });
   }
 
   filterError = (err) => {
@@ -73,7 +76,7 @@ export default class ResourcedResultsList extends Component {
     );
 
     return (
-      <div id="resourced-results-list">
+      <div ref={ref => (this.ref = ref)}>
         <NoScrollResultsBox
           height={this.state.innerHeight}
           results={this.state.items && mapItemsToResults(this.state.items)}

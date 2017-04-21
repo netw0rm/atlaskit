@@ -15,6 +15,8 @@ export default class InlineEdit extends PureComponent {
     readView: PropTypes.node.isRequired,
     /** Component to be shown when editing. Should be an @atlaskit/input. */
     editView: PropTypes.node,
+    /** Whether the FieldBase should be shown in compact mode. */
+    isCompact: PropTypes.bool,
     /** Whether the component shows the readView or the editView. */
     isEditing: PropTypes.bool.isRequired,
     /** Greys out text and shows spinner. Does not disable input. */
@@ -46,6 +48,7 @@ export default class InlineEdit extends PureComponent {
   }
 
   static defaultProps = {
+    isCompact: false,
     isInvalid: false,
     isWaiting: false,
     isLabelHidden: false,
@@ -137,6 +140,7 @@ export default class InlineEdit extends PureComponent {
   wrapWithFieldBase = children => (
     <FieldBase
       isInvalid={this.props.isInvalid}
+      isCompact={this.props.isCompact}
       isFocused={this.isReadOnly() ? false : undefined}
       isReadOnly={this.isReadOnly()}
       isFitContainerWidthEnabled={this.props.isEditing}

@@ -262,6 +262,13 @@ describe('@atlaskit/inline-edit', () => {
     });
   });
 
+  describe('isCompact prop', () => {
+    it('should be reflected to the FieldBase', () => {
+      expect(shallow(<InlineEdit {...defaultProps} isCompact />)
+        .find(FieldBase).props().isCompact).to.equal(true);
+    });
+  });
+
   describe('invalidMessage prop', () => {
     it('should be reflected to the FieldBase', () => {
       expect(shallow(<InlineEdit {...defaultProps} invalidMessage="test" />)

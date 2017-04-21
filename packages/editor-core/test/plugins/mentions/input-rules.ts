@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import MentionsPlugin from '../../../src/plugins/mentions';
+import mentionsPlugins from '../../../src/plugins/mentions';
 import {
   chaiPlugin,
   fixtures,
@@ -10,6 +10,7 @@ import {
   p,
 } from '../../../src/test-helper';
 import { resourceProvider } from '../../../stories/mentions/story-data';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -17,7 +18,7 @@ describe('mentions - input rules', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: MentionsPlugin,
+    plugins: mentionsPlugins(defaultSchema),
     place: fixture()
   });
 

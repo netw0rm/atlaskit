@@ -22,10 +22,14 @@ export interface State {
   mentionsProvider?: MentionProvider;
 }
 
+const isMentionPicker = (picker): picker is AkMentionPicker => !!(picker.mentionsCount);
+
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
   popper?: IPopper;
   subscriberKey?: string;
+  picker?: AkMentionPicker;
+  content?: HTMLElement;
 
   constructor(props) {
     super(props);
@@ -111,16 +115,15 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private applyPopper(): void {
-    const { content } = this.refs;
     const target = this.state.anchorElement;
 
     if (this.popper) {
       this.popper.destroy();
     }
 
-    if (target && content instanceof HTMLElement) {
+    if (target && this.content instanceof HTMLElement) {
 
-      this.popper = new Popper(target, content, {
+      this.popper = new Popper(target, this.content, {
         onCreate: this.extractStyles,
         onUpdate: this.extractStyles,
         placement: this.props.reversePosition ? 'top-start' : 'bottom-start',
@@ -178,7 +181,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
     return (
       <div
-        ref="content"
+        ref={ref => { this.content = ref;}}
         style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
       >
         <AkMentionPicker
@@ -186,7 +189,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
           presenceProvider={this.props.presenceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
-          ref="picker"
+          ref={ref => { this.picker = ref;}}
         />
       </div>
     );
@@ -197,27 +200,24 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private handleSelectPrevious = (): boolean => {
-    const { picker } = this.refs;
-    if (picker) {
-      (picker as AkMentionPicker).selectPrevious();
+    if (this.picker) {
+      (this.picker as AkMentionPicker).selectPrevious();
     }
 
     return true;
   }
 
   private handleSelectNext = (): boolean => {
-    const { picker } = this.refs;
-    if (picker) {
-      (picker as AkMentionPicker).selectNext();
+    if (this.picker) {
+      (this.picker as AkMentionPicker).selectNext();
     }
 
     return true;
   }
 
   private handleSelectCurrent = (): boolean => {
-    const { picker } = this.refs;
-    if (picker && (picker as AkMentionPicker).mentionsCount() > 0) {
-      (picker as AkMentionPicker).chooseCurrentSelection();
+    if (this.getMentionsCount() > 0) {
+      (this.picker as AkMentionPicker).chooseCurrentSelection();
     } else {
       this.props.pluginState.dismiss();
     }
@@ -226,12 +226,20 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private handleTrySelectCurrent = (): boolean => {
-    const { picker } = this.refs;
-    if (picker && (picker as AkMentionPicker).mentionsCount() === 1) {
-      (picker as AkMentionPicker).chooseCurrentSelection();
+    const mentionsCount = this.getMentionsCount();
+    const { query } = this.state;
+
+    if (mentionsCount === 1) {
+      (this.picker as AkMentionPicker).chooseCurrentSelection();
       return true;
+    } else if (mentionsCount === 0 || !query) {
+      this.props.pluginState.dismiss();
     }
 
     return false;
+  }
+
+  private getMentionsCount(): number {
+    return isMentionPicker(this.picker) && this.picker.mentionsCount() || 0;
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/button-group",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "config": {
     "access": "public"
   },
@@ -35,7 +35,7 @@
     "@atlaskit/dropdown-menu": "^1.0.0",
     "ak-icon": "^12.1.2",
     "akutil-react": "*",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^3.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

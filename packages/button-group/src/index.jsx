@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 export default class AkButtonGroup extends PureComponent {
   static propTypes = {
+    /** Button elements to be displayed inside the group */
     children: React.PropTypes.node,
   }
 

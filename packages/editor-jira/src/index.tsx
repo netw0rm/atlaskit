@@ -1,27 +1,45 @@
 import {
   AnalyticsHandler,
   analyticsService,
-  BlockTypePlugin,
+  baseKeymap,
   Chrome,
-  CodeBlockPlugin,
+  blockTypePlugins,
+  clearFormattingPlugins,
+  codeBlockPlugins,
+  hyperlinkPlugins,
+  mentionsPlugins,
+  rulePlugins,
+  textFormattingPlugins,
+  listsPlugins,
+  blockTypeStateKey,
+  clearFormattingStateKey,
+  codeBlockStateKey,
+  hyperlinkStateKey,
+  mentionsStateKey,
+  textFormattingStateKey,
+  listsStateKey,
   ContextName,
-  HorizontalRulePlugin,
-  Keymap,
-  ListsPlugin,
-  HyperlinkPlugin,
-  ProseMirror,
-  TextFormattingPlugin,
-  ClearFormattingPlugin,
-  DefaultKeymapsPlugin,
-  MentionsPlugin,
-  MarkdownInputRulesPlugin,
+  EditorState,
+  EditorView,
+  Schema,
+  history,
+  keymap,
+  mentionNodeView,
+  ProviderFactory,
+  TextSelection,
   version as coreVersion
 } from '@atlaskit/editor-core';
 import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
-import { makeSchema, isSchemaWithMentions, isSchemaWithLinks, isSchemaWithCodeBlock, JIRASchema } from './schema';
+import {
+  JIRASchema,
+  isSchemaWithCodeBlock,
+  isSchemaWithLinks,
+  isSchemaWithMentions,
+  makeSchema,
+} from './schema';
 import { version, name } from './version';
 
 export { version };
@@ -41,18 +59,20 @@ export interface Props {
   allowCodeBlock?: boolean;
   allowAdvancedTextFormatting?: boolean;
   allowBlockQuote?: boolean;
+  allowSubSup?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
 }
 
 export interface State {
-  pm?: ProseMirror;
-  mentionProvider?: MentionProvider;
+  editorView?: EditorView;
+  editorState?: EditorState<any>;
   isExpanded?: boolean;
   schema: JIRASchema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
+  providerFactory: ProviderFactory;
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
 
@@ -67,27 +87,25 @@ export default class Editor extends PureComponent<Props, State> {
         allowLinks: !!props.allowLinks,
         allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting,
         allowCodeBlock: !!props.allowCodeBlock,
-        allowBlockQuote: !!props.allowBlockQuote
+        allowBlockQuote: !!props.allowBlockQuote,
+        allowSubSup: !!props.allowSubSup
       }),
     };
 
-    if (props.mentionProvider) {
-      props
-        .mentionProvider
-        .then((mentionProvider: MentionProvider) =>
-          this.setState({ mentionProvider, schema: this.state.schema }));
-    }
+    this.providerFactory = new ProviderFactory();
+    this.providerFactory.setProvider('mentionProvider', props.mentionProvider);
 
-    analyticsService.handler = props.analyticsHandler || ((name) => {});
+    analyticsService.handler = props.analyticsHandler || ((name) => { });
   }
 
   /**
    * Focus the content region of the editor.
    */
   focus(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.focus();
+    const { editorView } = this.state;
+
+    if (editorView) {
+      editorView.focus();
     }
   }
 
@@ -118,9 +136,15 @@ export default class Editor extends PureComponent<Props, State> {
    * Clear the content of the editor, making it an empty document.
    */
   clear(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
+    const { editorView } = this.state;
+
+    if (editorView) {
+      const { state } = editorView;
+      const tr = state.tr
+        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .deleteSelection();
+
+      editorView.dispatch(tr);
     }
   }
 
@@ -129,9 +153,10 @@ export default class Editor extends PureComponent<Props, State> {
    * (i.e. text)
    */
   isDirty(): boolean {
-    const { pm } = this.state;
-    return pm && pm.doc
-      ? !!pm.doc.textContent
+    const { editorView } = this.state;
+
+    return editorView && editorView.state.doc
+      ? !!editorView.state.doc.textContent
       : false;
   }
 
@@ -139,37 +164,50 @@ export default class Editor extends PureComponent<Props, State> {
    * The current value of the editor, encoded as HTML.
    */
   get value(): string | undefined {
-    const { pm, schema } = this.state;
-    return pm
-      ? encode(pm.doc, schema, { mention: this.props.mentionEncoder })
+    const { editorView, schema } = this.state;
+
+    return editorView && editorView.state.doc
+      ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
       : this.props.defaultValue;
   }
 
   render() {
-    const { pm, isExpanded } = this.state;
+    const { editorView, isExpanded } = this.state;
+    const { mentionProvider } = this.props;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { mentionProvider } = this.state;
+    const editorState = editorView && editorView.state;
+
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
-      <Chrome
-        children={<div ref={this.handleRef} />}
-        isExpanded={isExpanded}
-        onCancel={handleCancel}
-        onSave={handleSave}
-        onCollapsedChromeFocus={this.expand}
-        mentionsResourceProvider={mentionProvider}
-        placeholder={this.props.placeholder}
-        pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
-        pluginStateCodeBlock={pm && CodeBlockPlugin.get(pm)}
-        pluginStateLists={pm && ListsPlugin.get(pm)}
-        pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
-        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
-        pluginStateMentions={pm && mentionProvider && MentionsPlugin.get(pm)!}
-        pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
-        packageVersion={version}
-        packageName={name}
-      />
+      <div onBlur={this.onBlur}>
+        <Chrome
+          children={<div ref={this.handleRef} />}
+          editorView={editorView!}
+          isExpanded={isExpanded}
+          mentionProvider={mentionProvider}
+          onCancel={handleCancel}
+          onSave={handleSave}
+          onCollapsedChromeFocus={this.expand}
+          placeholder={this.props.placeholder}
+          pluginStateBlockType={blockTypeState}
+          pluginStateCodeBlock={codeBlockState}
+          pluginStateLists={listsState}
+          pluginStateTextFormatting={textFormattingState}
+          pluginStateClearFormatting={clearFormattingState}
+          pluginStateMentions={mentionsState}
+          pluginStateHyperlink={hyperlinkState}
+          packageVersion={version}
+          packageName={name}
+        />
+      </div>
     );
   }
 
@@ -196,45 +234,79 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
+
     if (place) {
       const { context } = this.props;
-      const pm = new ProseMirror({
-        place,
+      const jiraKeymap = {
+        'Mod-Enter': this.handleSave,
+      };
+
+      const editorState = EditorState.create({
+        schema,
         doc: parse(this.props.defaultValue || '', schema),
         plugins: [
-          ...( isSchemaWithLinks(schema) ? [ HyperlinkPlugin ] : [] ),
-          BlockTypePlugin,
-          ListsPlugin,
-          TextFormattingPlugin,
-          ClearFormattingPlugin,
-          HorizontalRulePlugin,
-          DefaultKeymapsPlugin,
-          MarkdownInputRulesPlugin,
-          ...( isSchemaWithCodeBlock(schema) ? [ CodeBlockPlugin ] : [] ),
-          ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),
-        ],
+          ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
+          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
+          ...blockTypePlugins(schema as Schema<any, any>),
+          ...clearFormattingPlugins(schema as Schema<any, any>),
+          ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
+          ...listsPlugins(schema as Schema<any, any>),
+          ...rulePlugins(schema as Schema<any, any>),
+          ...textFormattingPlugins(schema as Schema<any, any>),
+          history(),
+          keymap(jiraKeymap),
+          keymap(baseKeymap), // should be last :(
+        ]
       });
 
       if (context) {
-        BlockTypePlugin.get(pm)!.changeContext(context);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
+        blockTypeState.changeContext(context);
       }
 
-      pm.addKeymap(new Keymap({
-        'Mod-Enter': this.handleSave
-      }));
-
-      pm.on.domPaste.add(() => {
-        analyticsService.trackEvent('atlassian.editor.paste');
+      const editorView = new EditorView(place, {
+        state: editorState,
+        dispatchTransaction: (tr) => {
+          const newState = editorView.state.apply(tr);
+          editorView.updateState(newState);
+          this.handleChange();
+        },
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory)
+        },
+        handleDOMEvents: {
+          paste(view: EditorView, event: ClipboardEvent) {
+            analyticsService.trackEvent('atlassian.editor.paste');
+            return false;
+          }
+        }
       });
-
-      pm.on.change.add(this.handleChange);
-      pm.focus();
 
       analyticsService.trackEvent('atlassian.editor.start');
 
-      this.setState({ pm, schema });
+      if (isSchemaWithMentions(schema)) {
+        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      }
+
+      this.setState({ editorView });
+      this.focus();
     } else {
-      this.setState({ pm: undefined, schema });
+      this.setState({ editorView: undefined });
     }
+  }
+
+  /**
+   * When BlockType Dropdown is closed, "blur" event is fired
+   * JIRA description view is using @atlaskit/inline-edit component
+   * to wrap the editor and it's listening to "blur" events with
+   * React's onBlur (which is a synthetic event listener and blur is
+   * being propagated to inline-edit). This prevents the event to propagate
+   * to the inline-edit container
+   *
+   * @see https://ecosystem.atlassian.net/browse/AK-2127
+   * @see https://product-fabric.atlassian.net/browse/ED-1419
+   */
+  private onBlur = (evt: React.SyntheticEvent<HTMLElement>) => {
+    evt.stopPropagation();
   }
 }

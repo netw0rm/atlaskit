@@ -1,5 +1,4 @@
 import { style } from 'typestyle';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 import {
   emojiPreviewSelectedColor,
@@ -12,23 +11,12 @@ import {
 
 export const selected = 'selected';
 
-export const emojiScrollable = style({
-  background: 'white',
-  border: '1px solid #fff',
-  borderRadius: akBorderRadius,
-  display: 'block',
-  margin: '0',
-  maxHeight: `${emojiTypeAheadMaxHeight}px`,
-  overflowX: 'hidden',
-  overflowY: 'auto',
-  padding: '0',
-});
-
 export const emojiTypeAhead = 'emoji-typeahead';
 
 export const typeAheadListContainer = 'typeahead-list-container';
 
 export const typeAheadList = style({
+  background: 'white',
   border: `1px solid ${noDialogContainerBorderColor}`,
   borderRadius: noDialogContainerBorderRadius,
   boxShadow: noDialogContainerBoxShadow,
@@ -45,6 +33,7 @@ export const typeAheadItem = style({
     display: 'block',
     listStyleType: 'none',
     overflow: 'hidden',
+    width: emojiTypeAheadWidth,
 
     $nest: {
       [`&.${selected}`]: {

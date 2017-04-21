@@ -1,16 +1,24 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 export default class Label extends PureComponent {
   static propTypes = {
+    /** the label text to display */
     label: PropTypes.string.isRequired,
+    /** whether to hide the label */
     isLabelHidden: PropTypes.bool,
+    /** onclick handler */
     onClick: PropTypes.func,
+    /** show a style indicating that the label is for a required field */
     isRequired: PropTypes.bool,
+    /** the labels control element */
     htmlFor: PropTypes.string,
+    /** any children to render, displayed underneath the label */
     children: PropTypes.node,
+    /** controls the appearance of the label */
     appearance: PropTypes.oneOf(['default', 'inline-edit']),
+    /** controls the top margin of the label */
     isFirstChild: PropTypes.bool,
   }
 

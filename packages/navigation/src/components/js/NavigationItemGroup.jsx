@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { themeVariables } from '../../utils/theme';
 import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
 import NavigationItemGroupInner from '../styled/NavigationItemGroupInner';
 import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
@@ -36,8 +37,8 @@ export default class NavigationItemGroup extends PureComponent {
     return (
       <ThemeProvider
         theme={outerTheme => ({
-          NavigationAppearance: (outerTheme && outerTheme.NavigationAppearance) || 'container',
-          NavigationItemIsCompact: isCompact,
+          [themeVariables.appearance]: (outerTheme || {})[themeVariables.appearance],
+          [themeVariables.isCompact]: isCompact,
         })}
       >
         <NavigationItemGroupInner hasHeaderContent={(title || action || hasSeparator)}>

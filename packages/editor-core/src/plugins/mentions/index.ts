@@ -2,12 +2,12 @@ import { MentionProvider } from '@atlaskit/mention';
 import {
   EditorState,
   EditorView,
-  Fragment,
+  Schema,
   Plugin,
   PluginKey,
 } from '../../prosemirror';
-import { reconfigure } from '../utils';
-import { inputRulePlugin, destroyRulePluginCache } from './input-rules';
+import { inputRulePlugin } from './input-rules';
+import { isMarkAllowedAtPosition } from '../../utils';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -51,7 +51,6 @@ export class MentionsState {
       return;
     }
 
-    const { docView } = this.view;
     const { mentionQuery } = state.schema.marks;
     const { doc, selection } = state;
     const { from, to } = selection;
@@ -77,7 +76,7 @@ export class MentionsState {
       return;
     }
 
-    const newAnchorElement = docView.dom.querySelector('[data-mention-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector('[data-mention-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;
@@ -110,8 +109,9 @@ export class MentionsState {
   }
 
   mentionDisabled() {
-    const { selection, schema } = this.state;
-    return schema.marks.code && schema.marks.code.isInSet(selection.$from.marks());
+    const { schema, selection } = this.state;
+    const { mentionQuery } = schema.marks;
+    return isMarkAllowedAtPosition(mentionQuery, selection);
   }
 
   private findMentionQueryMark() {
@@ -147,11 +147,11 @@ export class MentionsState {
 
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
-      const node = mention.create({ displayName: `@${mentionData.name}`, id: mentionData.id });
+      const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
+      const node = mention.create({ text: `@${renderName}`, id: mentionData.id });
       const textNode = state.schema.text(' ');
-      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
       view.dispatch(
-        state.tr.replaceWith(start, end, fragment)
+        state.tr.replaceWith(start, end, [node, textNode])
       );
     } else {
       this.dismiss();
@@ -200,17 +200,12 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [inputRulePlugin(view.state.schema), keymapPlugin(view.state.schema)]);
     const pluginState = stateKey.getState(view.state);
     pluginState.setView(view);
 
     return {
       update(view: EditorView, prevState: EditorState<any>) {
         pluginState.update(view.state, view);
-      },
-
-      destroy() {
-        destroyRulePluginCache();
       }
     };
   }
@@ -219,7 +214,12 @@ const plugin = new Plugin({
 export interface Mention {
   name: string;
   mentionName: string;
+  nickname?: string;
   id: string;
 }
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

@@ -8,6 +8,7 @@ import {
     globalVerticalPaddingTop,
     globalVerticalPaddingBottom,
 } from '../../shared-variables';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 
 const colors = {
   global: {
@@ -20,7 +21,7 @@ const colors = {
 
 const GlobalNavigationInner = styled.div`
   align-items: center;
-  background-color: ${({ appearance }) => colors[appearance].background};
+  background-color: ${({ theme }) => colors[theme[themeVariables.appearance]].background};
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -29,6 +30,12 @@ const GlobalNavigationInner = styled.div`
   position: fixed;
   width: ${globalOpenWidth}px;
 `;
+
+GlobalNavigationInner.defaultProps = {
+  theme: {
+    [themeVariables.appearance]: appearanceEnum.global,
+  },
+};
 
 GlobalNavigationInner.displayName = 'GlobalNavigationInner';
 export default GlobalNavigationInner;

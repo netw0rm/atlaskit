@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
-import {CardDimensions, CardAppearance} from '../../card';
+import {CardDimensions, CardAppearance} from '../../index';
 import {Ellipsify, Menu, MediaImage, getCSSUnitValue} from '../../utils';
 import {Href} from '../../utils/href';
 import {Details, Wrapper} from '../styled';

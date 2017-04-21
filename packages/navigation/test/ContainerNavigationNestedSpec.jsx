@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import styles from 'style!../src/components/less/ContainerNavigationNested.less';
+import styles from '../src/components/less/ContainerNavigationNested.less';
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
 
 describe('<ContainerNavigationNested />', () => {

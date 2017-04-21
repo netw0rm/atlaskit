@@ -55,6 +55,7 @@ const propDescriptions = {
   position: 'Position of the select. See the documentation of ak-layer for more details',
   selectedItem: 'Selected item',
   shouldFitContainer: 'Specifies whether a select will take all available space',
+  shouldFocus: 'Specifies whether the component will auto-focus itself',
 };
 
 const propTypes = {
@@ -193,7 +194,7 @@ storiesOf(name, module)
     </Chrome>
   ))
   .add('Select in a form', () => (
-    <Chrome title="Select alignment">
+    <Chrome title="Select in a form">
       {SelectInForm}
       <Code>
         {SelectInFormRaw}

@@ -1,26 +1,21 @@
 import { Fragment, InputRule, inputRules, Plugin, Schema } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
-
-let plugin: Plugin | undefined;
+import { createInputRule } from '../utils';
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
-  if (plugin) {
-    return plugin;
-  }
-
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.rule) {
     // '---' for hr
-    rules.push(new InputRule(/^\-\-\-$/, (state, match, start, end) => {
+    rules.push(createInputRule(/^\-\-\-$/, (state, match, start, end) => {
       analyticsService.trackEvent(`atlassian.editor.format.horizontalrule.autoformatting`);
       return state.tr.replaceWith(start, end, Fragment.from(schema.nodes.rule.create()));
     }));
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 };
 
 export default inputRulePlugin;

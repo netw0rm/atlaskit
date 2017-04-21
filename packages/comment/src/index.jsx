@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import CommentAction from './CommentAction';
 import CommentAuthor from './CommentAuthor';
 import CommentTime from './CommentTime';
@@ -13,15 +13,25 @@ export { CommentAction, CommentAuthor, CommentTime, CommentLayout };
 
 export default class Comment extends PureComponent {
   static propTypes = {
+    /** An list of CommentAction items rendered as a row of buttons below the comment content */
     actions: PropTypes.node,
+    /** A CommentAuthor element containing the name of the comment author. */
     author: PropTypes.node,
+    /** The element to display as the Comment avatar - generally an AtlasKit Avatar */
     avatar: PropTypes.node.isRequired,
+    /** Nested comments should be provided as children of the Comment */
     children: PropTypes.node,
+    /** The main content of the Comment */
     content: PropTypes.node,
+    /** The name of a group that a comment is restricted to. Will display in the top items */
     restrictedTo: PropTypes.string,
+    /** Enable "optimistic saving" mode, remove actions and show `savingText` prop */
     isSaving: PropTypes.bool,
+    /** Text to show when in "optimistic saving" mode */
     savingText: PropTypes.string,
+    /** A CommentTime element containing the time to be displayed */
     time: PropTypes.node,
+    /** The type of the comment - will be rendered in a lozenge at the top of the Comment */
     type: PropTypes.string,
   }
 

@@ -1,6 +1,6 @@
-import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 import Base, { Label } from '@atlaskit/field-base';
+import styles from './styles.less';
 
 export default class FieldText extends PureComponent {
   static propTypes = {
@@ -18,7 +18,9 @@ export default class FieldText extends PureComponent {
     isLabelHidden: PropTypes.bool,
     invalidMessage: PropTypes.node,
     shouldFitContainer: PropTypes.bool,
+    isSpellCheckEnabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
+    maxLength: PropTypes.number,
   }
 
   static defaultProps = {
@@ -27,6 +29,7 @@ export default class FieldText extends PureComponent {
     required: false,
     isInvalid: false,
     type: 'text',
+    isSpellCheckEnabled: true,
   }
 
   focus() {
@@ -61,6 +64,8 @@ export default class FieldText extends PureComponent {
             onChange={this.props.onChange}
             id={this.props.id}
             autoFocus={this.props.autoFocus}
+            spellCheck={this.props.isSpellCheckEnabled}
+            maxLength={this.props.maxLength}
             ref={(input) => { this.input = input; }}
           />
         </Base>

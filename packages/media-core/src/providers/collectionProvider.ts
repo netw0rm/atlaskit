@@ -3,22 +3,43 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/publishReplay';
 
-import { MediaCollection, MediaCollectionItem} from '../collection';
+import { MediaCollection, MediaCollectionItem } from '../collection';
 import { MediaApiConfig } from '../config';
 import { CollectionService, MediaCollectionService, SortDirection } from '../services/collectionService';
 import { Pool, observableFromReducerPool } from './util/reducerPool';
 
-export type CollectionCommand = 'loadNextPage';
+export type MediaCollectionItemPredicate = (item: MediaCollectionItem) => boolean;
+
+export type LoadNextPageCommand = {
+  type: 'loadNextPage'
+};
+
+export type LoadNextPageUntilCommand = {
+  type: 'loadNextPageUntil',
+  predicate: MediaCollectionItemPredicate
+};
+
+export type CollectionCommand = LoadNextPageCommand | LoadNextPageUntilCommand;
 
 export interface CollectionController {
   loadNextPage(): void;
+  loadNextPageUntil(predicate: MediaCollectionItemPredicate): void;
 }
 
 class CollectionControllerImpl implements CollectionController {
   private readonly subject = new Subject<CollectionCommand>();
 
   loadNextPage(): void {
-    this.subject.next('loadNextPage');
+    this.subject.next({
+      type: 'loadNextPage'
+    });
+  }
+
+  loadNextPageUntil(predicate: MediaCollectionItemPredicate): void {
+    this.subject.next({
+      type: 'loadNextPageUntil',
+      predicate
+    });
   }
 
   get commands(): Observable<CollectionCommand> {
@@ -54,10 +75,34 @@ export class CollectionCommandReducer {
   }
 
   private handleCommand(command: CollectionCommand): void {
-    if (command === 'loadNextPage') {
-      this.loadNextPage();
-    } else {
-      this.subject.error(new Error(`unknown command ${command}`));
+    switch (command.type) {
+      case 'loadNextPage':
+        this.loadNextPage();
+        break;
+
+      case 'loadNextPageUntil':
+        this.loadNextPageUntil(command.predicate);
+        break;
+
+      default:
+        this.subject.error(new Error(`unknown command ${command}`));
+    }
+  }
+
+  private loadNextPageUntil(predicate: MediaCollectionItemPredicate): void {
+    if (!this.items.some(predicate)) {
+      const subscription = this.connectableObservable
+        .subscribe({
+          next: collection => {
+            if (collection.items.some(predicate)) {
+              subscription.unsubscribe();
+            } else {
+              this.loadNextPage();
+            }
+          },
+          complete: () => subscription.unsubscribe(),
+          error: error => subscription.unsubscribe()
+        });
     }
   }
 
@@ -75,6 +120,7 @@ export class CollectionCommandReducer {
       this.sortDirection,
       'full')
       .then(response => {
+        this.isLoading = false;
         this.items.push(...response.items);
 
         const mediaCollection = {
@@ -90,11 +136,9 @@ export class CollectionCommandReducer {
           this.subject.next(mediaCollection);
           this.subject.complete();
         }
-
-        this.isLoading = false;
       }, error => {
-        this.subject.error(error);
         this.isLoading = false;
+        this.subject.error(error);
       });
   }
 }

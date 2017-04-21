@@ -1,12 +1,12 @@
 import { browser, EditorState, Transaction } from '../prosemirror';
 
-export const toggleOrderedList = makeKeyMapWithCommon('Toggle ordered list', 'Mod-Shift-l');
-export const toggleBulletList = makeKeyMapWithCommon('Toggle bullet list', 'Mod-Shift-b');
-export const toggleBold = makeKeyMapWithCommon('Toggle bold', 'Mod-b');
-export const toggleItalic = makeKeyMapWithCommon('Toggle italic', 'Mod-i');
-export const toggleUnderline = makeKeyMapWithCommon('Toggle underline', 'Mod-u');
-export const toggleStrikethrough = makeKeyMapWithCommon('Toggle strikethrough', 'Mod-Shift-s');
-export const toggleCode = makeKeyMapWithCommon('Toggle code', 'Mod-Shift-m');
+export const toggleOrderedList = makeKeyMapWithCommon('Numbered list', 'Mod-Shift-l');
+export const toggleBulletList = makeKeyMapWithCommon('Bullet list', 'Mod-Shift-b');
+export const toggleBold = makeKeyMapWithCommon('Bold', 'Mod-b');
+export const toggleItalic = makeKeyMapWithCommon('Italic', 'Mod-i');
+export const toggleUnderline = makeKeyMapWithCommon('Underline', 'Mod-u');
+export const toggleStrikethrough = makeKeyMapWithCommon('Strikethrough', 'Mod-Shift-s');
+export const toggleCode = makeKeyMapWithCommon('Code', 'Mod-Shift-m');
 export const setNormalText = makeKeymap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
 export const clearFormatting = makeKeyMapWithCommon('Clear formatting', 'Mod-\\');
 export const toggleHeading1 = makeKeymap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
@@ -30,7 +30,7 @@ export const indentList = makeKeyMapWithCommon('Indent List', 'Tab');
 export const outdentList = makeKeyMapWithCommon('Outdent List', 'Shift-Tab');
 export const redo = makeKeymap('Redo', 'Ctrl-y', 'Cmd-Shift-z');
 export const redoBarred = makeKeymap('Redo Barred', 'Ctrl-Shift-z', 'Cmd-y');
-export const addLink = makeKeyMapWithCommon('Add Link', 'Mod-k');
+export const addLink = makeKeyMapWithCommon('Insert link', 'Mod-k');
 export const enter = makeKeyMapWithCommon('Enter', 'Enter');
 export const tab = makeKeyMapWithCommon('Tab', 'Tab');
 export const space = makeKeyMapWithCommon('Space', 'Space');

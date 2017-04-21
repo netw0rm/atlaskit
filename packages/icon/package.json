@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "6.0.0",
+  "version": "6.3.1",
   "config": {
     "access": "public"
   },
@@ -17,7 +17,8 @@
   },
   "files": [
     "dist",
-    "glyph"
+    "glyph",
+    "lib"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
@@ -40,7 +41,9 @@
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/button-group": "^1.0.0",
+    "@atlaskit/icon": "*",
     "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-readme": "^3.1.0",
     "async": "^2.0.1",
     "camelcase": "^3.0.0",
     "glob": "^7.0.5",

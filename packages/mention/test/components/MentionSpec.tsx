@@ -9,7 +9,7 @@ import ResourcedMention from '../../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../_mock-mention-provider';
 
 describe('<Mention />', () => {
-  describe('Stateless mention', () => {
+  describe('Mention', () => {
     it('should render based on mention data', () => {
       const mention = shallow(<Mention {...mentionData} />);
       expect(mention.text()).to.equal(mentionData.text);
@@ -57,6 +57,11 @@ describe('<Mention />', () => {
       return mentionProvider.then(() => {
         expect(mention.find(Mention).first().hasClass(styles.highlighted)).to.equal(true);
       });
+    });
+
+    it('should not render highlighted mention component if there is no mentionProvider', () => {
+      const mention = mount(<ResourcedMention id="oscar" text="@Oscar Wallhult" />);
+      expect(mention.find(Mention).first().hasClass(styles.highlighted)).to.equal(false);
     });
 
     it('should dispatch onClick-event', () => {

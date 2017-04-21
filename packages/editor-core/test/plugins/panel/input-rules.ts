@@ -1,12 +1,16 @@
 import { expect } from 'chai';
-import PanelPlugin from '../../../src/plugins/panel';
+import panelPlugins from '../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../src/plugins/panel/input-rules';
-import { insertText, doc, p, makeEditor, fixtures, panel } from '../../../src/test-helper';
+import {
+  insertText, doc, p, makeEditor, fixtures, panel, code_block
+} from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 const fixture = fixtures();
+
 const editor = (doc: any) => makeEditor({
   doc,
-  plugins: [PanelPlugin],
+  plugins: panelPlugins(defaultSchema),
   place: fixture()
 });
 
@@ -27,12 +31,20 @@ describe('panel input rules', () => {
     expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
   });
 
+  it('should not convert {info} inside a code_block', () => {
+    const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+    insertText(editorView, '{info}', sel);
+
+    expect(editorView.state.doc).to.deep.equal(doc(code_block()('\\{info}')));
+  });
+
   it('should replace {tip} input with panel node of type tip', () => {
     const { editorView } = editor(doc(p('{tip')));
 
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 5, 5, '}');
-    expect(editorView.state.doc.content.content[0].attrs.panelType).to.deep.equal('tip');
+    expect(editorView.state.doc.content.child(0).attrs.panelType).to.deep.equal('tip');
   });
 
   it('should replace {warning} input with panel node of type warning', () => {
@@ -40,6 +52,6 @@ describe('panel input rules', () => {
 
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 9, 9, '}');
-    expect(editorView.state.doc.content.content[0].attrs.panelType).to.deep.equal('warning');
+    expect(editorView.state.doc.content.child(0).attrs.panelType).to.deep.equal('warning');
   });
 });

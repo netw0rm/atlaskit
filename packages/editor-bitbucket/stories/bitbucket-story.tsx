@@ -3,6 +3,9 @@ import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/dist/
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { EmojiProvider } from '@atlaskit/emoji';
+
 import { default as Editor, version as editorVersion } from '../src';
 import { MockMentionSource } from './_mock-mentionsource';
 import exampleHTML from './exampleHTML';
@@ -42,6 +45,7 @@ const imageUploadHandler = (e: any, fn: any) => {
 };
 
 const mentionSource = new MockMentionSource();
+const emojiProvider = emojiData.emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(editorVersion))
@@ -66,6 +70,14 @@ storiesOf(name, module)
       onChange={CHANGE_ACTION}
       onSave={SAVE_ACTION}
       mentionSource={mentionSource}
+    />
+  )
+  .add('With emoji', () =>
+    <Editor
+      onCancel={CANCEL_ACTION}
+      onChange={CHANGE_ACTION}
+      onSave={SAVE_ACTION}
+      emojiProvider={emojiProvider}
     />
   )
   .add('With imageUploadHandler', () =>
@@ -111,9 +123,9 @@ storiesOf(name, module)
         <Editor
           placeholder="Click me to expand ..."
           analyticsHandler={(actionName, props) => action(actionName)(props)}
-          onSave={() => {}}
-          onCancel={() => {}}
-          imageUploadHandler={() => {}}
+          onSave={() => { }}
+          onCancel={() => { }}
+          imageUploadHandler={() => { }}
         />
       </div>
     );
@@ -136,6 +148,7 @@ storiesOf(name, module)
               onChange={this.handleChange}
               onSave={SAVE_ACTION}
               mentionSource={mentionSource}
+              emojiProvider={emojiProvider}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>Markdown</legend>
@@ -222,6 +235,7 @@ storiesOf(name, module)
               <Editor
                 ref={this.handleEditorRef}
                 isExpandedByDefault
+                emojiProvider={emojiProvider}
               />
             </div>
           </div>
@@ -275,5 +289,4 @@ storiesOf(name, module)
     }
 
     return <EditorWithFeedback />;
-  })
-;
+  });

@@ -11,6 +11,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import focusRingMixin from '../../utils/focus-ring-mixin';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 
 const colors = {
   container: {
@@ -68,12 +69,21 @@ const colors = {
 
 const borderRadius = 3;
 
+const defaultTheme = {
+  [themeVariables.appearance]: appearanceEnum.container,
+  [themeVariables.isCompact]: false,
+};
+
+function getThemeValue(theme, variable) {
+  return theme[themeVariables[variable]] || defaultTheme[themeVariables[variable]];
+}
+
 function getColors(theme) {
-  return colors[theme.NavigationAppearance];
+  return colors[getThemeValue(theme, 'appearance')];
 }
 
 function getHeight(theme) {
-  return theme.NavigationItemIsCompact ? akGridSizeUnitless * 4.5 : akGridSizeUnitless * 5;
+  return (getThemeValue(theme, 'isCompact') ? akGridSizeUnitless * 4.5 : akGridSizeUnitless * 5);
 }
 
 const NavigationItemOuter = styled.div`
@@ -108,10 +118,7 @@ const NavigationItemOuter = styled.div`
 `;
 
 NavigationItemOuter.defaultProps = {
-  theme: {
-    NavigationAppearance: 'container',
-    NavigationItemIsCompact: false,
-  },
+  theme: defaultTheme,
 };
 
 NavigationItemOuter.displayName = 'NavigationItemOuter';

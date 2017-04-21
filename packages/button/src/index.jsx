@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import styles from 'style!./less/styles.less';
 import classNames from 'classnames';
+import styles from './less/styles.less';
 
 import { appearance, type, spacing, theme } from './internal/enumerated-properties';
 import getClasses from './internal/get-button-classes';

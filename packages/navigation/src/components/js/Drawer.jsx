@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { ThemeProvider } from 'styled-components';
 import Blanket from '@atlaskit/blanket';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
@@ -72,14 +71,7 @@ export default class Drawer extends PureComponent {
               <ContainerHeader>{header}</ContainerHeader>
             : null}
             <DrawerContent>
-              <ThemeProvider
-                theme={{
-                  NavigationAppearance: 'container',
-                  NavigationItemIsCompact: false,
-                }}
-              >
-                {this.props.children}
-              </ThemeProvider>
+              {this.props.children}
             </DrawerContent>
           </DrawerMain>
         </DrawerInner>

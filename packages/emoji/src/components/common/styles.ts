@@ -1,4 +1,5 @@
 import {
+  akBorderRadius,
   akColorN200,
   akColorN900,
 } from '@atlaskit/util-shared-styles';
@@ -65,6 +66,14 @@ export const emojiButton = style({
   cursor: 'pointer',
   margin: '0',
   padding: '4px',
+
+  $nest: {
+    /* Firefox */
+    ['&::-moz-focus-inner']: {
+      border: '0 none',
+      padding: 0,
+    },
+  },
 });
 
 export const buttons = 'buttons';
@@ -85,6 +94,7 @@ export const emojiPreview = style({
     [`.${preview}`]: {
       display: 'flex',
       flexDirection: 'row',
+      flexWrap: 'wrap',
 
       $nest: {
         [`.${emojiSprite}`]: {
@@ -95,19 +105,22 @@ export const emojiPreview = style({
 
         [`.${previewImg}`]: {
           display: 'inline-block',
+          flex: 'initial',
           backgroundPosition: '50%',
           backgroundRepeat: 'no-repeat',
           backgroundSize: '32px 32px',
         },
 
         [`.${previewText}`]: {
-          flex: 1,
+          flex: 'column',
           marginLeft: '10px',
           marginTop: '-2px',
           maxWidth: '285px',
+          width: '285px', /* IE */
 
           $nest: {
             [`.${name}`]: {
+              display: 'block',
               color: akColorN900,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -121,12 +134,13 @@ export const emojiPreview = style({
             },
 
             [`.${shortName}`]: {
+              display: 'block',
               color: akColorN200,
               fontSize: '12px',
               lineHeight: 1,
-              marginBottom: '-1px',
+              marginBottom: '-2px',
               overflow: 'hidden',
-              paddingBottom: '1px',
+              paddingBottom: '2px',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
             },
@@ -165,4 +179,14 @@ export const emojiPreview = style({
       maxWidth: '255px',
     },
   },
+});
+
+export const emojiScrollable = style({
+  border: '1px solid #fff',
+  borderRadius: akBorderRadius,
+  display: 'block',
+  margin: '0',
+  overflowX: 'hidden',
+  overflowY: 'auto',
+  padding: '0',
 });

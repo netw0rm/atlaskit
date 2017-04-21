@@ -4,7 +4,12 @@ import Group, { SROnly, Inner } from '../styled/Group';
 
 export default class FlagGroup extends PureComponent {
   static propTypes = {
+    /** Flag elements to be displayed */
     children: PropTypes.node,
+    /**
+      * Handler to be called once a Flag is dismissed and its animation has finished.
+      * Receives the id of the dismissed Flag as a parameter.
+      */
     onDismissed: PropTypes.func,
   };
 

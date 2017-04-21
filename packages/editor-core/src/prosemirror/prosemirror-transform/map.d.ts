@@ -26,6 +26,7 @@ export class Mapping {
   slice(from?: number, to?: number): Mapping;
   appendMap(map: StepMap, mirrors?: number): void;
   appendMapping(mapping: Mapping): void;
+  appendMappingInverted(mapping: Mapping): void;
   map(pos: number, assoc?: number): number;
   mapResult(pos: number, assoc?: number): MapResult;
 }

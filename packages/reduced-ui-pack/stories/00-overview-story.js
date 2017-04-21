@@ -2,6 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme, { Code } from '@atlaskit/util-readme';
 
+// We explicitly DONT use post-css loader here so that we get the unmangled class names
 import '!style-loader!css-loader!less-loader!../src/index.less';
 
 import { name, description, main } from '../package.json';

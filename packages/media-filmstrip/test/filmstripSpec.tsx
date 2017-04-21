@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { Observable } from 'rxjs';
 import { MediaItemType } from '@atlaskit/media-core';
 import { Card } from '@atlaskit/media-card';
@@ -39,7 +39,7 @@ describe('Filmstrip', () => {
   });
 
   it('should use Cards for every item', () => {
-    const filmstrip = mount(<FilmStrip items={[link1, file1, link2]} actions={[]} context={context} />);
+    const filmstrip = shallow(<FilmStrip items={[link1, file1, link2]} actions={[]} context={context} />);
 
     expect(filmstrip.find(Card)).to.have.length(3);
   });

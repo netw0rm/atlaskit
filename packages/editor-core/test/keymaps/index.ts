@@ -21,7 +21,7 @@ describe('keymaps', () => {
       describe('findKeymapByDescription', () => {
         context('keymap is found', () => {
           it('returns matched keymap', () => {
-            expect(keymaps.findKeymapByDescription('toggle bold')).to.eq(keymaps.toggleBold);
+            expect(keymaps.findKeymapByDescription('Bold')).to.eq(keymaps.toggleBold);
           });
         });
 
@@ -57,7 +57,7 @@ describe('keymaps', () => {
       describe('findKeymapByDescription', () => {
         context('keymap is found', () => {
           it('returns matched keymap', () => {
-            expect(keymaps.findKeymapByDescription('toggle bold')).to.eq(keymaps.toggleBold);
+            expect(keymaps.findKeymapByDescription('Bold')).to.eq(keymaps.toggleBold);
           });
         });
 

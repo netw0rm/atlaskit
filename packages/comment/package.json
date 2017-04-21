@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "1.2.1",
+  "version": "1.4.0",
   "config": {
     "access": "public"
   },
@@ -22,10 +22,10 @@
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/comment": "*",
     "@atlaskit/editor-bitbucket": "^1.0.0",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^3.1.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

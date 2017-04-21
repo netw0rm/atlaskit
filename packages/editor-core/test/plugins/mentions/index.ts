@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mention as mentionNode } from '../../../src';
-import MentionsPlugin from '../../../src/plugins/mentions';
+import mentionsPlugins from '../../../src/plugins/mentions';
 import {
   chaiPlugin,
   fixtures,
@@ -17,7 +17,7 @@ import {
   p,
   ul,
 } from '../../../src/test-helper';
-
+import defaultSchema from '../../../src/test-helper/schema';
 import { resourceProvider } from '../../../stories/mentions/story-data';
 
 const mentionProvider = new Promise<any>(resolve => {
@@ -30,18 +30,13 @@ describe('mentions', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: MentionsPlugin,
+    plugins: mentionsPlugins(defaultSchema),
     place: fixture()
   });
 
   const forceUpdate = (editorView: any) => {
     editorView.updateState(editorView.state);
   };
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = MentionsPlugin as any; // .key is not public API.
-    expect(plugin.key).to.be.a('string');
-  });
 
   describe('keymap', () => {
 
@@ -273,7 +268,30 @@ describe('mentions', () => {
         doc(
           p(
             mention({
-              displayName: '@Oscar Wallhult',
+              text: '@Oscar Wallhult',
+              id: '1234'
+            }),
+            ' '
+          )
+        )
+      );
+    });
+
+    it('should render the mention-node using a nickname if present', () => {
+      const { editorView, pluginState } = editor(doc(p(mentionQuery('@ta'))));
+
+      pluginState.insertMention({
+        name: 'Tara Tjandra',
+        mentionName: 'ttjandra',
+        nickname: 'tara',
+        id: '1234'
+      });
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            mention({
+              text: '@tara',
               id: '1234'
             }),
             ' '
@@ -283,7 +301,7 @@ describe('mentions', () => {
     });
 
     it('should allow inserting multiple @-mentions next to eachother', () => {
-      const { editorView, pluginState } = editor(doc(p(mention({ id: '1234', displayName: '@Oscar Wallhult' }), ' ', mentionQuery('@{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mention({ id: '1234', text: '@Oscar Wallhult' }), ' ', mentionQuery('@{<>}'))));
 
       pluginState.insertMention({
         name: 'Bradley Ayers',
@@ -295,12 +313,12 @@ describe('mentions', () => {
         doc(
           p(
             mention({
-              displayName: '@Oscar Wallhult',
+              text: '@Oscar Wallhult',
               id: '1234'
             }),
             ' ',
             mention({
-              displayName: '@Bradley Ayers',
+              text: '@Bradley Ayers',
               id: '5678'
             }),
             ' '
@@ -325,7 +343,7 @@ describe('mentions', () => {
             br,
             mention({
               id: '1234',
-              displayName: '@Oscar Wallhult'
+              text: '@Oscar Wallhult'
             }),
             ' '
           )
@@ -352,7 +370,7 @@ describe('mentions', () => {
                   'Two ',
                   mention({
                     id: '1234',
-                    displayName: '@Oscar Wallhult'
+                    text: '@Oscar Wallhult'
                   }),
                   ' '
                 )
@@ -380,7 +398,7 @@ describe('mentions', () => {
               'Hello ',
               mention({
                 id: '1234',
-                displayName: '@Oscar Wallhult'
+                text: '@Oscar Wallhult'
               }),
               ' '
             )

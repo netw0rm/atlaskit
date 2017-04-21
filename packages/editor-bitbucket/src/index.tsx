@@ -1,32 +1,49 @@
 import {
   AnalyticsHandler,
   analyticsService,
-  BlockTypePlugin,
   Chrome,
-  CodeBlockPlugin,
+  codeBlockPlugins,
+  blockTypePlugins,
+  rulePlugins,
+  emojisPlugins,
+  hyperlinkPlugins,
+  imageUploadPlugins,
+  mentionsPlugins,
+  listsPlugins,
+  textFormattingPlugins,
+  clearFormattingPlugins,
+  codeBlockStateKey,
+  blockTypeStateKey,
+  emojisStateKey,
+  hyperlinkStateKey,
+  imageUploadStateKey,
+  mentionsStateKey,
+  listsStateKey,
+  textFormattingStateKey,
+  clearFormattingStateKey,
   ContextName,
-  DefaultInputRulesPlugin,
-  HorizontalRulePlugin,
-  HyperlinkPlugin,
-  ImageUploadPlugin,
-  Keymap,
-  ListsPlugin,
-  MarkdownInputRulesPlugin,
-  MentionsPlugin,
+  EditorView,
+  EditorState,
   Node,
-  ProseMirror,
-  DefaultKeymapsPlugin,
-  TextFormattingPlugin,
-  ClearFormattingPlugin,
+  TextSelection,
+  ProviderFactory,
+  emojiNodeView,
+  mentionNodeView,
+  history,
+  keymap,
+  baseKeymap,
   version as coreVersion
 } from '@atlaskit/editor-core';
+import { EmojiProvider } from '@atlaskit/emoji';
+import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import markdownSerializer from './markdown-serializer';
 import { MentionResource, MentionSource } from './mention-resource';
+import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
 import { version, name } from './version';
+import schema from './schema';
 
 export { version };
 
@@ -44,39 +61,69 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
   mentionSource?: MentionSource;
+  emojiProvider?: Promise<EmojiProvider>;
 }
 
 export interface State {
-  pm?: ProseMirror;
+  editorView?: EditorView;
   isExpanded?: boolean;
+  mentionProvider?: Promise<MentionProvider>;
+  emojiProvider?: Promise<EmojiProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
-  mentionsResourceProvider: MentionResource;
+  providerFactory: ProviderFactory;
   version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
+    analyticsService.handler = props.analyticsHandler || ((name) => { });
+
     this.state = { isExpanded: props.isExpandedByDefault };
+    this.providerFactory = new ProviderFactory();
+  }
 
-    analyticsService.handler = props.analyticsHandler || ((name) => {});
+  componentWillMount() {
+    this.handleProviders(this.props);
+  }
 
-    if (props.mentionSource) {
-      this.mentionsResourceProvider = new MentionResource({
+  componentWillReceiveProps(nextProps: Props) {
+    const { props } = this;
+    if (props.mentionSource !== nextProps.mentionSource || props.emojiProvider !== nextProps.emojiProvider) {
+      this.handleProviders(nextProps);
+    }
+  }
+
+  handleProviders = (props: Props) => {
+    const { emojiProvider, mentionSource } = props;
+
+    let mentionProvider;
+
+    if (mentionSource) {
+      const mentionsResourceProvider = new MentionResource({
         minWait: 10,
         maxWait: 25,
-      }, props.mentionSource);
+      }, mentionSource);
+
+      mentionProvider = Promise.resolve(mentionsResourceProvider);
     }
+
+    this.providerFactory.setProvider('emojiProvider', emojiProvider);
+    this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.setState({
+      emojiProvider,
+      mentionProvider
+    });
   }
 
   /**
    * Focus the content region of the editor.
    */
   focus(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.focus();
+    const { editorView } = this.state;
+    if (editorView) {
+      editorView.focus();
     }
   }
 
@@ -104,12 +151,13 @@ export default class Editor extends PureComponent<Props, State> {
    * Clear the content of the editor, making it an empty document.
    */
   clear(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
-
-      // We need flush for bitbucket, otherwise editor becomes broken after detaching/attaching parent DOM node
-      pm.flush();
+    const { editorView } = this.state;
+    if (editorView) {
+      const { state } = editorView;
+      const tr = state.tr
+        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .deleteSelection();
+      editorView.dispatch(tr);
     }
   }
 
@@ -118,9 +166,9 @@ export default class Editor extends PureComponent<Props, State> {
    * (i.e. text)
    */
   isEmpty(): boolean {
-    const { pm } = this.state;
-    return pm && pm.doc
-      ? !!pm.doc.textContent
+    const { editorView } = this.state;
+    return editorView && editorView.state.doc
+      ? !!editorView.state.doc.textContent
       : false;
   }
 
@@ -128,22 +176,25 @@ export default class Editor extends PureComponent<Props, State> {
    * Set value from HTML string
    */
   setFromHtml(html: string): void {
-    const { pm } = this.state;
+    const { editorView } = this.state;
 
-    if (!pm || !pm.doc) {
+    if (!editorView || !editorView.state.doc) {
       throw new Error('Unable to set from HTML before the editor is initialized');
     }
 
-    pm.setDoc(parseHtml(html.trim()));
+    const { tr, doc } = editorView.state;
+    const newDoc = parseHtml(html.trim());
+
+    editorView.dispatch(tr.replace(0, doc.nodeSize - 2, newDoc.slice(0, newDoc.nodeSize - 2)));
   }
 
   /**
    * Return the current python-markdown value from the editor.
    */
   get value(): string | undefined {
-    const { pm } = this.state;
-    return pm
-      ? markdownSerializer.serialize(pm.doc)
+    const { editorView } = this.state;
+    return editorView
+      ? markdownSerializer.serialize(editorView.state.doc)
       : this.props.defaultValue;
   }
 
@@ -151,16 +202,27 @@ export default class Editor extends PureComponent<Props, State> {
    * Return the current ProseMirror doc value from the editor;
    */
   get doc(): Node | undefined {
-    const { pm } = this.state;
-    return pm
-      ? pm.doc
+    const { editorView } = this.state;
+    return editorView
+      ? editorView.state.doc
       : undefined;
   }
 
   render() {
+    const { mentionProvider, emojiProvider } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { pm, isExpanded } = this.state;
+    const { isExpanded, editorView } = this.state;
+    const editorState = editorView && editorView.state;
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const imageUploadState = editorState && imageUploadStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
+    const emojiState = editorState && emojisStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -171,15 +233,18 @@ export default class Editor extends PureComponent<Props, State> {
         onSave={handleSave}
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
-        pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
-        pluginStateCodeBlock={pm && CodeBlockPlugin.get(pm)}
-        pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
-        pluginStateLists={pm && ListsPlugin.get(pm)}
-        pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
-        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
-        pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
-        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)!}
-        mentionsResourceProvider={this.mentionsResourceProvider}
+        editorView={editorView!}
+        pluginStateBlockType={blockTypeState}
+        pluginStateCodeBlock={codeBlockState}
+        pluginStateEmojis={emojiState}
+        pluginStateHyperlink={hyperlinkState}
+        pluginStateLists={listsState}
+        pluginStateMentions={mentionsState}
+        pluginStateTextFormatting={textFormattingState}
+        pluginStateClearFormatting={clearFormattingState}
+        pluginStateImageUpload={imageUploadState}
+        mentionProvider={mentionProvider}
+        emojiProvider={emojiProvider}
         packageVersion={version}
         packageName={name}
       />
@@ -209,55 +274,78 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context } = this.props;
-      const pm = new ProseMirror({
-        place,
-        doc: parseHtml(this.props.defaultValue || ''),
-        plugins: [
-          MarkdownInputRulesPlugin,
-          HyperlinkPlugin,
-          BlockTypePlugin,
-          CodeBlockPlugin,
-          ListsPlugin,
-          TextFormattingPlugin,
-          ClearFormattingPlugin,
-          HorizontalRulePlugin,
-          DefaultKeymapsPlugin,
-          ...( this.mentionsResourceProvider ? [ MentionsPlugin ] : [] ),
-          DefaultInputRulesPlugin,
-          ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
-        ],
-      });
+      const { context, emojiProvider, mentionSource, imageUploadHandler } = this.props;
+      const bitbucketKeymap = {
+        'Mod-Enter': this.handleSave,
+        'Esc'() { } // Disable Esc handler
+      };
+      const editorState = EditorState.create(
+        {
+          schema,
+          doc: parseHtml(this.props.defaultValue || ''),
+          plugins: [
+            ...mentionsPlugins(schema), // mentions and emoji needs to be first
+            ...emojisPlugins(schema),
+            ...listsPlugins(schema),
+            ...blockTypePlugins(schema),
+            ...clearFormattingPlugins(schema),
+            ...codeBlockPlugins(schema),
+            ...textFormattingPlugins(schema),
+            ...hyperlinkPlugins(schema),
+            ...rulePlugins(schema),
+            ...imageUploadPlugins(schema),
+            history(),
+            keymap(bitbucketKeymap),
+            keymap(baseKeymap) // should be last :(
+          ]
+        }
+      );
 
       if (context) {
-        BlockTypePlugin.get(pm)!.changeContext(context);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
+        blockTypeState.changeContext(context);
       }
 
-      if (this.props.imageUploadHandler) {
-        ImageUploadPlugin.get(pm)!.uploadHandler = this.props.imageUploadHandler;
+      if (imageUploadHandler) {
+        const imageUploadState = imageUploadStateKey.getState(editorState);
+        imageUploadState.setUploadHandler(imageUploadHandler);
       }
 
-      pm.addKeymap(new Keymap({
-        'Mod-Enter': this.handleSave,
-        'Esc'() {} // Disable Esc handler
-      }));
-
-      pm.on.transformPastedHTML.add((html: string) => {
-        return transformHtml(html).innerHTML;
+      const editorView = new EditorView(place, {
+        state: editorState,
+        dispatchTransaction: (tr) => {
+          const newState = editorView.state.apply(tr);
+          editorView.updateState(newState);
+          this.handleChange();
+        },
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory),
+          emoji: emojiNodeView(this.providerFactory)
+        },
+        handleDOMEvents: {
+          paste(view: EditorView, event: ClipboardEvent) {
+            analyticsService.trackEvent('atlassian.editor.paste');
+            return false;
+          }
+        },
+        transformPastedHTML(html: string) {
+          return transformHtml(html).innerHTML;
+        }
       });
 
-      pm.on.domPaste.add(() => {
-        analyticsService.trackEvent('atlassian.editor.paste');
-      });
+      if (mentionSource) {
+        mentionsStateKey.getState(editorState).subscribeToFactory(this.providerFactory);
+      }
 
-      pm.on.change.add(this.handleChange);
-      pm.focus();
+      if (emojiProvider) {
+        emojisStateKey.getState(editorState).subscribeToFactory(this.providerFactory);
+      }
+
+      this.setState({ editorView });
 
       analyticsService.trackEvent('atlassian.editor.start');
-
-      this.setState({ pm });
     } else {
-      this.setState({ pm: undefined });
+      this.setState({ editorView: undefined });
     }
   }
 }

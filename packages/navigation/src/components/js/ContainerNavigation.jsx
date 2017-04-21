@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
 import memoizeOne from 'memoize-one';
+import { themeVariables } from '../../utils/theme';
 import ContainerHeader from './ContainerHeader';
 import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -87,8 +88,16 @@ export default class ContainerNavigation extends PureComponent {
   }
 
   getOuterStyles() {
+    if (!this.props.offsetX) {
+      return {
+        width: this.props.width,
+      };
+    }
+
+    // temporary fix for the AK-1780. When it resolved, this marginLeft should be changed back
+    // to translateX
     return {
-      transform: `translateX(${this.props.offsetX}px)`,
+      marginLeft: `${this.props.offsetX}px`,
       width: this.props.width,
     };
   }
@@ -115,7 +124,7 @@ export default class ContainerNavigation extends PureComponent {
     return (
       <ThemeProvider
         theme={{
-          NavigationAppearance: appearance,
+          [themeVariables.appearance]: appearance,
           isCollapsed: isWidthCollapsed,
         }}
       >
@@ -131,7 +140,6 @@ export default class ContainerNavigation extends PureComponent {
             style={this.getOuterStyles()}
           >
             <ContainerNavigationInner
-              appearance={appearance}
               innerRef={this.onRefChange}
             >
               <GlobalPrimaryActions

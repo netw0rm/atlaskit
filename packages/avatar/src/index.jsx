@@ -1,2 +1,2 @@
-export default from './Avatar';
-export Presence from './Presence';
+export { default } from './components/Avatar';
+export { default as Presence } from './components/Presence';

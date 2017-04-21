@@ -1,6 +1,7 @@
 import {
   EditorState,
   EditorView,
+  Schema,
   Mark,
   Node,
   Plugin,
@@ -12,7 +13,7 @@ import {
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { reconfigure } from '../utils';
+import { normalizeUrl } from './utils';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
@@ -58,15 +59,15 @@ export class HyperlinkState {
       const { state } = this;
       const { href } = options;
       const { empty, $from, $to } = state.selection;
-      const mark = state.schema.mark('link', { href });
+      const mark = state.schema.mark('link', { href: normalizeUrl(href) });
       const tr = empty
         ? state.tr.replaceWith($from.pos, $to.pos, state.schema.text(href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
 
-      if (browser.gecko && view.editable) {
-        view.selectionReader.ignoreUpdates = true;
+      if (browser.gecko && (view as any).editable) {
+        (view as any).selectionReader.ignoreUpdates = true;
         view.dom.focus();
-        view.selectionReader.ignoreUpdates = false;
+        (view as any).selectionReader.ignoreUpdates = false;
       }
       view.dispatch(tr);
       view.focus();
@@ -90,7 +91,7 @@ export class HyperlinkState {
       const to = this.activeLinkStartPos + this.text!.length;
       view.dispatch(state.tr
         .removeMark(from, to, this.activeLinkMark)
-        .addMark(from, to, state.schema.mark('link', { href: options.href })));
+        .addMark(from, to, state.schema.mark('link', { href: normalizeUrl(options.href) })));
     }
   }
 
@@ -143,6 +144,7 @@ export class HyperlinkState {
         this.changeHandlers.forEach(cb => cb(this));
       } else {
         this.addLink({ href: '' }, editorView);
+        this.update(editorView.state, editorView.docView);
       }
     }
   }
@@ -190,7 +192,7 @@ export class HyperlinkState {
 
   private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = docView.domFromPos(this.activeLinkStartPos, 1);
+      const { node, offset } = docView.domFromPos(this.activeLinkStartPos);
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;
@@ -215,6 +217,11 @@ const plugin = new Plugin({
 
       return false;
     },
+    handleClick(view: EditorView) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
+      return false;
+    },
     onBlur(view: EditorView) {
       const pluginState = stateKey.getState(view.state);
 
@@ -228,13 +235,7 @@ const plugin = new Plugin({
       pluginState.editorFocused = true;
 
       return true;
-    },
-    handleDOMEvents: {
-      // This enables default behavior on paste
-      paste: (view: EditorView, event) => {
-        return true;
-      },
-    },
+    }
   },
   state: {
     init(config, state: EditorState<any>) {
@@ -247,10 +248,6 @@ const plugin = new Plugin({
   key: stateKey,
   view: (view: EditorView) => {
     stateKey.getState(view.state).update(view.state, view.docView, true);
-    reconfigure(view, [
-      keymapPlugin(view.state.schema),
-      inputRulePlugin(view.state.schema),
-    ]);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
@@ -261,4 +258,8 @@ const plugin = new Plugin({
   }
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

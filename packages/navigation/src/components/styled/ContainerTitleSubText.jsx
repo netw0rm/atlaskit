@@ -1,5 +1,6 @@
 import { akColorN300, akColorN0 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 
 const colors = {
   global: akColorN0,
@@ -8,7 +9,7 @@ const colors = {
 };
 
 const ContainerTitleSubText = styled.div`
-  color: ${({ theme }) => colors[theme.NavigationAppearance]};
+  color: ${({ theme }) => colors[theme[themeVariables.appearance]]};
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -16,7 +17,7 @@ const ContainerTitleSubText = styled.div`
 
 ContainerTitleSubText.defaultProps = {
   theme: {
-    NavigationAppearance: 'container',
+    [themeVariables.appearance]: appearanceEnum.container,
   },
 };
 

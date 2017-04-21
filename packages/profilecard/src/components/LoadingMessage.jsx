@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import AkSpinner from '@atlaskit/spinner';
 
-import styles from 'style!../styles/profilecard.less';
+import styles from '../styles/profilecard.less';
 
 export default class LoadingMessage extends PureComponent {
   static propTypes = {};

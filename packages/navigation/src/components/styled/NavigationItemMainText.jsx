@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const NavigationItemMainText = styled.div`
-  overflow-x: hidden;
+  line-height: 1.2;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

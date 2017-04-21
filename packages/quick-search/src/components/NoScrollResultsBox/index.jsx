@@ -2,7 +2,6 @@ import React, { PropTypes, PureComponent } from 'react';
 
 export default class NoScrollResultsBox extends PureComponent {
   static propTypes = {
-    getContainerHeight: PropTypes.func.isRequired,
     minItems: PropTypes.number,
     children: PropTypes.oneOfType([
       React.PropTypes.arrayOf(React.PropTypes.node),
@@ -23,18 +22,21 @@ export default class NoScrollResultsBox extends PureComponent {
 
   componentDidMount() {
     this.resizeToFillContainer();
-    if (this.props.getContainerHeight) {
-      window.addEventListener('resize', this.resizeToFillContainer);
-    }
+    window.addEventListener('resize', this.resizeToFillContainer);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeToFillContainer);
   }
 
+  getNoScrollHeight = () => {
+    const cmpntY = this.ref && this.ref.getBoundingClientRect().top;
+    return window.innerHeight - cmpntY;
+  }
+
   resizeToFillContainer = () => {
     this.setState({
-      height: this.props.getContainerHeight(),
+      height: this.getNoScrollHeight(),
     });
   }
 
@@ -47,11 +49,12 @@ export default class NoScrollResultsBox extends PureComponent {
   render = () => {
     let { children } = this.props;
     if (Array.isArray(children)) {
-      children = children.slice(
-        0,
-        Math.max(this.props.minItems, this.itemsTheresSpaceFor())
-      );
+      children = children
+        .slice(
+          0,
+          Math.max(this.props.minItems, this.itemsTheresSpaceFor())
+        );
     }
-    return <div>{children}</div>;
+    return <div ref={(div) => { this.ref = div; }}>{children}</div>;
   }
 }

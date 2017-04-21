@@ -4,10 +4,11 @@ import Droplist from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import sinon from 'sinon';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
-import Menu, { StatelessDropdownMenu as StatelessMenu } from '../src';
+import Menu, { StatelessDropdownMenu as StatelessMenu } from '../../src';
 
 const itemsList = [
   {

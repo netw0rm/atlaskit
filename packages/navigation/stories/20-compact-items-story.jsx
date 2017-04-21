@@ -41,7 +41,8 @@ storiesOf(name, module)
           <AkNavigationItem
             icon={<DashboardIcon label="Lobby" />}
             text="Lobby"
-          /></AkNavigationItemGroup>
+          />
+        </AkNavigationItemGroup>
         <AkNavigationItemGroup
           action={
             <AkButton

@@ -7,14 +7,13 @@ const intGridSize = Number(akGridSizeUnitless);
 const paddingBottom = `${(intGridSize * 1.5) - keylineHeight}px`;
 const paddingOpen = `${container.padding.top}px ${container.padding.side + (intGridSize * 1.75)}px ${paddingBottom} ${container.padding.side + (intGridSize * 1.5)}px`;
 const paddingClosed = `0 ${intGridSize * 2.5}px 0 ${intGridSize * 0.5}px`;
-const supportsStickyCondition = '@supports(position: sticky) or (position: -webkit - sticky)';
+const supportsStickyCondition = '@supports(position: sticky) or (position: -webkit-sticky)';
 
 const ContainerHeaderWrapper = styled.div`
-  transition: padding ${animationTime};
-  padding: ${paddingOpen};
-
   // the keyline will be drawn over the margin
   margin-bottom: ${keylineHeight}px;
+  padding: ${paddingOpen};
+  transition: padding ${animationTime};
 
   ${supportsStickyCondition} {
     // use the background color of the parent
@@ -42,8 +41,8 @@ const ContainerHeaderWrapper = styled.div`
 
     // undoing position: sticky
     ${supportsStickyCondition} {
-      position: static;
       background-color: transparent;
+      position: static;
 
       &::after {
         display: none;

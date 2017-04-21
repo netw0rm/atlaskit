@@ -35,15 +35,13 @@ storiesOf(name, module)
       <BasicNavigation containerHeaderComponent={null}>
         <AkNavigationItemGroup isCompact>
           <AkNavigationItem
-          icon={<RandomAvatar presence="online" />}
-
-          text="Available"
-        />
-        <AkNavigationItem
-          icon={<DashboardIcon label="Lobby" />}
-
-          text="Lobby"
-        /></AkNavigationItemGroup>
+            icon={<RandomAvatar presence="online" />}
+            text="Available"
+          />
+          <AkNavigationItem
+            icon={<DashboardIcon label="Lobby" />}
+            text="Lobby"
+          /></AkNavigationItemGroup>
         <AkNavigationItemGroup
           action={
             <AkButton

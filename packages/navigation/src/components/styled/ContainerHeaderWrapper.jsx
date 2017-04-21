@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { animationTime, container, resizeAnimationTime } from '../../shared-variables';
+import { animationTime, colors, container, resizeAnimationTime } from '../../shared-variables';
 
 const keylineHeight = 2;
 const intGridSize = Number(akGridSizeUnitless);
 const paddingBottom = `${(intGridSize * 1.5) - keylineHeight}px`;
 const paddingOpen = `${container.padding.top}px ${container.padding.side + (intGridSize * 1.75)}px ${paddingBottom} ${container.padding.side + (intGridSize * 1.5)}px`;
 const paddingClosed = `0 ${intGridSize * 2.5}px 0 ${intGridSize * 0.5}px`;
+const supportsStickyCondition = '@supports(position: sticky) or (position: -webkit - sticky)';
 
 const ContainerHeaderWrapper = styled.div`
   transition: padding ${animationTime};
@@ -15,7 +16,7 @@ const ContainerHeaderWrapper = styled.div`
   // the keyline will be drawn over the margin
   margin-bottom: ${keylineHeight}px;
 
-  @supports ( position: sticky ) or ( position: -webkit-sticky ) {
+  ${supportsStickyCondition} {
     // use the background color of the parent
     background-color: inherit;
     position: sticky;
@@ -24,7 +25,7 @@ const ContainerHeaderWrapper = styled.div`
 
     // keyline
     &::after {
-      background-color: ${props => (props.isContentScrolled ? container.colors[props.appearance].keyline : 'none')}
+      background-color: ${props => (props.isContentScrolled ? colors[props.appearance].keyline : 'none')}
       bottom: -${keylineHeight}px;
       border-radius: 1px;
       content: "";
@@ -40,7 +41,7 @@ const ContainerHeaderWrapper = styled.div`
     padding: ${paddingClosed};
 
     // undoing position: sticky
-    @supports ( position: sticky ) or ( position: -webkit-sticky ) {
+    ${supportsStickyCondition} {
       position: static;
       background-color: transparent;
 

@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import { container } from '../../shared-variables';
+import { container, colors } from '../../shared-variables';
 import { appearanceEnum, themeVariables } from '../../utils/theme';
-
-const getColor = (appearance = 'container') =>
-  container.colors[appearance];
 
 const ContainerNavigationInner = styled.div`
   background-color: ${({ theme }) => colors[theme[themeVariables.appearance]].background};
@@ -17,7 +14,7 @@ const ContainerNavigationInner = styled.div`
   padding-right: ${({ theme }) => (theme.isCollapsed ? container.padding.side : 0)}px;
   padding-bottom: 0;
   width: 100%;
-  
+
   // needed to fix sticky header on retina displays 🙃
   transform-style: preserve-3d;
 `;

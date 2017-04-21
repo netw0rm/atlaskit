@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ContainerHeaderWrapper from '../styled/ContainerHeaderWrapper';
+import { appearanceEnum } from '../../utils/theme';
 
 export default class ContainerHeader extends PureComponent {
   static propTypes = {
@@ -10,7 +11,7 @@ export default class ContainerHeader extends PureComponent {
 
   static defaultProps = {
     isContentScrolled: false,
-    appearance: 'container',
+    appearance: appearanceEnum.container,
   }
 
   render() {

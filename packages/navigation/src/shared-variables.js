@@ -27,26 +27,28 @@ export const resizeAnimationTime = animationTime;
 export const globalVerticalPaddingTop = akGridSizeUnitless * 3;
 export const globalVerticalPaddingBottom = akGridSizeUnitless * 2;
 export const globalItemMediumSize = akGridSizeUnitless * 5;
+
+export const colors = {
+  container: {
+    background: akColorN20,
+    color: akColorN500,
+    keyline: akColorN30A,
+  },
+  global: {
+    background: akColorB500,
+    color: akColorN0,
+    keyline: akColorN80,
+  },
+  settings: {
+    background: akColorN700,
+    color: akColorN0,
+    keyline: akColorN900,
+  },
+};
+
 export const container = {
   padding: {
     side: Number(akGridSizeUnitless),
     top: Number(akGridSizeUnitless) * 3,
-  },
-  colors: {
-    container: {
-      background: akColorN20,
-      color: akColorN500,
-      keyline: akColorN30A,
-    },
-    global: {
-      background: akColorB500,
-      color: akColorN0,
-      keyline: akColorN80,
-    },
-    settings: {
-      background: akColorN700,
-      color: akColorN0,
-      keyline: akColorN900,
-    },
   },
 };

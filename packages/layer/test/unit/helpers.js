@@ -1,4 +1,4 @@
-import { getFlipBehavior } from '../src/internal/helpers';
+import { getFlipBehavior } from '../../src/internal/helpers';
 
 describe('Layer', () => {
   describe('helpers', () => {

@@ -13,16 +13,17 @@ export default class DefaultMediaStateManager implements MediaStateManager {
   updateState(tempId: string, newState: MediaState) {
     let list: Subscriber[] | undefined = this.subscribers[tempId];
 
-    if (list === undefined) {
-      return;
-    }
-
     const state = {
       ...(this.state.get(tempId) || {}),
       ...newState
     };
 
     this.state.set(tempId, state);
+
+    if (list === undefined) {
+      return;
+    }
+
     list.forEach(cb => cb.call(cb, state));
   }
 

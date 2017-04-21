@@ -176,6 +176,47 @@ export class MediaPluginState {
     this.popupPicker.show();
   }
 
+  /**
+   * Returns a promise that is resolved after all pending operations have been finished.
+   * An optional timeout will cause the promise to reject if the operation takes too long
+   *
+   * NOTE: The promise will resolve even if some of the media have failed to process.
+   *
+   */
+  waitForPendingTasks = async (timeout?: Number) => {
+    const { temporaryMediaNodes, stateManager } = this;
+    let outstandingNodes = temporaryMediaNodes.length;
+
+    if (!outstandingNodes) {
+      return Promise.resolve();
+    }
+
+    return new Promise<void>((resolve, reject) => {
+      if (timeout) {
+        setTimeout(() => reject(new Error(`Media operations did not finish in ${timeout} ms`)), timeout);
+      }
+
+      // To avoid race-conditions steming from Promise micro-task, we're reading the length again
+      outstandingNodes = temporaryMediaNodes.length;
+
+      temporaryMediaNodes.forEach((node, mediaId) => {
+        const listener = (state: MediaState) => {
+          const { status } = state;
+
+          if (status === 'ready' || status === 'error') {
+            outstandingNodes--;
+            stateManager.unsubscribe(mediaId, listener);
+
+            if (outstandingNodes <= 0) {
+              resolve();
+            }
+          }
+        };
+        stateManager.subscribe(mediaId, listener);
+      });
+    });
+  }
+
   setView(view: EditorView) {
     this.view = view;
   }

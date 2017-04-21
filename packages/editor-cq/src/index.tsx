@@ -34,7 +34,8 @@ import {
   MediaProvider,
   Plugin,
   mentionNodeView,
-  ProviderFactory
+  ProviderFactory,
+  MediaPluginState
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -143,15 +144,18 @@ export default class Editor extends PureComponent<Props, State> {
   /**
    * The current value of the editor, encoded as CXTML.
    */
-  get value(): string | undefined {
+  get value(): Promise<string | undefined> {
     const { editorView } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
 
-    return editorView && editorView.state.doc
-      ? encode(editorView.state.doc)
-      : this.props.defaultValue;
+    return mediaPluginState.waitForPendingTasks().then(() =>
+      editorView && editorView.state.doc
+          ? encode(editorView.state.doc)
+          : this.props.defaultValue
+    );
   }
 
- componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: Props) {
     const { props, providerFactory } = this;
     const { mediaProvider } = nextProps;
 

@@ -7,6 +7,7 @@ import { name, version } from '../package.json';
 import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { pd } from 'pretty-data';
 import { resourceProvider } from './mentions/story-data';
+import Spinner from '@atlaskit/spinner';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
@@ -27,7 +28,7 @@ const mentionProvider = new Promise<any>(resolve => {
 storiesOf(name, module)
   .addDecorator(function (story: Function, context: { kind: string, story: string }) {
     type Props = {};
-    type State = { cxhtml?: string, story?: any, prettify?: boolean };
+    type State = { cxhtml?: string, story?: any, prettify?: boolean, isGettingValue?: boolean};
     class Demo extends PureComponent<Props, State> {
       state: State;
 
@@ -37,12 +38,18 @@ storiesOf(name, module)
         this.state = {
           cxhtml: '',
           prettify: true,
-          story: story()
+          story: story(),
+          isGettingValue: false
         };
       }
 
       handleChange = (editor: Editor) => {
-        this.setState({ cxhtml: editor.value });
+        this.setState({ isGettingValue: true });
+
+        editor.value.then((value) => this.setState({
+          isGettingValue: false,
+          cxhtml: value
+        }));
       }
 
       togglePrettify = () => {
@@ -63,7 +70,11 @@ storiesOf(name, module)
                   <span onClick={this.togglePrettify} style={{ cursor: 'pointer' }}> prettify</span>
                  )
               </legend>
-              <pre style={{ whiteSpace:'pre-wrap', wordBreak:'break-all' }}>{xml}</pre>
+              {this.state.isGettingValue ?
+                <div style={{ padding: 20 }}><Spinner size="large" /></div>
+                :
+                <pre style={{ whiteSpace:'pre-wrap', wordBreak:'break-all' }}>{xml}</pre>
+              }
             </fieldset>
           </div>
         );

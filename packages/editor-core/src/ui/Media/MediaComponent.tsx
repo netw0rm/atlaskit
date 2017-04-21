@@ -143,11 +143,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaProvider = (mediaProvider: MediaProvider) => {
-    const { stateManager } = mediaProvider;
+    const { stateManager } = this.props.pluginState!;
 
-    if (stateManager) {
-       stateManager.subscribe(this.props.id, this.handleMediaStateChange);
-    }
+    stateManager.subscribe(this.props.id, this.handleMediaStateChange);
 
     this.setState({ ...this.state, mediaProvider });
 

@@ -35,8 +35,8 @@ export default class TemporaryNodesList {
     return this;
   }
 
-  forEach(...args: any[]) {
-    return this.map.forEach.apply(this.map, args);
+  forEach(cb: (node: Node, mediaId: string) => void) {
+    return this.map.forEach.call(this.map, cb);
   }
 
   delete(...args: any[]) {
@@ -45,6 +45,12 @@ export default class TemporaryNodesList {
 
   clear(...args: any[]) {
     return this.map.clear.apply(this.map, args);
+  }
+
+  get length() {
+    const { map } = this;
+
+    return Array.from(map.keys()).reduce((acc, val) => acc + map.get(val)!.length, 0);
   }
 }
 

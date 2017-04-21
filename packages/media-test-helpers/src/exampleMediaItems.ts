@@ -1,4 +1,4 @@
-import {MediaItemType} from '@atlaskit/media-core';
+import {MediaItemType, UrlPreview, LinkDetails, FileDetails} from '@atlaskit/media-core';
 import {defaultCollectionName as collectionName} from './collectionNames';
 
 const fileType: MediaItemType = 'file';
@@ -115,3 +115,73 @@ export const unknownFileId = {
   mediaItemType: fileType,
   collectionName
 };
+
+// === DETAILS ===
+
+export const genericUrlPreview: UrlPreview = {
+  url: 'https://www.atlassian.com/',
+  type: 'link',
+  site: 'Atlassian',
+  title: 'Atlassian | Software Development and Collaboration Tools',
+  description: 'Millions of users globally rely on Atlassian products every day for improving software development, project management, collaboration, and code quality.',
+  author: {
+    name: 'Atlassian'
+  },
+  resources: {
+    icon: {
+      url: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/apple-touch-icon-152x152.png',
+      type: 'image/png',
+      width: 152,
+      height: 152
+    },
+    thumbnail: {
+      url: 'https://wac-cdn.atlassian.com/dam/jcr:89e146b4-642e-41fc-8e65-7848337d7bdd/atlassian_charlie_square.png',
+      type: 'image/png',
+      width: 400,
+      height: 400
+    }
+  }
+};
+
+export const genericLinkDetails: LinkDetails = {
+  id: 'foo',
+  ...genericUrlPreview
+};
+
+export const genericFileDetails: FileDetails = {
+  id: 'fd4c4672-323a-4b6c-8326-223169e2a13e',
+  mediaType: 'image',
+  mimeType: 'image/gif',
+  name: 'picker-thread-leaking.gif',
+  size: 2958464,
+  processingStatus: 'succeeded',
+  artifacts: {
+    'thumb_320.jpg': {
+      url: '/file/fd4c4672-323a-4b6c-8326-223169e2a13e/artifact/thumb_320.jpg/binary',
+      processingStatus: 'succeeded'
+    },
+    'thumb_large.jpg': {
+      url: '/file/fd4c4672-323a-4b6c-8326-223169e2a13e/artifact/thumb_320.jpg/binary',
+      processingStatus: 'succeeded'
+    },
+    'thumb_120.jpg': {
+      url: '/file/fd4c4672-323a-4b6c-8326-223169e2a13e/artifact/thumb_120.jpg/binary',
+      processingStatus: 'succeeded'
+    },
+    'thumb.jpg': {
+      url: '/file/fd4c4672-323a-4b6c-8326-223169e2a13e/artifact/thumb_120.jpg/binary',
+      processingStatus: 'succeeded'
+    },
+    'meta.json': {
+      url: '/file/fd4c4672-323a-4b6c-8326-223169e2a13e/artifact/meta.json/binary',
+      processingStatus: 'succeeded'
+    },
+    'image.jpg': {
+      url: '/file/fd4c4672-323a-4b6c-8326-223169e2a13e/artifact/image.jpg/binary',
+      processingStatus: 'succeeded'
+    }
+  }
+};
+
+export const genericDataURI = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAZABkAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABkAAAAAQAAAGQAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAAKgAwAEAAAAAQAAAAIAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIAAIAAgMBEQACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQICAQECAQEBAgICAgICAgICAQICAgICAgICAgL/2wBDAQEBAQEBAQEBAQECAQEBAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL/3QAEAAH/2gAMAwEAAhEDEQA/AP0U8M2NmPDfh8C0tgBomkgAW8OAPsFvwK/lh7s+5u+/4n//2Q==';
+

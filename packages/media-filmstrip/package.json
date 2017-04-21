@@ -19,7 +19,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/media-card": "^8.0.0",
+    "@atlaskit/media-card": "^9.0.0",
     "@atlaskit/icon": "^2.4.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "react-lazyload": "^2.2.5",

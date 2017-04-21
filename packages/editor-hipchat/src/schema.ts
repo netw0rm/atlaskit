@@ -1,6 +1,8 @@
 import {
   em,
   doc,
+  codeBlock,
+  code as codeBase,
   emoji,
   emojiQuery,
   hardBreak,
@@ -16,8 +18,14 @@ import {
   underline
 } from '@atlaskit/editor-core';
 
+const code = {
+  ...codeBase,
+  excludes: 'em strong underline mentionQuery emojiQuery'
+};
+
 export interface HCSchemaNodes {
   doc: NodeSpec;
+  codeBlock: NodeSpec;
   paragraph: NodeSpec;
   text: NodeSpec;
   hardBreak: NodeSpec;
@@ -26,6 +34,7 @@ export interface HCSchemaNodes {
 }
 
 export interface HCSchemaMarks {
+  code: MarkSpec;
   link: MarkSpec;
   em: MarkSpec;
   strong: MarkSpec;
@@ -54,7 +63,10 @@ const nodes: HCSchemaNodes = {
   mention,
 
   // An emoji.
-  emoji
+  emoji,
+
+  // A code block
+  codeBlock,
 };
 
 const marks: HCSchemaMarks = {
@@ -82,7 +94,10 @@ const marks: HCSchemaMarks = {
   //
   // This mark is used internally, and is stripped from documents before they are exposed through
   // the editor getter APIs.
-  emojiQuery
+  emojiQuery,
+
+  // Represents inline code
+  code,
 };
 
 export interface HCSchema extends Schema<HCSchemaNodes, HCSchemaMarks> {}

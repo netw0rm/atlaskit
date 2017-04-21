@@ -5,12 +5,15 @@ import {
   EditorView,
   emojiNodeView,
   EmojiTypeAhead,
+  LanguagePicker,
   emojisPlugins,
   emojisStateKey,
   history,
   HyperlinkEdit,
   hyperlinkPlugins,
   hyperlinkStateKey,
+  codeBlockPlugins,
+  codeBlockStateKey,
   keymap,
   mentionNodeView,
   MentionPicker,
@@ -201,6 +204,7 @@ export default class Editor extends PureComponent<Props, State> {
     const editorState = editorView && editorView.state;
     const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);
     const mentionsState = editorState && mentionProvider && mentionsStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
@@ -228,6 +232,12 @@ export default class Editor extends PureComponent<Props, State> {
               reversePosition={props.reverseMentionPicker}
             />
           }
+          {!codeBlockState ? null :
+            <LanguagePicker
+              pluginState={codeBlockState}
+              editorView={editorView!}
+            />
+          }
         </div>
       </div>
     );
@@ -251,6 +261,7 @@ export default class Editor extends PureComponent<Props, State> {
         ...blockTypePlugins(schema),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
+        ...codeBlockPlugins(schema),
         history(),
         keymap(hcKeymap),
         keymap(baseKeymap) // should be last

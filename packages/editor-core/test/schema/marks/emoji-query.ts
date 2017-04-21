@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Schema, doc, paragraph, text, emojiQuery } from '../../../src';
+import { createSchema } from '../../../src';
 import { chaiPlugin, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -14,7 +14,8 @@ describe('@atlaskit/editor-core/schema emoji-query mark', () => {
 });
 
 function makeSchema() {
-  const nodes = { doc, paragraph, text };
-  const marks = { emojiQuery };
-  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+  return createSchema({
+    nodes: ['doc', 'paragraph', 'text'],
+    marks: ['emojiQuery']
+  });
 }

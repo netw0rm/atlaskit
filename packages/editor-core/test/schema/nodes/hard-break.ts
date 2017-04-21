@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Schema, doc, paragraph, text, hardBreak } from '../../../src';
+import { createSchema } from '../../../src';
 import { toHTML, fromHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
@@ -18,7 +18,7 @@ describe('@atlaskit/editor-core/schema hardBreak node', () => {
 });
 
 function makeSchema() {
-  const nodes = { doc, paragraph, hardBreak, text };
-  const marks = {};
-  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+  return createSchema({
+    nodes: ['doc', 'paragraph', 'text', 'hardBreak']
+  });
 }

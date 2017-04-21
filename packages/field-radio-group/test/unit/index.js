@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import FieldRadioGroup, { AkFieldRadioGroup, AkRadio } from '../src';
-import { name } from '../package.json';
+import FieldRadioGroup, { AkFieldRadioGroup, AkRadio } from '../../src';
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('FieldRadioGroup', () => {

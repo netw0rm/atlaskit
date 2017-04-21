@@ -1,8 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Base from '@atlaskit/field-base';
+import sinon from 'sinon';
 
-import FieldTextSmart, { FieldText } from '../src';
+import FieldTextSmart, { FieldText } from '../../src';
 
 describe('ak-field-text', () => {
   // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.

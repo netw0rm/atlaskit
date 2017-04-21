@@ -116,14 +116,15 @@ describe('Media plugin', () => {
     );
   });
 
-  it('should replace paragraph with 0-length text inside with mediaGroup', () => {
+  it('should prepend media group to empty paragraph in an empty document', () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
 
     (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
-        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' }))
+        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
+        p(),
       )
     );
   });

@@ -155,11 +155,18 @@ export class MediaPluginState {
     if (this.isInsideEmptyParagraph()) {
       const { $from } = state.selection;
 
-      transaction = state.tr.replaceWith(
-        $from.start($from.depth) - 1,
-        $from.end($from.depth) + 1,
-        node
-      );
+      // empty paragraph always exists inside the document
+      if (state.doc.childCount === 1) {
+        // add media group before this empty paragraph
+        transaction = state.tr.insert($from.start($from.depth) - 1, node);
+      } else {
+        // replace this empty paragraph with media group
+        transaction = state.tr.replaceWith(
+          $from.start($from.depth) - 1,
+          $from.end($from.depth) + 1,
+          node
+        );
+      }
     } else {
       transaction = state.tr.insert(this.findInsertPosition(), node);
     }

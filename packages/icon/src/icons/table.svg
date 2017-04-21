@@ -4,7 +4,7 @@
     <title>table</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="table" fill="currentColor">
             <g>
                 <path d="M3.99999118,17.9953393 L19.9915951,17.9953393 C19.9833106,17.9953407 19.983199,8.00466075 19.983199,8.00466075 L3.99159507,8.00466075 C3.99987954,8.00465933 3.99999118,17.9953393 3.99999118,17.9953393 Z M2,5.99406028 C2,4.8927712 2.89821238,4 3.99079514,4 L20.0092049,4 C21.1086907,4 22,4.89451376 22,5.99406028 L22,18.0059397 C22,19.1072288 21.1017876,20 20.0092049,20 L3.99079514,20 C2.89130934,20 2,19.1054862 2,18.0059397 L2,5.99406028 Z" id="Rectangle-8" fill-rule="nonzero"></path>

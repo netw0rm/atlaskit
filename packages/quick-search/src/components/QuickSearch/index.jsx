@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { CrossIcon } from '@atlaskit/icon';
 import { AkSearch } from '@atlaskit/navigation';
 import _debounce from 'lodash.debounce';
 
-import DelayedSpinner from '../DelayedSpinner';
+import SpinningClearIcon from '../SpinningClearIcon';
 import ResourcedResultsList from '../ResourcedResultsList';
 import { JsonToResultParser } from '../../api/JsonToResultParser';
 import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
@@ -80,13 +79,10 @@ export default class QuickSearch extends Component {
   }
 
   render() {
-    const clearIcon = this.state.isLoading
-      ? <DelayedSpinner />
-      : <CrossIcon label="Clear search" />;
     return (
       <AkSearch
         onChange={this.handleQueryChange}
-        clearIcon={clearIcon}
+        clearIcon={<SpinningClearIcon shouldSpin={this.state.isLoading} />}
         onSearchClear={this.clearSearch}
         value={this.state.query}
       >

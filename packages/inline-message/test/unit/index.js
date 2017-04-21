@@ -11,11 +11,11 @@ import {
 } from '@atlaskit/util-shared-styles';
 import SuccessIcon from 'ak-icon/glyph/success';
 import InlineDialog from '@atlaskit/inline-dialog';
-import styles from '../src/styles.less';
-import InlineMessage from '../src';
-import IconForType from '../src/internal/IconForType';
+import styles from '../../src/styles.less';
+import InlineMessage from '../../src';
+import IconForType from '../../src/internal/IconForType';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 describe(name, () => {
   it('basic sanity check', () => {

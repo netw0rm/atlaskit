@@ -130,6 +130,7 @@ export default class Navigation extends PureComponent {
       globalSearchIcon,
       globalSecondaryActions,
       isResizeable,
+      isOpen,
       linkComponent,
       onCreateDrawerOpen,
       onResizeStart,
@@ -147,18 +148,20 @@ export default class Navigation extends PureComponent {
         />
         <NavigationInner>
           <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
-            <GlobalNavigation
-              appearance={globalAppearance}
-              createIcon={globalCreateIcon}
-              linkComponent={linkComponent}
-              onCreateActivate={onCreateDrawerOpen}
-              onSearchActivate={onSearchDrawerOpen}
-              primaryIcon={globalPrimaryIcon}
-              primaryItemHref={globalPrimaryItemHref}
-              searchIcon={globalSearchIcon}
-              shouldAnimate={shouldAnimate}
-              secondaryActions={globalSecondaryActions}
-            />
+            {isOpen ? (
+              <GlobalNavigation
+                appearance={globalAppearance}
+                createIcon={globalCreateIcon}
+                linkComponent={linkComponent}
+                onCreateActivate={onCreateDrawerOpen}
+                onSearchActivate={onSearchDrawerOpen}
+                primaryIcon={globalPrimaryIcon}
+                primaryItemHref={globalPrimaryItemHref}
+                searchIcon={globalSearchIcon}
+                shouldAnimate={shouldAnimate}
+                secondaryActions={globalSecondaryActions}
+              />
+            ) : <Spacer width={globalOpenWidth} />}
           </div>
           <div style={{ zIndex: 2, position: 'relative' }}>
             {drawers}

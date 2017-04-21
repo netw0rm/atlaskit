@@ -31,7 +31,7 @@ export type PickerEventError = {
   description: string, // description for an error. example: "Token verification failed: invalid token". Can be empty.
   name: string,        // type of error. Available types: 'object_create_fail' (failed to create file object), 'metadata_fetch_fail', 'token_fetch_fail', 'token_source_empty', 'upload_fail'
   fileId?: string      // if available, the id of the file that failed to upload
-}
+};
 
 export default class PickerFacade {
   private picker: any;
@@ -201,4 +201,4 @@ export default class PickerFacade {
       });
     }
   }
-}
+};

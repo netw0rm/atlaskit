@@ -48,18 +48,22 @@ export default class Navigation extends PureComponent {
     isResizeable: true,
     isSearchDrawerOpen: false,
     linkComponent: DefaultLinkComponent,
-    onCreateDrawerOpen: () => {},
-    onResize: () => {},
-    onResizeStart: () => {},
-    onSearchDrawerOpen: () => {},
+    onCreateDrawerOpen: () => { },
+    onResize: () => { },
+    onResizeStart: () => { },
+    onSearchDrawerOpen: () => { },
     width: navigationOpenWidth,
   };
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      resizeDelta: 0,
-    };
+  state = {
+    resizeDelta: 0,
+    isSliding: false,
+  };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      isSliding: this.props.isOpen !== nextProps.isOpen,
+    });
   }
 
   onResize = (resizeDelta) => {
@@ -104,19 +108,6 @@ export default class Navigation extends PureComponent {
     this.props.onResize(resizeState);
   }
 
-  isCollapsed() {
-    const {
-      isCollapsible,
-      isOpen,
-    } = this.props;
-
-    if (!isCollapsible) {
-      return false;
-    }
-
-    return !isOpen && (this.state.resizeDelta <= 0);
-  }
-
   render() {
     const {
       children,
@@ -137,9 +128,46 @@ export default class Navigation extends PureComponent {
       onSearchDrawerOpen,
     } = this.props;
 
-    const shouldAnimate = this.state.resizeDelta === 0;
+    const { isSliding } = this.state;
+
+    const isResizing = this.state.resizeDelta !== 0;
     const renderedWidth = this.getRenderedWidth();
-    const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
+
+    const isGlobalNavPartiallyCollapsed = isResizing &&
+      renderedWidth < (globalOpenWidth + containerClosedWidth);
+
+    // Cover over the global navigation when it is partially collapsed
+    const containerOffsetX = isGlobalNavPartiallyCollapsed ?
+      renderedWidth - (globalOpenWidth + containerClosedWidth) : 0;
+
+    const showGlobalNavigation = isOpen || isResizing;
+    const shouldAnimate = isResizing || isSliding;
+
+    const globalNavigation = showGlobalNavigation ? (
+      <GlobalNavigation
+        appearance={globalAppearance}
+        createIcon={globalCreateIcon}
+        linkComponent={linkComponent}
+        onCreateActivate={onCreateDrawerOpen}
+        onSearchActivate={onSearchDrawerOpen}
+        primaryIcon={globalPrimaryIcon}
+        primaryItemHref={globalPrimaryItemHref}
+        searchIcon={globalSearchIcon}
+        shouldAnimate={shouldAnimate}
+        secondaryActions={globalSecondaryActions}
+      />
+    ) : null;
+
+    const resizer = isResizeable ? (
+      <Resizer
+        navigationWidth={renderedWidth}
+        onResize={this.onResize}
+        onResizeButton={this.triggerResizeButtonHandler}
+        onResizeStart={onResizeStart}
+        onResizeEnd={this.triggerResizeHandler}
+      />
+    ) : null;
+
     return (
       <NavigationOuter>
         <Spacer
@@ -147,21 +175,8 @@ export default class Navigation extends PureComponent {
           width={renderedWidth}
         />
         <NavigationInner>
-          <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
-            {isOpen ? (
-              <GlobalNavigation
-                appearance={globalAppearance}
-                createIcon={globalCreateIcon}
-                linkComponent={linkComponent}
-                onCreateActivate={onCreateDrawerOpen}
-                onSearchActivate={onSearchDrawerOpen}
-                primaryIcon={globalPrimaryIcon}
-                primaryItemHref={globalPrimaryItemHref}
-                searchIcon={globalSearchIcon}
-                shouldAnimate={shouldAnimate}
-                secondaryActions={globalSecondaryActions}
-              />
-            ) : <Spacer width={globalOpenWidth} />}
+          <div style={{ zIndex: isGlobalNavPartiallyCollapsed ? false : 1 }}>
+            {globalNavigation}
           </div>
           <div style={{ zIndex: 2, position: 'relative' }}>
             {drawers}
@@ -169,14 +184,14 @@ export default class Navigation extends PureComponent {
           <div>
             <ContainerNavigation
               appearance={containerAppearance}
-              areGlobalActionsVisible={this.isCollapsed()}
+              areGlobalActionsVisible={!showGlobalNavigation}
               globalCreateIcon={globalCreateIcon}
               globalPrimaryIcon={globalPrimaryIcon}
               globalPrimaryItemHref={globalPrimaryItemHref}
               globalSearchIcon={globalSearchIcon}
               headerComponent={containerHeaderComponent}
               linkComponent={linkComponent}
-              offsetX={Math.min(renderedWidth - (globalOpenWidth + containerClosedWidth), 0)}
+              offsetX={containerOffsetX}
               onGlobalCreateActivate={onCreateDrawerOpen}
               onGlobalSearchActivate={onSearchDrawerOpen}
               shouldAnimate={shouldAnimate}
@@ -185,17 +200,7 @@ export default class Navigation extends PureComponent {
               {children}
             </ContainerNavigation>
           </div>
-          {
-            isResizeable
-              ? <Resizer
-                navigationWidth={renderedWidth}
-                onResize={this.onResize}
-                onResizeButton={this.triggerResizeButtonHandler}
-                onResizeStart={onResizeStart}
-                onResizeEnd={this.triggerResizeHandler}
-              />
-              : null
-          }
+          {resizer}
         </NavigationInner>
       </NavigationOuter>
     );

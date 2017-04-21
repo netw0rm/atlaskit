@@ -1,9 +1,10 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Layer from '@atlaskit/layer';
+import sinon from 'sinon';
 
-import InlineDialog from '../src';
-import Container from '../src/styled/Container';
+import InlineDialog from '../../src';
+import Container from '../../src/styled/Container';
 
 describe('inline-dialog', () => {
   describe('default', () => {

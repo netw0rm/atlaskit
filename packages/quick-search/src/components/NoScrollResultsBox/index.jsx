@@ -47,7 +47,10 @@ export default class NoScrollResultsBox extends PureComponent {
   render = () => {
     let { children } = this.props;
     if (Array.isArray(children)) {
-      children = children.slice(0, Math.max(this.props.minItems, this.itemsTheresSpaceFor()));
+      children = children.slice(
+        0,
+        Math.max(this.props.minItems, this.itemsTheresSpaceFor())
+      );
     }
     return <div>{children}</div>;
   }

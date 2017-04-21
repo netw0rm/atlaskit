@@ -24,6 +24,7 @@ export default class ResourcedResultsList extends Component {
     this.state = {
       items: null,
       resultType: 'recent',
+      innerHeight: window.innerHeight,
     };
     this.searchSubscriber = new SearchSubscriber({
       subscriberKey: uniqueId('ak-quick-search-resourced-results'),
@@ -40,6 +41,7 @@ export default class ResourcedResultsList extends Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.setNoScrollHeight);
     this.searchSubscriber.unsubscribe(this.props.searchResource);
   }
 

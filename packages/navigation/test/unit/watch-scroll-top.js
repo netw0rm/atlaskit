@@ -1,11 +1,6 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import createStub from 'raf-stub';
-import subscribe from '../src/watch-scroll-top';
-
-const raf = createStub();
-const originalRaf = window.requestAnimationFrame;
-const originalCaf = window.cancelAnimationFrame;
+import subscribe from '../../src/watch-scroll-top';
 
 describe('watch scroll top', () => {
   let unsubscribeManaged;
@@ -23,21 +18,15 @@ describe('watch scroll top', () => {
   };
 
   before(() => {
-    window.requestAnimationFrame = raf.add;
-    window.cancelAnimationFrame = raf.remove;
+    requestAnimationFrame.reset();
   });
 
   afterEach(() => {
-    raf.reset();
+    requestAnimationFrame.reset();
     if (unsubscribeManaged) {
       unsubscribeManaged();
       unsubscribeManaged = null;
     }
-  });
-
-  after(() => {
-    window.requestAnimationFrame = originalRaf;
-    window.cancelAnimationFrame = originalCaf;
   });
 
   it('should execute the callback immediately with the current scroll', () => {
@@ -56,7 +45,7 @@ describe('watch scroll top', () => {
 
     startManagedSubscription(el, callback);
     triggerScroll(el, 200);
-    raf.step();
+    requestAnimationFrame.step();
 
     expect(callback.calledWith(200)).to.equal(true);
   });
@@ -68,12 +57,12 @@ describe('watch scroll top', () => {
     startManagedSubscription(el, callback);
 
     triggerScroll(el, 200);
-    raf.step();
+    requestAnimationFrame.step();
 
     expect(callback.secondCall.calledWith(200)).to.equal(true);
 
     triggerScroll(el, 500);
-    raf.step();
+    requestAnimationFrame.step();
 
     expect(callback.thirdCall.calledWith(500)).to.equal(true);
   });
@@ -85,12 +74,12 @@ describe('watch scroll top', () => {
     startManagedSubscription(el, callback);
 
     triggerScroll(el, 200);
-    raf.step();
+    requestAnimationFrame.step();
 
     expect(callback.callCount).to.equal(2);
 
     triggerScroll(el, 200);
-    raf.step();
+    requestAnimationFrame.step();
 
     expect(callback.callCount).to.equal(2);
   });
@@ -105,7 +94,7 @@ describe('watch scroll top', () => {
     triggerScroll(el, 200);
     triggerScroll(el, 300);
     triggerScroll(el, 400);
-    raf.step();
+    requestAnimationFrame.step();
 
     expect(callback.firstCall.calledWith(0)).to.equal(true);
     expect(callback.secondCall.calledWith(400)).to.equal(true);
@@ -123,7 +112,7 @@ describe('watch scroll top', () => {
 
     // would normally trigger the scroll handler
     triggerScroll(el, 400);
-    raf.step();
+    requestAnimationFrame.step();
 
     expect(callback.callCount).to.equal(1);
   });
@@ -141,7 +130,7 @@ describe('watch scroll top', () => {
     // unsubscribe before frame is executed
     unsubscribe();
     // tick any frames
-    raf.step();
+    requestAnimationFrame.step();
 
     expect(callback.callCount).to.equal(1);
   });

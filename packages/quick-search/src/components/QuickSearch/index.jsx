@@ -60,7 +60,7 @@ export default class QuickSearch extends Component {
   handleQueryChange = (ev) => {
     const query = ev.target.value;
     if (query === '') {
-      this.props.searchResource.cancelQuery();
+      this.queryResourceDebounced.cancel();
       this.props.searchResource.recentItems();
     } else {
       this.queryResourceDebounced(query);

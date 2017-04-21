@@ -37,9 +37,6 @@ export default class ResourcedResultsList extends Component {
 
   componentDidMount = () => {
     this.searchSubscriber.subscribe(this.props.searchResource);
-    window.addEventListener('resize', () => {
-      this.setState({ innerHeight: this.getNoScrollHeight() });
-    });
   }
 
   componentWillUnmount() {
@@ -51,8 +48,7 @@ export default class ResourcedResultsList extends Component {
   }
 
   getNoScrollHeight = () => {
-    const cmpnt = document.getElementById('resourced-results-list');
-    const cmpntY = cmpnt.getBoundingClientRect().top;
+    const cmpntY = this.ref && this.ref.getBoundingClientRect().top;
     return window.innerHeight - cmpntY;
   }
 
@@ -72,12 +68,18 @@ export default class ResourcedResultsList extends Component {
         : 'No results found'
     );
 
+    let content = this.state.items && mapItemsToResults(this.state.items);
+    if (this.state.resultType === 'recent') {
+      content = (
+        <NoScrollResultsBox getContainerHeight={this.getNoScrollHeight}>
+          {content}
+        </NoScrollResultsBox>
+      );
+    }
+
     return (
-      <div id="resourced-results-list">
-        <NoScrollResultsBox
-          height={this.state.innerHeight}
-          results={this.state.items && mapItemsToResults(this.state.items)}
-        />
+      <div ref={(div) => { this.ref = div; }}>
+        {content}
       </div>
     );
   }

@@ -91,6 +91,7 @@ export default class SearchResource extends AbstractResource {
 
   /** TODO:revise when more info/design is available */
   recentItems = () => {
+    this.cancelQuery();
     if (this._recentItems) {
       this.notifyChange('recent', this._recentItems);
       return;

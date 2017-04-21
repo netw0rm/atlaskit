@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 
-import { CommentAction } from '../src/';
-import { name } from '../package.json';
+import { CommentAction } from '../../src/';
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('CommentAction', () => {

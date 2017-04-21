@@ -4,9 +4,9 @@ import Avatar from '@atlaskit/avatar';
 import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
 
-import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } from '../src/';
-import styles from '../src/styles.less';
-import { name } from '../package.json';
+import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } from '../../src/';
+import styles from '../../src/styles.less';
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('Comment', () => {

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
 
-import { CommentLayout } from '../src/';
-import styles from '../src/styles.less';
-import { name } from '../package.json';
+import { CommentLayout } from '../../src/';
+import styles from '../../src/styles.less';
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('CommentLayout', () => {

@@ -190,7 +190,7 @@ export class MediaPluginState {
    * NOTE: The promise will resolve even if some of the media have failed to process.
    *
    */
-  waitForPendingTasks = async (timeout?: Number) => {
+  waitForPendingTasks = (timeout?: Number) => {
     const { temporaryMediaNodes, stateManager } = this;
     let outstandingNodes = temporaryMediaNodes.length;
 

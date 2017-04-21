@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LinkCard, LinkCardGenericView, CardView, Card } from '@atlaskit/media-card';
+import { LinkCardGenericView, CardView, Card } from '@atlaskit/media-card';
 import { ContextConfig, ContextFactory, Context, CardDelete } from '@atlaskit/media-core';
 import { MediaPluginState } from '../../plugins/media';
 
@@ -77,10 +77,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     return (
-      <LinkCard
+      <Card
         context={viewContext}
-        menuActions={[ CardDelete(onDelete!) ]}
-        link={id ? { id: id!, collection: (collection ? collection : '')} : url!}
+        identifier={{
+          mediaItemType: 'link',
+          id: id || '',
+          collectionName: collection || ''
+        }}
+        actions={[ CardDelete(onDelete!) ]}
       />
     );
   }

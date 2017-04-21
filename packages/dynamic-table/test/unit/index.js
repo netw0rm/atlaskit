@@ -2,9 +2,9 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
 import { Pagination } from '@atlaskit/pagination';
-import AkDynamicTable, { DynamicTable } from '../src';
+import AkDynamicTable, { DynamicTable } from '../../src';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 const head = {
   cells: [

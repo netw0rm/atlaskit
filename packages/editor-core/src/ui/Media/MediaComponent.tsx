@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { LinkCard, LinkCardGenericView, CardView, Card } from '@atlaskit/media-card';
+import {
+  LinkCardGenericView,
+  Card,
+  FileCardView,
+  MediaIdentifier,
+  UrlPreviewIdentifier,
+} from '@atlaskit/media-card';
 import { ContextConfig, ContextFactory, Context, CardDelete } from '@atlaskit/media-core';
 import { MediaPluginState } from '../../plugins/media';
 
@@ -76,11 +82,22 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       />;
     }
 
+    const mediaIdentifier = {
+      mediaItemType: 'link',
+      id: id || '',
+      collectionName: collection || ''
+    } as MediaIdentifier;
+
+    const urlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: url!
+    } as UrlPreviewIdentifier;
+
     return (
-      <LinkCard
+      <Card
         context={viewContext}
-        menuActions={[ CardDelete(onDelete!) ]}
-        link={id ? { id: id!, collection: (collection ? collection : '')} : url!}
+        identifier={id ? mediaIdentifier : urlPreviewIdentifier}
+        actions={[ CardDelete(onDelete!) ]}
       />
     );
   }
@@ -90,7 +107,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { id } = this.props;
 
     if ( !mediaProvider || !viewContext ) {
-      return <CardView
+      return <FileCardView
         loading={true}
       />;
     }
@@ -108,12 +125,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     return (
       <Card
-        mediaItemType="file"
-        id={id}
-        selectable={false}
-        collectionName={collection}
         context={viewContext!}
+        identifier={{
+          id,
+          mediaItemType: 'file',
+          collectionName: collection
+        }}
         actions={[ CardDelete(onDelete!) ]}
+        selectable={false}
       />
     );
   }
@@ -123,13 +142,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { thumbnail, fileName, fileSize, fileType, progress} = state;
     const { onDelete } = this.props;
 
-    return <CardView
+    return <FileCardView
       mediaName={fileName}
       mediaSize={fileSize}
       mediaType={(thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')}
       progress={progress}
       dataURI={thumbnail && URL.createObjectURL(thumbnail)}
-      menuActions={[ CardDelete(onDelete!) ]}
+      actions={[ CardDelete(onDelete!) ]}
     />;
   }
 

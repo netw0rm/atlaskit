@@ -1,28 +1,6 @@
-import {
-  akColorN0,
-  akColorN20,
-  akColorN500,
-  akColorN700,
-  akColorB500,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { container, colors } from '../../shared-variables';
 import { appearanceEnum, themeVariables } from '../../utils/theme';
-
-const colors = {
-  container: {
-    background: akColorN20,
-    color: akColorN500,
-  },
-  global: {
-    background: akColorB500,
-    color: akColorN0,
-  },
-  settings: {
-    background: akColorN700,
-    color: akColorN0,
-  },
-};
 
 const ContainerNavigationInner = styled.div`
   background-color: ${({ theme }) => colors[theme[themeVariables.appearance]].background};
@@ -31,8 +9,14 @@ const ContainerNavigationInner = styled.div`
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: ${akGridSizeUnitless * 3}px ${akGridSizeUnitless}px 0 ${akGridSizeUnitless}px;
+  padding-top: ${({ theme }) => (theme.isCollapsed ? container.padding.top : 0)}px;
+  padding-left: ${({ theme }) => (theme.isCollapsed ? container.padding.side : 0)}px;
+  padding-right: ${({ theme }) => (theme.isCollapsed ? container.padding.side : 0)}px;
+  padding-bottom: 0;
   width: 100%;
+
+  // needed to fix sticky header on retina displays 🙃
+  transform-style: preserve-3d;
 `;
 
 ContainerNavigationInner.defaultProps = {
@@ -40,4 +24,5 @@ ContainerNavigationInner.defaultProps = {
 };
 
 ContainerNavigationInner.displayName = 'ContainerNavigationInner';
+
 export default ContainerNavigationInner;

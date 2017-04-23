@@ -9,8 +9,8 @@ import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
 
 export interface LinkCardProps extends SharedCardProps {
-  urlPreview?: UrlPreview;
-  cardProcessingStatus: CardProcessingStatus;
+  details?: UrlPreview;
+  status: CardProcessingStatus;
   error?: Error;
 }
 
@@ -138,7 +138,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private get urlPreview() {
     const defaultUrlPreview: UrlPreview = {type: '', url: '', title: ''};
-    const urlPreview = this.props.urlPreview;
+    const urlPreview = this.props.details;
 
     // We provide a defaultUrlPreview in order to conform what the card is expecting and show the right loading status
     return urlPreview || defaultUrlPreview;
@@ -158,10 +158,8 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   }
 
   private get isLoading(): boolean {
-    const {cardProcessingStatus} = this.props;
-    const notProcesed = cardProcessingStatus === 'loading' || cardProcessingStatus === 'processing';
-
-    return notProcesed;
+    const {status} = this.props;
+    return status === 'loading' || status === 'processing';
   }
 };
 

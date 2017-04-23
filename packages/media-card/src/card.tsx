@@ -74,10 +74,9 @@ export class Card extends Component<CardProps, {}> {
   }
 
   render() {
-    const {context, identifier: {mediaItemType}, ...otherProps} = this.props;
+    const {context, identifier, ...otherProps} = this.props;
     return <MediaCard
       {...otherProps}
-      type={mediaItemType}
       provider={this.provider}
       dataURIService={this.dataURIService}
     />;

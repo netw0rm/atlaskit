@@ -18,7 +18,6 @@ export default class GlobalPrimaryActions extends PureComponent {
   };
 
   static defaultProps = {
-    isVisible: true,
     linkComponent: DefaultLinkComponent,
   }
 

@@ -1,15 +1,16 @@
 import styled from 'styled-components';
-import { globalVerticalPaddingTop, globalOpenWidth } from '../../shared-variables';
+import { navigation } from '../../shared-variables';
 
+// TODO: WHY IS THIS GLOBAL NAV?
 const DrawerSide = styled.div`
   align-items: center;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  padding: ${globalVerticalPaddingTop}px 0 ${globalVerticalPaddingTop * 2}px 0;
+  padding: ${navigation.padding.vertical}px 0;
   position: relative;
-  width: ${globalOpenWidth}px;
+  width: ${navigation.width.closed}px;
 `;
 
 DrawerSide.displayName = 'DrawerSide';

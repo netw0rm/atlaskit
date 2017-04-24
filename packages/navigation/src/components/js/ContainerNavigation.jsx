@@ -11,10 +11,10 @@ import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
 import subscribe from '../../watch-scroll-top';
-
 import {
   containerOpenWidth,
   containerClosedWidth,
+  globalPrimaryActions,
 } from '../../shared-variables';
 import Spacer from './Spacer';
 
@@ -159,12 +159,11 @@ export default class ContainerNavigation extends PureComponent {
               <Reveal
                 shouldAnimate={shouldAnimateGlobalPrimaryActions}
                 isOpen={areGlobalActionsVisible}
-                openHeight={300}
+                openHeight={globalPrimaryActions.height.outer}
               >
                 <GlobalPrimaryActions
                   appearance={appearance}
                   createIcon={globalCreateIcon}
-                  isVisible
                   linkComponent={linkComponent}
                   onCreateActivate={onGlobalCreateActivate}
                   onSearchActivate={onGlobalSearchActivate}

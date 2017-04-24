@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { animationTime, colors, container, resizeAnimationTime } from '../../shared-variables';
+import { animationTime, colors, containerNav, resizeAnimationTime } from '../../shared-variables';
 
 const keylineHeight = 2;
 const intGridSize = Number(akGridSizeUnitless);
 const paddingBottom = `${(intGridSize * 1.5) - keylineHeight}px`;
-const paddingOpen = `${container.padding.top}px ${container.padding.side + (intGridSize * 1.75)}px ${paddingBottom} ${container.padding.side + (intGridSize * 1.5)}px`;
+const paddingOpen = `${containerNav.padding.vertical}px ${containerNav.padding.horizontal + (intGridSize * 1.75)}px ${paddingBottom} ${containerNav.padding.horizontal + (intGridSize * 1.5)}px`;
 const paddingClosed = `0 ${intGridSize * 2.5}px 0 ${intGridSize * 0.5}px`;
 const supportsStickyCondition = '@supports(position: sticky) or (position: -webkit-sticky)';
 

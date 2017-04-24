@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { containerClosedWidth } from '../../shared-variables';
+import { containerNav } from '../../shared-variables';
 import { themeVariables } from '../../utils/theme';
 
 const size = akGridSizeUnitless * 3;
 const offsetLeft = akGridSizeUnitless * 3.5;
 const openPadding = `0 ${akGridSizeUnitless * 2}px 0 ${offsetLeft - (akGridSizeUnitless * 2)}px`;
 const compactPadding = `0 ${akGridSizeUnitless}px 0 0`;
-const closedHorizontalPadding = (containerClosedWidth - (akGridSizeUnitless * 4) - size) / 2;
+const closedHorizontalPadding =
+  (containerNav.width.closed - (akGridSizeUnitless * 4) - size) / 2;
 const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPadding}px`;
 
 const NavigationItemIcon = styled.div`

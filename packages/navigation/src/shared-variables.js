@@ -24,9 +24,6 @@ export const searchIconOffset = 80;
 export const createIconOffset = 120;
 export const animationTime = '200ms';
 export const resizeAnimationTime = animationTime;
-export const globalVerticalPaddingTop = akGridSizeUnitless * 3;
-export const globalVerticalPaddingBottom = akGridSizeUnitless * 2;
-export const globalItemMediumSize = akGridSizeUnitless * 5;
 
 export const colors = {
   container: {
@@ -46,9 +43,90 @@ export const colors = {
   },
 };
 
-export const container = {
+export const navigation = {
   padding: {
-    side: Number(akGridSizeUnitless),
-    top: Number(akGridSizeUnitless) * 3,
+    vertical: akGridSizeUnitless * 3,
+    horizontal: akGridSizeUnitless,
+
+    // explicity break into top, left, right, bottom?
+  },
+  width: {
+    closed: 64,
   },
 };
+
+export const globalNav = {
+  width: navigation.width.closed,
+  padding: {
+    vertical: navigation.padding.vertical,
+    horizontal: 0,
+  },
+};
+
+export const containerNav = {
+  width: {
+    open: 240,
+    closed: navigation.width.closed,
+  },
+  padding: {
+    ...navigation.padding,
+  },
+};
+
+export const globalPrimaryActions = (() => {
+  const itemSizes = {
+    medium: akGridSizeUnitless * 5,
+  };
+
+  const margin = {
+    bottom: akGridSizeUnitless * 3.5,
+  };
+
+  const innerHeight = itemSizes.medium * 3;
+
+  const height = {
+    inner: innerHeight,
+    outer: margin.bottom + innerHeight,
+  };
+
+  return {
+    height,
+    margin,
+    itemSizes,
+  };
+})();
+
+/*
+export const globalNav = (() => {
+  const itemSizes = {
+    medium: akGridSizeUnitless * 5,
+  };
+
+  const margin = {
+    bottom: akGridSizeUnitless * 3.5,
+  };
+
+  const padding = {
+    top: akGridSizeUnitless * 3,
+    bottom: akGridSizeUnitless * 2,
+  };
+
+  const innerHeight = itemSizes.medium * 3;
+
+  const height = {
+    inner: innerHeight,
+    outer: margin.bottom + innerHeight,
+  };
+
+  const width = {
+    open: 64,
+  };
+
+  return {
+    itemSizes,
+    padding,
+    height,
+    width,
+  };
+})();
+*/

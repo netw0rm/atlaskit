@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { container } from '../../shared-variables';
+import { containerNav } from '../../shared-variables';
 
 const ContainerNavigationChildren = styled.div`
-  padding: 0 ${({ theme }) => (theme.isCollapsed ? 0 : container.padding.side)}px;
+  padding: 0 ${({ theme }) => (theme.isCollapsed ? 0 : containerNav.padding.horizontal)}px;
 `;
 
 ContainerNavigationChildren.displayName = 'ContainerNavigationChildren';

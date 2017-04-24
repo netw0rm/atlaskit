@@ -6,7 +6,7 @@ import createStub from 'raf-stub';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import ContainerHeader from '../src/components/js/ContainerHeader';
 import Spacer from '../src/components/js/Spacer';
-import { containerClosedWidth } from '../src/shared-variables';
+import { containerNav } from '../src/shared-variables';
 
 describe('<ContainerNavigation />', () => {
   describe('children', () => {
@@ -22,7 +22,7 @@ describe('<ContainerNavigation />', () => {
   });
   describe('behaviour', () => {
     it('renders [data-__ak-navigation-container-closed="true"] if and only if it is closed', () => {
-      expect(mount(<ContainerNavigation width={containerClosedWidth} />).getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(true);
+      expect(mount(<ContainerNavigation width={containerNav.width.closed} />).getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(true);
       expect(mount(<ContainerNavigation width={200} />).getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(false);
     });
     it('collapses the container header when closed', () => {

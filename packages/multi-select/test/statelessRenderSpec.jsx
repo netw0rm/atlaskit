@@ -6,7 +6,7 @@ import Droplist, { Group, Item } from '@atlaskit/droplist';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
 
-import styles from 'style!../src/styles.less';
+import styles from '../src/styles.less';
 import { StatelessMultiSelect } from '../src';
 import Trigger from '../src/internal/Trigger';
 

@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 export default class Label extends PureComponent {
   static propTypes = {

@@ -444,7 +444,7 @@ describe('Bitbucket markdown serializer: ', () => {
     });
   });
 
-  xdescribe('image', () => {
+  describe('image', () => {
     it('with no alt to serialize', () => {
       expect(markdownSerializer.serialize(doc(img({
         src: 'http://example.com'
@@ -463,7 +463,7 @@ describe('Bitbucket markdown serializer: ', () => {
         src: 'http://example.com',
         alt: 'an image',
         title: 'a title'
-      })))).to.eq('![an image](http://example.com "a title")');
+      })))).to.eq('![an image](http://example.com \'a title\')');
     });
 
     it('with title containing double-quote to serialize without escaping', () => {
@@ -471,7 +471,7 @@ describe('Bitbucket markdown serializer: ', () => {
         src: 'http://example.com',
         alt: 'an image',
         title: 'a " "title"'
-      })))).to.eq('![an image](http://example.com "a " "title"")');
+      })))).to.eq('![an image](http://example.com \'a " "title"\')');
     });
 
     it('with alt containing quotes to serialize', () => {
@@ -492,7 +492,7 @@ describe('Bitbucket markdown serializer: ', () => {
           }),
           ' bar',
         )
-      ))).to.eq('foo ![an image](http://example.com "a title") bar');
+      ))).to.eq('foo ![an image](http://example.com \'a title\') bar');
     });
 
     it('in blockquote to serialize', () => {
@@ -507,7 +507,7 @@ describe('Bitbucket markdown serializer: ', () => {
             ' foo'
           )
         )
-      ))).to.eq('> ![an image](http://example.com "a title") foo');
+      ))).to.eq('> ![an image](http://example.com \'a title\') foo');
 
       expect(markdownSerializer.serialize(doc(
         blockquote(
@@ -522,7 +522,7 @@ describe('Bitbucket markdown serializer: ', () => {
             )
           )
         )
-      ))).to.eq('> > ![an image](http://example.com "a title") foo');
+      ))).to.eq('> > ![an image](http://example.com \'a title\') foo');
     });
   });
 

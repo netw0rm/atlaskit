@@ -32,14 +32,13 @@ describe('Profilecard', () => {
       const card = shallow(<AkProfilecard fullName={fullName} />);
 
       it('should show the full name on the card if property is set', () => {
-        const el = card.find(`.${styles.locals.detailsFullname}`);
+        const el = card.find(`.${styles.detailsFullname}`);
         expect(el.text()).to.equal(fullName);
       });
 
-      it('should render empty element for full name is not set', () => {
+      it('should not render a card if full name is not set', () => {
         card.setProps({ fullName: undefined });
-        const el = card.find(`.${styles.locals.detailsFullname}`);
-        expect(el.text()).to.equal('');
+        expect(card.children()).to.have.length(0);
       });
     });
 
@@ -49,8 +48,8 @@ describe('Profilecard', () => {
 
         presenceWithoutNone.forEach((presence) => {
           it(`should render label with content ${presence}`, () => {
-            const card = mount(<AkProfilecard presence={presence} />);
-            const el = card.find(`.${styles.locals.presence}`);
+            const card = mount(<AkProfilecard fullName="name" presence={presence} />);
+            const el = card.find(`.${styles.presence}`);
             expect(el.length).to.be.above(0);
             expect(el.text()).to.equal(presences[presence]);
           });
@@ -58,8 +57,8 @@ describe('Profilecard', () => {
       });
 
       it('should not render a presence label if property is not set', () => {
-        const card = mount(<AkProfilecard />);
-        const el = card.find(`.${styles.locals.presence}`);
+        const card = mount(<AkProfilecard fullName="name" />);
+        const el = card.find(`.${styles.presence}`);
         expect(el.isEmpty()).to.equal(true);
       });
     });
@@ -104,10 +103,10 @@ describe('Profilecard', () => {
           label: 'three',
         },
       ];
-      const card = shallow(<AkProfilecard actions={actions} />);
+      const card = shallow(<AkProfilecard fullName="name" actions={actions} />);
 
       it('should render an action button for every item in actions property', () => {
-        const actionsWrapper = card.find(`.${styles.locals.actionsWrapper}`);
+        const actionsWrapper = card.find(`.${styles.actionsWrapper}`);
         const buttonTexts = card.find('AkButton').children().map(node => node.text());
 
         expect(actionsWrapper.children()).to.have.length(actions.length);
@@ -120,14 +119,14 @@ describe('Profilecard', () => {
           label: 'test',
           callback: spy,
         }] });
-        const actionsWrapper = card.find(`.${styles.locals.actionsWrapper}`);
+        const actionsWrapper = card.find(`.${styles.actionsWrapper}`);
         actionsWrapper.find('AkButton').first().simulate('click');
         expect(spy.callCount).to.equal(1);
       });
 
       it('should not render any action buttons if actions property is not set', () => {
         card.setProps({ actions: undefined });
-        const actionsWrapper = card.find(`.${styles.locals.actionsWrapper}`);
+        const actionsWrapper = card.find(`.${styles.actionsWrapper}`);
         expect(actionsWrapper.children().length).to.equal(0);
       });
     });

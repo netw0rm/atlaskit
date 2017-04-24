@@ -29,20 +29,21 @@ export class Node {
   childAfter(pos: number): { node?: Node, index: number, offset: number };
   childBefore(pos: number): { node?: Node, index: number, offset: number };
   resolve(pos: number): ResolvedPos;
-  resolveNoCache(pos: number): ResolvedPos;
   rangeHasMark(from: number | null, to: number | null, type: MarkType): boolean;
   isBlock: boolean;
   isTextblock: boolean;
+  inlineContent: boolean;
   isInline: boolean;
   isText: boolean;
   isLeaf: boolean;
+  isAtom: boolean;
   toString(): string;
   contentMatchAt(index: number): ContentMatch;
   canReplace(from: number, to: number, replacement?: Fragment, start?: number, end?: number): boolean;
   canReplaceWith(from: number, to: number, type: NodeType, attrs?: Mark[]): boolean;
   canAppend(other: Node): boolean;
+  check(): void;
   toJSON(): { [key: string]: any };
-  defaultContentType(at: number);
 
   static fromJSON(schema: Schema<any, any>, json: { [key: string]: any }): Node;
 }

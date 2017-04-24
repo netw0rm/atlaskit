@@ -5,7 +5,6 @@ import {
   EditorState,
   EditorView,
   Schema,
-  Fragment,
   Plugin,
   PluginKey,
 } from '../../prosemirror';
@@ -58,7 +57,6 @@ export class EmojiState {
       return;
     }
 
-    const { docView } = this.view;
     const { emojiQuery } = state.schema.marks;
     const { doc, selection } = state;
     const { from, to } = selection;
@@ -84,7 +82,7 @@ export class EmojiState {
       return;
     }
 
-    const newAnchorElement = docView.dom.querySelector('[data-emoji-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector('[data-emoji-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;
@@ -157,9 +155,8 @@ export class EmojiState {
       const { start, end } = this.findEmojiQueryMark();
       const node = emoji.create({ ...emojiId });
       const textNode = state.schema.text(' ');
-      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
       view.dispatch(
-        state.tr.replaceWith(start, end, fragment)
+        state.tr.replaceWith(start, end, [node, textNode])
       );
     } else {
       this.dismiss();

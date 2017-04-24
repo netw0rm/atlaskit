@@ -8,7 +8,6 @@ import {
   PluginKey,
   NodeViewDesc,
   TextSelection,
-  browser,
 } from '../../prosemirror';
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
@@ -20,6 +19,7 @@ export type StateChangeHandler = (state: HyperlinkState) => any;
 export interface HyperlinkOptions {
   href: string;
 }
+export type Coordniates = { left: number, right: number, top: number, bottom: number };
 interface NodeInfo {
   node: Node;
   startPos: number;
@@ -61,16 +61,10 @@ export class HyperlinkState {
       const { empty, $from, $to } = state.selection;
       const mark = state.schema.mark('link', { href: normalizeUrl(href) });
       const tr = empty
-        ? state.tr.replaceWith($from.pos, $to.pos, state.schema.text(href, [mark]))
+        ? state.tr.insert($from.pos, state.schema.text(href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
 
-      if (browser.gecko && view.editable) {
-        view.selectionReader.ignoreUpdates = true;
-        view.dom.focus();
-        view.selectionReader.ignoreUpdates = false;
-      }
       view.dispatch(tr);
-      view.focus();
     }
   }
 
@@ -81,6 +75,7 @@ export class HyperlinkState {
       const to = from + this.text!.length;
 
       view.dispatch(state.tr.removeMark(from, to, this.activeLinkMark));
+      view.focus();
     }
   }
 
@@ -112,10 +107,10 @@ export class HyperlinkState {
       this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
       this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
-      this.element = this.getDomElement(docView);
       this.active = !!nodeInfo;
       dirty = true;
     }
+    this.element = this.getDomElement(docView);
 
     if (dirty) {
       this.triggerOnChange();
@@ -136,16 +131,51 @@ export class HyperlinkState {
   }
 
   showLinkPanel(editorView: EditorView) {
-    if (!this.activeLinkMark) {
-      const { selection } = this.state;
-
-      if (selection.empty) {
-        this.showToolbarPanel = !this.showToolbarPanel;
-        this.changeHandlers.forEach(cb => cb(this));
-      } else {
-        this.addLink({ href: '' }, editorView);
-      }
+    if (!(this.showToolbarPanel || editorView.hasFocus())) {
+      editorView.focus();
     }
+    const { selection } = editorView.state;
+    if (selection.empty && !this.active) {
+      this.showToolbarPanel = !this.showToolbarPanel;
+      this.changeHandlers.forEach(cb => cb(this));
+    } else {
+      this.addLink({ href: '' }, editorView);
+      this.update(editorView.state, editorView.docView);
+    }
+  }
+
+  hideLinkPanel() {
+    this.showToolbarPanel = false;
+    this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  getCoordniates(editorView: EditorView): Coordniates {
+    if (editorView.hasFocus()) {
+      editorView.focus();
+    }
+    const { pos } = this.state.selection.$from;
+    const { left, top } = editorView.dom.getBoundingClientRect();
+    const { node } = editorView.docView.domFromPos(pos);
+
+    const cursorNode = (node.nodeType === 3) ? // Node.TEXT_NODE = 3
+      (node.parentNode as HTMLElement) : (node as HTMLElement);
+    const cursorHeight = parseFloat(window.getComputedStyle(cursorNode, undefined).lineHeight || '');
+    /**
+     * We need to translate the co-ordinates because `coordsAtPos` returns co-ordinates
+     * relative to `window`. And, also need to adjust the cursor container height.
+     * (0, 0)
+     * +--------------------- [window] ---------------------+
+     * |   (left, top) +-------- [Editor Chrome] --------+  |
+     * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
+     * |               | [FloatingToolbar]               |  |
+     */
+    const translateCoordinates = (coords: Coordniates, dx: number, dy: number) => ({
+      left: coords.left - dx,
+      right: coords.right - dx,
+      top: coords.top - dy,
+      bottom: coords.bottom - dy,
+    });
+    return translateCoordinates(editorView.coordsAtPos(pos), left, top - cursorHeight);
   }
 
   private triggerOnChange() {
@@ -191,7 +221,7 @@ export class HyperlinkState {
 
   private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = docView.domFromPos(this.activeLinkStartPos, 1);
+      const { node, offset } = docView.domFromPos(this.activeLinkStartPos);
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;
@@ -214,6 +244,11 @@ const plugin = new Plugin({
       const pluginState = stateKey.getState(view.state);
       pluginState.escapeFromMark(view);
 
+      return false;
+    },
+    handleClick(view: EditorView) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
       return false;
     },
     onBlur(view: EditorView) {
@@ -241,11 +276,11 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    stateKey.getState(view.state).update(view.state, view.docView, true);
+    const pluginState = stateKey.getState(view.state);
+    pluginState.update(view.state, view.docView, true);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
-        const pluginState = stateKey.getState(view.state);
         pluginState.update(view.state, view.docView);
       }
     };

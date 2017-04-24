@@ -6,7 +6,7 @@ import { Label, FieldBase } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
 
-import styles from 'style!../src/styles.less';
+import styles from '../src/styles.less';
 import { StatelessSelect } from '../src';
 
 import { name } from '../package.json';

@@ -2,9 +2,10 @@ const mapContent = (content: any) => {
   return content.map(child => {
     switch (child.type) {
       case 'mention':
+        const attrs = child.attrs.displayName ? { ...child.attrs, text: child.text } : child.attrs;
         return {
           type: 'mention',
-          attrs: child.attrs
+          attrs
         };
 
       case 'emoji':

@@ -85,7 +85,7 @@ describe(name, () => {
           );
 
           // Clicks on the tab at index 2, then checks that the spy is called with 2 as argument
-          wrapper.find(`.${styles.locals.akTabLabel}`).at(2).simulate('click');
+          wrapper.find(`.${styles.akTabLabel}`).at(2).simulate('click');
           expect(spy.calledOnce).to.equal(true);
           expect(spy.calledWith(2)).to.equal(true);
         });
@@ -100,7 +100,7 @@ describe(name, () => {
 
           // Triggers right arrow click on the tabs, then checks that handler prop was called
           // with correct new selected tab index
-          wrapper.find(`.${styles.locals.akTabLabel}`).at(1).simulate('keyDown', {
+          wrapper.find(`.${styles.akTabLabel}`).at(1).simulate('keyDown', {
             key: 'ArrowRight',
           });
           expect(spy.calledOnce).to.equal(true);
@@ -114,7 +114,7 @@ describe(name, () => {
         describe('with 3 tabs, when the 2nd tab is selected', () => {
           let wrapper;
           const simulateKeyboardNav = (key) => {
-            wrapper.find(`.${styles.locals.akTabLabelSelected}`).simulate('keyDown', { key });
+            wrapper.find(`.${styles.akTabLabelSelected}`).simulate('keyDown', { key });
           };
 
           beforeEach(() => {

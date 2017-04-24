@@ -29,12 +29,11 @@ describe('ak-modal-dialog', () => {
     });
 
     describe('width', () => {
-      const { locals, locals: { modalPositioner, medium } } = styles;
       const allowedWidths = ['small', 'medium', 'large', 'x-large'];
-      const hasClass = (wrapper, className) => wrapper.find(`.${modalPositioner}`).hasClass(className);
+      const hasClass = (wrapper, className) => wrapper.find(`.${styles.modalPositioner}`).hasClass(className);
 
       it('should be "medium" by default', () => {
-        hasClass(shallow(<ModalDialog isOpen />), medium).should.equal(true);
+        hasClass(shallow(<ModalDialog isOpen />), styles.medium).should.equal(true);
       });
 
       it('should support a custom pixel width as string', () => {
@@ -43,7 +42,7 @@ describe('ak-modal-dialog', () => {
             isOpen
             width="300px"
           />
-        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: '300px' });
+        ).find(`.${styles.modalPositioner}`).props().style).to.deep.equal({ width: '300px' });
       });
 
       it('should support a custom pixel width as string', () => {
@@ -52,7 +51,7 @@ describe('ak-modal-dialog', () => {
             isOpen
             width="75%"
           />
-        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: '75%' });
+        ).find(`.${styles.modalPositioner}`).props().style).to.deep.equal({ width: '75%' });
       });
 
       it('should support a custom integer width', () => {
@@ -61,12 +60,12 @@ describe('ak-modal-dialog', () => {
             isOpen
             width={300}
           />
-        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: 300 });
+        ).find(`.${styles.modalPositioner}`).props().style).to.deep.equal({ width: 300 });
       });
 
       allowedWidths.forEach((width) => {
         it(`width = "${width}" is applied uniquely`, () => {
-          hasClass(shallow(<ModalDialog isOpen width={width} />), locals[width]).should.equal(true);
+          hasClass(shallow(<ModalDialog isOpen width={width} />), styles[width]).should.equal(true);
 
           // Check that other widths aren't applied
           allowedWidths.filter(w => w !== width).forEach((otherWidth) => {
@@ -116,14 +115,14 @@ describe('ak-modal-dialog', () => {
       it('should trigger when blanket clicked', () => {
         const spy = sinon.spy();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
-        wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
+        wrapper.find(`.${styles.modalWrapper}`).children().first().simulate('click');
         expect(spy.callCount).to.equal(1);
       });
 
       it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
         const spy = sinon.spy();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
-        wrapper.find(`.${styles.locals.modalPositioner}`).simulate('click');
+        wrapper.find(`.${styles.modalPositioner}`).simulate('click');
         expect(spy.callCount).to.equal(1);
       });
 
@@ -143,36 +142,36 @@ describe('ak-modal-dialog', () => {
   describe('rounded body', () => {
     it('should be rounded on top only when header omitted but footer supplied', () => {
       const wrapper = mount(<ModalDialog isOpen footer="Footer" />);
-      expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(1);
-      expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.withoutHeader}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withoutFooter}`).length).to.equal(0);
     });
 
     it('should be rounded on bottom only when footer omitted but header supplied', () => {
       const wrapper = mount(<ModalDialog isOpen header="Header" />);
-      expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(0);
-      expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withoutHeader}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.withoutFooter}`).length).to.equal(1);
     });
 
     it('should be rounded on top + bottom when header and footer omitted', () => {
       const wrapper = mount(<ModalDialog isOpen />);
-      expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(1);
-      expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withoutHeader}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withoutFooter}`).length).to.equal(1);
     });
   });
 
   describe('scrolling header/footer keylines', () => {
     it('should enable header keyline only when header provided', () => {
       const wrapper = mount(<ModalDialog isOpen />);
-      expect(wrapper.find(`.${styles.locals.withHeader}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.withHeader}`).length).to.equal(0);
       wrapper.setProps({ header: 'Header' });
-      expect(wrapper.find(`.${styles.locals.withHeader}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withHeader}`).length).to.equal(1);
     });
 
     it('should enable footer keyline only when footer provided', () => {
       const wrapper = mount(<ModalDialog isOpen />);
-      expect(wrapper.find(`.${styles.locals.withFooter}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.withFooter}`).length).to.equal(0);
       wrapper.setProps({ footer: 'Header' });
-      expect(wrapper.find(`.${styles.locals.withFooter}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withFooter}`).length).to.equal(1);
     });
   });
 });

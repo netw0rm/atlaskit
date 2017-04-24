@@ -33,7 +33,7 @@ describe(name, () => {
         const wrapper = shallow(<TabsNav />);
         expect(wrapper.type()).to.equal('div');
         const ul = wrapper.find('ul').at(0);
-        expect(ul.props().className).to.equal(styles.locals.akTabLabels);
+        expect(ul.props().className).to.equal(styles.akTabLabels);
         expect(ul.props().role).to.equal('tablist');
       });
     });
@@ -42,7 +42,7 @@ describe(name, () => {
       describe('tabs prop', () => {
         it('should render a matching list item for each tab', () => {
           const wrapper = shallow(<TabsNav tabs={sampleTabs} onKeyboardNav={kbNav} />);
-          const items = wrapper.find(`.${styles.locals.akTabLabel}`);
+          const items = wrapper.find(`.${styles.akTabLabel}`);
           expect(items).to.have.length(sampleTabs.length);
 
           items.forEach((item, i) => {
@@ -53,9 +53,9 @@ describe(name, () => {
             expect(item.props().children).to.equal(sampleTabs[i].label);
             if (sampleTabs[i].isSelected) {
               expect(item.props()['aria-selected']).to.equal(sampleTabs[i].isSelected);
-              expect(item.props().className).to.contain(styles.locals.akTabLabelSelected);
+              expect(item.props().className).to.contain(styles.akTabLabelSelected);
             } else {
-              expect(item.props().className).to.equal(styles.locals.akTabLabel);
+              expect(item.props().className).to.equal(styles.akTabLabel);
             }
           });
         });
@@ -72,7 +72,7 @@ describe(name, () => {
               onKeyboardNav={spy}
               tabs={sampleTabs}
             />);
-            wrapper.find(`.${styles.locals.akTabLabel}`).at(1).simulate('keyDown', { key });
+            wrapper.find(`.${styles.akTabLabel}`).at(1).simulate('keyDown', { key });
             expect(spy.calledOnce).to.equal(true);
             expect(spy.args[0][0]).to.equal(key);
           });

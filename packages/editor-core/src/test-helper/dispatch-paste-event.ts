@@ -1,4 +1,5 @@
 import { EditorView } from '../';
+import { TestingEditorView } from './types/prosemirror';
 import createEvent from './create-event';
 
 export interface PasteContent {
@@ -37,6 +38,6 @@ export default (editorView: EditorView, content: PasteContent) => {
     return false;
   }
 
-  editorView.dispatchEvent(event);
+  (editorView as TestingEditorView).dispatchEvent(event);
   return true;
 };

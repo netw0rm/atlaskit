@@ -26,13 +26,13 @@ describe('ak-button/default-behaviour', () => {
   });
 
   it('should render span when the button is disabled and has href property', () => {
-    expect(mount(<Button isDisabled href="test" />).find(`span > span.${styles.locals.buttonWrapper}`).length).to.equal(1);
+    expect(mount(<Button isDisabled href="test" />).find(`span > span.${styles.buttonWrapper}`).length).to.equal(1);
     expect(mount(<Button isDisabled href="test" />).find('button').length).to.equal(0);
     expect(mount(<Button isDisabled href="test" />).find('a').length).to.equal(0);
   });
 
   it('should not render span when the button is disabled, but doesn\'t have href', () => {
-    expect(mount(<Button isDisabled />).find(`span > ${styles.locals.buttonWrapper}`).length).to.equal(0);
+    expect(mount(<Button isDisabled />).find(`span > ${styles.buttonWrapper}`).length).to.equal(0);
     expect(mount(<Button isDisabled />).find('button').length).to.equal(1);
     expect(mount(<Button isDisabled />).find('a').length).to.equal(0);
   });

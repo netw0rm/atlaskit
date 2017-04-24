@@ -1,28 +1,22 @@
 import React, { PureComponent, PropTypes } from 'react';
-import {
-  action,
-  after,
-  navigationItemInner,
-  navigationItemOuter,
-  icon,
-  isSelected,
-  isCompact,
-  link,
-  mainText,
-  subText,
-  text,
-  textAfter,
-} from 'style!../less/NavigationItem.less';
-import classNames from 'classnames';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import InteractiveWrapper from './InteractiveWrapper';
+
+import NavigationItemIcon from '../styled/NavigationItemIcon';
+import NavigationItemAfter from '../styled/NavigationItemAfter';
+import NavigationItemAction from '../styled/NavigationItemAction';
+import NavigationItemText from '../styled/NavigationItemText';
+import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
+import NavigationItemInner from '../styled/NavigationItemInner';
+import NavigationItemMainText from '../styled/NavigationItemMainText';
+import NavigationItemOuter from '../styled/NavigationItemOuter';
+import NavigationItemSubText from '../styled/NavigationItemSubText';
 
 export default class NavigationItem extends PureComponent {
   static propTypes = {
     action: PropTypes.node,
     href: PropTypes.string,
     icon: PropTypes.node,
-    isCompact: PropTypes.bool,
     isSelected: PropTypes.bool,
     linkComponent: PropTypes.func,
     onClick: PropTypes.func,
@@ -32,7 +26,6 @@ export default class NavigationItem extends PureComponent {
   }
 
   static defaultProps = {
-    isCompact: false,
     isSelected: false,
     linkComponent: DefaultLinkComponent,
   }
@@ -42,62 +35,56 @@ export default class NavigationItem extends PureComponent {
   }
 
   render() {
-    const Icon = () => (this.props.icon ? <div className={icon}>{this.props.icon}</div> : null);
+    const Icon = () => (this.props.icon ?
+      <NavigationItemIcon>
+        {this.props.icon}
+      </NavigationItemIcon>
+    : null);
     const TextAfter = () => (this.props.textAfter ?
-      <div className={textAfter}>
+      <NavigationItemTextAfter>
         {this.props.textAfter}
-      </div>
+      </NavigationItemTextAfter>
     : null);
 
     const Action = () => (this.props.action ?
-      <div className={action}>
+      <NavigationItemAction>
         {this.props.action}
-      </div>
+      </NavigationItemAction>
     : null);
 
     const After = ({ children }) => (this.props.textAfter ?
-      <div className={after}>
+      <NavigationItemAfter shouldTakeSpace={this.props.action || this.props.textAfter}>
         {children}
-      </div>
+      </NavigationItemAfter>
     : null);
 
-    const SubText = () => (
-      <div className={subText}>
-        {this.props.subText}
-      </div>
-    );
-
     return (
-      <div
-        className={classNames(navigationItemOuter, {
-          [isSelected]: this.props.isSelected,
-          [isCompact]: this.props.isCompact,
-        })}
+      <NavigationItemOuter
+        isSelected={this.props.isSelected}
       >
         <InteractiveWrapper
-          className={link}
           href={this.props.href}
           onMouseDown={this.onMouseDown}
           onClick={this.props.onClick}
           linkComponent={this.props.linkComponent}
         >
-          <div
-            className={navigationItemInner}
-          >
+          <NavigationItemInner>
             <Icon />
-            <div className={text}>
-              <div className={mainText}>
+            <NavigationItemText>
+              <NavigationItemMainText>
                 {this.props.text}
-              </div>
-              <SubText />
-            </div>
+              </NavigationItemMainText>
+              <NavigationItemSubText>
+                {this.props.subText}
+              </NavigationItemSubText>
+            </NavigationItemText>
             <After>
               <TextAfter />
             </After>
-          </div>
+          </NavigationItemInner>
         </InteractiveWrapper>
         <Action />
-      </div>
+      </NavigationItemOuter>
     );
   }
 }

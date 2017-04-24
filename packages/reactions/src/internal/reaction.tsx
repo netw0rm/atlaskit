@@ -104,7 +104,7 @@ export default class Reaction extends PureComponent<Props, {}> {
         className={classNames}
         onMouseUp={this.handleMouseDown}
       >
-        <span className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={{ id: reaction.emojiId }} /></span>
+        <span className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={reaction.emojiId} /></span>
         <span className={countStyle}>
           {reaction.count < 100 ? reaction.count : '99+'}
         </span>

@@ -334,7 +334,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
 
         return schema.nodes.mention.create({
           id: node.getAttribute('atlassian-id'),
-          displayName: cdata!.nodeValue,
+          text: cdata!.nodeValue,
         });
     }
   }
@@ -372,7 +372,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       content.push(codeBlockNode);
       nodeSize += codeBlockNode.nodeSize;
 
-      return new Fragment(content, nodeSize);
+      return Fragment.from(content);
 
     case 'WARNING':
     case 'INFO':

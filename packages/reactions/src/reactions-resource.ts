@@ -1,12 +1,14 @@
 import { Promise } from 'es6-promise';
 import 'whatwg-fetch';
-import { findIndex } from './internal/helpers';
+import { EmojiId } from '@atlaskit/emoji';
+
+import { findIndex, equalEmojiId } from './internal/helpers';
 
 let debounced: number | null = null;
 
 export interface ReactionSummary {
   ari: string;
-  emojiId: string;
+  emojiId: EmojiId;
   count: number;
   reacted: boolean;
 }
@@ -21,9 +23,9 @@ export interface Reactions {
 
 export interface ReactionsProvider {
   getReactions(aris: string[]): Promise<Reactions>;
-  toggleReaction(ari: string, emojiId: string);
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  toggleReaction(ari: string, emojiId: EmojiId);
+  addReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]>;
+  deleteReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]>;
   notifyUpdated(ari: string, state: ReactionSummary[]): void;
   subscribe(ari: string, handler: Function): void;
   unsubscribe(ari: string, handler: Function): void;
@@ -68,12 +70,12 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     });
   }
 
-  toggleReaction(ari: string, emojiId: string) {
+  toggleReaction(ari: string, emojiId: EmojiId) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
 
-    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => r.emojiId === emojiId);
+    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, emojiId));
     const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
 
     if (hasReacted) {
@@ -97,13 +99,13 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     }
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
@@ -183,14 +185,14 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     this.excludeArisFromAutoPoll.splice(index, 1);
   }
 
-  protected optimisticAddReaction(ari: string, emojiId: string): void {
+  protected optimisticAddReaction(ari: string, emojiId: EmojiId): void {
     this.excludeAriFromAutoPoll(ari);
 
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
 
-    const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
+    const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
 
     if (index !== -1) {
       const reaction = this.cachedReactions[ari][index];
@@ -208,14 +210,14 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     this.notifyUpdated(ari, this.cachedReactions[ari]);
   }
 
-  protected optimisticDeleteReaction(ari: string, emojiId: string): void {
+  protected optimisticDeleteReaction(ari: string, emojiId: EmojiId): void {
     this.excludeAriFromAutoPoll(ari);
 
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
 
-    const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
+    const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
     const reaction = this.cachedReactions[ari][index];
 
     reaction.reacted = false;
@@ -293,7 +295,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     });
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
     this.optimisticAddReaction(ari, emojiId);
 
     const timestamp = Date.now();
@@ -317,7 +319,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
     this.optimisticDeleteReaction(ari, emojiId);
 
     const timestamp = Date.now();

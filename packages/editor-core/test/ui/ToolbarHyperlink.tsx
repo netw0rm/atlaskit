@@ -31,13 +31,13 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
     toolbarHyperlink.find(LinkIcon).simulate('click');
-    expect(toolbarHyperlink.state('showToolbarPanel')).to.be.true;
+    expect(pluginState.showToolbarPanel).to.be.true;
   });
 
   it('should state variable showToolbarPanel should be false when toolbar hyperlink button is clicked with a selection', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
     toolbarHyperlink.find(ToolbarButton).simulate('click');
-    expect(toolbarHyperlink.state('showToolbarPanel')).not.to.be.true;
+    expect(pluginState.showToolbarPanel).to.be.false;
   });
 });

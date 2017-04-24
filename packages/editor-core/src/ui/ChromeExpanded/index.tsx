@@ -62,19 +62,23 @@ export interface Props {
 }
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
+  private editorContainer: HTMLElement;
+
   render() {
     const { props } = this;
 
     return (
-      <div className={styles.container} data-editor-chrome>
+      <div className={styles.container} data-editor-chrome tabIndex={-1} ref={this.handleEditorContainerRef}>
         <div className={styles.toolbar}>
-          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} /> : null}
+          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
           {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
             <ToolbarAdvancedTextFormatting
               pluginStateTextFormatting={props.pluginStateTextFormatting}
               pluginStateClearFormatting={props.pluginStateClearFormatting}
               editorView={props.editorView}
+              softBlurEditor={this.softBlurEditor}
+              focusEditor={this.focusEditor}
             /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
@@ -116,6 +120,24 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         </div>
       </div>
     );
+  }
+
+  /**
+   * Blurs editor but keeps focus on editor container,
+   * so components like inline-edit can check if focus is still inside them
+   */
+  softBlurEditor = () => {
+    if (this.editorContainer) {
+      this.editorContainer.focus();
+    }
+  }
+
+  focusEditor = () => {
+    this.props.editorView.dom.focus();
+  }
+
+  private handleEditorContainerRef = ref => {
+    this.editorContainer = ref;
   }
 
   @analytics('atlassian.editor.stop.cancel')

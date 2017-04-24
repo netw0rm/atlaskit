@@ -8,6 +8,7 @@ import {
   NodeViewDesc,
 } from '../../prosemirror';
 import * as commands from '../../commands';
+import keymapPlugin from './keymaps';
 
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
 export type StateChangeHandler = (state: CodeBlockState) => any;
@@ -134,7 +135,7 @@ const plugin = new Plugin({
 });
 
 const plugins = (schema: Schema<any, any>) => {
-  return [plugin];
+  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

@@ -63,7 +63,7 @@ export interface Props {
 export interface State {
   editorView?: EditorView;
   isExpanded?: boolean;
-  isGettingValue: boolean;
+  isMediaReady: boolean;
   schema: CQSchema;
 }
 
@@ -81,7 +81,7 @@ export default class Editor extends PureComponent<Props, State> {
     this.state = {
       schema,
       isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
-      isGettingValue: false,
+      isMediaReady: true,
     };
 
     this.providerFactory = new ProviderFactory();
@@ -184,7 +184,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { editorView, isExpanded, isGettingValue } = this.state;
+    const { editorView, isExpanded, isMediaReady } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
@@ -221,7 +221,7 @@ export default class Editor extends PureComponent<Props, State> {
         packageName={name}
         mentionProvider={this.mentionProvider}
         pluginStateMentions={mentionsState}
-        saveDisabled={isGettingValue}
+        saveDisabled={!isMediaReady}
       />
     );
   }
@@ -313,9 +313,9 @@ export default class Editor extends PureComponent<Props, State> {
       onChange(this);
     }
 
-    this.setState({ isGettingValue: true });
+    this.setState({ isMediaReady: false });
     await this.value;
-    this.setState({ isGettingValue: false });
+    this.setState({ isMediaReady: true });
   }
 
   private handleSave = () => {

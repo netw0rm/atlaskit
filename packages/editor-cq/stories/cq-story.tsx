@@ -28,7 +28,7 @@ const mentionProvider = new Promise<any>(resolve => {
 storiesOf(name, module)
   .addDecorator(function (story: Function, context: { kind: string, story: string }) {
     type Props = {};
-    type State = { cxhtml?: string, story?: any, prettify?: boolean, isGettingValue?: boolean};
+    type State = { cxhtml?: string, story?: any, prettify?: boolean, isMediaReady?: boolean};
     class Demo extends PureComponent<Props, State> {
       state: State;
 
@@ -39,15 +39,15 @@ storiesOf(name, module)
           cxhtml: '',
           prettify: true,
           story: story(),
-          isGettingValue: false
+          isMediaReady: true,
         };
       }
 
       handleChange = (editor: Editor) => {
-        this.setState({ isGettingValue: true });
+        this.setState({ isMediaReady: false });
 
         editor.value.then((value) => this.setState({
-          isGettingValue: false,
+          isMediaReady: true,
           cxhtml: value
         }));
       }
@@ -70,10 +70,10 @@ storiesOf(name, module)
                   <span onClick={this.togglePrettify} style={{ cursor: 'pointer' }}> prettify</span>
                  )
               </legend>
-              {this.state.isGettingValue ?
-                <div style={{ padding: 20 }}><Spinner size="large" /></div>
-                :
+              {this.state.isMediaReady ?
                 <pre style={{ whiteSpace:'pre-wrap', wordBreak:'break-all' }}>{xml}</pre>
+                :
+                <div style={{ padding: 20 }}><Spinner size="large" /></div>
               }
             </fieldset>
           </div>

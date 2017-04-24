@@ -55,6 +55,12 @@ storiesOf(name, module)
     const fabricEditor = (
       <Editor
         isExpandedByDefault
+        allowLists
+        allowLinks
+        allowCodeBlock
+        allowAdvancedTextFormatting
+        allowSubSup
+        allowBlockQuote
         defaultValue="Text"
       />
     );

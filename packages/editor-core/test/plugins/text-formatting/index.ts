@@ -68,7 +68,7 @@ describe('text-formatting', () => {
 
         context('when hits Shift-Cmd-M', () => {
           it('toggles code mark', () => {
-            const { editorView } = editor(doc(p(strong('{<}text '), mention({ id: '1234', displayName: '@helga' }), em(' text{>}'))));
+            const { editorView } = editor(doc(p(strong('{<}text '), mention({ id: '1234', text: '@helga' }), em(' text{>}'))));
 
             sendKeyToPm(editorView, 'Shift-Cmd-m');
 

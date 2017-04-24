@@ -252,7 +252,7 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
     elem.setAttribute('class', 'user-hover');
     elem.setAttribute('href', encoder ? encoder(node.attrs.id) : node.attrs.id);
     elem.setAttribute('rel', node.attrs.id);
-    elem.innerText = node.attrs.displayName;
+    elem.innerText = node.attrs.text;
     return elem;
   }
 

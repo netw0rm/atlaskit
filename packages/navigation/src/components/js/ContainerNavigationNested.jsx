@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerNavigationNested.less';
+import styles from '../less/ContainerNavigationNested.less';
 import ContainerNavigationNestedPageWrapper from '../styled/ContainerNavigationNestedPageWrapper';
 
 export default class ContainerNavigationNested extends PureComponent {

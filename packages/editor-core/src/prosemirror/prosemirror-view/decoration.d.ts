@@ -3,11 +3,11 @@ import * as dom from '../dom';
 import { EditorView } from './';
 
 export class Decoration {
-  options: { [key: string]: any };
+  spec: { [key: string]: any };
 
-  static widget(pos: number, dom: dom.Node, options?: { [key: string]: any }): Decoration;
-  static inline(from: number, to: number, attrs: DecorationAttrs, options?: { [key: string]: any }): Decoration;
-  static node(from: number, to: number, attrs: DecorationAttrs, options?: { [key: string]: any }): Decoration;
+  static widget(pos: number, dom: dom.Node, spec?: { [key: string]: any }): Decoration;
+  static inline(from: number, to: number, attrs: DecorationAttrs, spec?: { [key: string]: any }): Decoration;
+  static node(from: number, to: number, attrs: DecorationAttrs, spec?: { [key: string]: any }): Decoration;
 }
 
 export interface DecorationAttrs {

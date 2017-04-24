@@ -11,6 +11,13 @@ import Container from './styled/Container';
 // in pixels
 const dialogOffset = `0 ${akGridSizeUnitless}`;
 
+// TODO: expose positions and flipPositions from Layer and pull in here
+const positions = [
+  'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
+  'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
+];
+const flipPositions = ['top', 'right', 'bottom', 'left'];
+
 // TODO: expose applicable props from Layer and pull in here
 export default class InlineDialog extends PureComponent {
   static propTypes = {
@@ -21,12 +28,11 @@ export default class InlineDialog extends PureComponent {
     onContentClick: PropTypes.func,
     onContentFocus: PropTypes.func,
     onClose: PropTypes.func,
-    position: PropTypes.oneOf([
-      'top left', 'top center', 'top right', 'right top', 'right middle',
-      'right bottom', 'bottom left', 'bottom center', 'bottom right', 'left top',
-      'left middle', 'left bottom',
+    position: PropTypes.oneOf(positions),
+    shouldFlip: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.arrayOf(PropTypes.oneOf(flipPositions)),
     ]),
-    shouldFlip: PropTypes.bool,
   }
 
   static defaultProps = {

@@ -5,7 +5,6 @@ const path = require('path');
 const baseIconChunkName = require('./constants').baseIconChunkName;
 
 const relativePathToIcon = path.join('..', 'src', 'Icon');
-const pathToIcon = path.join(__dirname, relativePathToIcon);
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 let cssOptions = '?camelCase=true&modules=true&mergeRules=false';
@@ -14,9 +13,7 @@ if (isDevelopment) {
 }
 
 module.exports = (tmpFolder, entry) => ({
-  entry: Object.assign({
-    [baseIconChunkName]: [pathToIcon],
-  }, entry),
+  entry,
   output: {
     path: tmpFolder,
     filename: '[name].js',
@@ -39,7 +36,7 @@ module.exports = (tmpFolder, entry) => ({
     loaders: [
       {
         test: /\.less$/,
-        loader: `css${cssOptions}!less`,
+        loader: `style!css${cssOptions}!less`,
       },
       {
         test: /\.jsx?$/,

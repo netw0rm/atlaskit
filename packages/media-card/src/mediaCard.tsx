@@ -1,34 +1,32 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {Observable, Subscription} from 'rxjs';
-import {MediaItem, FileItem, MediaItemDetails, FileDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
+import {MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardEventProps, OnLoadingChangeState} from '.';
-import {LinkCard} from './links';
-import {FileCard} from './files';
+import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardProcessingStatus} from '.';
 import {Provider} from './card';
-import {CardProcessingStatus} from '.';
+import {CardView} from './cardView';
+import {withDataURI} from './withDataURI';
+
+const CardViewWithDataURI = withDataURI(CardView); // tslint:disable-line:variable-name
 
 export interface MediaCardProps extends SharedCardProps, CardEventProps {
-  readonly type: string;
   readonly provider: Provider;
   readonly dataURIService?: DataUriService;
 }
 
 export interface MediaCardState {
   readonly subscription?: Subscription;
-  readonly cardProcessingStatus: CardProcessingStatus;
-  readonly details?: MediaItemDetails;
+  readonly status: CardProcessingStatus;
+
+  // can NOT use MediaItemDetails because get the following error: https://github.com/Microsoft/TypeScript/issues/9944
+  readonly metadata?: FileDetails | LinkDetails | UrlPreview;
   readonly error?: Error;
 }
 
 export class MediaCard extends Component<MediaCardProps, MediaCardState> {
-  static defaultProps: Partial<MediaCardProps> = {
-    onLoadingChange: () => {}
-  };
-
   state: MediaCardState = {
-    cardProcessingStatus: 'loading'
+    status: 'loading'
   };
 
   componentDidMount(): void {
@@ -53,7 +51,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     return mediaItem && (mediaItem as MediaItem).details !== undefined;
   }
 
-  observable = (props: MediaCardProps): Observable<MediaItemDetails> => {
+  observable = (props: MediaCardProps): Observable<FileDetails | LinkDetails | UrlPreview> => {
     const {provider} = props;
     return provider.observable()
       .map((result: MediaItem | UrlPreview) => {
@@ -67,39 +65,39 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   }
 
   private stateToCardProcessingStatus(): OnLoadingChangeState {
-    const {cardProcessingStatus, error, details} = this.state;
+    const {status, error, metadata} = this.state;
     return {
-      type: cardProcessingStatus,
-      payload: error ? error : details
+      type: status,
+      payload: error || metadata
     };
   }
 
   private updateState(props: MediaCardProps): void {
-    const onLoadingChange = this.props.onLoadingChange || (() => {});
+    const {onLoadingChange = () => {/* do nothing */}} = this.props;
     this.unsubscribe();
 
     this.setPartialState(
-      {cardProcessingStatus: 'loading'},
+      {status: 'loading'},
       () => this.setPartialState(
         {
           subscription: this.observable(props).subscribe({
-            next: details => {
+            next: metadata => {
               this.setPartialState(
-                {details, error: undefined, cardProcessingStatus: 'processing'},
+                {metadata, error: undefined, status: 'processing'},
                 () => onLoadingChange(this.stateToCardProcessingStatus())
               );
             },
 
             complete: () => {
               this.setPartialState(
-                {error: undefined, cardProcessingStatus: 'complete'},
+                {error: undefined, status: 'complete'},
                 () => onLoadingChange(this.stateToCardProcessingStatus())
               );
             },
 
             error: (error) => {
               this.setPartialState(
-                {error, cardProcessingStatus: 'error'},
+                {error, status: 'error'},
                 () => onLoadingChange(this.stateToCardProcessingStatus())
               );
             }
@@ -120,33 +118,17 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     this.state && this.state.subscription && this.state.subscription.unsubscribe();
   }
 
-  private isUrlPreviewOrUndefined(details: UrlPreview | FileDetails | undefined): details is UrlPreview | undefined {
-    return details === undefined || (details as UrlPreview).url !== undefined;
-  }
-
   render() {
-    const {type, provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
-    const {details, cardProcessingStatus, error} = this.state;
-
-    if (type === 'link' && this.isUrlPreviewOrUndefined(details)) {
-      return (
-        <LinkCard
-          {...otherProps}
-          urlPreview={details}
-          cardProcessingStatus={cardProcessingStatus}
-          error={error}
-        />
-      );
-    } else {
-      return (
-        <FileCard
-          {...otherProps}
-          fileDetails={details}
-          cardProcessingStatus={cardProcessingStatus}
-          dataURIService={dataURIService as DataUriService}
-          error={error}
-        />
-      );
-    }
+    const {provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
+    const {metadata, status, error} = this.state;
+    return (
+      <CardViewWithDataURI
+        {...otherProps}
+        dataURIService={dataURIService}
+        status={status}
+        error={error}
+        metadata={metadata}
+      />
+    );
   }
 }

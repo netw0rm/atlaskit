@@ -106,6 +106,19 @@ storiesOf(name, module)
                 text={(<span>Create a new <strong>item</strong></span>)}
               />
               <AkNavigationItem text={(<span>Make an <strong>item</strong> appear</span>)} />
+              <AkNavigationItem text={(<span>Make an <strong>ball</strong> appear</span>)} />
+              <AkNavigationItem text={(<span>Make an <strong>bed</strong> appear</span>)} />
+              <AkNavigationItem text={(<span>Make an <strong>pool</strong> appear</span>)} />
+            </AkNavigationItemGroup>
+            <AkNavigationItemGroup title="Items with highlighted verbs">
+              <AkNavigationItem
+                icon={<img alt="icon" src={nucleus} />}
+                text={(<span><strong>Create</strong> a new item</span>)}
+              />
+              <AkNavigationItem text={(<span><strong>Make</strong> an item appear</span>)} />
+              <AkNavigationItem text={(<span><strong>Make</strong> an ball appear</span>)} />
+              <AkNavigationItem text={(<span><strong>Make</strong> an bed appear</span>)} />
+              <AkNavigationItem text={(<span><strong>Make</strong> an pool appear</span>)} />
             </AkNavigationItemGroup>
           </div>
         )}

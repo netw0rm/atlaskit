@@ -6,7 +6,7 @@ import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';

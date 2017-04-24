@@ -32,6 +32,7 @@ export default class ProfilecardTrigger extends PureComponent {
       getCachedProfile: PropTypes.func,
       makeRequest: PropTypes.func,
     }).isRequired,
+    analytics: PropTypes.func,
   }
 
   static defaultProps = {
@@ -90,6 +91,7 @@ export default class ProfilecardTrigger extends PureComponent {
             cloudId={this.props.cloudId}
             resourceClient={this.props.resourceClient}
             actions={this.props.actions}
+            analytics={this.props.analytics}
           />
         </div>
       </PositionWrapper>

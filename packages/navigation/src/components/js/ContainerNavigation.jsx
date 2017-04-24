@@ -1,12 +1,16 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
+import memoizeOne from 'memoize-one';
 import { themeVariables } from '../../utils/theme';
 import ContainerHeader from './ContainerHeader';
+import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import Reveal from './Reveal';
 import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
+import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
+import subscribe from '../../watch-scroll-top';
 
 import {
   containerOpenWidth,
@@ -41,8 +45,18 @@ export default class ContainerNavigation extends PureComponent {
     linkComponent: DefaultLinkComponent,
   }
 
-  state = {
-    shouldAnimateGlobalPrimaryActions: false,
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      isScrolling: false,
+      shouldAnimateGlobalPrimaryActions: false,
+    };
+
+    // Memoizing this function so that it will only be called
+    // when the underlying DOM node is changing OR if it is
+    // unmounting (in which case it will be `null`).
+    this.onRefChange = memoizeOne(this.onRefChange);
   }
 
   componentWillReceiveProps() {
@@ -52,6 +66,36 @@ export default class ContainerNavigation extends PureComponent {
         shouldAnimateGlobalPrimaryActions: true,
       });
     }
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
+
+  onScrollTopChange = (number) => {
+    const isScrolling = number > 0;
+
+    if (isScrolling === this.state.isScrolling) {
+      return;
+    }
+
+    this.setState({
+      isScrolling,
+    });
+  }
+
+  onRefChange = (el) => {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+
+    if (!el) {
+      return;
+    }
+
+    this.unsubscribe = subscribe(el, this.onScrollTopChange);
   }
 
   getOuterStyles() {
@@ -90,16 +134,12 @@ export default class ContainerNavigation extends PureComponent {
     const { shouldAnimateGlobalPrimaryActions } = this.state;
 
     const isWidthCollapsed = width <= containerClosedWidth;
-    const header = headerComponent ? (
-      <ContainerHeader>
-        {headerComponent({ isCollapsed: width <= containerClosedWidth })}
-      </ContainerHeader>
-    ) : null;
 
     return (
       <ThemeProvider
         theme={{
           [themeVariables.appearance]: appearance,
+          isCollapsed: isWidthCollapsed,
         }}
       >
         <nav
@@ -113,7 +153,9 @@ export default class ContainerNavigation extends PureComponent {
             shouldAnimate={shouldAnimate}
             style={this.getOuterStyles()}
           >
-            <ContainerNavigationInner>
+            <ContainerNavigationInner
+              innerRef={this.onRefChange}
+            >
               <Reveal
                 shouldAnimate={shouldAnimateGlobalPrimaryActions}
                 isOpen={areGlobalActionsVisible}
@@ -131,12 +173,18 @@ export default class ContainerNavigation extends PureComponent {
                   searchIcon={globalSearchIcon}
                 />
               </Reveal>
-              <div>
-                {header}
-              </div>
-              <div>
+              {
+                headerComponent ? (
+                  <ContainerHeader
+                    appearance={appearance}
+                    isContentScrolled={this.state.isScrolling}
+                  >
+                    {headerComponent({ isCollapsed: isWidthCollapsed })}
+                  </ContainerHeader>) : <ContainerNoHeader />
+              }
+              <ContainerNavigationChildren>
                 {children}
-              </div>
+              </ContainerNavigationChildren>
             </ContainerNavigationInner>
           </ContainerNavigationOuter>
         </nav>

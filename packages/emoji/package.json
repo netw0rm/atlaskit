@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "13.2.1",
+  "version": "13.4.1",
   "config": {
     "access": "public"
   },
@@ -53,6 +53,7 @@
   "devDependencies": {
     "@atlaskit/util-common-test": "1.0.2",
     "fetch-mock": "^5.8.0",
+    "react-addons-perf": "^15.3.2",
     "uid": "^0.0.2"
   },
   "repository": {

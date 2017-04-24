@@ -27,15 +27,15 @@ describe(name, () => {
           const href = '/test-href';
           const wrapper = shallow(<CommentField href={href}>{children}</CommentField>);
 
-          expect(wrapper.find(`.${styles.locals.topButtonLink}`).length).to.equal(1);
-          expect(wrapper.find(`.${styles.locals.topButtonLink}`).contains(children)).to.equal(true);
-          expect(wrapper.find(`.${styles.locals.topButtonLink}`).prop('href')).to.equal(href);
+          expect(wrapper.find(`.${styles.topButtonLink}`).length).to.equal(1);
+          expect(wrapper.find(`.${styles.topButtonLink}`).contains(children)).to.equal(true);
+          expect(wrapper.find(`.${styles.topButtonLink}`).prop('href')).to.equal(href);
         });
 
         it('should render link with extraClasses', () => {
           const extraClass = 'extra-class';
           const wrapper = shallow(<CommentField href="#" extraClasses={extraClass} />);
-          expect((wrapper.find(`.${styles.locals.topButtonLink}`)).hasClass((extraClass))).to.equal(true);
+          expect((wrapper.find(`.${styles.topButtonLink}`)).hasClass((extraClass))).to.equal(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the link element', () => {
@@ -46,7 +46,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField href="#" {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(`.${styles.locals.topButtonLink}`).prop(propName)).to.equal(props[propName]);
+            expect(wrapper.find(`.${styles.topButtonLink}`).prop(propName)).to.equal(props[propName]);
           });
         });
       });
@@ -56,14 +56,14 @@ describe(name, () => {
           const children = <span>children</span>;
           const wrapper = shallow(<CommentField>{children}</CommentField>);
 
-          expect(wrapper.find(`.${styles.locals.topButtonText}`).length).to.equal(1);
-          expect(wrapper.find(`.${styles.locals.topButtonText}`).contains(children)).to.equal(true);
+          expect(wrapper.find(`.${styles.topButtonText}`).length).to.equal(1);
+          expect(wrapper.find(`.${styles.topButtonText}`).contains(children)).to.equal(true);
         });
 
         it('should render span with extraClasses', () => {
           const extraClass = 'extra-class';
           const wrapper = shallow(<CommentField extraClasses={extraClass} />);
-          expect((wrapper.find(`.${styles.locals.topButtonText}`)).hasClass((extraClass))).to.equal(true);
+          expect((wrapper.find(`.${styles.topButtonText}`)).hasClass((extraClass))).to.equal(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the span', () => {
@@ -74,7 +74,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(`.${styles.locals.topButtonText}`).prop(propName)).to.equal(props[propName]);
+            expect(wrapper.find(`.${styles.topButtonText}`).prop(propName)).to.equal(props[propName]);
           });
         });
       });

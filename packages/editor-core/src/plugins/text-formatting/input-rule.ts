@@ -30,10 +30,9 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
     }
 
     return tr
-      // delete special characters before the text
-      .delete(from, from + charSize)
-      // deactivate the mark
-      .removeStoredMark(markType);
+       // delete special characters before the text
+       .delete(from, from + charSize)
+       .removeStoredMark(markType);
   };
 };
 

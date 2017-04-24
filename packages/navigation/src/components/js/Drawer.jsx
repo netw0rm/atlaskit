@@ -5,7 +5,6 @@ import DrawerBackIcon from './DrawerBackIcon';
 import ContainerHeader from './ContainerHeader';
 import DrawerSide from '../styled/DrawerSide';
 import DrawerInner from '../styled/DrawerInner';
-import DrawerHeader from '../styled/DrawerHeader';
 import DrawerPrimaryIcon from '../styled/DrawerPrimaryIcon';
 import DrawerMain from '../styled/DrawerMain';
 import DrawerContent from '../styled/DrawerContent';
@@ -55,32 +54,28 @@ export default class Drawer extends PureComponent {
           />
         </div>
         <DrawerInner isOpen={isOpen} width={width}>
-          {isOpen ? (
-            <DrawerSide>
-              <DrawerPrimaryIcon>
-                {primaryIcon}
-              </DrawerPrimaryIcon>
-              <DrawerBackIconWrapper style={backIconWrapperStyle}>
-                <DrawerTrigger onActivate={onBackButton}>
-                  <DrawerBackIcon isVisible={isOpen}>
-                    {backIcon}
-                  </DrawerBackIcon>
-                </DrawerTrigger>
-              </DrawerBackIconWrapper>
-            </DrawerSide>
+          {isOpen ? (<DrawerSide>
+            <DrawerPrimaryIcon>
+              {primaryIcon}
+            </DrawerPrimaryIcon>
+            <DrawerBackIconWrapper style={backIconWrapperStyle}>
+              <DrawerTrigger onActivate={onBackButton}>
+                <DrawerBackIcon isVisible={isOpen}>
+                  {backIcon}
+                </DrawerBackIcon>
+              </DrawerTrigger>
+            </DrawerBackIconWrapper>
+          </DrawerSide>
           ) : null}
-          {isOpen ? (
-            <DrawerMain>
-              {((width !== 'full') && header) ?
-                <DrawerHeader>
-                  <ContainerHeader>{header}</ContainerHeader>
-                </DrawerHeader>
-                : null}
-              <DrawerContent>
-                {this.props.children}
-              </DrawerContent>
-            </DrawerMain>
-          ) : null}
+          {isOpen ? (<DrawerMain>
+            {((width !== 'full') && header) ?
+              <ContainerHeader>{header}</ContainerHeader>
+
+            : null}
+            <DrawerContent>
+              {this.props.children}
+            </DrawerContent>
+          </DrawerMain>) : null}
         </DrawerInner>
       </div>
     );

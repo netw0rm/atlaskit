@@ -22,6 +22,8 @@ export interface State {
   mentionsProvider?: MentionProvider;
 }
 
+const isMentionPicker = (picker): picker is AkMentionPicker => !!(picker.mentionsCount);
+
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
   popper?: IPopper;
@@ -214,7 +216,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private handleSelectCurrent = (): boolean => {
-    if (this.picker && (this.picker as AkMentionPicker).mentionsCount() > 0) {
+    if (this.getMentionsCount() > 0) {
       (this.picker as AkMentionPicker).chooseCurrentSelection();
     } else {
       this.props.pluginState.dismiss();
@@ -224,11 +226,20 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private handleTrySelectCurrent = (): boolean => {
-    if (this.picker && (this.picker as AkMentionPicker).mentionsCount() === 1) {
+    const mentionsCount = this.getMentionsCount();
+    const { query } = this.state;
+
+    if (mentionsCount === 1) {
       (this.picker as AkMentionPicker).chooseCurrentSelection();
       return true;
+    } else if (mentionsCount === 0 || !query) {
+      this.props.pluginState.dismiss();
     }
 
     return false;
+  }
+
+  private getMentionsCount(): number {
+    return isMentionPicker(this.picker) && this.picker.mentionsCount() || 0;
   }
 }

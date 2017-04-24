@@ -16,8 +16,8 @@ export default class TabPane extends PureComponent {
     return (
       <div
         aria-hidden={this.props.isSelected ? 'false' : 'true'}
-        className={classNames(styles.locals.akTabPane, {
-          [styles.locals.selected]: this.props.isSelected,
+        className={classNames(styles.akTabPane, {
+          [styles.selected]: this.props.isSelected,
         })}
         role="tabpanel"
       >

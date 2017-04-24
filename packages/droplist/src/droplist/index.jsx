@@ -4,7 +4,7 @@ import Layer from '@atlaskit/layer';
 import classnames from 'classnames';
 import { akGridSize } from '@atlaskit/util-shared-styles';
 
-import { locals as styles } from '../styles.less';
+import styles from '../styles.less';
 
 const halfFocusRing = 1;
 const numberOfVisibleItems = 9;
@@ -57,7 +57,7 @@ export default class DropdownList extends PureComponent {
 
   componentWillUnmount = () => {
     document.removeEventListener('click', this.handleClickOutside);
-    document.addEventListener('keydown', this.handleEsc);
+    document.removeEventListener('keydown', this.handleEsc);
   }
 
   setMaxHeight = (dropDomRef) => {
@@ -114,7 +114,7 @@ export default class DropdownList extends PureComponent {
         onKeyDown={this.props.onKeyDown}
       >
         <Layer
-          autoPosition={props.shouldFlip}
+          autoFlip={props.shouldFlip}
           content={props.isOpen ?
             <div
               className={styles.dropContent}

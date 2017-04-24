@@ -30,7 +30,6 @@ describe('Card', function() {
     expect(context.getUrlPreviewProvider.calledWithExactly(dummyUrl)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().type).to.deep.equal(mediaItemType);
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 
@@ -56,7 +55,6 @@ describe('Card', function() {
     expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().type).to.deep.equal(mediaItemType);
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 
@@ -82,7 +80,6 @@ describe('Card', function() {
     expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().type).to.deep.equal(mediaItemType);
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 
@@ -112,7 +109,6 @@ describe('Card', function() {
     expect(secondContext.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().type).to.equal(mediaItemType);
     expect(mediaCard.props().provider).to.equal(dummyProvider);
   });
 
@@ -144,7 +140,6 @@ describe('Card', function() {
     expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().type).to.equal(mediaItemType);
     expect(mediaCard.props().provider).to.equal(dummyProvider);
   });
 

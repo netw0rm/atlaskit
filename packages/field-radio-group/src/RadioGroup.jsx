@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 import Base from 'ak-field-base';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import Radio from './Radio';
 import { itemsDefault, itemsPropType } from './internal/constants';
 

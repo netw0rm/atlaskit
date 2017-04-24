@@ -2,22 +2,30 @@ import {
   AnalyticsHandler,
   analyticsService,
   baseKeymap,
-  BlockTypePlugin,
   Chrome,
-  ClearFormattingPlugin,
-  CodeBlockPlugin,
+  blockTypePlugins,
+  clearFormattingPlugins,
+  codeBlockPlugins,
+  hyperlinkPlugins,
+  mentionsPlugins,
+  rulePlugins,
+  textFormattingPlugins,
+  listsPlugins,
+  blockTypeStateKey,
+  clearFormattingStateKey,
+  codeBlockStateKey,
+  hyperlinkStateKey,
+  mentionsStateKey,
+  textFormattingStateKey,
+  listsStateKey,
   ContextName,
   EditorState,
   EditorView,
+  Schema,
   history,
-  HyperlinkPlugin,
   keymap,
-  ListsPlugin,
   mentionNodeView,
-  MentionsPlugin,
   ProviderFactory,
-  RulePlugin,
-  TextFormattingPlugin,
   TextSelection,
   version as coreVersion
 } from '@atlaskit/editor-core';
@@ -87,7 +95,7 @@ export default class Editor extends PureComponent<Props, State> {
     this.providerFactory = new ProviderFactory();
     this.providerFactory.setProvider('mentionProvider', props.mentionProvider);
 
-    analyticsService.handler = props.analyticsHandler || ((name) => {});
+    analyticsService.handler = props.analyticsHandler || ((name) => { });
   }
 
   /**
@@ -170,37 +178,34 @@ export default class Editor extends PureComponent<Props, State> {
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
 
-    const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
-    const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
-    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
-    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
-    const listsState = editorState && ListsPlugin.getState(editorState);
-    const mentionsState = editorState && MentionsPlugin.getState(editorState);
-    const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
-
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
-      <div onBlur={this.onBlur}>
-        <Chrome
-          children={<div ref={this.handleRef} />}
-          editorView={editorView!}
-          isExpanded={isExpanded}
-          mentionProvider={mentionProvider}
-          onCancel={handleCancel}
-          onSave={handleSave}
-          onCollapsedChromeFocus={this.expand}
-          placeholder={this.props.placeholder}
-          pluginStateBlockType={blockTypeState}
-          pluginStateCodeBlock={codeBlockState}
-          pluginStateLists={listsState}
-          pluginStateTextFormatting={textFormattingState}
-          pluginStateClearFormatting={clearFormattingState}
-          pluginStateMentions={mentionsState}
-          pluginStateHyperlink={hyperlinkState}
-          packageVersion={version}
-          packageName={name}
-        />
-      </div>
+      <Chrome
+        children={<div ref={this.handleRef} />}
+        editorView={editorView!}
+        isExpanded={isExpanded}
+        mentionProvider={mentionProvider}
+        onCancel={handleCancel}
+        onSave={handleSave}
+        onCollapsedChromeFocus={this.expand}
+        placeholder={this.props.placeholder}
+        pluginStateBlockType={blockTypeState}
+        pluginStateCodeBlock={codeBlockState}
+        pluginStateLists={listsState}
+        pluginStateTextFormatting={textFormattingState}
+        pluginStateClearFormatting={clearFormattingState}
+        pluginStateMentions={mentionsState}
+        pluginStateHyperlink={hyperlinkState}
+        packageVersion={version}
+        packageName={name}
+      />
     );
   }
 
@@ -238,14 +243,14 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc: parse(this.props.defaultValue || '', schema),
         plugins: [
-          ...( isSchemaWithLinks(schema) ? [ HyperlinkPlugin ] : [] ),
-          ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),
-          BlockTypePlugin,
-          ClearFormattingPlugin,
-          ...( isSchemaWithCodeBlock(schema) ? [ CodeBlockPlugin ] : [] ),
-          ListsPlugin,
-          RulePlugin,
-          TextFormattingPlugin,
+          ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
+          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
+          ...blockTypePlugins(schema as Schema<any, any>),
+          ...clearFormattingPlugins(schema as Schema<any, any>),
+          ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
+          ...listsPlugins(schema as Schema<any, any>),
+          ...rulePlugins(schema as Schema<any, any>),
+          ...textFormattingPlugins(schema as Schema<any, any>),
           history(),
           keymap(jiraKeymap),
           keymap(baseKeymap), // should be last :(
@@ -253,7 +258,7 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       if (context) {
-        const blockTypeState = BlockTypePlugin.getState(editorState);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
         blockTypeState.changeContext(context);
       }
 
@@ -278,7 +283,7 @@ export default class Editor extends PureComponent<Props, State> {
       analyticsService.trackEvent('atlassian.editor.start');
 
       if (isSchemaWithMentions(schema)) {
-        MentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       }
 
       this.setState({ editorView });
@@ -286,20 +291,5 @@ export default class Editor extends PureComponent<Props, State> {
     } else {
       this.setState({ editorView: undefined });
     }
-  }
-
-  /**
-   * When BlockType Dropdown is closed, "blur" event is fired
-   * JIRA description view is using @atlaskit/inline-edit component
-   * to wrap the editor and it's listening to "blur" events with
-   * React's onBlur (which is a synthetic event listener and blur is
-   * being propagated to inline-edit). This prevents the event to propagate
-   * to the inline-edit container
-   *
-   * @see https://ecosystem.atlassian.net/browse/AK-2127
-   * @see https://product-fabric.atlassian.net/browse/ED-1419
-   */
-  private onBlur = (evt: React.SyntheticEvent<HTMLElement>) => {
-    evt.stopPropagation();
   }
 }

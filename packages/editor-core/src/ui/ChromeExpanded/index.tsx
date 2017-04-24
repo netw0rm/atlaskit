@@ -55,6 +55,7 @@ export interface Props {
   pluginStateMedia?: MediaPluginState;
   pluginStateEmojis?: EmojiState;
   presenceResourceProvider?: any; // AbstractPresenceResource
+  saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   mediaProvider?: Promise<MediaProvider>;
@@ -63,6 +64,10 @@ export interface Props {
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
   private editorContainer: HTMLElement;
+
+  static defaultProps = {
+    saveDisabled: false,
+  };
 
   render() {
     const { props } = this;
@@ -98,7 +103,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             <AkButtonGroup>
               {!this.props.onSave ? null :
                 <span onClick={this.handleSave}>
-                  <AkButton appearance="primary">Save</AkButton>
+                  <AkButton isDisabled={this.props.saveDisabled} appearance="primary">Save</AkButton>
                 </span>
               }
               {!this.props.onCancel ? null :

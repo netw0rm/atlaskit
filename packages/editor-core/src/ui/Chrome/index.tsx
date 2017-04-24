@@ -41,6 +41,7 @@ export interface Props {
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   onCollapsedChromeFocus: () => void;
+  saveDisabled?: boolean;
 }
 
 export default class Chrome extends PureComponent<Props, {}> {
@@ -51,6 +52,7 @@ export default class Chrome extends PureComponent<Props, {}> {
       ? <ChromeExpanded
         onCancel={props.onCancel}
         onSave={props.onSave}
+        saveDisabled={props.saveDisabled}
         feedbackFormUrl={props.feedbackFormUrl}
         pluginStateBlockType={props.pluginStateBlockType}
         pluginStateCodeBlock={props.pluginStateCodeBlock}

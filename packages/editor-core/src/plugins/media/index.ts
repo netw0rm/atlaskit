@@ -195,13 +195,11 @@ export class MediaPluginState {
     const { temporaryMediaNodes, stateManager } = this;
 
     return new Promise<void>((resolve, reject) => {
-      let outstandingNodes = temporaryMediaNodes.length;
-
       if (timeout) {
         setTimeout(() => reject(new Error(`Media operations did not finish in ${timeout} ms`)), timeout);
       }
 
-      outstandingNodes = temporaryMediaNodes.length;
+      let outstandingNodes = temporaryMediaNodes.length;
       if (!outstandingNodes) {
         return resolve();
       }

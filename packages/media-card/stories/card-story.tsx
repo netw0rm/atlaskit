@@ -70,7 +70,7 @@ storiesOf('Card', {})
 
     const fileIdentifier: MediaIdentifier = {
       mediaItemType: 'file',
-      id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
+      id: 'fd4c4672-323a-4b6c-8326-223169e2a13e',
       collectionName
     };
 

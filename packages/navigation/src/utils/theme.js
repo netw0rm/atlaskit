@@ -10,3 +10,10 @@ export const appearanceEnum = {
   container: 'container',
   global: 'global',
 };
+
+export const getFromOuterTheme = (themeVariable, defaultValue) => (outerTheme = {}) => {
+  if (!Object.hasOwnProperty.call(outerTheme, themeVariable)) {
+    return defaultValue;
+  }
+  return themeVariable[themeVariable];
+};

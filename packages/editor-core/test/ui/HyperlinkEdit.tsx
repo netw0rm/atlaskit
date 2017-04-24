@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import hyperlinkPlugins from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
+import PanelTextInput from '../../src/ui/PanelTextInput';
 import { createEvent, fixtures, doc, p as paragraph, a as link, linkable, makeEditor } from '../../src/test-helper';
 import defaultSchema from '../../src/test-helper/schema';
 
@@ -37,10 +38,11 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     expect(hyperlinkEdit.html()).to.equal(null);
   });
 
-  it('should set state variable autoFocusInput to true when link href is not defined', () => {
+  it('should set autoFocus of PanelTextInput to true when link href is not defined', () => {
     const { editorView, pluginState } = editor(doc(linkable('before', link({ href: '' })('te{<>}xt'), 'after')));
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
-    expect(hyperlinkEdit.state('autoFocusInput')).to.be.true;
+    const input = hyperlinkEdit.find(PanelTextInput);
+    expect(input.prop('autoFocus')).to.be.true;
   });
 
   it('should set state variable autoFocusInput to false when link href is defined', () => {

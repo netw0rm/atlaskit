@@ -104,13 +104,6 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       .parent()
       .simulate('click');
 
-    // enzyme currently requires setting value manually and simulating "change" event
-    // https://github.com/airbnb/enzyme/issues/76
-    const input = toolbar.find('FloatingToolbar PanelTextInput input');
-    (input.get(0) as any).value = 'http://atlassian.com';
-    input.simulate('change');
-    input.simulate('keydown', { which: 'enter', keyCode: 13 });
-
     expect(handler.calledWith('atlassian.editor.format.hyperlink.button')).to.equal(true);
   });
 

@@ -20,7 +20,6 @@ export interface WithDataURIProps {
 
   // allow extra props to be passed down to lower views e.g. status and error to CardView
   [propName: string]: any;
-
 };
 
 export interface WithDataURIState {
@@ -33,10 +32,10 @@ export interface WithDataURI extends React.Component<WithDataURIProps, WithDataU
   updateDataURI(props: WithDataURIProps): void;
 }
 
-export const withDataURI = Component => { // tslint:disable-line:variable-name
-
+// return type is "any" to avoid TS attempting to infer the return type
+// if TS attempts to infer the return type it can NOT publish .d.ts files because WithDataURIImpl isn't exported
+export const withDataURI = (Component): any => { // tslint:disable-line:variable-name
   class WithDataURIImpl extends React.Component<WithDataURIProps, WithDataURIState> implements WithDataURI {
-
     state: WithDataURIState = {};
 
     componentDidMount(): void {
@@ -50,7 +49,6 @@ export const withDataURI = Component => { // tslint:disable-line:variable-name
       if (nextDataURIService !== currentDataURIService || nextMetadata !== currentMetadata) {
         this.updateDataURI(nextProps);
       }
-
     }
 
     private isSmall(): boolean {
@@ -106,7 +104,6 @@ export const withDataURI = Component => { // tslint:disable-line:variable-name
         width,
         height
       ).then(setDataURI, clearDataURI);
-
     }
 
     render(): JSX.Element {
@@ -116,8 +113,8 @@ export const withDataURI = Component => { // tslint:disable-line:variable-name
         <Component {...otherProps} dataURI={dataURI}/>
       );
     }
-
   }
 
   return WithDataURIImpl;
 };
+

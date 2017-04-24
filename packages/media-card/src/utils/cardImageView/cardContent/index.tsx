@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {MediaType} from '@atlaskit/media-core';
-import FileIcon from '@atlaskit/icon/glyph/file';
-import {LoadingWrapper} from './styled';
 import {MediaImage} from '../../mediaImage';
+import {CardLoading} from '../../cardLoading';
 
 export interface CardContentProps {
   mediaType?: MediaType;
@@ -14,9 +13,7 @@ export interface CardContentProps {
 export class CardContent extends Component<CardContentProps, {}> {
   render() {
     if (this.props.loading) {
-      return <LoadingWrapper>
-               <FileIcon label="loading" size="medium"/>
-             </LoadingWrapper>;
+      return <CardLoading mediaItemType="file" />;
     }
 
     if (this.props.mediaType === 'image' && this.props.dataURI) {

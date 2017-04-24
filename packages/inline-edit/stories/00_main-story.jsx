@@ -27,6 +27,11 @@ storiesOf(name, module)
       <TextInlineEdit isLabelHidden />
     </div>
   ))
+  .add('with compact field-base', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit isCompact />
+    </div>
+  ))
   .add('with invalid input', () => (
     <div style={containerStyle}>
       <TextInlineEdit

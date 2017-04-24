@@ -15,7 +15,15 @@ export class MediaFileAttributesFactory {
 
     const binary = `/file/${details.id}/binary`;
     const artifactFormat = ArtifactFormat.fromFileDetails(details);
-    const resource = artifactFormat && getArtifactUrl(artifactFormat.name) || binary;
+
+    const imageUrl = (details: FileDetails) : string | undefined => {
+      if (details.mimeType === 'image/jpeg') {
+        return `/file/${details.id}/image`;
+      }
+    };
+
+    const artifact = artifactFormat && getArtifactUrl(artifactFormat.name);
+    const resource = imageUrl(details) || artifact || binary;
     const video1280 = getArtifactUrl('video_1280.mp4');
     const poster1280 = getArtifactUrl('poster_1280.jpg');
     const poster640 = getArtifactUrl('poster_640.jpg');

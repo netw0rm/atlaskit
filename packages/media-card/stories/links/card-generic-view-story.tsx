@@ -229,4 +229,25 @@ storiesOf('LinkCardGenericView', {})
     ];
 
     return <StoryList>{linkCardViewHorizontals}</StoryList>;
+  })
+  .add('Loading', () => {
+    const linkCardViewHorizontals = [
+      {
+        title: 'Infinite loading',
+        content: (
+          <LinkCardGenericView
+            title="This week inside Intercom."
+            site="The site name"
+            description="Convert today’s signups into tomorrow some text after"
+            linkUrl="http://localhost:9001/?selectedKind=LinkCardViewHorizontal&selectedStory=Various%20text%20lengths&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"
+            thumbnailUrl="https://wac-cdn.atlassian.com/dam/jcr:89e146b4-642e-41fc-8e65-7848337d7bdd/atlassian_charlie_square.png"
+            iconUrl="https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/apple-touch-icon-152x152.png"
+            actions={actions}
+            loading={true}
+          />
+        )
+      }
+    ];
+
+    return <StoryList>{linkCardViewHorizontals}</StoryList>;
   });

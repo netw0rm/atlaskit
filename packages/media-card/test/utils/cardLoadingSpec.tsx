@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-
-import { CardLoading } from '../../src/utils';
 import FileIcon from '@atlaskit/icon/glyph/file';
 import LinkIcon from '@atlaskit/icon/glyph/link';
+
+import { CardLoading } from '../../src/utils';
 
 describe('CardLoading', () => {
   it('should render the right icon based on the itemType', () => {

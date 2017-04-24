@@ -138,7 +138,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     );
   }
 
-  renderContent() {
+  private renderContent() {
     const {linkUrl, title, site, description, actions} = this.props;
     const thumbnail = this.getThumbnail();
     const icon = this.getIcon();
@@ -166,7 +166,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     ];
   }
 
-  renderLoading() {
+  private renderLoading() {
     return <CardLoading mediaItemType="link" iconSize="large"/>;
   }
 

@@ -38,6 +38,7 @@ export default {
   toDOM(node): [string, any, string] {
     const attrs = {
       'class': nodeClassName,
+      'data-unsupported': 'inline',
       'data-unsupported-inline-cxhtml': node.attrs['cxhtml'],
       'spellcheck': 'false',
     };
@@ -45,7 +46,7 @@ export default {
   },
   parseDOM: [
     {
-      tag: 'div',
+      tag: 'div[data-unsupported="inline"]',
       getAttrs(dom: HTMLElement) {
         return { cxhtml: dom.getAttribute('data-unsupported-inline-cxhtml')! };
       }

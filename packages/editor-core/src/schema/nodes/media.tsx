@@ -53,6 +53,16 @@ export const media: NodeSpec = {
       collection: dom.getAttribute('data-collection')!
     })
   }],
+  toDOM(node: any) {
+    const attrs = {
+      'data-id': node.attrs.id,
+      'data-node-type': 'media',
+      'data-type': node.attrs.type,
+      'data-collection': node.attrs.collection,
+    };
+
+    return ['div', attrs];
+  },
 };
 
 export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, view: EditorView, getPos: () => number): NodeView => {

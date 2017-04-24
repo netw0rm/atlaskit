@@ -4,8 +4,10 @@ import * as React from 'react';
 import {
   chaiPlugin,
   fixtures,
+  fromHTML,
   makeEditor,
   sendKeyToPm,
+  toDOM,
 } from '@atlaskit/editor-core/dist/es5/test-helper';
 import {
   blockquote,
@@ -15,6 +17,8 @@ import {
 } from './_schema-builder';
 import Editor from '../src';
 import schema from '../src/schema';
+import unsupportedBlock from '../src/schema/nodes/unsupportedBlock';
+import unsupportedInline from '../src/schema/nodes/unsupportedInline';
 
 chai.use(chaiPlugin);
 
@@ -71,6 +75,45 @@ describe('@atlaskit/editor-cq', () => {
       sendKeyToPm(editorView, 'Enter');
 
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'), p())));
+    });
+  });
+
+  describe('@atlaskit/editor-cq/schema unsupported nodes', () => {
+    describe('parse HTML', () => {
+      it('should work for unsupported block nodes', () => {
+        const doc = fromHTML('<div data-unsupported="block" data-unsupported-block-cxhtml="foobar"/>', schema);
+        const unsupportedBlockNode = doc.firstChild!;
+
+        expect(unsupportedBlockNode.type.spec).to.equal(unsupportedBlock);
+        expect(unsupportedBlockNode.attrs.cxhtml).to.be.equal('foobar');
+      });
+
+      it('should work for unsupported inline nodes', () => {
+        const doc = fromHTML('<div data-unsupported="inline" data-unsupported-inline-cxhtml="foobar"/>', schema);
+        const paragraph = doc.firstChild!;
+        const unsupportedInlineNode = paragraph.firstChild!;
+
+        expect(unsupportedInlineNode.type.spec).to.equal(unsupportedInline);
+        expect(unsupportedInlineNode.attrs.cxhtml).to.be.equal('foobar');
+      });
+    });
+
+    describe('encode to html', () => {
+      it('should work for unsupported block nodes', () => {
+        const unsupportedBlockNode = schema.nodes.unsupportedBlock.create({ cxhtml: 'foobar' });
+        const domNode = toDOM(unsupportedBlockNode, schema).firstChild as HTMLElement;
+
+        expect(domNode.dataset.unsupported).to.be.equal('block');
+        expect(domNode.dataset.unsupportedBlockCxhtml).to.be.equal('foobar');
+      });
+
+      it('should work for unsupported inline nodes', () => {
+        const unsupportedInlineNode = schema.nodes.unsupportedInline.create({ cxhtml: 'foobar' });
+        const domNode = toDOM(unsupportedInlineNode, schema).firstChild as HTMLElement;
+
+        expect(domNode.dataset.unsupported).to.be.equal('inline');
+        expect(domNode.dataset.unsupportedInlineCxhtml).to.be.equal('foobar');
+      });
     });
   });
 });

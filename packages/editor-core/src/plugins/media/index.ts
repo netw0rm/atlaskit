@@ -193,9 +193,10 @@ export class MediaPluginState {
    */
   waitForPendingTasks = (timeout?: Number) => {
     const { temporaryMediaNodes, stateManager } = this;
-    let outstandingNodes = temporaryMediaNodes.length;
 
     return new Promise<void>((resolve, reject) => {
+      let outstandingNodes = temporaryMediaNodes.length;
+
       if (timeout) {
         setTimeout(() => reject(new Error(`Media operations did not finish in ${timeout} ms`)), timeout);
       }

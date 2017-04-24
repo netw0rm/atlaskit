@@ -4,6 +4,7 @@ import { themeVariables } from '../../utils/theme';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
+import Reveal from './Reveal';
 import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 
@@ -40,6 +41,19 @@ export default class ContainerNavigation extends PureComponent {
     linkComponent: DefaultLinkComponent,
   }
 
+  state = {
+    shouldAnimateGlobalPrimaryActions: false,
+  }
+
+  componentWillReceiveProps() {
+    // start animating global primary actions after initial mount
+    if (!this.state.shouldAnimateGlobalPrimaryActions) {
+      this.setState({
+        shouldAnimateGlobalPrimaryActions: true,
+      });
+    }
+  }
+
   getOuterStyles() {
     if (!this.props.offsetX) {
       return {
@@ -73,7 +87,15 @@ export default class ContainerNavigation extends PureComponent {
       width,
     } = this.props;
 
+    const { shouldAnimateGlobalPrimaryActions } = this.state;
+
     const isWidthCollapsed = width <= containerClosedWidth;
+    const header = headerComponent ? (
+      <ContainerHeader>
+        {headerComponent({ isCollapsed: width <= containerClosedWidth })}
+      </ContainerHeader>
+    ) : null;
+
     return (
       <ThemeProvider
         theme={{
@@ -92,24 +114,25 @@ export default class ContainerNavigation extends PureComponent {
             style={this.getOuterStyles()}
           >
             <ContainerNavigationInner>
-              <GlobalPrimaryActions
-                appearance={appearance}
-                createIcon={globalCreateIcon}
-                isVisible={areGlobalActionsVisible}
-                linkComponent={linkComponent}
-                onCreateActivate={onGlobalCreateActivate}
-                onSearchActivate={onGlobalSearchActivate}
-                primaryIcon={globalPrimaryIcon}
-                primaryItemHref={globalPrimaryItemHref}
-                searchIcon={globalSearchIcon}
-              />
+              <Reveal
+                shouldAnimate={shouldAnimateGlobalPrimaryActions}
+                isOpen={areGlobalActionsVisible}
+                openHeight={300}
+              >
+                <GlobalPrimaryActions
+                  appearance={appearance}
+                  createIcon={globalCreateIcon}
+                  isVisible
+                  linkComponent={linkComponent}
+                  onCreateActivate={onGlobalCreateActivate}
+                  onSearchActivate={onGlobalSearchActivate}
+                  primaryIcon={globalPrimaryIcon}
+                  primaryItemHref={globalPrimaryItemHref}
+                  searchIcon={globalSearchIcon}
+                />
+              </Reveal>
               <div>
-                {
-                  headerComponent ? (
-                    <ContainerHeader>
-                      {headerComponent({ isCollapsed: width <= containerClosedWidth })}
-                    </ContainerHeader>) : null
-                }
+                {header}
               </div>
               <div>
                 {children}

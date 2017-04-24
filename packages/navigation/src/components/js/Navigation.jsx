@@ -141,7 +141,7 @@ export default class Navigation extends PureComponent {
       renderedWidth - (globalOpenWidth + containerClosedWidth) : 0;
 
     const showGlobalNavigation = isOpen || isResizing;
-    const shouldAnimate = isResizing || isSliding;
+    const isMoving = isResizing || isSliding;
 
     const globalNavigation = showGlobalNavigation ? (
       <GlobalNavigation
@@ -153,7 +153,7 @@ export default class Navigation extends PureComponent {
         primaryIcon={globalPrimaryIcon}
         primaryItemHref={globalPrimaryItemHref}
         searchIcon={globalSearchIcon}
-        shouldAnimate={shouldAnimate}
+        shouldAnimate={isMoving}
         secondaryActions={globalSecondaryActions}
       />
     ) : null;
@@ -171,7 +171,7 @@ export default class Navigation extends PureComponent {
     return (
       <NavigationOuter>
         <Spacer
-          shouldAnimate={shouldAnimate}
+          shouldAnimate={isSliding}
           width={renderedWidth}
         />
         <NavigationInner>
@@ -194,7 +194,7 @@ export default class Navigation extends PureComponent {
               offsetX={containerOffsetX}
               onGlobalCreateActivate={onCreateDrawerOpen}
               onGlobalSearchActivate={onSearchDrawerOpen}
-              shouldAnimate={shouldAnimate}
+              shouldAnimate={isSliding}
               width={getContainerWidth(renderedWidth)}
             >
               {children}

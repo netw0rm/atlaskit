@@ -1,9 +1,9 @@
-import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import Spinner from '@atlaskit/spinner';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import InlineDialog from '@atlaskit/inline-dialog';
+import styles from './styles.less';
 
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBase extends PureComponent {

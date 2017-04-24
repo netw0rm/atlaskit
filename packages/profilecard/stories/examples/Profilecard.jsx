@@ -1,4 +1,5 @@
 import React from 'react';
+import { action } from '@kadira/storybook';
 import { AkProfilecard } from '@atlaskit/profilecard';
 
 import avatar from 'file!../data/1.jpg';
@@ -15,8 +16,12 @@ export default (
     actions={[
       {
         label: 'View profile',
+        id: 'view-profile',
         callback: () => {},
       },
     ]}
+    analytics={(eventname, attributes) => {
+      action(eventname)(JSON.stringify(attributes));
+    }}
   />
 );

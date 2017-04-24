@@ -4,9 +4,13 @@ import { DEFAULT_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
 import { fromHTML, toHTML } from '../../../src/test-helper';
 
 describe('@atlaskit/editor-core/schema codeBlock node', () => {
-    describe('parse from html', () => {
-        const schema = makeSchema();
+    const schema = makeSchema();
 
+    it('should have code property to be true', () => {
+        expect(schema.nodes.codeBlock.spec.code).to.be.true;
+    });
+
+    describe('parse from html', () => {
         context('parse from editor encoded HTML', () => {
             context('when language is not set', () => {
                 it('converts to block code node', () => {

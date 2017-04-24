@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 class ToggleIcons extends React.PureComponent {
   constructor(props) {

@@ -144,6 +144,7 @@ export class HyperlinkState {
         this.changeHandlers.forEach(cb => cb(this));
       } else {
         this.addLink({ href: '' }, editorView);
+        this.update(editorView.state, editorView.docView);
       }
     }
   }
@@ -214,6 +215,11 @@ const plugin = new Plugin({
       const pluginState = stateKey.getState(view.state);
       pluginState.escapeFromMark(view);
 
+      return false;
+    },
+    handleClick(view: EditorView) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
       return false;
     },
     onBlur(view: EditorView) {

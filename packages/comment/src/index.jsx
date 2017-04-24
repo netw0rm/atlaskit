@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import CommentAction from './CommentAction';
 import CommentAuthor from './CommentAuthor';
 import CommentTime from './CommentTime';

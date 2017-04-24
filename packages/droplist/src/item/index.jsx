@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
-import { locals as styles } from '../styles.less';
+import styles from '../styles.less';
 
 import Element from './internal/Element';
 import SecondaryText from './internal/SecondaryText';

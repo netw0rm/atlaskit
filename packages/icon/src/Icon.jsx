@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classnames from 'classnames';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import { NotImplementedError } from './internal/exceptions';
 import { iconConstructorBase, prepareProps } from './iconConstructor';
 

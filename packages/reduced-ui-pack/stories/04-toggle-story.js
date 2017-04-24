@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { Chrome, Code } from '@atlaskit/util-readme';
 
-import '!style-loader!css-loader!less-loader!../src/index.less';
+import '../src/index.less';
 import { name } from '../package.json';
 import ToggleExample from './components/ToggleExample';
 

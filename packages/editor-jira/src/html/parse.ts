@@ -109,7 +109,7 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
         if (node.className === 'user-hover' && isSchemaWithMentions(schema)) {
           return schema.nodes.mention!.createChecked({
             id: node.getAttribute('rel'),
-            displayName: node.innerText
+            text: node.innerText
           });
         }
 

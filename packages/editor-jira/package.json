@@ -26,7 +26,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^12.0.2",
+    "@atlaskit/editor-core": "^14.5.2",
     "@atlaskit/mention": "^4.0.4",
     "collapse-whitespace": "^1.1.4",
     "tslib": "^1.2.0"

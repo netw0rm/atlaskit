@@ -18,6 +18,7 @@ import { analyticsService } from '../../analytics';
 import { MediaPluginOptions, MediaPluginBehavior } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 
+const MEDIA_RESOLVE_STATES = ['ready', 'error'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
@@ -194,32 +195,42 @@ export class MediaPluginState {
     const { temporaryMediaNodes, stateManager } = this;
     let outstandingNodes = temporaryMediaNodes.length;
 
-    if (!outstandingNodes) {
-      return Promise.resolve();
-    }
-
     return new Promise<void>((resolve, reject) => {
       if (timeout) {
         setTimeout(() => reject(new Error(`Media operations did not finish in ${timeout} ms`)), timeout);
       }
 
-      // To avoid race-conditions steming from Promise micro-task, we're reading the length again
       outstandingNodes = temporaryMediaNodes.length;
+      if (!outstandingNodes) {
+        return resolve();
+      }
+
+      function onNodeStateChanged(state: MediaState) {
+        const { status } = state;
+
+        if (MEDIA_RESOLVE_STATES.indexOf(status || '') !== -1) {
+          onNodeStateReady(state);
+        }
+      }
+
+      function onNodeStateReady(state: MediaState) {
+        outstandingNodes--;
+        stateManager.unsubscribe(state.id, onNodeStateChanged);
+
+        if (outstandingNodes <= 0) {
+          resolve();
+        }
+      }
 
       temporaryMediaNodes.forEach((node, mediaId) => {
-        const listener = (state: MediaState) => {
-          const { status } = state;
+        const nodeCurrentState = stateManager.getState(mediaId)!;
+        const nodeCurrentStatus = nodeCurrentState.status || '';
 
-          if (status === 'ready' || status === 'error') {
-            outstandingNodes--;
-            stateManager.unsubscribe(mediaId, listener);
-
-            if (outstandingNodes <= 0) {
-              resolve();
-            }
-          }
-        };
-        stateManager.subscribe(mediaId, listener);
+        if (MEDIA_RESOLVE_STATES.indexOf(nodeCurrentStatus) !== -1) {
+          onNodeStateReady(nodeCurrentState);
+        } else {
+          stateManager.subscribe(mediaId, onNodeStateChanged);
+        }
       });
     });
   }

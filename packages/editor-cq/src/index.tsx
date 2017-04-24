@@ -148,11 +148,13 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
     const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
 
-    return mediaPluginState.waitForPendingTasks().then(() =>
-      editorView && editorView.state.doc
+    return (async () => {
+      await mediaPluginState.waitForPendingTasks();
+
+      return editorView && editorView.state.doc
           ? encode(editorView.state.doc)
-          : this.props.defaultValue
-    );
+          : this.props.defaultValue;
+    })();
   }
 
   componentWillReceiveProps(nextProps: Props) {

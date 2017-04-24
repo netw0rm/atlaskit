@@ -1,11 +1,9 @@
-import { Schema, keymap, Plugin, Node } from '../../prosemirror';
+import { Schema, keymap, Plugin, ResolvedPos } from '../../prosemirror';
 
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
-  const lastCharIsNewline = (node: Node): boolean => {
-    if (node && node.textContent) {
-      return node.textContent.slice(-1) === '\n';
-    }
-    return false;
+  const lastNodeIsHardBreak = ($from: ResolvedPos): boolean => {
+    const node = $from.node($from.depth);
+    return (!!node.lastChild && node.lastChild.type === schema.nodes.hardBreak);
   };
 
   const keymaps = {
@@ -15,13 +13,17 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
       const range = $from.blockRange($to);
       const node = range && range.parent;
       if (node && node.type === nodes.panel) {
-        if (lastCharIsNewline(node)) {
+        if (lastNodeIsHardBreak($from)) {
           tr.split($from.pos);
           tr.delete($from.pos - 1, $from.pos);
           dispatch(tr);
         } else {
-          dispatch(tr.insertText('\n'));
-          return true;
+          const { hardBreak } = nodes;
+          if (hardBreak) {
+            const hardBreakNode = hardBreak.create();
+            dispatch(state.tr.replaceSelectionWith(hardBreakNode));
+            return true;
+          }
         }
       }
       return false;

@@ -35,6 +35,7 @@ const profilecardPropTypes = {
   presence: 'oneOf(["none", "available", "busy", "unavailable"]',
   actions: `arrayOf(React.PropTypes.shape({
     callback: React.PropTypes.function,
+    id: React.PropTypes.string
     label: React.PropTypes.string
   }))`,
   isLoading: 'bool',

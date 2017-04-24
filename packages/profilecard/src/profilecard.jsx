@@ -23,12 +23,13 @@ export default class Profilecard extends PureComponent {
     presence: PropTypes.oneOf(Object.keys(presences)),
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.function,
+      id: PropTypes.string,
       label: PropTypes.string,
     })),
     isLoading: PropTypes.bool,
     hasError: PropTypes.bool,
     clientFetchProfile: PropTypes.func,
-
+    analytics: PropTypes.func,
   }
 
   static defaultProps = {
@@ -36,6 +37,28 @@ export default class Profilecard extends PureComponent {
     actions: [],
     isLoading: false,
     hasError: false,
+    analytics: () => {},
+  }
+
+  constructor(options) {
+    super(options);
+
+    this._timeOpen = null;
+
+    this.clientFetchProfile = (...args) => {
+      this.props.analytics('profileCard.reload', {});
+      this.props.clientFetchProfile(...args);
+    };
+  }
+
+  componentDidMount() {
+    this._timeOpen = Date.now();
+    this.props.analytics('profileCard.view', {});
+  }
+
+  _durationSince = (from) => {
+    const fromParsed = parseInt(from, 10) || 0;
+    return fromParsed > 0 ? Date.now() - fromParsed : null;
   }
 
   renderActionsButtons() {
@@ -50,7 +73,13 @@ export default class Profilecard extends PureComponent {
             appearance={idx === 0 ? 'default' : 'subtle'}
             compact
             key={action.label}
-            onClick={action.callback}
+            onClick={(...args) => {
+              this.props.analytics('profileCard.click', {
+                id: action.id || null,
+                duration: this._durationSince(this._timeOpen),
+              });
+              action.callback(...args);
+            }}
           >{action.label}</AkButton>
         ))}
       </div>
@@ -58,7 +87,7 @@ export default class Profilecard extends PureComponent {
   }
 
   renderErrorMessage() {
-    return (<ErrorMessage reload={this.props.clientFetchProfile} />);
+    return (<ErrorMessage reload={this.clientFetchProfile} />);
   }
 
   renderProfilecard() {
@@ -66,6 +95,10 @@ export default class Profilecard extends PureComponent {
       styles.profilecard,
       { [styles.noDetailsMeta]: !this.props.meta },
     ]);
+
+    this.props.analytics('profileCard.loaded', {
+      duration: this._durationSince(this._timeOpen),
+    });
 
     return (
       <div className={cardClasses}>
@@ -94,10 +127,12 @@ export default class Profilecard extends PureComponent {
     let cardContent = null;
 
     if (this.props.hasError) {
+      this.props.analytics('profileCard.error', {});
+
       cardContent = this.renderErrorMessage();
     } else if (this.props.isLoading) {
       cardContent = <LoadingMessage />;
-    } else {
+    } else if (this.props.fullName) {
       cardContent = this.renderProfilecard();
     }
 

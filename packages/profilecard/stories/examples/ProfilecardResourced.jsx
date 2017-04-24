@@ -28,6 +28,7 @@ const handleActionClick = title => action(`${title} button clicked`);
 const actions = [
   {
     label: 'View profile',
+    id: 'view-profile',
     callback: handleActionClick('View profile'),
   },
 ];
@@ -35,11 +36,18 @@ const actions = [
 class AkProfilecardRandomById extends PureComponent {
   state = {
     userId: randomNumber(),
+    isVisible: true,
   };
 
   reloadRandomCardData = () => {
     this.setState({
       userId: newRandomUser(this.state.userId),
+    });
+  }
+
+  toggleVisibility() {
+    this.setState({
+      isVisible: !this.state.isVisible,
     });
   }
 
@@ -56,20 +64,26 @@ class AkProfilecardRandomById extends PureComponent {
   render() {
     return (
       <div>
-        <AkProfilecardResourced
-          actions={actions}
-          cloudId="DUMMY-CLOUDID"
-          resourceClient={mockClient}
-          userId={this.state.userId}
-        />
+        <button onClick={() => this.toggleVisibility()}>{this.state.isVisible ? 'Unmount' : 'Mount'}</button>
+        &nbsp;
+        <button onClick={() => this.reloadRandomCardData()}>Set random user id</button>
+        &nbsp;
+        <button onClick={() => this.reloadCardData('404')}>Set card data to error</button>
+        &nbsp;
+        <button onClick={this.flushStoryCache}>Delete cache</button>
         <br /><br />
-        <button onClick={this.reloadRandomCardData}>Load random card data</button>
-        &nbsp;
-        <button onClick={() => this.reloadCardData('1')}>Load card 1</button>
-        &nbsp;
-        <button onClick={() => this.reloadCardData('2')}>Load card 2</button>
-        &nbsp;
-        <button onClick={this.flushStoryCache}>Flush cache</button>
+        {
+          this.state.isVisible ?
+            <AkProfilecardResourced
+              actions={actions}
+              cloudId="DUMMY-CLOUDID"
+              resourceClient={mockClient}
+              userId={this.state.userId}
+              analytics={(eventname, attributes) => {
+                action(eventname)(JSON.stringify(attributes));
+              }}
+            /> : null
+        }
       </div>
     );
   }

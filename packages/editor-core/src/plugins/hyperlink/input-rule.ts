@@ -32,7 +32,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const emailEndOfLine = createLinkInputRule(emailAtEndOfLine, match => match[1] && `mailto:${match[1]}`);
 
   // [something](link) should convert to a hyperlink
-  const markdownLinkRule = createInputRule(/(^|[^!])\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
+  const markdownLinkRule = createInputRule(/(^|[^!])\[(.*?)\]\((\S+)\)$/, (state, match, start, end) => {
     const { schema } = state;
     const url = normalizeUrl(match[3]);
     const markType = schema.mark('link', { href: url });

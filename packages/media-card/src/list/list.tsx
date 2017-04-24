@@ -211,7 +211,6 @@ export class CardList extends Component<CardListProps, CardListState> {
         return (
           <li key={`${index}-${mediaItem.details.id}`}>
             <MediaCard
-              type={mediaItem.type}
               provider={this.providersByMediaItemId[mediaItem.details.id]}
               dataURIService={this.dataURIService}
 

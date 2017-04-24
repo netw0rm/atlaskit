@@ -1,13 +1,13 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from '../less/GlobalPrimaryActions.less';
 import GlobalItem from './GlobalItem';
 import DrawerTrigger from './DrawerTrigger';
 import DefaultLinkComponent from './DefaultLinkComponent';
+import GlobalPrimaryActionsInner from '../styled/GlobalPrimaryActionsInner';
+import GlobalPrimaryActionsPrimaryItem from '../styled/GlobalPrimaryActionsPrimaryItem';
+import GlobalPrimaryActionsItemsWrapper from '../styled/GlobalPrimaryActionsItemsWrapper';
 
 export default class GlobalPrimaryActions extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
     createIcon: PropTypes.node,
     isVisible: PropTypes.bool,
     linkComponent: PropTypes.func,
@@ -25,7 +25,6 @@ export default class GlobalPrimaryActions extends PureComponent {
 
   render() {
     const {
-      appearance,
       createIcon,
       isVisible,
       linkComponent,
@@ -36,40 +35,35 @@ export default class GlobalPrimaryActions extends PureComponent {
       searchIcon,
     } = this.props;
     return (
-      <div
-        className={classNames(styles.globalActions, {
-          [styles.isVisible]: isVisible,
-        })}
-      >
+      <GlobalPrimaryActionsInner isVisible={isVisible}>
         {primaryIcon ?
-          <div className={styles.primaryItem}>
+          <GlobalPrimaryActionsPrimaryItem>
             <GlobalItem
-              appearance={appearance}
               href={primaryItemHref}
               linkComponent={linkComponent}
               size="medium"
             >
               {primaryIcon}
             </GlobalItem>
-          </div>
+          </GlobalPrimaryActionsPrimaryItem>
         : null}
-        <div className={styles.actions}>
+        <GlobalPrimaryActionsItemsWrapper>
           {searchIcon ?
             <DrawerTrigger onActivate={onSearchActivate}>
-              <GlobalItem appearance={appearance} size="medium">
+              <GlobalItem size="medium">
                 {searchIcon}
               </GlobalItem>
             </DrawerTrigger>
           : null}
           {createIcon ?
             <DrawerTrigger onActivate={onCreateActivate}>
-              <GlobalItem appearance={appearance} size="medium">
+              <GlobalItem size="medium">
                 {createIcon}
               </GlobalItem>
             </DrawerTrigger>
           : null}
-        </div>
-      </div>
+        </GlobalPrimaryActionsItemsWrapper>
+      </GlobalPrimaryActionsInner>
     );
   }
 }

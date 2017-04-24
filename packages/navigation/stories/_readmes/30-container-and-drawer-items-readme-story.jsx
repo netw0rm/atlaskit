@@ -2,11 +2,11 @@ import React from 'react';
 import Readme, { Description, Props } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
-import { AkContainerItem, AkDrawerItem } from '../../src/index';
+import { AkNavigationItem } from '../../src/index';
 
 import { name, description } from '../../package.json';
 
-const containerItemSpeificPropDescriptions = {
+const NavigationItemSpeificPropDescriptions = {
   appearance: 'The appearance of the navigation item – can be styled to match a global container',
   isSelected: 'Whether the item is currently in a selected state',
 };
@@ -24,34 +24,34 @@ const navigationItemPropDescriptions = {
 };
 
 storiesOf(name, module)
-  .add('📖 ContainerItem readme', () => (
+  .add('📖 NavigationItem readme', () => (
     <Readme
       component={name}
       description={description}
     >
       <Description>
-        The ContainerItem component is used in the ContainerNavigation, and is
+        The NavigationItem component is used in the ContainerNavigation, and is
         used to represent views of content inside a container. They are often
         links to different views of a particular container.
       </Description>
       <Props
-        component={AkContainerItem}
+        component={AkNavigationItem}
         descriptions={Object.assign(
           navigationItemPropDescriptions,
-          containerItemSpeificPropDescriptions
+          NavigationItemSpeificPropDescriptions
         )}
       />
     </Readme>
   ))
-  .add('📖 DrawerItem readme', () => (
+  .add('📖 NavigationItem readme', () => (
     <Readme
       component={name}
       description={description}
     >
       <Description>
-        The DrawerItem component is used in the Drawers, and is used to
+        The NavigationItem component is used in the Drawers, and is used to
         represent different actions related to searching and created content.
       </Description>
-      <Props component={AkDrawerItem} descriptions={navigationItemPropDescriptions} />
+      <Props component={AkNavigationItem} descriptions={navigationItemPropDescriptions} />
     </Readme>
   ));

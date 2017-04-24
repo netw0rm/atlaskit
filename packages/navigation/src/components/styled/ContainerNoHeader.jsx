@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { containerNav } from '../../shared-variables';
+import { layout } from '../../shared-variables';
 
 const ContainerNoHeader = styled.div`
-  height: ${containerNav.padding.vertical}px;
+  height: ${layout.padding.top}px;
 `;
 
 ContainerNoHeader.displayName = 'ContainerNoHeader';

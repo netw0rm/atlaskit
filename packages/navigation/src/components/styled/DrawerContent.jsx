@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { containerNav } from '../../shared-variables';
+import { layout } from '../../shared-variables';
 
 const DrawerContent = styled.div`
-  padding: 0 ${containerNav.padding.horizontal}px;
+  padding: 0 ${layout.padding.side}px;
   width: 100%;
 `;
 

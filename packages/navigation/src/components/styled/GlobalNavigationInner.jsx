@@ -3,7 +3,7 @@ import {
   akColorN800,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
-import { globalNav } from '../../shared-variables';
+import { layout, globalOpenWidth } from '../../shared-variables';
 import { appearanceEnum, themeVariables } from '../../utils/theme';
 
 const colors = {
@@ -22,9 +22,9 @@ const GlobalNavigationInner = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: ${globalNav.padding.vertical}px ${globalNav.padding.horizontal}px;
+  padding: ${layout.padding.top}px ${layout.padding.side}px ${layout.padding.top}px;
   position: fixed;
-  width: ${globalNav.width}px;
+  width: ${globalOpenWidth}px;
 `;
 
 GlobalNavigationInner.defaultProps = {

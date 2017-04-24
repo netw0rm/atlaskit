@@ -9,11 +9,23 @@ import {
   akColorN900,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
+
 /**
- * NOTE: these variables are duplicated in shared-variables.less
  * NOTE: changing the width of the Navigation is considered a breaking change
  */
-export const globalOpenWidth = 64;
+
+export const layout = {
+  padding: {
+    top: akGridSizeUnitless * 3,
+    bottom: akGridSizeUnitless * 3,
+    side: akGridSizeUnitless,
+  },
+  width: {
+    closed: 64,
+  },
+};
+
+export const globalOpenWidth = layout.width.closed;
 export const containerClosedWidth = globalOpenWidth;
 export const containerOpenWidth = 240;
 export const navigationOpenWidth = globalOpenWidth + containerOpenWidth;
@@ -43,36 +55,6 @@ export const colors = {
   },
 };
 
-export const navigation = {
-  padding: {
-    vertical: akGridSizeUnitless * 3,
-    horizontal: akGridSizeUnitless,
-
-    // explicity break into top, left, right, bottom?
-  },
-  width: {
-    closed: 64,
-  },
-};
-
-export const globalNav = {
-  width: navigation.width.closed,
-  padding: {
-    vertical: navigation.padding.vertical,
-    horizontal: 0,
-  },
-};
-
-export const containerNav = {
-  width: {
-    open: 240,
-    closed: navigation.width.closed,
-  },
-  padding: {
-    ...navigation.padding,
-  },
-};
-
 export const globalPrimaryActions = (() => {
   const itemSizes = {
     medium: akGridSizeUnitless * 5,
@@ -95,38 +77,3 @@ export const globalPrimaryActions = (() => {
     itemSizes,
   };
 })();
-
-/*
-export const globalNav = (() => {
-  const itemSizes = {
-    medium: akGridSizeUnitless * 5,
-  };
-
-  const margin = {
-    bottom: akGridSizeUnitless * 3.5,
-  };
-
-  const padding = {
-    top: akGridSizeUnitless * 3,
-    bottom: akGridSizeUnitless * 2,
-  };
-
-  const innerHeight = itemSizes.medium * 3;
-
-  const height = {
-    inner: innerHeight,
-    outer: margin.bottom + innerHeight,
-  };
-
-  const width = {
-    open: 64,
-  };
-
-  return {
-    itemSizes,
-    padding,
-    height,
-    width,
-  };
-})();
-*/

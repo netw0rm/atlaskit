@@ -16,6 +16,8 @@ import { EditorView } from '../../prosemirror';
 
 export interface Props {
   editorView: EditorView;
+  softBlurEditor: () => void;
+  focusEditor: () => void;
   pluginStateTextFormatting?: TextFormattingState | undefined;
   pluginStateClearFormatting?: ClearFormattingState | undefined;
 }
@@ -162,6 +164,13 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private toggleOpen = () => {
     const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
     if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
+
+      if (!isOpen) {
+        this.props.softBlurEditor();
+      } else {
+        this.props.focusEditor();
+      }
+
       this.setState({
         isOpen: !isOpen,
       });

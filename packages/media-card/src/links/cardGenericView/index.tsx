@@ -3,7 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../index';
-import {Ellipsify, Menu, MediaImage, getCSSUnitValue} from '../../utils';
+import {Ellipsify, Menu, MediaImage, getCSSUnitValue, CardLoading} from '../../utils';
 import {Href} from '../../utils/href';
 import {Details, Wrapper} from '../styled';
 import {
@@ -127,36 +127,47 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {linkUrl, title, site, description, actions, appearance} = this.props;
+    const {appearance, loading} = this.props;
     const cardStyle = {height: this.height, width: this.width};
-
-    const thumbnail = this.getThumbnail();
-    const icon = this.getIcon();
+    const content = loading ? this.renderLoading() : this.renderContent();
 
     return (
       <Wrapper style={cardStyle} className={appearance} onClick={this.onClick}>
-        {thumbnail}
-
-        <Details className="details">
-          <Title>
-            {title}
-          </Title>
-          <Description>
-            <Ellipsify text={description || ''} lines={2} endLength={0} />
-          </Description>
-
-          <Footer>
-            <Link>
-              {icon}
-              <Href linkUrl={linkUrl} underline={true}>
-                {site || linkUrl}
-              </Href>
-            </Link>
-            <Menu actions={actions} />
-          </Footer>
-        </Details>
+        {content}
       </Wrapper>
     );
+  }
+
+  private renderContent() {
+    const {linkUrl, title, site, description, actions} = this.props;
+    const thumbnail = this.getThumbnail();
+    const icon = this.getIcon();
+
+    return [
+      thumbnail,
+      <Details className="details">
+        <Title>
+          {title}
+        </Title>
+        <Description>
+          <Ellipsify text={description || ''} lines={2} endLength={0} />
+        </Description>
+
+        <Footer>
+          <Link>
+            {icon}
+            <Href linkUrl={linkUrl} underline={true}>
+              {site || linkUrl}
+            </Href>
+          </Link>
+          <Menu actions={actions} />
+        </Footer>
+      </Details>
+    ];
+  }
+
+  private renderLoading() {
+    return <CardLoading mediaItemType="link" iconSize="large"/>;
   }
 
   private onClick = (event: MouseEvent<HTMLDivElement>) => {

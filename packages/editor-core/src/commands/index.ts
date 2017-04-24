@@ -4,7 +4,7 @@ import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType, liftSelection, wrapIn } from '../utils';
+import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
 import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
@@ -208,11 +208,12 @@ export function toggleCodeBlock(): Command {
 
 export function setNormalText(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from, $to } = state.selection;
-    const currentBlock = $from.parent;
+    const { $from : initialFrom } = state.selection;
+    const currentBlock = initialFrom.parent;
 
     if (currentBlock.type !== state.schema.nodes.paragraph) {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
+      const { tr, $from, $to } = splitCodeBlockAtSelection(state);
+      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
       return true;
     }
 
@@ -222,13 +223,14 @@ export function setNormalText(): Command {
 
 export function toggleHeading(level: number): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from, $to } = state.selection;
-    const currentBlock = $from.parent;
+    const { $from : initialFrom } = state.selection;
+    const currentBlock = initialFrom.parent;
+    const { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
     if (currentBlock.type !== state.schema.nodes.heading || currentBlock.attrs['level'] !== level) {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
+      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
     } else {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
+      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
     }
 
     return true;
@@ -462,12 +464,12 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 
 function toggleNodeType(nodeType: NodeType): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    let { $from, $to } = state.selection;
-    const potentialBlockquoteNode = $from.node($from.depth - 1);
+    let { $from : selFrom } = state.selection;
+    const potentialNodePresent = selFrom.node(selFrom.depth - 1);
 
     // lift the node and convert to given nodeType
-    if (potentialBlockquoteNode.type !== nodeType) {
-      let { tr } = state;
+    if (potentialNodePresent.type !== nodeType) {
+      let { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
       if ($from.depth > 1) {
         const result = liftSelection(tr, state.doc, $from, $to);

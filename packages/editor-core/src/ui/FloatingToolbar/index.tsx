@@ -5,6 +5,7 @@ import OutsideClickable from '../OutsideClickable';
 import Popper, { IPopper } from './../../popper';
 import * as styles from './styles';
 import { akEditorFloatingPanelZIndex } from '../../styles';
+export type Coordniates = { left: number, right: number, top: number, bottom: number };
 
 export interface Props {
   autoPosition?: boolean;
@@ -12,6 +13,7 @@ export interface Props {
   onOutsideClick?: () => void;
   target?: HTMLElement;
   spacing?: 'none';
+  onExtractStyle?: (state: any) => Coordniates | undefined;
 }
 
 export interface State {
@@ -41,12 +43,11 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
 
   extractStyles = (state: any) => {
     if (state) {
-      const left = Math.round(state.offsets.popper.left);
-      const top = Math.round(state.offsets.popper.top);
-
+      const { onExtractStyle } = this.props;
+      const { left, top } = (onExtractStyle && onExtractStyle(state)) || state.offsets.popper;
       this.setState({
         position: state.offsets.popper.position,
-        transform: `translate3d(${left}px, ${top}px, 0px)`,
+        transform: `translate3d(${Math.round(left)}px, ${Math.round(top)}px, 0px)`,
       });
     }
   }

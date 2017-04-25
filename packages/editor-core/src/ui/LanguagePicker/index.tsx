@@ -72,6 +72,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
       return (
         <FloatingToolbar target={element} align="left" autoPosition className={styles.floatingToolbar}>
           <div
+            tabIndex={0}
             className={styles.container}
             onMouseDown={this.setLanguageSelectFocused}
           >
@@ -98,10 +99,13 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const matchedLanguage = findMatchedLanguage(supportedLanguages!, language);
     const updatedLanguage = this.optionToLanguage(matchedLanguage);
 
+    const languageSelectFocused = !this.state.toolbarVisible && toolbarVisible ? false : this.state.languageSelectFocused;
+
     this.setState({
       language: matchedLanguage,
       element,
       toolbarVisible,
+      languageSelectFocused,
     });
 
     if (language !== updatedLanguage) {

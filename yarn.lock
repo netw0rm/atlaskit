@@ -308,13 +308,6 @@ ak-css-reset@^1.1.0:
   dependencies:
     akutil-shared-styles "^37.1.0"
 
-akutil-polyfills@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/akutil-polyfills/-/akutil-polyfills-5.0.1.tgz#b270be72309831f3a4b6d842c64ffc20f1ac14d1"
-  dependencies:
-    babel-runtime "^6.11.6"
-    skatejs-web-components "^2.0.2"
-
 akutil-shared-styles@^37.0.0, akutil-shared-styles@^37.1.0:
   version "37.2.0"
   resolved "https://registry.yarnpkg.com/akutil-shared-styles/-/akutil-shared-styles-37.2.0.tgz#56540cda33899757ed7941e534a121ac4952d4ac"
@@ -1268,6 +1261,14 @@ babel-polyfill@^6.16.0:
     babel-runtime "^6.9.1"
     core-js "^2.4.0"
     regenerator-runtime "^0.9.5"
+
+babel-polyfill@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.23.0.tgz#8364ca62df8eafb830499f699177466c3b03499d"
+  dependencies:
+    babel-runtime "^6.22.0"
+    core-js "^2.4.0"
+    regenerator-runtime "^0.10.0"
 
 babel-preset-env@0.0.6:
   version "0.0.6"
@@ -2530,10 +2531,6 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-custom-event-polyfill@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-0.3.0.tgz#99807839be62edb446b645832e0d80ead6fa1888"
-
 custom-event@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/custom-event/-/custom-event-1.0.1.tgz#5d02a46850adf1b4a317946a3928fccb5bfd0425"
@@ -2569,19 +2566,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-date-now@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/date-now/-/date-now-1.0.1.tgz#bb7d086438debe4182a485fb3df3fbfb99d6153c"
-
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
-
-debounce@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.0.0.tgz#0948af513d2e4ce407916f8506a423d3f9cf72d8"
-  dependencies:
-    date-now "1.0.1"
 
 debug@0.7.4:
   version "0.7.4"
@@ -2714,10 +2701,6 @@ doctrine@1.5.0, doctrine@^1.2.0, doctrine@^1.2.2:
   dependencies:
     esutils "^2.0.2"
     isarray "^1.0.0"
-
-document-register-element@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.2.0.tgz#aa0f1312320b4155ac13599edeb7a7cda4d5ac2a"
 
 dom-serialize@^2.2.0:
   version "2.2.1"
@@ -7018,21 +7001,6 @@ sinon@^1.17.7:
     samsam "1.1.2"
     util ">=0.10.3 <1"
 
-skatejs-named-slots@2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/skatejs-named-slots/-/skatejs-named-slots-2.0.4.tgz#66ab654f80ba553d956df8c76ec65b8fc9fe2362"
-  dependencies:
-    custom-event-polyfill "^0.3.0"
-    debounce "^1.0.0"
-    weak-map "^1.0.5"
-
-skatejs-web-components@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/skatejs-web-components/-/skatejs-web-components-2.0.2.tgz#7b51d4a6a5d0b63dee2e1502b829f729d9aed84a"
-  dependencies:
-    document-register-element "1.2.0"
-    skatejs-named-slots "2.0.4"
-
 skatejs@^4.0.4:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/skatejs/-/skatejs-4.2.2.tgz#3c96bab4fc61e8c77da685eacf8978e804b24b21"
@@ -7866,10 +7834,6 @@ watchpack@^0.2.1:
     async "^0.9.0"
     chokidar "^1.0.0"
     graceful-fs "^4.1.2"
-
-weak-map@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/weak-map/-/weak-map-1.0.5.tgz#79691584d98607f5070bd3b70a40e6bb22e401eb"
 
 webdriver-manager@^10.2.8:
   version "10.2.10"

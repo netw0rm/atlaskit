@@ -1,8 +1,9 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
+import sinon from 'sinon';
 
-import Button from '../src/index';
-import styles from '../src/less/styles.less';
+import Button from '../../src/index';
+import Span from '../../src/Span';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
@@ -10,30 +11,35 @@ describe('ak-button/default-behaviour', () => {
   );
 
   it('should render button if there is no href property', () => {
-    expect(mount(<Button />).find('button').length).to.equal(1);
-    expect(mount(<Button />).find('a').length).to.equal(0);
+    const wrapper = mount(<Button />);
+    expect(wrapper.find('button').length).to.equal(1);
+    expect(wrapper.find('a').length).to.equal(0);
   });
 
   it('should render link if href property is set', () => {
-    expect(mount(<Button href="test" />).find('a').length).to.equal(1);
-    expect(mount(<Button href="test" />).find('button').length).to.equal(0);
+    const wrapper = mount(<Button href="test" />);
+    expect(wrapper.find('a').length).to.equal(1);
+    expect(wrapper.find('button').length).to.equal(0);
   });
 
   it('should not render link without href prop, even if the target prop is set', () => {
-    expect(mount(<Button target="something" />).find('a').length).to.equal(0);
-    expect(mount(<Button target="something" />).find('button').length).to.equal(1);
+    const wrapper = mount(<Button target="something" />);
+    expect(wrapper.find('a').length).to.equal(0);
+    expect(wrapper.find('button').length).to.equal(1);
   });
 
   it('should render span when the button is disabled and has href property', () => {
-    expect(mount(<Button isDisabled href="test" />).find(`span > span.${styles.buttonWrapper}`).length).to.equal(1);
-    expect(mount(<Button isDisabled href="test" />).find('button').length).to.equal(0);
-    expect(mount(<Button isDisabled href="test" />).find('a').length).to.equal(0);
+    const wrapper = mount(<Button isDisabled href="test" />);
+    expect(wrapper.find(Span).length).to.equal(1);
+    expect(wrapper.find('button').length).to.equal(0);
+    expect(wrapper.find('a').length).to.equal(0);
   });
 
   it('should not render span when the button is disabled, but doesn\'t have href', () => {
-    expect(mount(<Button isDisabled />).find(`span > ${styles.buttonWrapper}`).length).to.equal(0);
-    expect(mount(<Button isDisabled />).find('button').length).to.equal(1);
-    expect(mount(<Button isDisabled />).find('a').length).to.equal(0);
+    const wrapper = mount(<Button isDisabled />);
+    expect(wrapper.find(Span).length).to.equal(0);
+    expect(wrapper.find('button').length).to.equal(1);
+    expect(wrapper.find('a').length).to.equal(0);
   });
 
   it('should render icon if the prop iconBefore is set', () => {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
-import CommentField from '../src/internal/CommentField';
-import styles from '../src/styles.less';
-import { name } from '../package.json';
+import CommentField from '../../src/internal/CommentField';
+import styles from '../../src/styles.less';
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('CommentField', () => {

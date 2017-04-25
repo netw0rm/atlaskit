@@ -1,9 +1,9 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { name } from '../package.json';
-import ButtonGroup from '../src';
-import styles from '../src/styles.less';
+import { name } from '../../package.json';
+import ButtonGroup from '../../src';
+import styles from '../../src/styles.less';
 
 describe(name, () => {
   describe('basic behavior', () => {

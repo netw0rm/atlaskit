@@ -1,3 +1,4 @@
+require('./lessLoaderProxy');
 require('jsdom-global')();
 require('babel-register')({
   retainLines: true,

@@ -56,8 +56,6 @@ ReactDOM.render(<Calendar />, container);
 
 ## API
 
-As with all web components, the calendar is given safe defaults and no parameters are required.
-
 Any prop that takes multiple dates will expect the dates in `yyyy-mm-dd` without leading zeroes. Any prop that takes more than one date can be specified as an attribute as an array.
 
 ### `disabled`

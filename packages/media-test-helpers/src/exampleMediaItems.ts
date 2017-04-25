@@ -16,6 +16,26 @@ export const youTubeUrlPreviewId = {
   mediaItemType: linkType
 };
 
+export const spotifyUrlPreviewId = {
+  mediaItemType: 'link',
+  url: 'https://play.spotify.com/track/2Foc5Q5nqNiosCNqttzHof'
+};
+
+export const soundcloudUrlPreviewId = {
+  mediaItemType: 'link',
+  url: 'https://soundcloud.com/kodak-black/tunnel-vision-1'
+};
+
+export const publicTrelloBoardUrlPreviewId = {
+  mediaItemType: 'link',
+  url: 'https://trello.com/b/rq2mYJNn/public-trello-boards'
+};
+
+export const privateTrelloBoardUrlPreviewId = {
+  mediaItemType: 'link',
+  url: 'https://trello.com/b/hlo7gRqs/shpxxxviii-60'
+};
+
 export const videoUrlPreviewId = {
   url: 'https://github.com/mediaelement/mediaelement-files/blob/master/big_buck_bunny.mp4?raw=true',
   mediaItemType: linkType
@@ -78,6 +98,12 @@ export const playerLinkId = {
   collectionName
 };
 
+export const errorLinkId = {
+  id: 'error-file-id',
+  mediaItemType: linkType,
+  collectionName
+};
+
 // === FILE ===
 
 export const genericFileId = {
@@ -112,6 +138,12 @@ export const docFileId = {
 
 export const unknownFileId = {
   id: 'e0652e68-c596-4800-8a91-1920e6b8a585',
+  mediaItemType: fileType,
+  collectionName
+};
+
+export const errorFileId = {
+  id: 'error-file-id',
   mediaItemType: fileType,
   collectionName
 };

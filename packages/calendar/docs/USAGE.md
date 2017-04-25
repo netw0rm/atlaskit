@@ -50,11 +50,8 @@ This is a standard web component, if you want to use it in your React app, use t
 
 ```js
 import Calendar from '@NAME@';
-import reactify from 'skatejs-react-integration';
 
-const ReactComponent = reactify(Calendar, {});
-
-ReactDOM.render(<ReactComponent />, container);
+ReactDOM.render(<Calendar />, container);
 ```
 
 ## API

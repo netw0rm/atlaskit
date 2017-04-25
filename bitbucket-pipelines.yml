@@ -34,16 +34,17 @@ pipelines:
           - ./build/bin/setup.sh
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
-          - ./node_modules/.bin/yarn --version
-          - ./node_modules/.bin/yarn
+          - npm install -g yarn
+          - yarn --version
+          - yarn
           # we have to run this after `yarn` to have access to child-process-promise
           - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
-          - ./node_modules/.bin/yarn run test/unit
+          - yarn run test/unit
           - run-p -ln "test" "test/base"
-          - ./node_modules/.bin/yarn run browserstack/tunnel/start
-          - ./node_modules/.bin/yarn run test/wc/browserstack
-          - ./node_modules/.bin/yarn run browserstack/tunnel/stop
-          - ./node_modules/.bin/yarn run "pr/storybook"
+          - yarn run browserstack/tunnel/start
+          - yarn run test/wc/browserstack
+          - yarn run browserstack/tunnel/stop
+          - yarn run "pr/storybook"

@@ -13,3 +13,7 @@ export const container = style({
     }
   }
 });
+
+export const floatingToolbar = style({
+  backgroundColor: 'transparent',
+});

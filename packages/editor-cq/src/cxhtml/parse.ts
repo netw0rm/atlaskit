@@ -342,7 +342,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
 
         return schema.nodes.mention.create({
           id: node.getAttribute('atlassian-id'),
-          displayName: cdata!.nodeValue,
+          text: cdata!.nodeValue,
         });
       case 'FAB:MEDIA':
         const mediaNode: MediaNode = schema.nodes.media.create({

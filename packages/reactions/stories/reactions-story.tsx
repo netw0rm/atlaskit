@@ -95,14 +95,14 @@ storiesOf(`${name}/Resourced Components`, module)
 storiesOf(`${name}/Internal Components`, module)
   .add('Reaction', () => (
     <Reaction
-      reaction={{ emojiId: defaultReactionsByShortName.get('smiley') as EmojiId, count: 1, reacted: false, ari: demoAri }}
+      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: false, ari: demoAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />
   ))
   .add('Reaction - reacted', () => (
     <Reaction
-      reaction={{ emojiId: defaultReactionsByShortName.get('smiley') as EmojiId, count: 1, reacted: true, ari: demoAri }}
+      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: true, ari: demoAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />

@@ -4,7 +4,7 @@ import Avatar from '@atlaskit/avatar';
 import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
 
-import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } from '../../src/';
+import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout, CommentEdited } from '../../src/';
 import styles from '../../src/styles.less';
 import { name } from '../../package.json';
 
@@ -77,6 +77,14 @@ describe(name, () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = mount(<Comment time={time} />);
           expect(wrapper.find(`.${styles.mainSection}`).contains(time)).to.equal(true);
+        });
+      });
+
+      describe('edited prop', () => {
+        it('should render edited correctly', () => {
+          const edited = <CommentEdited>Edited</CommentEdited>;
+          const wrapper = mount(<Comment edited={edited} />);
+          expect(wrapper.find(`.${styles.mainSection}`).contains(edited)).to.equal(true);
         });
       });
 

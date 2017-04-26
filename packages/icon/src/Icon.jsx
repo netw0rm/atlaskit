@@ -14,21 +14,30 @@ class Icon extends PureComponent {
     size: PropTypes.oneOf(sizes),
     /** onclick handler for the icon element */
     onClick: PropTypes.func,
-    /** glyph to be shown inside Icon */
+    /** glyph to show by Icon Component*/
     glyph: PropTypes.func,
+    /** for primary colour for icons */
+    primaryColor: PropTypes.string,
+    /** for secondary colour for 2-color icons. Set to inherit to control this via "fill" in CSS */
+    secondaryColor: PropTypes.string,
   }
 
   static defaultProps = {
-    onClick() {
-    },
+    onClick() { },
+    primaryColor: 'currentColor',
+    secondaryColor: 'white',
   }
 
   render() {
     const iconBodyClasses = classnames([styles.iconBody, styles[this.props.size]]);
     const GlyphComponent = this.props.glyph;
+    const colorStyles = {
+      color: this.props.primaryColor,
+      fill: this.props.secondaryColor,
+    };
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <span className={iconBodyClasses} onClick={this.props.onClick}>
+      <span className={iconBodyClasses} onClick={this.props.onClick} style={colorStyles}>
         <GlyphComponent label={this.props.label} className={styles.svg} role="img" />
       </span>
     );

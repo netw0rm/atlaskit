@@ -9,19 +9,14 @@ import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
 
 export interface LinkCardProps extends SharedCardProps {
-  details?: UrlPreview;
   status: CardProcessingStatus;
-  error?: Error;
+  details?: UrlPreview;
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
-    const {appearance, error} = this.props;
+    const {appearance} = this.props;
     const {resources} = this;
-
-    if (error) {
-      return null;
-    }
 
     // If appearance is passed we prioritize that instead of the better looking one
     if (appearance === 'small') {
@@ -88,8 +83,10 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   private renderGenericLink(): JSX.Element {
     const { url, title, site, description } = this.urlPreview;
     const { dimensions, actions, appearance } = this.props;
+    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return <LinkCardGenericView
+      error={errorMessage}
       linkUrl={url}
       title={title}
       site={site}
@@ -106,38 +103,45 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   private renderSmallLink(): JSX.Element {
     const { url, title, site } = this.urlPreview;
     const { dimensions, actions } = this.props;
+    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
-    return <LinkCardViewSmall
-      linkUrl={url}
-      title={title}
-      site={site}
-      thumbnailUrl={this.iconUrl || this.thumbnailUrl}
-      width={dimensions && dimensions.width}
-      loading={this.isLoading}
-      actions={actions}
-    />;
+    return (
+      <LinkCardViewSmall
+        error={errorMessage}
+        linkUrl={url}
+        title={title}
+        site={site}
+        thumbnailUrl={this.iconUrl || this.thumbnailUrl}
+        width={dimensions && dimensions.width}
+        loading={this.isLoading}
+        actions={actions}
+      />
+    );
   }
 
   private renderLinkCardImage(): JSX.Element {
     const { url, title, site } = this.urlPreview;
     const { dimensions, actions, appearance } = this.props;
+    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
-    return <LinkCardImageView
-      linkUrl={url}
-      title={title}
-      site={site}
-      thumbnailUrl={this.thumbnailUrl}
-      appearance={appearance}
-      dimensions={dimensions}
-      loading={this.isLoading}
-      actions={actions}
-      iconUrl={this.iconUrl}
-    />;
+    return (
+      <LinkCardImageView
+        error={errorMessage}
+        linkUrl={url}
+        title={title}
+        site={site}
+        thumbnailUrl={this.thumbnailUrl}
+        appearance={appearance}
+        dimensions={dimensions}
+        loading={this.isLoading}
+        actions={actions}
+        iconUrl={this.iconUrl}
+      />
+    );
   }
 
   private get resources() {
     const { resources } = this.urlPreview;
-
     return resources || {};
   }
 
@@ -167,6 +171,11 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   private get isLoading(): boolean {
     const {status} = this.props;
     return status === 'loading' || status === 'processing';
+  }
+
+  private get isError(): boolean {
+    const {status} = this.props;
+    return status === 'error';
   }
 };
 

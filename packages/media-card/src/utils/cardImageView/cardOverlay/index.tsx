@@ -102,7 +102,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     const error = this.props.error;
     return error && (
       <ErrorLine>
-        <ErrorIcon />
         <ErrorMessage>{this.props.error}</ErrorMessage>
       </ErrorLine>
     );
@@ -118,8 +117,9 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   bottomLeftColumn() {
     if (this.props.error) {
       const onRetry = this.props.onRetry;
+
       if (!onRetry) {
-        return null;
+        return <ErrorIcon />;
       }
 
       const retryMessage = onRetry.label || 'Try again';
@@ -131,9 +131,12 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       };
 
       return (
-        <Retry className={'retry'}>
-          <span onClick={retryHandler}>{retryMessage}</span>
-        </Retry>
+        <div>
+          <ErrorIcon />
+          <Retry className={'retry'}>
+            <span onClick={retryHandler}>{retryMessage}</span>
+          </Retry>
+        </div>
       );
     } else {
       const {progress, mediaType, subtitle, icon} = this.props;

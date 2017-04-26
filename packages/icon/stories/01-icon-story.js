@@ -58,6 +58,7 @@ class AllIcons extends PureComponent {
                 label={`${key} icon`}
                 title={`${key}.svg`}
                 key={key}
+                fillColor="inherit"
                 size={this.state.size}
               />)}
         </div>

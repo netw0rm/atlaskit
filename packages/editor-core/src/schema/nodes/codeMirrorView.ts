@@ -15,13 +15,13 @@ import {
 } from '../../prosemirror';
 
 export default class CodeMirrorView {
+  dom: HTMLElement;
   private node: Node;
   private view: EditorView;
   private getPos: any;
   private value: string;
   private selection: any;
   private cm: CodeMirror;
-  private dom: HTMLElement;
   private updating: boolean = false;
 
   constructor(node, view, getPos) {

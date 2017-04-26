@@ -40,6 +40,11 @@ describe('Media plugin', () => {
     place: fixture()
   });
 
+  const insertFile = (editorView: any, pluginState: MediaPluginState, id = 'mock') => {
+    const [, transaction ] = pluginState.insertFile({ id }, 'mock-collection');
+    editorView.dispatch(transaction);
+  };
+
   it('allows change handler to be registered', () => {
     const pluginState = editor(doc(p(''))).pluginState as MediaPluginState;
     pluginState.subscribe(sinon.spy());
@@ -48,7 +53,7 @@ describe('Media plugin', () => {
   it(`should insert media node into the document after current paragraph node`, () => {
     const { editorView, pluginState } = editor(doc(p('text{<>}')));
 
-    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+    insertFile(editorView, pluginState);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -61,7 +66,7 @@ describe('Media plugin', () => {
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView, pluginState } = editor(doc(h1('text{<>}')));
 
-    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+    insertFile(editorView, pluginState);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -74,7 +79,7 @@ describe('Media plugin', () => {
   it(`should insert media node into the document after current blockquote node`, () => {
     const { editorView, pluginState } = editor(doc(blockquote(p('text{<>}'))));
 
-    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+    insertFile(editorView, pluginState);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(blockquote(
@@ -87,7 +92,7 @@ describe('Media plugin', () => {
   it(`should insert media node into the document after current codeblock node`, () => {
     const { editorView, pluginState } = editor(doc(code_block()('text{<>}')));
 
-    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+    insertFile(editorView, pluginState);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -103,7 +108,7 @@ describe('Media plugin', () => {
       mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
     ));
 
-    (pluginState as MediaPluginState).insertFile({ id: 'mock2' }, 'mock-collection');
+    insertFile(editorView, pluginState, 'mock2');
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -119,7 +124,7 @@ describe('Media plugin', () => {
   it('should prepend media group to empty paragraph in an empty document', () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
 
-    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+    insertFile(editorView, pluginState);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -132,7 +137,7 @@ describe('Media plugin', () => {
   it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
     const { editorView, pluginState } = editor(doc(p('{<>}'), p()));
 
-    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+    insertFile(editorView, pluginState);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -145,7 +150,7 @@ describe('Media plugin', () => {
   it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
 
-    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+    insertFile(editorView, pluginState);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(

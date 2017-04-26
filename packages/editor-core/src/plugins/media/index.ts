@@ -96,7 +96,7 @@ export class MediaPluginState {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
           // TODO: re-initialize pickers ?
-          this.popupPicker.setUploadParams(mediaProvider.uploadParams);
+          this.popupPicker!.setUploadParams(mediaProvider.uploadParams);
         });
       } else {
         this.allowsUploads = false;
@@ -251,6 +251,9 @@ export class MediaPluginState {
 
     // In case the file has been attached multiple times, remove all occurences
     this.removeTemporaryMediaNodes(id);
+
+    // if there are no more media nodes inside mediaGroup, remove it
+    this.tryRemoveMediaGroupContainer(node);
   }
 
   destroy() {
@@ -420,6 +423,25 @@ export class MediaPluginState {
     });
 
     temporaryMediaNodes.delete(tempId);
+  }
+
+  private tryRemoveMediaGroupContainer(node: PositionedNode) {
+    const { dispatch, state } = this.view;
+    const { doc, tr, schema } = state;
+    const pos = doc.resolve(node.getPos());
+
+    if (pos.parent.type !== schema.nodes.mediaGroup) {
+      throw new Error('media node parent is not mediaGroup');
+    }
+
+    // if there are more media nodes in mediaGroup
+    // there's no need to remove it
+    if (pos.parent.childCount) {
+      return;
+    }
+
+    const from = pos.start(pos.depth);
+    dispatch(tr.delete(from - 1, from));
   }
 }
 

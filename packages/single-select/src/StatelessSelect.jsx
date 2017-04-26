@@ -16,6 +16,7 @@ const groupShape = DummyGroup.propTypes;
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(appearances.values),
+    droplistShouldFitContainer: PropTypes.bool,
     filterValue: PropTypes.string,
     hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
@@ -40,6 +41,7 @@ export default class StatelessSelect extends PureComponent {
 
   static defaultProps = {
     appearance: appearances.default,
+    droplistShouldFitContainer: true,
     filterValue: '',
     hasAutocomplete: false,
     isOpen: false,
@@ -398,7 +400,7 @@ export default class StatelessSelect extends PureComponent {
           isTriggerNotTabbable
           onOpenChange={this.onOpenChange}
           position={this.props.position}
-          shouldFitContainer
+          shouldFitContainer={this.props.droplistShouldFitContainer}
           trigger={
             <FieldBase
               appearance={mapAppearanceToFieldBase([this.props.appearance])}

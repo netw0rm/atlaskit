@@ -7,6 +7,7 @@ import {
   PluginKey,
   Node,
   Schema,
+  Transaction,
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
 import { MediaProvider, UploadParams, DefaultMediaStateManager } from '../../media';
@@ -136,7 +137,7 @@ export class MediaPluginState {
     );
   }
 
-  insertFile = (mediaState: MediaState, collection: string): Node => {
+  insertFile = (mediaState: MediaState, collection: string): [ Node, Transaction ] => {
     const { view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
@@ -172,8 +173,7 @@ export class MediaPluginState {
       transaction = state.tr.insert(this.findInsertPosition(), node);
     }
 
-    view.dispatch(transaction);
-    return node;
+    return [ node, transaction ];
   }
 
   showMediaPicker = () => {
@@ -325,10 +325,15 @@ export class MediaPluginState {
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
+    const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
+
     this.temporaryMediaNodes.push(
       state.id,
-      this.insertFile(state, this.mediaProvider.uploadParams.collection)
+      node
     );
+
+    const { view } = this;
+    view.dispatch(transaction);
   }
 
   private handleNewMediaPublished = (state: MediaState) => {

@@ -313,8 +313,11 @@ export default class Editor extends PureComponent<Props, State> {
       onChange(this);
     }
 
+    const { editorView } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
     this.setState({ isMediaReady: false });
-    await this.value;
+    await mediaPluginState.waitForPendingTasks();
     this.setState({ isMediaReady: true });
   }
 

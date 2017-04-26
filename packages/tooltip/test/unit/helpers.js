@@ -1,5 +1,5 @@
 
-import { positionToPopperPosition } from '../src/internal/helpers';
+import { positionToPopperPosition } from '../../src/internal/helpers';
 
 describe('Tooltip helpers', () => {
   describe('positionToPopperPosition', () => {

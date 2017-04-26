@@ -6,7 +6,9 @@ import {
   Plugin,
   PluginKey,
   Node,
+  ReplaceStep,
   Schema,
+  Transaction,
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
 import { MediaProvider, UploadParams, DefaultMediaStateManager } from '../../media';
@@ -421,8 +423,64 @@ function mediaPluginFactory(options: MediaPluginOptions) {
           return false;
         }
       }
+    },
+    appendTransaction(transactions, oldState, newState) {
+      const removeMediaTransaction = findRemoveLastMediaTransaction(transactions, oldState);
+
+      if (removeMediaTransaction) {
+        const { from } = removeMediaTransaction.steps[0] as ReplaceStep;
+        const tr = newState.tr.delete(from - 1, from + 1);
+
+        return tr;
+      }
     }
   });
+}
+
+/**
+ * Check transaction for media nodes being removed
+ * If this is the only media node inside mediaGroup
+ * we need to remove mediaGroup
+ */
+function findRemoveLastMediaTransaction(transactions: Transaction[], state: EditorState<any>): Transaction | undefined {
+  for (let i = 0; i < transactions.length; i++) {
+    const tr = transactions[i];
+    const { steps } = tr;
+
+    if (steps.length !== 1) {
+      continue;
+    }
+
+    // this should be a ReplaceStep
+    const transactionStep = steps[0];
+    if (!(transactionStep instanceof ReplaceStep)) {
+      continue;
+    }
+
+    // (from === to) means that we're not removing anything in this transaction
+    // 1 is the nodeSize of mediaGroup and it should be empty
+    if (transactionStep.from + 1 !== transactionStep.to) {
+      continue;
+    }
+
+    // slice in this transaction will add smth to the document
+    // this is not what we're searching for
+    if (transactionStep.slice.size) {
+      continue;
+    }
+
+    // okay, this is the only step in transaction
+    // it's replace step and we're removing smth
+    const nodesInInterval: Node[] = [];
+    tr.doc.nodesBetween(transactionStep.from, transactionStep.to, node => {
+      nodesInInterval.push(node);
+    });
+
+    // interval must contain only one media group
+    if (nodesInInterval.length === 1 && nodesInInterval[0].type === state.schema.nodes.mediaGroup) {
+      return tr;
+    }
+  }
 }
 
 const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {

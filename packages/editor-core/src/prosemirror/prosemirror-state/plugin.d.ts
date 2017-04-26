@@ -10,7 +10,7 @@ export interface PluginOptions {
     destroy?: () => void;
   };
   filterTransaction?: (transaction: Transaction, editorState: EditorState<any>) => boolean;
-  appendTransaction?: (transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>) => Transaction | undefined;
+  appendTransaction?: (transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>) => Transaction | void;
 }
 
 export class Plugin {

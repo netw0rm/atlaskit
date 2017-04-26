@@ -1,10 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { akColorR400, akColorG75 } from '@atlaskit/util-shared-styles';
-import AkToggle, { Toggle } from '../src';
-import { getContainerBackgroundColor } from '../src/styled';
+import sinon from 'sinon';
 
-import { name } from '../package.json';
+import AkToggle, { Toggle } from '../../src';
+import { getContainerBackgroundColor } from '../../src/styled';
+
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('stateless', () => {

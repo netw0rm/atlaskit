@@ -17,22 +17,22 @@ export const youTubeUrlPreviewId = {
 };
 
 export const spotifyUrlPreviewId = {
-  mediaItemType: 'link',
+  mediaItemType: linkType,
   url: 'https://play.spotify.com/track/2Foc5Q5nqNiosCNqttzHof'
 };
 
 export const soundcloudUrlPreviewId = {
-  mediaItemType: 'link',
+  mediaItemType: linkType,
   url: 'https://soundcloud.com/kodak-black/tunnel-vision-1'
 };
 
 export const publicTrelloBoardUrlPreviewId = {
-  mediaItemType: 'link',
+  mediaItemType: linkType,
   url: 'https://trello.com/b/rq2mYJNn/public-trello-boards'
 };
 
 export const privateTrelloBoardUrlPreviewId = {
-  mediaItemType: 'link',
+  mediaItemType: linkType,
   url: 'https://trello.com/b/hlo7gRqs/shpxxxviii-60'
 };
 

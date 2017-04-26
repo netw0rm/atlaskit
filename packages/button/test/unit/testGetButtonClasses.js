@@ -1,5 +1,5 @@
-import { appearance, spacing } from '../src/internal/enumerated-properties';
-import getClasses from '../src/internal/get-button-classes';
+import { appearance, spacing } from '../../src/internal/enumerated-properties';
+import getClasses from '../../src/internal/get-button-classes';
 
 const classKeys = {
   button: 'button',

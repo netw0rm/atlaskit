@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import { name } from '../package.json';
-import styles from '../src/styles.less';
+import { name } from '../../package.json';
+import styles from '../../src/styles.less';
 
-import { Group } from '../src';
+import { Group } from '../../src';
 
 describe(`${name} - group`, () => {
   it('should be possible to create a component', () => {

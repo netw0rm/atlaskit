@@ -12,6 +12,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import { appearanceEnum, themeVariables } from '../../utils/theme';
+import { colors } from '../../shared-variables';
 
 const sizes = {
   small: 4 * akGridSizeUnitless,
@@ -19,11 +20,11 @@ const sizes = {
   large: 6 * akGridSizeUnitless,
 };
 
-const colors = {
+const itemColors = {
   container: {
     default: {
       background: 'transparent',
-      color: akColorN500,
+      color: colors.container.color,
     },
     hover: {
       background: akColorN20A,
@@ -36,7 +37,7 @@ const colors = {
   global: {
     default: {
       background: 'transparent',
-      color: akColorN0,
+      color: colors.global.color,
     },
     hover: {
       background: akColorN90A,
@@ -49,7 +50,7 @@ const colors = {
   settings: {
     default: {
       background: 'transparent',
-      color: akColorN0,
+      color: colors.settings.color,
     },
     hover: {
       background: akColorN900,
@@ -62,7 +63,7 @@ const colors = {
 };
 
 function getColors(theme) {
-  return colors[theme[themeVariables.appearance] || appearanceEnum.global];
+  return itemColors[theme[themeVariables.appearance] || appearanceEnum.global];
 }
 
 const GlobalItemInner = styled.div`

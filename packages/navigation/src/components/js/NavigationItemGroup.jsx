@@ -1,11 +1,13 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { themeVariables } from '../../utils/theme';
+import { appearanceEnum, themeVariables, getFromOuterTheme } from '../../utils/theme';
 import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
 import NavigationItemGroupInner from '../styled/NavigationItemGroupInner';
 import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
 import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
 import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
+
+const getBackground = getFromOuterTheme(themeVariables.appearance, appearanceEnum.container);
 
 export default class NavigationItemGroup extends PureComponent {
   static propTypes = {
@@ -37,7 +39,7 @@ export default class NavigationItemGroup extends PureComponent {
     return (
       <ThemeProvider
         theme={outerTheme => ({
-          [themeVariables.appearance]: (outerTheme || {})[themeVariables.appearance],
+          [themeVariables.appearance]: getBackground(outerTheme),
           [themeVariables.isCompact]: isCompact,
         })}
       >

@@ -14,8 +14,8 @@ class Icon extends PureComponent {
     size: PropTypes.oneOf(sizes),
     /** onclick handler for the icon element */
     onClick: PropTypes.func,
-    /** glyph to show by Icon Component*/
-    glyph: PropTypes.node,
+    /** glyph to be shown inside Icon */
+    glyph: PropTypes.func,
   }
 
   static defaultProps = {

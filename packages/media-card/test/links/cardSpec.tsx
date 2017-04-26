@@ -7,20 +7,20 @@ import { LinkCard, LinkCardPlayer, LinkCardGenericView, LinkCardTrelloBoardView 
 
 describe('LinkCard', () => {
   it('should render the default preview when is a generic link and processing status is "complete"', () => {
-    const urlPreview: UrlPreview = {
+    const details: UrlPreview = {
       type: 'link',
       url: 'https://atlassian.com',
       title: 'Atlassian',
       resources: {}
     };
 
-    const linkCard = shallow(<LinkCard urlPreview={urlPreview} cardProcessingStatus="complete" />);
+    const linkCard = shallow(<LinkCard details={details} status="complete" />);
 
     expect(linkCard.find(LinkCardGenericView)).to.have.length(1);
   });
 
   it('should use cardPlayer component if we have an embed available', () => {
-    const urlPreview: UrlPreview = {
+    const details: UrlPreview = {
         type: 'media',
         url: 'https://atlassian.com',
         title: 'Atlassian',
@@ -29,12 +29,12 @@ describe('LinkCard', () => {
         }
       };
 
-    const linkCard = shallow(<LinkCard urlPreview={urlPreview} cardProcessingStatus="complete" />);
+    const linkCard = shallow(<LinkCard details={details} status="complete" />);
     expect(linkCard.find(LinkCardPlayer)).to.have.length(1);
   });
 
   it('should render a TrelloBoard preview when link contains a trello board url', () => {
-    const urlPreview: UrlPreview = {
+    const details: UrlPreview = {
       type: 'media',
       url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
       title: 'Atlassian',
@@ -57,7 +57,7 @@ describe('LinkCard', () => {
       }
     };
 
-    const linkCard = shallow(<LinkCard urlPreview={urlPreview} cardProcessingStatus="complete" />);
+    const linkCard = shallow(<LinkCard details={details} status="complete" />);
     expect(linkCard.find(LinkCardTrelloBoardView)).to.have.length(1);
   });
 });

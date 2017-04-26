@@ -96,7 +96,7 @@ export default class Nav extends Component {
                 <NavItem
                   icon={<GlobeIcon label="Welcome icon" />}
                   text="Welcome"
-                  // isSelected={this.context.router.isActive(url, true)}
+                  isSelected={pathname === '/'}
                 />
               </Link>
               <NavItem
@@ -114,7 +114,7 @@ export default class Nav extends Component {
                   <NavItem
                     icon={<Icon label={title} />}
                     text={title}
-                    // isSelected={this.context.router.isActive(url, true)}
+                    isSelected={pathname === path}
                   />
                 </Link>
               ), this)}
@@ -125,7 +125,7 @@ export default class Nav extends Component {
                   <NavItem
                     icon={<Icon label={title} />}
                     text={title}
-                    // isSelected={this.context.router.isActive(url, true)}
+                    isSelected={pathname === url}
                   />
                 </a>
               ), this)}

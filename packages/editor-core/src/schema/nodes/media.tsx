@@ -6,7 +6,7 @@ import { akColorN50 } from '@atlaskit/util-shared-styles';
 import MediaComponent from '../../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 import { locateAndRemoveNode } from '../../utils';
-import { mediaStateKey } from '../../plugins';
+import { mediaStateKey, MediaPluginState } from '../../plugins';
 
 const mediaStyle = style({
   display: 'inline-block',
@@ -67,7 +67,6 @@ export const media: NodeSpec = {
 
 export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, view: EditorView, getPos: () => number): NodeView => {
   const { id, type, collection } = node.attrs;
-  const pluginState = mediaStateKey.getState(view.state);
   let div: HTMLElement | undefined = document.createElement('div');
 
   const attrs = {
@@ -96,7 +95,7 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
       renderNode={providers =>
         <MediaComponent
           mediaProvider={providers['mediaProvider']}
-          pluginState={pluginState}
+          editorView={view}
           id={id!}
           type={type!}
           collection={collection!}
@@ -112,8 +111,10 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
     },
 
     destroy() {
+      const pluginState = mediaStateKey.getState(view.state) as MediaPluginState;
       ReactDOM.unmountComponentAtNode(div!);
       div = undefined;
+      pluginState.handleMediaNodeRemoval(node);
     }
   };
 };

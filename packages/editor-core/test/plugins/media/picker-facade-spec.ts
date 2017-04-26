@@ -236,5 +236,16 @@ describe('Media PickerFacade', () => {
         fileType: testFileData.type,
       })).to.eq(true);
     });
+
+    it('for upload that has been cancelled', () => {
+      const cb = sinon.spy();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      facade!.cancel(testTemporaryFileId);
+
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        status: 'cancelled'
+      })).to.eq(true);
+    });
   });
 });

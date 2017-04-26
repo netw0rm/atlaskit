@@ -19,7 +19,7 @@ import { analyticsService } from '../../analytics';
 import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 
-const MEDIA_RESOLVE_STATES = ['ready', 'error'];
+const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
@@ -37,9 +37,8 @@ export class MediaPluginState {
   private useDefaultStateManager = true;
   private destroyed = false;
   private mediaProvider: MediaProvider;
-  private popupPicker: PickerFacade;
-  private dropzonePicker: PickerFacade;
-  private clipboardPicker: PickerFacade;
+  private pickers: PickerFacade[] = [];
+  private popupPicker?: PickerFacade;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
@@ -240,6 +239,20 @@ export class MediaPluginState {
     this.view = view;
   }
 
+  handleMediaNodeRemoval = (node: PositionedNode) => {
+    const { stateManager, pickers } = this;
+    const { id } = node.attrs;
+
+    pickers.forEach(picker => picker.cancel(id));
+    stateManager.updateState(node.attrs.id, {
+      id,
+      status: 'cancelled'
+    });
+
+    // In case the file has been attached multiple times, remove all occurences
+    this.removeTemporaryMediaNodes(id);
+  }
+
   destroy() {
     if (this.destroyed) {
       return;
@@ -247,12 +260,11 @@ export class MediaPluginState {
 
     this.destroyed = true;
 
-    const { dropzonePicker, clipboardPicker, popupPicker, temporaryMediaNodes } = this;
+    const { pickers, temporaryMediaNodes } = this;
 
-    dropzonePicker && dropzonePicker.destroy();
-    clipboardPicker && clipboardPicker.destroy();
-    popupPicker && popupPicker.destroy();
-
+    pickers.forEach(picker => picker.destroy());
+    pickers.splice(0, pickers.length);
+    this.popupPicker = undefined;
     temporaryMediaNodes.clear();
   }
 
@@ -314,15 +326,13 @@ export class MediaPluginState {
       return;
     }
 
-    const { stateManager } = this;
+    const { stateManager, pickers } = this;
 
-    const popupPicker = this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager);
-    const clipboardPicker = this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager);
-    const dropzonePicker = this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager);
+    pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager));
+    pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager));
+    pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager));
 
-    [ popupPicker, dropzonePicker, clipboardPicker ].forEach(picker => {
-      picker.onNewMedia(this.handleNewMediaPicked);
-    });
+    pickers.forEach(picker => picker.onNewMedia(this.handleNewMediaPicked));
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
@@ -479,7 +489,7 @@ export interface MediaData {
   type?: MediaType;
 }
 
-interface PositionedNode extends Node {
+export interface PositionedNode extends Node {
   getPos: () => number;
 }
 

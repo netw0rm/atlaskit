@@ -7,6 +7,7 @@ export default class MockMediaPicker {
   public shown = false;
   public torndown = false;
   public deactivated = false;
+  public cancelled = false;
   public listeners: {[eventName: string]: Array<(...args: any[]) => any> } = {};
 
   on(eventName: string, cb: (...args: any[]) => any) {
@@ -25,6 +26,10 @@ export default class MockMediaPicker {
 
   show() {
     this.shown = true;
+  }
+
+  cancel(mediaId: string) {
+    this.cancelled = true;
   }
 
   teardown: any = () => {

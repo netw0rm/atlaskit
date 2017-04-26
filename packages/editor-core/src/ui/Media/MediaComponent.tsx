@@ -11,10 +11,11 @@ import { MediaPluginState } from '../../plugins/media';
 
 import { default as MediaProvider, MediaState } from '../../media';
 import { Attributes } from '../../schema/nodes/media';
+import { EditorView, mediaStateKey } from '../../index';
 
 interface Props extends Attributes {
   mediaProvider?: Promise<MediaProvider>;
-  pluginState?: MediaPluginState;
+  editorView?: EditorView;
   onDelete?: () => void;
 };
 
@@ -49,11 +50,19 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   public componentWillUnmount() {
-    const { pluginState, id } = this.props;
+    const { editorView, id } = this.props;
 
-    if (pluginState) {
-      pluginState.stateManager.unsubscribe(id, this.handleMediaStateChange);
+    if (!editorView) {
+      return;
     }
+
+    const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
+
+    if (!pluginState) {
+      return;
+    }
+
+    pluginState.stateManager.unsubscribe(id, this.handleMediaStateChange);
   }
 
   render() {
@@ -162,10 +171,21 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaProvider = (mediaProvider: MediaProvider) => {
-    const { stateManager } = this.props.pluginState!;
+    const { editorView, id } = this.props;
 
-    stateManager.subscribe(this.props.id, this.handleMediaStateChange);
+    if (!editorView) {
+      return;
+    }
 
+    const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
+
+    if (!pluginState) {
+      return;
+    }
+
+    const { stateManager } = pluginState;
+
+    stateManager.subscribe(id, this.handleMediaStateChange);
     this.setState({ ...this.state, mediaProvider });
 
     mediaProvider.viewContext.then((context: ContextConfig | Context) => {

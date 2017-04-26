@@ -2,7 +2,7 @@ import { ContextConfig, Context } from '@atlaskit/media-core';
 
 export interface MediaState {
   id: string;
-  status?: 'unknown' | 'uploading' | 'processing' | 'ready' | 'error';
+  status?: 'unknown' | 'uploading' | 'processing' | 'ready' | 'error' | 'cancelled';
   publicId?: string;
   fileName?: string;
   fileSize?: number;

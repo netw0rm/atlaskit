@@ -1,4 +1,3 @@
-import { defaultCollectionName } from './../../../../media-test-helpers/src/collectionNames';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -23,6 +22,7 @@ import {
   storyMediaProviderFactory,
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
+import { PositionedNode } from '../../../src/plugins/media';
 
 chai.use(chaiPlugin);
 
@@ -46,8 +46,10 @@ describe('Media plugin', () => {
   });
 
   const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
-    const [, transaction ] = pluginState.insertFile({ id }, 'mock-collection');
+    const [node, transaction ] = pluginState.insertFile({ id }, 'mock-collection');
     editorView.dispatch(transaction);
+
+    return node as PositionedNode;
   };
 
   it('allows change handler to be registered', () => {
@@ -223,6 +225,49 @@ describe('Media plugin', () => {
       doc(
         p()
       )
+    );
+  });
+
+  it('should cancel uploads after media item is removed', async () => {
+    const handler = sinon.spy();
+    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
+    await resolvedProvider;
+
+    const firstMediaNode = insertFile(editorView, pluginState, 'temporary: file1');
+    insertFile(editorView, pluginState, 'temporary: file1');
+    insertFile(editorView, pluginState, 'temporary: file2');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p(),
+        mediaGroup(
+          media({ id: 'temporary: file1', type: 'file', collection: defaultCollectionName }),
+          media({ id: 'temporary: file1', type: 'file', collection: defaultCollectionName }),
+          media({ id: 'temporary: file2', type: 'file', collection: defaultCollectionName }),
+        ),
+      )
+    );
+
+    stateManager.subscribe('temporary: file1', handler);
+    const pos = firstMediaNode.getPos();
+    editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
+
+    expect(handler.calledOnce).to.eq(true, 'State Manager should receive "cancelled" status');
+    expect(handler.calledWithExactly({
+      id: 'temporary: file1',
+      status: 'cancelled'
+    })).to.eq(true, 'State Manager should receive "cancelled" status');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p(),
+        mediaGroup(
+          media({ id: 'temporary: file1', type: 'file', collection: defaultCollectionName }),
+          media({ id: 'temporary: file1', type: 'file', collection: defaultCollectionName }),
+          media({ id: 'temporary: file2', type: 'file', collection: defaultCollectionName }),
+        ),
+      ),
+      'All instances of the cancelled media should be removed from the document'
     );
   });
 });

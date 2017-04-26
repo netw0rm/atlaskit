@@ -91,6 +91,14 @@ export default class PickerFacade {
     this.picker.show && this.picker.show();
   }
 
+  cancel(tempId: string): void {
+    this.picker.cancel(tempId);
+    this.stateManager.updateState(tempId, {
+      id: tempId,
+      status: 'cancelled',
+    });
+  }
+
   onNewMedia(cb: (state: MediaState) => any) {
     this.onStartListeners.push(cb);
   }

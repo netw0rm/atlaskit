@@ -90,11 +90,13 @@ storiesOf(name, module)
       onCancel={CANCEL_ACTION}
       onSave={SAVE_ACTION}
       onChange={handleChange}
+      mentionProvider={mentionProvider}
     />
   )
   .add('With Media support', () =>
     <Editor
       isExpandedByDefault
+      mentionProvider={mentionProvider}
       mediaProvider={storyMediaProviderFactory()}
       onCancel={CANCEL_ACTION}
       onSave={SAVE_ACTION}

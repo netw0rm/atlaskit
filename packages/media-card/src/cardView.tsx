@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MediaItemDetails} from '@atlaskit/media-core';
+import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardProcessingStatus} from '.';
 import {LinkCard} from './links';
@@ -8,40 +8,55 @@ import {isLinkDetails} from './utils/isLinkDetails';
 
 export interface CardViewProps extends SharedCardProps {
   readonly status: CardProcessingStatus;
-  readonly error?: Error;
+  readonly mediaItemType?: MediaItemType;
   readonly metadata?: MediaItemDetails;
 
   // allow extra props to be passed down to lower views e.g. dataURI to FileCard
   [propName: string]: any;
-
 }
 
-export const CardView = (props: CardViewProps): JSX.Element => {  // tslint:disable-line:variable-name
-  const {status, error, metadata, ...otherProps} = props;
+export class CardView extends React.Component<CardViewProps, {}> {  // tslint:disable-line:variable-name
+  render() {
+    const {mediaItemType} = this.props;
 
-  // if (status === 'loading') {
-  //   //TODO: FIL-4039 - show common loading view
-  // }
-  //
-  // if (status === 'error') {
-  //   //TODO: FIL-3893 - show common error view
-  // }
+    if (mediaItemType === 'link') {
+      return this.renderLink();
+    } else if (mediaItemType === 'file') {
+      return this.renderFile();
+    }
 
-  if (!metadata || isLinkDetails(metadata)) {
+    return this.renderCardFromDetails();
+  }
+
+  private renderCardFromDetails = () => {
+    const {metadata} = this.props;
+
+    if (isLinkDetails(metadata)) {
+      return this.renderLink();
+    }
+
+    return this.renderFile();
+  }
+
+  renderLink = () => {
+    const {mediaItemType, status, metadata, ...otherProps} = this.props;
+
     return (
       <LinkCard
         {...otherProps}
         status={status}
-        error={error}
-        details={metadata}
+        details={metadata as LinkDetails | UrlPreview}
       />
     );
-  } else {
+  }
+
+  renderFile = () => {
+    const {mediaItemType, status, metadata, ...otherProps} = this.props;
+
     return (
       <FileCard
         {...otherProps}
         status={status}
-        error={error}
         details={metadata}
       />
     );

@@ -99,14 +99,6 @@ export class BlockTypeState {
     }
   }
 
-  focus(view): void {
-    view.dom.focus();
-  }
-
-  blur(view): void {
-    view.dom.blur();
-  }
-
   private triggerOnChange() {
     this.changeHandlers.forEach(cb => cb(this));
   }

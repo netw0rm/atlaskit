@@ -24,14 +24,16 @@ export const TickBox = styled.div`
 `;
 
 export const Overlay = styled.div`
-  ${borderRadius}
   width: 100%;
   height: 100%;
-  background: transparent;
+
   position: absolute;
   top: 0;
   left: 0;
+
+  background: transparent;
   border: 2px solid transparent;
+  ${borderRadius}
   transition: .3s background ${easeOutCubic}, .3s border-color;
 
   &:hover, &.active {
@@ -51,7 +53,7 @@ export const Overlay = styled.div`
   .file-type-icon {
     display: block;
   }
-  
+
   &:not(.persistent) {
     &:hover {
       background-color: ${rgba(akColorN900, 0.06)};
@@ -60,7 +62,7 @@ export const Overlay = styled.div`
     &.selectable {
       &.selected {
         background-color: ${akColorB200};
-        
+
         &:hover {
           // TODO FIL-3884 add new overlay with rgba(akColorN900, 0.16)
         }
@@ -76,7 +78,7 @@ export const Overlay = styled.div`
     &:not(.active) {
       overflow: hidden;
     }
-    
+
     .top-row {
       .title {
         transition: opacity .3s;

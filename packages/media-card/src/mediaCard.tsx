@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {Observable, Subscription} from 'rxjs';
-import {MediaItem, FileItem, MediaItemDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
+import {MediaItemType, MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardProcessingStatus} from '.';
 import {Provider} from './card';
@@ -12,18 +12,20 @@ const CardViewWithDataURI = withDataURI(CardView); // tslint:disable-line:variab
 
 export interface MediaCardProps extends SharedCardProps, CardEventProps {
   readonly provider: Provider;
+  readonly mediaItemType?: MediaItemType;
   readonly dataURIService?: DataUriService;
 }
 
 export interface MediaCardState {
   readonly subscription?: Subscription;
   readonly status: CardProcessingStatus;
-  readonly metadata?: MediaItemDetails;
+
+  // can NOT use MediaItemDetails because get the following error: https://github.com/Microsoft/TypeScript/issues/9944
+  readonly metadata?: FileDetails | LinkDetails | UrlPreview;
   readonly error?: Error;
 }
 
 export class MediaCard extends Component<MediaCardProps, MediaCardState> {
-
   state: MediaCardState = {
     status: 'loading'
   };
@@ -50,7 +52,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     return mediaItem && (mediaItem as MediaItem).details !== undefined;
   }
 
-  observable = (props: MediaCardProps): Observable<MediaItemDetails> => {
+  observable = (props: MediaCardProps): Observable<FileDetails | LinkDetails | UrlPreview> => {
     const {provider} = props;
     return provider.observable()
       .map((result: MediaItem | UrlPreview) => {
@@ -118,15 +120,17 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   }
 
   render() {
-    const {provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
-    const {metadata, status, error} = this.state;
+    const {mediaItemType, provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
+    const {metadata, status} = this.state;
+
     return (
       <CardViewWithDataURI
         {...otherProps}
+
         dataURIService={dataURIService}
         status={status}
-        error={error}
         metadata={metadata}
+        mediaItemType={mediaItemType}
       />
     );
   }

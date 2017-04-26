@@ -23,7 +23,6 @@ import {
   hardBreak,
   emoji,
   emojiQuery,
-  codemirror,
 } from '../src/schema';
 
 const nodes = {
@@ -36,7 +35,6 @@ const nodes = {
   heading,
   blockquote,
   codeBlock,
-  codemirror,
   panel,
   rule,
   image,

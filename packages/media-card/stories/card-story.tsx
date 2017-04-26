@@ -174,14 +174,14 @@ storiesOf('Card', {})
       collectionName
     };
 
-    // file cards
+    // link cards
     const videoLinkCard = <Card context={context} identifier={videoUrlIdentifier} />;
     const imageLinkCard = <Card context={context} identifier={imageUrlIdentifier} />;
     const audioLinkCard = <Card context={context} identifier={audioUrlIdentifier} />;
     const docLinkCard = <Card context={context} identifier={docUrlIdentifier} />;
     const unknownLinkCard = <Card context={context} identifier={unknownLinkIdentifier} />;
 
-    // link cards
+    // file cards
     const videoFileCard = <Card context={context} identifier={videoFileIdentifier} />;
     const imageFileCard = <Card context={context} identifier={imageFileIdentifier} />;
     const docFileCard = <Card context={context} identifier={docFileIdentifier} />;

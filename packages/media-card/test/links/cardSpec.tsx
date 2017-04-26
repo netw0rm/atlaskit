@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 
 import { LinkCard, LinkCardPlayer, LinkCardGenericView, LinkCardTrelloBoardView } from '../../src';
+import { LinkCardImageView } from '../../src/links/cardImageView';
 
 describe('LinkCard', () => {
   it('should render the default preview when is a generic link and processing status is "complete"', () => {
@@ -59,5 +60,41 @@ describe('LinkCard', () => {
 
     const linkCard = shallow(<LinkCard details={details} status="complete" />);
     expect(linkCard.find(LinkCardTrelloBoardView)).to.have.length(1);
+  });
+
+  it('should render right image preview for links images', () => {
+    const details: UrlPreview = {
+      type: 'link',
+      url: 'http://i.imgur.com/KL5g7xl.png',
+      title: 'A joke that took a life of its own',
+      resources: {
+        image: {
+          url: 'image-url.png',
+          type: 'image/png',
+          width: 500,
+          height: 500
+        }
+      }
+    };
+
+    const linkCard = shallow(<LinkCard details={details} status="complete" />);
+
+    expect(linkCard.find(LinkCardImageView)).to.have.length(1);
+    expect(linkCard.find(LinkCardImageView).props().thumbnailUrl).to.equal('image-url.png');
+  });
+
+  it('should render generic link for "horizontal" and "square" appearances', () => {
+    const details: UrlPreview = {
+      type: 'link',
+      url: 'https://atlassian.com',
+      title: 'Atlassian',
+      resources: {}
+    };
+
+    const squareCard = shallow(<LinkCard details={details} status="complete" appearance="square" />);
+    const horizontalCard = shallow(<LinkCard details={details} status="complete" appearance="horizontal" />);
+
+    expect(squareCard.find(LinkCardGenericView)).to.have.length(1);
+    expect(horizontalCard.find(LinkCardGenericView)).to.have.length(1);
   });
 });

@@ -16,6 +16,8 @@ import { EditorView } from '../../prosemirror';
 export interface Props {
   editorView: EditorView;
   pluginState: BlockTypeState;
+  softBlurEditor: () => void;
+  focusEditor: () => void;
 }
 
 export interface State {
@@ -53,10 +55,11 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         onOpenChange={(attrs: any) => {
           const { availableBlockTypes, currentBlockType } = this.state;
 
+          // Hack for IE needed to prevent caret blinking above the opened dropdown.
           if (attrs.isOpen) {
-            this.props.pluginState.blur(this.props.editorView);
+            this.props.softBlurEditor();
           } else {
-            this.props.pluginState.focus(this.props.editorView);
+            this.props.focusEditor();
           }
 
           this.setState({
@@ -105,7 +108,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   private handleSelectBlockType = (blockType: BlockType) => {
-    this.props.pluginState.focus(this.props.editorView);
+    this.props.focusEditor();
 
     const { availableBlockTypes } = this.state;
     this.props.pluginState.toggleBlockType(blockType.name, this.props.editorView);

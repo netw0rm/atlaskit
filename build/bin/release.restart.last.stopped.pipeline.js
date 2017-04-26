@@ -64,6 +64,10 @@ axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
       console.log('Restarting it now.');
       const postData = {
         target: {
+          commit: {
+            type: 'commit',
+            hash: mostRecentPipeline.target.commit.hash,
+          },
           ref_name: BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR,
           ref_type: 'branch',
           type: 'pipeline_ref_target',

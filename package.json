@@ -85,6 +85,7 @@
     "protractor": "^4.0.9",
     "protractor-console": "^2.0.1",
     "psa": "^1.0.0",
+    "raf-stub": "2.0.0",
     "raw-loader": "^0.5.1",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.4.0",

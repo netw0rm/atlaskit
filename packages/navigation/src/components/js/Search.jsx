@@ -1,5 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from '../less/Search.less';
+import SearchInner from '../styled/SearchInner';
+import SearchBox from '../styled/SearchBox';
+import SearchClearButtonOuter from '../styled/SearchClearButtonOuter';
+import SearchClearButton from '../styled/SearchClearButton';
+import SearchResults from '../styled/SearchResults';
+import SearchInput from '../styled/SearchInput';
 
 export default class Search extends PureComponent {
   static propTypes = {
@@ -23,30 +28,28 @@ export default class Search extends PureComponent {
       placeholder,
     } = this.props;
     return (
-      <div className={styles.search}>
-        <div className={styles.searchBox}>
-          <input
+      <SearchInner>
+        <SearchBox>
+          <SearchInput
             autoFocus
-            className={styles.input}
             onChange={onChange}
             placeholder={placeholder}
             type="text"
             value={value}
           />
-          <div className={styles.clearButtonOuter}>
-            <button
-              className={styles.clearButton}
+          <SearchClearButtonOuter>
+            <SearchClearButton
               onClick={this.props.onSearchClear}
               onMouseDown={e => e.preventDefault()}
             >
               {this.props.clearIcon}
-            </button>
-          </div>
-        </div>
-        <div className={styles.results}>
+            </SearchClearButton>
+          </SearchClearButtonOuter>
+        </SearchBox>
+        <SearchResults>
           {children}
-        </div>
-      </div>
+        </SearchResults>
+      </SearchInner>
     );
   }
 }

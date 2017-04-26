@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import * as deepEqual from 'deep-equal';
-import {Context,  MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriService} from '@atlaskit/media-core';
+import {Context, MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriService} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardEventProps} from '.';
 import {MediaCard} from './mediaCard';
@@ -74,10 +74,11 @@ export class Card extends Component<CardProps, {}> {
   }
 
   render() {
-    const {context, identifier: {mediaItemType}, ...otherProps} = this.props;
+    const {context, identifier, ...otherProps} = this.props;
+    const {mediaItemType} = identifier;
     return <MediaCard
       {...otherProps}
-      type={mediaItemType}
+      mediaItemType={mediaItemType}
       provider={this.provider}
       dataURIService={this.dataURIService}
     />;

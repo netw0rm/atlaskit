@@ -22,7 +22,7 @@ storiesOf(name, module)
       description={description}
     >
       <Description>
-        The GlobalItem is the equivalent of ContainerItem, but for use in the
+        The GlobalItem is the equivalent of NavigationItem, but for use in the
         GlobalNavigation. The difference is that these items are presented
         differently – they can only contain icons, and have a circular
         background. When using the Navigation component, these items will pop

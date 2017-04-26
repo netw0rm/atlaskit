@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "4.3.0",
+  "version": "4.5.1",
   "config": {
     "access": "public"
   },
@@ -27,7 +27,13 @@
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
     {
-      "name": "Hector G"
+      "name": "Hector Z"
+    },
+    {
+      "name": "Michael J"
+    },
+    {
+      "name": "James N"
     }
   ],
   "license": "Apache-2.0",
@@ -43,7 +49,7 @@
     "@atlaskit/media-core": "^5.0.4"
   },
   "keywords": [
-    "fabric",
+    "media",
     "ui",
     "private"
   ]

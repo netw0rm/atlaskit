@@ -36,7 +36,7 @@ module.exports = (tmpFolder, entry) => ({
     loaders: [
       {
         test: /\.less$/,
-        loader: `css${cssOptions}!less`,
+        loader: `style!css${cssOptions}!less`,
       },
       {
         test: /\.jsx?$/,

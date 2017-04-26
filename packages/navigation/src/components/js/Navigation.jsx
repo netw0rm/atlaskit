@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from '../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -12,6 +11,8 @@ import {
   resizeClosedBreakpoint,
 } from '../../shared-variables';
 import getContainerWidth from '../../utils/collapse';
+import NavigationOuter from '../styled/NavigationOuter';
+import NavigationInner from '../styled/NavigationInner';
 
 export default class Navigation extends PureComponent {
   static propTypes = {
@@ -139,12 +140,12 @@ export default class Navigation extends PureComponent {
     const renderedWidth = this.getRenderedWidth();
     const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
     return (
-      <div className={styles.navigation}>
+      <NavigationOuter>
         <Spacer
           shouldAnimate={shouldAnimate}
           width={renderedWidth}
         />
-        <div className={styles.navigationInner}>
+        <NavigationInner>
           <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
               appearance={globalAppearance}
@@ -192,8 +193,8 @@ export default class Navigation extends PureComponent {
               />
               : null
           }
-        </div>
-      </div>
+        </NavigationInner>
+      </NavigationOuter>
     );
   }
 }

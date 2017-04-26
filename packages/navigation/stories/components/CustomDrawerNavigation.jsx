@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { AtlassianIcon, ArrowleftIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowrightIcon, QuestionCircleIcon } from '@atlaskit/icon';
-import { AkCustomDrawer, AkSearchDrawer, AkCreateDrawer, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
+import { AkCustomDrawer, AkSearchDrawer, AkCreateDrawer, AkNavigationItemGroup, AkNavigationItem, AkGlobalItem } from '../../src/index';
 import BasicNavigation from './BasicNavigation';
 
 export default class CustomDrawerNavigation extends PureComponent {
@@ -59,15 +59,15 @@ export default class CustomDrawerNavigation extends PureComponent {
       onBackButton={() => this.setDrawer(null)}
       primaryIcon={this.getPrimaryIcon()}
     >
-      <AkDrawerItem
+      <AkNavigationItem
         icon={<DashboardIcon label="Blockers" />}
         text="Blockers"
       />
-      <AkDrawerItem
+      <AkNavigationItem
         icon={<DashboardIcon label="Urgent SLA" />}
         text="Urgent SLA"
       />
-      <AkDrawerItem
+      <AkNavigationItem
         icon={<DashboardIcon label="All open issues" />}
         text="All open issues"
       />
@@ -83,22 +83,22 @@ export default class CustomDrawerNavigation extends PureComponent {
       primaryIcon={this.getPrimaryIcon()}
     >
       <div>
-        <AkContainerItemGroup title="Team">
-          <AkDrawerItem text="Workload" />
-          <AkDrawerItem text="SLA goals" />
-          <AkDrawerItem text="Satisfaction" />
-        </AkContainerItemGroup>
-        <AkContainerItemGroup title="Knowledge Base">
-          <AkDrawerItem text="Article usage" />
-          <AkDrawerItem text="Article effectiveness" />
-        </AkContainerItemGroup>
-        <AkContainerItemGroup title="Custom">
-          <AkDrawerItem text="Created vs Resolved" />
-          <AkDrawerItem text="Time to resolution" />
-          <AkDrawerItem text="SLA success rate" />
-          <AkDrawerItem text="SLA met vs breached" />
-          <AkDrawerItem text="Resolution by component" />
-        </AkContainerItemGroup>
+        <AkNavigationItemGroup title="Team">
+          <AkNavigationItem text="Workload" />
+          <AkNavigationItem text="SLA goals" />
+          <AkNavigationItem text="Satisfaction" />
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup title="Knowledge Base">
+          <AkNavigationItem text="Article usage" />
+          <AkNavigationItem text="Article effectiveness" />
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup title="Custom">
+          <AkNavigationItem text="Created vs Resolved" />
+          <AkNavigationItem text="Time to resolution" />
+          <AkNavigationItem text="SLA success rate" />
+          <AkNavigationItem text="SLA met vs breached" />
+          <AkNavigationItem text="Resolution by component" />
+        </AkNavigationItemGroup>
       </div>
     </AkCustomDrawer>
   );
@@ -111,14 +111,14 @@ export default class CustomDrawerNavigation extends PureComponent {
   }
 
   render() {
-    const queuesItemOpen = (<AkContainerItem icon={<DashboardIcon label="Queues" />} text="Queues" />);
-    const queuesItemCollapsed = (<AkContainerItem
+    const queuesItemOpen = (<AkNavigationItem icon={<DashboardIcon label="Queues" />} text="Queues" />);
+    const queuesItemCollapsed = (<AkNavigationItem
       icon={<ArrowrightIcon label="Queues" />}
       onClick={() => { this.setDrawer('queues'); }}
       text="Queues"
     />);
-    const reportsItemOpen = (<AkContainerItem icon={<SettingsIcon label="Reports" />} text="Reports" />);
-    const reportsItemCollapsed = (<AkContainerItem
+    const reportsItemOpen = (<AkNavigationItem icon={<SettingsIcon label="Reports" />} text="Reports" />);
+    const reportsItemCollapsed = (<AkNavigationItem
       icon={<ArrowrightIcon label="Reports" />}
       onClick={() => { this.setDrawer('reports'); }}
       text="Reports"
@@ -145,7 +145,7 @@ export default class CustomDrawerNavigation extends PureComponent {
       >
         <div>
           {this.state.isOpen ? queuesItemOpen : queuesItemCollapsed }
-          <AkContainerItem icon={<IssuesIcon label="Customers" />} text="Collapse navigation and click one of the other two icons" />
+          <AkNavigationItem icon={<IssuesIcon label="Customers" />} text="Collapse navigation and click one of the other two icons" />
           {this.state.isOpen ? reportsItemOpen : reportsItemCollapsed }
         </div>
       </BasicNavigation>

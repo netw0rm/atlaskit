@@ -1,14 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from '../less/GlobalItem.less';
+import GlobalItemInner from '../styled/GlobalItemInner';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class GlobalItem extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(['container', 'global', 'settings']),
     children: PropTypes.node,
     href: PropTypes.string,
-    isSelected: PropTypes.bool,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
     linkComponent: PropTypes.func,
   };
@@ -22,21 +19,13 @@ export default class GlobalItem extends PureComponent {
     const {
       href,
       linkComponent: Link,
+      size,
     } = this.props;
     return (
       <Link href={href}>
-        <div
-          className={classNames(styles.globalItem, {
-            [styles.smallGlobalItem]: this.props.size === 'small',
-            [styles.mediumGlobalItem]: this.props.size === 'medium',
-            [styles.largeGlobalItem]: this.props.size === 'large',
-            [styles.isSelected]: this.props.isSelected,
-            [styles.hasContainerAppearance]: this.props.appearance === 'container',
-            [styles.hasSettingsAppearance]: this.props.appearance === 'settings',
-          })}
-        >
+        <GlobalItemInner size={size}>
           {this.props.children}
-        </div>
+        </GlobalItemInner>
       </Link>
     );
   }

@@ -2,17 +2,17 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { BitbucketBranchesIcon, PageIcon, FeedbackIcon, IssuesIcon, EmojiObjectsIcon, EmojiNatureIcon, EmojiTravelIcon, ExpandIcon } from '@atlaskit/icon';
 import searchStencil from 'url-loader!./stencils/search.svg';
-import { AkDrawerItem, AkContainerItemGroup } from '../src/index';
+import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
 import { name } from '../package.json';
 
-const manyDrawerItems = () => {
+const manyNavigationItems = () => {
   const items = [];
   for (let i = 0; i < 20; i++) {
     items.push(
-      <AkDrawerItem text="Test create item" />
+      <AkNavigationItem text="Test create item" />
     );
   }
   return items;
@@ -24,44 +24,44 @@ storiesOf(name, module)
       <BasicNavigation
         createDrawerContent={(
           <div>
-            <AkContainerItemGroup>
-              <AkDrawerItem
+            <AkNavigationItemGroup>
+              <AkNavigationItem
                 href="#1"
                 icon={<EmojiObjectsIcon />}
                 text="Create item 1"
               />
-              <AkDrawerItem
+              <AkNavigationItem
                 href="#2"
                 icon={<EmojiNatureIcon />}
                 text="Create item 2"
               />
-              <AkDrawerItem
+              <AkNavigationItem
                 href="#3"
                 icon={<EmojiObjectsIcon />}
                 text="Create item 3"
               />
-              <AkDrawerItem
+              <AkNavigationItem
                 href="#4"
                 icon={<EmojiTravelIcon />}
                 text="Create item 4"
               />
-            </AkContainerItemGroup>
-            <AkContainerItemGroup>
-              <AkDrawerItem
+            </AkNavigationItemGroup>
+            <AkNavigationItemGroup>
+              <AkNavigationItem
                 icon={<ExpandIcon />}
                 text="See more"
               />
-            </AkContainerItemGroup>
-            <AkContainerItemGroup title="Group with title">
-              <AkDrawerItem
+            </AkNavigationItemGroup>
+            <AkNavigationItemGroup title="Group with title">
+              <AkNavigationItem
                 icon={<BitbucketBranchesIcon />}
                 text={<span>Create a <strong>Bitbucket branch</strong></span>}
               />
-              <AkDrawerItem
+              <AkNavigationItem
                 icon={<PageIcon />}
                 text={<span>Create a <strong>Confluence page</strong></span>}
               />
-            </AkContainerItemGroup>
+            </AkNavigationItemGroup>
           </div>
         )}
         openDrawer="create"
@@ -73,40 +73,53 @@ storiesOf(name, module)
       <BasicNavigation
         createDrawerContent={(
           <div>
-            <AkDrawerItem text="Item outside a group" />
-            <AkContainerItemGroup title="Create item group">
-              <AkDrawerItem
+            <AkNavigationItem text="Item outside a group" />
+            <AkNavigationItemGroup title="Create item group">
+              <AkNavigationItem
                 icon={<img alt="icon" src={nucleus} />}
                 text="Item with an icon"
               />
-              <AkDrawerItem
+              <AkNavigationItem
                 icon={<img alt="icon" src={nucleus} />}
                 text="A really, really, quite long, actually super long item name"
               />
-            </AkContainerItemGroup>
-            <AkDrawerItem
+            </AkNavigationItemGroup>
+            <AkNavigationItem
               icon={<img alt="icon" src={nucleus} />}
               text="Item underneath group"
             />
-            <AkContainerItemGroup>
-              <AkDrawerItem
+            <AkNavigationItemGroup>
+              <AkNavigationItem
                 icon={<FeedbackIcon />}
                 text="Inside a group with no title"
               />
-            </AkContainerItemGroup>
-            <AkContainerItemGroup>
-              <AkDrawerItem
+            </AkNavigationItemGroup>
+            <AkNavigationItemGroup>
+              <AkNavigationItem
                 icon={<IssuesIcon />}
                 text="Inside a different group with no title"
               />
-            </AkContainerItemGroup>
-            <AkContainerItemGroup title="Items with highlighted nouns">
-              <AkDrawerItem
+            </AkNavigationItemGroup>
+            <AkNavigationItemGroup title="Items with highlighted nouns">
+              <AkNavigationItem
                 icon={<img alt="icon" src={nucleus} />}
                 text={(<span>Create a new <strong>item</strong></span>)}
               />
-              <AkDrawerItem text={(<span>Make an <strong>item</strong> appear</span>)} />
-            </AkContainerItemGroup>
+              <AkNavigationItem text={(<span>Make an <strong>item</strong> appear</span>)} />
+              <AkNavigationItem text={(<span>Make an <strong>ball</strong> appear</span>)} />
+              <AkNavigationItem text={(<span>Make an <strong>bed</strong> appear</span>)} />
+              <AkNavigationItem text={(<span>Make an <strong>pool</strong> appear</span>)} />
+            </AkNavigationItemGroup>
+            <AkNavigationItemGroup title="Items with highlighted verbs">
+              <AkNavigationItem
+                icon={<img alt="icon" src={nucleus} />}
+                text={(<span><strong>Create</strong> a new item</span>)}
+              />
+              <AkNavigationItem text={(<span><strong>Make</strong> an item appear</span>)} />
+              <AkNavigationItem text={(<span><strong>Make</strong> an ball appear</span>)} />
+              <AkNavigationItem text={(<span><strong>Make</strong> an bed appear</span>)} />
+              <AkNavigationItem text={(<span><strong>Make</strong> an pool appear</span>)} />
+            </AkNavigationItemGroup>
           </div>
         )}
         openDrawer="create"
@@ -117,7 +130,7 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation
         createDrawerContent={(
-          <div>{manyDrawerItems()}</div>
+          <div>{manyNavigationItems()}</div>
         )}
         openDrawer="create"
       />

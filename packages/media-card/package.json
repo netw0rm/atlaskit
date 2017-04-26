@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "8.0.0",
+  "version": "10.1.0",
   "config": {
     "access": "public"
   },
@@ -37,7 +37,13 @@
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
     {
-      "name": "Hector G"
+      "name": "Hector Z"
+    },
+    {
+      "name": "Michael J"
+    },
+    {
+      "name": "James N"
     }
   ],
   "license": "Apache-2.0",
@@ -53,7 +59,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-core": "^5.0.4",
-    "@atlaskit/media-test-helpers": "^4.0.0",
+    "@atlaskit/media-test-helpers": "^4.5.0",
     "akutil-common-test": "*"
   },
   "keywords": [

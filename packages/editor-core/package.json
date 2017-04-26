@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "14.4.0",
+  "version": "14.6.1",
   "config": {
     "access": "public"
   },
@@ -58,7 +58,7 @@
     "prosemirror-schema-list": "^0.20.0",
     "prosemirror-state": "^0.20.0",
     "prosemirror-transform": "^0.20.0",
-    "prosemirror-view": "git://github.com/jspn500/prosemirror-view.git#e6e1b5d6b08a02fa2a515731791c478aec003b98",
+    "prosemirror-view": "^0.20.3",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },

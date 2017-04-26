@@ -27,7 +27,8 @@ export default class HeightTransitionWrapper extends PureComponent {
 
   updateRefHeight() {
     this.setState({
-      height: this.ref ? this.ref.children[0].offsetHeight : 'auto',
+      height: this.ref && this.ref.children.length
+        ? this.ref.children[0].offsetHeight : 'auto',
     });
   }
 

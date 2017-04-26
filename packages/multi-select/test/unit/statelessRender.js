@@ -6,11 +6,11 @@ import Droplist, { Group, Item } from '@atlaskit/droplist';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
 
-import styles from '../src/styles.less';
-import { StatelessMultiSelect } from '../src';
-import Trigger from '../src/internal/Trigger';
+import styles from '../../src/styles.less';
+import { StatelessMultiSelect } from '../../src';
+import Trigger from '../../src/internal/Trigger';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 describe(`${name} - stateless`, () => {
   const animStub = window.cancelAnimationFrame;

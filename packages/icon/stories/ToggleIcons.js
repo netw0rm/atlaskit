@@ -27,6 +27,7 @@ class ToggleIcons extends React.PureComponent {
             <Icon
               key={id}
               label="Icon which checks and unchecks itself"
+              secondaryColor="inherit"
               onClick={() => (this.setState({ toggleColor: !this.state.toggleColor }))}
             />
           ))}
@@ -38,6 +39,7 @@ class ToggleIcons extends React.PureComponent {
           {this.props.icons.map(([id, Icon]) => (
             <Icon
               key={id}
+              secondaryColor="inherit"
               label="Icon which reverses itself while staying checked"
               onClick={() => (this.setState({ toggleFill: !this.state.toggleFill }))}
             />

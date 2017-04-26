@@ -1,7 +1,47 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
+import { GroupedResultsParser } from '../../api/JsonToResultParser';
+import NoScrollResultsBox from '../NoScrollResultsBox';
 
-// eslint-disable-next-line react/prop-types
-const ResultsList = ({ items }) =>
-  <div>{items || 'No matching results found'}</div>;
+export default class ResultsList extends Component {
 
-export default ResultsList;
+  static itemPropType = PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    type: PropTypes.string,
+    title: PropTypes.string,
+    meta: PropTypes.arrayOf(PropTypes.any),
+  }));
+
+  static propTypes = {
+    resultGroups: PropTypes.shape({
+      Conversations: self.itemPropType,
+      Other: self.itemPropType,
+    }),
+    resultsType: PropTypes.string,
+    onSearchTerminate: PropTypes.func,
+    resultCallbacks: PropTypes.shape({
+      HipChatConversation: PropTypes.func,
+    }),
+  }
+
+  constructor(props) {
+    super(props);
+    this.jsonToResultParser =
+      new GroupedResultsParser(props.onSearchTerminate, props.resultCallbacks);
+  }
+
+  render() {
+    const mapPropsToResults = resultGroups => (
+      Object.keys(resultGroups).length
+        ? this.jsonToResultParser.parse(resultGroups)
+        : 'No results found'
+    );
+
+    const content = this.props.resultGroups && mapPropsToResults(this.props.resultGroups);
+
+    if (this.props.resultsType === 'recent') {
+      return <NoScrollResultsBox>{content}</NoScrollResultsBox>;
+    }
+
+    return <div>{content}</div>;
+  }
+}

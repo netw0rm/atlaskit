@@ -65,42 +65,21 @@ export class GroupedResultsParser extends /** implements */ JsonToResultParser {
     this.resultParser = new ResultParser(onSearchTerminate, callbacks);
   }
 
-  groupNameDictionary = {
-    hc: 'Conversations',
-    mention: 'Conversations',
-    'jira-board': 'Boards',
-    'jira-issue': 'Issues',
-    'jira-project': 'Projects',
-    'confluence-page': 'Pages',
-    'confluence-space': 'Spaces',
-  };
-
-  getGroupName(key, defaultGroup = 'Other') {
-    const groupKey = key.split('.')[0];
-    return this.groupNameDictionary[groupKey] || defaultGroup;
-  }
-
-  parse = (dataList) => {
-    if (!dataList || !dataList.length) {
+  parse = (resultGroups) => {
+    if (!resultGroups || !Object.keys(resultGroups).length) {
       return [];
     }
 
-    const groupedCmpnts = dataList
-      .map(this.resultParser.parseSingle)
-      .reduce((groups, result) => {
-        const groupName = this.getGroupName(result.props.type);
-        groups[groupName] = groups[groupName] || [];
-        groups[groupName].push(result);
-        return groups;
-      }, {});
-
-    return Object.keys(groupedCmpnts).map((group) => {
-      const memberCmpnts = groupedCmpnts[group];
-      return (
-        <AkContainerItemGroup title={group} key={group}>
-          {memberCmpnts}
-        </AkContainerItemGroup>
+    if (Object.keys(resultGroups).length === 1) {
+      return this.resultParser.parse(
+        resultGroups[Object.keys(resultGroups)[0]]
       );
-    });
+    }
+
+    return Object.keys(resultGroups).map(group =>
+      <AkContainerItemGroup title={group} key={group}>
+        {this.resultParser.parse(resultGroups[group])}
+      </AkContainerItemGroup>
+    );
   }
 }

@@ -3,10 +3,13 @@ import { AkSearch } from '@atlaskit/navigation';
 import _debounce from 'lodash.debounce';
 
 import SpinningClearIcon from '../SpinningClearIcon';
-import ResourcedResultsList from '../ResourcedResultsList';
+import withSearchResource from '../ResourcedResultsList';
+import ResultsList from '../ResultsList';
 import { JsonToResultParser } from '../../api/JsonToResultParser';
 import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
 import uniqueId from '../../util/id';
+
+const ResourcedResultsList = withSearchResource(ResultsList);
 
 export default class QuickSearch extends Component {
   static propTypes = {

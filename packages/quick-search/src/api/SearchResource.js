@@ -127,6 +127,21 @@ export class ParsingSearchResource extends SearchResource {
     this.queryClient = this.queryClient.bind(this);
   }
 
+  groupNameDictionary = {
+    hc: 'Conversations',
+    mention: 'Conversations',
+    'jira-board': 'Boards',
+    'jira-issue': 'Issues',
+    'jira-project': 'Projects',
+    'confluence-page': 'Pages',
+    'confluence-space': 'Spaces',
+  };
+
+  getGroupName(key, defaultGroup = 'Other') {
+    const groupKey = key.split('.')[0];
+    return this.groupNameDictionary[groupKey] || defaultGroup;
+  }
+
   queryClient(searchTerm) {
     return super.queryClient(searchTerm).then(this.parse);
   }
@@ -135,11 +150,18 @@ export class ParsingSearchResource extends SearchResource {
     if (!jsonArray || !jsonArray.length) {
       return [];
     }
-    return jsonArray.map(item => (
-      item.meta && item.meta.length
-        ? { ...item, meta: this.formatMetaData(item.meta) }
-        : item
-    ));
+    return jsonArray
+      .map(item => (
+        item.meta && item.meta.length
+          ? { ...item, meta: this.formatMetaData(item.meta) }
+          : item
+      ))
+      .reduce((groups, item) => {
+        const groupName = this.getGroupName(item.type);
+        groups[groupName] = groups[groupName] || [];
+        groups[groupName].push(item);
+        return groups;
+      }, {});
   }
 
   // eslint-disable-next-line class-methods-use-this

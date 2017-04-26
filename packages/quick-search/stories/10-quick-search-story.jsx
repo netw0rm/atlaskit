@@ -27,6 +27,8 @@ storiesOf(name, module)
           <QuickSearch
             searchResource={searchResource}
             jsonToResultParser={resultParser}
+            resultCallbacks={resultCallbacks}
+            onSearchTerminate={() => {}}
           />
         )}
       >

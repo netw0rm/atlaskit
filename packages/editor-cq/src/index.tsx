@@ -35,7 +35,9 @@ import {
   Plugin,
   mentionNodeView,
   ProviderFactory,
-  MediaPluginState
+  MediaPluginState,
+  ReplaceStep,
+  Transaction,
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -267,8 +269,10 @@ export default class Editor extends PureComponent<Props, State> {
 
       const editorView = new EditorView(place, {
         state: editorState,
-        dispatchTransaction: (tr) => {
-          const newState = editorView.state.apply(tr);
+        dispatchTransaction: (tr: Transaction) => {
+          const transaction = this.checkTransaction(tr);
+
+          const newState = editorView.state.apply(transaction);
           editorView.updateState(newState);
           this.handleChange();
         },
@@ -323,6 +327,55 @@ export default class Editor extends PureComponent<Props, State> {
     if (onSave) {
       onSave(this);
     }
+  }
+
+  /**
+   * Check transaction for media nodes being removed
+   * If this is the only media node inside mediaGroup
+   * we need to remove mediaGroup
+   */
+  private checkTransaction = (tr: Transaction): Transaction => {
+    const { schema, editorView } = this.state;
+    const { steps } = tr;
+
+    if (steps.length !== 1) {
+      return tr;
+    }
+
+    // this should be a ReplaceStep
+    const transactionStep = steps[0];
+    if (!(transactionStep instanceof ReplaceStep)) {
+      return tr;
+    }
+
+    // (from === to) means that we're not removing anything in this transaction
+    // 1 is the nodeSize of mediaGroup and it should be empty
+    if (transactionStep.from + 1 !== transactionStep.to) {
+      return tr;
+    }
+
+    // slice in this transaction will add smth to the document
+    // this is not what we're searching for
+    if (transactionStep.slice.size) {
+      return tr;
+    }
+
+    // okay, this is the only step in transaction
+    // it's replace step and we're removing smth
+    const nodesInInterval: PMNode[] = [];
+    tr.doc.nodesBetween(transactionStep.from, transactionStep.to, node => {
+      nodesInInterval.push(node);
+    });
+
+    // interval must contain only one media group
+    if (nodesInInterval.length !== 1 || nodesInInterval[0].type !== schema.nodes.mediaGroup) {
+      return tr;
+    }
+
+    return editorView!.state.tr.delete(
+      transactionStep.from - 1,
+      transactionStep.to + 1
+    );
   }
 
   /**

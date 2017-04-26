@@ -8,11 +8,10 @@ export const Card = styled(Root)`
   ${borderRadius}
   background: #fff;
   display: table;
-  font-family: sans-serif;
   cursor: pointer;
   line-height: normal;
   position: relative;
-  
+
   .wrapper {
     ${borderRadius}
     background: ${akColorN30};

@@ -87,9 +87,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
       </Retry>
     ) : null;
 
-    return this.formatCard((
-      <ErrorIcon />
-    ), (
+    return this.formatCard(<ErrorIcon />, (
       <div>
         <Error className="error">{error}</Error>
         {retryComponent}

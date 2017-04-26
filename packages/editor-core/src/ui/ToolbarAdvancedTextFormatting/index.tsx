@@ -16,6 +16,8 @@ import { EditorView } from '../../prosemirror';
 
 export interface Props {
   editorView: EditorView;
+  softBlurEditor: () => void;
+  focusEditor: () => void;
   pluginStateTextFormatting?: TextFormattingState | undefined;
   pluginStateClearFormatting?: ClearFormattingState | undefined;
 }
@@ -75,7 +77,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       pluginStateTextFormatting,
       pluginStateClearFormatting,
     } = this.props;
-    const hasMarksInSchema = !codeHidden || !strikeHidden;
+    const hasMarksInSchema = !codeHidden || !strikeHidden || !subscriptHidden || !superscriptHidden;
     if ((pluginStateTextFormatting && hasMarksInSchema) || pluginStateClearFormatting) {
       return (
         <DropdownList
@@ -162,6 +164,13 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private toggleOpen = () => {
     const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
     if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
+
+      if (!isOpen) {
+        this.props.softBlurEditor();
+      } else {
+        this.props.focusEditor();
+      }
+
       this.setState({
         isOpen: !isOpen,
       });
@@ -173,9 +182,18 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       codeActive: pluginState.codeActive,
       codeDisabled: pluginState.codeDisabled,
       codeHidden: pluginState.codeHidden,
+
       strikeActive: pluginState.strikeActive,
       strikeDisabled: pluginState.strikeDisabled,
       strikeHidden: pluginState.strikeHidden,
+
+      subscriptActive: pluginState.subscriptActive,
+      subscriptDisabled: pluginState.subscriptDisabled,
+      subscriptHidden: pluginState.subscriptHidden,
+
+      superscriptActive: pluginState.superscriptActive,
+      superscriptDisabled: pluginState.superscriptDisabled,
+      superscriptHidden: pluginState.superscriptHidden,
     });
   }
 

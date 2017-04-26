@@ -2,8 +2,8 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import AkFieldText from '@atlaskit/field-text';
 import Readme, { Code } from '@atlaskit/util-readme';
-import '!style-loader!css-loader!less-loader!../src/index.less';
 import icons from '!raw!../dist/icons-sprite.svg';
+import '../src/index.less';
 import iconIds from '../src/internal/iconIds';
 import { name } from '../package.json';
 

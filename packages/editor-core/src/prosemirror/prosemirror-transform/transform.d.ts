@@ -13,6 +13,7 @@ export class Transform {
   before: Node;
   step(step: Step): this;
   maybeStep(step: Step): StepResult;
+  docChanged: boolean;
   addMark(from: number, to: number, mark: Mark): this;
   removeMark(from: number, to: number, mark?: Mark | MarkType): this;
   clearMarkup(from: number, to: number): this;

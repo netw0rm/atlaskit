@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import AkButton from '@atlaskit/button';
 import AkButtonGroup from '@atlaskit/button-group';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 import AnimationDemo from './AnimationDemo';
 import { name } from '../package.json';
@@ -116,10 +116,11 @@ storiesOf(name, module)
           .entries(components)
           .map(([key, Icon]) => {
             const importName = `${name}/glyph/${key}`;
+            const displayName = Icon.displayName.match(/Icon/) ? Icon.displayName : `${Icon.displayName}Icon`;
             return (
               <tr key={key}>
                 <td><Icon label={`${key} icon`} /></td>
-                <td><pre>import {Icon.displayName}Icon from &#39;{importName}&#39;;</pre></td>
+                <td><pre>import {displayName} from &#39;{importName}&#39;;</pre></td>
               </tr>
             );
           })

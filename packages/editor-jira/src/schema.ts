@@ -29,7 +29,7 @@ const code = {
   excludes: 'em strike strong underline'
 };
 
-interface JIRASchemaNodes {
+export interface JIRASchemaNodes {
   blockquote?: NodeSpec;
   bulletList?: NodeSpec;
   codeBlock?: NodeSpec;
@@ -44,14 +44,14 @@ interface JIRASchemaNodes {
   text: NodeSpec;
 }
 
-interface JIRASchemaMarks {
+export interface JIRASchemaMarks {
   code?: MarkSpec;
   em: MarkSpec;
   link?: MarkSpec;
   mentionQuery?: MarkSpec;
   strike?: MarkSpec;
   strong: MarkSpec;
-  subsup: MarkSpec;
+  subsup?: MarkSpec;
   underline: MarkSpec;
 }
 
@@ -64,6 +64,7 @@ export interface JIRASchemaConfig {
   allowAdvancedTextFormatting?: boolean;
   allowCodeBlock?: boolean;
   allowBlockQuote?: boolean;
+  allowSubSup?: boolean;
 }
 
 export function isSchemaWithLists(schema: JIRASchema): boolean {
@@ -82,6 +83,10 @@ export function isSchemaWithAdvancedTextFormattingMarks(schema: JIRASchema): boo
   return !!schema.marks.code && !!schema.marks.strike;
 }
 
+export function isSchemaWithSubSupMark(schema: JIRASchema): boolean {
+  return !!schema.marks.subsup;
+}
+
 export function isSchemaWithCodeBlock(schema: JIRASchema): boolean {
   return !!schema.nodes.codeBlock;
 }
@@ -92,18 +97,18 @@ export function isSchemaWithBlockQuotes(schema: JIRASchema): boolean {
 
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   const nodes = {
+    doc,
+    paragraph,
+    text,
     blockquote,
     bulletList,
     codeBlock,
-    doc,
     hardBreak,
     heading,
     listItem,
     mention,
     orderedList,
-    paragraph,
     rule,
-    text,
   };
 
   const marks = {
@@ -135,6 +140,10 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   if (!config.allowAdvancedTextFormatting) {
     delete marks.strike;
     delete marks.code;
+  }
+
+  if (!config.allowSubSup) {
+    delete marks.subsup;
   }
 
   if (!config.allowCodeBlock) {

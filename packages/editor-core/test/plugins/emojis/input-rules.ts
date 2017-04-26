@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import EmojiPlugin from '../../../src/plugins/emojis';
+import emojiPlugins from '../../../src/plugins/emojis';
 import {
   chaiPlugin,
   fixtures,
@@ -9,6 +9,7 @@ import {
   doc,
   p,
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
 const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
@@ -19,7 +20,7 @@ describe('emojis - input rules', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: EmojiPlugin,
+    plugins: emojiPlugins(defaultSchema),
     place: fixture()
   });
 

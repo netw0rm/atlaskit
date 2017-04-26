@@ -12,6 +12,7 @@ import {
   br,
   chaiPlugin,
   code_block,
+  panel,
   doc,
   h1,
   h2,
@@ -29,8 +30,9 @@ import {
   marks,
   hardBreak,
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
-import BlockTypePlugin from '../../../src/plugins/block-type';
+import blockTypePlugins from '../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);
 
@@ -38,13 +40,8 @@ describe('block-type', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: BlockTypePlugin,
+    plugins: blockTypePlugins(defaultSchema),
     place: fixture()
-  });
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = BlockTypePlugin as any; // .State is not public API.
-    expect(plugin.key).is.be.a('string');
   });
 
   it('should be able to change to normal', () => {
@@ -156,12 +153,12 @@ describe('block-type', () => {
       const { editorView, pluginState } = editor(
         doc(p(
           'hello ',
-          mention({ id: 'foo1', displayName: '@bar1' }),
+          mention({ id: 'foo1', text: '@bar1' }),
           img({ src: 'url', alt: 'text', title: 'text' }),
           ' & ',
-          mention({ id: 'foo2', displayName: '@bar2' }),
+          mention({ id: 'foo2', text: '@bar2' }),
           ' & ',
-          mention({ id: 'foo3', displayName: '@bar3' }),
+          mention({ id: 'foo3', text: '@bar3' }),
         )));
 
       pluginState.toggleBlockType('codeblock', editorView);
@@ -172,7 +169,7 @@ describe('block-type', () => {
       const { editorView, pluginState } = editor(
         doc(p(
           '{<}hello ',
-          mention({ id: 'foo1', displayName: '@bar1' })
+          mention({ id: 'foo1', text: '@bar1' })
         ), p('text{>}')));
 
       pluginState.toggleBlockType('codeblock', editorView);
@@ -189,6 +186,69 @@ describe('block-type', () => {
 
       pluginState.toggleBlockType('codeblock', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('h1')));
+    });
+
+    it('should split code block when converting to normal text with partial selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
+
+      pluginState.toggleBlockType('normal', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('test\ntest'), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to normal text with collapsed selection in starting of code block', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<>}test\ntest\ntest\ntest')));
+
+      pluginState.toggleBlockType('normal', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('test'), code_block()('test\ntest\ntest')));
+    });
+
+    it('should split code block when converting to normal text with collapsed selection in end of code block', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('test\ntest\ntest\ntest{<>}')));
+
+      pluginState.toggleBlockType('normal', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('test\ntest\ntest'), p('test')));
+    });
+
+    it('should split code block when converting to heading1 with partial selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
+
+      pluginState.toggleBlockType('heading1', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(h1('test\ntest'), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to heading1 with partial selection in middle of code block', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('test\n{<}test\ntest{>}\ntest')));
+
+      pluginState.toggleBlockType('heading1', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('test'), h1('test\ntest'), code_block()('test')));
+    });
+
+    it('should split code block when converting to block-quote with partial selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
+
+      pluginState.toggleBlockType('blockquote', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('test\ntest')), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to block-quote with collapsed selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('test\nt{<>}est\ntest\ntest')));
+
+      pluginState.toggleBlockType('blockquote', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('test'), blockquote(p('test')), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to panel with partial selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
+
+      pluginState.toggleBlockType('panel', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(panel(p('test\ntest')), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to panel with partial selection at end of code block', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('test\ntest\n{<}test\ntest{>}')));
+
+      pluginState.toggleBlockType('panel', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('test\ntest'), panel(p('test\ntest'))));
     });
   });
 
@@ -364,11 +424,11 @@ describe('block-type', () => {
             const schema = {
               nodes: { ...nodes },
               marks: { ...marks },
-            };
+            } as Schema<any, any>;
             delete schema.nodes.panel;
             const edit = (doc: any) => makeEditor({
               doc,
-              plugin: BlockTypePlugin,
+              plugins: blockTypePlugins(schema),
               place: fixture(),
               schema: new Schema(schema),
             });
@@ -383,11 +443,11 @@ describe('block-type', () => {
             const schema = {
               nodes: { ...nodes },
               marks: { ...marks },
-            };
+            } as Schema<any, any>;
             delete schema.nodes.blockquote;
             const edit = (doc: any) => makeEditor({
               doc,
-              plugin: BlockTypePlugin,
+              plugins: blockTypePlugins(schema),
               place: fixture(),
               schema: new Schema(schema),
             });
@@ -485,7 +545,7 @@ describe('block-type', () => {
 
             sendKeyToPm(editorView, 'Enter');
 
-            expect(editorView.state.doc).to.deep.equal(doc(code_block()('```'), p('')));
+            expect(editorView.state.doc).to.deep.equal(doc(code_block()('```\n')));
           });
         });
 
@@ -500,7 +560,7 @@ describe('block-type', () => {
             });
 
             it('trims the spaces', () => {
-              const { editorView } = editor(doc(p('```javascript    {<>}   hello ', mention({ id: 'foo1', displayName: '@bar1' }))));
+              const { editorView } = editor(doc(p('```javascript    {<>}   hello ', mention({ id: 'foo1', text: '@bar1' }))));
 
               sendKeyToPm(editorView, 'Enter');
 
@@ -593,11 +653,11 @@ describe('block-type', () => {
 
                 it('does not ignore @mention', () => {
 
-                  const { editorView } = editor(doc(p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                  const { editorView } = editor(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
-                  expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                  expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', text: '@bar1' }))));
                 });
               });
 

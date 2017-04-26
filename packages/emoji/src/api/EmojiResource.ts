@@ -86,7 +86,7 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
       emojis.then((emojiResponse) => {
         this.activeLoaders--;
         emojiResponses[index] = emojiResponse;
-        this.initEmojiService(emojiResponses);
+        this.initEmojiRepository(emojiResponses);
         this.performRetries();
         this.refreshLastFilter();
       }).catch((reason) => {
@@ -100,7 +100,7 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     }
   }
 
-  private initEmojiService(emojiResponses: EmojiResponse[]): void {
+  private initEmojiRepository(emojiResponses: EmojiResponse[]): void {
     let emojis: EmojiDescription[] = [];
     emojiResponses.forEach(emojiResponse => {
       emojis = emojis.concat(emojiResponse.emojis);

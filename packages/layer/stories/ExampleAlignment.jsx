@@ -28,7 +28,7 @@ export default class ExampleAlignment extends PureComponent {
     return (
       <div>
         <AKLayer {...this.props} content={popperContent}>
-          <div className={styles.locals.alignmentContainer}>
+          <div className={styles.alignmentContainer}>
             {this.props.targetContent}
           </div>
         </AKLayer>

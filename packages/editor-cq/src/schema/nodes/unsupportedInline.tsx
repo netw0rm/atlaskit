@@ -41,7 +41,7 @@ export default {
       'data-unsupported-inline-cxhtml': node.attrs['cxhtml'],
       'spellcheck': 'false',
     };
-    return ['div', attrs, 'Embedded content'];
+    return ['div', attrs, 'Unsupported content'];
   },
   parseDOM: [
     {

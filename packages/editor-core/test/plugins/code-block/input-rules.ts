@@ -1,17 +1,19 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import CodeBlockPlugin from '../../../src/plugins/code-block';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 import {
   chaiPlugin, doc, fixtures, insertText, li, makeEditor, p, ul
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
+
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: CodeBlockPlugin,
+    plugins: codeBlockPlugin(defaultSchema),
     place: fixture()
   });
 

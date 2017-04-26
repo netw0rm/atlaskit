@@ -122,6 +122,18 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       expect(editor.state.schema.marks.strike).to.not.exist;
     });
 
+    it('allowSubSup=true prop should enable subsup mark', () => {
+      const editorWrapper = mount(<Editor allowSubSup={true}/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.marks.subsup).to.exist;
+    });
+
+    it('Subsup mark should be disabled without allowSubSup prop', () => {
+      const editorWrapper = mount(<Editor/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.marks.subsup).to.not.exist;
+    });
+
     it('allowCodeBlock=true prop should enable code blocks', () => {
       const editorWrapper = mount(<Editor allowCodeBlock={true}/>);
       const editor: Editor = editorWrapper.get(0) as any;
@@ -134,5 +146,4 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       expect(editor.state.schema.nodes.codeBlock).to.not.exist;
     });
   });
-
 });

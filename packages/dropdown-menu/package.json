@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/dropdown-menu",
-  "version": "1.1.12",
+  "version": "1.4.0",
   "config": {
     "access": "public"
   },
-  "description": "ak-dropdown-menu React component",
+  "description": "Creates a dropdown menu, with optional groups, headings, icons, checkbox items, radio group items and disabled items.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
-    "@atlaskit/droplist": "^3.0.0",
+    "@atlaskit/droplist": "^3.3.2",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/icon": "^3.0.0",
     "uid": "0.0.2"
@@ -32,8 +32,8 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/avatar": "^1.0.0",
-    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/avatar": "^2.0.0",
+    "@atlaskit/util-readme": "^3.0.0",
     "@atlaskit/dropdown-menu": "*",
     "@atlaskit/lozenge": "^1.0.0"
   },

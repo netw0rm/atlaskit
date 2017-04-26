@@ -3,7 +3,7 @@ const path = require('path');
 
 const { tmpFolderName } = require('./constants');
 
-const tempFolder = `../src/${tmpFolderName}/`;
+const tempFolder = `../${tmpFolderName}/`;
 const sourceFolder = path.join(__dirname, '..', 'src');
 
 module.exports = () => {

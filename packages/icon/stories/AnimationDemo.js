@@ -49,7 +49,7 @@ class AnimationDemo extends React.PureComponent {
           ref={elem => (this.checkbox = elem)}
         /> <label htmlFor="animate">Animate</label>
         <hr />
-        <div className={styles.locals.container}>
+        <div className={styles.container}>
           {this.randomIcon()}
           {this.randomIcon()}
           {this.randomIcon()}

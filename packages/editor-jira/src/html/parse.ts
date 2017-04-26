@@ -6,6 +6,7 @@ import {
   isSchemaWithAdvancedTextFormattingMarks,
   isSchemaWithCodeBlock,
   isSchemaWithBlockQuotes,
+  isSchemaWithSubSupMark,
   JIRASchema,
 } from '../schema';
 import parseHtml from './parse-html';
@@ -95,6 +96,9 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
         return content ? addMarks(content, [schema.marks.code!.create()]) : null;
       case 'SUB':
       case 'SUP':
+        if (!isSchemaWithSubSupMark(schema)) {
+          return null;
+        }
         const type = tag === 'SUB' ? 'sub' : 'sup';
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'INS':
@@ -105,7 +109,7 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
         if (node.className === 'user-hover' && isSchemaWithMentions(schema)) {
           return schema.nodes.mention!.createChecked({
             id: node.getAttribute('rel'),
-            displayName: node.innerText
+            text: node.innerText
           });
         }
 

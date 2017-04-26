@@ -231,9 +231,11 @@ describe('Marks', () => {
       expect(renderMark( { type: 'text', text: 'hello world' } as any)).to.equal('hello world');
     });
 
-    it('should ignore unknown mark and render it the content', () => {
+    it('should ignore unknown mark and render the content, if any', () => {
       expect(renderMark( { type: 'stroooong', content: [ { type: 'text', text: 'hello world' } ]})).to.equal('hello world');
+      expect(renderMark( { type: 'stroooong' })).to.equal(null);
     });
+
 
   });
 

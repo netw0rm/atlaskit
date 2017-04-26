@@ -4,13 +4,12 @@ import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import {
   EditorState,
   EditorView,
-  Fragment,
+  Schema,
   Plugin,
   PluginKey,
 } from '../../prosemirror';
-import { reconfigure } from '../utils';
 import { isMarkAllowedAtPosition } from '../../utils';
-import { inputRulePlugin, destroyRulePluginCache } from './input-rules';
+import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -58,7 +57,6 @@ export class EmojiState {
       return;
     }
 
-    const { docView } = this.view;
     const { emojiQuery } = state.schema.marks;
     const { doc, selection } = state;
     const { from, to } = selection;
@@ -84,7 +82,7 @@ export class EmojiState {
       return;
     }
 
-    const newAnchorElement = docView.dom.querySelector('[data-emoji-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector('[data-emoji-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;
@@ -157,9 +155,8 @@ export class EmojiState {
       const { start, end } = this.findEmojiQueryMark();
       const node = emoji.create({ ...emojiId });
       const textNode = state.schema.text(' ');
-      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
       view.dispatch(
-        state.tr.replaceWith(start, end, fragment)
+        state.tr.replaceWith(start, end, [node, textNode])
       );
     } else {
       this.dismiss();
@@ -190,7 +187,7 @@ export class EmojiState {
 
 export const stateKey = new PluginKey('emojiPlugin');
 
-export default new Plugin({
+const plugin = new Plugin({
   state: {
     init(config, state) {
       return new EmojiState(state);
@@ -202,18 +199,19 @@ export default new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [inputRulePlugin(view.state.schema), keymapPlugin(view.state.schema)]);
     const pluginState = stateKey.getState(view.state);
     pluginState.setView(view);
 
     return {
       update(view: EditorView, prevState: EditorState<any>) {
         pluginState.update(view.state, view);
-      },
-
-      destroy() {
-        destroyRulePluginCache();
       }
     };
   }
 });
+
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

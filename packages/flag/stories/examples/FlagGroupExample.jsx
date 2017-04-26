@@ -1,20 +1,35 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Flag, { FlagGroup } from '@atlaskit/flag';
-import YellowWarningIcon from '../components/YellowWarningIcon';
+
+class FlagGroupWrapper extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      showFlag: true,
+    };
+  }
+
+  flagDismissed = () => {
+    this.setState({ showFlag: false });
+  }
+
+  render() {
+    const flag = (
+      <Flag
+        id="1"
+        title="FlagGroup Example: Test Flag"
+        description="Dismiss me with the x. Reload the page to show me again"
+      />
+    );
+
+    return (
+      <FlagGroup onDismissed={this.flagDismissed}>
+        {this.state.showFlag ? flag : null}
+      </FlagGroup>
+    );
+  }
+}
 
 export default (
-  <FlagGroup
-    onDismissed={(dismissedId) => {
-      console.info(`${dismissedId} was dismissed`);
-    // update your state here to no longer render the dismissed Flag
-    }}
-  >
-    <Flag
-      description="Somebody forgot to upgrade the storage on the information superhighway."
-      icon={<YellowWarningIcon label="Warning" />}
-      id="flag-1"
-      key="flag-1"
-      title="The Internet seems to be full"
-    />
-  </FlagGroup>
+  <FlagGroupWrapper />
 );

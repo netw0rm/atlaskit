@@ -28,17 +28,17 @@ describe('ak-field-base', () =>
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
         const wrapper = shallow(<Label label={label} isLabelHidden />);
-        expect(wrapper.find(`.${styles.locals.labelText}`).hasClass(styles.locals.hidden)).to.equal(true);
+        expect(wrapper.find(`.${styles.labelText}`).hasClass(styles.hidden)).to.equal(true);
       });
     });
 
     describe('required prop', () => {
       it('should append an asterisk to the content', () =>
-        expect(shallow(<Label {...defaultProps} isRequired />).find(`.${styles.locals.required}`).text()).to.equal('*')
+        expect(shallow(<Label {...defaultProps} isRequired />).find(`.${styles.required}`).text()).to.equal('*')
       );
 
       it('should not append an asterisk to the content if required is not set', () => {
-        expect(shallow(<Label {...defaultProps} />).find(`.${styles.locals.required}`).length).to.equal(0);
+        expect(shallow(<Label {...defaultProps} />).find(`.${styles.required}`).length).to.equal(0);
         expect(shallow(<Label {...defaultProps} />).text()).to.equal('test');
       });
     });
@@ -49,15 +49,15 @@ describe('ak-field-base', () =>
       });
 
       it('should set className for it', () => {
-        expect(mount(<Label />).find(`.${styles.locals.inlineEdit}`).length).to.equal(0);
-        expect(mount(<Label appearance="inline-edit" />).find(`.${styles.locals.inlineEdit}`).length).to.equal(1);
+        expect(mount(<Label />).find(`.${styles.inlineEdit}`).length).to.equal(0);
+        expect(mount(<Label appearance="inline-edit" />).find(`.${styles.inlineEdit}`).length).to.equal(1);
       });
     });
 
     describe('isFirstChild prop', () => {
       it('should set className for it', () => {
-        expect(mount(<Label />).find(`.${styles.locals.firstChild}`).length).to.equal(0);
-        expect(mount(<Label isFirstChild />).find(`.${styles.locals.firstChild}`).length).to.equal(1);
+        expect(mount(<Label />).find(`.${styles.firstChild}`).length).to.equal(0);
+        expect(mount(<Label isFirstChild />).find(`.${styles.firstChild}`).length).to.equal(1);
       });
     });
 

@@ -31,13 +31,13 @@ export const mention: NodeSpec = {
   group: 'inline',
   attrs: {
     id: { default: '' },
-    displayName: { default: '' }
+    text: { default: '' }
   },
   parseDOM: [{
     tag: 'span[mention-id]',
     getAttrs: (dom: Element) => ({
       id: dom.getAttribute('mention-id')!,
-      displayName: dom.textContent!
+      text: dom.textContent!
     })
   }],
   toDOM(node: any): [string, any, string] {
@@ -46,13 +46,13 @@ export const mention: NodeSpec = {
       'mention-id': node.attrs.id,
       'contenteditable': 'false',
     };
-    return ['span', attrs, node.attrs.displayName];
+    return ['span', attrs, node.attrs.text];
   }
 };
 
 export const mentionNodeView = (providerFactory: ProviderFactory) => (node: any, view: any, getPos: () => number): NodeView => {
   let dom: HTMLElement | undefined = document.createElement('span');
-  const { id, displayName } = node.attrs;
+  const { id, text } = node.attrs;
 
   ReactDOM.render(
     <WithProviders
@@ -61,7 +61,7 @@ export const mentionNodeView = (providerFactory: ProviderFactory) => (node: any,
       renderNode={providers =>
         <ResourcedMention
           id={id}
-          text={displayName}
+          text={text}
           mentionProvider={providers['mentionProvider']}
         />
       }

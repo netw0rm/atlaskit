@@ -1,4 +1,4 @@
-import { DOMSerializer, EditorState, Node, Slice, Transaction } from '../';
+import { DOMSerializer, EditorState, Node, Slice, Transaction, ResolvedPos } from '../';
 import * as dom from '../dom';
 import { Decoration, DecorationSet } from './decoration';
 import { NodeViewDesc } from './viewdesc';
@@ -9,16 +9,13 @@ import * as browser from './browser';
 export { browser };
 
 export class EditorView {
-  constructor(place: dom.Node | ((_0: dom.Node) => void) | null, props: EditorProps);
+  constructor(place: dom.Node | ((_0: dom.Node) => void) | { mount: dom.Node } | null, props: EditorProps);
 
-  props: EditorProps;
   state: EditorState<any>;
-  content: dom.Element;
   dom: dom.Element;
-  docView: NodeViewDesc;
-  editable: boolean;
-  selectionReader: SelectionReader;
+  props: EditorProps;
   update(props: EditorProps): void;
+  setProps(props: EditorProps): void;
   updateState(state: EditorState<any>): void;
   hasFocus(): boolean;
   someProp(propName: string, f: (prop: any) => any): any;
@@ -29,7 +26,9 @@ export class EditorView {
   endOfTextblock(dir: 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward', state?: EditorState<any>): boolean;
   destroy(): void;
   dispatch(tr: Transaction): void;
-  dispatchEvent(event: string | CustomEvent | { type: string });
+
+  // PRIVATE MEMBERS EXPOSED AS A HACK.
+  docView: NodeViewDesc;
 }
 
 export interface PluginProps {
@@ -44,8 +43,11 @@ export interface PluginProps {
   handleTripleClickOn?: (view: EditorView, pos: number, node: Node, nodePos: number, event: dom.MouseEvent, direct: boolean) => boolean;
   handleTripleClick?: (view: EditorView, pos: number, event: dom.MouseEvent) => boolean;
   handleContextMenu?: (view: EditorView, pos: number, event: dom.MouseEvent) => boolean;
-  onFocus?: (view: EditorView, event?: dom.Event) => void;
-  onBlur?: (view: EditorView, event?: dom.Event) => void;
+  handlePaste?: (view: EditorView, event: dom.Event, slice: Slice) => boolean;
+  handleDrop?: (view: EditorView, event: dom.Event, slice: Slice, moved: boolean) => boolean;
+  onFocus?: (view: EditorView, event: dom.Event) => void;
+  onBlur?: (view: EditorView, event: dom.Event) => void;
+  createSelectionBetween?: (view: EditorView, anchor: ResolvedPos, head: ResolvedPos) => Selection | void;
   domParser?: DOMParser;
   clipboardParser?: DOMParser;
   transformPasted?: (_0: Slice) => Slice;
@@ -53,7 +55,7 @@ export interface PluginProps {
   transformPastedText?: (_0: string) => string;
   nodeViews?: { [key: string]: (node: Node, view: EditorView, getPos: () => number, decorations: Decoration[]) => NodeView };
   clipboardSerializer?: DOMSerializer;
-  decorations?: (view: EditorState<any>) => DecorationSet;
+  decorations?: (_0: EditorState<any>) => DecorationSet | void;
   editable?: (_0: EditorState<any>) => boolean;
   attributes?: { [key: string]: string } | ((_0: EditorState<any>) => { [key: string]: string } | void);
   scrollThreshold?: number;

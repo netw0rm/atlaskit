@@ -1,36 +1,43 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classnames from 'classnames';
-
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import { NotImplementedError } from './internal/exceptions';
-import size from './internal/size';
+import { iconConstructorBase, prepareProps } from './iconConstructor';
 
-export default class Icon extends PureComponent {
+const sizes = ['small', 'medium', 'large', 'xlarge'];
+
+class Icon extends PureComponent {
   static propTypes = {
+    /** string to apply as the svg title element */
     label: PropTypes.string.isRequired,
-    size: PropTypes.oneOf(Object.keys(size).map(k => size[k])),
+    /** control the size of the icon */
+    size: PropTypes.oneOf(sizes),
+    /** onclick handler for the icon element */
     onClick: PropTypes.func,
+    /** glyph to be shown inside Icon */
+    glyph: PropTypes.func,
   }
 
   static defaultProps = {
-    onClick() {},
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  getGlyphTemplate() {
-    throw new NotImplementedError('Subclasses need to provide an implementation');
+    onClick() {
+    },
   }
 
   render() {
-    const Glyph = this.getGlyphTemplate();
     const iconBodyClasses = classnames([styles.iconBody, styles[this.props.size]]);
+    const GlyphComponent = this.props.glyph;
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <span className={iconBodyClasses} onClick={this.props.onClick}>
-        <Glyph className={styles.svg} label={this.props.label} role="img" />
+        <GlyphComponent label={this.props.label} className={styles.svg} role="img" />
       </span>
     );
   }
 }
 
-export { NotImplementedError, size };
+const iconConstructor = (componentName, SvgIcon) =>
+  iconConstructorBase(Icon)(componentName, SvgIcon);
+const size = sizes.reduce((p, c) => Object.assign(p, { [c]: c }), {});
+
+export { NotImplementedError, size, iconConstructor, prepareProps };
+export default Icon;

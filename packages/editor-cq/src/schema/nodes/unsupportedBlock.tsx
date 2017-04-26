@@ -45,7 +45,7 @@ export default {
       'data-unsupported-block-cxhtml': node.attrs['cxhtml'],
       'spellcheck': 'false',
     };
-    return ['div', attrs, 'Embedded content'];
+    return ['div', attrs, 'Unsupported content'];
   },
   parseDOM: [
     {

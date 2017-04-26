@@ -249,6 +249,8 @@ describe(name, () => {
         'media-services/pdf',
         'media-services/preselected',
         'media-services/presentation',
+        'media-services/scale-large',
+        'media-services/scale-small',
         'media-services/spreadsheet',
         'media-services/square',
         'media-services/text',
@@ -302,6 +304,7 @@ describe(name, () => {
         'sign-out',
         'star-filled',
         'star',
+        'switcher',
         'table',
         'task',
         'time',
@@ -365,12 +368,13 @@ describe(name, () => {
       it('icons are properly defined in bundle', () => {
         const bundleKeys = Object
           .keys(bundle)
-          .filter(key => key !== 'size');
+          .filter(key => key !== 'size' && key !== 'default');
 
         bundleKeys.should.be.deep.equal(Object
               .keys(components)
               .map(pathToDashed)
-              .map(x => iconNameToComponentName(x)));
+              .map(x => iconNameToComponentName(x))
+        );
 
         bundleKeys.forEach((key) => {
           expect(typeof bundle[key]).to.equal('function');

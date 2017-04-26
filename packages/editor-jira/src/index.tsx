@@ -2,22 +2,30 @@ import {
   AnalyticsHandler,
   analyticsService,
   baseKeymap,
-  BlockTypePlugin,
   Chrome,
-  ClearFormattingPlugin,
-  CodeBlockPlugin,
+  blockTypePlugins,
+  clearFormattingPlugins,
+  codeBlockPlugins,
+  hyperlinkPlugins,
+  mentionsPlugins,
+  rulePlugins,
+  textFormattingPlugins,
+  listsPlugins,
+  blockTypeStateKey,
+  clearFormattingStateKey,
+  codeBlockStateKey,
+  hyperlinkStateKey,
+  mentionsStateKey,
+  textFormattingStateKey,
+  listsStateKey,
   ContextName,
   EditorState,
   EditorView,
+  Schema,
   history,
-  HyperlinkPlugin,
   keymap,
-  ListsPlugin,
   mentionNodeView,
-  MentionsPlugin,
   ProviderFactory,
-  RulePlugin,
-  TextFormattingPlugin,
   TextSelection,
   version as coreVersion
 } from '@atlaskit/editor-core';
@@ -51,6 +59,7 @@ export interface Props {
   allowCodeBlock?: boolean;
   allowAdvancedTextFormatting?: boolean;
   allowBlockQuote?: boolean;
+  allowSubSup?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
 }
@@ -78,14 +87,15 @@ export default class Editor extends PureComponent<Props, State> {
         allowLinks: !!props.allowLinks,
         allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting,
         allowCodeBlock: !!props.allowCodeBlock,
-        allowBlockQuote: !!props.allowBlockQuote
+        allowBlockQuote: !!props.allowBlockQuote,
+        allowSubSup: !!props.allowSubSup
       }),
     };
 
     this.providerFactory = new ProviderFactory();
     this.providerFactory.setProvider('mentionProvider', props.mentionProvider);
 
-    analyticsService.handler = props.analyticsHandler || ((name) => {});
+    analyticsService.handler = props.analyticsHandler || ((name) => { });
   }
 
   /**
@@ -168,14 +178,13 @@ export default class Editor extends PureComponent<Props, State> {
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
 
-    const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
-    const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
-    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
-    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
-    const listsState = editorState && ListsPlugin.getState(editorState);
-    const mentionsState = editorState && MentionsPlugin.getState(editorState);
-    const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
-
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -234,14 +243,14 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc: parse(this.props.defaultValue || '', schema),
         plugins: [
-          ...( isSchemaWithLinks(schema) ? [ HyperlinkPlugin ] : [] ),
-          ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),
-          BlockTypePlugin,
-          ClearFormattingPlugin,
-          ...( isSchemaWithCodeBlock(schema) ? [ CodeBlockPlugin ] : [] ),
-          ListsPlugin,
-          RulePlugin,
-          TextFormattingPlugin,
+          ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
+          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
+          ...blockTypePlugins(schema as Schema<any, any>),
+          ...clearFormattingPlugins(schema as Schema<any, any>),
+          ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
+          ...listsPlugins(schema as Schema<any, any>),
+          ...rulePlugins(schema as Schema<any, any>),
+          ...textFormattingPlugins(schema as Schema<any, any>),
           history(),
           keymap(jiraKeymap),
           keymap(baseKeymap), // should be last :(
@@ -249,7 +258,7 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       if (context) {
-        const blockTypeState = BlockTypePlugin.getState(editorState);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
         blockTypeState.changeContext(context);
       }
 
@@ -274,7 +283,7 @@ export default class Editor extends PureComponent<Props, State> {
       analyticsService.trackEvent('atlassian.editor.start');
 
       if (isSchemaWithMentions(schema)) {
-        MentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       }
 
       this.setState({ editorView });

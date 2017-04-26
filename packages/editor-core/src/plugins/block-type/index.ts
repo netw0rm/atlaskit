@@ -1,6 +1,7 @@
 import {
   EditorState,
   EditorView,
+  Schema,
   Node,
   Plugin,
   PluginKey,
@@ -15,7 +16,6 @@ import {
 import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
-import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: BlockTypeState) => any;
 export type GroupedBlockTypes = BlockType[][];
@@ -97,14 +97,6 @@ export class BlockTypeState {
 
       this.update(this.state, true);
     }
-  }
-
-  focus(view): void {
-    view.dom.focus();
-  }
-
-  blur(view): void {
-    view.dom.blur();
   }
 
   private triggerOnChange() {
@@ -224,7 +216,6 @@ const plugin = new Plugin({
 
     const pluginState = stateKey.getState(view.state);
     pluginState.keymapHandler = keymapHandler(view, pluginState);
-    reconfigure(view, [inputRulePlugin(view.state.schema)]);
     return {};
   },
   props: {
@@ -234,5 +225,9 @@ const plugin = new Plugin({
   }
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;
 

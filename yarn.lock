@@ -846,10 +846,6 @@ babel-plugin-check-es2015-constants@^6.3.13:
   dependencies:
     babel-runtime "^6.0.0"
 
-babel-plugin-import-noop@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-import-noop/-/babel-plugin-import-noop-1.0.1.tgz#ceb9afa4006de68579fe676afc77dc1899a146eb"
-
 babel-plugin-incremental-dom@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-incremental-dom/-/babel-plugin-incremental-dom-3.4.0.tgz#f08e7856afbe6f17f866d8ca6eda977237795fb1"
@@ -5831,7 +5827,7 @@ pbkdf2@^3.0.3:
   dependencies:
     create-hmac "^1.1.2"
 
-performance-now@^0.2.0, performance-now@~0.2.0:
+performance-now@0.2.0, performance-now@^0.2.0, performance-now@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
@@ -6305,6 +6301,12 @@ querystring@0.2.0, querystring@^0.2.0:
 querystringify@0.0.x:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-0.0.4.tgz#0cf7f84f9463ff0ae51c4c4b142d95be37724d9c"
+
+raf-stub@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/raf-stub/-/raf-stub-2.0.0.tgz#1b2db30024e5407ebb655a795fcde0df048a4807"
+  dependencies:
+    performance-now "0.2.0"
 
 raf@^3.1.0:
   version "3.3.0"

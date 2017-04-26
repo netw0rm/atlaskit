@@ -5,6 +5,7 @@ import OutsideClickable from '../OutsideClickable';
 import Popper, { IPopper } from './../../popper';
 import * as styles from './styles';
 import { akEditorFloatingPanelZIndex } from '../../styles';
+export type Coordniates = { left: number, right: number, top: number, bottom: number };
 
 export interface Props {
   autoPosition?: boolean;
@@ -12,6 +13,7 @@ export interface Props {
   onOutsideClick?: () => void;
   target?: HTMLElement;
   spacing?: 'none';
+  onExtractStyle?: (state: any) => Coordniates | undefined;
 }
 
 export interface State {
@@ -22,6 +24,7 @@ export interface State {
 export default class FloatingToolbar extends PureComponent<Props, State> {
   state: State = {};
   popper?: IPopper;
+  content?: HTMLElement;
 
   componentDidMount() {
     this.applyPopper(this.props);
@@ -40,27 +43,25 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
 
   extractStyles = (state: any) => {
     if (state) {
-      const left = Math.round(state.offsets.popper.left);
-      const top = Math.round(state.offsets.popper.top);
-
+      const { onExtractStyle } = this.props;
+      const { left, top } = (onExtractStyle && onExtractStyle(state)) || state.offsets.popper;
       this.setState({
         position: state.offsets.popper.position,
-        transform: `translate3d(${left}px, ${top}px, 0px)`,
+        transform: `translate3d(${Math.round(left)}px, ${Math.round(top)}px, 0px)`,
       });
     }
   }
 
   private applyPopper(props: Props): void {
-    const { content } = this.refs;
     const target = props.target || ReactDOM.findDOMNode(this).parentElement!;
     const boundary = this.findBoundary(target);
 
-    if (target && boundary && content instanceof HTMLElement) {
+    if (target && boundary && this.content instanceof HTMLElement) {
       if (this.popper) {
         this.popper.destroy();
       }
 
-      this.popper = new Popper(target, content, {
+      this.popper = new Popper(target, this.content, {
         onCreate: this.extractStyles,
         onUpdate: this.extractStyles,
         placement: this.popperPlacement(),
@@ -98,7 +99,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
     return (
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
-          ref="content"
+          ref={ref => {this.content = ref;}}
           style={{ top: 0, left: 0, position, transform, padding, zIndex: akEditorFloatingPanelZIndex }}
           className={styles.container}
         >

@@ -18,7 +18,7 @@ class AnimatedBoxGroup extends PureComponent {
 
   render() {
     return (
-      <div className={storyStyles.locals.container}>
+      <div className={storyStyles.container}>
         <div>
           <AnimatedBox
             boxStyle="bold"
@@ -36,7 +36,7 @@ class AnimatedBoxGroup extends PureComponent {
             ref={n => (this.combinedBox = n)}
           >Combined</AnimatedBox>
         </div>
-        <div className={storyStyles.locals.centerContent}>
+        <div className={storyStyles.centerContent}>
           <button onClick={this.clickAll}>All</button>
         </div>
       </div>

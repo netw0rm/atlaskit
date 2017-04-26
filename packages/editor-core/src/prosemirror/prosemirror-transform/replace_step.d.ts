@@ -3,6 +3,10 @@ import { Step } from './';
 
 export class ReplaceStep extends Step {
   constructor(from: number, to: number, slice: Slice, structure?: boolean);
+  from: number;
+  to: number;
+  slice: Slice;
+  structure: boolean;
 }
 
 export class ReplaceAroundStep extends Step {

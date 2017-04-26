@@ -6,6 +6,7 @@ import {
   Plugin,
   PluginKey,
   Node,
+  ReplaceStep,
   Schema,
   Transaction,
 } from '../../prosemirror';
@@ -96,7 +97,7 @@ export class MediaPluginState {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
           // TODO: re-initialize pickers ?
-          this.popupPicker.setUploadParams(mediaProvider.uploadParams);
+          this.popupPicker!.setUploadParams(mediaProvider.uploadParams);
         });
       } else {
         this.allowsUploads = false;
@@ -473,8 +474,68 @@ function mediaPluginFactory(options: MediaPluginOptions) {
           return false;
         }
       }
+    },
+    appendTransaction(transactions, oldState, newState) {
+      const removeLastMediaTransaction = findRemoveLastMediaTransaction(transactions, oldState);
+
+      if (removeLastMediaTransaction) {
+        const { from } = removeLastMediaTransaction.steps[0] as ReplaceStep;
+        const tr = newState.tr.delete(from - 1, from + 1);
+
+        return tr;
+      }
     }
   });
+}
+
+/**
+ * Check transaction for media nodes being removed
+ * If this is the only media node inside mediaGroup
+ * we need to remove mediaGroup
+ */
+function findRemoveLastMediaTransaction(transactions: Transaction[], oldState: EditorState<any>): Transaction | undefined {
+  for (let i = 0; i < transactions.length; i++) {
+    const tr = transactions[i];
+    const { steps } = tr;
+
+    if (steps.length !== 1) {
+      continue;
+    }
+
+    // this should be a ReplaceStep
+    const transactionStep = steps[0];
+    if (!(transactionStep instanceof ReplaceStep)) {
+      continue;
+    }
+
+    // (from === to) means that we're not removing anything in this transaction
+    // 1 is the nodeSize of mediaGroup and it should be empty
+    if (transactionStep.from + 1 !== transactionStep.to) {
+      continue;
+    }
+
+    // slice in this transaction will add smth to the document
+    // this is not what we're searching for
+    if (transactionStep.slice.size) {
+      continue;
+    }
+
+    // okay, this is the only step in transaction
+    // it's replace step and we're removing smth
+    let mediaGroupNode;
+    oldState.doc.nodesBetween(transactionStep.from, transactionStep.to, node => {
+      if (node.type === oldState.schema.nodes.mediaGroup) {
+        mediaGroupNode = node;
+      }
+    });
+
+    // if there are more media nodes inside mediaGroup, skip
+    if (!mediaGroupNode || mediaGroupNode.childCount !== 1) {
+      continue;
+    }
+
+    return tr;
+  }
 }
 
 const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {

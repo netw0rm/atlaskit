@@ -8,6 +8,9 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "ak:component": {
+    "name": "Icon"
+  },
   "scripts": {
     "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.jsx",
     "generate-icon-exports": "node ./bin/generate-icon-exports.js",

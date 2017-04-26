@@ -8,6 +8,9 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "ak:component": {
+    "name": "Avatar"
+  },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/avatar; } || ../../node_modules/.bin/not-in-publish"
   },

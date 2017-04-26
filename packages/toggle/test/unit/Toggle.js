@@ -4,8 +4,8 @@ import { mount, shallow } from 'enzyme';
 import CloseIcon from 'ak-icon/glyph/cancel';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 
-import { ToggleStateless as Toggle } from '../src';
-import { IconWrapper, Input, Label } from '../src/styled';
+import { ToggleStateless as Toggle } from '../../src';
+import { IconWrapper, Input, Label } from '../../src/styled';
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 

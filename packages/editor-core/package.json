@@ -59,6 +59,7 @@
     "prosemirror-state": "^0.20.0",
     "prosemirror-transform": "^0.20.0",
     "prosemirror-view": "^0.20.3",
+    "codemirror": "^5.25.2",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },

@@ -23,3 +23,4 @@ export { mention, mentionNodeView } from './nodes/mention';
 export { listItem } from './nodes/list-item';
 export { panel } from './nodes/panel';
 export { text } from './nodes/text';
+export { codemirror } from './nodes/codemirror';

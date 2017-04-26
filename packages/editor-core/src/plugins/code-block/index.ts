@@ -9,6 +9,8 @@ import {
 } from '../../prosemirror';
 import * as commands from '../../commands';
 import keymapPlugin from './keymaps';
+import '!style!css!less!codemirror/lib/codemirror.css';
+import CodeMirror from '../../codemirror';
 
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
 export type StateChangeHandler = (state: CodeBlockState) => any;
@@ -19,6 +21,7 @@ export class CodeBlockState {
   supportedLanguages: string[];
   toolbarVisible: boolean = false;
   domEvent: boolean = false;
+  codemirrorEditor?: object;
 
   private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
@@ -107,12 +110,24 @@ const plugin = new Plugin({
       if (stored) {
         pluginState.update(newState, stored.docView, stored.domEvent);
       }
+
+      const { element } = pluginState;
+      if (element && !pluginState.codemirrorEditor) {
+        pluginState.codemirrorEditor = CodeMirror(function(cmNode) {
+          element.parentNode.replaceChild(cmNode, element);
+        }, {
+          value: element.innerText,
+          mode:  pluginState.language
+        });
+      }
+
       return pluginState;
     }
   },
   key: stateKey,
   view: (editorView: EditorView) => {
-    stateKey.getState(editorView.state).update(editorView.state, editorView.docView);
+    const pluginState = stateKey.getState(editorView.state);
+    pluginState.update(editorView.state, editorView.docView);
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
         stateKey.getState(view.state).update(view.state, view.docView);

@@ -32,7 +32,6 @@ pipelines:
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
-          - npm ls
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
           - yarn

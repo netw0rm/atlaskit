@@ -7,7 +7,7 @@ const stringify = obj => JSON.stringify(obj)
 
 module.exports = ({ components }) => `/* eslint-disable global-require, quote-props */
 const components = {${components.map(component => `
-  ${component.key}: {
+  '${component.key}': {
     description: '${component.pkg.description}',
     docs: ${component.docs ? `require('../../${component.key}/docs')` : 'false'},
     key: '${component.key}',
@@ -20,6 +20,7 @@ const components = {${components.map(component => `
     },
     version: '${component.pkg.version}',
     versions: ['${component.pkg.version}'], // TODO
+    storybooks: ['${component.pkg.version}'], // TODO
   },
 `).join('')}};
 

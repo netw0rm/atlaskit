@@ -20,7 +20,7 @@ import InstallIcon from '@atlaskit/icon/glyph/overview';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
-import DotIcon from '@atlaskit/icon/glyph/hipchat/media-attachment-count';
+import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 
 import reactIcon from '../../images/atlaskit-logo.png';
 import data from '../../data';
@@ -167,7 +167,7 @@ const ComponentNavItem = withRouter(({ componentKey, location }) => {
   return (
     <Link to={url} key={componentKey}>
       <NavItem
-        icon={<DotIcon size="small" label={`${component.name} icon`} />}
+        icon={<PackageIcon size="small" label={`${component.name} icon`} />}
         text={component.name}
         isSelected={isSelected}
       />

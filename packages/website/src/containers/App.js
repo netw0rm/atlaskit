@@ -4,7 +4,8 @@ import Helmet from 'react-helmet';
 
 import Page from '../components/Page';
 
-import ComponentSwitch from '../pages/ComponentSwitch';
+import Component from '../pages/Component';
+import Components from '../pages/Components';
 import Examples from '../pages/Examples';
 import Home from '../pages/Home';
 import NoMatch from '../pages/NoMatch';
@@ -39,7 +40,8 @@ export default class App extends PureComponent {
             <Route exact path="/" component={Home} />
             <Route path="/install" component={InstallGuide} />
             <Route path="/examples" component={Examples} />
-            <Route path="/components" component={ComponentSwitch} />
+            <Route exact path="/components" component={Components} />
+            <Route path="/components/:component" component={Component} />
             <Route component={NoMatch} />
           </Switch>
         </Page>

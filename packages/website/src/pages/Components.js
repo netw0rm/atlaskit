@@ -7,6 +7,9 @@ import Table from '@atlaskit/dynamic-table';
 
 import { Heading, Intro, Section } from '../components/Type';
 
+import components from '../data';
+const componentKeys = Object.keys(components);
+
 const head = {
   cells: [
     {
@@ -45,13 +48,6 @@ export default class Components extends PureComponent {
     header: PropTypes.node,
   }
 
-  isMaintainerFound = component => !!(component.maintainers.length)
-  isComponentFound = component => !!(component.name)
-  filteredComponents = component => !(
-    !this.isMaintainerFound(component)
-    && !this.isComponentFound(component)
-  )
-
   renderHeader = () => {
     const { header: Header, ...rest } = this.props;
 
@@ -60,30 +56,32 @@ export default class Components extends PureComponent {
 
   renderRow = (component) => {
     const {
-      description, packageName, packageNameWithoutOrg, maintainers, name, publishTime, version,
+      description, packageName, key, maintainers, name, status, version,
     } = component;
+
+    const publishTime = status.date;
 
     return {
       cells: [
         {
-          key: name,
+          key: 'name',
           content: (
             <RowCell>
-              <Link to={`/components/${packageNameWithoutOrg}`}>
+              <Link to={`/components/${key}`}>
                 {name}
               </Link>
             </RowCell>
           ),
         },
         {
-          key: description,
+          key: 'description',
           shouldTruncate: true,
           content: (
             <RowCell>{description}</RowCell>
           ),
         },
         {
-          key: publishTime.toString(),
+          key: 'publishTime',
           content: (
             <RowCell>
               <a href={`https://www.npmjs.com/package/${packageName}`} target="_new">
@@ -109,20 +107,17 @@ export default class Components extends PureComponent {
     };
   }
 
-  renderContent = () => {
-    const { components } = this.props;
-    return (
-      <TableWrapper>
-        <Table
-          head={head}
-          rows={components.filter(this.filteredComponents).map(c => this.renderRow(c))}
-          isFixedSize
-          defaultSortKey="name"
-          defaultSortOrder="ASC"
-        />
-      </TableWrapper>
-    );
-  }
+  renderContent = () => (
+    <TableWrapper>
+      <Table
+        head={head}
+        rows={componentKeys.map(key => this.renderRow(components[key]))}
+        isFixedSize
+        defaultSortKey="name"
+        defaultSortOrder="ASC"
+      />
+    </TableWrapper>
+  );
 
   render() {
     const Header = this.renderHeader;

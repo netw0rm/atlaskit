@@ -10,6 +10,7 @@ import Dropdown from '@atlaskit/dropdown-menu';
 import { Grid, GridColumn } from '@atlaskit/page';
 import { akColorN80, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
+import { getStorybookURL } from '../utils';
 import data from '../data';
 import NoMatch from '../pages/NoMatch';
 import Docs from '../components/ComponentDocs';
@@ -25,21 +26,20 @@ const MetaItem = ({ href, label, summary }) => (
   </DI>
 );
 
-const TEMP_STATIC_VERSIONS = ['1.0.16', '1.0.13', '1.0.12', '1.0.11', '1.0.10', '1.0.9', '1.0.8', '1.0.7', '1.0.6', '1.0.5', '1.0.4', '1.0.3', '1.0.2', '1.0.0'];
-const Header = ({ name, pkg, storybookUrl }) => (
+const Header = ({ component }) => (
   <Title>
     <TitleBar>
-      <Heading style={{ marginTop: 0 }}>{name}</Heading>
+      <Heading style={{ marginTop: 0 }}>{component.name}</Heading>
       <ButtonGroup>
-        <Button href={`${storybookUrl}/${pkg.version}/`} target="_new">
+        <Button href={getStorybookURL(component)} target="_blank">
           Storybook
         </Button>
         <Dropdown
           items={[{
             heading: 'Versions',
-            items: TEMP_STATIC_VERSIONS.map(v => ({
+            items: component.versions.map(v => ({
               content: v,
-              href: `${storybookUrl}/${v}/`,
+              href: getStorybookURL(component, v),
             })),
             target: '_blank',
           }]}
@@ -49,75 +49,64 @@ const Header = ({ name, pkg, storybookUrl }) => (
       </ButtonGroup>
     </TitleBar>
     <Intro>
-      {pkg.description}
+      {component.description}
     </Intro>
   </Title>
 );
 
-const MetaData = ({ pkg, status }) => {
-  const tag = pkg.name.replace('@atlaskit/', '');
-
-  return (
-    <Meta>
-      <MetaItem
-        label="Install"
-        summary={<code>yarn add {pkg.name}</code>}
-      />
-      <MetaItem
-        href={`https://www.npmjs.com/package/${pkg.name}`}
-        label="Docs"
-        summary="Documentation on NPM"
-      />
-      <MetaItem
-        href={`https://bitbucket.org/atlassian/atlaskit/src/master/packages/${tag}`}
-        label="Source"
-        summary="Bitbucket"
-      />
-      <MetaItem
-        label="Version"
-        summary={(
-          <span>
-            <a href={`https://npmjs.com/package/${pkg.name}`}>{pkg.version}</a>
-            <time dateTime={status.date}> {status.date.toLocaleDateString()}</time>
-          </span>
-        )}
-      />
-      <MetaItem
-        href={`https://unpkg.com/${tag}/dist`}
-        label="Bundle"
-        summary="unpkg.com"
-      />
-      <MetaItem
-        label={`Maintainer${pkg.maintainers.length > 1 ? 's' : ''}`}
-        summary={pkg.maintainers.map(m => m.name).join(', ')}
-      />
-    </Meta>
-  );
-};
+const MetaData = ({ component }) => (
+  <Meta>
+    <MetaItem
+      label="Install"
+      summary={<code>yarn add {component.packageName}</code>}
+    />
+    <MetaItem
+      href={`https://www.npmjs.com/package/${component.packageName}`}
+      label="Docs"
+      summary="Documentation on NPM"
+    />
+    <MetaItem
+      href={`https://bitbucket.org/atlassian/atlaskit/src/master/packages/${component.key}`}
+      label="Source"
+      summary="Bitbucket"
+    />
+    <MetaItem
+      label="Version"
+      summary={(
+        <span>
+          <a href={`https://npmjs.com/package/${component.packageName}`}>{component.version}</a>
+          <time dateTime={component.status.date}>
+            {' '}{component.status.date.toLocaleDateString()}
+          </time>
+        </span>
+      )}
+    />
+    <MetaItem
+      href={`https://unpkg.com/${component.packageName}/dist`}
+      label="Bundle"
+      summary="unpkg.com"
+    />
+    <MetaItem
+      label={`Maintainer${component.maintainers.length > 1 ? 's' : ''}`}
+      summary={component.maintainers.map(m => m.name).join(', ')}
+    />
+  </Meta>
+);
 
 export default ({ match }) => {
   const component = data[match.params.component];
 
   if (!component) return <Route component={NoMatch} />;
 
-  const storybookUrl = `https://aui-cdn.atlassian.com/atlaskit/stories/${component.package.name}`;
-
   return (
     <Grid spacing="comfortable">
       <GridColumn small={0} medium={1} />
       <GridColumn small={12} medium={10}>
         <Helmet title={component.name}>
-          <meta name="description" content={component.package.description} />
+          <meta name="description" content={component.description} />
         </Helmet>
-        <Header
-          name={component.name}
-          pkg={component.package}
-          storybookUrl={storybookUrl}
-        />
-        <MetaData
-          status={component.status}
-          pkg={component.package}
-        />
+        <Header component={component} />
+        <MetaData component={component} />
         <Main>
           <Docs component={component} />
         </Main>
@@ -129,7 +118,7 @@ export default ({ match }) => {
 
 // <dt>Version</dt>
 // <dd>
-//   <a href={`https://npmjs.com/package/${pkg.name}`}>{data.version}</a>
+//   <a href={`https://npmjs.com/package/${component.packageName}`}>{data.version}</a>
 //   {data.npmInfo.isPublished ? (
 //     <span style={{ paddingLeft: 4 }}>
 //       (<RelativeDate iso={data.npmInfo.publishTime} />)

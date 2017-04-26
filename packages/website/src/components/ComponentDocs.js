@@ -6,14 +6,17 @@ import styled from 'styled-components';
 
 import Example from './ComponentExample';
 
+import { getStorybookURL } from '../utils';
+
 const Title = styled.h2`
   margin-top: 30px !important;
   margin-bottom: 10px;
 `;
 
-const ComponentDocs = ({ component: { docs } }) => {
-  if (typeof docs === 'function') {
-    const Docs = docs;
+const ComponentDocs = ({ component }) => {
+  const { docs } = component;
+  if (docs && typeof docs.default === 'function') {
+    const Docs = docs.default;
     return <Docs />;
   }
   if (typeof docs === 'object') {
@@ -26,11 +29,19 @@ const ComponentDocs = ({ component: { docs } }) => {
             {docs.examples.map((eg, i) => <Example key={i} {...eg} />)}
           </div>
         ) : null}
-        <DynamicProps componentSrc={docs.componentSource} />
+        {typeof docs.componentSource === 'string'
+          ? <DynamicProps componentSrc={docs.componentSource} />
+          : null}
       </div>
     );
   }
-  return <div>No Docs Yet</div>;
+  return (
+    <div>
+      See the <a href={getStorybookURL(component)} target="_blank">
+        {component.name} Storybook
+      </a> for usage and docs.
+    </div>
+  );
 };
 
 export default ComponentDocs;

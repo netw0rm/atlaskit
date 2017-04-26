@@ -81,7 +81,7 @@ describe('@atlaskit/editor-cq', () => {
   describe('@atlaskit/editor-cq/schema unsupported nodes', () => {
     describe('parse HTML', () => {
       it('should work for unsupported block nodes', () => {
-        const doc = fromHTML('<div data-unsupported="block" data-unsupported-block-cxhtml="foobar"/>', schema);
+        const doc = fromHTML('<div data-node-type="unsupportedBlock" data-unsupported="block" data-unsupported-block-cxhtml="foobar"/>', schema);
         const unsupportedBlockNode = doc.firstChild!;
 
         expect(unsupportedBlockNode.type.spec).to.equal(unsupportedBlock);
@@ -89,7 +89,7 @@ describe('@atlaskit/editor-cq', () => {
       });
 
       it('should work for unsupported inline nodes', () => {
-        const doc = fromHTML('<div data-unsupported="inline" data-unsupported-inline-cxhtml="foobar"/>', schema);
+        const doc = fromHTML('<div data-node-type="unsupportedInline" data-unsupported="inline" data-unsupported-inline-cxhtml="foobar"/>', schema);
         const paragraph = doc.firstChild!;
         const unsupportedInlineNode = paragraph.firstChild!;
 

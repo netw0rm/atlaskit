@@ -1,9 +1,11 @@
-import { name } from '../package.json';
-import * as exports from '../src';
+import sinon from 'sinon';
+
+import { name } from '../../package.json';
+import * as exports from '../../src';
 import {
     computeBooleanValue, setBooleanAttribute,
     computeEnumValue, setEnumAttribute,
-} from '../src/attributes';
+} from '../../src/attributes';
 
 // TODO move these tests into separate files and give them appropriate names.
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { waitUntil } from '@atlaskit/util-common-test';
+import sinon from 'sinon';
 
-import Spinner from '../src';
-import Container from '../src/styled/Container';
-import Dash from '../src/styled/Dash';
+import Spinner from '../../src';
+import Container from '../../src/styled/Container';
+import Dash from '../../src/styled/Dash';
 
 // we use this to know when the spinner is visible (because it has a time out
 // before showing now)
@@ -20,30 +21,30 @@ describe('Spinner', () => {
     const wrapper = mount(<Spinner />);
 
     // active is equivalent to Prop `!isCompleting`
-    wrapper.prop('isCompleting').should.equal(false);
+    expect(wrapper.prop('isCompleting')).to.equal(false);
   });
 
   it('should be hidden by default', () => {
     const wrapper = mount(<Spinner />);
-    wrapper.find(Container).prop('hidden').should.equal(true);
+    expect(wrapper.find(Container).prop('hidden')).to.equal(true);
   });
 
   it('should remove the hidden state after some time', () => {
     const wrapper = mount(<Spinner />);
 
     return waitUntil(() => spinnerIsVisible(wrapper)).then(() =>
-      expect(wrapper.find(Container).prop('hidden').should.equal(false))
+      expect(expect(wrapper.find(Container).prop('hidden')).to.equal(false))
     );
   });
 
   describe('isCompleting prop', () => {
     it('should remove the active prop from Container when set to true', () => {
       const wrapper = mount(<Spinner isCompleting />);
-      wrapper.find(Container).prop('active').should.equal(false);
+      expect(wrapper.find(Container).prop('active')).to.equal(false);
     });
     it('should remove the active prop from Dash when set to true', () => {
       const wrapper = mount(<Spinner isCompleting />);
-      wrapper.find(Dash).prop('active').should.equal(false);
+      expect(wrapper.find(Dash).prop('active')).to.equal(false);
     });
   });
 

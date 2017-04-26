@@ -3,8 +3,10 @@ import { shallow, mount } from 'enzyme';
 import InlineDialog from '@atlaskit/inline-dialog';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Spinner from '@atlaskit/spinner';
-import FieldBaseSmart, { FieldBase } from '../src';
-import styles from '../src/styles.less';
+import sinon from 'sinon';
+
+import FieldBaseSmart, { FieldBase } from '../../src';
+import styles from '../../src/styles.less';
 
 const defaultProps = {
   onFocus: () => {},

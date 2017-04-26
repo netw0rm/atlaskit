@@ -1,12 +1,12 @@
 import 'akutil-polyfills';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import { getMonthName } from '../src/util';
+import { getMonthName } from '../../src/util';
 
-import { name } from '../package.json';
-import { AkCalendar } from '../src';
-import { Announcer, MonthAndYear } from '../src/styled';
-import DateComponent from '../src/Date';
+import { name } from '../../package.json';
+import { AkCalendar } from '../../src';
+import { Announcer, MonthAndYear } from '../../src/styled';
+import DateComponent from '../../src/Date';
 
 const now = new Date();
 const nowMonth = now.getMonth() + 1;

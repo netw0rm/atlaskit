@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Base from 'ak-field-base';
+import sinon from 'sinon';
 
-import Radio from '../src/Radio';
-import AkFieldRadioGroup from '../src/RadioGroup';
-import { name } from '../package.json';
+import Radio from '../../src/Radio';
+import AkFieldRadioGroup from '../../src/RadioGroup';
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('AkFieldRadioGroup', () => {

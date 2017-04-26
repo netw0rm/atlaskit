@@ -2,9 +2,9 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
 import Button from '@atlaskit/button';
-import AkPagination, { Pagination } from '../src';
+import AkPagination, { Pagination } from '../../src';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('stateless', () => {

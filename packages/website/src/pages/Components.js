@@ -8,6 +8,7 @@ import Table from '@atlaskit/dynamic-table';
 import { Heading, Intro, Section } from '../components/Type';
 
 import components from '../data';
+
 const componentKeys = Object.keys(components);
 
 const head = {

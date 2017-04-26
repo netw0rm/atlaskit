@@ -37,7 +37,7 @@ const ComponentDocs = ({ component }) => {
   }
   return (
     <div>
-      See the <a href={getStorybookURL(component)} target="_blank">
+      See the <a href={getStorybookURL(component)} target="_blank" rel="noopener noreferrer">
         {component.name} Storybook
       </a> for usage and docs.
     </div>

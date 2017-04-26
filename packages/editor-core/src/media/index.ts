@@ -10,6 +10,10 @@ export interface MediaState {
   fileMimeType?: string;
   progress?: number;
   thumbnail?: Blob;
+  error?: {
+    name: string,
+    description: string
+  };
 }
 
 export interface MediaStateManager {

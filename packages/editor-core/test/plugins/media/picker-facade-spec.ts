@@ -118,11 +118,26 @@ describe('Media PickerFacade', () => {
     });
   });
 
-
   describe('proxies events to MediaStateManager', () => {
     it('for upload starting', () => {
       const cb = sinon.spy();
       stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-start', {
+        file: testFileData
+      });
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        status: 'uploading',
+        fileName: testFileData.name,
+        fileSize: testFileData.size,
+        fileType: testFileData.type,
+      })).to.eq(true);
+    });
+
+    it('for new uploads via onNewMedia()', () => {
+      const cb = sinon.spy();
+      facade!.onNewMedia(cb);
+
       mockPicker.__triggerEvent('upload-start', {
         file: testFileData
       });
@@ -176,6 +191,30 @@ describe('Media PickerFacade', () => {
         id: testTemporaryFileId,
         publicId: testFilePublicId,
         status: 'processing',
+        fileName: testFileData.name,
+        fileSize: testFileData.size,
+        fileType: testFileData.type,
+      })).to.eq(true);
+    });
+
+    it('for upload error', () => {
+      const cb = sinon.spy();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-error', {
+        file: { ...testFileData, publicId: testFilePublicId },
+        error: {
+          name: 'some-error',
+          description: 'something went wrong'
+        }
+      });
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        publicId: testFilePublicId,
+        status: 'error',
+        error: {
+          name: 'some-error',
+          description: 'something went wrong'
+        },
         fileName: testFileData.name,
         fileSize: testFileData.size,
         fileType: testFileData.type,

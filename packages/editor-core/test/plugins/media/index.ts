@@ -1,3 +1,4 @@
+import { defaultCollectionName } from './../../../../media-test-helpers/src/collectionNames';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -6,6 +7,7 @@ import {
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
+  DefaultMediaStateManager,
 } from '../../../src';
 import {
   blockquote,
@@ -26,21 +28,24 @@ chai.use(chaiPlugin);
 
 describe('Media plugin', () => {
   const fixture = fixtures();
-  const resolvedProvider = storyMediaProviderFactory();
+  const stateManager = new DefaultMediaStateManager();
+  const defaultCollectionName = 'media-plugin-mock-collection';
+  const resolvedProvider = storyMediaProviderFactory(defaultCollectionName, stateManager);
+  const testFileId = `temporary:${Math.round(Math.random() * 1000)}`;
 
   const providerFactory = new ProviderFactory();
   providerFactory.setProvider('mediaProvider', resolvedProvider);
 
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor({
     doc,
-    plugins: mediaPluginFactory(defaultSchema, { providerFactory, behavior: 'default' }),
+    plugins: mediaPluginFactory(defaultSchema, { providerFactory, behavior: 'default', uploadErrorHandler }),
     nodeViews: {
       media: mediaNodeView(providerFactory)
     },
     place: fixture()
   });
 
-  const insertFile = (editorView: any, pluginState: MediaPluginState, id = 'mock') => {
+  const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
     const [, transaction ] = pluginState.insertFile({ id }, 'mock-collection');
     editorView.dispatch(transaction);
   };
@@ -58,7 +63,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p('text'),
-        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })
+        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })
       )
     ));
   });
@@ -71,7 +76,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         h1('text'),
-        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })
+        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })
       )
     ));
   });
@@ -84,7 +89,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(blockquote(
         p('text'),
-        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' }))
+        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' }))
       ))
     );
   });
@@ -97,7 +102,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         code_block()('text'),
-        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })
+        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })
       )
     ));
   });
@@ -105,7 +110,7 @@ describe('Media plugin', () => {
   it('should prepend media node to existing media group', () => {
     const { editorView, pluginState } = editor(doc(
       p('text{<>}'),
-      mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
+      mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })),
     ));
 
     insertFile(editorView, pluginState, 'mock2');
@@ -115,7 +120,7 @@ describe('Media plugin', () => {
         p('text{<>}'),
         mediaGroup(
           media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
-          media({ id: 'mock', type: 'file', collection: 'mock-collection' }),
+          media({ id: testFileId, type: 'file', collection: 'mock-collection' }),
         )
       )
     );
@@ -128,7 +133,7 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
-        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
+        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })),
         p(),
       )
     );
@@ -141,7 +146,7 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
-        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
+        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })),
         p()
       )
     );
@@ -155,131 +160,69 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
-        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
+        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })),
       )
     );
   });
 
-  // it('allows an image to be added at the current collapsed selection', () => {
-  //   const { editorView, pluginState } = editor(doc(p('{<>}')));
+  it('should call uploadErrorHandler on upload error', async () => {
+    const handler = sinon.spy();
+    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
 
-  //   pluginState.addImage(editorView)({ src: testImgSrc });
+    await resolvedProvider;
 
-  //   expect(editorView.state.doc).to.deep.equal(doc(p(testImg())));
-  // });
+    insertFile(editorView, pluginState);
 
-  // it('should get current state immediately once subscribed', () => {
-  //   const { pluginState } = editor(doc(p('{<>}', testImg())));
-  //   const spy = sinon.spy();
-  //   pluginState.subscribe(spy);
+    stateManager.updateState(testFileId, {
+      id: testFileId,
+      status: 'error',
+      error: {
+        name: 'some-error',
+        description: 'something went wrong'
+      }
+    });
 
-  //   expect(spy.callCount).to.equal(1);
-  //   expect(pluginState).to.have.property('active', false);
-  //   expect(pluginState).to.have.property('enabled', true);
-  //   expect(pluginState).to.have.property('src', undefined);
-  //   expect(pluginState).to.have.property('element', undefined);
-  // });
+    expect(handler.calledOnce).to.eq(true, 'uploadErrorHandler should be called once per failed upload');
+    expect(handler.calledWithExactly({
+      id: testFileId,
+      status: 'error',
+      error: {
+        name: 'some-error',
+        description: 'something went wrong'
+      }
+    })).to.eq(true, 'uploadErrorHandler should be called with MediaState containing \'error\' status');
+  });
 
-  // it('emits a change when an image is selected', () => {
-  //   const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-  //   const spy = sinon.spy();
-  //   pluginState.subscribe(spy);
+  // TODO: re-enable after merging https://bitbucket.org/atlassian/atlaskit/pull-requests/2496/ed-1536-remove-empty-mediagroup/diff#comment-35691560
+  it.skip('should remove failed uploads from the document', async () => {
+    const handler = sinon.spy();
+    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
 
-  //   setNodeSelection(editorView, sel);
+    await resolvedProvider;
 
-  //   expect(spy.callCount).to.equal(2);
-  // });
+    insertFile(editorView, pluginState);
 
-  // it('does not emits a change when unsubscribe', () => {
-  //   const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-  //   const spy = sinon.spy();
-  //   pluginState.subscribe(spy);
-  //   pluginState.unsubscribe(spy);
+    stateManager.updateState(testFileId, {
+      id: testFileId,
+      status: 'uploading'
+    });
 
-  //   setNodeSelection(editorView, sel);
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p(),
+        mediaGroup(media({ id: testFileId, type: 'file', collection: defaultCollectionName })),
+      )
+    );
 
-  //   expect(spy.callCount).to.equal(1);
-  // });
+    stateManager.updateState(testFileId, {
+      id: testFileId,
+      status: 'error'
+    });
 
-  // it('does not emit multiple changes when an image is not selected', () => {
-  //   const { editorView, pluginState, refs } = editor(doc(p('{<>}t{a}e{b}st', testImg())));
-  //   const { a, b } = refs;
-  //   const spy = sinon.spy();
-  //   pluginState.subscribe(spy);
-
-  //   setTextSelection(editorView, a);
-  //   setTextSelection(editorView, b);
-
-  //   expect(spy.callCount).to.equal(1);
-  // });
-
-  // it('does not emit multiple changes when an image is selected multiple times', () => {
-  //   const { pluginState } = editor(doc(p('{<>}', testImg())));
-  //   const spy = sinon.spy();
-
-  //   pluginState.subscribe(spy);
-
-  //   expect(spy.callCount).to.equal(1);
-  // });
-
-  // it('emits a change event when selection leaves an image', () => {
-  //   const { editorView, pluginState, sel, refs } = editor(doc(p('{a}test{<>}', testImg())));
-  //   const { a } = refs;
-  //   const spy = sinon.spy();
-  //   setNodeSelection(editorView, sel);
-  //   pluginState.subscribe(spy);
-
-  //   setTextSelection(editorView, a);
-
-  //   expect(spy.callCount).to.equal(2);
-  // });
-
-  // it('permits an image to be added when an image is selected', () => {
-  //   const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-  //   setNodeSelection(editorView, sel);
-
-  //   pluginState.addImage(editorView)({ src: testImgSrc });
-
-  //   expect(editorView.state.doc).to.deep.equal(doc(p(testImg(), testImg())));
-  // });
-
-  // it('permits an image to be added when there is selected text', () => {
-  //   const { editorView, pluginState } = editor(doc(p('{<}hello{>}')));
-
-  //   pluginState.addImage(editorView)({ src: testImgSrc });
-
-  //   expect(editorView.state.doc).to.deep.equal(doc(p('hello', testImg())));
-  // });
-
-  // it('does not permit an image to be added when the state is disabled', () => {
-  //   const { editorView, pluginState } = editor(doc(code_block()('{<>}')));
-
-  //   pluginState.addImage(editorView)({ src: testImgSrc });
-
-  //   expect(editorView.state.doc).to.deep.equal(doc(code_block()()));
-  // });
-
-  // it('does not permit an image to be removed at a collapsed text selection', () => {
-  //   const { editorView, pluginState } = editor(doc(p('test{<>}')));
-
-  //   pluginState.removeImage(editorView);
-  // });
-
-  // it('can remove a selected image', () => {
-  //   const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-  //   setNodeSelection(editorView, sel);
-
-  //   pluginState.removeImage(editorView);
-
-  //   expect(editorView.state.doc).to.deep.equal(doc(p()));
-  // });
-
-  // it('can update a selected image', () => {
-  //   const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-  //   setNodeSelection(editorView, sel);
-
-  //   pluginState.updateImage(editorView)({ src: 'atlassian.png' });
-
-  //   expect(editorView.state.doc).to.deep.equal(doc(p(img({ src: 'atlassian.png' }))));
-  // });
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p()
+      )
+    );
+  });
 });

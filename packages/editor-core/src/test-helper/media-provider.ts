@@ -1,3 +1,4 @@
+import { MediaStateManager } from './../media/index';
 import { MediaProvider, MediaContextConfig } from '../media';
 import {
   defaultClientId,
@@ -6,8 +7,9 @@ import {
   StoryBookTokenProvider
 } from '@atlaskit/media-test-helpers';
 
-export function storyMediaProviderFactory (collection = defaultCollectionName) {
+export function storyMediaProviderFactory (collection = defaultCollectionName, stateManager?: MediaStateManager) {
   return Promise.resolve<MediaProvider>({
+    stateManager,
     uploadParams: {
       collection: collection
     },

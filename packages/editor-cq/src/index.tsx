@@ -35,7 +35,8 @@ import {
   Plugin,
   mentionNodeView,
   ProviderFactory,
-  MediaPluginState
+  MediaPluginState,
+  MediaState
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -55,6 +56,7 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
+  uploadErrorHandler?: (state: MediaState) => void;
   analyticsHandler?: AnalyticsHandler;
   mediaProvider?: Promise<MediaProvider>;
   mentionProvider?: Promise<MentionProvider>;
@@ -87,7 +89,7 @@ export default class Editor extends PureComponent<Props, State> {
     this.providerFactory = new ProviderFactory();
     analyticsService.handler = props.analyticsHandler || ((name) => {});
 
-    const { mentionProvider, mediaProvider } = props;
+    const { mentionProvider, mediaProvider, uploadErrorHandler } = props;
 
     if (mentionProvider) {
       this.mentionProvider = mentionProvider;
@@ -99,6 +101,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     this.mediaPlugins = mediaPluginFactory(schema, {
+      uploadErrorHandler,
       providerFactory: this.providerFactory,
       behavior: 'default'
     });

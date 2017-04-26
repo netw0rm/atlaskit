@@ -35,6 +35,7 @@ export type PickerEventError = {
 
 export default class PickerFacade {
   private picker: any;
+  private onStartListeners: Array<(state: MediaState) => void> = [];
 
   constructor(
     pickerType: string,
@@ -56,6 +57,7 @@ export default class PickerFacade {
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
     picker.on('upload-status-update', this.handleUploadStatusUpdate);
     picker.on('upload-processing', this.handleUploadProcessing);
+    picker.on('upload-error', this.handleUploadError);
     picker.on('upload-end', this.handleUploadEnd);
 
     if (picker.activate) {
@@ -89,33 +91,8 @@ export default class PickerFacade {
     this.picker.show && this.picker.show();
   }
 
-  onStart(cb: (state: MediaState) => any) {
-    this.picker.addListener('upload-start', (event: any) => {
-      const { file } = event;
-
-      cb({
-        id: `temporary:${event.file.id}`,
-        status: 'uploading',
-        fileName: file.name as string,
-        fileSize: file.size as number,
-        fileType: file.type as string,
-      });
-    });
-  }
-
-  onEnd(cb: (state: MediaState) => any) {
-    this.picker.addListener('upload-end', (event: any) => {
-      const { file } = event;
-
-      cb({
-        id: `temporary:${event.file.id}`,
-        status: 'ready',
-        publicId: file.publicId as string,
-        fileName: file.name as string,
-        fileSize: file.size as number,
-        fileType: file.type as string,
-      });
-    });
+  onNewMedia(cb: (state: MediaState) => any) {
+    this.onStartListeners.push(cb);
   }
 
   private buildPickerConfigFromContext(uploadParams: UploadParams, context: ContextConfig) {
@@ -139,14 +116,16 @@ export default class PickerFacade {
   private handleUploadStart = (event: PickerEvent) => {
     const tempId = `temporary:${event.file.id}`;
     const { file } = event;
-
-    this.stateManager.updateState(tempId, {
+    const state = {
       id: tempId,
       status: 'uploading',
       fileName: file.name as string,
       fileSize: file.size as number,
       fileType: file.type as string,
-    });
+    };
+
+    this.stateManager.updateState(tempId, state as MediaState);
+    this.onStartListeners.forEach(cb => cb.call(cb, state));
   }
 
   private handleUploadStatusUpdate = (event: PickerEvent) => {
@@ -171,6 +150,21 @@ export default class PickerFacade {
       id: tempId,
       publicId: file.publicId as string,
       status: 'processing',
+      fileName: file.name as string,
+      fileSize: file.size as number,
+      fileType: file.type as string,
+    });
+  }
+
+  private handleUploadError = (event: PickerEvent) => {
+    const tempId = `temporary:${event.file.id}`;
+    const { file, error } = event;
+
+    this.stateManager.updateState(tempId, {
+      id: tempId,
+      publicId: file.publicId as string,
+      status: 'error',
+      error: error ? { description: error!.description, name: error!.name } : undefined,
       fileName: file.name as string,
       fileSize: file.size as number,
       fileType: file.type as string,

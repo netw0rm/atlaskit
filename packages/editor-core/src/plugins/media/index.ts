@@ -16,7 +16,7 @@ import TemporaryNodesList from './temporary-nodes-list';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
 
-import { MediaPluginOptions, MediaPluginBehavior } from './media-plugin-options';
+import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error'];
@@ -30,19 +30,19 @@ export class MediaPluginState {
   public allowsPastingLinks: boolean = false;
   public stateManager: MediaStateManager;
 
+  private options: MediaPluginOptions;
   private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private temporaryMediaNodes = new TemporaryNodesList();
   private useDefaultStateManager = true;
   private destroyed = false;
-  private behavior: MediaPluginBehavior;
   private mediaProvider: MediaProvider;
   private popupPicker: PickerFacade;
   private dropzonePicker: PickerFacade;
   private clipboardPicker: PickerFacade;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
-    this.behavior = options.behavior;
+    this.options = options;
 
     const { nodes } = state.schema;
 
@@ -141,6 +141,8 @@ export class MediaPluginState {
     const { view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
+
+    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
 
     const node = state.schema.nodes.media!.create({
       id,
@@ -319,8 +321,7 @@ export class MediaPluginState {
     const dropzonePicker = this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager);
 
     [ popupPicker, dropzonePicker, clipboardPicker ].forEach(picker => {
-      picker.onStart(this.handleNewMediaPicked);
-      picker.onEnd(this.handleNewMediaPublished);
+      picker.onNewMedia(this.handleNewMediaPicked);
     });
   }
 
@@ -336,8 +337,24 @@ export class MediaPluginState {
     view.dispatch(transaction);
   }
 
-  private handleNewMediaPublished = (state: MediaState) => {
-    this.replaceTemporaryMediaNodes(state.id, state.publicId!);
+  private handleMediaState = (state: MediaState) => {
+    switch (state.status) {
+      case 'error':
+        // TODO: we would like better error handling and retry support here.
+        this.removeTemporaryMediaNodes(state.id);
+
+        const { uploadErrorHandler } = this.options;
+
+        if (uploadErrorHandler) {
+          uploadErrorHandler(state);
+        }
+        break;
+
+      case 'ready':
+        this.stateManager.unsubscribe(state.id, this.handleMediaState);
+        this.replaceTemporaryMediaNodes(state.id, state.publicId!);
+    }
+
   }
 
   private notifyPluginStateSubscribers = () => {
@@ -370,6 +387,26 @@ export class MediaPluginState {
       fileMimeType && (newNode.fileMimeType = fileMimeType);
 
       view.dispatch(view.state.tr.replaceWith(pos, pos + 1, newNode));
+    });
+
+    temporaryMediaNodes.delete(tempId);
+  }
+
+  private removeTemporaryMediaNodes = (tempId: string) => {
+    const { view, temporaryMediaNodes } = this;
+
+    if (!view) {
+      return;
+    }
+
+    temporaryMediaNodes.get(tempId).forEach((node: PositionedNode) => {
+      const pos = node.getPos && node.getPos();
+
+      if (!pos || pos < 1) {
+        return;
+      }
+
+      view.dispatch(view.state.tr.delete(pos, pos + 1, ));
     });
 
     temporaryMediaNodes.delete(tempId);

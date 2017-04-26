@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { borderRadius } from '@atlaskit/media-ui';
+import { borderRadius } from '../../styles';
 
 export const ProgressWrapper = styled.div`
   ${borderRadius}

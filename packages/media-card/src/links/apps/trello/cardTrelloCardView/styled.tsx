@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { akColorN300 } from '@atlaskit/util-shared-styles';
 
-import { size, ellipsis } from '@atlaskit/media-ui';
+import { size, ellipsis } from '../../../../styles';
 
 export const Title = styled.div`
   user-select: text;

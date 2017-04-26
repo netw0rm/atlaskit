@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import { akColorN500 } from '@atlaskit/util-shared-styles';
-import { Root, centerX, borderRadius, size, center } from '@atlaskit/media-ui';
+import { Root, centerX, borderRadius, size, center } from '../../styles';
 
 export const Wrapper = styled(Root)`
   display: flex;

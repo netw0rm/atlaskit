@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {size} from '@atlaskit/media-ui';
+import {size} from '../../styles';
 
 export const FileTypeIcon = styled.div`
   float: left;

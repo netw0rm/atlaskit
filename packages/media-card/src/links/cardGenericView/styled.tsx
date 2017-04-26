@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import { akColorN30, akColorN70, akColorN300 } from '@atlaskit/util-shared-styles';
-import { size, ellipsis, antialiased } from '@atlaskit/media-ui';
+import { size, ellipsis, antialiased } from '../../styles';
 
 export const Title = styled.div`
   ${ellipsis('100%')}

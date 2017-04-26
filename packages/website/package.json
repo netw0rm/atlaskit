@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "description": "The AtlasKit Website",
   "scripts": {
-    "build": "NODE_ENV=production webpack -p",
-    "start": "webpack-dev-server"
+    "build": "yarn run build-data && NODE_ENV=production webpack -p",
+    "build-data": "node ./build",
+    "start": "yarn run build-data && webpack-dev-server"
   },
   "dependencies": {
     "@atlaskit/button": "^1.0.16",

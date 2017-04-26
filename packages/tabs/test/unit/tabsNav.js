@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import chai from 'chai';
 import { shallow } from 'enzyme';
+import sinon from 'sinon';
 
-import TabsNav from '../src/internal/TabsNav';
-import styles from '../src/styles.less';
-import { name } from '../package.json';
+import TabsNav from '../../src/internal/TabsNav';
+import styles from '../../src/styles.less';
+import { name } from '../../package.json';
 import { sampleTabs } from './_constants';
 
 const { expect } = chai;

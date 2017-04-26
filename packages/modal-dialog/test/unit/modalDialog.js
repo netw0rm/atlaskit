@@ -1,28 +1,29 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import sinon from 'sinon';
 
-import ModalDialog from '../src';
-import styles from '../src/style.less';
+import ModalDialog from '../../src';
+import styles from '../../src/style.less';
 
 describe('ak-modal-dialog', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      shallow(<ModalDialog />).should.be.an.instanceof(Object);
+      expect(shallow(<ModalDialog />)).to.be.an.instanceof(Object);
     });
   });
 
   describe('props', () => {
     describe('isOpen', () => {
       it('should be hidden by default', () => {
-        shallow(<ModalDialog />).text().should.be.equal('');
+        expect(shallow(<ModalDialog />).text()).to.equal('');
       });
       it('should be visible when open = true', () => {
-        shallow(<ModalDialog isOpen />).text().should.not.equal('');
+        expect(shallow(<ModalDialog isOpen />).text()).to.not.equal('');
       });
       it('should become hidden when open changed from true -> false', () => {
         const wrapper = shallow(<ModalDialog isOpen />);
         wrapper.setProps({ isOpen: false });
-        wrapper.text().should.be.equal('');
+        expect(wrapper.text()).to.equal('');
       });
     });
 
@@ -31,7 +32,7 @@ describe('ak-modal-dialog', () => {
       const hasClass = (wrapper, className) => wrapper.find(`.${styles.modalPositioner}`).hasClass(className);
 
       it('should be "medium" by default', () => {
-        hasClass(shallow(<ModalDialog isOpen />), styles.medium).should.equal(true);
+        expect(hasClass(shallow(<ModalDialog isOpen />), styles.medium)).to.equal(true);
       });
 
       it('should support a custom pixel width as string', () => {
@@ -63,11 +64,12 @@ describe('ak-modal-dialog', () => {
 
       allowedWidths.forEach((width) => {
         it(`width = "${width}" is applied uniquely`, () => {
-          hasClass(shallow(<ModalDialog isOpen width={width} />), styles[width]).should.equal(true);
+          const wrapper = shallow(<ModalDialog isOpen width={width} />);
+          expect(hasClass(wrapper, styles[width])).to.equal(true);
 
           // Check that other widths aren't applied
           allowedWidths.filter(w => w !== width).forEach((otherWidth) => {
-            hasClass(shallow(<ModalDialog isOpen width={width} />), otherWidth).should.equal(false);
+            expect(hasClass(wrapper, otherWidth)).to.equal(false);
           });
         });
       });
@@ -75,37 +77,24 @@ describe('ak-modal-dialog', () => {
 
     describe('header', () => {
       it('should render when set', () => {
-        shallow(
-          <ModalDialog
-            header={
-              <span>My header</span>
-            }
-            isOpen
-          />
-        ).contains(<span>My header</span>).should.be.equal(true);
+        const wrapper = shallow(<ModalDialog header={<span>My header</span>} isOpen />);
+        expect(wrapper.contains(<span>My header</span>)).to.equal(true);
       });
     });
 
     describe('footer', () => {
       it('should render when set', () => {
-        shallow(
-          <ModalDialog
-            footer={
-              <span>My footer</span>
-            }
-            isOpen
-          />
-        ).contains(<span>My footer</span>).should.be.equal(true);
+        const wrapper = shallow(<ModalDialog footer={<span>My footer</span>} isOpen />);
+        expect(wrapper.contains(<span>My footer</span>)).to.equal(true);
       });
     });
 
     describe('children', () => {
       it('should render when set', () => {
-        shallow(
-          <ModalDialog isOpen>
-            <form>This is <strong>my</strong> form</form>
-          </ModalDialog>
-        ).contains(<form>This is <strong>my</strong> form</form>).should.be.equal(true);
+        const wrapper = shallow(<ModalDialog isOpen>
+          <form>This is <strong>my</strong> form</form>
+        </ModalDialog>);
+        expect(wrapper.contains(<form>This is <strong>my</strong> form</form>)).to.equal(true);
       });
     });
 

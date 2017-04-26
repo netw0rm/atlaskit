@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import SmartSelect, { StatelessSelect } from '../src';
+import SmartSelect, { StatelessSelect } from '../../src';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 describe(`${name} - smart`, () => {
   const animStub = window.cancelAnimationFrame;

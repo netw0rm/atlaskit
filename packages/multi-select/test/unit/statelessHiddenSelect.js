@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { StatelessMultiSelect } from '../src';
+import { StatelessMultiSelect } from '../../src';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 describe(`${name} - stateless`, () => {
   const animStub = window.cancelAnimationFrame;

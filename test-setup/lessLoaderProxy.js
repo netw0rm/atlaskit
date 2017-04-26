@@ -16,13 +16,15 @@
 
 // This script will no longer be required once all components have moved to styled components
 
+const camelcase = require('camelcase');
+
 require.extensions['.less'] = function resolveLessFile(module) {
   module.exports = new Proxy({}, {
     get: function getter(target, key) {
       if (key === '__esModule') {
         return false;
       }
-      return key;
+      return camelcase(key);
     },
   });
 };

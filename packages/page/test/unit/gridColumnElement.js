@@ -1,6 +1,6 @@
-import { getColumnWidth } from '../src/internal/GridColumnElement';
+import { getColumnWidth } from '../../src/internal/GridColumnElement';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 describe(name, () => {
   it('gridColumns should have an auto flex-basis', () => {

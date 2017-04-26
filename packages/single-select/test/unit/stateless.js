@@ -3,11 +3,12 @@ import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
+import sinon from 'sinon';
 
-import styles from '../src/styles.less';
-import { StatelessSelect } from '../src';
+import styles from '../../src/styles.less';
+import { StatelessSelect } from '../../src';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 describe(name, () => {
   const animStub = window.cancelAnimationFrame;

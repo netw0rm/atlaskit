@@ -1,8 +1,8 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import Page from '../src/index';
-import { name } from '../package.json';
+import Page from '../../src/index';
+import { name } from '../../package.json';
 
 describe(name, () => {
   it('page should accept navigation as a property', () => {

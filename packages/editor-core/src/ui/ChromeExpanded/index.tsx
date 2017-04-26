@@ -5,6 +5,7 @@ import { PureComponent } from 'react';
 import * as React from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
+import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
@@ -71,6 +72,13 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
 
   render() {
     const { props } = this;
+    const iconAfter = props.saveDisabled
+      ? <Spinner isCompleting={false} onComplete={() => { }} />
+      : undefined;
+
+    const saveButtonAppearance = props.saveDisabled
+      ? 'default'
+      : 'primary';
 
     return (
       <div className={styles.container} data-editor-chrome tabIndex={-1} ref={this.handleEditorContainerRef}>
@@ -103,7 +111,13 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             <AkButtonGroup>
               {!this.props.onSave ? null :
                 <span onClick={this.handleSave}>
-                  <AkButton isDisabled={this.props.saveDisabled} appearance="primary">Save</AkButton>
+                  <AkButton
+                    iconAfter={iconAfter}
+                    isDisabled={this.props.saveDisabled}
+                    appearance={saveButtonAppearance}
+                  >
+                    Save
+                  </AkButton>
                 </span>
               }
               {!this.props.onCancel ? null :

@@ -4,7 +4,7 @@
     <title>component</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="component" fill="currentColor">
             <g>
                 <path d="M5,17.9914698 C5,17.9978202 19.0049107,18 19.0049107,18 C18.9994849,18 19,10.0085302 19,10.0085302 C19,10.0021798 4.99508929,10 4.99508929,10 C5.00051505,10 5,17.9914698 5,17.9914698 Z M3,10.0085302 C3,8.8992496 3.8926228,8 4.99508929,8 L19.0049107,8 C20.1067681,8 21,8.90195036 21,10.0085302 L21,17.9914698 C21,19.1007504 20.1073772,20 19.0049107,20 L4.99508929,20 C3.8932319,20 3,19.0980496 3,17.9914698 L3,10.0085302 Z" id="Rectangle-17"></path>

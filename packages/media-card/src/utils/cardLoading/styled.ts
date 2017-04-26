@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled, { keyframes } from 'styled-components';
-import {center, size} from '../../styles';
+import {center, size} from '@atlaskit/media-ui';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 export const blinkLoadingAnimation = keyframes`

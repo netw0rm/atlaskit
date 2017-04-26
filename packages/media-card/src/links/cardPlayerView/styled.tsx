@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {absolute, size, centerSelf, easeInOutCubic, spin} from '../../styles';
+import {absolute, size, centerSelf, easeInOutCubic, spin} from '@atlaskit/media-ui';
 
 export const Wrapper = styled.div`
   position: relative;

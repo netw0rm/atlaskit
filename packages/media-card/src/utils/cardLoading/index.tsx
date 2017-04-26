@@ -6,7 +6,7 @@ import LinkIcon from '@atlaskit/icon/glyph/link';
 import {Wrapper} from './styled';
 
 export interface LoadingCardProps {
-  mediaItemType: MediaItemType;
+  mediaItemType?: MediaItemType;
   iconSize?: 'small' | 'medium' | 'large';
 }
 
@@ -25,8 +25,8 @@ export class CardLoading extends Component<LoadingCardProps, {}> {
     const {iconSize} = this;
     const {mediaItemType} = this.props;
 
-    return mediaItemType === 'file' ?
-      <FileIcon label="loading" size={iconSize}/> :
-      <LinkIcon label="loading" size={iconSize}/>;
+    return mediaItemType === 'link' ?
+      <LinkIcon label="loading" size={iconSize}/> :
+      <FileIcon label="loading" size={iconSize}/>;
   }
 }

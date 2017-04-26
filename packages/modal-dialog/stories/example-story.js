@@ -89,7 +89,23 @@ storiesOf(name, module)
       header={null}
       footer={null}
     >
-      <Lorem count="5" />
+      <Lorem count="10" />
+    </ModalDemo>
+  ))
+  .add('with header only', () => (
+    <ModalDemo
+      header="Header"
+      footer={null}
+    >
+      <Lorem count="10" />
+    </ModalDemo>
+  ))
+  .add('with footer only', () => (
+    <ModalDemo
+      header={null}
+      footer="Footer"
+    >
+      <Lorem count="10" />
     </ModalDemo>
   ))
   .add('z-index test', () => (

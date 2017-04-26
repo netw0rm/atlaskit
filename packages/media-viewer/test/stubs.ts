@@ -40,6 +40,7 @@ export class Stubs {
 
   static collectionController() {
     return {
+      refresh: sinon.spy(),
       loadNextPage: sinon.stub(),
       loadNextPageUntil: sinon.stub()
     };

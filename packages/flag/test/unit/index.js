@@ -1,9 +1,11 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Flag, { FlagGroup } from '../src';
-import { name } from '../package.json';
-import Container, { Description, DismissButton, Title } from '../src/styled/Flag';
-import { Action } from '../src/styled/Actions';
+import sinon from 'sinon';
+
+import Flag, { FlagGroup } from '../../src';
+import { name } from '../../package.json';
+import Container, { Description, DismissButton, Title } from '../../src/styled/Flag';
+import { Action } from '../../src/styled/Actions';
 
 describe(name, () => {
   let flagCount = 0;
@@ -72,9 +74,9 @@ describe(name, () => {
             })
           );
           const actionItems = flag.find(Action);
-          actionItems.length.should.equal(2);
-          actionItems.at(0).text().should.be.equal('Hello!');
-          actionItems.at(1).text().should.be.equal('Goodbye!');
+          expect(actionItems.length).to.equal(2);
+          expect(actionItems.at(0).text()).to.equal('Hello!');
+          expect(actionItems.at(1).text()).to.equal('Goodbye!');
         });
 
         it('action onClick should be triggered on click', () => {
@@ -120,14 +122,16 @@ describe(name, () => {
   });
 
   describe('FlagGroup', () => {
-    it('should render the correct number of Flag children', () =>
-      mount(
+    it('should render the correct number of Flag children', () => {
+      const wrapper = mount(
         <FlagGroup>
           {generateFlag()}
           {generateFlag()}
           {generateFlag()}
         </FlagGroup>
-      ).find(Container).length.should.equal(3)
+        );
+      expect(wrapper.find(Container).length).to.equal(3);
+    }
     );
 
     it('onDismissed should be called when child Flag is dismissed', () => {

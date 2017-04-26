@@ -2,8 +2,10 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
-import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
-import InlineEdit from '../src/InlineEdit';
+import FieldBase, { Label } from '@atlaskit/field-base';
+import sinon from 'sinon';
+
+import InlineEdit from '../../src/InlineEdit';
 
 const noop = () => {};
 const Input = props =>
@@ -174,7 +176,7 @@ describe('@atlaskit/inline-edit', () => {
        * So instead, we find the first node inside Label that has `onClick` and that it's not
        * the Label itself, and then we simulate the event on that node.
        **/
-      const onClickNode = label.findWhere(n => n.prop('onClick') && n.find(Label).isEmpty()).at(0);
+      const onClickNode = label.findWhere(n => n.prop('onClick') && !n.find(Label).exists()).at(0);
       onClickNode.simulate('click');
       expect(spy.called).to.equal(false);
     });

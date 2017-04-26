@@ -80,7 +80,9 @@ storiesOf('Card', {})
 
       onAddLink = () => {
         const {link} = this.state;
-        context.addLinkItem(link, collectionName);
+        context.getUrlPreviewProvider(link).observable().subscribe(
+          metadata => context.addLinkItem(link, collectionName, metadata)
+        );
       }
     }
 

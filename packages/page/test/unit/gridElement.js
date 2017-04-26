@@ -1,6 +1,6 @@
-import { getMargin, getMaxWidth, getPadding } from '../src/internal/GridElement';
+import { getMargin, getMaxWidth, getPadding } from '../../src/internal/GridElement';
 
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 describe(name, () => {
   it('grid should have no max-width if fluid', () => {

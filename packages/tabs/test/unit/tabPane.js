@@ -2,9 +2,9 @@ import chai from 'chai';
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
-import TabPane from '../src/internal/TabPane';
-import styles from '../src/styles.less';
-import { name } from '../package.json';
+import TabPane from '../../src/internal/TabPane';
+import styles from '../../src/styles.less';
+import { name } from '../../package.json';
 
 const { expect } = chai;
 

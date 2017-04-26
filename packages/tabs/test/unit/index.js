@@ -1,11 +1,12 @@
 import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
+import sinon from 'sinon';
 
-import Tabs, { StatelessTabs } from '../src';
-import styles from '../src/styles.less';
+import Tabs, { StatelessTabs } from '../../src';
+import styles from '../../src/styles.less';
 import { sampleTabs, sampleTabsNoSelection, sampleTabsDefaultSelected } from './_constants';
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 const { expect } = chai;
 

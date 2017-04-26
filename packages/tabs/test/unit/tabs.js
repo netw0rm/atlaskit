@@ -2,11 +2,11 @@ import chai from 'chai';
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
-import Tabs from '../src/Tabs';
-import TabsNav from '../src/internal/TabsNav';
-import TabPane from '../src/internal/TabPane';
+import Tabs from '../../src/Tabs';
+import TabsNav from '../../src/internal/TabsNav';
+import TabPane from '../../src/internal/TabPane';
 import { sampleTabs, sampleTabsNoSelection } from './_constants';
-import { name } from '../package.json';
+import { name } from '../../package.json';
 
 const { expect } = chai;
 

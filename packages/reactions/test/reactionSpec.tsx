@@ -16,7 +16,7 @@ const { expect } = chai;
 const grinning: EmojiDescription = emojiRepository.findByShortName(':grinning:') as EmojiDescription;
 const renderReaction = (reacted: boolean, count: number, onClick: Function) => {
   const reactionData = {
-    ari: 'ari:cloud:demo:123:123',
+    ari: 'ari:cloud:owner:demo-cloud-id:item/1',
     emojiId: toEmojiId(grinning).id!,
     count: count,
     reacted: reacted

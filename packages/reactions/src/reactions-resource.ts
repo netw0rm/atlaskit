@@ -22,9 +22,9 @@ export interface Reactions {
 
 export interface ReactionsProvider {
   getReactions(aris: string[]): Promise<Reactions>;
-  toggleReaction(ari: string, emojiId: string);
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  toggleReaction(containerAri: string, ari: string, emojiId: string);
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
   notifyUpdated(ari: string, state: ReactionSummary[]): void;
   subscribe(ari: string, handler: Function): void;
   unsubscribe(ari: string, handler: Function): void;
@@ -69,7 +69,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     });
   }
 
-  toggleReaction(ari: string, emojiId: string) {
+  toggleReaction(containerAri: string, ari: string, emojiId: string) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
@@ -78,7 +78,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
 
     if (hasReacted) {
-      this.deleteReaction(ari, emojiId)
+      this.deleteReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         })
@@ -87,7 +87,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
           this.notifyUpdated(ari, this.cachedReactions[ari]);
         });
     } else {
-      this.addReaction(ari, emojiId)
+      this.addReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         })
@@ -98,13 +98,13 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     }
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
@@ -294,7 +294,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     });
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     this.optimisticAddReaction(ari, emojiId);
 
     const timestamp = Date.now();
@@ -304,7 +304,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
       requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, 'reactions', {
         'method': 'POST',
         'headers': this.getHeaders(),
-        'body': JSON.stringify({ emojiId: emojiId, ari }),
+        'body': JSON.stringify({ emojiId, ari, containerAri }),
         'credentials': 'include'
       }).then(reactions => {
 
@@ -318,14 +318,14 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     this.optimisticDeleteReaction(ari, emojiId);
 
     const timestamp = Date.now();
     this.lastActionForAri[ari] = timestamp;
 
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}`, {
+      requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}&containerAri=${containerAri}`, {
         'method': 'DELETE',
         'headers': this.getHeaders(),
         'credentials': 'include'

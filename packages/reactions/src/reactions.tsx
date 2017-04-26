@@ -51,7 +51,7 @@ export default class Reactions extends Component<Props, State> {
     this.props.onReactionClick(emojiId);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ari, reactionsProvider } = this.props;
     reactionsProvider.subscribe(ari, this.updateState);
   }

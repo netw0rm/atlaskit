@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { BASE_URL } from '../../config';
 
 export default class SearchResults extends PureComponent {
   static propTypes = {
@@ -22,7 +21,7 @@ export default class SearchResults extends PureComponent {
         {this.props.matchingComponents.map(component => (
           <li key={component.name} style={{ padding: 8 }}>
             <Link
-              to={`${BASE_URL}/${component.name}/latest/index.html`}
+              to={`/components/${component.key}`}
               onClick={this.props.onResultClicked}
             >
               {component.name}

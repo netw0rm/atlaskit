@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import SearchResults from './SearchResults';
-// import { BASE_URL } from '../config';
+
+import data from '../../data';
+
+const components = Object.keys(data).map(i => data[i]);
 
 export default class SearchDrawer extends PureComponent {
   static propTypes = {
@@ -13,17 +16,6 @@ export default class SearchDrawer extends PureComponent {
 
   state = {
     searchString: '',
-    components: [],
-  }
-
-  componentDidMount() {
-    // fetch(`${BASE_URL}/spa_data/components_page.json`)
-    //   .then(result => result.json())
-    //   .then((json) => {
-    //     this.setState({
-    //       components: json,
-    //     });
-    //   });
   }
 
   filterChange = () => {
@@ -31,14 +23,14 @@ export default class SearchDrawer extends PureComponent {
   }
 
   searchResults = () => {
-    const { components, searchString } = this.state;
+    const searchString = this.state.searchString.toLowerCase();
 
     if (!searchString.length) return null;
 
     const matchingComponents = components.filter(
       c => (
-        c.name.indexOf(searchString) >= 0 ||
-        (c.description && c.description.indexOf(searchString) >= 0)
+        c.name.toLowerCase().indexOf(searchString) >= 0 ||
+        (c.description && c.description.toLowerCase().indexOf(searchString) >= 0)
       )
     ).slice(0, 10);
 

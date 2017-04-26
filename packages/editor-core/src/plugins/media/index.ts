@@ -244,6 +244,13 @@ export class MediaPluginState {
     const { id } = node.attrs;
 
     pickers.forEach(picker => picker.cancel(id));
+
+    // fix race confition problem
+    const currentState = stateManager.getState(node.attrs.id)!;
+    if (currentState.status === 'cancelled') {
+      return;
+    }
+
     stateManager.updateState(node.attrs.id, {
       id,
       status: 'cancelled'

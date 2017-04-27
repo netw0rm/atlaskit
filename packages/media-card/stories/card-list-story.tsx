@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
-import { CardList } from '../../src';
+import { CardList } from '../src';
 
 const wrongCollection = 'adfasdf';
 const wrongClientId = 'wrong-client-id';

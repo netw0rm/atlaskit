@@ -157,6 +157,18 @@ describe(`${name} - stateless`, () => {
         expect(select.find(NothingWasFound).length).to.equal(1);
       });
 
+      it('should not render a no matches found if at least an item is selected', () => {
+        const selectedItems = [itemsIn3Groups[1].items[1]];
+
+        const select = mount(<StatelessMultiSelect
+          items={itemsIn3Groups}
+          selectedItems={selectedItems}
+          isOpen
+        />);
+
+        expect(select.find(NothingWasFound).length).to.equal(0);
+      });
+
       it('should filter selected items by their values not reference', () => {
         const select = mount(<StatelessMultiSelect
           items={items}

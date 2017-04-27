@@ -239,9 +239,15 @@ describe('Media PickerFacade', () => {
 
     it('for upload that has been cancelled', () => {
       const cb = sinon.spy();
+      stateManager!.updateState(testTemporaryFileId, {
+        id: testTemporaryFileId,
+        status: 'uploading'
+      });
+
       stateManager!.subscribe(testTemporaryFileId, cb);
       facade!.cancel(testTemporaryFileId);
 
+      expect(cb.calledOnce).to.eq(true);
       expect(cb.calledWithExactly({
         id: testTemporaryFileId,
         status: 'cancelled'

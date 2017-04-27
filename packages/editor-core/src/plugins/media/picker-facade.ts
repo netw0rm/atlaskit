@@ -94,7 +94,7 @@ export default class PickerFacade {
   cancel(tempId: string): void {
     const state = this.stateManager.getState(tempId);
 
-    if (!state || state.status === 'cancelled') {
+    if (!state || (state.status === 'cancelled')) {
       return;
     }
 

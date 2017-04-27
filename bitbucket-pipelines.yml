@@ -1,4 +1,3 @@
-image: atlassianlabs/atlaskit:2017-03-17
 pipelines:
   branches:
     master:
@@ -31,6 +30,19 @@ pipelines:
         script:
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
+          - npm install -g yarn@0.22.0
+          - yarn global add cloudfront-invalidate-cli@1.2.0 \
+            marky-markdown@8.1.0 \
+            bitbucket-build-status@1.0.2 \
+            npm-run-all@3.1.1
+            lerna@2.0.0-beta.38
+            # lerna-semantic-release depends on semantic-release@^6.3.1, but the "latest" dist-tag
+            # is 6.3.2, which *doesn't* include https://github.com/semantic-release/semantic-release/pull/332
+            # However the version 6.3.6 exists which *does* include it, so we depend on that explicitly.
+            semantic-release@6.3.6 \
+            lerna-semantic-release@9.0.7 \
+            indexifier@2.0.0 \
+            @atlassian/prebake-distributor-runner@1.0.2
           - ./build/bin/setup.sh
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh

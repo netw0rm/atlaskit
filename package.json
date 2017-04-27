@@ -111,8 +111,7 @@
     "url-loader": "^0.5.7",
     "validate-commit-message": "^3.0.1",
     "wait-on": "^2.0.0",
-    "webpack": "~2.2.0",
-    "yarn": "^0.22.0"
+    "webpack": "~2.2.0"
   },
   "engines": {
     "npm": ">=3.8",

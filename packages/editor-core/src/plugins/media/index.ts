@@ -253,18 +253,7 @@ export class MediaPluginState {
       // In-flight media items that we should cancel
       case 'uploading':
       case 'processing':
-        pickers.forEach(picker => {
-          try {
-            picker.cancel(id);
-          } catch (e) {
-            // We're deliberatelly consuming a known Media Picker exception, as it seems that
-            // the picker has problems cancelling uploads before the popup picker has been shown
-            // TODO: remove after fixing https://jira.atlassian.com/browse/FIL-4161
-            if (!/(popupIframe|cancelUpload).*?undefined/.test(`${e}`)) {
-              throw e;
-            }
-          }
-        });
+        pickers.forEach(picker => picker.cancel(id));
 
         // In case the file has been attached multiple times, remove all occurences
         this.removeTemporaryMediaNodes(id);

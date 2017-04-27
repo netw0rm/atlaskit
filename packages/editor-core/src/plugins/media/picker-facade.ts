@@ -98,7 +98,17 @@ export default class PickerFacade {
       return;
     }
 
-    this.picker.cancel(tempId);
+    try {
+      this.picker.cancel(tempId);
+    } catch (e) {
+      // We're deliberatelly consuming a known Media Picker exception, as it seems that
+      // the picker has problems cancelling uploads before the popup picker has been shown
+      // TODO: remove after fixing https://jira.atlassian.com/browse/FIL-4161
+      if (!/((popupIframe|cancelUpload).*?undefined)|(undefined.*?(popupIframe|cancelUpload))/.test(`${e}`)) {
+        throw e;
+      }
+    }
+
     this.stateManager.updateState(tempId, {
       id: tempId,
       status: 'cancelled',

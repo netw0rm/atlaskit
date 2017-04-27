@@ -198,7 +198,7 @@ describe('Media plugin', () => {
   });
 
   // TODO: re-enable after merging https://bitbucket.org/atlassian/atlaskit/pull-requests/2496/ed-1536-remove-empty-mediagroup/diff#comment-35691560
-  it.skip('should remove failed uploads from the document', async () => {
+  it('should remove failed uploads from the document', async () => {
     const handler = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
 

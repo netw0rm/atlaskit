@@ -4,7 +4,7 @@
     <title>image-border</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="image-border" fill="currentColor">
             <g>
                 <path d="M3,17 L3,20.41 C3,20.736 3.262,21 3.59,21 L7,21 L7,19 L5,19 L5,17 L3,17 Z" id="Clip-2"></path>

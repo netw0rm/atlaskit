@@ -4,11 +4,11 @@
     <title>chevron-down-two-color</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="chevron-down-two-color">
             <g>
                 <circle id="Combined-Shape" fill="currentColor" cx="12" cy="12" r="9"></circle>
-                <path d="M11.221,10.322 L8.292,13.277 C7.903,13.669 7.903,14.304 8.292,14.696 C8.68,15.088 9.31,15.088 9.697,14.696 L11.995,12.379 L14.302,14.706 C14.691,15.098 15.321,15.098 15.709,14.706 C16.097,14.314 16.097,13.679 15.709,13.287 L12.769,10.322 C12.551,10.107 12.27,10 11.991,10 C11.712,10 11.434,10.107 11.221,10.322 Z" id="Clip-4" fill="#FFFFFF" transform="translate(12.000125, 12.500000) scale(-1, -1) translate(-12.000125, -12.500000) "></path>
+                <path d="M11.221,10.322 L8.292,13.277 C7.903,13.669 7.903,14.304 8.292,14.696 C8.68,15.088 9.31,15.088 9.697,14.696 L11.995,12.379 L14.302,14.706 C14.691,15.098 15.321,15.098 15.709,14.706 C16.097,14.314 16.097,13.679 15.709,13.287 L12.769,10.322 C12.551,10.107 12.27,10 11.991,10 C11.712,10 11.434,10.107 11.221,10.322 Z" id="Clip-4" fill="inherit" transform="translate(12.000125, 12.500000) scale(-1, -1) translate(-12.000125, -12.500000) "></path>
             </g>
         </g>
     </g>

@@ -251,7 +251,11 @@ describe('Media plugin', () => {
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
     const firstTemporaryFileId = `temporary:${randomId()}`;
     const secondTemporaryFileId = `temporary:${randomId()}`;
-    await resolvedProvider;
+
+    // wait until mediaProvider has been set
+    const provider = await resolvedProvider;
+    // wait until mediaProvider's uploadContext has been set
+    await provider.uploadContext;
 
     const firstMediaNode = insertFile(editorView, pluginState, firstTemporaryFileId);
     insertFile(editorView, pluginState, secondTemporaryFileId);

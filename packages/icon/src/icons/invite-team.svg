@@ -3,18 +3,12 @@
     <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
     <title>invite-team</title>
     <desc>Created with Sketch.</desc>
-    <defs>
-        <path d="M16.991,8 C16.451,8 16,8.448 16,9 C16,9.556 16.444,10 16.991,10 L21.009,10 C21.549,10 22,9.552 22,9 C22,8.443 21.556,8 21.009,8 L16.991,8 Z" id="path-1"></path>
-    </defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="invite-team">
             <g>
                 <circle id="Oval-2" fill="currentColor" cx="11" cy="7" r="4"></circle>
                 <rect id="Rectangle-3" fill="currentColor" x="18" y="6" width="2" height="6" rx="1"></rect>
-                <mask id="mask-2" fill="white">
-                    <use xlink:href="#path-1"></use>
-                </mask>
-                <use id="Clip-2" fill="currentColor" xlink:href="#path-1"></use>
+                <rect id="Rectangle-3" fill="currentColor" x="16" y="8" width="6" height="2" rx="1"></rect>
                 <path d="M5,14.0001103 C5,12.8954799 5.90195036,12 7.0085302,12 L14.9914698,12 C16.1007504,12 17,12.8938878 17,14.006104 L17,18.4460997 C17,21.8513001 5,21.8513001 5,18.4460997 C5,21.8513001 5,14.0001103 5,14.0001103 Z" id="Rectangle-7" fill="currentColor"></path>
             </g>
         </g>

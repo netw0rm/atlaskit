@@ -8,15 +8,14 @@ import {LinkCard} from '../src/links';
 import {FileCard} from '../src/files';
 
 describe('CardView', () => {
-
-  it('should render LinkCard when no metadata is passed', () => {
+  it('should render FileCard when no metadata is passed', () => {
     const element = shallow(
       <CardView
         status="loading"
         appearance="small"
       />
     );
-    const linkCard = element.find(LinkCard);
+    const linkCard = element.find(FileCard);
     expect(linkCard).to.be.length(1);
   });
 
@@ -95,9 +94,46 @@ describe('CardView', () => {
       />
     );
 
-    const linkCard = element.find(FileCard);
-    expect(linkCard).to.be.length(1);
-    expect(linkCard.prop('appearance')).to.equal('small');
+    const fileCard = element.find(FileCard);
+    expect(fileCard).to.be.length(1);
+    expect(fileCard.prop('appearance')).to.equal('small');
   });
 
+  it('should render LinkCard and NOT use details to determine which card to render when mediaItemType is "link"', () => {
+    const file: FileDetails = {
+      id: 'abcd',
+      name: 'my-file'
+    };
+
+    const element = shallow(
+      <CardView
+        mediaItemType="link"
+        status="loading"
+        metadata={file}
+      />
+    );
+
+    const linkCard = element.find(LinkCard);
+    expect(linkCard).to.be.length(1);
+  });
+
+  it('should render FileCard and NOT use details to determine which card to render when mediaItemType is "file"', () => {
+    const linkDetails: LinkDetails = {
+      type: 'link',
+      id: 'abcd',
+      url: 'my-file',
+      title: 'some-title'
+    };
+
+    const element = shallow(
+      <CardView
+        mediaItemType="file"
+        status="loading"
+        metadata={linkDetails}
+      />
+    );
+
+    const linkCard = element.find(FileCard);
+    expect(linkCard).to.be.length(1);
+  });
 });

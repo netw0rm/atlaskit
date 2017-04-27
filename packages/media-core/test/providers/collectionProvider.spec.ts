@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/skip';
@@ -7,19 +6,20 @@ import 'rxjs/add/operator/take';
 
 import { CollectionServiceStub } from '../stubs/collection-service-stub';
 import { CollectionProvider } from '../../src/providers/collectionProvider';
+import { MediaCollection } from '../../src/collection';
 
 describe('CollectionProvider', () => {
   const pageCount = 10;
-  const itemsPerPageCount = 10;
-  const totalItemCount = pageCount * itemsPerPageCount;
+  const pageSize = 10;
+  const items = pageCount * pageSize;
   const sortDirection = 'desc';
 
   it('should load the first page on construction', (done) => {
-    const collectionService = CollectionServiceStub.from(defaultCollectionName, totalItemCount, itemsPerPageCount);
+    const collectionService = CollectionServiceStub.from(defaultCollectionName, items, pageSize);
     const collectionProvider = CollectionProvider.fromCollectionService(
       collectionService,
       defaultCollectionName,
-      itemsPerPageCount,
+      pageSize,
       sortDirection
     );
 
@@ -27,7 +27,7 @@ describe('CollectionProvider', () => {
       .subscribe({
         next: collection => {
           expect(collection.id).to.be.equal(defaultCollectionName);
-          expect(collection.items).to.be.length(itemsPerPageCount);
+          expect(collection.items).to.be.length(pageSize);
           subscription.unsubscribe();
           done();
         }
@@ -35,11 +35,11 @@ describe('CollectionProvider', () => {
   });
 
   it('should load the next page', (done) => {
-    const collectionService = CollectionServiceStub.from(defaultCollectionName, totalItemCount, itemsPerPageCount);
+    const collectionService = CollectionServiceStub.from(defaultCollectionName, items, pageSize);
     const collectionProvider = CollectionProvider.fromCollectionService(
       collectionService,
       defaultCollectionName,
-      itemsPerPageCount,
+      pageSize,
       sortDirection
     );
 
@@ -48,7 +48,7 @@ describe('CollectionProvider', () => {
       .take(1)
       .do(collection => collectionProvider.controller().loadNextPage())
       .subscribe({
-        next: () => subscription1.unsubscribe()
+        complete: () => subscription1.unsubscribe()
       });
 
     const subscription2 = collectionProvider.observable()
@@ -56,20 +56,22 @@ describe('CollectionProvider', () => {
       .take(1)
       .subscribe({
         next: collection => {
-          expect(collection.items).to.be.length(2 * itemsPerPageCount);
-          expect(collection.items[2 * itemsPerPageCount - 1].details.occurrenceKey).to.be.equal('file-19');
+          expect(collection.items).to.be.length(2 * pageSize);
+          expect(collection.items[2 * pageSize - 1].details.occurrenceKey).to.be.equal('file-19');
+        },
+        complete: () => {
           subscription2.unsubscribe();
           done();
         }
       });
   });
 
-  it('should load all the pages until it finds occurrence key', (done) => {
-    const collectionService = CollectionServiceStub.from(defaultCollectionName, totalItemCount, itemsPerPageCount);
+  it('should load all the pages until it finds occurence key', (done) => {
+    const collectionService = CollectionServiceStub.from(defaultCollectionName, items, pageSize);
     const collectionProvider = CollectionProvider.fromCollectionService(
       collectionService,
       defaultCollectionName,
-      itemsPerPageCount,
+      pageSize,
       sortDirection
     );
 
@@ -80,281 +82,37 @@ describe('CollectionProvider', () => {
       .take(1)
       .subscribe({
         next: collection => {
-          expect(collection.items).to.be.length(7 * itemsPerPageCount);
-          expect(collection.items[7 * itemsPerPageCount - 1].details.occurrenceKey).to.be.equal('file-69');
+          expect(collection.items).to.be.length(7 * pageSize);
+          expect(collection.items[7 * pageSize - 1].details.occurrenceKey).to.be.equal('file-69');
+        },
+        complete: () => {
           subscription.unsubscribe();
           done();
         }
       });
   });
 
-  it('should load all the pages if it can\'t find the occurrence key', (done) => {
-    const collectionService = CollectionServiceStub.from(defaultCollectionName, totalItemCount, itemsPerPageCount);
+  it('should load all the pages if it can\'t find the occurence key', (done) => {
+    const collectionService = CollectionServiceStub.from(defaultCollectionName, items, pageSize);
     const collectionProvider = CollectionProvider.fromCollectionService(
       collectionService,
       defaultCollectionName,
-      itemsPerPageCount,
+      pageSize,
       sortDirection
     );
 
     collectionProvider.controller().loadNextPageUntil(item => item.details.occurrenceKey === 'file-not-found');
 
+    let lastEmittedCollection: MediaCollection;
     const subscription = collectionProvider.observable()
       .subscribe({
-        next: collection => {
-          if (collection.items.length === totalItemCount) {
-            expect(collection.items[totalItemCount - 1].details.occurrenceKey).to.be.equal('file-99');
-            subscription.unsubscribe();
-            done();
-          }
+        next: collection => lastEmittedCollection = collection,
+        complete: () => {
+          expect(lastEmittedCollection.items).to.be.length(items);
+          expect(lastEmittedCollection.items[items - 1].details.occurrenceKey).to.be.equal('file-99');
+          subscription.unsubscribe();
+          done();
         }
       });
   });
-
-  describe('refresh', () => {
-
-    it('should fetch and not add any new items to the collection when there are no new items', done => {
-      const getCollectionItems = sinon.stub();
-
-      const firstPageItems = [{details: {id: 'd'}}, {details: {id: 'e'}}, {details: {id: 'f'}}];
-
-      getCollectionItems
-        .onFirstCall().returns(Promise.resolve({
-          items: [...firstPageItems],
-          nextInclusiveStartKey: undefined
-        }))
-        .onSecondCall().returns(Promise.resolve({
-          items: [...firstPageItems],
-          nextInclusiveStartKey: undefined
-        }))
-      ;
-
-      const collectionProvider = CollectionProvider.fromCollectionService(
-        {getCollectionItems},
-        defaultCollectionName,
-        itemsPerPageCount,
-        sortDirection
-      );
-
-      let firstTime = true;
-      const subscription = collectionProvider.observable()
-        .subscribe({
-          next: collection => {
-            if (firstTime) {
-              firstTime = false;
-              collectionProvider.controller().refresh();
-            } else {
-              expect(collection.items).to.be.length(firstPageItems.length);
-              expect(collection.items).to.be.deep.equal([...firstPageItems]);
-              subscription.unsubscribe();
-              done();
-            }
-          }
-        })
-      ;
-    });
-
-    it('should fetch and add new items from the first page to the collection when we have loaded the first page', done => {
-      const getCollectionItems = sinon.stub();
-
-      const firstPageItems = [{details: {id: 'd'}}, {details: {id: 'e'}}, {details: {id: 'f'}}];
-      const newItems = [{details: {id: 'a'}}, {details: {id: 'b'}}, {details: {id: 'c'}}];
-
-      getCollectionItems
-        .onFirstCall().returns(Promise.resolve({
-          items: [...firstPageItems],
-          nextInclusiveStartKey: undefined
-        }))
-        .onSecondCall().returns(Promise.resolve({
-          items: [...newItems, ...firstPageItems],
-          nextInclusiveStartKey: undefined
-        }))
-      ;
-
-      const collectionProvider = CollectionProvider.fromCollectionService(
-        {getCollectionItems},
-        defaultCollectionName,
-        itemsPerPageCount,
-        sortDirection
-      );
-
-      let firstTime = true;
-      const subscription = collectionProvider.observable()
-        .subscribe({
-          next: collection => {
-            if (firstTime) {
-              firstTime = false;
-              collectionProvider.controller().refresh();
-            } else {
-              expect(collection.items).to.be.length(newItems.length + firstPageItems.length);
-              expect(collection.items).to.be.deep.equal([...newItems, ...firstPageItems]);
-              subscription.unsubscribe();
-              done();
-            }
-          }
-        })
-      ;
-    });
-
-    it('should fetch and add new items from the first page to the collection when we have loaded the first page and multiple items have the same ID', done => {
-      const getCollectionItems = sinon.stub();
-
-      const firstPageItems = [{details: {id: 'a', occurrenceKey: 'X'}}];
-      const newItems = [{details: {id: 'a', occurrenceKey: 'Y'}}];
-
-      getCollectionItems
-        .onFirstCall().returns(Promise.resolve({
-          items: [...firstPageItems],
-          nextInclusiveStartKey: undefined
-        }))
-        .onSecondCall().returns(Promise.resolve({
-          items: [...newItems, ...firstPageItems],
-          nextInclusiveStartKey: undefined
-        }))
-      ;
-
-      const collectionProvider = CollectionProvider.fromCollectionService(
-        {getCollectionItems},
-        defaultCollectionName,
-        itemsPerPageCount,
-        sortDirection
-      );
-
-      let firstTime = true;
-      const subscription = collectionProvider.observable()
-        .subscribe({
-          next: collection => {
-            if (firstTime) {
-              firstTime = false;
-              collectionProvider.controller().refresh();
-            } else {
-              expect(collection.items).to.be.length(newItems.length + firstPageItems.length);
-              expect(collection.items).to.be.deep.equal([...newItems, ...firstPageItems]);
-              subscription.unsubscribe();
-              done();
-            }
-          }
-        })
-      ;
-    });
-
-    it('should fetch and add new items from the first page to the collection when we have loaded the second page', done => {
-      const getCollectionItems = sinon.stub();
-
-      const firstPageItems = [{details: {id: 'd'}}, {details: {id: 'e'}}, {details: {id: 'f'}}];
-      const secondPageItems = [{details: {id: 'g'}}, {details: {id: 'h'}}, {details: {id: 'i'}}];
-      const newItems = [{details: {id: 'a'}}, {details: {id: 'b'}}, {details: {id: 'c'}}];
-
-      getCollectionItems
-        .onFirstCall().returns(Promise.resolve({
-          items: [...firstPageItems],
-          nextInclusiveStartKey: 'xyz'
-        }))
-        .onSecondCall().returns(Promise.resolve({
-          items: [...secondPageItems],
-          nextInclusiveStartKey: undefined // we're at the end of the collection
-        }))
-        .onThirdCall().returns(Promise.resolve({
-          items: [...newItems, ...firstPageItems],
-          nextInclusiveStartKey: 'xyz'
-        }))
-      ;
-
-      const collectionProvider = CollectionProvider.fromCollectionService(
-        {getCollectionItems},
-        defaultCollectionName,
-        itemsPerPageCount,
-        sortDirection
-      );
-
-      let callCount = 0;
-      const subscription = collectionProvider.observable()
-        .subscribe({
-          next: collection => {
-            switch (callCount) {
-
-              case 0:
-                expect(collection.items).to.be.length(secondPageItems.length);
-                collectionProvider.controller().loadNextPage();
-                break;
-
-              case 1:
-                expect(collection.items).to.be.length(firstPageItems.length + secondPageItems.length);
-                collectionProvider.controller().refresh();
-                break;
-
-              case 2:
-                expect(collection.items).to.be.length(newItems.length + firstPageItems.length + secondPageItems.length);
-                expect(collection.items).to.be.deep.equal([...newItems, ...firstPageItems, ...secondPageItems]);
-                subscription.unsubscribe();
-                done();
-                break;
-
-            }
-            ++callCount;
-          }
-        })
-      ;
-    });
-
-    it('should fetch and add new items from the first two pages to the collection when we have loaded the first page', done => {
-      const getCollectionItems = sinon.stub();
-
-      const firstPageItems = [{details: {id: 'g'}}, {details: {id: 'h'}}, {details: {id: 'i'}}];
-      const newItemsPage1 = [{details: {id: 'a'}}, {details: {id: 'b'}}, {details: {id: 'c'}}];
-      const newItemsPage2 = [{details: {id: 'd'}}, {details: {id: 'e'}}, {details: {id: 'f'}}];
-
-      getCollectionItems
-        .onFirstCall().returns(Promise.resolve({
-          items: [...firstPageItems],
-          nextInclusiveStartKey: 'xyz'
-        }))
-        .onSecondCall().returns(Promise.resolve({
-          items: [...newItemsPage1],
-          nextInclusiveStartKey: 'xyz'
-        }))
-        .onThirdCall().returns(Promise.resolve({
-          items: [...newItemsPage2],
-          nextInclusiveStartKey: 'xyz'
-        }))
-        .onCall(3).returns(Promise.resolve({
-          items: [...firstPageItems],
-          nextInclusiveStartKey: 'xyz'
-        }))
-      ;
-
-      const collectionProvider = CollectionProvider.fromCollectionService(
-        {getCollectionItems},
-        defaultCollectionName,
-        itemsPerPageCount,
-        sortDirection
-      );
-
-      let callCount = 0;
-      const subscription = collectionProvider.observable()
-        .subscribe({
-          next: collection => {
-            switch (callCount) {
-
-              case 0:
-                expect(collection.items).to.be.length(3);
-                collectionProvider.controller().refresh();
-                break;
-
-              case 1:
-                expect(collection.items).to.be.length(9);
-                expect(collection.items).to.be.deep.equal([...newItemsPage1, ...newItemsPage2, ...firstPageItems]);
-                subscription.unsubscribe();
-                done();
-                break;
-
-            }
-            ++callCount;
-          }
-        })
-      ;
-    });
-
-  });
-
 });

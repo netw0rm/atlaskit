@@ -14,21 +14,16 @@ export type LoadNextPageCommand = {
   type: 'loadNextPage'
 };
 
-export type RefreshCommand = {
-  type: 'refresh'
-};
-
 export type LoadNextPageUntilCommand = {
   type: 'loadNextPageUntil',
   predicate: MediaCollectionItemPredicate
 };
 
-export type CollectionCommand = LoadNextPageCommand | LoadNextPageUntilCommand | RefreshCommand;
+export type CollectionCommand = LoadNextPageCommand | LoadNextPageUntilCommand;
 
 export interface CollectionController {
   loadNextPage(): void;
   loadNextPageUntil(predicate: MediaCollectionItemPredicate): void;
-  refresh(): void;
 }
 
 class CollectionControllerImpl implements CollectionController {
@@ -47,12 +42,6 @@ class CollectionControllerImpl implements CollectionController {
     });
   }
 
-  refresh(): void {
-    this.subject.next({
-      type: 'refresh'
-    });
-  }
-
   get commands(): Observable<CollectionCommand> {
     return this.subject.asObservable();
   }
@@ -62,7 +51,7 @@ export class CollectionCommandReducer {
   private readonly subject = new Subject<MediaCollection>();
   private readonly connectableObservable = this.subject.publishReplay(1);
 
-  private items: Array<MediaCollectionItem> = [];
+  private readonly items: Array<MediaCollectionItem> = [];
   private nextInclusiveStartKey?: string = undefined;
   private isLoading = false;
 
@@ -87,7 +76,6 @@ export class CollectionCommandReducer {
 
   private handleCommand(command: CollectionCommand): void {
     switch (command.type) {
-
       case 'loadNextPage':
         this.loadNextPage();
         break;
@@ -96,13 +84,8 @@ export class CollectionCommandReducer {
         this.loadNextPageUntil(command.predicate);
         break;
 
-      case 'refresh':
-        this.refresh();
-        break;
-
       default:
         this.subject.error(new Error(`unknown command ${command}`));
-
     }
   }
 
@@ -111,10 +94,7 @@ export class CollectionCommandReducer {
       const subscription = this.connectableObservable
         .subscribe({
           next: collection => {
-            // an `undefined` `nextInclusiveStartKey` is how we know we've reached the end of a collection
-            // (since the `Observable`'s `complete` callback is NEVER called so we can notify the
-            // consumer when the list has changed)
-            if (!this.nextInclusiveStartKey || collection.items.some(predicate)) {
+            if (collection.items.some(predicate)) {
               subscription.unsubscribe();
             } else {
               this.loadNextPage();
@@ -149,74 +129,18 @@ export class CollectionCommandReducer {
         };
 
         this.nextInclusiveStartKey = response.nextInclusiveStartKey;
-        this.subject.next(mediaCollection);
+
+        if (this.nextInclusiveStartKey) {
+          this.subject.next(mediaCollection);
+        } else {
+          this.subject.next(mediaCollection);
+          this.subject.complete();
+        }
       }, error => {
         this.isLoading = false;
         this.subject.error(error);
       });
   }
-
-  private refresh() {
-    if (this.isLoading) {
-      return;
-    } else {
-      this.isLoading = true;
-    }
-
-    const oldFirstItemDetails = this.items[0] && this.items[0].details;
-    const oldFirstItemId = oldFirstItemDetails && oldFirstItemDetails.id;
-    const oldFirstItemOccurrenceKey = oldFirstItemDetails && oldFirstItemDetails.occurrenceKey;
-    const newItems: Array<MediaCollectionItem> = [];
-    let nextInclusiveStartKey;
-
-    const fetchNewItems = () => {
-      this.collectionService.getCollectionItems(
-        this.collectionName,
-        this.pageSize,
-        nextInclusiveStartKey,
-        this.sortDirection,
-        'full'
-      )
-        .then(res => {
-          let reachedFirstOldItem = false;
-          for (let newItem of res.items) {
-
-            const {details: {id, occurrenceKey}} = newItem;
-            const reachedFirstItemAlreadyInCollection =  id === oldFirstItemId && occurrenceKey === oldFirstItemOccurrenceKey;
-
-            if (reachedFirstItemAlreadyInCollection) {
-              reachedFirstOldItem = true;
-              break;
-            }
-
-            newItems.push(newItem);
-
-          }
-
-          if (reachedFirstOldItem) {
-            this.isLoading = false;
-
-            this.items = [...newItems, ...this.items];
-
-            this.subject.next({
-              id: this.collectionName,
-              items: this.items
-            });
-
-          } else if (res.nextInclusiveStartKey) {
-            nextInclusiveStartKey = res.nextInclusiveStartKey;
-            fetchNewItems();
-          }
-
-        }, error => {
-          this.isLoading = false;
-          this.subject.error(error);
-        });
-    };
-
-    fetchNewItems();
-  }
-
 }
 
 export interface CollectionProvider {

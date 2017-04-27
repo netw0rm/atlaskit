@@ -428,7 +428,8 @@ export class MediaPluginState {
   private tryRemoveMediaGroupContainer(node: PositionedNode) {
     const { dispatch, state } = this.view;
     const { doc, tr, schema } = state;
-    const pos = doc.resolve(node.getPos());
+    const mediaNodePos = node.getPos();
+    const pos = doc.resolve(mediaNodePos);
 
     if (pos.parent.type !== schema.nodes.mediaGroup) {
       throw new Error('media node parent is not mediaGroup');
@@ -440,8 +441,10 @@ export class MediaPluginState {
       return;
     }
 
-    const from = pos.start(pos.depth);
-    dispatch(tr.delete(from - 1, from));
+    const from = mediaNodePos - 1;
+    const to = from + pos.parent.nodeSize;
+
+    dispatch(tr.delete(from, to));
   }
 }
 

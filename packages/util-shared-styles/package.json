@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "1.7.1",
+  "version": "2.0.1",
   "config": {
     "access": "public"
   },
@@ -35,7 +35,6 @@
     "javascript-natural-sort": "^0.7.1",
     "less-vars-loader": "^1.1.0",
     "rgba-convert": "^0.3.0",
-    "skatejs": "^4.0.4",
     "uid": "0.0.2",
     "wcag-contrast": "^0.1.0"
   },

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
-import { FileCardViewSmall, FileCardViewSmallProps } from '../../src';
+import { FileCardViewSmall, FileCardViewSmallProps } from '../../src/files';
 import { FileIcon, ErrorIcon } from '../../src/utils/index';
 
 describe('FileCardViewSmall', () => {

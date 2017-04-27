@@ -1,6 +1,10 @@
 # MediaCard
 
-Includes all media card related components like CardView, CardViewSmall, Card, etc.
+Exports 3 components:
+
+1. Card
+2. CardView
+3. CardList
 
 ![Example @NAME@](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/@NAME@/docs/screencast.gif)
 
@@ -11,25 +15,43 @@ Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.co
 ## Installation
 
 ```sh
-npm install @NAME@
+yarn add @NAME@
 ```
 
 ## Using the component
 
-**CardView**
+**Card**
 
-```javascript
-import {CardView} from '@atlaskit/media-card';
+```typescript
+import {Card} from '@atlaskit/media-card';
+import {ContextFactory} from '@atlaskit/media-core';
 
-//Default
-<CardView
-  loading={false}
-  selectable={false}
-  selected={false}
-  mediaName="some image"
-  mediaType="image"
-  mediaSize={32831}
-  dataURI={tallImageDataUri}
-  onClick={onClick}
-/>
+const context = ContextFactory.create({ clientId, serviceHost, tokenProvider });
+
+// url preview
+const urlPreviewId = {
+  mediaItemType: 'link',
+  url: 'https://atlassian.com'
+};
+
+<Card context={context} identifier={urlPreviewId} />
+
+// stored link 
+const linkId = {
+  mediaItemType: 'link',
+  id: 'some-link-id',
+  collectionName: 'some-collection-name'
+};
+
+<Card context={context} identifier={linkId} />
+
+// stored file 
+const fileId = {
+  mediaItemType: 'file',
+  id: 'some-file-id',
+  collectionName: 'some-collection-name'
+};
+
+<Card context={context} identifier={fileId} />
 ```
+

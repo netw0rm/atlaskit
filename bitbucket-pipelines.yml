@@ -53,7 +53,8 @@ pipelines:
           - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
-          - run-p -ln "validate/tslint" "validate/eslint"
+          - validate/tslint
+          - validate/eslint
           - yarn run test/unit
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start

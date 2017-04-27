@@ -169,6 +169,20 @@ describe('Media plugin', () => {
     );
   });
 
+  it('should insert all media nodes on the same line', () => {
+    const { editorView, pluginState } = editor(doc(p('{<>}')));
+
+    insertFile(editorView, pluginState, 'mock1');
+    insertFile(editorView, pluginState, 'mock2');
+
+    expect(editorView.state.doc).to.deep.equal(doc(
+      mediaGroup(
+        media({ id: 'mock1', type: 'file', collection: 'mock-collection' }),
+        media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
+      ),
+    ));
+  });
+
   it('should call uploadErrorHandler on upload error', async () => {
     const handler = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);

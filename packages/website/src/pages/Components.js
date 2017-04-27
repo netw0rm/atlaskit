@@ -16,7 +16,7 @@ const head = {
     {
       key: 'name',
       content: 'Name',
-      isSortable: true,
+      isSortable: false,
       width: 15,
     },
     {
@@ -27,10 +27,10 @@ const head = {
       width: 45,
     },
     {
-      key: 'updated',
-      content: 'Updated',
+      key: 'publishTime',
+      content: 'Latest',
       shouldTruncate: true,
-      isSortable: true,
+      isSortable: false,
       width: 20,
     },
     {
@@ -88,10 +88,9 @@ export default class Components extends PureComponent {
               <a href={`https://www.npmjs.com/package/${packageName}`} target="_new">
                 {version}
               </a>
-              &nbsp;
               {publishTime ? (
                 <time dateTime={publishTime}>
-                  {publishTime.toLocaleDateString()}
+                  {' '}{publishTime.toLocaleDateString()}
                 </time>
               ) : null}
             </RowCell>
@@ -129,7 +128,8 @@ export default class Components extends PureComponent {
         <Helmet title="Components" />
         <Heading>Components</Heading>
         <Intro>
-          Write something compelling here, cupcake powder dragée liquorice fruitcake cookie.
+          These React Components make up the foundation building blocks of our
+          UI framework.
         </Intro>
         <Section>
           <Header />

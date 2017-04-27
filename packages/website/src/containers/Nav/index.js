@@ -27,7 +27,13 @@ import data from '../../data';
 import SearchDrawer from './SearchDrawer';
 import Groups from './Groups';
 
-const atlaskitComponentKeys = Object.keys(data);
+/* eslint-disable arrow-body-style */
+function sortComponentsByName(a, b) {
+  return data[a].name > data[b].name ? -1 : 1;
+}
+const atlaskitComponentKeys = Object.keys(data).sort(sortComponentsByName);
+/* eslint-enable arrow-body-style */
+
 const externalLinks = [
   ['https://bitbucket.org/atlassian/atlaskit', 'Bitbucket repo', BitbucketIcon],
   ['https://ecosystem.atlassian.net/browse/AK', 'JIRA project', JiraIcon],

@@ -23,16 +23,12 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 
 import reactIcon from '../../images/atlaskit-logo.png';
-import data from '../../data';
 import SearchDrawer from './SearchDrawer';
 import Groups from './Groups';
 
-/* eslint-disable arrow-body-style */
-function sortComponentsByName(a, b) {
-  return data[a].name > data[b].name ? -1 : 1;
-}
-const atlaskitComponentKeys = Object.keys(data).sort(sortComponentsByName);
-/* eslint-enable arrow-body-style */
+import components from '../../data';
+
+const componentKeys = Object.keys(components);
 
 const externalLinks = [
   ['https://bitbucket.org/atlassian/atlaskit', 'Bitbucket repo', BitbucketIcon],
@@ -150,7 +146,7 @@ export default class Nav extends Component {
               isSelected={pathname === '/components'}
             />
             <NavItemGroup title="Components">
-              {atlaskitComponentKeys.map(key => (
+              {componentKeys.map(key => (
                 <ComponentNavItem
                   componentKey={key}
                   key={key}
@@ -166,7 +162,7 @@ export default class Nav extends Component {
 }
 
 const ComponentNavItem = withRouter(({ componentKey, location }) => {
-  const component = data[componentKey];
+  const component = components[componentKey];
   const url = `/components/${componentKey}`;
   const isSelected = location.pathname === url;
 

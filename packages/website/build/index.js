@@ -1,4 +1,7 @@
-/* eslint-disable no-empty, global-require, import/no-dynamic-require, no-console */
+/*
+  eslint-disable no-empty, global-require, import/no-dynamic-require,
+  no-console, no-confusing-arrow
+*/
 
 const fs = require('fs');
 const path = require('path');
@@ -7,7 +10,8 @@ const getExternalMetadata = require('./getExternalMetadata');
 const template = require('./data.template');
 
 // Loop through the folders up a level, i.e. atlaskit/packages to build up
-// a list of components that we process and filter.
+// a list of components that we process and filter. Falsy values are filtered
+// out and the final array is sorted by component name.
 const components = fs.readdirSync('..').map((key) => {
   // Everything in here should be a directory, but let's check to be safe
   if (!fs.statSync(path.resolve('..', key)).isDirectory()) return false;
@@ -37,7 +41,7 @@ const components = fs.readdirSync('..').map((key) => {
     name,
     pkg,
   };
-}).filter(i => i); // filter out falsy items from the returned array
+}).filter(i => i).sort((a, b) => a.name > b.name ? 1 : -1);
 
 /* eslint-disable prefer-object-spread/prefer-object-spread */
 const mergeMetadata = component => getExternalMetadata(component.pkg.name)

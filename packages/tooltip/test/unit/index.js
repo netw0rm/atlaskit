@@ -1,8 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import sinon from 'sinon';
 
 // Testing the dumb component
-import { Tooltip } from '../src';
+import { Tooltip } from '../../src';
 
 describe('Tooltip', () => {
   it('should be possible to create a component', () => {

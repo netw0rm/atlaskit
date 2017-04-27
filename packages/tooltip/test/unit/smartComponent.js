@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 
 // Testing the smart component
-import AKTooltip from '../src';
+import AKTooltip from '../../src';
 
 describe('Tooltip (smart)', () => {
   it('should be possible to create a component', () => {

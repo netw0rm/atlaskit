@@ -1,5 +1,5 @@
 import { configure, setAddon } from '@kadira/storybook';
-import 'akutil-polyfills';
+import 'babel-polyfill';
 import React from 'react';
 import 'storybook-addon-i18n-tools';
 import 'style-loader!css-loader!ak-css-reset/dist/bundle.css';

@@ -10,27 +10,26 @@ export default class WelcomePage extends PureComponent {
     return (
       <div>
         <Helmet>
-          <meta name="description" content="Atlassian's UI Library powered by React.js" />
+          <meta name="description" content="AtlasKit is the technical implementation of the Atlassian Design Guidelines" />
         </Helmet>
         <Grid spacing="comfortable">
           <GridColumn small={12} medium={6}>
             <Heading>AtlasKit</Heading>
             <Intro>
-              AtlasKit gives you the building blocks to create your application experience in
-              the Atlassian ADG3 style.
+              AtlasKit gives you the building blocks to create your application experiences using
+              the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a>(ADG).
             </Intro>
             <Section>
-              <h3>New to AtlasKit?</h3>
-              <p>
-                Check out the <a href="https://bitbucket.org/atlassian/atlaskit-starter/">atlaskit-starter</a> repo to get up and running with a React app and some demo AtlasKit components. There&apos;s also a non-React <a href="http://aui-cdn.atlassian.com/atlaskit/registry/reduced-ui-pack/latest/index.html">reduced UI pack</a> available.
-              </p>
+              <h3>Getting started</h3>
+              <p>There two ways to start using our library of components. To get started, check out the <a href="./install">install guide</a>.</p>
             </Section>
             <Section>
               <h3>Getting involved</h3>
               <p>
-                Feel free to ask a question in the &quot;AtlasKit&quot; HipChat room, create a
-                ticket on the <a href="https://ecosystem.atlassian.net/browse/AK">JIRA project</a>, or
-                contribute with a PR on the <a href="https://bitbucket.org/atlassian/atlaskit">Bitbucket repo</a>.
+                We welcome issue and code contributions. Please start with our <a href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">contribution guide</a>.
+              </p>
+              <p>
+                &nbsp;
               </p>
             </Section>
           </GridColumn>

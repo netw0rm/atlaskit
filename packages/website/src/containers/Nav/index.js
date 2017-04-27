@@ -13,13 +13,12 @@ import Navigation, {
 
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import CodeIcon from '@atlaskit/icon/glyph/code';
+// import CodeIcon from '@atlaskit/icon/glyph/code';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import GlobeIcon from '@atlaskit/icon/glyph/world';
 import InstallIcon from '@atlaskit/icon/glyph/overview';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 
 import reactIcon from '../../images/atlaskit-logo.png';
@@ -31,12 +30,11 @@ import components from '../../data';
 const componentKeys = Object.keys(components);
 
 const externalLinks = [
-  ['https://bitbucket.org/atlassian/atlaskit', 'Bitbucket repo', BitbucketIcon],
-  ['https://ecosystem.atlassian.net/browse/AK', 'JIRA project', JiraIcon],
+  ['//bitbucket.org/atlassian/atlaskit', 'Bitbucket repo', BitbucketIcon],
 ];
 const getStartedLinks = [
   ['/install', 'Install Guide', InstallIcon],
-  ['/examples', 'Examples', CodeIcon],
+  // ['/examples', 'Examples', CodeIcon],
 ];
 const Header = () => (
   <Link to="/">

@@ -36,7 +36,7 @@ export default class App extends PureComponent {
           )}
         >
           <Helmet
-            defaultTitle="AtlasKit - Atlassian's UI Library powered by React.js"
+            defaultTitle="AtlasKit - the official implementation of the Atlassian Design Guidelines"
             titleTemplate="%s | AtlasKit"
           />
           <Switch>

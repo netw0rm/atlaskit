@@ -176,8 +176,8 @@ describe('Media plugin', () => {
     ));
 
     const { doc: document, tr } = editorView.state;
-    const mediaGroupNode = document.firstChild!;
-    editorView.dispatch(tr.delete(0, mediaGroupNode.nodeSize));
+    const mediaNode = document.firstChild!.firstChild!;
+    editorView.dispatch(tr.delete(1, mediaNode.nodeSize));
 
     expect(editorView.state.doc).to.deep.equal(doc(p('text')));
   });
@@ -190,8 +190,8 @@ describe('Media plugin', () => {
     ));
 
     const { doc: document, tr } = editorView.state;
-    const mediaGroupNode = document.firstChild!;
-    editorView.dispatch(tr.delete(0, mediaGroupNode.nodeSize));
+    const mediaNode = document.firstChild!.firstChild!;
+    editorView.dispatch(tr.delete(1, mediaNode.nodeSize));
 
     expect(editorView.state.doc).to.deep.equal(doc(p()));
   });
@@ -208,8 +208,8 @@ describe('Media plugin', () => {
     ));
 
     const { doc: document, tr } = editorView.state;
-    const mediaGroupNode = document.firstChild!;
-    editorView.dispatch(tr.delete(0, mediaGroupNode.nodeSize));
+    const mediaNode = document.firstChild!.firstChild!;
+    editorView.dispatch(tr.delete(1, mediaNode.nodeSize));
 
     expect(editorView.state.doc).to.deep.equal(doc(
       mediaGroup(

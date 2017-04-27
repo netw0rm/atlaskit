@@ -104,6 +104,12 @@ export const errorLinkId = {
   collectionName
 };
 
+export const imageLinkId = {
+  id: '2c83687c-3183-4db0-8d64-e70013163e76',
+  mediaItemType: linkType,
+  collectionName
+};
+
 // === FILE ===
 
 export const genericFileId = {

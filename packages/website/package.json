@@ -20,6 +20,7 @@
     "@atlaskit/page": "^3.0.4",
     "@atlaskit/util-readme": "^3.1.0",
     "@atlaskit/util-shared-styles": "^1.6.1",
+    "axios": "^0.16.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
     "babel-preset-es2015": "^6.24.1",

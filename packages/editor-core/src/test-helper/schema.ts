@@ -26,6 +26,8 @@ import {
   emojiQuery,
 } from '../schema';
 
+import { NodeDesc } from '../schema/descriptor';
+
 const nodes = {
   doc,
   paragraph,
@@ -59,5 +61,5 @@ const marks = {
   emojiQuery
 };
 
-export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, nodes, marks };
+export { AttributeSpec, MarkSpec, Node, NodeDesc, NodeSpec, ParseRule, nodes, marks };
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

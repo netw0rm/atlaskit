@@ -4,7 +4,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { style, types as styleTypes } from 'typestyle';
 
-import { NodeSpec, NodeView } from '../../prosemirror';
+import { NodeDesc } from '../descriptor';
+import { NodeView } from '../../prosemirror';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 
 const width = '20px';
@@ -51,7 +52,7 @@ const emojiStyle = style({
   }
 });
 
-export const emoji: NodeSpec = {
+export const emoji: NodeDesc = {
   inline: true,
   group: 'inline',
   attrs: {
@@ -79,6 +80,9 @@ export const emoji: NodeSpec = {
     // Don't render any text as it will be replaced quite quickly by
     // the placeholder in ResourcedEmoji
     return ['span', attrs, ' '];
+  },
+  toText(node: any): string {
+    return node.attrs.fallback;
   }
 };
 

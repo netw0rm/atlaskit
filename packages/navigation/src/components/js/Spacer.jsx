@@ -5,6 +5,7 @@ export default class Spacer extends PureComponent {
   static propTypes = {
     width: PropTypes.number,
     shouldAnimate: PropTypes.bool,
+    children: PropTypes.node,
   }
   static defaultProps = {
     width: 0,
@@ -17,7 +18,9 @@ export default class Spacer extends PureComponent {
         style={{
           width: this.props.width,
         }}
-      />
+      >
+        {this.props.children}
+      </SpacerInner>
     );
   }
 }

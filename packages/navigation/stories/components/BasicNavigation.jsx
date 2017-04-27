@@ -136,6 +136,13 @@ export default class BasicNavigation extends PureComponent {
   }
 
   openDrawer = (name) => {
+    if (name === 'search') {
+      action('onSearchDrawerOpen')();
+    }
+
+    if (name === 'create') {
+      action('onCreateDrawerOpen')();
+    }
     this.setState({
       openDrawer: name,
     });
@@ -148,6 +155,7 @@ export default class BasicNavigation extends PureComponent {
   }
 
   resize = (resizeState) => {
+    action('onResize')();
     this.setState({
       isOpen: resizeState.isOpen,
       width: resizeState.width,

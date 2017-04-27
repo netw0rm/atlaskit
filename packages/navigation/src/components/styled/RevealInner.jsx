@@ -5,7 +5,6 @@ import { animationTime } from '../../shared-variables';
 const transition = `height ${animationTime}, opacity ${animationTime}`;
 
 const RevealInner = styled.div`
-  background: lightgreen;
   overflow: hidden;
   height: ${props => (props.isOpen ? props.openHeight : 0)}px;
   opacity: ${props => (props.isOpen ? 1 : 0)};

@@ -17,7 +17,6 @@ const ContainerHeaderWrapper = styled.div`
   // the keyline will be drawn over the margin
   margin-bottom: ${keylineHeight}px;
   padding: ${paddingOpen};
-  transition: padding ${animationTime};
 
   ${supportsStickyCondition} {
     // use the background color of the parent

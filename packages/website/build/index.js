@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const getExternalMetadata = require('./getExternalMetadata');
 const template = require('./data.template');
 
 // Loop through the folders up a level, i.e. atlaskit/packages to build up
@@ -38,10 +39,15 @@ const components = fs.readdirSync('..').map((key) => {
   };
 }).filter(i => i); // filter out falsy items from the returned array
 
-const data = template({ components }).replace(/\n\s+\n/g, '\n');
+/* eslint-disable prefer-object-spread/prefer-object-spread */
+const mergeMetadata = component => getExternalMetadata(component.pkg.name)
+  .then(metadata => Object.assign({}, component, metadata));
+/* eslint-enable prefer-object-spread/prefer-object-spread */
 
-// Write the template as data.js in the src directory where webpack can bundle it
-fs.writeFileSync(path.resolve('src', 'data.js'), data, 'utf8');
+Promise.all(components.map(mergeMetadata))
+  .then(data => template({ components: data }).replace(/\n\s+\n/g, '\n'))
+  .then(data => fs.writeFileSync(path.resolve('src', 'data.js'), data, 'utf8'))
+  .then(() => console.info(`📦  => Wrote data.json for ${components.length} AtlasKit components`))
+  .catch(console.error);
 
 // We're done!
-console.info(`📦  => Wrote data.json for ${components.length} AtlasKit components`);

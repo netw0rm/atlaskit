@@ -56,10 +56,16 @@ const nodes = {
       state.closeBlock(node);
     }
   },
-  heading(state: MarkdownSerializerState, node: Node) {
+  heading(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.write(state.repeat('#', node.attrs.level) + ' ');
     state.renderInline(node);
-    state.closeBlock(node);
+    if (parent.type.name === 'listItem' && parent.childCount > (index + 1) && isListNode(parent.child(index + 1))) {
+      state.write('\n');
+      state.closeBlock(node);
+      state.flushClose(2);
+    } else {
+      state.closeBlock(node);
+    }
   },
   rule(state: MarkdownSerializerState, node: Node) {
     state.write(node.attrs.markup || '---');
@@ -91,9 +97,15 @@ const nodes = {
       state.write('\n');
     }
   },
-  paragraph(state: MarkdownSerializerState, node: Node) {
+  paragraph(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.renderInline(node);
-    state.closeBlock(node);
+    if (parent.type.name === 'listItem' && parent.childCount > (index + 1) && isListNode(parent.child(index + 1))) {
+      state.write('\n');
+      state.closeBlock(node);
+      state.flushClose(2);
+    } else {
+      state.closeBlock(node);
+    }
   },
   image(state: MarkdownSerializerState, node: Node) {
     // Note: the 'title' is not escaped in this flavor of markdown.

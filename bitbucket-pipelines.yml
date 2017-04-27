@@ -1,3 +1,4 @@
+image: node:7.9.0
 pipelines:
   branches:
     master:

@@ -16,11 +16,11 @@ const components = {${components.map(component => `
     maintainers: ${stringify(component.pkg.maintainers)},
     status: {
       label: 'published',
-      date: new Date(),
+      date: new Date('${component.lastPublishedOn}'),
     },
     version: '${component.pkg.version}',
-    versions: ['${component.pkg.version}'], // TODO
-    storybooks: ['${component.pkg.version}'], // TODO
+    versions: [${component.versions.map(v => `'${v}'`).join(', ')}],
+    storybooks: [${component.storybooks.map(v => `'${v}'`).join(', ')}],
   },
 `).join('')}};
 

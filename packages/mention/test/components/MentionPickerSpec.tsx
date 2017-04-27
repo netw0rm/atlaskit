@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-
 import { waitUntil } from '@atlaskit/util-common-test';
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';

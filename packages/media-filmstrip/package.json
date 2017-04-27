@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-filmstrip",
-  "version": "3.0.1",
+  "version": "3.1.1",
   "config": {
     "access": "public"
   },
@@ -18,7 +18,7 @@
     "umd"
   ],
   "dependencies": {
-    "@atlaskit/media-card": "^8.0.0",
+    "@atlaskit/media-card": "^10.1.1",
     "@atlaskit/icon": "^2.4.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "react-lazyload": "^2.2.5",
@@ -28,6 +28,15 @@
   "maintainers": [
     {
       "name": "Vadim K"
+    },
+    {
+      "name": "Hector Z"
+    },
+    {
+      "name": "Michael J"
+    },
+    {
+      "name": "James N"
     }
   ],
   "license": "Apache-2.0",
@@ -42,7 +51,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-core": "^5.1.0",
-    "@atlaskit/media-test-helpers": "^4.3.0",
+    "@atlaskit/media-test-helpers": "^4.6.0",
     "akutil-common-test": "*"
   },
   "keywords": [

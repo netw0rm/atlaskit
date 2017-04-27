@@ -8,7 +8,6 @@ import {FileCardViewSmall} from '../cardViewSmall';
 
 export interface FileCardProps extends SharedCardProps {
   readonly status: CardProcessingStatus;
-  readonly error?: Error;
   readonly details?: FileDetails;
   readonly dataURI?: string;
 };
@@ -32,10 +31,11 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {dimensions, selectable, selected, details, error, dataURI} = this.props;
+    const {dimensions, selectable, selected, details, dataURI} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
-    const errorMessage = error ? 'Error loading card' : undefined;
+    const errorMessage = this.isError ? 'Error loading card' : undefined;
+
     const card = (this._isSmall()) ?
       (
         <FileCardViewSmall
@@ -73,15 +73,13 @@ export class FileCard extends Component<FileCardProps, {}> {
     return (actions.length) ? actions[0] : null;
   }
 
-  private _getActions(): Array < CardAction > {
+  private _getActions(): Array <CardAction> {
     const {details} = this.props;
     // redundant 'or' guarding to satisfy compiler
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
     const actions = this.props.actions || [];
-    const nonActions = [CardActionType.click];
 
     return actions
-      .filter(action => action.type && nonActions.indexOf(action.type) === -1)
       .map((action: CardAction) => {
         return {
           label: action.label,
@@ -94,7 +92,7 @@ export class FileCard extends Component<FileCardProps, {}> {
       });
   }
 
-  private _getActionsByType(type: CardActionType): Array < CardAction > {
+  private _getActionsByType(type: CardActionType): Array <CardAction> {
     // redundant 'or' guarding to satisfy compiler
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
     const actions: Array<CardAction> = this.props.actions || [];
@@ -108,5 +106,10 @@ export class FileCard extends Component<FileCardProps, {}> {
   private get isLoading(): boolean {
     const {status} = this.props;
     return status === 'loading' || status === 'processing';
+  }
+
+  private get isError(): boolean {
+    const {status} = this.props;
+    return status === 'error';
   }
 }

@@ -7,14 +7,5 @@
   "plugins": [
     "transform-runtime",
     "transform-class-properties"
-  ],
-  "env": {
-    "test": {
-      "plugins": [
-        ["import-noop", {
-          "extensions": ["less"]
-        }]
-      ]
-    }
-  }
+  ]
 }

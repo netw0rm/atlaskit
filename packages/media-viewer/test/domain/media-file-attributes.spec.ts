@@ -27,6 +27,15 @@ describe('MediaFileAttributes', () => {
       expect(attributes.title).to.be.equal('Some GIF');
     });
 
+    it('should return image url given jpg file', () => {
+      const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.jpgFile, serviceHost);
+      expect(attributes.id).to.be.equal('jpg-file');
+      expect(attributes.src).to.be.equal('https://filestore.io/file/jpg-file/image');
+      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/jpg-file/binary?dl=1');
+      expect(attributes.type).to.be.undefined;
+      expect(attributes.title).to.be.equal('Some JPG');
+    });
+
     it('should return type video/mp4 given SD video', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.sdVideoFile, serviceHost);
       expect(attributes.id).to.be.equal('sd-file');
@@ -68,6 +77,14 @@ class Mocks {
       id: 'gif-file',
       name: 'Some GIF',
       mimeType: 'image/gif'
+    }
+  } as FileItem;
+
+  static jpgFile = {
+    details: {
+      id: 'jpg-file',
+      name: 'Some JPG',
+      mimeType: 'image/jpeg'
     }
   } as FileItem;
 

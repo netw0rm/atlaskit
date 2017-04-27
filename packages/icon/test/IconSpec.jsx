@@ -52,6 +52,42 @@ describe(name, () => {
       });
     });
 
+    describe('primaryColor property', () => {
+      it('is set to inherit the text color by default', () => {
+        const wrapper = mount(<MyIcon label="default primaryColor" />);
+
+        expect(wrapper.find('span').props().style.color).to.equal('currentColor');
+      });
+      it('can be changed to a hex value', () => {
+        const wrapper = mount(<MyIcon label="hex primaryColor" primaryColor="#ff0000" />);
+
+        expect(wrapper.find('span').props().style.color).to.equal('#ff0000');
+      });
+      it('can be changed to a named color', () => {
+        const wrapper = mount(<MyIcon label="named primaryColor" primaryColor="rebeccapurple" />);
+
+        expect(wrapper.find('span').props().style.color).to.equal('rebeccapurple');
+      });
+    });
+
+    describe('secondaryColor property', () => {
+      it('is set to white by default', () => {
+        const wrapper = mount(<MyIcon label="default secondaryColor" />);
+
+        expect(wrapper.find('span').props().style.fill).to.equal('white');
+      });
+      it('can be changed to a hex value', () => {
+        const wrapper = mount(<MyIcon label="hex secondaryColor" secondaryColor="#ff0000" />);
+
+        expect(wrapper.find('span').props().style.fill).to.equal('#ff0000');
+      });
+      it('can be changed to a named color', () => {
+        const wrapper = mount(<MyIcon label="named secondaryColor" secondaryColor="rebeccapurple" />);
+
+        expect(wrapper.find('span').props().style.fill).to.equal('rebeccapurple');
+      });
+    });
+
     describe('onClick property', () => {
       it('should set a click handler', () => {
         const handler = sinon.spy();

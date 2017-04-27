@@ -9,22 +9,22 @@ import { defaultReactionsByShortName } from '../../src/internal/selector';
 export default class MockReactionsProvider extends AbstractReactionsProvider {
 
   protected cachedReactions = {
-    'ari:cloud:demo:123:123': [
+    'ari:cloud:owner:demo-cloud-id:item/1': [
       {
-        ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortName.get(':grinning:') as EmojiId,
+        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+        emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!,
         count: 1,
         reacted: true
       },
       {
-        ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortName.get(':thumbsup:') as EmojiId,
+        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+        emojiId: (defaultReactionsByShortName.get(':thumbsup:') as EmojiId).id!,
         count: 5,
         reacted: false
       },
       {
-        ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortName.get(':heart:') as EmojiId,
+        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+        emojiId: (defaultReactionsByShortName.get(':heart:') as EmojiId).id!,
         count: 100,
         reacted: false
       }
@@ -37,7 +37,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  toggleReaction(ari: string, emojiId: EmojiId) {
+  toggleReaction(containerAri: string, ari: string, emojiId: string) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
@@ -46,19 +46,19 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
 
     if (hasReacted) {
-      this.deleteReaction(ari, emojiId)
+      this.deleteReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         });
     } else {
-      this.addReaction(ari, emojiId)
+      this.addReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         });
     }
   }
 
-  addReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
 
@@ -79,7 +79,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  deleteReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
       const reaction = this.cachedReactions[ari][index];
@@ -97,5 +97,5 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
 
 }
 
-export const reactionsProvider = new MockReactionsProvider() as any; // This need to be any in order for the overview story to work.
+export const reactionsProvider = new MockReactionsProvider(); // This need to be any in order for the overview story to work.
 export const reactionsProviderPromise = Promise.resolve(reactionsProvider) as any;

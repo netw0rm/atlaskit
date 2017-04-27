@@ -1,5 +1,5 @@
 import React from 'react';
-import Badge from '@atlaskit/badge';
+import Badge from '../src';
 
 const Badges = () => (
   <div>

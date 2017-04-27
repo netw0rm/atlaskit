@@ -176,7 +176,7 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.underline:
       return <Underline key={key}>{content}</Underline>;
     case MarkType.code:
-      return <Code key={key}>{content}</Code>;
+      return <Code key={key} text={content} />;
     case MarkType.text:
       if (validMark.text === '\n') {
         return <HardBreak key={key} />;

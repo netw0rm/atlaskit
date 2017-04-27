@@ -1,8 +1,14 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { AkCode } from '@atlaskit/code';
 
-export default class Code extends PureComponent<{}, {}> {
+export interface CodeProps {
+  text: string;
+}
+
+export default class Code extends PureComponent<CodeProps, {}> {
+
   render() {
-    return <span style={{fontFamily: 'monospace', whiteSpace: 'pre-wrap'}}>{this.props.children}</span>;
+    return <AkCode text={this.props.text} />;
   }
 }

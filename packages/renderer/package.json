@@ -19,6 +19,7 @@
     "src"
   ],
   "dependencies": {
+    "@atlaskit/code": "^1.0.0",
     "@atlaskit/emoji": "^13.1.1",
     "@atlaskit/media-card": "^5.0.0",
     "@atlaskit/media-core": "^1.2.2",

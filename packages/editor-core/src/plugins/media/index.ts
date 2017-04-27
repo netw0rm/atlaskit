@@ -97,7 +97,7 @@ export class MediaPluginState {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
           // TODO: re-initialize pickers ?
-          this.popupPicker.setUploadParams(mediaProvider.uploadParams);
+          this.popupPicker && this.popupPicker.setUploadParams(mediaProvider.uploadParams);
         });
       } else {
         this.allowsUploads = false;
@@ -253,10 +253,17 @@ export class MediaPluginState {
       // In-flight media items that we should cancel
       case 'uploading':
       case 'processing':
-        pickers.forEach(picker => picker.cancel(id));
-        stateManager.updateState(node.attrs.id, {
-          id,
-          status: 'cancelled'
+        pickers.forEach(picker => {
+          try {
+            picker.cancel(id);
+          } catch (e) {
+            // We're deliberatelly consuming a known Media Picker exception, as it seems that
+            // the picker has problems cancelling uploads before the popup picker has been shown
+            // TODO: remove after fixing https://jira.atlassian.com/browse/FIL-4161
+            if (!/(popupIframe|cancelUpload).*?undefined/.test(`${e}`)) {
+              throw e;
+            }
+          }
         });
 
         // In case the file has been attached multiple times, remove all occurences

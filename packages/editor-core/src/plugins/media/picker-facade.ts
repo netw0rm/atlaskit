@@ -92,6 +92,12 @@ export default class PickerFacade {
   }
 
   cancel(tempId: string): void {
+    const state = this.stateManager.getState(tempId);
+
+    if (!state || state.status === 'cancelled') {
+      return;
+    }
+
     this.picker.cancel(tempId);
     this.stateManager.updateState(tempId, {
       id: tempId,
@@ -122,8 +128,8 @@ export default class PickerFacade {
   }
 
   private handleUploadStart = (event: PickerEvent) => {
-    const tempId = `temporary:${event.file.id}`;
     const { file } = event;
+    const tempId = `temporary:${file.id}`;
     const state = {
       id: tempId,
       status: 'uploading',
@@ -137,8 +143,8 @@ export default class PickerFacade {
   }
 
   private handleUploadStatusUpdate = (event: PickerEvent) => {
-    const tempId = `temporary:${event.file.id}`;
     const { file, progress } = event;
+    const tempId = `temporary:${file.id}`;
 
     this.stateManager.updateState(tempId, {
       id: tempId,
@@ -151,8 +157,8 @@ export default class PickerFacade {
   }
 
   private handleUploadProcessing = (event: PickerEvent) => {
-    const tempId = `temporary:${event.file.id}`;
     const { file } = event;
+    const tempId = `temporary:${file.id}`;
 
     this.stateManager.updateState(tempId, {
       id: tempId,
@@ -165,9 +171,14 @@ export default class PickerFacade {
   }
 
   private handleUploadError = (event: PickerEvent) => {
-    const tempId = `temporary:${event.file.id}`;
     const { file, error } = event;
 
+    if (!file || !file.id) {
+      console.error('Editor: Media: unknown upload-error received from Media Picker', error);
+      return;
+    }
+
+    const tempId = `temporary:${file.id}`;
     this.stateManager.updateState(tempId, {
       id: tempId,
       publicId: file.publicId as string,
@@ -180,8 +191,8 @@ export default class PickerFacade {
   }
 
   private handleUploadEnd = (event: PickerEvent) => {
-    const tempId = `temporary:${event.file.id}`;
     const { file } = event;
+    const tempId = `temporary:${file.id}`;
 
     this.stateManager.updateState(tempId, {
       id: tempId,

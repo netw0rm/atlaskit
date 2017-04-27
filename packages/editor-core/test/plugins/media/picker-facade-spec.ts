@@ -114,7 +114,7 @@ describe('Media PickerFacade', () => {
     });
 
     it('respects dropzone container', () => {
-      expect(mockPicker.pickerConfig).to.have.property('tokenSource')
+      expect(mockPicker.pickerConfig).to.have.property('tokenSource');
     });
   });
 

@@ -20,18 +20,20 @@ import {
   fixtures,
   p,
   storyMediaProviderFactory,
+  randomId,
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { PositionedNode } from '../../../src/plugins/media';
 
 chai.use(chaiPlugin);
 
+
 describe('Media plugin', () => {
   const fixture = fixtures();
   const stateManager = new DefaultMediaStateManager();
-  const defaultCollectionName = 'media-plugin-mock-collection';
-  const resolvedProvider = storyMediaProviderFactory(defaultCollectionName, stateManager);
-  const testFileId = `temporary:${Math.round(Math.random() * 1000)}`;
+  const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+  const resolvedProvider = storyMediaProviderFactory(testCollectionName, stateManager);
+  const testFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();
   providerFactory.setProvider('mediaProvider', resolvedProvider);
@@ -46,7 +48,7 @@ describe('Media plugin', () => {
   });
 
   const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
-    const [node, transaction ] = pluginState.insertFile({ id }, 'mock-collection');
+    const [node, transaction ] = pluginState.insertFile({ id }, testCollectionName);
     editorView.dispatch(transaction);
 
     return node as PositionedNode;
@@ -65,7 +67,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
       )
     ));
   });
@@ -78,7 +80,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         h1('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
       )
     ));
   });
@@ -91,7 +93,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(blockquote(
         p('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' }))
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName }))
       ))
     );
   });
@@ -104,7 +106,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         code_block()('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
       )
     ));
   });
@@ -112,7 +114,7 @@ describe('Media plugin', () => {
   it('should prepend media node to existing media group', () => {
     const { editorView, pluginState } = editor(doc(
       p('text{<>}'),
-      mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })),
+      mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
     ));
 
     insertFile(editorView, pluginState, 'mock2');
@@ -121,8 +123,8 @@ describe('Media plugin', () => {
       doc(
         p('text{<>}'),
         mediaGroup(
-          media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
-          media({ id: testFileId, type: 'file', collection: 'mock-collection' }),
+          media({ id: 'mock2', type: 'file', collection: testCollectionName }),
+          media({ id: testFileId, type: 'file', collection: testCollectionName }),
         )
       )
     );
@@ -135,7 +137,7 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
-        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })),
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
         p(),
       )
     );
@@ -148,7 +150,7 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
-        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })),
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
         p()
       )
     );
@@ -162,7 +164,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: 'mock-collection' })),
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
       )
     );
   });
@@ -212,7 +214,7 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: defaultCollectionName })),
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
       )
     );
 
@@ -231,30 +233,40 @@ describe('Media plugin', () => {
   it('should cancel uploads after media item is removed', async () => {
     const handler = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
+    const firstTemporaryFileId = `temporary:${randomId()}`;
+    const secondTemporaryFileId = `temporary:${randomId()}`;
     await resolvedProvider;
 
-    const firstMediaNode = insertFile(editorView, pluginState, 'temporary: file1');
-    insertFile(editorView, pluginState, 'temporary: file1');
-    insertFile(editorView, pluginState, 'temporary: file2');
+    const firstMediaNode = insertFile(editorView, pluginState, firstTemporaryFileId);
+    insertFile(editorView, pluginState, secondTemporaryFileId);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
         mediaGroup(
-          media({ id: 'temporary: file1', type: 'file', collection: defaultCollectionName }),
-          media({ id: 'temporary: file1', type: 'file', collection: defaultCollectionName }),
-          media({ id: 'temporary: file2', type: 'file', collection: defaultCollectionName }),
+          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
       )
     );
 
-    stateManager.subscribe('temporary: file1', handler);
+    stateManager.updateState(firstTemporaryFileId, {
+      id: firstTemporaryFileId,
+      status: 'uploading'
+    });
+
+    stateManager.updateState(secondTemporaryFileId, {
+      id: secondTemporaryFileId,
+      status: 'uploading'
+    });
+
+    stateManager.subscribe(firstTemporaryFileId, handler);
     const pos = firstMediaNode.getPos();
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
 
     expect(handler.calledOnce).to.eq(true, 'State Manager should receive "cancelled" status');
     expect(handler.calledWithExactly({
-      id: 'temporary: file1',
+      id: firstTemporaryFileId,
       status: 'cancelled'
     })).to.eq(true, 'State Manager should receive "cancelled" status');
 
@@ -262,12 +274,9 @@ describe('Media plugin', () => {
       doc(
         p(),
         mediaGroup(
-          media({ id: 'temporary: file1', type: 'file', collection: defaultCollectionName }),
-          media({ id: 'temporary: file1', type: 'file', collection: defaultCollectionName }),
-          media({ id: 'temporary: file2', type: 'file', collection: defaultCollectionName }),
+          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
-      ),
-      'All instances of the cancelled media should be removed from the document'
+      )
     );
   });
 });

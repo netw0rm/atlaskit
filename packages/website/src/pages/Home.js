@@ -9,7 +9,7 @@ export default class WelcomePage extends PureComponent {
   render() {
     return (
       <div>
-        <Helmet title="Welcome">
+        <Helmet>
           <meta name="description" content="Atlassian's UI Library powered by React.js" />
         </Helmet>
         <Grid spacing="comfortable">

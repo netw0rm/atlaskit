@@ -35,7 +35,10 @@ export default class App extends PureComponent {
             />
           )}
         >
-          <Helmet titleTemplate="%s | AtlasKit" />
+          <Helmet
+            defaultTitle="AtlasKit - Atlassian's UI Library powered by React.js"
+            titleTemplate="%s | AtlasKit"
+          />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/install" component={InstallGuide} />

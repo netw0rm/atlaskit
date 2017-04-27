@@ -16,10 +16,13 @@ const emojiStyle = style({
   transformOrigin: 'center center 0',
   transition: 'transform cubic-bezier(0.23, 1, 0.32, 1) 200ms',
   $nest: {
-    '&&> div': {
+    '&&> span': {
+      display: 'inline-block',
       flex: 'auto',
       width: 'auto',
+      minWidth: '24px',
       height: '20px',
+      backgroundSize: '16px 16px',
       $nest: {
         '> span': {
           margin: '2px 4px',
@@ -27,12 +30,6 @@ const emojiStyle = style({
           height: '16px'
         }
       }
-    },
-    '&&> span': {
-      flex: 'auto',
-      width: '24px',
-      height: '20px',
-      backgroundSize: '16px 16px'
     }
   }
 });
@@ -99,12 +96,14 @@ export default class Reaction extends PureComponent<Props, {}> {
       'reacted': reaction.reacted
     });
 
+    const emojiId = { id: reaction.emojiId, shortName: '' };
+
     return (
       <button
         className={classNames}
         onMouseUp={this.handleMouseDown}
       >
-        <span className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={reaction.emojiId} /></span>
+        <span className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} /></span>
         <span className={countStyle}>
           {reaction.count < 100 ? reaction.count : '99+'}
         </span>

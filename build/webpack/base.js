@@ -6,7 +6,6 @@ const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const glob = require('glob');
 
-const moduleBabelQuery = require('./babel.query.module');
 const loaderChain = require('./loader-chain').encode;
 
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -101,32 +100,8 @@ const standardConfig = {
         // JAVASCRIPT (React components)
         //
         {
-          test: /\.jsx$/,
+          test: /\.jsx?$/,
           loader: 'babel-loader',
-          exclude: /node_modules/,
-        },
-        //
-        // JAVASCRIPT (Web components)
-        // Support react/jsx in stories, react/ directory, or react-*.js files
-        //
-        // TODO: remove this once we don't have WC any more
-        {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
-          // TODO: Remove next line once ak-component-base and ak-tooltip are migrated
-          exclude: /stories\/skate\/.*\.js/,
-        },
-        //
-        // JAVASCRIPT
-        // Support jsx to incremental dom in non-react locations (above).
-        // Make sure vdom is imported from skatejs where jsx is used
-        //
-        // TODO: remove this once we don't have WC any more
-        {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          query: moduleBabelQuery,
           exclude: /node_modules/,
         },
       ],

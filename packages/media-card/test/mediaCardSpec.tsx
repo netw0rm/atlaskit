@@ -21,7 +21,6 @@ describe('MediaCard', () => {
   };
 
   describe('.render()', () => {
-
     it('should pass down other props', () => {
       const element = shallow(
         <MediaCard
@@ -64,7 +63,7 @@ describe('MediaCard', () => {
       expect(element.props().metadata).to.be.equal(metadata);
     });
 
-    it('should pass down the error when we have one', () => {
+    it('should NOT pass down the error when we have one', () => {
       const error = new Error('test');
 
       const element = shallow(
@@ -75,9 +74,8 @@ describe('MediaCard', () => {
 
       element.setState({error});
 
-      expect(element.props().error).to.be.equal(error);
+      expect(element.props().error).to.be.equal(undefined);
     });
-
   });
 
   describe('.updateState()', () => {

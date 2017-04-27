@@ -5,32 +5,6 @@ import {CollectionService, MediaCollectionService, SortDirection} from '../servi
 import {mediaCollectionProviderFromPool} from './util/mediaCollectionProviderFromPool';
 import {Pool} from './util/pool';
 
-
-// export type MediaCollectionReducerPool = Pool<CollectionProvider>;
-
-// export class MediaCollectionProvider {
-//   public static fromMediaApi(config: MediaApiConfig,
-//                              collectionName: string,
-//                              clientId: string,
-//                              pageSize: number): CollectionProvider {
-
-//     return CollectionProvider.fromMediaAPI(config, collectionName, clientId, pageSize, 'desc');
-//   }
-
-//   public static fromPool(pool: MediaCollectionReducerPool,
-//                          config: MediaApiConfig,
-//                          collectionName: string,
-//                          clientId: string,
-//                          pageSize: number): CollectionProvider {
-//     return CollectionProvider.fromPool(pool, config, collectionName, clientId, pageSize, 'desc');
-//   }
-
-//   public static createPool(): MediaCollectionReducerPool {
-//     return new Pool<CollectionProvider>();
-//   }
-// }
-
-
 export class RemoteMediaCollectionProviderFactory {
 
   public static fromCollectionService(

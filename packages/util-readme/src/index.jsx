@@ -5,6 +5,8 @@ import Description from './Description';
 import DynamicProps from './DynamicProps';
 import Usage from './Usage';
 
+export { DynamicProps };
+
 export default class Readme extends PureComponent {
   static propTypes = {
     /** The component class/function described by the readme */

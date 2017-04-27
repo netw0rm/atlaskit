@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
-import { StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
+import { StoryList, createStorybookContext, collectionNames, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
 
 const wrongCollection = 'adfasdf';
@@ -89,14 +89,14 @@ storiesOf('CardList', {})
          title: 'Normal card',
          content: <CardList
            context={context}
-           collectionName={fileCollectionName}
+           collectionName={defaultCollectionName}
            pageSize={30}
          />
        }, {
          title: 'Small card',
          content: <CardList
            context={context}
-           collectionName={fileCollectionName}
+           collectionName={defaultCollectionName}
            pageSize={30}
            cardAppearance={'small'}
          />
@@ -104,7 +104,7 @@ storiesOf('CardList', {})
          title: 'Small card',
          content: <CardList
            context={context}
-           collectionName={fileCollectionName}
+           collectionName={defaultCollectionName}
            pageSize={30}
            cardAppearance={'small'}
          />
@@ -112,21 +112,21 @@ storiesOf('CardList', {})
          title: 'Normal Card',
          content: <CardList
            context={context}
-           collectionName={fileCollectionName}
+           collectionName={defaultCollectionName}
            pageSize={30}
          />
        }, {
          title: 'Normal card',
          content: <CardList
            context={context}
-           collectionName={fileCollectionName}
+           collectionName={defaultCollectionName}
            pageSize={30}
          />
        }, {
          title: 'Normal card',
          content: <CardList
            context={context}
-           collectionName={fileCollectionName}
+           collectionName={defaultCollectionName}
            pageSize={30}
          />
        }]}
@@ -169,7 +169,7 @@ storiesOf('CardList', {})
    .add('Custom actions dropdown', () => (
      <CardList
        context={context}
-       collectionName={fileCollectionName}
+       collectionName={defaultCollectionName}
        actions={cardsActions}
      />
    ))
@@ -178,7 +178,7 @@ storiesOf('CardList', {})
      return <CardList
        context={context}
        loadingComponent={customLoadingComponent}
-       collectionName={fileCollectionName}
+       collectionName={defaultCollectionName}
        actions={cardsActions}
      />;
    })
@@ -207,7 +207,7 @@ storiesOf('CardList', {})
    .add('With pageSize (3)', () => {
      return <CardList
        context={context}
-       collectionName={fileCollectionName}
+       collectionName={defaultCollectionName}
        actions={cardsActions}
        pageSize={3}
      />;
@@ -215,14 +215,14 @@ storiesOf('CardList', {})
   .add('With Card Width and Height', () => {
     return <CardList
       context={context}
-      collectionName={fileCollectionName}
+      collectionName={defaultCollectionName}
       cardDimensions={{width: '200px', height: '100px'}}
       actions={cardsActions}
       pageSize={3}
     />;
   })
   .add('With infinite scroll', () => {
-    return <div style={{display: 'inline-block'}}>
+    return <div >
       <CardList
         context={context}
         collectionName={defaultCollectionName}

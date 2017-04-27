@@ -16,6 +16,7 @@ export interface LinkCardProps extends SharedCardProps {
 export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
     const {appearance} = this.props;
+    const {resources} = this;
 
     // If appearance is passed we prioritize that instead of the better looking one
     if (appearance === 'small') {
@@ -26,10 +27,14 @@ export class LinkCard extends Component<LinkCardProps, {}> {
       return this.renderLinkCardImage();
     }
 
-    if (this.resources && this.resources.app) {
-      return this.renderApplicationLink();
-    } else if (this.resources && this.resources.player) {
-      return this.renderPlayerLink();
+    if (appearance === 'horizontal' || appearance === 'square') {
+      return this.renderGenericLink();
+    }
+
+    if (resources) {
+      if (resources.app) { return this.renderApplicationLink(); }
+      if (resources.player) { return this.renderPlayerLink(); }
+      if (resources.image) { return this.renderLinkCardImage(); }
     }
 
     return this.renderGenericLink();
@@ -106,7 +111,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         linkUrl={url}
         title={title}
         site={site}
-        thumbnailUrl={this.iconUrl}
+        thumbnailUrl={this.iconUrl || this.thumbnailUrl}
         width={dimensions && dimensions.width}
         loading={this.isLoading}
         actions={actions}
@@ -149,10 +154,12 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   }
 
   private get thumbnailUrl() {
-    const { thumbnail } = this.resources;
+    const { thumbnail, image } = this.resources;
+    const imageUrl = image ? image.url : undefined;
+    const thumbnailUrl = thumbnail ? thumbnail.url : undefined;
 
     // TODO: Should we default here to 'this.iconUrl'?
-    return thumbnail ? thumbnail.url : undefined;
+    return imageUrl || thumbnailUrl;
   }
 
   private get iconUrl() {

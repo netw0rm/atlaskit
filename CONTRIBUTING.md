@@ -4,25 +4,41 @@
 ## Code of Conduct
 This project is bound by a [Code of Conduct][CODEOFCONDUCT].
 
+## Reporting Issues
 
-## Issue Contributions
+This section guides you through submitting a bug report for AtlasKit. Following these guidelines helps us and the community understand your issue, reproduce the behavior, and find related issues.
 
-When [opening new issues][IssueTracker] or commenting on existing issues in this repository, please make sure discussions are related to concrete technical issues in AtlasKit.
+When you are creating an issue, please include as many details as possible. Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks helps us resolve issues faster.
 
-**Please also remember that we accept Pull Requests. See below. **
+### Before submitting an issue
+
+* **Perform a [cursory search][IssueTracker]** to see if the problem has already been reported. If it has, add a comment to the existing issue instead of opening a new one.
+
+### How do I submit a (good) issue?
+
+* **Use a clear and descriptive title** for the issue to identify the problem.
+* **Describe the exact steps which reproduce the problem** in as many details as possible. Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-codepen) as starting point. When listing steps, **don't just say what you did, but explain how you did it**. For example, if you opened a inline dialog, explain if you used the mouse, or a keyboard shortcut.
+* **If the problem wasn't triggered by a specific action**, describe what you were doing before the problem happened and share more information using the guidelines below.
+
+Include details about your configuration and environment:
+
+* **Which version of the component are you using?** You can get this information by running `yarn ls | grep '@atlaskit'` or `npm list | grep '@atlaskit'` from the command line.
+* **What's the name and version of the browser and OS you're using**?
 
 
-## Code Contributions
+### Code Contributions
 
-###Why should I contribute?
+#### Why should I contribute?
 
-1. While we strive to look at new issues as soon as we can, because of the many priorities we juggle and limited hours in the day, issues raised often don't get looked into soon enough.
+1. While we strive to look at new issues as soon as we can, because of the many priorities we juggle and limited resources, issues raised often don't get looked into soon enough.
 2. We want your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes.
 3. With the build system and auto-deployment to npm, using AtlasKit components in your projects simplifies your development stack. Treat AtlasKit as part of your codebase and make changes in it.
-4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations inside and outside the company.
+4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations.
+
+Please raise a new issue [here][IssueTracker]. (Atlassians, please use this [internal link][AtlassianBug].)
 
 
-## How do I...
+# How do I...
 
 
 ## Setup my local environment
@@ -366,3 +382,4 @@ with `"fix(dummy): ..."` should be enough.
 
 [CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md
 [IssueTracker]: https://bitbucket.org/atlassian/atlaskit/issues?status=new&status=open
+[AtlassianBug]: http://go/ak-bug

@@ -148,14 +148,14 @@ storiesOf('Card', {})
       </div>
     );
   }).add('Media type matrix', () => {
-    // file cards
+    // link cards
     const videoLinkCard = <Card context={context} identifier={videoUrlPreviewId} />;
     const imageLinkCard = <Card context={context} identifier={imageUrlPreviewId} />;
     const audioLinkCard = <Card context={context} identifier={audioUrlPreviewId} />;
     const docLinkCard = <Card context={context} identifier={docUrlPreviewId} />;
     const unknownLinkCard = <Card context={context} identifier={unknownUrlPreviewId} />;
 
-    // link cards
+    // file cards
     const videoFileCard = <Card context={context} identifier={videoFileId} />;
     const imageFileCard = <Card context={context} identifier={imageFileId} />;
     const audioFileCard = <Card context={context} identifier={audioFileId} />;

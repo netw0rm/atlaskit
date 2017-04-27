@@ -4,7 +4,7 @@
     <title>home-filled</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="home-filled" fill="currentColor">
             <g transform="translate(3.000000, 3.000000)">
                 <path d="M3,7.9955775 C3,7.44573523 3.45576096,7 4.00247329,7 L13.9975267,7 C14.5511774,7 15,7.44483697 15,7.9955775 L15,17.0044225 C15,17.5542648 14.544239,18 13.9975267,18 L4.00247329,18 C3.44882258,18 3,17.555163 3,17.0044225 L3,7.9955775 Z M7,13.9979131 L7,18 L11,18 L11,13.9979131 C11,12.8982606 10.1045695,12 9,12 C7.88772964,12 7,12.8944962 7,13.9979131 Z" id="Combined-Shape"></path>

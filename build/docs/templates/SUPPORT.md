@@ -1,16 +1,7 @@
-## Support and feedback
+___* Please note that there are dependencies in this module that are governed by the Atlassian Design Guidelines license which will be automatically included on install of this library. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies.___
 
-### We're here to help!
+## We're here to help!
 
 Let us know what you think of our components and docs, your feedback is really important for us.
 
-### Community support
-
-Ask a question in our [forum](https://answers.atlassian.com/questions/ask?title=AtlasKit%3A%20&topics=atlaskit,@NAME@,@NAME@@@VERSION@).
-
-Check [if someone has already asked the same question before](https://answers.atlassian.com/questions/topics/42926171/atlaskit).
-
-
-### Create a support ticket
-
-Are you in trouble? [Let us know](https://ecosystem.atlassian.net/browse/AK)!
+Are you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.

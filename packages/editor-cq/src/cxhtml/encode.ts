@@ -221,7 +221,7 @@ export default function encode(node: PMNode) {
     const elem = doc.createElementNS(FAB_XMLNS, 'fab:mention');
     elem.setAttribute('atlassian-id', node.attrs['id']);
 
-    const cdata = doc.createCDATASection(node.attrs['displayName']);
+    const cdata = doc.createCDATASection(node.attrs['text']);
     elem.appendChild(cdata);
 
     return elem;

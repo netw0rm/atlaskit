@@ -25,9 +25,9 @@ export interface LinkCardTrelloBoardViewProps {
   lists: Array<{name: string, count: number}>;
   members: MembersList;
 
-  // TODO FIL-3892 implement visual designs for loading state
+  // TODO implement visual designs for loading state
   loading?: boolean;
-  // TODO FIL-3893 implement visual designs for error state
+  // TODO implement visual designs for error state
   error?: string;
 }
 

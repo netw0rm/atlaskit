@@ -4,7 +4,7 @@
     <title>billing</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="billing" fill="currentColor">
             <g transform="translate(5.000000, 2.000000)">
                 <path d="M2,2 L2,18 L12,18 L12,2 L2,2 Z M0,1.99079514 C0,0.891309342 0.897060126,0 2.00585866,0 L11.9941413,0 C13.1019465,0 14,0.898212381 14,1.99079514 L14,18.0092049 C14,19.1086907 13.1029399,20 11.9941413,20 L2.00585866,20 C0.898053512,20 0,19.1017876 0,18.0092049 L0,1.99079514 Z" id="Rectangle-5" fill-rule="nonzero"></path>

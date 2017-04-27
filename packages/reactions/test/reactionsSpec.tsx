@@ -14,7 +14,8 @@ const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
-const demoAri = 'ari:cloud:demo:123:123';
+const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
+const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 // Override "subscribe" so that it resovles instantly.
 const subscribe = reactionsProvider.subscribe;
@@ -65,7 +66,7 @@ describe('@atlaskit/reactions/reactions', () => {
     const reactionElements = reactions.find(Reaction);
     expect(reactionElements.length).to.equal(sortedReactions.length);
 
-    return reactionsProvider.addReaction(demoAri, smileyId)
+    return reactionsProvider.addReaction(containerAri, demoAri, smileyId.id!)
       .then(state => {
         reactionsProvider.notifyUpdated(demoAri, state);
         expect(reactions.find(Reaction).length).to.equal(sortedReactions.length + 1);

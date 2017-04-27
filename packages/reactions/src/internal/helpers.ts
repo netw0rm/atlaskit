@@ -26,42 +26,18 @@ export const unique = (array: any[], predicate: (item: any) => string) => {
   return array.filter(item => seen[predicate(item)] ? false : (seen[predicate(item)] = true));
 };
 
-export const equalEmojiId = (l: EmojiId, r: EmojiId): boolean => {
-  return (l === r) || (l && r && l.id === r.id && l.shortName === r.shortName);
+export const equalEmojiId = (l: EmojiId | string, r: EmojiId | string): boolean => {
+  if (isEmojiId(l) && isEmojiId(r)) {
+    return (l === r) || (l && r && l.id === r.id && l.shortName === r.shortName);
+  } else {
+    return l === r;
+  }
 };
 
-const compareOptionalStrings = (l: string | undefined, r: string | undefined): number => {
-  if (l === r) {
-    return 0;
-  }
-  if (!l) {
-    return 1;
-  }
-  if (!r) {
-    return -1;
-  }
-  return l.localeCompare(r);
+const isEmojiId = (emojiId: EmojiId | string): emojiId is EmojiId => {
+  return (emojiId as EmojiId).id !== undefined;
 };
 
-export const compareEmojiId = (l: EmojiId, r: EmojiId): number => {
-  if (l === r) {
-    return 0;
-  }
-  if (!l) {
-    return 1;
-  }
-  if (!r) {
-    return -1;
-  }
-  const compareShortName = compareOptionalStrings(l.shortName, r.shortName);
-  if (compareShortName) {
-    return compareShortName;
-  }
-
-  const compareFallback = compareOptionalStrings(l.fallback, r.fallback);
-  if (compareFallback) {
-    return compareFallback;
-  }
-
-  return compareOptionalStrings(l.id, r.id);
+export const compareEmojiId = (l: string, r: string): number => {
+  return l > r ? 1 : 0;
 };

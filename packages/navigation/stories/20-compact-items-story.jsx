@@ -36,12 +36,10 @@ storiesOf(name, module)
         <AkNavigationItemGroup isCompact>
           <AkNavigationItem
             icon={<RandomAvatar presence="online" />}
-            isCompact
             text="Available"
           />
           <AkNavigationItem
             icon={<DashboardIcon label="Lobby" />}
-            isCompact
             text="Lobby"
           />
         </AkNavigationItemGroup>
@@ -53,7 +51,6 @@ storiesOf(name, module)
               spacing="none"
             />
           }
-          isCompact
           title="Rooms"
         >
           <CompactItem href="#1">Front deskers</CompactItem>

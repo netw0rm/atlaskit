@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-avatar-picker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "config": {
     "access": "public"
   },
@@ -28,7 +28,20 @@
     "typestyle": "^0.21.4"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [],
+  "maintainers": [
+    {
+      "name": "Hector Z"
+    },
+    {
+      "name": "Michael J"
+    },
+    {
+      "name": "Aleksandr Motsjonov"
+    },
+    {
+      "name": "Vladimir Vinogradov"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "@atlaskit/media-core": "^5.4.0",

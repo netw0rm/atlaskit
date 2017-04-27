@@ -19,7 +19,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/media-card": "^8.0.0",
+    "@atlaskit/media-card": "^10.1.1",
     "@atlaskit/icon": "^2.4.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "react-lazyload": "^2.2.5",
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-core": "^5.1.0",
-    "@atlaskit/media-test-helpers": "^4.3.0",
+    "@atlaskit/media-test-helpers": "^4.6.2",
     "akutil-common-test": "*"
   },
   "keywords": [

@@ -169,17 +169,19 @@ describe('Media plugin', () => {
     );
   });
 
-  it('should insert all media nodes on the same line', () => {
+  it('should insert all media nodes on the same line', async () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
 
-    insertFile(editorView, pluginState, 'mock1');
-    insertFile(editorView, pluginState, 'mock2');
+    await resolvedProvider;
+    pluginState.handleNewMediaPicked({ id: 'mock2' });
+    pluginState.handleNewMediaPicked({ id: 'mock1' });
 
     expect(editorView.state.doc).to.deep.equal(doc(
       mediaGroup(
-        media({ id: 'mock1', type: 'file', collection: 'mock-collection' }),
-        media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
+        media({ id: 'mock1', type: 'file', collection: testCollectionName }),
+        media({ id: 'mock2', type: 'file', collection: testCollectionName }),
       ),
+      p(),
     ));
   });
 

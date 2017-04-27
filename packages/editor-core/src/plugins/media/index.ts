@@ -29,6 +29,7 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsPastingLinks: boolean = false;
   public stateManager: MediaStateManager;
+  public replaceQueue: Array<[PositionedNode, Node | undefined]> = [];
 
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -242,15 +243,25 @@ export class MediaPluginState {
   handleMediaNodeRemoval = (node: PositionedNode) => {
     const { stateManager, pickers } = this;
     const { id } = node.attrs;
+    const state = stateManager.getState(id);
 
-    pickers.forEach(picker => picker.cancel(id));
-    stateManager.updateState(node.attrs.id, {
-      id,
-      status: 'cancelled'
-    });
+    if (!state) {
+      return;
+    }
 
-    // In case the file has been attached multiple times, remove all occurences
-    this.removeTemporaryMediaNodes(id);
+    switch (state.status) {
+      // In-flight media items that we should cancel
+      case 'uploading':
+      case 'processing':
+        pickers.forEach(picker => picker.cancel(id));
+        stateManager.updateState(node.attrs.id, {
+          id,
+          status: 'cancelled'
+        });
+
+        // In case the file has been attached multiple times, remove all occurences
+        this.removeTemporaryMediaNodes(id);
+    }
   }
 
   destroy() {
@@ -379,12 +390,6 @@ export class MediaPluginState {
     }
 
     temporaryMediaNodes.get(tempId).forEach((node: PositionedNode) => {
-      const pos = node.getPos && node.getPos();
-
-      if (!pos || pos < 1) {
-        return;
-      }
-
       const newNode = view.state.schema.nodes.media!.create({
         ...node.attrs,
         id: publicId
@@ -396,10 +401,11 @@ export class MediaPluginState {
       fileSize && (newNode.fileSize = fileSize);
       fileMimeType && (newNode.fileMimeType = fileMimeType);
 
-      view.dispatch(view.state.tr.replaceWith(pos, pos + 1, newNode));
+      this.replaceQueue.push([node, newNode]);
     });
 
     temporaryMediaNodes.delete(tempId);
+    view.dispatch(view.state.tr);
   }
 
   private removeTemporaryMediaNodes = (tempId: string) => {
@@ -410,16 +416,11 @@ export class MediaPluginState {
     }
 
     temporaryMediaNodes.get(tempId).forEach((node: PositionedNode) => {
-      const pos = node.getPos && node.getPos();
-
-      if (!pos || pos < 1) {
-        return;
-      }
-
-      view.dispatch(view.state.tr.delete(pos, pos + 1, ));
+      this.replaceQueue.push([node, undefined]);
     });
 
     temporaryMediaNodes.delete(tempId);
+    view.dispatch(view.state.tr);
   }
 }
 
@@ -443,7 +444,26 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       const pluginState = stateKey.getState(view.state);
       pluginState.setView(view);
 
-      return {};
+      return {
+        update: (view: EditorView, prevState: EditorState<any>) => {
+          // Pop items from the replace queue, and dispatch a replace transforms one by one
+          const pluginState = stateKey.getState(view.state) as MediaPluginState;
+          const item = pluginState.replaceQueue.pop();
+
+          if (item) {
+            const pos = item[0].getPos();
+            if (!pos || pos < 1) {
+              return;
+            }
+
+            if (item[1]) {
+              view.dispatch(view.state.tr.replaceWith(pos, pos + 1, item[1]!));
+            } else {
+              view.dispatch(view.state.tr.delete(pos, pos + 1));
+            }
+          }
+        }
+      };
     },
     props: {
       handleDOMEvents: {

@@ -1,4 +1,4 @@
-___* Please note that there are dependencies in this module that are governed by the Atlassian Design Guidelines license which will be automatically included on install of this library. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies.___
+_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._
 
 ## We're here to help!
 

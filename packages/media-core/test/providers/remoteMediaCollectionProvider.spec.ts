@@ -6,9 +6,11 @@ import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/take';
 
 import { CollectionServiceStub } from '../stubs/collection-service-stub';
-import { CollectionProvider } from '../../src/providers/collectionProvider';
+import { RemoteMediaCollectionProviderFactory } from '../../src/providers/remoteMediaCollectionProviderFactory';
 
-describe('CollectionProvider', () => {
+// TODO: don't test the factory
+
+describe('RemoteMediaCollectionProvider', () => {
   const pageCount = 10;
   const itemsPerPageCount = 10;
   const totalItemCount = pageCount * itemsPerPageCount;
@@ -16,7 +18,7 @@ describe('CollectionProvider', () => {
 
   it('should load the first page on construction', (done) => {
     const collectionService = CollectionServiceStub.from(defaultCollectionName, totalItemCount, itemsPerPageCount);
-    const collectionProvider = CollectionProvider.fromCollectionService(
+    const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
       collectionService,
       defaultCollectionName,
       itemsPerPageCount,
@@ -36,7 +38,7 @@ describe('CollectionProvider', () => {
 
   it('should load the next page', (done) => {
     const collectionService = CollectionServiceStub.from(defaultCollectionName, totalItemCount, itemsPerPageCount);
-    const collectionProvider = CollectionProvider.fromCollectionService(
+    const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
       collectionService,
       defaultCollectionName,
       itemsPerPageCount,
@@ -46,7 +48,7 @@ describe('CollectionProvider', () => {
     // Load next page when we have finished loading the first one.
     const subscription1 = collectionProvider.observable()
       .take(1)
-      .do(collection => collectionProvider.controller().loadNextPage())
+      .do(collection => collectionProvider.loadNextPage())
       .subscribe({
         next: () => subscription1.unsubscribe()
       });
@@ -66,14 +68,14 @@ describe('CollectionProvider', () => {
 
   it('should load all the pages until it finds occurrence key', (done) => {
     const collectionService = CollectionServiceStub.from(defaultCollectionName, totalItemCount, itemsPerPageCount);
-    const collectionProvider = CollectionProvider.fromCollectionService(
+    const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
       collectionService,
       defaultCollectionName,
       itemsPerPageCount,
       sortDirection
     );
 
-    collectionProvider.controller().loadNextPageUntil(item => item.details.occurrenceKey === 'file-66');
+    collectionProvider.loadNextPageUntil(item => item.details.occurrenceKey === 'file-66');
 
     const subscription = collectionProvider.observable()
       .skip(6)
@@ -90,14 +92,14 @@ describe('CollectionProvider', () => {
 
   it('should load all the pages if it can\'t find the occurrence key', (done) => {
     const collectionService = CollectionServiceStub.from(defaultCollectionName, totalItemCount, itemsPerPageCount);
-    const collectionProvider = CollectionProvider.fromCollectionService(
+    const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
       collectionService,
       defaultCollectionName,
       itemsPerPageCount,
       sortDirection
     );
 
-    collectionProvider.controller().loadNextPageUntil(item => item.details.occurrenceKey === 'file-not-found');
+    collectionProvider.loadNextPageUntil(item => item.details.occurrenceKey === 'file-not-found');
 
     const subscription = collectionProvider.observable()
       .subscribe({
@@ -129,7 +131,7 @@ describe('CollectionProvider', () => {
         }))
       ;
 
-      const collectionProvider = CollectionProvider.fromCollectionService(
+      const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
         {getCollectionItems},
         defaultCollectionName,
         itemsPerPageCount,
@@ -142,7 +144,7 @@ describe('CollectionProvider', () => {
           next: collection => {
             if (firstTime) {
               firstTime = false;
-              collectionProvider.controller().refresh();
+              collectionProvider.refresh();
             } else {
               expect(collection.items).to.be.length(firstPageItems.length);
               expect(collection.items).to.be.deep.equal([...firstPageItems]);
@@ -171,7 +173,7 @@ describe('CollectionProvider', () => {
         }))
       ;
 
-      const collectionProvider = CollectionProvider.fromCollectionService(
+      const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
         {getCollectionItems},
         defaultCollectionName,
         itemsPerPageCount,
@@ -184,7 +186,7 @@ describe('CollectionProvider', () => {
           next: collection => {
             if (firstTime) {
               firstTime = false;
-              collectionProvider.controller().refresh();
+              collectionProvider.refresh();
             } else {
               expect(collection.items).to.be.length(newItems.length + firstPageItems.length);
               expect(collection.items).to.be.deep.equal([...newItems, ...firstPageItems]);
@@ -213,7 +215,7 @@ describe('CollectionProvider', () => {
         }))
       ;
 
-      const collectionProvider = CollectionProvider.fromCollectionService(
+      const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
         {getCollectionItems},
         defaultCollectionName,
         itemsPerPageCount,
@@ -226,7 +228,7 @@ describe('CollectionProvider', () => {
           next: collection => {
             if (firstTime) {
               firstTime = false;
-              collectionProvider.controller().refresh();
+              collectionProvider.refresh();
             } else {
               expect(collection.items).to.be.length(newItems.length + firstPageItems.length);
               expect(collection.items).to.be.deep.equal([...newItems, ...firstPageItems]);
@@ -260,7 +262,7 @@ describe('CollectionProvider', () => {
         }))
       ;
 
-      const collectionProvider = CollectionProvider.fromCollectionService(
+      const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
         {getCollectionItems},
         defaultCollectionName,
         itemsPerPageCount,
@@ -275,12 +277,12 @@ describe('CollectionProvider', () => {
 
               case 0:
                 expect(collection.items).to.be.length(secondPageItems.length);
-                collectionProvider.controller().loadNextPage();
+                collectionProvider.loadNextPage();
                 break;
 
               case 1:
                 expect(collection.items).to.be.length(firstPageItems.length + secondPageItems.length);
-                collectionProvider.controller().refresh();
+                collectionProvider.refresh();
                 break;
 
               case 2:
@@ -323,7 +325,7 @@ describe('CollectionProvider', () => {
         }))
       ;
 
-      const collectionProvider = CollectionProvider.fromCollectionService(
+      const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
         {getCollectionItems},
         defaultCollectionName,
         itemsPerPageCount,
@@ -338,7 +340,7 @@ describe('CollectionProvider', () => {
 
               case 0:
                 expect(collection.items).to.be.length(3);
-                collectionProvider.controller().refresh();
+                collectionProvider.refresh();
                 break;
 
               case 1:

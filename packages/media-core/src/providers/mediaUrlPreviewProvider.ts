@@ -1,7 +1,8 @@
 import { MediaApiConfig, UrlPreview } from '../';
 import { Observable } from 'rxjs/Observable';
 import { UrlPreviewProvider } from './urlPreviewProvider';
-import { Pool, observableFromObservablePool } from './util/reducerPool';
+import { Pool } from './util/pool';
+import { observableFromObservablePool } from './util/observableFromObservablePool';
 
 export type MediaUrlPreviewObservablePool = Pool<Observable<UrlPreview>>;
 

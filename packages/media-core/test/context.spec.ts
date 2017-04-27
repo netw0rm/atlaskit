@@ -19,6 +19,8 @@ const createFakeContext = () => {
   });
 };
 
+const noop = () => {/* do nothing */};
+
 describe('Context', () => {
 
   describe('.getMediaItemProvider()', () => {
@@ -170,6 +172,34 @@ describe('Context', () => {
           done(error || new Error('Uknown error.'));
         }
       });
+    });
+
+  });
+
+  describe('.getCollectionProvider()', () => {
+
+    // TODO: mock the CollectionService - will need to refactor context to allow us to pass in a mock service?
+
+    it('should return the same provider instance when the same args are passed', () => {
+      const context = createFakeContext();
+      const provider1 = context.getMediaCollectionProvider('foobar', 10);
+      const provider2 = context.getMediaCollectionProvider('foobar', 10);
+      expect(provider1).to.be.equal(provider2);
+    });
+
+    it('should return a different provider instance when the same args are passed but the provider has been removed from the pool', () => {
+      const context = createFakeContext();
+      const provider1 = context.getMediaCollectionProvider('foobar', 10);
+      provider1.observable().subscribe(noop).unsubscribe();
+      const provider2 = context.getMediaCollectionProvider('barfoo', 10);
+      expect(provider1).to.not.be.equal(provider2);
+    });
+
+    it('should return a different provider instance when different args are passed', () => {
+      const context = createFakeContext();
+      const provider1 = context.getMediaCollectionProvider('foobar', 10);
+      const provider2 = context.getMediaCollectionProvider('barfoo', 10);
+      expect(provider1).to.not.be.equal(provider2);
     });
 
   });

@@ -1,4 +1,4 @@
-export {CollectionProvider, CollectionController} from './collectionProvider';
+export {RemoteMediaCollectionProvider} from './remoteMediaCollectionProvider';
 export {FileProvider} from './fileProvider';
 export {LinkProvider} from './linkProvider';
 export {MediaCollectionProvider} from './mediaCollectionProvider';

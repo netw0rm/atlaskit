@@ -2,7 +2,8 @@ import { MediaItem, MediaItemType, MediaApiConfig } from '../';
 import { Observable } from 'rxjs/Observable';
 import { FileProvider, FILE_PROVIDER_RETRY_INTERVAL } from './fileProvider';
 import { LinkProvider } from './linkProvider';
-import { Pool, observableFromObservablePool } from './util/reducerPool';
+import { Pool} from './util/pool';
+import { observableFromObservablePool } from './util/observableFromObservablePool';
 import { LRUCache } from 'lru-fast';
 
 export type MediaItemObservablePool = Pool<Observable<MediaItem>>;

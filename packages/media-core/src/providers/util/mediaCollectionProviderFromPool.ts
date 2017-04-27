@@ -14,7 +14,8 @@ export function mediaCollectionProviderFromPool(
 
     // wrap the observable to release the provider from the pool when we unsubscribe
     provider.observable = () => new Observable<MediaCollection>(observer => {
-      const subscription = oldObservableFn().subscribe(observer);
+      const observable = oldObservableFn.bind(provider)();
+      const subscription = observable.subscribe(observer);
       return () => {
         subscription.unsubscribe();
         pool.release(poolId);

@@ -167,6 +167,77 @@ describe('Media plugin', () => {
     );
   });
 
+  it('should delete empty media group', () => {
+    const { editorView } = editor(doc(
+      mediaGroup(
+        media({ id: 'mock', type: 'file', collection: 'mock-collection' }),
+      ),
+      p('text'),
+    ));
+
+    const { doc: document, tr } = editorView.state;
+    const mediaGroupNode = document.firstChild!;
+    editorView.dispatch(tr.delete(0, mediaGroupNode.nodeSize));
+
+    expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+  });
+
+  it('should delete last empty media group and replace it with paragraph', () => {
+    const { editorView } = editor(doc(
+      mediaGroup(
+        media({ id: 'mock', type: 'file', collection: 'mock-collection' }),
+      ),
+    ));
+
+    const { doc: document, tr } = editorView.state;
+    const mediaGroupNode = document.firstChild!;
+    editorView.dispatch(tr.delete(0, mediaGroupNode.nodeSize));
+
+    expect(editorView.state.doc).to.deep.equal(doc(p()));
+  });
+
+  it('should delete an empty media group when other media groups are not empty', () => {
+    const { editorView } = editor(doc(
+      mediaGroup(
+        media({ id: 'mock', type: 'file', collection: 'mock-collection' }),
+      ),
+      mediaGroup(
+        media({ id: 'mock1', type: 'file', collection: 'mock-collection' }),
+        media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
+      ),
+    ));
+
+    const { doc: document, tr } = editorView.state;
+    const mediaGroupNode = document.firstChild!;
+    editorView.dispatch(tr.delete(0, mediaGroupNode.nodeSize));
+
+    expect(editorView.state.doc).to.deep.equal(doc(
+      mediaGroup(
+        media({ id: 'mock1', type: 'file', collection: 'mock-collection' }),
+        media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
+      ),
+    ));
+  });
+
+  it('should not delete non-empty media group', () => {
+    const { editorView } = editor(doc(
+      mediaGroup(
+        media({ id: 'mock1', type: 'file', collection: 'mock-collection' }),
+        media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
+      ),
+    ));
+
+    const { doc: document, tr } = editorView.state;
+    const mediaNode = document.firstChild!.firstChild!;
+    editorView.dispatch(tr.delete(1, mediaNode.nodeSize));
+
+    expect(editorView.state.doc).to.deep.equal(doc(
+      mediaGroup(
+        media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
+      ),
+    ));
+  });
+
   it('should call uploadErrorHandler on upload error', async () => {
     const handler = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);

@@ -8,5 +8,3 @@ export * from './dataURIs/wideTransparentImageURI';
 
 // image urls
 export const remoteImage = 'https://mediaviewer-examples.s3-ap-southeast-2.amazonaws.com/image/image.jpg';
-// tslint:disable-next-line:no-var-requires
-export const gifDataURI = require('raw-loader!./dataURIs/gifDataURI.data');

@@ -17,7 +17,7 @@ import {
   imageFileDetails,
   unknownFileDetails,
 
-  gifDataURI as genericDataURI,
+  gifDataUri,
 
   // dataURIs for file cards
   tallImage,
@@ -103,15 +103,15 @@ const createMissingMetadataFileCards = (appearance: CardAppearance) => {
     },
     {
       title: 'Missing name',
-      content: <CardView appearance={appearance} status="complete" metadata={missingNameDetails} dataURI={genericDataURI} />
+      content: <CardView appearance={appearance} status="complete" metadata={missingNameDetails} dataURI={gifDataUri} />
     },
     {
       title: 'Missing file size',
-      content: <CardView appearance={appearance} status="complete" metadata={missingFileSizeDetails} dataURI={genericDataURI} />
+      content: <CardView appearance={appearance} status="complete" metadata={missingFileSizeDetails} dataURI={gifDataUri} />
     },
     {
       title: 'Missing media type',
-      content: <CardView appearance={appearance} status="complete" metadata={missingMediaTypeDetails} dataURI={genericDataURI} />
+      content: <CardView appearance={appearance} status="complete" metadata={missingMediaTypeDetails} dataURI={gifDataUri} />
     },
     {
       title: 'Missing data uri',
@@ -121,7 +121,7 @@ const createMissingMetadataFileCards = (appearance: CardAppearance) => {
 };
 
 const createSelectableCards = (appearance: CardAppearance, metadata: MediaItemDetails, mediaItemType: MediaItemType) => {
-  const dataURI = mediaItemType === 'file' ? genericDataURI : undefined;
+  const dataURI = mediaItemType === 'file' ? gifDataUri : undefined;
 
   return [
     {
@@ -164,9 +164,9 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
   // upload progress
   const uploadProgressCards = [
-    {title: '10%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={genericDataURI} progress={0.1} />},
-    {title: '50%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={genericDataURI} progress={0.5} />},
-    {title: '90%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={genericDataURI} progress={0.9} />}
+    {title: '10%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.1} />},
+    {title: '50%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.5} />},
+    {title: '90%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.9} />}
   ];
 
   // selectable

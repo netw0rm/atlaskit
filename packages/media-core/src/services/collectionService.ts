@@ -3,8 +3,6 @@ import {MediaCollectionItem} from '../collection';
 import {Resources} from '../item';
 import createRequest from './util/createRequest';
 
-export const DEFAULT_COLLECTION_PAGE_SIZE: number = 10;
-
 export type SortDirection = 'desc' | 'asc';
 
 export type RemoteCollectionItem = RemoteCollectionFileItem | RemoteCollectionLinkItem;
@@ -52,6 +50,7 @@ export interface CollectionService {
 export type DetailsType = 'minimal' | 'full';
 
 export class MediaCollectionService implements CollectionService {
+  static defaultLimit = 10;
 
   constructor(private config: MediaApiConfig, private clientId: string) {
   }
@@ -85,7 +84,7 @@ export class MediaCollectionService implements CollectionService {
 
   getCollectionItems(
     collectionName: string,
-    limit: number = DEFAULT_COLLECTION_PAGE_SIZE,
+    limit: number = MediaCollectionService.defaultLimit,
     inclusiveStartKey?: string,
     sortDirection?: SortDirection,
     details?: DetailsType): Promise<RemoteCollectionItemsResponse> {

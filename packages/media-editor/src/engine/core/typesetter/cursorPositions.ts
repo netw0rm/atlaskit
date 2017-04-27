@@ -1,7 +1,7 @@
 import {TextDirection} from '../../../common';
 import {getUtf32CodeUnits} from '../../../util';
 
-type Text = Array<string>;  // array of characters, each character is a string with only one UTF-32 code unit
+export type Text = Array<string>;  // array of characters, each character is a string with only one UTF-32 code unit
 
 // A group is either:
 // - one whitespace character;
@@ -13,7 +13,7 @@ type Text = Array<string>;  // array of characters, each character is a string w
 // 'abc def'  contains 3 groups ['abc', ' ', 'def']
 // 'abc  def' contains 4 groups ['abc', ' ', ' ', 'def']
 // '123abרא'  contains 2 groups ['123ab', 'רא']
-interface Group {
+export interface Group {
   text: Text;
   direction: TextDirection;
   startIndex: number;
@@ -23,12 +23,12 @@ interface Group {
 
 // GroupBase, GroupMinMax describe data that obtained at different steps and then combined into a group
 
-interface GroupBase {  // describes the group content
+export interface GroupBase {  // describes the group content
   text: Text;
   direction?: TextDirection;
 }
 
-interface GroupMinMax {  // describes the group position
+export interface GroupMinMax {  // describes the group position
   xmin: number;
   xmax: number;
 }

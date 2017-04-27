@@ -4,6 +4,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
+import * as sinon from 'sinon';
 
 const wrongCollection = 'adfasdf';
 const wrongClientId = 'wrong-client-id';

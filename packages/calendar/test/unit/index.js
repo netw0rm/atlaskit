@@ -1,4 +1,3 @@
-import 'akutil-polyfills';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { getMonthName } from '../../src/util';

@@ -62,8 +62,8 @@ const MetaData = ({ component }) => (
     />
     <MetaItem
       href={`https://www.npmjs.com/package/${component.packageName}`}
-      label="Docs"
-      summary="Documentation on NPM"
+      label="npm"
+      summary={component.packageName}
     />
     <MetaItem
       href={`https://bitbucket.org/atlassian/atlaskit/src/master/packages/${component.key}`}
@@ -74,10 +74,12 @@ const MetaData = ({ component }) => (
       label="Version"
       summary={(
         <span>
-          <a href={`https://npmjs.com/package/${component.packageName}`}>{component.version}</a>
-          <time dateTime={component.publishedDate}>
-            {' '}{component.publishedDate && new Date(component.publishedDate).toLocaleDateString()}
-          </time>
+          <strong>{component.version}</strong>
+          {component.publishedDate ? (
+            <time dateTime={component.publishedDate} style={{ marginLeft: 10 }}>
+              {new Date(component.publishedDate).toLocaleDateString()}
+            </time>
+          ) : null}
         </span>
       )}
     />

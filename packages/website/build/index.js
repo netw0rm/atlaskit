@@ -5,9 +5,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const reactDocs = require('react-docgen');
 
 const getExternalMetadata = require('./getExternalMetadata');
 const template = require('./data.template');
+
+const parseProps = src => reactDocs.parse(fs.readFileSync(src).toString());
 
 // Loop through the folders up a level, i.e. atlaskit/packages to build up
 // a list of components that we process and filter. Falsy values are filtered
@@ -28,8 +31,12 @@ const components = fs.readdirSync('..').map((key) => {
   // Some components have docs, so we test for the presence of a directory and
   // pass `true` if it exists. This writes a literal require() into the template
   let docs;
+  let props;
   try {
-    docs = fs.statSync(path.resolve('..', key, 'docs', 'index.js')).isFile();
+    const docsFile = path.resolve(__dirname, '../../', key, 'docs', 'index.js');
+    const sourcesFile = path.resolve(__dirname, '../../', key, 'docs', 'sources.js');
+    docs = fs.statSync(docsFile).isFile();
+    props = require(sourcesFile).map(({ name, src }) => ({ name, props: parseProps(src) }));
   } catch (e) {}
   // The name of the component may be in the "ak:component" section; we default
   // to the directory name if it isn't present
@@ -37,6 +44,7 @@ const components = fs.readdirSync('..').map((key) => {
   // Return the component data
   return {
     docs,
+    props,
     key,
     name,
     pkg,

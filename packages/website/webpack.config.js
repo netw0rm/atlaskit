@@ -46,6 +46,7 @@ module.exports = {
       },
       {
         test: /\.(le|c)ss$/,
+        exclude: /prismjs/,
         use: [{
           loader: 'style-loader',
         }, {
@@ -58,6 +59,15 @@ module.exports = {
           },
         }, {
           loader: 'less-loader',
+        }],
+      },
+      {
+        test: /\.css$/,
+        include: /prismjs/,
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader',
         }],
       },
       {

@@ -10,6 +10,7 @@ const components = {${components.map(component => `
   '${component.key}': {
     description: '${component.pkg.description}',
     docs: ${component.docs ? `require('../../${component.key}/docs')` : 'false'},
+    props: ${JSON.stringify(component.props)},
     key: '${component.key}',
     name: '${component.name}',
     packageName: '${component.pkg.name}',

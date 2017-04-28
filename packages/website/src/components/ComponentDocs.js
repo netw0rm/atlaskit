@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react';
-import { DynamicProps } from '@atlaskit/util-readme';
 import styled from 'styled-components';
+import DynamicProps from './DynamicProps';
 
 import Example from './ComponentExample';
 
@@ -17,17 +17,17 @@ function renderProps(comp, i) {
   if (Array.isArray(comp)) {
     return comp.map(renderProps);
   }
-  if (typeof comp === 'object' && typeof comp.src === 'string') {
-    return <DynamicProps key={i} componentName={comp.name} componentSrc={comp.src} />;
+  if (typeof comp === 'object') {
+    return <DynamicProps key={i} componentName={comp.name} componentDocs={comp.props} />;
   }
   if (typeof comp === 'string') {
-    return <DynamicProps componentSrc={comp} />;
+    return <DynamicProps componentDocs={comp} />;
   }
   return null;
 }
 
 const ComponentDocs = ({ component }) => {
-  const { docs } = component;
+  const { docs, props } = component;
   if (docs && typeof docs.default === 'function') {
     const Docs = docs.default;
     return <Docs />;
@@ -42,7 +42,7 @@ const ComponentDocs = ({ component }) => {
             {docs.examples.map((eg, i) => <Example key={i} {...eg} />)}
           </div>
         ) : null}
-        {renderProps(docs.componentSource)}
+        {renderProps(props)}
       </div>
     );
   }

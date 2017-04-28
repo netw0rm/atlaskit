@@ -1,9 +1,11 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable react/prop-types, react/no-danger */
 
 import React, { PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
-import SyntaxHighlighter from 'react-syntax-highlighter';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-jsx';
 import CodeIcon from '@atlaskit/icon/glyph/code';
+import 'prismjs/themes/prism-tomorrow.css';
 import {
   akColorN20,
   akColorN30,
@@ -14,7 +16,6 @@ import {
 
   akGridSize,
 } from '@atlaskit/util-shared-styles';
-import syntaxTheme from './syntax-theme';
 
 export default class Example extends PureComponent {
   state = {
@@ -50,6 +51,8 @@ export default class Example extends PureComponent {
     const { isHover, isSourceVisible, isSourceClosing } = this.state;
     const toggleLabel = 'Toggle Code Snippet';
 
+    const m = Prism.highlight(src, Prism.languages.jsx);
+
     return (
       <Wrapper hover={isHover} open={isSourceVisible}>
         <Toggle
@@ -62,14 +65,15 @@ export default class Example extends PureComponent {
           <Title>{title}</Title>
           <CodeIcon label={toggleLabel} />
         </Toggle>
+
         {isSourceVisible ? (
           <Code
             closing={isSourceClosing}
-            // language="jsx"
             onAnimationEnd={this.handleAnimationEnd}
-            style={syntaxTheme}
           >
-            {src}
+            <pre>
+              <code dangerouslySetInnerHTML={{ __html: m }} />
+            </pre>
           </Code>) : null}
         <Showcase>
           <Component />
@@ -118,7 +122,7 @@ const animOut = keyframes`
   from { max-height: 1000px; opacity: 1; }
   to { max-height: 0; opacity: 0; }
 `;
-const Code = styled(SyntaxHighlighter)`
+const Code = styled.div`
   animation: ${props => (props.closing ? animOut : animIn)} 200ms ease-out;
   background-color: ${akColorN800};
   border-radius: 3px;

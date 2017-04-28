@@ -42,6 +42,7 @@ import Select, { StatelessSelect } from '../src';
 const propDescriptions = {
   appearance: 'Appearance of the triggering field',
   defaultSelected: 'Default selected item',
+  droplistShouldFitContainer: 'Specifies whether the dropdown should fit the trigger part or it can be wider than it.',
   id: 'id of the form element',
   isDisabled: 'Specifies that a select should be disabled',
   isDefaultOpen: 'Controls the open state of the select',

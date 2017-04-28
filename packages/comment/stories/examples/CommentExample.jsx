@@ -20,5 +20,10 @@ export default (
       <CommentAction onClick={clickHandler}>Edit</CommentAction>,
       <CommentAction onClick={clickHandler}>Like</CommentAction>,
     ]}
+    errorActions={[
+      <CommentAction onClick={clickHandler}>Retry</CommentAction>,
+      <CommentAction onClick={clickHandler}>Cancel</CommentAction>,
+    ]}
+    errorIconLabel="Failed to save the comment"
   />
 );

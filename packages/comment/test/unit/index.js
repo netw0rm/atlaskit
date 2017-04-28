@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
 import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 
 import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout, CommentEdited } from '../../src/';
 import styles from '../../src/styles.less';
@@ -132,7 +133,9 @@ describe(name, () => {
               <CommentAction>action content</CommentAction>,
               <CommentAction onClick={() => {}}>action content</CommentAction>,
             ];
-            const wrapper = mount(<Comment actions={actions} isSaving savingText="Saving..." />);
+            const wrapper = mount(
+              <Comment actions={actions} isSaving savingText="Saving..." isError errorActions={actions} />
+            );
             expect(wrapper.find(CommentAction).length).to.equal(0);
           });
 
@@ -150,6 +153,69 @@ describe(name, () => {
 
           it('should not apply .optimistic-saving-content styles', () => {
             const wrapper = mount(<Comment savingText="Saving..." />);
+            expect(wrapper.find(`.${styles.optimisticSavingContent}`).length).to.equal(0);
+          });
+        });
+      });
+
+      describe('isError, errorActions and errorLabel props', () => {
+        let errorActions;
+
+        beforeEach(() => {
+          errorActions = [
+            <CommentAction>Retry</CommentAction>,
+            <CommentAction onClick={() => {}}>Cancel</CommentAction>,
+          ];
+        });
+
+        describe('if isError prop is set', () => {
+          it('should render the default (empty) if no errorIconLabel is set', () => {
+            const wrapper = mount(<Comment isError errorActions={errorActions} />);
+            expect(wrapper.find(WarningIcon).length).to.equal(1);
+            expect(wrapper.find(WarningIcon).at(0).prop('label')).to.equal('');
+          });
+
+          it('should render the errorIconLabel text if it is set', () => {
+            const label = 'Error';
+            const wrapper = mount(
+              <Comment isError errorActions={errorActions} errorIconLabel={label} />
+            );
+            expect(wrapper.find(WarningIcon).length).to.equal(1);
+            expect(wrapper.find(WarningIcon).at(0).prop('label')).to.equal(label);
+          });
+
+          it('should render the icon and errorActions instead of the actions', () => {
+            const actions = [
+              <CommentAction />,
+              <CommentAction>action content</CommentAction>,
+              <CommentAction onClick={() => {}}>action content</CommentAction>,
+            ];
+            const wrapper = mount(
+              <Comment actions={actions} isError errorActions={errorActions} />
+            );
+            expect(wrapper.find(CommentAction).length).to.equal(2);
+            const actionItems = wrapper.find(`.${styles.actionsContainer}`);
+            expect(actionItems.children().length).to.equal(3);
+            expect(actionItems.childAt(0).find(WarningIcon).length).to.equal(1);
+            expect(actionItems.childAt(1).text()).to.equal('Retry');
+            expect(actionItems.childAt(2).text()).to.equal('Cancel');
+          });
+
+          it('should apply .optimistic-saving-content styles', () => {
+            const wrapper = mount(<Comment isError />);
+            expect(wrapper.find(`.${styles.optimisticSavingContent}`).length).to.equal(1);
+          });
+        });
+
+        describe('if isError prop is not set', () => {
+          it('should not render the icon and errorActions', () => {
+            const wrapper = mount(<Comment errorActions={errorActions} />);
+            expect(wrapper.find(WarningIcon).length).to.equal(0);
+            expect(wrapper.find(CommentAction).length).to.equal(0);
+          });
+
+          it('should not apply .optimistic-saving-content styles', () => {
+            const wrapper = mount(<Comment />);
             expect(wrapper.find(`.${styles.optimisticSavingContent}`).length).to.equal(0);
           });
         });

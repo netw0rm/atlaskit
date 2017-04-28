@@ -10,7 +10,6 @@ const imgSize = 32;
 
 export const SmallCard = styled(Root)`
   ${borderRadius}
-  font-family: sans-serif;
   cursor: pointer;
   box-sizing: border-box;
   height: 42px;
@@ -26,7 +25,7 @@ export const SmallCard = styled(Root)`
       color: #0065FF;
     }
   }
-  
+
   &.loading {
     background: transparent;
     box-shadow: none;
@@ -38,7 +37,7 @@ export const SmallCard = styled(Root)`
       background-color: ${akColorN30};
       height: 10px;
     }
-  
+
     .size {
       width: 50%;
     }
@@ -51,7 +50,7 @@ export const SmallCard = styled(Root)`
       box-shadow: none;
     }
   }
-  
+
   .error-icon {
     height: 20px;
   }
@@ -90,7 +89,7 @@ export const ImgWrapper = styled.div`
 
   img {
     max-width: 100%;
-    max-height: 100%;   
+    max-height: 100%;
   }
 `;
 
@@ -125,7 +124,7 @@ export const RoundedBackground = styled.div`
   ${borderRadius}
   min-width: ${imgSize}px;
   height: inherit;
-  overflow: hidden;  
+  overflow: hidden;
 `;
 
 export const InfoWrapper = styled.div`
@@ -147,7 +146,7 @@ export const PlaceholderSmallWrapper = styled.div`
   ${size(imgSize)}
   ${center}
   position: relative;
-  
+
   .file-type-icon {
     position: absolute;
 

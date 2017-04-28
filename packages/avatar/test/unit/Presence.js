@@ -4,7 +4,8 @@ import { shallow, mount } from 'enzyme';
 
 // import from index; ensures we're exposing Presence as a named export
 import { Presence } from '../../src';
-import { getPresenceSvg, PRESENCE_TYPE } from '../../src/components/Presence';
+import { PRESENCE_TYPE } from '../../src/components/Presence';
+import getPresenceSVG from '../../src/utils/getPresenceSVG';
 
 describe('Avatar', () => {
   // TODO: This test is not testing anything
@@ -12,7 +13,7 @@ describe('Avatar', () => {
     PRESENCE_TYPE.values.forEach(presence =>
       describe(`when presence is ${presence}`, () =>
         it('should render content', () =>
-          expect(shallow(<Presence presence={presence} />).type(getPresenceSvg(presence)))
+          expect(shallow(<Presence presence={presence} />).type(getPresenceSVG(presence)))
         )
       )
     );

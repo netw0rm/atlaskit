@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { useFakeXMLHttpRequest, SinonFakeXMLHttpRequest } from 'sinon';
-import { MediaCollectionService } from '../src/services/collectionService';
+import { MediaCollectionService, DEFAULT_COLLECTION_PAGE_SIZE } from '../src/services/collectionService';
 import { MediaApiConfig } from '../src/config';
 
 const clientId = 'some-client-id';
@@ -42,7 +42,7 @@ describe('MediaCollectionService', () => {
         const response = collectionService.getCollectionItems(collectionName)
             .then(response => {
                 const request = requests[0];
-                expect(request.url).to.equal(`${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${MediaCollectionService.defaultLimit}`);
+                expect(request.url).to.equal(`${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${DEFAULT_COLLECTION_PAGE_SIZE}`);
             });
 
         respond(JSON.stringify(Mocks.collectionItemsResponse));

@@ -4,7 +4,7 @@
     <title>list</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="list" fill-rule="nonzero" fill="currentColor">
             <g id="list-view">
                 <path d="M3,18 C3,18.5522847 3.44494629,19 3.99339768,19 L20.0066023,19 C20.5552407,19 21,18.5561352 21,18 L21,17 L3,17 L3,18 Z" id="Line-Copy-3"></path>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import { LinkCardPlayer } from '../../src';
+import { LinkCardPlayer } from '../../src/links';
 
 describe('LinkCardPlayer', () => {
   const url = '';

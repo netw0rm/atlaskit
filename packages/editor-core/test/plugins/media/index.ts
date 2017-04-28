@@ -48,7 +48,7 @@ describe('Media plugin', () => {
   });
 
   const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
-    const [node, transaction ] = pluginState.insertFile({ id }, testCollectionName);
+    const [node, transaction] = pluginState.insertFile({ id, status: 'uploading' }, testCollectionName);
     editorView.dispatch(transaction);
 
     return node as PositionedNode;
@@ -197,19 +197,14 @@ describe('Media plugin', () => {
     })).to.eq(true, 'uploadErrorHandler should be called with MediaState containing \'error\' status');
   });
 
-  // TODO: re-enable after merging https://bitbucket.org/atlassian/atlaskit/pull-requests/2496/ed-1536-remove-empty-mediagroup/diff#comment-35691560
   it('should remove failed uploads from the document', async () => {
     const handler = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
 
-    await resolvedProvider;
+    const provider = await resolvedProvider;
+    await provider.uploadContext;
 
     insertFile(editorView, pluginState);
-
-    stateManager.updateState(testFileId, {
-      id: testFileId,
-      status: 'uploading'
-    });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(

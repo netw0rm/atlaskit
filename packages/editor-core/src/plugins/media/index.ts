@@ -175,6 +175,13 @@ export class MediaPluginState {
       transaction = state.tr.insert(this.findInsertPosition(), node);
     }
 
+    if (!mediaState.status || mediaState.status === 'uploading' || mediaState.status === 'unknown') {
+      this.temporaryMediaNodes.push(
+        mediaState.id,
+        node
+      );
+    }
+
     return [ node, transaction ];
   }
 
@@ -256,7 +263,7 @@ export class MediaPluginState {
         pickers.forEach(picker => picker.cancel(id));
 
         // In case the file has been attached multiple times, remove all occurences
-        this.removeTemporaryMediaNodes(id);
+        this.removeTemporaryMediaNodes(id, node);
     }
   }
 
@@ -343,13 +350,7 @@ export class MediaPluginState {
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
-    const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
-
-    this.temporaryMediaNodes.push(
-      state.id,
-      node
-    );
-
+    const [, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
     const { view } = this;
     view.dispatch(transaction);
   }
@@ -404,7 +405,7 @@ export class MediaPluginState {
     view.dispatch(view.state.tr);
   }
 
-  private removeTemporaryMediaNodes = (tempId: string) => {
+  private removeTemporaryMediaNodes = (tempId: string, skipNode?: Node) => {
     const { view, temporaryMediaNodes } = this;
 
     if (!view) {
@@ -412,7 +413,9 @@ export class MediaPluginState {
     }
 
     temporaryMediaNodes.get(tempId).forEach((node: PositionedNode) => {
-      this.replaceQueue.push([node, undefined]);
+      if (!skipNode || node !== skipNode) {
+        this.replaceQueue.push([node, undefined]);
+      }
     });
 
     temporaryMediaNodes.delete(tempId);
@@ -455,7 +458,14 @@ function mediaPluginFactory(options: MediaPluginOptions) {
             if (item[1]) {
               view.dispatch(view.state.tr.replaceWith(pos, pos + 1, item[1]!));
             } else {
-              view.dispatch(view.state.tr.delete(pos, pos + 1));
+              const resolvedPos = view.state.doc.resolve(pos);
+              if (resolvedPos.parent.childCount > 1) {
+                view.dispatch(view.state.tr.delete(pos, pos + 1));
+              } else {
+                // This is the last item in mediaGroup, so remove the whole group.
+                // (works around a bug where ProseMirror would create a dummy empty "media" node)
+                view.dispatch(view.state.tr.delete(resolvedPos.before(), resolvedPos.after()));
+              }
             }
           }
         }

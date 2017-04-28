@@ -1,6 +1,5 @@
-import Tooltip from 'ak-tooltip';
+import { Tooltip } from '@atlaskit/tooltip';
 import React from 'react';
-import reactify from 'akutil-react';
 import naturalSort from 'javascript-natural-sort';
 import wcagContrast from 'wcag-contrast';
 import uid from 'uid';
@@ -21,7 +20,6 @@ const {
 } = lessVars;
 const tooltipId = `tooltip-${uid()}`;
 const prism = new Prism(lessVars);
-const AkTooltip = reactify(Tooltip);
 
 function sortEntryNaturalByName(a, b) {
   const [nameA] = a;
@@ -77,7 +75,7 @@ const Blocks = props => (
           );
         })
     }
-    <AkTooltip id={tooltipId} />
+    <Tooltip id={tooltipId} />
   </div>
 );
 Blocks.propTypes = {

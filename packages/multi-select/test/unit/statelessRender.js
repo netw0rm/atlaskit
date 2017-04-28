@@ -5,6 +5,8 @@ import Avatar from '@atlaskit/avatar';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import styles from '../../src/styles.less';
 import { StatelessMultiSelect } from '../../src';
@@ -48,6 +50,17 @@ describe(`${name} - stateless`, () => {
     it('should render Trigger inside Fieldbase', () => {
       expect(mount(<StatelessMultiSelect />).find(Trigger).length).to.equal(1);
       expect(mount(<StatelessMultiSelect />).find(FieldBase).find(Trigger).length).to.equal(1);
+    });
+
+    it('should render ExpandIcon if no custom icon provided', () => {
+      expect(mount(<StatelessMultiSelect />).find(ExpandIcon).length).to.equal(1);
+    });
+
+    it('should render custom icon if provided', () => {
+      const icon = <SearchIcon label="" />;
+      const select = mount(<StatelessMultiSelect icon={icon} />);
+      expect(select.find(SearchIcon).length).to.equal(1);
+      expect(select.find(ExpandIcon).length).to.equal(0);
     });
 
     describe('groups and items', () => {

@@ -22,6 +22,7 @@ const statelessMultiSelectPropDescriptions = {
   selectedItems: `An array of groups of Items (from the items prop) that should be rendered as tags and not in the selectable options list.
     Use the onSelected and onRemoved callbacks to keep this in sync.`,
   shouldFitContainer: 'Boolean property to define if a multiselect should fill the entire horizontal space it has, or if it should display inline.',
+  icon: 'Icon to display at the right end of the multi-select',
 };
 
 // some overrides for types that we can't get by reflection

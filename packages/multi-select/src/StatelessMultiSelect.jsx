@@ -4,6 +4,7 @@ import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import classNames from 'classnames';
 
 import styles from './styles.less';
@@ -39,6 +40,7 @@ export default class StatelessMultiSelect extends PureComponent {
     position: PropTypes.string,
     selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     shouldFitContainer: PropTypes.bool,
+    icon: PropTypes.node,
   }
 
   static defaultProps = {
@@ -55,6 +57,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onRemoved: () => {},
     position: 'bottom left',
     selectedItems: [],
+    icon: <ExpandIcon label="" />,
   }
 
   // This is used only to show the focus ring around , it's okay to have state in this case.
@@ -348,6 +351,7 @@ export default class StatelessMultiSelect extends PureComponent {
               <Trigger
                 isDisabled={this.props.isDisabled}
                 onClick={this.handleTriggerClick}
+                icon={this.props.icon}
               >
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
                   {this.props.selectedItems.map(item =>

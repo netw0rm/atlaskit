@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
@@ -28,6 +29,7 @@ export default class AkMultiSelect extends PureComponent {
     onOpenChange: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
+    icon: PropTypes.node,
     shouldFitContainer: PropTypes.bool,
   }
 
@@ -43,6 +45,7 @@ export default class AkMultiSelect extends PureComponent {
     onOpenChange: () => {},
     onSelectedChange: () => {},
     position: 'bottom left',
+    icon: <ExpandIcon label="" />,
   }
 
   state = {
@@ -104,6 +107,7 @@ export default class AkMultiSelect extends PureComponent {
         position={this.props.position}
         selectedItems={this.state.selectedItems}
         shouldFocus={this.props.shouldFocus}
+        icon={this.props.icon}
         shouldFitContainer={this.props.shouldFitContainer}
       />
     );

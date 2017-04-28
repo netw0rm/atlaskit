@@ -9,6 +9,7 @@ export default class Trigger extends PureComponent {
     children: PropTypes.node,
     onClick: PropTypes.func,
     isDisabled: PropTypes.bool,
+    icon: PropTypes.node,
   }
 
   static defaultProps = {
@@ -16,6 +17,7 @@ export default class Trigger extends PureComponent {
     isDisabled: false,
     children: null,
     onClick: () => {},
+    icon: <ExpandIcon label="" />,
   }
 
   // disabled because all of the accessibility is handled manually
@@ -33,7 +35,7 @@ export default class Trigger extends PureComponent {
           {this.props.children}
         </div>
         <div className={styles.expand}>
-          <ExpandIcon label="" />
+          {this.props.icon}
         </div>
       </div>
     );

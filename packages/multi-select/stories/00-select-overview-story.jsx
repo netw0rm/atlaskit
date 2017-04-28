@@ -12,6 +12,8 @@ import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelect
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
 import SmartSelectRequired from './examples/SmartSelectRequired';
 import SmartSelectRequiredRaw from '!raw!./examples/SmartSelectRequired';
+import SmartSelectCustomIcon from './examples/SmartSelectCustomIcon';
+import SmartSelectCustomIconRaw from '!raw!./examples/SmartSelectCustomIcon';
 import SmartSelectDisabled from './examples/SmartSelectDisabled';
 import SmartSelectDisabledRaw from '!raw!./examples/SmartSelectDisabled';
 import SmartSelectInvalid from './examples/SmartSelectInvalid';
@@ -168,6 +170,14 @@ storiesOf(name, module)
       {SmartSelectRequired}
       <Code>
         {SmartSelectRequiredRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select - custom icon', () => (
+    <Chrome title="Multi select (smart) - overview">
+      {SmartSelectCustomIcon}
+      <Code>
+        {SmartSelectCustomIconRaw}
       </Code>
     </Chrome>
   ))

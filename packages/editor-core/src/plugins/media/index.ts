@@ -351,7 +351,7 @@ export class MediaPluginState {
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
-    const [, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
+    const [node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
     const { view } = this;
     view.dispatch(transaction);
 

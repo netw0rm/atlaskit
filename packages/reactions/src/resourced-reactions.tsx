@@ -11,6 +11,7 @@ export interface Props {
   reactionsProvider: Promise<ReactionsProvider>;
   emojiProvider: Promise<EmojiProvider>;
   boundariesElement?: string;
+  allowAllEmojis?: boolean;
 };
 
 export interface State {
@@ -55,7 +56,7 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
       return null;
     }
 
-    const { containerAri, ari, boundariesElement, emojiProvider } = this.props;
+    const { containerAri, ari, boundariesElement, emojiProvider, allowAllEmojis } = this.props;
 
     return (
       <Reactions
@@ -64,6 +65,7 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
         reactionsProvider={reactionsProvider}
         onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, ari, emojiId)}
         boundariesElement={boundariesElement}
+        allowAllEmojis={allowAllEmojis}
       />
     );
   }

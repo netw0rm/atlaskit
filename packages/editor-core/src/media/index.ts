@@ -1,36 +1,79 @@
-import { MediaCollectionItem, MediaApiConfig } from '@atlaskit/media-core';
+import { ContextConfig, Context } from '@atlaskit/media-core';
 
-export type MediaItemId = string;
-export type MediaCollectionId = string;
-export type MediaViewContextScope = MediaCollectionItem[] | MediaCollectionId;
+export interface MediaState {
+  id: string;
+  status?: 'unknown' | 'uploading' | 'processing' | 'ready' | 'error' | 'cancelled';
+  publicId?: string;
+  fileName?: string;
+  fileSize?: number;
+  fileType?: string;
+  fileMimeType?: string;
+  progress?: number;
+  thumbnail?: Blob;
+  error?: {
+    name: string,
+    description: string
+  };
+}
 
-export type IsScopedToCloudClientId = {
-  clientId: string;
+export interface MediaStateManager {
+  getState(tempId: string): MediaState | undefined;
+  updateState(tempId: string, newState: MediaState): void;
+  subscribe(tempId: string, cb: (state: MediaState) => void);
+  unsubscribe(tempId: string, cb: (state: MediaState) => void): void;
+}
+
+export interface UploadParams {
+  /**
+   * (Mandatory) collection name used when creating new Media Files and Links
+   */
+  collection: string;
+
+  /**
+   * Should links and files be implicitly finalized with Media API, returning public ids?
+   * (default: true)
+   */
+  autoFinalize?: boolean;
+  skipConversions?: boolean;
+  fetchMetadata?: boolean;
+  expireAfter?: number;
+
+  /**
+   * Reference to DOM element to be used for files drag and drop
+   * (default: document)
+   */
+  dropzoneContainer?: HTMLElement;
+}
+
+export interface MediaProvider {
+  uploadParams: UploadParams;
+
+  /**
+   * A manager notifying subscribers on changes in Media states
+   */
+  stateManager?: MediaStateManager;
+
+  /**
+   * Used for displaying Media Cards and downloading files.
+   * This is context config is required.
+   */
+  viewContext: Promise<Context | ContextConfig>;
+
+  /**
+   * (optional) Used for creating new uploads and finalizing files.
+   * NOTE: We currently don't accept Context instance, because we need config properties
+   *       to initialize
+   */
+  uploadContext?: Promise<ContextConfig>;
+
+  /**
+   * (optional) Used for creation of new Media links.
+   */
+  linkCreateContext?: Promise<Context | ContextConfig>;
 };
 
-export interface MediaResource {
-  /**
-   * Resolve to a Media Context Config for uploading new media items, i.e.:
-   *
-   *   resolve({
-   *     clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
-   *     serviceHost: 'http://media-api.host.com',
-   *     tokenProvider: tokenProvidingFunction
-   *   });
-   */
-  getUploadContext(): Promise<MediaApiConfig & IsScopedToCloudClientId>;
+export { ContextConfig as MediaContextConfig };
 
-  /**
-   * Resolve to Media Context that allows downloading Media. Optionally accepts a list of media items or
-   * a Media Collection id which is about to be accessed. Example result:
-   *
-   *   resolve({
-   *     clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
-   *     serviceHost: 'http://media-api.host.com',
-   *     tokenProvider: tokenProvidingFunction
-   *   });
-   */
-  getViewContext(scope?: MediaViewContextScope): Promise<MediaApiConfig & IsScopedToCloudClientId>;
-};
+export { default as DefaultMediaStateManager } from './default-media-state-manager';
 
-export default MediaResource;
+export default MediaProvider;

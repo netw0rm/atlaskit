@@ -1,11 +1,4 @@
 import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-} from '../src/styles';
-
-import {
-  akBorderRadius,
   akColorN40,
   akColorN300,
 } from 'akutil-shared-styles';
@@ -41,14 +34,7 @@ export const content = style({
               display: `block`,
             }
           }
-        },
-
-        // '& pre': {
-        //   fontFamily: akEditorCodeFontFamily,
-        //   background: akEditorCodeBackground,
-        //   padding: akEditorCodeBlockPadding,
-        //   borderRadius: akBorderRadius,
-        // }
+        }
       }
     }
   }

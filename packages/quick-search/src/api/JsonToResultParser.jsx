@@ -19,7 +19,9 @@ export class ResultParser extends /** implements */ JsonToResultParser {
     if (!dataList || !dataList.length) {
       return [];
     }
-    return dataList.map(data => this.parseSingle(data));
+    return dataList
+      .map(this.parseSingle)
+      .filter(x => x !== null);
   }
 
   parseSingle = (data) => {

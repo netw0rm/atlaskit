@@ -5,7 +5,6 @@ import _debounce from 'lodash.debounce';
 import SpinningClearIcon from '../SpinningClearIcon';
 import withSearchResource from '../ResourcedResultsList';
 import ResultsList from '../ResultsList';
-import { JsonToResultParser } from '../../api/JsonToResultParser';
 import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
 import uniqueId from '../../util/id';
 
@@ -18,7 +17,6 @@ export default class QuickSearch extends Component {
       HipChatConversation: PropTypes.func,
     }),
     onSearchTerminate: PropTypes.func,
-    jsonToResultParser: PropTypes.instanceOf(JsonToResultParser),
   }
 
   constructor(props) {
@@ -93,7 +91,6 @@ export default class QuickSearch extends Component {
           searchResource={this.props.searchResource}
           resultCallbacks={this.props.resultCallbacks}
           onSearchTerminate={this.props.onSearchTerminate}
-          jsonToResultParser={this.props.jsonToResultParser}
         />
       </AkSearch>
     );

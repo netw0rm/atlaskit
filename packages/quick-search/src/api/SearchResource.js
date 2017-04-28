@@ -13,7 +13,9 @@ export class AbstractResource /* implements IResource */ {
   }
 
   subscribe = (key, changeCallback, errorCallback) => {
-    if (!key) return;
+    if (!key) {
+      return;
+    }
     if (changeCallback) {
       this.changeListeners[key] = changeCallback;
     }
@@ -23,8 +25,9 @@ export class AbstractResource /* implements IResource */ {
   }
 
   unsubscribe(key) {
-    if (!key) return;
-
+    if (!key) {
+      return;
+    }
     delete this.changeListeners[key];
     delete this.errorListeners[key];
   }

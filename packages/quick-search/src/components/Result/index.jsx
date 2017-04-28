@@ -53,7 +53,6 @@ export class HipChatRoomResult extends Result {
         onClick={this.handleClick}
         icon={this.resolveRoomAvatar()}
         text={this.props.title}
-        subText={this.props.subTitle}
         isCompact
       />
     );
@@ -87,7 +86,6 @@ export class HipChatPersonResult extends Result {
         icon={(<AkAvatar src={this.props.meta.avatarUrl} size="small" />)}
         isCompact
         onClick={this.handleClick}
-        subText={this.props.subTitle}
         text={mainText}
       />
     );
@@ -101,7 +99,6 @@ export class UnknownResult extends Result {
         href={''}
         icon={'[unknown]'}
         text={this.props.title}
-        subText={this.props.subTitle}
         isCompact
       />
     );

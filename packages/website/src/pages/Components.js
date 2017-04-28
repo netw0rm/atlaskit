@@ -126,8 +126,8 @@ export default class Components extends PureComponent {
         <Helmet title="Components" />
         <Heading>Components</Heading>
         <Intro>
-          These React Components make up the foundation building blocks of our
-          UI framework.
+          These React components will help you
+          build Atlassian cloud applications and add-ons.
         </Intro>
         <Section>
           <Header />

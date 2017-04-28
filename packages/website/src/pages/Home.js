@@ -10,23 +10,23 @@ export default class WelcomePage extends PureComponent {
     return (
       <div>
         <Helmet>
-          <meta name="description" content="AtlasKit is the technical implementation of the Atlassian Design Guidelines" />
+          <meta name="description" content="A set of React components that implements Atlassian Design Guidelines" />
         </Helmet>
         <Grid spacing="comfortable">
           <GridColumn small={12} medium={6}>
             <Heading>AtlasKit</Heading>
             <Intro>
-              AtlasKit gives you the building blocks to create your application experiences using
-              the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a>&nbsp;(ADG).
+              AtlasKit is Atlassian&#39;s official UI library, built according to
+              the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a>(ADG).
             </Intro>
             <Section>
               <h3>Getting started</h3>
-              <p>There two ways to start using our library of components. To get started, check out the <a href="./install">install guide</a>.</p>
+              <p>To learn how to get ADG into your projects, check out the <a href="./install">install guide</a>.</p>
             </Section>
             <Section>
               <h3>Getting involved</h3>
               <p>
-                We welcome issue and code contributions. Please start with our <a href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">contribution guide</a>.
+                We welcome issue and code contributions. Please start by reading our <a href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">contribution guide</a>.
               </p>
               <p>
                 &nbsp;

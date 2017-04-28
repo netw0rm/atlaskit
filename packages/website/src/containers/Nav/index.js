@@ -15,11 +15,13 @@ import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 // import CodeIcon from '@atlaskit/icon/glyph/code';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
-import GlobeIcon from '@atlaskit/icon/glyph/world';
-import InstallIcon from '@atlaskit/icon/glyph/overview';
+import HomeFilledIcon from '@atlaskit/icon/glyph/home-filled';
+import OverviewIcon from '@atlaskit/icon/glyph/overview';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import PageIcon from '@atlaskit/icon/glyph/page';
 
 import reactIcon from '../../images/atlaskit-logo.png';
 import SearchDrawer from './SearchDrawer';
@@ -30,10 +32,11 @@ import components from '../../data';
 const componentKeys = Object.keys(components);
 
 const externalLinks = [
-  ['//bitbucket.org/atlassian/atlaskit', 'Bitbucket repo', BitbucketIcon],
+  ['//bitbucket.org/atlassian/atlaskit', 'Repository', BitbucketIcon],
+  ['//atlassian.design', 'Design guidelines', DashboardIcon],
 ];
 const getStartedLinks = [
-  ['/install', 'Install Guide', InstallIcon],
+  // ['/install', 'Install guide', InstallIcon],
   // ['/examples', 'Examples', CodeIcon],
 ];
 const Header = () => (
@@ -94,9 +97,17 @@ export default class Nav extends Component {
             <NavItemGroup>
               <Link to="/">
                 <NavItem
-                  icon={<GlobeIcon label="Welcome icon" />}
+                  icon={<HomeFilledIcon label="Welcome icon" />}
                   text="Welcome"
                   isSelected={pathname === '/'}
+                />
+              </Link>
+            </NavItemGroup>
+            <NavItemGroup title="Get Started">
+              <Link to="./install">
+                <NavItem
+                  icon={<OverviewIcon label="Install icon" />}
+                  text="Install guide"
                 />
               </Link>
               <NavItem
@@ -107,8 +118,12 @@ export default class Nav extends Component {
                 }}
                 text="Components"
               />
-            </NavItemGroup>
-            <NavItemGroup title="Get Started">
+              <Link to="//go.atlassian.com/reduced-ui-pack" target="_new">
+                <NavItem
+                  icon={<PageIcon label="More icon" />}
+                  text="Reduced UI pack"
+                />
+              </Link>
               {getStartedLinks.map(([path, title, Icon]) => (
                 <Link key={path} to={path}>
                   <NavItem
@@ -140,7 +155,7 @@ export default class Nav extends Component {
             <NavItem
               icon={<ComponentIcon label="Components icon" />}
               onClick={() => router.history.push('/components')}
-              text="All Components"
+              text="All components"
               isSelected={pathname === '/components'}
             />
             <NavItemGroup title="Components">

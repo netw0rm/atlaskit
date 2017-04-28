@@ -8,7 +8,7 @@ import landingHero from '../images/landing_hero.svg';
 export default class Examples extends PureComponent {
   render() {
     const title = 'Install Guide';
-    const description = 'A guide on how to install AtlasKit from Atlassian.';
+    const description = 'How to get it...';
 
     return (
       <div>
@@ -20,33 +20,24 @@ export default class Examples extends PureComponent {
             <Heading>{title}</Heading>
             <Intro>{description}</Intro>
             <Section>
-              <p>There are two ways to implement Atlassian Design
-              Guidelines in your software projects.</p>
-              <h3>1. React components</h3>
+              <h3>1. The React components</h3>
               <p>
-                AtlasKit is a collection of React components built according to the
-                Atlassian Design Guidelines(ADG).
+                These components are Atlassian Design Guidelines(ADG)
+                compliant, reusable, well-maintained and accessible.
               </p>
               <ul>
-                <li>The <a href="//go.atlassian.com/ak-starter/" target="_blank" rel="noopener noreferrer">atlaskit-starter</a> repo will help you get setup and running with a React app and some demo AtlasKit components. </li>
-                <li>The <a href="//go.atlassian.com/ak-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample is a sandbox to quickly try out some components. </li>
-                <li>The docs and code samples in this site will give you a comprehensive view on
-                how to use our components.</li>
+                <li>The <a href="//go.atlassian.com/ak-starter/" target="_blank" rel="noopener noreferrer">atlaskit-starter</a> project will help you get a React app setup and running with some demo AtlasKit components. </li>
+                <li>Use this <a href="//go.atlassian.com/ak-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample as a sandbox to quickly try out our components. </li>
+                <li>The <a href="./components">components</a> section of this site has docs, code samples and links to React storybooks.</li>
               </ul>
 
-              <h3>2. Reduced UI pack</h3>
-              <p>The Reduced UI pack is a set of CSS styles used
-              to make basic HTML elements ADG.</p>
+              <h3>2. The reduced UI pack</h3>
+              <p>The reduced UI pack is a small set of
+              ADG styles for use in any web project.</p>
               <ul>
-                <li>The <a href="//go.atlassian.com/reduced-ui-pack-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample is a sandbox to quickly try out some components. </li>
-                <li>The <a href="//go.atlassian.com/reduced-ui-pack" target="_blank" rel="noopener noreferrer">reduced UI pack</a> has a comprehensive list of the styles available.</li>
+                <li>Use this <a href="//go.atlassian.com/reduced-ui-pack-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample as a sandbox to quickly try out our styles. </li>
+                <li>The <a href="//go.atlassian.com/reduced-ui-pack" target="_blank" rel="noopener noreferrer">reduced UI pack</a> storybook is the comprehensive list of the styles available.</li>
               </ul>
-            </Section>
-            <Section>
-              <h3>Getting involved</h3>
-              <p>
-                We welcome issue and code contributions. Please start with our <a href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">contribution guide</a>.
-              </p>
               <p>
                 &nbsp;
               </p>

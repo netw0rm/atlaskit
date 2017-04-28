@@ -6,6 +6,7 @@ import {
   Plugin,
   PluginKey,
   Node,
+  NodeSelection,
   Schema,
   Transaction,
 } from '../../prosemirror';
@@ -353,6 +354,8 @@ export class MediaPluginState {
     const [, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
     const { view } = this;
     view.dispatch(transaction);
+
+    this.selectInsertedMediaNode(node as PositionedNode);
   }
 
   private handleMediaState = (state: MediaState) => {
@@ -420,6 +423,15 @@ export class MediaPluginState {
 
     temporaryMediaNodes.delete(tempId);
     view.dispatch(view.state.tr);
+  }
+
+  private selectInsertedMediaNode = (node: PositionedNode) => {
+    const { view } = this;
+    const { doc, tr } = view.state;
+    const pos = doc.resolve(node.getPos());
+    const selection = new NodeSelection(pos);
+
+    view.dispatch(tr.setSelection(selection));
   }
 }
 

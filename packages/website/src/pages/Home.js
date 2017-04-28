@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import { Grid, GridColumn } from '@atlaskit/page';
+import Button from '@atlaskit/button';
 
 import { Heading, Intro, Section } from '../components/Type';
 import landingHero from '../images/landing_hero.svg';
@@ -17,7 +18,7 @@ export default class WelcomePage extends PureComponent {
             <Heading>AtlasKit</Heading>
             <Intro>
               AtlasKit gives you the building blocks to create your application experiences using
-              the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a>(ADG).
+              the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a>&nbsp;(ADG).
             </Intro>
             <Section>
               <h3>Getting started</h3>
@@ -33,7 +34,10 @@ export default class WelcomePage extends PureComponent {
               </p>
             </Section>
             <Section>
-              <p><em>Atlassians: For internal, Fabric and Media Services components, click <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">here</a>.</em></p>
+              <p><em>
+                Atlassians: For internal, Fabric and Media Services components,
+                {' '}<a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">click&nbsp;here</a>.
+              </em></p>
             </Section>
           </GridColumn>
           <GridColumn small={12} medium={6}>

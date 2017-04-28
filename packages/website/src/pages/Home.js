@@ -33,7 +33,7 @@ export default class WelcomePage extends PureComponent {
               </p>
             </Section>
             <Section>
-                <p><em>Atlassians: For internal, Fabric and Media Services components, click <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">here</a>.</em></p>
+              <p><em>Atlassians: For internal, Fabric and Media Services components, click <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">here</a>.</em></p>
             </Section>
           </GridColumn>
           <GridColumn small={12} medium={6}>

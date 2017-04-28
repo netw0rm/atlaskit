@@ -2,49 +2,62 @@
 # yarn lockfile v1
 
 
-"@atlaskit/icon@^3.0.0":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-3.0.3.tgz#0cdc098b97601454bc4b580c143bf0c30ec40d48"
+"@atlaskit/avatar@^2.0.2":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/avatar/-/avatar-2.1.5.tgz#bcd66211ffc48455f3c1652a03727b2a6980bf49"
   dependencies:
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    create-error "^0.3.1"
-
-"@atlaskit/tag-group@^1.0.0":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@atlaskit/tag-group/-/tag-group-1.0.7.tgz#7a46e293f05128d7ab4103134af383deea870f2b"
-  dependencies:
-    "@atlaskit/util-common" "^1.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-
-"@atlaskit/tag@^1.0.0":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/tag/-/tag-1.2.1.tgz#5703aa3a71a1eced891ab451942b55b57b7bbef7"
-  dependencies:
-    "@atlaskit/icon" "^3.0.0"
-    "@atlaskit/util-common" "^1.0.0"
     "@atlaskit/util-shared-styles" "^1.0.0"
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
-    create-error "^0.3.1"
-    debug "^2.2.0"
 
-"@atlaskit/util-common@^1.0.0":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-common/-/util-common-1.1.2.tgz#b703b58aed6b98813e2344e9e026d5f7a63ce4b8"
+"@atlaskit/field-base@^2.0.0":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-2.1.6.tgz#79917da913eaf66fc5b6cab225caa813bde0cf09"
+  dependencies:
+    "@atlaskit/icon" "^1.0.0"
+    "@atlaskit/spinner" "^1.0.1"
+    "@atlaskit/util-shared-styles" "^1.0.1"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
+"@atlaskit/icon@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-1.0.0.tgz#267a41e4d254afbf4d2cff8acd85d4e0218fb18a"
   dependencies:
     babel-runtime "^6.11.6"
+    classnames "^2.2.5"
     create-error "^0.3.1"
-    keycode "^2.1.2"
 
-"@atlaskit/util-shared-styles@^1.0.0":
+"@atlaskit/icon@^2.0.0":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-2.5.6.tgz#6743bf214973cdfe62ec5996a956c465551198a0"
+  dependencies:
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    create-error "^0.3.1"
+
+"@atlaskit/spinner@^1.0.1":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-1.0.5.tgz#1e50e11efb0cc35ee42135b01b06d7d8fe730dea"
+  dependencies:
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
+"@atlaskit/util-readme@^1.0.0":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-readme/-/util-readme-1.0.5.tgz#28bc17c547839c41e40eaae620242427dd0dc4bb"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    decamelize "^1.2.0"
+    react-syntax-highlighter "^3.0.2"
+
+"@atlaskit/util-shared-styles@^1.0.0", "@atlaskit/util-shared-styles@^1.0.1":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.5.0.tgz#e96501d0ef9fd1f31cc57a9710c25c6f14336ab5"
   dependencies:
     babel-runtime "^6.11.6"
 
-babel-runtime@^6.11.6:
+babel-runtime@^6.11.6, babel-runtime@^6.18.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -63,19 +76,31 @@ create-error@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/create-error/-/create-error-0.3.1.tgz#69810245a629e654432bf04377360003a5351a23"
 
-debug@^2.2.0:
-  version "2.6.3"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.3.tgz#0f7eb8c30965ec08c72accfa0130c8b79984141d"
+decamelize@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
+
+highlight.js@~9.10.0:
+  version "9.10.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.10.0.tgz#f9f0b14c0be00f0e4fb1e577b749fed9e6f52f55"
+
+highlight.js@~9.8.0:
+  version "9.8.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.8.0.tgz#38eeef40cd45eaddbec8c9e5238fb7a783a3b685"
+
+lowlight@^1.5.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/lowlight/-/lowlight-1.7.0.tgz#b91f701debe57580d4ef447bfd26232f65aa0766"
   dependencies:
-    ms "0.7.2"
+    highlight.js "~9.10.0"
 
-keycode@^2.1.2:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.1.8.tgz#94d2b7098215eff0e8f9a8931d5a59076c4532fb"
-
-ms@0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
+react-syntax-highlighter@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-3.0.2.tgz#77c556385bbf71dc2e974ba96bfdd0edef5c3192"
+  dependencies:
+    babel-runtime "^6.18.0"
+    highlight.js "~9.8.0"
+    lowlight "^1.5.0"
 
 regenerator-runtime@^0.10.0:
   version "0.10.3"

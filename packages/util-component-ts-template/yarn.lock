@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@atlaskit/util-shared-styles@^1.0.0":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.7.1.tgz#0832cb6cc1797431c4ccf67d178aa4112df305e2"
+  dependencies:
+    babel-runtime "^6.11.6"
+
 akutil-common-test@*:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/akutil-common-test/-/akutil-common-test-7.0.3.tgz#d381f8824cf3940d08c7bffa11e6538bfbe5dca5"

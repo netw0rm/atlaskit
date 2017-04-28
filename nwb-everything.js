@@ -6,6 +6,8 @@ const path = require('path');
 
 const cwd = process.cwd();
 const pathPackages = path.join(cwd, 'packages');
+const modPath = '../../node_modules';
+const binPath = `${modPath}/.bin`;
 
 const exclude = [
   'css-reset',
@@ -17,6 +19,8 @@ const exclude = [
 fs.readdirSync(pathPackages).forEach((pathPackage) => {
   const dir = path.join(pathPackages, pathPackage);
   const nwbFile = path.join(dir, 'nwb.config.js');
+  const tsFile = path.join(dir, 'tsconfig.json');
+  const isTsPackage = fs.existsSync(tsFile);
 
   if (!fs.statSync(dir).isDirectory()) {
     return;
@@ -46,10 +50,13 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   pkgJson.files = ['umd'];
   pkgJson.main = `umd/${pkgJson.name}.js`;
   pkgJson.scripts = {
-    prepublish: '../../node_modules/.bin/nwb build',
-    storybook: '../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001',
-    test: '../../node_modules/.bin/nwb test',
-    'test:watch': '../../node_modules/.bin/nwb test --server',
+    lint: isTsPackage
+      ? `${binPath}/tslint -c ../../tslint.json "./src/**/*.{ts,tsx,d.ts}" "./stories/**/*.{ts,tsx,d.ts}" "*.{ts,tsx,d.ts}"`
+      : `${binPath}/eslint --color --format "${modPath}/eslint-friendly-formatter" --ext .js --ext .jsx src/ stories/ test/`,
+    prepublish: `${binPath}/nwb build`,
+    storybook: `${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,
+    test: `${binPath}/nwb test`,
+    'test:watch': `${binPath}/nwb test --server`,
   };
 
   // Remove old fields.

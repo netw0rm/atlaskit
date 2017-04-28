@@ -10,7 +10,7 @@
     decamelize "^1.2.0"
     react-syntax-highlighter "^3.0.2"
 
-"@atlaskit/util-shared-styles@^1.0.0":
+"@atlaskit/util-shared-styles@^1.0.0", "@atlaskit/util-shared-styles@^1.0.1":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.5.0.tgz#e96501d0ef9fd1f31cc57a9710c25c6f14336ab5"
   dependencies:

@@ -5,18 +5,18 @@
     "access": "public"
   },
   "description": "MediaViewer is Atlassian's powerful solution for viewing files on the web. It's both powerful and extendable yet easy-to-integrate",
-  "main": "dist/es5/index.js",
+  "main": "umd/@atlaskit/media-viewer.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es5 && npm run build/es2015",
-    "build/es5": "../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
+    "lint": "../../node_modules/.bin/tslint -c ../../tslint.json \"./src/**/*.{ts,tsx,d.ts}\" \"./stories/**/*.{ts,tsx,d.ts}\" \"*.{ts,tsx,d.ts}\"",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
-    "dist",
-    "src"
+    "umd"
   ],
   "dependencies": {
     "@types/jquery": "^2.0.41",
@@ -53,5 +53,6 @@
     "media",
     "ui",
     "private"
-  ]
+  ],
+  "lint": "../../node_modules/.bin//tslint -c ./tslint.json \"./src/**/*.{ts,tsx,d.ts}\" \"./stories/**/*.{ts,tsx,d.ts}\" \"*.{ts,tsx,d.ts}\""
 }

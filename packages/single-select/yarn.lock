@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@atlaskit/avatar@^2.0.0":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/avatar/-/avatar-2.1.5.tgz#bcd66211ffc48455f3c1652a03727b2a6980bf49"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
 "@atlaskit/field-base@^2.0.0":
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-2.1.6.tgz#79917da913eaf66fc5b6cab225caa813bde0cf09"
@@ -15,6 +23,14 @@
 "@atlaskit/icon@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-1.0.0.tgz#267a41e4d254afbf4d2cff8acd85d4e0218fb18a"
+  dependencies:
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    create-error "^0.3.1"
+
+"@atlaskit/icon@^3.0.0":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-3.0.3.tgz#0cdc098b97601454bc4b580c143bf0c30ec40d48"
   dependencies:
     babel-runtime "^6.11.6"
     classnames "^2.2.5"

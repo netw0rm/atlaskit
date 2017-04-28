@@ -9,8 +9,11 @@
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
+    "lint": "../../node_modules/.bin/tslint -c ../../tslint.json \"./src/**/*.{ts,tsx,d.ts}\" \"./stories/**/*.{ts,tsx,d.ts}\" \"*.{ts,tsx,d.ts}\"",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001"
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
     "umd"
@@ -49,5 +52,6 @@
     "media",
     "ui",
     "private"
-  ]
+  ],
+  "lint": "../../node_modules/.bin//tslint -c ./tslint.json \"./src/**/*.{ts,tsx,d.ts}\" \"./stories/**/*.{ts,tsx,d.ts}\" \"*.{ts,tsx,d.ts}\""
 }

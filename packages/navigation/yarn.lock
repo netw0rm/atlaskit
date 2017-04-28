@@ -26,59 +26,13 @@
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
 
-"@atlaskit/button@^1.0.0":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-1.0.15.tgz#450614abe0ff45c737d543969044ed5ca712b26a"
-  dependencies:
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-
-"@atlaskit/dropdown-menu@^1.0.0":
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-1.1.12.tgz#fd0df3cd474b380de4a46ca9d9128cad87614fef"
-  dependencies:
-    uid "0.0.2"
-    "@atlaskit/button" "^1.0.0"
-    "@atlaskit/droplist" "^3.0.0"
-    "@atlaskit/icon" "^3.0.0"
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    babel-runtime "^6.11.6"
-
-"@atlaskit/droplist@^3.0.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/droplist/-/droplist-3.2.0.tgz#e1c3272fd13980e0e7b4acc50ea774217c755114"
-  dependencies:
-    "@atlaskit/icon" "^2.5.5"
-    "@atlaskit/layer" "^1.0.0"
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    keycode "^2.1.7"
-
-"@atlaskit/icon@^2.3.0", "@atlaskit/icon@^2.5.5":
+"@atlaskit/icon@^2.3.0":
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-2.5.6.tgz#6743bf214973cdfe62ec5996a956c465551198a0"
   dependencies:
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
     create-error "^0.3.1"
-
-"@atlaskit/icon@^3.0.0":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-3.0.3.tgz#0cdc098b97601454bc4b580c143bf0c30ec40d48"
-  dependencies:
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    create-error "^0.3.1"
-
-"@atlaskit/layer@^1.0.0":
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/@atlaskit/layer/-/layer-1.1.9.tgz#d2ea4ff2ec99175dcaabb383a820c604d5e9aa0f"
-  dependencies:
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    babel-runtime "^6.11.6"
-    popper.js "^1.0.1"
 
 "@atlaskit/logo@^2.0.0":
   version "2.0.1"
@@ -87,18 +41,6 @@
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
 
-"@atlaskit/navigation@*":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/navigation/-/navigation-8.0.1.tgz#c07ea5b18fb39370ffb793c979d800f95629fa49"
-  dependencies:
-    "@atlaskit/blanket" "^1.2.0"
-    "@atlaskit/util-common" "^1.0.0"
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    invariant "^2.2.2"
-    keycode "^2.1.2"
-
 "@atlaskit/page@^1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/page/-/page-1.0.1.tgz#2a7a8434e56c832c24c754f2d9281b4e23f0327b"
@@ -106,23 +48,6 @@
     akutil-shared-styles "^37.0.0"
     babel-runtime "^6.11.6"
     styled-components "^1.4.2"
-
-"@atlaskit/util-common-test@*":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-common-test/-/util-common-test-1.0.5.tgz#3f5ecfa47c79cf60dfaaa24bfe509043ee6a9069"
-  dependencies:
-    uid "^0.0.2"
-    babel-runtime "^6.11.6"
-    custom-event-polyfill "^0.3.0"
-    keycode "^2.1.4"
-
-"@atlaskit/util-common@^1.0.0":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-common/-/util-common-1.1.2.tgz#b703b58aed6b98813e2344e9e026d5f7a63ce4b8"
-  dependencies:
-    babel-runtime "^6.11.6"
-    create-error "^0.3.1"
-    keycode "^2.1.2"
 
 "@atlaskit/util-readme@^1.0.0":
   version "1.0.5"
@@ -207,10 +132,6 @@ css-to-react-native@^1.0.6:
     css-color-list "0.0.1"
     fbjs "^0.8.5"
     nearley "^2.7.7"
-
-custom-event-polyfill@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-0.3.0.tgz#99807839be62edb446b645832e0d80ead6fa1888"
 
 decamelize@^1.2.0:
   version "1.2.0"
@@ -331,7 +252,7 @@ karma-sinon-chai@^1.2.4:
   dependencies:
     lolex "^1.5.0"
 
-keycode@^2.1.2, keycode@^2.1.4, keycode@^2.1.7:
+keycode@^2.1.2:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.1.8.tgz#94d2b7098215eff0e8f9a8931d5a59076c4532fb"
 
@@ -356,6 +277,10 @@ lowlight@^1.5.0:
   resolved "https://registry.yarnpkg.com/lowlight/-/lowlight-1.6.0.tgz#92f61e31e09ae9e971e70cabdd9e8f219f025232"
   dependencies:
     highlight.js "~9.9.0"
+
+memoize-one@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-1.0.2.tgz#b91bb769d98debdeae1a33b981904d75c5d309f0"
 
 nearley@^2.7.7:
   version "2.8.0"
@@ -388,10 +313,6 @@ optimist@~0.3.5:
   resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.3.7.tgz#c90941ad59e4273328923074d2cf2e7cbc6ec0d9"
   dependencies:
     wordwrap "~0.0.2"
-
-popper.js@^1.0.1:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.0.8.tgz#05c2cb34fdf78af99eb33337605a1384fbaffa32"
 
 promise@^7.1.1:
   version "7.1.1"
@@ -485,10 +406,6 @@ supports-color@^3.1.2:
 ua-parser-js@^0.7.9:
   version "0.7.12"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
-
-uid@0.0.2, uid@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/uid/-/uid-0.0.2.tgz#5e4a5d4b78138b4f70f89fd3c76fc59aa9d2f103"
 
 underscore@~1.4.4:
   version "1.4.4"

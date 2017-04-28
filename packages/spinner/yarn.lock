@@ -2,6 +2,15 @@
 # yarn lockfile v1
 
 
+"@atlaskit/util-common-test@^1.0.0":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-common-test/-/util-common-test-1.0.6.tgz#7aa5a698b215587c64ccf4e27ccbc17b90fbaaf5"
+  dependencies:
+    uid "^0.0.2"
+    babel-runtime "^6.11.6"
+    custom-event-polyfill "^0.3.0"
+    keycode "^2.1.4"
+
 "@atlaskit/util-readme@^1.0.0":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-readme/-/util-readme-1.0.5.tgz#28bc17c547839c41e40eaae620242427dd0dc4bb"
@@ -10,7 +19,7 @@
     decamelize "^1.2.0"
     react-syntax-highlighter "^3.0.2"
 
-"@atlaskit/util-shared-styles@^1.0.0":
+"@atlaskit/util-shared-styles@^1.0.0", "@atlaskit/util-shared-styles@^1.0.3":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.5.0.tgz#e96501d0ef9fd1f31cc57a9710c25c6f14336ab5"
   dependencies:
@@ -27,6 +36,10 @@ core-js@^2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.4.1.tgz#4de911e667b0eae9124e34254b53aea6fc618d3e"
 
+custom-event-polyfill@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-0.3.0.tgz#99807839be62edb446b645832e0d80ead6fa1888"
+
 decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -38,6 +51,10 @@ highlight.js@~9.8.0:
 highlight.js@~9.9.0:
   version "9.9.0"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.9.0.tgz#b9995dcfdc2773e307a34f0460d92b9a474782c0"
+
+keycode@^2.1.4:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.1.8.tgz#94d2b7098215eff0e8f9a8931d5a59076c4532fb"
 
 lowlight@^1.5.0:
   version "1.6.0"
@@ -56,3 +73,7 @@ react-syntax-highlighter@^3.0.2:
 regenerator-runtime@^0.10.0:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.3.tgz#8c4367a904b51ea62a908ac310bf99ff90a82a3e"
+
+uid@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/uid/-/uid-0.0.2.tgz#5e4a5d4b78138b4f70f89fd3c76fc59aa9d2f103"

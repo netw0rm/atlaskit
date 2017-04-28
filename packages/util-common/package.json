@@ -7,6 +7,7 @@
   "description": "Utilities shared by AtlasKit components",
   "main": "umd/@atlaskit/util-common.js",
   "scripts": {
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",
@@ -35,5 +36,6 @@
     "atlaskit",
     "ui",
     "internal"
-  ]
+  ],
+  "lint": "../../node_modules/.bin//eslint --color --format \"../../node_modules/eslint-friendly-formatter\" . --ext .js --ext .jsx"
 }

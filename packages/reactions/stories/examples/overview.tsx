@@ -1,7 +1,7 @@
 import { ReactionPicker, Reactions } from '../../src/';
 import * as React from 'react';
 
-import { reactionsProvider } from './reactions-provider';
+import { reactionsProvider } from '../../src/mock-reactions-provider';
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 
 const { getEmojiResource } = emojiTestData.emojiStoryData;

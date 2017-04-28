@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "The AtlasKit Website",
   "scripts": {
-    "build": "yarn run build-data && NODE_ENV=production webpack -p",
+    "build": "yarn run build-data && NODE_ENV=production webpack -p && cp dist/index.html dist/404.html",
+    "deploy": "yarn run build && netlify -t $NETLIFY_TOKEN deploy -s $NETLIFY_SITE_ID -p dist",
     "build-data": "node ./build",
     "start": "yarn run build-data && webpack-dev-server"
   },
@@ -38,6 +39,7 @@
     "react-helmet": "^5.0.3",
     "react-router-dom": "^4.0.0",
     "react-syntax-highlighter": "^5.3.0",
+    "semver": "^5.3.0",
     "style-loader": "^0.16.1",
     "styled-components": "^1.3.0",
     "svg-url-loader": "^2.0.2",
@@ -54,5 +56,8 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "devDependencies": {
+    "netlify-cli": "^1.2.2"
   }
 }

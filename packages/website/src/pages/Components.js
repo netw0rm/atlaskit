@@ -57,10 +57,10 @@ export default class Components extends PureComponent {
 
   renderRow = (component) => {
     const {
-      description, packageName, key, maintainers, name, status, version,
+      description, packageName, key, maintainers, name, lastPublishedOn, version,
     } = component;
 
-    const publishTime = status.date;
+    const publishTime = new Date(lastPublishedOn);
 
     return {
       cells: [
@@ -89,8 +89,8 @@ export default class Components extends PureComponent {
                 {version}
               </a>
               {publishTime ? (
-                <time dateTime={publishTime}>
-                  {' '}{publishTime.toLocaleDateString()}
+                <time dateTime={component.publishedDate}>
+                  {' '}{component.publishedDate && new Date(component.publishedDate).toLocaleDateString()}
                 </time>
               ) : null}
             </RowCell>
@@ -113,8 +113,6 @@ export default class Components extends PureComponent {
         head={head}
         rows={componentKeys.map(key => this.renderRow(components[key]))}
         isFixedSize
-        defaultSortKey="name"
-        defaultSortOrder="ASC"
       />
     </TableWrapper>
   );

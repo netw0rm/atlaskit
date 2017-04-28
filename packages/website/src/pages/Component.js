@@ -75,8 +75,8 @@ const MetaData = ({ component }) => (
       summary={(
         <span>
           <a href={`https://npmjs.com/package/${component.packageName}`}>{component.version}</a>
-          <time dateTime={component.status.date}>
-            {' '}{component.status.date.toLocaleDateString()}
+          <time dateTime={component.publishedDate}>
+            {' '}{component.publishedDate && new Date(component.publishedDate).toLocaleDateString()}
           </time>
         </span>
       )}

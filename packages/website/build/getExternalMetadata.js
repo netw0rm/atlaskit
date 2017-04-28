@@ -1,13 +1,24 @@
 const axios = require('axios');
+const semver = require('semver');
 
 function getNpmMetada(name) {
   const url = `http://registry.npmjs.org/${name.replace('/', '%2F')}`;
   return axios.get(url)
-    .then(response => response.data)
-    .then(({ versions, time }) => ({
-      versions: Object.keys(versions),
-      publishedOn: time.modified,
-    }));
+    .then(response => ({
+      isPublished: true,
+      versions: Object.keys(response.data.versions),
+      publishedOn: response.data.time[semver.maxSatisfying(Object.keys(response.data.versions), '*')],
+    }))
+    .catch((error) => {
+      if (!error || !error.response || error.response.status !== 404) {
+        throw error;
+      }
+
+      return {
+        isPublished: false,
+        versions: [],
+      };
+    });
 }
 
 function getStorybooksMetadata(name, versions) {
@@ -33,6 +44,7 @@ function getExternalMetadata(name) {
     .then(([npmMetadata, storybookMetadata]) => ({
       versions: npmMetadata.versions,
       storybooks: storybookMetadata.validVersions,
+      isPublished: npmMetadata.versions.length > 0,
       lastPublishedOn: npmMetadata.publishedOn,
     }));
 }

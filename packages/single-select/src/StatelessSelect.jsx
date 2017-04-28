@@ -16,6 +16,7 @@ const groupShape = DummyGroup.propTypes;
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(appearances.values),
+    droplistShouldFitContainer: PropTypes.bool,
     filterValue: PropTypes.string,
     hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
@@ -40,6 +41,7 @@ export default class StatelessSelect extends PureComponent {
 
   static defaultProps = {
     appearance: appearances.default,
+    droplistShouldFitContainer: true,
     filterValue: '',
     hasAutocomplete: false,
     isOpen: false,
@@ -64,11 +66,19 @@ export default class StatelessSelect extends PureComponent {
     if (this.state.isFocused) {
       this.focus();
     }
+
+    if (!this.props.droplistShouldFitContainer && this.droplistNode) {
+      this.setDroplistMinWidth();
+    }
   }
 
   componentDidUpdate = (prevProps) => {
     if (!prevProps.shouldFocus && this.props.shouldFocus) {
       this.focus();
+    }
+
+    if (!this.props.droplistShouldFitContainer && this.droplistNode) {
+      this.setDroplistMinWidth();
     }
   }
 
@@ -142,6 +152,11 @@ export default class StatelessSelect extends PureComponent {
     }
 
     return res;
+  }
+
+  setDroplistMinWidth = () => {
+    const width = this.triggerNode.getBoundingClientRect().width;
+    this.setState({ droplistWidth: width });
   }
 
   focus = () => {
@@ -398,7 +413,7 @@ export default class StatelessSelect extends PureComponent {
           isTriggerNotTabbable
           onOpenChange={this.onOpenChange}
           position={this.props.position}
-          shouldFitContainer
+          shouldFitContainer={this.props.droplistShouldFitContainer}
           trigger={
             <FieldBase
               appearance={mapAppearanceToFieldBase([this.props.appearance])}
@@ -449,7 +464,12 @@ export default class StatelessSelect extends PureComponent {
             </FieldBase>
           }
         >
-          {this.renderGroups(this.props.items)}
+          <div
+            ref={ref => (this.droplistNode = ref)}
+            style={{ minWidth: this.state.droplistWidth }}
+          >
+            {this.renderGroups(this.props.items)}
+          </div>
         </Droplist>
       </div>
     );

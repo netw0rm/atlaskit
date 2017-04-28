@@ -44,7 +44,7 @@ export class PanelState {
   }
 
   changePanelType(view: EditorView, panelType: PanelType) {
-    analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
+    analyticsService.trackEvent(`atlassian.editor.format.${panelType.panelType}.button`);
     const { state, dispatch } = view;
     let { tr } = state;
     // wrap selection in new panel type
@@ -159,7 +159,7 @@ const plugin = new Plugin({
 });
 
 const plugins = (schema: Schema<any, any>) => {
-  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

@@ -1,8 +1,19 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import { Grid, GridColumn } from '@atlaskit/page';
 import { Heading, Intro, Section } from '../components/Type';
+import lostImage from '../images/404-image.png';
+import styled from 'styled-components';
+
+const Img = styled.img`
+  height: auto;
+  margin-top: 48;
+  max-width: 448px;
+  padding-top: 24px;
+`;
+
+const Center = styled.div`
+  text-align: center;
+`
 
 export default class WelcomePage extends PureComponent {
   static propTypes = {
@@ -10,25 +21,19 @@ export default class WelcomePage extends PureComponent {
   }
   render() {
     const { location } = this.props;
-    const title = 'Page Not Found (404)';
 
     return (
-      <Grid spacing="comfortable">
-        <GridColumn medium={12}>
-          <Helmet title={title} />
-          <Heading>{title}</Heading>
+      <Center>
+          <Helmet title="Page not found (404)" />
+          <Img
+            alt="Adventurers"
+            src={lostImage}
+          />
+          <Heading>Looks like we&#39;re off the beaten track</Heading>
           <Intro>
-            Sorry, we couldn&apos;t find a page at &quot;{location.pathname}&quot;. It may
-            have moved or been deleted.
+            Let the nav to your left guide you back
           </Intro>
-          <Section>
-            <h3>What now?</h3>
-            <p>
-              You can checkout our <Link to="/components">components page</Link>, or just head <Link to="/">home</Link>.
-            </p>
-          </Section>
-        </GridColumn>
-      </Grid>
+      </Center>
     );
   }
 }

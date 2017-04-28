@@ -6,8 +6,12 @@ import {
   createSchema
 } from '@atlaskit/editor-core';
 
+import { code } from './marks/code';
+import { codeBlock } from './nodes/codeBlock';
+
 export interface HCSchemaNodes {
   doc: NodeSpec;
+  codeBlock: NodeSpec;
   paragraph: NodeSpec;
   text: NodeSpec;
   hardBreak: NodeSpec;
@@ -18,6 +22,7 @@ export interface HCSchemaNodes {
 }
 
 export interface HCSchemaMarks {
+  code: MarkSpec;
   link: MarkSpec;
   em: MarkSpec;
   strong: MarkSpec;
@@ -48,11 +53,17 @@ const nodes = [
   // media
   'mediaGroup',
   'media',
+
+  // code
+  'codeBlock',
 ];
 
 const customNodeSpecs = {
   // The top level node for a document.
-  doc
+  doc,
+
+  // styled codeBlock nodes
+  codeBlock
 };
 
 const marks = [
@@ -84,9 +95,14 @@ const marks = [
 
   // We are forced to add this, because link mark excludes: 'textColor'
   // Without this ProseMirror is unable to construct the schema
-  'textColor'
+  'textColor',
+
+  // Represents inline code
+  'code',
 ];
+
+const customMarkSpecs = { code };
 
 export interface HCSchema extends Schema<HCSchemaNodes, HCSchemaMarks> {}
 
-export default createSchema({ nodes, marks, customNodeSpecs }) as HCSchema;
+export default createSchema({ nodes, marks, customNodeSpecs, customMarkSpecs }) as HCSchema;

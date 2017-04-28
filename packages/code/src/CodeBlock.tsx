@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PropTypes } from 'prop-types';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { applyTheme } from './themes/themeBuilder';
+import { normalizeLanguage, languageList } from './supportedLanguages';
+import { Theme, applyTheme } from './themes/themeBuilder';
 
 export interface CodeBlockProps {
+  text: string;
   language?: string;
   showLineNumbers?: boolean;
-  text: string;
-  theme?: object;
+  theme?: Theme;
 }
 
 export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
@@ -16,34 +18,37 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
 
   static propTypes = {
 
-    /** The language in which the code is written */
-    language: 'string',
-
-    /** Whether or not to show line numbers */
-    showLineNumbers: 'bool',
-
     /** The code to be formatted */
-    text: 'string',
+    text: PropTypes.string.isRequired,
+
+    /** The language in which the code is written */
+    language: PropTypes.oneOf(languageList),
+
+    /** Indicates whether or not to show line numbers */
+    showLineNumbers: PropTypes.bool,
 
     /** A custom theme to be applied, implements the Theme interface */
-    theme: 'object'
+    theme: PropTypes.object
   };
 
   static defaultProps = {
     showLineNumbers: true,
+    language: 'markdown',
     theme: {}
   };
 
   render() {
+    const { language } = this.props;
     const { lineNumberContainerStyle, codeBlockStyle, codeContainerStyle } = applyTheme(this.props.theme);
+    const props = {
+      language: normalizeLanguage(language),
+      style: codeBlockStyle,
+      showLineNumbers: this.props.showLineNumbers,
+      codeTagProps: { style: codeContainerStyle },
+      lineNumberContainerStyle
+    };
     return (
-      <SyntaxHighlighter
-        language={this.props.language}
-        style={codeBlockStyle}
-        lineNumberContainerStyle={lineNumberContainerStyle}
-        showLineNumbers={this.props.showLineNumbers}
-        codeTagProps={{style: codeContainerStyle}}
-      >
+      <SyntaxHighlighter {...props}>
         {this.props.text.toString()}
       </SyntaxHighlighter>
     );

@@ -291,6 +291,24 @@ export const document = {
       type: 'paragraph',
       content: [
         {
+          type: 'text',
+          text: 'some inline code: '
+        },
+        {
+          type: 'text',
+          text: 'const foo = bar();',
+          marks: [
+            {
+              type: 'code'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
           type: 'unkown type',
           attrs: {
             text: 'fallback text'
@@ -423,6 +441,35 @@ export const document = {
           ]
         }
       ]
+    },
+    {
+      type: 'codeBlock',
+      content: [
+        {
+          type: 'text',
+          text: `// Create a map.
+final IntIntOpenHashMap map = new IntIntOpenHashMap();
+map.put(1, 2);
+map.put(2, 5);
+map.put(3, 10);`
+        },
+        {
+          type: 'text',
+          text: `
+int count = map.forEach(new IntIntProcedure()
+{
+   int count;
+   public void apply(int key, int value)
+   {
+       if (value >= 5) count++;
+   }
+}).count;
+System.out.println("There are " + count + " values >= 5");`
+        }
+      ],
+      attrs: {
+        language: 'javascript'
+      }
     },
     {
       type: 'heading',

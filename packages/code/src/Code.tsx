@@ -1,42 +1,45 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PropTypes } from 'prop-types';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { applyTheme } from './themes/themeBuilder';
+import { normalizeLanguage, languageList } from './supportedLanguages';
+import { Theme, applyTheme } from './themes/themeBuilder';
 
 export interface CodeProps {
-  language?: string;
   text: string;
-  theme?: object;
+  language?: string;
+  theme?: Theme;
 }
 
 export default class Code extends PureComponent<CodeProps, {}> {
 
-  static displayName = 'Code';
-
   static propTypes = {
 
-    /** The language in which the code is written */
-    language: 'string',
-
     /** The code to be formatted */
-    text: 'string',
+    text: PropTypes.string.isRequired,
+
+    /** The language in which the code is written */
+    language: PropTypes.oneOf(languageList),
 
     /** A custom theme to be applied, implements the Theme interface */
-    theme: 'object'
+    theme: PropTypes.object
   };
 
   static defaultProps = {
+    language: 'markdown',
     theme: {}
   };
 
   render() {
+    const { language } = this.props;
     const { inlineCodeStyle } = applyTheme(this.props.theme);
+    const props = {
+      language: normalizeLanguage(language),
+      style: inlineCodeStyle,
+      showLineNumbers: false
+    };
     return (
-      <SyntaxHighlighter
-        language={this.props.language}
-        style={inlineCodeStyle}
-        showLineNumbers={false}
-      >
+      <SyntaxHighlighter {...props}>
         {this.props.text}
       </SyntaxHighlighter>
     );

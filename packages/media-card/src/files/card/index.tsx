@@ -11,6 +11,7 @@ export interface FileCardProps extends SharedCardProps {
   readonly details?: FileDetails;
   readonly dataURI?: string;
   readonly progress?: number;
+  readonly onClick?: (event: Event) => void;
 };
 
 export class FileCard extends Component<FileCardProps, {}> {
@@ -22,13 +23,8 @@ export class FileCard extends Component<FileCardProps, {}> {
     return this.renderFile();
   }
 
-  onClick = (event: Event) : void => { // TODO: select handlers seem to be broken now. fix.
-    const {details} = this.props;
-    const onClick = this._getFirstAction(CardActionType.click);
-
-    if (onClick && details) {
-      onClick.handler({type: 'file', details}, event);
-    }
+  onClick = (event: Event) : void => {
+    this.props.onClick && this.props.onClick(event);
   }
 
   renderFile(): JSX.Element {

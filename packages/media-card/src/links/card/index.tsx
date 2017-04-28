@@ -11,6 +11,7 @@ import { LinkCardImageView } from '../cardImageView';
 export interface LinkCardProps extends SharedCardProps {
   status: CardProcessingStatus;
   details?: UrlPreview;
+  onClick?: (event: Event) => void;
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {

@@ -119,6 +119,10 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     this.state && this.state.subscription && this.state.subscription.unsubscribe();
   }
 
+  private onClick(event: Event): void {
+
+  }
+
   render() {
     const {mediaItemType, provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
     const {metadata, status} = this.state;
@@ -131,6 +135,8 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         status={status}
         metadata={metadata}
         mediaItemType={mediaItemType}
+
+        onClick={this.onClick}
       />
     );
   }

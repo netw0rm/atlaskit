@@ -162,6 +162,14 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
   // menu actions
   const fileMenuActionsCards = createMenuActionCards(appearance, imageFileDetails);
 
+  // click event
+  const fileEventCards = [
+    {
+      title: 'Click event',
+      content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} onClick={() => action('click!')()} />
+    }
+  ];
+
   // upload progress
   const uploadProgressCards = [
     {title: '10%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.1} />},
@@ -188,6 +196,9 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
       <h4>Menu actions</h4>
       <StoryList>{fileMenuActionsCards}</StoryList>
+
+      <h4>Click event</h4>
+      <StoryList>{fileEventCards}</StoryList>
 
       {appearance === 'image' || appearance === 'auto' ? (
           <div>

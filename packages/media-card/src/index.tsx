@@ -21,7 +21,7 @@ export interface CardDimensions {
 
 export interface CardEvent {
   event: Event;
-  mediaItem: MediaItem;
+  mediaItemDetails?: MediaItemDetails;
 }
 
 export interface OnSelectChangeFuncResult extends CardEvent {
@@ -50,9 +50,12 @@ export interface SharedCardProps {
   readonly selected?: boolean;
 }
 
-export interface CardEventProps {
+export interface CardViewEventProps {
   readonly onClick?: (result: CardEvent) => void;
   readonly onHover?: (result: CardEvent) => void;
   readonly onSelectChange?: OnSelectChangeFunc;
+}
+
+export interface CardEventProps extends CardViewEventProps {
   readonly onLoadingChange?: OnLoadingChangeFunc;
 }

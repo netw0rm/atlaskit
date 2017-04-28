@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardProcessingStatus} from '.';
+import {SharedCardProps, CardProcessingStatus, CardViewEventProps} from '.';
 import {LinkCard} from './links';
 import {FileCard} from './files';
 import {isLinkDetails} from './utils/isLinkDetails';
 
-export interface CardViewProps extends SharedCardProps {
+export interface CardViewProps extends SharedCardProps, CardViewEventProps {
   readonly status: CardProcessingStatus;
   readonly mediaItemType?: MediaItemType;
   readonly metadata?: MediaItemDetails;
@@ -38,6 +38,10 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
     return this.renderFile();
   }
 
+  private onClick(event: Event): void {
+    // console.log('CLICKED');
+  }
+
   renderLink = () => {
     const {mediaItemType, status, metadata, ...otherProps} = this.props;
 
@@ -46,7 +50,10 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
         {...otherProps}
         status={status}
         details={metadata as LinkDetails | UrlPreview}
+
+        onClick={this.onClick}
       />
+
     );
   }
 
@@ -58,6 +65,8 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
         {...otherProps}
         status={status}
         details={metadata}
+
+        onClick={this.onClick}
       />
     );
   }

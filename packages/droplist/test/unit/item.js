@@ -2,7 +2,6 @@ import sinon from 'sinon';
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 

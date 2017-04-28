@@ -30,7 +30,14 @@ export default class SearchDrawer extends PureComponent {
     const matchingComponents = components.filter(
       c => (
         c.name.toLowerCase().indexOf(searchString) >= 0 ||
-        (c.description && c.description.toLowerCase().indexOf(searchString) >= 0)
+        c.description.toLowerCase().indexOf(searchString) >= 0
+        // TODO: Maintainers has been requested in the search, but it returns a
+        // lot of results without an obvious reason so I don't think we should
+        // actually implement it - JW
+        /* || (
+          c.maintainers
+          && c.maintainers.map(m => m.name).join(' ').toLowerCase().indexOf(searchString) >= 0
+        ) */
       )
     ).slice(0, 10);
 

@@ -66,11 +66,19 @@ export default class StatelessSelect extends PureComponent {
     if (this.state.isFocused) {
       this.focus();
     }
+
+    if (!this.props.droplistShouldFitContainer && this.droplistNode) {
+      this.setDroplistMinWidth();
+    }
   }
 
   componentDidUpdate = (prevProps) => {
     if (!prevProps.shouldFocus && this.props.shouldFocus) {
       this.focus();
+    }
+
+    if (!this.props.droplistShouldFitContainer && this.droplistNode) {
+      this.setDroplistMinWidth();
     }
   }
 
@@ -144,6 +152,11 @@ export default class StatelessSelect extends PureComponent {
     }
 
     return res;
+  }
+
+  setDroplistMinWidth = () => {
+    const width = this.triggerNode.getBoundingClientRect().width;
+    this.setState({ droplistWidth: width });
   }
 
   focus = () => {
@@ -451,7 +464,12 @@ export default class StatelessSelect extends PureComponent {
             </FieldBase>
           }
         >
-          {this.renderGroups(this.props.items)}
+          <div
+            ref={ref => (this.droplistNode = ref)}
+            style={{ minWidth: this.state.droplistWidth }}
+          >
+            {this.renderGroups(this.props.items)}
+          </div>
         </Droplist>
       </div>
     );

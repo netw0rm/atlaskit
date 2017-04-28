@@ -94,6 +94,8 @@ describe(name, () => {
       expect(droplistProps.shouldFitContainer, 'shouldFitContainer').to.equal(true);
       expect(droplistProps.isKeyboardInteractionDisabled, 'isKeyboardInteractionDisabled').to.equal(true);
       expect(droplistProps.isTriggerDisabled, 'isTriggerDisabled').to.equal(true);
+      select.setProps({ droplistShouldFitContainer: false });
+      expect(droplistProps.shouldFitContainer, 'shouldFitContainer').to.equal(false);
     });
 
     it('should pass props to fieldBase', () => {

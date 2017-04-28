@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 
-import { FileCardView } from '../../src';
+import { FileCardView } from '../../src/files';
 import { CardContent } from '../../src/utils/cardImageView/cardContent';
 import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
 

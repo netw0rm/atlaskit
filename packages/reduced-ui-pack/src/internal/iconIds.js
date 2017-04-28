@@ -256,6 +256,7 @@ const iconIds = [
   'sign-out',
   'star-filled',
   'star',
+  'switcher',
   'table',
   'task',
   'time',

@@ -4,13 +4,13 @@
     <title>document</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="File-types" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="File-types" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="document">
             <g>
                 <rect id="Rectangle-5" fill="currentColor" x="4" y="4" width="16" height="16" rx="2"></rect>
-                <rect id="Rectangle-6" fill="#FFFFFF" x="7" y="8" width="10" height="2" rx="1"></rect>
-                <rect id="Rectangle-6-Copy" fill="#FFFFFF" x="7" y="11" width="10" height="2" rx="1"></rect>
-                <rect id="Rectangle-6-Copy-2" fill="#FFFFFF" x="7" y="14" width="5" height="2" rx="1"></rect>
+                <rect id="Rectangle-6" fill="inherit" x="7" y="8" width="10" height="2" rx="1"></rect>
+                <rect id="Rectangle-6-Copy" fill="inherit" x="7" y="11" width="10" height="2" rx="1"></rect>
+                <rect id="Rectangle-6-Copy-2" fill="inherit" x="7" y="14" width="5" height="2" rx="1"></rect>
             </g>
         </g>
     </g>

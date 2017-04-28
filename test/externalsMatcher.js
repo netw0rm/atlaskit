@@ -15,10 +15,6 @@ const matchAgainst = (dep, context = '') => new Promise((resolve, reject) => {
 });
 
 describe('externalsMatcher', () => {
-  it('should match module dependencies', () => matchAgainst('skatejs').then((result) => {
-    result.should.equal(true);
-  }));
-
   describe('relative dependencies', () => {
     it('should not match relative dependencies', () => matchAgainst('../some/lib').then((result) => {
       result.should.equal(false);

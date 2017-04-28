@@ -17,22 +17,22 @@ export const youTubeUrlPreviewId = {
 };
 
 export const spotifyUrlPreviewId = {
-  mediaItemType: 'link',
+  mediaItemType: linkType,
   url: 'https://play.spotify.com/track/2Foc5Q5nqNiosCNqttzHof'
 };
 
 export const soundcloudUrlPreviewId = {
-  mediaItemType: 'link',
+  mediaItemType: linkType,
   url: 'https://soundcloud.com/kodak-black/tunnel-vision-1'
 };
 
 export const publicTrelloBoardUrlPreviewId = {
-  mediaItemType: 'link',
+  mediaItemType: linkType,
   url: 'https://trello.com/b/rq2mYJNn/public-trello-boards'
 };
 
 export const privateTrelloBoardUrlPreviewId = {
-  mediaItemType: 'link',
+  mediaItemType: linkType,
   url: 'https://trello.com/b/hlo7gRqs/shpxxxviii-60'
 };
 
@@ -100,6 +100,12 @@ export const playerLinkId = {
 
 export const errorLinkId = {
   id: 'error-file-id',
+  mediaItemType: linkType,
+  collectionName
+};
+
+export const imageLinkId = {
+  id: '2c83687c-3183-4db0-8d64-e70013163e76',
   mediaItemType: linkType,
   collectionName
 };
@@ -215,5 +221,40 @@ export const genericFileDetails: FileDetails = {
   }
 };
 
-export const genericDataURI = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAZABkAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABkAAAAAQAAAGQAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAAKgAwAEAAAAAQAAAAIAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIAAIAAgMBEQACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQICAQECAQEBAgICAgICAgICAQICAgICAgICAgL/2wBDAQEBAQEBAQEBAQECAQEBAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL/3QAEAAH/2gAMAwEAAhEDEQA/AP0U8M2NmPDfh8C0tgBomkgAW8OAPsFvwK/lh7s+5u+/4n//2Q==';
 
+export const imageFileDetails: FileDetails = {
+  id: 'some-id',
+  mediaType: 'image',
+  name: 'image_file.jpg',
+  size: 2958464
+};
+
+export const videoFileDetails: FileDetails = {
+  id: 'some-id',
+  mediaType: 'video',
+  name: 'video_file.mp4',
+  size: 29584640
+};
+
+export const audioFileDetails: FileDetails = {
+  id: 'some-id',
+  mediaType: 'audio',
+  name: 'audio_file.mp3',
+  size: 2958464
+};
+
+export const docFileDetails: FileDetails = {
+  id: 'some-id',
+  mediaType: 'doc',
+  name: 'doc_file.pdf',
+  size: 2958464
+};
+
+export const unknownFileDetails: FileDetails = {
+  id: 'some-id',
+  mediaType: 'unknown',
+  name: 'doc_file.pdf',
+  size: 2958464
+};
+
+export const genericDataURI = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAZABkAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABkAAAAAQAAAGQAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAAKgAwAEAAAAAQAAAAIAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIAAIAAgMBEQACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQICAQECAQEBAgICAgICAgICAQICAgICAgICAgL/2wBDAQEBAQEBAQEBAQECAQEBAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL/3QAEAAH/2gAMAwEAAhEDEQA/AP0U8M2NmPDfh8C0tgBomkgAW8OAPsFvwK/lh7s+5u+/4n//2Q==';

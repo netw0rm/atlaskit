@@ -1,5 +1,6 @@
 import CodeMirror from '../../codemirror';
-import 'codemirror/mode/javascript/javascript';
+// import 'codemirror/mode/javascript/javascript';
+// import 'codemirror/mode/ruby/ruby';
 import '!style!css!less!codemirror/lib/codemirror.css';
 import {
   Selection,
@@ -13,7 +14,10 @@ import {
   EditorView,
   Fragment,
 } from '../../prosemirror';
-import {stateKey} from '../../plugins/code-block';
+import { CodeBlockState, stateKey } from '../../plugins/code-block';
+import { findMode } from '../../ui/LanguagePicker/languageList';
+
+const loadedModes = {};
 
 export default class CodeMirrorView {
   dom: HTMLElement;
@@ -25,6 +29,7 @@ export default class CodeMirrorView {
   private cm: CodeMirror;
   private updating: boolean = false;
   private schema: Schema<any, any>;
+  private pluginState: CodeBlockState;
 
   constructor(node, view, getPos, schema) {
     this.node = node;
@@ -34,6 +39,7 @@ export default class CodeMirrorView {
     this.value = node.textContent;
     this.selection = null;
     let mod = /Mac/.test(navigator.platform) ? 'Cmd' : 'Ctrl';
+    this.pluginState = stateKey.getState(this.view.state);
 
     this.cm = new CodeMirror(null, {
       value: this.value,
@@ -71,11 +77,22 @@ export default class CodeMirrorView {
       }
     });
     this.cm.on('focus', () => {
-      const codeBlockPluginState = stateKey.getState(this.view.state);
-      codeBlockPluginState.updateEditorFocused(true);
-      codeBlockPluginState.update(this.view.state, this.view.docView, true);
+      this.pluginState.updateEditorFocused(true);
+      this.pluginState.update(this.view.state, this.view.docView, true);
       if (!this.updating) {
         this.forwardSelection();
+      }
+    });
+
+    this.pluginState.subscribe((state) => {
+      const { language } = state;
+      if (language) {
+        const modeInfo = findMode(language.toLowerCase());
+        if (modeInfo && !loadedModes[modeInfo.mode]) {
+          loadedModes[modeInfo.mode] = true;
+          require(`codemirror/mode/${modeInfo.mode}/${modeInfo.mode}`);
+        }
+        this.cm.setOption('mode', modeInfo ? modeInfo.mode : 'javascript');
       }
     });
   }

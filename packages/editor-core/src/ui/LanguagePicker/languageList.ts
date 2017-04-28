@@ -1,4 +1,5 @@
 // This is the option when no language specified
+import CodeMirror from '../../codemirror';
 export const NO_LANGUAGE = 'Language';
 
 export const DEFAULT_LANGUAGES = [
@@ -89,6 +90,16 @@ export function findMatchedLanguage(supportedLanguages: any[], language?: string
   }
 
   return NO_LANGUAGE;
+}
+
+export function findMode(languageName: string) {
+  const matches = DEFAULT_LANGUAGES.filter((supportedLanguage) => {
+    return supportedLanguage.alias.indexOf(languageName.toLowerCase()) !== -1;
+  });
+
+  const modes = matches[0].alias.map((language) => CodeMirror.findModeByName(language)).filter(mode => !!mode);
+
+  return modes[0];
 }
 
 export function filterSupportedLanguages (supportedLanguages) {

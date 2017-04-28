@@ -241,43 +241,45 @@ export default class StatelessMultiSelect extends PureComponent {
   filterItems = (items) => {
     const value = this.props.filterValue;
     const trimmedValue = value && value.toLowerCase().trim();
-    const selectedItems = this.props.selectedItems;
-    const unselectedItems = items.filter(item => selectedItems.indexOf(item) === -1);
+    const selectedValues = this.props.selectedItems.map(item => item.value);
+    const unselectedItems = items.filter(item => selectedValues.indexOf(item.value) === -1);
 
     return trimmedValue ?
       unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
       unselectedItems;
   }
 
-  renderItems = (items) => {
-    if (items.length) {
-      return items.map((item, itemIndex) => (<Item
-        {...item}
-        elemBefore={item.elemBefore}
-        isFocused={itemIndex === this.state.focusedItemIndex}
-        key={itemIndex}
-        onActivate={(attrs) => {
-          this.handleItemSelect(item, attrs);
-        }}
-      >
-        {item.content}
-      </Item>));
-    }
+  renderItems = items => items.map((item, itemIndex) => (
+    <Item
+      {...item}
+      elemBefore={item.elemBefore}
+      isFocused={itemIndex === this.state.focusedItemIndex}
+      key={itemIndex}
+      onActivate={(attrs) => {
+        this.handleItemSelect(item, attrs);
+      }}
+    >
+      {item.content}
+    </Item>)
+  )
 
-    return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
+  renderNoItemsMessage = () => <NothingWasFound noMatchesFound={this.props.noMatchesFound} />
+
+  renderGroups = (groups) => {
+    const renderedGroups = groups.map((group, groupIndex) => {
+      const filteredItems = this.filterItems(group.items);
+      return filteredItems.length > 0 ?
+        <Group
+          heading={group.heading}
+          key={groupIndex}
+        >
+          {this.renderItems(filteredItems)}
+        </Group>
+        : null;
+    }).filter(group => !!group);
+
+    return renderedGroups.length > 0 ? renderedGroups : this.renderNoItemsMessage();
   }
-
-  renderGroups = groups => groups.map((group, groupIndex) => {
-    const filteredItems = this.filterItems(group.items);
-    return filteredItems.length > 0 ?
-      <Group
-        heading={group.heading}
-        key={groupIndex}
-      >
-        {this.renderItems(filteredItems)}
-      </Group>
-    : null;
-  })
 
   renderOptions = items => items.map((item, itemIndex) => (<option
     disabled={item.isDisabled}

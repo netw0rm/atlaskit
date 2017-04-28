@@ -34,8 +34,7 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/button-group": "*",
     "@atlaskit/dropdown-menu": "^1.0.0",
-    "ak-icon": "^12.1.2",
-    "akutil-react": "*",
+    "@atlaskit/icon": "^6.5.0",
     "@atlaskit/util-readme": "^3.0.0"
   },
   "peerDependencies": {

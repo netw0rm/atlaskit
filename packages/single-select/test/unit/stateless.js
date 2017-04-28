@@ -88,12 +88,17 @@ describe(name, () => {
 
     it('should pass props to Droplist', () => {
       const func = () => {};
-      const select = mount(<StatelessSelect position="top right" isOpen onOpenChange={func} />);
+      const select = mount(<StatelessSelect
+        position="top right"
+        isOpen
+        onOpenChange={func}
+        droplistShouldFitContainer={false}
+      />);
       const droplistProps = select.find(Droplist).props();
       expect(droplistProps.position, 'position').to.equal('top right');
       expect(droplistProps.isOpen, 'isOpen').to.equal(true);
       expect(droplistProps.isTriggerNotTabbable, 'isTriggerNotTabbable').to.equal(true);
-      expect(droplistProps.shouldFitContainer, 'shouldFitContainer').to.equal(true);
+      expect(droplistProps.shouldFitContainer, 'shouldFitContainer').to.equal(false);
       expect(droplistProps.isKeyboardInteractionDisabled, 'isKeyboardInteractionDisabled').to.equal(true);
       expect(droplistProps.isTriggerDisabled, 'isTriggerDisabled').to.equal(true);
     });

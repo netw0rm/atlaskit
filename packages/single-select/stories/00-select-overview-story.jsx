@@ -11,6 +11,8 @@ import DefaultSelectedItem from './examples/DefaultSelectedItem';
 import DefaultSelectedItemRaw from '!raw!./examples/DefaultSelectedItem';
 import WideSelect from './examples/WideSelect';
 import WideSelectRaw from '!raw!./examples/WideSelect';
+import WideDroplist from './examples/WideDroplist';
+import WideDroplistRaw from '!raw!./examples/WideDroplist';
 import SelectAlignment from './examples/SelectAlignment';
 import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
 import SelectWithGroups from './examples/SelectWithGroups';
@@ -40,6 +42,7 @@ import Select, { StatelessSelect } from '../src';
 const propDescriptions = {
   appearance: 'Appearance of the triggering field',
   defaultSelected: 'Default selected item',
+  droplistShouldFitContainer: 'Specifies whether a dropdown should be constrained to the width of its trigger',
   id: 'id of the form element',
   isDisabled: 'Specifies that a select should be disabled',
   isDefaultOpen: 'Controls the open state of the select',
@@ -152,6 +155,15 @@ storiesOf(name, module)
       {WideSelect}
       <Code>
         {WideSelectRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Droplist that extends past the select space', () => (
+    <Chrome title="Droplist that extends past the select space">
+      {WideDroplist}
+      <Code>
+        {WideDroplistRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

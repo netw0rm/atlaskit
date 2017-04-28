@@ -17,6 +17,7 @@
     "@treshugart/nwb": "^0.17.0",
     "@types/ajv": "0.0.5",
     "@types/chai": "^3.4.34",
+    "@types/chai-as-promised": "0.0.30",
     "@types/enzyme": "^2.7.5",
     "@types/es6-promise": "^0.0.32",
     "@types/highlight.js": "^9.1.8",

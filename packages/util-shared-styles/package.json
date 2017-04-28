@@ -26,8 +26,7 @@
   "devDependencies": {
     "@atlaskit/util-readme": "^1.0.0",
     "@atlaskit/util-shared-styles": "*",
-    "ak-tooltip": "^5.0.0",
-    "akutil-react": "*",
+    "@atlaskit/tooltip": "^1.0.0",
     "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.5.13",

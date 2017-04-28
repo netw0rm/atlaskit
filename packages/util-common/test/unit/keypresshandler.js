@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import keyCode from 'keycode';
 import 'custom-event-polyfill';
 import { afterMutations } from '@atlaskit/util-common-test';
-import sinon from 'sinon';
 
 import { name } from '../../package.json';
 import KeyPressHandler,

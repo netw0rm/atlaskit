@@ -2,7 +2,6 @@ import sinon from 'sinon';
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 // Testing the dumb component
 import { Tooltip } from '../../src';

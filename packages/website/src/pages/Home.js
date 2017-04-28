@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import { Grid, GridColumn } from '@atlaskit/page';
-import Button from '@atlaskit/button';
 
 import { Heading, Intro, Section } from '../components/Type';
 import landingHero from '../images/landing_hero.svg';

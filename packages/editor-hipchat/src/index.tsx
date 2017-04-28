@@ -1,6 +1,5 @@
 import {
   baseKeymap,
-  blockTypePlugins,
   EditorState,
   EditorView,
   emojiNodeView,
@@ -12,11 +11,18 @@ import {
   hyperlinkPlugins,
   hyperlinkStateKey,
   keymap,
+  mediaPluginFactory,
+  mediaStateKey,
+  mediaNodeView,
+  MediaPluginState,
+  MediaProvider,
+  MediaState,
   mentionNodeView,
   MentionPicker,
   mentionsPlugins,
   mentionsStateKey,
   Node,
+  Plugin,
   ProviderFactory,
   textFormattingPlugins,
   TextSelection,
@@ -44,12 +50,14 @@ export type Doc = {
 export interface Props {
   id?: string;
   maxContentSize?: number;
-  onSubmit?: (value: Doc | any[]) => void;
+  onSubmit?: (value: Doc) => void;
   onChange?: () => void;
   emojiProvider?: Promise<EmojiProvider>;
+  mediaProvider?: Promise<MediaProvider>;
   mentionProvider?: Promise<MentionProvider>;
   presenceProvider?: any;
   reverseMentionPicker?: boolean;
+  uploadErrorHandler?: (state: MediaState) => void;
   useLegacyFormat?: boolean;
 }
 
@@ -65,6 +73,8 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   version = `${version} (editor-core ${coreVersion})`;
 
+  private mediaPlugins: Plugin[];
+
   public static defaultProps: Props = {
     reverseMentionPicker: true
   };
@@ -76,7 +86,20 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { schema };
+
     this.providerFactory = new ProviderFactory();
+
+    const { mediaProvider, uploadErrorHandler } = props;
+
+    if (mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
+
+    this.mediaPlugins = mediaPluginFactory(schema, {
+      uploadErrorHandler,
+      providerFactory: this.providerFactory,
+      behavior: 'compact'
+    });
   }
 
 
@@ -91,9 +114,10 @@ export default class Editor extends PureComponent<Props, State> {
   /**
    * The current value of the editor
    */
-  get value() {
+  get value(): Doc {
     const { editorView } = this.state;
     const doc = editorView && toJSON(editorView.state.doc);
+
     if (!doc) {
       return { type: 'doc', version: 1, content: [] };
     }
@@ -171,14 +195,37 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
+  showMediaPicker() {
+    const { editorView } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
+    mediaPluginState.showMediaPicker();
+  }
+
   componentWillMount() {
     this.handleProviders(this.props);
   }
 
+  componentWillUnmount() {
+    const { editorView } = this.state;
+    if (editorView) {
+      if (editorView.state) {
+        mediaStateKey.getState(editorView.state).destroy();
+      }
+
+      editorView.destroy();
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
-    const { props } = this;
+    const { props, providerFactory } = this;
     if (props.emojiProvider !== nextProps.emojiProvider || props.mentionProvider !== nextProps.mentionProvider) {
       this.handleProviders(nextProps);
+    }
+
+    const { mediaProvider } = nextProps;
+    if (props.mediaProvider !== mediaProvider) {
+      providerFactory.setProvider('mediaProvider', mediaProvider);
     }
   }
 
@@ -238,6 +285,7 @@ export default class Editor extends PureComponent<Props, State> {
       return this.setState({ editorView: undefined });
     }
 
+    const { mediaPlugins } = this;
     const hcKeymap = {
       'Enter': this.handleSubmit
     };
@@ -247,8 +295,8 @@ export default class Editor extends PureComponent<Props, State> {
       doc: '',
       plugins: [
         ...mentionsPlugins(schema),
+        ...mediaPlugins,
         ...emojisPlugins(schema),
-        ...blockTypePlugins(schema),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         history(),
@@ -283,6 +331,7 @@ export default class Editor extends PureComponent<Props, State> {
       },
       nodeViews: {
         emoji: emojiNodeView(this.providerFactory),
+        media: mediaNodeView(this.providerFactory),
         mention: mentionNodeView(this.providerFactory)
       }
     });

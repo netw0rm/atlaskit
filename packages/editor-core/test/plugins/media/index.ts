@@ -2,7 +2,10 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import {
+  baseKeymap,
+  keymap,
   mediaNodeView,
+  MediaPluginBehavior,
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
@@ -17,13 +20,15 @@ import {
   makeEditor,
   mediaGroup,
   media,
+  nodeFactory,
   fixtures,
   p,
+  sendKeyToPm,
   storyMediaProviderFactory,
   randomId,
   sleep,
 } from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+import { default as defaultSchema, compactSchema } from '../../../src/test-helper/schema';
 import { PositionedNode } from '../../../src/plugins/media';
 
 chai.use(chaiPlugin);
@@ -38,14 +43,30 @@ describe('Media plugin', () => {
   const providerFactory = new ProviderFactory();
   providerFactory.setProvider('mediaProvider', resolvedProvider);
 
-  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor({
-    doc,
-    plugins: mediaPluginFactory(defaultSchema, { providerFactory, behavior: 'default', uploadErrorHandler }),
-    nodeViews: {
-      media: mediaNodeView(providerFactory)
-    },
-    place: fixture()
-  });
+  const editor = (doc: any, uploadErrorHandler?: () => void, behavior?: MediaPluginBehavior) => {
+    behavior = behavior || 'default';
+    const schema = (behavior === 'compact') ? compactSchema : defaultSchema;
+    const addBaseKeymap = behavior !== 'compact';
+    const plugins = mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler });
+
+    if (behavior === 'compact') {
+      const baseKeymapForCompactBehaviour = { ...baseKeymap };
+      delete baseKeymapForCompactBehaviour.Enter;
+
+      plugins.push(keymap(baseKeymapForCompactBehaviour));
+    }
+
+    return makeEditor({
+      doc,
+      schema,
+      addBaseKeymap,
+      plugins,
+      nodeViews: {
+        media: mediaNodeView(providerFactory)
+      },
+      place: fixture(),
+    });
+  };
 
   const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
     const [node, transaction] = pluginState.insertFile({ id, status: 'uploading' }, testCollectionName);
@@ -183,6 +204,38 @@ describe('Media plugin', () => {
       ),
       p(),
     ));
+  });
+
+  describe('Compact behaviour', () => {
+    const doc = nodeFactory(compactSchema.nodes.doc);
+    const p = nodeFactory(compactSchema.nodes.paragraph);
+    const mediaGroup = nodeFactory(compactSchema.nodes.mediaGroup);
+    const media = (attrs: {
+      id: string;
+      type: 'file' | 'link';
+      collection: string;
+    }) => compactSchema.nodes.media.create(attrs);
+
+    it('should not react to Enter keypress', () => {
+      const { editorView } = editor(doc(p('te{<>}xt')), () => {}, 'compact');
+
+      sendKeyToPm(editorView, 'Enter');
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should insert media on the second line', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')), () => {}, 'compact');
+
+      insertFile(editorView, pluginState);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(),
+          mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+        )
+      );
+    });
   });
 
   it('should call uploadErrorHandler on upload error', async () => {

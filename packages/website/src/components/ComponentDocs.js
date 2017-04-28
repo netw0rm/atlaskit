@@ -13,6 +13,19 @@ const Title = styled.h2`
   margin-bottom: 10px;
 `;
 
+function renderProps(comp, i) {
+  if (Array.isArray(comp)) {
+    return comp.map(renderProps);
+  }
+  if (typeof comp === 'object' && typeof comp.src === 'string') {
+    return <DynamicProps key={i} componentName={comp.name} componentSrc={comp.src} />;
+  }
+  if (typeof comp === 'string') {
+    return <DynamicProps componentSrc={comp} />;
+  }
+  return null;
+}
+
 const ComponentDocs = ({ component }) => {
   const { docs } = component;
   if (docs && typeof docs.default === 'function') {
@@ -29,9 +42,7 @@ const ComponentDocs = ({ component }) => {
             {docs.examples.map((eg, i) => <Example key={i} {...eg} />)}
           </div>
         ) : null}
-        {typeof docs.componentSource === 'string'
-          ? <DynamicProps componentSrc={docs.componentSource} />
-          : null}
+        {renderProps(docs.componentSource)}
       </div>
     );
   }

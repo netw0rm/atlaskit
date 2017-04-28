@@ -124,7 +124,7 @@ const Code = styled(SyntaxHighlighter)`
   border-radius: 3px;
   color: ${akColorN60};
   display: block;
-  margin: 0;
+  margin: 0 0 ${akGridSize};
   overflow-x: auto;
   padding: ${akGridSize};
 
@@ -139,5 +139,4 @@ const Showcase = styled.div`
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   padding: ${akGridSize};
-  margin-top: ${akGridSize};
 `;

@@ -18,6 +18,8 @@ export interface Props {
   onSelection: Function;
   miniMode?: boolean;
   boundariesElement?: string;
+  className?: string;
+  allowAllEmojis?: boolean;
 }
 
 export interface State {
@@ -56,6 +58,8 @@ const moreButtonStyle = style({
 });
 
 export default class ReactionPicker extends PureComponent<Props, State> {
+
+  private trigger?: Trigger;
 
   constructor(props) {
     super(props);
@@ -103,7 +107,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   }
 
   private renderSelector() {
-    const { emojiProvider } = this.props;
+    const { emojiProvider, allowAllEmojis } = this.props;
 
     return (
       <div className={contentStyle}>
@@ -111,9 +115,11 @@ export default class ReactionPicker extends PureComponent<Props, State> {
           emojiProvider={emojiProvider}
           onSelection={this.onEmojiSelected}
         />
-        <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
-          <EditorMoreIcon label="More" />
-        </button>
+        { !allowAllEmojis ? null :
+          <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
+            <EditorMoreIcon label="More" />
+          </button>
+        }
       </div>
     );
   }
@@ -157,7 +163,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     return (
       <Popup
         boundariesElement={this.props.boundariesElement || 'body'}
-        target={this.refs['trigger']}
+        target={this.trigger!}
       >
         {this.renderContent()}
       </Popup>
@@ -169,15 +175,15 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     const { miniMode } = this.props;
     const classNames = cx(pickerStyle, {
       'isOpen': isOpen,
-      'miniMode': miniMode
-    });
+      'miniMode': miniMode,
+    }, this.props.className);
 
     return (
       <div className={classNames}>
         <Trigger
           onClick={this.onTriggerClick}
           miniMode={miniMode}
-          ref="trigger"
+          ref={ref => this.trigger = ref}
         />
         {this.renderPopup()}
       </div>

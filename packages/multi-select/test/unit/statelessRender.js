@@ -157,7 +157,7 @@ describe(`${name} - stateless`, () => {
         expect(select.find(NothingWasFound).length).to.equal(1);
       });
 
-      it('should not render a no matches found if at least an item is available in dropdown', () => {
+      it('should not render a no matches found message if at least an item is available in dropdown', () => {
         const selectedItems = [
           itemsIn3Groups[0].items[0],
           itemsIn3Groups[0].items[1],

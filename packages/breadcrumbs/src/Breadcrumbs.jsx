@@ -1,5 +1,5 @@
 import React, { Children, PureComponent, PropTypes } from 'react';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import BreadcrumbsItem from './BreadcrumbsItem';
 import EllipsisItem from './internal/EllipsisItem';
 import { defaultMaxItems } from './internal/constants';

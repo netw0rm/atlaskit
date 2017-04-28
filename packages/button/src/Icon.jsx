@@ -13,6 +13,6 @@ export default class Icon extends PureComponent {
   }
 
   render() {
-    return (<span className={styles.locals.IconWrapper}>{this.props.source}</span>);
+    return (<span className={styles.IconWrapper}>{this.props.source}</span>);
   }
 }

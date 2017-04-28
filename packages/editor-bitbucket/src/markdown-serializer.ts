@@ -1,19 +1,11 @@
 import {
-  isCodeBlockNode,
-  isOrderedListNode,
-  isBulletListNode,
   Mark,
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
-  Node
+  Node,
 } from '@atlaskit/editor-core';
 import stringRepeat from './util/string-repeat';
-
-interface NodeRendererOption {
-  readonly isLastNode: boolean;
-  readonly trimTrailingWhitespace: boolean;
-};
-
+import schema from './schema';
 /**
  * This function escapes all plain-text sequences that might get converted into markdown
  * formatting by Bitbucket server (via python-markdown).
@@ -30,56 +22,54 @@ function escapeMarkdown(str: string, startOfLine?: boolean): string {
 /**
  * Look for series of backticks in a string, find length of the longest one, then
  * generate a backtick chain of a length longer by one. This is the only proven way
- * to escape backticks inside code block and monospace (for python-markdown)
+ * to escape backticks inside code block and inline code (for python-markdown)
  */
 const generateOuterBacktickChain: (text: string, minLength?: number) => string = (() => {
   function getMaxLength(text: String): number {
     return (text.match(/`+/g) || [])
       .reduce((prev, val) => (val.length > prev.length ? val : prev), '')
       .length
-    ;
+      ;
   }
 
-  return function(text: string, minLength = 1): string {
+  return function (text: string, minLength = 1): string {
     const length = Math.max(minLength, getMaxLength(text) + 1);
     return stringRepeat('`', length);
   };
 })();
 
-const isListNode = (node: Node) => isBulletListNode(node) || isOrderedListNode(node);
+const isListNode = (node: Node) => node.type.name === 'bulletList' || node.type.name === 'orderedList';
 
 const nodes = {
-  blockquote(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+  blockquote(state, node) {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
-  code_block(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
-    if (!node.attrs['language']) {
+  codeBlock(state: MarkdownSerializerState, node: Node) {
+    if (!node.attrs.language) {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
-      state.write(backticks + node.attrs['language'] + '\n');
+      state.write(backticks + node.attrs.language + '\n');
       state.text(node.textContent ? node.textContent : '\u200c', false);
       state.ensureNewLine();
       state.write(backticks);
       state.closeBlock(node);
     }
   },
-  heading(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
-    const isLastNode = opts && opts.isLastNode;
-
-    state.write(state.repeat('#', node.attrs['level']) + ' ');
-    state.renderInline(node, isLastNode);
+  heading(state: MarkdownSerializerState, node: Node) {
+    state.write(state.repeat('#', node.attrs.level) + ' ');
+    state.renderInline(node);
     state.closeBlock(node);
   },
-  horizontal_rule(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
-    state.write(node.attrs['markup'] || '---');
+  rule(state: MarkdownSerializerState, node: Node) {
+    state.write(node.attrs.markup || '---');
     state.closeBlock(node);
   },
-  bullet_list(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
-    node.attrs['tight'] = true;
-    state.renderList(node, '    ', () => (node.attrs['bullet'] || '*') + ' ');
+  bulletList(state: MarkdownSerializerState, node: Node) {
+    node.attrs.tight = true;
+    state.renderList(node, '    ', () => (node.attrs.bullet || '*') + ' ');
   },
-  ordered_list(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+  orderedList(state: MarkdownSerializerState, node: Node) {
     node.attrs['tight'] = true;
     const start = node.attrs['order'] || 1;
     const maxW = String(start + node.childCount - 1).length;
@@ -94,30 +84,33 @@ const nodes = {
       return state.repeat(' ', maxW - nStr.length) + nStr + '. ';
     });
   },
-  list_item(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+  listItem(state: MarkdownSerializerState, node: Node) {
     state.renderContent(node);
     // When there's more than one item in a list item if they are not a nested list (ol/ul) insert a blank line
     if (node.childCount > 1 && node.lastChild && !isListNode(node.lastChild)) {
       state.write('\n');
     }
   },
-  paragraph(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
-    const isLastNode = opts && opts.isLastNode;
-    state.renderInline(node, isLastNode);
+  paragraph(state: MarkdownSerializerState, node: Node) {
+    state.renderInline(node);
     state.closeBlock(node);
   },
-  image(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+  image(state: MarkdownSerializerState, node: Node) {
     // Note: the 'title' is not escaped in this flavor of markdown.
-    state.write('![' + state.esc(node.attrs['alt'] || '') + '](' + state.esc(node.attrs['src']) +
-                (node.attrs['title'] ? ` '${node.attrs['title']}'` : '') + ')');
+    state.write('![' + state.esc(node.attrs.alt || '') + '](' + state.esc(node.attrs.src) +
+      (node.attrs.title ? ` '${node.attrs.title}'` : '') + ')');
   },
-  hard_break(state: any) {
+  hardBreak(state: MarkdownSerializerState) {
     state.write('  \n');
   },
-  text(state: MarkdownSerializerState, node: any, opts?: NodeRendererOption) {
-    const text = (opts && opts.trimTrailingWhitespace)
-      ? node.text.replace(' ', '') // only first blank space occurrence is replaced
-      : node.text;
+  text(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
+    const previousNode = index === 0 ? null : parent.child(index - 1);
+    const previousNodeIsAMention = (previousNode && previousNode.type === schema.nodes.mention);
+    const currentNodeStartWithASpace = (node.textContent.indexOf(' ') === 0);
+    const trimTrailingWhitespace = (previousNodeIsAMention && currentNodeStartWithASpace);
+    const text = trimTrailingWhitespace
+      ? node.textContent.replace(' ', '') // only first blank space occurrence is replaced
+      : node.textContent;
 
     const lines = text.split('\n');
     for (let i = 0; i < lines.length; i++) {
@@ -129,15 +122,18 @@ const nodes = {
       }
     }
   },
-  empty_line(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+  empty_line(state: MarkdownSerializerState, node: Node) {
     state.write('\u200c'); // zero-width-non-joiner
     state.closeBlock(node);
   },
-  mention(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
-    const isLastNode = opts && opts.isLastNode;
+  mention(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
+    const isLastNode = (parent.childCount === index + 1);
     const delimiter = isLastNode ? '' : ' ';
 
-    state.write(`@${node.attrs['id']}${delimiter}`);
+    state.write(`@${node.attrs.id}${delimiter}`);
+  },
+  emoji(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
+    state.write(node.attrs.shortName);
   }
 };
 
@@ -153,7 +149,8 @@ const marks = {
     }
   },
   code: { open: '`', close: '`' },
-  mention_query: { open: '', close: '', mixable: false }
+  mentionQuery: { open: '', close: '', mixable: false },
+  emojiQuery: { open: '', close: '', mixable: false }
 };
 
 export class MarkdownSerializer extends PMMarkdownSerializer {
@@ -167,26 +164,19 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
 
 export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
-  /**
-   * If mention was followed with blank whitespace check the next node.
-   * If it starts with a blank space, trim this blank whitespace from the left
-   */
-  markNextNodeForTrim: boolean;
-
   renderContent(parent: Node): void {
     parent.forEach((child: Node, offset: number, index: number) => {
       if (
         // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
         (child.isTextblock && !child.textContent) &&
         // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks
-        !isCodeBlockNode(child) &&
+        !(child.type === schema.nodes.codeBlock) &&
         !(child.content && (child.content as any).size > 0)
       ) {
         return nodes.empty_line(this, child);
       }
 
-      const isLastNode = (index + 1 === parent.childCount);
-      return this.render(child, isLastNode);
+      return this.render(child, parent, index);
     });
   }
 
@@ -195,15 +185,15 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    * Bitbucket uses python-markdown which does not honor escaped backtick escape sequences \`
    * inside a backtick fence.
    *
-   * @see node_modules/prosemirror/src/markdown/to_markdown.js
+   * @see node_modules/prosemirror-markdown/src/to_markdown.js
    * @see MarkdownSerializerState.renderInline()
    */
-  renderInline(parent: Node, isLastNode?: boolean): void {
+  renderInline(parent: Node): void {
     const active: Mark[] = [];
 
-    const progress = (node: Node | null, isLastChildNode?: boolean) => {
+    const progress = (node: Node | null, _?: any, index?: number) => {
       let marks = node ? node.marks : [];
-      const code = marks.length && marks[marks.length - 1].type.isCode && marks[marks.length - 1];
+      const code = marks.length && marks[marks.length - 1].type === schema.marks.code && marks[marks.length - 1];
       const len = marks.length - (code ? 1 : 0);
 
       // Try to reorder 'mixable' marks, such as em and strong, which
@@ -251,7 +241,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
       if (node) {
         if (!code || !node.isText) {
-          this.render(node, isLastNode && isLastChildNode);
+          this.render(node, parent, index!);
         } else if (node.text) {
           // Generate valid monospace, fenced with series of backticks longer that backtick series inside it.
           let text = node.text;
@@ -272,28 +262,10 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
     };
 
     parent.forEach((child: Node, offset: number, index: number) => {
-      const isLastChildNode = (index + 1 === parent.childCount);
-      progress(child, isLastChildNode);
+      progress(child, parent, index);
     });
 
     progress(null);
-  }
-
-  /**
-   * Render the given node as a block.
-   * Overrides prosemirror native behaviour
-   */
-  render(node: Node, isLastNode?: boolean) {
-    const trimTrailingWhitespace = (
-      this.markNextNodeForTrim &&
-      node.isText &&
-      (node.text && node.text.indexOf(' ') === 0)
-    );
-
-    // if current node is mention and it's not the last child mark it for next node processing
-    this.markNextNodeForTrim = (node.type.name === 'mention' && !isLastNode);
-
-    nodes[node.type.name](this, node, { isLastNode, trimTrailingWhitespace });
   }
 }
 

@@ -8,8 +8,9 @@
   background-color: @card-bg;
   border-radius: @ak-border-radius;
   box-shadow: @card-shadow;
-  display: inline-block;
+  cursor: default;
   font-family: @ak-font-family;
+  font-size: @ak-font-size-default;
   overflow: hidden;
   position: relative;
   transition: height 0.25s ease;
@@ -170,9 +171,10 @@
     right: @ak-grid-size * 3;
   }
 
-  .detailsGroup {
-    margin-left: 0;
-    margin-right: @ak-grid-size * 14;
+  .detailsWrapper {
+    position: relative;
+    left: auto;
+    right: @ak-grid-size * 14;
   }
 
   .actionsWrapper {

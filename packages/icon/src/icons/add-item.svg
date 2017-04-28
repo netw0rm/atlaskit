@@ -3,18 +3,12 @@
     <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
     <title>add-item</title>
     <desc>Created with Sketch.</desc>
-    <defs>
-        <path d="M15.991,5 C15.451,5 15,5.448 15,6 C15,6.556 15.444,7 15.991,7 L20.009,7 C20.549,7 21,6.552 21,6 C21,5.443 20.556,5 20.009,5 L15.991,5 Z" id="path-1"></path>
-    </defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="add-item">
             <g>
                 <path d="M16.0024554,3 L4.99508929,3 C3.8926228,3 3,3.8932319 3,4.99508929 L3,19.0049107 C3,20.1073772 3.8932319,21 4.99508929,21 L19.0049107,21 C20.1073772,21 21,20.1067681 21,19.0049107 L21,7.99754465 L21,11 L19,11 L19,19 L5,19 L5,5 L13,5 L13,3 L16.0024554,3 Z" id="Combined-Shape" fill="currentColor" fill-rule="nonzero"></path>
                 <rect id="Rectangle-3" fill="currentColor" x="17" y="3" width="2" height="6" rx="1"></rect>
-                <mask id="mask-2" fill="white">
-                    <use xlink:href="#path-1"></use>
-                </mask>
-                <use id="Clip-2" fill="currentColor" xlink:href="#path-1"></use>
+                <rect id="Rectangle-3" fill="currentColor" x="15" y="5" width="6" height="2" rx="1"></rect>
             </g>
         </g>
     </g>

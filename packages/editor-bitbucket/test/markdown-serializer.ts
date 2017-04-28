@@ -3,8 +3,8 @@ import markdownSerializer from '../src/markdown-serializer';
 import stringRepeat from '../src/util/string-repeat';
 import {
   a, blockquote, br, code_block, doc, em, h1, h2,
-  h3, h4, h5, h6, hr, img, li, mention, mention_query, code, ol, p, strike, strong,
-  ul
+  h3, h4, h5, h6, hr, img, li, emoji, emojiQuery, mention,
+  mentionQuery, code, ol, p, strike, strong, ul
 } from './_schema-builder';
 
 describe('Bitbucket markdown serializer: ', () => {
@@ -63,40 +63,50 @@ describe('Bitbucket markdown serializer: ', () => {
     ))).to.eq('foo\n\n\u200c\n\n\u200c');
   });
 
-  it('should serialize mentions', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar');
+  describe('mentions', () => {
+    it('should serialize mentions', () => {
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' })));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar');
+    });
+
+    it('should divide serialized mentions and text with one blank space', () => {
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' }), 'text'));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar text');
+    });
+
+    it('should not add a blank space in the end of the string for mentions', () => {
+      const node = doc(p('text ', mention({ text: 'Oscar Wallhult', id: 'oscar' })));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('text @oscar');
+    });
+
+    it('should not divide mention and text with additional space if text starts with the space', () => {
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' }), ' text'));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar text');
+    });
+
+    it('should divide mention and text with only one additional space if text starts with the spaces', () => {
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' }), '  text'));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar  text');
+    });
+
+    it('should not divide mention and italic text node with additional space if text starts with the space', () => {
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar *text*');
+    });
   });
 
-  it('should divide serialized mentions and text with one blank space', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), 'text'));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar text');
-  });
-
-  it('should not add a blank space in the end of the string for mentions', () => {
-    const node = doc(p('text ', mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('text @oscar');
-  });
-
-  it('should not divide mention and text with additional space if text starts with the space', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), ' text'));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar text');
-  });
-
-  it('should divide mention and text with only one additional space if text starts with the spaces', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), '  text'));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar  text');
-  });
-
-  it('should not divide mention and italic text node with additional space if text starts with the space', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar *text*');
+  describe('emoji', () => {
+    it('should serialize emoji', () => {
+      const node = doc(p(emoji({ shortName: ':grinning:' })));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq(':grinning:');
+    });
   });
 
   it('should not skip [ & ]', () => {
@@ -163,7 +173,7 @@ describe('Bitbucket markdown serializer: ', () => {
 
       expect(markdownSerializer.serialize(doc(
         css('````js\nfoo\n```')
-      ))).to.eq('`````css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block' );
+      ))).to.eq('`````css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block');
 
       expect(markdownSerializer.serialize(doc(
         css('````')
@@ -261,7 +271,7 @@ describe('Bitbucket markdown serializer: ', () => {
         '        * baz 2\n' +
         '    * bar 2\n' +
         '* foo 2'
-      );
+        );
     });
 
     it('with newline', () => {
@@ -366,7 +376,7 @@ describe('Bitbucket markdown serializer: ', () => {
         '        2. baz 2\n' +
         '    2. bar 2\n' +
         '2. foo 2'
-      );
+        );
     });
   });
 
@@ -404,7 +414,7 @@ describe('Bitbucket markdown serializer: ', () => {
         '            * banana\n' +
         '    * bar 2\n' +
         '2. foo 2'
-      );
+        );
     });
 
     it('of consecutive ordered and unordered should serialize', () => {
@@ -430,11 +440,11 @@ describe('Bitbucket markdown serializer: ', () => {
         '\n' +
         '1. baz 1\n' +
         '2. baz 2'
-      );
+        );
     });
   });
 
-  xdescribe('image', () => {
+  describe('image', () => {
     it('with no alt to serialize', () => {
       expect(markdownSerializer.serialize(doc(img({
         src: 'http://example.com'
@@ -453,7 +463,7 @@ describe('Bitbucket markdown serializer: ', () => {
         src: 'http://example.com',
         alt: 'an image',
         title: 'a title'
-      })))).to.eq('![an image](http://example.com "a title")');
+      })))).to.eq('![an image](http://example.com \'a title\')');
     });
 
     it('with title containing double-quote to serialize without escaping', () => {
@@ -461,7 +471,7 @@ describe('Bitbucket markdown serializer: ', () => {
         src: 'http://example.com',
         alt: 'an image',
         title: 'a " "title"'
-      })))).to.eq('![an image](http://example.com "a " "title"")');
+      })))).to.eq('![an image](http://example.com \'a " "title"\')');
     });
 
     it('with alt containing quotes to serialize', () => {
@@ -482,7 +492,7 @@ describe('Bitbucket markdown serializer: ', () => {
           }),
           ' bar',
         )
-      ))).to.eq('foo ![an image](http://example.com "a title") bar');
+      ))).to.eq('foo ![an image](http://example.com \'a title\') bar');
     });
 
     it('in blockquote to serialize', () => {
@@ -497,7 +507,7 @@ describe('Bitbucket markdown serializer: ', () => {
             ' foo'
           )
         )
-      ))).to.eq('> ![an image](http://example.com "a title") foo');
+      ))).to.eq('> ![an image](http://example.com \'a title\') foo');
 
       expect(markdownSerializer.serialize(doc(
         blockquote(
@@ -512,11 +522,11 @@ describe('Bitbucket markdown serializer: ', () => {
             )
           )
         )
-      ))).to.eq('> > ![an image](http://example.com "a title") foo');
+      ))).to.eq('> > ![an image](http://example.com \'a title\') foo');
     });
   });
 
-  it('should serialize hard_break to newline', () => {
+  it('should serialize hardBreak to newline', () => {
     expect(markdownSerializer.serialize(doc(
       p('foo ', br, 'bar')
     ))).to.eq('foo   \nbar');
@@ -551,257 +561,261 @@ describe('Bitbucket markdown serializer: ', () => {
   });
 
   describe('marks -', () => {
-      it('should ignore mention_query mark', () => {
-        expect(markdownSerializer.serialize(doc(p(mention_query('@oscar'))))).to.eq('@oscar');
-      });
+    it('should ignore mentionQuery mark', () => {
+      expect(markdownSerializer.serialize(doc(p(mentionQuery('@oscar'))))).to.eq('@oscar');
+    });
 
-      it('should serialize em', () => {
-        expect(markdownSerializer.serialize(doc(p(em('foo'))))).to.eq('*foo*');
+    it('should ignore emojiQuery mark', () => {
+      expect(markdownSerializer.serialize(doc(p(emojiQuery(':grin'))))).to.eq(':grin');
+    });
+
+    it('should serialize em', () => {
+      expect(markdownSerializer.serialize(doc(p(em('foo'))))).to.eq('*foo*');
+      expect(markdownSerializer.serialize(doc(p(
+        'foo ',
+        em('bar'),
+        ' baz',
+      )))).to.eq('foo *bar* baz');
+    });
+
+    it('should serialize strong', () => {
+      expect(markdownSerializer.serialize(doc(p(strong('foo'))))).to.eq('**foo**');
+      expect(markdownSerializer.serialize(doc(p(
+        'foo ',
+        strong('bar bar'),
+        ' baz',
+      )))).to.eq('foo **bar bar** baz');
+    });
+
+    it('should serialize strikethrough', () => {
+      expect(markdownSerializer.serialize(doc(p(strike('foo'))))).to.eq('~~foo~~');
+      expect(markdownSerializer.serialize(doc(p(
+        'foo ',
+        strike('bar bar'),
+        ' baz',
+      )))).to.eq('foo ~~bar bar~~ baz');
+    });
+
+    it('should serialize code', () => {
+      expect(markdownSerializer.serialize(doc(p(code('foo'))))).to.eq('`foo`');
+      expect(markdownSerializer.serialize(doc(p(
+        'foo ',
+        code('bar baz'),
+        ' foo',
+      )))).to.eq('foo `bar baz` foo');
+    });
+
+    describe('code', () => {
+      it('containing backticks should be fenced properly', () => {
         expect(markdownSerializer.serialize(doc(p(
           'foo ',
-          em('bar'),
-          ' baz',
-        )))).to.eq('foo *bar* baz');
-      });
-
-      it('should serialize strong', () => {
-        expect(markdownSerializer.serialize(doc(p(strong('foo'))))).to.eq('**foo**');
-        expect(markdownSerializer.serialize(doc(p(
-          'foo ',
-          strong('bar bar'),
-          ' baz',
-        )))).to.eq('foo **bar bar** baz');
-      });
-
-      it('should serialize strikethrough', () => {
-        expect(markdownSerializer.serialize(doc(p(strike('foo'))))).to.eq('~~foo~~');
-        expect(markdownSerializer.serialize(doc(p(
-          'foo ',
-          strike('bar bar'),
-          ' baz',
-        )))).to.eq('foo ~~bar bar~~ baz');
-      });
-
-      it('should serialize code', () => {
-        expect(markdownSerializer.serialize(doc(p(code('foo'))))).to.eq('`foo`');
-        expect(markdownSerializer.serialize(doc(p(
-          'foo ',
-          code('bar baz'),
+          code('bar ` ` baz'),
           ' foo',
-        )))).to.eq('foo `bar baz` foo');
+        )))).to.eq('foo ``bar ` ` baz`` foo');
       });
 
-      describe('code', () => {
-        it('containing backticks should be fenced properly', () => {
-          expect(markdownSerializer.serialize(doc(p(
-            'foo ',
-            code('bar ` ` baz'),
-            ' foo',
-          )))).to.eq('foo ``bar ` ` baz`` foo');
-        });
-
-        it('containing backticks on the edges of a fence should be fenced properly', () => {
-          expect(markdownSerializer.serialize(doc(p(
-            'foo ',
-            code('`bar`  ``baz``'),
-            ' foo',
-          )))).to.eq('foo ``` `bar`  ``baz`` ``` foo');
-        });
-      });
-
-      xdescribe('links', () => {
-        it('with no text to be ignored', () => {
-          const link = a({ href: 'http://example.com' });
-
-          expect(markdownSerializer.serialize(doc(p(
-            link(''),
-          )))).to.eq('');
-        });
-
-        it('with no title to serialize', () => {
-          const link = a({ href: 'http://example.com' });
-
-          expect(markdownSerializer.serialize(doc(p(
-            link('foo'),
-          )))).to.eq('[foo](http://example.com)');
-        });
-
-        it('with title to serialize', () => {
-          const link = a({
-            href: 'http://example.com',
-            title: 'title'
-          });
-
-          expect(markdownSerializer.serialize(doc(p(
-            link('foo'),
-          )))).to.eq('[foo](http://example.com "title")');
-        });
-
-        it('with title containing double-quotes to serialize', () => {
-          const link = a({
-            href: 'http://example.com',
-            title: 'some " "title"'
-          });
-
-          expect(markdownSerializer.serialize(doc(p(
-            link('foo'),
-          )))).to.eq('[foo](http://example.com "some " "title"")');
-        });
-
-        it('in blockquote to serialize', () => {
-          expect(markdownSerializer.serialize(doc(
-            blockquote(
-              p(
-                img({
-                  src: 'http://example.com',
-                  alt: 'an image',
-                  title: 'a title'
-                }),
-                ' foo'
-              )
-            )
-          ))).to.eq('> ![an image](http://example.com "a title") foo');
-
-          expect(markdownSerializer.serialize(doc(
-            blockquote(
-              blockquote(
-                p(
-                  img({
-                    src: 'http://example.com',
-                    alt: 'an image',
-                    title: 'a title'
-                  }),
-                  ' foo'
-                )
-              )
-            )
-          ))).to.eq('> > ![an image](http://example.com "a title") foo');
-        });
-
-        it('in heading to serialize', () => {
-          expect(markdownSerializer.serialize(doc(
-            h1(
-              p(
-                img({
-                  src: 'http://example.com',
-                  alt: 'an image',
-                  title: 'a title'
-                }),
-                ' foo'
-              )
-            )
-          ))).to.eq('# ![an image](http://example.com "a title") foo');
-
-          expect(markdownSerializer.serialize(doc(
-            h2(
-              p(
-                img({
-                  src: 'http://example.com',
-                  alt: 'an image',
-                  title: 'a title'
-                }),
-                ' foo'
-              )
-            )
-          ))).to.eq('## ![an image](http://example.com "a title") foo');
-        });
-
-        it('with space in url to serialize', () => {
-          const link = a({
-            href: '/url with space',
-          });
-
-          expect(markdownSerializer.serialize(doc(p(
-            link('foo'),
-          )))).to.eq('[foo](/url with space)');
-        });
-
-        it('with space in url and title to serialize', () => {
-          const link = a({
-            href: '/url with space',
-            title: 'title'
-          });
-
-          expect(markdownSerializer.serialize(doc(p(
-            link('foo'),
-          )))).to.eq('[foo](/url with space "title")');
-        });
-      });
-
-      describe('emphasis -', () => {
-        it('asterisk within strings should be escaped', () => {
-          expect(markdownSerializer.serialize(doc(p(
-            '*foo bar*',
-          )))).to.eq('\\*foo bar\\*');
-
-          expect(markdownSerializer.serialize(doc(p(
-            '**foo bar**',
-          )))).to.eq('\\*\\*foo bar\\*\\*');
-
-          expect(markdownSerializer.serialize(doc(p(
-            '***foo bar***',
-          )))).to.eq('\\*\\*\\*foo bar\\*\\*\\*');
-        });
-
-        it('underscore within strings should be escaped', () => {
-          expect(markdownSerializer.serialize(doc(p(
-            '_foo bar_',
-          )))).to.eq('\\_foo bar\\_');
-
-          expect(markdownSerializer.serialize(doc(p(
-            '__foo bar__',
-          )))).to.eq('\\_\\_foo bar\\_\\_');
-
-          expect(markdownSerializer.serialize(doc(p(
-            '___foo bar___',
-          )))).to.eq('\\_\\_\\_foo bar\\_\\_\\_');
-        });
-
-        it('"strong em" should be escaped in its entirety', () => {
-          expect(markdownSerializer.serialize(doc(p(
-            '***strong**em*'
-          )))).to.eq('\\*\\*\\*strong\\*\\*em\\*');
-        });
-
-        it('"smart em" should be escaped in its entirety', () => {
-          expect(markdownSerializer.serialize(doc(p(
-            '_smart_emphasis_'
-          )))).to.eq('\\_smart\\_emphasis\\_');
-        });
-
-        it('combinations should be properly serialized', () => {
-          expect(markdownSerializer.serialize(doc(p(
-            em('hi'), '**there*',
-          )))).to.eq('*hi*\\*\\*there\\*');
-
-          expect(markdownSerializer.serialize(doc(p(
-            strike(strong('foo bar baz'))
-          )))).to.eq('**~~foo bar baz~~**');
-
-          expect(markdownSerializer.serialize(doc(p(
-            strong(strike('foo bar'), ' baz'),
-          )))).to.eq('**~~foo bar~~ baz**');
-
-          expect(markdownSerializer.serialize(doc(p(
-            em(strike('foo bar'), ' baz'),
-          )))).to.eq('*~~foo bar~~ baz*');
-
-          expect(markdownSerializer.serialize(doc(p(
-            code('**bar baz**'),
-          )))).to.eq('`**bar baz**`');
-
-          expect(markdownSerializer.serialize(doc(p(
-            code('__bar_baz__'),
-          )))).to.eq('`__bar_baz__`');
-        });
-      });
-
-      describe('tilde ~', () => {
-        it('should not escape tilde ~', () => {
-          expect(markdownSerializer.serialize(doc(p(
-            '~',
-          )))).to.eq('~');
-        });
+      it('containing backticks on the edges of a fence should be fenced properly', () => {
+        expect(markdownSerializer.serialize(doc(p(
+          'foo ',
+          code('`bar`  ``baz``'),
+          ' foo',
+        )))).to.eq('foo ``` `bar`  ``baz`` ``` foo');
       });
     });
+
+    xdescribe('links', () => {
+      it('with no text to be ignored', () => {
+        const link = a({ href: 'http://example.com' });
+
+        expect(markdownSerializer.serialize(doc(p(
+          link(''),
+        )))).to.eq('');
+      });
+
+      it('with no title to serialize', () => {
+        const link = a({ href: 'http://example.com' });
+
+        expect(markdownSerializer.serialize(doc(p(
+          link('foo'),
+        )))).to.eq('[foo](http://example.com)');
+      });
+
+      it('with title to serialize', () => {
+        const link = a({
+          href: 'http://example.com',
+          title: 'title'
+        });
+
+        expect(markdownSerializer.serialize(doc(p(
+          link('foo'),
+        )))).to.eq('[foo](http://example.com "title")');
+      });
+
+      it('with title containing double-quotes to serialize', () => {
+        const link = a({
+          href: 'http://example.com',
+          title: 'some " "title"'
+        });
+
+        expect(markdownSerializer.serialize(doc(p(
+          link('foo'),
+        )))).to.eq('[foo](http://example.com "some " "title"")');
+      });
+
+      it('in blockquote to serialize', () => {
+        expect(markdownSerializer.serialize(doc(
+          blockquote(
+            p(
+              img({
+                src: 'http://example.com',
+                alt: 'an image',
+                title: 'a title'
+              }),
+              ' foo'
+            )
+          )
+        ))).to.eq('> ![an image](http://example.com "a title") foo');
+
+        expect(markdownSerializer.serialize(doc(
+          blockquote(
+            blockquote(
+              p(
+                img({
+                  src: 'http://example.com',
+                  alt: 'an image',
+                  title: 'a title'
+                }),
+                ' foo'
+              )
+            )
+          )
+        ))).to.eq('> > ![an image](http://example.com "a title") foo');
+      });
+
+      it('in heading to serialize', () => {
+        expect(markdownSerializer.serialize(doc(
+          h1(
+            p(
+              img({
+                src: 'http://example.com',
+                alt: 'an image',
+                title: 'a title'
+              }),
+              ' foo'
+            )
+          )
+        ))).to.eq('# ![an image](http://example.com "a title") foo');
+
+        expect(markdownSerializer.serialize(doc(
+          h2(
+            p(
+              img({
+                src: 'http://example.com',
+                alt: 'an image',
+                title: 'a title'
+              }),
+              ' foo'
+            )
+          )
+        ))).to.eq('## ![an image](http://example.com "a title") foo');
+      });
+
+      it('with space in url to serialize', () => {
+        const link = a({
+          href: '/url with space',
+        });
+
+        expect(markdownSerializer.serialize(doc(p(
+          link('foo'),
+        )))).to.eq('[foo](/url with space)');
+      });
+
+      it('with space in url and title to serialize', () => {
+        const link = a({
+          href: '/url with space',
+          title: 'title'
+        });
+
+        expect(markdownSerializer.serialize(doc(p(
+          link('foo'),
+        )))).to.eq('[foo](/url with space "title")');
+      });
+    });
+
+    describe('emphasis -', () => {
+      it('asterisk within strings should be escaped', () => {
+        expect(markdownSerializer.serialize(doc(p(
+          '*foo bar*',
+        )))).to.eq('\\*foo bar\\*');
+
+        expect(markdownSerializer.serialize(doc(p(
+          '**foo bar**',
+        )))).to.eq('\\*\\*foo bar\\*\\*');
+
+        expect(markdownSerializer.serialize(doc(p(
+          '***foo bar***',
+        )))).to.eq('\\*\\*\\*foo bar\\*\\*\\*');
+      });
+
+      it('underscore within strings should be escaped', () => {
+        expect(markdownSerializer.serialize(doc(p(
+          '_foo bar_',
+        )))).to.eq('\\_foo bar\\_');
+
+        expect(markdownSerializer.serialize(doc(p(
+          '__foo bar__',
+        )))).to.eq('\\_\\_foo bar\\_\\_');
+
+        expect(markdownSerializer.serialize(doc(p(
+          '___foo bar___',
+        )))).to.eq('\\_\\_\\_foo bar\\_\\_\\_');
+      });
+
+      it('"strong em" should be escaped in its entirety', () => {
+        expect(markdownSerializer.serialize(doc(p(
+          '***strong**em*'
+        )))).to.eq('\\*\\*\\*strong\\*\\*em\\*');
+      });
+
+      it('"smart em" should be escaped in its entirety', () => {
+        expect(markdownSerializer.serialize(doc(p(
+          '_smart_emphasis_'
+        )))).to.eq('\\_smart\\_emphasis\\_');
+      });
+
+      it('combinations should be properly serialized', () => {
+        expect(markdownSerializer.serialize(doc(p(
+          em('hi'), '**there*',
+        )))).to.eq('*hi*\\*\\*there\\*');
+
+        expect(markdownSerializer.serialize(doc(p(
+          strike(strong('foo bar baz'))
+        )))).to.eq('**~~foo bar baz~~**');
+
+        expect(markdownSerializer.serialize(doc(p(
+          strong(strike('foo bar'), ' baz'),
+        )))).to.eq('**~~foo bar~~ baz**');
+
+        expect(markdownSerializer.serialize(doc(p(
+          em(strike('foo bar'), ' baz'),
+        )))).to.eq('*~~foo bar~~ baz*');
+
+        expect(markdownSerializer.serialize(doc(p(
+          code('**bar baz**'),
+        )))).to.eq('`**bar baz**`');
+
+        expect(markdownSerializer.serialize(doc(p(
+          code('__bar_baz__'),
+        )))).to.eq('`__bar_baz__`');
+      });
+    });
+
+    describe('tilde ~', () => {
+      it('should not escape tilde ~', () => {
+        expect(markdownSerializer.serialize(doc(p(
+          '~',
+        )))).to.eq('~');
+      });
+    });
+  });
 });

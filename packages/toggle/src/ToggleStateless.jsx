@@ -6,14 +6,23 @@ import { Handle, IconWrapper, Inner, Input, Label, Slide } from './styled';
 
 export default class ToggleStateless extends PureComponent {
   static propTypes = {
+    /** Whether the toggle is checked or not */
     isChecked: PropTypes.bool,
+    /** Whether the toggle is disabled or not. This will prevent any interaction with the user */
     isDisabled: PropTypes.bool,
+    /** Label to be set for accessibility */
     label: PropTypes.string,
+    /** Descriptive name for value property to be submitted in a form */
     name: PropTypes.string,
+    /** Callback to be called when toggle is unfocused */
     onBlur: PropTypes.func,
+    /** Callback to be called when native 'change' event happens internally. */
     onChange: PropTypes.func,
+    /** Callback to be called when toggle is focused */
     onFocus: PropTypes.func,
+    /** Defines the size of the toggle */
     size: PropTypes.oneOf(['regular', 'large']),
+    /** The value to be submitted in a form */
     value: PropTypes.string,
   }
 

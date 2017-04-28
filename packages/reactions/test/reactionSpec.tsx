@@ -1,4 +1,4 @@
-import { Emoji, EmojiDescription } from '@atlaskit/emoji';
+import { Emoji, EmojiDescription, toEmojiId } from '@atlaskit/emoji';
 import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
@@ -9,15 +9,15 @@ import { emojiVisible } from './test-utils';
 import Reaction from '../src/internal/reaction';
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 
-const { getEmojiResourcePromise, getEmojiService } = emojiTestData.emojiTestData;
+const { getEmojiResourcePromise, emojiRepository } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
-const grinning: EmojiDescription = getEmojiService().findByShortcut('grinning') as EmojiDescription;
+const grinning: EmojiDescription = emojiRepository.findByShortName(':grinning:') as EmojiDescription;
 const renderReaction = (reacted: boolean, count: number, onClick: Function) => {
   const reactionData = {
-    ari: 'ari:cloud:demo:123:123',
-    emojiId: grinning.id,
+    ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+    emojiId: toEmojiId(grinning).id!,
     count: count,
     reacted: reacted
   };

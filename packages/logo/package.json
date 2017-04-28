@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/logo",
-  "version": "3.0.3",
+  "version": "3.0.5",
   "config": {
     "access": "public"
   },
@@ -20,7 +20,8 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/logo": "*",
+    "@atlaskit/util-readme": "^3.1.0",
     "@atlaskit/util-shared-styles": "^1.0.1"
   },
   "peerDependencies": {

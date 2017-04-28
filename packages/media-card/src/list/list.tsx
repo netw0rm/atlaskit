@@ -4,9 +4,11 @@ import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import Button from '@atlaskit/button';
-import { MediaItem, MediaCollection, MediaCollectionItem, Context, CollectionAction } from '@atlaskit/media-core';
+import { MediaItem, MediaCollection, MediaCollectionItem, Context, CollectionAction, DataUriService } from '@atlaskit/media-core';
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
-import { Card, CardDimensions } from '../card';
+import { CardDimensions } from '../index';
+import { Provider } from '../card';
+import { MediaCard } from '../mediaCard';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListWrapper, Spinner, LoadMoreButtonContainer } from './styled';
 
@@ -17,7 +19,7 @@ export interface CardListProps {
   height?: number;
 
   cardDimensions?: CardDimensions;
-  cardType?: 'small' | 'image';
+  cardAppearance?: 'small' | 'image';
 
   pageSize?: number;
 
@@ -37,9 +39,9 @@ export interface CardListProps {
 
 export interface CardListState {
   loading: boolean;
-  subscription: Subscription;
-  hasNextPage: boolean;
-  loadNextPage: () => void;
+  subscription?: Subscription;
+  hasNextPage?: boolean;
+  loadNextPage?: () => void;
   collection?: MediaCollection;
   error?: AxiosError;
 }
@@ -52,14 +54,23 @@ export class CardList extends Component<CardListProps, CardListState> {
   static defaultPageSize = 10;
 
   static defaultProps = {
+    cardAppearance: 'image',
     pageSize: CardList.defaultPageSize,
     actions: [],
     cardHeight: DEFAULT_CARD_DIMENSIONS.HEIGHT,
-    loadingComponent: LoadingComponent,
     useInfiniteScroll: true,
-    emptyComponent: EmptyComponent,
-    errorComponent: ErrorComponent
+
+    errorComponent: ErrorComponent,
+    loadingComponent: LoadingComponent,
+    emptyComponent: EmptyComponent
   };
+
+  state: CardListState = {
+    loading: true
+  };
+
+  providersByMediaItemId: {[id: string]: Provider} = {};
+  private dataURIService: DataUriService;
 
   private shouldUpdateState(nextProps: CardListProps): boolean {
     return (nextProps.collectionName !== this.props.collectionName)
@@ -68,15 +79,31 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private updateState(nextProps: CardListProps): void {
-    const pageSize = nextProps.pageSize || CardList.defaultPageSize;
-    const provider = nextProps.context.getMediaCollectionProvider(nextProps.collectionName, pageSize);
+    const {collectionName, context} = nextProps;
+    const pageSize = this.props.pageSize || CardList.defaultPageSize;
+    const provider = context.getMediaCollectionProvider(collectionName, pageSize);
 
     if (this.state && this.state.subscription) {
       this.state.subscription.unsubscribe();
     }
 
+    this.dataURIService = context.getDataUriService(collectionName);
+
     const subscription = provider.observable().subscribe({
       next: (collection: MediaCollection): void => {
+
+        this.providersByMediaItemId = {};
+        collection.items.forEach(mediaItem => {
+          if (!mediaItem.details || !mediaItem.details.id) { return; }
+
+          this.providersByMediaItemId[mediaItem.details.id] = context.getMediaItemProvider(
+            mediaItem.details.id,
+            mediaItem.type,
+            collectionName,
+            mediaItem
+          );
+        });
+
         this.setState({
           ...this.state,
           collection,
@@ -97,7 +124,6 @@ export class CardList extends Component<CardListProps, CardListState> {
       hasNextPage: false,
       collection: undefined,
       error: undefined,
-      loading: false,
       subscription
     });
   }
@@ -123,7 +149,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     const loadingComponent = this.props.loadingComponent || LoadingComponent;
     const errorComponent = this.props.errorComponent || ErrorComponent;
 
-    if (this.state) {
+    if (!this.state.loading) {
       if (this.state.error) {
         if (this.state.error.response && this.state.error.response.status === 404) {
           return emptyComponent;
@@ -161,6 +187,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   private renderCardList(): JSX.Element {
     const { collection } = this.state;
+
     const actions = this.props.actions || [];
     const cardActions = (collectionItem: MediaCollectionItem) => actions
       .map(action => {
@@ -173,40 +200,39 @@ export class CardList extends Component<CardListProps, CardListState> {
             }
           }
         };
-      });
+      })
+    ;
 
     const cards = collection ? collection.items
-      .map(item => {
-        const { context, collectionName, cardType, cardDimensions } = this.props;
-        const identifier = {
-          id: item.id,
-          mediaItemType: item.type,
-          collectionName
-        };
+      .map((mediaItem: MediaCollectionItem, index: number) => {
+        const {cardAppearance, cardDimensions} = this.props;
+        if (!mediaItem.details.id) { return null; }
 
         return (
-          <li key={`${item.occurrenceKey}-${item.id}`}>
-            <Card
-              context={context}
-              identifier={identifier}
+          <li key={`${index}-${mediaItem.details.id}`}>
+            <MediaCard
+              provider={this.providersByMediaItemId[mediaItem.details.id]}
+              dataURIService={this.dataURIService}
 
               dimensions={{
                 width: this.cardWidth,
                 height: cardDimensions && cardDimensions.height
               }}
 
-              appearance={cardType}
-              actions={cardActions(item)}
+              appearance={cardAppearance}
+              actions={cardActions(mediaItem)}
             />
           </li>
         );
-      }) : null;
+      }) : null
+    ;
 
     return (
       <ul>
         {cards}
       </ul>
     );
+
   }
 
   /*
@@ -214,14 +240,14 @@ export class CardList extends Component<CardListProps, CardListState> {
     in case of small cards we want them to grow up and use the whole parent width
    */
   private get cardWidth(): string | number | undefined {
-    const {cardDimensions, cardType} = this.props;
+    const {cardDimensions, cardAppearance} = this.props;
     if (cardDimensions) { return cardDimensions.width; }
 
-    if (cardType === 'image') {
+    if (cardAppearance === 'image') {
       return DEFAULT_CARD_DIMENSIONS.WIDTH;
     }
 
-    if (cardType === 'small') {
+    if (cardAppearance === 'small') {
       return '100%';
     }
 
@@ -237,9 +263,12 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private get showLoadMoreButton(): boolean {
+    if (!this.state.hasNextPage) { return false; }
+
     return this.state.hasNextPage && (
       (this.props.showLoadMoreButton === true) ||
-      (this.isNullOrUndefined(this.props.showLoadMoreButton) && !this.useInfiniteScroll));
+      (this.isNullOrUndefined(this.props.showLoadMoreButton) && !this.useInfiniteScroll)
+    );
   }
 
   private renderLoadMoreButton(): JSX.Element | null {
@@ -264,8 +293,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     this.loadNextPage();
   }
 
-  private loadNextPage = (): void => {
-    this.setState({ ...this.state, loading: true });
-    this.state.loadNextPage();
+  loadNextPage = (): void => {
+    this.state.loadNextPage && this.state.loadNextPage();
   }
 }

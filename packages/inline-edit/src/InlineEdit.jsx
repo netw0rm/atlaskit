@@ -1,11 +1,11 @@
 import React, { PureComponent, PropTypes, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
-import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
+import styles from './styles.less';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -40,7 +40,6 @@ export default class InlineEdit extends PureComponent {
 
   state = {
     wasFocusReceivedSinceLastBlur: false,
-    wasIconMouseDown: false,
     resetFieldBase: false,
     shouldResetFieldBase: false,
   }
@@ -57,11 +56,6 @@ export default class InlineEdit extends PureComponent {
   }
 
   onWrapperClick = () => {
-    if (this.state.wasIconMouseDown) {
-      // If we are clicking the icon, we don't want to treat it as a click on the field.
-      this.setState({ wasIconMouseDown: false });
-      return;
-    }
     if (!this.isReadOnly() && !this.props.isEditing) {
       this.props.onEditRequested();
     }
@@ -72,18 +66,12 @@ export default class InlineEdit extends PureComponent {
       return;
     }
 
-    if (this.state.wasIconMouseDown) {
-      // If we are clicking the icon then we don't want to confirm on blur.
-      this.setState({ wasIconMouseDown: false });
-      return;
-    }
-
     this.setState({ wasFocusReceivedSinceLastBlur: false });
     setTimeout(this.confirmIfUnfocused, 10);
   }
 
   onWrapperFocus = () => {
-    this.setState({ wasIconMouseDown: false, wasFocusReceivedSinceLastBlur: true });
+    this.setState({ wasFocusReceivedSinceLastBlur: true });
   }
 
   onConfirmClick = (event) => {

@@ -3,12 +3,11 @@ import {
   akColorN30,
   akColorN50,
 } from '@atlaskit/util-shared-styles';
+
 import {
-  Attribute,
-  Block,
-  Node as PMNode,
-  Schema,
+  NodeSpec,
 } from '@atlaskit/editor-core';
+
 import { style } from 'typestyle';
 
 const nodeClassName = style({
@@ -36,45 +35,24 @@ const nodeClassName = style({
   }
 });
 
-export class UnsupportedBlockNodeType extends Block {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'unsupportedBlock') {
-      throw new Error('UnsupportedBlockNodeType must be named "unsupportedBlock".');
-    }
-  }
-
-  get attrs() {
-    return {
-      cxhtml: new Attribute({ default: null })
-    };
-  }
-
-  get matchDOMTag() {
-    return {
-      'div[data-unsupported-block-cxhtml]': (dom: HTMLElement) => ({
-        cxhtml: dom.getAttribute('data-unsupported-block-cxhtml')!
-      })
-    };
-  }
-
-  toDOM(node: PMNode): [string, any] {
+export default {
+  group: 'block',
+  attrs: { cxhtml: { default: null } },
+  toDOM(node): [string, any, string] {
     // NOTE: This node cannot be "contenteditable: false". If it's the only node in a document, PM throws an error because there's nowhere to put the cursor.
     const attrs = {
       'class': nodeClassName,
       'data-unsupported-block-cxhtml': node.attrs['cxhtml'],
       'spellcheck': 'false',
     };
-    return ['div', attrs, 'Embedded content'];
-  }
-}
-
-
-export interface UnsupportedBlockNode extends PMNode {
-    type: UnsupportedBlockNodeType;
-}
-
-export function isUnsupportedBlockNode(node: PMNode): node is UnsupportedBlockNode {
-  return node.type instanceof UnsupportedBlockNodeType;
-}
-
+    return ['div', attrs, 'Unsupported content'];
+  },
+  parseDOM: [
+    {
+      tag: 'div',
+      getAttrs(dom: HTMLElement) {
+        return { cxhtml: dom.getAttribute('data-unsupported-block-cxhtml')! };
+      }
+    }
+  ]
+} as NodeSpec;

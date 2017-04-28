@@ -7,12 +7,17 @@ import { PureComponent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 
 import { analyticsService as analytics } from '../../analytics';
+import { BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
+import { BlockType } from '../../plugins/block-type/types';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
-import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
 import * as styles from './styles';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
+  editorView: EditorView;
   pluginState: BlockTypeState;
+  softBlurEditor: () => void;
+  focusEditor: () => void;
 }
 
 export interface State {
@@ -50,10 +55,11 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         onOpenChange={(attrs: any) => {
           const { availableBlockTypes, currentBlockType } = this.state;
 
+          // Hack for IE needed to prevent caret blinking above the opened dropdown.
           if (attrs.isOpen) {
-            this.props.pluginState.blur();
+            this.props.softBlurEditor();
           } else {
-            this.props.pluginState.focus();
+            this.props.focusEditor();
           }
 
           this.setState({
@@ -74,21 +80,21 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           </AkButton>
         }
       >
-      {availableBlockTypes.map((blockTypeGroup, groupNo) => (
-        <Group key={`blockTypeGroup${groupNo}`}>
-        {blockTypeGroup.map((blockType, blockTypeNo) => (
-          <Tooltip key={`blockType${groupNo}${blockTypeNo}`} position="right" description={tooltip(findKeymapByDescription(blockType.title))}>
-            <Item
-              key={blockType.name}
-              isActive={currentBlockType === blockType}
-              onActivate={() => { this.handleSelectBlockType(blockType); }}
-            >
-              <span>{blockType.title}</span>
-            </Item>
-          </Tooltip>
+        {availableBlockTypes.map((blockTypeGroup, groupNo) => (
+          <Group key={`blockTypeGroup${groupNo}`}>
+            {blockTypeGroup.map((blockType, blockTypeNo) => (
+              <Tooltip key={`blockType${groupNo}${blockTypeNo}`} position="right" description={tooltip(findKeymapByDescription(blockType.title))}>
+                <Item
+                  key={blockType.name}
+                  isActive={currentBlockType === blockType}
+                  onActivate={() => { this.handleSelectBlockType(blockType); }}
+                >
+                  <span>{blockType.title}</span>
+                </Item>
+              </Tooltip>
+            ))}
+          </Group>
         ))}
-        </Group>
-      ))}
       </DropdownList>
     );
   }
@@ -102,14 +108,14 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   private handleSelectBlockType = (blockType: BlockType) => {
-    this.props.pluginState.focus();
+    this.props.focusEditor();
 
-    const { availableBlockTypes, currentBlockType } = this.state;
-    this.props.pluginState.changeBlockType(blockType.name);
+    const { availableBlockTypes } = this.state;
+    this.props.pluginState.toggleBlockType(blockType.name, this.props.editorView);
     this.setState({
       active: false,
       availableBlockTypes,
-      currentBlockType
+      currentBlockType: blockType
     });
 
     analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);

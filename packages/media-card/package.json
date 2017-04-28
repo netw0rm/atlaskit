@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "8.0.0",
+  "version": "10.1.1",
   "config": {
     "access": "public"
   },
@@ -30,13 +30,20 @@
     "babel-runtime": "^6.11.6",
     "bytes": "^2.4.0",
     "classnames": "^2.2.5",
+    "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
     {
-      "name": "Hector G"
+      "name": "Hector Z"
+    },
+    {
+      "name": "Michael J"
+    },
+    {
+      "name": "James N"
     }
   ],
   "license": "Apache-2.0",
@@ -52,7 +59,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-core": "^5.0.4",
-    "@atlaskit/media-test-helpers": "^4.0.0",
+    "@atlaskit/media-test-helpers": "^4.5.0",
     "akutil-common-test": "*"
   },
   "keywords": [

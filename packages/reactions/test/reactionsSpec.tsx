@@ -3,16 +3,19 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 
 import { mount } from 'enzyme';
-import { Reactions } from '../src';
+import { Reactions, OnEmoji } from '../src';
+import { compareEmojiId } from '../src/internal/helpers';
 import Reaction from '../src/internal/reaction';
 import { reactionsProvider } from '../stories/examples/reactions-provider';
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+import { smileyId } from './test-data';
 
 const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
-const demoAri = 'ari:cloud:demo:123:123';
+const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
+const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 // Override "subscribe" so that it resovles instantly.
 const subscribe = reactionsProvider.subscribe;
@@ -21,13 +24,13 @@ sinon.stub(reactionsProvider, 'subscribe', (ari: string, handler: Function) => {
   reactionsProvider.notifyUpdated(demoAri, (reactionsProvider as any).cachedReactions[ari]);
 });
 
-const renderReactions = (onClick: Function = () => { }) => {
+const renderReactions = (onClick: OnEmoji = () => { }) => {
   return <Reactions ari={demoAri} reactionsProvider={reactionsProvider} emojiProvider={getEmojiResourcePromise()} onReactionClick={onClick} />;
 };
 
 const getSortedReactions = () => {
   const reactionSummaries = (reactionsProvider as any).cachedReactions[demoAri];
-  return [...reactionSummaries].sort((a, b) => a.emojiId > b.emojiId ? 1 : 0);
+  return [...reactionSummaries].sort((a, b) => compareEmojiId(a.emojiId, b.emojiId));
 };
 
 describe('@atlaskit/reactions/reactions', () => {
@@ -63,7 +66,7 @@ describe('@atlaskit/reactions/reactions', () => {
     const reactionElements = reactions.find(Reaction);
     expect(reactionElements.length).to.equal(sortedReactions.length);
 
-    return reactionsProvider.addReaction(demoAri, 'smiley')
+    return reactionsProvider.addReaction(containerAri, demoAri, smileyId.id!)
       .then(state => {
         reactionsProvider.notifyUpdated(demoAri, state);
         expect(reactions.find(Reaction).length).to.equal(sortedReactions.length + 1);

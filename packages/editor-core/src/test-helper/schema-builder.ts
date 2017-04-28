@@ -1,6 +1,7 @@
 import { Fragment, MarkType, Node, NodeType, Schema, Slice } from '../';
+import { NodeSpec, MarkSpec } from '../prosemirror';
 import matches from './matches';
-import { schema as sampleSchema } from './schema';
+import sampleSchema from './schema';
 
 /**
  * Represents a ProseMirror "position" in a document.
@@ -76,14 +77,32 @@ export interface RefsNode extends Node {
  * declaratively describe a position within some text, and then access the
  * position in the resulting node.
  */
-export function text(value: string, schema: Schema = sampleSchema): RefsContentItem {
+export function text(value: string, schema: Schema<NodeSpec, MarkSpec>): RefsContentItem {
   let stripped = '';
   let textIndex = 0;
   const refs: Refs = {};
 
-  for (const match of matches(value, /{(\w+|<|>|<>)}/g)) {
-    const [refToken, refName] = match;
-    stripped += value.slice(textIndex, match.index);
+  // Helpers
+  const isEven = n => n % 2 === 0;
+
+  for (const match of matches(value, /([\\]+)?{(\w+|<|>|<>)}/g)) {
+    const [refToken, skipChars, refName] = match;
+    let { index } = match;
+
+    const skipLen = skipChars && skipChars.length;
+    if (skipLen) {
+      if (isEven(skipLen)) {
+        index += (skipLen / 2);
+      }
+      else {
+        stripped += value.slice(textIndex, index + ((skipLen - 1) / 2));
+        stripped += value.slice(index + skipLen, index + refToken.length);
+        textIndex = index + refToken.length;
+        continue;
+      }
+    }
+
+    stripped += value.slice(textIndex, index);
     refs[refName] = stripped.length;
     textIndex = match.index + refToken.length;
   }
@@ -125,11 +144,11 @@ export function sequence(...content: RefsContentItem[]) {
 
   for (const node of content) {
     if (isRefsTracker(node)) {
-      refs = {...refs, ...offsetRefs(node.refs, position)};
+      refs = { ...refs, ...offsetRefs(node.refs, position) };
     }
     if (isRefsNode(node)) {
       const thickness = node.isText ? 0 : 1;
-      refs = {...refs, ...offsetRefs(node.refs, position + thickness)};
+      refs = { ...refs, ...offsetRefs(node.refs, position + thickness) };
       position += node.nodeSize;
       nodes.push(node as RefsNode);
     }
@@ -155,7 +174,7 @@ export function flatten<T>(deep: (T | T[])[]): T[] {
 /**
  * Coerce builder content into ref nodes.
  */
-export function coerce(content: BuilderContent[], schema: Schema) {
+export function coerce(content: BuilderContent[], schema: Schema<NodeSpec, MarkSpec>) {
   const refsContent = content
     .map(item => typeof item === 'string'
       ? text(item, schema)
@@ -167,7 +186,7 @@ export function coerce(content: BuilderContent[], schema: Schema) {
  * Create a factory for nodes.
  */
 export function nodeFactory(type: NodeType, attrs = {}) {
-  return function(...content: BuilderContent[]): RefsNode {
+  return function (...content: BuilderContent[]): RefsNode {
     const { nodes, refs } = coerce(content, type.schema);
     const node = type.create(attrs, nodes) as RefsNode;
     node.refs = refs;
@@ -180,7 +199,7 @@ export function nodeFactory(type: NodeType, attrs = {}) {
  */
 export function markFactory(type: MarkType, attrs = {}) {
   const mark = type.create(attrs);
-  return (...content: BuilderContent[]) : RefsNode[] => {
+  return (...content: BuilderContent[]): RefsNode[] => {
     const { nodes } = coerce(content, type.schema);
     return nodes
       .map(node => {
@@ -197,27 +216,36 @@ export function markFactory(type: MarkType, attrs = {}) {
 
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
+export const linkable = nodeFactory(sampleSchema.nodes.linkable, {});
+export const unlinkable = nodeFactory(sampleSchema.nodes.unlinkable, {});
 export const blockquote = nodeFactory(sampleSchema.nodes.blockquote, {});
-export const h1 = nodeFactory(sampleSchema.nodes.heading, {level: 1});
-export const h2 = nodeFactory(sampleSchema.nodes.heading, {level: 2});
-export const h3 = nodeFactory(sampleSchema.nodes.heading, {level: 3});
-export const h4 = nodeFactory(sampleSchema.nodes.heading, {level: 4});
-export const h5 = nodeFactory(sampleSchema.nodes.heading, {level: 5});
-export const h6 = nodeFactory(sampleSchema.nodes.heading, {level: 6});
-export const li = nodeFactory(sampleSchema.nodes.list_item, {});
-export const ul = nodeFactory(sampleSchema.nodes.bullet_list, {});
-export const ol = nodeFactory(sampleSchema.nodes.ordered_list, {});
-export const br = sampleSchema.nodes.hard_break.createChecked();
+export const h1 = nodeFactory(sampleSchema.nodes.heading, { level: 1 });
+export const h2 = nodeFactory(sampleSchema.nodes.heading, { level: 2 });
+export const h3 = nodeFactory(sampleSchema.nodes.heading, { level: 3 });
+export const h4 = nodeFactory(sampleSchema.nodes.heading, { level: 4 });
+export const h5 = nodeFactory(sampleSchema.nodes.heading, { level: 5 });
+export const h6 = nodeFactory(sampleSchema.nodes.heading, { level: 6 });
+export const li = nodeFactory(sampleSchema.nodes.listItem, {});
+export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
+export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
+export const br = sampleSchema.nodes.hardBreak.createChecked();
+export const panel = nodeFactory(sampleSchema.nodes.panel, {});
+export const plain = nodeFactory(sampleSchema.nodes.plain, {});
+export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
 // tslint:disable-next-line:variable-name
-export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.code_block, attrs);
+export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.codeBlock, attrs);
 export const img = (attrs: { src: string, alt?: string, title?: string }) => sampleSchema.nodes.image.createChecked(attrs);
-export const emoji = (attrs: { id: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
-export const mention = (attrs: { id: string, displayName?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
-export const hr = sampleSchema.nodes.horizontal_rule.createChecked();
+export const emoji = (attrs: { shortName: string, id?: string, fallback?: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
+export const mention = (attrs: { id: string, text?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
+export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
+export const subsup = (attrs: { type: string }) => markFactory(sampleSchema.marks.subsup, attrs);
+export const underline = markFactory(sampleSchema.marks.underline, {});
 export const strong = markFactory(sampleSchema.marks.strong, {});
 export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
+export const mentionQuery = markFactory(sampleSchema.marks.mentionQuery, {});
 export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
+export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});

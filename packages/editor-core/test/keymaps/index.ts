@@ -21,7 +21,7 @@ describe('keymaps', () => {
       describe('findKeymapByDescription', () => {
         context('keymap is found', () => {
           it('returns matched keymap', () => {
-            expect(keymaps.findKeymapByDescription('toggle bold')).to.eq(keymaps.toggleBold);
+            expect(keymaps.findKeymapByDescription('Bold')).to.eq(keymaps.toggleBold);
           });
         });
 
@@ -35,13 +35,13 @@ describe('keymaps', () => {
       describe('findShortcutByDescription', () => {
         context('shortcut is found', () => {
           it('returns matched shortcut', () => {
-            expect(keymaps.findShorcutByDescription('heading 1')).to.eq('Cmd-Alt-1');
+            expect(keymaps.findShortcutByDescription('heading 1')).to.eq('Cmd-Alt-1');
           });
         });
 
         context('shortcut is not found', () => {
           it('returns undefined', () => {
-            expect(keymaps.findShorcutByDescription('random')).to.be.undefined;
+            expect(keymaps.findShortcutByDescription('random')).to.be.undefined;
           });
         });
       });
@@ -57,7 +57,7 @@ describe('keymaps', () => {
       describe('findKeymapByDescription', () => {
         context('keymap is found', () => {
           it('returns matched keymap', () => {
-            expect(keymaps.findKeymapByDescription('toggle bold')).to.eq(keymaps.toggleBold);
+            expect(keymaps.findKeymapByDescription('Bold')).to.eq(keymaps.toggleBold);
           });
         });
 
@@ -71,13 +71,13 @@ describe('keymaps', () => {
       describe('findShortcutByDescription', () => {
         context('shortcut is found', () => {
           it('returns matched shortcut', () => {
-            expect(keymaps.findShorcutByDescription('heading 1')).to.eq('Ctrl-1');
+            expect(keymaps.findShortcutByDescription('heading 1')).to.eq('Ctrl-1');
           });
         });
 
         context('shortcut is not found', () => {
           it('returns undefined', () => {
-            expect(keymaps.findShorcutByDescription('random')).to.be.undefined;
+            expect(keymaps.findShortcutByDescription('random')).to.be.undefined;
           });
         });
       });

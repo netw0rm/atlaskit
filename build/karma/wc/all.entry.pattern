@@ -1,1 +1,1 @@
-../../../packages/*/test/**/!(_)*.+(js|ts|tsx)
+../../../packages/*/test/{!(unit)/**,}/!(_)*.+(js|ts|tsx)

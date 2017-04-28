@@ -1,139 +1,102 @@
-import Keymap from 'browserkeymap';
-import * as keymaps from '../../keymaps';
-import { trackAndInvoke } from '../../analytics';
 import {
-  commands,
-  Plugin,
-  ProseMirror,
+  EditorState,
+  EditorView,
   Schema,
   MarkType,
+  Plugin,
+  PluginKey,
 } from '../../prosemirror';
-import {
-  BlockQuoteNodeType,
-  CodeBlockNodeType,
-  HardBreakNodeType,
-  HeadingNodeType,
-  LinkMarkType,
-  PanelNodeType,
-  ParagraphNodeType,
-  EmMarkType,
-  CodeMarkType,
-  StrikeMarkType,
-  StrongMarkType,
-  UnderlineMarkType,
-  isParagraphNode,
-} from '../../schema';
-import { setSelectionToNormalText, liftSelectionBlocks } from '../../utils';
+import { clearFormatting } from './commands';
+import keymapPlugin from './keymap';
+
+export type StateChangeHandler = (state: ClearFormattingState) => any;
 
 export class ClearFormattingState {
-  private pm: PM;
-  private markTypes = ['em', 'code', 'strike', 'strong', 'u', 'link'];
-  private activeMarkTypes: string[];
-  private changeHandlers: ClearFormattingStateSubscriber[] = [];
-
   formattingIsPresent: boolean = false;
 
-  constructor(pm: PM) {
-    this.pm = pm;
+  private state: EditorState<any>;
+  private markTypes = ['em', 'code', 'strike', 'strong', 'underline', 'link'];
+  private activeMarkTypes: string[];
+  private changeHandlers: StateChangeHandler[] = [];
 
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-      pm.on.activeMarkChange,
-    ], () => this.update());
-
-    this.pm.addKeymap(new Keymap({
-      [keymaps.clearFormatting.common!]: trackAndInvoke('atlassian.editor.format.clear.keyboard', this.clearFormatting),
-    }));
-
-    this.update();
+  constructor(state: EditorState<any>) {
+    this.changeHandlers = [];
+    this.update(state);
   }
 
-  subscribe(cb: ClearFormattingStateSubscriber) {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
     cb(this);
   }
 
-  unsubscribe(cb: ClearFormattingStateSubscriber) {
+  unsubscribe(cb: StateChangeHandler) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  clearFormatting = () => {
-    const { pm } = this;
-    setSelectionToNormalText(pm).apply();
-    liftSelectionBlocks(pm).apply();
-    this.clearActiveMarks();
-  }
+  update(newEditorState: EditorState<any>) {
+    this.state = newEditorState;
+    const { state } = this;
 
-  private clearActiveMarks = () => {
-    const { pm } = this;
-    this.activeMarkTypes.forEach((mark) => {
-      const markTypeObj = pm.schema.marks[mark];
-      if (markTypeObj) {
-        commands.toggleMark(markTypeObj)(pm);
-      }
-    });
-  }
-
-  private update() {
-    const { pm } = this;
     this.activeMarkTypes = this.markTypes.filter(
-      mark => pm.schema.marks[mark] && this.markIsActive(pm.schema.marks[mark])
+      mark => state.schema.marks[mark] && this.markIsActive(state.schema.marks[mark])
     );
     const formattingIsPresent = this.activeMarkTypes.length > 0 || this.blockStylingIsPresent();
     if (formattingIsPresent !== this.formattingIsPresent) {
       this.formattingIsPresent = formattingIsPresent;
-      this.changeHandlers.forEach(cb => cb(this));
+      this.triggerOnChange();
     }
   }
 
-  private markIsActive(markType: MarkType): boolean {
-    const { pm } = this;
-    const { from, to, empty } = pm.selection;
+  clearFormatting(view: EditorView) {
+    clearFormatting(this.markTypes)(view.state, view.dispatch);
+  }
+
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  private markIsActive(mark: MarkType): boolean {
+    const { state } = this;
+    const { from, to, empty } = state.selection;
     if (empty) {
-      return !!markType.isInSet(pm.activeMarks());
+      return !!mark.isInSet(state.selection.$from.marks());
     }
-    return pm.doc.rangeHasMark(from, to, markType);
+    return state.doc.rangeHasMark(from, to, mark);
   }
 
   private blockStylingIsPresent = (): boolean => {
-    const { pm } = this;
-    let { from, to } = pm.selection;
+    const { state } = this;
+    let { from, to } = state.selection;
     let isBlockStyling = false;
-    pm.doc.nodesBetween(from, to, (node, pos) => {
-      if (node.isBlock && !isParagraphNode(node)) {
-          isBlockStyling = true;
+    state.doc.nodesBetween(from, to, (node, pos) => {
+      if (node.isBlock && node.type !== state.schema.nodes.paragraph) {
+        isBlockStyling = true;
       }
     });
     return isBlockStyling;
   }
 }
 
-export interface S extends Schema {
-  nodes: {
-    blockquote?: BlockQuoteNodeType;
-    code_block?: CodeBlockNodeType;
-    heading?: HeadingNodeType;
-    paragraph?: ParagraphNodeType;
-    panel?: PanelNodeType;
-    hard_break?: HardBreakNodeType;
-  };
-  marks: {
-    em?: EmMarkType;
-    code?: CodeMarkType;
-    strike?: StrikeMarkType;
-    strong?: StrongMarkType;
-    u?: UnderlineMarkType;
-    link?: LinkMarkType;
-  };
-}
+export const stateKey = new PluginKey('clearFormattingPlugin');
 
-export interface PM extends ProseMirror {
-  schema: S;
-}
+const plugin = new Plugin({
+  state: {
+    init(config, state: EditorState<any>) {
+      return new ClearFormattingState(state);
+    },
+    apply(tr, pluginState: ClearFormattingState, oldState, newState) {
+      pluginState.update(newState);
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    return {};
+  }
+});
 
-export type ClearFormattingStateSubscriber = (state: ClearFormattingState) => any;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
 
-Object.defineProperty(ClearFormattingState, 'name', { value: 'ClearFormattingState' });
-
-export default new Plugin(ClearFormattingState);
+export default plugins;

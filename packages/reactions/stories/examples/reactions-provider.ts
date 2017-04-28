@@ -1,28 +1,30 @@
 import { Promise } from 'es6-promise';
-import { findIndex } from '../../src/internal/helpers';
+import { EmojiId } from '@atlaskit/emoji';
+
+import { equalEmojiId, findIndex } from '../../src/internal/helpers';
 import { default as AbstractReactionsProvider } from '../../src/reactions-resource';
 import { Reactions, ReactionSummary } from '../../src/reactions-resource';
-import { defaultReactionsByShortcut } from '../../src/internal/selector';
+import { defaultReactionsByShortName } from '../../src/internal/selector';
 
 export default class MockReactionsProvider extends AbstractReactionsProvider {
 
   protected cachedReactions = {
-    'ari:cloud:demo:123:123': [
+    'ari:cloud:owner:demo-cloud-id:item/1': [
       {
-        ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('grinning') as string,
+        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+        emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!,
         count: 1,
         reacted: true
       },
       {
-        ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('thumbsup') as string,
+        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+        emojiId: (defaultReactionsByShortName.get(':thumbsup:') as EmojiId).id!,
         count: 5,
         reacted: false
       },
       {
-        ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('grin') as string,
+        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+        emojiId: (defaultReactionsByShortName.get(':heart:') as EmojiId).id!,
         count: 100,
         reacted: false
       }
@@ -35,30 +37,30 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  toggleReaction(ari: string, emojiId: string) {
+  toggleReaction(containerAri: string, ari: string, emojiId: string) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
 
-    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => r.emojiId === emojiId);
+    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, emojiId));
     const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
 
     if (hasReacted) {
-      this.deleteReaction(ari, emojiId)
+      this.deleteReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         });
     } else {
-      this.addReaction(ari, emojiId)
+      this.addReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         });
     }
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
+      const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
 
       if (index !== -1) {
         const reaction = this.cachedReactions[ari][index];
@@ -77,9 +79,9 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
+      const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
       const reaction = this.cachedReactions[ari][index];
 
       reaction.reacted = false;
@@ -95,5 +97,5 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
 
 }
 
-export const reactionsProvider = new MockReactionsProvider() as any; // This need to be any in order for the overview story to work.
+export const reactionsProvider = new MockReactionsProvider(); // This need to be any in order for the overview story to work.
 export const reactionsProviderPromise = Promise.resolve(reactionsProvider) as any;

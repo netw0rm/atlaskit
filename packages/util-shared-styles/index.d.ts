@@ -117,3 +117,6 @@ export const akZIndexNavigation: number;
 export const akZIndexLayer: number;
 export const akZIndexBlanket: number;
 export const akZIndexFlag: number;
+export const akZIndexCard: number;
+export const akZIndexDialog: number;
+export const akZIndexModal: number;

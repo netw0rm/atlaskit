@@ -1,103 +1,104 @@
 import * as React from 'react';
-import { Observable } from 'rxjs';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
-import { mount, ReactWrapper } from 'enzyme';
-import { ContextFactory, Context } from '@atlaskit/media-core';
-import { waitUntil, fakeContext } from '@atlaskit/media-test-helpers';
+import { shallow } from 'enzyme';
+import { FileDetails } from '@atlaskit/media-core';
 
-import { FileCard, FileCardProps, FileCardState, CardOverlay } from '../../src';
+import { FileCard, FileCardView, FileCardViewSmall } from '../../src';
 
 describe('FileCard', () => {
-  const waitUntilCardIsLoaded = (card: ReactWrapper<FileCardProps, FileCardState>) => {
-    return waitUntil(() => !card.state<boolean>('loading'));
-  };
 
-  const tokenProvider = (collection: string) => Promise.resolve('some-jwt-token');
-
-  const toDataUri = (data: string) => {
-    return 'data:;base64,' + btoa(data);
-  };
-
-  it('should display an image when loaded', function() {
-    const fakeMediaItem = {
-        type: 'file',
-        details: {
-          id: 'some-image',
-          mediaType: 'image',
-          mimeType: 'image/jpeg',
-          name: 'some-image.jpg',
-          processingStatus: 'succeeded',
-          size: 123456,
-          artifacts: {}
-        }
+  it('should render cardFileView with details passed through to props', function() {
+    const details: FileDetails = {
+      mediaType: 'image',
+      mimeType: 'image/jpeg',
+      name: 'some-image.jpg',
+      processingStatus: 'succeeded',
+      size: 123456,
+      artifacts: {}
     };
 
-    const context = fakeContext({
-      getMediaItemProvider: {observable: () => Observable.of(fakeMediaItem)},
-      getDataUriService: {
-        fetchImageDataUri() {
-          return Promise.resolve(toDataUri('some-image'));
-        }
-      }
-    });
+    const expectedProps = {
+      loading: false,
+      dimensions: undefined,
 
-    const card = mount<FileCardProps, FileCardState>(
-      <FileCard
-        context={context}
-        id={'some-image'}
-      />
+      mediaName: details.name,
+      mediaType: details.mediaType,
+      mediaSize: details.size,
+    };
+
+    const card = shallow(
+      <FileCard details={details} status="complete"/>
     );
 
-    expect(card.find('.media-card').length).to.eql(0);
-
-    return waitUntilCardIsLoaded(card).then(() => {
-      expect(card.find('.media-card').first().props().style.backgroundImage).to.contain(toDataUri('some-image'));
-    });
+    expect(card.find(FileCardView).length).to.eql(1);
+    expect(card.find(FileCardView).props()).to.contain(expectedProps);
   });
 
-  it('should display a spinner while loading', () => {
-    const context = ContextFactory.create({
-      clientId: 'some-client',
-      serviceHost: 'some-service',
-      tokenProvider
-    });
-    const component = mount<FileCardProps, FileCardState>(
-      <FileCard
-        context={context}
-        id={'some-image'}
-      />);
+  it('should render cardFileViewSmall with details passed through to props', () => {
+    const details: FileDetails = {
+      mediaType: 'image',
+      mimeType: 'image/jpeg',
+      name: 'some-image.jpg',
+      processingStatus: 'succeeded',
+      size: 123456,
+      artifacts: {}
+    };
 
-    expect(component.state<boolean>('loading')).to.eql(true);
-    expect(component.find('FileIcon').first().props().label).to.eql('loading');
-  });
+    const expectedProps = {
+      loading: false,
+      width: undefined,
 
-  it('should not display error fallback for gif images if there is no preview image', () => {
-    const fakeObservable = Observable.of({
-        type: 'file',
-        details: {
-          mimeType: 'image/gif',
-          name: 'some-image.jpg',
-          processingStatus: 'succeeded'
-        }
-      });
+      mediaName: details.name,
+      mediaType: details.mediaType,
+      mediaSize: details.size,
+    };
 
-    const context = fakeContext({
-      getMediaItemProvider: {observable: () => fakeObservable},
-      getDataUriService: {
-        fetchOriginalDataUri(mediaItem) {
-          expect(mediaItem.details.name).to.equal('some-image.jpg');
-          return Promise.reject();
-        }
-      }
-    });
-
-    const card = mount<FileCardProps, FileCardState>(
-      <FileCard context={context} id="some-image"/>
+    const card = shallow(
+      <FileCard appearance="small" status="complete" details={details}/>
     );
 
-    waitUntilCardIsLoaded(card).then(() => {
-      expect(card.find(CardOverlay).first().props().mediaName).to.equal('some-image.jpg');
-    });
+    expect(card.find(FileCardViewSmall).length).to.eql(1);
+    expect(card.find(FileCardViewSmall).props()).to.contain(expectedProps);
   });
+
+  it('should render fileCardView with dataUri when passed', () => {
+    const fakeDataUri: string = 'l33tdatauri';
+
+    const details: FileDetails = {
+      mediaType: 'image',
+      mimeType: 'image/jpeg',
+      name: 'some-image.jpg',
+      processingStatus: 'succeeded',
+      size: 123456,
+      artifacts: {}
+    };
+
+    const card = shallow(
+      <FileCard status="complete" details={details} dataURI={fakeDataUri}/>
+    );
+
+    expect(card.find(FileCardView).length).to.eql(1);
+    expect(card.find(FileCardView).props().dataURI).to.contain(fakeDataUri);
+  });
+
+  it('should render fileCardViewSmall with dataUri when passed', () => {
+    const fakeDataUri: string = 'l33tdatauri';
+
+    const details: FileDetails = {
+      mediaType: 'image',
+      mimeType: 'image/jpeg',
+      name: 'some-image.jpg',
+      processingStatus: 'succeeded',
+      size: 123456,
+      artifacts: {}
+    };
+
+    const card = shallow(
+      <FileCard appearance="small" status="complete" details={details} dataURI={fakeDataUri}/>
+    );
+
+    expect(card.find(FileCardViewSmall).length).to.eql(1);
+    expect(card.find(FileCardViewSmall).props().dataURI).to.contain(fakeDataUri);
+  });
+
 });

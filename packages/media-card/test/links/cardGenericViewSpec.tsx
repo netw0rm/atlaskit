@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../src';
-import { MeatballsButton, DeleteBtn } from '../../src/utils/menu/styled';
-import { Title, Link } from '../../src/links/cardGenericView/styled';
+import { Details } from '../../src/links/styled';
+import { Title, Link, ErrorContainer, ErrorHeader } from '../../src/links/cardGenericView/styled';
 
 describe('LinkCardViewGeneric', () => {
   it('should only render the title and linkUrl when not supplied with optional props', () => {
@@ -32,7 +32,7 @@ describe('LinkCardViewGeneric', () => {
     const linkUrl = 'http://localhost:9001/';
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
-    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} display="square" />);
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} appearance="square" />);
     expect(card.find('.media-card')).to.have.length(1);
   });
 
@@ -41,7 +41,7 @@ describe('LinkCardViewGeneric', () => {
     const linkUrl = 'http://localhost:9001/';
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
-    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />) as any;
 
     expect(card.find('.media-card')).to.have.length(1);
     expect(card.find('.media-card').props().style.backgroundImage).to.contain(thumbnailUrl);
@@ -106,14 +106,15 @@ describe('LinkCardViewGeneric', () => {
     expect(card.find('.media-card')).to.have.length(0);
   });
 
-  it('currently ignores the error prop', () => {
+  it('displays error when error prop is passed in', () => {
     const title = 'Hello world';
     const linkUrl = 'http://localhost:9001/';
+    const error = 'Some random error occured';
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} error={error}/>);
 
-    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl}/>);
-
-    expect(card.find(Title).text()).to.eql(title);
-    expect(card.find(Link).text()).to.eql(linkUrl);
-    expect(card.find('.media-card')).to.have.length(0);
+    expect(card.find(Details)).to.have.length(0);
+    expect(card.find(ErrorContainer)).to.have.length(1);
+    expect(card.find(ErrorHeader)).to.have.length(1);
+    expect(card.find(ErrorHeader).text()).to.equal(error);
   });
 });

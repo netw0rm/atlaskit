@@ -1,26 +1,43 @@
 import {
   AnalyticsHandler,
   analyticsService,
-  BlockTypePlugin,
+  baseKeymap,
   Chrome,
-  CodeBlockPlugin,
   ContextName,
-  DefaultInputRulesPlugin,
-  HorizontalRulePlugin,
-  Keymap,
-  ListsPlugin,
-  MarkdownInputRulesPlugin,
-  ProseMirror,
-  TextFormattingPlugin,
-  ClearFormattingPlugin,
-  DefaultKeymapsPlugin,
-  version as coreVersion
+  EditorState,
+  EditorView,
+  history,
+  blockTypePlugins,
+  codeBlockPlugins,
+  hyperlinkPlugins,
+  listsPlugins,
+  rulePlugins,
+  textFormattingPlugins,
+  clearFormattingPlugins,
+  panelPlugins,
+  mentionsPlugins,
+  blockTypeStateKey,
+  codeBlockStateKey,
+  hyperlinkStateKey,
+  listsStateKey,
+  textFormattingStateKey,
+  clearFormattingStateKey,
+  panelStateKey,
+  mentionsStateKey,
+  keymap,
+  Node as PMNode,
+  TextSelection,
+  version as coreVersion,
+  mentionNodeView,
+  ProviderFactory
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { encode, parse } from './cxhtml';
+import { MentionProvider } from '@atlaskit/mention';
+import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
-
+import { CQSchema, default as schema } from './schema';
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 export { version };
 
 
@@ -28,36 +45,59 @@ export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
+  expanded?: boolean;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
+  mentionProvider?: Promise<MentionProvider>;
 }
 
 export interface State {
-  pm?: ProseMirror;
+  editorView?: EditorView;
   isExpanded?: boolean;
+  schema: CQSchema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
+  providerFactory: ProviderFactory;
+  mentionProvider: Promise<MentionProvider>;
 
   constructor(props: Props) {
     super(props);
-    this.state = { isExpanded: props.isExpandedByDefault };
+
+    this.state = {
+      schema,
+      isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
+    };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+
+    this.providerFactory = new ProviderFactory();
+
+    if (props.mentionProvider) {
+      this.mentionProvider = props.mentionProvider;
+      this.providerFactory.setProvider('mentionProvider', this.mentionProvider);
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
+    }
   }
 
   /**
    * Focus the content region of the editor.
    */
   focus(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.focus();
+    const { editorView } = this.state;
+
+    if (editorView) {
+      editorView.focus();
     }
   }
 
@@ -65,9 +105,15 @@ export default class Editor extends PureComponent<Props, State> {
    * Clear the content of the editor, making it an empty document.
    */
   clear(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
+    const { editorView } = this.state;
+
+    if (editorView) {
+      const { state } = editorView;
+      const tr = state.tr
+        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .deleteSelection();
+
+      editorView.dispatch(tr);
     }
   }
 
@@ -76,9 +122,10 @@ export default class Editor extends PureComponent<Props, State> {
    * (i.e. text)
    */
   isEmpty(): boolean {
-    const { pm } = this.state;
-    return pm && pm.doc
-      ? !!pm.doc.textContent
+    const { editorView } = this.state;
+
+    return editorView && editorView.state.doc
+      ? !!editorView.state.doc.textContent
       : false;
   }
 
@@ -86,32 +133,49 @@ export default class Editor extends PureComponent<Props, State> {
    * The current value of the editor, encoded as CXTML.
    */
   get value(): string | undefined {
-    const { pm } = this.state;
-    return pm
-      ? encode(pm.doc)
+    const { editorView } = this.state;
+
+    return editorView && editorView.state.doc
+      ? encode(editorView.state.doc)
       : this.props.defaultValue;
   }
 
   render() {
-    const { pm, isExpanded } = this.state;
+    const { editorView, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
+    const editorState = editorView && editorView.state;
+
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const panelState = editorState && panelStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
+        editorView={editorView!}
         isExpanded={isExpanded}
         feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
         placeholder={this.props.placeholder}
-        pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
-        pluginStateLists={pm && ListsPlugin.get(pm)}
-        pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
-        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
+        pluginStateBlockType={blockTypeState}
+        pluginStateCodeBlock={codeBlockState}
+        pluginStateHyperlink={hyperlinkState}
+        pluginStateLists={listsState}
+        pluginStateTextFormatting={textFormattingState}
+        pluginStateClearFormatting={clearFormattingState}
+        pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
+        mentionProvider={this.mentionProvider}
+        pluginStateMentions={mentionsState}
       />
     );
   }
@@ -138,45 +202,103 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
+    const { schema } = this.state;
+
     if (place) {
       const { context } = this.props;
-      const pm = new ProseMirror({
-        place,
-        doc: parse(this.props.defaultValue || ''),
+      const doc = parse(this.props.defaultValue || '');
+      const cqKeymap = {
+        'Mod-Enter': this.handleSave,
+      };
+
+      const editorState = EditorState.create({
+        schema,
+        doc,
         plugins: [
-          BlockTypePlugin,
-          CodeBlockPlugin,
-          MarkdownInputRulesPlugin,
-          ListsPlugin,
-          TextFormattingPlugin,
-          ClearFormattingPlugin,
-          HorizontalRulePlugin,
-          DefaultInputRulesPlugin,
-          DefaultKeymapsPlugin,
-        ],
+          ...blockTypePlugins(schema),
+          ...clearFormattingPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...hyperlinkPlugins(schema),
+          ...listsPlugins(schema),
+          ...rulePlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...panelPlugins(schema),
+          ...mentionsPlugins(schema),
+          history(),
+          keymap(cqKeymap),
+          keymap(baseKeymap), // should be last :(
+        ]
       });
+
+      const codeBlockState = codeBlockStateKey.getState(editorState);
+      codeBlockState.setLanguages(supportedLanguages);
 
       if (context) {
-        BlockTypePlugin.get(pm)!.changeContext(context);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
+        blockTypeState.changeContext(context);
       }
 
-      pm.addKeymap(new Keymap({
-        'Mod-Enter': this.handleSave
-      }));
-
-      pm.on.domPaste.add(() => {
-        analyticsService.trackEvent('atlassian.editor.paste');
+      const editorView = new EditorView(place, {
+        state: editorState,
+        dispatchTransaction: (tr) => {
+          const newState = editorView.state.apply(tr);
+          editorView.updateState(newState);
+          this.handleChange();
+        },
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory),
+          jiraIssue: jiraIssueNodeView,
+        },
+        handleDOMEvents: {
+          paste(view: EditorView, event: ClipboardEvent) {
+            analyticsService.trackEvent('atlassian.editor.paste');
+            return false;
+          }
+        }
       });
 
-
-      pm.on.change.add(this.handleChange);
-      pm.focus();
+      if (this.mentionProvider) {
+        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      }
 
       analyticsService.trackEvent('atlassian.editor.start');
 
-      this.setState({ pm });
+      this.setState({ editorView });
+      this.focus();
+
+      this.sendUnsupportedNodeUsage(doc);
     } else {
-      this.setState({ pm: undefined });
+      this.setState({ editorView: undefined });
     }
   }
+
+  /**
+   * Traverse document nodes to find the number of unsupported ones
+   */
+  private sendUnsupportedNodeUsage(doc: PMNode) {
+    const { unsupportedBlock, unsupportedInline } = schema.nodes;
+    let blockNodesOccurance = 0;
+    let inlineNodesOccurance = 0;
+
+    traverseNode(doc);
+
+    for (let i = 0; i < blockNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.block');
+    }
+
+    for (let i = 0; i < inlineNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.inline');
+    }
+
+    function traverseNode(node: PMNode) {
+      if (node.type === unsupportedBlock) {
+        blockNodesOccurance += 1;
+      } else if (node.type === unsupportedInline) {
+        inlineNodesOccurance += 1;
+      } else {
+        node.content.forEach(traverseNode);
+      }
+    }
+  }
+
 }

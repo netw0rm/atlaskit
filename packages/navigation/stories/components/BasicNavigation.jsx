@@ -4,7 +4,7 @@ import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, 
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
 import BasicSearch from './BasicSearch';
-import Navigation, { AkContainerTitle, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
+import Navigation, { AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -22,15 +22,15 @@ export default class BasicNavigation extends PureComponent {
 
   static defaultProps = {
     children: (<div>
-      <AkContainerItem
+      <AkNavigationItem
         icon={<DashboardIcon label="Dashboard" />}
         text="Item A"
       />
-      <AkContainerItem
+      <AkNavigationItem
         icon={<SettingsIcon label="Settings" />}
         text="Item B"
       />
-      <AkContainerItem
+      <AkNavigationItem
         icon={<IssuesIcon label="Projects" />}
         text="Item C"
       />
@@ -47,21 +47,21 @@ export default class BasicNavigation extends PureComponent {
     searchDrawerContent: (<BasicSearch />),
     createDrawerContent: (
       <div>
-        <AkDrawerItem
+        <AkNavigationItem
           text="Item outside a group"
         />
-        <AkContainerItemGroup
+        <AkNavigationItemGroup
           title="Create item group"
         >
-          <AkDrawerItem
+          <AkNavigationItem
             icon={<img alt="icon" src={nucleusLogo} />}
             text="Item with an icon"
           />
-          <AkDrawerItem
+          <AkNavigationItem
             icon={<img alt="icon" src={nucleusLogo} />}
             text="A really, really, quite long, actually super long container name"
           />
-        </AkContainerItemGroup>
+        </AkNavigationItemGroup>
       </div>),
     globalSecondaryActions: [
       <AkDropdownMenu

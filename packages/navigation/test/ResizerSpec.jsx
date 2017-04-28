@@ -22,11 +22,11 @@ describe('<Resizer />', () => {
     });
     it('mousedown default is prevented', () => {
       const preventDefaultSpy = sinon.spy();
-      resizer.find('div').simulate('mousedown', { screenX: 100, preventDefault: preventDefaultSpy });
+      resizer.find('ResizerInner').simulate('mousedown', { screenX: 100, preventDefault: preventDefaultSpy });
       expect(preventDefaultSpy.called).to.equal(true);
     });
     it('mousedown triggers onResizeStart', () => {
-      resizer.find('div').simulate('mousedown', { screenX: 100, preventDefault: () => {} });
+      resizer.find('ResizerInner').simulate('mousedown', { screenX: 100, preventDefault: () => {} });
       expect(resizeStartSpy.called).to.equal(true);
       expect(resizeSpy.called).to.equal(false);
       expect(resizeEndSpy.called).to.equal(false);

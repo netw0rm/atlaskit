@@ -1,31 +1,21 @@
 import {
-  BulletListNode,
-  DocNode,
   Fragment,
-  HeadingNode,
-  isBulletListNode,
-  isHardBreakNode,
-  isHeadingNode,
-  isHorizontalRuleNode,
-  isListItemNode,
-  isOrderedListNode,
-  isParagraphNode,
-  isMentionNode,
-  isCodeBlockNode,
-  ListItemNode,
-  CodeBlockNode,
-  MentionNode,
   Node as PMNode,
-  OrderedListNode,
-  ParagraphNode
 } from '@atlaskit/editor-core';
-import { isSchemaWithLists, isSchemaWithMentions, isSchemaWithCodeBlock, JIRASchema } from '../schema';
+
+import {
+  JIRASchema,
+  isSchemaWithBlockQuotes,
+  isSchemaWithCodeBlock,
+  isSchemaWithLists,
+  isSchemaWithMentions,
+} from '../schema';
 
 export interface JIRACustomEncoders {
   mention?: (userId: string) => string;
 }
 
-export default function encode(node: DocNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
+export default function encode(node: PMNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -43,34 +33,51 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     .replace(/<hr>/g, '<hr />');
 
   function encodeNode(node: PMNode): DocumentFragment | Text | HTMLElement {
+    const {
+      blockquote,
+      bulletList,
+      codeBlock,
+      hardBreak,
+      heading,
+      listItem,
+      mention,
+      orderedList,
+      paragraph,
+      rule,
+    } = schema.nodes;
+
     if (node.isText) {
       return encodeText(node);
-    } else if (isHeadingNode(node)) {
+    } else if (node.type === heading) {
       return encodeHeading(node);
-    } else if (isHorizontalRuleNode(node)) {
+    } else if (node.type === rule) {
       return encodeHorizontalRule();
-    } else if (isParagraphNode(node)) {
+    } else if (node.type === paragraph) {
       return encodeParagraph(node);
-    } else if (isHardBreakNode(node)) {
+    } else if (node.type === hardBreak) {
       return encodeHardBreak();
     }
 
     if (isSchemaWithLists(schema)) {
-      if (isBulletListNode(node)) {
+      if (node.type === bulletList) {
         return encodeBulletList(node);
-      } else if (isOrderedListNode(node)) {
+      } else if (node.type === orderedList) {
         return encodeOrderedList(node);
-      } else if (isListItemNode(node)) {
+      } else if (node.type === listItem) {
         return encodeListItem(node);
       }
     }
 
-    if (isSchemaWithMentions(schema) && isMentionNode(node)) {
+    if (isSchemaWithMentions(schema) && node.type === mention) {
       return encodeMention(node, customEncoders.mention);
     }
 
-    if (isSchemaWithCodeBlock(schema) && isCodeBlockNode(node)) {
+    if (isSchemaWithCodeBlock(schema) && node.type === codeBlock) {
       return encodeCodeBlock(node);
+    }
+
+    if (isSchemaWithBlockQuotes(schema) && node.type === blockquote) {
+      return encodeBlockQuote(node);
     }
 
     throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
@@ -89,7 +96,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return documentFragment;
   }
 
-  function encodeHeading(node: HeadingNode) {
+  function encodeHeading(node: PMNode) {
     function anchorNameEncode(name: string) {
       const noSpaces = name.replace(/ /g, '');
       const uriEncoded = encodeURIComponent(noSpaces);
@@ -106,7 +113,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return elem;
   }
 
-  function encodeParagraph(node: ParagraphNode) {
+  function encodeParagraph(node: PMNode) {
     const elem = doc.createElement('p');
     elem.appendChild(encodeFragment(node.content));
     return elem;
@@ -116,46 +123,57 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     if (node.text) {
       const root = doc.createDocumentFragment();
       let elem = root as Node;
+      const {
+        code,
+        em,
+        link,
+        mentionQuery,
+        strike,
+        strong,
+        subsup,
+        underline,
+      } = schema.marks;
+
       for (const mark of node.marks) {
         switch (mark.type) {
-          case schema.marks.strong:
+          case strong:
             elem = elem.appendChild(doc.createElement('b'));
             break;
-          case schema.marks.em:
+          case em:
             elem = elem.appendChild(doc.createElement('em'));
             break;
-          case schema.marks.code:
+          case code:
             elem = elem.appendChild(doc.createElement('tt'));
             break;
-          case schema.marks.strike:
+          case strike:
             elem = elem.appendChild(doc.createElement('del'));
             break;
-          case schema.marks.u:
+          case underline:
             elem = elem.appendChild(doc.createElement('ins'));
             break;
-          case schema.marks.subsup:
+          case subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
             break;
-          case schema.marks.link:
-            const link = doc.createElement('a');
+          case link:
+            const linkElem = doc.createElement('a');
             const href = mark.attrs['href'];
 
             // Handle external links e.g. links which start with http://, https://, ftp://, //
             if (href.match(/\w+:\/\//) || href.match(/^\/\//) || href.match('mailto:')) {
-              link.setAttribute('class', 'external-link');
-              link.setAttribute('href', href);
-              link.setAttribute('rel', 'nofollow');
+              linkElem.setAttribute('class', 'external-link');
+              linkElem.setAttribute('href', href);
+              linkElem.setAttribute('rel', 'nofollow');
             } else {
-              link.setAttribute('href', href);
+              linkElem.setAttribute('href', href);
             }
 
             if (mark.attrs['title']) {
-              link.setAttribute('title', mark.attrs['title']);
+              linkElem.setAttribute('title', mark.attrs['title']);
             }
 
-            elem = elem.appendChild(link);
+            elem = elem.appendChild(linkElem);
             break;
-          case schema.marks.mention_query:
+          case mentionQuery:
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
@@ -177,7 +195,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return doc.createElement('hr');
   }
 
-  function encodeBulletList(node: BulletListNode) {
+  function encodeBulletList(node: PMNode) {
     const elem = doc.createElement('ul');
     elem.setAttribute('class', 'alternate');
     elem.setAttribute('type', 'disc');
@@ -189,7 +207,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return elem;
   }
 
-  function encodeOrderedList(node: OrderedListNode) {
+  function encodeOrderedList(node: PMNode) {
     const elem = doc.createElement('ol');
     elem.appendChild(encodeFragment(node.content));
     for (let index = 0; index < elem.childElementCount; index++) {
@@ -198,11 +216,11 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return elem;
   }
 
-  function encodeListItem(node: ListItemNode) {
+  function encodeListItem(node: PMNode) {
     const elem = doc.createElement('li');
     if (node.content.childCount) {
       node.content.forEach(childNode => {
-        if (isBulletListNode(childNode) || isOrderedListNode(childNode)) {
+        if (childNode.type === schema.nodes.bulletList || childNode.type === schema.nodes.orderedList) {
           const list = encodeNode(childNode)!;
 
           /**
@@ -222,23 +240,23 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
           elem.appendChild(list);
         } else {
           // Strip the paragraph node from the list item.
-          elem.appendChild(encodeFragment((childNode as ParagraphNode).content));
+          elem.appendChild(encodeFragment((childNode as PMNode).content));
         }
       });
     }
     return elem;
   }
 
-  function encodeMention(node: MentionNode, encoder?: (userId: string) => string) {
+  function encodeMention(node: PMNode, encoder?: (userId: string) => string) {
     const elem = doc.createElement('a');
     elem.setAttribute('class', 'user-hover');
     elem.setAttribute('href', encoder ? encoder(node.attrs.id) : node.attrs.id);
     elem.setAttribute('rel', node.attrs.id);
-    elem.innerText = node.attrs.displayName;
+    elem.innerText = node.attrs.text;
     return elem;
   }
 
-  function encodeCodeBlock(node: CodeBlockNode) {
+  function encodeCodeBlock(node: PMNode) {
     const elem = doc.createElement('div');
     elem.setAttribute('class', 'code panel');
 
@@ -253,6 +271,12 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     content.appendChild(pre);
     elem.appendChild(content);
 
+    return elem;
+  }
+
+  function encodeBlockQuote(node: PMNode) {
+    const elem = doc.createElement('blockquote');
+    elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 }

@@ -6,7 +6,7 @@ import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';
@@ -352,7 +352,8 @@ export default class StatelessMultiSelect extends PureComponent {
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
                   {this.props.selectedItems.map(item =>
                     <Tag
-                      elemBefore={item.tagElemBefore}
+                      appearance={item.tag ? item.tag.appearance : undefined}
+                      elemBefore={item.tag ? item.tag.elemBefore : undefined}
                       key={item.value}
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);

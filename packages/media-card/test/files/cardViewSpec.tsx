@@ -6,7 +6,6 @@ import { mount } from 'enzyme';
 import { FileCardView } from '../../src';
 import { CardContent } from '../../src/utils/cardImageView/cardContent';
 import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
-import { Title, Link } from '../../src/links/cardGenericView/styled';
 
 describe('FileCardView', () => {
   it('should render an empty card with overlay when supplied with no props', function() {

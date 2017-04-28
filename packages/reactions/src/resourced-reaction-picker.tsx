@@ -6,6 +6,7 @@ import { ReactionsProvider } from './reactions-resource';
 import ReactionPicker from './reaction-picker';
 
 export interface Props {
+  containerAri: string;
   ari: string;
   reactionsProvider: Promise<ReactionsProvider>;
   emojiProvider: Promise<EmojiProvider>;
@@ -37,7 +38,7 @@ export default class ResourcedReactionPicker extends PureComponent<Props, State>
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.state.reactionsProvider) {
       this.refreshReactions(this.props.reactionsProvider);
     }
@@ -56,12 +57,12 @@ export default class ResourcedReactionPicker extends PureComponent<Props, State>
       return null;
     }
 
-    const { ari, boundariesElement, emojiProvider, miniMode } = this.props;
+    const { containerAri, ari, boundariesElement, emojiProvider, miniMode } = this.props;
 
     return (
       <ReactionPicker
         emojiProvider={emojiProvider}
-        onSelection={(emojiId) => reactionsProvider.toggleReaction(ari, emojiId)}
+        onSelection={(emojiId) => reactionsProvider.toggleReaction(containerAri, ari, emojiId)}
         miniMode={miniMode}
         boundariesElement={boundariesElement}
       />

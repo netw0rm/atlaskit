@@ -13,6 +13,7 @@ import {
   EditorView,
   Fragment,
 } from '../../prosemirror';
+import {stateKey} from '../../plugins/code-block';
 
 export default class CodeMirrorView {
   dom: HTMLElement;
@@ -70,6 +71,9 @@ export default class CodeMirrorView {
       }
     });
     this.cm.on('focus', () => {
+      const codeBlockPluginState = stateKey.getState(this.view.state);
+      codeBlockPluginState.updateEditorFocused(true);
+      codeBlockPluginState.update(this.view.state, this.view.docView, true);
       if (!this.updating) {
         this.forwardSelection();
       }

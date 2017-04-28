@@ -125,7 +125,6 @@ const plugin = new Plugin({
       return false;
     },
     onFocus(view: EditorView, event) {
-      stateKey.getState(view.state).updateEditorFocused(true);
     },
     onBlur(view: EditorView, event) {
       stateKey.getState(view.state).updateEditorFocused(false);

@@ -238,7 +238,7 @@ export default class Editor extends PureComponent<Props, State> {
         nodeViews: {
           mention: mentionNodeView(this.providerFactory),
           emoji: emojiNodeView(this.providerFactory),
-          codeBlock: (node, view, getPos) => new CodeMirrorView(node, view, getPos)
+          codeBlock: (node, view, getPos) => new CodeMirrorView(node, view, getPos, schema)
         }
       });
       imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);

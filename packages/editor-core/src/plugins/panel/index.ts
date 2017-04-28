@@ -96,7 +96,7 @@ export class PanelState {
     if (state.selection instanceof TextSelection) {
       const { $from } = state.selection;
       const node = $from.node($from.depth - 1);
-      if (node.type === state.schema.nodes.panel) {
+      if (node && node.type === state.schema.nodes.panel) {
         return node;
       }
     }

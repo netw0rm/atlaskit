@@ -4,7 +4,7 @@ import '!style!css!less!codemirror/lib/codemirror.css';
 import {
   Selection,
   TextSelection,
-  schema,
+  Schema,
   exitCode,
   undo,
   redo,
@@ -23,11 +23,13 @@ export default class CodeMirrorView {
   private selection: any;
   private cm: CodeMirror;
   private updating: boolean = false;
+  private schema: Schema<any, any>;
 
-  constructor(node, view, getPos) {
+  constructor(node, view, getPos, schema) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
+    this.schema = schema;
     this.value = node.textContent;
     this.selection = null;
     let mod = /Mac/.test(navigator.platform) ? 'Cmd' : 'Ctrl';
@@ -91,7 +93,7 @@ export default class CodeMirrorView {
       let change = computeChange(this.value, value);
       this.value = value;
       let start = this.getPos() + 1;
-      const content = change.text ? schema.text(change.text) : Fragment.empty;
+      const content = change.text ? this.schema.text(change.text) : Fragment.empty;
       let tr = this.view.state.tr.replaceWith(start + change.from, start + change.to, content);
       if (this.cm.hasFocus()) {
         let selection = this.findSelection();

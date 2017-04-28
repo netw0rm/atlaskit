@@ -19,6 +19,10 @@ export const content = style({
   padding: 20,
 
   $nest: {
+    '& .CodeMirror': {
+      height: 'auto',
+      border: '1px solid #eee'
+    },
     '& .ProseMirror': {
       outline: 'none',
       whiteSpace: 'pre-wrap',
@@ -39,12 +43,12 @@ export const content = style({
           }
         },
 
-        '& pre': {
-          fontFamily: akEditorCodeFontFamily,
-          background: akEditorCodeBackground,
-          padding: akEditorCodeBlockPadding,
-          borderRadius: akBorderRadius,
-        }
+        // '& pre': {
+        //   fontFamily: akEditorCodeFontFamily,
+        //   background: akEditorCodeBackground,
+        //   padding: akEditorCodeBlockPadding,
+        //   borderRadius: akBorderRadius,
+        // }
       }
     }
   }

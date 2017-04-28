@@ -16,7 +16,7 @@ const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
 const { expect } = chai;
 
 const renderPicker = (onSelection: Function = () => {}) => {
-  return <ReactionPicker emojiProvider={getEmojiResourcePromise()} onSelection={onSelection} />;
+  return <ReactionPicker emojiProvider={getEmojiResourcePromise()} onSelection={onSelection} allowAllEmojis={true} />;
 };
 
 describe('@atlaskit/reactions/reaction-picker', () => {

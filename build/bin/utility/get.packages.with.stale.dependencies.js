@@ -1,5 +1,5 @@
 const semver = require('semver');
-const getAllPackageJsons = require('./_get.packages.from.local');
+const getAllPackageJsons = require('./get.packages.from.local');
 
 function getLocalDep(packageJsons, packageName) {
   return packageJsons.find(pkg => pkg.name === packageName);

@@ -66,7 +66,7 @@ function getLatestPackagesFromRegistry(packages) {
 */
 function getPackagesFromRegistryAtVersion(packages) {
   // tell getPackagesFromRegistry to not get latest
-  return getPackagesFromRegistry(packages, true);
+  return getPackagesFromRegistry(packages, false);
 }
 
 module.exports = {

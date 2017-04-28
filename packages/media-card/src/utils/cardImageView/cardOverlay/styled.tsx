@@ -222,6 +222,7 @@ export const TopRow = styled.div`
 
 export const BottomRow = styled.div`
   position: absolute;
+  z-index: 1;
   display: table;
   bottom: 0;
   left: 0;

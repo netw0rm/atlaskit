@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-cq",
-  "version": "1.33.4",
+  "version": "1.33.5",
   "config": {
     "access": "public"
   },

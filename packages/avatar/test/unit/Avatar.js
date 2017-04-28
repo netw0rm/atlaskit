@@ -2,10 +2,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import Avatar from '../../src/components/Avatar';
+import Avatar, { SIZE, PRESENCE_TYPE } from '../../src/components/Avatar';
 import Image from '../../src/components/Image';
 import Presence from '../../src/components/Presence';
-import { SIZE, PRESENCE_TYPE } from '../../src/components/constants';
 
 import { ImageWrapper, getSize } from '../../src/styled/Avatar';
 import { AVATAR_SIZES } from '../../src/styled/constants';

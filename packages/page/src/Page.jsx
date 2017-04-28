@@ -19,8 +19,8 @@ const BannerContainer = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: auto;
-  transition: height .25s ease-in-out;
-  height: ${props => (props.isBannerOpen ? 52 : 0)}px; /* 52 is line height (20) + 4*grid */
+  transition: max-height 0.25s ease-in-out;
+  max-height: ${props => (props.isBannerOpen ? 52 : 0)}px; /* 52 is line height (20) + 4*grid */
   position: relative;
   width: 100%;
   z-index: 3;
@@ -68,14 +68,16 @@ export default class Page extends PureComponent {
     return (
       <ThemeProvider theme={{}}>
         <Wrapper>
-          <BannerContainer
-            aria-hidden={this.props.isBannerOpen}
-            isBannerOpen={this.props.isBannerOpen}
-          >
-            <Banner>
-              {this.props.banner}
-            </Banner>
-          </BannerContainer>
+          {this.props.banner ? (
+            <BannerContainer
+              aria-hidden={this.props.isBannerOpen}
+              isBannerOpen={this.props.isBannerOpen}
+            >
+              <Banner>
+                {this.props.banner}
+              </Banner>
+            </BannerContainer>
+          ) : null}
           <NavigationAndContent>
             <Navigation>
               {this.props.navigation}

@@ -1,10 +1,10 @@
 import { Promise } from 'es6-promise';
 import { EmojiId } from '@atlaskit/emoji';
 
-import { equalEmojiId, findIndex } from '../../src/internal/helpers';
-import { default as AbstractReactionsProvider } from '../../src/reactions-resource';
-import { Reactions, ReactionSummary } from '../../src/reactions-resource';
-import { defaultReactionsByShortName } from '../../src/internal/selector';
+import { equalEmojiId, findIndex } from './internal/helpers';
+import { default as AbstractReactionsProvider } from './reactions-resource';
+import { Reactions, ReactionSummary } from './reactions-resource';
+import { defaultReactionsByShortName } from './internal/selector';
 
 export default class MockReactionsProvider extends AbstractReactionsProvider {
 
@@ -97,5 +97,5 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
 
 }
 
-export const reactionsProvider = new MockReactionsProvider(); // This need to be any in order for the overview story to work.
-export const reactionsProviderPromise = Promise.resolve(reactionsProvider) as any;
+export const reactionsProvider = new MockReactionsProvider();
+export const reactionsProviderPromise = Promise.resolve(reactionsProvider);

@@ -10,6 +10,7 @@ export interface FileCardProps extends SharedCardProps {
   readonly status: CardProcessingStatus;
   readonly details?: FileDetails;
   readonly dataURI?: string;
+  readonly progress?: number;
 };
 
 export class FileCard extends Component<FileCardProps, {}> {
@@ -31,7 +32,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {dimensions, selectable, selected, details, dataURI} = this.props;
+    const {dimensions, selectable, selected, details, dataURI, progress} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
@@ -62,6 +63,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           loading={this.isLoading}
           actions={this._getActions()}
           onClick={this.onClick}
+          progress={progress}
         />
       );
 

@@ -17,6 +17,7 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   onReactionClick: OnEmoji;
   boundariesElement?: string;
+  allowAllEmojis?: boolean;
 }
 
 export interface State {
@@ -68,7 +69,7 @@ export default class Reactions extends Component<Props, State> {
   }
 
   private renderPicker() {
-    const { emojiProvider, boundariesElement } = this.props;
+    const { emojiProvider, boundariesElement, allowAllEmojis } = this.props;
     const { reactions } = this.state;
 
     if (!reactions.length) {
@@ -81,6 +82,7 @@ export default class Reactions extends Component<Props, State> {
         onSelection={(emojiId) => this.onEmojiClick(emojiId)}
         miniMode={true}
         boundariesElement={boundariesElement}
+        allowAllEmojis={allowAllEmojis}
       />
     );
   }

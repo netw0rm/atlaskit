@@ -6,7 +6,7 @@ import { encode, parse, LANGUAGE_MAP } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
-  unsupportedInline, unsupportedBlock, jiraIssue,
+  unsupportedInline, unsupportedBlock, jiraIssue, mediaGroup, media
 } from './_schema-builder';
 chai.use(chaiPlugin);
 
@@ -25,7 +25,7 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: PMNode)
 const check = (description: string, cxhtml: string, doc: PMNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
-describe('@atlaskit/editor-cq encode-cxml:', () => {
+describe('@atlaskit/editor-cq encode-cxhtml:', () => {
   describe('empty', () => {
     check('empty',
       '',
@@ -514,9 +514,11 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         )
       );
     });
+  });
 
+  describe('fabric mentions', () => {
     check(
-      'mentions',
+      'with atlassian id and name',
       '<p>This is mention from <fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></p>',
       doc(
         p(
@@ -528,6 +530,23 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         )
       )
     );
+  });
+
+  describe('media nodes', () => {
+    check(
+      'with minimal number of attributes',
+      '<p><fab:media media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" media-type="file" media-collection="de7ae355-dcf3-4988-9785-bccb835830c4"></fab:media></p>',
+      doc(
+        mediaGroup(
+          media({
+            id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
+            type: 'file',
+            collection: 'de7ae355-dcf3-4988-9785-bccb835830c4'
+          })
+        )
+      )
+    );
+
   });
 
 // Color text span

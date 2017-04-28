@@ -42,9 +42,9 @@ const TypeLabel = styled.span`
 // Disable prop types validation for internal functional components
 /* eslint-disable react/prop-types */
 
-const PageWrapper = ({ children }) => (
+const PageWrapper = ({ name, children }) => (
   <div>
-    <Heading type={2}>Props</Heading>
+    <Heading type={2}>{name ? `${name} ` : ''}Props</Heading>
     {children}
   </div>
 );
@@ -67,6 +67,7 @@ const PropTypeHeading = ({ defaultValue, name, required, type }) => (
 
 export default class DynamicProps extends PureComponent {
   static propTypes = {
+    componentName: PropTypes.string,
     componentSrc: PropTypes.string.isRequired,
   }
   constructor(props) {
@@ -84,19 +85,19 @@ export default class DynamicProps extends PureComponent {
     }
   }
   render() {
+    const { componentName } = this.props;
     const { componentDocs } = this.state;
     if (!componentDocs || !componentDocs.props || !!componentDocs.props.length) {
       return (
-        <PageWrapper>
+        <PageWrapper name={componentName}>
           <Description>There are no props for this component.</Description>
         </PageWrapper>
       );
     }
-
     const propTypes = Object.keys(componentDocs.props);
 
     return (
-      <PageWrapper>
+      <PageWrapper name={componentName}>
         {propTypes.map((propName) => {
           const prop = componentDocs.props[propName];
           return (

@@ -2,6 +2,7 @@ import { Promise } from 'es6-promise';
 import 'whatwg-fetch';
 
 import { findIndex, equalEmojiId } from './internal/helpers';
+import { analyticsService } from './analytics';
 
 let debounced: number | null = null;
 
@@ -99,12 +100,14 @@ export default class AbstractReactionsResource implements ReactionsProvider {
   }
 
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
+    analyticsService.trackEvent('reactions.add.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
+    analyticsService.trackEvent('reactions.delete.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });

@@ -40,7 +40,7 @@ export default class ResultsList extends PureComponent {
         : 'No results found'
     );
 
-    const content = mapPropsToResults(this.props.resultGroups);
+    const content = mapPropsToResults(this.props.resultGroups || {});
 
     if (this.props.resultsType === 'recent') {
       return <NoScrollResultsBox>{content}</NoScrollResultsBox>;

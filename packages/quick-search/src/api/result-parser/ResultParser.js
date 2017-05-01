@@ -1,14 +1,13 @@
 import React from 'react';
 import { AkContainerItemGroup } from '@atlaskit/navigation';
-import {
-  HipChatPersonResult,
-  HipChatRoomResult,
-  UnknownResult,
-} from '../../components/Result';
+import Result from '../../components/Result';
+import hcPersonParser from './HipChatPersonParser';
+import hcRoomParser from './HipChatRoomParser';
+import unknownParser from './UnknownResultParser';
 
-export class JsonToResultParser {} // Placeholder for TS interface
+export class IResultParser {} // Placeholder for TS interface
 
-export class ResultParser extends /** implements */ JsonToResultParser {
+export class ResultParser extends /** implements */ IResultParser {
   constructor(onSearchTerminate, callbacks) {
     super();
     this.onSearchTerminate = onSearchTerminate;
@@ -26,39 +25,32 @@ export class ResultParser extends /** implements */ JsonToResultParser {
       return null;
     }
 
-    let className;
-    let key;
-    let callbackType;
+    let parser;
+    let actionCallback;
     switch (data.type) {
       case 'hc.room':
-        className = HipChatRoomResult;
-        callbackType = 'HipChatConversation';
-        key = `hc.room.${data.id}`;
+        parser = hcRoomParser;
+        actionCallback = this.callbacks.HipChatConversation;
         break;
       case 'mention':
-        className = HipChatPersonResult;
-        callbackType = 'HipChatConversation';
-        key = `hc.person.${data.id}`;
+        parser = hcPersonParser;
+        actionCallback = this.callbacks.HipChatConversation;
         break;
       default:
-        className = UnknownResult;
-        callbackType = 'unknown';
-        key = `${data.type}.${data.id}`;
+        parser = unknownParser;
+        actionCallback = this.callbacks.unknown;
     }
 
-    return React.createElement(
-      className,
-      {
-        ...data,
-        key,
-        callback: this.callbacks[callbackType],
-        onSearchTerminate: this.onSearchTerminate,
-      }
+    const resultProps = parser.parse(
+      data,
+      actionCallback,
+      this.onSearchTerminate
     );
+    return React.createElement(Result, resultProps);
   }
 }
 
-export class GroupedResultsParser extends /** implements */ JsonToResultParser {
+export class GroupedResultsParser extends /** implements */ IResultParser {
   constructor(onSearchTerminate, callbacks) {
     super();
     this.resultParser = new ResultParser(onSearchTerminate, callbacks);
@@ -72,9 +64,11 @@ export class GroupedResultsParser extends /** implements */ JsonToResultParser {
     }
 
     return Object.keys(resultGroups).map(group =>
-      <AkContainerItemGroup title={group} key={group}>
-        {this.resultParser.parse(resultGroups[group])}
-      </AkContainerItemGroup>
+      React.createElement(
+        AkContainerItemGroup,
+        { title: group, key: group },
+        this.resultParser.parse(resultGroups[group]),
+      )
     );
   }
 }

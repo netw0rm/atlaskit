@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { GroupedResultsParser } from '../api/JsonToResultParser';
+import { GroupedResultsParser } from '../api/result-parser/ResultParser';
 import NoScrollResultsBox from './NoScrollResultsBox';
 
 export default class ResultsList extends PureComponent {
@@ -29,14 +29,14 @@ export default class ResultsList extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.jsonToResultParser =
+    this.resultParser =
       new GroupedResultsParser(props.onSearchTerminate, props.resultCallbacks);
   }
 
   render() {
     const mapPropsToResults = resultGroups => (
       Object.keys(resultGroups).length
-        ? this.jsonToResultParser.parse(resultGroups)
+        ? this.resultParser.parse(resultGroups)
         : 'No results found'
     );
 

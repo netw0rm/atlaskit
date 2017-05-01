@@ -2,8 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import { name } from '../package.json';
-import QuickSearch from '../src/';
-import { ParsingSearchResource } from '../src/api/SearchResource';
+import QuickSearch, { ParsingSearchResource } from '../src/';
 // import MockSearchResource from '../test/helpers/MockSearchResource';
 import BasicNav from '../../navigation/stories/components/BasicNavigation';
 

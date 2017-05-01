@@ -15,6 +15,8 @@ import {
 import { CodeBlockState, stateKey } from '../../plugins/code-block';
 import { findMode } from '../../ui/LanguagePicker/languageList';
 
+const DETECT_URL = 'http://localhost:3000/detect';
+
 const loadedModes = {};
 
 export default class CodeMirrorView {
@@ -48,6 +50,11 @@ export default class CodeMirrorView {
         Left: () => this.maybeEscape('char', -1),
         Down: () => this.maybeEscape('line', 1),
         Right: () => this.maybeEscape('char', 1),
+        Enter: (cm) => {
+          const content = cm.getValue();
+          this.detectLanguage(content);
+          return CodeMirror.Pass;
+        },
         [`${mod}-Z`]: () => undo(this.view.state, this.view.dispatch),
         [`Shift-${mod}-Z`]: () => redo(this.view.state, this.view.dispatch),
         [`${mod}-Y`]: () => redo(this.view.state, this.view.dispatch),
@@ -81,12 +88,7 @@ export default class CodeMirrorView {
     this.pluginState.subscribe((state) => {
       const { language } = state;
       if (language) {
-        const modeInfo = findMode(language.toLowerCase());
-        if (modeInfo && !loadedModes[modeInfo.mode]) {
-          loadedModes[modeInfo.mode] = true;
-          require(`codemirror/mode/${modeInfo.mode}/${modeInfo.mode}`);
-        }
-        this.cm.setOption('mode', modeInfo ? modeInfo.mode : 'javascript');
+        this.setMode(language);
       }
     });
   }
@@ -96,6 +98,34 @@ export default class CodeMirrorView {
       head: this.cm.indexFromPos(this.cm.getCursor('head')),
       anchor: this.cm.indexFromPos(this.cm.getCursor('anchor'))
     };
+  }
+
+  setMode(language: string) {
+    const modeInfo = findMode(language.toLowerCase());
+    if (modeInfo && !loadedModes[modeInfo.mode]) {
+      loadedModes[modeInfo.mode] = true;
+      require(`codemirror/mode/${modeInfo.mode}/${modeInfo.mode}`);
+    }
+    this.cm.setOption('mode', modeInfo ? modeInfo.mode : 'javascript');
+  }
+
+  detectLanguage(content: string) {
+    const self = this;
+
+    fetch(DETECT_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      },
+      body: 'code=' + content
+    }).then(response => {
+      return response.json();
+    }).then(function (data) {
+      const mode = data['language'];
+      self.setMode(mode);
+      self.pluginState.updateLanguage(mode, self.view);
+    });
   }
 
   selectionChanged(selection) {

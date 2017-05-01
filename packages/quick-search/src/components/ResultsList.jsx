@@ -1,8 +1,8 @@
-import React, { PropTypes, Component } from 'react';
-import { GroupedResultsParser } from '../../api/JsonToResultParser';
-import NoScrollResultsBox from '../NoScrollResultsBox';
+import React, { PropTypes, PureComponent } from 'react';
+import { GroupedResultsParser } from '../api/JsonToResultParser';
+import NoScrollResultsBox from './NoScrollResultsBox';
 
-export default class ResultsList extends Component {
+export default class ResultsList extends PureComponent {
 
   static itemPropType = PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,

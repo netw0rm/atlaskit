@@ -2,10 +2,10 @@ import React, { PropTypes, Component } from 'react';
 
 import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
 import uniqueId from '../../util/id';
+import getDisplayName from '../../util/getDisplayName';
 
-/** TS: ResultsList: WrappedCmpnt */
-const withSearchResource = WrappedComponent =>
-  class ResourcedResultsList extends Component {
+const withSearchResource = (WrappedComponent) => {
+  class WithSearchResource extends Component {
 
     static propTypes = {
       searchResource: PropTypes.instanceOf(AbstractResource).isRequired,
@@ -32,14 +32,14 @@ const withSearchResource = WrappedComponent =>
       this.searchSubscriber.unsubscribe(this.props.searchResource);
     }
 
-    onSearchResultUpdate = (resultType, items) => {
-      this.setState({ resultType, items });
+    onSearchResultUpdate = (resultsType, items) => {
+      this.setState({ resultsType, items });
     }
 
     filterError = (err) => {
       this.setState({
         items: [],
-        resultType: 'error',
+        resultsType: 'error',
       });
       // eslint-disable-next-line no-console
       console.log('ak-quick-search.filterError', err);
@@ -56,6 +56,9 @@ const withSearchResource = WrappedComponent =>
         />
       );
     }
+  }
+  WithSearchResource.displayName = `WithSearchResource(${getDisplayName(WrappedComponent)})`;
+  return WithSearchResource;
 };
 
 export default withSearchResource;

@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { AkSearch } from '@atlaskit/navigation';
 import _debounce from 'lodash.debounce';
 
-import SpinningClearIcon from '../SpinningClearIcon';
-import withSearchResource from '../ResourcedResultsList';
-import ResultsList from '../ResultsList';
-import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
-import uniqueId from '../../util/id';
+import SpinningClearIcon from './SpinningClearIcon';
+import withSearchResource from './results-list-enhancers/WithSearchResource';
+import ResultsList from './ResultsList';
+import { AbstractResource, SearchSubscriber } from '../api/SearchResource';
+import uniqueId from '../util/id';
 
 const ResourcedResultsList = withSearchResource(ResultsList);
 

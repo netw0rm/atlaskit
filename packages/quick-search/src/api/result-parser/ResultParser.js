@@ -4,7 +4,7 @@ import {
   HipChatPersonResult,
   HipChatRoomResult,
   UnknownResult,
-} from '../components/Result';
+} from '../../components/Result';
 
 export class JsonToResultParser {} // Placeholder for TS interface
 

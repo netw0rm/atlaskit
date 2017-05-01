@@ -45,7 +45,7 @@ storiesOf(`${name}/external-emoji`, module)
         label="Emoji search"
         onSelection={action('emoji selected')}
         position="below"
-        afterContent
+        afterContent={true}
         emojiProvider={defaultEmojiProvider}
       />
     );

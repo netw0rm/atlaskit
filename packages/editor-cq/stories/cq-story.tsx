@@ -86,7 +86,7 @@ storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('Default', () =>
     <Editor
-      isExpandedByDefault
+      isExpandedByDefault={true}
       onCancel={CANCEL_ACTION}
       onSave={SAVE_ACTION}
       onChange={handleChange}
@@ -95,7 +95,7 @@ storiesOf(name, module)
   )
   .add('With Media support', () =>
     <Editor
-      isExpandedByDefault
+      isExpandedByDefault={true}
       mentionProvider={mentionProvider}
       mediaProvider={storyMediaProviderFactory()}
       onCancel={CANCEL_ACTION}
@@ -135,7 +135,7 @@ storiesOf(name, module)
               <button onClick={() => this.setState({ input: JIRA_ISSUES_LIST })}>Insert JIRA Issues List</button>
             </fieldset>
             <Editor
-              isExpandedByDefault
+              isExpandedByDefault={true}
               onCancel={CANCEL_ACTION}
               onChange={handleChange}
               onSave={SAVE_ACTION}

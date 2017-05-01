@@ -126,10 +126,10 @@ const createSelectableCards = (appearance: CardAppearance, metadata: MediaItemDe
   return [
     {
       title: 'Selectable',
-      content: <CardView appearance={appearance} status="complete" metadata={metadata} dataURI={dataURI} selectable />
+      content: <CardView appearance={appearance} status="complete" metadata={metadata} dataURI={dataURI} selectable={true} />
     }, {
       title: 'Selected',
-      content: <CardView appearance={appearance} status="complete" metadata={metadata}  dataURI={dataURI} selectable selected />
+      content: <CardView appearance={appearance} status="complete" metadata={metadata}  dataURI={dataURI} selectable={true} selected={true} />
     }
   ];
 };

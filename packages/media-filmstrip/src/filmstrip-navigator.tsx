@@ -94,7 +94,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       </li>
     )) : null;
 
-    return <LazyLoad height={100} once overflow >
+    return <LazyLoad height={100} once={true} overflow={true} >
              <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
                {this.state.showLeft ? leftArrow : undefined}
                <FilmStripListWrapper>

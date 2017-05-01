@@ -83,7 +83,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           target={target}
           align="left"
           onExtractStyle={this.updatePosition}
-          autoPosition
+          autoPosition={true}
         >
           <div className={styles.container}>
             {!showOpenButton ? null :

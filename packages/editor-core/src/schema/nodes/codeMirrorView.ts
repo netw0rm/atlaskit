@@ -50,11 +50,7 @@ export default class CodeMirrorView {
         Left: () => this.maybeEscape('char', -1),
         Down: () => this.maybeEscape('line', 1),
         Right: () => this.maybeEscape('char', 1),
-        Enter: (cm) => {
-          const content = cm.getValue();
-          this.detectLanguage(content);
-          return CodeMirror.Pass;
-        },
+        Enter: (cm) => this.detectLanguage( cm.getValue() ),
         [`${mod}-Z`]: () => undo(this.view.state, this.view.dispatch),
         [`Shift-${mod}-Z`]: () => redo(this.view.state, this.view.dispatch),
         [`${mod}-Y`]: () => redo(this.view.state, this.view.dispatch),
@@ -75,6 +71,11 @@ export default class CodeMirrorView {
       if (!this.updating) {
         this.valueChanged();
       }
+    });
+
+    this.cm.on('paste', (cm, event) => {
+      const content = event.clipboardData.getData('text/plain');
+      this.detectLanguage( content );
     });
 
     this.cm.on('focus', () => {
@@ -126,6 +127,8 @@ export default class CodeMirrorView {
       self.setMode(mode);
       self.pluginState.updateLanguage(mode, self.view);
     });
+
+    return CodeMirror.Pass;
   }
 
   selectionChanged(selection) {

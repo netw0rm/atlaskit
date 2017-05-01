@@ -19,22 +19,22 @@ export const dimensionsSame = (a: Dimensions, b: Dimensions): boolean => {
 };
 
 // The editor core consumes and operates with UTF-32 strings.
-// JavaScript uses UTF-16 encoding for string. 
+// JavaScript uses UTF-16 encoding for string.
 // The following two functions are necessary to get UTF-32 code units (numeric codes or as strings) from a JS string.
 //
-// In UTF-16 a code unit is two bytes. 
+// In UTF-16 a code unit is two bytes.
 // When we call String.charCodeAt() we get a UTF-16 code unit. String.length returns the number of UTF-16 code units.
-// 
+//
 // Most of the characters we use are encoded with one UTF-16 code unit and we translate it to UTF-32 easily: the code is the same.
 // For example the letter 'a' is represented with the code 0x0061. The corresponding UTF-32 code is 0x00000061.
 //
 // Unfortunately there are characters that are represented with two UTF-16 code units.
 // Their Unicode values are in the range 0x10000-0x10FFFF.
-// In UTF-16 they are represented as surrogate pairs: 
+// In UTF-16 they are represented as surrogate pairs:
 //   the first UTF-16 code unit is in range 0xD800-0xDBFF and is called a high surrogate;
 //   the second UTF-16 code unit is in range 0xDC00-0xDFFF and is called a low surrogate.
-// 
-// No character can be encoded with one UTF-16 code unit in the range 0xD800-0xDBFF. If we get such a code unit 
+//
+// No character can be encoded with one UTF-16 code unit in the range 0xD800-0xDBFF. If we get such a code unit
 // then it's always a high surrogate and to get the whole character we need the next UTF-16 code unit which is the low surrogate.
 //
 // To form a surrogate pair (according to UTF-16 encoding) we need:
@@ -47,7 +47,7 @@ export const dimensionsSame = (a: Dimensions, b: Dimensions): boolean => {
 // 2) low_ten_bits = low_surrogate - 0xDC00
 // 3) To shift ten bits left we multiply by 0x400, thus the result is
 //
-//    result = top_ten_bits * 0x400 + low_ten_bits + 0x10000 = 
+//    result = top_ten_bits * 0x400 + low_ten_bits + 0x10000 =
 //           = (high_surrogate - 0xD800) * 0x400 + (low - 0xDC00) + 0x10000
 //
 // More info:

@@ -3,6 +3,7 @@ import HelpIcon from 'ak-icon/glyph/help';
 import Banner from '../src';
 import Button from '@atlaskit/button';
 
+const Icon = <HelpIcon label="Info icon" />;
 export default class ToggleBanner extends PureComponent {
   state = {
     isOpen: true,
@@ -18,7 +19,7 @@ export default class ToggleBanner extends PureComponent {
     return (
       <div>
         <Banner
-          icon={HelpIcon}
+          icon={Icon}
           isOpen={this.state.isOpen}
         >
           The opening and closing of the banner is animated

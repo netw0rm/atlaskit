@@ -2,9 +2,10 @@ import React from 'react';
 import HelpIcon from 'ak-icon/glyph/warning';
 import Banner from '../src';
 
+const Icon = <HelpIcon label="Info icon" />;
 const ErrorBanner = () => (
   <Banner
-    icon={<HelpIcon label="Info icon" />}
+    icon={Icon}
     isOpen
     appearance="error"
   >

@@ -78,8 +78,7 @@ AtlasKit uses [React Storybook](https://github.com/kadirahq/react-storybook) to 
 
 #### Viewing the storybook
 
-* To run a storybook for a single component: `yarn run storybook/single @atlaskit/my-component-name`
-* To run the storybook for all components (slow!): `yarn run storybook`
+* To run a storybook for a single component: `yarn run storybook @atlaskit/my-component-name`
 
 #### Publishing the storybook
 

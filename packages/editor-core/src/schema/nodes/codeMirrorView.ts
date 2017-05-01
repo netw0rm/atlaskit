@@ -113,6 +113,10 @@ export default class CodeMirrorView {
   detectLanguage(content: string) {
     const self = this;
 
+    if (this.cm.getMode().name !== 'null') {
+      return CodeMirror.Pass;
+    }
+
     fetch(DETECT_URL, {
       method: 'POST',
       mode: 'cors',

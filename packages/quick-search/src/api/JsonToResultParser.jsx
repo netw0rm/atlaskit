@@ -15,14 +15,11 @@ export class ResultParser extends /** implements */ JsonToResultParser {
     this.callbacks = callbacks;
   }
 
-  parse = (dataList) => {
-    if (!dataList || !dataList.length) {
-      return [];
-    }
-    return dataList
+  parse = dataList => (
+    dataList
       .map(this.parseSingle)
-      .filter(x => x !== null);
-  }
+      .filter(x => x !== null)
+  );
 
   parseSingle = (data) => {
     if (!data || !data.type) {
@@ -68,10 +65,6 @@ export class GroupedResultsParser extends /** implements */ JsonToResultParser {
   }
 
   parse = (resultGroups) => {
-    if (!resultGroups || !Object.keys(resultGroups).length) {
-      return [];
-    }
-
     if (Object.keys(resultGroups).length === 1) {
       return this.resultParser.parse(
         resultGroups[Object.keys(resultGroups)[0]]

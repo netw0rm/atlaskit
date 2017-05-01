@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import codeBlockPlugins from '../../../src/plugins/code-block';
-import { setTextSelection, fixtures, chaiPlugin, code_block, doc, makeEditor, p, createEvent } from '../../../src/test-helper';
+import { setTextSelection, fixtures, chaiPlugin, code_block, doc, makeEditor, p, createEvent, dispatchPasteEvent } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -287,7 +287,7 @@ describe('code-block', () => {
       expect(pluginState.language).to.eq('java');
     });
 
-    it('updates if activeCodeBlock updates langugae', () => {
+    it('updates if activeCodeBlock updates language', () => {
       const { pluginState, editorView } = editor(doc(code_block({ language: 'java' })('te{<>}xt')));
 
       pluginState.updateLanguage('php', editorView);
@@ -315,7 +315,7 @@ describe('code-block', () => {
     });
   });
 
-  describe('editorFocued', () => {
+  describe('editorFocused', () => {
     context('when editor is focused', () => {
       it('it is true', () => {
         const { plugin, editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
@@ -335,6 +335,18 @@ describe('code-block', () => {
 
         expect(pluginState.editorFocused).not.to.be.true;
       });
+    });
+  });
+
+  describe('onPaste', () => {
+    it('should preserve line breaks from the pasted text', () => {
+      const clipboardString = 'let a;\nconst b = new Map();';
+      const pasteEventPayload = {
+        plain: clipboardString
+      };
+      const { editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'javascript' })('{<>}')));
+      dispatchPasteEvent(editorView, pasteEventPayload);
+      expect(pluginState.element.textContent).to.equal(clipboardString);
     });
   });
 });

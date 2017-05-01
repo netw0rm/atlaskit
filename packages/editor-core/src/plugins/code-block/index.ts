@@ -2,6 +2,8 @@ import {
   EditorState,
   EditorView,
   Schema,
+  Slice,
+  Fragment,
   Node,
   Plugin,
   PluginKey,
@@ -122,6 +124,25 @@ const plugin = new Plugin({
   props: {
     handleClick(view: EditorView, event) {
       view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, domEvent: true }));
+      return false;
+    },
+    handlePaste(view: EditorView, event: ClipboardEvent, slice: Slice) {
+
+      /**
+       * Prosemirror will have already stripped newlines from the pasted text at this point,
+       * so we'll pull the string from the clipboardData and apply the transform ourselves.
+       */
+      const pastedText = event.clipboardData.getData('text/plain');
+      const node = slice.content.firstChild;
+      if (pastedText && node && node.type === view.state.schema.nodes.codeBlock) {
+        const { attrs } = node;
+        const newCodeBlockNode = view.state.schema.nodes.codeBlock.create(attrs, view.state.schema.text(pastedText));
+        const newCodeBlockFragment = Fragment.from(newCodeBlockNode);
+        const newSlice = new Slice(newCodeBlockFragment, slice.openLeft, slice.openRight);
+        let tr = view.state.tr.replaceSelection(newSlice);
+        view.dispatch(tr.scrollIntoView());
+        return true;
+      }
       return false;
     },
     onFocus(view: EditorView, event) {

@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classnames from 'classnames';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable-next-line react/prefer-stateless-function */

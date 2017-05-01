@@ -1,14 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
 import React, { PropTypes } from 'react';
 import Avatar from '@atlaskit/avatar';
-import EditorBB from '@atlaskit/editor-bitbucket';
+import Editor from '@atlaskit/editor-bitbucket';
 
-import storyStyles from 'style!./stories.less';
+import storyStyles from './stories.less';
 import { CommentLayout } from '../src';
 import { name } from '../package.json';
 import sampleAvatarImg from './sample-avatar.png';
-
-const Editor = EditorBB.default;
 
 const sampleAvatar = <Avatar src={sampleAvatarImg} label="User avatar" />;
 

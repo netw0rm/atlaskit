@@ -40,7 +40,7 @@ describe('MentionPicker', () => {
     const component = setupPicker({
       query: 's',
     } as Props);
-    const hasExpectedItems = () => component.find(MentionItem).length === 4;
+    const hasExpectedItems = () => component.find(MentionItem).length === 5;
     return waitUntil(hasExpectedItems);
   });
 

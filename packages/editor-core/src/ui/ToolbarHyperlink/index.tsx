@@ -3,21 +3,22 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { addLink, tooltip } from '../../keymaps';
+import { EditorView, PluginKey } from '../../prosemirror';
 import { HyperlinkState } from '../../plugins/hyperlink';
-import FloatingToolbar from '../FloatingToolbar';
-import TextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
 
 export interface Props {
+  editorView: EditorView;
   pluginState: HyperlinkState;
 }
 
 export interface State {
   adding?: boolean;
   disabled?: boolean;
-  showToolbarPanel?: boolean;
 }
+
+export const stateKey = new PluginKey('hypelinkPlugin');
 
 export default class ToolbarHyperlink extends PureComponent<Props, State> {
   state: State = {};
@@ -31,7 +32,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
   }
 
   render() {
-    const { adding, disabled, showToolbarPanel } = this.state;
+    const { adding, disabled } = this.state;
 
     return (
       <span className={styles.outerContainer}>
@@ -42,37 +43,19 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           title={tooltip(addLink)}
           iconBefore={<LinkIcon label="Link" />}
         />
-        {!showToolbarPanel ? null :
-          <FloatingToolbar align="center" onOutsideClick={this.toggleLinkPanel}>
-            <div className={styles.textInputContainer}>
-              <TextInput
-                autoFocus
-                placeholder="Paste link"
-                onSubmit={this.handleSubmit}
-                onCancel={this.toggleLinkPanel}
-              />
-            </div>
-          </FloatingToolbar>
-        }
       </span>
     );
   }
 
+  @analytics('atlassian.editor.format.hyperlink.button')
   private toggleLinkPanel = () => {
-    const { pluginState } = this.props;
-    pluginState.showLinkPanel();
+    const { pluginState, editorView } = this.props;
+    pluginState.showLinkPanel(editorView);
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
     this.setState({
-      disabled: !pluginState.linkable || pluginState.active,
-      showToolbarPanel: pluginState.showToolbarPanel,
+      disabled: !pluginState.linkable || pluginState.active
     });
-  }
-
-  @analytics('atlassian.editor.format.hyperlink.button')
-  private handleSubmit = (value: string) => {
-    this.props.pluginState.addLink({ href: value });
-    this.toggleLinkPanel();
   }
 }

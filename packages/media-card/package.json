@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "9.0.0",
+  "version": "12.0.0",
   "config": {
     "access": "public"
   },
@@ -23,6 +23,7 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/droplist-group": "^1.0.0",
     "@atlaskit/droplist-item": "^1.0.0",
+    "@atlaskit/field-text": "^2.6.1",
     "@atlaskit/icon": "^2.4.0",
     "@atlaskit/media-filmstrip": "^2.0.6",
     "@atlaskit/util-shared-styles": "^1.0.0",
@@ -31,6 +32,7 @@
     "babel-runtime": "^6.11.6",
     "bytes": "^2.4.0",
     "classnames": "^2.2.5",
+    "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
     "react-rnd": "^4.2.2",
     "tslib": "^1.2.0"
@@ -38,7 +40,13 @@
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
     {
-      "name": "Hector G"
+      "name": "Hector Z"
+    },
+    {
+      "name": "Michael J"
+    },
+    {
+      "name": "James N"
     }
   ],
   "license": "Apache-2.0",
@@ -54,8 +62,9 @@
   },
   "devDependencies": {
     "@atlaskit/media-core": "^5.0.4",
-    "@atlaskit/media-test-helpers": "^4.0.0",
-    "akutil-common-test": "*"
+    "@atlaskit/media-test-helpers": "^4.8.0",
+    "akutil-common-test": "*",
+    "deepcopy": "0.6.3"
   },
   "keywords": [
     "media",

@@ -62,7 +62,7 @@ export default class Popup extends PureComponent<Props, {}> {
 
   render() {
     return (
-      <div className={popupStyle} ref="popup">
+      <div className={popupStyle}>
         {this.props.children}
       </div>
     );

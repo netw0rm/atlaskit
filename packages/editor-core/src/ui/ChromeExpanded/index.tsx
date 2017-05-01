@@ -4,17 +4,21 @@ import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { MentionProvider } from '@atlaskit/mention';
+import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
-import { EmojisPluginState } from '../../plugins/emojis';
+import { EmojiState } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
-import { MentionsPluginState } from '../../plugins/mentions';
+import { MentionsState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
+import { MediaPluginState } from '../../plugins/media';
+import { MediaProvider } from '../../media';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
@@ -28,9 +32,12 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
+import ToolbarMedia from '../ToolbarMedia';
 import * as styles from './styles';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
+  editorView: EditorView;
   feedbackFormUrl?: string;
   onCancel?: () => void;
   onInsertMention?: () => void;
@@ -45,67 +52,111 @@ export interface Props {
   pluginStateTextFormatting?: TextFormattingState;
   pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
-  pluginStateMentions?: MentionsPluginState;
-  pluginStateEmojis?: EmojisPluginState;
-  mentionsResourceProvider?: any; // AbstractMentionResource
+  pluginStateMentions?: MentionsState;
+  pluginStateMedia?: MediaPluginState;
+  pluginStateEmojis?: EmojiState;
   presenceResourceProvider?: any; // AbstractPresenceResource
+  saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
+  mentionProvider?: Promise<MentionProvider>;
+  mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
+  private editorContainer: HTMLElement;
+
+  static defaultProps = {
+    saveDisabled: false,
+  };
+
   render() {
     const { props } = this;
+    const iconAfter = props.saveDisabled
+      ? <Spinner isCompleting={false} onComplete={() => { }} />
+      : undefined;
+
+    const saveButtonAppearance = props.saveDisabled
+      ? 'default'
+      : 'primary';
 
     return (
-      <div className={styles.container} data-editor-chrome>
+      <div className={styles.container} data-editor-chrome tabIndex={-1} ref={this.handleEditorContainerRef}>
         <div className={styles.toolbar}>
-          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
-          {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
+          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
+          {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
           {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
             <ToolbarAdvancedTextFormatting
               pluginStateTextFormatting={props.pluginStateTextFormatting}
               pluginStateClearFormatting={props.pluginStateClearFormatting}
+              editorView={props.editorView}
+              softBlurEditor={this.softBlurEditor}
+              focusEditor={this.focusEditor}
             /> : null}
-          {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
-          {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
+          {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
+          {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
           <span style={{ flexGrow: 1 }} />
           {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
         </div>
         <div className={styles.content}>
           {props.children}
-          {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
-          {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
-          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} presenceProvider={props.presenceResourceProvider} /> : null}
+          {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
+          {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} editorView={props.editorView} /> : null}
+          {props.pluginStateMentions && props.mentionProvider ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionProvider} /> : null}
           {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
-          {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
+          {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} editorView={props.editorView} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>
             <AkButtonGroup>
               {!this.props.onSave ? null :
-              <span onClick={this.handleSave}>
-                <AkButton appearance="primary">Save</AkButton>
-              </span>
+                <span onClick={this.handleSave}>
+                  <AkButton
+                    iconAfter={iconAfter}
+                    isDisabled={this.props.saveDisabled}
+                    appearance={saveButtonAppearance}
+                  >
+                    Save
+                  </AkButton>
+                </span>
               }
               {!this.props.onCancel ? null :
-              <span onClick={this.handleCancel}>
-                <AkButton appearance="subtle">Cancel</AkButton>
-              </span>
+                <span onClick={this.handleCancel}>
+                  <AkButton appearance="subtle">Cancel</AkButton>
+                </span>
               }
             </AkButtonGroup>
           </div>
           <div>
             {!props.onInsertMention ? null :
-            <ToolbarButton onClick={this.handleInsertMention}>
-              <MentionIcon label="Mention" />
-            </ToolbarButton>
+              <ToolbarButton onClick={this.handleInsertMention}>
+                <MentionIcon label="Mention" />
+              </ToolbarButton>
             }
-            {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} /> : null}
+            {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
+            {props.pluginStateMedia ? <ToolbarMedia pluginState={props.pluginStateMedia} /> : null}
           </div>
         </div>
       </div>
     );
+  }
+
+  /**
+   * Blurs editor but keeps focus on editor container,
+   * so components like inline-edit can check if focus is still inside them
+   */
+  softBlurEditor = () => {
+    if (this.editorContainer) {
+      this.editorContainer.focus();
+    }
+  }
+
+  focusEditor = () => {
+    this.props.editorView.dom.focus();
+  }
+
+  private handleEditorContainerRef = ref => {
+    this.editorContainer = ref;
   }
 
   @analytics('atlassian.editor.stop.cancel')

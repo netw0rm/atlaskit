@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-base",
-  "version": "5.1.0",
+  "version": "5.3.2",
   "config": {
     "access": "public"
   },
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@atlaskit/icon": "^1.0.0",
-    "@atlaskit/inline-dialog": "^1.0.0",
+    "@atlaskit/inline-dialog": "^3.0.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/util-shared-styles": "^1.0.1",
     "babel-runtime": "^6.11.6",
@@ -29,7 +29,9 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/button": "^1.0.0",
+    "@atlaskit/field-base": "*",
     "@atlaskit/input": "^1.0.0",
+    "@atlaskit/util-readme": "^3.1.0",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",

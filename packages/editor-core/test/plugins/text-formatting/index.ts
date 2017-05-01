@@ -1,74 +1,78 @@
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import { browser, TextFormattingPlugin } from '../../../src';
-import { chaiPlugin, makeEditor } from '../../../src/test-helper';
-import { doc, em, code, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
+import { browser } from '../../../src';
+import {
+  sendKeyToPm, insertText, fixtures, doc, strike, plain, strong, em, underline, code, p,
+  subsup, chaiPlugin, makeEditor, mention
+} from '../../../src/test-helper';
+import textFormattingPlugins from '../../../src/plugins/text-formatting';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('text-formatting', () => {
-  const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins: textFormattingPlugins(defaultSchema),
+    place: fixture()
+  });
 
   describe('keymap', () => {
     if (browser.mac) {
       context('when on a mac', () => {
         context('when hits Cmd-B', () => {
           it('toggles bold mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleStrong = sinon.spy(plugin, 'toggleStrong');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Cmd-B');
+            sendKeyToPm(editorView, 'Cmd-b');
 
-            expect(toggleStrong.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
           });
         });
 
         context('when hits Cmd-I', () => {
           it('toggles italic mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleEm = sinon.spy(plugin, 'toggleEm');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Cmd-I');
+            sendKeyToPm(editorView, 'Cmd-i');
 
-            expect(toggleEm.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
           });
         });
 
         context('when hits Cmd-U', () => {
           it('toggles underline mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Cmd-U');
+            sendKeyToPm(editorView, 'Cmd-u');
 
-            expect(toggleUnderline.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
           });
         });
 
         /*
-          Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
-                Because after key binding, it was normalized.
-        */
+         Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
+         Because after key binding, it was normalized.
+         */
         context('when hits Shift-Cmd-S', () => {
           it('toggles strikethrough mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleStrike = sinon.spy(plugin, 'toggleStrike');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Shift-Cmd-S');
+            sendKeyToPm(editorView, 'Shift-Cmd-s');
 
-            expect(toggleStrike.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
         });
 
         context('when hits Shift-Cmd-M', () => {
           it('toggles code mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleCode = sinon.spy(plugin, 'toggleCode');
+            const { editorView } = editor(doc(p(strong('{<}text '), mention({ id: '1234', text: '@helga' }), em(' text{>}'))));
 
-            pm.input.dispatchKey('Shift-Cmd-M');
+            sendKeyToPm(editorView, 'Shift-Cmd-m');
 
-            expect(toggleCode.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(code('text @helga text'))));
           });
         });
       });
@@ -76,60 +80,55 @@ describe('text-formatting', () => {
       context('when not on a mac', () => {
         context('when hits Ctrl-B', () => {
           it('toggles bold mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleStrong = sinon.spy(plugin, 'toggleStrong');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Ctrl-B');
+            sendKeyToPm(editorView, 'Ctrl-b');
 
-            expect(toggleStrong.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
           });
         });
 
         context('when hits Ctrl-B', () => {
           it('toggles italic mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleEm = sinon.spy(plugin, 'toggleEm');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Ctrl-I');
+            sendKeyToPm(editorView, 'Ctrl-i');
 
-            expect(toggleEm.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
           });
         });
 
         context('when hits Ctrl-B', () => {
           it('toggles underline mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Ctrl-U');
+            sendKeyToPm(editorView, 'Ctrl-u');
 
-            expect(toggleUnderline.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
           });
         });
 
         /*
-          Node: Here dispatch key 'Shift-Ctrl-S' instead of 'Ctrl-Shift-S',
-                Because after key binding, it was normalized.
-        */
+         Node: Here dispatch key 'Shift-Ctrl-S' instead of 'Ctrl-Shift-S',
+         Because after key binding, it was normalized.
+         */
         context('when hits Shift-Ctrl-S', () => {
           it('toggles strikethrough mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleStrike = sinon.spy(plugin, 'toggleStrike');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Shift-Ctrl-S');
+            sendKeyToPm(editorView, 'Shift-Ctrl-s');
 
-            expect(toggleStrike.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
         });
 
         context('when hits Shift-Ctrl-M', () => {
           it('toggles code mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleCode = sinon.spy(plugin, 'toggleCode');
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            pm.input.dispatchKey('Shift-Ctrl-M');
+            sendKeyToPm(editorView, 'Shift-Ctrl-m');
 
-            expect(toggleCode.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
           });
         });
       });
@@ -137,346 +136,384 @@ describe('text-formatting', () => {
 
   });
 
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = TextFormattingPlugin as any; // .State is not public API.
-    expect(plugin.State.name).is.be.a('string');
-  });
-
   it('should allow a change handler to be attached', () => {
-    const { plugin } = editor(doc(p('text')));
+    const { pluginState } = editor(doc(p('text')));
     const spy = sinon.spy();
-    plugin.subscribe(spy);
+    pluginState.subscribe(spy);
 
     expect(spy.callCount).to.equal(1);
-    expect(spy.calledWith(plugin)).to.equal(true);
-  });
-
-  it('should call change handlers when em is toggled', () => {
-    const { plugin } = editor(doc(p('te{<>}xt')));
-    const spy = sinon.spy();
-    plugin.subscribe(spy);
-
-    plugin.toggleEm();
-
-    expect(spy.callCount).to.equal(2);
-    expect(spy.calledWith(plugin)).to.equal(true);
+    expect(spy.calledWith(pluginState)).to.equal(true);
   });
 
   describe('em', () => {
-    it('should be able to toggle em on a character', () => {
-      const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
+    it('should be able to remove mark when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(em('{<}text{>}'))));
 
-      expect(plugin.toggleEm());
-      expect(pm.doc).to.deep.equal(doc(p(em('t'), 'ext')));
-      expect(plugin.toggleEm());
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should be able to toggle em on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+
+      expect(pluginState.toggleEm(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('t'), 'ext')));
+      expect(pluginState.toggleEm(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should expose whether em is active on an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.emActive).to.equal(false);
-      expect(plugin.toggleEm());
-      expect(plugin.emActive).to.equal(true);
+      expect(pluginState.emActive).to.equal(false);
+      expect(pluginState.toggleEm(editorView));
+      expect(pluginState.emActive).to.equal(true);
     });
 
     it('should expose whether em is active on a text selection', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.emActive).to.equal(false);
-      expect(plugin.toggleEm());
-      expect(plugin.emActive).to.equal(true);
+      expect(pluginState.emActive).to.equal(false);
+      expect(pluginState.toggleEm(editorView));
+      expect(pluginState.emActive).to.equal(true);
     });
 
     it('exposes em as disabled when the mark cannot be applied', () => {
-      const { plugin } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.emDisabled).to.equal(true);
+      expect(pluginState.emDisabled).to.equal(true);
     });
 
     it('exposes em as not disabled when the mark can be applied', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.emDisabled).to.equal(false);
+      expect(pluginState.emDisabled).to.equal(false);
     });
   });
 
   describe('strong', () => {
-    it('should be able to toggle strong on a character', () => {
-      const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
+    it('should be able to remove mark when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(strong('{<}text{>}'))));
 
-      expect(plugin.toggleStrong());
-      expect(pm.doc).to.deep.equal(doc(p(strong('t'), 'ext')));
-      expect(plugin.toggleStrong());
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should be able to toggle strong on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+
+      expect(pluginState.toggleStrong(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('t'), 'ext')));
+      expect(pluginState.toggleStrong(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should expose whether strong is active on an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.strongActive).to.equal(false);
-      expect(plugin.toggleStrong());
-      expect(plugin.strongActive).to.equal(true);
+      expect(pluginState.strongActive).to.equal(false);
+      expect(pluginState.toggleStrong(editorView));
+      expect(pluginState.strongActive).to.equal(true);
     });
 
     it('should expose whether strong is active on a text selection', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.strongActive).to.equal(false);
-      expect(plugin.toggleStrong());
-      expect(plugin.strongActive).to.equal(true);
+      expect(pluginState.strongActive).to.equal(false);
+      expect(pluginState.toggleStrong(editorView));
+      expect(pluginState.strongActive).to.equal(true);
     });
 
     it('exposes strong as disabled when the mark cannot be applied', () => {
-      const { plugin } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.strongDisabled).to.equal(true);
+      expect(pluginState.strongDisabled).to.equal(true);
     });
 
     it('exposes strong as not disabled when the mark can be applied', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.strongDisabled).to.equal(false);
+      expect(pluginState.strongDisabled).to.equal(false);
     });
   });
 
   describe('underline', () => {
-    it('should be able to toggle underline on a character', () => {
-      const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
+    it('should be able to remove mark when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(underline('{<}text{>}'))));
 
-      expect(plugin.toggleUnderline());
-      expect(pm.doc).to.deep.equal(doc(p(u('t'), 'ext')));
-      expect(plugin.toggleUnderline());
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should be able to toggle underline on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+
+      expect(pluginState.toggleUnderline(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p(underline('t'), 'ext')));
+      expect(pluginState.toggleUnderline(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should expose whether underline is active on an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.underlineActive).to.equal(false);
-      expect(plugin.toggleUnderline());
-      expect(plugin.underlineActive).to.equal(true);
+      expect(pluginState.underlineActive).to.equal(false);
+      expect(pluginState.toggleUnderline(editorView));
+      expect(pluginState.underlineActive).to.equal(true);
     });
 
     it('should expose whether underline is active on a text selection', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.underlineActive).to.equal(false);
-      expect(plugin.toggleUnderline());
-      expect(plugin.underlineActive).to.equal(true);
+      expect(pluginState.underlineActive).to.equal(false);
+      expect(pluginState.toggleUnderline(editorView));
+      expect(pluginState.underlineActive).to.equal(true);
     });
 
     it('exposes underline as disabled when the mark cannot be applied', () => {
-      const { plugin } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.underlineDisabled).to.equal(true);
+      expect(pluginState.underlineDisabled).to.equal(true);
     });
 
     it('exposes underline as not disabled when the mark can be applied', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.underlineDisabled).to.equal(false);
+      expect(pluginState.underlineDisabled).to.equal(false);
     });
   });
 
   describe('code', () => {
-    it('should be able to toggle code on a character', () => {
-      const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
+    it('should be able to remove mark when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(code('{<}text{>}'))));
 
-      expect(plugin.toggleCode());
-      expect(pm.doc).to.deep.equal(doc(p(code('t'), 'ext')));
-      expect(plugin.toggleCode());
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should be able to toggle code on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+
+      expect(pluginState.toggleCode(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p(code('t'), 'ext')));
+      expect(pluginState.toggleCode(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should expose whether code is active on an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.codeActive).to.equal(false);
-      expect(plugin.toggleCode());
-      expect(plugin.codeActive).to.equal(true);
+      expect(pluginState.codeActive).to.equal(false);
+      expect(pluginState.toggleCode(editorView));
+      expect(pluginState.codeActive).to.equal(true);
     });
 
     it('should expose whether code is active on a text selection', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.codeActive).to.equal(false);
-      expect(plugin.toggleCode());
-      expect(plugin.codeActive).to.equal(true);
+      expect(pluginState.codeActive).to.equal(false);
+      expect(pluginState.toggleCode(editorView));
+      expect(pluginState.codeActive).to.equal(true);
     });
 
     it('exposes code as disabled when the mark cannot be applied', () => {
-      const { plugin } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.codeDisabled).to.equal(true);
+      expect(pluginState.codeDisabled).to.equal(true);
     });
 
     it('exposes code as not disabled when the mark can be applied', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.codeDisabled).to.equal(false);
+      expect(pluginState.codeDisabled).to.equal(false);
     });
   });
 
   describe('strike', () => {
-    it('should be able to toggle strike on a character', () => {
-      const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
+    it('should be able to remove mark when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(strike('{<}text{>}'))));
 
-      expect(plugin.toggleStrike());
-      expect(pm.doc).to.deep.equal(doc(p(strike('t'), 'ext')));
-      expect(plugin.toggleStrike());
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should be able to toggle strike on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+
+      expect(pluginState.toggleStrike(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p(strike('t'), 'ext')));
+      expect(pluginState.toggleStrike(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should expose whether strike is active on an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.strikeActive).to.equal(false);
-      expect(plugin.toggleStrike());
-      expect(plugin.strikeActive).to.equal(true);
+      expect(pluginState.strikeActive).to.equal(false);
+      expect(pluginState.toggleStrike(editorView));
+      expect(pluginState.strikeActive).to.equal(true);
     });
 
     it('should expose whether strike is active on a text selection', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.strikeActive).to.equal(false);
-      expect(plugin.toggleStrike());
-      expect(plugin.strikeActive).to.equal(true);
+      expect(pluginState.strikeActive).to.equal(false);
+      expect(pluginState.toggleStrike(editorView));
+      expect(pluginState.strikeActive).to.equal(true);
     });
 
     it('exposes strike as disabled when the mark cannot be applied', () => {
-      const { plugin } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.strikeDisabled).to.equal(true);
+      expect(pluginState.strikeDisabled).to.equal(true);
     });
 
     it('exposes strike as not disabled when the mark can be applied', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.strikeDisabled).to.equal(false);
+      expect(pluginState.strikeDisabled).to.equal(false);
     });
   });
 
   describe('subscript', () => {
-    it('should be able to toggle subscript on a character', () => {
-      const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
+    it('should be able to remove mark when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(subsup({ type: 'sub' })('{<}text{>}'))));
 
-      expect(plugin.toggleSubscript());
-      expect(pm.doc).to.deep.equal(doc(p(sub('t'), 'ext')));
-      expect(plugin.toggleSubscript());
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should be able to toggle subscript on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+
+      expect(pluginState.toggleSubscript(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({ type: 'sub' })('t'), 'ext')));
+      expect(pluginState.toggleSubscript(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should expose whether subcript is active on an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.subscriptActive).to.equal(false);
-      expect(plugin.toggleSubscript());
-      expect(plugin.subscriptActive).to.equal(true);
+      expect(pluginState.subscriptActive).to.equal(false);
+      expect(pluginState.toggleSubscript(editorView));
+      expect(pluginState.subscriptActive).to.equal(true);
     });
 
     it('should expose whether subcript is active on a text selection', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.subscriptActive).to.equal(false);
-      expect(plugin.toggleSubscript());
-      expect(plugin.subscriptActive).to.equal(true);
+      expect(pluginState.subscriptActive).to.equal(false);
+      expect(pluginState.toggleSubscript(editorView));
+      expect(pluginState.subscriptActive).to.equal(true);
     });
 
     it('exposes subcript as disabled when the mark cannot be applied', () => {
-      const { plugin } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.subscriptDisabled).to.equal(true);
+      expect(pluginState.subscriptDisabled).to.equal(true);
     });
 
     it('exposes subcript as not disabled when the mark can be applied', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.subscriptDisabled).to.equal(false);
+      expect(pluginState.subscriptDisabled).to.equal(false);
     });
 
     it('deactives superscript after toggling subscript for an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      plugin.toggleSuperscript();
-      plugin.toggleSubscript();
-      expect(plugin.superscriptActive).to.equal(false);
+      pluginState.toggleSuperscript(editorView);
+      pluginState.toggleSubscript(editorView);
+      expect(pluginState.superscriptActive).to.equal(false);
     });
 
     it('deactives superscript after toggling subscript for selected text', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      plugin.toggleSuperscript();
-      plugin.toggleSubscript();
-      expect(plugin.superscriptActive).to.equal(false);
+      pluginState.toggleSuperscript(editorView);
+      pluginState.toggleSubscript(editorView);
+      expect(pluginState.superscriptActive).to.equal(false);
     });
   });
 
   describe('superscript', () => {
-    it('should be able to toggle superscript on a character', () => {
-      const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
+    it('should be able to remove mark when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(subsup({ type: 'sup' })('{<}text{>}'))));
 
-      expect(plugin.toggleSuperscript());
-      expect(pm.doc).to.deep.equal(doc(p(sup('t'), 'ext')));
-      expect(plugin.toggleSuperscript());
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should be able to toggle superscript on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+      pluginState.toggleSuperscript(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({ type: 'sup' })('t'), 'ext')));
+      pluginState.toggleSuperscript(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should expose whether superscript is active on an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.superscriptActive).to.equal(false);
-      expect(plugin.toggleSuperscript());
-      expect(plugin.superscriptActive).to.equal(true);
+      expect(pluginState.superscriptActive).to.equal(false);
+      expect(pluginState.toggleSuperscript(editorView));
+      expect(pluginState.superscriptActive).to.equal(true);
     });
 
     it('should expose whether superscript is active on a text selection', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.superscriptActive).to.equal(false);
-      expect(plugin.toggleSuperscript());
-      expect(plugin.superscriptActive).to.equal(true);
+      expect(pluginState.superscriptActive).to.equal(false);
+      expect(pluginState.toggleSuperscript(editorView));
+      expect(pluginState.superscriptActive).to.equal(true);
     });
 
     it('exposes superscript as disabled when the mark cannot be applied', () => {
-      const { plugin } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.superscriptDisabled).to.equal(true);
+      expect(pluginState.superscriptDisabled).to.equal(true);
     });
 
     it('exposes superscript as not disabled when the mark can be applied', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.superscriptDisabled).to.equal(false);
+      expect(pluginState.superscriptDisabled).to.equal(false);
     });
 
     it('deactives subscript after toggling superscript for an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      plugin.toggleSubscript();
-      plugin.toggleSuperscript();
-      expect(plugin.subscriptActive).to.equal(false);
+      pluginState.toggleSubscript(editorView);
+      pluginState.toggleSuperscript(editorView);
+      expect(pluginState.subscriptActive).to.equal(false);
     });
 
     it('deactives subscript after toggling superscript for selected text', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      plugin.toggleSubscript();
-      plugin.toggleSuperscript();
-      expect(plugin.subscriptActive).to.equal(false);
+      pluginState.toggleSubscript(editorView);
+      pluginState.toggleSuperscript(editorView);
+      expect(pluginState.subscriptActive).to.equal(false);
     });
 
     it('deactives strong, em, strike after toggling code for selected text', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.strongDisabled).to.be.false;
-      expect(plugin.emDisabled).to.be.false;
-      expect(plugin.strikeDisabled).to.be.false;
-      plugin.toggleCode();
-      expect(plugin.strongDisabled).to.be.true;
-      expect(plugin.emDisabled).to.be.true;
-      expect(plugin.strikeDisabled).to.be.true;
+      expect(pluginState.strongDisabled).to.be.false;
+      expect(pluginState.emDisabled).to.be.false;
+      expect(pluginState.strikeDisabled).to.be.false;
+      pluginState.toggleCode(editorView);
+      expect(pluginState.strongDisabled).to.be.true;
+      expect(pluginState.emDisabled).to.be.true;
+      expect(pluginState.strikeDisabled).to.be.true;
     });
-
   });
 });

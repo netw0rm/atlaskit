@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
+import { akFontFamily } from '@atlaskit/util-shared-styles';
 import { fadeIn } from './animations';
 
 export * from './config';
@@ -9,6 +10,7 @@ export * from './animations';
 
 export const Root = styled.div`
   box-sizing: border-box;
+  font-family: ${akFontFamily};
 
   * {
     box-sizing: border-box;

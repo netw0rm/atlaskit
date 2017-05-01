@@ -1,10 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
-import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
+import styles from './styles.less';
 import NothingWasFound from './internal/NothingWasFound';
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
@@ -16,6 +16,7 @@ const groupShape = DummyGroup.propTypes;
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(appearances.values),
+    droplistShouldFitContainer: PropTypes.bool,
     filterValue: PropTypes.string,
     hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
@@ -40,6 +41,7 @@ export default class StatelessSelect extends PureComponent {
 
   static defaultProps = {
     appearance: appearances.default,
+    droplistShouldFitContainer: true,
     filterValue: '',
     hasAutocomplete: false,
     isOpen: false,
@@ -61,23 +63,29 @@ export default class StatelessSelect extends PureComponent {
   }
 
   componentDidMount = () => {
-    if (this.state.isFocused && this.inputNode) {
-      this.inputNode.focus();
+    if (this.state.isFocused) {
+      this.focus();
+    }
+
+    if (!this.props.droplistShouldFitContainer && this.droplistNode) {
+      this.setDroplistMinWidth();
     }
   }
 
   componentDidUpdate = (prevProps) => {
-    if (!prevProps.shouldFocus && this.props.shouldFocus && this.inputNode) {
-      this.inputNode.focus();
+    if (!prevProps.shouldFocus && this.props.shouldFocus) {
+      this.focus();
+    }
+
+    if (!this.props.droplistShouldFitContainer && this.droplistNode) {
+      this.setDroplistMinWidth();
     }
   }
 
   onFocus = () => {
     if (!this.props.isDisabled) {
       this.setState({ isFocused: true });
-      if (this.inputNode) {
-        this.inputNode.focus();
-      }
+      this.focus();
     }
   }
 
@@ -92,10 +100,6 @@ export default class StatelessSelect extends PureComponent {
     this.setState({
       focusedItemIndex: undefined,
     });
-
-    if (this.inputNode) {
-      this.inputNode.focus();
-    }
   }
 
   getNextFocusable = (indexItem, length) => {
@@ -148,6 +152,19 @@ export default class StatelessSelect extends PureComponent {
     }
 
     return res;
+  }
+
+  setDroplistMinWidth = () => {
+    const width = this.triggerNode.getBoundingClientRect().width;
+    this.setState({ droplistWidth: width });
+  }
+
+  focus = () => {
+    if (this.inputNode) {
+      this.inputNode.focus();
+    } else {
+      this.triggerNode.focus();
+    }
   }
 
   clearNativeSearch = () => {
@@ -396,7 +413,7 @@ export default class StatelessSelect extends PureComponent {
           isTriggerNotTabbable
           onOpenChange={this.onOpenChange}
           position={this.props.position}
-          shouldFitContainer
+          shouldFitContainer={this.props.droplistShouldFitContainer}
           trigger={
             <FieldBase
               appearance={mapAppearanceToFieldBase([this.props.appearance])}
@@ -412,6 +429,7 @@ export default class StatelessSelect extends PureComponent {
                 className={triggerClasses}
                 onClick={this.handleTriggerClick}
                 tabIndex="0"
+                ref={ref => (this.triggerNode = ref)}
               >
                 {
                   !this.props.hasAutocomplete || this.props.isDisabled ?
@@ -446,7 +464,12 @@ export default class StatelessSelect extends PureComponent {
             </FieldBase>
           }
         >
-          {this.renderGroups(this.props.items)}
+          <div
+            ref={ref => (this.droplistNode = ref)}
+            style={{ minWidth: this.state.droplistWidth }}
+          >
+            {this.renderGroups(this.props.items)}
+          </div>
         </Droplist>
       </div>
     );

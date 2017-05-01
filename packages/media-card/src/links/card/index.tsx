@@ -1,172 +1,53 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { Context, CardAction, TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
-
-import { CardDimensions, CardAppearance, OnLoadingChangeFunc, OnLoadingChangeState, OnSelectChangeFunc, CardEvent, CardProcessingStatus } from '../../card';
+import { TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
+import { SharedCardProps, CardProcessingStatus } from '../..';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
 import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
 
-export interface LinkFromId {
-  readonly id: string;
-  readonly collectionName: string;
+export interface LinkCardProps extends SharedCardProps {
+  status: CardProcessingStatus;
+  details?: UrlPreview;
 }
 
-export interface LinkCardProps {
-  readonly context: Context;
-  readonly link: string | LinkFromId;
-
-  readonly dimensions?: CardDimensions;
-
-  readonly actions?: Array<CardAction>;
-
-  readonly appearance?: CardAppearance;
-
-  // TODO FIL-3962 update card to fire click, hover, selectChange and loading change callbacks
-  readonly onClick?: (result: CardEvent) => void;
-  readonly onHover?: (result: CardEvent) => void;
-  readonly onSelectChange?: OnSelectChangeFunc;
-  readonly onLoadingChange?: OnLoadingChangeFunc;
-}
-
-export interface LinkCardState {
-  readonly subscription?: Subscription;
-  readonly processingStatus: CardProcessingStatus;
-  readonly urlPreview?: UrlPreview;
-  readonly error?: Error;
-}
-
-export class LinkCard extends Component<LinkCardProps, LinkCardState> {
-  static defaultProps: Partial<LinkCardProps> = {
-    actions: [],
-    onLoadingChange: () => {}
-  };
-
-  state: LinkCardState = {
-    processingStatus: 'loading'
-  };
-
-  componentDidMount(): void {
-    this.updateState(this.props);
-  }
-
-  componentWillReceiveProps(nextProps: LinkCardProps, nextContext: any): void {
-    if (this.shouldUpdateState(nextProps)) {
-      this.updateState(nextProps);
-    }
-  }
-
-  componentWillUnmount(): void {
-    this.unsubscribe();
-  }
-
-  private shouldUpdateState(nextProps: LinkCardProps): boolean {
-    return nextProps.context !== this.props.context || nextProps.link !== this.props.link;
-  }
-
-  private observable(): Observable<UrlPreview> {
-    const { context, link } = this.props;
-
-    if (typeof link === 'string') {
-      return context.getUrlPreviewProvider(link).observable();
-    } else {
-      return context.getMediaItemProvider(link.id, 'link', link.collectionName)
-        .observable()
-        .map(linkItem => linkItem.details);
-    }
-  }
-
-  private stateToProcessingStatus(): OnLoadingChangeState {
-    const {processingStatus, error, urlPreview} = this.state;
-    return {
-      type: processingStatus,
-      payload: error ? error : urlPreview
-    };
-  }
-
-  private updateState(props: LinkCardProps): void {
-    this.unsubscribe();
-    this.setPartialState({ processingStatus: 'loading' });
-
-    const onLoadingChange = this.props.onLoadingChange as OnLoadingChangeFunc;
-    onLoadingChange(this.stateToProcessingStatus());
-
-    this.setPartialState({
-      subscription: this.observable().subscribe({
-        next: urlPreview => {
-          this.setPartialState(
-            { urlPreview, error: undefined, processingStatus: 'processing'},
-            () => onLoadingChange(this.stateToProcessingStatus())
-          );
-        },
-        complete: () => {
-          this.setPartialState(
-            { processingStatus: 'complete' },
-            () => onLoadingChange(this.stateToProcessingStatus())
-          );
-        },
-        error: (error) => {
-          this.setPartialState(
-            { error, processingStatus: 'error' },
-            () => onLoadingChange(this.stateToProcessingStatus())
-          );
-        }
-      })
-    });
-  }
-
-  private setPartialState(partialState: Partial<LinkCardState>, callback?: () => any) {
-    this.setState((previousState, props) => {
-      return { ...previousState, ...partialState };
-    }, callback);
-  }
-
-  private unsubscribe(): void {
-    this.state && this.state.subscription && this.state.subscription.unsubscribe();
-  }
-
+export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
-    const { state, props } = this;
+    const {appearance} = this.props;
+    const {resources} = this;
 
-    if (state && state.urlPreview) {
-      const urlPreview = state.urlPreview as UrlPreview;
-      const { resources } = urlPreview;
-      const { appearance } = props;
-
-      // If appearance is passed we prioritize that instead of the better looking one
-      if (appearance === 'small') {
-        return this.renderSmallLink(urlPreview);
-      }
-
-      if (appearance === 'image') {
-        return this.renderLinkCardImage(urlPreview);
-      }
-
-      if (resources && resources.app) {
-        return this.renderApplicationLink(urlPreview);
-      } else if (resources && resources.player) {
-        return this.renderPlayerLink(urlPreview);
-      }
-
-      return this.renderGenericLink(urlPreview);
-    } else {
-      // TODO FIL-3893 render loading/error state 
-      return null;
+    // If appearance is passed we prioritize that instead of the better looking one
+    if (appearance === 'small') {
+      return this.renderSmallLink();
     }
+
+    if (appearance === 'image') {
+      return this.renderLinkCardImage();
+    }
+
+    if (appearance === 'horizontal' || appearance === 'square') {
+      return this.renderGenericLink();
+    }
+
+    if (resources) {
+      if (resources.app) { return this.renderApplicationLink(); }
+      if (resources.player) { return this.renderPlayerLink(); }
+      if (resources.image) { return this.renderLinkCardImage(); }
+    }
+
+    return this.renderGenericLink();
   }
 
-  private renderApplicationLink(urlPreview: UrlPreview): JSX.Element {
-    const {app, icon} = urlPreview.resources;
+  private renderApplicationLink(): JSX.Element {
+    const {app, icon} = this.resources;
 
     switch (app && app.type) {
       case 'trello_board':
         return this.renderTrelloBoard(app as TrelloBoardLinkApp, icon && icon.url);
       default:
-        return this.renderGenericLink(urlPreview);
+        return this.renderGenericLink();
     }
   }
 
@@ -181,13 +62,11 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     />;
   }
 
-  private renderPlayerLink(urlPreview: UrlPreview): JSX.Element {
-    const { title, site,  description, resources } = urlPreview;
-    const { thumbnail, icon, player } = resources;
+  private renderPlayerLink(): JSX.Element {
+    const { title, site, description } = this.urlPreview;
+    const { player } = this.resources;
 
     const playerUrl = player && player.url ? player.url : '';
-    const iconUrl = icon && icon.url;
-    const thumbnailUrl = thumbnail && thumbnail.url;
 
     return <LinkCardPlayer
       linkUrl={playerUrl}
@@ -195,74 +74,108 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
 
       site={site}
       description={description}
-      thumbnailUrl={thumbnailUrl}
-      iconUrl={iconUrl}
+      thumbnailUrl={this.thumbnailUrl}
+      iconUrl={this.iconUrl}
       playerUrl={playerUrl}
     />;
   }
 
-  private renderGenericLink(urlPreview: UrlPreview): JSX.Element {
-    const { url, title, site, description, resources } = urlPreview;
-    const icon = resources ? resources.icon : undefined;
-    const thumbnail = resources ? resources.icon : undefined;
-
+  private renderGenericLink(): JSX.Element {
+    const { url, title, site, description } = this.urlPreview;
     const { dimensions, actions, appearance } = this.props;
-    const { processingStatus } = this.state;
+    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return <LinkCardGenericView
+      error={errorMessage}
       linkUrl={url}
       title={title}
-
       site={site}
       description={description}
-      thumbnailUrl={thumbnail && thumbnail.url}
-      iconUrl={icon && icon.url}
-
+      thumbnailUrl={this.thumbnailUrl}
+      iconUrl={this.iconUrl}
       dimensions={dimensions}
-
       appearance={appearance}
-      loading={processingStatus === 'loading'}
+      loading={this.isLoading}
       actions={actions}
     />;
   }
 
-  private renderSmallLink(urlPreview: UrlPreview): JSX.Element {
-    const { url, title, site, resources } = urlPreview;
-    const thumbnail = resources ? resources.icon : undefined;
-
+  private renderSmallLink(): JSX.Element {
+    const { url, title, site } = this.urlPreview;
     const { dimensions, actions } = this.props;
-    const { processingStatus } = this.state;
+    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
-    return <LinkCardViewSmall
-      linkUrl={url}
-      title={title}
-      site={site}
-
-      thumbnailUrl={thumbnail && thumbnail.url}
-      width={dimensions && dimensions.width}
-
-      loading={processingStatus === 'loading'}
-      actions={actions}
-    />;
+    return (
+      <LinkCardViewSmall
+        error={errorMessage}
+        linkUrl={url}
+        title={title}
+        site={site}
+        thumbnailUrl={this.iconUrl || this.thumbnailUrl}
+        width={dimensions && dimensions.width}
+        loading={this.isLoading}
+        actions={actions}
+      />
+    );
   }
 
-  private renderLinkCardImage(urlPreview: UrlPreview): JSX.Element {
-    const { url, title, site, resources } = urlPreview;
-    const { thumbnail, icon } = resources || {thumbnail: '', icon: ''};
+  private renderLinkCardImage(): JSX.Element {
+    const { url, title, site } = this.urlPreview;
     const { dimensions, actions, appearance } = this.props;
-    const { processingStatus } = this.state;
+    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
-    return <LinkCardImageView
-      linkUrl={url}
-      title={title}
-      site={site}
-      thumbnailUrl={thumbnail && thumbnail.url}
-      appearance={appearance}
-      dimensions={dimensions}
-      loading={processingStatus === 'loading'}
-      actions={actions}
-      iconUrl={icon && icon.url}
-    />;
+    return (
+      <LinkCardImageView
+        error={errorMessage}
+        linkUrl={url}
+        title={title}
+        site={site}
+        thumbnailUrl={this.thumbnailUrl}
+        appearance={appearance}
+        dimensions={dimensions}
+        loading={this.isLoading}
+        actions={actions}
+        iconUrl={this.iconUrl}
+      />
+    );
+  }
+
+  private get resources() {
+    const { resources } = this.urlPreview;
+    return resources || {};
+  }
+
+  private get urlPreview() {
+    const defaultUrlPreview: UrlPreview = {type: '', url: '', title: ''};
+    const urlPreview = this.props.details;
+
+    // We provide a defaultUrlPreview in order to conform what the card is expecting and show the right loading status
+    return urlPreview || defaultUrlPreview;
+  }
+
+  private get thumbnailUrl() {
+    const { thumbnail, image } = this.resources;
+    const imageUrl = image ? image.url : undefined;
+    const thumbnailUrl = thumbnail ? thumbnail.url : undefined;
+
+    // TODO: Should we default here to 'this.iconUrl'?
+    return imageUrl || thumbnailUrl;
+  }
+
+  private get iconUrl() {
+    const { icon } = this.resources;
+
+    return icon ? icon.url : undefined;
+  }
+
+  private get isLoading(): boolean {
+    const {status} = this.props;
+    return status === 'loading' || status === 'processing';
+  }
+
+  private get isError(): boolean {
+    const {status} = this.props;
+    return status === 'error';
   }
 };
 

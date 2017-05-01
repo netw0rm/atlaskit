@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
-import { FileCardViewSmall, FileCardViewSmallProps } from '../../src';
+import { FileCardViewSmall, FileCardViewSmallProps } from '../../src/files';
 import { FileIcon, ErrorIcon } from '../../src/utils/index';
 
 describe('FileCardViewSmall', () => {
@@ -21,7 +21,7 @@ describe('FileCardViewSmall', () => {
         mediaType={'image'}
         mediaSize={1024}
         dataURI={'some-data-uri'}
-      />);
+      />) as any;
 
     expect(cardView.find('.media-card').first().props().style.backgroundImage).to.contain('some-data-uri');
     expect(cardView.find('.title').first().text()).to.equal('some-name');

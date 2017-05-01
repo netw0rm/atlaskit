@@ -79,7 +79,7 @@ ReactDOM.render(<Tag text="Atlassian"
 ### tag.appearance : <code>string</code>
 Allowed values: "default", "rounded".
 
-Rounded is reccomended only for use with Avatars in elemBefore
+Rounded is recommended only for use with Avatars in elemBefore
 
 **Kind**: instance property of <code>[Tag](#Tag)</code>
 **JS Example**

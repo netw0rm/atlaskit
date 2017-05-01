@@ -15,6 +15,7 @@ export default (
     actions={[
       {
         label: 'View profile',
+        id: 'view-profile',
         callback: () => {},
       },
     ]}

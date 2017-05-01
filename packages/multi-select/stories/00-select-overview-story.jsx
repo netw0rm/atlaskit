@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
+import { Code, Chrome, Description, Props, Heading } from '@atlaskit/util-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
 import SmartSelectOverview from './examples/SmartSelectOverview';
@@ -8,10 +8,10 @@ import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
 import CustomMultiSelectRaw from '!raw!./examples/CustomMultiSelect';
 import CustomMultiSelectOverview from './examples/CustomMultiSelectOverview';
 import CustomMultiSelectOverviewRaw from '!raw!./examples/CustomMultiSelectOverview';
-import ItemsOverview from './examples/ItemsOverview';
-import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
 import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelectedItems';
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
+import SmartSelectNoMatchesFound from './examples/SmartSelectNoMatchesFound';
+import SmartSelectNoMatchesFoundRaw from '!raw!./examples/SmartSelectNoMatchesFound';
 import SmartSelectRequired from './examples/SmartSelectRequired';
 import SmartSelectRequiredRaw from '!raw!./examples/SmartSelectRequired';
 import SmartSelectDisabled from './examples/SmartSelectDisabled';
@@ -33,6 +33,7 @@ import SmartSelectWithDescriptionsRaw from '!raw!./examples/SmartSelectWithDescr
 // Dummy components exist so that we have a component to pass to <Props/>
 import DummyItem from '../src/internal/DummyItem';
 import DummyGroup from '../src/internal/DummyGroup';
+import DummyTag from '../src/internal/DummyTag';
 import { name, description } from '../package.json';
 
 import SmartMultiSelect, { StatelessMultiSelect } from '../src';
@@ -45,6 +46,7 @@ import {
   itemPropTypes,
   groupPropDescriptions,
   groupPropTypes,
+  tagPropDescriptions,
 } from './props';
 
 storiesOf(name, module)
@@ -97,28 +99,37 @@ storiesOf(name, module)
       />
     </Chrome>
   ))
-  .add('📖 Multi select Item - readme', () => (
-    <Chrome title="Multi select Item - overview">
+  .add('📖 Multi select Items - readme', () => (
+    <Chrome title="Multi select Items and Groups - overview">
+      <Heading>Group</Heading>
       <Description>
         <p>The <code>items</code> prop takes an array of groups
           of items. Groups are simply collections of Items with optional headings</p>
-        <p>The <code>selectedItems</code> prop takes just an array of references to items</p>
         <p>It is recommended that every group should have a heading. However if headings are not
           required, the dialog will either have all headings or no headings at all for these groups.
           But if there are no headings for the group, then the group should be combined instead.</p>
+        <p>The <code>selectedItems</code> prop takes just an array of references to items</p>
       </Description>
       <Props component={DummyGroup} descriptions={groupPropDescriptions} types={groupPropTypes} />
+
+      <Heading>Item</Heading>
       <Description>
         <p>
+          The selectedItems prop (and also the items part of Groups) take an array of Items.
           Items you pass in support a range of options that affect how your options are rendered
           both in the dropdown and in the selected tags.
         </p>
       </Description>
       <Props component={DummyItem} descriptions={itemPropDescriptions} types={itemPropTypes} />
-      {ItemsOverview}
-      <Code>
-        {ItemsOverviewRaw}
-      </Code>
+
+      <Heading>Tag</Heading>
+      <Description>
+        <p>
+          Items support modifying certain properties of the rendered Tags when selected.
+          See below for the supported API.
+        </p>
+      </Description>
+      <Props component={DummyTag} descriptions={tagPropDescriptions} />
     </Chrome>
   ))
   .add('Multi select is submittable', () => (
@@ -133,7 +144,7 @@ storiesOf(name, module)
     <Chrome title="Multi select with Avatars">
       <Description>
         <p>You can pass content to be displayed in front of the dropdown items and also the tags by
-          using the <code>elemBefore</code> and <code>tagElemBefore</code> props
+          using the <code>elemBefore</code> and <code>tag.elemBefore</code> props
           respectively.
         </p>
         <p>The most common use case for this would be for things like <code>@atlaskit/icon</code>
@@ -151,6 +162,14 @@ storiesOf(name, module)
       {SmartSelectDefaultSelectedItems}
       <Code>
         {SmartSelectDefaultSelectedItemsRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select - no matches found', () => (
+    <Chrome title="Multi select (smart) - overview">
+      {SmartSelectNoMatchesFound}
+      <Code>
+        {SmartSelectNoMatchesFoundRaw}
       </Code>
     </Chrome>
   ))

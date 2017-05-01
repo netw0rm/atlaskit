@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { schema } from '../../src/test-helper/schema';
+import schema from '../../src/test-helper/schema';
 import { markFactory, nodeFactory, p, RefsTracker, sequence, text } from '../../src/test-helper/schema-builder';
 
-describe('ak-editore-core/test-helper/schema-builder', () => {
-  const clone = (object = {}) => ({...object});
+describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
+  const clone = (object = {}) => ({ ...object });
 
   describe('text', () => {
     it('returns a refs tracking node for an empty string', () => {
@@ -74,6 +74,24 @@ describe('ak-editore-core/test-helper/schema-builder', () => {
       const node = text('0', schema);
 
       expect(Object.keys(node.refs)).to.be.empty;
+    });
+
+    it('supports skipping refs with a backslash', () => {
+      const node = text('\\{a}', schema);
+      expect((node as any).text).to.equal('{a}');
+    });
+
+    it('supports skipping backslash adjacent to refs', () => {
+      const node = text('\\\\{a}', schema);
+
+      expect((node as any).text).to.equal('\\');
+      expect(node.refs).to.deep.equal({ a: 1 });
+    });
+
+    it('supports skipping refs with a backslash (mutiple)', () => {
+      const node = text('\\\\\\{a}', schema);
+
+      expect((node as any).text).to.equal('\\{a}');
     });
   });
 

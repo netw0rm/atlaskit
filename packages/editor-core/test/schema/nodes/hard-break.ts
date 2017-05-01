@@ -1,29 +1,24 @@
 import { expect } from 'chai';
-import { Schema, Text } from '../../../src';
-import { DocNodeType, HardBreakNodeType } from '../../../src';
+import { Schema, doc, paragraph, text, hardBreak } from '../../../src';
+import { toHTML, fromHTML } from '../../../src/test-helper';
 
-describe('@atlaskit/editor-core/schema hard_break node', () => {
-  it('throws an error if it is not named "hard_break"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'text*' },
-          foo: { type: HardBreakNodeType, content: 'text*' },
-          text: { type: Text }
-        }
-      });
-    }).to.throw(Error);
+const schema = makeSchema();
+
+describe('@atlaskit/editor-core/schema hardBreak node', () => {
+  it('serializes to <br>', () => {
+    const html = toHTML(schema.nodes.hardBreak.create(), schema);
+    expect(html).to.have.string('<br>');
   });
 
-  it('does not throw an error if it is named "hard_break"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'text*' },
-          hard_break: { type: HardBreakNodeType, content: 'text*' },
-          text: { type: Text }
-        }
-      });
-    }).to.not.throw(Error);
+  it('matches <br>', () => {
+    const doc = fromHTML('<br>', schema);
+    const br = doc.firstChild!.firstChild!;
+    expect(br.type.name).to.equal('hardBreak');
   });
 });
+
+function makeSchema() {
+  const nodes = { doc, paragraph, hardBreak, text };
+  const marks = {};
+  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+}

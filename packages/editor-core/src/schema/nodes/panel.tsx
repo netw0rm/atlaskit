@@ -16,13 +16,12 @@ import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Attribute, Block, Node, Schema } from '../../prosemirror';
+import { NodeSpec, Node } from '../../prosemirror';
 
 const panelStyle = style({
   borderRadius: akBorderRadius,
   margin: '4px 0 4px 0',
-  padding: '4px',
-  display: 'flex',
+  padding: '4px'
 });
 
 const panelColorStyle = {
@@ -48,12 +47,9 @@ const panelIcons = {
 };
 
 const iconStyle = style({
-  height: '100%',
-  display: 'flex',
-  marginRight: '5px',
-  minWidth: '24px',
-  minHeight: '24px',
-  justifyContent: 'center'
+  height: '24px',
+  width: '24px',
+  position: 'absolute'
 });
 
 const iconColorStyle = {
@@ -72,40 +68,38 @@ const iconColorStyle = {
 };
 
 const contentStyle = style({
-  width: '95%',
-  verticalAlign: 'middle',
-  lineHeight: '1.7'
+  margin: '1px 0 1px 30px'
 });
+
+const getIconDom = function (panelType: string): HTMLElement {
+  const dom = document.createElement('span');
+  dom.setAttribute('contenteditable', 'false');
+  dom.setAttribute('class', `${iconStyle} ${iconColorStyle[panelType]}`);
+  // Prevent IE11 resize handles on selection.
+  dom.addEventListener('mousedown', (e) => e.preventDefault());
+  // tslint:disable-next-line:variable-name
+  const Icon = panelIcons[panelType];
+  ReactDOM.render(<Icon label={panelType} />, dom);
+  return dom;
+};
 
 export interface DOMAttributes {
   [propName: string]: string;
 }
 
-export class PanelNodeType extends Block {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'panel') {
-      throw new Error('PanelNodeType must be named "panel".');
-    }
-  }
-
-  get matchDOMTag() {
-    return {
-      'div[data-panel-type]': (dom: HTMLElement) => {
-        return [{
-          'panelType': dom.getAttribute('data-panel-type')
-        }] as any;
-      }
-    };
-  }
-
-  get attrs() {
-    return {
-      panelType: new Attribute({ default: 'info' }),
-    };
-  }
-
-  toDOM(node: PanelNode): [string, any] {
+export const panel: NodeSpec = {
+  group: 'block',
+  content: 'block+',
+  attrs: {
+    panelType: { default: 'info' }
+  },
+  parseDOM: [{
+    tag: 'div[data-panel-type]',
+    getAttrs: (dom: HTMLElement) => ({
+      'panelType': dom.getAttribute('data-panel-type')!
+    })
+  }],
+  toDOM(node: Node): [string, any] {
     const panelType = node.attrs['panelType'];
     const attrs: DOMAttributes = {
       'class': `${panelStyle} ${panelColorStyle[panelType]}`,
@@ -114,26 +108,8 @@ export class PanelNodeType extends Block {
     return [
       'div',
       attrs,
-      this.getIconDom(panelType),
-      ['span', { class: contentStyle }, 0]
+      getIconDom(panelType),
+      ['div', { class: contentStyle }, 0]
     ];
   }
-
-  private getIconDom(panelType: string): HTMLElement {
-    const dom = document.createElement('span');
-    dom.setAttribute('contenteditable', 'false');
-    dom.setAttribute('class', `${iconStyle} ${iconColorStyle[panelType]}`);
-    // tslint:disable-next-line:variable-name
-    const Icon = panelIcons[panelType];
-    ReactDOM.render(<Icon label={panelType} />, dom);
-    return dom;
-  }
-}
-
-export interface PanelNode extends Node {
-  type: PanelNodeType;
-}
-
-export function isPanelNode(node: Node): node is PanelNode {
-  return node.type instanceof PanelNodeType;
-}
+};

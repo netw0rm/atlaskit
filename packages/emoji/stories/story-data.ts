@@ -63,6 +63,6 @@ ullamcorper lectus mi, quis varius libero ultricies nec. Quisque tempus neque li
 a semper massa dignissim nec.
 `;
 
-export const getEmojiService = (): EmojiRepository => new EmojiRepository(getEmojis());
+export const getEmojiRepository = (): EmojiRepository => new EmojiRepository(getEmojis());
 
-export const getEmojiResource = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiService(), config);
+export const getEmojiResource = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiRepository(), config);

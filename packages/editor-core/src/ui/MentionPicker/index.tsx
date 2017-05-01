@@ -1,15 +1,15 @@
-import { MentionPicker as AkMentionPicker } from '@atlaskit/mention';
+import { MentionPicker as AkMentionPicker, MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
-import { MentionsPluginState } from '../../plugins/mentions';
 import Popper, { IPopper } from './../../popper';
 import { akEditorFloatingPanelZIndex } from '../../styles';
+import { MentionsState } from '../../plugins/mentions';
 
 export interface Props {
-  pluginState: MentionsPluginState;
-  resourceProvider: any; // AbstractMentionResource
-  presenceProvider?: any; // AbstractPresenceResource
+  pluginState: MentionsState;
+  presenceProvider?: any;
+  resourceProvider: Promise<MentionProvider>;
   reversePosition?: boolean;
   target?: HTMLElement;
 }
@@ -19,18 +19,75 @@ export interface State {
   anchorElement?: HTMLElement;
   position?: string;
   transform?: string;
+  mentionsProvider?: MentionProvider;
 }
+
+const isMentionPicker = (picker): picker is AkMentionPicker => !!(picker.mentionsCount);
 
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
   popper?: IPopper;
+  subscriberKey?: string;
+  picker?: AkMentionPicker;
+  content?: HTMLElement;
+
+  constructor(props) {
+    super(props);
+    this.subscriberKey = 'editor-' + Math.floor(Math.random() * 100000);
+  }
+
+  private refreshProvider(providerPromise: Promise<any>) {
+    if (providerPromise) {
+      providerPromise.then(mentionsProvider => {
+        this.subscribeResourceProvider(mentionsProvider);
+        this.setState({ mentionsProvider });
+      });
+    } else {
+      this.unsubscribeResourceProvider(this.state.mentionsProvider);
+      this.setState({ mentionsProvider: undefined });
+    }
+  }
+
+  private subscribeResourceProvider(mentionsProvider) {
+    if (mentionsProvider) {
+      mentionsProvider.subscribe(
+        this.subscriberKey,
+        this.updatePopupPosition.bind(this),
+        () => {},
+        () => {}
+      );
+    }
+  }
+
+  private unsubscribeResourceProvider(mentionsProvider) {
+    if (mentionsProvider) {
+      mentionsProvider.unsubscribe(this.subscriberKey);
+    }
+  }
+
+  private updatePopupPosition() {
+    this.popper && this.popper.update();
+  }
+
+  componentWillMount() {
+    if (!this.state.mentionsProvider) {
+      this.refreshProvider(this.props.resourceProvider);
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.resourceProvider !== this.props.resourceProvider) {
+      this.refreshProvider(nextProps.resourceProvider);
+    }
+  }
 
   componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
-    this.props.pluginState.onSelectPrevious = this.handleSelectPrevious;
-    this.props.pluginState.onSelectNext = this.handleSelectNext;
-    this.props.pluginState.onSelectCurrent = this.handleSelectCurrent;
-    this.props.pluginState.onTrySelectCurrent = this.handleTrySelectCurrent;
+    const { pluginState } = this.props;
+    pluginState.subscribe(this.handlePluginStateChange);
+    pluginState.onSelectPrevious = this.handleSelectPrevious;
+    pluginState.onSelectNext = this.handleSelectNext;
+    pluginState.onSelectCurrent = this.handleSelectCurrent;
+    pluginState.onTrySelectCurrent = this.handleTrySelectCurrent;
   }
 
   componentDidUpdate() {
@@ -39,6 +96,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentWillUmount() {
+    this.unsubscribeResourceProvider(this.state.mentionsProvider);
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
     document.removeEventListener('click', this.handleClickOutside);
     this.popper && this.popper.destroy();
@@ -57,16 +115,15 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private applyPopper(): void {
-    const { content } = this.refs;
     const target = this.state.anchorElement;
 
     if (this.popper) {
       this.popper.destroy();
     }
 
-    if (target && content instanceof HTMLElement) {
+    if (target && this.content instanceof HTMLElement) {
 
-      this.popper = new Popper(target, content, {
+      this.popper = new Popper(target, this.content, {
         onCreate: this.extractStyles,
         onUpdate: this.extractStyles,
         placement: this.props.reversePosition ? 'top-start' : 'bottom-start',
@@ -105,30 +162,34 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
-  private handlePluginStateChange = (state: MentionsPluginState) => {
+  private handlePluginStateChange = (state: MentionsState) => {
     const { anchorElement, query } = state;
     this.setState({ anchorElement, query });
     this.applyPopper();
   }
 
   render() {
-    const { anchorElement, query, position, transform } = this.state;
+    const { anchorElement, query, position, transform, mentionsProvider } = this.state;
 
     if (!anchorElement || query === undefined) {
       return null;
     }
 
+    if (!mentionsProvider) {
+      return null;
+    }
+
     return (
       <div
-        ref="content"
+        ref={ref => { this.content = ref;}}
         style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
       >
         <AkMentionPicker
-          resourceProvider={this.props.resourceProvider}
+          resourceProvider={mentionsProvider}
           presenceProvider={this.props.presenceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
-          ref="picker"
+          ref={ref => { this.picker = ref;}}
         />
       </div>
     );
@@ -138,36 +199,47 @@ export default class MentionPicker extends PureComponent<Props, State> {
     this.props.pluginState.insertMention(mention);
   }
 
-  private handleSelectPrevious = () => {
-    const { picker } = this.refs;
-    if (picker) {
-      (picker as AkMentionPicker).selectPrevious();
+  private handleSelectPrevious = (): boolean => {
+    if (this.picker) {
+      (this.picker as AkMentionPicker).selectPrevious();
     }
+
+    return true;
   }
 
-  private handleSelectNext = () => {
-    const { picker } = this.refs;
-    if (picker) {
-      (picker as AkMentionPicker).selectNext();
+  private handleSelectNext = (): boolean => {
+    if (this.picker) {
+      (this.picker as AkMentionPicker).selectNext();
     }
+
+    return true;
   }
 
-  private handleSelectCurrent = () => {
-    const { picker } = this.refs;
-    if (picker && (picker as AkMentionPicker).mentionsCount() > 0) {
-      (picker as AkMentionPicker).chooseCurrentSelection();
+  private handleSelectCurrent = (): boolean => {
+    if (this.getMentionsCount() > 0) {
+      (this.picker as AkMentionPicker).chooseCurrentSelection();
     } else {
       this.props.pluginState.dismiss();
     }
+
+    return true;
   }
 
   private handleTrySelectCurrent = (): boolean => {
-    const { picker } = this.refs;
-    if (picker && (picker as AkMentionPicker).mentionsCount() === 1) {
-      (picker as AkMentionPicker).chooseCurrentSelection();
+    const mentionsCount = this.getMentionsCount();
+    const { query } = this.state;
+
+    if (mentionsCount === 1) {
+      (this.picker as AkMentionPicker).chooseCurrentSelection();
       return true;
+    } else if (mentionsCount === 0 || !query) {
+      this.props.pluginState.dismiss();
     }
 
     return false;
+  }
+
+  private getMentionsCount(): number {
+    return isMentionPicker(this.picker) && this.picker.mentionsCount() || 0;
   }
 }

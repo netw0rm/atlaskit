@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Layer from '@atlaskit/layer';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import { positionToPopperPosition, getAnimationClass } from './internal/helpers';
 
 /* eslint-disable react/no-unused-prop-types */

@@ -1,12 +1,9 @@
 import React from 'react';
-import { TooltipTrigger } from 'ak-tooltip';
-import reactify from 'akutil-react';
+import { Tooltip } from '@atlaskit/tooltip';
 import Clipboard from 'clipboard';
 import { action } from '@kadira/storybook';
 
-import { locals as styles } from './styles.less';
-
-const AkTooltipTrigger = reactify(TooltipTrigger);
+import styles from './styles.less';
 
 class Block extends React.PureComponent {
   componentDidMount() {
@@ -21,7 +18,7 @@ class Block extends React.PureComponent {
 
   render() {
     return (
-      <AkTooltipTrigger
+      <Tooltip
         description={this.props.backgroundColor}
         className={styles.Trigger}
       >
@@ -38,7 +35,7 @@ class Block extends React.PureComponent {
         >
           <div className={styles.description}>{this.props.description}</div>
         </div>
-      </AkTooltipTrigger>
+      </Tooltip>
     );
   }
 }

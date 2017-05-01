@@ -1,162 +1,256 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { EmojiNodeType, EmojiQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
-import BlockTypePlugin from '../../../src/plugins/block-type';
-import EmojisPlugin from '../../../src/plugins/emojis';
-import { chaiPlugin, fixtures } from '../../../src/test-helper';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+
+import { emoji as emojiNode } from '../../../src';
+import emojiPlugins from '../../../src/plugins/emojis';
+import {
+  chaiPlugin,
+  fixtures,
+  makeEditor,
+  sendKeyToPm,
+  blockquote,
+  br,
+  doc,
+  emoji,
+  emojiQuery,
+  li,
+  p,
+  ul,
+} from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
+
+const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
+
+const grinEmoji = emojiData.emojiTestData.grinEmoji;
+const grinEmojiId = {
+  shortName: grinEmoji.shortName,
+  id: grinEmoji.id,
+  fallback: grinEmoji.fallback,
+};
+
+const evilburnsEmoji = emojiData.emojiTestData.evilburnsEmoji;
+const evilburnsEmojiId = {
+  shortName: evilburnsEmoji.shortName,
+  id: evilburnsEmoji.id,
+  fallback: evilburnsEmoji.fallback,
+};
 
 chai.use(chaiPlugin);
 
-const schema: Schema = new Schema({
-  nodes: schemaBasic.nodeSpec.append({
-    emoji: { type: EmojiNodeType, group: 'inline' }
-  }),
-  marks: {
-    emoji_query: EmojiQueryMarkType
-  }
-});
-
-const makeEditor = (container: Node) => {
-  return new ProseMirror({
-    schema: schema,
-    plugins: [EmojisPlugin, BlockTypePlugin],
-    place: container
-  });
-};
-
-const container = fixtures();
-
-const smileEmojiId = {
-  id: 'smile'
-};
-
-const smileEmoji = {
-  id: 'smile',
-  name: 'smiling face with open mouth and smiling eyes',
-  shortcut: 'smile',
-  representation: {
-    sprite: {
-      url: 'https://path-to-spritesheet.png',
-      row: 1,
-      column: 1,
-    }
-  }
-};
-
 describe('emojis', () => {
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = EmojisPlugin as any; // .State is not public API.
-    expect(plugin.State.name).is.be.a('string');
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins: emojiPlugins(defaultSchema),
+    place: fixture()
   });
+
+  const forceUpdate = (editorView: any) => {
+    editorView.updateState(editorView.state);
+  };
 
   describe('keymap', () => {
-    xit('should bind keymap when query is active', () => {
-      const pm = makeEditor(container());
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
-      expect(pm.input.keymaps.filter((k: any) => k.map.options.name === 'emojis-plugin-keymap').length).to.equal(1);
+
+    describe('ArrowUp', () => {
+
+      it('should be ignored if there is no emojiProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectPrevious');
+
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'ArrowUp');
+        expect(spy.called).to.equal(false);
+      });
+
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
+        const spy = sinon.spy(pluginState, 'onSelectPrevious');
+
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+
+            sendKeyToPm(editorView, 'ArrowUp');
+            expect(spy.called).to.equal(false);
+          });
+      });
+
+      it('should call "onSelectPrevious" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectPrevious');
+
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+
+            sendKeyToPm(editorView, 'ArrowUp');
+            expect(spy.called, 'Was called').to.equal(true);
+            expect(spy.returned(false), 'Return value').to.equal(true);
+          });
+      });
     });
 
-    xit('should unbind keymap when dismissed', () => {
-      const pm = makeEditor(container());
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
+    describe('ArrowDown', () => {
+      it('should be ignored if there is no emojiProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectNext');
 
-      const keyDownEvent = new CustomEvent('keydown');
-      (keyDownEvent as any).keyCode = 27;
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'ArrowDown');
+        expect(spy.called).to.equal(false);
+      });
 
-      pm.input.dispatchKey('Esc', keyDownEvent);
-      expect(pm.input.keymaps.filter((k: any) => k.map.options.name === 'emojis-plugin-keymap').length).to.equal(0);
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
+        const spy = sinon.spy(pluginState, 'onSelectNext');
+
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+
+            sendKeyToPm(editorView, 'ArrowDown');
+            expect(spy.called).to.equal(false);
+          });
+      });
+
+      it('should call "onSelectNext" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectNext');
+
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+
+            sendKeyToPm(editorView, 'ArrowDown');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(false)).to.equal(true);
+          });
+      });
     });
 
-    it('should ignore "Up"-key if no "onSelectPrevious" is attached', () => {
-      const pm = makeEditor(container());
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
+    describe('Enter', () => {
+      it('should be ignored if there is no emojiProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
 
-      const keyDownEvent = new CustomEvent('keydown');
-      (keyDownEvent as any).keyCode = 38;
-      pm.input.dispatchKey('Up', keyDownEvent);
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'Enter');
+        expect(spy.called).to.equal(false);
+      });
+
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
+
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+
+            sendKeyToPm(editorView, 'Enter');
+            expect(spy.called).to.equal(false);
+          });
+      });
+
+      it('should call "onSelectCurrent" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
+
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+
+            sendKeyToPm(editorView, 'Enter');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(false)).to.equal(true);
+          });
+      });
     });
 
-    it('should ignore "Down"-key if no "onSelectNext" is attached', () => {
-      const pm = makeEditor(container());
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
+    describe('Space', () => {
+      it('should be ignored if there is no emojiProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
 
-      const keyDownEvent = new CustomEvent('keydown');
-      (keyDownEvent as any).keyCode = 40;
-      pm.input.dispatchKey('Down', keyDownEvent);
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'Space');
+        expect(spy.called).to.equal(false);
+      });
+
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello')));
+        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
+
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+
+            sendKeyToPm(editorView, 'Space');
+            expect(spy.called).to.equal(false);
+          });
+      });
+
+      it('should call "onTrySelectCurrent" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
+
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+
+            sendKeyToPm(editorView, 'Space');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(false)).to.equal(true);
+          });
+      });
     });
 
-    it('should ignore "Enter"-key if no "onSelectCurrent" is attached', () => {
-      const pm = makeEditor(container());
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
+    describe('Escape', () => {
+      it('should be ignored if there is no emojiProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'dismiss');
 
-      const keyDownEvent = new CustomEvent('keydown');
-      (keyDownEvent as any).keyCode = 13;
-      pm.input.dispatchKey('Enter', keyDownEvent);
-    });
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'Esc');
+        expect(spy.called).to.equal(false);
+      });
 
-    it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
-      const pm = makeEditor(container());
-      const pluginState = EmojisPlugin.get(pm)!;
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
+        const spy = sinon.spy(pluginState, 'dismiss');
 
-      const spy = sinon.spy();
-      pluginState.onSelectPrevious = spy;
-      const keyDownEvent = new CustomEvent('keydown');
-      (keyDownEvent as any).keyCode = 38;
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-      pm.input.dispatchKey('Up', keyDownEvent);
-      expect(spy.called).to.equal(true);
-    });
+            sendKeyToPm(editorView, 'Esc');
+            expect(spy.called).to.equal(false);
+          });
+      });
 
-    it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
-      const pm = makeEditor(container());
-      const pluginState = EmojisPlugin.get(pm)!;
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
+      it('should call "dismiss" which should return true by default', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'dismiss');
 
-      const spy = sinon.spy();
-      pluginState.onSelectNext = spy;
-      const keyDownEvent = new CustomEvent('keydown');
-      (keyDownEvent as any).keyCode = 40;
-
-      pm.input.dispatchKey('Down', keyDownEvent);
-      expect(spy.called).to.equal(true);
-    });
-
-    it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
-      const pm = makeEditor(container());
-      const pluginState = EmojisPlugin.get(pm)!;
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
-
-      const spy = sinon.spy();
-      pluginState.onSelectCurrent = spy;
-      const keyDownEvent = new CustomEvent('keydown');
-      (keyDownEvent as any).keyCode = 13;
-
-      pm.input.dispatchKey('Enter', keyDownEvent);
-      expect(spy.called).to.equal(true);
-    });
-
-    it('should trigger "dismiss" when "Esc"-key is pressed', () => {
-      const pm = makeEditor(container());
-      const pluginState = EmojisPlugin.get(pm)!;
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
-
-      const spy = sinon.spy(pluginState, 'dismiss');
-      const keyDownEvent = new CustomEvent('keydown');
-      (keyDownEvent as any).keyCode = 27;
-
-      pm.input.dispatchKey('Esc', keyDownEvent);
-      expect(spy.called).to.equal(true);
+        return pluginState
+          .setEmojiProvider(emojiProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+            sendKeyToPm(editorView, 'Esc');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(true)).to.equal(true);
+          });
+      });
     });
 
   });
@@ -164,55 +258,128 @@ describe('emojis', () => {
   describe('insertEmoji', () => {
 
     it('should replace emoji-query-mark with emoji-node', () => {
-      const pm = makeEditor(container());
-      const pluginInstance = EmojisPlugin.get(pm)!;
+      const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin'))));
 
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
-      pm.tr.typeText('smile').apply();
+      pluginState.insertEmoji({
+        name: 'Oscar Wallhult',
+        emojiName: 'oscar',
+        id: '1234'
+      });
 
-      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
-
-      expect(pm.doc.nodeAt(1)).to.be.of.nodeType(EmojiNodeType);
+      expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(emojiNode);
     });
 
-    it('should allow inserting multiple emojis next to eachother', () => {
-      const pm = makeEditor(container());
-      const pluginInstance = EmojisPlugin.get(pm)!;
+    it('should insert a space after the emoji-node', () => {
+      const { editorView, pluginState } = editor(doc(p(emojiQuery(':gr{<>}'))));
 
-      pm.input.insertText(0, 0, ':');
-      pm.flush();
-      pm.tr.typeText('smile').apply();
+      pluginState.insertEmoji(grinEmojiId);
 
-      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
-      pm.flush();
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            emoji(grinEmojiId),
+            ' '
+          )
+        )
+      );
+    });
 
-      pm.input.insertText(2, 2, ':');
-      pm.flush();
-      pm.tr.typeText('smile').apply();
+    it('should allow inserting multiple emojis next to each other', () => {
+      const { editorView, pluginState } = editor(
+        doc(
+          p(
+            emoji(grinEmojiId),
+            ' ',
+            emojiQuery(':ev{<>}')
+          )
+        )
+      );
 
-      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
-      pm.flush();
+      pluginState.insertEmoji(evilburnsEmojiId);
 
-      expect(pm.doc.nodeAt(1)).to.be.of.nodeType(EmojiNodeType);
-      expect(pm.doc.nodeAt(2)).to.be.of.nodeType(EmojiNodeType);
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            emoji(grinEmojiId),
+            ' ',
+            emoji(evilburnsEmojiId),
+            ' '
+          )
+        )
+      );
     });
 
     it('should allow inserting emoji on new line after hard break', () => {
-      const pm = makeEditor(container());
-      const pluginInstance = EmojisPlugin.get(pm)!;
-      const blockTypePluginInstance = BlockTypePlugin.get(pm)!;
+      const { editorView, pluginState } = editor(doc(p(br, emojiQuery(':gr{<>}'))));
 
-      blockTypePluginInstance.insertNewLine();
+      pluginState.insertEmoji(grinEmojiId);
 
-      pm.input.insertText(2, 2, ':');
-      pm.flush();
-      pm.tr.typeText('smile').apply();
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            br,
+            emoji(grinEmojiId),
+            ' '
+          )
+        )
+      );
+    });
 
-      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
-      pm.flush();
+    it('should not break list into two when inserting emoji inside list item', () => {
+      const { editorView, pluginState } = editor(
+        doc(
+          p(
+            ul(
+              li(p('One')),
+              li(p('Two ', emojiQuery(':{<>}'))),
+              li(p('Three'))))));
 
-      expect(pm.doc.nodeAt(2)).to.be.of.nodeType(EmojiNodeType);
+      pluginState.insertEmoji(grinEmojiId);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            ul(
+              li(p('One')),
+              li(
+                p(
+                  'Two ',
+                  emoji(grinEmojiId),
+                  ' '
+                )
+              ),
+              li(p('Three'))
+            )
+          )
+        )
+      );
+    });
+
+    it('should insert only 1 emoji at a time inside blockqoute', () => {
+      const { editorView, pluginState } = editor(
+        doc(
+          blockquote(
+            p('Hello ', emojiQuery(':{<>}'))
+          )
+        )
+      );
+
+      pluginState.insertEmoji(grinEmojiId);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          blockquote(
+            p(
+              'Hello ',
+              emoji(grinEmojiId),
+              ' '
+            )
+          )
+        )
+      );
+
+      expect(editorView.state.doc.nodeAt(8)).to.be.of.nodeSpec(emojiNode);
+      expect(editorView.state.doc.nodeAt(10)).to.equal(null);
     });
   });
 

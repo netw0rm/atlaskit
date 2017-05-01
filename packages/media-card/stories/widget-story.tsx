@@ -4,7 +4,7 @@ import {storiesOf, action} from '@kadira/storybook';
 import {StoryList} from '@atlaskit/media-test-helpers';
 import {tallImage, wideImage, wideTransparentImage, smallImage} from '@atlaskit/media-test-helpers';
 
-import {FileCardView} from '../src';
+import {FileCardView} from '../src/files/cardView';
 
 const onClick = (event: Event) => {
   action('click')();

@@ -62,7 +62,7 @@ export default class TabsNav extends PureComponent {
           // ¯\_(ツ)_/¯
         }
         <ul
-          className={styles.locals.akTabLabels}
+          className={styles.akTabLabels}
           role="tablist"
         >
           {this.props.tabs.map((tab, index) => (
@@ -70,8 +70,8 @@ export default class TabsNav extends PureComponent {
               aria-posinset={index + 1}
               aria-selected={tab.isSelected}
               aria-setsize={this.props.tabs.length}
-              className={classNames(styles.locals.akTabLabel, {
-                [styles.locals.akTabLabelSelected]: tab.isSelected,
+              className={classNames(styles.akTabLabel, {
+                [styles.akTabLabelSelected]: tab.isSelected,
               })}
               key={index}
               onClick={tab.onSelect}

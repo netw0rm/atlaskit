@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import Container from './styled/Container';
@@ -10,6 +11,13 @@ import Container from './styled/Container';
 // in pixels
 const dialogOffset = `0 ${akGridSizeUnitless}`;
 
+// TODO: expose positions and flipPositions from Layer and pull in here
+const positions = [
+  'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
+  'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
+];
+const flipPositions = ['top', 'right', 'bottom', 'left'];
+
 // TODO: expose applicable props from Layer and pull in here
 export default class InlineDialog extends PureComponent {
   static propTypes = {
@@ -19,12 +27,12 @@ export default class InlineDialog extends PureComponent {
     onContentBlur: PropTypes.func,
     onContentClick: PropTypes.func,
     onContentFocus: PropTypes.func,
-    position: PropTypes.oneOf([
-      'top left', 'top center', 'top right', 'right top', 'right middle',
-      'right bottom', 'bottom left', 'bottom center', 'bottom right', 'left top',
-      'left middle', 'left bottom',
+    onClose: PropTypes.func,
+    position: PropTypes.oneOf(positions),
+    shouldFlip: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.arrayOf(PropTypes.oneOf(flipPositions)),
     ]),
-    shouldFlip: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -32,8 +40,26 @@ export default class InlineDialog extends PureComponent {
     onContentBlur: () => {},
     onContentClick: () => {},
     onContentFocus: () => {},
+    onClose: () => {},
     position: 'bottom center',
     shouldFlip: false,
+  }
+
+  componentDidMount = () => {
+    document.addEventListener('click', this.handleClickOutside);
+  }
+
+  componentWillUnmount = () => {
+    document.removeEventListener('click', this.handleClickOutside);
+  }
+
+  handleClickOutside = (event) => {
+    if (this.props.isOpen) {
+      const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
+      if (!domNode || (event.target instanceof Node && !domNode.contains(event.target))) {
+        this.props.onClose({ isOpen: false, event });
+      }
+    }
   }
 
   render() {

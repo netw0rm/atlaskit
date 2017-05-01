@@ -11,6 +11,8 @@ import DefaultSelectedItem from './examples/DefaultSelectedItem';
 import DefaultSelectedItemRaw from '!raw!./examples/DefaultSelectedItem';
 import WideSelect from './examples/WideSelect';
 import WideSelectRaw from '!raw!./examples/WideSelect';
+import WideDroplist from './examples/WideDroplist';
+import WideDroplistRaw from '!raw!./examples/WideDroplist';
 import SelectAlignment from './examples/SelectAlignment';
 import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
 import SelectWithGroups from './examples/SelectWithGroups';
@@ -40,6 +42,7 @@ import Select, { StatelessSelect } from '../src';
 const propDescriptions = {
   appearance: 'Appearance of the triggering field',
   defaultSelected: 'Default selected item',
+  droplistShouldFitContainer: 'Specifies whether a dropdown should be constrained to the width of its trigger',
   id: 'id of the form element',
   isDisabled: 'Specifies that a select should be disabled',
   isDefaultOpen: 'Controls the open state of the select',
@@ -55,6 +58,7 @@ const propDescriptions = {
   position: 'Position of the select. See the documentation of ak-layer for more details',
   selectedItem: 'Selected item',
   shouldFitContainer: 'Specifies whether a select will take all available space',
+  shouldFocus: 'Specifies whether the component will auto-focus itself',
 };
 
 const propTypes = {
@@ -155,6 +159,15 @@ storiesOf(name, module)
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>
   ))
+  .add('Droplist that extends past the select space', () => (
+    <Chrome title="Droplist that extends past the select space">
+      {WideDroplist}
+      <Code>
+        {WideDroplistRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
   .add('Select with icons', () => (
     <Chrome title="Select with icons">
       {SelectWithIcons}
@@ -193,7 +206,7 @@ storiesOf(name, module)
     </Chrome>
   ))
   .add('Select in a form', () => (
-    <Chrome title="Select alignment">
+    <Chrome title="Select in a form">
       {SelectInForm}
       <Code>
         {SelectInFormRaw}

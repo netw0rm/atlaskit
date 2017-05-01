@@ -8,12 +8,12 @@ import { JIRASchema, makeSchema } from '../src/schema';
 const schema = makeSchema({ allowMentions: true }) as JIRASchema;
 
 // Nodes
-const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention!.createChecked(attrs);
+const mention = (attrs: { id: string, text?: string }) => schema.nodes.mention!.createChecked(attrs);
 const doc = nodeFactory(schema.nodes.doc);
 const p = nodeFactory(schema.nodes.paragraph);
 
 // Marks
-const mentionQuery = markFactory(schema.marks.mention_query!);
+const mentionQuery = markFactory(schema.marks.mentionQuery!);
 
 const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 
@@ -27,7 +27,7 @@ describe(name, () => {
     checkParseEncodeRoundTrips('mention node',
       schema,
       `<p>Text <a class="user-hover" href="/secure/ViewProfile?name=Starr" rel="Starr">@Cheryll Maust</a> text</p>`,
-      doc(p('Text ', mention({ id: 'Starr', displayName: '@Cheryll Maust' }), ' text')),
+      doc(p('Text ', mention({ id: 'Starr', text: '@Cheryll Maust' }), ' text')),
       { mention: mentionEncoder }
     );
   });

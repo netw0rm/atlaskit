@@ -1,21 +1,29 @@
-import Keymap from 'browserkeymap';
 import {
-  commands,
-  DOMFromPos,
-  InputRule,
-  inputRules,
+  EditorState,
+  EditorView,
+  Schema,
+  Mark,
   Node,
   Plugin,
-  ProseMirror,
-  Schema,
+  PluginKey,
+  NodeViewDesc,
   TextSelection,
 } from '../../prosemirror';
-import { LinkMark, LinkMarkType } from '../../schema';
-import hyperlinkRule from './input-rule';
-import * as keymaps from '../../keymaps';
-import { trackAndInvoke } from '../../analytics';
+import * as commands from '../../commands';
+import inputRulePlugin from './input-rule';
+import keymapPlugin from './keymap';
+import { normalizeUrl } from './utils';
 
-export type StateChangeHandler = (state: HyperlinkState) => void;
+export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
+export type StateChangeHandler = (state: HyperlinkState) => any;
+export interface HyperlinkOptions {
+  href: string;
+}
+export type Coordniates = { left: number, right: number, top: number, bottom: number };
+interface NodeInfo {
+  node: Node;
+  startPos: number;
+}
 
 export class HyperlinkState {
   // public state
@@ -23,119 +31,68 @@ export class HyperlinkState {
   text?: string;
   active = false;
   linkable = false;
+  editorFocused = false;
   element?: HTMLElement;
-  editorFocused: boolean = false;
-  showToolbarPanel: boolean = false;
+  showToolbarPanel = false;
 
   private changeHandlers: StateChangeHandler[] = [];
-  private inputRules: InputRule[] = [];
-  private pm: PM;
+  private state: EditorState<any>;
   private activeLinkNode?: Node;
-  private activeLinkMark?: LinkMark;
+  private activeLinkMark?: Mark;
   private activeLinkStartPos?: number;
 
-  constructor(pm: PM) {
-    this.pm = pm;
-
-    this.inputRules = [hyperlinkRule];
-
-    const rules = inputRules.ensure(pm);
-    this.inputRules.forEach(rule => rules.addRule(rule));
-
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-      pm.on.activeMarkChange,
-    ], () => this.update());
-
-    pm.updateScheduler([
-      pm.on.textInput,
-    ], () => this.escapeFromMark());
-
-    pm.on.focus.add(() => {
-      this.editorFocused = true;
-    });
-
-    pm.on.blur.add(() => {
-      this.editorFocused = false;
-      this.active && this.changeHandlers.forEach(cb => cb(this));
-    });
-
-    pm.addKeymap(new Keymap({
-      [keymaps.addLink.common!]: trackAndInvoke('atlassian.editor.format.link.keyboard', this.showLinkPanel),
-    }));
-
-    this.update(true);
+  constructor(state: EditorState<any>) {
+    this.changeHandlers = [];
   }
 
-  subscribe(cb: StateChangeHandler) {
+  subscribe(cb: HyperlinkStateSubscriber) {
     this.changeHandlers.push(cb);
     cb(this);
   }
 
-  unsubscribe(cb: StateChangeHandler) {
+  unsubscribe(cb: HyperlinkStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  addLink(options: HyperlinkOptions) {
+  addLink(options: HyperlinkOptions, view: EditorView) {
     if (this.linkable && !this.active) {
-      const { pm } = this;
+      const { state } = this;
       const { href } = options;
-      const { empty, $from, $to } = pm.selection;
-      const mark = pm.schema.mark('link', { href });
+      const { empty, $from, $to } = state.selection;
+      const mark = state.schema.mark('link', { href: normalizeUrl(href) });
       const tr = empty
-        ? pm.tr.replaceWith($from.pos, $to.pos, pm.schema.text(href, [mark]))
-        : pm.tr.addMark($from.pos, $to.pos, mark);
-      tr.apply();
-      pm.focus();
+        ? state.tr.insert($from.pos, state.schema.text(href, [mark]))
+        : state.tr.addMark($from.pos, $to.pos, mark);
+
+      view.dispatch(tr);
     }
   }
 
-  removeLink(forceTextSelection = false) {
+  removeLink(view: EditorView) {
     if (this.activeLinkStartPos) {
-      const { pm } = this;
+      const { state } = this;
       const from = this.activeLinkStartPos;
-      const to = this.activeLinkStartPos + this.text!.length;
-      pm.tr.removeMark(from, to, this.activeLinkMark).apply();
+      const to = from + this.text!.length;
 
-      if (forceTextSelection) {
-        pm.setTextSelection(from, to);
-        pm.focus();
-      }
+      view.dispatch(state.tr.removeMark(from, to, this.activeLinkMark));
+      view.focus();
     }
   }
 
-  updateLink(options: HyperlinkOptions) {
+  updateLink(options: HyperlinkOptions, view: EditorView) {
     if (this.activeLinkStartPos) {
-      const { pm } = this;
+      const { state } = this;
       const from = this.activeLinkStartPos;
       const to = this.activeLinkStartPos + this.text!.length;
-      pm.tr
+      view.dispatch(state.tr
         .removeMark(from, to, this.activeLinkMark)
-        .addMark(from, to, pm.schema.mark('link', { href: options.href }))
-        .apply();
+        .addMark(from, to, state.schema.mark('link', { href: normalizeUrl(options.href) })));
     }
   }
 
-  showLinkPanel = () => {
-    if (!this.activeLinkMark) {
-      const { pm } = this;
-      const { selection } = pm;
-      if (selection.empty) {
-        this.showToolbarPanel = !this.showToolbarPanel;
-        this.changeHandlers.forEach(cb => cb(this));
-      } else {
-        this.addLink({ href: '' });
-      }
-    }
-  }
+  update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
+    this.state = state;
 
-  detach(pm: ProseMirror) {
-    const rules = inputRules.ensure(pm);
-    this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
-  }
-
-  private update(dirty = false, domEvent = false) {
     const nodeInfo = this.getActiveLinkNodeInfo();
     const canAddLink = this.isActiveNodeLinkable();
 
@@ -144,42 +101,99 @@ export class HyperlinkState {
       dirty = true;
     }
 
-    if ((nodeInfo && domEvent) || (nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
+    if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
       this.activeLinkNode = nodeInfo && nodeInfo.node;
       this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
       this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
       this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
-      this.element = this.getDomElement();
-      this.editorFocused = this.editorFocused;
       this.active = !!nodeInfo;
       dirty = true;
     }
+    this.element = this.getDomElement(docView);
 
     if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
+      this.triggerOnChange();
     }
   }
 
-  private escapeFromMark() {
+  escapeFromMark(editorView: EditorView) {
     const nodeInfo = this.getActiveLinkNodeInfo();
     if (nodeInfo && this.isShouldEscapeFromMark(nodeInfo)) {
-      this.pm.tr.removeMark(nodeInfo.startPos, this.pm.selection.$from.pos, this.pm.schema.marks.link).apply();
+      const transaction = this.state.tr.removeMark(
+        nodeInfo.startPos,
+        this.state.selection.$from.pos,
+        this.state.schema.marks.link
+      );
+
+      editorView.dispatch(transaction);
     }
+  }
+
+  showLinkPanel(editorView: EditorView) {
+    if (!(this.showToolbarPanel || editorView.hasFocus())) {
+      editorView.focus();
+    }
+    const { selection } = editorView.state;
+    if (selection.empty && !this.active) {
+      this.showToolbarPanel = !this.showToolbarPanel;
+      this.changeHandlers.forEach(cb => cb(this));
+    } else {
+      this.addLink({ href: '' }, editorView);
+      this.update(editorView.state, editorView.docView);
+    }
+  }
+
+  hideLinkPanel() {
+    this.showToolbarPanel = false;
+    this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  getCoordniates(editorView: EditorView): Coordniates {
+    if (editorView.hasFocus()) {
+      editorView.focus();
+    }
+    const { pos } = this.state.selection.$from;
+    const { left, top } = editorView.dom.getBoundingClientRect();
+    const { node } = editorView.docView.domFromPos(pos);
+
+    const cursorNode = (node.nodeType === 3) ? // Node.TEXT_NODE = 3
+      (node.parentNode as HTMLElement) : (node as HTMLElement);
+    const cursorHeight = parseFloat(window.getComputedStyle(cursorNode, undefined).lineHeight || '');
+    /**
+     * We need to translate the co-ordinates because `coordsAtPos` returns co-ordinates
+     * relative to `window`. And, also need to adjust the cursor container height.
+     * (0, 0)
+     * +--------------------- [window] ---------------------+
+     * |   (left, top) +-------- [Editor Chrome] --------+  |
+     * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
+     * |               | [FloatingToolbar]               |  |
+     */
+    const translateCoordinates = (coords: Coordniates, dx: number, dy: number) => ({
+      left: coords.left - dx,
+      right: coords.right - dx,
+      top: coords.top - dy,
+      bottom: coords.bottom - dy,
+    });
+    return translateCoordinates(editorView.coordsAtPos(pos), left, top - cursorHeight);
+  }
+
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
-    const parentOffset = this.pm.selection.$from.parentOffset;
+    const parentOffset = this.state.selection.$from.parentOffset;
     return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
   }
 
   private getActiveLinkNodeInfo(): NodeInfo | undefined {
-    const {pm} = this;
-    const {link} = pm.schema.marks;
-    const {$from, empty} = pm.selection as TextSelection;
+    const { state } = this;
+    const { link } = state.schema.marks;
+    const { $from, empty } = state.selection as TextSelection;
 
     if (link && $from) {
-      const {node, offset} = $from.parent.childAfter($from.parentOffset);
+      const { node, offset } = $from.parent.childAfter($from.parentOffset);
       const parentNodeStartPos = $from.start($from.depth);
 
       // offset is the end postion of previous node
@@ -197,21 +211,17 @@ export class HyperlinkState {
     }
   }
 
-  private getActiveLinkMark(activeLinkNode: Node): LinkMark | undefined {
+  private getActiveLinkMark(activeLinkNode: Node): Mark | undefined {
     const linkMarks = activeLinkNode.marks.filter((mark) => {
-      return mark.type instanceof LinkMarkType;
+      return mark.type === this.state.schema.marks.link;
     });
 
-    return (linkMarks as LinkMark[])[0];
+    return (linkMarks as Mark[])[0];
   }
 
-  private getDomElement(): HTMLElement | undefined {
+  private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = DOMFromPos(
-        this.pm,
-        this.activeLinkStartPos,
-        true
-      );
+      const { node, offset } = docView.domFromPos(this.activeLinkStartPos);
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;
@@ -222,31 +232,63 @@ export class HyperlinkState {
   }
 
   private isActiveNodeLinkable(): boolean {
-    const { link } = this.pm.schema.marks;
-    return !!link && commands.toggleMark(link)(this.pm, false);
+    const { link } = this.state.schema.marks;
+    return !!link && commands.toggleMark(link)(this.state);
   }
 }
+export const stateKey = new PluginKey('hypelinkPlugin');
 
-// IE11 + multiple prosemirror fix.
-Object.defineProperty(HyperlinkState, 'name', { value: 'HyperlinkState' });
+const plugin = new Plugin({
+  props: {
+    handleTextInput(view: EditorView, from: number, to: number, text: string) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.escapeFromMark(view);
 
-export default new Plugin(HyperlinkState);
+      return false;
+    },
+    handleClick(view: EditorView) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
+      return false;
+    },
+    onBlur(view: EditorView) {
+      const pluginState = stateKey.getState(view.state);
 
-export interface S extends Schema {
-  marks: {
-    link?: LinkMarkType;
-  };
-}
+      pluginState.editorFocused = false;
+      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
 
-export interface PM extends ProseMirror {
-  schema: S;
-}
+      return true;
+    },
+    onFocus(view: EditorView) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.editorFocused = true;
 
-export interface HyperlinkOptions {
-  href: string;
-}
+      return true;
+    }
+  },
+  state: {
+    init(config, state: EditorState<any>) {
+      return new HyperlinkState(state);
+    },
+    apply(tr, pluginState: HyperlinkState, oldState, newState) {
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    const pluginState = stateKey.getState(view.state);
+    pluginState.update(view.state, view.docView, true);
 
-interface NodeInfo {
-  node: Node;
-  startPos: number;
-}
+    return {
+      update: (view: EditorView, prevState: EditorState<any>) => {
+        pluginState.update(view.state, view.docView);
+      }
+    };
+  }
+});
+
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

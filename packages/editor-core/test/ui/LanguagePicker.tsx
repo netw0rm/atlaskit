@@ -1,23 +1,28 @@
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import CodeBlockPlugin from '../../src/plugins/code-block';
+import codeBlockPlugins from '../../src/plugins/code-block';
 import FloatingToolbar from '../../src/ui/FloatingToolbar';
 import LanguagePicker from '../../src/ui/LanguagePicker';
-import { makeEditor } from '../../src/test-helper';
-import { code_block, doc, p, schema } from '../_schema-builder';
+import { code_block, doc, p, makeEditor, fixtures, createEvent } from '../../src/test-helper';
+import defaultSchema from '../../src/test-helper/schema';
 
 describe('LanguagePicker', () => {
-  const editor = (doc: any) => {
-    const { pm, plugin } = makeEditor({ doc, plugin: CodeBlockPlugin, schema });
-    return { pm, plugin, sel: pm.doc.refs['<>'] };
-  };
+
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins: codeBlockPlugins(defaultSchema),
+    place: fixture()
+  });
+
+  const event = createEvent('event');
 
   context('when toolbarVisible is false', () => {
     it('does not render toolbar', () => {
-      const { plugin } = editor(doc(code_block()('text')));
+      const { editorView, pluginState } = editor(doc(code_block()('text')));
 
-      const languagePicker = shallow(<LanguagePicker pluginState={plugin} />);
+      const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
       languagePicker.setState({ toolbarVisible: false });
 
       expect(languagePicker.find(FloatingToolbar)).to.have.length(0);
@@ -26,9 +31,9 @@ describe('LanguagePicker', () => {
 
   context('when toolbarVisible is true', () => {
     it('renders toolbar', () => {
-      const { plugin } = editor(doc(code_block()('text')));
+      const { editorView, pluginState } = editor(doc(code_block()('text')));
 
-      const languagePicker = shallow(<LanguagePicker pluginState={plugin} />);
+      const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
       languagePicker.setState({ toolbarVisible: true });
 
       expect(languagePicker.find(FloatingToolbar)).to.have.length(1);
@@ -37,11 +42,11 @@ describe('LanguagePicker', () => {
 
   context('click on a code block element', () => {
     it('sets toolbarVisible to be true', () => {
-      const { pm, plugin } = editor(doc(code_block()('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
+      const { editorView, plugin, pluginState, sel } = editor(doc(code_block()('text')));
+      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
-      pm.on.focus.dispatch();
-      pm.on.click.dispatch();
+      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleClick!(editorView, sel, event);
 
       expect(languagePicker.state('toolbarVisible')).to.be.true;
     });
@@ -49,46 +54,50 @@ describe('LanguagePicker', () => {
 
   context('click on a non code block element', () => {
     it('sets current code-block element to be undefined', () => {
+      const { editorView, plugin, pluginState, sel } = editor(doc(p('text')));
+      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
-      const { pm, plugin } = editor(doc(p('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
-
-      pm.on.click.dispatch();
+      plugin.props.handleClick!(editorView, sel, event);
 
       expect(languagePicker.state('element')).to.be.undefined;
     });
   });
 
-  it('editor is blur', () => {
+  context('editor is blur', () => {
     it('LanguagePicker produce null HTML', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
-      const languagePicker = mount(<LanguagePicker pluginState={plugin}/>);
+      const { editorView, plugin, pluginState, sel } = editor(doc(p('paragraph'), code_block()('{<}codeBlock{>}')));
+
+      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleClick!(editorView, sel, event);
+
+      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+
       expect(languagePicker.html()).to.not.equal(null);
-      pm.on.blur.dispatch();
+      plugin.props.onBlur!(editorView, event);
       expect(languagePicker.html()).to.equal(null);
     });
   });
 
   context('when code block has a language', () => {
     it('shows the formatted language', () => {
-      const { plugin } = editor(doc(code_block({ language: 'js' })('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
+      const { editorView, pluginState } = editor(doc(code_block({ language: 'js' })('text')));
+      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
       expect(languagePicker.state('language')).to.be.equal('JavaScript');
     });
 
     it('updates plugin with the formatted langauge', () => {
-      const { plugin } = editor(doc(code_block({ language: 'js' })('text')));
-      mount(<LanguagePicker pluginState={plugin} />);
+      const { editorView, pluginState } = editor(doc(code_block({ language: 'js' })('text')));
+      mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
-      expect(plugin.language).to.equal('JavaScript');
+      expect(pluginState.language).to.equal('JavaScript');
     });
   });
 
   context('when code block has no language set', () => {
     it('shows no specific language', () => {
-      const { plugin } = editor(doc(code_block()('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
+      const { editorView, pluginState } = editor(doc(code_block()('text')));
+      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
       expect(languagePicker.state('language')).to.be.equal('Language');
     });

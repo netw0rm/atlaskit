@@ -4,7 +4,7 @@
     <title>issues</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="issues" fill="currentColor">
             <g>
                 <path d="M5,12.9914698 C5,12.9978202 19.0049107,13 19.0049107,13 C18.9994849,13 19,5.0085302 19,5.0085302 C19,5.00217984 4.99508929,5 4.99508929,5 C5.00051505,5 5,12.9914698 5,12.9914698 Z M3,5.0085302 C3,3.8992496 3.8926228,3 4.99508929,3 L19.0049107,3 C20.1067681,3 21,3.90195036 21,5.0085302 L21,12.9914698 C21,14.1007504 20.1073772,15 19.0049107,15 L4.99508929,15 C3.8932319,15 3,14.0980496 3,12.9914698 L3,5.0085302 Z" id="Rectangle-42" fill-rule="nonzero"></path>

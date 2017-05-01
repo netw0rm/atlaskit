@@ -3,8 +3,8 @@ import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 
+import {CardDimensions} from '../../index';
 import {CardImageView} from '../../utils/cardImageView';
-import {CardDimensions} from '../../card';
 import {toHumanReadableMediaSize} from '../../utils';
 
 export interface FileCardViewProps {

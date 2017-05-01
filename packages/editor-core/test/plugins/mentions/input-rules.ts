@@ -1,63 +1,63 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { MentionNodeType, MentionQueryMarkType, MentionsPlugin,
-          ProseMirror, Schema, schema as schemaBasic } from '../../../src';
-import { chaiPlugin } from '../../../src/test-helper';
+import mentionsPlugins from '../../../src/plugins/mentions';
+import {
+  chaiPlugin,
+  fixtures,
+  insertText,
+  makeEditor,
+  doc,
+  p,
+} from '../../../src/test-helper';
+import { resourceProvider } from '../../../stories/mentions/story-data';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
-const schema: Schema = new Schema({
-  nodes: schemaBasic.nodeSpec.append({
-    mention: { type: MentionNodeType, group: 'inline' }
-  }),
-  marks: {
-    mention_query: MentionQueryMarkType
-  }
-});
-
-const makeEditor = () => new ProseMirror({
-  schema: schema,
-  plugins: [ MentionsPlugin ],
-});
-
 describe('mentions - input rules', () => {
-  it('should replace a standalone "@" with mention-query-mark', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, 'foo @');
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins: mentionsPlugins(defaultSchema),
+    place: fixture()
+  });
 
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
+  const assert = (what: string, expected: boolean) => {
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+    return pluginState
+      .setMentionProvider(Promise.resolve(resourceProvider))
+      .then(() => {
+        insertText(editorView, what, sel);
+
+        const { state } = editorView;
+        const { mentionQuery } = state.schema.marks;
+        const cursorFocus = state.selection.$to.nodeBefore!;
+
+        if (expected) {
+          expect(mentionQuery.isInSet(cursorFocus.marks)).to.not.equal(undefined);
+        } else {
+          expect(mentionQuery.isInSet(cursorFocus.marks)).to.equal(undefined);
+        }
+      });
+  };
+
+  it('should replace a standalone "@" with mention-query-mark', () => {
+    assert('foo @', true);
   });
 
   it('should not replace a "@" thats part of a word', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, 'foo@');
-
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);
+    assert('foo@', false);
   });
 
   it('should not replace a "@" after the "`"', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, '`@');
-
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);
+    assert('`@', false);
   });
 
   it('should replace "@" at the start of the content', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, '@');
-
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
+    assert('@', true);
   });
 
   it('should replace "@" if there are multiple spaces infront of it', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, '  @');
-
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
+    assert('  @', true);
   });
 });

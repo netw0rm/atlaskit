@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "1.5.0",
+  "version": "2.0.1",
   "config": {
     "access": "public"
   },
@@ -9,7 +9,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-shared-styles; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/util-shared-styles"
   },
   "files": [
     "dist",
@@ -26,8 +26,7 @@
   "devDependencies": {
     "@atlaskit/util-readme": "^1.0.0",
     "@atlaskit/util-shared-styles": "*",
-    "ak-tooltip": "^5.0.0",
-    "akutil-react": "*",
+    "@atlaskit/tooltip": "^1.0.0",
     "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.5.13",
@@ -35,7 +34,6 @@
     "javascript-natural-sort": "^0.7.1",
     "less-vars-loader": "^1.1.0",
     "rgba-convert": "^0.3.0",
-    "skatejs": "^4.0.4",
     "uid": "0.0.2",
     "wcag-contrast": "^0.1.0"
   },

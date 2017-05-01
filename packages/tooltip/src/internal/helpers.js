@@ -16,10 +16,10 @@ export function positionToPopperPosition(position) {
 
 export function getAnimationClass(position, isFlipped) {
   const animationMapping = {
-    top: styles.locals.slideUpAnimation,
-    bottom: styles.locals.slideDownAnimation,
-    left: styles.locals.slideLeftAnimation,
-    right: styles.locals.slideRightAnimation,
+    top: styles.slideUpAnimation,
+    bottom: styles.slideDownAnimation,
+    left: styles.slideLeftAnimation,
+    right: styles.slideRightAnimation,
   };
   const flippedPositions = {
     top: 'bottom',

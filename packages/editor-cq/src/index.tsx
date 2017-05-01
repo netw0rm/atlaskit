@@ -1,63 +1,120 @@
 import {
   AnalyticsHandler,
   analyticsService,
-  BlockTypePlugin,
+  baseKeymap,
   Chrome,
-  CodeBlockPlugin,
   ContextName,
-  DefaultInputRulesPlugin,
-  HorizontalRulePlugin,
-  Keymap,
-  ListsPlugin,
-  MarkdownInputRulesPlugin,
-  ProseMirror,
-  TextFormattingPlugin,
-  ClearFormattingPlugin,
-  DefaultKeymapsPlugin,
-  version as coreVersion
+  EditorState,
+  EditorView,
+  history,
+  blockTypePlugins,
+  codeBlockPlugins,
+  hyperlinkPlugins,
+  listsPlugins,
+  rulePlugins,
+  textFormattingPlugins,
+  clearFormattingPlugins,
+  panelPlugins,
+  mentionsPlugins,
+  blockTypeStateKey,
+  codeBlockStateKey,
+  hyperlinkStateKey,
+  listsStateKey,
+  textFormattingStateKey,
+  clearFormattingStateKey,
+  panelStateKey,
+  mentionsStateKey,
+  keymap,
+  Node as PMNode,
+  TextSelection,
+  version as coreVersion,
+  mediaPluginFactory,
+  mediaStateKey,
+  mediaNodeView,
+  MediaProvider,
+  Plugin,
+  mentionNodeView,
+  ProviderFactory,
+  MediaPluginState,
+  MediaState
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { encode, parse } from './cxhtml';
+import { MentionProvider } from '@atlaskit/mention';
+import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
-
+import { CQSchema, default as schema } from './schema';
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 export { version };
-
 
 export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
+  expanded?: boolean;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
+  uploadErrorHandler?: (state: MediaState) => void;
   analyticsHandler?: AnalyticsHandler;
+  mediaProvider?: Promise<MediaProvider>;
+  mentionProvider?: Promise<MentionProvider>;
 }
 
 export interface State {
-  pm?: ProseMirror;
+  editorView?: EditorView;
   isExpanded?: boolean;
+  isMediaReady: boolean;
+  schema: CQSchema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
+  mentionProvider: Promise<MentionProvider>;
+
+  private providerFactory: ProviderFactory;
+  private mediaPlugins: Plugin[];
 
   constructor(props: Props) {
     super(props);
-    this.state = { isExpanded: props.isExpandedByDefault };
 
+    this.state = {
+      schema,
+      isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
+      isMediaReady: true,
+    };
+
+    this.providerFactory = new ProviderFactory();
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+
+    const { mentionProvider, mediaProvider, uploadErrorHandler } = props;
+
+    if (mentionProvider) {
+      this.mentionProvider = mentionProvider;
+      this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    }
+
+    if (mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
+
+    this.mediaPlugins = mediaPluginFactory(schema, {
+      uploadErrorHandler,
+      providerFactory: this.providerFactory,
+      behavior: 'default'
+    });
   }
 
   /**
    * Focus the content region of the editor.
    */
   focus(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.focus();
+    const { editorView } = this.state;
+
+    if (editorView) {
+      editorView.focus();
     }
   }
 
@@ -65,9 +122,15 @@ export default class Editor extends PureComponent<Props, State> {
    * Clear the content of the editor, making it an empty document.
    */
   clear(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
+    const { editorView } = this.state;
+
+    if (editorView) {
+      const { state } = editorView;
+      const tr = state.tr
+        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .deleteSelection();
+
+      editorView.dispatch(tr);
     }
   }
 
@@ -76,44 +139,168 @@ export default class Editor extends PureComponent<Props, State> {
    * (i.e. text)
    */
   isEmpty(): boolean {
-    const { pm } = this.state;
-    return pm && pm.doc
-      ? !!pm.doc.textContent
+    const { editorView } = this.state;
+
+    return editorView && editorView.state.doc
+      ? !!editorView.state.doc.textContent
       : false;
   }
 
   /**
    * The current value of the editor, encoded as CXTML.
    */
-  get value(): string | undefined {
-    const { pm } = this.state;
-    return pm
-      ? encode(pm.doc)
-      : this.props.defaultValue;
+  get value(): Promise<string | undefined> {
+    const { editorView } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
+    return (async () => {
+      await mediaPluginState.waitForPendingTasks();
+
+      return editorView && editorView.state.doc
+          ? encode(editorView.state.doc)
+          : this.props.defaultValue;
+    })();
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { props, providerFactory } = this;
+    const { mediaProvider } = nextProps;
+
+    if (props.mediaProvider !== mediaProvider) {
+      providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
+
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
+    }
+  }
+
+  componentWillUnmount() {
+    const { editorView } = this.state;
+    if (editorView) {
+      if (editorView.state) {
+        mediaStateKey.getState(editorView.state).destroy();
+      }
+
+      editorView.destroy();
+    }
   }
 
   render() {
-    const { pm, isExpanded } = this.state;
+    const { editorView, isExpanded, isMediaReady } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
+    const editorState = editorView && editorView.state;
+
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const mediaState = editorState && this.mediaPlugins && this.props.mediaProvider && mediaStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const panelState = editorState && panelStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
+        editorView={editorView!}
         isExpanded={isExpanded}
         feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
         placeholder={this.props.placeholder}
-        pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
-        pluginStateLists={pm && ListsPlugin.get(pm)}
-        pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
-        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
+        pluginStateBlockType={blockTypeState}
+        pluginStateCodeBlock={codeBlockState}
+        pluginStateHyperlink={hyperlinkState}
+        pluginStateLists={listsState}
+        pluginStateTextFormatting={textFormattingState}
+        pluginStateClearFormatting={clearFormattingState}
+        pluginStateMedia={mediaState}
+        pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
+        mentionProvider={this.mentionProvider}
+        pluginStateMentions={mentionsState}
+        saveDisabled={!isMediaReady}
       />
     );
+  }
+
+  private handleRef = (place: Element | null) => {
+    const { schema } = this.state;
+    const { mediaPlugins } = this;
+
+    if (place) {
+      const { context } = this.props;
+      const doc = parse(this.props.defaultValue || '');
+      const cqKeymap = {
+        'Mod-Enter': this.handleSave,
+      };
+
+      const editorState = EditorState.create({
+        schema,
+        doc,
+        plugins: [
+          ...mentionsPlugins(schema),
+          ...blockTypePlugins(schema),
+          ...clearFormattingPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...hyperlinkPlugins(schema),
+          ...listsPlugins(schema),
+          ...rulePlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...mediaPlugins,
+          ...panelPlugins(schema),
+          history(),
+          keymap(cqKeymap),
+          keymap(baseKeymap),
+        ]
+      });
+
+      const codeBlockState = codeBlockStateKey.getState(editorState);
+      codeBlockState.setLanguages(supportedLanguages);
+
+      if (context) {
+        const blockTypeState = blockTypeStateKey.getState(editorState);
+        blockTypeState.changeContext(context);
+      }
+
+      const editorView = new EditorView(place, {
+        state: editorState,
+        dispatchTransaction: (tr) => {
+          const newState = editorView.state.apply(tr);
+          editorView.updateState(newState);
+          this.handleChange();
+        },
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory),
+          jiraIssue: jiraIssueNodeView,
+          media: mediaNodeView(this.providerFactory)
+        },
+        handleDOMEvents: {
+          paste(view: EditorView, event: ClipboardEvent) {
+            analyticsService.trackEvent('atlassian.editor.paste');
+            return false;
+          }
+        },
+      });
+
+      if (this.mentionProvider) {
+        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      }
+
+      analyticsService.trackEvent('atlassian.editor.start');
+
+      this.setState({ editorView });
+      this.focus();
+
+      this.sendUnsupportedNodeUsage(doc);
+    } else {
+      this.setState({ editorView: undefined });
+    }
   }
 
   private handleCancel = () => {
@@ -123,11 +310,18 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  private handleChange = () => {
+  private handleChange = async () => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(this);
     }
+
+    const { editorView } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
+    this.setState({ isMediaReady: false });
+    await mediaPluginState.waitForPendingTasks();
+    this.setState({ isMediaReady: true });
   }
 
   private handleSave = () => {
@@ -137,46 +331,33 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  private handleRef = (place: Element | null) => {
-    if (place) {
-      const { context } = this.props;
-      const pm = new ProseMirror({
-        place,
-        doc: parse(this.props.defaultValue || ''),
-        plugins: [
-          BlockTypePlugin,
-          CodeBlockPlugin,
-          MarkdownInputRulesPlugin,
-          ListsPlugin,
-          TextFormattingPlugin,
-          ClearFormattingPlugin,
-          HorizontalRulePlugin,
-          DefaultInputRulesPlugin,
-          DefaultKeymapsPlugin,
-        ],
-      });
+  /**
+   * Traverse document nodes to find the number of unsupported ones
+   */
+  private sendUnsupportedNodeUsage(doc: PMNode) {
+    const { unsupportedBlock, unsupportedInline } = schema.nodes;
+    let blockNodesOccurance = 0;
+    let inlineNodesOccurance = 0;
 
-      if (context) {
-        BlockTypePlugin.get(pm)!.changeContext(context);
+    traverseNode(doc);
+
+    for (let i = 0; i < blockNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.block');
+    }
+
+    for (let i = 0; i < inlineNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.inline');
+    }
+
+    function traverseNode(node: PMNode) {
+      if (node.type === unsupportedBlock) {
+        blockNodesOccurance += 1;
+      } else if (node.type === unsupportedInline) {
+        inlineNodesOccurance += 1;
+      } else {
+        node.content.forEach(traverseNode);
       }
-
-      pm.addKeymap(new Keymap({
-        'Mod-Enter': this.handleSave
-      }));
-
-      pm.on.domPaste.add(() => {
-        analyticsService.trackEvent('atlassian.editor.paste');
-      });
-
-
-      pm.on.change.add(this.handleChange);
-      pm.focus();
-
-      analyticsService.trackEvent('atlassian.editor.start');
-
-      this.setState({ pm });
-    } else {
-      this.setState({ pm: undefined });
     }
   }
+
 }

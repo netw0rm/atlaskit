@@ -3,11 +3,18 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import { CodeBlockState } from '../../plugins/code-block';
+import { EditorView } from '../../prosemirror';
 import FloatingToolbar from '../FloatingToolbar';
-import languageList, { findMatchedLanguage, NO_LANGUAGE } from './languageList';
+import {
+  createLanguageList,
+  filterSupportedLanguages,
+  findMatchedLanguage,
+  NO_LANGUAGE
+} from './languageList';
 import * as styles from './styles';
 
 export interface Props {
+  editorView: EditorView;
   pluginState: CodeBlockState;
 }
 
@@ -15,20 +22,30 @@ export interface State {
   active?: boolean;
   element?: HTMLElement;
   language: string;
+  supportedLanguages: object[];
   toolbarVisible?: boolean;
 }
 
-const items = [{
-  'items': languageList.map((language) => {
-    return { content: language };
-  })
-}];
-
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { language: NO_LANGUAGE, toolbarVisible: false };
+  items: object[];
+
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      language: NO_LANGUAGE,
+      toolbarVisible: false,
+      supportedLanguages: filterSupportedLanguages(props.pluginState.supportedLanguages)
+    } as State;
+  }
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
+    const { supportedLanguages } = this.state;
+
+    this.items = [{
+      'items': createLanguageList(supportedLanguages).map((language) => ({ content: language }))
+    }];
   }
 
   componentWillUnmount() {
@@ -42,7 +59,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
       return (
         <FloatingToolbar target={element} align="left" autoPosition>
           <div className={styles.container}>
-            <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
+            <DropdownMenu triggerType="button" items={this.items} onItemActivated={this.handleLanguageChange}>
               {language}
             </DropdownMenu>
           </div>
@@ -54,25 +71,26 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const { element, language, toolbarVisible} = pluginState;
+    const { element, language, toolbarVisible } = pluginState;
+    const { supportedLanguages } = this.state;
 
-    const matchedLanguage = findMatchedLanguage(language);
-    const updatedlanguage = this.optionToLanguage(matchedLanguage);
-
-    if (language !== updatedlanguage) {
-      this.props.pluginState.updateLanguage(updatedlanguage);
-    }
+    const matchedLanguage = findMatchedLanguage(supportedLanguages, language);
+    const updatedLanguage = this.optionToLanguage(matchedLanguage);
 
     this.setState({
       language: matchedLanguage,
       element,
       toolbarVisible
     });
+
+    if (language !== updatedLanguage) {
+      this.props.pluginState.updateLanguage(updatedLanguage, this.props.editorView);
+    }
   }
 
   private handleLanguageChange = (activeItem: any) => {
     const language = this.optionToLanguage(activeItem.item.content);
-    this.props.pluginState.updateLanguage(language);
+    this.props.pluginState.updateLanguage(language, this.props.editorView);
   }
 
   private optionToLanguage(languageOption: string): string | undefined {

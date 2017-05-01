@@ -2,43 +2,79 @@ import React, { PropTypes, PureComponent } from 'react';
 import * as reactDocs from 'react-docgen';
 import styled from 'styled-components';
 
-import typeParser from './typeParser';
 import Description from './Description';
 import Heading from './Heading';
+import PrettyPropType from './PrettyPropType';
 
-const CodeBlock = styled.code`
-  display: block;
+const TypeHeading = styled.h3`
+  margin: 0 0 10px 0;
+`;
+const PropTypeWrapper = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+`;
+const DefaultValue = styled.code`
+  color: #777;
+`;
+const Required = styled.span`
+  color: #b74242;
+  font-size: 80%;
+  margin-left: 10px;
+`;
+const PropTypeDescription = styled.div`
+  border-radius: 3px;
+  border-left: 3px solid #ccc;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+`;
+const TypeLabel = styled.span`
+  display: inline-block;
+  border: 1px solid #bedcf7;
+  color: #1c4b75;
+  background: #eff7ff;
+  border-radius: 3px;
+  margin-right: 5px;
+  padding: 0 3px;
+  font-size: 80%;
 `;
 
-const wrap = inner => (
+// Disable prop types validation for internal functional components
+/* eslint-disable react/prop-types */
+
+const PageWrapper = ({ name, children }) => (
   <div>
-    <Heading type={2}>Props</Heading>
-    {inner}
+    <Heading type={2}>{name ? `${name} ` : ''}Props</Heading>
+    {children}
   </div>
 );
 
-function renderTypeDescription(type) {
-  // primitive types have the shape { name: <type> }
-  // complex types have the shape { name: <type>, value: <something> }
-  // we only want to render the explicit type options in the description area if they are complex
-  if (type.value) {
-    return <CodeBlock>{typeParser(type)}</CodeBlock>;
-  }
+const PropType = ({ children }) => (
+  <TypeLabel>
+    {children}
+  </TypeLabel>
+);
 
-  return null;
-}
+const PropTypeHeading = ({ defaultValue, name, required, type }) => (
+  <TypeHeading>
+    <code><PropType>{type.name}</PropType> {name}</code>
+    {defaultValue ? <DefaultValue> = {defaultValue.value}</DefaultValue> : null}
+    {required ? <Required> required</Required> : null}
+  </TypeHeading>
+);
+
+/* eslint-enable react/prop-types */
 
 export default class DynamicProps extends PureComponent {
   static propTypes = {
+    componentName: PropTypes.string,
     componentSrc: PropTypes.string.isRequired,
   }
   constructor(props) {
     super(props);
-    // we store this in state to cache it between "props" changes.changes
-    // this is defensive, against a case in the future where props to control behaviour are added
-    // since reactDocs.parse is an expensive operation, we want to avoid recomputing it
-    // when the props change, unless the componentSrc prop is the one that changes
-    // see the componentWillReceiveProps method below
+    // Parsing the componentSrc is expensive, so we cache it in state rather than
+    // computing it every time the component is rendered. Note the
+    // componentWillReceiveProps method below where it is re-parsed as required.
     const componentDocs = reactDocs.parse(props.componentSrc);
     this.state = { componentDocs };
   }
@@ -49,40 +85,37 @@ export default class DynamicProps extends PureComponent {
     }
   }
   render() {
+    const { componentName } = this.props;
     const { componentDocs } = this.state;
     if (!componentDocs || !componentDocs.props || !!componentDocs.props.length) {
-      return wrap(<Description>There are no props for this component.</Description>);
+      return (
+        <PageWrapper name={componentName}>
+          <Description>There are no props for this component.</Description>
+        </PageWrapper>
+      );
     }
-
     const propTypes = Object.keys(componentDocs.props);
 
-    return wrap(
-      <table>
-        <thead style={{ border: 0, borderBottom: '1px solid #ddd' }}>
-          <tr>
-            <th>Name (* is required)</th>
-            <th>Type</th>
-            <th>Default value</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody style={{ border: 0 }}>
-          {propTypes.map((propName) => {
-            const prop = componentDocs.props[propName];
-            return (
-              <tr key={propName}>
-                <td>{propName}{prop.required ? ' *' : ''}</td>
-                <td>{prop.type.name || '--'}</td>
-                <td>{prop.defaultValue ? prop.defaultValue.value : '--'}</td>
-                <td>
-                  {prop.description}
-                  {renderTypeDescription(prop.type)}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    return (
+      <PageWrapper name={componentName}>
+        {propTypes.map((propName) => {
+          const prop = componentDocs.props[propName];
+          return (
+            <PropTypeWrapper key={propName}>
+              <PropTypeHeading
+                name={propName}
+                required={prop.required}
+                defaultValue={prop.defaultValue}
+                type={prop.type}
+              />
+              {prop.description ? (
+                <PropTypeDescription>{prop.description}</PropTypeDescription>
+              ) : null}
+              <PrettyPropType type={prop.type} />
+            </PropTypeWrapper>
+          );
+        })}
+      </PageWrapper>
     );
   }
 }

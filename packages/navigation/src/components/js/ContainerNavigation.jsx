@@ -1,9 +1,16 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from 'style!../less/ContainerNavigation.less';
+import { ThemeProvider } from 'styled-components';
+import memoizeOne from 'memoize-one';
+import { themeVariables } from '../../utils/theme';
 import ContainerHeader from './ContainerHeader';
+import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
+import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
+import ContainerNavigationInner from '../styled/ContainerNavigationInner';
+import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
+import subscribe from '../../watch-scroll-top';
+
 import {
   containerOpenWidth,
   containerClosedWidth,
@@ -37,9 +44,60 @@ export default class ContainerNavigation extends PureComponent {
     linkComponent: DefaultLinkComponent,
   }
 
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      isScrolling: false,
+    };
+
+    // Memoizing this function so that it will only be called
+    // when the underlying DOM node is changing OR if it is
+    // unmounting (in which case it will be `null`).
+    this.onRefChange = memoizeOne(this.onRefChange);
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
+
+  onScrollTopChange = (number) => {
+    const isScrolling = number > 0;
+
+    if (isScrolling === this.state.isScrolling) {
+      return;
+    }
+
+    this.setState({
+      isScrolling,
+    });
+  }
+
+  onRefChange = (el) => {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+
+    if (!el) {
+      return;
+    }
+
+    this.unsubscribe = subscribe(el, this.onScrollTopChange);
+  }
+
   getOuterStyles() {
+    if (!this.props.offsetX) {
+      return {
+        width: this.props.width,
+      };
+    }
+
+    // temporary fix for the AK-1780. When it resolved, this marginLeft should be changed back
+    // to translateX
     return {
-      transform: `translateX(${this.props.offsetX}px)`,
+      marginLeft: `${this.props.offsetX}px`,
       width: this.props.width,
     };
   }
@@ -63,54 +121,54 @@ export default class ContainerNavigation extends PureComponent {
     } = this.props;
 
     const isWidthCollapsed = width <= containerClosedWidth;
-
     return (
-      <nav
-        className={classNames({
-          [styles.shouldAnimate]: shouldAnimate,
-        })}
-        data-__ak-navigation-container-closed={isWidthCollapsed}
+      <ThemeProvider
+        theme={{
+          [themeVariables.appearance]: appearance,
+          isCollapsed: isWidthCollapsed,
+        }}
       >
-        <Spacer
-          shouldAnimate={shouldAnimate}
-          width={width + offsetX}
-        />
-        <div
-          className={styles.containerNavigationOuter}
-          style={this.getOuterStyles()}
+        <nav
+          data-__ak-navigation-container-closed={isWidthCollapsed}
         >
-          <div
-            className={classNames(styles.containerNavigationInner, {
-              [styles.hasContainerHeader]: headerComponent !== null,
-              [styles.hasGlobalAppearance]: appearance === 'global',
-              [styles.hasSettingsAppearance]: appearance === 'settings',
-            })}
+          <Spacer
+            shouldAnimate={shouldAnimate}
+            width={width + offsetX}
+          />
+          <ContainerNavigationOuter
+            shouldAnimate={shouldAnimate}
+            style={this.getOuterStyles()}
           >
-            <GlobalPrimaryActions
-              appearance={appearance}
-              createIcon={globalCreateIcon}
-              isVisible={areGlobalActionsVisible}
-              linkComponent={linkComponent}
-              onCreateActivate={onGlobalCreateActivate}
-              onSearchActivate={onGlobalSearchActivate}
-              primaryIcon={globalPrimaryIcon}
-              primaryItemHref={globalPrimaryItemHref}
-              searchIcon={globalSearchIcon}
-            />
-            <div>
+            <ContainerNavigationInner
+              innerRef={this.onRefChange}
+            >
+              <GlobalPrimaryActions
+                appearance={appearance}
+                createIcon={globalCreateIcon}
+                isVisible={areGlobalActionsVisible}
+                linkComponent={linkComponent}
+                onCreateActivate={onGlobalCreateActivate}
+                onSearchActivate={onGlobalSearchActivate}
+                primaryIcon={globalPrimaryIcon}
+                primaryItemHref={globalPrimaryItemHref}
+                searchIcon={globalSearchIcon}
+              />
               {
-                this.props.headerComponent ? (
-                  <ContainerHeader>
-                    {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
-                  </ContainerHeader>) : null
+                headerComponent ? (
+                  <ContainerHeader
+                    appearance={appearance}
+                    isContentScrolled={this.state.isScrolling}
+                  >
+                    {headerComponent({ isCollapsed: isWidthCollapsed })}
+                  </ContainerHeader>) : <ContainerNoHeader />
               }
-            </div>
-            <div>
-              {children}
-            </div>
-          </div>
-        </div>
-      </nav>
+              <ContainerNavigationChildren>
+                {children}
+              </ContainerNavigationChildren>
+            </ContainerNavigationInner>
+          </ContainerNavigationOuter>
+        </nav>
+      </ThemeProvider>
     );
   }
 }

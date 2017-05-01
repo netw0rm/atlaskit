@@ -3,12 +3,7 @@ import {
   akColorN30,
   akColorN50,
 } from '@atlaskit/util-shared-styles';
-import {
-  Attribute,
-  Inline,
-  Node as PMNode,
-  Schema,
-} from '@atlaskit/editor-core';
+import { NodeSpec } from '@atlaskit/editor-core';
 import { style } from 'typestyle';
 
 const nodeClassName = style({
@@ -35,45 +30,27 @@ const nodeClassName = style({
   }
 });
 
-export class UnsupportedInlineNodeType extends Inline {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'unsupportedInline') {
-      throw new Error('UnsupportedInlineNodeType must be named "unsupportedInline".');
-    }
-  }
-
-  get attrs() {
-    return {
-      cxhtml: new Attribute({ default: null })
-    };
-  }
-
-  get matchDOMTag() {
-    return {
-      'div[data-unsupported-inline-cxhtml]': (dom: HTMLElement) => ({
-        cxhtml: dom.getAttribute('data-unsupported-inline-cxhtml')!
-      })
-    };
-  }
-
-  toDOM(node: PMNode): [string, any] {
+export default {
+  group: 'inline',
+  inline: true,
+  atom: true,
+  attrs: { cxhtml: { default: null } },
+  toDOM(node): [string, any, string] {
     const attrs = {
+      'data-node-type': 'unsupportedInline',
       'class': nodeClassName,
-      'contenteditable': 'false',
+      'data-unsupported': 'inline',
       'data-unsupported-inline-cxhtml': node.attrs['cxhtml'],
       'spellcheck': 'false',
     };
-    return ['div', attrs, 'Embedded content'];
-  }
-}
-
-
-export interface UnsupportedInlineNode extends PMNode {
-    type: UnsupportedInlineNodeType;
-}
-
-export function isUnsupportedInlineNode(node: PMNode): node is UnsupportedInlineNode {
-  return node.type instanceof UnsupportedInlineNodeType;
-}
-
+    return ['div', attrs, 'Unsupported content'];
+  },
+  parseDOM: [
+    {
+      tag: 'div[data-node-type="unsupportedInline"]',
+      getAttrs(dom: HTMLElement) {
+        return { cxhtml: dom.getAttribute('data-unsupported-inline-cxhtml')! };
+      }
+    }
+  ]
+} as NodeSpec;

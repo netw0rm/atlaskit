@@ -7,9 +7,11 @@ import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
   pluginState: HyperlinkState;
+  editorView: EditorView;
 }
 
 export interface State {
@@ -25,8 +27,8 @@ export interface State {
   textInputValue?: string;
   editorFocused?: boolean;
   inputActive?: boolean;
-  autoFocusInput?: boolean;
   active?: boolean;
+  showToolbarPanel?: boolean;
 }
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
@@ -35,8 +37,8 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     unlinkable: true,
     editorFocused: false,
     inputActive: false,
-    autoFocusInput: false,
     active: false,
+    showToolbarPanel: false,
   };
 
   componentDidMount() {
@@ -59,48 +61,61 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     });
   }
 
-  render() {
-    const { href, target, unlinkable, active, editorFocused, inputActive, autoFocusInput } = this.state;
+  updatePosition = () => {
+    const { pluginState } = this.props;
+    if (!pluginState.active) {
+      return pluginState.getCoordniates(this.props.editorView);
+    }
+  }
 
-    if (active && (editorFocused || inputActive)) {
+  render() {
+    const {
+      href, target, unlinkable, active, editorFocused, inputActive, showToolbarPanel
+    } = this.state;
+
+    if ((active || showToolbarPanel) && (editorFocused || inputActive)) {
       const showOpenButton = !!href;
-      const showUnlinkButton = unlinkable;
+      const showUnlinkButton = unlinkable && active;
       const showSeparator = showOpenButton || showUnlinkButton;
 
       return (
-        <FloatingToolbar target={target} align="left" autoPosition>
+        <FloatingToolbar
+          target={target}
+          align="left"
+          onExtractStyle={this.updatePosition}
+          autoPosition
+        >
           <div className={styles.container}>
             {!showOpenButton ? null :
-            <ToolbarButton
-              href={href}
-              target="_blank"
-              theme="dark"
-              title="Open link in new tab"
-            >
-              <OpenIcon label="Open" />
-            </ToolbarButton>
+              <ToolbarButton
+                href={href}
+                target="_blank"
+                theme="dark"
+                title="Open link in new tab"
+              >
+                <OpenIcon label="Open" />
+              </ToolbarButton>
             }
             {!showUnlinkButton ? null :
-            <ToolbarButton
-              theme="dark"
-              title="Unlink"
-              onClick={this.handleUnlink}
-            >
-              <UnlinkIcon label="Unlink" />
-            </ToolbarButton>
+              <ToolbarButton
+                theme="dark"
+                title="Unlink"
+                onClick={this.handleUnlink}
+              >
+                <UnlinkIcon label="Unlink" />
+              </ToolbarButton>
             }
             {!showSeparator ? null :
-            <span className={styles.seperator} />
+              <span className={styles.seperator} />
             }
             <PanelTextInput
               placeholder="Link address"
-              autoFocus={autoFocusInput}
+              autoFocus={!href || href.length === 0}
               defaultValue={href}
-              onSubmit={this.updateHref}
+              onSubmit={this.handleSubmit}
               onChange={this.updateHref}
               onMouseDown={this.setInputActive}
-              onBlur={this.resetInputActive}
-              ref="textInput"
+              onBlur={this.handleOnBlur}
             />
           </div>
         </FloatingToolbar>
@@ -110,8 +125,20 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     }
   }
 
+  // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue
+  private handleOnBlur = () => {
+    const { editorView, pluginState } = this.props;
+    if (editorView.state.selection.empty && !pluginState.active) {
+      pluginState.hideLinkPanel();
+    }
+    if (!pluginState.href || pluginState.href.length === 0) {
+      pluginState.removeLink(editorView);
+    }
+    this.resetInputActive();
+  }
+
   private handleUnlink = () => {
-    this.props.pluginState.removeLink();
+    this.props.pluginState.removeLink(this.props.editorView);
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
@@ -125,11 +152,22 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       textInputValue: pluginState.text,
       editorFocused: pluginState.editorFocused,
       inputActive: hrefNotPreset || inputActive,
-      autoFocusInput: hrefNotPreset,
+      showToolbarPanel: pluginState.showToolbarPanel,
     });
   }
 
   private updateHref = (href: string) => {
-    this.props.pluginState.updateLink({ href });
+    this.props.pluginState.updateLink({ href }, this.props.editorView);
+  }
+
+  private handleSubmit = (href: string) => {
+    const { editorView, pluginState } = this.props;
+    if (this.state.href) {
+      pluginState.updateLink({ href }, editorView);
+    }
+    else {
+      pluginState.addLink({ href }, editorView);
+      editorView.focus();
+    }
   }
 };

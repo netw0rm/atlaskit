@@ -1,11 +1,11 @@
 // This is the option when no language specified
 export const NO_LANGUAGE = 'Language';
 
-export const SUPPORTED_LANGUAGES = [
+export const DEFAULT_LANGUAGES = [
   { name: 'PHP', alias: ['php', 'php3', 'php4', 'php5'] },
   { name: 'Java', alias: ['java'] },
   { name: 'CSharp', alias: ['csharp', 'c#'] },
-  { name: 'Python', alias: ['python'] },
+  { name: 'Python', alias: ['python', 'py'] },
   { name: 'JavaScript', alias: ['javascript', 'js'] },
   { name: 'Html', alias: ['html'] },
   { name: 'C++', alias: ['c++', 'cpp'] },
@@ -17,7 +17,13 @@ export const SUPPORTED_LANGUAGES = [
   { name: 'Shell', alias: ['shell', 'bash', 'sh', 'ksh', 'zsh'] },
   { name: 'Scala', alias: ['scala'] },
   { name: 'Go', alias: ['go'] },
-  { name: 'ActionScript', alias: ['actionscript', 'as'] },
+  { name: 'ActionScript', alias: ['actionscript', 'actionscript3', 'as'] },
+  { name: 'AppleScript', alias: ['applescript'] },
+  { name: 'ColdFusion', alias: ['coldfusion'] },
+  { name: 'Diff', alias: ['diff'] },
+  { name: 'JavaFX', alias: ['javafx', 'jfx'] },
+  { name: 'VisualBasic', alias: ['visualbasic', 'vb'] },
+  { name: 'PlainText', alias: ['plaintext', 'text'] },
   { name: 'VbNet', alias: ['vbnet', 'vb.net'] },
   { name: 'MATLAB', alias: ['matlab'] },
   { name: 'Groovy', alias: ['groovy'] },
@@ -34,7 +40,7 @@ export const SUPPORTED_LANGUAGES = [
   { name: 'Puppet', alias: ['puppet'] },
   { name: 'Arduino', alias: ['arduino'] },
   { name: 'Fortran', alias: ['fortran'] },
-  { name: 'Erlang', alias: ['erlang'] },
+  { name: 'Erlang', alias: ['erlang', 'erl'] },
   { name: 'PowerShell', alias: ['powershell', 'posh', 'ps1', 'psm1'] },
   { name: 'Haxe', alias: ['haxe', 'hx', 'hxsl'] },
   { name: 'Elixir', alias: ['elixir', 'ex', 'exs'] },
@@ -69,19 +75,12 @@ export const SUPPORTED_LANGUAGES = [
   { name: 'LiveScript', alias: ['livescript', 'live-script'] },
   { name: 'XQuery', alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'] }];
 
-const languageList = [NO_LANGUAGE, ...(SUPPORTED_LANGUAGES.map((language) => language.name).sort())];
-
-export interface Language {
-  name: string;
-  alias: string[];
-}
-
-export function findMatchedLanguage(language?: string): string {
+export function findMatchedLanguage(supportedLanguages: any[], language?: string): string {
   if (!language) {
     return NO_LANGUAGE;
   }
 
-  const matches = SUPPORTED_LANGUAGES.filter((supportedLanguage) => {
+  const matches = supportedLanguages.filter((supportedLanguage) => {
     return supportedLanguage.alias.indexOf(language.toLowerCase()) !== -1;
   });
 
@@ -92,4 +91,22 @@ export function findMatchedLanguage(language?: string): string {
   return NO_LANGUAGE;
 }
 
-export default languageList;
+export function filterSupportedLanguages (supportedLanguages) {
+  if (!supportedLanguages || !supportedLanguages.length) {
+    return DEFAULT_LANGUAGES;
+  }
+
+  return DEFAULT_LANGUAGES.filter(language => {
+    let i = language.alias.length;
+    while (i--) {
+      if (supportedLanguages.indexOf(language.alias[i]) > -1) {
+        return true;
+      }
+    }
+    return false;
+  });
+}
+
+export function createLanguageList (supportedLanguages) {
+  return [NO_LANGUAGE, ...(supportedLanguages.map((language) => language.name).sort())];
+};

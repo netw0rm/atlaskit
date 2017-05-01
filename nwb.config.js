@@ -11,13 +11,13 @@ const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
 
 const runInRealBrowsers = [
-  // These should actually be run through BrowserStack in CI.
+  // TODO These should actually be run through BrowserStack in CI.
   /^editor-/,
 
-  // Seems to be errors that kill JSDOM.
-  /^multi-select/,
+  // TODO These run super slow when using mocha-cli.
+  /multi-select/,
 
-  // This only works in Chrome for now becuase we're not including polyfills.
+  // TODO Visibility test fails in JSDOM.
   /util-common-test/,
 ];
 

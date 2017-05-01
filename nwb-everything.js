@@ -20,7 +20,9 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   const dir = path.join(pathPackages, pathPackage);
   const nwbFile = path.join(dir, 'nwb.config.js');
   const tsFile = path.join(dir, 'tsconfig.json');
+  const unitFile = path.join(dir, 'test', 'unit');
   const isTsPackage = fs.existsSync(tsFile);
+  const isMochaPackage = fs.existsSync(unitFile);
 
   if (!fs.statSync(dir).isDirectory()) {
     return;
@@ -55,8 +57,12 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
       : `${binPath}/eslint --color --format "${modPath}/eslint-friendly-formatter" --ext .js --ext .jsx src/ stories/ test/`,
     prepublish: `${binPath}/nwb build`,
     storybook: `${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,
-    test: `${binPath}/nwb test`,
-    'test:watch': `${binPath}/nwb test --server`,
+    test: isMochaPackage
+      ? "mocha --colors --require ../../test-setup './test/unit/**/*.js'"
+      : `${binPath}/nwb test`,
+    'test:watch': isMochaPackage
+      ? "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'"
+      : `${binPath}/nwb test --server`,
   };
 
   // Remove old fields.

@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import React from 'react';
 import { mount } from 'enzyme';
 import { akColorR400, akColorG75 } from '@atlaskit/util-shared-styles';
-import sinon from 'sinon';
 
 import AkToggle, { Toggle } from '../../src';
 import { getContainerBackgroundColor } from '../../src/styled';

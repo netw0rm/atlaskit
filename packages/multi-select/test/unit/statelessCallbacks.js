@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import React from 'react';
 import { mount } from 'enzyme';
 import Tag from '@atlaskit/tag';
-import sinon from 'sinon';
 
 import { StatelessMultiSelect } from '../../src';
 

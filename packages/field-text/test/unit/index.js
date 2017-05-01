@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Base from '@atlaskit/field-base';
-import sinon from 'sinon';
 
 import FieldTextSmart, { FieldText } from '../../src';
 

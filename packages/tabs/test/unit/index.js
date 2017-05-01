@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import Tabs, { StatelessTabs } from '../../src';
 import styles from '../../src/styles.less';

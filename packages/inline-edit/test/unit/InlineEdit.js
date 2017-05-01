@@ -5,7 +5,6 @@ import { mount, shallow } from 'enzyme';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base';
-import sinon from 'sinon';
 
 import InlineEdit from '../../src/InlineEdit';
 

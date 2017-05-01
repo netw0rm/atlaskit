@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Base from 'ak-field-base';
-import sinon from 'sinon';
 
 import Radio from '../../src/Radio';
 import AkFieldRadioGroup from '../../src/RadioGroup';

@@ -2,7 +2,6 @@ import sinon from 'sinon';
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import Flag, { FlagGroup } from '../../src';
 import { name } from '../../package.json';

@@ -5,7 +5,7 @@ import Dash from './styled/Dash';
 import Wrapper from './styled/Wrapper';
 
 // time in milliseconds to wait before displaying the loading spinner
-const SPINNER_DELAY = 100;
+const DEFAULT_SPINNER_DELAY = 100;
 const SIZES = ['small', 'medium', 'large', 'xlarge'];
 const SIZES_MAP = {
   small: 20,
@@ -18,6 +18,7 @@ const NOOP = () => {};
 
 export default class Spinner extends PureComponent {
   static propTypes = {
+    delay: PropTypes.number,
     isCompleting: PropTypes.bool,
     onComplete: PropTypes.func,
     size: PropTypes.oneOfType([
@@ -27,6 +28,7 @@ export default class Spinner extends PureComponent {
   }
 
   static defaultProps = {
+    delay: DEFAULT_SPINNER_DELAY,
     isCompleting: false,
     onComplete: NOOP,
     size: SIZES[0],
@@ -59,7 +61,7 @@ export default class Spinner extends PureComponent {
       clearTimeout(this.state.spinnerDelayTimeout);
     }
     this.setState({
-      spinnerDelayTimeout: setTimeout(this.handleSpinnerDelayEnd, SPINNER_DELAY),
+      spinnerDelayTimeout: setTimeout(this.handleSpinnerDelayEnd, this.props.delay),
       spinnerHiddenForDelay: true,
     });
   }

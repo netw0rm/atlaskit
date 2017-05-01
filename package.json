@@ -192,7 +192,7 @@
     "validate/tslint/changed/fix": "./build/bin/lint.tslint.changed.sh --fix",
     "validate/tslint/fix": "lerna run -- lint -- --fix",
     "validate/package.json": "pjv -q && lerna exec -- pjv -q",
-    "validate/typescript": "./build/bin/validate.typescript.sh"
+    "validate/typescript": "lerna run validate/typescript"
   },
   "devDependencies": {}
 }

@@ -51,7 +51,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   pkgJson.main = `umd/${pkgJson.name}.js`;
   pkgJson.scripts = {
     lint: isTsPackage
-      ? `${binPath}/tslint -c ../../tslint.json "./src/**/*.{ts,tsx,d.ts}" "./stories/**/*.{ts,tsx,d.ts}" "*.{ts,tsx,d.ts}"`
+      ? `${binPath}/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'`
       : `${binPath}/eslint --color --format "${modPath}/eslint-friendly-formatter" --ext .js --ext .jsx src/ stories/ test/`,
     prepublish: `${binPath}/nwb build`,
     storybook: `${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,

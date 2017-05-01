@@ -99,7 +99,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
     return (
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
-          ref={ref => {this.content = ref;}}
+          ref={ref => {this.content = ref; }}
           style={{ top: 0, left: 0, position, transform, padding, zIndex: akEditorFloatingPanelZIndex }}
           className={styles.container}
         >

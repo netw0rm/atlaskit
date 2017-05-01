@@ -6,10 +6,9 @@
   },
   "description": "Editor web component",
   "main": "umd/@atlaskit/editor-bitbucket.js",
-  "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "lint": "../../node_modules/.bin/tslint -c ../../tslint.json \"./src/**/*.{ts,tsx,d.ts}\" \"./stories/**/*.{ts,tsx,d.ts}\" \"*.{ts,tsx,d.ts}\"",
+    "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",

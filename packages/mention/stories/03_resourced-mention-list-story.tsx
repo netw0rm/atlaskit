@@ -11,7 +11,7 @@ export interface State {
   query: string;
 }
 
-class ResourcedMentionListStoryDemo extends Component<undefined, State> {
+class ResourcedMentionListStoryDemo extends Component<{}, State> {
   private resourcedMentionListRef: ResourcedMentionList;
 
   constructor(props) {

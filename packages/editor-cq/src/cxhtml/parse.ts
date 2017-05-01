@@ -402,6 +402,11 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
       return Fragment.from(content);
 
+    case 'NOFORMAT': {
+      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
+      return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
+    }
+
     case 'WARNING':
     case 'INFO':
     case 'NOTE':

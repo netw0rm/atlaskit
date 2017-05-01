@@ -4,7 +4,7 @@ import {Core} from './binaries/editorCore';
 export type TimerTickHandler = (id: number) => void;
 
 // For better testing we provide functions that can be used to start and stop timers.
-// The starter function starts the timer immediately and returns a nonzero handle that can be used 
+// The starter function starts the timer immediately and returns a nonzero handle that can be used
 // to stop the timer with the stopper function.
 export type TimerCallback = () => void;
 export type TimerHandle = number;

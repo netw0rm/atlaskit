@@ -71,7 +71,7 @@ storiesOf(name, module)
                  )
               </legend>
               {this.state.isMediaReady ?
-                <pre style={{ whiteSpace:'pre-wrap', wordBreak:'break-all' }}>{xml}</pre>
+                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{xml}</pre>
                 :
                 <div style={{ padding: 20 }}><Spinner size="large" /></div>
               }

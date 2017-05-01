@@ -1,22 +1,22 @@
 {
   "name": "@atlaskit/code",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "config": {
     "access": "public"
   },
   "description": "Renders inline code snippets and code blocks",
-  "main": "dist/es5/index.js",
+  "main": "umd/@atlaskit/code.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es5 && npm run build/es2015",
-    "build/es5": "../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
+    "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
-    "dist",
-    "src"
+    "umd"
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.1",

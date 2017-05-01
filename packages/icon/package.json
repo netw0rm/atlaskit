@@ -7,12 +7,8 @@
   "description": "A React package that contains icons",
   "main": "umd/@atlaskit/icon.js",
   "scripts": {
-    "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.jsx",
-    "generate-icon-exports": "node ./bin/generate-icon-exports.js",
-    "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
-    "lint": "../../node_modules/.bin/tslint -c ../../tslint.json \"./src/**/*.{ts,tsx,d.ts}\" \"./stories/**/*.{ts,tsx,d.ts}\" \"*.{ts,tsx,d.ts}\"",
-    "prepublish": "CLI=1 npm run gen-js && ../../node_modules/.bin/nwb build",
-    "pretest": "npm run gen-js",
+    "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
+    "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"

@@ -44,6 +44,32 @@ export default class Drawer extends PureComponent {
       top: `${backIconOffset}px`,
     };
 
+    const sidebar = isOpen ? (
+      <DrawerSide>
+        <DrawerPrimaryIcon>
+          {primaryIcon}
+        </DrawerPrimaryIcon>
+        <DrawerBackIconWrapper style={backIconWrapperStyle}>
+          <DrawerTrigger onActivate={onBackButton}>
+            <DrawerBackIcon isVisible={isOpen}>
+              {backIcon}
+            </DrawerBackIcon>
+          </DrawerTrigger>
+        </DrawerBackIconWrapper>
+      </DrawerSide>
+    ) : null;
+
+    const content = isOpen ? (
+      <DrawerMain>
+        {((width !== 'full') && header) ?
+          <ContainerHeader>{header}</ContainerHeader>
+        : null}
+        <DrawerContent>
+          {this.props.children}
+        </DrawerContent>
+      </DrawerMain>
+    ) : null;
+
     return (
       <div>
         <div style={{ zIndex: 0, position: 'relative' }}>
@@ -54,28 +80,8 @@ export default class Drawer extends PureComponent {
           />
         </div>
         <DrawerInner isOpen={isOpen} width={width}>
-          {isOpen ? (<DrawerSide>
-            <DrawerPrimaryIcon>
-              {primaryIcon}
-            </DrawerPrimaryIcon>
-            <DrawerBackIconWrapper style={backIconWrapperStyle}>
-              <DrawerTrigger onActivate={onBackButton}>
-                <DrawerBackIcon isVisible={isOpen}>
-                  {backIcon}
-                </DrawerBackIcon>
-              </DrawerTrigger>
-            </DrawerBackIconWrapper>
-          </DrawerSide>
-          ) : null}
-          {isOpen ? (<DrawerMain>
-            {((width !== 'full') && header) ?
-              <ContainerHeader>{header}</ContainerHeader>
-
-            : null}
-            <DrawerContent>
-              {this.props.children}
-            </DrawerContent>
-          </DrawerMain>) : null}
+          {sidebar}
+          {content}
         </DrawerInner>
       </div>
     );

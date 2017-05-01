@@ -12,6 +12,7 @@ import { style } from 'typestyle';
 import Popup from './internal/popup';
 import Selector from './internal/selector';
 import Trigger from './internal/trigger';
+import { analyticsService } from './analytics';
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
@@ -91,6 +92,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   }
 
   private close() {
+    analyticsService.trackEvent('reactions.picker.close');
     this.setState({
       isOpen: false,
       showFullPicker: false
@@ -99,6 +101,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
   private showFullPicker = (e) => {
     e.preventDefault();
+    analyticsService.trackEvent('reactions.picker.show');
 
     this.setState({
       isOpen: true,
@@ -143,11 +146,13 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   private onEmojiSelected = (emoji) => {
     const { onSelection } = this.props;
 
+    analyticsService.trackEvent('reactions.picker.emoji.selected', { emojiId: emoji.id });
     onSelection(emoji.id);
     this.close();
   }
 
   private onTriggerClick = () => {
+    analyticsService.trackEvent('reactions.picker.trigger.click');
     this.setState({
       isOpen: !this.state.isOpen,
       showFullPicker: false

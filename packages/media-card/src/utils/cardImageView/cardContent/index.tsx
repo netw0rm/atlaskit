@@ -19,10 +19,14 @@ export class CardContent extends Component<CardContentProps, {}> {
       return <CardLoading mediaItemType={mediaItemType} />;
     }
 
-    if (mediaType === 'image' && dataURI) {
+    if (this.shouldDisplayImageThumbnail(dataURI, mediaType)) {
       return <MediaImage dataURI={dataURI} fadeIn={loading} />;
     } else {
       return null;
     }
+  }
+
+  private shouldDisplayImageThumbnail(dataURI?: string, mediaType?: MediaType): dataURI is string {
+    return !!(mediaType !== 'doc' && dataURI);
   }
 }

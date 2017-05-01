@@ -39,15 +39,16 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
     const {iframeLoaded, isLoading} = this.state;
     const classNames = cx({'is-played': iframeLoaded, 'is-loading': isLoading});
 
-    return <Wrapper className={classNames}>
-      {this.renderPlayer()}
-      {this.renderLinkCard()}
-    </Wrapper>;
+    return (
+      <Wrapper className={classNames}>
+        {this.renderPlayer()}
+        {this.renderLinkCard()}
+      </Wrapper>
+    );
   }
 
   private renderPlayer(): JSX.Element {
     const src = this.state.isPlayed ? `${this.props.playerUrl}&autoplay=1` : '';
-
     return <iframe src={src} onLoad={this.onIframeLoad}/>;
   }
 

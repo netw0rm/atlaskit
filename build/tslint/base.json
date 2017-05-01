@@ -1,5 +1,5 @@
 {
-  "rulesDirectory": ["build/tslint-rules"],
+  "rulesDirectory": ["./rules"],
   "extends": ["tslint:recommended", "tslint-react"],
   "rules": {
     "align": [false],
@@ -18,7 +18,7 @@
     ],
     "interface-name": [false],
     "interface-over-type-literal": false,
-    "jsx-boolean-value": [false],
+    "jsx-boolean-value": [true],
     "jsx-alignment": true,
     "jsx-no-lambda": [false],
     "jsx-no-multiline-js": [false],

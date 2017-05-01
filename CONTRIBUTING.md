@@ -159,7 +159,7 @@ All packages should use a consistent set of TSLint rules (found in `tslint.json`
 
 Custom TSLint rules can be written and contributed to the repo to enforce patterns. This can be used as to 'incubate' new rules before promoting them to standalone packages, or to house rules that are Atlaskit specific.
 
-These rules live in `build/tslint-rules`.
+These rules live in `build/tslint/rules`.
 
 ### Packaging
 

@@ -3,11 +3,13 @@ import DrawerTriggerInner from '../styled/DrawerTriggerInner';
 
 export default class DrawerTrigger extends PureComponent {
   static propTypes = {
+    identity: PropTypes.string,
     children: PropTypes.node,
     onActivate: PropTypes.func,
   };
   static defaultProps = {
     onActivate: () => {},
+    idenetity: '',
   };
 
   render() {
@@ -15,6 +17,7 @@ export default class DrawerTrigger extends PureComponent {
     return (
       <DrawerTriggerInner
         aria-haspopup="true"
+        id={this.props.identity}
         onClick={this.props.onActivate}
         onMouseDown={e => e.preventDefault()}
       >

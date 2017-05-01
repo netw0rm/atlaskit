@@ -1,5 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
+const GRID_UNITS_PER_ITEM = 4.5;
 export default class NoScrollResultsBox extends PureComponent {
   static propTypes = {
     minItems: PropTypes.number,
@@ -34,16 +36,15 @@ export default class NoScrollResultsBox extends PureComponent {
     return window.innerHeight - cmpntY;
   }
 
+  getMaxItemsForHeight = () => {
+    const availableGridUnits = parseInt(this.state.height / akGridSizeUnitless, 10);
+    return parseInt(availableGridUnits / GRID_UNITS_PER_ITEM, 10);
+  }
+
   resizeToFillContainer = () => {
     this.setState({
       height: this.getNoScrollHeight(),
     });
-  }
-
-  itemsTheresSpaceFor = () => {
-    const availableGridUnits = parseInt(this.state.height / 8, 10);
-    const gridUnitsPerItem = 4.5;
-    return parseInt(availableGridUnits / gridUnitsPerItem, 10);
   }
 
   render = () => {
@@ -52,7 +53,7 @@ export default class NoScrollResultsBox extends PureComponent {
       children = children
         .slice(
           0,
-          Math.max(this.props.minItems, this.itemsTheresSpaceFor())
+          Math.max(this.props.minItems, this.getMaxItemsForHeight())
         );
     }
     return <div ref={(div) => { this.ref = div; }}>{children}</div>;

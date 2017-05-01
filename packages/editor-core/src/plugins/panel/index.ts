@@ -10,7 +10,6 @@ import {
   Node,
 } from '../../prosemirror';
 import inputRulePlugin from './input-rules';
-import keymapPlugin from './keymaps';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';

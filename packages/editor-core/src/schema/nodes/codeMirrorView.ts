@@ -1,6 +1,4 @@
 import CodeMirror from '../../codemirror';
-// import 'codemirror/mode/javascript/javascript';
-// import 'codemirror/mode/ruby/ruby';
 import '!style!css!less!codemirror/lib/codemirror.css';
 import {
   Selection,
@@ -71,11 +69,7 @@ export default class CodeMirrorView {
         this.valueChanged();
       }
     });
-    this.cm.on('cursorActivity', () => {
-      if (!this.updating) {
-        this.forwardSelection();
-      }
-    });
+
     this.cm.on('focus', () => {
       this.pluginState.updateEditorFocused(true);
       this.pluginState.update(this.view.state, this.view.docView, true);

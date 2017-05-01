@@ -191,7 +191,7 @@
     "validate/lint-changed": "run-p -l validate/eslint/changed validate/tslint/changed",
     "validate/lint-changed/fix": "run-p -l validate/eslint/changed/fix validate/tslint/changed/fix",
     "validate/lint/fix": "run-p -l validate/eslint/fix validate/tslint/fix",
-    "validate/tslint": "./build/bin/lint.tslint.sh",
+    "validate/tslint": "lerna run lint",
     "validate/tslint/changed": "./build/bin/lint.tslint.changed.sh",
     "validate/tslint/changed/fix": "./build/bin/lint.tslint.changed.sh --fix",
     "validate/tslint/fix": "./build/bin/lint.tslint.sh --fix",

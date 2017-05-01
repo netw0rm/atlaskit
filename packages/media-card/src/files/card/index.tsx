@@ -5,17 +5,27 @@ import {CardAction, CardActionType, FileDetails} from '@atlaskit/media-core';
 import {SharedCardProps, CardStatus} from '../..';
 import {FileCardView} from '../cardView';
 import {FileCardViewSmall} from '../cardViewSmall';
+import {CardVideoView, toHumanReadableMediaSize} from '../../utils';
 
 export interface FileCardProps extends SharedCardProps {
   readonly status: CardStatus;
   readonly details?: FileDetails;
-  readonly dataURI?: string;
   readonly progress?: number;
-}
+  readonly dataURI?: string;
+  readonly videoUrl?: Promise<string>;
+};
 
 export class FileCard extends Component<FileCardProps, {}> {
+  private static defaultDetails: FileDetails = {
+    id: undefined,
+    name: undefined,
+    mediaType: undefined,
+    size: undefined
+  };
+
   static defaultProps: Partial<FileCardProps> = {
-    actions: []
+    actions: [],
+    details: FileCard.defaultDetails
   };
 
   render() {
@@ -32,42 +42,79 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {status, dimensions, selectable, selected, details, dataURI, progress} = this.props;
-    const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
-    const {name, mediaType, size} = details || defaultDetails;
+    const {appearance, details, videoUrl} = this.props;
+    const {mediaType} = details || FileCard.defaultDetails;
+
+    if (appearance === 'small') {
+      return this.renderSmallView();
+    }
+
+    if (appearance === 'image') {
+      return this.renderImageView();
+    }
+
+    if (mediaType === 'video' && videoUrl) {
+      return this.renderVideoView(videoUrl);
+    }
+
+    return this.renderImageView();
+  }
+
+  private renderSmallView = (): JSX.Element => {
+    const {dimensions, dataURI, details} = this.props;
+    const {name, mediaType, size} = details || FileCard.defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
 
-    const card = (this._isSmall()) ?
-      (
-        <FileCardViewSmall
-          error={errorMessage}
-          width={dimensions && dimensions.width}
-          dataURI={dataURI}
-          mediaName={name}
-          mediaType={mediaType}
-          mediaSize={size}
-          loading={this.isLoading}
-          actions={this._getActions()}
-          onClick={this.onClick}
-        />
-      ) : (
-        <FileCardView
-          error={errorMessage}
-          dimensions={dimensions}
-          selectable={selectable}
-          selected={selected}
-          dataURI={dataURI}
-          mediaName={name}
-          mediaType={mediaType}
-          mediaSize={size}
-          status={status}
-          actions={this._getActions()}
-          onClick={this.onClick}
-          progress={progress}
-        />
-      );
+    return (
+      <FileCardViewSmall
+        error={errorMessage}
+        width={dimensions && dimensions.width}
+        dataURI={dataURI}
+        mediaName={name}
+        mediaType={mediaType}
+        mediaSize={size}
+        loading={this.isLoading}
+        actions={this._getActions()}
+        onClick={this.onClick}
+      />
+    );
+  }
 
-    return card;
+  private renderImageView = (): JSX.Element => {
+    const {dimensions, selectable, selected, details, dataURI, status, progress, videoUrl} = this.props;
+    const {name, mediaType, size} = details || FileCard.defaultDetails;
+    const errorMessage = this.isError ? 'Error loading card' : undefined;
+
+    return (
+      <FileCardView
+        error={errorMessage}
+        dimensions={dimensions}
+        selectable={selectable}
+        selected={selected}
+        dataURI={dataURI}
+        videoUrl={videoUrl}
+        mediaName={name}
+        mediaType={mediaType}
+        mediaSize={size}
+        actions={this._getActions()}
+        onClick={this.onClick}
+        status={status}
+        progress={progress}
+      />
+    );
+  }
+
+  private renderVideoView = (videoUrl: Promise<string>): JSX.Element => {
+    const {details} = this.props;
+    const {name, size} = details || FileCard.defaultDetails;
+
+    return (
+      <CardVideoView
+        videoUrl={videoUrl}
+        title={name}
+        subtitle={size !== undefined ? toHumanReadableMediaSize(size) : ''}
+      />
+    );
   }
 
   private _getFirstAction(type: CardActionType): CardAction | null {
@@ -99,10 +146,6 @@ export class FileCard extends Component<FileCardProps, {}> {
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
     const actions: Array<CardAction> = this.props.actions || [];
     return actions.filter(action => action.type === type);
-  }
-
-  private _isSmall(): boolean {
-    return this.props.appearance === 'small';
   }
 
   private get isLoading(): boolean {

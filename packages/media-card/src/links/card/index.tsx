@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
 import { SharedCardProps, CardStatus } from '../..';
+import { TrelloBoardLinkApp, UrlPreview, Resource } from '@atlaskit/media-core';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
 import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
+import { CardVideoView } from '../../utils';
 
 export interface LinkCardProps extends SharedCardProps {
   status: CardStatus;
@@ -33,6 +34,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
     if (resources) {
       if (resources.app) { return this.renderApplicationLink(); }
+      if (resources.file) { return this.renderFileLink(resources.file); }
       if (resources.player) { return this.renderPlayerLink(); }
       if (resources.image) { return this.renderLinkCardImage(); }
     }
@@ -60,6 +62,23 @@ export class LinkCard extends Component<LinkCardProps, {}> {
       lists={app.lists}
       members={app.member}
     />;
+  }
+
+  private renderFileLink(file: Resource): JSX.Element {
+    const { title } = this.urlPreview;
+    const { type } = file;
+
+    if (type && type.indexOf('video') === 0) {
+      return (
+        <CardVideoView
+          videoUrl={Promise.resolve(file.url)}
+          title={title}
+          subtitle={this.hostName}
+        />
+      );
+    }
+
+    return this.renderGenericLink();
   }
 
   private renderPlayerLink(): JSX.Element {
@@ -138,6 +157,14 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         iconUrl={this.iconUrl}
       />
     );
+  }
+
+  private get hostName(): string {
+    const { site, url } = this.urlPreview;
+    if (site) { return site; }
+    if (window.URL) { return new URL(url).host; }
+
+    return url;
   }
 
   private get resources() {

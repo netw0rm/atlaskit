@@ -24,7 +24,10 @@ import {
   wideImage,
   wideTransparentImage,
   smallImage,
-  smallTransparentImage
+  smallTransparentImage,
+
+  // serviceHost for player cards
+  defaultServiceHost
 } from '@atlaskit/media-test-helpers';
 
 import {CardAppearance} from '../src';
@@ -176,37 +179,26 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
   // missing metadata and/or data uri
   const fileMissingMetadataOrDataUriCards = createMissingMetadataFileCards(appearance);
+  const videoUrl = 'https://scontent-syd2-1.cdninstagram.com/t50.2886-16/18277848_1290357941084723_1532640624103129088_n.mp4';
+  // players
+  const filePlayerCards = [
+    {
+      title: 'Video',
+      content: <CardView appearance={appearance} status="complete" metadata={videoFileDetails} videoUrl={videoUrl} />
+    }, {
+      title: 'Audio',
+      content: <CardView appearance={appearance} status="complete" metadata={imageFileDetails} />
+    }
+  ];
 
   return (
     <div>
-      <h3>Files</h3>
-      <StoryList>{fileCards}</StoryList>
-
-      <h4>Media Types - no placeholders</h4>
-      <StoryList>{fileMediaTypeCards}</StoryList>
-
-      <h4>Loading and error states</h4>
-      <StoryList>{fileLoadingAndErrorCards}</StoryList>
-
-      <h4>Menu actions</h4>
-      <StoryList>{fileMenuActionsCards}</StoryList>
-
       {appearance === 'image' || appearance === 'auto' ? (
           <div>
-            <h4>Upload progress</h4>
-            <StoryList>{uploadProgressCards}</StoryList>
+            <h4>Player cards</h4>
+            <StoryList>{filePlayerCards}</StoryList>
           </div>
         ) : null}
-
-      {appearance === 'image' || appearance === 'auto' ? (
-          <div>
-            <h4>Seletable</h4>
-            <StoryList>{fileSelectableCards}</StoryList>
-          </div>
-        ) : null}
-
-      <h4>Missing metadata or data uri</h4>
-      <StoryList>{fileMissingMetadataOrDataUriCards}</StoryList>
     </div>
   );
 };

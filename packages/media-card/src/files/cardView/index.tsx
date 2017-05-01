@@ -13,6 +13,7 @@ export interface FileCardViewProps {
   mediaSize?: number;
 
   dataURI?: string;
+  videoUrl?: Promise<string>;
   progress?: number;
   status: CardStatus;
 
@@ -35,7 +36,8 @@ export const DEFAULT_CARD_DIMENSIONS = {
 
 export class FileCardView extends Component<FileCardViewProps, {}> {
   render() {
-    const {mediaSize, mediaType, mediaName, dataURI, progress, status, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
+    const {mediaSize, mediaType, mediaName, dataURI, videoUrl, status,
+      progress, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
     const fileSize = toHumanReadableMediaSize(mediaSize || 0);
     const elementToWidget = () => {
       return <FileCardView {...this.props} key={new Date().getTime()} dimensions={{width: '100%', height: 'calc(100% - 90px)'}} />;
@@ -46,6 +48,7 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
       mediaName={mediaName}
       subtitle={fileSize}
       dataURI={dataURI}
+      videoUrl={videoUrl}
       progress={progress}
       status={status}
       dimensions={dimensions}

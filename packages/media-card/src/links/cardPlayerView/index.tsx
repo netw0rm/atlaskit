@@ -4,10 +4,10 @@ import * as cx from 'classnames';
 import {CardAction} from '@atlaskit/media-core';
 import ExpandIcon from '@atlaskit/icon/glyph/image-resize';
 
-import PlayButton from './play-button';
 import {LinkCardGenericView} from '../cardGenericView';
-import {Wrapper, AnimatedButton, PlayButtonWrapper, Circle} from './styled';
-import Widget from '../../widget';
+import {Wrapper} from './styled';
+import {PlayButton} from '../../utils';
+import Widget from '../../utils/widget';
 
 export interface LinkCardPlayerProps {
   linkUrl: string;
@@ -63,11 +63,7 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
 
     return (
       <div className="link-info">
-        <PlayButtonWrapper className="play-button-wrapper" onClick={this.onClick}>
-          <Circle className="circle"/>
-          <AnimatedButton dangerouslySetInnerHTML={{__html: PlayButton}} />
-        </PlayButtonWrapper>
-
+        <PlayButton onClick={this.onClick}/>
         <LinkCardGenericView
           appearance="square"
           title={title}
@@ -86,7 +82,6 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
 
   makeWidget = () => {
     const component = <LinkCardPlayer {...this.props} key={new Date().getTime()}/>;
-
     Widget.add(component);
   }
 

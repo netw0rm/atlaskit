@@ -14,6 +14,7 @@ export interface MediaCardProps extends SharedCardProps, CardEventProps {
   readonly provider: Provider;
   readonly mediaItemType?: MediaItemType;
   readonly dataURIService?: DataUriService;
+  readonly getFileBinary?: (id: string) => Promise<string>;
 }
 
 export interface MediaCardState {
@@ -121,9 +122,19 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     }
   }
 
+  private isFileDetails(metadata?: FileDetails | LinkDetails | UrlPreview): metadata is FileDetails {
+    const details = metadata as LinkDetails | UrlPreview;
+
+    return details && details.url === undefined;
+  }
+
   render() {
-    const {mediaItemType, provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
+    const {mediaItemType, provider, dataURIService, onLoadingChange, getFileBinary, ...otherProps} = this.props;
     const {metadata, status} = this.state;
+    const {id, mediaType} = this.isFileDetails(metadata) ? metadata : {id: undefined, mediaType: undefined};
+    const videoUrl = mediaType === 'video' && id && getFileBinary
+      ? getFileBinary(id)
+      : undefined;
 
     return (
       <CardViewWithDataURI
@@ -133,6 +144,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         status={status}
         metadata={metadata}
         mediaItemType={mediaItemType}
+        videoUrl={videoUrl}
       />
     );
   }

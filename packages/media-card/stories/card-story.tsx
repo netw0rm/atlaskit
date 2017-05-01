@@ -288,6 +288,14 @@ storiesOf('Card', {})
       }
     ];
 
+    // Videos
+    const videoCards = [
+      {
+        title: 'Video',
+        content: <Card identifier={videoFileId} context={context} />
+      }
+    ];
+
     return (
       <div>
         <h1 style={{margin: '10px 20px'}}>File cards</h1>
@@ -306,6 +314,9 @@ storiesOf('Card', {})
 
           <h3>Thumbnail not available</h3>
           <StoryList>{noThumbnailCards}</StoryList>
+
+          <h3>Video cards</h3>
+          <StoryList>{videoCards}</StoryList>
         </div>
       </div>
     );
@@ -344,6 +355,13 @@ storiesOf('Card', {})
       }
     ];
 
+    const videoCards = [
+      {
+        title: 'Video',
+        content: <Card identifier={videoUrlPreviewId} context={context} />
+      }
+    ];
+
     const playerCards = [
       {
         title: 'YouTube',
@@ -376,6 +394,9 @@ storiesOf('Card', {})
 
           <h3>Error</h3>
           <StoryList>{errorCards}</StoryList>
+
+          <h3>Video cards</h3>
+          <StoryList>{videoCards}</StoryList>
 
           <h3>Player cards</h3>
           <StoryList>{playerCards}</StoryList>

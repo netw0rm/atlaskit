@@ -76,11 +76,14 @@ export class Card extends Component<CardProps, {}> {
   render() {
     const {context, identifier, ...otherProps} = this.props;
     const {mediaItemType} = identifier;
+    const getFileBinary = mediaItemType === 'file' ? context.getFileBinary : undefined;
+
     return <MediaCard
       {...otherProps}
       mediaItemType={mediaItemType}
       provider={this.provider}
       dataURIService={this.dataURIService}
+      getFileBinary={getFileBinary}
     />;
   }
 

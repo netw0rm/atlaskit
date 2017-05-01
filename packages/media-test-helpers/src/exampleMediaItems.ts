@@ -125,7 +125,7 @@ export const audioFileId = {
 };
 
 export const videoFileId = {
-  id: '1b01a476-83b4-4f44-8192-f83b2d00913a', // mp4 video
+  id: '63807c44-3aeb-4116-9499-d80018c2bca8', // mp4 video
   mediaItemType: fileType,
   collectionName
 };
@@ -230,7 +230,7 @@ export const imageFileDetails: FileDetails = {
 };
 
 export const videoFileDetails: FileDetails = {
-  id: 'some-id',
+  id: '755dcfc9-a1bf-443c-be77-33b0a7962c9d',
   mediaType: 'video',
   name: 'video_file.mp4',
   size: 29584640

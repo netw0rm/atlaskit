@@ -7,10 +7,16 @@ export const defaultServiceHost = 'https://dt-api-filestore.internal.app.dev.atl
 
 export const createStorybookContext = (clientId = defaultClientId, serviceHost = defaultServiceHost): Context => {
   const tokenProvider = StoryBookTokenProvider.withAccess({
-    [`urn:filestore:collection:${defaultCollectionName}`]: [
-      'read',
-      'update'
-    ]
+     [`urn:filestore:collection:${defaultCollectionName}`]: [
+        'read',
+        'update'
+      ],
+      'urn:filestore:file:*': [
+        'read'
+      ],
+      'urn:filestore:chunk:*': [
+        'read'
+      ]
   });
   const context = ContextFactory.create({ clientId, serviceHost, tokenProvider });
 

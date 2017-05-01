@@ -13,14 +13,36 @@ export interface Props {
   onChange: any;
 }
 
-export default class EmojiPickerListSearch extends PureComponent<Props, undefined> {
+export interface State {
+  query?: string;
+}
+
+export default class EmojiPickerListSearch extends PureComponent<Props, State> {
 
   static defaultProps = {
     style: {},
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      query: props.query
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ query: nextProps.query });
+  }
+
+  private onChange = (e) => {
+    this.setState({ query: e.target.value });
+    this.props.onChange(e);
+  }
+
   render() {
-    const { style, onChange, query } = this.props;
+    const { style } = this.props;
+    const { query } = this.state;
 
     return (
       <div className={styles.pickerSearch} style={style}>
@@ -41,7 +63,7 @@ export default class EmojiPickerListSearch extends PureComponent<Props, undefine
             name="search"
             placeholder="Search..."
             required={false}
-            onChange={e => onChange(e)}
+            onChange={this.onChange}
             value={query}
             ref={input => input && input.focus()}
           />

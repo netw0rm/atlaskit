@@ -246,4 +246,4 @@ export default class PickerFacade {
       });
     }
   }
-};
+}

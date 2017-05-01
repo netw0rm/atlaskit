@@ -18,13 +18,13 @@ export function setTextSelection(view: EditorView, anchor: number, head?: number
   const { state } = view;
   const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor, head));
   view.dispatch(tr);
-};
+}
 
 export function setNodeSelection(view: EditorView, from: number) {
   const { state } = view;
   const tr = state.tr.setSelection(NodeSelection.create(state.doc, from));
   view.dispatch(tr);
-};
+}
 
 
 /**
@@ -38,7 +38,7 @@ export function insertText(view: EditorView, text: string, from: number, to?: nu
       view.dispatch(view.state.tr.insertText(character, pos + index, pos + index));
     }
   });
-};
+}
 
 /**
  * Replace the current selection with the given content, which may be a fragment, node, or array of nodes.

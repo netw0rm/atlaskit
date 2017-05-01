@@ -170,4 +170,4 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       editorView.focus();
     }
   }
-};
+}

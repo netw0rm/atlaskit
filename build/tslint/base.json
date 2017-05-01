@@ -53,7 +53,7 @@
       "single",
       "jsx-double"
     ],
-    "semicolon": [false],
+    "semicolon": [true],
     "space-before-function-paren": [false],
     "switch-default": false,
     "trailing-comma": [true],

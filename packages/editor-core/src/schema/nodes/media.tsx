@@ -35,7 +35,7 @@ export interface Attributes {
   id: string;
   type: MediaType;
   collection: string;
-};
+}
 
 export const media: NodeSpec = {
   inline: false,
@@ -127,4 +127,4 @@ export interface MediaNode extends Node {
   fileName?: string;
   fileSize?: number;
   fileMimeType?: string;
-};
+}

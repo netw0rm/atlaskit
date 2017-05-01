@@ -10,6 +10,8 @@ import CustomMultiSelectOverview from './examples/CustomMultiSelectOverview';
 import CustomMultiSelectOverviewRaw from '!raw!./examples/CustomMultiSelectOverview';
 import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelectedItems';
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
+import SmartSelectNoMatchesFound from './examples/SmartSelectNoMatchesFound';
+import SmartSelectNoMatchesFoundRaw from '!raw!./examples/SmartSelectNoMatchesFound';
 import SmartSelectRequired from './examples/SmartSelectRequired';
 import SmartSelectRequiredRaw from '!raw!./examples/SmartSelectRequired';
 import SmartSelectDisabled from './examples/SmartSelectDisabled';
@@ -160,6 +162,14 @@ storiesOf(name, module)
       {SmartSelectDefaultSelectedItems}
       <Code>
         {SmartSelectDefaultSelectedItemsRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select - no matches found', () => (
+    <Chrome title="Multi select (smart) - overview">
+      {SmartSelectNoMatchesFound}
+      <Code>
+        {SmartSelectNoMatchesFoundRaw}
       </Code>
     </Chrome>
   ))

@@ -263,9 +263,7 @@ export default function encode(node: PMNode) {
       return encodeUnsupported(node);
     }
 
-    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
-    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'jira');
-    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    const elem = createMacroElement('jira');
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
     const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');

@@ -197,6 +197,25 @@ describe('Media PickerFacade', () => {
       })).to.eq(true);
     });
 
+    it('for upload ready for finalization', () => {
+      const cb = sinon.spy();
+      const finalizeCb = () => {};
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-finalize-ready', {
+        file: { ...testFileData, publicId: testFilePublicId },
+        finalize: finalizeCb
+      });
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        publicId: testFilePublicId,
+        status: 'unfinalized',
+        finalizeCb: finalizeCb,
+        fileName: testFileData.name,
+        fileSize: testFileData.size,
+        fileType: testFileData.type,
+      })).to.eq(true);
+    });
+
     it('for upload error', () => {
       const cb = sinon.spy();
       stateManager!.subscribe(testTemporaryFileId, cb);

@@ -55,8 +55,18 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   setLanguageSelectFocused = (event) => {
+    if (event.target.tagName.toLowerCase() === 'input') {
+      this.setState({
+        languageSelectFocused: true,
+      });
+    } else {
+      event.preventDefault();
+    }
+  }
+
+  resetLanguageSelectFocused = (event) => {
     this.setState({
-      languageSelectFocused: true,
+      languageSelectFocused: false,
     });
   }
 
@@ -75,6 +85,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
             tabIndex={0}
             className={styles.container}
             onMouseDown={this.setLanguageSelectFocused}
+            onBlur={this.resetLanguageSelectFocused}
           >
             <Select
               id="test"
@@ -99,13 +110,10 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const matchedLanguage = findMatchedLanguage(supportedLanguages!, language);
     const updatedLanguage = this.optionToLanguage(matchedLanguage);
 
-    const languageSelectFocused = !this.state.toolbarVisible && toolbarVisible ? false : this.state.languageSelectFocused;
-
     this.setState({
       language: matchedLanguage,
       element,
       toolbarVisible,
-      languageSelectFocused,
     });
 
     if (language !== updatedLanguage) {
@@ -118,7 +126,6 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     this.props.editorView.focus();
     this.setState({
       toolbarVisible: true,
-      languageSelectFocused: false,
     });
   }
 

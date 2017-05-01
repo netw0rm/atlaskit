@@ -64,6 +64,7 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
         emojiProvider={emojiProvider}
         reactionsProvider={reactionsProvider}
         onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, ari, emojiId)}
+        onReactionHover={(reaction) => reactionsProvider.fetchReactionDetails(reaction)}
         boundariesElement={boundariesElement}
         allowAllEmojis={allowAllEmojis}
       />

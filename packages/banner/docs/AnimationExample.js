@@ -1,0 +1,42 @@
+import React, { PureComponent } from 'react';
+import HelpIcon from 'ak-icon/glyph/help';
+import Banner from '../src';
+import Button from '@atlaskit/button';
+
+export default class ToggleBanner extends PureComponent {
+  state = {
+    isOpen: true,
+  };
+
+  toggleBanner = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <Banner
+          icon={HelpIcon}
+          isOpen={this.state.isOpen}
+        >
+          The opening and closing of the banner is animated
+        </Banner>
+        <div
+          style={{
+            'padding-top': '5px',
+            'text-align': 'center',
+          }}
+        >
+          <Button
+            appearance="primary"
+            onClick={this.toggleBanner}
+          >
+            Toggle banner
+          </Button>
+        </div>
+      </div>
+    );
+  }
+}

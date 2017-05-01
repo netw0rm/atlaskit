@@ -248,14 +248,18 @@ const plugin = new Plugin({
     },
     handleClick(view: EditorView) {
       const pluginState = stateKey.getState(view.state);
-      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
+      if (pluginState.active) {
+        pluginState.changeHandlers.forEach(cb => cb(pluginState));
+      }
       return false;
     },
     onBlur(view: EditorView) {
       const pluginState = stateKey.getState(view.state);
 
       pluginState.editorFocused = false;
-      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
+      if (pluginState.active) {
+        pluginState.changeHandlers.forEach(cb => cb(pluginState));
+      }
 
       return true;
     },

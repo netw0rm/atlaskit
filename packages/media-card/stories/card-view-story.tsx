@@ -226,10 +226,14 @@ const createMissingMetadataLinkCards = (appearance: CardAppearance) => {
   delete missingResourcesPreview.resources;
 
   const missingThumbnailPreview: UrlPreview = deepcopy(genericUrlPreview);
-  missingThumbnailPreview.resources && delete missingThumbnailPreview.resources.thumbnail;
+  if (missingThumbnailPreview.resources) {
+    delete missingThumbnailPreview.resources.thumbnail;
+  }
 
   const missingIconPreview: UrlPreview = deepcopy(genericUrlPreview);
-  missingIconPreview.resources && delete missingIconPreview.resources.icon;
+  if (missingIconPreview.resources) {
+    delete missingIconPreview.resources.icon;
+  }
 
   return [
     {

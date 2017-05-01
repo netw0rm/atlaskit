@@ -44,9 +44,9 @@ class ResourcedMentionListStoryDemo extends Component<{}, State> {
           inputId="mention-input"
           label="User search"
           onChange={this.updateQuery}
-          onUp={() => { this.resourcedMentionListRef.selectPrevious; }}
-          onDown={() => { this.resourcedMentionListRef.selectNext; }}
-          onEnter={() => { this.resourcedMentionListRef.chooseCurrentSelection; }}
+          onUp={() => { this.resourcedMentionListRef.selectPrevious(); }}
+          onDown={() => { this.resourcedMentionListRef.selectNext(); }}
+          onEnter={() => { this.resourcedMentionListRef.chooseCurrentSelection(); }}
         />
         {mentionList}
       </div>

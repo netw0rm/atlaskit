@@ -11,6 +11,7 @@ export default class AkSingleSelect extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(appearances.values),
     defaultSelected: PropTypes.shape(itemShape),
+    droplistShouldFitContainer: PropTypes.bool,
     hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
     isFirstChild: PropTypes.bool,
@@ -33,6 +34,7 @@ export default class AkSingleSelect extends PureComponent {
 
   static defaultProps = {
     appearance: appearances.default,
+    droplistShouldFitContainer: true,
     isOpen: false,
     isRequired: false,
     items: [],
@@ -71,6 +73,7 @@ export default class AkSingleSelect extends PureComponent {
     return (
       <StatelessSelect
         appearance={this.props.appearance}
+        droplistShouldFitContainer={this.props.droplistShouldFitContainer}
         filterValue={this.state.filterValue}
         hasAutocomplete={this.props.hasAutocomplete}
         id={this.props.id}

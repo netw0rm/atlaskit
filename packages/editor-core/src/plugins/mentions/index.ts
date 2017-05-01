@@ -21,10 +21,10 @@ export class MentionsState {
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
 
-  onSelectPrevious = (): boolean => { return false; };
-  onSelectNext = (): boolean => { return false; };
-  onSelectCurrent = (): boolean => { return false; };
-  onTrySelectCurrent = (): boolean => { return false; };
+  onSelectPrevious = (): boolean => false;
+  onSelectNext = (): boolean => false;
+  onSelectCurrent = (): boolean => false;
+  onTrySelectCurrent = (): boolean => false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;

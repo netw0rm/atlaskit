@@ -131,7 +131,7 @@ const requestService = (baseUrl: string, path: string | undefined, data: KeyValu
   const options = {
     ...opts,
     ...{ headers },
-    credentials: 'include',
+    credentials: 'include' as 'include',
   };
   return fetch(new Request(url, options))
     .then(response => {

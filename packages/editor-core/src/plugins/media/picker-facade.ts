@@ -6,7 +6,8 @@ export type PickerEvent = {
   file: PickerEventFile,
   preview?: Blob
   progress?: PickerEventProgress,
-  error?: PickerEventError
+  error?: PickerEventError,
+  finalize?: () => void,
 };
 
 export type PickerEventFile = {
@@ -57,6 +58,7 @@ export default class PickerFacade {
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
     picker.on('upload-status-update', this.handleUploadStatusUpdate);
     picker.on('upload-processing', this.handleUploadProcessing);
+    picker.on('upload-finalize-ready', this.handleUploadFinalizeReady);
     picker.on('upload-error', this.handleUploadError);
     picker.on('upload-end', this.handleUploadEnd);
 
@@ -174,6 +176,26 @@ export default class PickerFacade {
       id: tempId,
       publicId: file.publicId as string,
       status: 'processing',
+      fileName: file.name as string,
+      fileSize: file.size as number,
+      fileType: file.type as string,
+    });
+  }
+
+  private handleUploadFinalizeReady = (event: PickerEvent) => {
+    const { file } = event;
+    const { finalize } = event;
+    const tempId = `temporary:${file.id}`;
+
+    if (!finalize) {
+      throw new Error('Editor: Media: Picker emitted finalize-ready event but didn\'t provide finalize callback');
+    }
+
+    this.stateManager.updateState(tempId, {
+      id: tempId,
+      publicId: file.publicId as string,
+      finalizeCb: finalize,
+      status: 'unfinalized',
       fileName: file.name as string,
       fileSize: file.size as number,
       fileType: file.type as string,

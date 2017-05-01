@@ -261,6 +261,7 @@ export class MediaPluginState {
       // In-flight media items that we should cancel
       case 'uploading':
       case 'processing':
+      case 'unfinalized':
         pickers.forEach(picker => picker.cancel(id));
 
         // In case the file has been attached multiple times, remove all occurences

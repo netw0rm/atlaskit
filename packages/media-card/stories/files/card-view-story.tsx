@@ -20,59 +20,6 @@ const actions = [
 ];
 
 storiesOf('FileCardView', {})
-  .add('Widget', () => (
-    <StoryList>
-      {[{
-        title: 'tallImage',
-        content: <FileCardView
-          loading={false}
-          selectable={false}
-          selected={false}
-          mediaName="Media name"
-          mediaType="image"
-          mediaSize={32831}
-          dataURI={tallImage}
-          onClick={onClick}
-        />
-      }, {
-        title: 'wideImage',
-        content: <FileCardView
-          loading={false}
-          selectable={false}
-          selected={false}
-          mediaName="Media name"
-          mediaType="image"
-          mediaSize={32831}
-          dataURI={wideImage}
-          onClick={onClick}
-        />
-      }, {
-        title: 'wideTransparentImage',
-        content: <FileCardView
-          loading={false}
-          selectable={false}
-          selected={false}
-          mediaName="Media name"
-          mediaType="image"
-          mediaSize={32831}
-          dataURI={wideTransparentImage}
-          onClick={onClick}
-        />
-      }, {
-        title: 'smallImage',
-        content: <FileCardView
-          loading={false}
-          selectable={false}
-          selected={false}
-          mediaName="Media name"
-          mediaType="image"
-          mediaSize={32831}
-          dataURI={smallImage}
-          onClick={onClick}
-        />
-      }]}
-    </StoryList>
-  ))
   .add('Ellipsify', () => (
     <StoryList>
       {[{

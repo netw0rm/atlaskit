@@ -52,7 +52,9 @@ export default class Widget {
       minWidth={300}
       minHeight={160}
       bounds={'parent'}
+      dragHandlerClassName=".widget-resize-handler"
     >
+      <div className="widget-resize-handler" />
       {activeComponent}
       {this.renderRecentItems()}
     </Rnd>;
@@ -98,10 +100,21 @@ export default class Widget {
         margin: 5px;
         padding: 0 5px;
         border-top: 1px solid #ccc;
+        cursor: default;
       }
       .widget-filmstrip-wrapper .card {
         height: 70px !important;
         width: 70px !important;
+      }
+      .widget-resize-handler {
+        height: 25px;
+        width: 100%;
+        background: red;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        border-radius: 3px 3px 0 0;
       }
     `;
     const styles = document.createElement('style');

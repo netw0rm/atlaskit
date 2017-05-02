@@ -127,7 +127,11 @@ const plugin = new Plugin({
       return false;
     },
     handlePaste(view: EditorView, event: ClipboardEvent, slice: Slice) {
-
+      // IE has issues with this as the "paste" event doesn't have the clipboardData property defined,
+      // see https://github.com/ProseMirror/prosemirror/issues/325
+      if (!event.clipboardData) {
+        return false;
+      }
       /**
        * Prosemirror will have already stripped newlines from the pasted text at this point,
        * so we'll pull the string from the clipboardData and apply the transform ourselves.

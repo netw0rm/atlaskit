@@ -18,5 +18,9 @@
     // Allowing this lets us order the imports, including !raw! imports, in a way
     // that makes more sense for the examples
     "import/first": "off"
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prop-types.md
+    // Disabling this so we don't have to add propTypes to everything in our
+    // sample code; they're not always helpful to demonstrate component usage
+    "react/prop-types": "off",
   }
 }

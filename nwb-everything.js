@@ -11,6 +11,7 @@ const binPath = `${modPath}/.bin`;
 
 const exclude = [
   'css-reset',
+  'icon',
   'reduced-ui-pack',
   'util-cz-',
   'util-dmd-',
@@ -18,23 +19,29 @@ const exclude = [
 
 fs.readdirSync(pathPackages).forEach((pathPackage) => {
   const dir = path.join(pathPackages, pathPackage);
+
   const nwbFile = path.join(dir, 'nwb.config.js');
   const tsFile = path.join(dir, 'tsconfig.json');
   const unitFile = path.join(dir, 'test', 'unit');
+  const testFile = path.join(dir, 'test');
+  const testsFile = path.join(dir, 'tests');
+
   const isTsPackage = fs.existsSync(tsFile);
   const isMochaPackage = fs.existsSync(unitFile);
+  const isTestedPackage = fs.existsSync(testFile) || fs.existsSync(testsFile);
 
   if (!fs.statSync(dir).isDirectory()) {
     return;
   }
 
-  if (fs.existsSync(nwbFile)) {
-    fs.unlinkSync(nwbFile);
-  }
-
   // Special packages.
   if (exclude.indexOf(pathPackage) > -1) {
     return;
+  }
+
+  // Remove so we can re-add.
+  if (fs.existsSync(nwbFile)) {
+    fs.unlinkSync(nwbFile);
   }
 
   const pkg = path.join(dir, 'package.json');
@@ -49,6 +56,15 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
     return;
   }
 
+  function getTestCommand({ watch } = {}) {
+    if (!isTestedPackage) {
+      return "echo 'Error: no test specified'";
+    }
+    return isMochaPackage
+      ? `mocha${watch ? ' --watch' : ''} --colors --require ../../test-setup './test/unit/**/*.js'`
+      : `${binPath}/nwb test${watch ? ' --server' : ''}`;
+  }
+
   pkgJson.files = ['umd'];
   pkgJson.main = `umd/${pkgJson.name}.js`;
   pkgJson.scripts = {
@@ -57,12 +73,8 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
       : `${binPath}/eslint --color --format "${modPath}/eslint-friendly-formatter" --ext .js --ext .jsx src/ stories/ test/`,
     prepublish: `${binPath}/nwb build`,
     storybook: `${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,
-    test: isMochaPackage
-      ? "mocha --colors --require ../../test-setup './test/unit/**/*.js'"
-      : `${binPath}/nwb test`,
-    'test:watch': isMochaPackage
-      ? "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'"
-      : `${binPath}/nwb test --server`,
+    test: getTestCommand(),
+    'test:watch': getTestCommand({ watch: true }),
   };
 
   // Remove old fields.

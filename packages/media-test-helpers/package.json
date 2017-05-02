@@ -12,8 +12,8 @@
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
-    "test": "../../node_modules/.bin/nwb test",
-    "test:watch": "../../node_modules/.bin/nwb test --server"
+    "test": "echo 'Error: no test specified'",
+    "test:watch": "echo 'Error: no test specified'"
   },
   "files": [
     "umd"

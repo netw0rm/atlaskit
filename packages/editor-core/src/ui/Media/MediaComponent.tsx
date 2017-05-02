@@ -13,13 +13,13 @@ import { default as MediaProvider, MediaState } from '../../media';
 import { Attributes } from '../../schema/nodes/media';
 import { EditorView, mediaStateKey } from '../../index';
 
-interface Props extends Attributes {
+export interface Props extends Attributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
   onDelete?: () => void;
 };
 
-interface State extends MediaState {
+export interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
 }

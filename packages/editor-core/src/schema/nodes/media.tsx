@@ -111,6 +111,10 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
     },
 
     destroy() {
+      if (!div) {
+        console.warn('Editor: Media node view is being destroyed twice');
+        return;
+      }
       const pluginState = mediaStateKey.getState(view.state) as MediaPluginState;
       ReactDOM.unmountComponentAtNode(div!);
       div = undefined;

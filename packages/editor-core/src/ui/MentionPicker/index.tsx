@@ -181,7 +181,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
     return (
       <div
-        ref={ref => { this.content = ref;}}
+        ref={ref => { this.content = ref; }}
         style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
       >
         <AkMentionPicker
@@ -189,7 +189,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
           presenceProvider={this.props.presenceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
-          ref={ref => { this.picker = ref;}}
+          ref={ref => { this.picker = ref; }}
         />
       </div>
     );

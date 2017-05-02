@@ -89,7 +89,7 @@ export default class CodeMirrorView {
 
     this.cm.on('paste', (cm, event) => {
       const content = event.clipboardData.getData('text/plain');
-      this.detectLanguage( content );
+      this.detectLanguage( content, true );
     });
 
     this.cm.on('focus', () => {
@@ -124,10 +124,10 @@ export default class CodeMirrorView {
     this.cm.setOption('mode', modeInfo ? modeInfo.mode : 'javascript');
   }
 
-  detectLanguage(content: string) {
+  detectLanguage(content: string, reDetect: boolean) {
     const self = this;
 
-    if (this.cm.getMode().name !== 'null') {
+    if (!reDetect && this.cm.getMode().name !== 'null') {
       return CodeMirror.Pass;
     }
 

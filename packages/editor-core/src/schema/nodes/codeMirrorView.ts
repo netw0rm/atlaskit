@@ -1,5 +1,7 @@
 import CodeMirror from '../../codemirror';
 import '!style!css!less!codemirror/lib/codemirror.css';
+import 'codemirror/mode/javascript/javascript';
+
 import {
   Selection,
   TextSelection,
@@ -70,6 +72,11 @@ export default class CodeMirrorView {
     this.cm.on('changes', () => {
       if (!this.updating) {
         this.valueChanged();
+        if (!this.value) {
+          this.pluginState.updateLanguage(undefined, this.view);
+          this.cm.setOption('mode', 'null');
+        }
+        this.pluginState.update(this.view.state, this.view.docView, true);
       }
     });
 
@@ -79,11 +86,11 @@ export default class CodeMirrorView {
     });
 
     this.cm.on('focus', () => {
-      this.pluginState.updateEditorFocused(true);
-      this.pluginState.update(this.view.state, this.view.docView, true);
       if (!this.updating) {
         this.forwardSelection();
       }
+      this.pluginState.updateEditorFocused(true);
+      this.pluginState.update(this.view.state, this.view.docView, true);
     });
 
     this.pluginState.subscribe((state) => {
@@ -129,7 +136,8 @@ export default class CodeMirrorView {
     }).then(function (data) {
       const mode = data['language'];
       self.setMode(mode);
-      self.pluginState.updateLanguage(mode, self.view);
+      self.pluginState.updateLanguage( self.cm.getMode().name , self.view);
+      self.pluginState.update(self.view.state, self.view.docView, true);
     });
 
     return CodeMirror.Pass;

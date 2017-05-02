@@ -96,9 +96,11 @@ export function findMode(languageName: string) {
   const matches = DEFAULT_LANGUAGES.filter((supportedLanguage) => {
     return supportedLanguage.alias.indexOf(languageName.toLowerCase()) !== -1;
   });
+  if (!matches.length) {
+    return false;
+  }
 
   const modes = matches[0].alias.map((language) => CodeMirror.findModeByName(language)).filter(mode => !!mode);
-
   return modes[0];
 }
 

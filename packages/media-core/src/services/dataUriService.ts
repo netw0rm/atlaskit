@@ -53,7 +53,6 @@ export class MediaDataUriService implements DataUriService {
       responseType: 'blob'
     })
       .then(this.readBlob);
-    ;
   }
 
   private readBlob(blob: Blob): Promise<DataUri> {

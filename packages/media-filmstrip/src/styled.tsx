@@ -11,7 +11,7 @@ export const FilmStripViewWrapper = styled.div`
   position: relative;
   padding: 3px 0;
   border-radius: 3px;
-  
+
   &:hover .arrow {
     opacity: 1;
   }
@@ -46,7 +46,7 @@ export const FilmStripList = styled.ul`
     &:first-child {
       padding-left: 10px;
     }
-    
+
     &:last-child {
       padding-right: 10px;
     }
@@ -68,7 +68,7 @@ export const ArrowWrapper = styled.div`
   height: 30px;
   justify-content: center;
   opacity: 0;
-  
+
   &:hover{
     color: black;
     background-color: ${akColorN40};

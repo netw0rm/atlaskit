@@ -1,24 +1,25 @@
 import { ReactionPicker, Reactions } from '../../src/';
 import * as React from 'react';
 
-import { reactionsProvider } from './reactions-provider';
+import { reactionsProvider } from '../../src/mock-reactions-provider';
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 
 const { getEmojiResource } = emojiTestData.emojiStoryData;
 
-const ari = 'ari:cloud:demo:123:123';
+const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
+const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 export default (
   <div style={{ position: 'relative' }}>
     <ReactionPicker
       emojiProvider={getEmojiResource()}
-      onSelection={(emojiId) => reactionsProvider.toggleReaction(ari, emojiId)}
+      onSelection={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
     />
     <Reactions
-      ari={ari}
+      ari={demoAri}
       emojiProvider={getEmojiResource()}
       reactionsProvider={reactionsProvider}
-      onReactionClick={(emojiId) => reactionsProvider.toggleReaction(ari, emojiId)}
+      onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
     />
   </div>
 );

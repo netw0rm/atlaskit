@@ -3,14 +3,16 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../index';
-import {Ellipsify, Menu, MediaImage, getCSSUnitValue, CardLoading} from '../../utils';
+import {Ellipsify, Menu, MediaImage, CardLoading, ErrorIcon, getCSSUnitValue} from '../../utils';
 import {Href} from '../../utils/href';
 import {Details, Wrapper} from '../styled';
 import {
   Title,
   Description,
   Footer,
-  Link
+  Link,
+  ErrorContainer,
+  ErrorHeader
 } from './styled';
 
 export interface LinkCardGenericViewProps {
@@ -24,14 +26,11 @@ export interface LinkCardGenericViewProps {
   appearance?: CardAppearance;
   dimensions?: CardDimensions;
 
-  // TODO FIL-3892 implement visual designs for loading state
   loading?: boolean;
+  error?: string;
 
   actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
-
-  // TODO FIL-3893 implement visual designs for error state
-  error?: string;
 }
 
 export interface LinkCardGenericViewState {
@@ -115,7 +114,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       return null;
     }
 
-    return <MediaImage dataURI={thumbnailUrl || ''} onError={this.thumbnailError} />;
+    return <MediaImage key="thumbnail" dataURI={thumbnailUrl || ''} onError={this.thumbnailError} />;
   }
 
   private getIcon = (): JSX.Element | null => {
@@ -127,9 +126,9 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {appearance, loading} = this.props;
+    const {appearance} = this.props;
     const cardStyle = {height: this.height, width: this.width};
-    const content = loading ? this.renderLoading() : this.renderContent();
+    const content = this.getContentToRender();
 
     return (
       <Wrapper style={cardStyle} className={appearance} onClick={this.onClick}>
@@ -138,14 +137,28 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     );
   }
 
-  private renderContent() {
+  private getContentToRender = () => {
+    const {error, loading} = this.props;
+
+    if (error) {
+      return this.renderError(error);
+    }
+
+    if (loading) {
+      return this.renderLoading();
+    }
+
+    return this.renderDetails();
+  }
+
+  private renderDetails() {
     const {linkUrl, title, site, description, actions} = this.props;
     const thumbnail = this.getThumbnail();
     const icon = this.getIcon();
 
     return [
       thumbnail,
-      <Details className="details">
+      <Details key="details" className="details">
         <Title>
           {title}
         </Title>
@@ -170,8 +183,21 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     return <CardLoading mediaItemType="link" iconSize="large"/>;
   }
 
+  private renderError(errorMessage: string) {
+    return (
+      <ErrorContainer>
+        <ErrorHeader>{errorMessage}</ErrorHeader>
+        <div>
+          <ErrorIcon />
+        </div>
+      </ErrorContainer>
+    );
+  }
+
   private onClick = (event: MouseEvent<HTMLDivElement>) => {
-    this.props.onClick && this.props.onClick(event.nativeEvent);
+    if (this.props.onClick) {
+      this.props.onClick(event.nativeEvent);
+    }
   }
 }
 

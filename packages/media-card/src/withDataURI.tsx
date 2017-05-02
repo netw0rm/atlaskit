@@ -20,11 +20,11 @@ export interface WithDataURIProps {
 
   // allow extra props to be passed down to lower views e.g. status and error to CardView
   [propName: string]: any;
-};
+}
 
 export interface WithDataURIState {
   dataURI?: string;
-};
+}
 
 export interface WithDataURI extends React.Component<WithDataURIProps, WithDataURIState> {
   componentDidMount(): void;

@@ -1,9 +1,7 @@
 import * as React from 'react';
-import {FileCardView} from '@atlaskit/media-card';
+import {MediaType, MediaItem, FileDetails, ListAction, CardAction, ListEventHandler} from '@atlaskit/media-core';
+import {CardView} from '@atlaskit/media-card';
 import FilmStripNavigator from './filmstrip-navigator';
-import {MediaType} from '@atlaskit/media-core';
-import {MediaItem} from '@atlaskit/media-core';
-import {ListAction, CardAction, ListEventHandler} from '@atlaskit/media-core';
 
 export interface FilmStripViewItem {
   id?: string;
@@ -28,10 +26,12 @@ export interface FilmStripViewProps {
 
 function onItemClick(item: FilmStripViewItem, props: FilmStripViewProps): (event: Event) => void {
   return (event: Event) => {
-    props.onClick && props.onClick({
-      type: 'file',
-      details: item
-    }, props.items, event);
+    if (props.onClick) {
+      props.onClick({
+        type: 'file',
+        details: item
+      }, props.items, event);
+    }
   };
 }
 
@@ -52,20 +52,28 @@ function createCardActions(item: FilmStripViewItem, items: Array<FilmStripViewIt
 }
 
 export function FilmStripView(props: FilmStripViewProps): JSX.Element {
-  const itemEls = props.items.map((item, k) => (
-    <FileCardView
-      loading={item.loading}
-      selectable={false}
-      selected={false}
-      progress={item.progress}
-      dataURI={item.dataURI}
-      mediaName={item.mediaName}
-      mediaType={item.mediaType}
-      mediaSize={item.mediaSize}
+  const itemEls = props.items.map((item, k) => {
+    const {mediaName, mediaSize, mediaType, loading, progress, dataURI} = item;
+
+    const fileDetails: FileDetails = {
+      name: mediaName,
+      size: mediaSize,
+      mediaType
+    };
+
+    const status = loading ? 'loading' : 'complete';
+
+    return <CardView
+      key={k}
+      status={status}
+      metadata={fileDetails}
+      progress={progress}
+      dataURI={dataURI}
       onClick={onItemClick(item, props)}
       actions={createCardActions(item, props.items, props.menuActions)}
-    />
-  ));
+    />;
+  });
+
   return <FilmStripNavigator onDrop={props.onDrop} onDragEnter={props.onDragEnter} onDragOver={props.onDragOver} width={props.width}>
            {itemEls}
          </FilmStripNavigator>;

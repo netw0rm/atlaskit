@@ -4,7 +4,7 @@
     <title>bitbucket/clone</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Bitbucket" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Bitbucket" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="bitbucket/clone" fill="currentColor">
             <g id="clone">
                 <path d="M8,4 L4.99508929,4 C3.8926228,4 3,4.8992496 3,6.0085302 L3,13.9914698 C3,15.0980496 3.8932319,16 4.99508929,16 L19.0049107,16 C20.1073772,16 21,15.1007504 21,13.9914698 L21,6.0085302 C21,4.90195036 20.1067681,4 19.0049107,4 L16,4 L16,6 L19,6 L19,14 L5,14 L5,6 L8,6 L8,4 Z" id="Combined-Shape" fill-rule="nonzero"></path>

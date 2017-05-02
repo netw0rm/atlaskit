@@ -10,13 +10,24 @@ const iconConstructorBase = Icon => (componentName, SvgIcon) =>
       size: PropTypes.oneOf(sizes),
       /** onclick handler for the icon element */
       onClick: PropTypes.func,
+      /** for primary colour for icons */
+      primaryColor: PropTypes.string,
+     /** for secondary colour for 2-color icons. Set to inherit to control this via "fill" in CSS */
+      secondaryColor: PropTypes.string,
     };
 
     static displayName = componentName;
 
     render() {
-      const { label, size, onClick } = this.props;
-      return (<Icon glyph={SvgIcon} label={label} size={size} onClick={onClick} />);
+      const { label, size, onClick, primaryColor, secondaryColor } = this.props;
+      return (<Icon
+        glyph={SvgIcon}
+        label={label}
+        size={size}
+        onClick={onClick}
+        primaryColor={primaryColor}
+        secondaryColor={secondaryColor}
+      />);
     }
   };
 

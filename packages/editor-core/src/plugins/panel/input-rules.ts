@@ -32,6 +32,6 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     });
 
   return inputRules({ rules: [panelInputRule] });
-};
+}
 
 export default inputRulePlugin;

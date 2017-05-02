@@ -37,15 +37,19 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   };
 
   componentDidMount() {
-    this.props.onLoad && this.props.onLoad({
-      export: this.export
-    });
+    if (this.props.onLoad) {
+      this.props.onLoad({
+        export: this.export
+      });
+    }
   }
 
   onDragStarted = () => this.props.onDragStarted && this.props.onDragStarted();
 
   onImageLoaded = (e) => {
-    this.props.onImageSize && this.props.onImageSize(e.target.naturalWidth, e.target.naturalHeight);
+    if (this.props.onImageSize) {
+      this.props.onImageSize(e.target.naturalWidth, e.target.naturalHeight);
+    }
     this.imageElement = e.target;
   }
 

@@ -9,32 +9,57 @@ import { grinId, grinningId, laughingId, smileyId, thumbsupId } from './test-dat
 const { expect } = chai;
 
 const baseUrl = 'https://reactions';
-const ari = 'ari:cloud:demo:123:123';
+const ari = 'ari:cloud:owner:demo-cloud-id:item/1';
+const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
+
+const detailedReaction = {
+  ari: ari,
+  emojiId: grinningId.id!,
+  count: 1,
+  reacted: true,
+  users: [
+    {
+      id: 'oscar',
+      displayName: 'Oscar Wallhult'
+    }
+  ]
+};
+
+const reaction = {
+  ari: ari,
+  emojiId: grinningId.id!,
+  count: 1,
+  reacted: true
+};
+
+const fetchDetailedReaction = () => {
+  return detailedReaction;
+};
 
 const fetchGetReactions = () => {
   return {
     [ari]: [
       {
         ari: ari,
-        emojiId: grinningId,
+        emojiId: grinningId.id!,
         count: 1,
         reacted: true
       },
       {
         ari: ari,
-        emojiId: laughingId,
+        emojiId: laughingId.id!,
         count: 2,
         reacted: true
       },
       {
         ari: ari,
-        emojiId: thumbsupId,
+        emojiId: thumbsupId.id!,
         count: 5,
         reacted: false
       },
       {
         ari: ari,
-        emojiId: grinId,
+        emojiId: grinId.id!,
         count: 100,
         reacted: false
       }
@@ -47,7 +72,7 @@ const fetchAddReaction = () => {
     ari: ari,
     reactions: [...fetchGetReactions()[ari], {
       ari: ari,
-      emojiId: smileyId,
+      emojiId: smileyId.id,
       count: 1,
       reacted: true
     }]
@@ -57,7 +82,7 @@ const fetchAddReaction = () => {
 const fetchDeleteReaction = () => {
   return {
     ari: ari,
-    reactions: fetchGetReactions()[ari].filter(r => !equalEmojiId(r.emojiId, grinningId))
+    reactions: fetchGetReactions()[ari].filter(r => !equalEmojiId(r.emojiId, grinningId.id!))
   };
 };
 
@@ -142,7 +167,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       });
       const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
 
-      return reactionsProvider.addReaction(ari, smileyId)
+      return reactionsProvider.addReaction(containerAri, ari, smileyId.id!)
         .then(state => {
           expect(spy.called).to.equal(true);
           expect((reactionsProvider as any).cachedReactions[ari]).to.deep.equal(state);
@@ -165,7 +190,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       });
       const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
 
-      return reactionsProvider.deleteReaction(ari, grinningId)
+      return reactionsProvider.deleteReaction(containerAri, ari, grinningId.id!)
         .then(state => {
           expect(spy.called).to.equal(true);
           expect((reactionsProvider as any).cachedReactions[ari]).to.deep.equal(state);
@@ -182,7 +207,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       const optimisticSpy = sinon.spy(reactionsProvider, 'optimisticAddReaction');
       const addSpy = sinon.spy(reactionsProvider, 'addReaction');
 
-      reactionsProvider.toggleReaction(ari, smileyId);
+      reactionsProvider.toggleReaction(containerAri, ari, smileyId.id!);
       expect(optimisticSpy.called).to.equal(true);
       expect(addSpy.called).to.equal(true);
     });
@@ -194,7 +219,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       const optimisticSpy = sinon.spy(reactionsProvider, 'optimisticDeleteReaction');
       const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
 
-      reactionsProvider.toggleReaction(ari, grinningId);
+      reactionsProvider.toggleReaction(containerAri, ari, grinningId.id!);
       expect(optimisticSpy.called).to.equal(true);
       expect(deleteSpy.called).to.equal(true);
     });
@@ -204,10 +229,10 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       populateCache(reactionsProvider);
 
       const addSpy = sinon.spy(reactionsProvider, 'addReaction');
-      reactionsProvider.toggleReaction(ari, thumbsupId);
+      reactionsProvider.toggleReaction(containerAri, ari, thumbsupId.id!);
       expect(addSpy.called).to.equal(true);
 
-      const reaction = (reactionsProvider as any).cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, thumbsupId))[0];
+      const reaction = (reactionsProvider as any).cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, thumbsupId.id!))[0];
       expect(reaction.count).to.equal(6);
       expect(reaction.reacted).to.equal(true);
     });
@@ -217,10 +242,10 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       populateCache(reactionsProvider);
 
       const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
-      reactionsProvider.toggleReaction(ari, laughingId);
+      reactionsProvider.toggleReaction(containerAri, ari, laughingId.id!);
       expect(deleteSpy.called).to.equal(true);
 
-      const reaction = (reactionsProvider as any).cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, laughingId))[0];
+      const reaction = (reactionsProvider as any).cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, laughingId.id!))[0];
       expect(reaction.count).to.equal(1);
       expect(reaction.reacted).to.equal(false);
     });
@@ -230,13 +255,68 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       populateCache(reactionsProvider);
 
       const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
-      reactionsProvider.toggleReaction(ari, grinningId);
+      reactionsProvider.toggleReaction(containerAri, ari, grinningId.id!);
       expect(deleteSpy.called).to.equal(true);
 
-      expect((reactionsProvider as any).cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, grinningId)).length).to.equal(0);
+      expect((reactionsProvider as any).cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, grinningId.id!)).length).to.equal(0);
       expect((reactionsProvider as any).cachedReactions[ari].length).to.equal(fetchGetReactions()[ari].length - 1);
     });
   });
 
+  describe('getDetailedReaction', () => {
+    const reactionId = `${ari}|${grinningId!.id}`;
+    const reactionsProvider = new ReactionsResource({baseUrl});
+
+    beforeEach(() => {
+      fetchMock.mock({
+        options: {
+          method: 'GET'
+        },
+        matcher: `end:reactions?reactionId=${encodeURIComponent(reactionId)}`,
+        response: fetchDetailedReaction()
+      });
+    });
+
+    it('should fetch details for reaction', () => {
+      return reactionsProvider.getDetailedReaction(reaction)
+        .then(detail => {
+          expect(detail).to.deep.equal(detailedReaction);
+        });
+    });
+  });
+
+  describe('fetchReactionDetails', () => {
+    const reactionId = `${ari}|${grinningId!.id}`;
+    const reactionsProvider = new ReactionsResource({baseUrl});
+
+    beforeEach(() => {
+      fetchMock.mock({
+        options: {
+          method: 'GET'
+        },
+        matcher: `end:reactions?reactionId=${encodeURIComponent(reactionId)}`,
+        response: fetchDetailedReaction()
+      });
+    });
+
+    it('should fetch reaction details for reaction', () => {
+      const spy = sinon.spy(reactionsProvider, 'getDetailedReaction');
+      reactionsProvider.fetchReactionDetails(reaction);
+      expect(spy.called).to.equal(true);
+      expect(spy.calledWith(reaction)).to.equal(true);
+      spy.restore();
+    });
+
+    it('should call notifyUpdated', () => {
+      const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
+      return reactionsProvider.fetchReactionDetails(reaction)
+        .then(() => {
+          expect(spy.called).to.equal(true);
+          expect(spy.calledWith(reaction.ari, [detailedReaction])).to.equal(true);
+          spy.restore();
+        });
+    });
+
+  });
 });
 

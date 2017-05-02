@@ -277,6 +277,28 @@ describe('mentions', () => {
       );
     });
 
+    it('should not insert a space after the mention-node if next character is already a space', () => {
+      const { editorView, pluginState } = editor(doc(p(mentionQuery('@os{<>}'), ' text')));
+
+      pluginState.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            mention({
+              text: '@Oscar Wallhult',
+              id: '1234'
+            }),
+            ' text'
+          )
+        )
+      );
+    });
+
     it('should render the mention-node using a nickname if present', () => {
       const { editorView, pluginState } = editor(doc(p(mentionQuery('@ta'))));
 

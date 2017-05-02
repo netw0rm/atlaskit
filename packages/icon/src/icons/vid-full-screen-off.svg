@@ -4,7 +4,7 @@
     <title>vid-full-screen-off</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="vid-full-screen-off" fill="currentColor">
             <g id="vid-full-screen-on">
                 <path d="M9,15.0033389 L9,17.9983306 C9,18.5515373 9.44771525,19 10,19 C10.5522847,19 11,18.5515373 11,17.9983306 L11,14.1018364 C11,13.4935378 10.5072847,13 9.9,13 L6,13 C5.44771525,13 5,13.4484627 5,14.0016694 C5,14.5548762 5.44771525,15.0033389 6,15.0033389 L9,15.0033389 Z" id="Stroke-1" fill-rule="nonzero"></path>

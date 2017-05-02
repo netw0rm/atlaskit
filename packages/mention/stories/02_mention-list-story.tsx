@@ -72,6 +72,6 @@ storiesOf(`${name}/MentionList`, module)
   .add('simple mention list', () => <RefreshableMentionList />)
   .add('error mention list', () => (
     <div style={{ padding: '10px' }} >
-      <MentionList showError mentions={[]} />
+      <MentionList showError={true} mentions={[]} />
     </div>
   ));

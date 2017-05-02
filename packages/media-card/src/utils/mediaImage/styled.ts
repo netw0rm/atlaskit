@@ -10,7 +10,7 @@ export const ImageViewWrapper = styled.div`
   background-repeat: no-repeat, repeat;
   background-position: center, center;
   background-size: contain, auto;
-  
+
   &.crop {
     background-size: cover, auto;
   }

@@ -3,7 +3,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import { MediaItem, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
 import { createStorybookContext, defaultCollectionName, StoryList,
          spotifyLinkId, genericLinkId, youtubeLinkId, trelloLinkId, playerLinkId, twitterLinkId,
-         imageFileId, docFileId, genericFileId } from '@atlaskit/media-test-helpers';
+         imageFileId, docFileId, genericFileId, imageLinkId } from '@atlaskit/media-test-helpers';
 import {FilmStrip} from '../src';
 
 const collectionName = defaultCollectionName;
@@ -30,7 +30,7 @@ const file1 = imageFileId;
 const file2 = docFileId;
 const file3 = genericFileId;
 
-const fileItems = [file1, file2, file3];
+const fileItems = [file1, file2, file3, imageLinkId];
 const styles = {
   border: '1px solid black',
   paddingLeft: 0,

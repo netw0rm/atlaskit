@@ -52,13 +52,10 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     };
   }
 
-  static get defaultProps() {
-    const actions: Array<CardAction> = [];
-
-    return {
-      actions
-    };
-  }
+  static defaultProps = {
+    actions: [],
+    mediaName: ''
+  };
 
   private get wrapperClassNames() {
     const {error, selectable, selected, mediaType, persistent} = this.props;
@@ -74,15 +71,15 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   render() {
-    const {mediaName, actions} = this.props;
-    const text = mediaName || '';
+    const {error, mediaName, actions} = this.props;
+    const titleText = error || !mediaName ? '' : mediaName;
 
     return (
       <Overlay className={this.wrapperClassNames}>
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>
-            <Ellipsify text={text} lines={2}/>
+            <Ellipsify text={titleText} lines={2}/>
           </TitleWrapper>
           {this.tickBox()}
         </TopRow>
@@ -102,7 +99,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     const error = this.props.error;
     return error && (
       <ErrorLine>
-        <ErrorIcon />
         <ErrorMessage>{this.props.error}</ErrorMessage>
       </ErrorLine>
     );
@@ -118,8 +114,9 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   bottomLeftColumn() {
     if (this.props.error) {
       const onRetry = this.props.onRetry;
+
       if (!onRetry) {
-        return null;
+        return <ErrorIcon />;
       }
 
       const retryMessage = onRetry.label || 'Try again';
@@ -131,9 +128,12 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       };
 
       return (
-        <Retry className={'retry'}>
-          <span onClick={retryHandler}>{retryMessage}</span>
-        </Retry>
+        <div>
+          <ErrorIcon />
+          <Retry className={'retry'}>
+            <span onClick={retryHandler}>{retryMessage}</span>
+          </Retry>
+        </div>
       );
     } else {
       const {progress, mediaType, subtitle, icon} = this.props;

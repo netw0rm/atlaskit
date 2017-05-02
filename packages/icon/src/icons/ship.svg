@@ -4,7 +4,7 @@
     <title>ship</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="ship" fill="currentColor">
             <g>
                 <path d="M6,12 L14,12 L14,10 L6,10 L6,12 Z M4,8.99077797 C4,8.44358641 4.45576096,8 5.00247329,8 L14.9975267,8 C15.5511774,8 16,8.45097518 16,8.99077797 L16,14 L4,14 L4,8.99077797 Z" id="Rectangle-16" fill-rule="nonzero"></path>

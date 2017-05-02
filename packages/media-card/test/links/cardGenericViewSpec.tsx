@@ -2,8 +2,9 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 
-import { LinkCardGenericView } from '../../src';
-import { Title, Link } from '../../src/links/cardGenericView/styled';
+import { LinkCardGenericView } from '../../src/links';
+import { Details } from '../../src/links/styled';
+import { Title, Link, ErrorContainer, ErrorHeader } from '../../src/links/cardGenericView/styled';
 
 describe('LinkCardViewGeneric', () => {
   it('should only render the title and linkUrl when not supplied with optional props', () => {
@@ -105,14 +106,15 @@ describe('LinkCardViewGeneric', () => {
     expect(card.find('.media-card')).to.have.length(0);
   });
 
-  it('currently ignores the error prop', () => {
+  it('displays error when error prop is passed in', () => {
     const title = 'Hello world';
     const linkUrl = 'http://localhost:9001/';
+    const error = 'Some random error occured';
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} error={error}/>);
 
-    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl}/>);
-
-    expect(card.find(Title).text()).to.eql(title);
-    expect(card.find(Link).text()).to.eql(linkUrl);
-    expect(card.find('.media-card')).to.have.length(0);
+    expect(card.find(Details)).to.have.length(0);
+    expect(card.find(ErrorContainer)).to.have.length(1);
+    expect(card.find(ErrorHeader)).to.have.length(1);
+    expect(card.find(ErrorHeader).text()).to.equal(error);
   });
 });

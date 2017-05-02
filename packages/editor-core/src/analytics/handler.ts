@@ -1,5 +1,5 @@
 export interface AnalyticsProperties {
-  [key: string]: string | Number;
+  [key: string]: string | number;
 }
 
 export interface AnalyticsHandler {

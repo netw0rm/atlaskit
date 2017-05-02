@@ -6,11 +6,13 @@ import { ReactionsProvider } from './reactions-resource';
 import Reactions from './reactions';
 
 export interface Props {
+  containerAri: string;
   ari: string;
   reactionsProvider: Promise<ReactionsProvider>;
   emojiProvider: Promise<EmojiProvider>;
   boundariesElement?: string;
-};
+  allowAllEmojis?: boolean;
+}
 
 export interface State {
   reactionsProvider: ReactionsProvider | null;
@@ -35,7 +37,7 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.state.reactionsProvider) {
       this.refreshReactions(this.props.reactionsProvider);
     }
@@ -54,15 +56,17 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
       return null;
     }
 
-    const { ari, boundariesElement, emojiProvider } = this.props;
+    const { containerAri, ari, boundariesElement, emojiProvider, allowAllEmojis } = this.props;
 
     return (
       <Reactions
         ari={ari}
         emojiProvider={emojiProvider}
         reactionsProvider={reactionsProvider}
-        onReactionClick={(emojiId) => reactionsProvider.toggleReaction(ari, emojiId)}
+        onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, ari, emojiId)}
+        onReactionHover={(reaction) => reactionsProvider.fetchReactionDetails(reaction)}
         boundariesElement={boundariesElement}
+        allowAllEmojis={allowAllEmojis}
       />
     );
   }

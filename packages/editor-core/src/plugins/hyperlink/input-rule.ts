@@ -56,6 +56,6 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
       markdownLinkRule
     ]
   });
-};
+}
 
 export default inputRulePlugin;

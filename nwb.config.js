@@ -12,7 +12,7 @@ const pkg = require(path.join(cwd, 'package.json'));
 
 const runInRealBrowsers = [
   // TODO These should actually be run through BrowserStack in CI.
-  /^editor-/,
+  /editor-/,
 
   // TODO These run super slow when using mocha-cli.
   /multi-select/,
@@ -111,7 +111,7 @@ module.exports = {
           }, 'less-loader'],
         }, {
           test: /\.tsx?$/,
-          use: 'ts-loader',
+          use: 'awesome-typescript-loader',
         }],
       },
 

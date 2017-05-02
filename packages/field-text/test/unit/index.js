@@ -6,7 +6,9 @@ import Base from '@atlaskit/field-base';
 
 import FieldTextSmart, { FieldText } from '../../src';
 
-describe('ak-field-text', () => {
+describe('ak-field-text', function test() {
+  this.timeout(5000);
+
   // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {

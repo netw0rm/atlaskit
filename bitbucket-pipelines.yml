@@ -32,12 +32,12 @@ pipelines:
           # - export FORCE_COLOR=1
           # - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           # Install Yarn
-          - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.2
-          - export PATH=$HOME/.yarn/bin:$PATH
+          - time curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.2
+          - time export PATH=$HOME/.yarn/bin:$PATH
           # lerna-semantic-release depends on semantic-release@^6.3.1, but the "latest" dist-tag
           # is 6.3.2, which *doesn't* include https://github.com/semantic-release/semantic-release/pull/332
           # However the version 6.3.6 exists which *does* include it, so we depend on that explicitly.
-          - yarn global add cloudfront-invalidate-cli@1.2.0
+          - time yarn global add cloudfront-invalidate-cli@1.2.0
             marky-markdown@8.1.0
             bitbucket-build-status@1.0.2
             npm-run-all@3.1.1
@@ -49,14 +49,14 @@ pipelines:
           # - ./build/bin/setup.sh
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           # - ./build/bin/prep_for_release.sh
-          - yarn
-          - lerna bootstrap
+          - time yarn
+          - time lerna bootstrap
           # we have to run this after `yarn` to have access to child-process-promise
           # - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           # - run-p -ln "validate/package.json" "validate/typescript"
-          - lerna run lint
-          - lerna run test
+          - time lerna run lint
+          - time lerna run test
           # - run-p -ln "test" "test/base"
           # - yarn run browserstack/tunnel/start
           # - yarn run test/wc/browserstack

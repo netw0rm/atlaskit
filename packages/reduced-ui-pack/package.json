@@ -7,8 +7,10 @@
   "description": "CSS classes which provide styling for a reduced number of AtlasKit components.",
   "main": "dist/bundle.css",
   "scripts": {
-    "prepublish": "lessc src/index.less dist/bundle.css && npm run sprite",
-    "sprite": "node ./bin/buildSprite.js"
+    "prepublish": "lessc src/index.less dist/bundle.css && node ./bin/buildSprite.js",
+    "pretest": "npm run prepublish",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
     "dist"

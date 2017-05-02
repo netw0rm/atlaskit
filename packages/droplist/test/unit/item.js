@@ -10,7 +10,9 @@ import styles from '../../src/styles.less';
 
 import { SecondaryText, Item } from '../../src';
 
-describe(`${name} - item`, () => {
+describe(`${name} - item`, function test() {
+  this.timeout(5000);
+
   it('should be possible to create a component', () => {
     expect(shallow(<Item />)).not.to.equal(undefined);
   });

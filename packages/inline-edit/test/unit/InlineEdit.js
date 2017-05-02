@@ -29,7 +29,9 @@ const defaultProps = {
   editView: <Input value="test" />,
 };
 
-describe('@atlaskit/inline-edit', () => {
+describe('@atlaskit/inline-edit', function test() {
+  this.timeout(5000);
+
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
     const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);

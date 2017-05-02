@@ -15,7 +15,9 @@ const defaultProps = {
   onIconClick: () => {},
 };
 
-describe('ak-field-base', () => {
+describe('ak-field-base', function test() {
+  this.timeout(5000);
+
   // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {

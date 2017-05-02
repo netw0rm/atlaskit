@@ -11,7 +11,9 @@ const defaultProps = {
   isLabelHidden: true,
 };
 
-describe('ak-field-base', () =>
+describe('ak-field-base', function test() {
+  this.timeout(5000);
+
   describe('Label', () => {
     describe('by default', () =>
       it('should render a label element', () =>
@@ -83,5 +85,5 @@ describe('ak-field-base', () =>
         expect(wrapper.find('div.foo')).to.not.equal(undefined);
       })
     );
-  })
-);
+  });
+});

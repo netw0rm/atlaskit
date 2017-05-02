@@ -2,6 +2,20 @@
 # yarn lockfile v1
 
 
+"@atlaskit/media-core@^5.0.4":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/media-core/-/media-core-5.5.2.tgz#0d2561b88324b420445465551ff441e357043080"
+  dependencies:
+    axios "^0.15.3"
+    lru-fast "^0.2.2"
+    tslib "^1.2.0"
+
+"@atlaskit/util-shared-styles@^1.0.0":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.7.1.tgz#0832cb6cc1797431c4ccf67d178aa4112df305e2"
+  dependencies:
+    babel-runtime "^6.11.6"
+
 akutil-common-test@*:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/akutil-common-test/-/akutil-common-test-7.0.3.tgz#d381f8824cf3940d08c7bffa11e6538bfbe5dca5"
@@ -47,6 +61,10 @@ follow-redirects@1.0.0:
 keycode@^2.1.4:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.1.8.tgz#94d2b7098215eff0e8f9a8931d5a59076c4532fb"
+
+lru-fast@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/lru-fast/-/lru-fast-0.2.2.tgz#30c233304cdd9b694b75141d897c52d4d413796c"
 
 ms@0.7.2:
   version "0.7.2"

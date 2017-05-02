@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@atlaskit/util-shared-styles@^1.0.0":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.7.1.tgz#0832cb6cc1797431c4ccf67d178aa4112df305e2"
+  dependencies:
+    babel-runtime "^6.11.6"
+
 ak-icon@^12.1.2:
   version "12.2.1"
   resolved "https://registry.yarnpkg.com/ak-icon/-/ak-icon-12.2.1.tgz#181c6cfc4a92a0be76594742afcb41e62cbd1330"

@@ -11,7 +11,9 @@ const itemsList = (<Group heading="test1">
   <Item>Some text</Item>
 </Group>);
 
-describe(`${name} - core`, () => {
+describe(`${name} - core`, function test() {
+  this.timeout(5000);
+
   it('should be possible to create a component', () => {
     expect(shallow(<Droplist>test</Droplist>)).not.to.equal(undefined);
   });

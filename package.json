@@ -152,7 +152,7 @@
     "create": "./build/bin/create.new.component.sh",
     "create-ts": "./build/bin/create.new.ts.component.sh",
     "help": "readme-help",
-    "health-check": "./build/bin/health.check.js",
+    "health-check": "./build/bin/health-check-scripts/health.check.js",
     "lint": "yarn run validate/lint",
     "postinstall": "./build/bin/postinstall.sh",
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",

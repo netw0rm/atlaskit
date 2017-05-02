@@ -12,6 +12,6 @@ export class AnalyticsService {
   set handler(handler: AnalyticsHandler | null) {
     this.trackEvent = handler ? handler : () => {};
   }
-};
+}
 
 export default new AnalyticsService();

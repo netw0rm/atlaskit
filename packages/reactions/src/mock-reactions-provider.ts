@@ -46,7 +46,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         },
         {
           id: 'julien',
-          displayName: 'Julien Hoarau'
+          displayName: 'Julien Michel Hoarau'
         },
         {
           id: 'craig',
@@ -63,7 +63,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         users
       });
     });
-  };
+  }
 
   fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
     const { ari, emojiId } = reaction;

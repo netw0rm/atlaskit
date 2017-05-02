@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Resizer from '../src/components/js/Resizer';
-import { navigationOpenWidth } from '../src/shared-variables';
+import { navigationOpenWidth, globalOpenWidth } from '../src/shared-variables';
 
 describe('<Resizer />', () => {
   describe('interacting', () => {
@@ -69,6 +69,7 @@ describe('<Resizer />', () => {
         onResizeButton={(resizeState) => {
           expect(resizeState).to.deep.equal({
             isOpen: false,
+            width: globalOpenWidth,
           });
           done();
         }}

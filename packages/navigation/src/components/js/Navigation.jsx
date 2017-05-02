@@ -120,9 +120,6 @@ export default class Navigation extends PureComponent {
     const width = this.getRenderedWidth();
     const snappedWidth = getSnappedWidth(width);
 
-    console.log('width', width);
-    console.log('snappedWidth', snappedWidth);
-
     const resizeState = {
       isOpen: (snappedWidth >= standardOpenWidth),
       width: snappedWidth,

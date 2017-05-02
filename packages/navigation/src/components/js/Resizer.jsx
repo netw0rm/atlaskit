@@ -2,8 +2,11 @@ import React, { PureComponent, PropTypes } from 'react';
 import ResizerInner from '../styled/ResizerInner';
 import ResizerButton from './ResizerButton';
 import {
-  navigationOpenWidth,
- } from '../../shared-variables';
+  containerOpenWidth,
+  globalOpenWidth,
+} from '../../shared-variables';
+
+const standardOpenWidth = containerOpenWidth + globalOpenWidth;
 
 export default class Resizer extends PureComponent {
   static propTypes = {
@@ -18,7 +21,7 @@ export default class Resizer extends PureComponent {
     onResizeEnd: () => {},
     onResizeButton: () => {},
     onResize: () => {},
-    navigationWidth: navigationOpenWidth,
+    navigationWidth: standardOpenWidth,
   }
   constructor(props) {
     super(props);
@@ -63,20 +66,21 @@ export default class Resizer extends PureComponent {
     });
   }
 
-  isPointingRight = () => this.props.navigationWidth < navigationOpenWidth
+  isPointingRight = () => this.props.navigationWidth < standardOpenWidth
 
   resizeButtonHandler = () => {
-    const isExpanded = (this.props.navigationWidth > navigationOpenWidth);
+    const isExpanded = (this.props.navigationWidth > standardOpenWidth);
     const isPointingRight = this.isPointingRight();
 
     if (isPointingRight || isExpanded) {
       this.props.onResizeButton({
         isOpen: true,
-        width: navigationOpenWidth,
+        width: standardOpenWidth,
       });
     } else {
       this.props.onResizeButton({
         isOpen: false,
+        width: globalOpenWidth,
       });
     }
   }

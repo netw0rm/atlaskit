@@ -9,13 +9,13 @@ import {
   resizeClosedBreakpoint,
 } from '../src/shared-variables';
 
+const expect = window.expect;
+
 class Child extends PureComponent {
   render() {
     return <div>Hi there</div>;
   }
 }
-
-const expect = window.expect;
 
 const standardOpenWidth = globalOpenWidth + containerOpenWidth;
 
@@ -79,7 +79,7 @@ describe('<Navigation />', () => {
         />
       );
 
-      // cannot resize because there is no resizer
+      // cannot resize because there is no Resizer
       expect(wrapper.find('Resizer').length).to.equal(0);
     });
 

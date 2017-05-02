@@ -6,6 +6,7 @@ import {
   containerClosedWidth,
   globalOpenWidth,
   containerOpenWidth,
+  resizeClosedBreakpoint,
 } from '../src/shared-variables';
 
 class Child extends PureComponent {
@@ -15,6 +16,8 @@ class Child extends PureComponent {
 }
 
 const expect = window.expect;
+
+const standardOpenWidth = globalOpenWidth + containerOpenWidth;
 
 describe('<Navigation />', () => {
   describe('is open', () => {
@@ -62,7 +65,6 @@ describe('<Navigation />', () => {
   });
 
   describe('resizing', () => {
-    const resize = wrapper => value => wrapper.find('Spacer').first().simulate('resize', value);
     const getSpacerWidth = wrapper => wrapper.find('Spacer').first().props().width;
 
     it('should not allow resizing if not resizable', () => {
@@ -77,11 +79,8 @@ describe('<Navigation />', () => {
         />
       );
 
-      resize(wrapper, 10000);
-
-      expect(getSpacerWidth(wrapper)).to.equal(globalOpenWidth + containerOpenWidth);
-      expect(onResize.called).to.equal(false);
-      expect(onResizeStart.called).to.equal(false);
+      // cannot resize because there is no resizer
+      expect(wrapper.find('Resizer').length).to.equal(0);
     });
 
     it('should call onResizeStart when the resizer starts resizing', () => {
@@ -133,6 +132,87 @@ describe('<Navigation />', () => {
       wrapper.find('Resizer').simulate('resize', -5);
 
       expect(getSpacerWidth(wrapper)).to.equal(globalOpenWidth + containerOpenWidth);
+    });
+
+    describe('snapping', () => {
+      describe('starting open', () => {
+        it('should snap closed if moving beyond the resize breakpoint', () => {
+          const stub = sinon.stub();
+          const wrapper = shallow(<Navigation isOpen onResize={stub} />);
+          const diff = standardOpenWidth - resizeClosedBreakpoint;
+          // moving to the left beyond the resize breakpoint
+          const resizeTo = (-1 * diff) - 1;
+
+          wrapper.find('Resizer')
+            .simulate('resize', resizeTo)
+            .simulate('resizeEnd');
+
+          expect(stub.calledWith({
+            width: globalOpenWidth,
+            isOpen: false,
+          })).to.equal(true);
+        });
+
+        it('should snap open if closing but did not move past the resize breakpoint', () => {
+          const stub = sinon.stub();
+          const wrapper = shallow(<Navigation isOpen onResize={stub} />);
+          const diff = standardOpenWidth - resizeClosedBreakpoint;
+          // moving to the left but not enough
+          const resizeTo = (-1 * diff) + 1;
+
+          wrapper.find('Resizer')
+            .simulate('resize', resizeTo)
+            .simulate('resizeEnd');
+
+          expect(stub.calledWith({
+            width: standardOpenWidth,
+            isOpen: true,
+          })).to.equal(true);
+        });
+      });
+
+      describe('starting closed', () => {
+        it('should snap closed if opening but did not move beyond the resize breakpoint', () => {
+          const stub = sinon.stub();
+          const wrapper = shallow(<Navigation isOpen={false} onResize={stub} />);
+          // moving to the right but not beyond the resize breakpoint
+          const resizeTo = globalOpenWidth + 1;
+
+          wrapper.find('Resizer')
+            .simulate('resize', resizeTo)
+            .simulate('resizeEnd');
+
+          expect(stub.calledWith({
+            width: globalOpenWidth,
+            isOpen: false,
+          })).to.equal(true);
+        });
+
+        it('should snap open if expanding beyond the resize breakpoint', () => {
+          const stub = sinon.stub();
+          const wrapper = shallow(<Navigation isOpen={false} onResize={stub} />);
+          const diff = resizeClosedBreakpoint - globalOpenWidth;
+          // moving to the right beyond the resize breakpoint
+          const resizeTo = diff + 1;
+
+          wrapper.find('Resizer')
+            .simulate('resize', resizeTo)
+            .simulate('resizeEnd');
+
+          expect(stub.calledWith({
+            width: standardOpenWidth,
+            isOpen: true,
+          })).to.equal(true);
+        });
+      });
+
+      it('should not snap if the proposed width is greater than the standard navigation width', () => {
+
+      });
+
+      it('should not allow the width the drop below the closed width', () => {
+
+      });
     });
   });
 
@@ -221,58 +301,54 @@ describe('<Navigation />', () => {
     });
   });
 
-  describe('not collapsible', () => {
-    describe('is open is set to false', () => {
-      let wrapper;
-      let warnStub;
+  describe('not collapsible and is open is set to false', () => {
+    let wrapper;
+    let warnStub;
 
-      beforeEach(() => {
-        warnStub = sinon.stub(console, 'warn');
-        wrapper = shallow(<Navigation isCollapsible={false} isOpen={false} />);
-      });
-
-      afterEach(() => {
-        warnStub.restore();
-        wrapper.unmount();
-      });
-
-      it('should keep the container navigation open', () => {
-        expect(wrapper.find('ContainerNavigation').length).to.equal(1);
-      });
-
-      it('should tell the container not to render the global primary items', () => {
-        expect(wrapper.find('ContainerNavigation').props().areGlobalActionsVisible)
-          .to.equal(false);
-      });
-
-      it('should render the global navigation', () => {
-        expect(wrapper.find('GlobalNavigation').length).to.equal(1);
-      });
-
-      it('should render the correct width', () => {
-        expect(wrapper.find('Spacer').first().props().width)
-          .to.equal(globalOpenWidth + containerOpenWidth);
-      });
-
-      it('should log a warning on mount', () => {
-        expect(warnStub.called).to.equal(true);
-      });
-
-      it('should log a warning on update', () => {
-        warnStub.reset();
-        const customWrapper = shallow(<Navigation isOpen />);
-
-        expect(warnStub.callCount).to.equal(0);
-
-        customWrapper.setProps({
-          isOpen: false,
-          isCollapsible: false,
-        });
-
-        expect(warnStub.callCount).to.equal(1);
-      });
+    beforeEach(() => {
+      warnStub = sinon.stub(console, 'warn');
+      wrapper = shallow(<Navigation isCollapsible={false} isOpen={false} />);
     });
 
-    // resizing behaviour is handled in 'Resize'
+    afterEach(() => {
+      warnStub.restore();
+      wrapper.unmount();
+    });
+
+    it('should keep the container navigation open', () => {
+      expect(wrapper.find('ContainerNavigation').length).to.equal(1);
+    });
+
+    it('should tell the container not to render the global primary items', () => {
+      expect(wrapper.find('ContainerNavigation').props().areGlobalActionsVisible)
+        .to.equal(false);
+    });
+
+    it('should render the global navigation', () => {
+      expect(wrapper.find('GlobalNavigation').length).to.equal(1);
+    });
+
+    it('should render the correct width', () => {
+      expect(wrapper.find('Spacer').first().props().width)
+        .to.equal(globalOpenWidth + containerOpenWidth);
+    });
+
+    it('should log a warning on mount', () => {
+      expect(warnStub.called).to.equal(true);
+    });
+
+    it('should log a warning on update', () => {
+      warnStub.reset();
+      const customWrapper = shallow(<Navigation isOpen />);
+
+      expect(warnStub.callCount).to.equal(0);
+
+      customWrapper.setProps({
+        isOpen: false,
+        isCollapsible: false,
+      });
+
+      expect(warnStub.callCount).to.equal(1);
+    });
   });
 });

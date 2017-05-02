@@ -25,6 +25,29 @@ const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   }
 };
 
+const getSnappedWidth = (width) => {
+  // |------------------------------|
+  //      |           |             |
+  //    closed    breakpoint       open
+  //          * snap closed
+  //                       * snap open
+  //                                    * maintain expanded width
+
+  // Snap closed if width ever goes below the resizeClosedBreakpoint
+  if (width < resizeClosedBreakpoint) {
+    return globalOpenWidth;
+  }
+
+  // Snap open if in between the closed breakpoint and the standard width
+  if (width > resizeClosedBreakpoint && width < standardOpenWidth) {
+    return standardOpenWidth;
+  }
+
+  // At this point the width > standard width.
+  // We allow you to have your own wider width.
+  return width;
+};
+
 export default class Navigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
@@ -95,19 +118,13 @@ export default class Navigation extends PureComponent {
 
   onResizeEnd = () => {
     const width = this.getRenderedWidth();
+    const snappedWidth = getSnappedWidth(width);
 
-    const snappedWidth = (() => {
-      if (width > standardOpenWidth) {
-        return width;
-      }
-      if (width < resizeClosedBreakpoint) {
-        return containerClosedWidth;
-      }
-      return standardOpenWidth;
-    })();
+    console.log('width', width);
+    console.log('snappedWidth', snappedWidth);
 
     const resizeState = {
-      isOpen: (width >= resizeClosedBreakpoint),
+      isOpen: (snappedWidth >= standardOpenWidth),
       width: snappedWidth,
     };
 

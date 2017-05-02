@@ -197,7 +197,7 @@ export class BlockTypeState {
         return !!state.schema.nodes.panel;
     }
   }
-};
+}
 
 export const stateKey = new PluginKey('blockTypePlugin');
 

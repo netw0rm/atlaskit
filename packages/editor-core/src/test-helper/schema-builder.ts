@@ -212,7 +212,7 @@ export function markFactory(type: MarkType, attrs = {}) {
         }
       });
   };
-};
+}
 
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});

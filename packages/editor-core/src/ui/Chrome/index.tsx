@@ -79,4 +79,4 @@ export default class Chrome extends PureComponent<Props, {}> {
         text={props.placeholder}
       />;
   }
-};
+}

@@ -2,7 +2,7 @@ import { ContextConfig, Context } from '@atlaskit/media-core';
 
 export interface MediaState {
   id: string;
-  status?: 'unknown' | 'uploading' | 'processing' | 'ready' | 'error' | 'cancelled';
+  status?: 'unknown' | 'uploading' | 'processing' | 'unfinalized' | 'ready' | 'error' | 'cancelled';
   publicId?: string;
   fileName?: string;
   fileSize?: number;
@@ -10,6 +10,7 @@ export interface MediaState {
   fileMimeType?: string;
   progress?: number;
   thumbnail?: Blob;
+  finalizeCb?: () => void;
   error?: {
     name: string,
     description: string
@@ -70,7 +71,7 @@ export interface MediaProvider {
    * (optional) Used for creation of new Media links.
    */
   linkCreateContext?: Promise<Context | ContextConfig>;
-};
+}
 
 export { ContextConfig as MediaContextConfig };
 

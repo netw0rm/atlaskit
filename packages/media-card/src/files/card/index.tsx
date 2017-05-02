@@ -11,7 +11,7 @@ export interface FileCardProps extends SharedCardProps {
   readonly details?: FileDetails;
   readonly dataURI?: string;
   readonly progress?: number;
-};
+}
 
 export class FileCard extends Component<FileCardProps, {}> {
   static defaultProps: Partial<FileCardProps> = {

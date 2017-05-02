@@ -16,6 +16,7 @@ export interface Props {
   reactionsProvider: ReactionsProvider;
   emojiProvider: Promise<EmojiProvider>;
   onReactionClick: OnEmoji;
+  onReactionHover?: Function;
   boundariesElement?: string;
   allowAllEmojis?: boolean;
 }
@@ -50,6 +51,13 @@ export default class Reactions extends Component<Props, State> {
 
   private onEmojiClick = (emojiId: string) => {
     this.props.onReactionClick(emojiId);
+  }
+
+  private onReactionHover = (reaction: ReactionSummary) => {
+    const { onReactionHover } = this.props;
+    if (onReactionHover) {
+      onReactionHover(reaction);
+    }
   }
 
   componentDidMount() {
@@ -102,6 +110,7 @@ export default class Reactions extends Component<Props, State> {
                 reaction={reaction}
                 emojiProvider={emojiProvider}
                 onClick={() => this.onEmojiClick(reaction.emojiId)}
+                onMouseOver={() => this.onReactionHover(reaction)}
               />
             </div>
           );

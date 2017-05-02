@@ -57,7 +57,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     if (toolbarVisible) {
       return (
-        <FloatingToolbar target={element} align="left" autoPosition>
+        <FloatingToolbar target={element} align="left" autoPosition={true}>
           <div className={styles.container}>
             <DropdownMenu triggerType="button" items={this.items} onItemActivated={this.handleLanguageChange}>
               {language}

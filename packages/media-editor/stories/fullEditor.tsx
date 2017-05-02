@@ -8,7 +8,7 @@ export interface FullEditorProps {
   onError: ErrorHandler;
 }
 
-interface FullEditorState {
+export interface FullEditorState {
   dimensions: Dimensions;
   color: Color;
   lineWidth: number;

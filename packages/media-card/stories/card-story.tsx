@@ -90,7 +90,9 @@ storiesOf('Card', {})
       }
 
       onLoadingChange = state => {
-        state && this.setState({loading: state.loading});
+        if (state) {
+          this.setState({loading: state.loading});
+        }
       }
 
       // TODO debounce
@@ -268,10 +270,10 @@ storiesOf('Card', {})
     const selectableCards = [
       {
         title: 'image - Not selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable />
+        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} />
       }, {
         title: 'image - Selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable selected />
+        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} selected={true} />
       }
     ];
 

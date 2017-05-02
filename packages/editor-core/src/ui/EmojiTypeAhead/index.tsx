@@ -66,7 +66,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         emojiProvider={this.props.emojiProvider}
         onSelection={this.handleSelectedEmoji}
         query={query}
-        ref={ref => {this.typeAhead = ref;}}
+        ref={ref => {this.typeAhead = ref; }}
       />
     );
 

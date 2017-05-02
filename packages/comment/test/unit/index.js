@@ -159,14 +159,10 @@ describe(name, () => {
       });
 
       describe('isError, errorActions and errorLabel props', () => {
-        let errorActions;
-
-        beforeEach(() => {
-          errorActions = [
-            <CommentAction>Retry</CommentAction>,
-            <CommentAction onClick={() => {}}>Cancel</CommentAction>,
-          ];
-        });
+        const errorActions = [
+          <CommentAction>Retry</CommentAction>,
+          <CommentAction onClick={() => {}}>Cancel</CommentAction>,
+        ];
 
         describe('if isError prop is set', () => {
           it('should render the default (empty) if no errorIconLabel is set', () => {

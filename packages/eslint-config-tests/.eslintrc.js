@@ -1,21 +1,16 @@
-/* This extends the default .eslintrc with some rules that should apply to all tests directories
-   .eslintrc files in those directories will need to extend this file and any extra rules they may
-   need.
-   Any new rules that apply to all tests should be placed here.                                   */
-
-{
+module.exports = {
   "name": "@atlaskit/eslint-config-tests",
   "extends": "@atlaskit/eslint-config-base",
   "env": {
-    "mocha": true
+    "mocha": true,
   },
   "globals": {
     "expect": false,  // will be defined globally, false prevents overriding them
-    "sinon": false
+    "sinon": false,
   },
   "plugins": [
     "mocha",
-    "chai-expect"
+    "chai-expect",
   ],
   "rules": {
     // https://github.com/lo1tuma/eslint-plugin-mocha/blob/master/docs/rules/no-exclusive-tests.md
@@ -50,6 +45,6 @@
     // Disallow calling chai properties as functions
     // Allow supported syntax: `expect(true).to.be.ok;`
     // Disallow calling properties as functions: `expect(true).to.be.ok();`
-    "chai-expect/terminating-properties": "error"
-  }
-}
+    "chai-expect/terminating-properties": "error",
+  },
+};

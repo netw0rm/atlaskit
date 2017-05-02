@@ -99,7 +99,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
     return (
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
-          ref={ref => {this.content = ref; }}
+          ref={this.handleOutsideClickableRef}
           style={{ top: 0, left: 0, position, transform, padding, zIndex: akEditorFloatingPanelZIndex }}
           className={styles.container}
         >
@@ -107,6 +107,10 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
         </div>
       </OutsideClickable>
     );
+  }
+
+  private handleOutsideClickableRef = (ref) => {
+    this.content = ref;
   }
 
   private findBoundary(elem: HTMLElement): HTMLElement {

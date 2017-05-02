@@ -46,10 +46,26 @@ export class FullEditor extends React.Component<FullEditorProps, FullEditorState
     window.removeEventListener('resize', this.windowResizeListener);
   }
 
+  private handleDivRef = (div) => {
+    this.container = div;
+  }
+
+  private handleShapeParametersChanged = (shapeParameters) => {
+    this.setState({
+      color: shapeParameters.color,
+      lineWidth: shapeParameters.lineWidth,
+      addShadow: shapeParameters.addShadow,
+    });
+  }
+
+  private handleToolbarColorChanged = (color) => { this.setState({color}); };
+  private handleToolbarLineWidthChanged = (lineWidth) => { this.setState({lineWidth}); };
+  private handleToolbarToolChanged = (tool) => { this.setState({tool}); };
+
   render() {
     return (
       <div
-        ref={div => this.container = div}
+        ref={this.handleDivRef}
         style={{position: 'absolute', width: '100%', height: '100%', overflow: 'hidden'}}
       >
         <MediaEditor
@@ -60,11 +76,7 @@ export class FullEditor extends React.Component<FullEditorProps, FullEditorState
           tool={this.state.tool}
           onLoad={this.props.onLoad}
           onError={this.props.onError}
-          onShapeParametersChanged={(shapeParameters) => this.setState({
-            color: shapeParameters.color,
-            lineWidth: shapeParameters.lineWidth,
-            addShadow: shapeParameters.addShadow
-          })}
+          onShapeParametersChanged={this.handleShapeParametersChanged}
         />
 
         <div
@@ -74,9 +86,9 @@ export class FullEditor extends React.Component<FullEditorProps, FullEditorState
             color={this.state.color}
             lineWidth={this.state.lineWidth}
             tool={this.state.tool}
-            onColorChanged={(color) => { this.setState({color}); }}
-            onLineWidthChanged={(lineWidth) => { this.setState({lineWidth}); }}
-            onToolChanged={(tool) => { this.setState({tool}); }}
+            onColorChanged={this.handleToolbarColorChanged}
+            onLineWidthChanged={this.handleToolbarLineWidthChanged}
+            onToolChanged={this.handleToolbarToolChanged}
           />
         </div>
       </div>

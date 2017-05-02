@@ -65,6 +65,13 @@ export default class EmojiTypeAheadTextInput extends PureComponent<Props, State>
     }
   }
 
+  private handleSearchTextInputChange = (query) => { this.updateSearch(query); };
+  private handleSearchTextInputUp = () => { this.emojiTypeAheadRef.selectPrevious(); };
+  private handleSearchTextInputDown = () => { this.emojiTypeAheadRef.selectNext(); };
+  private handleSearchTextInputEnter = () => { this.emojiTypeAheadRef.chooseCurrentSelection(); };
+  private handleEmojiTypeAheadRef = (ref) => { this.emojiTypeAheadRef = ref; };
+  private handleEmojiTypeAheadSelection = (emojiId, emoji) => { this.handleSelection(emojiId, emoji); };
+
   render() {
     const { label, emojiProvider, position, beforeContent, afterContent, disableBlur } = this.props;
     debug('demo-emoji-text-input.render', position);
@@ -74,10 +81,10 @@ export default class EmojiTypeAheadTextInput extends PureComponent<Props, State>
       <SearchTextInput
         inputId="demo-input"
         label={label}
-        onChange={query => this.updateSearch(query)}
-        onUp={() => this.emojiTypeAheadRef.selectPrevious()}
-        onDown={() => this.emojiTypeAheadRef.selectNext()}
-        onEnter={() => this.emojiTypeAheadRef.chooseCurrentSelection()}
+        onChange={this.handleSearchTextInputChange}
+        onUp={this.handleSearchTextInputUp}
+        onDown={this.handleSearchTextInputDown}
+        onEnter={this.handleSearchTextInputEnter}
         onEscape={this.hideEmojiPopup}
         onFocus={this.showEmojiPopup}
         onBlur={onBlur}
@@ -91,10 +98,10 @@ export default class EmojiTypeAheadTextInput extends PureComponent<Props, State>
         <EmojiTypeAhead
           target={target}
           position={position}
-          onSelection={(emojiId, emoji) => { this.handleSelection(emojiId, emoji); }}
+          onSelection={this.handleEmojiTypeAheadSelection}
           onOpen={action('picker opened')}
           onClose={action('picker closed')}
-          ref={(ref) => { this.emojiTypeAheadRef = ref; }}
+          ref={this.handleEmojiTypeAheadRef}
           query={this.state.query}
           emojiProvider={emojiProvider}
         />

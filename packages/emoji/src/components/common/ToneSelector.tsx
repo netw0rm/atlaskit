@@ -27,6 +27,7 @@ export default class ToneSelector extends PureComponent<Props, undefined> {
           toneEmojis.map((tone, i) => (
             <EmojiButton
               key={`${tone.id}`}
+              // tslint:disable-next-line:jsx-no-lambda
               onSelected={() => onToneSelected(i + 1)}
               emoji={tone}
             />

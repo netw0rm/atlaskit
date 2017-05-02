@@ -91,6 +91,7 @@ export const emojiNodeView = (providerFactory: ProviderFactory) => (node: any, v
     <WithProviders
       providers={['emojiProvider']}
       providerFactory={providerFactory}
+      // tslint:disable-next-line:jsx-no-lambda
       renderNode={providers =>
         <ResourcedEmoji
           emojiId={{ shortName, id, fallback }}

@@ -40,6 +40,10 @@ export class LinkCardTrelloBoardView extends Component<LinkCardTrelloBoardViewPr
     height: 116
   };
 
+  private handleOpenBoardClick = () => {
+    open(this.props.linkUrl, '_blank');
+  }
+
   render() {
     const {linkUrl, title, thumbnailUrl, iconUrl} = this.props;
     const cardStyle = {height: `${this.props.height}px`, width: `${this.props.width}px`};
@@ -67,7 +71,7 @@ export class LinkCardTrelloBoardView extends Component<LinkCardTrelloBoardViewPr
                 Trello - Board
               </Href>
             </Link>
-            <Button onClick={() => open(this.props.linkUrl, '_blank')}>Open board</Button>
+            <Button onClick={this.handleOpenBoardClick}>Open board</Button>
           </Footer>
         </Details>
       </Wrapper>

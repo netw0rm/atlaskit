@@ -5,18 +5,18 @@ import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
-import { AkContainerItem, AkContainerItemGroup } from '../src/index';
+import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 
 storiesOf(name, module)
   .add('with a container item group', () => (
     <Page>
       <BasicNavigation>
-        <AkContainerItem
+        <AkNavigationItem
           icon={<SearchIcon label="Search" />}
           isCompact
           text="Search"
         />
-        <AkContainerItemGroup
+        <AkNavigationItemGroup
           action={
             <AkButton
               appearance="subtle"
@@ -26,34 +26,34 @@ storiesOf(name, module)
           }
           title="Rooms"
         >
-          <AkContainerItem
+          <AkNavigationItem
             icon={<IssuesIcon label="Issues" />}
             isCompact
             text="Issues"
           />
-          <AkContainerItem
+          <AkNavigationItem
             icon={<AddIcon label="Create" />}
             isCompact
             text="Create"
           />
-          <AkContainerItem
+          <AkNavigationItem
             icon={<DashboardIcon label="Dashboard" />}
             isCompact
             text="Nucleus"
           />
-        </AkContainerItemGroup>
-        <AkContainerItemGroup title="People">
-          <AkContainerItem
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup title="People">
+          <AkNavigationItem
             icon={<SettingsIcon label="Settings" />}
             isCompact
             text="Settings"
           />
-          <AkContainerItem
+          <AkNavigationItem
             icon={<IssuesIcon label="Issues" />}
             isCompact
             text="Issues"
           />
-        </AkContainerItemGroup>
+        </AkNavigationItemGroup>
       </BasicNavigation>
     </Page>
   ));

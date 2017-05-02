@@ -21,7 +21,7 @@ export interface TextNode extends Renderable {
 
 /*
  *  Wraps adjecent textnodes in a textWrapper
- * 
+ *
  *  Input:
  *  [
  *    {
@@ -38,7 +38,7 @@ export interface TextNode extends Renderable {
  *      ]
  *    }
  *  ]
- * 
+ *
  *  Output:
  *  [
  *    {

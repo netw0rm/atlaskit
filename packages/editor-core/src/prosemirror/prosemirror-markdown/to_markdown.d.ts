@@ -36,7 +36,7 @@ export class MarkdownSerializerState {
   esc(str: string, startOfLine?: boolean): string;
   quote(str: string): string;
   repeat(str: string, n: number): string;
-  markString(mark: Mark, open: boolean): string
+  markString(mark: Mark, open: boolean): string;
   out;
   closed;
   nodes;

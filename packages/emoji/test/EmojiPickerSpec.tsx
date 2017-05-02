@@ -7,13 +7,10 @@ import { emojiRepository, getEmojiResourcePromise } from './TestData';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import Emoji from '../src/components/common/Emoji';
-import EmojiButton from '../src/components/common/EmojiButton';
 import EmojiPicker, { Props } from '../src/components/picker/EmojiPicker';
 import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
 import EmojiPickerList from '../src/components/picker/EmojiPickerList';
-// import EmojiPickerListCategory from '../src/components/picker/EmojiPickerListCategory';
 import { EmojiProvider } from '../src/api/EmojiResource';
-// import EmojiPickerListSearch from '../src/components/picker/EmojiPickerListSearch';
 import { OptionalEmojiDescription } from '../src/types';
 
 function setupPicker(props?: Props): ReactWrapper<any, any> {
@@ -79,7 +76,7 @@ describe('<EmojiPicker />', () => {
       const list = component.find(EmojiPickerList);
 
       return waitUntil(() => emojisVisible(list)).then(() => {
-        const hoverButton = list.find(EmojiButton).at(hoverOffset);
+        const hoverButton = list.find(Emoji).at(hoverOffset);
         hoverButton.simulate('mousemove');
         const previewEmoji = footer.find(Emoji);
         expect(previewEmoji.length, 'Emoji preview after hover').to.equal(1);
@@ -117,7 +114,7 @@ describe('<EmojiPicker />', () => {
         onSelection: (emojiId, emoji) => { selection = emoji; },
       } as Props);
       const list = component.find(EmojiPickerList);
-      const hoverButton = () => list.find(EmojiButton).at(clickOffset);
+      const hoverButton = () => list.find(Emoji).at(clickOffset);
       return waitUntil(() => hoverButton().exists()).then(() => {
         hoverButton().simulate('mousedown', leftClick);
         return waitUntil(() => !!selection).then(() => {

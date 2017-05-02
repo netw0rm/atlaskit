@@ -17,6 +17,8 @@ import {
   panel,
   rule,
   hardBreak,
+  media,
+  mediaGroup,
   mention,
   emoji,
   link,
@@ -42,6 +44,8 @@ const nodes = {
   mention,
   emoji,
   image,
+  media,
+  mediaGroup,
   linkable: { ...paragraph, content: 'text<link>*' },
   unlinkable: { ...paragraph, content: 'text*' },
   plain: { ...paragraph, content: 'text*' }

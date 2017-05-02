@@ -1,8 +1,9 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
+import AkToolTip from '@atlaskit/tooltip';
 
-import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
+import Comment, { CommentAction, CommentEdited, CommentAuthor, CommentTime } from '../src';
 import { name } from '../package.json';
 import { clickHandler, sampleText, nonSpacedSampleText } from './_constants';
 import sampleAvatarImg from './sample-avatar.png';
@@ -16,6 +17,22 @@ storiesOf(name, module)
       avatar={sampleAvatar}
       time={<CommentTime>30, August 2016</CommentTime>}
       type="Author"
+      content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
+      actions={[
+        <CommentAction onClick={clickHandler}>Reply</CommentAction>,
+        <CommentAction onClick={clickHandler}>Edit</CommentAction>,
+        <CommentAction onClick={clickHandler}>Delete</CommentAction>,
+        <CommentAction onClick={clickHandler}>Like</CommentAction>,
+      ]}
+    />
+  ))
+  .add('simple comment with edited flag', () => (
+    <Comment
+      author={<CommentAuthor>John Smith</CommentAuthor>}
+      avatar={sampleAvatar}
+      time={<CommentTime>30, August 2016</CommentTime>}
+      type="Author"
+      edited={<AkToolTip description="6 Dec 2016 3:19PM by Maggie Tighe"><CommentEdited>Edited</CommentEdited></AkToolTip>}
       content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
       actions={[
         <CommentAction onClick={clickHandler}>Reply</CommentAction>,
@@ -113,6 +130,20 @@ storiesOf(name, module)
       ]}
     />
   ))
+  .add('comment with restricted property and edited flag', () => (
+    <Comment
+      author={<CommentAuthor>John Smith</CommentAuthor>}
+      avatar={sampleAvatar}
+      time={<CommentTime>30, August 2016</CommentTime>}
+      type="Author"
+      content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
+      edited={<AkToolTip description="6 Dec 2016 3:19PM by Maggie Tighe"><CommentEdited>Edited</CommentEdited></AkToolTip>}
+      restrictedTo="developers"
+      actions={[
+        <CommentAction onClick={clickHandler}>Like</CommentAction>,
+      ]}
+    />
+  ))
   .add('comment with optimistic saving', () => (
     <Comment
       author={<CommentAuthor>John Smith</CommentAuthor>}
@@ -137,6 +168,21 @@ storiesOf(name, module)
         author={<CommentAuthor>John Smith</CommentAuthor>}
         avatar={<img src={sampleAvatarImg} alt="img avatar" height="40" width="40" />}
         content={<p>{nonSpacedSampleText}</p>}
+      />
+    </div>
+  ))
+  .add('comment in an error state', () => (
+    <div style={{ width: 500 }}>
+      <Comment
+        author={<CommentAuthor>John Smith</CommentAuthor>}
+        avatar={<img src={sampleAvatarImg} alt="img avatar" height="40" width="40" />}
+        content={<p>{nonSpacedSampleText}</p>}
+        isError
+        errorActions={[
+          <CommentAction onClick={clickHandler}>Retry</CommentAction>,
+          <CommentAction onClick={clickHandler}>Cancel</CommentAction>,
+        ]}
+        errorLabel="Error"
       />
     </div>
 ));

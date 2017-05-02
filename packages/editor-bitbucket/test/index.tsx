@@ -232,7 +232,7 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
   });
 });
 
-describe('@atlaskit/editor-bitbucket/pasting', () => {
+describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
   let editorView: EditorView;
@@ -266,7 +266,7 @@ describe('@atlaskit/editor-bitbucket/pasting', () => {
       return this.skip();
     }
 
-    expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: '@Mention' }), ' some mention.')));
+    expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', text: '@Mention' }), ' some mention.')));
   });
 });
 

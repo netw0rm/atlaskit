@@ -99,14 +99,6 @@ export class BlockTypeState {
     }
   }
 
-  focus(view): void {
-    view.dom.focus();
-  }
-
-  blur(view): void {
-    view.dom.blur();
-  }
-
   private triggerOnChange() {
     this.changeHandlers.forEach(cb => cb(this));
   }
@@ -205,7 +197,7 @@ export class BlockTypeState {
         return !!state.schema.nodes.panel;
     }
   }
-};
+}
 
 export const stateKey = new PluginKey('blockTypePlugin');
 

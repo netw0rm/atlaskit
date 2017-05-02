@@ -4,6 +4,8 @@ import { style } from 'typestyle';
 import { EmojiId, EmojiProvider, OnEmojiEvent, OptionalEmojiDescription } from '@atlaskit/emoji';
 import EmojiButton from './emoji-button';
 
+import { equalEmojiId } from './helpers';
+
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   onSelection: OnEmojiEvent;
@@ -15,23 +17,23 @@ const selectorStyle = style({
   padding: 0
 });
 
-export const defaultReactionsByShortcut: Map<string, string> = new Map<string, string>([
-  ['thumbsup', '1f44d'],
-  ['thumbsdown', '1f44e'],
-  ['grinning', '1f600'],
-  ['tada', '1f389'],
-  ['heart', '2764'],
+export const defaultReactionsByShortName: Map<string, EmojiId> = new Map<string, EmojiId>([
+  [':thumbsup:', { id: '1f44d', shortName: ':thumbsup:' }],
+  [':thumbsdown:', { id: '1f44e', shortName: ':thumbsdown:' }],
+  [':grinning:', { id: '1f600', shortName: ':grinning:' }],
+  [':tada:', { id: '1f389', shortName: ':tada:' }],
+  [':heart:', { id: '2764', shortName: ':heart:' }],
 ]);
 
-export const defaultReactions: string[] = [
-  defaultReactionsByShortcut.get('thumbsup') as string,
-  defaultReactionsByShortcut.get('thumbsdown') as string,
-  defaultReactionsByShortcut.get('grinning') as string,
-  defaultReactionsByShortcut.get('tada') as string,
-  defaultReactionsByShortcut.get('heart') as string,
+export const defaultReactions: EmojiId[] = [
+  defaultReactionsByShortName.get(':thumbsup:') as EmojiId,
+  defaultReactionsByShortName.get(':thumbsdown:') as EmojiId,
+  defaultReactionsByShortName.get(':grinning:') as EmojiId,
+  defaultReactionsByShortName.get(':tada:') as EmojiId,
+  defaultReactionsByShortName.get(':heart:') as EmojiId,
 ];
 
-export const isDefaultReaction = (emojiId: string) => defaultReactions.filter(otherEmojiId => otherEmojiId === emojiId).length > 0;
+export const isDefaultReaction = (emojiId: EmojiId) => defaultReactions.filter(otherEmojiId => equalEmojiId(otherEmojiId, emojiId)).length > 0;
 
 export default class Selector extends PureComponent<Props, {}> {
 
@@ -45,9 +47,10 @@ export default class Selector extends PureComponent<Props, {}> {
     return (
       <div className={selectorStyle}>
         {defaultReactions.map(emojiId => {
+          const key = emojiId.id || emojiId.shortName;
           return (
-            <div style={{display: 'inline-block'}} key={emojiId}>
-              <EmojiButton emojiId={{id: emojiId}} emojiProvider={emojiProvider} onClick={this.onEmojiSelected} />
+            <div style={{display: 'inline-block'}} key={key}>
+              <EmojiButton emojiId={emojiId} emojiProvider={emojiProvider} onClick={this.onEmojiSelected} />
             </div>
           );
         })}

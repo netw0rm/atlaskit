@@ -3,7 +3,6 @@ import {
   EditorState,
   EditorView,
   Schema,
-  Fragment,
   Plugin,
   PluginKey,
 } from '../../prosemirror';
@@ -22,10 +21,10 @@ export class MentionsState {
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
 
-  onSelectPrevious = (): boolean => { return false; };
-  onSelectNext = (): boolean => { return false; };
-  onSelectCurrent = (): boolean => { return false; };
-  onTrySelectCurrent = (): boolean => { return false; };
+  onSelectPrevious = (): boolean => false;
+  onSelectNext = (): boolean => false;
+  onSelectCurrent = (): boolean => false;
+  onTrySelectCurrent = (): boolean => false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;
@@ -52,7 +51,6 @@ export class MentionsState {
       return;
     }
 
-    const { docView } = this.view;
     const { mentionQuery } = state.schema.marks;
     const { doc, selection } = state;
     const { from, to } = selection;
@@ -78,7 +76,7 @@ export class MentionsState {
       return;
     }
 
-    const newAnchorElement = docView.dom.querySelector('[data-mention-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector('[data-mention-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;
@@ -150,15 +148,21 @@ export class MentionsState {
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
-      const node = mention.create({ text: `@${renderName}`, id: mentionData.id });
-      const textNode = state.schema.text(' ');
-      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
+      const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id })];
+      if (!this.isNextCharacterSpace(end)) {
+        nodes.push(state.schema.text(' '));
+      }
       view.dispatch(
-        state.tr.replaceWith(start, end, fragment)
+        state.tr.replaceWith(start, end, nodes)
       );
     } else {
       this.dismiss();
     }
+  }
+
+  isNextCharacterSpace(end) {
+    const { $from } = this.state.selection;
+    return $from.nodeAfter && $from.nodeAfter.textContent.indexOf(' ') === 0;
   }
 
   subscribeToFactory(providerFactory: ProviderFactory) {

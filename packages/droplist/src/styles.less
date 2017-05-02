@@ -57,7 +57,6 @@
   box-sizing: border-box;
   font-size: 14px;
   font-weight: normal;
-  line-height: 1;
   padding: 0 (@halfGrid * 3);
   text-decoration: none;
   color: @ak-dropdown-font-main-color;
@@ -170,11 +169,18 @@
   white-space: nowrap;
 }
 
+.allowMultilineItems {
+  .itemContent {
+    white-space: normal;
+  }
+}
+
 .itemContentWrapper {
   display: flex;
   flex-direction: column;
   margin: 0 @grid;
-  padding: 9px 0;
+  padding: @grid 0;
+  overflow: hidden;
 
   &:first-child {
     margin: 0;

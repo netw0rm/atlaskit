@@ -1,6 +1,8 @@
 import { Promise } from 'es6-promise';
 import 'whatwg-fetch';
-import { findIndex } from './internal/helpers';
+
+import { findIndex, equalEmojiId } from './internal/helpers';
+import { analyticsService } from './analytics';
 
 let debounced: number | null = null;
 
@@ -9,6 +11,12 @@ export interface ReactionSummary {
   emojiId: string;
   count: number;
   reacted: boolean;
+  users?: User[];
+}
+
+export interface User {
+  id: string;
+  displayName: string;
 }
 
 export interface Listener {
@@ -21,9 +29,11 @@ export interface Reactions {
 
 export interface ReactionsProvider {
   getReactions(aris: string[]): Promise<Reactions>;
-  toggleReaction(ari: string, emojiId: string);
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary>;
+  toggleReaction(containerAri: string, ari: string, emojiId: string);
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary>;
   notifyUpdated(ari: string, state: ReactionSummary[]): void;
   subscribe(ari: string, handler: Function): void;
   unsubscribe(ari: string, handler: Function): void;
@@ -61,23 +71,34 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     }, autoPollInterval);
   }
 
-
   getReactions(aris: string[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
       resolve({});
     });
   }
 
-  toggleReaction(ari: string, emojiId: string) {
+  getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      reject();
+    });
+  }
+
+  fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      reject();
+    });
+  }
+
+  toggleReaction(containerAri: string, ari: string, emojiId: string) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
 
-    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => r.emojiId === emojiId);
+    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, emojiId));
     const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
 
     if (hasReacted) {
-      this.deleteReaction(ari, emojiId)
+      this.deleteReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         })
@@ -86,7 +107,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
           this.notifyUpdated(ari, this.cachedReactions[ari]);
         });
     } else {
-      this.addReaction(ari, emojiId)
+      this.addReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         })
@@ -97,13 +118,15 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     }
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
+    analyticsService.trackEvent('reactions.add.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
+    analyticsService.trackEvent('reactions.delete.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
@@ -190,7 +213,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
       this.cachedReactions[ari] = [];
     }
 
-    const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
+    const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
 
     if (index !== -1) {
       const reaction = this.cachedReactions[ari][index];
@@ -215,7 +238,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
       this.cachedReactions[ari] = [];
     }
 
-    const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
+    const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
     const reaction = this.cachedReactions[ari][index];
 
     reaction.reacted = false;
@@ -277,6 +300,38 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     return headers;
   }
 
+  getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
+    const reactionId = `${reaction.ari}|${reaction.emojiId}`;
+    return requestService<ReactionSummary>(this.config.baseUrl, `reactions?reactionId=${encodeURIComponent(reactionId)}`, {
+      'method': 'GET',
+      'headers': this.getHeaders(),
+      'credentials': 'include'
+    });
+  }
+
+  fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      this
+        .getDetailedReaction(reaction)
+        .then(reactionDetails => {
+          const { ari, emojiId } = reactionDetails;
+          if (!this.cachedReactions[ari]) {
+            this.cachedReactions[ari] = [];
+          }
+
+          const index = findIndex(this.cachedReactions[ari], r => r.emojiId === emojiId);
+          if (index !== -1) {
+            this.cachedReactions[ari][index] = reactionDetails;
+          } else {
+            this.cachedReactions[ari].push(reactionDetails);
+          }
+
+          this.notifyUpdated(ari, this.cachedReactions[ari]);
+          resolve(reactionDetails);
+        });
+    });
+  }
+
   getReactions(aris: string[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
       requestService<Reactions>(this.config.baseUrl, 'reactions/view', {
@@ -293,7 +348,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     });
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     this.optimisticAddReaction(ari, emojiId);
 
     const timestamp = Date.now();
@@ -303,7 +358,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
       requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, 'reactions', {
         'method': 'POST',
         'headers': this.getHeaders(),
-        'body': JSON.stringify({ emojiId, ari }),
+        'body': JSON.stringify({ emojiId, ari, containerAri }),
         'credentials': 'include'
       }).then(reactions => {
 
@@ -317,14 +372,14 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     this.optimisticDeleteReaction(ari, emojiId);
 
     const timestamp = Date.now();
     this.lastActionForAri[ari] = timestamp;
 
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}`, {
+      requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}&containerAri=${containerAri}`, {
         'method': 'DELETE',
         'headers': this.getHeaders(),
         'credentials': 'include'

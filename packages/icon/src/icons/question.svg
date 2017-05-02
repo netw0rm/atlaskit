@@ -4,7 +4,7 @@
     <title>question</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="question" fill="currentColor">
             <g id="question-mark-circle">
                 <path d="M12,18 L12,18 C11.448,18 11,17.552 11,17 L11,17 C11,16.448 11.448,16 12,16 L12,16 C12.552,16 13,16.448 13,17 L13,17 C13,17.552 12.552,18 12,18" id="Fill-3"></path>

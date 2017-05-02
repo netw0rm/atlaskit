@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerNavigationNested.less';
+import styles from '../less/ContainerNavigationNested.less';
+import ContainerNavigationNestedPageWrapper from '../styled/ContainerNavigationNestedPageWrapper';
 
 export default class ContainerNavigationNested extends PureComponent {
   static propTypes = {
@@ -45,8 +46,8 @@ export default class ContainerNavigationNested extends PureComponent {
   render() {
     const { children } = this.props;
     const { prevChildren } = this.state;
-    const activePane = <div key="active-pane" className={styles.pageWrapper}>{children}</div>;
-    const prevPane = <div key="prev-pane" className={styles.pageWrapper}>{prevChildren}</div>;
+    const activePane = <ContainerNavigationNestedPageWrapper key="active-pane" className={styles.pageWrapper}>{children}</ContainerNavigationNestedPageWrapper>;
+    const prevPane = <ContainerNavigationNestedPageWrapper key="prev-pane" className={styles.pageWrapper}>{prevChildren}</ContainerNavigationNestedPageWrapper>;
     const content = this.props.animationDirection === 'left' ? [prevPane, activePane] : [activePane, prevPane];
     return (<div
       className={styles.containerNavigationNested}

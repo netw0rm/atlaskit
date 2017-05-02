@@ -261,9 +261,106 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
   return tr;
 }
 
+/**
+ * Returns a method which removes a single node at position obtained from getPos() callback.
+ * This is designed to be used with node views for interactions, where a node is to be removed.
+ *
+ * For example:
+ *
+ *   const nv:NodeView = (node: any, view: any, getPos: () => number) => {
+ *     let div: HTMLElement | undefined = document.createElement('div');
+ *
+ *     ReactDOM.render(
+ *       <Component>
+ *         <Button onClick={locateAndRemoveNode(view, getPos)}>
+ *           Click to remove
+ *         </Button>
+ *       </Component>
+ *     );
+ *     return {
+ *       get dom() {
+ *         return div;
+ *       }
+ *     }
+ *   }
+ *
+ * @param getPos Callback normally passed into Node View by ProseMirror.
+ * @param view A View instance which will be updated
+ */
+export function locateAndRemoveNode(view: EditorView, getPos: () => number): () => void {
+  return function() {
+    const pos = getPos();
+    if (!pos || pos <= 0) {
+      return;
+    }
+
+    view.dispatch(view.state.tr.delete(pos, pos + 1));
+  };
+}
+
 export function toJSON(node: Node) {
   return {
     version: 1,
     ...node.toJSON()
   };
+}
+
+export function splitCodeBlockAtSelection(state: EditorState<any>) {
+  let tr = splitCodeBlockAtSelectionStart(state);
+  tr = splitCodeBlockAtSelectionEnd(state, tr);
+  return {
+    tr,
+    $from: tr.selection.$from,
+    $to: tr.selection.$to,
+  };
+}
+
+function splitCodeBlockAtSelectionStart(state: EditorState<any>) {
+  const { tr } = state;
+  const { $from } = state.selection;
+  const { codeBlock } = state.schema.nodes;
+  const node = $from.node($from.depth);
+
+  if ($from.pos > $from.start($from.depth) && node.type === codeBlock) {
+    let fromPos = $from.pos - $from.start($from.depth);
+    for (let i = fromPos; i >= 0; i--) {
+      if (node.textContent[i] === '\n') {
+        fromPos = i + 1;
+        break;
+      } else if (i === 0) {
+        fromPos = 0;
+      }
+    }
+    if ( fromPos > 0) {
+      tr.split($from.start($from.depth) + fromPos, $from.depth);
+      if (node.textContent[fromPos - 1] === '\n') {
+        tr.delete($from.start($from.depth) + fromPos - 1, $from.start($from.depth) + fromPos);
+      }
+    }
+  }
+  return tr;
+}
+
+function splitCodeBlockAtSelectionEnd(state: EditorState<any>, tr: Transaction) {
+  let { $from, $to } = tr.selection;
+  const { codeBlock } = state.schema.nodes;
+  const node = $to.node($to.depth);
+  if ($to.pos < $to.end($to.depth) && node.type === codeBlock) {
+    let toPos = $to.pos - $from.start($from.depth);
+    for (let i = toPos; i <= node.textContent.length; i++) {
+      if (node.textContent[i] === '\n') {
+        toPos = i + 1;
+        break;
+      } else if (i === node.textContent.length) {
+        toPos = node.textContent.length;
+      }
+    }
+    if (toPos < node.textContent.length) {
+      tr.split($from.start($from.depth) + toPos, $to.depth);
+      if (node.textContent[toPos - 1] === '\n') {
+        tr.delete($from.start($from.depth) + toPos - 1, $from.start($from.depth) + toPos);
+      }
+    }
+  }
+  return tr;
 }

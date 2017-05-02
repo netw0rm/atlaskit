@@ -38,7 +38,7 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
 
     it('should support images', () => {
       const parsed = parse('<p><img alt="Alt text" src="http://path/to/image.jpg"></p>');
-      expect(parsed).to.deep.equal(doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text', title: '' }))));
+      expect(parsed).to.deep.equal(doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text' }))));
     });
   });
 
@@ -402,7 +402,7 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
       )).to.deep.equal(doc(
         p(
           'foo ',
-          mention({ displayName: '@Artur Bodera', id: 'abodera' }),
+          mention({ text: '@Artur Bodera', id: 'abodera' }),
           ' bar'
         )
       ));

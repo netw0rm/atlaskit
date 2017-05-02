@@ -4,11 +4,14 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import Editor from '../src';
 import { name, version } from '../package.json';
-import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { pd } from 'pretty-data';
 import { resourceProvider } from './mentions/story-data';
+import Spinner from '@atlaskit/spinner';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
+let handleChange: (editor: Editor) => void;
 
 const CODE_MACRO = `<ac:structured-macro ac:name="code" ac:schema-version="1" ac:macro-id="1c61c2dd-3574-45f3-ac07-76d400504d84"><ac:parameter ac:name="language">js</ac:parameter><ac:parameter ac:name="theme">Confluence</ac:parameter><ac:parameter ac:name="title">Example</ac:parameter><ac:plain-text-body><![CDATA[if (true) {
   console.log('Hello World');
@@ -23,12 +26,81 @@ const mentionProvider = new Promise<any>(resolve => {
 });
 
 storiesOf(name, module)
+  .addDecorator(function (story: Function, context: { kind: string, story: string }) {
+    type Props = {};
+    type State = { cxhtml?: string, story?: any, prettify?: boolean, isMediaReady?: boolean};
+    class Demo extends PureComponent<Props, State> {
+      state: State;
+
+      constructor(props: Props) {
+        super(props);
+        handleChange = this.handleChange;
+        this.state = {
+          cxhtml: '',
+          prettify: true,
+          story: story(),
+          isMediaReady: true,
+        };
+      }
+
+      handleChange = (editor: Editor) => {
+        this.setState({ isMediaReady: false });
+
+        editor.value.then((value) => this.setState({
+          isMediaReady: true,
+          cxhtml: value
+        }));
+      }
+
+      togglePrettify = () => {
+        this.setState({ prettify: !this.state.prettify });
+      }
+
+      render() {
+        const xml = this.state.prettify ? pd.xml(this.state.cxhtml || '') : this.state.cxhtml || '';
+
+        return (
+          <div ref="root">
+            {this.state.story}
+            <fieldset style={{ marginTop: 20 }}>
+              <legend>
+                CXHTML output
+                 (
+                  <input type="checkbox" checked={this.state.prettify} onChange={this.togglePrettify}/>
+                  <span onClick={this.togglePrettify} style={{ cursor: 'pointer' }}> prettify</span>
+                 )
+              </legend>
+              {this.state.isMediaReady ?
+                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{xml}</pre>
+                :
+                <div style={{ padding: 20 }}><Spinner size="large" /></div>
+              }
+            </fieldset>
+          </div>
+        );
+      }
+    }
+
+    return <Demo/>;
+  })
   .addDecorator(storyDecorator(version))
-  .add('Empty', () =>
+  .add('Default', () =>
     <Editor
-      isExpandedByDefault
+      isExpandedByDefault={true}
       onCancel={CANCEL_ACTION}
       onSave={SAVE_ACTION}
+      onChange={handleChange}
+      mentionProvider={mentionProvider}
+    />
+  )
+  .add('With Media support', () =>
+    <Editor
+      isExpandedByDefault={true}
+      mentionProvider={mentionProvider}
+      mediaProvider={storyMediaProviderFactory()}
+      onCancel={CANCEL_ACTION}
+      onSave={SAVE_ACTION}
+      onChange={handleChange}
     />
   )
   .add('CXHTML input', () => {
@@ -39,10 +111,6 @@ storiesOf(name, module)
       refs: {
         input: HTMLTextAreaElement;
       };
-
-      handleChange = (editor: Editor) => {
-        this.setState({ output: editor.value || '' });
-      }
 
       render() {
         return (
@@ -67,28 +135,14 @@ storiesOf(name, module)
               <button onClick={() => this.setState({ input: JIRA_ISSUES_LIST })}>Insert JIRA Issues List</button>
             </fieldset>
             <Editor
-              isExpandedByDefault
+              isExpandedByDefault={true}
               onCancel={CANCEL_ACTION}
-              onChange={this.handleChange}
+              onChange={handleChange}
               onSave={SAVE_ACTION}
               defaultValue={this.state.input}
               key={this.state.input}
               mentionProvider={mentionProvider}
             />
-            <fieldset style={{ marginTop: 20 }}>
-              <legend>Output</legend>
-              <textarea
-                style={{
-                  boxSizing: 'border-box',
-                  border: '1px solid lightgray',
-                  fontFamily: 'monospace',
-                  padding: 10,
-                  width: '100%',
-                  height: 100
-                }}
-                value={this.state.output}
-              />
-            </fieldset>
           </div>
         );
       }
@@ -96,33 +150,4 @@ storiesOf(name, module)
 
     return <Demo />;
   })
-  .add('CXHTML preview', () => {
-    type Props = {};
-    type State = { cxhtml?: string };
-    class Demo extends PureComponent<Props, State> {
-      state = { cxhtml: '' };
-
-      handleChange = (editor: Editor) => {
-        this.setState({ cxhtml: editor.value });
-      }
-
-      render() {
-        return (
-          <div ref="root">
-            <Editor
-              isExpandedByDefault
-              onCancel={CANCEL_ACTION}
-              onChange={this.handleChange}
-              onSave={SAVE_ACTION}
-            />
-            <fieldset style={{ marginTop: 20 }}>
-              <legend>CXHTML</legend>
-              <pre>{this.state.cxhtml || ''}</pre>
-            </fieldset>
-          </div>
-        );
-      }
-    }
-
-    return <Demo />;
-  });
+;

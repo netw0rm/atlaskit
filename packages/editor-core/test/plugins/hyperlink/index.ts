@@ -253,6 +253,26 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })(href))));
     });
 
+    it('should add http:// for a link without protocol', () => {
+      const { editorView, pluginState } = editor(doc(linkable('{<>}')));
+      const href = 'www.atlassian.com';
+      const hrefWithProtocol = 'http://' + href;
+
+      pluginState.addLink({ href }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: hrefWithProtocol })(href))));
+    });
+
+    it('should add mailto: for a link if it is an email', () => {
+      const { editorView, pluginState } = editor(doc(linkable('{<>}')));
+      const href = 'test@atlassian.com';
+      const hrefWithProtocol = 'mailto:' + href;
+
+      pluginState.addLink({ href }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: hrefWithProtocol })(href))));
+    });
+
     it('does not permit adding a link to an existing link', () => {
       const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}link{>}'))));
 
@@ -400,6 +420,16 @@ describe('hyperlink', () => {
     });
 
 
+    it('should call subscribers when link is clicked', () => {
+      const { editorView, plugin, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+      const spy = sinon.spy();
+
+      pluginState.subscribe(spy);
+      plugin.props.handleClick!(editorView, 2, createEvent('event'));
+
+      expect(spy.callCount).to.equal(2);
+    });
+
     it('should call subscribers when link was focused and then editor is blur', () => {
       const { editorView, plugin, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
       const spy = sinon.spy();
@@ -524,6 +554,18 @@ describe('hyperlink', () => {
     context('when called without any selection in the editor', () => {
       it('should call subscribers', () => {
         const { editorView, pluginState } = editor(doc(paragraph('testing')));
+        const spy = sinon.spy();
+        pluginState.subscribe(spy);
+
+        sendKeyToPm(editorView, 'Mod-k');
+
+        expect(spy.callCount).to.equal(2);
+      });
+    });
+
+    context('when called with selection in the editor', () => {
+      it('should call subscribers', () => {
+        const { editorView, pluginState } = editor(doc(paragraph('{<}testing{>}')));
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 

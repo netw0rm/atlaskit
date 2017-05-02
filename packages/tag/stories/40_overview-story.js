@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import Component from '../src/index';
 import { name } from '../package.json';
 

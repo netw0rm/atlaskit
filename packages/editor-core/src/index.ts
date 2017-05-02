@@ -22,6 +22,7 @@ export {
   Mark,
   Slice,
   Schema,
+  NodeSelection,
   NodeType,
   NodeView,
   MarkType,

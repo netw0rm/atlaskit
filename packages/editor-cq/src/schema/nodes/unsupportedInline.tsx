@@ -37,15 +37,17 @@ export default {
   attrs: { cxhtml: { default: null } },
   toDOM(node): [string, any, string] {
     const attrs = {
+      'data-node-type': 'unsupportedInline',
       'class': nodeClassName,
+      'data-unsupported': 'inline',
       'data-unsupported-inline-cxhtml': node.attrs['cxhtml'],
       'spellcheck': 'false',
     };
-    return ['div', attrs, 'Embedded content'];
+    return ['div', attrs, 'Unsupported content'];
   },
   parseDOM: [
     {
-      tag: 'div',
+      tag: 'div[data-node-type="unsupportedInline"]',
       getAttrs(dom: HTMLElement) {
         return { cxhtml: dom.getAttribute('data-unsupported-inline-cxhtml')! };
       }

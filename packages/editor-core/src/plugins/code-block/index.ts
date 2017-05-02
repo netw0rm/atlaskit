@@ -8,6 +8,7 @@ import {
   NodeViewDesc,
 } from '../../prosemirror';
 import * as commands from '../../commands';
+import keymapPlugin from './keymaps';
 
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
 export type StateChangeHandler = (state: CodeBlockState) => any;
@@ -74,7 +75,7 @@ export class CodeBlockState {
 
   private activeCodeBlockElement(docView: NodeViewDesc): HTMLElement {
     const offset = this.nodeStartPos();
-    const { node } = docView.domFromPos(offset, 1);
+    const { node } = docView.domFromPos(offset);
 
     return node as HTMLElement;
   }
@@ -91,8 +92,6 @@ export class CodeBlockState {
     if (node.type === state.schema.nodes.codeBlock) {
       return node;
     }
-
-    return undefined;
   }
 }
 export const stateKey = new PluginKey('codeBlockPlugin');
@@ -136,7 +135,7 @@ const plugin = new Plugin({
 });
 
 const plugins = (schema: Schema<any, any>) => {
-  return [plugin];
+  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

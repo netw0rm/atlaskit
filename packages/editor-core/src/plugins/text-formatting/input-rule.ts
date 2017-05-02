@@ -29,10 +29,12 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
       tr = tr.delete(to - (charSize - 1), to);
     }
 
-    // delete special characters before the text
-    return tr.delete(from, from + charSize);
+    return tr
+       // delete special characters before the text
+       .delete(from, from + charSize)
+       .removeStoredMark(markType);
   };
-};
+}
 
 function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): InputRuleHandler<any> {
   return (state, match, start, end): Transaction | undefined => {
@@ -67,6 +69,6 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (rules.length !== 0) {
     return inputRules({ rules });
   }
-};
+}
 
 export default inputRulePlugin;

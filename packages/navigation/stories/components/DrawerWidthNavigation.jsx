@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { AtlassianIcon, ArrowleftIcon, IssuesIcon, QuestionCircleIcon } from '@atlaskit/icon';
 import AkButton from '@atlaskit/button';
-import { AkSearchDrawer, AkCreateDrawer, AkCustomDrawer, AkContainerItem, AkGlobalItem } from '../../src/index';
+import { AkSearchDrawer, AkCreateDrawer, AkCustomDrawer, AkNavigationItem, AkGlobalItem } from '../../src/index';
 import BasicNavigation from './BasicNavigation';
 
 export default class DrawerWidthNavigation extends PureComponent {
@@ -123,7 +123,7 @@ export default class DrawerWidthNavigation extends PureComponent {
           </AkGlobalItem>
         }
       >
-        <AkContainerItem
+        <AkNavigationItem
           icon={<IssuesIcon label="Custom" />}
           text="Open custom drawer"
           onClick={() => this.setDrawer('custom')}

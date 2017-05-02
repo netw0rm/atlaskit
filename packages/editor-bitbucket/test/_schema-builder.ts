@@ -17,7 +17,7 @@ export const h6 = nodeFactory(schema.nodes.heading, {level: 6});
 export const hr = schema.nodes.rule.createChecked();
 export const img = (attrs: { src: string, alt?: string, title?: string }) => schema.nodes.image.createChecked(attrs);
 export const li = nodeFactory(schema.nodes.listItem);
-export const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention.createChecked(attrs);
+export const mention = (attrs: { id: string, text?: string }) => schema.nodes.mention.createChecked(attrs);
 export const ol = nodeFactory(schema.nodes.orderedList);
 export const p = nodeFactory(schema.nodes.paragraph);
 export const ul = nodeFactory(schema.nodes.bulletList);

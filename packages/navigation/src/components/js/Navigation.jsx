@@ -16,6 +16,7 @@ import NavigationInner from '../styled/NavigationInner';
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   if (!isCollapsible && !isOpen) {
+    // eslint-disable-next-line no-console
     console.warn(`
         Navigation is being told it cannot collapse and that it is not open.
         When Navigation cannot collapse it must always be open.

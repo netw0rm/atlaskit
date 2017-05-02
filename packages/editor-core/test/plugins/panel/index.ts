@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import panelPlugins from '../../../src/plugins/panel';
-import { doc, panel, p, makeEditor, fixtures, createEvent, sendKeyToPm } from '../../../src/test-helper';
+import { doc, panel, panelNote, p, makeEditor, fixtures, createEvent, sendKeyToPm } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
@@ -91,11 +91,24 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(pluginState.activePanelType).to.equal('note');
     });
 
+    it('should be able to change panel type using function changeType for panel with multiple blocks', () => {
+      const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'), p('text'))));
+      pluginState.changePanelType(editorView, { panelType: 'note' });
+      expect(editorView.state.doc).to.deep.equal(doc(panelNote(p('text'), p('text'))));
+    });
+
     it('should be able to remove panel type using function removePanelType', () => {
       const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'))));
       expect(pluginState.activePanelType).to.equal('info');
       pluginState.removePanelType(editorView);
       expect(pluginState.element).to.be.undefined;
+    });
+
+    it('should be able to remove panel type for panel of multiple blocks using function removePanelType', () => {
+      const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'), p('text'))));
+      expect(pluginState.activePanelType).to.equal('info');
+      pluginState.removePanelType(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('te{<>}xt'), p('text')));
     });
 
     it('should call handlers for change in panel type', () => {

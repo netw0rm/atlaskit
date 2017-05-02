@@ -26,8 +26,8 @@ export default class Examples extends PureComponent {
                 compliant, reusable, well-maintained and accessible.
               </p>
               <ul>
-                <li>The <a href="//go.atlassian.com/ak-starter/" target="_blank" rel="noopener noreferrer">atlaskit-starter</a> project will help you get a React app setup and running with some demo AtlasKit components. </li>
-                <li>Use this <a href="//go.atlassian.com/ak-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample as a sandbox to quickly try out our components. </li>
+                <li>The <a href="http://go.atlassian.com/ak-starter/" target="_blank" rel="noopener noreferrer">atlaskit-starter</a> project will help you get a React app setup and running with some demo AtlasKit components. </li>
+                <li>Use this <a href="http://go.atlassian.com/ak-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample as a sandbox to quickly try out our components. </li>
                 <li>The <a href="./components">components</a> section of this site has docs, code samples and links to React storybooks.</li>
               </ul>
 
@@ -35,8 +35,8 @@ export default class Examples extends PureComponent {
               <p>The reduced UI pack is a small set of
               ADG styles for use in any web project.</p>
               <ul>
-                <li>Use this <a href="//go.atlassian.com/reduced-ui-pack-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample as a sandbox to quickly try out our styles. </li>
-                <li>The <a href="//go.atlassian.com/reduced-ui-pack" target="_blank" rel="noopener noreferrer">reduced UI pack</a> storybook is the comprehensive list of the styles available.</li>
+                <li>Use this <a href="http://go.atlassian.com/reduced-ui-pack-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample as a sandbox to quickly try out our styles. </li>
+                <li>The <a href="http://go.atlassian.com/reduced-ui-pack" target="_blank" rel="noopener noreferrer">reduced UI pack</a> storybook is the comprehensive list of the styles available.</li>
               </ul>
               <p>
                 &nbsp;

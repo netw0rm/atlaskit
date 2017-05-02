@@ -63,7 +63,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         users
       });
     });
-  };
+  }
 
   fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
     const { ari, emojiId } = reaction;

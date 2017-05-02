@@ -80,7 +80,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     if (toolbarVisible || languageSelectFocused) {
       return (
-        <FloatingToolbar target={element} align="left" autoPosition className={styles.floatingToolbar}>
+        <FloatingToolbar target={element} align="left" autoPosition={true} className={styles.floatingToolbar}>
           <div
             tabIndex={0}
             className={styles.container}
@@ -89,7 +89,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
           >
             <Select
               id="test"
-              hasAutocomplete
+              hasAutocomplete={true}
               items={this.items}
               onSelected={this.handleLanguageChange}
               defaultSelected={{ content: language, value: language }}

@@ -4,6 +4,7 @@ export interface Props {
   compact?: boolean;
   type?: string;
   disabled?: boolean;
+  isReadOnly?: boolean;
   required?: boolean;
   label?: string;
   name?: string;

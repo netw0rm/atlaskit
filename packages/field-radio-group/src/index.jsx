@@ -14,11 +14,13 @@ export default class FieldRadioGroup extends PureComponent {
     isRequired: PropTypes.bool,
     items: itemsPropTypeSmart,
     label: PropTypes.string,
+    onRadioChange: PropTypes.func,
   }
 
   static defaultProps = {
     isRequired: false,
     items: itemsDefault,
+    onRadioChange: () => {},
   }
 
   constructor() {
@@ -51,7 +53,10 @@ export default class FieldRadioGroup extends PureComponent {
   }
 
   changeHandler = (event) => {
-    this.setState({ selectedValue: event.target.value });
+    this.props.onRadioChange(event);
+    if (!event.defaultPrevented) {
+      this.setState({ selectedValue: event.target.value });
+    }
   }
 
   render() {

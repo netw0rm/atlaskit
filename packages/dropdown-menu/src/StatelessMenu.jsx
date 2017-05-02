@@ -45,7 +45,12 @@ export default class StatelessDropdownMenu extends PureComponent {
     triggerButtonProps: PropTypes.shape(Button.propTypes),
     /** Flip its position to the opposite side of its target if it does not fit */
     shouldFlip: PropTypes.bool,
+    /** Option to fit dropdown menu width to its parent width */
     shouldFitContainer: PropTypes.bool,
+    /** Option to display multiline items when content is too long.
+      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
+      */
+    shouldAllowMultilineItems: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -60,6 +65,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     triggerButtonProps: {},
     shouldFlip: true,
     shouldFitContainer: false,
+    shouldAllowMultilineItems: false,
   }
 
   state = {
@@ -249,6 +255,7 @@ export default class StatelessDropdownMenu extends PureComponent {
         shouldFlip={props.shouldFlip}
         trigger={this.renderTrigger()}
         shouldFitContainer={this.props.shouldFitContainer}
+        shouldAllowMultilineItems={this.props.shouldAllowMultilineItems}
       >
         <div
           id={state.id}

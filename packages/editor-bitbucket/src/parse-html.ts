@@ -111,4 +111,4 @@ export function transformHtml(html: string): HTMLElement {
  */
 export function parseHtml(html: string): Node {
   return DOMParser.fromSchema(schema).parse(transformHtml(html));
-};
+}

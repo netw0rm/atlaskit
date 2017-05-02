@@ -80,4 +80,4 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
   private handleMouseOut = () => {
     this.setState({ isTooltipVisible: false });
   }
-};
+}

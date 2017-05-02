@@ -25,7 +25,7 @@ export class Transform {
   replace(from, to?: number, slice?: Slice): this;
   replaceWith(from, to: number, content: Fragment | Node | Array<Node>): this;
   insert(pos: number, content: Fragment | Node | Array<Node>): this;
-  lift(range: NodeRange, target: number)
+  lift(range: NodeRange, target: number);
   wrap(range: NodeRange, wrappers: [{type: NodeType, attrs?: Object}]): this;
   setBlockType(from: number, to: number, type: NodeType, attrs?: Object): this;
   setNodeType(pos: number, type?: NodeType, attrs?: Object, marks?: Array<Mark>): this;

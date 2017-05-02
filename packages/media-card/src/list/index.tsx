@@ -292,6 +292,8 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   loadNextPage = (): void => {
-    this.state.loadNextPage && this.state.loadNextPage();
+    if (this.state.loadNextPage) {
+      this.state.loadNextPage();
+    }
   }
 }

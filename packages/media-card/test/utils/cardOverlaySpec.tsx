@@ -6,7 +6,7 @@ import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
 import { TitleWrapper, Metadata, ErrorMessage } from '../../src/utils/cardImageView/cardOverlay/styled';
 import { Ellipsify } from '../../src/utils/';
 
-describe('CardImageView', () => {
+describe('CardOverlay', () => {
   it('should not render the title or subtitle when the card has errored', function() {
     const errorMessage = 'Loading failed';
     const title = 'card is lyfe';

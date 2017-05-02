@@ -92,9 +92,15 @@ export default function encode(node: PMNode) {
     elem.setAttribute('media-id', node.attrs.id);
     elem.setAttribute('media-type', node.attrs.type);
     elem.setAttribute('media-collection', node.attrs.collection);
-    node.fileName && elem.setAttribute('file-name', node.fileName);
-    node.fileSize && elem.setAttribute('file-size', `${node.fileSize}`);
-    node.fileMimeType && elem.setAttribute('file-mime-type', node.fileMimeType);
+    if (node.fileName) {
+      elem.setAttribute('file-name', node.fileName);
+    }
+    if (node.fileSize) {
+      elem.setAttribute('file-size', `${node.fileSize}`);
+    }
+    if (node.fileMimeType) {
+      elem.setAttribute('file-mime-type', node.fileMimeType);
+    }
     return elem;
   }
 
@@ -263,9 +269,7 @@ export default function encode(node: PMNode) {
       return encodeUnsupported(node);
     }
 
-    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
-    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'jira');
-    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    const elem = createMacroElement('jira');
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
     const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');

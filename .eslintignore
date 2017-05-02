@@ -1,7 +1,7 @@
 **/node_modules/*
 **/dist/*
 /stories
-/build/tslint-rules
+/build/tslint/rules
 packages/icon/glyph
 packages/icon/lib
 packages/icon/tmp

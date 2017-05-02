@@ -177,6 +177,6 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     const {status} = this.props;
     return status === 'error';
   }
-};
+}
 
 export default LinkCard;

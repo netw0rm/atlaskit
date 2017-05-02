@@ -81,7 +81,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       : 'primary';
 
     return (
-      <div className={styles.container} data-editor-chrome tabIndex={-1} ref={this.handleEditorContainerRef}>
+      <div className={styles.container} data-editor-chrome={true} tabIndex={-1} ref={this.handleEditorContainerRef}>
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
@@ -182,4 +182,4 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       onSave();
     }
   }
-};
+}

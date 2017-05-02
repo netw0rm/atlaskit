@@ -14,6 +14,7 @@ export interface Props {
   boundariesElement?: string;
   className?: string;
   allowAllEmojis?: boolean;
+  text?: string;
 }
 
 export interface State {
@@ -59,7 +60,7 @@ export default class ResourcedReactionPicker extends PureComponent<Props, State>
       return null;
     }
 
-    const { containerAri, ari, boundariesElement, emojiProvider, miniMode, className, allowAllEmojis } = this.props;
+    const { containerAri, ari, boundariesElement, emojiProvider, miniMode, className, allowAllEmojis, text } = this.props;
 
     return (
       <ReactionPicker
@@ -69,6 +70,7 @@ export default class ResourcedReactionPicker extends PureComponent<Props, State>
         boundariesElement={boundariesElement}
         className={className}
         allowAllEmojis={allowAllEmojis}
+        text={text}
       />
     );
   }

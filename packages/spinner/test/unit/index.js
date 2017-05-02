@@ -7,6 +7,9 @@ import Spinner from '../../src';
 import Container from '../../src/styled/Container';
 import Dash from '../../src/styled/Dash';
 
+// TODO: It would be good if we could test the delay prop here, however, tests that rely on timing
+// are notoriously flakey.
+
 // we use this to know when the spinner is visible (because it has a time out
 // before showing now)
 const spinnerIsVisible = elem => (elem.state('spinnerHiddenForDelay') === false);

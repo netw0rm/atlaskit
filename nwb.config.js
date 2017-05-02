@@ -14,9 +14,6 @@ const runInRealBrowsers = [
   // TODO These should actually be run through BrowserStack in CI.
   /editor-/,
 
-  // TODO These run super slow when using mocha-cli.
-  /multi-select/,
-
   // TODO Visibility test fails in JSDOM.
   /util-common-test/,
 ];

@@ -43,10 +43,16 @@ mentions
 
 - Re-enable tests
 - Fix issues causing JSON data to be undefined in tests
+
+tooltip
+
+- Un-skip tests
+- Fix failures when run in Mocha
 */
 const exclude = [
   'css-reset',
   'icon',
+  'reduced-ui-pack',
   'util-cz-',
   'util-dmd-',
 
@@ -63,7 +69,7 @@ const exclude = [
   'media-card',
   'media-editor',
   'media-filmstrip',
-  'mentions',
+  'mention',
   'multi-select',
   'profilecard',
 ];
@@ -112,7 +118,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
       return "echo 'Error: no test specified'";
     }
     return isMochaPackage
-      ? `mocha${watch ? ' --watch' : ''} --colors --require ../../test-setup './test/unit/**/*.js' --timeout 5000`
+      ? `mocha${watch ? ' --watch' : ''} --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000`
       : `${binPath}/nwb test${watch ? ' --server' : ''}`;
   }
 

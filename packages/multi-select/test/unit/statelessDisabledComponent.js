@@ -6,9 +6,7 @@ import Trigger from '../../src/internal/Trigger';
 
 import { name } from '../../package.json';
 
-describe(`${name} - stateless`, function test() {
-  this.timeout(5000);
-
+describe(`${name} - stateless`, () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};

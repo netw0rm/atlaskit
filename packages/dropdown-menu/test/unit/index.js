@@ -26,9 +26,7 @@ const itemsList = [
   },
 ];
 
-describe(name, function test() {
-  this.timeout(5000);
-
+describe(name, () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};

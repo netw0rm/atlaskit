@@ -6,9 +6,7 @@ import styles from '../../src/styles.less';
 
 import { Group } from '../../src';
 
-describe(`${name} - group`, function test() {
-  this.timeout(5000);
-
+describe(`${name} - group`, () => {
   it('should be possible to create a component', () => {
     expect(shallow(<Group />)).not.to.equal(undefined);
   });

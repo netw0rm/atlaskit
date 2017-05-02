@@ -10,8 +10,8 @@
     "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
-    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js'",
-    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'"
+    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000"
   },
   "types": "src/index.d.ts",
   "files": [

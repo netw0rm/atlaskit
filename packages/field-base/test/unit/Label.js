@@ -11,9 +11,7 @@ const defaultProps = {
   isLabelHidden: true,
 };
 
-describe('ak-field-base', function test() {
-  this.timeout(5000);
-
+describe('ak-field-base', () => {
   describe('Label', () => {
     describe('by default', () =>
       it('should render a label element', () =>

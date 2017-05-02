@@ -7,13 +7,15 @@
   "description": "CSS classes which provide styling for a reduced number of AtlasKit components.",
   "main": "dist/bundle.css",
   "scripts": {
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "lessc src/index.less dist/bundle.css && node ./bin/buildSprite.js",
     "pretest": "npm run prepublish",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
-    "dist"
+    "umd"
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0"

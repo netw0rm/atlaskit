@@ -96,10 +96,13 @@ export default class Spinner extends PureComponent {
       strokeDashoffset: isCompleting ? circumference : 0.8 * circumference,
       strokeDasharray: circumference,
     };
+    // "active" means that the spinner is actually spinning (this happens after the delay of setting
+    // "isCompleting")
+    const spinnerIsActive = !isCompleting && !this.state.spinnerHiddenForDelay;
 
     return (
       <Container
-        active={!isCompleting}
+        active={spinnerIsActive}
         hidden={this.state.spinnerHiddenForDelay}
         onTransitionEnd={this.handleTransitionEnd}
         style={dimensions}
@@ -112,7 +115,7 @@ export default class Spinner extends PureComponent {
             xmlns="http://www.w3.org/2000/svg"
           >
             <Dash
-              active={!isCompleting}
+              active={spinnerIsActive}
               cx={size / 2}
               cy={size / 2}
               fill="none"

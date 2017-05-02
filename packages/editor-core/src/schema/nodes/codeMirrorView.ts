@@ -19,7 +19,7 @@ import { findMode } from '../../ui/LanguagePicker/languageList';
 
 const DETECT_URL = 'http://localhost:3000/detect';
 
-const loadedModes = {};
+const loadedModes = { javacript: true };
 
 export default class CodeMirrorView {
   dom: HTMLElement;
@@ -45,7 +45,7 @@ export default class CodeMirrorView {
 
     this.cm = new CodeMirror(null, {
       value: this.value,
-      mode: 'javascript',
+      mode: 'null',
       lineNumbers: true,
       extraKeys: CodeMirror.normalizeKeyMap({
         Up: () => this.maybeEscape('line', -1),

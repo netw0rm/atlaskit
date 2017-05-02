@@ -6,12 +6,24 @@ import Resizer from './Resizer';
 import Spacer from './Spacer';
 import {
   containerClosedWidth,
+  containerOpenWidth,
   globalOpenWidth,
-  navigationOpenWidth,
   resizeClosedBreakpoint,
 } from '../../shared-variables';
 import NavigationOuter from '../styled/NavigationOuter';
 import NavigationInner from '../styled/NavigationInner';
+
+const standardOpenWidth = containerOpenWidth + globalOpenWidth;
+
+const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
+  if (!isCollapsible && !isOpen) {
+    console.warn(`
+        Navigation is being told it cannot collapse and that it is not open.
+        When Navigation cannot collapse it must always be open.
+        Ignoring isOpen={true}
+      `);
+  }
+};
 
 export default class Navigation extends PureComponent {
   static propTypes = {
@@ -51,46 +63,47 @@ export default class Navigation extends PureComponent {
     onResize: () => { },
     onResizeStart: () => { },
     onSearchDrawerOpen: () => { },
-    width: navigationOpenWidth,
+    width: globalOpenWidth + containerOpenWidth,
   };
 
-  state = {
-    resizeDelta: 0,
-    isTogglingIsOpen: false,
-  };
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      resizeDelta: 0,
+      isResizing: false,
+      isTogglingIsOpen: false,
+    };
+
+    warnIfCollapsedPropsAreInvalid(props);
+  }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       isTogglingIsOpen: this.props.isOpen !== nextProps.isOpen,
     });
+
+    warnIfCollapsedPropsAreInvalid(nextProps);
   }
 
   onResize = (resizeDelta) => {
     this.setState({
+      isResizing: true,
       resizeDelta,
     });
   }
 
-  getRenderedWidth = () => {
-    const baselineWidth = this.props.isOpen ? this.props.width : containerClosedWidth;
-    const minWidth = this.props.isCollapsible ? containerClosedWidth : navigationOpenWidth;
-    return Math.max(
-      minWidth,
-      baselineWidth + this.state.resizeDelta
-    );
-  }
-
-  callOnResizeProp = () => {
+  onResizeEnd = () => {
     const width = this.getRenderedWidth();
 
     const snappedWidth = (() => {
-      if (width > navigationOpenWidth) {
+      if (width > standardOpenWidth) {
         return width;
       }
       if (width < resizeClosedBreakpoint) {
         return containerClosedWidth;
       }
-      return navigationOpenWidth;
+      return standardOpenWidth;
     })();
 
     const resizeState = {
@@ -100,9 +113,19 @@ export default class Navigation extends PureComponent {
 
     this.setState({
       resizeDelta: 0,
+      isResizing: false,
     }, function callOnResizeAfterSetState() {
       this.props.onResize(resizeState);
     });
+  }
+
+  getRenderedWidth = () => {
+    const baselineWidth = this.props.isOpen ? this.props.width : containerClosedWidth;
+    const minWidth = this.props.isCollapsible ? containerClosedWidth : standardOpenWidth;
+    return Math.max(
+      minWidth,
+      baselineWidth + this.state.resizeDelta
+    );
   }
 
   triggerResizeButtonHandler = (resizeState) => {
@@ -121,6 +144,7 @@ export default class Navigation extends PureComponent {
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
+      isCollapsible,
       isResizeable,
       isOpen,
       linkComponent,
@@ -131,10 +155,13 @@ export default class Navigation extends PureComponent {
 
     const {
       isTogglingIsOpen,
-      resizeDelta,
-     } = this.state;
+      isResizing,
+    } = this.state;
 
-    const isResizing = resizeDelta !== 0;
+    // if the Navigation then:
+    // 1. isOpen is ignored
+    // 2. You cannot resize to a size smaller than the default open size
+
     const renderedWidth = this.getRenderedWidth();
 
     const isGlobalNavPartiallyCollapsed = isResizing &&
@@ -144,7 +171,8 @@ export default class Navigation extends PureComponent {
     const containerOffsetX = isGlobalNavPartiallyCollapsed ?
       renderedWidth - (globalOpenWidth + containerClosedWidth) : 0;
 
-    const showGlobalNavigation = isOpen || isResizing;
+    // always show global navigation if it is not collapsible
+    const showGlobalNavigation = !isCollapsible || isOpen || isResizing;
 
     const containerWidth = showGlobalNavigation ?
       Math.max(renderedWidth - globalOpenWidth, containerClosedWidth) :
@@ -175,7 +203,7 @@ export default class Navigation extends PureComponent {
         onResize={this.onResize}
         onResizeButton={this.triggerResizeButtonHandler}
         onResizeStart={onResizeStart}
-        onResizeEnd={this.callOnResizeProp}
+        onResizeEnd={this.onResizeEnd}
       />
     ) : null;
 

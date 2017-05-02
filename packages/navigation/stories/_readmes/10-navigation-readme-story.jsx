@@ -15,6 +15,7 @@ const navigationPropDescriptions = {
   globalSearchIcon: 'The icon to use in the global navigation for the global search button',
   globalSecondaryActions: 'A list of nodes to be placed in the secondary actions slot in the global sidebar. This should not exceed four nodes.',
   isOpen: 'Whether the navigation is currently open',
+  isCollapsible: 'TODO',
   isResizeable: 'Whether the navigation is resizeable by the user. The navigation\'s open state can still be set by the application',
   isSearchDrawerOpen: 'Whether the search drawer is currently open',
   linkComponent: 'A component that will be used to render links. See the linkComponent docs for more details',

@@ -55,10 +55,14 @@ const tooltip = style({
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   $nest: {
-    '> ul': {
+    'ul': {
       listStyle: 'none',
       margin: 0,
-      padding: 0
+      padding: 0,
+    },
+    'li': {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
     },
     '&.animateDown': {
       transform: 'translateY(10px)',

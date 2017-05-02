@@ -46,7 +46,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         },
         {
           id: 'julien',
-          displayName: 'Julien Hoarau'
+          displayName: 'Julien Michel Hoarau'
         },
         {
           id: 'craig',

@@ -14,7 +14,13 @@ export const content = style({
   $nest: {
     '& .CodeMirror': {
       height: 'auto',
-      border: '1px solid #eee'
+      border: '1px solid #eee',
+
+      $nest: {
+        '& .CodeMirror-dialog': {
+          marginLeft: '40px'
+        }
+      }
     },
     '& .ProseMirror': {
       outline: 'none',

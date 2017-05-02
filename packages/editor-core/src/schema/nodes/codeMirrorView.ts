@@ -1,5 +1,7 @@
 import CodeMirror from '../../codemirror';
 import '!style!css!less!codemirror/lib/codemirror.css';
+import '!style!css!less!codemirror/addon/fold/foldgutter.css';
+
 import 'codemirror/mode/javascript/javascript';
 
 import {
@@ -47,6 +49,10 @@ export default class CodeMirrorView {
       value: this.value,
       mode: 'null',
       lineNumbers: true,
+      lineWrapping: true,
+      tabSize: 2,
+      foldGutter: true,
+      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
       extraKeys: CodeMirror.normalizeKeyMap({
         Up: () => this.maybeEscape('line', -1),
         Left: () => this.maybeEscape('char', -1),
@@ -56,6 +62,7 @@ export default class CodeMirrorView {
         [`${mod}-Z`]: () => undo(this.view.state, this.view.dispatch),
         [`Shift-${mod}-Z`]: () => redo(this.view.state, this.view.dispatch),
         [`${mod}-Y`]: () => redo(this.view.state, this.view.dispatch),
+        'Ctrl-Q': (cm) => cm.foldCode(cm.getCursor()),
         'Ctrl-Enter': () => {
           if (exitCode(view.state, view.dispatch)) {
             view.focus();

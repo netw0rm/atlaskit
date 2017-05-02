@@ -2,11 +2,9 @@ import React, { PureComponent, PropTypes } from 'react';
 import ResizerInner from '../styled/ResizerInner';
 import ResizerButton from './ResizerButton';
 import {
-  containerOpenWidth,
   globalOpenWidth,
+  standardOpenWidth,
 } from '../../shared-variables';
-
-const standardOpenWidth = containerOpenWidth + globalOpenWidth;
 
 export default class Resizer extends PureComponent {
   static propTypes = {

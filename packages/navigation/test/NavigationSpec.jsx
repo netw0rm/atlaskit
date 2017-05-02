@@ -5,6 +5,7 @@ import Drawer from '../src/components/js/Drawer';
 import {
   containerClosedWidth,
   globalOpenWidth,
+  standardOpenWidth,
   containerOpenWidth,
   resizeClosedBreakpoint,
 } from '../src/shared-variables';
@@ -16,8 +17,6 @@ class Child extends PureComponent {
     return <div>Hi there</div>;
   }
 }
-
-const standardOpenWidth = globalOpenWidth + containerOpenWidth;
 
 describe('<Navigation />', () => {
   describe('is open', () => {
@@ -135,6 +134,12 @@ describe('<Navigation />', () => {
     });
 
     describe('snapping', () => {
+      const resize = (wrapper, resizeTo) =>
+        wrapper.find('Resizer')
+            .simulate('resizeStart')
+            .simulate('resize', resizeTo)
+            .simulate('resizeEnd');
+
       describe('starting open', () => {
         it('should snap closed if moving beyond the resize breakpoint', () => {
           const stub = sinon.stub();
@@ -143,9 +148,7 @@ describe('<Navigation />', () => {
           // moving to the left beyond the resize breakpoint
           const resizeTo = (-1 * diff) - 1;
 
-          wrapper.find('Resizer')
-            .simulate('resize', resizeTo)
-            .simulate('resizeEnd');
+          resize(wrapper, resizeTo);
 
           expect(stub.calledWith({
             width: globalOpenWidth,
@@ -160,9 +163,7 @@ describe('<Navigation />', () => {
           // moving to the left but not enough
           const resizeTo = (-1 * diff) + 1;
 
-          wrapper.find('Resizer')
-            .simulate('resize', resizeTo)
-            .simulate('resizeEnd');
+          resize(wrapper, resizeTo);
 
           expect(stub.calledWith({
             width: standardOpenWidth,
@@ -178,9 +179,7 @@ describe('<Navigation />', () => {
           // moving to the right but not beyond the resize breakpoint
           const resizeTo = globalOpenWidth + 1;
 
-          wrapper.find('Resizer')
-            .simulate('resize', resizeTo)
-            .simulate('resizeEnd');
+          resize(wrapper, resizeTo);
 
           expect(stub.calledWith({
             width: globalOpenWidth,
@@ -195,9 +194,7 @@ describe('<Navigation />', () => {
           // moving to the right beyond the resize breakpoint
           const resizeTo = diff + 1;
 
-          wrapper.find('Resizer')
-            .simulate('resize', resizeTo)
-            .simulate('resizeEnd');
+          resize(wrapper, resizeTo);
 
           expect(stub.calledWith({
             width: standardOpenWidth,

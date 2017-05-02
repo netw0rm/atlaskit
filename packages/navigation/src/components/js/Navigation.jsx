@@ -9,11 +9,10 @@ import {
   containerOpenWidth,
   globalOpenWidth,
   resizeClosedBreakpoint,
+  standardOpenWidth,
 } from '../../shared-variables';
 import NavigationOuter from '../styled/NavigationOuter';
 import NavigationInner from '../styled/NavigationInner';
-
-const standardOpenWidth = containerOpenWidth + globalOpenWidth;
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   if (!isCollapsible && !isOpen) {

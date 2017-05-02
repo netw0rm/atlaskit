@@ -16,7 +16,7 @@ import { globalPrimaryActions } from '../../shared-variables';
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
     appearance: PropTypes.string,
-    areGlobalActionsVisible: PropTypes.bool,
+    areGlobalPrimaryActionsVisible: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
     isCollapsed: PropTypes.bool,
@@ -31,7 +31,7 @@ export default class ContainerNavigation extends PureComponent {
 
   static defaultProps = {
     appearance: 'container',
-    areGlobalActionsVisible: false,
+    areGlobalPrimaryActionsVisible: false,
     isCollapsed: false,
     linkComponent: DefaultLinkComponent,
   }
@@ -41,7 +41,7 @@ export default class ContainerNavigation extends PureComponent {
 
     this.state = {
       isScrolling: false,
-      shouldAnimateGlobalPrimaryActions: false,
+      isInitiallyRendered: false,
     };
 
     // Memoizing this function so that it will only be called
@@ -52,9 +52,9 @@ export default class ContainerNavigation extends PureComponent {
 
   componentWillReceiveProps() {
     // start animating global primary actions after initial mount
-    if (!this.state.shouldAnimateGlobalPrimaryActions) {
+    if (!this.state.isInitiallyRendered) {
       this.setState({
-        shouldAnimateGlobalPrimaryActions: true,
+        isInitiallyRendered: true,
       });
     }
   }
@@ -92,7 +92,7 @@ export default class ContainerNavigation extends PureComponent {
   render() {
     const {
       appearance,
-      areGlobalActionsVisible,
+      areGlobalPrimaryActionsVisible,
       children,
       globalCreateIcon,
       globalPrimaryIcon,
@@ -105,7 +105,19 @@ export default class ContainerNavigation extends PureComponent {
       isCollapsed,
     } = this.props;
 
-    const { shouldAnimateGlobalPrimaryActions } = this.state;
+    const { isInitiallyRendered } = this.state;
+
+    // Only animating the revealing of GlobalPrimaryActions
+    // after the first render. Before that it is rendered
+    // without animation.
+
+    const header = headerComponent ? (
+      <ContainerHeader
+        appearance={appearance}
+        isContentScrolled={this.state.isScrolling}
+      >
+        {headerComponent({ isCollapsed })}
+      </ContainerHeader>) : <ContainerNoHeader />;
 
     return (
       <ThemeProvider
@@ -121,8 +133,8 @@ export default class ContainerNavigation extends PureComponent {
             innerRef={this.onRefChange}
           >
             <Reveal
-              shouldAnimate={shouldAnimateGlobalPrimaryActions}
-              isOpen={areGlobalActionsVisible}
+              shouldAnimate={isInitiallyRendered}
+              isOpen={areGlobalPrimaryActionsVisible}
               openHeight={globalPrimaryActions.height.outer}
             >
               <GlobalPrimaryActions
@@ -136,15 +148,7 @@ export default class ContainerNavigation extends PureComponent {
                 searchIcon={globalSearchIcon}
               />
             </Reveal>
-            {
-              headerComponent ? (
-                <ContainerHeader
-                  appearance={appearance}
-                  isContentScrolled={this.state.isScrolling}
-                >
-                  {headerComponent({ isCollapsed })}
-                </ContainerHeader>) : <ContainerNoHeader />
-            }
+            {header}
             <ContainerNavigationChildren>
               {children}
             </ContainerNavigationChildren>

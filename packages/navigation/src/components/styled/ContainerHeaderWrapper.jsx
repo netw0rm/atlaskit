@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { animationTime, colors, layout, resizeAnimationTime } from '../../shared-variables';
+import { colors, layout, resizeAnimationTime } from '../../shared-variables';
 
 const keylineHeight = 2;
 const paddingOpen = (() => {

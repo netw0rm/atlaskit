@@ -317,7 +317,7 @@ describe('<Navigation />', () => {
     });
 
     it('should tell the container not to render the global primary items', () => {
-      expect(wrapper.find('ContainerNavigation').props().areGlobalActionsVisible)
+      expect(wrapper.find('ContainerNavigation').props().areGlobalPrimaryActionsVisible)
         .to.equal(false);
     });
 

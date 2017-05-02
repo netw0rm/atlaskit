@@ -13,15 +13,33 @@ describe('<ContainerNavigation />', () => {
     it('renders [data-__ak-navigation-container-closed="true"] if it is collapsed', () => {
       expect(mount(<ContainerNavigation isCollapsed />).getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(true);
     });
+
     it('renders [data-__ak-navigation-container-closed="false"] if it is not collapsed', () => {
       expect(mount(<ContainerNavigation isCollapsed={false} />).getDOMNode().matches('[data-__ak-navigation-container-closed="false"]')).to.equal(true);
     });
+
     it('collapses the container header when closed', () => {
       const headerComponent = sinon.spy();
       shallow(<ContainerNavigation isCollapsed headerComponent={headerComponent} />);
       expect(headerComponent.calledWith({ isCollapsed: true })).to.equal(true);
     });
   });
+
+  describe('revealing the global primary actions', () => {
+    it('should not animate the global primary actions on initial render', () => {
+      const wrapper = shallow(<ContainerNavigation />);
+      expect(wrapper.find('Reveal').props().shouldAnimate).to.equal(false);
+    });
+
+    it('should animate the global primary actions after any change', () => {
+      const wrapper = mount(<ContainerNavigation />);
+
+      wrapper.update();
+
+      expect(wrapper.find('Reveal').props().shouldAnimate).to.equal(true);
+    });
+  });
+
   describe('is scrolled', () => {
     const raf = createStub();
     const originalRaf = window.requestAnimationFrame;

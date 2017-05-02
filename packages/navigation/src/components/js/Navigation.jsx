@@ -242,7 +242,7 @@ export default class Navigation extends PureComponent {
             >
               <ContainerNavigation
                 appearance={containerAppearance}
-                areGlobalActionsVisible={!showGlobalNavigation}
+                areGlobalPrimaryActionsVisible={!showGlobalNavigation}
                 globalCreateIcon={globalCreateIcon}
                 globalPrimaryIcon={globalPrimaryIcon}
                 globalPrimaryItemHref={globalPrimaryItemHref}

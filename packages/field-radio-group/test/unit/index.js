@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
+import sinon from 'sinon';
 
 import FieldRadioGroup, { AkFieldRadioGroup, AkRadio } from '../../src';
 import { name } from '../../package.json';
 
 describe(name, () => {
-  describe('FieldRadioGroup', () => {
+  describe('FieldRadioGroup (smart)', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two' },
@@ -85,12 +86,29 @@ describe(name, () => {
         });
       });
 
-      describe('behaviour', () => {
-        it('updates the value state when a radio is changed', () => {
+      describe('onRadio changed prop', () => {
+        it('should be called when a value is selected', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(<FieldRadioGroup items={sampleItems} onRadioChange={spy} />);
+          wrapper.find(AkRadio).first().find('input').simulate('change');
+          expect(spy.callCount).to.equal(1);
+        });
+
+        it('updates the selectedValue state when a radio is changed', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
           expect(wrapper.state('selectedValue')).to.equal(null);
           wrapper.find(AkRadio).first().find('input').simulate('change');
           expect(wrapper.state('selectedValue')).to.equal(sampleItems[0].value);
+        });
+
+        it('should not update state if preventDefault is called', () => {
+          const wrapper = mount(<FieldRadioGroup
+            items={sampleItems}
+            onRadioChange={e => e.preventDefault()}
+          />);
+          expect(wrapper.state('selectedValue')).to.equal(null);
+          wrapper.find(AkRadio).first().find('input').simulate('change');
+          expect(wrapper.state('selectedValue')).to.equal(null);
         });
       });
     });

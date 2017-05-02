@@ -118,7 +118,7 @@ export default class Nav extends Component {
                 }}
                 text="Components"
               />
-              <Link to="//go.atlassian.com/reduced-ui-pack" target="_new">
+              <Link to="http://go.atlassian.com/reduced-ui-pack" target="_new">
                 <NavItem
                   icon={<PageIcon label="More icon" />}
                   text="Reduced UI pack"

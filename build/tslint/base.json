@@ -2,7 +2,7 @@
   "rulesDirectory": ["./rules"],
   "extends": ["tslint:recommended", "tslint-react"],
   "rules": {
-    "align": [false],
+    "align": [true],
     "array-type": [false],
     "arrow-parens": false,
     "ban-types": ["Object", "Boolean", "Number", "String", "Symbol"],
@@ -61,7 +61,7 @@
     "typedef": [true],
     "unified-signatures": [false],
     "variable-name": true,
-    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-type", "check-typecast"],
+    "whitespace": [true],
 
     // Custom Rules
     "no-only-tests": true // Prohibits commiting test with "only", e.g.: describe.only, it.only

@@ -118,4 +118,4 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       }
     }
   }
-};
+}

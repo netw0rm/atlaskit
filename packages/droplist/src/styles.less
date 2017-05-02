@@ -169,11 +169,18 @@
   white-space: nowrap;
 }
 
+.allowMultilineItems {
+  .itemContent {
+    white-space: normal;
+  }
+}
+
 .itemContentWrapper {
   display: flex;
   flex-direction: column;
   margin: 0 @grid;
   padding: @grid 0;
+  overflow: hidden;
 
   &:first-child {
     margin: 0;

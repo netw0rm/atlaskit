@@ -9,7 +9,7 @@ export interface RequesterOptions {
   clientId: string;
   collectionName?: string;
   config: MediaApiConfig;
-};
+}
 
 export interface RequestOptions {
   method?: string;
@@ -18,7 +18,7 @@ export interface RequestOptions {
   headers?: Object;
   data?: Object;
   responseType?: string;
-};
+}
 
 export default (requesterOptions: RequesterOptions) => (requestOptions: RequestOptions) : any => {
   return requesterOptions.config.tokenProvider(requesterOptions.collectionName).then(token => {

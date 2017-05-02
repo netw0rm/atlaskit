@@ -41,7 +41,7 @@ export class MediaFileAttributesFactory {
 
   static fromFileItem(item: FileItem, serviceHost: string): MediaFileAttributes {
     return MediaFileAttributesFactory.create(item.details.id, item.details, serviceHost);
-  };
+  }
 
   static fromMediaCollectionFileItem(item: MediaCollectionFileItem, serviceHost: string): MediaFileAttributes {
     return MediaFileAttributesFactory.create(item.details.occurrenceKey, item.details, serviceHost);

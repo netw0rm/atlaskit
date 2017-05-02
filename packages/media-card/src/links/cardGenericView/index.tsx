@@ -195,7 +195,9 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   private onClick = (event: MouseEvent<HTMLDivElement>) => {
-    this.props.onClick && this.props.onClick(event.nativeEvent);
+    if (this.props.onClick) {
+      this.props.onClick(event.nativeEvent);
+    }
   }
 }
 

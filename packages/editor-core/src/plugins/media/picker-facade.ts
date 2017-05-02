@@ -90,7 +90,9 @@ export default class PickerFacade {
   }
 
   show(): void {
-    this.picker.show && this.picker.show();
+    if (this.picker.show) {
+      this.picker.show();
+    }
   }
 
   cancel(tempId: string): void {
@@ -246,4 +248,4 @@ export default class PickerFacade {
       });
     }
   }
-};
+}

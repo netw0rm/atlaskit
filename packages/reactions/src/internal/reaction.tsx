@@ -11,6 +11,7 @@ import { PureComponent } from 'react';
 import { style } from 'typestyle';
 import { ReactionSummary } from '../reactions-resource';
 import { isLeftClick } from './helpers';
+import { analyticsService } from '../analytics';
 
 const emojiStyle = style({
   transformOrigin: 'center center 0',
@@ -85,6 +86,9 @@ export default class Reaction extends PureComponent<Props, {}> {
   private handleMouseDown = (event) => {
     event.preventDefault();
     if (this.props.onClick && isLeftClick(event)) {
+      const { reaction } = this.props;
+      analyticsService.trackEvent('reactions.reaction.click', reaction as {});
+
       this.props.onClick(event);
     }
   }

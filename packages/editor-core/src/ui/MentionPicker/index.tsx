@@ -66,7 +66,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private updatePopupPosition() {
-    this.popper && this.popper.update();
+    if (this.popper) {
+      this.popper.update();
+    }
   }
 
   componentWillMount() {
@@ -99,7 +101,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     this.unsubscribeResourceProvider(this.state.mentionsProvider);
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
     document.removeEventListener('click', this.handleClickOutside);
-    this.popper && this.popper.destroy();
+    if (this.popper) {
+      this.popper.destroy();
+    }
   }
 
   extractStyles = (state: any) => {

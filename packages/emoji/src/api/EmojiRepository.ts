@@ -93,7 +93,7 @@ export default class EmojiRepository {
     this.fullSearch.addIndex('name');
     this.fullSearch.addIndex('shortName');
     this.fullSearch.addDocuments(emojis);
-  };
+  }
 
   /**
    * Returns all available emoji.

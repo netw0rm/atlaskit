@@ -27,7 +27,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
       onSelection={action('emoji selected')}
       emojiProvider={getEmojiResource()}
       position="below"
-      afterContent
+      afterContent={true}
     />
   ))
   .add('Input field emoji typeahead. Inline', () => (
@@ -35,8 +35,8 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
       label="Emoji search"
       onSelection={action('emoji selected')}
       emojiProvider={getEmojiResource()}
-      beforeContent
-      afterContent
+      beforeContent={true}
+      afterContent={true}
     />
   ))
   .add('Input field emoji typeahead, above.', () => (
@@ -46,7 +46,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
         onSelection={action('emoji selected')}
         emojiProvider={getEmojiResource()}
         position="above"
-        beforeContent
+        beforeContent={true}
       />
     </div>
   ))
@@ -58,8 +58,8 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
           onSelection={action('emoji selected')}
           emojiProvider={getEmojiResource()}
           position="above"
-          beforeContent
-          afterContent
+          beforeContent={true}
+          afterContent={true}
         />
       </div>
     </div>
@@ -94,8 +94,8 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
           onSelection={action('emoji selected')}
           emojiProvider={Promise.resolve(emojiResource)}
           position="below"
-          afterContent
-          disableBlur
+          afterContent={true}
+          disableBlur={true}
         />
       </div>
     );

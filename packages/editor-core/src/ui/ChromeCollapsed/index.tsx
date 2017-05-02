@@ -19,4 +19,4 @@ export default class ChromeCollapsed extends PureComponent<Props, {}> {
       />
     );
   }
-};
+}

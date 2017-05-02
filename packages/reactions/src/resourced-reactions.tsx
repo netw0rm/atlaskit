@@ -12,7 +12,7 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   boundariesElement?: string;
   allowAllEmojis?: boolean;
-};
+}
 
 export interface State {
   reactionsProvider: ReactionsProvider | null;

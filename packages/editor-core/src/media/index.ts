@@ -71,7 +71,7 @@ export interface MediaProvider {
    * (optional) Used for creation of new Media links.
    */
   linkCreateContext?: Promise<Context | ContextConfig>;
-};
+}
 
 export { ContextConfig as MediaContextConfig };
 

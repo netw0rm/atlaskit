@@ -63,7 +63,7 @@ export class Card extends Component<CardProps, {}> {
       const {id, mediaItemType, collectionName} = identifier;
       this.provider = context.getMediaItemProvider(id, mediaItemType, collectionName);
     }
-  };
+  }
 
   private updateDataUriService(context: Context, identifier: Identifier): void {
     if (!this.isUrlPreviewIdentifier(identifier)) {

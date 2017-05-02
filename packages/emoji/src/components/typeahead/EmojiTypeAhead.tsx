@@ -14,7 +14,7 @@ export const defaultListLimit = 50;
 
 export interface OnLifecycle {
   (): void;
-};
+}
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;

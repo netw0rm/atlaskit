@@ -121,7 +121,7 @@ export class ListsState {
 
     return true;
   }
-};
+}
 
 export const stateKey = new PluginKey('listsPlugin');
 

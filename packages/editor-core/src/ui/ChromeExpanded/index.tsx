@@ -182,4 +182,4 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       onSave();
     }
   }
-};
+}

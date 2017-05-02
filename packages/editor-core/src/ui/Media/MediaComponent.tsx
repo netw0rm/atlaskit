@@ -17,7 +17,7 @@ export interface Props extends Attributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
   onDelete?: () => void;
-};
+}
 
 export interface State extends MediaState {
   mediaProvider?: MediaProvider;

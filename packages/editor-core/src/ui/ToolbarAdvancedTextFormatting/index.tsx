@@ -265,4 +265,4 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       this.toggleOpen();
     }
   }
-};
+}

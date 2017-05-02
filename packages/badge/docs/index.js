@@ -5,8 +5,6 @@ import Example from './example';
 import exampleSrc from '!raw-loader!./example';
 /* eslint-enable import/no-duplicates, import/first */
 
-export componentSource from '!raw-loader!../src/components/Badge';
-
 export const description = (
   <div>
     <p>Badges are visual indicators for numeric values such as tallies and

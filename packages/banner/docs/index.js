@@ -9,8 +9,6 @@ import AnimationExample from './AnimationExample';
 import animationExampleSrc from '!raw-loader!./AnimationExample';
 /* eslint-enable import/no-duplicates, import/first */
 
-export componentSource from '!raw-loader!../src/Banner';
-
 export const description = (
   <div>
     <p>

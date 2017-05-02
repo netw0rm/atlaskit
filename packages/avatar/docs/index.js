@@ -6,15 +6,7 @@ import AvatarExample from './AvatarExample';
 import avatarExampleSrc from '!raw-loader!./AvatarExample';
 import PresenceExample from './PresenceExample';
 import presenceExampleSrc from '!raw-loader!./PresenceExample';
-
-import avatarSrc from '!raw-loader!../src/components/Avatar';
-import presenceSrc from '!raw-loader!../src/components/Presence';
 /* eslint-enable import/no-duplicates, import/first */
-
-export const componentSource = [
-  { name: 'Avatar', src: avatarSrc },
-  { name: 'Presence', src: presenceSrc },
-];
 
 const Usage = styled.pre`
   background-color: #F4F5F7;

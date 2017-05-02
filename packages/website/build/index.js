@@ -34,7 +34,7 @@ const components = fs.readdirSync('..').map((key) => {
   let props;
   try {
     const docsFile = path.resolve(__dirname, '../../', key, 'docs', 'index.js');
-    const sourcesFile = path.resolve(__dirname, '../../', key, 'docs', 'sources.js');
+    const sourcesFile = path.resolve(__dirname, '../../', key, 'docs', 'components.js');
     docs = fs.statSync(docsFile).isFile();
     props = require(sourcesFile).map(({ name, src }) => ({ name, props: parseProps(src) }));
   } catch (e) {}

@@ -81,7 +81,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     return new Promise<ReactionSummary>((resolve, reject) => {
       reject();
     });
-  };
+  }
 
   fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
     return new Promise<ReactionSummary>((resolve, reject) => {
@@ -307,7 +307,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
       'headers': this.getHeaders(),
       'credentials': 'include'
     });
-  };
+  }
 
   fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
     return new Promise<ReactionSummary>((resolve, reject) => {

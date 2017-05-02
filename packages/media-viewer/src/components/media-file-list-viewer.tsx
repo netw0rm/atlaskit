@@ -49,7 +49,9 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
     const { serviceHost } = config;
     const { mediaViewer } = this.state;
 
-    onClose && mediaViewer.on('fv.close', onClose);
+    if (onClose) {
+      mediaViewer.on('fv.close', onClose);
+    }
 
     const observableFileItems = fileIds
       .map(file => context.getMediaItemProvider(file, 'file', collectionName))
@@ -73,8 +75,12 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
     const { onClose } = this.props;
     const { mediaViewer, subscription } = this.state;
 
-    subscription && subscription.unsubscribe();
-    onClose && mediaViewer.off('fv.close', onClose);
+    if (subscription) {
+      subscription.unsubscribe();
+    }
+    if (onClose) {
+      mediaViewer.off('fv.close', onClose);
+    }
   }
 
   render(): JSX.Element {

@@ -116,7 +116,9 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   }
 
   private unsubscribe(): void {
-    this.state && this.state.subscription && this.state.subscription.unsubscribe();
+    if (this.state && this.state.subscription) {
+      this.state.subscription.unsubscribe();
+    }
   }
 
   render() {

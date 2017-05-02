@@ -108,7 +108,9 @@ storiesOf(name, module)
         <button
           onClick={() => {
             (document.getElementById('editor') as Node).appendChild(ref);
-            editor && editor.clear();
+            if (editor) {
+              editor.clear();
+            }
           }}
         >
           Attach

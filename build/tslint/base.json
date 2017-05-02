@@ -39,7 +39,7 @@
     "no-shadowed-variable": false,
     "no-string-literal": false,
     "no-trailing-whitespace": true,
-    "no-unused-expression": false,
+    "no-unused-expression": true,
     "object-literal-key-quotes": [false],
     "object-literal-shorthand": false,
     "object-literal-sort-keys": false,

@@ -26,10 +26,12 @@ export interface FilmStripViewProps {
 
 function onItemClick(item: FilmStripViewItem, props: FilmStripViewProps): (event: Event) => void {
   return (event: Event) => {
-    props.onClick && props.onClick({
-      type: 'file',
-      details: item
-    }, props.items, event);
+    if (props.onClick) {
+      props.onClick({
+        type: 'file',
+        details: item
+      }, props.items, event);
+    }
   };
 }
 

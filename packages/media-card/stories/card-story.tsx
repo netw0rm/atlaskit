@@ -90,7 +90,9 @@ storiesOf('Card', {})
       }
 
       onLoadingChange = state => {
-        state && this.setState({loading: state.loading});
+        if (state) {
+          this.setState({loading: state.loading});
+        }
       }
 
       // TODO debounce

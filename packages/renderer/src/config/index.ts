@@ -5,13 +5,13 @@ import { SyntheticEvent } from 'react';
 
 export interface MediaProvider {
   viewContext: Promise<ContextConfig>;
-};
+}
 
 export interface ServicesConfig {
   getEmojiProvider?: () => Promise<EmojiProvider>;
   getMentionProvider?: () => Promise<MentionProvider>;
   getMediaProvider?: () => Promise<MediaProvider>;
-};
+}
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -24,4 +24,4 @@ export interface EventHandlers {
   media?: {
     onClick?: CardEventHandler;
   };
-};
+}

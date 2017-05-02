@@ -107,4 +107,4 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
             this.props.pluginState.toggleUnderline(this.props.editorView);
         }
     }
-};
+}

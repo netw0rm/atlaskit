@@ -156,9 +156,13 @@ export default class MentionPicker extends PureComponent<Props, State> {
     });
     if (wasVisible !== visible) {
       if (visible) {
-        this.props.onOpen && this.props.onOpen();
+        if (this.props.onOpen) {
+          this.props.onOpen();
+        }
       } else {
-        this.props.onClose && this.props.onClose();
+        if (this.props.onClose) {
+          this.props.onClose();
+        }
       }
     }
   }

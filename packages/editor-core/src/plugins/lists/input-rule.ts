@@ -28,4 +28,4 @@ export default function inputRulePlugin(schema: Schema<any, any>): Plugin | unde
   if (rules.length !== 0) {
     return inputRules({ rules });
   }
-};
+}

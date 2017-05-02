@@ -37,7 +37,7 @@ export const privateTrelloBoardUrlPreviewId = {
 };
 
 export const videoUrlPreviewId = {
-  url: 'https://github.com/mediaelement/mediaelement-files/blob/master/big_buck_bunny.mp4?raw=true',
+  url: 'http://techslides.com/demos/sample-videos/small.mp4',
   mediaItemType: linkType
 };
 

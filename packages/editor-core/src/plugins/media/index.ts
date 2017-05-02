@@ -98,7 +98,9 @@ export class MediaPluginState {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
           // TODO: re-initialize pickers ?
-          this.popupPicker && this.popupPicker.setUploadParams(mediaProvider.uploadParams);
+          if (this.popupPicker) {
+            this.popupPicker.setUploadParams(mediaProvider.uploadParams);
+          }
         });
       } else {
         this.allowsUploads = false;
@@ -151,9 +153,15 @@ export class MediaPluginState {
       collection,
     }) as MediaNode;
 
-    fileName && (node.fileName = fileName);
-    fileSize && (node.fileSize = fileSize);
-    fileMimeType && (node.fileMimeType = fileMimeType);
+    if (fileName) {
+      node.fileName = fileName;
+    }
+    if (fileSize) {
+      node.fileSize = fileSize;
+    }
+    if (fileMimeType) {
+      node.fileMimeType = fileMimeType;
+    }
 
     let transaction;
 
@@ -398,9 +406,15 @@ export class MediaPluginState {
 
       const { fileSize, fileName, fileMimeType } = node as MediaNode;
 
-      fileName && (newNode.fileName = fileName);
-      fileSize && (newNode.fileSize = fileSize);
-      fileMimeType && (newNode.fileMimeType = fileMimeType);
+      if (fileName) {
+        newNode.fileName = fileName;
+      }
+      if (fileSize) {
+        newNode.fileSize = fileSize;
+      }
+      if (fileMimeType) {
+        newNode.fileMimeType = fileMimeType;
+      }
 
       this.replaceQueue.push([node, newNode]);
     });

@@ -6,6 +6,6 @@ export default (
   <Editor
     onSave={() => action('save')}
     onChange={() => action('change')}
-    isExpandedByDefault
+    isExpandedByDefault={true}
   />
 );

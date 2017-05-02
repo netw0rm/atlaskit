@@ -30,7 +30,7 @@ export interface ServiceConfig {
   url: string;
   securityProvider?: SecurityProvider;
   refreshedSecurityProvider?: RefreshSecurityProvider;
-};
+}
 
 const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions | undefined): string => {
   const searchParam = new URLSearchParams();

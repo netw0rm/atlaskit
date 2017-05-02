@@ -18,6 +18,7 @@
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
+    "glyph",
     "umd"
   ],
   "license": "SEE LICENSE IN LICENSE",

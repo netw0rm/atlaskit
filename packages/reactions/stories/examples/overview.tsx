@@ -19,6 +19,7 @@ export default (
       onSelection={handlePickerSelection}
     />
     <Reactions
+      containerAri={containerAri}
       ari={demoAri}
       emojiProvider={getEmojiResource()}
       reactionsProvider={reactionsProvider}

@@ -76,6 +76,7 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
     return (
       <Reactions
         ari={ari}
+        containerAri={containerAri}
         emojiProvider={emojiProvider}
         reactionsProvider={reactionsProvider}
         onReactionClick={this.handleReactionClick}

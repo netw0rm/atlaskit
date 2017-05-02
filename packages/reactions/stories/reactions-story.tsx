@@ -35,6 +35,7 @@ storiesOf(name, module)
       </div>
       <hr />
       <Reactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
@@ -60,6 +61,7 @@ storiesOf(name, module)
     <div>
       <p>This is a message with some reactions</p>
       <Reactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
@@ -71,6 +73,7 @@ storiesOf(name, module)
     <div>
       <p>This is a message with some reactions</p>
       <Reactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
@@ -126,14 +129,14 @@ storiesOf(`${name}/Resourced Components`, module)
 storiesOf(`${name}/Internal Components`, module)
   .add('Reaction', () => (
     <Reaction
-      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: false, ari: demoAri }}
+      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: false, ari: demoAri, containerAri: containerAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />
   ))
   .add('Reaction - reacted', () => (
     <Reaction
-      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: true, ari: demoAri }}
+      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: true, ari: demoAri, containerAri: containerAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />

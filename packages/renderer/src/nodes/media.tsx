@@ -5,6 +5,7 @@ import {
   ContextConfig,
   ContextFactory,
   MediaItemType,
+  MediaProvider,
   CardEventHandler,
 } from '@atlaskit/media-core';
 
@@ -13,7 +14,6 @@ import {
   CardView,
   CardDimensions,
 } from '@atlaskit/media-card';
-import { MediaProvider } from '../config';
 
 import {
   Renderable,

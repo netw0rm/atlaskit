@@ -6,7 +6,7 @@
   "scripts": {
     "build": "yarn run build-data && NODE_ENV=production webpack -p && cp dist/index.html dist/404.html",
     "deploy": "yarn run build && netlify -t $NETLIFY_TOKEN deploy -s $NETLIFY_SITE_ID -p dist",
-    "build-data": "node ./build",
+    "build-data": "node ./build && prettier --single-quote --trailing-comma es5 --write src/data.js",
     "start": "yarn run build-data && webpack-dev-server"
   },
   "dependencies": {
@@ -60,6 +60,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "netlify-cli": "^1.2.2"
+    "netlify-cli": "^1.2.2",
+    "prettier": "^1.3.0"
   }
 }

@@ -43,7 +43,7 @@ describe(name, () => {
       expect(configInstance.mentionResourceProvider!()).to.be.a('Promise');
 
       return configInstance.mediaResourceProvider!().then((mr: MediaProvider) => {
-        expect(mr.uploadParams.collection).to.be.a('string');
+        expect(mr.uploadParams!.collection).to.be.a('string');
         expect(mr.viewContext).to.be.a('Promise');
       });
     });

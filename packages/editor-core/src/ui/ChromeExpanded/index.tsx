@@ -5,7 +5,7 @@ import { PureComponent } from 'react';
 import * as React from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
-import { MediaProviderRW } from '@atlaskit/media-core';
+import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
@@ -59,7 +59,7 @@ export interface Props {
   saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
-  mediaProvider?: Promise<MediaProviderRW>;
+  mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
 }
 

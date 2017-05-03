@@ -1,6 +1,6 @@
 import {
   DefaultMediaStateManager,
-  MediaProviderRW,
+  MediaProvider,
   MediaState,
   MediaStateManager,
   UploadParams,
@@ -46,7 +46,7 @@ export class MediaPluginState {
   private temporaryMediaNodes = new TemporaryNodesList();
   private useDefaultStateManager = true;
   private destroyed = false;
-  private mediaProvider: MediaProviderRW;
+  private mediaProvider: MediaProvider;
   private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
 
@@ -60,7 +60,7 @@ export class MediaPluginState {
     }
 
     this.stateManager = new DefaultMediaStateManager();
-    options.providerFactory.subscribe('mediaProvider', (name, provider: Promise<MediaProviderRW>) => this.setMediaProvider(provider));
+    options.providerFactory.subscribe('mediaProvider', (name, provider: Promise<MediaProvider>) => this.setMediaProvider(provider));
   }
 
   subscribe(cb: PluginStateChangeSubscriber) {
@@ -77,7 +77,7 @@ export class MediaPluginState {
     }
   }
 
-  setMediaProvider = (mediaProvider?: Promise<MediaProviderRW>) => {
+  setMediaProvider = (mediaProvider?: Promise<MediaProvider>) => {
     if (!mediaProvider) {
       this.allowsPastingLinks = false;
       this.allowsUploads = false;

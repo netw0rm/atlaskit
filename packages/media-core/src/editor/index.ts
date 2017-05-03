@@ -46,7 +46,7 @@ export interface UploadParams {
   dropzoneContainer?: HTMLElement;
 }
 
-export interface MediaProviderRO {
+export interface MediaProvider {
   uploadParams?: UploadParams;
 
   /**
@@ -71,10 +71,6 @@ export interface MediaProviderRO {
    * (optional) Used for creation of new Media links.
    */
   linkCreateContext?: Promise<Context | ContextConfig>;
-}
-
-export interface MediaProviderRW extends MediaProviderRO {
-  uploadParams: UploadParams;
 }
 
 export { default as DefaultMediaStateManager } from './default-state-manager';

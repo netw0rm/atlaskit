@@ -13,7 +13,7 @@ import {
   CardClick,
   CardDelete,
   FileDetails,
-  MediaProviderRW,
+  MediaProvider,
   MediaState,
   UrlPreview
 } from '@atlaskit/media-core';
@@ -23,13 +23,13 @@ import { Attributes } from '../../schema/nodes/media';
 import { EditorView, mediaStateKey } from '../../index';
 
 export interface Props extends Attributes {
-  mediaProvider?: Promise<MediaProviderRW>;
+  mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
   onDelete?: () => void;
 }
 
 export interface State extends MediaState {
-  mediaProvider?: MediaProviderRW;
+  mediaProvider?: MediaProvider;
   viewContext?: Context;
 }
 
@@ -233,7 +233,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     this.setState(newState);
   }
 
-  private handleMediaProvider = (mediaProvider: MediaProviderRW) => {
+  private handleMediaProvider = (mediaProvider: MediaProvider) => {
     const { editorView, id } = this.props;
 
     if (!editorView) {

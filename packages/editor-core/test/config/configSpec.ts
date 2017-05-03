@@ -1,5 +1,5 @@
 import { EditorServicesConfig } from '../../src';
-import { JwtTokenProvider, MediaProviderRW } from '@atlaskit/media-core';
+import { JwtTokenProvider, MediaProvider } from '@atlaskit/media-core';
 import { MentionResource } from '@atlaskit/mention';
 import { name } from '../../package.json';
 import { EmojiResource } from '@atlaskit/emoji';
@@ -20,7 +20,7 @@ describe(name, () => {
         emojiResourceProvider: function (): Promise<EmojiResource> {
           return Promise.resolve({} as EmojiResource);
         },
-        mediaResourceProvider: function (): Promise<MediaProviderRW> {
+        mediaResourceProvider: function (): Promise<MediaProvider> {
           return Promise.resolve({
             uploadParams: {
               collection: 'mock',
@@ -42,7 +42,7 @@ describe(name, () => {
       expect(configInstance.mediaResourceProvider!()).to.be.a('Promise');
       expect(configInstance.mentionResourceProvider!()).to.be.a('Promise');
 
-      return configInstance.mediaResourceProvider!().then((mr: MediaProviderRW) => {
+      return configInstance.mediaResourceProvider!().then((mr: MediaProvider) => {
         expect(mr.uploadParams.collection).to.be.a('string');
         expect(mr.viewContext).to.be.a('Promise');
       });

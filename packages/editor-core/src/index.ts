@@ -1,6 +1,6 @@
 export {
   DefaultMediaStateManager,
-  MediaProviderRW as MediaProvider,
+  MediaProvider,
   MediaState,
 } from '@atlaskit/media-core';
 

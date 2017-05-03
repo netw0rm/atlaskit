@@ -122,14 +122,11 @@ describe('Avatar', () => {
     it('should default to circle avatar', () => {
       const wrapper = mount(<Avatar />);
       expect(wrapper.prop('appearance')).to.equal('circle');
-      expect(wrapper.find(`.${styles.locals.circleAvatar}`)).to.have.lengthOf(1);
-      expect(wrapper.find(`.${styles.locals.squareAvatar}`)).to.have.lengthOf(0);
     });
 
     it('should apply rounded corners for square avatar', () => {
       const wrapper = mount(<Avatar appearance="square" />);
-      expect(wrapper.find(`.${styles.locals.squareAvatar}`)).to.have.lengthOf(1);
-      expect(wrapper.find(`.${styles.locals.circleAvatar}`)).to.have.lengthOf(0);
+      expect(wrapper.find(ImageWrapper).prop('appearance')).to.equal('square');
     });
   });
 

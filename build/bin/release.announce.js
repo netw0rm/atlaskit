@@ -126,6 +126,7 @@ Commit <a href="${buildLink}">${COMMIT}</a> gave us some fresh components:<br/>
     <th>Version</th>
     <th>Storybook</th>
     <th>NPM</th>
+    <th>Unpkg</th>
   </tr>
 ${changedPackages.map(([name, version]) => `
   <tr>

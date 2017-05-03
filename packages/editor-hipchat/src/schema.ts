@@ -1,19 +1,17 @@
 import {
-  em,
-  doc,
+  docCompact,
   emoji,
   emojiQuery,
   hardBreak,
-  link,
   MarkSpec,
+  media,
+  mediaGroup,
   mention,
   mentionQuery,
   NodeSpec,
   paragraph,
   Schema,
-  strong,
   text,
-  underline
 } from '@atlaskit/editor-core';
 
 export interface HCSchemaNodes {
@@ -21,22 +19,20 @@ export interface HCSchemaNodes {
   paragraph: NodeSpec;
   text: NodeSpec;
   hardBreak: NodeSpec;
+  media: NodeSpec;
+  mediaGroup: NodeSpec;
   mention: NodeSpec;
   emoji: NodeSpec;
 }
 
 export interface HCSchemaMarks {
-  link: MarkSpec;
-  em: MarkSpec;
-  strong: MarkSpec;
-  underline: MarkSpec;
   mentionQuery: MarkSpec;
   emojiQuery: MarkSpec;
 }
 
 const nodes: HCSchemaNodes = {
   // The top level node for a document.
-  doc,
+  doc: docCompact,
 
   // A paragraph node.
   paragraph,
@@ -54,22 +50,14 @@ const nodes: HCSchemaNodes = {
   mention,
 
   // An emoji.
-  emoji
+  emoji,
+
+  // media
+  mediaGroup,
+  media,
 };
 
 const marks: HCSchemaMarks = {
-  // Represents a hyperlink to a URL.
-  link,
-
-  // Represents an italic text
-  em,
-
-  // Represents bolded text
-  strong,
-
-  // Represents underlined text
-  underline,
-
   // Represents a "mention query". A mention query is created by typing the @ symbol. The text
   // within a mention query is used to search for a mention.
   //

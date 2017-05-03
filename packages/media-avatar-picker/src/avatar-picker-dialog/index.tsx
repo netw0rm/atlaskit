@@ -16,7 +16,7 @@ export interface AvatarPickerDialogProps {
   avatars: Array<Avatar>;
 }
 
-enum Mode {
+export enum Mode {
   Cropping,
   PredefinedAvatars,
 }
@@ -50,7 +50,7 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
             <Button appearance="subtle-link">Cancel</Button>
           </div>
         }
-        isOpen
+        isOpen={true}
       >
         <AvatarPickerViewWrapper>
           {this.renderContent()}

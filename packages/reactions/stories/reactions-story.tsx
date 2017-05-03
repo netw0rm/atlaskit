@@ -1,10 +1,13 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
+import { EmojiId } from '@atlaskit/emoji';
+
 import { ReactionPicker, Reactions, ResourcedReactions, ResourcedReactionPicker } from '../src';
 import Reaction from '../src/internal/reaction';
-import Selector, { defaultReactionsByShortcut } from '../src/internal/selector';
+import Selector, { defaultReactionsByShortName } from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
-import { reactionsProvider, reactionsProviderPromise } from './examples/reactions-provider';
+import { reactionsProvider, reactionsProviderPromise } from '../src/mock-reactions-provider';
+import { analyticsService } from '../src/analytics';
 
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 
@@ -12,7 +15,12 @@ const { getEmojiResource } = emojiTestData.emojiStoryData;
 
 import { name } from '../package.json';
 
-const demoAri = 'ari:cloud:demo:123:123';
+const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
+const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
+
+analyticsService.handler = (name, properties) => {
+  action('analytic event')(name, properties);
+};
 
 storiesOf(name, module)
   .add('Picker and Reactions', () => (
@@ -21,7 +29,8 @@ storiesOf(name, module)
         <p>Lorem ipsum dolor sit amet...</p>
         <ReactionPicker
           emojiProvider={getEmojiResource()}
-          onSelection={(emojiId) => reactionsProvider.toggleReaction(demoAri, emojiId)}
+          // tslint:disable-next-line:jsx-no-lambda
+          onSelection={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
         />
       </div>
       <hr />
@@ -29,7 +38,8 @@ storiesOf(name, module)
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
-        onReactionClick={(emojiId) => reactionsProvider.toggleReaction(demoAri, emojiId)}
+        // tslint:disable-next-line:jsx-no-lambda
+        onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
       />
     </div>
   ))
@@ -37,6 +47,13 @@ storiesOf(name, module)
     <ReactionPicker
       emojiProvider={getEmojiResource()}
       onSelection={action('reaction selected')}
+    />
+  ))
+  .add('Picker with all emojis enabled', () => (
+    <ReactionPicker
+      emojiProvider={getEmojiResource()}
+      onSelection={action('reaction selected')}
+      allowAllEmojis={true}
     />
   ))
   .add('Reactions', () => (
@@ -50,6 +67,18 @@ storiesOf(name, module)
       />
     </div>
   ))
+  .add('Reactions with all emojis enabled', () => (
+    <div>
+      <p>This is a message with some reactions</p>
+      <Reactions
+        ari={demoAri}
+        emojiProvider={getEmojiResource()}
+        reactionsProvider={reactionsProvider}
+        onReactionClick={action('reaction clicked')}
+        allowAllEmojis={true}
+      />
+    </div>
+  ))
 ;
 
 storiesOf(`${name}/Resourced Components`, module)
@@ -58,6 +87,7 @@ storiesOf(`${name}/Resourced Components`, module)
       <div style={{display: 'flex'}}>
         <p>Lorem ipsum dolor sit amet...</p>
         <ResourcedReactionPicker
+          containerAri={containerAri}
           ari={demoAri}
           emojiProvider={getEmojiResource()}
           reactionsProvider={reactionsProviderPromise}
@@ -65,6 +95,7 @@ storiesOf(`${name}/Resourced Components`, module)
       </div>
       <hr />
       <ResourcedReactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProviderPromise}
@@ -73,6 +104,7 @@ storiesOf(`${name}/Resourced Components`, module)
   ))
   .add('Resourced Reaction Picker', () => (
     <ResourcedReactionPicker
+      containerAri={containerAri}
       ari={demoAri}
       emojiProvider={getEmojiResource()}
       reactionsProvider={reactionsProviderPromise}
@@ -82,6 +114,7 @@ storiesOf(`${name}/Resourced Components`, module)
     <div>
       <p>This is a message with some reactions</p>
       <ResourcedReactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProviderPromise}
@@ -93,14 +126,14 @@ storiesOf(`${name}/Resourced Components`, module)
 storiesOf(`${name}/Internal Components`, module)
   .add('Reaction', () => (
     <Reaction
-      reaction={{ emojiId: defaultReactionsByShortcut.get('smiley') as string, count: 1, reacted: false, ari: demoAri }}
+      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: false, ari: demoAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />
   ))
   .add('Reaction - reacted', () => (
     <Reaction
-      reaction={{ emojiId: defaultReactionsByShortcut.get('smiley') as string, count: 1, reacted: true, ari: demoAri }}
+      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: true, ari: demoAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />

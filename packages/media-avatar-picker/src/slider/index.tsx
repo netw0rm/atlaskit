@@ -14,13 +14,13 @@ export interface SliderProps {
   onChange?: (value: number) => void;
 }
 
-export interface State {
+export interface SliderState {
   value: number;
 }
 
 const defaultStep = 0.1;
 
-export class Slider extends Component<SliderProps, State> {
+export class Slider extends Component<SliderProps, SliderState> {
   constructor(props) {
     super(props);
 
@@ -44,7 +44,9 @@ export class Slider extends Component<SliderProps, State> {
   onInputChange = (e) => {
     const value = parseFloat(e.target.value);
     this.setState({value});
-    this.props.onChange && this.props.onChange(value);
+    if (this.props.onChange) {
+      this.props.onChange(value);
+    }
   }
 
   render() {

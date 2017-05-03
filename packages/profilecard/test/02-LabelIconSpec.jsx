@@ -16,7 +16,7 @@ describe('Profilecard', () => {
       expect(wrapper.length).to.be.above(0);
       expect(wrapper.find('span').text()).to.equal('Labeltext');
 
-      const icon = wrapper.find(`.${styles.locals.detailsLabelIcon}`);
+      const icon = wrapper.find(`.${styles.detailsLabelIcon}`);
       expect(icon.text()).to.equal('');
     });
 
@@ -25,7 +25,7 @@ describe('Profilecard', () => {
       expect(wrapper.length).to.be.above(0);
       expect(wrapper.find('span').text()).to.equal('Labeltext');
 
-      const icon = wrapper.find(`.${styles.locals['pf-icon']}`);
+      const icon = wrapper.find(`.${styles['pf-icon']}`);
       expect(icon.length).to.equal(0);
     });
 
@@ -34,7 +34,7 @@ describe('Profilecard', () => {
       expect(wrapper.length).to.be.above(0);
       expect(wrapper.find('span').text()).to.equal('Labeltext');
 
-      const icon = wrapper.find(`.${styles.locals.detailsLabelIcon}`);
+      const icon = wrapper.find(`.${styles.detailsLabelIcon}`);
       expect(icon.length).to.be.above(0);
     });
   });

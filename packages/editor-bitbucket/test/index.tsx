@@ -232,7 +232,7 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
   });
 });
 
-describe('@atlaskit/editor-bitbucket/pasting', () => {
+describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
   let editorView: EditorView;

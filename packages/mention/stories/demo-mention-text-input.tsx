@@ -61,6 +61,11 @@ export default class MentionTextInput extends Component<Props, State> {
     }
   }
 
+  private handleInputUp = () => this.mentionPickerRef.selectPrevious();
+  private handleInputDown = () => this.mentionPickerRef.selectNext();
+  private handleInputEnter = () => this.mentionPickerRef.chooseCurrentSelection();
+  private handleMentionPickerRef = (ref) => { this.mentionPickerRef = ref; };
+
   render() {
     debug('demo-mention-text-input.render');
     /* eslint no-unused-vars: 0 */
@@ -70,9 +75,9 @@ export default class MentionTextInput extends Component<Props, State> {
         inputId="demo-input"
         label={label}
         onChange={this.updateSearch}
-        onUp={() => this.mentionPickerRef.selectPrevious()}
-        onDown={() => this.mentionPickerRef.selectNext()}
-        onEnter={() => this.mentionPickerRef.chooseCurrentSelection()}
+        onUp={this.handleInputUp}
+        onDown={this.handleInputDown}
+        onEnter={this.handleInputEnter}
         onEscape={this.hideMentionPopup}
         onFocus={this.showMentionPopup}
         onBlur={this.hideMentionPopup}
@@ -91,7 +96,7 @@ export default class MentionTextInput extends Component<Props, State> {
           onSelection={this.handleSelection}
           onOpen={action('picker opened')}
           onClose={action('picker closed')}
-          ref={(ref) => { this.mentionPickerRef = ref; }}
+          ref={this.handleMentionPickerRef}
           query={this.state.query}
         />
       );

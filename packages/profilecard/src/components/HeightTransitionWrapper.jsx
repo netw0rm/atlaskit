@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 
-import { cardAnimationWrapper } from 'style!../styles/profilecard.less';
+import styles from '../styles/profilecard.less';
 
 export default class HeightTransitionWrapper extends PureComponent {
   static propTypes = {
@@ -27,7 +27,8 @@ export default class HeightTransitionWrapper extends PureComponent {
 
   updateRefHeight() {
     this.setState({
-      height: this.ref ? this.ref.children[0].offsetHeight : 'auto',
+      height: this.ref && this.ref.children.length
+        ? this.ref.children[0].offsetHeight : 'auto',
     });
   }
 
@@ -39,7 +40,7 @@ export default class HeightTransitionWrapper extends PureComponent {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        className={cardAnimationWrapper}
+        className={styles.cardAnimationWrapper}
         style={inlineHeight}
         ref={ref => (this.ref = ref)}
         onClick={this.preventDefault}

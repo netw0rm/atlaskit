@@ -25,9 +25,9 @@ export interface LinkCardTrelloBoardViewProps {
   lists: Array<{name: string, count: number}>;
   members: MembersList;
 
-  // TODO FIL-3892 implement visual designs for loading state
+  // TODO implement visual designs for loading state
   loading?: boolean;
-  // TODO FIL-3893 implement visual designs for error state
+  // TODO implement visual designs for error state
   error?: string;
 }
 
@@ -39,6 +39,10 @@ export class LinkCardTrelloBoardView extends Component<LinkCardTrelloBoardViewPr
     width: 435,
     height: 116
   };
+
+  private handleOpenBoardClick = () => {
+    open(this.props.linkUrl, '_blank');
+  }
 
   render() {
     const {linkUrl, title, thumbnailUrl, iconUrl} = this.props;
@@ -67,7 +71,7 @@ export class LinkCardTrelloBoardView extends Component<LinkCardTrelloBoardViewPr
                 Trello - Board
               </Href>
             </Link>
-            <Button onClick={() => open(this.props.linkUrl, '_blank')}>Open board</Button>
+            <Button onClick={this.handleOpenBoardClick}>Open board</Button>
           </Footer>
         </Details>
       </Wrapper>

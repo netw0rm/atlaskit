@@ -343,6 +343,8 @@ export default class Editor extends PureComponent<Props, State> {
 
       this.setState({ editorView });
 
+      editorView.dom.focus();
+
       analyticsService.trackEvent('atlassian.editor.start');
     } else {
       this.setState({ editorView: undefined });

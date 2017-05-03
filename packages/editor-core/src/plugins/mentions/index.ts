@@ -21,10 +21,10 @@ export class MentionsState {
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
 
-  onSelectPrevious = (): boolean => { return false; };
-  onSelectNext = (): boolean => { return false; };
-  onSelectCurrent = (): boolean => { return false; };
-  onTrySelectCurrent = (): boolean => { return false; };
+  onSelectPrevious = (): boolean => false;
+  onSelectNext = (): boolean => false;
+  onSelectCurrent = (): boolean => false;
+  onTrySelectCurrent = (): boolean => false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;
@@ -148,14 +148,21 @@ export class MentionsState {
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
-      const node = mention.create({ text: `@${renderName}`, id: mentionData.id });
-      const textNode = state.schema.text(' ');
+      const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id })];
+      if (!this.isNextCharacterSpace(end)) {
+        nodes.push(state.schema.text(' '));
+      }
       view.dispatch(
-        state.tr.replaceWith(start, end, [node, textNode])
+        state.tr.replaceWith(start, end, nodes)
       );
     } else {
       this.dismiss();
     }
+  }
+
+  isNextCharacterSpace(end) {
+    const { $from } = this.state.selection;
+    return $from.nodeAfter && $from.nodeAfter.textContent.indexOf(' ') === 0;
   }
 
   subscribeToFactory(providerFactory: ProviderFactory) {

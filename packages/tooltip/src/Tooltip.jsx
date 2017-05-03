@@ -1,13 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Layer from '@atlaskit/layer';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import { positionToPopperPosition, getAnimationClass } from './internal/helpers';
-
-// This hack is to make sure that styles.locals exists when style loading is a noop (when we are
-// running tests).
-// TODO: Remove in AK-2025
-styles.locals = styles.locals || {};
 
 /* eslint-disable react/no-unused-prop-types */
 

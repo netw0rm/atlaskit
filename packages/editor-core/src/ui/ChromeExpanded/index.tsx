@@ -5,6 +5,7 @@ import { PureComponent } from 'react';
 import * as React from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
+import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
@@ -16,6 +17,8 @@ import { MentionsState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
+import { MediaPluginState } from '../../plugins/media';
+import { MediaProvider } from '../../media';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
@@ -30,6 +33,7 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
+import ToolbarMedia from '../ToolbarMedia';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
 
@@ -50,27 +54,47 @@ export interface Props {
   pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsState;
+  pluginStateMedia?: MediaPluginState;
   pluginStateEmojis?: EmojiState;
   presenceResourceProvider?: any; // AbstractPresenceResource
+  saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
+  private editorContainer: HTMLElement;
+
+  static defaultProps = {
+    saveDisabled: false,
+  };
+
+  private handleSpinnerComplete() {}
+
   render() {
     const { props } = this;
+    const iconAfter = props.saveDisabled
+      ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
+      : undefined;
+
+    const saveButtonAppearance = props.saveDisabled
+      ? 'default'
+      : 'primary';
 
     return (
-      <div className={styles.container} data-editor-chrome>
+      <div className={styles.container} data-editor-chrome={true} tabIndex={-1} ref={this.handleEditorContainerRef}>
         <div className={styles.toolbar}>
-          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} /> : null}
+          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
           {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
             <ToolbarAdvancedTextFormatting
               pluginStateTextFormatting={props.pluginStateTextFormatting}
               pluginStateClearFormatting={props.pluginStateClearFormatting}
               editorView={props.editorView}
+              softBlurEditor={this.softBlurEditor}
+              focusEditor={this.focusEditor}
             /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
@@ -90,7 +114,13 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             <AkButtonGroup>
               {!this.props.onSave ? null :
                 <span onClick={this.handleSave}>
-                  <AkButton appearance="primary">Save</AkButton>
+                  <AkButton
+                    iconAfter={iconAfter}
+                    isDisabled={this.props.saveDisabled}
+                    appearance={saveButtonAppearance}
+                  >
+                    Save
+                  </AkButton>
                 </span>
               }
               {!this.props.onCancel ? null :
@@ -108,10 +138,29 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             }
             {props.pluginStateEmojis && props.emojiProvider ? <ToolbarEmojiPicker pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
             {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
+            {props.pluginStateMedia ? <ToolbarMedia pluginState={props.pluginStateMedia} /> : null}
           </div>
         </div>
       </div>
     );
+  }
+
+  /**
+   * Blurs editor but keeps focus on editor container,
+   * so components like inline-edit can check if focus is still inside them
+   */
+  softBlurEditor = () => {
+    if (this.editorContainer) {
+      this.editorContainer.focus();
+    }
+  }
+
+  focusEditor = () => {
+    this.props.editorView.dom.focus();
+  }
+
+  private handleEditorContainerRef = ref => {
+    this.editorContainer = ref;
   }
 
   @analytics('atlassian.editor.stop.cancel')
@@ -137,4 +186,4 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       onSave();
     }
   }
-};
+}

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { MediaItem, MediaItemType, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
-import { createStorybookContext, defaultCollectionName, StoryList } from '@atlaskit/media-test-helpers';
+import { MediaItem, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
+import { createStorybookContext, defaultCollectionName, StoryList,
+         spotifyLinkId, genericLinkId, youtubeLinkId, trelloLinkId, playerLinkId, twitterLinkId,
+         imageFileId, docFileId, genericFileId, imageLinkId } from '@atlaskit/media-test-helpers';
 import {FilmStrip} from '../src';
 
 const collectionName = defaultCollectionName;
@@ -24,46 +26,11 @@ const annotateAction = {
 const cardsActions = [deleteAction, clickAction, annotateAction];
 const context = createStorybookContext();
 
-const fileType: MediaItemType = 'file';
-const linkType: MediaItemType = 'link';
+const file1 = imageFileId;
+const file2 = docFileId;
+const file3 = genericFileId;
 
-const spotifyLink = {
-  id: 'b3205cf6-7c26-4208-a1a2-50488bffa973',
-  mediaItemType: linkType
-};
-const genericLink = {
-  id: '517dade5-5489-4e8c-a113-42319878c4a5',
-  mediaItemType: linkType
-};
-const youtubeLink = {
-  id: '5c024c78-8dee-4a6c-9967-6276abd80286',
-  mediaItemType: linkType
-};
-const trelloLink = {
-  id: '70997118-3b5a-49f0-8608-43f6e0b9796e',
-  mediaItemType: linkType
-};
-const linkPlayer = {
-  id: 'f0e80555-cf97-44ae-afef-9cbfae8c73c7',
-  mediaItemType: linkType
-};
-const twitterLink = {
-  id: 'c3e22950-99b2-4f6e-9696-26117310741f',
-  mediaItemType: linkType
-};
-const file1 = {
-  id: '71cd7e7d-4e86-4b89-a0b4-7f6ffe013c94',
-  mediaItemType: fileType
-};
-const file2 = {
-  id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-  mediaItemType: fileType
-};
-const file3 = {
-  id: 'cee59267-e920-4fc3-b1e9-94235fdb7065',
-  mediaItemType: fileType
-};
-const fileItems = [file1, file2, file3];
+const fileItems = [file1, file2, file3, imageLinkId];
 const styles = {
   border: '1px solid black',
   paddingLeft: 0,
@@ -97,7 +64,7 @@ storiesOf('FilmStrip', {})
         title: 'Single generic link',
         content: <FilmStrip
           context={context}
-          items={[genericLink]}
+          items={[genericLinkId]}
           collectionName={collectionName}
           actions={cardsActions}
         />
@@ -105,7 +72,7 @@ storiesOf('FilmStrip', {})
         title: 'Single player link',
         content: <FilmStrip
           context={context}
-          items={[linkPlayer]}
+          items={[playerLinkId]}
           collectionName={collectionName}
           actions={cardsActions}
         />
@@ -113,7 +80,7 @@ storiesOf('FilmStrip', {})
         title: 'Single twitter link',
         content: <FilmStrip
           context={context}
-          items={[twitterLink]}
+          items={[twitterLinkId]}
           collectionName={collectionName}
           actions={cardsActions}
         />
@@ -121,7 +88,7 @@ storiesOf('FilmStrip', {})
         title: 'Multiple links',
         content: <FilmStrip
           context={context}
-          items={[genericLink, youtubeLink, genericLink, spotifyLink]}
+          items={[genericLinkId, youtubeLinkId, genericLinkId, spotifyLinkId]}
           collectionName={collectionName}
           actions={cardsActions}
         />
@@ -186,13 +153,13 @@ storiesOf('FilmStrip', {})
     />;
     const filmstrip = () => <FilmStrip
       context={context}
-      items={[file1, spotifyLink, file3, file2, trelloLink, twitterLink, linkPlayer, genericLink]}
+      items={[file1, spotifyLinkId, file3, file2, trelloLinkId, twitterLinkId, playerLinkId, genericLinkId]}
       collectionName={collectionName}
       actions={cardsActions}
     />;
     const noFilesFilmstrip = () => <FilmStrip
       context={context}
-      items={[spotifyLink, trelloLink, twitterLink, linkPlayer, genericLink]}
+      items={[spotifyLinkId, trelloLinkId, twitterLinkId, playerLinkId, genericLinkId]}
       collectionName={collectionName}
       actions={cardsActions}
     />;
@@ -248,7 +215,7 @@ storiesOf('FilmStrip', {})
         title: 'Links + files',
         content: <FilmStrip
           context={context}
-          items={[trelloLink, file1, spotifyLink, file2]}
+          items={[trelloLinkId, file1, spotifyLinkId, file2]}
           collectionName={collectionName}
           actions={cardsActions}
         />

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {MediaType} from '@atlaskit/media-core';
-import FileIcon from '@atlaskit/icon/glyph/file';
-import {LoadingWrapper} from './styled';
+import {MediaType, MediaItemType} from '@atlaskit/media-core';
 import {MediaImage} from '../../mediaImage';
+import {CardLoading} from '../../cardLoading';
 
 export interface CardContentProps {
+  mediaItemType?: MediaItemType;
   mediaType?: MediaType;
   dataURI?: string;
   loading?: boolean;
@@ -13,16 +13,20 @@ export interface CardContentProps {
 
 export class CardContent extends Component<CardContentProps, {}> {
   render() {
-    if (this.props.loading) {
-      return <LoadingWrapper>
-               <FileIcon label="loading" size="medium"/>
-             </LoadingWrapper>;
+    const {loading, mediaType, mediaItemType, dataURI} = this.props;
+
+    if (loading) {
+      return <CardLoading mediaItemType={mediaItemType} />;
     }
 
-    if (this.props.mediaType === 'image' && this.props.dataURI) {
-      return <MediaImage dataURI={this.props.dataURI} fadeIn={this.props.loading} />;
+    if (this.shouldDisplayImageThumbnail(dataURI, mediaType)) {
+      return <MediaImage dataURI={dataURI} fadeIn={loading} />;
     } else {
       return null;
     }
+  }
+
+  private shouldDisplayImageThumbnail(dataURI?: string, mediaType?: MediaType): dataURI is string {
+    return !!(mediaType !== 'doc' && dataURI);
   }
 }

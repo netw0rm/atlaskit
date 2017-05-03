@@ -11,11 +11,14 @@ const requestService = (cloudId, userId) => {
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
+      if (userId === '404') {
+        return reject();
+      }
+
       const profile = profiles[userId];
 
       if (!profile) {
-        reject(new Error('Not Found'));
-        return;
+        return reject(new Error('Not Found'));
       }
 
       const weekday = getWeekday();
@@ -26,7 +29,7 @@ const requestService = (cloudId, userId) => {
       data.remoteWeekdayIndex = weekday.index;
       data.remoteWeekdayString = weekday.string;
 
-      resolve(modifyResponse(data));
+      return resolve(modifyResponse(data));
     }, timeout);
   });
 };

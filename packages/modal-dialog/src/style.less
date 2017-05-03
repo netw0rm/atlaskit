@@ -11,8 +11,8 @@
 @width-x-large: 968px;
 
 // Helper function for generating header/content/footer styles
-.panel-background (@topBorderRadius: 0, @bottomBorderRadius: 0) {
-  background-color: white;
+.panel-border-radius (@topBorderRadius: 0, @bottomBorderRadius: 0) {
+  background-color: @ak-color-N0;
   border-top-left-radius: @topBorderRadius;
   border-top-right-radius: @topBorderRadius;
   border-bottom-left-radius: @bottomBorderRadius;
@@ -58,10 +58,11 @@
 .modal-positioner {
   display: flex;
   flex-direction: column;
-  max-width: ~"calc(100% - (2 * @{viewportMargin}))"; // can't use max-height here because of IE11 bug
-  margin: 0 auto;
   height: ~"calc(100% - (2 * @{viewportMargin}))"; // can't use max-height here because of IE11 bug
+  margin: 0 auto;
   margin-top: @viewportMargin;
+  max-height: ~"calc(100% - 1px)"; // The -1px is needed for IE11/Edge.
+  max-width: ~"calc(100% - (2 * @{viewportMargin}))";
   position: relative;
   z-index: @ak-z-index-modal;
 
@@ -70,80 +71,72 @@
   .widthTier(large);
   .widthTier(x-large);
 
+  .modal-container {
+    .panel-border-radius(@grid, @grid);
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+  }
+
   // Background and corners for header
   .header-flex {
+    .modal-shadow();
+    .panel-border-radius(@grid, 0);
     flex: 0 0 auto;
     padding: @grid * 4;
-    .modal-shadow();
-    .panel-background(@grid, 0);
     // TODO: AK-704: animated keylines
-  }
-
-  // Background for middle content
-  .content-flex {
-    flex: 0 1 auto;
-    overflow: auto;
-    box-sizing: border-box;
-    padding: 0 (@grid * 4);
-    position: relative;
-    .panel-background();
-  }
-
-  .without-header {
-    .panel-background(@grid, 0);
-  }
-
-  .without-footer {
-    .panel-background(0, @grid);
-  }
-
-  .without-header.without-footer {
-    .panel-background(@grid, @grid);
   }
 
   // Background and corners for footer
   .footer-flex {
+    .modal-shadow();
+    .panel-border-radius(0, @grid);
     flex: 0 0 auto;
     padding: @grid * 4;
-    .modal-shadow();
-    .panel-background(0, @grid);
     // TODO: AK-704: animated keylines
   }
-}
 
-.with-header {
-  .modal-shadow(inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30);
+  .content-container {
+    flex: 0 1 auto;
+    overflow-y: auto;
+    padding: 0 (@grid * 4);
+    position: relative;
 
-  // This pseudo element hides the top shadow when the scroll position is 0,
-  // then reveals the top shadow once scroll position > 0
-  &:before {
-    background: @ak-color-N0;
-    content: "";
-    display: block;
-    height: @modal-inner-shadow-size;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0px;
+    // Display the keyline shadow when there is a header or footer element
+    &.with-header {
+      .modal-shadow(inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30);
+    }
+
+    &.with-footer {
+      .modal-shadow(inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30);
+    }
+
+    &.with-header.with-footer {
+      .modal-shadow(
+        inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30,
+        inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30
+      );
+    }
+
+    // This element hides the top shadow when the scroll position is 0,
+    // then reveals the top shadow once scroll position > 0
+    .top-keyline-mask {
+      background: @ak-color-N0;
+      content: "";
+      display: block;
+      height: @modal-inner-shadow-size;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .bottom-keyline-mask {
+      background: @ak-color-N0;
+      content: "";
+      display: block;
+      height: @modal-inner-shadow-size;
+      margin-left: unit(@grid * -4, px);
+      margin-right: unit(@grid * -4, px);
+    }
   }
-}
-
-.with-footer {
-  .modal-shadow(inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30);
-
-  &:after {
-    background: @ak-color-N0;
-    content: "";
-    display: block;
-    height: @modal-inner-shadow-size;
-    margin-right: -16px;
-    margin-left: -16px;
-  }
-}
-
-.with-header.with-footer {
-  .modal-shadow(
-    inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30,
-    inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30
-  );
 }

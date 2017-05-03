@@ -106,7 +106,7 @@ export class MediaPluginState {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
           // TODO: re-initialize pickers ?
-          if (this.popupPicker) {
+          if (this.popupPicker && mediaProvider.uploadParams) {
             this.popupPicker.setUploadParams(mediaProvider.uploadParams);
           }
         });
@@ -123,7 +123,9 @@ export class MediaPluginState {
       if (mediaProvider.uploadContext) {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
-          this.initPickers(mediaProvider.uploadParams, uploadContext);
+          if (mediaProvider.uploadParams) {
+            this.initPickers(mediaProvider.uploadParams, uploadContext);
+          }
         });
       } else {
         this.allowsUploads = false;
@@ -368,6 +370,10 @@ export class MediaPluginState {
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
+    if (!this.mediaProvider.uploadParams) {
+      return;
+    }
+
     const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
     const { options, view } = this;
 

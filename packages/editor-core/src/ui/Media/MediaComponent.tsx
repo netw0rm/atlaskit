@@ -5,6 +5,7 @@ import {
   MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
+
 import {
   ContextConfig,
   ContextFactory,
@@ -12,11 +13,12 @@ import {
   CardClick,
   CardDelete,
   FileDetails,
+  MediaProvider,
+  MediaState,
   UrlPreview
 } from '@atlaskit/media-core';
 import { MediaPluginState } from '../../plugins/media';
 
-import { default as MediaProvider, MediaState } from '../../media';
 import { Attributes } from '../../schema/nodes/media';
 import { EditorView, mediaStateKey } from '../../index';
 

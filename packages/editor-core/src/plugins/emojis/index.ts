@@ -1,6 +1,6 @@
 import Keymap from 'browserkeymap';
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
-
+import * as commands from '../../commands';
 import {
   EditorState,
   EditorView,
@@ -22,10 +22,10 @@ export interface Options {
 export class EmojiState {
   emojiProvider: Promise<EmojiProvider>;
   query?: string;
+  enabled = false;
   queryActive = false;
   anchorElement?: HTMLElement;
   keymap: Keymap;
-  blah = 'EmojiPlugin';
 
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
@@ -62,6 +62,12 @@ export class EmojiState {
     const { from, to } = selection;
 
     let dirty = false;
+
+    const newEnabled = this.canAddEmojiToActiveNode();
+    if (newEnabled !== this.enabled) {
+      this.enabled = newEnabled;
+      dirty = true;
+    }
 
     if (doc.rangeHasMark(from - 1, to, emojiQuery)) {
       if (!this.queryActive) {
@@ -118,6 +124,11 @@ export class EmojiState {
     const { schema, selection } = this.state;
     const { emojiQuery } = schema.marks;
     return isMarkAllowedAtPosition(emojiQuery, selection);
+  }
+
+  private canAddEmojiToActiveNode(): boolean {
+    const { emoji } = this.state.schema.marks;
+    return commands.toggleMark(emoji)(this.state);
   }
 
   private findEmojiQueryMark() {

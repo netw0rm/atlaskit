@@ -15,8 +15,9 @@ export interface Props {
 }
 
 export interface State {
-  isOpen: boolean;
   button?: HTMLElement;
+  disabled?: boolean;
+  isOpen: boolean;
 }
 
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
@@ -28,10 +29,15 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.state.button = ReactDOM.findDOMNode(this.refs.button) as HTMLElement;
+    this.props.pluginState.subscribe(this.handlePluginStateChange);
+  }
+
+  componentWillUnmount() {
+    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
   render() {
-    const { isOpen, button } = this.state;
+    const { button, disabled, isOpen } = this.state;
 
     let position: 'above' | 'below' = 'above';
     if (button) {
@@ -45,6 +51,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       <span className={styles.outerContainer}>
         <ToolbarButton
           selected={isOpen}
+          disabled={disabled}
           onClick={this.toggleOpen}
           title={'Emoji'}
           iconBefore={<EmojiIcon label="Emoji" />}
@@ -65,6 +72,12 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     );
   }
 
+  private handlePluginStateChange = (pluginState: EmojiState) => {
+    this.setState({
+      disabled: !pluginState.enabled
+    });
+  }
+
   private onPickerRef = (ref: any) => {
     if (ref) {
       document.addEventListener('click', this.handleClickOutside);
@@ -74,19 +87,10 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     this.pickerRef = ref;
   }
 
-  @analytics('atlassian.editor.emoji.button')
-  private handleSelectedEmoji = (emojiId: any, emoji: any) => {
-    if (this.state.isOpen) {
-      this.props.pluginState.insertEmoji(emojiId);
-      this.close();
-    }
-  }
-
-  private handleClickOutside = (e) => {
-    const picker = ReactDOM.findDOMNode(this.pickerRef);
-    if (!picker || !picker.contains(e.target)) {
-      this.close();
-    }
+  private close = () => {
+    this.setState({
+      isOpen: false,
+    });
   }
 
   private toggleOpen = () => {
@@ -96,10 +100,18 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     });
   }
 
-  private close = () => {
-    this.setState({
-      isOpen: false,
-    });
+  private handleClickOutside = (e) => {
+    const picker = ReactDOM.findDOMNode(this.pickerRef);
+    if (!picker || !picker.contains(e.target)) {
+      this.close();
+    }
   }
 
+  @analytics('atlassian.editor.emoji.button')
+  private handleSelectedEmoji = (emojiId: any, emoji: any) => {
+    if (this.state.isOpen) {
+      this.props.pluginState.insertEmoji(emojiId);
+      this.close();
+    }
+  }
 }

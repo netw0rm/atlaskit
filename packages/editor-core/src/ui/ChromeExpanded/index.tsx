@@ -23,13 +23,13 @@ import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
 import ToolbarButton from '../ToolbarButton';
+import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
-import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
 

@@ -40,13 +40,13 @@ export interface State extends MediaState {
 function mapMediaStatusIntoCardStatus(state: MediaState) {
   switch (state.status) {
     case 'ready':
-    case 'unknown':
       return 'complete';
 
     case 'processing':
     case 'unfinalized':
       return 'processing';
 
+    case 'unknown':
     case 'uploading':
       // TODO: change this to uploading. Currently media-card doesn't have a concept of uploading
       // Because of this progressbar is shown only for "complete" status
@@ -55,7 +55,6 @@ function mapMediaStatusIntoCardStatus(state: MediaState) {
 
     // default case is to let TypeScript know that this function always returns a string
     case 'error':
-    case 'unknown':
     default:
       return 'error';
   }

@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 import { chaiPlugin, sendKeyToPm } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { mount, ReactWrapper } from 'enzyme';
 import Editor from '../src';
+import * as api from '../src';
 
 chai.use(chaiPlugin);
 
@@ -51,7 +52,13 @@ describe('@atlaskit/editor-hipchat', () => {
   let editorWrapper: ReactWrapper<any, any>;
 
   afterEach(() => {
-    editorWrapper.unmount();
+    if (editorWrapper) {
+      editorWrapper.unmount();
+    }
+  });
+
+  it('should export schema', () => {
+    expect(api).to.have.property('schema');
   });
 
   describe('Keymap', () => {

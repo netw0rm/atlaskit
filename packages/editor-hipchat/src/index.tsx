@@ -47,6 +47,8 @@ export type Doc = {
   content?: any[]
 };
 
+export { schema };
+
 export interface Props {
   id?: string;
   maxContentSize?: number;

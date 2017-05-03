@@ -23,6 +23,8 @@ describe(name, () => {
         'denormaliseEmojiServiceResponse',
         'toEmojiId',
         'toOptionalEmojiId',
+        'emojiPickerWidth',
+        'emojiPickerHeight',
         'default',
       ]);
     });

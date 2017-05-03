@@ -65,10 +65,16 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
             required={false}
             onChange={this.onChange}
             value={query}
-            ref={input => input && input.focus()}
+            ref={this.handleInputRef}
           />
         </AkFieldBase>
       </div>
     );
+  }
+
+  private handleInputRef = (input) => {
+    if (input) {
+      input.focus();
+    }
   }
 }

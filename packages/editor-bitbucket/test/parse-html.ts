@@ -16,13 +16,13 @@ const pre = code_block();
 // Based on https://bitbucket.org/tutorials/markdowndemo
 describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
   describe('block elements', () => {
-    it('should support level 1 to 5 headings', () => {
+    it('should support level 1 to 6 headings', () => {
       expect(parse('<h1>text</h1>')).to.deep.equal(doc(h1('text')));
       expect(parse('<h2>text</h2>')).to.deep.equal(doc(h2('text')));
       expect(parse('<h3>text</h3>')).to.deep.equal(doc(h3('text')));
       expect(parse('<h4>text</h4>')).to.deep.equal(doc(h4('text')));
       expect(parse('<h5>text</h5>')).to.deep.equal(doc(h5('text')));
-      expect(parse('<h5>text</h6>')).to.deep.equal(doc(h6('text')));
+      expect(parse('<h6>text</h6>')).to.deep.equal(doc(h6('text')));
     });
 
     it('should support paragraphs', () => {

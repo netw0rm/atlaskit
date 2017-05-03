@@ -99,12 +99,15 @@ storiesOf(`${name}/ResourcedEmoji`, module)
       }
     };
 
+    const handleStandardRef = (ref) => { loadStandardRef = ref; };
+    const handleAtlassianRef = (ref) => { loadAtlassianRef = ref; };
+
     return (
       <div>
         <SampleEmojis emojiProvider={Promise.resolve(emojiResource)} />
         <div>
-          <button onClick={loadStandard} ref={(ref) => { loadStandardRef = ref; }}>Load Standard Emojis</button>
-          <button onClick={loadAtlassian} ref={(ref) => { loadAtlassianRef = ref; }}>Load Atlassian Emojis</button>
+          <button onClick={loadStandard} ref={handleStandardRef}>Load Standard Emojis</button>
+          <button onClick={loadAtlassian} ref={handleAtlassianRef}>Load Atlassian Emojis</button>
         </div>
       </div>
     );

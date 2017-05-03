@@ -56,35 +56,12 @@ describe('@atlaskit/editor-hipchat', () => {
 
   describe('Keymap', () => {
 
-    it('should insert new line when user press Shift-Enter', () => {
-      editorWrapper = mount(<Editor />);
-      const editor = editorWrapper.get(0) as any;
-      const { editorView } = editor.state;
-      sendKeyToPm(editorView!, 'Shift-Enter');
-
-      expect(editor.value).to.deep.equal({
-        type: 'doc',
-        version: 1,
-        content: [
-          {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'hardBreak'
-              }
-            ]
-          }
-        ]
-      });
-    });
-
-    it('should trigger onSubmit when user press Enter', () => {
+    it('should trigger onSubmit when user presses Enter', () => {
       const spy = sinon.spy();
       editorWrapper = mount(<Editor onSubmit={spy} />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
       sendKeyToPm(editorView!, 'Enter');
-
       expect(spy.calledWith(editor.value)).to.equal(true);
     });
 
@@ -150,7 +127,7 @@ describe('@atlaskit/editor-hipchat', () => {
     });
 
     describe('.value', () => {
-      it('returns a fabric document', () => {
+      it('returns a Promise which resolves with fabric document', () => {
         expect(editor.value).to.deep.equal({
           type: 'doc',
           version: 1,
@@ -205,26 +182,15 @@ describe('@atlaskit/editor-hipchat', () => {
         expect(editor.documentSize).to.equal(4);
       });
     });
+
+    describe('.showMediaPicker()', () => {
+      it('should be a function', () => {
+        expect(typeof editor.showMediaPicker === 'function').to.equal(true);
+      });
+    });
   });
 
   describe('Legacy-format', () => {
-
-    describe('Keymap', () => {
-
-      it('should insert new line when user press Shift-Enter', () => {
-        editorWrapper = mount(<Editor useLegacyFormat={true} />);
-        const editor = editorWrapper.get(0) as any;
-        const { editorView } = editor.state;
-        sendKeyToPm(editorView!, 'Shift-Enter');
-
-        expect(editor.value).to.deep.equal([{
-          type: 'text',
-          text: '\n',
-          marks: []
-        }]);
-      });
-
-    });
 
     describe('MaxContentSize', () => {
 

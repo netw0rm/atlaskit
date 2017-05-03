@@ -9,6 +9,7 @@ export { mentionQuery } from './marks/mention-query';
 export { subsup } from './marks/subsup';
 
 export { doc } from './nodes/doc';
+export { docCompact } from './nodes/doc';
 export { blockquote } from './nodes/blockquote';
 export { bulletList } from './nodes/bullet-list';
 export { codeBlock } from './nodes/code-block';

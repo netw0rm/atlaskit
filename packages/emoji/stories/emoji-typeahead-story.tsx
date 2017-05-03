@@ -83,11 +83,14 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
       }
     };
 
+    const handleStandardRef = (ref) => { loadStandardRef = ref; };
+    const handleAtlassianRef = (ref) => { loadAtlassianRef = ref; };
+
     return (
       <div style={{ padding: '10px' }} >
         <div style={{ padding: '10px' }}>
-          <button onClick={loadStandard} ref={(ref) => { loadStandardRef = ref; }}>Load Standard Emojis</button>
-          <button onClick={loadAtlassian} ref={(ref) => { loadAtlassianRef = ref; }}>Load Atlassian Emojis</button>
+          <button onClick={loadStandard} ref={handleStandardRef}>Load Standard Emojis</button>
+          <button onClick={loadAtlassian} ref={handleAtlassianRef}>Load Atlassian Emojis</button>
         </div>
         <EmojiTextInput
           label="Emoji search"

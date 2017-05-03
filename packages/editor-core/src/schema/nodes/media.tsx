@@ -92,6 +92,7 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
     <WithProviders
       providers={['mediaProvider']}
       providerFactory={providerFactory}
+      // tslint:disable-next-line:jsx-no-lambda
       renderNode={providers =>
         <MediaComponent
           mediaProvider={providers['mediaProvider']}

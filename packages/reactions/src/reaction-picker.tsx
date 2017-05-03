@@ -1,3 +1,4 @@
+import Button from '@atlaskit/button';
 import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import { EditorMoreIcon } from '@atlaskit/icon';
 import {
@@ -21,6 +22,7 @@ export interface Props {
   boundariesElement?: string;
   className?: string;
   allowAllEmojis?: boolean;
+  text?: string;
 }
 
 export interface State {
@@ -60,7 +62,7 @@ const moreButtonStyle = style({
 
 export default class ReactionPicker extends PureComponent<Props, State> {
 
-  private trigger?: Trigger;
+  private trigger?: Trigger | Button;
 
   constructor(props) {
     super(props);
@@ -175,6 +177,36 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     );
   }
 
+  private renderTrigger() {
+    const { text, miniMode } = this.props;
+
+    if (text) {
+      return (
+        <Button
+          appearance="subtle-link"
+          spacing="none"
+          type="button"
+          onClick={this.onTriggerClick}
+          ref={this.handleTriggerRef}
+        >
+          {text}
+        </Button>
+      );
+    }
+
+    return (
+      <Trigger
+        onClick={this.onTriggerClick}
+        miniMode={miniMode}
+        ref={this.handleTriggerRef}
+      />
+    );
+  }
+
+  private handleTriggerRef = (ref) => {
+    this.trigger = ref;
+  }
+
   render() {
     const { isOpen } = this.state;
     const { miniMode } = this.props;
@@ -185,14 +217,9 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
     return (
       <div className={classNames}>
-        <Trigger
-          onClick={this.onTriggerClick}
-          miniMode={miniMode}
-          ref={ref => this.trigger = ref}
-        />
+        {this.renderTrigger()}
         {this.renderPopup()}
       </div>
     );
   }
-
 }

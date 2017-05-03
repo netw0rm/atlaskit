@@ -37,6 +37,59 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
+  getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      const users = [
+        {
+          id: 'oscar',
+          displayName: 'Oscar Wallhult'
+        },
+        {
+          id: 'julien',
+          displayName: 'Julien Michel Hoarau'
+        },
+        {
+          id: 'craig',
+          displayName: 'Craig Petchell'
+        },
+        {
+          id: 'jerome',
+          displayName: 'Jerome Touffe-Blin'
+        },
+      ].slice(0, Math.floor(Math.random() * 3) + 1);
+
+      resolve({
+        ...reaction,
+        users
+      });
+    });
+  }
+
+  fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
+    const { ari, emojiId } = reaction;
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      this
+        .getDetailedReaction(reaction)
+        .then(reactionDetails => {
+          if (!this.cachedReactions[ari]) {
+            this.cachedReactions[ari] = [];
+          }
+
+          const index = findIndex(this.cachedReactions[ari], r => r.emojiId === emojiId);
+
+          setTimeout(() => {
+            if (index !== -1) {
+              this.cachedReactions[ari][index] = reactionDetails;
+            } else {
+              this.cachedReactions[ari].push(reactionDetails);
+            }
+            this.notifyUpdated(ari, this.cachedReactions[ari]);
+            resolve(reactionDetails);
+          }, 1000);
+        });
+    });
+  }
+
   toggleReaction(containerAri: string, ari: string, emojiId: string) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];

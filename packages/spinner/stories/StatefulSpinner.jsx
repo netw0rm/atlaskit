@@ -10,11 +10,12 @@ export default class StatefulSpinner extends PureComponent {
     super(props);
     this.state = {
       active: true,
+      delay: 100,
       state: 'spinning',
     };
   }
 
-  handleClick = () => {
+  handleSpinnerClick = () => {
     this.setState({
       active: !this.state.active,
       state: this.state.active ? 'removing' : 'spinning',
@@ -22,25 +23,44 @@ export default class StatefulSpinner extends PureComponent {
   }
 
   handleOnComplete = () => {
-    this.setState({
-      state: 'completed',
-    });
+    this.setState({ state: 'completed' });
+  }
+
+  handleInputChange = (e) => {
+    this.setState({ delay: Number.parseInt(e.target.value, 10) });
   }
 
   /* eslint-disable jsx-a11y/no-static-element-interactions */
   render() {
     const containerStyles = {
-      display: 'inline-block',
-      padding: '5px',
+      display: 'inline-flex',
+      padding: '10px',
       border: '1px solid',
+    };
+    const inputStyles = {
+      marginLeft: '5px',
+      width: '5em',
+    };
+    const labelStyles = {
+      marginLeft: '10px',
     };
     return (
       <div>
-        <div onClick={this.handleClick} style={containerStyles}>
-          <Spinner isCompleting={!this.state.active} onComplete={this.handleOnComplete} />
+        <div style={containerStyles}>
+          <div onClick={this.handleSpinnerClick}>
+            <Spinner
+              isCompleting={!this.state.active}
+              onComplete={this.handleOnComplete}
+              delay={this.state.delay}
+            />
+          </div>
+          <label htmlFor="delayInput" style={labelStyles} >
+            Delay
+          </label>
+          <input type="number" id="delayInput" style={inputStyles} value={this.state.delay} onChange={this.handleInputChange} />
         </div>
         <div>Click the spinner to see it&#39;s fade in and out animations.</div>
-        <div>There should be a 100ms delay between clicking it and the spinner showing</div>
+        <div>The delay field will modify the delay before the spinner shows.</div>
         <div>
           <code>isCompleting</code> is currently set to <code>{`${!this.state.active}`}</code>
         </div>

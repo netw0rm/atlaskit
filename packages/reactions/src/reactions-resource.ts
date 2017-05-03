@@ -11,6 +11,12 @@ export interface ReactionSummary {
   emojiId: string;
   count: number;
   reacted: boolean;
+  users?: User[];
+}
+
+export interface User {
+  id: string;
+  displayName: string;
 }
 
 export interface Listener {
@@ -23,9 +29,11 @@ export interface Reactions {
 
 export interface ReactionsProvider {
   getReactions(aris: string[]): Promise<Reactions>;
+  getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary>;
   toggleReaction(containerAri: string, ari: string, emojiId: string);
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary>;
   notifyUpdated(ari: string, state: ReactionSummary[]): void;
   subscribe(ari: string, handler: Function): void;
   unsubscribe(ari: string, handler: Function): void;
@@ -63,10 +71,21 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     }, autoPollInterval);
   }
 
-
   getReactions(aris: string[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
       resolve({});
+    });
+  }
+
+  getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      reject();
+    });
+  }
+
+  fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      reject();
     });
   }
 
@@ -279,6 +298,38 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
       headers.append('Authorization', this.config.sessionToken);
     }
     return headers;
+  }
+
+  getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
+    const reactionId = `${reaction.ari}|${reaction.emojiId}`;
+    return requestService<ReactionSummary>(this.config.baseUrl, `reactions?reactionId=${encodeURIComponent(reactionId)}`, {
+      'method': 'GET',
+      'headers': this.getHeaders(),
+      'credentials': 'include'
+    });
+  }
+
+  fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      this
+        .getDetailedReaction(reaction)
+        .then(reactionDetails => {
+          const { ari, emojiId } = reactionDetails;
+          if (!this.cachedReactions[ari]) {
+            this.cachedReactions[ari] = [];
+          }
+
+          const index = findIndex(this.cachedReactions[ari], r => r.emojiId === emojiId);
+          if (index !== -1) {
+            this.cachedReactions[ari][index] = reactionDetails;
+          } else {
+            this.cachedReactions[ari].push(reactionDetails);
+          }
+
+          this.notifyUpdated(ari, this.cachedReactions[ari]);
+          resolve(reactionDetails);
+        });
+    });
   }
 
   getReactions(aris: string[]): Promise<Reactions> {

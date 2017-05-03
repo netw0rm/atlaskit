@@ -100,16 +100,6 @@ describe(name, () => {
           wrapper.find(AkRadio).first().find('input').simulate('change');
           expect(wrapper.state('selectedValue')).to.equal(sampleItems[0].value);
         });
-
-        it('should not update state if preventDefault is called', () => {
-          const wrapper = mount(<FieldRadioGroup
-            items={sampleItems}
-            onRadioChange={e => e.preventDefault()}
-          />);
-          expect(wrapper.state('selectedValue')).to.equal(null);
-          wrapper.find(AkRadio).first().find('input').simulate('change');
-          expect(wrapper.state('selectedValue')).to.equal(null);
-        });
       });
     });
   });

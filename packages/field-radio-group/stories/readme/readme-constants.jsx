@@ -1,7 +1,7 @@
 import { description } from '../../package.json';
 
 export const readmeDescription = `${description}. This is the basic (controlled) version of this component, which does not handle its own state. Supply a callback via the onRadioChange property to update your state when a radio item is selected.`;
-export const readmeDescriptionSmart = `${description}. This is the smart (uncontrolled) version of this component, which handles its own state. You can still supply an onRadioChange handler and call e.preventDefault() to prevent the normal handling (state will not be updated)`;
+export const readmeDescriptionSmart = `${description}. This is the smart (uncontrolled) version of this component, which handles its own state. You can also pass an onRadioChange callback to be notified of state changes (the state will be updated automatically).`;
 
 export const radioGroupPropDescriptions = {
   isRequired: 'Whether the user must select a value before submitting the form.',

@@ -13,9 +13,8 @@ export default (
     items={items}
     label="Pick your favourite color:"
     onRadioChange={(e) => {
-      if (e.target.value === 'yellow') {
-        e.preventDefault();
-      }
+      // We don't need to worry about setting the state here, but we can still do other things
+      console.log(e.target.value);
     }}
   />
 );

@@ -54,9 +54,7 @@ export default class FieldRadioGroup extends PureComponent {
 
   changeHandler = (event) => {
     this.props.onRadioChange(event);
-    if (!event.defaultPrevented) {
-      this.setState({ selectedValue: event.target.value });
-    }
+    this.setState({ selectedValue: event.target.value });
   }
 
   render() {

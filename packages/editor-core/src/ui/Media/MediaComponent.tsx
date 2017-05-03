@@ -46,7 +46,10 @@ function mapMediaStatusIntoCardStatus(state: MediaState) {
       return 'processing';
 
     case 'uploading':
-      return 'loading';
+      // TODO: change this to uploading. Currently media-card doesn't have a concept of uploading
+      // Because of this progressbar is shown only for "complete" status
+      // @see https://jira.atlassian.com/browse/FIL-4175
+      return 'complete';
 
     // default case is to let TypeScript know that this function always returns a string
     case 'error':

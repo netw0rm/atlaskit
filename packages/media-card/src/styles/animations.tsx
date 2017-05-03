@@ -11,6 +11,11 @@ export const fadeInKeyframe = keyframes`
   }
 `;
 
+export const marquee = keyframes`
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+`;
+
 export const fadeIn = `
   animation: ${fadeInKeyframe} .3s ${easeInOutCubic};
 `;

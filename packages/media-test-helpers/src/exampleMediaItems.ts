@@ -37,7 +37,7 @@ export const privateTrelloBoardUrlPreviewId = {
 };
 
 export const videoUrlPreviewId = {
-  url: 'http://techslides.com/demos/sample-videos/small.mp4',
+  url: 'https://media2.giphy.com/media/zAYZOtH5OMhuU/giphy.mp4',
   mediaItemType: linkType
 };
 
@@ -47,7 +47,7 @@ export const imageUrlPreviewId = {
 };
 
 export const audioUrlPreviewId = {
-  url: 'https://devchat.cachefly.net/javascriptjabber/JSJ243_Immutable.js_with_Lee_Byron.mp3',
+  url: 'https://mdn.github.io/voice-change-o-matic/audio/concert-crowd.ogg',
   mediaItemType: linkType
 };
 
@@ -119,7 +119,7 @@ export const genericFileId = {
 };
 
 export const audioFileId = {
-  id: 'a965c8df-1d64-4db8-9de5-16dfa8fd2e12', // mp3 audio
+  id: '801a9bf6-5a09-4af0-bd49-101bb11cafd7', // mp3 audio
   mediaItemType: fileType,
   collectionName
 };

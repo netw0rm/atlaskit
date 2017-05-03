@@ -27,6 +27,8 @@ export interface CardVideoViewState {
 
 export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewState> {
   private dimensions?: CardDimensions;
+  private videoElement: HTMLVideoElement;
+  private playPromise: Promise<void>;
 
   constructor(props: CardVideoViewProps) {
     super(props);
@@ -68,7 +70,7 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
     const {videoSrc} = this.state;
 
     return (
-      <Wrapper onClick={this.makeWidget}>
+      <Wrapper onMouseOver={this.startInlineVideo} onMouseLeave={this.stopInlineVideo} onClick={this.makeWidget}>
         <CardOverlay
           persistent={false}
           mediaName={title}
@@ -77,7 +79,14 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
           actions={actions}
         />
         <PlayButton/>
-        <Video src={videoSrc} preload="metadata" onLoadedMetadata={this.updateVideoDimensions} />
+        <Video
+          innerRef={(ref) => this.videoElement = ref}
+          src={videoSrc}
+          loop
+          muted
+          preload="metadata"
+          onLoadedMetadata={this.updateVideoDimensions}
+        />
       </Wrapper>
     );
   }
@@ -96,7 +105,7 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
           videoName={title}
           onClose={this.handleWidgetClose}
         />
-        <Video src={videoSrc} preload="metadata" controls />
+        <Video autoPlay loop src={videoSrc} preload="metadata" controls />
       </Wrapper>
     );
 
@@ -113,6 +122,14 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
 
   private handleWidgetClose = (): void => {
     Widget.remove();
+  }
+
+  private startInlineVideo = (): void => {
+    this.playPromise = this.videoElement.play();
+  }
+
+  private stopInlineVideo = (): void => {
+    this.playPromise.then(() => this.videoElement.pause());
   }
 }
 

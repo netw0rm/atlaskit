@@ -5,7 +5,7 @@
  */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as Rnd from 'react-rnd';
+import Rnd from 'react-rnd';
 
 import {CardDimensions} from '../../index';
 import {
@@ -18,40 +18,43 @@ import {
 const containerId = 'widget-container';
 
 interface WidgetOptions {
-  id?: number | string;
   dimensions?: CardDimensions;
+  enableResizing?: boolean;
 }
 
 export default class Widget {
-  static add(component, options: WidgetOptions = {id: undefined, dimensions: undefined}) {
-    const dimensions = options.dimensions || {width: undefined, height: undefined};
-    this.renderWidget(component, dimensions);
+  static add(component, options: WidgetOptions = {enableResizing: true, dimensions: undefined}) {
+    this.renderWidget(component, options);
   }
 
   static remove() {
-    this.getContainer().remove();
+    ReactDOM.unmountComponentAtNode(this.getContainer());
   }
 
-  private static renderWidget(activeComponent, dimensions: CardDimensions) {
+  private static renderWidget(activeComponent, options: WidgetOptions) {
+    const {dimensions, enableResizing} = options;
+
     const initialLocationAndDimensions = {
       x: 100,
       y: 100,
       ...dimensions
     };
-
+    const resizingValues = Widget.resizingHash(enableResizing);
     const componentWrapper = (
       <Rnd
-        initial={initialLocationAndDimensions}
+        default={initialLocationAndDimensions}
         style={widgetWrapperStyles}
-        minWidth={120}
-        minHeight={90}
+        minWidth={240}
+        minHeight={180}
         bounds="parent"
         lockAspectRatio
+        enableResizing={resizingValues}
       >
         {activeComponent}
       </Rnd>
     );
 
+    Widget.remove(); // TODO: Don't remove the whole container, find a more performant way of updating it
     ReactDOM.render(componentWrapper, this.getContainer());
   }
 
@@ -77,5 +80,18 @@ export default class Widget {
 
   private static addStylesToContainerForWidget(container: HTMLElement): void {
     container.style.cssText = containerForWidgetStyles;
+  }
+
+  private static resizingHash(visible?: boolean) {
+    return {
+      bottom: visible,
+      bottomLeft: visible,
+      bottomRight: visible,
+      left: visible,
+      right: visible,
+      top: visible,
+      topLeft: visible,
+      topRight: visible
+    };
   }
 }

@@ -124,17 +124,16 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
 
   private isFileDetails(metadata?: FileDetails | LinkDetails | UrlPreview): metadata is FileDetails {
     const details = metadata as LinkDetails | UrlPreview;
-
     return details && details.url === undefined;
   }
 
   render() {
     const {mediaItemType, provider, dataURIService, onLoadingChange, getFileBinary, ...otherProps} = this.props;
     const {metadata, status} = this.state;
-    const {id, mediaType} = this.isFileDetails(metadata) ? metadata : {id: undefined, mediaType: undefined};
-    const videoUrl = mediaType === 'video' && id && getFileBinary
-      ? getFileBinary(id)
-      : undefined;
+    const {id, mediaType: actualMediaType} = this.isFileDetails(metadata) ? metadata : {id: undefined, mediaType: undefined};
+
+    const videoUrl = this.getBinaryUrlPromise({actualMediaType, binaryMediaType: 'video', id});
+    const audioUrl = this.getBinaryUrlPromise({actualMediaType, binaryMediaType: 'audio', id});
 
     return (
       <CardViewWithDataURI
@@ -145,7 +144,18 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         metadata={metadata}
         mediaItemType={mediaItemType}
         videoUrl={videoUrl}
+        audioUrl={audioUrl}
       />
     );
+  }
+
+  private getBinaryUrlPromise = (
+      {binaryMediaType, actualMediaType, id}: {binaryMediaType: string, actualMediaType?: string, id?: string}
+    ) => {
+    const {getFileBinary} = this.props;
+
+    return actualMediaType === binaryMediaType && id && getFileBinary
+      ? getFileBinary(id)
+      : undefined;
   }
 }

@@ -5,14 +5,16 @@ import {CardAction, CardActionType, FileDetails} from '@atlaskit/media-core';
 import {SharedCardProps, CardStatus} from '../..';
 import {FileCardView} from '../cardView';
 import {FileCardViewSmall} from '../cardViewSmall';
-import {CardVideoView, toHumanReadableMediaSize} from '../../utils';
+import {CardVideoView, CardAudioView, toHumanReadableMediaSize} from '../../utils';
 
 export interface FileCardProps extends SharedCardProps {
   readonly status: CardStatus;
   readonly details?: FileDetails;
   readonly progress?: number;
   readonly dataURI?: string;
+
   readonly videoUrl?: Promise<string>;
+  readonly audioUrl?: Promise<string>;
 };
 
 export class FileCard extends Component<FileCardProps, {}> {
@@ -42,7 +44,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {appearance, details, videoUrl} = this.props;
+    const {appearance, details, videoUrl, audioUrl} = this.props;
     const {mediaType} = details || FileCard.defaultDetails;
 
     if (appearance === 'small') {
@@ -55,6 +57,10 @@ export class FileCard extends Component<FileCardProps, {}> {
 
     if (mediaType === 'video' && videoUrl) {
       return this.renderVideoView(videoUrl);
+    }
+
+    if (mediaType === 'audio' && audioUrl) {
+      return this.renderAudioView(audioUrl);
     }
 
     return this.renderImageView();
@@ -113,6 +119,20 @@ export class FileCard extends Component<FileCardProps, {}> {
         videoUrl={videoUrl}
         title={name}
         subtitle={size !== undefined ? toHumanReadableMediaSize(size) : ''}
+      />
+    );
+  }
+  private renderAudioView = (audioUrl: Promise<string>): JSX.Element => {
+    const {details, dataURI, dimensions} = this.props;
+    const {name, size} = details || FileCard.defaultDetails;
+
+    return (
+      <CardAudioView
+        audioUrl={audioUrl}
+        title={name}
+        subtitle={size !== undefined ? toHumanReadableMediaSize(size) : ''}
+        dataURI={dataURI}
+        dimensions={dimensions}
       />
     );
   }

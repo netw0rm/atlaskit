@@ -11,6 +11,7 @@ export interface CardViewProps extends SharedCardProps {
   readonly mediaItemType?: MediaItemType;
   readonly metadata?: MediaItemDetails;
   readonly videoUrl?: Promise<string>;
+  readonly audioUrl?: Promise<string>;
 
   // allow extra props to be passed down to lower views e.g. dataURI to FileCard
   [propName: string]: any;

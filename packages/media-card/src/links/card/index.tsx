@@ -7,7 +7,7 @@ import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
 import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
-import { CardVideoView } from '../../utils';
+import { CardVideoView, CardAudioView } from '../../utils';
 
 export interface LinkCardProps extends SharedCardProps {
   status: CardStatus;
@@ -68,14 +68,24 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     const { title } = this.urlPreview;
     const { type } = file;
 
-    if (type && type.indexOf('video') === 0) {
-      return (
-        <CardVideoView
-          videoUrl={Promise.resolve(file.url)}
-          title={title}
-          subtitle={this.hostName}
-        />
-      );
+    if (type) {
+      if (type.indexOf('video') === 0) {
+        return (
+          <CardVideoView
+            videoUrl={Promise.resolve(file.url)}
+            title={title}
+            subtitle={this.hostName}
+          />
+        );
+      } else if (type.indexOf('audio') === 0) {
+        return (
+          <CardAudioView
+            audioUrl={Promise.resolve(file.url)}
+            title={title}
+            subtitle={this.hostName}
+          />
+        );
+      }
     }
 
     return this.renderGenericLink();

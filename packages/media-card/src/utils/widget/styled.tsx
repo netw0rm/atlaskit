@@ -6,6 +6,7 @@ export const containerForWidgetStyles = `
   width: 100%;
   height: 100%;
   position: fixed;
+  z-index: 2147483647;
   top: 0;
   left: 0;
 

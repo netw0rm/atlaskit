@@ -355,10 +355,13 @@ storiesOf('Card', {})
       }
     ];
 
-    const videoCards = [
+    const mediaCards = [
       {
         title: 'Video',
         content: <Card identifier={videoUrlPreviewId} context={context} />
+      }, {
+        title: 'Audio',
+        content: <Card identifier={audioUrlPreviewId} context={context} />
       }
     ];
 
@@ -389,20 +392,8 @@ storiesOf('Card', {})
       <div>
         <h1 style={{margin: '10px 20px'}}>Link cards</h1>
         <div style={{margin: '20px 40px'}}>
-          <h3>Standard</h3>
-          <StoryList>{standardCards}</StoryList>
-
-          <h3>Error</h3>
-          <StoryList>{errorCards}</StoryList>
-
-          <h3>Video cards</h3>
-          <StoryList>{videoCards}</StoryList>
-
-          <h3>Player cards</h3>
-          <StoryList>{playerCards}</StoryList>
-
-          <h3>Trello cards</h3>
-          <StoryList>{trelloCards}</StoryList>
+          <h3>Media cards</h3>
+          <StoryList>{mediaCards}</StoryList>
         </div>
       </div>
     );

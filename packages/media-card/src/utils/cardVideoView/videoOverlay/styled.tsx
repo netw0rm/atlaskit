@@ -13,7 +13,7 @@ export const Overlay = styled.div`
   transition: .3s opacity ${easeOutCubic};
 
   // display over the top of the video element
-  z-index: 1;
+  z-index: 2;
 
   &:hover {
     opacity: 1;

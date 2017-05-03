@@ -18,6 +18,7 @@ export const Card = styled(Root)`
     display: block;
     height: inherit;
     position: relative;
+    overflow: hidden;
 
     .img-wrapper{
       ${borderRadius}

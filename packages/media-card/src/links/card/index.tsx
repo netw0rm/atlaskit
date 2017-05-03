@@ -121,7 +121,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private renderLinkCardImage(): JSX.Element {
     const { url, title, site } = this.urlPreview;
-    const { dimensions, actions, appearance } = this.props;
+    const { status, dimensions, actions, appearance } = this.props;
     const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return (
@@ -133,7 +133,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         thumbnailUrl={this.thumbnailUrl}
         appearance={appearance}
         dimensions={dimensions}
-        loading={this.isLoading}
+        status={status}
         actions={actions}
         iconUrl={this.iconUrl}
       />

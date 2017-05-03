@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {MediaType, MediaItemType, CardAction} from '@atlaskit/media-core';
+import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
 
 import {getCSSUnitValue} from '../index';
-import {CardDimensions} from '../../index';
+import {CardDimensions, CardProcessingStatus} from '../../index';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
+import {UploadingView} from '../../utils/uploadingView';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;
@@ -16,7 +17,7 @@ export interface CardImageViewProps {
 
   dataURI?: string;
   progress?: number;
-  loading?: boolean;
+  status?: CardProcessingStatus;
 
   dimensions?: CardDimensions;
 
@@ -57,9 +58,14 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return getCSSUnitValue(height);
   }
 
+  isLoading() {
+    const {status} = this.props;
+    return status === 'loading' || status === 'processing';
+  }
+
   render() {
     const cardStyle = {height: this.height, width: this.width};
-    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, loading, selectable, selected, progress} = this.props;
+    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, selectable, selected, progress, status} = this.props;
 
     if (error) {
       return (
@@ -79,8 +85,36 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       );
     }
 
+    if (status === 'uploading') {
+
+      // we need to prevent the card's onClick from being invoked
+      let onCancel;
+      const deleteActions = actions && actions.filter(action => action.type === CardActionType.delete) || [];
+      if (deleteActions.length) {
+        onCancel = event => {
+          event.preventDefault();
+          event.stopPropagation();
+          deleteActions[0].handler();
+        };
+      }
+
+      return (
+        <Wrapper style={cardStyle} className={'card'} onClick={this.onClick}>
+          <div className="wrapper">
+            <UploadingView
+              title={mediaName}
+              progress={progress || 0}
+              dataURI={dataURI}
+              onCancel={onCancel}
+            />
+          </div>
+        </Wrapper>
+      );
+
+    }
+
     const isPersistent = mediaType === 'doc' || !dataURI;
-    const overlay = loading ? false : <CardOverlay
+    const overlay = this.isLoading() ? false : <CardOverlay
       persistent={isPersistent}
       selectable={selectable}
       selected={selected}
@@ -97,7 +131,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
         <div className={'wrapper'}>
           <div className={'img-wrapper'}>
             <CardContent
-              loading={loading}
+              loading={this.isLoading()}
               mediaItemType={mediaItemType}
               mediaType={mediaType}
               dataURI={dataURI}

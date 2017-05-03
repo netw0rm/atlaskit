@@ -10,7 +10,7 @@ export * from './card';
 export * from './cardView';
 export * from './list';
 
-export type CardProcessingStatus = 'loading' | 'processing' | 'complete' | 'error';
+export type CardProcessingStatus = 'uploading' | 'loading' | 'processing' | 'complete' | 'error';
 
 export type CardAppearance = 'auto' | 'small' | 'image' | 'square' | 'horizontal';
 

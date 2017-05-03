@@ -32,7 +32,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {dimensions, selectable, selected, details, dataURI, progress} = this.props;
+    const {status, dimensions, selectable, selected, details, dataURI, progress} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
@@ -60,7 +60,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           mediaName={name}
           mediaType={mediaType}
           mediaSize={size}
-          loading={this.isLoading}
+          status={status}
           actions={this._getActions()}
           onClick={this.onClick}
           progress={progress}

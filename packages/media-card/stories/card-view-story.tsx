@@ -30,6 +30,12 @@ import {
 import {CardAppearance} from '../src';
 import {CardView} from '../src/cardView';
 
+const actions = [
+  {label: 'Open', type: undefined, handler: () => { action('open')(); }},
+  {label: 'Close', type: undefined, handler: () => { action('close')(); }},
+  {label: 'Delete', type: CardActionType.delete, handler: () => { action('delete')(); }}
+];
+
 const createErrorAndLoadingCards = (appearance: CardAppearance, mediaItemType: MediaItemType) => {
   return [
     {
@@ -43,12 +49,6 @@ const createErrorAndLoadingCards = (appearance: CardAppearance, mediaItemType: M
 };
 
 const createMenuActionCards = (appearance: CardAppearance, metadata: MediaItemDetails) => {
-  const actions = [
-    {label: 'Open', type: undefined, handler: () => { action('open')(); }},
-    {label: 'Close', type: undefined, handler: () => { action('close')(); }},
-    {label: 'Delete', type: CardActionType.delete, handler: () => { action('delete')(); }}
-  ];
-
   return [
     {
       title: 'Single menu action',
@@ -164,9 +164,11 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
   // upload progress
   const uploadProgressCards = [
-    {title: '10%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.1} />},
-    {title: '50%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.5} />},
-    {title: '90%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.9} />}
+    {title: '10%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.1} />},
+    {title: '50%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.5} />},
+    {title: '90%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.9} />},
+    {title: 'No dataURI', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} />},
+    {title: 'Delete action', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} actions={actions.filter(a => a.type === CardActionType.delete)} />}
   ];
 
   // selectable
@@ -306,7 +308,6 @@ const generateStoriesForAppearance = (appearance: CardAppearance) => {
 
   return () => (
     <div>
-      <h1 style={{margin: '10px 20px'}}>Small cards</h1>
       <div style={{margin: '20px 40px'}}>
         {fileCardStories}
         {linkCardStories}

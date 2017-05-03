@@ -11,19 +11,18 @@ import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecond
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf([appearanceEnum.global, appearanceEnum.settings]),
+    createIcon: PropTypes.node,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
+    secondaryActions: PropTypes.arrayOf(PropTypes.node),
     searchIcon: PropTypes.node,
     onSearchActivate: PropTypes.func,
     onCreateActivate: PropTypes.func,
-    createIcon: PropTypes.node,
-    secondaryActions: PropTypes.arrayOf(PropTypes.node),
   };
   static defaultProps = {
     appearance: appearanceEnum.global,
     accountItem: null,
-    helpItem: null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
     secondaryActions: [],

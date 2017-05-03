@@ -16,6 +16,8 @@ import { EditorView } from '../../prosemirror';
 
 export interface Props {
   editorView: EditorView;
+  softBlurEditor: () => void;
+  focusEditor: () => void;
   pluginStateTextFormatting?: TextFormattingState | undefined;
   pluginStateClearFormatting?: ClearFormattingState | undefined;
 }
@@ -44,14 +46,22 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   componentDidMount() {
     const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
-    pluginStateTextFormatting && pluginStateTextFormatting.subscribe(this.handlePluginStateTextFormattingChange);
-    pluginStateClearFormatting && pluginStateClearFormatting.subscribe(this.handlePluginStateClearFormattingChange);
+    if (pluginStateTextFormatting) {
+      pluginStateTextFormatting.subscribe(this.handlePluginStateTextFormattingChange);
+    }
+    if (pluginStateClearFormatting) {
+      pluginStateClearFormatting.subscribe(this.handlePluginStateClearFormattingChange);
+    }
   }
 
   componentWillUmount() {
     const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
-    pluginStateTextFormatting && pluginStateTextFormatting.unsubscribe(this.handlePluginStateTextFormattingChange);
-    pluginStateClearFormatting && pluginStateClearFormatting.unsubscribe(this.handlePluginStateClearFormattingChange);
+    if (pluginStateTextFormatting) {
+      pluginStateTextFormatting.unsubscribe(this.handlePluginStateTextFormattingChange);
+    }
+    if (pluginStateClearFormatting) {
+      pluginStateClearFormatting.unsubscribe(this.handlePluginStateClearFormattingChange);
+    }
   }
 
   render() {
@@ -162,6 +172,13 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private toggleOpen = () => {
     const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
     if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
+
+      if (!isOpen) {
+        this.props.softBlurEditor();
+      } else {
+        this.props.focusEditor();
+      }
+
       this.setState({
         isOpen: !isOpen,
       });
@@ -198,7 +215,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleStrikeClick = () => {
     if (!this.state.strikeDisabled) {
       const { pluginStateTextFormatting } = this.props;
-      pluginStateTextFormatting && pluginStateTextFormatting.toggleStrike(this.props.editorView);
+      if (pluginStateTextFormatting) {
+        pluginStateTextFormatting.toggleStrike(this.props.editorView);
+      }
       this.toggleOpen();
     }
   }
@@ -207,7 +226,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleSubscriptClick = () => {
     if (!this.state.subscriptDisabled) {
       const { pluginStateTextFormatting } = this.props;
-      pluginStateTextFormatting && pluginStateTextFormatting.toggleSubscript(this.props.editorView);
+      if (pluginStateTextFormatting) {
+        pluginStateTextFormatting.toggleSubscript(this.props.editorView);
+      }
       this.toggleOpen();
     }
   }
@@ -216,7 +237,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleSuperscriptClick = () => {
     if (!this.state.subscriptDisabled) {
       const { pluginStateTextFormatting } = this.props;
-      pluginStateTextFormatting && pluginStateTextFormatting.toggleSuperscript(this.props.editorView);
+      if (pluginStateTextFormatting) {
+        pluginStateTextFormatting.toggleSuperscript(this.props.editorView);
+      }
       this.toggleOpen();
     }
   }
@@ -225,7 +248,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleCodeClick = () => {
     if (!this.state.codeDisabled) {
       const { pluginStateTextFormatting } = this.props;
-      pluginStateTextFormatting && pluginStateTextFormatting.toggleCode(this.props.editorView);
+      if (pluginStateTextFormatting) {
+        pluginStateTextFormatting.toggleCode(this.props.editorView);
+      }
       this.toggleOpen();
     }
   }
@@ -234,8 +259,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleClearFormattingClick = () => {
     if (!this.state.clearFormattingDisabled) {
       const { pluginStateClearFormatting } = this.props;
-      pluginStateClearFormatting && pluginStateClearFormatting.clearFormatting(this.props.editorView);
+      if (pluginStateClearFormatting) {
+        pluginStateClearFormatting.clearFormatting(this.props.editorView);
+      }
       this.toggleOpen();
     }
   }
-};
+}

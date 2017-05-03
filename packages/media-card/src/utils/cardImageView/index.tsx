@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {CardAction} from '@atlaskit/media-core';
-import {MediaType} from '@atlaskit/media-core';
+import {MediaType, MediaItemType, CardAction} from '@atlaskit/media-core';
 
 import {getCSSUnitValue} from '../index';
 import {CardDimensions} from '../../index';
@@ -10,6 +9,7 @@ import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 
 export interface CardImageViewProps {
+  mediaItemType?: MediaItemType;
   mediaName?: string;
   mediaType?: MediaType;
   subtitle?: string;
@@ -59,7 +59,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
 
   render() {
     const cardStyle = {height: this.height, width: this.width};
-    const {error, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, loading, selectable, selected, progress} = this.props;
+    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, loading, selectable, selected, progress} = this.props;
 
     if (error) {
       return (
@@ -79,7 +79,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       );
     }
 
-    const isPersistent = !(mediaType === 'image' && dataURI);
+    const isPersistent = mediaType === 'doc' || !dataURI;
     const overlay = loading ? false : <CardOverlay
       persistent={isPersistent}
       selectable={selectable}
@@ -98,6 +98,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
           <div className={'img-wrapper'}>
             <CardContent
               loading={loading}
+              mediaItemType={mediaItemType}
               mediaType={mediaType}
               dataURI={dataURI}
             />
@@ -109,7 +110,9 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   onClick = (event: MouseEvent<HTMLDivElement>) => {
-    this.props.onClick && this.props.onClick(event.nativeEvent);
+    if (this.props.onClick) {
+      this.props.onClick(event.nativeEvent);
+    }
   }
 }
 

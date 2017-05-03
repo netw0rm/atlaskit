@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { style } from 'typestyle';
-import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
+import { EmojiProvider } from '@atlaskit/emoji';
 import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
 import { ReactionsProvider, ReactionSummary } from './reactions-resource';
 import { compareEmojiId } from './internal/helpers';
 
 export interface OnEmoji {
-  (emojiId: EmojiId): any;
+  (emojiId: string): any;
 }
 
 export interface Props {
@@ -16,7 +16,9 @@ export interface Props {
   reactionsProvider: ReactionsProvider;
   emojiProvider: Promise<EmojiProvider>;
   onReactionClick: OnEmoji;
+  onReactionHover?: Function;
   boundariesElement?: string;
+  allowAllEmojis?: boolean;
 }
 
 export interface State {
@@ -47,11 +49,18 @@ export default class Reactions extends Component<Props, State> {
     };
   }
 
-  private onEmojiClick = (emojiId: EmojiId) => {
+  private onEmojiClick = (emojiId: string) => {
     this.props.onReactionClick(emojiId);
   }
 
-  componentWillMount() {
+  private onReactionHover = (reaction: ReactionSummary) => {
+    const { onReactionHover } = this.props;
+    if (onReactionHover) {
+      onReactionHover(reaction);
+    }
+  }
+
+  componentDidMount() {
     const { ari, reactionsProvider } = this.props;
     reactionsProvider.subscribe(ari, this.updateState);
   }
@@ -67,8 +76,12 @@ export default class Reactions extends Component<Props, State> {
     });
   }
 
+  private handleReactionPickerSelection = (emojiId) => {
+    this.onEmojiClick(emojiId);
+  }
+
   private renderPicker() {
-    const { emojiProvider, boundariesElement } = this.props;
+    const { emojiProvider, boundariesElement, allowAllEmojis } = this.props;
     const { reactions } = this.state;
 
     if (!reactions.length) {
@@ -78,9 +91,10 @@ export default class Reactions extends Component<Props, State> {
     return (
       <ReactionPicker
         emojiProvider={emojiProvider}
-        onSelection={(emojiId) => this.onEmojiClick(emojiId)}
+        onSelection={this.handleReactionPickerSelection}
         miniMode={true}
         boundariesElement={boundariesElement}
+        allowAllEmojis={allowAllEmojis}
       />
     );
   }
@@ -91,15 +105,18 @@ export default class Reactions extends Component<Props, State> {
 
     return (
       <div className={reactionsStyle}>
-        {reactions.sort((a, b) => compareEmojiId(a.emojiId, b.emojiId)).map(reaction => {
+        {reactions.sort((a, b) => compareEmojiId(a.emojiId, b.emojiId)).map((reaction, index) => {
           const { emojiId } = reaction;
-          const key = emojiId.id || emojiId.shortName;
+          const key = emojiId || `unknown-${index}`;
           return (
             <div style={{ display: 'inline-block' }} key={key}>
               <Reaction
                 reaction={reaction}
                 emojiProvider={emojiProvider}
+                // tslint:disable-next-line:jsx-no-lambda
                 onClick={() => this.onEmojiClick(reaction.emojiId)}
+                // tslint:disable-next-line:jsx-no-lambda
+                onMouseOver={() => this.onReactionHover(reaction)}
               />
             </div>
           );

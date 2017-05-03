@@ -2,6 +2,8 @@ import { EditorProps, Mappable, Node, ResolvedPos } from '../';
 import { EditorState } from './';
 
 export class Selection {
+  constructor($anchor: ResolvedPos, $head: ResolvedPos, ranges?: SelectionRange[]);
+
   from: number;
   to: number;
   $from: ResolvedPos;
@@ -37,4 +39,11 @@ export class NodeSelection extends Selection {
 
   static create(doc: Node, from: number, _2?: number): TextSelection;
   static isSelectable(node: Node): boolean;
+}
+
+export class SelectionRange {
+  constructor($from: ResolvedPos, $to: ResolvedPos);
+
+  $from: ResolvedPos;
+  $to: ResolvedPos;
 }

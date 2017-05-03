@@ -97,18 +97,18 @@ export function isSchemaWithBlockQuotes(schema: JIRASchema): boolean {
 
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   const nodes = {
+    doc,
+    paragraph,
+    text,
     blockquote,
     bulletList,
     codeBlock,
-    doc,
     hardBreak,
     heading,
     listItem,
     mention,
     orderedList,
-    paragraph,
     rule,
-    text,
   };
 
   const marks = {

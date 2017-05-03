@@ -34,9 +34,9 @@ describe('banner', () => {
       it('should default to not being open', () =>
         expect(mount(<Banner />).prop('isOpen')).to.equal(false)
       );
-      it('should apply a max-height of 4em when isOpen', () => {
+      it('should apply a max-height of 52px when isOpen', () => {
         const props = { isOpen: true };
-        expect(getMaxHeight(props)).to.equal('4em');
+        expect(getMaxHeight(props)).to.equal('52px');
       });
     });
   });

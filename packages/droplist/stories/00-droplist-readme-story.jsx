@@ -9,6 +9,10 @@ import DroplistOverviewExample from './examples/DroplistOverview';
 import DroplistOverviewExampleRaw from '!raw!./examples/DroplistOverview';
 import DroplistFitExample from './examples/DroplistFit';
 import DroplistFitExampleRaw from '!raw!./examples/DroplistFit';
+import DroplistOverflowItemsExample from './examples/DroplistOverflowItems';
+import DroplistOverflowItemsExampleRaw from '!raw!./examples/DroplistOverflowItems';
+import DroplistMultilineItemsExample from './examples/DroplistMultilineItems';
+import DroplistMultilineItemsExampleRaw from '!raw!./examples/DroplistMultilineItems';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -61,6 +65,28 @@ storiesOf(name, module)
       </Description>
       <Code>
         {DroplistFitExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Droplist with long items (default behaviour)', () => (
+    <Chrome title={name}>
+      <Description>
+        <p>Droplist with long items (default behaviour).</p>
+        {DroplistOverflowItemsExample}
+      </Description>
+      <Code>
+        {DroplistOverflowItemsExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Droplist with long items with multiline option', () => (
+    <Chrome title={name}>
+      <Description>
+        <p>Droplist with long items with multiline option.</p>
+        {DroplistMultilineItemsExample}
+      </Description>
+      <Code>
+        {DroplistMultilineItemsExampleRaw}
       </Code>
     </Chrome>
   ));

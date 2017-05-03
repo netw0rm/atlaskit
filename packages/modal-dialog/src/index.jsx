@@ -72,37 +72,39 @@ export default class ModalDialog extends PureComponent {
       <div className={styles.modalWrapper}>
         <Blanket isTinted onBlanketClicked={onDialogDismissed} />
         <div
-          className={classNames([
-            styles.modalPositioner,
-            {
-              [styles.small]: width === 'small',
-              [styles.medium]: width === 'medium',
-              [styles.large]: width === 'large',
-              [styles.xLarge]: width === 'x-large',
-            },
-          ])}
+          className={classNames([styles.modalPositioner, {
+            [styles.small]: width === 'small',
+            [styles.medium]: width === 'medium',
+            [styles.large]: width === 'large',
+            [styles.xLarge]: width === 'x-large',
+          }])}
           {...customStyle}
           onClick={this.handlePositionerDirectClick}
         >
-          {
-            header ? <div className={styles.headerFlex}>{header}</div> : null
-          }
-          <div
-            className={classNames([
-              styles.contentFlex,
-              {
+          <div className={styles.modalContainer}>
+            {
+              header ? <div className={styles.headerFlex}>{header}</div> : null
+            }
+            <div
+              className={classNames([styles.contentContainer, {
                 [styles.withHeader]: hasHeader,
                 [styles.withFooter]: hasFooter,
-                [styles.withoutHeader]: !hasHeader,
-                [styles.withoutFooter]: !hasFooter,
-              },
-            ])}
-          >
-            {children}
+              }])}
+            >
+              <div>
+                {
+                  hasHeader ? <div className={styles.topKeylineMask} /> : null
+                }
+                {children}
+                {
+                  hasFooter ? <div className={styles.bottomKeylineMask} /> : null
+                }
+              </div>
+            </div>
+            {
+              footer ? <div className={styles.footerFlex}>{footer}</div> : null
+            }
           </div>
-          {
-            footer ? <div className={styles.footerFlex}>{footer}</div> : null
-          }
         </div>
       </div>
     );

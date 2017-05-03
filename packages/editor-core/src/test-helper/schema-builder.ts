@@ -212,7 +212,7 @@ export function markFactory(type: MarkType, attrs = {}) {
         }
       });
   };
-};
+}
 
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
@@ -230,6 +230,7 @@ export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
 export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
 export const br = sampleSchema.nodes.hardBreak.createChecked();
 export const panel = nodeFactory(sampleSchema.nodes.panel, {});
+export const panelNote = nodeFactory(sampleSchema.nodes.panel, { panelType: 'note' });
 export const plain = nodeFactory(sampleSchema.nodes.plain, {});
 export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
 // tslint:disable-next-line:variable-name
@@ -249,3 +250,12 @@ export const a = (attrs: { href: string, title?: string }) => markFactory(sample
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
+export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
+export const media = (attrs: {
+  id: string;
+  type: 'file' | 'link';
+  collection: string;
+  fileName?: string;
+  fileSize?: number;
+  fileMimeType?: string;
+}) => sampleSchema.nodes.media.create(attrs);

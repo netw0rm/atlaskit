@@ -33,10 +33,10 @@ export default function(node: Node): string {
     node.parentNode.replaceChild(marker, node);
   }
 
-  const fabWrapper = doc.createElementNS(FAB_XMLNS, 'fab:wrapper');
+  const wrapper = doc.createElementNS(XHTML_XMLNS, 'wrapper');
   const acWrapper = doc.createElementNS(AC_XMLNS, 'ac:wrapper');
   const riWrapper = doc.createElementNS(RI_XMLNS, 'ri:wrapper');
-  const wrapper = doc.createElementNS(XHTML_XMLNS, 'wrapper');
+  const fabWrapper = doc.createElementNS(FAB_XMLNS, 'fab:wrapper');
 
   wrapper.appendChild(fabWrapper);
   fabWrapper.appendChild(acWrapper);
@@ -46,14 +46,14 @@ export default function(node: Node): string {
   const wedge = '|';
   const wedgeText = doc.createTextNode(wedge);
   riWrapper.appendChild(wedgeText);
-  const template = (wrapper as any).__outerHTML || wrapper.outerHTML; // NOTE: skatejs-named-slots breaks ".outerHTML" in IE, but keeps desired behaviour as ".__outerHTML".
+  const template = wrapper.outerHTML;
   const prefixLength = template.indexOf(wedge);
   const suffixLength = template.length - prefixLength - wedge.length;
 
   riWrapper.removeChild(wedgeText);
   riWrapper.appendChild(node);
 
-  const wrappedResult = (wrapper as any).__outerHTML || wrapper.outerHTML; // NOTE: skatejs-named-slots breaks ".outerHTML" in IE, but keeps desired behaviour as ".__outerHTML".
+  const wrappedResult = wrapper.outerHTML;
   const result = wrappedResult.slice(prefixLength, wrappedResult.length - suffixLength);
 
   if (marker.parentNode) {

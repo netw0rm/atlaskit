@@ -18,7 +18,7 @@ export interface EmojiResourceConfig {
   providers: ServiceConfig[];
 }
 
-export interface OnEmojiProviderChange extends OnProviderChange<EmojiSearchResult, any, void> {};
+export interface OnEmojiProviderChange extends OnProviderChange<EmojiSearchResult, any, void> {}
 
 export interface Retry<T> {
   (): Promise<T>;

@@ -66,7 +66,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private updatePopupPosition() {
-    this.popper && this.popper.update();
+    if (this.popper) {
+      this.popper.update();
+    }
   }
 
   componentWillMount() {
@@ -99,7 +101,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     this.unsubscribeResourceProvider(this.state.mentionsProvider);
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
     document.removeEventListener('click', this.handleClickOutside);
-    this.popper && this.popper.destroy();
+    if (this.popper) {
+      this.popper.destroy();
+    }
   }
 
   extractStyles = (state: any) => {
@@ -181,7 +185,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
     return (
       <div
-        ref={ref => { this.content = ref;}}
+        ref={this.handleContentRef}
         style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
       >
         <AkMentionPicker
@@ -189,10 +193,18 @@ export default class MentionPicker extends PureComponent<Props, State> {
           presenceProvider={this.props.presenceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
-          ref={ref => { this.picker = ref;}}
+          ref={this.handleMentionPickerRef}
         />
       </div>
     );
+  }
+
+  private handleContentRef = (ref) => {
+    this.content = ref;
+  }
+
+  private handleMentionPickerRef = (ref) => {
+    this.picker = ref;
   }
 
   private handleSelectedMention = (mention: any) => {

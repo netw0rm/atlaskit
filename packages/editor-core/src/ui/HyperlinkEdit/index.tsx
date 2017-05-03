@@ -19,6 +19,8 @@ export interface State {
   // URL of the hyperlink. The presence of this attribute causes an "open"
   // hyperlink to be rendered in the popup.
   href?: string;
+  // Href before editing
+  oldHref?: string;
   // Surprisingly not all hyperlinks can be unlinked. For example when the
   // storage format is Markdown, you can't represent some a URL as plain text
   // using standard markdown syntax alone.
@@ -27,8 +29,8 @@ export interface State {
   textInputValue?: string;
   editorFocused?: boolean;
   inputActive?: boolean;
-  autoFocusInput?: boolean;
   active?: boolean;
+  showToolbarPanel?: boolean;
 }
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
@@ -37,11 +39,9 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     unlinkable: true,
     editorFocused: false,
     inputActive: false,
-    autoFocusInput: false,
     active: false,
+    showToolbarPanel: false,
   };
-
-  textInput?: PanelTextInput;
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -63,16 +63,31 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     });
   }
 
-  render() {
-    const { href, target, unlinkable, active, editorFocused, inputActive, autoFocusInput } = this.state;
+  updatePosition = () => {
+    const { pluginState } = this.props;
+    if (!pluginState.active) {
+      return pluginState.getCoordniates(this.props.editorView);
+    }
+  }
 
-    if (active && (editorFocused || inputActive)) {
+  render() {
+    const {
+      href, target, unlinkable, active,
+      editorFocused, inputActive, showToolbarPanel
+    } = this.state;
+
+    if ((active || showToolbarPanel) && (editorFocused || inputActive)) {
       const showOpenButton = !!href;
-      const showUnlinkButton = unlinkable;
+      const showUnlinkButton = unlinkable && active && href;
       const showSeparator = showOpenButton || showUnlinkButton;
 
       return (
-        <FloatingToolbar target={target} align="left" autoPosition>
+        <FloatingToolbar
+          target={target}
+          align="left"
+          onExtractStyle={this.updatePosition}
+          autoPosition={true}
+        >
           <div className={styles.container}>
             {!showOpenButton ? null :
               <ToolbarButton
@@ -98,13 +113,12 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
             }
             <PanelTextInput
               placeholder="Link address"
-              autoFocus={autoFocusInput}
+              autoFocus={!href || href.length === 0}
               defaultValue={href}
-              onSubmit={this.updateHref}
+              onSubmit={this.handleSubmit}
               onChange={this.updateHref}
               onMouseDown={this.setInputActive}
               onBlur={this.handleOnBlur}
-              ref={ref => {this.textInput = ref;}}
             />
           </div>
         </FloatingToolbar>
@@ -112,6 +126,20 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     } else {
       return null;
     }
+  }
+
+  // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue
+  private handleOnBlur = () => {
+    const { editorView, pluginState } = this.props;
+    const { href = '' } = this.state;
+    if (editorView.state.selection.empty && !pluginState.active) {
+      pluginState.hideLinkPanel();
+    } else if (!href || href.length === 0) {
+      pluginState.removeLink(editorView);
+    } else {
+      pluginState.updateLink({ href }, editorView);
+    }
+    this.resetInputActive();
   }
 
   private handleUnlink = () => {
@@ -126,23 +154,25 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       active: pluginState.active,
       target: pluginState.element,
       href: pluginState.href,
+      oldHref: pluginState.href,
       textInputValue: pluginState.text,
       editorFocused: pluginState.editorFocused,
       inputActive: hrefNotPreset || inputActive,
-      autoFocusInput: hrefNotPreset,
+      showToolbarPanel: pluginState.showToolbarPanel,
     });
   }
 
   private updateHref = (href: string) => {
-    this.props.pluginState.updateLink({ href }, this.props.editorView);
+    this.setState({ href });
   }
 
-  // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue
-  handleOnBlur = () => {
-    const { href } = this.state;
-    if (!href || href.length === 0) {
-      this.handleUnlink();
+  private handleSubmit = (href: string) => {
+    const { editorView, pluginState } = this.props;
+    if (this.state.oldHref) {
+      pluginState.updateLink({ href }, editorView);
+    } else {
+      pluginState.addLink({ href }, editorView);
     }
-    this.resetInputActive();
+    editorView.focus();
   }
-};
+}

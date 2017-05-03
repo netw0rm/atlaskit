@@ -29,6 +29,12 @@ import commentLayoutComponent from '../src/layout/CommentLayout';
 import commentLayoutComponentSource from '!raw!../src/layout/CommentLayout';
 import commentLayoutOverview from './examples/CommentLayoutExample';
 import commentLayoutOverviewSource from '!raw!./examples/CommentLayoutExample';
+
+import commentEditedComponent from '../src/CommentEdited';
+import commentEditedComponentSource from '!raw!../src/CommentEdited';
+import commentEditedOverview from './examples/CommentEditedExample';
+import commentEditedOverviewSource from '!raw!./examples/CommentEditedExample';
+
 /* eslint-enable import/no-duplicates, import/first */
 
 storiesOf(name, module)
@@ -79,6 +85,16 @@ storiesOf(name, module)
       componentSource={commentLayoutComponentSource}
       example={commentLayoutOverview}
       exampleSource={commentLayoutOverviewSource}
+      description={description}
+    />
+  ))
+  .add('📖 CommentEdited readme', () => (
+    <Readme
+      name={name}
+      component={commentEditedComponent}
+      componentSource={commentEditedComponentSource}
+      example={commentEditedOverview}
+      exampleSource={commentEditedOverviewSource}
       description={description}
     />
   ))

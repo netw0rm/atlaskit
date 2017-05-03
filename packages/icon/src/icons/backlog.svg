@@ -4,7 +4,7 @@
     <title>backlog</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global" stroke="none" stroke-width="1" fill-rule="evenodd">
         <g id="backlog" fill-rule="nonzero" fill="currentColor">
             <g>
                 <path d="M5,19.0018278 C4.99999698,19.0001399 17,19 17,19 L17,16.9981722 C17.000003,16.9998601 5,17 5,17 L5,19.0018278 Z M3,16.9979131 C3,15.8944962 3.89451376,15 4.99406028,15 L17.0059397,15 C18.1072288,15 19,15.8982606 19,16.9979131 L19,19.0020869 C19,20.1055038 18.1054862,21 17.0059397,21 L4.99406028,21 C3.8927712,21 3,20.1017394 3,19.0020869 L3,16.9979131 Z" id="Rectangle-Copy"></path>

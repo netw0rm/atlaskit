@@ -5,10 +5,10 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
 import {CardAction, MediaItem, MediaItemDetails} from '@atlaskit/media-core';
 
-export * from './files';
-export * from './list';
-export * from './links';
+// the only components we expose to consumers is Card, CardView and CardList
 export * from './card';
+export * from './cardView';
+export * from './list';
 
 export type CardProcessingStatus = 'loading' | 'processing' | 'complete' | 'error';
 
@@ -43,11 +43,9 @@ export interface OnLoadingChangeFunc {
 
 export interface SharedCardProps {
   readonly appearance?: CardAppearance;
-
   readonly dimensions?: CardDimensions;
 
   readonly actions?: Array<CardAction>;
-
   readonly selectable?: boolean;
   readonly selected?: boolean;
 }

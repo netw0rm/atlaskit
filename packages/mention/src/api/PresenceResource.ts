@@ -113,9 +113,9 @@ class PresenceResource extends AbstractPresenceResource {
 
   private queryDirectoryForPresences(userIds: string[]): Promise<Response> {
     let data = {
-      query: `query getPresenceForMentions($organizationId: String!, $userIds: [String!], $productId: String) { 
-                PresenceBulk(organizationId: $organizationId, product: $productId, userIds: $userIds) { 
-                  userId 
+      query: `query getPresenceForMentions($organizationId: String!, $userIds: [String!], $productId: String) {
+                PresenceBulk(organizationId: $organizationId, product: $productId, userIds: $userIds) {
+                  userId
                   state
                 }
               }`,

@@ -27,12 +27,12 @@ export const SmallAvatarImage = styled(AvatarImage)`
 
 export const PredefinedAvatarViewWrapper = styled.div`
   ul {
-    display: flex; 
+    display: flex;
     flex-flow: row wrap;
-    
+
     padding: 0;
     margin: 0;
-    
+
     list-style-type: none;
 
     li {
@@ -42,38 +42,38 @@ export const PredefinedAvatarViewWrapper = styled.div`
       margin: 0px;
     }
   }
-  
+
   .header {
       display: flex;
       align-items: center;
-      
+
       padding-top: 4px;
       padding-bottom: 8px;
-      
+
       .description {
         padding-left: 8px;
       }
-  
+
       .back-button {
         width: 32px;
         height: 32px;
         border-radius: 16px;
-        
+
         align-items: center;
         justify-content: center;
-        
+
         margin: 0px;
         padding: 0px;
       }
   }
-  
+
   // hide tickbox and file type icon in overlay
   // because those are not necessary for avatars
-  
+
   .tickbox {
     visibility: hidden;
   }
-  
+
   .file-type-icon {
     visibility: hidden;
   }

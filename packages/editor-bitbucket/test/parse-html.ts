@@ -5,7 +5,7 @@ import { parseHtml as parse } from '../src/parse-html';
 import schema from '../src/schema';
 import {
   a, blockquote, code_block, doc, h1, h2,
-  h3, h4, h5, hr, img, li, emoji, mention,
+  h3, h4, h5, h6, hr, img, li, emoji, mention,
   code, ol, p, strong, ul
 } from './_schema-builder';
 
@@ -16,12 +16,13 @@ const pre = code_block();
 // Based on https://bitbucket.org/tutorials/markdowndemo
 describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
   describe('block elements', () => {
-    it('should support level 1 to 5 headings', () => {
+    it('should support level 1 to 6 headings', () => {
       expect(parse('<h1>text</h1>')).to.deep.equal(doc(h1('text')));
       expect(parse('<h2>text</h2>')).to.deep.equal(doc(h2('text')));
       expect(parse('<h3>text</h3>')).to.deep.equal(doc(h3('text')));
       expect(parse('<h4>text</h4>')).to.deep.equal(doc(h4('text')));
       expect(parse('<h5>text</h5>')).to.deep.equal(doc(h5('text')));
+      expect(parse('<h6>text</h6>')).to.deep.equal(doc(h6('text')));
     });
 
     it('should support paragraphs', () => {
@@ -38,7 +39,7 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
 
     it('should support images', () => {
       const parsed = parse('<p><img alt="Alt text" src="http://path/to/image.jpg"></p>');
-      expect(parsed).to.deep.equal(doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text', title: '' }))));
+      expect(parsed).to.deep.equal(doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text' }))));
     });
   });
 

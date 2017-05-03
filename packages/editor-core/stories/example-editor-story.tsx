@@ -72,6 +72,10 @@ class DemoEditor extends React.PureComponent<Props, State> {
     }
   }
 
+  private handleEditorRef = (ref) => {
+    this.editorRef = ref;
+  }
+
   render() {
     const { mentionProvider, emojiProvider, jsonDocument } = this.state;
     return (
@@ -84,8 +88,8 @@ class DemoEditor extends React.PureComponent<Props, State> {
           onChange={this.props.onChange}
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
-          isExpandedByDefault
-          ref={(ref) => { this.editorRef = ref; }}
+          isExpandedByDefault={true}
+          ref={this.handleEditorRef}
         />
         <div>
           <br />

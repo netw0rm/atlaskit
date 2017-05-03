@@ -27,11 +27,15 @@ export default class Scrollable extends PureComponent<Props, undefined> {
     }
   }
 
+  private handleRef = (ref) => {
+    this.scrollableDiv = ref;
+  }
+
   render() {
     return (
       <div
         className={styles.akScrollable}
-        ref={(ref) => { this.scrollableDiv = ref; }}
+        ref={this.handleRef}
       >
         {this.props.children}
       </div>

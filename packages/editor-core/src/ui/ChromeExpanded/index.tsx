@@ -70,10 +70,12 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
     saveDisabled: false,
   };
 
+  private handleSpinnerComplete() {}
+
   render() {
     const { props } = this;
     const iconAfter = props.saveDisabled
-      ? <Spinner isCompleting={false} onComplete={() => { }} />
+      ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
 
     const saveButtonAppearance = props.saveDisabled

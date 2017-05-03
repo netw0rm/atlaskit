@@ -15,6 +15,7 @@ import { name } from '../package.json';
 const CANCEL_ACTION = () => action('Cancel')();
 const CHANGE_ACTION = () => action('Change')();
 const SAVE_ACTION = () => action('Save')();
+const NOOP = () => {};
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
@@ -90,44 +91,63 @@ storiesOf(name, module)
     />
   )
   .add('With attaching/detaching', () => {
-    let ref: Node;
-    let editor;
-    return (
-      <div>
-        <div id="editor">
-          <div ref={(elem) => ref = elem as Node}>
-            <Editor
-              ref={(e) => editor = e}
-              onCancel={() => (ref.parentNode as Node).removeChild(ref)}
-              onChange={CHANGE_ACTION}
-              onSave={SAVE_ACTION}
-              isExpandedByDefault={true}
-            />
+    class Story extends React.Component<{}, {}> {
+      private ref: Node;
+      private editor;
+
+      render () {
+        return (
+          <div>
+            <div id="editor">
+              <div ref={this.handleDivRef}>
+                <Editor
+                  ref={this.handleEditorRef}
+                  onCancel={this.handleEditorCancel}
+                  onChange={CHANGE_ACTION}
+                  onSave={SAVE_ACTION}
+                  isExpandedByDefault={true}
+                />
+              </div>
+            </div>
+            <button onClick={this.handleButtonClick}>Attach</button>
           </div>
-        </div>
-        <button
-          onClick={() => {
-            (document.getElementById('editor') as Node).appendChild(ref);
-            if (editor) {
-              editor.clear();
-            }
-          }}
-        >
-          Attach
-        </button>
-      </div>
-    );
+        );
+      }
+
+      private handleDivRef = (elem) => {
+        this.ref = elem as Node;
+      }
+
+      private handleEditorRef = (elem) => {
+        this.editor = elem;
+      }
+
+      private handleEditorCancel = () => {
+        (this.ref.parentNode as Node).removeChild(this.ref);
+      }
+
+      private handleButtonClick = () => {
+        (document.getElementById('editor') as Node).appendChild(this.ref);
+        if (this.editor) {
+          this.editor.clear();
+        }
+      }
+    }
+
+    return <Story />;
   })
   .add('Analytics events', () => {
+    const analyticsHandler = (actionName, props) => action(actionName)(props);
+
     return (
       <div>
         <h5 style={{ marginBottom: 20 }}>Interact with the editor and observe analytics events in the Action Logger below</h5>
         <Editor
           placeholder="Click me to expand ..."
-          analyticsHandler={(actionName, props) => action(actionName)(props)}
-          onSave={() => { }}
-          onCancel={() => { }}
-          imageUploadHandler={() => { }}
+          analyticsHandler={analyticsHandler}
+          onSave={NOOP}
+          onCancel={NOOP}
+          imageUploadHandler={NOOP}
         />
       </div>
     );

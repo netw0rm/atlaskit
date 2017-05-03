@@ -22,7 +22,7 @@ export interface Options {
 export class EmojiState {
   emojiProvider: Promise<EmojiProvider>;
   query?: string;
-  enabled = false;
+  enabled = true;
   queryActive = false;
   anchorElement?: HTMLElement;
   keymap: Keymap;

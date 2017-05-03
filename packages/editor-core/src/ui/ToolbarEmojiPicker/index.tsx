@@ -40,11 +40,14 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     const { button, disabled, isOpen } = this.state;
 
     let position: 'above' | 'below' = 'above';
+    let offsetX: number = 0;
+    const offsetY: number = 8;
     if (button) {
       const box = button.getBoundingClientRect();
       if (box.top - emojiPickerHeight < 0 && box.bottom + emojiPickerHeight <= window.innerHeight) {
         position = 'below';
       }
+      offsetX = box.right - emojiPickerWidth/2 - window.innerWidth;
     }
 
     return (
@@ -53,7 +56,6 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
           selected={isOpen}
           disabled={disabled}
           onClick={this.toggleOpen}
-          title={'Emoji'}
           iconBefore={<EmojiIcon label="Emoji" />}
           ref="button"
         />
@@ -63,7 +65,8 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
             onSelection={this.handleSelectedEmoji}
             target={button}
             position={position}
-            offsetX={-1 * emojiPickerWidth}
+            offsetX={offsetX}
+            offsetY={offsetY}
             zIndex={akZIndexModal}
             onPickerRef={this.onPickerRef}
           />

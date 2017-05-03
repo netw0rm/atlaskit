@@ -50,9 +50,9 @@ const browsers = (() => {
       temp.forEach(key => (customLaunchers[key].base = 'BrowserStack'));
       return temp;
     }
-    return require('karma-chrome-launcher');
+    return [require('karma-chrome-launcher')];
   }
-  return require('karma-jsdom-launcher');
+  return [require('karma-jsdom-launcher')];
 })();
 
 module.exports = {

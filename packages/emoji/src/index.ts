@@ -8,6 +8,7 @@ import { AbstractResource } from './api/SharedResources';
 import EmojiRepository, { EmojiSearchResult } from './api/EmojiRepository';
 import EmojiLoader, { denormaliseEmojiServiceResponse } from './api/EmojiLoader';
 import { toEmojiId, toOptionalEmojiId } from './type-helpers';
+import { emojiPickerWidth, emojiPickerHeight } from './shared-styles';
 
 export {
   // Classes
@@ -27,6 +28,8 @@ export {
   // interfaces
   EmojiProvider,
   EmojiSearchResult,
+  emojiPickerWidth,
+  emojiPickerHeight
 };
 
 export * from './types';

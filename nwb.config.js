@@ -9,6 +9,7 @@ const camelcase = require('camelcase');
 
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
+const isInCi = true;
 
 const runInRealBrowsers = [
   // TODO These should actually be run through BrowserStack in CI.
@@ -17,6 +18,42 @@ const runInRealBrowsers = [
   // TODO Visibility test fails in JSDOM.
   /util-common-test/,
 ];
+
+const customLaunchers = {
+  ie: {
+    browser: 'ie',
+    os: 'WINDOWS',
+    os_version: '8.1',
+    browser_version: '11',
+  },
+  iphone: {
+    os: 'ios',
+    os_version: '9.1',
+    device: 'iPhone 6S',
+  },
+  chrome: {
+    browser: 'chrome',
+    os: 'WINDOWS',
+    os_version: '10',
+  },
+  firefox: {
+    browser: 'firefox',
+    os: 'WINDOWS',
+    os_version: '10',
+  },
+};
+
+const browsers = (() => {
+  if (runInRealBrowsers.some(r => r.test(pkg.name.replace('@atlaskit/', '')))) {
+    if (isInCi) {
+      const temp = Object.keys(customLaunchers);
+      temp.forEach(key => (customLaunchers[key].base = 'BrowserStack'));
+      return temp;
+    }
+    return require('karma-chrome-launcher');
+  }
+  return require('karma-jsdom-launcher');
+})();
 
 module.exports = {
   type: 'react-component',
@@ -48,21 +85,9 @@ module.exports = {
     ],
   },
   karma: {
-    browsers: runInRealBrowsers.some(r => r.test(pkg.name.replace('@atlaskit/', ''))) ? [
-      require('karma-chrome-launcher'),
-    ] : [
-      require('karma-jsdom-launcher'),
-    ],
-
-    extra: {
-      // Required so we don't get incorrect MIME type errors for TypeScript files.
-      mime: {
-        'text/x-typescript': ['ts', 'tsx'],
-      },
-    },
-
+    browsers,
     frameworks: ['mocha', 'chai'],
-    plugins: [require('karma-chai')],
+    plugins: [require('karma-chai'), require('karma-browserstack-launcher')],
 
     // TODO remove this when following the default convention.
     testFiles: [
@@ -78,6 +103,19 @@ module.exports = {
       // Some TypeScript tests follow yet another convention.
       'test/**/!(_)*.+(js|jsx|ts|tsx)',
     ],
+
+    extra: {
+      browserStack: {
+        username: process.env.BROWSERSTACK_USERNAME,
+        accessKey: process.env.BROWSERSTACK_KEY,
+      },
+      customLaunchers,
+
+      // Required so we don't get incorrect MIME type errors for TypeScript files.
+      mime: {
+        'text/x-typescript': ['ts', 'tsx'],
+      },
+    },
   },
   webpack: {
     compat: {

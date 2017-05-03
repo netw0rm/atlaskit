@@ -110,7 +110,8 @@ export default class EmojiRepository {
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[];
     if (query) {
-      filteredEmoji = this.fullSearch.search(query).sort(this.emojiComparator);
+      filteredEmoji = this.fullSearch.search(query);
+      this.sortFiltered(filteredEmoji, query);
     } else {
       filteredEmoji = this.emojis;
     }
@@ -151,8 +152,8 @@ export default class EmojiRepository {
     this.idMap = new Map();
 
     this.emojis.forEach(emoji => {
-      // Give default value for consistent order when sorting
-      if (typeof emoji.order === 'undefined') {
+      // Give default value and assign higher weight to Atlassian emojis for logical order when sorting
+      if (typeof emoji.order === 'undefined' || emoji.order === -1) {
         emoji.order = EmojiRepository.defaultEmojiWeight;
       }
       if (typeof emoji.id === 'undefined') {
@@ -164,24 +165,75 @@ export default class EmojiRepository {
   }
 
   /**
-   * Sorts list of EmojiDescription returned by search
-   * Order: category -> order -> shortName -> id
+   * Sort emojis return by js-search in to a logical order
    */
-  private emojiComparator = (e1: EmojiDescription, e2: EmojiDescription) : number => {
-    const categoryIndex1: number = this.categoryOrder.get(e1.category) || EmojiRepository.defaultEmojiWeight;
-    const categoryIndex2: number = this.categoryOrder.get(e2.category) || EmojiRepository.defaultEmojiWeight;
+  private sortFiltered(filteredEmoji: EmojiDescription[], query: string) {
+    query = query.replace(/:/g, '').toLowerCase().trim();
+    const colonQuery = `:${query}:`;
 
-    // Order and id will always have a value but still need undefined check for TS
-    if (categoryIndex1 !== categoryIndex2) {
-      return categoryIndex1 - categoryIndex2;
-    } else if (e1.order && e2.order && e1.order !== e2.order) {
-      return e1.order - e2.order;
-    } else if (e1.shortName !== e2.shortName) {
-      return e1.shortName.localeCompare(e2.shortName);
-    } else if (e1.id && e2.id) {
-      return e1.id.localeCompare(e2.id);
+    // Comparator is an internal function within sorter to access the query
+    const emojiComparator = (e1: EmojiDescription, e2: EmojiDescription): number => {
+      // Handle exact matches between query and shortName
+      if (e1.shortName === colonQuery && e2.shortName === colonQuery) {
+        return this.typeToOrder(e1.type) - this.typeToOrder(e2.type);
+      } else if (e1.shortName === colonQuery) {
+        return -1;
+      } else if (e2.shortName === colonQuery) {
+        return 1;
+      }
+
+      // Use order for shorter queries with default order values assigned on initialisation
+      if (query.length < 3) {
+        return e1.order! - e2.order!;
+      }
+
+      // shortName matches should take precedence over full name
+      const short1 = e1.shortName.indexOf(query);
+      const short2 = e2.shortName.indexOf(query);
+
+      // Lexicographic order used for both matching on first token
+      if (short1 === 1 && short2 === 1) {
+        return e1.shortName.slice(0, -1).localeCompare(e2.shortName.slice(0, -1));
+      } else if (short1 !== -1 && short2 !== -1) {
+        return short1 - short2;
+      } else if (short1 !== -1) {
+        return -1;
+      } else if (short2 !== -1) {
+        return 1;
+      }
+
+      // Query matches earliest in the full name
+      if (e1.name && e2.name) {
+        const index1 = e1.name.indexOf(query);
+        const index2 = e2.name.indexOf(query);
+        if (index1 !== index2) {
+          return index1 - index2;
+        }
+      }
+
+      // Use order if full name matches on same index
+      if (e1.order !== e2.order) {
+        return e1.order! - e2.order!;
+      }
+
+      // Default to alphabetical order
+      return e1.shortName.slice(0, -1).localeCompare(e2.shortName.slice(0, -1));
+    };
+
+    filteredEmoji.sort(emojiComparator);
+  }
+
+  // Give precedence when conflicting shortNames occur as defined in Emoji Storage Spec
+  private typeToOrder(type: string): number {
+    if (type === 'SITE') {
+      return 0;
+    } else if (type === 'ATLASSIAN') {
+      return 1;
+    } else if (type === 'STANDARD') {
+      return 2;
     }
-    return 0;
+    // Push unknown type to bottom of list
+    return 3;
   }
 
 }

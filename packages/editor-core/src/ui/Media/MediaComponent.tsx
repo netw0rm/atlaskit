@@ -38,11 +38,11 @@ export interface State extends MediaState {
 function mapMediaStatusIntoCardStatus(state: MediaState) {
   switch (state.status) {
     case 'ready':
-    case 'unknown':
       return 'complete';
 
     case 'processing':
     case 'unfinalized':
+    case 'unknown':
       return 'processing';
 
     case 'uploading':
@@ -53,7 +53,6 @@ function mapMediaStatusIntoCardStatus(state: MediaState) {
 
     // default case is to let TypeScript know that this function always returns a string
     case 'error':
-    case 'unknown':
     default:
       return 'error';
   }

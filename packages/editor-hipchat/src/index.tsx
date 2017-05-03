@@ -220,22 +220,22 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { props, providerFactory } = this;
-    if (props.emojiProvider !== nextProps.emojiProvider || props.mentionProvider !== nextProps.mentionProvider) {
+    const { props } = this;
+    if (
+      props.emojiProvider !== nextProps.emojiProvider ||
+      props.mentionProvider !== nextProps.mentionProvider ||
+      props.mediaProvider !== nextProps.mediaProvider
+    ) {
       this.handleProviders(nextProps);
-    }
-
-    const { mediaProvider } = nextProps;
-    if (props.mediaProvider !== mediaProvider) {
-      providerFactory.setProvider('mediaProvider', mediaProvider);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mentionProvider } = props;
+    const { emojiProvider, mentionProvider, mediaProvider } = props;
 
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.providerFactory.setProvider('mediaProvider', mediaProvider);
 
     this.setState({
       emojiProvider,

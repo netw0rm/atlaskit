@@ -1,6 +1,7 @@
 import { MarkSpec } from '../../prosemirror';
 
 export const link: MarkSpec = {
+  excludes: 'textColor',
   attrs: {
     href: {}
   },

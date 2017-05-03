@@ -14,7 +14,8 @@ import {
   heading,
   blockquote,
   codeBlock,
-  rule
+  rule,
+  textColor,
 } from '../../src/schema';
 
 const nodes = {
@@ -35,7 +36,8 @@ const marks = {
   strong,
   code,
   strike,
-  underline
+  underline,
+  textColor
 };
 
 export const schema = new Schema<typeof nodes, typeof marks>({ nodes, marks });

@@ -9,8 +9,9 @@ const DropdownWrapper = styled.div`padding-bottom: 4px`;
 
 export default class NavigationWithDropdown extends PureComponent {
   static propTypes = {
-    items: PropTypes.arrayOf({}).isRequired,
     children: PropTypes.node,
+    dropdownProps: PropTypes.shape({}),
+    navigationItemProps: PropTypes.shape({}),
   }
 
   state = {
@@ -22,21 +23,23 @@ export default class NavigationWithDropdown extends PureComponent {
   }
 
   render() {
+    const dropdownTriggerText = this.props.navigationItemProps.text || 'Dropdown Menu'; // eslint-disable-line react/prop-types
     return (
       <BasicNavigation
         onResizeCallback={this.onResize}
       >
         <DropdownWrapper>
           <AkDropdownMenu
-            items={this.props.items}
             shouldFitContainer={this.state.isNavigationOpen}
             position={this.state.isNavigationOpen ? 'bottom left' : 'right top'}
+            {...this.props.dropdownProps}
           >
             <AkNavigationItem
               isDropdownTrigger
               icon={<ListIcon label="List" />}
               dropIcon={<ExpandIcon label="Chevron" />}
-              text={this.state.isNavigationOpen ? 'Dropdown Menu' : ''}
+              {...this.props.navigationItemProps}
+              text={this.state.isNavigationOpen ? dropdownTriggerText : ''}
             />
           </AkDropdownMenu>
         </DropdownWrapper>

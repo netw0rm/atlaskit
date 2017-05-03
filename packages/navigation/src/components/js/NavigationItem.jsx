@@ -105,10 +105,10 @@ export default class NavigationItem extends PureComponent {
                 {this.props.subText}
               </NavigationItemSubText>
             </NavigationItemText>
-            <DropIcon />
             <After>
               <TextAfter />
             </After>
+            <DropIcon />
           </NavigationItemInner>
         </InteractiveWrapper>
         <Action />

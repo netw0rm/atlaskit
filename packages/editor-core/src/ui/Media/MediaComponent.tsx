@@ -42,9 +42,9 @@ function mapMediaStatusIntoCardStatus(state: MediaState) {
 
     case 'processing':
     case 'unfinalized':
-    case 'unknown':
       return 'processing';
 
+    case 'unknown':
     case 'uploading':
       // TODO: change this to uploading. Currently media-card doesn't have a concept of uploading
       // Because of this progressbar is shown only for "complete" status

@@ -238,7 +238,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
       >
         {loadingSpinner}
         <Scrollable
-          ref={(ref) => { this.scrollable = ref; }}
+          ref={this.handleRef}
           maxHeight={`${emojiPickerListHeight}px`}
           onScroll={this.checkCategoryChange}
         >
@@ -250,5 +250,9 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
         </Scrollable>
       </div>
     );
+  }
+
+  private handleRef = (ref) => {
+    this.scrollable = ref;
   }
 }

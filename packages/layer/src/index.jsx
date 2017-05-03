@@ -86,9 +86,18 @@ export default class Layer extends PureComponent {
     if (!this.targetRef || !this.contentRef) {
       return;
     }
+
     if (this.popper) {
       this.popper.destroy();
     }
+
+    // "new Popper(...)" operation is very expensive when called on virtual DOM.
+    // This condition reduces the number of calls so we can run our tests faster
+    // (time was reduced from 100s to 13s).
+    if (!props.content) {
+      return;
+    }
+
     // we wrap our target in a div so that we can safely get a reference to it, but we pass the
     // actual target to popper
     const actualTarget = this.targetRef.firstChild;

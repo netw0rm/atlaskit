@@ -1,6 +1,7 @@
 import { Schema, AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule } from '../prosemirror';
 import {
   doc,
+  docCompact,
   paragraph,
   text,
   em,
@@ -17,6 +18,8 @@ import {
   panel,
   rule,
   hardBreak,
+  media,
+  mediaGroup,
   mention,
   emoji,
   link,
@@ -42,6 +45,8 @@ const nodes = {
   mention,
   emoji,
   image,
+  media,
+  mediaGroup,
   linkable: { ...paragraph, content: 'text<link>*' },
   unlinkable: { ...paragraph, content: 'text*' },
   plain: { ...paragraph, content: 'text*' }
@@ -61,3 +66,22 @@ const marks = {
 
 export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, nodes, marks };
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });
+
+// compact schema for HCNG
+const compactSchemaNodes = {
+  doc: docCompact,
+  paragraph,
+  mediaGroup,
+  mention,
+  text,
+  media,
+};
+
+const compactSchemaMarks = {
+  mentionQuery,
+};
+
+export const compactSchema = new Schema<typeof compactSchemaNodes, typeof compactSchemaMarks>({
+  nodes: compactSchemaNodes,
+  marks: compactSchemaMarks
+});

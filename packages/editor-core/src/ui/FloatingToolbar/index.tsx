@@ -13,6 +13,7 @@ export interface Props {
   onOutsideClick?: () => void;
   target?: HTMLElement;
   spacing?: 'none';
+  className?: string | undefined;
   onExtractStyle?: (state: any) => Coordniates | undefined;
 }
 
@@ -92,6 +93,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
 
   render() {
     const { position, transform } = this.state;
+    const { className } = this.props;
     const padding = this.props.spacing === 'none'
       ? '0'
       : undefined;
@@ -99,14 +101,18 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
     return (
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
-          ref={ref => {this.content = ref;}}
+          ref={this.handleOutsideClickableRef}
           style={{ top: 0, left: 0, position, transform, padding, zIndex: akEditorFloatingPanelZIndex }}
-          className={styles.container}
+          className={`${styles.container} ${className || ''}`}
         >
           {this.props.children}
         </div>
       </OutsideClickable>
     );
+  }
+
+  private handleOutsideClickableRef = (ref) => {
+    this.content = ref;
   }
 
   private findBoundary(elem: HTMLElement): HTMLElement {

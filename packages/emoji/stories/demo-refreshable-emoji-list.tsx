@@ -44,12 +44,14 @@ export default class RefreshableEmojiList extends PureComponent<Props, State> {
     }
   }
 
+  private handleEmojiTypeAheadListRef = (ref) => { this.emojiList = ref; };
+
   render() {
     const emojiList = (
       <EmojiTypeAheadList
         emojis={this.state.emojis}
         onEmojiSelected={action('onSelection')}
-        ref={(ref) => { this.emojiList = ref; }}
+        ref={this.handleEmojiTypeAheadListRef}
       />
     );
 

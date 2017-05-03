@@ -1,18 +1,20 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "4.0.2",
+  "version": "4.2.0",
   "config": {
     "access": "public"
   },
   "description": "Atlassian Editor component for HipChat",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/es5/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
     "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es5 && npm run build/es2015",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
+    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
+    "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
+    "validate/typescript": "../../build/bin/validate.typescript.sh"
   },
   "files": [
     "dist",
@@ -26,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^14.0.0",
+    "@atlaskit/editor-core": "^16.0.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
@@ -36,8 +38,9 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
-    "@atlaskit/emoji": "*",
+    "@atlaskit/button": "^1.1.2",
     "@atlaskit/editor-hipchat": "*",
+    "@atlaskit/emoji": "*",
     "@atlaskit/mention": "*",
     "@atlaskit/util-data-test": "^4.0.0",
     "@atlaskit/util-readme": "^1.0.0",

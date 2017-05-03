@@ -68,7 +68,7 @@ export interface EmojiDescription extends EmojiId {
   type: string;
   category: string;
   representation: EmojiRepresentation;
-};
+}
 
 export interface EmojiDescriptionWithVariations extends EmojiDescription {
   skinVariations?: EmojiDescription[];
@@ -92,7 +92,7 @@ export interface EmojiServiceDescription {
 
 export interface EmojiServiceDescriptionWithVariations extends EmojiServiceDescription {
   skinVariations?: EmojiServiceDescription[];
-};
+}
 
 
 export interface SpriteSheets {

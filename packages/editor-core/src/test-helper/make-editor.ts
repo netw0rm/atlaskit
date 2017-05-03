@@ -29,17 +29,21 @@ export default (options: Options): EditorInstance => {
     plugins.push(...options.plugins);
   }
 
-  plugins.push(
-    keymap(baseKeymap)
-  );
+  if (options.addBaseKeymap !== false) {
+    plugins.push(
+      keymap(baseKeymap)
+    );
+  }
 
   const editorState = EditorState.create({
     plugins,
     doc: options.doc,
     schema: options.schema || defaultSchema,
   }) as ProseMirrorWithRefs;
+
   const editorView = new EditorView(options.place || document.body, {
-    state: editorState
+    state: editorState,
+    nodeViews: options.nodeViews || {},
   });
 
   const { refs } = editorState.doc;
@@ -79,8 +83,10 @@ export interface Options {
   doc: RefsNode;
   plugin?: Plugin;
   plugins?: Plugin[];
+  nodeViews?: { [key: string]: any };
   place?: HTMLElement;
   schema?: Schema<any, any>;
+  addBaseKeymap?: boolean;
 }
 
 export interface EditorInstance {

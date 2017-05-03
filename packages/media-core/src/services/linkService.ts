@@ -36,8 +36,6 @@ export class MediaLinkService implements LinkService {
           }
         } as LinkItem;
       });
-    ;
-
   }
 
   addLinkItem(url: string, clientId: string, collectionName: string, metadata?: UrlPreview): Promise<string> {

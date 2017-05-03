@@ -21,8 +21,7 @@ import { NodeSpec, Node } from '../../prosemirror';
 const panelStyle = style({
   borderRadius: akBorderRadius,
   margin: '4px 0 4px 0',
-  padding: '4px',
-  display: 'flex',
+  padding: '4px'
 });
 
 const panelColorStyle = {
@@ -48,12 +47,9 @@ const panelIcons = {
 };
 
 const iconStyle = style({
-  height: '100%',
-  display: 'flex',
-  marginRight: '5px',
-  minWidth: '24px',
-  minHeight: '24px',
-  justifyContent: 'center'
+  height: '24px',
+  width: '24px',
+  position: 'absolute'
 });
 
 const iconColorStyle = {
@@ -72,15 +68,15 @@ const iconColorStyle = {
 };
 
 const contentStyle = style({
-  width: '95%',
-  verticalAlign: 'middle',
-  lineHeight: '1.7'
+  margin: '1px 0 1px 30px'
 });
 
 const getIconDom = function (panelType: string): HTMLElement {
   const dom = document.createElement('span');
   dom.setAttribute('contenteditable', 'false');
   dom.setAttribute('class', `${iconStyle} ${iconColorStyle[panelType]}`);
+  // Prevent IE11 resize handles on selection.
+  dom.addEventListener('mousedown', (e) => e.preventDefault());
   // tslint:disable-next-line:variable-name
   const Icon = panelIcons[panelType];
   ReactDOM.render(<Icon label={panelType} />, dom);
@@ -113,7 +109,7 @@ export const panel: NodeSpec = {
       'div',
       attrs,
       getIconDom(panelType),
-      ['span', { class: contentStyle }, 0]
+      ['div', { class: contentStyle }, 0]
     ];
   }
 };

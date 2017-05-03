@@ -1,10 +1,10 @@
 import { Promise } from 'es6-promise';
 import { EmojiId } from '@atlaskit/emoji';
 
-import { equalEmojiId, findIndex } from '../../src/internal/helpers';
-import { default as AbstractReactionsProvider } from '../../src/reactions-resource';
-import { Reactions, ReactionSummary } from '../../src/reactions-resource';
-import { defaultReactionsByShortName } from '../../src/internal/selector';
+import { equalEmojiId, findIndex } from './internal/helpers';
+import { default as AbstractReactionsProvider } from './reactions-resource';
+import { Reactions, ReactionSummary } from './reactions-resource';
+import { defaultReactionsByShortName } from './internal/selector';
 
 export default class MockReactionsProvider extends AbstractReactionsProvider {
 
@@ -34,6 +34,59 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
   getReactions(aris: string[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
       resolve(this.cachedReactions);
+    });
+  }
+
+  getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      const users = [
+        {
+          id: 'oscar',
+          displayName: 'Oscar Wallhult'
+        },
+        {
+          id: 'julien',
+          displayName: 'Julien Michel Hoarau'
+        },
+        {
+          id: 'craig',
+          displayName: 'Craig Petchell'
+        },
+        {
+          id: 'jerome',
+          displayName: 'Jerome Touffe-Blin'
+        },
+      ].slice(0, Math.floor(Math.random() * 3) + 1);
+
+      resolve({
+        ...reaction,
+        users
+      });
+    });
+  }
+
+  fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
+    const { ari, emojiId } = reaction;
+    return new Promise<ReactionSummary>((resolve, reject) => {
+      this
+        .getDetailedReaction(reaction)
+        .then(reactionDetails => {
+          if (!this.cachedReactions[ari]) {
+            this.cachedReactions[ari] = [];
+          }
+
+          const index = findIndex(this.cachedReactions[ari], r => r.emojiId === emojiId);
+
+          setTimeout(() => {
+            if (index !== -1) {
+              this.cachedReactions[ari][index] = reactionDetails;
+            } else {
+              this.cachedReactions[ari].push(reactionDetails);
+            }
+            this.notifyUpdated(ari, this.cachedReactions[ari]);
+            resolve(reactionDetails);
+          }, 1000);
+        });
     });
   }
 
@@ -97,5 +150,5 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
 
 }
 
-export const reactionsProvider = new MockReactionsProvider(); // This need to be any in order for the overview story to work.
-export const reactionsProviderPromise = Promise.resolve(reactionsProvider) as any;
+export const reactionsProvider = new MockReactionsProvider();
+export const reactionsProviderPromise = Promise.resolve(reactionsProvider);

@@ -23,6 +23,7 @@ export default class DropdownList extends PureComponent {
     shouldFitContainer: PropTypes.bool,
     shouldFlip: PropTypes.bool,
     trigger: PropTypes.node,
+    shouldAllowMultilineItems: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -36,6 +37,7 @@ export default class DropdownList extends PureComponent {
     position: 'bottom left',
     trigger: null,
     shouldFlip: true,
+    shouldAllowMultilineItems: false,
   }
 
   componentDidMount = () => {
@@ -109,6 +111,7 @@ export default class DropdownList extends PureComponent {
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
         className={classnames([styles.dropWrapper, {
           [styles.fitContainer]: props.shouldFitContainer,
+          [styles.allowMultilineItems]: props.shouldAllowMultilineItems,
         }])}
         onClick={this.props.onClick}
         onKeyDown={this.props.onKeyDown}

@@ -11,4 +11,4 @@ if [ "" == "$diff" ]; then
 fi
 FILE_COUNT=$(echo $diff | wc -w | sed -e s/[^0-9]//g)
 $CHALK --no-stdin -t "{blue TSLinting $FILE_COUNT files…}"
-tslint -c $ROOT/tslint.json $@ $diff
+tslint -c $ROOT/build/tslint/base.json $@ $diff

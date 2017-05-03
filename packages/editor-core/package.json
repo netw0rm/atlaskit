@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "14.6.4",
+  "version": "16.1.0",
   "config": {
     "access": "public"
   },
@@ -12,7 +12,9 @@
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
     "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5",
     "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --no-babelrc src && ../../node_modules/.bin/tsc -p build/es2015",
-    "build/es5": "mkdir -p dist/es5 && cp -Rf src/prosemirror dist/es5/ && ../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5"
+    "build/es5": "mkdir -p dist/es5 && cp -Rf src/prosemirror dist/es5/ && ../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5",
+    "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
+    "validate/typescript": "../../build/bin/validate.typescript.sh"
   },
   "files": [
     "dist",
@@ -35,16 +37,19 @@
     "@atlaskit/button": "^1.0.10",
     "@atlaskit/button-group": "^1.0.7",
     "@atlaskit/dropdown-menu": "^1.1.4",
+    "@atlaskit/single-select": "^1.7.1",
     "@atlaskit/droplist": "^1.3.11",
     "@atlaskit/droplist-group": "^1.0.6",
     "@atlaskit/droplist-item": "^2.0.8",
     "@atlaskit/emoji": "^13.0.0",
     "@atlaskit/icon": "^2.5.6",
-    "@atlaskit/media-core": "^1.2.0",
+    "@atlaskit/media-core": "^5.4.0",
+    "@atlaskit/media-card": "^8.0.0",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.0.3",
     "@atlaskit/util-shared-styles": "^1.2.1",
+    "mediapicker": "^4.2.2",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#3615382475d0d6beeb1c5f0b27a1eadc94a108ac",
     "orderedmap": "^1.0.0",
     "popper.js": "1.0.8",
@@ -64,16 +69,20 @@
   },
   "peerDependencies": {
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "jquery": "^2.2.4"
   },
   "devDependencies": {
+    "@atlaskit/media-test-helpers": "^1.1.0",
     "@atlaskit/util-data-test": "^4.0.0",
     "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",
     "js-search": "^1.3.3",
     "sinon": "^1.17.6",
     "string.prototype.repeat": "^0.2.0",
-    "thenable": "^1.0.0"
+    "thenable": "^1.0.0",
+    "jquery": "^2.2.4",
+    "chai-as-promised": "^6.0.0"
   },
   "repository": {
     "type": "git",

@@ -19,10 +19,31 @@ const items = [
   },
 ];
 
-export default <DropdownMenu
-  defaultOpen
-  items={items}
-  triggerType="button"
->
-  Wow!
-</DropdownMenu>;
+export default (
+  <div style={{ padding: '40px' }}>
+    <p>
+      This is an example a dropdown with long items showing the default behaviour
+    </p>
+    <div style={{ padding: '20px 0' }}>
+      <DropdownMenu
+        defaultOpen
+        items={items}
+        triggerType="button"
+      >
+        Long Items
+      </DropdownMenu>
+    </div>
+    <p>
+      And this shows a dropdown with long items with multiline behaviour
+    </p>
+    <div style={{ padding: '20px 0' }}>
+      <DropdownMenu
+        items={items}
+        triggerType="button"
+        shouldAllowMultilineItems
+      >
+        Long multiline Items
+      </DropdownMenu>
+    </div>
+  </div>
+);

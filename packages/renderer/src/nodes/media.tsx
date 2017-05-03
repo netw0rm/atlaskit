@@ -1,7 +1,18 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { Context, ContextConfig, ContextFactory, MediaItemType, MediaType, CardEventHandler, CardClick } from '@atlaskit/media-core';
-import { FileCard, FileCardView, CardDimensions } from '@atlaskit/media-card';
+import {
+  Context,
+  ContextConfig,
+  ContextFactory,
+  MediaItemType,
+  CardEventHandler,
+} from '@atlaskit/media-core';
+
+import {
+  Card,
+  CardView,
+  CardDimensions,
+} from '@atlaskit/media-card';
 import { MediaProvider } from '../config';
 
 import {
@@ -25,10 +36,9 @@ export interface MediaProps {
 }
 
 export interface State {
+  mediaProvider?: MediaProvider;
   viewContext?: Context;
 }
-
-const noop = () => {};
 
 export default class Media extends PureComponent<MediaProps, State> {
   constructor(props) {
@@ -36,46 +46,69 @@ export default class Media extends PureComponent<MediaProps, State> {
     this.state = {};
   }
 
-  private handleMediaProvider = (props: MediaProps) => {
-    const {mediaProvider} = props;
-    if (mediaProvider) {
-      mediaProvider
-        .then(provider => provider.viewContext)
-        .then((mediaContext: ContextConfig) => {
-          this.setState({
-            viewContext: ContextFactory.create(mediaContext)
-          });
-        });
-    }
-  }
-
-  private getActions(props: MediaProps) {
-    return [CardClick(props.onClick || noop)];
-  }
-
-  private getCardComponent() {
-    if (this.state.viewContext) {
-      const { collectionId, id } = this.props.item.attrs;
-      return <FileCard
-        dimensions={this.props.cardDimensions}
-        context={this.state.viewContext}
-        id={id}
-        collectionName={collectionId[0]}
-        actions={this.getActions(this.props)}
-      />;
-    }
-    return <FileCardView
-      dimensions={this.props.cardDimensions}
-      mediaType={'unknown' as MediaType}
-      mediaName="Loading…"
-    />;
-  }
-
   componentWillMount() {
-    this.handleMediaProvider(this.props);
+    if (this.props.mediaProvider) {
+      this.handleNewMediaProvider(this.props.mediaProvider);
+     }
+   }
+
+  componentWillReceiveProps(nextProps: MediaProps) {
+    const { mediaProvider } = nextProps;
+
+    if (mediaProvider && this.props.mediaProvider !== mediaProvider) {
+      this.handleNewMediaProvider(mediaProvider);
+    }
   }
 
   render() {
-    return this.getCardComponent();
+    switch (this.props.item.attrs.type) {
+      case 'file':
+        return this.renderFile();
+
+      default:
+        return null;
+    }
   }
+
+  private renderFile() {
+    const { cardDimensions, item } = this.props;
+    const { mediaProvider, viewContext } = this.state;
+    const { collectionId, id } = item.attrs;
+
+    if ( !mediaProvider || !viewContext ) {
+      return <CardView
+        status="loading"
+        mediaItemType="file"
+      />;
+    }
+
+    return (
+      <Card
+        dimensions={cardDimensions}
+        context={viewContext}
+        identifier={{
+          id,
+          mediaItemType: 'file',
+          collectionName: collectionId[0]
+        }}
+        selectable={false}
+      />
+    );
+  }
+
+  private async handleNewMediaProvider(mediaProvider: Promise<MediaProvider>) {
+    const resolvedMediaProvider = await this.props.mediaProvider;
+    if (!resolvedMediaProvider) {
+      return;
+    }
+
+    this.setState({ mediaProvider: resolvedMediaProvider });
+
+    let context = await resolvedMediaProvider.viewContext;
+    if ('clientId' in context) {
+      context = ContextFactory.create(context as ContextConfig);
+    }
+
+    this.setState({ viewContext: context as Context });
+   }
 }

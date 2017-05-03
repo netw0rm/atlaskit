@@ -1,3 +1,9 @@
+export {
+  DefaultMediaStateManager,
+  MediaProviderRW as MediaProvider,
+  MediaState,
+} from '@atlaskit/media-core';
+
 import ProviderFactory from './providerFactory';
 export { version, name } from './version';
 export { default as Keymap } from 'browserkeymap';
@@ -35,4 +41,3 @@ export {
   keymap,
 } from './prosemirror';
 export { toJSON } from './utils';
-export { DefaultMediaStateManager } from '@atlaskit/media-core';

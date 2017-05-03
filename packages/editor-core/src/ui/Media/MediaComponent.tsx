@@ -5,6 +5,7 @@ import {
   MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
+
 import {
   ContextConfig,
   ContextFactory,
@@ -12,22 +13,23 @@ import {
   CardClick,
   CardDelete,
   FileDetails,
+  MediaProviderRW,
+  MediaState,
   UrlPreview
 } from '@atlaskit/media-core';
 import { MediaPluginState } from '../../plugins/media';
 
-import { default as MediaProvider, MediaState } from '../../media';
 import { Attributes } from '../../schema/nodes/media';
 import { EditorView, mediaStateKey } from '../../index';
 
 export interface Props extends Attributes {
-  mediaProvider?: Promise<MediaProvider>;
+  mediaProvider?: Promise<MediaProviderRW>;
   editorView?: EditorView;
   onDelete?: () => void;
 }
 
 export interface State extends MediaState {
-  mediaProvider?: MediaProvider;
+  mediaProvider?: MediaProviderRW;
   viewContext?: Context;
 }
 
@@ -232,7 +234,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     this.setState(newState);
   }
 
-  private handleMediaProvider = (mediaProvider: MediaProvider) => {
+  private handleMediaProvider = (mediaProvider: MediaProviderRW) => {
     const { editorView, id } = this.props;
 
     if (!editorView) {

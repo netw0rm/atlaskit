@@ -1,5 +1,9 @@
-import { MediaStateManager } from './../media/index';
-import { MediaProvider, MediaContextConfig } from '../media';
+import {
+  ContextConfig as MediaContextConfig,
+  MediaProviderRW,
+  MediaStateManager,
+} from '@atlaskit/media-core';
+
 import {
   defaultClientId,
   defaultServiceHost,
@@ -8,7 +12,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 
 export function storyMediaProviderFactory (collection = defaultCollectionName, stateManager?: MediaStateManager) {
-  return Promise.resolve<MediaProvider>({
+  return Promise.resolve<MediaProviderRW>({
     stateManager,
     uploadParams: {
       collection: collection

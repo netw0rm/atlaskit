@@ -1,4 +1,11 @@
-import { MediaStateManager, MediaState } from './../../media';
+import {
+  DefaultMediaStateManager,
+  MediaProviderRW,
+  MediaState,
+  MediaStateManager,
+  UploadParams,
+} from '@atlaskit/media-core';
+
 import { MediaType, MediaNode } from './../../schema/nodes/media';
 import {
   EditorState,
@@ -11,7 +18,6 @@ import {
   Transaction,
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
-import { MediaProvider, UploadParams, DefaultMediaStateManager } from '../../media';
 import PickerFacade from './picker-facade';
 import TemporaryNodesList from './temporary-nodes-list';
 import { ContextConfig } from '@atlaskit/media-core';
@@ -40,7 +46,7 @@ export class MediaPluginState {
   private temporaryMediaNodes = new TemporaryNodesList();
   private useDefaultStateManager = true;
   private destroyed = false;
-  private mediaProvider: MediaProvider;
+  private mediaProvider: MediaProviderRW;
   private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
 
@@ -54,7 +60,7 @@ export class MediaPluginState {
     }
 
     this.stateManager = new DefaultMediaStateManager();
-    options.providerFactory.subscribe('mediaProvider', (name, provider: Promise<MediaProvider>) => this.setMediaProvider(provider));
+    options.providerFactory.subscribe('mediaProvider', (name, provider: Promise<MediaProviderRW>) => this.setMediaProvider(provider));
   }
 
   subscribe(cb: PluginStateChangeSubscriber) {
@@ -71,7 +77,7 @@ export class MediaPluginState {
     }
   }
 
-  setMediaProvider = (mediaProvider?: Promise<MediaProvider>) => {
+  setMediaProvider = (mediaProvider?: Promise<MediaProviderRW>) => {
     if (!mediaProvider) {
       this.allowsPastingLinks = false;
       this.allowsUploads = false;

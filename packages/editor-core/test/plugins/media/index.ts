@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import {
   baseKeymap,
   keymap,
@@ -9,7 +10,6 @@ import {
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
-  DefaultMediaStateManager,
 } from '../../../src';
 import {
   blockquote,

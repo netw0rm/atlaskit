@@ -2,7 +2,6 @@ import ProviderFactory from './providerFactory';
 export { version, name } from './version';
 export { default as Keymap } from 'browserkeymap';
 export * from './config';
-export * from './media';
 export * from './plugins';
 export * from './schema';
 export * from './ui';
@@ -36,3 +35,4 @@ export {
   keymap,
 } from './prosemirror';
 export { toJSON } from './utils';
+export { DefaultMediaStateManager } from '@atlaskit/media-core';

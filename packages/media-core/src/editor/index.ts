@@ -1,4 +1,4 @@
-import { ContextConfig, Context } from '@atlaskit/media-core';
+import { ContextConfig, Context } from '../';
 
 export interface MediaState {
   id: string;
@@ -46,8 +46,8 @@ export interface UploadParams {
   dropzoneContainer?: HTMLElement;
 }
 
-export interface MediaProvider {
-  uploadParams: UploadParams;
+export interface MediaProviderRO {
+  uploadParams?: UploadParams;
 
   /**
    * A manager notifying subscribers on changes in Media states
@@ -73,8 +73,8 @@ export interface MediaProvider {
   linkCreateContext?: Promise<Context | ContextConfig>;
 }
 
-export { ContextConfig as MediaContextConfig };
+export interface MediaProviderRW extends MediaProviderRO {
+  uploadParams: UploadParams;
+}
 
-export { default as DefaultMediaStateManager } from './default-media-state-manager';
-
-export default MediaProvider;
+export { default as DefaultMediaStateManager } from './default-state-manager';

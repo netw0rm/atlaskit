@@ -39,7 +39,9 @@ export const EmojiButton = (props: Props) => {
   return (
     <button
       className={classNames(classes)}
+      // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
+      // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
     >
       <Emoji

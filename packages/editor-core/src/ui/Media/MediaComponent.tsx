@@ -78,6 +78,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
+  private handleLinkCardGenericViewClick(event: Event) {
+    event.preventDefault();
+  }
+
   private renderLink() {
     const { mediaProvider, viewContext } = this.state;
     const { id, collection, onDelete } = this.props;
@@ -87,7 +91,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return <LinkCardGenericView
         title=" ... loading"
         linkUrl=""
-        onClick={(event: Event) => event.preventDefault()}
+        onClick={this.handleLinkCardGenericViewClick}
       />;
     }
 

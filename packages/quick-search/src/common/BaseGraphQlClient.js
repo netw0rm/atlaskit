@@ -87,14 +87,14 @@ const getServiceUrlFromLocation = () => {
 };
 
 export default class BaseGraphQlClient {
-  constructor() {
-    this.serviceUrl = `${getServiceUrlFromLocation()}${graphqlEndpoint}`;
-    this._cancel = () => {};
-    this.axiosInstance = axios.create();
+  constructor(inAxios) {
+    this.axiosInstance = inAxios || axios.create();
     axiosRetry(this.axiosInstance, {
       retries: 1,
       retryCondition: err => !axios.isCancel(err),
     });
+    this.serviceUrl = `${getServiceUrlFromLocation()}${graphqlEndpoint}`;
+    this._cancel = () => {};
   }
 
   cancelPreviousRequest() {

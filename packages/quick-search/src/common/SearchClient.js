@@ -18,7 +18,7 @@ const buildSearchString = (cloudId, userId, query) => {
   });
 };
 
-class SearchClient extends BaseGraphQlClient {
+export class SearchClient extends BaseGraphQlClient {
 
   query(queryString, userId, cloudId) {
     const query = buildSearchString(

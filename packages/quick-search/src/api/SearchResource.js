@@ -76,8 +76,7 @@ export default class SearchResource extends AbstractResource {
 
     this.cloudId = config.cloudId;
     this.userId = config.userId;
-    // this.cloudId = 'DUMMY-a5a01d21-1cc3-4f29-9565-f2bb8cd969f5';
-    this.searchClient = searchClient;
+    this.searchClient = config.searchClient || searchClient;
 
     this.queryClient = this.queryClient.bind(this);
   }
@@ -86,7 +85,7 @@ export default class SearchResource extends AbstractResource {
     return this.searchClient.query(searchTerm, this.userId, this.cloudId);
   }
 
-  query = (searchTerm) => {
+  search = (searchTerm) => {
     this.queryClient(searchTerm)
       .then(items => this.notifyChange('search', items))
       .catch(this.notifyError);
@@ -131,18 +130,17 @@ export class ParsingSearchResource extends SearchResource {
   }
 
   groupNameDictionary = {
-    hc: 'Conversations',
+    'hc.room': 'Conversations',
     mention: 'Conversations',
-    'jira-board': 'Boards',
-    'jira-issue': 'Issues',
-    'jira-project': 'Projects',
-    'confluence-page': 'Pages',
-    'confluence-space': 'Spaces',
+    'jira.board': 'Boards',
+    'jira.issue': 'Issues',
+    'jira.project': 'Projects',
+    'confluence.page': 'Pages',
+    'confluence.space': 'Spaces',
   };
 
   getGroupName(key, defaultGroup = 'Other') {
-    const groupKey = key.split('.')[0];
-    return this.groupNameDictionary[groupKey] || defaultGroup;
+    return this.groupNameDictionary[key] || defaultGroup;
   }
 
   queryClient(searchTerm) {

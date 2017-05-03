@@ -1,46 +1,19 @@
-import { AbstractResource } from '../../src/api/SearchResource';
-import mockSearchData from './mock-search-data.json';
-import recentData from './mock-recent-data.json';
-// import mockSearchData from './mock-hc-search-data.json';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { ParsingSearchResource } from '../../src/api/SearchResource';
+import { SearchClient } from '../../src/common/SearchClient';
 
-export default class MockSearchResource extends AbstractResource {
+export default function createMockSearchResource(options = {}) {
+  const mockedAxios = axios.create();
+  const mocker = new MockAdapter(mockedAxios, options);
 
-  constructor(delay = 0) {
-    super();
-    this.delay = delay;
-  }
+  const mockSearchResource = new ParsingSearchResource({
+    userId: 'soldier-strife',
+    cloudId: 'final-fantasy-vii',
+    searchClient: new SearchClient(mockedAxios),
+  });
 
-  query = (searchTerm) => {
-    if (!searchTerm) {
-      this.notifyChange([]);
-      return;
-    }
+  mockSearchResource.mock = mocker;
 
-    setTimeout(
-      () => {
-        Promise.resolve(
-          mockSearchData.filter(
-            ({ title }) => title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
-          )
-        ).then((data) => {
-          const items = data.length ? data : null;
-          this.notifyChange(items);
-        });
-      }
-      , this.delay || 0
-    );
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  recentItems() {
-    return Promise.resolve(recentData);
-  }
-
-  notifyChange = (items) => {
-    Object.keys(this.changeListeners).forEach(key => this.changeListeners[key](items));
-  }
-
-  notifyError(items) {
-    Object.keys(this.errorListeners).forEach(key => this.errorListeners[key](items));
-  }
+  return mockSearchResource;
 }

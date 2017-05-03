@@ -51,7 +51,7 @@ export default class QuickSearch extends Component {
   }
 
   queryResource = (query) => {
-    this.props.searchResource.query(query);
+    this.props.searchResource.search(query);
     this.setState({
       isLoading: true,
     });

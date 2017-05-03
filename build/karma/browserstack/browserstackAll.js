@@ -1,4 +1,4 @@
-const allConfig = require('./all');
+const allConfig = require('../wc/all');
 const stage1 = require('./browserstack.browsers.stage.1');
 const stage2 = require('./browserstack.browsers.stage.2');
 const stage3 = require('./browserstack.browsers.stage.3');

@@ -30,6 +30,7 @@ export function debugHandler(name: string, properties?: AnalyticsProperties): vo
 export function detectHandler(): AnalyticsHandler {
   // Check Herment is globally available
   if (
+    typeof window !== 'undefined' &&
     window.AJS &&
     window.AJS.EventQueue &&
     typeof window.AJS.EventQueue.push === 'function'

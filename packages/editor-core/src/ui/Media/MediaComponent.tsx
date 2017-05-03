@@ -62,6 +62,8 @@ function mapMediaStatusIntoCardStatus(state: MediaState) {
 
 
 export default class MediaComponent extends React.PureComponent<Props, State> {
+  private thumbnailWm = new WeakMap();
+
   state: State = {
     id: '',
     status: 'unknown'
@@ -199,9 +201,27 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType, progress } = state;
+    const { thumbnail, fileName, fileSize, fileType} = state;
     const { onDelete } = this.props;
 
+    // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
+    let dataURI: string | undefined;
+    if (thumbnail) {
+      if (this.thumbnailWm.has(thumbnail)) {
+        dataURI = this.thumbnailWm.get(thumbnail);
+      } else {
+        dataURI = URL.createObjectURL(thumbnail);
+        this.thumbnailWm.set(thumbnail, dataURI);
+      }
+    }
+
+    // Make sure that we always display progress bar when the file is uploading (prevents flicker)
+    let progress = state.progress;
+    if (!progress && state.status === 'uploading') {
+      progress = .0;
+    }
+
+    // Construct file details object
     const fileDetails = {
       name: fileName,
       size: fileSize,
@@ -216,7 +236,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       metadata={fileDetails}
 
       // FileCardProps
-      dataURI={thumbnail && URL.createObjectURL(thumbnail)}
+      dataURI={dataURI}
       progress={progress}
 
       // SharedCardProps

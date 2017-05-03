@@ -40,9 +40,9 @@ export const ImageWrapper = styled.div`
 
 // PRESENCE WRAPPER
 const getPresenceLayout = ({ appearance, size }) => `
-  bottom: ${appearance === 'square' ? -PRESENCE_BORDER_WIDTH[size] : PRESENCE_OFFSET[size]}px;
+  bottom: ${appearance === 'square' ? -(PRESENCE_BORDER_WIDTH[size] * 2) : PRESENCE_OFFSET[size]}px;
   height: ${PRESENCE_SIZES[size]}px;
-  right: ${appearance === 'square' ? -PRESENCE_BORDER_WIDTH[size] : PRESENCE_OFFSET[size]}px;
+  right: ${appearance === 'square' ? -(PRESENCE_BORDER_WIDTH[size] * 2) : PRESENCE_OFFSET[size]}px;
   width: ${PRESENCE_SIZES[size]}px;
 `;
 export const PresenceWrapper = styled.div`

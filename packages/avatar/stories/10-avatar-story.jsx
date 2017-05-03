@@ -93,43 +93,19 @@ storiesOf(name, module)
       <DefaultAvatar size="large" presence="offline" />
     </AvatarRow>
   ))
-  .add('Square avatars', () => {
-    const lock = <img src={lockImage} style={{ height: '100%', width: '100%' }} alt="Lock" />;
-    return (
-      <Example>
-        <DefaultAvatar
-          appearance="square"
-          icon={lock}
-          size="xsmall"
-          src={nucleusImage}
-        />
-        <DefaultAvatar
-          appearance="square"
-          icon={lock}
-          size="small"
-          src={nucleusImage}
-        />
-        <DefaultAvatar
-          appearance="square"
-          icon={lock}
-          size="medium"
-          src={nucleusImage}
-        />
-        <DefaultAvatar
-          appearance="square"
-          icon={lock}
-          size="large"
-          src={nucleusImage}
-        />
-        <DefaultAvatar
-          appearance="square"
-          icon={lock}
-          size="xlarge"
-          src={nucleusImage}
-        />
-      </Example>
-    );
-  })
+  .add('Square avatars', () => (
+    <AllAvatarSizes
+      appearance="square"
+      src={nucleusImage}
+    />
+  ))
+  .add('Square avatars with icon', () => (
+    <AllAvatarSizes
+      appearance="square"
+      icon={<img alt="Lock" src={lockImage} style={{ height: '100%', width: '100%' }} />}
+      src={nucleusImage}
+    />
+  ))
   .add('Avatars with custom presence', () => (
     <div>
       <div>As well as the presence attribute, avatars can also display custom content on their badge

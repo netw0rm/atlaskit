@@ -22,10 +22,6 @@ storiesOf(name, module)
   .add('With media', () => {
     let reactEditorComponent;
 
-    const refHandlers = {
-      editor: (elem) => reactEditorComponent = elem
-    };
-
     function openMediaPicker() {
       if (reactEditorComponent) {
         reactEditorComponent.showMediaPicker();
@@ -35,7 +31,8 @@ storiesOf(name, module)
     const editor = (
       <div>
         <Editor
-          ref={refHandlers.editor}
+          // tslint:disable-next-line:jsx-no-lambda
+          ref={elem => reactEditorComponent = elem}
           onSubmit={action('submit')}
           mediaProvider={storyMediaProviderFactory()}
         />

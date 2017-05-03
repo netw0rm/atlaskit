@@ -91,7 +91,7 @@ describe('Reveal', () => {
       expect(wrapper.find('RevealInner').props().isOpen).to.equal(true);
 
       // restore system clock
-      clock.reset();
+      clock.restore();
     });
   });
 

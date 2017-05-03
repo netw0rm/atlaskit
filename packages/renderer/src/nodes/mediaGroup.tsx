@@ -15,26 +15,19 @@ export const CardWrapper = styled.div`
   padding: 5px 10px;
 `;
 
-export interface Props {
-  numOfCards: number;
-}
-
-export default class MediaGroup extends PureComponent<Props, {}> {
+export default class MediaGroup extends PureComponent<{}, {}> {
 
   render() {
-    return this.props.numOfCards > 1
+    const { children } = this.props;
+    const { count, map } = React.Children;
 
-      ? <FilmStripNavigator>
-          {this.props.children}
-        </FilmStripNavigator>
-
+    return count(children) > 1
+      ? <FilmStripNavigator>{children}</FilmStripNavigator>
       : <CardWrapper>
         {
-          React.Children.map(this.props.children,
-            (child: ReactElement<MediaProps>) => React.cloneElement(child, {
-              cardDimensions: LargeCard as CardDimensions
-            } as MediaProps)
-          )
+          map(children, (child: ReactElement<MediaProps>) => React.cloneElement(child, {
+            cardDimensions: LargeCard as CardDimensions
+          } as MediaProps))
         }
       </CardWrapper>;
   }

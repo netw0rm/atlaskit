@@ -181,10 +181,7 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       return <Hardbreak key={key} />;
     case NodeType.mediaGroup:
       return (
-        <MediaGroup
-          key={key}
-          numOfCards={nodeContent.length}
-        >
+        <MediaGroup key={key}>
           {nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}
         </MediaGroup>);
     case NodeType.media:

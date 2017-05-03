@@ -24,7 +24,7 @@
     "@atlaskit/emoji": "^13.1.1",
     "@atlaskit/media-card": "^5.0.0",
     "@atlaskit/media-core": "^1.2.2",
-    "@atlaskit/media-filmstrip": "^2.0.6",
+    "@atlaskit/media-filmstrip": "^3.1.2",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "styled-components": "^1.4.0",

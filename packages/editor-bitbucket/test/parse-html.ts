@@ -5,7 +5,7 @@ import { parseHtml as parse } from '../src/parse-html';
 import schema from '../src/schema';
 import {
   a, blockquote, code_block, doc, h1, h2,
-  h3, h4, h5, hr, img, li, emoji, mention,
+  h3, h4, h5, h6, hr, img, li, emoji, mention,
   code, ol, p, strong, ul
 } from './_schema-builder';
 
@@ -22,6 +22,7 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
       expect(parse('<h3>text</h3>')).to.deep.equal(doc(h3('text')));
       expect(parse('<h4>text</h4>')).to.deep.equal(doc(h4('text')));
       expect(parse('<h5>text</h5>')).to.deep.equal(doc(h5('text')));
+      expect(parse('<h5>text</h6>')).to.deep.equal(doc(h6('text')));
     });
 
     it('should support paragraphs', () => {

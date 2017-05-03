@@ -3,8 +3,8 @@ import {
   akColorN20,
   akColorN500,
   akColorN700,
+  akColorN80A,
   akColorB500,
-  akColorN80,
   akColorN30A,
   akColorN900,
   akGridSizeUnitless,
@@ -37,7 +37,7 @@ export const colors = {
   global: {
     background: akColorB500,
     color: akColorN0,
-    keyline: akColorN80,
+    keyline: akColorN80A,
   },
   settings: {
     background: akColorN700,

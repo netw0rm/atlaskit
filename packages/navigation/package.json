@@ -17,7 +17,7 @@
   "dependencies": {
     "@atlaskit/blanket": "^1.2.0",
     "@atlaskit/util-common": "^1.0.0",
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "invariant": "^2.2.2",

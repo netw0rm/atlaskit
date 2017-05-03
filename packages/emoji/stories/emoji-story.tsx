@@ -35,4 +35,4 @@ storiesOf(`${name}/Emoji`, module)
         {grimacingEmoji}
       </div>
     );
-  }).add('simple emoji selected', () => (<Emoji emoji={emoji} selected />));
+  }).add('simple emoji selected', () => (<Emoji emoji={emoji} selected={true} />));

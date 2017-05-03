@@ -2,8 +2,8 @@ import { EditorEmojiIcon } from '@atlaskit/icon';
 import {
   akBorderRadius,
   akColorN0,
-  akColorN30A,
-  akColorN70
+  akColorN50,
+  akColorN800
 } from '@atlaskit/util-shared-styles';
 import * as cx from 'classnames';
 import * as React from 'react';
@@ -17,6 +17,7 @@ export interface Props {
 }
 
 const triggerStyle = style({
+  color: akColorN50,
   background: akColorN0,
   border: 0,
   borderRadius: akBorderRadius,
@@ -28,10 +29,9 @@ const triggerStyle = style({
   height: '32px',
   $nest: {
     '&:hover, &:active': {
-      background: akColorN30A
+      color: akColorN800
     },
     '&.miniMode': {
-      color: akColorN70,
       width: '20px',
       height: '20px',
       overflow: 'hidden',

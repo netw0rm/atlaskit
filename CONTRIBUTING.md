@@ -31,7 +31,7 @@ Include details about your configuration and environment:
 #### Why should I contribute?
 
 1. While we strive to look at new issues as soon as we can, because of the many priorities we juggle and limited resources, issues raised often don't get looked into soon enough.
-2. We want your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes. 
+2. We want your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes.
 3. With the build system and auto-deployment to npm, using AtlasKit components in your projects simplifies your development stack. Treat AtlasKit as part of your codebase and make changes in it.
 4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations.
 
@@ -78,8 +78,7 @@ AtlasKit uses [React Storybook](https://github.com/kadirahq/react-storybook) to 
 
 #### Viewing the storybook
 
-* To run a storybook for a single component: `yarn run storybook/single @atlaskit/my-component-name`
-* To run the storybook for all components (slow!): `yarn run storybook`
+* To run a storybook for a single component: `yarn run storybook @atlaskit/my-component-name`
 
 #### Publishing the storybook
 
@@ -160,7 +159,7 @@ All packages should use a consistent set of TSLint rules (found in `tslint.json`
 
 Custom TSLint rules can be written and contributed to the repo to enforce patterns. This can be used as to 'incubate' new rules before promoting them to standalone packages, or to house rules that are Atlaskit specific.
 
-These rules live in `build/tslint-rules`.
+These rules live in `build/tslint/rules`.
 
 ### Packaging
 
@@ -359,6 +358,26 @@ yarn run build/docker/image -- --no-cache
 ```
 
 **Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!
+
+
+### Checking Consistency of the repository
+
+There are several ways that things can become out of date within the Atlaskit repository. The build is designed in a way that most
+issues will fix themselves on the next master build, but some are not possible to fix like this. To help track down these issues we
+have a health check script that can be used to quickly identify possible issues.
+
+```sh
+yarn run health-check
+```
+
+Will display a table of components and versions, highlighing any discrepencies between local, npm and the registry.
+
+It will also look for storybooks on the registry that are not available.
+
+The root cause of each of these can vary widely, and all should be investigated. Most of the time, simply pushing a dummy commit
+with `"fix(dummy): ..."` should be enough.
+
+</section>
 
 [CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md
 [IssueTracker]: https://bitbucket.org/atlassian/atlaskit/issues?status=new&status=open

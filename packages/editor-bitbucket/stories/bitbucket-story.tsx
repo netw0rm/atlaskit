@@ -82,7 +82,7 @@ storiesOf(name, module)
   )
   .add('With imageUploadHandler', () =>
     <Editor
-      isExpandedByDefault
+      isExpandedByDefault={true}
       imageUploadHandler={imageUploadHandler}
       onCancel={CANCEL_ACTION}
       onChange={CHANGE_ACTION}
@@ -101,14 +101,16 @@ storiesOf(name, module)
               onCancel={() => (ref.parentNode as Node).removeChild(ref)}
               onChange={CHANGE_ACTION}
               onSave={SAVE_ACTION}
-              isExpandedByDefault
+              isExpandedByDefault={true}
             />
           </div>
         </div>
         <button
           onClick={() => {
             (document.getElementById('editor') as Node).appendChild(ref);
-            editor && editor.clear();
+            if (editor) {
+              editor.clear();
+            }
           }}
         >
           Attach
@@ -234,7 +236,7 @@ storiesOf(name, module)
             <div style={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'stretch', alignContent: 'stretch' }}>
               <Editor
                 ref={this.handleEditorRef}
-                isExpandedByDefault
+                isExpandedByDefault={true}
                 emojiProvider={emojiProvider}
               />
             </div>

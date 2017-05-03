@@ -6,7 +6,8 @@ import { ReactionPicker, Reactions, ResourcedReactions, ResourcedReactionPicker 
 import Reaction from '../src/internal/reaction';
 import Selector, { defaultReactionsByShortName } from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
-import { reactionsProvider, reactionsProviderPromise } from './examples/reactions-provider';
+import { reactionsProvider, reactionsProviderPromise } from '../src/mock-reactions-provider';
+import { analyticsService } from '../src/analytics';
 
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 
@@ -16,6 +17,10 @@ import { name } from '../package.json';
 
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
+
+analyticsService.handler = (name, properties) => {
+  action('analytic event')(name, properties);
+};
 
 storiesOf(name, module)
   .add('Picker and Reactions', () => (
@@ -42,6 +47,13 @@ storiesOf(name, module)
       onSelection={action('reaction selected')}
     />
   ))
+  .add('Picker with all emojis enabled', () => (
+    <ReactionPicker
+      emojiProvider={getEmojiResource()}
+      onSelection={action('reaction selected')}
+      allowAllEmojis={true}
+    />
+  ))
   .add('Reactions', () => (
     <div>
       <p>This is a message with some reactions</p>
@@ -50,6 +62,18 @@ storiesOf(name, module)
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
         onReactionClick={action('reaction clicked')}
+      />
+    </div>
+  ))
+  .add('Reactions with all emojis enabled', () => (
+    <div>
+      <p>This is a message with some reactions</p>
+      <Reactions
+        ari={demoAri}
+        emojiProvider={getEmojiResource()}
+        reactionsProvider={reactionsProvider}
+        onReactionClick={action('reaction clicked')}
+        allowAllEmojis={true}
       />
     </div>
   ))

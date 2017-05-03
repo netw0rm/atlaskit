@@ -102,7 +102,7 @@ export function dropHandler(
   converter.convert(files, (src: string) => fn({ src }));
 
   return true;
-};
+}
 
 export function pasteHandler(
   converter: Converter,

@@ -46,15 +46,15 @@ const chromeRangeInputStyle = `
       -webkit-appearance: none;
       margin-top: -${sliderThumbSize / 2 - sliderLineThickness / 2}px;
     }
-    
+
     &:focus::-webkit-slider-thumb {
       ${sliderThumbFocusedStyle}
     }
-    
+
     &::-webkit-slider-runnable-track {
       ${sliderTrackStyle}
     }
-    
+
     &:focus::-webkit-slider-runnable-track {
       ${sliderTrackFocusedStyle}
     }
@@ -64,20 +64,20 @@ const firefoxRangeInputStyle = `
     &::-moz-focus-outer {
         border: 0;
     }
-    
+
     &::-moz-range-thumb {
       ${sliderThumbStyle}
       border:0;
     }
-    
+
     &:focus::-moz-range-thumb {
       ${sliderThumbFocusedStyle}
     }
-    
+
     &::-moz-range-track {
       ${sliderTrackStyle}
     }
-    
+
     &:focus::-moz-range-track {
       ${sliderTrackFocusedStyle}
     }
@@ -110,7 +110,7 @@ const IERangeInputStyle = `
       border: 0px;
       box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
     }
-    
+
     &:focus::-ms-fill-lower {
       ${sliderTrackFocusedStyle}
     }
@@ -128,7 +128,7 @@ export const rangeInputStyle = `
   &:focus {
     outline: none;
   }
-  
+
   ${chromeRangeInputStyle}
   ${firefoxRangeInputStyle}
   ${IERangeInputStyle}

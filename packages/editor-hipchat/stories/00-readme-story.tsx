@@ -134,4 +134,4 @@ function SchemaDoc(props: { schemaSourceFile: string }) {
   return schema
     ? <Code language="js">{schema}</Code>
     : <p>Unable to show the schema.</p>;
-};
+}

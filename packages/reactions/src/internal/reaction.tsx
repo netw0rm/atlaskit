@@ -11,6 +11,8 @@ import { PureComponent } from 'react';
 import { style } from 'typestyle';
 import { ReactionSummary } from '../reactions-resource';
 import { isLeftClick } from './helpers';
+import { analyticsService } from '../analytics';
+import ReactionTooltip from './reaction-tooltip';
 
 const emojiStyle = style({
   transformOrigin: 'center center 0',
@@ -62,6 +64,9 @@ const reactionStyle = style({
       $nest: {
         [`> .${emojiStyle}`]: {
           transform: 'scale(1.3)'
+        },
+        '> .reaction-tooltip': {
+          display: 'block'
         }
       }
     },
@@ -78,14 +83,54 @@ export interface Props {
   reaction: ReactionSummary;
   emojiProvider: Promise<EmojiProvider>;
   onClick: Function;
+  onMouseOver?: Function;
 }
 
-export default class Reaction extends PureComponent<Props, {}> {
+export interface State {
+  showTooltip: boolean;
+}
+
+export default class Reaction extends PureComponent<Props, State> {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showTooltip: false
+    };
+  }
 
   private handleMouseDown = (event) => {
     event.preventDefault();
     if (this.props.onClick && isLeftClick(event)) {
+      const { reaction } = this.props;
+      analyticsService.trackEvent('reactions.reaction.click', reaction as {});
+
       this.props.onClick(event);
+    }
+  }
+
+  private handleMouseOver = (event) => {
+    event.preventDefault();
+    const { onMouseOver, reaction } = this.props;
+    if (onMouseOver) {
+      if (!reaction.users || !reaction.users.length) {
+        onMouseOver(event);
+      }
+
+      this.setState({
+        showTooltip: true
+      });
+    }
+  }
+
+  private handleMouseOut = (event) => {
+    event.preventDefault();
+
+    if (this.props.onMouseOver) {
+      this.setState({
+        showTooltip: false
+      });
     }
   }
 
@@ -96,13 +141,19 @@ export default class Reaction extends PureComponent<Props, {}> {
       'reacted': reaction.reacted
     });
 
+    const { users } = reaction;
+
     const emojiId = { id: reaction.emojiId, shortName: '' };
+    const tooltip = this.state.showTooltip && users && users.length ? <ReactionTooltip target={this} users={users} /> : null;
 
     return (
       <button
         className={classNames}
         onMouseUp={this.handleMouseDown}
+        onMouseOver={this.handleMouseOver}
+        onMouseOut={this.handleMouseOut}
       >
+        {tooltip}
         <span className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} /></span>
         <span className={countStyle}>
           {reaction.count < 100 ? reaction.count : '99+'}

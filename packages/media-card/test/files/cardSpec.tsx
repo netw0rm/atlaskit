@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { FileDetails } from '@atlaskit/media-core';
 
-import { FileCard, FileCardView, FileCardViewSmall } from '../../src';
+import { FileCard, FileCardView, FileCardViewSmall } from '../../src/files';
 
 describe('FileCard', () => {
 

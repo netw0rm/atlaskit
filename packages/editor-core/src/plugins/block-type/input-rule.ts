@@ -47,6 +47,6 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (rules.length !== 0) {
     return inputRules({ rules });
   }
-};
+}
 
 export default inputRulePlugin;

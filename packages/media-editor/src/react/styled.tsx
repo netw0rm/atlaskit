@@ -8,7 +8,7 @@ export const EditorContainer = styled.div`
 
 export const OutputArea = styled.div`
   position: absolute;
-  overflow: hidden;  
+  overflow: hidden;
 `;
 
 export const DrawingCanvas = styled.canvas`

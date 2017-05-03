@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
-import { FileCardViewSmall, FileCardViewSmallProps } from '../../src';
+import { FileCardViewSmall, FileCardViewSmallProps } from '../../src/files';
 import { FileIcon, ErrorIcon } from '../../src/utils/index';
 
 describe('FileCardViewSmall', () => {
@@ -28,13 +28,12 @@ describe('FileCardViewSmall', () => {
     expect(cardView.find('.size').first().text()).to.equal('1 KB');
   });
 
-  it('should display file icon when file loaded', () => {
+  it('should display file icon when file loaded and dataURI is undefined', () => {
     const cardView = mount<FileCardViewSmallProps, {}>(
       <FileCardViewSmall
         mediaName={'some-audio'}
         mediaType={'audio'}
         mediaSize={1024}
-        dataURI={'some-data-uri'}
       />);
 
     expect(cardView.find(FileIcon).length).to.equal(1);

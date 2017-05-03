@@ -24,7 +24,7 @@ interface StoredFragment {
 // When a model is changed, the core calls 'update()'.
 //
 // Paragraphs are separated with the character '\n'. Currently each paragraph is one line.
-// 
+//
 // A typeset must provide text fragments and cursor positions.
 //
 // A fragment consists of:
@@ -32,7 +32,7 @@ interface StoredFragment {
 //   - position of the text fragment assuming that the text origin is in (0, 0).
 //
 // For the text containing N characters the typeset must produce N + 1 cursor positions. Each of them is a point with two values x and y.
-// Line height and descent are used to render the cursor. Cursor positions for subsequent lines must have y coordinates that differ 
+// Line height and descent are used to render the cursor. Cursor positions for subsequent lines must have y coordinates that differ
 // exactly in line height.
 export class Typeset implements Core.TypesetInterop {
   private isContextLost: boolean = false;
@@ -65,7 +65,7 @@ export class Typeset implements Core.TypesetInterop {
   //   textLength - the length of the text line (in UTF-32 code units)
   //   direction - text direction: 'ltr' or 'rtl'
   //   fontSize - font size in pixels
-  //   cursorArray - array to be filled in with cursor data, the memory is pre-allocated in Emscripten heap 
+  //   cursorArray - array to be filled in with cursor data, the memory is pre-allocated in Emscripten heap
   //                 for  2 * (textLength + 1)  32-bit integers (x and y coordinates for cursor positions)
   //
   // Returns true if the update was successful
@@ -165,7 +165,7 @@ export class Typeset implements Core.TypesetInterop {
   }
 
   private collectFragments(): boolean {
-    // For fragments we will record each fragment and the y coordinate of the line 
+    // For fragments we will record each fragment and the y coordinate of the line
     // (currently one paragraph contains only one line).
     this.fragments = [];  // we don't own fragments (paragraphs do), so we don't need to delete textures explicitly
     const {lineHeight} = this.fontMetrics;
@@ -186,8 +186,8 @@ export class Typeset implements Core.TypesetInterop {
     // 'cursorArray' is the offset in this 32-bit heap.
     // We must populate this array with the values from paragraphs.
     //
-    // This array contains (cursorPosCount * 2) 32-bit numbers. For each cursor position it should store 
-    // firstly x and then y coordinate. 
+    // This array contains (cursorPosCount * 2) 32-bit numbers. For each cursor position it should store
+    // firstly x and then y coordinate.
     // For example, if we have 3 cursor positions (12, -5), (16, -11), (22, -11) the core expects the array:
     // [12, -5, 16, -11, 22, -11]
     // which contains 6 elements

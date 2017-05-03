@@ -162,6 +162,7 @@ export const pickerSearch = style({
     [`.${searchIcon}`]: {
       opacity: .5,
       paddingTop: '2px',
+      height: '17px',
     },
 
     [`.${input}`]: {
@@ -172,7 +173,7 @@ export const pickerSearch = style({
       cursor: 'inherit',
       fontSize: '14px',
       outline: 'none',
-      padding: '0 0 0 12px',
+      padding: '1px 0 2px 10px',
       width: '100%',
 
       $nest: {

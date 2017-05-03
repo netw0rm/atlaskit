@@ -113,11 +113,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
+  private handleLinkCardViewClick(item: any, event: Event) {
+    event.preventDefault();
+  }
+
   private renderLink() {
     const { mediaProvider, viewContext } = this.state;
     const { id, collection, onDelete } = this.props;
     const url = this.getLinkUrlFromId(id);
-    const onClickHandler = (item: any, event: Event) => event.preventDefault();
 
     if ( !mediaProvider || !viewContext ) {
       const previewDetails = {
@@ -133,7 +136,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         metadata={previewDetails}
 
         // SharedCardProps
-        actions={[ CardClick(onClickHandler) ]}
+        actions={[ CardClick(this.handleLinkCardViewClick) ]}
       />;
     }
 

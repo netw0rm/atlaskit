@@ -17,11 +17,13 @@ import TemporaryNodesList from './temporary-nodes-list';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
 
-import { MediaPluginOptions } from './media-plugin-options';
+import { MediaPluginBehavior, MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
+
+export type MediaPluginBehavior = MediaPluginBehavior;
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -141,7 +143,7 @@ export class MediaPluginState {
   }
 
   insertFile = (mediaState: MediaState, collection: string): [ Node, Transaction ] => {
-    const { view } = this;
+    const { options, view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
 
@@ -165,7 +167,7 @@ export class MediaPluginState {
 
     let transaction;
 
-    if (this.isInsideEmptyParagraph()) {
+    if (this.isInsideEmptyParagraph() && options.behavior !== 'compact') {
       const { $from } = state.selection;
 
       // empty paragraph always exists inside the document
@@ -360,11 +362,14 @@ export class MediaPluginState {
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
-    const [node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
-    const { view } = this;
+    const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
+    const { options, view } = this;
+
     view.dispatch(transaction);
 
-    this.selectInsertedMediaNode(node as PositionedNode);
+    if (options.behavior !== 'compact') {
+      this.selectInsertedMediaNode(node as PositionedNode);
+    }
   }
 
   private handleMediaState = (state: MediaState) => {

@@ -54,6 +54,7 @@ storiesOf(name, module)
 
       <button
         style={{position: 'absolute', width: '100px', height: '30px', right: '0', top: '0'}}
+        // tslint:disable-next-line:jsx-no-lambda
         onClick={() => {
           const image = loadParameters.imageGetter();
           if (image.isExported && image.content) {

@@ -1,3 +1,19 @@
+# make sure not to use && as a continuation in any of these steps unless you pair it with || exit 1
+# pipelines concats each of these commands into one script and runs that
+# if your command in the script list has && joining it, and any of the steps fail, the pipeline will still continue
+#
+# please either put those commands in a script in ./build/bin
+# or just place them in different items in the list i.e. change
+#           - foo && bar && baz
+# to
+#           - foo
+#           - bar
+#           - baz
+# or
+#           - foo && bar && baz || exit 1
+# or
+#           - ./build/bin/foo-bar-baz.bash
+
 image: atlassianlabs/atlaskit:2017-04-26
 pipelines:
   branches:
@@ -18,7 +34,7 @@ pipelines:
             - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
-            - npm run release && echo "Released packages:" && touch .released-packages && cat .released-packages
+            - npm run release
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce
             - ./build/bin/release.restart.last.stopped.pipeline.js

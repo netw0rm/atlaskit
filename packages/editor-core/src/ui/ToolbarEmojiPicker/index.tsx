@@ -41,7 +41,6 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
 
     let position: 'above' | 'below' = 'above';
     let offsetX: number = 0;
-    const offsetY: number = 8;
     if (button) {
       const box = button.getBoundingClientRect();
       if (box.top - emojiPickerHeight < 0 && box.bottom + emojiPickerHeight <= window.innerHeight) {
@@ -66,7 +65,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
             target={button}
             position={position}
             offsetX={offsetX}
-            offsetY={offsetY}
+            offsetY={styles.offsetY}
             zIndex={akZIndexModal}
             onPickerRef={this.onPickerRef}
           />

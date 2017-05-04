@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/reactions",
-  "version": "10.0.0",
+  "version": "10.2.1",
   "config": {
     "access": "public"
   },
   "description": "Reactions component",
   "main": "umd/@atlaskit/reactions.js",
   "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/es5/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -19,6 +19,7 @@
     "umd"
   ],
   "dependencies": {
+    "@atlaskit/button": "^1.1.2",
     "@atlaskit/emoji": "^13.0.0",
     "@atlaskit/icon": "^2.3.0",
     "@atlaskit/util-shared-styles": "^1.0.0",

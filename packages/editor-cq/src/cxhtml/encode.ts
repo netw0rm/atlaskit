@@ -92,9 +92,15 @@ export default function encode(node: PMNode) {
     elem.setAttribute('media-id', node.attrs.id);
     elem.setAttribute('media-type', node.attrs.type);
     elem.setAttribute('media-collection', node.attrs.collection);
-    node.fileName && elem.setAttribute('file-name', node.fileName);
-    node.fileSize && elem.setAttribute('file-size', `${node.fileSize}`);
-    node.fileMimeType && elem.setAttribute('file-mime-type', node.fileMimeType);
+    if (node.fileName) {
+      elem.setAttribute('file-name', node.fileName);
+    }
+    if (node.fileSize) {
+      elem.setAttribute('file-size', `${node.fileSize}`);
+    }
+    if (node.fileMimeType) {
+      elem.setAttribute('file-mime-type', node.fileMimeType);
+    }
     return elem;
   }
 

@@ -4,7 +4,7 @@ export interface MouseEventProps {
   clientY?: number;
   screenX?: number;
   screenY?: number;
-};
+}
 
 export const createMouseEvent = (name: string, props: MouseEventProps = {}): MouseEvent => {
   const {mouseButton: mb, clientX: cx, clientY: cy, screenX: sx, screenY: sy} = props;

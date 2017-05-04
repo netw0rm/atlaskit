@@ -1,5 +1,9 @@
-import { MediaStateManager } from './../media/index';
-import { MediaProvider, MediaContextConfig } from '../media';
+import {
+  ContextConfig as MediaContextConfig,
+  MediaProvider,
+  MediaStateManager,
+} from '@atlaskit/media-core';
+
 import {
   defaultClientId,
   defaultServiceHost,
@@ -31,7 +35,7 @@ export function storyMediaProviderFactory (collection = defaultCollectionName, s
       })
     })
   });
-};
+}
 
 
 export type promisedString = Promise<string>;
@@ -52,7 +56,7 @@ export function fileToBase64(blob) {
     };
     reader.readAsDataURL(blob);
   });
-};
+}
 
 export function isImage(type: string) {
   return ['image/jpeg', 'image/png'].indexOf(type) > -1;

@@ -7,6 +7,7 @@ import Reaction from '../src/internal/reaction';
 import Selector, { defaultReactionsByShortName } from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
 import { reactionsProvider, reactionsProviderPromise } from '../src/mock-reactions-provider';
+import { analyticsService } from '../src/analytics';
 
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 
@@ -17,6 +18,10 @@ import { name } from '../package.json';
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
+analyticsService.handler = (name, properties) => {
+  action('analytic event')(name, properties);
+};
+
 storiesOf(name, module)
   .add('Picker and Reactions', () => (
     <div>
@@ -24,6 +29,7 @@ storiesOf(name, module)
         <p>Lorem ipsum dolor sit amet...</p>
         <ReactionPicker
           emojiProvider={getEmojiResource()}
+          // tslint:disable-next-line:jsx-no-lambda
           onSelection={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
         />
       </div>
@@ -32,6 +38,7 @@ storiesOf(name, module)
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
+        // tslint:disable-next-line:jsx-no-lambda
         onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
       />
     </div>

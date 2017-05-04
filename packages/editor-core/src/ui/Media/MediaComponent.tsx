@@ -1,15 +1,24 @@
 import * as React from 'react';
 import {
-  LinkCardGenericView,
   Card,
-  FileCardView,
+  CardView,
   MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
-import { ContextConfig, ContextFactory, Context, CardDelete } from '@atlaskit/media-core';
+
+import {
+  ContextConfig,
+  ContextFactory,
+  Context,
+  CardClick,
+  CardDelete,
+  FileDetails,
+  MediaProvider,
+  MediaState,
+  UrlPreview
+} from '@atlaskit/media-core';
 import { MediaPluginState } from '../../plugins/media';
 
-import { default as MediaProvider, MediaState } from '../../media';
 import { Attributes } from '../../schema/nodes/media';
 import { EditorView, mediaStateKey } from '../../index';
 
@@ -17,15 +26,44 @@ export interface Props extends Attributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
   onDelete?: () => void;
-};
+}
 
 export interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
 }
 
+/**
+ * Map media state status into CardView processing status
+ * Media state status is more broad than CardView API so we need to reduce it
+ */
+function mapMediaStatusIntoCardStatus(state: MediaState) {
+  switch (state.status) {
+    case 'ready':
+      return 'complete';
+
+    case 'processing':
+    case 'unfinalized':
+      return 'processing';
+
+    case 'unknown':
+    case 'uploading':
+      // TODO: change this to uploading. Currently media-card doesn't have a concept of uploading
+      // Because of this progressbar is shown only for "complete" status
+      // @see https://jira.atlassian.com/browse/FIL-4175
+      return 'complete';
+
+    // default case is to let TypeScript know that this function always returns a string
+    case 'error':
+    default:
+      return 'error';
+  }
+}
+
 
 export default class MediaComponent extends React.PureComponent<Props, State> {
+  private thumbnailWm = new WeakMap();
+
   state: State = {
     id: '',
     status: 'unknown'
@@ -78,16 +116,30 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
+  private handleLinkCardViewClick(item: any, event: Event) {
+    event.preventDefault();
+  }
+
   private renderLink() {
     const { mediaProvider, viewContext } = this.state;
     const { id, collection, onDelete } = this.props;
     const url = this.getLinkUrlFromId(id);
 
     if ( !mediaProvider || !viewContext ) {
-      return <LinkCardGenericView
-        title=" ... loading"
-        linkUrl=""
-        onClick={(event: Event) => event.preventDefault()}
+      const previewDetails = {
+        type: '',
+        url: '',
+        title: ' ... loading'
+      } as UrlPreview;
+
+      return <CardView
+        // CardViewProps
+        status="loading"
+        mediaItemType="link"
+        metadata={previewDetails}
+
+        // SharedCardProps
+        actions={[ CardClick(this.handleLinkCardViewClick) ]}
       />;
     }
 
@@ -116,8 +168,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { id } = this.props;
 
     if ( !mediaProvider || !viewContext ) {
-      return <FileCardView
-        loading={true}
+      return <CardView
+        status="loading"
+        mediaItemType="file"
       />;
     }
 
@@ -148,15 +201,45 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType, progress} = state;
+    const { thumbnail, fileName, fileSize, fileType} = state;
     const { onDelete } = this.props;
 
-    return <FileCardView
-      mediaName={fileName}
-      mediaSize={fileSize}
-      mediaType={(thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')}
+    // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
+    let dataURI: string | undefined;
+    if (thumbnail) {
+      if (this.thumbnailWm.has(thumbnail)) {
+        dataURI = this.thumbnailWm.get(thumbnail);
+      } else {
+        dataURI = URL.createObjectURL(thumbnail);
+        this.thumbnailWm.set(thumbnail, dataURI);
+      }
+    }
+
+    // Make sure that we always display progress bar when the file is uploading (prevents flicker)
+    let progress = state.progress;
+    if (!progress && state.status === 'uploading') {
+      progress = .0;
+    }
+
+    // Construct file details object
+    const fileDetails = {
+      name: fileName,
+      size: fileSize,
+      mimeType: fileType,
+      mediaType: (thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')
+    } as FileDetails;
+
+    return <CardView
+      // CardViewProps
+      status={mapMediaStatusIntoCardStatus(state)}
+      mediaItemType="file"
+      metadata={fileDetails}
+
+      // FileCardProps
+      dataURI={dataURI}
       progress={progress}
-      dataURI={thumbnail && URL.createObjectURL(thumbnail)}
+
+      // SharedCardProps
       actions={[ CardDelete(onDelete!) ]}
     />;
   }

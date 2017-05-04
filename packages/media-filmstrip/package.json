@@ -7,7 +7,7 @@
   "description": "Includes components that show media cards as a filmstrip",
   "main": "umd/@atlaskit/media-filmstrip.js",
   "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/es5/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",

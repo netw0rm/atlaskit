@@ -152,7 +152,7 @@
     "create": "./build/bin/create.new.component.sh",
     "create-ts": "./build/bin/create.new.ts.component.sh",
     "help": "readme-help",
-    "health-check": "./build/bin/health.check.js",
+    "health-check": "./build/bin/health-check-scripts/health.check.js",
     "lint": "yarn run validate/lint",
     "postinstall": "./build/bin/postinstall.sh",
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",
@@ -194,9 +194,9 @@
     "validate/tslint": "lerna run lint",
     "validate/tslint/changed": "./build/bin/lint.tslint.changed.sh",
     "validate/tslint/changed/fix": "./build/bin/lint.tslint.changed.sh --fix",
-    "validate/tslint/fix": "./build/bin/lint.tslint.sh --fix",
+    "validate/tslint/fix": "lerna run -- lint -- --fix",
     "validate/package.json": "pjv -q && lerna exec -- pjv -q",
-    "validate/typescript": "./build/bin/validate.typescript.sh"
+    "validate/typescript": "lerna run validate/typescript"
   },
   "devDependencies": {}
 }

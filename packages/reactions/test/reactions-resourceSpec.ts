@@ -12,6 +12,30 @@ const baseUrl = 'https://reactions';
 const ari = 'ari:cloud:owner:demo-cloud-id:item/1';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
+const detailedReaction = {
+  ari: ari,
+  emojiId: grinningId.id!,
+  count: 1,
+  reacted: true,
+  users: [
+    {
+      id: 'oscar',
+      displayName: 'Oscar Wallhult'
+    }
+  ]
+};
+
+const reaction = {
+  ari: ari,
+  emojiId: grinningId.id!,
+  count: 1,
+  reacted: true
+};
+
+const fetchDetailedReaction = () => {
+  return detailedReaction;
+};
+
 const fetchGetReactions = () => {
   return {
     [ari]: [
@@ -239,5 +263,60 @@ describe('@atlaskit/reactions/reactions-provider', () => {
     });
   });
 
+  describe('getDetailedReaction', () => {
+    const reactionId = `${ari}|${grinningId!.id}`;
+    const reactionsProvider = new ReactionsResource({baseUrl});
+
+    beforeEach(() => {
+      fetchMock.mock({
+        options: {
+          method: 'GET'
+        },
+        matcher: `end:reactions?reactionId=${encodeURIComponent(reactionId)}`,
+        response: fetchDetailedReaction()
+      });
+    });
+
+    it('should fetch details for reaction', () => {
+      return reactionsProvider.getDetailedReaction(reaction)
+        .then(detail => {
+          expect(detail).to.deep.equal(detailedReaction);
+        });
+    });
+  });
+
+  describe('fetchReactionDetails', () => {
+    const reactionId = `${ari}|${grinningId!.id}`;
+    const reactionsProvider = new ReactionsResource({baseUrl});
+
+    beforeEach(() => {
+      fetchMock.mock({
+        options: {
+          method: 'GET'
+        },
+        matcher: `end:reactions?reactionId=${encodeURIComponent(reactionId)}`,
+        response: fetchDetailedReaction()
+      });
+    });
+
+    it('should fetch reaction details for reaction', () => {
+      const spy = sinon.spy(reactionsProvider, 'getDetailedReaction');
+      reactionsProvider.fetchReactionDetails(reaction);
+      expect(spy.called).to.equal(true);
+      expect(spy.calledWith(reaction)).to.equal(true);
+      spy.restore();
+    });
+
+    it('should call notifyUpdated', () => {
+      const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
+      return reactionsProvider.fetchReactionDetails(reaction)
+        .then(() => {
+          expect(spy.called).to.equal(true);
+          expect(spy.calledWith(reaction.ari, [detailedReaction])).to.equal(true);
+          spy.restore();
+        });
+    });
+
+  });
 });
 

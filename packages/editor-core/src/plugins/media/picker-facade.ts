@@ -1,6 +1,10 @@
-import { MediaStateManager, MediaState, UploadParams } from './../../media';
 import { MediaPicker } from 'mediapicker';
-import { ContextConfig } from '@atlaskit/media-core';
+import {
+  ContextConfig,
+  MediaStateManager,
+  MediaState,
+  UploadParams,
+} from '@atlaskit/media-core';
 
 export type PickerEvent = {
   file: PickerEventFile,
@@ -90,7 +94,9 @@ export default class PickerFacade {
   }
 
   show(): void {
-    this.picker.show && this.picker.show();
+    if (this.picker.show) {
+      this.picker.show();
+    }
   }
 
   cancel(tempId: string): void {
@@ -246,4 +252,4 @@ export default class PickerFacade {
       });
     }
   }
-};
+}

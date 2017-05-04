@@ -37,7 +37,7 @@ describe('ak-field-base', () => {
 
     describe('required prop', () => {
       it('should append an asterisk to the content', () =>
-        expect(shallow(<Label {...defaultProps} isRequired />).find(`.${styles.required}`).text()).to.equal('*')
+        expect(shallow(<Label {...defaultProps} isRequired />).find(`.${styles.requiredAsterisk}`).text()).to.equal('*')
       );
 
       it('should not append an asterisk to the content if required is not set', () => {

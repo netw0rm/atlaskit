@@ -2,7 +2,7 @@
   "rulesDirectory": ["./rules"],
   "extends": ["tslint:recommended", "tslint-react"],
   "rules": {
-    "align": [false],
+    "align": [true],
     "array-type": [false],
     "arrow-parens": false,
     "ban-types": ["Object", "Boolean", "Number", "String", "Symbol"],
@@ -18,9 +18,9 @@
     ],
     "interface-name": [false],
     "interface-over-type-literal": false,
-    "jsx-boolean-value": [false],
+    "jsx-boolean-value": [true],
     "jsx-alignment": true,
-    "jsx-no-lambda": [false],
+    "jsx-no-lambda": [true],
     "jsx-no-multiline-js": [false],
     "jsx-no-string-ref": [false],
     "jsx-wrap-multiline": [false],
@@ -39,7 +39,7 @@
     "no-shadowed-variable": false,
     "no-string-literal": false,
     "no-trailing-whitespace": true,
-    "no-unused-expression": false,
+    "no-unused-expression": true,
     "object-literal-key-quotes": [false],
     "object-literal-shorthand": false,
     "object-literal-sort-keys": false,
@@ -53,7 +53,7 @@
       "single",
       "jsx-double"
     ],
-    "semicolon": [false],
+    "semicolon": [true],
     "space-before-function-paren": [false],
     "switch-default": false,
     "trailing-comma": [true],
@@ -61,7 +61,7 @@
     "typedef": [true],
     "unified-signatures": [false],
     "variable-name": true,
-    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-type", "check-typecast"],
+    "whitespace": [true],
 
     // Custom Rules
     "no-only-tests": true // Prohibits commiting test with "only", e.g.: describe.only, it.only

@@ -1,4 +1,4 @@
-import { MediaState } from './../../media';
+import { MediaState } from '@atlaskit/media-core';
 import { default as ProviderFactory } from '../../providerFactory';
 
 export type MediaPluginBehavior = 'default' | 'compact';

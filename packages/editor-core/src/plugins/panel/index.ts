@@ -10,7 +10,6 @@ import {
   Node,
 } from '../../prosemirror';
 import inputRulePlugin from './input-rules';
-import keymapPlugin from './keymaps';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -44,20 +43,19 @@ export class PanelState {
   }
 
   changePanelType(view: EditorView, panelType: PanelType) {
-    analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
+    analyticsService.trackEvent(`atlassian.editor.format.${panelType.panelType}.button`);
     const { state, dispatch } = view;
     let { tr } = state;
-    // wrap selection in new panel type
     const { panel } = state.schema.nodes;
     const { $from, $to } = state.selection;
-    let range = $from.blockRange($to)!;
+    let newFrom = tr.doc.resolve($from.start($from.depth - 1));
+    let newTo = tr.doc.resolve($to.end($to.depth - 1));
+    let range = newFrom.blockRange(newTo)!;
+    tr.lift(range, $from.depth - 2);
+    newFrom = tr.doc.resolve(tr.mapping.map(newFrom.pos));
+    newTo = tr.doc.resolve(tr.mapping.map(newTo.pos));
+    range = newFrom.blockRange(newTo)!;
     tr = tr.wrap(range, [{ type: panel, attrs: panelType }]);
-    // list selection
-    tr.setSelection(state.selection.map(tr.doc, tr.mapping));
-    let blockStart = tr.doc.resolve($from.start($from.depth - 1));
-    let blockEnd = tr.doc.resolve($to.end($to.depth - 1));
-    range = blockStart.blockRange(blockEnd)!;
-    tr.lift(range, blockStart.depth - 1);
     dispatch(tr);
   }
 
@@ -65,7 +63,9 @@ export class PanelState {
     const { dispatch, state } = view;
     const { tr } = state;
     const { $from, $to } = state.selection;
-    const range = $from.blockRange($to)!;
+    const newFrom = tr.doc.resolve($from.start($from.depth - 1));
+    const newTo = tr.doc.resolve($to.end($to.depth - 1));
+    const range = newFrom.blockRange(newTo)!;
     dispatch(tr.lift(range, $from.depth - 2));
   }
 
@@ -145,21 +145,22 @@ const plugin = new Plugin({
   },
   props: {
     handleClick(view: EditorView, event) {
-      view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, domEvent: true }));
+      stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;
     },
     onFocus(view: EditorView, event) {
       stateKey.getState(view.state).updateEditorFocused(true);
     },
     onBlur(view: EditorView, event) {
-      stateKey.getState(view.state).updateEditorFocused(false);
-      view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, domEvent: true }));
+      const pluginState = stateKey.getState(view.state);
+      pluginState.updateEditorFocused(false);
+      pluginState.update(view.state, view.docView, true);
     },
   },
 });
 
 const plugins = (schema: Schema<any, any>) => {
-  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

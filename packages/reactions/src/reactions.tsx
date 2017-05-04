@@ -16,6 +16,7 @@ export interface Props {
   reactionsProvider: ReactionsProvider;
   emojiProvider: Promise<EmojiProvider>;
   onReactionClick: OnEmoji;
+  onReactionHover?: Function;
   boundariesElement?: string;
   allowAllEmojis?: boolean;
 }
@@ -52,6 +53,13 @@ export default class Reactions extends Component<Props, State> {
     this.props.onReactionClick(emojiId);
   }
 
+  private onReactionHover = (reaction: ReactionSummary) => {
+    const { onReactionHover } = this.props;
+    if (onReactionHover) {
+      onReactionHover(reaction);
+    }
+  }
+
   componentDidMount() {
     const { ari, reactionsProvider } = this.props;
     reactionsProvider.subscribe(ari, this.updateState);
@@ -68,6 +76,10 @@ export default class Reactions extends Component<Props, State> {
     });
   }
 
+  private handleReactionPickerSelection = (emojiId) => {
+    this.onEmojiClick(emojiId);
+  }
+
   private renderPicker() {
     const { emojiProvider, boundariesElement, allowAllEmojis } = this.props;
     const { reactions } = this.state;
@@ -79,7 +91,7 @@ export default class Reactions extends Component<Props, State> {
     return (
       <ReactionPicker
         emojiProvider={emojiProvider}
-        onSelection={(emojiId) => this.onEmojiClick(emojiId)}
+        onSelection={this.handleReactionPickerSelection}
         miniMode={true}
         boundariesElement={boundariesElement}
         allowAllEmojis={allowAllEmojis}
@@ -101,7 +113,10 @@ export default class Reactions extends Component<Props, State> {
               <Reaction
                 reaction={reaction}
                 emojiProvider={emojiProvider}
+                // tslint:disable-next-line:jsx-no-lambda
                 onClick={() => this.onEmojiClick(reaction.emojiId)}
+                // tslint:disable-next-line:jsx-no-lambda
+                onMouseOver={() => this.onReactionHover(reaction)}
               />
             </div>
           );

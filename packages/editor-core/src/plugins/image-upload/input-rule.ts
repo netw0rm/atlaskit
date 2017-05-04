@@ -30,6 +30,6 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
       imageRule
     ]
   });
-};
+}
 
 export default inputRulePlugin;

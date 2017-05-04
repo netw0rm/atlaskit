@@ -109,4 +109,4 @@ export function filterSupportedLanguages (supportedLanguages) {
 
 export function createLanguageList (supportedLanguages) {
   return [NO_LANGUAGE, ...(supportedLanguages.map((language) => language.name).sort())];
-};
+}

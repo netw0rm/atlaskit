@@ -79,7 +79,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       );
     }
 
-    const isPersistent = !(mediaType === 'image' && dataURI);
+    const isPersistent = mediaType === 'doc' || !dataURI;
     const overlay = loading ? false : <CardOverlay
       persistent={isPersistent}
       selectable={selectable}
@@ -110,7 +110,9 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   onClick = (event: MouseEvent<HTMLDivElement>) => {
-    this.props.onClick && this.props.onClick(event.nativeEvent);
+    if (this.props.onClick) {
+      this.props.onClick(event.nativeEvent);
+    }
   }
 }
 

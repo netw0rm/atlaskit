@@ -59,6 +59,7 @@ export const emojiRepository = new EmojiRepository(emojis);
 export const grinEmoji = emojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
 export const evilburnsEmoji = emojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
 export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
+export const standardBoomEmoji = emojiRepository.findById('1f4a5') as EmojiDescriptionWithVariations;
 
 export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiRepository, config);
 

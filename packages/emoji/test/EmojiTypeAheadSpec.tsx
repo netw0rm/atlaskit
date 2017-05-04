@@ -4,12 +4,12 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, getEmojiResourcePromise } from './TestData';
+import { emojiRepository, standardBoomEmoji, getEmojiResourcePromise } from './TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../src/components/typeahead/EmojiTypeAheadItem';
-import { OptionalEmojiDescription } from '../src/types';
+import { OptionalEmojiDescription, EmojiId } from '../src/types';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import { Props as TypeAheadProps, State as TypeAheadState } from '../src/components/typeahead/EmojiTypeAhead';
 
@@ -193,6 +193,21 @@ describe('EmojiTypeAhead', () => {
         expect(onOpen.callCount, 'opened 2').to.equal(1);
         expect(onClose.callCount, 'closed 2').to.equal(1);
       });
+    });
+  });
+
+  it('should highlight emojis by matching on id then falling back to shortName', () => {
+    const component = setupPicker({
+      query: 'boom',
+    } as Props);
+    const standardBoomId: EmojiId = {
+      ...standardBoomEmoji
+    };
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      const item = getEmojiTypeAheadItemById(component, standardBoomEmoji.id);
+      item.prop('onMouseMove')(standardBoomId, standardBoomEmoji, item.simulate('mouseover'));
+      expect(isEmojiTypeAheadItemSelected(component, standardBoomEmoji.id)).to.equal(true);
     });
   });
 });

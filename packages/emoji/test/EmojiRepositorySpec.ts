@@ -37,10 +37,10 @@ const cowboy: EmojiDescription = {
   },
 };
 
-const siteBoom: EmojiDescription = {
+const siteTest: EmojiDescription = {
   id: '1f921',
-  name: 'boom',
-  shortName: ':boom:',
+  name: 'collision symbol',
+  shortName: ':test:',
   type: 'SITE',
   category: 'SYMBOL',
   representation: {
@@ -60,10 +60,10 @@ const siteBoom: EmojiDescription = {
   },
 };
 
-const atlassianBoom: EmojiDescription = {
+const atlassianTest: EmojiDescription = {
   id: '1f922',
-  name: 'collision symbol',
-  shortName: ':boom:',
+  name: 'boom',
+  shortName: ':test:',
   type: 'ATLASSIAN',
   category: 'SYMBOL',
   representation: {
@@ -83,10 +83,10 @@ const atlassianBoom: EmojiDescription = {
   },
 };
 
-const standardBoom: EmojiDescription = {
+const standardTest: EmojiDescription = {
   id: '1f923',
   name: 'BOOM',
-  shortName: ':boom:',
+  shortName: ':test:',
   type: 'STANDARD',
   category: 'SYMBOL',
   representation: {
@@ -149,17 +149,17 @@ describe('EmojiRepository', () => {
     it('conflicting shortName matches show in type order Site -> Atlassian -> Standard', () => {
       const splitCategoryEmojis = [
         ...allEmojis.slice(0, 10), // upto flag,
-        atlassianBoom,
-        standardBoom,
-        siteBoom,
+        atlassianTest,
+        standardTest,
+        siteTest,
         ...allEmojis.slice(10), // rest...
       ];
       const service = new EmojiRepository(splitCategoryEmojis);
-      const emojis = service.search(':boom').emojis;
+      const emojis = service.search(':test').emojis;
       const expectedEmoji = [
-        siteBoom,
-        atlassianBoom,
-        standardBoom,
+        siteTest,
+        atlassianTest,
+        standardTest,
       ];
       checkOrder(expectedEmoji, emojis);
     });

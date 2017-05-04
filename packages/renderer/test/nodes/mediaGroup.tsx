@@ -18,7 +18,7 @@ describe('MediaGroup', () => {
       attrs: {
         type: 'file',
         id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-        collectionId: ['MediaServicesSample']
+        collection: 'MediaServicesSample'
       }
     } as MediaNode;
     const mediaGroup = mount(<MediaGroup numOfCards={1}><Media item={mediaNode}/></MediaGroup>);

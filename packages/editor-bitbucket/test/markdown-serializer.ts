@@ -39,7 +39,19 @@ describe('Bitbucket markdown serializer: ', () => {
     ))).to.eq('foo\n\n\u200c\n\n\u200c\n\nbar');
   });
 
-  it('should preserve leading and traling blank lines suing zero-non-width', () => {
+  it('should espace 4 spaces at the beginning of the line with zero-width-non-joiner', () => {
+    const fourSpaces = '    ';
+
+    expect(markdownSerializer.serialize(doc(
+      p(`${fourSpaces}hello`)
+    ))).to.eq(`\u200c${fourSpaces}hello`);
+
+    expect(markdownSerializer.serialize(doc(p(
+      `hello${fourSpaces}there`
+    )))).to.eq(`hello${fourSpaces}there`);
+  });
+
+  it('should preserve leading and traling blank lines using zero-non-width', () => {
     expect(markdownSerializer.serialize(doc(
       p(),
       p('bar')

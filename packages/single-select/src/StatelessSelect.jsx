@@ -60,6 +60,7 @@ export default class StatelessSelect extends PureComponent {
 
   state = {
     isFocused: this.props.isOpen,
+    focusedElement: null,
   }
 
   componentDidMount = () => {
@@ -84,7 +85,10 @@ export default class StatelessSelect extends PureComponent {
 
   onFocus = () => {
     if (!this.props.isDisabled) {
-      this.setState({ isFocused: true });
+      this.setState({
+        isFocused: true,
+        focusedElement: document.activeElement,
+      });
       this.focus();
     }
   }
@@ -161,7 +165,9 @@ export default class StatelessSelect extends PureComponent {
 
   focus = () => {
     if (this.inputNode) {
-      this.inputNode.focus();
+      if (this.state.focusedElement !== this.inputNode) {
+        this.inputNode.focus();
+      }
     } else {
       this.triggerNode.focus();
     }

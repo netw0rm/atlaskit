@@ -154,7 +154,6 @@
     "help": "readme-help",
     "health-check": "./build/bin/health.check.js",
     "lint": "yarn run validate/lint",
-    "postinstall": "./build/bin/postinstall.sh",
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "prepublish/all": "lerna run prepublish",

@@ -16,18 +16,22 @@ const exportImage = () => {
   imageElement.src = imageData;
 };
 
+function handleImgRef(img) {
+  imageElement = img;
+}
+
 storiesOf('Image navigator', {})
   .add('Local image', () => {
     return <div>
             <ImageNavigator imageSource={tallImage} onLoad={onLoad} />
             <button onClick={exportImage}>Export</button>
-            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={(image) => imageElement = image} />
+            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
            </div>;
   })
   .add('Remote image', () => {
     return <div>
             <ImageNavigator imageSource={remoteImage} onLoad={onLoad} />
             <button onClick={exportImage}>Export</button>
-            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={(image) => imageElement = image} />
+            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
            </div>;
   });

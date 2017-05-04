@@ -104,6 +104,12 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
     this.unloadEngine();
   }
 
+  private handleOutputAreaInnerRef = (outputArea) => { this.outputArea = outputArea; };
+  private handleSupplementaryCanvasInnerRef = (canvas) => { this.supplementaryCanvas = canvas; };
+  private handleHiddenTextAreaInnerRef = (textArea) => { this.hiddenTextArea = textArea; };
+  private handleHiddenTextHelperDivInnerRef = (div) => { this.hiddenTextHelperDiv = div; };
+  private handleDrawingCanvasInnerRef = (canvas) => { this.canvas = canvas; };
+
   render() {
     const {dimensions} = this.props;
     const width = `${dimensions.width}px`;
@@ -112,24 +118,24 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
     return (
       <EditorContainer style={{width, height}}>
         <OutputArea
-          innerRef={outputArea => this.outputArea = outputArea}
+          innerRef={this.handleOutputAreaInnerRef}
           style={{width, height}}
         >
           <SupplementaryCanvas
-            innerRef={canvas => this.supplementaryCanvas = canvas}
+            innerRef={this.handleSupplementaryCanvasInnerRef}
           />
 
           <HiddenTextArea
             autoComplete={'off'}
-            innerRef={textArea => this.hiddenTextArea = textArea}
+            innerRef={this.handleHiddenTextAreaInnerRef}
           />
 
           <HiddenTextHelperDiv
-            innerRef={div => this.hiddenTextHelperDiv = div}
+            innerRef={this.handleHiddenTextHelperDivInnerRef}
           />
 
           <DrawingCanvas
-            innerRef={canvas => this.canvas = canvas}
+            innerRef={this.handleDrawingCanvasInnerRef}
             style={{width, height}}
           />
         </OutputArea>

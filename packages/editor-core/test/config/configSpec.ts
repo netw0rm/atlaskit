@@ -1,5 +1,5 @@
-import { EditorServicesConfig, MediaProvider } from '../../src';
-import { JwtTokenProvider } from '@atlaskit/media-core';
+import { EditorServicesConfig } from '../../src';
+import { JwtTokenProvider, MediaProvider } from '@atlaskit/media-core';
 import { MentionResource } from '@atlaskit/mention';
 import { name } from '../../package.json';
 import { EmojiResource } from '@atlaskit/emoji';
@@ -43,7 +43,7 @@ describe(name, () => {
       expect(configInstance.mentionResourceProvider!()).to.be.a('Promise');
 
       return configInstance.mediaResourceProvider!().then((mr: MediaProvider) => {
-        expect(mr.uploadParams.collection).to.be.a('string');
+        expect(mr.uploadParams!.collection).to.be.a('string');
         expect(mr.viewContext).to.be.a('Promise');
       });
     });

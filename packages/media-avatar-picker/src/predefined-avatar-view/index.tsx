@@ -53,6 +53,7 @@ export class PredefinedAvatarView extends PureComponent<PredefinedAvatarViewProp
           <LargeAvatarImage
             className={avatar === this.state.selectedAvatar ? 'selected' : ''}
             src={avatar.dataURI}
+            // tslint:disable-next-line:jsx-no-lambda
             onClick={(e) => this.createOnItemClickHandler(avatar)}
           />
         </li>);

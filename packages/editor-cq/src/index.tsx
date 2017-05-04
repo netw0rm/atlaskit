@@ -210,7 +210,7 @@ export default class Editor extends PureComponent<Props, State> {
         feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
-        onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
+        onCollapsedChromeFocus={this.handleCollapsedChromeFocus}
         placeholder={this.props.placeholder}
         pluginStateBlockType={blockTypeState}
         pluginStateCodeBlock={codeBlockState}
@@ -227,6 +227,10 @@ export default class Editor extends PureComponent<Props, State> {
         saveDisabled={!isMediaReady}
       />
     );
+  }
+
+  private handleCollapsedChromeFocus = () => {
+    this.setState({ isExpanded: true });
   }
 
   private handleRef = (place: Element | null) => {

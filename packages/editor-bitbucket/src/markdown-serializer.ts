@@ -103,10 +103,9 @@ const nodes = {
     });
     closeListItemChild(state, node, parent, index);
   },
-  listItem(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
+  listItem(state: MarkdownSerializerState, node: Node) {
     state.renderContent(node);
     // When there's more than one item in a list item if they are not a nested list (ol/ul) insert a blank line
-    // closeListItemChild(state, node, parent, index);
     if (node.childCount > 1 && node.lastChild && !isListNode(node.lastChild)) {
       state.write('\n');
     }

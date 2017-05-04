@@ -1,4 +1,4 @@
-import { MediaPicker } from 'mediapicker';
+import MediaPicker from 'mediapicker';
 import {
   ContextConfig,
   MediaStateManager,

@@ -11,8 +11,8 @@ const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
 const isInCi = true;
 
+// TODO come up with a per-package stategy to run these.
 const runInRealBrowsers = [
-  // TODO These should actually be run through BrowserStack in CI.
   /editor-/,
 
   // TODO Visibility test fails in JSDOM.

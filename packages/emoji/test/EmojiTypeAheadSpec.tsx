@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, standardBoomEmoji, getEmojiResourcePromise } from './TestData';
+import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise } from './TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
@@ -196,6 +196,16 @@ describe('EmojiTypeAhead', () => {
     });
   });
 
+  it('should find two matches when querying "boom"', () => {
+    const component = setupPicker({
+      query: 'boom',
+    } as Props);
+    // Confirm initial state for later conflicting shortName tests
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(findEmojiItems(component).length).to.equal(2);
+    });
+  });
+
   it('should highlight emojis by matching on id then falling back to shortName', () => {
     const component = setupPicker({
       query: 'boom',
@@ -208,6 +218,21 @@ describe('EmojiTypeAhead', () => {
       const item = getEmojiTypeAheadItemById(component, standardBoomEmoji.id);
       item.prop('onMouseMove')(standardBoomId, standardBoomEmoji, item.simulate('mouseover'));
       expect(isEmojiTypeAheadItemSelected(component, standardBoomEmoji.id)).to.equal(true);
+    });
+  });
+
+  it('should highlight correct emoji regardless of conflicting shortName', () => {
+    const component = setupPicker({
+      query: 'boom',
+    } as Props);
+    const atlassianBoomId: EmojiId = {
+      ...atlassianBoomEmoji
+    };
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      const item = getEmojiTypeAheadItemById(component, atlassianBoomEmoji.id);
+      item.prop('onMouseMove')(atlassianBoomId, atlassianBoomEmoji, item.simulate('mouseover'));
+      expect(isEmojiTypeAheadItemSelected(component, atlassianBoomEmoji.id)).to.equal(true);
     });
   });
 });

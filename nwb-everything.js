@@ -8,47 +8,6 @@ const cwd = process.cwd();
 const pathPackages = path.join(cwd, 'packages');
 const modPath = '../../node_modules';
 const binPath = `${modPath}/.bin`;
-
-/*
-TODO
-
-editor-core
-
-- Re-enable tests
-- Fix issues causing out of memory errors
-
-flag
-
-- Re-enable tests
-- Fix issue causing “cannot read property e600 of undefined
-
-icon, profilecard
-
-- Looks like the tests for each package are disabled on master
-- Re-enable tests
-- Fix test failures in each package
-
-dropdown-menu, droplist, field-base, field-text, inline-edit, multi-select
-
-- Use shallow() instead of mount() where possible
-- Where not possible, increase timeout to 5s
-- Remove all timeout overrides where possible
-
-media-avatar-picker, media-card, media-editor, media-filmstrip
-
-- Re-enable tests
-- Fix issues causing critical dependency errors
-
-mentions
-
-- Re-enable tests
-- Fix issues causing JSON data to be undefined in tests
-
-tooltip
-
-- Un-skip tests
-- Fix failures when run in Mocha
-*/
 const exclude = [
   'css-reset',
   'icon',

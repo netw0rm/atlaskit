@@ -22,16 +22,32 @@ const formStyle = {
 
 storiesOf(name, module)
   .add('with label', () =>
-    <BasicFieldBase
-      label="basic example for form"
-      id="fieldbase"
-    >
-      <Input
-        value="input children"
-        isEditing
-        id="fieldbase"
-      />
-    </BasicFieldBase>
+    <div>
+      <div>
+        <BasicFieldBase
+          label="basic example for form"
+          id="fieldbase"
+        >
+          <Input
+            value="input children"
+            isEditing
+            id="fieldbase"
+          />
+        </BasicFieldBase>
+      </div>
+      <div>
+        <BasicFieldBase
+          label="basic example for form"
+          id="fieldbase2"
+        >
+          <Input
+            value="input children"
+            isEditing
+            id="fieldbase2"
+          />
+        </BasicFieldBase>
+      </div>
+    </div>
   )
   .add('for inline edit', () =>
     <BasicFieldBase
@@ -411,12 +427,8 @@ storiesOf(name, module)
   .add('when it`s the first element of a form', () =>
     <div
       style={{
-        margin: '20px',
-        padding: '20px',
-        border: '1px solid #f0f0f0',
         display: 'flex',
         flexDirection: 'column',
-        background: '#fff',
       }}
     >
       <BasicFieldBase

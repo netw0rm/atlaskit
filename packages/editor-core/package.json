@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "16.3.3",
+  "version": "16.3.4",
   "config": {
     "access": "public"
   },
@@ -49,7 +49,7 @@
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.0.3",
     "@atlaskit/util-shared-styles": "^1.2.1",
-    "mediapicker": "^4.2.2",
+    "mediapicker": "^5.0.0",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#3615382475d0d6beeb1c5f0b27a1eadc94a108ac",
     "orderedmap": "^1.0.0",
     "popper.js": "1.0.8",

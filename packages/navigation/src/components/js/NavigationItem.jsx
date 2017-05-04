@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styled from 'styled-components';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import InteractiveWrapper from './InteractiveWrapper';
 
@@ -12,14 +11,6 @@ import NavigationItemInner from '../styled/NavigationItemInner';
 import NavigationItemMainText from '../styled/NavigationItemMainText';
 import NavigationItemOuter from '../styled/NavigationItemOuter';
 import NavigationItemSubText from '../styled/NavigationItemSubText';
-
-const NavigationDropItemIcon = styled(NavigationItemIcon)`
-  padding-right: 0px;
-
-  [data-__ak-navigation-container-closed="true"] & {
-    display: none;
-  }
-`;
 
 export default class NavigationItem extends PureComponent {
   static propTypes = {
@@ -54,9 +45,9 @@ export default class NavigationItem extends PureComponent {
     : null);
 
     const DropIcon = () => (this.props.dropIcon && this.props.isDropdownTrigger ?
-      <NavigationDropItemIcon>
+      <NavigationItemIcon hasNoPadding={this.props.isDropdownTrigger} isDropdownTrigger>
         {this.props.dropIcon}
-      </NavigationDropItemIcon>
+      </NavigationItemIcon>
     : null);
 
     const TextAfter = () => (this.props.textAfter ?
@@ -72,7 +63,10 @@ export default class NavigationItem extends PureComponent {
     : null);
 
     const After = ({ children }) => (this.props.textAfter ?
-      <NavigationItemAfter shouldTakeSpace={this.props.action || this.props.textAfter}>
+      <NavigationItemAfter
+        shouldTakeSpace={this.props.action || this.props.textAfter}
+        isDropdownTrigger={this.props.isDropdownTrigger}
+      >
         {children}
       </NavigationItemAfter>
     : null);

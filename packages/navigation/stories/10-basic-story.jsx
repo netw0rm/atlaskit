@@ -78,7 +78,9 @@ storiesOf(name, module)
   ))
   .add('with a dropdown trigger item', () => (
     <Page>
-      <NavigationWithDropdown items={dropdownItemsSample}>
+      <NavigationWithDropdown
+        dropdownProps={{ items: dropdownItemsSample }}
+      >
         <AkNavigationItem
           text="Test page 1"
           icon={<DashboardIcon label="Dashboard" />}

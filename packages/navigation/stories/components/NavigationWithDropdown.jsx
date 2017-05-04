@@ -14,6 +14,11 @@ export default class NavigationWithDropdown extends PureComponent {
     navigationItemProps: PropTypes.shape({}),
   }
 
+  static defaultProps = {
+    navigationItemProps: {},
+    dropdownProps: {},
+  }
+
   state = {
     isNavigationOpen: true,
   }

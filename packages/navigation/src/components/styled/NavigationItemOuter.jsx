@@ -2,9 +2,12 @@ import {
   akGridSizeUnitless,
   akColorN0,
   akColorN20A,
+  akColorN30A,
   akColorN80A,
+  akColorN90A,
   akColorN50A,
   akColorN700A,
+  akColorN800A,
   akColorB50,
   akColorB200,
   akColorB400,
@@ -21,6 +24,9 @@ const colors = {
     },
     hover: {
       background: akColorN20A,
+    },
+    dropdownHover: {
+      background: akColorN30A,
     },
     active: {
       background: akColorB50,
@@ -39,6 +45,9 @@ const colors = {
     hover: {
       background: akColorN80A,
     },
+    dropdownHover: {
+      background: akColorN90A,
+    },
     active: {
       background: akColorB200,
       color: akColorN0,
@@ -55,6 +64,9 @@ const colors = {
     },
     hover: {
       background: akColorN700A,
+    },
+    dropdownHover: {
+      background: akColorN800A,
     },
     active: {
       background: 'rgba(255, 255, 255, 0.08)',
@@ -118,7 +130,9 @@ const NavigationItemOuter = styled.div`
     ${focusRingMixin()}
 
     &:hover {
-      background: ${({ theme }) => getColors(theme).hover.background};
+      background: ${({ theme, isDropdownTrigger }) =>
+        (getColors(theme)[isDropdownTrigger ? 'dropdownHover' : 'hover'].background)
+      };
     }
 
     &:active {

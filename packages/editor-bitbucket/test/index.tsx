@@ -14,70 +14,75 @@ chai.use(chaiPlugin);
 const expect = chai.expect;
 
 describe('@atlaskit/editor-bitbucket/expand and collapse', () => {
+  const fixture = fixtures();
+  let editorWrapper;
+  beforeEach(() => {
+    editorWrapper = mount(<Editor />, { attachTo: fixture() });
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
+  });
+
   it('should not render expanded chrome when collapsed by default', () => {
-    expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
-    expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
-    expect(mount(<Editor />).find('ChromeExpanded').length).to.equal(0);
+    expect(editorWrapper.find('ChromeCollapsed')).to.have.length.above(0);
+    expect(editorWrapper.find('input[placeholder]')).to.have.length.above(0);
+    expect(editorWrapper.find('ChromeExpanded').length).to.equal(0);
   });
 
   it('should respect defaultExpanded property', () => {
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed').length).to.equal(0);
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.have.length.above(0);
+    editorWrapper.setState({ isExpanded: true });
+    expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
+    expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('should expand after clicking', () => {
-    const editorWrapper = mount(<Editor />);
-
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
-
     expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('.expand() method should expand the editor chrome', () => {
-    const editorWrapper = mount(<Editor />);
     const editor: Editor = editorWrapper.get(0) as any;
-
     editor.expand();
-
     expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
-    const editorWrapper = mount(<Editor isExpandedByDefault />);
     const editor: Editor = editorWrapper.get(0) as any;
-
     editor.collapse();
-
     expect(editorWrapper.find('ChromeCollapsed')).to.have.length.above(0);
     expect(editorWrapper.find('ChromeExpanded').length).to.equal(0);
   });
 
   it('should call onExpanded after editor is expanded via click', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor onExpanded={spy}/>);
-
+    editorWrapper.setProps({ onExpanded: spy });
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
     expect(spy.callCount).to.equal(1);
   });
 
   it('should call onExpanded after editor is expanded via .expand()', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor onExpanded={spy}/>);
     const editor: Editor = editorWrapper.get(0) as any;
-
+    editorWrapper.setProps({ onExpanded: spy });
     editor.expand();
-
     expect(spy.callCount).to.equal(1);
   });
 });
 
 describe('@atlaskit/editor-bitbucket/setFromHtml', () => {
+  const fixture = fixtures();
+  let editorWrapper;
   let editor: Editor;
-
   beforeEach(() => {
-    editor = mount(<Editor isExpandedByDefault />).get(0) as any;
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    editor = editorWrapper.get(0) as any;
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
   });
 
   it('should accept empty strings', () => {
@@ -98,16 +103,21 @@ describe('@atlaskit/editor-bitbucket/setFromHtml', () => {
 });
 
 describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
-  let editor: ReactWrapper<any, any>;
+  const fixture = fixtures();
   let spy: SinonSpy;
+  let editorWrapper;
 
   beforeEach(() => {
     spy = sinon.spy();
-    editor = mount(<Editor isExpandedByDefault imageUploadHandler={spy} />);
+    editorWrapper = mount(<Editor isExpandedByDefault={true} imageUploadHandler={spy} />, { attachTo: fixture() });
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
   });
 
   it('should invoke upload handler after clicking image icon', () => {
-    editor
+    editorWrapper
       .find('ChromeExpanded')
       .find('EditorImageIcon')
       .parent()
@@ -119,7 +129,7 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   });
 
   it('should invoke upload handler after pasting an image', function() {
-    const contentArea: HTMLElement = (editor.get(0) as any).state.editorView.dom;
+    const contentArea: HTMLElement = (editorWrapper.get(0) as any).state.editorView.dom;
     const event = createEvent('paste');
 
     try {
@@ -145,7 +155,7 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   it('should invoke upload handler after dropping an image', function(){
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
-    const dropElement: HTMLElement = (editor.get(0) as any).state.editorView.dom;
+    const dropElement: HTMLElement = (editorWrapper.get(0) as any).state.editorView.dom;
     const event = createEvent('drop');
 
     Object.defineProperties(event, {
@@ -170,20 +180,20 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
 });
 
 describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
-  const fixture = fixtures();
   type Props = {};
   type State = {};
   class ContainerWithTwoEditors extends React.PureComponent<Props, State> {
     render() {
      return (
        <div>
-         <Editor isExpandedByDefault />
-         <Editor isExpandedByDefault />
+         <Editor isExpandedByDefault={true} />
+         <Editor isExpandedByDefault={true} />
        </div>
      );
     }
   }
 
+  const fixture = fixtures();
   let container: ReactWrapper<Props, State>;
   let editor1: ReactWrapper<Props, State>;
   let editor2: ReactWrapper<Props, State>;
@@ -192,6 +202,10 @@ describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
     container = mount(<ContainerWithTwoEditors />, { attachTo: fixture() });
     editor1 = container.find(Editor).at(0);
     editor2 = container.find(Editor).at(1);
+  });
+
+  afterEach(() => {
+    container.unmount();
   });
 
   it('should render two editors inside a common container', () => {
@@ -212,23 +226,28 @@ describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
 });
 
 describe('@atlaskit/editor-bitbucket/toolbar', () => {
-  let editor: ReactWrapper<any, any>;
+  const fixture = fixtures();
+  let editorWrapper: ReactWrapper<any, any>;
 
   beforeEach(() => {
-    editor = mount(<Editor isExpandedByDefault />);
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
   });
 
   it('should close blocktype dropdown after second click', () => {
-    const trigger = editor.find('ToolbarBlockType AkButton');
+    const trigger = editorWrapper.find('ToolbarBlockType AkButton');
 
     expect(trigger).to.have.length.above(0);
-    expect(editor.find('ToolbarBlockType Group').length).to.equal(0);
+    expect(editorWrapper.find('ToolbarBlockType Group').length).to.equal(0);
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Group')).to.have.length.above(0);
+    expect(editorWrapper.find('ToolbarBlockType Group')).to.have.length.above(0);
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Group').length).to.equal(0);
+    expect(editorWrapper.find('ToolbarBlockType Group').length).to.equal(0);
   });
 });
 
@@ -236,11 +255,17 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
   let editorView: EditorView;
+  let editorWrapper;
 
   beforeEach(() => {
     const mentionResoure = sinon.stub() as any;
-    editor = mount(<Editor isExpandedByDefault mentionSource={mentionResoure}/>, { attachTo: fixture() }).get(0) as any;
+    editorWrapper = mount(<Editor isExpandedByDefault={true} mentionSource={mentionResoure} />, { attachTo: fixture() });
+    editor = editorWrapper.get(0) as any;
     editorView = editor!.state!.editorView as EditorView;
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
   });
 
   it('should transform pasted html with an emoji', function() {
@@ -274,10 +299,16 @@ describe('@atlaskit/editor-bitbucket/keymaps', () => {
   const fixture = fixtures();
   let editor: Editor;
   let editorView: EditorView;
+  let editorWrapper;
 
   beforeEach(() => {
-    editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    editor = editorWrapper.get(0) as any;
     editorView = editor!.state!.editorView as EditorView;
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
   });
 
   it('should undo code block with Cmd+Z', function() {

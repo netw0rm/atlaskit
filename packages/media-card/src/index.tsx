@@ -10,7 +10,7 @@ export * from './card';
 export * from './cardView';
 export * from './list';
 
-export type CardProcessingStatus = 'loading' | 'processing' | 'complete' | 'error';
+export type CardStatus = 'uploading' | 'loading' | 'processing' | 'complete' | 'error';
 
 export type CardAppearance = 'auto' | 'small' | 'image' | 'square' | 'horizontal';
 
@@ -33,7 +33,7 @@ export interface OnSelectChangeFunc {
 }
 
 export interface OnLoadingChangeState {
-  readonly type: CardProcessingStatus;
+  readonly type: CardStatus;
   readonly payload?: Error | MediaItemDetails;
 }
 

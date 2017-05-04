@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {MediaType, MediaItemType, CardAction} from '@atlaskit/media-core';
+import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
 
 import {getCSSUnitValue} from '../index';
-import {CardDimensions} from '../../index';
+import {CardDimensions, CardStatus} from '../../index';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
+import {UploadingView} from '../../utils/uploadingView';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;
@@ -16,7 +17,7 @@ export interface CardImageViewProps {
 
   dataURI?: string;
   progress?: number;
-  loading?: boolean;
+  status?: CardStatus;
 
   dimensions?: CardDimensions;
 
@@ -57,13 +58,54 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return getCSSUnitValue(height);
   }
 
+  isDownloadingOrProcessing() {
+    const {status} = this.props;
+    return status === 'loading' || status === 'processing';
+  }
+
+  private get cardStyle() {
+    return {height: this.height, width: this.width};
+  }
+
+  renderUploadingView() {
+    const {actions, mediaName, progress, dataURI} = this.props;
+
+    /*
+      if there is a delete action, wrap the delete action handler to stop the "click" event bubling up
+      to the card and also firing the Card onClick event
+    */
+    let onCancel;
+    const deleteActions = actions && actions.filter(action => action.type === CardActionType.delete) || [];
+    if (deleteActions.length) {
+      onCancel = event => {
+        event.preventDefault();
+        event.stopPropagation();
+        deleteActions[0].handler();
+      };
+    }
+
+    return (
+      <Wrapper style={this.cardStyle} onClick={this.onClick}>
+        <div className="wrapper">
+          <UploadingView
+            title={mediaName}
+            progress={progress || 0}
+            dataURI={dataURI}
+            onCancel={onCancel}
+          />
+        </div>
+      </Wrapper>
+    );
+
+  }
+
   render() {
-    const cardStyle = {height: this.height, width: this.width};
-    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, loading, selectable, selected, progress} = this.props;
+    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, selectable, selected, progress, status} = this.props;
+    const cardStyle = this.cardStyle;
 
     if (error) {
       return (
-        <Wrapper style={cardStyle} className={'card'} onClick={this.onClick}>
+        <Wrapper style={cardStyle} onClick={this.onClick}>
           <div className={'wrapper'} />
           <CardOverlay
             persistent={true}
@@ -79,8 +121,12 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       );
     }
 
+    if (status === 'uploading') {
+      return this.renderUploadingView();
+    }
+
     const isPersistent = mediaType === 'doc' || !dataURI;
-    const overlay = loading ? false : <CardOverlay
+    const overlay = this.isDownloadingOrProcessing() ? false : <CardOverlay
       persistent={isPersistent}
       selectable={selectable}
       selected={selected}
@@ -93,11 +139,11 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     />;
 
     return (
-      <Wrapper style={cardStyle} className={'card'} onClick={this.onClick}>
+      <Wrapper style={cardStyle} onClick={this.onClick}>
         <div className={'wrapper'}>
           <div className={'img-wrapper'}>
             <CardContent
-              loading={loading}
+              loading={this.isDownloadingOrProcessing()}
               mediaItemType={mediaItemType}
               mediaType={mediaType}
               dataURI={dataURI}

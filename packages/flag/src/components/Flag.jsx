@@ -23,6 +23,8 @@ export default class Flag extends PureComponent {
     isDismissAllowed: PropTypes.bool,
     /** Private, do not use. Use the FlagGroup onDismissed handler. */
     onDismissed: PropTypes.func,
+    /** Set to `true` to programatically dismiss the flag. */
+    shouldDismiss: PropTypes.bool,
     /** The bold text shown at the top of the flag */
     title: PropTypes.string.isRequired,
   };
@@ -31,10 +33,19 @@ export default class Flag extends PureComponent {
     actions: [],
     isDismissAllowed: false,
     onDismissed: () => {},
+    shouldDismiss: false,
   }
 
-  flagDismissed = () => {
-    this.props.onDismissed(this.props.id);
+  componentWillUpdate(nextProps) {
+    if (this.props.shouldDismiss === false && nextProps.shouldDismiss === true) {
+      this.dismissFlag();
+    }
+  }
+
+  dismissFlag = () => {
+    if (this.props.isDismissAllowed) {
+      this.props.onDismissed(this.props.id);
+    }
   }
 
   render() {
@@ -47,7 +58,7 @@ export default class Flag extends PureComponent {
           <Header>
             <Title>{title}</Title>
             {isDismissAllowed ? (
-              <DismissButton type="button" onClick={this.flagDismissed}>
+              <DismissButton type="button" onClick={this.dismissFlag}>
                 <CrossIcon label="Dismiss flag" />
               </DismissButton>
             ) : null}

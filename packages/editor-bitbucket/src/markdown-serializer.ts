@@ -41,8 +41,10 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
 const isListNode = (node: Node) => node.type.name === 'bulletList' || node.type.name === 'orderedList';
 
 const closeListItemChild = (state: MarkdownSerializerState, node: Node, parent: Node, index: number) => {
-  if (node.type.name === 'listItem' ||
-    (parent.type.name === 'listItem' && parent.childCount > (index + 1) && isListNode(parent.child(index + 1)))) {
+  if (parent.type.name === 'listItem' &&
+    (parent.childCount > (index + 1) || isListNode(node)) &&
+    !(node.type.name === 'paragraph' && index === 0)
+  ) {
     state.closeBlock(node);
     state.flushClose(2);
     return true;
@@ -104,7 +106,7 @@ const nodes = {
   listItem(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.renderContent(node);
     // When there's more than one item in a list item if they are not a nested list (ol/ul) insert a blank line
-    closeListItemChild(state, node, parent, index);
+    // closeListItemChild(state, node, parent, index);
     if (node.childCount > 1 && node.lastChild && !isListNode(node.lastChild)) {
       state.write('\n');
     }

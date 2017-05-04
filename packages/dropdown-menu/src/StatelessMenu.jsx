@@ -2,7 +2,9 @@ import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
+import FieldBase from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 import uid from 'uid';
 import styles from './styles.less';
 
@@ -19,6 +21,11 @@ export default class StatelessDropdownMenu extends PureComponent {
     appearance: PropTypes.oneOf(['default', 'tall']),
     /** Content that will be rendered inside the trigger element */
     children: PropTypes.node,
+    /**
+      * Controls whether to show a FieldText
+      * for filtering items
+      */
+    hasItemsFilter: PropTypes.bool,
     /** Controls the open state of the dropdown */
     isOpen: PropTypes.bool,
     /** Controls whether it is possible to tab to the trigger.
@@ -30,8 +37,14 @@ export default class StatelessDropdownMenu extends PureComponent {
       * Every group must contain array of items (see @atlastkit/droplist-item for available props).
       */
     items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    /**
+      * The current value of the items filter,
+      */
+    itemsFilterValue: PropTypes.string,
     /** Called when an item is activated. Receives an object with the activated item */
     onItemActivated: PropTypes.func,
+    /** Called when the items filter value change. Receives the a synthetic event*/
+    onItemsFilterChange: PropTypes.func,
     /** Called when the menu should be open/closed. Received an object with isOpen state */
     onOpenChange: PropTypes.func,
     /** Position of the menu. See the documentation of @atlastkit/layer for more details */
@@ -58,8 +71,13 @@ export default class StatelessDropdownMenu extends PureComponent {
     isOpen: false,
     isTriggerNotTabbable: false,
     items: [],
-    onItemActivated: () => {},
-    onOpenChange: () => {},
+    itemsFilterValue: '',
+    onItemActivated: () => {
+    },
+    onItemsFilterChange: () => {
+    },
+    onOpenChange: () => {
+    },
     position: 'bottom left',
     triggerType: 'default',
     triggerButtonProps: {},
@@ -70,6 +88,7 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   state = {
     id: uid(),
+    isItemsFilterFocused: false,
   }
 
   componentDidMount = () => {
@@ -82,6 +101,14 @@ export default class StatelessDropdownMenu extends PureComponent {
     if (this.props.isOpen && !prevProp.isOpen) {
       this.focusFirstItem();
     }
+  }
+
+  onItemsFilterBlur = () => {
+    this.setState({ isItemsFilterFocused: false });
+  }
+
+  onItemsFilterFocus = () => {
+    this.setState({ isItemsFilterFocused: true });
   }
 
   getNextFocusable = (indexItem, available) => {
@@ -116,6 +143,19 @@ export default class StatelessDropdownMenu extends PureComponent {
     }
 
     return latestAvailable || currentItem;
+  }
+
+  clearItemsFilter = (e) => {
+    e.preventDefault();
+    this.props.onItemsFilterChange('');
+  }
+
+  filterItems = (items) => {
+    const value = this.props.itemsFilterValue;
+    const trimmedValue = value && value.toLowerCase().trim();
+    return trimmedValue ?
+      items.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
+      items;
   }
 
   focusFirstItem = () => {
@@ -187,6 +227,14 @@ export default class StatelessDropdownMenu extends PureComponent {
     }
   }
 
+  handleItemsFilterOnChange = (event) => {
+    const value = event.target.value;
+
+    if (value !== this.props.itemsFilterValue && this.props.onItemsFilterChange) {
+      this.props.onItemsFilterChange(value);
+    }
+  }
+
   open = (attrs) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
@@ -207,7 +255,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     }
   }
 
-  renderItems = items => items.map((item, itemIndex) =>
+  renderItems = items => this.filterItems(items).map((item, itemIndex) =>
     <Item
       {...item}
       key={itemIndex}
@@ -218,6 +266,29 @@ export default class StatelessDropdownMenu extends PureComponent {
       {item.content}
     </Item>
   )
+
+  renderItemsFilter = () => {
+    const itemsFilterAttributes = {
+      'data-role': 'droplistItem',
+      onFocus: this.onItemsFilterFocus,
+      onBlur: this.onItemsFilterBlur,
+    };
+    return (<div className={styles.menuItemsFilterContainer}>
+      <FieldBase isFocused={this.state.isItemsFilterFocused}>
+        <div className={styles.menuItemsFilter}>
+          <input
+            {...itemsFilterAttributes}
+            onChange={this.handleItemsFilterOnChange}
+            type="text"
+            value={this.props.itemsFilterValue}
+          />
+        </div>
+        <div className={styles.itemsFilterIcon}>
+          <SearchIcon label="" />
+        </div>
+      </FieldBase>
+    </div>);
+  };
 
   renderGroups = groups => groups.map((group, groupIndex) =>
     <Group heading={group.heading} key={groupIndex}>{this.renderItems(group.items)}</Group>
@@ -268,6 +339,7 @@ export default class StatelessDropdownMenu extends PureComponent {
             ? styles.menuContainerWithoutLimit
             : styles.menuContainer}
         >
+          {props.hasItemsFilter ? this.renderItemsFilter() : null}
           {this.renderGroups(props.items)}
         </div>
       </Droplist>

@@ -16,6 +16,11 @@ export default class DropdownMenu extends PureComponent {
     children: PropTypes.node,
     /** Controls the open state of the dropdown */
     defaultOpen: PropTypes.bool,
+    /**
+     * Controls whether to show a FieldText
+     * for filtering items
+     */
+    hasItemsFilter: PropTypes.bool,
     /** Controls whether it is possible to tab to the trigger.
       * This should be true if some interactive element is used inside trigger (links, buttons).
       */
@@ -27,6 +32,8 @@ export default class DropdownMenu extends PureComponent {
     items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     /** Called when an item is activated. Receives an object with the activated item */
     onItemActivated: PropTypes.func,
+    /** Called when the items filter value change. Receives the a synthetic event*/
+    onItemsFilterChange: PropTypes.func,
     /** Called when the menu should be open/closed. Received an object with isOpen state */
     onOpenChange: PropTypes.func,
     /** Position of the menu. See the documentation of @atlastkit/layer for more details */
@@ -51,9 +58,11 @@ export default class DropdownMenu extends PureComponent {
   static defaultProps = {
     appearance: 'default',
     defaultOpen: false,
+    hasItemsFilter: false,
     isTriggerNotTabbable: false,
     items: [],
     onItemActivated: () => {},
+    onItemsFilterChange: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
     triggerType: 'default',
@@ -66,6 +75,7 @@ export default class DropdownMenu extends PureComponent {
   state = {
     isOpen: this.props.defaultOpen,
     items: [...this.props.items],
+    itemsFilterValue: '',
   }
 
   componentWillReceiveProps(nextProps) {
@@ -111,6 +121,11 @@ export default class DropdownMenu extends PureComponent {
     this.props.onOpenChange(attrs);
   }
 
+  handleItemsFilterChange = (value) => {
+    this.setState({ itemsFilterValue: value });
+    this.props.onItemsFilterChange(value);
+  }
+
   close = () => {
     this.setState({ isOpen: false });
     this.props.onOpenChange({ isOpen: false });
@@ -125,11 +140,14 @@ export default class DropdownMenu extends PureComponent {
         isOpen={state.isOpen}
         onItemActivated={this.handleItemActivation}
         onOpenChange={this.handleOpenChange}
+        onItemsFilterChange={this.handleItemsFilterChange}
         isTriggerNotTabbable={props.isTriggerNotTabbable}
         triggerType={props.triggerType}
         triggerButtonProps={props.triggerButtonProps}
         shouldFlip={props.shouldFlip}
         items={state.items}
+        itemsFilterValue={state.itemsFilterValue}
+        hasItemsFilter={this.props.hasItemsFilter}
         shouldFitContainer={this.props.shouldFitContainer}
         shouldAllowMultilineItems={this.props.shouldAllowMultilineItems}
       >

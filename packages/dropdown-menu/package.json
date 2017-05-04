@@ -22,6 +22,7 @@
     "@atlaskit/droplist": "^3.6.0",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/icon": "^3.0.0",
+    "@atlaskit/field-base": "^5.0.0",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",

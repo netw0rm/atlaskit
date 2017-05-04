@@ -117,6 +117,15 @@ describe(name, () => {
       expect(trigger.prop('iconAfter')).to.equal(undefined);
       expect(menu.find(MoreIcon).length).to.equal(1);
     });
+
+    it('should render items filter if specified when opened', () => {
+      const menu = mount(<StatelessMenu isOpen items={itemsList} hasItemsFilter itemsFilterValue="filter" />);
+      const itemsFilter = menu.find('FieldBase');
+      const itemsFilterInput = itemsFilter.find('input');
+      expect(itemsFilterInput.prop('type')).to.equal('text');
+      expect(itemsFilterInput.prop('value')).to.equal('filter');
+      expect(itemsFilter.find('SearchIcon').length).to.equal(1);
+    });
   });
 
   describe('show/hide logic', () => {
@@ -171,6 +180,13 @@ describe(name, () => {
       const item = wrapper.find('[role="menuitemradio"]');
       expect(wrapper.state().isOpen).to.equal(true);
       item.simulate('click');
+      expect(wrapper.state().isOpen).to.equal(true);
+    });
+
+    it('interacting with the items filter should not close the menu', () => {
+      const wrapper = mount(<Menu hasItemsFilter items={itemsList} defaultOpen>test</Menu>);
+      const itemsFilter = wrapper.find('input');
+      itemsFilter.simulate('click');
       expect(wrapper.state().isOpen).to.equal(true);
     });
   });
@@ -353,6 +369,18 @@ describe(name, () => {
 
         expect(wrapper.instance().getPrevFocusable(2)).to.equal(2);
       });
+
+      it('should treat items filter as an item if hasItemsFilter is true', () => {
+        const Items = [{ items: [{ content: 1 }] }];
+        const wrapper = mount(<StatelessMenu
+          hasItemsFilter
+          items={Items}
+          isOpen
+        >
+          test
+        </StatelessMenu>);
+        expect(wrapper.instance().getPrevFocusable(1)).to.equal(0);
+      });
     });
 
     describe('getNextFocusable', () => {
@@ -434,6 +462,20 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
+      });
+
+      it('should treat the items filter as an item when hasItemsFilter is true', () => {
+        const Items = [{
+          items: [],
+        }];
+        const wrapper = mount(<StatelessMenu
+          hasItemsFilter
+          items={Items}
+          isOpen
+        >
+          test
+        </StatelessMenu>);
+        expect(wrapper.instance().getNextFocusable()).to.equal(0);
       });
     });
   });

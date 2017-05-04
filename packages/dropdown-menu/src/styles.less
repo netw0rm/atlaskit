@@ -1,5 +1,36 @@
+@import '~@atlaskit/util-shared-styles/src/grid.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
+
 .menuContainer {
   max-width: 300px;
+}
+
+.menuItemsFilterContainer {
+  padding: (@ak-grid-size / 2) (@ak-grid-size * 1.5);
+}
+
+.menuItemsFilter {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  padding: 0;
+
+  input {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: 0;
+    outline: 0;
+    font-size: 14px;
+    color: @ak-color-N800;
+  }
+}
+
+.itemsFilterIcon {
+  align-items: center;
+  display: flex;
+  flex: 0 0 @ak-grid-size*3;
+  justify-content: center;
+  margin: 0px @ak-grid-size;
 }
 
 .menuContainerWithoutLimit {}

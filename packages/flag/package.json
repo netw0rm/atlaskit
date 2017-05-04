@@ -34,7 +34,9 @@
   "devDependencies": {
     "@atlaskit/flag": "*",
     "@atlaskit/navigation": "^1.0.0",
-    "@atlaskit/util-readme": "^3.0.0"
+    "@atlaskit/util-readme": "^3.0.0",
+    "@atlaskit/icon": "^1.0.0",
+    "ak-icon": "^12.2.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

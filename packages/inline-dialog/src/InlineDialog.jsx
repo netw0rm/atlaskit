@@ -21,14 +21,27 @@ const flipPositions = ['top', 'right', 'bottom', 'left'];
 // TODO: expose applicable props from Layer and pull in here
 export default class InlineDialog extends PureComponent {
   static propTypes = {
+    /** The elements that the InlineDialog will be positioned relative to. */
     children: PropTypes.node,
+    /** The elements to be displayed within the InlineDialog. */
     content: PropTypes.node,
+    /** Sets whether to show or hide the dialo modal. */
     isOpen: PropTypes.bool,
+    /** Function called when you lose focus on the object. Returns the react synthetic event. */
     onContentBlur: PropTypes.func,
+    /** Function called when you click on the open dialog. Returns the react synthetic event.  */
     onContentClick: PropTypes.func,
+    /** Function called when you focus on the open dialog. Returns the react synthetic event.  */
     onContentFocus: PropTypes.func,
+    /** Function called when the dialog is open and a click occurs anywhere outside
+    the dialog. Calls with an object { isOpen: false } and the type of event that
+    triggered the close. */
     onClose: PropTypes.func,
+    /** Where the dialog should appear, relative to the contents of the children  */
     position: PropTypes.oneOf(positions),
+    /** Whether the dialog's position should be altered when there is no space
+    for it in its default position. If an array is passed, it will use the first
+    position where there is enough space.  */
     shouldFlip: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.arrayOf(PropTypes.oneOf(flipPositions)),

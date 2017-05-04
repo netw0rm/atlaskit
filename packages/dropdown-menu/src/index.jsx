@@ -7,7 +7,7 @@ import StatelessDropdownMenu from './StatelessMenu';
 export default class DropdownMenu extends PureComponent {
   static propTypes = {
     /**
-      * Controls the appearance of the menu.
+      * Controls the appearance of the menu, between 'default' and 'tall'.
       * Default menu has scroll after its height exceeds the pre-defined amount.
       * Tall menu has no restrictions.
       */

@@ -9,8 +9,12 @@ export const APPEARANCE_ENUM = {
 
 export default class Lozenge extends PureComponent {
   static propTypes = {
+    /** Determines whether to apply the bold style or not. */
     isBold: PropTypes.bool,
+    /** The appearance type. */
     appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
+    /** Elements to be rendered inside the lozenge. This should ideally be just
+    a word or two. */
     children: PropTypes.node,
   };
 

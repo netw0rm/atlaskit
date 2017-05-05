@@ -7,9 +7,9 @@ const fs = require('fs');
 const path = require('path');
 const camelcase = require('camelcase');
 
+const { BITBUCKET_COMMIT } = process.env;
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
-const isInCi = true;
 
 // TODO come up with a per-package stategy to run these.
 const runInRealBrowsers = [
@@ -45,7 +45,7 @@ const customLaunchers = {
 
 const browsers = (() => {
   if (runInRealBrowsers.some(r => r.test(pkg.name.replace('@atlaskit/', '')))) {
-    if (isInCi) {
+    if (BITBUCKET_COMMIT) {
       const temp = Object.keys(customLaunchers);
       temp.forEach(key => (customLaunchers[key].base = 'BrowserStack'));
       return temp;
@@ -65,6 +65,8 @@ module.exports = {
       externals: Object.keys(Object.assign(
         {},
         pkg.dependencies,
+        pkg.devDependencies,
+        pkg.optionalDependencies,
         pkg.peerDependencies
       )).reduce((prev, curr) => {
         prev[curr] = curr;

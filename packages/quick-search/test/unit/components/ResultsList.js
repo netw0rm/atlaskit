@@ -1,6 +1,7 @@
-import { shallow } from 'enzyme';
 import React from 'react';
+
 import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
 import NoScrollResultsBox from '../../../src/components/NoScrollResultsBox';
 import ResultsList from '../../../src/components/ResultsList';

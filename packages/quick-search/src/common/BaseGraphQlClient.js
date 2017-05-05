@@ -1,6 +1,6 @@
-import 'es6-promise/auto'; // 'axios' needs a Promise polyfill
 import axios, { CancelToken } from 'axios';
 import axiosRetry from 'axios-retry';
+import 'es6-promise/auto'; // 'axios' needs a Promise polyfill
 
 export class DefaultError {
   constructor({ message }) {

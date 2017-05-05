@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { AkContainerItemGroup } from '@atlaskit/navigation';
-import Result from '../../components/Result';
+
 import hcPersonParser from './HipChatPersonParser';
 import hcRoomParser from './HipChatRoomParser';
+import Result from '../../components/Result';
 import unknownParser from './UnknownResultParser';
 
 export class IResultParser {} // Placeholder for TS interface

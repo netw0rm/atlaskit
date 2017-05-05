@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+
 import { AkDrawerItem } from '@atlaskit/navigation';
 
 export default class Result extends PureComponent {

@@ -1,6 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { CrossIcon } from '@atlaskit/icon';
+
 import AkSpinner from '@atlaskit/spinner';
+import { CrossIcon } from '@atlaskit/icon';
 
 const DEFAULT_DELAY = 500;
 

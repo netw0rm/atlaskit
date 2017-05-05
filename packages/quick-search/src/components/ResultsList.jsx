@@ -1,6 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { GroupedResultsParser, IResultParser } from '../api/result-parser/ResultParser';
+
 import NoScrollResultsBox from './NoScrollResultsBox';
+import { GroupedResultsParser, IResultParser } from '../api/result-parser/ResultParser';
 
 export default class ResultsList extends PureComponent {
 

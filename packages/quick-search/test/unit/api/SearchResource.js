@@ -1,4 +1,5 @@
 import sinon from 'sinon';
+
 import searchResponseData from '../../helpers/mock-search-response-short';
 import { ParsingSearchResource } from '../../../src/api/SearchResource';
 

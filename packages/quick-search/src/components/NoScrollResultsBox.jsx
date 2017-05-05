@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 const GRID_UNITS_PER_ITEM = 4.5;

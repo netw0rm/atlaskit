@@ -1,10 +1,11 @@
 import React from 'react';
+
 import { shallow } from 'enzyme';
 
-import withSearchResource from
-  '../../../../src/components/results-list-enhancers/WithSearchResource';
 import ResultsList from '../../../../src/components/ResultsList';
 import SearchResource from '../../../../src/api/SearchResource';
+import withSearchResource from
+  '../../../../src/components/results-list-enhancers/WithSearchResource';
 
 describe('<withSearchResource(ResultsList) />', () => {
   const ResourcedResultsList = withSearchResource(ResultsList);

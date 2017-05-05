@@ -1,8 +1,9 @@
 import React from 'react';
+
 import AkAvatar from '@atlaskit/avatar';
+import HipChatIcon from '@atlaskit/icon/glyph/hipchat';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import WorldIcon from '@atlaskit/icon/glyph/world';
-import HipChatIcon from '@atlaskit/icon/glyph/hipchat';
 
 const NO_OP = () => {};
 

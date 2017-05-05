@@ -1,12 +1,7 @@
 import axios from 'axios';
 import searchClient from '../common/SearchClient';
 
-/* interface IResource {
-  subscribe = (key, changeCallback, errorCallback) => {}
-  unsubscribe = (key) => {}
-}*/
-
-export class AbstractResource /* implements IResource */ {
+export class AbstractResource {
   constructor() {
     this.changeListeners = {};
     this.errorListeners = {};

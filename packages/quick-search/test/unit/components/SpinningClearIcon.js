@@ -1,7 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+
 import AkSpinner from '@atlaskit/spinner';
 import { CrossIcon } from '@atlaskit/icon';
+import { shallow } from 'enzyme';
 
 import SpinningClearIcon from '../../../src/components/SpinningClearIcon';
 

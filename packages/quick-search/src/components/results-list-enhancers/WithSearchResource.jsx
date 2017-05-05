@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 
-import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
-import uniqueId from '../../util/id';
 import getDisplayName from '../../util/getDisplayName';
+import uniqueId from '../../util/id';
+import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
 
 const withSearchResource = WrappedComponent =>
   class WithSearchResource extends Component {
@@ -36,7 +36,6 @@ const withSearchResource = WrappedComponent =>
     }
 
     onSearchResultUpdate = (resultsType, items) => {
-      console.log('items', items);
       this.setState({ resultsType, items });
     }
 

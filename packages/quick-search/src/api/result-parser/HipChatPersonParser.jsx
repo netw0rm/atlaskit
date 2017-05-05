@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AkAvatar from '@atlaskit/avatar';
 import styled from 'styled-components';
 import { akColorN100 } from '@atlaskit/util-shared-styles';

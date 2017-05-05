@@ -1,6 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
+
 import { AkSearch } from '@atlaskit/navigation';
+import { mount } from 'enzyme';
 
 import QuickSearch from '../../../src/';
 import ResultsList from '../../../src/components/ResultsList';

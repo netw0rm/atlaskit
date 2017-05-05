@@ -1,4 +1,5 @@
 import React from 'react';
+
 import OpenIcon from '@atlaskit/icon/glyph/open';
 
 const NO_OP = () => {};

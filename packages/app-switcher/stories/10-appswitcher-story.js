@@ -114,4 +114,14 @@ storiesOf(name, module)
         }}
       />
     </Chrome>
+  ))
+  .add('with loading state', () => (
+    <Chrome>
+      <AppSwitcher
+        {...{
+          ...data,
+          isLoading: true,
+        }}
+      />
+    </Chrome>
   ));

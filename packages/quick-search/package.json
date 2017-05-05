@@ -36,15 +36,18 @@
     "styled-components": "^1.3.0"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
+  "maintainers": [
+    {
+      "name": "Jonathan Y"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "keywords": [
-    "atlaskit",
-    "ui",
-    "internal"
+    "fabric",
+    "ui"
   ]
 }

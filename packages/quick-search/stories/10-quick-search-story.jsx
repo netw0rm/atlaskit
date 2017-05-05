@@ -2,7 +2,7 @@ import React from 'react';
 
 import { storiesOf } from '@kadira/storybook';
 
-import BasicNav from '../../navigation/stories/components/BasicNavigation';
+import BasicNav from './BasicNav';
 import QuickSearch, { ParsingSearchResource } from '../src/';
 import { name } from '../package.json';
 

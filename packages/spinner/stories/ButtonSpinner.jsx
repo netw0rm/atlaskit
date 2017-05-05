@@ -46,6 +46,16 @@ export default class StatefulSpinner extends PureComponent {
         >
           Click me!!
         </AKButton>
+        <br />
+        <AKButton
+          appearance="primary"
+          onClick={this.handleClick}
+          iconAfter={
+            <Spinner isCompleting={!this.state.active} onComplete={this.onComplete} invertColor />
+          }
+        >
+          Click me!!
+        </AKButton>
         <div>
           <code>isCompleting</code> is currently set to <code>{`${!this.state.active}`}</code>
         </div>

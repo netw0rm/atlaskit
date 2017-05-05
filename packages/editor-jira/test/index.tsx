@@ -3,28 +3,37 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin, fixtures } from '@atlaskit/editor-core/dist/es5/test-helper';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
 
 const expect = chai.expect;
 
-describe.skip('@atlaskit/editor-jira expand and collapse', () => {
+describe('@atlaskit/editor-jira expand and collapse', () => {
+  const fixture = fixtures();
+  let editorWrapper;
+  beforeEach(() => {
+    editorWrapper = mount(<Editor />, { attachTo: fixture() });
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
+  });
+
   it('should not render expanded chrome when collapsed by default', () => {
-    expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
-    expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
-    expect(mount(<Editor />).find('ChromeExpanded').length).to.equal(0);
+    expect(editorWrapper.find('ChromeCollapsed')).to.have.length.above(0);
+    expect(editorWrapper.find('input[placeholder]')).to.have.length.above(0);
+    expect(editorWrapper.find('ChromeExpanded').length).to.equal(0);
   });
 
   it('should respect defaultExpanded property', () => {
-    expect(mount(<Editor isExpandedByDefault={true} />).find('ChromeCollapsed').length).to.equal(0);
-    expect(mount(<Editor isExpandedByDefault={true} />).find('ChromeExpanded')).to.have.length.above(0);
+    const editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
+    expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('should expand after clicking', () => {
-    const editorWrapper = mount(<Editor />);
-
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
 
     expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
@@ -32,7 +41,6 @@ describe.skip('@atlaskit/editor-jira expand and collapse', () => {
   });
 
   it('.expand() method should expand the editor chrome', () => {
-    const editorWrapper = mount(<Editor />);
     const editor: Editor = editorWrapper.get(0) as any;
 
     editor.expand();
@@ -42,7 +50,7 @@ describe.skip('@atlaskit/editor-jira expand and collapse', () => {
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
-    const editorWrapper = mount(<Editor isExpandedByDefault={true} />);
+    const editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
     const editor: Editor = editorWrapper.get(0) as any;
 
     editor.collapse();
@@ -53,7 +61,7 @@ describe.skip('@atlaskit/editor-jira expand and collapse', () => {
 
   it('should call onExpanded after editor is expanded via click', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor onExpanded={spy}/>);
+    const editorWrapper = mount(<Editor isExpandedByDefault={true} onExpanded={spy}/>, { attachTo: fixture() });
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
     expect(spy.callCount).to.equal(1);
@@ -61,7 +69,7 @@ describe.skip('@atlaskit/editor-jira expand and collapse', () => {
 
   it('should call onExpanded after editor is expanded via .expand()', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor onExpanded={spy}/>);
+    const editorWrapper = mount(<Editor isExpandedByDefault={true} onExpanded={spy}/>, { attachTo: fixture() });
     const editor: Editor = editorWrapper.get(0) as any;
 
     editor.expand();

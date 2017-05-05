@@ -43,6 +43,7 @@ export default class Popup extends PureComponent<Props, undefined> {
   }
 
   componentDidUpdate() {
+    this.applyAbsolutePosition();
     this.renderContent();
   }
 

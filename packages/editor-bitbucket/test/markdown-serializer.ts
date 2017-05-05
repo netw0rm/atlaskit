@@ -268,8 +268,8 @@ describe('Bitbucket markdown serializer: ', () => {
         '* foo 1\n' +
         '    * bar 1\n' +
         '        * baz 1\n' +
-        '        * baz 2\n' +
-        '    * bar 2\n' +
+        '        * baz 2\n\n' +
+        '    * bar 2\n\n' +
         '* foo 2'
         );
     });
@@ -373,8 +373,8 @@ describe('Bitbucket markdown serializer: ', () => {
         '1. foo 1\n' +
         '    1. bar 1\n' +
         '        1. baz 1\n' +
-        '        2. baz 2\n' +
-        '    2. bar 2\n' +
+        '        2. baz 2\n\n' +
+        '    2. bar 2\n\n' +
         '2. foo 2'
         );
     });
@@ -411,8 +411,8 @@ describe('Bitbucket markdown serializer: ', () => {
         '    * bar 1\n' +
         '        1. baz 1\n' +
         '        2. baz 2\n' +
-        '            * banana\n' +
-        '    * bar 2\n' +
+        '            * banana\n\n\n' +
+        '    * bar 2\n\n' +
         '2. foo 2'
         );
     });

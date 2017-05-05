@@ -10,6 +10,10 @@ import { EmojiState } from '../../plugins/emojis';
 import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror';
 
+let debounced: number | null = null;
+
+type Position = 'above' | 'below';
+
 export interface Props {
   pluginState: EmojiState;
   editorView: EditorView;
@@ -32,26 +36,25 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   componentDidMount() {
     this.state.button = ReactDOM.findDOMNode(this.refs.button) as HTMLElement;
     this.props.pluginState.subscribe(this.handlePluginStateChange);
+    window.addEventListener('resize', this.handleResize);
+
   }
 
   componentWillUnmount() {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+    window.removeEventListener('resize', this.handleResize);
   }
 
   render() {
     const { button, disabled, isOpen } = this.state;
-    let position: 'above' | 'below' = 'above';
+    let position: Position = 'above';
     let offsetX: number = 0;
+    let absoluteX: number = 0;
     if (button) {
-      const bodyRect = document.body.getBoundingClientRect();
       const buttonRect = button.getBoundingClientRect();
-      const yPos: number = buttonRect.top - bodyRect.top;
-      if (yPos - emojiPickerHeight < 0) {
-        position = 'below';
-      }
-      const editorRect = this.props.editorView.dom.getBoundingClientRect();
-
-      offsetX = - (buttonRect.left + emojiPickerWidth - editorRect.right) - styles.marginRight;
+      absoluteX = buttonRect.left;
+      position = this.getPosition(buttonRect);
+      offsetX = this.getOffsetX(buttonRect);
     }
 
     return (
@@ -69,6 +72,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
             onSelection={this.handleSelectedEmoji}
             target={button}
             position={position}
+            absoluteX={absoluteX}
             offsetX={offsetX}
             offsetY={styles.offsetY}
             zIndex={akZIndexModal}
@@ -112,6 +116,31 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     if (!picker || !picker.contains(e.target)) {
       this.close();
     }
+  }
+
+  private handleResize = () => {
+    const { isOpen, button } = this.state;
+    if (isOpen && button) {
+      if (debounced) {
+        clearTimeout(debounced);
+      }
+      // Timeout set to 30ms as to not throttle IE11
+      debounced = setTimeout(() => { this.forceUpdate(); }, 30);
+    }
+  }
+
+  private getPosition = (buttonRect: ClientRect): Position => {
+    const bodyRect = document.body.getBoundingClientRect();
+    const yPos: number = buttonRect.top - bodyRect.top;
+    if (yPos - emojiPickerHeight < 0) {
+      return 'below';
+    }
+    return 'above';
+  }
+
+  private getOffsetX = (buttonRect: ClientRect): number => {
+    const editorRect = this.props.editorView.dom.getBoundingClientRect();
+    return -(buttonRect.left + emojiPickerWidth - editorRect.right) - styles.marginRight;
   }
 
   @analytics('atlassian.editor.emoji.button')

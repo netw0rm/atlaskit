@@ -13,7 +13,7 @@ const ResourcedResultsList = withSearchResource(ResultsList);
 
 export default class QuickSearch extends Component {
   static propTypes = {
-    searchResource: PropTypes.instanceOf(AbstractResource),
+    searchResource: PropTypes.instanceOf(AbstractResource).isRequired,
     resultCallbacks: PropTypes.shape({
       HipChatConversation: PropTypes.func,
     }),

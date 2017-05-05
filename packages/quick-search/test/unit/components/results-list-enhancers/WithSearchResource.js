@@ -11,12 +11,13 @@ describe('<withSearchResource(ResultsList) />', () => {
   const ResourcedResultsList = withSearchResource(ResultsList);
 
   it('should pass through props that it doesn\'t own', () => {
+    const srchRsrc = new SearchResource({ userId: 'a', cloudId: 'b' });
     const wrapper = shallow(
       <ResourcedResultsList
         resultGroups={{ a: 'a' }}
         resultsType={'pass-through-results-type'}
         randomProp={13}
-        searchResource={{}}
+        searchResource={srchRsrc}
       />
     );
     const resultsListWrapper = wrapper.find(ResultsList).first();
@@ -32,7 +33,7 @@ describe('<withSearchResource(ResultsList) />', () => {
     const wrapper = shallow(
       <ResourcedResultsList searchResource={srchRsrc} />
     );
-    wrapper.instance().setState({ items: 'test-items' });
-    expect(wrapper.find(ResultsList).first().props()).to.include({ resultGroups: 'test-items' });
+    wrapper.instance().setState({ items: { groupA: 'testProp' } });
+    expect(wrapper.find(ResultsList).first().props()).to.have.deep.property('resultGroups.groupA', 'testProp');
   });
 });

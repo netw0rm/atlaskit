@@ -119,11 +119,6 @@ export default class SearchResource extends AbstractResource {
  */
 export class ParsingSearchResource extends SearchResource {
 
-  constructor(...args) {
-    super(...args);
-    this.queryClient = this.queryClient.bind(this);
-  }
-
   groupNameDictionary = {
     'hc.room': 'Conversations',
     mention: 'Conversations',

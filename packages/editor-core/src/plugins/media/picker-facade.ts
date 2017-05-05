@@ -1,6 +1,10 @@
-import { MediaStateManager, MediaState, UploadParams } from './../../media';
 import { MediaPicker } from 'mediapicker';
-import { ContextConfig } from '@atlaskit/media-core';
+import {
+  ContextConfig,
+  MediaStateManager,
+  MediaState,
+  UploadParams,
+} from '@atlaskit/media-core';
 
 export type PickerEvent = {
   file: PickerEventFile,

@@ -199,7 +199,10 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
               return null;
             }
 
-            const language = pre.className.split('-')[1];
+            const language = node.className === 'preformatted panel'
+              ? 'plain'
+              : pre.className.split('-')[1];
+
             return schema.nodes.codeBlock!.createChecked({ language }, schema.text(pre.innerText.replace(/\r\n/g, '\n')));
           }
           break;

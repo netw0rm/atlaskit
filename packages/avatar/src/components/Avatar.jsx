@@ -24,7 +24,7 @@ export default class Avatar extends PureComponent {
   static propTypes = {
     /** Content to use as a custom presence indicator. Accepts any React element.
     For best results, it is recommended to use square content with height and
-    width of 100% */
+    width of 100%. */
     children: PropTypes.element,
     /** Defines the label for the Avatar used by screen readers as fallback
     content if the image fails to load. */
@@ -33,11 +33,11 @@ export default class Avatar extends PureComponent {
     Accepts any color argument that the border-color CSS property accepts. */
     presenceBorderColor: PropTypes.string,
     /** Indicates a user's online status by showing a small icon on the avatar.
-    Refer to presence values on the Presence component */
+    Refer to presence values on the Presence component. */
     presence: PropTypes.oneOf(PRESENCE_TYPE.values),
     /** Defines the size of the avatar */
     size: PropTypes.oneOf(SIZE.values),
-    /** A url to load an image from (this can also be a base64 encoded image) */
+    /** A url to load an image from (this can also be a base64 encoded image). */
     src: PropTypes.string,
   }
 

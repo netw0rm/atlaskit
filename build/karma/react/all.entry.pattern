@@ -1,1 +1,1 @@
-../../../packages/*/test/**/*@(Spec|spec).+(js|jsx|ts|tsx)
+../../../packages/*/test/{!(unit|browser)/**,}/!(_)*.@(ts|js|jsx|tsx)

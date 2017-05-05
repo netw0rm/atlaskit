@@ -16,7 +16,7 @@ import { globalPrimaryActions } from '../../shared-variables';
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
     appearance: PropTypes.string,
-    areGlobalPrimaryActionsVisible: PropTypes.bool,
+    showGlobalPrimaryActions: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
     isCollapsed: PropTypes.bool,
@@ -31,7 +31,7 @@ export default class ContainerNavigation extends PureComponent {
 
   static defaultProps = {
     appearance: 'container',
-    areGlobalPrimaryActionsVisible: false,
+    showGlobalPrimaryActions: false,
     isCollapsed: false,
     linkComponent: DefaultLinkComponent,
   }
@@ -92,7 +92,7 @@ export default class ContainerNavigation extends PureComponent {
   render() {
     const {
       appearance,
-      areGlobalPrimaryActionsVisible,
+      showGlobalPrimaryActions,
       children,
       globalCreateIcon,
       globalPrimaryIcon,
@@ -134,7 +134,7 @@ export default class ContainerNavigation extends PureComponent {
           >
             <Reveal
               shouldAnimate={isInitiallyRendered}
-              isOpen={areGlobalPrimaryActionsVisible}
+              isOpen={showGlobalPrimaryActions}
               openHeight={globalPrimaryActions.height.outer}
             >
               <GlobalPrimaryActions

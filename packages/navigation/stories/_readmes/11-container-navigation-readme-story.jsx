@@ -10,7 +10,7 @@ const globalActionPropDescription = 'The same as the property to GlobalNavigatio
 
 const containerNavigationPropDescriptions = {
   appearance: 'The visual style of the ContainerNavigation - it can be styled to appear like the GlobalNavigation, to create the Global product home navigation. This is useful for product dashboard screens.',
-  areGlobalPrimaryActionsVisible: 'Whether the global primary actions (search, create, and the primary item) are visible in the container navigation. In t',
+  showGlobalNavigation: 'Whether the global primary actions (search, create, and the primary item) are visible in the container navigation. In t',
   children: 'NavigationItems that will render inside the ContainerNavigation',
   headerComponent: 'Used to render the header component of the ContainerNavigation - usually a ContainerTitle or a Logo',
   isCollapsed: 'Used to control whether the container navigation should be rendered in collapsed mode',

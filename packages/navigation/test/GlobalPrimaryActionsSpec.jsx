@@ -57,8 +57,5 @@ describe('<GlobalPrimaryActions />', () => {
         onCreateActivate={handler}
       />).find('DrawerTrigger').at(1).props().onActivate).to.equal(handler);
     });
-    it('isVisible applies the isVisible class', () => {
-      expect(mount(<GlobalPrimaryActions isVisible />).find('GlobalPrimaryActions').props().isVisible).to.equal(true);
-    });
   });
 });

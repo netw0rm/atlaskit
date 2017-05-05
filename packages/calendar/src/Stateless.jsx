@@ -33,24 +33,23 @@ export default class StatelessCalendar extends PureComponent {
     /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
     provided are greyed out. This does not prevent these dates being selected. */
     disabled: PropTypes.arrayOf(PropTypes.string),
-    /** The number of the date currently focused. Places border around the date. */
+    /** The number of the date currently focused. Places border around the date.
+    0 highlights no date. */
     focused: PropTypes.number,
-    /** The number of the month (from 1 to 12) which the calendar should be on.
-    Defaults to the current month. */
+    /** The number of the month (from 1 to 12) which the calendar should be on. */
     month: PropTypes.number,
-    /** function which is called when the calendar is no longer focused. Returns
-    the react synthetic event that was triggered */
+    /** Function which is called when the calendar is no longer focused. */
     onBlur: PropTypes.func,
-    /** function which is called when navigation within the calendar is called,
+    /** Function which is called when navigation within the calendar is called,
     such as changing the month or year. Returns an object with day, month and
     year properties, each as a number. These will be the currently selected values
     with updates for if the change has been triggered internally by the forward and
     back arrows for months. */
     onChange: PropTypes.func,
-    /** function called when a day is clicked on. Calls with an object that has
+    /** Function called when a day is clicked on. Calls with an object that has
     a day, month and week property as numbers, representing the date just clicked.
-    It also has an 'iso' property, which is a string of the selected date in the format
-    YYYY-MM-DD */
+    It also has an 'iso' property, which is a string of the selected date in the
+    format YYYY-MM-DD. */
     onSelect: PropTypes.func,
     /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
     provided are given a background color. */
@@ -58,10 +57,9 @@ export default class StatelessCalendar extends PureComponent {
     /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
     provided are given a background color. */
     selected: PropTypes.arrayOf(PropTypes.string),
-    /** Value of current day, as a string in the format 'YYYY-MM-DD'. Will be
-    defaulted if not provided. */
+    /** Value of current day, as a string in the format 'YYYY-MM-DD'. */
     today: PropTypes.string,
-    /** Year to display the calendar for. Defaults to the current year. */
+    /** Year to display the calendar for. */
     year: PropTypes.number,
   }
 

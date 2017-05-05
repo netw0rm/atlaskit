@@ -22,13 +22,12 @@ export const description = (
     <p>
       There are two Calendar components, one of which maintains internal state, and
       cannot have values passed in or out. The stateless component has its values
-      set through props, and has several actions.
+      set through props.
     </p>
     <Usage>
       {"import Calendar, { AkCalendar } from '@atlaskit/breadcrumbs';"}
     </Usage>
     <p>
-      If you are using the stateless version, it is hard to extract the information.
       For the stateful version, be cautious that some functions such as
       the <code>onChange()</code> function which automatically navigate on the
       previous month and next month arrows for the stateless component will need

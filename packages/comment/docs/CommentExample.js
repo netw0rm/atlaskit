@@ -19,11 +19,12 @@ const CommentExample = () => (
       edited={<CommentEdited>Edited</CommentEdited>}
       restrictedTo="Admins Only"
       time={<CommentTime>30 August, 2016</CommentTime>}
-      content={(
-        <div>
-          <p>Content goes here. This can include <a href="/link">links</a> and other content.</p>
-        </div>
-      )}
+      content={
+        <p>
+         Content goes here. This can include <a href="/link">links</a> and
+         other content.
+        </p>
+      }
       actions={[
         <CommentAction onClick={onClick}>Reply</CommentAction>,
         <CommentAction onClick={onClick}>Edit</CommentAction>,

@@ -20,16 +20,19 @@ const Usage = styled.pre`
 export const description = (
   <div>
     <p>
-      The dropdown menu has two exports, a default usage for most situations,
+      The dropdown menu has two exports, a default stateful component,
       and a stateless component when you want to have more direct control over
-      all actions, such as whether to select an item immediately on click.
-      The default usage works to handle selection for you, while still providing
-      several functions that allow you to retrieve information from a form, most
-      notably <code>onItemActivated</code>, which returns an item when it is clicked on.
+      all actions.
     </p>
     <Usage>
       {'import DropdownMenu, { StatelessDropdownMenu} from @atlaskit/dropdown-menu'}
     </Usage>
+    <p>
+      The stateful component handles selection for you, while
+      still providing several functions that allow you to retrieve information
+      from a form, most notably <code>onItemActivated</code>, which returns an
+      item when it is clicked on.
+    </p>
   </div>
 );
 

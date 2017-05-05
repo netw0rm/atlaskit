@@ -9,19 +9,13 @@ const dropdownItems = [
 ];
 
 const StatelessMenuExample = class extends PureComponent {
-  state = {
-    isDropdownOpen: false,
-    items: dropdownItems,
-  }
+  state = { isDropdownOpen: false, items: dropdownItems }
 
   render() {
     return (
       <StatelessDropdownMenu
         isOpen={this.state.isDropdownOpen}
-        items={[{
-          heading: 'Cities',
-          items: this.state.items,
-        }]}
+        items={[{ heading: 'Cities', items: this.state.items }]}
         onOpenChange={(attrs) => {
           this.setState({ isDropdownOpen: attrs.isOpen });
         }}

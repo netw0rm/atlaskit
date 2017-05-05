@@ -40,6 +40,7 @@
     "@atlaskit/field-text": "^2.3.3",
     "@atlaskit/layer": "^2.0.0",
     "@atlaskit/navigation": "^8.0.0",
+    "@atlaskit/modal-dialog": "*",
     "react-lorem-component": "*"
   },
   "repository": {

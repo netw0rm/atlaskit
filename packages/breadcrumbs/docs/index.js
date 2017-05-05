@@ -18,20 +18,24 @@ const Usage = styled.pre`
 export const description = (
   <div>
     <p>
-      Breadcrumbs are used for nested navigation, displaying with each item
-      acting as a link. There are three components exported, of which you will
-      need two. Most commonly you will need:
+      Breadcrumbs are used for nested navigation, with each item
+      acting as a link. There is a stateful default export that handles expansion
+      of the collapse view, and passes other props on to the stateless export.
     </p>
     <Usage>
       {"import { AkBreadcrumbs, AkBreadcrumbsItem } from '@atlaskit/breadcrumbs';"}
     </Usage>
+    <p>or:</p>
+    <Usage>
+      {"import Breadcrumbs, { AkBreadcrumbsItem } from '@atlaskit/breadcrumbs';"}
+    </Usage>
     <p>
-      <code>Breadcrumbs</code> for
-      the wrapper component, and <code>BreadcrumbsItem</code> for individual items
-      in the list.
+      <code>Breadcrumbs</code> or <code>AkBreadcrumbs</code> are used as the wrapper
+      component. <code>BreadcrumbsItem</code> is the rendering componet for each
+      individual item in the list.
     </p>
     <p>
-      A <code>Breadcrumbs</code> component with no items will simply not display.
+      An <code>AkBreadcrumbs</code> component with no items will not be rendered.
     </p>
   </div>
 );

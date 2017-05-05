@@ -16,24 +16,22 @@ const Usage = styled.pre`
 export const description = (
   <div>
     <p>
-      The package exports two version of <code>InlineEdit</code>:
+      The inline editor is designed to not stand out as an input when it is not
+      focused or being interacted with. It is designed to be used as a wrapper
+      to control an input such as <code>@atlaskit/input</code>.
+    </p>
+    <p>
+      The package exports a stateful (default) and stateless version of <code>InlineEdit</code>:
     </p>
     <Usage>
       {'import InlineEditor, { InlineEdit } from @atlaskit/inline-edit'}
     </Usage>
     <p>
-      The default export has an <code>onCancel</code> and <code>onConfirm</code> method
-      as helpers, and also props down to the base component. The functions you
-      provide for these will be called after an internal method, which
-      sets <code>isEditing</code> to false.
-    </p>
-    <p>
-      If you do not want automatic functions for <code>onCancel</code>
-      and <code>onConfirm</code>, or <code>onEditRequested</code>, you can export
-      the base component and handle these entirely.
-    </p>
-    <p>
-      The inline editor is designed to not stand out as an input when not focused by default.
+      The stateful inline editor manages the <code>onEditRequested</code>,
+      {' '}<code>onCancel</code>, and <code>onConfirm</code> events and exposes
+      {' '}<code>onCancel</code> and <code>onConfirm</code> handlers.
+      All other props passed to the <code>InlineEditor</code> component are passed
+      directly through to the stateless <code>InlineEdit</code> component.
     </p>
   </div>
 );

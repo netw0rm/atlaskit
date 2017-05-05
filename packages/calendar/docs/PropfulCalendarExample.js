@@ -30,9 +30,3 @@ export default class AkCAlendarExample extends PureComponent {
     );
   }
 }
-
-// disabled
-// previouslySelected
-// selected
-// today
-// focused

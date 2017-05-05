@@ -7,10 +7,8 @@ const simpleDropdownItems = [
     items: [
       { content: 'Sydney', type: 'checkbox' },
       { content: 'Canberra', type: 'checkbox' },
-      { content: 'Melbourne', type: 'checkbox' },
-      { content: 'Perth', type: 'checkbox' },
       {
-        content: 'While not a city, this line demonstrates what happens when we have a line that is too long',
+        content: '"shouldAllowMultilineItems" makes this line wrap.',
         type: 'checkbox',
       },
     ],

@@ -9,9 +9,22 @@ import {
 const CommentSingleComponents = () => (
   <div>
     <div><CommentAuthor href="/author">John Smith</CommentAuthor></div>
-    <div><CommentAction onClick={e => console.log(e.target.textContent)}>Like</CommentAction></div>
+
     <div><CommentTime>30 August, 2016</CommentTime></div>
-    <div><CommentEdited>Show is edited</CommentEdited></div>
+    <div>
+      <CommentEdited
+        onClick={e => console.log(e.target.textContent)}
+      >
+        Comment Edited
+      </CommentEdited>
+    </div>
+    <div>
+      <CommentAction
+        onClick={e => console.log(e.target.textContent)}
+      >
+        Like
+      </CommentAction>
+    </div>
   </div>
 );
 

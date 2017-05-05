@@ -8,13 +8,13 @@ import { itemTruncateWidth } from './internal/constants';
 
 export default class BreadcrumbsItem extends PureComponent {
   static propTypes = {
-    /** The url or path which the breadcrumb should act as a link to */
+    /** The url or path which the breadcrumb should act as a link to. */
     href: PropTypes.string,
-    /** An icon to display before the breadcrumb */
+    /** An icon to display before the breadcrumb. */
     iconBefore: PropTypes.element,
-    /** An icon to display after the breadcrumb */
+    /** An icon to display after the breadcrumb. */
     iconAfter: PropTypes.element,
-    /** The text to appear within the breadcrumb as a link */
+    /** The text to appear within the breadcrumb as a link. */
     text: PropTypes.string,
   }
 

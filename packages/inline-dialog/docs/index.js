@@ -15,9 +15,15 @@ export const description = (
       change position to fit in the page.
     </p>
     <p>
-      The content takes two different react elements. The children, which are
-      the elements the modal will appear around, and the content, which is the
-      content within the modal.
+      The content takes two different react elements:
+      <ul>
+        <li>The children, which are the elements the modal will be positioned
+          relative to, using the position prop.
+        </li>
+        <li>
+          The content, which is the content to display inside the modal.
+        </li>
+      </ul>
     </p>
   </div>
 );
@@ -29,7 +35,7 @@ export const examples = [
     src: inlineDialogExampleSrc,
   },
   {
-    title: 'Simple Example',
+    title: 'Changing Modal Position',
     Component: ComplexDialogExample,
     src: complexDialogExampleSrc,
   },

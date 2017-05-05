@@ -4,8 +4,15 @@ import styled from 'styled-components';
 /* eslint-disable import/no-duplicates, import/first */
 import FlagExample from './FlagExample';
 import flagExampleSrc from '!raw-loader!./FlagExample';
-import FlagGroupExample from './FlagGroupExample';
-import flagGroupExampleSrc from '!raw-loader!./FlagGroupExample';
+/*
+=============================================
+NOTE: Flag group example is commented out as it does not display correctly.
+We need to come back to this once the component is easier to make display correctly.
+Currently it is mostly hidden behind the left navbar.
+=============================================
+*/
+// import FlagGroupExample from './FlagGroupExample';
+// import flagGroupExampleSrc from '!raw-loader!./FlagGroupExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
@@ -34,9 +41,9 @@ export const examples = [
     Component: FlagExample,
     src: flagExampleSrc,
   },
-  {
-    title: 'Flag Group Example',
-    Component: FlagGroupExample,
-    src: flagGroupExampleSrc,
-  },
+  // {
+  //   title: 'Flag Group Example',
+  //   Component: FlagGroupExample,
+  //   src: flagGroupExampleSrc,
+  // },
 ];

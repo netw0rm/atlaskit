@@ -7,10 +7,8 @@ const simpleDropdownItems = [
     items: [
       { content: 'Sydney', type: 'radio' },
       { content: 'Canberra', type: 'radio' },
-      { content: 'Melbourne', type: 'radio' },
-      { content: 'Perth', type: 'radio' },
       {
-        content: 'While not a city, this line demonstrates what happens when we have a line that is too long',
+        content: 'Line is too long and so the last words are lost',
         type: 'radio',
       },
     ],

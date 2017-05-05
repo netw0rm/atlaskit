@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from './less/styles.less';
 
-import { appearance, type, spacing, theme } from './internal/enumerated-properties';
 import getClasses from './internal/get-button-classes';
 import Content from './Content';
 import Icon from './Icon';
@@ -10,56 +9,67 @@ import Span from './Span';
 import Link from './Link';
 import Button from './Button';
 
+/*
+==========================================
+NOTE: appearance, type, spacing and theme have been moved in-line
+to the props and default props. The canonical list can be found at
+./internal/enumerated-properties.jsx
+==========================================
+*/
+
 export default class AkButton extends Component {
   static propTypes = {
-    /** The base styling to apply to the button, from the list primary, default,
-    subtle, link, subtle-link. Defaults to default appearance. */
-    appearance: PropTypes.oneOf(appearance.values),
-    /** Set whether it is a button or a form submission, takes the option button
-    or submit, defaulting to button. */
-    type: PropTypes.oneOf(type.values),
-    /** Provides a url for buttons being used as a link */
+    /** The base styling to apply to the button. */
+    appearance: PropTypes.oneOf([
+      'primary',
+      'default',
+      'subtle',
+      'link',
+      'subtle-link',
+    ]),
+    /** Set whether it is a button or a form submission. */
+    type: PropTypes.oneOf(['button', 'submit']),
+    /** Provides a url for buttons being used as a link. */
     href: PropTypes.string,
-    /** Pass target down to to a link within the button component, if a href is provided. */
+    /** Pass target down to a link within the button component, if a href is provided. */
     target: PropTypes.string,
-    /** Name of a linked form that the button submits. */
+    /** Name property of a linked form that the button submits when clicked. */
     form: PropTypes.string,
-    /** Set if the button is clickable. When disabled, onClick functions cannot
-    be called and if it has a href, it will be disabled. */
+    /** Set if the button is disabled. */
     isDisabled: PropTypes.bool,
-    /** Define the spacing type of the button. Accepted values are default, compact, none. */
-    spacing: PropTypes.oneOf(spacing.values),
+    /** Set the amount of padding in the button. */
+    spacing: PropTypes.oneOf(['default', 'compact', 'none']),
     /** Change the style to indicate the button is selected. */
     isSelected: PropTypes.bool,
-    /** Change the default styling, accepts default and dark. */
-    theme: PropTypes.oneOf(theme.values),
+    /** Change the default styling. */
+    theme: PropTypes.oneOf(['default', 'dark']),
     /** Places an icon within the button, before the button's text. */
     iconBefore: PropTypes.element,
     /** Places an icon within the button, after the button's text. */
     iconAfter: PropTypes.element,
-    /** Add a classname to the button */
+    /** Add a classname to the button. */
     className: PropTypes.string,
-    /** action to be called on click */
+    /** Handler to be called on click. */
     onClick: PropTypes.func,
-    /** Assign specific tabIndex order to the underlying html button */
+    /** Assign specific tabIndex order to the underlying html button. */
     tabIndex: PropTypes.number,
-    /** pass aria-haspopup to underlying html button. */
+    /** Pass aria-haspopup to underlying html button. */
     ariaHaspopup: PropTypes.bool,
-    /** pass aria-expanded to underlying html button */
+    /** Pass aria-expanded to underlying html button. */
     ariaExpanded: PropTypes.bool,
-    /** pass aria-controls to underlying html button */
+    /** Pass aria-controls to underlying html button. */
     ariaControls: PropTypes.string,
-    /** Provide a unique id to the button, which can be styled or referenced */
+    /** Provide a unique id to the button. */
     id: PropTypes.string,
   }
 
   static defaultProps = {
-    appearance: appearance.default,
-    type: type.default,
+    appearance: 'default',
+    type: 'button',
     isDisabled: false,
-    spacing: spacing.default,
+    spacing: 'default',
     isSelected: false,
-    theme: theme.default,
+    theme: 'default',
     tabIndex: null,
   }
 

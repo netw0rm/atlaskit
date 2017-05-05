@@ -17,14 +17,13 @@ export default class InlineDialogExample extends PureComponent {
   }
   render() {
     return (
-      <div>
-        <p>Content before the whole inline dialog, demonstrating how it wraps</p>
-        <div style={{ width: '200px', margin: 'auto' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div>
           <InlineDialog
             content={
               <div>
-                <p>All about that words on a page</p>
-                <p>All about that words on a page</p>
+                <p>This dialog will shift sides.</p>
+                <p>It will cover up part of the paragraph below.</p>
               </div>
             }
             isOpen={this.state.dialogOpen}
@@ -35,8 +34,6 @@ export default class InlineDialogExample extends PureComponent {
             onClose={e => console.log('close happened', e)}
           >
             <Button onClick={this.moveDialog}>Toggle Dialog Location</Button>
-            <Button onClick={this.toggleDialog}>Toggle Inline Dialog</Button>
-
           </InlineDialog>
         </div>
         <p>Content after the whole inline dialog, demonstrating how it wraps</p>

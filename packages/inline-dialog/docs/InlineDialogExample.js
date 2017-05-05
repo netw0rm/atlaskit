@@ -13,11 +13,7 @@ export default class InlineDialogExample extends PureComponent {
     return (
       <div style={{ height: '120px' }}>
         <InlineDialog
-          content={
-            <div>
-              All about that words on a page
-            </div>
-          }
+          content="The content of the dialog"
           isOpen={this.state.dialogOpen}
         >
           <Button onClick={this.toggleDialog}>Toggle Inline Dialog</Button>

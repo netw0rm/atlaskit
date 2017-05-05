@@ -1,3 +1,11 @@
+/*
+==========================================
+NOTE: Due to website displaying props and default props, ../index.jsx
+has had the below themes inlined to prop definitions. If you change any values
+here, ensure that they are also changed in the index file.
+==========================================
+*/
+
 export const appearance = {
   values: [
     'primary',

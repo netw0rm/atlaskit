@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Schema, doc, text, panel } from '../../../src';
+import { createSchema } from '../../../src';
 import { fromHTML, toHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
@@ -26,7 +26,7 @@ describe('@atlaskit/editor-core/schema panel node', () => {
 });
 
 function makeSchema() {
-  const nodes = { doc, panel, text };
-  const marks = {};
-  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+  return createSchema({
+    nodes: ['doc', 'paragraph', 'text', 'panel']
+  });
 }

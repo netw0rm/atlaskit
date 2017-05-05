@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Schema, doc, paragraph, text, underline } from '../../../src';
+import { createSchema } from '../../../src';
 import { chaiPlugin, fromHTML, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -17,9 +17,10 @@ describe('@atlaskit/editor-core/schema underline mark', () => {
 });
 
 function makeSchema() {
-  const nodes = { doc, paragraph, text };
-  const marks = { underline };
-  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+  return createSchema({
+    nodes: ['doc', 'paragraph', 'text'],
+    marks: ['underline']
+  });
 }
 
 function itMatches(html: string, expectedText: string) {

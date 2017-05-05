@@ -19,15 +19,18 @@ describe('ak-modal-dialog', () => {
   describe('props', () => {
     describe('isOpen', () => {
       it('should be hidden by default', () => {
-        expect(shallow(<ModalDialog />).text()).to.equal('');
+        expect(shallow(<ModalDialog />).find(ModalPositioner).length).to.equal(0);
       });
       it('should be visible when open = true', () => {
-        expect(shallow(<ModalDialog isOpen />).text()).to.not.equal('');
+        expect(shallow(<ModalDialog isOpen />).find(ModalPositioner).length).to.equal(1);
       });
       it('should become hidden when open changed from true -> false', () => {
-        const wrapper = shallow(<ModalDialog isOpen />);
+        const wrapper = mount(<ModalDialog isOpen />);
+        expect(wrapper.find(ModalPositioner).length).to.equal(1);
         wrapper.setProps({ isOpen: false });
-        expect(wrapper.text()).to.equal('');
+        // need to simulate onAnimationEnd it doesn't seem to fire after setProps
+        wrapper.find(ModalPositioner).simulate('animationEnd');
+        expect(wrapper.find(ModalPositioner).length).to.equal(0);
       });
     });
 

@@ -13,6 +13,7 @@ import Button from './Button';
 export default class AkButton extends Component {
   static propTypes = {
     appearance: PropTypes.oneOf(appearance.values),
+    component: PropTypes.func,
     type: PropTypes.oneOf(type.values),
     href: PropTypes.string,
     target: PropTypes.string,
@@ -65,6 +66,20 @@ export default class AkButton extends Component {
       }
       return (<Link {...props} className={classes}>{this.renderContent()}</Link>);
     }
-    return (<Button {...props} className={classes}>{this.renderContent()}</Button>);
+    const ButtonComponent = this.props.component || Button;
+    if (ButtonComponent !== Button) {
+      // if it's not our Button component, remove these props so they don't
+      // bleed into the DOM
+      delete props.component;
+      delete props.appearance;
+      delete props.isDisabled;
+      delete props.isSelected;
+      delete props.theme;
+    }
+    return (
+      <ButtonComponent {...props} className={classes}>
+        {this.renderContent()}
+      </ButtonComponent>
+    );
   }
 }

@@ -21,21 +21,21 @@ import {
 } from '../../shared-styles';
 
 export const pickerEmoji = style({
-  cursor: 'pointer',
-  margin: '4px',
+  padding: '4px',
   width: '32px',
   height: '32px',
-  padding: 0,
   display: 'inline-block',
 
   $nest: {
     '&>span': {
-      display: 'inline-block',
-      width: '32px',
-      height: '32px',
-      padding: 0,
+      cursor: 'pointer',
+      padding: '4px',
+      borderRadius: '5px',
+      width: '24px',
+      height: '24px',
 
       $nest: {
+        // Fit non-square emoji to square
         '&>img': {
           position: 'relative',
           left: '50%',
@@ -46,7 +46,7 @@ export const pickerEmoji = style({
           display: 'block',
         },
       }
-    },
+    }
   },
 });
 

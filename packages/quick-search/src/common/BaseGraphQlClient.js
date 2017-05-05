@@ -2,9 +2,6 @@ import 'es6-promise/auto'; // 'axios' needs a Promise polyfill
 import axios, { CancelToken } from 'axios';
 import axiosRetry from 'axios-retry';
 
-// Babel does not support extending built-in types
-// http://stackoverflow.com/questions/31089801/extending-error-in-javascript-with-es6-syntax
-
 export class DefaultError {
   constructor({ message }) {
     this.message = message || 'UnkownError';

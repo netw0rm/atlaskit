@@ -13,7 +13,7 @@ export default class SpinningClearIcon extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isSpinning: false,
+      isSpinning: props.shouldSpin || false,
       isUnderMouse: false,
     };
     this.delayTimeoutId = null;

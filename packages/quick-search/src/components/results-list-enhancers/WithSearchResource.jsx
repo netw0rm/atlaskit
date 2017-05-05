@@ -4,12 +4,15 @@ import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
 import uniqueId from '../../util/id';
 import getDisplayName from '../../util/getDisplayName';
 
-const withSearchResource = (WrappedComponent) => {
+const withSearchResource = WrappedComponent =>
   class WithSearchResource extends Component {
 
     static propTypes = {
       searchResource: PropTypes.instanceOf(AbstractResource).isRequired,
+      searchSubscriber: PropTypes.instanceOf(SearchSubscriber),
     }
+
+    static displayName = `WithSearchResource(${getDisplayName(WrappedComponent)})`
 
     constructor(props) {
       super(props);
@@ -33,12 +36,13 @@ const withSearchResource = (WrappedComponent) => {
     }
 
     onSearchResultUpdate = (resultsType, items) => {
+      console.log('items', items);
       this.setState({ resultsType, items });
     }
 
     filterError = (err) => {
       this.setState({
-        items: [],
+        items: {},
         resultsType: 'error',
       });
       // eslint-disable-next-line no-console
@@ -56,9 +60,6 @@ const withSearchResource = (WrappedComponent) => {
         />
       );
     }
-  }
-  WithSearchResource.displayName = `WithSearchResource(${getDisplayName(WrappedComponent)})`;
-  return WithSearchResource;
-};
+  };
 
 export default withSearchResource;

@@ -1,6 +1,6 @@
 import sinon from 'sinon';
-import createMockSearchResource from '../../helpers/mockSearchResource';
 import searchResponseData from '../../helpers/mock-search-response-short';
+import { ParsingSearchResource } from '../../../src/api/SearchResource';
 
 describe('SearchResource', () => {
   const mockResponse = {
@@ -13,10 +13,13 @@ describe('SearchResource', () => {
     },
   };
 
-  let mockSearchResource;
+  let searchResource;
 
   beforeEach(() => {
-    mockSearchResource = createMockSearchResource();
+    searchResource = new ParsingSearchResource({
+      userId: '13',
+      cloudId: 'final-fantasy-vii',
+    });
   });
 
   it('notify all changeListeners of successful search results', (done) => {
@@ -24,21 +27,17 @@ describe('SearchResource', () => {
     const changeSpyB = sinon.spy();
     const errorSpyA = sinon.spy();
     const errorSpyB = sinon.spy();
-    mockSearchResource.subscribe('keyA', changeSpyA, errorSpyA);
-    mockSearchResource.subscribe('keyB', changeSpyB, errorSpyB);
+    searchResource.subscribe('keyA', changeSpyA, errorSpyA);
+    searchResource.subscribe('keyB', changeSpyB, errorSpyB);
 
-    mockSearchResource.mock
-      .onPost(/\/graphql$/)
-      .reply(200, mockResponse);
-    mockSearchResource.search('hello');
+    sinon.stub(searchResource, 'queryClient').returns(Promise.resolve(mockResponse));
+    searchResource.search('hello');
 
     setImmediate(() => {
-      /* eslint-disable no-unused-expressions */
-      expect(changeSpyA.called).to.be.true;
-      expect(changeSpyB.called).to.be.true;
-      expect(errorSpyA.called).to.be.false;
-      expect(errorSpyB.called).to.be.false;
-      /* eslint-enable no-unused-expressions */
+      expect(changeSpyA.calledWith('search', mockResponse)).to.equal(true);
+      expect(changeSpyB.calledWith('search', mockResponse)).to.equal(true);
+      expect(errorSpyA.called).to.equal(false);
+      expect(errorSpyB.called).to.equal(false);
       done();
     });
   });
@@ -48,57 +47,52 @@ describe('SearchResource', () => {
     const changeSpyB = sinon.spy();
     const errorSpyA = sinon.spy();
     const errorSpyB = sinon.spy();
-    mockSearchResource.subscribe('keyA', changeSpyA, errorSpyA);
-    mockSearchResource.subscribe('keyB', changeSpyB, errorSpyB);
+    searchResource.subscribe('keyA', changeSpyA, errorSpyA);
+    searchResource.subscribe('keyB', changeSpyB, errorSpyB);
 
-    mockSearchResource.mock.onPost(/\/graphql$/).reply(500);
-    mockSearchResource.search('hello');
+    sinon.stub(searchResource, 'queryClient').returns(Promise.reject());
+    searchResource.search('hello');
 
     setImmediate(() => {
-      /* eslint-disable no-unused-expressions */
-      expect(changeSpyA.called).to.be.false;
-      expect(changeSpyB.called).to.be.false;
-      expect(errorSpyA.called).to.be.true;
-      expect(errorSpyB.called).to.be.true;
-      /* eslint-enable no-unused-expressions */
+      expect(changeSpyA.called).to.equal(false);
+      expect(changeSpyB.called).to.equal(false);
+      expect(errorSpyA.called).to.equal(true);
+      expect(errorSpyB.called).to.equal(true);
       done();
     });
   });
 
   // TODO: Something's wrong: axios-mock-adapter not playing nicely with jsdom
-  // eslint-disable-next-line mocha/no-skipped-tests
-  it.skip('re/query on each recentItems() call until it receives items', (done) => {
+  it('re/query on each recentItems() call until it receives items', (done) => {
     const changeSpyA = sinon.spy();
-    mockSearchResource.subscribe('keyA', changeSpyA);
+    searchResource.subscribe('keyA', changeSpyA);
 
-    mockSearchResource.mock
-      .onPost(/\/graphql$/).reply(500)
-      .onPost(/\/graphql$/).replyOnce(200, mockResponse);
-    mockSearchResource.recentItems();
-    mockSearchResource.recentItems();
+    sinon.stub(searchResource, 'queryClient')
+      .onFirstCall()
+      .returns(Promise.reject())
+      .onSecondCall()
+      .returns(Promise.resolve(mockResponse));
+    searchResource.recentItems();
+    searchResource.recentItems();
 
     setImmediate(() => {
-      // eslint-disable-next-line no-unused-expressions
-      expect(changeSpyA.called).to.be.true;
+      expect(changeSpyA.called).to.equal(true);
       done();
     });
   });
 
   it('remember recent items for its lifetime', () => {
     const changeSpyA = sinon.spy();
-    const requestSpy = sinon.spy(mockSearchResource.queryClient);
-    mockSearchResource.subscribe('keyA', changeSpyA);
+    const requestSpy = sinon.spy(searchResource.queryClient);
+    searchResource.subscribe('keyA', changeSpyA);
 
-    mockSearchResource.mock
-      .onPost(/\/graphql$/).reply(200, mockResponse);
-    mockSearchResource.recentItems();
-    mockSearchResource.recentItems();
+    sinon.stub(searchResource, 'queryClient').returns(Promise.resolve(mockResponse));
+    searchResource.recentItems();
+    searchResource.recentItems();
 
     setImmediate(() => {
-      /* eslint-disable no-unused-expressions */
-      expect(changeSpyA.calledOnce).to.be.true;
-      expect(requestSpy.calledOnce).to.be.true;
-      /* eslint-enable no-unused-expressions */
+      expect(changeSpyA.calledOnce).to.equal(true);
+      expect(requestSpy.calledOnce).to.equal(true);
     });
   });
 });
@@ -119,7 +113,10 @@ describe('ParsingSearchResource', () => {
   let parsingSearchResource;
 
   beforeEach(() => {
-    parsingSearchResource = createMockSearchResource();
+    parsingSearchResource = new ParsingSearchResource({
+      userId: '13',
+      cloudId: 'final-fantasy-vii',
+    });
   });
 
   it('formatMetaData() returns correctly formatted meta data', () => {

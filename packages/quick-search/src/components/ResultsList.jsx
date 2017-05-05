@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { GroupedResultsParser } from '../api/result-parser/ResultParser';
+import { GroupedResultsParser, IResultParser } from '../api/result-parser/ResultParser';
 import NoScrollResultsBox from './NoScrollResultsBox';
 
 export default class ResultsList extends PureComponent {
@@ -21,6 +21,7 @@ export default class ResultsList extends PureComponent {
     resultCallbacks: PropTypes.shape({
       HipChatConversation: PropTypes.func,
     }),
+    resultParser: PropTypes.instanceOf(IResultParser),
   }
 
   static defaultProps = {
@@ -30,6 +31,7 @@ export default class ResultsList extends PureComponent {
   constructor(props) {
     super(props);
     this.resultParser =
+      props.resultParser ||
       new GroupedResultsParser(props.onSearchTerminate, props.resultCallbacks);
   }
 

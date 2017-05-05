@@ -3,7 +3,7 @@ import AkAvatar from '@atlaskit/avatar';
 import styled from 'styled-components';
 import { akColorN100 } from '@atlaskit/util-shared-styles';
 
-const SecondaryTitle = styled.span`
+export const SecondaryTitle = styled.span`
   color: ${akColorN100}
 `;
 

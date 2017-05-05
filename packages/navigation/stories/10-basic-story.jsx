@@ -4,11 +4,24 @@ import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/i
 import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
 import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle } from '../src/index';
+import NavigationWithDropdown from './components/NavigationWithDropdown';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleusLogo from './nucleus.png';
 import { name } from '../package.json';
 import RandomBadge from './components/RandomBadge';
+
+const dropdownItemsSample = [
+  {
+    heading: 'Cities',
+    items: [
+      { content: 'Sydney', value: 1 },
+      { content: 'Canberra', value: 2 },
+      { content: 'Melbourne', value: 3 },
+      { content: 'Perth', value: 4 },
+    ],
+  },
+];
 
 const manyNavigationItems = () => {
   const items = [];
@@ -61,6 +74,50 @@ storiesOf(name, module)
         />
         {manyNavigationItems()}
       </BasicNavigation>
+    </Page>
+  ))
+  .add('with a dropdown trigger item', () => (
+    <Page>
+      <NavigationWithDropdown
+        dropdownProps={{ items: dropdownItemsSample }}
+      >
+        <AkNavigationItem
+          text="Test page 1"
+          icon={<DashboardIcon label="Dashboard" />}
+        />
+        <AkNavigationItem
+          text="Test page 3"
+          icon={<DashboardIcon label="Dashboard" />}
+        />
+        <AkNavigationItem
+          text="Test page 4"
+          icon={<DashboardIcon label="Dashboard" />}
+        />
+      </NavigationWithDropdown>
+    </Page>
+  ))
+  .add('with a dropdown trigger item + after text', () => (
+    <Page>
+      <NavigationWithDropdown
+        dropdownProps={{ items: dropdownItemsSample }}
+        navigationItemProps={{ textAfter: 'text', text: 'Menu' }}
+      >
+        <AkNavigationItem
+          text="Test page 1"
+          icon={<DashboardIcon label="Dashboard" />}
+          textAfter="text"
+        />
+        <AkNavigationItem
+          text="Test page 3"
+          icon={<DashboardIcon label="Dashboard" />}
+          textAfter="text"
+        />
+        <AkNavigationItem
+          text="Test page 4"
+          icon={<DashboardIcon label="Dashboard" />}
+          textAfter="text"
+        />
+      </NavigationWithDropdown>
     </Page>
   ))
   .add('with a selected item', () => (

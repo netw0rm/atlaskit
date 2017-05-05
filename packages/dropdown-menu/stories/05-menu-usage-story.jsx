@@ -187,6 +187,21 @@ storiesOf(name, module)
       DropdownLoadItemsExampleRaw,
     ],
   })
+  .addCodeExampleStory('Loading dropdown', () => (
+    <div style={{ padding: '40px' }}>
+      <p>
+        This is an example of a dropdown that is loading.
+      </p>
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu
+          defaultOpen
+          isLoading
+          isOpen
+          triggerType="button"
+        />
+      </div>
+    </div>
+  ))
   .addCodeExampleStory('Basic Dropdown menu with customized trigger button', () => (
     <DropdownWithTriggerOptions />
   ),

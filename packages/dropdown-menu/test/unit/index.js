@@ -60,6 +60,7 @@ describe(name, () => {
       expect(droplist.prop('shouldFlip')).to.equal(wrapper.props().shouldFlip);
       expect(droplist.prop('isOpen')).to.equal(wrapper.state().isOpen);
       expect(droplist.prop('trigger')).to.equal('text');
+      expect(droplist.prop('isLoading')).to.equal(wrapper.props().isLoading);
     });
 
     it('should pass required properties to the button trigger', () => {

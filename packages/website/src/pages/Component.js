@@ -4,11 +4,14 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
+import Media from 'react-media';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 import Dropdown from '@atlaskit/dropdown-menu';
 import { Grid, GridColumn } from '@atlaskit/page';
 import { akColorN80, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+
+import { LARGE_DESKTOP_QUERY } from '../../constants';
 
 import { getStorybookURL } from '../utils';
 import data from '../data';
@@ -101,20 +104,22 @@ export default ({ match }) => {
   if (!component) return <Route component={NoMatch} />;
 
   return (
-    <Grid spacing="comfortable">
-      <GridColumn small={0} medium={1} />
-      <GridColumn small={12} medium={10}>
-        <Helmet title={component.name}>
-          <meta name="description" content={component.description} />
-        </Helmet>
-        <Header component={component} />
-        <MetaData component={component} />
-        <Main>
-          <Docs component={component} />
-        </Main>
-      </GridColumn>
-      <GridColumn small={0} medium={1} />
-    </Grid>
+    <Media query={LARGE_DESKTOP_QUERY}>{matches => (
+      <Grid spacing="comfortable">
+        {matches ? <GridColumn medium={1} /> : null}
+        <GridColumn medium={matches ? 10 : 12}>
+          <Helmet title={component.name}>
+            <meta name="description" content={component.description} />
+          </Helmet>
+          <Header component={component} />
+          <MetaData component={component} />
+          <Main>
+            <Docs component={component} />
+          </Main>
+        </GridColumn>
+        {matches ? <GridColumn medium={1} /> : null}
+      </Grid>
+    )}</Media>
   );
 };
 

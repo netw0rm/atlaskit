@@ -294,7 +294,7 @@ export function locateAndRemoveNode(view: EditorView, getPos: () => number): () 
       return;
     }
 
-    view.dispatch(view.state.tr.delete(pos, pos + 1));
+    view.dispatch(view.state.tr.deleteRange(pos, pos + 1));
   };
 }
 

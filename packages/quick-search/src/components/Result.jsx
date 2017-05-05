@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 
-import { AkDrawerItem } from '@atlaskit/navigation';
+import { AkNavigationItem } from '@atlaskit/navigation';
 
 export default class Result extends PureComponent {
   static propTypes = {
@@ -15,9 +15,8 @@ export default class Result extends PureComponent {
 
   render() {
     return (
-      <AkDrawerItem
+      <AkNavigationItem
         {...this.props}
-        isCompact
       />
     );
   }

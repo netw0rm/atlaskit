@@ -144,7 +144,7 @@ export class ParsingSearchResource extends SearchResource {
 
   parse = (jsonArray) => {
     if (!jsonArray || !jsonArray.length) {
-      return [];
+      return {};
     }
     return jsonArray
       .map(item => (

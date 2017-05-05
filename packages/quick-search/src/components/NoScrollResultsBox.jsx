@@ -2,7 +2,7 @@ import React, { PropTypes, PureComponent } from 'react';
 
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-const GRID_UNITS_PER_ITEM = 4.5;
+const GRID_UNITS_PER_ITEM = 5;
 export default class NoScrollResultsBox extends PureComponent {
   static propTypes = {
     minItems: PropTypes.number,

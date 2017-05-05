@@ -1,5 +1,9 @@
-import { MediaStateManager } from './../media/index';
-import { MediaProvider, MediaContextConfig } from '../media';
+import {
+  ContextConfig as MediaContextConfig,
+  MediaProvider,
+  MediaStateManager,
+} from '@atlaskit/media-core';
+
 import {
   defaultClientId,
   defaultServiceHost,

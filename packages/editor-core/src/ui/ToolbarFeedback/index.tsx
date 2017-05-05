@@ -31,9 +31,11 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
   showJiraCollectorDialogCallback?: () => void;
 
+  private handleSpinnerComplete() {}
+
   render() {
     const iconBefore = this.state.jiraIssueCollectorScriptLoading
-      ? <Spinner isCompleting={false} onComplete={() => { }} />
+      ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
 
     // JIRA issue collector script is using jQuery internally

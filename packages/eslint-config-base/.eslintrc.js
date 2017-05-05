@@ -1,14 +1,14 @@
-{
+module.exports = {
   "name": "@atlaskit/eslint-config-base",
   "extends": "airbnb",
   "parser": "babel-eslint",
   "env": {
-    "browser": true
+    "browser": true,
   },
   "plugins": [
     "react",
     "prefer-object-spread",
-    "compat"
+    "compat",
   ],
   "rules": {
     // http://eslint.org/docs/rules/comma-dangle
@@ -18,7 +18,7 @@
       "objects": "always-multiline",
       "imports": "always-multiline",
       "exports": "always-multiline",
-      "functions": "ignore"
+      "functions": "ignore",
     }],
 
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/extensions.md
@@ -27,7 +27,7 @@
       "js": "never",
       "jsx": "never",
       "ts": "never",
-      "tsx": "never"
+      "tsx": "never",
     }],
 
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-webpack-loader-syntax.md
@@ -57,7 +57,7 @@
 
     // http://eslint.org/docs/rules/no-multiple-empty-lines
     // Disallow more than 1 empty lines
-    "no-multiple-empty-lines": ["error", {"max": 1}],
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
 
     // http://eslint.org/docs/rules/padded-blocks
     // Enforce no padding within blocks
@@ -77,15 +77,13 @@
     "prefer-object-spread/prefer-object-spread": "error",
 
     // http://eslint.org/docs/rules/no-restricted-properties
-    "no-restricted-properties": ["error",
-      {
-          // Disabling the use of React.Component
-          // Rationale: https://extranet.atlassian.com/display/AtlasKit/React+component+conventions
-          "object": "React",
-          "property": "Component",
-          "message": "Please use PureComponent instead."
-      }
-    ],
+    "no-restricted-properties": ["error", {
+        // Disabling the use of React.Component
+        // Rationale: https://extranet.atlassian.com/display/AtlasKit/React+component+conventions
+        "object": "React",
+        "property": "Component",
+        "message": "Please use PureComponent instead."
+    }],
 
     // https://github.com/amilajack/eslint-plugin-compat
     // Error when violating browser compatibility
@@ -94,6 +92,6 @@
     // Disallowing the use of variables starting with `_` unless it called on `this`.
     // Allowed: `this._secret = Symbol()`
     // Not allowed: `const _secret = Symbol()`
-    "no-underscore-dangle": ["error", { "allowAfterThis": true }]
-  }
-}
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+  },
+};

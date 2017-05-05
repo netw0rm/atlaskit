@@ -212,6 +212,10 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
   }
 
+  private handleMentionListRef = (ref) => {
+    this.mentionListRef = ref;
+  }
+
   render() {
     const { mentions, showError } = this.state;
 
@@ -225,7 +229,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
           mentions={mentions}
           showError={showError}
           onSelection={this.notifySelection}
-          ref={(ref) => { this.mentionListRef = ref; }}
+          ref={this.handleMentionListRef}
         />
       </div>
     );

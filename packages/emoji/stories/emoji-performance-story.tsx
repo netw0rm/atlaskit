@@ -13,6 +13,12 @@ export interface PerformanceWrapperProps {
 }
 
 class PerformanceWrapper extends PureComponent<PerformanceWrapperProps, {}> {
+  private handleStartClick = () => { Perf.start(); };
+  private handleStopClick = () => { Perf.stop(); };
+  private handlePrintInclusiveClick = () => { Perf.printInclusive(Perf.getLastMeasurements()); };
+  private handlePrintExclusiveClick = () => { Perf.printExclusive(Perf.getLastMeasurements()); };
+  private handlePrintWastedClick = () => { Perf.printWasted(Perf.getLastMeasurements()); };
+  private handlePrintOperationsClick = () => { Perf.printOperations(Perf.getLastMeasurements()); };
 
   render() {
     return (
@@ -22,12 +28,12 @@ class PerformanceWrapper extends PureComponent<PerformanceWrapperProps, {}> {
         <div>
           <h3>Peformance tools: see console for output. (Only supported in react dev mode)</h3>
           <p>
-            <button onClick={() => { Perf.start(); }}>Start recording</button>
-            <button onClick={() => { Perf.stop(); }}>Stop recording</button>
-            <button onClick={() => { Perf.printInclusive(Perf.getLastMeasurements()); }}>Print Inclusive</button>
-            <button onClick={() => { Perf.printExclusive(Perf.getLastMeasurements()); }}>Print Exclusive</button>
-            <button onClick={() => { Perf.printWasted(Perf.getLastMeasurements()); }}>Print Wasted</button>
-            <button onClick={() => { Perf.printOperations(Perf.getLastMeasurements()); }}>Print Operations</button>
+            <button onClick={this.handleStartClick}>Start recording</button>
+            <button onClick={this.handleStopClick}>Stop recording</button>
+            <button onClick={this.handlePrintInclusiveClick}>Print Inclusive</button>
+            <button onClick={this.handlePrintExclusiveClick}>Print Exclusive</button>
+            <button onClick={this.handlePrintWastedClick}>Print Wasted</button>
+            <button onClick={this.handlePrintOperationsClick}>Print Operations</button>
           </p>
         </div>
       </div>

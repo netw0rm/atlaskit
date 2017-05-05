@@ -33,7 +33,8 @@ if (!AUTH_TOKEN || !ROOM_ID || !CDN_URL_SCOPE || !CDN_URL_BASE) {
 * @return {String} the URL to the package with the given version in the registry
 */
 function generatePackageUrl(pkg, version) {
-  return `${CDN_URL_BASE}/${CDN_URL_SCOPE}/registry/${pkg}/${version}/`;
+  const simplePkg = pkg.replace('@atlaskit/', '');
+  return `${CDN_URL_BASE}/${CDN_URL_SCOPE}/registry/${simplePkg}/${version}/`;
 }
 
 /**
@@ -45,6 +46,17 @@ function generatePackageUrl(pkg, version) {
 */
 function generateNpmUrl(pkg) {
   return `https://www.npmjs.com/package/${pkg}`;
+}
+
+/**
+* Generates a URL to a package on unpkg.com, such as:
+* https://unpkg.com/@atlaskit/avatar
+*
+* @param {String} pkg The package name
+* @return {String} the URL to the package on unpkg.com
+*/
+function generateUnpkgUrl(pkg) {
+  return `https://unpkg.com/${pkg}/`;
 }
 
 /**
@@ -114,6 +126,7 @@ Commit <a href="${buildLink}">${COMMIT}</a> gave us some fresh components:<br/>
     <th>Version</th>
     <th>Storybook</th>
     <th>NPM</th>
+    <th>Unpkg</th>
   </tr>
 ${changedPackages.map(([name, version]) => `
   <tr>
@@ -121,6 +134,7 @@ ${changedPackages.map(([name, version]) => `
     <td>${version}</td>
     <td><a href="${generateStorybookUrl(name, version)}">storybook</a></td>
     <td><a href="${generateNpmUrl(name)}">npm</a></td>
+    <td><a href="${generateUnpkgUrl(name)}">unpkg</a></td>
   </tr>`).join('')}
 </table>`;
 

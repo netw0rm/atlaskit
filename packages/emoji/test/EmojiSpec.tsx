@@ -39,7 +39,7 @@ describe('<Emoji />', () => {
     it('should be selected', () => {
       const wrapper = shallow(<Emoji
         emoji={spriteEmoji}
-        selected
+        selected={true}
       />);
 
       expect((wrapper.find(`.${styles.emojiContainer}`)).hasClass((styles.selected))).to.equal(true);
@@ -59,7 +59,7 @@ describe('<Emoji />', () => {
     it('should be selected', () => {
       const wrapper = shallow(<Emoji
         emoji={imageEmoji}
-        selected
+        selected={true}
       />);
 
       const image = wrapper.find(`.${styles.emoji}`);

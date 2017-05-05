@@ -14,26 +14,28 @@ export const emoji = style({
   borderRadius: '5px',
   backgroundColor: 'transparent',
   display: 'inline-block',
-  padding: '4px',
   verticalAlign: 'middle',
+  // Ensure along with vertical align middle, we don't increase the line height for p and some
+  // headings. Smaller headings get a slight increase in height, cannot add more negative margin
+  // as a "selected" emoji (e.g. in the editor) will not look good.
+  margin: '-1px 0',
 
   $nest: {
     [`&.${selected}`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
     '&>img': {
-      maxHeight: '22px',
-      verticalAlign: 'middle',
+      maxHeight: '24px',
+      display: 'block',
     }
   },
 });
 
 export const emojiContainer = style({
-  borderRadius: '5px',
   display: 'inline-block',
-  height: '32px',
-  width: '32px',
   verticalAlign: 'middle',
+  // Ensure along with vertical align middle, we don't increase the line height for h1..h6, and p
+  margin: '-1px 0',
 
   $nest: {
     [`&.${selected}`]: {
@@ -42,19 +44,14 @@ export const emojiContainer = style({
 
     [`.${emojiSprite}`]: {
       background: 'transparent no-repeat',
-      border: 0,
-      boxSizing: 'border-box',
-      display: 'inline-block',
+      display: 'block',
       height: '24px',
-      margin: '4px',
       width: '24px',
     },
   },
 });
 
 export const missingEmoji = style({
-  height: '32px',
-  width: '32px',
   display: 'inline-block',
   fill: '#f7f7f7',
 });

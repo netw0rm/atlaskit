@@ -6,6 +6,7 @@ import AnimationDemo from './components/AnimationDemo';
 import { name } from '../package.json';
 import Flag, { FlagGroup } from '../src';
 import GreenSuccessIcon from './components/GreenSuccessIcon';
+import ProgrammaticFlagDismissExample from './examples/ProgrammaticFlagDismissExample';
 
 storiesOf(name, module)
   .add('Interactive flag example', () => (
@@ -64,4 +65,7 @@ storiesOf(name, module)
         title="I am a Flag"
       />
     </FlagGroup>
+  ))
+  .add('programatically dismissing a Flag', () => (
+    <ProgrammaticFlagDismissExample />
   ));

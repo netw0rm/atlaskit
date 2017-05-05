@@ -1,11 +1,10 @@
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
-import { ContextConfig, CardEventHandler } from '@atlaskit/media-core';
+import {
+  CardEventHandler,
+  MediaProvider,
+} from '@atlaskit/media-core';
 import { SyntheticEvent } from 'react';
-
-export interface MediaProvider {
-  viewContext: Promise<ContextConfig>;
-}
 
 export interface ServicesConfig {
   getEmojiProvider?: () => Promise<EmojiProvider>;

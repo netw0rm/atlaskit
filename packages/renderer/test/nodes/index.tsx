@@ -4,7 +4,7 @@ import { getValidNode, renderNode } from '../../src/nodes';
 describe('Nodes', () => {
   describe('getValidNode', () => {
 
-    describe('unkown', () => {
+    describe('unknown', () => {
       it('should return "unkown" if type is unkown', () => {
         expect(getValidNode({ type: 'banana' }).type).to.equal('unknown');
       });
@@ -202,7 +202,7 @@ describe('Nodes', () => {
               attrs: {
                 type: 'file',
                 id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-                collectionId: ['MediaServicesSample']
+                collection: 'MediaServicesSample'
               }
             }
           ]
@@ -214,7 +214,7 @@ describe('Nodes', () => {
               attrs: {
                 type: 'file',
                 id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-                collectionId: ['MediaServicesSample']
+                collection: 'MediaServicesSample'
               }
             }
           ]
@@ -229,14 +229,14 @@ describe('Nodes', () => {
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collectionId: ['MediaServicesSample']
+            collection: 'MediaServicesSample'
           }
         })).to.deep.equal({
           type: 'media',
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collectionId: ['MediaServicesSample']
+            collection: 'MediaServicesSample'
           }
         });
       });

@@ -14,6 +14,8 @@ export default class DropdownMenu extends PureComponent {
     appearance: PropTypes.oneOf(['default', 'tall']),
     /** Content that will be rendered inside the trigger element */
     children: PropTypes.node,
+    /** Controls the value of the items filter */
+    defaultItemsFilterValue: PropTypes.string,
     /** Controls the open state of the dropdown */
     defaultOpen: PropTypes.bool,
     /**
@@ -57,6 +59,7 @@ export default class DropdownMenu extends PureComponent {
 
   static defaultProps = {
     appearance: 'default',
+    defaultItemsFilterValue: '',
     defaultOpen: false,
     hasItemsFilter: false,
     isTriggerNotTabbable: false,
@@ -75,7 +78,7 @@ export default class DropdownMenu extends PureComponent {
   state = {
     isOpen: this.props.defaultOpen,
     items: [...this.props.items],
-    itemsFilterValue: '',
+    itemsFilterValue: this.props.defaultItemsFilterValue,
   }
 
   componentWillReceiveProps(nextProps) {

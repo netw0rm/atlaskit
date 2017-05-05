@@ -127,8 +127,8 @@ export class EmojiState {
   }
 
   private canAddEmojiToActiveNode(): boolean {
-    const { emoji } = this.state.schema.marks;
-    return commands.toggleMark(emoji)(this.state);
+    const { emojiQuery } = this.state.schema.marks;
+    return !!emojiQuery && commands.toggleMark(emojiQuery)(this.state);
   }
 
   private findEmojiQueryMark() {

@@ -28,6 +28,7 @@ const mentionProvider = Promise.resolve({
 });
 
 const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+const loadingEmojiProvider = new Promise(() => {});
 
 const mediaProvider = Promise.resolve({
   viewContext: Promise.resolve({
@@ -101,7 +102,7 @@ storiesOf(name, module)
         Example emoji:&nbsp;
         <Emoji emojiId={evilburnsEmojiId} emojiProvider={props.emojiProvider} />
         <Emoji emojiId={grinEmojiId} emojiProvider={props.emojiProvider} />
-        <Emoji emojiId={{ shortName: ':nope:' }} emojiProvider={props.emojiProvider} />
+        <Emoji emojiId={{ shortName: ':nope:' }} emojiProvider={props.emojiProvider ? loadingEmojiProvider : undefined} />
       </span>
     );
     const sampleStyle = {

@@ -1,7 +1,5 @@
-import { EmojiResourceConfig } from './src/api/EmojiResource';
-
 // Copy this file to local-config.js and customise.
-const sampleConfig: EmojiResourceConfig = {
+export default {
   recordConfig: {
     url: 'https://emoji-example/',
   },
@@ -19,5 +17,3 @@ const sampleConfig: EmojiResourceConfig = {
     },
   ],
 };
-
-export default sampleConfig;

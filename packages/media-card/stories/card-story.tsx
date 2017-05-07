@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
+import Button from '@atlaskit/button';
+import FieldText from '@atlaskit/field-text';
 import {
   StoryList,
   Matrix,
@@ -31,12 +33,6 @@ const context = createStorybookContext();
 
 storiesOf('Card', {})
   .add('Live preview', () => {
-    const inputStyles = {
-      display: 'inline-block',
-      margin: '0 20px 20px',
-      width: '300px'
-    };
-
     interface LiveUrlConverterState {
       link: string;
       loading: boolean;
@@ -51,28 +47,55 @@ storiesOf('Card', {})
       }
 
       render() {
-        const loading = this.state.loading ? <div>Loading...</div> : null;
         const identifier: UrlPreviewIdentifier = {
           mediaItemType: 'link',
           url: this.state.link
         };
 
-        return <div style={{margin: '20px'}}>
-          <input style={inputStyles} type="text" autoFocus={true} placeholder="Paste some url..." defaultValue={this.state.link} onInput={this.onInputChange} />
-          <button onClick={this.onAddLink}>Add link</button>
-          {loading}
-          <Card
-            identifier={identifier}
-            onLoadingChange={this.onLoadingChange}
-            context={context}
-          />
-        </div>;
+        const cards = [
+          {
+            title: 'small',
+            content: <Card identifier={identifier} context={context} appearance="small" />
+          }, {
+            title: 'image',
+            content: <Card identifier={identifier} context={context} appearance="image" />
+          }, {
+            title: 'horizontal',
+            content: <Card identifier={identifier} context={context} appearance="horizontal" />
+          }, {
+            title: 'square',
+            content: <Card identifier={identifier} context={context} appearance="square" />
+          }
+        ];
+
+        return (
+          <div style={{margin: '20px'}}>
+            <h1>Url live preview</h1>
+            <div style={{display: 'flex', alignItems: 'flex-end'}}>
+              <div style={{width: '500px', marginRight: '20px'}}>
+                <FieldText
+                  label="url"
+                  type="text"
+                  shouldFitContainer={true}
+                  placeholder="Paste some url..."
+                  value={this.state.link}
+                  onChange={this.onInputChange}
+                />
+              </div>
+              <Button appearance="primary" onClick={this.onAddLink}>Add link</Button>
+            </div>
+            <StoryList>{cards}</StoryList>
+          </div>
+        );
       }
 
       onLoadingChange = state => {
-        state && this.setState({loading: state.loading});
+        if (state) {
+          this.setState({loading: state.loading});
+        }
       }
 
+      // TODO debounce
       onInputChange = (e) => {
         const link = e.target.value;
         this.setState({link});
@@ -249,10 +272,10 @@ storiesOf('Card', {})
     const selectableCards = [
       {
         title: 'image - Not selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable />
+        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} />
       }, {
         title: 'image - Selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable selected />
+        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} selected={true} />
       }
     ];
 

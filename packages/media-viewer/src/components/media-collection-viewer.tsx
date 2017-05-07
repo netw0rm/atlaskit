@@ -54,7 +54,9 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
     const { serviceHost } = config;
     const { mediaViewer, provider } = this.state;
 
-    onClose && mediaViewer.on('fv.close', onClose);
+    if (onClose) {
+      mediaViewer.on('fv.close', onClose);
+    }
 
     mediaViewer.on('fv.changeFile', this.loadNextPageIfRequired);
 
@@ -78,7 +80,9 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
     const { mediaViewer } = this.state;
 
     this.subscription.unsubscribe();
-    onClose && mediaViewer.off('fv.close', onClose);
+    if (onClose) {
+      mediaViewer.off('fv.close', onClose);
+    }
     mediaViewer.off('fv.changeFile', this.loadNextPageIfRequired);
   }
 

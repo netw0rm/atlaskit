@@ -5,7 +5,7 @@ import Dash from './styled/Dash';
 import Wrapper from './styled/Wrapper';
 
 // time in milliseconds to wait before displaying the loading spinner
-const SPINNER_DELAY = 100;
+const DEFAULT_SPINNER_DELAY = 100;
 const SIZES = ['small', 'medium', 'large', 'xlarge'];
 const SIZES_MAP = {
   small: 20,
@@ -18,6 +18,8 @@ const NOOP = () => {};
 
 export default class Spinner extends PureComponent {
   static propTypes = {
+    delay: PropTypes.number,
+    invertColor: PropTypes.bool,
     isCompleting: PropTypes.bool,
     onComplete: PropTypes.func,
     size: PropTypes.oneOfType([
@@ -27,6 +29,8 @@ export default class Spinner extends PureComponent {
   }
 
   static defaultProps = {
+    delay: DEFAULT_SPINNER_DELAY,
+    invertColor: false,
     isCompleting: false,
     onComplete: NOOP,
     size: SIZES[0],
@@ -59,7 +63,7 @@ export default class Spinner extends PureComponent {
       clearTimeout(this.state.spinnerDelayTimeout);
     }
     this.setState({
-      spinnerDelayTimeout: setTimeout(this.handleSpinnerDelayEnd, SPINNER_DELAY),
+      spinnerDelayTimeout: setTimeout(this.handleSpinnerDelayEnd, this.props.delay),
       spinnerHiddenForDelay: true,
     });
   }
@@ -94,10 +98,13 @@ export default class Spinner extends PureComponent {
       strokeDashoffset: isCompleting ? circumference : 0.8 * circumference,
       strokeDasharray: circumference,
     };
+    // "active" means that the spinner is actually spinning (this happens after the delay of setting
+    // "isCompleting")
+    const spinnerIsActive = !isCompleting && !this.state.spinnerHiddenForDelay;
 
     return (
       <Container
-        active={!isCompleting}
+        active={spinnerIsActive}
         hidden={this.state.spinnerHiddenForDelay}
         onTransitionEnd={this.handleTransitionEnd}
         style={dimensions}
@@ -110,10 +117,11 @@ export default class Spinner extends PureComponent {
             xmlns="http://www.w3.org/2000/svg"
           >
             <Dash
-              active={!isCompleting}
+              active={spinnerIsActive}
               cx={size / 2}
               cy={size / 2}
               fill="none"
+              invertColor={this.props.invertColor}
               r={strokeRadius}
               strokeLinecap="round"
               strokeWidth={strokeWidth}

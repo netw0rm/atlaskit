@@ -61,4 +61,4 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
       />
     );
   }
-};
+}

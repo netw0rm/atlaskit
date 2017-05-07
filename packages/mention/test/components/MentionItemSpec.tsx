@@ -25,7 +25,7 @@ function setupMentionItem(mention: Mention, props?: Props): ShallowWrapper<Props
   return shallow(
     <MentionItem
       mention={mention}
-      {...props}
+      onSelection={props && props.onSelection}
     />
   ) as ShallowWrapper<Props, State>;
 }

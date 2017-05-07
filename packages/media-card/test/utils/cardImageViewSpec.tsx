@@ -1,6 +1,7 @@
+/* tslint:disable:no-unused-expression */
 import * as React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import { CardImageView } from '../../src/utils/cardImageView';
 import { FileIcon } from '../../src/utils';
@@ -26,5 +27,35 @@ describe('CardImageView', () => {
     const card = mount(<CardImageView subtitle={subtitle} />);
 
     expect(card.find(CardOverlay).props().subtitle).to.equal(subtitle);
+  });
+
+  it('should render the overlay as NOT persistent when dataURI is a string and mediaType is "video"', function() {
+    const card = shallow(<CardImageView mediaType="video" dataURI="some-data-uri" />);
+
+    expect(card.find(CardOverlay).props().persistent).to.be.false;
+  });
+
+  it('should render the overlay as NOT persistent when dataURI is a string and mediaType is "audio"', function() {
+    const card = shallow(<CardImageView mediaType="audio" dataURI="some-data-uri" />);
+
+    expect(card.find(CardOverlay).props().persistent).to.be.false;
+  });
+
+  it('should render the overlay as NOT persistent when dataURI is a string and mediaType is "image"', function() {
+    const card = shallow(<CardImageView mediaType="image" dataURI="some-data-uri" />);
+
+    expect(card.find(CardOverlay).props().persistent).to.be.false;
+  });
+
+  it('should render the overlay as persistent when dataURI is a string and mediaType is "doc"', function() {
+    const card = shallow(<CardImageView mediaType="doc" dataURI="some-data-uri" />);
+
+    expect(card.find(CardOverlay).props().persistent).to.be.true;
+  });
+
+  it('should render the overlay as persistent when dataURI is undefined', function() {
+    const card = shallow(<CardImageView mediaType="video" />);
+
+    expect(card.find(CardOverlay).props().persistent).to.be.true;
   });
 });

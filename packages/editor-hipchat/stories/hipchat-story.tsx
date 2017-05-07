@@ -1,5 +1,6 @@
+import Button from '@atlaskit/button';
 import { action, storiesOf } from '@kadira/storybook';
-import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as React from 'react';
 import Editor from '../src';
 import { emojiProvider, mentionProvider } from './story-data';
@@ -18,6 +19,31 @@ storiesOf(name, module)
       />
     )
   )
+  .add('With media', () => {
+    let reactEditorComponent;
+
+    function openMediaPicker() {
+      if (reactEditorComponent) {
+        reactEditorComponent.showMediaPicker();
+      }
+    }
+
+    const editor = (
+      <div>
+        <Editor
+          // tslint:disable-next-line:jsx-no-lambda
+          ref={elem => reactEditorComponent = elem}
+          onSubmit={action('submit')}
+          mediaProvider={storyMediaProviderFactory()}
+        />
+        <div style={{ marginTop: '12px' }}>
+          <Button onClick={openMediaPicker}>Open mediaPicker</Button>
+        </div>
+      </div>
+    );
+
+    return editor;
+  })
   .add('With maxContentSize', () => <Editor maxContentSize={100}/>)
   .add('With onChange', () => <Editor onChange={action('onChange')} />)
   .add('With legacy format', () =>

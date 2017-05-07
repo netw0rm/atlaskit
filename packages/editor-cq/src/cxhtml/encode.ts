@@ -1,6 +1,7 @@
 import {
   Fragment,
-  Node as PMNode
+  Node as PMNode,
+  MediaNode
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
@@ -42,6 +43,10 @@ export default function encode(node: PMNode) {
       return encodeMention(node);
     } else if (node.type === schema.nodes.unsupportedBlock || node.type === schema.nodes.unsupportedInline) {
       return encodeUnsupported(node);
+    } else if (node.type === schema.nodes.mediaGroup) {
+      return encodeMediaGroup(node);
+    } else if (node.type === schema.nodes.media) {
+      return encodeMedia(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -73,6 +78,29 @@ export default function encode(node: PMNode) {
   function encodeParagraph(node: PMNode) {
     const elem = doc.createElement('p');
     elem.appendChild(encodeFragment(node.content));
+    return elem;
+  }
+
+  function encodeMediaGroup(node: PMNode) {
+    const elem = doc.createElement('p');
+    elem.appendChild(encodeFragment(node.content));
+    return elem;
+  }
+
+  function encodeMedia(node: MediaNode) {
+    const elem = doc.createElementNS(FAB_XMLNS, 'fab:media');
+    elem.setAttribute('media-id', node.attrs.id);
+    elem.setAttribute('media-type', node.attrs.type);
+    elem.setAttribute('media-collection', node.attrs.collection);
+    if (node.fileName) {
+      elem.setAttribute('file-name', node.fileName);
+    }
+    if (node.fileSize) {
+      elem.setAttribute('file-size', `${node.fileSize}`);
+    }
+    if (node.fileMimeType) {
+      elem.setAttribute('file-mime-type', node.fileMimeType);
+    }
     return elem;
   }
 
@@ -241,9 +269,7 @@ export default function encode(node: PMNode) {
       return encodeUnsupported(node);
     }
 
-    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
-    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'jira');
-    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    const elem = createMacroElement('jira');
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
     const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');

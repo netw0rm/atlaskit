@@ -44,7 +44,9 @@ export class Slider extends Component<SliderProps, SliderState> {
   onInputChange = (e) => {
     const value = parseFloat(e.target.value);
     this.setState({value});
-    this.props.onChange && this.props.onChange(value);
+    if (this.props.onChange) {
+      this.props.onChange(value);
+    }
   }
 
   render() {

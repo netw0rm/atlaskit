@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 
-import { LinkCard, LinkCardPlayer, LinkCardGenericView, LinkCardTrelloBoardView } from '../../src';
+import { LinkCard, LinkCardPlayer, LinkCardGenericView, LinkCardTrelloBoardView } from '../../src/links';
 import { LinkCardImageView } from '../../src/links/cardImageView';
 
 describe('LinkCard', () => {

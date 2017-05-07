@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
       opacity: 0;
     }
   }
-  
+
   &.is-loading, &.is-played {
     height: 300px;
 

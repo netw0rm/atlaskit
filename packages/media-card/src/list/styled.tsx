@@ -7,7 +7,7 @@ export const Spinner = styled.div`
   height: 30px;
 `;
 
-export const ListWrapper = styled.div`
+export const CardListWrapper = styled.div`
   .load-more-button {
     font-size: 12px;
     width: 100%;
@@ -29,7 +29,7 @@ const cardEntryAnimation = keyframes`
   }
 `;
 
-export const ListItemWrapper = styled.div`
+export const CardListItemWrapper = styled.div`
 
   padding-top: 5px;
   &:first-child {

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { TRANSITION_DURATION } from './constants';
 
-export const getMaxHeight = ({ isOpen }) => (isOpen ? '4em' : 0);
+export const getMaxHeight = ({ isOpen }) => (isOpen ? '52px' : 0);
 
 export default styled.div`
   max-height: ${getMaxHeight};

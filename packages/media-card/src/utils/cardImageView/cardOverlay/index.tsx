@@ -52,13 +52,10 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     };
   }
 
-  static get defaultProps() {
-    const actions: Array<CardAction> = [];
-
-    return {
-      actions
-    };
-  }
+  static defaultProps = {
+    actions: [],
+    mediaName: ''
+  };
 
   private get wrapperClassNames() {
     const {error, selectable, selected, mediaType, persistent} = this.props;
@@ -74,15 +71,15 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   render() {
-    const {mediaName, actions} = this.props;
-    const text = mediaName || '';
+    const {error, mediaName, actions} = this.props;
+    const titleText = error || !mediaName ? '' : mediaName;
 
     return (
       <Overlay className={this.wrapperClassNames}>
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>
-            <Ellipsify text={text} lines={2}/>
+            <Ellipsify text={titleText} lines={2}/>
           </TitleWrapper>
           {this.tickBox()}
         </TopRow>

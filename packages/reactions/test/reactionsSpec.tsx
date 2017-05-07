@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 import { Reactions, OnEmoji } from '../src';
 import { compareEmojiId } from '../src/internal/helpers';
 import Reaction from '../src/internal/reaction';
-import { reactionsProvider } from '../stories/examples/reactions-provider';
+import { reactionsProvider } from '../src/mock-reactions-provider';
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 import { smileyId } from './test-data';
 

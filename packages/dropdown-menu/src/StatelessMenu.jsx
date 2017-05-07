@@ -162,7 +162,7 @@ export default class StatelessDropdownMenu extends PureComponent {
   }
 
   focusItem = (index) => {
-    if(index === 0 && this.props.hasItemsFilter) {
+    if (index === 0 && this.props.hasItemsFilter) {
       this.domItemsList[index].focus();
     }
     this.setState({ focusedItem: index });
@@ -246,7 +246,8 @@ export default class StatelessDropdownMenu extends PureComponent {
     }
   }
 
-  isItemFocused = (indexOffset, itemIndex) => this.state.focusedItem === indexOffset + itemIndex + (this.props.hasItemsFilter ? 1 : 0);
+  isItemFocused = (indexOffset, itemIndex) =>
+    this.state.focusedItem === indexOffset + itemIndex + (this.props.hasItemsFilter ? 1 : 0);
 
   renderItems = (indexOffset, items) => items.map((item, itemIndex) =>
     <Item
@@ -286,14 +287,14 @@ export default class StatelessDropdownMenu extends PureComponent {
     </div>);
   };
 
-  renderGroups = groups => {
+  renderGroups = (groups) => {
     let itemsCount = 0;
     return groups.map((group, groupIndex) => {
       const filteredItems = this.filterItems(group.items);
       const renderedItems = this.renderItems(itemsCount, filteredItems);
       itemsCount += filteredItems.length;
       return <Group heading={group.heading} key={groupIndex}>{renderedItems}</Group>;
-    })
+    });
   }
 
   renderTrigger = () => {

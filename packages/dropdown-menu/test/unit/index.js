@@ -370,7 +370,7 @@ describe(name, () => {
         expect(wrapper.instance().getPrevFocusable(2)).to.equal(2);
       });
 
-      it('should treat items filter as an item if hasItemsFilter is true', () => {
+      it('should return items filter as an item if hasItemsFilter is true', () => {
         const Items = [{ items: [{ content: 1 }] }];
         const wrapper = mount(<StatelessMenu
           hasItemsFilter
@@ -464,7 +464,7 @@ describe(name, () => {
         expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
       });
 
-      it('should treat the items filter as an item when hasItemsFilter is true', () => {
+      it('should return the items filter as the first item if hasItemsFilter is true', () => {
         const Items = [{
           items: [],
         }];

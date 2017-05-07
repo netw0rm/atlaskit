@@ -88,7 +88,7 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   state = {
     id: uid(),
-    isItemsFilterFocused: false,
+    focusedItem: undefined,
   }
 
   componentDidMount = () => {
@@ -103,13 +103,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     }
   }
 
-  onItemsFilterBlur = () => {
-    this.setState({ isItemsFilterFocused: false });
-  }
-
-  onItemsFilterFocus = () => {
-    this.setState({ isItemsFilterFocused: true });
-  }
+  onItemsFilterFocus = () => this.itemsFilterInputNode.focus();
 
   getNextFocusable = (indexItem, available) => {
     let currentItem = indexItem === undefined ? -1 : indexItem;
@@ -145,11 +139,6 @@ export default class StatelessDropdownMenu extends PureComponent {
     return latestAvailable || currentItem;
   }
 
-  clearItemsFilter = (e) => {
-    e.preventDefault();
-    this.props.onItemsFilterChange('');
-  }
-
   filterItems = (items) => {
     const value = this.props.itemsFilterValue;
     const trimmedValue = value && value.toLowerCase().trim();
@@ -159,22 +148,24 @@ export default class StatelessDropdownMenu extends PureComponent {
   }
 
   focusFirstItem = () => {
-    if (this.sourceOfIsOpen === 'keydown') {
+    if (this.sourceOfIsOpen === 'keydown' || this.props.hasItemsFilter) {
       this.focusItem(this.getNextFocusable());
     }
   }
 
   focusNextItem = () => {
-    this.focusItem(this.getNextFocusable(this.focusedItem));
+    this.focusItem(this.getNextFocusable(this.state.focusedItem));
   }
 
   focusPreviousItem = () => {
-    this.focusItem(this.getPrevFocusable(this.focusedItem));
+    this.focusItem(this.getPrevFocusable(this.state.focusedItem));
   }
 
   focusItem = (index) => {
-    this.focusedItem = index;
-    this.domItemsList[this.focusedItem].focus();
+    if(index === 0 && this.props.hasItemsFilter) {
+      this.domItemsList[index].focus();
+    }
+    this.setState({ focusedItem: index });
   }
 
   isTargetChildItem = target => target && (target.getAttribute('data-role') === 'droplistItem') &&
@@ -255,10 +246,13 @@ export default class StatelessDropdownMenu extends PureComponent {
     }
   }
 
-  renderItems = items => this.filterItems(items).map((item, itemIndex) =>
+  isItemFocused = (indexOffset, itemIndex) => this.state.focusedItem === indexOffset + itemIndex + (this.props.hasItemsFilter ? 1 : 0);
+
+  renderItems = (indexOffset, items) => items.map((item, itemIndex) =>
     <Item
       {...item}
       key={itemIndex}
+      isFocused={this.isItemFocused(indexOffset, itemIndex)}
       onActivate={() => {
         this.props.onItemActivated({ item });
       }}
@@ -270,17 +264,19 @@ export default class StatelessDropdownMenu extends PureComponent {
   renderItemsFilter = () => {
     const itemsFilterAttributes = {
       'data-role': 'droplistItem',
-      onFocus: this.onItemsFilterFocus,
-      onBlur: this.onItemsFilterBlur,
     };
     return (<div className={styles.menuItemsFilterContainer}>
-      <FieldBase isFocused={this.state.isItemsFilterFocused}>
+      <FieldBase
+        isFocused={this.props.isOpen}
+        onFocus={this.onItemsFilterFocus}
+      >
         <div className={styles.menuItemsFilter}>
           <input
             {...itemsFilterAttributes}
             onChange={this.handleItemsFilterOnChange}
             type="text"
             value={this.props.itemsFilterValue}
+            ref={(inputNode) => { this.itemsFilterInputNode = inputNode; }}
           />
         </div>
         <div className={styles.itemsFilterIcon}>
@@ -290,9 +286,15 @@ export default class StatelessDropdownMenu extends PureComponent {
     </div>);
   };
 
-  renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group heading={group.heading} key={groupIndex}>{this.renderItems(group.items)}</Group>
-  )
+  renderGroups = groups => {
+    let itemsCount = 0;
+    return groups.map((group, groupIndex) => {
+      const filteredItems = this.filterItems(group.items);
+      const renderedItems = this.renderItems(itemsCount, filteredItems);
+      itemsCount += filteredItems.length;
+      return <Group heading={group.heading} key={groupIndex}>{renderedItems}</Group>;
+    })
+  }
 
   renderTrigger = () => {
     if (this.props.triggerType === 'button') {

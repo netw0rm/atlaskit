@@ -15,7 +15,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/icon": "^3.0.0",
+    "@atlaskit/icon": "^6.5.2",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^2.0.0",
     "babel-runtime": "^6.11.6",

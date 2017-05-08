@@ -10,20 +10,36 @@ import styles from './styles.less';
 export default class InlineEdit extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
+    /** Component to be shown when reading only */
     readView: PropTypes.node.isRequired,
+    /** Component to be shown when editing. Should be an @atlaskit/input. */
     editView: PropTypes.node,
+    /** Whether the component shows the readView or the editView. */
     isEditing: PropTypes.bool.isRequired,
+    /** Greys out text and shows spinner. */
     isWaiting: PropTypes.bool,
+    /** Sets yellow border with warning symbol at end of input. */
     isInvalid: PropTypes.bool,
+    /** Determine whether the label is shown. */
     isLabelHidden: PropTypes.bool,
+    /** Sets whether the checkmark and cross are displayed in the bottom right fo the field. */
     areActionButtonsHidden: PropTypes.bool,
+    /** Sets whether the confirm function is called when the input loses focus. */
     isConfirmOnBlurDisabled: PropTypes.bool,
+    /** Handler called when the wrapper or the label are clicked. */
     onEditRequested: PropTypes.func.isRequired,
+    /** Handler called when checkmark is clicked. Also by default
+    called when the input loses focus. */
     onConfirm: PropTypes.func.isRequired,
+    /** Handler called when the cross is clicked on. */
     onCancel: PropTypes.func.isRequired,
+    /** html to pass down to the label htmlFor prop. */
     labelHtmlFor: PropTypes.string,
+    /** Set whether onConfirm is called on pressing enter. */
     shouldConfirmOnEnter: PropTypes.bool,
+    /** Set whether default stylings should be disabled when editing. */
     disableEditViewFieldBase: PropTypes.bool,
+    /** Component to b shown in an @atlaskit/inline-dialog when edit view is open. */
     invalidMessage: PropTypes.node,
   }
 

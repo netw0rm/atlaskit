@@ -6,7 +6,7 @@ const Color = styled.div`
   background: #fea;
 `;
 
-export default class NavExample extends PureComponent {
+export default class PageExample extends PureComponent {
 
   render() {
     return (

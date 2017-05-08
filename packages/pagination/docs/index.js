@@ -4,6 +4,8 @@ import styled from 'styled-components';
 /* eslint-disable import/no-duplicates, import/first */
 import Example from './Example';
 import exampleSrc from '!raw-loader!./Example';
+import StatelessExample from './StatelessExample';
+import statelessExampleSrc from '!raw-loader!./StatelessExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
@@ -16,20 +18,13 @@ const Usage = styled.pre`
 export const description = (
   <div>
     <p>
-      The page component exports a <code>Page</code> component, as well as
-      a <code>Grid</code> component and a <code>GridColumn</code> componet.
+      Before Export Example
     </p>
     <Usage>
-      {"import Page, { Grid, GridColumn } from '@atlaskit/page'"}
+      {"import Paginate, { Pagination } from '@atlaskit/pagination'"}
     </Usage>
     <p>
-      A <code>Page</code> component should contain a collection of <code>Grid</code> components
-      which each stretch the width of their container. Each Grid should be made up
-      of <code>GridColumn</code> components.
-    </p>
-    <p>
-      The Page component also optionally accepts a <code>Navigation</code> component
-      and a <code>Banner</code> component.
+        After export example.
     </p>
   </div>
 );
@@ -39,5 +34,10 @@ export const examples = [
     title: 'Basic Usage',
     Component: Example,
     src: exampleSrc,
+  },
+  {
+    title: 'Basic Usage',
+    Component: StatelessExample,
+    src: statelessExampleSrc,
   },
 ];

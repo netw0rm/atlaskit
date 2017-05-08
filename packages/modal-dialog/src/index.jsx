@@ -10,18 +10,18 @@ const WIDTH_ENUM = {
 
 export default class ModalDialog extends PureComponent {
   static propTypes = {
-    /** Determines whether the modal should be shown or not */
+    /** Determines whether the modal should be shown or not. */
     isOpen: PropTypes.bool,
-    /** Elements to render in the header of the modal */
+    /** Elements to render in the header of the modal. */
     header: PropTypes.node,
-    /** Elements to render in the main body of the modal */
+    /** Elements to render in the main body of the modal. */
     children: PropTypes.node,
-    /** Elements to render in the footer of the modal */
+    /** Elements to render in the footer of the moda.l */
     footer: PropTypes.node,
     /** Width of the modal. This can be provided in three different ways.
     If a number is provided, the width is set to that number in pixels.
     A string including pixels, or a percentage, will be directly applied as a style.
-    You can pass in the options small, medium, large, and x-large.  */
+    Several size options are also recognised. */
     width: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,

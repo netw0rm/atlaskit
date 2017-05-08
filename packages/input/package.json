@@ -28,7 +28,11 @@
     "keycode": "^2.1.8"
   },
   "devDependencies": {
-    "ak-field-base": "^6.4.2"
+    "ak-field-base": "^6.4.2",
+    "react-router-dom": "^4.0.0",
+    "@atlaskit/input": "*",
+    "@atlaskit/Button": "^1.0.0"
+
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

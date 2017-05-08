@@ -1,25 +1,28 @@
 import React, { PureComponent } from 'react';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
+import ButtonGroup from '@atlaskit/button-group';
 
 export default class LozengeExamples extends PureComponent {
   state = {
     openNumModal: false,
     openPxModal: false,
     percentModal: false,
+    openSmallModal: false,
   }
 
   toggleNumModal = () => this.setState({ openNumModal: !this.state.openNumModal })
   togglePxModal = () => this.setState({ openPxModal: !this.state.openPxModal })
   togglePercentModal = () => this.setState({ percentModal: !this.state.percentModal })
+  toggleSmallModal = () => this.setState({ openSmallModal: !this.state.openSmallModal })
 
   render() {
     return (
-      <div>
+      <ButtonGroup>
         <Button onClick={this.toggleNumModal}>Width as number</Button>
         <ModalDialog
           width={300}
-          header="Three hundred as a number"
+          header="300 as a number"
           footer={<Button onClick={this.toggleNumModal}>Close Modal</Button>}
           isOpen={this.state.openNumModal}
         >
@@ -43,43 +46,16 @@ export default class LozengeExamples extends PureComponent {
         >
           The modal dialog main content
         </ModalDialog>
-        <Button onClick={this.toggleNumModal}>Width small</Button>
+        <Button onClick={this.toggleSmallModal}>Width small</Button>
         <ModalDialog
           width="small"
-          header="small option"
-          footer={<Button onClick={this.toggleNumModal}>Close Modal</Button>}
-          isOpen={this.state.baseModalOpen}
+          header="Pre-defined size option"
+          footer={<Button onClick={this.toggleSmallModal}>Close Modal</Button>}
+          isOpen={this.state.openSmallModal}
         >
           The modal dialog main content
         </ModalDialog>
-        <Button onClick={this.toggleNumModal}>Width medium</Button>
-        <ModalDialog
-          width="medium"
-          header="medium option"
-          footer={<Button onClick={this.toggleNumModal}>Close Modal</Button>}
-          isOpen={this.state.baseModalOpen}
-        >
-          The modal dialog main content
-        </ModalDialog>
-        <Button onClick={this.toggleNumModal}>Width large</Button>
-        <ModalDialog
-          width="large"
-          header="large option"
-          footer={<Button onClick={this.toggleNumModal}>Close Modal</Button>}
-          isOpen={this.state.baseModalOpen}
-        >
-          The modal dialog main content
-        </ModalDialog>
-        <Button onClick={this.toggleNumModal}>Width x-large</Button>
-        <ModalDialog
-          width="x-large"
-          header="x-large option"
-          footer={<Button onClick={this.toggleNumModal}>Close Modal</Button>}
-          isOpen={this.state.baseModalOpen}
-        >
-          The modal dialog main content
-        </ModalDialog>
-      </div>
+      </ButtonGroup>
     );
   }
 }

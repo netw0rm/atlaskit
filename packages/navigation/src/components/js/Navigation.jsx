@@ -16,9 +16,11 @@ import NavigationInner from '../styled/NavigationInner';
 
 export default class Navigation extends PureComponent {
   static propTypes = {
+    /** Components to display within the ContainerNavigation. */
     children: PropTypes.node,
     containerAppearance: PropTypes.string,
     containerHeaderComponent: PropTypes.func,
+    /** Drawers to render inside the navigation panel. */
     drawers: PropTypes.arrayOf(PropTypes.node),
     globalAppearance: PropTypes.string,
     globalCreateIcon: PropTypes.node,

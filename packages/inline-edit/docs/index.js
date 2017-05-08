@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 /* eslint-disable import/no-duplicates, import/first */
@@ -18,7 +19,8 @@ export const description = (
     <p>
       The inline editor is designed to not stand out as an input when it is not
       focused or being interacted with. It is designed to be used as a wrapper
-      to control an input such as <code>@atlaskit/input</code>.
+      to control an input component such
+      as <Link to="/components/input">@atlaskit/input</Link> field.
     </p>
     <p>
       The package exports a stateful (default) and stateless version of <code>InlineEdit</code>:

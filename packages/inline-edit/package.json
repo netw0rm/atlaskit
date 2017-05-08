@@ -37,6 +37,7 @@
     "@atlaskit/mention": "^1.0.0",
     "@atlaskit/modal-dialog": "^1.2.4",
     "@atlaskit/single-select": "^1.4.0",
+    "react-router-dom": "^4.0.0",
     "@atlaskit/inline-edit": "*",
     "uid": "0.0.2"
   },

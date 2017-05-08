@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
+import ButtonGroup from '@atlaskit/button-group';
 
 export default class LozengeExamples extends PureComponent {
   state = {
@@ -16,7 +17,7 @@ export default class LozengeExamples extends PureComponent {
 
   render() {
     return (
-      <div>
+      <ButtonGroup>
         <Button onClick={this.openBaseModal}>Open Modal</Button>
         <ModalDialog
           header="The Modal Header"
@@ -34,11 +35,11 @@ export default class LozengeExamples extends PureComponent {
         <Button onClick={this.toggleBodyOnlyModalOpen}>Header-footerless modal</Button>
         <ModalDialog isOpen={this.state.bodyOnlyModalOpen}>
           <div>
-            <p>With only the body of the modall, things look a bit squished</p>
+            <p>With only the body of the modal, things look cramped</p>
             <Button onClick={this.toggleBodyOnlyModalOpen}>Close Modal</Button>
           </div>
         </ModalDialog>
-      </div>
+      </ButtonGroup>
     );
   }
 }

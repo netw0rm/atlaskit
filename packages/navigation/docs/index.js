@@ -1,10 +1,8 @@
 import React from 'react';
 
 /* eslint-disable import/no-duplicates, import/first */
-import Examples from './Examples';
-import examplesSrc from '!raw-loader!./Examples';
-import WidthExamples from './WidthExamples';
-import widthExamplesSrc from '!raw-loader!./WidthExamples';
+import Example from './Example';
+import exampleSrc from '!raw-loader!./Example';
 /* eslint-enable import/no-duplicates, import/first */
 
 export const description = (
@@ -26,13 +24,8 @@ export const description = (
 export const examples = [
 
   {
-    title: 'Basic Usage',
-    Component: Examples,
-    src: examplesSrc,
-  },
-  {
-    title: 'Example Width Options',
-    Component: WidthExamples,
-    src: widthExamplesSrc,
+    title: 'Basic Example',
+    Component: Example,
+    src: exampleSrc,
   },
 ];

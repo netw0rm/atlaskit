@@ -18,7 +18,7 @@ describe('FileCard', () => {
     };
 
     const expectedProps = {
-      loading: false,
+      status: 'complete',
       dimensions: undefined,
 
       mediaName: details.name,
@@ -27,11 +27,12 @@ describe('FileCard', () => {
     };
 
     const card = shallow(
-      <FileCard details={details} status="complete"/>
+      <FileCard status="complete" details={details}/>
     );
 
-    expect(card.find(FileCardView).length).to.eql(1);
-    expect(card.find(FileCardView).props()).to.contain(expectedProps);
+    const fileCardView = card.find(FileCardView);
+    expect(fileCardView.length).to.eql(1);
+    expect(fileCardView.props()).to.contain(expectedProps);
   });
 
   it('should render cardFileViewSmall with details passed through to props', () => {
@@ -45,7 +46,6 @@ describe('FileCard', () => {
     };
 
     const expectedProps = {
-      loading: false,
       width: undefined,
 
       mediaName: details.name,

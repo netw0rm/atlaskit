@@ -9,6 +9,8 @@ import { name } from '../package.json';
 /* eslint-disable import/first, import/no-duplicates */
 import DropdownLoadItemsExample from './DropdownLoadItemsExample';
 import DropdownLoadItemsExampleRaw from '!raw!./DropdownLoadItemsExample';
+import DropdownWithItemsFilter from './DropdownWithItemsFilter';
+import DropdownWithItemsFilterRaw from '!raw!./DropdownWithItemsFilter';
 import DropdownWithTriggerOptions from './DropdownWithTriggerOptions';
 import DropdownWithTriggerOptionsRaw from '!raw!./DropdownWithTriggerOptions';
 import StatusDropdown from './examples/StatusDropdown';
@@ -140,29 +142,6 @@ storiesOf(name, module)
       itemsOverride,
     ],
   })
-  .addCodeExampleStory('Basic Dropdown menu with items filter', () => (
-    <div>
-      <p>A dropdown with filter that could be used to search for items</p>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: 200,
-          padding: '20px 0',
-        }}
-      >
-        <DropdownMenu
-          defaultOpen
-          triggerType="button"
-          hasItemsFilter
-          items={simpleDropdownItems}
-        >
-          <span tabIndex="0">click me</span>
-        </DropdownMenu>
-      </div>
-    </div>
-  ), { imports })
   .addCodeExampleStory('Different appearances of the dropdown menu: default, tall', () => (
     <div style={{ padding: '40px' }}>
       <p>This is an example of a default dropdown with lots of items. If there are
@@ -215,6 +194,13 @@ storiesOf(name, module)
   {
     scripts: [
       DropdownWithTriggerOptionsRaw,
+    ],
+  })
+  .addCodeExampleStory('Basic Dropdown menu with items filter', () => (
+    <DropdownWithItemsFilter />
+  ), {
+    scripts: [
+      DropdownWithItemsFilterRaw,
     ],
   })
   .addCodeExampleStory(

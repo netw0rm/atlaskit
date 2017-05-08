@@ -151,6 +151,12 @@ export default class StatelessDropdownMenu extends PureComponent {
     return latestAvailable || currentItem;
   }
 
+  activateFocusedItems = () => {
+    if (this.domItemsList && this.state.focusedItem) {
+      this.domItemsList[this.state.focusedItem].click();
+    }
+  };
+
   filterItems = (items) => {
     const value = this.props.itemsFilterValue;
     const trimmedValue = value && value.toLowerCase().trim();
@@ -191,6 +197,10 @@ export default class StatelessDropdownMenu extends PureComponent {
         case 'Tab':
           event.preventDefault();
           this.close({ event });
+          break;
+        case 'Enter':
+          event.preventDefault();
+          this.activateFocusedItems();
           break;
         default:
           break;

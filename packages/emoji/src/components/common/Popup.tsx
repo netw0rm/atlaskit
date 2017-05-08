@@ -40,6 +40,7 @@ export default class Popup extends PureComponent<Props, undefined> {
     this.popup.style.position = 'absolute';
     this.applyAbsolutePosition();
     this.renderContent();
+    window.addEventListener('resize', this.handleResize);
   }
 
   componentDidUpdate() {
@@ -47,6 +48,7 @@ export default class Popup extends PureComponent<Props, undefined> {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
     ReactDOM.unmountComponentAtNode(this.popup);
     document.body.removeChild(this.popup);
   }
@@ -96,6 +98,10 @@ export default class Popup extends PureComponent<Props, undefined> {
     if (this.props.zIndex) {
       this.popup.style.zIndex = `${this.props.zIndex}`;
     }
+  }
+
+  private handleResize = () => {
+    this.applyAbsolutePosition();
   }
 
   renderContent() {

@@ -29,6 +29,12 @@ export default class HtmlPage extends PureComponent {
           height: '100vh',
           overflowY: 'scroll',
           boxSizing: 'border-box',
+
+          /**
+           * Fixes bug in Edge where the navigation is rendered outside the iframe
+           * @see {@link https://ecosystem.atlassian.net/browse/AK-2166}
+           */
+          transform: 'translate3d(0, 0, 0)',
         }}
       >
         <style>{'body { margin: 0 }'}</style>

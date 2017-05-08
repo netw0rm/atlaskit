@@ -68,8 +68,6 @@ export interface State {
   schema: HCSchema;
   maxLengthReached?: boolean;
   flashToggle?: boolean;
-  emojiProvider?: Promise<EmojiProvider>;
-  mentionProvider?: Promise<MentionProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -148,7 +146,7 @@ export default class Editor extends PureComponent<Props, State> {
   focus(): void {
     const { editorView } = this.state;
 
-    if (editorView) {
+    if (editorView && !editorView.hasFocus()) {
       editorView.focus();
     }
   }
@@ -236,16 +234,12 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
-
-    this.setState({
-      emojiProvider,
-      mentionProvider
-    });
   }
 
   render() {
     const { props } = this;
-    const { editorView, emojiProvider, mentionProvider } = this.state;
+    const { editorView } = this.state;
+    const { emojiProvider, mentionProvider } = props;
 
     const editorState = editorView && editorView.state;
     const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);

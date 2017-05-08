@@ -8,6 +8,7 @@ export const fakeContext = (stubbedContext = {}): Context => {
     getDataUriService: sinon.stub().returns({fetchOriginalDataUri: sinon.spy(), fetchImageDataUri: sinon.stub().returns(Promise.resolve())}),
     addLinkItem: sinon.stub().returns({observable: sinon.spy()}),
     getUrlPreviewProvider: sinon.stub().returns({observable: sinon.spy()}),
+    refreshCollection: sinon.spy(),
     config: {
       clientId: 'some-client',
       serviceHost: 'some-service-host',

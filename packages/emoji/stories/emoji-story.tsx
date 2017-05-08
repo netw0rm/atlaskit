@@ -29,7 +29,7 @@ storiesOf(`${name}/Emoji`, module)
     const grimacing = emojiService.findByShortName(':grimacing:');
     const grimacingEmoji = grimacing ? <Emoji emoji={grimacing} /> : <span>[grimacing emoji not found]</span>;
     return (
-      <div>
+      <div style={{ lineHeight: '24px' }}>
         <Emoji emoji={emoji} />
         {awthanksEmoji}
         {grimacingEmoji}

@@ -323,3 +323,38 @@ describe('@atlaskit/editor-bitbucket/keymaps', () => {
     expect(editorView.state.doc).to.deep.equal(doc(p()));
   });
 });
+
+describe('@atlaskit/editor-bitbucket/focus', () => {
+  const fixture = fixtures();
+  let editorWrapper: ReactWrapper<any, any>;
+
+  beforeEach(() => {
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
+  });
+
+  it('should focus the editor if not already focused', () => {
+    const editorInstance = editorWrapper.instance() as any;
+    const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(false);
+    const spy = sinon.stub(editorInstance.state.editorView, 'focus');
+    editorInstance.focus();
+
+    expect(spy.called).to.eq(true);
+    hasFocusStub.restore();
+    spy.restore();
+  });
+
+  it('should not try to focus when already focused', () => {
+    const editorInstance = editorWrapper.instance() as any;
+    const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(true);
+    const spy = sinon.stub(editorInstance.state.editorView, 'focus');
+    editorInstance.focus();
+
+    expect(spy.called).to.eq(false);
+    hasFocusStub.restore();
+    spy.restore();
+  });
+});

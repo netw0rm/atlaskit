@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 
-import {CardDimensions} from '../../index';
+import {CardDimensions, CardStatus} from '../../index';
 import {CardImageView} from '../../utils/cardImageView';
 import {toHumanReadableMediaSize} from '../../utils';
 
@@ -14,7 +14,7 @@ export interface FileCardViewProps {
 
   dataURI?: string;
   progress?: number;
-  loading?: boolean;
+  status: CardStatus;
 
   dimensions?: CardDimensions;
 
@@ -35,7 +35,7 @@ export const DEFAULT_CARD_DIMENSIONS = {
 
 export class FileCardView extends Component<FileCardViewProps, {}> {
   render() {
-    const {mediaSize, mediaType, mediaName, dataURI, progress, loading, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
+    const {mediaSize, mediaType, mediaName, dataURI, progress, status, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
     const fileSize = toHumanReadableMediaSize(mediaSize || 0);
 
     return <CardImageView
@@ -44,7 +44,7 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
       subtitle={fileSize}
       dataURI={dataURI}
       progress={progress}
-      loading={loading}
+      status={status}
       dimensions={dimensions}
       selectable={selectable}
       selected={selected}

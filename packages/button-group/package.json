@@ -17,7 +17,7 @@
     "src/index.d.ts"
   ],
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^1.0.0"
+    "@atlaskit/util-shared-styles": "^2.0.1"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

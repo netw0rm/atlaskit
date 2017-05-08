@@ -158,6 +158,7 @@ export default class BasicNavigation extends PureComponent {
 
   resize = (resizeState) => {
     action('onResize')();
+    this.props.onResizeCallback(resizeState);
     this.setState({
       isOpen: resizeState.isOpen,
       width: resizeState.width,

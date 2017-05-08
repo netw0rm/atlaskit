@@ -24,7 +24,6 @@ export interface Props {
   target?: string | HTMLElement;
   position?: RelativePosition;
   zIndex?: string | number;
-  absoluteX?: number;
   offsetX?: number;
   offsetY?: number;
 }

@@ -1,3 +1,5 @@
+require('custom-event-polyfill');
+
 function addPolyFills(config) {
   const babelPolyfill = require.resolve('babel-polyfill');
   config.files.unshift(babelPolyfill);

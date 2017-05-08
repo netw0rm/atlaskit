@@ -40,7 +40,7 @@ export default class ResultsList extends PureComponent {
     const mapPropsToResults = resultGroups => (
       Object.keys(resultGroups).length
         ? this.resultParser.parse(resultGroups)
-        : 'No results found'
+        : 'No matching search results'
     );
 
     const content = mapPropsToResults(this.props.resultGroups || {});

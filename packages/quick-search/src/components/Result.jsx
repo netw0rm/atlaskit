@@ -9,7 +9,7 @@ export default class Result extends PureComponent {
     icon: PropTypes.node,
     onClick: PropTypes.func,
     subText: PropTypes.node || PropTypes.string,
-    text: PropTypes.node || PropTypes.string,
+    text: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     /* eslint-enable react/no-unused-prop-types */
   }
 

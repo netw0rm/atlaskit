@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AkContainerItemGroup } from '@atlaskit/navigation';
+import { AkNavigationItemGroup } from '@atlaskit/navigation';
 
 import hcPersonParser from './HipChatPersonParser';
 import hcRoomParser from './HipChatRoomParser';
@@ -13,10 +13,17 @@ export class ResultParser extends /** implements */ IResultParser {
   constructor(onSearchTerminate, callbacks) {
     super();
     this.onSearchTerminate = onSearchTerminate;
-    this.callbacks = callbacks;
+    this.callbacks = callbacks || {};
   }
 
-  parse = dataList => (
+  parse = resultGroups =>
+    Object.keys(resultGroups)
+      .reduce((totalResults, key) => {
+        totalResults.push(this.parseList(resultGroups[key]));
+        return totalResults;
+      }, []);
+
+  parseList = dataList => (
     dataList
       .map(this.parseSingle)
       .filter(x => x !== null)
@@ -60,16 +67,16 @@ export class GroupedResultsParser extends /** implements */ IResultParser {
 
   parse = (resultGroups) => {
     if (Object.keys(resultGroups).length === 1) {
-      return this.resultParser.parse(
+      return this.resultParser.parseList(
         resultGroups[Object.keys(resultGroups)[0]]
       );
     }
 
     return Object.keys(resultGroups).map(group =>
       React.createElement(
-        AkContainerItemGroup,
+        AkNavigationItemGroup,
         { title: group, key: group },
-        this.resultParser.parse(resultGroups[group]),
+        this.resultParser.parseList(resultGroups[group]),
       )
     );
   }

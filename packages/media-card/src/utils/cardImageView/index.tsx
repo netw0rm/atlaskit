@@ -100,7 +100,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   render() {
-    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, selectable, selected, progress, status} = this.props;
+    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, selectable, selected, status} = this.props;
     const cardStyle = this.cardStyle;
 
     if (error) {
@@ -133,7 +133,6 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       mediaName={mediaName}
       mediaType={mediaType}
       subtitle={subtitle}
-      progress={progress}
       actions={actions}
       icon={icon}
     />;

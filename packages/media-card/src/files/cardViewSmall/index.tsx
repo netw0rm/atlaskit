@@ -11,7 +11,6 @@ export interface FileCardViewSmallProps {
   mediaType?: MediaType;
   mediaSize?: number;
   dataURI?: string;
-  progress?: number;
   loading?: boolean;
   actions?: Array<CardAction>;
   onClick?: (event: Event) => void;

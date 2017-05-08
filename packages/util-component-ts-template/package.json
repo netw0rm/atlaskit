@@ -21,7 +21,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.0.1",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },

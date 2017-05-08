@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/field-base": "^2.0.4",
+    "@atlaskit/field-base": "^5.0.0",
     "@atlaskit/icon": "^2.3.3",
     "@atlaskit/spinner": "^1.0.2",
     "@atlaskit/util-common": "^1.0.0",

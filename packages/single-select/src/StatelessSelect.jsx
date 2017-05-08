@@ -432,7 +432,7 @@ export default class StatelessSelect extends PureComponent {
               <div
                 className={triggerClasses}
                 onClick={this.handleTriggerClick}
-                tabIndex="0"
+                tabIndex={!this.props.isDisabled && !this.props.hasAutocomplete ? '0' : null}
                 ref={ref => (this.triggerNode = ref)}
               >
                 {
@@ -458,6 +458,7 @@ export default class StatelessSelect extends PureComponent {
                         ref={ref => (this.inputNode = ref)}
                         type="text"
                         value={this.props.filterValue}
+                        disabled={this.props.isDisabled}
                       />
                     </div>
                 }

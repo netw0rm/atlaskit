@@ -170,4 +170,19 @@ storiesOf(name, module)
         content={<p>{nonSpacedSampleText}</p>}
       />
     </div>
+  ))
+  .add('comment in an error state', () => (
+    <div style={{ width: 500 }}>
+      <Comment
+        author={<CommentAuthor>John Smith</CommentAuthor>}
+        avatar={<img src={sampleAvatarImg} alt="img avatar" height="40" width="40" />}
+        content={<p>{nonSpacedSampleText}</p>}
+        isError
+        errorActions={[
+          <CommentAction onClick={clickHandler}>Retry</CommentAction>,
+          <CommentAction onClick={clickHandler}>Cancel</CommentAction>,
+        ]}
+        errorLabel="Error"
+      />
+    </div>
 ));

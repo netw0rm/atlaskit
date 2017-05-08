@@ -90,7 +90,7 @@ const measureText = (config: TextRenderingConfig): TextMeasures | null => {
   const pureHeight = fontMetrics.lineHeight;
 
   // "Pure" width and height are rough values, estimations.
-  // If we apply them directly, we can have our rendered text clipped. Thus we will add some offset. 
+  // If we apply them directly, we can have our rendered text clipped. Thus we will add some offset.
   // Offset value was adjusted manually.
   // Also "pure" width and height don't consider stroke thickness, we need to add it as well.
   const strokeThickness = getStrokeThickness(fontSize);

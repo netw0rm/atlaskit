@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {Observable, Subscription} from 'rxjs';
 import {MediaItemType, MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardProcessingStatus} from '.';
+import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardStatus} from '.';
 import {Provider} from './card';
 import {CardView} from './cardView';
 import {withDataURI} from './withDataURI';
@@ -18,7 +18,7 @@ export interface MediaCardProps extends SharedCardProps, CardEventProps {
 
 export interface MediaCardState {
   readonly subscription?: Subscription;
-  readonly status: CardProcessingStatus;
+  readonly status: CardStatus;
 
   // can NOT use MediaItemDetails because get the following error: https://github.com/Microsoft/TypeScript/issues/9944
   readonly metadata?: FileDetails | LinkDetails | UrlPreview;
@@ -116,7 +116,9 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   }
 
   private unsubscribe(): void {
-    this.state && this.state.subscription && this.state.subscription.unsubscribe();
+    if (this.state && this.state.subscription) {
+      this.state.subscription.unsubscribe();
+    }
   }
 
   render() {

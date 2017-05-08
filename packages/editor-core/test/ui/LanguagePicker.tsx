@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import codeBlockPlugins from '../../src/plugins/code-block';
 import FloatingToolbar from '../../src/ui/FloatingToolbar';
+import Select from '@atlaskit/single-select';
 import LanguagePicker from '../../src/ui/LanguagePicker';
 import { code_block, doc, p, makeEditor, fixtures, createEvent } from '../../src/test-helper';
 import defaultSchema from '../../src/test-helper/schema';
@@ -37,6 +38,17 @@ describe('LanguagePicker', () => {
       languagePicker.setState({ toolbarVisible: true });
 
       expect(languagePicker.find(FloatingToolbar)).to.have.length(1);
+    });
+  });
+
+  context('when languageSelectFocused is true', () => {
+    it('renders toolbar', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('text')));
+
+      const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      languagePicker.setState({ languageSelectFocused: true, toolbarVisible: false });
+
+      expect(languagePicker.find(Select)).to.have.length(1);
     });
   });
 

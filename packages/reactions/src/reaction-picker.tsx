@@ -1,3 +1,4 @@
+import Button from '@atlaskit/button';
 import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import { EditorMoreIcon } from '@atlaskit/icon';
 import {
@@ -12,6 +13,7 @@ import { style } from 'typestyle';
 import Popup from './internal/popup';
 import Selector from './internal/selector';
 import Trigger from './internal/trigger';
+import { analyticsService } from './analytics';
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
@@ -20,6 +22,7 @@ export interface Props {
   boundariesElement?: string;
   className?: string;
   allowAllEmojis?: boolean;
+  text?: string;
 }
 
 export interface State {
@@ -59,7 +62,7 @@ const moreButtonStyle = style({
 
 export default class ReactionPicker extends PureComponent<Props, State> {
 
-  private trigger?: Trigger;
+  private trigger?: Trigger | Button;
 
   constructor(props) {
     super(props);
@@ -91,6 +94,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   }
 
   private close() {
+    analyticsService.trackEvent('reactions.picker.close');
     this.setState({
       isOpen: false,
       showFullPicker: false
@@ -99,6 +103,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
   private showFullPicker = (e) => {
     e.preventDefault();
+    analyticsService.trackEvent('reactions.picker.show');
 
     this.setState({
       isOpen: true,
@@ -143,11 +148,13 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   private onEmojiSelected = (emoji) => {
     const { onSelection } = this.props;
 
+    analyticsService.trackEvent('reactions.picker.emoji.selected', { emojiId: emoji.id });
     onSelection(emoji.id);
     this.close();
   }
 
   private onTriggerClick = () => {
+    analyticsService.trackEvent('reactions.picker.trigger.click');
     this.setState({
       isOpen: !this.state.isOpen,
       showFullPicker: false
@@ -170,6 +177,36 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     );
   }
 
+  private renderTrigger() {
+    const { text, miniMode } = this.props;
+
+    if (text) {
+      return (
+        <Button
+          appearance="subtle-link"
+          spacing="none"
+          type="button"
+          onClick={this.onTriggerClick}
+          ref={this.handleTriggerRef}
+        >
+          {text}
+        </Button>
+      );
+    }
+
+    return (
+      <Trigger
+        onClick={this.onTriggerClick}
+        miniMode={miniMode}
+        ref={this.handleTriggerRef}
+      />
+    );
+  }
+
+  private handleTriggerRef = (ref) => {
+    this.trigger = ref;
+  }
+
   render() {
     const { isOpen } = this.state;
     const { miniMode } = this.props;
@@ -180,14 +217,9 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
     return (
       <div className={classNames}>
-        <Trigger
-          onClick={this.onTriggerClick}
-          miniMode={miniMode}
-          ref={ref => this.trigger = ref}
-        />
+        {this.renderTrigger()}
         {this.renderPopup()}
       </div>
     );
   }
-
 }

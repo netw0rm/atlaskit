@@ -142,6 +142,10 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
   }
 
+  private handleInfiniteScrollThresholdReached = () => {
+    this.loadNextPage();
+  }
+
   render(): JSX.Element {
     const emptyComponent = this.props.emptyComponent || EmptyComponent;
     const loadingComponent = this.props.loadingComponent || LoadingComponent;
@@ -161,7 +165,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           return (
             <InfiniteScroll
               height={this.props.height}
-              onThresholdReached={() => this.loadNextPage()}
+              onThresholdReached={this.handleInfiniteScrollThresholdReached}
             >
               <CardListWrapper className="card-list">
                 {this.renderCardList()}
@@ -292,6 +296,8 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   loadNextPage = (): void => {
-    this.state.loadNextPage && this.state.loadNextPage();
+    if (this.state.loadNextPage) {
+      this.state.loadNextPage();
+    }
   }
 }

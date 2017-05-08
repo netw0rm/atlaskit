@@ -51,6 +51,7 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
       <ColorButton
         color={color}
         selected={colorSame(this.props.color, color)}
+        // tslint:disable-next-line:jsx-no-lambda
         onClick={() => this.props.onColorChanged(color)}
       />
     );
@@ -61,6 +62,7 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
       <LineWidthButton
         lineWidth={lineWidth}
         selected={this.props.lineWidth === lineWidth}
+        // tslint:disable-next-line:jsx-no-lambda
         onClick={() => this.props.onLineWidthChanged(lineWidth)}
       />
     );
@@ -71,6 +73,7 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
       <ToolButton
         tool={tool}
         selected={this.props.tool === tool}
+        // tslint:disable-next-line:jsx-no-lambda
         onClick={() => this.props.onToolChanged(tool)}
       />
     );

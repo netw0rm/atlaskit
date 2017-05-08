@@ -16,8 +16,11 @@ const NavigationItemIcon = styled.div`
   display: flex;
   flex-shrink: 0;
 
+  ${({ hasNoPadding }) => (hasNoPadding ? 'padding: 0px' : '')};
+
   [data-__ak-navigation-container-closed="true"] & {
     padding: ${closedPadding};
+    ${({ isDropdownTrigger }) => (isDropdownTrigger ? 'display: none' : '')}
   }
 
   /* We need to ensure that any image passed in as a child (<img/>, <svg/>

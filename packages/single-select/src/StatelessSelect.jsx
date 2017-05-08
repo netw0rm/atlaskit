@@ -16,6 +16,7 @@ const groupShape = DummyGroup.propTypes;
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(appearances.values),
+    droplistShouldFitContainer: PropTypes.bool,
     filterValue: PropTypes.string,
     hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
@@ -40,6 +41,7 @@ export default class StatelessSelect extends PureComponent {
 
   static defaultProps = {
     appearance: appearances.default,
+    droplistShouldFitContainer: true,
     filterValue: '',
     hasAutocomplete: false,
     isOpen: false,
@@ -64,11 +66,19 @@ export default class StatelessSelect extends PureComponent {
     if (this.state.isFocused) {
       this.focus();
     }
+
+    if (!this.props.droplistShouldFitContainer && this.droplistNode) {
+      this.setDroplistMinWidth();
+    }
   }
 
   componentDidUpdate = (prevProps) => {
     if (!prevProps.shouldFocus && this.props.shouldFocus) {
       this.focus();
+    }
+
+    if (!this.props.droplistShouldFitContainer && this.droplistNode) {
+      this.setDroplistMinWidth();
     }
   }
 
@@ -143,6 +153,15 @@ export default class StatelessSelect extends PureComponent {
 
     return res;
   }
+
+  setDroplistMinWidth = () => {
+    const width = this.triggerNode.getBoundingClientRect().width;
+    this.setState({ droplistWidth: width });
+  }
+
+  getItemTrueIndex = (itemIndex, groupIndex = 0) => itemIndex + this.props.items
+    .filter((group, thisGroupIndex) => thisGroupIndex < groupIndex)
+    .reduce((totalItems, group) => totalItems + group.items.length, 0);
 
   focus = () => {
     if (this.inputNode) {
@@ -309,13 +328,13 @@ export default class StatelessSelect extends PureComponent {
     }
   }
 
-  renderItems = (items) => {
+  renderItems = (items, groupIndex = 0) => {
     const filteredItems = this.filterItems(items);
 
     if (filteredItems.length) {
       return filteredItems.map((item, itemIndex) => (<Item
         {...item}
-        isFocused={itemIndex === this.state.focusedItemIndex}
+        isFocused={this.getItemTrueIndex(itemIndex, groupIndex) === this.state.focusedItemIndex}
         key={itemIndex}
         onActivate={(attrs) => {
           this.handleItemSelect(item, attrs);
@@ -333,7 +352,7 @@ export default class StatelessSelect extends PureComponent {
       heading={group.heading}
       key={groupIndex}
     >
-      {this.renderItems(group.items)}
+      {this.renderItems(group.items, groupIndex)}
     </Group>
   )
 
@@ -398,7 +417,7 @@ export default class StatelessSelect extends PureComponent {
           isTriggerNotTabbable
           onOpenChange={this.onOpenChange}
           position={this.props.position}
-          shouldFitContainer
+          shouldFitContainer={this.props.droplistShouldFitContainer}
           trigger={
             <FieldBase
               appearance={mapAppearanceToFieldBase([this.props.appearance])}
@@ -449,7 +468,12 @@ export default class StatelessSelect extends PureComponent {
             </FieldBase>
           }
         >
-          {this.renderGroups(this.props.items)}
+          <div
+            ref={ref => (this.droplistNode = ref)}
+            style={{ minWidth: this.state.droplistWidth }}
+          >
+            {this.renderGroups(this.props.items)}
+          </div>
         </Droplist>
       </div>
     );

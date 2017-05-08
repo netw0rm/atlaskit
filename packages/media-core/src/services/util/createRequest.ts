@@ -11,7 +11,7 @@ export interface RequesterOptions {
   clientId: string;
   collectionName?: string;
   config: MediaApiConfig;
-};
+}
 
 export interface RequestOptions {
   method?: string;

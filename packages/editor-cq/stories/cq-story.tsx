@@ -71,7 +71,7 @@ storiesOf(name, module)
                  )
               </legend>
               {this.state.isMediaReady ?
-                <pre style={{ whiteSpace:'pre-wrap', wordBreak:'break-all' }}>{xml}</pre>
+                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{xml}</pre>
                 :
                 <div style={{ padding: 20 }}><Spinner size="large" /></div>
               }
@@ -86,7 +86,7 @@ storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('Default', () =>
     <Editor
-      isExpandedByDefault
+      isExpandedByDefault={true}
       onCancel={CANCEL_ACTION}
       onSave={SAVE_ACTION}
       onChange={handleChange}
@@ -95,7 +95,7 @@ storiesOf(name, module)
   )
   .add('With Media support', () =>
     <Editor
-      isExpandedByDefault
+      isExpandedByDefault={true}
       mentionProvider={mentionProvider}
       mediaProvider={storyMediaProviderFactory()}
       onCancel={CANCEL_ACTION}
@@ -128,14 +128,14 @@ storiesOf(name, module)
                 }}
                 ref="input"
               />
-              <button onClick={() => this.setState({ input: this.refs.input.value })}>Import</button>
-              <button onClick={() => this.setState({ input: CODE_MACRO })}>Insert Code</button>
-              <button onClick={() => this.setState({ input: PANEL_MACRO })}>Insert Panel</button>
-              <button onClick={() => this.setState({ input: JIRA_ISSUE })}>Insert JIRA Issue</button>
-              <button onClick={() => this.setState({ input: JIRA_ISSUES_LIST })}>Insert JIRA Issues List</button>
+              <button onClick={this.handleImportClick}>Import</button>
+              <button onClick={this.handleInsertCodeClick}>Insert Code</button>
+              <button onClick={this.handleInsertPanelClick}>Insert Panel</button>
+              <button onClick={this.handleInsertJiraIssueClick}>Insert JIRA Issue</button>
+              <button onClick={this.handleInsertJiraIssuesListClick}>Insert JIRA Issues List</button>
             </fieldset>
             <Editor
-              isExpandedByDefault
+              isExpandedByDefault={true}
               onCancel={CANCEL_ACTION}
               onChange={handleChange}
               onSave={SAVE_ACTION}
@@ -146,6 +146,12 @@ storiesOf(name, module)
           </div>
         );
       }
+
+      private handleImportClick = () => this.setState({ input: this.refs.input.value });
+      private handleInsertCodeClick = () => this.setState({ input: CODE_MACRO });
+      private handleInsertPanelClick = () => this.setState({ input: PANEL_MACRO });
+      private handleInsertJiraIssueClick = () => this.setState({ input: JIRA_ISSUE });
+      private handleInsertJiraIssuesListClick = () => this.setState({ input: JIRA_ISSUES_LIST });
     }
 
     return <Demo />;

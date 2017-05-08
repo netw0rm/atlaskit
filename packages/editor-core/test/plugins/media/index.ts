@@ -1,12 +1,15 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import {
+  baseKeymap,
+  keymap,
   mediaNodeView,
+  MediaPluginBehavior,
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
-  DefaultMediaStateManager,
 } from '../../../src';
 import {
   blockquote,
@@ -17,16 +20,18 @@ import {
   makeEditor,
   mediaGroup,
   media,
+  nodeFactory,
   fixtures,
   p,
+  sendKeyToPm,
   storyMediaProviderFactory,
   randomId,
+  sleep,
 } from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+import { default as defaultSchema, compactSchema } from '../../../src/test-helper/schema';
 import { PositionedNode } from '../../../src/plugins/media';
 
 chai.use(chaiPlugin);
-
 
 describe('Media plugin', () => {
   const fixture = fixtures();
@@ -38,14 +43,30 @@ describe('Media plugin', () => {
   const providerFactory = new ProviderFactory();
   providerFactory.setProvider('mediaProvider', resolvedProvider);
 
-  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor({
-    doc,
-    plugins: mediaPluginFactory(defaultSchema, { providerFactory, behavior: 'default', uploadErrorHandler }),
-    nodeViews: {
-      media: mediaNodeView(providerFactory)
-    },
-    place: fixture()
-  });
+  const editor = (doc: any, uploadErrorHandler?: () => void, behavior?: MediaPluginBehavior) => {
+    behavior = behavior || 'default';
+    const schema = (behavior === 'compact') ? compactSchema : defaultSchema;
+    const addBaseKeymap = behavior !== 'compact';
+    const plugins = mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler });
+
+    if (behavior === 'compact') {
+      const baseKeymapForCompactBehaviour = { ...baseKeymap };
+      delete baseKeymapForCompactBehaviour.Enter;
+
+      plugins.push(keymap(baseKeymapForCompactBehaviour));
+    }
+
+    return makeEditor({
+      doc,
+      schema,
+      addBaseKeymap,
+      plugins,
+      nodeViews: {
+        media: mediaNodeView(providerFactory)
+      },
+      place: fixture(),
+    });
+  };
 
   const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
     const [node, transaction] = pluginState.insertFile({ id, status: 'uploading' }, testCollectionName);
@@ -185,6 +206,38 @@ describe('Media plugin', () => {
     ));
   });
 
+  describe('Compact behaviour', () => {
+    const doc = nodeFactory(compactSchema.nodes.doc);
+    const p = nodeFactory(compactSchema.nodes.paragraph);
+    const mediaGroup = nodeFactory(compactSchema.nodes.mediaGroup);
+    const media = (attrs: {
+      id: string;
+      type: 'file' | 'link';
+      collection: string;
+    }) => compactSchema.nodes.media.create(attrs);
+
+    it('should not react to Enter keypress', () => {
+      const { editorView } = editor(doc(p('te{<>}xt')), () => {}, 'compact');
+
+      sendKeyToPm(editorView, 'Enter');
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should insert media on the second line', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')), () => {}, 'compact');
+
+      insertFile(editorView, pluginState);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(),
+          mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+        )
+      );
+    });
+  });
+
   it('should call uploadErrorHandler on upload error', async () => {
     const handler = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
@@ -241,11 +294,13 @@ describe('Media plugin', () => {
     );
   });
 
-  it('should cancel uploads after media item is removed', async () => {
-    const handler = sinon.spy();
-    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
+  it('should cancel in-flight uploads after media item is removed from document', async () => {
+    const spy = sinon.spy();
+    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), spy);
     const firstTemporaryFileId = `temporary:${randomId()}`;
     const secondTemporaryFileId = `temporary:${randomId()}`;
+    const thirdTemporaryFileId = `temporary:${randomId()}`;
+    const fourthTemporaryFileId = `temporary:${randomId()}`;
 
     // wait until mediaProvider has been set
     const provider = await resolvedProvider;
@@ -253,12 +308,16 @@ describe('Media plugin', () => {
     await provider.uploadContext;
 
     const firstMediaNode = insertFile(editorView, pluginState, firstTemporaryFileId);
-    insertFile(editorView, pluginState, secondTemporaryFileId);
+    const secondMediaNode = insertFile(editorView, pluginState, secondTemporaryFileId);
+    const thirdMediaNode = insertFile(editorView, pluginState, thirdTemporaryFileId);
+    insertFile(editorView, pluginState, fourthTemporaryFileId);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
         mediaGroup(
+          media({ id: fourthTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
@@ -272,26 +331,59 @@ describe('Media plugin', () => {
 
     stateManager.updateState(secondTemporaryFileId, {
       id: secondTemporaryFileId,
-      status: 'uploading'
+      status: 'processing'
     });
 
-    stateManager.subscribe(firstTemporaryFileId, handler);
-    const pos = firstMediaNode.getPos();
-    editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
+    stateManager.updateState(thirdTemporaryFileId, {
+      id: thirdTemporaryFileId,
+      status: 'unfinalized'
+    });
 
-    expect(handler.calledOnce).to.eq(true, 'State Manager should receive "cancelled" status');
-    expect(handler.calledWithExactly({
-      id: firstTemporaryFileId,
-      status: 'cancelled'
-    })).to.eq(true, 'State Manager should receive "cancelled" status');
+    stateManager.subscribe(firstTemporaryFileId, spy);
+    stateManager.subscribe(secondTemporaryFileId, spy);
+    stateManager.subscribe(thirdTemporaryFileId, spy);
+    stateManager.subscribe(fourthTemporaryFileId, spy);
+
+    let pos: number;
+    pos = firstMediaNode.getPos();
+    editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
+    // When removing multiple nodes with node view, ProseMirror performs the DOM update
+    // asynchronously after a 20ms timeout. In order for the operations to succeed, we
+    // must wait for the DOM reconciliation to conclude before proceeding.
+    await sleep(100);
+
+    pos = secondMediaNode.getPos();
+    editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
+    await sleep(100);
+
+    pos = thirdMediaNode.getPos();
+    editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
+    await sleep(100);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
         mediaGroup(
-          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: fourthTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
       )
     );
+
+    expect(spy.callCount).to.eq(3, 'State Manager should receive "cancelled" status');
+
+    expect(spy.calledWithExactly({
+      id: firstTemporaryFileId,
+      status: 'cancelled'
+    })).to.eq(true, 'State Manager should emit "cancelled" status');
+
+    expect(spy.calledWithExactly({
+      id: secondTemporaryFileId,
+      status: 'cancelled'
+    })).to.eq(true, 'State Manager should emit "cancelled" status');
+
+    expect(spy.calledWithExactly({
+      id: thirdTemporaryFileId,
+      status: 'cancelled'
+    })).to.eq(true, 'State Manager should emit "cancelled" status');
   });
 });

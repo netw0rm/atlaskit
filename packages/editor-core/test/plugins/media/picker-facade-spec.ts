@@ -2,15 +2,15 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as chaiAsPromised from 'chai-as-promised';
-import {
-  chaiPlugin
-} from '../../../src/test-helper';
 
 import {
   DefaultMediaStateManager,
-  MediaStateManager
-} from '../../../src/media';
+  MediaStateManager,
+} from '@atlaskit/media-core';
 
+import {
+  chaiPlugin
+} from '../../../src/test-helper';
 import PickerFacade from '../../../src/plugins/media/picker-facade';
 import MockMediaPicker from './mock-media-picker';
 
@@ -76,7 +76,7 @@ describe('Media PickerFacade', () => {
 
   it('removes listeners on destruction', () => {
     facade!.destroy();
-    expect(mockPicker.listeners).to.be.empty;
+    expect(mockPicker.listeners).to.be.empty; // tslint:disable-line:no-unused-expression
   });
 
   it('calls picker\'s teardown() on destruction', () => {
@@ -191,6 +191,25 @@ describe('Media PickerFacade', () => {
         id: testTemporaryFileId,
         publicId: testFilePublicId,
         status: 'processing',
+        fileName: testFileData.name,
+        fileSize: testFileData.size,
+        fileType: testFileData.type,
+      })).to.eq(true);
+    });
+
+    it('for upload ready for finalization', () => {
+      const cb = sinon.spy();
+      const finalizeCb = () => {};
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-finalize-ready', {
+        file: { ...testFileData, publicId: testFilePublicId },
+        finalize: finalizeCb
+      });
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        publicId: testFilePublicId,
+        status: 'unfinalized',
+        finalizeCb: finalizeCb,
         fileName: testFileData.name,
         fileSize: testFileData.size,
         fileType: testFileData.type,

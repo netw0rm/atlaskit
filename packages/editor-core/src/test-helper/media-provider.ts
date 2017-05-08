@@ -1,5 +1,9 @@
-import { MediaStateManager } from './../media/index';
-import { MediaProvider, MediaContextConfig } from '../media';
+import {
+  ContextConfig as MediaContextConfig,
+  MediaProvider,
+  MediaStateManager,
+} from '@atlaskit/media-core';
+
 import {
   defaultClientId,
   defaultServiceHost,
@@ -31,24 +35,12 @@ export function storyMediaProviderFactory (collection = defaultCollectionName, s
       })
     })
   });
-};
+}
 
 
 export type promisedString = Promise<string>;
 export type resolveFn = (...any) => any;
 export type thumbnailStore = { [id: string]: promisedString | resolveFn  };
-
-export const storyThumbnailProvider = new (class {
-  private store = {};
-
-  public getThumbnail(mediaId: string): Blob {
-    return this.store[mediaId];
-  }
-
-  public setThumbnail(mediaId: string, blob: Blob): void {
-    this.store[mediaId] = blob;
-  }
-})();
 
 export function fileToBase64(blob) {
   return new Promise((resolve, reject) => {
@@ -64,7 +56,7 @@ export function fileToBase64(blob) {
     };
     reader.readAsDataURL(blob);
   });
-};
+}
 
 export function isImage(type: string) {
   return ['image/jpeg', 'image/png'].indexOf(type) > -1;

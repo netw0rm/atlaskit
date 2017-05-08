@@ -186,6 +186,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
                 selected={selected}
                 onMouseMove={this.selectIndexOnHover}
                 onSelection={this.itemSelected}
+                // tslint:disable-next-line:jsx-no-lambda
                 ref={(ref) => {
                   if (ref) {
                     this.items[key] = ref;
@@ -232,7 +233,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
       <div className={styles.typeAheadListContainer}>
         <div className={classes}>
           <Scrollable
-            ref={(ref) => { this.scrollable = ref; }}
+            ref={this.handleScrollableRef}
             maxHeight={`${emojiTypeAheadMaxHeight}px`}
           >
             {listBody}
@@ -240,5 +241,9 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
         </div>
       </div>
     );
+  }
+
+  private handleScrollableRef = (ref) => {
+    this.scrollable = ref;
   }
 }

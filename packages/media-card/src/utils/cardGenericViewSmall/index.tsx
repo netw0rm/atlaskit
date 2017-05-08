@@ -79,7 +79,9 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
       // We need to prevent the card's onClick being called
       event.stopPropagation();
       event.preventDefault();
-      onRetry && onRetry.handler(undefined, event.nativeEvent);
+      if (onRetry) {
+        onRetry.handler(undefined, event.nativeEvent);
+      }
     };
     const retryComponent = (onRetry) ? (
       <Retry className="retry">
@@ -96,7 +98,9 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   }
 
   onClick = (event: MouseEvent<HTMLDivElement>) => {
-    this.props.onClick && this.props.onClick(event.nativeEvent);
+    if (this.props.onClick) {
+      this.props.onClick(event.nativeEvent);
+    }
   }
 
   formatCard(left: JSX.Element, right: JSX.Element) {

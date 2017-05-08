@@ -5,6 +5,7 @@ import { PureComponent } from 'react';
 import * as React from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
+import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
@@ -18,7 +19,6 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import { MediaPluginState } from '../../plugins/media';
-import { MediaProvider } from '../../media';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
@@ -70,10 +70,12 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
     saveDisabled: false,
   };
 
+  private handleSpinnerComplete() {}
+
   render() {
     const { props } = this;
     const iconAfter = props.saveDisabled
-      ? <Spinner isCompleting={false} onComplete={() => { }} />
+      ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
 
     const saveButtonAppearance = props.saveDisabled
@@ -81,7 +83,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       : 'primary';
 
     return (
-      <div className={styles.container} data-editor-chrome tabIndex={-1} ref={this.handleEditorContainerRef}>
+      <div className={styles.container} data-editor-chrome={true} tabIndex={-1} ref={this.handleEditorContainerRef}>
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
@@ -152,7 +154,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
   }
 
   focusEditor = () => {
-    this.props.editorView.dom.focus();
+    this.props.editorView.focus();
   }
 
   private handleEditorContainerRef = ref => {
@@ -182,4 +184,4 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       onSave();
     }
   }
-};
+}

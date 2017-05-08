@@ -1,4 +1,11 @@
-import { MediaStateManager, MediaState } from './../../media';
+import {
+  DefaultMediaStateManager,
+  MediaProvider,
+  MediaState,
+  MediaStateManager,
+  UploadParams,
+} from '@atlaskit/media-core';
+
 import { MediaType, MediaNode } from './../../schema/nodes/media';
 import {
   EditorState,
@@ -11,17 +18,18 @@ import {
   Transaction,
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
-import { MediaProvider, UploadParams, DefaultMediaStateManager } from '../../media';
 import PickerFacade from './picker-facade';
 import TemporaryNodesList from './temporary-nodes-list';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
 
-import { MediaPluginOptions } from './media-plugin-options';
+import { MediaPluginBehavior, MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
+
+export type MediaPluginBehavior = MediaPluginBehavior;
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -98,7 +106,9 @@ export class MediaPluginState {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
           // TODO: re-initialize pickers ?
-          this.popupPicker && this.popupPicker.setUploadParams(mediaProvider.uploadParams);
+          if (this.popupPicker && mediaProvider.uploadParams) {
+            this.popupPicker.setUploadParams(mediaProvider.uploadParams);
+          }
         });
       } else {
         this.allowsUploads = false;
@@ -113,7 +123,9 @@ export class MediaPluginState {
       if (mediaProvider.uploadContext) {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
-          this.initPickers(mediaProvider.uploadParams, uploadContext);
+          if (mediaProvider.uploadParams) {
+            this.initPickers(mediaProvider.uploadParams, uploadContext);
+          }
         });
       } else {
         this.allowsUploads = false;
@@ -139,7 +151,7 @@ export class MediaPluginState {
   }
 
   insertFile = (mediaState: MediaState, collection: string): [ Node, Transaction ] => {
-    const { view } = this;
+    const { options, view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
 
@@ -151,13 +163,19 @@ export class MediaPluginState {
       collection,
     }) as MediaNode;
 
-    fileName && (node.fileName = fileName);
-    fileSize && (node.fileSize = fileSize);
-    fileMimeType && (node.fileMimeType = fileMimeType);
+    if (fileName) {
+      node.fileName = fileName;
+    }
+    if (fileSize) {
+      node.fileSize = fileSize;
+    }
+    if (fileMimeType) {
+      node.fileMimeType = fileMimeType;
+    }
 
     let transaction;
 
-    if (this.isInsideEmptyParagraph()) {
+    if (this.isInsideEmptyParagraph() && options.behavior !== 'compact') {
       const { $from } = state.selection;
 
       // empty paragraph always exists inside the document
@@ -261,6 +279,7 @@ export class MediaPluginState {
       // In-flight media items that we should cancel
       case 'uploading':
       case 'processing':
+      case 'unfinalized':
         pickers.forEach(picker => picker.cancel(id));
 
         // In case the file has been attached multiple times, remove all occurences
@@ -351,11 +370,18 @@ export class MediaPluginState {
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
-    const [node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
-    const { view } = this;
+    if (!this.mediaProvider.uploadParams) {
+      return;
+    }
+
+    const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
+    const { options, view } = this;
+
     view.dispatch(transaction);
 
-    this.selectInsertedMediaNode(node as PositionedNode);
+    if (options.behavior !== 'compact') {
+      this.selectInsertedMediaNode(node as PositionedNode);
+    }
   }
 
   private handleMediaState = (state: MediaState) => {
@@ -397,9 +423,15 @@ export class MediaPluginState {
 
       const { fileSize, fileName, fileMimeType } = node as MediaNode;
 
-      fileName && (newNode.fileName = fileName);
-      fileSize && (newNode.fileSize = fileSize);
-      fileMimeType && (newNode.fileMimeType = fileMimeType);
+      if (fileName) {
+        newNode.fileName = fileName;
+      }
+      if (fileSize) {
+        newNode.fileSize = fileSize;
+      }
+      if (fileMimeType) {
+        newNode.fileMimeType = fileMimeType;
+      }
 
       this.replaceQueue.push([node, newNode]);
     });
@@ -470,14 +502,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
             if (item[1]) {
               view.dispatch(view.state.tr.replaceWith(pos, pos + 1, item[1]!));
             } else {
-              const resolvedPos = view.state.doc.resolve(pos);
-              if (resolvedPos.parent.childCount > 1) {
-                view.dispatch(view.state.tr.delete(pos, pos + 1));
-              } else {
-                // This is the last item in mediaGroup, so remove the whole group.
-                // (works around a bug where ProseMirror would create a dummy empty "media" node)
-                view.dispatch(view.state.tr.delete(resolvedPos.before(), resolvedPos.after()));
-              }
+              view.dispatch(view.state.tr.deleteRange(pos, pos + 1));
             }
           }
         }

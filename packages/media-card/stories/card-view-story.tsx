@@ -30,6 +30,12 @@ import {
 import {CardAppearance} from '../src';
 import {CardView} from '../src/cardView';
 
+const actions = [
+  {label: 'Open', type: undefined, handler: () => { action('open')(); }},
+  {label: 'Close', type: undefined, handler: () => { action('close')(); }},
+  {label: 'Delete', type: CardActionType.delete, handler: () => { action('delete')(); }}
+];
+
 const createErrorAndLoadingCards = (appearance: CardAppearance, mediaItemType: MediaItemType) => {
   return [
     {
@@ -43,12 +49,6 @@ const createErrorAndLoadingCards = (appearance: CardAppearance, mediaItemType: M
 };
 
 const createMenuActionCards = (appearance: CardAppearance, metadata: MediaItemDetails) => {
-  const actions = [
-    {label: 'Open', type: undefined, handler: () => { action('open')(); }},
-    {label: 'Close', type: undefined, handler: () => { action('close')(); }},
-    {label: 'Delete', type: CardActionType.delete, handler: () => { action('delete')(); }}
-  ];
-
   return [
     {
       title: 'Single menu action',
@@ -126,10 +126,10 @@ const createSelectableCards = (appearance: CardAppearance, metadata: MediaItemDe
   return [
     {
       title: 'Selectable',
-      content: <CardView appearance={appearance} status="complete" metadata={metadata} dataURI={dataURI} selectable />
+      content: <CardView appearance={appearance} status="complete" metadata={metadata} dataURI={dataURI} selectable={true} />
     }, {
       title: 'Selected',
-      content: <CardView appearance={appearance} status="complete" metadata={metadata}  dataURI={dataURI} selectable selected />
+      content: <CardView appearance={appearance} status="complete" metadata={metadata}  dataURI={dataURI} selectable={true} selected={true} />
     }
   ];
 };
@@ -164,9 +164,11 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
   // upload progress
   const uploadProgressCards = [
-    {title: '10%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.1} />},
-    {title: '50%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.5} />},
-    {title: '90%', content: <CardView status="complete" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.9} />}
+    {title: '10%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.1} />},
+    {title: '50%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.5} />},
+    {title: '90%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.9} />},
+    {title: 'No dataURI', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} />},
+    {title: 'Cancel action', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} actions={actions.filter(a => a.type === CardActionType.delete)} />}
   ];
 
   // selectable
@@ -226,10 +228,14 @@ const createMissingMetadataLinkCards = (appearance: CardAppearance) => {
   delete missingResourcesPreview.resources;
 
   const missingThumbnailPreview: UrlPreview = deepcopy(genericUrlPreview);
-  missingThumbnailPreview.resources && delete missingThumbnailPreview.resources.thumbnail;
+  if (missingThumbnailPreview.resources) {
+    delete missingThumbnailPreview.resources.thumbnail;
+  }
 
   const missingIconPreview: UrlPreview = deepcopy(genericUrlPreview);
-  missingIconPreview.resources && delete missingIconPreview.resources.icon;
+  if (missingIconPreview.resources) {
+    delete missingIconPreview.resources.icon;
+  }
 
   return [
     {
@@ -302,7 +308,6 @@ const generateStoriesForAppearance = (appearance: CardAppearance) => {
 
   return () => (
     <div>
-      <h1 style={{margin: '10px 20px'}}>Small cards</h1>
       <div style={{margin: '20px 40px'}}>
         {fileCardStories}
         {linkCardStories}

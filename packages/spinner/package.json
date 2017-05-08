@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "2.0.3",
+  "version": "2.2.0",
   "config": {
     "access": "public"
   },

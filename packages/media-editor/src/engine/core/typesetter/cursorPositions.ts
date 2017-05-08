@@ -139,7 +139,7 @@ const extractBaseGroups = (text: Text, direction: TextDirection, rootSpan: HTMLS
 
   // Data for the group being extracted
   let currentText: Text = [];
-  let currentDirection: TextDirection | undefined = undefined;
+  let currentDirection: TextDirection | undefined;
 
   text.forEach((character, index) => {
     if (isWhiteSpace(character)) {  // The current character is a whitespace. It forms one group.

@@ -2,10 +2,14 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { waitUntil } from '@atlaskit/util-common-test';
 import sinon from 'sinon';
+import { akColorN0, akColorN500 } from '@atlaskit/util-shared-styles';
 
 import Spinner from '../../src';
 import Container from '../../src/styled/Container';
-import Dash from '../../src/styled/Dash';
+import Dash, { getStrokeColor } from '../../src/styled/Dash';
+
+// TODO: It would be good if we could test the delay prop here, however, tests that rely on timing
+// are notoriously flakey.
 
 // we use this to know when the spinner is visible (because it has a time out
 // before showing now)
@@ -22,6 +26,12 @@ describe('Spinner', () => {
 
     // active is equivalent to Prop `!isCompleting`
     expect(wrapper.prop('isCompleting')).to.equal(false);
+  });
+
+  it('should not use the inverted color scheme by default', () => {
+    const wrapper = mount(<Spinner />);
+    expect(wrapper.prop('invertColor')).to.equal(false);
+    expect(wrapper.find(Dash).prop('invertColor')).to.equal(false);
   });
 
   it('should be hidden by default', () => {
@@ -114,6 +124,22 @@ describe('Spinner', () => {
 
       expect(custom.find(Container).prop('style').height).to.equal(20);
       expect(custom.find(Container).prop('style').width).to.equal(20);
+    });
+  });
+
+  describe('invertColor prop', () => {
+    it('should set the invertColor prop on Dash when set to true', () => {
+      const wrapper = mount(<Spinner invertColor />);
+      expect(wrapper.find(Dash).prop('invertColor')).to.equal(true);
+    });
+
+    it('should be akColorN500 by default', () => {
+      expect(getStrokeColor({})).to.equal(akColorN500);
+      expect(getStrokeColor({ invertColor: false })).to.equal(akColorN500);
+    });
+
+    it('should be akColorN0 when set to true', () => {
+      expect(getStrokeColor({ invertColor: true })).to.equal(akColorN0);
     });
   });
 });

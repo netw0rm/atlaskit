@@ -13,14 +13,20 @@ export interface CardContentProps {
 
 export class CardContentSmall extends Component<CardContentProps, {}> {
   render() {
-    if (this.props.loading) {
+    const {loading, mediaType, dataURI} = this.props;
+
+    if (loading) {
       return <LoadingWrapper />;
     }
 
-    if (this.props.mediaType === 'image' && this.props.dataURI) {
-      return <MediaImage dataURI={this.props.dataURI} fadeIn={this.props.loading} />;
+    if (this.shouldDisplayImageThumbnail(dataURI)) {
+      return <MediaImage dataURI={dataURI} fadeIn={loading} />;
     } else {
-      return <PlaceholderSmall mediaType={this.props.mediaType} />;
+      return <PlaceholderSmall mediaType={mediaType} />;
     }
+  }
+
+  private shouldDisplayImageThumbnail(dataURI?: string): dataURI is string {
+    return !!(dataURI);
   }
 }

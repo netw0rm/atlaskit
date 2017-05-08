@@ -464,6 +464,14 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         unsupportedBlock('<ac:structured-macro name="foo"/>'),
       ));
 
+    // NB: encoding should work into ac:structured-macro name="code"
+    it('block ac:structured-macro noformat: parses CXHTML to codeBlock', () => {
+      const actual = parse(`<ac:structured-macro ac:name="noformat" ac:schema-version="1" ac:macro-id="139765c9-74b9-4e21-8335-6844d10ce18b"><ac:plain-text-body><![CDATA[foo
++// bar!]]></ac:plain-text-body></ac:structured-macro>`);
+      expect(actual).to.deep.equal(doc(codeblock({ language: null })(`foo
++// bar!`)));
+    });
+
     check('CDATA',
       '<![CDATA[some code]]>',
       doc(
@@ -548,6 +556,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
     );
 
   });
+
 
 // Color text span
 // ```````````````````````````````` xample

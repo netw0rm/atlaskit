@@ -2,16 +2,16 @@ import * as React from 'react';
 import {Component} from 'react';
 import {CardAction, CardActionType, FileDetails} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardProcessingStatus} from '../..';
+import {SharedCardProps, CardStatus} from '../..';
 import {FileCardView} from '../cardView';
 import {FileCardViewSmall} from '../cardViewSmall';
 
 export interface FileCardProps extends SharedCardProps {
-  readonly status: CardProcessingStatus;
+  readonly status: CardStatus;
   readonly details?: FileDetails;
   readonly dataURI?: string;
   readonly progress?: number;
-};
+}
 
 export class FileCard extends Component<FileCardProps, {}> {
   static defaultProps: Partial<FileCardProps> = {
@@ -32,7 +32,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {dimensions, selectable, selected, details, dataURI, progress} = this.props;
+    const {status, dimensions, selectable, selected, details, dataURI, progress} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
@@ -60,7 +60,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           mediaName={name}
           mediaType={mediaType}
           mediaSize={size}
-          loading={this.isLoading}
+          status={status}
           actions={this._getActions()}
           onClick={this.onClick}
           progress={progress}

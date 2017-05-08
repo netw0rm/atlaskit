@@ -46,7 +46,7 @@ export const atlassianProductsDropdownItems = [
       },
     ],
   },
-]
+];
 
 export const dropdownItemsWithGroups = [
   {

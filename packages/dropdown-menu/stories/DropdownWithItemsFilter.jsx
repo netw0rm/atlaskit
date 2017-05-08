@@ -3,7 +3,7 @@ import DropdownMenu from '../src';
 import {
   atlassianProductsDropdownItems,
   simpleDropdownItemsWithRadio,
-  simpleDropdownItemsWithCheckboxes
+  simpleDropdownItemsWithCheckboxes,
 } from './DropdownsData';
 
 export default class DropdownWithItemsFilter extends Component {

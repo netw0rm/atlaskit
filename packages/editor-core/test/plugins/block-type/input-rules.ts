@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import blockTypePlugins from '../../../src/plugins/block-type';
 import {
-  blockquote, br, code_block, chaiPlugin, doc, fixtures, h1, h2, h3, insertText, li, makeEditor, p, ul
+  sendKeyToPm, blockquote, br, code_block, chaiPlugin, doc, fixtures, h1, h2, h3, insertText, li, makeEditor, p, ul
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
@@ -98,6 +98,14 @@ describe('inputrules', () => {
 
           insertText(editorView, '```', sel);
           expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello\nworld')));
+        });
+      });
+
+      context('when there are more than 3 backticks', () => {
+        it('should convert "`````js" to a code block with attr "language: js"', () => {
+          const { editorView } = editor(doc(p('`````js{<>}')));
+          sendKeyToPm(editorView, 'Enter');
+          expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'js' })('')));
         });
       });
     });

@@ -20,7 +20,7 @@ export interface RequestOptions {
   headers?: Object;
   data?: Object;
   responseType?: ResponseType;
-};
+}
 
 const buildHeaders = (requesterOptions: RequesterOptions, requestOptions: RequestOptions, token: string) => {
   const headers = {

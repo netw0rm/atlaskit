@@ -369,18 +369,6 @@ describe(name, () => {
 
         expect(wrapper.instance().getPrevFocusable(2)).to.equal(2);
       });
-
-      it('should return items filter as an item if hasItemsFilter is true', () => {
-        const Items = [{ items: [{ content: 1 }] }];
-        const wrapper = mount(<StatelessMenu
-          hasItemsFilter
-          items={Items}
-          isOpen
-        >
-          test
-        </StatelessMenu>);
-        expect(wrapper.instance().getPrevFocusable(1)).to.equal(0);
-      });
     });
 
     describe('getNextFocusable', () => {
@@ -462,20 +450,6 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
-      });
-
-      it('should return the items filter as the first item if hasItemsFilter is true', () => {
-        const Items = [{
-          items: [],
-        }];
-        const wrapper = mount(<StatelessMenu
-          hasItemsFilter
-          items={Items}
-          isOpen
-        >
-          test
-        </StatelessMenu>);
-        expect(wrapper.instance().getNextFocusable()).to.equal(0);
       });
     });
   });

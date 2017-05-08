@@ -16,8 +16,9 @@ export default class MockSearchResource extends AbstractResource {
         item.title.toLowerCase().indexOf(q) !== -1 ||
         item.meta.mentionName.toLowerCase().indexOf(q) !== -1
       );
+    const resultGroups = results.length > 0 ? { Conversations: results } : {};
     this.timeoutId = setTimeout(() => {
-      this.notifyChange('search', { Conversations: results });
+      this.notifyChange('search', resultGroups);
     }, this.requestDelay);
   }
 

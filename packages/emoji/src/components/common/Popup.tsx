@@ -3,8 +3,6 @@ import { PureComponent, ReactElement } from 'react';
 import * as ReactDOM from 'react-dom';
 import { RelativePosition } from '../../types';
 
-let debounced: number | null = null;
-
 const getTargetNode = (target: string | Element): Element | null => {
   if (typeof target === 'string') {
     return document.querySelector(target);
@@ -27,6 +25,7 @@ export interface Props {
  */
 export default class Popup extends PureComponent<Props, undefined> {
   private popup: HTMLElement;
+  private debounced: number | null = null;
 
   static defaultProps = {
     relativePosition: 'auto',
@@ -103,11 +102,13 @@ export default class Popup extends PureComponent<Props, undefined> {
   }
 
   private handleResize = () => {
-    if (debounced) {
-      clearTimeout(debounced);
+    if (this.debounced) {
+      clearTimeout(this.debounced);
+      this.debounced = null;
     }
     // Timeout set to 30ms as to not throttle IE11
-    debounced = setTimeout(() => { this.applyAbsolutePosition(); }, 30);
+    this.debounced = setTimeout(() => { this.applyAbsolutePosition(); }, 30);
+    this.debounced = null;
   }
 
   renderContent() {

@@ -135,7 +135,7 @@ describe(`${name} html:`, () => {
         em(strong('strong emphasised words')),
         '.'
       )),
-      '<p>Text with <b><em>strong emphasised words</em></b>.</p>');
+      '<p>Text with <em><b>strong emphasised words</b></em>.</p>');
 
     checkParseEncodeRoundTrips('<del>',
       schema,
@@ -247,11 +247,11 @@ describe(`${name} html:`, () => {
 
     checkParseEncodeRoundTrips('<h1> with nested <b><em>',
       schema,
-      '<h1><a name="Readallaboutit%21"></a>Read all <b><em>about</em></b> it!</h1>',
+      '<h1><a name="Readallaboutit%21"></a>Read all <em><b>about</b></em> it!</h1>',
       doc(
         h1(
           'Read all ',
-          strong(em('about')),
+          em(strong('about')),
           ' it!'
         )
       ));

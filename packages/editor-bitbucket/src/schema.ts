@@ -2,6 +2,7 @@ import {
   code as coreCode,
   MarkSpec,
   NodeSpec,
+  Schema,
   createSchema
 } from '@atlaskit/editor-core';
 
@@ -38,5 +39,5 @@ const marks = [
 
 const customMarkSpecs = { code };
 
-export { MarkSpec, NodeSpec };
+export { MarkSpec, NodeSpec, Schema };
 export default createSchema({ nodes, marks, customMarkSpecs});

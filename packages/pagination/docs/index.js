@@ -18,14 +18,11 @@ const Usage = styled.pre`
 export const description = (
   <div>
     <p>
-      Before Export Example
+      This package provides both a stateful (default) and stateless component.
     </p>
     <Usage>
       {"import Paginate, { Pagination } from '@atlaskit/pagination'"}
     </Usage>
-    <p>
-        After export example.
-    </p>
   </div>
 );
 

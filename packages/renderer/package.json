@@ -21,12 +21,12 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/emoji": "^13.1.1",
-    "@atlaskit/media-card": "^12.0.1",
+    "@atlaskit/emoji": "^14.0.0",
+    "@atlaskit/media-card": "^14.0.1",
     "@atlaskit/media-core": "^6.0.2",
     "@atlaskit/media-filmstrip": "^3.1.2",
     "@atlaskit/mention": "^4.2.0",
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.0.1",
     "styled-components": "^1.4.0",
     "tslib": "^1.2.0"
   },

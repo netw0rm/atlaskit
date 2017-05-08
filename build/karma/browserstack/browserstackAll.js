@@ -3,6 +3,8 @@ const stage1 = require('./browserstack.browsers.stage.1');
 const stage2 = require('./browserstack.browsers.stage.2');
 const stage3 = require('./browserstack.browsers.stage.3');
 
+// This is the entrypoint for running all the browserstack tests in CI
+
 // eslint-disable-next-line
 const launchers = Object.assign({}, stage1, stage2, stage3);
 const browsers = Object.keys(launchers);

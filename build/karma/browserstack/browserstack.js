@@ -3,6 +3,8 @@ const stage1 = require('./browserstack.browsers.stage.1');
 const stage2 = require('./browserstack.browsers.stage.2');
 const stage3 = require('./browserstack.browsers.stage.3');
 
+// This is the entrypoint for running test/single/browserstack
+
 const stages = [
   null,
   stage1,

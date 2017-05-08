@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import FieldBase from '@atlaskit/field-base';
@@ -43,7 +42,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     itemsFilterValue: PropTypes.string,
     /** Called when an item is activated. Receives an object with the activated item */
     onItemActivated: PropTypes.func,
-    /** Called when the items filter value change. Receives the a synthetic event*/
+    /** Called when the items filter value change. Receives the synthetic event*/
     onItemsFilterChange: PropTypes.func,
     /** Called when the menu should be open/closed. Received an object with isOpen state */
     onOpenChange: PropTypes.func,
@@ -99,11 +98,18 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   componentDidUpdate = (prevProp) => {
     if (this.props.isOpen && !prevProp.isOpen) {
-      if(this.itemsFilterInputNode){
+      if (this.itemsFilterInputNode) {
         this.itemsFilterInputNode.focus();
       }
       this.focusFirstItem();
     }
+  }
+
+  onOpenChange = ({ isOpen, event }) => {
+    if (!isOpen) {
+      this.setState({ focusedItem: undefined });
+    }
+    this.props.onOpenChange({ isOpen, event });
   }
 
   onItemsFilterFocus = () => this.itemsFilterInputNode.focus();
@@ -181,7 +187,7 @@ export default class StatelessDropdownMenu extends PureComponent {
           break;
         case 'Tab':
           event.preventDefault();
-          this.close({event});
+          this.close({ event });
           break;
         default:
           break;
@@ -236,13 +242,6 @@ export default class StatelessDropdownMenu extends PureComponent {
     }
   }
 
-  onOpenChange = ({ isOpen, event }) => {
-    if(!isOpen) {
-      this.setState({ focusedItem: undefined });
-    }
-    this.props.onOpenChange({ isOpen, event });
-  }
-
   isItemFocused = (indexOffset, itemIndex) =>
     this.state.focusedItem === indexOffset + itemIndex;
 
@@ -259,26 +258,24 @@ export default class StatelessDropdownMenu extends PureComponent {
     </Item>
   )
 
-  renderItemsFilter = () => {
-    return (<div className={styles.menuItemsFilterContainer}>
-      <FieldBase
-        isFocused={this.props.isOpen}
-        onFocus={this.onItemsFilterFocus}
-      >
-        <div className={styles.menuItemsFilter}>
-          <input
-            onChange={this.handleItemsFilterOnChange}
-            type="text"
-            value={this.props.itemsFilterValue}
-            ref={(inputNode) => { this.itemsFilterInputNode = inputNode; }}
-          />
-        </div>
-        <div className={styles.itemsFilterIcon}>
-          <SearchIcon label="" />
-        </div>
-      </FieldBase>
-    </div>);
-  };
+  renderItemsFilter = () => (<div className={styles.menuItemsFilterContainer}>
+    <FieldBase
+      isFocused={this.props.isOpen}
+      onFocus={this.onItemsFilterFocus}
+    >
+      <div className={styles.menuItemsFilter}>
+        <input
+          onChange={this.handleItemsFilterOnChange}
+          type="text"
+          value={this.props.itemsFilterValue}
+          ref={(inputNode) => { this.itemsFilterInputNode = inputNode; }}
+        />
+      </div>
+      <div className={styles.itemsFilterIcon}>
+        <SearchIcon label="" />
+      </div>
+    </FieldBase>
+  </div>);
 
   renderGroups = (groups) => {
     let itemsCount = 0;

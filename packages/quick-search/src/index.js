@@ -1,15 +1,15 @@
-import AkQuickSearch from './components/QuickSearch';
-import AkQuickSearchResult from './components/Result';
-import AkQuickSearchResultsList from './components/ResultsList';
+import QuickSearch from './components/QuickSearch';
+import Result from './components/Result';
+import ResultsList from './components/ResultsList';
 import SearchResource, { ParsingSearchResource } from './api/SearchResource';
 import { GroupedResultsParser, ResultParser } from './api/result-parser/ResultParser';
 
 export {
-  AkQuickSearchResult,
-  AkQuickSearchResultsList,
   GroupedResultsParser,
   ParsingSearchResource,
+  Result,
   ResultParser,
+  ResultsList,
   SearchResource,
 };
-export default AkQuickSearch;
+export default QuickSearch;

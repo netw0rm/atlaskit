@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { AkSearch } from '@atlaskit/navigation';
 import { mount } from 'enzyme';
 
-import QuickSearch from '../../../src/';
+import QuickSearch from '../../../src';
 import ResultsList from '../../../src/components/ResultsList';
 import { ParsingSearchResource } from '../../../src/api/SearchResource';
 

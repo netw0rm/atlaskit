@@ -4,7 +4,7 @@ import { storiesOf } from '@kadira/storybook';
 
 import BasicNav from './BasicNav';
 import MockSearchResource from './helpers/MockSearchResource';
-import QuickSearch from '../src/';
+import QuickSearch from '../src';
 import { name } from '../package.json';
 
 storiesOf(name, module)

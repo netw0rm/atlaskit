@@ -4,7 +4,7 @@ import AkAvatar from '@atlaskit/avatar';
 import { action, storiesOf } from '@kadira/storybook';
 import { AtlassianIcon, StarIcon } from '@atlaskit/icon';
 
-import { AkQuickSearchResult as Result } from '../src/';
+import { Result } from '../src';
 import { name } from '../package.json';
 
 const containerStyles = {

@@ -3,8 +3,8 @@ import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
 import {
-  AkQuickSearchResultsList as ResultsList,
   ResultParser,
+  ResultsList,
 } from '../src';
 import { name } from '../package.json';
 import sampleResultData from './helpers/sample-result-data';

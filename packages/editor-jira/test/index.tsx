@@ -61,7 +61,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
   it('should call onExpanded after editor is expanded via click', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor isExpandedByDefault={true} onExpanded={spy}/>, { attachTo: fixture() });
+    const editorWrapper = mount(<Editor onExpanded={spy}/>, { attachTo: fixture() });
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
     expect(spy.callCount).to.equal(1);
@@ -69,7 +69,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
   it('should call onExpanded after editor is expanded via .expand()', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor isExpandedByDefault={true} onExpanded={spy}/>, { attachTo: fixture() });
+    const editorWrapper = mount(<Editor onExpanded={spy}/>, { attachTo: fixture() });
     const editor: Editor = editorWrapper.get(0) as any;
 
     editor.expand();

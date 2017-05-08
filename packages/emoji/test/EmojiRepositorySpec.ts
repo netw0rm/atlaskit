@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { EmojiDescription } from '../src/types';
 import EmojiRepository from '../src/api/EmojiRepository';
 
-import { emojis as allEmojis, emojiRepository } from './TestData';
+import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji } from './TestData';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -160,6 +160,15 @@ describe('EmojiRepository', () => {
         siteTest,
         atlassianTest,
         standardTest,
+      ];
+      checkOrder(expectedEmoji, emojis);
+    });
+
+    it('thumbsup emojis appears before thumbs down', () => {
+      const emojis = emojiRepository.search(':thumbs').emojis;
+      const expectedEmoji = [
+        thumbsupEmoji,
+        thumbsdownEmoji,
       ];
       checkOrder(expectedEmoji, emojis);
     });

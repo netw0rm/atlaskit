@@ -127,24 +127,6 @@
       "shortName": ":sweat_smile:"
     },
     {
-      "id": "1f606",
-      "name": "smiling face with open mouth and tightly-closed eyes",
-      "fallback": "😆",
-      "type": "STANDARD",
-      "category": "PEOPLE",
-      "order": 8,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-        "x": 238,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 7,
-        "yIndex": 0
-      },
-      "shortName": ":laughing:"
-    },
-    {
       "id": "2639",
       "name": "white frowning face",
       "fallback": "☹️",
@@ -271,6 +253,116 @@
         "yIndex": 3
       },
       "shortName": ":thumbsup:"
+    },
+    {
+      "id": "1f44e",
+      "name": "thumbs down sign",
+      "fallback": "\uD83D\uDC4E",
+      "type": "STANDARD",
+      "category": "PEOPLE",
+      "order": 92,
+      "skinVariations": [
+        {
+          "id": "1f44e-1f3fb",
+          "name": "thumbs down sign tone 2",
+          "fallback": "\uD83D\uDC4E\uD83C\uDFFB",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 1315,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+            "x": 816,
+            "y": 272,
+            "height": 32,
+            "width": 32,
+            "xIndex": 24,
+            "yIndex": 8
+          },
+          "shortName": ":thumbsdown::skin-tone-2:"
+        },
+        {
+          "id": "1f44e-1f3fc",
+          "name": "thumbs down sign tone 3",
+          "fallback": "\uD83D\uDC4E\uD83C\uDFFC",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 1316,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+            "x": 0,
+            "y": 306,
+            "height": 32,
+            "width": 32,
+            "xIndex": 0,
+            "yIndex": 9
+          },
+          "shortName": ":thumbsdown::skin-tone-3:"
+        },
+        {
+          "id": "1f44e-1f3fd",
+          "name": "thumbs down sign tone 4",
+          "fallback": "\uD83D\uDC4E\uD83C\uDFFD",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 1317,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+            "x": 34,
+            "y": 306,
+            "height": 32,
+            "width": 32,
+            "xIndex": 1,
+            "yIndex": 9
+          },
+          "shortName": ":thumbsdown::skin-tone-4:"
+        },
+        {
+          "id": "1f44e-1f3fe",
+          "name": "thumbs down sign tone 5",
+          "fallback": "\uD83D\uDC4E\uD83C\uDFFE",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 1318,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+            "x": 68,
+            "y": 306,
+            "height": 32,
+            "width": 32,
+            "xIndex": 2,
+            "yIndex": 9
+          },
+          "shortName": ":thumbsdown::skin-tone-5:"
+        },
+        {
+          "id": "1f44e-1f3ff",
+          "name": "thumbs down sign tone 6",
+          "fallback": "\uD83D\uDC4E\uD83C\uDFFF",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 1319,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+            "x": 102,
+            "y": 306,
+            "height": 32,
+            "width": 32,
+            "xIndex": 3,
+            "yIndex": 9
+          },
+          "shortName": ":thumbsdown::skin-tone-6:"
+        }
+      ],
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "x": 544,
+        "y": 102,
+        "height": 32,
+        "width": 32,
+        "xIndex": 16,
+        "yIndex": 3
+      },
+      "shortName": ":thumbsdown:"
     },
     {
       "id": "1f436",

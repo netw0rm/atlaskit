@@ -127,6 +127,30 @@ describe('@atlaskit/editor-hipchat', () => {
       editor.setFromJson(defaultValue);
     });
 
+    describe('.focus', () => {
+      it('should focus the editor if not already focused', () => {
+        const editorInstance = editorWrapper.instance() as any;
+        const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(false);
+        const spy = sinon.stub(editorInstance.state.editorView, 'focus');
+        editorInstance.focus();
+
+        expect(spy.called).to.eq(true);
+        hasFocusStub.restore();
+        spy.restore();
+      });
+
+      it('should not try to focus when already focused', () => {
+        const editorInstance = editorWrapper.instance() as any;
+        const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(true);
+        const spy = sinon.stub(editorInstance.state.editorView, 'focus');
+        editorInstance.focus();
+
+        expect(spy.called).to.eq(false);
+        hasFocusStub.restore();
+        spy.restore();
+      });
+    });
+
     describe('.documentSize', () => {
       it('returns the node size of the current document', () => {
         expect(editor.documentSize).to.equal(10);

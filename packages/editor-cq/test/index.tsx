@@ -1,6 +1,7 @@
 import * as chai from 'chai';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
+import * as sinon from 'sinon';
 import {
   chaiPlugin,
   fixtures,
@@ -115,5 +116,39 @@ describe('@atlaskit/editor-cq', () => {
         expect(domNode.dataset.unsupportedInlineCxhtml).to.be.equal('foobar');
       });
     });
+  });
+});
+
+describe('@atlaskit/editor-cq/focus', () => {
+  let editorWrapper: ReactWrapper<any, any>;
+
+  beforeEach(() => {
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />);
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
+  });
+
+  it('should focus the editor if not already focused', () => {
+    const editorInstance = editorWrapper.instance() as any;
+    const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(false);
+    const spy = sinon.stub(editorInstance.state.editorView, 'focus');
+    editorInstance.focus();
+
+    expect(spy.called).to.eq(true);
+    hasFocusStub.restore();
+    spy.restore();
+  });
+
+  it('should not try to focus when already focused', () => {
+    const editorInstance = editorWrapper.instance() as any;
+    const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(true);
+    const spy = sinon.stub(editorInstance.state.editorView, 'focus');
+    editorInstance.focus();
+
+    expect(spy.called).to.eq(false);
+    hasFocusStub.restore();
+    spy.restore();
   });
 });

@@ -30,8 +30,20 @@ export default class ModalDialog extends PureComponent {
     width: WIDTH_ENUM.defaultValue,
   };
 
+  state = {
+    isAnimating: false,
+  }
+
   componentDidMount = () => {
     document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  // when the isOpen prop is changed, ModalPositioner will detect the change and trigger an
+  // animation immediately, so we set isAnimating in state here.
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.isOpen !== nextProps.isOpen) {
+      this.setState({ isAnimating: true });
+    }
   }
 
   componentWillUnmount = () => {
@@ -45,10 +57,23 @@ export default class ModalDialog extends PureComponent {
     ) : {}
   )
 
+  // Helper function to guard the onDialogDismissed prop function. Saved doing the same isOpen
+  // check in multiple places.
+  dismissModal = (e) => {
+    if (this.props.isOpen) {
+      this.props.onDialogDismissed(e);
+    }
+  }
+
+  // Once the ModalPositioner animation finishes, set isAnimating back to false.
+  handleAnimationEnd = () => {
+    this.setState({ isAnimating: false });
+  }
+
   handleKeyDown = (e) => {
     const escapeKeyCode = 27;
     if (e.keyCode === escapeKeyCode) {
-      this.props.onDialogDismissed(e);
+      this.dismissModal(e);
     }
   }
 
@@ -57,15 +82,12 @@ export default class ModalDialog extends PureComponent {
   handlePositionerDirectClick = (e) => {
     const { target } = e;
     if (target && target === this.modalPositionerRef) {
-      this.props.onDialogDismissed(e);
+      this.dismissModal(e);
     }
   }
 
   render() {
-    // don't render anything if isOpen = false
-    if (!this.props.isOpen) return null;
-
-    const { onDialogDismissed, header, children, footer, width } = this.props;
+    const { header, isOpen, children, footer, width } = this.props;
 
     const hasHeader = !!header;
     const hasFooter = !!footer;
@@ -95,24 +117,30 @@ export default class ModalDialog extends PureComponent {
     );
 
     return (
-      <ModalWrapper>
-        <Blanket isTinted onBlanketClicked={onDialogDismissed} />
-        <ModalPositioner
-          innerRef={(ref) => { this.modalPositionerRef = ref; }}
-          width={width}
-          {...this.getCustomWidth()}
-          onClick={this.handlePositionerDirectClick}
-        >
-          <ModalContainer>
-            <OptionalHeader />
-            <ContentContainer hasHeader={hasHeader} hasFooter={hasFooter}>
-              <HeaderKeylineMask />
-              {children}
-              <FooterKeylineMask />
-            </ContentContainer>
-            <OptionalFooter />
-          </ModalContainer>
-        </ModalPositioner>
+      <ModalWrapper isOpen={isOpen}>
+        <Blanket canClickThrough={!isOpen} isTinted={isOpen} onBlanketClicked={this.dismissModal} />
+        {
+          this.state.isAnimating || isOpen ? (
+            <ModalPositioner
+              innerRef={(ref) => { this.modalPositionerRef = ref; }}
+              isOpen={isOpen}
+              width={width}
+              {...this.getCustomWidth()}
+              onAnimationEnd={this.handleAnimationEnd}
+              onClick={this.handlePositionerDirectClick}
+            >
+              <ModalContainer>
+                <OptionalHeader />
+                <ContentContainer hasHeader={hasHeader} hasFooter={hasFooter}>
+                  <HeaderKeylineMask />
+                  {children}
+                  <FooterKeylineMask />
+                </ContentContainer>
+                <OptionalFooter />
+              </ModalContainer>
+            </ModalPositioner>
+          ) : null
+        }
       </ModalWrapper>
     );
   }

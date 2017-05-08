@@ -11,28 +11,31 @@ export const selected = 'selected';
 export const emojiSprite = 'emoji-sprite';
 
 export const emoji = style({
-  cursor: 'pointer',
+  borderRadius: '5px',
   backgroundColor: 'transparent',
-  backgroundPosition: '50%',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: '22px 22px',
   display: 'inline-block',
-  height: '32px',
-  width: '32px',
+  verticalAlign: 'middle',
+  // Ensure along with vertical align middle, we don't increase the line height for p and some
+  // headings. Smaller headings get a slight increase in height, cannot add more negative margin
+  // as a "selected" emoji (e.g. in the editor) will not look good.
+  margin: '-1px 0',
 
   $nest: {
     [`&.${selected}`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
+    '&>img': {
+      maxHeight: '24px',
+      display: 'block',
+    }
   },
 });
 
 export const emojiContainer = style({
-  borderRadius: '5px',
-  cursor: 'pointer',
   display: 'inline-block',
-  height: '32px',
-  width: '32px',
+  verticalAlign: 'middle',
+  // Ensure along with vertical align middle, we don't increase the line height for h1..h6, and p
+  margin: '-1px 0',
 
   $nest: {
     [`&.${selected}`]: {
@@ -41,22 +44,19 @@ export const emojiContainer = style({
 
     [`.${emojiSprite}`]: {
       background: 'transparent no-repeat',
-      border: 0,
-      boxSizing: 'border-box',
-      cursor: 'pointer',
-      display: 'inline-block',
+      display: 'block',
       height: '24px',
-      margin: '4px',
       width: '24px',
     },
   },
 });
 
-export const missingEmoji = style({
-  height: '32px',
-  width: '32px',
+export const placeholderEmoji = style({
   display: 'inline-block',
   fill: '#f7f7f7',
+  width: '24px',
+  height: '24px',
+  verticalAlign: 'middle',
 });
 
 export const emojiButton = style({
@@ -106,9 +106,29 @@ export const emojiPreview = style({
         [`.${previewImg}`]: {
           display: 'inline-block',
           flex: 'initial',
-          backgroundPosition: '50%',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: '32px 32px',
+          width: '32px',
+
+          $nest: {
+            '&>span': {
+              width: '32px',
+              height: '32px',
+              padding: 0,
+              maxHeight: 'inherit',
+
+              $nest: {
+                '&>img': {
+                  position: 'relative',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translateX(-50%) translateY(-50%)',
+                  maxHeight: '32px',
+                  maxWidth: '32px',
+                  padding: 0,
+                  display: 'block',
+                }
+              }
+            }
+          }
         },
 
         [`.${previewText}`]: {

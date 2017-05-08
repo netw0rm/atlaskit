@@ -1,14 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import { akColorB400 } from '@atlaskit/util-shared-styles';
 
-import StatefulSpinner from './StatefulSpinner'; // eslint-disable-line import/no-duplicates
 import { name } from '../package.json';
 import Spinner from '../src';
-import ButtonSpinner from './ButtonSpinner'; // eslint-disable-line import/no-duplicates
 
 /* eslint-disable import/no-duplicates, import/first */
+import StatefulSpinner from './StatefulSpinner';
 import statefulSpinnerRaw from '!raw!./StatefulSpinner';
-import ButtonSpinnerRaw from '!raw!./ButtonSpinner';
 /* eslint-enable import/no-duplicates, import/first */
 
 const defaultImports = { imports: [['Spinner', '@atlaskit/spinner']] };
@@ -57,14 +56,24 @@ storiesOf(name, module)
       </div>
     </div>
   ), defaultImports)
+  .addCodeExampleStory('Inverted color', () => (
+    <div
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        backgroundColor: akColorB400,
+        padding: '10px',
+      }}
+    >
+      <Spinner invertColor size="small" />
+      <Spinner invertColor size="medium" />
+      <Spinner invertColor size="large" />
+      <Spinner invertColor size="xlarge" />
+    </div>
+  ), defaultImports)
   .addCodeExampleStory('Stateful spinner', () => (
     <div style={{ padding: '10px' }}>
       <StatefulSpinner />
     </div>
   ), { scripts: [statefulSpinnerRaw] })
-  .addCodeExampleStory('Spinner in a button', () => (
-    <div style={{ padding: '10px' }}>
-      <ButtonSpinner />
-    </div>
-  ), { scripts: [ButtonSpinnerRaw] })
   ;

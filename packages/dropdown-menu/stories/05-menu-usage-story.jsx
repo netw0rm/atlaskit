@@ -196,7 +196,7 @@ storiesOf(name, module)
       DropdownWithTriggerOptionsRaw,
     ],
   })
-  .addCodeExampleStory('Basic Dropdown menu with items filter', () => (
+  .addCodeExampleStory('Smart Dropdown menu with items filter', () => (
     <DropdownWithItemsFilter />
   ), {
     scripts: [

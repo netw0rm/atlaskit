@@ -11,7 +11,8 @@ module.exports = [
   { name: 'AkCustomDrawer', src: path.join(__dirname, '../src/components/js/drawers/CustomDrawer.jsx') },
   { name: 'AkSearchDrawer', src: path.join(__dirname, '../src/components/js/drawers/SearchDrawer.jsx') },
   { name: 'AkNavigationItem', src: path.join(__dirname, '../src/components/js/NavigationItem.jsx') },
-  // { name: 'AkGlobalNavigation', src: path.join(__dirname, '../src/components/js/GlobalNavigation.jsx') },
+  // { name: 'AkGlobalNavigation',
+  // src: path.join(__dirname, '../src/components/js/GlobalNavigation.jsx') },
   // { name: 'AkGlobalItem', src: path.join(__dirname, '../src/components/js/GlobalItem.jsx') },
   { name: 'AkSearch', src: path.join(__dirname, '../src/components/js/Search.jsx') },
 ];

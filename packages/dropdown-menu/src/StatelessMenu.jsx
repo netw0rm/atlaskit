@@ -152,7 +152,7 @@ export default class StatelessDropdownMenu extends PureComponent {
   }
 
   activateFocusedItems = () => {
-    if (this.domItemsList && this.state.focusedItem) {
+    if (this.domItemsList && this.state.focusedItem !== undefined) {
       this.domItemsList[this.state.focusedItem].click();
     }
   };

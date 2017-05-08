@@ -25,6 +25,29 @@ export const simpleDropdownItems = [
   },
 ];
 
+export const atlassianProductsDropdownItems = [
+  {
+    heading: 'Products',
+    items: [
+      {
+        content: 'Jira',
+        href: '//atlassian.com/software/jira',
+        target: '_blank',
+      },
+      {
+        content: 'Confluence',
+        href: '//atlassian.com/software/confluence',
+        target: '_blank',
+      },
+      {
+        content: 'Bitbucket',
+        href: '//atlassian.com/software/bitbucket',
+        target: '_blank',
+      },
+    ],
+  },
+]
+
 export const dropdownItemsWithGroups = [
   {
     heading: 'The first group',

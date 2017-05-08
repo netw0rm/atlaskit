@@ -14,7 +14,11 @@ export default class DropdownMenu extends PureComponent {
     appearance: PropTypes.oneOf(['default', 'tall']),
     /** Content that will be rendered inside the trigger element */
     children: PropTypes.node,
-    /** Controls the value of the items filter */
+    /** Controls the value of the items filter.
+      * Note: This value is only used as the initial filter value
+      * and will be overridden by the components state once the user
+      * interacts with the filter
+      */
     defaultItemsFilterValue: PropTypes.string,
     /** Controls the open state of the dropdown */
     defaultOpen: PropTypes.bool,

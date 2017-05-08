@@ -7,7 +7,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ResourcedMention } from '@atlaskit/mention';
 import { style } from 'typestyle';
-import { NodeSpec, NodeView } from '../../prosemirror';
+import {
+  Node as PMNode,
+  NodeSpec,
+  NodeView,
+} from '../../prosemirror';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 
 const mentionStyle = style({
@@ -50,33 +54,35 @@ export const mention: NodeSpec = {
   }
 };
 
-export const mentionNodeView = (providerFactory: ProviderFactory) => (node: any, view: any, getPos: () => number): NodeView => {
-  let dom: HTMLElement | undefined = document.createElement('span');
-  const { id, text } = node.attrs;
+class MentionNodeView implements NodeView {
+  dom: HTMLElement | undefined = document.createElement('span');
 
-  ReactDOM.render(
-    <WithProviders
-      providers={['mentionProvider']}
-      providerFactory={providerFactory}
-      // tslint:disable-next-line:jsx-no-lambda
-      renderNode={providers =>
-        <ResourcedMention
-          id={id}
-          text={text}
-          mentionProvider={providers['mentionProvider']}
-        />
-      }
-    />
-  , dom);
+  constructor(node: PMNode, providerFactory: ProviderFactory) {
+    const { id, text } = node.attrs;
 
-  return {
-    get dom() {
-      return dom;
-    },
+    ReactDOM.render(
+      <WithProviders
+        providers={['mentionProvider']}
+        providerFactory={providerFactory}
+        // tslint:disable-next-line:jsx-no-lambda
+        renderNode={providers =>
+          <ResourcedMention
+            id={id}
+            text={text}
+            mentionProvider={providers['mentionProvider']}
+          />
+        }
+      />,
+      this.dom!
+    );
+  }
 
-    destroy() {
-      ReactDOM.unmountComponentAtNode(dom!);
-      dom = undefined;
-    }
-  };
+  destroy() {
+    ReactDOM.unmountComponentAtNode(this.dom!);
+    this.dom = undefined;
+  }
+}
+
+export const mentionNodeView = (providerFactory: ProviderFactory) => (node: PMNode, view: any, getPos: () => number): NodeView => {
+  return new MentionNodeView(node, providerFactory);
 };

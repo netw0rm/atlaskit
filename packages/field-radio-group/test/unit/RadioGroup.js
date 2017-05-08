@@ -8,7 +8,7 @@ import AkFieldRadioGroup from '../../src/RadioGroup';
 import { name } from '../../package.json';
 
 describe(name, () => {
-  describe('AkFieldRadioGroup', () => {
+  describe('AkFieldRadioGroup (stateless)', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two', isSelected: true },

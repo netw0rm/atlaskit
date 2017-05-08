@@ -121,15 +121,16 @@ const plugin = new Plugin({
   },
   props: {
     handleClick(view: EditorView, event) {
-      view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, domEvent: true }));
+      stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;
     },
     onFocus(view: EditorView, event) {
       stateKey.getState(view.state).updateEditorFocused(true);
     },
     onBlur(view: EditorView, event) {
-      stateKey.getState(view.state).updateEditorFocused(false);
-      view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, domEvent: true }));
+      const pluginState = stateKey.getState(view.state);
+      pluginState.updateEditorFocused(false);
+      pluginState.update(view.state, view.docView, true);
     },
   }
 });

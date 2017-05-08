@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "config": {
     "access": "public"
   },
@@ -31,7 +31,6 @@
     "babel-runtime": "^6.11.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^1.0.0",
     "@atlaskit/util-readme": "^1.0.0",
     "@atlaskit/spinner": "*",
     "@atlaskit/util-common-test": "^1.0.0"

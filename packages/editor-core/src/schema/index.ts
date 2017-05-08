@@ -26,3 +26,4 @@ export { panel } from './nodes/panel';
 export { text } from './nodes/text';
 export { media, MediaType, mediaNodeView, MediaNode } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
+export { createSchema } from './create-schema';

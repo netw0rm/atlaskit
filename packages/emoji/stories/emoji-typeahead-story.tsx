@@ -30,6 +30,16 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
       afterContent={true}
     />
   ))
+  .add('Input field emoji typeahead. Popup. No blur.', () => (
+    <EmojiTextInput
+      label="Emoji search"
+      onSelection={action('emoji selected')}
+      emojiProvider={getEmojiResource()}
+      position="below"
+      afterContent={true}
+      disableBlur={true}
+    />
+  ))
   .add('Input field emoji typeahead. Inline', () => (
     <EmojiTextInput
       label="Emoji search"
@@ -98,7 +108,6 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
           emojiProvider={Promise.resolve(emojiResource)}
           position="below"
           afterContent={true}
-          disableBlur={true}
         />
       </div>
     );

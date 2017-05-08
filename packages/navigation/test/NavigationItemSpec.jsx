@@ -1,6 +1,8 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import NavigationItem from '../src/components/js/NavigationItem';
+import NavigationItemIcon from '../src/components/styled/NavigationItemIcon';
+import NavigationItemAfter from '../src/components/styled/NavigationItemAfter';
 
 describe('<NavigationItem />', () => {
   describe('props', () => {
@@ -66,6 +68,41 @@ describe('<NavigationItem />', () => {
     });
     it('subText should render in the navigation item', () => {
       expect(mount(<NavigationItem subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
+    });
+
+    describe('isDropdownTrigger=true and dropIcon is provided', () => {
+      const navigationWrapper = mount(<NavigationItem isDropdownTrigger dropIcon={<img alt="foo" />} />);
+
+      it('should render dropIcon', () => (
+        expect(navigationWrapper.find('img').length).to.equal(1)
+      ));
+
+      it('should render NavigationItemIcon wrapper with isDropdownTrigger prop forwarded', () => (
+        expect(navigationWrapper.find(NavigationItemIcon).prop('isDropdownTrigger')).to.equal(true)
+      ));
+
+      describe('if textAfter is provided', () => {
+        navigationWrapper.setProps({ textAfter: 'test' });
+        it('should render NavigationItemAfter wrapper with isDropdownTrigger prop forwarded', () => {
+          expect(navigationWrapper.find(NavigationItemAfter).prop('isDropdownTrigger')).to.equal(true);
+        });
+      });
+    });
+
+    describe('isDropdownTrigger=false and dropIcon is provided', () => {
+      const navigationWrapper = mount(<NavigationItem dropIcon={<img alt="foo" />} />);
+
+      it('should not render dropIcon', () => {
+        expect(navigationWrapper.find(NavigationItemIcon).length).to.equal(0);
+        expect(navigationWrapper.find('img').length).to.equal(0);
+      });
+
+      describe('if textAfter is provided', () => {
+        navigationWrapper.setProps({ textAfter: 'test' });
+        it('should render NavigationItemAfter wrapper without isDropdownTrigger prop forwarded', () => {
+          expect(navigationWrapper.find(NavigationItemAfter).prop('isDropdownTrigger')).to.equal(false);
+        });
+      });
     });
   });
   describe('behaviour', () => {

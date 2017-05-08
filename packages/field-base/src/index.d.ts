@@ -1,7 +1,8 @@
 import { FocusEventHandler, PureComponent } from 'react';
 
 export interface Props {
-  appearance: 'standard' | 'compact' | 'none' | 'subtle';
+  appearance: 'standard' | 'none' | 'subtle';
+  isCompact?: boolean;
   isInvalid?: boolean;
   isFocused?: boolean;
   isRequired?: boolean;

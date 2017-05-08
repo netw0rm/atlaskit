@@ -18,9 +18,11 @@ export default class BasicNavigation extends PureComponent {
     searchDrawerContent: PropTypes.node,
     createDrawerContent: PropTypes.node,
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
+    onResizeCallback: PropTypes.func,
   }
 
   static defaultProps = {
+    onResizeCallback: () => {},
     children: (<div>
       <AkNavigationItem
         icon={<DashboardIcon label="Dashboard" />}

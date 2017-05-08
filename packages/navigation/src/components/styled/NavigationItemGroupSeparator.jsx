@@ -11,6 +11,7 @@ const NavigationItemGroupSeparator = styled.div`
   margin-bottom: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
   height: ${dividerLineHeight}px;
   background: ${({ theme }) => colors[theme[themeVariables.appearance]].keyline};
+  border-radius: 1px;
 `;
 
 NavigationItemGroupSeparator.defaultProps = {

@@ -71,20 +71,20 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
       case NodeType.media:
         let mediaId = '';
         let mediaType = '';
-        let mediaCollectionId = [];
+        let mediaCollection = '';
         if (attrs) {
-          const { id, collectionId, type } = attrs;
+          const { id, collection, type } = attrs;
           mediaId = id;
           mediaType = type;
-          mediaCollectionId = collectionId;
+          mediaCollection = collection;
         }
-        if (mediaId && mediaType && mediaCollectionId.length) {
+        if (mediaId && mediaType && mediaCollection.length) {
           return {
             type,
             attrs: {
               type: mediaType,
               id: mediaId,
-              collectionId: mediaCollectionId
+              collection: mediaCollection
             }
           };
         }

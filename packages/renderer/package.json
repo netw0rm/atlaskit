@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "1.29.5",
+  "version": "2.0.0",
   "config": {
     "access": "public"
   },
@@ -22,9 +22,9 @@
   ],
   "dependencies": {
     "@atlaskit/emoji": "^13.1.1",
-    "@atlaskit/media-card": "^5.0.0",
-    "@atlaskit/media-core": "^1.2.2",
-    "@atlaskit/media-filmstrip": "^2.0.6",
+    "@atlaskit/media-card": "^12.0.1",
+    "@atlaskit/media-core": "^6.0.2",
+    "@atlaskit/media-filmstrip": "^3.1.2",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "styled-components": "^1.4.0",
@@ -45,7 +45,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^2.1.0",
+    "@atlaskit/media-test-helpers": "^4.8.1",
     "@atlaskit/util-data-test": "^4.0.0",
     "akutil-common-test": "*"
   },

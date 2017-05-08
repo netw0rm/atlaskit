@@ -154,7 +154,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
   }
 
   focusEditor = () => {
-    this.props.editorView.dom.focus();
+    this.props.editorView.focus();
   }
 
   private handleEditorContainerRef = ref => {

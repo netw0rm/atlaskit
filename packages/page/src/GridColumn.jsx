@@ -9,7 +9,9 @@ const defaultSpacing = 'cosy';
 export default withTheme(class AkGridColumn extends PureComponent {
 
   static propTypes = {
+    /** The number of columns this GridColumn should take up. */
     medium: PropTypes.number,
+    /** Components to display within the column. */
     children: PropTypes.node,
   }
 

@@ -1,15 +1,29 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
 
-import { defaultGridColumns, layout, spacing } from './internal/vars';
+/*
+================================================
+layout and spacing prop were imported from ./internal/vars
+so that documentation will be clear. It must be kept in sync.
+================================================
+*/
+
+import { defaultGridColumns } from './internal/vars';
 import Grid from './internal/GridElement';
 
 export default withTheme(class AkGrid extends PureComponent {
 
   static propTypes = {
+    /** Components to render in grid. All children should be GridColumns. */
     children: PropTypes.node,
-    spacing: PropTypes.oneOf(Object.keys(spacing)),
-    layout: PropTypes.oneOf(layout),
+    /** How much spacing should be placed between columns in the grid. */
+    spacing: PropTypes.oneOf([
+      'comfortable',
+      'cosy',
+      'compact',
+    ]),
+    /** Whether the columns should have a fixed maximum width, or no maximum width. */
+    layout: PropTypes.oneOf(['fixed', 'fluid']),
   }
 
   static defaultProps = {

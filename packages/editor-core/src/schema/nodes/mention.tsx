@@ -55,7 +55,7 @@ export const mention: NodeSpec = {
 };
 
 class MentionNodeView implements NodeView {
-  dom: HTMLElement | undefined = document.createElement('span');
+  private domRef: HTMLElement | undefined = document.createElement('span');
 
   constructor(node: PMNode, providerFactory: ProviderFactory) {
     const { id, text } = node.attrs;
@@ -73,13 +73,17 @@ class MentionNodeView implements NodeView {
           />
         }
       />,
-      this.dom!
+      this.domRef!
     );
+  }
+
+  get dom() {
+    return this.domRef;
   }
 
   destroy() {
     ReactDOM.unmountComponentAtNode(this.dom!);
-    this.dom = undefined;
+    this.domRef = undefined;
   }
 }
 

@@ -1,0 +1,68 @@
+@import '../../shared-variables.less';
+@import '~@atlaskit/util-shared-styles/src/grid.less';
+
+.slide-animation() {
+  animation-duration: 300ms;
+  animation-fill-mode: forwards;
+}
+
+.containerNavigationNested {
+  display: flex;
+  position: relative;
+  margin: 0 -@ak-grid-size;
+}
+
+.pageWrapper {
+  flex: 1 0 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 @ak-grid-size;
+}
+
+// Sliding left Animation
+
+.left-animate-start() {
+  transform: translateX(0);
+}
+
+.left-animate-end() {
+  transform: translateX(-100%);
+};
+
+.containerNavigationNestedLeftAnimate {
+  animation-name: slideLeft;
+  .slide-animation();
+}
+
+.containerNavigationNestedLeftAnimateEnd {
+  .left-animate-end();
+}
+
+@keyframes slideLeft {
+    0% { .left-animate-start()}
+    100% { .left-animate-end()}
+}
+
+// Sliding right animation
+
+.right-animate-start() {
+  transform: translateX(-100%);
+}
+
+.right-animate-end() {
+  transform: translateX(0);
+}
+
+.containerNavigationNestedRightAnimate {
+  animation-name: slideRight;
+  .slide-animation();
+}
+
+.containerNavigationNestedRightAnimateEnd {
+  .right-animate-end();
+}
+
+@keyframes slideRight {
+    0% { .right-animate-start()}
+    100% { .right-animate-end()}
+}

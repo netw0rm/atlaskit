@@ -38,7 +38,7 @@ export default class DropdownMenu extends PureComponent {
     items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     /** Called when an item is activated. Receives an object with the activated item */
     onItemActivated: PropTypes.func,
-    /** Called when the items filter value change. Receives the synthetic event.
+    /** Called when the items filter value change. Receives the filter's new value.
       * There is no need to sync this value back to defaultItemsFilterValue,
       * this will be handled by the component*/
     onItemsFilterChange: PropTypes.func,

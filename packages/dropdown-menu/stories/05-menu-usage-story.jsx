@@ -13,6 +13,8 @@ import DropdownWithItemsFilter from './DropdownWithItemsFilter';
 import DropdownWithItemsFilterRaw from '!raw!./DropdownWithItemsFilter';
 import DropdownWithTriggerOptions from './DropdownWithTriggerOptions';
 import DropdownWithTriggerOptionsRaw from '!raw!./DropdownWithTriggerOptions';
+import StatelessDropdownUsingItemsFilterValue from './examples/StatelessDropdownUsingItemsFilterValue';
+import StatelessDropdownUsingItemsFilterValueRaw from '!raw!./examples/StatelessDropdownUsingItemsFilterValue';
 import StatusDropdown from './examples/StatusDropdown';
 import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
@@ -201,6 +203,14 @@ storiesOf(name, module)
   ), {
     scripts: [
       DropdownWithItemsFilterRaw,
+    ],
+  })
+  .addCodeExampleStory('Basic Dropdown that listen to onItemsFilterChange events ' +
+    'and sync the filter value accordingly', () => (
+      <StatelessDropdownUsingItemsFilterValue />
+  ), {
+    scripts: [
+      StatelessDropdownUsingItemsFilterValueRaw,
     ],
   })
   .addCodeExampleStory(

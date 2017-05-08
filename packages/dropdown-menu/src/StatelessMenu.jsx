@@ -44,7 +44,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     itemsFilterValue: PropTypes.string,
     /** Called when an item is activated. Receives an object with the activated item */
     onItemActivated: PropTypes.func,
-    /** Called when the items filter value change. Receives the synthetic event.
+    /** Called when the items filter value change. Receives the filter's new value.
       * Should be used by the consumer to keep itemsFilterValue in sync*/
     onItemsFilterChange: PropTypes.func,
     /** Called when the menu should be open/closed. Received an object with isOpen state */

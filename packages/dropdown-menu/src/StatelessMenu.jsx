@@ -99,6 +99,9 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   componentDidUpdate = (prevProp) => {
     if (this.props.isOpen && !prevProp.isOpen) {
+      if(this.itemsFilterInputNode){
+        this.itemsFilterInputNode.focus();
+      }
       this.focusFirstItem();
     }
   }
@@ -148,7 +151,7 @@ export default class StatelessDropdownMenu extends PureComponent {
   }
 
   focusFirstItem = () => {
-    if (this.sourceOfIsOpen === 'keydown' || this.props.hasItemsFilter) {
+    if (this.sourceOfIsOpen === 'keydown') {
       this.focusItem(this.getNextFocusable());
     }
   }
@@ -162,39 +165,26 @@ export default class StatelessDropdownMenu extends PureComponent {
   }
 
   focusItem = (index) => {
-    if (index === 0 && this.props.hasItemsFilter) {
-      this.domItemsList[index].focus();
-    }
     this.setState({ focusedItem: index });
   }
 
-  isTargetChildItem = target => target && (target.getAttribute('data-role') === 'droplistItem') &&
-    ReactDOM.findDOMNode(this).contains(target) // eslint-disable-line react/no-find-dom-node
-
   handleKeyboardInteractions = (event) => {
     if (this.props.isOpen) {
-      if (this.isTargetChildItem(event.target)) {
-        switch (event.key) {
-          case 'ArrowUp':
-            event.preventDefault();
-            this.focusPreviousItem();
-            break;
-          case 'ArrowDown':
-            event.preventDefault();
-            this.focusNextItem();
-            break;
-          case 'Tab':
-            event.preventDefault();
-            this.close({ event });
-            break;
-          default:
-            break;
-        }
-      } else if (event.key === 'ArrowDown') {
-        this.sourceOfIsOpen = 'keydown';
-        this.focusFirstItem();
-      } else if (event.key === 'Tab') {
-        this.close({ event });
+      switch (event.key) {
+        case 'ArrowUp':
+          event.preventDefault();
+          this.focusPreviousItem();
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          this.focusNextItem();
+          break;
+        case 'Tab':
+          event.preventDefault();
+          this.close({event});
+          break;
+        default:
+          break;
       }
     } else {
       switch (event.key) {
@@ -228,12 +218,12 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   open = (attrs) => {
     this.sourceOfIsOpen = attrs.source;
-    this.props.onOpenChange({ isOpen: true, event: attrs.event });
+    this.onOpenChange({ isOpen: true, event: attrs.event });
   }
 
   close = (attrs) => {
     this.sourceOfIsOpen = null;
-    this.props.onOpenChange({ isOpen: false, event: attrs.event });
+    this.onOpenChange({ isOpen: false, event: attrs.event });
   }
 
   toggle = (attrs) => {
@@ -246,8 +236,15 @@ export default class StatelessDropdownMenu extends PureComponent {
     }
   }
 
+  onOpenChange = ({ isOpen, event }) => {
+    if(!isOpen) {
+      this.setState({ focusedItem: undefined });
+    }
+    this.props.onOpenChange({ isOpen, event });
+  }
+
   isItemFocused = (indexOffset, itemIndex) =>
-    this.state.focusedItem === indexOffset + itemIndex + (this.props.hasItemsFilter ? 1 : 0);
+    this.state.focusedItem === indexOffset + itemIndex;
 
   renderItems = (indexOffset, items) => items.map((item, itemIndex) =>
     <Item
@@ -263,9 +260,6 @@ export default class StatelessDropdownMenu extends PureComponent {
   )
 
   renderItemsFilter = () => {
-    const itemsFilterAttributes = {
-      'data-role': 'droplistItem',
-    };
     return (<div className={styles.menuItemsFilterContainer}>
       <FieldBase
         isFocused={this.props.isOpen}
@@ -273,7 +267,6 @@ export default class StatelessDropdownMenu extends PureComponent {
       >
         <div className={styles.menuItemsFilter}>
           <input
-            {...itemsFilterAttributes}
             onChange={this.handleItemsFilterOnChange}
             type="text"
             value={this.props.itemsFilterValue}
@@ -324,7 +317,7 @@ export default class StatelessDropdownMenu extends PureComponent {
         isOpen={props.isOpen}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyboardInteractions}
-        onOpenChange={props.onOpenChange}
+        onOpenChange={this.onOpenChange}
         position={props.position}
         shouldFlip={props.shouldFlip}
         trigger={this.renderTrigger()}

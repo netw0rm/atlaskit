@@ -11,7 +11,7 @@ export const checkWebpSupport = () : Promise<boolean> => {
   return new Promise((resolve) => {
     const img = new Image();
 
-    img.src = 'data:image/img;base64,UklGRi4AAABXRUJQVlA4TCEAAAAvAUAAEB8wAiMwAgSSNtse/cXjxyCCmrYNWPwmHRH9jwMA';
+    img.src = 'data:image/webp;base64,UklGRi4AAABXRUJQVlA4TCEAAAAvAUAAEB8wAiMwAgSSNtse/cXjxyCCmrYNWPwmHRH9jwMA';
     img.onload = img.onerror = () => {
       isSupported = img.height === 2;
 

@@ -56,6 +56,7 @@ export default class MobileNavigation extends PureComponent {
   }
 
   closeNav = () => {
+    window.scrollTo(0, 0);
     this.setState({
       navIsOpen: false,
     });

@@ -32,13 +32,11 @@ const buildHeaders = (requesterOptions: RequesterOptions, requestOptions: Reques
 
   if (requestOptions.responseType === 'image') {
     return checkWebpSupport().then(isWebpSupported => {
-      const webpAcceptHeader = 'image/webp,image/*,*/*;q=0.8'; // q=0.8 stands for 'quality factor' => http://stackoverflow.com/a/10496722
-      const accept = isWebpSupported ? webpAcceptHeader : null;
+      // q=0.8 stands for 'quality factor' => http://stackoverflow.com/a/10496722
+      const noWebpAcceptHeader = 'image/*,*/*;q=0.8';
+      const webpAcceptHeader = 'image/webp,image/*,*/*;q=0.8';
 
-      // Having an undefined value for the 'accept' property will add {accept: 'undefined'} to the headers
-      // which will cause the request to always fail, thats why we need to be more explicit
-      if (accept) { headers.accept = accept; }
-
+      headers.accept = isWebpSupported ? webpAcceptHeader : noWebpAcceptHeader;
       return headers;
     });
   }

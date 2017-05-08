@@ -39,7 +39,6 @@ export interface Props {
   editorView: EditorView;
   feedbackFormUrl?: string;
   onCancel?: () => void;
-  onInsertMention?: () => void;
   onInsertImage?: () => void;
   onSave?: () => void;
   packageVersion?: string;

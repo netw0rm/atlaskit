@@ -5,6 +5,8 @@ import {
   Schema,
   Plugin,
   PluginKey,
+  Slice,
+  Fragment
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
 import { isMarkAllowedAtPosition } from '../../utils';
@@ -190,6 +192,14 @@ export class MentionsState {
 
   setView(view: EditorView) {
     this.view = view;
+  }
+
+  isnertMentionQuery () {
+    const { state } = this.view;
+    const node = state.schema.text('@', [ state.schema.mark('mentionQuery') ]);
+    this.view.dispatch(
+      state.tr.replaceSelection(new Slice(Fragment.from(node), 0, 0))
+    );
   }
 }
 

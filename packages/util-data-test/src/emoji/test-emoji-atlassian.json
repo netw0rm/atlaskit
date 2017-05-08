@@ -15,6 +15,20 @@
       "shortName": ":areyoukiddingme:"
     },
     {
+      "id": "atlassian-boom",
+      "name": "boom",
+      "fallback": ":boom:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/boom.gif",
+        "height": 100,
+        "width": 100
+      },
+      "shortName": ":boom:"
+    },
+    {
       "id": "atlassian-chewie",
       "name": "chewie",
       "fallback": ":chewie:",
@@ -83,20 +97,6 @@
         "width": 64
       },
       "shortName": ":failed:"
-    },
-    {
-      "id": "atlassian-goldstar",
-      "name": "goldstar",
-      "fallback": ":goldstar:",
-      "type": "ATLASSIAN",
-      "category": "ATLASSIAN",
-      "order": -1,
-      "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/goldstar@4x.png",
-        "height": 80,
-        "width": 80
-      },
-      "shortName": ":goldstar:"
     },
     {
       "id": "atlassian-heart",

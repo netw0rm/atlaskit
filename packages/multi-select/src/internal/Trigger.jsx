@@ -27,7 +27,6 @@ export default class Trigger extends PureComponent {
           [styles.disabled]: this.props.isDisabled,
         }])}
         onClick={this.props.onClick}
-        tabIndex={this.props.isDisabled ? -1 : 0}
       >
         <div className={styles.content}>
           {this.props.children}

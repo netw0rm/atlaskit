@@ -286,8 +286,7 @@ export default class Editor extends PureComponent<Props, State> {
         mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       }
 
-      this.setState({ editorView });
-      this.focus();
+      this.setState({ editorView }, this.focus);
     } else {
       this.setState({ editorView: undefined });
     }

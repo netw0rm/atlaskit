@@ -48,7 +48,7 @@ export default class Item extends PureComponent {
     title: null,
     type: 'link',
     tooltipDescription: null,
-    tooltipPosition: 'right'
+    tooltipPosition: 'right',
   }
 
   getClasses = props => classNames(
@@ -85,7 +85,7 @@ export default class Item extends PureComponent {
   render() {
     const { props } = this;
 
-    const element = <Element
+    const element = (<Element
       className={this.getClasses(props)}
       handleClick={this.handleClick}
       handleKeyPress={this.handleKeyPress}
@@ -126,19 +126,20 @@ export default class Item extends PureComponent {
           ? <span className={styles.elemAfter}>{ props.elemAfter }</span>
           : null
       }
-    </Element>;
+    </Element>);
 
     return (
-      props.tooltipDescription
-        ? <span role="presentation">
-            <Tooltip
-              position={props.tooltipPosition}
-              description={props.tooltipDescription}
-            >
-              {element}
-            </Tooltip>
-          </span>
-      : <span role="presentation">
+      props.tooltipDescription ?
+        <span role="presentation">
+          <Tooltip
+            position={props.tooltipPosition}
+            description={props.tooltipDescription}
+          >
+            {element}
+          </Tooltip>
+        </span>
+      :
+        <span role="presentation">
           {element}
         </span>
     );

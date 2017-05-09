@@ -56,8 +56,8 @@ describe(`${name} - item`, () => {
     });
 
     it('should NOT render tooltip when tooltipDescription is empty', () => {
-      expect(mount(<Item/>).find(Tooltip).length).to.equal(0);
-      expect(mount(<Item tooltipPosition="left"/>).find(Tooltip).length).to.equal(0);
+      expect(mount(<Item />).find(Tooltip).length).to.equal(0);
+      expect(mount(<Item tooltipPosition="left" />).find(Tooltip).length).to.equal(0);
     });
   });
 

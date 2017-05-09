@@ -185,10 +185,11 @@ export default class Media extends PureComponent<MediaProps, State> {
     const { cardDimensions, item } = this.props;
     const { collection, id } = item.attrs;
 
-    if (!mediaProvider || !viewContext) {
+    if (!mediaProvider || !viewContext || id.indexOf('temporary:') === 0) {
       return <CardView
         status="loading"
         mediaItemType="file"
+        dimensions={cardDimensions}
       />;
     }
 

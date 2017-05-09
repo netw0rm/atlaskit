@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Card,
+  CardStatus,
   CardView,
   MediaIdentifier,
   UrlPreviewIdentifier,
@@ -37,21 +38,18 @@ export interface State extends MediaState {
  * Map media state status into CardView processing status
  * Media state status is more broad than CardView API so we need to reduce it
  */
-function mapMediaStatusIntoCardStatus(state: MediaState) {
+function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
   switch (state.status) {
     case 'ready':
+    case 'unknown':
       return 'complete';
 
     case 'processing':
     case 'unfinalized':
       return 'processing';
 
-    case 'unknown':
     case 'uploading':
-      // TODO: change this to uploading. Currently media-card doesn't have a concept of uploading
-      // Because of this progressbar is shown only for "complete" status
-      // @see https://jira.atlassian.com/browse/FIL-4175
-      return 'complete';
+      return 'uploading';
 
     // default case is to let TypeScript know that this function always returns a string
     case 'error':

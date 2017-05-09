@@ -6,7 +6,7 @@ import LinkIcon from '@atlaskit/icon/glyph/link';
 
 import { CardLoading } from '../../src/utils';
 
-describe('CardLoading', () => {
+describe.skip('CardLoading', () => {
   it('should render the right icon based on the itemType', () => {
     const fileLoading = shallow(<CardLoading mediaItemType="file" />);
     const linkLoading = shallow(<CardLoading mediaItemType="link" />);

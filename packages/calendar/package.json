@@ -16,8 +16,8 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/icon": "^1.0.0",
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/util-shared-styles": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "calendar-base": "^0.3.0",
     "keycode": "^2.1.7"

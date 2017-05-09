@@ -12,9 +12,9 @@ chai.use(chaiPlugin);
 
 describe('text-formatting input rules', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any, schema: any = defaultSchema) => makeEditor({
     doc,
-    plugins: textFormattingPlugins(defaultSchema),
+    plugins: textFormattingPlugins(schema),
     place: fixture()
   });
 
@@ -159,6 +159,21 @@ describe('text-formatting input rules', () => {
   });
 
   describe('nested rules', () => {
+    it('should work without code-mark in the schema', () => {
+      const simpleSchema = {
+        ...defaultSchema,
+        marks: {
+          strong: defaultSchema.marks.strong
+        }
+      };
+
+      const { editorView, sel } = editor(doc(p('{<>}')), simpleSchema);
+
+      insertText(editorView, '**text**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
+    });
+
     it('should convert "*`text`*" to italic code text', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 

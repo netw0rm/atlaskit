@@ -61,8 +61,23 @@ describe('EmojiLoader', () => {
       });
     });
 
+    it('is only passed a baseUrl with no params or securityProvider', () => {
+      const simpleProvider: ServiceConfig = {
+        url: p1Url,
+      };
+      fetchMock.mock({
+        matcher: `${simpleProvider.url}`,
+        response: fetchResponse(providerData1),
+      });
+
+      const resource = new EmojiLoader(simpleProvider);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
     it('can handle when a version is specified in the query params', () => {
-      const v2QueryParams = '?maxVersion=2';
+      const params = '?maxVersion=2';
       const providerData2 = [
         { id: 'A' },
         { id: 'B' },
@@ -70,12 +85,14 @@ describe('EmojiLoader', () => {
         { id: 'C' },
       ];
       fetchMock.mock({
-        matcher: `end:${v2QueryParams}`,
+        matcher: `end:${params}`,
         response: fetchResponse(providerData2),
       });
 
-      const provider2 = provider1;
-      provider2.url += v2QueryParams;
+      const provider2 = {
+        ...provider1,
+        url: `${provider1.url}${params}`
+      };
 
       const resource = new EmojiLoader(provider2);
       return resource.loadEmoji().then((emojiResponse) => {

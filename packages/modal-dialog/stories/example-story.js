@@ -10,6 +10,7 @@ import { name } from '../package.json';
 import ModalDialog from '../src';
 import ModalDemo from './ModalDemo';
 import SubmitDemo from './SubmitDemo';
+import ShowHideDemo from './ShowHideDemo';
 
 storiesOf(name, module)
   .add('simple modal', () => <ModalDemo />)
@@ -191,4 +192,7 @@ storiesOf(name, module)
         </div>
       </div>
     </ModalDialog>
+  ))
+  .add('width animated entry/exit', () => (
+    <ShowHideDemo />
   ));

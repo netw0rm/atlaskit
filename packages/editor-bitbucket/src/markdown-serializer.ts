@@ -129,9 +129,16 @@ const nodes = {
     const previousNodeIsAMention = (previousNode && previousNode.type === schema.nodes.mention);
     const currentNodeStartWithASpace = (node.textContent.indexOf(' ') === 0);
     const trimTrailingWhitespace = (previousNodeIsAMention && currentNodeStartWithASpace);
-    const text = trimTrailingWhitespace
+    let text = trimTrailingWhitespace
       ? node.textContent.replace(' ', '') // only first blank space occurrence is replaced
       : node.textContent;
+
+    // BB converts 4 spaces at the beginning of the line to code block
+    // that's why we escape 4 spaces with zero-width-non-joiner
+    const fourSpaces = '    ';
+    if (!previousNode && /^\s{4}/.test(node.textContent)) {
+      text = node.textContent.replace(fourSpaces, '\u200c' + fourSpaces);
+    }
 
     const lines = text.split('\n');
     for (let i = 0; i < lines.length; i++) {

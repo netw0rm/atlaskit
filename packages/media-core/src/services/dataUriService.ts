@@ -50,7 +50,7 @@ export class MediaDataUriService implements DataUriService {
     return this.request({
       url,
       params,
-      responseType: 'blob'
+      responseType: 'image'
     })
       .then(this.readBlob);
   }

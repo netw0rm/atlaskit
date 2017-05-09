@@ -5,6 +5,8 @@ import {
   akColorN40,
 } from '@atlaskit/util-shared-styles';
 
+export const defaultEmojiHeight = 24;
+
 export const emojiPickerWidth = 350;
 export const emojiPickerHeight = 295;
 export const emojiPickerListWidth = 350;

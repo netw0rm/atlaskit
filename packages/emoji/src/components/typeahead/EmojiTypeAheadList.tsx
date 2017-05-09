@@ -141,16 +141,19 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
 
   private selectByEmojiId(emojiId: EmojiId, callback?: () => any) {
     const { emojis } = this.props;
-    let index = -1;
     for (let i = 0; i < emojis.length; i++) {
       const emoji = emojis[i];
-      if (emoji.id === emojiId.id || emoji.shortName === emojiId.shortName) {
-        index = i;
-        break;
+      if (emoji.id === emojiId.id) {
+        this.selectIndex(i, callback);
+        return;
       }
     }
-    if (index >= 0) {
-      this.selectIndex(index, callback);
+    for (let i = 0; i < emojis.length; i++) {
+      const emoji = emojis[i];
+      if (emoji.shortName === emojiId.shortName) {
+        this.selectIndex(i, callback);
+        return;
+      }
     }
   }
 

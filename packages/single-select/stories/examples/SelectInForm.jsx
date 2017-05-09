@@ -73,6 +73,16 @@ export default (
       shouldFitContainer
       hasAutocomplete
     />
+    <Select
+      id="colors_id"
+      items={cities}
+      label="Disabled autocomplete field"
+      name="disabled-autocomplete"
+      placeholder="Select city"
+      shouldFitContainer
+      hasAutocomplete
+      isDisabled
+    />
     <div style={{ margin: '20px 0' }}>
       <Button type="submit">Submit allthethings!</Button>
     </div>

@@ -12,3 +12,4 @@ export const WIDTH_ENUM = {
   },
   defaultValue: 'medium',
 };
+export const modalAnimationDuration = 0.25;

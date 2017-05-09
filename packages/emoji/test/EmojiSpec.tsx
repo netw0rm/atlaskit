@@ -39,7 +39,7 @@ describe('<Emoji />', () => {
     it('should be selected', () => {
       const wrapper = shallow(<Emoji
         emoji={spriteEmoji}
-        selected
+        selected={true}
       />);
 
       expect((wrapper.find(`.${styles.emojiContainer}`)).hasClass((styles.selected))).to.equal(true);
@@ -52,18 +52,18 @@ describe('<Emoji />', () => {
         emoji={imageEmoji}
       />);
 
-      const sprite = wrapper.find(`.${styles.emoji}`);
-      expect((sprite.prop('style') || {}).backgroundImage).to.equal('url(https://path-to-image.png)');
+      const image = wrapper.find(`.${styles.emoji} img`);
+      expect((image.prop('src') || {})).to.equal('https://path-to-image.png');
     });
 
     it('should be selected', () => {
       const wrapper = shallow(<Emoji
         emoji={imageEmoji}
-        selected
+        selected={true}
       />);
 
-      const sprite = wrapper.find(`.${styles.emoji}`);
-      expect((sprite).hasClass((styles.selected))).to.equal(true);
+      const image = wrapper.find(`.${styles.emoji}`);
+      expect((image).hasClass((styles.selected))).to.equal(true);
     });
   });
 });

@@ -85,20 +85,21 @@ const renderAsImage = (props: Props) => {
 
   const representation = emoji.representation as ImageRepresentation;
 
-  const style = {
-    backgroundImage: `url(${representation.imagePath})`,
-  };
-
   return (
     <span
       className={classNames(classes)}
       title={emoji.shortName}
-      style={style}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
-    />
+    >
+      <img
+        src={representation.imagePath}
+        alt={emoji.shortName}
+        title={emoji.shortName}
+      />
+    </span>
   );
 };
 

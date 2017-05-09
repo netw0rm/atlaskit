@@ -93,6 +93,14 @@ storiesOf(`${name}-resourced`, module)
       />
     </div>
   ))
+  .add('mock api w/o cloud-id', () => (
+    <div style={canvasStyle}>
+      <AkProfilecardResourced
+        userId={3}
+        resourceClient={mockClient}
+      />
+    </div>
+  ))
   .add('mock api w/ error response', () => (
     <div style={canvasStyle}>
       <AkProfilecardResourced

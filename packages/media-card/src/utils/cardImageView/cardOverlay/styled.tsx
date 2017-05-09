@@ -256,14 +256,6 @@ export const Retry = styled.div`
   white-space: nowrap;
 `;
 
-export const DropdownWrapper = styled.div`
-  position: absolute;
-  z-index: 100;
-  left: calc(100% - 40px);
-  top: 100%;
-  display: block;
-`;
-
 export const TitleWrapper = styled.div`
   box-sizing: border-box;
   word-wrap: break-word;

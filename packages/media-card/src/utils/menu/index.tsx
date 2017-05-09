@@ -1,86 +1,80 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import * as cx from 'classnames';
 import {CardAction, CardActionType, CardEventHandler} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Icon from '@atlaskit/icon';
+import DropdownMenu from '@atlaskit/dropdown-menu';
 
-import {Dropdown} from './dropdown';
 import {
   Wrapper,
-  MeatballsButton,
-  DropdownWrapper,
-  DeleteBtn
+  DeleteBtn,
+  MeatBallsWrapper
 } from './styled';
 
 export interface MenuProps {
   actions?: Array<CardAction>;
-  onToggle?: (newState: MenuState) => void;
+  onToggle?: (attrs: {isOpen: boolean}) => void;
 
   deleteBtnColor?: string;
 }
 
-export interface MenuState {
-  isExpanded: boolean;
-}
-
-export class Menu extends Component<MenuProps, MenuState> {
-  private clickDetector: (e: Event) => void;
-
+export class Menu extends Component<MenuProps, {}> {
   static defaultProps = {
     actions: [],
     onToggle: () => null
   };
 
-  constructor(props: MenuProps) {
-    super(props);
-
-    this.state = { isExpanded: false };
-  }
-
   render() {
+    const actions = this.props.actions || [];
+
+    if (!actions.length) { return null; }
+
+    const content = this.shouldRenderDeleteButton(actions) ? this.renderDeleteButton(actions[0]) : this.renderDropdown(actions);
+
     return (
       <Wrapper>
-        {this.actionBtn()}
-        {this.dropdown()}
+        {content}
       </Wrapper>
     );
   }
 
-  private actionBtn() {
-    const actions = this.props.actions || [];
-
-    if (!actions.length) {
-      return null;
-    }
-
-    if (this.shouldRenderDeleteButton()) {
-      const deleteAction = actions[0];
-
-      return (
-        <DeleteBtn onClick={this.deleteBtnClick(deleteAction.handler)} style={{color: this.props.deleteBtnColor}} >
-          <Icon glyph={CrossIcon} label="cross" />
-        </DeleteBtn>
-      );
-    }
-
-    const {isExpanded} = this.state;
-    const meatballBtnClasses: string = cx('more-btn', {active: isExpanded});
-
+  private renderDeleteButton(action) {
     return (
-      <MeatballsButton
-        className={meatballBtnClasses}
-        onClick={this.meatballBtnClick}
-      >
-        <Icon glyph={MoreIcon} label="more"/>
-      </MeatballsButton>
+      <DeleteBtn onClick={this.deleteBtnClick(action.handler)} style={{color: this.props.deleteBtnColor}} >
+        <Icon glyph={CrossIcon} label="cross" />
+      </DeleteBtn>
     );
   }
 
-  private shouldRenderDeleteButton() {
-    const actions = this.props.actions || [];
+  private renderDropdown(actions: Array<CardAction>) {
+    const items = actions.map(i => ({content: i.label, handler: i.handler}));
+    const dropdownItems = [{items}];
+
+    return (
+      <DropdownMenu
+        items={dropdownItems}
+        onOpenChange={this.props.onToggle}
+        onItemActivated={this.onItemActivated}
+        triggerType="button"
+        triggerButtonProps={{
+          appearance: 'subtle',
+          iconBefore: this.renderIconBefore()
+        }}
+      />
+    );
+  }
+
+  private shouldRenderDeleteButton(actions: Array<CardAction>) {
     return actions.length === 1 && actions[0].type === CardActionType.delete;
+  }
+
+  private renderIconBefore = () => {
+    return (
+      <MeatBallsWrapper>
+        <Icon glyph={MoreIcon} label="more"/>
+      </MeatBallsWrapper>
+    );
   }
 
   private deleteBtnClick(handler: CardEventHandler) {
@@ -90,52 +84,8 @@ export class Menu extends Component<MenuProps, MenuState> {
     };
   }
 
-  private meatballBtnClick = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-
-    const {isExpanded} = this.state;
-
-    if (isExpanded) {    // we should remove handlers
-      document.removeEventListener('click', this.clickDetector);
-    } else {    // we should add handlers on clicking outside of element
-      this.clickDetector = this.newClickDetector.bind(this);
-      document.addEventListener('click', this.clickDetector);
-    }
-
-    this.updateStateAndFireToggleEvent();
-  }
-
-  private newClickDetector(e: Event) {
-    this.updateStateAndFireToggleEvent();
-    document.removeEventListener('click', this.clickDetector);
-  }
-
-  private updateStateAndFireToggleEvent() {
-    // explicit cast required as tsc does not pickup on default props
-    const onToggle = this.props.onToggle as (newState: MenuState) => void;
-    const {isExpanded} = this.state;
-
-    const newState = {isExpanded: !isExpanded};
-    this.setState(newState);
-    onToggle(newState);
-  }
-
-  private dropdown() {
-    const {isExpanded} = this.state;
-
-    if (!isExpanded) {
-      return null;
-    }
-
-    return (
-      <DropdownWrapper onClick={this.dropdownClick}>
-        <Dropdown items={this.props.actions}/>
-      </DropdownWrapper>
-    );
-  }
-
-  private dropdownClick(e: MouseEvent<HTMLDivElement>) {
-    e.preventDefault();
+  private onItemActivated = (attrs) => {
+    if (attrs.item && attrs.item.handler) { attrs.item.handler(); }
   }
 }
 

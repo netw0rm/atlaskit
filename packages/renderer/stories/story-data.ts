@@ -5,9 +5,10 @@ const toEmojiId = (emoji) => {
   return { shortName, id, fallback };
 };
 
-const { emojiTestData } = emojiData;
-const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
-const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+const { emojiTestData, emojiStoryData } = emojiData;
+export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
+export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+export const lorem = emojiStoryData.lorem;
 
 export const document = {
   type: 'doc',

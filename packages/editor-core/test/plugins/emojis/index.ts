@@ -61,7 +61,7 @@ describe('emojis', () => {
 
         forceUpdate(editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'ArrowUp');
-        expect(spy.called).to.equal(false);
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
       it('should be ignored if there is no active query', () => {
@@ -74,7 +74,7 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'ArrowUp');
-            expect(spy.called).to.equal(false);
+            expect(spy.called, 'was not called').to.equal(false);
           });
       });
 
@@ -88,8 +88,8 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'ArrowUp');
-            expect(spy.called, 'Was called').to.equal(true);
-            expect(spy.returned(false), 'Return value').to.equal(true);
+            expect(spy.called, 'was called').to.equal(true);
+            expect(spy.returned(false), 'return value').to.equal(true);
           });
       });
     });
@@ -101,7 +101,7 @@ describe('emojis', () => {
 
         forceUpdate(editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'ArrowDown');
-        expect(spy.called).to.equal(false);
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
       it('should be ignored if there is no active query', () => {
@@ -114,7 +114,7 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'ArrowDown');
-            expect(spy.called).to.equal(false);
+            expect(spy.called, 'was not called').to.equal(false);
           });
       });
 
@@ -128,8 +128,8 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'ArrowDown');
-            expect(spy.called).to.equal(true);
-            expect(spy.returned(false)).to.equal(true);
+            expect(spy.called, 'was called').to.equal(true);
+            expect(spy.returned(false), 'return vale').to.equal(true);
           });
       });
     });
@@ -141,7 +141,7 @@ describe('emojis', () => {
 
         forceUpdate(editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Enter');
-        expect(spy.called).to.equal(false);
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
       it('should be ignored if there is no active query', () => {
@@ -154,7 +154,7 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'Enter');
-            expect(spy.called).to.equal(false);
+            expect(spy.called, 'was not called').to.equal(false);
           });
       });
 
@@ -168,8 +168,8 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'Enter');
-            expect(spy.called).to.equal(true);
-            expect(spy.returned(false)).to.equal(true);
+            expect(spy.called, 'was called').to.equal(true);
+            expect(spy.returned(false), 'return value').to.equal(true);
           });
       });
     });
@@ -181,7 +181,7 @@ describe('emojis', () => {
 
         forceUpdate(editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Space');
-        expect(spy.called).to.equal(false);
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
       it('should be ignored if there is no active query', () => {
@@ -194,7 +194,7 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'Space');
-            expect(spy.called).to.equal(false);
+            expect(spy.called, 'was not called').to.equal(false);
           });
       });
 
@@ -208,8 +208,8 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'Space');
-            expect(spy.called).to.equal(true);
-            expect(spy.returned(false)).to.equal(true);
+            expect(spy.called, 'was called').to.equal(true);
+            expect(spy.returned(false), 'return value').to.equal(true);
           });
       });
     });
@@ -221,7 +221,7 @@ describe('emojis', () => {
 
         forceUpdate(editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Esc');
-        expect(spy.called).to.equal(false);
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
       it('should be ignored if there is no active query', () => {
@@ -234,7 +234,7 @@ describe('emojis', () => {
             forceUpdate(editorView); // Force update to ensure active query.
 
             sendKeyToPm(editorView, 'Esc');
-            expect(spy.called).to.equal(false);
+            expect(spy.called, 'was not called').to.equal(false);
           });
       });
 
@@ -247,8 +247,8 @@ describe('emojis', () => {
           .then(() => {
             forceUpdate(editorView); // Force update to ensure active query.
             sendKeyToPm(editorView, 'Esc');
-            expect(spy.called).to.equal(true);
-            expect(spy.returned(true)).to.equal(true);
+            expect(spy.called, 'was called').to.equal(true);
+            expect(spy.returned(true), 'return value').to.equal(true);
           });
       });
     });
@@ -266,7 +266,7 @@ describe('emojis', () => {
         id: '1234'
       });
 
-      expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(emojiNode);
+      expect(editorView.state.doc.nodeAt(1), 'emoji node').to.be.of.nodeSpec(emojiNode);
     });
 
     it('should insert a space after the emoji-node', () => {
@@ -274,7 +274,7 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc).to.deep.equal(
+      expect(editorView.state.doc, 'document').to.deep.equal(
         doc(
           p(
             emoji(grinEmojiId),
@@ -297,7 +297,7 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(evilburnsEmojiId);
 
-      expect(editorView.state.doc).to.deep.equal(
+      expect(editorView.state.doc, 'document').to.deep.equal(
         doc(
           p(
             emoji(grinEmojiId),
@@ -314,7 +314,7 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc).to.deep.equal(
+      expect(editorView.state.doc, 'document').to.deep.equal(
         doc(
           p(
             br,
@@ -336,7 +336,7 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc).to.deep.equal(
+      expect(editorView.state.doc, 'document').to.deep.equal(
         doc(
           p(
             ul(
@@ -366,7 +366,7 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc).to.deep.equal(
+      expect(editorView.state.doc, 'document').to.deep.equal(
         doc(
           blockquote(
             p(
@@ -378,8 +378,8 @@ describe('emojis', () => {
         )
       );
 
-      expect(editorView.state.doc.nodeAt(8)).to.be.of.nodeSpec(emojiNode);
-      expect(editorView.state.doc.nodeAt(10)).to.equal(null);
+      expect(editorView.state.doc.nodeAt(8), 'emoji node').to.be.of.nodeSpec(emojiNode);
+      expect(editorView.state.doc.nodeAt(10), 'no node').to.equal(null);
     });
   });
 

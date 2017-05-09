@@ -13,7 +13,7 @@ const colors = {
 
 const ContainerTitleText = styled.div`
   color: ${({ theme }) => colors[theme[themeVariables.appearance]]};
-  font-weight: 500;
+  font-weight: 600;
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

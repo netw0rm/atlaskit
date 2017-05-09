@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon, CrossIcon, DashboardIcon } from '@atlaskit/icon';
+import { AtlassianIcon, CrossIcon, DashboardIcon, SearchIcon } from '@atlaskit/icon';
 import { AkSearch, AkNavigationItem } from '../../src/index';
 
 const data = [
@@ -109,6 +109,7 @@ export default class BasicSearch extends PureComponent {
     return (
       <AkSearch
         clearIcon={<CrossIcon label="clear" size="medium" />}
+        searchIcon={<SearchIcon label="search" size="small" />}
         onChange={({ target }) => { this.setQuery(target.value); }}
         onSearchClear={() => { this.setQuery(''); }}
         value={this.state.query}

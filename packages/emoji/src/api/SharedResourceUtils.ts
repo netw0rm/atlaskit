@@ -1,4 +1,5 @@
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+import * as URL from 'url';
 
 import debug from '../util/logger';
 
@@ -33,7 +34,7 @@ export interface ServiceConfig {
 }
 
 const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions | undefined): string => {
-  const searchParam = new URLSearchParams(new URL(baseUrl).search);
+  const searchParam = new URLSearchParams(URL.parse(baseUrl).search);
   baseUrl = baseUrl.split('?')[0];
   for (const key in data) { // eslint-disable-line no-restricted-syntax
     if ({}.hasOwnProperty.call(data, key)) {

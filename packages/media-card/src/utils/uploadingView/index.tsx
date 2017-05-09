@@ -1,5 +1,6 @@
 import * as React from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Icon from '@atlaskit/icon';
 import {ProgressBar} from '../progressBar';
 import {MediaImage} from '../mediaImage';
 import {Ellipsify} from '../ellipsify';
@@ -24,7 +25,7 @@ export const UploadingView = ({title, progress, dataURI, onCancel}: UploadingVie
           </ProgressWrapper>
           {onCancel && (
             <IconLink onClick={onCancel}>
-              <CrossIcon label="Cancel upload"/>
+              <Icon glyph={CrossIcon} label="Cancel upload"/>
             </IconLink>
           )}
         </Body>

@@ -63,7 +63,7 @@ export default class PanelEdit extends PureComponent<Props, State> {
                 }
                 selected={activePanelType === panelType.panelType}
                 onClick={this.handleSelectPanelType.bind(this, panelType)}
-                iconBefore={<Icon label={`change panel type to ${panelType.panelType}`} />}
+                iconBefore={<Icon label={`Change panel type to ${panelType.panelType}`} />}
               />
             );
           })}
@@ -71,7 +71,7 @@ export default class PanelEdit extends PureComponent<Props, State> {
             <ToolbarButton
               wrapperClassName={styles.buttonWrapperStyle}
               onClick={this.handleRemovePanelType}
-              iconBefore={<RemoveIcon label="remove panel type" />}
+              iconBefore={<RemoveIcon label="Remove panel type" />}
             />
           </span>
         </FloatingToolbar>

@@ -99,9 +99,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
               disabled={codeDisabled && strikeDisabled && clearFormattingDisabled}
               iconBefore={
                 <div className={styles.triggerWrapper}>
-                  <AdvancedIcon label="open or close advance text formatting dropdown" />
+                  <AdvancedIcon label="Open or close advance text formatting dropdown" />
                   <div className={styles.expandIcon}>
-                    <ExpandIcon label="open or close advance text formatting dropdown" />
+                    <ExpandIcon label="Open or close advance text formatting dropdown" />
                   </div>
                 </div>}
             />

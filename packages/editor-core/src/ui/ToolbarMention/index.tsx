@@ -36,7 +36,7 @@ export default class ToolbarMention extends PureComponent<Props, State> {
         onClick={this.handleInsertMention}
         disabled={disabled}
         title="Mention a person (@)"
-        iconBefore={<MentionIcon label="add mention" />}
+        iconBefore={<MentionIcon label="Add mention" />}
       />
     );
   }

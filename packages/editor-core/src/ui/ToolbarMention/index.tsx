@@ -49,6 +49,6 @@ export default class ToolbarMention extends PureComponent<Props, State> {
 
   @analytics('atlassian.editor.mention.button')
   private handleInsertMention = () => {
-    this.props.pluginState.isnertMentionQuery();
+    this.props.pluginState.insertMentionQuery();
   }
 }

@@ -182,18 +182,13 @@ export default class EmojiRepository {
         return 1;
       }
 
-      // Use order for shorter queries with default order values assigned on initialisation
-      if (query.length < 3) {
-        return e1.order! - e2.order!;
-      }
-
       // shortName matches should take precedence over full name
       const short1 = e1.shortName.indexOf(query);
       const short2 = e2.shortName.indexOf(query);
 
-      // Lexicographic order used for both matching on first token
-      if (short1 === 1 && short2 === 1) {
-        return e1.shortName.slice(0, -1).localeCompare(e2.shortName.slice(0, -1));
+      // Order used for matching on same index and shorter queries with default value assigned on initialisation
+      if (query.length < 3 || short1 !== -1 && short1 === short2) {
+        return e1.order! - e2.order!;
       } else if (short1 !== -1 && short2 !== -1) {
         return short1 - short2;
       } else if (short1 !== -1) {

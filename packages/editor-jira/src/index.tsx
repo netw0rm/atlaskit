@@ -104,7 +104,7 @@ export default class Editor extends PureComponent<Props, State> {
   focus(): void {
     const { editorView } = this.state;
 
-    if (editorView) {
+    if (editorView && !editorView.hasFocus()) {
       editorView.focus();
     }
   }
@@ -286,8 +286,7 @@ export default class Editor extends PureComponent<Props, State> {
         mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       }
 
-      this.setState({ editorView });
-      this.focus();
+      this.setState({ editorView }, this.focus);
     } else {
       this.setState({ editorView: undefined });
     }

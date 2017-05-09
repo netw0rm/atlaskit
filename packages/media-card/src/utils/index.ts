@@ -19,7 +19,6 @@ export * from './errorIcon';
 export * from './fileIcon';
 export * from './menu';
 export * from './placeholder';
-export * from './progressBar';
 export * from './isRetina';
 export * from './ellipsify';
 export * from './mediaImage';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
-import { SharedCardProps, CardProcessingStatus } from '../..';
+import { SharedCardProps, CardStatus } from '../..';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
@@ -9,7 +9,7 @@ import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
 
 export interface LinkCardProps extends SharedCardProps {
-  status: CardProcessingStatus;
+  status: CardStatus;
   details?: UrlPreview;
 }
 
@@ -121,7 +121,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private renderLinkCardImage(): JSX.Element {
     const { url, title, site } = this.urlPreview;
-    const { dimensions, actions, appearance } = this.props;
+    const { status, dimensions, actions, appearance } = this.props;
     const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return (
@@ -133,7 +133,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         thumbnailUrl={this.thumbnailUrl}
         appearance={appearance}
         dimensions={dimensions}
-        loading={this.isLoading}
+        status={status}
         actions={actions}
         iconUrl={this.iconUrl}
       />

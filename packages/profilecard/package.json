@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "config": {
     "access": "public"
   },

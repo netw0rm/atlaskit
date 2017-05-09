@@ -7,6 +7,19 @@ import {
  } from '@atlaskit/util-shared-styles';
 import focusRingMixin from '../../utils/focus-ring-mixin';
 
+const interactiveStyles = `
+  ${focusRingMixin()}
+
+  &:hover {
+    background: ${akColorN20A};
+  }
+
+  &:active {
+    background: ${akColorB50};
+    color: ${akColorB400};
+  }
+`;
+
 const SearchClearButton = styled.button`
   display: flex;
   align-items: center;
@@ -21,16 +34,7 @@ const SearchClearButton = styled.button`
   outline: none;
   color: inherit;
 
-  ${focusRingMixin()}
-
-  &:hover {
-    background: ${akColorN20A};
-  }
-
-  &:active {
-    background: ${akColorB50};
-    color: ${akColorB400};
-  }
+  ${props => (props.disabled ? '' : interactiveStyles)}
 `;
 
 SearchClearButton.displayName = 'SearchClearButton';

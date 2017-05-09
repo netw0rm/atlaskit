@@ -8,12 +8,13 @@ import SearchInput from '../styled/SearchInput';
 
 export default class Search extends PureComponent {
   static propTypes = {
-    placeholder: PropTypes.string,
-    clearIcon: PropTypes.node,
     children: PropTypes.node,
+    clearIcon: PropTypes.node.isRequired,
+    placeholder: PropTypes.string,
+    searchIcon: PropTypes.node.isRequired,
+    value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     onSearchClear: PropTypes.func,
-    value: PropTypes.string,
   }
 
   static defaultProps = {
@@ -66,10 +67,16 @@ export default class Search extends PureComponent {
   render() {
     const {
       children,
+      clearIcon,
       value,
       onChange,
       placeholder,
+      searchIcon,
     } = this.props;
+
+    const canBeCleared = Boolean(value && value.length);
+    const clearButtonIcon = canBeCleared ? clearIcon : searchIcon;
+
     return (
       <SearchInner>
         <SearchBox
@@ -93,11 +100,12 @@ export default class Search extends PureComponent {
               by pressing 'Escape'.
             */}
             <SearchClearButton
+              disabled={!canBeCleared}
               type="button"
               tabIndex="-1"
               innerRef={this.setClearButtonRef}
             >
-              {this.props.clearIcon}
+              {clearButtonIcon}
             </SearchClearButton>
           </SearchClearButtonOuter>
         </SearchBox>

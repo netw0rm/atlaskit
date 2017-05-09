@@ -185,8 +185,9 @@ export default class BasicNavigation extends PureComponent {
           >
             {
               this.props.searchDrawerContent ?
-              this.props.searchDrawerContent :
-              <BasicSearch />
+              this.props.searchDrawerContent : (
+                <BasicSearch />
+              )
             }
           </AkSearchDrawer>),
           (<AkCreateDrawer

@@ -1,4 +1,5 @@
 import React from 'react';
+import { CrossIcon, SearchIcon } from '@atlaskit/icon';
 import { mount } from 'enzyme';
 import Search from '../src/components/js/Search';
 
@@ -19,6 +20,53 @@ describe('Search', () => {
     const wrapper = mount(<Search />);
 
     expect(isInputFocused(wrapper)).to.equal(true);
+  });
+
+  describe('clear button icon', () => {
+    describe('has input', () => {
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = mount(
+          <Search
+            clearIcon={<CrossIcon label="Clear" />}
+            searchIcon={<SearchIcon label="Search" />}
+            value="hello"
+          />
+        );
+      });
+
+      it('should be enabled', () => {
+        expect(wrapper.find('SearchClearButton').props().disabled).to.equal(false);
+      });
+
+      it('should display the clearIcon', () => {
+        expect(wrapper.find('SearchClearButton').find(CrossIcon).length).to.equal(1);
+        expect(wrapper.find('SearchClearButton').find(SearchIcon).length).to.equal(0);
+      });
+    });
+
+    describe('no input', () => {
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = mount(
+          <Search
+            clearIcon={<CrossIcon label="Clear" />}
+            searchIcon={<SearchIcon label="Search" />}
+          />
+        );
+      });
+
+      it('should be disabled', () => {
+        expect(wrapper.find('SearchClearButton').props().disabled).to.equal(true);
+      });
+
+      it('should display the searchIcon', () => {
+        expect(wrapper.find('SearchClearButton').find(SearchIcon).length).to.equal(1);
+        expect(wrapper.find('SearchClearButton').find(CrossIcon).length).to.equal(0);
+      });
+    });
   });
 
   describe('clearing input', () => {

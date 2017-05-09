@@ -26,7 +26,7 @@
     "@atlaskit/droplist-group": "^1.0.0",
     "@atlaskit/droplist-item": "^1.0.0",
     "@atlaskit/field-text": "^2.6.1",
-    "@atlaskit/icon": "^2.4.0",
+    "@atlaskit/icon": "^6.5.2",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "@types/bytes": "^2.4.33",
     "axios": "^0.15.3",

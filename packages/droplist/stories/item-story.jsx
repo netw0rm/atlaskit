@@ -154,5 +154,18 @@ storiesOf(`${name} - item`, module)
         </div>
       </div>
     </div>
-  ));
+  ))
+  .addCodeExampleStory('with a tooltip', () => (
+    <div className={styles.storiesContainer}>
+      <p>Hover over each item to reveal tooltips:</p>
+      <div className={styles.itemsNarrowContainer}>
+        <Item tooltipDescription="I'm a tooltip">Tooltip on the right (default)</Item>
+        <Item tooltipDescription="I'm a tooltip" tooltipPosition="left">Tooltip on the left</Item>
+        <Item tooltipDescription="I'm a tooltip" tooltipPosition="top">Tooltip on top</Item>
+        <Item tooltipDescription="I'm a tooltip" tooltipPosition="bottom">Tooltip at the bottom</Item>
+      </div>
+    </div>
+  ), { imports })
+
+;
 

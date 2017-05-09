@@ -19,10 +19,10 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "@atlaskit/icon": "^1.0.0",
+    "@atlaskit/icon": "^6.5.2",
     "@atlaskit/inline-dialog": "^3.0.0",
-    "@atlaskit/spinner": "^1.0.1",
-    "@atlaskit/util-shared-styles": "^1.0.1",
+    "@atlaskit/spinner": "^2.2.1",
+    "@atlaskit/util-shared-styles": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },

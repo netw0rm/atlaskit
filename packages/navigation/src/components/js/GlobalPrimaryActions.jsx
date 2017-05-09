@@ -9,7 +9,6 @@ import GlobalPrimaryActionsItemsWrapper from '../styled/GlobalPrimaryActionsItem
 export default class GlobalPrimaryActions extends PureComponent {
   static propTypes = {
     createIcon: PropTypes.node,
-    isVisible: PropTypes.bool,
     linkComponent: PropTypes.func,
     onCreateActivate: PropTypes.func,
     onSearchActivate: PropTypes.func,
@@ -19,14 +18,12 @@ export default class GlobalPrimaryActions extends PureComponent {
   };
 
   static defaultProps = {
-    isVisible: true,
     linkComponent: DefaultLinkComponent,
   }
 
   render() {
     const {
       createIcon,
-      isVisible,
       linkComponent,
       onCreateActivate,
       onSearchActivate,
@@ -35,7 +32,7 @@ export default class GlobalPrimaryActions extends PureComponent {
       searchIcon,
     } = this.props;
     return (
-      <GlobalPrimaryActionsInner isVisible={isVisible}>
+      <GlobalPrimaryActionsInner>
         {primaryIcon ?
           <GlobalPrimaryActionsPrimaryItem>
             <GlobalItem

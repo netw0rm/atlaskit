@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { globalVerticalPaddingTop, globalOpenWidth } from '../../shared-variables';
+import { layout } from '../../shared-variables';
 
 const DrawerSide = styled.div`
   align-items: center;
@@ -7,9 +7,9 @@ const DrawerSide = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  padding: ${globalVerticalPaddingTop}px 0 ${globalVerticalPaddingTop * 2}px 0;
+  padding: ${layout.padding.top}px 0;
   position: relative;
-  width: ${globalOpenWidth}px;
+  width: ${layout.width.closed}px;
 `;
 
 DrawerSide.displayName = 'DrawerSide';

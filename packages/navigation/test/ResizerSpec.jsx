@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Resizer from '../src/components/js/Resizer';
-import { navigationOpenWidth } from '../src/shared-variables';
+import { standardOpenWidth, globalOpenWidth } from '../src/shared-variables';
 
 describe('<Resizer />', () => {
   describe('interacting', () => {
@@ -42,45 +42,46 @@ describe('<Resizer />', () => {
     it('when navigationWidth=0, <ResizerButton /> points right', () => {
       expect(mount(<Resizer navigationWidth={0} />).find('ResizerButton').props().isPointingRight).equal(true);
     });
-    it(`when navigationWidth=${navigationOpenWidth - 1}, <ResizerButton /> points right`, () => {
-      expect(mount(<Resizer navigationWidth={navigationOpenWidth - 1} />).find('ResizerButton').props().isPointingRight).equal(true);
+    it(`when navigationWidth=${standardOpenWidth - 1}, <ResizerButton /> points right`, () => {
+      expect(mount(<Resizer navigationWidth={standardOpenWidth - 1} />).find('ResizerButton').props().isPointingRight).equal(true);
     });
-    it(`when navigationWidth=${navigationOpenWidth}, <ResizerButton /> points left`, () => {
-      expect(mount(<Resizer navigationWidth={navigationOpenWidth} />).find('ResizerButton').props().isPointingRight).equal(false);
+    it(`when navigationWidth=${standardOpenWidth}, <ResizerButton /> points left`, () => {
+      expect(mount(<Resizer navigationWidth={standardOpenWidth} />).find('ResizerButton').props().isPointingRight).equal(false);
     });
-    it(`when navigationWidth=${navigationOpenWidth + 100}, <ResizerButton /> points left`, () => {
-      expect(mount(<Resizer navigationWidth={navigationOpenWidth + 100} />).find('ResizerButton').props().isPointingRight).equal(false);
+    it(`when navigationWidth=${standardOpenWidth + 100}, <ResizerButton /> points left`, () => {
+      expect(mount(<Resizer navigationWidth={standardOpenWidth + 100} />).find('ResizerButton').props().isPointingRight).equal(false);
     });
-    it(`when navigationWidth=${navigationOpenWidth - 1}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
+    it(`when navigationWidth=${standardOpenWidth - 1}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
       mount(<Resizer
-        navigationWidth={navigationOpenWidth - 1}
+        navigationWidth={standardOpenWidth - 1}
         onResizeButton={(resizeState) => {
           expect(resizeState).to.deep.equal({
             isOpen: true,
-            width: navigationOpenWidth,
+            width: standardOpenWidth,
           });
           done();
         }}
       />).find('ResizerButton').simulate('click');
     });
-    it(`when navigationWidth=${navigationOpenWidth}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
+    it(`when navigationWidth=${standardOpenWidth}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
       mount(<Resizer
-        navigationWidth={navigationOpenWidth}
+        navigationWidth={standardOpenWidth}
         onResizeButton={(resizeState) => {
           expect(resizeState).to.deep.equal({
             isOpen: false,
+            width: globalOpenWidth,
           });
           done();
         }}
       />).find('ResizerButton').simulate('click');
     });
-    it(`when navigationWidth=${navigationOpenWidth + 100}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
+    it(`when navigationWidth=${standardOpenWidth + 100}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
       mount(<Resizer
-        navigationWidth={navigationOpenWidth + 100}
+        navigationWidth={standardOpenWidth + 100}
         onResizeButton={(resizeState) => {
           expect(resizeState).to.deep.equal({
             isOpen: true,
-            width: navigationOpenWidth,
+            width: standardOpenWidth,
           });
           done();
         }}

@@ -10,9 +10,6 @@ class Child extends PureComponent {
 
 describe('<GlobalNavigation />', () => {
   describe('renders', () => {
-    it('should render a <Spacer />', () => {
-      expect(mount(<GlobalNavigation />).find('Spacer')).to.have.length(1);
-    });
     it('should render <GlobalPrimaryActions />', () => {
       expect(mount(<GlobalNavigation />).find('GlobalPrimaryActions')).to.have.length(1);
     });

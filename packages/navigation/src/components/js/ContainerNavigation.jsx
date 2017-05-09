@@ -6,26 +6,20 @@ import ContainerHeader from './ContainerHeader';
 import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
+import Reveal from './Reveal';
 import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
 import subscribe from '../../watch-scroll-top';
-
-import {
-  containerOpenWidth,
-  containerClosedWidth,
-} from '../../shared-variables';
-import Spacer from './Spacer';
+import { globalPrimaryActions } from '../../shared-variables';
 
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
     appearance: PropTypes.string,
-    areGlobalActionsVisible: PropTypes.bool,
+    showGlobalPrimaryActions: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
-    shouldAnimate: PropTypes.bool,
-    width: PropTypes.number,
-    offsetX: PropTypes.number,
+    isCollapsed: PropTypes.bool,
     linkComponent: PropTypes.func,
     globalPrimaryItemHref: PropTypes.string,
     globalPrimaryIcon: PropTypes.node,
@@ -37,10 +31,8 @@ export default class ContainerNavigation extends PureComponent {
 
   static defaultProps = {
     appearance: 'container',
-    areGlobalActionsVisible: false,
-    shouldAnimate: false,
-    width: containerOpenWidth,
-    offsetX: 0,
+    showGlobalPrimaryActions: false,
+    isCollapsed: false,
     linkComponent: DefaultLinkComponent,
   }
 
@@ -49,12 +41,22 @@ export default class ContainerNavigation extends PureComponent {
 
     this.state = {
       isScrolling: false,
+      isInitiallyRendered: false,
     };
 
     // Memoizing this function so that it will only be called
     // when the underlying DOM node is changing OR if it is
     // unmounting (in which case it will be `null`).
     this.onRefChange = memoizeOne(this.onRefChange);
+  }
+
+  componentWillReceiveProps() {
+    // start animating global primary actions after initial mount
+    if (!this.state.isInitiallyRendered) {
+      this.setState({
+        isInitiallyRendered: true,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -87,25 +89,10 @@ export default class ContainerNavigation extends PureComponent {
     this.unsubscribe = subscribe(el, this.onScrollTopChange);
   }
 
-  getOuterStyles() {
-    if (!this.props.offsetX) {
-      return {
-        width: this.props.width,
-      };
-    }
-
-    // temporary fix for the AK-1780. When it resolved, this marginLeft should be changed back
-    // to translateX
-    return {
-      marginLeft: `${this.props.offsetX}px`,
-      width: this.props.width,
-    };
-  }
-
   render() {
     const {
       appearance,
-      areGlobalActionsVisible,
+      showGlobalPrimaryActions,
       children,
       globalCreateIcon,
       globalPrimaryIcon,
@@ -113,39 +100,46 @@ export default class ContainerNavigation extends PureComponent {
       globalSearchIcon,
       headerComponent,
       linkComponent,
-      offsetX,
       onGlobalCreateActivate,
       onGlobalSearchActivate,
-      shouldAnimate,
-      width,
+      isCollapsed,
     } = this.props;
 
-    const isWidthCollapsed = width <= containerClosedWidth;
+    const { isInitiallyRendered } = this.state;
+
+    // Only animating the revealing of GlobalPrimaryActions
+    // after the first render. Before that it is rendered
+    // without animation.
+
+    const header = headerComponent ? (
+      <ContainerHeader
+        appearance={appearance}
+        isContentScrolled={this.state.isScrolling}
+      >
+        {headerComponent({ isCollapsed })}
+      </ContainerHeader>) : <ContainerNoHeader />;
+
     return (
       <ThemeProvider
         theme={{
           [themeVariables.appearance]: appearance,
-          isCollapsed: isWidthCollapsed,
+          isCollapsed,
         }}
       >
-        <nav
-          data-__ak-navigation-container-closed={isWidthCollapsed}
+        <ContainerNavigationOuter
+          data-__ak-navigation-container-closed={isCollapsed}
         >
-          <Spacer
-            shouldAnimate={shouldAnimate}
-            width={width + offsetX}
-          />
-          <ContainerNavigationOuter
-            shouldAnimate={shouldAnimate}
-            style={this.getOuterStyles()}
+          <ContainerNavigationInner
+            innerRef={this.onRefChange}
           >
-            <ContainerNavigationInner
-              innerRef={this.onRefChange}
+            <Reveal
+              shouldAnimate={isInitiallyRendered}
+              isOpen={showGlobalPrimaryActions}
+              openHeight={globalPrimaryActions.height.outer}
             >
               <GlobalPrimaryActions
                 appearance={appearance}
                 createIcon={globalCreateIcon}
-                isVisible={areGlobalActionsVisible}
                 linkComponent={linkComponent}
                 onCreateActivate={onGlobalCreateActivate}
                 onSearchActivate={onGlobalSearchActivate}
@@ -153,22 +147,14 @@ export default class ContainerNavigation extends PureComponent {
                 primaryItemHref={globalPrimaryItemHref}
                 searchIcon={globalSearchIcon}
               />
-              {
-                headerComponent ? (
-                  <ContainerHeader
-                    appearance={appearance}
-                    isContentScrolled={this.state.isScrolling}
-                  >
-                    {headerComponent({ isCollapsed: isWidthCollapsed })}
-                  </ContainerHeader>) : <ContainerNoHeader />
-              }
-              <ContainerNavigationChildren>
-                {children}
-              </ContainerNavigationChildren>
-            </ContainerNavigationInner>
-          </ContainerNavigationOuter>
-        </nav>
-      </ThemeProvider>
+            </Reveal>
+            {header}
+            <ContainerNavigationChildren>
+              {children}
+            </ContainerNavigationChildren>
+          </ContainerNavigationInner>
+        </ContainerNavigationOuter>
+      </ThemeProvider >
     );
   }
 }

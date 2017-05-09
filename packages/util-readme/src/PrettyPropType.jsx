@@ -195,7 +195,7 @@ function print(type, depth = 1) {
         <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
         <Indent>
           {Array.isArray(type.value)
-            ? type.value.map(i => <Block>{print(i, depth + 1)}</Block>)
+            ? type.value.map(i => <Block key={i.name}>{print(i, depth + 1)}</Block>)
             : print(type.value, depth + 1)}
         </Indent>
         <TypeMeta><Outline>{')'}</Outline></TypeMeta>

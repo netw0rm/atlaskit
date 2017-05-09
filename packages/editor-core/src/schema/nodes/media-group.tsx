@@ -1,5 +1,14 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
-import { NodeSpec } from '../../prosemirror';
+import ProviderFactory from '../../providerFactory';
+import {
+  EditorView,
+  Node as PMNode,
+  NodeSpec,
+  NodeView,
+} from '../../prosemirror';
+import { ReactPMNode } from '../../react';
 
 const mediaGroupStyle = style({
   display: 'block',
@@ -39,4 +48,32 @@ export const mediaGroup: NodeSpec = {
       0
     ];
   }
+};
+
+class MediaGroupNodeView implements NodeView {
+  private domRef: HTMLElement | undefined = document.createElement('div');
+
+  constructor(node: PMNode, view: EditorView, providerFactory: ProviderFactory) {
+    ReactDOM.render(
+      <ReactPMNode
+        node={node}
+        view={view}
+        providerFactory={providerFactory}
+      />,
+      this.domRef!
+    );
+  }
+
+  get dom() {
+    return this.domRef;
+  }
+
+  destroy() {
+    ReactDOM.unmountComponentAtNode(this.domRef!);
+    this.domRef = undefined;
+  }
+}
+
+export const mediaGroupNodeView = (providerFactory: ProviderFactory) => (node: PMNode, view: EditorView, getPos: () => number): NodeView => {
+  return new MediaGroupNodeView(node, view, providerFactory);
 };

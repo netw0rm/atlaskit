@@ -28,6 +28,7 @@ import {
   Node as PMNode,
   TextSelection,
   version as coreVersion,
+  mediaGroupNodeView,
   mediaPluginFactory,
   mediaStateKey,
   mediaNodeView,
@@ -292,9 +293,10 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory),
-          jiraIssue: jiraIssueNodeView,
-          media: mediaNodeView(this.providerFactory)
+          mediaGroup: mediaGroupNodeView(this.providerFactory),
+          // mention: mentionNodeView(this.providerFactory),
+          // jiraIssue: jiraIssueNodeView,
+          // media: mediaNodeView(this.providerFactory)
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

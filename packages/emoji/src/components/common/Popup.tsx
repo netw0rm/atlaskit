@@ -107,8 +107,10 @@ export default class Popup extends PureComponent<Props, undefined> {
       this.debounced = null;
     }
     // Timeout set to 30ms as to not throttle IE11
-    this.debounced = setTimeout(() => { this.applyAbsolutePosition(); }, 30);
-    this.debounced = null;
+    this.debounced = setTimeout(() => {
+      this.applyAbsolutePosition();
+      this.debounced = null;
+    }, 30);
   }
 
   renderContent() {

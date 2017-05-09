@@ -9,6 +9,7 @@ import EmojiLoader, { denormaliseEmojiServiceResponse } from '../src/api/EmojiLo
 import { EmojiServiceDescriptionWithVariations, SpriteRepresentation } from '../src/types';
 
 const p1Url = 'https://p1/';
+const v2QueryParams = '?maxVersion=2';
 
 const defaultSecurityHeader = 'X-Bogus';
 
@@ -31,6 +32,13 @@ const providerData1 = [
   { id: 'a' },
   { id: 'b' },
   { id: 'c' },
+];
+
+const providerData2 = [
+  { id: 'A' },
+  { id: 'B' },
+  { id: 'C' },
+  { id: 'C' },
 ];
 
 const fetchResponse = data => ({ emojis: data });
@@ -58,6 +66,20 @@ describe('EmojiLoader', () => {
       const resource = new EmojiLoader(provider1);
       return resource.loadEmoji().then((emojiResponse) => {
         checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
+    it('can handle when a version is specified in the query params', () => {
+      fetchMock.mock({
+        matcher: `end:${v2QueryParams}`,
+        response: fetchResponse(providerData2),
+      });
+      const provider2 = provider1;
+      provider2.url += v2QueryParams;
+
+      const resource = new EmojiLoader(provider2);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData2, emojiResponse.emojis);
       });
     });
 

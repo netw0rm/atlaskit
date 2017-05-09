@@ -33,7 +33,8 @@ export interface ServiceConfig {
 }
 
 const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions | undefined): string => {
-  const searchParam = new URLSearchParams();
+  const searchParam = new URLSearchParams(new URL(baseUrl).search);
+  baseUrl = baseUrl.split('?')[0];
   for (const key in data) { // eslint-disable-line no-restricted-syntax
     if ({}.hasOwnProperty.call(data, key)) {
       searchParam.append(key, data[key]);

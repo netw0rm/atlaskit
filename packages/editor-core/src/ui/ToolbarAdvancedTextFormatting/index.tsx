@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
-import DropdownList from '@atlaskit/droplist';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
+import DropdownList, { Item, Group } from '@atlaskit/droplist';
 import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import { analyticsDecorator as analytics } from '../../analytics';
@@ -170,6 +168,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   }
 
   private toggleOpen = () => {
+    console.log(1);
     const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
     if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
 

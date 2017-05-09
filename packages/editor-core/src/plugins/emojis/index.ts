@@ -1,4 +1,3 @@
-import Keymap from 'browserkeymap';
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 
 import {
@@ -24,8 +23,6 @@ export class EmojiState {
   query?: string;
   queryActive = false;
   anchorElement?: HTMLElement;
-  keymap: Keymap;
-  blah = 'EmojiPlugin';
 
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;

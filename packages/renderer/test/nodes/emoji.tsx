@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import { EmojiProvider, ResourcedEmoji } from '@atlaskit/emoji';
-import Emoji, { EmojiWrapper } from '../../src/nodes/emoji';
+import Emoji from '../../src/nodes/emoji';
 
 describe('Emoji', () => {
 
@@ -25,9 +25,7 @@ describe('Emoji', () => {
   it('should render a EmojiWrapper component if emojiProvider supplied', () => {
     const emojiId = { shortName: ':anything:', fallback: 'fallback', id: 'abc' };
     const component = shallow(<Emoji emojiId={emojiId} emojiProvider={emojiProvider}/>);
-    const emojiWrapper = component.find(EmojiWrapper);
-    expect(emojiWrapper.length).to.equal(1);
-    const resourcedEmoji = emojiWrapper.find(ResourcedEmoji);
+    const resourcedEmoji = component.find(ResourcedEmoji);
     expect(resourcedEmoji.length).to.equal(1);
     expect(resourcedEmoji.prop('emojiId')).to.deep.equal(emojiId);
     expect(resourcedEmoji.prop('emojiProvider')).to.equal(emojiProvider);

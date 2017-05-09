@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket",
-  "version": "1.18.3",
+  "version": "1.19.0",
   "config": {
     "access": "public"
   },
@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^16.3.3",
+    "@atlaskit/editor-core": "^16.4.0",
     "@atlaskit/emoji": "^13.0.0",
     "@atlaskit/mention": "^4.0.4",
     "tslib": "^1.2.0"

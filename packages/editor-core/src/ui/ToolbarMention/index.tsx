@@ -35,7 +35,7 @@ export default class ToolbarMention extends PureComponent<Props, State> {
         wrapperClassName={styles.button}
         onClick={this.handleInsertMention}
         disabled={disabled}
-        title="mention a person (@)"
+        title="Mention a person (@)"
         iconBefore={<MentionIcon label="Mention" />}
       />
     );

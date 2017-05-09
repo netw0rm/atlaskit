@@ -79,7 +79,7 @@ const getIconDom = function (panelType: string): HTMLElement {
   dom.addEventListener('mousedown', (e) => e.preventDefault());
   // tslint:disable-next-line:variable-name
   const Icon = panelIcons[panelType];
-  ReactDOM.render(<Icon label={panelType} />, dom);
+  ReactDOM.render(<Icon label={`panel ${panelType}`} />, dom);
   return dom;
 };
 

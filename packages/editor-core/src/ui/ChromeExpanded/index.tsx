@@ -132,7 +132,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           <div>
             {!props.onInsertMention ? null :
               <ToolbarButton onClick={this.handleInsertMention}>
-                <MentionIcon label="Mention" />
+                <MentionIcon label="add mention" />
               </ToolbarButton>
             }
             {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}

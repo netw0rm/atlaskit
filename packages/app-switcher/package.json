@@ -18,9 +18,9 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/dropdown-menu": "^1.1.12",
     "@atlaskit/droplist": "^3.3.2",
-    "@atlaskit/logo": "^2.0.0",
-    "@atlaskit/util-readme": "^1.0.0",
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/logo": "^3.0.6",
+    "@atlaskit/util-readme": "^3.2.0",
+    "@atlaskit/util-shared-styles": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },

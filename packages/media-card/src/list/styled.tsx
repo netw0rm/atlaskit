@@ -8,11 +8,7 @@ export const Spinner = styled.div`
 `;
 
 export const CardListWrapper = styled.div`
-  .load-more-button {
-    font-size: 12px;
-    width: 100%;
-    display: block;
-  }
+  display: table;
 `;
 
 const cardEntryAnimation = keyframes`

@@ -224,15 +224,15 @@ export class CardList extends Component<CardListProps, CardListState> {
     ;
 
     return (
-      <CardListWrapper className="card-list">
-        <CSSTransitionGroup
-          transitionName="card-list-item"
-          transitionEnterTimeout={750}
-          transitionLeave={false}
-        >
-          {cards}
-        </CSSTransitionGroup>
-      </CardListWrapper>
+      <CSSTransitionGroup
+        transitionName="card-list-item"
+        transitionEnterTimeout={750}
+        transitionLeave={false}
+        component={CardListWrapper}
+        className="card-list"
+      >
+        {cards}
+      </CSSTransitionGroup>
     );
   }
 

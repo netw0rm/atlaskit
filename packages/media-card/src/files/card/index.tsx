@@ -15,7 +15,7 @@ export interface FileCardProps extends SharedCardProps {
 
   readonly videoUrl?: Promise<string>;
   readonly audioUrl?: Promise<string>;
-};
+}
 
 export class FileCard extends Component<FileCardProps, {}> {
   private static defaultDetails: FileDetails = {
@@ -87,7 +87,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   private renderImageView = (): JSX.Element => {
-    const {dimensions, selectable, selected, details, dataURI, status, progress, videoUrl} = this.props;
+    const {dimensions, selectable, selected, details, dataURI, status, progress} = this.props;
     const {name, mediaType, size} = details || FileCard.defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
 
@@ -98,7 +98,6 @@ export class FileCard extends Component<FileCardProps, {}> {
         selectable={selectable}
         selected={selected}
         dataURI={dataURI}
-        videoUrl={videoUrl}
         mediaName={name}
         mediaType={mediaType}
         mediaSize={size}

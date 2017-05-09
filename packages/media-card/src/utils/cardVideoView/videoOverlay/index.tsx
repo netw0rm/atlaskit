@@ -36,6 +36,9 @@ export class VideoCardOverlay extends Component<VideoCardOverlayProps, {}> {
   }
 
   private handleClose = (): void => {
-    this.props.onClose && this.props.onClose();
+    const {onClose} = this.props;
+    if (onClose) {
+      onClose();
+    }
   }
 }

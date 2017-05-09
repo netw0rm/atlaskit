@@ -85,7 +85,9 @@ export class AudioBars extends Component<AudioBarsProps, {}> {
   private analyse = (): void => {
     const {audioEl} = this.props;
 
-    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // required to get around compiler complaining about non-existance of window.webkitAudioContext
+    const localWindow = window as any;
+    this.audioCtx = new (localWindow.AudioContext || localWindow.webkitAudioContext)();
 
     this.source = this.audioCtx.createMediaElementSource(audioEl);
 
@@ -124,7 +126,9 @@ export class AudioBars extends Component<AudioBarsProps, {}> {
       canvasContext.fillRect(x, height - barHeight / barHeightCorrection, barWidth, barHeight / barHeightCorrection);
 
       x += barWidth + 1;
-      if (i > maxBars) break
+      if (i > maxBars) {
+        break;
+      }
     }
 
     this.animationId = requestAnimationFrame(this.drawBars);
@@ -147,12 +151,12 @@ export class AudioBars extends Component<AudioBarsProps, {}> {
   private onPlaying = () => {
     this.draw();
   }
-  
+
   private onPause = () => {
     this.stopAnimation();
   }
 
   private onEnded = () => {
-    
+
   }
 }

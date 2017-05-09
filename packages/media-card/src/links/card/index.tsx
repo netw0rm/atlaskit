@@ -10,8 +10,11 @@ import { LinkCardImageView } from '../cardImageView';
 import { CardVideoView, CardAudioView } from '../../utils';
 
 export interface LinkCardProps extends SharedCardProps {
-  status: CardStatus;
-  details?: UrlPreview;
+  readonly status: CardStatus;
+  readonly details?: UrlPreview;
+
+  readonly videoUrl?: Promise<string>;
+  readonly audioUrl?: Promise<string>;
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {

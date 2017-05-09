@@ -80,15 +80,19 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
         />
         <PlayButton/>
         <Video
-          innerRef={(ref) => this.videoElement = ref}
+          innerRef={this.getVideoElementFromRef}
           src={videoSrc}
-          loop
-          muted
+          loop={true}
+          muted={true}
           preload="metadata"
           onLoadedMetadata={this.updateVideoDimensions}
         />
       </Wrapper>
     );
+  }
+
+  private getVideoElementFromRef = (ref): void => {
+    this.videoElement = ref;
   }
 
   private makeWidget = (): void => {
@@ -105,7 +109,7 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
           videoName={title}
           onClose={this.handleWidgetClose}
         />
-        <Video autoPlay loop src={videoSrc} preload="metadata" controls />
+        <Video autoPlay={true} loop={true} src={videoSrc} preload="metadata" controls={true} />
       </Wrapper>
     );
 
@@ -125,7 +129,9 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
   }
 
   private startInlineVideo = (): void => {
-    this.playPromise = this.videoElement.play();
+    // Hack required as typescript 2.3 incorrectly types the return type of play() as void
+    // https://github.com/Microsoft/TypeScript/issues/15691
+    this.playPromise = (this.videoElement.play() as any);
   }
 
   private stopInlineVideo = (): void => {

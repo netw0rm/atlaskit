@@ -392,8 +392,20 @@ storiesOf('Card', {})
       <div>
         <h1 style={{margin: '10px 20px'}}>Link cards</h1>
         <div style={{margin: '20px 40px'}}>
+          <h3>Standard</h3>
+          <StoryList>{standardCards}</StoryList>
+
+          <h3>Error</h3>
+          <StoryList>{errorCards}</StoryList>
+
+          <h3>Menu</h3>
+          <StoryList>{playerCards}</StoryList>
+
           <h3>Media cards</h3>
           <StoryList>{mediaCards}</StoryList>
+
+          <h3>Trello Application Cards</h3>
+          <StoryList>{trelloCards}</StoryList>
         </div>
       </div>
     );

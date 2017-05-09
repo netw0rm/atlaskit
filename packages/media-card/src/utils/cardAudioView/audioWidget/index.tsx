@@ -33,7 +33,7 @@ export class AudioWidget extends Component<AudioWidgetProps, AudioWidgetState> {
   }
 
   render() {
-    const {title, audioSrc, dimensions, onClose} = this.props;
+    const {title, audioSrc, dimensions} = this.props;
     const {audioElement, isPlaying} = this.state;
 
     const audioBars = audioElement
@@ -54,7 +54,7 @@ export class AudioWidget extends Component<AudioWidgetProps, AudioWidgetState> {
         {audioControls}
         {audioBars}
         <Audio
-          autoPlay
+          autoPlay={true}
           src={audioSrc}
           preload="auto"
           innerRef={this.onAudioMountOrUnmount}
@@ -68,7 +68,9 @@ export class AudioWidget extends Component<AudioWidgetProps, AudioWidgetState> {
 
   private onAudioEnded = () => {
     const {audioElement} = this.state;
-    audioElement && (audioElement.currentTime = 0);
+    if (audioElement) {
+      audioElement.currentTime = 0;
+    }
   }
 
   private onAudioMountOrUnmount = (audioElement: HTMLAudioElement): void => {

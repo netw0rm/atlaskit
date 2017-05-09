@@ -8,7 +8,7 @@ export const Wrapper = styled(Root)`
   overflow: hidden;
   border-radius: 3px;
   position: relative;
-  
+
   &:hover {
     .show-on-hover {
       display: block
@@ -20,7 +20,7 @@ export const Wrapper = styled(Root)`
   .stroke-solid, .stroke-dotted {
     display: none;
   }
-  
+
   .overlay {
     z-index: 9;
     border: none;

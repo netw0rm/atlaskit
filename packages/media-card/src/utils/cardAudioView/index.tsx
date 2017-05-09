@@ -84,7 +84,7 @@ export class CardAudioView extends Component<CardAudioViewProps, CardAudioViewSt
       : null;
 
     return (
-      <Wrapper onMouseOver={this.starBars} onMouseLeave={this.stopBars}  onClick={this.makeWidget}>
+      <Wrapper onMouseOver={this.startBars} onMouseLeave={this.stopBars}  onClick={this.makeWidget}>
         {previewImg}
         {audioBars}
         <CardOverlay
@@ -127,13 +127,21 @@ export class CardAudioView extends Component<CardAudioViewProps, CardAudioViewSt
     this.setState({audioElement});
   }
 
-  private starBars = (): void => {
+  private startBars = (): void => {
     this.setState({isHovering: true});
-    this.state.audioElement.play();
+
+    const {audioElement} = this.state;
+    if (audioElement) {
+      audioElement.play();
+    }
   }
 
   private stopBars = (): void => {
     this.setState({isHovering: false});
-    this.state.audioElement.pause();
+
+    const {audioElement} = this.state;
+    if (audioElement) {
+      audioElement.pause();
+    }
   }
 }

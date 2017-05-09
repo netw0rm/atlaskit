@@ -9,6 +9,7 @@ export const fakeContext = (stubbedContext = {}): Context => {
     addLinkItem: sinon.stub().returns({observable: sinon.spy()}),
     getUrlPreviewProvider: sinon.stub().returns({observable: sinon.spy()}),
     refreshCollection: sinon.spy(),
+    getFileBinary: sinon.stub().returns(Promise.resolve('some-url-to-/file/binary')),
     config: {
       clientId: 'some-client',
       serviceHost: 'some-service-host',

@@ -17,7 +17,7 @@ import {
 
 const containerId = 'widget-container';
 
-interface WidgetOptions {
+export interface WidgetOptions {
   dimensions?: CardDimensions;
   enableResizing?: boolean;
 }
@@ -47,7 +47,7 @@ export default class Widget {
         minWidth={240}
         minHeight={180}
         bounds="parent"
-        lockAspectRatio
+        lockAspectRatio={true}
         enableResizing={resizingValues}
       >
         {activeComponent}

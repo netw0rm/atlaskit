@@ -34,7 +34,7 @@ export interface ServiceConfig {
 }
 
 const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions | undefined): string => {
-  const searchParam = new URLSearchParams(URL.parse(baseUrl).search);
+  const searchParam = new URLSearchParams(URL.parse(baseUrl).search || undefined);
   baseUrl = baseUrl.split('?')[0];
   for (const key in data) { // eslint-disable-line no-restricted-syntax
     if ({}.hasOwnProperty.call(data, key)) {
@@ -59,7 +59,12 @@ const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, se
   if (path && baseUrl.substr(-1) !== '/') {
     seperator = '/';
   }
-  return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
+  let params = searchParam.toString();
+  if (params) {
+    params = '?' + params;
+  }
+
+  return `${baseUrl}${seperator}${path}${params}`;
 };
 
 const buildHeaders = (secOptions?: SecurityOptions): Headers => {

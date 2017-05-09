@@ -11,7 +11,6 @@ import emmaAvatar from '../emma.png';
 export default class BasicNavigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    isOpen: PropTypes.bool,
     width: PropTypes.number,
     containerHeaderComponent: PropTypes.func,
     openDrawer: PropTypes.string,
@@ -46,7 +45,6 @@ export default class BasicNavigation extends PureComponent {
         text="AtlasKit"
         subText="Is the king"
       />),
-    searchDrawerContent: (<BasicSearch />),
     createDrawerContent: (
       <div>
         <AkNavigationItem
@@ -131,7 +129,6 @@ export default class BasicNavigation extends PureComponent {
   constructor(...args) {
     super(...args);
     this.state = {
-      isOpen: this.props.isOpen,
       openDrawer: this.props.openDrawer,
       width: this.props.width,
     };
@@ -186,7 +183,11 @@ export default class BasicNavigation extends PureComponent {
             onBackButton={this.closeDrawer}
             primaryIcon={globalPrimaryIcon}
           >
-            {this.props.searchDrawerContent}
+            {
+              this.props.searchDrawerContent ?
+              this.props.searchDrawerContent :
+              <BasicSearch />
+            }
           </AkSearchDrawer>),
           (<AkCreateDrawer
             backIcon={backIcon}

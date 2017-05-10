@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
   chaiPlugin, createEvent, doc, fixtures, insert, insertText, a as link,
-  linkable, makeEditor, p as paragraph, sendKeyToPm, setTextSelection, unlinkable
+  linkable, makeEditor, p as paragraph, sendKeyToPm, setTextSelection, unlinkable, dispatchPasteEvent
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -584,6 +584,52 @@ describe('hyperlink', () => {
 
         expect(pluginState.activeLinkNode).not.to.equal(undefined);
         expect(pluginState.text).not.to.equal(undefined);
+      });
+    });
+  });
+
+  describe('paste', () => {
+    context('url link is at beginning of plain text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com'), ' test')));
+      });
+    });
+
+    context('url link is at end of html text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: '<a href="http://www.atlassian.com">Atlassian</a> test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')));
+      });
+    });
+
+    context('email link is at middle of plain text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { plain: 'test test@atlassian.com test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('test ', link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));
+      });
+    });
+
+    context('email link is at end of html', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: '<a href="mailto:test@atlassian.com">Atlassian</a> test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('Atlassian'), ' test')));
       });
     });
   });

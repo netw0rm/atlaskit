@@ -1,20 +1,26 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PositionedNode } from './';
 import MediaComponent from '../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../providerFactory';
-import {
-  EditorView,
-  Node as PMNode,
-} from '../prosemirror';
+import { mediaStateKey, MediaPluginState } from '../plugins';
+import { EditorView } from '../prosemirror';
 
 export interface Props {
   children?: React.ReactNode;
   view: EditorView;
-  node: PMNode;
+  node: PositionedNode;
   providerFactory: ProviderFactory;
 }
 
 export default class MediaNode extends PureComponent<Props, {}> {
+  componentWillUnmount() {
+    const { node, view } = this.props;
+    const pluginState = mediaStateKey.getState(view.state) as MediaPluginState;
+
+    pluginState.handleMediaNodeRemoval(node);
+  }
+
   render() {
     const { node, providerFactory, view } = this.props;
     const { id, type, collection } = node.attrs;

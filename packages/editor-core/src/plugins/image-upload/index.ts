@@ -116,7 +116,7 @@ export class ImageUploadState {
   }
 
   addImage(view: EditorView): Function {
-    return (options: { src?: string }): void => {
+    return (options: { src?: string, alt?: string, title?: string }): void => {
       const { state } = this;
       const { image } = state.schema.nodes;
       if (this.enabled && image) {
@@ -126,7 +126,7 @@ export class ImageUploadState {
   }
 
   updateImage(view: EditorView): Function {
-    return (options: { src?: string }): void => {
+    return (options: { src?: string, alt?: string, title?: string }): void => {
       if (this.isImageSelected()) {
         this.removeImage(view);
         this.addImage(view)(options);

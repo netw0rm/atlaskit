@@ -21,7 +21,7 @@
     "babel-runtime": "^6.11.6",
     "@atlaskit/droplist": "^3.6.0",
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/icon": "^3.0.0",
+    "@atlaskit/icon": "^6.5.2",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",

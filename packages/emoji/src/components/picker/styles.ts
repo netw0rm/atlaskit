@@ -161,7 +161,7 @@ export const pickerSearch = style({
   $nest: {
     [`.${searchIcon}`]: {
       opacity: .5,
-      paddingTop: '2px',
+      marginTop: '-2px',
       height: '17px',
     },
 

@@ -5,7 +5,7 @@ import AkProfilecardStatic from './profilecard';
 export default class ProfilecardResourced extends PureComponent {
   static propTypes = {
     userId: PropTypes.string.isRequired,
-    cloudId: PropTypes.string,
+    cloudId: PropTypes.string.isRequired,
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.func,
       id: PropTypes.string,

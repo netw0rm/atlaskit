@@ -7,7 +7,7 @@ describe('@atlaskit/editor-core/schema codeBlock node', () => {
   const schema = makeSchema();
 
   it('should have code property to be true', () => {
-    expect(schema.nodes.codeBlock.spec.code).to.be.true;
+    expect(schema.nodes.codeBlock.spec.code).to.equal(true);
   });
 
   describe('parse from html', () => {

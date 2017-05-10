@@ -11,13 +11,14 @@ import { ReactPMNode } from '../react';
 class NodeViewElem implements NodeView {
   private domRef: HTMLElement | undefined;
 
-  constructor(node: PMNode, view: EditorView, providerFactory: ProviderFactory, blockNodeView: boolean) {
+  constructor(node: PMNode, view: EditorView, getPos: () => number, providerFactory: ProviderFactory, blockNodeView: boolean) {
     const elementType = blockNodeView ? 'div' : 'span';
     this.domRef = document.createElement(elementType);
 
     ReactDOM.render(
       <ReactPMNode
         node={node}
+        getPos={getPos}
         view={view}
         providerFactory={providerFactory}
       />,
@@ -37,7 +38,7 @@ class NodeViewElem implements NodeView {
 
 function nodeViewFactory(providerFactory: ProviderFactory, blockNodeView: boolean) {
   return (node: PMNode, view: EditorView, getPos: () => number): NodeView => {
-    return new NodeViewElem(node, view, providerFactory, blockNodeView);
+    return new NodeViewElem(node, view, getPos, providerFactory, blockNodeView);
   };
 }
 

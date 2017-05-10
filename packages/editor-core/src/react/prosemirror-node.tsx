@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { default as MediaGroupNode } from './media-group';
@@ -15,33 +16,34 @@ const richNodes = new Map<string, React.ComponentClass<any>>([
 
 export interface Props {
   node: PMNode;
+  getPos: () => number;
   [key: string]: any;
 }
 
 export default class ReactProsemirrorNode extends PureComponent<Props, {}> {
   render() {
-    const { node } = this.props;
+    const { getPos, node } = this.props;
     const nodeTypeName = node.type.name;
-    const attrs = { ...this.props, node };
-    const hasRichClass = richNodes.has(nodeTypeName);
 
-    const reactClass = hasRichClass
-      ? richNodes.get(nodeTypeName)
-      : 'div';
+    assert(richNodes.has(nodeTypeName), `Rich node with type ${nodeTypeName} is not declared`);
+
+    const attrs = { ...this.props, node };
+    const reactClass = richNodes.get(nodeTypeName)!;
 
     const children: any[] = [];
-    node.forEach(childNode => {
+    let nodePosOffset = 0;
+
+    node.forEach((childNode, offset, index) => {
+      childNode.getPos = () => getPos() + nodePosOffset;
+      nodePosOffset += childNode.nodeSize;
+
       const childAttrs = { ...this.props, node: childNode };
 
       children.push(
-        <ReactProsemirrorNode {...childAttrs}/>
+        <ReactProsemirrorNode key={`richnode-${offset}-${index}`} {...childAttrs}/>
       );
     });
 
-    return React.createElement(
-      reactClass!,
-      hasRichClass ? attrs : undefined,
-      children
-    );
+    return React.createElement(reactClass, attrs, children);
   }
 }

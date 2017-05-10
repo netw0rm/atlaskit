@@ -8,11 +8,7 @@ const Wrapper = styled.div`
   padding: 0 0 8px 0;
 `;
 
-export interface Props {
-  children?: React.ReactNode;
-}
-
-export default class MediaGroupNode extends PureComponent<Props, {}> {
+export default class MediaGroupNode extends PureComponent<{}, {}> {
   render() {
     return (
       <Wrapper>

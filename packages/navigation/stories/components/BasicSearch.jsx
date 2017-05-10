@@ -94,11 +94,8 @@ function search(query) {
 const store = {};
 
 export default class BasicSearch extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      query: store.query || '',
-    };
+  state = {
+    query: store.query || '',
   }
 
   setQuery(query) {

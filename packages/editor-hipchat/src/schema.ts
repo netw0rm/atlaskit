@@ -1,5 +1,5 @@
 import {
-  docCompact,
+  doc,
   MarkSpec,
   NodeSpec,
   Schema,
@@ -25,11 +25,8 @@ export interface HCSchemaMarks {
   mentionQuery: MarkSpec;
   emojiQuery: MarkSpec;
 }
-  // // The top level node for a document.
-  // doc: docCompact,
 
 const nodes = [
-
   // A paragraph node.
   'paragraph',
 
@@ -55,7 +52,7 @@ const nodes = [
 
 const customNodeSpecs = {
   // The top level node for a document.
-  doc: docCompact
+  doc
 };
 
 const marks = [

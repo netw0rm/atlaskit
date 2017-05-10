@@ -160,3 +160,31 @@ export const lotsOfItems = [
     ],
   },
 ];
+
+export const itemsWithTooltips = [
+  {
+    heading: 'Heading',
+    items: [
+      {
+        content: 'Tooltip on the right',
+        tooltipDescription: 'Oh, hello there!',
+        tooltipPosition: 'right',
+      },
+      {
+        content: 'Tooltip on the left',
+        tooltipDescription: 'Oh, hello there!',
+        tooltipPosition: 'left',
+      },
+      {
+        content: 'Tooltip on the top',
+        tooltipDescription: 'Oh, hello there!',
+        tooltipPosition: 'top',
+      },
+      {
+        content: 'Tooltip at the bottom',
+        tooltipDescription: 'Oh, hello there!',
+        tooltipPosition: 'bottom',
+      },
+    ],
+  },
+];

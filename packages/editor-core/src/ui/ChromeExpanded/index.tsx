@@ -24,6 +24,7 @@ import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
+import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHyperlink from '../ToolbarHyperlink';
@@ -129,6 +130,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           </div>
           <div className={styles.secondaryToolbar}>
             {props.pluginStateMentions ? <ToolbarMention pluginState={props.pluginStateMentions} editorView={props.editorView} /> : null}
+            {props.pluginStateEmojis && props.emojiProvider ? <ToolbarEmojiPicker pluginState={props.pluginStateEmojis} editorView={props.editorView} emojiProvider={props.emojiProvider} /> : null}
             {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
             {props.pluginStateMedia ? <ToolbarMedia pluginState={props.pluginStateMedia} /> : null}
           </div>

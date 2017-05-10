@@ -40,8 +40,8 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
       const childAttrs = { ...this.props, node: childNode };
 
       children.push(
-        <WrapperClickArea>
-          <ReactProsemirrorNode key={`richnode-${offset}-${index}`} {...childAttrs}/>
+        <WrapperClickArea key={`richnode-${offset}-${index}`}>
+          <ReactProsemirrorNode {...childAttrs}/>
         </WrapperClickArea>
       );
     });

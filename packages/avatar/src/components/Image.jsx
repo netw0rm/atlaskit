@@ -26,6 +26,6 @@ export default class Image extends PureComponent {
     const { hasError, isLoading, ...props } = this.props;
     const showDefault = !isLoading && (!this.props.src || hasError);
 
-    return showDefault ? <DefaultImage /> : <Img {...props} />;
+    return showDefault ? <DefaultImage /> : <Img isLoading={isLoading} {...props} />;
   }
 }

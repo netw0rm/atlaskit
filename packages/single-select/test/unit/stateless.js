@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
-import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
+import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import { Tooltip } from '@atlaskit/tooltip';
 import sinon from 'sinon';
 

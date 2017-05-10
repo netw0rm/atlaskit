@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
+import { Tooltip } from '@atlaskit/tooltip';
 import sinon from 'sinon';
 
 import styles from '../../src/styles.less';
@@ -72,6 +73,21 @@ describe(name, () => {
       expect(select.find(Group).length).to.equal(1);
       expect(select.find(Item).length).to.equal(2);
       expect(select.find(Group).find(Item).length).to.equal(2);
+    });
+
+    it('should render tooltips inside Droplist', () => {
+      const selectItems = [
+        {
+          heading: 'test',
+          items: [
+            { value: 1, content: '1', tooltipDescription: 'first' },
+            { value: 2, content: '2', tooltipDescription: 'second' },
+            { value: 3, content: '3' },
+          ],
+        },
+      ];
+      const select = mount(<StatelessSelect items={selectItems} isOpen />);
+      expect(select.find(Tooltip).length).to.equal(2);
     });
   });
 

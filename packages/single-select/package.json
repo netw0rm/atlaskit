@@ -29,7 +29,8 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/util-readme": "^1.0.0",
-    "@atlaskit/single-select": "*"
+    "@atlaskit/single-select": "*",
+    "@atlaskit/tooltip": "*"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

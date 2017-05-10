@@ -1,3 +1,4 @@
+/* tslint:disable:no-unused-expression */
 import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';

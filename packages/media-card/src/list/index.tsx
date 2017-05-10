@@ -65,6 +65,10 @@ export class CardList extends Component<CardListProps, CardListState> {
     loading: true
   };
 
+  firstLoad: boolean = true;
+  previousIds: {[id: string]: boolean} = {};
+  newIds: {[id: string]: boolean} = {};
+
   providersByMediaItemId: {[id: string]: Provider} = {};
   private dataURIService: DataUriService;
 
@@ -93,9 +97,23 @@ export class CardList extends Component<CardListProps, CardListState> {
     const subscription = provider.observable().subscribe({
       next: (collection: MediaCollection): void => {
 
+        // add new ids to the previous ids
+        Object.keys(this.newIds).forEach(id => {
+          this.previousIds[id] = true;
+        });
+
         this.providersByMediaItemId = {};
         collection.items.forEach(mediaItem => {
           if (!mediaItem.details || !mediaItem.details.id) { return; }
+
+          // add new id to previous ids on first load (so the initial items don't animate)
+          if (this.firstLoad) {
+            this.firstLoad = false;
+            this.previousIds[mediaItem.details.id] = true;
+          }
+
+          // add new id to current ids
+          this.newIds[mediaItem.details.id] = true;
 
           this.providersByMediaItemId[mediaItem.details.id] = context.getMediaItemProvider(
             mediaItem.details.id,
@@ -206,7 +224,8 @@ export class CardList extends Component<CardListProps, CardListState> {
           return null;
         }
 
-        const isNewItem = typeof this.providersByMediaItemId[mediaItem.details.id] !== 'undefined';
+        // what about the occurrence key, need to track that too!
+        const isNewItem = this.previousIds[mediaItem.details.id] !== true;
 
         return (
           <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} animateIn={isNewItem}>

@@ -191,7 +191,6 @@ export const ErrorLine = styled.div`
 
 export const LeftColumn = styled.div`
   width: 100%;
-  display: table-cell;
   position: relative;
   box-sizing: border-box;
   vertical-align: middle;
@@ -208,20 +207,21 @@ export const TopRow = styled.div`
 `;
 
 export const BottomRow = styled.div`
+  display: flex;
+  align-items: center;
   position: absolute;
   z-index: 1;
-  display: table;
   bottom: 0;
   left: 0;
   width: 100%;
-  box-sizing: border-box;
   height: 28px;
-  line-height: 26px;
   padding: 0 2px 0 2px;
 `;
 
 export const RightColumn = styled.div`
-  display: table-cell;
+  .meat-balls-button {
+    height: 23px;
+  }
 `;
 
 export const ErrorMessage = styled.div`

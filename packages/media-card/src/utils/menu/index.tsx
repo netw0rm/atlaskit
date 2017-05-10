@@ -42,7 +42,7 @@ export class Menu extends Component<MenuProps, {}> {
   private renderDeleteButton(action) {
     return (
       <DeleteBtn onClick={this.deleteBtnClick(action.handler)} style={{color: this.props.deleteBtnColor}} >
-        <Icon glyph={CrossIcon} label="cross" />
+        <Icon glyph={CrossIcon} size="small" label="delete" />
       </DeleteBtn>
     );
   }
@@ -58,6 +58,7 @@ export class Menu extends Component<MenuProps, {}> {
         onItemActivated={this.onItemActivated}
         triggerType="button"
         triggerButtonProps={{
+          className: 'meat-balls-button',
           appearance: 'subtle',
           iconBefore: this.renderIconBefore()
         }}

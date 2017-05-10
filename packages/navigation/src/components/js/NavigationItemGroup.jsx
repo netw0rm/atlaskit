@@ -7,7 +7,7 @@ import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator
 import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
 import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
 
-const getBackground = getFromOuterTheme(themeVariables.appearance, appearanceEnum.container);
+const getAppearance = getFromOuterTheme(themeVariables.appearance, appearanceEnum.container);
 
 export default class NavigationItemGroup extends PureComponent {
   static propTypes = {
@@ -39,7 +39,7 @@ export default class NavigationItemGroup extends PureComponent {
     return (
       <ThemeProvider
         theme={outerTheme => ({
-          [themeVariables.appearance]: getBackground(outerTheme),
+          [themeVariables.appearance]: getAppearance(outerTheme),
           [themeVariables.isCompact]: isCompact,
         })}
       >

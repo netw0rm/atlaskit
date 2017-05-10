@@ -5,9 +5,10 @@ const toEmojiId = (emoji) => {
   return { shortName, id, fallback };
 };
 
-const { emojiTestData } = emojiData;
-const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
-const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+const { emojiTestData, emojiStoryData } = emojiData;
+export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
+export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+export const lorem = emojiStoryData.lorem;
 
 export const document = {
   type: 'doc',
@@ -354,7 +355,7 @@ export const document = {
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collectionId: ['MediaServicesSample']
+            collection: 'MediaServicesSample'
           }
         }
       ]
@@ -367,7 +368,7 @@ export const document = {
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collectionId: ['MediaServicesSample']
+            collection: 'MediaServicesSample'
           }
         },
         {
@@ -375,7 +376,7 @@ export const document = {
           attrs: {
             type: 'file',
             id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
-            collectionId: ['MediaServicesSample']
+            collection: 'MediaServicesSample'
           }
         }
       ]

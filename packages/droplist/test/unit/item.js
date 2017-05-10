@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
+import Tooltip from '@atlaskit/tooltip';
 
 import { name } from '../../package.json';
 import styles from '../../src/styles.less';
@@ -48,6 +49,15 @@ describe(`${name} - item`, () => {
 
     it('should NOT render icon for the link element', () => {
       expect(mount(<Item type="link" />).find(Radio).length).to.equal(0);
+    });
+
+    it('should render tooltip when tooltipDescription is not empty', () => {
+      expect(mount(<Item tooltipDescription="foo" />).find(Tooltip).length).to.equal(1);
+    });
+
+    it('should NOT render tooltip when tooltipDescription is empty', () => {
+      expect(mount(<Item />).find(Tooltip).length).to.equal(0);
+      expect(mount(<Item tooltipPosition="left" />).find(Tooltip).length).to.equal(0);
     });
   });
 

@@ -1,10 +1,10 @@
 import AkButton from '@atlaskit/button';
 import AkButtonGroup from '@atlaskit/button-group';
-import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
+import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
@@ -18,14 +18,13 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import { MediaPluginState } from '../../plugins/media';
-import { MediaProvider } from '../../media';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
-import ToolbarButton from '../ToolbarButton';
+import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
@@ -40,7 +39,6 @@ export interface Props {
   editorView: EditorView;
   feedbackFormUrl?: string;
   onCancel?: () => void;
-  onInsertMention?: () => void;
   onInsertImage?: () => void;
   onSave?: () => void;
   packageVersion?: string;
@@ -129,12 +127,8 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               }
             </AkButtonGroup>
           </div>
-          <div>
-            {!props.onInsertMention ? null :
-              <ToolbarButton onClick={this.handleInsertMention}>
-                <MentionIcon label="Mention" />
-              </ToolbarButton>
-            }
+          <div className={styles.secondaryToolbar}>
+            {props.pluginStateMentions ? <ToolbarMention pluginState={props.pluginStateMentions} editorView={props.editorView} /> : null}
             {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
             {props.pluginStateMedia ? <ToolbarMedia pluginState={props.pluginStateMedia} /> : null}
           </div>
@@ -154,7 +148,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
   }
 
   focusEditor = () => {
-    this.props.editorView.dom.focus();
+    this.props.editorView.focus();
   }
 
   private handleEditorContainerRef = ref => {
@@ -166,14 +160,6 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel();
-    }
-  }
-
-  @analytics('atlassian.editor.mention.button')
-  private handleInsertMention = () => {
-    const { onInsertMention } = this.props;
-    if (onInsertMention) {
-      onInsertMention();
     }
   }
 

@@ -1,4 +1,11 @@
-import { MediaStateManager, MediaState } from './../../media';
+import {
+  DefaultMediaStateManager,
+  MediaProvider,
+  MediaState,
+  MediaStateManager,
+  UploadParams,
+} from '@atlaskit/media-core';
+
 import { MediaType, MediaNode } from './../../schema/nodes/media';
 import {
   EditorState,
@@ -11,7 +18,6 @@ import {
   Transaction,
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
-import { MediaProvider, UploadParams, DefaultMediaStateManager } from '../../media';
 import PickerFacade from './picker-facade';
 import TemporaryNodesList from './temporary-nodes-list';
 import { ContextConfig } from '@atlaskit/media-core';
@@ -100,7 +106,7 @@ export class MediaPluginState {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
           // TODO: re-initialize pickers ?
-          if (this.popupPicker) {
+          if (this.popupPicker && mediaProvider.uploadParams) {
             this.popupPicker.setUploadParams(mediaProvider.uploadParams);
           }
         });
@@ -117,7 +123,9 @@ export class MediaPluginState {
       if (mediaProvider.uploadContext) {
         this.allowsUploads = true;
         mediaProvider.uploadContext.then(uploadContext => {
-          this.initPickers(mediaProvider.uploadParams, uploadContext);
+          if (mediaProvider.uploadParams) {
+            this.initPickers(mediaProvider.uploadParams, uploadContext);
+          }
         });
       } else {
         this.allowsUploads = false;
@@ -362,6 +370,10 @@ export class MediaPluginState {
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
+    if (!this.mediaProvider.uploadParams) {
+      return;
+    }
+
     const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
     const { options, view } = this;
 
@@ -490,14 +502,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
             if (item[1]) {
               view.dispatch(view.state.tr.replaceWith(pos, pos + 1, item[1]!));
             } else {
-              const resolvedPos = view.state.doc.resolve(pos);
-              if (resolvedPos.parent.childCount > 1) {
-                view.dispatch(view.state.tr.delete(pos, pos + 1));
-              } else {
-                // This is the last item in mediaGroup, so remove the whole group.
-                // (works around a bug where ProseMirror would create a dummy empty "media" node)
-                view.dispatch(view.state.tr.delete(resolvedPos.before(), resolvedPos.after()));
-              }
+              view.dispatch(view.state.tr.deleteRange(pos, pos + 1));
             }
           }
         }

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardProcessingStatus} from '.';
+import {SharedCardProps, CardStatus} from '.';
 import {LinkCard} from './links';
 import {FileCard} from './files';
 import {isLinkDetails} from './utils/isLinkDetails';
 
 export interface CardViewProps extends SharedCardProps {
-  readonly status: CardProcessingStatus;
+  readonly status: CardStatus;
   readonly mediaItemType?: MediaItemType;
   readonly metadata?: MediaItemDetails;
 

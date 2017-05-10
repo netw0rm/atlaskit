@@ -1,17 +1,9 @@
 import {
   docCompact,
-  emoji,
-  emojiQuery,
-  hardBreak,
   MarkSpec,
-  media,
-  mediaGroup,
-  mention,
-  mentionQuery,
   NodeSpec,
-  paragraph,
   Schema,
-  text,
+  createSchema
 } from '@atlaskit/editor-core';
 
 export interface HCSchemaNodes {
@@ -26,53 +18,74 @@ export interface HCSchemaNodes {
 }
 
 export interface HCSchemaMarks {
+  link: MarkSpec;
+  em: MarkSpec;
+  strong: MarkSpec;
+  underline: MarkSpec;
   mentionQuery: MarkSpec;
   emojiQuery: MarkSpec;
 }
+  // // The top level node for a document.
+  // doc: docCompact,
 
-const nodes: HCSchemaNodes = {
-  // The top level node for a document.
-  doc: docCompact,
+const nodes = [
 
   // A paragraph node.
-  paragraph,
+  'paragraph',
 
   // Text node.
-  text,
+  'text',
 
   // The equivalent of a <br> in HTML.
   //
   // This mark is used internally and is translated to a text node with content "\n" in documents
   // exposed from getter APIs.
-  hardBreak,
+  'hardBreak',
 
   // An @-mention.
-  mention,
+  'mention',
 
   // An emoji.
-  emoji,
+  'emoji',
 
   // media
-  mediaGroup,
-  media,
+  'mediaGroup',
+  'media',
+];
+
+const customNodeSpecs = {
+  // The top level node for a document.
+  doc: docCompact
 };
 
-const marks: HCSchemaMarks = {
+const marks = [
+  // Represents a hyperlink to a URL.
+  'link',
+
+  // Represents an italic text
+  'em',
+
+  // Represents bolded text
+  'strong',
+
+  // Represents underlined text
+  'underline',
+
   // Represents a "mention query". A mention query is created by typing the @ symbol. The text
   // within a mention query is used to search for a mention.
   //
   // This mark is used internally, and is stripped from documents before they are exposed through
   // the editor getter APIs.
-  mentionQuery,
+  'mentionQuery',
 
   // Represents an "emoji query". An emoji query is created by typing the : symbol. The text
   // within an emoji query is used to search for an emoji.
   //
   // This mark is used internally, and is stripped from documents before they are exposed through
   // the editor getter APIs.
-  emojiQuery
-};
+  'emojiQuery'
+];
 
 export interface HCSchema extends Schema<HCSchemaNodes, HCSchemaMarks> {}
 
-export default new Schema<typeof nodes, typeof marks>({ nodes, marks }) as HCSchema;
+export default createSchema({ nodes, marks, customNodeSpecs }) as HCSchema;

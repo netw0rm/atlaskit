@@ -4,6 +4,7 @@ import * as cx from 'classnames';
 import {CardAction, CardActionType, CardEventHandler} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Icon from '@atlaskit/icon/lib/Icon';
 
 import {Dropdown} from './dropdown';
 import {
@@ -59,7 +60,7 @@ export class Menu extends Component<MenuProps, MenuState> {
 
       return (
         <DeleteBtn onClick={this.deleteBtnClick(deleteAction.handler)} style={{color: this.props.deleteBtnColor}} >
-          <CrossIcon label="cross" />
+          <Icon glyph={CrossIcon} label="cross" />
         </DeleteBtn>
       );
     }
@@ -72,7 +73,7 @@ export class Menu extends Component<MenuProps, MenuState> {
         className={meatballBtnClasses}
         onClick={this.meatballBtnClick}
       >
-        <MoreIcon label="more"/>
+        <Icon glyph={MoreIcon} label="more"/>
       </MeatballsButton>
     );
   }

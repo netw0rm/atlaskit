@@ -168,8 +168,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (state: MentionsState) => {
     const { anchorElement, query } = state;
-    this.setState({ anchorElement, query });
-    this.applyPopper();
+    this.setState({ anchorElement, query }, this.applyPopper);
   }
 
   render() {

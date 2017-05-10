@@ -122,7 +122,7 @@ export default class Editor extends PureComponent<Props, State> {
    */
   focus(): void {
     const { editorView } = this.state;
-    if (editorView) {
+    if (editorView && !editorView.hasFocus()) {
       editorView.focus();
     }
   }
@@ -343,7 +343,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       this.setState({ editorView });
 
-      editorView.dom.focus();
+      editorView.focus();
 
       analyticsService.trackEvent('atlassian.editor.start');
     } else {

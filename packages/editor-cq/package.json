@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-cq",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "config": {
     "access": "public"
   },
@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^16.0.0",
+    "@atlaskit/editor-core": "^16.4.0",
     "@atlaskit/logo": "^3.0.3",
     "@atlaskit/util-shared-styles": "^1.2.1",
     "@atlaskit/mention": "^4.1.0",

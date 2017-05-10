@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "4.2.0",
+  "version": "4.5.0",
   "config": {
     "access": "public"
   },
@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^16.0.0",
+    "@atlaskit/editor-core": "^16.7.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },

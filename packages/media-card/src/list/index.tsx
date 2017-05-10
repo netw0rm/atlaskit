@@ -4,7 +4,6 @@ import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import { MediaItem, MediaCollection, MediaCollectionItem, Context, CollectionAction, DataUriService } from '@atlaskit/media-core';
-import { CSSTransitionGroup } from 'react-transition-group';
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
 import { CardDimensions } from '../index';
 import { Provider } from '../card';
@@ -207,8 +206,10 @@ export class CardList extends Component<CardListProps, CardListState> {
           return null;
         }
 
+        const isNewItem = typeof this.providersByMediaItemId[mediaItem.details.id] !== 'undefined';
+
         return (
-          <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`}>
+          <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} animateIn={isNewItem}>
             <MediaCard
               provider={this.providersByMediaItemId[mediaItem.details.id]}
               dataURIService={this.dataURIService}
@@ -227,15 +228,9 @@ export class CardList extends Component<CardListProps, CardListState> {
     ;
 
     return (
-      <CSSTransitionGroup
-        transitionName="card-list-item"
-        transitionEnterTimeout={750}
-        transitionLeave={false}
-        component={CardListWrapper}
-        className="card-list"
-      >
+      <CardListWrapper className="card-list">
         {cards}
-      </CSSTransitionGroup>
+      </CardListWrapper>
     );
   }
 

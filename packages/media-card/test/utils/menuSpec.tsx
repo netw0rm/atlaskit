@@ -15,6 +15,15 @@ describe('Menu', () => {
     {label: 'Close', handler: () => {}},
   ];
   const deleteAction = {type: CardActionType.delete, label: 'Delete', handler: () => {}};
+  const animStub = window.cancelAnimationFrame;
+  // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
 
   it('should render the meatballs menu when supplied with multiple actions', () => {
     const card = mount(<Menu actions={menuActions}/>);

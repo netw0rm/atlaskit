@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { chaiPlugin, sendKeyToPm } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin, sendKeyToPm, insertText } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { mount, ReactWrapper } from 'enzyme';
 import Editor from '../../src';
 import * as api from '../../src';
@@ -70,6 +70,79 @@ describe('@atlaskit/editor-hipchat', () => {
       const { editorView } = editor.state;
       sendKeyToPm(editorView!, 'Enter');
       expect(spy.calledWith(editor.value)).to.equal(true);
+    });
+
+    it('should insert a new line when user presses Shift-Enter', () => {
+      editorWrapper = mount(<Editor />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+      sendKeyToPm(editorView!, 'Shift-Enter');
+      expect(editor.value).to.deep.equal({
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [{
+              type: 'hardBreak'
+            }]
+          }
+        ]
+      });
+    });
+
+  });
+
+  describe('Autoformatting', () => {
+
+    it('should convert "**text**" to strong', () => {
+      editorWrapper = mount(<Editor />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+
+      insertText(editorView, '**text**', 1);
+
+      expect(editor.value).to.deep.equal({
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [{
+              type: 'text',
+              text: 'text',
+              marks: [{
+                type: 'strong'
+              }]
+            }]
+          }
+        ]
+      });
+    });
+
+    it('should convert "*text*" to em', () => {
+      editorWrapper = mount(<Editor />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+
+      insertText(editorView, '*text*', 1);
+
+      expect(editor.value).to.deep.equal({
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [{
+              type: 'text',
+              text: 'text',
+              marks: [{
+                type: 'em'
+              }]
+            }]
+          }
+        ]
+      });
     });
 
   });

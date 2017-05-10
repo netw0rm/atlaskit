@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Component} from 'react';
+import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
@@ -12,15 +12,17 @@ export interface LinkCardViewSmallProps {
   site?: string;
   thumbnailUrl?: string;
   loading?: boolean;
-  onClick?: (event: Event) => void;
   error?: string;
   actions?: Array<CardAction>;
+
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
 }
 
 export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
   render() {
-    const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onRetry, error} = this.props;
+    const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onMouseEnter, onRetry, error} = this.props;
 
     return (
       <Href linkUrl={linkUrl}>
@@ -31,10 +33,12 @@ export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
           width={width}
           loading={loading}
           actions={actions}
-          onClick={onClick}
           error={error}
+          mediaType="image"
+
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
           onRetry={onRetry}
-          mediaType={'image'}
         />
       </Href>
     );

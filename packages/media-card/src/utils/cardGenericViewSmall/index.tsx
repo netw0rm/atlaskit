@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as cx from 'classnames';
 import {Component, MouseEvent} from 'react';
+import * as cx from 'classnames';
 import {CardAction, MediaType} from '@atlaskit/media-core';
 
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
@@ -15,8 +15,10 @@ export interface CardGenericViewSmallProps {
   thumbnailUrl?: string;
   loading?: boolean;
   actions?: Array<CardAction>;
-  onClick?: (event: Event) => void;
   error?: string;
+
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
 }
 
@@ -97,20 +99,14 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     ));
   }
 
-  onClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (this.props.onClick) {
-      this.props.onClick(event.nativeEvent);
-    }
-  }
-
-  formatCard(left: JSX.Element, right: JSX.Element) {
-    const {actions, loading, mediaType, thumbnailUrl} = this.props;
+  private formatCard(left: JSX.Element, right: JSX.Element) {
+    const {actions, loading, mediaType, thumbnailUrl, onClick, onMouseEnter} = this.props;
     const cardStyle = this.wrapperStyles;
     const cardClass = cx({loading: loading});
     const imgClass = cx('img-wrapper', {shadow: mediaType === 'image' && thumbnailUrl});
 
     return (
-      <SmallCard style={cardStyle} className={cardClass} onClick={this.onClick}>
+      <SmallCard style={cardStyle} className={cardClass} onClick={onClick} onMouseEnter={onMouseEnter}>
         <ImgWrapper className={imgClass}>
           {left}
         </ImgWrapper>

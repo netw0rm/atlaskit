@@ -3,7 +3,8 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
-import {CardAction, MediaItem, MediaItemDetails} from '@atlaskit/media-core';
+import {MouseEvent} from 'react';
+import {CardAction, MediaItemDetails} from '@atlaskit/media-core';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './card';
@@ -20,12 +21,13 @@ export interface CardDimensions {
 }
 
 export interface CardEvent {
-  event: Event;
-  mediaItem: MediaItem;
+  event: MouseEvent<HTMLElement>;
+  mediaItemDetails?: MediaItemDetails;
 }
 
-export interface OnSelectChangeFuncResult extends CardEvent {
+export interface OnSelectChangeFuncResult {
   selected: boolean;
+  mediaItemDetails?: MediaItemDetails;
 }
 
 export interface OnSelectChangeFunc {
@@ -52,7 +54,7 @@ export interface SharedCardProps {
 
 export interface CardEventProps {
   readonly onClick?: (result: CardEvent) => void;
-  readonly onHover?: (result: CardEvent) => void;
+  readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: OnSelectChangeFunc;
   readonly onLoadingChange?: OnLoadingChangeFunc;
 }

@@ -24,12 +24,13 @@ export interface CardImageViewProps {
   selectable?: boolean;
   selected?: boolean;
 
-  actions?: Array<CardAction>;
-  onClick?: (event: Event) => void;
-
   error?: string;
-  onRetry?: CardAction;
   icon?: string;
+
+  actions?: Array<CardAction>;
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
+  onRetry?: CardAction;
 }
 
 export const DEFAULT_CARD_DIMENSIONS = {
@@ -58,7 +59,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return getCSSUnitValue(height);
   }
 
-  isDownloadingOrProcessing() {
+  private isDownloadingOrProcessing() {
     const {status} = this.props;
     return status === 'loading' || status === 'processing';
   }
@@ -67,7 +68,53 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return {height: this.height, width: this.width};
   }
 
-  renderUploadingView() {
+  render() {
+    const {onClick, onMouseEnter} = this.props;
+    const cardStyle = this.cardStyle;
+
+    return (
+      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter}>
+        {this.getCardContents()}
+      </Wrapper>
+    );
+  }
+
+  private getCardContents = (): Array<JSX.Element> | JSX.Element => {
+    const {error, status} = this.props;
+
+    if (error) {
+      return this.getErrorContents();
+    }
+
+    if (status === 'uploading') {
+      return this.getUploadingContents();
+    }
+
+    return this.getSuccessCardContents();
+  }
+
+  private getErrorContents = (): Array<JSX.Element> => {
+    const {error, mediaName, mediaType, onRetry, actions, icon, subtitle} = this.props;
+
+    // key is required by React 15
+    return [
+      <div key={0} className="wrapper" />,
+      <CardOverlay
+        key={1}
+
+        persistent={true}
+        mediaName={mediaName}
+        mediaType={mediaType}
+        error={error}
+        onRetry={onRetry}
+        actions={actions}
+        icon={icon}
+        subtitle={subtitle}
+      />
+    ];
+  }
+
+  private getUploadingContents = (): JSX.Element => {
     const {actions, mediaName, progress, dataURI} = this.props;
 
     /*
@@ -85,45 +132,19 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     }
 
     return (
-      <Wrapper style={this.cardStyle} onClick={this.onClick}>
-        <div className="wrapper">
-          <UploadingView
-            title={mediaName}
-            progress={progress || 0}
-            dataURI={dataURI}
-            onCancel={onCancel}
-          />
-        </div>
-      </Wrapper>
+      <div className="wrapper">
+        <UploadingView
+          title={mediaName}
+          progress={progress || 0}
+          dataURI={dataURI}
+          onCancel={onCancel}
+        />
+      </div>
     );
-
   }
 
-  render() {
-    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, selectable, selected, status} = this.props;
-    const cardStyle = this.cardStyle;
-
-    if (error) {
-      return (
-        <Wrapper style={cardStyle} onClick={this.onClick}>
-          <div className={'wrapper'} />
-          <CardOverlay
-            persistent={true}
-            mediaName={mediaName}
-            mediaType={mediaType}
-            error={error}
-            onRetry={onRetry}
-            actions={actions}
-            icon={icon}
-            subtitle={subtitle}
-          />
-        </Wrapper>
-      );
-    }
-
-    if (status === 'uploading') {
-      return this.renderUploadingView();
-    }
+  private getSuccessCardContents = (): JSX.Element => {
+    const {mediaName, mediaType, mediaItemType, subtitle, dataURI, selectable, selected, actions, icon} = this.props;
 
     const isPersistent = mediaType === 'doc' || !dataURI;
     const overlay = this.isDownloadingOrProcessing() ? false : <CardOverlay
@@ -138,26 +159,18 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     />;
 
     return (
-      <Wrapper style={cardStyle} onClick={this.onClick}>
-        <div className={'wrapper'}>
-          <div className={'img-wrapper'}>
-            <CardContent
-              loading={this.isDownloadingOrProcessing()}
-              mediaItemType={mediaItemType}
-              mediaType={mediaType}
-              dataURI={dataURI}
-            />
-          </div>
-          {overlay}
+      <div className={'wrapper'}>
+        <div className={'img-wrapper'}>
+          <CardContent
+            loading={this.isDownloadingOrProcessing()}
+            mediaItemType={mediaItemType}
+            mediaType={mediaType}
+            dataURI={dataURI}
+          />
         </div>
-      </Wrapper>
+        {overlay}
+      </div>
     );
-  }
-
-  onClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (this.props.onClick) {
-      this.props.onClick(event.nativeEvent);
-    }
   }
 }
 

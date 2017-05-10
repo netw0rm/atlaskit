@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Component} from 'react';
+import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 
@@ -7,7 +7,7 @@ import {CardDimensions, CardStatus} from '../../index';
 import {CardImageView} from '../../utils/cardImageView';
 import {toHumanReadableMediaSize} from '../../utils';
 
-export interface FileCardViewProps {
+export interface FileCardImageViewProps {
   mediaName?: string;
   mediaType?: MediaType;
   mediaSize?: number;
@@ -21,10 +21,11 @@ export interface FileCardViewProps {
   selectable?: boolean;
   selected?: boolean;
 
-  actions?: Array<CardAction>;
-  onClick?: (event: Event) => void;
-
   error?: string;
+
+  actions?: Array<CardAction>;
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
 }
 
@@ -33,12 +34,14 @@ export const DEFAULT_CARD_DIMENSIONS = {
   HEIGHT: '104px'
 };
 
-export class FileCardView extends Component<FileCardViewProps, {}> {
+export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   render() {
-    const {mediaSize, mediaType, mediaName, dataURI, progress, status, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
+    const {error, mediaSize, mediaType, mediaName, dataURI, progress, status, dimensions,
+       selectable, selected, actions, onClick, onMouseEnter, onRetry} = this.props;
     const fileSize = toHumanReadableMediaSize(mediaSize || 0);
 
     return <CardImageView
+      error={error}
       mediaType={mediaType}
       mediaName={mediaName}
       subtitle={fileSize}
@@ -49,11 +52,12 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
       selectable={selectable}
       selected={selected}
       actions={actions}
+
       onClick={onClick}
-      error={error}
+      onMouseEnter={onMouseEnter}
       onRetry={onRetry}
     />;
   }
 }
 
-export default FileCardView;
+export default FileCardImageView;

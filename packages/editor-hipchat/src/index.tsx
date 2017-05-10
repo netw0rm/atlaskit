@@ -98,7 +98,8 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
-      providerFactory: this.providerFactory
+      providerFactory: this.providerFactory,
+      behavior: 'default'
     });
   }
 

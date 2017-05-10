@@ -27,6 +27,7 @@ const description = (<Description>
 </Description>);
 
 const propDescriptions = {
+  invertColor: 'a flag to indicate that the spinner is being displayed on a dark background',
   isCompleting: 'a flag to signal that a loader should start playing it&#39;s fade out animation',
   onComplete: 'a callback function called after the fade out animation has finished',
   size: `a number indicating the width of the spinner, or one of "small" (20px), "medium" (30px),

@@ -1,27 +1,9 @@
 import {
-  blockquote,
-  bulletList,
   code as codeBase,
-  codeBlock,
-  doc,
-  em,
-  hardBreak,
-  heading,
-  link,
-  listItem,
   MarkSpec,
-  mention,
-  mentionQuery,
   NodeSpec,
-  orderedList,
-  paragraph,
-  rule,
   Schema,
-  strike,
-  strong,
-  subsup,
-  text,
-  underline,
+  createSchema
 } from '@atlaskit/editor-core';
 
 const code = {
@@ -96,63 +78,39 @@ export function isSchemaWithBlockQuotes(schema: JIRASchema): boolean {
 }
 
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
-  const nodes = {
-    doc,
-    paragraph,
-    text,
-    blockquote,
-    bulletList,
-    codeBlock,
-    hardBreak,
-    heading,
-    listItem,
-    mention,
-    orderedList,
-    rule,
-  };
+  const nodes = ['doc', 'paragraph', 'text', 'hardBreak', 'heading', 'rule'];
+  const marks = ['strong', 'em', 'underline'];
+  const customMarkSpecs: {[name: string]: any} = {};
 
-  const marks = {
-    strong,
-    code,
-    em,
-    link,
-    mentionQuery,
-    strike,
-    subsup,
-    underline,
-  };
-
-  if (!config.allowLinks) {
-    delete marks.link;
+  if (config.allowLinks) {
+    marks.push('link');
   }
 
-  if (!config.allowLists) {
-    delete nodes.orderedList;
-    delete nodes.bulletList;
-    delete nodes.listItem;
+  if (config.allowLists) {
+    nodes.push('orderedList', 'bulletList', 'listItem');
   }
 
-  if (!config.allowMentions) {
-    delete nodes.mention;
-    delete marks.mentionQuery;
+  if (config.allowMentions) {
+    nodes.push('mention');
+    marks.push('mentionQuery');
   }
 
-  if (!config.allowAdvancedTextFormatting) {
-    delete marks.strike;
-    delete marks.code;
+  if (config.allowAdvancedTextFormatting) {
+    marks.push('strike');
+    customMarkSpecs.code = code;
   }
 
-  if (!config.allowSubSup) {
-    delete marks.subsup;
+  if (config.allowSubSup) {
+    marks.push('subsup');
   }
 
-  if (!config.allowCodeBlock) {
-    delete nodes.codeBlock;
+  if (config.allowCodeBlock) {
+    nodes.push('codeBlock');
   }
 
-  if (!config.allowBlockQuote) {
-    delete nodes.blockquote;
+  if (config.allowBlockQuote) {
+    nodes.push('blockquote');
   }
 
-  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+  return createSchema({ nodes, marks, customMarkSpecs });
 }

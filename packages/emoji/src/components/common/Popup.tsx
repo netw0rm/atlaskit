@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import * as ReactDOM from 'react-dom';
-
 import { RelativePosition } from '../../types';
 
 const getTargetNode = (target: string | Element): Element | null => {
@@ -26,6 +25,7 @@ export interface Props {
  */
 export default class Popup extends PureComponent<Props, undefined> {
   private popup: HTMLElement;
+  private debounced: number | null = null;
 
   static defaultProps = {
     relativePosition: 'auto',
@@ -38,15 +38,18 @@ export default class Popup extends PureComponent<Props, undefined> {
     this.popup = document.createElement('div');
     document.body.appendChild(this.popup);
     this.popup.style.position = 'absolute';
+    window.addEventListener('resize', this.handleResize);
     this.applyAbsolutePosition();
     this.renderContent();
   }
 
   componentDidUpdate() {
+    this.applyAbsolutePosition();
     this.renderContent();
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
     ReactDOM.unmountComponentAtNode(this.popup);
     document.body.removeChild(this.popup);
   }
@@ -96,6 +99,18 @@ export default class Popup extends PureComponent<Props, undefined> {
     if (this.props.zIndex) {
       this.popup.style.zIndex = `${this.props.zIndex}`;
     }
+  }
+
+  private handleResize = () => {
+    if (this.debounced) {
+      clearTimeout(this.debounced);
+      this.debounced = null;
+    }
+    // Timeout set to 30ms as to not throttle IE11
+    this.debounced = setTimeout(() => {
+      this.applyAbsolutePosition();
+      this.debounced = null;
+    }, 30);
   }
 
   renderContent() {

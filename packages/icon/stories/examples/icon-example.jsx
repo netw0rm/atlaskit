@@ -1,6 +1,6 @@
 import React from 'react';
 import AtlassianIcon, { AtlassianIconIcon } from '@atlaskit/icon/glyph/atlassian';
-import Icon from '@atlaskit/icon';
+import Icon from '@atlaskit/icon/lib/Icon';
 
 // the module exports all the icons as top level icons.
 // see the All icons (usage) story for a list of all exports

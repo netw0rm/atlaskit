@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/app-switcher",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "config": {
     "access": "public"
   },

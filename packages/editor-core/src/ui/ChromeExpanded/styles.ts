@@ -170,3 +170,8 @@ export const toolbar = style({
     }
   }
 });
+
+export const secondaryToolbar = style({
+  alignItems: 'center',
+  display: 'flex'
+});

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "config": {
     "access": "public"
   },
@@ -38,9 +38,7 @@
     "wcag-contrast": "^0.1.0"
   },
   "dependencies": {
-    "babel-runtime": "^6.11.6"
-  },
-  "peerDependencies": {
+    "babel-runtime": "^6.11.6",
     "styled-components": "^1.3.0"
   },
   "keywords": [

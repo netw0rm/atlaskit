@@ -18,9 +18,11 @@ export default class BasicNavigation extends PureComponent {
     searchDrawerContent: PropTypes.node,
     createDrawerContent: PropTypes.node,
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
+    onResizeCallback: PropTypes.func,
   }
 
   static defaultProps = {
+    onResizeCallback: () => {},
     children: (<div>
       <AkNavigationItem
         icon={<DashboardIcon label="Dashboard" />}
@@ -136,6 +138,13 @@ export default class BasicNavigation extends PureComponent {
   }
 
   openDrawer = (name) => {
+    if (name === 'search') {
+      action('onSearchDrawerOpen')();
+    }
+
+    if (name === 'create') {
+      action('onCreateDrawerOpen')();
+    }
     this.setState({
       openDrawer: name,
     });
@@ -148,6 +157,8 @@ export default class BasicNavigation extends PureComponent {
   }
 
   resize = (resizeState) => {
+    action('onResize')();
+    this.props.onResizeCallback(resizeState);
     this.setState({
       isOpen: resizeState.isOpen,
       width: resizeState.width,

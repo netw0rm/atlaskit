@@ -502,14 +502,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
             if (item[1]) {
               view.dispatch(view.state.tr.replaceWith(pos, pos + 1, item[1]!));
             } else {
-              const resolvedPos = view.state.doc.resolve(pos);
-              if (resolvedPos.parent.childCount > 1) {
-                view.dispatch(view.state.tr.delete(pos, pos + 1));
-              } else {
-                // This is the last item in mediaGroup, so remove the whole group.
-                // (works around a bug where ProseMirror would create a dummy empty "media" node)
-                view.dispatch(view.state.tr.delete(resolvedPos.before(), resolvedPos.after()));
-              }
+              view.dispatch(view.state.tr.deleteRange(pos, pos + 1));
             }
           }
         }

@@ -265,7 +265,7 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
 
     const pre = doc.createElement('pre');
     // java is default language for JIRA
-    pre.setAttribute('class', `code-${(node.attrs.language || 'java').toLocaleLowerCase()}`);
+    pre.setAttribute('class', `code-${(node.attrs.language || 'plain').toLocaleLowerCase()}`);
     pre.appendChild(encodeFragment(node.content));
 
     content.appendChild(pre);

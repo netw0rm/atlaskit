@@ -1,7 +1,9 @@
 
 import { checkVisibility, checkInvisibility } from '../src';
 
-describe('visible elements', () => {
+// skipping these tests for now until I move them to browserstack
+// eslint-disable-next-line mocha/no-skipped-tests
+describe.skip('visible elements', () => {
   let div;
 
   beforeEach(() => {
@@ -22,7 +24,10 @@ describe('visible elements', () => {
     expect(checkInvisibility(div)).to.equal(false);
   });
 });
-describe('invisible elements', () => {
+
+// skipping these tests for now until I move them to browserstack
+// eslint-disable-next-line mocha/no-skipped-tests
+describe.skip('invisible elements', () => {
   let div;
 
   beforeEach(() => {

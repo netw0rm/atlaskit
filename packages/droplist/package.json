@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/droplist",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "config": {
     "access": "public"
   },
@@ -20,6 +20,7 @@
     "@atlaskit/util-shared-styles": "^1.0.0",
     "@atlaskit/layer": "^2.0.1",
     "@atlaskit/icon": "^2.5.5",
+    "@atlaskit/tooltip": "^1.1.2",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "keycode": "^2.1.7"

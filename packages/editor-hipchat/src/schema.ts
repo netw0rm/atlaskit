@@ -18,6 +18,10 @@ export interface HCSchemaNodes {
 }
 
 export interface HCSchemaMarks {
+  link: MarkSpec;
+  em: MarkSpec;
+  strong: MarkSpec;
+  underline: MarkSpec;
   mentionQuery: MarkSpec;
   emojiQuery: MarkSpec;
 }
@@ -55,6 +59,18 @@ const customNodeSpecs = {
 };
 
 const marks = [
+  // Represents a hyperlink to a URL.
+  'link',
+
+  // Represents an italic text
+  'em',
+
+  // Represents bolded text
+  'strong',
+
+  // Represents underlined text
+  'underline',
+
   // Represents a "mention query". A mention query is created by typing the @ symbol. The text
   // within a mention query is used to search for a mention.
   //

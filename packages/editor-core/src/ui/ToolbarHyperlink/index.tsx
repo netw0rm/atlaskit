@@ -41,7 +41,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           onClick={this.toggleLinkPanel}
           selected={adding}
           title={tooltip(addLink)}
-          iconBefore={<LinkIcon label="Link" />}
+          iconBefore={<LinkIcon label="Add link" />}
         />
       </span>
     );

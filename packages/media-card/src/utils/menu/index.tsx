@@ -2,8 +2,8 @@ import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {CardAction, CardActionType, CardEventHandler} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
+import Icon from '@atlaskit/icon/lib/Icon';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import Icon from '@atlaskit/icon';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 
 import {

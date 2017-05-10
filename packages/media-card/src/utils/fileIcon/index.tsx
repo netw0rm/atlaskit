@@ -6,7 +6,7 @@ import doc from '@atlaskit/icon/glyph/document';
 import image from '@atlaskit/icon/glyph/image';
 import video from '@atlaskit/icon/glyph/media-services/video';
 import unknown from '@atlaskit/icon/glyph/page';
-import Icon from '@atlaskit/icon';
+import Icon from '@atlaskit/icon/lib/Icon';
 
 import {FileTypeIcon} from './styled';
 

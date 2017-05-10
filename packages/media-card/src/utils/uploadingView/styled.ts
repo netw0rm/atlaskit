@@ -1,6 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {rgba, parseToRgb} from 'polished';
+import * as rgba from 'polished/lib/color/rgba';
+import * as parseToRgb from 'polished/lib/color/parseToRgb';
 import {akColorN0, akColorN900} from '@atlaskit/util-shared-styles';
 import {absolute, size, center} from '../../styles';
 

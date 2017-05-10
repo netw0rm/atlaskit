@@ -292,8 +292,7 @@ export default class Editor extends PureComponent<Props, State> {
         nodeViews: {
           mediaGroup: nodeViewFactory(this.providerFactory, true),
           mention: nodeViewFactory(this.providerFactory, false),
-          // jiraIssue: jiraIssueNodeView,
-          // media: mediaNodeView(this.providerFactory)
+          jiraIssue: nodeViewFactory(this.providerFactory, false),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

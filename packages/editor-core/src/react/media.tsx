@@ -1,10 +1,19 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import styled from 'styled-components';
 import { PositionedNode } from './';
 import MediaComponent from '../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../providerFactory';
 import { mediaStateKey, MediaPluginState } from '../plugins';
 import { EditorView } from '../prosemirror';
+
+// tslint:disable-next-line:variable-name
+const Wrapper = styled.div`
+  margin: 8px 8px 0 0;
+  display: inline-block;
+  verticalAlign: middle;
+  userSelect: all;
+`;
 
 export interface Props {
   children?: React.ReactNode;
@@ -26,23 +35,24 @@ export default class MediaNode extends PureComponent<Props, {}> {
     const { id, type, collection } = node.attrs;
 
     return (
-      <WithProviders
-        providers={['mediaProvider']}
-        providerFactory={providerFactory}
-        // tslint:disable-next-line:jsx-no-lambda
-        renderNode={providers => {
-          return <MediaComponent
-            mediaProvider={providers['mediaProvider']}
-            editorView={view}
-            id={id!}
-            type={type!}
-            collection={collection!}
-          />;
-        }}
-      />
+      <Wrapper>
+        <WithProviders
+          providers={['mediaProvider']}
+          providerFactory={providerFactory}
+          // tslint:disable-next-line:jsx-no-lambda
+          renderNode={providers => {
+            return (
+              <MediaComponent
+                mediaProvider={providers['mediaProvider']}
+                editorView={view}
+                id={id!}
+                type={type!}
+                collection={collection!}
+              />
+            );
+          }}
+        />
+      </Wrapper>
     );
   }
 }
-
-
-

@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PositionedNode } from './';
 import { default as MediaGroupNode } from './media-group';
 import { default as MediaNode } from './media';
 import { default as MentionNode } from './mention';
@@ -33,7 +34,7 @@ export default class ReactProsemirrorNode extends PureComponent<Props, {}> {
     const children: any[] = [];
     let nodePosOffset = 0;
 
-    node.forEach((childNode, offset, index) => {
+    node.forEach((childNode: PositionedNode, offset: number, index: number) => {
       childNode.getPos = () => getPos() + nodePosOffset;
       nodePosOffset += childNode.nodeSize;
 

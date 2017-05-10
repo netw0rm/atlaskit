@@ -24,15 +24,15 @@ export default class MediaNode extends PureComponent<Props, {}> {
         providers={['mediaProvider']}
         providerFactory={providerFactory}
         // tslint:disable-next-line:jsx-no-lambda
-        renderNode={providers =>
-          <MediaComponent
+        renderNode={providers => {
+          return <MediaComponent
             mediaProvider={providers['mediaProvider']}
             editorView={view}
             id={id!}
             type={type!}
             collection={collection!}
-          />
-        }
+          />;
+        }}
       />
     );
   }

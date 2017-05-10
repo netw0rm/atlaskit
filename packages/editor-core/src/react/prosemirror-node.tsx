@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { default as MediaGroupNode } from './media-group';
 import { default as MediaNode } from './media';
+import { default as MentionNode } from './mention';
 import {
   Node as PMNode,
 } from '../prosemirror';
@@ -9,6 +10,7 @@ import {
 const richNodes = new Map<string, React.ComponentClass<any>>([
   [ 'mediaGroup', MediaGroupNode ],
   [ 'media', MediaNode ],
+  [ 'mention', MentionNode ],
 ]);
 
 export interface Props {

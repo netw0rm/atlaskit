@@ -28,13 +28,11 @@ import {
   Node as PMNode,
   TextSelection,
   version as coreVersion,
-  mediaGroupNodeView,
   mediaPluginFactory,
   mediaStateKey,
-  mediaNodeView,
   MediaProvider,
+  nodeViewFactory,
   Plugin,
-  mentionNodeView,
   ProviderFactory,
   MediaPluginState,
   MediaState,
@@ -46,7 +44,6 @@ import { MentionProvider } from '@atlaskit/mention';
 import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
-import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 export { version };
 
 export interface Props {
@@ -293,8 +290,8 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mediaGroup: mediaGroupNodeView(this.providerFactory),
-          // mention: mentionNodeView(this.providerFactory),
+          mediaGroup: nodeViewFactory(this.providerFactory, true),
+          mention: nodeViewFactory(this.providerFactory, false),
           // jiraIssue: jiraIssueNodeView,
           // media: mediaNodeView(this.providerFactory)
         },

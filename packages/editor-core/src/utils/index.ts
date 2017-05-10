@@ -15,6 +15,8 @@ import {
   findWrapping
 } from '../prosemirror';
 
+export { default as nodeViewFactory } from './nodeview-factory';
+
 function validateNode(node: Node): boolean {
   return false;
 }

@@ -51,9 +51,12 @@ export const mediaGroup: NodeSpec = {
 };
 
 class MediaGroupNodeView implements NodeView {
-  private domRef: HTMLElement | undefined = document.createElement('div');
+  private domRef: HTMLElement | undefined;
 
-  constructor(node: PMNode, view: EditorView, providerFactory: ProviderFactory) {
+  constructor(node: PMNode, view: EditorView, providerFactory: ProviderFactory, blockNodeView: boolean) {
+    const elementType = blockNodeView ? 'div' : 'span';
+    this.domRef = document.createElement(elementType);
+
     ReactDOM.render(
       <ReactPMNode
         node={node}
@@ -74,6 +77,6 @@ class MediaGroupNodeView implements NodeView {
   }
 }
 
-export const mediaGroupNodeView = (providerFactory: ProviderFactory) => (node: PMNode, view: EditorView, getPos: () => number): NodeView => {
-  return new MediaGroupNodeView(node, view, providerFactory);
+export const mediaGroupNodeView = (providerFactory: ProviderFactory, blockNodeView: boolean) => (node: PMNode, view: EditorView, getPos: () => number): NodeView => {
+  return new MediaGroupNodeView(node, view, providerFactory, blockNodeView);
 };

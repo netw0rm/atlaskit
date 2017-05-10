@@ -352,7 +352,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       editor.find('ToolbarBlockType').find('AkButton').simulate('click');
       editor
         .find('Item')
-        .filterWhere(n => n.key() === blockTypeName)
+        .filterWhere(n => n.prop('value')!['name'] === blockTypeName)
         .find('Element')
         .simulate('click');
 

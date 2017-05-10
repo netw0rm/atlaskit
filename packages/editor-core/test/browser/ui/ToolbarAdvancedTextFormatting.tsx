@@ -2,8 +2,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
-import { Tooltip } from '@atlaskit/tooltip';
-import { Item } from '@atlaskit/droplist';
+import DropdownMenu from '@atlaskit/dropdown-menu';
 import textFormattingPlugins from '../../../src/plugins/text-formatting';
 import clearFormattingPlugins from '../../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../../src/ui/ToolbarAdvancedTextFormatting';
@@ -23,13 +22,12 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         place: fixture()
     });
 
-    it('should return null both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
+    it('should render disabled ToolbarButton if both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
         const { editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
-            <ToolbarAdvancedTextFormatting editorView={editorView} focusEditor={noop} softBlurEditor={noop} />
+          <ToolbarAdvancedTextFormatting editorView={editorView} focusEditor={noop} softBlurEditor={noop} />
         );
-        toolbarOption.setState({ isOpen: true });
-        expect(toolbarOption.html()).to.equal(null);
+        expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
     });
 
     it('should have 5 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
@@ -43,8 +41,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 softBlurEditor={noop}
             />
         );
-        toolbarOption.setState({ isOpen: true });
-        expect(toolbarOption.find(Item).length).to.equal(5);
+        toolbarOption.find(ToolbarButton).simulate('click');
+        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(5);
     });
 
     it('should return only 4 items if only pluginStateTextFormatting is defined', () => {
@@ -57,7 +55,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 softBlurEditor={noop}
             />
         );
-        expect(toolbarOption.find(Item).length).to.equal(4);
+        toolbarOption.find(ToolbarButton).simulate('click');
+        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(4);
     });
 
     it('should return only 1 items if only pluginStateClearFormatting is defined', () => {
@@ -70,26 +69,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 softBlurEditor={noop}
             />
         );
-        expect(toolbarOption.find(Item).length).to.equal(1);
+        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(1);
     });
 
-    it('should open drop-down when trigger clicked', () => {
-        const { editorView } = editor(doc(p('text')));
-        const toolbarOption = mount(
-            <ToolbarAdvancedTextFormatting
-                pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
-                pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
-                editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
-            />
-        );
-        expect(toolbarOption.state('isOpen')).to.equal(false);
-        toolbarOption.find(ToolbarButton).simulate('click');
-        expect(toolbarOption.state('isOpen')).to.equal(true);
-    });
-
-    it('should not open drop-down when trigger clicked but all code and strikethrough and clearformatting are disabled', () => {
+    it('should render disabled toolbar button when all code and strikethrough and clearformatting are disabled', () => {
         const { editorView } = editor(doc(p('text')));
         const pluginState = textFormattingPluginSet[0].getState(editorView.state);
         if (pluginState) {
@@ -106,24 +89,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 softBlurEditor={noop}
             />
         );
-        expect(toolbarOption.state('isOpen')).to.equal(false);
-        toolbarOption.find(ToolbarButton).simulate('click');
-        expect(toolbarOption.state('isOpen')).to.equal(false);
-    });
-
-    it('should have 5 child elements with title attribute', () => {
-        const { editorView } = editor(doc(p('text')));
-        const toolbarOption = mount(
-            <ToolbarAdvancedTextFormatting
-                pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
-                pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
-                editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
-            />
-        );
-        toolbarOption.setState({ isOpen: true });
-        expect(toolbarOption.find(Tooltip).length).to.equal(5);
+        expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
     });
 
     it('should trigger toggleCode of pluginStateTextFormatting when code option is clicked', () => {
@@ -139,7 +105,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         );
         toolbarOption.find(ToolbarButton).simulate('click');
         textFormattingPluginSet[0].getState(editorView.state).toggleCode = sinon.spy();
-        const codeButton = toolbarOption.find(Item).at(0).childAt(0);
+        const codeButton = toolbarOption
+            .find('Item')
+            .filterWhere(n => n.text() === 'Code')
+            .find('Element');
         codeButton.simulate('click');
         expect(textFormattingPluginSet[0].getState(editorView.state).toggleCode.callCount).to.equal(1);
     });
@@ -157,7 +126,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         );
         toolbarOption.find(ToolbarButton).simulate('click');
         textFormattingPluginSet[0].getState(editorView.state).toggleStrike = sinon.spy();
-        const strikeButton = toolbarOption.find(Item).at(1).childAt(0);
+        const strikeButton = toolbarOption
+            .find('Item')
+            .filterWhere(n => n.text() === 'Strikethrough')
+            .find('Element');
         strikeButton.simulate('click');
         expect(textFormattingPluginSet[0].getState(editorView.state).toggleStrike.callCount).to.equal(1);
     });
@@ -173,7 +145,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 softBlurEditor={noop}
             />
         );
-        toolbarOption.setState({ codeHidden: true, isOpen: true });
+        toolbarOption.setState({ codeHidden: true });
+        toolbarOption.find(ToolbarButton).simulate('click');
         const codeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Code');
         expect(codeButton.length).to.equal(0);
     });
@@ -189,7 +162,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 softBlurEditor={noop}
             />
         );
-        toolbarOption.setState({ strikeHidden: true, isOpen: true });
+        toolbarOption.setState({ strikeHidden: true });
+        toolbarOption.find(ToolbarButton).simulate('click');
         const strikeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Strikethrough');
         expect(strikeButton.length).to.equal(0);
     });
@@ -208,12 +182,15 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         );
         toolbarOption.find(ToolbarButton).simulate('click');
         clearformattingPluginSet[0].getState(editorView.state).clearFormatting = sinon.spy();
-        const clearFormattingButton = toolbarOption.find(Item).at(4).childAt(0);
+        const clearFormattingButton = toolbarOption
+          .find('Item')
+          .filterWhere(n => n.text() === 'Clear Formatting')
+          .find('Element');
         clearFormattingButton.simulate('click');
         expect(clearformattingPluginSet[0].getState(editorView.state).clearFormatting.callCount).to.equal(1);
     });
 
-    it('should be disabled if all code and strikethrough and clearformatting are disabled', () => {
+    it('should render disabled ToolbarButton if all code and strikethrough and clearformatting are disabled', () => {
         const { editorView } = editor(doc(p('text')));
         const pluginState = textFormattingPluginSet[0].getState(editorView.state);
         if (pluginState) {
@@ -230,8 +207,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 softBlurEditor={noop}
             />
         );
-        const toolbarButton = toolbarOption.find(ToolbarButton);
-        expect(toolbarButton.prop('disabled')).to.equal(true);
+        expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
     });
 
     it('should be selected after convertion to code', () => {

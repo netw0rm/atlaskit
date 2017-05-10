@@ -172,7 +172,7 @@ export default class Navigation extends PureComponent {
       isResizing,
     } = this.state;
 
-    // if the Navigation then:
+    // if collapsed then:
     // 1. isOpen is ignored
     // 2. You cannot resize to a size smaller than the default open size
 

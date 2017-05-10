@@ -51,7 +51,9 @@ export default class ContainerNavigation extends PureComponent {
   }
 
   componentWillReceiveProps() {
-    // start animating global primary actions after initial mount
+    // After any update we are going to start animating.
+    // Not doing this in componentDidMount to prevent an
+    // unneeded second render on mount.
     if (!this.state.isInitiallyRendered) {
       this.setState({
         isInitiallyRendered: true,
@@ -105,11 +107,10 @@ export default class ContainerNavigation extends PureComponent {
       isCollapsed,
     } = this.props;
 
-    const { isInitiallyRendered } = this.state;
-
     // Only animating the revealing of GlobalPrimaryActions
     // after the first render. Before that it is rendered
     // without animation.
+    const { isInitiallyRendered } = this.state;
 
     const header = headerComponent ? (
       <ContainerHeader

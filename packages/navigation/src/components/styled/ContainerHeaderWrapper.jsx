@@ -6,10 +6,10 @@ const keylineHeight = 2;
 const paddingOpen = (() => {
   const paddingLeft = layout.padding.side + (akGridSizeUnitless * 1.75);
   const paddingRight = layout.padding.side + (akGridSizeUnitless * 1.5);
-  const paddingBottom = `${(akGridSizeUnitless * 1.5) - keylineHeight}px`;
+  const paddingBottom = (akGridSizeUnitless * 1.5) - keylineHeight;
 
-  return `${layout.padding.top}px ${paddingLeft}px ${paddingBottom} ${paddingRight}px`;
-});
+  return `${layout.padding.top}px ${paddingLeft}px ${paddingBottom}px ${paddingRight}px`;
+})();
 const paddingClosed = `0 ${akGridSizeUnitless * 2.5}px 0 ${akGridSizeUnitless * 0.5}px`;
 const supportsStickyCondition = '@supports(position: sticky) or (position: -webkit-sticky)';
 

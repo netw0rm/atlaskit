@@ -34,7 +34,7 @@ export default class NavigationItemGroup extends PureComponent {
       <NavigationItemGroupAction>
         {this.props.action}
       </NavigationItemGroupAction>
-      : null);
+    : null);
 
     return (
       <ThemeProvider

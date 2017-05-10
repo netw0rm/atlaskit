@@ -7,8 +7,7 @@ const size = akGridSizeUnitless * 3;
 const offsetLeft = akGridSizeUnitless * 3.5;
 const openPadding = `0 ${akGridSizeUnitless * 2}px 0 ${offsetLeft - (akGridSizeUnitless * 2)}px`;
 const compactPadding = `0 ${akGridSizeUnitless}px 0 0`;
-const closedHorizontalPadding =
-  (layout.width.closed - (akGridSizeUnitless * 4) - size) / 2;
+const closedHorizontalPadding = (layout.width.closed - (akGridSizeUnitless * 4) - size) / 2;
 const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPadding}px`;
 
 const NavigationItemIcon = styled.div`

@@ -8,7 +8,7 @@ const RevealInner = styled.div`
   overflow: hidden;
   height: ${props => (props.isOpen ? props.openHeight : 0)}px;
   opacity: ${props => (props.isOpen ? 1 : 0)};
-  transition: ${props => (props.shouldAnimate ? transition : 0)};
+  transition: ${props => (props.shouldAnimate ? transition : 'none')};
 `;
 
 RevealInner.displayName = 'RevealInner';

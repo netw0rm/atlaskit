@@ -4,7 +4,7 @@ import * as cx from 'classnames';
 import {CardAction, CardActionType, CardEventHandler} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import Icon from '@atlaskit/icon';
+import Icon from '@atlaskit/icon/lib/Icon';
 
 import {Dropdown} from './dropdown';
 import {

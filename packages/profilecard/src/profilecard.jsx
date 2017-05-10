@@ -87,7 +87,9 @@ export default class Profilecard extends PureComponent {
   }
 
   renderErrorMessage() {
-    return (<ErrorMessage reload={this.clientFetchProfile} />);
+    return (<ErrorMessage
+      reload={this.props.clientFetchProfile && this.clientFetchProfile}
+    />);
   }
 
   renderProfilecard() {

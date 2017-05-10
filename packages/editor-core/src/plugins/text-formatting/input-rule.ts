@@ -14,7 +14,7 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
 
     // fixes the following case: my `*name` is *
     // expected result: should ignore special characters inside "code"
-    if (state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())) {
+    if (state.schema.marks.code && state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())) {
       return;
     }
 

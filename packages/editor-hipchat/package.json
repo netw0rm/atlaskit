@@ -33,7 +33,7 @@
     "tslib": "^1.2.0"
   },
   "peerDependencies": {
-    "@atlaskit/emoji": "^13.1.1",
+    "@atlaskit/emoji": "^14.0.0",
     "@atlaskit/mention": "^4.2.0",
     "react": "^15.3.2"
   },

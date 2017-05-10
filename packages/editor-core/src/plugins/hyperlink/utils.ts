@@ -33,7 +33,7 @@ export function normalizeUrl(url: string) {
 export function linkify(schema, text: string): Slice|undefined {
   let matches: any = [];
   let match;
-  while(match = EMAIL_REGEX_G.exec(text)) {
+  while(match = URL_REGEX_G.exec(text)) {
     matches.push({
       start: match.index,
       end: match.index + match[0].length,
@@ -41,7 +41,7 @@ export function linkify(schema, text: string): Slice|undefined {
       href: match[0],
     });
   }
-  while(match = URL_REGEX_G.exec(text)) {
+  while(match = EMAIL_REGEX_G.exec(text)) {
     matches.push({
       start: match.index,
       end: match.index + match[0].length,

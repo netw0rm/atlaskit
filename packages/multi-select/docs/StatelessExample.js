@@ -25,9 +25,12 @@ export default class StatelessExample extends PureComponent {
   }
 
   onSelected = (item) => {
+    let newSelectedItems;
+    if (!this.state.selectedItems) newSelectedItems = [item];
+    else newSelectedItems = [...this.state.selectedItems, item];
     this.setState({
       isOpen: false,
-      selectedItems: [...this.state.selectedItems, item],
+      selectedItems: newSelectedItems,
       filterValue: '',
     });
   }

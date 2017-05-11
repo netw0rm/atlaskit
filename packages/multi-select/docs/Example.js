@@ -1,5 +1,6 @@
 import React from 'react';
 import MultiSelect from '@atlaskit/multi-select';
+import styled from 'styled-components';
 
 const selectItems = [
   {
@@ -26,8 +27,13 @@ const selectItems = [
   },
 ];
 
+const Vert = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const PaginationExample = () => (
-  <div>
+  <Vert>
     <MultiSelect
       items={selectItems}
       placeholder="Choose a City"
@@ -54,7 +60,7 @@ const PaginationExample = () => (
       placeholder="Choose a City"
       isInvalid
     />
-  </div>
+  </Vert>
 );
 
 export default PaginationExample;

@@ -284,14 +284,14 @@ storiesOf('CardList', {})
 
     const RefreshDemo = (): JSX.Element => { // tslint:disable-line:variable-name
       return (
-        <div style={{ display: 'flex' }}>
-          <div>
+        <div style={{display: 'flex'}}>
+          <div style={{width: '25%'}}>
             <CardList
               context={demoContext}
               collectionName={defaultCollectionName}
             />
           </div>
-          <div>
+          <div style={{width: '25%'}}>
             <CardList
               context={demoContext}
               collectionName={defaultCollectionName}

@@ -10,7 +10,7 @@ import { CardDimensions } from '../index';
 import { Provider } from '../card';
 import { MediaCard } from '../mediaCard';
 import { InfiniteScroll } from './infiniteScroll';
-import { CardListWrapper, CardListItemWrapper, Spinner } from './styled';
+import { CardListItemWrapper, Spinner } from './styled';
 
 export interface CardListProps {
   context: Context;
@@ -209,7 +209,7 @@ export class CardList extends Component<CardListProps, CardListState> {
         }
 
         return (
-          <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`}>
+          <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
             <MediaCard
               provider={this.providersByMediaItemId[mediaItem.details.id]}
               dataURIService={this.dataURIService}
@@ -232,7 +232,7 @@ export class CardList extends Component<CardListProps, CardListState> {
         transitionName="card-list-item"
         transitionEnterTimeout={750}
         transitionLeave={false}
-        component={CardListWrapper}
+        component="div"
         className="card-list"
       >
         {cards}
@@ -246,7 +246,10 @@ export class CardList extends Component<CardListProps, CardListState> {
    */
   private get cardWidth(): string | number | undefined {
     const {cardDimensions, cardAppearance} = this.props;
-    if (cardDimensions) { return cardDimensions.width; }
+
+    if (cardDimensions) {
+      return cardDimensions.width;
+    }
 
     if (cardAppearance === 'image') {
       return DEFAULT_CARD_DIMENSIONS.WIDTH;
@@ -270,3 +273,4 @@ export class CardList extends Component<CardListProps, CardListState> {
   loadNextPage = (): void => this.state.loadNextPage && this.state.loadNextPage();
 
 }
+

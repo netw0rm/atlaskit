@@ -1,18 +1,10 @@
 /* tslint:disable:variable-name */
-import styled, {keyframes} from 'styled-components';
+import styled, {keyframes, css} from 'styled-components';
 
 export const Spinner = styled.div`
   background: data-uri("./icons/spinner.svg") no-repeat center;
   width: 30px;
   height: 30px;
-`;
-
-export const CardListWrapper = styled.div`
-  /*
-    Using display: table; makes the wrapper have the same width as the Card which is important for
-    the cardEntryAnimation to position the Card right when scaled
-  */
-  display: table;
 `;
 
 const cardEntryAnimation = keyframes`
@@ -40,12 +32,20 @@ const cardEntryAnimation = keyframes`
   }
 `;
 
+export interface CardListItemWrapperProps {
+  readonly cardWidth: string;
+}
+
 export const CardListItemWrapper = styled.div`
+  ${({cardWidth}: CardListItemWrapperProps) => cardWidth && css`width: ${cardWidth};`}
+
   padding-top: 5px;
   &:first-child {
     padding-top: 0;
   }
+
   &.card-list-item-enter.card-list-item-enter-active {
     animation: ${cardEntryAnimation} 0.75s forwards;
   }
+
 `;

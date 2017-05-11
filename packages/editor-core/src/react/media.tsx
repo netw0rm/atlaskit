@@ -6,6 +6,7 @@ import MediaComponent from '../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../providerFactory';
 import { mediaStateKey, MediaPluginState } from '../plugins';
 import { EditorView } from '../prosemirror';
+import { locateAndRemoveNode } from '../utils';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
@@ -48,6 +49,7 @@ export default class MediaNode extends PureComponent<Props, {}> {
                 id={id!}
                 type={type!}
                 collection={collection!}
+                onDelete={locateAndRemoveNode(view, node.getPos)}
               />
             );
           }}

@@ -1,7 +1,5 @@
 import AkButton from '@atlaskit/button';
-import DropdownList from '@atlaskit/droplist';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
+import DropdownList, { Group, Item } from '@atlaskit/droplist';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
@@ -46,6 +44,10 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
+  private handleTriggerClick = () => {
+    this.handleOpenChange({ isOpen: !this.state.active });
+  }
+
   private handleOpenChange = (attrs: any) => {
     const { availableBlockTypes, currentBlockType } = this.state;
 
@@ -77,6 +79,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
             isSelected={active}
             appearance="subtle"
             spacing="compact"
+            onClick={this.handleTriggerClick}
           >
             <div className={styles.buttonContent}>{currentBlockType.title}</div>
           </AkButton>

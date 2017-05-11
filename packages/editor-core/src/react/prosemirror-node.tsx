@@ -3,6 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { PositionedNode } from './';
 import WrapperClickArea from './wrapper-click-area';
+import { default as EmojiNode } from './emoji';
 import { default as MediaGroupNode } from './media-group';
 import { default as MediaNode } from './media';
 import { default as MentionNode } from './mention';
@@ -12,6 +13,7 @@ import {
 } from '../prosemirror';
 
 const richNodes = new Map<string, React.ComponentClass<any>>([
+  [ 'emoji', EmojiNode ],
   [ 'mediaGroup', MediaGroupNode ],
   [ 'media', MediaNode ],
   [ 'mention', MentionNode ],

@@ -136,16 +136,24 @@ module.exports = {
           use: 'json-loader',
         }, {
           test: /\.less$/,
-          use: [{
-            loader: 'css-loader',
-            options: {
-              camelCase: true,
-              hashPrefix: `${pkg.name}${pkg.version}`,  // Avoid hash collisions
-              importLoaders: 1,
-              mergeRules: false,
-              modules: true,
+          use: [
+            {
+              loader: 'style-loader',
             },
-          }, 'less-loader'],
+            {
+              loader: 'css-loader',
+              options: {
+                camelCase: true,
+                hashPrefix: `${pkg.name}${pkg.version}`,  // Avoid hash collisions
+                importLoaders: 1,
+                mergeRules: false,
+                modules: true,
+              },
+            },
+            {
+              loader: 'less-loader',
+            },
+          ],
         }, {
           test: /\.tsx?$/,
           use: 'awesome-typescript-loader',

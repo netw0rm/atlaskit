@@ -17,7 +17,6 @@ export interface CardAudioViewProps {
   title?: string;
   subtitle?: string;
 
-  // TODO use of remove these properties
   dataURI?: string;
   dimensions?: CardDimensions;
 
@@ -73,14 +72,11 @@ export class CardAudioView extends Component<CardAudioViewProps, CardAudioViewSt
       // TODO: Show loading state
     }
 
-    const {title, subtitle, actions, dataURI, dimensions} = this.props;
-    const {audioSrc, audioElement, isHovering} = this.state;
+    const {title, subtitle, actions, dataURI} = this.props;
+    const {audioSrc} = this.state;
     const persistent = !dataURI;
     const previewImg = dataURI ? <MediaImage dataURI={dataURI} /> : null;
-    const audioBarsClass = cx({visible: isHovering});
-    const audioBars = audioElement
-      ? <AudioBarsWrapper className={audioBarsClass}><AudioBars audioEl={audioElement} dimensions={dimensions || {width: '100%', height: '100%'}} /></AudioBarsWrapper>
-      : null;
+    const audioBars = this.renderBars();
 
     return (
       <Wrapper onMouseOver={this.startBars} onMouseLeave={this.stopBars}  onClick={this.makeWidget}>
@@ -131,6 +127,7 @@ export class CardAudioView extends Component<CardAudioViewProps, CardAudioViewSt
     this.setState({isHovering: true});
 
     const {audioElement} = this.state;
+
     if (audioElement) {
       audioElement.play();
     }
@@ -143,5 +140,17 @@ export class CardAudioView extends Component<CardAudioViewProps, CardAudioViewSt
     if (audioElement) {
       audioElement.pause();
     }
+  }
+
+  private renderBars() {
+    const {dimensions} = this.props;
+    const {audioElement, isHovering} = this.state;
+    const audioBarsClass = cx({visible: isHovering});
+
+    return audioElement
+      ? <AudioBarsWrapper className={audioBarsClass}>
+          <AudioBars audioEl={audioElement} dimensions={dimensions || {width: '100%', height: '100%'}} />
+        </AudioBarsWrapper>
+      : null;
   }
 }

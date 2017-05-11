@@ -615,7 +615,6 @@ describe('hyperlink', () => {
       it('should add link mark', function() {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { plain: 'test test@atlassian.com test' })) {
-          // This environment does not allow mocking paste events
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph('test ', link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));

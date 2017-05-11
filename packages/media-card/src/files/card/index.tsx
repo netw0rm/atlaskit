@@ -44,8 +44,8 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {appearance, details, videoUrl, audioUrl} = this.props;
-    const {mediaType} = details || FileCard.defaultDetails;
+    const {appearance, videoUrl, audioUrl} = this.props;
+    const {mediaType} = this.details;
 
     if (appearance === 'small') {
       return this.renderSmallView();
@@ -67,13 +67,12 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   private renderSmallView = (): JSX.Element => {
-    const {dimensions, dataURI, details} = this.props;
-    const {name, mediaType, size} = details || FileCard.defaultDetails;
-    const errorMessage = this.isError ? 'Error loading card' : undefined;
+    const {dimensions, dataURI} = this.props;
+    const {name, mediaType, size} = this.details;
 
     return (
       <FileCardViewSmall
-        error={errorMessage}
+        error={this.errorMessage}
         width={dimensions && dimensions.width}
         dataURI={dataURI}
         mediaName={name}
@@ -87,13 +86,12 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   private renderImageView = (): JSX.Element => {
-    const {dimensions, selectable, selected, details, dataURI, status, progress} = this.props;
-    const {name, mediaType, size} = details || FileCard.defaultDetails;
-    const errorMessage = this.isError ? 'Error loading card' : undefined;
+    const {dimensions, selectable, selected, dataURI, status, progress} = this.props;
+    const {name, mediaType, size} = this.details;
 
     return (
       <FileCardView
-        error={errorMessage}
+        error={this.errorMessage}
         dimensions={dimensions}
         selectable={selectable}
         selected={selected}
@@ -110,26 +108,25 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   private renderVideoView = (videoUrl: Promise<string>): JSX.Element => {
-    const {details} = this.props;
-    const {name, size} = details || FileCard.defaultDetails;
+    const {name} = this.details;
 
     return (
       <CardVideoView
         videoUrl={videoUrl}
         title={name}
-        subtitle={size !== undefined ? toHumanReadableMediaSize(size) : ''}
+        subtitle={this.subtitle}
       />
     );
   }
   private renderAudioView = (audioUrl: Promise<string>): JSX.Element => {
-    const {details, dataURI, dimensions} = this.props;
-    const {name, size} = details || FileCard.defaultDetails;
+    const {dataURI, dimensions} = this.props;
+    const {name} = this.details;
 
     return (
       <CardAudioView
         audioUrl={audioUrl}
         title={name}
-        subtitle={size !== undefined ? toHumanReadableMediaSize(size) : ''}
+        subtitle={this.subtitle}
         dataURI={dataURI}
         dimensions={dimensions}
       />
@@ -175,5 +172,19 @@ export class FileCard extends Component<FileCardProps, {}> {
   private get isError(): boolean {
     const {status} = this.props;
     return status === 'error';
+  }
+
+  private get errorMessage(): string | undefined {
+    return this.isError ? 'Error loading card' : undefined;
+  }
+
+  private get subtitle(): string {
+    const {size} = this.details;
+    return size !== undefined ? toHumanReadableMediaSize(size) : '';
+  }
+
+  private get details(): FileDetails {
+    const {details} = this.props;
+    return details || FileCard.defaultDetails;
   }
 }

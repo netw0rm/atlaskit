@@ -44,7 +44,7 @@ export class AudioControls extends Component<AudioControlsProps, AudioControlsSt
         <PlayButtonWrapper onClick={this.toggleAudio}>
           {button}
         </PlayButtonWrapper>,
-        <PlayCanvas key={1} innerRef={this.onCanvasElMountOrUnmount} />
+        <PlayCanvas innerRef={this.onCanvasElMountOrUnmount} />
       </div>
     );
   }
@@ -61,12 +61,12 @@ export class AudioControls extends Component<AudioControlsProps, AudioControlsSt
 
   private draw = (): void => {
     const {canvasContext: context} = this;
-    const {audioEl} = this.props;
 
     if (!context) {
       return;
     }
 
+    const {audioEl} = this.props;
     const isPlayerAtStart = audioEl.currentTime === 0;
     const percentage = isPlayerAtStart ? 100 : (audioEl.currentTime * 100) / audioEl.duration;
     const fullArc = Math.PI * 2;
@@ -75,12 +75,15 @@ export class AudioControls extends Component<AudioControlsProps, AudioControlsSt
     const {width, height} = this.canvasEl;
     context.clearRect(0, 0, width, height);
 
+    // Draws full circle in the background
     context.lineWidth = 15;
     context.strokeStyle = 'white';
     context.beginPath();
     context.arc(width / 2, height / 2, 50, 0, fullArc, true);
     context.closePath();
     context.stroke();
+
+    // Draws circle representing audio progress in top of the previous one
     context.strokeStyle = '#4c5b76'; // TODO: get color from AGD3
     context.beginPath();
     context.arc(width / 2, height / 2, 50, 0, arcPencentage, true);
@@ -93,6 +96,7 @@ export class AudioControls extends Component<AudioControlsProps, AudioControlsSt
     window.cancelAnimationFrame(this.animationId);
   }
 
+  // TODO: Handle audio play returned Promise https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play
   private toggleAudio = (): void => {
     const {audioEl} = this.props;
     const {isPlaying} = this.state;

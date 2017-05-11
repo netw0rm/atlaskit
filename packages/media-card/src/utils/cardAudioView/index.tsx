@@ -73,7 +73,6 @@ export class CardAudioView extends Component<CardAudioViewProps, CardAudioViewSt
       // TODO: Show loading state
     }
 
-    // TODO: Add logic to show dataURI as video poster instead of the default video element
     const {title, subtitle, actions, dataURI, dimensions} = this.props;
     const {audioSrc, audioElement, isHovering} = this.state;
     const persistent = !dataURI;
@@ -117,6 +116,7 @@ export class CardAudioView extends Component<CardAudioViewProps, CardAudioViewSt
     Widget.remove();
   }
 
+  // TODO: Abstract CORS handling in a helper method
   private onAudioMountOrUnmount = (audioElement: HTMLAudioElement): void => {
     if (!audioElement) {
       return;

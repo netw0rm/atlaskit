@@ -101,9 +101,9 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   render() {
-    const cardStyle = {height: this.height, width: this.width};
+    const {cardStyle} = this;
     const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle,
-      dataURI, selectable, selected} = this.props;
+      dataURI, selectable, selected, status} = this.props;
 
     if (error) {
       return (

@@ -8,11 +8,7 @@ export interface PlayButtonProps {
   onClick?: () => void;
 }
 
-export interface PlayButtonState {
-
-}
-
-export class PlayButton extends Component<PlayButtonProps, PlayButtonState> {
+export class PlayButton extends Component<PlayButtonProps, {}> {
   render() {
     return (
       <PlayButtonWrapper className="play-button-wrapper" onClick={this.props.onClick}>

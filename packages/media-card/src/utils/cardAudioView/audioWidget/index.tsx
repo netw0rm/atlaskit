@@ -73,6 +73,7 @@ export class AudioWidget extends Component<AudioWidgetProps, AudioWidgetState> {
     }
   }
 
+  // TODO: Abstract CORS handling in a helper method
   private onAudioMountOrUnmount = (audioElement: HTMLAudioElement): void => {
     if (!audioElement) {
       return;

@@ -1,6 +1,5 @@
 /**
  * TODO:
- *   - Add typings 😱
  *   - Specs 😅
  */
 import * as React from 'react';
@@ -28,6 +27,7 @@ export default class Widget {
   }
 
   static remove() {
+    // Using unmountComponentAtNode instead of a native 'remove' in order to fire React hooks
     ReactDOM.unmountComponentAtNode(this.getContainer());
   }
 

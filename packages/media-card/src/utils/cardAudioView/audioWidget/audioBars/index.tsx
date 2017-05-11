@@ -1,3 +1,8 @@
+/**
+ * TODO: How can we properly test this component?
+ * Problem right now is that this component just wraps a canvas element and draws audio data there.
+ * Maybe extract drawing methods/logic and unit test them?
+ */
 import * as React from 'react';
 import {Component} from 'react';
 
@@ -5,7 +10,6 @@ import {CardDimensions} from '../../../../index';
 import {BarsCanvas} from './styled';
 
 export interface AudioBarsProps {
-  // TODO use audioEl to figure out when you can avoid drawing
   audioEl: HTMLAudioElement;
   dimensions: CardDimensions;
 }
@@ -40,9 +44,9 @@ export class AudioBars extends Component<AudioBarsProps, {}> {
 
     this.analyse();
 
-    audioEl.addEventListener('playing', this.onPlaying); // TODO: Stop draw
-    audioEl.addEventListener('pause', this.onPause); // TODO: Stop draw
-    audioEl.addEventListener('ended', this.onEnded); // TODO: Stop draw
+    audioEl.addEventListener('playing', this.onPlaying);
+    audioEl.addEventListener('pause', this.onPause);
+    audioEl.addEventListener('ended', this.onEnded);
   }
 
   render() {
@@ -92,7 +96,7 @@ export class AudioBars extends Component<AudioBarsProps, {}> {
     this.source = this.audioCtx.createMediaElementSource(audioEl);
 
     this.analyser = this.audioCtx.createAnalyser();
-    this.analyser.fftSize = 256;
+    this.analyser.fftSize = 256; // TODO: Probably we can decrease this number and get less data since we are limiting the number of bars on the canvas
 
     this.gainNode = this.audioCtx.createGain();
     this.gainNode.gain.value = 0.2;
@@ -102,17 +106,14 @@ export class AudioBars extends Component<AudioBarsProps, {}> {
     this.gainNode.connect(this.audioCtx.destination);
   }
 
-  // TODO: Performance: we should only call this method when the audio is being played
-  // TODO: Performance: we are painting way more bars that the ones that fits on the canvas,
-  // we should only paint the visible ones
   private drawBars = (): void => {
     const {canvasContext, width, height, dataArray} = this;
     const bufferLength = dataArray.length;
-    const maxBars = 30;
+    const maxBars = 30; // huge perf win here: we are limiting the number of painted bars to 30 as we don't fit more right now 🚀
     const barHeightCorrection = 2.2;
     this.analyser.getByteFrequencyData(dataArray);
 
-    canvasContext.fillStyle = '#EBECF0';
+    canvasContext.fillStyle = '#EBECF0'; // TODO: Use AK color?
     canvasContext.fillRect(0, 0, width, height);
 
     const barWidth = (width / bufferLength) * 4;
@@ -156,6 +157,7 @@ export class AudioBars extends Component<AudioBarsProps, {}> {
     this.stopAnimation();
   }
 
+  // TODO: Stop draw 😅
   private onEnded = () => {
 
   }

@@ -6,7 +6,6 @@ import MediaComponent from '../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../providerFactory';
 import { mediaStateKey, MediaPluginState } from '../plugins';
 import { EditorView } from '../prosemirror';
-import { locateAndRemoveNode } from '../utils';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
@@ -24,11 +23,23 @@ export interface Props {
 }
 
 export default class MediaNode extends PureComponent<Props, {}> {
-  componentWillUnmount() {
-    const { node, view } = this.props;
-    const pluginState = mediaStateKey.getState(view.state) as MediaPluginState;
+  private pluginState: MediaPluginState;
 
-    pluginState.handleMediaNodeRemoval(node);
+  constructor(props) {
+    super(props);
+
+    const { view } = this.props;
+    this.pluginState = mediaStateKey.getState(view.state);
+  }
+
+  componentDidMount() {
+    const { node } = this.props;
+    this.pluginState.handleMediaNodeMount(node);
+  }
+
+  componentWillUnmount() {
+    const { node } = this.props;
+    this.pluginState.handleMediaNodeUnmount(node);
   }
 
   render() {
@@ -49,12 +60,17 @@ export default class MediaNode extends PureComponent<Props, {}> {
                 id={id!}
                 type={type!}
                 collection={collection!}
-                onDelete={locateAndRemoveNode(view, node.getPos)}
+                onDelete={this.handleRemove}
               />
             );
           }}
         />
       </Wrapper>
     );
+  }
+
+  private handleRemove = () => {
+    const { node } = this.props;
+    this.pluginState.handleMediaNodeRemoval(node);
   }
 }

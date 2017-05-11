@@ -4,6 +4,7 @@ import styles from './styles.less';
 
 export default class FieldText extends PureComponent {
   static propTypes = {
+    /** Set whether the fields should expand to fill available horizontal space. */
     compact: PropTypes.bool,
     /** Type value to be passed to the html input. */
     type: PropTypes.string,
@@ -15,7 +16,7 @@ export default class FieldText extends PureComponent {
     isInvalid: PropTypes.bool,
     /** Label to be displayed above the input. */
     label: PropTypes.string,
-    /** Name value to be passedto the html input. */
+    /** Name value to be passed to the html input. */
     name: PropTypes.string,
     /** Text to display in the input if the input is empty. */
     placeholder: PropTypes.string,

@@ -271,11 +271,12 @@ const plugin = new Plugin({
       return true;
     },
     handlePaste(view: EditorView, event: any, slice: Slice) {
-      const html = event.clipboardData.getData('text/html');
+      const { clipboardData } = event;
+      const html = clipboardData && clipboardData.getData('text/html');
       if (html) {
         return false;
       }
-      const text = event.clipboardData.getData('text/plain');
+      const text = clipboardData && clipboardData.getData('text/plain');
       if (!text) {
         return false;
       }

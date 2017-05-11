@@ -20,6 +20,7 @@ export default class Spinner extends PureComponent {
   static propTypes = {
     /** Time in milliseconds after component mount before spinner is visible. */
     delay: PropTypes.number,
+    /** Set the spinner color to white, for use in dark-themed UIs. */
     invertColor: PropTypes.bool,
     /** Setting this to true causes the spinner to animate its disappearance.
     Setting it to false again will cause the spinner to animate back in. */

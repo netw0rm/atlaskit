@@ -7,6 +7,14 @@ const SpinnerExample = () => (
     <Spinner size="large" />
     <Spinner size="medium" />
     <Spinner size="small" />
+    <span
+      style={{
+        backgroundColor: 'rgb(37, 56, 88)',
+        display: 'inline-block',
+      }}
+    >
+      <Spinner invertColor />
+    </span>
   </div>
 );
 

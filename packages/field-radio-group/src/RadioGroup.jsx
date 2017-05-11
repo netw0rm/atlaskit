@@ -2,14 +2,28 @@ import React, { PropTypes, PureComponent } from 'react';
 import Base from 'ak-field-base';
 import styles from './styles.less';
 import Radio from './Radio';
-import { itemsDefault, itemsPropType } from './internal/constants';
+import { itemsPropType } from './internal/constants';
+
+// ========================================================================
+// NOTE: Duplicated in ./internal/constants unitl docgen can follow imports.
+// -------------------------------------------------------------
+// DO NOT update values here without updating the other.
+// ========================================================================
+
+const itemsDefault = [];
 
 /* eslint-disable-next-line react/prefer-stateless-function */
 export default class FieldRadioGroup extends PureComponent {
   static propTypes = {
+    /** Mark whether this field is required for form validation. */
     isRequired: PropTypes.bool,
+    /** Items to be rendered by a single Radio component. Passes options down to
+    an AkRadio component, with label passed as children. */
     items: itemsPropType,
+    /** Label to display above the radio button options. */
     label: PropTypes.string,
+    /** Handler called whenever a new radio button is selected. Called with the
+    value of the new selection. */
     onRadioChange: PropTypes.func.isRequired,
   }
 

@@ -26,7 +26,6 @@ export class VideoCardOverlay extends Component<VideoCardOverlayProps, {}> {
       <Overlay>
         <Header>
           {videoName}
-
           <Button appearance="subtle-link" onClick={this.handleClose}>
             <CrossIcon label="close widget" />
           </Button>

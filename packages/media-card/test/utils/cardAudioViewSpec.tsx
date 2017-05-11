@@ -11,7 +11,7 @@ import { MediaImage } from '../../src/utils/mediaImage';
 
 /* tslint:disable */ //:no-unused-expressions
 
-describe.only('CardAudioView', () => {
+describe('CardAudioView', () => {
   const audioUrl = Promise.resolve('');
   const subtitle = 'File size';
   const dataURI = 'audio-cover.png';
@@ -51,7 +51,7 @@ describe.only('CardAudioView', () => {
     expect(spy.called).to.be.true;
   });
 
-  it.only('should pause the audio when user cursor leaves the card', () => {
+  it('should pause the audio when user cursor leaves the card', () => {
     const card = mount(<CardAudioView audioUrl={audioUrl}/>);
     const spy = sinon.spy();
     const audioElement = {pause: spy};

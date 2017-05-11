@@ -13,11 +13,6 @@ export interface CardVideoViewProps {
   videoUrl: Promise<string>;
   title?: string;
   subtitle?: string;
-
-  // TODO use of remove these properties
-  dataURI?: string;
-  dimensions?: CardDimensions;
-
   actions?: Array<CardAction>;
 }
 
@@ -33,6 +28,7 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
   constructor(props: CardVideoViewProps) {
     super(props);
 
+    this.playPromise = Promise.resolve();
     this.state = {
       videoSrc: ''
     };
@@ -68,7 +64,6 @@ export class CardVideoView extends Component<CardVideoViewProps, CardVideoViewSt
     // TODO: Add logic to show dataURI as video poster instead of the default video element
     const {title, subtitle, actions} = this.props;
     const {videoSrc} = this.state;
-
     return (
       <Wrapper onMouseOver={this.startInlineVideo} onMouseLeave={this.stopInlineVideo} onClick={this.makeWidget}>
         <CardOverlay

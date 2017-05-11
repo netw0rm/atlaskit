@@ -11,11 +11,11 @@ export default class Tag extends PureComponent {
   static propTypes = {
     /** Set whether tags should be rounded. */
     appearance: PropTypes.oneOf(['default', 'rounded']),
-    /** Component to be rendered before the Tag */
+    /** Component to be rendered before the Tag. */
     elemBefore: PropTypes.node,
     /** Text to be displayed in the tag. */
     text: PropTypes.string.isRequired,
-    /** uri or path if  */
+    /** uri or path. If provided, the tag will be a link.  */
     href: PropTypes.string,
     /** Text display as the aria-label for remove text. Setting this makes the
     tag removable. */
@@ -24,7 +24,7 @@ export default class Tag extends PureComponent {
     truthy value, the tag will not be removed. */
     onBeforeRemoveAction: PropTypes.func,
     /** Handler to be called after tag is removed. Called with the string 'Post
-    Removal Hook' */
+    Removal Hook'. */
     onAfterRemoveAction: PropTypes.func,
   }
 

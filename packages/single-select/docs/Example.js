@@ -1,5 +1,6 @@
 import React from 'react';
 import SingleSelect from '@atlaskit/single-select';
+import styled from 'styled-components';
 
 const selectItems = [
   {
@@ -26,8 +27,13 @@ const selectItems = [
   },
 ];
 
+const Vert = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const SingleSelectExample = () => (
-  <div>
+  <Vert>
     <SingleSelect
       items={selectItems}
       placeholder="Choose a City"
@@ -50,7 +56,7 @@ const SingleSelectExample = () => (
       placeholder="Choose a City"
       isDisabled
     />
-  </div>
+  </Vert>
 );
 
 export default SingleSelectExample;

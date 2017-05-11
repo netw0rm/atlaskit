@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, MouseEvent } from 'react';
 import { TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
+
 import { SharedCardProps, CardStatus } from '../..';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
@@ -11,6 +12,9 @@ import { LinkCardImageView } from '../cardImageView';
 export interface LinkCardProps extends SharedCardProps {
   status: CardStatus;
   details?: UrlPreview;
+
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {
@@ -82,7 +86,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private renderGenericLink(): JSX.Element {
     const { url, title, site, description } = this.urlPreview;
-    const { dimensions, actions, appearance } = this.props;
+    const { dimensions, actions, appearance, onClick, onMouseEnter } = this.props;
     const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return <LinkCardGenericView
@@ -97,12 +101,15 @@ export class LinkCard extends Component<LinkCardProps, {}> {
       appearance={appearance}
       loading={this.isLoading}
       actions={actions}
+
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
     />;
   }
 
   private renderSmallLink(): JSX.Element {
     const { url, title, site } = this.urlPreview;
-    const { dimensions, actions } = this.props;
+    const { dimensions, actions, onClick, onMouseEnter } = this.props;
     const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return (
@@ -115,13 +122,16 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         width={dimensions && dimensions.width}
         loading={this.isLoading}
         actions={actions}
+
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
       />
     );
   }
 
   private renderLinkCardImage(): JSX.Element {
     const { url, title, site } = this.urlPreview;
-    const { status, dimensions, actions, appearance } = this.props;
+    const { status, dimensions, actions, appearance, onClick, onMouseEnter } = this.props;
     const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return (
@@ -136,6 +146,9 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         status={status}
         actions={actions}
         iconUrl={this.iconUrl}
+
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
       />
     );
   }

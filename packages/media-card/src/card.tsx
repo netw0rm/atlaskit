@@ -76,6 +76,7 @@ export class Card extends Component<CardProps, {}> {
   render() {
     const {context, identifier, ...otherProps} = this.props;
     const {mediaItemType} = identifier;
+
     return <MediaCard
       {...otherProps}
       mediaItemType={mediaItemType}

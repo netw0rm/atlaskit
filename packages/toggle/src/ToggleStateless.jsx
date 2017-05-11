@@ -14,11 +14,11 @@ export default class ToggleStateless extends PureComponent {
     label: PropTypes.string,
     /** Descriptive name for value property to be submitted in a form */
     name: PropTypes.string,
-    /** Callback to be called when toggle is unfocused */
+    /** Handler to be called when toggle is unfocused */
     onBlur: PropTypes.func,
-    /** Callback to be called when native 'change' event happens internally. */
+    /** Handler to be called when native 'change' event happens internally. */
     onChange: PropTypes.func,
-    /** Callback to be called when toggle is focused. */
+    /** Handler to be called when toggle is focused. */
     onFocus: PropTypes.func,
     /** Defines the size of the toggle. */
     size: PropTypes.oneOf(['regular', 'large']),

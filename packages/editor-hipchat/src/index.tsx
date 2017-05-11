@@ -1,4 +1,6 @@
 import {
+  AnalyticsHandler,
+  analyticsService,
   baseKeymap,
   blockTypePlugins,
   EditorState,
@@ -62,6 +64,7 @@ export interface Props {
   reverseMentionPicker?: boolean;
   uploadErrorHandler?: (state: MediaState) => void;
   useLegacyFormat?: boolean;
+  analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
@@ -101,6 +104,8 @@ export default class Editor extends PureComponent<Props, State> {
       providerFactory: this.providerFactory,
       behavior: 'default'
     });
+
+    analyticsService.handler = props.analyticsHandler || ((name) => { });
   }
 
 
@@ -331,6 +336,12 @@ export default class Editor extends PureComponent<Props, State> {
         emoji: emojiNodeView(this.providerFactory),
         media: mediaNodeView(this.providerFactory),
         mention: mentionNodeView(this.providerFactory)
+      },
+      handleDOMEvents: {
+        paste(view: EditorView, event: ClipboardEvent) {
+          analyticsService.trackEvent('atlassian.editor.paste');
+          return false;
+        }
       }
     });
 
@@ -347,6 +358,8 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.setState({ editorView });
     this.focus();
+
+    analyticsService.trackEvent('atlassian.editor.start');
   }
 
   private handleSubmit = () => {

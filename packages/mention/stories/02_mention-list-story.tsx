@@ -46,12 +46,16 @@ class RefreshableMentionList extends Component<Props, State> {
     }
   }
 
+  private handleMentionListRef = (ref) => {
+    this.mentionListRef = ref;
+  }
+
   render() {
     const mentionList = (
       <MentionList
         mentions={this.state.mentions}
         onSelection={action('onSelection')}
-        ref={(ref) => { this.mentionListRef = ref; }}
+        ref={this.handleMentionListRef}
       />
     );
 

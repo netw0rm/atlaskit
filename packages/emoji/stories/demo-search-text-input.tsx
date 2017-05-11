@@ -56,6 +56,8 @@ class SearchTextInput extends PureComponent<Props, undefined> {
     }
   }
 
+  private handleRef = (ref) => { this.inputRefUpdate(ref); };
+
   render() {
     /* eslint no-unused-vars: 0 */
     const { onUp, onDown, onEnter, onEscape, label, inputRef, inputId, ...other } = this.props;
@@ -72,7 +74,7 @@ class SearchTextInput extends PureComponent<Props, undefined> {
           id={id}
           type="text"
           onKeyDown={this.handleKeyDown}
-          ref={ref => this.inputRefUpdate(ref)}
+          ref={this.handleRef}
           style={{
             height: '20px',
             margin: '10px',

@@ -435,22 +435,22 @@
       "shortName": ":tiger:"
     },
     {
-      "id": "1f981",
-      "name": "lion face",
-      "fallback": "🦁",
+      "id": "1f4a5",
+      "name": "collision symbol",
+      "fallback": "\uD83D\uDCA5",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 214,
+      "order": 338,
       "representation": {
         "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
-        "x": 306,
-        "y": 0,
+        "x": 238,
+        "y": 306,
         "height": 32,
         "width": 32,
-        "xIndex": 9,
-        "yIndex": 0
+        "xIndex": 7,
+        "yIndex": 9
       },
-      "shortName": ":lion_face:"
+      "shortName": ":boom:"
     },
     {
       "id": "1f34f",

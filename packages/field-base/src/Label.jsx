@@ -38,7 +38,10 @@ export default class Label extends PureComponent {
       <label className={styles.label} htmlFor={this.props.htmlFor}>
         <div className={labelClasses}>
           <span onClick={this.props.onClick}>{this.props.label}</span>
-          {this.props.isRequired ? <span className={styles.required}>*</span> : null}
+          {this.props.isRequired ?
+            <span role="presentation" className={styles.requiredAsterisk}>*</span>
+            : null
+          }
         </div>
         {this.props.children}
       </label>

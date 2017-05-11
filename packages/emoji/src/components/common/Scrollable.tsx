@@ -51,6 +51,10 @@ export default class Scrollable extends PureComponent<Props, undefined> {
     }
   }
 
+  private handleRef = (ref) => {
+    this.scrollableDiv = ref;
+  }
+
   render() {
     const scrollableClasses = classNames([
       'emoji-scrollable',
@@ -60,7 +64,7 @@ export default class Scrollable extends PureComponent<Props, undefined> {
     return (
       <div
         className={scrollableClasses}
-        ref={(ref) => { this.scrollableDiv = ref; }}
+        ref={this.handleRef}
         style={{ maxHeight: this.props.maxHeight }}
         onScroll={this.handleScroll}
       >

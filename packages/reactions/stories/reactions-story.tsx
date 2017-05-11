@@ -29,6 +29,7 @@ storiesOf(name, module)
         <p>Lorem ipsum dolor sit amet...</p>
         <ReactionPicker
           emojiProvider={getEmojiResource()}
+          // tslint:disable-next-line:jsx-no-lambda
           onSelection={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
         />
       </div>
@@ -37,6 +38,7 @@ storiesOf(name, module)
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
+        // tslint:disable-next-line:jsx-no-lambda
         onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
       />
     </div>

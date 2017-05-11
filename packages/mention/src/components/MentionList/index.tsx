@@ -196,6 +196,7 @@ export default class MentionList extends PureComponent<Props, State> {
                  * onClick from firing.
                  */
                 onSelection={this.itemSelected}
+                // tslint:disable-next-line:jsx-no-lambda
                 ref={(ref) => {
                   if (ref) {
                     this.items[key] = ref;
@@ -211,6 +212,10 @@ export default class MentionList extends PureComponent<Props, State> {
       );
     }
     return null;
+  }
+
+  private handleScrollableRef = (ref) => {
+    this.scrollable = ref;
   }
 
   render() {
@@ -234,9 +239,7 @@ export default class MentionList extends PureComponent<Props, State> {
       errorSection = (<Error />);
     } else if (hasMentions) {
       resultSection = (
-        <Scrollable
-          ref={(ref) => { this.scrollable = ref; }}
-        >
+        <Scrollable ref={this.handleScrollableRef}>
           {this.renderItems()}
         </Scrollable>
       );

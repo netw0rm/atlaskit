@@ -166,19 +166,6 @@ export const Overlay = styled.div`
         }
       }
     }
-
-    /* In progress*/
-    &.in-progress {
-      .bottom-row {
-        .file-type-icon {
-          display: none;
-        }
-
-        .file-size {
-          display: none;
-        }
-      }
-    }
   }
 
   &.error {
@@ -292,7 +279,4 @@ export const FileSize = styled.div`
 `;
 
 export const Metadata = styled.div`
-  &.has-progress {
-    display: none;
-  }
 `;

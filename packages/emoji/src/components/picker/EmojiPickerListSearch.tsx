@@ -47,8 +47,9 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
     return (
       <div className={styles.pickerSearch} style={style}>
         <AkFieldBase
-          appearance="compact"
+          appearance="standard"
           label="Search"
+          isCompact={true}
           isLabelHidden={true}
           isFitContainerWidthEnabled={true}
         >
@@ -65,10 +66,16 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
             required={false}
             onChange={this.onChange}
             value={query}
-            ref={input => input && input.focus()}
+            ref={this.handleInputRef}
           />
         </AkFieldBase>
       </div>
     );
+  }
+
+  private handleInputRef = (input) => {
+    if (input) {
+      input.focus();
+    }
   }
 }

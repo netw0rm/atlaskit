@@ -25,11 +25,13 @@ export default class FieldRadioGroup extends PureComponent {
     items: itemsPropTypeSmart,
     /** Label to display above the radio button options. */
     label: PropTypes.string,
+    onRadioChange: PropTypes.func,
   }
 
   static defaultProps = {
     isRequired: false,
     items: itemsDefault,
+    onRadioChange: () => {},
   }
 
   constructor() {
@@ -62,6 +64,7 @@ export default class FieldRadioGroup extends PureComponent {
   }
 
   changeHandler = (event) => {
+    this.props.onRadioChange(event);
     this.setState({ selectedValue: event.target.value });
   }
 

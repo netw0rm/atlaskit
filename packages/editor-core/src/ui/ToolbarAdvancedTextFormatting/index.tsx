@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
-import DropdownList from '@atlaskit/droplist';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
+import DropdownList, { Group, Item } from '@atlaskit/droplist';
 import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import { analyticsDecorator as analytics } from '../../analytics';
@@ -90,11 +88,12 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       return (
         <DropdownList
           isOpen={isOpen}
-          onOpenChange={this.toggleOpen}
+          onOpenChange={this.handleOpenChange}
           appearance="tall"
           position="top left"
           trigger={
             <ToolbarButton
+              onClick={this.toggleOpen}
               selected={isOpen || codeActive || strikeActive}
               disabled={codeDisabled && strikeDisabled && clearFormattingDisabled}
               iconBefore={
@@ -170,17 +169,21 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   }
 
   private toggleOpen = () => {
-    const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
+    this.handleOpenChange({ isOpen: !this.state.isOpen });
+  }
+
+  private handleOpenChange = (attrs) => {
+    const { codeDisabled, strikeDisabled, clearFormattingDisabled } = this.state;
     if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
 
-      if (!isOpen) {
+      if (!attrs.isOpen) {
         this.props.softBlurEditor();
       } else {
         this.props.focusEditor();
       }
 
       this.setState({
-        isOpen: !isOpen,
+        isOpen: attrs.isOpen,
       });
     }
   }

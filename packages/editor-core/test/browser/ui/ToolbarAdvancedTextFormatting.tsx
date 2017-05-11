@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
 import { Tooltip } from '@atlaskit/tooltip';
-import Item from '@atlaskit/droplist-item';
+import { Item } from '@atlaskit/droplist';
 import textFormattingPlugins from '../../../src/plugins/text-formatting';
 import clearFormattingPlugins from '../../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../../src/ui/ToolbarAdvancedTextFormatting';

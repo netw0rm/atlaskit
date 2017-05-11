@@ -4,6 +4,7 @@ import Drawer from '../Drawer';
 import { searchIconOffset } from '../../../shared-variables';
 
 const ContentArea = styled.div`
+  bottom: 0; // Required for children elements be able to have bottom of a screen  
   position: absolute;
   transition: top 220ms;
   top: ${props => (props.isFullWidth ? 0 : searchIconOffset)}px;

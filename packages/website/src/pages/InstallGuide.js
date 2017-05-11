@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import { Grid, GridColumn } from '@atlaskit/page';
 
+import landingHero from 'svg-url-loader!../images/landing_hero.svg';
 import { Heading, Intro, Section } from '../components/Type';
-import landingHero from '../images/landing_hero.svg';
 
 export default class Examples extends PureComponent {
   render() {

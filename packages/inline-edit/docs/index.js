@@ -5,6 +5,8 @@ import styled from 'styled-components';
 /* eslint-disable import/no-duplicates, import/first */
 import EditExamples from './EditExamples';
 import editExamplesSrc from '!raw-loader!./EditExamples';
+import StatelessExample from './StatelessExample';
+import statelessExampleSrc from '!raw-loader!./StatelessExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
@@ -43,5 +45,10 @@ export const examples = [
     title: 'Basic Examples',
     Component: EditExamples,
     src: editExamplesSrc,
+  },
+  {
+    title: 'Stateless Examples',
+    Component: StatelessExample,
+    src: statelessExampleSrc,
   },
 ];

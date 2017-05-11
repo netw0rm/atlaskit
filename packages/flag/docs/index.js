@@ -30,7 +30,7 @@ export const description = (
       the loading and unloading of flags.
     </p>
     <Usage>
-      {'import Flag, { FlagGroup } from @atlaskit/flag'}
+      {"import Flag, { FlagGroup } from '@atlaskit/flag'"}
     </Usage>
   </div>
 );

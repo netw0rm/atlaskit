@@ -9,6 +9,7 @@ import styles from './styles.less';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
+    /** Label above the input. */
     label: PropTypes.string.isRequired,
     /** Component to be shown when reading only */
     readView: PropTypes.node.isRequired,
@@ -16,7 +17,7 @@ export default class InlineEdit extends PureComponent {
     editView: PropTypes.node,
     /** Whether the component shows the readView or the editView. */
     isEditing: PropTypes.bool.isRequired,
-    /** Greys out text and shows spinner. */
+    /** Greys out text and shows spinner. Does not disable input. */
     isWaiting: PropTypes.bool,
     /** Sets yellow border with warning symbol at end of input. */
     isInvalid: PropTypes.bool,

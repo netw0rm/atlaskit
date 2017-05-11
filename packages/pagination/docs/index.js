@@ -36,7 +36,7 @@ export const examples = [
     src: exampleSrc,
   },
   {
-    title: 'Basic Usage',
+    title: 'Stateless Component Usage',
     Component: StatelessExample,
     src: statelessExampleSrc,
   },

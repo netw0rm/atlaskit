@@ -27,7 +27,9 @@
   },
   "devDependencies": {
     "@atlaskit/util-common-test": "^1.0.0",
-    "@atlaskit/avatar": "^2.0.0"
+    "@atlaskit/avatar": "^2.0.0",
+    "react-router-dom": "^4.0.0",
+    "@atlaskit/tag": "*"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

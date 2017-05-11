@@ -1,23 +1,31 @@
 /* eslint-disable react/prop-types */
 
-import React from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
-import Media from 'react-media';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 import Dropdown from '@atlaskit/dropdown-menu';
-import { Grid, GridColumn } from '@atlaskit/page';
 import { akColorN80, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-import { LARGE_DESKTOP_QUERY } from '../../constants';
+import LayoutFork from 'react-media';
+import { MOBILE_QUERY } from '../../constants';
 
 import { getStorybookURL } from '../utils';
 import data from '../data';
 import NoMatch from '../pages/NoMatch';
+import Container from '../components/Container';
 import Docs from '../components/ComponentDocs';
 import { Heading, Intro } from '../components/Type';
+
+const componentKeys = Object.keys(data);
+const componentItems = componentKeys.map((key) => {
+  const pkg = data[key];
+
+  return { content: pkg.name, value: key };
+});
 
 const MetaItem = ({ href, label, summary }) => (
   <DI>
@@ -29,27 +37,43 @@ const MetaItem = ({ href, label, summary }) => (
   </DI>
 );
 
-const Header = ({ component }) => (
+const Header = ({
+  component,
+  isSelectOpen,
+  onClickDropdownItem,
+}) => (
   <Title>
     <TitleBar>
       <Heading style={{ marginTop: 0 }}>{component.name}</Heading>
-      <ButtonGroup>
-        <Button href={getStorybookURL(component)} target="_blank">
-          Storybook
-        </Button>
-        <Dropdown
-          items={[{
-            heading: 'Versions',
-            items: component.versions.map(v => ({
-              content: v,
-              href: getStorybookURL(component, v),
-            })),
-            target: '_blank',
-          }]}
-          position="bottom right"
-          triggerType="button"
-        />
-      </ButtonGroup>
+      <LayoutFork query={MOBILE_QUERY}>
+        {matches => (matches ? (
+          <Dropdown
+            isOpen={isSelectOpen}
+            items={[{ items: componentItems }]}
+            onItemActivated={onClickDropdownItem}
+            position="bottom right"
+            triggerType="button"
+          />
+        ) : (
+          <ButtonGroup>
+            <Button href={getStorybookURL(component)} target="_blank">
+              Storybook
+            </Button>
+            <Dropdown
+              items={[{
+                heading: 'Versions',
+                items: component.versions.reverse().map(v => ({
+                  content: v,
+                  href: getStorybookURL(component, v),
+                })),
+                target: '_blank',
+              }]}
+              position="bottom right"
+              triggerType="button"
+            />
+          </ButtonGroup>
+        ))}
+      </LayoutFork>
     </TitleBar>
     <Intro>
       {component.description}
@@ -98,46 +122,71 @@ const MetaData = ({ component }) => (
   </Meta>
 );
 
-export default ({ match }) => {
-  const component = data[match.params.component];
+export default class PackageComponent extends PureComponent {
+  static contextTypes = {
+    router: PropTypes.object,
+  };
 
-  if (!component) return <Route component={NoMatch} />;
+  state = { isSelectOpen: false }
 
-  return (
-    <Media query={LARGE_DESKTOP_QUERY}>{matches => (
-      <Grid spacing="comfortable">
-        {matches ? <GridColumn medium={1} /> : null}
-        <GridColumn medium={matches ? 10 : 12}>
-          <Helmet title={component.name}>
-            <meta name="description" content={component.description} />
-          </Helmet>
-          <Header component={component} />
-          <MetaData component={component} />
-          <Main>
-            <Docs component={component} />
-          </Main>
-        </GridColumn>
-        {matches ? <GridColumn medium={1} /> : null}
-      </Grid>
-    )}</Media>
-  );
-};
+  componentWillMount() {
+    this.setSelectedItem(this.props.match.params.component);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.component === this.props.match.params.component) return;
 
-// <dt>Version</dt>
-// <dd>
-//   <a href={`https://npmjs.com/package/${component.packageName}`}>{data.version}</a>
-//   {data.npmInfo.isPublished ? (
-//     <span style={{ paddingLeft: 4 }}>
-//       (<RelativeDate iso={data.npmInfo.publishTime} />)
-//       <Lozenge appearance="success">Published</Lozenge>
-//     </span>
-//   ) : null}
-// </dd>
+    this.setSelectedItem(nextProps.match.params.component);
+  }
+  setSelectedItem = (key) => {
+    const component = data[key];
+
+    if (!component) return;
+
+    const selectedItem = { content: component.name, value: component.key };
+
+    this.setState({ selectedItem });
+  }
+
+  render() {
+    const component = data[this.props.match.params.component];
+
+    if (!component) return <Route component={NoMatch} />;
+
+    const { isSelectOpen } = this.state;
+    const { router } = this.context;
+
+    return (
+      <Container>
+        <Helmet title={component.name}>
+          <meta name="description" content={component.description} />
+        </Helmet>
+        <Header
+          component={component}
+          isSelectOpen={isSelectOpen}
+          onClickDropdownItem={(attrs) => {
+            this.setState({ isSelectOpen: false, selectedItem: attrs.item }, () => {
+              router.history.push(`/components/${attrs.item.value}`);
+            });
+          }}
+        />
+        <MetaData component={component} />
+        <Main>
+          <Docs component={component} />
+        </Main>
+      </Container>
+    );
+  }
+}
 
 const Title = styled.header`
-  padding-top: ${akGridSizeUnitless * 6}px;
+  padding-top: ${akGridSizeUnitless * 3}px;
+
+  @media (min-width: 780px) {
+    padding-top: ${akGridSizeUnitless * 6}px;
+  }
 `;
 const TitleBar = styled.div`
+  align-items: center;
   display: flex;
   justify-content: space-between;
 `;
@@ -153,7 +202,7 @@ const Meta = styled.section`
   padding-bottom: ${akGridSizeUnitless * 1.5}px;
   padding-top: ${akGridSizeUnitless * 1.5}px;
 
-  @media (min-width: 600px) {
+  @media (min-width: 780px) {
     padding-bottom: ${akGridSizeUnitless * 3}px;
     padding-top: ${akGridSizeUnitless * 3}px;
   }
@@ -165,7 +214,7 @@ const DI = styled.div`
   flex-direction: column;
   padding: 0.5em;
 
-  @media (min-width: 600px) {
+  @media (min-width: 780px) {
     flex-direction: row;
   }
   @media (min-width: 1200px) {

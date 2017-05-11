@@ -2,18 +2,21 @@
 
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import Media from 'react-media';
 import { Link } from 'react-router-dom';
 import { Grid, GridColumn } from '@atlaskit/page';
 import Button from '@atlaskit/button';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 import { MOBILE_QUERY } from '../../constants';
 
 import { Heading, Intro, Section } from '../components/Type';
+import Container from '../components/Container';
 import landingHero from '../images/landing_hero.svg';
 
-const IntroContent = ({ style }) => (
-  <Intro style={style}>
+const IntroContent = props => (
+  <Intro {...props}>
     AtlasKit is Atlassian&#39;s official UI library, built according to
     the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a>(ADG).
   </Intro>
@@ -36,26 +39,24 @@ const GettingInvolvedContent = () => (
 );
 
 const Mobile = () => (
-  <Grid spacing="comfortable">
-    <GridColumn medium={12}>
-      <img
-        alt="Landing page hero"
-        src={landingHero}
-        style={{
-          height: 'auto',
-          marginTop: 48,
-          maxWidth: 160,
-          float: 'right',
-        }}
-      />
-      <IntroContent style={{ marginTop: 40 }} />
-      <Section>
-        <Button component={Link} to="/components" appearance="primary">View Components</Button>
-      </Section>
+  <MobileIntro>
+    <Heading style={{ marginLeft: akGridSizeUnitless * 2 }}>Welcome</Heading>
+    <Row>
+      <Col width="60%">
+        <IntroContent style={{ marginBottom: 40 }} />
+        <Button component={Link} to="/components" appearance="primary">
+          View Components
+        </Button>
+      </Col>
+      <Col width="40%">
+        <MobileHero alt="Landing page hero" src={landingHero} />
+      </Col>
+    </Row>
+    <Container>
       <GettingStartedContent />
       <GettingInvolvedContent />
-    </GridColumn>
-  </Grid>
+    </Container>
+  </MobileIntro>
 );
 
 const Desktop = () => (
@@ -102,3 +103,22 @@ export default class WelcomePage extends PureComponent {
     );
   }
 }
+
+const MobileIntro = styled.div`
+`;
+const Row = styled.div`
+  display: flex;
+  padding-left: ${akGridSizeUnitless * 2}px;
+  padding-top: 40px;
+  overflow: hidden;
+`;
+const Col = styled.div`
+  width: ${props => props.width ? props.width : '50%'};
+`;
+const MobileHero = styled.img`
+  height: auto;
+  margin-left: -${akGridSizeUnitless * 2}px;
+  margin-right: -40px;
+  margin-top: -40px;
+  width: 290px; /* arbitrary */
+`;

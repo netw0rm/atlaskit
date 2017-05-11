@@ -6,7 +6,9 @@ import TabsNav from './internal/TabsNav';
 
 export default class Tabs extends PureComponent {
   static propTypes = {
+    /** Handler for navigation using the keyboard buttons. */
     onKeyboardNav: PropTypes.func.isRequired,
+    /** The tabs to display, with content being hidden unless the tab is selected. */
     tabs: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
       isSelected: PropTypes.bool,

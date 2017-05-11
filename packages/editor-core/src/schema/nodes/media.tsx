@@ -20,7 +20,7 @@ const mediaStyle = style({
     '&.ProseMirror-selectednode': {
       outline: 'none',
       $nest: {
-        '.card': {
+        '.wrapper': {
           outline: '3px solid #8cf',
           background: akColorN50,
         }

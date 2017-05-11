@@ -15,21 +15,12 @@ const Usage = styled.pre`
 
 export const description = (
   <div>
-    Toggle is a checkbox input, which is styled as a toggle. It exports both a
-    default stateful component, and a stateless component.
+    <p>
+      Here be docs
+    </p>
     <Usage>
-      {"import Tooltip, { Tooltip } from '@atlaskit/toggle'"}
+      {"import Tooltip, { Tooltip } from '@atlaskit/tooltip'"}
     </Usage>
-    <p>
-      Both stateful and stateless components manage the internal state of the toggle
-      regarding whether it is checked or not. The stateful component allows you
-      to specify a default value for whether it is checked.
-    </p>
-    <p>
-      In the stateless version, the value passed in to isChecked is used as the
-      initial value for the internal state, but cannot be externally provided
-      to change it.
-    </p>
   </div>
 );
 

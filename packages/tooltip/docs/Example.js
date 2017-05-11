@@ -1,13 +1,18 @@
 import React from 'react';
-// import StatefulToolTip, { Tooltip } from '@atlaskit/tooltip';
+import StatefulToolTip, { Tooltip } from '@atlaskit/tooltip';
 
 const TagsExample = () => (
   <div>
-    {/* <StatefulToolTip
+    <StatefulToolTip
       description="Description"
     >
         Here things
-    </StatefulToolTip> */}
+    </StatefulToolTip>
+    <Tooltip
+      description="herethings"
+    >
+      Here other things
+    </Tooltip>
   </div>
 );
 

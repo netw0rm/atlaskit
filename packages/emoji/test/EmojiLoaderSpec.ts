@@ -61,6 +61,45 @@ describe('EmojiLoader', () => {
       });
     });
 
+    it('is only passed a baseUrl with no params or securityProvider', () => {
+      const simpleProvider: ServiceConfig = {
+        url: p1Url,
+      };
+      fetchMock.mock({
+        matcher: `${simpleProvider.url}`,
+        response: fetchResponse(providerData1),
+      });
+
+      const resource = new EmojiLoader(simpleProvider);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
+    it('can handle when a version is specified in the query params', () => {
+      const params = '?maxVersion=2';
+      const providerData2 = [
+        { id: 'A' },
+        { id: 'B' },
+        { id: 'C' },
+        { id: 'C' },
+      ];
+      fetchMock.mock({
+        matcher: `end:${params}`,
+        response: fetchResponse(providerData2),
+      });
+
+      const provider2 = {
+        ...provider1,
+        url: `${provider1.url}${params}`
+      };
+
+      const resource = new EmojiLoader(provider2);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData2, emojiResponse.emojis);
+      });
+    });
+
     it('401 error once retry', () => {
       const refreshedSecurityProvider = sinon.stub();
       refreshedSecurityProvider.returns(Promise.resolve(header(666)));

@@ -96,7 +96,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
                 theme="dark"
                 title="Open link in new tab"
               >
-                <OpenIcon label="Open" />
+                <OpenIcon label="Open link" />
               </ToolbarButton>
             }
             {!showUnlinkButton ? null :

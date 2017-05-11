@@ -42,7 +42,7 @@ const buildHeaders = () => {
  * @param  {string} cloudId
  * @return {string} GraphQL Query String
  */
-const buildQueryString = (userId, cloudId) => {
+const buildQueryString = (cloudId, userId) => {
   const fields = [
     'id',
     'fullName',
@@ -63,7 +63,7 @@ const buildQueryString = (userId, cloudId) => {
     'date',
   ];
 
-  const queryUser = `User(id: "${userId}") {${fields.join(', ')}}`;
+  const queryUser = `User:CloudUser(userId: "${userId}", cloudId: "${cloudId}") {${fields.join(', ')}}`;
   const queryPresence = `Presence(organizationId: "${cloudId}", userId: "${userId}") {${presence.join(', ')}}`;
 
   return `{${queryUser} ${queryPresence}}`;
@@ -76,7 +76,7 @@ const buildQueryString = (userId, cloudId) => {
 */
 const requestService = (serviceUrl, cloudId, userId) => {
   const headers = buildHeaders();
-  const query = buildQueryString(userId, cloudId);
+  const query = buildQueryString(cloudId, userId);
 
   return fetch(new Request(serviceUrl, {
     method: 'POST',
@@ -163,7 +163,12 @@ class ProfileClient {
   }
 
   getProfile(cloudId, userId) {
-    const cache = this.getCachedProfile(userId);
+    if (!cloudId || !userId) {
+      return Promise.reject(new Error('cloudId or userId missing'));
+    }
+
+    const cacheIdentifier = `${cloudId}/${userId}`;
+    const cache = this.getCachedProfile(cacheIdentifier);
 
     if (cache) {
       return Promise.resolve(cache);

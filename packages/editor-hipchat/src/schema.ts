@@ -1,5 +1,5 @@
 import {
-  docCompact,
+  doc,
   MarkSpec,
   NodeSpec,
   Schema,
@@ -18,14 +18,15 @@ export interface HCSchemaNodes {
 }
 
 export interface HCSchemaMarks {
+  link: MarkSpec;
+  em: MarkSpec;
+  strong: MarkSpec;
+  underline: MarkSpec;
   mentionQuery: MarkSpec;
   emojiQuery: MarkSpec;
 }
-  // // The top level node for a document.
-  // doc: docCompact,
 
 const nodes = [
-
   // A paragraph node.
   'paragraph',
 
@@ -51,10 +52,22 @@ const nodes = [
 
 const customNodeSpecs = {
   // The top level node for a document.
-  doc: docCompact
+  doc
 };
 
 const marks = [
+  // Represents a hyperlink to a URL.
+  'link',
+
+  // Represents an italic text
+  'em',
+
+  // Represents bolded text
+  'strong',
+
+  // Represents underlined text
+  'underline',
+
   // Represents a "mention query". A mention query is created by typing the @ symbol. The text
   // within a mention query is used to search for a mention.
   //

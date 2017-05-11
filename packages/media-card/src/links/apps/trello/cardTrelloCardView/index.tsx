@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import ClockIcon from '@atlaskit/icon/glyph/recent';
 import AttachmentIcon from '@atlaskit/icon/glyph/attachment';
-import Icon from '@atlaskit/icon';
+import Icon from '@atlaskit/icon/lib/Icon';
 import {MembersList, MemberAvatars} from '../shared';
 import {
     Lists,

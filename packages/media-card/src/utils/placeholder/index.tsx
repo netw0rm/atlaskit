@@ -4,7 +4,7 @@ import {Component} from 'react';
 import {PlaceholderWrapper} from './styled';
 import {MediaType} from '@atlaskit/media-core';
 import FileIcon from '@atlaskit/icon/glyph/file';
-import Icon from '@atlaskit/icon';
+import Icon from '@atlaskit/icon/lib/Icon';
 
 export interface PlaceholderProps {
   mediaType?: MediaType;

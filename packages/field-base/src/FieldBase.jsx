@@ -81,7 +81,7 @@ export default class FieldBase extends PureComponent {
     if (!this.props.isDisabled && this.props.isInvalid) {
       return (
         <div className={styles.warningIconWrapper}>
-          <WarningIcon label="warning" />
+          <WarningIcon label="warning" size="medium" />
         </div>
       );
     }

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { container, colors } from '../../shared-variables';
+import { layout, colors } from '../../shared-variables';
 import { appearanceEnum, themeVariables } from '../../utils/theme';
 
 const ContainerNavigationInner = styled.div`
@@ -9,9 +9,9 @@ const ContainerNavigationInner = styled.div`
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  padding-top: ${({ theme }) => (theme.isCollapsed ? container.padding.top : 0)}px;
-  padding-left: ${({ theme }) => (theme.isCollapsed ? container.padding.side : 0)}px;
-  padding-right: ${({ theme }) => (theme.isCollapsed ? container.padding.side : 0)}px;
+  padding-top: ${({ theme }) => (theme.isCollapsed ? layout.padding.top : 0)}px;
+  padding-left: ${({ theme }) => (theme.isCollapsed ? layout.padding.side : 0)}px;
+  padding-right: ${({ theme }) => (theme.isCollapsed ? layout.padding.side : 0)}px;
   padding-bottom: 0;
   width: 100%;
 

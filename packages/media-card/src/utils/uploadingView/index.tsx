@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import Icon from '@atlaskit/icon';
+import Icon from '@atlaskit/icon/lib/Icon';
 import {ProgressBar} from '../progressBar';
 import {MediaImage} from '../mediaImage';
 import {Ellipsify} from '../ellipsify';

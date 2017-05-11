@@ -2,8 +2,8 @@ import * as React from 'react';
 import {MouseEvent, Component} from 'react';
 import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
-import Icon from '@atlaskit/icon';
 import TickIcon from '@atlaskit/icon/glyph/check';
+import Icon from '@atlaskit/icon/lib/Icon';
 
 import {FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
 
@@ -145,8 +145,8 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     }
   }
 
-  onMenuToggle = (newMenuState) => {
-    this.setState({isMenuExpanded: newMenuState.isExpanded});
+  onMenuToggle = (attrs: {isOpen: boolean}) => {
+    this.setState({isMenuExpanded: attrs.isOpen});
   }
 
   removeBtnClick(handler: CardEventHandler) {

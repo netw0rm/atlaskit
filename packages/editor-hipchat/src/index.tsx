@@ -1,5 +1,6 @@
 import {
   baseKeymap,
+  blockTypePlugins,
   EditorState,
   EditorView,
   emojiNodeView,
@@ -98,7 +99,7 @@ export default class Editor extends PureComponent<Props, State> {
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
       providerFactory: this.providerFactory,
-      behavior: 'compact'
+      behavior: 'default'
     });
   }
 
@@ -293,6 +294,7 @@ export default class Editor extends PureComponent<Props, State> {
         ...mentionsPlugins(schema),
         ...mediaPlugins,
         ...emojisPlugins(schema),
+        ...blockTypePlugins(schema),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         history(),

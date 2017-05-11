@@ -6,7 +6,10 @@ import WrapperClickArea from './wrapper-click-area';
 import { default as MediaGroupNode } from './media-group';
 import { default as MediaNode } from './media';
 import { default as MentionNode } from './mention';
-import { Node as PMNode } from '../prosemirror';
+import {
+  Node as PMNode,
+  EditorView,
+} from '../prosemirror';
 
 const richNodes = new Map<string, React.ComponentClass<any>>([
   [ 'mediaGroup', MediaGroupNode ],
@@ -17,12 +20,14 @@ const richNodes = new Map<string, React.ComponentClass<any>>([
 export interface ReactProsemirrorNodeProps {
   node: PMNode;
   getPos: () => number;
+  view: EditorView;
+
   [key: string]: any;
 }
 
 export default class ReactProsemirrorNode extends PureComponent<ReactProsemirrorNodeProps, {}> {
   render() {
-    const { getPos, node } = this.props;
+    const { getPos, node, view } = this.props;
     const nodeTypeName = node.type.name;
 
     assert(richNodes.has(nodeTypeName), `Rich node with type ${nodeTypeName} is not declared`);
@@ -40,7 +45,11 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
       const childAttrs = { ...this.props, node: childNode };
 
       children.push(
-        <WrapperClickArea key={`richnode-${offset}-${index}`}>
+        <WrapperClickArea
+          key={`richnode-${offset}-${index}`}
+          node={childNode}
+          view={view}
+        >
           <ReactProsemirrorNode {...childAttrs}/>
         </WrapperClickArea>
       );

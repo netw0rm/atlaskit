@@ -1,25 +1,31 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PositionedNode } from './';
+import {
+  EditorView,
+  NodeSelection,
+} from '../prosemirror';
 
-export default class WrapperClickArea extends PureComponent<{}, {}> {
-  private domElem: HTMLElement;
+interface WrapperClickAreaProps {
+  node: PositionedNode;
+  view: EditorView;
+}
 
+export default class WrapperClickArea extends PureComponent<WrapperClickAreaProps, {}> {
   render() {
     return (
-      <div
-        onClick={this.onClick}
-        ref={this.handleRef}
-      >
+      <div onClick={this.onClick}>
         {this.props.children}
       </div>
     );
   }
 
   private onClick = () => {
-    this.domElem.classList.toggle('ProseMirror-selectednode');
-  }
+    const { node, view } = this.props;
+    const { doc, tr } = view.state;
+    const pos = doc.resolve(node.getPos());
+    const selection = new NodeSelection(pos);
 
-  private handleRef = (elem: HTMLElement) => {
-    this.domElem = elem;
+    view.dispatch(tr.setSelection(selection));
   }
 }

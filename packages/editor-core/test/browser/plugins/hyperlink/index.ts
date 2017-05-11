@@ -588,7 +588,7 @@ describe('hyperlink', () => {
     });
   });
 
-  describe('paste', () => {
+  describe.skip('paste', () => {
     context('url link is at beginning of plain text', () => {
       it('should add link mark', function() {
         const { editorView } = editor(doc(paragraph('{<>}')));
@@ -600,7 +600,7 @@ describe('hyperlink', () => {
       });
     });
 
-    context.skip('url link is at end of html text', () => {
+    context('url link is at end of html text', () => {
       it('should add link mark', function() {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { html: '<a href="http://www.atlassian.com">Atlassian</a> test' })) {
@@ -621,7 +621,7 @@ describe('hyperlink', () => {
       });
     });
 
-    context.skip('email link is at end of html', () => {
+    context('email link is at end of html', () => {
       it('should add link mark', function() {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { html: '<a href="mailto:test@atlassian.com">Atlassian</a> test' })) {

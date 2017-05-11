@@ -10,3 +10,4 @@ export { default as mentionsPlugins, stateKey as mentionsStateKey } from './ment
 export { default as textFormattingPlugins, stateKey as textFormattingStateKey } from './text-formatting';
 export { default as rulePlugins, stateKey as ruleStateKey } from './rule';
 export { default as panelPlugins, stateKey as panelStateKey } from './panel';
+export { default as reactNodeViewPlugins, ReactNodeViewState, stateKey as reactNodeViewStateKey } from './react-nodeview';

@@ -11,6 +11,7 @@ import {
   Node as PMNode,
   EditorView,
 } from '../prosemirror';
+import { reactNodeViewStateKey } from '../plugins';
 
 const richNodes = new Map<string, React.ComponentClass<any>>([
   [ 'emoji', EmojiNode ],
@@ -20,8 +21,9 @@ const richNodes = new Map<string, React.ComponentClass<any>>([
 ]);
 
 export interface ReactProsemirrorNodeProps {
-  node: PMNode;
   getPos: () => number;
+  internal?: boolean;
+  node: PMNode;
   view: EditorView;
 
   [key: string]: any;
@@ -44,13 +46,15 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
       childNode.getPos = () => getPos() + nodePosOffset;
       nodePosOffset += childNode.nodeSize;
 
-      const childAttrs = { ...this.props, node: childNode };
+      const reactNodeViewState = reactNodeViewStateKey.getState(view.state);
+      const childAttrs = { ...this.props, node: childNode, internal: true };
 
       children.push(
         <WrapperClickArea
           key={`richnode-${offset}-${index}`}
           node={childNode}
           view={view}
+          pluginState={reactNodeViewState}
         >
           <ReactProsemirrorNode {...childAttrs}/>
         </WrapperClickArea>

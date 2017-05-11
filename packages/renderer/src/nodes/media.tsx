@@ -182,13 +182,14 @@ export default class Media extends PureComponent<MediaProps, State> {
 
   private renderFile() {
     const { mediaProvider, viewContext } = this.state;
-    const { cardDimensions, item } = this.props;
+    const { cardDimensions, item, onClick } = this.props;
     const { collection, id } = item.attrs;
 
-    if (!mediaProvider || !viewContext) {
+    if (!mediaProvider || !viewContext || id.indexOf('temporary:') === 0) {
       return <CardView
         status="loading"
         mediaItemType="file"
+        dimensions={cardDimensions}
       />;
     }
 
@@ -202,6 +203,7 @@ export default class Media extends PureComponent<MediaProps, State> {
           collectionName: collection
         }}
         selectable={false}
+        actions={[ CardClick(onClick || noop) ]}
       />
     );
   }

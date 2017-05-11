@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import styled, {keyframes, css} from 'styled-components';
+import {getCSSUnitValue} from '../utils';
 
 export const Spinner = styled.div`
   background: data-uri("./icons/spinner.svg") no-repeat center;
@@ -33,11 +34,18 @@ const cardEntryAnimation = keyframes`
 `;
 
 export interface CardListItemWrapperProps {
-  readonly cardWidth: string;
+  readonly key?: string;
+  readonly cardWidth?: string | number;
 }
 
 export const CardListItemWrapper = styled.div`
-  ${({cardWidth}: CardListItemWrapperProps) => cardWidth && css`width: ${cardWidth};`}
+  ${({cardWidth}: CardListItemWrapperProps) => {
+    if (cardWidth) {
+      return css`width: ${getCSSUnitValue(cardWidth)};`;
+    } else {
+     return '';
+    }
+  }}
 
   padding-top: 5px;
   &:first-child {

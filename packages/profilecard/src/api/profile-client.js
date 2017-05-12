@@ -136,7 +136,14 @@ class ProfileClient {
     return requestService(this.config.url, cloudId, userId);
   }
 
-  getCachedProfile(cacheIdentifier) {
+  setCachedProfile(cloudId, userId, cacheItem) {
+    const cacheIdentifier = `${cloudId}/${userId}`;
+    this.cache.put(cacheIdentifier, cacheItem);
+  }
+
+  getCachedProfile(cloudId, userId) {
+    const cacheIdentifier = `${cloudId}/${userId}`;
+
     const cached = this.cache && this.cache.get(cacheIdentifier);
 
     if (!cached) {
@@ -167,8 +174,7 @@ class ProfileClient {
       return Promise.reject(new Error('cloudId or userId missing'));
     }
 
-    const cacheIdentifier = `${cloudId}/${userId}`;
-    const cache = this.getCachedProfile(cacheIdentifier);
+    const cache = this.getCachedProfile(cloudId, userId);
 
     if (cache) {
       return Promise.resolve(cache);
@@ -178,10 +184,14 @@ class ProfileClient {
       this.makeRequest(cloudId, userId)
       .then((data) => {
         if (this.cache) {
-          this.cache.put(userId, {
-            expire: Date.now() + this.cacheMaxAge,
-            profile: data,
-          });
+          this.setCachedProfile(
+            cloudId,
+            userId,
+            {
+              expire: Date.now() + this.cacheMaxAge,
+              profile: data,
+            }
+          );
         }
         resolve(data);
       })

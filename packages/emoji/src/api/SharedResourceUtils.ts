@@ -97,6 +97,7 @@ export const requestService = (baseUrl: string, path: string | undefined, data: 
   const options = {
     ...opts,
     ...{ headers },
+    credentials: 'include' as 'include',
   };
   return fetch(new Request(url, options))
     .then((response: Response) => {

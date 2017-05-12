@@ -5,8 +5,10 @@ import * as classNames from 'classnames';
 import * as styles from './styles';
 import AkButton from '@atlaskit/button';
 import Emoji from '../../components/common/Emoji';
+import EmojiPlaceholder from '../../components/common/EmojiPlaceholder';
 import ToneSelector from './ToneSelector';
 import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
+import { isMediaApiRepresentation } from '../../type-helpers';
 
 export interface Props {
   emoji?: EmojiDescription;
@@ -99,10 +101,25 @@ export default class EmojiPreview extends PureComponent<Props, State> {
       [styles.previewSingleLine]: !emoji.name,
     });
 
+    const { representation } = emoji;
+
+    let emojiComponent;
+
+    if (isMediaApiRepresentation(representation)) {
+      const { shortName, name } = emoji;
+      emojiComponent = (
+        <EmojiPlaceholder title={shortName} name={name} size={32} />
+      );
+    } else {
+      emojiComponent = (
+        <Emoji emoji={emoji} />
+      );
+    }
+
     return (
       <div className={previewClasses}>
         <span className={styles.previewImg}>
-          <Emoji emoji={emoji} />
+          {emojiComponent}
         </span>
         <div className={previewTextClasses}>
           <span className={styles.name}>{emoji.name}</span>

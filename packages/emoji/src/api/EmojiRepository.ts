@@ -52,6 +52,9 @@ const findByKey = (map: EmojiByKey, key: any): OptionalEmojiDescription => {
 
 const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
   if (options) {
+    if (options.limit && options.limit > 0) {
+      emojis = emojis.slice(0, options.limit);
+    }
     return emojis.map(emoji => {
       return getEmojiVariation(emoji, options);
     });

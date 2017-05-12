@@ -1,20 +1,31 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 
 import { placeholderEmoji } from './styles';
 
-export interface PlaceholderProps {
+export const defaultSize = 24;
+
+export interface Props {
   title: string;
+  name?: string;
+  size?: number;
 }
 
-export default class EmojiPlaceholder extends PureComponent<PlaceholderProps, undefined> {
-  render() {
-    return (
-      <svg className={placeholderEmoji} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
-        <circle cx="12" cy="12" r="11">
-          <title>{`Unknown Emoji (${this.props.title})`}</title>
-        </circle>
-      </svg>
-    );
-  }
-}
+// tslint:disable-next-line:variable-name
+const EmojiPlaceholder = (props: Props) => {
+  const { title, name = 'Unknown Emoji', size = defaultSize } = props;
+  const center = Math.floor(size / 2);
+  const radius = center - 1;
+  const style = {
+    width: `${size}px`,
+    height: `${size}px`,
+  };
+  return (
+    <svg className={placeholderEmoji} style={style} viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg" >
+      <circle cx={center} cy={center} r={radius}>
+        <title>{`${name} (${title})`}</title>
+      </circle>
+    </svg>
+  );
+};
+
+export default EmojiPlaceholder;

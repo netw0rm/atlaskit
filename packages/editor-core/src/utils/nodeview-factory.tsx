@@ -8,12 +8,43 @@ import {
 } from '../prosemirror';
 import { ReactPMNode } from '../react';
 
+type getPosHandler = () => number;
+
 class NodeViewElem implements NodeView {
   private domRef: HTMLElement | undefined;
+  private node: PMNode;
+  private view: EditorView;
+  private getPos: getPosHandler;
+  private providerFactory: ProviderFactory;
 
-  constructor(node: PMNode, view: EditorView, getPos: () => number, providerFactory: ProviderFactory, blockNodeView: boolean) {
+  constructor(node: PMNode, view: EditorView, getPos: getPosHandler, providerFactory: ProviderFactory, blockNodeView: boolean) {
+    this.node = node;
+    this.view = view;
+    this.getPos = getPos;
+    this.providerFactory = providerFactory;
+
     const elementType = blockNodeView ? 'div' : 'span';
     this.domRef = document.createElement(elementType);
+
+    this.renderReactComponent();
+  }
+
+  get dom() {
+    return this.domRef;
+  }
+
+  update(node: PMNode) {
+    this.renderReactComponent();
+    return true;
+  }
+
+  destroy() {
+    ReactDOM.unmountComponentAtNode(this.domRef!);
+    this.domRef = undefined;
+  }
+
+  private renderReactComponent() {
+    const { getPos, node, providerFactory, view } = this;
 
     ReactDOM.render(
       <ReactPMNode
@@ -24,15 +55,6 @@ class NodeViewElem implements NodeView {
       />,
       this.domRef!
     );
-  }
-
-  get dom() {
-    return this.domRef;
-  }
-
-  destroy() {
-    ReactDOM.unmountComponentAtNode(this.domRef!);
-    this.domRef = undefined;
   }
 }
 

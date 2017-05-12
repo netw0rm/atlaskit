@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Component, MouseEvent} from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Icon from '@atlaskit/icon/lib/Icon';
 import {ProgressBar} from '../progressBar';
@@ -13,25 +14,48 @@ export interface UploadingViewProps {
   onCancel?: () => void;
 }
 
-export const UploadingView = ({title, progress, dataURI, onCancel}: UploadingViewProps) => ( // tslint:disable-line:variable-name
-  <Wrapper>
-    <Overlay>
-      <Title>
-        <Ellipsify text={title || ''} lines={2}/>
-      </Title>
-      <Body>
-          <ProgressWrapper>
-            <ProgressBar progress={progress}/>
-          </ProgressWrapper>
-          {onCancel && (
-            <IconLink onClick={onCancel}>
-              <Icon glyph={CrossIcon} label="Cancel upload"/>
-            </IconLink>
-          )}
-        </Body>
-    </Overlay>
-    {dataURI && (
-      <MediaImage dataURI={dataURI}/>
-    )}
-  </Wrapper>
-);
+export class UploadingView extends Component<UploadingViewProps, {}> {
+  render() {
+    const {title, progress, dataURI, onCancel} = this.props;
+
+    const cancelButton = onCancel ?
+      (
+        <IconLink onClick={this.handleCancelClick}>
+          <Icon glyph={CrossIcon} label="Cancel upload"/>
+        </IconLink>
+      ) : null;
+
+    return (
+      <Wrapper>
+        <Overlay>
+          <Title>
+            <Ellipsify text={title || ''} lines={2}/>
+          </Title>
+          <Body>
+              <ProgressWrapper>
+                <ProgressBar progress={progress}/>
+              </ProgressWrapper>
+              {cancelButton}
+            </Body>
+        </Overlay>
+        {dataURI && (
+          <MediaImage dataURI={dataURI}/>
+        )}
+      </Wrapper>
+    );
+  }
+
+  /*
+    If there is a cancel action, wrap the cancel action handler to stop the "click" event bubbling up
+    to the card and also firing the Card onClick event
+  */
+  private handleCancelClick = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const {onCancel} = this.props;
+    if (onCancel) {
+      onCancel();
+    }
+  }
+}

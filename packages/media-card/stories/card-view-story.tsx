@@ -79,18 +79,22 @@ const createApiCards = (appearance: CardAppearance, metadata: MediaItemDetails) 
   // API methods
   const apiCards = [
     {
-      title: 'click',
-      content: <CardView status="complete" appearance={appearance} metadata={metadata} dataURI={gifDataUri} onClick={clickHandler} actions={actions} />
+      title: 'status = complete',
+      content: <CardView status="complete" appearance={appearance} metadata={metadata} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
     },
     {
-      title: 'hover',
-      content: <CardView status="complete" appearance={appearance} metadata={metadata} dataURI={gifDataUri} onMouseEnter={mouseEnterHandler} actions={actions} />
+      title: 'status = error',
+      content: <CardView status="error" appearance={appearance} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
+    },
+    {
+      title: 'status = loading',
+      content: <CardView status="loading" appearance={appearance} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
     }
   ];
 
   const uploadCardWithApi = {
-    title: 'upload',
-    content: <CardView status="uploading" progresss={0.5} appearance={appearance} metadata={metadata} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
+    title: 'status = uploading',
+    content: <CardView status="uploading" progress={0.5} appearance={appearance} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
   };
 
   if (appearance === 'image') {

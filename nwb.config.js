@@ -119,7 +119,7 @@ module.exports = {
       entry: ['index.js', 'index.jsx', 'index.ts', 'index.tsx']
         .map(p => path.join(cwd, 'src', p)).filter(fs.existsSync)[0],
 
-      externals: [externals()],
+      externals: [externals({ modulesFromFile: true })],
       module: {
         rules: [{
           test: /\.json$/,

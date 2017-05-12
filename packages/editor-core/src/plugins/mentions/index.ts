@@ -6,8 +6,7 @@ import {
   Plugin,
   PluginKey,
   Slice,
-  Fragment,
-  TextSelection
+  Fragment
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
 import { isMarkAllowedAtPosition } from '../../utils';

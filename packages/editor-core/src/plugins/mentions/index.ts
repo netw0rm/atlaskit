@@ -6,7 +6,8 @@ import {
   Plugin,
   PluginKey,
   Slice,
-  Fragment
+  Fragment,
+  TextSelection
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
 import { isMarkAllowedAtPosition } from '../../utils';
@@ -200,6 +201,7 @@ export class MentionsState {
     this.view.dispatch(
       state.tr.replaceSelection(new Slice(Fragment.from(node), 0, 0))
     );
+    this.view.focus();
   }
 }
 

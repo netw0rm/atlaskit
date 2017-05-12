@@ -111,19 +111,24 @@ export class BlockTypeState {
       return NORMAL_TEXT;
     }
 
-    const { $from } = state.selection;
-    for (let depth = 0; depth <= $from.depth; depth++) {
-      const node = $from.node(depth)!;
-      const blocktype = this.nodeBlockType(node);
-      if (blocktype !== OTHER) {
-        return blocktype;
+    let blockType;
+    const { $from, $to } = state.selection;
+    const getNodeBlockType = this.nodeBlockType.bind(this);
+    state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
+      const resolvedPosDepth = state.doc.resolve(pos).depth;
+      if (node.isBlock && resolvedPosDepth === 0) {
+        if (!blockType) {
+          blockType = getNodeBlockType(node);
+        } else if (blockType !== OTHER && blockType !== getNodeBlockType(node)) {
+          blockType = OTHER;
+        }
       }
-    }
+    });
 
-    return OTHER;
+    return blockType || OTHER;
   }
 
-  private nodeBlockType(node: Node): BlockType {
+  private nodeBlockType = (node: Node): BlockType => {
     if (node.type === this.state.schema.nodes.heading) {
       switch (node.attrs['level']) {
         case 1:
@@ -220,8 +225,9 @@ const plugin = new Plugin({
   },
   props: {
     handleKeyDown(view, event) {
+      stateKey.getState(view.state).update(view.state, view.docView, true);
       return stateKey.getState(view.state).keymapHandler(view, event);
-    }
+    },
   }
 });
 

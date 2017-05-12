@@ -7,9 +7,17 @@ import Media from 'react-media';
 import { Link } from 'react-router-dom';
 import { Grid, GridColumn } from '@atlaskit/page';
 import Button from '@atlaskit/button';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import {
+  akBorderRadius,
+  akColorN300,
+  akColorB500,
+  akElevationMixins,
+  akGridSize,
+  akGridSizeUnitless,
+} from '@atlaskit/util-shared-styles';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 
-import { MOBILE_QUERY } from '../../constants';
+import { DESKTOP_QUERY, MOBILE_QUERY } from '../../constants';
 
 import { Heading, Intro, Section } from '../components/Type';
 import Container from '../components/Container';
@@ -21,14 +29,12 @@ const IntroContent = props => (
     the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a>(ADG).
   </Intro>
 );
-
 const GettingStartedContent = () => (
   <Section>
     <h3>Getting started</h3>
     <p>To learn how to get ADG into your projects, check out the <a href="./install">install guide</a>.</p>
   </Section>
 );
-
 const GettingInvolvedContent = () => (
   <Section>
     <h3>Getting involved</h3>
@@ -36,6 +42,18 @@ const GettingInvolvedContent = () => (
       We welcome issue and code contributions. Please start by reading our <a href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">contribution guide</a>.
     </p>
   </Section>
+);
+
+const Message = ({ children, title, ...props }) => (
+  <MessageRoot {...props}>
+    <MessageIcon>
+      <WarningIcon label="Blue alert icon" primaryColor={akColorB500} />
+    </MessageIcon>
+    <MessageContent>
+      <MessageTitle>{title}</MessageTitle>
+      <MessageText>{children}</MessageText>
+    </MessageContent>
+  </MessageRoot>
 );
 
 const Mobile = () => (
@@ -59,34 +77,47 @@ const Mobile = () => (
   </MobileIntro>
 );
 
+const DesktopContent = () => (
+  <div>
+    <Heading>AtlasKit</Heading>
+    <IntroContent />
+    <GettingStartedContent />
+    <GettingInvolvedContent />
+    <Section>
+      <Message title="Atlassians">
+        For internal, Fabric, and Media Services components please see the <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">registry website</a>.
+      </Message>
+    </Section>
+  </div>
+);
 const Desktop = () => (
-  <Grid spacing="comfortable">
-    <GridColumn medium={6}>
-      <Heading>AtlasKit</Heading>
-      <IntroContent />
-      <GettingStartedContent />
-      <GettingInvolvedContent />
-      <Section style={{ marginTop: 60 }}>
-        <p><em>
-          Atlassians: For internal, Fabric and Media Services components,
-          {' '}<a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">click&nbsp;here</a>.
-        </em></p>
-      </Section>
-    </GridColumn>
-    <GridColumn medium={6}>
-      <p>
-        <img
-          alt="Landing page hero"
-          src={landingHero}
-          style={{
-            height: 'auto',
-            marginTop: 48,
-            maxWidth: '100%',
-          }}
-        />
-      </p>
-    </GridColumn>
-  </Grid>
+  <Media query={DESKTOP_QUERY}>
+    {matches => matches ? (
+      <Grid spacing="comfortable">
+        <GridColumn medium={6}>
+          <DesktopContent />
+        </GridColumn>
+        <GridColumn medium={6}>
+          <p>
+            <img
+              alt="Landing page hero"
+              src={landingHero}
+              style={{
+                height: 'auto',
+                marginTop: 48,
+                maxWidth: '100%',
+              }}
+            />
+          </p>
+        </GridColumn>
+      </Grid>
+    ) : (
+      <Container>
+        <DesktopContent />
+      </Container>
+    )
+  }
+  </Media>
 );
 
 export default class WelcomePage extends PureComponent {
@@ -121,4 +152,28 @@ const MobileHero = styled.img`
   margin-right: -40px;
   margin-top: -40px;
   width: 290px; /* arbitrary */
+`;
+
+// Message
+const MessageRoot = styled.div`
+  ${akElevationMixins.e100}
+  border-radius: ${akBorderRadius}
+  display: flex;
+  padding: ${akGridSizeUnitless * 2}px;
+`;
+const MessageIcon = styled.div`
+  flex-shrink: 0;
+  margin-right: ${akGridSize};
+`;
+const MessageContent = styled.div`
+`;
+const MessageTitle = styled.h5`
+  display: block;
+  height: 24px;
+  line-height: 24px;
+  margin-bottom: ${akGridSize};
+`;
+const MessageText = styled.p`
+  color: ${akColorN300};
+  margin: 0 0 ${akGridSize};
 `;

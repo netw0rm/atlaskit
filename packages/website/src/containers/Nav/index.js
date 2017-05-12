@@ -22,6 +22,7 @@ import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import PageIcon from '@atlaskit/icon/glyph/page';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 import atlasKitLogo from '../../images/atlaskit-logo.png';
 import SearchDrawer from './SearchDrawer';
@@ -147,7 +148,7 @@ export default class Nav extends Component {
               ), this)}
             </NavItemGroup>
           </div>
-          <div>
+          <div style={{ paddingBottom: akGridSizeUnitless * 3 }}>
             <NavItem
               icon={backIcon}
               onClick={() => router.history.push('/')}

@@ -15,6 +15,7 @@ import {
   akGridSize,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
+import Message from '@atlaskit/inline-message';
 import Table from '@atlaskit/dynamic-table';
 
 import { Heading, Intro, Section } from '../components/Type';
@@ -101,9 +102,9 @@ export default class Components extends PureComponent {
                 {version}
               </a>
               {publishTime ? (
-                <time dateTime={component.publishedDate}>
-                  {' '}{component.publishedDate && new Date(component.publishedDate).toLocaleDateString()}
-                </time>
+                <Time dateTime={component.publishedDate}>
+                  {' '}({component.publishedDate && new Date(component.publishedDate).toLocaleDateString()})
+                </Time>
               ) : null}
             </RowCell>
           ),
@@ -167,6 +168,11 @@ export default class Components extends PureComponent {
             {matches => (matches ? <MobileContent /> : <DesktopContent />)}
           </LayoutFork>
         </Section>
+        <Section style={{ marginLeft: `-${akGridSize}` }}>
+          <Message title="Atlassians">
+            For internal, Fabric, and Media Services components please see the <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">registry website</a>.
+          </Message>
+        </Section>
       </Wrapper>
     );
   }
@@ -174,6 +180,7 @@ export default class Components extends PureComponent {
 
 // Layout
 const Wrapper = styled.div`
+  padding-bottom: 3em;
   padding-left: ${akGridSizeUnitless * 2.5}px;
   padding-right: ${akGridSizeUnitless * 2.5}px;
 
@@ -196,6 +203,9 @@ const TableWrapper = styled.div`
 const RowCell = styled.div`
   padding-bottom: ${akGridSize};
   padding-top: ${akGridSize};
+`;
+const Time = styled.time`
+  color: ${akColorN80};
 `;
 
 // Mobile content

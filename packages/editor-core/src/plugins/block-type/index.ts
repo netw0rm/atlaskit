@@ -225,9 +225,8 @@ const plugin = new Plugin({
   },
   props: {
     handleKeyDown(view, event) {
-      stateKey.getState(view.state).update(view.state, view.docView, true);
       return stateKey.getState(view.state).keymapHandler(view, event);
-    },
+    }
   }
 });
 

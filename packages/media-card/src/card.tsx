@@ -3,7 +3,7 @@ import {Component} from 'react';
 import * as deepEqual from 'deep-equal';
 import {Context, MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriService} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardEventProps} from '.';
+import {SharedCardProps, CardEventProps, CardEvent} from '.';
 import {MediaCard} from './mediaCard';
 
 export type Identifier = UrlPreviewIdentifier | MediaIdentifier;
@@ -25,7 +25,11 @@ export interface CardProps extends SharedCardProps, CardEventProps {
   readonly identifier: Identifier;
 }
 
-export class Card extends Component<CardProps, {}> {
+export interface CardState {
+  selected: boolean;
+}
+
+export class Card extends Component<CardProps, CardState> {
   static defaultProps = {
     appearance: 'auto'
   };
@@ -35,20 +39,30 @@ export class Card extends Component<CardProps, {}> {
 
   constructor(props) {
     super(props);
-    const {context, identifier} = props;
+    const {context, identifier, selectable, selected} = props;
+
     this.updateProvider(context, identifier);
     this.updateDataUriService(context, identifier);
+
+    if (selectable) {
+      this.state = { selected };
+    } else {
+      this.state = { selected: false };
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     const {context: currentContext, identifier: currentIdentifier} = this.props;
-    const {context: nextContext, identifier: nextIdenfifier} = nextProps;
+    const {context: nextContext, identifier: nextIdenfifier, selectable: nextSelectable, selected: nextSelectedState} = nextProps;
 
     if (currentContext !== nextContext || !deepEqual(currentIdentifier, nextIdenfifier)) {
       this.updateProvider(nextContext, nextIdenfifier);
       this.updateDataUriService(nextContext, nextIdenfifier);
     }
 
+    if (nextSelectable && nextSelectedState !== this.state.selected) {
+      this.setState({selected: nextSelectedState});
+    }
   }
 
   private isUrlPreviewIdentifier(identifier: Identifier): identifier is UrlPreviewIdentifier {
@@ -75,6 +89,7 @@ export class Card extends Component<CardProps, {}> {
 
   render() {
     const {context, identifier, ...otherProps} = this.props;
+    const {selected} = this.state;
     const {mediaItemType} = identifier;
 
     return <MediaCard
@@ -82,8 +97,44 @@ export class Card extends Component<CardProps, {}> {
       mediaItemType={mediaItemType}
       provider={this.provider}
       dataURIService={this.dataURIService}
+
+      selected={selected}
+      onClick={this.onClick}
     />;
   }
 
+  private onClick = (result: CardEvent): void => {
+    const {selected} = this.state;
+
+    this.fireOnClickToConsumer(result);
+    this.fireOnSelectChangeToConsumer(result, !selected);
+    this.updateCardSelectedState();
+  }
+
+  private fireOnClickToConsumer = (result: CardEvent): void => {
+    const {onClick} = this.props;
+    if (onClick) {
+      onClick(result);
+    }
+  }
+
+  private fireOnSelectChangeToConsumer = (result: CardEvent, newSelectedState: boolean): void => {
+    const {selectable, onSelectChange} = this.props;
+    const {mediaItemDetails} = result;
+
+    if (selectable && onSelectChange) {
+      onSelectChange({selected: newSelectedState, mediaItemDetails});
+    }
+  }
+
+  private updateCardSelectedState = () => {
+    const {selectable} = this.props;
+
+    if (selectable) {
+      this.setState((prevState, props) => {
+        return {selected: !prevState.selected};
+      });
+    }
+  }
 }
 

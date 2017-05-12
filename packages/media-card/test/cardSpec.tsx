@@ -1,5 +1,6 @@
-/* tslint:disable:no-unused-expression */
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
@@ -144,7 +145,7 @@ describe('Card', function() {
     expect(mediaCard.props().provider).to.equal(dummyProvider);
   });
 
-  it('should pass onClick to MediaCard', function() {
+  it('should fire onClick when passed in as a prop and MediaCard fires onClick', function() {
     const identifier: MediaIdentifier = {
       id: 'some-random-id',
       mediaItemType: 'file',
@@ -152,10 +153,19 @@ describe('Card', function() {
     };
 
     const context = fakeContext() as any;
-    const clickHandler = (result: CardEvent) => {};
-    const card = shallow(<Card context={context} identifier={identifier} onClick={clickHandler} />);
+    const clickHandler = sinon.spy();
 
-    expect(card.find(MediaCard).props().onClick).to.deep.equal(clickHandler);
+    const card = shallow(<Card context={context} identifier={identifier} onClick={clickHandler} />);
+    const mediaCardOnClick = card.find(MediaCard).props().onClick;
+
+    if (!mediaCardOnClick) {
+      throw new Error('MediaCard onClick was undefined');
+    }
+
+    expect(clickHandler.called).to.be.false;
+
+    mediaCardOnClick({} as any);
+    expect(clickHandler.calledOnce).to.be.true;
   });
 
   it('should pass onMouseEnter to MediaCard', function() {
@@ -170,5 +180,92 @@ describe('Card', function() {
     const card = shallow(<Card context={context} identifier={identifier} onMouseEnter={hoverHandler} />);
 
     expect(card.find(MediaCard).props().onMouseEnter).to.deep.equal(hoverHandler);
+  });
+
+  it('should set selected state to false when selectable prop is falsey', function() {
+    const identifier: MediaIdentifier = {
+      id: 'some-random-id',
+      mediaItemType: 'file',
+      collectionName: 'some-collection-name'
+    };
+
+    const context = fakeContext() as any;
+    const card = shallow(<Card context={context} identifier={identifier} selected={true} />);
+    expect(card.find(MediaCard).props().selected).to.be.false;
+  });
+
+  it('should initialise and render Card with correct selected state when seletable prop is true', function() {
+    const identifier: MediaIdentifier = {
+      id: 'some-random-id',
+      mediaItemType: 'file',
+      collectionName: 'some-collection-name'
+    };
+
+    const context = fakeContext() as any;
+    const card = shallow(<Card context={context} identifier={identifier} selectable={true} selected={true} />);
+    expect(card.find(MediaCard).props().selected).to.be.true;
+  });
+
+  it('should update and render Cards selected state when a different selected state is passed in', function() {
+    const identifier: MediaIdentifier = {
+      id: 'some-random-id',
+      mediaItemType: 'file',
+      collectionName: 'some-collection-name'
+    };
+
+    const context = fakeContext() as any;
+    const card = shallow(<Card context={context} identifier={identifier} selectable={true} selected={true} />);
+    expect(card.find(MediaCard).props().selected).to.be.true;
+
+    card.setProps({selected: false});
+    expect(card.find(MediaCard).props().selected).to.be.false;
+  });
+
+  it('should fire onSelectChange when Card is clicked and it is selectable', function() {
+    const identifier: MediaIdentifier = {
+      id: 'some-random-id',
+      mediaItemType: 'file',
+      collectionName: 'some-collection-name'
+    };
+
+    const context = fakeContext() as any;
+
+    const selectChangeHandler = sinon.spy();
+
+    const card = shallow(<Card context={context} identifier={identifier} onSelectChange={selectChangeHandler} selectable={true} />);
+    const mediaCardOnClick = card.find(MediaCard).props().onClick;
+
+    if (!mediaCardOnClick) {
+      throw new Error('MediaCard onClick was undefined');
+    }
+
+    mediaCardOnClick({} as any);
+    expect(selectChangeHandler.calledOnce).to.be.true;
+    expect(selectChangeHandler.firstCall.args[0].selected).to.be.true;
+
+    mediaCardOnClick({} as any);
+    expect(selectChangeHandler.calledTwice).to.be.true;
+    expect(selectChangeHandler.secondCall.args[0].selected).to.be.false;
+  });
+
+  it('should NOT fire onSelectChange Card is clicked and it is NOT seletable', function() {
+    const identifier: MediaIdentifier = {
+      id: 'some-random-id',
+      mediaItemType: 'file',
+      collectionName: 'some-collection-name'
+    };
+
+    const context = fakeContext() as any;
+    const selectChangeHandler = sinon.spy();
+
+    const card = shallow(<Card context={context} identifier={identifier} onSelectChange={selectChangeHandler} />);
+    const mediaCardOnClick = card.find(MediaCard).props().onClick;
+
+    if (!mediaCardOnClick) {
+      throw new Error('MediaCard onClick was undefined');
+    }
+
+    mediaCardOnClick({} as any);
+    expect(selectChangeHandler.called).to.be.false;
   });
 });

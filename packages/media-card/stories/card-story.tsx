@@ -27,7 +27,7 @@ import {
   unknownFileId,
   errorFileId
 } from '@atlaskit/media-test-helpers';
-import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent } from '../src';
+import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent, OnSelectChangeFuncResult } from '../src';
 
 const context = createStorybookContext();
 
@@ -36,23 +36,51 @@ const clickHandler = (result: CardEvent) => {
   action('click')(result.mediaItemDetails);
 };
 
-const hoverHandler = (result: CardEvent) => {
+const mouseEnterHandler = (result: CardEvent) => {
   result.event.preventDefault();
   action('mouseEnter')(result.mediaItemDetails);
+};
+
+const onSelectChangeHandler = (result: OnSelectChangeFuncResult) => {
+  action('selectChanged')(result);
 };
 
 const createApiCards = (appearance: CardAppearance, identifier: Identifier) => {
   // API methods
   const apiCards = [
     {
-      title: 'click',
-      content: <Card context={context} appearance={appearance} identifier={identifier} onClick={clickHandler} />
-    },
-    {
-      title: 'hover',
-      content: <Card context={context} appearance={appearance} identifier={identifier} onMouseEnter={hoverHandler} />
+      title: 'not selectable',
+      content: (
+        <Card
+          context={context}
+          appearance={appearance}
+          identifier={identifier}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          onSelectChange={onSelectChangeHandler}
+        />
+      )
     }
   ];
+
+  const selectableCard = {
+    title: 'selectable',
+    content: (
+      <Card
+        context={context}
+        appearance={appearance}
+        identifier={identifier}
+        onClick={clickHandler}
+        onMouseEnter={mouseEnterHandler}
+        selectable={true}
+        onSelectChange={onSelectChangeHandler}
+      />
+    )
+  };
+
+  if (appearance === 'image') {
+    return [...apiCards, selectableCard];
+  }
 
   return apiCards;
 };
@@ -300,11 +328,8 @@ storiesOf('Card', {})
     // selectable
     const selectableCards = [
       {
-        title: 'image - Not selected',
+        title: 'Selectable',
         content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} />
-      }, {
-        title: 'image - Selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} selected={true} />
       }
     ];
 

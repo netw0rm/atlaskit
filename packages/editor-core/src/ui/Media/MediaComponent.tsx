@@ -13,6 +13,7 @@ import {
   ContextFactory,
   Context,
   CardDelete,
+  CardEventHandler,
   FileDetails,
   MediaProvider,
   MediaState,
@@ -26,7 +27,7 @@ import { EditorView, mediaStateKey } from '../../index';
 export interface Props extends Attributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
-  onDelete?: () => void;
+  onDelete?: CardEventHandler;
 }
 
 export interface State extends MediaState {

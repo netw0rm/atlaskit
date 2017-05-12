@@ -70,8 +70,12 @@ export default class MediaNode extends PureComponent<Props, {}> {
     );
   }
 
-  private handleRemove = () => {
+  private handleRemove = (item?: any, event?: Event) => {
     const { node } = this.props;
     this.pluginState.handleMediaNodeRemove(node);
+
+    if (event) {
+      event.stopPropagation();
+    }
   }
 }

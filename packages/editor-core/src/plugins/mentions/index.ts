@@ -200,7 +200,9 @@ export class MentionsState {
     this.view.dispatch(
       state.tr.replaceSelection(new Slice(Fragment.from(node), 0, 0))
     );
-    this.view.focus();
+    if (!this.view.hasFocus()) {
+      this.view.focus();
+    }
   }
 }
 

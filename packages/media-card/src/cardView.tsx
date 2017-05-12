@@ -1,10 +1,8 @@
 import * as React from 'react';
-import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview} from '@atlaskit/media-core';
-
+import {MediaItemType, MediaItemDetails} from '@atlaskit/media-core';
 import {SharedCardProps, CardProcessingStatus} from '.';
-import {LinkCard} from './links';
-import {FileCard} from './files';
-import {isLinkDetails} from './utils/isLinkDetails';
+import {SmallView} from './small';
+import {StandardView} from './standard';
 
 export interface CardViewProps extends SharedCardProps {
   readonly status: CardProcessingStatus;
@@ -15,50 +13,17 @@ export interface CardViewProps extends SharedCardProps {
   [propName: string]: any;
 }
 
-export class CardView extends React.Component<CardViewProps, {}> {  // tslint:disable-line:variable-name
-  render() {
-    const {mediaItemType} = this.props;
+export const CardView = (props: CardViewProps): JSX.Element => { // tslint:disable-line:variable-name
+  const {appearance, status, mediaItemType: type, metadata, ...otherProps} = props;
 
-    if (mediaItemType === 'link') {
-      return this.renderLink();
-    } else if (mediaItemType === 'file') {
-      return this.renderFile();
-    }
-
-    return this.renderCardFromDetails();
-  }
-
-  private renderCardFromDetails = () => {
-    const {metadata} = this.props;
-
-    if (isLinkDetails(metadata)) {
-      return this.renderLink();
-    }
-
-    return this.renderFile();
-  }
-
-  renderLink = () => {
-    const {mediaItemType, status, metadata, ...otherProps} = this.props;
-
+  if (appearance === 'small') {
     return (
-      <LinkCard
-        {...otherProps}
-        status={status}
-        details={metadata as LinkDetails | UrlPreview}
-      />
+      <SmallView {...otherProps} status={status} type={type || 'link'} metadata={metadata}/>
+    );
+  } else {
+    return (
+      <StandardView {...otherProps} status={status} type={type || 'link'} metadata={metadata}/>
     );
   }
 
-  renderFile = () => {
-    const {mediaItemType, status, metadata, ...otherProps} = this.props;
-
-    return (
-      <FileCard
-        {...otherProps}
-        status={status}
-        details={metadata}
-      />
-    );
-  }
-}
+};

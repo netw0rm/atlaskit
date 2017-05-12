@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import {MediaImage} from '../../src/utils/mediaImage';
 import {UploadingView} from '../../src/utils/uploadingView';
-import {IconLink} from '../../src/utils/uploadingView/styled';
+import {IconLink} from '../../src/standard/uploadingView/styled';
 
 const noop = () => {/* do nothing */};
 

@@ -18,10 +18,10 @@ interface State {
   selected: boolean;
 }
 
-/* tslint:disable:variable-name */
-const SelectedNode = styled.div`outline: 2px solid #8cf`;
-const NonSelectedNode = styled.div``;
-/* tslint:enable:variable-name */
+// tslint:disable-next-line:variable-name
+const Wrapper = styled.div`
+  outline: 2px solid ${props => props.selected ? '#8cf' : 'transparent'}
+`;
 
 export default class WrapperClickArea extends PureComponent<Props, State> {
   state: State = { selected: false };
@@ -37,12 +37,14 @@ export default class WrapperClickArea extends PureComponent<Props, State> {
   }
 
   render() {
-    // tslint:disable-next-line:variable-name
-    const Wrapper = this.state.selected
-      ? SelectedNode
-      : NonSelectedNode;
-
-    return <Wrapper onClick={this.onClick}>{this.props.children}</Wrapper>;
+    return (
+      <Wrapper
+        onClick={this.onClick}
+        selected={this.state.selected}
+      >
+        {this.props.children}
+      </Wrapper>
+    )
   }
 
   private handlePluginSelectionChange = (anchorPos: number, headPos: number) => {

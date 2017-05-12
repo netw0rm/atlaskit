@@ -94,9 +94,10 @@ storiesOf(name, module)
     />
   )
   .add('With Media support', () =>
+    //  TODO: remove the following note and link after the login is not required anymore or there's better way to run the story.
     <div>
       <div style={{ padding: '5px 0'}}>
-        ️️️⚠️ In order for this story to work, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>
+        ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
       </div>
       <Editor
         isExpandedByDefault={true}

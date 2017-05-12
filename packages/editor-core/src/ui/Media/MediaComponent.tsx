@@ -163,7 +163,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderFile() {
     const { mediaProvider, viewContext } = this.state;
-    const { id } = this.props;
+    const { publicId } = this.props;
 
     if ( !mediaProvider || !viewContext ) {
       return <CardView
@@ -172,22 +172,22 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       />;
     }
 
-    if (id.substr(0, 10) === 'temporary:') {
-      return this.renderTemporaryFile();
-    } else {
+    if (publicId) {
       return this.renderPublicFile();
+    } else {
+      return this.renderTemporaryFile();
     }
   }
 
   private renderPublicFile() {
     const { viewContext } = this.state;
-    const { id, collection, onDelete } = this.props;
+    const { collection, onDelete, publicId } = this.props;
 
     return (
       <Card
         context={viewContext!}
         identifier={{
-          id,
+          id: publicId,
           mediaItemType: 'file',
           collectionName: collection
         }}
@@ -199,7 +199,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType} = state;
+    const { thumbnail, fileName, fileSize, fileType } = state;
     const { onDelete } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)

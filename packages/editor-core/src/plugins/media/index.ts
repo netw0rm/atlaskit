@@ -8,7 +8,7 @@ import {
   UploadParams,
 } from '@atlaskit/media-core';
 
-import { MediaType, MediaNode } from './../../schema/nodes/media';
+import { MediaType } from './../../schema/nodes/media';
 import {
   EditorState,
   EditorView,
@@ -40,7 +40,7 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsPastingLinks: boolean = false;
   public stateManager: MediaStateManager;
-  private temporaryNodes: PositionedNode[] = [];
+  private mediaNodes: PositionedNode[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
@@ -152,7 +152,7 @@ export class MediaPluginState {
     const node = state.schema.nodes.media!.create({
       id,
       type: 'file',
-      collection,
+      collection
     }) as PositionedNode;
 
     let transaction;
@@ -174,10 +174,6 @@ export class MediaPluginState {
       }
     } else {
       transaction = state.tr.insert(this.findInsertPosition(), node);
-    }
-
-    if (mediaState.status !== 'ready') {
-      this.temporaryNodes.push(node);
     }
 
     return [ node, transaction ];
@@ -209,14 +205,14 @@ export class MediaPluginState {
    *
    */
   waitForPendingTasks = (timeout?: Number) => {
-    const { temporaryNodes, stateManager } = this;
+    const { mediaNodes, stateManager } = this;
 
     return new Promise<void>((resolve, reject) => {
       if (timeout) {
         setTimeout(() => reject(new Error(`Media operations did not finish in ${timeout} ms`)), timeout);
       }
 
-      let outstandingNodes = temporaryNodes.length;
+      let outstandingNodes = mediaNodes.length;
       if (!outstandingNodes) {
         return resolve();
       }
@@ -238,15 +234,15 @@ export class MediaPluginState {
         }
       }
 
-      temporaryNodes.forEach(node => {
-        const mediaId = node.attrs.id;
-        const nodeCurrentState = stateManager.getState(mediaId)!;
+      mediaNodes.forEach(node => {
+        const internalId = node.attrs.id;
+        const nodeCurrentState = stateManager.getState(internalId)!;
         const nodeCurrentStatus = nodeCurrentState.status || '';
 
         if (MEDIA_RESOLVE_STATES.indexOf(nodeCurrentStatus) !== -1) {
           onNodeStateReady(nodeCurrentState);
         } else {
-          stateManager.subscribe(mediaId, onNodeStateChanged);
+          stateManager.subscribe(internalId, onNodeStateChanged);
         }
       });
     });
@@ -256,7 +252,11 @@ export class MediaPluginState {
     this.view = view;
   }
 
-  handleMediaNodeRemoval = (node: PositionedNode) => {
+  /**
+   * Called from React UI Component when user clicks on "Delete" icon
+   * inside of it
+   */
+  handleMediaNodeRemove = (node: PositionedNode) => {
     const { stateManager, pickers } = this;
     const { id } = node.attrs;
     const state = stateManager.getState(id);
@@ -272,7 +272,7 @@ export class MediaPluginState {
         pickers.forEach(picker => picker.cancel(id));
 
         // In case the file has been attached multiple times, remove all occurences
-        this.removeTemporaryMediaNode(id);
+        this.removeMediaNode(id);
         break;
 
       case 'ready':
@@ -285,21 +285,19 @@ export class MediaPluginState {
     }
   }
 
+  /**
+   * Called from React UI Component on componentDidMount
+   */
   handleMediaNodeMount = (node: PositionedNode) => {
-    const { stateManager } = this;
-    const { id } = node.attrs;
-    const nodeCurrentState = stateManager.getState(id);
-
-    // usually there's no state for "ready" nodes
-    if (!nodeCurrentState) {
-      return;
-    }
-
-    this.temporaryNodes.push(node);
+    this.mediaNodes.push(node);
   }
 
-  handleMediaNodeUnmount = (node: PositionedNode) => {
-    this.temporaryNodes = this.temporaryNodes.filter(tempNode => tempNode !== node);
+  /**
+   * Called from React UI Component on componentWillUnmount.
+   * This also means that we can't no longer use its underlying PM node's getPos()
+   */
+  handleMediaNodeUnmount = (oldNode: PositionedNode) => {
+    this.mediaNodes = this.mediaNodes.filter(node => oldNode !== node);
   }
 
   destroy() {
@@ -309,25 +307,24 @@ export class MediaPluginState {
 
     this.destroyed = true;
 
-    const { pickers, temporaryNodes } = this;
+    const { pickers, mediaNodes } = this;
 
     pickers.forEach(picker => picker.destroy());
     pickers.splice(0, pickers.length);
-    temporaryNodes.splice(0, temporaryNodes.length);
+    mediaNodes.splice(0, mediaNodes.length);
     this.popupPicker = undefined;
   }
 
-  private findTemporaryNode = (tempId: string): PositionedNode | null => {
-    const { temporaryNodes } = this;
+  private findMediaNode = (id: string): PositionedNode | null => {
+    const { mediaNodes } = this;
 
-    // find temporary node in temporaryNodes array
     // Array#find... no IE support
-    return temporaryNodes.reduce((memo: PositionedNode | null, node: PositionedNode) => {
+    return mediaNodes.reduce((memo: PositionedNode | null, node: PositionedNode) => {
       if (memo) {
         return memo;
       }
 
-      if (node.attrs.id === tempId) {
+      if (node.attrs.id === id) {
         return node;
       }
 
@@ -419,10 +416,11 @@ export class MediaPluginState {
   }
 
   private handleMediaState = (state: MediaState) => {
+    console.log(state);
     switch (state.status) {
       case 'error':
         // TODO: we would like better error handling and retry support here.
-        this.removeTemporaryMediaNode(state.id);
+        this.removeMediaNode(state.id);
 
         const { uploadErrorHandler } = this.options;
 
@@ -433,7 +431,7 @@ export class MediaPluginState {
 
       case 'ready':
         this.stateManager.unsubscribe(state.id, this.handleMediaState);
-        this.replaceTemporaryMediaNode(state.id, state.publicId!);
+        this.addPublicId(state.id, state.publicId!);
         break;
     }
   }
@@ -442,40 +440,46 @@ export class MediaPluginState {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
   }
 
-  private replaceTemporaryMediaNode = (tempId: string, publicId: string) => {
+  private addPublicId = (internalId: string, publicId: string) => {
     const { view } = this;
     if (!view) {
       return;
     }
 
-    const temporaryNode = this.findTemporaryNode(tempId);
-    if (!temporaryNode) {
+    const mediaNode = this.findMediaNode(internalId);
+    if (!mediaNode) {
       return;
     }
 
-    const newNode: MediaNode = view.state.schema.nodes.media!.create({
-      ...temporaryNode.attrs,
-      id: publicId
+    const newNode: PositionedNode = view.state.schema.nodes.media!.create({
+      ...mediaNode.attrs,
+      publicId
     });
 
-    const nodePos = temporaryNode.getPos();
-    const tr = view.state.tr.replaceWith(nodePos, nodePos + temporaryNode.nodeSize, newNode);
+    const nodePos = mediaNode.getPos();
+    const tr = view.state.tr.replaceWith(nodePos, nodePos + mediaNode.nodeSize, newNode);
     view.dispatch(tr);
   }
 
-  private removeTemporaryMediaNode = (tempId: string) => {
+  /**
+   * Called when:
+   * 1) user wants to delete the node when is hasn't been finalized (not ready) from UI
+   * 2) when upload process finished with "error" status
+   * In both cases we just delete the PM node from the document
+   */
+  private removeMediaNode = (id: string) => {
     const { view } = this;
     if (!view) {
       return;
     }
 
-    const temporaryNode = this.findTemporaryNode(tempId);
-    if (!temporaryNode) {
+    const mediaNode = this.findMediaNode(id);
+    if (!mediaNode) {
       return;
     }
 
-    const nodePos = temporaryNode.getPos();
-    const tr = view.state.tr.deleteRange(nodePos, nodePos + temporaryNode.nodeSize);
+    const nodePos = mediaNode.getPos();
+    const tr = view.state.tr.deleteRange(nodePos, nodePos + mediaNode.nodeSize);
     view.dispatch(tr);
   }
 

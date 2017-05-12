@@ -89,9 +89,10 @@ export default function encode(node: PMNode) {
 
   function encodeMedia(node: MediaNode) {
     const elem = doc.createElementNS(FAB_XMLNS, 'fab:media');
-    elem.setAttribute('media-id', node.attrs.id);
+    elem.setAttribute('media-id', node.attrs.publicId || node.attrs.id);
     elem.setAttribute('media-type', node.attrs.type);
     elem.setAttribute('media-collection', node.attrs.collection);
+
     if (node.fileName) {
       elem.setAttribute('file-name', node.fileName);
     }

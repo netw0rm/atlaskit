@@ -10,11 +10,11 @@ import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
 
 export interface LinkCardProps extends SharedCardProps {
-  status: CardStatus;
-  details?: UrlPreview;
+  readonly status: CardStatus;
+  readonly details?: UrlPreview;
 
-  onClick?: (event: MouseEvent<HTMLElement>) => void;
-  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
+  readonly onClick?: (event: MouseEvent<HTMLElement>) => void;
+  readonly onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {

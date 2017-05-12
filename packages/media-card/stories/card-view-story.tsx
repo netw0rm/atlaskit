@@ -80,21 +80,61 @@ const createApiCards = (appearance: CardAppearance, metadata: MediaItemDetails) 
   const apiCards = [
     {
       title: 'status = complete',
-      content: <CardView status="complete" appearance={appearance} metadata={metadata} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
+      content: (
+        <CardView
+          status="complete"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
     },
     {
       title: 'status = error',
-      content: <CardView status="error" appearance={appearance} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
+      content: (
+        <CardView
+          status="error"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
     },
     {
       title: 'status = loading',
-      content: <CardView status="loading" appearance={appearance} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
+      content: (
+        <CardView
+          status="loading"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
     }
   ];
 
   const uploadCardWithApi = {
     title: 'status = uploading',
-    content: <CardView status="uploading" progress={0.5} appearance={appearance} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
+    content: (
+      <CardView
+        status="uploading"
+        appearance={appearance}
+        metadata={metadata}
+        dataURI={gifDataUri}
+        onClick={clickHandler}
+        onMouseEnter={mouseEnterHandler}
+        actions={actions}
+      />
+    )
   };
 
   if (appearance === 'image') {

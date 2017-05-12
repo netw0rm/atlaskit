@@ -138,11 +138,6 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     }
 
     const deleteActions = actions.filter(a => a.type === CardActionType.delete);
-
-    if (deleteActions.length === 0) {
-      return;
-    }
-
     return deleteActions[0];
   }
 

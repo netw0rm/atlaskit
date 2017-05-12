@@ -8,7 +8,7 @@ import {
   akGridSizeUnitless,
   akElevationMixins,
 } from '@atlaskit/util-shared-styles';
-import { flagWidthUnitless, focusRingMixin } from './constants';
+import { focusRingMixin } from './constants';
 
 export default styled.div`
   background-color: ${akColorN0};
@@ -28,8 +28,7 @@ export const Header = styled.div`
 `;
 export const Title = styled.span`
   font-weight: 600;
-  flex: 1 0 auto;
-  max-width: ${flagWidthUnitless - (akGridSizeUnitless * 12)}px;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -38,14 +37,13 @@ export const DismissButton = styled.button`
   appearance: none;
   background: none;
   border: none;
+  border-radius: ${akBorderRadius};
   color: ${akColorN500};
   cursor: pointer;
   display: flex;
-  flex: 0 1 auto;
-  justify-content: flex-end;
-  margin: 0;
+  margin-left: ${akGridSize};
   padding: 0;
-  width: ${akGridSizeUnitless * 4}px;
+  white-space: nowrap;
 
   &:hover {
     color: ${akColorN900};
@@ -57,6 +55,7 @@ export const DismissButton = styled.button`
 // Content
 export const Content = styled.div`
   flex: 1 1 auto;
+  min-width: 0;
 `;
 export const Description = styled.div`
   color: ${akColorN500};

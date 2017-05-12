@@ -66,7 +66,9 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
         next: collection => {
           const files = MediaFileAttributesFactory.fromMediaCollection(collection, serviceHost);
           if (mediaViewer.isOpen()) {
+            mediaViewer.off('fv.changeFile', this.loadNextPageIfRequired);
             mediaViewer.setFiles(files, { id: mediaViewer.getCurrent().id });
+            mediaViewer.on('fv.changeFile', this.loadNextPageIfRequired);
           } else {
             mediaViewer.setFiles(files);
             mediaViewer.open({ id: occurenceKey });

@@ -23,6 +23,7 @@ storiesOf(`${name}-trigger`, module)
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
         eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
         minim veniam, quis nostrud exercitation ullamco <AkProfilecardTrigger
+          cloudId="DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048"
           userId="1"
           position="bottom left"
           resourceClient={mockClient}

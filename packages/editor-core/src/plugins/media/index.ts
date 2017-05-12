@@ -358,7 +358,7 @@ export class MediaPluginState {
 
     // Check if we're already in a media group and prepend the element inside the group
     if ($from.parent.type === state.schema.nodes.mediaGroup) {
-      return $from.start($from.depth);
+      return $from.end($from.depth);
     }
 
     // Resolve node adjacent to parent
@@ -416,7 +416,6 @@ export class MediaPluginState {
   }
 
   private handleMediaState = (state: MediaState) => {
-    console.log(state);
     switch (state.status) {
       case 'error':
         // TODO: we would like better error handling and retry support here.

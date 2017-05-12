@@ -36,15 +36,16 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
 
     assert(richNodes.has(nodeTypeName), `Rich node with type ${nodeTypeName} is not declared`);
 
+    // tslint:disable-next-line:variable-name
+    const RichNode = richNodes.get(nodeTypeName)!;
     const attrs = { ...this.props, node };
-    const reactClass = richNodes.get(nodeTypeName)!;
-
-    const children: any[] = [];
-    let nodePosOffset = 0;
+    const children: React.ReactNode[] = [];
 
     node.forEach((childNode: PositionedNode, offset: number, index: number) => {
-      childNode.getPos = () => getPos() + nodePosOffset;
-      nodePosOffset += childNode.nodeSize;
+      // child node position is parent position + offset + 1
+      // because each node has its own position
+      // i.e. different nodes can't have the same position
+      childNode.getPos = () => getPos() + offset + 1;
 
       const reactNodeViewState = reactNodeViewStateKey.getState(view.state);
       const childAttrs = { ...this.props, node: childNode, internal: true };
@@ -61,6 +62,6 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
       );
     });
 
-    return React.createElement(reactClass, attrs, children);
+    return <RichNode {...attrs}>{children}</RichNode>;
   }
 }

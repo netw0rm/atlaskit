@@ -24,7 +24,6 @@ const NonSelectedNode = styled.div``;
 /* tslint:enable:variable-name */
 
 export default class WrapperClickArea extends PureComponent<Props, State> {
-  private domRef: HTMLElement | null;
   state: State = { selected: false };
 
   componentDidMount() {
@@ -35,20 +34,15 @@ export default class WrapperClickArea extends PureComponent<Props, State> {
   componentWillUnmount() {
     const { pluginState } = this.props;
     pluginState.unsubscribe(this.handlePluginSelectionChange);
-
-    this.domRef = null;
   }
 
   render() {
-    const wrapper = this.state.selected
+    // tslint:disable-next-line:variable-name
+    const Wrapper = this.state.selected
       ? SelectedNode
       : NonSelectedNode;
 
-    return React.createElement(
-      wrapper,
-      { onClick: this.onClick },
-      this.props.children
-    );
+    return <Wrapper onClick={this.onClick}>{this.props.children}</Wrapper>;
   }
 
   private handlePluginSelectionChange = (anchorPos: number, headPos: number) => {
@@ -67,9 +61,5 @@ export default class WrapperClickArea extends PureComponent<Props, State> {
     const selection = new NodeSelection(pos);
 
     view.dispatch(tr.setSelection(selection));
-  }
-
-  private handleRef = (domRef) => {
-    this.domRef = domRef;
   }
 }

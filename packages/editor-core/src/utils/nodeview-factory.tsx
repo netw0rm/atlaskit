@@ -12,13 +12,11 @@ type getPosHandler = () => number;
 
 class NodeViewElem implements NodeView {
   private domRef: HTMLElement | undefined;
-  private node: PMNode;
   private view: EditorView;
   private getPos: getPosHandler;
   private providerFactory: ProviderFactory;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler, providerFactory: ProviderFactory, blockNodeView: boolean) {
-    this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.providerFactory = providerFactory;
@@ -26,7 +24,7 @@ class NodeViewElem implements NodeView {
     const elementType = blockNodeView ? 'div' : 'span';
     this.domRef = document.createElement(elementType);
 
-    this.renderReactComponent();
+    this.renderReactComponent(node);
   }
 
   get dom() {
@@ -34,7 +32,7 @@ class NodeViewElem implements NodeView {
   }
 
   update(node: PMNode) {
-    this.renderReactComponent();
+    this.renderReactComponent(node);
     return true;
   }
 
@@ -43,8 +41,8 @@ class NodeViewElem implements NodeView {
     this.domRef = undefined;
   }
 
-  private renderReactComponent() {
-    const { getPos, node, providerFactory, view } = this;
+  private renderReactComponent(node: PMNode) {
+    const { getPos, providerFactory, view } = this;
 
     ReactDOM.render(
       <ReactPMNode

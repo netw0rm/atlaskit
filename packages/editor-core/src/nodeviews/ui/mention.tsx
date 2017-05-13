@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { ResourcedMention } from '@atlaskit/mention';
-import { ReactNodeProps } from './';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 import {
   EditorView,
   Node as PMNode,
 } from '../../prosemirror';
 
-export interface Props extends ReactNodeProps {
+export interface Props {
   children?: React.ReactNode;
   view: EditorView;
   node: PMNode;

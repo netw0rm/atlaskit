@@ -27,6 +27,7 @@ import { analyticsService } from '../../analytics';
 
 import { MediaPluginBehavior, MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
+import { PositionedNode } from '../../nodeviews';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
@@ -257,32 +258,21 @@ export class MediaPluginState {
    * inside of it
    */
   handleMediaNodeRemove = (node: PositionedNode) => {
-    const { stateManager, pickers } = this;
-    const { id } = node.attrs;
-    const state = stateManager.getState(id);
+    this.handleMediaNodeRemoval(node, true);
+  }
 
-    if (!state) {
+  /**
+   * Nodes can be removed not only by user action but also from PM transform.
+   * For example when some plugin or even user manually calls "state.tr.deleteRange(...)"
+   * This function is called in this case
+   */
+  handleMediaNodeOutsideRemove = (id: string) => {
+    const node = this.findMediaNode(id);
+    if (!node) {
       return;
     }
 
-    switch (state.status) {
-      // In-flight media items that we should cancel
-      case 'uploading':
-      case 'processing':
-        pickers.forEach(picker => picker.cancel(id));
-
-        // In case the file has been attached multiple times, remove all occurences
-        this.removeMediaNode(id);
-        break;
-
-      case 'ready':
-        const { view } = this;
-        const nodePos = node.getPos();
-        const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
-
-        view.dispatch(tr);
-        break;
-    }
+    this.handleMediaNodeRemoval(node, false);
   }
 
   /**
@@ -412,6 +402,42 @@ export class MediaPluginState {
 
     if (options.behavior !== 'compact') {
       this.selectInsertedMediaNode(node as PositionedNode);
+    }
+  }
+
+  private handleMediaNodeRemoval = (node: PositionedNode, activeUserAction: boolean) => {
+    const { stateManager, pickers } = this;
+    const { id } = node.attrs;
+    const state = stateManager.getState(id);
+
+    if (!state) {
+      return;
+    }
+
+    switch (state.status) {
+      // In-flight media items that we should cancel
+      case 'uploading':
+      case 'processing':
+        pickers.forEach(picker => picker.cancel(id));
+
+        if (!activeUserAction) {
+          return;
+        }
+
+        this.removeMediaNode(id);
+        break;
+
+      case 'ready':
+        if (!activeUserAction) {
+          return;
+        }
+
+        const { view } = this;
+        const nodePos = node.getPos();
+        const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
+
+        view.dispatch(tr);
+        break;
     }
   }
 
@@ -556,10 +582,6 @@ export default plugins;
 export interface MediaData {
   id: string;
   type?: MediaType;
-}
-
-export interface PositionedNode extends Node {
-  getPos: () => number;
 }
 
 function extractFirstURLFromString(string: string) {

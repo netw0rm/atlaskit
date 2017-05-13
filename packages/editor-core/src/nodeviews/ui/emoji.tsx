@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { ResourcedEmoji } from '@atlaskit/emoji';
-import { ReactNodeProps } from './';
 import { PositionedNode } from '../';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 import { mediaStateKey, MediaPluginState } from '../../plugins';
@@ -13,7 +12,7 @@ const Wrapper = styled.span`
   userSelect: all;
 `;
 
-export interface Props extends ReactNodeProps {
+export interface Props {
   children?: React.ReactNode;
   view: EditorView;
   node: PositionedNode;

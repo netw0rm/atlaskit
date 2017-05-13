@@ -18,14 +18,14 @@ const Wrapper = styled.div`
   border-radius: 5px;
 `;
 
-export interface Props extends ReactNodeProps {
+export interface MediaNodeProps extends ReactNodeProps {
   children?: React.ReactNode;
   view: EditorView;
   node: PositionedNode;
   providerFactory: ProviderFactory;
 }
 
-export default class MediaNode extends PureComponent<Props, {}> {
+export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   private pluginState: MediaPluginState;
 
   constructor(props) {

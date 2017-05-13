@@ -44,8 +44,10 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
   render() {
     const { getPos, node, providerFactory, view } = this.props;
     const nodeTypeName = node.type.name;
+    const pluginState = reactNodeViewStateKey.getState(view.state);
 
     assert(richNodes.has(nodeTypeName), `Rich node with type ${nodeTypeName} is not declared`);
+    assert(pluginState, 'ReactNodeViewPlugin is not enabled');
 
     const attrs = { ...this.props, node };
     const children: React.ReactNode[] = [];
@@ -66,7 +68,7 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
           key={`richnode-${offset}-${index}`}
           node={childNode}
           view={view}
-          pluginState={reactNodeViewStateKey.getState(view.state)}
+          pluginState={pluginState}
           providerFactory={providerFactory}
         />
       );

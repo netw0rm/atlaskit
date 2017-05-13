@@ -13,14 +13,14 @@ export interface PositionedNode extends PMNode {
   getPos: () => number;
 }
 
-export const getNodeViews = (providerFactory: ProviderFactory, opts: { block: string[], inline: string[] }): EditorViewNodeViews => {
+export const getNodeViews = (providerFactory: ProviderFactory, opts: { block?: string[], inline?: string[] }): EditorViewNodeViews => {
   const output = {};
 
-  opts.block.forEach(nodeType => {
+  (opts.block || []).forEach(nodeType => {
     output[nodeType] = nodeViewFactory(providerFactory, true);
   });
 
-  opts.inline.forEach(nodeType => {
+  (opts.inline || []).forEach(nodeType => {
     output[nodeType] = nodeViewFactory(providerFactory, false);
   });
 

@@ -6,11 +6,12 @@ import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   baseKeymap,
   keymap,
-  mediaNodeView,
+  getNodeViews,
   MediaPluginBehavior,
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
+  reactNodeViewPlugins,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
@@ -31,13 +32,13 @@ import {
   sleep,
 } from '../../../../src/test-helper';
 import { default as defaultSchema, compactSchema } from '../../../../src/test-helper/schema';
-import { PositionedNode } from '../../../../src/plugins/media';
+import { PositionedNode } from '../../../../src/nodeviews';
 
 chai.use(chaiPlugin);
 
 const noop = () => {};
 
-describe.only('Media plugin', () => {
+describe('Media plugin', () => {
   const fixture = fixtures();
   const stateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -51,7 +52,10 @@ describe.only('Media plugin', () => {
     behavior = behavior || 'default';
     const schema = (behavior === 'compact') ? compactSchema : defaultSchema;
     const addBaseKeymap = behavior !== 'compact';
-    const plugins = mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler });
+    const plugins = [
+      ...mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler }),
+      ...reactNodeViewPlugins(schema),
+    ];
 
     plugins.push(history());
 
@@ -67,9 +71,9 @@ describe.only('Media plugin', () => {
       schema,
       addBaseKeymap,
       plugins,
-      nodeViews: {
-        media: mediaNodeView(providerFactory)
-      },
+      nodeViews: getNodeViews(providerFactory, {
+        block: [ 'mediaGroup', 'media' ],
+      }),
       place: fixture(),
     });
   };
@@ -205,8 +209,8 @@ describe.only('Media plugin', () => {
 
     expect(editorView.state.doc).to.deep.equal(doc(
       mediaGroup(
-        media({ id: 'mock1', type: 'file', collection: testCollectionName }),
         media({ id: 'mock2', type: 'file', collection: testCollectionName }),
+        media({ id: 'mock1', type: 'file', collection: testCollectionName }),
       ),
       p(),
     ));
@@ -337,9 +341,9 @@ describe.only('Media plugin', () => {
       doc(
         p(),
         mediaGroup(
-          media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
-          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
       )
     );

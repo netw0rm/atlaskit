@@ -1,11 +1,6 @@
-import { ResourcedEmoji } from '@atlaskit/emoji';
 import { akColorN50 } from '@atlaskit/util-shared-styles';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
-
-import { NodeSpec, NodeView } from '../../prosemirror';
-import ProviderFactory, { WithProviders } from '../../providerFactory';
+import { NodeSpec } from '../../prosemirror';
 
 const emojiStyle = style({
   display: 'inline-block',
@@ -48,35 +43,4 @@ export const emoji: NodeSpec = {
     // the placeholder in ResourcedEmoji
     return ['span', attrs, ' '];
   }
-};
-
-export const emojiNodeView = (providerFactory: ProviderFactory) => (node: any, view: any, getPos: () => number): NodeView => {
-  let dom: HTMLElement | undefined = document.createElement('span');
-  dom.className = emojiStyle;
-  const { shortName, id, text: fallback } = node.attrs;
-
-  ReactDOM.render(
-    <WithProviders
-      providers={['emojiProvider']}
-      providerFactory={providerFactory}
-      // tslint:disable-next-line:jsx-no-lambda
-      renderNode={providers =>
-        <ResourcedEmoji
-          emojiId={{ shortName, id, fallback }}
-          emojiProvider={providers['emojiProvider']}
-        />
-      }
-    />
-  , dom);
-
-  return {
-    get dom() {
-      return dom;
-    },
-
-    destroy() {
-      ReactDOM.unmountComponentAtNode(dom!);
-      dom = undefined;
-    }
-  };
 };

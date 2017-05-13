@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import styled from 'styled-components';
 import { PositionedNode } from './';
 import { ReactNodeViewState } from '../plugins';
+import ProviderFactory from '../providerFactory';
 import {
   EditorView,
   NodeSelection,
@@ -10,8 +10,9 @@ import {
 
 interface Props {
   node: PositionedNode;
-  view: EditorView;
   pluginState: ReactNodeViewState;
+  providerFactory: ProviderFactory;
+  view: EditorView;
 }
 
 interface State {
@@ -19,49 +20,47 @@ interface State {
 }
 
 // tslint:disable-next-line:variable-name
-const Wrapper = styled.div`
-  outline: 2px solid ${props => props.selected ? '#8cf' : 'transparent'}
-`;
+export default function wrapComponentWithClickArea(ReactComponent: new() => React.Component<any, any>) {
+  return class WrapperClickArea extends PureComponent<Props, State> {
+    state: State = { selected: false };
 
-export default class WrapperClickArea extends PureComponent<Props, State> {
-  state: State = { selected: false };
+    componentDidMount() {
+      const { pluginState } = this.props;
+      pluginState.subscribe(this.handleDocumentSelectionChange);
+    }
 
-  componentDidMount() {
-    const { pluginState } = this.props;
-    pluginState.subscribe(this.handlePluginSelectionChange);
-  }
+    componentWillUnmount() {
+      const { pluginState } = this.props;
+      pluginState.unsubscribe(this.handleDocumentSelectionChange);
+    }
 
-  componentWillUnmount() {
-    const { pluginState } = this.props;
-    pluginState.unsubscribe(this.handlePluginSelectionChange);
-  }
+    render() {
+      return (
+        <div onClick={this.onClick}>
+          <ReactComponent
+            {...this.props}
+            selected={this.state.selected}
+          />
+        </div>
+      );
+    }
 
-  render() {
-    return (
-      <Wrapper
-        onClick={this.onClick}
-        selected={this.state.selected}
-      >
-        {this.props.children}
-      </Wrapper>
-    )
-  }
+    private handleDocumentSelectionChange = (anchorPos: number, headPos: number) => {
+      const { node } = this.props;
+      const nodePos = node.getPos();
 
-  private handlePluginSelectionChange = (anchorPos: number, headPos: number) => {
-    const { node } = this.props;
-    const nodePos = node.getPos();
+      this.setState({
+        selected: nodePos >= anchorPos && nodePos < headPos
+      });
+    }
 
-    this.setState({
-      selected: nodePos >= anchorPos && nodePos < headPos
-    });
-  }
+    private onClick = () => {
+      const { node, view } = this.props;
+      const { doc, tr } = view.state;
+      const pos = doc.resolve(node.getPos());
+      const selection = new NodeSelection(pos);
 
-  private onClick = () => {
-    const { node, view } = this.props;
-    const { doc, tr } = view.state;
-    const pos = doc.resolve(node.getPos());
-    const selection = new NodeSelection(pos);
-
-    view.dispatch(tr.setSelection(selection));
-  }
+      view.dispatch(tr.setSelection(selection));
+    }
+  };
 }

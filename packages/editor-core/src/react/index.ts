@@ -1,5 +1,9 @@
 import { Node as PMNode } from '../prosemirror';
 
+export interface ReactNodeProps {
+  selected: boolean;
+}
+
 export {
   default as ReactPMNode,
   ReactProsemirrorNodeProps,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import { PositionedNode } from './';
+import { PositionedNode, ReactNodeProps } from './';
 import MediaComponent from '../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../providerFactory';
 import { mediaStateKey, MediaPluginState } from '../plugins';
@@ -13,9 +13,11 @@ const Wrapper = styled.div`
   display: inline-block;
   verticalAlign: middle;
   userSelect: all;
+  border: 3px solid ${props => props.selected ? '#8cf' : 'transparent'}
+  border-radius: 5px;
 `;
 
-export interface Props {
+export interface Props extends ReactNodeProps {
   children?: React.ReactNode;
   view: EditorView;
   node: PositionedNode;
@@ -43,11 +45,11 @@ export default class MediaNode extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { node, providerFactory, view } = this.props;
+    const { node, providerFactory, selected, view } = this.props;
     const { id, type, collection, publicId } = node.attrs;
 
     return (
-      <Wrapper>
+      <Wrapper selected={selected}>
         <WithProviders
           providers={['mediaProvider']}
           providerFactory={providerFactory}

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { FilmStripNavigator } from '@atlaskit/media-filmstrip';
+import { ReactNodeProps } from './';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
@@ -11,7 +12,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class MediaGroupNode extends PureComponent<{}, {}> {
+export default class MediaGroupNode extends PureComponent<ReactNodeProps, {}> {
   render() {
     return (
       <Wrapper>

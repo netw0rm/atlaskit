@@ -36,6 +36,7 @@
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.16.0",
+    "babel-preset-flow": "6.23.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.24.0",
@@ -56,6 +57,7 @@
     "eslint-plugin-chai-expect": "1.1.1",
     "eslint-plugin-compat": "^1.0.2",
     "file-loader": "^0.9.0",
+    "flow-bin": "0.46.0",
     "git-validate": "^2.2.2",
     "glob": "^7.1.1",
     "glob-loader": "^0.3.0",
@@ -187,7 +189,7 @@
     "validate/eslint/changed": "./build/bin/lint.eslint.changed.sh",
     "validate/eslint/changed/fix": "./build/bin/lint.eslint.changed.sh --fix",
     "validate/eslint/fix": "./build/bin/lint.eslint.sh --fix",
-    "validate/lint": "run-p -cl validate/tslint validate/eslint",
+    "validate/lint": "run-p -cl validate/tslint validate/eslint validate/flow",
     "validate/lint-changed": "run-p -l validate/eslint/changed validate/tslint/changed",
     "validate/lint-changed/fix": "run-p -l validate/eslint/changed/fix validate/tslint/changed/fix",
     "validate/lint/fix": "run-p -l validate/eslint/fix validate/tslint/fix",
@@ -196,7 +198,8 @@
     "validate/tslint/changed/fix": "./build/bin/lint.tslint.changed.sh --fix",
     "validate/tslint/fix": "lerna run -- lint -- --fix",
     "validate/package.json": "pjv -q && lerna exec -- pjv -q",
-    "validate/typescript": "lerna run validate/typescript"
+    "validate/typescript": "lerna run validate/typescript",
+    "validate/flow": "flow check"
   },
   "devDependencies": {}
 }

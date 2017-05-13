@@ -62,6 +62,7 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
 
 export default class MediaComponent extends React.PureComponent<Props, State> {
   private thumbnailWm = new WeakMap();
+  private destroyed = false;
 
   state: State = {
     id: '',
@@ -87,6 +88,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   public componentWillUnmount() {
+    this.destroyed = true;
+
     const { editorView, id } = this.props;
 
     if (!editorView) {
@@ -244,6 +247,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaStateChange = (mediaState: MediaState) => {
+    if (this.destroyed) {
+      return;
+    }
+
     const newState = {
       ...mediaState
     };
@@ -255,6 +262,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { editorView, id } = this.props;
 
     if (!editorView) {
+      return;
+    }
+
+    if (this.destroyed) {
       return;
     }
 
@@ -271,6 +282,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     this.setState({ mediaProvider, ...mediaState });
 
     mediaProvider.viewContext.then((context: ContextConfig | Context) => {
+      if (this.destroyed) {
+        return;
+      }
+
       if ('clientId' in (context as ContextConfig)) {
         context = ContextFactory.create(context as ContextConfig);
       }

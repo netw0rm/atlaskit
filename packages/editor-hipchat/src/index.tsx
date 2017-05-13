@@ -5,10 +5,10 @@ import {
   blockTypePlugins,
   EditorState,
   EditorView,
-  emojiNodeView,
   EmojiTypeAhead,
   emojisPlugins,
   emojisStateKey,
+  getNodeViews,
   history,
   HyperlinkEdit,
   hyperlinkPlugins,
@@ -16,11 +16,9 @@ import {
   keymap,
   mediaPluginFactory,
   mediaStateKey,
-  mediaNodeView,
   MediaPluginState,
   MediaProvider,
   MediaState,
-  mentionNodeView,
   MentionPicker,
   mentionsPlugins,
   mentionsStateKey,
@@ -343,11 +341,10 @@ export default class Editor extends PureComponent<Props, State> {
         editorView.updateState(newState);
         this.handleChange();
       },
-      nodeViews: {
-        emoji: emojiNodeView(this.providerFactory),
-        media: mediaNodeView(this.providerFactory),
-        mention: mentionNodeView(this.providerFactory)
-      },
+      nodeViews: getNodeViews(this.providerFactory, {
+        block: [ 'mediaGroup' ],
+        inline: [ 'emoji', 'mention' ]
+      }),
       handleDOMEvents: {
         paste(view: EditorView, event: ClipboardEvent) {
           analyticsService.trackEvent('atlassian.editor.paste');

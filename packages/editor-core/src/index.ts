@@ -12,6 +12,7 @@ export * from './plugins';
 export * from './schema';
 export * from './ui';
 export * from './analytics';
+export * from './nodeviews';
 export { ProviderFactory };
 export type ContextName = 'default';
 export {
@@ -40,4 +41,4 @@ export {
   baseKeymap,
   keymap,
 } from './prosemirror';
-export { nodeViewFactory, toJSON } from './utils';
+export { toJSON } from './utils';

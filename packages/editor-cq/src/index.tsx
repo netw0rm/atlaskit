@@ -31,7 +31,7 @@ import {
   mediaPluginFactory,
   mediaStateKey,
   MediaProvider,
-  nodeViewFactory,
+  getNodeViews,
   Plugin,
   ProviderFactory,
   reactNodeViewPlugins,
@@ -291,11 +291,10 @@ export default class Editor extends PureComponent<Props, State> {
           editorView.updateState(newState);
           this.handleChange();
         },
-        nodeViews: {
-          mediaGroup: nodeViewFactory(this.providerFactory, true),
-          mention: nodeViewFactory(this.providerFactory, false),
-          jiraIssue: nodeViewFactory(this.providerFactory, false),
-        },
+        nodeViews: getNodeViews(this.providerFactory, {
+          block: [ 'mediaGroup' ],
+          inline: [ 'jiraIssue', 'mention' ]
+        }),
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { PositionedNode } from './';
-import { ReactNodeViewState } from '../plugins';
-import ProviderFactory from '../providerFactory';
+import { ReactComponentConstructor } from './';
+import { PositionedNode } from '../';
+import { ReactNodeViewState } from '../../plugins';
+import ProviderFactory from '../../providerFactory';
 import {
   EditorView,
   NodeSelection,
-} from '../prosemirror';
+} from '../../prosemirror';
 
 interface Props {
   node: PositionedNode;
@@ -20,7 +21,7 @@ interface State {
 }
 
 // tslint:disable-next-line:variable-name
-export default function wrapComponentWithClickArea(ReactComponent: new() => React.Component<any, any>) {
+export default function wrapComponentWithClickArea(ReactComponent: ReactComponentConstructor) {
   return class WrapperClickArea extends PureComponent<Props, State> {
     state: State = { selected: false };
 

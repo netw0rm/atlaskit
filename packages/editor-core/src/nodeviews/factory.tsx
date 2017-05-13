@@ -6,7 +6,7 @@ import {
   Node as PMNode,
   NodeView,
 } from '../prosemirror';
-import { ReactPMNode } from '../react';
+import { ReactPMNode } from './ui';
 
 type getPosHandler = () => number;
 
@@ -56,10 +56,8 @@ class NodeViewElem implements NodeView {
   }
 }
 
-function nodeViewFactory(providerFactory: ProviderFactory, blockNodeView: boolean) {
+export default function nodeViewFactory(providerFactory: ProviderFactory, blockNodeView: boolean) {
   return (node: PMNode, view: EditorView, getPos: () => number): NodeView => {
     return new NodeViewElem(node, view, getPos, providerFactory, blockNodeView);
   };
 }
-
-export default nodeViewFactory;

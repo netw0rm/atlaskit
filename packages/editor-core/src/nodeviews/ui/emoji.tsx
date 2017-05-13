@@ -2,10 +2,11 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { ResourcedEmoji } from '@atlaskit/emoji';
-import { PositionedNode, ReactNodeProps } from './';
-import ProviderFactory, { WithProviders } from '../providerFactory';
-import { mediaStateKey, MediaPluginState } from '../plugins';
-import { EditorView } from '../prosemirror';
+import { ReactNodeProps } from './';
+import { PositionedNode } from '../';
+import ProviderFactory, { WithProviders } from '../../providerFactory';
+import { mediaStateKey, MediaPluginState } from '../../plugins';
+import { EditorView } from '../../prosemirror';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.span`

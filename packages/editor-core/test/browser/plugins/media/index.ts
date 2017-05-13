@@ -37,7 +37,7 @@ chai.use(chaiPlugin);
 
 const noop = () => {};
 
-describe('Media plugin', () => {
+describe.only('Media plugin', () => {
   const fixture = fixtures();
   const stateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;

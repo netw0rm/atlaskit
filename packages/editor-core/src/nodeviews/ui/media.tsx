@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import { PositionedNode, ReactNodeProps } from './';
-import MediaComponent from '../ui/Media/MediaComponent';
-import ProviderFactory, { WithProviders } from '../providerFactory';
-import { mediaStateKey, MediaPluginState } from '../plugins';
-import { EditorView } from '../prosemirror';
+import { ReactNodeProps } from './';
+import { PositionedNode } from '../';
+import MediaComponent from '../../ui/Media/MediaComponent';
+import ProviderFactory, { WithProviders } from '../../providerFactory';
+import { mediaStateKey, MediaPluginState } from '../../plugins';
+import { EditorView } from '../../prosemirror';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`

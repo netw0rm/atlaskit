@@ -24,7 +24,7 @@ export default class MediaNode extends PureComponent<Props, {}> {
     const { node, view } = this.props;
     const pluginState = mediaStateKey.getState(view.state) as MediaPluginState;
 
-    pluginState.handleMediaNodeRemoval(node);
+    pluginState.handleMediaNodeRemove(node);
   }
 
   render() {

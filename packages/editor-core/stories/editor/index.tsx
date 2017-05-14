@@ -30,10 +30,9 @@ import {
   TextSelection,
   PluginKey
 } from '../../src/prosemirror';
+import { getNodeViews } from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
-import { mentionNodeView } from '../../src/schema/nodes/mention';
-import { emojiNodeView } from '../../src/schema/nodes/emoji';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
@@ -246,10 +245,9 @@ export default class Editor extends PureComponent<Props, State> {
           editorView.updateState(newState);
           this.handleChange();
         },
-        nodeViews: {
-          mention: mentionNodeView(this.providerFactory),
-          emoji: emojiNodeView(this.providerFactory),
-        }
+        nodeViews: getNodeViews(this.providerFactory, {
+          inline: [ 'emoji', 'mention' ],
+        }),
       });
       imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
       mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);

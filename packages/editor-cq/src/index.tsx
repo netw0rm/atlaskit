@@ -30,11 +30,11 @@ import {
   version as coreVersion,
   mediaPluginFactory,
   mediaStateKey,
+  mediaNodeView,
   MediaProvider,
-  getNodeViews,
   Plugin,
+  mentionNodeView,
   ProviderFactory,
-  reactNodeViewPlugins,
   MediaPluginState,
   MediaState,
   Slice,
@@ -45,6 +45,7 @@ import { MentionProvider } from '@atlaskit/mention';
 import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 export { version };
 
 export interface Props {
@@ -269,7 +270,6 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...mediaPlugins,
           ...panelPlugins(schema),
-          ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),
@@ -291,10 +291,11 @@ export default class Editor extends PureComponent<Props, State> {
           editorView.updateState(newState);
           this.handleChange();
         },
-        nodeViews: getNodeViews(this.providerFactory, {
-          block: [ 'mediaGroup' ],
-          inline: [ 'jiraIssue', 'mention' ]
-        }),
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory),
+          jiraIssue: jiraIssueNodeView,
+          media: mediaNodeView(this.providerFactory)
+        },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');

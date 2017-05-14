@@ -21,7 +21,7 @@ interface State {
 }
 
 // tslint:disable-next-line:variable-name
-export default function wrapComponentWithClickArea(ReactComponent: ReactComponentConstructor) {
+export default function wrapComponentWithClickArea(ReactComponent: ReactComponentConstructor): ReactComponentConstructor {
   return class WrapperClickArea extends PureComponent<Props, State> {
     state: State = { selected: false };
 

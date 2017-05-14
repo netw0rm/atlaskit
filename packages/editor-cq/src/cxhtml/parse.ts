@@ -169,7 +169,6 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
       case 'FAB:MEDIA':
         const mediaNode: MediaNode = schema.nodes.media.create({
           id: node.getAttribute('media-id'),
-          publicId: node.getAttribute('media-id'),
           type: node.getAttribute('media-type'),
           collection: node.getAttribute('media-collection'),
         });

@@ -154,7 +154,6 @@ storiesOf(name, module)
               defaultValue={this.state.input}
               key={this.state.input}
               mentionProvider={mentionProvider}
-              mediaProvider={storyMediaProviderFactory()}
             />
           </div>
         );

@@ -7,7 +7,7 @@ import { MediaNodeProps } from './media';
 import { MediaPluginState, mediaStateKey } from '../../plugins';
 import { EditorView } from '../../prosemirror';
 
-interface Props {
+export interface MediaGroupNodeProps {
   view: EditorView;
 }
 
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class MediaGroupNode extends PureComponent<Props, {}> {
+export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {}> {
   private mediaPluginState: MediaPluginState;
   private mediaNodesIds: string[];
 

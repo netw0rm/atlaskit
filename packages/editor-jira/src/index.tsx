@@ -6,7 +6,6 @@ import {
   blockTypePlugins,
   clearFormattingPlugins,
   codeBlockPlugins,
-  getNodeViews,
   hyperlinkPlugins,
   mentionsPlugins,
   rulePlugins,
@@ -25,6 +24,7 @@ import {
   Schema,
   history,
   keymap,
+  mentionNodeView,
   ProviderFactory,
   TextSelection,
   version as coreVersion
@@ -269,9 +269,9 @@ export default class Editor extends PureComponent<Props, State> {
           editorView.updateState(newState);
           this.handleChange();
         },
-        nodeViews: getNodeViews(this.providerFactory, {
-          inline: [ 'mention' ]
-        }),
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory)
+        },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');

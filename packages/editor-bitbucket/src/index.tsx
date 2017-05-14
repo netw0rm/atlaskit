@@ -27,7 +27,8 @@ import {
   Node,
   TextSelection,
   ProviderFactory,
-  getNodeViews,
+  emojiNodeView,
+  mentionNodeView,
   history,
   keymap,
   baseKeymap,
@@ -317,9 +318,10 @@ export default class Editor extends PureComponent<Props, State> {
           editorView.updateState(newState);
           this.handleChange();
         },
-        nodeViews: getNodeViews(this.providerFactory, {
-          inline: [ 'emoji', 'mention' ]
-        }),
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory),
+          emoji: emojiNodeView(this.providerFactory)
+        },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');

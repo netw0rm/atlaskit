@@ -81,6 +81,8 @@ export class Menu extends Component<MenuProps, {}> {
   private deleteBtnClick(handler: CardEventHandler) {
     return (e: MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
+      e.stopPropagation();
+
       handler();
     };
   }

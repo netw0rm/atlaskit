@@ -12,7 +12,7 @@ export default class BreadcrumbsItem extends PureComponent {
     iconBefore: PropTypes.element,
     iconAfter: PropTypes.element,
     text: PropTypes.string,
-    target: PropTypes.oneOf(['_target', '_parent', '_self', '_top']),
+    target: PropTypes.oneOf(['_blank', '_parent', '_self', '_top']),
   }
 
   static defaultProps = {

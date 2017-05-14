@@ -20,7 +20,6 @@ const CODE_MACRO = `<ac:structured-macro ac:name="code" ac:schema-version="1" ac
 
 const PANEL_MACRO = `<ac:structured-macro ac:name="warning" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">Hello</ac:parameter><ac:rich-text-body><p>Warning panel</p></ac:rich-text-body></ac:structured-macro>`;
 const JIRA_ISSUE = '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>';
-const MEDIA = '<p><fab:media media-id="e2adb106-6827-439f-98ec-ab7cdcffd2dd" media-type="file" media-collection="de7ae355-dcf3-4988-9785-bccb835830c4"></fab:media></p>';
 const JIRA_ISSUES_LIST = '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro></p>';
 
 const mentionProvider = new Promise<any>(resolve => {
@@ -143,7 +142,6 @@ storiesOf(name, module)
               />
               <button onClick={this.handleImportClick}>Import</button>
               <button onClick={this.handleInsertCodeClick}>Insert Code</button>
-              <button onClick={this.handleInsertMedia}>Insert Media</button>
               <button onClick={this.handleInsertPanelClick}>Insert Panel</button>
               <button onClick={this.handleInsertJiraIssueClick}>Insert JIRA Issue</button>
               <button onClick={this.handleInsertJiraIssuesListClick}>Insert JIRA Issues List</button>
@@ -166,7 +164,6 @@ storiesOf(name, module)
       private handleInsertCodeClick = () => this.setState({ input: CODE_MACRO });
       private handleInsertPanelClick = () => this.setState({ input: PANEL_MACRO });
       private handleInsertJiraIssueClick = () => this.setState({ input: JIRA_ISSUE });
-      private handleInsertMedia = () => this.setState({ input: MEDIA });
       private handleInsertJiraIssuesListClick = () => this.setState({ input: JIRA_ISSUES_LIST });
     }
 

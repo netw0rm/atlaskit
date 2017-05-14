@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Card,
+  CardEvent,
   CardStatus,
   CardView,
   MediaIdentifier,
@@ -11,7 +12,6 @@ import {
   ContextConfig,
   ContextFactory,
   Context,
-  CardClick,
   CardDelete,
   FileDetails,
   MediaProvider,
@@ -114,8 +114,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleLinkCardViewClick(item: any, event: Event) {
-    event.preventDefault();
+  private handleLinkCardViewClick(result: CardEvent) {
+    result.event.preventDefault();
   }
 
   private renderLink() {
@@ -137,7 +137,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         metadata={previewDetails}
 
         // SharedCardProps
-        actions={[ CardClick(this.handleLinkCardViewClick) ]}
+        onClick={this.handleLinkCardViewClick}
       />;
     }
 

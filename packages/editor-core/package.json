@@ -41,7 +41,7 @@
     "@atlaskit/emoji": "^14.1.0",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/media-core": "^6.1.0",
-    "@atlaskit/media-card": "^14.1.0",
+    "@atlaskit/media-card": "^15.0.0",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.2.0",

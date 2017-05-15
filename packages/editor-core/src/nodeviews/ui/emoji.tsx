@@ -19,14 +19,7 @@ export interface Props {
   providerFactory: ProviderFactory;
 }
 
-export default class MediaNode extends PureComponent<Props, {}> {
-  componentWillUnmount() {
-    const { node, view } = this.props;
-    const pluginState = mediaStateKey.getState(view.state) as MediaPluginState;
-
-    pluginState.handleMediaNodeRemove(node);
-  }
-
+export default class EmojiNode extends PureComponent<Props, {}> {
   render() {
     const { node, providerFactory } = this.props;
     const { shortName, id, fallback } = node.attrs;

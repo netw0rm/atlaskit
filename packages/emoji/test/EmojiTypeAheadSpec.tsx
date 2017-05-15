@@ -4,11 +4,12 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise } from './TestData';
+import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji } from './TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../src/components/typeahead/EmojiTypeAheadItem';
+import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
 import { OptionalEmojiDescription, EmojiId } from '../src/types';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import { Props as TypeAheadProps, State as TypeAheadState } from '../src/components/typeahead/EmojiTypeAhead';
@@ -233,6 +234,21 @@ describe('EmojiTypeAhead', () => {
       const item = getEmojiTypeAheadItemById(component, atlassianBoomEmoji.id);
       item.prop('onMouseMove')(atlassianBoomId, atlassianBoomEmoji, item.simulate('mouseover'));
       expect(isEmojiTypeAheadItemSelected(component, atlassianBoomEmoji.id)).to.equal(true);
+    });
+  });
+
+  it('should render placeholder for unloaded media emoji', () => {
+    const component = setupPicker({
+      query: 'media',
+    } as Props);
+    return waitUntil(() => doneLoading(component)).then(() => {
+      const emojiItems = findEmojiItems(component);
+      expect(emojiItems.length).to.equal(1);
+      const placeholders = emojiItems.find(EmojiPlaceholder);
+      expect(placeholders.length).to.equal(1);
+      const props = placeholders.get(0).props;
+      expect(props.name, 'name').to.equals(mediaEmoji.name);
+      expect(props.title, 'short name').to.equals(mediaEmoji.shortName);
     });
   });
 });

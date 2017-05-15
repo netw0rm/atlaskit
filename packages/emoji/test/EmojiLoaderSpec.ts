@@ -4,9 +4,11 @@ import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { SecurityOptions } from '../src/api/SharedResourceUtils';
-import EmojiLoader, { denormaliseEmojiServiceResponse, EmojiLoaderConfig } from '../src/api/EmojiLoader';
-import { EmojiServiceDescriptionWithVariations, SpriteRepresentation } from '../src/types';
+import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
+import EmojiLoader, { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
+import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../src/types';
+
+import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../test/TestData';
 
 const p1Url = 'https://p1/';
 
@@ -309,6 +311,27 @@ describe('EmojiLoader', () => {
       checkFields(e.representation, emoji.representation, ['imagePath', 'height', 'width']);
       expect(e.skinVariations && e.skinVariations.length).to.equal(1);
       checkFields(e.skinVariations && e.skinVariations[0], emoji.skinVariations[0], ['imagePath', 'height', 'width']);
+    });
+  });
+
+  describe('#denormaliseServiceRepresentation', () => {
+    it('media emoji converted to media representation', () => {
+      const mediaApiToken = defaultMediaApiToken();
+      const emojiServiceData: EmojiServiceResponse = {
+        emojis: [ mediaServiceEmoji ],
+        meta: {
+          mediaApiToken,
+        },
+      };
+      const serviceRepresentation = mediaServiceEmoji.representation as ImageRepresentation;
+      expect(serviceRepresentation.imagePath.indexOf(mediaApiToken.url), 'Test data matches').to.equal(0);
+
+      const emojiData = denormaliseEmojiServiceResponse(emojiServiceData);
+      expect(emojiData.mediaApiToken, 'mediaApiToken copied').to.deep.equal(mediaApiToken);
+      expect(emojiData.emojis.length, 'Same number of emoji').to.equal(1);
+
+      const convertedEmoji = emojiData.emojis[0];
+      expect(convertedEmoji, 'Converted emoji').to.deep.equal(mediaEmoji);
     });
   });
 });

@@ -3,13 +3,16 @@ import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, getEmojiResourcePromise } from './TestData';
+import { emojiRepository, getEmojiResourcePromise, mediaEmoji } from './TestData';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import Emoji from '../src/components/common/Emoji';
+import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
+import EmojiPreview from '../src/components/common/EmojiPreview';
 import EmojiPicker, { Props } from '../src/components/picker/EmojiPicker';
 import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
 import EmojiPickerList from '../src/components/picker/EmojiPickerList';
+import EmojiPickerListSection from '../src/components/picker/EmojiPickerListSection';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import { OptionalEmojiDescription } from '../src/types';
 
@@ -66,6 +69,21 @@ describe('<EmojiPicker />', () => {
 
       expect(previewEmoji.length, 'No emoji preview by default').to.equal(0);
     });
+
+    it('media emoji should render placeholder while loading', () => {
+      const component = setupPicker();
+      const list = component.find(EmojiPickerList);
+
+      return waitUntil(() => emojisVisible(list)).then(() => {
+        const customSection = component.find(EmojiPickerListSection).last();
+        expect(customSection.get(0).props.title, 'Custom category title').to.equal('CUSTOM');
+        const placeholders = customSection.find(EmojiPlaceholder);
+        expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
+        const props = placeholders.get(0).props;
+        expect(props.name, 'name').to.equals(mediaEmoji.name);
+        expect(props.title, 'short name').to.equals(mediaEmoji.shortName);
+      });
+    });
   });
 
   describe('hover', () => {
@@ -101,6 +119,39 @@ describe('<EmojiPicker />', () => {
         flagCategoryButton.simulate('click', leftClick);
         return waitUntil(() => list.prop('selectedCategory') === 'FLAGS').then(() => {
           expect(list.prop('selectedCategory'), 'Flags category selected').to.equal('FLAGS');
+          const previews = component.find(EmojiPreview);
+          expect(previews.length, 'Preview visible').to.equal(1);
+          const preview = previews.first();
+          const emojis = preview.find(Emoji);
+          expect(emojis.length, 'Emoji visible').to.equal(1);
+          const emoji = emojis.get(0);
+          expect(emoji.props.emoji.shortName, 'First flag emoji').to.equal(':flag_ac:');
+        });
+      });
+    });
+
+    it('selecting custom category - should show preview with media first emoji loading', () => {
+      const component = setupPicker();
+      const categorySelector = component.find(CategorySelector);
+
+      const list = component.find(EmojiPickerList);
+      expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal('CUSTOM');
+
+      const customCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Custom');
+      expect(customCategoryButton.length, 'Custom category button').to.equal(1);
+
+      return waitUntil(() => emojisVisible(list)).then(() => {
+        customCategoryButton.simulate('click', leftClick);
+        return waitUntil(() => list.prop('selectedCategory') === 'CUSTOM').then(() => {
+          expect(list.prop('selectedCategory'), 'Custom category selected').to.equal('CUSTOM');
+          const previews = component.find(EmojiPreview);
+          expect(previews.length, 'Preview visible').to.equal(1);
+          const preview = previews.first();
+          const placeholders = preview.find(EmojiPlaceholder);
+          expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
+          const props = placeholders.get(0).props;
+          expect(props.name, 'name').to.equals(mediaEmoji.name);
+          expect(props.title, 'short name').to.equals(mediaEmoji.shortName);
         });
       });
     });

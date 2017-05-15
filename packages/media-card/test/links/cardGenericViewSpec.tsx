@@ -1,4 +1,4 @@
-/* tslint:disable */ //:no-unused-expressions
+/* tslint:disable:no-unused-expression */
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { expect } from 'chai';

@@ -1,5 +1,6 @@
 // This is the option when no language specified
 export const NO_LANGUAGE = 'Language';
+import CodeMirror from '../../codemirror';
 
 export const DEFAULT_LANGUAGES = [
   { name: 'PHP', alias: ['php', 'php3', 'php4', 'php5'] },
@@ -109,4 +110,27 @@ export function filterSupportedLanguages (supportedLanguages) {
 
 export function createLanguageList (supportedLanguages) {
   return [NO_LANGUAGE, ...(supportedLanguages.map((language) => language.name).sort())];
+}
+
+export function getSupportedModes() {
+  const modes = (
+    DEFAULT_LANGUAGES
+      .map(langObj => langObj.alias.map(lang => CodeMirror.findModeByName(lang))[0])
+      .filter(mode => !!mode)
+  )
+  .map(modeInfo => modeInfo.mode)
+  .filter((mode, index, self) => self.indexOf(mode) === index);
+
+  return modes;
+}
+
+export function findMode(mode: string) {
+  const matches = DEFAULT_LANGUAGES.filter(language => language.alias.indexOf(mode.toLowerCase()) !== -1);
+
+  if (!matches.length) {
+    return false;
+  }
+
+  const modes = matches[0].alias.map(lang => CodeMirror.findModeByName(lang)).filter(mode => !!mode);
+  return modes[0];
 }

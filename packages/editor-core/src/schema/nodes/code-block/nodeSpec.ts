@@ -1,4 +1,4 @@
-import { NodeSpec, dom, browser } from '../../prosemirror';
+import { NodeSpec, dom, browser } from '../../../prosemirror';
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
   return dom.dataset['language'];

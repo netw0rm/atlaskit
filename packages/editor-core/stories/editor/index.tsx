@@ -32,6 +32,8 @@ import ProviderFactory from '../../src/providerFactory';
 import { mentionNodeView } from '../../src/schema/nodes/mention';
 import { emojiNodeView } from '../../src/schema/nodes/emoji';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
+import { CodeBlockView } from '../../src/schema/nodes/code-block';
+import { codeMirrorKeymaps } from '../../src/plugins/code-block/codeMirrorKeymaps';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
@@ -221,6 +223,7 @@ export default class Editor extends PureComponent<Props, State> {
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
+            codeMirrorKeymaps,
             history(),
             keymap(baseKeymap) // should be last :(
           ]
@@ -236,6 +239,7 @@ export default class Editor extends PureComponent<Props, State> {
         nodeViews: {
           mention: mentionNodeView(this.providerFactory),
           emoji: emojiNodeView(this.providerFactory),
+          codeBlock: (node, view, getPos) => new CodeBlockView(node, view, getPos, schema)
         }
       });
       imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);

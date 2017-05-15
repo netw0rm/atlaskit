@@ -1,11 +1,4 @@
 import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-} from '../src/styles';
-
-import {
-  akBorderRadius,
   akColorN40,
   akColorN300,
 } from 'akutil-shared-styles';
@@ -19,6 +12,16 @@ export const content = style({
   padding: 20,
 
   $nest: {
+    '& .CodeMirror': {
+      height: 'auto',
+      border: '1px solid #eee',
+
+      $nest: {
+        '& .CodeMirror-dialog': {
+          marginLeft: '40px'
+        }
+      }
+    },
     '& .ProseMirror': {
       outline: 'none',
       whiteSpace: 'pre-wrap',
@@ -37,13 +40,6 @@ export const content = style({
               display: `block`,
             }
           }
-        },
-
-        '& pre': {
-          fontFamily: akEditorCodeFontFamily,
-          background: akEditorCodeBackground,
-          padding: akEditorCodeBlockPadding,
-          borderRadius: akBorderRadius,
         }
       }
     }

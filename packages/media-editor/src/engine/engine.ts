@@ -160,7 +160,7 @@ export class Engine {
       addShadow: shapeParameters.addShadow,
       tool: this.toVeTool(this.config.initialTool),
       windowSize: drawingArea.outputSize,
-      backgroundColor: drawingArea.backgroundColor,
+      backgroundColor: {alpha: 255, ...drawingArea.backgroundColor},
       backBitmapUuid: backImageUuid,
       backBitmapSize: {width: backImage.width, height: backImage.height},
       baseTextDirection: this.toTextDirection(this.config.textDirection)

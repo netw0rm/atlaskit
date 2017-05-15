@@ -8,6 +8,7 @@ import {FullEditor} from './fullEditor';
 import {name} from '../package.json';
 
 const lightGrey = {red: 230, green: 230, blue: 230};
+const transparent = {red: 0, green: 0, blue: 0, alpha: 0};
 const red = {red: 255, green: 0, blue: 0};
 
 const fixedDimensions = {width: 600, height: 480};
@@ -28,6 +29,18 @@ storiesOf(name, module)
       imageUrl={imageDataUri}
       dimensions={fixedDimensions}
       backgroundColor={lightGrey}
+      shapeParameters={shapeParameters}
+      tool={'arrow'}
+      onLoad={onLoad}
+      onError={onError}
+      onShapeParametersChanged={onShapeParametersChanged}
+    />
+  ))
+  .add('fixed with transparent background', () => (
+    <MediaEditor
+      imageUrl={imageDataUri}
+      dimensions={fixedDimensions}
+      backgroundColor={transparent}
       shapeParameters={shapeParameters}
       tool={'arrow'}
       onLoad={onLoad}

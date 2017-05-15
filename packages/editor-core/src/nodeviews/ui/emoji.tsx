@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { ResourcedEmoji } from '@atlaskit/emoji';
 import { PositionedNode } from '../';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
-import { mediaStateKey, MediaPluginState } from '../../plugins';
 import { EditorView } from '../../prosemirror';
 
 // tslint:disable-next-line:variable-name

@@ -30,7 +30,11 @@ import {
   TextSelection,
   PluginKey
 } from '../../src/prosemirror';
-import { getNodeViews } from '../../src/nodeviews';
+import {
+  nodeViewFactory,
+  ReactEmojiNode,
+  ReactMentionNode,
+} from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
@@ -245,9 +249,10 @@ export default class Editor extends PureComponent<Props, State> {
           editorView.updateState(newState);
           this.handleChange();
         },
-        nodeViews: getNodeViews(this.providerFactory, {
-          inline: [ 'emoji', 'mention' ],
-        }),
+        nodeViews: {
+          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
+          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
+        },
       });
       imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
       mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);

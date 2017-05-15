@@ -3,11 +3,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { ReactComponentConstructor } from './';
 import wrapComponentWithClickArea from './wrapper-click-area';
-import { default as EmojiNode } from './emoji';
-import { default as MediaGroupNode } from './media-group';
-import { default as MediaNode } from './media';
-import { default as MentionNode } from './mention';
 import { PositionedNode } from '../';
+import { ReactNodeViewComponents } from '../factory';
 import {
   Node as PMNode,
   EditorView,
@@ -15,17 +12,11 @@ import {
 import ProviderFactory from '../../providerFactory';
 import { reactNodeViewStateKey } from '../../plugins';
 
-const richNodes = new Map<string, React.ComponentClass<any>>([
-  [ 'emoji', EmojiNode ],
-  [ 'mediaGroup', MediaGroupNode ],
-  [ 'media', MediaNode ],
-  [ 'mention', MentionNode ],
-]);
-
 export interface ReactProsemirrorNodeProps {
   getPos: () => number;
   node: PMNode;
   providerFactory: ProviderFactory;
+  components: ReactNodeViewComponents;
   view: EditorView;
 
   [key: string]: any;
@@ -42,11 +33,11 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
   private wrapped: ReactComponentConstructor = wrapComponentWithClickArea(ReactProsemirrorNode);
 
   render() {
-    const { getPos, node, providerFactory, view } = this.props;
+    const { components, getPos, node, providerFactory, view } = this.props;
     const nodeTypeName = node.type.name;
     const pluginState = reactNodeViewStateKey.getState(view.state);
 
-    assert(richNodes.has(nodeTypeName), `Rich node with type ${nodeTypeName} is not declared`);
+    assert(components[nodeTypeName], `Rich node with type ${nodeTypeName} is not declared`);
     assert(pluginState, 'ReactNodeViewPlugin is not enabled');
 
     const attrs = { ...this.props, node };
@@ -66,6 +57,7 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
       children.push(
         <RichNodeWithClickArea
           key={`richnode-${offset}-${index}`}
+          components={components}
           node={childNode}
           view={view}
           pluginState={pluginState}
@@ -75,7 +67,7 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
     });
 
     // tslint:disable-next-line:variable-name
-    const RichNode = richNodes.get(nodeTypeName)!;
+    const RichNode = components[nodeTypeName]!;
     return <RichNode {...attrs}>{children}</RichNode>;
   }
 }

@@ -1,28 +1,11 @@
-import nodeViewFactory from './factory';
-import {
-  EditorView,
-  Node as PMNode,
-  NodeView,
-} from '../prosemirror';
-import ProviderFactory from '../providerFactory';
+import { Node as PMNode } from '../prosemirror';
 
-type NodeViewFactory = (node: PMNode, view: EditorView, getPos: () => number) => NodeView;
-type EditorViewNodeViews = { [key: string]: NodeViewFactory; };
+export { default as nodeViewFactory } from './factory';
+export { default as ReactEmojiNode } from './ui/emoji';
+export { default as ReactMediaGroupNode } from './ui/media-group';
+export { default as ReactMediaNode } from './ui/media';
+export { default as ReactMentionNode } from './ui/mention';
 
 export interface PositionedNode extends PMNode {
   getPos: () => number;
 }
-
-export const getNodeViews = (providerFactory: ProviderFactory, opts: { block?: string[], inline?: string[] }): EditorViewNodeViews => {
-  const output = {};
-
-  (opts.block || []).forEach(nodeType => {
-    output[nodeType] = nodeViewFactory(providerFactory, true);
-  });
-
-  (opts.inline || []).forEach(nodeType => {
-    output[nodeType] = nodeViewFactory(providerFactory, false);
-  });
-
-  return output;
-};

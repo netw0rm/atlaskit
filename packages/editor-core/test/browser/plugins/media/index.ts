@@ -6,11 +6,15 @@ import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   baseKeymap,
   keymap,
-  getNodeViews,
   MediaPluginBehavior,
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactMediaGroupNode,
+  ReactMediaNode,
   reactNodeViewPlugins,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
@@ -71,9 +75,12 @@ describe('Media plugin', () => {
       schema,
       addBaseKeymap,
       plugins,
-      nodeViews: getNodeViews(providerFactory, {
-        block: [ 'mediaGroup', 'media' ],
-      }),
+      nodeViews: {
+        mediaGroup: nodeViewFactory(providerFactory, {
+          mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+      },
       place: fixture(),
     });
   };

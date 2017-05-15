@@ -115,8 +115,8 @@ export class MediaPluginState {
       this.stateManager = stateManager;
     }
 
-    this.allowsPastingLinks = Boolean(resolvedMediaProvider.linkCreateContext);
-    this.allowsUploads = Boolean(resolvedMediaProvider.uploadContext);
+    this.allowsPastingLinks = !!resolvedMediaProvider.linkCreateContext;
+    this.allowsUploads = !!resolvedMediaProvider.uploadContext;
 
     if (this.allowsUploads) {
       const uploadContext = await resolvedMediaProvider.uploadContext;

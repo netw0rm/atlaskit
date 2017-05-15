@@ -117,19 +117,8 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   private getUploadingContents = (): JSX.Element => {
     const {actions, mediaName, progress, dataURI} = this.props;
 
-    /*
-      if there is a delete action, wrap the delete action handler to stop the "click" event bubling up
-      to the card and also firing the Card onClick event
-    */
-    let onCancel;
-    const deleteActions = actions && actions.filter(action => action.type === CardActionType.delete) || [];
-    if (deleteActions.length) {
-      onCancel = event => {
-        event.preventDefault();
-        event.stopPropagation();
-        deleteActions[0].handler();
-      };
-    }
+    const deleteAction = this.getFirstDeleteAction(actions);
+    const onCancel = deleteAction ? () => deleteAction.handler() : undefined;
 
     return (
       <div className="wrapper">
@@ -141,6 +130,15 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
         />
       </div>
     );
+  }
+
+  private getFirstDeleteAction = (actions: Array<CardAction> | undefined): CardAction | undefined => {
+    if (!actions) {
+      return;
+    }
+
+    const deleteActions = actions.filter(a => a.type === CardActionType.delete);
+    return deleteActions[0];
   }
 
   private getSuccessCardContents = (): JSX.Element => {

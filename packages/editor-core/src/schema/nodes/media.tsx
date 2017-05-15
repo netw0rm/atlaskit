@@ -7,7 +7,6 @@ export type MediaType = 'file' | 'link';
 
 export interface Attributes {
   id: string;
-  publicId: string;
   type: MediaType;
   collection: string;
 }
@@ -17,7 +16,6 @@ export const media: NodeSpec = {
   selectable: true,
   attrs: {
     id: { default: '' },
-    publicId: { default: '' },
     type: { default: '' },
     collection: { default: null }
   },
@@ -25,7 +23,6 @@ export const media: NodeSpec = {
     tag: 'div[data-node-type="media"]',
     getAttrs: (dom: Element) => ({
       id: (dom.getAttribute('data-id')! || ''),
-      publicId: (dom.getAttribute('data-public-id')! || ''),
       type: dom.getAttribute('data-type')!,
       collection: dom.getAttribute('data-collection')!
     })
@@ -33,7 +30,6 @@ export const media: NodeSpec = {
   toDOM(node: MediaNode) {
     const attrs = {
       'data-id': node.attrs.id,
-      'data-public-id': node.attrs.publicId,
       'data-node-type': 'media',
       'data-type': node.attrs.type,
       'data-collection': node.attrs.collection,

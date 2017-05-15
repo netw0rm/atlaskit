@@ -40,6 +40,7 @@ export interface MediaNode extends PositionedNode {
   fileName?: string;
   fileSize?: number;
   fileMimeType?: string;
+  publicId?: string;
 }
 
 export class MediaPluginState {
@@ -494,10 +495,10 @@ export class MediaPluginState {
       return;
     }
 
-    const newNode: MediaNode = view.state.schema.nodes.media!.create({
-      ...mediaNode.attrs,
-      publicId
-    });
+    const newNode: MediaNode = view.state.schema.nodes.media!.create(mediaNode.attrs);
+
+    // add publicId
+    newNode.publicId = publicId;
 
     // copy file-* attributes from old node
     const { fileSize, fileName, fileMimeType } = mediaNode;

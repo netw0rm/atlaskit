@@ -36,6 +36,12 @@ export type MediaPluginBehavior = MediaPluginBehavior;
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
+export interface MediaNode extends PositionedNode {
+  fileName?: string;
+  fileSize?: number;
+  fileMimeType?: string;
+}
+
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
@@ -146,7 +152,7 @@ export class MediaPluginState {
   insertFile = (mediaState: MediaState, collection: string): [ Node, Transaction ] => {
     const { options, view } = this;
     const { state } = view;
-    const { id } = mediaState;
+    const { id, fileName, fileSize, fileMimeType } = mediaState;
 
     this.stateManager.subscribe(mediaState.id, this.handleMediaState);
 
@@ -154,7 +160,19 @@ export class MediaPluginState {
       id,
       type: 'file',
       collection
-    }) as PositionedNode;
+    }) as MediaNode;
+
+    if (fileName) {
+      node.fileName = fileName;
+    }
+
+    if (fileSize) {
+      node.fileSize = fileSize;
+    }
+
+    if (fileMimeType) {
+      node.fileMimeType = fileMimeType;
+    }
 
     let transaction;
 
@@ -305,7 +323,7 @@ export class MediaPluginState {
     this.popupPicker = undefined;
   }
 
-  private findMediaNode = (id: string): PositionedNode | null => {
+  private findMediaNode = (id: string): MediaNode | null => {
     const { mediaNodes } = this;
 
     // Array#find... no IE support
@@ -476,11 +494,27 @@ export class MediaPluginState {
       return;
     }
 
-    const newNode: PositionedNode = view.state.schema.nodes.media!.create({
+    const newNode: MediaNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
       publicId
     });
 
+    // copy file-* attributes from old node
+    const { fileSize, fileName, fileMimeType } = mediaNode;
+
+    if (fileName) {
+      newNode.fileName = fileName;
+    }
+
+    if (fileSize) {
+      newNode.fileSize = fileSize;
+    }
+
+    if (fileMimeType) {
+      newNode.fileMimeType = fileMimeType;
+    }
+
+    // replace the old node with a new one
     const nodePos = mediaNode.getPos();
     const tr = view.state.tr.replaceWith(nodePos, nodePos + mediaNode.nodeSize, newNode);
     view.dispatch(tr);

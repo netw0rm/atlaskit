@@ -29,19 +29,6 @@ const tmpFolder = path.join(rootFolder, tmpFolderName);
 const destFolder = path.join(rootFolder, glyphFolderName);
 
 async.waterfall([
-  function createIcon(cb) {
-    const entry = {
-      Icon: `${path.join(rootFolder, 'src')}/Icon.jsx`,
-    };
-    const compiler = webpack(webpackConf(path.join(rootFolder, 'lib'), entry));
-    compiler.run((err, stats) => {
-      if (err || stats.compilation.errors.length) {
-        cb(err || stats.compilation.errors);
-        return;
-      }
-      cb();
-    });
-  },
   function cleanTmpDir(cb) {
     log.debug('cleaning temp directory');
 
@@ -51,6 +38,21 @@ async.waterfall([
     log.debug('cleaning destination directory');
 
     rimraf(destFolder, cb);
+  },
+  function createIcon(cb) {
+    const entry = {
+      Icon: `${path.join(rootFolder, 'src')}/Icon.jsx`,
+    };
+    // where to story the generic Icon component. We put it in tmp because nwb will delete the lib
+    // folder when it builds
+    const compiler = webpack(webpackConf(path.join(rootFolder, 'tmp'), entry));
+    compiler.run((err, stats) => {
+      if (err || stats.compilation.errors.length) {
+        cb(err || stats.compilation.errors);
+        return;
+      }
+      cb();
+    });
   },
   function findIconFiles(cb) {
     log.debug('Finding SVG files to transform');

@@ -302,7 +302,6 @@ describe('Media plugin', () => {
     const firstTemporaryFileId = `temporary:${randomId()}`;
     const secondTemporaryFileId = `temporary:${randomId()}`;
     const thirdTemporaryFileId = `temporary:${randomId()}`;
-    const fourthTemporaryFileId = `temporary:${randomId()}`;
 
     // wait until mediaProvider has been set
     const provider = await resolvedProvider;
@@ -311,14 +310,12 @@ describe('Media plugin', () => {
 
     const firstMediaNode = insertFile(editorView, pluginState, firstTemporaryFileId);
     const secondMediaNode = insertFile(editorView, pluginState, secondTemporaryFileId);
-    const thirdMediaNode = insertFile(editorView, pluginState, thirdTemporaryFileId);
-    insertFile(editorView, pluginState, fourthTemporaryFileId);
+    insertFile(editorView, pluginState, thirdTemporaryFileId);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
         mediaGroup(
-          media({ id: fourthTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
@@ -336,15 +333,9 @@ describe('Media plugin', () => {
       status: 'processing'
     });
 
-    stateManager.updateState(thirdTemporaryFileId, {
-      id: thirdTemporaryFileId,
-      status: 'unfinalized'
-    });
-
     stateManager.subscribe(firstTemporaryFileId, spy);
     stateManager.subscribe(secondTemporaryFileId, spy);
     stateManager.subscribe(thirdTemporaryFileId, spy);
-    stateManager.subscribe(fourthTemporaryFileId, spy);
 
     let pos: number;
     pos = firstMediaNode.getPos();
@@ -358,20 +349,16 @@ describe('Media plugin', () => {
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     await sleep(100);
 
-    pos = thirdMediaNode.getPos();
-    editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
-    await sleep(100);
-
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
         mediaGroup(
-          media({ id: fourthTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
       )
     );
 
-    expect(spy.callCount).to.eq(3, 'State Manager should receive "cancelled" status');
+    expect(spy.callCount).to.eq(2, 'State Manager should receive "cancelled" status');
 
     expect(spy.calledWithExactly({
       id: firstTemporaryFileId,
@@ -380,11 +367,6 @@ describe('Media plugin', () => {
 
     expect(spy.calledWithExactly({
       id: secondTemporaryFileId,
-      status: 'cancelled'
-    })).to.eq(true, 'State Manager should emit "cancelled" status');
-
-    expect(spy.calledWithExactly({
-      id: thirdTemporaryFileId,
       status: 'cancelled'
     })).to.eq(true, 'State Manager should emit "cancelled" status');
   });

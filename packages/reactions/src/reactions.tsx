@@ -13,6 +13,7 @@ export interface OnEmoji {
 
 export interface Props {
   ari: string;
+  containerAri: string;
   reactionsProvider: ReactionsProvider;
   emojiProvider: Promise<EmojiProvider>;
   onReactionClick: OnEmoji;
@@ -61,13 +62,13 @@ export default class Reactions extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { ari, reactionsProvider } = this.props;
-    reactionsProvider.subscribe(ari, this.updateState);
+    const { ari, containerAri, reactionsProvider } = this.props;
+    reactionsProvider.subscribe({ari, containerAri }, this.updateState);
   }
 
   componentWillUnmount() {
-    const { ari, reactionsProvider } = this.props;
-    reactionsProvider.unsubscribe(ari, this.updateState);
+    const { ari, containerAri, reactionsProvider } = this.props;
+    reactionsProvider.unsubscribe({ari, containerAri}, this.updateState);
   }
 
   private updateState = (state) => {

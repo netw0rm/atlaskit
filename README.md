@@ -10,7 +10,7 @@ AtlasKit is the technical implementation of the [Atlassian Design Guidelines][AD
 **This project is bound by a [Code of Conduct][codeofconduct].**
 
 Usage
-====== 
+======
 
 #### Example for React projects
 
@@ -44,7 +44,7 @@ To use:
 <link rel="stylesheet" href="//unpkg.com/@atlaskit/css-reset@latest" />
 <link rel="stylesheet" href="//unpkg.com/@atlaskit/reduced-ui-pack@latest" />
 ```
-2. Then you can style HTML with 
+2. Then you can style HTML with
 
 `<button class="ak-button ak-button__appearance-primary">Submit</button>`
 
@@ -92,7 +92,7 @@ Documentation
 =============
 A comprehensive list of components and detail usage of each can be found in the [AtlasKit Registry][AtlasKitRegistry].
 
-You can also find how each component is meant to be used on the [Atlassian Design Guideline][ADG]. 
+You can also find how each component is meant to be used on the [Atlassian Design Guideline][ADG].
 
 
 Tests
@@ -166,9 +166,9 @@ those contributing as an individual.
 License
 ========
 
-This is a [mono-repo](https://github.com/babel/babel/blob/master/doc/design/monorepo.md), which means that different parts of this repository can have different licenses. 
+This is a [mono-repo](https://github.com/babel/babel/blob/master/doc/design/monorepo.md), which means that different parts of this repository can have different licenses.
 
-The base level of the repository is licensed under [Apache 2.0][LICENSE]. There are separate license files (`LICENSE`)  for each component under `/packages` that specify the license restrictions for each component. While most componets are licensed under the Apache 2.0 license, please note packages containing styles, assets & icons are most likely licensed under the [Atlassian Design Guidelines license][ADG_License]. 
+The base level of the repository is licensed under [Apache 2.0][LICENSE]. There are separate license files (`LICENSE`)  for each component under `/packages` that specify the license restrictions for each component. While most components are licensed under the Apache 2.0 license, please note packages containing styles, assets & icons are most likely licensed under the [Atlassian Design Guidelines license][ADG_License].
 
 If you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions. If you want to redistribute this repository, you will need to replace these Atlassian Design Guidelines licensed components with your own implementation.
 
@@ -181,6 +181,3 @@ Copyright (c) 2016 Atlassian and others.
 [LICENSE]: ./LICENSE
 [AtlasKitRegistry]: http://go.atlassian.com/atlaskit  "AtlasKit Registry"
 [CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md
-
-
-

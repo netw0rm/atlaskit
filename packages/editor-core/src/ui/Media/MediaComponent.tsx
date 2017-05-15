@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Card,
+  CardEvent,
   CardStatus,
   CardView,
   MediaIdentifier,
@@ -11,7 +12,6 @@ import {
   ContextConfig,
   ContextFactory,
   Context,
-  CardClick,
   CardDelete,
   FileDetails,
   MediaProvider,
@@ -42,10 +42,10 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
   switch (state.status) {
     case 'ready':
     case 'unknown':
+    case 'unfinalized':
       return 'complete';
 
     case 'processing':
-    case 'unfinalized':
       return 'processing';
 
     case 'uploading':
@@ -114,8 +114,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleLinkCardViewClick(item: any, event: Event) {
-    event.preventDefault();
+  private handleLinkCardViewClick(result: CardEvent) {
+    result.event.preventDefault();
   }
 
   private renderLink() {
@@ -137,7 +137,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         metadata={previewDetails}
 
         // SharedCardProps
-        actions={[ CardClick(this.handleLinkCardViewClick) ]}
+        onClick={this.handleLinkCardViewClick}
       />;
     }
 
@@ -244,7 +244,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private handleMediaStateChange = (mediaState: MediaState) => {
     const newState = {
-      ...this.state,
       ...mediaState
     };
 
@@ -265,9 +264,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     const { stateManager } = pluginState;
+    const mediaState = stateManager.getState(id);
 
     stateManager.subscribe(id, this.handleMediaStateChange);
-    this.setState({ ...this.state, mediaProvider });
+    this.setState({ mediaProvider, ...mediaState });
 
     mediaProvider.viewContext.then((context: ContextConfig | Context) => {
       if ('clientId' in (context as ContextConfig)) {

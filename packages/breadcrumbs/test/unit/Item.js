@@ -62,6 +62,13 @@ describe('BreadcrumbsItem', () => {
           expect(wrapper.find(Button).prop('iconBefore')).to.equal(icon);
         });
       });
+      describe('target prop', () => {
+        it('should be reflected to the Button', () => {
+          const target = '_top';
+          const wrapper = mount(<Item target={target} />);
+          expect(wrapper.find(Button).prop('target')).to.equal(target);
+        });
+      });
     });
   });
 

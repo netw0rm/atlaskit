@@ -27,9 +27,35 @@ import {
   unknownFileId,
   errorFileId
 } from '@atlaskit/media-test-helpers';
-import { Card, UrlPreviewIdentifier, MediaIdentifier } from '../src';
+import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent } from '../src';
 
 const context = createStorybookContext();
+
+const clickHandler = (result: CardEvent) => {
+  result.event.preventDefault();
+  action('click')(result.mediaItemDetails);
+};
+
+const hoverHandler = (result: CardEvent) => {
+  result.event.preventDefault();
+  action('mouseEnter')(result.mediaItemDetails);
+};
+
+const createApiCards = (appearance: CardAppearance, identifier: Identifier) => {
+  // API methods
+  const apiCards = [
+    {
+      title: 'click',
+      content: <Card context={context} appearance={appearance} identifier={identifier} onClick={clickHandler} />
+    },
+    {
+      title: 'hover',
+      content: <Card context={context} appearance={appearance} identifier={identifier} onMouseEnter={hoverHandler} />
+    }
+  ];
+
+  return apiCards;
+};
 
 storiesOf('Card', {})
   .add('Live preview', () => {
@@ -268,6 +294,9 @@ storiesOf('Card', {})
       }
     ];
 
+    // api cards
+    const apiCards = createApiCards('image', successIdentifier);
+
     // selectable
     const selectableCards = [
       {
@@ -303,6 +332,9 @@ storiesOf('Card', {})
           <h3>Menu</h3>
           <StoryList>{menuCards}</StoryList>
 
+          <h3>API Cards</h3>
+          <StoryList>{apiCards}</StoryList>
+
           <h3>Seletable</h3>
           <StoryList>{selectableCards}</StoryList>
 
@@ -328,6 +360,9 @@ storiesOf('Card', {})
         content: <Card identifier={genericUrlPreviewId} context={context} appearance="square" />
       }
     ];
+
+    // api cards
+    const apiCards = createApiCards('horizontal', genericUrlPreviewId);
 
     // errors
     const errorCards = [
@@ -375,6 +410,9 @@ storiesOf('Card', {})
         <div style={{margin: '20px 40px'}}>
           <h3>Standard</h3>
           <StoryList>{standardCards}</StoryList>
+
+          <h3>API Cards</h3>
+          <StoryList>{apiCards}</StoryList>
 
           <h3>Error</h3>
           <StoryList>{errorCards}</StoryList>

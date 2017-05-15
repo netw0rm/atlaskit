@@ -145,8 +145,8 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     }
   }
 
-  onMenuToggle = (newMenuState) => {
-    this.setState({isMenuExpanded: newMenuState.isExpanded});
+  onMenuToggle = (attrs: {isOpen: boolean}) => {
+    this.setState({isMenuExpanded: attrs.isOpen});
   }
 
   removeBtnClick(handler: CardEventHandler) {

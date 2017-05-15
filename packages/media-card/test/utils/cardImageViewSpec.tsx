@@ -1,5 +1,6 @@
 /* tslint:disable:no-unused-expression */
 import * as React from 'react';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
@@ -8,10 +9,7 @@ import { FileIcon } from '../../src/utils';
 import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
 import { UploadingView } from '../../src/utils/uploadingView';
 
-/* tslint:disable */ //:no-unused-expressions
-
 describe('CardImageView', () => {
-
   it('should render default icon according to mediaType', () => {
     const card = mount(<CardImageView mediaType="audio" status="complete"/>);
 
@@ -73,4 +71,25 @@ describe('CardImageView', () => {
     });
   });
 
+  it('should fire onClick when component is clicked', () => {
+    const event = 'some-random-event';
+    const handler = sinon.spy();
+    const card = shallow(<CardImageView onClick={handler} />);
+
+    card.simulate('click', event);
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.firstCall.args[0]).to.deep.equal(event);
+  });
+
+  it('should fire onMouseEnter when component is hovered', () => {
+    const event = 'some-random-event';
+    const handler = sinon.spy();
+    const card = shallow(<CardImageView onMouseEnter={handler} />);
+
+    card.simulate('mouseEnter', event);
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.firstCall.args[0]).to.deep.equal(event);
+  });
 });

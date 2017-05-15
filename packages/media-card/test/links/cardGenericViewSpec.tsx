@@ -1,7 +1,8 @@
 /* tslint:disable:no-unused-expression */
 import * as React from 'react';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../src/links';
 import { Details } from '../../src/links/styled';
@@ -117,5 +118,33 @@ describe('LinkCardViewGeneric', () => {
     expect(card.find(ErrorContainer)).to.have.length(1);
     expect(card.find(ErrorHeader)).to.have.length(1);
     expect(card.find(ErrorHeader).text()).to.equal(error);
+  });
+
+  it('should fire onClick when component is clicked', () => {
+    const title = 'Hello world';
+    const linkUrl = 'http://localhost:9001/';
+
+    const event = 'some-random-event';
+    const handler = sinon.spy();
+    const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} onClick={handler} />);
+
+    card.simulate('click', event);
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.firstCall.args[0]).to.deep.equal(event);
+  });
+
+  it('should fire onMouseEnter when component is hovered', () => {
+    const title = 'Hello world';
+    const linkUrl = 'http://localhost:9001/';
+
+    const event = 'some-random-event';
+    const handler = sinon.spy();
+    const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} onMouseEnter={handler} />);
+
+    card.simulate('mouseEnter', event);
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.firstCall.args[0]).to.deep.equal(event);
   });
 });

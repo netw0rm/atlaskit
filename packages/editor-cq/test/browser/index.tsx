@@ -52,6 +52,20 @@ describe('@atlaskit/editor-cq', () => {
       node.setProps({ expanded: false });
       expect(node.find('ChromeCollapsed')).to.have.length.above(0);
     });
+
+    it('should call onExpanded after editor is expanded via click', () => {
+      const spy = sinon.spy();
+      const node = mount(<Editor onExpanded={spy} isExpandedByDefault={false} />);
+      node.find('ChromeCollapsed input').simulate('focus');
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should call onExpanded after editor is expanded via expanded prop', () => {
+      const spy = sinon.spy();
+      const node = mount(<Editor onExpanded={spy} isExpandedByDefault={false} />);
+      node.setProps({ expanded: true });
+      expect(spy.callCount).to.equal(1);
+    });
   });
 
   describe('ED-1410', () => {

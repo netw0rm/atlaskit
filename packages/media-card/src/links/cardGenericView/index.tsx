@@ -30,7 +30,8 @@ export interface LinkCardGenericViewProps {
   error?: string;
 
   actions?: Array<CardAction>;
-  onClick?: (event: Event) => void;
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
 }
 
 export interface LinkCardGenericViewState {
@@ -126,12 +127,12 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {appearance} = this.props;
+    const {appearance, onClick, onMouseEnter} = this.props;
     const cardStyle = {height: this.height, width: this.width};
     const content = this.getContentToRender();
 
     return (
-      <Wrapper style={cardStyle} className={appearance} onClick={this.onClick}>
+      <Wrapper style={cardStyle} className={appearance} onClick={onClick} onMouseEnter={onMouseEnter}>
         {content}
       </Wrapper>
     );
@@ -192,12 +193,6 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
         </div>
       </ErrorContainer>
     );
-  }
-
-  private onClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (this.props.onClick) {
-      this.props.onClick(event.nativeEvent);
-    }
   }
 }
 

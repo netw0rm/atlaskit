@@ -71,11 +71,12 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
       return null;
     }
 
-    const { ari, boundariesElement, emojiProvider, allowAllEmojis } = this.props;
+    const { ari, containerAri, boundariesElement, emojiProvider, allowAllEmojis } = this.props;
 
     return (
       <Reactions
         ari={ari}
+        containerAri={containerAri}
         emojiProvider={emojiProvider}
         reactionsProvider={reactionsProvider}
         onReactionClick={this.handleReactionClick}

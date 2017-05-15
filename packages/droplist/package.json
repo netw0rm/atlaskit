@@ -14,7 +14,7 @@
   },
   "files": [
     "dist",
-    "src/index.d.ts"
+    "src/**/*.d.ts"
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",

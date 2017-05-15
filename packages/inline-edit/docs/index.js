@@ -5,6 +5,10 @@ import styled from 'styled-components';
 /* eslint-disable import/no-duplicates, import/first */
 import EditExamples from './EditExamples';
 import editExamplesSrc from '!raw-loader!./EditExamples';
+import SelectExample from './SelectExample';
+import selectExampleSrc from '!raw-loader!./SelectExample';
+import WaitingExample from './WaitingExample';
+import waitingExampleSrc from '!raw-loader!./WaitingExample';
 import StatelessExample from './StatelessExample';
 import statelessExampleSrc from '!raw-loader!./StatelessExample';
 /* eslint-enable import/no-duplicates, import/first */
@@ -42,13 +46,24 @@ export const description = (
 
 export const examples = [
   {
-    title: 'Basic Examples',
+    title: 'Basic Example',
     Component: EditExamples,
     src: editExamplesSrc,
   },
   {
-    title: 'Stateless Examples',
+    title: 'Select Input Example',
+    Component: SelectExample,
+    src: selectExampleSrc,
+  },
+  {
+    title: 'Other States Examples',
+    Component: WaitingExample,
+    src: waitingExampleSrc,
+  },
+  {
+    title: 'Stateless Example',
     Component: StatelessExample,
     src: statelessExampleSrc,
   },
+
 ];

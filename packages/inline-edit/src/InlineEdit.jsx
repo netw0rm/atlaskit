@@ -19,7 +19,8 @@ export default class InlineEdit extends PureComponent {
     isEditing: PropTypes.bool.isRequired,
     /** Greys out text and shows spinner. Does not disable input. */
     isWaiting: PropTypes.bool,
-    /** Sets yellow border with warning symbol at end of input. */
+    /** Sets yellow border with warning symbol at end of input. Removes confirm
+    and cancel buttons. */
     isInvalid: PropTypes.bool,
     /** Determine whether the label is shown. */
     isLabelHidden: PropTypes.bool,

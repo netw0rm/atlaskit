@@ -35,8 +35,10 @@ const plugin = new Plugin({
       return new ReactNodeViewState();
     },
     apply(tr, pluginState: ReactNodeViewState, oldState, newState) {
-      const { $anchor, $head } = tr.selection;
-      pluginState.notifyNewSelection($anchor.pos, $head.pos);
+      if (!tr.docChanged) {
+        const { $anchor, $head } = tr.selection;
+        pluginState.notifyNewSelection($anchor.pos, $head.pos);
+      }
 
       return pluginState;
     }

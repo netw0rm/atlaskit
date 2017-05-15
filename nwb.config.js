@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const camelcase = require('camelcase');
+const externals = require('webpack-node-externals');
 
 const { BITBUCKET_COMMIT } = process.env;
 const cwd = process.cwd();
@@ -60,19 +61,7 @@ module.exports = {
   npm: {
     esModules: false,
     cjs: false,
-    umd: {
-      global: camelcase(pkg.name),
-      externals: Object.keys(Object.assign(
-        {},
-        pkg.dependencies,
-        pkg.devDependencies,
-        pkg.optionalDependencies,
-        pkg.peerDependencies
-      )).reduce((prev, curr) => {
-        prev[curr] = curr;
-        return prev;
-      }, {}),
-    },
+    umd: { global: camelcase(pkg.name) },
   },
   babel: {
     presets: [
@@ -130,30 +119,27 @@ module.exports = {
       entry: ['index.js', 'index.jsx', 'index.ts', 'index.tsx']
         .map(p => path.join(cwd, 'src', p)).filter(fs.existsSync)[0],
 
+      externals: [externals({ modulesFromFile: true })],
       module: {
         rules: [{
           test: /\.json$/,
           use: 'json-loader',
         }, {
           test: /\.less$/,
-          use: [
-            {
-              loader: 'style-loader',
+          use: [{
+            loader: 'style-loader',
+          }, {
+            loader: 'css-loader',
+            options: {
+              camelCase: true,
+              hashPrefix: `${pkg.name}${pkg.version}`,  // Avoid hash collisions
+              importLoaders: 1,
+              mergeRules: false,
+              modules: true,
             },
-            {
-              loader: 'css-loader',
-              options: {
-                camelCase: true,
-                hashPrefix: `${pkg.name}${pkg.version}`,  // Avoid hash collisions
-                importLoaders: 1,
-                mergeRules: false,
-                modules: true,
-              },
-            },
-            {
-              loader: 'less-loader',
-            },
-          ],
+          }, {
+            loader: 'less-loader',
+          }],
         }, {
           test: /\.tsx?$/,
           use: 'awesome-typescript-loader',

@@ -13,19 +13,14 @@ const emojiButtonStyle = style({
   borderRadius: '5px',
   cursor: 'pointer',
   margin: '0',
-  padding: '4px',
+  padding: '8px',
   $nest: {
     '&:hover > span': {
-      transform: 'scale(1.5)'
-    },
-    '&:active > span': {
-      transform: 'scale(.8)'
+      transform: 'scale(1.33)'
     },
     '&> span': {
-      transformOrigin: 'center center 0',
-      transition: 'transform cubic-bezier(0.23, 1, 0.32, 1) 200ms',
       $nest: {
-        '&&> div': {
+        '&> div': {
           width: '28px',
           height: '28px',
           $nest: {
@@ -35,10 +30,10 @@ const emojiButtonStyle = style({
             }
           }
         },
-        '&&> span': {
+        '&> span': {
           flex: 'auto',
           width: '24px',
-          height: '20px',
+          height: '24px',
           backgroundSize: '16px 16px'
         }
       }

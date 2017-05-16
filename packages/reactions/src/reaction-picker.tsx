@@ -31,11 +31,12 @@ export interface State {
 }
 
 const pickerStyle = style({
+  verticalAlign: 'middle',
   $nest: {
     '&.miniMode': {
       display: 'inline-block',
-      height: '20px',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      margin: '0 4px',
     }
   }
 });

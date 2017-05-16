@@ -20,7 +20,7 @@ const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 // Override "subscribe" so that it resovles instantly.
 const subscribe = reactionsProvider.subscribe;
-sinon.stub(reactionsProvider, 'subscribe', (objectReactionKey: ObjectReactionKey, handler: Function) => {
+sinon.stub(reactionsProvider, 'subscribe').callsFake((objectReactionKey: ObjectReactionKey, handler: Function) => {
   subscribe.call(reactionsProvider, objectReactionKey, handler);
   reactionsProvider.notifyUpdated(containerAri, demoAri, (reactionsProvider as any).cachedReactions[reactionsProvider.objectReactionKeyToString(objectReactionKey)]);
 });

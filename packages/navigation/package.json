@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "9.2.1",
+  "version": "10.0.0",
   "config": {
     "access": "public"
   },
@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "storybook": "PACKAGE=navigation ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
     "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000"
   },
@@ -24,7 +24,7 @@
     "classnames": "^2.2.5",
     "invariant": "^2.2.2",
     "keycode": "^2.1.2",
-    "memoize-one": "^1.0.2"
+    "memoize-one": "^2.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

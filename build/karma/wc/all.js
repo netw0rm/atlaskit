@@ -1,5 +1,8 @@
 const path = require('path');
 
+// NOTE! Despite the naming of this file, this is not use to test webcomponents. This is just used
+// to run the browserstack tests locally in Chrome and Firefox
+
 const karmaConf = require('../base');
 const addPolyFills = require('../addPolyFills');
 const setUpEnzyme = require('../setUpEnzyme');

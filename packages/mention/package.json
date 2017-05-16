@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "config": {
     "access": "public"
   },
@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "storybook": "PACKAGE=mention ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "echo 'TODO - fails with cannot access mentions on imported JSON.' && exit 0 && ../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
@@ -19,8 +19,8 @@
     "umd"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^2.0.0",
-    "@atlaskit/lozenge": "^1.0.2",
+    "@atlaskit/avatar": "^4.0.0",
+    "@atlaskit/lozenge": "^3.0.2",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",

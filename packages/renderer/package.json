@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "config": {
     "access": "public"
   },
@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "storybook": "PACKAGE=renderer ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
@@ -19,7 +19,7 @@
     "umd"
   ],
   "dependencies": {
-    "@atlaskit/emoji": "^13.1.1",
+    "@atlaskit/emoji": "^14.0.0",
     "@atlaskit/media-card": "^12.0.1",
     "@atlaskit/media-core": "^6.0.2",
     "@atlaskit/media-filmstrip": "^3.1.2",

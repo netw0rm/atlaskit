@@ -114,6 +114,9 @@ export default class Media extends PureComponent<MediaProps, State> {
     const { stateManager } = resolvedMediaProvider;
     if (stateManager) {
       stateManager.subscribe(id, this.handleMediaStateChange);
+
+      const mediaState = stateManager.getState(id);
+      this.setState({ ...mediaState });
     }
 
     let context = await resolvedMediaProvider.viewContext;

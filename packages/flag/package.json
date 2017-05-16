@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "config": {
     "access": "public"
   },
@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "storybook": "PACKAGE=flag ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js'",
     "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'"
   },

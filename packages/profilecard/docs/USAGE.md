@@ -63,7 +63,7 @@ const profileClient = new AkProfilecardClient({
 ```javascript
 import { AkProfileClient } from '@atlaskit/profilecard';
 
-const getProfileDataFromSomewhereElse = (options, url) => {
+const getProfileDataFromSomewhereElse = (url, cloudId, userId) => {
   const fetchUrl = `${url}?userId=${options.userId}`;
 
   return fetch(fetchUrl, {
@@ -75,10 +75,15 @@ const getProfileDataFromSomewhereElse = (options, url) => {
 };
 
 class CustomProfileClient extends ProfileClient {
-  makeRequest(options) {
-    // options is an object with the keys `userId` and `cloudId` passed
-    // from `AkProfilecardResourced` component properties.
-    // `userId` is required and is used as cache identifier.
+  /**
+    * @param {String} cloudId 
+    * @param {String} userId 
+    * @returns {Promise}
+    */
+  makeRequest(cloudId, userId) {
+    // `userId` and `cloudId` are passed from `AkProfilecardResourced`
+    // component properties.
+    // The string of `cloudId/userId` is used as cache identifier.
     // 
     // Inside `makeRequest` the `url` parameter the client was instantiated
     // with is accessible via `this.config.url`.
@@ -97,7 +102,7 @@ class CustomProfileClient extends ProfileClient {
     //   "timestring": string
     // }
 
-    return getProfileDataFromSomewhereElse(options, this.config.url);
+    return getProfileDataFromSomewhereElse(this.config.url, cloudId, userId);
   }
 }
 

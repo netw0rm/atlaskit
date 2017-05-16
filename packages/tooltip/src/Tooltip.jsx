@@ -45,7 +45,7 @@ export default class StatelessTooltip extends PureComponent {
       <div onMouseOver={props.onMouseOver} onMouseOut={props.onMouseOut}>
         <Layer
           position={positionToPopperPosition(props.position)}
-          autoPosition
+          autoFlip
           content={content}
           onFlippedChange={this.handleLayerFlipChange}
         >

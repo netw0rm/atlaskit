@@ -47,6 +47,7 @@ const imageUploadHandler = (e: any, fn: any) => {
 
 const mentionSource = new MockMentionSource();
 const emojiProvider = emojiData.emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
+const analyticsHandler = (actionName, props) => action(actionName)(props);
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(editorVersion))
@@ -137,8 +138,6 @@ storiesOf(name, module)
     return <Story />;
   })
   .add('Analytics events', () => {
-    const analyticsHandler = (actionName, props) => action(actionName)(props);
-
     return (
       <div>
         <h5 style={{ marginBottom: 20 }}>Interact with the editor and observe analytics events in the Action Logger below</h5>
@@ -311,4 +310,41 @@ storiesOf(name, module)
     }
 
     return <EditorWithFeedback />;
+  })
+  .add('All bitbucket features enabled', () => {
+    type Props = {};
+    type State = { markdown?: string };
+    class EditorWithAllFeatures extends PureComponent<Props, State> {
+      state: State = { markdown: '' };
+
+      handleChange = (editor: Editor) => {
+        this.setState( CHANGE_ACTION );
+        this.setState({ markdown: editor.value });
+      }
+
+      render() {
+        return (
+          <div ref="root">
+            <Editor
+              placeholder = "Test editor"
+              onCancel={CANCEL_ACTION}
+              onChange={this.handleChange}
+              onSave={SAVE_ACTION}
+              mentionSource={mentionSource}
+              emojiProvider={emojiProvider}
+              analyticsHandler = {analyticsHandler}
+              imageUploadHandler={imageUploadHandler}
+            />
+            <fieldset style={{ marginTop: 20 }}>
+              <legend>Markdown</legend>
+              <pre>{this.state.markdown}</pre>
+            </fieldset>
+          </div>
+        );
+      }
+    }
+
+    return (
+      <EditorWithAllFeatures />
+    );
   });

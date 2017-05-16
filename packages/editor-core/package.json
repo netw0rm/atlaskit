@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "16.3.4",
+  "version": "16.7.4",
   "config": {
     "access": "public"
   },
@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "storybook": "PACKAGE=editor-core ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "echo 'TODO - fails with out of memory errors.' && exit 0 && ../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
@@ -39,10 +39,10 @@
     "@atlaskit/droplist": "^1.3.11",
     "@atlaskit/droplist-group": "^1.0.6",
     "@atlaskit/droplist-item": "^2.0.8",
-    "@atlaskit/emoji": "^13.0.0",
+    "@atlaskit/emoji": "^14.0.2",
     "@atlaskit/icon": "^2.5.6",
-    "@atlaskit/media-core": "^6.0.1",
-    "@atlaskit/media-card": "^12.0.0",
+    "@atlaskit/media-core": "^6.1.0",
+    "@atlaskit/media-card": "^14.0.2",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.0.3",
@@ -63,7 +63,7 @@
     "prosemirror-transform": "^0.20.0",
     "prosemirror-view": "^0.20.3",
     "tslib": "^1.2.0",
-    "typestyle": "^0.21.4"
+    "typestyle": "^1.3.2"
   },
   "peerDependencies": {
     "react": "^15.3.2",
@@ -71,7 +71,7 @@
     "jquery": "^2.2.4"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^1.1.0",
+    "@atlaskit/media-test-helpers": "^4.8.3",
     "@atlaskit/util-data-test": "^4.0.0",
     "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",

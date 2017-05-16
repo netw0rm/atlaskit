@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "config": {
     "access": "public"
   },
@@ -11,7 +11,6 @@
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },

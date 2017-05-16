@@ -16,6 +16,7 @@ export interface Context {
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
   getDataUriService(collectionName?: string): DataUriService;
   addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string>;
+  refreshCollection(collectionName: string, pageSize: number): void;
   readonly config: ContextConfig;
 }
 
@@ -84,7 +85,7 @@ class ContextImpl implements Context {
     return linkService.addLinkItem(url, this.config.clientId, collectionName, metadata);
   }
 
-  refreshCollection(collectionName: string, pageSize: number) {
+  refreshCollection(collectionName: string, pageSize: number): void {
     this.getMediaCollectionProvider(collectionName, pageSize).controller().refresh();
   }
 

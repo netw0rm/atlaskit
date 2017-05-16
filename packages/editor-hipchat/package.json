@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "4.2.2",
+  "version": "4.5.2",
   "config": {
     "access": "public"
   },
@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "storybook": "PACKAGE=editor-hipchat ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
@@ -26,12 +26,12 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^16.0.0",
+    "@atlaskit/editor-core": "^16.7.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {
-    "@atlaskit/emoji": "^13.1.1",
+    "@atlaskit/emoji": "^14.0.0",
     "@atlaskit/mention": "^4.2.0",
     "react": "^15.3.2"
   },

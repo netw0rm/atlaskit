@@ -33,7 +33,7 @@ import { mentionNodeView } from '../../src/schema/nodes/mention';
 import { emojiNodeView } from '../../src/schema/nodes/emoji';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 import { CodeBlockView } from '../../src/schema/nodes/code-block';
-import { codeMirrorKeymaps } from '../../src/plugins/code-block/codeMirrorKeymaps';
+import codeMirrorKeymapsPlugin from '../../src/plugins/code-block/codeMirrorKeymaps';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
@@ -223,7 +223,7 @@ export default class Editor extends PureComponent<Props, State> {
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
-            codeMirrorKeymaps,
+            codeMirrorKeymapsPlugin(),
             history(),
             keymap(baseKeymap) // should be last :(
           ]

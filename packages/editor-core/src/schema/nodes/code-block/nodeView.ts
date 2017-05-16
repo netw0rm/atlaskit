@@ -12,7 +12,6 @@ import {
 } from '../../../prosemirror';
 import { CodeBlockState, stateKey } from '../../../plugins/code-block';
 import { findMode } from '../../../ui/LanguagePicker/languageList';
-import { computeChange } from './utils';
 
 const MOD = /Mac/.test(navigator.platform) ? 'Cmd' : 'Ctrl';
 
@@ -181,4 +180,18 @@ export class CodeBlockView {
   stopEvent() {
     return true;
   }
+}
+
+function computeChange(oldVal, newVal) {
+  let start = 0;
+  let oldEnd = oldVal.length;
+  let newEnd = newVal.length;
+  while (start < oldEnd && oldVal.charCodeAt(start) === newVal.charCodeAt(start)) {
+    ++start;
+  }
+  while (oldEnd > start && newEnd > start && oldVal.charCodeAt(oldEnd - 1) === newVal.charCodeAt(newEnd - 1)) {
+    oldEnd--;
+    newEnd--;
+  }
+  return { from: start, to: oldEnd, text: newVal.slice(start, newEnd) };
 }

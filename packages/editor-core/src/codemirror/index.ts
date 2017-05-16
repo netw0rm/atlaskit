@@ -1,5 +1,8 @@
-// tslint:disable-next-line:no-var-requires
-require('codemirror/mode/meta');
-
-import CodeMirror = require('codemirror/lib/codemirror');
+import '!style!css!less!codemirror/lib/codemirror.css';
+import 'codemirror/mode/meta';
+import * as CodeMirror from 'codemirror/lib/codemirror';
 export default CodeMirror;
+
+import { requireModes } from './utils';
+
+requireModes();

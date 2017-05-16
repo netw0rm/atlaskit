@@ -1,12 +1,16 @@
 import React, { PureComponent, PropTypes } from 'react';
 import styles from '../less/ContainerNavigationNested.less';
 import ContainerNavigationNestedPageWrapper from '../styled/ContainerNavigationNestedPageWrapper';
+import NestedNavigationSplitButton from './NestedNavigationSplitButton';
 
 export default class ContainerNavigationNested extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     onAnimationEnd: PropTypes.func,
     animationDirection: PropTypes.oneOf(['left', 'right']),
+    backButtonIcon: PropTypes.node,
+    onBackButtonClick: PropTypes.func,
+    mainNavigationItem: PropTypes.element,
   }
 
   static defaultProps = {
@@ -44,10 +48,20 @@ export default class ContainerNavigationNested extends PureComponent {
     this.props.onAnimationEnd();
   }
   render() {
-    const { children } = this.props;
+    const { children, backButtonIcon, mainNavigationItem, onBackButtonClick } = this.props;
     const { prevChildren } = this.state;
-    const activePane = <ContainerNavigationNestedPageWrapper key="active-pane" className={styles.pageWrapper}>{children}</ContainerNavigationNestedPageWrapper>;
-    const prevPane = <ContainerNavigationNestedPageWrapper key="prev-pane" className={styles.pageWrapper}>{prevChildren}</ContainerNavigationNestedPageWrapper>;
+
+    const shouldRenderSplitBackButton = backButtonIcon && mainNavigationItem;
+
+    const splitBackButton = shouldRenderSplitBackButton ?
+      (<NestedNavigationSplitButton
+        backButtonIcon={backButtonIcon}
+        onBackButtonClick={onBackButtonClick}
+        mainNavigationItem={mainNavigationItem}
+      />) : null;
+
+    const activePane = <ContainerNavigationNestedPageWrapper key="active-pane" className={styles.pageWrapper}>{splitBackButton}{children}</ContainerNavigationNestedPageWrapper>;
+    const prevPane = <ContainerNavigationNestedPageWrapper key="prev-pane" className={styles.pageWrapper}>{splitBackButton}{prevChildren}</ContainerNavigationNestedPageWrapper>;
     const content = this.props.animationDirection === 'left' ? [prevPane, activePane] : [activePane, prevPane];
     return (<div
       className={styles.containerNavigationNested}

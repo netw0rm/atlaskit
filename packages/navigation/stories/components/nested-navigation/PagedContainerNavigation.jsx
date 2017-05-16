@@ -81,16 +81,14 @@ export default class PagedContainerNavigation extends PureComponent {
   render() {
     return (
       <div>
-        <AkContainerNavigationNested animationDirection={this.state.animationDirection}>
+        <AkContainerNavigationNested
+          animationDirection={this.state.animationDirection}
+          backButtonIcon={<ArrowleftIcon label="Previous" />}
+          onBackButtonClick={this.goToPrev}
+          mainNavigationItem={<AkNavigationItem text="Previous" />}
+        >
           {this.props.children[this.state.selectedIndex]}
         </AkContainerNavigationNested>
-        <a
-          href="#prev"
-          onClick={this.goToPrev}
-          style={!this.isPrevEnabled() ? disabledLinkStyles : enabledLinkStyles}
-        >
-          <AkNavigationItem icon={<ArrowleftIcon label="Previous" />} text="Previous" />
-        </a>
         <a
           href="#next"
           onClick={this.goToNext}

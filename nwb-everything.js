@@ -61,6 +61,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   }
 
   const pkg = path.join(dir, 'package.json');
+  const pkgBasename = pkg.name.split('/')[1];
 
   if (!fs.existsSync(pkg)) {
     return;
@@ -88,7 +89,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
       ? `${binPath}/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'`
       : `${binPath}/eslint --color --format "${modPath}/eslint-friendly-formatter" --ext .js --ext .jsx src/ stories/ test/`,
     prepublish: `${binPath}/nwb build`,
-    storybook: `${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,
+    storybook: `PACKAGE=${pkgBasename} ${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,
     test: getTestCommand(),
     'test:watch': getTestCommand({ watch: true }),
   };

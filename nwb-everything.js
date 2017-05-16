@@ -93,6 +93,10 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
     'test:watch': getTestCommand({ watch: true }),
   };
 
+  if (isTsPackage) {
+    pkgJson.types = 'types/src/index.d.ts';
+  }
+
   // Remove old fields.
   delete pkgJson.module;
   delete pkgJson.webpack;

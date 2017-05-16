@@ -4,6 +4,7 @@ import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 import { ALL_BLOCK_TYPES } from './types';
 import { redo, undo } from '../../prosemirror/prosemirror-history';
+import { undoInputRule } from '../../prosemirror/prosemirror-inputrules';
 import { BlockTypeState } from './';
 
 export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Function {
@@ -14,7 +15,7 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow(view)), list);
   keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('codeblock', 'autoformatting'), commands.createCodeBlockFromFenceFormat()), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.undo.keyboard', redo), list);
-  keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', undo), list);
+  keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', cmdUndo), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redoBarred)!, commands.preventDefault(), list);
 
   const nodes = view.state.schema.nodes;
@@ -31,6 +32,14 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
 
   return keydownHandler(list);
 }
+
+const cmdUndo = (state, dispatch) => {
+  if(undoInputRule(state, dispatch)) {
+    return true;
+  } else {
+    return undo(state, dispatch);
+  }
+};
 
 function analyticsEventName(blockTypeName: string, eventSource: string): string {
   return `atlassian.editor.format.${blockTypeName}.${eventSource}`;

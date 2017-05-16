@@ -11,7 +11,6 @@
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "echo 'Error: no test specified'",
     "test:watch": "echo 'Error: no test specified'"
   },
@@ -53,6 +52,5 @@
     "media",
     "ui",
     "private"
-  ],
-  "lint": "../../node_modules/.bin//tslint -c ./tslint.json \"./src/**/*.{ts,tsx,d.ts}\" \"./stories/**/*.{ts,tsx,d.ts}\" \"*.{ts,tsx,d.ts}\""
+  ]
 }

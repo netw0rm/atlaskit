@@ -51,6 +51,5 @@
   "keywords": [
     "atlaskit",
     "internal"
-  ],
-  "lint": "../../node_modules/.bin//eslint --color --format \"../../node_modules/eslint-friendly-formatter\" . --ext .js --ext .jsx"
+  ]
 }

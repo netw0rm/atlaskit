@@ -7,6 +7,6 @@ describe('HeaderSearch', () => {
 
   it('should include the search form', () => {
     const wrapped = render(headerSearch);
-    expect(wrapped.find('form[action="/search"]').length).toEqual(1);
+    expect(wrapped.find('form[action="/search"]').length).to.equal(1);
   });
 });

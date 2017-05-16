@@ -30,7 +30,7 @@ describe('HeaderLinks', () => {
     const wrapped = shallow(header);
     links.forEach((link) => {
       const anchor = wrapped.find(`[href="${link.href}"]`);
-      expect(anchor.parent().is({ selected: link.selected })).toEqual(true, link.label);
+      expect(anchor.parent().is({ selected: link.selected })).to.equal(true, link.label);
     });
   });
 });

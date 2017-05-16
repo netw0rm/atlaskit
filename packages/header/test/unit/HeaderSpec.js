@@ -20,7 +20,7 @@ describe('Header', () => {
 
   it('should render the Atlassian logo link', () => {
     const mounted = mount(header);
-    expect(mounted.find(`.show-for-large [href="${logoHref}"]`).find(AtlassianLogo).length).toEqual(1);
+    expect(mounted.find(`.show-for-large [href="${logoHref}"]`).find(AtlassianLogo).length).to.equal(1);
   });
 
   it('should render the desktop title link', () => {
@@ -29,29 +29,29 @@ describe('Header', () => {
       title={title}
       titleHref={titleHref}
     />);
-    expect(wrapped.find(`.show-for-large [href="${titleHref}"]`).contains(title)).toEqual(true);
+    expect(wrapped.find(`.show-for-large [href="${titleHref}"]`).contains(title)).to.equal(true);
   });
 
   it('should render the mobile title', () => {
     const rendered = render(header);
-    expect(rendered.find('.hide-for-large span').text()).toEqual(title);
+    expect(rendered.find('.hide-for-large span').text()).to.equal(title);
   });
 
   it('should render a link to doc overview page', () => {
     const mounted = mount(header);
-    expect(mounted.find('[href="/docs/"]').length).toEqual(1);
+    expect(mounted.find('[href="/docs/"]').length).to.equal(1);
   });
 
   it('should include search', () => {
     const mounted = mount(header);
-    expect(mounted.find(HeaderSearch).length).toEqual(1);
+    expect(mounted.find(HeaderSearch).length).to.equal(1);
   });
 
   it('should use the foundation grid', () => {
     const rendered = render(header);
     const row = rendered.find('.row');
-    expect(row.length).toEqual(6);
-    expect(row.children('.column.large-12, .columns.large-12').length).toEqual(1);
+    expect(row.length).to.equal(6);
+    expect(row.children('.column.large-12, .columns.large-12').length).to.equal(1);
   });
 });
 
@@ -76,12 +76,12 @@ describe('Header with links', () => {
   it('should render 1 <HeaderLinks /> component for desktop view', () => {
     const mounted = mount(header);
     const headerLinkComponents = mounted.find('.show-for-large').find(HeaderLinks);
-    expect(headerLinkComponents.length).toEqual(1);
+    expect(headerLinkComponents.length).to.equal(1);
   });
 
   it('should render 2 <HeaderLinks /> components for mobile view', () => {
     const mounted = mount(header);
     const headerLinkComponents = mounted.find('.hide-for-large').find(HeaderLinks);
-    expect(headerLinkComponents.length).toEqual(2);
+    expect(headerLinkComponents.length).to.equal(2);
   });
 });

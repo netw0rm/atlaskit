@@ -177,9 +177,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     if (id.substr(0, 10) === 'temporary:') {
-      return this.renderPublicFile();
-    } else {
       return this.renderTemporaryFile();
+    } else {
+      return this.renderPublicFile();
     }
   }
 

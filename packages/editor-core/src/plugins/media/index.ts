@@ -40,7 +40,6 @@ export interface MediaNode extends PositionedNode {
   fileName?: string;
   fileSize?: number;
   fileMimeType?: string;
-  publicId?: string;
 }
 
 export class MediaPluginState {
@@ -255,14 +254,14 @@ export class MediaPluginState {
       }
 
       mediaNodes.forEach(node => {
-        const internalId = node.attrs.id;
-        const nodeCurrentState = stateManager.getState(internalId)!;
+        const mediaNodeId = node.attrs.id;
+        const nodeCurrentState = stateManager.getState(mediaNodeId)!;
         const nodeCurrentStatus = nodeCurrentState.status || '';
 
         if (MEDIA_RESOLVE_STATES.indexOf(nodeCurrentStatus) !== -1) {
           onNodeStateReady(nodeCurrentState);
         } else {
-          stateManager.subscribe(internalId, onNodeStateChanged);
+          stateManager.subscribe(mediaNodeId, onNodeStateChanged);
         }
       });
     });
@@ -425,19 +424,13 @@ export class MediaPluginState {
   }
 
   private handleMediaNodeRemoval = (node: PositionedNode, activeUserAction: boolean) => {
-    const { stateManager, pickers } = this;
     const { id } = node.attrs;
-    const state = stateManager.getState(id);
+    const status = this.getMediaNodeStateStatus(id);
 
-    if (!state) {
-      return;
-    }
-
-    switch (state.status) {
-      // In-flight media items that we should cancel
+    switch (status) {
       case 'uploading':
       case 'processing':
-        pickers.forEach(picker => picker.cancel(id));
+        this.pickers.forEach(picker => picker.cancel(id));
 
         if (!activeUserAction) {
           return;
@@ -475,7 +468,7 @@ export class MediaPluginState {
 
       case 'ready':
         this.stateManager.unsubscribe(state.id, this.handleMediaState);
-        this.addPublicId(state.id, state.publicId!);
+        this.replaceNodeWithPublicId(state.id, state.publicId!);
         break;
     }
   }
@@ -484,21 +477,21 @@ export class MediaPluginState {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
   }
 
-  private addPublicId = (internalId: string, publicId: string) => {
+  private replaceNodeWithPublicId = (temporaryId: string, publicId: string) => {
     const { view } = this;
     if (!view) {
       return;
     }
 
-    const mediaNode = this.findMediaNode(internalId);
+    const mediaNode = this.findMediaNode(temporaryId);
     if (!mediaNode) {
       return;
     }
 
-    const newNode: MediaNode = view.state.schema.nodes.media!.create(mediaNode.attrs);
-
-    // add publicId
-    newNode.publicId = publicId;
+    const newNode: MediaNode = view.state.schema.nodes.media!.create({
+      ...mediaNode.attrs,
+      id: publicId,
+    });
 
     // copy file-* attributes from old node
     const { fileSize, fileName, fileMimeType } = mediaNode;
@@ -550,6 +543,17 @@ export class MediaPluginState {
     const selection = new NodeSelection(pos);
 
     view.dispatch(tr.setSelection(selection));
+  }
+
+  /**
+   * Since we replace nodes with public id when node is finalized
+   * stateManager contains no information for public ids
+   */
+  private getMediaNodeStateStatus = (id: string) => {
+    const { stateManager } = this;
+    const state = stateManager.getState(id);
+
+    return (state && state.status) || 'ready';
   }
 }
 

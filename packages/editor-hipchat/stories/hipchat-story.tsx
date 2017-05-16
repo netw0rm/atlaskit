@@ -61,5 +61,34 @@ storiesOf(name, module)
         useLegacyFormat={true}
       />
     )
-  )
-;
+  ).add('Editor Hipchat with all enabled', () =>
+    {
+      let reactEditorComponent;
+
+    function openMediaPicker() {
+      if (reactEditorComponent) {
+        reactEditorComponent.showMediaPicker();
+      }
+    }
+      const editor = (
+        <div>
+          <div style={{ float: 'right', position: 'relative', top: -6, left: 6 }}>
+            <Button onClick={openMediaPicker} appearance="primary">Show media picker</Button>
+          </div>
+        <Editor
+          maxContentSize={400}
+          mentionProvider={mentionProvider}
+          emojiProvider={emojiProvider}
+          reverseMentionPicker={false}
+          useLegacyFormat={true}
+          onChange={action('onChange')}
+           // tslint:disable-next-line:jsx-no-lambda
+          ref={elem => reactEditorComponent = elem}
+          onSubmit={action('submit')}
+          mediaProvider={storyMediaProviderFactory()}
+        />
+        </div>
+      );
+      return editor;
+    });
+

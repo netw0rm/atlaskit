@@ -12,6 +12,9 @@ const { BITBUCKET_COMMIT } = process.env;
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
 
+// The nwb command we are running
+const cmd = process.argv.slice(2)[0];
+
 // TODO come up with a per-package stategy to run these.
 const runInRealBrowsers = [
   /editor-/,
@@ -118,8 +121,10 @@ module.exports = {
       // between Web Component and React JSX pragmas.
       entry: ['index.js', 'index.jsx', 'index.ts', 'index.tsx']
         .map(p => path.join(cwd, 'src', p)).filter(fs.existsSync)[0],
-
-      externals: [externals({ modulesFromFile: true })],
+      // if we are building the umd, we don't want to bundle any dependencies
+      externals: cmd === 'build'
+        ? [externals({ modulesFromFile: true })]
+        : [],
       module: {
         rules: [{
           test: /\.json$/,

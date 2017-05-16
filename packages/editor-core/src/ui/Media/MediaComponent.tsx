@@ -167,7 +167,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderFile() {
     const { mediaProvider, viewContext } = this.state;
-    const { publicId } = this.props;
+    const { id } = this.props;
 
     if ( !mediaProvider || !viewContext ) {
       return <CardView
@@ -176,7 +176,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       />;
     }
 
-    if (publicId) {
+    if (id.substr(0, 10) === 'temporary:') {
       return this.renderPublicFile();
     } else {
       return this.renderTemporaryFile();
@@ -185,13 +185,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderPublicFile() {
     const { viewContext } = this.state;
-    const { collection, onDelete, publicId } = this.props;
+    const { collection, id, onDelete } = this.props;
 
     return (
       <Card
         context={viewContext!}
         identifier={{
-          id: publicId,
+          id,
           mediaItemType: 'file',
           collectionName: collection
         }}

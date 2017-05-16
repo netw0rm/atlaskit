@@ -47,7 +47,7 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
 
   render() {
     const { node, providerFactory, selected, view } = this.props;
-    const { id, type, collection, publicId } = node.attrs;
+    const { id, type, collection } = node.attrs;
 
     return (
       <Wrapper selected={selected}>
@@ -61,7 +61,6 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
                 mediaProvider={providers['mediaProvider']}
                 editorView={view}
                 id={id!}
-                publicId={publicId!}
                 type={type!}
                 collection={collection!}
                 onDelete={this.handleRemove}

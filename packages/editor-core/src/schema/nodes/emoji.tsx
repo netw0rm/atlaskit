@@ -25,23 +25,23 @@ export const emoji: NodeSpec = {
   attrs: {
     shortName: { default: '' },
     id: { default: '' },
-    fallback: { default: '' },
+    text: { default: '' },
   },
   parseDOM: [{
     tag: 'span[data-emoji-short-name]',
     getAttrs: (dom: Element) => ({
       shortName: dom.getAttribute('data-emoji-short-name')!,
       id: dom.getAttribute('data-emoji-id')!,
-      fallback: dom.getAttribute('data-emoji-fallback')!,
+      text: dom.getAttribute('data-emoji-text')!,
     })
   }],
   toDOM(node: any): [string, any, string] {
-    const { shortName, id, fallback } = node.attrs;
+    const { shortName, id, text } = node.attrs;
     const attrs = {
       'class': emojiStyle,
       'data-emoji-short-name': shortName,
       'data-emoji-id': id,
-      'data-emoji-fallback': fallback,
+      'data-emoji-text': text,
       'contenteditable': 'false',
     };
     // Don't render any text as it will be replaced quite quickly by
@@ -53,7 +53,7 @@ export const emoji: NodeSpec = {
 export const emojiNodeView = (providerFactory: ProviderFactory) => (node: any, view: any, getPos: () => number): NodeView => {
   let dom: HTMLElement | undefined = document.createElement('span');
   dom.className = emojiStyle;
-  const { shortName, id, fallback } = node.attrs;
+  const { shortName, id, text: fallback } = node.attrs;
 
   ReactDOM.render(
     <WithProviders

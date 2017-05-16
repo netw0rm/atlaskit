@@ -29,4 +29,5 @@ changed-packages
 # package bundle dirs
 es/
 lib/
+types/
 umd/

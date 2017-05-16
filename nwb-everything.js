@@ -67,7 +67,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   }
 
   const pkgJson = require(pkg);
-  const pkgJsonBasename = pkg.name.split('/')[1];
+  const pkgJsonBasename = pkgJson.name.split('/')[1];
 
   if (!pkgJson.scripts || !pkgJson.scripts.prepublish) {
     return;

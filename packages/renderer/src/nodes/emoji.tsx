@@ -4,13 +4,14 @@ import { EmojiId, EmojiProvider, ResourcedEmoji } from '@atlaskit/emoji';
 
 export interface Props {
   emojiId: EmojiId;
+  text: string;
   emojiProvider?: Promise<EmojiProvider>;
 }
 
 export default class Emoji extends PureComponent<Props, {}> {
 
   render() {
-    const { emojiProvider, emojiId } = this.props;
+    const { emojiProvider, emojiId, text } = this.props;
 
     if (emojiProvider) {
       return (
@@ -21,7 +22,6 @@ export default class Emoji extends PureComponent<Props, {}> {
       );
     }
 
-    const text = emojiId.fallback || emojiId.shortName;
     return <span>{text}</span>;
   }
 }

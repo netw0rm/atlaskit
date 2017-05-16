@@ -8,7 +8,7 @@
   "main": "dist/bundle.css",
   "scripts": {
     "prepublish": "lessc src/index.less dist/bundle.css",
-    "storybook": "PACKAGE=css-reset ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001"
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001"
   },
   "files": [
     "dist"

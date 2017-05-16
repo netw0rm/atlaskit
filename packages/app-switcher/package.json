@@ -45,6 +45,5 @@
     "fabric",
     "ui"
   ],
-  "devDependencies": {},
-  "lint": "../../node_modules/.bin//eslint --color --format \"../../node_modules/eslint-friendly-formatter\" . --ext .js --ext .jsx"
+  "devDependencies": {}
 }

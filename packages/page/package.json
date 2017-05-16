@@ -52,6 +52,5 @@
     "@atlaskit/util-readme": "^1.0.0",
     "react-lorem-component": "^0.11.0",
     "react-syntax-highlighter": "^4.0.1"
-  },
-  "lint": "../../node_modules/.bin//eslint --color --format \"../../node_modules/eslint-friendly-formatter\" . --ext .js --ext .jsx"
+  }
 }

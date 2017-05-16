@@ -59,6 +59,5 @@
       "name": "Thorsten B"
     }
   ],
-  "license": "Apache-2.0",
-  "lint": "../../node_modules/.bin//eslint --color --format \"../../node_modules/eslint-friendly-formatter\" . --ext .js --ext .jsx"
+  "license": "Apache-2.0"
 }

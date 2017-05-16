@@ -113,13 +113,12 @@ export class BlockTypeState {
 
     let blockType;
     const { $from, $to } = state.selection;
-    const getNodeBlockType = this.nodeBlockType.bind(this);
     state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
       const resolvedPosDepth = state.doc.resolve(pos).depth;
       if (node.isBlock && resolvedPosDepth === 0) {
         if (!blockType) {
-          blockType = getNodeBlockType(node);
-        } else if (blockType !== OTHER && blockType !== getNodeBlockType(node)) {
+          blockType = this.nodeBlockType(node);
+        } else if (blockType !== OTHER && blockType !== this.nodeBlockType(node)) {
           blockType = OTHER;
         }
       }

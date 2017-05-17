@@ -96,6 +96,8 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
 
   if (isStorybookPackage) {
     pkgJson.scripts.storybook = `${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`;
+  } else if (pkgJson.scripts.storybook) {
+    delete pkgJson.scripts.storybook;
   }
 
   if (isTsPackage) {

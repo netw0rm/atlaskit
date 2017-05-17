@@ -36,7 +36,8 @@ import {
   mentionNodeView,
   ProviderFactory,
   MediaPluginState,
-  MediaState
+  MediaState,
+  Slice,
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -300,6 +301,18 @@ export default class Editor extends PureComponent<Props, State> {
             analyticsService.trackEvent('atlassian.editor.paste');
             return false;
           }
+        },
+        handlePaste(view: EditorView, event: any, slice: Slice): boolean {
+          const { clipboardData } = event;
+          const html = clipboardData && clipboardData.getData('text/html');
+          if (html) {
+            const doc = parse(html.replace(/^<meta[^>]+>/, ''));
+            view.dispatch(
+              view.state.tr.replaceSelection(new Slice(doc.content, slice.openLeft, slice.openRight))
+            );
+            return true;
+          }
+          return false;
         },
       });
 

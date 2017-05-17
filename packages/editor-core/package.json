@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "18.0.0",
+  "version": "20.0.0",
   "config": {
     "access": "public"
   },
@@ -37,7 +37,7 @@
     "@atlaskit/button": "^1.0.10",
     "@atlaskit/button-group": "^1.0.7",
     "@atlaskit/single-select": "^1.10.0",
-    "@atlaskit/droplist": "^3.8.0",
+    "@atlaskit/droplist": "^3.8.1",
     "@atlaskit/emoji": "^14.1.0",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/media-core": "^6.1.0",
@@ -74,6 +74,7 @@
     "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",
     "js-search": "^1.3.3",
+    "prosemirror-dev-tools": "^1.3.3",
     "sinon": "^1.17.6",
     "string.prototype.repeat": "^0.2.0",
     "thenable": "^1.0.0",

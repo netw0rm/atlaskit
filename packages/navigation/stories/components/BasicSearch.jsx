@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import Spinner from '@atlaskit/spinner';
 import { AtlassianIcon, CrossIcon, DashboardIcon } from '@atlaskit/icon';
 import { AkSearch, AkNavigationItem } from '../../src/index';
+import Spinner from '@atlaskit/spinner';
 
 const data = [
   {

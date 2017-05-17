@@ -1,29 +1,29 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import SearchInner from '../styled/SearchInner';
 import SearchBox from '../styled/SearchBox';
-import SearchClearButtonOuter from '../styled/SearchClearButtonOuter';
 import SearchClearButton from '../styled/SearchClearButton';
-import SearchResults from '../styled/SearchResults';
+import SearchClearButtonOuter from '../styled/SearchClearButtonOuter';
+import SearchInner from '../styled/SearchInner';
 import SearchInput from '../styled/SearchInput';
+import SearchResults from '../styled/SearchResults';
 
 export default class Search extends PureComponent {
   static propTypes = {
-    placeholder: PropTypes.string,
+    busyIcon: PropTypes.node,
     clearIcon: PropTypes.node,
     children: PropTypes.node,
+    delayBusyStateBy: PropTypes.number,
+    isBusy: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onSearchClear: PropTypes.func,
+    placeholder: PropTypes.string,
     value: PropTypes.string,
-    busyIcon: PropTypes.node,
-    isBusy: PropTypes.bool,
-    delayBusyStateBy: PropTypes.number,
   }
 
   static defaultProps = {
-    placeholder: 'Search',
     delayBusyStateBy: 500,
     isBusy: false,
+    placeholder: 'Search',
   }
 
   state = {

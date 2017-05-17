@@ -9,7 +9,7 @@ import {
   CardViewProps,
   MediaIdentifier,
 } from '@atlaskit/media-card';
-import Media, { MediaNode } from '../../src/nodes/media';
+import Media, { MediaNode } from '../../../src/nodes/media';
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
   viewContext: Promise.resolve({})

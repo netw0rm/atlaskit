@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { getValidNode, renderNode } from '../../src/nodes';
+import { getValidNode, renderNode } from '../../../src/nodes';
 
 describe('Nodes', () => {
   describe('getValidNode', () => {

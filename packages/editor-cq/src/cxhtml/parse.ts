@@ -360,7 +360,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         }
 
         if (node.hasAttribute('file-mime-type')) {
-          mediaNode.fileName = node.getAttribute('file-mime-type')!;
+          mediaNode.fileMimeType = node.getAttribute('file-mime-type')!;
         }
 
         return mediaNode;

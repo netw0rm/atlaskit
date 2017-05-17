@@ -243,7 +243,7 @@ export const emoji = (attrs: { shortName: string, id?: string, fallback?: string
     text: attrs.fallback || attrs.shortName,
   };
   return sampleSchema.nodes.emoji.createChecked(emojiNodeAttrs);
-}
+};
 export const mention = (attrs: { id: string, text?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});

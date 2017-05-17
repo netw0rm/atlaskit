@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Code from '../../src/marks/code';
+import Code from '../../../src/marks/code';
 
 describe('<Code />', () => {
   const mark = shallow(<Code>This is code</Code>);

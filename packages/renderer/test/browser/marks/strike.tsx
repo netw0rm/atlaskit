@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Mono from '../../src/marks/mono';
+import Strike from '../../../src/marks/strike';
 
-describe('<Mono />', () => {
-  const mark = shallow(<Mono>This is monospace</Mono>);
+describe('<Strike />', () => {
+  const mark = shallow(<Strike>Strike this</Strike>);
 
   it('should wrap content with <span>-tag', () => {
     expect(mark.is('span')).to.equal(true);
   });
 
   it('should output correct html', () => {
-    expect(mark.html()).to.equal('<span style="font-family:monospace;white-space:pre-wrap;">This is monospace</span>');
+    expect(mark.html()).to.equal('<span style="text-decoration:line-through;">Strike this</span>');
   });
 });

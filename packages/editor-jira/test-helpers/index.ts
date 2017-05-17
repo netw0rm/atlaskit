@@ -13,14 +13,14 @@ export function checkParse(description: string, schema, htmls: string[], node: N
       expect(actual).to.deep.equal(node);
     }
   });
-};
+}
 
 export function checkEncode(description: string, schema, node: Node, html: string) {
   it(`encodes HTML: ${description}`, () => {
     const encoded = encode(node, schema);
     expect(encoded).to.deep.equal(html);
   });
-};
+}
 
 export function checkParseEncodeRoundTrips(description: string, schema, html: string, node: Node, customEncoders?) {
   it(`parses HTML: ${description}`, () => {
@@ -37,4 +37,4 @@ export function checkParseEncodeRoundTrips(description: string, schema, html: st
     const roundTripped = parse(encode(node, schema, customEncoders), schema);
     expect(roundTripped).to.deep.equal(node);
   });
-};
+}

@@ -1,4 +1,5 @@
 import Button from '@atlaskit/button';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import { action, storiesOf } from '@kadira/storybook';
 import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as React from 'react';
@@ -49,7 +50,7 @@ storiesOf(name, module)
           // tslint:disable-next-line:jsx-no-lambda
           ref={elem => reactEditorComponent = elem}
           onSubmit={action('submit')}
-          mediaProvider={storyMediaProviderFactory()}
+          mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
         />
       </div>
     );

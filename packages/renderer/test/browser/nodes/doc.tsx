@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Doc from '../../src/nodes/doc';
+import Doc from '../../../src/nodes/doc';
 
 describe('<Doc/>', () => {
   const paragraph = shallow(<Doc>This is an empty document</Doc>);

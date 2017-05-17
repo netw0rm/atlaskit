@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import {
-  CardEventHandler,
-  CardClick,
   Context,
   ContextConfig,
   ContextFactory,
@@ -14,14 +12,14 @@ import {
 import {
   Card,
   CardDimensions,
+  CardEvent,
   CardView,
   MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
 
-import {
-  Renderable,
-} from './';
+import { Renderable } from './';
+import { CardEventClickHandler } from '../config';
 
 export interface MediaNode extends Renderable {
   type: string;
@@ -34,7 +32,7 @@ export interface MediaNode extends Renderable {
 
 export interface MediaProps {
   mediaProvider?: Promise<MediaProvider>;
-  onClick?: CardEventHandler;
+  onClick?: CardEventClickHandler;
   cardDimensions?: CardDimensions;
   item: MediaNode;
 }
@@ -131,8 +129,8 @@ export default class Media extends PureComponent<MediaProps, State> {
     this.setState({ ...mediaState });
   }
 
-  private handleLinkCardViewClick(item: any, event: Event) {
-    event.preventDefault();
+  private handleLinkCardViewClick(result: CardEvent) {
+    result.event.preventDefault();
   }
 
   private renderLink() {
@@ -155,7 +153,7 @@ export default class Media extends PureComponent<MediaProps, State> {
         dimensions={cardDimensions}
 
         // SharedCardProps
-        actions={[ CardClick(this.handleLinkCardViewClick) ]}
+        onClick={this.handleLinkCardViewClick}
       />;
     }
 
@@ -175,7 +173,7 @@ export default class Media extends PureComponent<MediaProps, State> {
         context={viewContext}
         dimensions={cardDimensions}
         identifier={id ? mediaIdentifier : urlPreviewIdentifier}
-        actions={[ CardClick(onClick || noop) ]}
+        onClick={onClick || noop}
       />
     );
   }
@@ -203,7 +201,7 @@ export default class Media extends PureComponent<MediaProps, State> {
           collectionName: collection
         }}
         selectable={false}
-        actions={[ CardClick(onClick || noop) ]}
+        onClick={onClick || noop}
       />
     );
   }

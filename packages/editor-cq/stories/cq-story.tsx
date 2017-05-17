@@ -1,4 +1,5 @@
 import '!style!css!less!./cq-styles.less';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -102,7 +103,7 @@ storiesOf(name, module)
       <Editor
         isExpandedByDefault={true}
         mentionProvider={mentionProvider}
-        mediaProvider={storyMediaProviderFactory()}
+        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
         onCancel={CANCEL_ACTION}
         onSave={SAVE_ACTION}
         onChange={handleChange}

@@ -90,6 +90,7 @@ class LogIn extends Component {
     return (
       <LoginList>
         <UserInfoItem>{this.renderUserInfo()}</UserInfoItem>
+        <ListLink><a href="/apps/">My Apps</a></ListLink>
         <ListLink><a href="/account/logout">Log out</a></ListLink>
       </LoginList>
     );

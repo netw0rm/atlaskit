@@ -1,124 +1,24 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styled from 'styled-components';
 import { AtlassianLogo } from '@atlaskit/logo';
 import ChevronDownIconIcon from '@atlaskit/icon/glyph/chevron-down';
-import {
-  akColorB400,
-  akColorN0,
-  akTypographyMixins,
-} from '@atlaskit/util-shared-styles';
-import { foundationLargeWidth, gridSize, setAnchorStates } from './util/style';
 import HeaderLinks from './HeaderLinks';
 import HeaderSearch from './HeaderSearch';
-// import LogIn from './LogIn';
-
-const headerHeight = gridSize * 11;
-
-/* eslint-disable no-confusing-arrow */
-const PrimaryFullWidthWrapper = styled.div`
-  background-color: ${akColorB400};
-  height: auto;
-  padding: 0 ${gridSize}px;
-  position: relative;
-  width: 100%;
-
-  @media screen and (min-width: ${foundationLargeWidth}) {
-    height: ${headerHeight}px;
-  }
-`;
-/* eslint-enable no-confusing-arrow */
-
-const Row = styled.div`
-  height: 100%;
-`;
-
-const Column = styled.div`
-  align-items: baseline;
-  color: ${akColorN0};
-  display: flex;
-  height: 100%;
-
-  ${setAnchorStates`
-    color: inherit;
-  `}
-`;
-
-const Title = styled.h1`
-  ${akTypographyMixins.h700}
-  margin-top: ${gridSize * 4}px;
-  padding-right: ${gridSize * 2}px;
-
-  ${setAnchorStates`
-    text-decoration: none;
-    white-space: nowrap;
-  `}
-`;
-
-/* eslint-disable no-confusing-arrow */
-const ScreenHeightWrapper = styled.div`
-  height: ${props => props.isOpen ? '100vh' : `${headerHeight}px`};
-  overflow: hidden;
-  transition: height 0.5s;
-`;
-/* eslint-enable no-confusing-arrow */
-
-const Dropdown = styled.div`
-  height: calc(100% - ${headerHeight}px + 1px);
-`;
-
-const StyledDiv = styled.div`
-  position: relative;
-  top: ${gridSize}px;
-`;
-
-// TODO RAD-26 Ask Atlaskit team why @atlaskit/logo doesn't properly align on the baseline.
-const StyledAnchor = styled.a`
-  position: relative;
-  top: ${gridSize}px;
-`;
-
-const MobileTitle = styled.span`
-  ${akTypographyMixins.h700}
-  display: inline;
-  font-size: 20px;
-  margin: ${gridSize * 4}px ${gridSize}px;
-
-  ${setAnchorStates`
-    text-decoration: none;
-  `}
-`;
-
-const SecondaryFullWidthWrapper = styled.div`
-  background-color: #F1F2F6;
-  height: 100%;
-  width: 100%;
-  padding: ${gridSize}px;
-`;
-
-const SecondaryLink = styled.a`
-  color: white;
-
-  &:hover {
-    color: white;
-    text-decoration: underline !important;
-  }
-`;
-
-const SecondaryLinksWrapper = styled.div`
-  flex-grow: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 45px;
-
-  & > * {
-    margin-left: ${gridSize * 2}px;
-  }
-
-  & > *:first-child {
-    margin-left: 0;
-  }
-`;
+import LogIn from './LogIn';
+import {
+  HeaderWrapper,
+  PrimaryFullWidthWrapper,
+  Row,
+  Column,
+  Title,
+  ScreenHeightWrapper,
+  Dropdown,
+  StyledDiv,
+  StyledAnchor,
+  MobileTitle,
+  SecondaryFullWidthWrapper,
+  SecondaryLink,
+  SecondaryLinksWrapper,
+} from './styled';
 
 export class Header extends PureComponent {
   static propTypes = {
@@ -241,7 +141,7 @@ export class Header extends PureComponent {
             <SecondaryLinksWrapper>
               <HeaderSearch />
               <SecondaryLink href={'/docs/'}>All docs</SecondaryLink>
-
+              <LogIn />
             </SecondaryLinksWrapper>
           </Column>
         </Row>
@@ -251,10 +151,10 @@ export class Header extends PureComponent {
 
   render() {
     return (
-      <div>
+      <HeaderWrapper>
         { this._renderDesktopView() }
         { this._renderSmallScreenView() }
-      </div>
+      </HeaderWrapper>
     );
   }
 }

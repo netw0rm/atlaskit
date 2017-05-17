@@ -11,7 +11,7 @@ storiesOf('Header', module)
   .add('Standalone header without links', () => (
     <Header
       logoHref="#home"
-      title="JIRA Service Desk Cloud"
+      title="Atlassian Developer"
       titleHref="#jsdcloud"
     />
   ))

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Underline from '../../src/marks/underline';
+import Underline from '../../../src/marks/underline';
 
 describe('<Underline />', () => {
   const mark = shallow(<Underline>This is underlined</Underline>);

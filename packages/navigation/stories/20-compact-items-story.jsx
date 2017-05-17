@@ -51,6 +51,7 @@ storiesOf(name, module)
               spacing="none"
             />
           }
+          isCompact
           title="Rooms"
         >
           <CompactItem href="#1">Front deskers</CompactItem>

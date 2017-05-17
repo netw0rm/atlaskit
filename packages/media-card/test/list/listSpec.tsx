@@ -1,3 +1,4 @@
+/* tslint:disable:no-unused-expression */
 import * as React from 'react';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -8,6 +9,7 @@ import 'rxjs/add/observable/of';
 
 import {CardList, CardListProps, CardListState} from '../../src/list';
 import {MediaCard} from '../../src/mediaCard';
+import {InfiniteScroll} from '../../src/list/infiniteScroll';
 
 describe('CardList', () => {
 
@@ -119,4 +121,58 @@ describe('CardList', () => {
     card.instance().loadNextPage();
     expect(card.state().loading).to.be.false;
   });
+
+  describe('.render()', () => {
+
+    it('should render the loading view when the list is loading', () => {
+      const context = fakeContext();
+      const collectionName = 'MyMedia';
+      const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+      list.setState({loading: true});
+      expect(list.children().text()).to.contain('loading...');
+    });
+
+    it('should render the empty view when the list is not loading and the error is an axios response with a status of 404', () => {
+      const context = fakeContext();
+      const collectionName = 'MyMedia';
+      const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+      list.setState({loading: false, error: {response: {status: 404}}});
+      expect(list.children().text()).to.contain('No items');
+    });
+
+    it('should render the error view when the the list is not loading and the error is not an axios response with a status of 404', () => {
+      const context = fakeContext();
+      const collectionName = 'MyMedia';
+      const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+      list.setState({loading: false, error: new Error()});
+      expect(list.children().text()).to.contain('ERROR');
+    });
+
+    // TODO: when would this even occur? loading=true is set when the collection is set! and error=xyz is set when the collection is undefined
+    it('should render the loading view when the the list is not loading, there is no error and the collection has not been retrieved', () => {
+      const context = fakeContext();
+      const collectionName = 'MyMedia';
+      const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+      list.setState({loading: false, error: undefined, collection: undefined});
+      expect(list.children().text()).to.contain('loading...');
+    });
+
+    it('should render wrapped in an <InfiniteScroll> when useInfiniteScroll=true', () => {
+      const context = fakeContext();
+      const collectionName = 'MyMedia';
+      const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName} useInfiniteScroll={true}/>) as any;
+      list.setState({loading: false, error: undefined, collection: {items: []}});
+      expect(list.is(InfiniteScroll)).to.be.true;
+    });
+
+    it('should not render wrapped in an <InfiniteScroll> when useInfiniteScroll=false', () => {
+      const context = fakeContext();
+      const collectionName = 'MyMedia';
+      const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName} useInfiniteScroll={false}/>) as any;
+      list.setState({loading: false, error: undefined, collection: {items: []}});
+      expect(list.is(InfiniteScroll)).to.be.false;
+    });
+
+  });
+
 });

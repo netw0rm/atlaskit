@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 const style = {
   h1: {
@@ -38,4 +39,3 @@ export default class Heading extends PureComponent {
     return <HeadingTag style={style[HeadingTag]}>{children}</HeadingTag>;
   }
 }
-

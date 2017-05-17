@@ -33,7 +33,7 @@ export default class Avatar extends PureComponent {
     appearance: PropTypes.oneOf(APPEARANCE_TYPE.values),
     /** Content to use as a custom presence indicator. Accepts any React element.
     For best results, it is recommended to use square content with height and
-    width of 100% */
+    width of 100%. */
     icon: PropTypes.element,
     /** Defines the label for the Avatar used by screen readers as fallback
     content if the image fails to load. */
@@ -42,11 +42,11 @@ export default class Avatar extends PureComponent {
     Accepts any color argument that the border-color CSS property accepts. */
     presenceBorderColor: PropTypes.string,
     /** Indicates a user's online status by showing a small icon on the avatar.
-    Refer to presence values on the Presence component */
+    Refer to presence values on the Presence component. */
     presence: PropTypes.oneOf(PRESENCE_TYPE.values),
     /** Defines the size of the avatar */
     size: PropTypes.oneOf(SIZE.values),
-    /** A url to load an image from (this can also be a base64 encoded image) */
+    /** A url to load an image from (this can also be a base64 encoded image). */
     src: PropTypes.string,
   }
 
@@ -57,11 +57,17 @@ export default class Avatar extends PureComponent {
     size: SIZE.defaultValue,
   }
 
-  state = {
-    hasError: false,
-    isLoading: false,
+  // We set isLoading conditionally here in the event that the src prop is applied at mount.
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hasError: false,
+      isLoading: !!props.src,
+    };
   }
 
+  // We set isLoading conditionally here in the event that the src prop is updated after mount.
   componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
       this.setState({ isLoading: true });
@@ -90,15 +96,14 @@ export default class Avatar extends PureComponent {
     return (
       <Container size={size}>
         <ImageWrapper appearance={appearance} size={size} isLoading={isLoading} aria-label={label}>
-          {isLoading ? null : (
-            <Image
-              alt={label}
-              src={src}
-              onLoad={this.imageLoadedHandler}
-              onError={this.imageErrorHandler}
-              hasError={hasError}
-            />
-          )}
+          <Image
+            alt={label}
+            isLoading={isLoading}
+            src={src}
+            onLoad={this.imageLoadedHandler}
+            onError={this.imageErrorHandler}
+            hasError={hasError}
+          />
         </ImageWrapper>
 
         {showPresence ? (

@@ -26,6 +26,7 @@ import {
   dropdownItemsWithGroups,
   simpleDropdownItemsWithCheckboxes,
   simpleDropdownItemsWithRadio,
+  itemsWithTooltips,
 } from './DropdownsData';
 
 const itemsOverride = `const simpleDropdownItems = ${JSON.stringify(simpleDropdownItems, null, 2)}`;
@@ -208,4 +209,15 @@ storiesOf(name, module)
     'Dropdown that fits container width',
     () => (WideDropdown),
     { scripts: [WideDropdownRaw] },
-  );
+  )
+  .addCodeExampleStory('Dropdown menu with tooltips', () => (
+    <div style={{ padding: '40px' }}>
+      <p>Try hovering over items in the dropdown</p>
+      <div style={{ padding: '20px 0', width: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <DropdownMenu triggerType="button" items={itemsWithTooltips}>
+          Open me
+        </DropdownMenu>
+      </div>
+    </div>
+  ))
+;

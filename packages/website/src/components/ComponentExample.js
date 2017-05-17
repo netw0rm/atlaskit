@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
-import CodeIcon from '@atlaskit/icon/glyph/code';
+import ToggleIcon from '@atlaskit/icon/glyph/code';
 import 'prismjs/themes/prism-tomorrow.css';
 import {
   akColorN20,
@@ -49,7 +49,9 @@ export default class Example extends PureComponent {
   render() {
     const { Component, title, src } = this.props;
     const { isHover, isSourceVisible, isSourceClosing } = this.state;
-    const toggleLabel = 'Toggle Code Snippet';
+    const toggleLabel = isSourceVisible
+      ? 'Hide Code Snippet'
+      : 'Show Code Snippet';
 
     const m = Prism.highlight(src, Prism.languages.jsx);
 
@@ -62,8 +64,8 @@ export default class Example extends PureComponent {
           title={toggleLabel}
           open={isSourceVisible}
         >
-          <Title>{title}</Title>
-          <CodeIcon label={toggleLabel} />
+          <ToggleTitle>{title}</ToggleTitle>
+          <ToggleIcon label={toggleLabel} />
         </Toggle>
 
         {isSourceVisible ? (
@@ -83,6 +85,8 @@ export default class Example extends PureComponent {
   }
 }
 
+const TRANSITION_DURATION = '200ms';
+
 const getWrapperBg = (props) => {
   let color = akColorN20;
 
@@ -98,7 +102,7 @@ const Wrapper = styled.div`
   border-radius: 5px;
   margin-top: 20px;
   padding: 0 ${akGridSize} ${akGridSize};
-  transition: background-color 200ms;
+  transition: background-color ${TRANSITION_DURATION};
 `;
 
 const Toggle = styled.div`
@@ -108,8 +112,9 @@ const Toggle = styled.div`
   display: flex;
   justify-content: space-between;
   padding: ${akGridSize};
+  transition: color ${TRANSITION_DURATION}, fill ${TRANSITION_DURATION};
 `;
-const Title = styled.h4`
+const ToggleTitle = styled.h4`
   color: inherit;
   margin: 0;
 `;
@@ -123,7 +128,7 @@ const animOut = keyframes`
   to { max-height: 0; opacity: 0; }
 `;
 const Code = styled.div`
-  animation: ${props => (props.closing ? animOut : animIn)} 200ms ease-out;
+  animation: ${props => (props.closing ? animOut : animIn)} ${TRANSITION_DURATION} ease-out;
   background-color: ${akColorN800};
   border-radius: 3px;
   color: ${akColorN60};

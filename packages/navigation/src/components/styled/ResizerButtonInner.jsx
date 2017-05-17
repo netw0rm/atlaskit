@@ -29,7 +29,6 @@ const ResizerButtonInner = styled.button`
 
   &:before, &:after {
     content: '';
-    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
     background: ${akColorB200};
     width: ${toggleArrowWidth}px;
     border-radius: ${toggleArrowHeight}px;

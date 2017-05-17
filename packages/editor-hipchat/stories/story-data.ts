@@ -1,6 +1,6 @@
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
-import MentionResource from '../test/_mock-ak-mention-resource';
+import MentionResource from '../test/browser/_mock-ak-mention-resource';
 
 export const resourceProvider = new MentionResource({
   minWait: 10,

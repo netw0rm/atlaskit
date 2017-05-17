@@ -27,7 +27,7 @@ import {
   smallTransparentImage
 } from '@atlaskit/media-test-helpers';
 
-import {CardAppearance} from '../src';
+import {CardAppearance, CardEvent} from '../src';
 import {CardView} from '../src/cardView';
 
 const actions = [
@@ -35,6 +35,16 @@ const actions = [
   {label: 'Close', type: undefined, handler: () => { action('close')(); }},
   {label: 'Delete', type: CardActionType.delete, handler: () => { action('delete')(); }}
 ];
+
+const clickHandler = (result: CardEvent) => {
+  result.event.preventDefault();
+  action('click')(result.mediaItemDetails);
+};
+
+const mouseEnterHandler = (result: CardEvent) => {
+  result.event.preventDefault();
+  action('mouseEnter')(result.mediaItemDetails);
+};
 
 const createErrorAndLoadingCards = (appearance: CardAppearance, mediaItemType: MediaItemType) => {
   return [
@@ -63,6 +73,75 @@ const createMenuActionCards = (appearance: CardAppearance, metadata: MediaItemDe
       content: <CardView appearance={appearance} status="complete" metadata={metadata} actions={actions.filter(a => a.type === CardActionType.delete)} />
     }
   ];
+};
+
+const createApiCards = (appearance: CardAppearance, metadata: MediaItemDetails) => {
+  // API methods
+  const apiCards = [
+    {
+      title: 'status = complete',
+      content: (
+        <CardView
+          status="complete"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
+    },
+    {
+      title: 'status = error',
+      content: (
+        <CardView
+          status="error"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
+    },
+    {
+      title: 'status = loading',
+      content: (
+        <CardView
+          status="loading"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
+    }
+  ];
+
+  const uploadCardWithApi = {
+    title: 'status = uploading',
+    content: (
+      <CardView
+        status="uploading"
+        appearance={appearance}
+        metadata={metadata}
+        dataURI={gifDataUri}
+        onClick={clickHandler}
+        onMouseEnter={mouseEnterHandler}
+        actions={actions}
+      />
+    )
+  };
+
+  if (appearance === 'image') {
+    return [...apiCards, uploadCardWithApi];
+  }
+
+  return apiCards;
 };
 
 const createFileCardsWithDifferentDataURIs = (appearance: CardAppearance) => {
@@ -174,6 +253,9 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
   // selectable
   const fileSelectableCards = createSelectableCards(appearance, imageFileDetails, 'file');
 
+  // api cards
+  const apiCards = createApiCards(appearance, genericFileDetails);
+
   // missing metadata and/or data uri
   const fileMissingMetadataOrDataUriCards = createMissingMetadataFileCards(appearance);
 
@@ -190,6 +272,9 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
       <h4>Menu actions</h4>
       <StoryList>{fileMenuActionsCards}</StoryList>
+
+      <h4>API methods</h4>
+      <StoryList>{apiCards}</StoryList>
 
       {appearance === 'image' || appearance === 'auto' ? (
           <div>
@@ -279,6 +364,9 @@ const generateStoriesForLinksWithAppearance = (appearance: CardAppearance) => {
   // menu actions
   const linkMenuActionsCards = createMenuActionCards(appearance, genericLinkDetails);
 
+  // api methods
+  const apiCards = createApiCards(appearance, genericLinkDetails);
+
   // missing metadata
   const linkMissingMetadataCards = createMissingMetadataLinkCards(appearance);
 
@@ -292,6 +380,9 @@ const generateStoriesForLinksWithAppearance = (appearance: CardAppearance) => {
 
       <h4>Menu actions</h4>
       <StoryList>{linkMenuActionsCards}</StoryList>
+
+      <h4>API methods</h4>
+      <StoryList>{apiCards}</StoryList>
 
       <h4>Missing metadata</h4>
       <StoryList>{linkMissingMetadataCards}</StoryList>

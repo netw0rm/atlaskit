@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import DropdownList, { Group, Item } from '@atlaskit/droplist';
 import { akColorN800 } from '@atlaskit/util-shared-styles';
-import Arrow from '@atlaskit/icon/glyph/arrowrightlong';
+import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
 import Lozenge from '@atlaskit/lozenge';
 
 const DroplistOverview = class extends Component {

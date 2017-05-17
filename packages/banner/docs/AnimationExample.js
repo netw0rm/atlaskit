@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import HelpIcon from 'ak-icon/glyph/help';
-import Banner from '../src';
+import HelpIcon from '@atlaskit/icon/glyph/help';
+import Banner from '@atlaskit/banner';
 import Button from '@atlaskit/button';
 
 const Icon = <HelpIcon label="Info icon" />;

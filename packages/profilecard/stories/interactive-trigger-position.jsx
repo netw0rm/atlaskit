@@ -76,6 +76,7 @@ export default class InteractiveTrigger extends PureComponent {
       <div>
         <p>Hover over the circle to show the profilecard and click to change the cards position.</p>
         <AkProfilecardTrigger
+          cloudId="DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048"
           userId="3"
           position={positionsOrder[this.state.positionIdx]}
           resourceClient={this.props.resourceClient}

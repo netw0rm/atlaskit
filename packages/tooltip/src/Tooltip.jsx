@@ -8,11 +8,17 @@ import { positionToPopperPosition, getAnimationClass } from './internal/helpers'
 
 export default class StatelessTooltip extends PureComponent {
   static propTypes = {
+    /** Position relative to the child component. */
     position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
+    /** Text to appear inside the tooltip. */
     description: PropTypes.string,
+    /** Set whether the tooltip is visible or not. */
     visible: PropTypes.bool,
+    /** Handler called when the mouse enters the child component. */
     onMouseOver: PropTypes.func,
+    /** Handler called when the mouse leaves the child component. */
     onMouseOut: PropTypes.func,
+    /** Component the tooltip will be relative to. */
     children: PropTypes.node,
   }
 
@@ -45,7 +51,7 @@ export default class StatelessTooltip extends PureComponent {
       <div onMouseOver={props.onMouseOver} onMouseOut={props.onMouseOut}>
         <Layer
           position={positionToPopperPosition(props.position)}
-          autoPosition
+          autoFlip
           content={content}
           onFlippedChange={this.handleLayerFlipChange}
         >

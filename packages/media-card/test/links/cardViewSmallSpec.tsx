@@ -40,4 +40,18 @@ describe('LinkCardViewSmall', () => {
 
     expect(card.find(CardGenericViewSmall).props().subtitle).to.deep.equal(site);
   });
+
+  it('should pass onClick handlers through to the generic view component', () => {
+    const handler = () => {};
+    const card = shallow(<LinkCardViewSmall title={title} linkUrl={linkUrl} onClick={handler} />);
+
+    expect(card.find(CardGenericViewSmall).props().onClick).to.deep.equal(handler);
+  });
+
+  it('should pass onMouseEnter handlers through to the generic view component', () => {
+    const handler = () => {};
+    const card = shallow(<LinkCardViewSmall title={title} linkUrl={linkUrl} onMouseEnter={handler} />);
+
+    expect(card.find(CardGenericViewSmall).props().onMouseEnter).to.deep.equal(handler);
+  });
 });

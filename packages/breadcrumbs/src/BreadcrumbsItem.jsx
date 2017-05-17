@@ -16,6 +16,7 @@ export default class BreadcrumbsItem extends PureComponent {
     iconAfter: PropTypes.element,
     /** The text to appear within the breadcrumb as a link. */
     text: PropTypes.string,
+    target: PropTypes.oneOf(['_blank', '_parent', '_self', '_top']),
   }
 
   static defaultProps = {
@@ -61,6 +62,7 @@ export default class BreadcrumbsItem extends PureComponent {
       iconBefore={this.props.iconBefore}
       spacing="compact"
       href={this.props.href}
+      target={this.props.target}
       ref={el => (this.button = el)}
     >
       {this.props.text}

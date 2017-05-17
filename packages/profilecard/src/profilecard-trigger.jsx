@@ -73,8 +73,6 @@ export default class ProfilecardTrigger extends PureComponent {
   }
 
   renderProfilecard() {
-    if (!this.state.visible) { return null; }
-
     const animationClass = getAnimationClass(
       this.props.position,
       this.state.isFlipped
@@ -105,15 +103,17 @@ export default class ProfilecardTrigger extends PureComponent {
         onMouseEnter={this.showProfilecard}
         onMouseLeave={this.hideProfilecard}
       >
-        <AkLayer
-          autoFlip
-          content={this.renderProfilecard()}
-          offset="0 4"
-          onFlippedChange={this.handleLayerFlipChange}
-          position={this.props.position}
-        >
-          {this.props.children}
-        </AkLayer>
+        {
+          this.state.visible ? <AkLayer
+            autoFlip
+            content={this.renderProfilecard()}
+            offset="0 4"
+            onFlippedChange={this.handleLayerFlipChange}
+            position={this.props.position}
+          >
+            {this.props.children}
+          </AkLayer> : this.props.children
+        }
       </div>
     );
   }

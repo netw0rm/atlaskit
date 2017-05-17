@@ -167,13 +167,43 @@ storiesOf('CardList', {})
        }]}
      </StoryList>
    ))
-   .add('Custom actions dropdown', () => (
-     <CardList
-       context={context}
-       collectionName={defaultCollectionName}
-       actions={cardsActions}
-     />
-   ))
+   .add('Actions and exposed events', () => {
+     const cardClickHandler = (result) => {
+       result.event.preventDefault();
+       action('click')(result.mediaItemDetails);
+     };
+
+     const cardLists = [
+       {
+          title: 'Actions',
+          content: (
+            <CardList
+              context={context}
+              collectionName={defaultCollectionName}
+              actions={cardsActions}
+            />
+          )
+       },
+       {
+          title: 'onCardClick',
+          content: (
+            <CardList
+              context={context}
+              collectionName={defaultCollectionName}
+              onCardClick={cardClickHandler}
+            />
+          )
+       }
+     ];
+
+     return (
+       <div style={{margin: '40px'}}>
+         <StoryList>
+           {cardLists}
+         </StoryList>
+       </div>
+     );
+   })
    .add('Custom loading state', () => {
      const customLoadingComponent = <div>this is a custom loading...</div>;
      return <CardList

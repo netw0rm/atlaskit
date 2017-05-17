@@ -12,7 +12,6 @@ import {MediaCard} from '../../src/mediaCard';
 import {InfiniteScroll} from '../../src/list/infiniteScroll';
 
 describe('CardList', () => {
-
   it('should create a MediaItemProvider for each MediaItem in the collection', () => {
     const collectionName = 'MyMedia';
 
@@ -173,6 +172,23 @@ describe('CardList', () => {
       expect(list.is(InfiniteScroll)).to.be.false;
     });
 
-  });
+    it('should pass down onCardClick handler to each MediaCard in the list', () => {
+      const context = fakeContext();
+      const collectionName = 'MyMedia';
+      const item = {
+        details: {
+          id: 'some-file/link-id',
+          occurrenceKey: 'some-occurrence-key'
+        }
+      };
 
+      const onCardClickHandler = () => {};
+
+      const wrapper = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName} onCardClick={onCardClickHandler} />) as any;
+      wrapper.setState({loading: false, error: undefined, collection: {items: [item, item, item]}});
+      wrapper.find(MediaCard).forEach(card =>
+        expect(card.props().onClick).to.deep.equal(onCardClickHandler)
+      );
+    });
+  });
 });

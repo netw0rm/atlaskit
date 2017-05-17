@@ -5,8 +5,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import { MediaItem, MediaCollection, MediaCollectionItem, Context, CollectionAction, DataUriService } from '@atlaskit/media-core';
 import { CSSTransitionGroup } from 'react-transition-group';
+
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
-import { CardDimensions } from '../index';
+import { CardDimensions, CardEvent } from '../index';
 import { Provider } from '../card';
 import { MediaCard } from '../mediaCard';
 import { InfiniteScroll } from './infiniteScroll';
@@ -17,12 +18,12 @@ export interface CardListProps {
   collectionName: string;
 
   height?: number;
+  pageSize?: number;
 
   cardDimensions?: CardDimensions;
   cardAppearance?: 'small' | 'image';
 
-  pageSize?: number;
-
+  onCardClick?: (result: CardEvent) => void;
   actions?: Array<CollectionAction>;
 
   /**
@@ -202,7 +203,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     const cards = collection ? collection.items
       .map((mediaItem: MediaCollectionItem, index: number) => {
-        const {cardAppearance, cardDimensions} = this.props;
+        const {cardAppearance, cardDimensions, onCardClick} = this.props;
 
         if (!mediaItem.details || !mediaItem.details.id) {
           return null;
@@ -214,12 +215,13 @@ export class CardList extends Component<CardListProps, CardListState> {
               provider={this.providersByMediaItemId[mediaItem.details.id]}
               dataURIService={this.dataURIService}
 
+              appearance={cardAppearance}
               dimensions={{
                 width: this.cardWidth,
                 height: cardDimensions && cardDimensions.height
               }}
 
-              appearance={cardAppearance}
+              onClick={onCardClick}
               actions={cardActions(mediaItem)}
             />
           </CardListItemWrapper>

@@ -67,6 +67,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   }
 
   const pkgJson = require(pkg);
+  const pkgJsonBasename = pkgJson.name.split('/')[1];
 
   if (!pkgJson.scripts || !pkgJson.scripts.prepublish) {
     return;
@@ -88,10 +89,14 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
       ? `${binPath}/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'`
       : `${binPath}/eslint --color --format "${modPath}/eslint-friendly-formatter" --ext .js --ext .jsx src/ stories/ test/`,
     prepublish: `${binPath}/nwb build`,
-    storybook: `${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,
+    storybook: `PACKAGE=${pkgJsonBasename} ${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,
     test: getTestCommand(),
     'test:watch': getTestCommand({ watch: true }),
   };
+
+  if (isTsPackage) {
+    pkgJson.types = 'types/src/index.d.ts';
+  }
 
   // Remove old fields.
   delete pkgJson.module;

@@ -7,10 +7,11 @@
   "description": "Collection of test helpers used in media component stories and specs",
   "main": "umd/@atlaskit/media-test-helpers.js",
   "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
+  "types": "types/src/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
+    "storybook": "PACKAGE=media-test-helpers ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "echo 'Error: no test specified'",
     "test:watch": "echo 'Error: no test specified'"
   },

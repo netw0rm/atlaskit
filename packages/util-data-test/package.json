@@ -7,10 +7,11 @@
   },
   "main": "umd/@atlaskit/util-data-test.js",
   "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
+  "types": "types/src/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
+    "storybook": "PACKAGE=util-data-test ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },

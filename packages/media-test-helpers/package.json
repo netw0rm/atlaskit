@@ -22,9 +22,10 @@
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "akutil-common-test": "*",
     "axios": "^0.15.3",
+    "rxjs": "^5.4.0",
     "sinon": "^2.2.0",
+    "styled-components": "^1.4.6",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",

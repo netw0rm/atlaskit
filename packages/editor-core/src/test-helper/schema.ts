@@ -27,6 +27,7 @@ import {
   mentionQuery,
   subsup,
   emojiQuery,
+  textColor
 } from '../schema';
 
 const nodes = {
@@ -61,7 +62,8 @@ const marks = {
   link,
   mentionQuery,
   subsup,
-  emojiQuery
+  emojiQuery,
+  textColor,
 };
 
 export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, nodes, marks };

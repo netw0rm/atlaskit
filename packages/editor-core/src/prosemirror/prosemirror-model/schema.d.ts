@@ -54,7 +54,7 @@ export class MarkType {
   create(attrs?: { [key: string]: any }): Mark;
   removeFromSet(set: Mark[]): Mark[];
   isInSet(set: Mark[]): Mark | null;
-  excludes: MarkType;
+  excludes(type: MarkType): boolean;
 }
 
 export class Schema<N, M> {

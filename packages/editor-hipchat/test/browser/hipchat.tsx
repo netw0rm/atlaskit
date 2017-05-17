@@ -7,8 +7,9 @@ import { mount, ReactWrapper } from 'enzyme';
 import Editor from '../../src';
 import * as api from '../../src';
 import { testImageUrl, testImageName } from '../../stories/story-data';
-import { mediaStateKey, MediaPluginState, MediaProvider } from '@atlaskit/editor-core';
+import { MediaProvider } from '@atlaskit/editor-core';
 import { waitUntil } from '@atlaskit/util-common-test';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 
 chai.use(chaiPlugin);
 
@@ -330,7 +331,7 @@ describe('@atlaskit/editor-hipchat', () => {
       let mediaProvider: Promise<MediaProvider>;
 
       beforeEach(() => {
-        mediaProvider = storyMediaProviderFactory();
+        mediaProvider = storyMediaProviderFactory(mediaTestHelpers);
         editorWrapper = mount(<Editor useLegacyFormat={true} mediaProvider={mediaProvider} />);
         editor = editorWrapper.get(0) as any;
         editor.setFromJson(defaultValueLegacy);

@@ -12,6 +12,7 @@ import Heading from '../src/nodes/heading';
 import BulletList from '../src/nodes/bulletList';
 import OrderedList from '../src/nodes/orderedList';
 import ListItem from '../src/nodes/listItem';
+import Blockquote from '../src/nodes/blockquote';
 import Em from '../src/marks/em';
 import Link from '../src/marks/link';
 import Mono from '../src/marks/mono';
@@ -273,5 +274,8 @@ storiesOf(name, module)
         </OrderedList>
       </ListItem>
     </OrderedList>
+  ))
+  .add('nodes/blockquote', () => (
+    <Blockquote>Blockquote</Blockquote>
   ))
   ;

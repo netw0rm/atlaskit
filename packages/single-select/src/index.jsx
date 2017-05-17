@@ -1,46 +1,86 @@
 import React, { PureComponent, PropTypes } from 'react';
 import StatelessSelect from './StatelessSelect';
-import { appearances } from './internal/appearances';
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
+
+// =============================================================
+// NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
+// -------------------------------------------------------------
+// DO NOT update values here without updating the other.
+// =============================================================
+
+const appearances = {
+  values: [
+    'default',
+    'subtle',
+  ],
+  default: 'default',
+};
 
 const itemShape = DummyItem.propTypes;
 const groupShape = DummyGroup.propTypes;
 
 export default class AkSingleSelect extends PureComponent {
   static propTypes = {
+    /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Item to be selected on component mount. */
     defaultSelected: PropTypes.shape(itemShape),
+    /** Sets whether the dropdown should be constrained to the width of its trigger */
     droplistShouldFitContainer: PropTypes.bool,
+    /** Sets whether the field should be selectable. If it is, the field will be
+    a text box, which will filter the items. */
     hasAutocomplete: PropTypes.bool,
+    /** id property to be passed down to the html select component. */
     id: PropTypes.string,
+    /** controls the top margin of the label component rendered. */
     isFirstChild: PropTypes.bool,
+    /** Sets whether the select is selectable. Changes hover state. */
     isDisabled: PropTypes.bool,
+    /** Sets whether the component should be open on mount. */
     isDefaultOpen: PropTypes.bool,
+    /** Sets whether form including select can be submitted without an option
+    being made. */
     isRequired: PropTypes.bool,
+    /** Set whether there is an error with the selection. Sets an orange border
+    and shows the warning icon. */
     isInvalid: PropTypes.bool,
+    /** An array of objects, each one of which must have an array of items, and
+    may have a heading. All items should have content and value properties, with
+    content being the displayed text. */
     items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    /** Label to be displayed above select. */
     label: PropTypes.string,
+    /** name property to be passed to the html select element. */
     name: PropTypes.string,
+    /** Mesage to display in any group in items if there are no items in it,
+    including if there is one item that has been selected. */
     noMatchesFound: PropTypes.string,
+    /** Handler to be called when the filtered items changes.*/
     onFilterChange: PropTypes.func,
+    /** Handler to be called when an item is selected. Called with an object that
+    has the item selected as a property on the object. */
     onSelected: PropTypes.func,
+    /** Handler called when the select is opened or closed. Called with an object
+    that has both the event, and the new isOpen state. */
     onOpenChange: PropTypes.func,
+    /** Text to be shown within the select when no item is selected. */
     placeholder: PropTypes.string,
+    /** Where the select dropdown should be displayed relative to the field position. */
     position: PropTypes.string,
+    /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
+    /** Sets whether the field will become focused. */
     shouldFocus: PropTypes.bool,
   }
 
   static defaultProps = {
     appearance: appearances.default,
     droplistShouldFitContainer: true,
-    isOpen: false,
     isRequired: false,
     items: [],
     label: '',
     onFilterChange: () => {},
-    onItemActivated: () => {},
     onOpenChange: () => {},
     onSelected: () => {},
     placeholder: '',

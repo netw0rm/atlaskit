@@ -149,10 +149,12 @@ module.exports = {
         }, {
           test: /\.tsx?$/,
           use: [{
-            loader: 'awesome-typescript-loader',
+            loader: 'ts-loader',
             options: {
-              declaration: true,
-              declarationDir: './types',
+              compilerOptions: {
+                declaration: true,
+                declarationDir: './types',
+              },
             },
           }],
         }],

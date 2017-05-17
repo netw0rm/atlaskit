@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 import { chaiPlugin, sendKeyToPm } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { mount, ReactWrapper } from 'enzyme';
 import Editor from '../src';
+import * as api from '../src';
 
 chai.use(chaiPlugin);
 
@@ -51,40 +52,23 @@ describe('@atlaskit/editor-hipchat', () => {
   let editorWrapper: ReactWrapper<any, any>;
 
   afterEach(() => {
-    editorWrapper.unmount();
+    if (editorWrapper) {
+      editorWrapper.unmount();
+    }
+  });
+
+  it('should export schema', () => {
+    expect(api).to.have.property('schema');
   });
 
   describe('Keymap', () => {
 
-    it('should insert new line when user press Shift-Enter', () => {
-      editorWrapper = mount(<Editor />);
-      const editor = editorWrapper.get(0) as any;
-      const { editorView } = editor.state;
-      sendKeyToPm(editorView!, 'Shift-Enter');
-
-      expect(editor.value).to.deep.equal({
-        type: 'doc',
-        version: 1,
-        content: [
-          {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'hardBreak'
-              }
-            ]
-          }
-        ]
-      });
-    });
-
-    it('should trigger onSubmit when user press Enter', () => {
+    it('should trigger onSubmit when user presses Enter', () => {
       const spy = sinon.spy();
       editorWrapper = mount(<Editor onSubmit={spy} />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
       sendKeyToPm(editorView!, 'Enter');
-
       expect(spy.calledWith(editor.value)).to.equal(true);
     });
 
@@ -143,6 +127,30 @@ describe('@atlaskit/editor-hipchat', () => {
       editor.setFromJson(defaultValue);
     });
 
+    describe('.focus', () => {
+      it('should focus the editor if not already focused', () => {
+        const editorInstance = editorWrapper.instance() as any;
+        const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(false);
+        const spy = sinon.stub(editorInstance.state.editorView, 'focus');
+        editorInstance.focus();
+
+        expect(spy.called).to.eq(true);
+        hasFocusStub.restore();
+        spy.restore();
+      });
+
+      it('should not try to focus when already focused', () => {
+        const editorInstance = editorWrapper.instance() as any;
+        const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(true);
+        const spy = sinon.stub(editorInstance.state.editorView, 'focus');
+        editorInstance.focus();
+
+        expect(spy.called).to.eq(false);
+        hasFocusStub.restore();
+        spy.restore();
+      });
+    });
+
     describe('.documentSize', () => {
       it('returns the node size of the current document', () => {
         expect(editor.documentSize).to.equal(10);
@@ -150,7 +158,7 @@ describe('@atlaskit/editor-hipchat', () => {
     });
 
     describe('.value', () => {
-      it('returns a fabric document', () => {
+      it('returns a Promise which resolves with fabric document', () => {
         expect(editor.value).to.deep.equal({
           type: 'doc',
           version: 1,
@@ -205,26 +213,15 @@ describe('@atlaskit/editor-hipchat', () => {
         expect(editor.documentSize).to.equal(4);
       });
     });
+
+    describe('.showMediaPicker()', () => {
+      it('should be a function', () => {
+        expect(typeof editor.showMediaPicker === 'function').to.equal(true);
+      });
+    });
   });
 
   describe('Legacy-format', () => {
-
-    describe('Keymap', () => {
-
-      it('should insert new line when user press Shift-Enter', () => {
-        editorWrapper = mount(<Editor useLegacyFormat={true} />);
-        const editor = editorWrapper.get(0) as any;
-        const { editorView } = editor.state;
-        sendKeyToPm(editorView!, 'Shift-Enter');
-
-        expect(editor.value).to.deep.equal([{
-          type: 'text',
-          text: '\n',
-          marks: []
-        }]);
-      });
-
-    });
 
     describe('MaxContentSize', () => {
 

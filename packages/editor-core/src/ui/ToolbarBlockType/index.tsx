@@ -46,28 +46,30 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
+  private handleOpenChange = (attrs: any) => {
+    const { availableBlockTypes, currentBlockType } = this.state;
+
+    // Hack for IE needed to prevent caret blinking above the opened dropdown.
+    if (attrs.isOpen) {
+      this.props.softBlurEditor();
+    } else {
+      this.props.focusEditor();
+    }
+
+    this.setState({
+      active: attrs.isOpen,
+      availableBlockTypes,
+      currentBlockType
+    });
+  }
+
   render() {
     const { active, currentBlockType, availableBlockTypes } = this.state;
 
     return (
       <DropdownList
         isOpen={this.state.active}
-        onOpenChange={(attrs: any) => {
-          const { availableBlockTypes, currentBlockType } = this.state;
-
-          // Hack for IE needed to prevent caret blinking above the opened dropdown.
-          if (attrs.isOpen) {
-            this.props.softBlurEditor();
-          } else {
-            this.props.focusEditor();
-          }
-
-          this.setState({
-            active: attrs.isOpen,
-            availableBlockTypes,
-            currentBlockType
-          });
-        }}
+        onOpenChange={this.handleOpenChange}
         appearance="tall"
         position="top left"
         trigger={
@@ -87,6 +89,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
                 <Item
                   key={blockType.name}
                   isActive={currentBlockType === blockType}
+                  // tslint:disable-next-line:jsx-no-lambda
                   onActivate={() => { this.handleSelectBlockType(blockType); }}
                 >
                   <span>{blockType.title}</span>

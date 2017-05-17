@@ -354,7 +354,7 @@ export const document = {
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collectionId: ['MediaServicesSample']
+            collection: 'MediaServicesSample'
           }
         }
       ]
@@ -367,7 +367,7 @@ export const document = {
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collectionId: ['MediaServicesSample']
+            collection: 'MediaServicesSample'
           }
         },
         {
@@ -375,7 +375,7 @@ export const document = {
           attrs: {
             type: 'file',
             id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
-            collectionId: ['MediaServicesSample']
+            collection: 'MediaServicesSample'
           }
         }
       ]

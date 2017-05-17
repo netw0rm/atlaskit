@@ -13,14 +13,25 @@ import Editor from '../src/index';
 chai.use(chaiPlugin);
 
 describe('@atlaskit/editor-bitbucket/analytics/start-event', () => {
+  const fixture = fixtures();
+  let editorWrapper;
+  beforeEach(() => {
+    editorWrapper = mount(<Editor />, { attachTo: fixture() });
+  });
+
+  afterEach(() => {
+    editorWrapper.unmount();
+  });
+
   it('atlassian.editor.start', () => {
     const handler = sinon.spy();
     analyticsService.handler = handler;
 
-    mount(<Editor analyticsHandler={handler} />);
+    editorWrapper.setProps({ analyticsHandler: handler });
+
     expect(handler.called).to.equal(false);
 
-    mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
+    editorWrapper.find('ChromeCollapsed').simulate('focus');
     expect(handler.callCount).to.equal(1);
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
   });
@@ -33,38 +44,45 @@ describe('@atlaskit/editor-bitbucket/analytics/start-event', () => {
       render() {
         return (
           <div>
-            <Editor isExpandedByDefault analyticsHandler={handler} />
-            <Editor isExpandedByDefault analyticsHandler={handler} />
+            <Editor isExpandedByDefault={true} analyticsHandler={handler} />
+            <Editor isExpandedByDefault={true} analyticsHandler={handler} />
           </div>
         );
       }
     }
 
     expect(handler.called).to.equal(false);
-    mount(<ContainerWithTwoEditors />);
+    const container = mount(<ContainerWithTwoEditors />, { attachTo: fixture() });
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
     expect(handler.callCount).to.equal(2);
+    container.unmount();
   });
 
   it('editor.start must not be called when unmounting component', () => {
     const handler = sinon.spy();
     analyticsService.handler = handler;
 
-    mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
+    editorWrapper.setProps({ analyticsHandler: handler });
+    editorWrapper.setState({ isExpanded: true });
+
     expect(handler.callCount).to.equal(1);
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
   });
 });
 
 describe('@atlaskit/editor-bitbucket/analytics/analyticsHandler', () => {
+  const fixture = fixtures();
+
   it('updates analytics handler when provided via property', () => {
     const handler = sinon.spy();
-    mount(<Editor analyticsHandler={handler} />);
+    const editorWrapper = mount(<Editor analyticsHandler={handler} />, { attachTo: fixture() });
     expect(handler.called).to.equal(false);
 
-    mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
+    editorWrapper.find('ChromeCollapsed').simulate('focus');
     expect(handler.callCount).to.equal(1);
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
+
+    editorWrapper.unmount();
   });
 });
 
@@ -80,7 +98,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     handler = sinon.spy();
 
     editor = mount(
-      <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
+      <Editor isExpandedByDefault={true} onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
 
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)
@@ -89,6 +107,10 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
     editorAPI = editor.get(0) as any;
     editorView = editorAPI!.state!.editorView as EditorView;
+  });
+
+  afterEach(() => {
+    editor.unmount();
   });
 
   it('atlassian.editor.format.clear.keyboard', () => {
@@ -217,7 +239,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     const noop = () => { };
 
     editor = mount(
-      <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
+      <Editor isExpandedByDefault={true} onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
 
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)

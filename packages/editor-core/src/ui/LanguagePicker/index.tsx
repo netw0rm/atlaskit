@@ -1,4 +1,4 @@
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import Select from '@atlaskit/single-select';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
@@ -21,9 +21,11 @@ export interface Props {
 export interface State {
   active?: boolean;
   element?: HTMLElement;
-  language: string;
-  supportedLanguages: object[];
+  language?: string;
+  supportedLanguages?: object[];
   toolbarVisible?: boolean;
+  isLanguageSelectOpen?: boolean;
+  languageSelectFocused?: boolean;
 }
 
 export default class LanguagePicker extends PureComponent<Props, State> {
@@ -44,7 +46,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const { supportedLanguages } = this.state;
 
     this.items = [{
-      'items': createLanguageList(supportedLanguages).map((language) => ({ content: language }))
+      'items': createLanguageList(supportedLanguages).map((language) => ({ content: language, value: language }))
     }];
   }
 
@@ -52,16 +54,47 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  render() {
-    const { language, element, toolbarVisible } = this.state;
+  setLanguageSelectFocused = (event) => {
+    if (event.target.tagName.toLowerCase() === 'input') {
+      this.setState({
+        languageSelectFocused: true,
+      });
+    } else {
+      event.preventDefault();
+    }
+  }
 
-    if (toolbarVisible) {
+  resetLanguageSelectFocused = (event) => {
+    this.setState({
+      languageSelectFocused: false,
+    });
+  }
+
+  render() {
+    const {
+      language,
+      element,
+      toolbarVisible,
+      languageSelectFocused
+    } = this.state;
+
+    if (toolbarVisible || languageSelectFocused) {
       return (
-        <FloatingToolbar target={element} align="left" autoPosition={true}>
-          <div className={styles.container}>
-            <DropdownMenu triggerType="button" items={this.items} onItemActivated={this.handleLanguageChange}>
-              {language}
-            </DropdownMenu>
+        <FloatingToolbar target={element} align="left" autoPosition={true} className={styles.floatingToolbar}>
+          <div
+            tabIndex={0}
+            className={styles.container}
+            onMouseDown={this.setLanguageSelectFocused}
+            onBlur={this.resetLanguageSelectFocused}
+          >
+            <Select
+              id="test"
+              hasAutocomplete={true}
+              items={this.items}
+              onSelected={this.handleLanguageChange}
+              defaultSelected={{ content: language, value: language }}
+              placeholder="Select language"
+            />
           </div>
         </FloatingToolbar>
       );
@@ -74,13 +107,13 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const { element, language, toolbarVisible } = pluginState;
     const { supportedLanguages } = this.state;
 
-    const matchedLanguage = findMatchedLanguage(supportedLanguages, language);
+    const matchedLanguage = findMatchedLanguage(supportedLanguages!, language);
     const updatedLanguage = this.optionToLanguage(matchedLanguage);
 
     this.setState({
       language: matchedLanguage,
       element,
-      toolbarVisible
+      toolbarVisible,
     });
 
     if (language !== updatedLanguage) {
@@ -88,9 +121,12 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     }
   }
 
-  private handleLanguageChange = (activeItem: any) => {
-    const language = this.optionToLanguage(activeItem.item.content);
-    this.props.pluginState.updateLanguage(language, this.props.editorView);
+  private handleLanguageChange = (language: any) => {
+    this.props.pluginState.updateLanguage(language.item.value, this.props.editorView);
+    this.props.editorView.focus();
+    this.setState({
+      toolbarVisible: true,
+    });
   }
 
   private optionToLanguage(languageOption: string): string | undefined {

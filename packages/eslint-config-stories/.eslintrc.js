@@ -1,4 +1,4 @@
-{
+module.exports = {
   "name": "@atlaskit/eslint-config-stories",
   "extends": "@atlaskit/eslint-config-base",
   "rules": {
@@ -17,6 +17,10 @@
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/first.md
     // Allowing this lets us order the imports, including !raw! imports, in a way
     // that makes more sense for the examples
-    "import/first": "off"
+    "import/first": "off",
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prop-types.md
+    // Disabling this so we don't have to add propTypes to everything in our
+    // sample code; they're not always helpful to demonstrate component usage
+    "react/prop-types": "off",
   }
-}
+};

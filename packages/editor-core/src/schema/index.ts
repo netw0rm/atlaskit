@@ -9,6 +9,7 @@ export { mentionQuery } from './marks/mention-query';
 export { subsup } from './marks/subsup';
 
 export { doc } from './nodes/doc';
+export { docCompact } from './nodes/doc';
 export { blockquote } from './nodes/blockquote';
 export { bulletList } from './nodes/bullet-list';
 export { codeBlock } from './nodes/code-block';
@@ -25,3 +26,4 @@ export { panel } from './nodes/panel';
 export { text } from './nodes/text';
 export { media, MediaType, mediaNodeView, MediaNode } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
+export { createSchema } from './create-schema';

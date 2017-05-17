@@ -7,8 +7,6 @@ import EmojiPickerTextInput from './demo-emoji-picker-text-input';
 import EmojiTypeAheadTextInput from './demo-emoji-typeahead-text-input';
 import { getEmojiResource } from './story-data';
 
-import sampleEmojiConfig from '../local-config-example';
-
 declare var require: {
     <T>(path: string): T;
 };
@@ -18,7 +16,8 @@ try {
   // tslint:disable-next-line import/no-unresolved, no-var-requires
   emojiConfig = require('../local-config')['default'];
 } catch (e) {
-  emojiConfig = sampleEmojiConfig;
+  // tslint:disable-next-line import/no-unresolved, no-var-requires
+  emojiConfig = require('../local-config-example')['default'];
 }
 
 const defaultEmojiProvider = Promise.resolve(getEmojiResource());

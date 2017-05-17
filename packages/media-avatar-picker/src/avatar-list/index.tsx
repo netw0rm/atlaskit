@@ -32,6 +32,7 @@ export class AvatarList extends PureComponent<AvatarListProps, {}> {
           <SmallAvatarImage
             className={avatar.selected ? 'selected' : ''}
             src={avatar.avatar.dataURI}
+            // tslint:disable-next-line:jsx-no-lambda
             onClick={(e) => this.onItemClick(avatar)}
           />
         </li>);

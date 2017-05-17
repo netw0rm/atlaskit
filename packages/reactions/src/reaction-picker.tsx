@@ -187,7 +187,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
           spacing="none"
           type="button"
           onClick={this.onTriggerClick}
-          ref={ref => this.trigger = ref}
+          ref={this.handleTriggerRef}
         >
           {text}
         </Button>
@@ -198,9 +198,13 @@ export default class ReactionPicker extends PureComponent<Props, State> {
       <Trigger
         onClick={this.onTriggerClick}
         miniMode={miniMode}
-        ref={ref => this.trigger = ref}
+        ref={this.handleTriggerRef}
       />
     );
+  }
+
+  private handleTriggerRef = (ref) => {
+    this.trigger = ref;
   }
 
   render() {
@@ -218,5 +222,4 @@ export default class ReactionPicker extends PureComponent<Props, State> {
       </div>
     );
   }
-
 }

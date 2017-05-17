@@ -4,7 +4,7 @@ import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/editor/check';
 
-import {ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
+import {FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
 
 import {
   TickBox,
@@ -29,8 +29,6 @@ export interface CardOverlayProps {
   selectable?: boolean;
   selected?: boolean;
   persistent: boolean;
-
-  progress?: number;
 
   error?: string;
   onRetry?: CardAction;
@@ -63,11 +61,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
 
     return error
       ? cx('overlay', {error, active: isMenuExpanded})
-      : cx('overlay', mediaType, {active: this.isProcessing || isMenuExpanded, selectable, selected, persistent: !persistent});
-  }
-
-  private get isProcessing() {
-    return typeof this.props.progress === 'number';
+      : cx('overlay', mediaType, {active: isMenuExpanded, selectable, selected, persistent: !persistent});
   }
 
   render() {
@@ -136,8 +130,8 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         </div>
       );
     } else {
-      const {progress, mediaType, subtitle, icon} = this.props;
-      const classNames = cx('metadata', {'has-progress': this.isProcessing});
+      const {mediaType, subtitle, icon} = this.props;
+      const classNames = cx('metadata');
 
       return (
         <div>
@@ -145,7 +139,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
             <FileIcon mediaType={mediaType} iconUrl={icon} />
             <FileSize className="file-size">{subtitle}</FileSize>
           </Metadata>
-          <ProgressBar progress={progress} />
         </div>
       );
     }

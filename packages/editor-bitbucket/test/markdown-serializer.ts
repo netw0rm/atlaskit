@@ -39,7 +39,19 @@ describe('Bitbucket markdown serializer: ', () => {
     ))).to.eq('foo\n\n\u200c\n\n\u200c\n\nbar');
   });
 
-  it('should preserve leading and traling blank lines suing zero-non-width', () => {
+  it('should espace 4 spaces at the beginning of the line with zero-width-non-joiner', () => {
+    const fourSpaces = '    ';
+
+    expect(markdownSerializer.serialize(doc(
+      p(`${fourSpaces}hello`)
+    ))).to.eq(`\u200c${fourSpaces}hello`);
+
+    expect(markdownSerializer.serialize(doc(p(
+      `hello${fourSpaces}there`
+    )))).to.eq(`hello${fourSpaces}there`);
+  });
+
+  it('should preserve leading and traling blank lines using zero-non-width', () => {
     expect(markdownSerializer.serialize(doc(
       p(),
       p('bar')
@@ -268,8 +280,8 @@ describe('Bitbucket markdown serializer: ', () => {
         '* foo 1\n' +
         '    * bar 1\n' +
         '        * baz 1\n' +
-        '        * baz 2\n' +
-        '    * bar 2\n' +
+        '        * baz 2\n\n' +
+        '    * bar 2\n\n' +
         '* foo 2'
         );
     });
@@ -373,8 +385,8 @@ describe('Bitbucket markdown serializer: ', () => {
         '1. foo 1\n' +
         '    1. bar 1\n' +
         '        1. baz 1\n' +
-        '        2. baz 2\n' +
-        '    2. bar 2\n' +
+        '        2. baz 2\n\n' +
+        '    2. bar 2\n\n' +
         '2. foo 2'
         );
     });
@@ -411,8 +423,8 @@ describe('Bitbucket markdown serializer: ', () => {
         '    * bar 1\n' +
         '        1. baz 1\n' +
         '        2. baz 2\n' +
-        '            * banana\n' +
-        '    * bar 2\n' +
+        '            * banana\n\n\n' +
+        '    * bar 2\n\n' +
         '2. foo 2'
         );
     });

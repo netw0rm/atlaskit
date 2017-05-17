@@ -1,9 +1,22 @@
 import styled from 'styled-components';
-import { akColorN90 } from '@atlaskit/util-shared-styles';
+import {
+  akColorB75,
+  akColorN90,
+  akTypographyMixins,
+} from '@atlaskit/util-shared-styles';
+import { themeVariables } from '../../utils/theme';
 
 const NavigationItemGroupTitle = styled.div`
+  ${akTypographyMixins.h300}
+  margin-top: 0;
   align-self: center;
-  color: ${akColorN90};
+  color: ${({ theme }) => {
+    if (theme[themeVariables.appearance] === 'global') {
+      return akColorB75;
+    }
+
+    return akColorN90;
+  }};
   display: flex;
   flex-grow: 1;
   font-size: 12px;

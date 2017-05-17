@@ -159,6 +159,10 @@ export default class StatelessSelect extends PureComponent {
     this.setState({ droplistWidth: width });
   }
 
+  getItemTrueIndex = (itemIndex, groupIndex = 0) => itemIndex + this.props.items
+    .filter((group, thisGroupIndex) => thisGroupIndex < groupIndex)
+    .reduce((totalItems, group) => totalItems + group.items.length, 0);
+
   focus = () => {
     if (this.inputNode) {
       this.inputNode.focus();
@@ -324,13 +328,13 @@ export default class StatelessSelect extends PureComponent {
     }
   }
 
-  renderItems = (items) => {
+  renderItems = (items, groupIndex = 0) => {
     const filteredItems = this.filterItems(items);
 
     if (filteredItems.length) {
       return filteredItems.map((item, itemIndex) => (<Item
         {...item}
-        isFocused={itemIndex === this.state.focusedItemIndex}
+        isFocused={this.getItemTrueIndex(itemIndex, groupIndex) === this.state.focusedItemIndex}
         key={itemIndex}
         onActivate={(attrs) => {
           this.handleItemSelect(item, attrs);
@@ -348,7 +352,7 @@ export default class StatelessSelect extends PureComponent {
       heading={group.heading}
       key={groupIndex}
     >
-      {this.renderItems(group.items)}
+      {this.renderItems(group.items, groupIndex)}
     </Group>
   )
 
@@ -428,7 +432,7 @@ export default class StatelessSelect extends PureComponent {
               <div
                 className={triggerClasses}
                 onClick={this.handleTriggerClick}
-                tabIndex="0"
+                tabIndex={!this.props.isDisabled && !this.props.hasAutocomplete ? '0' : null}
                 ref={ref => (this.triggerNode = ref)}
               >
                 {
@@ -454,6 +458,7 @@ export default class StatelessSelect extends PureComponent {
                         ref={ref => (this.inputNode = ref)}
                         type="text"
                         value={this.props.filterValue}
+                        disabled={this.props.isDisabled}
                       />
                     </div>
                 }

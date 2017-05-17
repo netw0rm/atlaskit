@@ -19,6 +19,7 @@ const NOOP = () => {};
 export default class Spinner extends PureComponent {
   static propTypes = {
     delay: PropTypes.number,
+    invertColor: PropTypes.bool,
     isCompleting: PropTypes.bool,
     onComplete: PropTypes.func,
     size: PropTypes.oneOfType([
@@ -29,6 +30,7 @@ export default class Spinner extends PureComponent {
 
   static defaultProps = {
     delay: DEFAULT_SPINNER_DELAY,
+    invertColor: false,
     isCompleting: false,
     onComplete: NOOP,
     size: SIZES[0],
@@ -119,6 +121,7 @@ export default class Spinner extends PureComponent {
               cx={size / 2}
               cy={size / 2}
               fill="none"
+              invertColor={this.props.invertColor}
               r={strokeRadius}
               strokeLinecap="round"
               strokeWidth={strokeWidth}

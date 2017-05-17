@@ -1,8 +1,9 @@
 import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { MediaProvider } from '@atlaskit/media-core';
 import { MentionProvider } from '@atlaskit/mention';
 import { renderNode } from './nodes';
-import { ServicesConfig, MediaProvider, EventHandlers } from './config';
+import { ServicesConfig, EventHandlers } from './config';
 
 export interface Props {
   document?: any;

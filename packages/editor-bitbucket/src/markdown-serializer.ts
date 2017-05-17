@@ -40,11 +40,24 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
 
 const isListNode = (node: Node) => node.type.name === 'bulletList' || node.type.name === 'orderedList';
 
+const closeListItemChild = (state: MarkdownSerializerState, node: Node, parent: Node, index: number) => {
+  if (parent.type.name === 'listItem' &&
+    (parent.childCount > (index + 1) || isListNode(node)) &&
+    !(node.type.name === 'paragraph' && index === 0)
+  ) {
+    state.closeBlock(node);
+    state.flushClose(2);
+    return true;
+  }
+  return false;
+};
+
 const nodes = {
-  blockquote(state, node) {
+  blockquote(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
+    closeListItemChild(state, node, parent, index);
   },
-  codeBlock(state: MarkdownSerializerState, node: Node) {
+  codeBlock(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     if (!node.attrs.language) {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
@@ -53,23 +66,28 @@ const nodes = {
       state.text(node.textContent ? node.textContent : '\u200c', false);
       state.ensureNewLine();
       state.write(backticks);
+    }
+    if (!closeListItemChild(state, node, parent, index)) {
       state.closeBlock(node);
     }
   },
-  heading(state: MarkdownSerializerState, node: Node) {
+  heading(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.write(state.repeat('#', node.attrs.level) + ' ');
     state.renderInline(node);
-    state.closeBlock(node);
+    if (!closeListItemChild(state, node, parent, index)) {
+      state.closeBlock(node);
+    }
   },
   rule(state: MarkdownSerializerState, node: Node) {
     state.write(node.attrs.markup || '---');
     state.closeBlock(node);
   },
-  bulletList(state: MarkdownSerializerState, node: Node) {
+  bulletList(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     node.attrs.tight = true;
     state.renderList(node, '    ', () => (node.attrs.bullet || '*') + ' ');
+    closeListItemChild(state, node, parent, index);
   },
-  orderedList(state: MarkdownSerializerState, node: Node) {
+  orderedList(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     node.attrs['tight'] = true;
     const start = node.attrs['order'] || 1;
     const maxW = String(start + node.childCount - 1).length;
@@ -83,6 +101,7 @@ const nodes = {
       const nStr = String(start + i);
       return state.repeat(' ', maxW - nStr.length) + nStr + '. ';
     });
+    closeListItemChild(state, node, parent, index);
   },
   listItem(state: MarkdownSerializerState, node: Node) {
     state.renderContent(node);
@@ -91,9 +110,11 @@ const nodes = {
       state.write('\n');
     }
   },
-  paragraph(state: MarkdownSerializerState, node: Node) {
+  paragraph(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.renderInline(node);
-    state.closeBlock(node);
+    if (!closeListItemChild(state, node, parent, index)) {
+      state.closeBlock(node);
+    }
   },
   image(state: MarkdownSerializerState, node: Node) {
     // Note: the 'title' is not escaped in this flavor of markdown.
@@ -108,9 +129,16 @@ const nodes = {
     const previousNodeIsAMention = (previousNode && previousNode.type === schema.nodes.mention);
     const currentNodeStartWithASpace = (node.textContent.indexOf(' ') === 0);
     const trimTrailingWhitespace = (previousNodeIsAMention && currentNodeStartWithASpace);
-    const text = trimTrailingWhitespace
+    let text = trimTrailingWhitespace
       ? node.textContent.replace(' ', '') // only first blank space occurrence is replaced
       : node.textContent;
+
+    // BB converts 4 spaces at the beginning of the line to code block
+    // that's why we escape 4 spaces with zero-width-non-joiner
+    const fourSpaces = '    ';
+    if (!previousNode && /^\s{4}/.test(node.textContent)) {
+      text = node.textContent.replace(fourSpaces, '\u200c' + fourSpaces);
+    }
 
     const lines = text.split('\n');
     for (let i = 0; i < lines.length; i++) {

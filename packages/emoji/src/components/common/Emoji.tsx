@@ -30,6 +30,8 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
   }
 };
 
+// Pure functional components are used in favour of class based components, due to the performance!
+// When rendering 1500+ emoji using class based components had a significant impact.
 const renderAsSprite = (props: Props) => {
   const { emoji, selected, className } = props;
   const representation = emoji.representation as SpriteRepresentation;
@@ -54,7 +56,9 @@ const renderAsSprite = (props: Props) => {
   return (
     <span
       className={classNames(classes)}
+      // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
+      // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
     >
       <span
@@ -66,6 +70,7 @@ const renderAsSprite = (props: Props) => {
   );
 };
 
+// Keep as pure functional component, see renderAsSprite.
 const renderAsImage = (props: Props) => {
   const { emoji, selected, className } = props;
 
@@ -80,18 +85,21 @@ const renderAsImage = (props: Props) => {
 
   const representation = emoji.representation as ImageRepresentation;
 
-  const style = {
-    backgroundImage: `url(${representation.imagePath})`,
-  };
-
   return (
     <span
       className={classNames(classes)}
       title={emoji.shortName}
-      style={style}
+      // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
+      // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
-    />
+    >
+      <img
+        src={representation.imagePath}
+        alt={emoji.shortName}
+        title={emoji.shortName}
+      />
+    </span>
   );
 };
 

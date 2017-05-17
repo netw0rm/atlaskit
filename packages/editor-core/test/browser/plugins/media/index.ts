@@ -208,6 +208,23 @@ describe('Media plugin', () => {
     ));
   });
 
+  it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const provider = await resolvedProvider;
+    await provider.uploadContext;
+
+    expect(pluginState.binaryPicker!).to.be.an('object');
+
+    pluginState.binaryPicker!.upload = sinon.spy();
+
+    pluginState.insertFileFromDataUrl(
+      'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      'test.gif'
+    );
+
+    expect(pluginState.binaryPicker!.upload.calledOnce).to.equal(true);
+  });
+
   describe('Compact behaviour', () => {
     const doc = nodeFactory(compactSchema.nodes.doc);
     const p = nodeFactory(compactSchema.nodes.paragraph);

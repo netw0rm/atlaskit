@@ -8,6 +8,7 @@ import Emoji from './emoji';
 import Hardbreak from './hardBreak';
 import MediaGroup from './mediaGroup';
 import Media, { MediaNode } from './media';
+import Heading, { HeadingLevel } from './heading';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -35,6 +36,7 @@ enum NodeType {
   paragraph,
   textWrapper,
   text,
+  heading,
   unknown
 }
 
@@ -152,6 +154,17 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         }
         break;
       }
+      case NodeType.heading: {
+        const between = (x, a, b) => x >= a && x <= b;
+        if (attrs && attrs.level && between(attrs.level, 1, 6) && content) {
+          return {
+            type,
+            attrs,
+            content,
+          };
+        }
+        break;
+      }
     }
   }
 
@@ -241,6 +254,9 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       return renderTextNodes(validNode.content as TextNode[]);
     case NodeType.text:
       return renderTextNodes([validNode as TextNode]);
+    case NodeType.heading:
+      const { level } = validNode.attrs as { level: HeadingLevel };
+      return <Heading key={key} level={level}>{renderTextNodes(validNode.content as TextNode[])}</Heading>;
     default: {
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {

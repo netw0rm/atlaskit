@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/droplist",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "config": {
     "access": "public"
   },
@@ -14,7 +14,7 @@
   },
   "files": [
     "dist",
-    "src/index.d.ts"
+    "src/**/*.d.ts"
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",

@@ -266,3 +266,4 @@ export const media = (attrs: {
   fileSize?: number;
   fileMimeType?: string;
 }) => sampleSchema.nodes.media.create(attrs);
+export const textColor = (attrs: { color: string }) => markFactory(sampleSchema.marks.textColor, attrs);

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "16.8.1",
+  "version": "19.0.0",
   "config": {
     "access": "public"
   },
@@ -37,11 +37,11 @@
     "@atlaskit/button": "^1.0.10",
     "@atlaskit/button-group": "^1.0.7",
     "@atlaskit/single-select": "^1.10.0",
-    "@atlaskit/droplist": "^3.8.0",
+    "@atlaskit/droplist": "^3.8.1",
     "@atlaskit/emoji": "^14.1.0",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/media-core": "^6.1.0",
-    "@atlaskit/media-card": "^14.1.0",
+    "@atlaskit/media-card": "^16.0.1",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.2.0",
@@ -70,7 +70,7 @@
     "jquery": "^2.2.4"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^4.8.3",
+    "@atlaskit/media-test-helpers": "^4.8.5",
     "@atlaskit/util-data-test": "^4.0.0",
     "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",

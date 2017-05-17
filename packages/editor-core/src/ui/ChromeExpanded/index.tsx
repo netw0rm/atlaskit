@@ -18,13 +18,13 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import { MediaPluginState } from '../../plugins/media';
+import { TextColorState } from '../../plugins/text-color';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
-import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHyperlink from '../ToolbarHyperlink';
@@ -33,6 +33,7 @@ import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
+import ToolbarTextColor from '../ToolbarTextColor';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
 
@@ -54,6 +55,7 @@ export interface Props {
   pluginStateMentions?: MentionsState;
   pluginStateMedia?: MediaPluginState;
   pluginStateEmojis?: EmojiState;
+  pluginStateTextColor?: TextColorState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
@@ -86,6 +88,14 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
+          {props.pluginStateTextColor ?
+            <ToolbarTextColor
+              pluginState={props.pluginStateTextColor}
+              editorView={props.editorView}
+              softBlurEditor={this.softBlurEditor}
+              focusEditor={this.focusEditor}
+            /> : null
+          }
           {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
             <ToolbarAdvancedTextFormatting
               pluginStateTextFormatting={props.pluginStateTextFormatting}
@@ -130,7 +140,6 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           </div>
           <div className={styles.secondaryToolbar}>
             {props.pluginStateMentions ? <ToolbarMention pluginState={props.pluginStateMentions} editorView={props.editorView} /> : null}
-            {props.pluginStateEmojis && props.emojiProvider ? <ToolbarEmojiPicker pluginState={props.pluginStateEmojis} editorView={props.editorView} emojiProvider={props.emojiProvider} /> : null}
             {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
             {props.pluginStateMedia ? <ToolbarMedia pluginState={props.pluginStateMedia} /> : null}
           </div>

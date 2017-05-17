@@ -1,3 +1,5 @@
+import { ThemedCssFunction } from 'styled-components';
+
 export const akBorderRadius: string;
 
 // Primary color palette
@@ -120,3 +122,15 @@ export const akZIndexFlag: number;
 export const akZIndexCard: number;
 export const akZIndexDialog: number;
 export const akZIndexModal: number;
+
+export const akTypographyMixins: {
+  h100: ThemedCssFunction<any>,
+  h200: ThemedCssFunction<any>,
+  h300: ThemedCssFunction<any>,
+  h400: ThemedCssFunction<any>,
+  h500: ThemedCssFunction<any>,
+  h600: ThemedCssFunction<any>,
+  h700: ThemedCssFunction<any>,
+  h800: ThemedCssFunction<any>,
+  h900: ThemedCssFunction<any>,
+};

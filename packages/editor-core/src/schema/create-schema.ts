@@ -30,6 +30,7 @@ import {
   code,
   mentionQuery,
   emojiQuery,
+  textColor,
 } from '../schema';
 
 const nodesInOrder: SchemaBuiltInItem[] = [
@@ -49,7 +50,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'media', spec: media },
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'hardBreak', spec: hardBreak },
-  { name: 'emoji', spec: emoji }
+  { name: 'emoji', spec: emoji },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [
@@ -62,6 +63,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'code', spec: code },
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
+  { name: 'textColor', spec: textColor },
 ];
 
 function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}) {

@@ -4,8 +4,8 @@ import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
-import EmojiLoader, { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
+import { SecurityOptions } from '../src/api/SharedResourceUtils';
+import EmojiLoader, { denormaliseEmojiServiceResponse, EmojiLoaderConfig } from '../src/api/EmojiLoader';
 import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../src/types';
 
 import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../test/TestData';

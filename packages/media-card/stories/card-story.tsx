@@ -27,9 +27,60 @@ import {
   unknownFileId,
   errorFileId
 } from '@atlaskit/media-test-helpers';
-import { Card, UrlPreviewIdentifier, MediaIdentifier } from '../src';
+
+import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent, OnSelectChangeFuncResult } from '../src';
+import { SelectableCard } from './utils/selectableCard';
 
 const context = createStorybookContext();
+
+const clickHandler = (result: CardEvent) => {
+  result.event.preventDefault();
+  action('click')(result.mediaItemDetails);
+};
+
+const mouseEnterHandler = (result: CardEvent) => {
+  result.event.preventDefault();
+  action('mouseEnter')(result.mediaItemDetails);
+};
+
+const onSelectChangeHandler = (result: OnSelectChangeFuncResult) => {
+  action('selectChanged')(result);
+};
+
+const createApiCards = (appearance: CardAppearance, identifier: Identifier) => {
+  // API methods
+  const apiCards = [
+    {
+      title: 'not selectable',
+      content: (
+        <Card
+          context={context}
+          appearance={appearance}
+          identifier={identifier}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+        />
+      )
+    }
+  ];
+
+  const selectableCard = {
+    title: 'selectable',
+    content: (
+      <SelectableCard
+        context={context}
+        identifier={identifier}
+        onSelectChange={onSelectChangeHandler}
+      />
+    )
+  };
+
+  if (appearance === 'image') {
+    return [...apiCards, selectableCard];
+  }
+
+  return apiCards;
+};
 
 storiesOf('Card', {})
   .add('Live preview', () => {
@@ -103,7 +154,9 @@ storiesOf('Card', {})
 
       onAddLink = () => {
         const {link} = this.state;
-        context.addLinkItem(link, collectionName);
+        context.getUrlPreviewProvider(link).observable().subscribe(
+          metadata => context.addLinkItem(link, collectionName, metadata)
+        );
       }
     }
 
@@ -266,16 +319,8 @@ storiesOf('Card', {})
       }
     ];
 
-    // selectable
-    const selectableCards = [
-      {
-        title: 'image - Not selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} />
-      }, {
-        title: 'image - Selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} selected={true} />
-      }
-    ];
+    // api cards
+    const apiCards = createApiCards('image', successIdentifier);
 
     // no thumbnail
     const noThumbnailCards = [
@@ -301,8 +346,8 @@ storiesOf('Card', {})
           <h3>Menu</h3>
           <StoryList>{menuCards}</StoryList>
 
-          <h3>Seletable</h3>
-          <StoryList>{selectableCards}</StoryList>
+          <h3>API Cards</h3>
+          <StoryList>{apiCards}</StoryList>
 
           <h3>Thumbnail not available</h3>
           <StoryList>{noThumbnailCards}</StoryList>
@@ -326,6 +371,9 @@ storiesOf('Card', {})
         content: <Card identifier={genericUrlPreviewId} context={context} appearance="square" />
       }
     ];
+
+    // api cards
+    const apiCards = createApiCards('horizontal', genericUrlPreviewId);
 
     // errors
     const errorCards = [
@@ -373,6 +421,9 @@ storiesOf('Card', {})
         <div style={{margin: '20px 40px'}}>
           <h3>Standard</h3>
           <StoryList>{standardCards}</StoryList>
+
+          <h3>API Cards</h3>
+          <StoryList>{apiCards}</StoryList>
 
           <h3>Error</h3>
           <StoryList>{errorCards}</StoryList>

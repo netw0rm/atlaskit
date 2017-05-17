@@ -35,14 +35,17 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
             const key = emoji.id || `${emoji.shortName}-${emoji.category}`;
 
             return (
-              <Emoji
-                emoji={emoji}
-                selected={selected}
-                key={key}
-                onSelected={onSelected}
-                onMouseMove={onMouseMove}
+              <span
                 className={styles.pickerEmoji}
-              />
+                key={key}
+              >
+                <Emoji
+                  emoji={emoji}
+                  selected={selected}
+                  onSelected={onSelected}
+                  onMouseMove={onMouseMove}
+                />
+              </span>
             );
          })}
         </div>

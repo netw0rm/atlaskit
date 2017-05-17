@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { container } from '../../shared-variables';
+import { layout } from '../../shared-variables';
 
 const DrawerContent = styled.div`
-  padding: 0 ${container.padding.side}px;
+  padding: 0 ${layout.padding.side}px;
   width: 100%;
 `;
 

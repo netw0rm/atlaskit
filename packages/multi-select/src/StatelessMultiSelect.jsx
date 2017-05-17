@@ -78,7 +78,18 @@ export default class StatelessMultiSelect extends PureComponent {
   onFocus = () => {
     if (!this.props.isDisabled) {
       this.setState({ isFocused: true });
-      this.inputNode.focus();
+
+      /**
+       * Check if we're tabbing to the Remove button on a tag.
+       * This is a hacky workaround for now and should be fixed when
+       * we implement proper traversal for tags with the keyboard.
+       *
+       * @see {@link https://ecosystem.atlassian.net/browse/AK-2250}
+       * @todo Implement traversal of tags with arrow keys, then remove this.
+       */
+      if (document.activeElement.tagName.toLowerCase() !== 'button') {
+        this.inputNode.focus();
+      }
     }
   }
 

@@ -94,14 +94,20 @@ storiesOf(name, module)
     />
   )
   .add('With Media support', () =>
-    <Editor
-      isExpandedByDefault={true}
-      mentionProvider={mentionProvider}
-      mediaProvider={storyMediaProviderFactory()}
-      onCancel={CANCEL_ACTION}
-      onSave={SAVE_ACTION}
-      onChange={handleChange}
-    />
+    //  TODO: remove the following note and link after the login is not required anymore or there's better way to run the story.
+    <div>
+      <div style={{ padding: '5px 0'}}>
+        ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
+      </div>
+      <Editor
+        isExpandedByDefault={true}
+        mentionProvider={mentionProvider}
+        mediaProvider={storyMediaProviderFactory()}
+        onCancel={CANCEL_ACTION}
+        onSave={SAVE_ACTION}
+        onChange={handleChange}
+      />
+    </div>
   )
   .add('CXHTML input', () => {
     type Props = {};

@@ -1,16 +1,19 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {CardAction, CardActionType, FileDetails} from '@atlaskit/media-core';
+import {Component, MouseEvent} from 'react';
+import {CardAction, FileDetails} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardProcessingStatus} from '../..';
-import {FileCardView} from '../cardView';
+import {SharedCardProps, CardStatus} from '../..';
+import {FileCardImageView} from '../cardImageView';
 import {FileCardViewSmall} from '../cardViewSmall';
 
 export interface FileCardProps extends SharedCardProps {
-  readonly status: CardProcessingStatus;
+  readonly status: CardStatus;
   readonly details?: FileDetails;
   readonly dataURI?: string;
   readonly progress?: number;
+
+  readonly onClick?: (result: MouseEvent<HTMLElement>) => void;
+  readonly onMouseEnter?: (result: MouseEvent<HTMLElement>) => void;
 }
 
 export class FileCard extends Component<FileCardProps, {}> {
@@ -22,17 +25,8 @@ export class FileCard extends Component<FileCardProps, {}> {
     return this.renderFile();
   }
 
-  onClick = (event: Event) : void => { // TODO: select handlers seem to be broken now. fix.
-    const {details} = this.props;
-    const onClick = this._getFirstAction(CardActionType.click);
-
-    if (onClick && details) {
-      onClick.handler({type: 'file', details}, event);
-    }
-  }
-
   renderFile(): JSX.Element {
-    const {dimensions, selectable, selected, details, dataURI, progress} = this.props;
+    const {status, dimensions, selectable, selected, details, dataURI, progress, onClick, onMouseEnter} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
@@ -47,11 +41,13 @@ export class FileCard extends Component<FileCardProps, {}> {
           mediaType={mediaType}
           mediaSize={size}
           loading={this.isLoading}
+
           actions={this._getActions()}
-          onClick={this.onClick}
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
         />
       ) : (
-        <FileCardView
+        <FileCardImageView
           error={errorMessage}
           dimensions={dimensions}
           selectable={selectable}
@@ -60,19 +56,16 @@ export class FileCard extends Component<FileCardProps, {}> {
           mediaName={name}
           mediaType={mediaType}
           mediaSize={size}
-          loading={this.isLoading}
-          actions={this._getActions()}
-          onClick={this.onClick}
+          status={status}
           progress={progress}
+
+          actions={this._getActions()}
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
         />
       );
 
     return card;
-  }
-
-  private _getFirstAction(type: CardActionType): CardAction | null {
-    const actions = this._getActionsByType(type);
-    return (actions.length) ? actions[0] : null;
   }
 
   private _getActions(): Array <CardAction> {
@@ -92,13 +85,6 @@ export class FileCard extends Component<FileCardProps, {}> {
           }
         };
       });
-  }
-
-  private _getActionsByType(type: CardActionType): Array <CardAction> {
-    // redundant 'or' guarding to satisfy compiler
-    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
-    const actions: Array<CardAction> = this.props.actions || [];
-    return actions.filter(action => action.type === type);
   }
 
   private _isSmall(): boolean {

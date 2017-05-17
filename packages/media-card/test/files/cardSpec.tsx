@@ -3,10 +3,9 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { FileDetails } from '@atlaskit/media-core';
 
-import { FileCard, FileCardView, FileCardViewSmall } from '../../src/files';
+import { FileCard, FileCardImageView, FileCardViewSmall } from '../../src/files';
 
 describe('FileCard', () => {
-
   it('should render cardFileView with details passed through to props', function() {
     const details: FileDetails = {
       mediaType: 'image',
@@ -18,7 +17,7 @@ describe('FileCard', () => {
     };
 
     const expectedProps = {
-      loading: false,
+      status: 'complete',
       dimensions: undefined,
 
       mediaName: details.name,
@@ -27,11 +26,12 @@ describe('FileCard', () => {
     };
 
     const card = shallow(
-      <FileCard details={details} status="complete"/>
+      <FileCard status="complete" details={details}/>
     );
 
-    expect(card.find(FileCardView).length).to.eql(1);
-    expect(card.find(FileCardView).props()).to.contain(expectedProps);
+    const fileCardView = card.find(FileCardImageView);
+    expect(fileCardView.length).to.eql(1);
+    expect(fileCardView.props()).to.contain(expectedProps);
   });
 
   it('should render cardFileViewSmall with details passed through to props', () => {
@@ -45,7 +45,6 @@ describe('FileCard', () => {
     };
 
     const expectedProps = {
-      loading: false,
       width: undefined,
 
       mediaName: details.name,
@@ -77,8 +76,8 @@ describe('FileCard', () => {
       <FileCard status="complete" details={details} dataURI={fakeDataUri}/>
     );
 
-    expect(card.find(FileCardView).length).to.eql(1);
-    expect(card.find(FileCardView).props().dataURI).to.contain(fakeDataUri);
+    expect(card.find(FileCardImageView).length).to.eql(1);
+    expect(card.find(FileCardImageView).props().dataURI).to.contain(fakeDataUri);
   });
 
   it('should render fileCardViewSmall with dataUri when passed', () => {
@@ -101,4 +100,23 @@ describe('FileCard', () => {
     expect(card.find(FileCardViewSmall).props().dataURI).to.contain(fakeDataUri);
   });
 
+  it('should pass onClick handlers through to root component for appearances "small" and "image"', () => {
+    const handler = () => {};
+
+    const smallCard = shallow(<FileCard status="complete" appearance="small" onClick={handler} />);
+    const imageCard = shallow(<FileCard status="complete" appearance="image" onClick={handler} />);
+
+    expect(smallCard.find(FileCardViewSmall).props().onClick).to.deep.equal(handler);
+    expect(imageCard.find(FileCardImageView).props().onClick).to.deep.equal(handler);
+  });
+
+  it('should pass onMouseEnter handlers through to root component for appearances "small" and "image"', () => {
+    const handler = () => {};
+
+    const smallCard = shallow(<FileCard status="complete" appearance="small" onMouseEnter={handler} />);
+    const imageCard = shallow(<FileCard status="complete" appearance="image" onMouseEnter={handler} />);
+
+    expect(smallCard.find(FileCardViewSmall).props().onMouseEnter).to.deep.equal(handler);
+    expect(imageCard.find(FileCardImageView).props().onMouseEnter).to.deep.equal(handler);
+  });
 });

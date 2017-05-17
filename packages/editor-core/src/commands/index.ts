@@ -265,10 +265,10 @@ export function createCodeBlockFromFenceFormat(): Command {
 
     const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
 
-    const matches = /^```([^\s]+)?/.exec(fencePart);
+    const matches = /^```(`+)?([^\s]+)?/.exec(fencePart);
 
     if (matches && isConvertableToCodeBlock(state)) {
-      dispatch(transformToCodeBlockAction(state, { language: matches[1] }).delete(startPos, $from.pos));
+      dispatch(transformToCodeBlockAction(state, { language: matches[2] }).delete(startPos, $from.pos));
       return true;
     }
 

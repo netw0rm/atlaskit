@@ -57,11 +57,17 @@ export default class Avatar extends PureComponent {
     size: SIZE.defaultValue,
   }
 
-  state = {
-    hasError: false,
-    isLoading: false,
+  // We set isLoading conditionally here in the event that the src prop is applied at mount.
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hasError: false,
+      isLoading: !!props.src,
+    };
   }
 
+  // We set isLoading conditionally here in the event that the src prop is updated after mount.
   componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
       this.setState({ isLoading: true });
@@ -90,15 +96,14 @@ export default class Avatar extends PureComponent {
     return (
       <Container size={size}>
         <ImageWrapper appearance={appearance} size={size} isLoading={isLoading} aria-label={label}>
-          {isLoading ? null : (
-            <Image
-              alt={label}
-              src={src}
-              onLoad={this.imageLoadedHandler}
-              onError={this.imageErrorHandler}
-              hasError={hasError}
-            />
-          )}
+          <Image
+            alt={label}
+            isLoading={isLoading}
+            src={src}
+            onLoad={this.imageLoadedHandler}
+            onError={this.imageErrorHandler}
+            hasError={hasError}
+          />
         </ImageWrapper>
 
         {showPresence ? (

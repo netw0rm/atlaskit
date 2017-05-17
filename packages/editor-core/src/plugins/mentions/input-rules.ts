@@ -1,6 +1,7 @@
 import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
 import { MentionsState, stateKey } from './';
 import { createInputRule } from '../utils';
+import { analyticsService } from '../../analytics';
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
@@ -20,6 +21,8 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
       const markType = schema.mark('mentionQuery');
       const { tr } = state;
+
+      analyticsService.trackEvent('atlassian.editor.mention.autoformatting');
 
       return tr.replaceWith(
         end,

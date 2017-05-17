@@ -29,6 +29,8 @@ import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
 import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
 import SelectWithDescriptions from './examples/SelectWithDescriptions';
 import SelectWithDescriptionsRaw from '!raw!./examples/SelectWithDescriptions';
+import SelectWithTooltips from './examples/SelectWithTooltips';
+import SelectWithTooltipsRaw from '!raw!./examples/SelectWithTooltips';
 import ItemsOverview from './examples/ItemsOverview';
 import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
 /* eslint-enable import/first, import/no-duplicates */
@@ -80,6 +82,8 @@ const groupPropTypes = {
 const itemPropDescriptions = {
   content: 'The text/content to display in the option and in the rendered trigger (selected option).',
   description: 'The text/content to display underneath the content. Doesn`t show in the rendered trigger',
+  tooltipDescription: 'The text/content to display in a tooltip, appearing on hover.',
+  tooltipPosition: 'The position of the tooltip (one of: left, right, top, bottom)',
   value: 'Value sent when option is selected in a form.',
   isDisabled: 'Whether an option is selectable or not.',
   isSelected: 'Whether an option is selected or not (affects appearance of option, not of selectedItems)',
@@ -192,6 +196,17 @@ storiesOf(name, module)
       </div>
       <Code>
         {SelectWithDescriptionsRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with tooltips', () => (
+    <Chrome title="Select with tooltips">
+      <div style={{ width: '300px' }}>
+        {SelectWithTooltips}
+      </div>
+      <Code>
+        {SelectWithTooltipsRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

@@ -287,7 +287,7 @@ export class TextFormattingState {
     const { state } = this;
     const { from, to, empty } = state.selection;
     let marks = state.selection.$from.marks();
-    let nodeBefore = view.docView.domFromPos(from - 1);
+    let domNodeBefore = view.docView.domFromPos(from - 1);
 
     if (!empty) {
       marks = [];
@@ -308,14 +308,27 @@ export class TextFormattingState {
     if (event.keyCode === keyCodes.Backspace) {
       let found = false;
 
+      const nonInclusiveMarks: Mark[] = [];
+      const { nodeBefore } = state.selection.$from;
+      if (nodeBefore) {
+        nodeBefore.marks.forEach(mark => {
+          if (mark.type.spec.inclusive === false) {
+            nonInclusiveMarks.push(mark);
+          }
+        });
+        if (nonInclusiveMarks.length) {
+          this.marksToRemove = nonInclusiveMarks;
+        }
+      }
+
       marks.forEach(mark => {
         if (state.doc.rangeHasMark(from - 1, to, mark.type)) {
           found = true;
         }
       });
 
-      if (marks.length && (!nodeBefore || found)) {
-        this.marksToRemove = marks;
+      if (marks.length && (!domNodeBefore || found)) {
+        this.marksToRemove = marks.concat(this.marksToRemove || []);
       }
     }
   }
@@ -346,7 +359,10 @@ export class TextFormattingState {
       });
     }
 
-    if (foundMark && !state.doc.rangeHasMark(from - 1, to, mark.type)) {
+    const currentMarkBefore = state.doc.rangeHasMark(from - 1, to, mark.type);
+    const currentMarkAfter = state.doc.rangeHasMark(from, to, mark.type);
+
+    if (foundMark && (!currentMarkBefore || ( !mark.type.spec.inclusive && !currentMarkAfter ))) {
       return false;
     }
 

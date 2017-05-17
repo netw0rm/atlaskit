@@ -29,17 +29,17 @@ export const typeAheadEmpty = style({
 });
 
 export const typeAheadItem = style({
-    cursor: 'pointer',
-    display: 'block',
-    listStyleType: 'none',
-    overflow: 'hidden',
-    width: emojiTypeAheadWidth,
+  cursor: 'pointer',
+  display: 'block',
+  listStyleType: 'none',
+  overflow: 'hidden',
+  width: emojiTypeAheadWidth,
 
-    $nest: {
-      [`&.${selected}`]: {
-        backgroundColor: emojiPreviewSelectedColor,
-      },
+  $nest: {
+    [`&.${selected}`]: {
+      backgroundColor: emojiPreviewSelectedColor,
     },
+  },
 });
 
 export const typeAheadItemRow = style({

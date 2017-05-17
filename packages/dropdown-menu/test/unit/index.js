@@ -4,6 +4,7 @@ import Droplist from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import Tooltip from '@atlaskit/tooltip';
 import sinon from 'sinon';
 
 import { name } from '../../package.json';
@@ -16,6 +17,7 @@ const itemsList = [
     items: [
       {
         content: 'Some text',
+        tooltipDescription: 'Hello world!',
       },
     ],
   },
@@ -125,6 +127,11 @@ describe(name, () => {
       expect(itemsFilterInput.prop('type')).to.equal('text');
       expect(itemsFilterInput.prop('value')).to.equal('filter');
       expect(itemsFilter.find('SearchIcon').length).to.equal(1);
+    });
+
+    it('should render tooltips if provided', () => {
+      const menu = mount(<Menu items={itemsList} triggerType="button" defaultOpen />);
+      expect(menu.find(Tooltip).length).to.equal(1);
     });
   });
 

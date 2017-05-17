@@ -6,3 +6,5 @@ export class InputRule {
   handler: (state: EditorState<any>, match, start, end) => (Transaction | undefined);
 }
 export function inputRules(config: {rules: Array<InputRule>}): Plugin;
+
+export function undoInputRule(state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;

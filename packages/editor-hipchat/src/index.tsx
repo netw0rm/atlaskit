@@ -1,5 +1,8 @@
 import {
+  AnalyticsHandler,
+  analyticsService,
   baseKeymap,
+  blockTypePlugins,
   EditorState,
   EditorView,
   emojiNodeView,
@@ -61,6 +64,7 @@ export interface Props {
   reverseMentionPicker?: boolean;
   uploadErrorHandler?: (state: MediaState) => void;
   useLegacyFormat?: boolean;
+  analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
@@ -68,8 +72,6 @@ export interface State {
   schema: HCSchema;
   maxLengthReached?: boolean;
   flashToggle?: boolean;
-  emojiProvider?: Promise<EmojiProvider>;
-  mentionProvider?: Promise<MentionProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -100,8 +102,10 @@ export default class Editor extends PureComponent<Props, State> {
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
       providerFactory: this.providerFactory,
-      behavior: 'compact'
+      behavior: 'default'
     });
+
+    analyticsService.handler = props.analyticsHandler || ((name) => { });
   }
 
 
@@ -148,7 +152,7 @@ export default class Editor extends PureComponent<Props, State> {
   focus(): void {
     const { editorView } = this.state;
 
-    if (editorView) {
+    if (editorView && !editorView.hasFocus()) {
       editorView.focus();
     }
   }
@@ -220,32 +224,28 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { props, providerFactory } = this;
-    if (props.emojiProvider !== nextProps.emojiProvider || props.mentionProvider !== nextProps.mentionProvider) {
+    const { props } = this;
+    if (
+      props.emojiProvider !== nextProps.emojiProvider ||
+      props.mentionProvider !== nextProps.mentionProvider ||
+      props.mediaProvider !== nextProps.mediaProvider
+    ) {
       this.handleProviders(nextProps);
-    }
-
-    const { mediaProvider } = nextProps;
-    if (props.mediaProvider !== mediaProvider) {
-      providerFactory.setProvider('mediaProvider', mediaProvider);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mentionProvider } = props;
+    const { emojiProvider, mentionProvider, mediaProvider } = props;
 
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
-
-    this.setState({
-      emojiProvider,
-      mentionProvider
-    });
+    this.providerFactory.setProvider('mediaProvider', mediaProvider);
   }
 
   render() {
     const { props } = this;
-    const { editorView, emojiProvider, mentionProvider } = this.state;
+    const { editorView } = this.state;
+    const { emojiProvider, mentionProvider } = props;
 
     const editorState = editorView && editorView.state;
     const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);
@@ -299,6 +299,7 @@ export default class Editor extends PureComponent<Props, State> {
         ...mentionsPlugins(schema),
         ...mediaPlugins,
         ...emojisPlugins(schema),
+        ...blockTypePlugins(schema),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         history(),
@@ -335,6 +336,12 @@ export default class Editor extends PureComponent<Props, State> {
         emoji: emojiNodeView(this.providerFactory),
         media: mediaNodeView(this.providerFactory),
         mention: mentionNodeView(this.providerFactory)
+      },
+      handleDOMEvents: {
+        paste(view: EditorView, event: ClipboardEvent) {
+          analyticsService.trackEvent('atlassian.editor.paste');
+          return false;
+        }
       }
     });
 
@@ -351,6 +358,8 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.setState({ editorView });
     this.focus();
+
+    analyticsService.trackEvent('atlassian.editor.start');
   }
 
   private handleSubmit = () => {

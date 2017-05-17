@@ -2,51 +2,19 @@ import { ResourcedEmoji } from '@atlaskit/emoji';
 import { akColorN50 } from '@atlaskit/util-shared-styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { style, types as styleTypes } from 'typestyle';
+import { style } from 'typestyle';
 
 import { NodeSpec, NodeView } from '../../prosemirror';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 
-const width = '20px';
-const height = '20px';
-
 const emojiStyle = style({
   display: 'inline-block',
-  width: width,
-  height: height,
-  verticalAlign: 'middle',
   userSelect: 'all',
 
-  // Temporary until @atlaskit/emoji fixes padding/positioning see FS-853
   $nest: {
     '&.ProseMirror-selectednode': {
       backgroundColor: akColorN50,
       outline: 'none'
-    },
-    // sprite
-    'span.emoji-sprite': {
-      margin: '0',
-      width: width,
-      height: height,
-    },
-    // image
-    '> span': {
-      margin: '0',
-      width: width,
-      height: height,
-      backgroundSize: `${width} ${height}`,
-    },
-    // placeholder
-    '> svg': {
-      margin: '0',
-      width: width,
-      height: height,
-
-      $nest: {
-        'circle': {
-          r: '16',
-        } as styleTypes.NestedCSSProperties,
-      },
     },
   }
 });

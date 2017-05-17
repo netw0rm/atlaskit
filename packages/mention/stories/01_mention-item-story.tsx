@@ -68,11 +68,11 @@ storiesOf(`${name}/MentionItem`, module)
       id: '666',
       name: 'Craig Petchell',
       mentionName: 'petch',
-      selected: true,
+      selected: true
     };
 
     return renderSingleMention(
-      <MentionItem mention={mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
     );
   })
   .add('mention with the lot', () => {
@@ -83,8 +83,10 @@ storiesOf(`${name}/MentionItem`, module)
       mentionName: 'cpetchell',
       nickname: 'petch',
       selected: true,
-      status: 'online',
-      time: '11:23am',
+      presence: {
+        status: 'online',
+        time: '11:23am',
+      },
       highlight: {
         name: [
           {
@@ -103,7 +105,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem mention={mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
     );
   })
   .add('mention with lozenge', () => {
@@ -116,7 +118,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem mention={mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
     );
   })
   .add('mention with lozenge and presence', () => {
@@ -126,12 +128,14 @@ storiesOf(`${name}/MentionItem`, module)
       mentionName: 'oscar',
       selected: false,
       lozenge: 'teammate',
-      status: 'online',
-      time: '11:23am',
+      presence: {
+        status: 'online',
+        time: '11:23am',
+      },
     };
 
     return renderSingleMention(
-      <MentionItem mention={mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
     );
   })
 ;

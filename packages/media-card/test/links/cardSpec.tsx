@@ -1,9 +1,10 @@
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 
-import { LinkCard, LinkCardPlayer, LinkCardGenericView, LinkCardTrelloBoardView } from '../../src/links';
+import { LinkCard, LinkCardPlayer, LinkCardViewSmall, LinkCardGenericView, LinkCardTrelloBoardView } from '../../src/links';
 import { LinkCardImageView } from '../../src/links/cardImageView';
 
 describe('LinkCard', () => {
@@ -89,5 +90,33 @@ describe('LinkCard', () => {
 
     expect(squareCard.find(LinkCardGenericView)).to.have.length(1);
     expect(horizontalCard.find(LinkCardGenericView)).to.have.length(1);
+  });
+
+  it('should pass onClick handlers through to root component for appearances "small", "image" and "horizontal/square"', () => {
+    const handler = () => {};
+
+    const smallCard = shallow(<LinkCard status="complete" appearance="small" onClick={handler} />);
+    const imageCard = shallow(<LinkCard status="complete" appearance="image" onClick={handler} />);
+    const horizontalCard = shallow(<LinkCard status="complete" appearance="horizontal" onClick={handler} />);
+    const squareCard = shallow(<LinkCard status="complete" appearance="square" onClick={handler} />);
+
+    expect(smallCard.find(LinkCardViewSmall).props().onClick).to.deep.equal(handler);
+    expect(imageCard.find(LinkCardImageView).props().onClick).to.deep.equal(handler);
+    expect(horizontalCard.find(LinkCardGenericView).props().onClick).to.deep.equal(handler);
+    expect(squareCard.find(LinkCardGenericView).props().onClick).to.deep.equal(handler);
+  });
+
+  it('should pass onMouseEnter handlers through to root component for appearances "small", "image" and "horizontal/square"', () => {
+    const handler = () => {};
+
+    const smallCard = shallow(<LinkCard status="complete" appearance="small" onMouseEnter={handler} />);
+    const imageCard = shallow(<LinkCard status="complete" appearance="image" onMouseEnter={handler} />);
+    const horizontalCard = shallow(<LinkCard status="complete" appearance="horizontal" onMouseEnter={handler} />);
+    const squareCard = shallow(<LinkCard status="complete" appearance="square" onMouseEnter={handler} />);
+
+    expect(smallCard.find(LinkCardViewSmall).props().onMouseEnter).to.deep.equal(handler);
+    expect(imageCard.find(LinkCardImageView).props().onMouseEnter).to.deep.equal(handler);
+    expect(horizontalCard.find(LinkCardGenericView).props().onMouseEnter).to.deep.equal(handler);
+    expect(squareCard.find(LinkCardGenericView).props().onMouseEnter).to.deep.equal(handler);
   });
 });

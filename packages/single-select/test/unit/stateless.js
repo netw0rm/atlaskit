@@ -2,7 +2,8 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
-import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
+import UpIcon from '@atlaskit/icon/glyph/arrow-up';
+import { Tooltip } from '@atlaskit/tooltip';
 import sinon from 'sinon';
 
 import styles from '../../src/styles.less';
@@ -72,6 +73,21 @@ describe(name, () => {
       expect(select.find(Group).length).to.equal(1);
       expect(select.find(Item).length).to.equal(2);
       expect(select.find(Group).find(Item).length).to.equal(2);
+    });
+
+    it('should render tooltips inside Droplist', () => {
+      const selectItems = [
+        {
+          heading: 'test',
+          items: [
+            { value: 1, content: '1', tooltipDescription: 'first' },
+            { value: 2, content: '2', tooltipDescription: 'second' },
+            { value: 3, content: '3' },
+          ],
+        },
+      ];
+      const select = mount(<StatelessSelect items={selectItems} isOpen />);
+      expect(select.find(Tooltip).length).to.equal(2);
     });
   });
 
@@ -398,6 +414,30 @@ describe(name, () => {
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
       });
+
+      it('should only select one option, even when there are multiple groups', () => {
+        wrapper.setProps({
+          items: [
+            {
+              heading: 'Group 1',
+              items: [
+                { value: 11, content: 'Group 1 Item 1' },
+                { value: 12, content: 'Group 1 Item 2' },
+              ],
+            },
+            {
+              heading: 'Group 2',
+              items: [
+                { value: 21, content: 'Group 2 Item 1' },
+                { value: 22, content: 'Group 2 Item 2' },
+              ],
+            },
+          ],
+        });
+        const event = { key: 'ArrowDown', preventDefault: () => {} };
+        instance.handleKeyboardInteractions(event);
+        expect(wrapper.find(Item).nodes.filter(item => item.props.isFocused).length).to.equal(1);
+      });
     });
 
     describe('handleInputOnChange', () => {
@@ -589,6 +629,57 @@ describe(name, () => {
 
       it('should return undefined if nothing is found', () => {
         expect(instance.getNextNativeSearchItem(items, 'y', 4)).to.equal(undefined);
+      });
+    });
+
+    describe('getItemTrueIndex', () => {
+      it('should return the index of the item when there is only one group', () => {
+        wrapper = mount(<StatelessSelect
+          items={[
+            {
+              heading: 'Group 1',
+              items: [
+                { value: 11, content: 'Group 1 Item 1' },
+                { value: 12, content: 'Group 1 Item 2' },
+                { value: 13, content: 'Group 1 Item 3' },
+              ],
+            },
+          ]}
+          isOpen
+        />);
+        instance = wrapper.instance();
+        expect(instance.getItemTrueIndex(0, 0)).to.equal(0);
+        expect(instance.getItemTrueIndex(2, 0)).to.equal(2);
+      });
+
+      it('should return the index of the item when there are multiple groups', () => {
+        wrapper = mount(<StatelessSelect
+          items={[
+            {
+              heading: 'Group 1',
+              items: [
+                { value: 11, content: 'Group 1 Item 1' },
+                { value: 12, content: 'Group 1 Item 2' },
+                { value: 13, content: 'Group 1 Item 3' },
+              ],
+            },
+            {
+              heading: 'Group 2',
+              items: [
+                { value: 21, content: 'Group 2 Item 1' },
+                { value: 22, content: 'Group 2 Item 2' },
+                { value: 23, content: 'Group 2 Item 3' },
+                { value: 24, content: 'Group 2 Item 4' },
+              ],
+            },
+          ]}
+          isOpen
+        />);
+        instance = wrapper.instance();
+        expect(instance.getItemTrueIndex(0, 0)).to.equal(0);
+        expect(instance.getItemTrueIndex(2, 0)).to.equal(2);
+        expect(instance.getItemTrueIndex(0, 1)).to.equal(3);
+        expect(instance.getItemTrueIndex(3, 1)).to.equal(6);
       });
     });
   });

@@ -76,45 +76,61 @@ describe('Avatar', () => {
   });
 
   describe('src property', () => {
-    let wrapper;
-    beforeEach(() => (wrapper = mount(<Avatar src={oneByOnePixel} />)));
+    describe('set at mount time', () => {
+      let wrapper;
+      beforeEach(() => (wrapper = mount(<Avatar src={oneByOnePixel} />)));
 
-    it('should set the src property on the internal img', () => {
-      expect(wrapper.find(Image).prop('src')).to.equal(oneByOnePixel);
-      expect(wrapper.find(Image).find('img').is(`[src="${oneByOnePixel}"]`)).to.equal(true);
+      it('should set the src property on the internal img', () => {
+        expect(wrapper.find(Image).prop('src')).to.equal(oneByOnePixel);
+        expect(wrapper.find(Image).find('img').is(`[src="${oneByOnePixel}"]`)).to.equal(true);
+      });
+
+      it('should render an img tag when src is set', () =>
+        expect(wrapper.find(Image).find('img').length).to.be.above(0)
+      );
+
+      it('should set isLoading=false when a same src is provided as the src already loaded', () => {
+        expect((wrapper).state('isLoading')).to.equal(true);
+        wrapper.find(Image).find('img').simulate('load');
+        expect((wrapper).state('isLoading')).to.equal(false);
+        wrapper.setProps({ src: oneByOnePixel });
+        expect((wrapper).state('isLoading')).to.equal(false);
+        expect((wrapper).state('hasError')).to.equal(false);
+      });
+
+      it('should set isLoading=true when a new src is provided', () => {
+        wrapper.setProps({ src: oneByOnePixelBlack });
+        expect((wrapper).state('isLoading')).to.equal(true);
+        expect((wrapper).state('hasError')).to.equal(false);
+      });
+
+      it('should set isLoading=false & hasError=false when src is loaded without errors', () => {
+        wrapper.find(Image).find('img').simulate('load');
+        expect((wrapper).state('isLoading')).to.equal(false);
+        expect((wrapper).state('hasError')).to.equal(false);
+      });
+
+      it('should set isLoading=false & hasError=true when a new invalid src is provided', () => {
+        wrapper.find(Image).find('img').simulate('error');
+        expect((wrapper).state('isLoading')).to.equal(false);
+        expect((wrapper).state('hasError')).to.equal(true);
+      });
+
+      it('should NOT render an img tag when src is NOT set', () => {
+        wrapper = mount(<Avatar />);
+        expect(wrapper.find(Image).find('img').length).to.equal(0);
+      });
     });
 
-    it('should render an img tag when src is set', () =>
-      expect(wrapper.find(Image).find('img').length).to.be.above(0)
-    );
-
-    it('should set isLoading=false when a same src is provided', () => {
-      wrapper.setProps({ src: oneByOnePixel });
-      expect((wrapper).state('isLoading')).to.equal(false);
-      expect((wrapper).state('hasError')).to.equal(false);
-    });
-
-    it('should set isLoading=true when a new src is provided', () => {
-      wrapper.setProps({ src: oneByOnePixelBlack });
-      expect((wrapper).state('isLoading')).to.equal(true);
-      expect((wrapper).state('hasError')).to.equal(false);
-    });
-
-    it('should set isLoading=false & hasError=false when src is loaded without errors', () => {
-      wrapper.find(Image).find('img').simulate('load');
-      expect((wrapper).state('isLoading')).to.equal(false);
-      expect((wrapper).state('hasError')).to.equal(false);
-    });
-
-    it('should set isLoading=false & hasError=true when a new invalid src is provided', () => {
-      wrapper.find(Image).find('img').simulate('error');
-      expect((wrapper).state('isLoading')).to.equal(false);
-      expect((wrapper).state('hasError')).to.equal(true);
-    });
-
-    it('should NOT render an img tag when src is NOT set', () => {
-      wrapper = mount(<Avatar />);
-      expect(wrapper.find(Image).find('img').length).to.equal(0);
+    describe('set after mount time', () => {
+      it('should load image successfully when src set', () => {
+        const wrapper = mount(<Avatar />);
+        expect((wrapper).state('isLoading')).to.equal(false);
+        wrapper.setProps({ src: oneByOnePixel });
+        expect((wrapper).state('isLoading')).to.equal(true);
+        wrapper.find(Image).find('img').simulate('load');
+        expect((wrapper).state('isLoading')).to.equal(false);
+      });
     });
   });
 

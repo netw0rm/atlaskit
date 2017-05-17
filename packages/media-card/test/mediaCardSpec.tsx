@@ -1,3 +1,4 @@
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -9,6 +10,7 @@ import 'rxjs/add/observable/of';
 import {waitUntil} from '@atlaskit/media-test-helpers';
 import {FileDetails, UrlPreview} from '@atlaskit/media-core';
 
+import {CardEvent} from '../src';
 import {MediaCard, MediaCardProps, MediaCardState} from '../src/mediaCard';
 
 const createNoopProvider = () => ({
@@ -75,6 +77,20 @@ describe('MediaCard', () => {
       element.setState({error});
 
       expect(element.props().error).to.be.equal(undefined);
+    });
+
+    it('should pass onClick to root node', function() {
+      const clickHandler = (result: CardEvent) => {};
+      const card = shallow(<MediaCard provider={createNoopProvider()} onClick={clickHandler} />);
+
+      expect(card.props().onClick).to.deep.equal(clickHandler);
+    });
+
+    it('should pass onMouseEnter to root node', function() {
+      const hoverHandler = (result: CardEvent) => {};
+      const card = shallow(<MediaCard provider={createNoopProvider()} onMouseEnter={hoverHandler} />);
+
+      expect(card.props().onMouseEnter).to.deep.equal(hoverHandler);
     });
   });
 

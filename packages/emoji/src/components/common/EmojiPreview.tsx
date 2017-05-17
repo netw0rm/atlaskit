@@ -101,7 +101,9 @@ export default class EmojiPreview extends PureComponent<Props, State> {
 
     return (
       <div className={previewClasses}>
-        <Emoji emoji={emoji} />
+        <span className={styles.previewImg}>
+          <Emoji emoji={emoji} />
+        </span>
         <div className={previewTextClasses}>
           <span className={styles.name}>{emoji.name}</span>
           <span className={styles.shortName}>{emoji.shortName}</span>

@@ -1,4 +1,5 @@
 import { Component, ReactNode, MouseEvent, KeyboardEvent } from 'react';
+import SecondaryText from './internal/SecondaryText';
 
 type KeyboardOrMouseEvent = MouseEvent<any> | KeyboardEvent<any>;
 
@@ -20,3 +21,4 @@ interface Props {
 interface State {}
 
 export default class Item extends Component<Props, State> {}
+export { SecondaryText };

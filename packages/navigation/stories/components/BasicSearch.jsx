@@ -90,19 +90,27 @@ function search(query) {
   ));
 }
 
+// a little fake store for holding the query after a component unmounts
+const store = {};
+
 export default class BasicSearch extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      query: '',
-    };
+  state = {
+    query: store.query || '',
   }
+
+  setQuery(query) {
+    store.query = query;
+    this.setState({
+      query,
+    });
+  }
+
   render() {
     return (
       <AkSearch
         clearIcon={<CrossIcon label="clear" size="medium" />}
-        onChange={({ target }) => { this.setState({ query: target.value }); }}
-        onSearchClear={() => { this.setState({ query: '' }); }}
+        onChange={({ target }) => { this.setQuery(target.value); }}
+        onSearchClear={() => { this.setQuery(''); }}
         value={this.state.query}
       >
         {search(this.state.query)}

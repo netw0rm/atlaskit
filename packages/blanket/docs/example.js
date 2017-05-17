@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Blanket from '../src';
+import Blanket from '@atlaskit/blanket';
 import Button from '@atlaskit/button';
 
 export default class ExampleBlanket extends PureComponent {

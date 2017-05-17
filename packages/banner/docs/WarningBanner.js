@@ -1,6 +1,6 @@
 import React from 'react';
-import HelpIcon from 'ak-icon/glyph/help';
-import Banner from '../src';
+import HelpIcon from '@atlaskit/icon/glyph/help';
+import Banner from '@atlaskit/banner';
 
 const Icon = <HelpIcon label="Info icon" />;
 const WarningBanner = () => (

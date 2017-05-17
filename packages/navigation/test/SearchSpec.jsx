@@ -113,40 +113,40 @@ describe('Search', () => {
     );
     it('should show busy icon instead of clear icon when busy', (done) => {
       const wrapper = mount(<SearchWithBusyIcon isBusy />);
-      setImmediate(() => {
+      setTimeout(() => {
         expect(wrapper.find(BusyIcon)).to.have.length(1);
         expect(wrapper.find(ClearIcon)).to.have.length(0);
         done();
-      });
+      }, 0);
     });
     it('should show clear icon when not busy', (done) => {
       const wrapper = mount(<SearchWithBusyIcon isBusy={false} />);
-      setImmediate(() => {
+      setTimeout(() => {
         expect(wrapper.find(BusyIcon)).to.have.length(0);
         expect(wrapper.find(ClearIcon)).to.have.length(1);
         done();
-      });
+      }, 0);
     });
     it('should switch from busy icon to clear icon when busy, on mouse enter', (done) => {
       const wrapper = mount(<SearchWithBusyIcon isBusy />);
       const mouseEventDivWrapper = wrapper.find(ClearIcon).parent();
       mouseEventDivWrapper.simulate('mouseenter');
-      setImmediate(() => {
+      setTimeout(() => {
         expect(wrapper.find(BusyIcon)).to.have.length(0);
         expect(wrapper.find(ClearIcon)).to.have.length(1);
         done();
-      });
+      }, 0);
     });
     it('should switch back to busy icon on mouse leave', (done) => {
       const wrapper = mount(<SearchWithBusyIcon isBusy />);
       const mouseEventDivWrapper = wrapper.find(ClearIcon).parent();
       mouseEventDivWrapper.simulate('mouseenter');
       mouseEventDivWrapper.simulate('mouseleave');
-      setImmediate(() => {
+      setTimeout(() => {
         expect(wrapper.find(BusyIcon)).to.have.length(1);
         expect(wrapper.find(ClearIcon)).to.have.length(0);
         done();
-      });
+      }, 0);
     });
     it('should show clear icon when busy if no busy icon is supplied', (done) => {
       const wrapper = mount(
@@ -156,11 +156,11 @@ describe('Search', () => {
           delayBusyStateBy={0}
         />
       );
-      setImmediate(() => {
+      setTimeout(() => {
         expect(wrapper.find(BusyIcon)).to.have.length(0);
         expect(wrapper.find(ClearIcon)).to.have.length(1);
         done();
-      });
+      }, 0);
     });
   });
 });

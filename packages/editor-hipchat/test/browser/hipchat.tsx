@@ -57,7 +57,13 @@ describe('@atlaskit/editor-hipchat', () => {
 
   afterEach(() => {
     if (editorWrapper) {
-      editorWrapper.unmount();
+      try {
+        editorWrapper.unmount();
+      } catch(e) {
+        // TODO: remove after https://product-fabric.atlassian.net/browse/ED-1694
+        // Temporary workaround to prevent Picker exceptions thrown
+        // when removing them too quickly after unmount.
+      }
     }
   });
 

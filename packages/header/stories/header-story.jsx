@@ -10,12 +10,32 @@ import ReadmeExample from './examples/readme';
 storiesOf('Header', module)
   .add('Standalone header without links', () => (
     <Header
-      logoHref="#home"
+      logoHref="#apps"
       title="Atlassian Developer"
-      titleHref="#jsdcloud"
+      titleHref="#apps"
     />
   ))
   .add('Standalone header', () => ReadmeExample)
+  .add('With logIn link', () => (
+    <Header
+      logoHref="#apps"
+      title="Atlassian Developer"
+      titleHref="#apps"
+      showLoginButton
+    />
+  ))
+  .add('With user info', () => (
+    <Header
+      logoHref="#apps"
+      title="Atlassian Developer"
+      titleHref="#apps"
+      userInfo={{
+        avatarUrl: '',
+        screenName: 'Hector',
+        email: 'hzarcogarcia@atlassian.com',
+      }}
+    />
+  ))
   .add('Header with @atlaskit/tabs', () => (
     <div>
       {ReadmeExample}

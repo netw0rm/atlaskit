@@ -10,10 +10,15 @@ const headerHeight = gridSize * 11;
 
 export const HeaderWrapper = styled.div`
   *, *::before, *::after {
-      box-sizing: inherit;
+    box-sizing: inherit;
+  }
+  ul {
+    padding: 0;
+    margin: 0;
   }
   .row {
-    max-width: 75rem;
+    // max-width: 75rem;
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 

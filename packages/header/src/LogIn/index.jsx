@@ -3,7 +3,6 @@
  * or a logIn link if the user is not logged.
  */
 import React, { PropTypes, Component } from 'react';
-import fetch from 'isomorphic-fetch';
 import styled from 'styled-components';
 import Avatar from '@atlaskit/avatar';
 import cx from 'classnames';
@@ -19,36 +18,20 @@ const StyledDiv = styled.div`
 class LogIn extends Component {
 
   static propTypes = {
-    isEnabled: PropTypes.bool,
+    showLoginButton: PropTypes.bool,
+    userInfo: PropTypes.shape({
+      avatarUrl: PropTypes.string,
+      screenName: PropTypes.string,
+      email: PropTypes.string,
+    }),
   };
 
   constructor(props) {
     super(props);
-    // TODO RAD-162: Move session state to redux store
+
     this.state = {
-      session: {},
-      isLogged: null,
-      isLoaded: false,
       showUserInfo: false,
     };
-  }
-
-  componentDidMount() {
-    this.fetchSession();
-  }
-
-  fetchSession() {
-    const sessionEndpoint = '/account/profile';
-
-    // eslint-disable-next-line
-    fetch(sessionEndpoint, {
-      method: 'GET',
-      credentials: 'include',
-    }).then(r => r.json()).then((session) => {
-      this.setState({ session, isLogged: true, isLoaded: true });
-    }).catch(() => {
-      this.setState({ isLogged: false, isLoaded: true });
-    });
   }
 
   toggleUserInfo = () => {
@@ -56,13 +39,15 @@ class LogIn extends Component {
   };
 
   renderAvatar() {
-    const logInLinks = this.state.showUserInfo ? this.renderLogInLinks() : null;
-    const avatarClass = cx({ active: this.state.showUserInfo });
+    const { showUserInfo } = this.state;
+    const { avatarUrl } = this.props.userInfo;
+    const logInLinks = showUserInfo ? this.renderLogInLinks() : null;
+    const avatarClass = cx({ active: showUserInfo });
 
     return (
       <AvatarWrapper>
         <AvatarElementWrapper className={avatarClass} onClick={this.toggleUserInfo}>
-          <Avatar size="small" src={this.state.session.avatarUrl} />
+          <Avatar size="small" src={avatarUrl} />
         </AvatarElementWrapper>
         {logInLinks}
       </AvatarWrapper>
@@ -70,12 +55,14 @@ class LogIn extends Component {
   }
 
   renderUserInfo() {
+    const { avatarUrl, screenName, email } = this.props.userInfo;
+
     return (
       <UserInfoWrapper>
-        <Avatar size="medium" src={this.state.session.avatarUrl} />
+        <Avatar size="medium" src={avatarUrl} />
         <UserInfo>
-          <UserName>{this.state.session.screenName}</UserName>
-          <UserEmail>{this.state.session.email}</UserEmail>
+          <UserName>{screenName}</UserName>
+          <UserEmail>{email}</UserEmail>
         </UserInfo>
       </UserInfoWrapper>
     );
@@ -97,15 +84,13 @@ class LogIn extends Component {
   }
 
   render() {
-    if (!this.state.isLoaded) {
-      return null;
-    }
+    const { userInfo, showLoginButton } = this.props;
 
-    if (this.state.isLogged) {
+    if (userInfo) {
       return <StyledDiv>{ this.renderAvatar() }</StyledDiv>;
     }
 
-    if (this.props.isEnabled) {
+    if (showLoginButton) {
       return <StyledDiv>{ this.renderLoginLink() }</StyledDiv>;
     }
 

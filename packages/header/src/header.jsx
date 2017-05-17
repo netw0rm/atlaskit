@@ -37,6 +37,12 @@ export class Header extends PureComponent {
       label: PropTypes.string.isRequired,
     })),
     submenuId: PropTypes.string,
+    showLoginButton: PropTypes.bool,
+    userInfo: PropTypes.shape({
+      avatarUrl: PropTypes.string,
+      screenName: PropTypes.string,
+      email: PropTypes.string,
+    }),
   };
 
   static defaultProps = {
@@ -129,6 +135,8 @@ export class Header extends PureComponent {
   }
 
   _renderDesktopView() {
+    const { showLoginButton, userInfo } = this.props;
+
     return (
       <PrimaryFullWidthWrapper className="show-for-large">
         <Row className="row">
@@ -141,7 +149,10 @@ export class Header extends PureComponent {
             <SecondaryLinksWrapper>
               <HeaderSearch />
               <SecondaryLink href={'/docs/'}>All docs</SecondaryLink>
-              <LogIn />
+              <LogIn
+                showLoginButton={showLoginButton}
+                userInfo={userInfo}
+              />
             </SecondaryLinksWrapper>
           </Column>
         </Row>

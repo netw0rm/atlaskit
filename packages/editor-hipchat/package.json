@@ -6,14 +6,13 @@
   },
   "description": "Atlassian Editor component for HipChat",
   "main": "umd/@atlaskit/editor-hipchat.js",
-  "jsnext:main": "dist/es2015/index.js",
-  "types": "types/src/index.d.ts",
+  "types": "umd/types/src/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "PACKAGE=editor-hipchat ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
     "test": "../../node_modules/.bin/nwb test",
-    "test:watch": "../../node_modules/.bin/nwb test --server"
+    "test:watch": "../../node_modules/.bin/nwb test --server",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001"
   },
   "files": [
     "umd"

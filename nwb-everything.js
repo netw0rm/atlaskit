@@ -41,10 +41,12 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   const unitFile = path.join(dir, 'test', 'unit');
   const testFile = path.join(dir, 'test');
   const testsFile = path.join(dir, 'tests');
+  const storybookDir = path.join(dir, 'stories');
 
   const isTsPackage = fs.existsSync(tsFile);
   const isMochaPackage = fs.existsSync(unitFile);
   const isTestedPackage = fs.existsSync(testFile) || fs.existsSync(testsFile);
+  const isStorybookPackage = fs.existsSync(storybookDir);
 
   if (!fs.statSync(dir).isDirectory()) {
     return;
@@ -67,7 +69,6 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   }
 
   const pkgJson = require(pkg);
-  const pkgJsonBasename = pkgJson.name.split('/')[1];
 
   if (!pkgJson.scripts || !pkgJson.scripts.prepublish) {
     return;
@@ -89,19 +90,23 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
       ? `${binPath}/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'`
       : `${binPath}/eslint --color --format "${modPath}/eslint-friendly-formatter" --ext .js --ext .jsx src/ stories/ test/`,
     prepublish: `${binPath}/nwb build`,
-    storybook: `PACKAGE=${pkgJsonBasename} ${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`,
     test: getTestCommand(),
     'test:watch': getTestCommand({ watch: true }),
   };
 
+  if (isStorybookPackage) {
+    pkgJson.scripts.storybook = `${binPath}/start-storybook -c ../../build/storybook-nwb -p 9001`;
+  }
+
   if (isTsPackage) {
-    pkgJson.types = 'types/src/index.d.ts';
+    pkgJson.types = 'umd/types/src/index.d.ts';
   }
 
   // Remove old fields.
   delete pkgJson.module;
   delete pkgJson.webpack;
   delete pkgJson['ak:webpack:raw'];
+  delete pkgJson['jsnext:main'];
 
   fs.writeFileSync(pkg, JSON.stringify(pkgJson, null, 2));
   fs.writeFileSync(nwbFile, 'module.exports = require(\'../../nwb.config\');\n');

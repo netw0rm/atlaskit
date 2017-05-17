@@ -2,10 +2,13 @@ import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { chaiPlugin, sendKeyToPm, insertText } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin, sendKeyToPm, insertText, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { mount, ReactWrapper } from 'enzyme';
 import Editor from '../../src';
 import * as api from '../../src';
+import { testImageUrl, testImageName } from '../../stories/story-data';
+import { mediaStateKey, MediaPluginState, MediaProvider } from '@atlaskit/editor-core';
+import { waitUntil } from '@atlaskit/util-common-test';
 
 chai.use(chaiPlugin);
 
@@ -292,6 +295,12 @@ describe('@atlaskit/editor-hipchat', () => {
         expect(typeof editor.showMediaPicker === 'function').to.equal(true);
       });
     });
+
+    describe('.insertFileFromDataUrl()', () => {
+      it('should be a function', () => {
+        expect(typeof editor.insertFileFromDataUrl === 'function').to.equal(true);
+      });
+    });
   });
 
   describe('Legacy-format', () => {
@@ -318,9 +327,11 @@ describe('@atlaskit/editor-hipchat', () => {
     describe('API', () => {
 
       let editor;
+      let mediaProvider: Promise<MediaProvider>;
 
       beforeEach(() => {
-        editorWrapper = mount(<Editor useLegacyFormat={true} />);
+        mediaProvider = storyMediaProviderFactory();
+        editorWrapper = mount(<Editor useLegacyFormat={true} mediaProvider={mediaProvider} />);
         editor = editorWrapper.get(0) as any;
         editor.setFromJson(defaultValueLegacy);
       });
@@ -360,8 +371,33 @@ describe('@atlaskit/editor-hipchat', () => {
         });
       });
 
-    });
+      describe('.insertFileFromDataUrl()', () => {
+        it('adds a media item when provided with a file', async () => {
+          const provider = await mediaProvider;
+          await provider.uploadContext;
 
+          editor.setFromJson([{ type: 'text', text: 'Here goes a media item', marks: []}]);
+          editor.insertFileFromDataUrl(testImageUrl, testImageName);
+
+          // Media picker does not currently emit upload start events synchronously, so we have to wait for
+          // AJAX calls to finish before the media item is added to the document (actually starts uploading).
+          // TODO: Remove the waitUntil() after this issue is resolved: https://jira.atlassian.com/browse/FIL-4083
+          let doc;
+          return waitUntil(() => {
+            doc = editor.state.editorView!.state.doc;
+            return doc.childCount > 1;
+          }, 2000, 200).then(() => {
+            expect(doc.lastChild.type.name).to.equal('mediaGroup');
+            expect(doc.lastChild.content.size).to.equal(1);
+
+            const media = doc.lastChild.lastChild;
+            expect(media.type.name).to.equal('media');
+            expect(media.attrs.id.length > 5).to.equal(true);
+            expect(media.attrs.collection.length > 5).to.equal(true);
+          });
+        });
+      });
+    });
   });
 
 });

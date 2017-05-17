@@ -53,7 +53,9 @@ export default class Flag extends PureComponent {
 
     return (
       <Container role="alert" tabIndex="0">
-        <Icon>{icon}</Icon>
+        <span>
+          <Icon>{icon}</Icon>
+        </span>
         <Content>
           <Header>
             <Title>{title}</Title>

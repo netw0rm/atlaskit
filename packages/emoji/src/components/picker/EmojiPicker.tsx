@@ -21,7 +21,6 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
-
   target?: string | HTMLElement;
   position?: RelativePosition;
   zIndex?: string | number;

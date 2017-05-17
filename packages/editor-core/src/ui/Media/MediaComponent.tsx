@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {
   Card,
+  CardEvent,
+  CardStatus,
   CardView,
   MediaIdentifier,
   UrlPreviewIdentifier,
@@ -10,7 +12,6 @@ import {
   ContextConfig,
   ContextFactory,
   Context,
-  CardClick,
   CardDelete,
   FileDetails,
   MediaProvider,
@@ -37,21 +38,18 @@ export interface State extends MediaState {
  * Map media state status into CardView processing status
  * Media state status is more broad than CardView API so we need to reduce it
  */
-function mapMediaStatusIntoCardStatus(state: MediaState) {
+function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
   switch (state.status) {
     case 'ready':
+    case 'unknown':
+    case 'unfinalized':
       return 'complete';
 
     case 'processing':
-    case 'unfinalized':
       return 'processing';
 
-    case 'unknown':
     case 'uploading':
-      // TODO: change this to uploading. Currently media-card doesn't have a concept of uploading
-      // Because of this progressbar is shown only for "complete" status
-      // @see https://jira.atlassian.com/browse/FIL-4175
-      return 'complete';
+      return 'uploading';
 
     // default case is to let TypeScript know that this function always returns a string
     case 'error':
@@ -116,8 +114,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleLinkCardViewClick(item: any, event: Event) {
-    event.preventDefault();
+  private handleLinkCardViewClick(result: CardEvent) {
+    result.event.preventDefault();
   }
 
   private renderLink() {
@@ -139,7 +137,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         metadata={previewDetails}
 
         // SharedCardProps
-        actions={[ CardClick(this.handleLinkCardViewClick) ]}
+        onClick={this.handleLinkCardViewClick}
       />;
     }
 
@@ -246,7 +244,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private handleMediaStateChange = (mediaState: MediaState) => {
     const newState = {
-      ...this.state,
       ...mediaState
     };
 
@@ -267,9 +264,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     const { stateManager } = pluginState;
+    const mediaState = stateManager.getState(id);
 
     stateManager.subscribe(id, this.handleMediaStateChange);
-    this.setState({ ...this.state, mediaProvider });
+    this.setState({ mediaProvider, ...mediaState });
 
     mediaProvider.viewContext.then((context: ContextConfig | Context) => {
       if ('clientId' in (context as ContextConfig)) {

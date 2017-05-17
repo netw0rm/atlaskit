@@ -10,15 +10,11 @@ const Wrapper = styled.div`
 
 const NavigationAndContent = styled.div`
   display: flex;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
+  flex: 1 1 auto;
 `;
 
 const BannerContainer = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: auto;
+  flex: 1 0 auto;
   transition: max-height 0.25s ease-in-out;
   max-height: ${props => (props.isBannerOpen ? 52 : 0)}px; /* 52 is line height (20) + 4*grid */
   position: relative;
@@ -32,21 +28,14 @@ const Banner = styled.div`
 `;
 
 const Navigation = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: auto;
   position: relative;
-  max-height: 100%;
   z-index: 2;
 `;
 
 const PageContent = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: auto;
+  flex: 1 0 auto;
   position: relative;
   z-index: 1;
-  width: calc(100% - ${props => props.navigationWidth}px);
 `;
 
 export default class Page extends PureComponent {
@@ -57,12 +46,10 @@ export default class Page extends PureComponent {
     children: PropTypes.node,
     isBannerOpen: PropTypes.bool,
     navigation: PropTypes.node,
-    navigationWidth: PropTypes.number,
   }
 
   static defaultProps = {
     isBannerOpen: false,
-    navigationWidth: 0,
   }
   render() {
     return (
@@ -82,7 +69,7 @@ export default class Page extends PureComponent {
             <Navigation>
               {this.props.navigation}
             </Navigation>
-            <PageContent navigationWidth={this.props.navigationWidth}>
+            <PageContent>
               {this.props.children}
             </PageContent>
           </NavigationAndContent>

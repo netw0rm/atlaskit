@@ -24,7 +24,7 @@ export default class DefaultMediaStateManager implements MediaStateManager {
       return;
     }
 
-    list.forEach(cb => cb.call(cb, state));
+    Array.from(list).forEach(cb => cb.call(cb, state));
   }
 
   subscribe(tempId: string, cb: (state: MediaState) => void) {

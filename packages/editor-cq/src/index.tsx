@@ -55,6 +55,7 @@ export interface Props {
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
+  onExpanded?: (editor?: Editor) => void;
   placeholder?: string;
   uploadErrorHandler?: (state: MediaState) => void;
   analyticsHandler?: AnalyticsHandler;
@@ -172,6 +173,11 @@ export default class Editor extends PureComponent<Props, State> {
 
     if (nextProps.expanded !== this.props.expanded) {
       this.setState({ isExpanded: nextProps.expanded });
+
+      const { onExpanded } = this.props;
+      if (onExpanded) {
+        onExpanded(this);
+      }
     }
   }
 
@@ -230,7 +236,12 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleCollapsedChromeFocus = () => {
+    const { onExpanded } = this.props;
     this.setState({ isExpanded: true });
+
+    if (onExpanded) {
+      onExpanded(this);
+    }
   }
 
   private handleRef = (place: Element | null) => {

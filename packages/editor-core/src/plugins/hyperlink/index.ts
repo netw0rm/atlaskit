@@ -8,11 +8,12 @@ import {
   PluginKey,
   NodeViewDesc,
   TextSelection,
+  Slice,
 } from '../../prosemirror';
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { normalizeUrl } from './utils';
+import { normalizeUrl, linkify } from './utils';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
@@ -268,6 +269,24 @@ const plugin = new Plugin({
       pluginState.editorFocused = true;
 
       return true;
+    },
+    handlePaste(view: EditorView, event: any, slice: Slice) {
+      const { clipboardData } = event;
+      const html = clipboardData && clipboardData.getData('text/html');
+      if (html) {
+        return false;
+      }
+      const text = clipboardData && clipboardData.getData('text/plain');
+      if (!text) {
+        return false;
+      }
+      const contentSlices = linkify(view.state.schema, text);
+      if (contentSlices) {
+        const { dispatch, state: { tr }} = view;
+        dispatch(tr.replaceSelection(contentSlices));
+        return true;
+      }
+      return false;
     }
   },
   state: {

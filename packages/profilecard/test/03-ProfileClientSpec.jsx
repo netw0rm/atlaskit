@@ -61,7 +61,7 @@ describe('Profilecard', () => {
           client.getProfile('DUMMY-CLOUD-ID', '1')
           .then((data) => {
             clock.tick(clientCacheMaxAge);
-            cache = client.getCachedProfile('1');
+            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).to.equal(data);
             done();
@@ -75,7 +75,7 @@ describe('Profilecard', () => {
           client.getProfile('DUMMY-CLOUD-ID', '1')
           .then(() => {
             clock.tick(clientCacheMaxAge + 1);
-            cache = client.getCachedProfile('1');
+            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).to.equal(null);
             done();
@@ -89,12 +89,12 @@ describe('Profilecard', () => {
           client.getProfile('DUMMY-CLOUD-ID', '1')
           .then((data) => {
             clock.tick(clientCacheMaxAge);
-            cache = client.getCachedProfile('1');
+            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).to.equal(data);
 
             clock.tick(clientCacheMaxAge);
-            cache = client.getCachedProfile('1');
+            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).to.equal(data);
             done();
@@ -109,12 +109,12 @@ describe('Profilecard', () => {
         it('should purge all cached items', (done) => {
           client.getProfile('DUMMY-CLOUD-ID', '1')
           .then((data) => {
-            cache = client.getCachedProfile('1');
+            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).to.equal(data);
 
             client.flushCache();
-            cache = client.getCachedProfile('1');
+            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).to.equal(null);
             done();

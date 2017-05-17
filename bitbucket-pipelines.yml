@@ -14,7 +14,7 @@
 # or
 #           - ./build/bin/foo-bar-baz.bash
 
-image: atlassianlabs/atlaskit:2017-04-26
+image: atlassianlabs/atlaskit:2017-05-10
 pipelines:
   branches:
     master:
@@ -31,7 +31,7 @@ pipelines:
             - yarn run test/unit
             - run-p -ln "test" "test/base"
             - yarn run browserstack/tunnel/start
-            - yarn run test/wc/browserstack
+            - yarn run test/browserstack
             - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
@@ -61,6 +61,6 @@ pipelines:
           - yarn run test/unit
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
-          - yarn run test/wc/browserstack
+          - yarn run test/browserstack
           - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"

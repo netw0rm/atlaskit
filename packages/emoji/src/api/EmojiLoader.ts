@@ -1,7 +1,7 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 
-import { requestService, ServiceConfig } from './SharedResourceUtils';
+import { requestService, ServiceConfig, KeyValues } from './SharedResourceUtils';
 import debug from '../util/logger';
 
 import {
@@ -20,10 +20,29 @@ import {
 
 import { isImageRepresentation, isSpriteServiceRepresentation } from '../type-helpers';
 
-const emojiRequest = (provider: ServiceConfig): Promise<EmojiServiceResponse> => {
+export interface EmojiLoaderConfig extends ServiceConfig {
+  getRatio?: () => number;
+}
+
+const emojiRequest = (provider: EmojiLoaderConfig): Promise<EmojiServiceResponse> => {
   const { url, securityProvider, refreshedSecurityProvider } = provider;
   const secOptions = securityProvider && securityProvider();
-  return requestService(url, '', {}, {}, secOptions, refreshedSecurityProvider);
+  const getRatio = provider.getRatio ? provider.getRatio : getPixelRatio;
+  const scale: KeyValues = calculateScale(getRatio);
+  return requestService(url, '', scale, {}, secOptions, refreshedSecurityProvider);
+};
+
+const calculateScale = (getRatio: () => number): KeyValues => {
+  // Retina display
+  if (getRatio() > 1) {
+    return { scale: 'XHDPI' };
+  }
+  // Default set used for desktop
+  return {};
+};
+
+const getPixelRatio = (): number => {
+  return window.devicePixelRatio;
 };
 
 export const isMediaApi = (url: string, meta?: EmojiMeta): boolean =>
@@ -111,9 +130,9 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
  */
 export default class EmojiLoader {
 
-  private config: ServiceConfig;
+  private config: EmojiLoaderConfig;
 
-  constructor(config: ServiceConfig) {
+  constructor(config: EmojiLoaderConfig) {
     this.config = config;
   }
 

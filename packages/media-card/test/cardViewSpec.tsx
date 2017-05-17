@@ -1,6 +1,9 @@
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
+import * as sinon from 'sinon';
+
 import {expect} from 'chai';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import {FileDetails, LinkDetails} from '@atlaskit/media-core';
 
 import {CardView} from '../src/cardView';
@@ -135,5 +138,78 @@ describe('CardView', () => {
 
     const linkCard = element.find(FileCard);
     expect(linkCard).to.be.length(1);
+  });
+
+  it('should fire onClick and onMouseEnter events when file details are passed in', function() {
+    const file: FileDetails = {
+      id: 'abcd',
+      name: 'my-file'
+    };
+
+    const clickHandler = sinon.spy();
+    const hoverHandler = sinon.spy();
+    const card = mount(<CardView status="loading" metadata={file} onClick={clickHandler} onMouseEnter={hoverHandler} />);
+
+    card.simulate('click');
+    card.simulate('mouseEnter');
+
+    expect(clickHandler.calledOnce).to.be.true;
+    const clickHandlerArg = clickHandler.firstCall.args[0];
+    expect(clickHandlerArg.mediaItemDetails).to.deep.equal(file);
+
+    expect(hoverHandler.calledOnce).to.be.true;
+    const hoverHandlerArg = hoverHandler.firstCall.args[0];
+    expect(hoverHandlerArg.mediaItemDetails).to.deep.equal(file);
+  });
+
+  it('should fire onClick and onMouseEnter events when file details are passed in', function() {
+    const linkDetails: LinkDetails = {
+      type: 'link',
+      id: 'abcd',
+      url: 'my-file',
+      title: 'some-title'
+    };
+
+    const clickHandler = sinon.spy();
+    const hoverHandler = sinon.spy();
+    const card = mount(<CardView status="loading" metadata={linkDetails} onClick={clickHandler} onMouseEnter={hoverHandler} />);
+
+    card.simulate('click');
+    card.simulate('mouseEnter');
+
+    expect(clickHandler.calledOnce).to.be.true;
+    const clickHandlerArg = clickHandler.firstCall.args[0];
+    expect(clickHandlerArg.mediaItemDetails).to.deep.equal(linkDetails);
+
+    expect(hoverHandler.calledOnce).to.be.true;
+    const hoverHandlerArg = hoverHandler.firstCall.args[0];
+    expect(hoverHandlerArg.mediaItemDetails).to.deep.equal(linkDetails);
+  });
+
+  it('should NOT fire onSelectChange when card is NOT selectable', function() {
+    const file: FileDetails = {
+      id: 'abcd',
+      name: 'my-file'
+    };
+
+    const handler = sinon.spy();
+    const card = shallow(<CardView status="loading" metadata={file} onSelectChange={handler} />);
+    card.setProps({selected: true});
+
+    expect(handler.called).to.be.false;
+  });
+
+  it('should fire onSelectChange when selected state is changed by the consumer and selectable is true', function() {
+    const file: FileDetails = {
+      id: 'abcd',
+      name: 'my-file'
+    };
+
+    const handler = sinon.spy();
+    const card = shallow(<CardView status="loading" metadata={file} onSelectChange={handler} selectable={true} />);
+    card.setProps({selected: true});
+
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.firstCall.args[0]).to.deep.equal({selected: true, mediaItemDetails: file});
   });
 });

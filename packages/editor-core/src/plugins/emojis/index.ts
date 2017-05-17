@@ -1,6 +1,5 @@
-import Keymap from 'browserkeymap';
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
-
+import * as commands from '../../commands';
 import {
   EditorState,
   EditorView,
@@ -22,10 +21,9 @@ export interface Options {
 export class EmojiState {
   emojiProvider: Promise<EmojiProvider>;
   query?: string;
+  enabled = true;
   queryActive = false;
   anchorElement?: HTMLElement;
-  keymap: Keymap;
-  blah = 'EmojiPlugin';
 
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
@@ -62,6 +60,12 @@ export class EmojiState {
     const { from, to } = selection;
 
     let dirty = false;
+
+    const newEnabled = this.canAddEmojiToActiveNode();
+    if (newEnabled !== this.enabled) {
+      this.enabled = newEnabled;
+      dirty = true;
+    }
 
     if (doc.rangeHasMark(from - 1, to, emojiQuery)) {
       if (!this.queryActive) {
@@ -120,10 +124,15 @@ export class EmojiState {
     return isMarkAllowedAtPosition(emojiQuery, selection);
   }
 
+  private canAddEmojiToActiveNode(): boolean {
+    const { emojiQuery } = this.state.schema.marks;
+    return !!emojiQuery && commands.toggleMark(emojiQuery)(this.state);
+  }
+
   private findEmojiQueryMark() {
     const { state } = this;
     const { doc, schema, selection } = state;
-    const { from } = selection;
+    const { to, from } = selection;
     const { emojiQuery } = schema.marks;
 
     let start = from;
@@ -144,6 +153,12 @@ export class EmojiState {
       end = start + node.nodeSize;
     }
 
+    // Emoji inserted via picker
+    if (start === 0 && end === 0) {
+      start = from;
+      end = to;
+    }
+
     return { start, end };
   }
 
@@ -158,6 +173,7 @@ export class EmojiState {
       view.dispatch(
         state.tr.replaceWith(start, end, [node, textNode])
       );
+      view.focus();
     } else {
       this.dismiss();
     }

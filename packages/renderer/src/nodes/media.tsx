@@ -18,9 +18,8 @@ import {
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
 
-import {
-  Renderable,
-} from './';
+import { Renderable } from './';
+import { CardEventClickHandler } from '../config';
 
 export interface MediaNode extends Renderable {
   type: string;
@@ -30,8 +29,6 @@ export interface MediaNode extends Renderable {
     collection: string;
   };
 }
-
-export type CardEventClickHandler = (result: CardEvent) => void;
 
 export interface MediaProps {
   mediaProvider?: Promise<MediaProvider>;

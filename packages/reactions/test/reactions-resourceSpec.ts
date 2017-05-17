@@ -323,14 +323,15 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       spy.restore();
     });
 
-    it('should call notifyUpdated', () => {
+    it('should call notifyUpdated if cached', () => {
       const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
-      return reactionsProvider.fetchReactionDetails(reaction)
-        .then(() => {
-          expect(spy.called).to.equal(true);
-          expect(spy.calledWith(reaction.containerAri, reaction.ari, [detailedReaction])).to.equal(true);
-          spy.restore();
-        });
+      return reactionsProvider.addReaction(containerAri, ari, grinningId.id!)
+          .then(() => reactionsProvider.fetchReactionDetails(reaction))
+          .then(() => {
+            expect(spy.called).to.equal(true);
+            expect(spy.calledWith(reaction.containerAri, reaction.ari, [detailedReaction])).to.equal(true);
+            spy.restore();
+          });
     });
 
   });

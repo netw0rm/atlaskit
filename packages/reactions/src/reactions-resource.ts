@@ -370,9 +370,9 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
           const index = findIndex(this.cachedReactions[key], r => r.emojiId === emojiId);
           if (index !== -1) {
             this.cachedReactions[key][index] = reactionDetails;
+            this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
           }
 
-          this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
           resolve(reactionDetails);
         });
     });

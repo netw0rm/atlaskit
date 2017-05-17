@@ -1,8 +1,7 @@
 const browserStackBrowsers = {
   // Chrome
-  // 2017-05-17 03:36:58: Disabled by @abodera because of consistent disconnect failures on BrowserStack
-  //   (https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/%7B7fae1701-15bb-4ccf-b8d8-843d8a2ba7b1%7D)
-  //   The issue has been reported to BrowserStack and is awaiting a fix.
+  // 2017-05-17 03:36:58: Disabled by @abodera because of consistent disconnect failures
+  //  on BrowserStack. The issue has been reported to BrowserStack and is awaiting a fix.
   // chrome_latest_windows: {
   //   browser: 'chrome',
   //   os: 'WINDOWS',

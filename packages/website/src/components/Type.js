@@ -12,7 +12,12 @@ const StyledHeading = styled.h1`
 
   /* override css reset */
   &, &:first-child {
-    margin-top: ${akGridSizeUnitless * 6}px;
+    margin-top: 1em;
+  }
+  @media (min-width: 600px) {
+    &, &:first-child {
+      margin-top: ${akGridSizeUnitless * 6}px;
+    }
   }
 `;
 const StyledIntro = styled.p`
@@ -26,6 +31,6 @@ const StyledSection = styled.section`
   margin-top: 3em;
 
   p {
-    line-height: 1.8em;
+    line-height: 1.4em;
   }
 `;

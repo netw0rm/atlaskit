@@ -1,13 +1,26 @@
-import React, { PropTypes, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import LayoutFork from 'react-media';
+import {
+  akBorderRadius,
+
+  akColorB50,
+  akColorB500,
+  akColorN600,
+  akColorN80,
+
+  akGridSize,
+  akGridSizeUnitless,
+} from '@atlaskit/util-shared-styles';
+import Message from '@atlaskit/inline-message';
 import Table from '@atlaskit/dynamic-table';
 
 import { Heading, Intro, Section } from '../components/Type';
-
 import components from '../data';
+import { MOBILE_QUERY } from '../../constants';
 
 const componentKeys = Object.keys(components);
 
@@ -89,9 +102,9 @@ export default class Components extends PureComponent {
                 {version}
               </a>
               {publishTime ? (
-                <time dateTime={component.publishedDate}>
-                  {' '}{component.publishedDate && new Date(component.publishedDate).toLocaleDateString()}
-                </time>
+                <Time dateTime={component.publishedDate}>
+                  {' '}({component.publishedDate && new Date(component.publishedDate).toLocaleDateString()})
+                </Time>
               ) : null}
             </RowCell>
           ),
@@ -107,7 +120,7 @@ export default class Components extends PureComponent {
     };
   }
 
-  renderContent = () => (
+  renderDesktop = () => (
     <TableWrapper>
       <Table
         head={head}
@@ -117,9 +130,29 @@ export default class Components extends PureComponent {
     </TableWrapper>
   );
 
+  renderMobile = () => (
+    <div>{componentKeys.map((key) => {
+      const component = components[key];
+      const { description, name, version } = component;
+
+      return (
+        <RowButton to={`/components/${key}`} key={key}>
+          <RowButtonHeader>
+            <RowButtonTitle>{name}</RowButtonTitle>
+            <div>{version}</div>
+          </RowButtonHeader>
+          <RowButtonDescription>
+            {description}
+          </RowButtonDescription>
+        </RowButton>
+      );
+    })}</div>
+  );
+
   render() {
     const Header = this.renderHeader;
-    const Content = this.renderContent;
+    const DesktopContent = this.renderDesktop;
+    const MobileContent = this.renderMobile;
 
     return (
       <Wrapper>
@@ -131,7 +164,14 @@ export default class Components extends PureComponent {
         </Intro>
         <Section>
           <Header />
-          <Content />
+          <LayoutFork query={MOBILE_QUERY}>
+            {matches => (matches ? <MobileContent /> : <DesktopContent />)}
+          </LayoutFork>
+        </Section>
+        <Section style={{ marginLeft: `-${akGridSize}` }}>
+          <Message title="Atlassians">
+            For internal, Fabric, and Media Services components please see the <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">registry website</a>.
+          </Message>
         </Section>
       </Wrapper>
     );
@@ -140,6 +180,7 @@ export default class Components extends PureComponent {
 
 // Layout
 const Wrapper = styled.div`
+  padding-bottom: 3em;
   padding-left: ${akGridSizeUnitless * 2.5}px;
   padding-right: ${akGridSizeUnitless * 2.5}px;
 
@@ -162,4 +203,38 @@ const TableWrapper = styled.div`
 const RowCell = styled.div`
   padding-bottom: ${akGridSize};
   padding-top: ${akGridSize};
+`;
+const Time = styled.time`
+  color: ${akColorN80};
+`;
+
+// Mobile content
+const RowButton = styled(Link)`
+  border-radius: ${akBorderRadius};
+  color: ${akColorN80};
+  display: block;
+  padding: 0.5em 1em;
+  margin-bottom: 0.5em;
+  margin-left: -1em;
+  margin-right: -1em;
+  text-decoration: none !important;
+
+  &:active, &:focus {
+    background-color: ${akColorB50};
+    text-decoration: none;
+  }
+`;
+const RowButtonHeader = styled.div`
+  align-items: baseline;
+  display: flex;
+`;
+const RowButtonTitle = styled.div`
+  color: ${akColorB500};
+  font-weight: 500;
+  margin-right: 0.5em;
+`;
+const RowButtonDescription = styled.div`
+  color: ${akColorN600};
+  line-height: 1.4;
+  font-size: 0.85em;
 `;

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { akBorderRadius, akColorN20, akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 /* eslint-disable import/no-duplicates, import/first */
 import AvatarExample from './AvatarExample';
@@ -8,11 +9,15 @@ import PresenceExample from './PresenceExample';
 import presenceExampleSrc from '!raw-loader!./PresenceExample';
 /* eslint-enable import/no-duplicates, import/first */
 
-const Usage = styled.pre`
-  background-color: #F4F5F7;
-  border-radius: 5px;
-  margin: 14px 0;
-  padding: 8px;
+const Pre = styled.pre`
+  background-color: ${akColorN20};
+  border-radius: ${akBorderRadius};
+  box-sizing: border-box;
+  font-family: Monaco, Menlo, monospace;
+  font-size: 0.9em;
+  margin: ${akGridSizeUnitless * 2}px 0;
+  overflow-x: auto;
+  padding: ${akGridSize};
 `;
 
 export const description = (
@@ -22,9 +27,9 @@ export const description = (
       This package exports an <code>Avatar</code> component and
       a <code>Presence</code> component:
     </p>
-    <Usage>
+    <Pre>
       {"import Avatar, { Presence } from '@atlaskit/avatar';"}
-    </Usage>
+    </Pre>
     <p>
       Use the <code>Avatar</code> component to represent users with their
       profile picture. Optionally, a presence to indicate online status can also

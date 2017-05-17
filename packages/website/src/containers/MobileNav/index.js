@@ -1,43 +1,22 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { akColorN0, akColorB500, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import {
+  akColorN0,
+  akColorN30,
+  akColorN800,
+
+  akGridSize,
+  akGridSizeUnitless,
+} from '@atlaskit/util-shared-styles';
 import { Link } from 'react-router-dom';
+import Button from '@atlaskit/button';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
-import CancelIcon from '@atlaskit/icon/glyph/cancel';
 
 import Navigation from './Navigation';
 import atlasKitLogo from '../../images/atlaskit-logo.png';
 
-const HeaderLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-  color: inherit !important;
-`;
-
-const Logo = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  display: inline-block;
-`;
-
-const Header = styled.span`
-  display: inline-block;
-  font-size: 20px;
-  margin: 10px;
-`;
-
-const NavBar = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100vw;
-  background-color: ${akColorB500};
-  color: ${akColorN0};
-  border-bottom: 1px solid rgba(9, 30, 66, 0.36);
-  padding: ${akGridSizeUnitless}px;
-  box-sizing: border-box;
-`;
+export const NAVBAR_HEIGHT = `${akGridSizeUnitless * 7}px`;
 
 export default class MobileNavigation extends PureComponent {
   constructor(props) {
@@ -64,22 +43,75 @@ export default class MobileNavigation extends PureComponent {
 
   render() {
     const { navIsOpen } = this.state;
+
     return (
-      <div>
-        <NavBar>
-          <Link onClick={this.toggleNav} style={{ color: 'inherit' }} to="/">
-            {navIsOpen
-              ? <CancelIcon label="Close Navigation" size="medium" />
-              : <MenuIcon label="Open Navigation" size="medium" />
-            }
-          </Link>
-          <HeaderLink to="/">
-            <Logo alt="AtlasKit Logo" src={atlasKitLogo} />
-            <Header>AtlasKit</Header>
-          </HeaderLink>
-        </NavBar>
-        {navIsOpen ? <Navigation onNavigate={this.closeNav} /> : null}
-      </div>
+      <Wrapper>
+        <Navbar>
+          <NavbarLink to="/">
+            <NavbarBrand alt="AtlasKit Logo" src={atlasKitLogo} />
+            <NavbarTitle>AtlasKit</NavbarTitle>
+          </NavbarLink>
+          <Button
+            onClick={this.toggleNav}
+            isSelected={navIsOpen}
+            iconBefore={(
+              <Hamburger>
+                <MenuIcon
+                  label={navIsOpen ? 'Close Navigation' : 'Open Navigation'}
+                  size="small"
+                  style={{ marginLeft: 10, marginRight: 10 }}
+                />
+              </Hamburger>
+            )}
+          />
+        </Navbar>
+        <TransitionGroup>
+          {navIsOpen ? <Navigation closeNav={this.closeNav} /> : null}
+        </TransitionGroup>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  background-color: ${akColorN0};
+  border-bottom: 1px solid ${akColorN30};
+`;
+
+const Navbar = styled.div`
+  align-items: center;
+  box-sizing: border-box;
+  color: ${akColorN800};
+  display: flex;
+  height: ${NAVBAR_HEIGHT};
+  justify-content: space-between;
+  line-height: 1;
+  padding-left: ${akGridSizeUnitless * 2}px;
+  padding-right: ${akGridSizeUnitless * 2}px;
+`;
+
+const NavbarLink = styled(Link)`
+  align-items: center;
+  color: inherit !important;
+  display: flex;
+
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
+const NavbarBrand = styled.img`
+  border-radius: 4px;
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+`;
+
+const NavbarTitle = styled.span`
+  display: inline-block;
+  font-size: 20px;
+  margin: 10px;
+`;
+const Hamburger = styled.div`
+  margin: 0 ${akGridSize};
+`;

@@ -209,7 +209,7 @@ describe('Media plugin', () => {
     ));
   });
 
-  it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
+  it.skip('should invoke binary picker when calling insertFileFromDataUrl', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
     const provider = await resolvedProvider;
     await provider.uploadContext;

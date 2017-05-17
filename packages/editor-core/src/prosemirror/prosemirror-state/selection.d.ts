@@ -9,6 +9,7 @@ export class Selection {
   $from: ResolvedPos;
   $to: ResolvedPos;
   empty: boolean;
+  ranges: Array<SelectionRange>;
   toJSON(): { [key: string]: any };
   map(doc: Node, mapping: Mappable): Selection;
   eq(other: Selection): boolean;
@@ -28,6 +29,7 @@ export class TextSelection extends Selection {
   head: number;
   $anchor: ResolvedPos;
   $head: ResolvedPos;
+  $cursor?: ResolvedPos;
 
   static create(doc: Node, anchor: number, head?: number): TextSelection;
 }

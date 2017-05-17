@@ -14,7 +14,7 @@ export {
   strike, text, fragment, slice, mention, emoji, plain,
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
   linkable, unlinkable, panel, panelNote, mentionQuery, hardBreak, emojiQuery,
-  media, mediaGroup,
+  media, mediaGroup, textColor
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';

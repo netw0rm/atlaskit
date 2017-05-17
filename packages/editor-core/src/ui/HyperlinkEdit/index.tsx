@@ -19,6 +19,8 @@ export interface State {
   // URL of the hyperlink. The presence of this attribute causes an "open"
   // hyperlink to be rendered in the popup.
   href?: string;
+  // Href before editing
+  oldHref?: string;
   // Surprisingly not all hyperlinks can be unlinked. For example when the
   // storage format is Markdown, you can't represent some a URL as plain text
   // using standard markdown syntax alone.
@@ -70,12 +72,13 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
 
   render() {
     const {
-      href, target, unlinkable, active, editorFocused, inputActive, showToolbarPanel
+      href, target, unlinkable, active,
+      editorFocused, inputActive, showToolbarPanel
     } = this.state;
 
     if ((active || showToolbarPanel) && (editorFocused || inputActive)) {
       const showOpenButton = !!href;
-      const showUnlinkButton = unlinkable && active;
+      const showUnlinkButton = unlinkable && active && href;
       const showSeparator = showOpenButton || showUnlinkButton;
 
       return (
@@ -128,11 +131,13 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue
   private handleOnBlur = () => {
     const { editorView, pluginState } = this.props;
+    const { href = '' } = this.state;
     if (editorView.state.selection.empty && !pluginState.active) {
       pluginState.hideLinkPanel();
-    }
-    if (!pluginState.href || pluginState.href.length === 0) {
+    } else if (!href || href.length === 0) {
       pluginState.removeLink(editorView);
+    } else {
+      pluginState.updateLink({ href }, editorView);
     }
     this.resetInputActive();
   }
@@ -149,6 +154,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       active: pluginState.active,
       target: pluginState.element,
       href: pluginState.href,
+      oldHref: pluginState.href,
       textInputValue: pluginState.text,
       editorFocused: pluginState.editorFocused,
       inputActive: hrefNotPreset || inputActive,
@@ -157,17 +163,16 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private updateHref = (href: string) => {
-    this.props.pluginState.updateLink({ href }, this.props.editorView);
+    this.setState({ href });
   }
 
   private handleSubmit = (href: string) => {
     const { editorView, pluginState } = this.props;
-    if (this.state.href) {
+    if (this.state.oldHref) {
       pluginState.updateLink({ href }, editorView);
-    }
-    else {
+    } else {
       pluginState.addLink({ href }, editorView);
-      editorView.focus();
     }
+    editorView.focus();
   }
 }

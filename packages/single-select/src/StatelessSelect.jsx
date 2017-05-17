@@ -8,34 +8,76 @@ import styles from './styles.less';
 import NothingWasFound from './internal/NothingWasFound';
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
-import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
+import { mapAppearanceToFieldBase } from './internal/appearances';
+
+// =============================================================
+// NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
+// -------------------------------------------------------------
+// DO NOT update values here without updating the other.
+// =============================================================
+
+const appearances = {
+  values: [
+    'default',
+    'subtle',
+  ],
+  default: 'default',
+};
 
 const itemShape = DummyItem.propTypes;
 const groupShape = DummyGroup.propTypes;
 
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
+    /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Sets whether the dropdown should be constrained to the width of its trigger */
     droplistShouldFitContainer: PropTypes.bool,
+    /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
+    /** Sets whether the field should be selectable. If it is, the field will be
+    a text box, which will filter the items. */
     hasAutocomplete: PropTypes.bool,
+    /** id property to be passed down to the html select component. */
     id: PropTypes.string,
+    /** Sets whether the select is selectable. Changes hover state. */
     isDisabled: PropTypes.bool,
+    /** controls the top margin of the label component rendered. */
     isFirstChild: PropTypes.bool,
+    /** Sets whether the Select dropdown is open. */
     isOpen: PropTypes.bool,
+    /** Sets whether form including select can be submitted without an option
+    being made. */
     isRequired: PropTypes.bool,
+    /** Set whether there is an error with the selection. Sets an orange border
+    and shows the warning icon. */
     isInvalid: PropTypes.bool,
+    /** An array of objects, each one of which must have an array of items, and
+    may have a heading. All items should have content and value properties, with
+    content being the displayed text. */
     items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    /** Label to be displayed above select. */
     label: PropTypes.string,
+    /** name property to be passed to the html select element. */
     name: PropTypes.string,
+    /** Mesage to display in any group in items if there are no items in it,
+    including if there is one item that has been selected. */
     noMatchesFound: PropTypes.string,
+    /** Handler called when a selection is made, with the item chosen. */
     onSelected: PropTypes.func,
+    /** Handler to be called when the filtered items changes.*/
     onFilterChange: PropTypes.func,
+    /** Handler called when the select is opened or closed. Called with an object
+    that has both the event, and the new isOpen state. */
     onOpenChange: PropTypes.func,
+    /** Text to be shown within the select when no item is selected. */
     placeholder: PropTypes.string,
+    /** Where the select dropdown should be displayed relative to the field position. */
     position: PropTypes.string,
+    /** Sets whether the field will become focused. */
     shouldFocus: PropTypes.bool,
     selectedItem: PropTypes.shape(itemShape),
+    /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
   }
 
@@ -158,6 +200,10 @@ export default class StatelessSelect extends PureComponent {
     const width = this.triggerNode.getBoundingClientRect().width;
     this.setState({ droplistWidth: width });
   }
+
+  getItemTrueIndex = (itemIndex, groupIndex = 0) => itemIndex + this.props.items
+    .filter((group, thisGroupIndex) => thisGroupIndex < groupIndex)
+    .reduce((totalItems, group) => totalItems + group.items.length, 0);
 
   focus = () => {
     if (this.inputNode) {
@@ -324,13 +370,13 @@ export default class StatelessSelect extends PureComponent {
     }
   }
 
-  renderItems = (items) => {
+  renderItems = (items, groupIndex = 0) => {
     const filteredItems = this.filterItems(items);
 
     if (filteredItems.length) {
       return filteredItems.map((item, itemIndex) => (<Item
         {...item}
-        isFocused={itemIndex === this.state.focusedItemIndex}
+        isFocused={this.getItemTrueIndex(itemIndex, groupIndex) === this.state.focusedItemIndex}
         key={itemIndex}
         onActivate={(attrs) => {
           this.handleItemSelect(item, attrs);
@@ -348,7 +394,7 @@ export default class StatelessSelect extends PureComponent {
       heading={group.heading}
       key={groupIndex}
     >
-      {this.renderItems(group.items)}
+      {this.renderItems(group.items, groupIndex)}
     </Group>
   )
 
@@ -428,7 +474,7 @@ export default class StatelessSelect extends PureComponent {
               <div
                 className={triggerClasses}
                 onClick={this.handleTriggerClick}
-                tabIndex="0"
+                tabIndex={!this.props.isDisabled && !this.props.hasAutocomplete ? '0' : null}
                 ref={ref => (this.triggerNode = ref)}
               >
                 {
@@ -454,6 +500,7 @@ export default class StatelessSelect extends PureComponent {
                         ref={ref => (this.inputNode = ref)}
                         type="text"
                         value={this.props.filterValue}
+                        disabled={this.props.isDisabled}
                       />
                     </div>
                 }

@@ -29,6 +29,9 @@ export default class AkButton extends Component {
     ]),
     /** Set whether it is a button or a form submission. */
     type: PropTypes.oneOf(['button', 'submit']),
+    /** A custom button component to be rendered instead of the default. Will still
+    wrap the content. */
+    component: PropTypes.func,
     /** Provides a url for buttons being used as a link. */
     href: PropTypes.string,
     /** Pass target down to a link within the button component, if a href is provided. */
@@ -96,6 +99,20 @@ export default class AkButton extends Component {
       }
       return (<Link {...props} className={classes}>{this.renderContent()}</Link>);
     }
-    return (<Button {...props} className={classes}>{this.renderContent()}</Button>);
+    const ButtonComponent = this.props.component || Button;
+    if (ButtonComponent !== Button) {
+      // if it's not our Button component, remove these props so they don't
+      // bleed into the DOM
+      delete props.component;
+      delete props.appearance;
+      delete props.isDisabled;
+      delete props.isSelected;
+      delete props.theme;
+    }
+    return (
+      <ButtonComponent {...props} className={classes}>
+        {this.renderContent()}
+      </ButtonComponent>
+    );
   }
 }

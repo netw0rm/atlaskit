@@ -21,7 +21,33 @@ import {
 } from '../../shared-styles';
 
 export const pickerEmoji = style({
-  margin: '4px',
+  padding: '4px',
+  width: '32px',
+  height: '32px',
+  display: 'inline-block',
+
+  $nest: {
+    '&>span': {
+      cursor: 'pointer',
+      padding: '4px',
+      borderRadius: '5px',
+      width: '24px',
+      height: '24px',
+
+      $nest: {
+        // Fit non-square emoji to square
+        '&>img': {
+          position: 'relative',
+          left: '50%',
+          top: '50%',
+          transform: 'translateX(-50%) translateY(-50%)',
+          maxHeight: '24px',
+          maxWidth: '24px',
+          display: 'block',
+        },
+      }
+    }
+  },
 });
 
 export const emojiPickerFooter = style({
@@ -136,6 +162,7 @@ export const pickerSearch = style({
     [`.${searchIcon}`]: {
       opacity: .5,
       paddingTop: '2px',
+      height: '17px',
     },
 
     [`.${input}`]: {
@@ -146,7 +173,7 @@ export const pickerSearch = style({
       cursor: 'inherit',
       fontSize: '14px',
       outline: 'none',
-      padding: '0 0 0 12px',
+      padding: '1px 0 2px 10px',
       width: '100%',
 
       $nest: {

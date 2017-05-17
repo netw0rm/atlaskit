@@ -48,6 +48,7 @@ storiesOf(name, module)
   .add('Editor (Mentions)', () =>
     <Demo
       mentionProvider={Promise.resolve(new MentionResource())}
+      // tslint:disable-next-line:jsx-no-lambda
       mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}
     />
   )
@@ -85,6 +86,7 @@ storiesOf(name, module)
       allowSubSup={true}
       allowBlockQuote={true}
       mentionProvider={Promise.resolve(new MentionResource())}
+      // tslint:disable-next-line:jsx-no-lambda
       mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}
     />
   );

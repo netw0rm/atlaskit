@@ -23,10 +23,10 @@ describe(name, () => {
       doc(code({ language: 'javascript' })(`var foo = "bar";\nfoo += "baz";`))
     );
 
-    checkEncode('default language is java',
+    checkEncode('default language is plain',
       schema,
       doc(code({})('var foo = "bar";')),
-      `<div class="code panel"><div class="codeContent panelContent"><pre class="code-java">var foo = "bar";</pre></div></div>`,
+      `<div class="code panel"><div class="codeContent panelContent"><pre class="code-plain">var foo = "bar";</pre></div></div>`,
     );
 
     checkEncode('lowercase language',
@@ -38,7 +38,7 @@ describe(name, () => {
     checkParse('JIRA preformatted macros',
       schema,
       [`<div class="preformatted panel"><div class="preformattedContent panelContent"><pre>*no* further _formatting_</pre></div></div>`],
-      doc(code({})('*no* further _formatting_'))
+      doc(code({ language: 'plain' })('*no* further _formatting_'))
     );
 
     checkParse('strip spans',

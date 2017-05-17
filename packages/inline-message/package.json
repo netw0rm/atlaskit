@@ -27,7 +27,9 @@
   },
   "devDependencies": {
     "@atlaskit/inline-message": "*",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^1.0.0",
+    "react-router-dom": "^4.0.0"
+
   },
   "peerDependencies": {
     "react": "^15.3.2"

@@ -182,6 +182,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
     } as State);
   }
 
+  private handleMentionListRef = (ref) => { this.mentionListRef = ref; };
+
   render() {
     const { resourceProvider, presenceProvider, onSelection, query,
       target, position, zIndex, offsetX, offsetY } = this.props;
@@ -201,7 +203,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         presenceProvider={presenceProvider}
         onSelection={onSelection}
         query={query}
-        ref={(ref) => { this.mentionListRef = ref; }}
+        ref={this.handleMentionListRef}
       />
     );
 

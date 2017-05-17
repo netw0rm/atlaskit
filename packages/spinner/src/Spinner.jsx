@@ -18,9 +18,16 @@ const NOOP = () => {};
 
 export default class Spinner extends PureComponent {
   static propTypes = {
+    /** Time in milliseconds after component mount before spinner is visible. */
     delay: PropTypes.number,
+    /** Set the spinner color to white, for use in dark-themed UIs. */
+    invertColor: PropTypes.bool,
+    /** Setting this to true causes the spinner to animate its disappearance.
+    Setting it to false again will cause the spinner to animate back in. */
     isCompleting: PropTypes.bool,
+    /** Handler for once the spinner has completed its outro animation */
     onComplete: PropTypes.func,
+    /** Size of the spinner. */
     size: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.oneOf(SIZES),
@@ -29,6 +36,7 @@ export default class Spinner extends PureComponent {
 
   static defaultProps = {
     delay: DEFAULT_SPINNER_DELAY,
+    invertColor: false,
     isCompleting: false,
     onComplete: NOOP,
     size: SIZES[0],
@@ -119,6 +127,7 @@ export default class Spinner extends PureComponent {
               cx={size / 2}
               cy={size / 2}
               fill="none"
+              invertColor={this.props.invertColor}
               r={strokeRadius}
               strokeLinecap="round"
               strokeWidth={strokeWidth}

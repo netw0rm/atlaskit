@@ -53,10 +53,17 @@ export default class Page extends PureComponent {
   static displayName = 'AkPage';
 
   static propTypes = {
+    /** Component to be displayed at top of page component. */
     banner: PropTypes.node,
+    /** The components to be displayed as the content of the page. Should be an
+    @atlaskit/banner. */
     children: PropTypes.node,
+    /** Set whether the banner component should be displayed. */
     isBannerOpen: PropTypes.bool,
+    /** A component to be displayed to the side of the page component. Should
+    be an @atlaskit/navigation component. */
     navigation: PropTypes.node,
+    /** The width of the navigation bar in pixels. */
     navigationWidth: PropTypes.number,
   }
 

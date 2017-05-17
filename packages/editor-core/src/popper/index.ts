@@ -1,4 +1,4 @@
-import * as module from 'popper.js';
+import * as popperCtor from 'popper.js';
 
 export interface State {
   offsets: {
@@ -20,4 +20,4 @@ export interface IPopperConstructor {
   new (reference: HTMLElement, popper: HTMLElement, options: any): IPopper;
 }
 
-export default module as IPopperConstructor;
+export default popperCtor as IPopperConstructor;

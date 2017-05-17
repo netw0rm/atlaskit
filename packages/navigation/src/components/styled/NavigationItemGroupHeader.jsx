@@ -7,7 +7,7 @@ import {
 const NavigationItemGroupHeader = styled.div`
   display: flex;
   margin-bottom: ${akGridSizeUnitless}px;
-  margin-left: ${akGridSizeUnitless}px;
+  margin-left: ${akGridSizeUnitless * 2.5}px;
   margin-top: ${akGridSizeUnitless * 2}px;
 
   [data-__ak-navigation-container-closed="true"] & {

@@ -343,8 +343,8 @@ describe('EmojiResource', () => {
         expect(onChange.resultCalls.length, 'Result called').to.equal(2);
         const emojis = onChange.resultCalls[1].emojis;
         expect(emojis.length, 'Number of emoji').to.equal(2);
-        expect(emojis[0].shortName).to.equal(':grinning:');
-        expect(emojis[1].shortName).to.equal(':grin:');
+        expect(emojis[0].shortName).to.equal(':grin:');
+        expect(emojis[1].shortName).to.equal(':grinning:');
       });
       resource.subscribe(onChange);
       resource.filter('grin');

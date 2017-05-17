@@ -34,6 +34,7 @@ export default class Search extends PureComponent {
             autoFocus
             onChange={onChange}
             placeholder={placeholder}
+            spellCheck={false}
             type="text"
             value={value}
           />

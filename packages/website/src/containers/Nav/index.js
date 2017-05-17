@@ -23,7 +23,7 @@ import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import PageIcon from '@atlaskit/icon/glyph/page';
 
-import reactIcon from '../../images/atlaskit-logo.png';
+import atlasKitLogo from '../../images/atlaskit-logo.png';
 import SearchDrawer from './SearchDrawer';
 import Groups from './Groups';
 
@@ -42,7 +42,7 @@ const getStartedLinks = [
 const Header = () => (
   <Link to="/">
     <NavTitle
-      icon={<img alt="nucleus" src={reactIcon} />}
+      icon={<img alt="AtlasKit Logo" src={atlasKitLogo} />}
       text="AtlasKit"
     />
   </Link>

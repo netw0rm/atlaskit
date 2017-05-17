@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Schema, doc, paragraph, text, strike } from '../../../src';
+import { createSchema } from '../../../src';
 import { chaiPlugin, fromHTML, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -18,9 +18,10 @@ describe('@atlaskit/editor-core/schema strike mark', () => {
 });
 
 function makeSchema() {
-  const nodes = { doc, paragraph, text };
-  const marks = { strike };
-  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+  return createSchema({
+    nodes: ['doc', 'paragraph', 'text'],
+    marks: ['strike']
+  });
 }
 
 function itMatches(html: string, expectedText: string) {

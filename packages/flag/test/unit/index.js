@@ -107,6 +107,39 @@ describe(name, () => {
         expect(spy.calledWith('a')).to.equal(true);
       });
 
+      describe('shouldDismiss prop', () => {
+        it('should default to false', () => {
+          const flag = mount(generateFlag());
+          expect(flag.prop('shouldDismiss')).to.equal(false);
+        });
+
+        it('should not cause flag to be dismissed when set to false', () => {
+          const spy = sinon.spy();
+          mount(
+            generateFlag({
+              id: 'a',
+              isDismissAllowed: true,
+              onDismissed: spy,
+              shouldDismiss: false,
+            })
+          );
+          expect(spy.callCount).to.equal(0);
+        });
+
+        it('should cause flag to be dismissed when changed to true', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(
+            generateFlag({
+              isDismissAllowed: true,
+              onDismissed: spy,
+              shouldDismiss: false,
+            })
+          );
+          wrapper.setProps({ shouldDismiss: true });
+          expect(spy.callCount).to.equal(1);
+        });
+      });
+
       it('Dismiss button should not be rendered if isDismissAllowed is omitted', () => {
         const spy = sinon.spy();
         const wrapper = mount(

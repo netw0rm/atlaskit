@@ -3,12 +3,14 @@ import Button from '@atlaskit/button';
 import Layer from '@atlaskit/layer';
 import Navigation from '@atlaskit/navigation';
 import DropdownMenu from '@atlaskit/dropdown-menu';
+import InlineDialog from '@atlaskit/inline-dialog';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { name } from '../package.json';
 import ModalDialog from '../src';
 import ModalDemo from './ModalDemo';
 import SubmitDemo from './SubmitDemo';
+import ShowHideDemo from './ShowHideDemo';
 
 storiesOf(name, module)
   .add('simple modal', () => <ModalDemo />)
@@ -88,7 +90,23 @@ storiesOf(name, module)
       header={null}
       footer={null}
     >
-      <Lorem count="5" />
+      <Lorem count="10" />
+    </ModalDemo>
+  ))
+  .add('with header only', () => (
+    <ModalDemo
+      header="Header"
+      footer={null}
+    >
+      <Lorem count="10" />
+    </ModalDemo>
+  ))
+  .add('with footer only', () => (
+    <ModalDemo
+      header={null}
+      footer="Footer"
+    >
+      <Lorem count="10" />
     </ModalDemo>
   ))
   .add('z-index test', () => (
@@ -148,4 +166,33 @@ storiesOf(name, module)
         </ModalDialog>
       </div>
     </div>
+  ))
+  .add('with inline-dialog child', () => (
+    <ModalDialog
+      isOpen
+      width="medium"
+    >
+      <div style={{ minHeight: '240px' }}>
+        <p>This story is to ensure that an inline dialog inside a modal displays correctly.</p>
+        <p>Ensure that the inline dialog is visible above the trigger in IE browsers.</p>
+      </div>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div style={{ backgroundColor: 'grey' }}>
+            <InlineDialog
+              content="Long inline dialog content that should be fully visible above the trigger"
+              isOpen
+              position="top right"
+            >
+              <span style={{}}>
+                  Inline dialog trigger
+                </span>
+            </InlineDialog>
+          </div>
+        </div>
+      </div>
+    </ModalDialog>
+  ))
+  .add('width animated entry/exit', () => (
+    <ShowHideDemo />
   ));

@@ -58,6 +58,7 @@ export const mentionNodeView = (providerFactory: ProviderFactory) => (node: any,
     <WithProviders
       providers={['mentionProvider']}
       providerFactory={providerFactory}
+      // tslint:disable-next-line:jsx-no-lambda
       renderNode={providers =>
         <ResourcedMention
           id={id}

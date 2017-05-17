@@ -35,11 +35,18 @@ const EditView = styled.input`
 
 export default class SingleLineTextInput extends PureComponent {
   static propTypes = {
+    /** Value of the field. When not editing, is displayed as text, otherwise it
+    is the input value. */
     value: PropTypes.string,
+    /** Style to be passed down. */
     style: PropTypes.shape({}),
+    /** Set if the field should be selected on initial render. */
     isInitiallySelected: PropTypes.bool,
+    /** Sets whether the field is editable. */
     isEditing: PropTypes.bool.isRequired,
+    /** Function to be called on enter in the field. */
     onConfirm: PropTypes.func,
+    /** Function to be called when any key other than enter is pressed. */
     onKeyDown: PropTypes.func,
   }
 

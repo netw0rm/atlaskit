@@ -287,6 +287,14 @@ describe('text-formatting', () => {
   });
 
   describe('code', () => {
+    context('when the cursor is right after the code mark', () => {
+      it('should be able to delete character with "Backspace" without entering into mark editing mode', () => {
+        const { editorView, pluginState } = editor(doc(p( code('hell{<}o{>}') )));
+        sendKeyToPm(editorView, 'Backspace');
+        expect(pluginState.codeActive).to.equal(false);
+      });
+    });
+
     it('should be able to remove mark when its the first node of the paragraph', () => {
       const { editorView } = editor(doc(p(code('{<}text{>}'))));
 

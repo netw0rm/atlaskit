@@ -11,33 +11,73 @@ import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
-import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
+import { mapAppearanceToFieldBase } from './internal/appearances';
 
 const groupShape = DummyGroup.propTypes;
 const itemShape = DummyItem.propTypes;
 
+// =============================================================
+// NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
+// -------------------------------------------------------------
+// DO NOT update values here without updating the other.
+// =============================================================
+
+const appearances = {
+  values: [
+    'default',
+    'subtle',
+  ],
+  default: 'default',
+};
+
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
+    /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
+    /** id property to be passed down to the html select component. */
     id: PropTypes.string,
+    /** Sets whether the select is selectable. Changes hover state. */
     isDisabled: PropTypes.bool,
+    /** controls the top margin of the label component rendered. */
     isFirstChild: PropTypes.bool,
+    /** Sets whether the field will become focused. */
     shouldFocus: PropTypes.bool,
+    /** Set whether there is an error with the selection. Sets an orange border
+    and shows the warning icon. */
     isInvalid: PropTypes.bool,
+    /** Sets whether the Select dropdown is open. */
     isOpen: PropTypes.bool,
+    /** Sets whether form including select can be submitted without an option
+    being made. */
     isRequired: PropTypes.bool,
+    /** An array of objects, each one of which must have an array of items, and
+    may have a heading. All items should have content and value properties, with
+    content being the displayed text. */
     items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    /** Label to be displayed above select. */
     label: PropTypes.string,
+    /** Mesage to display in any group in items if there are no items in it,
+    including if there is one item that has been selected. */
     noMatchesFound: PropTypes.string,
+    /** name property to be passed to the html select element. */
     name: PropTypes.string,
+    /** Handler to be called when the filtered items changes.*/
     onFilterChange: PropTypes.func,
+    /** Handler called when the select is opened or closed. Called with an object
+    that has both the event, and the new isOpen state. */
     onOpenChange: PropTypes.func,
+    /** Handler called when a selection is made, with the item chosen. */
     onSelected: PropTypes.func,
     onRemoved: PropTypes.func,
+    /** Text to be shown within the select when no item is selected. */
     placeholder: PropTypes.string,
+    /** Where the select dropdown should be displayed relative to the field position. */
     position: PropTypes.string,
+    /** Array of selected items */
     selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
+    /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
   }
 
@@ -78,7 +118,18 @@ export default class StatelessMultiSelect extends PureComponent {
   onFocus = () => {
     if (!this.props.isDisabled) {
       this.setState({ isFocused: true });
-      this.inputNode.focus();
+
+      /**
+       * Check if we're tabbing to the Remove button on a tag.
+       * This is a hacky workaround for now and should be fixed when
+       * we implement proper traversal for tags with the keyboard.
+       *
+       * @see {@link https://ecosystem.atlassian.net/browse/AK-2250}
+       * @todo Implement traversal of tags with arrow keys, then remove this.
+       */
+      if (document.activeElement.tagName.toLowerCase() !== 'button') {
+        this.inputNode.focus();
+      }
     }
   }
 

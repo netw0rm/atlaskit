@@ -74,15 +74,15 @@ module.exports = {
         test: /\.(gif|jpe?g|png|ico)$/,
         loader: 'url-loader?limit=10000',
       },
-      {
-        test: /\.svg/,
-        use: {
-          loader: 'svg-url-loader',
-          options: {
-            limit: 512,
-          },
-        },
-      },
+      // {
+      //   test: /\.svg/,
+      //   use: {
+      //     loader: 'svg-url-loader',
+      //     options: {
+      //       limit: 512,
+      //     },
+      //   },
+      // },
     ],
   },
 

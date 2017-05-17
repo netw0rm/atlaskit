@@ -6,6 +6,7 @@ import {
   ToolbarButton,
   ToolbarMedia,
 } from '@atlaskit/editor-core';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   chaiPlugin,
   storyMediaProviderFactory,
@@ -16,7 +17,7 @@ import Editor from '../../src';
 chai.use(chaiPlugin);
 
 describe('media', () => {
-  const resolvedProvider = storyMediaProviderFactory();
+  const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers);
   const rejectedProvider = Promise.reject(new Error('foo'));
   const noop = () => {};
 

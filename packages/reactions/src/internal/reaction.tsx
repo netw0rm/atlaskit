@@ -165,7 +165,7 @@ export default class Reaction extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.reaction.reacted && nextProps.reaction.reacted) {
+    if (!this.props.reaction.reacted && nextProps.reaction.reacted && nextProps.reaction.count > 0) {
       this.bounce();
     }
   }
@@ -183,7 +183,9 @@ export default class Reaction extends PureComponent<Props, State> {
       const { reaction } = this.props;
       analyticsService.trackEvent('reactions.reaction.click', reaction as {});
 
-      this.bounce();
+      if (!reaction.reacted || reaction.count > 1) {
+        this.bounce();
+      }
 
       this.props.onClick(this.props.reaction.emojiId, event);
     }

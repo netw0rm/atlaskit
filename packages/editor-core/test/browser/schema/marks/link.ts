@@ -27,7 +27,7 @@ describe('@atlaskit/editor-core/schema link mark', () => {
 function makeSchema() {
   return createSchema({
     nodes: ['doc', 'paragraph', 'text'],
-    marks: ['link']
+    marks: ['link', 'textColor']
   });
 }
 

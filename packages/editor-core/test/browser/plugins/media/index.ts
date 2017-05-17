@@ -2,6 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   baseKeymap,
   keymap,
@@ -39,7 +40,7 @@ describe('Media plugin', () => {
   const fixture = fixtures();
   const stateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
-  const resolvedProvider = storyMediaProviderFactory(testCollectionName, stateManager);
+  const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
   const testFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();

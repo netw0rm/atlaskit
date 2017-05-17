@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Spinner from '@atlaskit/spinner';
 import { AtlassianIcon, CrossIcon, DashboardIcon } from '@atlaskit/icon';
 import { AkSearch, AkNavigationItem } from '../../src/index';
 
@@ -94,8 +95,14 @@ function search(query) {
 const store = {};
 
 export default class BasicSearch extends PureComponent {
+  static defaultProps = {
+    searchDelay: 0,
+  }
+
   state = {
     query: store.query || '',
+    searchResults: search(''),
+    isSearching: false,
   }
 
   setQuery(query) {
@@ -105,15 +112,29 @@ export default class BasicSearch extends PureComponent {
     });
   }
 
+  search = (query) => {
+    clearTimeout(this.searchTimeoutId);
+    this.setState({ isSearching: true });
+    this.searchTimeoutId = setTimeout(() => {
+      const searchResults = search(query);
+      this.setState({
+        isSearching: false,
+        searchResults,
+      });
+    }, this.props.searchDelay);
+  }
+
   render() {
     return (
       <AkSearch
         clearIcon={<CrossIcon label="clear" size="medium" />}
-        onChange={({ target }) => { this.setQuery(target.value); }}
-        onSearchClear={() => { this.setQuery(''); }}
+        onChange={({ target }) => { this.setQuery(target.value); this.search(target.value); }}
+        onSearchClear={() => { this.setQuery(''); this.search(''); }}
         value={this.state.query}
+        busyIcon={<Spinner />}
+        isBusy={this.state.isSearching}
       >
-        {search(this.state.query)}
+        {this.state.searchResults}
       </AkSearch>
     );
   }

@@ -15,10 +15,27 @@ export default class Search extends PureComponent {
     onChange: PropTypes.func.isRequired,
     onSearchClear: PropTypes.func,
     value: PropTypes.string,
+    busyIcon: PropTypes.node,
+    isBusy: PropTypes.bool,
+    delayBusyStateBy: PropTypes.number,
   }
 
   static defaultProps = {
     placeholder: 'Search',
+    delayBusyStateBy: 500,
+    isBusy: false,
+  }
+
+  state = {
+    clearBtnIsUnderMouse: false,
+  }
+
+  componentDidMount() {
+    this.handleIsBusyProp(this.props.isBusy);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.handleIsBusyProp(nextProps.isBusy);
   }
 
   // Attaching a mouse down handler to the whole search box rather than
@@ -57,6 +74,18 @@ export default class Search extends PureComponent {
     this.clearButtonRef = ref;
   }
 
+  // Delay switching the clearIcon to the busyIcon to prevent flicker
+  handleIsBusyProp = (isBusy) => {
+    clearTimeout(this.isBusyStateTimeoutId);
+    if (isBusy) {
+      this.isBusyStateTimeoutId = setTimeout(() => {
+        this.setState({ isBusyState: true });
+      }, this.props.delayBusyStateBy);
+    } else {
+      this.setState({ isBusyState: false });
+    }
+  }
+
   clear() {
     const { value, onSearchClear } = this.props;
 
@@ -69,6 +98,14 @@ export default class Search extends PureComponent {
     if (this.inputRef && this.inputRef !== document.activeElement) {
       this.inputRef.focus();
     }
+  }
+
+  handleClearBtnMouseEnter = () => {
+    this.setState({ clearBtnIsUnderMouse: true });
+  }
+
+  handleClearBtnMouseLeave = () => {
+    this.setState({ clearBtnIsUnderMouse: false });
   }
 
   render() {
@@ -104,8 +141,14 @@ export default class Search extends PureComponent {
               type="button"
               tabIndex="-1"
               innerRef={this.setClearButtonRef}
+              onMouseEnter={this.handleClearBtnMouseEnter}
+              onMouseLeave={this.handleClearBtnMouseLeave}
             >
-              {this.props.clearIcon}
+              {
+                (this.props.busyIcon && this.state.isBusyState && !this.state.clearBtnIsUnderMouse)
+                  ? this.props.busyIcon
+                  : this.props.clearIcon
+              }
             </SearchClearButton>
           </SearchClearButtonOuter>
         </SearchBox>

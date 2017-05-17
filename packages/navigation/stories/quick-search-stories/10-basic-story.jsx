@@ -1,9 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import CrossIcon from '@atlaskit/icon/glyph/cross';
+import { AtlassianIcon, CrossIcon, ArrowleftIcon } from '@atlaskit/icon';
 import Spinner from '@atlaskit/spinner';
 
 import BasicSearch from '../components/BasicSearch';
@@ -19,7 +17,7 @@ const BasicQuickSearch = ({ searchDelay }) => (
 const DrawerSimulator3000 = ({ children }) => (
   <AkSearchDrawer
     isOpen
-    backIcon={<ArrowLeftIcon label="back" size="medium" />}
+    backIcon={<ArrowleftIcon label="back" size="medium" />}
     primaryIcon={<AtlassianIcon label="atlassian" size="medium" />}
   >
     {children}

@@ -4,18 +4,24 @@ import {
   MediaStateManager,
 } from '@atlaskit/media-core';
 
-import {
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider
-} from '@atlaskit/media-test-helpers';
+/**
+ * Add "import * as mediaTestHelpers from '@atlaskit/media-test-helpers'"
+ * at the beginning of your file and pass "mediaTestHelpers" into this function
+ */
+export function storyMediaProviderFactory (mediaTestHelpers, collection?: string, stateManager?: MediaStateManager) {
+  const {
+    defaultClientId,
+    defaultServiceHost,
+    defaultCollectionName,
+    StoryBookTokenProvider,
+  } = mediaTestHelpers;
 
-export function storyMediaProviderFactory (collection = defaultCollectionName, stateManager?: MediaStateManager) {
+  const collectionName = collection || defaultCollectionName;
+
   return Promise.resolve<MediaProvider>({
     stateManager,
     uploadParams: {
-      collection: collection
+      collection: collectionName,
     },
     viewContext: Promise.resolve<MediaContextConfig>({
       clientId: defaultClientId,
@@ -26,7 +32,7 @@ export function storyMediaProviderFactory (collection = defaultCollectionName, s
       clientId: defaultClientId,
       serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
       tokenProvider: StoryBookTokenProvider.withAccess({
-        [`urn:filestore:collection:${collection}`] : [
+        [`urn:filestore:collection:${collectionName}`] : [
           'read', 'insert'
         ],
         'urn:filestore:chunk:*' : ['create', 'read'],

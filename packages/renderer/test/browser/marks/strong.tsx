@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Strong from '../../src/marks/strong';
+import Strong from '../../../src/marks/strong';
 
 describe('<Strong />', () => {
   const mark = shallow(<Strong>This is strong</Strong>);

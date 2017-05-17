@@ -257,6 +257,16 @@ describe('block-type', () => {
     expect(pluginState.currentBlockType.name).to.equal('normal');
   });
 
+  it('should be able to identify normal even if there are multiple blocks', () => {
+    const { pluginState } = editor(doc(p('te{<}xt'), p('text'), p('te{>}xt')));
+    expect(pluginState.currentBlockType.name).to.equal('normal');
+  });
+
+  it('should set currentBlockType to Other if there are blocks of multiple types', () => {
+    const { pluginState } = editor(doc(p('te{<}xt'), h1('text'), p('te{>}xt')));
+    expect(pluginState.currentBlockType.name).to.equal('other');
+  });
+
   it('should be able to identify heading1', () => {
     const { pluginState } = editor(doc(h1('te{<>}xt')));
     expect(pluginState.currentBlockType.name).to.equal('heading1');

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import SubSup from '../../src/marks/subsup';
-import { isSubSupType } from '../../src/marks/subsup';
+import SubSup from '../../../src/marks/subsup';
+import { isSubSupType } from '../../../src/marks/subsup';
 
 describe('<SubSup />', () => {
 

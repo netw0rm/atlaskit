@@ -6,8 +6,8 @@ import {
   isSameMark,
   markOrder,
   renderMark,
-} from '../../src/marks';
-import Strong from '../../src/marks/strong';
+} from '../../../src/marks';
+import Strong from '../../../src/marks/strong';
 
 describe('Marks', () => {
 

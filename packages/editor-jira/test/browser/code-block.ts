@@ -57,5 +57,11 @@ public String getFoo()
 }`)
       )
     );
+
+    checkParse('empty content',
+      schema,
+      ['<div class="code panel"><div class="codeContent panelContent"><pre class="code-plain"></pre></div></div>'],
+      doc(code({ language: 'plain' })())
+    );
   });
 });

@@ -3,7 +3,7 @@ import {
   isTextWrapper,
   isText,
   isSafeUrl
-} from '../../src/utils';
+} from '../../../src/utils';
 
 describe('Utils', () => {
 

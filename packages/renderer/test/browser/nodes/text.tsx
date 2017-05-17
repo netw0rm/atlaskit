@@ -6,8 +6,8 @@ import * as sinon from 'sinon';
 import {
   mergeTextNodes,
   renderTextNodes
-} from '../../src/nodes/text';
-import * as markUtils from '../../src/marks';
+} from '../../../src/nodes/text';
+import * as markUtils from '../../../src/marks';
 
 describe('Text', () => {
 

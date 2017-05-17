@@ -2,8 +2,8 @@ import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import { FilmStripNavigator } from '@atlaskit/media-filmstrip';
-import MediaGroup, { LargeCard, CardWrapper } from '../../src/nodes/mediaGroup';
-import Media, { MediaNode } from '../../src/nodes/media';
+import MediaGroup, { LargeCard, CardWrapper } from '../../../src/nodes/mediaGroup';
+import Media, { MediaNode } from '../../../src/nodes/media';
 
 describe('MediaGroup', () => {
 

@@ -59,7 +59,6 @@ export interface State {
 
 const reactionsStyle = style({
   position: 'relative',
-  marginTop: '4px',
   background: 'white',
   borderRadius: '15px',
   $nest: {
@@ -145,7 +144,7 @@ export default class Reactions extends Component<Props, State> {
       <div className={reactionsStyle}>
         {this.renderPicker()}
         <CSSTransitionGroup
-            transitionName="reactionn"
+            transitionName="reaction"
             transitionEnterTimeout={500}
             transitionLeaveTimeout={300}
         >
@@ -162,10 +161,8 @@ export default class Reactions extends Component<Props, State> {
                 <Reaction
                   reaction={{...reaction}}
                   emojiProvider={emojiProvider}
-                  // tslint:disable-next-line:jsx-no-lambda
-                  onClick={() => this.onEmojiClick(reaction.emojiId)}
-                  // tslint:disable-next-line:jsx-no-lambda
-                  onMouseOver={() => this.onReactionHover(reaction)}
+                  onClick={this.onEmojiClick}
+                  onMouseOver={this.onReactionHover}
                 />
               </div>
             );

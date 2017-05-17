@@ -45,6 +45,18 @@ const contentStyle = style({
   display: 'flex',
 });
 
+const moreEmojiContainerStyle = style({
+  display: 'inline-block',
+});
+
+const separatorStyle = style({
+  backgroundColor: akColorN30A,
+  margin: '8px 8px 8px 4px',
+  width: '1px',
+  height: '60%',
+  display: 'inline-block',
+});
+
 const moreButtonStyle = style({
   outline: 'none',
   backgroundColor: 'transparent',
@@ -54,6 +66,7 @@ const moreButtonStyle = style({
   margin: '4px 4px 4px 0',
   padding: '4px',
   width: '38px',
+  verticalAlign: 'top',
   $nest: {
     '&:hover': {
       backgroundColor: akColorN30A
@@ -122,9 +135,12 @@ export default class ReactionPicker extends PureComponent<Props, State> {
           onSelection={this.onEmojiSelected}
         />
         { !allowAllEmojis ? null :
-          <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
-            <EditorMoreIcon label="More" />
-          </button>
+          <div className={moreEmojiContainerStyle}>
+            <div className={separatorStyle}/>
+            <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
+              <EditorMoreIcon label="More" />
+            </button>
+          </div>
         }
       </div>
     );

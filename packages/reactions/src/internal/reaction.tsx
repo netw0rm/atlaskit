@@ -15,6 +15,7 @@ import { ReactionSummary } from '../reactions-resource';
 import { isLeftClick } from './helpers';
 import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
+import { SyntheticEvent } from 'react';
 
 export const bouncingAnimation = keyframes({
   $debugName: 'bouncing',
@@ -94,21 +95,14 @@ const reactionStyle = style({
   cursor: 'pointer',
   padding: 0,
   margin: 0,
-  // transition: 'background cubic-bezier(0.23, 1, 0.32, 1) 500ms',
   $nest: {
     '&:hover': {
       background: akColorN30A,
       $nest: {
-        [`> .${emojiStyle}`]: {
-          // transform: 'scale(1.3)'
-        },
         '> .reaction-tooltip': {
           display: 'block'
         }
       }
-    },
-    [`&:active > .${emojiStyle}`]: {
-      // transform: 'scale(.9)'
     },
     '&.reacted': {
 
@@ -131,11 +125,15 @@ const reactionStyle = style({
   }
 });
 
+export interface ReactionOnClick {
+  (emojiId: string, event?: SyntheticEvent<any>): void;
+}
+
 export interface Props {
   reaction: ReactionSummary;
   emojiProvider: Promise<EmojiProvider>;
-  onClick: Function;
-  onMouseOver?: Function;
+  onClick: ReactionOnClick;
+  onMouseOver?: (reaction: ReactionSummary, event?: SyntheticEvent<any>) => void;
 }
 
 export interface State {
@@ -187,7 +185,7 @@ export default class Reaction extends PureComponent<Props, State> {
 
       this.bounce();
 
-      this.props.onClick(event);
+      this.props.onClick(this.props.reaction.emojiId, event);
     }
   }
 
@@ -196,7 +194,7 @@ export default class Reaction extends PureComponent<Props, State> {
     const { onMouseOver, reaction } = this.props;
     if (onMouseOver) {
       if (!reaction.users || !reaction.users.length) {
-        onMouseOver(event);
+        onMouseOver(this.props.reaction, event);
       }
 
       this.tooltipTimeout = setTimeout(() => this.setState({

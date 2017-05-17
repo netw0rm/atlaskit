@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "4.6.1",
+  "version": "4.7.0",
   "config": {
     "access": "public"
   },

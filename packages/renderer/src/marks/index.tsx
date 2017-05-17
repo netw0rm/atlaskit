@@ -160,7 +160,8 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.link: {
       const { attrs } = validMark;
       const { href } = attrs as { href: string };
-      return <Link key={key} href={href}>{content}</Link>;
+      // NOTE: https://product-fabric.atlassian.net/browse/ED-1236
+      return <Link key={key} href={href} target="_blank">{content}</Link>;
     }
     case MarkType.mono:
       return <Mono key={key}>{content}</Mono>;

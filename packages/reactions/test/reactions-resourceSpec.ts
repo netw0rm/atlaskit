@@ -324,9 +324,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
     });
 
     it('should call notifyUpdated if cached', () => {
+      const key = `${reaction.containerAri}|${reaction.ari}`;
+      (reactionsProvider as any).cachedReactions = {
+        [key]: [reaction]
+      };
       const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
-      return reactionsProvider.addReaction(containerAri, ari, grinningId.id!)
-          .then(() => reactionsProvider.fetchReactionDetails(reaction))
+      return reactionsProvider.fetchReactionDetails(reaction)
           .then(() => {
             expect(spy.called).to.equal(true);
             expect(spy.calledWith(reaction.containerAri, reaction.ari, [detailedReaction])).to.equal(true);

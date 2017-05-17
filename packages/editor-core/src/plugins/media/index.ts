@@ -49,6 +49,7 @@ export class MediaPluginState {
   private mediaProvider: MediaProvider;
   private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
+  private binaryPicker?: PickerFacade;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
@@ -202,6 +203,16 @@ export class MediaPluginState {
     }
 
     return [ node, transaction ];
+  }
+
+  insertFileFromDataUrl = (url: string, fileName: string) => {
+    const { binaryPicker } = this;
+
+    if (!binaryPicker) {
+      throw new Error('Unable to insert file because media pickers have not been initialized yet');
+    }
+
+    binaryPicker.upload(url, fileName);
   }
 
   showMediaPicker = () => {
@@ -361,6 +372,7 @@ export class MediaPluginState {
 
     const { stateManager, pickers } = this;
 
+    pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager));
     pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager));
     pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager));
     pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager));

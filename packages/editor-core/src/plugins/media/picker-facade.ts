@@ -123,6 +123,12 @@ export default class PickerFacade {
     });
   }
 
+  upload(url: string, fileName: string): void {
+    if (this.picker.upload) {
+      this.picker.upload(url, fileName);
+    }
+  }
+
   onNewMedia(cb: (state: MediaState) => any) {
     this.onStartListeners.push(cb);
   }

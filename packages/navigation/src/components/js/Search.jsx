@@ -141,14 +141,17 @@ export default class Search extends PureComponent {
               type="button"
               tabIndex="-1"
               innerRef={this.setClearButtonRef}
-              onMouseEnter={this.handleClearBtnMouseEnter}
-              onMouseLeave={this.handleClearBtnMouseLeave}
             >
-              {
-                (this.props.busyIcon && this.state.isBusyState && !this.state.clearBtnIsUnderMouse)
-                  ? this.props.busyIcon
-                  : this.props.clearIcon
-              }
+              <div
+                onMouseEnter={this.handleClearBtnMouseEnter}
+                onMouseLeave={this.handleClearBtnMouseLeave}
+              >
+                {
+                  this.props.busyIcon && this.state.isBusyState && !this.state.clearBtnIsUnderMouse
+                    ? this.props.busyIcon
+                    : this.props.clearIcon
+                }
+              </div>
             </SearchClearButton>
           </SearchClearButtonOuter>
         </SearchBox>

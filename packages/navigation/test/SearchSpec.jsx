@@ -99,4 +99,68 @@ describe('Search', () => {
       });
     });
   });
+
+  describe('busy state and busy icon', () => {
+    const BusyIcon = () => <div id="busy-icon" />;
+    const ClearIcon = () => <div id="clear-icon" />;
+    const SearchWithBusyIcon = props => (
+      <Search
+        busyIcon={<BusyIcon />}
+        clearIcon={<ClearIcon />}
+        delayBusyStateBy={0}
+        {...props}
+      />
+    );
+    it('should show busy icon instead of clear icon when busy', (done) => {
+      const wrapper = mount(<SearchWithBusyIcon isBusy />);
+      setImmediate(() => {
+        expect(wrapper.find(BusyIcon)).to.have.length(1);
+        expect(wrapper.find(ClearIcon)).to.have.length(0);
+        done();
+      });
+    });
+    it('should show clear icon when not busy', (done) => {
+      const wrapper = mount(<SearchWithBusyIcon isBusy={false} />);
+      setImmediate(() => {
+        expect(wrapper.find(BusyIcon)).to.have.length(0);
+        expect(wrapper.find(ClearIcon)).to.have.length(1);
+        done();
+      });
+    });
+    it('should switch from busy icon to clear icon when busy, on mouse enter', (done) => {
+      const wrapper = mount(<SearchWithBusyIcon isBusy />);
+      const mouseEventDivWrapper = wrapper.find(ClearIcon).parent();
+      mouseEventDivWrapper.simulate('mouseenter');
+      setImmediate(() => {
+        expect(wrapper.find(BusyIcon)).to.have.length(0);
+        expect(wrapper.find(ClearIcon)).to.have.length(1);
+        done();
+      });
+    });
+    it('should switch back to busy icon on mouse leave', (done) => {
+      const wrapper = mount(<SearchWithBusyIcon isBusy />);
+      const mouseEventDivWrapper = wrapper.find(ClearIcon).parent();
+      mouseEventDivWrapper.simulate('mouseenter');
+      mouseEventDivWrapper.simulate('mouseleave');
+      setImmediate(() => {
+        expect(wrapper.find(BusyIcon)).to.have.length(1);
+        expect(wrapper.find(ClearIcon)).to.have.length(0);
+        done();
+      });
+    });
+    it('should show clear icon when busy if no busy icon is supplied', (done) => {
+      const wrapper = mount(
+        <Search
+          isBusy
+          clearIcon={<ClearIcon />}
+          delayBusyStateBy={0}
+        />
+      );
+      setImmediate(() => {
+        expect(wrapper.find(BusyIcon)).to.have.length(0);
+        expect(wrapper.find(ClearIcon)).to.have.length(1);
+        done();
+      });
+    });
+  });
 });

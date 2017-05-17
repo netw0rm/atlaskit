@@ -1,9 +1,9 @@
 import { render, mount, shallow } from 'enzyme';
 import React from 'react';
 import { AtlassianLogo } from '@atlaskit/logo';
-import HeaderSearch from '../../src/HeaderSearch';
-import { Header } from '../../src';
-import HeaderLinks from '../../src/HeaderLinks';
+import HeaderSearch from '../src/HeaderSearch';
+import { Header } from '../src';
+import HeaderLinks from '../src/HeaderLinks';
 
 describe('Header', () => {
   const logoHref = '#logo';

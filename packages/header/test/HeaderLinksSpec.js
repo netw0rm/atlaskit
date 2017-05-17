@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import HeaderLinks from '../../src/HeaderLinks';
+import HeaderLinks from '../src/HeaderLinks';
 
 describe('HeaderLinks', () => {
   const links = [

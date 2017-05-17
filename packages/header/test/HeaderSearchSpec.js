@@ -1,6 +1,6 @@
 import { render } from 'enzyme';
 import React from 'react';
-import HeaderSearch from '../../src/HeaderSearch';
+import HeaderSearch from '../src/HeaderSearch';
 
 describe('HeaderSearch', () => {
   const headerSearch = <HeaderSearch />;

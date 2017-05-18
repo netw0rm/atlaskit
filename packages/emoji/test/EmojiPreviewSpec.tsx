@@ -154,7 +154,7 @@ describe('<EmojiPreview />', () => {
       expect(placeholders.length).to.equal(1);
       const props = placeholders.get(0).props;
       expect(props.name, 'name').to.equals(mediaEmoji.name);
-      expect(props.title, 'short name').to.equals(mediaEmoji.shortName);
+      expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
     });
   });
 });

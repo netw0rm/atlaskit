@@ -75,6 +75,6 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
     }
 
     const { shortName } = this.props.emojiId;
-    return <EmojiPlaceholder title={shortName} />;
+    return <EmojiPlaceholder shortName={shortName} />;
   }
 }

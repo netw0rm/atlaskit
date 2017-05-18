@@ -49,7 +49,7 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
               );
             } else {
               emojiComponent = (
-                <EmojiPlaceholder title={shortName} name={name} />
+                <EmojiPlaceholder shortName={shortName} name={name} />
               );
             }
 

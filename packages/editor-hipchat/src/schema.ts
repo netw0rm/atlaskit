@@ -80,7 +80,11 @@ const marks = [
   //
   // This mark is used internally, and is stripped from documents before they are exposed through
   // the editor getter APIs.
-  'emojiQuery'
+  'emojiQuery',
+
+  // We are forced to add this, because link mark excludes: 'textColor'
+  // Without this ProseMirror is unable to construct the schema
+  'textColor'
 ];
 
 export interface HCSchema extends Schema<HCSchemaNodes, HCSchemaMarks> {}

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
+import applyDevTools from 'prosemirror-dev-tools';
 
 import {
   Chrome,
@@ -253,6 +254,8 @@ export default class Editor extends PureComponent<Props, State> {
       imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
       mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+
+      applyDevTools(editorView);
 
       editorView.focus();
 

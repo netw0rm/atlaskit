@@ -1,20 +1,21 @@
+/* tslint:disable:no-unused-expression */
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import createRequest from '../src/services/util/createRequest';
 
 let fakeXhr;
-let fakeResponses;
+let myFakeResponses;
 
 describe('createRequest()', () => {
 
   beforeEach(() => {
-    fakeResponses = [];
+    myFakeResponses = [];
     fakeXhr = sinon.useFakeXMLHttpRequest();
+    fakeXhr.onCreate = res => myFakeResponses.push(res);
+  });
 
-    fakeXhr.onCreate = res => {
-      fakeResponses.push(res);
-    };
-
+  afterEach(() => {
+    fakeXhr.restore();
   });
 
   it('should send the client ID and auth token', () => {
@@ -28,20 +29,15 @@ describe('createRequest()', () => {
       }
     });
 
-    const promise = request({url: '/some-api/links'})
-      .then(json => {
-        expect(tokenProvider.calledOnce).to.be.true;
-        expect(fakeResponses[0].url).to.equal('http://example.com/some-api/links');
-        expect(fakeResponses[0].requestHeaders['X-Client-Id']).to.equal('1234');
-        expect(fakeResponses[0].requestHeaders['Authorization']).to.equal('Bearer ABCD');
-      })
-    ;
+    setTimeout(() => myFakeResponses[0].respond(200), 0);
 
-    setTimeout(() => {
-      fakeResponses[0].respond(200);
-    }, 0);
+    return request({url: '/some-api/links'}).then(json => {
+      expect(tokenProvider.calledOnce).to.be.true;
+      expect(myFakeResponses[0].url).to.equal('http://example.com/some-api/links');
+      expect(myFakeResponses[0].requestHeaders['X-Client-Id']).to.equal('1234');
+      expect(myFakeResponses[0].requestHeaders['Authorization']).to.equal('Bearer ABCD');
+    });
 
-    return promise;
   });
 
 });

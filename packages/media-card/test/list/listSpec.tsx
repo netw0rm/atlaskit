@@ -3,16 +3,18 @@ import * as React from 'react';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {shallow, mount} from 'enzyme';
-import {fakeContext} from '@atlaskit/media-test-helpers';
+
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
+
+import {fakeContext} from '@atlaskit/media-test-helpers';
+import {MediaCollectionFileItem, FileDetails} from '@atlaskit/media-core';
 
 import {CardList, CardListProps, CardListState} from '../../src/list';
 import {MediaCard} from '../../src/mediaCard';
 import {InfiniteScroll} from '../../src/list/infiniteScroll';
 
 describe('CardList', () => {
-
   it('should create a MediaItemProvider for each MediaItem in the collection', () => {
     const collectionName = 'MyMedia';
 
@@ -92,7 +94,6 @@ describe('CardList', () => {
     card.update();
 
     card.find(MediaCard).forEach(mediaCard => expect(mediaCard.prop('provider')).to.be.equal(expectedMediaItemProvider));
-
   });
 
   it('should be loading=true when mounted', () => {
@@ -122,8 +123,61 @@ describe('CardList', () => {
     expect(card.state().loading).to.be.false;
   });
 
-  describe('.render()', () => {
+  it('should fire onCardClick handler with updated MediaItemDetails when a Card in the list is clicked', () => {
+    const oldItem: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: 'some-file/link-id',
+        occurrenceKey: 'some-occurrence-key',
+        processingStatus: 'pending'
+      }
+    };
 
+    const newItemDetails: FileDetails = {
+      processingStatus: 'succeeded'
+    };
+
+    const newItem: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        ...oldItem.details,
+        ...newItemDetails
+      }
+    };
+
+    const collection = {items: [oldItem, oldItem, oldItem], nextInclusiveStartKey: 'xyz'};
+
+    const context = fakeContext({
+      getMediaCollectionProvider: {
+        observable() {
+          return Observable.create(observer => {
+            observer.next(collection);
+          });
+        }
+      },
+      getMediaItemProvider: {
+        observable() {
+          return Observable.create(observer => {
+            observer.next(newItemDetails);
+          });
+        }
+      }
+    });
+
+    const collectionName = 'MyMedia';
+
+    const onCardClickHandler = sinon.spy();
+
+    const wrapper = mount<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName} onCardClick={onCardClickHandler} />) as any;
+    wrapper.setState({loading: false, error: undefined, collection});
+    wrapper.find(MediaCard).first().simulate('click');
+
+    expect(onCardClickHandler.calledOnce).to.be.true;
+    expect(onCardClickHandler.firstCall.args[0].mediaCollectionItem).to.deep.equal(newItem);
+    expect(onCardClickHandler.firstCall.args[0].collectionName).to.deep.equal(collectionName);
+  });
+
+  describe('.render()', () => {
     it('should render the loading view when the list is loading', () => {
       const context = fakeContext();
       const collectionName = 'MyMedia';
@@ -172,7 +226,5 @@ describe('CardList', () => {
       list.setState({loading: false, error: undefined, collection: {items: []}});
       expect(list.is(InfiniteScroll)).to.be.false;
     });
-
   });
-
 });

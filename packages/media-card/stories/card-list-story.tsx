@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, defaultCollectionName} from '@atlaskit/media-test-helpers';
-import { CardList } from '../src';
+import { CardList, CardListEvent } from '../src';
 
 const wrongCollection = 'adfasdf';
 const wrongClientId = 'wrong-client-id';
@@ -166,13 +166,43 @@ storiesOf('CardList', {})
        }]}
      </StoryList>
    ))
-   .add('Custom actions dropdown', () => (
-     <CardList
-       context={context}
-       collectionName={defaultCollectionName}
-       actions={cardsActions}
-     />
-   ))
+   .add('Actions and exposed events', () => {
+     const cardClickHandler = (result: CardListEvent) => {
+       result.event.preventDefault();
+       action('click')([result.mediaCollectionItem, result.collectionName]);
+     };
+
+     const cardLists = [
+       {
+          title: 'Actions',
+          content: (
+            <CardList
+              context={context}
+              collectionName={defaultCollectionName}
+              actions={cardsActions}
+            />
+          )
+       },
+       {
+          title: 'onCardClick',
+          content: (
+            <CardList
+              context={context}
+              collectionName={defaultCollectionName}
+              onCardClick={cardClickHandler}
+            />
+          )
+       }
+     ];
+
+     return (
+       <div style={{margin: '40px'}}>
+         <StoryList>
+           {cardLists}
+         </StoryList>
+       </div>
+     );
+   })
    .add('Custom loading state', () => {
      const customLoadingComponent = <div>this is a custom loading...</div>;
      return <CardList

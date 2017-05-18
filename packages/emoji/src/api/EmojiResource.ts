@@ -158,33 +158,25 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
 
   protected notifyResult(result: EmojiSearchResult): void {
     if (result.query === this.lastQuery.query) {
-      const { emojis } = result;
-      const mediaEmoji: EmojiDescription[] = [];
-      emojis.forEach(emoji => {
-        const representation = emoji.representation;
-        if (isMediaApiRepresentation(representation)) {
-          mediaEmoji.push(emoji);
-        }
-      });
       super.notifyResult(result);
-      this.loadMediaEmoji(result, mediaEmoji);
+      this.loadMediaEmoji(result);
     }
   }
 
-  private loadMediaEmoji(result: EmojiSearchResult, mediaEmojis: EmojiDescription[]) {
+  private loadMediaEmoji(result: EmojiSearchResult) {
+    const { emojis, ...other } = result;
+    const mediaEmojis = emojis.filter(emoji => isMediaApiRepresentation(emoji.representation));
     // only load a batch of media emoji at a time (next notifyResult will load the next batch)
-    if (this.mediaEmojiResource && mediaEmojis.length) {
+    const mediaEmojiResource = this.mediaEmojiResource;
+    if (mediaEmojiResource && mediaEmojis.length) {
       const activeLoadersAtStart = this.activeLoaders;
-      const loaders: Promise<EmojiDescription>[] = [];
-      mediaEmojis.slice(0, mediaEmojiBatchSize).forEach(mediaEmoji => {
-        if (this.mediaEmojiResource) { // for typescript's sake
-          loaders.push(this.mediaEmojiResource.getMediaEmojiAsImageEmoji(mediaEmoji));
-        }
-      });
-      Promise.all(loaders).then(loadedEmojis => {
+      const mediaImageLoaders: Promise<EmojiDescription>[] =
+        mediaEmojis.slice(0, mediaEmojiBatchSize).map(mediaEmoji =>
+          mediaEmojiResource.getMediaEmojiAsImageEmoji(mediaEmoji)
+        );
+      Promise.all(mediaImageLoaders).then(loadedEmojis => {
         if (result.query === this.lastQuery.query && activeLoadersAtStart === this.activeLoaders) {
           // these loaded emojis are still relevant...
-          const { emojis, ...other } = result;
           const newEmojis: EmojiDescription[] = [];
           emojis.forEach(emoji => {
             if (loadedEmojis.length && isMediaApiRepresentation(emoji.representation)) {

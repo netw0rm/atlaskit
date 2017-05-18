@@ -12,7 +12,7 @@ import Popup from '../common/Popup';
 import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { AvailableCategories, EmojiDescription, EmojiId, OnEmojiEvent, RelativePosition } from '../../types';
-import { isEmojiIdEqual, isMediaApiRepresentation, toEmojiId } from '../../type-helpers';
+import { isEmojiIdEqual, isEmojiLoaded, toEmojiId } from '../../type-helpers';
 
 export interface PickerRefHandler {
   (ref: any): any;
@@ -120,8 +120,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
             selectedEmoji,
           } as State);
 
-          const { representation } = selectedEmoji;
-          if (isMediaApiRepresentation(representation)) {
+          if (!isEmojiLoaded(selectedEmoji)) {
             provider.findByEmojiId(toEmojiId(selectedEmoji)).then((loadedEmoji) => {
               const lastestSelectedEmoji = this.state.selectedEmoji;
               if (loadedEmoji && lastestSelectedEmoji && isEmojiIdEqual(toEmojiId(lastestSelectedEmoji), toEmojiId(loadedEmoji))) {

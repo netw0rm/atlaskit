@@ -133,5 +133,19 @@ describe('MediaEmojiResource', () => {
         expect(emoji).to.deep.equal(mediaEmoji);
       });
     });
+
+    it('media fails to load (rejection)', () => {
+      const mediaEmojiResource = createMediaEmojiResource();
+      fetchMock.mock({
+        matcher: `begin:${getMediaPath(mediaEmoji)}`,
+        response: {
+          throws: new Error(),
+        },
+      });
+      return mediaEmojiResource.getMediaEmojiAsImageEmoji(mediaEmoji).then(emoji => {
+        // returns original
+        expect(emoji).to.deep.equal(mediaEmoji);
+      });
+    });
   });
 });

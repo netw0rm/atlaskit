@@ -8,7 +8,7 @@ import Emoji from '../../components/common/Emoji';
 import EmojiPlaceholder from '../../components/common/EmojiPlaceholder';
 import ToneSelector from './ToneSelector';
 import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
-import { isMediaApiRepresentation } from '../../type-helpers';
+import { isEmojiLoaded } from '../../type-helpers';
 
 export interface Props {
   emoji?: EmojiDescription;
@@ -101,18 +101,16 @@ export default class EmojiPreview extends PureComponent<Props, State> {
       [styles.previewSingleLine]: !emoji.name,
     });
 
-    const { representation } = emoji;
-
     let emojiComponent;
 
-    if (isMediaApiRepresentation(representation)) {
+    if (isEmojiLoaded(emoji)) {
+      emojiComponent = (
+        <Emoji emoji={emoji} />
+      );
+    } else {
       const { shortName, name } = emoji;
       emojiComponent = (
         <EmojiPlaceholder title={shortName} name={name} size={32} />
-      );
-    } else {
-      emojiComponent = (
-        <Emoji emoji={emoji} />
       );
     }
 

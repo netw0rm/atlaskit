@@ -14,6 +14,11 @@ export const isSpriteRepresentation = (rep): rep is SpriteRepresentation => !!(r
 export const isImageRepresentation = (rep): rep is ImageRepresentation => !!(rep && (<ImageRepresentation> rep).imagePath);
 export const isMediaApiRepresentation = (rep): rep is MediaApiRepresentation => !!(rep && (<MediaApiRepresentation> rep).mediaPath);
 
+/**
+ * Determines if an emoji description is in a loading form (i.e. not suitable for rendering, e.g. a media emoji).
+ */
+export const isEmojiLoaded = (emoji: EmojiDescription) => !isMediaApiRepresentation(emoji.representation);
+
 export const isEmojiDescriptionWithVariations = (emoji): emoji is EmojiDescriptionWithVariations =>
   !!(emoji && (<EmojiDescriptionWithVariations> emoji).skinVariations);
 

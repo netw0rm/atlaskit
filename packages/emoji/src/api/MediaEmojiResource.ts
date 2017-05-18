@@ -27,16 +27,16 @@ export default class MediaEmojiResource {
       return Promise.resolve(emoji);
     }
 
-    return new Promise(resolve => {
-      this.getMediaApiToken(false).then(token => {
-        resolve(this.loadMediaEmoji(emoji, token, true));
+    return this.getMediaApiToken(false)
+      .then(token => this.loadMediaEmoji(emoji, token, true))
+      .catch(error => {
+        // Failed to load, just resolve to original emoji
+        return emoji;
       });
-    });
   }
 
   private loadMediaEmoji(emoji: EmojiDescription, token: MediaApiToken, retryOnAuthError: boolean): Promise<EmojiDescription> {
     const { representation, ...other } = emoji;
-
     const { mediaPath, ...otherRep } = representation as MediaApiRepresentation;
 
     // Media REST API: https://media-api-internal.atlassian.io/api.html#file__fileId__image_get
@@ -47,33 +47,30 @@ export default class MediaEmojiResource {
       },
     };
 
-    return new Promise((resolve, reject) => {
-      // FIXME - remove this once max-age is returned in url by emoji service. See FS-967
-      const paramSeparator = mediaPath.indexOf('?') >= 0 ? '&' : '?';
-      const mediaUrl = `${mediaPath}${paramSeparator}max-age=${mediaMaxAge}`;
-      fetch(new Request(mediaUrl, options)).then(response => {
-        if (response.status === 403 && retryOnAuthError) {
-          // retry once if 403
-          this.getMediaApiToken(true).then(newToken => {
-            resolve(this.loadMediaEmoji(emoji, newToken, false));
+    // FIXME - remove this once max-age is returned in url by emoji service. See FS-967
+    const paramSeparator = mediaPath.indexOf('?') >= 0 ? '&' : '?';
+    const mediaUrl = `${mediaPath}${paramSeparator}max-age=${mediaMaxAge}`;
+    return fetch(new Request(mediaUrl, options)).then(response => {
+      if (response.status === 403 && retryOnAuthError) {
+        // retry once if 403
+        return this.getMediaApiToken(true).then(newToken => {
+          return this.loadMediaEmoji(emoji, newToken, false);
+        });
+      } else if (response.ok) {
+        return response.blob().then((blob) => {
+          return this.readBlob(blob).then(imagePath => {
+            const imageEmoji = {
+              ...other,
+              representation: {
+                ...otherRep,
+                imagePath,
+              },
+            };
+            return imageEmoji;
           });
-        } else if (response.ok) {
-          response.blob().then((blob) => {
-            this.readBlob(blob).then(imagePath => {
-              const imageEmoji = {
-                ...other,
-                representation: {
-                  ...otherRep,
-                  imagePath,
-                },
-              };
-              resolve(imageEmoji);
-            });
-          });
-        } else {
-          resolve(emoji);
-        }
-      });
+        });
+      }
+      return emoji;
     });
   }
 
@@ -93,13 +90,11 @@ export default class MediaEmojiResource {
     const options = {
       credentials: 'include' as 'include',
     };
-    this.activeTokenRefresh = new Promise(resolve => {
-      fetch(new Request(readTokenUrl, options)).then(response => {
-        response.json().then(mediaApiToken => {
-          this.activeTokenRefresh = undefined;
-          this.initMediaApiToken(mediaApiToken);
-          resolve(this.mediaApiToken);
-        });
+    this.activeTokenRefresh = fetch(new Request(readTokenUrl, options)).then(response => {
+      return response.json().then(mediaApiToken => {
+        this.activeTokenRefresh = undefined;
+        this.initMediaApiToken(mediaApiToken);
+        return this.mediaApiToken;
       });
     });
 

@@ -107,6 +107,9 @@
     "storybook-addon-i18n-tools": "^1.0.0",
     "style-loader": "^0.13.1",
     "styled-components": "^1.4.0",
+    "stylelint": "^7.10.1",
+    "stylelint-config-standard": "^16.0.0",
+    "stylelint-processor-styled-components": "^0.1.0",
     "svg-to-jsx-loader": "^1.1.0",
     "ts-loader": "^1.2.2",
     "tslint": "^5.1.0",
@@ -203,10 +206,5 @@
     "validate/package.json": "pjv -q && lerna exec -- pjv -q",
     "validate/typescript": "lerna run validate/typescript",
     "validate/flow": "flow check"
-  },
-  "devDependencies": {
-    "stylelint": "^7.10.1",
-    "stylelint-config-standard": "^16.0.0",
-    "stylelint-processor-styled-components": "^0.1.0"
   }
 }

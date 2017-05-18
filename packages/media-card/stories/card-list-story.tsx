@@ -18,7 +18,7 @@ const anotherAction = {
   type: -2,
   label: 'Some other action',
   handler: (item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
-    action('annotate')(item, collection);
+    action('Some other action')(item, collection);
   }
 };
 

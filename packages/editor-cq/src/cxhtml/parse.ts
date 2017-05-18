@@ -173,6 +173,9 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
 
         return mediaNode;
 
+      case 'PRE':
+        return schema.nodes.codeBlock.create({ language: null }, schema.text(node.textContent || ''));
+
       case 'TABLE':
         if (hasClass(node, 'wysiwyg-macro')) {
           return convertWYSIWYGMacro(node) || unsupportedInline;

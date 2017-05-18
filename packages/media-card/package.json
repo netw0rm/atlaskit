@@ -64,7 +64,7 @@
   "devDependencies": {
     "@atlaskit/droplist": "^3.6.0",
     "@atlaskit/media-core": "^8.0.0",
-    "@atlaskit/media-test-helpers": "^5.0.0",
+    "@atlaskit/media-test-helpers": "^6.0.0",
     "akutil-common-test": "*",
     "deepcopy": "0.6.3"
   },

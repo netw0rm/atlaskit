@@ -246,13 +246,16 @@ export default function encode(node: PMNode) {
   }
 
   function encodeMention(node: PMNode) {
-    const elem = doc.createElementNS(FAB_XMLNS, 'fab:mention');
-    elem.setAttribute('atlassian-id', node.attrs['id']);
+    const link = doc.createElement('link');
+    const mention = doc.createElementNS(FAB_XMLNS, 'fab:mention');
+    mention.setAttribute('atlassian-id', node.attrs['id']);
 
     const cdata = doc.createCDATASection(node.attrs['text']);
-    elem.appendChild(cdata);
+    mention.appendChild(cdata);
 
-    return elem;
+    link.appendChild(mention);
+
+    return link;
   }
 
   function encodeUnsupported(node: PMNode) {

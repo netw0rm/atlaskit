@@ -119,7 +119,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     });
 
     this.setState({
-      loadNextPage: () => provider.controller().loadNextPage(),
+      loadNextPage: () => provider.loadNextPage(),
       collection: undefined,
       error: undefined,
       subscription

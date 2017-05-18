@@ -17,8 +17,7 @@ export const HeaderWrapper = styled.div`
     margin: 0;
   }
   .row {
-    // max-width: 75rem;
-    max-width: 1000px;
+    max-width: 75rem;
     margin-left: auto;
     margin-right: auto;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { waitUntil } from '@atlaskit/util-common-test';
 import Search from '../src/components/js/Search';
 
 const describe = window.describe;
@@ -111,42 +112,61 @@ describe('Search', () => {
         {...props}
       />
     );
+    const contains = wrapper => selector => wrapper.find(selector).length > 0;
+
     it('should show busy icon instead of clear icon when busy', (done) => {
       const wrapper = mount(<SearchWithBusyIcon isBusy />);
-      setTimeout(() => {
-        expect(wrapper.find(BusyIcon)).to.have.length(1);
-        expect(wrapper.find(ClearIcon)).to.have.length(0);
-        done();
-      }, 0);
+      const wrapperContains = contains(wrapper);
+      waitUntil(() => wrapperContains(BusyIcon))
+        .then(() => {
+          expect(wrapper.find(BusyIcon)).to.have.length(1);
+          expect(wrapper.find(ClearIcon)).to.have.length(0);
+          done();
+        }, 0);
     });
     it('should show clear icon when not busy', (done) => {
       const wrapper = mount(<SearchWithBusyIcon isBusy={false} />);
-      setTimeout(() => {
-        expect(wrapper.find(BusyIcon)).to.have.length(0);
-        expect(wrapper.find(ClearIcon)).to.have.length(1);
-        done();
-      }, 0);
+      const wrapperContains = contains(wrapper);
+      waitUntil(() => wrapperContains(ClearIcon))
+        .then(() => {
+          expect(wrapper.find(BusyIcon)).to.have.length(0);
+          expect(wrapper.find(ClearIcon)).to.have.length(1);
+          done();
+        }, 0);
     });
     it('should switch from busy icon to clear icon when busy, on mouse enter', (done) => {
       const wrapper = mount(<SearchWithBusyIcon isBusy />);
+      const wrapperContains = contains(wrapper);
       const mouseEventDivWrapper = wrapper.find(ClearIcon).parent();
-      mouseEventDivWrapper.simulate('mouseenter');
-      setTimeout(() => {
-        expect(wrapper.find(BusyIcon)).to.have.length(0);
-        expect(wrapper.find(ClearIcon)).to.have.length(1);
-        done();
-      }, 0);
+
+      waitUntil(() => wrapperContains(BusyIcon))
+        .then(() => { mouseEventDivWrapper.simulate('mouseenter'); });
+
+      waitUntil(() => wrapperContains(ClearIcon))
+        .then(() => {
+          expect(wrapper.find(BusyIcon)).to.have.length(0);
+          expect(wrapper.find(ClearIcon)).to.have.length(1);
+          done();
+        }, 0);
     });
     it('should switch back to busy icon on mouse leave', (done) => {
       const wrapper = mount(<SearchWithBusyIcon isBusy />);
+      const wrapperContains = contains(wrapper);
       const mouseEventDivWrapper = wrapper.find(ClearIcon).parent();
-      mouseEventDivWrapper.simulate('mouseenter');
-      mouseEventDivWrapper.simulate('mouseleave');
-      setTimeout(() => {
-        expect(wrapper.find(BusyIcon)).to.have.length(1);
-        expect(wrapper.find(ClearIcon)).to.have.length(0);
-        done();
-      }, 0);
+      waitUntil(() => wrapperContains(BusyIcon))
+        .then(() => { mouseEventDivWrapper.simulate('mouseenter'); })
+        .then(() => {
+          waitUntil(() => wrapperContains(ClearIcon))
+          .then(() => { mouseEventDivWrapper.simulate('mouseleave'); })
+          .then(() => {
+            waitUntil(() => wrapperContains(BusyIcon))
+              .then(() => {
+                expect(wrapper.find(BusyIcon)).to.have.length(1);
+                expect(wrapper.find(ClearIcon)).to.have.length(0);
+                done();
+              }, 0);
+          });
+        });
     });
     it('should show clear icon when busy if no busy icon is supplied', (done) => {
       const wrapper = mount(
@@ -156,11 +176,13 @@ describe('Search', () => {
           delayBusyStateBy={0}
         />
       );
-      setTimeout(() => {
-        expect(wrapper.find(BusyIcon)).to.have.length(0);
-        expect(wrapper.find(ClearIcon)).to.have.length(1);
-        done();
-      }, 0);
+      const wrapperContains = contains(wrapper);
+      waitUntil(() => wrapperContains(ClearIcon))
+        .then(() => {
+          expect(wrapper.find(BusyIcon)).to.have.length(0);
+          expect(wrapper.find(ClearIcon)).to.have.length(1);
+          done();
+        }, 0);
     });
   });
 });

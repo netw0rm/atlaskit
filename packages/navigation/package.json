@@ -50,7 +50,7 @@
     "@atlaskit/navigation": "*",
     "@atlaskit/page": "^4.0.0",
     "@atlaskit/spinner": "^2.2.1",
-    "@atlaskit/util-common-test": "*",
+    "@atlaskit/util-common-test": "^2.0.1",
     "@atlaskit/util-readme": "^1.0.0",
     "karma-sinon-chai": "^1.2.4",
     "react-lorem-component": "0.11.0",

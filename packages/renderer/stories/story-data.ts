@@ -9,9 +9,19 @@ const toEmojiAttrs = (emoji) => {
   };
 };
 
+const toEmojiId = (emoji) => {
+   const { shortName, id, fallback } = emoji;
+   return { shortName, id, fallback };
+};
+
 const { emojiTestData, emojiStoryData } = emojiData;
 export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
 export const evilburnsEmojiAttrs = toEmojiAttrs(emojiTestData.evilburnsEmoji);
+
+export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
+export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+
+
 export const lorem = emojiStoryData.lorem;
 
 export const document = {

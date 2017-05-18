@@ -21,7 +21,7 @@ export interface Props {
 export default class EmojiNode extends PureComponent<Props, {}> {
   render() {
     const { node, providerFactory } = this.props;
-    const { shortName, id, fallback } = node.attrs;
+    const { shortName, id, text: fallback } = node.attrs;
 
     return (
       <Wrapper>

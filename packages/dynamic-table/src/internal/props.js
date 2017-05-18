@@ -1,6 +1,5 @@
 import { PropTypes } from 'react';
 import { createError } from '@atlaskit/util-common';
-import { ASC, DESC } from './constants';
 
 function isInteger(props, propName, componentName) {
   if (props[propName] === undefined) return null;
@@ -62,9 +61,10 @@ const head = PropTypes.shape({
   cells: PropTypes.arrayOf(headCell),
 });
 
-const rows = PropTypes.arrayOf(PropTypes.shape({
+const row = PropTypes.shape({
   cells: rowCells,
-}));
+});
+const rows = PropTypes.arrayOf(row);
 
 function sortKey(props, propName, componentName) {
   if (!props[propName]) return null;
@@ -79,61 +79,12 @@ function sortKey(props, propName, componentName) {
 }
 sortKey.isRequired = false;
 
-const caption = PropTypes.node;
-const sortOrder = PropTypes.oneOf([ASC, DESC]);
-const isFixedSize = PropTypes.bool;
-const rowsPerPage = isInteger;
-const page = isInteger;
-const onSetPage = PropTypes.func;
-const onSort = PropTypes.func;
-const emptyView = PropTypes.node;
-
-const commonPropTypes = {
-  caption,
+// As the files we are going to use these in also have const declarations for the
+// props, here we are exporting them as an object for ease of use.
+export default {
   head,
+  isInteger,
+  row,
   rows,
-  emptyView,
-  isFixedSize,
-  rowsPerPage,
-  onSetPage,
-  onSort,
-};
-
-const commonDefaultProps = {
-  caption: null,
-  head: null,
-  rows: null,
-  emptyView: null,
-  isFixedSize: false,
-  rowsPerPage: Infinity,
-  onSetPage() {},
-  onSort() {},
-};
-
-export const statelessPropTypes = {
-  ...commonPropTypes,
-  page,
   sortKey,
-  sortOrder,
-};
-
-export const statefulPropTypes = {
-  ...commonPropTypes,
-  defaultPage: page,
-  defaultSortKey: sortKey,
-  defaultSortOrder: sortOrder,
-};
-
-export const statelessDefaultProps = {
-  ...commonDefaultProps,
-  page: 1,
-  sortKey: null,
-  sortOrder: null,
-};
-
-export const statefulDefaultProps = {
-  ...commonDefaultProps,
-  defaultPage: 1,
-  defaultSortKey: null,
-  defaultSortOrder: null,
 };

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { action } from '@kadira/storybook';
-import { DynamicTable } from '@atlaskit/dynamic-table';
+import { DynamicTableStateless } from '@atlaskit/dynamic-table';
 import { caption, head, rows } from './sample-data';
 
 const Wrapper = styled.div`
@@ -12,7 +12,7 @@ export default class extends PureComponent {
   render() {
     return (
       <Wrapper>
-        <DynamicTable
+        <DynamicTableStateless
           caption={caption}
           head={head}
           rows={rows}

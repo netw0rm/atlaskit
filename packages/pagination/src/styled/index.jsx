@@ -7,6 +7,6 @@ export const Container = styled.div`
 `;
 
 export const ButtonActive = styled(Button)`
-  font-weight: bold;
   color: #000 !important; /* @todo: until Button supports not faded disabled state */
+  font-weight: bold;
 `;

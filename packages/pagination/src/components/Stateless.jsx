@@ -2,33 +2,33 @@ import React, { PureComponent, PropTypes } from 'react';
 import Button from '@atlaskit/button';
 
 import {
+  defaultI18n,
+  i18nShape,
   validateCurrent,
   validateTotal,
-  i18nShape,
-  defaultI18n,
-} from './internal/props';
-import { Container, ButtonActive } from './styled';
+} from '../internal/props';
+import { Container, ButtonActive } from '../styled/index';
 
 export default class Pagination extends PureComponent {
   static propTypes = {
     /** The page that is currently selected. */
     current: validateCurrent,
-    /** The number of pages to display. */
-    total: validateTotal,
-    /** Function to call when the page is changed. It is called with the number
-    of the page clicked on. */
-    onSetPage: PropTypes.func,
     /** Object that sets the values for the previous and next buttons. It should
     have the properties 'prev' and 'next', which should be strings. Defaults to
     'Prev' and 'Next' */
     i18n: i18nShape,
+    /** Function to call when the page is changed. It is called with the number
+    of the page clicked on. */
+    onSetPage: PropTypes.func,
+    /** The number of pages to display. */
+    total: validateTotal,
   }
 
   static defaultProps = {
     current: 1,
-    total: 1,
-    onSetPage() {},
     i18n: defaultI18n,
+    onSetPage() {},
+    total: 1,
   }
 
   onSetPage = page => () => this.props.onSetPage(page)

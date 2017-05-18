@@ -2,19 +2,19 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
 import Button from '@atlaskit/button';
-import AkPagination, { Pagination } from '../../src';
+import Pagination, { PaginationStateless } from '../../src';
 
 import { name } from '../../package.json';
 
 describe(name, () => {
   describe('stateless', () => {
     it('should not render when total is 0', () => {
-      const wrapper = mount(<Pagination total={0} current={0} />);
+      const wrapper = mount(<PaginationStateless total={0} current={0} />);
       expect(wrapper.find(Button).length).to.equal(0);
     });
 
     it('should render pages and Prev/Next buttons when total is not 0', () => {
-      const wrapper = mount(<Pagination total={2} />);
+      const wrapper = mount(<PaginationStateless total={2} />);
       const buttons = wrapper.find(Button);
       expect(buttons.length).to.equal(4);
       expect(buttons.at(0).text()).to.equal('Prev');
@@ -24,20 +24,20 @@ describe(name, () => {
     });
 
     it('should render Prev button disabled when current in 1', () => {
-      const wrapper = mount(<Pagination total={3} />);
+      const wrapper = mount(<PaginationStateless total={3} />);
       const prevButton = wrapper.find(Button).at(0);
       expect(prevButton.prop('isDisabled')).to.equal(true);
     });
 
     it('should render Next button disabled when current in 1', () => {
-      const wrapper = mount(<Pagination total={3} current={3} />);
+      const wrapper = mount(<PaginationStateless total={3} current={3} />);
       const nextButton = wrapper.find(Button).at(4);
       expect(nextButton.prop('isDisabled')).to.equal(true);
     });
 
     it('should invoke callback passed to onSetPage', () => {
       const onSetPage = spy();
-      const wrapper = mount(<Pagination total={3} current={2} onSetPage={onSetPage} />);
+      const wrapper = mount(<PaginationStateless total={3} current={2} onSetPage={onSetPage} />);
       const buttons = wrapper.find(Button);
 
       buttons.at(1).simulate('click');
@@ -53,7 +53,7 @@ describe(name, () => {
       it('when clicked on active page', () => {
         const onSetPage = spy();
         const wrapper = mount(
-          <Pagination
+          <PaginationStateless
             total={3}
             current={2}
             onSetPage={onSetPage}
@@ -67,7 +67,7 @@ describe(name, () => {
       it('when clicked on Prev and first page is active', () => {
         const onSetPage = spy();
         const wrapper = mount(
-          <Pagination
+          <PaginationStateless
             total={3}
             current={1}
             onSetPage={onSetPage}
@@ -81,7 +81,7 @@ describe(name, () => {
       it('when clicked on Next and last page is active', () => {
         const onSetPage = spy();
         const wrapper = mount(
-          <Pagination
+          <PaginationStateless
             total={3}
             current={3}
             onSetPage={onSetPage}
@@ -99,7 +99,7 @@ describe(name, () => {
       let wrapper;
       beforeEach(() => {
         wrapper = mount(
-          <AkPagination
+          <Pagination
             total={10}
             defaultCurrent={3}
           />

@@ -142,7 +142,8 @@ export default class Search extends PureComponent {
               tabIndex="-1"
               innerRef={this.setClearButtonRef}
             >
-              <div
+              <span
+                style={{ display: 'inherit' }}
                 onMouseEnter={this.handleClearBtnMouseEnter}
                 onMouseLeave={this.handleClearBtnMouseLeave}
               >
@@ -151,7 +152,7 @@ export default class Search extends PureComponent {
                     ? this.props.busyIcon
                     : this.props.clearIcon
                 }
-              </div>
+              </span>
             </SearchClearButton>
           </SearchClearButtonOuter>
         </SearchBox>

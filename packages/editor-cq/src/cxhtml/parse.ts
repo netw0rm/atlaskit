@@ -181,7 +181,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
 
       case 'DIV':
         if (hasClass(node, 'codeHeader')) {
-          return schema.nodes.heading.createChecked({ level: 5 }, Fragment.from(schema.text(node.textContent || '')));
+          const codeHeader = schema.text(node.textContent || '', [ schema.marks.strong.create() ]);
+          return schema.nodes.heading.createChecked({ level: 5 }, Fragment.from( codeHeader ));
         }
         else if (hasClass(node, 'codeContent')) {
           return convertCodeFromView(node) || unsupportedInline;

@@ -3,10 +3,18 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
-import { MediaItem, MediaCollection, MediaCollectionItem, Context, CollectionAction, DataUriService } from '@atlaskit/media-core';
+import {
+  MediaItem,
+  MediaCollection,
+  MediaCollectionItem,
+  Context,
+  CollectionAction,
+  DataUriService
+} from '@atlaskit/media-core';
 import { CSSTransitionGroup } from 'react-transition-group';
+
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
-import { CardDimensions } from '../index';
+import { CardDimensions, CardListEvent, CardEvent } from '../index';
 import { Provider } from '../card';
 import { MediaCard } from '../mediaCard';
 import { InfiniteScroll } from './infiniteScroll';
@@ -17,12 +25,12 @@ export interface CardListProps {
   collectionName: string;
 
   height?: number;
+  pageSize?: number;
 
   cardDimensions?: CardDimensions;
   cardAppearance?: 'small' | 'image';
 
-  pageSize?: number;
-
+  onCardClick?: (result: CardListEvent) => void;
   actions?: Array<CollectionAction>;
 
   /**
@@ -94,7 +102,6 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     const subscription = provider.observable().subscribe({
       next: (collection: MediaCollection): void => {
-
         this.providersByMediaItemId = {};
         collection.items.forEach(mediaItem => {
           if (!mediaItem.details || !mediaItem.details.id) { return; }
@@ -214,12 +221,13 @@ export class CardList extends Component<CardListProps, CardListState> {
               provider={this.providersByMediaItemId[mediaItem.details.id]}
               dataURIService={this.dataURIService}
 
+              appearance={cardAppearance}
               dimensions={{
                 width: this.cardWidth,
                 height: cardDimensions && cardDimensions.height
               }}
 
-              appearance={cardAppearance}
+              onClick={this.handleCardClick.bind(this, mediaItem)}
               actions={cardActions(mediaItem)}
             />
           </CardListItemWrapper>
@@ -238,6 +246,33 @@ export class CardList extends Component<CardListProps, CardListState> {
         {cards}
       </CSSTransitionGroup>
     );
+  }
+
+  private handleCardClick(oldItem: MediaCollectionItem, cardEvent: CardEvent) {
+    const {collectionName, onCardClick} = this.props;
+
+    if (!onCardClick) {
+      return;
+    }
+
+    const {event, mediaItemDetails} = cardEvent;
+
+    // need to merge the new details with the old details (as the old details may be out of date) and we need the occurrenceKey
+    const newItem: MediaCollectionItem = {
+      type: oldItem.type,
+      details: {
+        ...oldItem.details,
+        ...mediaItemDetails
+      }
+    } as MediaCollectionItem;
+
+    const cardListEvent: CardListEvent = {
+      event,
+      collectionName,
+      mediaCollectionItem: newItem
+    };
+
+    onCardClick(cardListEvent);
   }
 
   /*
@@ -271,6 +306,5 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   loadNextPage = (): void => this.state.loadNextPage && this.state.loadNextPage();
-
 }
 

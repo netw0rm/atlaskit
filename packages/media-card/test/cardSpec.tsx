@@ -28,8 +28,8 @@ describe('Card', function() {
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getUrlPreviewProvider.calledOnce).to.equal(true);
-    expect(context.getUrlPreviewProvider.calledWithExactly(dummyUrl)).to.equal(true);
+    expect(context.getUrlPreviewProvider.calledOnce).to.be.true;
+    expect(context.getUrlPreviewProvider.calledWithExactly(dummyUrl)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
@@ -53,8 +53,8 @@ describe('Card', function() {
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getMediaItemProvider.calledOnce).to.equal(true);
-    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.equal(true);
+    expect(context.getMediaItemProvider.calledOnce).to.be.true;
+    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
@@ -78,8 +78,8 @@ describe('Card', function() {
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getMediaItemProvider.calledOnce).to.equal(true);
-    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.equal(true);
+    expect(context.getMediaItemProvider.calledOnce).to.be.true;
+    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
@@ -107,8 +107,8 @@ describe('Card', function() {
     const mediaCard = card.find(MediaCard);
 
     const {id, mediaItemType, collectionName} = identifier;
-    expect(secondContext.getMediaItemProvider.calledOnce).to.equal(true);
-    expect(secondContext.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.equal(true);
+    expect(secondContext.getMediaItemProvider.calledOnce).to.be.true;
+    expect(secondContext.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
     expect(mediaCard.props().provider).to.equal(dummyProvider);
@@ -138,8 +138,8 @@ describe('Card', function() {
     const mediaCard = card.find(MediaCard);
 
     const {id, mediaItemType, collectionName} = secondIdentifier;
-    expect(context.getMediaItemProvider.calledTwice).to.equal(true);
-    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.equal(true);
+    expect(context.getMediaItemProvider.calledTwice).to.be.true;
+    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
 
     expect(mediaCard).to.have.length(1);
     expect(mediaCard.props().provider).to.equal(dummyProvider);

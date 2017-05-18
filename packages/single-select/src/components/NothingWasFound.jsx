@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 
-import styles from '../styles.less';
+import NothingWasFoundElement from '../styled/NothingWasFound';
 
 export default class NothingWasFound extends PureComponent {
   static propTypes = {
@@ -9,9 +9,9 @@ export default class NothingWasFound extends PureComponent {
 
   render() {
     return (
-      <div className={styles.nothing}>
+      <NothingWasFoundElement>
         { this.props.noMatchesFound }
-      </div>
+      </NothingWasFoundElement>
     );
   }
 }

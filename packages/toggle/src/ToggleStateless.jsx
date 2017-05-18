@@ -36,7 +36,6 @@ export default class ToggleStateless extends PureComponent {
   };
 
   state = {
-    isChecked: this.props.isChecked,
     isFocused: false,
   }
 
@@ -56,7 +55,6 @@ export default class ToggleStateless extends PureComponent {
     this.props.onBlur(e);
   }
   handleChange = (e) => {
-    this.setState({ isChecked: e.target.checked });
     this.props.onChange(e);
   }
   handleFocus = (e) => {
@@ -65,8 +63,8 @@ export default class ToggleStateless extends PureComponent {
   }
 
   render() {
-    const { isDisabled, label, name, size, value } = this.props;
-    const { isChecked, isFocused } = this.state;
+    const { isChecked, isDisabled, label, name, size, value } = this.props;
+    const { isFocused } = this.state;
     const styledProps = { isChecked, isDisabled, isFocused, size };
     const Icon = isChecked ? ConfirmIcon : CloseIcon;
     const id = uid();

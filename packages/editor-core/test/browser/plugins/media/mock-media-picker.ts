@@ -9,6 +9,7 @@ export default class MockMediaPicker {
   public deactivated = false;
   public cancelled = false;
   public listeners: {[eventName: string]: Array<(...args: any[]) => any> } = {};
+  public uploaded?: [string, string];
 
   on(eventName: string, cb: (...args: any[]) => any) {
     const { listeners } = this;
@@ -26,6 +27,10 @@ export default class MockMediaPicker {
 
   show() {
     this.shown = true;
+  }
+
+  upload(url: string, fileName: string): void {
+    this.uploaded = [url, fileName];
   }
 
   cancel(mediaId: string) {

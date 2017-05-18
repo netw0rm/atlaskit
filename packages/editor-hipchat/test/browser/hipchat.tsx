@@ -2,10 +2,12 @@ import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { chaiPlugin, sendKeyToPm, insertText } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin, sendKeyToPm, insertText, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { mount, ReactWrapper } from 'enzyme';
 import Editor from '../../src';
 import * as api from '../../src';
+import { MediaProvider } from '@atlaskit/editor-core';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 
 chai.use(chaiPlugin);
 
@@ -53,7 +55,13 @@ describe('@atlaskit/editor-hipchat', () => {
 
   afterEach(() => {
     if (editorWrapper) {
-      editorWrapper.unmount();
+      try {
+        editorWrapper.unmount();
+      } catch(e) {
+        // TODO: remove after https://product-fabric.atlassian.net/browse/ED-1694
+        // Temporary workaround to prevent Picker exceptions thrown
+        // when removing them too quickly after unmount.
+      }
     }
   });
 
@@ -292,6 +300,12 @@ describe('@atlaskit/editor-hipchat', () => {
         expect(typeof editor.showMediaPicker === 'function').to.equal(true);
       });
     });
+
+    describe('.insertFileFromDataUrl()', () => {
+      it('should be a function', () => {
+        expect(typeof editor.insertFileFromDataUrl === 'function').to.equal(true);
+      });
+    });
   });
 
   describe('Legacy-format', () => {
@@ -318,9 +332,11 @@ describe('@atlaskit/editor-hipchat', () => {
     describe('API', () => {
 
       let editor;
+      let mediaProvider: Promise<MediaProvider>;
 
       beforeEach(() => {
-        editorWrapper = mount(<Editor useLegacyFormat={true} />);
+        mediaProvider = storyMediaProviderFactory(mediaTestHelpers);
+        editorWrapper = mount(<Editor useLegacyFormat={true} mediaProvider={mediaProvider} />);
         editor = editorWrapper.get(0) as any;
         editor.setFromJson(defaultValueLegacy);
       });
@@ -359,9 +375,7 @@ describe('@atlaskit/editor-hipchat', () => {
           expect(editor.value).to.deep.equal(value);
         });
       });
-
     });
-
   });
 
 });

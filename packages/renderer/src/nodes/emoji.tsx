@@ -11,7 +11,7 @@ export interface Props {
 export default class Emoji extends PureComponent<Props, {}> {
 
   render() {
-    const { emojiProvider, emojiId, text } = this.props;
+    const { emojiProvider, emojiId } = this.props;
 
     if (emojiProvider) {
       return (
@@ -22,6 +22,6 @@ export default class Emoji extends PureComponent<Props, {}> {
       );
     }
 
-    return <span>{text}</span>;
+    return <span>{emojiId.fallback || emojiId.shortName}</span>;
   }
 }

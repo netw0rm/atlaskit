@@ -5,19 +5,19 @@ import { akColorR300, akColorN30, akHelperMixins } from '@atlaskit/util-shared-s
 const Wrapper = styled.div`
   display: flex;
 `;
+const hoverStyle = css`
+  ${akHelperMixins.focusRing.default}
 
+  &:hover {
+    ${akHelperMixins.focusRing.none}
+  }
+`;
 const getFocusStyles = ({ appearance }) => {
   switch (appearance) {
     case 'custom':
       return akHelperMixins.focusRing.generate(akColorR300, '4px');
     case 'hover':
-      return css`
-        ${akHelperMixins.focusRing.default}
-
-        &:hover {
-          ${akHelperMixins.focusRing.none}
-        }
-      `;
+      return hoverStyle;
     default:
       return akHelperMixins.focusRing.default;
   }
@@ -31,7 +31,7 @@ const Box = styled.button`
   font-weight: 500;
   margin-right: 1em;
   margin-top: 1em;
-  outline: 0px,
+  outline: 0;
   padding: 0.6em 1em;
   text-align: center;
 

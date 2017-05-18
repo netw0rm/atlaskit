@@ -9,13 +9,14 @@ const ContainerNavigationInner = styled.div`
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
+  /* stylelint-disable  declaration-block-no-redundant-longhand-properties */
   padding-top: ${({ theme }) => (theme.isCollapsed ? layout.padding.top : 0)}px;
   padding-left: ${({ theme }) => (theme.isCollapsed ? layout.padding.side : 0)}px;
   padding-right: ${({ theme }) => (theme.isCollapsed ? layout.padding.side : 0)}px;
   padding-bottom: 0;
   width: 100%;
-
-  // needed to fix sticky header on retina displays 🙃
+  /* stylelint-enable */ 
+  /* needed to fix sticky header on retina displays 🙃 */
   transform-style: preserve-3d;
 `;
 

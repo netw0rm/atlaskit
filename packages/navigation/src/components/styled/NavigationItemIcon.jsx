@@ -12,7 +12,7 @@ const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPaddin
 
 const NavigationItemIcon = styled.div`
   transition: padding 200ms;
-  padding: ${({ theme }) => (theme[themeVariables.isCompact] ? compactPadding : openPadding)}
+  padding: ${({ theme }) => (theme[themeVariables.isCompact] ? compactPadding : openPadding)};
   display: flex;
   flex-shrink: 0;
 

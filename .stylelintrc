@@ -1,0 +1,29 @@
+{
+  "processors": ["stylelint-processor-styled-components"],
+  "extends": "stylelint-config-standard",
+  "syntax": "scss",
+  "rules": {
+      "at-rule-empty-line-before": null,
+      "block-closing-brace-newline-before": null,
+      "block-opening-brace-newline-after": null,
+      "block-no-empty": null,
+      "comment-empty-line-before": null,
+      "declaration-block-no-duplicate-properties": [
+        true,
+        {
+          "ignoreProperties": ["-styled-mixin"]
+        }
+      ],
+      "declaration-block-semicolon-newline-after": null,
+      "declaration-empty-line-before": null,
+      "function-comma-space-after": null,
+      "indentation": 2,
+      "no-eol-whitespace": null,
+      "number-leading-zero": null,
+      "rule-empty-line-before": null,
+      "shorthand-property-no-redundant-values": null,
+      "selector-list-comma-newline-after": "always-multi-line",
+      "color-no-hex": true
+
+  }
+}

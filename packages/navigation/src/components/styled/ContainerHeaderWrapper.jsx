@@ -14,20 +14,20 @@ const paddingClosed = `0 ${akGridSizeUnitless * 2.5}px 0 ${akGridSizeUnitless * 
 const supportsStickyCondition = '@supports(position: sticky) or (position: -webkit-sticky)';
 
 const ContainerHeaderWrapper = styled.div`
-  // the keyline will be drawn over the margin
+  /* the keyline will be drawn over the margin */
   margin-bottom: ${keylineHeight}px;
   padding: ${paddingOpen};
 
   ${supportsStickyCondition} {
-    // use the background color of the parent
+    /* use the background color of the parent */
     background-color: inherit;
     position: sticky;
-    top: 0px;
+    top: 0;
     z-index: 2;
 
-    // keyline
+    /* keyline */
     &::after {
-      background-color: ${props => (props.isContentScrolled ? colors[props.appearance].keyline : 'none')}
+      background-color: ${props => (props.isContentScrolled ? colors[props.appearance].keyline : 'none')};
       bottom: -${keylineHeight}px;
       border-radius: 1px;
       content: "";
@@ -35,14 +35,14 @@ const ContainerHeaderWrapper = styled.div`
       left: ${akGridSize};
       position: absolute;
       right: ${akGridSize};
-      transition: background-color ${resizeAnimationTime}
+      transition: background-color ${resizeAnimationTime};
     }
   }
 
   [data-__ak-navigation-container-closed="true"] & {
     padding: ${paddingClosed};
 
-    // undoing position: sticky
+    /* undoing position: sticky */
     ${supportsStickyCondition} {
       background-color: transparent;
       position: static;

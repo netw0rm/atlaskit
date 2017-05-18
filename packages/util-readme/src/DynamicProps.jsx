@@ -1,6 +1,14 @@
 import React, { PropTypes, PureComponent } from 'react';
 import * as reactDocs from 'react-docgen';
 import styled from 'styled-components';
+import {
+  akColorN100,
+  akColorN300,
+  akColorR400,
+  akColorN50,
+  akColorB75,
+  akColorB50,
+} from '@atlaskit/util-shared-styles';
 
 import Description from './Description';
 import Heading from './Heading';
@@ -15,24 +23,24 @@ const PropTypeWrapper = styled.div`
   border-bottom: 1px solid #eee;
 `;
 const DefaultValue = styled.code`
-  color: #777;
+  color: ${akColorN100}
 `;
 const Required = styled.span`
-  color: #b74242;
+  color: ${akColorR400}
   font-size: 80%;
   margin-left: 10px;
 `;
 const PropTypeDescription = styled.div`
   border-radius: 3px;
-  border-left: 3px solid #ccc;
+  border-left: 3px solid ${akColorN50};
   padding: 5px 10px;
   margin-bottom: 10px;
 `;
 const TypeLabel = styled.span`
   display: inline-block;
-  border: 1px solid #bedcf7;
-  color: #1c4b75;
-  background: #eff7ff;
+  border: 1px solid ${akColorB75};
+  color: ${akColorN300};
+  background: ${akColorB50};
   border-radius: 3px;
   margin-right: 5px;
   padding: 0 3px;

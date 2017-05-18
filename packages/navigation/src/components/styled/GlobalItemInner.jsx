@@ -68,7 +68,7 @@ function getColors(theme) {
 
 const GlobalItemInner = styled.div`
   align-items: center;
-  background-color: ${({ theme }) => getColors(theme).default.background}
+  background-color: ${({ theme }) => getColors(theme).default.background};
   border-radius: 50%;
   color: ${({ theme }) => getColors(theme).default.color};
   cursor: pointer;

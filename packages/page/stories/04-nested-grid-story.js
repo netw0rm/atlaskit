@@ -1,15 +1,19 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import styled from 'styled-components';
+import {
+  akColorY75,
+  akColorT75,
+} from '@atlaskit/util-shared-styles';
 
 import Page, { Grid, GridColumn } from '../src';
 import { name } from '../package.json';
 
 const Dummy = styled.div`
-  background: #fea;
+  background: ${akColorY75};
 `;
 const DummyNested = styled.div`
-  background: #afe;
+  background: ${akColorT75};
 `;
 
 storiesOf(name, module)

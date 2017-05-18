@@ -54,6 +54,5 @@ export default styled.div`
   position: relative;
   width: ${getWidth}px;
   z-index: ${akZIndexModal};
-
-  animation: ${getEntryExitAnimation} ${modalAnimationDuration}s ease-in-out;
+  animation: ${modalAnimationDuration}s ease-in-out ${getEntryExitAnimation};
 `;

@@ -28,9 +28,9 @@ const EditView = styled.input`
   cursor: inherit;
   outline: none;
   width: 100%;
-  :invalid: {
-    boxshadow: none;
-  },
+  :invalid {
+    box-shadow: none;
+  }
 `;
 
 export default class SingleLineTextInput extends PureComponent {

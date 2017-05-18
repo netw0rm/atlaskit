@@ -1,5 +1,11 @@
 import styled, { css } from 'styled-components';
-import { akColorN10, akColorN40, akColorN60, akColorN300, akGridSize } from '@atlaskit/util-shared-styles';
+import {
+  akColorN10,
+  akColorN40,
+  akColorN60,
+  akColorN300,
+  akGridSize,
+} from '@atlaskit/util-shared-styles';
 
 import { ASC, DESC } from './internal/constants';
 
@@ -7,8 +13,8 @@ const gridUnit = parseInt(akGridSize, 10);
 const baselineUnit = gridUnit / 2;
 
 const truncateStyle = ({ width, isFixedSize, shouldTruncate }) => css`
-  ${width ? css`width: ${width}%;` : ''}
-  ${isFixedSize ? css`overflow: hidden;` : ''};
+  ${width ? `width: ${width}%;` : ''}
+  ${isFixedSize ? 'overflow: hidden;' : ''};
   ${isFixedSize && shouldTruncate ? css`
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -36,45 +42,45 @@ const arrowsStyle = ({ isSortable, sortOrder }) => {
   return css`
     & > span {
       position: relative;
-        &:before {
-          ${pseudoBase};
-            content: ' ';
-            bottom: 8px;
-            border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN40}; 
-          };
-        &:after {
-          ${pseudoBase};
-          content: ' ';
-          bottom: 0;  
-          border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN40};       
-        };
+      &::before {
+        ${pseudoBase};
+        content: ' ';
+        bottom: 8px;
+        border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN40}; 
       }
+      &::after {
+        ${pseudoBase};
+        content: ' ';
+        bottom: 0;  
+        border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN40};       
+      }
+    }
         
-      &:hover > span {
-        &:before {
-          border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN60}; 
-        }
-        &:after {
-          border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN60}; 
-        }
+    &:hover > span {
+      &::before {
+        border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN60}; 
       }
-    `;
+      &::after {
+        border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN60}; 
+      }
+    }
+  `;
 };
 
 const cellStyle = css`
-    padding: ${baselineUnit}px ${gridUnit}px;
-    border: none;
-    text-align: left;    
-    &:first-child {
-      padding-left: 0;
-    }
-    &:last-child {
-      padding-right: 0;
-    }
+  padding: ${baselineUnit}px ${gridUnit}px;
+  border: none;
+  text-align: left;    
+  &:first-child {
+    padding-left: 0;
+  }
+  &:last-child {
+    padding-right: 0;
+  }
 `;
 
 export const Table = styled.table`
-  ${({ isFixedSize }) => (isFixedSize && css`table-layout: fixed;`)};
+  ${({ isFixedSize }) => (isFixedSize && 'table-layout: fixed;')}
   width: 100%;
   border-collapse: collapse;
 `;
@@ -91,7 +97,7 @@ export const Caption = styled.caption`
 `;
 
 export const TableHead = styled.thead`
-  border-bottom: 2px solid #DFE1E6;
+  border-bottom: 2px solid ${akColorN40};
 `;
 
 export const TableHeadCell = styled.th`
@@ -105,7 +111,7 @@ export const TableHeadCell = styled.th`
   border: none;
   font-size: 12px;
   color: ${akColorN300};
-  fontWeight: 600;
+  font-weight: 600;
 `;
 
 export const TableBodyRow = styled.tr`

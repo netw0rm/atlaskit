@@ -128,7 +128,7 @@ export const DateDiv = styled.div`
 
   &:hover {
     background-color: ${getHoverBackgroundColor};
-    color: ${getHoverColor}
+    color: ${getHoverColor};
   }
 `;
 

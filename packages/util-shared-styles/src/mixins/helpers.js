@@ -8,9 +8,7 @@ const createFocusRing = (color = akColorB100, width = '2px') => css`
     outline: none;
   }
 `;
-const withFocusRing = css`
-  ${createFocusRing()}
-`;
+const withFocusRing = createFocusRing();
 const withoutFocusRing = css`
   box-shadow: none;
 `;

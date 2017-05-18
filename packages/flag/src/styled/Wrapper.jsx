@@ -8,14 +8,14 @@ const exitXPosition = `${0 - (flagWidthUnitless / 2)}px`;
 const flagAnimationDuration = '0.4s';
 
 const animationEnter = keyframes`
-    from {
-      opacity: 0;
-      transform: translate(${exitXPosition}, 0);
-    }
-    to {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
+  from {
+    opacity: 0;
+    transform: translate(${exitXPosition}, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 `;
 const animationExit = keyframes`
   from {
@@ -57,7 +57,7 @@ export default styled.div`
     z-index: 4;
 
     /* The 2nd flag should be placed at 0,0 position when the 1st flag is animating out. */
-    ${({ isMovingToPrimary }) => (isMovingToPrimary && 'transform: translate(0, 0)')};
+    ${({ isMovingToPrimary }) => (isMovingToPrimary && 'transform: translate(0, 0);')}
   }
 
   /* Only show primary flag + 2 secondary flags */

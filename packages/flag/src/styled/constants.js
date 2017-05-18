@@ -7,6 +7,6 @@ export const flagWidth = `${flagWidthUnitless}px`;
 export const focusRingMixin = css`
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${akColorB100};
+    box-shadow: 0 0 0 2px ${akColorB100};
   }
 `;

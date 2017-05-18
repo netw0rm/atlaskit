@@ -140,8 +140,6 @@ const NavigationItemOuter = styled.div`
       color: ${({ theme }) => getColors(theme).active.color};
     }
   }
-
-
 `;
 
 NavigationItemOuter.defaultProps = {

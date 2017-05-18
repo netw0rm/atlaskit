@@ -30,5 +30,9 @@ export default styled.button`
     ${akHelperMixins.focusRing.default}
   }
 
-  &::-moz-focus-inner { border: 0; margin: 0; padding: 0; }
+  &::-moz-focus-inner {
+    border: 0;
+    margin: 0;
+    padding: 0; 
+  }
 `;

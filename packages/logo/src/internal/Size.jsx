@@ -39,7 +39,7 @@ const Size = styled.div`
     display: inline-block;
     transform: ${props => (
       props.collapseTo === 'type' ? `translateX(${scaledTypeOffset(props)})` : 'none'
-    )}
+    )};
   }
 
   .logo-icon {

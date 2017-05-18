@@ -10,10 +10,10 @@ const ResizerInner = styled.div`
   position: relative;
   left: -${resizerClickableWidth / 2}px;
   cursor: ew-resize;
-  &:hover:before {
+  &:hover::before {
     background: ${akColorB200};
   }
-  &:before {
+  &::before {
     content: '';
     width: ${resizerVisibleWidth}px;
     height: 100%;

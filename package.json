@@ -186,11 +186,14 @@
     "test/watch": "NODE_ENV=development ./build/bin/test.react.watch.sh",
     "validate": "npm ls >/dev/null && lerna exec -- npm ls >/dev/null",
     "validate/eslint": "./build/bin/lint.eslint.sh",
+    "validate/stylelint": "./build/bin/lint.stylelint.sh",
+    "validate/stylelint/changed": "./build/bin/lint.stylelint.changed.sh",
     "validate/eslint/changed": "./build/bin/lint.eslint.changed.sh",
     "validate/eslint/changed/fix": "./build/bin/lint.eslint.changed.sh --fix",
     "validate/eslint/fix": "./build/bin/lint.eslint.sh --fix",
     "validate/lint": "run-p -cl validate/tslint validate/eslint validate/flow",
-    "validate/lint-changed": "run-p -l validate/eslint/changed validate/tslint/changed",
+    "validate/lint-css": "run-p -l validate/eslint/changed validate/tslint/changed",
+    "validate/lint-changed": "run-p -l validate/eslint/changed validate/tslint/changed validate/stylelint/changed",
     "validate/lint-changed/fix": "run-p -l validate/eslint/changed/fix validate/tslint/changed/fix",
     "validate/lint/fix": "run-p -l validate/eslint/fix validate/tslint/fix",
     "validate/tslint": "lerna run lint",
@@ -201,5 +204,9 @@
     "validate/typescript": "lerna run validate/typescript",
     "validate/flow": "flow check"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "stylelint": "^7.10.1",
+    "stylelint-config-standard": "^16.0.0",
+    "stylelint-processor-styled-components": "^0.1.0"
+  }
 }

@@ -5,7 +5,9 @@ import { ExpandIcon, ListIcon } from '@atlaskit/icon';
 import BasicNavigation from './BasicNavigation';
 import { AkNavigationItem } from '../../src/index';
 
-const DropdownWrapper = styled.div`padding-bottom: 4px`;
+const DropdownWrapper = styled.div`
+  padding-bottom: 4px;
+`;
 
 export default class NavigationWithDropdown extends PureComponent {
   static propTypes = {

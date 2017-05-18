@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
+import {
+  akColorN800,
+} from '@atlaskit/util-shared-styles';
 
 export const Container = styled.div`
   display: flex;
@@ -8,5 +11,5 @@ export const Container = styled.div`
 
 export const ButtonActive = styled(Button)`
   font-weight: bold;
-  color: #000 !important; /* @todo: until Button supports not faded disabled state */
+  color: ${akColorN800} !important; /* @todo: until Button supports not faded disabled state */
 `;

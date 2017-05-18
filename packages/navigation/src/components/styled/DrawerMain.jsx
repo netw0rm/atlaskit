@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 const DrawerMain = styled.div`
-  // needed for the header to also be able to inherit the background color
+  /* needed for the header to also be able to inherit the background color */
   background-color: inherit;
 
-  // needed to fix sticky header on retina displays 🙃
+  /* needed to fix sticky header on retina displays 🙃 */
   transform-style: preserve-3d;
 
   box-sizing: border-box;

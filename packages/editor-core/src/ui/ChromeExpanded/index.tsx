@@ -18,6 +18,7 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import { MediaPluginState } from '../../plugins/media';
+import { TextColorState } from '../../plugins/text-color';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
@@ -32,6 +33,7 @@ import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
+import ToolbarTextColor from '../ToolbarTextColor';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
 
@@ -53,6 +55,7 @@ export interface Props {
   pluginStateMentions?: MentionsState;
   pluginStateMedia?: MediaPluginState;
   pluginStateEmojis?: EmojiState;
+  pluginStateTextColor?: TextColorState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
@@ -85,6 +88,14 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
+          {props.pluginStateTextColor ?
+            <ToolbarTextColor
+              pluginState={props.pluginStateTextColor}
+              editorView={props.editorView}
+              softBlurEditor={this.softBlurEditor}
+              focusEditor={this.focusEditor}
+            /> : null
+          }
           {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
             <ToolbarAdvancedTextFormatting
               pluginStateTextFormatting={props.pluginStateTextFormatting}

@@ -79,10 +79,10 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
           {this.tickBox()}
         </TopRow>
         <BottomRow className={'bottom-row'}>
-          <LeftColumn className={'left-column'}>
+          <LeftColumn>
             {this.bottomLeftColumn()}
           </LeftColumn>
-          <RightColumn className={'right-column'}>
+          <RightColumn>
             <Menu actions={actions} onToggle={this.onMenuToggle} deleteBtnColor="white" />
           </RightColumn>
         </BottomRow>

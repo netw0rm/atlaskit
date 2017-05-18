@@ -1,10 +1,10 @@
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
-import {
-  CardEventHandler,
-  MediaProvider,
-} from '@atlaskit/media-core';
+import { CardEvent } from '@atlaskit/media-card';
+import { MediaProvider } from '@atlaskit/media-core';
 import { SyntheticEvent } from 'react';
+
+export type CardEventClickHandler = (result: CardEvent) => void;
 
 export interface ServicesConfig {
   getEmojiProvider?: () => Promise<EmojiProvider>;
@@ -21,6 +21,6 @@ export interface EventHandlers {
     onMouseLeave?: MentionEventHandler;
   };
   media?: {
-    onClick?: CardEventHandler;
+    onClick?: CardEventClickHandler;
   };
 }

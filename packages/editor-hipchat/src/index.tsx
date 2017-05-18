@@ -203,9 +203,20 @@ export default class Editor extends PureComponent<Props, State> {
 
   showMediaPicker() {
     const { editorView } = this.state;
-    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    if (editorView) {
+      const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
 
-    mediaPluginState.showMediaPicker();
+      mediaPluginState.showMediaPicker();
+    }
+  }
+
+  insertFileFromDataUrl (url: string, fileName: string) {
+    const { editorView } = this.state;
+    if (editorView) {
+      const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
+      mediaPluginState.insertFileFromDataUrl(url, fileName);
+    }
   }
 
   componentWillMount() {

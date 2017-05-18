@@ -203,7 +203,13 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
               ? 'plain'
               : pre.className.split('-')[1];
 
-            return schema.nodes.codeBlock!.createChecked({ language }, schema.text(pre.innerText.replace(/\r\n/g, '\n')));
+            const textContent = pre.innerText.replace(/\r\n/g, '\n');
+            return schema.nodes.codeBlock!.createChecked(
+              { language },
+              textContent
+                ? schema.text(textContent)
+                : undefined
+            );
           }
           break;
         case 'PRE':
@@ -212,7 +218,8 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
     }
 
     if (isSchemaWithBlockQuotes(schema) && tag === 'BLOCKQUOTE') {
-      return schema.nodes.blockquote!.createChecked({}, content);
+      let blockquoteContent = content && (content as any).content.length ? content : schema.nodes.paragraph.create();
+      return schema.nodes.blockquote!.createChecked({}, blockquoteContent);
     }
   }
 }

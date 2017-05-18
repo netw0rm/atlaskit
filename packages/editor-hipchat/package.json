@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "4.6.0",
+  "version": "4.7.0",
   "config": {
     "access": "public"
   },
@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^16.7.0",
+    "@atlaskit/editor-core": "^20.1.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
@@ -41,6 +41,7 @@
     "@atlaskit/button": "^1.1.2",
     "@atlaskit/editor-hipchat": "*",
     "@atlaskit/emoji": "*",
+    "@atlaskit/media-test-helpers": "^4.8.5",
     "@atlaskit/mention": "*",
     "@atlaskit/util-data-test": "^4.0.0",
     "@atlaskit/util-readme": "^1.0.0",

@@ -145,6 +145,20 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return schema.nodes.paragraph.createChecked({}, content);
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(node) || unsupportedInline;
+      case 'LINK':
+        if (
+            node.firstChild &&
+            node.firstChild instanceof Element &&
+            getNodeName(node.firstChild) === 'FAB:MENTION'
+          ) {
+          const cdata = node.firstChild.firstChild!;
+
+          return schema.nodes.mention.create({
+            id: node.firstChild.getAttribute('atlassian-id'),
+            text: cdata!.nodeValue,
+          });
+        }
+        break;
       case 'FAB:MENTION':
         const cdata = node.firstChild!;
 

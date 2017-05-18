@@ -6,6 +6,7 @@ import Flag, { FlagGroup } from '../../src';
 import { name } from '../../package.json';
 import Container, { Description, DismissButton, Title } from '../../src/styled/Flag';
 import { Action } from '../../src/styled/Actions';
+import { getBottomOffset } from '../../src/styled/Group';
 
 describe(name, () => {
   let flagCount = 0;
@@ -164,8 +165,12 @@ describe(name, () => {
         </FlagGroup>
         );
       expect(wrapper.find(Container).length).to.equal(3);
-    }
-    );
+    });
+
+    it('should render closer to the viewport bottom with a single flag', () => {
+      expect(getBottomOffset({ hasSingleFlag: false })).to.equal(48);
+      expect(getBottomOffset({ hasSingleFlag: true })).to.equal(32);
+    });
 
     it('onDismissed should be called when child Flag is dismissed', () => {
       const spy = sinon.spy();

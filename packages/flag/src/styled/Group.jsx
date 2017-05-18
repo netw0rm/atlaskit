@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 import { akGridSizeUnitless, akZIndexFlag } from '@atlaskit/util-shared-styles';
 
+export const getBottomOffset = ({ hasSingleFlag }) => (
+  akGridSizeUnitless * (hasSingleFlag ? 4 : 6)
+);
+
 export default styled.div`
-  bottom: ${akGridSizeUnitless * 6}px;
+  bottom: ${getBottomOffset}px;
   left: ${akGridSizeUnitless * 10}px;
   position: fixed;
+  transition: bottom 0.25s;
   z-index: ${akZIndexFlag};
 `;
 

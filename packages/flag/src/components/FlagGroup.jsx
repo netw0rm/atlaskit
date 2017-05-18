@@ -47,11 +47,15 @@ export default class FlagGroup extends PureComponent {
   )
 
   render() {
+    const { children } = this.props;
+    const flagCount = Children.count(children);
+    const hasSingleFlag = flagCount === 1 || (flagCount === 2 && this.state.isAnimatingOut);
+
     return (
-      <Group>
+      <Group hasSingleFlag={hasSingleFlag}>
         <SROnly>Flag notifications</SROnly>
         <Inner>
-          {Children.map(this.props.children, this.renderFlag)}
+          {Children.map(children, this.renderFlag)}
         </Inner>
       </Group>
     );

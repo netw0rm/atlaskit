@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import classNames from 'classnames';
-import styles from '../styles.less';
+import PropTypes from 'prop-types';
+import TabPaneDiv from '../styled/TabPane';
 
 export default class TabPane extends PureComponent {
   static propTypes = {
@@ -15,15 +14,13 @@ export default class TabPane extends PureComponent {
 
   render() {
     return (
-      <div
+      <TabPaneDiv
+        selected={this.props.isSelected}
         aria-hidden={this.props.isSelected ? 'false' : 'true'}
-        className={classNames(styles.akTabPane, {
-          [styles.selected]: this.props.isSelected,
-        })}
         role="tabpanel"
       >
         {this.props.children}
-      </div>
+      </TabPaneDiv>
     );
   }
 }

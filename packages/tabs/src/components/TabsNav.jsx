@@ -1,7 +1,9 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import classNames from 'classnames';
-import styles from '../styles.less';
+import PropTypes from 'prop-types';
+import {
+  TabLabel,
+  TabLabels,
+} from '../styled/TabsNav';
 
 export default class TabsNav extends PureComponent {
   static propTypes = {
@@ -54,6 +56,7 @@ export default class TabsNav extends PureComponent {
 
   render() {
     this.tabs = [];
+    const { tabs } = this.props;
     /* eslint-disable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
     return (
       <div>
@@ -62,23 +65,20 @@ export default class TabsNav extends PureComponent {
           // fix but can't see the reason. it has something to do with the UL having display: flex
           // ¯\_(ツ)_/¯
         }
-        <ul
-          className={styles.akTabLabels}
+        <TabLabels
           role="tablist"
         >
-          {this.props.tabs.map((tab, index) => (
-            <li
+          {tabs.map((tab, index) => (
+            <TabLabel
               aria-posinset={index + 1}
               aria-selected={tab.isSelected}
-              aria-setsize={this.props.tabs.length}
-              className={classNames(styles.akTabLabel, {
-                [styles.akTabLabelSelected]: tab.isSelected,
-              })}
+              aria-setsize={tabs.length}
+              isSelected={tab.isSelected}
               key={index}
               onClick={tab.onSelect}
               onKeyDown={this.tabKeyDownHandler}
               onMouseDown={this.tabMouseDownHandler}
-              ref={(ref) => {
+              innerRef={(ref) => {
                 this.tabs.push({
                   el: ref,
                   isSelected: tab.isSelected,
@@ -88,9 +88,9 @@ export default class TabsNav extends PureComponent {
               tabIndex={tab.isSelected ? 0 : -1}
             >
               {tab.label}
-            </li>
+            </TabLabel>
           ))}
-        </ul>
+        </TabLabels>
       </div>
     );
     /* eslint-enable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */

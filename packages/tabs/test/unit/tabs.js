@@ -1,10 +1,10 @@
 import chai from 'chai';
 import React, { Component } from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
-import Tabs from '../../src/Tabs';
-import TabsNav from '../../src/internal/TabsNav';
-import TabPane from '../../src/internal/TabPane';
+import { TabsStateless } from '../../src/index';
+import TabsNav from '../../src/components/TabsNav';
+import TabPane from '../../src/components/TabPane';
 import { sampleTabs, sampleTabsNoSelection } from './_constants';
 import { name } from '../../package.json';
 
@@ -16,28 +16,36 @@ describe(name, () => {
 
     describe('exports', () => {
       it('the StatelessTabs component', () => {
-        expect(Tabs).not.to.equal(undefined);
-        expect(new Tabs()).to.be.instanceOf(Component);
+        expect(TabsStateless).not.to.equal(undefined);
+        expect(new TabsStateless()).to.be.instanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<Tabs onKeyboardNav={kbNav} />);
+        const wrapper = shallow(<TabsStateless onKeyboardNav={kbNav} />);
         expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
       it('should render the TabsNav element', () => {
-        const wrapper = shallow(<Tabs tabs={sampleTabs} onKeyboardNav={kbNav} />);
-
+        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={kbNav} />);
         const tabsNav = wrapper.find(TabsNav);
         expect(tabsNav).to.have.lengthOf(1);
-        expect(tabsNav.props().tabs).to.equal(sampleTabs);
+      });
+
+      it('should render tabs inside the TabsNav element', () => {
+        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={kbNav} />);
+        const tabsNav = wrapper.find(TabsNav);
+        tabsNav.props().tabs.forEach((tab, i) => {
+          const sampleTab = sampleTabs[i];
+          expect(tab.content).to.equal(sampleTab.content);
+          expect(tab.label).to.equal(sampleTab.label);
+        });
       });
 
       it('should render the selected TabPane item', () => {
-        const wrapper = shallow(<Tabs tabs={sampleTabs} onKeyboardNav={kbNav} />);
+        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={kbNav} />);
         const selectedTab = sampleTabs[1];
 
         const tab = wrapper.find(TabPane);
@@ -48,7 +56,9 @@ describe(name, () => {
       });
 
       it('should not render a TabPane item if there is no selected tab', () => {
-        const wrapper = shallow(<Tabs tabs={sampleTabsNoSelection} onKeyboardNav={kbNav} />);
+        const wrapper = shallow(
+          <TabsStateless tabs={sampleTabsNoSelection} onKeyboardNav={kbNav} />
+        );
         const tab = wrapper.find(TabPane);
         expect(tab.length).to.equal(0);
       });
@@ -58,7 +68,7 @@ describe(name, () => {
       describe('onKeyboardNav prop', () => {
         it('should be reflected to the TabsNav element', () => {
           const keyboardNavHandler = () => {};
-          const wrapper = shallow(<Tabs onKeyboardNav={keyboardNavHandler} />);
+          const wrapper = shallow(<TabsStateless onKeyboardNav={keyboardNavHandler} />);
           expect(wrapper.find(TabsNav).prop('onKeyboardNav')).to.equal(keyboardNavHandler);
         });
       });

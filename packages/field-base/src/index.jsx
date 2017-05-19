@@ -4,10 +4,8 @@ import Label from './Label';
 
 export { FieldBase, Label };
 
-function waitForRender(cb) {
-  // Execute the callback after any upcoming render calls in the execution queue
-  setTimeout(cb, 0);
-}
+const ON_BLUR_KEY = 'onBlurKey';
+const ON_CONTENT_BLUR_KEY = 'onContentBlurKey';
 
 export default class extends PureComponent {
   static propTypes = {
@@ -34,12 +32,16 @@ export default class extends PureComponent {
   onFocus = (e) => {
     this.setState({ isFocused: true });
     this.props.onFocus(e);
+
+    // Escape from a possible race-condition when blur and focus happen one by one
+    // (otherwise the dialog might be left closed)
+    this.cancelSchedule(ON_BLUR_KEY);
   }
 
   onBlur = (e) => {
     // Because the blur event fires before the focus event, we want to make sure that we don't
     // render and close the dialog before we can check if the dialog is focused.
-    waitForRender(() => this.setState({ isFocused: false }));
+    this.reschedule(ON_BLUR_KEY, () => this.setState({ isFocused: false }));
     this.props.onBlur(e);
   }
 
@@ -51,10 +53,14 @@ export default class extends PureComponent {
     } else {
       this.setState({ isDialogFocused: true });
     }
+
+    // Escape from a possible race-condition when blur and focus happen one by one
+    // (otherwise the dialog might be left closed)
+    this.cancelSchedule(ON_CONTENT_BLUR_KEY);
   }
 
   onContentBlur = () => {
-    waitForRender(() => {
+    this.rechedule(ON_CONTENT_BLUR_KEY, () => {
       if (this.state.shouldIgnoreNextDialogBlur) {
         // Ignore the blur event if we are still focused in the dialog.
         this.setState({ shouldIgnoreNextDialogBlur: false });
@@ -62,6 +68,27 @@ export default class extends PureComponent {
         this.setState({ isDialogFocused: false });
       }
     });
+  }
+
+  cancelSchedule(key) {
+    this.timers = this.timers || {};
+
+    if (this.timers[key]) {
+      clearTimeout(this.timers[key]);
+      delete this.timers[key];
+    }
+  }
+
+  reschedule(key, callback) {
+    // Use reschedule (not just schedule) to avoid race conditions when multiple blur events
+    // happen one by one.
+    this.timers = this.timers || {};
+
+    this.cancelSchedule(key);
+    this.timers[key] = setTimeout(() => {
+      callback();
+      this.cancelSchedule(key);
+    }, 0);
   }
 
   render() {

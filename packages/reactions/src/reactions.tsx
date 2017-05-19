@@ -58,14 +58,18 @@ export interface State {
 }
 
 const reactionsStyle = style({
+  display: 'flex',
   position: 'relative',
   background: 'white',
   borderRadius: '15px',
   $nest: {
-    '&> span > div': {
+    '&> div': {
+      display: 'flex',
+    },
+    '&> div > div': {
       margin: '0 4px 4px 4px'
     },
-    '&> span > div:first-child': {
+    '&> div > div:first-child': {
       margin: '0 4px 0 0',
     }
   }
@@ -147,6 +151,7 @@ export default class Reactions extends Component<Props, State> {
             transitionName="reaction"
             transitionEnterTimeout={500}
             transitionLeaveTimeout={300}
+            component="div"
         >
           {reactions.sort(sortReactions).map((reaction, index) => {
             const { emojiId } = reaction;

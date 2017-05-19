@@ -60,6 +60,7 @@ const emojiStyle = style({
       minWidth: '24px',
       height: '20px',
       backgroundSize: '16px 16px',
+      verticalAlign: 'middle',
       $nest: {
         '> span': {
           margin: '2px 4px',

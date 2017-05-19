@@ -13,31 +13,11 @@ const emojiButtonStyle = style({
   borderRadius: '5px',
   cursor: 'pointer',
   margin: '0',
-  padding: '8px',
+  padding: '4px',
   $nest: {
     '&:hover > span': {
       transition: 'transform cubic-bezier(0.23, 1, 0.32, 1) 200ms',
       transform: 'scale(1.33)'
-    },
-    '&> span': {
-      $nest: {
-        '&> div': {
-          width: '28px',
-          height: '28px',
-          $nest: {
-            '> span': {
-              width: '20px',
-              height: '20px'
-            }
-          }
-        },
-        '&> span': {
-          flex: 'auto',
-          width: '24px',
-          height: '24px',
-          backgroundSize: '16px 16px'
-        }
-      }
     }
   }
 });
@@ -67,7 +47,7 @@ export default class EmojiButton extends PureComponent<Props, {}> {
         onMouseUp={this.handleMouseDown}
         className={emojiButtonStyle}
       >
-        <span><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} /></span>
+        <ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} />
       </button>
     );
   }

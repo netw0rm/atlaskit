@@ -7,7 +7,7 @@ import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
 import { CSSTransitionGroup } from 'react-transition-group';
 import { ReactionsProvider, ReactionSummary } from './reactions-resource';
-import { compareEmojiId } from './internal/helpers';
+import { sortReactions } from './internal/helpers';
 
 export interface OnEmoji {
   (emojiId: string): any;
@@ -136,16 +136,6 @@ export default class Reactions extends Component<Props, State> {
     );
   }
 
-  private sortReactions(a: ReactionSummary, b: ReactionSummary) {
-    if (a.count > b.count) {
-      return -1;
-    } else if (a.count < b.count) {
-      return 1;
-    } else {
-      return compareEmojiId(a.emojiId, b.emojiId);
-    }
-  }
-
   render() {
     const { emojiProvider } = this.props;
     const { reactions } = this.state;
@@ -158,7 +148,7 @@ export default class Reactions extends Component<Props, State> {
             transitionEnterTimeout={500}
             transitionLeaveTimeout={300}
         >
-          {reactions.sort(this.sortReactions).map((reaction, index) => {
+          {reactions.sort(sortReactions).map((reaction, index) => {
             const { emojiId } = reaction;
             const key = emojiId || `unknown-${index}`;
 

@@ -69,7 +69,7 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^4.8.5",
+    "@atlaskit/media-test-helpers": "^6.0.0",
     "@atlaskit/util-data-test": "^4.0.0",
     "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",

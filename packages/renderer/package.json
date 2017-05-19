@@ -46,7 +46,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^4.8.1",
+    "@atlaskit/media-test-helpers": "^6.0.0",
     "@atlaskit/util-data-test": "^4.0.0",
     "akutil-common-test": "*"
   },

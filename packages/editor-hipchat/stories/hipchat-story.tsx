@@ -80,7 +80,6 @@ storiesOf(name, module)
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           reverseMentionPicker={false}
-          useLegacyFormat={true}
           onChange={action('onChange')}
            // tslint:disable-next-line:jsx-no-lambda
           ref={elem => reactEditorComponent = elem}

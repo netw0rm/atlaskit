@@ -29,7 +29,7 @@ else
   yarn run bootstrap/single @atlaskit/util-cz-atlaskit-changelog > /dev/null
 
   # Also need to bootstrap icons because bootstrap/single/with-deps wont pick it up
-  $CHALK --no-stdin -t "{blue Bootstrapping @ataskit/icon...}"
+  $CHALK --no-stdin -t "{blue Bootstrapping @atlaskit/icon...}"
   yarn run bootstrap/single @atlaskit/icon > /dev/null
   $LERNA_LOC run gen-js --scope=@atlaskit/icon > /dev/null
 

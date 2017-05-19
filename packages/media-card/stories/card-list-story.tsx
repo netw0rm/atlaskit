@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
-import * as sinon from 'sinon';
 import { StoryList, createStorybookContext, collectionNames, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList, CardListEvent } from '../src';
 
@@ -287,11 +286,6 @@ storiesOf('CardList', {})
   })
   .add('Refresh cards', () => {
 
-    // TODO: hack to always use the same provider
-    const demoContext = createStorybookContext();
-    const provider = demoContext.getMediaCollectionProvider(defaultCollectionName, 10);
-    sinon.stub(demoContext, 'getMediaCollectionProvider', () => provider);
-
     const sampleURLs = [
       'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/s750x750/sh0.08/e35/18013123_289517061492259_5387236423503970304_n.jpg',
       'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/sh0.08/e35/p750x750/17932355_1414135458643877_7397381955274145792_n.jpg',
@@ -303,13 +297,13 @@ storiesOf('CardList', {})
 
     const handleAddItem = () => {
       const url = sampleURLs[Math.floor(Math.random() * sampleURLs.length)];
-      demoContext.getUrlPreviewProvider(url).observable().subscribe(
-        metadata => demoContext.addLinkItem(url, defaultCollectionName, metadata)
+      context.getUrlPreviewProvider(url).observable().subscribe(
+        metadata => context.addLinkItem(url, defaultCollectionName, metadata)
       );
     };
 
     const handleRefresh = () => {
-      provider.controller().refresh();
+      context.refreshCollection(defaultCollectionName, 10);
     };
 
     const RefreshDemo = (): JSX.Element => { // tslint:disable-line:variable-name
@@ -317,13 +311,15 @@ storiesOf('CardList', {})
         <div style={{display: 'flex'}}>
           <div style={{width: '25%'}}>
             <CardList
-              context={demoContext}
+              context={context}
+              pageSize={10}
               collectionName={defaultCollectionName}
             />
           </div>
           <div style={{width: '25%'}}>
             <CardList
-              context={demoContext}
+              context={context}
+              pageSize={10}
               collectionName={defaultCollectionName}
               cardAppearance="small"
             />

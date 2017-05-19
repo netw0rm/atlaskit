@@ -26,13 +26,13 @@ export default function(cxhtml: string) {
 
   const content = getContent(dom);
   const compatibleContent = content.childCount > 0
-    // Dangling inline nodes can't be directly inserted into a document, so
-    // we attempt to wrap in a paragraph.
-    ? schema.nodes.doc.validContent(content)
-      ? content
-      : ensureBlocks(content)
-    // The document must have at least one block element.
-    : schema.nodes.paragraph.createChecked({});
+      // Dangling inline nodes can't be directly inserted into a document, so
+      // we attempt to wrap in a paragraph.
+      ? schema.nodes.doc.validContent(content)
+          ? content
+          : ensureBlocks(content)
+      // The document must have at least one block element.
+      : schema.nodes.paragraph.createChecked({});
 
   return schema.nodes.doc.createChecked({}, compatibleContent);
 }
@@ -275,8 +275,9 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
   // marks and nodes
   if (node instanceof Element) {
     const tag = getNodeName(node);
+
     switch (tag) {
-      // Marks
+        // Marks
       case 'DEL':
       case 'S':
         return content ? addMarks(content, [schema.marks.strike.create()]) : null;
@@ -296,12 +297,12 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return content ? addMarks(content, [schema.marks.underline.create()]) : null;
       case 'A':
         return content ? addMarks(content, [schema.marks.link.create({ href: node.getAttribute('href') })]) : null;
-      // Nodes
+        // Nodes
       case 'BLOCKQUOTE':
         return schema.nodes.blockquote.createChecked({},
-          schema.nodes.blockquote.validContent(content)
-            ? content
-            : ensureBlocks(content)
+            schema.nodes.blockquote.validContent(content)
+                ? content
+                : ensureBlocks(content)
         );
       case 'SPAN':
         return addMarks(content, marksFromStyle((node as HTMLSpanElement).style));
@@ -323,9 +324,9 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return schema.nodes.orderedList.createChecked({}, content);
       case 'LI':
         return schema.nodes.listItem.createChecked({},
-          schema.nodes.listItem.validContent(content)
-            ? content
-            : ensureBlocks(content)
+            schema.nodes.listItem.validContent(content)
+                ? content
+                : ensureBlocks(content)
         );
       case 'P':
         // Media groups are currently encoded as paragraphs containing 1 or more media items
@@ -337,20 +338,6 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return schema.nodes.paragraph.createChecked({}, content);
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(node);
-      case 'LINK':
-        if (
-            node.firstChild &&
-            node.firstChild instanceof Element &&
-            getNodeName(node.firstChild) === 'FAB:MENTION'
-          ) {
-          const cdata = node.firstChild.firstChild!;
-
-          return schema.nodes.mention.create({
-            id: node.firstChild.getAttribute('atlassian-id'),
-            text: cdata!.nodeValue,
-          });
-        }
-        break;
       case 'FAB:MENTION':
         const cdata = node.firstChild!;
 
@@ -374,7 +361,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         }
 
         if (node.hasAttribute('file-mime-type')) {
-          mediaNode.fileMimeType = node.getAttribute('file-mime-type')!;
+          mediaNode.fileName = node.getAttribute('file-mime-type')!;
         }
 
         return mediaNode;
@@ -392,46 +379,54 @@ export function getNodeName(node: Node): string {
 }
 
 
+function getBodyType(node: Element) {
+  if (hasAcTagNode(node, 'AC:RICH-TEXT-BODY'))  {
+    return 'RICH-TEXT-BODY';
+  }
+
+  if (hasAcTagNode(node, 'AC:PLAIN-TEXT-BODY')) {
+    return 'PLAIN-TEXT-BODY';
+  }
+
+  return 'NONE';
+}
+
 function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined  {
-  const name = getAcName(node);
+  const bodyType = getBodyType(node);
+  const name = getAcName(node) || 'Unnamed Macro';
 
-  switch (name) {
-    case 'CODE':
-      const language = getAcParameter(node, 'language');
-      const title = getAcParameter(node, 'title');
-      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
-      const content: PMNode[] = [];
-      let nodeSize = 0;
+  switch (bodyType) {
+    case 'NONE':
+      // TODO schema for generic inline nodes.
+      const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
+      const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
+      const server = getAcParameter(node, 'server');
+      const serverId = getAcParameter(node, 'serverId');
+      const issueKey = getAcParameter(node, 'key');
 
-      if (!!title) {
-        const titleNode = schema.nodes.heading.create({ level: 5 }, schema.text(title, [schema.marks.strong.create()]));
-        content.push(titleNode);
-        nodeSize += titleNode.nodeSize;
-      }
+      // if this is an issue list, render it as unsupported node
+      // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
+      // if (!issueKey) {
+      //   return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+      // }
 
-      const codeBlockNode = schema.nodes.codeBlock.create({ language }, schema.text(codeContent));
+      return schema.nodes.jiraIssue.create({
+        issueKey,
+        macroId,
+        schemaVersion,
+        server,
+        serverId,
+      });
 
-      content.push(codeBlockNode);
-      nodeSize += codeBlockNode.nodeSize;
-
-      return Fragment.from(content);
-
-    case 'NOFORMAT': {
-      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
-      return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
-    }
-
-    case 'WARNING':
-    case 'INFO':
-    case 'NOTE':
-    case 'TIP':
+    case 'RICH-TEXT-BODY':
+      // TODO schema for generic rich text nodes.
       const panelTitle = getAcParameter(node, 'title');
       const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY') || '';
       let panelBody: any[] = [];
 
       if (panelTitle) {
         panelBody.push(
-          schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle))
+            schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle))
         );
       }
 
@@ -452,26 +447,10 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
       return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
 
-    case 'JIRA':
-      const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
-      const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
-      const server = getAcParameter(node, 'server');
-      const serverId = getAcParameter(node, 'serverId');
-      const issueKey = getAcParameter(node, 'key');
-
-      // if this is an issue list, render it as unsupported node
-      // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
-      if (!issueKey) {
-        return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
-      }
-
-      return schema.nodes.jiraIssue.create({
-        issueKey,
-        macroId,
-        schemaVersion,
-        server,
-        serverId,
-      });
+    case 'PLAIN-TEXT-BODY':
+      // TODO schema generic for plaintext nodes.
+      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
+      return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
   }
 
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting
@@ -516,4 +495,15 @@ function getAcTagNodes(node: Element, tagName: string): NodeList | null {
   }
 
   return null;
+}
+
+function hasAcTagNode(node: Element, tagName: string): Boolean {
+  for (let i = 0; i < node.childNodes.length; i++) {
+    const child = node.childNodes[i] as Element;
+    if (getNodeName(child) === tagName) {
+      return true;
+    }
+  }
+
+  return false;
 }

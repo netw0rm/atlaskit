@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styles from './styles.less';
-import CommentField from './internal/CommentField';
+import PropTypes from 'prop-types';
+import Field from './Field';
 
-export default class CommentAuthor extends PureComponent {
+export default class Time extends PureComponent {
   static propTypes = {
-    /** The name of the author. */
+    /** The time of the comment. */
     children: PropTypes.node,
     /** The URL of the link. If not provided, the element will be rendered as text. */
     href: PropTypes.string,
@@ -18,16 +17,16 @@ export default class CommentAuthor extends PureComponent {
   }
 
   render() {
+    const { children, href, onClick, onFocus, onMouseOver } = this.props;
     return (
-      <CommentField
-        href={this.props.href}
-        extraClasses={styles.commentAuthor}
-        onClick={this.props.onClick}
-        onFocus={this.props.onFocus}
-        onMouseOver={this.props.onMouseOver}
+      <Field
+        href={href}
+        onClick={onClick}
+        onFocus={onFocus}
+        onMouseOver={onMouseOver}
       >
-        {this.props.children}
-      </CommentField>
+        {children}
+      </Field>
     );
   }
 }

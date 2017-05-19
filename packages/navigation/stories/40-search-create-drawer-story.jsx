@@ -3,7 +3,7 @@ import React from 'react';
 import { BitbucketBranchesIcon, PageIcon, FeedbackIcon, IssuesIcon, EmojiObjectsIcon, EmojiNatureIcon, EmojiTravelIcon, ExpandIcon } from '@atlaskit/icon';
 import searchStencil from 'url-loader!./stencils/search.svg';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
-import Page from './components/HtmlPage';
+import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
 import { name } from '../package.json';
@@ -20,7 +20,7 @@ const manyNavigationItems = () => {
 
 storiesOf(name, module)
   .add('with create drawer open', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         createDrawerContent={(
           <div>
@@ -66,10 +66,10 @@ storiesOf(name, module)
         )}
         openDrawer="create"
       />
-    </Page>
+    </HtmlPage>
   ))
   .add('with create drawer having many groups', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         createDrawerContent={(
           <div>
@@ -124,20 +124,20 @@ storiesOf(name, module)
         )}
         openDrawer="create"
       />
-    </Page>
+    </HtmlPage>
   ))
   .add('with create having many items', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         createDrawerContent={(
           <div>{manyNavigationItems()}</div>
         )}
         openDrawer="create"
       />
-    </Page>
+    </HtmlPage>
   ))
   .addStencilStory('with a stencil when the search drawer is open', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation openDrawer="search" />
-    </Page>
+    </HtmlPage>
   ), { image: searchStencil });

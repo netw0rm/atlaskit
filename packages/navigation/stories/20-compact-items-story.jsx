@@ -4,7 +4,7 @@ import { EmojiCustomIcon, DashboardIcon, CrossIcon } from '@atlaskit/icon';
 import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
-import Page from './components/HtmlPage';
+import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import RandomBadge from './components/RandomBadge';
@@ -31,7 +31,7 @@ CompactItem.propTypes = {
 
 storiesOf(name, module)
   .add('with compact items', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation containerHeaderComponent={null}>
         <AkNavigationItemGroup isCompact>
           <AkNavigationItem
@@ -72,5 +72,5 @@ storiesOf(name, module)
           <CompactItem>Ronnie Wood</CompactItem>
         </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ));

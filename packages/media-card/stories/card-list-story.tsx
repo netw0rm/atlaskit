@@ -303,7 +303,7 @@ storiesOf('CardList', {})
     };
 
     const handleRefresh = () => {
-      context.refreshCollection(defaultCollectionName);
+      context.refreshCollection(defaultCollectionName, 30);
     };
 
     const RefreshDemo = (): JSX.Element => { // tslint:disable-line:variable-name

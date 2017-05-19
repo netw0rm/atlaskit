@@ -92,7 +92,7 @@ storiesOf(name, module)
            // tslint:disable-next-line:jsx-no-lambda
           ref={elem => reactEditorComponent = elem}
           onSubmit={action('submit')}
-          mediaProvider={storyMediaProviderFactory()}
+          mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
         />
         </div>
       );

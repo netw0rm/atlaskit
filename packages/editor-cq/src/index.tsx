@@ -51,6 +51,8 @@ import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
 import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
+import { unsupportedBlockNodeView } from './schema/nodes/unsupportedBlock';
+import { unsupportedInlineNodeView } from './schema/nodes/unsupportedInline';
 export { version };
 
 export interface Props {
@@ -299,6 +301,8 @@ export default class Editor extends PureComponent<Props, State> {
         },
         nodeViews: {
           jiraIssue: jiraIssueNodeView,
+          unsupportedBlock: unsupportedBlockNodeView,
+          unsupportedInline: unsupportedInlineNodeView,
           mediaGroup: nodeViewFactory(this.providerFactory, {
             mediaGroup: ReactMediaGroupNode,
             media: ReactMediaNode,

@@ -3,32 +3,33 @@ import {
   akColorN30,
   akColorN50,
 } from '@atlaskit/util-shared-styles';
-import { NodeSpec } from '@atlaskit/editor-core';
-import { style } from 'typestyle';
+import { NodeSpec, NodeView } from '@atlaskit/editor-core';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import styled from 'styled-components';
 
-const nodeClassName = style({
-  alignItems: 'center',
-  background: akColorN30,
-  border: `1px dashed ${akColorN50}`,
-  borderRadius: akBorderRadius,
-  boxSizing: 'border-box',
-  cursor: 'default',
-  display: 'inline-flex',
-  fontSize: '13px',
-  margin: '0 2px',
-  minHeight: 24,
-  padding: '0 10px',
-  userSelect: 'all',
-  verticalAlign: 'middle',
-  whiteSpace: 'nowrap',
+// tslint:disable-next-line:variable-name
+const BlockNode = styled.div`
+  align-items: center;
+  background: ${akColorN30};
+  border: 1px dashed ${akColorN50};
+  border-radius: ${akBorderRadius};
+  box-sizing: border-box;
+  cursor: default;
+  display: inline-flex;
+  font-size: 13px;
+  margin: 0 2px;
+  min-height: 24px;
+  padding: 0 10px;
+  user-select: all;
+  vertical-align: middle;
+  white-space: nowrap;
 
-  $nest: {
-    '&.ProseMirror-selectednode': {
-      background: akColorN50,
-      outline: 'none'
-    }
+  '&.ProseMirror-selectednode': {
+    background: ${akColorN50};
+    outline: none;
   }
-});
+`;
 
 export default {
   group: 'inline',
@@ -38,10 +39,8 @@ export default {
   toDOM(node): [string, any, string] {
     const attrs = {
       'data-node-type': 'unsupportedInline',
-      'class': nodeClassName,
       'data-unsupported': 'inline',
       'data-unsupported-inline-cxhtml': node.attrs['cxhtml'],
-      'spellcheck': 'false',
     };
     return ['div', attrs, 'Unsupported content'];
   },
@@ -54,3 +53,28 @@ export default {
     }
   ]
 } as NodeSpec;
+
+export const unsupportedInlineNodeView = (node: any, view: any, getPos: () => number): NodeView => {
+  const { nodeType, unsupported, unsupportedBlockCxhtml } = node.attrs;
+  let dom: HTMLElement | undefined = document.createElement('div');
+  dom.dataset.nodeType = nodeType;
+  dom.dataset.unsupported = unsupported;
+  dom.dataset.unsupportedBlockCxhtml = unsupportedBlockCxhtml;
+  dom.setAttribute('spellcheck', 'false');
+
+  ReactDOM.render(
+    <BlockNode>Unsupported content</BlockNode>,
+    dom
+  );
+
+  return {
+    get dom() {
+      return dom;
+    },
+
+    destroy() {
+      ReactDOM.unmountComponentAtNode(dom!);
+      dom = undefined;
+    }
+  };
+};

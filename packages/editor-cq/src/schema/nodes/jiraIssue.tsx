@@ -7,59 +7,56 @@ import { NodeSpec, NodeView } from '@atlaskit/editor-core';
 import { JiraLogo } from '@atlaskit/logo';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-const nodeClassName = style({
-  alignItems: 'center',
-  background: akColorN30,
-  border: `1px solid ${akColorN50}`,
-  borderRadius: akBorderRadius,
-  boxSizing: 'border-box',
-  cursor: 'default',
-  display: 'inline-flex',
-  fontSize: '13px',
-  margin: '0 2px',
-  minHeight: 24,
-  padding: '0 4px',
-  userSelect: 'none',
-  verticalAlign: 'middle',
-  whiteSpace: 'nowrap',
+// tslint:disable-next-line:variable-name
+const WrapperNode = styled.span`
+  align-items: center;
+  background: ${akColorN30};
+  border: 1px solid ${akColorN50};
+  border-radius: ${akBorderRadius};
+  box-sizing: border-box;
+  cursor: default;
+  display: inline-flex;
+  font-size: 13px;
+  margin: 0 2px;
+  min-height: 24px;
+  padding: 0 4px;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
 
-  $nest: {
-    '&.ProseMirror-selectednode': {
-      background: akColorN50,
-      outline: 'none'
-    }
+  &.ProseMirror-selectednode: {
+    background: ${akColorN50};
+    outline: none;
   }
-});
+`;
 
-const jiraChildNodeClassName = style({
-  display: 'inline-block',
-  color: '#707070',
-  lineHeight: '24px',
-  verticalAlign: 'top',
+// tslint:disable-next-line:variable-name
+const JiraChildNode = styled.span`
+  display: inline-block;
+  color: #707070;
+  line-height: 24px;
+  vertical-align: top;
 
-  $nest: {
-    '&:before': {
-      color: 'black',
-      content: '"JIRA | "',
-    },
-  },
-});
-
-const svgChildNodeClassName = style({
-  display: 'inline-block',
-  height: '24px',
-  verticalAlign: 'top',
-  width: '24px',
-
-  $nest: {
-    '&>div': {
-      height: '24px',
-      width: '24px',
-    }
+  &:before: {
+    color: black;
+    content: "JIRA | ";
   }
-});
+`;
+
+// tslint:disable-next-line:variable-name
+const SvgChildNode = styled.span`
+  display: inline-block;
+  height: 24px;
+  verticalAlign: top;
+  width: 24px;
+
+  & > div: {
+    height: 24px;
+    width: 24px;
+  }
+`;
 
 export default {
   group: 'inline',
@@ -99,7 +96,6 @@ export const jiraIssueNodeView = (node: any, view: any, getPos: () => number): N
   const { issueKey, macroId, schemaVersion, server, serverId } = node.attrs;
 
   let dom: HTMLElement | undefined = document.createElement('span');
-  dom.setAttribute('class', nodeClassName);
   dom.dataset.macroId = macroId;
   dom.dataset.schemaVersion = schemaVersion;
   dom.dataset.server = server;
@@ -107,12 +103,12 @@ export const jiraIssueNodeView = (node: any, view: any, getPos: () => number): N
   dom.setAttribute('spellcheck', 'false');
 
   ReactDOM.render(
-    <span>
-      <span className={svgChildNodeClassName}>
+    <WrapperNode>
+      <SvgChildNode>
         <JiraLogo size="small" collapseTo="icon"/>
-      </span>
-      <span className={jiraChildNodeClassName}>{issueKey}</span>
-    </span>,
+      </SvgChildNode>
+      <JiraChildNode>{issueKey}</JiraChildNode>
+    </WrapperNode>,
     dom
   );
 

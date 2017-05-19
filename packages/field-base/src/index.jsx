@@ -60,7 +60,7 @@ export default class extends PureComponent {
   }
 
   onContentBlur = () => {
-    this.rechedule(ON_CONTENT_BLUR_KEY, () => {
+    this.reschedule(ON_CONTENT_BLUR_KEY, () => {
       if (this.state.shouldIgnoreNextDialogBlur) {
         // Ignore the blur event if we are still focused in the dialog.
         this.setState({ shouldIgnoreNextDialogBlur: false });

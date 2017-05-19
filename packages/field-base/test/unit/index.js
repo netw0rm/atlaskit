@@ -162,6 +162,23 @@ describe('ak-field-base', () => {
   });
 
   describe('smart component', () => {
+    let clock;
+    beforeEach(() => {
+      clock = sinon.useFakeTimers();
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    const isDialogOpened = wrapper => wrapper.find(InlineDialog).prop('isOpen');
+
+    const openDialog = (wrapper) => {
+      expect(isDialogOpened(wrapper)).to.equal(false);
+      wrapper.find(`.${styles.contentContainer}`).simulate('focus'); // open the dialog
+      expect(isDialogOpened(wrapper)).to.equal(true);
+    };
+
     it('should call onFocus handler', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldBaseSmart onFocus={spy} />);
@@ -176,9 +193,24 @@ describe('ak-field-base', () => {
       expect(spy.callCount).to.equal(1);
     });
 
-    it('should retain focus when blur and focus happen one by one', () => {
-      const clock = sinon.useFakeTimers();
+    it('should close the dialog when focus goes away from both the element and the dialog', () => {
+      const invalidMessage = <snap className="errorMessage">foo</snap>;
 
+      const spy = sinon.spy();
+      const wrapper = mount(<FieldBaseSmart onContentBlur={spy} invalidMessage={invalidMessage} />);
+
+      openDialog(wrapper);
+      wrapper.find('.errorMessage').simulate('focus');
+
+      wrapper.find('.errorMessage').simulate('blur');
+      wrapper.find(`.${styles.contentContainer}`).simulate('blur');
+
+      clock.tick(10);
+
+      expect(isDialogOpened(wrapper)).to.equal(false);
+    });
+
+    it('should retain focus when blur and focus happen one by one', () => {
       const wrapper = mount(<FieldBaseSmart {...defaultProps} />);
       const contentContainer = wrapper.find(`.${styles.contentContainer}`);
       contentContainer.simulate('blur'); // this should be robust enough to handle even two
@@ -189,8 +221,6 @@ describe('ak-field-base', () => {
       clock.tick(10);
 
       expect(wrapper.state('isFocused')).to.equal(true);
-
-      clock.restore();
     });
   });
 });

@@ -3,9 +3,9 @@ import { emoji as emojiData } from '@atlaskit/util-data-test';
 const toEmojiAttrs = (emoji) => {
   const { shortName, id, fallback } = emoji;
   return {
-    shortName: shortName,
-    id: id,
-    text: fallback,
+    shortName,
+    id,
+    text: fallback || shortName,
   };
 };
 

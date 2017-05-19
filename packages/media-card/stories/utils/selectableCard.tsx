@@ -4,7 +4,13 @@ import {Context} from '@atlaskit/media-core';
 
 import {Card, Identifier, OnSelectChangeFunc} from '../../src';
 
-export class SelectableCard extends Component<{context: Context; identifier: Identifier; onSelectChange: OnSelectChangeFunc}, {selected: boolean}> {
+export interface SelectableCardProps {
+  context: Context;
+  identifier: Identifier;
+  onSelectChange: OnSelectChangeFunc;
+}
+
+export class SelectableCard extends Component<SelectableCardProps, {selected: boolean}> {
   constructor(props) {
     super(props);
     this.state = {selected: false};

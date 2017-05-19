@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { media } from '../../../../src';
 import { fromHTML, toDOM } from '../../../../src/test-helper';
 import { default as schema } from '../../../../src/test-helper/schema';
-import { MediaNode } from '../../../../src/schema/nodes/media';
+import { MediaNode } from '../../../../src/plugins';
 
 describe('@atlaskit/editor-core/schema media node', () => {
 

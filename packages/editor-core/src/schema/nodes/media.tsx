@@ -1,7 +1,5 @@
-import {
-  Node as PMNode,
-  NodeSpec,
-} from '../../prosemirror';
+import { NodeSpec } from '../../prosemirror';
+import { MediaNode } from '../../plugins';
 
 export type MediaType = 'file' | 'link';
 

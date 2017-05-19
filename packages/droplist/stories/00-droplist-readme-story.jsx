@@ -42,10 +42,11 @@ storiesOf(name, module)
   .add('Droplist overview', () => (
     <Chrome title={name}>
       <Description>
-        <p>This is a `base` component on which such components as @atlaskit/dropdown-menu,
-          @atlaskit/single-select, @atlaskit/multi-select are built. It contains only styles and
-          very basic logic. It does not have any keyboard interactions, selectable logic or
-          open/close functionality</p>
+        <p>This is an <em>internal</em> component on which such components as
+        @atlaskit/dropdown-menu, @atlaskit/single-select, @atlaskit/multi-select
+        are built. It contains only styles and very basic logic.</p>
+        <p>It does not have any keyboard interactions, selectable logic or
+        open/close functionality</p>
       </Description>
       <Code code={DroplistOverviewExampleRaw}>
         {DroplistOverviewExample}

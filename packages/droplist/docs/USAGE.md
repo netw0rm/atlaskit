@@ -1,6 +1,6 @@
 # Droplist
 
-This is a base component which should be used to build all the 'dropdown' lists.
+This is an internal component which should be used to build all the 'dropdown' lists.
 
 ## Try it out
 

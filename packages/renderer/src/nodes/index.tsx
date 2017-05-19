@@ -12,6 +12,7 @@ import Heading, { HeadingLevel } from './heading';
 import BulletList from './bulletList';
 import OrderedList from './orderedList';
 import ListItem from './listItem';
+import Blockquote from './blockquote';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -43,6 +44,7 @@ enum NodeType {
   bulletList,
   orderedList,
   listItem,
+  blockquote,
   unknown
 }
 
@@ -201,6 +203,15 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         }
         break;
       }
+      case NodeType.blockquote: {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
     }
   }
 
@@ -298,6 +309,8 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       return <OrderedList key={key} {...optionalProps}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</OrderedList>;
     case NodeType.listItem:
       return <ListItem key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</ListItem>;
+    case NodeType.blockquote:
+      return <Blockquote key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Blockquote>;
     default: {
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {

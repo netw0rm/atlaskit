@@ -63,7 +63,7 @@ const reactionsStyle = style({
   borderRadius: '15px',
   $nest: {
     '&> span > div': {
-      margin: '0 4px 0 4px'
+      margin: '0 4px 4px 4px'
     },
     '&> span > div:first-child': {
       margin: '0 4px 0 0',
@@ -136,6 +136,16 @@ export default class Reactions extends Component<Props, State> {
     );
   }
 
+  private sortReactions(a: ReactionSummary, b: ReactionSummary) {
+    if (a.count > b.count) {
+      return -1;
+    } else if (a.count < b.count) {
+      return 1;
+    } else {
+      return compareEmojiId(a.emojiId, b.emojiId);
+    }
+  }
+
   render() {
     const { emojiProvider } = this.props;
     const { reactions } = this.state;
@@ -148,7 +158,7 @@ export default class Reactions extends Component<Props, State> {
             transitionEnterTimeout={500}
             transitionLeaveTimeout={300}
         >
-          {reactions.sort((a, b) => compareEmojiId(a.emojiId, b.emojiId)).map((reaction, index) => {
+          {reactions.sort(this.sortReactions).map((reaction, index) => {
             const { emojiId } = reaction;
             const key = emojiId || `unknown-${index}`;
 

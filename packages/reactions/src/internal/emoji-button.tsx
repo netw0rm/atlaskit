@@ -16,6 +16,7 @@ const emojiButtonStyle = style({
   padding: '8px',
   $nest: {
     '&:hover > span': {
+      transition: 'transform cubic-bezier(0.23, 1, 0.32, 1) 200ms',
       transform: 'scale(1.33)'
     },
     '&> span': {

@@ -46,7 +46,7 @@ const contentStyle = style({
 });
 
 const moreEmojiContainerStyle = style({
-  display: 'inline-block',
+  display: 'flex',
 });
 
 const separatorStyle = style({

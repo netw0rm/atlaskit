@@ -197,13 +197,14 @@ export default class AbstractReactionsResource implements ReactionsProvider {
         .then(reactions => {
           Object.keys(reactions).forEach(key => {
 
-            const containerAri = reactions[key][0].containerAri;
-            const ari = reactions[key][0].ari;
+            let objectReactions = reactions[key];
+            const containerAri = subscriptionKey.containerAri;
+            const ari = key;
             this.dequeueAri({
               ari: ari,
               containerAri: containerAri
             });
-            this.notifyUpdated(containerAri, ari, reactions[key]);
+            this.notifyUpdated(containerAri, ari, objectReactions);
           });
         });
     }, 1);
@@ -380,18 +381,20 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
 
   getReactions(keys: ObjectReactionKey[]): Promise<Reactions> {
     let aris = keys.map(key => key.ari);
+    const containerAri = keys[0].containerAri;
     return new Promise<Reactions>((resolve, reject) => {
       requestService<Reactions>(this.config.baseUrl, 'reactions/view', {
         'method': 'POST',
         'headers': this.getHeaders(),
         'body': JSON.stringify({
-          containerAri: keys[0].containerAri,
+          containerAri: containerAri,
           aris
         }),
         'credentials': 'include'
       }).then(reactions => {
         Object.keys(reactions).forEach(ari => {
-          this.cachedReactions[ari] = reactions[ari];
+          const cacheKey = this.objectReactionKey(containerAri, ari);
+          this.cachedReactions[cacheKey] = reactions[ari];
         });
         resolve(reactions);
       });

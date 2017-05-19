@@ -141,7 +141,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
     it('should set cached reactions', () => {
       return reactionsProvider.getReactions([{ari, containerAri}])
         .then(reactions => {
-          expect((reactionsProvider as any).cachedReactions).to.deep.equal(reactions);
+          expect(Object.keys((reactionsProvider as any).cachedReactions).length).to.equal(1);
         });
     });
 
@@ -151,19 +151,21 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       const anotherAriData = [
         {
           ari: anotherAri,
+          containerAri: containerAri,
           emojiId: 'grinning',
           count: 1,
           reacted: false
         }
       ];
 
-      (reactionsProvider as any).cachedReactions[anotherAri] = anotherAriData;
+      const anotherCacheKey = reactionsProvider.objectReactionKey(containerAri, anotherAri);
+      (reactionsProvider as any).cachedReactions[anotherCacheKey] = anotherAriData;
 
       return reactionsProvider.getReactions([{ari, containerAri}])
         .then(reactions => {
           expect((reactionsProvider as any).cachedReactions).not.to.deep.equal(reactions);
-          expect((reactionsProvider as any).cachedReactions[ari]).to.deep.equal(reactions[ari]);
-          expect((reactionsProvider as any).cachedReactions[anotherAri]).to.deep.equal(anotherAriData);
+          expect((reactionsProvider as any).cachedReactions[reactionsProvider.objectReactionKey(containerAri, ari)]).to.deep.equal(reactions[ari]);
+          expect((reactionsProvider as any).cachedReactions[anotherCacheKey]).to.deep.equal(anotherAriData);
         });
     });
   });

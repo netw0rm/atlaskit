@@ -6,7 +6,6 @@ import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import { Tooltip } from '@atlaskit/tooltip';
 import sinon from 'sinon';
 
-import styles from '../../src/styles.less';
 import { StatelessSelect } from '../../src';
 
 import { name } from '../../package.json';
@@ -24,10 +23,6 @@ describe(name, () => {
   describe('render', () => {
     it('sanity check', () => {
       expect(shallow(<StatelessSelect />).isEmpty()).to.equal(false);
-    });
-
-    it('should render with correct CSS class name', () => {
-      expect(mount(<StatelessSelect />).find(`.${styles.selectWrapper}`).length).to.equal(1);
     });
 
     it('should render Label when the prop is set', () => {

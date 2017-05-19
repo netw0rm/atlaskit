@@ -1,11 +1,5 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-export const outerContainer = style({
-  position: 'relative'
-});
-
-export const textInputContainer = style({
-  display: 'flex',
-  alignItems: 'center',
-  padding: '5px 10px'
-});
+export const OuterContainer = styled.span`
+  position: relative;
+`;

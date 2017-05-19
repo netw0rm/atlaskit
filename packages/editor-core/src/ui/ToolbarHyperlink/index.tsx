@@ -6,7 +6,7 @@ import { addLink, tooltip } from '../../keymaps';
 import { EditorView, PluginKey } from '../../prosemirror';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import ToolbarButton from '../ToolbarButton';
-import * as styles from './styles';
+import { OuterContainer } from './styles';
 
 export interface Props {
   editorView: EditorView;
@@ -35,7 +35,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     const { adding, disabled } = this.state;
 
     return (
-      <span className={styles.outerContainer}>
+      <OuterContainer>
         <ToolbarButton
           disabled={disabled}
           onClick={this.toggleLinkPanel}
@@ -43,7 +43,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           title={tooltip(addLink)}
           iconBefore={<LinkIcon label="Add link" />}
         />
-      </span>
+      </OuterContainer>
     );
   }
 

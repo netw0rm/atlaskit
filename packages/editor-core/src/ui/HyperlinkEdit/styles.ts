@@ -1,15 +1,15 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-export const seperator = style({
-  background: 'grey',
-  width: 1,
-  height: 20,
-  display: 'inline-block',
-  margin: '0 10px'
-});
+export const Seperator = styled.span`
+  background: grey;
+  width: 1px;
+  height: 20px;
+  display: inline-block;
+  margin: 0 10px;
+`;
 
-export const container = style({
-  display: 'flex',
-  alignItems: 'center',
-  padding: '5px 10px'
-});
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+`;

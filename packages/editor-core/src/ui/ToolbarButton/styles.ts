@@ -1,11 +1,10 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
+import AkButtonDefault from '@atlaskit/button';
 
-export const button = style({
-  lineHeight: 0,
+export const AkButton = styled(AkButtonDefault)`
+  line-height: 0;
 
-  $nest: {
-    '& + &': {
-      marginLeft: '4px',
-    }
+  & + & {
+    margin-left: 4px;
   }
-});
+`;

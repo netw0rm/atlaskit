@@ -8,7 +8,7 @@ import { analyticsService as analytics } from '../../analytics';
 import { BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
-import * as styles from './styles';
+import { ButtonContent } from './styles';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
@@ -81,7 +81,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
             spacing="compact"
             onClick={this.handleTriggerClick}
           >
-            <div className={styles.buttonContent}>{currentBlockType.title}</div>
+            <ButtonContent>{currentBlockType.title}</ButtonContent>
           </AkButton>
         }
       >

@@ -1,36 +1,32 @@
 import { akEditorPopupText } from '../../styles';
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-export const input = style({
-  $nest: {
-    'input&': {
-      background: 'transparent',
-      border: 0,
-      borderRadius: 0,
-      boxSizing: 'content-box',
-      color: akEditorPopupText,
-      flexGrow: 1,
-      fontSize: '13px',
-      lineHeight: '20px',
-      padding: 0,
+export const Input = styled.input`
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-sizing: content-box;
+  color: ${akEditorPopupText};
+  flex-grow: 1;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 0;
 
-      // IE11 fixes
-      height: '20px',
-      minWidth: 145,
-    },
+  /* IE11 fixes */
+  height: 20px;
+  min-width: 145px;
 
-    // Hides IE10+ built-in [x] clear input button
-    '&::-ms-clear': {
-      display: 'none'
-    },
-
-    '&:focus': {
-      outline: 'none',
-    },
-
-    '&::placeholder': {
-      color: akEditorPopupText,
-      opacity: 0.5,
-    }
+  /* Hides IE10+ built-in [x] clear input button */
+  &::-ms-clear {
+    display: none;
   }
-});
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: ${akEditorPopupText};
+    opacity: 0.5;
+  }
+`;

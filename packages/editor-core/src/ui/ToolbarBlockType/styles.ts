@@ -1,10 +1,5 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-export const buttonContent = style({
-  width: '80px',
-});
-
-export const container = style({
-  position: 'relative',
-  width: '92px',
-});
+export const ButtonContent = styled.div`
+  width: 80px;
+`;

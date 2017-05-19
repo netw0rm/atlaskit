@@ -6,7 +6,7 @@ import { HyperlinkState } from '../../plugins/hyperlink';
 import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
-import * as styles from './styles';
+import { Seperator, Container } from './styles';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
@@ -88,7 +88,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           onExtractStyle={this.updatePosition}
           autoPosition={true}
         >
-          <div className={styles.container}>
+          <Container>
             {!showOpenButton ? null :
               <ToolbarButton
                 href={href}
@@ -109,7 +109,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               </ToolbarButton>
             }
             {!showSeparator ? null :
-              <span className={styles.seperator} />
+              <Seperator />
             }
             <PanelTextInput
               placeholder="Link address"
@@ -120,7 +120,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               onMouseDown={this.setInputActive}
               onBlur={this.handleOnBlur}
             />
-          </div>
+          </Container>
         </FloatingToolbar>
       );
     } else {

@@ -1,9 +1,9 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-export const triggerWrapper = style({
-  display: 'flex',
-});
+export const TriggerWrapper = styled.div`
+  display: flex;
+`;
 
-export const expandIcon = style({
-  marginLeft: -8,
-});
+export const ExpandIconWrap = styled.div`
+  margin-left: -8px;
+`;

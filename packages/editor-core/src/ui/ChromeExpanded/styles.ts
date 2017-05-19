@@ -101,7 +101,7 @@ export const Content = styled.div`
   /* Make sure li selections wrap around markers */
   li.ProseMirror-selectednode {
     outline: none;
-  },
+  }
 
   li.ProseMirror-selectednode:after {
     content: '';

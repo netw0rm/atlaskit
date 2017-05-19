@@ -18,7 +18,7 @@ export const Input = styled.input`
   width: 100%;
 
   &:hover {
-    borderColor: ${akColorN50},
+    border-color: ${akColorN50};
     cursor: pointer;
   }
 `;

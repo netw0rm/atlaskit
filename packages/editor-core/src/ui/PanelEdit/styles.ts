@@ -1,42 +1,37 @@
 import { akColorN400, akColorPrimary1, akColorN20 } from '@atlaskit/util-shared-styles';
-import { style } from 'typestyle';
+import styled from 'styled-components';
+import ToolbarButtonDefault from '../ToolbarButton';
 
-export const removeButtonWrapperStyle = style({
-  borderLeft: `1px solid ${akColorN400}`,
-  paddingLeft: '5px',
-  marginLeft: '5px',
+export const RemoveButtonWrapper = styled.span`
+  border-left: 1px solid ${akColorN400};
+  padding-left: 5px;
+  margin-left: 5px;
 
-  $nest: {
-    ':hover': {
-      background: akColorPrimary1,
-      borderRadius: '3px',
-      color: akColorN20
-    }
+  & :hover {
+    background: ${akColorPrimary1};
+    border-radius: 3px;
+    color: ${akColorN20}
   }
-});
+`;
 
-export const buttonWrapperStyle = style({
-  margin: '5px 3px',
-  display: 'inline-block',
+export const ToolbarButton = styled(ToolbarButtonDefault)`
+  margin: 5px 3px;
+  display: inline-block;
 
-  $nest: {
-    ':hover': {
-      background: akColorPrimary1,
-      borderRadius: '3px',
-      color: akColorN20
-    }
+  & :hover {
+    background: ${akColorPrimary1};
+    border-radius: 3px;
+    color: ${akColorN20};
   }
-});
+`;
 
-export const selectedButtonWrapperStyle = style({
-  margin: '5px 3px',
-  display: 'inline-block',
-  background: akColorPrimary1,
-  borderRadius: '3px',
+export const ToolbarButtonSelected = styled(ToolbarButtonDefault)`
+  margin: 5px 3px;
+  display: inline-block;
+  background: ${akColorPrimary1};
+  border-radius: 3px;
 
-  $nest: {
-    ' button': {
-      background: 'none !important',
-    }
+  button {
+    background: none !important;
   }
-});
+`;

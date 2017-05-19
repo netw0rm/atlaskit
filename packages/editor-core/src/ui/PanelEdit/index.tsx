@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import FloatingToolbar from '../FloatingToolbar';
-import ToolbarButton from '../ToolbarButton';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
@@ -10,7 +9,7 @@ import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import { EditorView } from '../../prosemirror';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
-import * as styles from './styles';
+import { ToolbarButton, ToolbarButtonSelected, RemoveButtonWrapper } from './styles';
 
 const icons = {
   info: InfoIcon,
@@ -51,29 +50,26 @@ export default class PanelEdit extends PureComponent<Props, State> {
       return (
         <FloatingToolbar target={target} align="left">
           {availablePanelType.map((panelType, index) => {
-            // tslint:disable-next-line:variable-name
             const Icon = icons[panelType.panelType];
+            const Button = activePanelType === panelType.panelType
+              ? ToolbarButtonSelected
+              : ToolbarButton;
+
             return (
-              <ToolbarButton
+              <Button
                 key={index}
-                wrapperClassName={
-                  activePanelType === panelType.panelType ?
-                    styles.selectedButtonWrapperStyle :
-                    styles.buttonWrapperStyle
-                }
                 selected={activePanelType === panelType.panelType}
                 onClick={this.handleSelectPanelType.bind(this, panelType)}
                 iconBefore={<Icon label={`Change panel type to ${panelType.panelType}`} />}
               />
             );
           })}
-          <span className={styles.removeButtonWrapperStyle}>
+          <RemoveButtonWrapper>
             <ToolbarButton
-              wrapperClassName={styles.buttonWrapperStyle}
               onClick={this.handleRemovePanelType}
               iconBefore={<RemoveIcon label="Remove panel type" />}
             />
-          </span>
+          </RemoveButtonWrapper>
         </FloatingToolbar>
       );
     } else {

@@ -1,6 +1,6 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 import { akGridSize } from '@atlaskit/util-shared-styles';
 
-export const colorPalette = style({
-  padding: `0 ${akGridSize}`
-});
+export const ColorPaletteWrapper = styled.div`
+  padding: 0 ${akGridSize};
+`;

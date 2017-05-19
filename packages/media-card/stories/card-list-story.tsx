@@ -303,7 +303,7 @@ storiesOf('CardList', {})
     };
 
     const handleRefresh = () => {
-      context.refreshCollection(defaultCollectionName, 30);
+      context.refreshCollection(defaultCollectionName, 10);
     };
 
     const RefreshDemo = (): JSX.Element => { // tslint:disable-line:variable-name
@@ -312,12 +312,14 @@ storiesOf('CardList', {})
           <div style={{width: '25%'}}>
             <CardList
               context={context}
+              pageSize={10}
               collectionName={defaultCollectionName}
             />
           </div>
           <div style={{width: '25%'}}>
             <CardList
               context={context}
+              pageSize={10}
               collectionName={defaultCollectionName}
               cardAppearance="small"
             />

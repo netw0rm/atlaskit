@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { EmojiId } from '@atlaskit/emoji';
 import { Mention, ResourcedMention } from '@atlaskit/mention';
 import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';
@@ -193,7 +192,7 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
         fallback: text || shortName,
       };
       const emojiProvider = servicesConfig && servicesConfig.getEmojiProvider && servicesConfig.getEmojiProvider();
-      return <Emoji key={key} emojiId={emojiId} text={text} emojiProvider={emojiProvider} />;
+      return <Emoji key={key} emojiId={emojiId} emojiProvider={emojiProvider} />;
     }
     case NodeType.hardBreak:
       return <Hardbreak key={key} />;

@@ -4,7 +4,6 @@ import { EmojiId, EmojiProvider, ResourcedEmoji } from '@atlaskit/emoji';
 
 export interface Props {
   emojiId: EmojiId;
-  text: string;
   emojiProvider?: Promise<EmojiProvider>;
 }
 

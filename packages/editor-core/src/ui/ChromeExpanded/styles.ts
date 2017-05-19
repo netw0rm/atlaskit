@@ -71,7 +71,7 @@ export const Content = styled.div`
     }
   }
   .ProseMirror ol {
-    $nest: createNestedListStyles(),
+    ${createNestedListStyles()}
   }
 
   .ProseMirror li > * {
@@ -79,12 +79,10 @@ export const Content = styled.div`
   }
 
   .ProseMirror-hideselection *::selection {
-    $unique: true;
     background: transparent;
   }
 
   .ProseMirror-hideselection *::-moz-selection {
-    $unique: true;
     background: transparent;
   }
 

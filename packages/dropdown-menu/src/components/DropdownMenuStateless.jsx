@@ -1,12 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import Droplist, { Item, Group } from '@atlaskit/droplist';
-import Button from '@atlaskit/button';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import { findDOMNode } from 'react-dom';
 import uid from 'uid';
-import styles from './styles.less';
 
-const Icon = <ExpandIcon label="" />;
+import Button from '@atlaskit/button';
+import Droplist, { Item, Group } from '@atlaskit/droplist';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 /* eslint-disable react/no-unused-prop-types */
 export default class StatelessDropdownMenu extends PureComponent {
@@ -36,21 +34,21 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: PropTypes.func,
     /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
     position: PropTypes.string,
+    /** Option to display multiline items when content is too long.
+      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
+      */
+    shouldAllowMultilineItems: PropTypes.bool,
+    /** Option to fit dropdown menu width to its parent width */
+    shouldFitContainer: PropTypes.bool,
+    /** Flip its position to the opposite side of its target if it does not fit */
+    shouldFlip: PropTypes.bool,
+    /** Props to pass through to the trigger button. see @atlaskit/button for options */
+    triggerButtonProps: PropTypes.shape(Button.propTypes),
     /** Types of the menu's built-in trigger.
       * default trigger is empty.
       * button trigger uses the Button component with the 'expand' icon.
       */
     triggerType: PropTypes.oneOf(['default', 'button']),
-    /** Props to pass through to the trigger button. see @atlaskit/button for options. */
-    triggerButtonProps: PropTypes.shape(Button.propTypes),
-    /** Flip its position to the opposite side of its target if it does not fit. */
-    shouldFlip: PropTypes.bool,
-    /** Option to fit dropdown menu width to its parent width. */
-    shouldFitContainer: PropTypes.bool,
-    /** Option to display multiline items when content is too long.
-      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
-      */
-    shouldAllowMultilineItems: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -61,11 +59,11 @@ export default class StatelessDropdownMenu extends PureComponent {
     onItemActivated: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
-    triggerType: 'default',
-    triggerButtonProps: {},
-    shouldFlip: true,
-    shouldFitContainer: false,
     shouldAllowMultilineItems: false,
+    shouldFitContainer: false,
+    shouldFlip: true,
+    triggerButtonProps: {},
+    triggerType: 'default',
   }
 
   state = {
@@ -137,8 +135,14 @@ export default class StatelessDropdownMenu extends PureComponent {
     this.domItemsList[this.focusedItem].focus();
   }
 
-  isTargetChildItem = target => target && (target.getAttribute('data-role') === 'droplistItem') &&
-    ReactDOM.findDOMNode(this).contains(target) // eslint-disable-line react/no-find-dom-node
+  isTargetChildItem = (target) => {
+    if (!target) return false;
+
+    const isDroplistItem = target.getAttribute('data-role') === 'droplistItem';
+
+    // eslint-disable-next-line react/no-find-dom-node
+    return isDroplistItem && findDOMNode(this).contains(target);
+  }
 
   handleKeyboardInteractions = (event) => {
     if (this.props.isOpen) {
@@ -226,22 +230,27 @@ export default class StatelessDropdownMenu extends PureComponent {
   )
 
   renderTrigger = () => {
-    if (this.props.triggerType === 'button') {
-      const triggerProps = { ...this.props.triggerButtonProps };
+    const { children, isOpen, triggerButtonProps, triggerType } = this.props;
+
+    if (triggerType === 'button') {
+      const triggerProps = { ...triggerButtonProps };
       const defaultButtonProps = {
-        isSelected: this.props.isOpen,
+        isSelected: isOpen,
         ariaHaspopup: true,
-        ariaExpanded: this.props.isOpen,
+        ariaExpanded: isOpen,
         ariaControls: this.state.id,
       };
       if (!triggerProps.iconAfter && !triggerProps.iconBefore) {
-        triggerProps.iconAfter = Icon;
+        triggerProps.iconAfter = <ExpandIcon label="" />;
       }
       return (
-        <Button {...defaultButtonProps} {...triggerProps}>{ this.props.children }</Button>
+        <Button {...defaultButtonProps} {...triggerProps}>
+          {children}
+        </Button>
       );
     }
-    return this.props.children;
+
+    return children;
   }
 
   render() {
@@ -254,21 +263,21 @@ export default class StatelessDropdownMenu extends PureComponent {
         onKeyDown={this.handleKeyboardInteractions}
         onOpenChange={props.onOpenChange}
         position={props.position}
+        shouldAllowMultilineItems={props.shouldAllowMultilineItems}
+        shouldFitContainer={props.shouldFitContainer}
         shouldFlip={props.shouldFlip}
         trigger={this.renderTrigger()}
-        shouldFitContainer={this.props.shouldFitContainer}
-        shouldAllowMultilineItems={this.props.shouldAllowMultilineItems}
       >
         <div
           id={state.id}
           ref={(ref) => {
             this.domMenuContainer = ref;
-            this.domItemsList = ref ? ref.querySelectorAll('[data-role="droplistItem"]') : undefined;
+            this.domItemsList = ref
+              ? ref.querySelectorAll('[data-role="droplistItem"]')
+              : undefined;
           }}
           role="menu"
-          className={this.props.shouldFitContainer
-            ? styles.menuContainerWithoutLimit
-            : styles.menuContainer}
+          style={props.shouldFitContainer ? null : { maxWidth: 300 }}
         >
           {this.renderGroups(props.items)}
         </div>

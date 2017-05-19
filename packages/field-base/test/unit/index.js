@@ -175,5 +175,22 @@ describe('ak-field-base', () => {
       wrapper.find(`.${styles.contentContainer}`).simulate('blur');
       expect(spy.callCount).to.equal(1);
     });
+
+    it('should retain focus when blur and focus happen one by one', () => {
+      const clock = sinon.useFakeTimers();
+
+      const wrapper = mount(<FieldBaseSmart {...defaultProps} />);
+      const contentContainer = wrapper.find(`.${styles.contentContainer}`);
+      contentContainer.simulate('blur'); // this should be robust enough to handle even two
+                                         // "blur" events, one by one (faced it in the browser)
+      contentContainer.simulate('blur');
+      contentContainer.simulate('focus');
+
+      clock.tick(10);
+
+      expect(wrapper.state('isFocused')).to.equal(true);
+
+      clock.restore();
+    });
   });
 });

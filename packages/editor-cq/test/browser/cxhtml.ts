@@ -1,4 +1,4 @@
-import { Node as PMNode } from '@atlaskit/editor-core';
+import { MediaNode, Node as PMNode } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
@@ -527,7 +527,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
   describe('fabric mentions', () => {
     check(
       'with atlassian id and name',
-      '<p>This is mention from <fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></p>',
+      '<p>This is mention from <link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></link></p>',
       doc(
         p(
           'This is mention from ',
@@ -555,6 +555,30 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
       )
     );
 
+    it('should encode/parse media nodes with own attributes', () => {
+      const cxhtml = '<p><fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/></p>';
+      const mediaNode = media({
+        id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
+        type: 'file',
+        collection: 'de7ae355-dcf3-4988-9785-bccb835830c4',
+        fileName: '2017-04-12 07.15.57.jpg',
+        fileSize: 95316,
+        fileMimeType: 'image/jpeg'
+      }) as MediaNode;
+      const docNode = doc(mediaGroup(mediaNode));
+
+      // check that parsing/encoding is working as expected
+      // plus takes node own attributes into account
+      const parsed = parse(cxhtml);
+      expect(parsed).to.deep.equal(docNode);
+      expect(parse(encode(docNode))).to.deep.equal(docNode);
+
+      // check that node attributes are set during parsing
+      const parsedMediaNode = parsed.firstChild.firstChild;
+      expect(parsedMediaNode.fileName).to.equal('2017-04-12 07.15.57.jpg');
+      expect(parsedMediaNode.fileSize).to.equal(95316);
+      expect(parsedMediaNode.fileMimeType).to.equal('image/jpeg');
+    });
   });
 
 

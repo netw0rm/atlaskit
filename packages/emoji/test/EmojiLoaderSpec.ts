@@ -4,8 +4,8 @@ import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
-import EmojiLoader, { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
+import { SecurityOptions } from '../src/api/SharedResourceUtils';
+import EmojiLoader, { denormaliseEmojiServiceResponse, EmojiLoaderConfig } from '../src/api/EmojiLoader';
 import { EmojiServiceDescriptionWithVariations, SpriteRepresentation } from '../src/types';
 
 const p1Url = 'https://p1/';
@@ -22,7 +22,7 @@ const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
 
 const defaultSecurityCode = '10804';
 
-const provider1: ServiceConfig = {
+const provider1: EmojiLoaderConfig = {
   url: p1Url,
   securityProvider: () => header(defaultSecurityCode),
 };
@@ -62,7 +62,7 @@ describe('EmojiLoader', () => {
     });
 
     it('is only passed a baseUrl with no params or securityProvider', () => {
-      const simpleProvider: ServiceConfig = {
+      const simpleProvider: EmojiLoaderConfig = {
         url: p1Url,
       };
       fetchMock.mock({
@@ -78,15 +78,9 @@ describe('EmojiLoader', () => {
 
     it('can handle when a version is specified in the query params', () => {
       const params = '?maxVersion=2';
-      const providerData2 = [
-        { id: 'A' },
-        { id: 'B' },
-        { id: 'C' },
-        { id: 'C' },
-      ];
       fetchMock.mock({
         matcher: `end:${params}`,
-        response: fetchResponse(providerData2),
+        response: fetchResponse(providerData1),
       });
 
       const provider2 = {
@@ -96,7 +90,39 @@ describe('EmojiLoader', () => {
 
       const resource = new EmojiLoader(provider2);
       return resource.loadEmoji().then((emojiResponse) => {
-        checkOrder(providerData2, emojiResponse.emojis);
+        checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
+    it('does not add a scale param when it detects the pixel ratio is <= 1', () => {
+      const provider2 = {
+        ...provider1,
+        getRatio: () => 1
+      };
+      fetchMock.mock({
+        matcher: `${provider1.url}`,
+        response: fetchResponse(providerData1),
+      });
+
+      const resource = new EmojiLoader(provider2);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
+    it('adds a scale param when it detects the pixel ratio is > 1', () => {
+      const provider2 = {
+        ...provider1,
+        getRatio: () => 2
+      };
+      fetchMock.mock({
+        matcher: `end:?scale=XHDPI`,
+        response: fetchResponse(providerData1),
+      });
+
+      const resource = new EmojiLoader(provider2);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
       });
     });
 

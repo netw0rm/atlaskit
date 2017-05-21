@@ -8,6 +8,11 @@ import Emoji from './emoji';
 import Hardbreak from './hardBreak';
 import MediaGroup from './mediaGroup';
 import Media, { MediaNode } from './media';
+import Heading, { HeadingLevel } from './heading';
+import BulletList from './bulletList';
+import OrderedList from './orderedList';
+import ListItem from './listItem';
+import Blockquote from './blockquote';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -35,6 +40,11 @@ enum NodeType {
   paragraph,
   textWrapper,
   text,
+  heading,
+  bulletList,
+  orderedList,
+  listItem,
+  blockquote,
   unknown
 }
 
@@ -152,6 +162,56 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         }
         break;
       }
+      case NodeType.heading: {
+        const between = (x, a, b) => x >= a && x <= b;
+        if (attrs && attrs.level && between(attrs.level, 1, 6) && content) {
+          return {
+            type,
+            attrs,
+            content,
+          };
+        }
+        break;
+      }
+      case NodeType.bulletList: {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case NodeType.orderedList: {
+        if (content) {
+          return {
+            type,
+            attrs: {
+              order: attrs && attrs.order
+            },
+            content,
+          };
+        }
+        break;
+      }
+      case NodeType.listItem: {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case NodeType.blockquote: {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
     }
   }
 
@@ -236,6 +296,21 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       return renderTextNodes(validNode.content as TextNode[]);
     case NodeType.text:
       return renderTextNodes([validNode as TextNode]);
+    case NodeType.heading:
+      const { level } = validNode.attrs as { level: HeadingLevel };
+      return <Heading key={key} level={level}>{renderTextNodes(validNode.content as TextNode[])}</Heading>;
+    case NodeType.bulletList:
+      return <BulletList key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</BulletList>;
+    case NodeType.orderedList:
+      const optionalProps = {};
+      if (validNode.attrs && validNode.attrs.order) {
+        optionalProps['start'] = validNode.attrs.order;
+      }
+      return <OrderedList key={key} {...optionalProps}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</OrderedList>;
+    case NodeType.listItem:
+      return <ListItem key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</ListItem>;
+    case NodeType.blockquote:
+      return <Blockquote key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Blockquote>;
     default: {
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {

@@ -7,6 +7,7 @@ export { link } from './marks/link';
 export { emojiQuery } from './marks/emoji-query';
 export { mentionQuery } from './marks/mention-query';
 export { subsup } from './marks/subsup';
+export { textColor } from './marks/text-color';
 
 export { doc } from './nodes/doc';
 export { docCompact } from './nodes/doc';

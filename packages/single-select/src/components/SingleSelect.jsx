@@ -1,0 +1,100 @@
+import React, { PureComponent, PropTypes } from 'react';
+import StatelessSelect from './StatelessSelect';
+import { appearances } from './appearances';
+import DummyItem from './DummyItem';
+import DummyGroup from './DummyGroup';
+
+const itemShape = DummyItem.propTypes;
+const groupShape = DummyGroup.propTypes;
+
+export default class AkSingleSelect extends PureComponent {
+  static propTypes = {
+    appearance: PropTypes.oneOf(appearances.values),
+    defaultSelected: PropTypes.shape(itemShape),
+    droplistShouldFitContainer: PropTypes.bool,
+    hasAutocomplete: PropTypes.bool,
+    id: PropTypes.string,
+    isFirstChild: PropTypes.bool,
+    isDisabled: PropTypes.bool,
+    isDefaultOpen: PropTypes.bool,
+    isRequired: PropTypes.bool,
+    isInvalid: PropTypes.bool,
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    label: PropTypes.string,
+    name: PropTypes.string,
+    noMatchesFound: PropTypes.string,
+    onFilterChange: PropTypes.func,
+    onSelected: PropTypes.func,
+    onOpenChange: PropTypes.func,
+    placeholder: PropTypes.string,
+    position: PropTypes.string,
+    shouldFitContainer: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    appearance: appearances.default,
+    droplistShouldFitContainer: true,
+    isOpen: false,
+    isRequired: false,
+    items: [],
+    label: '',
+    onFilterChange: () => {},
+    onItemActivated: () => {},
+    onOpenChange: () => {},
+    onSelected: () => {},
+    placeholder: '',
+    position: 'bottom left',
+    shouldFocus: false,
+  }
+
+  state = {
+    isOpen: this.props.isDefaultOpen,
+    selectedItem: this.props.defaultSelected,
+    filterValue: this.props.defaultSelected ? this.props.defaultSelected.content : '',
+  }
+
+  selectItem = (item) => {
+    this.setState({ isOpen: false, selectedItem: item });
+    this.props.onSelected({ item });
+  }
+
+  handleOpenChange = (attrs) => {
+    this.setState({ isOpen: attrs.isOpen });
+    this.props.onOpenChange(attrs);
+  }
+
+  handleFilterChange = (value) => {
+    this.props.onFilterChange(value);
+    this.setState({ filterValue: value });
+  }
+
+  render() {
+    return (
+      <StatelessSelect
+        appearance={this.props.appearance}
+        droplistShouldFitContainer={this.props.droplistShouldFitContainer}
+        filterValue={this.state.filterValue}
+        hasAutocomplete={this.props.hasAutocomplete}
+        id={this.props.id}
+        isDisabled={this.props.isDisabled}
+        isFirstChild={this.props.isFirstChild}
+        isInvalid={this.props.isInvalid}
+        isOpen={this.state.isOpen}
+        isRequired={this.props.isRequired}
+        items={this.props.items}
+        label={this.props.label}
+        name={this.props.name}
+        noMatchesFound={this.props.noMatchesFound}
+        onFilterChange={this.handleFilterChange}
+        onOpenChange={this.handleOpenChange}
+        onSelected={this.selectItem}
+        placeholder={this.props.placeholder}
+        position={this.props.position}
+        selectedItem={this.state.selectedItem}
+        shouldFitContainer={this.props.shouldFitContainer}
+        shouldFocus={this.props.shouldFocus}
+      />
+    );
+  }
+}

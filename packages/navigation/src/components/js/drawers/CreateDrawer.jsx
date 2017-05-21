@@ -4,7 +4,8 @@ import Drawer from '../Drawer';
 import { createIconOffset } from '../../../shared-variables';
 
 const ContentArea = styled.div`
-  bottom: 0; // Required for children elements be able to have bottom of a screen
+  // Required for children elements be able to have bottom of a screen
+  bottom: 0;
   position: absolute;
   transition: top 220ms;
   top: ${props => (props.isFullWidth ? 0 : createIconOffset)}px;

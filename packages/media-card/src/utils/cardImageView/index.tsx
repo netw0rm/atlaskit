@@ -115,20 +115,36 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   private getUploadingContents = (): JSX.Element => {
-    const {actions, mediaName, progress, dataURI} = this.props;
+    const {actions, mediaName, progress, dataURI, selectable} = this.props;
 
     const deleteAction = this.getFirstDeleteAction(actions);
-    const onCancel = deleteAction ? () => deleteAction.handler() : undefined;
+    const overlay = selectable ? this.createUploadingCardOverlay() : null;
 
     return (
       <div className="wrapper">
-        <UploadingView
-          title={mediaName}
-          progress={progress || 0}
-          dataURI={dataURI}
-          onCancel={onCancel}
-        />
+        <div className="img-wrapper">
+          <UploadingView
+            title={mediaName}
+            progress={progress || 0}
+            dataURI={dataURI}
+            deleteAction={deleteAction}
+          />
+        </div>
+        {overlay}
       </div>
+    );
+  }
+
+  private createUploadingCardOverlay = (): JSX.Element => {
+    const {mediaType, dataURI, selectable, selected} = this.props;
+    const isPersistent = mediaType === 'doc' || !dataURI;
+
+    return (
+      <CardOverlay
+        persistent={isPersistent}
+        selectable={selectable}
+        selected={selected}
+      />
     );
   }
 
@@ -142,23 +158,12 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   private getSuccessCardContents = (): JSX.Element => {
-    const {mediaName, mediaType, mediaItemType, subtitle, dataURI, selectable, selected, actions, icon} = this.props;
-
-    const isPersistent = mediaType === 'doc' || !dataURI;
-    const overlay = this.isDownloadingOrProcessing() ? false : <CardOverlay
-      persistent={isPersistent}
-      selectable={selectable}
-      selected={selected}
-      mediaName={mediaName}
-      mediaType={mediaType}
-      subtitle={subtitle}
-      actions={actions}
-      icon={icon}
-    />;
+    const {mediaType, mediaItemType, dataURI} = this.props;
+    const overlay = this.isDownloadingOrProcessing() ? null : this.createSuccessCardOverlay();
 
     return (
-      <div className={'wrapper'}>
-        <div className={'img-wrapper'}>
+      <div className="wrapper">
+        <div className="img-wrapper">
           <CardContent
             loading={this.isDownloadingOrProcessing()}
             mediaItemType={mediaItemType}
@@ -168,6 +173,24 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
         </div>
         {overlay}
       </div>
+    );
+  }
+
+  private createSuccessCardOverlay = (): JSX.Element => {
+    const {mediaName, mediaType, subtitle, dataURI, selectable, selected, actions, icon} = this.props;
+    const isPersistent = mediaType === 'doc' || !dataURI;
+
+    return (
+      <CardOverlay
+        persistent={isPersistent}
+        selectable={selectable}
+        selected={selected}
+        mediaName={mediaName}
+        mediaType={mediaType}
+        subtitle={subtitle}
+        actions={actions}
+        icon={icon}
+      />
     );
   }
 }

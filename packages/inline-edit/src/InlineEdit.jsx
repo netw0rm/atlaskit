@@ -138,7 +138,7 @@ export default class InlineEdit extends PureComponent {
       <div className={styles.buttonsWrapper}>
         <div className={styles.buttonWrapper}>
           <Button
-            iconBefore={<ConfirmIcon label="confirm" />}
+            iconBefore={<ConfirmIcon label="confirm" size="small" />}
             onClick={this.onConfirmClick}
             ref={(ref) => { this.confirmButtonRef = ref; }}
             className={styles.button}
@@ -146,7 +146,7 @@ export default class InlineEdit extends PureComponent {
         </div>
         <div className={styles.buttonWrapper}>
           <Button
-            iconBefore={<CancelIcon label="cancel" />}
+            iconBefore={<CancelIcon label="cancel" size="small" />}
             onClick={this.onCancelClick}
             ref={(ref) => { this.cancelButtonRef = ref; }}
             className={styles.button}

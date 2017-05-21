@@ -87,6 +87,10 @@ export default class DynamicProps extends PureComponent {
       <PageWrapper name={componentName}>
         {propTypes.map((propName) => {
           const prop = componentDocs.props[propName];
+          if (!prop.type) {
+            console.error(`${componentName} prop ${propName} has no type; this usually indicates invalid propType or defaultProps config`); // eslint-disable-line no-console
+            return null;
+          }
           return (
             <PropTypeWrapper key={propName}>
               <PropTypeHeading

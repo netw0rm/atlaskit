@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 
 import { mount } from 'enzyme';
 import { Reactions, OnEmoji } from '../src';
-import { compareEmojiId } from '../src/internal/helpers';
+import { sortReactions } from '../src/internal/helpers';
 import Reaction from '../src/internal/reaction';
 import { reactionsProvider } from '../src/mock-reactions-provider';
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
@@ -20,7 +20,7 @@ const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 // Override "subscribe" so that it resovles instantly.
 const subscribe = reactionsProvider.subscribe;
-sinon.stub(reactionsProvider, 'subscribe', (objectReactionKey: ObjectReactionKey, handler: Function) => {
+sinon.stub(reactionsProvider, 'subscribe').callsFake((objectReactionKey: ObjectReactionKey, handler: Function) => {
   subscribe.call(reactionsProvider, objectReactionKey, handler);
   reactionsProvider.notifyUpdated(containerAri, demoAri, (reactionsProvider as any).cachedReactions[reactionsProvider.objectReactionKeyToString(objectReactionKey)]);
 });
@@ -31,7 +31,7 @@ const renderReactions = (onClick: OnEmoji = () => { }) => {
 
 const getSortedReactions = () => {
   const reactionSummaries = (reactionsProvider as any).cachedReactions[reactionsProvider.objectReactionKey(containerAri, demoAri)];
-  return [...reactionSummaries].sort((a, b) => compareEmojiId(a.emojiId, b.emojiId));
+  return [...reactionSummaries].sort(sortReactions);
 };
 
 describe('@atlaskit/reactions/reactions', () => {

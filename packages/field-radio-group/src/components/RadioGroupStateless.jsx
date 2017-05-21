@@ -1,8 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
 import Base from 'ak-field-base';
-import styles from './styles.less';
 import Radio from './Radio';
-import { itemsDefault, itemsPropType } from './internal/constants';
+import { itemsDefault, itemsPropType } from './constants';
 
 /* eslint-disable-next-line react/prefer-stateless-function */
 export default class FieldRadioGroup extends PureComponent {
@@ -44,7 +43,6 @@ export default class FieldRadioGroup extends PureComponent {
       >
         <div
           aria-label={this.props.label}
-          className={styles.radioGroup}
           role="group"
         >
           {this.renderItems()}

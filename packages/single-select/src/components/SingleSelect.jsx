@@ -77,12 +77,10 @@ export default class AkSingleSelect extends PureComponent {
   static defaultProps = {
     appearance: appearances.default,
     droplistShouldFitContainer: true,
-    isOpen: false,
     isRequired: false,
     items: [],
     label: '',
     onFilterChange: () => {},
-    onItemActivated: () => {},
     onOpenChange: () => {},
     onSelected: () => {},
     placeholder: '',

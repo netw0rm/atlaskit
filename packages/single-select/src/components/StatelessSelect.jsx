@@ -80,6 +80,7 @@ export default class StatelessSelect extends PureComponent {
     position: PropTypes.string,
     /** Sets whether the field will become focused. */
     shouldFocus: PropTypes.bool,
+    /** The selected item data */
     selectedItem: PropTypes.shape(itemShape),
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,

@@ -25,15 +25,15 @@ export const PRESENCE_TYPE = {
 export default class Presence extends PureComponent {
   static propTypes = {
     /** Used to override the default border color of the presence indicator.
-    Accepts any color argument that the border-color CSS property accepts */
+    Accepts any color argument that the border-color CSS property accepts. */
     borderColor: PropTypes.string,
     /** Content to use as a custom presence indicator (usually not required if
-    consuming Presence separate to Avatar) */
+    consuming Presence separate to Avatar). */
     children: PropTypes.element,
     /** Content to use as a custom presence indicator (usually not required if
     consuming Presence separate to Avatar). */
     presence: PropTypes.oneOf(PRESENCE_TYPE.values),
-    /** Defines the size of the presence */
+    /** Defines the size of the presence. */
     size: PropTypes.oneOf(SIZE.values),
   }
 

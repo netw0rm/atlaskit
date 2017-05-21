@@ -11,9 +11,16 @@ import { Container, ButtonActive } from './styled';
 
 export default class Pagination extends PureComponent {
   static propTypes = {
+    /** The page that is currently selected. */
     current: validateCurrent,
+    /** The number of pages to display. */
     total: validateTotal,
+    /** Function to call when the page is changed. It is called with the number
+    of the page clicked on. */
     onSetPage: PropTypes.func,
+    /** Object that sets the values for the previous and next buttons. It should
+    have the properties 'prev' and 'next', which should be strings. Defaults to
+    'Prev' and 'Next' */
     i18n: i18nShape,
   }
 

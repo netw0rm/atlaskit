@@ -5,7 +5,11 @@ export { InlineEdit };
 
 export default class extends PureComponent {
   static propTypes = {
+    /** Function passed to stateless component, isEditing will be set to false
+    before the passed function is called. */
     onConfirm: PropTypes.func.isRequired,
+    /** Function passed to stateless component, isEditing will be set to false
+    before the passed function is called. */
     onCancel: PropTypes.func.isRequired,
   }
 

@@ -1,8 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
 import Base from 'ak-field-base';
-import styles from './styles.less';
 import Radio from './Radio';
-import { itemsPropType } from './internal/constants';
+import { itemsPropType } from './constants';
 
 // ========================================================================
 // NOTE: Duplicated in ./internal/constants unitl docgen can follow imports.
@@ -58,7 +57,6 @@ export default class FieldRadioGroup extends PureComponent {
       >
         <div
           aria-label={this.props.label}
-          className={styles.radioGroup}
           role="group"
         >
           {this.renderItems()}

@@ -1,14 +1,18 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
-import classNames from 'classnames';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
-
-import styles from './styles.less';
-import NothingWasFound from './internal/NothingWasFound';
-import DummyItem from './internal/DummyItem';
-import DummyGroup from './internal/DummyGroup';
-import { mapAppearanceToFieldBase } from './internal/appearances';
+import { mapAppearanceToFieldBase } from './appearances';
+import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
+import Content from '../styled/Content';
+import DummyItem from './DummyItem';
+import DummyGroup from './DummyGroup';
+import ElemBefore from '../styled/ElemBefore';
+import Expand from '../styled/Expand';
+import NothingWasFound from './NothingWasFound';
+import Placeholder from '../styled/Placeholder';
+import StatelessSelectWrapper from '../styled/StatelessSelectWrapper';
+import Trigger from '../styled/Trigger';
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
@@ -427,87 +431,97 @@ export default class StatelessSelect extends PureComponent {
   </select>)
 
   render() {
-    const classes = classNames([styles.selectWrapper, {
-      [styles.fitContainer]: this.props.shouldFitContainer,
-    }]);
-
-    const triggerClasses = classNames([styles.trigger, {
-      [styles.isOpen]: this.props.isOpen,
-    }]);
+    const {
+      appearance,
+      droplistShouldFitContainer,
+      filterValue,
+      hasAutocomplete,
+      id,
+      isDisabled,
+      isFirstChild,
+      isInvalid,
+      isOpen,
+      isRequired,
+      items,
+      label,
+      placeholder,
+      position,
+      selectedItem,
+      shouldFitContainer,
+    } = this.props;
 
     // disabled because all of the accessibility is handled manually
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
-      <div
-        className={classes}
+      <StatelessSelectWrapper
         onKeyDown={this.handleKeyboardInteractions}
-        ref={(ref) => {
+        innerRef={(ref) => {
           this.containerNode = ref;
         }}
+        shouldFitContainer={shouldFitContainer}
       >
         {this.renderSelect()}
-        {this.props.label ? <Label
-          htmlFor={this.props.id}
-          isFirstChild={this.props.isFirstChild}
-          isRequired={this.props.isRequired}
-          label={this.props.label}
+        {label ? <Label
+          htmlFor={id}
+          isFirstChild={isFirstChild}
+          isRequired={isRequired}
+          label={label}
         /> : null}
         <Droplist
           isKeyboardInteractionDisabled
-          isOpen={this.props.isOpen}
+          isOpen={isOpen}
           isTriggerDisabled
           isTriggerNotTabbable
           onOpenChange={this.onOpenChange}
-          position={this.props.position}
-          shouldFitContainer={this.props.droplistShouldFitContainer}
+          position={position}
+          shouldFitContainer={droplistShouldFitContainer}
           trigger={
             <FieldBase
-              appearance={mapAppearanceToFieldBase([this.props.appearance])}
-              isDisabled={this.props.isDisabled}
+              appearance={mapAppearanceToFieldBase([appearance])}
+              isDisabled={isDisabled}
               isFitContainerWidthEnabled
-              isFocused={this.props.isOpen || this.state.isFocused}
-              isInvalid={this.props.isInvalid}
+              isFocused={isOpen || this.state.isFocused}
+              isInvalid={isInvalid}
               isPaddingDisabled
               onBlur={this.onBlur}
               onFocus={this.onFocus}
             >
-              <div
-                className={triggerClasses}
+              <Trigger
                 onClick={this.handleTriggerClick}
-                tabIndex={!this.props.isDisabled && !this.props.hasAutocomplete ? '0' : null}
-                ref={ref => (this.triggerNode = ref)}
+                tabIndex={!isDisabled && !hasAutocomplete ? '0' : null}
+                innerRef={ref => (this.triggerNode = ref)}
               >
                 {
-                  !this.props.hasAutocomplete || this.props.isDisabled ?
-                    <div className={styles.content}>
+                  !hasAutocomplete || isDisabled ?
+                    <Content>
                       {
-                        this.props.selectedItem.elemBefore ?
-                          <div className={styles.elemBefore}>
-                            {this.props.selectedItem.elemBefore}
-                          </div> :
+                        selectedItem.elemBefore ?
+                          <ElemBefore>
+                            {selectedItem.elemBefore}
+                          </ElemBefore> :
                           null
                       }
                       {
-                        this.props.selectedItem.content ?
-                          <span>{this.props.selectedItem.content}</span> :
-                          <span className={styles.placeholder}>{this.props.placeholder}</span>
+                        selectedItem.content ?
+                          <span>{selectedItem.content}</span> :
+                          <Placeholder>{placeholder}</Placeholder>
                       }
-                    </div> :
-                    <div className={styles.contentAutocomplete}>
-                      <input
+                    </Content> :
+                    <AutocompleteWrapper>
+                      <AutocompleteInput
                         onChange={this.handleInputOnChange}
-                        placeholder={this.props.placeholder}
-                        ref={ref => (this.inputNode = ref)}
+                        placeholder={placeholder}
+                        innerRef={ref => (this.inputNode = ref)}
                         type="text"
-                        value={this.props.filterValue}
-                        disabled={this.props.isDisabled}
+                        value={filterValue}
+                        disabled={isDisabled}
                       />
-                    </div>
+                    </AutocompleteWrapper>
                 }
-                <div className={styles.expand}>
+                <Expand>
                   <ExpandIcon label="" />
-                </div>
-              </div>
+                </Expand>
+              </Trigger>
             </FieldBase>
           }
         >
@@ -515,10 +529,10 @@ export default class StatelessSelect extends PureComponent {
             ref={ref => (this.droplistNode = ref)}
             style={{ minWidth: this.state.droplistWidth }}
           >
-            {this.renderGroups(this.props.items)}
+            {this.renderGroups(items)}
           </div>
         </Droplist>
-      </div>
+      </StatelessSelectWrapper>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }

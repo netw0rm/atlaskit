@@ -56,7 +56,7 @@ export default class Popup extends PureComponent<Props, {}> {
     }
 
     if (popupRect.bottom >= viewportRect.bottom) {
-      popup.style.top = `${popupRect.top - popupRect.height - triggerRect.height - triggerRect.top - 4}px`;
+      popup.style.top = `${popupRect.top - popupRect.height - triggerRect.height - triggerRect.top - 4 + 10}px`;
     }
   }
 

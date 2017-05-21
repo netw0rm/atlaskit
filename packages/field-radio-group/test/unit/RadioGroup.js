@@ -3,8 +3,8 @@ import { mount, shallow } from 'enzyme';
 import Base from 'ak-field-base';
 import sinon from 'sinon';
 
-import Radio from '../../src/Radio';
-import AkFieldRadioGroup from '../../src/RadioGroup';
+import Radio from '../../src/components/Radio';
+import AkFieldRadioGroup from '../../src/components/RadioGroupStateless';
 import { name } from '../../package.json';
 
 describe(name, () => {

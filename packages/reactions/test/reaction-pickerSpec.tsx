@@ -21,6 +21,14 @@ const renderPicker = (onSelection: Function = () => {}, text?: string) => {
 };
 
 describe('@atlaskit/reactions/reaction-picker', () => {
+  let clock;
+  beforeEach(function () {
+    clock = sinon.useFakeTimers();
+  });
+
+  afterEach(function () {
+    clock.restore();
+  });
 
   it('should render a trigger', () => {
     const picker = shallow(renderPicker());
@@ -50,6 +58,8 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     trigger.simulate('mousedown', { button: 0 });
     const selector = picker.find(Selector);
     selector.find(EmojiButton).first().simulate('mouseup', { button: 0 });
+
+    clock.tick(500);
     expect(onSelectionSpy.called).to.equal(true);
   });
 

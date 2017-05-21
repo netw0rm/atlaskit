@@ -26,7 +26,7 @@ const WrapperNode = styled.span`
   vertical-align: middle;
   white-space: nowrap;
 
-  &.ProseMirror-selectednode: {
+  &.ProseMirror-selectednode {
     background: ${akColorN50};
     outline: none;
   }
@@ -39,7 +39,7 @@ const JiraChildNode = styled.span`
   line-height: 24px;
   vertical-align: top;
 
-  &:before: {
+  &:before {
     color: black;
     content: "JIRA | ";
   }
@@ -49,10 +49,10 @@ const JiraChildNode = styled.span`
 const SvgChildNode = styled.span`
   display: inline-block;
   height: 24px;
-  verticalAlign: top;
+  vertical-align: top;
   width: 24px;
 
-  & > div: {
+  & > div {
     height: 24px;
     width: 24px;
   }
@@ -92,7 +92,7 @@ export default {
   }
 } as NodeSpec;
 
-export const jiraIssueNodeView = (node: any, view: any, getPos: () => number): NodeView => {
+export const jiraIssueNodeView = (node: any): NodeView => {
   const { issueKey, macroId, schemaVersion, server, serverId } = node.attrs;
 
   let dom: HTMLElement | undefined = document.createElement('span');

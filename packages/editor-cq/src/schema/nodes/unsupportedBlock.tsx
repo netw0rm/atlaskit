@@ -26,11 +26,9 @@ const BlockNode = styled.div`
   vertical-align: text-bottom;
   white-space: nowrap;
 
-  $nest: {
-    '&.ProseMirror-selectednode': {
-      background: ${akColorN50};
-      outline: none;
-    }
+  '&.ProseMirror-selectednode' {
+    background: ${akColorN50};
+    outline: none;
   }
 `;
 
@@ -56,9 +54,9 @@ export default {
   ]
 } as NodeSpec;
 
-export const unsupportedBlockNodeView = (node: any, view: any, getPos: () => number): NodeView => {
+export const unsupportedBlockNodeView = (node: any): NodeView => {
   const { nodeType, unsupported, unsupportedBlockCxhtml } = node.attrs;
-  let dom: HTMLElement | undefined = document.createElement('div');
+  let dom: HTMLElement | undefined = document.createElement('span');
   dom.dataset.nodeType = nodeType;
   dom.dataset.unsupported = unsupported;
   dom.dataset.unsupportedBlockCxhtml = unsupportedBlockCxhtml;

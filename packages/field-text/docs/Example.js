@@ -19,5 +19,3 @@ const Example = () => (
 );
 
 export default Example;
-
-// toggleable isLabelHidden

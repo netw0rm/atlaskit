@@ -168,7 +168,7 @@ export class EmojiState {
 
     if (emoji && emojiId) {
       const { start, end } = this.findEmojiQueryMark();
-      const node = emoji.create({ ...emojiId });
+      const node = emoji.create({ ...emojiId, text: emojiId.fallback || emojiId.shortName });
       const textNode = state.schema.text(' ');
       view.dispatch(
         state.tr.replaceWith(start, end, [node, textNode])

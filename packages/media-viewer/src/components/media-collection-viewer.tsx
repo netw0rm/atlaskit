@@ -95,9 +95,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
   private loadNextPageIfRequired = () => {
     const { mediaViewer, provider } = this.state;
     if (mediaViewer.isShowingLastFile()) {
-      provider
-        .controller()
-        .loadNextPage();
+      provider.loadNextPage();
     }
   }
 }

@@ -12,7 +12,6 @@ import { UploadingView } from '../../src/utils/uploadingView';
 describe('CardImageView', () => {
   it('should render default icon according to mediaType', () => {
     const card = mount(<CardImageView mediaType="audio" status="complete"/>);
-
     expect(card.find(FileIcon).props().mediaType).to.equal('audio');
   });
 
@@ -61,13 +60,34 @@ describe('CardImageView', () => {
     expect(card.find(CardOverlay).props().persistent).to.be.true;
   });
 
-  it('should render the UploadView when status=uploading', () => {
+  it('should render the UploadView with no overlay when status=uploading and card is NOT selectable', () => {
     const card = shallow(<CardImageView status="uploading" mediaName="foo" progress={90}/>);
     const uploadView = card.find(UploadingView);
     expect(uploadView).to.be.length(1);
     expect(uploadView.props()).to.include({
       title: 'foo',
       progress: 90
+    });
+
+    const overlay = card.find(CardOverlay);
+    expect(overlay).to.have.length(0);
+  });
+
+  it('should render the UploadView with an overlay when status=uploading and card is selectable', () => {
+    const card = shallow(<CardImageView status="uploading" mediaName="foo" progress={90} selectable={true} />);
+    const uploadView = card.find(UploadingView);
+    expect(uploadView).to.be.length(1);
+    expect(uploadView.props()).to.include({
+      title: 'foo',
+      progress: 90
+    });
+
+    const overlay = card.find(CardOverlay);
+    expect(overlay).to.have.length(1);
+    expect(overlay.props()).to.include({
+      persistent: true,
+      selectable: true,
+      selected: undefined
     });
   });
 

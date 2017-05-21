@@ -16,6 +16,7 @@ const { getEmojiResource } = emojiTestData.emojiStoryData;
 import { name } from '../package.json';
 
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
+const demoAri2 = 'ari:cloud:owner:demo-cloud-id:item/2';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 analyticsService.handler = (name, properties) => {
@@ -68,6 +69,19 @@ storiesOf(name, module)
         onReactionClick={action('reaction clicked')}
       />
     </div>
+  ))
+  .add('Empty Reactions', () => (
+      <div>
+          <p>This is a message with some reactions</p>
+          <Reactions
+              containerAri={containerAri}
+              ari={demoAri2}
+              emojiProvider={getEmojiResource()}
+              reactionsProvider={reactionsProvider}
+              onReactionClick={action('reaction clicked')}
+              allowAllEmojis={true}
+          />
+      </div>
   ))
   .add('Reactions with all emojis enabled', () => (
     <div>

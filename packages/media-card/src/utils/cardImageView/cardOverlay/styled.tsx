@@ -264,7 +264,7 @@ export const TitleWrapper = styled.div`
   line-height: 18px;
 `;
 
-export const FileSize = styled.div`
+export const Subtitle = styled.div`
   ${ellipsis('100px')}
   font-size: 12px;
   color: #5E6C84;

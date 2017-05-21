@@ -53,7 +53,7 @@ export const media: NodeSpec = {
       collection: dom.getAttribute('data-collection')!
     })
   }],
-  toDOM(node: any) {
+  toDOM(node: MediaNode) {
     const attrs = {
       'data-id': node.attrs.id,
       'data-node-type': 'media',
@@ -67,6 +67,18 @@ export const media: NodeSpec = {
       // rectangle that provides an affordance for media.
       'style': 'display: inline-block; border-radius: 3px; background: #EBECF0; height: 104px; width: 156px; box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);'
     };
+
+    if (node.fileName) {
+      attrs['file-name'] = node.fileName;
+    }
+
+    if (node.fileSize) {
+      attrs['file-size'] = `${node.fileSize}`;
+    }
+
+    if (node.fileMimeType) {
+      attrs['file-mime-type'] = node.fileMimeType;
+    }
 
     return ['div', attrs];
   },

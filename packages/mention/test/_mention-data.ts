@@ -5,7 +5,7 @@ declare var require: {
 };
 
 // tslint:disable-next-line:no-var-requires
-export const mentionData: MentionsResult = require('./_mention-data.json') as MentionsResult;
+export const mentionData: MentionsResult = require('./_mention-data-raw.json') as MentionsResult;
 
 export const mentionDataSize = mentionData.mentions.length;
 

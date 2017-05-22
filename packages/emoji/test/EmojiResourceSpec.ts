@@ -3,6 +3,7 @@ import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 
+import { customCategory } from '../src/constants';
 import { EmojiDescription, ImageRepresentation } from '../src/types';
 import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
 import { OnProviderChange } from '../src/api/SharedResources';
@@ -80,7 +81,7 @@ const checkEmoji = (expected: EmojiDescription, actual: EmojiDescription | undef
   }
 };
 
-const customEmoji = (emoji: EmojiDescription) => emoji.category === 'CUSTOM';
+const customEmoji = (emoji: EmojiDescription) => emoji.category === customCategory;
 
 class MockOnProviderChange implements OnProviderChange<EmojiSearchResult, any, undefined> {
   resultCalls: EmojiSearchResult[] = [];

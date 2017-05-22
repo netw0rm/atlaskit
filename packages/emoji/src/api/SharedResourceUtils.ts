@@ -33,12 +33,20 @@ export interface ServiceConfig {
   refreshedSecurityProvider?: RefreshSecurityProvider;
 }
 
-const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions | undefined): string => {
+export interface RequestServiceOptions {
+  path?: string;
+  queryParams?: KeyValues;
+  requestInit?: RequestInit;
+}
+
+const buildUrl = (baseUrl: string, path: string = '', queryParams?: KeyValues, secOptions?: SecurityOptions): string => {
   const searchParam = new URLSearchParams(URL.parse(baseUrl).search || undefined);
   baseUrl = baseUrl.split('?')[0];
-  for (const key in data) { // eslint-disable-line no-restricted-syntax
-    if ({}.hasOwnProperty.call(data, key)) {
-      searchParam.append(key, data[key]);
+  if (queryParams) {
+    for (const key in queryParams) { // eslint-disable-line no-restricted-syntax
+      if ({}.hasOwnProperty.call(queryParams, key)) {
+        searchParam.append(key, queryParams[key]);
+      }
     }
   }
   if (secOptions && secOptions.params) {
@@ -67,12 +75,11 @@ const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, se
   return `${baseUrl}${seperator}${path}${params}`;
 };
 
-const buildHeaders = (secOptions?: SecurityOptions): Headers => {
-  const headers = new Headers();
-  if (secOptions && secOptions.headers) {
-    for (const key in secOptions.headers) { // eslint-disable-line no-restricted-syntax
-      if ({}.hasOwnProperty.call(secOptions.headers, key)) {
-        const values = secOptions.headers[key];
+const addToHeaders = (headers: Headers, keyValues?: KeyValues) => {
+  if (keyValues) {
+    for (const key in keyValues) { // eslint-disable-line no-restricted-syntax
+      if ({}.hasOwnProperty.call(keyValues, key)) {
+        const values = keyValues[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
             headers.append(key, values[i]);
@@ -83,32 +90,46 @@ const buildHeaders = (secOptions?: SecurityOptions): Headers => {
       }
     }
   }
+};
 
+const buildHeaders = (secOptions?: SecurityOptions, extraHeaders?: KeyValues): Headers => {
+  const headers = new Headers();
+  addToHeaders(headers, extraHeaders);
+  if (secOptions) {
+    addToHeaders(headers, secOptions.headers);
+  }
   return headers;
 };
 
 /**
  * @returns Promise containing the json response
  */
-export const requestService = (baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
-                        secOptions: SecurityOptions | undefined, refreshedSecurityProvider?: RefreshSecurityProvider) => {
-  const url = buildUrl(baseUrl, path, data, secOptions);
-  const headers = buildHeaders(secOptions);
-  const options = {
-    ...opts,
-    ...{ headers },
+export const requestService = <T>(serviceConfig: ServiceConfig, options: RequestServiceOptions): Promise<T> => {
+  const { url, securityProvider, refreshedSecurityProvider } = serviceConfig;
+  const { path, queryParams, requestInit } = options;
+  const secOptions = securityProvider && securityProvider();
+  const requestUrl = buildUrl(url, path, queryParams, secOptions);
+  const headers = buildHeaders(secOptions, requestInit && requestInit.headers);
+  const requestOptions = {
+    ...requestInit,
+    headers,
     credentials: 'include' as RequestCredentials,
   };
-  return fetch(new Request(url, options))
+
+  return fetch(new Request(requestUrl, requestOptions))
     .then((response: Response) => {
       if (response.ok) {
         return response.json();
       } else if (response.status === 401 && refreshedSecurityProvider) {
         // auth issue - try once
         debug('401 attempting a forced refresh from securityProvider');
-        return refreshedSecurityProvider().then(newSecOptions => (
-          requestService(baseUrl, path, data, opts, newSecOptions)
-        ));
+        return refreshedSecurityProvider().then(newSecOptions => {
+          const retryServiceConfig = {
+            url,
+            securityProvider: () => newSecOptions,
+          };
+          return requestService(retryServiceConfig, options);
+        });
       }
       return Promise.reject({
         code: response.status,

@@ -6,11 +6,11 @@ import { expect } from 'chai';
 import MediaEmojiResource from '../src/api/MediaEmojiResource';
 import { EmojiDescription, ImageRepresentation, MediaApiToken, MediaApiRepresentation } from '../src/types';
 
-import { blobResponse, defaultMediaApiToken, evilburnsEmoji, mediaEmoji, siteUrl } from './TestData';
+import { blobResponse, defaultMediaApiToken, evilburnsEmoji, mediaEmoji, siteServiceConfig } from './TestData';
 
 const createMediaEmojiResource = (mediaApiToken?: MediaApiToken) => {
   mediaApiToken = mediaApiToken || defaultMediaApiToken();
-  return new MediaEmojiResource(siteUrl, mediaApiToken);
+  return new MediaEmojiResource(siteServiceConfig, mediaApiToken);
 };
 
 const getMediaPath = (emoji: EmojiDescription): string => (
@@ -67,7 +67,7 @@ describe('MediaEmojiResource', () => {
         matcher: `begin:${getMediaPath(mediaEmoji)}`,
         response: blobResponse(blob),
       }).mock({
-        matcher: `${siteUrl}/token/read`,
+        matcher: `${siteServiceConfig.url}/token/read`,
         response: defaultMediaApiToken(),
         name: 'token-refresh',
       });
@@ -100,7 +100,7 @@ describe('MediaEmojiResource', () => {
         matcher: `begin:${getMediaPath(mediaEmoji)}`,
         response: blobResponse(blob),
       }).mock({
-        matcher: `${siteUrl}/token/read`,
+        matcher: `${siteServiceConfig.url}/token/read`,
         response: defaultMediaApiToken(),
         name: 'token-refresh',
       });

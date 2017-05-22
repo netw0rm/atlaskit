@@ -5,6 +5,7 @@ import { waitUntil } from '@atlaskit/util-common-test';
 
 import { emojiRepository, getEmojiResourcePromise, mediaEmoji } from './TestData';
 
+import { customCategory } from '../src/constants';
 import CategorySelector from '../src/components/picker/CategorySelector';
 import Emoji from '../src/components/common/Emoji';
 import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
@@ -76,7 +77,7 @@ describe('<EmojiPicker />', () => {
 
       return waitUntil(() => emojisVisible(list)).then(() => {
         const customSection = component.find(EmojiPickerListSection).last();
-        expect(customSection.get(0).props.title, 'Custom category title').to.equal('CUSTOM');
+        expect(customSection.get(0).props.title, 'Custom category title').to.equal(customCategory);
         const placeholders = customSection.find(EmojiPlaceholder);
         expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
         const props = placeholders.get(0).props;
@@ -135,15 +136,15 @@ describe('<EmojiPicker />', () => {
       const categorySelector = component.find(CategorySelector);
 
       const list = component.find(EmojiPickerList);
-      expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal('CUSTOM');
+      expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
 
       const customCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Custom');
       expect(customCategoryButton.length, 'Custom category button').to.equal(1);
 
       return waitUntil(() => emojisVisible(list)).then(() => {
         customCategoryButton.simulate('click', leftClick);
-        return waitUntil(() => list.prop('selectedCategory') === 'CUSTOM').then(() => {
-          expect(list.prop('selectedCategory'), 'Custom category selected').to.equal('CUSTOM');
+        return waitUntil(() => list.prop('selectedCategory') === customCategory).then(() => {
+          expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
           const previews = component.find(EmojiPreview);
           expect(previews.length, 'Preview visible').to.equal(1);
           const preview = previews.first();

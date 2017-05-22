@@ -13,6 +13,7 @@ describe('<EmojiPickerList />', () => {
     it('should contain search ', () => {
       const wrapper = mount(<EmojiList
         emojis={emojis}
+        showUploadOption={true}
       />);
 
       expect(wrapper.find(`.${styles.pickerSearch}`)).to.have.length(1);

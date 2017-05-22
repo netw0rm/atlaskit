@@ -1,3 +1,4 @@
+import { customCategory } from '../src/constants';
 import EmojiRepository from '../src/api/EmojiRepository';
 import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
 import { EmojiDescription, EmojiDescriptionWithVariations, EmojiServiceDescription, EmojiServiceResponse } from '../src/types';
@@ -51,7 +52,7 @@ export const mediaServiceEmoji: EmojiServiceDescription = {
   name: 'Media example',
   fallback: ':media:',
   type: 'custom',
-  category: 'CUSTOM',
+  category: customCategory,
   order: -2,
   representation: {
     imagePath: mediaEmojiImagePath,
@@ -66,7 +67,7 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
   name: 'Media example',
   fallback: ':media:',
   type: 'custom',
-  category: 'CUSTOM',
+  category: customCategory,
   order: -2,
   representation: {
     mediaPath: mediaEmojiImagePath,
@@ -77,6 +78,10 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
 };
 
 export const siteUrl = 'https://example.com/emoji/site/blah';
+
+export const siteServiceConfig = {
+  url: siteUrl,
+};
 
 export const defaultMediaApiToken = () => ({
   url: testMediaBaseUrl,

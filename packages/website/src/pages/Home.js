@@ -21,7 +21,7 @@ import { DESKTOP_QUERY, MOBILE_QUERY } from '../../constants';
 
 import { Heading, Intro, Section } from '../components/Type';
 import Container from '../components/Container';
-import landingHero from '../images/landing_hero.svg';
+import landingHero from '../images/landing-hero.svg';
 
 const IntroContent = props => (
   <Intro {...props}>

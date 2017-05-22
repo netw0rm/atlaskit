@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-viewer",
-  "version": "4.3.1",
+  "version": "5.0.0",
   "config": {
     "access": "public"
   },

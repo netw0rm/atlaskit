@@ -4,15 +4,15 @@ import CommentField from './internal/CommentField';
 
 export default class CommentAuthor extends PureComponent {
   static propTypes = {
-    /** The name of the author */
+    /** The name of the author. */
     children: PropTypes.node,
-    /** The URL of the link. If not provided, the element will be rendered as text */
+    /** The URL of the link. If not provided, the element will be rendered as text. */
     href: PropTypes.string,
-    /** Handler called when the element is clicked */
+    /** Handler called when the element is clicked. */
     onClick: PropTypes.func,
-    /** Handler called when the element is focused */
+    /** Handler called when the element is focused. */
     onFocus: PropTypes.func,
-    /** Handler called when the element is moused over */
+    /** Handler called when the element is moused over. */
     onMouseOver: PropTypes.func,
   }
 

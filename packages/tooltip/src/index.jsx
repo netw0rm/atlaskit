@@ -6,8 +6,11 @@ import Tooltip from './Tooltip';
    at import time */
 export default class AKTooltip extends PureComponent {
   static propTypes = {
+    /** Text to appear inside the tooltip. */
     description: PropTypes.string,
+    /** Position relative to the child component. */
     position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
+    /** Component the tooltip will be relative to. */
     children: PropTypes.node,
   }
 
@@ -50,4 +53,3 @@ export default class AKTooltip extends PureComponent {
 export { Tooltip };
 
 /* eslint-enable react/no-unused-prop-types */
-

@@ -2,8 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
-
-import { appearances, mapAppearanceToFieldBase } from './appearances';
+import { mapAppearanceToFieldBase } from './appearances';
 import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
 import Content from '../styled/Content';
 import DummyItem from './DummyItem';
@@ -15,32 +14,75 @@ import Placeholder from '../styled/Placeholder';
 import StatelessSelectWrapper from '../styled/StatelessSelectWrapper';
 import Trigger from '../styled/Trigger';
 
+// =============================================================
+// NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
+// -------------------------------------------------------------
+// DO NOT update values here without updating the other.
+// =============================================================
+
+const appearances = {
+  values: [
+    'default',
+    'subtle',
+  ],
+  default: 'default',
+};
+
 const itemShape = DummyItem.propTypes;
 const groupShape = DummyGroup.propTypes;
 
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
+    /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Sets whether the dropdown should be constrained to the width of its trigger */
     droplistShouldFitContainer: PropTypes.bool,
+    /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
+    /** Sets whether the field should be selectable. If it is, the field will be
+    a text box, which will filter the items. */
     hasAutocomplete: PropTypes.bool,
+    /** id property to be passed down to the html select component. */
     id: PropTypes.string,
+    /** Sets whether the select is selectable. Changes hover state. */
     isDisabled: PropTypes.bool,
+    /** controls the top margin of the label component rendered. */
     isFirstChild: PropTypes.bool,
+    /** Sets whether the Select dropdown is open. */
     isOpen: PropTypes.bool,
+    /** Sets whether form including select can be submitted without an option
+    being made. */
     isRequired: PropTypes.bool,
+    /** Set whether there is an error with the selection. Sets an orange border
+    and shows the warning icon. */
     isInvalid: PropTypes.bool,
+    /** An array of objects, each one of which must have an array of items, and
+    may have a heading. All items should have content and value properties, with
+    content being the displayed text. */
     items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    /** Label to be displayed above select. */
     label: PropTypes.string,
+    /** name property to be passed to the html select element. */
     name: PropTypes.string,
+    /** Mesage to display in any group in items if there are no items in it,
+    including if there is one item that has been selected. */
     noMatchesFound: PropTypes.string,
+    /** Handler called when a selection is made, with the item chosen. */
     onSelected: PropTypes.func,
+    /** Handler to be called when the filtered items changes.*/
     onFilterChange: PropTypes.func,
+    /** Handler called when the select is opened or closed. Called with an object
+    that has both the event, and the new isOpen state. */
     onOpenChange: PropTypes.func,
+    /** Text to be shown within the select when no item is selected. */
     placeholder: PropTypes.string,
+    /** Where the select dropdown should be displayed relative to the field position. */
     position: PropTypes.string,
+    /** Sets whether the field will become focused. */
     shouldFocus: PropTypes.bool,
+    /** The selected item data */
     selectedItem: PropTypes.shape(itemShape),
+    /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
   }
 

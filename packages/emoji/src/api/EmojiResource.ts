@@ -1,8 +1,10 @@
 import { EmojiDescription, EmojiId, EmojiResponse, OptionalEmojiDescription, SearchOptions } from '../types';
+import { isMediaApiRepresentation } from '../type-helpers';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
 import { requestService, ServiceConfig } from './SharedResourceUtils';
 import { AbstractResource, OnProviderChange, Provider } from './SharedResources';
+import MediaEmojiResource from './MediaEmojiResource';
 
 export interface EmojiResourceConfig {
   /**
@@ -32,6 +34,8 @@ export interface ResolveReject<T> {
 export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, undefined, SearchOptions> {
   /**
    * Returns the first matching emoji matching the shortName, or null if none found.
+   *
+   * Will load media api images before returning.
    */
   findByShortName(shortName: string): Promise<OptionalEmojiDescription>;
 
@@ -40,12 +44,14 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    *
    * If not found or emojiId.id is undefined, fallback to a search by shortName.
    *
-   * Returns undefined if none found.
+   * Will load media api images before returning.
    */
   findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription>;
 
   /**
    * Finds emojis belonging to specified category.
+   *
+   * Does not automatically load Media API images.
    */
   findInCategory(categoryId: string): Promise<EmojiDescription[]>;
 
@@ -62,14 +68,16 @@ interface LastQuery {
   options?: SearchOptions;
 }
 
+// Batch size === 1 row in the emoji picker
+const mediaEmojiBatchSize = 8;
+
 export default class EmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider {
   private recordConfig?: ServiceConfig;
   private emojiRepository: EmojiRepository;
   private lastQuery: LastQuery;
   private activeLoaders: number = 0;
   private retries: Map<Retry<any>, ResolveReject<any>> = new Map();
-
-  // private mediaApiToken?: MediaApiToken;
+  private mediaEmojiResource?: MediaEmojiResource;
 
   constructor(config: EmojiResourceConfig) {
     super();
@@ -87,6 +95,7 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
         this.activeLoaders--;
         emojiResponses[index] = emojiResponse;
         this.initEmojiRepository(emojiResponses);
+        this.initMediaEmojiResource(emojiResponse, provider.url);
         this.performRetries();
         this.refreshLastFilter();
       }).catch((reason) => {
@@ -106,6 +115,12 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
       emojis = emojis.concat(emojiResponse.emojis);
     });
     this.emojiRepository = new EmojiRepository(emojis);
+  }
+
+  private initMediaEmojiResource(emojiResponse: EmojiResponse, siteUrl: string): void {
+    if (!this.mediaEmojiResource && emojiResponse.mediaApiToken) {
+      this.mediaEmojiResource = new MediaEmojiResource(siteUrl, emojiResponse.mediaApiToken);
+    }
   }
 
   private performRetries(): void {
@@ -141,6 +156,50 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     return Promise.resolve<T | undefined>(defaultResponse);
   }
 
+  protected notifyResult(result: EmojiSearchResult): void {
+    if (result.query === this.lastQuery.query) {
+      super.notifyResult(result);
+      this.loadMediaEmoji(result);
+    }
+  }
+
+  private loadMediaEmoji(result: EmojiSearchResult) {
+    const { emojis, ...other } = result;
+    const mediaEmojis = emojis.filter(emoji => isMediaApiRepresentation(emoji.representation));
+    // only load a batch of media emoji at a time (next notifyResult will load the next batch)
+    const mediaEmojiResource = this.mediaEmojiResource;
+    if (mediaEmojiResource && mediaEmojis.length) {
+      const activeLoadersAtStart = this.activeLoaders;
+      const mediaImageLoaders: Promise<EmojiDescription>[] =
+        mediaEmojis.slice(0, mediaEmojiBatchSize).map(mediaEmoji =>
+          mediaEmojiResource.getMediaEmojiAsImageEmoji(mediaEmoji)
+        );
+      Promise.all(mediaImageLoaders).then(loadedEmojis => {
+        if (result.query === this.lastQuery.query && activeLoadersAtStart === this.activeLoaders) {
+          // these loaded emojis are still relevant...
+          const newEmojis: EmojiDescription[] = [];
+          emojis.forEach(emoji => {
+            if (loadedEmojis.length && isMediaApiRepresentation(emoji.representation)) {
+              const loadedEmoji = loadedEmojis.shift() as EmojiDescription;
+              const representation = loadedEmoji.representation;
+              if (!isMediaApiRepresentation(representation)) {
+                // loaded, keep, if not loaded, drop as it's not going to load
+                newEmojis.push(loadedEmoji);
+              }
+            } else {
+              newEmojis.push(emoji);
+            }
+          });
+
+          this.notifyResult({
+            ...other,
+            emojis: newEmojis,
+          });
+        }
+      });
+    }
+  }
+
   filter(query?: string, options?: SearchOptions): void {
     this.lastQuery = {
       query: query || '',
@@ -159,7 +218,10 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     if (this.isLoaded()) {
       // Wait for all emoji to load before looking by shortName (to ensure correct priority)
       const emoji = this.emojiRepository.findByShortName(shortName);
-      return Promise.resolve(emoji);
+      if (!emoji) {
+        return Promise.resolve(emoji);
+      }
+      return this.loadIfMediaEmoji(emoji);
     }
     return this.retryIfLoading(() => this.findByShortName(shortName), undefined);
   }
@@ -170,7 +232,7 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
       if (id) {
         const emoji = this.emojiRepository.findById(id);
         if (emoji) {
-          return Promise.resolve(emoji);
+          return this.loadIfMediaEmoji(emoji);
         }
         if (this.isLoaded()) {
           // all loaded but not found by id, fallback to searching by shortName to
@@ -205,5 +267,23 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
       return requestService(url, undefined, data, options, secOptions, refreshedSecurityProvider);
     }
     return Promise.reject('Resource does not support recordSelection');
+  }
+
+  /**
+   * Loads the media image data for the image and returns
+   * as an it as an Image representation.
+   *
+   * If it is not a media emoji, the original emoji is returned.
+   *
+   * If for some reason there is not media tokens available the
+   * original emoji is returned.
+   *
+   * Optional if not using Atlassian media api for custom emoji storage.
+   */
+  private loadIfMediaEmoji(emoji: EmojiDescription): Promise<EmojiDescription> {
+    if (!this.mediaEmojiResource) {
+      return Promise.resolve(emoji);
+    }
+    return this.mediaEmojiResource.getMediaEmojiAsImageEmoji(emoji);
   }
 }

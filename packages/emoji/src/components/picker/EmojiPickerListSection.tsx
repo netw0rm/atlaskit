@@ -3,7 +3,9 @@ import { PureComponent } from 'react';
 
 import * as styles from './styles';
 import { EmojiDescription, EmojiId, OnEmojiEvent } from '../../types';
+import { isEmojiLoaded } from '../../type-helpers';
 import Emoji from '../common/Emoji';
+import EmojiPlaceholder from '../common/EmojiPlaceholder';
 
 export interface Props {
   id?: string;
@@ -32,19 +34,31 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
         <div>
           {emojis.map((emoji) => {
             const selected = selectedEmoji && selectedEmoji.id === emoji.id;
-            const key = emoji.id || `${emoji.shortName}-${emoji.category}`;
+            const { shortName, category, id, name } = emoji;
+            const key = id || `${shortName}-${category}`;
+            let emojiComponent;
 
-            return (
-              <span
-                className={styles.pickerEmoji}
-                key={key}
-              >
+            if (isEmojiLoaded(emoji)) {
+              emojiComponent = (
                 <Emoji
                   emoji={emoji}
                   selected={selected}
                   onSelected={onSelected}
                   onMouseMove={onMouseMove}
                 />
+              );
+            } else {
+              emojiComponent = (
+                <EmojiPlaceholder shortName={shortName} name={name} />
+              );
+            }
+
+            return (
+              <span
+                className={styles.pickerEmoji}
+                key={key}
+              >
+                {emojiComponent}
               </span>
             );
          })}

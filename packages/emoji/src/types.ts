@@ -44,7 +44,6 @@ export interface SpriteImageRepresentation extends EmojiImageRepresentation {
  */
 export interface SpriteRepresentation extends SpriteImageRepresentation {
   sprite: SpriteSheet;
-  mediaApi?: boolean;
 }
 
 /**
@@ -57,10 +56,13 @@ export interface SpriteServiceRepresentation extends SpriteImageRepresentation {
 
 export interface ImageRepresentation extends EmojiImageRepresentation {
   imagePath: string;
-  mediaApi?: boolean;
 }
 
-export type EmojiRepresentation = SpriteRepresentation | ImageRepresentation | undefined;
+export interface MediaApiRepresentation extends EmojiImageRepresentation {
+  mediaPath: string;
+}
+
+export type EmojiRepresentation = SpriteRepresentation | ImageRepresentation | MediaApiRepresentation | undefined;
 
 export interface EmojiDescription extends EmojiId {
   name?: string;
@@ -108,7 +110,7 @@ export interface MediaApiToken {
   clientId: string;
   jwt: string;
   collectionName: string;
-  expiresIn: number;
+  expiresAt: number; // seconds since Epoch UTC
 }
 
 export interface EmojiMeta {
@@ -154,4 +156,5 @@ export interface OnCategory {
 
 export interface SearchOptions {
   skinTone?: number; // skin tone offset starting at 1
+  limit?: number;
 }

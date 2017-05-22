@@ -12,6 +12,8 @@ import Heading from '../src/nodes/heading';
 import BulletList from '../src/nodes/bulletList';
 import OrderedList from '../src/nodes/orderedList';
 import ListItem from '../src/nodes/listItem';
+import Blockquote from '../src/nodes/blockquote';
+import Panel from '../src/nodes/panel';
 import Em from '../src/marks/em';
 import Link from '../src/marks/link';
 import Mono from '../src/marks/mono';
@@ -273,5 +275,16 @@ storiesOf(name, module)
         </OrderedList>
       </ListItem>
     </OrderedList>
+  ))
+  .add('nodes/blockquote', () => (
+    <Blockquote>Blockquote</Blockquote>
+  ))
+  .add('nodes/panel', () => (
+    <div>
+      <Panel type="info">This is a info panel</Panel>
+      <Panel type="note">This is a note panel</Panel>
+      <Panel type="tip">This is a tip panel</Panel>
+      <Panel type="warning">This is a warning panel</Panel>
+    </div>
   ))
   ;

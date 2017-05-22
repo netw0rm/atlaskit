@@ -221,7 +221,6 @@ export const genericFileDetails: FileDetails = {
   }
 };
 
-
 export const imageFileDetails: FileDetails = {
   id: 'some-id',
   mediaType: 'image',

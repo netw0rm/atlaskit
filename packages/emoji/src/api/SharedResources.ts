@@ -57,7 +57,7 @@ export abstract class AbstractResource<Q, R, E, I, O> implements Provider<Q, R, 
   private lastResult: R;
   private listeners = new Set<OnProviderChange<R, E, I>>();
 
-  abstract filter(query?: Q): void;
+  abstract filter(query?: Q, options?: O): void;
 
   subscribe(onChange: OnProviderChange<R, E, I>): void {
     this.listeners.add(onChange);

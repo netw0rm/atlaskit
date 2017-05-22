@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as cx from 'classnames';
 import { PureComponent, SyntheticEvent } from 'react';
 import { style } from 'typestyle';
 import { EmojiId, EmojiProvider, OnEmojiEvent, OptionalEmojiDescription } from '@atlaskit/emoji';
@@ -15,6 +16,16 @@ const selectorStyle = style({
   boxSizing: 'border-box',
   display: 'flex',
   padding: 0
+});
+
+const emojiStyle = style({
+  display: 'inline-block',
+  transition: 'transform 200ms ease-in-out',
+  $nest: {
+    '&.selected': {
+      transform: 'translateY(-48px) scale(2.667)'
+    },
+  }
 });
 
 export const defaultReactionsByShortName: Map<string, EmojiId> = new Map<string, EmojiId>([
@@ -35,10 +46,31 @@ export const defaultReactions: EmojiId[] = [
 
 export const isDefaultReaction = (emojiId: EmojiId) => defaultReactions.filter(otherEmojiId => equalEmojiId(otherEmojiId, emojiId)).length > 0;
 
-export default class Selector extends PureComponent<Props, {}> {
+export interface State {
+  selection: EmojiId | undefined;
+}
+
+export default class Selector extends PureComponent<Props, State> {
+  private timeouts: Array<number>;
+
+  constructor(props) {
+    super(props);
+    this.timeouts = [];
+
+    this.state = {
+      selection: undefined
+    };
+  }
+
+  componentWillUnmount() {
+    this.timeouts.forEach(clearTimeout);
+  }
 
   private onEmojiSelected = (emojiId: EmojiId, emoji: OptionalEmojiDescription, event: SyntheticEvent<any>) => {
-    this.props.onSelection(emojiId, emoji, event);
+    this.timeouts.push(setTimeout(() => this.props.onSelection(emojiId, emoji, event), 250));
+    this.setState({
+      selection: emojiId
+    });
   }
 
   render() {
@@ -48,8 +80,13 @@ export default class Selector extends PureComponent<Props, {}> {
       <div className={selectorStyle}>
         {defaultReactions.map(emojiId => {
           const key = emojiId.id || emojiId.shortName;
+
+          const classNames = cx(emojiStyle, {
+            'selected': emojiId === this.state.selection,
+          });
+
           return (
-            <div style={{display: 'inline-block'}} key={key}>
+            <div className={classNames} key={key}>
               <EmojiButton emojiId={emojiId} emojiProvider={emojiProvider} onClick={this.onEmojiSelected} />
             </div>
           );

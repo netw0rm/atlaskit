@@ -14,6 +14,8 @@ import FocusRingExample from './examples/helpers/focus-ring';
 import FocusRingExampleRaw from '!raw!./examples/helpers/focus-ring';
 import TextExample from './examples/helpers/text';
 import TextExampleRaw from '!raw!./examples/helpers/text';
+import PlaceholderExample from './examples/helpers/placeholder';
+import PlaceholderExampleRaw from '!raw!./examples/helpers/placeholder';
 /* eslint-enable import/first, import/no-duplicates */
 
 function generateUtilList(n) {
@@ -52,6 +54,15 @@ storiesOf(name, module)
         </Description>
         <Code code={TextExampleRaw}>
           {TextExample}
+        </Code>
+
+        <Description>
+          <H3>Placeholder</H3>
+          <p>The placholder helper generates vendor-prefixed rules for styling an {'input\'s'} placeholder.</p>
+          <p>Below is an implementation using the placeholder helper mixin.</p>
+        </Description>
+        <Code code={PlaceholderExampleRaw}>
+          {PlaceholderExample}
         </Code>
       </Chrome>
     );

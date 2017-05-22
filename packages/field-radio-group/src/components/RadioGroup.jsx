@@ -1,12 +1,24 @@
 import React, { PropTypes, PureComponent } from 'react';
 import AkFieldRadioGroup from './RadioGroupStateless';
-import { itemsDefault, itemsPropTypeSmart } from './constants';
+import { itemsPropTypeSmart } from './constants';
+
+// ========================================================================
+// NOTE: Duplicated in ./internal/constants unitl docgen can follow imports.
+// -------------------------------------------------------------
+// DO NOT update values here without updating the other.
+// ========================================================================
+const itemsDefault = [];
 
 export default class FieldRadioGroup extends PureComponent {
   static propTypes = {
+    /** Mark whether this field is required for form validation. */
     isRequired: PropTypes.bool,
+    /** Items to be rendered by a single Radio component. Passes options down to
+    an AkRadio component, with label passed as children. */
     items: itemsPropTypeSmart,
+    /** Label to display above the radio button options. */
     label: PropTypes.string,
+    /** Called when the value changes; passed the event */
     onRadioChange: PropTypes.func,
   }
 

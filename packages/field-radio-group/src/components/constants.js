@@ -10,6 +10,13 @@ export const itemsPropType = PropTypes.arrayOf(
   }),
 );
 
+// ================================================================
+// NOTE: Duplicated in Radio Group and AkFieldRadioGroup until
+// docgen can follow imports.
+// -------------------------------------------------------------
+// DO NOT update values here without updating the other.
+// ================================================================
+
 export const itemsDefault = [];
 
 export const itemsPropTypeSmart = PropTypes.arrayOf(

@@ -80,7 +80,7 @@ const colors = {
 };
 
 const borderRadius = 3;
-const nestedBackButtonMargin = 3;
+const nestedBackButtonMargin = 2;
 
 const defaultTheme = {
   [themeVariables.appearance]: appearanceEnum.container,
@@ -124,6 +124,10 @@ function getNestedBackButtonCss() {
     flex-shrink: 0;
     text-align: center;
     margin-right: ${nestedBackButtonMargin}px;
+    [dir="rtl"] & {
+      margin-right: 0;
+      margin-left: ${nestedBackButtonMargin}px;
+    }
   `;
 }
 

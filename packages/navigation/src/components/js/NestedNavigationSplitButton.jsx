@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import NestedNavigationSplitButtonWrapper from '../styled/NestedNavigationSplitButtonWrapper';
 import InteractiveWrapper from './InteractiveWrapper';
 import NavigationItemOuter from '../styled/NavigationItemOuter';
+import NavigationItemIcon from '../styled/NavigationItemIcon';
 
 export default class NestedNavigationSplitButton extends PureComponent {
   static propTypes = {
@@ -29,7 +30,11 @@ export default class NestedNavigationSplitButton extends PureComponent {
             onMouseDown={this.onBackButtonMouseDown}
             onClick={onBackButtonClick}
           >
-            {backButtonIcon}
+            <NavigationItemIcon
+              hasNoPadding
+            >
+              {backButtonIcon}
+            </NavigationItemIcon>
           </InteractiveWrapper>
         </NavigationItemOuter>
         {mainNavigationItem}

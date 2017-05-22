@@ -56,6 +56,31 @@ describe('<ContainerNavigationNested />', () => {
       expect(component.find('div').first().hasClass(styles.containerNavigationNestedRightAnimate)).to.equal(true);
     });
 
+    it('should not have the split back button if backButtonIcon option is empty', () => {
+      const navItemInSplitBackButton = <NavigationItem text="Go back" />;
+      const component = mount(
+        <ContainerNavigationNested
+          mainNavigationItem={navItemInSplitBackButton}
+        >
+          <h1>Content</h1>
+        </ContainerNavigationNested>
+      );
+      expect(component.find('ArrowleftIcon').length).to.equal(0);
+      expect(component.find('NavigationItem').length).to.equal(0);
+    });
+
+    it('should not have the split back button if mainNavigationItem option is empty', () => {
+      const component = mount(
+        <ContainerNavigationNested
+          backButtonIcon={<ArrowleftIcon label="Left icon" />}
+        >
+          <h1>Content</h1>
+        </ContainerNavigationNested>
+      );
+      expect(component.find('ArrowleftIcon').length).to.equal(0);
+      expect(component.find('NavigationItem').length).to.equal(0);
+    });
+
     it('should have the split back button if backButtonIcon and mainNavigationItem options are not empty', () => {
       const navItemInSplitBackButton = <NavigationItem text="Go back" />;
       const component = mount(

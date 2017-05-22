@@ -220,7 +220,9 @@ export default class StatelessDropdownMenu extends PureComponent {
   )
 
   renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group heading={group.heading} key={groupIndex}>{this.renderItems(group.items)}</Group>
+    <Group heading={group.heading} elemAfter={group.elemAfter} key={groupIndex}>
+      {this.renderItems(group.items)}
+    </Group>
   )
 
   renderTrigger = () => {

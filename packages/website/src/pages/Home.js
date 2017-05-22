@@ -26,7 +26,7 @@ import landingHero from '../images/landing-hero.svg';
 const IntroContent = props => (
   <Intro {...props}>
     AtlasKit is Atlassian&#39;s official UI library, built according to
-    the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a>(ADG).
+    the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a> (ADG).
   </Intro>
 );
 const GettingStartedContent = () => (

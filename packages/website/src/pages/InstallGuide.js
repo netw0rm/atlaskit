@@ -4,9 +4,11 @@ import Helmet from 'react-helmet';
 import { Heading, Intro, Section } from '../components/Type';
 import Container from '../components/Container';
 
+import { Link } from 'react-router-dom';
+
 export default class Examples extends PureComponent {
   render() {
-    const title = 'Install Guide';
+    const title = 'Install guide';
     const description = 'Everything you need to know to get up and running with AtalasKit';
 
     return (
@@ -25,7 +27,7 @@ export default class Examples extends PureComponent {
           <ul>
             <li>The <a href="http://go.atlassian.com/ak-starter/" target="_blank" rel="noopener noreferrer">atlaskit-starter</a> project will help you get a React app setup and running with some demo AtlasKit components. </li>
             <li>Use this <a href="http://go.atlassian.com/ak-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample as a sandbox to quickly try out our components. </li>
-            <li>The <a href="./components">components</a> section of this site has docs, code samples and links to React storybooks.</li>
+            <li>The <Link to="/components">components</Link> section of this site has docs, code samples and links to React storybooks.</li>
           </ul>
 
           <h3>2. The reduced UI pack</h3>

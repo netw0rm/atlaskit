@@ -94,7 +94,7 @@ const Footer = ({
     ) : <FooterItemPlaceholder />}
     {nextUrl ? (
       <FooterItem to={nextUrl}>
-        <FooterLabel>Next Up</FooterLabel>
+        <FooterLabel>Next up</FooterLabel>
         <FooterTitle>{nextTitle}</FooterTitle>
       </FooterItem>
     ) : <FooterItemPlaceholder />}

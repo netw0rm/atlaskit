@@ -51,7 +51,7 @@ const Footer = () => (
       <li><a href="https://ecosystem.atlassian.net/projects/AK/issues" target="_blank" rel="noopener noreferrer">Jira</a></li>
       <li><a href="https://atlassian.design" target="_blank" rel="noopener noreferrer">Design</a></li>
     </ul> */}
-    <p>Copyright &copy; 2016 Atlassian. Code licensed <a href="https://bitbucket.org/atlassian/atlaskit/src/f57adbf8152967d7afbb876bb8962ffbd3d5da89/LICENSE" target="_blank" rel="noopener noreferrer">Apache 2.0</a>.</p>
+    <p>Copyright &copy; 2017 Atlassian. Code licensed <a href="https://bitbucket.org/atlassian/atlaskit/src/f57adbf8152967d7afbb876bb8962ffbd3d5da89/LICENSE" target="_blank" rel="noopener noreferrer">Apache 2.0</a>.</p>
     <AtlassianIcon label="Atlassian" />
   </FooterContainer>
 );

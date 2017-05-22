@@ -13,6 +13,7 @@ import BulletList from './bulletList';
 import OrderedList from './orderedList';
 import ListItem from './listItem';
 import Blockquote from './blockquote';
+import Panel, { PanelType } from './panel';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -45,6 +46,7 @@ enum NodeType {
   orderedList,
   listItem,
   blockquote,
+  panel,
   unknown
 }
 
@@ -163,13 +165,16 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         break;
       }
       case NodeType.heading: {
-        const between = (x, a, b) => x >= a && x <= b;
-        if (attrs && attrs.level && between(attrs.level, 1, 6) && content) {
-          return {
-            type,
-            attrs,
-            content,
-          };
+        if (attrs && content) {
+          const { level } = attrs;
+          const between = (x, a, b) => x >= a && x <= b;
+          if (level && between(level, 1, 6)) {
+            return {
+              type,
+              attrs: { level },
+              content,
+            };
+          }
         }
         break;
       }
@@ -209,6 +214,20 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
             type,
             content,
           };
+        }
+        break;
+      }
+      case NodeType.panel: {
+        const types = ['info', 'note', 'tip', 'warning'];
+        if (attrs && content) {
+          const { panelType } = attrs;
+          if (types.indexOf(panelType) > -1) {
+            return {
+              type,
+              attrs: { panelType },
+              content,
+            };
+          }
         }
         break;
       }
@@ -311,6 +330,9 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       return <ListItem key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</ListItem>;
     case NodeType.blockquote:
       return <Blockquote key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Blockquote>;
+    case NodeType.panel:
+      const { panelType } = validNode.attrs as { panelType: PanelType };
+      return <Panel key={key} type={panelType}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Panel>;
     default: {
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {

@@ -2,14 +2,14 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { CrossIcon, DashboardIcon, EmojiTravelIcon, EmojiNatureIcon } from '@atlaskit/icon';
 import { name } from '../package.json';
-import Page from './components/HtmlPage';
+import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import RandomBadge from './components/RandomBadge';
 
 storiesOf(name, module)
   .add('with multi line items', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         createDrawerContent={(
           <div>
@@ -72,5 +72,5 @@ storiesOf(name, module)
           />
         </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ));

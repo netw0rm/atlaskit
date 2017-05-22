@@ -1,10 +1,3 @@
-const stringify = obj => JSON.stringify(obj)
-  .replace(/"/g, '\'')
-  .replace(/\{'/g, '{ \'')
-  .replace(/'\}/g, '\' }')
-  .replace(/:'/g, ': \'')
-  .replace(/,{/g, ', {');
-
 module.exports = ({ components }) => `/* eslint-disable global-require, quote-props */
 const components = {${components.map(component => `
   '${component.key}': {
@@ -14,7 +7,7 @@ const components = {${components.map(component => `
     key: '${component.key}',
     name: '${component.name}',
     packageName: '${component.pkg.name}',
-    maintainers: ${stringify(component.pkg.maintainers || [])},
+    maintainers: ${JSON.stringify(component.pkg.maintainers || [])},
     isPublished: '$component.isPublished',
     publishedDate: '${component.lastPublishedOn}',
     version: '${component.pkg.version}',

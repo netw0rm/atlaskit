@@ -1,7 +1,7 @@
 const axios = require('axios');
 const semver = require('semver');
 
-function getNpmMetada(name) {
+function getNpmMetadata(name) {
   const url = `http://registry.npmjs.org/${name.replace('/', '%2F')}`;
   return axios.get(url)
     .then(response => ({
@@ -38,7 +38,7 @@ function getStorybooksMetadata(name, versions) {
 }
 
 function getExternalMetadata(name) {
-  const npm = getNpmMetada(name);
+  const npm = getNpmMetadata(name);
   const storybook = npm.then(({ versions }) => getStorybooksMetadata(name, versions));
   return Promise.all([npm, storybook])
     .then(([npmMetadata, storybookMetadata]) => ({

@@ -1,5 +1,4 @@
 import {
-  code as coreCode,
   MarkSpec,
   NodeSpec,
   Schema,
@@ -23,21 +22,15 @@ const nodes = [
   'emoji'
 ];
 
-const code = {
-  ...coreCode,
-  excludes: 'em strike strong mentionQuery emojiQuery'
-} as MarkSpec;
-
 const marks = [
   'em',
   'strong',
   'strike',
   'link',
   'mentionQuery',
-  'emojiQuery'
+  'emojiQuery',
+  'code',
 ];
 
-const customMarkSpecs = { code };
-
 export { MarkSpec, NodeSpec, Schema };
-export default createSchema({ nodes, marks, customMarkSpecs});
+export default createSchema({ nodes, marks });

@@ -3,11 +3,11 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import {expect} from 'chai';
 import {mount} from 'enzyme';
-import {FilmStripView, FilmStripViewItem} from '../src/index';
+import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../src/index';
 import {ArrowLeftWrapper, ArrowRightWrapper} from '../src/styled';
 import {CardView} from '@atlaskit/media-card';
 
-const mountFilmStrip = (container: HTMLDivElement, items: Array<FilmStripViewItem>, width: number, onCardClick?: (event: CardListEvent) => void) => {
+const mountFilmStrip = (container: HTMLDivElement, items: Array<FilmStripViewItem>, width: number, onCardClick?: (event: FilmStripCardClickEvent) => void) => {
   const wrapper = mount(<FilmStripView items={items} width={width} onCardClick={onCardClick}/>, {attachTo: container});
 
   return wrapper;

@@ -296,10 +296,10 @@ export default class Editor extends PureComponent<Props, State> {
         doc,
         plugins: [
           ...mentionsPlugins(schema),
+          ...blockTypePlugins(schema),
           ...clearFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
           ...hyperlinkPlugins(schema),
-          ...listsPlugins(schema),
           ...rulePlugins(schema),
           ...textFormattingPlugins(schema),
           ...mediaPlugins,
@@ -308,6 +308,7 @@ export default class Editor extends PureComponent<Props, State> {
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
           ...blockTypePlugins(schema),
+          ...listsPlugins(schema),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),

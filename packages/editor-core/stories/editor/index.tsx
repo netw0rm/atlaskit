@@ -265,10 +265,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...mentionsPlugins(schema), // mentions and emoji needs to be first
           ...emojiPlugins(schema),
           ...asciiEmojiPlugins(schema, this.state.emojiProvider),
-          ...listsPlugins(schema),
           ...clearFormattingPlugins(schema),
-          ...codeBlockPlugins(schema),
-          ...panelPlugins(schema),
           ...textFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
@@ -277,6 +274,9 @@ export default class Editor extends PureComponent<Props, State> {
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
           ...blockTypePlugins(schema),
+          ...listsPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...panelPlugins(schema),
           ...mediaPlugins,
           ...tablePlugins(),
           ...reactNodeViewPlugins(schema),

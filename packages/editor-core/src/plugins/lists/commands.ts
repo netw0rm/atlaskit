@@ -1,15 +1,51 @@
-import { EditorState, Transaction, EditorView, ReplaceAroundStep, Slice, NodeRange, liftTarget, Fragment, TextSelection, ResolvedPos, Schema } from '../../prosemirror';
+import { EditorState, Transaction, EditorView, ResolvedPos, Schema } from '../../prosemirror';
 import * as commands from '../../commands';
+import * as baseListCommand from '../../prosemirror/prosemirror-schema-list';
+import { liftFollowingList } from '../../commands/lists';
 
 export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
   const { selection } = state;
   if (selection.empty) {
-    const { listItem } = state.schema.nodes;
-    const node = selection.$from.node(selection.$from.depth - 1);
+    const { listItem, panel, blockquote, codeBlock, paragraph } = state.schema.nodes;
+    const node = selection.$from.node(selection.$from.depth);
+    const wrapper = selection.$from.node(selection.$from.depth - 1);
     const parent = selection.$from.node(selection.$from.depth - 3);
-    if ((node && node.textContent.length === 0 && node.type === listItem) &&
-      (parent && parent.type === listItem)) {
-      return commands.outdentList()(state, dispatch);
+    if (node && wrapper && parent) {
+      const { textContent } = node;
+      const { type: wrapperType } = wrapper;
+      const { type: parentType } = parent;
+      if (textContent.length === 0 && wrapperType === listItem && parentType === listItem) {
+        return commands.outdentList()(state, dispatch);
+      }
+      if (textContent.length === 0 &&
+        ((panel && wrapperType === panel) ||
+        (blockquote && wrapperType === blockquote))
+      ) {
+        let { tr} = state;
+        const { $from } = state.selection;
+        tr = tr.split($from.pos, 3);
+        const { $from: newFrom, $to: newTo } = tr.selection;
+        tr = tr.lift(newFrom.blockRange(newTo)!, newFrom.depth - 2);
+        tr = tr.delete($from.pos - 1, $from.pos + 1);
+        dispatch(tr);
+        return true;
+      }
+      if (codeBlock && node.type === codeBlock && wrapperType === listItem) {
+        if (node.textContent.slice(node.textContent.length - 2) === '\n\n') {
+          let { tr} = state;
+          const { $from } = state.selection;
+          tr = tr.split($from.pos, 2);
+          const { $from: newFrom, $to: newTo } = tr.selection;
+          tr = tr.setBlockType(newFrom.pos, newTo.pos, paragraph);
+          tr = tr.delete($from.pos - 2, $from.pos);
+          dispatch(tr);
+          return true;
+        }
+        return false;
+      }
+      if (wrapperType === listItem) {
+        return baseListCommand.splitListItem(state.schema.nodes.listItem)(state, dispatch);
+      }
     }
   }
   return false;
@@ -48,61 +84,6 @@ export const toggleList = (
     return true;
   }
 };
-
-/**
- * Function will lift list item following selection to level-1.
- */
-function liftFollowingList(
-  state: EditorState<any>,
-  from: number, to: number,
-  rootListDepth: number,
-  tr: Transaction
-): Transaction {
-  const { listItem } = state.schema.nodes;
-  let lifted = false;
-  tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (!lifted && node.type === listItem && pos > from) {
-      lifted = true;
-      let listDepth = rootListDepth + 3;
-      while (listDepth > rootListDepth + 2) {
-        const start = tr.doc.resolve(tr.mapping.map(pos));
-        listDepth = start.depth;
-        const end = tr.doc.resolve(tr.mapping.map(pos + node.textContent.length));
-        const sel = new TextSelection(start, end);
-        tr = liftListItem(state, sel, tr);
-      }
-    }
-  });
-  return tr;
-}
-
-/**
- * Lift list item.
- */
-function liftListItem(state: EditorState<any>, selection, tr: Transaction): Transaction {
-  let {$from, $to} = selection;
-  const nodeType = state.schema.nodes.listItem;
-  let range = $from.blockRange($to, node => node.childCount && node.firstChild.type === nodeType);
-  if (!range || range.depth < 2 || $from.node(range.depth - 1).type !== nodeType) { return tr; }
-  let end = range.end;
-  let endOfList = $to.end(range.depth);
-  if (end < endOfList) {
-    tr.step(
-      new ReplaceAroundStep(
-        end - 1,
-        endOfList,
-        end,
-        endOfList,
-        new Slice(Fragment.from(nodeType.create(null, range.parent.copy())), 1, 0),
-        1,
-        true
-      )
-    );
-    range = new NodeRange(tr.doc.resolve($from.pos), tr.doc.resolve(endOfList), range.depth);
-  }
-  return tr.lift(range, liftTarget(range)!).scrollIntoView();
-}
-
 /**
  * The function will list paragraphs in selection out to level 1 below root list.
  */

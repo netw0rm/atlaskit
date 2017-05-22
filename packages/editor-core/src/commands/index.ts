@@ -9,8 +9,10 @@ import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
+  const { $from } = view.state.selection;
 
-  if (name !== blockTypes.BLOCK_QUOTE.name && name !== blockTypes.PANEL.name) {
+  if (name !== blockTypes.BLOCK_QUOTE.name && name !== blockTypes.PANEL.name &&
+    $from.node($from.depth - 1).type.name !== 'listItem') {
     if (view.state.selection.$from.depth > 1) {
       view.dispatch(liftSelection(view.state.tr, view.state.doc, view.state.selection.$from, view.state.selection.$to).tr);
     }
@@ -478,7 +480,7 @@ function toggleNodeType(nodeType: NodeType): Command {
     if (potentialNodePresent.type !== nodeType) {
       let { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
-      if ($from.depth > 1) {
+      if ($from.depth > 1 && $from.node($from.depth - 1).type.name !== 'listItem') {
         const result = liftSelection(tr, state.doc, $from, $to);
         tr = result.tr;
         $from = result.$from;

@@ -19,13 +19,14 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p()))));
     });
 
-    it('should not convert "** " to a nested bullet list item', () => {
+    // We now allow any block type to be child of list item thus this test case is no more applicable
+    it.skip('should not convert "** " to a nested bullet list item', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '** ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p('** ')));
     });
 
-    it('should not convert "* " to a bullet list item when already inside a list', () => {
+    it.skip('should not convert "* " to a bullet list item when already inside a list', () => {
       const { editorView, sel } = editor(doc(ul(li(p('{<>}')))));
       insertText(editorView, '* ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('* ')))));
@@ -37,16 +38,16 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(ul(li(p())))));
     });
 
-    it('should not convert "* " to a bullet list item when inside a codeblock', () => {
+    it('should be possible to convert a code_clock to a list item', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
       insertText(editorView, '* ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(code_block()('* ')));
+      expect(editorView.state.doc).to.deep.equal(doc(ul(li(code_block()()))));
     });
 
-    it('should not convert "* " to a bullet list item when inside a heading', () => {
+    it('should be possible to convert a heading block to a list item', () => {
       const { editorView, sel } = editor(doc(h1('{<>}')));
       insertText(editorView, '* ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(h1('* ')));
+      expect(editorView.state.doc).to.deep.equal(doc(ul(li(h1()))));
     });
   });
 
@@ -72,11 +73,11 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(ol(li(p())))));
     });
 
-    it('should not convert "[number]. " to a ordered list item when inside a codeblock', () => {
+    it('should be possible to convert code block to bullet list item', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '1. ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(code_block()('1. ')));
+      expect(editorView.state.doc).to.deep.equal(doc(ol(li(code_block()()))));
     });
   });
 });

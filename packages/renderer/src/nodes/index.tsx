@@ -14,6 +14,7 @@ import OrderedList from './orderedList';
 import ListItem from './listItem';
 import Blockquote from './blockquote';
 import Panel, { PanelType } from './panel';
+import Rule from './rule';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -47,6 +48,7 @@ enum NodeType {
   listItem,
   blockquote,
   panel,
+  rule,
   unknown
 }
 
@@ -231,6 +233,9 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         }
         break;
       }
+      case NodeType.rule: {
+        return { type };
+      }
     }
   }
 
@@ -333,6 +338,8 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
     case NodeType.panel:
       const { panelType } = validNode.attrs as { panelType: PanelType };
       return <Panel key={key} type={panelType}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Panel>;
+    case NodeType.rule:
+      return <Rule />;
     default: {
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {

@@ -6,8 +6,9 @@ import { expect } from 'chai';
 import EmojiPreview from '../src/components/common/EmojiPreview';
 import ToneSelector from '../src/components/common/ToneSelector';
 import Emoji from '../src/components/common/Emoji';
+import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
 import { EmojiDescription, EmojiDescriptionWithVariations } from '../src/types';
-import { imageEmoji, generateSkinVariation } from './TestData';
+import { imageEmoji, generateSkinVariation, mediaEmoji } from './TestData';
 
 const baseEmoji = imageEmoji;
 
@@ -142,6 +143,18 @@ describe('<EmojiPreview />', () => {
 
       wrapper.simulate('mouseLeave');
       expect(wrapper.state('selectingTone')).to.equal(false);
+    });
+
+    it('should render placeholder for unloaded media emoji', () => {
+      const wrapper = shallow(<EmojiPreview
+        emoji={mediaEmoji}
+      />);
+
+      const placeholders = wrapper.find(EmojiPlaceholder);
+      expect(placeholders.length).to.equal(1);
+      const props = placeholders.get(0).props;
+      expect(props.name, 'name').to.equals(mediaEmoji.name);
+      expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
     });
   });
 });

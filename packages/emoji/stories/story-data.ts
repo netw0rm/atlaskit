@@ -47,6 +47,7 @@ const getEmojiSet = (name: string): EmojiDescription[] => {
 
 export const getStandardEmojis = (): EmojiDescription[] => getEmojiSet('standard');
 export const getAtlassianEmojis = (): EmojiDescription[] => getEmojiSet('atlassian');
+export const getSiteEmojis = (): EmojiDescription[] => getEmojiSet('site');
 export const getEmojis = (): EmojiDescription[] => getEmojiSet('all');
 
 export const lorem = `

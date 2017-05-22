@@ -7,6 +7,7 @@ import {
 } from '@atlaskit/editor-core';
 
 import jiraIssue from './schema/nodes/jiraIssue';
+import inlineMacro from './schema/nodes/inlineMacro';
 import unsupportedBlock from './schema/nodes/unsupportedBlock';
 import unsupportedInline from './schema/nodes/unsupportedInline';
 
@@ -23,6 +24,7 @@ export interface CQSchemaNodes {
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
+  inlineMacro: NodeSpec;
   jiraIssue: NodeSpec;
   listItem: NodeSpec;
   mention: NodeSpec;
@@ -60,6 +62,7 @@ const nodes = [
   'heading',
   'mediaGroup',
   'unsupportedBlock',
+  'inlineMacro',
   'jiraIssue',
   'listItem',
   'mention',
@@ -69,7 +72,7 @@ const nodes = [
   'rule'
 ];
 
-const customNodeSpecs = { jiraIssue, unsupportedBlock, unsupportedInline };
+const customNodeSpecs = { inlineMacro, jiraIssue, unsupportedBlock, unsupportedInline };
 
 // ranking order is important
 // @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Rank

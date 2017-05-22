@@ -379,46 +379,38 @@ export function getNodeName(node: Node): string {
 }
 
 
-function getBodyType(node: Element) {
-  if (hasAcTagNode(node, 'AC:RICH-TEXT-BODY'))  {
-    return 'RICH-TEXT-BODY';
-  }
-
-  if (hasAcTagNode(node, 'AC:PLAIN-TEXT-BODY')) {
-    return 'PLAIN-TEXT-BODY';
-  }
-
-  return 'NONE';
-}
+// function getBodyType(node: Element) {
+//   if (hasAcTagNode(node, 'AC:RICH-TEXT-BODY'))  {
+//     return 'RICH-TEXT-BODY';
+//   }
+//
+//   if (hasAcTagNode(node, 'AC:PLAIN-TEXT-BODY')) {
+//     return 'PLAIN-TEXT-BODY';
+//   }
+//
+//   return 'NONE';
+// }
 
 function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined  {
-  const bodyType = getBodyType(node);
+  // const bodyType = getBodyType(node);
+  const placeholderUrl = getAcParameter(node, 'placeholderUrl');
+  const bodyType = getAcParameter(node, 'bodyType');
+  const outputType = getAcParameter(node, 'outputType');
   const name = getAcName(node) || 'Unnamed Macro';
 
-  switch (bodyType) {
-    case 'NONE':
-      // TODO schema for generic inline nodes.
-      const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
+  switch (bodyType + '-' + outputType) {
+    case 'NONE-INLINE':
       const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
-      const server = getAcParameter(node, 'server');
-      const serverId = getAcParameter(node, 'serverId');
-      const issueKey = getAcParameter(node, 'key');
 
-      // if this is an issue list, render it as unsupported node
-      // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
-      // if (!issueKey) {
-      //   return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
-      // }
-
-      return schema.nodes.jiraIssue.create({
-        issueKey,
-        macroId,
-        schemaVersion,
-        server,
-        serverId,
+      return schema.nodes.inlineMacro.create({
+        macroId, placeholderUrl
       });
 
-    case 'RICH-TEXT-BODY':
+    case 'NONE-BLOCK':
+      // TODO
+      return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+
+    case 'RICH_TEXT-BLOCK':
       // TODO schema for generic rich text nodes.
       const panelTitle = getAcParameter(node, 'title');
       const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY') || '';
@@ -447,7 +439,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
       return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
 
-    case 'PLAIN-TEXT-BODY':
+    case 'PLAIN_TEXT-BLOCK':
       // TODO schema generic for plaintext nodes.
       const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
       return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
@@ -497,13 +489,13 @@ function getAcTagNodes(node: Element, tagName: string): NodeList | null {
   return null;
 }
 
-function hasAcTagNode(node: Element, tagName: string): Boolean {
-  for (let i = 0; i < node.childNodes.length; i++) {
-    const child = node.childNodes[i] as Element;
-    if (getNodeName(child) === tagName) {
-      return true;
-    }
-  }
-
-  return false;
-}
+// function hasAcTagNode(node: Element, tagName: string): Boolean {
+//   for (let i = 0; i < node.childNodes.length; i++) {
+//     const child = node.childNodes[i] as Element;
+//     if (getNodeName(child) === tagName) {
+//       return true;
+//     }
+//   }
+//
+//   return false;
+// }

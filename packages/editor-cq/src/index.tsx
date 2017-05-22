@@ -45,6 +45,7 @@ import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
 import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
+import { inlineMacroNodeView } from './schema/nodes/inlineMacro';
 export { version };
 
 export interface Props {
@@ -293,6 +294,7 @@ export default class Editor extends PureComponent<Props, State> {
         nodeViews: {
           mention: mentionNodeView(this.providerFactory),
           jiraIssue: jiraIssueNodeView,
+          inlineMacro: inlineMacroNodeView,
           media: mediaNodeView(this.providerFactory)
         },
         handleDOMEvents: {

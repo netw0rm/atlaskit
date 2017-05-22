@@ -15,6 +15,7 @@ export default class NestedNavigationSplitButton extends PureComponent {
     onBackButtonClick: () => {},
   };
 
+  // Stop the back button from stealing the focus state
   onBackButtonMouseDown = (e) => {
     e.preventDefault();
   };

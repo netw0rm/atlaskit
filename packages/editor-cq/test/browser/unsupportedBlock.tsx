@@ -3,7 +3,6 @@ import { unsupportedBlockNodeView } from '../../src/schema/nodes/unsupportedBloc
 import 'react';
 
 describe.skip('unsupportedBlock', () => {
-
   it('should have a not null html dom', () => {
     const dom = unsupportedBlockNodeView({ attrs: {} }).dom;
     expect(dom).to.not.equal(undefined);

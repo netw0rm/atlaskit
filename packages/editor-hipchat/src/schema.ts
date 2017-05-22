@@ -1,5 +1,4 @@
 import {
-  doc,
   MarkSpec,
   NodeSpec,
   Schema,
@@ -50,11 +49,6 @@ const nodes = [
   'media',
 ];
 
-const customNodeSpecs = {
-  // The top level node for a document.
-  doc
-};
-
 const marks = [
   // Represents a hyperlink to a URL.
   'link',
@@ -81,12 +75,8 @@ const marks = [
   // This mark is used internally, and is stripped from documents before they are exposed through
   // the editor getter APIs.
   'emojiQuery',
-
-  // We are forced to add this, because link mark excludes: 'textColor'
-  // Without this ProseMirror is unable to construct the schema
-  'textColor'
 ];
 
 export interface HCSchema extends Schema<HCSchemaNodes, HCSchemaMarks> {}
 
-export default createSchema({ nodes, marks, customNodeSpecs }) as HCSchema;
+export default createSchema({ nodes, marks }) as HCSchema;

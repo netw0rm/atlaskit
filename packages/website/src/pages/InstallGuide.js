@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 import { Heading, Intro, Section } from '../components/Type';
 import Container from '../components/Container';
-
-import { Link } from 'react-router-dom';
 
 export default class Examples extends PureComponent {
   render() {

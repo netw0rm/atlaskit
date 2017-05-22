@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {MediaType, MediaItem, FileDetails, ListAction, CardAction, ListEventHandler} from '@atlaskit/media-core';
-import {CardView} from '@atlaskit/media-card';
+import {MouseEvent} from 'react';
+import {MediaType, MediaItem, FileDetails, ListAction, CardAction} from '@atlaskit/media-core';
+import {CardView, CardEvent} from '@atlaskit/media-card';
 import FilmStripNavigator from './filmstrip-navigator';
 
 export interface FilmStripViewItem {
@@ -13,9 +14,15 @@ export interface FilmStripViewItem {
   progress?: number;
 }
 
+export interface FilmStripCardClickEvent {
+  event: MouseEvent<HTMLElement>;
+  item: FilmStripViewItem;
+  items?: Array<FilmStripViewItem>;
+}
+
 export interface FilmStripViewProps {
   items: Array<FilmStripViewItem>;
-  onClick?: ListEventHandler;
+  onCardClick?: (result: FilmStripCardClickEvent) => void;
   menuActions?: Array<ListAction>;
 
   onDrop?: (event: DragEvent) => void;
@@ -24,13 +31,14 @@ export interface FilmStripViewProps {
   width?: number;
 }
 
-function onItemClick(item: FilmStripViewItem, props: FilmStripViewProps): (event: Event) => void {
-  return (event: Event) => {
-    if (props.onClick) {
-      props.onClick({
-        type: 'file',
-        details: item
-      }, props.items, event);
+function onItemClick(item: FilmStripViewItem, props: FilmStripViewProps): (event: CardEvent) => void {
+  return (cardEvent: CardEvent) => {
+    if (props.onCardClick) {
+      props.onCardClick({
+        event: cardEvent.event,
+        item,
+        items: props.items
+      });
     }
   };
 }

@@ -23,6 +23,23 @@ const truncate = width => css`
   white-space: nowrap;
 `;
 
+const placeholder = styles => (
+  css`
+    &::-webkit-input-placeholder {
+      ${styles}
+    }
+    &:-moz-placeholder {
+      ${styles}
+    }
+    &::-moz-placeholder {
+      ${styles}
+    }
+    &:-ms-input-placeholder {
+      ${styles}
+    }
+  `
+);
+
 // prefer default export
 export default {
   focusRing: {
@@ -33,4 +50,5 @@ export default {
   text: {
     truncate,
   },
+  placeholder,
 };

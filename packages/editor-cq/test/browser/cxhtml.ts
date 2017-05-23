@@ -538,6 +538,26 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         )
       )
     );
+
+    it('strips @ from mention text', () => {
+      const docBefore = doc(p(
+        '@ is stripped from this mention: ',
+        mention({
+          id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+          text: '@Artur Bodera'
+        })
+      ));
+
+      const docAfter = doc(p(
+        '@ is stripped from this mention: ',
+        mention({
+          id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+          text: 'Artur Bodera'
+        })
+      ));
+
+      expect(parse(encode(docBefore))).to.deep.equal(docAfter);
+    });
   });
 
   describe('media nodes', () => {

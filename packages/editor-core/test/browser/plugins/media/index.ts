@@ -59,6 +59,7 @@ describe('Media plugin', () => {
     const plugins = [
       ...mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler }),
       ...reactNodeViewPlugins(schema),
+      history(),
     ];
 
     plugins.push(history());

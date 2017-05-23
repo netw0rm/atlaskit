@@ -240,13 +240,13 @@ export class MediaPluginState {
         const { status } = state;
 
         if (MEDIA_RESOLVE_STATES.indexOf(status || '') !== -1) {
-          onNodeStateReady(state);
+          onNodeStateReady(state.id);
         }
       }
 
-      function onNodeStateReady(state: MediaState) {
+      function onNodeStateReady(id: string) {
         outstandingNodes--;
-        stateManager.unsubscribe(state.id, onNodeStateChanged);
+        stateManager.unsubscribe(id, onNodeStateChanged);
 
         if (outstandingNodes <= 0) {
           resolve();
@@ -255,11 +255,10 @@ export class MediaPluginState {
 
       mediaNodes.forEach(node => {
         const mediaNodeId = node.attrs.id;
-        const nodeCurrentState = stateManager.getState(mediaNodeId)!;
-        const nodeCurrentStatus = nodeCurrentState.status || '';
+        const nodeCurrentStatus = this.getMediaNodeStateStatus(mediaNodeId);
 
         if (MEDIA_RESOLVE_STATES.indexOf(nodeCurrentStatus) !== -1) {
-          onNodeStateReady(nodeCurrentState);
+          onNodeStateReady(mediaNodeId);
         } else {
           stateManager.subscribe(mediaNodeId, onNodeStateChanged);
         }
@@ -511,7 +510,7 @@ export class MediaPluginState {
     // replace the old node with a new one
     const nodePos = mediaNode.getPos();
     const tr = view.state.tr.replaceWith(nodePos, nodePos + mediaNode.nodeSize, newNode);
-    view.dispatch(tr);
+    view.dispatch(tr.setMeta('addToHistory', false));
   }
 
   /**
@@ -533,7 +532,7 @@ export class MediaPluginState {
 
     const nodePos = mediaNode.getPos();
     const tr = view.state.tr.deleteRange(nodePos, nodePos + mediaNode.nodeSize);
-    view.dispatch(tr);
+    view.dispatch(tr.setMeta('addToHistory', false));
   }
 
   private selectInsertedMediaNode = (node: PositionedNode) => {

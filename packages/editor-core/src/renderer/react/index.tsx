@@ -33,9 +33,7 @@ export type ReactComponentConstructor = new () => React.Component<any, any>;
 export default class ReactSerializer implements Serializer<JSX.Element> {
 
   serializeFragment(fragment: Fragment, props: any = {}, target: ReactComponentConstructor = Doc, key: string = 'root-0'): JSX.Element | null {
-    // tslint:disable-next-line:variable-name
-    const Container = target;
-    const content = this.getChildNodes(fragment).map((node, index) => {
+    const content = ReactSerializer.getChildNodes(fragment).map((node, index) => {
       if (isTextWrapper(node.type.name)) {
         return this.serializeTextWrapper((node as TextWrapper).content);
       }
@@ -43,46 +41,13 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       return this.serializeFragment((node as Node).content, this.getProps(node as Node), toReact(node as Node), `${node.type.name}-${index}`);
     });
 
-    return this.renderNode(Container, props, key, content);
+    return this.renderNode(target, props, key, content);
   }
 
   private serializeTextWrapper(content: Node[]) {
-    let currentMarkNode: any;
-    const marks = content.reduce((acc, node, index) => {
-
-      const nodeMarks = this.getMarks(node);
-
-      if (nodeMarks.length === 0) {
-        currentMarkNode = node;
-        acc.push(currentMarkNode);
-      } else {
-        nodeMarks.forEach((mark, markIndex) => {
-          const isSameAsPrevious = isSameMark(mark, currentMarkNode as Mark);
-          const previousIsInMarks = markIndex > 0 && nodeMarks.some(m => isSameMark(m, currentMarkNode));
-
-          if (!isSameAsPrevious) {
-            let newMarkNode: any = {
-              ...mark,
-              content: [],
-            };
-
-            if (previousIsInMarks) {
-              currentMarkNode.content!.push(newMarkNode);
-              currentMarkNode = newMarkNode;
-            } else {
-              acc.push(newMarkNode);
-              currentMarkNode = newMarkNode;
-            }
-          }
-        });
-
-        currentMarkNode.content!.push(node);
-      }
-
-      return acc;
-    }, [] as Mark[]);
-
-    return marks.map((mark, index) => this.serializeMark(mark, index));
+    return ReactSerializer
+      .buildMarkStructure(content)
+      .map((mark, index) => this.serializeMark(mark, index));
   }
 
   private serializeMark(mark: Mark, index: number = 0) {
@@ -123,7 +88,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return mark.attrs;
   }
 
-  private getChildNodes(fragment: Fragment): (Node | TextWrapper)[] {
+  static getChildNodes(fragment: Fragment): (Node | TextWrapper)[] {
     const children: Node[] = [];
     fragment.forEach(node => {
       children.push(node);
@@ -131,12 +96,49 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return mergeTextNodes(children) as Node[];
   }
 
-  private getMarks(node: Node): Mark[] {
+  static getMarks(node: Node): Mark[] {
     if (!node.marks || node.marks.length === 0) {
       return [];
     }
 
     return getMarksByOrder(node.marks);
+  }
+
+  static buildMarkStructure(content: Node[]) {
+    let currentMarkNode: any;
+    return content.reduce((acc, node, index) => {
+
+      const nodeMarks = this.getMarks(node);
+
+      if (nodeMarks.length === 0) {
+        currentMarkNode = node;
+        acc.push(currentMarkNode);
+      } else {
+        nodeMarks.forEach((mark, markIndex) => {
+          const isSameAsPrevious = isSameMark(mark, currentMarkNode as Mark);
+          const previousIsInMarks = markIndex > 0 && nodeMarks.some(m => isSameMark(m, currentMarkNode));
+
+          if (!isSameAsPrevious) {
+            let newMarkNode: any = {
+              ...mark,
+              content: [],
+            };
+
+            if (previousIsInMarks) {
+              currentMarkNode.content!.push(newMarkNode);
+              currentMarkNode = newMarkNode;
+            } else {
+              acc.push(newMarkNode);
+              currentMarkNode = newMarkNode;
+            }
+          }
+        });
+
+        currentMarkNode.content!.push(node);
+      }
+
+      return acc;
+    }, [] as Mark[]);
   }
 
   static fromSchema(schema: Schema<any, any>): ReactSerializer {

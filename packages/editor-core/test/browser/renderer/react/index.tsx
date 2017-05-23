@@ -1,7 +1,9 @@
 import { mount } from 'enzyme';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import ReactSerializer from '../../../../src/renderer/react';
 import schema from '../../../../stories/schema';
+import * as validator from '../../../../src/renderer/validator';
 
 const doc = {
   'type': 'doc',
@@ -66,6 +68,37 @@ describe('Renderer - ReactSerializer', () => {
       expect(strong.text()).to.equal('World!');
     });
 
+  });
+
+  describe('buildMarkStructure', () => {
+
+    const { strong } = schema.marks;
+
+    it('should wrap text nodes with marks', () => {
+
+      const textNodes = [
+        schema.text('Hello '),
+        schema.text('World!', strong.create())
+      ];
+
+      const output = ReactSerializer.buildMarkStructure(textNodes);
+      expect(output[0].type.name).to.equal('text');
+      expect((output[0] as any).text).to.equal('Hello ');
+      expect(output[1].type.name).to.equal('strong');
+      expect((output[1] as any).content[0].type.name).to.equal('text');
+      expect((output[1] as any).content[0].text).to.equal('World!');
+    });
+  });
+
+  describe('getMarks', () => {
+    const { strong, strike, underline } = schema.marks;
+    const node = schema.text('Hello World', [strong.create(), strike.create(), underline.create()]);
+
+    it('should call getMarksByOrder', () => {
+      const spy = sinon.spy(validator, 'getMarksByOrder');
+      ReactSerializer.getMarks(node);
+      expect(spy.calledWith(node.marks)).to.equal(true);
+    });
   });
 
 });

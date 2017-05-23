@@ -379,29 +379,6 @@ describe('Renderer - Validator', () => {
     const { strong, strike, link, em, subsup, underline } = schema.marks;
 
     it('should return marks in right order', () => {
-      // const unorderedMarks = [
-      //   {
-      //     type: { name: 'strong' }
-      //   },
-      //   {
-      //     type: { name: 'link' }
-      //   },
-      //   {
-      //     type: { name: 'em' }
-      //   },
-      //   {
-      //     type: { name: 'mono' }
-      //   },
-      //   {
-      //     type: { name: 'subsup' }
-      //   },
-      //   {
-      //     type: { name: 'underline' }
-      //   },
-      //   {
-      //     type: { name: 'strike' }
-      //   },
-      // ];
       const unorderedMarks = [
         strong.create(),
         link.create({ href: 'www.atlassian.com' }),

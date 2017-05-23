@@ -21,6 +21,7 @@ const DrawerInner = styled.div`
   display: flex;
   height: 100%;
   left: 0;
+  top: 0;
   overflow: hidden;
   position: fixed;
   transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(${widths[width].offScreenTranslateX})`)}

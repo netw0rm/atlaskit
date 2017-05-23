@@ -133,6 +133,7 @@ export const InfoWrapper = styled.div`
   position: relative;
   width: 0;
   flex: 1;
+  overflow: hidden;
 `;
 
 export const LoadingWrapper = styled.div`

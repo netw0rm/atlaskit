@@ -298,7 +298,9 @@ export default class StatelessDropdownMenu extends PureComponent {
       const filteredItems = this.filterItems(group.items);
       const renderedItems = this.renderItems(itemsCount, filteredItems);
       itemsCount += filteredItems.length;
-      return <Group heading={group.heading} key={groupIndex}>{renderedItems}</Group>;
+      return (<Group heading={group.heading} elemAfter={group.elemAfter} key={groupIndex}>
+        {renderedItems}
+      </Group>);
     });
   }
 

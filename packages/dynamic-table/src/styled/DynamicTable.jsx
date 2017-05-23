@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { gridUnit, baselineUnit } from './constants';
 
 export const Table = styled.table`
-  ${({ isFixedSize }) => (isFixedSize && 'table-layout: fixed;')};
+  ${({ isFixedSize }) => (isFixedSize && css`table-layout: fixed;`)};
   border-collapse: collapse;
   width: 100%;
 `;

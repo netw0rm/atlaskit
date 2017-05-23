@@ -211,8 +211,8 @@ export default class StatelessDropdownMenu extends PureComponent {
     <Item
       {...item}
       key={itemIndex}
-      onActivate={() => {
-        this.props.onItemActivated({ item });
+      onActivate={({ event }) => {
+        this.props.onItemActivated({ item, event });
       }}
     >
       {item.content}

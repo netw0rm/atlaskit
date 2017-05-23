@@ -196,6 +196,10 @@ describe(name, () => {
       const item = wrapper.find('[role="menuitemcheckbox"]');
       item.simulate('click');
       expect(spy.called).to.equal(true);
+      expect(spy.calledWith(sinon.match({
+        item: sinon.match.defined,
+        event: sinon.match.defined,
+      }))).to.equal(true);
     });
 
     it('should pass the item when activated', () => {

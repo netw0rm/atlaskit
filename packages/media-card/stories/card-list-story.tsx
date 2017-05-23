@@ -2,9 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
-import * as sinon from 'sinon';
 import { StoryList, createStorybookContext, collectionNames, defaultCollectionName} from '@atlaskit/media-test-helpers';
-import { CardList } from '../src';
+import { CardList, CardListEvent } from '../src';
 
 const wrongCollection = 'adfasdf';
 const wrongClientId = 'wrong-client-id';
@@ -18,7 +17,7 @@ const anotherAction = {
   type: -2,
   label: 'Some other action',
   handler: (item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
-    action('annotate')(item, collection);
+    action('Some other action')(item, collection);
   }
 };
 
@@ -167,13 +166,43 @@ storiesOf('CardList', {})
        }]}
      </StoryList>
    ))
-   .add('Custom actions dropdown', () => (
-     <CardList
-       context={context}
-       collectionName={defaultCollectionName}
-       actions={cardsActions}
-     />
-   ))
+   .add('Actions and exposed events', () => {
+     const cardClickHandler = (result: CardListEvent) => {
+       result.event.preventDefault();
+       action('click')([result.mediaCollectionItem, result.collectionName]);
+     };
+
+     const cardLists = [
+       {
+          title: 'Actions',
+          content: (
+            <CardList
+              context={context}
+              collectionName={defaultCollectionName}
+              actions={cardsActions}
+            />
+          )
+       },
+       {
+          title: 'onCardClick',
+          content: (
+            <CardList
+              context={context}
+              collectionName={defaultCollectionName}
+              onCardClick={cardClickHandler}
+            />
+          )
+       }
+     ];
+
+     return (
+       <div style={{margin: '40px'}}>
+         <StoryList>
+           {cardLists}
+         </StoryList>
+       </div>
+     );
+   })
    .add('Custom loading state', () => {
      const customLoadingComponent = <div>this is a custom loading...</div>;
      return <CardList
@@ -257,11 +286,6 @@ storiesOf('CardList', {})
   })
   .add('Refresh cards', () => {
 
-    // TODO: hack to always use the same provider
-    const demoContext = createStorybookContext();
-    const provider = demoContext.getMediaCollectionProvider(defaultCollectionName, 10);
-    sinon.stub(demoContext, 'getMediaCollectionProvider', () => provider);
-
     const sampleURLs = [
       'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/s750x750/sh0.08/e35/18013123_289517061492259_5387236423503970304_n.jpg',
       'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/sh0.08/e35/p750x750/17932355_1414135458643877_7397381955274145792_n.jpg',
@@ -273,13 +297,13 @@ storiesOf('CardList', {})
 
     const handleAddItem = () => {
       const url = sampleURLs[Math.floor(Math.random() * sampleURLs.length)];
-      demoContext.getUrlPreviewProvider(url).observable().subscribe(
-        metadata => demoContext.addLinkItem(url, defaultCollectionName, metadata)
+      context.getUrlPreviewProvider(url).observable().subscribe(
+        metadata => context.addLinkItem(url, defaultCollectionName, metadata)
       );
     };
 
     const handleRefresh = () => {
-      provider.controller().refresh();
+      context.refreshCollection(defaultCollectionName, 10);
     };
 
     const RefreshDemo = (): JSX.Element => { // tslint:disable-line:variable-name
@@ -287,13 +311,15 @@ storiesOf('CardList', {})
         <div style={{display: 'flex'}}>
           <div style={{width: '25%'}}>
             <CardList
-              context={demoContext}
+              context={context}
+              pageSize={10}
               collectionName={defaultCollectionName}
             />
           </div>
           <div style={{width: '25%'}}>
             <CardList
-              context={demoContext}
+              context={context}
+              pageSize={10}
               collectionName={defaultCollectionName}
               cardAppearance="small"
             />

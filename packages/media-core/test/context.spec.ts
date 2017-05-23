@@ -1,3 +1,4 @@
+/* tslint:disable:no-unused-expression */
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {Observable} from 'rxjs/Observable';

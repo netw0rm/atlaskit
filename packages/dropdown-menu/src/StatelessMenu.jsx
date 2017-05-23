@@ -18,14 +18,14 @@ export default class StatelessDropdownMenu extends PureComponent {
       * Tall menu has no restrictions.
       */
     appearance: PropTypes.oneOf(['default', 'tall']),
-    /** Content that will be rendered inside the trigger element */
+    /** Content that will be rendered inside the trigger element. */
     children: PropTypes.node,
     /**
       * Controls whether to show a FieldText
       * for filtering items
       */
     hasItemsFilter: PropTypes.bool,
-    /** Controls the open state of the dropdown */
+    /** Controls the open state of the dropdown. */
     isOpen: PropTypes.bool,
     /** Controls whether it is possible to tab to the trigger.
       * This should be true if some interactive element is used inside trigger (links, buttons).
@@ -42,25 +42,25 @@ export default class StatelessDropdownMenu extends PureComponent {
       * using the onItemsFilterChange event
       */
     itemsFilterValue: PropTypes.string,
-    /** Called when an item is activated. Receives an object with the activated item */
+    /** Called when an item is activated. Receives an object with the activated item. */
     onItemActivated: PropTypes.func,
     /** Called when the items filter value change. Receives the filter's new value.
       * Should be used by the consumer to keep itemsFilterValue in sync*/
     onItemsFilterChange: PropTypes.func,
-    /** Called when the menu should be open/closed. Received an object with isOpen state */
+    /** Called when the menu should be open/closed. Received an object with isOpen state. */
     onOpenChange: PropTypes.func,
-    /** Position of the menu. See the documentation of @atlastkit/layer for more details */
+    /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
     position: PropTypes.string,
     /** Types of the menu's built-in trigger.
       * default trigger is empty.
       * button trigger uses the Button component with the 'expand' icon.
       */
     triggerType: PropTypes.oneOf(['default', 'button']),
-    /** Props to pass through to the trigger button. see @atlaskit/button for options */
+    /** Props to pass through to the trigger button. see @atlaskit/button for options. */
     triggerButtonProps: PropTypes.shape(Button.propTypes),
-    /** Flip its position to the opposite side of its target if it does not fit */
+    /** Flip its position to the opposite side of its target if it does not fit. */
     shouldFlip: PropTypes.bool,
-    /** Option to fit dropdown menu width to its parent width */
+    /** Option to fit dropdown menu width to its parent width. */
     shouldFitContainer: PropTypes.bool,
     /** Option to display multiline items when content is too long.
       * Instead of ellipsing the overflown text it causes item to flow over multiple lines.

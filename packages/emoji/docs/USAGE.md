@@ -1,6 +1,6 @@
 # Emoji
 
-Use emoji....
+Use emoji...
 
 ## Try it out
 

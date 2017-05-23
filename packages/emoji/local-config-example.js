@@ -5,10 +5,10 @@ export default {
   },
   providers: [
     {
-      url: 'https://emoji-example/standard',
+      url: 'https://emoji-example/emoji/standard',
     },
     {
-      url: 'https://emoji-example/custom',
+      url: 'https://emoji-example/emoji/site-id/site',
       securityProvider: () => ({
         headers: {
           Authorization: 'Bearer token',

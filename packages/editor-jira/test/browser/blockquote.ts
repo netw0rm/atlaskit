@@ -1,5 +1,5 @@
 import { nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import { checkParseEncodeRoundTrips } from '../../test-helpers';
+import { checkParse, checkParseEncodeRoundTrips } from '../../test-helpers';
 import { name } from '../../package.json';
 import { makeSchema } from '../../src/schema';
 
@@ -31,6 +31,18 @@ describe(name, () => {
           )
         )
       )
+    );
+
+    checkParse('empty node',
+      schema,
+      [`<blockquote></blockquote>`],
+      doc(blockquote(p()))
+    );
+
+    checkParseEncodeRoundTrips('no content',
+      schema,
+      `<blockquote><p></p></blockquote>`,
+      doc(blockquote(p()))
     );
   });
 });

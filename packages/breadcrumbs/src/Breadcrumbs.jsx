@@ -10,9 +10,16 @@ export { BreadcrumbsItem };
 
 export default class BreadcrumbsStateless extends PureComponent {
   static propTypes = {
+    /** Override collapsing of the nav when there are more than maxItems */
     isExpanded: PropTypes.bool,
+    /** Set the maximum number of breadcrumbs to display. When there are more
+    than the maximum number, only the first and last will be shown, with an
+    ellipsis in between. */
     maxItems: PropTypes.number,
+    /** A function to be called when you are in the collapsed view and click
+    the ellpisis. */
     onExpand: PropTypes.func.isRequired,
+    /** A single <AkBreadcrumbsItem> or an array of <AkBreadcrumbsItem>.  */
     children: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),

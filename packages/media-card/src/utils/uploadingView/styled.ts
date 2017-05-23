@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import * as rgba from 'polished/lib/color/rgba';
 import * as parseToRgb from 'polished/lib/color/parseToRgb';
 import {akColorN0, akColorN900} from '@atlaskit/util-shared-styles';
-import {absolute, size, center} from '../../styles';
+import {absolute, size} from '../../styles';
 
 const bodyHeight = 26;
 
@@ -58,30 +58,10 @@ export const ProgressWrapper = styled.div`
 
 `;
 
-export const IconLink = styled.a`
-
-  /*
-    fix the vertical align from taking up extra space
-  */
-  ${center}
-
-  /*
-    guessed a random number to make it look good since the icon doesn't fill the 20px square
-  */
+export const CancelButtonWrapper = styled.div`
   margin-left: 4px;
-
   /*
-    extra room to make it easier to touch on mobile
-  */
-  ${size(bodyHeight)}
-
-  cursor: pointer;
-  color: ${akColorN0};
-  border-radius: 3px;
-
-  &:hover, &:active {
-    color: ${akColorN0};
-    background-color: rgba(9, 30, 66, 0.06);
-  }
-
+    button must appear above overlay
+   */
+  z-index: 2;
 `;

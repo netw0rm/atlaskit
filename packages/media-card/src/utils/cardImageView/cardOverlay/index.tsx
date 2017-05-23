@@ -18,7 +18,7 @@ import {
   ErrorMessage,
   Retry,
   TitleWrapper,
-  FileSize,
+  Subtitle,
   Metadata
 } from './styled';
 
@@ -43,6 +43,11 @@ export interface CardOverlayState {
 }
 
 export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
+  static defaultProps = {
+    actions: [],
+    mediaName: ''
+  };
+
   constructor(props: CardOverlayProps) {
     super(props);
 
@@ -50,11 +55,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       isMenuExpanded: false
     };
   }
-
-  static defaultProps = {
-    actions: [],
-    mediaName: ''
-  };
 
   private get wrapperClassNames() {
     const {error, selectable, selected, mediaType, persistent} = this.props;
@@ -79,10 +79,10 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
           {this.tickBox()}
         </TopRow>
         <BottomRow className={'bottom-row'}>
-          <LeftColumn className={'left-column'}>
+          <LeftColumn>
             {this.bottomLeftColumn()}
           </LeftColumn>
-          <RightColumn className={'right-column'}>
+          <RightColumn>
             <Menu actions={actions} onToggle={this.onMenuToggle} deleteBtnColor="white" />
           </RightColumn>
         </BottomRow>
@@ -134,11 +134,19 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       const {mediaType, subtitle, icon} = this.props;
       const classNames = cx('metadata');
 
+      const fileIcon = mediaType || icon
+        ? <FileIcon mediaType={mediaType} iconUrl={icon} />
+        : null;
+
+      const subtitleEl = subtitle
+        ? <Subtitle className="file-size">{subtitle}</Subtitle>
+        : null;
+
       return (
         <div>
           <Metadata className={classNames}>
-            <FileIcon mediaType={mediaType} iconUrl={icon} />
-            <FileSize className="file-size">{subtitle}</FileSize>
+            {fileIcon}
+            {subtitleEl}
           </Metadata>
         </div>
       );

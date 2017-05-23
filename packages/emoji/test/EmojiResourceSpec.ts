@@ -3,17 +3,29 @@ import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 
-import { EmojiDescription } from '../src/types';
+import { EmojiDescription, ImageRepresentation } from '../src/types';
 import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
 import { OnProviderChange } from '../src/api/SharedResources';
 import EmojiResource, { EmojiResourceConfig } from '../src/api/EmojiResource';
 import { EmojiSearchResult } from '../src/api/EmojiRepository';
 
-import { evilburnsEmoji, atlassianEmojis, atlassianServiceEmojis, grinEmoji, standardEmojis, standardServiceEmojis, thumbsupEmoji } from './TestData';
+import {
+  atlassianEmojis,
+  atlassianServiceEmojis,
+  blobResponse,
+  evilburnsEmoji,
+  grinEmoji,
+  mediaEmojiImagePath,
+  siteServiceEmojis,
+  standardEmojis,
+  standardServiceEmojis,
+  thumbsupEmoji
+} from './TestData';
 
 const baseUrl = 'https://bogus/';
 const p1Url = 'https://p1/';
 const p2Url = 'https://p2/';
+const p3Url = 'https://p3/';
 
 const defaultSecurityHeader = 'X-Bogus';
 
@@ -34,6 +46,10 @@ const provider2: ServiceConfig = {
   url: p2Url,
 };
 
+const provider3: ServiceConfig = {
+  url: p3Url,
+};
+
 const defaultApiConfig: EmojiResourceConfig = {
   recordConfig: {
     url: baseUrl,
@@ -49,20 +65,22 @@ const providerData2 = atlassianEmojis;
 const providerServiceData1 = standardServiceEmojis;
 const providerServiceData2 = atlassianServiceEmojis;
 
-function checkOrder(expected: EmojiDescription[], actual: EmojiDescription[]) {
+const checkOrder = (expected: EmojiDescription[], actual: EmojiDescription[]) => {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
   expected.forEach((emoji, idx) => {
     checkEmoji(emoji, actual[idx], idx);
   });
-}
+};
 
-function checkEmoji(expected: EmojiDescription, actual: EmojiDescription | undefined, idx?: number) {
+const checkEmoji = (expected: EmojiDescription, actual: EmojiDescription | undefined, idx?: number) => {
   expect(actual, 'Emoji is defined').to.not.equal(undefined);
   if (actual) {
     expect(actual.id, `emoji #${idx}`).to.equal(expected.id);
     expect(actual.shortName, `emoji #${idx}`).to.equal(expected.shortName);
   }
-}
+};
+
+const customEmoji = (emoji: EmojiDescription) => emoji.category === 'CUSTOM';
 
 class MockOnProviderChange implements OnProviderChange<EmojiSearchResult, any, undefined> {
   resultCalls: EmojiSearchResult[] = [];
@@ -145,6 +163,7 @@ describe('EmojiResource', () => {
         providers: [],
       };
       try {
+        // tslint:disable-next-line:no-unused-expression
         new EmojiResource(config);
         expect(true, 'EmojiResource construction should throw error').to.equal(false);
       } catch (e) {
@@ -348,6 +367,50 @@ describe('EmojiResource', () => {
       });
       resource.subscribe(onChange);
       resource.filter('grin');
+      return filteredPromise;
+    });
+
+    it('media image is loaded before returned in search results', () => {
+      const config = {
+        ...defaultApiConfig,
+        providers: [provider1, provider3],
+      };
+
+      let imageResolver;
+      const deferredImage = new Promise(resolve => {
+        imageResolver = resolve;
+      });
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: providerServiceData1,
+      }).mock({
+        matcher: `begin:${provider3.url}`,
+        response: siteServiceEmojis(),
+      }).mock({
+        matcher: `begin:${mediaEmojiImagePath}`,
+        response: () => deferredImage,
+      });
+
+      const resource = new EmojiResource(config);
+      const onChange = new MockOnProviderChange();
+      const filteredPromise = onChange.waitForResult().then(result => {
+        const emojis = result.emojis;
+        expect(emojis.length, 'Number of emoji').to.equal(80);
+        expect(emojis.filter(customEmoji).length, 'No custom emoji').to.equal(0);
+        const secondResult = onChange.waitForResult();
+        imageResolver(blobResponse(new Blob()));
+        return secondResult;
+      }).then(result => {
+        const emojis = result.emojis;
+        expect(emojis.length, 'Number of emoji').to.equal(81);
+        const customEmojis = emojis.filter(customEmoji);
+        expect(customEmojis.filter(customEmoji).length, 'No custom emoji').to.equal(1);
+        const representation = customEmojis[0].representation as ImageRepresentation;
+        expect(representation.imagePath.indexOf('data:'), 'media emoji has image representation').to.equal(0);
+      });
+      resource.subscribe(onChange);
+      resource.filter('');
       return filteredPromise;
     });
   });
@@ -590,6 +653,55 @@ describe('EmojiResource', () => {
       });
       resolveProvider2(providerServiceData2);
       return done;
+    });
+
+    it('media image is loaded before promise resolved', () => {
+      fetchMock.mock({
+        matcher: `begin:${provider3.url}`,
+        response: siteServiceEmojis(),
+      }).mock({
+        matcher: `begin:${mediaEmojiImagePath}`,
+        response: blobResponse(new Blob()),
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [provider3],
+      };
+
+      const resource = new EmojiResource(config);
+
+      return resource.findByEmojiId({ id: 'media', shortName: ':media:' }).then(emoji => {
+        expect(emoji).to.not.equal(undefined);
+        if (emoji) {
+          const representation = emoji.representation as ImageRepresentation;
+          expect(representation.imagePath.indexOf('data:'), 'media emoji has image representation').to.equal(0);
+        }
+      });
+    });
+
+    it('media emoji missing token - left as image representation', () => {
+      fetchMock.mock({
+        matcher: `begin:${provider3.url}`,
+        response: {
+          emojis: siteServiceEmojis().emojis,
+        }
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [provider3],
+      };
+
+      const resource = new EmojiResource(config);
+
+      return resource.findByEmojiId({ id: 'media', shortName: ':media:' }).then(emoji => {
+        expect(emoji).to.not.equal(undefined);
+        if (emoji) {
+          const representation = emoji.representation as ImageRepresentation;
+          expect(representation.imagePath, 'media emoji left as image emoji with original url').to.equal(mediaEmojiImagePath);
+        }
+      });
     });
   });
 
@@ -846,6 +958,55 @@ describe('EmojiResource', () => {
       });
       resolveProvider2(providerServiceData2);
       return done;
+    });
+
+    it('media image is loaded before promise resolved', () => {
+      fetchMock.mock({
+        matcher: `begin:${provider3.url}`,
+        response: siteServiceEmojis(),
+      }).mock({
+        matcher: `begin:${mediaEmojiImagePath}`,
+        response: blobResponse(new Blob()),
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [provider3],
+      };
+
+      const resource = new EmojiResource(config);
+
+      return resource.findByShortName(':media:').then(emoji => {
+        expect(emoji).to.not.equal(undefined);
+        if (emoji) {
+          const representation = emoji.representation as ImageRepresentation;
+          expect(representation.imagePath.indexOf('data:'), 'media emoji has image representation').to.equal(0);
+        }
+      });
+    });
+
+    it('media emoji missing token - left as image representation', () => {
+      fetchMock.mock({
+        matcher: `begin:${provider3.url}`,
+        response: {
+          emojis: siteServiceEmojis().emojis,
+        }
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [provider3],
+      };
+
+      const resource = new EmojiResource(config);
+
+      return resource.findByShortName(':media:').then(emoji => {
+        expect(emoji).to.not.equal(undefined);
+        if (emoji) {
+          const representation = emoji.representation as ImageRepresentation;
+          expect(representation.imagePath, 'media emoji left as image emoji with original url').to.equal(mediaEmojiImagePath);
+        }
+      });
     });
   });
 });

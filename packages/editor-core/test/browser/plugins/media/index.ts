@@ -2,6 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   baseKeymap,
   keymap,
@@ -39,7 +40,7 @@ describe('Media plugin', () => {
   const fixture = fixtures();
   const stateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
-  const resolvedProvider = storyMediaProviderFactory(testCollectionName, stateManager);
+  const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
   const testFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();
@@ -206,6 +207,23 @@ describe('Media plugin', () => {
       ),
       p(),
     ));
+  });
+
+  it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const provider = await resolvedProvider;
+    await provider.uploadContext;
+
+    expect(pluginState.binaryPicker!).to.be.an('object');
+
+    pluginState.binaryPicker!.upload = sinon.spy();
+
+    pluginState.insertFileFromDataUrl(
+      'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      'test.gif'
+    );
+
+    expect(pluginState.binaryPicker!.upload.calledOnce).to.equal(true);
   });
 
   describe('Compact behaviour', () => {

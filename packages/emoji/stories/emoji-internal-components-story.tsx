@@ -73,6 +73,22 @@ storiesOf(`${name}/Internal components`, module)
       <EmojiPreview emoji={longTongueEmoji} toneEmoji={toneEmoji} />
     </div>
   ))
+  .add('emoji preview with placeholder for media api', () => {
+    const emoji = {
+      ...longTongueEmoji,
+      representation: {
+        mediaPath: 'http://example.com/sample.png',
+        height: 24,
+        width: 24,
+      }
+    };
+
+    return (
+      <div style={borderedStyle} >
+        <EmojiPreview emoji={emoji} />
+      </div>
+    );
+  })
   .add('category selector', () => (
     <CategorySelector
       activeCategoryId="OBJECT"

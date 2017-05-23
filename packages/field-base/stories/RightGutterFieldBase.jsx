@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from '@atlaskit/input';
 import uid from 'uid';
-import AkFieldBase, { Label } from '../src';
+import FieldBase, { Label } from '../src';
 
 /* eslint-disable react/prop-types */
 export default (props) => {
@@ -13,9 +13,9 @@ export default (props) => {
         htmlFor={id}
       />
       <div style={{ backgroundColor: 'white', display: 'flex', alignItems: 'center' }}>
-        <AkFieldBase isFitContainerWidthEnabled>
+        <FieldBase isFitContainerWidthEnabled>
           <Input id={id} value="Input children" isEditing />
-        </AkFieldBase>
+        </FieldBase>
         <div style={{ marginLeft: 4 }}>
           {props.rightGutter}
         </div>

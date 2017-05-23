@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from './styles.less';
+
+import { LabelWrapper, RequiredIndicator, LabelInner } from '../styled/Label';
 
 export default class Label extends PureComponent {
   static propTypes = {
@@ -28,23 +28,32 @@ export default class Label extends PureComponent {
 
   /* eslint-disable jsx-a11y/no-static-element-interactions */
   render() {
-    const labelClasses = classNames(styles.labelText, {
-      [styles.hidden]: this.props.isLabelHidden,
-      [styles.inlineEdit]: this.props.appearance === 'inline-edit',
-      [styles.firstChild]: this.props.isFirstChild,
-    });
+    const {
+      appearance,
+      children,
+      htmlFor,
+      isFirstChild,
+      isLabelHidden,
+      isRequired,
+      label,
+      onClick,
+    } = this.props;
 
     return (
-      <label className={styles.label} htmlFor={this.props.htmlFor}>
-        <div className={labelClasses}>
-          <span onClick={this.props.onClick}>{this.props.label}</span>
-          {this.props.isRequired ?
-            <span role="presentation" className={styles.requiredAsterisk}>*</span>
+      <LabelWrapper htmlFor={htmlFor}>
+        <LabelInner
+          isHidden={isLabelHidden}
+          inlineEdit={appearance === 'inline-edit'}
+          firstChild={isFirstChild}
+        >
+          <span onClick={onClick}>{label}</span>
+          {isRequired ?
+            <RequiredIndicator role="presentation">*</RequiredIndicator>
             : null
           }
-        </div>
-        {this.props.children}
-      </label>
+        </LabelInner>
+        {children}
+      </LabelWrapper>
     );
   }
 }

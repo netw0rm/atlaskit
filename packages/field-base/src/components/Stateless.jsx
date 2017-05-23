@@ -1,12 +1,12 @@
-import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
-import Spinner from '@atlaskit/spinner';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
 import InlineDialog from '@atlaskit/inline-dialog';
-import styles from './styles.less';
+import ContentWrapper from '../styled/ContentWrapper';
+import DialogWrapper from '../styled/DialogWrapper';
+import Content from '../styled/Content';
+import ValidationElement from './ValidationElement';
 
  /* eslint-disable react/no-unused-prop-types */
-export default class FieldBase extends PureComponent {
+export default class FieldBaseStateless extends PureComponent {
   static propTypes = {
     /**
       * controls the appearance of the field.
@@ -77,63 +77,67 @@ export default class FieldBase extends PureComponent {
     }
   }
 
-  renderRightGutter() {
-    if (!this.props.isDisabled && this.props.isInvalid) {
-      return (
-        <div className={styles.warningIconWrapper}>
-          <WarningIcon label="warning" size="medium" />
-        </div>
-      );
-    }
-
-    return this.props.isLoading ? <Spinner /> : null;
-  }
-
   render() {
-    const contentClasses = classNames(styles.contentContainer, {
-      [styles.none]: this.props.appearance === 'none',
-      [styles.subtle]: this.props.appearance === 'subtle',
-      [styles.compact]: this.props.isCompact,
-      [styles.disabled]: this.props.isDisabled,
-      [styles.readOnly]: this.props.isReadOnly,
-      [styles.paddingDisabled]: this.props.isPaddingDisabled,
-      [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
-      [styles.focused]: this.props.isFocused,
-      [styles.invalid]: this.props.isInvalid && !this.props.isFocused,
-    });
-
-    const dialogWrapperClasses = classNames(styles.dialogContainer, {
-      [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
-    });
-
-    const contentWrapperClasses = classNames(styles.contentWrapper, {
-      [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
-      [styles.disabled]: this.props.isDisabled,
-    });
+    const {
+      appearance,
+      children,
+      invalidMessage,
+      isCompact,
+      isDialogOpen,
+      isDisabled,
+      isFitContainerWidthEnabled,
+      isFocused,
+      isInvalid,
+      isLoading,
+      isPaddingDisabled,
+      isReadOnly,
+      onBlur,
+      onDialogBlur,
+      onDialogClick,
+      onDialogFocus,
+      onFocus,
+    } = this.props;
 
     return (
-      <div className={contentWrapperClasses}>
-        <div className={dialogWrapperClasses}>
+      <ContentWrapper
+        fitContainerWidth={isFitContainerWidthEnabled}
+        disabled={isDisabled}
+      >
+        <DialogWrapper
+          fitContainerWidth={isFitContainerWidthEnabled}
+        >
           <InlineDialog
             position="right middle"
-            isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
-            content={this.props.invalidMessage}
+            isOpen={isDialogOpen && !!invalidMessage}
+            content={invalidMessage}
             shouldFlip={['top']}
-            onContentBlur={this.props.onDialogBlur}
-            onContentClick={this.props.onDialogClick}
-            onContentFocus={this.props.onDialogFocus}
+            onContentBlur={onDialogBlur}
+            onContentClick={onDialogClick}
+            onContentFocus={onDialogFocus}
           >
-            <div
-              className={contentClasses}
-              onFocusCapture={this.props.onFocus}
-              onBlurCapture={this.props.onBlur}
+            <Content
+              none={appearance === 'none'}
+              subtle={appearance === 'subtle'}
+              compact={isCompact}
+              disabled={isDisabled}
+              readOnly={isReadOnly}
+              paddingDisabled={isPaddingDisabled}
+              fitContainerWidth={isFitContainerWidthEnabled}
+              focused={isFocused}
+              invalid={isInvalid && !isFocused}
+              onFocusCapture={onFocus}
+              onBlurCapture={onBlur}
             >
-              {this.props.children}
-              {this.renderRightGutter()}
-            </div>
+              {children}
+              <ValidationElement
+                isDisabled={isDisabled}
+                isInvalid={isInvalid}
+                isLoading={isLoading}
+              />
+            </Content>
           </InlineDialog>
-        </div>
-      </div>
+        </DialogWrapper>
+      </ContentWrapper>
     );
   }
 }

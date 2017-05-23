@@ -21,6 +21,11 @@ export const TickBox = styled.div`
     color: white;
     background-color: #0052CC; // TODO FIL-3884: Align with tickbox icons
   }
+
+  // Enforce dimensions of "tick" icon
+  svg {
+    width: 14px;
+  }
 `;
 
 export const Overlay = styled.div`

@@ -100,10 +100,11 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   tickBox() {
-    const selectedClass = this.props.selected ? 'selected' : null;
+    const {selected, selectable} = this.props;
     const tick = <Icon glyph={TickIcon} label="tick" />;
+    const className = cx('tickbox', {selected});
 
-    return this.props.selectable && (<TickBox className={`tickbox ${selectedClass}`}> {tick} </TickBox>);
+    return selectable && (<TickBox className={className}> {tick} </TickBox>);
   }
 
   bottomLeftColumn() {

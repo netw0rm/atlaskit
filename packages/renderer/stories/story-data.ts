@@ -1,13 +1,27 @@
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
-const toEmojiId = (emoji) => {
+const toEmojiAttrs = (emoji) => {
   const { shortName, id, fallback } = emoji;
-  return { shortName, id, fallback };
+  return {
+    shortName,
+    id,
+    text: fallback || shortName,
+  };
+};
+
+const toEmojiId = (emoji) => {
+   const { shortName, id, fallback } = emoji;
+   return { shortName, id, fallback };
 };
 
 const { emojiTestData, emojiStoryData } = emojiData;
+export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
+export const evilburnsEmojiAttrs = toEmojiAttrs(emojiTestData.evilburnsEmoji);
+
 export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
 export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+
+
 export const lorem = emojiStoryData.lorem;
 
 export const document = {
@@ -96,7 +110,7 @@ export const document = {
         {
           type: 'emoji',
           attrs: {
-            ...grinEmojiId,
+            ...grinEmojiAttrs,
           }
         },
         {
@@ -106,7 +120,7 @@ export const document = {
         {
           type: 'emoji',
           attrs: {
-            ...evilburnsEmojiId,
+            ...evilburnsEmojiAttrs,
           }
         },
         {

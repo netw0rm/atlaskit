@@ -246,7 +246,7 @@ export default function encode(node: PMNode) {
   }
 
   function encodeMention(node: PMNode) {
-    const link = doc.createElement('link');
+    const link = doc.createElementNS(FAB_XMLNS, 'fab:link');
     const mention = doc.createElementNS(FAB_XMLNS, 'fab:mention');
     mention.setAttribute('atlassian-id', node.attrs['id']);
 

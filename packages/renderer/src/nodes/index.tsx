@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { EmojiId } from '@atlaskit/emoji';
 import { Mention, ResourcedMention } from '@atlaskit/mention';
 import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';
@@ -252,7 +251,12 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
     case NodeType.doc:
       return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
     case NodeType.emoji: {
-      const emojiId = validNode.attrs as EmojiId;
+      const { shortName, id, text } = validNode.attrs as { shortName: string, id?: string, text?: string };
+      const emojiId = {
+        shortName,
+        id,
+        fallback: text || shortName,
+      };
       const emojiProvider = servicesConfig && servicesConfig.getEmojiProvider && servicesConfig.getEmojiProvider();
       return <Emoji key={key} emojiId={emojiId} emojiProvider={emojiProvider} />;
     }

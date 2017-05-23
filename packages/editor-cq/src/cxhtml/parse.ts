@@ -201,8 +201,9 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
           const codeHeader = schema.text(node.textContent || '', [ schema.marks.strong.create() ]);
           return schema.nodes.heading.createChecked({ level: 5 }, Fragment.from( codeHeader ));
         }
-        else if (hasClass(node, 'codeContent')) {
-          return convertCodeFromView(node) || unsupportedInline;
+        else if (node.querySelector('.syntaxhighlighter')) {
+          const codeblockNode = node.querySelector('.syntaxhighlighter');
+          return convertCodeFromView(codeblockNode as Element) || unsupportedInline;
         }
         else if (hasClass(node, 'preformatted')) {
           return convertNoFormatFromView(node) || unsupportedInline;
@@ -300,16 +301,22 @@ function convertWYSIWYGMacro (node: Element): Fragment | PMNode | null | undefin
 }
 
 function convertCodeFromView (node: Element): Fragment | PMNode | null | undefined  {
-    const container = node.querySelector('.syntaxhighlighter');
+    const container = node.querySelector('.container');
+
+    let content = '';
     if (container) {
-      const codeContent = container.textContent || ' ';
-      let language;
-      if (container.className) {
-        language = (container.className.match(/\w+$/) || [''])[0];
+      const { childNodes } = container;
+      for (let i = 0, len = childNodes.length; i < len; i++) {
+        content += childNodes[i].textContent + (i === len - 1 ? '' : '\n');
       }
-      return createCodeFragment(codeContent, language);
     }
-    return null;
+
+    let language;
+    if (node.className) {
+      language = (node.className.match(/\w+$/) || [''])[0];
+    }
+
+    return createCodeFragment(content, language);
 }
 
 function convertNoFormatFromView (node: Element): Fragment | PMNode | null | undefined  {

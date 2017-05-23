@@ -46,6 +46,8 @@ import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
 import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 import { inlineMacroNodeView } from './schema/nodes/inlineMacro';
+import { bodylessBlockMacroNodeView } from './schema/nodes/bodylessBlockMacro';
+import { plainTextBlockMacroNodeView } from './schema/nodes/plainTextBockNode';
 export { version };
 
 export interface Props {
@@ -295,6 +297,8 @@ export default class Editor extends PureComponent<Props, State> {
           mention: mentionNodeView(this.providerFactory),
           jiraIssue: jiraIssueNodeView,
           inlineMacro: inlineMacroNodeView,
+          bodylessBlockMacro: bodylessBlockMacroNodeView,
+          plainTextBlockMacro: plainTextBlockMacroNodeView,
           media: mediaNodeView(this.providerFactory)
         },
         handleDOMEvents: {

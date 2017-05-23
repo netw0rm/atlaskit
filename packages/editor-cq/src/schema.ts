@@ -8,6 +8,8 @@ import {
 
 import jiraIssue from './schema/nodes/jiraIssue';
 import inlineMacro from './schema/nodes/inlineMacro';
+import bodylessBlockMacro from './schema/nodes/bodylessBlockMacro';
+import plainTextBlockMacro from './schema/nodes/plainTextBockNode';
 import unsupportedBlock from './schema/nodes/unsupportedBlock';
 import unsupportedInline from './schema/nodes/unsupportedInline';
 
@@ -26,6 +28,8 @@ export interface CQSchemaNodes {
   heading: NodeSpec;
   inlineMacro: NodeSpec;
   jiraIssue: NodeSpec;
+  bodylessBlockMacro: NodeSpec;
+  plainTextBlockMacro: NodeSpec;
   listItem: NodeSpec;
   mention: NodeSpec;
   orderedList: NodeSpec;
@@ -64,6 +68,8 @@ const nodes = [
   'unsupportedBlock',
   'inlineMacro',
   'jiraIssue',
+  'bodylessBlockMacro',
+  'plainTextBlockMacro',
   'listItem',
   'mention',
   'text',
@@ -72,7 +78,7 @@ const nodes = [
   'rule'
 ];
 
-const customNodeSpecs = { inlineMacro, jiraIssue, unsupportedBlock, unsupportedInline };
+const customNodeSpecs = { inlineMacro, bodylessBlockMacro, plainTextBlockMacro, jiraIssue, unsupportedBlock, unsupportedInline };
 
 // ranking order is important
 // @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Rank

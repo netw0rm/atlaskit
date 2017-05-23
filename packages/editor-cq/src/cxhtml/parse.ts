@@ -395,20 +395,23 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
   // const bodyType = getBodyType(node);
   const placeholderUrl = getAcParameter(node, 'placeholderUrl');
   const bodyType = getAcParameter(node, 'bodyType');
-  const outputType = getAcParameter(node, 'outputType');
+  const displayType = getAcParameter(node, 'outputType');
   const name = getAcName(node) || 'Unnamed Macro';
+  const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
 
-  switch (bodyType + '-' + outputType) {
+  switch (bodyType + '-' + displayType) {
     case 'NONE-INLINE':
-      const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
 
       return schema.nodes.inlineMacro.create({
         macroId, placeholderUrl
       });
 
     case 'NONE-BLOCK':
-      // TODO
-      return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+      // TODO - For now this uses an inline macro as conf is wrapping these macros in a p tag
+      return schema.nodes.inlineMacro.create({
+        macroId, placeholderUrl
+      });
+      // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 
     case 'RICH_TEXT-BLOCK':
       // TODO schema for generic rich text nodes.
@@ -440,9 +443,14 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
 
     case 'PLAIN_TEXT-BLOCK':
+      const bodyContent = getContent(node);
+      // const bodyContent = node.innerHTML;
       // TODO schema generic for plaintext nodes.
-      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
-      return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
+      // const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
+      // return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
+      return schema.nodes.plainTextBlockMacro.create({
+        macroId, placeholderUrl, bodyContent
+      });
   }
 
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting
@@ -465,17 +473,17 @@ function getAcParameter(node: Element, parameter: string): string | null {
 
   return null;
 }
-
-function getAcTagContent(node: Element, tagName: string): string | null {
-  for (let i = 0; i < node.childNodes.length; i++) {
-    const child = node.childNodes[i] as Element;
-    if (getNodeName(child) === tagName) {
-      return child.textContent;
-    }
-  }
-
-  return null;
-}
+//
+// function getAcTagContent(node: Element, tagName: string): string | null {
+//   for (let i = 0; i < node.childNodes.length; i++) {
+//     const child = node.childNodes[i] as Element;
+//     if (getNodeName(child) === tagName) {
+//       return child.textContent;
+//     }
+//   }
+//
+//   return null;
+// }
 
 function getAcTagNodes(node: Element, tagName: string): NodeList | null {
   for (let i = 0; i < node.childNodes.length; i++) {

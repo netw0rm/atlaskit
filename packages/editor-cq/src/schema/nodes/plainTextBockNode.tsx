@@ -37,13 +37,15 @@ export default {
     atom: true,
     attrs: {
         macroId: { default: null },
-        placeholderUrl: {default: null}
+        placeholderUrl: {default: null},
+        bodyContent: {default: null}
     },
     parseDOM: [{
         tag: 'div',
         getAttrs: (dom: HTMLElement) => ({
             macroId: dom.dataset.macroId,
-            placeholderUrl: dom.dataset.placeholderUrl
+            placeholderUrl: dom.dataset.placeholderUrl,
+            bodyContent: dom.dataset.bodyContent
         })
     }],
     toDOM(node: any) {
@@ -55,13 +57,15 @@ export default {
     }
 } as NodeSpec;
 
-export const bodylessBlockMacroNodeView = (node: any, view: any, getPos: () => number): NodeView => {
-    const { macroId, placeholderUrl } = node.attrs;
+export const plainTextBlockMacroNodeView = (node: any, view: any, getPos: () => number): NodeView => {
+    const { macroId, placeholderUrl, bodyContent } = node.attrs;
 
     let dom: HTMLElement | undefined = document.createElement('div');
     dom.setAttribute('class', nodeClassName);
     dom.dataset.macroId = macroId;
     dom.dataset.placeholderUrl = placeholderUrl;
+    dom.dataset.bodyContent = bodyContent;
+
 
     dom.setAttribute('spellcheck', 'false');
 
@@ -74,10 +78,19 @@ export const bodylessBlockMacroNodeView = (node: any, view: any, getPos: () => n
         backgroundRepeat: 'none'
     });
 
-    ReactDOM.render(
-        <div className={macroNodeClassName} />,
-        dom
-    );
+    // HACK - I should learn react.
+    if (bodyContent.size <= 0) {
+        ReactDOM.render(
+            <div className={macroNodeClassName} />,
+            dom
+        );
+    } else {
+        ReactDOM.render(
+            <div className={macroNodeClassName} >{bodyContent}</div>,
+            dom
+        );
+    }
+
 
     return {
         get dom() {

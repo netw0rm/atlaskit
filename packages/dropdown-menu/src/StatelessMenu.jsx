@@ -181,6 +181,7 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   focusItem = (index) => {
     this.setState({ focusedItem: index });
+    this.domItemsList[index].focus();
   }
 
   handleKeyboardInteractions = (event) => {
@@ -275,6 +276,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     <FieldBase
       isFocused={this.props.isOpen}
       onFocus={this.onItemsFilterFocus}
+      isFitContainerWidthEnabled
     >
       <div className={styles.menuItemsFilter}>
         <input

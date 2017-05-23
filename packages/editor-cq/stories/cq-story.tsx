@@ -47,10 +47,15 @@ storiesOf(name, module)
       handleChange = (editor: Editor) => {
         this.setState({ isMediaReady: false });
 
-        editor.value.then((value) => this.setState({
-          isMediaReady: true,
-          cxhtml: value
-        }));
+        action('Change')();
+
+        editor.value.then((value) => {
+          action('Value has been resolved')(value);
+          this.setState({
+            isMediaReady: true,
+            cxhtml: value
+          });
+        });
       }
 
       togglePrettify = () => {

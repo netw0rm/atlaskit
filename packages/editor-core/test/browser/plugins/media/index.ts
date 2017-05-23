@@ -12,6 +12,7 @@ import {
   MediaPluginState,
   ProviderFactory,
 } from '../../../../src';
+import { undo, history } from '../../../../src/prosemirror';
 import {
   blockquote,
   chaiPlugin,
@@ -51,6 +52,8 @@ describe('Media plugin', () => {
     const schema = (behavior === 'compact') ? compactSchema : defaultSchema;
     const addBaseKeymap = behavior !== 'compact';
     const plugins = mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler });
+
+    plugins.push(history());
 
     if (behavior === 'compact') {
       const baseKeymapForCompactBehaviour = { ...baseKeymap };
@@ -387,5 +390,59 @@ describe('Media plugin', () => {
       id: secondTemporaryFileId,
       status: 'cancelled'
     })).to.eq(true, 'State Manager should emit "cancelled" status');
+  });
+
+  it('should not revert to temporary media nodes after upload finished and we undo', async () => {
+    const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
+    const tempFileId = `temporary:${randomId()}`;
+    const publicFileId = `${randomId()}`;
+
+    // wait until mediaProvider has been set
+    const provider = await resolvedProvider;
+    // wait until mediaProvider's uploadContext has been set
+    await provider.uploadContext;
+
+    insertFile(editorView, pluginState, tempFileId);
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p(),
+        mediaGroup(
+          media({ id: tempFileId, type: 'file', collection: testCollectionName }),
+        ),
+      )
+    );
+
+    stateManager.updateState(tempFileId, {
+      id: tempFileId,
+      status: 'uploading'
+    });
+
+    // mark the upload as finished, triggering replacement of media node
+    stateManager.updateState(tempFileId, {
+      id: tempFileId,
+      publicId: publicFileId,
+      status: 'ready'
+    });
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p(),
+        mediaGroup(
+          media({ id: publicFileId, type: 'file', collection: testCollectionName }),
+        ),
+      )
+    );
+
+    // undo last change
+    expect(undo(editorView.state, editorView.dispatch)).to.equal(true);
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p(),
+        // the second paragraph is a side effect of PM history snapshots merging
+        p(),
+      )
+    );
   });
 });

@@ -527,7 +527,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
   describe('fabric mentions', () => {
     check(
       'with atlassian id and name',
-      '<p>This is mention from <link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></link></p>',
+      '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link></p>',
       doc(
         p(
           'This is mention from ',

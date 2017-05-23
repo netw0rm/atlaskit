@@ -20,11 +20,9 @@
     "@atlaskit/navigation": "^9.3.0",
     "@atlaskit/spinner": "2.1.0",
     "@atlaskit/util-shared-styles": "^2.0.1",
-    "axios": "^0.16.0",
-    "axios-retry": "^1.2.0",
     "babel-runtime": "^6.11.6",
-    "es6-promise": "^4.1.0",
     "lodash.debounce": "^4.0.8",
+    "tslib": "^1.2.0",
     "uid": "^0.0.2"
   },
   "devDependencies": {

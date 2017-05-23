@@ -1,12 +1,17 @@
-# AkUtilComponentTemplate
+# @NAME@
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+This component integrates with `@atlaskit/navigation` to provide product search facility.
 
-## Try it out
+It includes:
 
-Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
+- Search result item components (e.g. for JIRA issues, Confluence pages, etc).
+- JavaScript APIs for querying Atlassian search services.
 
 ## Installation
+
+Requirements:
+
+- [`fetch` API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) -- For legacy browsers consider [`whatwg-fetch`](https://github.com/github/fetch)
 
 ```sh
 npm install @NAME@

@@ -1,23 +1,28 @@
-import React, { PropTypes, PureComponent } from 'react';
-
+import * as React from 'react';
 import AkSpinner from '@atlaskit/spinner';
 import { CrossIcon } from '@atlaskit/icon';
 
 const DEFAULT_DELAY = 500;
 
-export default class SpinningClearIcon extends PureComponent {
-  static propTypes = {
-    shouldSpin: PropTypes.bool,
-    delay: PropTypes.number,
-  }
+export interface Props {
+  shouldSpin: boolean;
+  delay?: number;
+}
 
-  constructor(props) {
+export interface State {
+  isSpinning: boolean;
+  isUnderMouse: boolean;
+}
+
+export class SpinningClearIcon extends React.PureComponent<Props, State> {
+  private delayTimeoutId?: number;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       isSpinning: props.shouldSpin || false,
       isUnderMouse: false,
     };
-    this.delayTimeoutId = null;
   }
 
   componentDidMount() {
@@ -32,7 +37,7 @@ export default class SpinningClearIcon extends PureComponent {
     this.clearDelayedSpinner();
   }
 
-  setupDelayedSpinner() {
+  private setupDelayedSpinner() {
     const delay = this.props.delay || DEFAULT_DELAY;
 
     this.delayTimeoutId = setTimeout(() => {
@@ -40,12 +45,14 @@ export default class SpinningClearIcon extends PureComponent {
     }, delay);
   }
 
-  clearDelayedSpinner() {
-    clearTimeout(this.delayTimeoutId);
-    this.delayTimeoutId = null;
+  private clearDelayedSpinner() {
+    if (typeof this.delayTimeoutId !== 'undefined') {
+      clearTimeout(this.delayTimeoutId);
+      this.delayTimeoutId = undefined;
+    }
   }
 
-  handleDelayedSpinner() {
+  private handleDelayedSpinner() {
     if (!this.state.isSpinning && this.props.shouldSpin) {
       this.setupDelayedSpinner();
     } else if (!this.props.shouldSpin) {
@@ -54,11 +61,11 @@ export default class SpinningClearIcon extends PureComponent {
     }
   }
 
-  handleMouseEnter = () => {
+  private handleMouseEnter = () => {
     this.setState({ isUnderMouse: true });
   }
 
-  handleMouseLeave = () => {
+  private handleMouseLeave = () => {
     this.setState({ isUnderMouse: false });
   }
 

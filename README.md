@@ -115,7 +115,7 @@ For these packages you'll need to run the `test/unit` script
 yarn run test/unit
 ```
 
-To run test for a single package you can pass the package name (the name used in the directory not the package.json) like so:
+To run tests for a single package you can pass the package name (the name used in the directory not the package.json) like so:
 
 ```
 yarn run test/unit avatar

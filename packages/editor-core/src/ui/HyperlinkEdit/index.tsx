@@ -79,8 +79,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       editorFocused, inputActive, showToolbarPanel
     } = this.state;
 
-    const nOldText = oldText && normalizeUrl(oldText);
-    const nText = text && normalizeUrl(text);
+    const normalizedOldText = oldText && normalizeUrl(oldText);
 
     if ((active || showToolbarPanel) && (editorFocused || inputActive)) {
       const showOpenButton = !!oldHref;
@@ -119,10 +118,10 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
             {!showUnlinkButton ? null :
               <span className={styles.seperator} />
             }
-            { nOldText && href === nOldText ?
+            { normalizedOldText && href === normalizedOldText ?
             <PanelTextInput
               placeholder="Text to display"
-              defaultValue={href === nText ? '' : text}
+              defaultValue={!text && href === normalizedOldText ? '' : text}
               onSubmit={this.updateLinkText}
               onChange={this.updateText}
               onMouseDown={this.setInputActive}
@@ -171,7 +170,6 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       active: pluginState.active,
       target: pluginState.element,
       href: pluginState.href,
-      text: pluginState.text,
       oldText: pluginState.text,
       oldHref: pluginState.href,
       textInputValue: pluginState.text,
@@ -190,7 +188,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private updateLinkText = (text: string) => {
-    if (text !== this.state.oldText) {
+    if (text && text.length > 0 && text !== this.state.oldText) {
       const { editorView, pluginState } = this.props;
       pluginState.updateLinkText(text, editorView);
     }

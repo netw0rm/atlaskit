@@ -337,7 +337,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return schema.nodes.paragraph.createChecked({}, content);
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(node);
-      case 'LINK':
+      case 'FAB:LINK':
         if (
             node.firstChild &&
             node.firstChild instanceof Element &&

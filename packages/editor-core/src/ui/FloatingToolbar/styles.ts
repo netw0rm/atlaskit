@@ -2,6 +2,7 @@ import { akEditorPopupBackground } from '../../styles';
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
+// tslint:disable-next-line:variable-name
 export const Container = styled.div`
   background: ${akEditorPopupBackground};
   border-radius: ${akBorderRadius};

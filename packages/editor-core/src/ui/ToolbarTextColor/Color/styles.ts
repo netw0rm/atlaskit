@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { akColorN900, akColorN50, akColorN0 } from '@atlaskit/util-shared-styles';
 
+// tslint:disable-next-line:variable-name
 export const Button = styled.button`
   height: 26px;
   width: 26px;
@@ -11,6 +12,7 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
+// tslint:disable-next-line:variable-name
 export const ButtonWrapper = styled.span`
   display: inline-block;
   border: 2px solid transparent;

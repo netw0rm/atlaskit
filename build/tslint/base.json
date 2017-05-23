@@ -60,7 +60,7 @@
     "triple-equals": true,
     "typedef": [true],
     "unified-signatures": [false],
-    "variable-name": false,
+    "variable-name": true,
     "whitespace": [true],
 
     // Custom Rules

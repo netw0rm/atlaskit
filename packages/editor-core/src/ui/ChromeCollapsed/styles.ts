@@ -7,6 +7,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
+// tslint:disable-next-line:variable-name
 export const Input = styled.input`
   background-color: white;
   border: 1px solid ${akEditorSubtleAccent};

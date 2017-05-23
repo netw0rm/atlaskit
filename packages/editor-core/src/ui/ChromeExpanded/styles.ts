@@ -15,6 +15,7 @@ export const createNestedListStyles = (): any => {
   return styles;
 };
 
+// tslint:disable-next-line:variable-name
 export const Container = styled.div`
   background-color: white;
   border: 1px solid ${akEditorSubtleAccent};
@@ -29,6 +30,7 @@ export const Container = styled.div`
   }
 `;
 
+// tslint:disable-next-line:variable-name
 export const Content = styled.div`
   position: relative;
 
@@ -115,6 +117,7 @@ export const Content = styled.div`
   }
 `;
 
+// tslint:disable-next-line:variable-name
 export const Footer = styled.div`
   font-size: 14px;
   padding: 20px;
@@ -124,11 +127,13 @@ export const Footer = styled.div`
   flex-grow: 1;
 `;
 
+// tslint:disable-next-line:variable-name
 export const FooterActions = styled.div`
   display: flex;
   flex-grow: 1;
 `;
 
+// tslint:disable-next-line:variable-name
 export const IconButton = styled.div`
   cursor: pointer;
   font-size: inherit;
@@ -139,6 +144,7 @@ export const IconButton = styled.div`
   margin-right: 5px;
 `;
 
+// tslint:disable-next-line:variable-name
 export const Toolbar = styled.div`
   align-items: center;
   display: flex;
@@ -158,6 +164,7 @@ export const Toolbar = styled.div`
   }
 `;
 
+// tslint:disable-next-line:variable-name
 export const SecondaryToolbar = styled.div`
   align-items: center;
   display: flex;

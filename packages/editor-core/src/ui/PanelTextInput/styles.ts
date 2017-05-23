@@ -1,6 +1,7 @@
 import { akEditorPopupText } from '../../styles';
 import styled from 'styled-components';
 
+// tslint:disable-next-line:variable-name
 export const Input = styled.input`
   background: transparent;
   border: 0;

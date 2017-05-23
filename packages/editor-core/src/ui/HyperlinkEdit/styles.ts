@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+// tslint:disable-next-line:variable-name
 export const Seperator = styled.span`
   background: grey;
   width: 1px;
@@ -8,6 +9,7 @@ export const Seperator = styled.span`
   margin: 0 10px;
 `;
 
+// tslint:disable-next-line:variable-name
 export const Container = styled.div`
   display: flex;
   align-items: center;

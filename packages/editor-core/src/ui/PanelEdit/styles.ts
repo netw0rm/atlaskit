@@ -2,6 +2,7 @@ import { akColorN400, akColorPrimary1, akColorN20 } from '@atlaskit/util-shared-
 import styled from 'styled-components';
 import ToolbarButtonDefault from '../ToolbarButton';
 
+// tslint:disable-next-line:variable-name
 export const RemoveButtonWrapper = styled.span`
   border-left: 1px solid ${akColorN400};
   padding-left: 5px;
@@ -14,6 +15,7 @@ export const RemoveButtonWrapper = styled.span`
   }
 `;
 
+// tslint:disable-next-line:variable-name
 export const ToolbarButton = styled(ToolbarButtonDefault)`
   margin: 5px 3px;
   display: inline-block;
@@ -25,6 +27,7 @@ export const ToolbarButton = styled(ToolbarButtonDefault)`
   }
 `;
 
+// tslint:disable-next-line:variable-name
 export const ToolbarButtonSelected = styled(ToolbarButtonDefault)`
   margin: 5px 3px;
   display: inline-block;

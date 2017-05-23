@@ -2,6 +2,7 @@ import { akEditorPopupText } from '../../styles';
 import styled from 'styled-components';
 import FloatingToolbarDefault from '../FloatingToolbar';
 
+// tslint:disable-next-line:variable-name
 export const Container = styled.div`
   & button > span > span:first-child {
     color: ${akEditorPopupText};
@@ -13,6 +14,7 @@ export const Container = styled.div`
   }
 `;
 
+// tslint:disable-next-line:variable-name
 export const FloatingToolbar = styled(FloatingToolbarDefault)`
   background-color: transparent;
 `;

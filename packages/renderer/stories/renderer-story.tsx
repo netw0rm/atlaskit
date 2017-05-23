@@ -14,6 +14,7 @@ import OrderedList from '../src/nodes/orderedList';
 import ListItem from '../src/nodes/listItem';
 import Blockquote from '../src/nodes/blockquote';
 import Panel from '../src/nodes/panel';
+import Rule from '../src/nodes/rule';
 import Em from '../src/marks/em';
 import Link from '../src/marks/link';
 import Mono from '../src/marks/mono';
@@ -286,5 +287,8 @@ storiesOf(name, module)
       <Panel type="tip">This is a tip panel</Panel>
       <Panel type="warning">This is a warning panel</Panel>
     </div>
+  ))
+  .add('nodes/rule', () => (
+    <Rule />
   ))
   ;

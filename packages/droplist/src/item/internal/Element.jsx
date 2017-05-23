@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import uid from 'uid';
 import { ariaRoles, baseTypes } from './constants';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
@@ -29,6 +30,7 @@ export default class Element extends PureComponent {
     const { href, target, type, isDisabled, handleKeyPress, handleClick, className, title } = props;
     const ariaAttributes = {};
     const commonAttributes = {
+      id: uid(),
       className,
       role: ariaRoles[type],
       onKeyPress: handleKeyPress,

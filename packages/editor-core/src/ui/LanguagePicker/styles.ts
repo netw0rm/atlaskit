@@ -19,11 +19,3 @@ export const FloatingToolbar: any = styled(FloatingToolbarDefault)`
     }
   }
 `;
-
-// tslint:disable-next-line:variable-name
-export const ToolbarButton: any = styled(ToolbarButtonDefault)`
-  button {
-    padding: 4px;
-    margin-left: 5px;
-  }
-`;

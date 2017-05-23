@@ -5,7 +5,8 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 
 import { CodeBlockState } from '../../plugins/code-block';
 import { EditorView } from '../../prosemirror';
-import { FloatingToolbar, ToolbarButton } from './styles';
+import ToolbarButton from '../ToolbarButton';
+import { FloatingToolbar } from './styles';
 
 import {
   createLanguageList,

@@ -4,20 +4,20 @@ import AkAvatar from '@atlaskit/avatar';
 import { SettingsIcon, QuestionCircleIcon, ListIcon } from '@atlaskit/icon';
 import { name } from '../package.json';
 import { AkGlobalItem } from '../src/';
-import Page from './components/HtmlPage';
+import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import emmaAvatar from './emma.png';
 
 storiesOf(name, module)
   .add('with no secondary actions', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         globalSecondaryActions={[]}
       />
-    </Page>
+    </HtmlPage>
   ))
   .add('with four secondary actions', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         globalSecondaryActions={[
           <AkGlobalItem>
@@ -34,5 +34,5 @@ storiesOf(name, module)
           </AkGlobalItem>,
         ]}
       />
-    </Page>
+    </HtmlPage>
   ));

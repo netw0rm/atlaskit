@@ -123,19 +123,21 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
 
   private onSearch(query?: string) {
     this.props.emojiProvider.then(provider => {
-      provider.filter(query);
+      const { listLimit } = this.props;
+      provider.filter(query, {
+        limit: listLimit || defaultListLimit,
+      });
     });
   }
 
   private onSearchResult = (result: EmojiSearchResult): void => {
     const { emojis } = result;
-    const { listLimit } = this.props;
     const wasVisible = this.state.visible;
     const visible = emojis.length > 0;
     debug('emoji-typeahead.applyPropChanges', emojis.length, wasVisible, visible);
 
     this.setState({
-      emojis: emojis.slice(0, listLimit || defaultListLimit),
+      emojis: emojis,
       visible,
       loading: false,
     });

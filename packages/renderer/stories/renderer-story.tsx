@@ -9,6 +9,11 @@ import Emoji from '../src/nodes/emoji';
 import Paragraph from '../src/nodes/paragraph';
 import HardBreak from '../src/nodes/hardBreak';
 import Heading from '../src/nodes/heading';
+import BulletList from '../src/nodes/bulletList';
+import OrderedList from '../src/nodes/orderedList';
+import ListItem from '../src/nodes/listItem';
+import Blockquote from '../src/nodes/blockquote';
+import Panel from '../src/nodes/panel';
 import Em from '../src/marks/em';
 import Link from '../src/marks/link';
 import Mono from '../src/marks/mono';
@@ -169,6 +174,117 @@ storiesOf(name, module)
       <Heading level={4}>Heading 4</Heading>
       <Heading level={5}>Heading 5</Heading>
       <Heading level={6}>Heading 6</Heading>
+    </div>
+  ))
+  .add('nodes/bulletList', () => (
+    <BulletList>
+      <ListItem>Depth 1: Item 1</ListItem>
+      <ListItem>Depth 1: Item 2</ListItem>
+      <ListItem>
+        <p>Depth 1: Item 3</p>
+        <BulletList>
+          <ListItem>Depth 2: Item 1</ListItem>
+          <ListItem>Depth 2: Item 2</ListItem>
+          <ListItem>
+            <p>Depth 2: Item 2</p>
+            <BulletList>
+              <ListItem>Depth 3: Item 1</ListItem>
+              <ListItem>Depth 1: Item 2</ListItem>
+              <ListItem>
+                <p>Depth 3: Item 3</p>
+                <BulletList>
+                  <ListItem>Depth 4: Item 1</ListItem>
+                  <ListItem>Depth 4: Item 2</ListItem>
+                  <ListItem>Depth 4: Item 3</ListItem>
+                </BulletList>
+              </ListItem>
+            </BulletList>
+          </ListItem>
+        </BulletList>
+      </ListItem>
+    </BulletList>
+  ))
+  .add('nodes/orderedList', () => (
+    <OrderedList>
+      <ListItem>Depth 1: Item 1</ListItem>
+      <ListItem>Depth 1: Item 2</ListItem>
+      <ListItem>
+        <p>Depth 1: Item 3</p>
+        <OrderedList>
+          <ListItem>Depth 2: Item 1</ListItem>
+          <ListItem>Depth 2: Item 2</ListItem>
+          <ListItem>
+            <p>Depth 2: Item 3</p>
+            <OrderedList>
+              <ListItem>Depth 3: Item 1</ListItem>
+              <ListItem>Depth 3: Item 2</ListItem>
+              <ListItem>
+                <p>Depth 3: Item 3</p>
+                <OrderedList>
+                  <ListItem>Depth 4: Item 1</ListItem>
+                  <ListItem>Depth 4: Item 2</ListItem>
+                  <ListItem>
+                    <p>Depth 4: Item 3</p>
+                    <OrderedList>
+                      <ListItem>Depth 5: Item 1</ListItem>
+                      <ListItem>Depth 5: Item 2</ListItem>
+                      <ListItem>
+                        <p>Depth 5: Item 3</p>
+                        <OrderedList>
+                          <ListItem>Depth 6: Item 1</ListItem>
+                          <ListItem>Depth 6: Item 2</ListItem>
+                          <ListItem>
+                            <p>Depth 6: Item 3</p>
+                            <OrderedList>
+                              <ListItem>Depth 7: Item 1</ListItem>
+                              <ListItem>Depth 7: Item 2</ListItem>
+                              <ListItem>
+                                <p>Depth 7: Item 3</p>
+                                <OrderedList>
+                                  <ListItem>Depth 8: Item 1</ListItem>
+                                  <ListItem>Depth 8: Item 2</ListItem>
+                                  <ListItem>
+                                    <p>Depth 8: Item 3</p>
+                                    <OrderedList>
+                                      <ListItem>Depth 9: Item 1</ListItem>
+                                      <ListItem>Depth 9: Item 2</ListItem>
+                                      <ListItem>
+                                        <p>Depth 9: Item 3</p>
+                                        <OrderedList>
+                                          <ListItem>Depth 10: Item 1</ListItem>
+                                          <ListItem>Depth 10: Item 2</ListItem>
+                                          <ListItem>
+                                            <p>Depth 10: Item 3</p>
+                                          </ListItem>
+                                        </OrderedList>
+                                      </ListItem>
+                                    </OrderedList>
+                                  </ListItem>
+                                </OrderedList>
+                              </ListItem>
+                            </OrderedList>
+                          </ListItem>
+                        </OrderedList>
+                      </ListItem>
+                    </OrderedList>
+                  </ListItem>
+                </OrderedList>
+              </ListItem>
+            </OrderedList>
+          </ListItem>
+        </OrderedList>
+      </ListItem>
+    </OrderedList>
+  ))
+  .add('nodes/blockquote', () => (
+    <Blockquote>Blockquote</Blockquote>
+  ))
+  .add('nodes/panel', () => (
+    <div>
+      <Panel type="info">This is a info panel</Panel>
+      <Panel type="note">This is a note panel</Panel>
+      <Panel type="tip">This is a tip panel</Panel>
+      <Panel type="warning">This is a warning panel</Panel>
     </div>
   ))
   ;

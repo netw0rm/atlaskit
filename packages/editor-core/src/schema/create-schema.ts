@@ -96,6 +96,20 @@ function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpe
   }, items);
 }
 
+function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]: MarkSpec } {
+  const markKeys = Object.keys(marks);
+  markKeys.map(markKey => {
+    const mark = marks[markKey];
+    if (mark.excludes) {
+      mark.excludes = mark.excludes
+        .split(' ')
+        .filter(exMarkKey => markKeys.indexOf(exMarkKey) > -1)
+        .join(' ');
+    }
+  });
+  return marks;
+}
+
 /**
  * Creates a schema preserving order of marks and nodes.
  */
@@ -105,7 +119,7 @@ export function createSchema(config: SchemaConfig): Schema<any, any> {
   const marksConfig = Object.keys(customMarkSpecs || {}).concat(marks || []);
   return new Schema({
     nodes: addItems(nodesInOrder, nodesConfig, customNodeSpecs),
-    marks: addItems(marksInOrder, marksConfig, customMarkSpecs)
+    marks: fixExcludes(addItems(marksInOrder, marksConfig, customMarkSpecs))
   });
 }
 

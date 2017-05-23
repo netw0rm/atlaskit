@@ -8,6 +8,9 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "ak:component": {
+    "name": "Tag Group"
+  },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tag-group; } || ../../node_modules/.bin/not-in-publish"
   },
@@ -32,6 +35,8 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/tag": "^2.0.0",
+    "react-router-dom": "^4.0.0",
+    "@atlaskit/tag-group": "*",
     "lodash.uniq": "^4.5.0"
   },
   "peerDependencies": {

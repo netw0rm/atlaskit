@@ -8,7 +8,9 @@ const ALIGNMENT = {
 
 export default class TagGroup extends PureComponent {
   static propTypes = {
+    /** Whether the tags should be left-aligned or right-aligned. */
     alignment: PropTypes.oneOf(ALIGNMENT.values),
+    /** Tags to render within the tag group. */
     children: PropTypes.node.isRequired,
   }
 

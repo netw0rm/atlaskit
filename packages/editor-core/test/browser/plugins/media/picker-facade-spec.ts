@@ -130,7 +130,7 @@ describe('Media PickerFacade', () => {
         status: 'uploading',
         fileName: testFileData.name,
         fileSize: testFileData.size,
-        fileType: testFileData.type,
+        fileMimeType: testFileData.type,
       })).to.eq(true);
     });
 
@@ -146,7 +146,7 @@ describe('Media PickerFacade', () => {
         status: 'uploading',
         fileName: testFileData.name,
         fileSize: testFileData.size,
-        fileType: testFileData.type,
+        fileMimeType: testFileData.type,
       })).to.eq(true);
     });
 
@@ -163,7 +163,7 @@ describe('Media PickerFacade', () => {
         progress: testFileProgress.portion,
         fileName: testFileData.name,
         fileSize: testFileData.size,
-        fileType: testFileData.type,
+        fileMimeType: testFileData.type,
       })).to.eq(true);
     });
 
@@ -193,7 +193,7 @@ describe('Media PickerFacade', () => {
         status: 'processing',
         fileName: testFileData.name,
         fileSize: testFileData.size,
-        fileType: testFileData.type,
+        fileMimeType: testFileData.type,
       })).to.eq(true);
     });
 
@@ -212,7 +212,7 @@ describe('Media PickerFacade', () => {
         finalizeCb: finalizeCb,
         fileName: testFileData.name,
         fileSize: testFileData.size,
-        fileType: testFileData.type,
+        fileMimeType: testFileData.type,
       })).to.eq(true);
     });
 
@@ -236,7 +236,7 @@ describe('Media PickerFacade', () => {
         },
         fileName: testFileData.name,
         fileSize: testFileData.size,
-        fileType: testFileData.type,
+        fileMimeType: testFileData.type,
       })).to.eq(true);
     });
 
@@ -252,7 +252,7 @@ describe('Media PickerFacade', () => {
         status: 'ready',
         fileName: testFileData.name,
         fileSize: testFileData.size,
-        fileType: testFileData.type,
+        fileMimeType: testFileData.type,
       })).to.eq(true);
     });
 

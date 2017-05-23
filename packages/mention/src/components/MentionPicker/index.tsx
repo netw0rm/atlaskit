@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import * as classNames from 'classnames';
 
-import * as styles from './styles';
+import { MentionPickerStyle, MentionPickerInfoStyle } from './styles';
 import { OnMentionEvent } from '../../types';
 import { MentionProvider } from '../../api/MentionResource';
 import { PresenceProvider } from '../../api/PresenceResource';
@@ -188,14 +187,6 @@ export default class MentionPicker extends PureComponent<Props, State> {
     const { resourceProvider, presenceProvider, onSelection, query,
       target, position, zIndex, offsetX, offsetY } = this.props;
     const { visible, info } = this.state;
-    const style = {
-      display: visible || info ? 'block' : 'none',
-    };
-
-    const classes = classNames([
-      'ak-mention-picker',
-      styles.akMentionPicker,
-    ]);
 
     const resourceMentionList = (
       <ResourcedMentionList
@@ -208,9 +199,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     );
 
     const infoContent = info && !visible ? (
-      <div className={styles.akMentionPickerInfo}>
+      <MentionPickerInfoStyle>
         <p>{info}</p>
-      </div>
+      </MentionPickerInfoStyle>
      ) : null;
 
     let content;
@@ -246,9 +237,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
 
     return (
-      <div style={style} className={classes}>
+      <MentionPickerStyle visible={visible || info}>
         {content}
-      </div>
+      </MentionPickerStyle>
     );
   }
 }

@@ -13,6 +13,7 @@ declare var require: {
     <T>(path: string): T;
 };
 
+// tslint:disable-next-line import/no-unresolved, no-var-requires
 let emojiConfig;
 try {
   // tslint:disable-next-line import/no-unresolved, no-var-requires

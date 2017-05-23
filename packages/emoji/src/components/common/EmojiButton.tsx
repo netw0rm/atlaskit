@@ -1,8 +1,7 @@
-import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent } from 'react';
 
-import * as styles from './styles';
+import { ButtonStyle } from './styles';
 import Emoji from './Emoji';
 import { toEmojiId } from '../../type-helpers';
 import { EmojiDescription, OnEmojiEvent } from '../../types';
@@ -34,11 +33,8 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
 export const EmojiButton = (props: Props) => {
   const { emoji, selected } = props;
 
-  const classes = [styles.emojiButton];
-
   return (
-    <button
-      className={classNames(classes)}
+    <ButtonStyle
       // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
@@ -48,7 +44,7 @@ export const EmojiButton = (props: Props) => {
         emoji={emoji}
         selected={selected}
       />
-    </button>
+    </ButtonStyle>
   );
 };
 

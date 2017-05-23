@@ -1,19 +1,40 @@
-import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent } from 'react';
 
-import * as styles from './styles';
+import {
+  ContainerStyle,
+  EmojiStyle,
+  SpriteStyle,
+} from './styles';
 import { isSpriteRepresentation, toEmojiId } from '../../type-helpers';
-import { EmojiDescription, ImageRepresentation, OnEmojiEvent, SpriteRepresentation } from '../../types';
+import {
+  EmojiDescription,
+  ImageRepresentation,
+  OnEmojiEvent,
+  SpriteRepresentation,
+  SpriteSheet,
+} from '../../types';
 import { leftClick } from '../../util/mouse';
 
 export interface Props {
   emoji: EmojiDescription;
+  preview?: boolean;
   selected?: boolean;
   onSelected?: OnEmojiEvent;
   onMouseMove?: OnEmojiEvent;
-  className?: string;
 }
+
+export const getSpriteProps = (props: Props) => {
+  const { emoji } = props;
+  const representation = emoji.representation as SpriteRepresentation;
+  const sprite = representation.sprite as SpriteSheet;
+
+  return {
+    sprite,
+    xPositionInPercent: (100 / (sprite.column - 1)) * (representation.xIndex - 0),
+    yPositionInPercent: (100 / (sprite.row - 1)) * (representation.yIndex - 0),
+  };
+};
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
   const { emoji, onSelected } = props;
@@ -33,61 +54,34 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
 // Pure functional components are used in favour of class based components, due to the performance!
 // When rendering 1500+ emoji using class based components had a significant impact.
 const renderAsSprite = (props: Props) => {
-  const { emoji, selected, className } = props;
-  const representation = emoji.representation as SpriteRepresentation;
-  const sprite = representation.sprite;
-  const classes = {
-    [styles.emojiContainer]: true,
-    [styles.selected]: selected,
-  };
-
-  if (className) {
-    classes[className] = true;
-  }
-
-  const xPositionInPercent = (100 / (sprite.column - 1)) * (representation.xIndex - 0);
-  const yPositionInPercent = (100 / (sprite.row - 1)) * (representation.yIndex - 0);
-  const style = {
-    backgroundImage: `url(${sprite.url})`,
-    backgroundPosition: `${xPositionInPercent}% ${yPositionInPercent}%`,
-    backgroundSize: `${sprite.column * 100}% ${sprite.row * 100}%`,
+  const { emoji, preview, selected } = props;
+  const spriteProps = {
+    ...getSpriteProps(props),
+    preview,
+    title: emoji.shortName,
   };
 
   return (
-    <span
-      className={classNames(classes)}
+    <ContainerStyle
+      selected={selected}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
     >
-      <span
-        className={styles.emojiSprite}
-        title={emoji.shortName}
-        style={style}
-      />
-    </span>
+      <SpriteStyle {...spriteProps}/>
+    </ContainerStyle>
   );
 };
 
 // Keep as pure functional component, see renderAsSprite.
 const renderAsImage = (props: Props) => {
-  const { emoji, selected, className } = props;
-
-  const classes = {
-    [styles.emoji]: true,
-    [styles.selected]: selected,
-  };
-
-  if (className) {
-    classes[className] = true;
-  }
-
+  const { emoji, selected } = props;
   const representation = emoji.representation as ImageRepresentation;
 
   return (
-    <span
-      className={classNames(classes)}
+    <EmojiStyle
+      selected={selected}
       title={emoji.shortName}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
@@ -99,7 +93,7 @@ const renderAsImage = (props: Props) => {
         alt={emoji.shortName}
         title={emoji.shortName}
       />
-    </span>
+    </EmojiStyle>
   );
 };
 

@@ -1,8 +1,10 @@
-import * as classNames from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import * as styles from './styles';
+import {
+  TypeAheadItemRowStyle,
+  TypeAheadItemStyle,
+} from './styles';
 import { EmojiDescription, OnEmojiEvent } from '../../types';
 import { toEmojiId } from '../../type-helpers';
 import EmojiPreview from '../common/EmojiPreview';
@@ -35,25 +37,21 @@ export default class EmojiTypeAheadItem extends PureComponent<Props, undefined> 
 
   render() {
     const { selected, emoji } = this.props;
-    const classes = classNames({
-      'ak-emoji-typeahead-item': true,
-      [styles.typeAheadItem]: true,
-      [styles.selected]: selected,
-    });
 
     return (
-      <div
-        className={classes}
+      <TypeAheadItemStyle
+        selected={selected}
         onMouseDown={this.onEmojiSelected}
         onMouseMove={this.onEmojiMenuItemMouseMove}
+        // TODO works or not?
         data-emoji-id={emoji.shortName}
       >
-        <div className={styles.typeAheadItemRow}>
+        <TypeAheadItemRowStyle>
           <EmojiPreview
             emoji={emoji}
           />
-        </div>
-      </div>
+        </TypeAheadItemRowStyle>
+      </TypeAheadItemStyle>
     );
   }
 }

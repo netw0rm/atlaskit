@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import * as styles from './styles';
+import {
+  CategoryTitleStyle,
+  PickerEmojiStyle,
+} from './styles';
 import { EmojiDescription, EmojiId, OnEmojiEvent } from '../../types';
 import { isEmojiLoaded } from '../../type-helpers';
 import Emoji from '../common/Emoji';
@@ -28,9 +31,9 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
         data-category-id={title}
         className={className}
       >
-        <div className={styles.emojiCategoryTitle} >
+        <CategoryTitleStyle>
           {title}
-        </div>
+        </CategoryTitleStyle>
         <div>
           {emojis.map((emoji) => {
             const selected = selectedEmoji && selectedEmoji.id === emoji.id;
@@ -54,12 +57,9 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
             }
 
             return (
-              <span
-                className={styles.pickerEmoji}
-                key={key}
-              >
+              <PickerEmojiStyle key={key}>
                 {emojiComponent}
-              </span>
+              </PickerEmojiStyle>
             );
          })}
         </div>

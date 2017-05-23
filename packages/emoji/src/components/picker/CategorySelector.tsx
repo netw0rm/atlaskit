@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import * as classNames from 'classnames';
 
-import * as styles from './styles';
+import {
+  CategorySelectorStyle,
+  CategoryStyle,
+} from './styles';
 import { AvailableCategories, CategoryDescription, OnCategory } from '../../types';
 
 import EmojiActivityIcon from '@atlaskit/icon/glyph/emoji/activity';
@@ -96,19 +98,15 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
   render() {
     const { categories, availableCategories } = this.props;
     let categoriesSection;
+
     if (categories) {
       categoriesSection = (
         <ul>
           {categories.map((category) => {
-            const categoryClasses = [styles.category];
-            if (category.id === this.props.activeCategoryId) {
-              categoryClasses.push(styles.active);
-            }
-
+            const disable = !availableCategories || !availableCategories[category.id];
             let onClick;
-            if (!availableCategories || !availableCategories[category.id]) {
-              categoryClasses.push(styles.disable);
-            } else {
+
+            if (!disable) {
               // disable click handling
               onClick = () => this.onClick(category.id);
             }
@@ -117,19 +115,18 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
             const Icon = category.icon;
 
             return (
-              <li
-                key={category.name}
-              >
-                <button
+              <li key={category.name}>
+                <CategoryStyle
                   key={category.name}
-                  className={classNames(categoryClasses)}
+                  disable={disable}
+                  active={category.id === this.props.activeCategoryId}
                   onClick={onClick}
                   title={category.name}
                 >
                   <Icon
                     label={category.name}
                   />
-                </button>
+                </CategoryStyle>
               </li>
             );
           })}
@@ -137,9 +134,9 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
       );
     }
     return (
-      <div className={classNames([styles.categorySelector])}>
+      <CategorySelectorStyle>
         {categoriesSection}
-      </div>
+      </CategorySelectorStyle>
     );
   }
 }

@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
-import * as styles from '../src/components/picker/styles';
+import { PickerSearchStyle } from '../src/components/picker/styles';
 import EmojiList from '../src/components/picker/EmojiPickerList';
 import { imageEmoji } from './TestData';
 
@@ -15,7 +15,7 @@ describe('<EmojiPickerList />', () => {
         emojis={emojis}
       />);
 
-      expect(wrapper.find(`.${styles.pickerSearch}`)).to.have.length(1);
+      expect(wrapper.find(PickerSearchStyle)).to.have.length(1);
     });
   });
 });

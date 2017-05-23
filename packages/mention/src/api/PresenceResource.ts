@@ -1,5 +1,3 @@
-import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
-import 'whatwg-fetch';
 import debug from '../util/logger';
 
 import { Presence } from '../types';

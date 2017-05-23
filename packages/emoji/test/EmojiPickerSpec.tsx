@@ -15,6 +15,7 @@ import EmojiPickerList from '../src/components/picker/EmojiPickerList';
 import EmojiPickerListSection from '../src/components/picker/EmojiPickerListSection';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import { OptionalEmojiDescription } from '../src/types';
+import { CategoryStyle } from '../src/components/picker/styles';
 
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   return mount(
@@ -112,7 +113,7 @@ describe('<EmojiPicker />', () => {
       const list = component.find(EmojiPickerList);
       expect(list.prop('selectedCategory'), 'Flags category not yet selected').to.not.equal('FLAGS');
 
-      const flagCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Flags');
+      const flagCategoryButton = categorySelector.find(CategoryStyle).filterWhere(n => n.key() === 'Flags');
       expect(flagCategoryButton.length, 'Flag category button').to.equal(1);
 
       return waitUntil(() => emojisVisible(list)).then(() => {
@@ -137,7 +138,7 @@ describe('<EmojiPicker />', () => {
       const list = component.find(EmojiPickerList);
       expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal('CUSTOM');
 
-      const customCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Custom');
+      const customCategoryButton = categorySelector.find(CategoryStyle).filterWhere(n => n.key() === 'Custom');
       expect(customCategoryButton.length, 'Custom category button').to.equal(1);
 
       return waitUntil(() => emojisVisible(list)).then(() => {

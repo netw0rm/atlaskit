@@ -1,4 +1,4 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
 import {
   emojiPreviewSelectedColor,
@@ -9,53 +9,61 @@ import {
   noDialogContainerBoxShadow,
 } from '../../shared-styles';
 
-export const selected = 'selected';
+export interface TypeAheadProps {
+  visible: boolean;
+}
 
-export const emojiTypeAhead = 'emoji-typeahead';
+// tslint:disable-next-line:variable-name
+export const TypeAheadStyle = styled.div`
+  display: ${(props: TypeAheadProps) => props.visible ? 'block' : 'none'};
+`;
 
-export const typeAheadListContainer = 'typeahead-list-container';
+// tslint:disable-next-line:variable-name
+export const TypeAheadItemRowStyle = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  vertical-align: middle;
+`;
 
-export const typeAheadList = style({
-  background: 'white',
-  border: `1px solid ${noDialogContainerBorderColor}`,
-  borderRadius: noDialogContainerBorderRadius,
-  boxShadow: noDialogContainerBoxShadow,
-  color: '#333',
-  width: emojiTypeAheadWidth,
-});
+export interface TypeAheadItemProps {
+  selected: boolean;
+}
 
-export const typeAheadEmpty = style({
-  display: 'none',
-});
+// tslint:disable-next-line:variable-name
+export const TypeAheadItemStyle = styled.div`
+  cursor: pointer;
+  display: block;
+  list-style-type: none;
+  overflow: hidden;
+  width: ${emojiTypeAheadWidth}px;
+  background-color: ${(props: TypeAheadItemProps) => props.selected ? emojiPreviewSelectedColor : 'transparent'};
+`;
 
-export const typeAheadItem = style({
-  cursor: 'pointer',
-  display: 'block',
-  listStyleType: 'none',
-  overflow: 'hidden',
-  width: emojiTypeAheadWidth,
+export interface TypeAheadListProps {
+  empty: boolean;
+}
 
-  $nest: {
-    [`&.${selected}`]: {
-      backgroundColor: emojiPreviewSelectedColor,
-    },
-  },
-});
+// tslint:disable-next-line:variable-name
+export const TypeAheadListStyle = styled.div`
+  background: white;
+  border: 1px solid ${noDialogContainerBorderColor};
+  border-radius: ${noDialogContainerBorderRadius};
+  box-shadow: ${noDialogContainerBoxShadow}
+  color: #333;
+  width: ${emojiTypeAheadWidth}px;
+  display: ${(props: TypeAheadListProps) => props.empty ? 'none' : 'block'};
+`;
 
-export const typeAheadItemRow = style({
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  verticalAlign: 'middle',
-});
+// tslint:disable-next-line:variable-name
+export const TypeAheadSpinnerContainerStyle = styled.div`
+  position: relative;
+  height: ${emojiTypeAheadMaxHeight}px;
+  padding-top: ${((emojiTypeAheadMaxHeight - 30) / 2).toFixed()}px;
+  box-sizing: border-box;
+`;
 
-export const emojiTypeAheadSpinnerContainer = style({
-  position: 'relative',
-  height: `${emojiTypeAheadMaxHeight}px`,
-  paddingTop: `${((emojiTypeAheadMaxHeight - 30) / 2).toFixed()}px`,
-  boxSizing: 'border-box',
-});
-
-export const emojiTypeAheadSpinner = style({
-  textAlign: 'center',
-});
+// tslint:disable-next-line:variable-name
+export const TypeAheadSpinnerStyle = styled.div`
+  text-align: center;
+`;

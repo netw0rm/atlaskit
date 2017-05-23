@@ -1,6 +1,3 @@
-import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
-import 'whatwg-fetch';
-
 import { requestService, ServiceConfig, KeyValues } from './SharedResourceUtils';
 import debug from '../util/logger';
 

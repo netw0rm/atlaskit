@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { MouseEvent, PureComponent } from 'react';
-import * as classNames from 'classnames';
 import Spinner from '@atlaskit/spinner';
 import * as uid from 'uid';
 import 'element-closest';
 
-import * as styles from './styles';
+import {
+  PickerListStyle,
+  PickerSpinnerContainerStyle,
+  PickerSpinnerStyle,
+} from './styles';
 import Scrollable from '../common/Scrollable';
 import EmojiPickerListSearch from './EmojiPickerListSearch';
 import EmojiPickerListSection from './EmojiPickerListSection';
@@ -221,21 +224,16 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
 
 
   render() {
-    const classes = [styles.emojiPickerList];
-
     const loadingSpinner = !this.props.loading ? null : (
-      <div className={styles.emojiPickerSpinnerContainer}>
-        <div className={styles.emojiPickerSpinner}>
+      <PickerSpinnerContainerStyle>
+        <PickerSpinnerStyle>
           <Spinner size="medium" />
-        </div>
-      </div>
+        </PickerSpinnerStyle>
+      </PickerSpinnerContainerStyle>
     );
 
     return (
-      <div
-        className={classNames(classes)}
-        onMouseLeave={this.onMouseLeave}
-      >
+      <PickerListStyle onMouseLeave={this.onMouseLeave}>
         {loadingSpinner}
         <Scrollable
           ref={this.handleRef}
@@ -248,7 +246,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
           />
           {this.renderGroups()}
         </Scrollable>
-      </div>
+      </PickerListStyle>
     );
   }
 

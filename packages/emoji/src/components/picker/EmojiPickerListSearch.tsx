@@ -1,10 +1,13 @@
-
 import * as React from 'react';
 import { PureComponent } from 'react';
 import AkFieldBase from '@atlaskit/field-base';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 
-import * as styles from './styles';
+import {
+  PickerSearchIconStyle,
+  PickerSearchInputStyle,
+  PickerSearchStyle,
+} from './styles';
 import { Styles, } from '../../types';
 
 export interface Props {
@@ -45,7 +48,7 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
     const { query } = this.state;
 
     return (
-      <div className={styles.pickerSearch} style={style}>
+      <PickerSearchStyle style={style}>
         <AkFieldBase
           appearance="standard"
           label="Search"
@@ -53,11 +56,10 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
           isLabelHidden={true}
           isFitContainerWidthEnabled={true}
         >
-          <span className={styles.searchIcon} >
+          <PickerSearchIconStyle>
             <SearchIcon label="Search" />
-          </span>
-          <input
-            className={styles.input}
+          </PickerSearchIconStyle>
+          <PickerSearchInputStyle
             type="text"
             autoComplete="off"
             disabled={false}
@@ -66,10 +68,10 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
             required={false}
             onChange={this.onChange}
             value={query}
-            ref={this.handleInputRef}
+            innerRef={this.handleInputRef}
           />
         </AkFieldBase>
-      </div>
+      </PickerSearchStyle>
     );
   }
 

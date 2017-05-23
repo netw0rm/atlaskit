@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
-import * as styles from '../src/components/common/styles';
+import { ButtonStyle } from '../src/components/common/styles';
 import EmojiButton from '../src/components/common/EmojiButton';
 import { spriteEmoji, imageEmoji } from './TestData';
 
@@ -16,7 +16,7 @@ describe('<EmojiButton />', () => {
         onSelected={onClickSpy}
       />);
 
-      wrapper.find(`.${styles.emojiButton}`).simulate('mousedown', { button: 0 });
+      wrapper.find(ButtonStyle).simulate('mousedown', { button: 0 });
       expect(onClickSpy.called).to.equal(true);
     });
   });
@@ -29,7 +29,7 @@ describe('<EmojiButton />', () => {
         onSelected={onClickSpy}
       />);
 
-      wrapper.find(`.${styles.emojiButton}`).simulate('mousedown', { button: 0 });
+      wrapper.find(ButtonStyle).simulate('mousedown', { button: 0 });
       expect(onClickSpy.called).to.equal(true);
     });
   });

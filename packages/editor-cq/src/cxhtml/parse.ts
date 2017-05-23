@@ -408,10 +408,9 @@ export function getNodeName(node: Node): string {
 // }
 
 function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined  {
-  // const bodyType = getBodyType(node);
-  const placeholderUrl = getAcParameter(node, 'placeholderUrl');
-  const bodyType = getAcParameter(node, 'bodyType');
-  const displayType = getAcParameter(node, 'outputType');
+  const placeholderUrl = getAcProperty(node, 'placeholder-url');
+  const bodyType = getAcProperty(node, 'body-type');
+  const displayType = getAcProperty(node, 'display-type');
   const name = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
 
@@ -477,6 +476,17 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
 function getAcName(node: Element): string | undefined {
   return (node.getAttribute('ac:name') || '').toUpperCase();
+}
+
+function getAcProperty(node: Element, property: string): string | null {
+  for (let i = 0; i < node.childNodes.length; i++) {
+    const child = node.childNodes[i] as Element;
+    if (getNodeName(child) === `AC:${property.toUpperCase()}`) {
+      return child.textContent;
+    }
+  }
+
+  return null;
 }
 
 function getAcParameter(node: Element, parameter: string): string | null {

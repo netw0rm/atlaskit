@@ -458,14 +458,8 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
 
     case 'PLAIN_TEXT-BLOCK':
-      const bodyContent = getContent(node);
-      // const bodyContent = node.innerHTML;
-      // TODO schema generic for plaintext nodes.
-      // const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
-      // return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
-      return schema.nodes.plainTextBlockMacro.create({
-        macroId, placeholderUrl, bodyContent
-      });
+      const codeContent = getAcProperty(node, 'PLAIN-TEXT-BODY') || ' ';
+      return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
   }
 
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting

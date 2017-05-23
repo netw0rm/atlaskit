@@ -10,7 +10,7 @@ import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 
 const convertedNodes = new WeakMap();
 
-export default function(cxhtml: string) {
+export default function (cxhtml: string) {
   const dom = parseCxhtml(cxhtml).querySelector('body')!;
   const nodes = findTraversalPath(Array.prototype.slice.call(dom.childNodes, 0));
 
@@ -26,13 +26,13 @@ export default function(cxhtml: string) {
 
   const content = getContent(dom);
   const compatibleContent = content.childCount > 0
-      // Dangling inline nodes can't be directly inserted into a document, so
-      // we attempt to wrap in a paragraph.
-      ? schema.nodes.doc.validContent(content)
-          ? content
-          : ensureBlocks(content)
-      // The document must have at least one block element.
-      : schema.nodes.paragraph.createChecked({});
+    // Dangling inline nodes can't be directly inserted into a document, so
+    // we attempt to wrap in a paragraph.
+    ? schema.nodes.doc.validContent(content)
+      ? content
+      : ensureBlocks(content)
+    // The document must have at least one block element.
+    : schema.nodes.paragraph.createChecked({});
 
   return schema.nodes.doc.createChecked({}, compatibleContent);
 }
@@ -277,7 +277,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
     const tag = getNodeName(node);
 
     switch (tag) {
-        // Marks
+      // Marks
       case 'DEL':
       case 'S':
         return content ? addMarks(content, [schema.marks.strike.create()]) : null;
@@ -297,12 +297,12 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return content ? addMarks(content, [schema.marks.underline.create()]) : null;
       case 'A':
         return content ? addMarks(content, [schema.marks.link.create({ href: node.getAttribute('href') })]) : null;
-        // Nodes
+      // Nodes
       case 'BLOCKQUOTE':
         return schema.nodes.blockquote.createChecked({},
-            schema.nodes.blockquote.validContent(content)
-                ? content
-                : ensureBlocks(content)
+          schema.nodes.blockquote.validContent(content)
+            ? content
+            : ensureBlocks(content)
         );
       case 'SPAN':
         return addMarks(content, marksFromStyle((node as HTMLSpanElement).style));
@@ -324,13 +324,13 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return schema.nodes.orderedList.createChecked({}, content);
       case 'LI':
         return schema.nodes.listItem.createChecked({},
-            schema.nodes.listItem.validContent(content)
-                ? content
-                : ensureBlocks(content)
+          schema.nodes.listItem.validContent(content)
+            ? content
+            : ensureBlocks(content)
         );
       case 'P':
         // Media groups are currently encoded as paragraphs containing 1 or more media items
-        if (node.firstChild && (getNodeName(node.firstChild) === 'FAB:MEDIA')){
+        if (node.firstChild && (getNodeName(node.firstChild) === 'FAB:MEDIA')) {
           return schema.nodes.mediaGroup.createChecked({}, content);
         }
 
@@ -407,7 +407,7 @@ export function getNodeName(node: Node): string {
 //   return 'NONE';
 // }
 
-function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined  {
+function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined {
   const placeholderUrl = getAcProperty(node, 'placeholder-url');
   const bodyType = getAcProperty(node, 'body-type');
   const displayType = getAcProperty(node, 'display-type');
@@ -426,7 +426,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       return schema.nodes.inlineMacro.create({
         macroId, placeholderUrl
       });
-      // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+    // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 
     case 'RICH_TEXT-BLOCK':
       // TODO schema for generic rich text nodes.
@@ -436,7 +436,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
       if (panelTitle) {
         panelBody.push(
-            schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle))
+          schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle))
         );
       }
 
@@ -446,7 +446,21 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
         for (let i = 0, len = nodes.length; i < len; i += 1) {
           const domNode: any = nodes[i];
 
-          const content = getContent(domNode);
+
+          const dom = parseCxhtml(domNode.innerHTML).querySelector('body')!;
+          const childNodes = findTraversalPath(Array.prototype.slice.call(dom.childNodes, 0));
+
+          // Process through nodes in reverse (so deepest child elements are first).
+          for (let i = childNodes.length - 1; i >= 0; i--) {
+            const node = childNodes[i];
+            const content = getContent(node);
+            const candidate = converter(content, node);
+            if (typeof candidate !== 'undefined') {
+              convertedNodes.set(node, candidate);
+            }
+          }
+
+          const content = getContent(dom);
           const pmNode = converter(content, domNode);
           if (pmNode) {
             panelBody.push(pmNode);

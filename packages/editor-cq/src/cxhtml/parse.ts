@@ -415,7 +415,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
     case 'RICH_TEXT-BLOCK':
       // TODO schema for generic rich text nodes.
       const panelTitle = getAcParameter(node, 'title');
-      const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY') || '';
+      const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
       let panelBody: any[] = [];
 
       if (panelTitle) {
@@ -429,7 +429,8 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
         for (let i = 0, len = nodes.length; i < len; i += 1) {
           const domNode: any = nodes[i];
-          const content = Fragment.from([ schema.text(domNode.innerText) ]);
+
+          const content = getContent(domNode);
           const pmNode = converter(content, domNode);
           if (pmNode) {
             panelBody.push(pmNode);
@@ -439,7 +440,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
         panelBody.push(schema.nodes.paragraph.create({}));
       }
 
-      return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
+      return schema.nodes.panel.create({ panelType: 'info' }, panelBody);
 
     case 'PLAIN_TEXT-BLOCK':
       const codeContent = getAcProperty(node, 'PLAIN-TEXT-BODY') || ' ';

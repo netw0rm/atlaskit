@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { placeholderStyles } from './mixins';
+import placeholderStyles from './placeholderStyles';
 
 const Placeholder = styled.span`
   ${placeholderStyles}

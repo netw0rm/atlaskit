@@ -418,6 +418,40 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
   const name = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
 
+  // Switch on name first to check for macros that the Atlassian editor supports "natively"
+  switch (name) {
+    case 'INFO':
+    case 'WARNING':
+    case 'TIP':
+    case 'NOTE':
+      const panelTitle = getAcParameter(node, 'title');
+      const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
+      let panelBody: any[] = [];
+
+      if (panelTitle) {
+        panelBody.push(
+          schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle))
+        );
+      }
+
+      if (panelNodes) {
+        const nodes = Array.prototype.slice.call(panelNodes);
+
+        for (let i = 0, len = nodes.length; i < len; i += 1) {
+          const domNode: any = nodes[i];
+
+          const content = getContent(domNode);
+          const pmNode = converter(content, domNode);
+          if (pmNode) {
+            panelBody.push(pmNode);
+          }
+        }
+      } else {
+        panelBody.push(schema.nodes.paragraph.create({}));
+      }
+      return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
+  }
+
   switch (macroType(node)) {
     case 'NONE-INLINE':
 
@@ -433,7 +467,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
     // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 
     case 'RICH_TEXT-BLOCK':
-      // TODO schema for generic rich text nodes.
+      // TODO - extract common logic from the panel node above
       const panelTitle = getAcParameter(node, 'title');
       const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
       let panelBody: any[] = [];
@@ -460,7 +494,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
         panelBody.push(schema.nodes.paragraph.create({}));
       }
 
-      return schema.nodes.panel.create({ panelType: 'info' }, panelBody);
+      return schema.nodes.richTextBlockMacro.create({macroId, placeholderUrl}, panelBody);
 
     case 'PLAIN_TEXT-BLOCK':
       const codeContent = getAcProperty(node, 'PLAIN-TEXT-BODY') || ' ';

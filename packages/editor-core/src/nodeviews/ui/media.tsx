@@ -42,8 +42,18 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   }
 
   componentDidMount() {
-    const { getPos, node } = this.props;
-    this.pluginState.handleMediaNodeMount(node, getPos);
+    this.handleNewNode(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { node } = this.props;
+
+    // if media node is prepended to existing one, existing React component
+    // will get new props instead of unmounting/creating a new one
+    if (nextProps.node.attrs.id !== node.attrs.id) {
+      this.pluginState.handleMediaNodeUnmount(node);
+      this.handleNewNode(nextProps);
+    }
   }
 
   componentWillUnmount() {
@@ -79,11 +89,16 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   }
 
   private handleRemove = (item?: any, event?: Event) => {
-    const { node } = this.props;
-    this.pluginState.handleMediaNodeRemove(node);
+    const { getPos, node } = this.props;
+    this.pluginState.handleMediaNodeRemove(node, getPos);
 
     if (event) {
       event.stopPropagation();
     }
+  }
+
+  private handleNewNode = (props: MediaNodeProps) => {
+    const { getPos, node } = props;
+    this.pluginState.handleMediaNodeMount(node, getPos);
   }
 }

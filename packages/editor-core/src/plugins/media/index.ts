@@ -304,8 +304,8 @@ export class MediaPluginState {
   }
 
   /**
-   * Called from React UI Component on componentWillUnmount.
-   * This also means that we can't no longer use its underlying PM node's getPos()
+   * Called from React UI Component on componentWillUnmount and componentWillReceiveProps
+   * when React component's underlying node property is replaced with a new node
    */
   handleMediaNodeUnmount = (oldNode: PMNode) => {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
@@ -326,7 +326,7 @@ export class MediaPluginState {
     this.popupPicker = undefined;
   }
 
-  private findMediaNode = (id: string): MediaNodeWithPosHandler | null => {
+  findMediaNode = (id: string): MediaNodeWithPosHandler | null => {
     const { mediaNodes } = this;
 
     // Array#find... no IE support
@@ -370,7 +370,7 @@ export class MediaPluginState {
 
     // Check if we're already in a media group and prepend the element inside the group
     if ($from.parent.type === state.schema.nodes.mediaGroup) {
-      return $from.end($from.depth);
+      return $from.start($from.depth);
     }
 
     // Resolve node adjacent to parent

@@ -4,19 +4,19 @@ import {
   ProsemirrorGetPosHandler,
   ReactComponentConstructor,
 } from './';
-import { PositionedNode } from '../';
 import { ReactNodeViewComponents } from '../factory';
 import { ReactNodeViewState } from '../../plugins';
 import ProviderFactory from '../../providerFactory';
 import {
   EditorView,
+  Node as PMNode,
   NodeSelection,
 } from '../../prosemirror';
 
 interface Props {
   components: ReactNodeViewComponents;
   getPos: ProsemirrorGetPosHandler;
-  node: PositionedNode;
+  node: PMNode;
   pluginState: ReactNodeViewState;
   providerFactory: ProviderFactory;
   view: EditorView;
@@ -53,8 +53,8 @@ export default function wrapComponentWithClickArea(ReactComponent: ReactComponen
     }
 
     private handleDocumentSelectionChange = (anchorPos: number, headPos: number) => {
-      const { node } = this.props;
-      const nodePos = node.getPos();
+      const { getPos } = this.props;
+      const nodePos = getPos();
 
       this.setState({
         selected: nodePos >= anchorPos && nodePos < headPos
@@ -62,9 +62,9 @@ export default function wrapComponentWithClickArea(ReactComponent: ReactComponen
     }
 
     private onClick = () => {
-      const { node, view } = this.props;
+      const { getPos, view } = this.props;
       const { doc, tr } = view.state;
-      const pos = doc.resolve(node.getPos());
+      const pos = doc.resolve(getPos());
       const selection = new NodeSelection(pos);
 
       view.dispatch(tr.setSelection(selection));

@@ -2,9 +2,11 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { ResourcedEmoji } from '@atlaskit/emoji';
-import { PositionedNode } from '../';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
-import { EditorView } from '../../prosemirror';
+import {
+  EditorView,
+  Node as PMNode,
+} from '../../prosemirror';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.span`
@@ -14,7 +16,7 @@ const Wrapper = styled.span`
 export interface Props {
   children?: React.ReactNode;
   view: EditorView;
-  node: PositionedNode;
+  node: PMNode;
   providerFactory: ProviderFactory;
 }
 

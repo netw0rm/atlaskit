@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -36,7 +37,6 @@ import {
   sleep,
 } from '../../../../src/test-helper';
 import { default as defaultSchema, compactSchema } from '../../../../src/test-helper/schema';
-import { PositionedNode } from '../../../../src/nodeviews';
 
 chai.use(chaiPlugin);
 
@@ -61,8 +61,6 @@ describe('Media plugin', () => {
       ...reactNodeViewPlugins(schema),
       history(),
     ];
-
-    plugins.push(history());
 
     if (behavior === 'compact') {
       const baseKeymapForCompactBehaviour = { ...baseKeymap };
@@ -90,7 +88,14 @@ describe('Media plugin', () => {
     const [node, transaction] = pluginState.insertFile({ id, status: 'uploading' }, testCollectionName);
     editorView.dispatch(transaction);
 
-    return node as PositionedNode;
+    return node;
+  };
+
+  const getNodePos = (pluginState: MediaPluginState, id: string) => {
+    const mediaNodeWithPos = pluginState.findMediaNode(id);
+    assert(mediaNodeWithPos, `Media node with id "${id}" has not been mounted yet`);
+
+    return mediaNodeWithPos!.getPos();
   };
 
   it('allows change handler to be registered', () => {
@@ -217,8 +222,8 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).to.deep.equal(doc(
       mediaGroup(
-        media({ id: 'mock2', type: 'file', collection: testCollectionName }),
         media({ id: 'mock1', type: 'file', collection: testCollectionName }),
+        media({ id: 'mock2', type: 'file', collection: testCollectionName }),
       ),
       p(),
     ));
@@ -332,26 +337,26 @@ describe('Media plugin', () => {
   it('should cancel in-flight uploads after media item is removed from document', async () => {
     const spy = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), spy);
-    const firstTemporaryFileId = `temporary:${randomId()}`;
-    const secondTemporaryFileId = `temporary:${randomId()}`;
-    const thirdTemporaryFileId = `temporary:${randomId()}`;
+    const firstTemporaryFileId = `temporary:first`;
+    const secondTemporaryFileId = `temporary:second`;
+    const thirdTemporaryFileId = `temporary:third`;
 
     // wait until mediaProvider has been set
     const provider = await resolvedProvider;
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    const firstMediaNode = insertFile(editorView, pluginState, firstTemporaryFileId);
-    const secondMediaNode = insertFile(editorView, pluginState, secondTemporaryFileId);
+    insertFile(editorView, pluginState, firstTemporaryFileId);
+    insertFile(editorView, pluginState, secondTemporaryFileId);
     insertFile(editorView, pluginState, thirdTemporaryFileId);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
         mediaGroup(
-          media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
-          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
       )
     );
@@ -371,14 +376,14 @@ describe('Media plugin', () => {
     stateManager.subscribe(thirdTemporaryFileId, spy);
 
     let pos: number;
-    pos = firstMediaNode.getPos();
+    pos = getNodePos(pluginState, firstTemporaryFileId);
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     // When removing multiple nodes with node view, ProseMirror performs the DOM update
     // asynchronously after a 20ms timeout. In order for the operations to succeed, we
     // must wait for the DOM reconciliation to conclude before proceeding.
     await sleep(100);
 
-    pos = secondMediaNode.getPos();
+    pos = getNodePos(pluginState, secondTemporaryFileId);
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     await sleep(100);
 

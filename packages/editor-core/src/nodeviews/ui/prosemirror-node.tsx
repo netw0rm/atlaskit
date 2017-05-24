@@ -3,7 +3,6 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { ReactComponentConstructor } from './';
 import wrapComponentWithClickArea from './wrapper-click-area';
-import { PositionedNode } from '../';
 import { ReactNodeViewComponents } from '../factory';
 import {
   Node as PMNode,
@@ -46,7 +45,7 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
     // tslint:disable-next-line:variable-name
     const RichNodeWithClickArea = this.wrapped;
 
-    node.forEach((childNode: PositionedNode, offset: number, index: number) => {
+    node.forEach((childNode: PMNode, offset: number, index: number) => {
       children.push(
         <RichNodeWithClickArea
           key={`richnode-${offset}-${index}`}

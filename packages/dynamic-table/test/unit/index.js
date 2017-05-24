@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
 import { Pagination } from '@atlaskit/pagination';
-import AkDynamicTable, { DynamicTable } from '../../src';
+import DynamicTable, { DynamicTableStateless } from '../../src';
 
 import { name } from '../../package.json';
 
@@ -60,13 +60,13 @@ describe(name, () => {
   describe('stateless', () => {
     it('should display empty view when items length is 0', () => {
       const EmptyView = <div>empty view</div>;
-      const wrapper = mount(<DynamicTable emptyView={EmptyView} />);
+      const wrapper = mount(<DynamicTableStateless emptyView={EmptyView} />);
       expect(wrapper.html()).to.equal(mount(EmptyView).html());
     });
 
     it('should display paginated data', () => {
       const wrapper = mount(
-        <DynamicTable
+        <DynamicTableStateless
           rowsPerPage={2}
           page={2}
           head={head}
@@ -85,7 +85,7 @@ describe(name, () => {
         isSortable: true,
       }));
       const wrapper = mount(
-        <DynamicTable
+        <DynamicTableStateless
           defaultSortKey="last_name"
           defaultSortOrder="DESC"
           head={{ cells: headCells }}
@@ -126,7 +126,7 @@ describe(name, () => {
       }));
 
       const wrapper = mount(
-        <DynamicTable
+        <DynamicTableStateless
           head={newHead}
           rows={newRows}
         />
@@ -152,7 +152,7 @@ describe(name, () => {
         onSetPage = spy();
         onSort = spy();
         wrapper = mount(
-          <DynamicTable
+          <DynamicTableStateless
             rowsPerPage={2}
             page={2}
             head={head}
@@ -193,7 +193,7 @@ describe(name, () => {
   describe('stateful', () => {
     it('should display paginated data after navigating to a different page', () => {
       const wrapper = mount(
-        <AkDynamicTable
+        <DynamicTable
           rowsPerPage={2}
           defaultPage={2}
           head={head}
@@ -213,7 +213,7 @@ describe(name, () => {
 
     it('should sort data', () => {
       const wrapper = mount(
-        <AkDynamicTable
+        <DynamicTable
           head={head}
           rows={rows}
         />

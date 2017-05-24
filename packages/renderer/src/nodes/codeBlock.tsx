@@ -10,9 +10,6 @@ export interface Props {
 export default class CodeBlock extends PureComponent<Props, {}> {
 
   render() {
-    return <AkCodeBlock
-      language={this.props.language}
-      text={this.props.text}
-    />;
+    return <AkCodeBlock {...this.props} />;
   }
 }

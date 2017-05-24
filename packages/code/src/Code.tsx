@@ -26,7 +26,7 @@ export default class Code extends PureComponent<CodeProps, {}> {
   };
 
   static defaultProps = {
-    language: 'markdown',
+    language: 'md',
     theme: {}
   };
 
@@ -35,6 +35,7 @@ export default class Code extends PureComponent<CodeProps, {}> {
     const { inlineCodeStyle } = applyTheme(this.props.theme);
     const props = {
       language: normalizeLanguage(language),
+      PreTag: 'span',
       style: inlineCodeStyle,
       showLineNumbers: false
     };

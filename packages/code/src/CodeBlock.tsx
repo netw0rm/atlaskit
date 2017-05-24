@@ -33,7 +33,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
 
   static defaultProps = {
     showLineNumbers: true,
-    language: 'markdown',
+    language: 'md',
     theme: {}
   };
 
@@ -44,9 +44,11 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
       language: normalizeLanguage(language),
       style: codeBlockStyle,
       showLineNumbers: this.props.showLineNumbers,
+      PreTag: 'span',
       codeTagProps: { style: codeContainerStyle },
       lineNumberContainerStyle
     };
+
     return (
       <SyntaxHighlighter {...props}>
         {this.props.text.toString()}

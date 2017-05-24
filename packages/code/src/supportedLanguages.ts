@@ -503,6 +503,15 @@ export const SUPPORTED_LANGUAGES = [
     value: 'tcl'
   },
   {
+    name: 'Markdown',
+    alias: [
+      'mkdown',
+      'md',
+      'markdown'
+    ],
+    value: 'markdown'
+  },
+  {
     name: 'Mathematica',
     alias: [
       'mathematica',

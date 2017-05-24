@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import { AkCodeBlock } from '@atlaskit/code';
-import CodeBlock from '../../src/nodes/codeBlock';
+import CodeBlock from '../../../src/nodes/codeBlock';
 
 describe('CodeBlock', () => {
 

@@ -1,7 +1,7 @@
 import {
-  akColorN900,
+  akColorN800,
   akColorN20,
-  akColorN40,
+  akColorN30,
   akColorN90,
   akColorN400,
   akColorG400,
@@ -17,9 +17,9 @@ import { Theme } from './themeBuilder';
 
 export const defaultColors: Theme = {
   lineNumberColor: akColorN90,
-  lineNumberBgColor: akColorN40,
+  lineNumberBgColor: akColorN30,
   backgroundColor: akColorN20,
-  textColor: akColorN900,
+  textColor: akColorN800,
   substringColor: akColorN400,
   keywordColor: akColorP500,
   attributeColor: akColorT500,

@@ -40,7 +40,7 @@ export interface MediaNode extends PMNode {
   fileMimeType?: string;
 }
 
-interface MediaNodeWithPosHandler {
+export interface MediaNodeWithPosHandler {
   node: MediaNode;
   getPos: ProsemirrorGetPosHandler;
 }

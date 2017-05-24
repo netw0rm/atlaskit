@@ -1,92 +1,50 @@
+import { NodeSpec } from '@atlaskit/editor-core';
+import { style } from 'typestyle';
 import {
   akBorderRadius,
-  akColorN30,
-  akColorN50,
+  akColorN50
 } from '@atlaskit/util-shared-styles';
-import { NodeSpec, NodeView } from '@atlaskit/editor-core';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { style } from 'typestyle';
 
-const nodeClassName = style({
-  alignItems: 'center',
-  background: akColorN30,
+const bodylessBlockStyle = style({
   border: `1px solid ${akColorN50}`,
   borderRadius: akBorderRadius,
-  boxSizing: 'border-box',
-  cursor: 'default',
-  display: 'block',
-  fontSize: '13px',
-  margin: '0 2px',
-  minHeight: 24,
-  padding: '0 4px',
-  userSelect: 'none',
-  verticalAlign: 'middle',
-  whiteSpace: 'nowrap',
-
-  $nest: {
-    '&.ProseMirror-selectednode': {
-      background: akColorN50,
-      outline: 'none'
-    }
-  }
+  margin: '4px 0 4px 0',
+  padding: '4px'
 });
 
 export default {
   group: 'block',
-  atom: true,
   attrs: {
     macroId: { default: null },
-    placeholderUrl: { default: null }
+    macroName: { default: null },
+    placeholderUrl: { default: null },
+    params: {default: null}
   },
   parseDOM: [{
-    tag: 'div',
+    tag: 'div[data-type="bodyless-block"]',
     getAttrs: (dom: HTMLElement) => ({
       macroId: dom.dataset.macroId,
-      placeholderUrl: dom.dataset.placeholderUrl
+      macroName: dom.dataset.macroName,
+      placeholderUrl: dom.dataset.placeholderUrl,
+      params: dom.dataset.params
     })
   }],
   toDOM(node: any) {
     const attrs = {
-      'data-macro-id': node.attrs.macroId
+      'class': `${bodylessBlockStyle}`,
+      'data-type': 'bodyless-block',
+      'data-macro-id': node.attrs.macroId,
+      'data-macro-name': node.attrs.macroName,
+      'data-placeholder-url': node.attrs.placeholderUrl,
+      'data-params': node.attrs.params
     };
 
-    return ['div', attrs, node.attrs.macroId];
+    const placeholderElement = document.createElement('img');
+    placeholderElement.src = node.attrs.placeholderUrl;
+    return [
+      'div',
+      attrs,
+      placeholderElement
+    ];
   }
 } as NodeSpec;
-
-export const bodylessBlockMacroNodeView = (node: any, view: any, getPos: () => number): NodeView => {
-  const { macroId, placeholderUrl } = node.attrs;
-
-  let dom: HTMLElement | undefined = document.createElement('div');
-  dom.setAttribute('class', nodeClassName);
-  dom.dataset.macroId = macroId;
-  dom.dataset.placeholderUrl = placeholderUrl;
-
-  dom.setAttribute('spellcheck', 'false');
-
-  let macroNodeClassName = style({
-    display: 'block',
-    color: '#707070',
-    lineHeight: '24px',
-    verticalAlign: 'top',
-    backgroundImage: 'url(' + placeholderUrl + ')',
-    backgroundRepeat: 'none'
-  });
-
-  ReactDOM.render(
-    <div className={macroNodeClassName} />,
-    dom
-  );
-
-  return {
-    get dom() {
-      return dom;
-    },
-
-    destroy() {
-      ReactDOM.unmountComponentAtNode(dom!);
-      dom = undefined;
-    }
-  };
-};

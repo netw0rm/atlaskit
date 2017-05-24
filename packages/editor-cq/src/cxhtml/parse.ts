@@ -461,7 +461,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
     case 'NONE-BLOCK':
       // TODO - For now this uses an inline macro as conf is wrapping these macros in a p tag
-      return schema.nodes.inlineMacro.create({
+      return schema.nodes.bodylessBlockMacro.create({
         macroId, placeholderUrl, macroName, params
       });
     // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });

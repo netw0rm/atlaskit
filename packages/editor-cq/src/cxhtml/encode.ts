@@ -47,8 +47,10 @@ export default function encode(node: PMNode) {
       return encodeMediaGroup(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
-    } else if (node.type === schema.nodes.inlineMacro) {
-      return encodeInlineMacro(node);
+    } else if (node.type === schema.nodes.inlineMacro ||
+      node.type === schema.nodes.bodylessBlockMacro ||
+      node.type === schema.nodes.richTextBlockMacro) {
+      return encodeMacro(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -260,7 +262,7 @@ export default function encode(node: PMNode) {
     return link;
   }
 
-  function encodeInlineMacro(node: PMNode) {
+  function encodeMacro(node: PMNode) {
     const elem = createMacroElement(node.attrs.macroName);
     const params = node.attrs.params ? node.attrs.params.split('&') : [];
     params.forEach((param) => {

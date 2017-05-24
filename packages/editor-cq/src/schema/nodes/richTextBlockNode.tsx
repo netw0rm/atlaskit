@@ -24,20 +24,23 @@ export default {
   attrs: {
     macroId: { default: null },
     macroName: { default: null },
-    placeholderUrl: { default: null },
+    params: {default: null}
   },
   parseDOM: [{
     tag: 'div[data-type="rich-text-block"]',
     getAttrs: (dom: HTMLElement) => ({
       macroId: dom.dataset.macroId,
       macroName: dom.dataset.macroName,
-      placeholderUrl: dom.dataset.placeholderUrl,
+      params: dom.dataset.params
     })
   }],
   toDOM(node: any) {
     const attrs = {
       'class': `${richTextBlockStyle}`,
-      'data-type': 'rich-text-block'
+      'data-type': 'rich-text-block',
+      'data-macro-id': node.attrs.macroId,
+      'data-macro-name': node.attrs.macroName,
+      'data-params': node.attrs.params
     };
 
     const blockNameElement = document.createElement('h4');

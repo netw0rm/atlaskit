@@ -4,7 +4,7 @@ import { layout } from '../../shared-variables';
 import { themeVariables } from '../../utils/theme';
 
 const size = akGridSizeUnitless * 3;
-const offsetLeft = akGridSizeUnitless * 3.5;
+const offsetLeft = akGridSizeUnitless * 3;
 const openPadding = `0 ${akGridSizeUnitless * 2}px 0 ${offsetLeft - (akGridSizeUnitless * 2)}px`;
 const compactPadding = `0 ${akGridSizeUnitless}px 0 0`;
 const closedHorizontalPadding = (layout.width.closed - (akGridSizeUnitless * 4) - size) / 2;

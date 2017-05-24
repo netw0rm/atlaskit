@@ -43,8 +43,8 @@
     "@atlaskit/droplist": "^3.8.1",
     "@atlaskit/emoji": "^14.1.0",
     "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/media-core": "^6.1.0",
-    "@atlaskit/media-card": "^16.0.1",
+    "@atlaskit/media-core": "^8.0.0",
+    "@atlaskit/media-card": "^17.1.4",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.2.0",
@@ -72,7 +72,7 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^4.8.5",
+    "@atlaskit/media-test-helpers": "^6.0.2",
     "@atlaskit/util-data-test": "^4.0.0",
     "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",

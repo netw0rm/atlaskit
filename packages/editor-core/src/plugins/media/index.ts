@@ -18,7 +18,6 @@ import {
   NodeSelection,
   Schema,
   Transaction,
-  closeHistory
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';

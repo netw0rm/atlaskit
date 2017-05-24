@@ -40,21 +40,11 @@ class NodeViewElem implements NodeView {
   }
 
   update(node: PMNode) {
+    // @see https://github.com/ProseMirror/prosemirror/issues/648
     const isValidUpdate = this.nodeTypeName === node.type.name;
 
-    /*
-      This is a prosemirror bug:
-      NodeView update() should not be called for node of another type
-      @see https://github.com/ProseMirror/prosemirror/issues/648
-    */
     if (isValidUpdate) {
       this.renderReactComponent(node);
-    } else {
-      const { getPos, view } = this;
-      const startPos = getPos();
-      const transaction = view.state.tr.deleteRange(startPos, startPos + node.nodeSize);
-
-      view.dispatch(transaction);
     }
 
     return isValidUpdate;

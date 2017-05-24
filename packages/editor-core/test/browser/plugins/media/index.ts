@@ -451,9 +451,7 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
-        p(),
-        // the second paragraph is a side effect of PM history snapshots merging
-        p(),
+        p()
       )
     );
   });

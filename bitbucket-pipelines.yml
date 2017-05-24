@@ -69,8 +69,8 @@ pipelines:
           # - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           # - run-p -ln "validate/package.json" "validate/typescript"
-          - time lerna run lint
-          - time lerna run test
+          - time lerna run lint --stream
+          - time lerna run test --concurrency=1 --stream
           # - run-p -ln "test" "test/base"
           # - yarn run browserstack/tunnel/start
           # - yarn run test/wc/browserstack

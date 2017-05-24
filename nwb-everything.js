@@ -33,11 +33,26 @@ const exclude = [
   'profilecard',
 ];
 
+const tsconfigUmd = {
+  extends: '../../build/types/tsconfig.base',
+  compilerOptions: {
+    declaration: true,
+    outDir: './types',
+    lib: ['dom', 'es6'],
+    target: 'es5',
+  },
+  include: [
+    'src/**/*.ts',
+    'src/**/*.tsx',
+  ],
+};
+
 fs.readdirSync(pathPackages).forEach((pathPackage) => {
   const dir = path.join(pathPackages, pathPackage);
 
   const nwbFile = path.join(dir, 'nwb.config.js');
   const tsFile = path.join(dir, 'tsconfig.json');
+  const tsUmdFile = path.join(dir, 'tsconfig.umd.json');
   const unitFile = path.join(dir, 'test', 'unit');
   const testFile = path.join(dir, 'test');
   const testsFile = path.join(dir, 'tests');
@@ -50,6 +65,10 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
 
   if (!fs.statSync(dir).isDirectory()) {
     return;
+  }
+
+  if (isTsPackage) {
+    fs.writeFileSync(tsUmdFile, JSON.stringify(tsconfigUmd, null, 2));
   }
 
   // Special packages.
@@ -101,7 +120,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   }
 
   if (isTsPackage) {
-    pkgJson.types = 'umd/types/src/index.d.ts';
+    pkgJson.types = 'umd/types/index.d.ts';
   }
 
   // Remove old fields.

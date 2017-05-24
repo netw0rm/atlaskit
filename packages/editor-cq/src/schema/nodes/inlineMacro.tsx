@@ -37,6 +37,7 @@ export default {
     atom: true,
     attrs: {
         macroId: { default: null },
+        macroName: { default: null },
         placeholderUrl: {default: null},
         params: { default: null }
     },
@@ -54,13 +55,14 @@ export default {
 } as NodeSpec;
 
 export const inlineMacroNodeView = (node: any, view: any, getPos: () => number): NodeView => {
-    const { macroId, placeholderUrl, params } = node.attrs;
+    const { macroId, macroName, placeholderUrl, params } = node.attrs;
 
     let dom: HTMLElement | undefined = document.createElement('span');
     dom.setAttribute('class', nodeClassName);
     dom.dataset.macroId = macroId;
     dom.dataset.placeholderUrl = placeholderUrl;
     dom.dataset.params = params;
+    dom.dataset.macroName = macroName;
 
     dom.setAttribute('spellcheck', 'false');
 

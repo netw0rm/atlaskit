@@ -415,21 +415,20 @@ function childrenOfMacro(node: Element): NodeList | null {
 
 function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined {
   const placeholderUrl = getAcProperty(node, 'placeholder-url');
-  const name = getAcName(node) || 'Unnamed Macro';
+  const macroName = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
   const params = toParamsString(getAcParameters(node));
 
   switch (macroType(node)) {
     case 'NONE-INLINE':
-
       return schema.nodes.inlineMacro.create({
-        macroId, placeholderUrl, params
+        macroId, placeholderUrl, macroName, params
       });
 
     case 'NONE-BLOCK':
       // TODO - For now this uses an inline macro as conf is wrapping these macros in a p tag
       return schema.nodes.inlineMacro.create({
-        macroId, placeholderUrl, params
+        macroId, placeholderUrl, macroName, params
       });
     // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 

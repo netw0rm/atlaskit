@@ -147,6 +147,10 @@ export default class StatelessSelect extends PureComponent {
     this.setState({
       focusedItemIndex: undefined,
     });
+
+    if (attrs.isOpen) {
+      this.focus();
+    }
   }
 
   getNextFocusable = (indexItem, length) => {

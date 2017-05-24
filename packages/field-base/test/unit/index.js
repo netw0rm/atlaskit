@@ -167,6 +167,23 @@ describe('ak-field-base', () => {
   });
 
   describe('smart component', () => {
+    let clock;
+    beforeEach(() => {
+      clock = sinon.useFakeTimers();
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    const isDialogOpened = wrapper => wrapper.find(InlineDialog).prop('isOpen');
+
+    const openDialog = (wrapper) => {
+      expect(isDialogOpened(wrapper)).to.equal(false);
+      wrapper.find(Content).simulate('focus'); // open the dialog
+      expect(isDialogOpened(wrapper)).to.equal(true);
+    };
+
     it('should call onFocus handler', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldBase onFocus={spy} />);
@@ -179,6 +196,33 @@ describe('ak-field-base', () => {
       const wrapper = mount(<FieldBase onBlur={spy} />);
       wrapper.find(Content).simulate('blur');
       expect(spy.callCount).to.equal(1);
+    });
+    it('should close the dialog when focus goes away from both the element and the dialog', () => {
+      const invalidMessage = <snap className="errorMessage">foo</snap>;
+      const wrapper = mount(<FieldBase invalidMessage={invalidMessage} />);
+
+      openDialog(wrapper);
+      wrapper.find('.errorMessage').simulate('focus');
+
+      wrapper.find('.errorMessage').simulate('blur');
+      wrapper.find(Content).simulate('blur');
+
+      clock.tick(10);
+
+      expect(isDialogOpened(wrapper)).to.equal(false);
+    });
+
+    it('should retain focus when blur and focus happen one by one', () => {
+      const wrapper = mount(<FieldBase {...defaultProps} />);
+      const contentContainer = wrapper.find(Content);
+      contentContainer.simulate('blur'); // this should be robust enough to handle even two
+                                         // "blur" events, one by one (faced it in the browser)
+      contentContainer.simulate('blur');
+      contentContainer.simulate('focus');
+
+      clock.tick(10);
+
+      expect(wrapper.state('isFocused')).to.equal(true);
     });
   });
 });

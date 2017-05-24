@@ -51,19 +51,19 @@ describe('ak-field-base', () =>
 
     describe('appearance prop', () => {
       it('should be "default" appearance by default', () => {
-        expect(mount(<Label />).prop('appearance')).to.equal('default');
+        expect(mount(<Label label="required prop label" />).prop('appearance')).to.equal('default');
       });
 
       it('should set prop for it', () => {
-        expect(mount(<Label />).find(LabelInner).prop('inlineEdit')).to.equal(false);
-        expect(mount(<Label appearance="inline-edit" />).find(LabelInner).prop('inlineEdit')).to.equal(true);
+        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('inlineEdit')).to.equal(false);
+        expect(mount(<Label label="required prop label" appearance="inline-edit" />).find(LabelInner).prop('inlineEdit')).to.equal(true);
       });
     });
 
     describe('isFirstChild prop', () => {
       it('should set prop for it', () => {
-        expect(mount(<Label />).find(LabelInner).prop('firstChild')).to.equal(undefined);
-        expect(mount(<Label isFirstChild />).find(LabelInner).prop('firstChild')).to.equal(true);
+        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('firstChild')).to.equal(undefined);
+        expect(mount(<Label label="required prop label" isFirstChild />).find(LabelInner).prop('firstChild')).to.equal(true);
       });
     });
 

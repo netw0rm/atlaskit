@@ -1,6 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
 
 import FieldBaseStateless from './Stateless';
+//
+const ON_BLUR_KEY = 'onBlurKey';
+const ON_CONTENT_BLUR_KEY = 'onContentBlurKey';
 
 function waitForRender(cb) {
   // Execute the callback after any upcoming render calls in the execution queue
@@ -32,12 +35,15 @@ export default class FieldBase extends PureComponent {
   onFocus = (e) => {
     this.setState({ isFocused: true });
     this.props.onFocus(e);
+    // Escape from a possible race-condition when blur and focus happen one by one
+    // (otherwise the dialog might be left closed)
+    this.cancelSchedule(ON_BLUR_KEY);
   }
 
   onBlur = (e) => {
     // Because the blur event fires before the focus event, we want to make sure that we don't
     // render and close the dialog before we can check if the dialog is focused.
-    waitForRender(() => this.setState({ isFocused: false }));
+    this.reschedule(ON_BLUR_KEY, () => this.setState({ isFocused: false }));
     this.props.onBlur(e);
   }
 
@@ -49,6 +55,10 @@ export default class FieldBase extends PureComponent {
     } else {
       this.setState({ isDialogFocused: true });
     }
+
+    // Escape from a possible race-condition when blur and focus happen one by one
+    // (otherwise the dialog might be left closed)
+    this.cancelSchedule(ON_CONTENT_BLUR_KEY);
   }
 
   onContentBlur = () => {
@@ -60,6 +70,25 @@ export default class FieldBase extends PureComponent {
         this.setState({ isDialogFocused: false });
       }
     });
+  }
+
+  cancelSchedule(key) {
+    this.timers = this.timers || {};
+    if (this.timers[key]) {
+      clearTimeout(this.timers[key]);
+      delete this.timers[key];
+    }
+  }
+
+  reschedule(key, callback) {
+    // Use reschedule (not just schedule) to avoid race conditions when multiple blur events
+    // happen one by one.
+    this.timers = this.timers || {};
+    this.cancelSchedule(key);
+    this.timers[key] = setTimeout(() => {
+      callback();
+      this.cancelSchedule(key);
+    }, 0);
   }
 
   render() {

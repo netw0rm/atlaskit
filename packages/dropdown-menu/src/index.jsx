@@ -78,13 +78,14 @@ export default class DropdownMenu extends PureComponent {
 
   handleItemActivation = (attrs) => {
     const activatedItem = attrs.item;
+    const event = attrs.event;
     const activatedGroup = this.findActivatedGroup(activatedItem);
     const items = [...this.state.items];
 
     switch (activatedItem.type) {
       case 'checkbox':
         activatedItem.isChecked = !activatedItem.isChecked;
-        this.props.onItemActivated({ item: activatedItem });
+        this.props.onItemActivated({ item: activatedItem, event });
         this.setState({ items });
         break;
       case 'radio':
@@ -95,12 +96,12 @@ export default class DropdownMenu extends PureComponent {
             i.isChecked = false;
           }
         });
-        this.props.onItemActivated({ item: activatedItem });
+        this.props.onItemActivated({ item: activatedItem, event });
         this.setState({ items });
         break;
       case 'link':
       default:
-        this.props.onItemActivated({ item: activatedItem });
+        this.props.onItemActivated({ item: activatedItem, event });
         this.close();
         break;
     }

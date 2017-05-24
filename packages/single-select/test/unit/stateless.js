@@ -306,7 +306,6 @@ describe(name, () => {
 
       it('should focus the autocomplete textfield', () => {
         wrapper.setProps({ isOpen: false, hasAutocomplete: true });
-        const args = { event: {}, isOpen: true };
         instance.handleTriggerClick({});
         expect(document.activeElement).to.equal(instance.inputNode);
       });

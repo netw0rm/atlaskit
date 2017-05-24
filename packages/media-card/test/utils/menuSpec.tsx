@@ -63,4 +63,21 @@ describe('Menu', () => {
     card.find(Item).first().childAt(0).simulate('click');
     expect(handler.called).to.equal(true);
   });
+
+  it('should pass supplied trigger color to meatballs wrapper when there are multiple actions', () => {
+    const handler = sinon.spy();
+    const menuActions = [{label: 'x', handler}, {label: 'y', handler}];
+
+    const triggerColor = 'some-color-string';
+    const card = mount(<Menu actions={menuActions} triggerColor={triggerColor}/>);
+    expect(card.find(MeatBallsWrapper).prop('style')).to.contain({color: triggerColor});
+  });
+
+  it('should pass supplied trigger color to delete button when there is a single action', () => {
+    const menuActions = [deleteAction];
+
+    const triggerColor = 'some-color-string';
+    const card = mount(<Menu actions={menuActions} triggerColor={triggerColor}/>);
+    expect(card.find(DeleteBtn).prop('style')).to.contain({color: triggerColor});
+  });
 });

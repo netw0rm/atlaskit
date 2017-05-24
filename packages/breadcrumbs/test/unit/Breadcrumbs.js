@@ -2,15 +2,16 @@
 import { mount, shallow } from 'enzyme';
 import React, { Component } from 'react';
 import sinon from 'sinon';
+import Button from '@atlaskit/button';
 
 import {
-  AkBreadcrumbs as Breadcrumbs,
-  AkBreadcrumbsItem as Item,
+  BreadcrumbsStateless as Breadcrumbs,
+  BreadcrumbsItem as Item,
 } from '../../src/';
 
-import EllipsisItem from '../../src/internal/EllipsisItem';
+import EllipsisItem from '../../src/components/EllipsisItem';
 
-describe('AkBreadcrumbs', () => {
+describe('BreadcrumbsStateless', () => {
   describe('exports', () => {
     it('the React component, and the Item component', () => {
       expect(Breadcrumbs).not.to.equal(undefined);
@@ -22,14 +23,18 @@ describe('AkBreadcrumbs', () => {
 
   describe('construction', () => {
     it('should be able to create a component', () => {
-      const wrapper = shallow(<Breadcrumbs />);
+      const wrapper = shallow(<Breadcrumbs
+        onExpand={() => {}}
+      />);
       expect(wrapper).not.to.equal(undefined);
       expect(wrapper.instance()).to.be.instanceOf(Component);
     });
 
     it('should be able to render a single child', () => {
       const wrapper = shallow(
-        <Breadcrumbs>
+        <Breadcrumbs
+          onExpand={() => {}}
+        >
           <Item>item</Item>
         </Breadcrumbs>
       );
@@ -38,7 +43,9 @@ describe('AkBreadcrumbs', () => {
 
     it('should render multiple children', () => {
       const wrapper = mount(
-        <Breadcrumbs>
+        <Breadcrumbs
+          onExpand={() => {}}
+        >
           <Item>item</Item>
           <Item>item</Item>
           <Item>item</Item>
@@ -48,7 +55,7 @@ describe('AkBreadcrumbs', () => {
     });
 
     describe('with enough items to collapse', () => {
-      const firstItem = <Item>item1</Item>;
+      const firstItem = <Item hasSeparator>item1</Item>;
       const lastItem = <Item>item2</Item>;
       const expandSpy = sinon.spy();
       let wrapper;
@@ -75,7 +82,7 @@ describe('AkBreadcrumbs', () => {
 
         it('calls the onExpand handler when the ellipsis is clicked', () => {
           const ellipsisItem = wrapper.find(EllipsisItem);
-          ellipsisItem.simulate('click');
+          ellipsisItem.find(Button).simulate('click');
           expect(expandSpy.callCount).to.equal(1);
         });
       });
@@ -83,7 +90,7 @@ describe('AkBreadcrumbs', () => {
       describe('and expanded', () => {
         beforeEach(() => {
           wrapper = mount(
-            <Breadcrumbs maxItems={4} isExpanded>
+            <Breadcrumbs onExpand={() => {}} maxItems={4} isExpanded>
               <Item>item1</Item>
               <Item>item2</Item>
               <Item>item3</Item>

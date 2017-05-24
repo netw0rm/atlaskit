@@ -1,13 +1,15 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import Button from '@atlaskit/button';
 import AKTooltip from '@atlaskit/tooltip';
-import classnames from 'classnames';
-import styles from './styles.less';
-import { itemTruncateWidth } from './internal/constants';
+import ItemWrapper from '../styled/BreadcrumbsItem';
+import Button from '../styled/Button';
+import Separator from '../styled/Separator';
+import { itemTruncateWidth } from '../constants';
 
 export default class BreadcrumbsItem extends PureComponent {
   static propTypes = {
+    /** Whether this item will be followed by a separator. */
+    hasSeparator: PropTypes.bool,
     /** The url or path which the breadcrumb should act as a link to. */
     href: PropTypes.string,
     /** An icon to display before the breadcrumb. */
@@ -20,15 +22,11 @@ export default class BreadcrumbsItem extends PureComponent {
   }
 
   static defaultProps = {
+    hasSeparator: false,
     href: '#',
   }
 
-  constructor() {
-    super();
-    this.state = {
-      hasOverflow: false,
-    };
-  }
+  state = { hasOverflow: false }
 
   componentDidMount() {
     this.updateOverflow();
@@ -56,11 +54,10 @@ export default class BreadcrumbsItem extends PureComponent {
 
   renderButton = () => (
     <Button
-      className={styles.itemButton}
-      appearance="link"
+      appearance="subtle-link"
       iconAfter={this.props.iconAfter}
       iconBefore={this.props.iconBefore}
-      spacing="compact"
+      spacing="none"
       href={this.props.href}
       target={this.props.target}
       ref={el => (this.button = el)}
@@ -79,16 +76,17 @@ export default class BreadcrumbsItem extends PureComponent {
   );
 
   render() {
-    const itemClasses = classnames(styles.item, {
-      [styles.truncated]: this.state.hasOverflow,
-    });
     return (
-      <div className={itemClasses}>
+      <ItemWrapper>
         {this.state.hasOverflow
           ? this.renderButtonWithTooltip()
           : this.renderButton()
         }
-      </div>
+        {this.props.hasSeparator
+          ? <Separator>/</Separator>
+          : null
+        }
+      </ItemWrapper>
     );
   }
 }

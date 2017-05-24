@@ -58,7 +58,7 @@ Installation
 
 * [node](https://nodejs.org/) version should be 6 or above (to check `node -v`)
 * [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`) or use [nvm](https://github.com/creationix/nvm)
-* [yarn](https://yarnpkg.com/) should be installed globally (`npm install -g yarn@0.18.1`)
+* [yarn](https://yarnpkg.com/) should be installed globally (see yarn website for installation instructions)
 
 #### Clone the repo and install
 
@@ -90,9 +90,9 @@ Once you made some changes, stage them and then commit them using `yarn run comm
 
 Documentation
 =============
-A comprehensive list of components and detail usage of each can be found in the [AtlasKit Registry][AtlasKitRegistry].
+A comprehensive list of components and detailed usage of each can be found in the [AtlasKit Registry][AtlasKitRegistry].
 
-You can also find how each component is meant to be used on the [Atlassian Design Guideline][ADG].
+You can also find how each component is meant to be used from a design perspective on the [Atlassian Design Guidelines][ADG] website.
 
 
 Tests
@@ -107,7 +107,7 @@ Tests
 
 **Note: The above information is slightly out of date in some cases as we are currently undergoing a major refactor for how we run tests**
 
-Some packages will have moved to the new unit testing frame work (using mocha to run jsdom rather than karma).
+Some packages will have moved to the new unit testing framework (using mocha to run jsdom rather than karma).
 
 For these packages you'll need to run the `test/unit` script
 
@@ -115,7 +115,7 @@ For these packages you'll need to run the `test/unit` script
 yarn run test/unit
 ```
 
-To run for a single package you can pass the package name (the name used in the directory not the package.json) like so:
+To run tests for a single package you can pass the package name (the name used in the directory not the package.json) like so:
 
 ```
 yarn run test/unit avatar

@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme';
 
 import { LinkCardViewSmall } from '../../src/links';
 import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
+import { Href } from '../../src/utils/href';
 import { Title, Size, LoadingWrapper } from '../../src/utils/cardGenericViewSmall/styled';
 
 describe('LinkCardViewSmall', () => {
@@ -53,5 +54,15 @@ describe('LinkCardViewSmall', () => {
     const card = shallow(<LinkCardViewSmall title={title} linkUrl={linkUrl} onMouseEnter={handler} />);
 
     expect(card.find(CardGenericViewSmall).props().onMouseEnter).to.deep.equal(handler);
+  });
+
+  it('should not render a link tag when loading is "true"', () => {
+    const card = shallow(<LinkCardViewSmall title={title} linkUrl={linkUrl} loading={true} />);
+    expect(card.find(Href)).to.have.length(0);
+  });
+
+  it('should not render a link tag when error is truthy', () => {
+    const card = shallow(<LinkCardViewSmall title={title} linkUrl={linkUrl} error="some error occurred" />);
+    expect(card.find(Href)).to.have.length(0);
   });
 });

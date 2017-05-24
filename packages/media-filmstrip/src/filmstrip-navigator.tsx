@@ -81,8 +81,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
 
   render() {
     const props = this.props;
-    const defaultWidth = 'auto';
-    const width = `${this.props.width || defaultWidth}px`;
+    const width = props.width ? `${props.width}px`: undefined;
     const transform = `translateX(${-this.state.position}px)`;
     const leftArrow = this.arrowFor('left');
     const rightArrow = this.arrowFor('right');

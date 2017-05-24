@@ -37,31 +37,30 @@ export default {
     atom: true,
     attrs: {
         macroId: { default: null },
-        placeholderUrl: {default: null}
+        placeholderUrl: {default: null},
+        params: { default: null }
     },
     parseDOM: [{
         tag: 'span',
         getAttrs: (dom: HTMLElement) => ({
             macroId: dom.dataset.macroId,
-            placeholderUrl: dom.dataset.placeholderUrl
+            placeholderUrl: dom.dataset.placeholderUrl,
+            params: dom.dataset.params
         })
     }],
     toDOM(node: any) {
-        const attrs = {
-            'data-macro-id': node.attrs.macroId
-        };
-
-        return ['span', attrs, node.attrs.macroId];
+        return ['span', node.attrs, node.attrs.macroId];
     }
 } as NodeSpec;
 
 export const inlineMacroNodeView = (node: any, view: any, getPos: () => number): NodeView => {
-    const { macroId, placeholderUrl } = node.attrs;
+    const { macroId, placeholderUrl, params } = node.attrs;
 
     let dom: HTMLElement | undefined = document.createElement('span');
     dom.setAttribute('class', nodeClassName);
     dom.dataset.macroId = macroId;
     dom.dataset.placeholderUrl = placeholderUrl;
+    dom.dataset.params = params;
 
     dom.setAttribute('spellcheck', 'false');
 

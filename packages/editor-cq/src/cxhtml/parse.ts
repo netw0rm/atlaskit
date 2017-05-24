@@ -417,18 +417,19 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
   const placeholderUrl = getAcProperty(node, 'placeholder-url');
   const name = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
+  const params = toParamsString(getAcParameters(node));
 
   switch (macroType(node)) {
     case 'NONE-INLINE':
 
       return schema.nodes.inlineMacro.create({
-        macroId, placeholderUrl
+        macroId, placeholderUrl, params
       });
 
     case 'NONE-BLOCK':
       // TODO - For now this uses an inline macro as conf is wrapping these macros in a p tag
       return schema.nodes.inlineMacro.create({
-        macroId, placeholderUrl
+        macroId, placeholderUrl, params
       });
     // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 
@@ -489,14 +490,31 @@ function getAcProperty(node: Element, property: string): string | null {
 }
 
 function getAcParameter(node: Element, parameter: string): string | null {
+  return getAcParameters(node)[parameter.toUpperCase()];
+}
+
+function getAcParameters(node: Element): Object {
+  const params = {};
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
-    if (getNodeName(child) === 'AC:PARAMETER' && getAcName(child) === parameter.toUpperCase()) {
-      return child.textContent;
+    if (getNodeName(child) === 'AC:PARAMETER') {
+      const key = getAcName(child);
+      if (key) {
+        const value = child.textContent;
+        params[key] = value;
+      }
     }
   }
+  return params;
+}
 
-  return null;
+function toParamsString(params: Object): string {
+  const paramsArray = [] as String[];
+  Object.keys(params).forEach((key) => {
+    paramsArray.push(`${key}=${params[key]}`);
+  });
+
+  return paramsArray.join('&');
 }
 //
 // function getAcTagContent(node: Element, tagName: string): string | null {

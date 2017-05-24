@@ -26,17 +26,18 @@ import {
 } from './constants';
 
 const getBorderAndPadding = ({ paddingDisabled, invalid, focused, compact, subtle, none }) => {
-  if (paddingDisabled) return css`border-width: 0; padding: 0`;
   let border;
   const height = compact ? heightCompact : heightBase;
-
   if (invalid || focused || none) border = borderWidthFocused;
   else if (subtle) border = borderWidthSubtle;
   else border = borderWidth;
+  const padding = (paddingDisabled)
+    ? css`0`
+    : `${(height - (2 * border) - innerHeight) / 2}px ${horizontalPadding - border}px;`;
 
   return css`
     border-width: ${border}px;
-    padding: ${(height - (2 * border) - innerHeight) / 2}px ${horizontalPadding - border}px;
+    padding: ${padding};
   `;
 };
 

@@ -52,18 +52,15 @@ function findTraversalPath(roots: Node[]) {
   let elem;
   while (elem = inqueue.shift()) {
     outqueue.push(elem);
-    if (isNodeSupportedContent(elem)) {
+    let children;
+    if (isNodeSupportedContent(elem) && (children = childrenOfNode(elem))) {
       let childIndex;
-      for (childIndex = 0; childIndex < elem.childNodes.length; childIndex++) {
-        const child = elem.childNodes[childIndex];
-        switch (child.nodeType) {
-          case Node.ELEMENT_NODE:
-          case Node.TEXT_NODE:
-          case Node.CDATA_SECTION_NODE:
-            inqueue.push(child);
-            break;
-          default:
-            console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
+      for (childIndex = 0; childIndex < children.length; childIndex++) {
+        const child = children[childIndex];
+        if (isNodeSupportedContent(child)) {
+          inqueue.push(child);
+        } else {
+          console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
         }
       }
     }
@@ -85,7 +82,7 @@ function isNodeSupportedContent(node: Node): boolean {
     return true;
   }
 
-  if (node instanceof HTMLElement) {
+  if (node instanceof HTMLElement || node.nodeType === Node.ELEMENT_NODE) {
     const tag = getNodeName(node);
     switch (tag) {
       case 'DEL':
@@ -115,6 +112,7 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'A':
       case 'FAB:MENTION':
       case 'FAB:MEDIA':
+      case 'AC:STRUCTURED-MACRO':
         return true;
     }
   }
@@ -391,14 +389,36 @@ export function getNodeName(node: Node): string {
 //   return 'NONE';
 // }
 
-function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined {
-  const placeholderUrl = getAcProperty(node, 'placeholder-url');
+function macroType(node: Element): string {
   const bodyType = getAcProperty(node, 'body-type');
   const displayType = getAcProperty(node, 'display-type');
+  return `${bodyType}-${displayType}`;
+}
+
+function childrenOfNode(node: Element): NodeList | null {
+  const tag = getNodeName(node);
+  if (tag === 'AC:STRUCTURED-MACRO') {
+    return childrenOfMacro(node);
+  }
+
+  return node.childNodes;
+}
+
+function childrenOfMacro(node: Element): NodeList | null {
+  switch (macroType(node)) {
+    case 'RICH_TEXT-BLOCK':
+      return getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
+    default:
+      return null;
+  }
+}
+
+function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined {
+  const placeholderUrl = getAcProperty(node, 'placeholder-url');
   const name = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
 
-  switch (bodyType + '-' + displayType) {
+  switch (macroType(node)) {
     case 'NONE-INLINE':
 
       return schema.nodes.inlineMacro.create({
@@ -430,21 +450,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
         for (let i = 0, len = nodes.length; i < len; i += 1) {
           const domNode: any = nodes[i];
 
-
-          const dom = parseCxhtml(domNode.innerHTML).querySelector('body')!;
-          const childNodes = findTraversalPath(Array.prototype.slice.call(dom.childNodes, 0));
-
-          // Process through nodes in reverse (so deepest child elements are first).
-          for (let i = childNodes.length - 1; i >= 0; i--) {
-            const node = childNodes[i];
-            const content = getContent(node);
-            const candidate = converter(content, node);
-            if (typeof candidate !== 'undefined') {
-              convertedNodes.set(node, candidate);
-            }
-          }
-
-          const content = getContent(dom);
+          const content = getContent(domNode);
           const pmNode = converter(content, domNode);
           if (pmNode) {
             panelBody.push(pmNode);

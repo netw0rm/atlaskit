@@ -234,7 +234,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         expect(toolbarButton.prop('disabled')).to.equal(true);
     });
 
-    it('should not be selected after convertion to code', () => {
+    it('should be selected after convertion to code', () => {
         const { editorView } = editor(doc(p(code('text'))));
         const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
@@ -246,7 +246,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
             />
         );
         const toolbarButton = toolbarOption.find(ToolbarButton);
-        expect(toolbarButton.prop('selected')).to.equal(false);
+        expect(toolbarButton.prop('selected')).to.equal(true);
     });
 
     it('should be selected inside strike', () => {

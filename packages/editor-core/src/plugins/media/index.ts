@@ -14,7 +14,7 @@ import {
   EditorView,
   Plugin,
   PluginKey,
-  Node,
+  Node as PMNode,
   NodeSelection,
   Schema,
   Transaction,
@@ -26,19 +26,23 @@ import { analyticsService } from '../../analytics';
 
 import { MediaPluginBehavior, MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
-import { PositionedNode } from '../../nodeviews';
+import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type MediaPluginBehavior = MediaPluginBehavior;
-
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
-export interface MediaNode extends PositionedNode {
+export interface MediaNode extends PMNode {
   fileName?: string;
   fileSize?: number;
   fileMimeType?: string;
+}
+
+interface MediaNodeWithPosHandler {
+  node: MediaNode;
+  getPos: ProsemirrorGetPosHandler;
 }
 
 export class MediaPluginState {
@@ -46,7 +50,7 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsPastingLinks: boolean = false;
   public stateManager: MediaStateManager;
-  private mediaNodes: PositionedNode[] = [];
+  private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
@@ -148,7 +152,7 @@ export class MediaPluginState {
     );
   }
 
-  insertFile = (mediaState: MediaState, collection: string): [ Node, Transaction ] => {
+  insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
     const { options, view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
@@ -252,7 +256,7 @@ export class MediaPluginState {
         }
       }
 
-      mediaNodes.forEach(node => {
+      mediaNodes.forEach(({ node }) => {
         const mediaNodeId = node.attrs.id;
         const nodeCurrentStatus = this.getMediaNodeStateStatus(mediaNodeId);
 
@@ -273,8 +277,8 @@ export class MediaPluginState {
    * Called from React UI Component when user clicks on "Delete" icon
    * inside of it
    */
-  handleMediaNodeRemove = (node: PositionedNode) => {
-    this.handleMediaNodeRemoval(node, true);
+  handleMediaNodeRemove = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+    this.handleMediaNodeRemoval(node, getPos, true);
   }
 
   /**
@@ -283,27 +287,28 @@ export class MediaPluginState {
    * This function is called in this case
    */
   handleMediaNodeOutsideRemove = (id: string) => {
-    const node = this.findMediaNode(id);
-    if (!node) {
+    const mediaNodeWithPos = this.findMediaNode(id);
+    if (!mediaNodeWithPos) {
       return;
     }
 
-    this.handleMediaNodeRemoval(node, false);
+    const { node, getPos } = mediaNodeWithPos;
+    this.handleMediaNodeRemoval(node, getPos, false);
   }
 
   /**
    * Called from React UI Component on componentDidMount
    */
-  handleMediaNodeMount = (node: PositionedNode) => {
-    this.mediaNodes.push(node);
+  handleMediaNodeMount = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+    this.mediaNodes.push({ node, getPos });
   }
 
   /**
    * Called from React UI Component on componentWillUnmount.
    * This also means that we can't no longer use its underlying PM node's getPos()
    */
-  handleMediaNodeUnmount = (oldNode: PositionedNode) => {
-    this.mediaNodes = this.mediaNodes.filter(node => oldNode !== node);
+  handleMediaNodeUnmount = (oldNode: PMNode) => {
+    this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   }
 
   destroy() {
@@ -321,17 +326,18 @@ export class MediaPluginState {
     this.popupPicker = undefined;
   }
 
-  private findMediaNode = (id: string): MediaNode | null => {
+  private findMediaNode = (id: string): MediaNodeWithPosHandler | null => {
     const { mediaNodes } = this;
 
     // Array#find... no IE support
-    return mediaNodes.reduce((memo: PositionedNode | null, node: PositionedNode) => {
+    return mediaNodes.reduce((memo: MediaNodeWithPosHandler | null, nodeWithPos: MediaNodeWithPosHandler) => {
       if (memo) {
         return memo;
       }
 
+      const { node } = nodeWithPos;
       if (node.attrs.id === id) {
-        return node;
+        return nodeWithPos;
       }
 
       return memo;
@@ -417,11 +423,11 @@ export class MediaPluginState {
     view.dispatch(transaction);
 
     if (options.behavior !== 'compact') {
-      this.selectInsertedMediaNode(node as PositionedNode);
+      this.selectInsertedMediaNode(node);
     }
   }
 
-  private handleMediaNodeRemoval = (node: PositionedNode, activeUserAction: boolean) => {
+  private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
     const { id } = node.attrs;
     const status = this.getMediaNodeStateStatus(id);
 
@@ -443,7 +449,7 @@ export class MediaPluginState {
         }
 
         const { view } = this;
-        const nodePos = node.getPos();
+        const nodePos = getPos();
         const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
 
         view.dispatch(tr);
@@ -481,10 +487,15 @@ export class MediaPluginState {
       return;
     }
 
-    const mediaNode = this.findMediaNode(temporaryId);
-    if (!mediaNode) {
+    const mediaNodeWithPos = this.findMediaNode(temporaryId);
+    if (!mediaNodeWithPos) {
       return;
     }
+
+    const {
+      getPos,
+      node: mediaNode,
+    } = mediaNodeWithPos;
 
     const newNode: MediaNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
@@ -507,7 +518,7 @@ export class MediaPluginState {
     }
 
     // replace the old node with a new one
-    const nodePos = mediaNode.getPos();
+    const nodePos = getPos();
     const tr = view.state.tr.replaceWith(nodePos, nodePos + mediaNode.nodeSize, newNode);
     view.dispatch(tr.setMeta('addToHistory', false));
   }
@@ -524,20 +535,28 @@ export class MediaPluginState {
       return;
     }
 
-    const mediaNode = this.findMediaNode(id);
-    if (!mediaNode) {
+    const mediaNodeWithPos = this.findMediaNode(id);
+    if (!mediaNodeWithPos) {
       return;
     }
 
-    const nodePos = mediaNode.getPos();
-    const tr = view.state.tr.deleteRange(nodePos, nodePos + mediaNode.nodeSize);
+    const { node, getPos } = mediaNodeWithPos;
+    const nodePos = getPos();
+    const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
-  private selectInsertedMediaNode = (node: PositionedNode) => {
+  private selectInsertedMediaNode = (node: PMNode) => {
+    // by this time node has already been mounted
+    const mediaNodeWithPos = this.findMediaNode(node.attrs.id);
+    if (!mediaNodeWithPos) {
+      return;
+    }
+
     const { view } = this;
     const { doc, tr } = view.state;
-    const pos = doc.resolve(node.getPos());
+    const { getPos } = mediaNodeWithPos;
+    const pos = doc.resolve(getPos());
     const selection = new NodeSelection(pos);
 
     view.dispatch(tr.setSelection(selection));

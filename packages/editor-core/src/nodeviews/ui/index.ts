@@ -3,6 +3,7 @@ export interface ReactNodeProps {
 }
 
 export type ReactComponentConstructor = new() => React.Component<any, any>;
+export type ProsemirrorGetPosHandler = () => number;
 
 export {
   default as ReactPMNode,

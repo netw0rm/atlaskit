@@ -33,7 +33,7 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
   private wrapped: ReactComponentConstructor = wrapComponentWithClickArea(ReactProsemirrorNode);
 
   render() {
-    const { components, getPos, node, providerFactory, view } = this.props;
+    const { components, node, providerFactory, view } = this.props;
     const nodeTypeName = node.type.name;
     const pluginState = reactNodeViewStateKey.getState(view.state);
 
@@ -47,18 +47,12 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
     const RichNodeWithClickArea = this.wrapped;
 
     node.forEach((childNode: PositionedNode, offset: number, index: number) => {
-      /**
-       * Child node position is parent position + offset + 1
-       * because each node has its own position
-       * i.e. different nodes can't have the same position
-       */
-      childNode.getPos = () => getPos() + offset + 1;
-
       children.push(
         <RichNodeWithClickArea
           key={`richnode-${offset}-${index}`}
           components={components}
           node={childNode}
+          getPos={this.handleGetPos(offset)}
           view={view}
           pluginState={pluginState}
           providerFactory={providerFactory}
@@ -69,5 +63,17 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
     // tslint:disable-next-line:variable-name
     const RichNode = components[nodeTypeName]!;
     return <RichNode {...attrs}>{children}</RichNode>;
+  }
+
+  /**
+   * Child node position is parent position + offset + 1
+   * because each node has its own position
+   * i.e. different nodes can't have the same position
+   */
+  private handleGetPos = (offset) => {
+    return () => {
+      const { getPos } = this.props;
+      return getPos() + offset + 1;
+    };
   }
 }

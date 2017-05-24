@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import { ReactNodeProps } from './';
-import { PositionedNode } from '../';
+import {
+  ProsemirrorGetPosHandler,
+  ReactNodeProps,
+} from './';
 import MediaComponent from '../../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 import { mediaStateKey, MediaPluginState } from '../../plugins';
-import { EditorView } from '../../prosemirror';
+import {
+  EditorView,
+  Node as PMNode,
+} from '../../prosemirror';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
@@ -20,8 +25,9 @@ const Wrapper = styled.div`
 
 export interface MediaNodeProps extends ReactNodeProps {
   children?: React.ReactNode;
+  getPos: ProsemirrorGetPosHandler;
   view: EditorView;
-  node: PositionedNode;
+  node: PMNode;
   providerFactory: ProviderFactory;
 }
 
@@ -36,8 +42,8 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   }
 
   componentDidMount() {
-    const { node } = this.props;
-    this.pluginState.handleMediaNodeMount(node);
+    const { getPos, node } = this.props;
+    this.pluginState.handleMediaNodeMount(node, getPos);
   }
 
   componentWillUnmount() {

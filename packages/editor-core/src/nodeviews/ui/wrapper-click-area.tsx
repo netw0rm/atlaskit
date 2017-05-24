@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { ReactComponentConstructor } from './';
+import {
+  ProsemirrorGetPosHandler,
+  ReactComponentConstructor,
+} from './';
 import { PositionedNode } from '../';
 import { ReactNodeViewComponents } from '../factory';
 import { ReactNodeViewState } from '../../plugins';
@@ -12,6 +15,7 @@ import {
 
 interface Props {
   components: ReactNodeViewComponents;
+  getPos: ProsemirrorGetPosHandler;
   node: PositionedNode;
   pluginState: ReactNodeViewState;
   providerFactory: ProviderFactory;

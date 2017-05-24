@@ -51,9 +51,13 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/util-common-test": "1.0.2",
+    "element-closest": "^2.0.2",
+    "es6-promise": "^4.0.5",
     "fetch-mock": "^5.8.0",
     "react-addons-perf": "^15.3.2",
-    "uid": "^0.0.2"
+    "uid": "^0.0.2",
+    "url-search-params": "^0.6.1",
+    "whatwg-fetch": "^2.0.3"
   },
   "repository": {
     "type": "git",

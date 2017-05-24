@@ -420,7 +420,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
   const params = toParamsString(getAcParameters(node));
 
   // Switch on name first to check for macros that the Atlassian editor supports "natively"
-  switch (name) {
+  switch (macroName) {
     case 'INFO':
     case 'WARNING':
     case 'TIP':
@@ -450,7 +450,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       } else {
         panelBody.push(schema.nodes.paragraph.create({}));
       }
-      return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
+      return schema.nodes.panel.create({ panelType: macroName.toLowerCase() }, panelBody);
   }
 
   switch (macroType(node)) {
@@ -468,18 +468,18 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
     case 'RICH_TEXT-BLOCK':
       // TODO - extract common logic from the panel node above
-      const panelTitle = getAcParameter(node, 'title');
-      const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
-      let panelBody: any[] = [];
+      const richTextBlockTitle = getAcParameter(node, 'title');
+      const richTextBlockNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
+      let richTextBlockBody: any[] = [];
 
-      if (panelTitle) {
-        panelBody.push(
-          schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle))
+      if (richTextBlockTitle) {
+        richTextBlockBody.push(
+          schema.nodes.heading.create({ level: 3 }, schema.text(richTextBlockTitle))
         );
       }
 
-      if (panelNodes) {
-        const nodes = Array.prototype.slice.call(panelNodes);
+      if (richTextBlockNodes) {
+        const nodes = Array.prototype.slice.call(richTextBlockNodes);
 
         for (let i = 0, len = nodes.length; i < len; i += 1) {
           const domNode: any = nodes[i];
@@ -487,14 +487,14 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
           const content = getContent(domNode);
           const pmNode = converter(content, domNode);
           if (pmNode) {
-            panelBody.push(pmNode);
+            richTextBlockBody.push(pmNode);
           }
         }
       } else {
-        panelBody.push(schema.nodes.paragraph.create({}));
+        richTextBlockBody.push(schema.nodes.paragraph.create({}));
       }
 
-      return schema.nodes.richTextBlockMacro.create({macroId, placeholderUrl}, panelBody);
+      return schema.nodes.richTextBlockMacro.create({macroId, placeholderUrl, macroName}, richTextBlockBody);
 
     case 'PLAIN_TEXT-BLOCK':
       const codeContent = getAcProperty(node, 'PLAIN-TEXT-BODY') || ' ';

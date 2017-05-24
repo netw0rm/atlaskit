@@ -57,6 +57,52 @@ storiesOf(name, module)
 
     return editor;
   })
+  .add('With 2 editor with media', () => {
+    let reactEditorComponent: Editor;
+
+    function openMediaPicker() {
+      if (reactEditorComponent) {
+        reactEditorComponent.showMediaPicker();
+      }
+    }
+
+    function insertTestFile() {
+      if (reactEditorComponent) {
+        reactEditorComponent.insertFileFromDataUrl(testImageUrl, testImageName);
+      }
+    }
+
+    const editors = (
+      <div>
+        <div style={{border: '2px solid', margin: '5px', minHeight: '50px'}}>
+          <div style={{ float: 'right', position: 'relative'}}>
+            <Button onClick={openMediaPicker} appearance="primary">Show media picker</Button>&nbsp;
+            <Button onClick={insertTestFile} appearance="primary">Insert from base64</Button>
+          </div>
+          <Editor
+            // tslint:disable-next-line:jsx-no-lambda
+            ref={elem => reactEditorComponent = elem}
+            onSubmit={action('submit')}
+            mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+          />
+        </div>
+        <div style={{border: '2px solid', margin: '5px', minHeight: '50px'}}>
+          <div style={{ float: 'right', position: 'relative'}}>
+            <Button onClick={openMediaPicker} appearance="primary">Show media picker</Button>&nbsp;
+            <Button onClick={insertTestFile} appearance="primary">Insert from base64</Button>
+          </div>
+          <Editor
+            // tslint:disable-next-line:jsx-no-lambda
+            ref={elem => reactEditorComponent = elem}
+            onSubmit={action('submit')}
+            mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+          />
+        </div>
+      </div>
+    );
+
+    return editors;
+  })
   .add('With maxContentSize', () => <Editor maxContentSize={100}/>)
   .add('With onChange', () => <Editor onChange={action('onChange')} />)
   .add('With legacy format', () =>

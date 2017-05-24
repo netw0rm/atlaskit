@@ -22,25 +22,31 @@ export interface LinkCardViewSmallProps {
 
 export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
   render() {
+    const {error, loading, linkUrl} = this.props;
+
+    return error || loading
+      ? this.getCardGenericViewSmall()
+      : <Href linkUrl={linkUrl}>{this.getCardGenericViewSmall()}</Href>;
+  }
+
+  private getCardGenericViewSmall(): JSX.Element {
     const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onMouseEnter, onRetry, error} = this.props;
 
     return (
-      <Href linkUrl={linkUrl}>
-        <CardGenericViewSmall
-          title={title}
-          subtitle={site || linkUrl}
-          thumbnailUrl={thumbnailUrl}
-          width={width}
-          loading={loading}
-          actions={actions}
-          error={error}
-          mediaType="image"
+      <CardGenericViewSmall
+        title={title}
+        subtitle={site || linkUrl}
+        thumbnailUrl={thumbnailUrl}
+        width={width}
+        loading={loading}
+        actions={actions}
+        error={error}
+        mediaType="image"
 
-          onClick={onClick}
-          onMouseEnter={onMouseEnter}
-          onRetry={onRetry}
-        />
-      </Href>
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onRetry={onRetry}
+      />
     );
   }
 }

@@ -431,7 +431,6 @@ function childrenOfMacro(node: Element): NodeList | null {
 
 function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined {
   const placeholderUrl = getAcProperty(node, 'placeholder-url');
-  const name = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
   const params = toParamsString(getAcParameters(node));
 

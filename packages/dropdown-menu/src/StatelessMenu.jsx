@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import Button from '@atlaskit/button';

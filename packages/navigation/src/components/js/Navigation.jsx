@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';

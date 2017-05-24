@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import AKTooltip from '@atlaskit/tooltip';
 import ItemWrapper from '../styled/BreadcrumbsItem';

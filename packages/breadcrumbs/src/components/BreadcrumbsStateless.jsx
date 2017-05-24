@@ -1,4 +1,5 @@
-import React, { Children, PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Children, PureComponent } from 'react';
 import EllipsisItem from './EllipsisItem';
 import { defaultMaxItems } from '../constants';
 import Container from '../styled/BreadcrumbsContainer';

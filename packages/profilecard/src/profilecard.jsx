@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';

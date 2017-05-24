@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';

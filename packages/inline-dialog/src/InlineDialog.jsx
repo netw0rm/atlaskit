@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';

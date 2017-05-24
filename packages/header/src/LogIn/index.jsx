@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 /**
  * Components that displays user avatar + logged in links if user is logged
  * or a logIn link if the user is not logged.
  */
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import Avatar from '@atlaskit/avatar';
 import cx from 'classnames';

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import * as classNames from 'classnames';
 
-import { PickerStyle } from './styles';
+import * as styles from './styles';
+
 import debug from '../../util/logger';
 import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
@@ -186,9 +188,10 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   render() {
     const { target, position, zIndex, offsetX, offsetY, onSelection } = this.props;
     const { activeCategory, availableCategories, filteredEmojis, loading, query, selectedCategory, selectedEmoji, selectedTone } = this.state;
+    const classes = [styles.emojiPicker];
 
     const picker = (
-      <PickerStyle innerRef={this.handlePickerRef}>
+      <div className={classNames(classes)} ref={this.handlePickerRef}>
         <CategorySelector
           activeCategoryId={activeCategory}
           onCategorySelected={this.onCategorySelected}
@@ -210,7 +213,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
           selectedTone={selectedTone}
           onToneSelected={this.onToneSelected}
         />
-      </PickerStyle>
+      </div>
     );
 
     let content;

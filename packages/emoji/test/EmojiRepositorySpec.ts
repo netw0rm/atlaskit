@@ -1,3 +1,4 @@
+import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import { expect } from 'chai';
 
 import { EmojiDescription } from '../src/types';

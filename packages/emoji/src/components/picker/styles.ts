@@ -1,8 +1,10 @@
-import styled from 'styled-components';
+import { style } from 'typestyle';
 import {
   akBorderRadius,
+  akColorB100,
   akColorB300,
   akColorN100A,
+  akColorN200,
   akColorN30,
   akColorN30A,
   akColorN50,
@@ -18,7 +20,189 @@ import {
   emojiPickerWidth,
 } from '../../shared-styles';
 
+export const pickerEmoji = style({
+  padding: '4px',
+  width: '32px',
+  height: '32px',
+  display: 'inline-block',
+
+  $nest: {
+    '&>span': {
+      cursor: 'pointer',
+      padding: '4px',
+      borderRadius: '5px',
+      width: '24px',
+      height: '24px',
+
+      $nest: {
+        // Fit non-square emoji to square
+        '&>img': {
+          position: 'relative',
+          left: '50%',
+          top: '50%',
+          transform: 'translateX(-50%) translateY(-50%)',
+          maxHeight: '24px',
+          maxWidth: '24px',
+          display: 'block',
+        },
+      }
+    }
+  },
+});
+
+export const emojiPickerFooter = style({
+  borderTop: `2px solid ${akColorN30A}`,
+  boxShadow: emojiFooterBoxShadow,
+});
+
+export const emojiPickerRow = style({
+  boxSizing: 'border-box',
+  padding: '0 8px',
+});
+
+export const emojiPickerCategoryTitle = style({
+  boxSizing: 'border-box',
+  color: akColorN900,
+  fontSize: '14px',
+  padding: '5px 8px',
+  textTransform: 'lowercase',
+
+  $nest: {
+    ['&:first-letter']: {
+      textTransform: 'uppercase',
+    },
+  },
+});
+
+export const active = 'active';
+export const disable = 'disable';
+
+export const category = style({
+  backgroundColor: 'transparent',
+  border: 0,
+  color: akColorN100A,
+  cursor: 'pointer',
+  margin: '0 3px 0 4px',
+  padding: 0,
+  transition: 'color 0.2s ease',
+
+  $nest: {
+    /* Firefox */
+    ['&::-moz-focus-inner']: {
+      border: '0 none',
+      padding: 0,
+    },
+
+    [`&.${active}`]: {
+      color: akColorB300,
+
+      $nest: {
+        ['&:hover']: {
+          color: akColorB300,
+        },
+      },
+    },
+
+    ['&:hover']: {
+      color: akColorB100,
+    },
+
+    [`&.${disable}`]: {
+      color: akColorN50,
+      cursor: 'default',
+
+      $nest: {
+        ['&:hover']: {
+          color: akColorN50,
+        },
+      },
+    },
+
+    ['&:focus']: {
+      outline: '0',
+    },
+  },
+});
+
+export const addButton = 'add-button';
+
+export const categorySelector = style({
+  backgroundColor: akColorN30,
+
+  $nest: {
+    ul: {
+      listStyle: 'none',
+      margin: '0 3px',
+      padding: '3px 0',
+    },
+
+    li: {
+      display: 'inline-block',
+      margin: 0,
+      padding: 0,
+      verticalAlign: 'middle',
+    },
+
+    [`.${addButton}`]: {
+      color: akColorN200,
+      margin: '0 0 0 5px',
+      verticalAlign: 'middle',
+    },
+  },
+});
+
+export const searchIcon = 'search-icon';
+export const input = 'input';
+
+export const pickerSearch = style({
+  boxSizing: 'border-box',
+  padding: '10px 25px 10px 8px',
+
+  $nest: {
+    [`.${searchIcon}`]: {
+      opacity: .5,
+      marginTop: '-2px',
+      height: '17px',
+    },
+
+    [`.${input}`]: {
+      background: 'transparent',
+      border: 0,
+      boxSizing: 'border-box',
+      color: 'inherit',
+      cursor: 'inherit',
+      fontSize: '14px',
+      outline: 'none',
+      padding: '1px 0 2px 10px',
+      width: '100%',
+
+      $nest: {
+        ['&:invalid']: {
+          boxShadow: 'none',
+        },
+        ['&::-ms-clear']: {
+          display: 'none',
+        },
+      },
+    },
+  },
+});
+
+export const emojiPickerList = style({
+  height: `${emojiPickerListHeight}px`,
+});
+
+export const emojiPicker = style({
+  background: 'white',
+  border: `${emojiPickerBorderColor} 1px solid`,
+  borderRadius: akBorderRadius,
+  boxShadow: emojiPickerBoxShadow,
+  height: `${emojiPickerHeight}px`,
+  width: `${emojiPickerWidth}px`,
+});
+
 const spinnerSize = 30;
+
 export const listSizes = {
   emoji: 40,
   search: 50,
@@ -26,171 +210,27 @@ export const listSizes = {
   default: 20,
 };
 
-function getCategoryStyleColour(props: CategoryProps, onHover: boolean) {
-  if (props.active) {
-    return akColorB300;
-  }
+export const emojiPickerSpinnerContainer = style({
+  position: 'relative',
+  zIndex: 1,
+});
 
-  if (props.disable) {
-    return akColorN50;
-  }
+export const emojiPickerSpinner = style({
+  position: 'absolute',
+  left: `${((emojiPickerWidth - spinnerSize) / 2).toFixed()}px`,
+  top: `${((emojiPickerListHeight - spinnerSize + listSizes.search) / 2).toFixed()}px`,
+});
 
-  return onHover ? akColorB300 : akColorN100A;
-}
+export const emojiCategoryTitle = style({
+  boxSizing: 'border-box',
+  color: akColorN900,
+  fontSize: '14px',
+  padding: '5px 8px',
+  textTransform: 'lowercase',
 
-// tslint:disable-next-line:variable-name
-export const CategorySelectorStyle = styled.div`
-  background-color: ${akColorN30};
-
-  & ul {
-    list-style: none;
-    margin: 0 3px;
-    padding: 3px 0;
-  }
-
-  & li {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    vertical-align: middle;
-  }
-`;
-
-export interface CategoryProps {
-  active: boolean;
-  disable: boolean;
-}
-
-// tslint:disable-next-line:variable-name
-export const CategoryStyle = styled.button`
-  background-color: transparent;
-  border: 0;
-  margin: 0 3px 0 4px;
-  padding: 0;
-  transition: color 0.2s ease;
-
-  color: ${(props: CategoryProps) => getCategoryStyleColour(props, false)};
-  cursor: ${(props: CategoryProps) => props.disable ? 'default' : 'pointer'};
-
-  /* Firefox */
-  &::-moz-focus-inner {
-    border: 0 none;
-    padding: 0;
-  }
-
-  &:hover {
-    color: ${(props: CategoryProps) => getCategoryStyleColour(props, true)};
-  }
-
-  &:focus {
-    outline: 0;
-  }
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerStyle = styled.div`
-  background: white;
-  border: 1px solid ${emojiPickerBorderColor};
-  border-radius: ${akBorderRadius};
-  box-shadow: ${emojiPickerBoxShadow};
-  height: ${emojiPickerHeight}px;
-  width: ${emojiPickerWidth}px;
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerFooterStyle = styled.div`
-  border-rop: 2px solid ${akColorN30A};
-  box-shadow: ${emojiFooterBoxShadow};
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerSpinnerContainerStyle = styled.div`
-  position: relative;
-  z-index: 1;
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerSpinnerStyle = styled.div`
-  position: absolute;
-  left: ${((emojiPickerWidth - spinnerSize) / 2).toFixed()}px;
-  top: ${((emojiPickerListHeight - spinnerSize + listSizes.search) / 2).toFixed()}px;
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerListStyle = styled.div`
-  height: ${emojiPickerListHeight}px;
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerSearchStyle = styled.div`
-  box-sizing: border-box;
-  padding: 10px 25px 10px 8px;
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerSearchIconStyle = styled.span`
-  opacity: 0.5;
-  margin-top: -2px;
-  height: 17px;
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerSearchInputStyle = styled.input`
-  background: transparent;
-  border: 0;
-  box-sizing: border-box;
-  color: inherit;
-  cursor: inherit;
-  font-size: 14px;
-  outline: none;
-  padding: 1px 0 2px 10px;
-  width: 100%;
-
-  &:invalid {
-    box-shadow: none;
-  }
-
-  &::-ms-clear {
-    display: none;
-  }
-`;
-
-// tslint:disable-next-line:variable-name
-export const CategoryTitleStyle = styled.div`
-  box-sizing: border-box;
-  color: ${akColorN900};
-  font-size: 14px;
-  padding: 5px 8px;
-  text-transform: lowercase;
-
-  &:first-letter {
-    text-transform: uppercase;
-  }
-`;
-
-// tslint:disable-next-line:variable-name
-export const PickerEmojiStyle = styled.span`
-  padding: 4px;
-  width: 32px;
-  height: 32px;
-  display: inline-block;
-
-  & > span {
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 5px;
-    width: 24px;
-    height: 24px;
-
-    /* Fit non-square emoji to square */
-    & > img {
-      position: relative;
-      left: 50%;
-      top: 50%;
-      transform: translateX(-50%) translateY(-50%);
-      max-height: 24px;
-      max-width: 24px;
-      display: block;
+  $nest: {
+    '&:first-letter': {
+      textTransform: 'uppercase'
     }
   }
-`;
+});

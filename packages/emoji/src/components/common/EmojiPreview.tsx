@@ -1,16 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import * as classNames from 'classnames';
 
-import {
-  ButtonsStyle,
-  PreviewEmojiStyle,
-  PreviewImgStyle,
-  PreviewStyle,
-  PreviewTextNameStyle,
-  PreviewTextShortNameStyle,
-  PreviewTextStyle,
-  ToneSelectedContainerStyle,
-} from './styles';
+import * as styles from './styles';
 import AkButton from '@atlaskit/button';
 import Emoji from '../../components/common/Emoji';
 import EmojiPlaceholder from '../../components/common/EmojiPlaceholder';
@@ -57,7 +49,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
     });
   }
 
-  private renderTones() {
+  renderTones() {
     const { emoji, toneEmoji, selectedTone } = this.props;
     if (!toneEmoji || !emoji) {
       return null;
@@ -65,12 +57,12 @@ export default class EmojiPreview extends PureComponent<Props, State> {
 
     if (this.state.selectingTone) {
       return (
-        <ToneSelectedContainerStyle>
+        <div className={styles.toneSelectorContainer}>
           <ToneSelector
             emoji={toneEmoji}
             onToneSelected={this.onToneSelected}
           />
-        </ToneSelectedContainerStyle>
+        </div>
       );
     }
 
@@ -80,7 +72,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
     }
 
     return (
-      <ButtonsStyle>
+      <div className={styles.buttons}>
         <AkButton
           id="toneSelectorButton"
           appearance="subtle"
@@ -88,25 +80,32 @@ export default class EmojiPreview extends PureComponent<Props, State> {
           onClick={this.onToneButtonClick}
           spacing="none"
         />
-      </ButtonsStyle>
+      </div>
     );
   }
 
   renderEmojiPreview() {
     const emoji = this.props.emoji;
+
     if (!emoji) {
       return null;
     }
 
-    const previewSingleLine = !emoji.name;
+    const previewClasses = classNames({
+      [styles.preview]: true,
+      [styles.withToneSelector]: !!this.props.toneEmoji,
+    });
+
+    const previewTextClasses = classNames({
+      [styles.previewText]: true,
+      [styles.previewSingleLine]: !emoji.name,
+    });
+
     let emojiComponent;
 
     if (isEmojiLoaded(emoji)) {
       emojiComponent = (
-        <Emoji
-          emoji={emoji}
-          preview={true}
-        />
+        <Emoji emoji={emoji} />
       );
     } else {
       const { shortName, name } = emoji;
@@ -116,31 +115,27 @@ export default class EmojiPreview extends PureComponent<Props, State> {
     }
 
     return (
-      <PreviewEmojiStyle>
-        <PreviewImgStyle>
+      <div className={previewClasses}>
+        <span className={styles.previewImg}>
           {emojiComponent}
-        </PreviewImgStyle>
-        <PreviewTextStyle
-          withToneSelector={!!this.props.toneEmoji}
-          previewSingleLine={previewSingleLine}
-        >
-          <PreviewTextNameStyle previewSingleLine={previewSingleLine}>
-            {emoji.name}
-          </PreviewTextNameStyle>
-          <PreviewTextShortNameStyle previewSingleLine={previewSingleLine}>
-            {emoji.shortName}
-          </PreviewTextShortNameStyle>
-        </PreviewTextStyle>
-      </PreviewEmojiStyle>
+        </span>
+        <div className={previewTextClasses}>
+          <span className={styles.name}>{emoji.name}</span>
+          <span className={styles.shortName}>{emoji.shortName}</span>
+        </div>
+      </div>
     );
   }
 
   render() {
     return (
-      <PreviewStyle onMouseLeave={this.onMouseLeave}>
+      <div
+        className={styles.emojiPreview}
+        onMouseLeave={this.onMouseLeave}
+      >
         {this.renderEmojiPreview()}
         {this.renderTones()}
-      </PreviewStyle>
+      </div>
     );
   }
 }

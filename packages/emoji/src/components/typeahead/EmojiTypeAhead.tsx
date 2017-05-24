@@ -1,7 +1,8 @@
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { TypeAheadStyle } from './styles';
+import * as styles from './styles';
 import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { EmojiDescription, OnEmojiEvent, RelativePosition } from '../../types';
@@ -165,16 +166,24 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   render() {
     const { onSelection, target, position, zIndex, offsetX, offsetY } = this.props;
     const { visible, emojis, loading } = this.state;
+    const style = {
+      display: visible ? 'block' : 'none',
+    };
+
+    const classes = classNames([
+      'ak-emoji-typeahead',
+      styles.emojiTypeAhead,
+    ]);
 
     const typeAhead = (
-      <TypeAheadStyle visible={visible}>
+      <div style={style} className={classes}>
         <EmojiList
           emojis={emojis}
           onEmojiSelected={onSelection}
           ref={this.onEmojiListRef}
           loading={loading}
         />
-      </TypeAheadStyle>
+      </div>
     );
 
     if (position) {

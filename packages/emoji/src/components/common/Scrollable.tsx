@@ -2,8 +2,10 @@
 
 import * as React from 'react';
 import { PureComponent, ReactNode, UIEvent } from 'react';
+import * as classNames from 'classnames';
 import { findDOMNode } from 'react-dom';
-import { ScrollableStyle } from './styles';
+
+import * as styles from './styles';
 
 export interface OnScroll {
   (element: HTMLElement, event: UIEvent<any>): void;
@@ -54,14 +56,20 @@ export default class Scrollable extends PureComponent<Props, undefined> {
   }
 
   render() {
+    const scrollableClasses = classNames([
+      'emoji-scrollable',
+      styles.emojiScrollable,
+    ]);
+
     return (
-      <ScrollableStyle
-        innerRef={this.handleRef}
-        maxHeight={this.props.maxHeight}
+      <div
+        className={scrollableClasses}
+        ref={this.handleRef}
+        style={{ maxHeight: this.props.maxHeight }}
         onScroll={this.handleScroll}
       >
         {this.props.children}
-      </ScrollableStyle>
+      </div>
     );
   }
 }

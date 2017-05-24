@@ -1,6 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import { PreviewEmojiStyle } from '../src/components/common/styles';
+import * as styles from '../src/components/common/styles';
 import { expect } from 'chai';
 
 import EmojiPreview from '../src/components/common/EmojiPreview';
@@ -48,13 +48,13 @@ describe('<EmojiPreview />', () => {
         emoji={emoji}
       />);
 
-      expect(wrapper.find(PreviewEmojiStyle), 'Preview rendered').to.have.length(1);
+      expect(wrapper.find(`.${styles.preview}`), 'Preview rendered').to.have.length(1);
     });
 
     it('should not render the emoji preview if one is not selected', () => {
       const wrapper = shallow(<EmojiPreview />);
 
-      expect(wrapper.find(PreviewEmojiStyle), 'Preview not rendered').to.have.length(0);
+      expect(wrapper.find(`.${styles.preview}`), 'Preview not rendered').to.have.length(0);
     });
   });
 

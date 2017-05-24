@@ -23,6 +23,13 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
   private mediaPluginState: MediaPluginState;
   private mediaNodesIds: string[];
 
+  constructor(props) {
+    super(props);
+
+    this.mediaPluginState = mediaStateKey.getState(props.view.state);
+    assert(this.mediaPluginState, 'Media is not enabled');
+  }
+
   /**
    * Save all childNodes ids into "mediaNodesIds"
    */
@@ -45,11 +52,6 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
   }
 
   render() {
-    const { view } = this.props;
-    this.mediaPluginState = mediaStateKey.getState(view.state);
-
-    assert(this.mediaPluginState, 'Media is not enabled');
-
     return (
       <Wrapper>
         <FilmStripNavigator>{this.props.children}</FilmStripNavigator>

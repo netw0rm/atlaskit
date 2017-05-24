@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 import { name } from '../package.json';
-import AkPagination, { Pagination } from '../src/';
+import Pagination, { PaginationStateless } from '../src/';
 
 /* eslint-disable import/no-duplicates, import/first */
 import StatelessOverviewExample from './examples/stateless-overview';
@@ -58,7 +58,7 @@ storiesOf(name, module)
         {StatelessOverviewExampleRaw}
       </Code>
       <Props
-        component={Pagination}
+        component={PaginationStateless}
         descriptions={statelessPropDescriptions}
         types={statelessPropTypes}
       />
@@ -74,7 +74,7 @@ storiesOf(name, module)
         {StatefulOverviewExampleRaw}
       </Code>
       <Props
-        component={AkPagination}
+        component={Pagination}
         descriptions={statefulPropDescriptions}
         types={statefulPropTypes}
       />

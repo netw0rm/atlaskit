@@ -5,10 +5,17 @@ import { type as buttonTypes } from './internal/enumerated-properties';
 /* eslint-disable react/no-unused-prop-types */
 export default class Button extends Component {
   static propTypes = {
+    /** The default styling to use for the button. One of primary, default,
+    subtle, link, subtle-link. */
     type: PropTypes.oneOf(buttonTypes.values),
+    /** When true, the button cannot be clicked or acted upon. */
     isDisabled: PropTypes.bool,
+    /** className for the button component, to allow styles to be passed down
+    to it. */
     className: PropTypes.string,
+    /** Associate the button with a form on the page */
     form: PropTypes.string,
+    /** action to be called on click */
     onClick: PropTypes.func,
     tabIndex: PropTypes.number,
     ariaHaspopup: PropTypes.bool,

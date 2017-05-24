@@ -16,6 +16,7 @@ import {
   NodeSelection,
   Schema,
   Transaction,
+  closeHistory
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
@@ -511,9 +512,9 @@ function mediaPluginFactory(options: MediaPluginOptions) {
             }
 
             if (item[1]) {
-              view.dispatch(view.state.tr.replaceWith(pos, pos + 1, item[1]!));
+              view.dispatch(closeHistory(view.state.tr.replaceWith(pos, pos + 1, item[1]!)).setMeta('addToHistory', false));
             } else {
-              view.dispatch(view.state.tr.deleteRange(pos, pos + 1));
+              view.dispatch(closeHistory(view.state.tr.deleteRange(pos, pos + 1)).setMeta('addToHistory', false));
             }
           }
         }

@@ -1,2 +1,2 @@
-export default from './stateful';
-export { default as Pagination } from './stateless';
+export default from './components/Stateful';
+export { default as PaginationStateless } from './components/Stateless';

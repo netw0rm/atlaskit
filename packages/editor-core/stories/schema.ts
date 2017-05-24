@@ -28,5 +28,6 @@ export default createSchema({
     'mentionQuery',
     'emojiQuery',
     'textColor',
+    'subsup',
   ]
 });

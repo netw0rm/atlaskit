@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "10.1.2",
+  "version": "10.2.0",
   "config": {
     "access": "public"
   },
@@ -8,6 +8,9 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "ak:component": {
+    "name": "Navigation"
+  },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/navigation; } || ../../node_modules/.bin/not-in-publish"
   },
@@ -44,7 +47,7 @@
     "@atlaskit/icon": "^2.3.0",
     "@atlaskit/logo": "^2.0.0",
     "@atlaskit/navigation": "*",
-    "@atlaskit/page": "^1.0.0",
+    "@atlaskit/page": "^4.0.0",
     "@atlaskit/util-common-test": "*",
     "@atlaskit/util-readme": "^1.0.0",
     "karma-sinon-chai": "^1.2.4",

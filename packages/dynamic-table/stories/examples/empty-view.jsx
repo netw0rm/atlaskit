@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { DynamicTable } from '@atlaskit/dynamic-table';
+import { DynamicTableStateless } from '@atlaskit/dynamic-table';
 
 export default class extends PureComponent {
   render() {
     return (
-      <DynamicTable
+      <DynamicTableStateless
         emptyView={<em>empty view</em>}
       />
     );

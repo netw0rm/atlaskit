@@ -1,3 +1,5 @@
+// TODO: deal with unused expression error while calling "chai calledOnce"
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonStub } from 'sinon';
@@ -192,8 +194,7 @@ describe('<MediaCollectionViewer />', () => {
   });
 
   it('should load next page, given media viewer is showing last page on navigation', () => {
-    const collectionController = Stubs.collectionController();
-    const provider = Stubs.mediaCollectionProvider(undefined, collectionController);
+    const provider = Stubs.mediaCollectionProvider(undefined);
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, provider) as any}
@@ -208,12 +209,11 @@ describe('<MediaCollectionViewer />', () => {
     (mediaViewer.isShowingLastFile as SinonStub).returns(true);
     (mediaViewer as any).trigger('fv.changeFile');
 
-    expect(collectionController.loadNextPage).to.have.been.called;
+    expect(provider.loadNextPage).to.have.been.called;
   });
 
   it('should not load next page, given media viewer not is showing last page on navigation', () => {
-    const collectionController = Stubs.collectionController();
-    const provider = Stubs.mediaCollectionProvider(undefined, collectionController);
+    const provider = Stubs.mediaCollectionProvider(undefined);
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, provider) as any}
@@ -228,6 +228,6 @@ describe('<MediaCollectionViewer />', () => {
     (mediaViewer.isShowingLastFile as SinonStub).returns(false);
     (mediaViewer as any).trigger('fv.changeFile');
 
-    expect(collectionController.loadNextPage).to.have.not.been.called;
+    expect(provider.loadNextPage).to.have.not.been.called;
   });
 });

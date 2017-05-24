@@ -8,6 +8,9 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "ak:component": {
+    "name": "Tooltip"
+  },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tooltip; } || ../../node_modules/.bin/not-in-publish"
   },
@@ -15,6 +18,11 @@
   "files": [
     "dist"
   ],
+  "devDependencies": {
+    "@atlaskit/tooltip": "*",
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button-group": "^1.0.0"
+  },
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",

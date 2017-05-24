@@ -64,7 +64,7 @@ export const unknownUrlPreviewId = {
 // === LINK ===
 
 export const genericLinkId = {
-  id: '517dade5-5489-4e8c-a113-42319878c4a5',
+  id: '15a9fb95-2d72-4d28-b338-00fd6bea121b',
   mediaItemType: linkType,
   collectionName
 };
@@ -220,7 +220,6 @@ export const genericFileDetails: FileDetails = {
     }
   }
 };
-
 
 export const imageFileDetails: FileDetails = {
   id: 'some-id',

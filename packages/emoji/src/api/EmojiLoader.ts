@@ -45,14 +45,13 @@ const getPixelRatio = (): number => {
   return window.devicePixelRatio;
 };
 
-export const isMediaApi = (url: string, meta?: EmojiMeta): boolean =>
+export const isMediaApiUrl = (url: string, meta?: EmojiMeta): boolean =>
   !!(meta && meta.mediaApiToken && url.indexOf(meta.mediaApiToken.url) === 0);
 
 export const denormaliseServiceRepresentation = (representation: EmojiServiceRepresentation, meta?: EmojiMeta): EmojiRepresentation => {
   if (isSpriteServiceRepresentation(representation) && meta && meta.spriteSheets) {
     const { height, width, x, y, xIndex, yIndex, spriteRef } = representation as SpriteServiceRepresentation;
     const spriteSheet = meta.spriteSheets[spriteRef];
-    const mediaApi = isMediaApi(spriteSheet.url, meta);
     if (spriteSheet) {
       return {
         sprite: spriteSheet,
@@ -62,17 +61,21 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
         y,
         xIndex,
         yIndex,
-        mediaApi,
       };
     }
   } else if (isImageRepresentation(representation)) {
     const { height, width, imagePath } = representation as ImageRepresentation;
-    const mediaApi = isMediaApi(imagePath, meta);
+    if (isMediaApiUrl(imagePath, meta)) {
+      return {
+        height,
+        width,
+        mediaPath: imagePath,
+      };
+    }
     return {
       height,
       width,
       imagePath,
-      mediaApi,
     };
   }
 

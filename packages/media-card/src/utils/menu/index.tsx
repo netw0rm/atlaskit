@@ -15,7 +15,7 @@ import {
 export interface MenuProps {
   actions?: Array<CardAction>;
   onToggle?: (attrs: {isOpen: boolean}) => void;
-  deleteBtnColor?: string;
+  triggerColor?: string;
 }
 
 export class Menu extends Component<MenuProps, {}> {
@@ -38,9 +38,15 @@ export class Menu extends Component<MenuProps, {}> {
     );
   }
 
+  private shouldRenderDeleteButton(actions: Array<CardAction>) {
+    return actions.length === 1 && actions[0].type === CardActionType.delete;
+  }
+
   private renderDeleteButton(action) {
+    const {triggerColor} = this.props;
+
     return (
-      <DeleteBtn onClick={this.deleteBtnClick(action.handler)} style={{color: this.props.deleteBtnColor}} >
+      <DeleteBtn onClick={this.deleteBtnClick(action.handler)} style={{color: triggerColor}} >
         <Icon glyph={CrossIcon} size="small" label="delete" />
       </DeleteBtn>
     );
@@ -67,14 +73,12 @@ export class Menu extends Component<MenuProps, {}> {
     );
   }
 
-  private shouldRenderDeleteButton(actions: Array<CardAction>) {
-    return actions.length === 1 && actions[0].type === CardActionType.delete;
-  }
-
   private renderIconBefore = () => {
+    const {triggerColor} = this.props;
+
     return (
-      <MeatBallsWrapper>
-        <Icon glyph={MoreIcon} label="more"/>
+      <MeatBallsWrapper style={{color: triggerColor}} >
+        <Icon glyph={MoreIcon} label="more" />
       </MeatBallsWrapper>
     );
   }

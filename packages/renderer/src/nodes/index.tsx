@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { EmojiId } from '@atlaskit/emoji';
 import { Mention, ResourcedMention } from '@atlaskit/mention';
 import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';
@@ -9,6 +8,12 @@ import Hardbreak from './hardBreak';
 import MediaGroup from './mediaGroup';
 import Media, { MediaNode } from './media';
 import Heading, { HeadingLevel } from './heading';
+import BulletList from './bulletList';
+import OrderedList from './orderedList';
+import ListItem from './listItem';
+import Blockquote from './blockquote';
+import Panel, { PanelType } from './panel';
+import Rule from './rule';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -37,6 +42,12 @@ enum NodeType {
   textWrapper,
   text,
   heading,
+  bulletList,
+  orderedList,
+  listItem,
+  blockquote,
+  panel,
+  rule,
   unknown
 }
 
@@ -155,15 +166,74 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         break;
       }
       case NodeType.heading: {
-        const between = (x, a, b) => x >= a && x <= b;
-        if (attrs && attrs.level && between(attrs.level, 1, 6) && content) {
+        if (attrs && content) {
+          const { level } = attrs;
+          const between = (x, a, b) => x >= a && x <= b;
+          if (level && between(level, 1, 6)) {
+            return {
+              type,
+              attrs: { level },
+              content,
+            };
+          }
+        }
+        break;
+      }
+      case NodeType.bulletList: {
+        if (content) {
           return {
             type,
-            attrs,
             content,
           };
         }
         break;
+      }
+      case NodeType.orderedList: {
+        if (content) {
+          return {
+            type,
+            attrs: {
+              order: attrs && attrs.order
+            },
+            content,
+          };
+        }
+        break;
+      }
+      case NodeType.listItem: {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case NodeType.blockquote: {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case NodeType.panel: {
+        const types = ['info', 'note', 'tip', 'warning'];
+        if (attrs && content) {
+          const { panelType } = attrs;
+          if (types.indexOf(panelType) > -1) {
+            return {
+              type,
+              attrs: { panelType },
+              content,
+            };
+          }
+        }
+        break;
+      }
+      case NodeType.rule: {
+        return { type };
       }
     }
   }
@@ -186,7 +256,12 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
     case NodeType.doc:
       return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
     case NodeType.emoji: {
-      const emojiId = validNode.attrs as EmojiId;
+      const { shortName, id, text } = validNode.attrs as { shortName: string, id?: string, text?: string };
+      const emojiId = {
+        shortName,
+        id,
+        fallback: text || shortName,
+      };
       const emojiProvider = servicesConfig && servicesConfig.getEmojiProvider && servicesConfig.getEmojiProvider();
       return <Emoji key={key} emojiId={emojiId} emojiProvider={emojiProvider} />;
     }
@@ -252,6 +327,23 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
     case NodeType.heading:
       const { level } = validNode.attrs as { level: HeadingLevel };
       return <Heading key={key} level={level}>{renderTextNodes(validNode.content as TextNode[])}</Heading>;
+    case NodeType.bulletList:
+      return <BulletList key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</BulletList>;
+    case NodeType.orderedList:
+      const optionalProps = {};
+      if (validNode.attrs && validNode.attrs.order) {
+        optionalProps['start'] = validNode.attrs.order;
+      }
+      return <OrderedList key={key} {...optionalProps}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</OrderedList>;
+    case NodeType.listItem:
+      return <ListItem key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</ListItem>;
+    case NodeType.blockquote:
+      return <Blockquote key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Blockquote>;
+    case NodeType.panel:
+      const { panelType } = validNode.attrs as { panelType: PanelType };
+      return <Panel key={key} type={panelType}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Panel>;
+    case NodeType.rule:
+      return <Rule />;
     default: {
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {

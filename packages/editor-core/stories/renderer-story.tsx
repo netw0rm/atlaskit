@@ -1,0 +1,182 @@
+import { /*action,*/ storiesOf } from '@kadira/storybook';
+import * as React from 'react';
+import { name } from '../package.json';
+import schema from './schema';
+
+import {
+  renderDocument,
+  ReactSerializer,
+} from '../src/renderer';
+
+import {
+  Code,
+  Em,
+  Link,
+  Strike,
+  Strong,
+  Subsup,
+  Underline,
+} from '../src/renderer/react/marks';
+
+import {
+  BulletList,
+  Blockquote,
+  HardBreak,
+  OrderedList,
+  ListItem,
+  Panel,
+  Paragraph,
+} from '../src/renderer/react/nodes';
+
+import { document } from './story-data';
+
+storiesOf(name, module)
+  .add('renderer', () => {
+    return (
+      <div>
+        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema), schema)}
+      </div>
+    );
+  })
+  .add('renderer/marks/em', () => (
+    <Em>This is italic</Em>
+  ))
+  .add('renderer/marks/link', () => (
+    <Link href="https://www.atlassian.com">This is a link</Link>
+  ))
+  .add('renderer/marks/strike', () => (
+    <Strike>This is strike-through</Strike>
+  ))
+  .add('renderer/marks/strong', () => (
+    <Strong>This is strong</Strong>
+  ))
+  .add('renderer/marks/subsup', () => (
+    <div>
+      <Subsup type="sub">This is sub</Subsup>
+      <Subsup type="sup">This is sup</Subsup>
+    </div>
+  ))
+  .add('renderer/marks/underline', () => (
+    <Underline>This is underlined</Underline>
+  ))
+  .add('renderer/marks/code', () => (
+    <Code>This is code</Code>
+  ))
+  .add('nodes/hardBreak', () => (
+    <div>Some text with that<HardBreak />breaks on multiple lines</div>
+  ))
+  .add('nodes/paragraph', () => (
+    <Paragraph>This is a paragraph</Paragraph>
+  ))
+  .add('nodes/bulletList', () => (
+    <BulletList>
+      <ListItem>Depth 1: Item 1</ListItem>
+      <ListItem>Depth 1: Item 2</ListItem>
+      <ListItem>
+        <p>Depth 1: Item 3</p>
+        <BulletList>
+          <ListItem>Depth 2: Item 1</ListItem>
+          <ListItem>Depth 2: Item 2</ListItem>
+          <ListItem>
+            <p>Depth 2: Item 2</p>
+            <BulletList>
+              <ListItem>Depth 3: Item 1</ListItem>
+              <ListItem>Depth 1: Item 2</ListItem>
+              <ListItem>
+                <p>Depth 3: Item 3</p>
+                <BulletList>
+                  <ListItem>Depth 4: Item 1</ListItem>
+                  <ListItem>Depth 4: Item 2</ListItem>
+                  <ListItem>Depth 4: Item 3</ListItem>
+                </BulletList>
+              </ListItem>
+            </BulletList>
+          </ListItem>
+        </BulletList>
+      </ListItem>
+    </BulletList>
+  ))
+  .add('nodes/orderedList', () => (
+    <OrderedList>
+      <ListItem>Depth 1: Item 1</ListItem>
+      <ListItem>Depth 1: Item 2</ListItem>
+      <ListItem>
+        <p>Depth 1: Item 3</p>
+        <OrderedList>
+          <ListItem>Depth 2: Item 1</ListItem>
+          <ListItem>Depth 2: Item 2</ListItem>
+          <ListItem>
+            <p>Depth 2: Item 3</p>
+            <OrderedList>
+              <ListItem>Depth 3: Item 1</ListItem>
+              <ListItem>Depth 3: Item 2</ListItem>
+              <ListItem>
+                <p>Depth 3: Item 3</p>
+                <OrderedList>
+                  <ListItem>Depth 4: Item 1</ListItem>
+                  <ListItem>Depth 4: Item 2</ListItem>
+                  <ListItem>
+                    <p>Depth 4: Item 3</p>
+                    <OrderedList>
+                      <ListItem>Depth 5: Item 1</ListItem>
+                      <ListItem>Depth 5: Item 2</ListItem>
+                      <ListItem>
+                        <p>Depth 5: Item 3</p>
+                        <OrderedList>
+                          <ListItem>Depth 6: Item 1</ListItem>
+                          <ListItem>Depth 6: Item 2</ListItem>
+                          <ListItem>
+                            <p>Depth 6: Item 3</p>
+                            <OrderedList>
+                              <ListItem>Depth 7: Item 1</ListItem>
+                              <ListItem>Depth 7: Item 2</ListItem>
+                              <ListItem>
+                                <p>Depth 7: Item 3</p>
+                                <OrderedList>
+                                  <ListItem>Depth 8: Item 1</ListItem>
+                                  <ListItem>Depth 8: Item 2</ListItem>
+                                  <ListItem>
+                                    <p>Depth 8: Item 3</p>
+                                    <OrderedList>
+                                      <ListItem>Depth 9: Item 1</ListItem>
+                                      <ListItem>Depth 9: Item 2</ListItem>
+                                      <ListItem>
+                                        <p>Depth 9: Item 3</p>
+                                        <OrderedList>
+                                          <ListItem>Depth 10: Item 1</ListItem>
+                                          <ListItem>Depth 10: Item 2</ListItem>
+                                          <ListItem>
+                                            <p>Depth 10: Item 3</p>
+                                          </ListItem>
+                                        </OrderedList>
+                                      </ListItem>
+                                    </OrderedList>
+                                  </ListItem>
+                                </OrderedList>
+                              </ListItem>
+                            </OrderedList>
+                          </ListItem>
+                        </OrderedList>
+                      </ListItem>
+                    </OrderedList>
+                  </ListItem>
+                </OrderedList>
+              </ListItem>
+            </OrderedList>
+          </ListItem>
+        </OrderedList>
+      </ListItem>
+    </OrderedList>
+  ))
+  .add('nodes/blockquote', () => (
+    <Blockquote>Blockquote</Blockquote>
+  ))
+  .add('nodes/panel', () => (
+    <div>
+      <Panel panelType="info">This is a info panel</Panel>
+      <Panel panelType="note">This is a note panel</Panel>
+      <Panel panelType="tip">This is a tip panel</Panel>
+      <Panel panelType="warning">This is a warning panel</Panel>
+    </div>
+  ))
+;

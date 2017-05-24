@@ -8,35 +8,46 @@ import { defaultReactionsByShortName } from './internal/selector';
 
 export default class MockReactionsProvider extends AbstractReactionsProvider {
 
-  protected cachedReactions = {
-    'ari:cloud:owner:demo-cloud-id:container/1|ari:cloud:owner:demo-cloud-id:item/1': [
-      {
-        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-        containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-        emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!,
-        count: 1,
-        reacted: true
-      },
-      {
-        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-        containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-        emojiId: (defaultReactionsByShortName.get(':thumbsup:') as EmojiId).id!,
-        count: 5,
-        reacted: false
-      },
-      {
-        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-        containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-        emojiId: (defaultReactionsByShortName.get(':heart:') as EmojiId).id!,
-        count: 100,
-        reacted: false
-      }
-    ]
-  };
+  constructor() {
+    super();
+    this.cachedReactions = {
+      [this.objectReactionKey('ari:cloud:owner:demo-cloud-id:container/1', 'ari:cloud:owner:demo-cloud-id:item/1')]: [
+        {
+          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+          emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!,
+          count: 1,
+          reacted: true
+        },
+        {
+          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+          emojiId: (defaultReactionsByShortName.get(':thumbsup:') as EmojiId).id!,
+          count: 5,
+          reacted: false
+        },
+        {
+          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+          emojiId: (defaultReactionsByShortName.get(':heart:') as EmojiId).id!,
+          count: 100,
+          reacted: false
+        }
+      ]
+    };
+  }
 
   getReactions(keys: ObjectReactionKey[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
-      resolve(this.cachedReactions);
+      const results = {};
+      Object.keys(this.cachedReactions).forEach(cacheKey => {
+        const objectReactions = this.cachedReactions[cacheKey];
+
+        const ari = objectReactions[0].ari;
+        results[ari] = objectReactions;
+      });
+
+      resolve(results);
     });
   }
 
@@ -94,28 +105,6 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  toggleReaction(containerAri: string, ari: string, emojiId: string) {
-    const key = this.objectReactionKey(containerAri, ari);
-    if (!this.cachedReactions[key]) {
-      this.cachedReactions[key] = [];
-    }
-
-    const hasReaction = this.cachedReactions[key] && this.cachedReactions[key].filter(r => equalEmojiId(r.emojiId, emojiId));
-    const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
-
-    if (hasReacted) {
-      this.deleteReaction(containerAri, ari, emojiId)
-        .then(state => {
-          this.notifyUpdated(containerAri, ari, state);
-        });
-    } else {
-      this.addReaction(containerAri, ari, emojiId)
-        .then(state => {
-          this.notifyUpdated(containerAri, ari, state);
-        });
-    }
-  }
-
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       const key = this.objectReactionKey(containerAri, ari);
@@ -128,6 +117,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
       } else {
         this.cachedReactions[key].push({
           ari: ari,
+          containerAri: containerAri,
           emojiId: emojiId,
           count: 1,
           reacted: true

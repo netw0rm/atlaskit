@@ -1,13 +1,27 @@
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
-const toEmojiId = (emoji) => {
+const toEmojiAttrs = (emoji) => {
   const { shortName, id, fallback } = emoji;
-  return { shortName, id, fallback };
+  return {
+    shortName,
+    id,
+    text: fallback || shortName,
+  };
+};
+
+const toEmojiId = (emoji) => {
+   const { shortName, id, fallback } = emoji;
+   return { shortName, id, fallback };
 };
 
 const { emojiTestData, emojiStoryData } = emojiData;
+export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
+export const evilburnsEmojiAttrs = toEmojiAttrs(emojiTestData.evilburnsEmoji);
+
 export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
 export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+
+
 export const lorem = emojiStoryData.lorem;
 
 export const document = {
@@ -96,7 +110,7 @@ export const document = {
         {
           type: 'emoji',
           attrs: {
-            ...grinEmojiId,
+            ...grinEmojiAttrs,
           }
         },
         {
@@ -106,7 +120,7 @@ export const document = {
         {
           type: 'emoji',
           attrs: {
-            ...evilburnsEmojiId,
+            ...evilburnsEmojiAttrs,
           }
         },
         {
@@ -477,6 +491,244 @@ export const document = {
           text: 'Heading 6',
         }
       ]
+    },
+    {
+      type: 'bulletList',
+      content: [
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'First list item'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Second list item'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Third list item'
+                }
+              ]
+            }
+          ]
+        },
+      ]
+    },
+    {
+      type: 'orderedList',
+      content: [
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'First list item'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Second list item'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Third list item'
+                }
+              ]
+            }
+          ]
+        },
+      ]
+    },
+    {
+      type: 'blockquote',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'All that is gold does not glitter, not all those who wander are lost; The old that is strong does not wither, deep roots are not reached by the frost.',
+            },
+          ]
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'From the ashes a fire shall be woken, a light from the shadows shall spring; Renewed shall be blade that was broken, the crownless again shall be king.',
+            }
+          ]
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'J.R.R. Tolkien, The Fellowship of the Ring.',
+              marks: [
+                {
+                  type: 'em',
+                }
+              ],
+            }
+          ]
+        },
+      ]
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'info'
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is an info panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                }
+              ],
+            },
+          ]
+        },
+      ]
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'note'
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a note panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                }
+              ],
+            },
+          ]
+        },
+      ]
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'tip'
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a tip panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                }
+              ],
+            },
+          ]
+        },
+      ]
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'warning'
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a warning panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                }
+              ],
+            },
+          ]
+        },
+      ]
+    },
+    {
+      type: 'rule'
     },
   ]
 };

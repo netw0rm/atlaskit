@@ -82,13 +82,21 @@ export const mergeTextNodes = (nodes: Renderable[]) => {
   }, []);
 };
 
+// Only handles space & tab now
+function escapeWhiteSpaces(text: string): string {
+  return text.replace(
+    /(\t| )(\t| )/g,
+    (match, p1, p2) => `${p1}${p2 === '\t' ? '&#09;' : '&nbsp;'}`
+  );
+}
+
 export const renderTextNodes = (textNodes: TextNode[]) => {
   let currentMarkNode: Renderable;
   const content = textNodes.reduce((acc, node, index) => {
     if (!node.marks || !node.marks.length) {
       currentMarkNode = {
         type: 'text',
-        text: node.text
+        text: escapeWhiteSpaces(node.text)
       };
       acc.push(currentMarkNode);
     } else {
@@ -116,7 +124,7 @@ export const renderTextNodes = (textNodes: TextNode[]) => {
 
       currentMarkNode.content!.push({
         type: 'text',
-        text: node.text
+        text: escapeWhiteSpaces(node.text)
       });
     }
 

@@ -18,7 +18,7 @@ import {
   ErrorMessage,
   Retry,
   TitleWrapper,
-  FileSize,
+  Subtitle,
   Metadata
 } from './styled';
 
@@ -43,6 +43,11 @@ export interface CardOverlayState {
 }
 
 export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
+  static defaultProps = {
+    actions: [],
+    mediaName: ''
+  };
+
   constructor(props: CardOverlayProps) {
     super(props);
 
@@ -50,11 +55,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       isMenuExpanded: false
     };
   }
-
-  static defaultProps = {
-    actions: [],
-    mediaName: ''
-  };
 
   private get wrapperClassNames() {
     const {error, selectable, selected, mediaType, persistent} = this.props;
@@ -66,8 +66,9 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   render() {
-    const {error, mediaName, actions} = this.props;
+    const {error, mediaName, persistent, actions} = this.props;
     const titleText = error || !mediaName ? '' : mediaName;
+    const menuTriggerColor = !persistent ? 'white' : undefined;
 
     return (
       <Overlay className={this.wrapperClassNames}>
@@ -83,7 +84,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
             {this.bottomLeftColumn()}
           </LeftColumn>
           <RightColumn>
-            <Menu actions={actions} onToggle={this.onMenuToggle} deleteBtnColor="white" />
+            <Menu actions={actions} onToggle={this.onMenuToggle} triggerColor={menuTriggerColor} />
           </RightColumn>
         </BottomRow>
       </Overlay>
@@ -100,10 +101,11 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   tickBox() {
-    const selectedClass = this.props.selected ? 'selected' : null;
+    const {selected, selectable} = this.props;
     const tick = <Icon glyph={TickIcon} label="tick" />;
+    const className = cx('tickbox', {selected});
 
-    return this.props.selectable && (<TickBox className={`tickbox ${selectedClass}`}> {tick} </TickBox>);
+    return selectable && (<TickBox className={className}> {tick} </TickBox>);
   }
 
   bottomLeftColumn() {
@@ -134,11 +136,19 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       const {mediaType, subtitle, icon} = this.props;
       const classNames = cx('metadata');
 
+      const fileIcon = mediaType || icon
+        ? <FileIcon mediaType={mediaType} iconUrl={icon} />
+        : null;
+
+      const subtitleEl = subtitle
+        ? <Subtitle className="file-size">{subtitle}</Subtitle>
+        : null;
+
       return (
         <div>
           <Metadata className={classNames}>
-            <FileIcon mediaType={mediaType} iconUrl={icon} />
-            <FileSize className="file-size">{subtitle}</FileSize>
+            {fileIcon}
+            {subtitleEl}
           </Metadata>
         </div>
       );

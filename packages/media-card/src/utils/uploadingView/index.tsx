@@ -22,7 +22,7 @@ export class UploadingView extends Component<UploadingViewProps, {}> {
     const cancelButton = deleteAction && deleteAction.type === CardActionType.delete
       ? (
         <CancelButtonWrapper>
-          <Menu actions={[deleteAction]} deleteBtnColor="white" />
+          <Menu actions={[deleteAction]} triggerColor="white" />
         </CancelButtonWrapper>
       )
       : null;

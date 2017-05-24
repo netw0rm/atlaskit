@@ -66,8 +66,9 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   render() {
-    const {error, mediaName, actions} = this.props;
+    const {error, mediaName, persistent, actions} = this.props;
     const titleText = error || !mediaName ? '' : mediaName;
+    const menuTriggerColor = !persistent ? 'white' : undefined;
 
     return (
       <Overlay className={this.wrapperClassNames}>
@@ -83,7 +84,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
             {this.bottomLeftColumn()}
           </LeftColumn>
           <RightColumn>
-            <Menu actions={actions} onToggle={this.onMenuToggle} deleteBtnColor="white" />
+            <Menu actions={actions} onToggle={this.onMenuToggle} triggerColor={menuTriggerColor} />
           </RightColumn>
         </BottomRow>
       </Overlay>

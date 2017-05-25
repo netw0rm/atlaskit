@@ -15,7 +15,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.0.1",
     "decamelize": "^1.2.0",
     "react-docgen": "^2.13.0",
     "react-syntax-highlighter": "^3.0.2",

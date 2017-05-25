@@ -8,11 +8,14 @@ import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 import LazyLoad from 'react-lazyload';
 
 export interface FilmstripNavigatorProps {
+  inOverflowContainer?: boolean;
+
+  children?: any;
+  width?: number;
+
   onDrop?: (event: DragEvent) => void;
   onDragEnter?: (event: DragEvent) => void;
   onDragOver?: (event: DragEvent) => void;
-  width?: number;
-  children?: any;
 }
 
 function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLDivElement> {
@@ -58,6 +61,10 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   private listElement: HTMLElement;
   private unmounted: boolean;
 
+  static defaultProps = {
+    inOverflowContainer: true
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -80,28 +87,47 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   render() {
-    const props = this.props;
-    const width = props.width ? `${props.width}px`: undefined;
-    const transform = `translateX(${-this.state.position}px)`;
+    const {
+      width: propWidth,
+      children,
+      inOverflowContainer,
+      onDrop,
+      onDragEnter,
+      onDragOver
+    } = this.props;
+
+    const {
+      position,
+      showTransition,
+      transitionDuration: stateTransistionDuration,
+      showLeft,
+      showRight
+    } = this.state;
+
+    const width = propWidth ? `${propWidth}px`: undefined;
+
+    const transform = `translateX(${-position}px)`;
     const leftArrow = this.arrowFor('left');
     const rightArrow = this.arrowFor('right');
-    const transitionProperty = this.state.showTransition ? 'transform' : 'none';
-    const transitionDuration = `${this.state.transitionDuration}s`;
-    const items = props.children ? props.children.map((item, k) => (
+
+    const transitionProperty = showTransition ? 'transform' : 'none';
+    const transitionDuration = `${stateTransistionDuration}s`;
+
+    const items = children ? children.map((item, k) => (
       <li key={k}>
         {item}
       </li>
     )) : null;
 
-    return <LazyLoad height={100} once={true} overflow={true} >
-             <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
-               {this.state.showLeft ? leftArrow : undefined}
+    return <LazyLoad height={100} once={true} overflow={inOverflowContainer} >
+             <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}>
+               {showLeft ? leftArrow : undefined}
                <FilmStripListWrapper>
                  <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
                    {items}
                  </FilmStripList>
                </FilmStripListWrapper>
-               {this.state.showRight ? rightArrow : undefined}
+               {showRight ? rightArrow : undefined}
              </FilmStripViewWrapper>
            </LazyLoad>;
   }

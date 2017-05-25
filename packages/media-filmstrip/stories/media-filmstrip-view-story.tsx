@@ -69,6 +69,7 @@ storiesOf('FilmStripView', {})
     return <ChatWrapper>
             <FilmStripView
               items={items}
+              inOverflowContainer={false}
               onCardClick={clickAction}
               menuActions={menuActions}
               width={550}
@@ -84,6 +85,7 @@ storiesOf('FilmStripView', {})
     return (
       <FilmStripView
         items={items}
+        inOverflowContainer={false}
         onCardClick={clickAction}
         menuActions={menuActions}
       />
@@ -107,6 +109,7 @@ storiesOf('FilmStripView', {})
     return (
       <FilmStripView
         items={items}
+        inOverflowContainer={false}
         onCardClick={clickAction}
         menuActions={menuActions}
       />
@@ -120,6 +123,7 @@ storiesOf('FilmStripView', {})
     return <SmallChatWrapper>
       <FilmStripView
         items={items}
+        inOverflowContainer={false}
         onCardClick={clickAction}
         menuActions={menuActions}
       />

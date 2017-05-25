@@ -16,7 +16,7 @@ export const RemoveButtonWrapper = styled.span`
 `;
 
 // tslint:disable-next-line:variable-name
-export const ToolbarButton = styled(ToolbarButtonDefault)`
+export const ToolbarButton: any = styled(ToolbarButtonDefault)`
   margin: 5px 3px;
   display: inline-block;
 
@@ -28,7 +28,7 @@ export const ToolbarButton = styled(ToolbarButtonDefault)`
 `;
 
 // tslint:disable-next-line:variable-name
-export const ToolbarButtonSelected = styled(ToolbarButtonDefault)`
+export const ToolbarButtonSelected: any = styled(ToolbarButtonDefault)`
   margin: 5px 3px;
   display: inline-block;
   background: ${akColorPrimary1};

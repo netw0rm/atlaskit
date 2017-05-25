@@ -15,6 +15,6 @@ export const Container = styled.div`
 `;
 
 // tslint:disable-next-line:variable-name
-export const FloatingToolbar = styled(FloatingToolbarDefault)`
+export const FloatingToolbar: any = styled(FloatingToolbarDefault)`
   background-color: transparent;
 `;

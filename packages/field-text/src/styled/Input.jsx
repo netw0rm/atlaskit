@@ -1,4 +1,6 @@
-.input {
+import styled from 'styled-components';
+
+const InputElement = styled.input`
   background: transparent;
   border: 0;
   box-sizing: border-box;
@@ -15,5 +17,6 @@
   &:invalid {
     box-shadow: none;
   }
-}
+`;
 
+export default InputElement;

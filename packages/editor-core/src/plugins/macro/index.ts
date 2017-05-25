@@ -28,7 +28,7 @@ export class MacroState {
     this.editorFocused = editorFocused;
   }
 
-  removeMaro(view: EditorView) {
+  removeMacro(view: EditorView) {
     const { dispatch, state } = view;
     const { tr } = state;
     const { $from, $to } = state.selection;
@@ -83,7 +83,6 @@ export class MacroState {
       }
     }
   }
-
 }
 
 export type MacroStateSubscriber = (state: MacroState) => any;

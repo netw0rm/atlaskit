@@ -39,11 +39,16 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
 
   getReactions(keys: ObjectReactionKey[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
+      keys.forEach(key => {
+        if (!this.cachedReactions[this.objectReactionKey(key.containerAri, key.ari)]) {
+          this.cachedReactions[this.objectReactionKey(key.containerAri, key.ari)] = [];
+        }
+      });
+
       const results = {};
       Object.keys(this.cachedReactions).forEach(cacheKey => {
         const objectReactions = this.cachedReactions[cacheKey];
-
-        const ari = objectReactions[0].ari;
+        const ari = cacheKey.split('|')[1];
         results[ari] = objectReactions;
       });
 

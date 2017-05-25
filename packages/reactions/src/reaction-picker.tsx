@@ -1,6 +1,8 @@
 import Button from '@atlaskit/button';
 import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import { EditorMoreIcon } from '@atlaskit/icon';
+import Layer from '@atlaskit/layer';
+import ToolTip from '@atlaskit/tooltip';
 import {
   akBorderRadius,
   akColorN30A
@@ -137,9 +139,11 @@ export default class ReactionPicker extends PureComponent<Props, State> {
         { !allowAllEmojis ? null :
           <div className={moreEmojiContainerStyle}>
             <div className={separatorStyle}/>
-            <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
-              <EditorMoreIcon label="More" />
-            </button>
+            <ToolTip description="More emoji">
+              <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
+                <EditorMoreIcon label="More" />
+              </button>
+            </ToolTip>
           </div>
         }
       </div>
@@ -185,16 +189,13 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     }
 
     return (
-      <Popup
-        boundariesElement={this.props.boundariesElement || 'body'}
-        target={this.trigger!}
-      >
+      <Popup>
         {this.renderContent()}
       </Popup>
     );
   }
 
-  private renderTrigger() {
+  private renderTrigger(content) {
     const { text, miniMode } = this.props;
 
     if (text) {
@@ -212,11 +213,18 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     }
 
     return (
-      <Trigger
-        onClick={this.onTriggerClick}
-        miniMode={miniMode}
-        ref={this.handleTriggerRef}
-      />
+      <Layer
+        content={content}
+        position="bottom left"
+        autoFlip={['top', 'bottom']}
+        boundariesElement="scrollParent"
+      >
+        <Trigger
+          onClick={this.onTriggerClick}
+          miniMode={miniMode}
+          ref={this.handleTriggerRef}
+        />
+      </Layer>
     );
   }
 
@@ -234,8 +242,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
     return (
       <div className={classNames}>
-        {this.renderTrigger()}
-        {this.renderPopup()}
+        {this.renderTrigger(this.renderPopup())}
       </div>
     );
   }

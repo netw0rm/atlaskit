@@ -22,12 +22,16 @@ const renderPicker = (onSelection: Function = () => {}, text?: string) => {
 
 describe('@atlaskit/reactions/reaction-picker', () => {
   let clock;
+  const animStub = window.cancelAnimationFrame;
+
   beforeEach(function () {
+    window.cancelAnimationFrame = () => {};
     clock = sinon.useFakeTimers();
   });
 
   afterEach(function () {
     clock.restore();
+    window.cancelAnimationFrame = animStub;
   });
 
   it('should render a trigger', () => {
@@ -46,6 +50,7 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     const picker = mount(renderPicker());
     const trigger = picker.find(Trigger);
     trigger.simulate('mousedown', { button: 0 });
+    console.log(picker.html());
     const moreButton = picker.find(EditorMoreIcon);
     moreButton.simulate('mousedown', { button: 0 });
     expect(picker.find(EmojiPicker).length).to.equal(1);

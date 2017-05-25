@@ -48,9 +48,9 @@ const tooltip = style({
   background: akColorN900,
   boxSizing: 'border-box',
   color: '#fff',
-  padding: 4,
+  padding: '5px',
   borderRadius: akBorderRadius,
-  maxWidth: '100px',
+  maxWidth: '150px',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
@@ -59,10 +59,17 @@ const tooltip = style({
       listStyle: 'none',
       margin: 0,
       padding: 0,
+      textAlign: 'left',
     },
     'li': {
       overflow: 'hidden',
-      textOverflow: 'ellipsis'
+      textOverflow: 'ellipsis',
+      marginTop: 0,
+      fontWeight: 600,
+    },
+    'li:first-child': {
+      textTransform: 'capitalize',
+      fontWeight: 800,
     },
     '&.animateDown': {
       transform: 'translateY(10px)',
@@ -78,6 +85,7 @@ const tooltip = style({
 export interface TooltipProps {
   target: any;
   users: User[];
+  emojiName: string | undefined;
 }
 
 export default class ReactionTooltip extends PureComponent<TooltipProps, { animateDown: boolean }> {
@@ -119,7 +127,7 @@ export default class ReactionTooltip extends PureComponent<TooltipProps, { anima
   }
 
   render() {
-    const { users } = this.props;
+    const { emojiName, users } = this.props;
     const classNames = cx(tooltip, 'reaction-tooltip', {
       animateDown: this.state.animateDown,
       animateUp: !this.state.animateDown,
@@ -131,6 +139,7 @@ export default class ReactionTooltip extends PureComponent<TooltipProps, { anima
     return (
       <span className={classNames}>
         <ul>
+        {emojiName ? <li>{emojiName}</li> : null}
         {
           users.slice(0, 9).map((user, index) => {
             return <li key={index}>{user.displayName}</li>;

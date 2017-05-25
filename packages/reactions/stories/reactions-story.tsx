@@ -135,6 +135,7 @@ storiesOf(`${name}/Resourced Components`, module)
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProviderPromise}
+        allowAllEmojis={true}
       />
     </div>
   ))

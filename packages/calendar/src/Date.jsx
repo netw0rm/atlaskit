@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 /* eslint no-confusing-arrow: 0 */
 
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import { DateDiv, DateTd } from './styled';
 
 export default class extends PureComponent {

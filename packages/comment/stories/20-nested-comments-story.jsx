@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Avatar from '@atlaskit/avatar';
 
 import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';

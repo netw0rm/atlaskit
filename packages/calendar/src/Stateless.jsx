@@ -2,7 +2,8 @@ import { Calendar } from 'calendar-base';
 import ArrowleftIcon from '@atlaskit/icon/glyph/arrowleft';
 import ArrowrightIcon from '@atlaskit/icon/glyph/arrowright';
 import keycode from 'keycode';
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 import {
   dateToString,

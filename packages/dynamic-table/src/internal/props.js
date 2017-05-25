@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import { createError } from '@atlaskit/util-common';
 
 function isInteger(props, propName, componentName) {

@@ -74,7 +74,7 @@ describe('<MediaCollectionViewer />', () => {
     expect(context.getMediaCollectionProvider).to.have.been.calledWith(collectionName, pageSize);
   });
 
-  it('should construct a media viewer instance with expected config', () => {
+  it('should construct a media viewer instance with default config', () => {
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
 
     shallow(
@@ -91,7 +91,32 @@ describe('<MediaCollectionViewer />', () => {
       assets: {
         basePath
       },
-      enableListLoop: false,
+      fetchToken: sinon.match.func
+    });
+  });
+
+  it('should construct a media viewer instance with custom config', () => {
+    const mediaViewerConstructor = Stubs.mediaViewerConstructor();
+    const additionalConfiguration = {
+      enableMiniMode: true
+    }
+
+    shallow(
+      <MediaCollectionViewer
+        context={Stubs.context(contextConfig) as any}
+        occurenceKey={occurenceKey}
+        collectionName={collectionName}
+        mediaViewerConfiguration={additionalConfiguration}
+        MediaViewer={mediaViewerConstructor as any}
+        basePath={basePath}
+      />);
+
+    expect(mediaViewerConstructor).to.have.been.calledOnce;
+    expect(mediaViewerConstructor).to.have.been.calledWith({
+      assets: {
+        basePath
+      },
+      enableMiniMode: true,
       fetchToken: sinon.match.func
     });
   });

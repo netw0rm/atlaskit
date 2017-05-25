@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { appearanceEnum, themeVariables } from '../../utils/theme';
 import GlobalPrimaryActions from './GlobalPrimaryActions';

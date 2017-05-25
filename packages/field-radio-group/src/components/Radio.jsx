@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import InputWrapper from '../styled/InputWrapper';
 import Input from '../styled/Input';
 import RadioIcon from '../styled/RadioIcon';

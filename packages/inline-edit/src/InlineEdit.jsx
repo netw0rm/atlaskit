@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes, cloneElement } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import Button from '@atlaskit/button';

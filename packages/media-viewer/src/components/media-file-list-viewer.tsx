@@ -4,7 +4,7 @@ import { Context, FileItem } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import { fetchToken } from '../domain/fetch-token';
 import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
-import { MediaViewerConstructor, MediaViewerInterface } from '../mediaviewer';
+import { MediaViewerConstructor, MediaViewerInterface, MediaViewerConfig } from '../mediaviewer';
 import { Observable } from 'rxjs';
 
 export interface MediaFileListViewerProps {
@@ -15,6 +15,7 @@ export interface MediaFileListViewerProps {
   readonly collectionName: string;
 
   readonly MediaViewer: MediaViewerConstructor;
+  readonly mediaViewerConfiguration?: MediaViewerConfig;
   readonly basePath: string;
 
   readonly onClose?: () => void;
@@ -29,12 +30,13 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
   constructor(props: MediaFileListViewerProps) {
     super(props);
 
-    const { context, collectionName, basePath, MediaViewer } = props;
+    const { context, collectionName, basePath, MediaViewer, mediaViewerConfiguration } = props;
     const { config } = context;
     const { clientId, tokenProvider } = config;
 
     this.state = {
       mediaViewer: new MediaViewer({
+        ...mediaViewerConfiguration,
         assets: {
           basePath: basePath
         },

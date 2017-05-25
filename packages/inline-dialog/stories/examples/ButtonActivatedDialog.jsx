@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import AKButton from '@atlaskit/button';
 import BitbucketAdminIcon from 'ak-icon/glyph/bitbucket/admin';
 import AKInlineDialog from '@atlaskit/inline-dialog';

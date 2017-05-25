@@ -54,6 +54,20 @@ describe('BreadcrumbsStateless', () => {
       expect(wrapper.find(Item).length).to.equal(3);
     });
 
+    it('should not count empty children', () => {
+      const wrapper = mount(
+        <Breadcrumbs onExpand={() => {}} maxItems={3}>
+          {null}
+          <Item>item</Item>
+          <Item>item</Item>
+          <Item>item</Item>
+          {undefined}
+          {false}
+        </Breadcrumbs>
+      );
+      expect(wrapper.find(Item).length).to.equal(3);
+    });
+
     describe('with enough items to collapse', () => {
       const firstItem = <Item hasSeparator>item1</Item>;
       const lastItem = <Item>item2</Item>;

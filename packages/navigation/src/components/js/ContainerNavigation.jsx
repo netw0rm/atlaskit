@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { ThemeProvider } from 'styled-components';
 import memoizeOne from 'memoize-one';
 import { themeVariables } from '../../utils/theme';

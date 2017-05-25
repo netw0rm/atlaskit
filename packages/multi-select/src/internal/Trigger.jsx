@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import classNames from 'classnames';
 

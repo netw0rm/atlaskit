@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Base from 'ak-field-base';
 import Radio from './Radio';
 import { itemsPropType } from './constants';

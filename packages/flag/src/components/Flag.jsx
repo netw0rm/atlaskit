@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Container, { Description, DismissButton, Icon, Content, Title, Header } from '../styled/Flag';
 import Actions from './FlagActions';

@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import {
   akGridSizeUnitless,
   akColorN800,
+  akHelperMixins,
 } from '@atlaskit/util-shared-styles';
-import { placeholderStyles, placeholderMixin } from './mixins';
+import placeholderStyles from './placeholderStyles';
 
 const AutocompleteWrapper = styled.div`
   flex: 1 1 auto;
@@ -23,7 +24,7 @@ const AutocompleteInput = styled.input`
   padding: 0;
   width: 100%;
 
-  ${placeholderMixin(placeholderStyles)}
+  ${akHelperMixins.placeholder(placeholderStyles)}
 `;
 AutocompleteInput.displayName = 'SingleSelectAutocompleteInput';
 

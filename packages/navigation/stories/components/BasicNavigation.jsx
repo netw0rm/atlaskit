@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowleftIcon } from '@atlaskit/icon';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';

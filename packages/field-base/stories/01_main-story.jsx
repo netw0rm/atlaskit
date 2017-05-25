@@ -10,7 +10,7 @@ import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import BasicFieldBase from './BasicFieldBase';
 import RightGutterFieldBase from './RightGutterFieldBase';
 import { name } from '../package.json';
-import AkFieldBase, { Label } from '../src';
+import FieldBase, { Label } from '../src';
 
 const formStyle = {
   padding: '20px',
@@ -312,7 +312,7 @@ storiesOf(name, module)
     <div style={{ display: 'inline-block', padding: 20 }}>
       <Label label="Button with no padding example" />
       <div style={{ backgroundColor: 'white' }}>
-        <AkFieldBase
+        <FieldBase
           isPaddingDisabled
         >
           <Button
@@ -320,7 +320,7 @@ storiesOf(name, module)
           >
             Imagine a Dropdown
           </Button>
-        </AkFieldBase>
+        </FieldBase>
       </div>
     </div>
   )
@@ -336,13 +336,13 @@ storiesOf(name, module)
         label="Avatar example"
       >
         <div style={{ backgroundColor: 'white' }}>
-          <AkFieldBase>
+          <FieldBase>
             <Avatar
               src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
               size="small"
             />
             <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
-          </AkFieldBase>
+          </FieldBase>
         </div>
       </Label>
     </div>
@@ -363,42 +363,42 @@ storiesOf(name, module)
     return (
       <div style={formStyle}>
         <Label label="Lots of text (with whitespace)">
-          <AkFieldBase>
+          <FieldBase>
             <div>{longTextWithSpaces}</div>
-          </AkFieldBase>
+          </FieldBase>
         </Label>
         <Label label="Lots of text (no whitespace)">
-          <AkFieldBase>
+          <FieldBase>
             <div style={{ overflow: 'hidden' }}>
               {longTextNoSpaces}
             </div>
-          </AkFieldBase>
+          </FieldBase>
         </Label>
         <Label label="Small non-textual content (5x5 div)">
-          <AkFieldBase>
+          <FieldBase>
             <div><div style={smallBoxStyles} /></div>
-          </AkFieldBase>
+          </FieldBase>
         </Label>
         <div style={{ display: 'inline-flex' }}>
           <Label label="With a max-width">
-            <AkFieldBase>
+            <FieldBase>
               <Input
                 isEditing
                 value="a children input"
                 style={{ maxWidth: '200em' }}
               />
-            </AkFieldBase>
+            </FieldBase>
           </Label>
         </div>
         <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
           <Label label="With fit width enabled" htmlFor="fieldbase" />
-          <AkFieldBase isFitContainerWidthEnabled>
+          <FieldBase isFitContainerWidthEnabled>
             <Input
               id="fieldbase"
               isEditing
               value="a children input"
             />
-          </AkFieldBase>
+          </FieldBase>
         </div>
       </div>
     );

@@ -163,12 +163,16 @@ const Container = styled.div`
 
 const Grid = styled.div`
   display: flex;
+  height: 100vh;
 `;
 
 const Column = styled.div`
   width: ${props => (props.isCollapsed ? containerClosedWidth : containerOpenWidth)}px;
   margin-left: ${gridSize}px;
   margin-right: ${gridSize}px;
+
+  /* make sure it is full height */
+  display: flex;
 `;
 
 const Row = styled.div`
@@ -200,15 +204,17 @@ class ContainerNavigationExplorer extends PureComponent {
             </Column>
           ))}
           <Column>
-            <Row>Container Navigation is currently:</Row>
-            <Row><strong>{isCollapsed ? 'collapsed' : 'open'}</strong></Row>
-            <Row>
-              <AkButton
-                onClick={this.toggleCollapsed}
-              >
+            <div>
+              <Row>Container Navigation is currently:</Row>
+              <Row><strong>{isCollapsed ? 'collapsed' : 'open'}</strong></Row>
+              <Row>
+                <AkButton
+                  onClick={this.toggleCollapsed}
+                >
               toggle collapsed
             </AkButton>
-            </Row>
+              </Row>
+            </div>
           </Column>
         </Grid>
 

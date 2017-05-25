@@ -27,27 +27,27 @@ export const populateTheme = (provided: Theme, isCollapsed?: boolean = false): m
 type Props = {|
   provided: Theme,
   isCollapsed?: bool,
-  children: mixed,
+  children: any,
 |}
 
 export class WithTheme extends PureComponent {
   props: Props
 
-  withOuterTheme = (outerTheme = {}) => {
+  withOuterTheme = (outerTheme?: Object = {}) => {
     const { provided, isCollapsed } = this.props;
     const newValues = populateTheme(provided, isCollapsed);
 
     // This will preserve any existing theme values.
     // This will override any values that have the same keys.
-    return {
-      ...outerTheme,
-      ...newValues,
-    };
+
+    // Not using object spread as it does not play well with flow
+    // eslint-disable-next-line prefer-object-spread/prefer-object-spread
+    return Object.assign({}, outerTheme, newValues);
   }
 
   render() {
-    // Would like to use theme={this.withOuterTheme} but styled-components is not
-    // handling updates correctly
+    // Would like to use theme={this.withOuterTheme} but styled-components
+    // is not handling updates correctly.
     return (
       <ThemeProvider
         theme={outerTheme => this.withOuterTheme(outerTheme)}

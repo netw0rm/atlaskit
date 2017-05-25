@@ -15,7 +15,7 @@ import {
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
-  margin: 8px 8px 0 0;
+  margin: 0;
   display: inline-block;
   verticalAlign: middle;
   userSelect: all;

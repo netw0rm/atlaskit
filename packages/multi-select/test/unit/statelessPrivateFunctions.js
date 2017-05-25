@@ -6,7 +6,8 @@ import { mount } from 'enzyme';
 import { StatelessMultiSelect } from '../../src';
 import { name } from '../../package.json';
 
-describe(`${name} - stateless`, () => {
+describe(`${name} - stateless`, function () { // eslint-disable-line func-names
+  this.timeout(10000);
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};

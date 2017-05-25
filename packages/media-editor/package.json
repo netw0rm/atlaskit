@@ -10,9 +10,9 @@
   "types": "dist/es5/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
-    "prepublish": "../../node_modules/.bin/nwb build",
+    "prepublish": "../../node_modules/.bin/nwb build && mkdir -p umd/types/engine/core/binaries && cp src/engine/core/binaries/editorCore.d.ts umd/types/engine/core/binaries",
     "storybook": "PACKAGE=media-editor ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
-    "test": "echo 'TODO - fails with critical dependency errors.' && exit 0 && ../../node_modules/.bin/nwb test",
+    "test": "node --max-old-space-size=4096 ../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [

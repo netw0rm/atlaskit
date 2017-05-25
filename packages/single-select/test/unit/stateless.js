@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
@@ -13,7 +11,8 @@ import { StatelessSelect } from '../../src';
 
 import { name } from '../../package.json';
 
-describe(name, () => {
+describe(name, function () { // eslint-disable-line func-names
+  this.timeout(20000);
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};

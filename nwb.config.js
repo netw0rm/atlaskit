@@ -8,6 +8,9 @@ const path = require('path');
 const camelcase = require('camelcase');
 const externals = require('webpack-node-externals');
 
+const customEventPolyfill = require.resolve('custom-event-polyfill');
+const babelPolyfill = require.resolve('babel-polyfill');
+
 const { BITBUCKET_COMMIT } = process.env;
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
@@ -82,9 +85,13 @@ module.exports = {
     browsers,
     frameworks: ['mocha', 'chai'],
     plugins: [require('karma-chai'), require('karma-browserstack-launcher')],
-
+    preprocessors: {
+      [customEventPolyfill]: ['webpack'],
+      [babelPolyfill]: ['webpack', 'sourcemap'],
+    },
     // TODO remove this when following the default convention.
     testFiles: [
+      customEventPolyfill,
       // This is the default NWB convention.
       '+(src|test?(s))/**/*+(-test|.spec|.test).js',
 
@@ -99,6 +106,10 @@ module.exports = {
     ],
 
     extra: {
+      captureTimeout: 210000,
+      browserDisconnectTolerance: 3,
+      browserDisconnectTimeout: 210000,
+      browserNoActivityTimeout: 210000,
       browserStack: {
         username: process.env.BROWSERSTACK_USERNAME,
         accessKey: process.env.BROWSERSTACK_KEY,
@@ -108,6 +119,11 @@ module.exports = {
       // Required so we don't get incorrect MIME type errors for TypeScript files.
       mime: {
         'text/x-typescript': ['ts', 'tsx'],
+      },
+      client: {
+        mocha: {
+          timeout: 20000,
+        },
       },
     },
   },
@@ -125,7 +141,11 @@ module.exports = {
       // if we are building the umd, we don't want to bundle any dependencies
       externals: cmd === 'build'
         ? [externals({ modulesFromFile: true })]
-        : [],
+        : {
+          'react/addons': true,
+          'react/lib/ExecutionEnvironment': true,
+          'react/lib/ReactContext': true,
+        },
       module: {
         rules: [{
           test: /\.json$/,
@@ -151,10 +171,7 @@ module.exports = {
           use: [{
             loader: 'ts-loader',
             options: {
-              compilerOptions: {
-                declaration: true,
-                declarationDir: './types',
-              },
+              configFileName: cmd === 'build' ? 'tsconfig.umd.json' : 'tsconfig.json',
             },
           }],
         }],

@@ -16,7 +16,8 @@ describe(`${name} - core`, () => {
     expect(shallow(<Droplist>test</Droplist>)).not.to.equal(undefined);
   });
 
-  describe('render', () => {
+  describe('render', function () { // eslint-disable-line prefer-arrow-callback, func-names
+    this.timeout(10000);
     let wrapper;
 
     beforeEach(() => {

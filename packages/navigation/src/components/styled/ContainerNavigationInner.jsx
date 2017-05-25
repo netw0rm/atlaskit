@@ -13,13 +13,15 @@ const ContainerNavigationInner = styled.div`
   }};
   box-sizing: border-box;
   color: ${({ theme }) => getProvided(theme).text};
-  height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
   padding-top: ${({ theme }) => (getIsCollapsed(theme) ? layout.padding.top : 0)}px;
   padding-left: ${({ theme }) => (getIsCollapsed(theme) ? layout.padding.side : 0)}px;
   padding-right: ${({ theme }) => (getIsCollapsed(theme) ? layout.padding.side : 0)}px;
   padding-bottom: 0;
+
+  /* fill the entire space of the flex container */
+  width: 100%;
 
   // needed to fix sticky header on retina displays 🙃
   transform-style: preserve-3d;

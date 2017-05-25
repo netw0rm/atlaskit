@@ -124,32 +124,31 @@ export default class ContainerNavigation extends PureComponent {
         isCollapsed={isCollapsed}
       >
         {/* This div is needed for legacy reasons. All children should use isCollapsed on the theme */}
-        <div data-__ak-navigation-container-closed={isCollapsed}>
-          <ContainerNavigationInner
-            innerRef={this.onRefChange}
+        <ContainerNavigationInner
+          data-__ak-navigation-container-closed={isCollapsed}
+          innerRef={this.onRefChange}
+        >
+          <Reveal
+            shouldAnimate={isInitiallyRendered}
+            isOpen={showGlobalPrimaryActions}
+            openHeight={globalPrimaryActions.height.outer}
           >
-            <Reveal
-              shouldAnimate={isInitiallyRendered}
-              isOpen={showGlobalPrimaryActions}
-              openHeight={globalPrimaryActions.height.outer}
-            >
-              <GlobalPrimaryActions
-                appearance={appearance}
-                createIcon={globalCreateIcon}
-                linkComponent={linkComponent}
-                onCreateActivate={onGlobalCreateActivate}
-                onSearchActivate={onGlobalSearchActivate}
-                primaryIcon={globalPrimaryIcon}
-                primaryItemHref={globalPrimaryItemHref}
-                searchIcon={globalSearchIcon}
-              />
-            </Reveal>
-            {header}
-            <ContainerNavigationChildren>
-              {children}
-            </ContainerNavigationChildren>
-          </ContainerNavigationInner>
-        </div>
+            <GlobalPrimaryActions
+              appearance={appearance}
+              createIcon={globalCreateIcon}
+              linkComponent={linkComponent}
+              onCreateActivate={onGlobalCreateActivate}
+              onSearchActivate={onGlobalSearchActivate}
+              primaryIcon={globalPrimaryIcon}
+              primaryItemHref={globalPrimaryItemHref}
+              searchIcon={globalSearchIcon}
+            />
+          </Reveal>
+          {header}
+          <ContainerNavigationChildren>
+            {children}
+          </ContainerNavigationChildren>
+        </ContainerNavigationInner>
       </WithTheme>
     );
   }

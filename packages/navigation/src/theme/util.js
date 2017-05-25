@@ -46,9 +46,11 @@ export class WithTheme extends PureComponent {
   }
 
   render() {
+    // Would like to use theme={this.withOuterTheme} but styled-components is not
+    // handling updates correctly
     return (
       <ThemeProvider
-        theme={this.withOuterTheme}
+        theme={outerTheme => this.withOuterTheme(outerTheme)}
       >
         {this.props.children}
       </ThemeProvider>

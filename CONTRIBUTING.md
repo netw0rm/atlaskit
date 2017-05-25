@@ -104,7 +104,7 @@ BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... docker-compose -f docker-compose-
 ### Follow code style guidelines
 We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict.
 
-Eslint will automatically run when attempting to commit, but can also run at any time using: `yarn run lint`
+Eslint and Stylelint will automatically run when attempting to commit, but can also run at any time using: `yarn run lint`
 
 *Note:* a lot of linting issues can be fixed automatically by passing the --fix flag to eslint: `yarn run lint -- --fix`
 

@@ -194,7 +194,7 @@
     "validate/eslint/changed": "./build/bin/lint.eslint.changed.sh",
     "validate/eslint/changed/fix": "./build/bin/lint.eslint.changed.sh --fix",
     "validate/eslint/fix": "./build/bin/lint.eslint.sh --fix",
-    "validate/lint": "run-p -cl validate/tslint validate/eslint validate/flow",
+    "validate/lint": "run-p -cl validate/tslint validate/eslint validate/flow validate/stylelint",
     "validate/lint-css": "run-p -l validate/eslint/changed validate/tslint/changed",
     "validate/lint-changed": "run-p -l validate/eslint/changed validate/tslint/changed validate/stylelint/changed",
     "validate/lint-changed/fix": "run-p -l validate/eslint/changed/fix validate/tslint/changed/fix",

@@ -24,6 +24,5 @@
       "shorthand-property-no-redundant-values": null,
       "selector-list-comma-newline-after": "always-multi-line",
       "color-no-hex": true
-
   }
 }

@@ -1,12 +1,9 @@
 import React, { Children, PureComponent, PropTypes } from 'react';
-import styles from './styles.less';
-import BreadcrumbsItem from './BreadcrumbsItem';
-import EllipsisItem from './internal/EllipsisItem';
-import { defaultMaxItems } from './internal/constants';
+import EllipsisItem from './EllipsisItem';
+import { defaultMaxItems } from '../constants';
+import Container from '../styled/BreadcrumbsContainer';
 
 const { count, toArray } = Children;
-
-export { BreadcrumbsItem };
 
 export default class BreadcrumbsStateless extends PureComponent {
   static propTypes = {
@@ -19,7 +16,7 @@ export default class BreadcrumbsStateless extends PureComponent {
     /** A function to be called when you are in the collapsed view and click
     the ellpisis. */
     onExpand: PropTypes.func.isRequired,
-    /** A single <AkBreadcrumbsItem> or an array of <AkBreadcrumbsItem>.  */
+    /** A single <BreadcrumbsItem> or an array of <BreadcrumbsItem>.  */
     children: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
@@ -32,26 +29,32 @@ export default class BreadcrumbsStateless extends PureComponent {
   }
 
   renderAllItems() {
-    return this.props.children;
+    return Children.map(this.props.children, (child, index) => React.cloneElement(child, {
+      hasSeparator: index < this.props.children.length - 1,
+    }));
   }
 
   renderFirstAndLast() {
-    const itemsToRender = toArray(this.props.children);
+    const itemsToRender = toArray(this.renderAllItems());
     return [
       itemsToRender[0],
-      <EllipsisItem key="ellipsis" onClick={this.props.onExpand} />,
+      <EllipsisItem
+        hasSeparator
+        key="ellipsis"
+        onClick={this.props.onExpand}
+      />,
       itemsToRender[itemsToRender.length - 1],
     ];
   }
 
   render() {
     return (
-      <div className={styles.container}>
+      <Container>
         {(this.props.isExpanded || count(this.props.children) <= this.props.maxItems)
           ? this.renderAllItems()
           : this.renderFirstAndLast()
         }
-      </div>
+      </Container>
     );
   }
 }

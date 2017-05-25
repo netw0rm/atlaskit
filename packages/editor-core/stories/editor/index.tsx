@@ -19,6 +19,8 @@ import imageUploadPlugins, {stateKey as imageUploadStateKey} from '../../src/plu
 import listsPlugins, {stateKey as listsStateKey} from '../../src/plugins/lists';
 import mentionsPlugins, {stateKey as mentionsStateKey} from '../../src/plugins/mentions';
 import emojiPlugins, {stateKey as emojiStateKey} from '../../src/plugins/emojis';
+import { reactNodeViewPlugins } from '../../src/plugins';
+
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
 import {
   baseKeymap,
@@ -237,6 +239,7 @@ export default class Editor extends PureComponent<Props, State> {
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
             ...textColorPlugins(schema),
+            ...reactNodeViewPlugins(schema),
             history(),
             keymap(baseKeymap) // should be last :(
           ]

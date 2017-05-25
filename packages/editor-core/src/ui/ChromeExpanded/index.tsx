@@ -17,6 +17,7 @@ import { MentionsState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
+import { MacroState } from '../../plugins/macro';
 import { MediaPluginState } from '../../plugins/media';
 import { TextColorState } from '../../plugins/text-color';
 import EmojiTypeAhead from '../EmojiTypeAhead';
@@ -24,6 +25,7 @@ import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
+import MacroEdit from '../MacroEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
 import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
@@ -62,6 +64,7 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
+  pluginStateMacro?: MacroState;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
@@ -116,6 +119,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateMentions && props.mentionProvider ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionProvider} /> : null}
           {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
           {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} editorView={props.editorView} /> : null}
+          {props.pluginStateMacro ? <MacroEdit pluginState={props.pluginStateMacro} editorView={props.editorView} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>

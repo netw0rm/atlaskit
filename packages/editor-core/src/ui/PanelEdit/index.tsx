@@ -50,7 +50,9 @@ export default class PanelEdit extends PureComponent<Props, State> {
       return (
         <FloatingToolbar target={target} align="left">
           {availablePanelType.map((panelType, index) => {
+            // tslint:disable-next-line:variable-name
             const Icon = icons[panelType.panelType];
+            // tslint:disable-next-line:variable-name
             const Button = activePanelType === panelType.panelType
               ? ToolbarButtonSelected
               : ToolbarButton;

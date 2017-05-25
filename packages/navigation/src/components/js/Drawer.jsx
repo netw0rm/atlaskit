@@ -9,6 +9,8 @@ import DrawerPrimaryIcon from '../styled/DrawerPrimaryIcon';
 import DrawerMain from '../styled/DrawerMain';
 import DrawerContent from '../styled/DrawerContent';
 import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
+import { WithTheme } from '../../theme/util';
+import * as presets from '../../theme/presets';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
@@ -71,19 +73,23 @@ export default class Drawer extends PureComponent {
     ) : null;
 
     return (
-      <div>
-        <div style={{ zIndex: 0, position: 'relative' }}>
-          <Blanket
-            isTinted={isOpen}
-            canClickThrough={!isOpen}
-            onBlanketClicked={onBackButton}
-          />
+      <WithTheme
+        provided={presets.container}
+      >
+        <div>
+          <div style={{ zIndex: 0, position: 'relative' }}>
+            <Blanket
+              isTinted={isOpen}
+              canClickThrough={!isOpen}
+              onBlanketClicked={onBackButton}
+            />
+          </div>
+          <DrawerInner isOpen={isOpen} width={width}>
+            {sidebar}
+            {content}
+          </DrawerInner>
         </div>
-        <DrawerInner isOpen={isOpen} width={width}>
-          {sidebar}
-          {content}
-        </DrawerInner>
-      </div>
+      </WithTheme>
     );
   }
 }

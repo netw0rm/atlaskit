@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { ThemeProvider } from 'styled-components';
 import memoizeOne from 'memoize-one';
-import { themeVariables } from '../../utils/theme';
+import * as presets from '../../theme/presets';
+import { WithTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
 import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -113,18 +113,15 @@ export default class ContainerNavigation extends PureComponent {
 
     const header = headerComponent ? (
       <ContainerHeader
-        appearance={appearance}
         isContentScrolled={this.state.isScrolling}
       >
         {headerComponent({ isCollapsed })}
       </ContainerHeader>) : <ContainerNoHeader />;
 
     return (
-      <ThemeProvider
-        theme={{
-          [themeVariables.appearance]: appearance,
-          isCollapsed,
-        }}
+      <WithTheme
+        provided={presets[appearance]}
+        isCollapsed={isCollapsed}
       >
         <div data-__ak-navigation-container-closed={isCollapsed}>
           <ContainerNavigationInner

@@ -18,6 +18,8 @@ export default class BasicNavigation extends PureComponent {
     createDrawerContent: PropTypes.node,
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     onResizeCallback: PropTypes.func,
+    globalAppearance: PropTypes.string,
+    containerAppearance: PropTypes.string,
   }
 
   static defaultProps = {
@@ -107,7 +109,7 @@ export default class BasicNavigation extends PureComponent {
 
         items={[
           {
-            heading: 'Joshua Nelson',
+            heading: 'Luke Skywalker',
             items: [
               { content: 'View profile' },
               { content: 'Manage Atlassian account' },
@@ -168,6 +170,8 @@ export default class BasicNavigation extends PureComponent {
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
+        containerAppearance={this.props.containerAppearance}
+        globalAppearance={this.props.globalAppearance}
         backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
         globalCreateIcon={<AddIcon size="small" label="Create icon" />}

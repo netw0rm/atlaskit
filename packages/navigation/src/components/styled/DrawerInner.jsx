@@ -1,24 +1,15 @@
-import {
-  akGridSizeUnitless,
-  akColorN0,
-  akColorN50A,
-  akColorN500,
-  akZIndexNavigation,
-} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import {
   widths,
   widthTransition,
   transformTransition,
-  boxShadowSpread,
 } from '../../utils/drawer-style-variables';
-
-const boxShadow = `${-akGridSizeUnitless * 4}px 0 ${akGridSizeUnitless * 4}px ${boxShadowSpread}px ${akColorN50A}`;
+import { getProvided } from '../../theme/util';
+import { zIndex } from '../../shared-variables';
 
 const DrawerInner = styled.div`
-  background: ${akColorN0};
-  box-shadow: ${({ isOpen }) => (isOpen ? boxShadow : 'none')};
-  color: ${akColorN500};
+  background-color: ${({ theme }) => getProvided(theme).background.tertiary};
+  color: ${({ theme }) => getProvided(theme).text};
   display: flex;
   height: 100%;
   left: 0;
@@ -29,7 +20,7 @@ const DrawerInner = styled.div`
   transition: ${transformTransition}, ${widthTransition};
   width: ${({ width }) => widths[width].width};
   /* needs to sit on top of navigation */
-  z-index: ${akZIndexNavigation + 1};
+  z-index: ${zIndex + 1};
 `;
 
 DrawerInner.displayName = 'DrawerInner';

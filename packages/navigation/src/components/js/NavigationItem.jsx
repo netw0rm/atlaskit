@@ -19,6 +19,7 @@ export default class NavigationItem extends PureComponent {
     icon: PropTypes.node,
     dropIcon: PropTypes.node,
     isSelected: PropTypes.bool,
+    isCompact: PropTypes.bool,
     isDropdownTrigger: PropTypes.bool,
     linkComponent: PropTypes.func,
     onClick: PropTypes.func,
@@ -28,6 +29,7 @@ export default class NavigationItem extends PureComponent {
   }
 
   static defaultProps = {
+    isCompact: false,
     isSelected: false,
     linkComponent: DefaultLinkComponent,
     isDropdownTrigger: false,
@@ -38,14 +40,23 @@ export default class NavigationItem extends PureComponent {
   }
 
   render() {
+    // We could have created a sub theme for isCompact.
+    // However, things are kept really simple for now and it is just a prop
+    // as this component has visibility of all children
+    const { isCompact } = this.props;
+
     const Icon = () => (this.props.icon ?
-      <NavigationItemIcon>
+      <NavigationItemIcon isCompact={isCompact}>
         {this.props.icon}
       </NavigationItemIcon>
     : null);
 
     const DropIcon = () => (this.props.dropIcon && this.props.isDropdownTrigger ?
-      <NavigationItemIcon hasNoPadding={this.props.isDropdownTrigger} isDropdownTrigger>
+      <NavigationItemIcon
+        isCompact={isCompact}
+        isDropdownTrigger
+        hasNoPadding={this.props.isDropdownTrigger}
+      >
         {this.props.dropIcon}
       </NavigationItemIcon>
     : null);
@@ -84,7 +95,8 @@ export default class NavigationItem extends PureComponent {
     return (
       <NavigationItemOuter
         isSelected={this.props.isSelected}
-        isDropdownTrigger={this.props.isDropdownTrigger}
+        isDropdown={this.props.isDropdownTrigger}
+        isCompact={isCompact}
       >
         <InteractiveWrapper
           {...interactiveWrapperProps}
@@ -95,7 +107,7 @@ export default class NavigationItem extends PureComponent {
               <NavigationItemMainText>
                 {this.props.text}
               </NavigationItemMainText>
-              <NavigationItemSubText>
+              <NavigationItemSubText isCompact={isCompact}>
                 {this.props.subText}
               </NavigationItemSubText>
             </NavigationItemText>

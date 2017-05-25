@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mountWithTheme } from './theme-util';
 import Search from '../src/components/js/Search';
 
 const describe = window.describe;
@@ -16,7 +16,7 @@ describe('Search', () => {
     wrapper.find('input').props().value;
 
   it('should auto focus on mount', () => {
-    const wrapper = mount(<Search />);
+    const wrapper = mountWithTheme(<Search />);
 
     expect(isInputFocused(wrapper)).to.equal(true);
   });
@@ -35,7 +35,7 @@ describe('Search', () => {
         wrapper.setProps({ value: '' });
       });
 
-      wrapper = mount(
+      wrapper = mountWithTheme(
         <Search
           onChange={noop}
           onSearchClear={onSearchClearStub}

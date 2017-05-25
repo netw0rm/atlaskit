@@ -19,6 +19,7 @@ const CompactItem = ({ children }) => (
   <AkNavigationItem
     action={<CrossIcon label="close" />}
     icon={<RandomAvatar />}
+    isCompact
     text={children}
     textAfter={<RandomBadge />}
     subText={Math.random() > 0.5 && 'This is some really long sub text'}
@@ -33,13 +34,15 @@ storiesOf(name, module)
   .add('with compact items', () => (
     <HtmlPage>
       <BasicNavigation containerHeaderComponent={null}>
-        <AkNavigationItemGroup isCompact>
+        <AkNavigationItemGroup>
           <AkNavigationItem
             icon={<RandomAvatar presence="online" />}
+            isCompact
             text="Available"
           />
           <AkNavigationItem
             icon={<DashboardIcon label="Lobby" />}
+            isCompact
             text="Lobby"
           />
         </AkNavigationItemGroup>
@@ -51,7 +54,6 @@ storiesOf(name, module)
               spacing="none"
             />
           }
-          isCompact
           title="Rooms"
         >
           <CompactItem href="#1">Front deskers</CompactItem>

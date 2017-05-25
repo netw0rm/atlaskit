@@ -1,18 +1,16 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { layout } from '../../shared-variables';
-import { themeVariables } from '../../utils/theme';
+import { layout, gridSize } from '../../shared-variables';
 
-const size = akGridSizeUnitless * 3;
-const offsetLeft = akGridSizeUnitless * 3;
-const openPadding = `0 ${akGridSizeUnitless * 2}px 0 ${offsetLeft - (akGridSizeUnitless * 2)}px`;
-const compactPadding = `0 ${akGridSizeUnitless}px 0 0`;
-const closedHorizontalPadding = (layout.width.closed - (akGridSizeUnitless * 4) - size) / 2;
+const size = gridSize * 3;
+const offsetLeft = gridSize * 3;
+const openPadding = `0 ${gridSize * 2}px 0 ${offsetLeft - (gridSize * 2)}px`;
+const compactPadding = `0 ${gridSize}px 0 0`;
+const closedHorizontalPadding = (layout.width.closed - (gridSize * 4) - size) / 2;
 const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPadding}px`;
 
 const NavigationItemIcon = styled.div`
   transition: padding 200ms;
-  padding: ${({ theme }) => (theme[themeVariables.isCompact] ? compactPadding : openPadding)}
+  padding: ${({ isCompact }) => (isCompact ? compactPadding : openPadding)}
   display: flex;
   flex-shrink: 0;
 
@@ -33,12 +31,6 @@ const NavigationItemIcon = styled.div`
     width: ${size}px;
   }
 `;
-
-NavigationItemIcon.defaultProps = {
-  theme: {
-    [themeVariables.isCompact]: false,
-  },
-};
 
 NavigationItemIcon.displayName = 'NavigationItemIcon';
 export default NavigationItemIcon;

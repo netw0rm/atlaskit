@@ -1,15 +1,15 @@
-import { shallow, mount } from 'enzyme';
 import React from 'react';
 import ContainerTitle from '../src/components/js/ContainerTitle';
+import { mountWithTheme, shallowWithTheme } from './theme-util';
 
 describe('<ContainerTitle />', () => {
   describe('props', () => {
     it('icon should render an image', () => {
-      expect(shallow(<ContainerTitle icon={<img alt="foo" />} />).find('img')).to.have.length(1);
+      expect(shallowWithTheme(<ContainerTitle icon={<img alt="foo" />} />).find('img')).to.have.length(1);
     });
 
     it('linkComponent can be used to render an arbitrary link', () => {
-      const wrapper = mount(<ContainerTitle
+      const wrapper = mountWithTheme(<ContainerTitle
         href="http://google.com"
         linkComponent={({ href, children }) => <a href={href} data-foo="foo">{children}</a>}
       />);
@@ -18,7 +18,7 @@ describe('<ContainerTitle />', () => {
     });
 
     it('should render its title', () => {
-      const wrapper = mount(
+      const wrapper = mountWithTheme(
         <ContainerTitle text="Main text" />
       );
 
@@ -26,7 +26,7 @@ describe('<ContainerTitle />', () => {
     });
 
     it('should render subText if it is provided', () => {
-      const wrapper = mount(
+      const wrapper = mountWithTheme(
         <ContainerTitle text="Main text" subText="sub text" />
       );
 

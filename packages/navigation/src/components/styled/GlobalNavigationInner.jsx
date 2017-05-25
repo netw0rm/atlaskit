@@ -21,10 +21,8 @@ const GlobalNavigationInner = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: ${layout.padding.top}px ${layout.padding.side}px ${layout.padding.top}px;
-  position: fixed;
-  // always keeping a fixed width so that the ContainerNavigation bleeds over the top of this
+  /* always keeping a fixed width so that the ContainerNavigation bleeds over the top of this */
   width: ${globalOpenWidth}px;
 `;
 

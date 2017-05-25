@@ -259,7 +259,7 @@ describe('Nodes', () => {
       expect(renderNode({ type: 'mention', attrs: { 'name': 'Oscar', 'uuid': 'nah' } })).to.equal('Unknown format: "mention"');
     });
 
-    it('should default to a paragraph if it has a content array containing renderable nodes', () => {
+    it('should default to a span if it has a content array containing renderable nodes', () => {
       const invalidBlockNode = {
         type: 'neckPillow',
         content: [
@@ -281,7 +281,7 @@ describe('Nodes', () => {
         ]
       };
       const rendered = renderNode(invalidBlockNode);
-      expect(rendered.type.type).to.equal('span');
+      expect(rendered.type).to.equal('span');
     });
 
   });

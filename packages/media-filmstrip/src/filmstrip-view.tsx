@@ -22,7 +22,6 @@ export interface FilmStripCardClickEvent {
 
 export interface FilmStripViewProps {
   items: Array<FilmStripViewItem>;
-  inOverflowContainer?: boolean;
 
   onCardClick?: (result: FilmStripCardClickEvent) => void;
   menuActions?: Array<ListAction>;
@@ -62,8 +61,6 @@ function createCardActions(item: FilmStripViewItem, items: Array<FilmStripViewIt
 }
 
 export function FilmStripView(props: FilmStripViewProps): JSX.Element {
-  const {inOverflowContainer} = props;
-
   const itemEls = props.items.map((item, k) => {
     const {mediaName, mediaSize, mediaType, loading, progress, dataURI} = item;
 
@@ -86,7 +83,7 @@ export function FilmStripView(props: FilmStripViewProps): JSX.Element {
     />;
   });
 
-  return <FilmStripNavigator inOverflowContainer={inOverflowContainer} onDrop={props.onDrop} onDragEnter={props.onDragEnter} onDragOver={props.onDragOver} width={props.width}>
+  return <FilmStripNavigator onDrop={props.onDrop} onDragEnter={props.onDragEnter} onDragOver={props.onDragOver} width={props.width}>
            {itemEls}
          </FilmStripNavigator>;
 }

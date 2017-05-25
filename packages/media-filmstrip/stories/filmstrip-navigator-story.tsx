@@ -17,7 +17,7 @@ const clickAction = (event: CardEvent) => {
 
 const getDefaultNavigator = (overflow: boolean, key?) => {
   return (
-    <FilmStripNavigator key={key} inOverflowContainer={overflow}>
+    <FilmStripNavigator key={key}>
       <CardView onClick={clickAction} status="loading"/>
       <CardView onClick={clickAction} status="complete" metadata={{mediaType: 'doc', name: 'foobar.docx', size: 1000}}/>
       <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>

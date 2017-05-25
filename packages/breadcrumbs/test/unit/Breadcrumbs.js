@@ -66,6 +66,7 @@ describe('BreadcrumbsStateless', () => {
         </Breadcrumbs>
       );
       expect(wrapper.find(Item).length).to.equal(3);
+      expect(wrapper.find(Item).last().props().hasSeparator).to.equal(false);
     });
 
     describe('with enough items to collapse', () => {

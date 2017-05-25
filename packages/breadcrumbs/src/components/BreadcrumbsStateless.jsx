@@ -29,13 +29,14 @@ export default class BreadcrumbsStateless extends PureComponent {
   }
 
   renderAllItems() {
-    return toArray(this.props.children).map((child, index) => React.cloneElement(child, {
-      hasSeparator: index < this.props.children.length - 1,
+    const allNonEmptyItems = toArray(this.props.children);
+    return allNonEmptyItems.map((child, index) => React.cloneElement(child, {
+      hasSeparator: index < allNonEmptyItems.length - 1,
     }));
   }
 
   renderFirstAndLast() {
-    const itemsToRender = toArray(this.renderAllItems());
+    const itemsToRender = this.renderAllItems();
     return [
       itemsToRender[0],
       <EllipsisItem

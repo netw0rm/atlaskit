@@ -77,7 +77,6 @@ export const TimeStyle = styled.div`
 
 // tslint:disable:next-line variable-name
 export const MentionItemStyle = styled.div`
-  /* TODO */
   background-color: ${(props: MentionItemStyleProps) => props.selected ? akColorN30 : 'transparent'};
   display: block;
   overflow: hidden;

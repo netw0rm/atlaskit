@@ -46,7 +46,7 @@ export default function encode(node: PMNode) {
     } else if (node.type === schema.nodes.mediaGroup) {
       return encodeMediaGroup(node);
     } else if (node.type === schema.nodes.media) {
-      return encodeMedia(node);
+      return encodeMedia(node as MediaNode);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }

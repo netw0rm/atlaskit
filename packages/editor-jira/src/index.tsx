@@ -24,10 +24,14 @@ import {
   Schema,
   history,
   keymap,
-  mentionNodeView,
   ProviderFactory,
   TextSelection,
-  version as coreVersion
+  version as coreVersion,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactMentionNode,
+  reactNodeViewPlugins,
 } from '@atlaskit/editor-core';
 import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
@@ -251,6 +255,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...listsPlugins(schema as Schema<any, any>),
           ...rulePlugins(schema as Schema<any, any>),
           ...textFormattingPlugins(schema as Schema<any, any>),
+          ...reactNodeViewPlugins(schema as Schema<any, any>),
           history(),
           keymap(jiraKeymap),
           keymap(baseKeymap), // should be last :(
@@ -270,7 +275,7 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory)
+          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

@@ -12,6 +12,7 @@ import {
 
 import styled from 'styled-components';
 
+// tslint:disable-next-line:variable-name
 export const Content = styled.div`
   /* Place the editor content beneath the toolbar. */
   position: relative;

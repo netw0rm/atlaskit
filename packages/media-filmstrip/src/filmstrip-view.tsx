@@ -22,6 +22,7 @@ export interface FilmStripCardClickEvent {
 
 export interface FilmStripViewProps {
   items: Array<FilmStripViewItem>;
+
   onCardClick?: (result: FilmStripCardClickEvent) => void;
   menuActions?: Array<ListAction>;
 

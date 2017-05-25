@@ -7,7 +7,6 @@ import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import Reveal from './Reveal';
-import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
 import subscribe from '../../watch-scroll-top';
@@ -127,9 +126,7 @@ export default class ContainerNavigation extends PureComponent {
           isCollapsed,
         }}
       >
-        <ContainerNavigationOuter
-          data-__ak-navigation-container-closed={isCollapsed}
-        >
+        <div data-__ak-navigation-container-closed={isCollapsed}>
           <ContainerNavigationInner
             innerRef={this.onRefChange}
           >
@@ -154,8 +151,8 @@ export default class ContainerNavigation extends PureComponent {
               {children}
             </ContainerNavigationChildren>
           </ContainerNavigationInner>
-        </ContainerNavigationOuter>
-      </ThemeProvider >
+        </div>
+      </ThemeProvider>
     );
   }
 }

@@ -1,6 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
+import NavigationFixedContainer from '../styled/NavigationFixedContainer';
+import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigationWrapper';
+import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
 import Spacer from './Spacer';
@@ -11,8 +14,6 @@ import {
   resizeClosedBreakpoint,
   standardOpenWidth,
 } from '../../shared-variables';
-import NavigationOuter from '../styled/NavigationOuter';
-import NavigationInner from '../styled/NavigationInner';
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   if (!isCollapsible && !isOpen) {
@@ -196,7 +197,7 @@ export default class Navigation extends PureComponent {
     const shouldAnimateContainer = isTogglingIsOpen && !isResizing;
 
     const globalNavigation = showGlobalNavigation ? (
-      <Spacer width={globalOpenWidth + containerOffsetX}>
+      <NavigationGlobalNavigationWrapper>
         <GlobalNavigation
           appearance={globalAppearance}
           createIcon={globalCreateIcon}
@@ -208,7 +209,7 @@ export default class Navigation extends PureComponent {
           searchIcon={globalSearchIcon}
           secondaryActions={globalSecondaryActions}
         />
-      </Spacer>
+      </NavigationGlobalNavigationWrapper>
     ) : null;
 
     const resizer = isResizeable ? (
@@ -222,23 +223,16 @@ export default class Navigation extends PureComponent {
     ) : null;
 
     return (
-      <NavigationOuter>
+      <div>
         {/* Used to push the page to the right the width of the nav */}
         <Spacer
           shouldAnimate={shouldAnimateContainer}
           width={renderedWidth}
-        />
-        <NavigationInner>
-          <div style={{ zIndex: isGlobalNavPartiallyCollapsed ? false : 1 }}>
+        >
+          <NavigationFixedContainer>
             {globalNavigation}
-          </div>
-          <div style={{ zIndex: 2, position: 'relative' }}>
-            {drawers}
-          </div>
-          <div>
-            <Spacer
-              shouldAnimate={shouldAnimateContainer}
-              width={containerWidth}
+            <NavigationContainerNavigationWrapper
+              horizontalOffset={containerOffsetX}
             >
               <ContainerNavigation
                 appearance={containerAppearance}
@@ -255,11 +249,12 @@ export default class Navigation extends PureComponent {
               >
                 {children}
               </ContainerNavigation>
-            </Spacer>
-          </div>
-          {resizer}
-        </NavigationInner>
-      </NavigationOuter>
+            </NavigationContainerNavigationWrapper>
+            {resizer}
+          </NavigationFixedContainer>
+        </Spacer>
+        {drawers}
+      </div>
     );
   }
 }

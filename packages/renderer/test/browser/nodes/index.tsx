@@ -259,6 +259,31 @@ describe('Nodes', () => {
       expect(renderNode({ type: 'mention', attrs: { 'name': 'Oscar', 'uuid': 'nah' } })).to.equal('Unknown format: "mention"');
     });
 
+    it('should default to a span if it has a content array containing renderable nodes', () => {
+      const invalidBlockNode = {
+        type: 'neckPillow',
+        content: [
+          {
+            type: 'text',
+            text: 'Here',
+            marks: [
+              {
+                type: 'em'
+              }
+            ]
+          },{
+            type: 'text',
+            text: ' is '
+          },{
+            type: 'text',
+            text: 'something'
+          },
+        ]
+      };
+      const rendered = renderNode(invalidBlockNode);
+      expect(rendered.type).to.equal('span');
+    });
+
   });
 
   describe('renderTextNodes', () => {

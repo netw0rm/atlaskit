@@ -348,6 +348,9 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {
         return validNode.attrs.text;
+      } else if (nodeContent.length) {
+        // If we have an unknown, block-level node with text content, default to a paragraph with text
+        return <span key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</span>;
       } else if (validNode.text) {
         return validNode.text;
       }

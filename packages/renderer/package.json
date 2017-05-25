@@ -23,9 +23,9 @@
   "dependencies": {
     "@atlaskit/emoji": "^14.2.0",
     "@atlaskit/icon": "^6.5.4",
-    "@atlaskit/media-card": "^17.1.4",
+    "@atlaskit/media-card": "^17.1.5",
     "@atlaskit/media-core": "^8.0.0",
-    "@atlaskit/media-filmstrip": "^4.1.1",
+    "@atlaskit/media-filmstrip": "^4.1.3",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/util-shared-styles": "^2.0.3",
     "styled-components": "^1.4.0",
@@ -46,7 +46,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^4.8.1",
+    "@atlaskit/media-test-helpers": "^6.0.2",
     "@atlaskit/util-data-test": "^4.0.0",
     "akutil-common-test": "*"
   },

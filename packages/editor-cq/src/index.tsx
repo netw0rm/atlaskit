@@ -24,6 +24,7 @@ import {
   textFormattingStateKey,
   clearFormattingStateKey,
   panelStateKey,
+  macroStateKey,
   mentionsStateKey,
   keymap,
   Node as PMNode,
@@ -209,6 +210,7 @@ export default class Editor extends PureComponent<Props, State> {
     const mediaState = editorState && this.mediaPlugins && this.props.mediaProvider && mediaStateKey.getState(editorState);
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
     const panelState = editorState && panelStateKey.getState(editorState);
+    const macroState = editorState && macroStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
@@ -229,6 +231,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateClearFormatting={clearFormattingState}
         pluginStateMedia={mediaState}
         pluginStatePanel={panelState}
+        pluginStateMacro={macroState}
         packageVersion={version}
         packageName={name}
         mentionProvider={this.mentionProvider}

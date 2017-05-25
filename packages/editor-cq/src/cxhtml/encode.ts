@@ -47,6 +47,10 @@ export default function encode(node: PMNode) {
       return encodeMediaGroup(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
+    } else if (node.type === schema.nodes.inlineMacro ||
+      node.type === schema.nodes.bodylessBlockMacro ||
+      node.type === schema.nodes.richTextBlockMacro) {
+      return encodeMacro(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -200,11 +204,11 @@ export default function encode(node: PMNode) {
     const plainTextBody = doc.createElementNS(AC_XMLNS, 'ac:plain-text-body');
     const fragment = doc.createDocumentFragment();
     (node.textContent || '').split(/]]>/g).map((value, index, array) => {
-        const isFirst = index === 0;
-        const isLast = index === array.length - 1;
-        const prefix = isFirst ? '' : '>';
-        const suffix = isLast ? '' : ']]';
-        return doc.createCDATASection(prefix + value + suffix);
+      const isFirst = index === 0;
+      const isLast = index === array.length - 1;
+      const prefix = isFirst ? '' : '>';
+      const suffix = isLast ? '' : ']]';
+      return doc.createCDATASection(prefix + value + suffix);
     }).forEach(cdata => fragment.appendChild(cdata));
 
     plainTextBody.appendChild(fragment);
@@ -213,7 +217,7 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  function encodePanel (node: PMNode) {
+  function encodePanel(node: PMNode) {
     const elem = createMacroElement(node.attrs.panelType);
     const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
     const fragment = doc.createDocumentFragment();
@@ -259,6 +263,22 @@ export default function encode(node: PMNode) {
     return link;
   }
 
+  function encodeMacro(node: PMNode) {
+    const elem = createMacroElement(node.attrs.macroName);
+    const params = node.attrs.params ? node.attrs.params.split('&') : [];
+    params.forEach((param) => {
+      const keyValuePair = param.split('=');
+      const key = keyValuePair[0];
+      const value = keyValuePair[1];
+      const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+      serverParam.setAttributeNS(AC_XMLNS, 'ac:name', key);
+      serverParam.textContent = value;
+      elem.appendChild(serverParam);
+    });
+
+    return elem;
+  }
+
   function encodeUnsupported(node: PMNode) {
     const domNode = parseCxhtml(node.attrs.cxhtml || '').querySelector('body')!.firstChild;
     if (domNode) {
@@ -294,7 +314,7 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  function createMacroElement (name) {
+  function createMacroElement(name) {
     const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
     elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
     elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');

@@ -431,25 +431,16 @@ function childrenOfMacro(node: Element): NodeList | null {
 
 function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined {
   const placeholderUrl = getAcProperty(node, 'placeholder-url');
+  const macroName = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
   const params = toParamsString(getAcParameters(node));
 
-  switch (macroType(node)) {
-    case 'NONE-INLINE':
-
-      return schema.nodes.inlineMacro.create({
-        macroId, placeholderUrl, params
-      });
-
-    case 'NONE-BLOCK':
-      // TODO - For now this uses an inline macro as conf is wrapping these macros in a p tag
-      return schema.nodes.inlineMacro.create({
-        macroId, placeholderUrl, params
-      });
-    // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
-
-    case 'RICH_TEXT-BLOCK':
-      // TODO schema for generic rich text nodes.
+  // Switch on name first to check for macros that the Atlassian editor supports "natively"
+  switch (macroName) {
+    case 'INFO':
+    case 'WARNING':
+    case 'TIP':
+    case 'NOTE':
       const panelTitle = getAcParameter(node, 'title');
       const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
       let panelBody: any[] = [];
@@ -475,8 +466,49 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       } else {
         panelBody.push(schema.nodes.paragraph.create({}));
       }
+      return schema.nodes.panel.create({ panelType: macroName.toLowerCase() }, panelBody);
+  }
 
-      return schema.nodes.panel.create({ panelType: 'info' }, panelBody);
+  switch (macroType(node)) {
+    case 'NONE-INLINE':
+      return schema.nodes.inlineMacro.create({
+        macroId, placeholderUrl, macroName, params
+      });
+
+    case 'NONE-BLOCK':
+      return schema.nodes.bodylessBlockMacro.create({
+        macroId, placeholderUrl, macroName, params
+      });
+
+    case 'RICH_TEXT-BLOCK':
+      // TODO - extract common logic from the panel node above
+      const richTextBlockTitle = getAcParameter(node, 'title');
+      const richTextBlockNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
+      const richTextBlockBody: any[] = [];
+
+      if (richTextBlockTitle) {
+        richTextBlockBody.push(
+          schema.nodes.heading.create({ level: 3 }, schema.text(richTextBlockTitle))
+        );
+      }
+
+      if (richTextBlockNodes) {
+        const nodes = Array.prototype.slice.call(richTextBlockNodes);
+
+        for (let i = 0, len = nodes.length; i < len; i += 1) {
+          const domNode: any = nodes[i];
+
+          const content = getContent(domNode);
+          const pmNode = converter(content, domNode);
+          if (pmNode) {
+            richTextBlockBody.push(pmNode);
+          }
+        }
+      } else {
+        richTextBlockBody.push(schema.nodes.paragraph.create({}));
+      }
+
+      return schema.nodes.richTextBlockMacro.create({macroId, placeholderUrl, macroName}, richTextBlockBody);
 
     case 'PLAIN_TEXT-BLOCK':
       const codeContent = getAcProperty(node, 'PLAIN-TEXT-BODY') || ' ';

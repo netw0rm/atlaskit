@@ -3,7 +3,7 @@ import EllipsisItem from './EllipsisItem';
 import { defaultMaxItems } from '../constants';
 import Container from '../styled/BreadcrumbsContainer';
 
-const { count, toArray } = Children;
+const { toArray } = Children;
 
 export default class BreadcrumbsStateless extends PureComponent {
   static propTypes = {
@@ -29,7 +29,7 @@ export default class BreadcrumbsStateless extends PureComponent {
   }
 
   renderAllItems() {
-    return Children.map(this.props.children, (child, index) => React.cloneElement(child, {
+    return toArray(this.props.children).map((child, index) => React.cloneElement(child, {
       hasSeparator: index < this.props.children.length - 1,
     }));
   }
@@ -50,7 +50,7 @@ export default class BreadcrumbsStateless extends PureComponent {
   render() {
     return (
       <Container>
-        {(this.props.isExpanded || count(this.props.children) <= this.props.maxItems)
+        {(this.props.isExpanded || toArray(this.props.children).length <= this.props.maxItems)
           ? this.renderAllItems()
           : this.renderFirstAndLast()
         }

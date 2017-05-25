@@ -30,7 +30,9 @@ describe('media', () => {
       onChange={noop}
     />);
 
-    await resolvedProvider;
+    const resolvedMediaProvider = await resolvedProvider;
+    await resolvedMediaProvider.uploadContext;
+
     expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(1);
   });
 
@@ -95,7 +97,8 @@ describe('media', () => {
     editor.setProps({ mediaProvider: resolvedProvider });
 
     // wait while the changes apply
-    await resolvedProvider;
+    const resolvedMediaProvider = await resolvedProvider;
+    await resolvedMediaProvider.uploadContext;
 
     expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(1);
   });

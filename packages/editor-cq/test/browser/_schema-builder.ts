@@ -37,6 +37,7 @@ export const media = (attrs: {
   fileName?: string;
   fileSize?: number;
   fileMimeType?: string;
+  publicId?: string;
 }) => {
   const node = schema.nodes.media.create(attrs) as MediaNode;
 

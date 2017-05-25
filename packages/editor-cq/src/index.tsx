@@ -30,14 +30,19 @@ import {
   version as coreVersion,
   mediaPluginFactory,
   mediaStateKey,
-  mediaNodeView,
   MediaProvider,
   Plugin,
-  mentionNodeView,
   ProviderFactory,
   MediaPluginState,
   MediaState,
   Slice,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactMediaGroupNode,
+  ReactMediaNode,
+  ReactMentionNode,
+  reactNodeViewPlugins,
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -270,6 +275,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...mediaPlugins,
           ...panelPlugins(schema),
+          ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),
@@ -292,9 +298,12 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory),
           jiraIssue: jiraIssueNodeView,
-          media: mediaNodeView(this.providerFactory)
+          mediaGroup: nodeViewFactory(this.providerFactory, {
+            mediaGroup: ReactMediaGroupNode,
+            media: ReactMediaNode,
+          }, true),
+          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

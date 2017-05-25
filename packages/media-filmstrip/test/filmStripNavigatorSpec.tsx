@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
+
 import { FilmStripNavigator } from '../src';
 import { FilmStripViewWrapper } from '../src/styled';
 
@@ -15,7 +16,7 @@ describe('FilmStripNavigator', () => {
 
   it('Renders correct number of children', () => {
     const children = [<div key="1">1</div>, <div key="2">2</div>, <div key="3">3</div>];
-    const filmstripNavigator = mount(<FilmStripNavigator>{children}</FilmStripNavigator>);
+    const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
 
     expect(filmstripNavigator.find('li').length).to.equal(children.length);
   });

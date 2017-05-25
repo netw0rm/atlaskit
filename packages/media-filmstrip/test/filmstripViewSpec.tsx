@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as sinon from 'sinon';
 import {expect} from 'chai';
-import {mount} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../src/index';
 import {ArrowLeftWrapper, ArrowRightWrapper} from '../src/styled';
 import {CardView} from '@atlaskit/media-card';
@@ -89,9 +89,8 @@ describe('FilmstripView', () => {
   });
 
   it('should contain all provided items', () => {
-    const filmStrip = mountFilmStrip(container, items, 500);
-
-    expect(filmStrip.find('li').length).to.be.equal(items.length);
+    const filmStrip = shallow(<FilmStripView items={items} />);
+    expect(filmStrip.find('CardView').length).to.be.equal(items.length);
   });
 
   it.skip('should initially have right arrow with large collection', (done) => {
@@ -157,13 +156,14 @@ describe('FilmstripView', () => {
 
   it('should handle the onCardClick event', () => {
     const onCardClick = sinon.spy();
+    const cardViewClickMock = {event: {}};
 
-    const filmStrip = mountFilmStrip(container, items, 500, onCardClick);
-    filmStrip.find(CardView).first().simulate('click');
-
-    const {item: clickedItem, items: clickedItems} = onCardClick.firstCall.args[0];
+    const filmStrip = shallow(<FilmStripView items={items} onCardClick={onCardClick} />);
+    filmStrip.find(CardView).first().simulate('click', cardViewClickMock);
 
     expect(onCardClick.calledOnce).to.be.true;
+
+    const {item: clickedItem, items: clickedItems} = onCardClick.firstCall.args[0];
     expect(clickedItem).deep.equals(items[0]);
     expect(clickedItems).deep.equals(clickedItems);
   });

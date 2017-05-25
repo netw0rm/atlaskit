@@ -1,4 +1,4 @@
-import { NodeSpec } from '@atlaskit/editor-core';
+import { NodeSpec, NodeView } from '@atlaskit/editor-core';
 import { style } from 'typestyle';
 import {
   akBorderRadius,
@@ -51,4 +51,4 @@ export default {
     }
 } as NodeSpec;
 
-export const bodylessBlockMacroNodeView = bodylessMacroNodeView('div', nodeClassName);
+export const bodylessBlockMacroNodeView: (node: any, view: any, getPos: () => number) => NodeView = bodylessMacroNodeView('div', nodeClassName);

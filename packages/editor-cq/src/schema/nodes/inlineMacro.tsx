@@ -3,7 +3,7 @@ import {
     akColorN30,
     akColorN50,
 } from '@atlaskit/util-shared-styles';
-import { NodeSpec } from '@atlaskit/editor-core';
+import { NodeSpec, NodeView } from '@atlaskit/editor-core';
 import { style } from 'typestyle';
 import bodylessMacroNodeView from './bodylessMacroNodeView';
 
@@ -35,6 +35,7 @@ export default {
     inline: true,
     atom: true,
     attrs: {
+        macroName: { default: null },
         macroId: { default: null },
         placeholderUrl: {default: null},
         params: { default: null },
@@ -43,6 +44,7 @@ export default {
         tag: 'span[data-macro-id]',
         getAttrs: (dom: HTMLElement) => ({
             macroId: dom.dataset.macroId,
+            macroName: dom.dataset.macroName,
             placeholderUrl: dom.dataset.placeholderUrl,
             params: dom.dataset.params,
         })
@@ -52,4 +54,4 @@ export default {
     }
 } as NodeSpec;
 
-export const inlineMacroNodeView = bodylessMacroNodeView('span', nodeClassName);
+export const inlineMacroNodeView: (node: any, view: any, getPos: () => number) => NodeView  = bodylessMacroNodeView('span', nodeClassName);

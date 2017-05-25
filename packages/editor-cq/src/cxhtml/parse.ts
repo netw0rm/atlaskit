@@ -512,7 +512,8 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
     case 'PLAIN_TEXT-BLOCK':
       const codeContent = getAcProperty(node, 'PLAIN-TEXT-BODY') || ' ';
-      return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
+      const codeLanguage = getAcParameter(node, 'language') || 'text';
+      return schema.nodes.codeBlock.create({ language: codeLanguage }, schema.text(codeContent));
   }
 
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const NavigationItemInner = styled.div`
   height: 100%;
   width: 100%;
-  padding: 0 ${akGridSizeUnitless}px;
+  padding: 0 ${akGridSizeUnitless * 1.5}px;
   display: flex;
   align-items: center;
   box-sizing: border-box;

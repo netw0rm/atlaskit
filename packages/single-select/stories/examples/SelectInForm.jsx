@@ -83,6 +83,14 @@ export default (
       hasAutocomplete
       isDisabled
     />
+    <Select
+      id="colors_id"
+      items={cities}
+      label="Invalid field"
+      placeholder="Select city"
+      shouldFitContainer
+      isInvalid
+    />
     <div style={{ margin: '20px 0' }}>
       <Button type="submit">Submit allthethings!</Button>
     </div>

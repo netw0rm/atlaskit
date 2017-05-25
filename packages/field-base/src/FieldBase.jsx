@@ -79,8 +79,11 @@ export default class FieldBase extends PureComponent {
 
   renderRightGutter() {
     if (!this.props.isDisabled && this.props.isInvalid) {
+      const iconWrapperClasses = classNames(styles.warningIconWrapper, {
+        [styles.paddingDisabled]: this.props.isPaddingDisabled,
+      });
       return (
-        <div className={styles.warningIconWrapper}>
+        <div className={iconWrapperClasses}>
           <WarningIcon label="warning" size="medium" />
         </div>
       );

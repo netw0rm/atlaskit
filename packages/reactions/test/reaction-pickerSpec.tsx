@@ -50,7 +50,6 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     const picker = mount(renderPicker());
     const trigger = picker.find(Trigger);
     trigger.simulate('mousedown', { button: 0 });
-    console.log(picker.html());
     const moreButton = picker.find(EditorMoreIcon);
     moreButton.simulate('mousedown', { button: 0 });
     expect(picker.find(EmojiPicker).length).to.equal(1);

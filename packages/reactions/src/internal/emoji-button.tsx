@@ -13,7 +13,7 @@ const emojiButtonStyle = style({
   borderRadius: '5px',
   cursor: 'pointer',
   margin: '0',
-  padding: '9px 8px', // emoji uses a negative top/bottom margin in packages/emoji/src/components/common/styles.ts
+  padding: '10px 8px',
   $nest: {
     '&:hover > span': {
       transition: 'transform cubic-bezier(0.23, 1, 0.32, 1) 200ms',

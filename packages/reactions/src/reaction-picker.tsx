@@ -5,14 +5,16 @@ import Layer from '@atlaskit/layer';
 import ToolTip from '@atlaskit/tooltip';
 import {
   akBorderRadius,
-  akColorN30A
+  akColorN0,
+  akColorN30A,
+  akColorN50A,
+  akColorN60A
 } from '@atlaskit/util-shared-styles';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
-import Popup from './internal/popup';
 import Selector from './internal/selector';
 import Trigger from './internal/trigger';
 import { analyticsService } from './analytics';
@@ -72,6 +74,18 @@ const moreButtonStyle = style({
   $nest: {
     '&:hover': {
       backgroundColor: akColorN30A
+    }
+  }
+});
+
+const popupStyle = style({
+  background: akColorN0,
+  borderRadius: akBorderRadius,
+  boxShadow: `0 4px 8px -2px ${akColorN50A}, 0 0 1px ${akColorN60A}`,
+
+  $nest: {
+    '&> div': {
+      boxShadow: undefined
     }
   }
 });
@@ -189,9 +203,9 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     }
 
     return (
-      <Popup>
+      <div className={popupStyle}>
         {this.renderContent()}
-      </Popup>
+      </div>
     );
   }
 

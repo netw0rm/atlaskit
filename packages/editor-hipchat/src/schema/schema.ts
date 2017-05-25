@@ -1,13 +1,11 @@
 import {
   doc,
+  code as codeBase,
   MarkSpec,
   NodeSpec,
   Schema,
   createSchema
 } from '@atlaskit/editor-core';
-
-import { code } from './marks/code';
-import { codeBlock } from './nodes/codeBlock';
 
 export interface HCSchemaNodes {
   doc: NodeSpec;
@@ -30,6 +28,11 @@ export interface HCSchemaMarks {
   mentionQuery: MarkSpec;
   emojiQuery: MarkSpec;
 }
+
+const code: MarkSpec = {
+  ...codeBase,
+  excludes: 'em strong underline mentionQuery emojiQuery',
+};
 
 const nodes = [
   // A paragraph node.
@@ -61,9 +64,6 @@ const nodes = [
 const customNodeSpecs = {
   // The top level node for a document.
   doc,
-
-  // styled codeBlock nodes
-  codeBlock
 };
 
 const marks = [

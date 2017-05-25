@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
 export default class Link extends PureComponent {

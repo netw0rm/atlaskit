@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Pagination } from '@atlaskit/pagination';
 
 import { ASC, DESC } from '../internal/constants';

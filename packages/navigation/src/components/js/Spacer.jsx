@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import SpacerInner from '../styled/SpacerInner';
 
 export default class Spacer extends PureComponent {

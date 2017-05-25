@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import CommentField from './internal/CommentField';
 
 export default class CommentTime extends PureComponent {

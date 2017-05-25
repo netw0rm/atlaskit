@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { AtlassianLogo } from '@atlaskit/logo';
 import ChevronDownIconIcon from '@atlaskit/icon/glyph/chevron-down';
 import HeaderLinks from './HeaderLinks';

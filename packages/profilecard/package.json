@@ -26,6 +26,7 @@
     "classnames": "^2.2.5",
     "es6-promise": "^4.0.5",
     "lru-fast": "^0.2.2",
+    "prop-types": "^15.5.10",
     "styled-components": "^1.4.4",
     "whatwg-fetch": "^1.0.0"
   },

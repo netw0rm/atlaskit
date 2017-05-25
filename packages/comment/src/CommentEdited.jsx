@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import CommentAction from './CommentAction';
 
 export default class CommentEdited extends PureComponent {

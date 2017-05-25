@@ -23,6 +23,7 @@
     "@atlaskit/util-shared-styles": "^2.1.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
+    "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"
   },
   "author": "Atlassian Pty Ltd",

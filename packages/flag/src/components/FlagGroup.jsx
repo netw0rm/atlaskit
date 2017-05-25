@@ -1,4 +1,5 @@
-import React, { Children, cloneElement, PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { Children, cloneElement, PureComponent } from 'react';
 import FlagAnimationWrapper from './FlagAnimationWrapper';
 import Group, { SROnly, Inner } from '../styled/Group';
 

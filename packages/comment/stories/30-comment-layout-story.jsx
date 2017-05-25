@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import Editor from '@atlaskit/editor-bitbucket';
 

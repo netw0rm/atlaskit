@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import InlineDialog from '@atlaskit/inline-dialog';
 import ContentWrapper from '../styled/ContentWrapper';
 import DialogWrapper from '../styled/DialogWrapper';

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { ASC, DESC } from '../internal/constants';
 import TableRow from './TableRow';
 import props from '../internal/props';

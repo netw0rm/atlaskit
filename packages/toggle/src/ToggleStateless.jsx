@@ -1,5 +1,6 @@
 import uid from 'uid';
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import CloseIcon from 'ak-icon/glyph/cancel';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import { Handle, IconWrapper, Inner, Input, Label, Slide } from './styled';

@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 
 import Container, { ImageWrapper, PresenceWrapper } from '../styled/Avatar';

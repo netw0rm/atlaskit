@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import DynamicTableStateless from './Stateless';
 import props from '../internal/props';
 import { ASC, DESC } from '../internal/constants';

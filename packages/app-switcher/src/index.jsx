@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
 
 import AppSwitcherPropTypes from './internal/prop-types';

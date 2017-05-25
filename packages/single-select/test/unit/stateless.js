@@ -303,6 +303,12 @@ describe(name, () => {
         expect(onOpenChangeSpy.called).to.equal(true);
         expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
       });
+
+      it('should focus the autocomplete textfield', () => {
+        wrapper.setProps({ isOpen: false, hasAutocomplete: true });
+        instance.handleTriggerClick({});
+        expect(document.activeElement).to.equal(instance.inputNode);
+      });
     });
 
     describe('handleKeyboardInteractions', () => {

@@ -13,6 +13,7 @@ import {
   ContextFactory,
   Context,
   CardDelete,
+  CardEventHandler,
   FileDetails,
   MediaProvider,
   MediaState,
@@ -26,7 +27,7 @@ import { EditorView, mediaStateKey } from '../../index';
 export interface Props extends Attributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
-  onDelete?: () => void;
+  onDelete?: CardEventHandler;
 }
 
 export interface State extends MediaState {
@@ -61,6 +62,7 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
 
 export default class MediaComponent extends React.PureComponent<Props, State> {
   private thumbnailWm = new WeakMap();
+  private destroyed = false;
 
   state: State = {
     id: '',
@@ -86,6 +88,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   public componentWillUnmount() {
+    this.destroyed = true;
+
     const { editorView, id } = this.props;
 
     if (!editorView) {
@@ -181,7 +185,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderPublicFile() {
     const { viewContext } = this.state;
-    const { id, collection, onDelete } = this.props;
+    const { collection, id, onDelete } = this.props;
 
     return (
       <Card
@@ -199,7 +203,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType} = state;
+    const { thumbnail, fileName, fileSize, fileType } = state;
     const { onDelete } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
@@ -243,6 +247,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaStateChange = (mediaState: MediaState) => {
+    if (this.destroyed) {
+      return;
+    }
+
     const newState = {
       ...mediaState
     };
@@ -254,6 +262,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { editorView, id } = this.props;
 
     if (!editorView) {
+      return;
+    }
+
+    if (this.destroyed) {
       return;
     }
 
@@ -270,6 +282,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     this.setState({ mediaProvider, ...mediaState });
 
     mediaProvider.viewContext.then((context: ContextConfig | Context) => {
+      if (this.destroyed) {
+        return;
+      }
+
       if ('clientId' in (context as ContextConfig)) {
         context = ContextFactory.create(context as ContextConfig);
       }

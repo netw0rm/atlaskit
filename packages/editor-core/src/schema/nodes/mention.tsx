@@ -3,12 +3,8 @@ import {
   akColorN50,
   akColorN500
 } from '@atlaskit/util-shared-styles';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { ResourcedMention } from '@atlaskit/mention';
 import { style } from 'typestyle';
-import { NodeSpec, NodeView } from '../../prosemirror';
-import ProviderFactory, { WithProviders } from '../../providerFactory';
+import { NodeSpec } from '../../prosemirror';
 
 const mentionStyle = style({
   background: akColorN30,
@@ -48,35 +44,4 @@ export const mention: NodeSpec = {
     };
     return ['span', attrs, node.attrs.text];
   }
-};
-
-export const mentionNodeView = (providerFactory: ProviderFactory) => (node: any, view: any, getPos: () => number): NodeView => {
-  let dom: HTMLElement | undefined = document.createElement('span');
-  const { id, text } = node.attrs;
-
-  ReactDOM.render(
-    <WithProviders
-      providers={['mentionProvider']}
-      providerFactory={providerFactory}
-      // tslint:disable-next-line:jsx-no-lambda
-      renderNode={providers =>
-        <ResourcedMention
-          id={id}
-          text={text}
-          mentionProvider={providers['mentionProvider']}
-        />
-      }
-    />
-  , dom);
-
-  return {
-    get dom() {
-      return dom;
-    },
-
-    destroy() {
-      ReactDOM.unmountComponentAtNode(dom!);
-      dom = undefined;
-    }
-  };
 };

@@ -8,6 +8,10 @@ export class Selection {
   to: number;
   $from: ResolvedPos;
   $to: ResolvedPos;
+  anchor: number;
+  head: number;
+  $anchor: ResolvedPos;
+  $head: ResolvedPos;
   empty: boolean;
   ranges: Array<SelectionRange>;
   toJSON(): { [key: string]: any };

@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -6,11 +7,16 @@ import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   baseKeymap,
   keymap,
-  mediaNodeView,
   MediaPluginBehavior,
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactMediaGroupNode,
+  ReactMediaNode,
+  reactNodeViewPlugins,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
@@ -31,7 +37,6 @@ import {
   sleep,
 } from '../../../../src/test-helper';
 import { default as defaultSchema, compactSchema } from '../../../../src/test-helper/schema';
-import { PositionedNode } from '../../../../src/plugins/media';
 
 chai.use(chaiPlugin);
 
@@ -51,9 +56,11 @@ describe('Media plugin', () => {
     behavior = behavior || 'default';
     const schema = (behavior === 'compact') ? compactSchema : defaultSchema;
     const addBaseKeymap = behavior !== 'compact';
-    const plugins = mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler });
-
-    plugins.push(history());
+    const plugins = [
+      ...mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler }),
+      ...reactNodeViewPlugins(schema),
+      history(),
+    ];
 
     if (behavior === 'compact') {
       const baseKeymapForCompactBehaviour = { ...baseKeymap };
@@ -68,7 +75,10 @@ describe('Media plugin', () => {
       addBaseKeymap,
       plugins,
       nodeViews: {
-        media: mediaNodeView(providerFactory)
+        mediaGroup: nodeViewFactory(providerFactory, {
+          mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
       },
       place: fixture(),
     });
@@ -78,7 +88,14 @@ describe('Media plugin', () => {
     const [node, transaction] = pluginState.insertFile({ id, status: 'uploading' }, testCollectionName);
     editorView.dispatch(transaction);
 
-    return node as PositionedNode;
+    return node;
+  };
+
+  const getNodePos = (pluginState: MediaPluginState, id: string) => {
+    const mediaNodeWithPos = pluginState.findMediaNode(id);
+    assert(mediaNodeWithPos, `Media node with id "${id}" has not been mounted yet`);
+
+    return mediaNodeWithPos!.getPos();
   };
 
   it('allows change handler to be registered', () => {
@@ -320,17 +337,17 @@ describe('Media plugin', () => {
   it('should cancel in-flight uploads after media item is removed from document', async () => {
     const spy = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), spy);
-    const firstTemporaryFileId = `temporary:${randomId()}`;
-    const secondTemporaryFileId = `temporary:${randomId()}`;
-    const thirdTemporaryFileId = `temporary:${randomId()}`;
+    const firstTemporaryFileId = `temporary:first`;
+    const secondTemporaryFileId = `temporary:second`;
+    const thirdTemporaryFileId = `temporary:third`;
 
     // wait until mediaProvider has been set
     const provider = await resolvedProvider;
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    const firstMediaNode = insertFile(editorView, pluginState, firstTemporaryFileId);
-    const secondMediaNode = insertFile(editorView, pluginState, secondTemporaryFileId);
+    insertFile(editorView, pluginState, firstTemporaryFileId);
+    insertFile(editorView, pluginState, secondTemporaryFileId);
     insertFile(editorView, pluginState, thirdTemporaryFileId);
 
     expect(editorView.state.doc).to.deep.equal(
@@ -359,14 +376,14 @@ describe('Media plugin', () => {
     stateManager.subscribe(thirdTemporaryFileId, spy);
 
     let pos: number;
-    pos = firstMediaNode.getPos();
+    pos = getNodePos(pluginState, firstTemporaryFileId);
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     // When removing multiple nodes with node view, ProseMirror performs the DOM update
     // asynchronously after a 20ms timeout. In order for the operations to succeed, we
     // must wait for the DOM reconciliation to conclude before proceeding.
     await sleep(100);
 
-    pos = secondMediaNode.getPos();
+    pos = getNodePos(pluginState, secondTemporaryFileId);
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     await sleep(100);
 

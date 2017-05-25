@@ -123,6 +123,7 @@ export default class ContainerNavigation extends PureComponent {
         provided={presets[appearance]}
         isCollapsed={isCollapsed}
       >
+        {/* This div is needed for legacy reasons. All children should use isCollapsed on the theme */}
         <div data-__ak-navigation-container-closed={isCollapsed}>
           <ContainerNavigationInner
             innerRef={this.onRefChange}
@@ -149,7 +150,7 @@ export default class ContainerNavigation extends PureComponent {
             </ContainerNavigationChildren>
           </ContainerNavigationInner>
         </div>
-      </ThemeProvider>
+      </WithTheme>
     );
   }
 }

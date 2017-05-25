@@ -9,7 +9,7 @@ const NavigationFixedContainer = styled.div`
   left: 0;
   /* force this to have the width of the Spacer above */
   width: inherit;
-  z-index: ${zIndex};
+  z-index: ${zIndex.base};
 `;
 
 NavigationFixedContainer.displayName = 'NavigationFixedContainer';

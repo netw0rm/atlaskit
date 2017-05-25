@@ -20,7 +20,7 @@ const DrawerInner = styled.div`
   transition: ${transformTransition}, ${widthTransition};
   width: ${({ width }) => widths[width].width};
   /* needs to sit on top of navigation */
-  z-index: ${zIndex + 1};
+  z-index: ${zIndex.drawer};
 `;
 
 DrawerInner.displayName = 'DrawerInner';

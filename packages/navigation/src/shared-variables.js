@@ -1,13 +1,5 @@
 import {
   akColorB200,
-  akColorB500,
-  akColorN0,
-  akColorN20,
-  akColorN500,
-  akColorN700,
-  akColorN80A,
-  akColorN30A,
-  akColorN900,
   akGridSizeUnitless,
   akZIndexNavigation,
 } from '@atlaskit/util-shared-styles';
@@ -41,29 +33,14 @@ export const createIconOffset = 120;
 export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;
-export const zIndex = akZIndexNavigation;
+export const zIndex = {
+  base: akZIndexNavigation,
+  drawer: akZIndexNavigation + 1,
+};
 
 // these are colors that are currently not controllable via theming
 export const unthemedColors = {
   resizer: akColorB200,
-};
-
-export const colors = {
-  container: {
-    background: akColorN20,
-    color: akColorN500,
-    keyline: akColorN30A,
-  },
-  global: {
-    background: akColorB500,
-    color: akColorN0,
-    keyline: akColorN80A,
-  },
-  settings: {
-    background: akColorN700,
-    color: akColorN0,
-    keyline: akColorN900,
-  },
 };
 
 export const globalPrimaryActions = (() => {

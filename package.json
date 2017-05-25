@@ -203,5 +203,10 @@
     "validate/typescript": "lerna run validate/typescript",
     "validate/flow": "flow check"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "element-closest": "^2.0.2",
+    "es6-promise": "^4.0.5",
+    "url-search-params": "^0.6.1",
+    "whatwg-fetch": "^2.0.3"
+  }
 }

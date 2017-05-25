@@ -4,7 +4,7 @@ import { Context, MediaCollectionProvider } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import { fetchToken } from '../domain/fetch-token';
 import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
-import { MediaViewerConstructor, MediaViewerInterface } from '../mediaviewer';
+import { MediaViewerConstructor, MediaViewerInterface, MediaViewerConfig } from '../mediaviewer';
 
 export interface MediaCollectionViewerProps {
   readonly context: Context;
@@ -13,6 +13,7 @@ export interface MediaCollectionViewerProps {
   readonly pageSize?: number;
 
   readonly MediaViewer: MediaViewerConstructor;
+  readonly mediaViewerConfiguration?: MediaViewerConfig;
   readonly basePath: string;
 
   readonly onClose?: () => void;
@@ -31,7 +32,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
   constructor(props: MediaCollectionViewerProps) {
     super(props);
 
-    const { context, collectionName, basePath, MediaViewer } = props;
+    const { context, collectionName, basePath, MediaViewer, mediaViewerConfiguration } = props;
     const { config } = context;
     const { clientId, tokenProvider } = config;
     const pageSize = this.props.pageSize || MediaCollectionViewer.defaultPageSize;
@@ -39,10 +40,10 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
     this.state = {
       provider: context.getMediaCollectionProvider(collectionName, pageSize),
       mediaViewer: new MediaViewer({
+        ...mediaViewerConfiguration,
         assets: {
           basePath: basePath
         },
-        enableListLoop: false,
         fetchToken: fetchToken(clientId, tokenProvider, collectionName)
       })
     };

@@ -25,6 +25,12 @@ export const layout = {
   },
 };
 
+export const globalItemSizes = {
+  small: 4 * akGridSizeUnitless,
+  medium: 5 * akGridSizeUnitless,
+  large: 6 * akGridSizeUnitless,
+};
+
 export const globalOpenWidth = layout.width.closed;
 export const containerClosedWidth = globalOpenWidth;
 export const containerOpenWidth = 240;

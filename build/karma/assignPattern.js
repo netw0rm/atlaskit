@@ -2,7 +2,7 @@ module.exports = (config, pattern, excludePattern) => {
   config.set({
     files: [pattern],
     preprocessors: {
-      [pattern]: ['webpack', 'sourcemap'],
+      [pattern]: ['webpack'],
     },
   });
   if (excludePattern) {

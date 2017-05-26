@@ -19,6 +19,7 @@ describe('exports', () => {
     // If we were to auto-generate this list, then renaming, adding or removing would NOT
     // break any tests and thus not hint the developer at what kind of change he/she is making
     Object.keys(allExports).sort().should.deep.equal([
+      'akAnimationMixins',
       'akBorderRadius',
       'akCodeFontFamily',
       'akColorB100',

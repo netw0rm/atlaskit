@@ -123,5 +123,15 @@ describe('hyperlink', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('[text](http://foo)')));
     });
+
+    it('should not convert to hyperlink if the last character is a puntuation', () => {
+      const { editorView, sel } = editor(doc(linkable('{<>}')));
+      const hyperlinkText = 'http://foo';
+      insertText(editorView, `[${hyperlinkText}](http://foo)`, sel, sel);
+      insertText(editorView, ',', sel + hyperlinkText.length, sel + hyperlinkText.length);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://foo' })('http://foo'), ',')));
+    });
+
   });
 });

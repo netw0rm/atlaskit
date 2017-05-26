@@ -50,6 +50,20 @@ storiesOf('MediaImage', {})
       }, {
         title: 'Border radius',
         content: <ImageWrapper style={{borderRadius: '10px'}}><MediaImage dataURI={tallImage} /></ImageWrapper>
+      }, {
+        title: 'Charlie square 115x115',
+        content: (
+          <ImageWrapper style={{width: '115px', height: '115px'}}>
+            <MediaImage dataURI="https://wac-cdn-a.atlassian.com/dam/jcr:89e146b4-642e-41fc-8e65-7848337d7bdd/atlassian_charlie_square.png" />
+          </ImageWrapper>
+        )
+      }, {
+        title: 'Charlie 300x180',
+        content: (
+          <ImageWrapper style={{width: '300px', height: '180px'}}>
+            <MediaImage dataURI="https://wac-cdn-a.atlassian.com/dam/jcr:89e146b4-642e-41fc-8e65-7848337d7bdd/atlassian_charlie_square.png" />
+          </ImageWrapper>
+        )
       }]}
     </StoryList>
   ));

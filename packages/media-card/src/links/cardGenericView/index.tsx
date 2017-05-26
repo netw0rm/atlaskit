@@ -115,7 +115,9 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       return null;
     }
 
-    return <MediaImage key="thumbnail" dataURI={thumbnailUrl || ''} onError={this.thumbnailError} />;
+    const imageWidth = this.isHorizontal ? '115px' : undefined; // 115 is the implicit value of the link images due Flexbox
+
+    return <MediaImage width={imageWidth} key="thumbnail" dataURI={thumbnailUrl || ''} onError={this.thumbnailError} />;
   }
 
   private getIcon = (): JSX.Element | null => {

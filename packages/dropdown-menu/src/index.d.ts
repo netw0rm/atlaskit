@@ -13,6 +13,8 @@ interface Props {
   triggerType?: 'default' | 'button';
   triggerButtonProps?: any;
   shouldFlip?: boolean;
+  shouldFitContainer?: boolean;
+  shouldAllowMultilineItems?: boolean;
 }
 
 interface State {}

@@ -8,7 +8,7 @@ import { MediaViewerConstructor, MediaViewerInterface, MediaViewerConfig } from 
 
 export interface MediaCollectionViewerProps {
   readonly context: Context;
-  readonly occurenceKey: string;
+  readonly occurrenceKey: string;
   readonly collectionName: string;
   readonly pageSize?: number;
 
@@ -50,7 +50,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
   }
 
   componentDidMount(): void {
-    const { context, occurenceKey, onClose } = this.props;
+    const { context, occurrenceKey, onClose } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer, provider } = this.state;
@@ -70,7 +70,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
             mediaViewer.setFiles(files, { id: mediaViewer.getCurrent().id });
           } else {
             mediaViewer.setFiles(files);
-            mediaViewer.open({ id: occurenceKey });
+            mediaViewer.open({ id: occurrenceKey });
           }
         }
       });

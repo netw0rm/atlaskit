@@ -5,8 +5,8 @@ import Readme from '@atlaskit/util-readme';
 import { name, description } from '../package.json';
 
 /* eslint-disable import/no-duplicates, import/first */
-import defaultComponent from '../src';
-import defaultComponentSource from '!raw!../src';
+import defaultComponent from '../src/components/ButtonGroup';
+import defaultComponentSource from '!raw!../src/components/ButtonGroup';
 import defaultOverview from './examples/ButtonGroupOverview';
 import defaultOverviewSource from '!raw!./examples/ButtonGroupOverview';
 /* eslint-enable import/no-duplicates, import/first */

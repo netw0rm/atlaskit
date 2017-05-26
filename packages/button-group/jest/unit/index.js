@@ -1,9 +1,9 @@
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 import { name } from '../../package.json';
 import ButtonGroup from '../../src';
-import styles from '../../src/styles.less';
+import ButtonGroupDiv from '../../src/styled/ButtonGroup';
 
 describe(name, () => {
   describe('basic behavior', () => {
@@ -15,9 +15,15 @@ describe(name, () => {
       expect(group.children().length).toBe(3);
     });
 
+<<<<<<< HEAD:packages/button-group/jest/unit/index.js
     it(`should have className ${styles.wrapper}`, () => {
       const group = shallow(<ButtonGroup />);
       expect((group).hasClass((styles.wrapper))).toBe(true);
+=======
+    it('should have a ButtonGroupDiv', () => {
+      const group = mount(<ButtonGroup />);
+      expect(group.contains(<ButtonGroupDiv />)).to.equal(true);
+>>>>>>> feat(refactor): refactor button group to styled-components:packages/button-group/test/unit/index.js
     });
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "4.1.3",
+  "version": "4.2.0",
   "config": {
     "access": "public"
   },

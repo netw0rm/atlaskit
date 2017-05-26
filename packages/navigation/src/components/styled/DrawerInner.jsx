@@ -3,7 +3,7 @@ import {
   akColorN0,
   akColorN50A,
   akColorN500,
-  akZIndexNavigation,
+  akZIndexBlanket,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import {
@@ -28,8 +28,8 @@ const DrawerInner = styled.div`
   transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(${widths[width].offScreenTranslateX})`)}
   transition: ${transformTransition}, ${widthTransition};
   width: ${({ width }) => widths[width].width};
-  /* needs to sit on top of navigation */
-  z-index: ${akZIndexNavigation + 1};
+  /* needs to sit on top of navigation and the drawer */
+  z-index: ${akZIndexBlanket + 1};
 `;
 
 DrawerInner.displayName = 'DrawerInner';

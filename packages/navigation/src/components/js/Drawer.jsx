@@ -73,13 +73,11 @@ export default class Drawer extends PureComponent {
 
     return (
       <div>
-        <div style={{ zIndex: 0, position: 'relative' }}>
-          <Blanket
-            isTinted={isOpen}
-            canClickThrough={!isOpen}
-            onBlanketClicked={onBackButton}
-          />
-        </div>
+        <Blanket
+          isTinted={isOpen}
+          canClickThrough={!isOpen}
+          onBlanketClicked={onBackButton}
+        />
         <DrawerInner isOpen={isOpen} width={width}>
           {sidebar}
           {content}

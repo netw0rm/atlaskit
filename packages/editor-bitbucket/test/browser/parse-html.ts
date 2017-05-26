@@ -411,7 +411,29 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
   });
 
   describe('emojis', () => {
-    it('should be parsed in an emoji', () => {
+    it('should be parsed from data attribute on the img', () => {
+        expect(parse(
+          '<p>' +
+          'foo ' +
+          '<img ' +
+            'data-emoji-short-name=":diamond_shape_with_a_dot_inside:"' +
+            'src="https://pf-emoji-service--cdn.useast.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/1f4a0.png"' +
+            'alt="diamond shape with a dot inside" ' +
+            'title="diamond shape with a dot inside" ' +
+            'class="emoji"' +
+          '>' +
+          ' bar' +
+          '</p>'
+        )).to.deep.equal(doc(
+          p(
+            'foo ',
+            emoji({ shortName: ':diamond_shape_with_a_dot_inside:' }),
+            ' bar'
+          )
+        ));
+    });
+
+    it('should fallback to parsing from img src if data attribute not present', () => {
         expect(parse(
           '<p>' +
           'foo ' +

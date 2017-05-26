@@ -22,15 +22,24 @@ export interface Props {
 export default class MediaGroup extends PureComponent<Props, {}> {
 
   render() {
+    const { children } = this.props;
+    const childrenItems = React.Children.map(children, (child: ReactElement<MediaProps>) => child.props.item);
+
     return this.props.numOfCards > 1
 
       ? <FilmStripNavigator>
-          {this.props.children}
+        {
+          React.Children.map(children,
+            (child: ReactElement<MediaProps>) => React.cloneElement(child, {
+              onClick: (child.props && child.props.onClick) ? child.props.onClick.bind(this, childrenItems) : undefined
+            } as MediaProps)
+          )
+        }
         </FilmStripNavigator>
 
       : <CardWrapper>
         {
-          React.Children.map(this.props.children,
+          React.Children.map(children,
             (child: ReactElement<MediaProps>) => React.cloneElement(child, {
               cardDimensions: LargeCard as CardDimensions
             } as MediaProps)

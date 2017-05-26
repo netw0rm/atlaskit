@@ -13,7 +13,7 @@ Interact with a [live demo of the @NAME@ component with code examples](https://a
 ## Installation
 
 ```sh
-npm install @NAME@ ak-tag # @NAME@ has a peer dependency on ak-tag
+npm install @NAME@ @atlaskit/tag # @NAME@ has a peer dependency on @atlaskit/tag
 ```
 
 ## Using the component

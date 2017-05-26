@@ -1,4 +1,4 @@
-import { NodeSpec, dom, browser } from '../../prosemirror';
+import { NodeSpec, browser } from '../../prosemirror';
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
   return dom.dataset['language'];
@@ -29,6 +29,34 @@ const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
   return dom;
 };
 
+const isBlock = (node: HTMLElement) => {
+  const blockElementsInsideCode = ['DIV', 'P', 'BR'];
+  return blockElementsInsideCode.indexOf(node.nodeName.toUpperCase()) > -1 &&
+    (!node.style.display || node.style.display === 'block');
+};
+
+const getTextFromDOM = (dom: HTMLElement): string => {
+  const content: Array<string> = [];
+  let line = '';
+  // TS doesn't allow Array.from or [...] because of type mismatch
+  [].slice.call(dom.childNodes).forEach((child: Node) => {
+    if (child.nodeType === Node.TEXT_NODE) {
+      line += child.textContent || '';
+    }
+    else if (child.nodeType === Node.ELEMENT_NODE) {
+      line += getTextFromDOM(child as HTMLElement) || '';
+      if (isBlock(child as HTMLElement)) {
+        content.push(line);
+        line = '\n';
+      }
+    }
+  });
+  if (line) {
+    content.push(line);
+  }
+  return content.join('');
+};
+
 export const codeBlock: NodeSpec = {
   attrs: { language: { default: null } },
   content: 'text*',
@@ -36,14 +64,32 @@ export const codeBlock: NodeSpec = {
   code: true,
   defining: true,
   parseDOM: [{
-    tag: 'pre', preserveWhitespace: 'full', getAttrs: (dom: Element) => {
+    tag: 'pre',
+    preserveWhitespace: 'full',
+    getAttrs: (dom: HTMLElement) => {
       const language = (
-        getLanguageFromBitbucketStyle((dom as dom.Node).parentElement!) ||
-        getLanguageFromEditorStyle((dom as dom.Node).parentElement!) ||
+        getLanguageFromBitbucketStyle(dom.parentElement!) ||
+        getLanguageFromEditorStyle(dom.parentElement!) ||
         dom.getAttribute('data-language')!
       );
-      dom = removeLastNewLine(dom as HTMLElement);
-      return { language, preserveWhitespace: 'full' };
+      dom.textContent = getTextFromDOM(removeLastNewLine(dom));
+      return { language };
+    }
+  },
+  // Handle VSCode paste, it wraps copied content with
+  // <div style="...white-space: pre;...">
+  {
+    tag: 'div[style]',
+    preserveWhitespace: 'full',
+    getAttrs: (dom: HTMLElement) => {
+      if (
+        dom.style.whiteSpace === 'pre' || dom.style.whiteSpace === 'pre-wrap' ||
+        (dom.style.fontFamily && dom.style.fontFamily.toLowerCase().indexOf('monospace') > -1)
+      ) {
+        dom.textContent = getTextFromDOM(dom).replace(/\n$/, '');
+        return {};
+      }
+      return false;
     }
   }],
   toDOM(node): [string, any, number] {

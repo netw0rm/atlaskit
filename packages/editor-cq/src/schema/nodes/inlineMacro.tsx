@@ -35,7 +35,6 @@ export default {
     inline: true,
     atom: true,
     attrs: {
-        macroName: { default: null },
         macroId: { default: null },
         macroName: { default: null },
         placeholderUrl: {default: null},

@@ -17,6 +17,8 @@ export default class DropdownMenu extends PureComponent {
     children: PropTypes.node,
     /** Controls the open state of the dropdown. */
     defaultOpen: PropTypes.bool,
+    /** If true, a Spinner is rendered instead of the items */
+    isLoading: PropTypes.bool,
     /** Controls whether it is possible to tab to the trigger.
       * This should be true if some interactive element is used inside trigger (links, buttons).
       */
@@ -52,6 +54,7 @@ export default class DropdownMenu extends PureComponent {
   static defaultProps = {
     appearance: 'default',
     defaultOpen: false,
+    isLoading: false,
     isTriggerNotTabbable: false,
     items: [],
     onItemActivated: () => {},
@@ -132,6 +135,7 @@ export default class DropdownMenu extends PureComponent {
         triggerButtonProps={props.triggerButtonProps}
         shouldFlip={props.shouldFlip}
         items={state.items}
+        isLoading={props.isLoading}
         shouldFitContainer={this.props.shouldFitContainer}
         shouldAllowMultilineItems={this.props.shouldAllowMultilineItems}
       >

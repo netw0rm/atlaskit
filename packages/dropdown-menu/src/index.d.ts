@@ -4,6 +4,7 @@ interface Props {
   appearance?: 'default' | 'tall';
   children?: ReactNode;
   defaultOpen?: boolean;
+  isLoading?: boolean;
   isTriggerNotTabbable?: boolean;
   items: Array<Object>;
   onItemActivated?: Function;

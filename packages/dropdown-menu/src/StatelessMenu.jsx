@@ -20,6 +20,8 @@ export default class StatelessDropdownMenu extends PureComponent {
     appearance: PropTypes.oneOf(['default', 'tall']),
     /** Content that will be rendered inside the trigger element. */
     children: PropTypes.node,
+    /** If true, a Spinner is rendered instead of the items */
+    isLoading: PropTypes.bool,
     /** Controls the open state of the dropdown. */
     isOpen: PropTypes.bool,
     /** Controls whether it is possible to tab to the trigger.
@@ -56,6 +58,7 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   static defaultProps = {
     appearance: 'default',
+    isLoading: false,
     isOpen: false,
     isTriggerNotTabbable: false,
     items: [],
@@ -250,6 +253,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     return (
       <Droplist
         appearance={props.appearance}
+        isLoading={props.isLoading}
         isOpen={props.isOpen}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyboardInteractions}

@@ -2,6 +2,7 @@ import { Component, ReactNode } from 'react';
 
 interface Props {
   appearance?: 'default' | 'tall';
+  isLoading?: boolean;
   isOpen?: boolean;
   shouldFitContainer?: boolean;
   onClick?: () => void;

@@ -15,6 +15,7 @@ export default class ContainerNavigationNested extends PureComponent {
 
   static defaultProps = {
     onAnimationEnd: () => {},
+    onBackButtonClick: () => {},
   }
 
   constructor(props) {

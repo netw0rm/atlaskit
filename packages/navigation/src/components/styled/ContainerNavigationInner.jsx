@@ -16,7 +16,7 @@ const ContainerNavigationInner = styled.div`
   width: 100%;
 
   // needed to fix sticky header on retina displays 🙃
-  transform-style: preserve-3d;
+  transform-style: ${({ isOpen }) => (isOpen ? 'preserve-3d' : 'inherit')};
 `;
 
 ContainerNavigationInner.defaultProps = {

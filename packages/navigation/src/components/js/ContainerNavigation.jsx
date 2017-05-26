@@ -131,6 +131,7 @@ export default class ContainerNavigation extends PureComponent {
           data-__ak-navigation-container-closed={isCollapsed}
         >
           <ContainerNavigationInner
+            isOpen={!isCollapsed}
             innerRef={this.onRefChange}
           >
             <Reveal

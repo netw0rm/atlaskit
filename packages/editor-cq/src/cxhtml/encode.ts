@@ -192,7 +192,7 @@ export default function encode(node: PMNode) {
   }
 
   function encodeCodeBlock(node: PMNode) {
-    const elem = createMacroElement('code');
+    const elem = createPlainTextBlockMacro('code');
 
     if (node.attrs.language) {
       const langParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
@@ -218,7 +218,13 @@ export default function encode(node: PMNode) {
   }
 
   function encodePanel(node: PMNode) {
-    const elem = createMacroElement(node.attrs.panelType);
+    let elem = createRichTextBlockMacro(node.attrs.panelType);
+    elem = richTextBodyFromNode(node, elem);
+
+    return elem;
+  }
+
+  function richTextBodyFromNode(node, elem) {
     const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
     const fragment = doc.createDocumentFragment();
 
@@ -241,11 +247,12 @@ export default function encode(node: PMNode) {
           }
         }
       }
+
+      return false;
     });
 
     body.appendChild(fragment);
     elem.appendChild(body);
-
     return elem;
   }
 
@@ -264,17 +271,38 @@ export default function encode(node: PMNode) {
   }
 
   function encodeMacro(node: PMNode) {
-    const elem = createMacroElement(node.attrs.macroName);
-    const params = node.attrs.params ? node.attrs.params.split('&') : [];
-    params.forEach((param) => {
-      const keyValuePair = param.split('=');
-      const key = keyValuePair[0];
-      const value = keyValuePair[1];
-      const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      serverParam.setAttributeNS(AC_XMLNS, 'ac:name', key);
-      serverParam.textContent = value;
-      elem.appendChild(serverParam);
-    });
+    let elem;
+    switch (node.type) {
+      case schema.nodes.inlineMacro:
+        elem = createBodyLessInlineMacro(node.attrs.macroName, node.attrs.macroId);
+        break;
+      case schema.nodes.bodylessBlockMacro:
+        elem = createBodyLessBlockMacro(node.attrs.macroName, node.attrs.macroId);
+        break;
+      case schema.nodes.richTextBlockMacro:
+        elem = createRichTextBlockMacro(node.attrs.macroName, node.attrs.macroId);
+        elem = richTextBodyFromNode(node, elem);
+        break;
+    }
+
+    if (elem) {
+      const params = node.attrs.params ? node.attrs.params.split('&') : [];
+      params.forEach((param) => {
+        const keyValuePair = param.split('=');
+        const key = keyValuePair[0];
+        const value = keyValuePair[1];
+        const paramElem = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+        paramElem.setAttributeNS(AC_XMLNS, 'ac:name', key);
+        paramElem.textContent = value;
+        elem.appendChild(paramElem);
+      });
+
+      if (node.attrs.placeholderUrl) {
+        const placeHolderElem = doc.createElementNS(AC_XMLNS, 'ac:placeholder-url');
+        placeHolderElem.textContent = node.attrs.placeholderUrl;
+        elem.appendChild(placeHolderElem);
+      }
+    }
 
     return elem;
   }
@@ -293,8 +321,7 @@ export default function encode(node: PMNode) {
       return encodeUnsupported(node);
     }
 
-    const elem = createMacroElement('jira');
-    elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
+    const elem = createBodyLessBlockMacro('jira', node.attrs.macroId);
 
     const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
     serverParam.setAttributeNS(AC_XMLNS, 'ac:name', 'server');
@@ -314,10 +341,38 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  function createMacroElement(name) {
+  function createBodyLessInlineMacro(name, macroId?) {
+    return createMacroElement(name, 'NONE', 'INLINE', macroId);
+  }
+
+  function createBodyLessBlockMacro(name, macroId?) {
+    return createMacroElement(name, 'NONE', 'BLOCK', macroId);
+  }
+
+  function createPlainTextBlockMacro(name, macroId?) {
+    return createMacroElement(name, 'PLAIN_TEXT', 'BLOCK', macroId);
+  }
+
+  function createRichTextBlockMacro(name, macroId?) {
+    return createMacroElement(name, 'RICH_TEXT', 'BLOCK', macroId);
+  }
+
+  function createMacroElement(macroName, bodyType, displayType, macroId?) {
     const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
-    elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', macroName);
+    if (macroId) {
+      elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', macroId);
+    }
     elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+
+    const bodyTypeElem = doc.createElementNS(AC_XMLNS, 'ac:body-type');
+    bodyTypeElem.textContent = bodyType;
+    elem.appendChild(bodyTypeElem);
+
+    const displayTypeElem = doc.createElementNS(AC_XMLNS, 'ac:display-type');
+    displayTypeElem.textContent = displayType;
+    elem.appendChild(displayTypeElem);
+
     return elem;
   }
 }

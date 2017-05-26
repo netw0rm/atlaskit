@@ -37,6 +37,7 @@ export default {
     attrs: {
         macroName: { default: null },
         macroId: { default: null },
+        macroName: { default: null },
         placeholderUrl: {default: null},
         params: { default: null },
     },

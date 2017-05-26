@@ -146,14 +146,12 @@ export default class AbstractReactionsResource implements ReactionsProvider {
   }
 
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
-    analyticsService.trackEvent('reactions.add.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
-    analyticsService.trackEvent('reactions.delete.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
@@ -349,7 +347,9 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
   }
 
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
-    const reactionId = `${reaction.containerAri}|${reaction.ari}|${reaction.emojiId}`;
+    const { containerAri, ari, emojiId } = reaction;
+    analyticsService.trackEvent('reactions.detailed.reaction', { containerAri, ari, emojiId });
+    const reactionId = `${containerAri}|${ari}|${emojiId}`;
     return requestService<ReactionSummary>(this.config.baseUrl, `reactions?reactionId=${encodeURIComponent(reactionId)}`, {
       'method': 'GET',
       'headers': this.getHeaders(),
@@ -402,6 +402,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
   }
 
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
+    analyticsService.trackEvent('reactions.add.reaction', { containerAri, ari, emojiId });
     this.optimisticAddReaction(containerAri, ari, emojiId);
 
     const timestamp = Date.now();
@@ -426,6 +427,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
   }
 
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
+    analyticsService.trackEvent('reactions.delete.reaction', { containerAri, ari, emojiId });
     this.optimisticDeleteReaction(containerAri, ari, emojiId);
 
     const timestamp = Date.now();

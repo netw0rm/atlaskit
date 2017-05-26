@@ -26,7 +26,7 @@ const getBorderRadius = ({ size, appearance }) => {
 // translateZ used to invoke the GPU -- otherwise overflow is ignored when animating
 export const ImageWrapper = styled.div`
   align-content: center;
-  align-items: middle;
+  align-items: center;
   background-color: ${({ isLoading }) => (isLoading ? akColorN40 : 'transparent')};
   border-radius: ${getBorderRadius};
   display: flex;

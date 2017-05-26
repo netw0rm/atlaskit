@@ -24,6 +24,8 @@ export default class AppSwitcher extends Component {
     analytics: PropTypes.func,
     isDropdownOpenInitially: PropTypes.bool,
     dropdownOptions: AppSwitcherPropTypes.dropdownOptions,
+    isLoading: PropTypes.bool,
+    onAppSwitcherOpen: PropTypes.func,
   };
 
   static defaultProps = {
@@ -31,6 +33,8 @@ export default class AppSwitcher extends Component {
     isDropdownOpenInitially: true,
     dropdownOptions: {},
     isHomeLinkEnabled: true,
+    isLoading: false,
+    onAppSwitcherOpen: () => {},
   };
 
   constructor(props) {
@@ -58,6 +62,7 @@ export default class AppSwitcher extends Component {
   onOpenChange = (attrs) => {
     if (!this.state.isDropdownOpen && attrs.isOpen) {
       this.props.analytics('appswitcher.trigger.click');
+      this.props.onAppSwitcherOpen();
     }
 
     this.setState({ isDropdownOpen: attrs.isOpen });
@@ -68,6 +73,7 @@ export default class AppSwitcher extends Component {
       i18n,
       isAnonymousUser,
       isHomeLinkEnabled,
+      isLoading,
       recentContainers,
       linkedApplications,
       suggestedApplication,
@@ -87,6 +93,7 @@ export default class AppSwitcher extends Component {
       <AppSwitcherContainer>
         <StatelessDropdownMenu
           items={dropdownItems}
+          isLoading={isLoading}
           isOpen={this.state.isDropdownOpen}
           onOpenChange={this.onOpenChange}
           onItemActivated={this.onItemActivated}

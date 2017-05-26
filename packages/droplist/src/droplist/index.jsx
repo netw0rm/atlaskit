@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
+import Spinner from '@atlaskit/spinner';
 import classnames from 'classnames';
 import { akGridSize } from '@atlaskit/util-shared-styles';
 
@@ -16,6 +17,7 @@ export default class DropdownList extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(['default', 'tall']),
     children: PropTypes.node,
+    isLoading: PropTypes.bool,
     isOpen: PropTypes.bool,
     onClick: PropTypes.func,
     onKeyDown: PropTypes.func,
@@ -30,6 +32,7 @@ export default class DropdownList extends PureComponent {
   static defaultProps = {
     appearance: 'default',
     children: null,
+    isLoading: false,
     isOpen: false,
     shouldFitContainer: false,
     onClick: () => {},
@@ -130,7 +133,11 @@ export default class DropdownList extends PureComponent {
                 }
               }}
             >
-              {props.children}
+              {
+                props.isLoading
+                  ? <div className={styles.spinnerContainer}><Spinner /></div>
+                  : props.children
+              }
             </div> :
             null
           }

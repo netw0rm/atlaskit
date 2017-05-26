@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
+
 import hyperlinkPlugins from '../../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../../src/ui/PanelTextInput';
@@ -50,5 +51,28 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
     editorView.dom.click();
     expect(hyperlinkEdit.state('autoFocusInput')).to.not.equal(true);
+  });
+
+  it('should set state variable autoFocusInput to false when link href is defined', () => {
+    const { editorView, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+    editorView.dom.click();
+    expect(hyperlinkEdit.state('autoFocusInput')).to.not.equal(true);
+  });
+
+  it('should show title input when title and href are same', () => {
+    const { editorView, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+    hyperlinkEdit.setState({ editorFocused: true });
+    expect(hyperlinkEdit.find(PanelTextInput).prop('defaultValue')).to.equal('');
+    expect(hyperlinkEdit.find(PanelTextInput).prop('placeholder')).to.equal('Text to display');
+  });
+
+  it('should show href input when title is defined', () => {
+    const { editorView, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('Atlas{<>}sian'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+    hyperlinkEdit.setState({ editorFocused: true });
+    expect(hyperlinkEdit.find(PanelTextInput).prop('defaultValue')).to.equal('http://www.atlassian.com');
+    expect(hyperlinkEdit.find(PanelTextInput).prop('placeholder')).to.equal('Paste link');
   });
 });

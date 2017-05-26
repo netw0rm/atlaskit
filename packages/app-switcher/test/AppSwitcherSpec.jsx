@@ -1,5 +1,6 @@
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
+import sinon from 'sinon';
 import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
 import AppSwitcher from '../src';
 import { name } from '../package.json';
@@ -58,5 +59,34 @@ describe(name, () => {
     );
 
     expect(wrapper.find(StatelessDropdownMenu).prop('test')).to.equal('test');
+  });
+
+  it('should pass isLoading to StatelessDropdown', () => {
+    expect(shallow(
+      <AppSwitcher
+        {...data}
+        isLoading
+      />).find(StatelessDropdownMenu).prop('isLoading')
+    ).to.equal(true);
+
+    expect(shallow(
+      <AppSwitcher
+        {...data}
+        isLoading={false}
+      />).find(StatelessDropdownMenu).prop('isLoading')
+    ).to.equal(false);
+  });
+
+  it('should invoke the open callback when it opens', () => {
+    const spy = sinon.spy();
+    const wrapper = shallow(
+      <AppSwitcher {...data} onAppSwitcherOpen={spy} />
+    );
+    expect(spy.callCount).to.equal(0);
+
+    wrapper.instance().onOpenChange({
+      isOpen: true,
+    });
+    expect(spy.callCount).to.equal(1);
   });
 });

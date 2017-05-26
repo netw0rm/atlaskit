@@ -81,10 +81,12 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
       // We need to prevent the card's onClick being called
       event.stopPropagation();
       event.preventDefault();
+
       if (onRetry) {
         onRetry.handler(undefined, event.nativeEvent);
       }
     };
+
     const retryComponent = (onRetry) ? (
       <Retry className="retry">
         <span onClick={retryHandler}>{retryMessage}</span>

@@ -1,2 +1,2 @@
-export default from './stateful';
-export { default as DynamicTable } from './stateless';
+export default from './components/Stateful';
+export { default as DynamicTableStateless } from './components/Stateless';

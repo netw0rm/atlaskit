@@ -1,7 +1,8 @@
 import Lorem from 'react-lorem-component';
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import PageNavigation from './PageNavigation';
-import Page from '../HtmlPage';
+import HtmlPage from '../HtmlPage';
 
 export default class TitledPage extends PureComponent {
   static propTypes = {
@@ -10,7 +11,7 @@ export default class TitledPage extends PureComponent {
 
   render() {
     return (
-      <Page
+      <HtmlPage
         content={
           <div>
             <h1>{this.props.title}</h1>
@@ -19,7 +20,7 @@ export default class TitledPage extends PureComponent {
         }
       >
         <PageNavigation />
-      </Page>
+      </HtmlPage>
     );
   }
 }

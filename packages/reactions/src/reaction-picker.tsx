@@ -1,16 +1,20 @@
 import Button from '@atlaskit/button';
 import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import { EditorMoreIcon } from '@atlaskit/icon';
+import Layer from '@atlaskit/layer';
+import ToolTip from '@atlaskit/tooltip';
 import {
   akBorderRadius,
-  akColorN30A
+  akColorN0,
+  akColorN30A,
+  akColorN50A,
+  akColorN60A
 } from '@atlaskit/util-shared-styles';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
-import Popup from './internal/popup';
 import Selector from './internal/selector';
 import Trigger from './internal/trigger';
 import { analyticsService } from './analytics';
@@ -31,17 +35,30 @@ export interface State {
 }
 
 const pickerStyle = style({
+  verticalAlign: 'middle',
   $nest: {
     '&.miniMode': {
       display: 'inline-block',
-      height: '20px',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      margin: '0 4px',
     }
   }
 });
 
 const contentStyle = style({
   display: 'flex',
+});
+
+const moreEmojiContainerStyle = style({
+  display: 'flex',
+});
+
+const separatorStyle = style({
+  backgroundColor: akColorN30A,
+  margin: '8px 8px 8px 4px',
+  width: '1px',
+  height: '60%',
+  display: 'inline-block',
 });
 
 const moreButtonStyle = style({
@@ -53,9 +70,22 @@ const moreButtonStyle = style({
   margin: '4px 4px 4px 0',
   padding: '4px',
   width: '38px',
+  verticalAlign: 'top',
   $nest: {
     '&:hover': {
       backgroundColor: akColorN30A
+    }
+  }
+});
+
+const popupStyle = style({
+  background: akColorN0,
+  borderRadius: akBorderRadius,
+  boxShadow: `0 4px 8px -2px ${akColorN50A}, 0 0 1px ${akColorN60A}`,
+
+  $nest: {
+    '&> div': {
+      boxShadow: undefined
     }
   }
 });
@@ -121,9 +151,14 @@ export default class ReactionPicker extends PureComponent<Props, State> {
           onSelection={this.onEmojiSelected}
         />
         { !allowAllEmojis ? null :
-          <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
-            <EditorMoreIcon label="More" />
-          </button>
+          <div className={moreEmojiContainerStyle}>
+            <div className={separatorStyle}/>
+            <ToolTip description="More emoji">
+              <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
+                <EditorMoreIcon label="More" />
+              </button>
+            </ToolTip>
+          </div>
         }
       </div>
     );
@@ -168,16 +203,13 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     }
 
     return (
-      <Popup
-        boundariesElement={this.props.boundariesElement || 'body'}
-        target={this.trigger!}
-      >
+      <div className={popupStyle}>
         {this.renderContent()}
-      </Popup>
+      </div>
     );
   }
 
-  private renderTrigger() {
+  private renderTrigger(content) {
     const { text, miniMode } = this.props;
 
     if (text) {
@@ -195,11 +227,18 @@ export default class ReactionPicker extends PureComponent<Props, State> {
     }
 
     return (
-      <Trigger
-        onClick={this.onTriggerClick}
-        miniMode={miniMode}
-        ref={this.handleTriggerRef}
-      />
+      <Layer
+        content={content}
+        position="bottom left"
+        autoFlip={['top', 'bottom']}
+        boundariesElement="scrollParent"
+      >
+        <Trigger
+          onClick={this.onTriggerClick}
+          miniMode={miniMode}
+          ref={this.handleTriggerRef}
+        />
+      </Layer>
     );
   }
 
@@ -217,8 +256,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
     return (
       <div className={classNames}>
-        {this.renderTrigger()}
-        {this.renderPopup()}
+        {this.renderTrigger(this.renderPopup())}
       </div>
     );
   }

@@ -5,7 +5,7 @@ import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
 import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle } from '../src/index';
 import NavigationWithDropdown from './components/NavigationWithDropdown';
-import Page from './components/HtmlPage';
+import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleusLogo from './nucleus.png';
 import { name } from '../package.json';
@@ -39,7 +39,7 @@ const manyNavigationItems = () => {
 
 storiesOf(name, module)
   .add('with a few container items', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
         <AkNavigationItem
           text="Test page"
@@ -62,10 +62,10 @@ storiesOf(name, module)
           href="#4"
         />
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with many container items', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
         <AkNavigationItem
           icon={<img alt="icon" src={nucleusLogo} />}
@@ -74,10 +74,10 @@ storiesOf(name, module)
         />
         {manyNavigationItems()}
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with a dropdown trigger item', () => (
-    <Page>
+    <HtmlPage>
       <NavigationWithDropdown
         dropdownProps={{ items: dropdownItemsSample }}
       >
@@ -94,10 +94,10 @@ storiesOf(name, module)
           icon={<DashboardIcon label="Dashboard" />}
         />
       </NavigationWithDropdown>
-    </Page>
+    </HtmlPage>
   ))
   .add('with a dropdown trigger item + after text', () => (
-    <Page>
+    <HtmlPage>
       <NavigationWithDropdown
         dropdownProps={{ items: dropdownItemsSample }}
         navigationItemProps={{ textAfter: 'text', text: 'Menu' }}
@@ -118,10 +118,10 @@ storiesOf(name, module)
           textAfter="text"
         />
       </NavigationWithDropdown>
-    </Page>
+    </HtmlPage>
   ))
   .add('with a selected item', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
         <AkNavigationItem
           icon={<img alt="icon" src={nucleusLogo} />}
@@ -129,15 +129,15 @@ storiesOf(name, module)
           text="Nucleus"
         />
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .addStencilStory('with a stencil in the open state', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation />
-    </Page>
+    </HtmlPage>
   ), { image: navigationStencil })
   .add('with global appearance', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerAppearance="global"
         containerHeaderComponent={AtlassianLogo}
@@ -173,10 +173,10 @@ storiesOf(name, module)
           />
         </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with settings appearance', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerHeaderComponent={() => (
           <AkContainerTitle
@@ -238,10 +238,10 @@ storiesOf(name, module)
           />
         </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with multiple groups', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerAppearance="global"
         containerHeaderComponent={AtlassianLogo}
@@ -281,20 +281,20 @@ storiesOf(name, module)
           />
         </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('that is not resizeable', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation isResizeable={false} />
-    </Page>
+    </HtmlPage>
   ))
   .add('with isCollapsible=false', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation isCollapsible={false} />
-    </Page>
+    </HtmlPage>
   ))
   .add('that starts closed', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation isOpen={false}>
         <AkNavigationItem
           icon={<img alt="icon" src={nucleusLogo} />}
@@ -306,20 +306,20 @@ storiesOf(name, module)
           text="This one is not selected"
         />
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with controllable drawers', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         onCreateDrawerClose={action('create-close')}
         onCreateDrawerOpen={action('create-open')}
         onSearchDrawerClose={action('search-close')}
         onSearchDrawerOpen={action('search-open')}
       />
-    </Page>
+    </HtmlPage>
   ))
   .add('with a long ContainerTitle', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerHeaderComponent={() => (
           <AkContainerTitle
@@ -332,10 +332,10 @@ storiesOf(name, module)
           />
         )}
       />
-    </Page>
+    </HtmlPage>
   ))
   .add('with no ContainerTitle subText', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerHeaderComponent={() => (
           <AkContainerTitle
@@ -347,5 +347,5 @@ storiesOf(name, module)
           />
         )}
       />
-    </Page>
+    </HtmlPage>
   ));

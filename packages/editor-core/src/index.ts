@@ -6,12 +6,12 @@ export {
 
 import ProviderFactory from './providerFactory';
 export { version, name } from './version';
-export { default as Keymap } from 'browserkeymap';
 export * from './config';
 export * from './plugins';
 export * from './schema';
 export * from './ui';
 export * from './analytics';
+export * from './nodeviews';
 export { ProviderFactory };
 export type ContextName = 'default';
 export {

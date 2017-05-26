@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Heading from './Heading';
 import Description from './Description';
 import Code from './Code';
@@ -19,7 +20,7 @@ export default class Usage extends PureComponent {
 
     return (
       <div>
-        <Heading type="2">Usage</Heading>
+        <Heading type={2}>Usage</Heading>
         <Description>Installing:</Description>
         <Code language="bash">{`npm install ${moduleName}`}</Code>
         <Description>Example:</Description>

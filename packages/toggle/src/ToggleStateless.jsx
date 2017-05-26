@@ -1,5 +1,6 @@
 import uid from 'uid';
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import CloseIcon from 'ak-icon/glyph/cancel';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import { Handle, IconWrapper, Inner, Input, Label, Slide } from './styled';
@@ -14,15 +15,15 @@ export default class ToggleStateless extends PureComponent {
     label: PropTypes.string,
     /** Descriptive name for value property to be submitted in a form */
     name: PropTypes.string,
-    /** Callback to be called when toggle is unfocused */
+    /** Handler to be called when toggle is unfocused */
     onBlur: PropTypes.func,
-    /** Callback to be called when native 'change' event happens internally. */
+    /** Handler to be called when native 'change' event happens internally. */
     onChange: PropTypes.func,
-    /** Callback to be called when toggle is focused */
+    /** Handler to be called when toggle is focused. */
     onFocus: PropTypes.func,
-    /** Defines the size of the toggle */
+    /** Defines the size of the toggle. */
     size: PropTypes.oneOf(['regular', 'large']),
-    /** The value to be submitted in a form */
+    /** The value to be submitted in a form. */
     value: PropTypes.string,
   }
 
@@ -36,7 +37,6 @@ export default class ToggleStateless extends PureComponent {
   };
 
   state = {
-    isChecked: this.props.isChecked,
     isFocused: false,
   }
 
@@ -56,7 +56,6 @@ export default class ToggleStateless extends PureComponent {
     this.props.onBlur(e);
   }
   handleChange = (e) => {
-    this.setState({ isChecked: e.target.checked });
     this.props.onChange(e);
   }
   handleFocus = (e) => {
@@ -65,8 +64,8 @@ export default class ToggleStateless extends PureComponent {
   }
 
   render() {
-    const { isDisabled, label, name, size, value } = this.props;
-    const { isChecked, isFocused } = this.state;
+    const { isChecked, isDisabled, label, name, size, value } = this.props;
+    const { isFocused } = this.state;
     const styledProps = { isChecked, isDisabled, isFocused, size };
     const Icon = isChecked ? ConfirmIcon : CloseIcon;
     const id = uid();

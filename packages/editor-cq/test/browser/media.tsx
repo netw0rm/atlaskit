@@ -6,6 +6,7 @@ import {
   ToolbarButton,
   ToolbarMedia,
 } from '@atlaskit/editor-core';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   chaiPlugin,
   storyMediaProviderFactory,
@@ -16,7 +17,7 @@ import Editor from '../../src';
 chai.use(chaiPlugin);
 
 describe('media', () => {
-  const resolvedProvider = storyMediaProviderFactory();
+  const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers);
   const rejectedProvider = Promise.reject(new Error('foo'));
   const noop = () => {};
 
@@ -29,7 +30,9 @@ describe('media', () => {
       onChange={noop}
     />);
 
-    await resolvedProvider;
+    const resolvedMediaProvider = await resolvedProvider;
+    await resolvedMediaProvider.uploadContext;
+
     expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(1);
   });
 
@@ -94,7 +97,8 @@ describe('media', () => {
     editor.setProps({ mediaProvider: resolvedProvider });
 
     // wait while the changes apply
-    await resolvedProvider;
+    const resolvedMediaProvider = await resolvedProvider;
+    await resolvedMediaProvider.uploadContext;
 
     expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(1);
   });

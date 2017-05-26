@@ -12,6 +12,7 @@ import Popup from '../common/Popup';
 import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { AvailableCategories, EmojiDescription, EmojiId, OnEmojiEvent, RelativePosition } from '../../types';
+import { isEmojiIdEqual, isEmojiLoaded, toEmojiId } from '../../type-helpers';
 
 export interface PickerRefHandler {
   (ref: any): any;
@@ -112,11 +113,24 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     this.props.emojiProvider.then(provider => {
       provider.findInCategory(categoryId).then(emojisInCategory => {
         if (emojisInCategory && emojisInCategory.length) {
+          const selectedEmoji = emojisInCategory[0];
           this.setState({
             activeCategory: categoryId,
             selectedCategory: categoryId,
-            selectedEmoji: emojisInCategory[0],
+            selectedEmoji,
           } as State);
+
+          if (!isEmojiLoaded(selectedEmoji)) {
+            provider.findByEmojiId(toEmojiId(selectedEmoji)).then((loadedEmoji) => {
+              const lastestSelectedEmoji = this.state.selectedEmoji;
+              if (loadedEmoji && lastestSelectedEmoji && isEmojiIdEqual(toEmojiId(lastestSelectedEmoji), toEmojiId(loadedEmoji))) {
+                // Emoji is still selected, update
+                this.setState({
+                  selectedEmoji: loadedEmoji,
+                });
+              }
+            });
+          }
         }
       });
     });

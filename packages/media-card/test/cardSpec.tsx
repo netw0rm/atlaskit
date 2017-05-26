@@ -1,4 +1,6 @@
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
@@ -143,7 +145,7 @@ describe('Card', function() {
     expect(mediaCard.props().provider).to.equal(dummyProvider);
   });
 
-  it('should pass onClick to MediaCard', function() {
+  it('should fire onClick when passed in as a prop and MediaCard fires onClick', function() {
     const identifier: MediaIdentifier = {
       id: 'some-random-id',
       mediaItemType: 'file',
@@ -151,10 +153,19 @@ describe('Card', function() {
     };
 
     const context = fakeContext() as any;
-    const clickHandler = (result: CardEvent) => {};
-    const card = shallow(<Card context={context} identifier={identifier} onClick={clickHandler} />);
+    const clickHandler = sinon.spy();
 
-    expect(card.find(MediaCard).props().onClick).to.deep.equal(clickHandler);
+    const card = shallow(<Card context={context} identifier={identifier} onClick={clickHandler} />);
+    const mediaCardOnClick = card.find(MediaCard).props().onClick;
+
+    if (!mediaCardOnClick) {
+      throw new Error('MediaCard onClick was undefined');
+    }
+
+    expect(clickHandler.called).to.be.false;
+
+    mediaCardOnClick({} as any);
+    expect(clickHandler.calledOnce).to.be.true;
   });
 
   it('should pass onMouseEnter to MediaCard', function() {

@@ -27,12 +27,16 @@ import {
   Node,
   TextSelection,
   ProviderFactory,
-  emojiNodeView,
-  mentionNodeView,
   history,
   keymap,
   baseKeymap,
-  version as coreVersion
+  version as coreVersion,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactEmojiNode,
+  ReactMentionNode,
+  reactNodeViewPlugins,
 } from '@atlaskit/editor-core';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
@@ -294,6 +298,7 @@ export default class Editor extends PureComponent<Props, State> {
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
+            ...reactNodeViewPlugins(schema),
             history(),
             keymap(bitbucketKeymap),
             keymap(baseKeymap) // should be last :(
@@ -319,8 +324,8 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory),
-          emoji: emojiNodeView(this.providerFactory)
+          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
+          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

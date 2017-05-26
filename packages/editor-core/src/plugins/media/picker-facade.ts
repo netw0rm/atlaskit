@@ -123,6 +123,12 @@ export default class PickerFacade {
     });
   }
 
+  upload(url: string, fileName: string): void {
+    if (this.picker.upload) {
+      this.picker.upload(url, fileName);
+    }
+  }
+
   onNewMedia(cb: (state: MediaState) => any) {
     this.onStartListeners.push(cb);
   }
@@ -153,7 +159,7 @@ export default class PickerFacade {
       status: 'uploading',
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     };
 
     this.stateManager.updateState(tempId, state as MediaState);
@@ -170,7 +176,7 @@ export default class PickerFacade {
       progress: progress ? progress.portion : undefined,
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 
@@ -184,7 +190,7 @@ export default class PickerFacade {
       status: 'processing',
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 
@@ -204,7 +210,7 @@ export default class PickerFacade {
       status: 'unfinalized',
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 
@@ -224,7 +230,7 @@ export default class PickerFacade {
       error: error ? { description: error!.description, name: error!.name } : undefined,
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 
@@ -238,7 +244,7 @@ export default class PickerFacade {
       status: 'ready',
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 

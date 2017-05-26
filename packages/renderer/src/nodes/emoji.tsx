@@ -21,7 +21,6 @@ export default class Emoji extends PureComponent<Props, {}> {
       );
     }
 
-    const text = emojiId.fallback || emojiId.shortName;
-    return <span>{text}</span>;
+    return <span>{emojiId.fallback || emojiId.shortName}</span>;
   }
 }

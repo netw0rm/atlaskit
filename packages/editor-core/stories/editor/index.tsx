@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
+import applyDevTools from 'prosemirror-dev-tools';
 
 import {
   Chrome,
@@ -18,6 +19,9 @@ import imageUploadPlugins, {stateKey as imageUploadStateKey} from '../../src/plu
 import listsPlugins, {stateKey as listsStateKey} from '../../src/plugins/lists';
 import mentionsPlugins, {stateKey as mentionsStateKey} from '../../src/plugins/mentions';
 import emojiPlugins, {stateKey as emojiStateKey} from '../../src/plugins/emojis';
+import { reactNodeViewPlugins } from '../../src/plugins';
+
+import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
 import {
   baseKeymap,
   EditorState,
@@ -25,12 +29,16 @@ import {
   history,
   keymap,
   Node,
-  TextSelection
+  TextSelection,
+  PluginKey
 } from '../../src/prosemirror';
+import {
+  nodeViewFactory,
+  ReactEmojiNode,
+  ReactMentionNode,
+} from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
-import { mentionNodeView } from '../../src/schema/nodes/mention';
-import { emojiNodeView } from '../../src/schema/nodes/emoji';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 import { CodeBlockView } from '../../src/schema/nodes/code-block';
 import codeMirrorKeymapsPlugin from '../../src/plugins/code-block/codeMirrorKeymaps';
@@ -144,20 +152,28 @@ export default class Editor extends PureComponent<Props, State> {
   render() {
     const { mentionProvider, emojiProvider } = this.state;
 
+    const getState =
+      (editorState: EditorState<any> | undefined) =>
+      (stateKey: PluginKey) => editorState && stateKey.getState(editorState);
+
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorView } = this.state;
     const editorState = editorView && editorView.state;
-    const listsState = editorState && listsStateKey.getState(editorState);
-    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
-    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
-    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
-    const panelState = editorState && panelStateKey.getState(editorState);
-    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
-    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
-    const imageUploadState = editorState && imageUploadStateKey.getState(editorState);
-    const mentionsState = editorState && mentionsStateKey.getState(editorState);
-    const emojiState = editorState && emojiStateKey.getState(editorState);
+
+    const getStateFromKey = getState(editorState);
+
+    const listsState = getStateFromKey(listsStateKey);
+    const blockTypeState = getStateFromKey(blockTypeStateKey);
+    const clearFormattingState = getStateFromKey(clearFormattingStateKey);
+    const codeBlockState = getStateFromKey(codeBlockStateKey);
+    const panelState = getStateFromKey(panelStateKey);
+    const textFormattingState = getStateFromKey(textFormattingStateKey);
+    const hyperlinkState = getStateFromKey(hyperlinkStateKey);
+    const imageUploadState = getStateFromKey(imageUploadStateKey);
+    const mentionsState = getStateFromKey(mentionsStateKey);
+    const emojiState = getStateFromKey(emojiStateKey);
+    const textColorState = getStateFromKey(textColorStateKey);
 
     return (
       <Chrome
@@ -179,6 +195,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateImageUpload={imageUploadState}
         pluginStateMentions={mentionsState}
         pluginStateEmojis={emojiState}
+        pluginStateTextColor={textColorState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
       />
@@ -224,6 +241,8 @@ export default class Editor extends PureComponent<Props, State> {
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
             codeMirrorKeymapsPlugin(),
+            ...textColorPlugins(schema),
+            ...reactNodeViewPlugins(schema),
             history(),
             keymap(baseKeymap) // should be last :(
           ]
@@ -237,14 +256,16 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory),
-          emoji: emojiNodeView(this.providerFactory),
+          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
+          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
           codeBlock: (node, view, getPos) => new CodeBlockView(node, view, getPos, schema)
-        }
+        },
       });
       imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
       mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+
+      applyDevTools(editorView);
 
       editorView.focus();
 

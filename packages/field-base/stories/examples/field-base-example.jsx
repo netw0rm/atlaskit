@@ -1,10 +1,12 @@
 import React from 'react';
-import { FieldBase } from '@atlaskit/field-base';
+import { FieldBaseStateless } from '@atlaskit/field-base';
 
 export default (
-  <FieldBase
+  <FieldBaseStateless
     appearance="subtle"
+    onBlur={() => {}}
+    onFocus={() => {}}
   >
     hover over me to
-  </FieldBase>
+  </FieldBaseStateless>
 );

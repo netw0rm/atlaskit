@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.code`
@@ -144,7 +145,7 @@ function print(type, depth = 1) {
         <TypeMeta>Shape <Outline>{'{'}</Outline></TypeMeta>
         <Indent>
           {Object.keys(type.value).map(key => (
-            <div>
+            <div key={key}>
               <TypeMinWidth><Type>{type.value[key].name}</Type></TypeMinWidth>
               {' '}{key}
               {type.value[key].required ? <Required> required</Required> : null}
@@ -172,7 +173,7 @@ function print(type, depth = 1) {
         <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
         <Indent>
           {Array.isArray(type.value)
-            ? type.value.map(i => <Block>{print(i.value, depth + 1)}</Block>)
+            ? type.value.map((v, i) => <Block key={i}>{print(v.value, depth + 1)}</Block>)
             : print(type.value, depth + 1)}
         </Indent>
         <TypeMeta><Outline>{')'}</Outline></TypeMeta>
@@ -195,7 +196,7 @@ function print(type, depth = 1) {
         <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
         <Indent>
           {Array.isArray(type.value)
-            ? type.value.map(i => <Block>{print(i, depth + 1)}</Block>)
+            ? type.value.map(i => <Block key={i.name}>{print(i, depth + 1)}</Block>)
             : print(type.value, depth + 1)}
         </Indent>
         <TypeMeta><Outline>{')'}</Outline></TypeMeta>

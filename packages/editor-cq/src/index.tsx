@@ -30,13 +30,19 @@ import {
   version as coreVersion,
   mediaPluginFactory,
   mediaStateKey,
-  mediaNodeView,
   MediaProvider,
   Plugin,
-  mentionNodeView,
   ProviderFactory,
   MediaPluginState,
-  MediaState
+  MediaState,
+  Slice,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactMediaGroupNode,
+  ReactMediaNode,
+  ReactMentionNode,
+  reactNodeViewPlugins,
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -269,6 +275,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...mediaPlugins,
           ...panelPlugins(schema),
+          ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),
@@ -291,15 +298,30 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory),
           jiraIssue: jiraIssueNodeView,
-          media: mediaNodeView(this.providerFactory)
+          mediaGroup: nodeViewFactory(this.providerFactory, {
+            mediaGroup: ReactMediaGroupNode,
+            media: ReactMediaNode,
+          }, true),
+          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');
             return false;
           }
+        },
+        handlePaste(view: EditorView, event: any, slice: Slice): boolean {
+          const { clipboardData } = event;
+          const html = clipboardData && clipboardData.getData('text/html');
+          if (html) {
+            const doc = parse(html.replace(/^<meta[^>]+>/, ''));
+            view.dispatch(
+              view.state.tr.replaceSelection(new Slice(doc.content, slice.openLeft, slice.openRight))
+            );
+            return true;
+          }
+          return false;
         },
       });
 

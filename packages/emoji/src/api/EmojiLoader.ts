@@ -1,7 +1,7 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 
-import { requestService, ServiceConfig } from './SharedResourceUtils';
+import { requestService, ServiceConfig, KeyValues } from './SharedResourceUtils';
 import debug from '../util/logger';
 
 import {
@@ -20,20 +20,38 @@ import {
 
 import { isImageRepresentation, isSpriteServiceRepresentation } from '../type-helpers';
 
-const emojiRequest = (provider: ServiceConfig): Promise<EmojiServiceResponse> => {
+export interface EmojiLoaderConfig extends ServiceConfig {
+  getRatio?: () => number;
+}
+
+const emojiRequest = (provider: EmojiLoaderConfig): Promise<EmojiServiceResponse> => {
   const { url, securityProvider, refreshedSecurityProvider } = provider;
   const secOptions = securityProvider && securityProvider();
-  return requestService(url, '', {}, {}, secOptions, refreshedSecurityProvider);
+  const getRatio = provider.getRatio ? provider.getRatio : getPixelRatio;
+  const scale: KeyValues = calculateScale(getRatio);
+  return requestService(url, '', scale, {}, secOptions, refreshedSecurityProvider);
 };
 
-export const isMediaApi = (url: string, meta?: EmojiMeta): boolean =>
+const calculateScale = (getRatio: () => number): KeyValues => {
+  // Retina display
+  if (getRatio() > 1) {
+    return { scale: 'XHDPI' };
+  }
+  // Default set used for desktop
+  return {};
+};
+
+const getPixelRatio = (): number => {
+  return window.devicePixelRatio;
+};
+
+export const isMediaApiUrl = (url: string, meta?: EmojiMeta): boolean =>
   !!(meta && meta.mediaApiToken && url.indexOf(meta.mediaApiToken.url) === 0);
 
 export const denormaliseServiceRepresentation = (representation: EmojiServiceRepresentation, meta?: EmojiMeta): EmojiRepresentation => {
   if (isSpriteServiceRepresentation(representation) && meta && meta.spriteSheets) {
     const { height, width, x, y, xIndex, yIndex, spriteRef } = representation as SpriteServiceRepresentation;
     const spriteSheet = meta.spriteSheets[spriteRef];
-    const mediaApi = isMediaApi(spriteSheet.url, meta);
     if (spriteSheet) {
       return {
         sprite: spriteSheet,
@@ -43,17 +61,21 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
         y,
         xIndex,
         yIndex,
-        mediaApi,
       };
     }
   } else if (isImageRepresentation(representation)) {
     const { height, width, imagePath } = representation as ImageRepresentation;
-    const mediaApi = isMediaApi(imagePath, meta);
+    if (isMediaApiUrl(imagePath, meta)) {
+      return {
+        height,
+        width,
+        mediaPath: imagePath,
+      };
+    }
     return {
       height,
       width,
       imagePath,
-      mediaApi,
     };
   }
 
@@ -111,9 +133,9 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
  */
 export default class EmojiLoader {
 
-  private config: ServiceConfig;
+  private config: EmojiLoaderConfig;
 
-  constructor(config: ServiceConfig) {
+  constructor(config: EmojiLoaderConfig) {
     this.config = config;
   }
 

@@ -10,14 +10,12 @@ import { name } from '../package.json';
 class ToggleBannerPage extends React.PureComponent {
   state = {
     isBannerOpen: false,
-    navigationWidth: 284,
   }
 
   render() {
     return (
       <Page
         isBannerOpen={this.state.isBannerOpen}
-        navigationWidth={this.state.navigationWidth}
         banner={
           <Banner
             appearance="error"

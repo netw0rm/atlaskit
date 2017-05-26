@@ -3,8 +3,8 @@ import { mount, shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
-import Item from '../../src/BreadcrumbsItem';
-import { itemTruncateWidth } from '../../src/internal/constants';
+import Item from '../../src/components/BreadcrumbsItem';
+import { itemTruncateWidth } from '../../src/constants';
 import { setItemWidth } from '../_helpers';
 
 describe('BreadcrumbsItem', () => {
@@ -51,15 +51,22 @@ describe('BreadcrumbsItem', () => {
       describe('iconAfter prop', () => {
         it('should be reflected to the Button', () => {
           const icon = <AtlassianIcon label="icon" />;
-          const wrapper = shallow(<Item iconAfter={icon} />);
+          const wrapper = mount(<Item iconAfter={icon} />);
           expect(wrapper.find(Button).prop('iconAfter')).to.equal(icon);
         });
       });
       describe('iconBefore prop', () => {
         it('should be reflected to the Button', () => {
           const icon = <AtlassianIcon label="icon" />;
-          const wrapper = shallow(<Item iconBefore={icon} />);
+          const wrapper = mount(<Item iconBefore={icon} />);
           expect(wrapper.find(Button).prop('iconBefore')).to.equal(icon);
+        });
+      });
+      describe('target prop', () => {
+        it('should be reflected to the Button', () => {
+          const target = '_top';
+          const wrapper = mount(<Item target={target} />);
+          expect(wrapper.find(Button).prop('target')).to.equal(target);
         });
       });
     });

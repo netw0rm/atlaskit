@@ -3,7 +3,7 @@ import * as events from 'events';
 import { Subject } from 'rxjs/Subject';
 import {
   ContextConfig,
-  MediaCollection, MediaCollectionProvider, CollectionController
+  MediaCollection, MediaCollectionProvider
 } from '@atlaskit/media-core';
 
 export class Stubs {
@@ -31,15 +31,9 @@ export class Stubs {
     return sinon.stub().returns(Stubs.mediaViewer());
   }
 
-  static mediaCollectionProvider(subject?: Subject<MediaCollection>, collectionController?: CollectionController) {
+  static mediaCollectionProvider(subject?: Subject<MediaCollection>) {
     return {
       observable: sinon.stub().returns(subject || new Subject<MediaCollection>()),
-      controller: sinon.stub().returns(collectionController || Stubs.collectionController())
-    };
-  }
-
-  static collectionController() {
-    return {
       refresh: sinon.spy(),
       loadNextPage: sinon.stub(),
       loadNextPageUntil: sinon.stub()

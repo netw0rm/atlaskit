@@ -70,6 +70,9 @@
                   },
                   {
                     "$ref": "#/definitions/underline_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/textColor_mark"
                   }
                 ]
               }
@@ -797,6 +800,45 @@
       },
       "required": [
         "type"
+      ],
+      "additionalProperties": false
+    },
+    "textColor_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "textColor"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "color": {
+              "enum": [
+                "#97a0af",
+                "#0049b0",
+                "#4c9aff",
+                "#006644",
+                "#79f3c0",
+                "#ff8b00",
+                "#ffe47f",
+                "#bf2600",
+                "#ff8f73",
+                "#403294",
+                "#998dd9"
+              ]
+            }
+          },
+          "required": [
+            "color"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
       ],
       "additionalProperties": false
     }

@@ -7,6 +7,7 @@ export { link } from './marks/link';
 export { emojiQuery } from './marks/emoji-query';
 export { mentionQuery } from './marks/mention-query';
 export { subsup } from './marks/subsup';
+export { textColor } from './marks/text-color';
 
 export { doc } from './nodes/doc';
 export { docCompact } from './nodes/doc';
@@ -18,12 +19,13 @@ export { heading } from './nodes/heading';
 export { rule } from './nodes/rule';
 export { orderedList } from './nodes/ordered-list';
 export { paragraph } from './nodes/paragraph';
-export { emoji, emojiNodeView } from './nodes/emoji';
+export { emoji } from './nodes/emoji';
 export { image } from './nodes/image';
-export { mention, mentionNodeView } from './nodes/mention';
+export { mention } from './nodes/mention';
 export { listItem } from './nodes/list-item';
 export { panel } from './nodes/panel';
 export { text } from './nodes/text';
-export { media, MediaType, mediaNodeView, MediaNode } from './nodes/media';
+export { media, MediaType } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
 export { createSchema } from './create-schema';
+

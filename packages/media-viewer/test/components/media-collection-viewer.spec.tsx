@@ -1,3 +1,5 @@
+// TODO: deal with unused expression error while calling "chai calledOnce"
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonStub } from 'sinon';
@@ -24,7 +26,7 @@ describe('<MediaCollectionViewer />', () => {
     serviceHost,
     tokenProvider
   };
-  const occurenceKey = 'some-occurence-key';
+  const occurrenceKey = 'some-occurence-key';
   const collectionName = 'some-collection';
   const basePath = 'some-base-path';
   const file = {
@@ -44,7 +46,7 @@ describe('<MediaCollectionViewer />', () => {
     shallow(
       <MediaCollectionViewer
         context={context as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -61,7 +63,7 @@ describe('<MediaCollectionViewer />', () => {
     shallow(
       <MediaCollectionViewer
         context={context as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         pageSize={pageSize}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
@@ -72,13 +74,13 @@ describe('<MediaCollectionViewer />', () => {
     expect(context.getMediaCollectionProvider).to.have.been.calledWith(collectionName, pageSize);
   });
 
-  it('should construct a media viewer instance with expected config', () => {
+  it('should construct a media viewer instance with default config', () => {
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
 
     shallow(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={mediaViewerConstructor as any}
         basePath={basePath}
@@ -89,7 +91,32 @@ describe('<MediaCollectionViewer />', () => {
       assets: {
         basePath
       },
-      enableListLoop: false,
+      fetchToken: sinon.match.func
+    });
+  });
+
+  it('should construct a media viewer instance with custom config', () => {
+    const mediaViewerConstructor = Stubs.mediaViewerConstructor();
+    const additionalConfiguration = {
+      enableMiniMode: true
+    }
+
+    shallow(
+      <MediaCollectionViewer
+        context={Stubs.context(contextConfig) as any}
+        occurrenceKey={occurrenceKey}
+        collectionName={collectionName}
+        mediaViewerConfiguration={additionalConfiguration}
+        MediaViewer={mediaViewerConstructor as any}
+        basePath={basePath}
+      />);
+
+    expect(mediaViewerConstructor).to.have.been.calledOnce;
+    expect(mediaViewerConstructor).to.have.been.calledWith({
+      assets: {
+        basePath
+      },
+      enableMiniMode: true,
       fetchToken: sinon.match.func
     });
   });
@@ -100,7 +127,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -119,7 +146,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -132,7 +159,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -151,7 +178,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, Stubs.mediaCollectionProvider(subject)) as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -163,7 +190,7 @@ describe('<MediaCollectionViewer />', () => {
 
     subject.next(collection);
 
-    expect(mediaViewer.open).to.have.been.calledWith({ id: occurenceKey });
+    expect(mediaViewer.open).to.have.been.calledWith({ id: occurrenceKey });
     expect(mediaViewer.setFiles).to.have.been.calledWith(files);
   });
 
@@ -172,7 +199,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, Stubs.mediaCollectionProvider(subject)) as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -192,12 +219,11 @@ describe('<MediaCollectionViewer />', () => {
   });
 
   it('should load next page, given media viewer is showing last page on navigation', () => {
-    const collectionController = Stubs.collectionController();
-    const provider = Stubs.mediaCollectionProvider(undefined, collectionController);
+    const provider = Stubs.mediaCollectionProvider(undefined);
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, provider) as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -208,16 +234,15 @@ describe('<MediaCollectionViewer />', () => {
     (mediaViewer.isShowingLastFile as SinonStub).returns(true);
     (mediaViewer as any).trigger('fv.changeFile');
 
-    expect(collectionController.loadNextPage).to.have.been.called;
+    expect(provider.loadNextPage).to.have.been.called;
   });
 
   it('should not load next page, given media viewer not is showing last page on navigation', () => {
-    const collectionController = Stubs.collectionController();
-    const provider = Stubs.mediaCollectionProvider(undefined, collectionController);
+    const provider = Stubs.mediaCollectionProvider(undefined);
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, provider) as any}
-        occurenceKey={occurenceKey}
+        occurrenceKey={occurrenceKey}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -228,6 +253,6 @@ describe('<MediaCollectionViewer />', () => {
     (mediaViewer.isShowingLastFile as SinonStub).returns(false);
     (mediaViewer as any).trigger('fv.changeFile');
 
-    expect(collectionController.loadNextPage).to.have.not.been.called;
+    expect(provider.loadNextPage).to.have.not.been.called;
   });
 });

@@ -146,14 +146,12 @@ export default class AbstractReactionsResource implements ReactionsProvider {
   }
 
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
-    analyticsService.trackEvent('reactions.add.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
-    analyticsService.trackEvent('reactions.delete.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
@@ -197,13 +195,14 @@ export default class AbstractReactionsResource implements ReactionsProvider {
         .then(reactions => {
           Object.keys(reactions).forEach(key => {
 
-            const containerAri = reactions[key][0].containerAri;
-            const ari = reactions[key][0].ari;
+            let objectReactions = reactions[key];
+            const containerAri = subscriptionKey.containerAri;
+            const ari = key;
             this.dequeueAri({
               ari: ari,
               containerAri: containerAri
             });
-            this.notifyUpdated(containerAri, ari, reactions[key]);
+            this.notifyUpdated(containerAri, ari, objectReactions);
           });
         });
     }, 1);
@@ -348,7 +347,9 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
   }
 
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
-    const reactionId = `${reaction.containerAri}|${reaction.ari}|${reaction.emojiId}`;
+    const { containerAri, ari, emojiId } = reaction;
+    analyticsService.trackEvent('reactions.detailed.reaction', { containerAri, ari, emojiId });
+    const reactionId = `${containerAri}|${ari}|${emojiId}`;
     return requestService<ReactionSummary>(this.config.baseUrl, `reactions?reactionId=${encodeURIComponent(reactionId)}`, {
       'method': 'GET',
       'headers': this.getHeaders(),
@@ -370,11 +371,9 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
           const index = findIndex(this.cachedReactions[key], r => r.emojiId === emojiId);
           if (index !== -1) {
             this.cachedReactions[key][index] = reactionDetails;
-          } else {
-            this.cachedReactions[key].push(reactionDetails);
+            this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
           }
 
-          this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
           resolve(reactionDetails);
         });
     });
@@ -382,18 +381,20 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
 
   getReactions(keys: ObjectReactionKey[]): Promise<Reactions> {
     let aris = keys.map(key => key.ari);
+    const containerAri = keys[0].containerAri;
     return new Promise<Reactions>((resolve, reject) => {
       requestService<Reactions>(this.config.baseUrl, 'reactions/view', {
         'method': 'POST',
         'headers': this.getHeaders(),
         'body': JSON.stringify({
-          containerAri: keys[0].containerAri,
+          containerAri: containerAri,
           aris
         }),
         'credentials': 'include'
       }).then(reactions => {
         Object.keys(reactions).forEach(ari => {
-          this.cachedReactions[ari] = reactions[ari];
+          const cacheKey = this.objectReactionKey(containerAri, ari);
+          this.cachedReactions[cacheKey] = reactions[ari];
         });
         resolve(reactions);
       });
@@ -401,6 +402,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
   }
 
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
+    analyticsService.trackEvent('reactions.add.reaction', { containerAri, ari, emojiId });
     this.optimisticAddReaction(containerAri, ari, emojiId);
 
     const timestamp = Date.now();
@@ -425,6 +427,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
   }
 
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
+    analyticsService.trackEvent('reactions.delete.reaction', { containerAri, ari, emojiId });
     this.optimisticDeleteReaction(containerAri, ari, emojiId);
 
     const timestamp = Date.now();

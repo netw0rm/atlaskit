@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import Radio from '../../src/Radio';
+import Radio from '../../src/components/Radio';
 import { name } from '../../package.json';
 
 describe(name, () => {

@@ -79,18 +79,62 @@ const createApiCards = (appearance: CardAppearance, metadata: MediaItemDetails) 
   // API methods
   const apiCards = [
     {
-      title: 'click',
-      content: <CardView status="complete" appearance={appearance} metadata={metadata} dataURI={gifDataUri} onClick={clickHandler} actions={actions} />
+      title: 'status = complete',
+      content: (
+        <CardView
+          status="complete"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
     },
     {
-      title: 'hover',
-      content: <CardView status="complete" appearance={appearance} metadata={metadata} dataURI={gifDataUri} onMouseEnter={mouseEnterHandler} actions={actions} />
+      title: 'status = error',
+      content: (
+        <CardView
+          status="error"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
+    },
+    {
+      title: 'status = loading',
+      content: (
+        <CardView
+          status="loading"
+          appearance={appearance}
+          metadata={metadata}
+          dataURI={gifDataUri}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+          actions={actions}
+        />
+      )
     }
   ];
 
   const uploadCardWithApi = {
-    title: 'upload',
-    content: <CardView status="uploading" progresss={0.5} appearance={appearance} metadata={metadata} dataURI={gifDataUri} onClick={clickHandler} onMouseEnter={mouseEnterHandler} actions={actions} />
+    title: 'status = uploading',
+    content: (
+      <CardView
+        status="uploading"
+        appearance={appearance}
+        metadata={metadata}
+        dataURI={gifDataUri}
+        onClick={clickHandler}
+        onMouseEnter={mouseEnterHandler}
+        actions={actions}
+      />
+    )
   };
 
   if (appearance === 'image') {
@@ -150,7 +194,7 @@ const createMissingMetadataFileCards = (appearance: CardAppearance) => {
     },
     {
       title: 'Missing data uri',
-      content: <CardView appearance={appearance} status="complete" metadata={missingMediaTypeDetails} />
+      content: <CardView appearance={appearance} status="complete" metadata={genericFileDetails} />
     }
   ];
 };
@@ -160,11 +204,20 @@ const createSelectableCards = (appearance: CardAppearance, metadata: MediaItemDe
 
   return [
     {
-      title: 'Selectable',
+      title: 'Complete - Selectable',
       content: <CardView appearance={appearance} status="complete" metadata={metadata} dataURI={dataURI} selectable={true} />
     }, {
-      title: 'Selected',
-      content: <CardView appearance={appearance} status="complete" metadata={metadata}  dataURI={dataURI} selectable={true} selected={true} />
+      title: 'Complete - Selected',
+      content: <CardView appearance={appearance} status="complete" metadata={metadata} dataURI={dataURI} selectable={true} selected={true} />
+    }, {
+      title: 'Uploading - Selectable',
+      content: <CardView appearance={appearance} status="uploading" progress={0.3} metadata={metadata}  dataURI={dataURI} selectable={true} />
+    }, {
+      title: 'Uploading - Selected',
+      content: <CardView appearance={appearance} status="uploading" progress={0.7} metadata={metadata} dataURI={dataURI} selectable={true} selected={true} />
+    }, {
+      title: 'Uploading - Selected (with delete)',
+      content: <CardView appearance={appearance} status="uploading" progress={0.7} actions={actions.slice(2)} metadata={metadata} dataURI={dataURI} selectable={true} selected={true} />
     }
   ];
 };
@@ -203,7 +256,7 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
     {title: '50%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.5} />},
     {title: '90%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.9} />},
     {title: 'No dataURI', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} />},
-    {title: 'Cancel action', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} actions={actions.filter(a => a.type === CardActionType.delete)} />}
+    {title: 'Delete action', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} actions={actions.filter(a => a.type === CardActionType.delete)} />}
   ];
 
   // selectable

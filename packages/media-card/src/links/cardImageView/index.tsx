@@ -25,26 +25,37 @@ export interface LinkCardImageViewProps {
 
 export class LinkCardImageView extends Component<LinkCardImageViewProps, {}> {
   render() {
+    const {error, linkUrl} = this.props;
+
+    return error || this.isDownloadingOrProcessing()
+      ? this.getCardImageView()
+      : <Href linkUrl={linkUrl}>{this.getCardImageView()}</Href>;
+  }
+
+  private isDownloadingOrProcessing() {
+    const {status} = this.props;
+    return status === 'loading' || status === 'processing';
+  }
+
+  private getCardImageView(): JSX.Element {
     const {title, site, thumbnailUrl, status, dimensions, actions, onClick, onMouseEnter, error, iconUrl, linkUrl} = this.props;
 
     return (
-      <Href linkUrl={linkUrl}>
-        <CardImageView
-          mediaItemType="link"
-          mediaName={title}
-          subtitle={site || linkUrl}
-          mediaType="image"
-          dataURI={thumbnailUrl}
-          status={status}
-          dimensions={dimensions}
-          actions={actions}
-          error={error}
-          icon={iconUrl}
+      <CardImageView
+        mediaItemType="link"
+        mediaName={title}
+        subtitle={site || linkUrl}
+        mediaType="image"
+        dataURI={thumbnailUrl}
+        status={status}
+        dimensions={dimensions}
+        actions={actions}
+        error={error}
+        icon={iconUrl}
 
-          onClick={onClick}
-          onMouseEnter={onMouseEnter}
-        />
-      </Href>
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+      />
     );
   }
 }

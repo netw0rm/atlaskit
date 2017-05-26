@@ -172,5 +172,17 @@ describe('EmojiRepository', () => {
       ];
       checkOrder(expectedEmoji, emojis);
     });
+
+    it('options - limit ignored if missing', () => {
+      const service = new EmojiRepository(allEmojis);
+      const emojis = service.search('').emojis;
+      checkOrder(allEmojis, emojis);
+    });
+
+    it('options - limit results', () => {
+      const service = new EmojiRepository(allEmojis);
+      const emojis = service.search('', { limit: 10 }).emojis;
+      checkOrder(allEmojis.slice(0, 10), emojis);
+    });
   });
 });

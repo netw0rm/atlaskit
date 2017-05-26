@@ -1,20 +1,24 @@
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
+import * as sinon from 'sinon';
 import {expect} from 'chai';
-import {mount} from 'enzyme';
-import {FilmStripView, FilmStripViewItem} from '../src/index';
+import {shallow, mount} from 'enzyme';
+import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../src/index';
 import {ArrowLeftWrapper, ArrowRightWrapper} from '../src/styled';
+import {CardView} from '@atlaskit/media-card';
 
-const mountFilmStrip = (container: HTMLDivElement, items: Array<FilmStripViewItem>, width: number) => {
-  const wrapper = mount(<FilmStripView items={items} width={width} />, {attachTo: container});
+const mountFilmStrip = (container: HTMLDivElement, items: Array<FilmStripViewItem>, width: number, onCardClick?: (event: FilmStripCardClickEvent) => void) => {
+  const wrapper = mount(<FilmStripView items={items} width={width} onCardClick={onCardClick}/>, {attachTo: container});
 
   return wrapper;
 };
 
+// we need to wait until the filmstrip animation completes
 const waitAndContinue = (f: () => void) => {
   setTimeout(f, 1000);
 };
 
-describe.skip('Filmstrip', () => {
+describe('FilmstripView', () => {
   const items: Array<FilmStripViewItem> = [
     {
       id: 'some-id-1',
@@ -85,13 +89,12 @@ describe.skip('Filmstrip', () => {
   });
 
   it('should contain all provided items', () => {
-    const filmStrip = mountFilmStrip(container, items, 500);
-
-    expect(filmStrip.find('li').length).to.be.equal(items.length);
+    const filmStrip = shallow(<FilmStripView items={items} />);
+    expect(filmStrip.find('CardView').length).to.be.equal(items.length);
   });
 
-  it('should initially have right arrow with large collection', (done) => {
-    const filmStrip = mountFilmStrip(container, items, 500);
+  it.skip('should initially have right arrow with large collection', (done) => {
+    const filmStrip = mountFilmStrip(container, items, 200);
 
     waitAndContinue(() => {
       expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(0);
@@ -102,7 +105,7 @@ describe.skip('Filmstrip', () => {
     });
   });
 
-  it('should initially have no arrows with small collection', (done) => {
+  it.skip('should initially have no arrows with small collection', (done) => {
     const smallCollection = items.slice(0, 2);
     const filmStrip = mountFilmStrip(container, smallCollection, 500);
 
@@ -115,7 +118,7 @@ describe.skip('Filmstrip', () => {
     });
   });
 
-  it('should show both arrows after moving right', (done) => {
+  it.skip('should show both arrows after moving right', (done) => {
     const filmStrip = mountFilmStrip(container, items, 500);
 
     waitAndContinue(() => {
@@ -131,7 +134,7 @@ describe.skip('Filmstrip', () => {
     });
   });
 
-  it('should show only right arrow in the leftmost position', (done) => {
+  it.skip('should show only right arrow in the leftmost position', (done) => {
     const filmStrip = mountFilmStrip(container, items, 500);
 
     waitAndContinue(() => {
@@ -149,5 +152,19 @@ describe.skip('Filmstrip', () => {
         });
       });
     });
+  });
+
+  it('should handle the onCardClick event', () => {
+    const onCardClick = sinon.spy();
+    const cardViewClickMock = {event: {}};
+
+    const filmStrip = shallow(<FilmStripView items={items} onCardClick={onCardClick} />);
+    filmStrip.find(CardView).first().simulate('click', cardViewClickMock);
+
+    expect(onCardClick.calledOnce).to.be.true;
+
+    const {item: clickedItem, items: clickedItems} = onCardClick.firstCall.args[0];
+    expect(clickedItem).deep.equals(items[0]);
+    expect(clickedItems).deep.equals(clickedItems);
   });
 });

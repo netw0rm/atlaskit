@@ -27,7 +27,9 @@ import {
   unknownFileId,
   errorFileId
 } from '@atlaskit/media-test-helpers';
-import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent } from '../src';
+
+import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent, OnSelectChangeFuncResult } from '../src';
+import { SelectableCard } from './utils/selectableCard';
 
 const context = createStorybookContext();
 
@@ -36,23 +38,46 @@ const clickHandler = (result: CardEvent) => {
   action('click')(result.mediaItemDetails);
 };
 
-const hoverHandler = (result: CardEvent) => {
+const mouseEnterHandler = (result: CardEvent) => {
   result.event.preventDefault();
   action('mouseEnter')(result.mediaItemDetails);
+};
+
+const onSelectChangeHandler = (result: OnSelectChangeFuncResult) => {
+  action('selectChanged')(result);
 };
 
 const createApiCards = (appearance: CardAppearance, identifier: Identifier) => {
   // API methods
   const apiCards = [
     {
-      title: 'click',
-      content: <Card context={context} appearance={appearance} identifier={identifier} onClick={clickHandler} />
-    },
-    {
-      title: 'hover',
-      content: <Card context={context} appearance={appearance} identifier={identifier} onMouseEnter={hoverHandler} />
+      title: 'not selectable',
+      content: (
+        <Card
+          context={context}
+          appearance={appearance}
+          identifier={identifier}
+          onClick={clickHandler}
+          onMouseEnter={mouseEnterHandler}
+        />
+      )
     }
   ];
+
+  const selectableCard = {
+    title: 'selectable',
+    content: (
+      <SelectableCard
+        context={context}
+        identifier={identifier}
+        onSelectChange={onSelectChangeHandler}
+      />
+    )
+  };
+
+  if (appearance === 'image') {
+    return [...apiCards, selectableCard];
+  }
 
   return apiCards;
 };
@@ -129,7 +154,9 @@ storiesOf('Card', {})
 
       onAddLink = () => {
         const {link} = this.state;
-        context.addLinkItem(link, collectionName);
+        context.getUrlPreviewProvider(link).observable().subscribe(
+          metadata => context.addLinkItem(link, collectionName, metadata)
+        );
       }
     }
 
@@ -295,17 +322,6 @@ storiesOf('Card', {})
     // api cards
     const apiCards = createApiCards('image', successIdentifier);
 
-    // selectable
-    const selectableCards = [
-      {
-        title: 'image - Not selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} />
-      }, {
-        title: 'image - Selected',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" selectable={true} selected={true} />
-      }
-    ];
-
     // no thumbnail
     const noThumbnailCards = [
       {
@@ -332,9 +348,6 @@ storiesOf('Card', {})
 
           <h3>API Cards</h3>
           <StoryList>{apiCards}</StoryList>
-
-          <h3>Seletable</h3>
-          <StoryList>{selectableCards}</StoryList>
 
           <h3>Thumbnail not available</h3>
           <StoryList>{noThumbnailCards}</StoryList>

@@ -185,4 +185,31 @@ describe('CardView', () => {
     const hoverHandlerArg = hoverHandler.firstCall.args[0];
     expect(hoverHandlerArg.mediaItemDetails).to.deep.equal(linkDetails);
   });
+
+  it('should NOT fire onSelectChange when card is NOT selectable', function() {
+    const file: FileDetails = {
+      id: 'abcd',
+      name: 'my-file'
+    };
+
+    const handler = sinon.spy();
+    const card = shallow(<CardView status="loading" metadata={file} onSelectChange={handler} />);
+    card.setProps({selected: true});
+
+    expect(handler.called).to.be.false;
+  });
+
+  it('should fire onSelectChange when selected state is changed by the consumer and selectable is true', function() {
+    const file: FileDetails = {
+      id: 'abcd',
+      name: 'my-file'
+    };
+
+    const handler = sinon.spy();
+    const card = shallow(<CardView status="loading" metadata={file} onSelectChange={handler} selectable={true} />);
+    card.setProps({selected: true});
+
+    expect(handler.calledOnce).to.be.true;
+    expect(handler.firstCall.args[0]).to.deep.equal({selected: true, mediaItemDetails: file});
+  });
 });

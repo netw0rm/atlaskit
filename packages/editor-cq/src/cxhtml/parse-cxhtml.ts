@@ -1,5 +1,5 @@
 import collapse from './collapse-whitespace';
-import { getNodeName } from './parse';
+import { getNodeName } from './utils';
 import { AC_XMLNS, FAB_XMLNS, RI_XMLNS } from './encode-cxhtml';
 
 export default function(xhtml: string): Document {

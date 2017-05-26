@@ -4,20 +4,20 @@ import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 
 import { AkNavigationItem } from '../src/index';
 import BasicNavigation from './components/BasicNavigation';
-import Page from './components/HtmlPage';
+import HtmlPage from './components/HtmlPage';
 import PagedContainerNavigation from './components/nested-navigation/PagedContainerNavigation';
 import { name } from '../package.json';
 
 storiesOf(name, module)
   .add('with nested navigation', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
         <PagedContainerNavigation />
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with nested navigation and container items', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
         <PagedContainerNavigation>
           <div>
@@ -38,6 +38,6 @@ storiesOf(name, module)
           </div>
         </PagedContainerNavigation>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   )
 );

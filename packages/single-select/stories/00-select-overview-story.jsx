@@ -36,8 +36,8 @@ import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
 /* eslint-enable import/first, import/no-duplicates */
 
 // Dummy components exist so that we have a component to pass to <Props/>
-import DummyItem from '../src/internal/DummyItem';
-import DummyGroup from '../src/internal/DummyGroup';
+import DummyItem from '../src/components/DummyItem';
+import DummyGroup from '../src/components/DummyGroup';
 import { name } from '../package.json';
 import Select, { StatelessSelect } from '../src';
 

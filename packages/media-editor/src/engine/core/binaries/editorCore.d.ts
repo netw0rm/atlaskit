@@ -1,14 +1,21 @@
 declare namespace EditorCore {
   namespace Core {
     /*
-    * Types exposed by the native part.
-    * See src/bindings.cpp for details
-    */
+     * Types exposed by the native part.
+     * See src/bindings.cpp for details
+     */
 
     type VeColor = {
       red: number,
       green: number,
       blue: number
+    };
+
+    type VeColorWithAlpha = {
+      red: number,
+      green: number,
+      blue: number,
+      alpha: number
     };
 
     type VePoint = {
@@ -45,7 +52,7 @@ declare namespace EditorCore {
       addShadow: boolean,
       tool: VeTool,
       windowSize: VeWindowSize,
-      backgroundColor: VeColor,
+      backgroundColor: VeColorWithAlpha,
       backBitmapUuid: string,
       backBitmapSize: VeSize,
       baseTextDirection: VeTextDirection
@@ -172,7 +179,7 @@ declare namespace EditorCore {
       // Returns:
       //   - null, if the typeset with the requested index doesn't exist
       //   - object implementing TypesetInterop (this interface is described in typeset.h)
-      getTypeset(index: number): TypesetInterop;
+      getTypeset(index: number): TypesetInterop | null;
 
       // Called when the OpenGL context is lost
       handleContextLost(): void;
@@ -203,7 +210,8 @@ declare namespace EditorCore {
         Brush: {value: number},
         Oval: {value: number},
         Rectangle: {value: number},
-        Text: {value: number}
+        Text: {value: number},
+        Move: {value: number}
       },
       VeTextDirection: {
         LeftToRight: {value: number},
@@ -229,7 +237,7 @@ declare namespace EditorCore {
       handleScrollChanged: (isHorizontalVisible: boolean, horizontalPosition: number, horizontalThumb: number,
                             isVerticalVisible: boolean, verticalPosition: number, verticalThumb: number) => void,
       handleShapeParametersChanged: (red: number, green: number, blue: number,
-                                    lineWidth: number, addShadow: boolean) => void,
+                                     lineWidth: number, addShadow: boolean) => void,
       bitmapProvider: BitmapProviderInterop,
       bitmapExporter: BitmapExporterInterop,
       browserTypesetter: BrowserTypesetterInterop,

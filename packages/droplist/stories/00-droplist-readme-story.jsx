@@ -22,6 +22,7 @@ const droplistPropDescriptions = {
   Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no
   restrictions.`,
   position: 'Position of the menu. See the documentation of ak-layer for more details.',
+  isLoading: 'Controls whether or not a Spinner will be shown (if isOpen)',
   isOpen: 'Controls the open state of the dropdown',
   onOpenChange: `This is a handler function which is called when the droplist should be open/closed.
   Received an object with isOpen state. Activates when page is clicked outside of the dropdown or
@@ -88,5 +89,13 @@ storiesOf(name, module)
       <Code>
         {DroplistMultilineItemsExampleRaw}
       </Code>
+    </Chrome>
+  ))
+  .add('Droplist that is loading', () => (
+    <Chrome title={name}>
+      <Description>
+        <p>Droplist that is loading</p>
+        <DropList isLoading isOpen />
+      </Description>
     </Chrome>
   ));

@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Layer from '@atlaskit/layer';
+import Spinner from '@atlaskit/spinner';
 
 import { name } from '../../package.json';
 
@@ -55,6 +56,18 @@ describe(`${name} - core`, () => {
     it('should be open when the isOpen property set to true', () => {
       expect(mount(<Droplist trigger="text">{itemsList}</Droplist>).find(Group).length).to.equal(0);
       expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>).find(Group).length).to.equal(1);
+    });
+  });
+
+  describe('loading', () => {
+    it('should show a Spinner (and no Groups) when it is loading and open', () => {
+      const mounted = mount(<Droplist isLoading isOpen>{itemsList}</Droplist>);
+      expect(mounted.find(Spinner).length).to.equal(1);
+      expect(mounted.find(Group).length).to.equal(0);
+    });
+
+    it('should not show a Spinner when it is loading but not open', () => {
+      expect(mount(<Droplist isLoading>{itemsList}</Droplist>).find(Spinner).length).to.equal(0);
     });
   });
 });

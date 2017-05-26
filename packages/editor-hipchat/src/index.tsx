@@ -5,7 +5,6 @@ import {
   blockTypePlugins,
   EditorState,
   EditorView,
-  emojiNodeView,
   EmojiTypeAhead,
   emojisPlugins,
   emojisStateKey,
@@ -16,11 +15,9 @@ import {
   keymap,
   mediaPluginFactory,
   mediaStateKey,
-  mediaNodeView,
   MediaPluginState,
   MediaProvider,
   MediaState,
-  mentionNodeView,
   MentionPicker,
   mentionsPlugins,
   mentionsStateKey,
@@ -30,7 +27,15 @@ import {
   textFormattingPlugins,
   TextSelection,
   toJSON,
-  version as coreVersion
+  version as coreVersion,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactEmojiNode,
+  ReactMediaGroupNode,
+  ReactMediaNode,
+  ReactMentionNode,
+  reactNodeViewPlugins,
 } from '@atlaskit/editor-core';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
@@ -203,9 +208,20 @@ export default class Editor extends PureComponent<Props, State> {
 
   showMediaPicker() {
     const { editorView } = this.state;
-    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    if (editorView) {
+      const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
 
-    mediaPluginState.showMediaPicker();
+      mediaPluginState.showMediaPicker();
+    }
+  }
+
+  insertFileFromDataUrl (url: string, fileName: string) {
+    const { editorView } = this.state;
+    if (editorView) {
+      const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
+      mediaPluginState.insertFileFromDataUrl(url, fileName);
+    }
   }
 
   componentWillMount() {
@@ -302,6 +318,7 @@ export default class Editor extends PureComponent<Props, State> {
         ...blockTypePlugins(schema),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
+        ...reactNodeViewPlugins(schema),
         history(),
         keymap(hcKeymap),
         keymap(baseKeymap) // should be last
@@ -333,9 +350,12 @@ export default class Editor extends PureComponent<Props, State> {
         this.handleChange();
       },
       nodeViews: {
-        emoji: emojiNodeView(this.providerFactory),
-        media: mediaNodeView(this.providerFactory),
-        mention: mentionNodeView(this.providerFactory)
+        emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
+        mediaGroup: nodeViewFactory(this.providerFactory, {
+          mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+        mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
       },
       handleDOMEvents: {
         paste(view: EditorView, event: ClipboardEvent) {

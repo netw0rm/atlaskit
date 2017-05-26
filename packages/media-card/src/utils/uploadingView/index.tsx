@@ -1,37 +1,49 @@
 import * as React from 'react';
-import CrossIcon from '@atlaskit/icon/glyph/cross';
-import Icon from '@atlaskit/icon/lib/Icon';
+import {Component} from 'react';
+import {CardAction, CardActionType} from '@atlaskit/media-core';
+
 import {ProgressBar} from '../progressBar';
 import {MediaImage} from '../mediaImage';
+import {Menu} from '../menu';
 import {Ellipsify} from '../ellipsify';
-import {Wrapper, Overlay, Title, Body, ProgressWrapper, IconLink} from './styled';
+import {Wrapper, Overlay, Title, Body, ProgressWrapper, CancelButtonWrapper} from './styled';
 
 export interface UploadingViewProps {
   title?: string;
   progress: number;
   dataURI?: string;
-  onCancel?: () => void;
+  deleteAction?: CardAction;
 }
 
-export const UploadingView = ({title, progress, dataURI, onCancel}: UploadingViewProps) => ( // tslint:disable-line:variable-name
-  <Wrapper>
-    <Overlay>
-      <Title>
-        <Ellipsify text={title || ''} lines={2}/>
-      </Title>
-      <Body>
-          <ProgressWrapper>
-            <ProgressBar progress={progress}/>
-          </ProgressWrapper>
-          {onCancel && (
-            <IconLink onClick={onCancel}>
-              <Icon glyph={CrossIcon} label="Cancel upload"/>
-            </IconLink>
-          )}
-        </Body>
-    </Overlay>
-    {dataURI && (
-      <MediaImage dataURI={dataURI}/>
-    )}
-  </Wrapper>
-);
+export class UploadingView extends Component<UploadingViewProps, {}> {
+  render() {
+    const {title, progress, dataURI, deleteAction} = this.props;
+
+    const cancelButton = deleteAction && deleteAction.type === CardActionType.delete
+      ? (
+        <CancelButtonWrapper>
+          <Menu actions={[deleteAction]} triggerColor="white" />
+        </CancelButtonWrapper>
+      )
+      : null;
+
+    return (
+      <Wrapper>
+        <Overlay>
+          <Title>
+            <Ellipsify text={title || ''} lines={2}/>
+          </Title>
+          <Body>
+              <ProgressWrapper>
+                <ProgressBar progress={progress}/>
+              </ProgressWrapper>
+              {cancelButton}
+            </Body>
+        </Overlay>
+        {dataURI && (
+          <MediaImage dataURI={dataURI}/>
+        )}
+      </Wrapper>
+    );
+  }
+}

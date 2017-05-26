@@ -36,6 +36,7 @@ export class Card extends Component<CardProps, {}> {
   constructor(props) {
     super(props);
     const {context, identifier} = props;
+
     this.updateProvider(context, identifier);
     this.updateDataUriService(context, identifier);
   }
@@ -48,7 +49,6 @@ export class Card extends Component<CardProps, {}> {
       this.updateProvider(nextContext, nextIdenfifier);
       this.updateDataUriService(nextContext, nextIdenfifier);
     }
-
   }
 
   private isUrlPreviewIdentifier(identifier: Identifier): identifier is UrlPreviewIdentifier {
@@ -84,6 +84,5 @@ export class Card extends Component<CardProps, {}> {
       dataURIService={this.dataURIService}
     />;
   }
-
 }
 

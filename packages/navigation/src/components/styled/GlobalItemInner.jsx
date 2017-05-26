@@ -12,13 +12,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import { appearanceEnum, themeVariables } from '../../utils/theme';
-import { colors } from '../../shared-variables';
-
-const sizes = {
-  small: 4 * akGridSizeUnitless,
-  medium: 5 * akGridSizeUnitless,
-  large: 6 * akGridSizeUnitless,
-};
+import { colors, globalItemSizes } from '../../shared-variables';
 
 const itemColors = {
   container: {
@@ -73,8 +67,8 @@ const GlobalItemInner = styled.div`
   color: ${({ theme }) => getColors(theme).default.color};
   cursor: pointer;
   display: flex;
-  width: ${({ size }) => sizes[size]}px;
-  height: ${({ size }) => sizes[size]}px;
+  width: ${({ size }) => globalItemSizes[size]}px;
+  height: ${({ size }) => globalItemSizes[size]}px;
   justify-content: center;
   margin-top: ${({ size }) => (size === 'small' ? akGridSizeUnitless : 0)}px;
 

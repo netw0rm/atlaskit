@@ -19,7 +19,7 @@ describe('text-color', () => {
   });
 
   const testColor1 = '#97a0af';
-  const testColor2 = '#0049b0';
+  const testColor2 = '#0747a6';
   const createTextColor = (color: string) => textColor({ color });
 
   it('should allow a change handler to be attached', () => {

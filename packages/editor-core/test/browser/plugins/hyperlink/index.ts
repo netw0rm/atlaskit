@@ -387,6 +387,14 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
     });
 
+    it('should be able to update existing links text', () => {
+      const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'))));
+
+      pluginState.updateLinkText('Atlassian', editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://www.atlassian.com' })('Atlassian'))));
+    });
+
     it('should allow updating a link if new href is empty', () => {
       const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://example.com' })('{<}text{>}'))));
 

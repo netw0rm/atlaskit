@@ -8,6 +8,7 @@ import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
+import { normalizeUrl } from '../../plugins/hyperlink/utils';
 
 export interface Props {
   pluginState: HyperlinkState;
@@ -19,6 +20,8 @@ export interface State {
   // URL of the hyperlink. The presence of this attribute causes an "open"
   // hyperlink to be rendered in the popup.
   href?: string;
+  text?: string;
+  oldText?: string;
   // Href before editing
   oldHref?: string;
   // Surprisingly not all hyperlinks can be unlinked. For example when the
@@ -72,14 +75,15 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
 
   render() {
     const {
-      href, target, unlinkable, active,
+      href, oldHref, text, oldText, target, unlinkable, active,
       editorFocused, inputActive, showToolbarPanel
     } = this.state;
 
+    const normalizedOldText = oldText && normalizeUrl(oldText);
+
     if ((active || showToolbarPanel) && (editorFocused || inputActive)) {
-      const showOpenButton = !!href;
-      const showUnlinkButton = unlinkable && active && href;
-      const showSeparator = showOpenButton || showUnlinkButton;
+      const showOpenButton = !!oldHref;
+      const showUnlinkButton = unlinkable && active && oldHref;
 
       return (
         <FloatingToolbar
@@ -99,6 +103,9 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
                 <OpenIcon label="Open link" />
               </ToolbarButton>
             }
+            {!showOpenButton ? null :
+              <span className={styles.seperator} />
+            }
             {!showUnlinkButton ? null :
               <ToolbarButton
                 theme="dark"
@@ -108,18 +115,27 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
                 <UnlinkIcon label="Unlink" />
               </ToolbarButton>
             }
-            {!showSeparator ? null :
+            {!showUnlinkButton ? null :
               <span className={styles.seperator} />
             }
+            { normalizedOldText && href === normalizedOldText ?
             <PanelTextInput
-              placeholder="Link address"
+              placeholder="Text to display"
+              defaultValue={!text && href === normalizedOldText ? '' : text}
+              onSubmit={this.updateLinkText}
+              onChange={this.updateText}
+              onMouseDown={this.setInputActive}
+              onBlur={this.handleOnBlur}
+            /> :
+            <PanelTextInput
+              placeholder="Paste link"
               autoFocus={!href || href.length === 0}
               defaultValue={href}
-              onSubmit={this.handleSubmit}
+              onSubmit={this.updateLinkHref}
               onChange={this.updateHref}
               onMouseDown={this.setInputActive}
               onBlur={this.handleOnBlur}
-            />
+            />}
           </div>
         </FloatingToolbar>
       );
@@ -154,6 +170,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       active: pluginState.active,
       target: pluginState.element,
       href: pluginState.href,
+      oldText: pluginState.text,
       oldHref: pluginState.href,
       textInputValue: pluginState.text,
       editorFocused: pluginState.editorFocused,
@@ -166,7 +183,18 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.setState({ href });
   }
 
-  private handleSubmit = (href: string) => {
+  private updateText = (text: string) => {
+    this.setState({ text });
+  }
+
+  private updateLinkText = (text: string) => {
+    if (text && text.length > 0 && text !== this.state.oldText) {
+      const { editorView, pluginState } = this.props;
+      pluginState.updateLinkText(text, editorView);
+    }
+  }
+
+  private updateLinkHref = (href: string) => {
     const { editorView, pluginState } = this.props;
     if (this.state.oldHref) {
       pluginState.updateLink({ href }, editorView);

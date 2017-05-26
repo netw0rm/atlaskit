@@ -5,7 +5,8 @@ import * as sinon from 'sinon';
 
 import {
   mergeTextNodes,
-  renderTextNodes
+  renderTextNodes,
+  stringifyTextNodes
 } from '../../../src/nodes/text';
 import * as markUtils from '../../../src/marks';
 
@@ -70,6 +71,27 @@ describe('Text', () => {
     });
   });
 
+  describe('stringifyTextNodes', () => {
+    it('should concatenate all the text nodes into a string', () => {
+      const textNodes = [
+        {
+          type: 'text',
+          text: 'Hello '
+        },
+        {
+          type: 'text',
+          text: 'World!',
+          marks: [
+            {
+              type: 'strong'
+            }
+          ]
+        }
+      ];
+      expect(stringifyTextNodes(textNodes)).to.equal('Hello World!');
+    });
+  });
+
   describe('renderTextNodes', () => {
     it('should wrap text nodes with marks', () => {
       const textNodes = [
@@ -114,6 +136,7 @@ describe('Text', () => {
       const spy = sinon.spy(markUtils, 'getMarksByOrder');
       renderTextNodes(textNodes);
       expect(spy.calledWith(textNodes[0].marks)).to.equal(true);
+      spy.restore();
     });
 
     it('should join adjecent text nodes with same marks', () => {

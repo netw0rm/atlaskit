@@ -6,6 +6,7 @@ import Paragraph from './paragraph';
 import Emoji from './emoji';
 import Hardbreak from './hardBreak';
 import MediaGroup from './mediaGroup';
+import CodeBlock from './codeBlock';
 import Media, { MediaNode } from './media';
 import Heading, { HeadingLevel } from './heading';
 import BulletList from './bulletList';
@@ -17,6 +18,7 @@ import Rule from './rule';
 import {
   mergeTextNodes,
   renderTextNodes,
+  stringifyTextNodes,
   TextNode,
 } from './text';
 
@@ -32,6 +34,7 @@ export interface Renderable {
 }
 
 enum NodeType {
+  codeBlock,
   doc,
   emoji,
   hardBreak,
@@ -56,6 +59,17 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
 
   if (type) {
     switch (NodeType[type]) {
+      case NodeType.codeBlock: {
+        if (content) {
+          const {attrs} = node;
+          return {
+            content,
+            type,
+            attrs
+          };
+        }
+        break;
+      }
       case NodeType.doc: {
         const { version } = node;
         if (version && content && content.length) {
@@ -253,6 +267,9 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
   const key = `${validNode.type}-${index}`;
 
   switch (NodeType[validNode.type]) {
+    case NodeType.codeBlock:
+      const { attrs } = validNode;
+      return <CodeBlock key={key} text={stringifyTextNodes(validNode.content)} language={attrs!.language as string} />;
     case NodeType.doc:
       return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
     case NodeType.emoji: {

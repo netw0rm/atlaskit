@@ -29,6 +29,7 @@
     "axios": "^0.16.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.17.0",
+    "babel-file-loader": "^1.0.1",
     "babel-loader": "^6.2.5",
     "babel-plugin-incremental-dom": "^3.4.0",
     "babel-plugin-rewire": "^1.0.0",
@@ -201,5 +202,7 @@
     "validate/typescript": "lerna run validate/typescript",
     "validate/flow": "flow check"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-plugin-react-flow-props-to-prop-types": "^0.5.0"
+  }
 }

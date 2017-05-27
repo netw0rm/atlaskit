@@ -1,7 +1,13 @@
+// @flow
 import React from 'react';
 import { ItemWithIcon, RecentContainerType, RecentContainerImage, RecentContainerName } from '../styled';
+import type { Translations, RecentContainers, DropdownConfig } from '../internal/types';
 
-export default function (i18n, isAnonymousUser, recentContainers) {
+export default function (
+  i18n: Translations,
+  isAnonymousUser: boolean,
+  recentContainers: RecentContainers
+): DropdownConfig | null {
   if (isAnonymousUser || !recentContainers.length) {
     return null;
   }

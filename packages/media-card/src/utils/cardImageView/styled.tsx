@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import { Root, cardShadow, centerSelf, borderRadius } from '../../styles';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import { akColorN20 } from '@atlaskit/util-shared-styles';
 
 export const Card = styled(Root)`
   ${cardShadow}
@@ -14,7 +14,7 @@ export const Card = styled(Root)`
 
   .wrapper {
     ${borderRadius}
-    background: ${akColorN30};
+    background: ${akColorN20};
     display: block;
     height: inherit;
     position: relative;

@@ -24,6 +24,7 @@ export const Wrapper = styled(Root)`
 
   &.square {
     flex-direction: column;
+    justify-content: flex-end;
 
     .details {
       height: 116px;

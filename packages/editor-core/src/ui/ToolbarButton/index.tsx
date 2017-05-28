@@ -1,8 +1,7 @@
-import AkButton from '@atlaskit/button';
 import { Tooltip } from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
-import * as styles from './styles';
+import { AkButton } from './styles';
 
 export interface Props {
   selected?: boolean;
@@ -11,7 +10,7 @@ export interface Props {
   title?: string;
   target?: string;
   theme?: 'dark';
-  wrapperClassName?: string;
+  className?: string;
   iconBefore?: ReactElement<any>;
   spacing?: 'default' | 'compact' | 'none';
   onClick?: () => void;
@@ -27,13 +26,13 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
   };
 
   static defaultProps = {
-    wrapperClassName: '',
+    className: '',
   };
 
   render() {
     const button = (
       <AkButton
-        className={`${styles.button} ${this.props.wrapperClassName}`}
+        className={`${this.props.className}`}
         ariaHaspopup={true}
         isDisabled={this.props.disabled}
         isSelected={this.props.selected}

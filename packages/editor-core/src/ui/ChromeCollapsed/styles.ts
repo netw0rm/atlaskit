@@ -5,22 +5,21 @@ import {
   akBorderRadius,
   akColorN50
 } from '@atlaskit/util-shared-styles';
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-export const input = style({
-  backgroundColor: 'white',
-  border: `1px solid ${akEditorSubtleAccent}`,
-  borderRadius: akBorderRadius,
-  boxSizing: 'border-box',
-  height: '40px',
-  paddingLeft: '20px',
-  paddingRight: '20px',
-  width: '100%',
+// tslint:disable-next-line:variable-name
+export const Input = styled.input`
+  background-color: white;
+  border: 1px solid ${akEditorSubtleAccent};
+  border-radius: ${akBorderRadius};
+  box-sizing: border-box;
+  height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 100%;
 
-  $nest: {
-    '&:hover': {
-      borderColor: akColorN50,
-      cursor: 'pointer',
-    }
+  &:hover {
+    border-color: ${akColorN50};
+    cursor: pointer;
   }
-});
+`;

@@ -4,14 +4,14 @@ import { PureComponent } from 'react';
 
 import { CodeBlockState } from '../../plugins/code-block';
 import { EditorView } from '../../prosemirror';
-import FloatingToolbar from '../FloatingToolbar';
+
 import {
   createLanguageList,
   filterSupportedLanguages,
   findMatchedLanguage,
   NO_LANGUAGE
 } from './languageList';
-import * as styles from './styles';
+import { Container, FloatingToolbar } from './styles';
 
 export interface Props {
   editorView: EditorView;
@@ -80,10 +80,9 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     if (toolbarVisible || languageSelectFocused) {
       return (
-        <FloatingToolbar target={element} align="left" autoPosition={true} className={styles.floatingToolbar}>
-          <div
+        <FloatingToolbar target={element} align="left" autoPosition={true}>
+          <Container
             tabIndex={0}
-            className={styles.container}
             onMouseDown={this.setLanguageSelectFocused}
             onBlur={this.resetLanguageSelectFocused}
           >
@@ -95,7 +94,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
               defaultSelected={{ content: language, value: language }}
               placeholder="Select language"
             />
-          </div>
+          </Container>
         </FloatingToolbar>
       );
     }

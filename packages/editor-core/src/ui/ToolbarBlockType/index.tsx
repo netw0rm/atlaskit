@@ -9,7 +9,7 @@ import { BlockType } from '../../plugins/block-type/types';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { EditorView } from '../../prosemirror';
 
-import * as styles from './styles';
+import { ButtonContent } from './styles';
 
 export interface Props {
   editorView: EditorView;
@@ -73,7 +73,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           appearance="subtle"
           spacing="compact"
         >
-          <div className={styles.buttonContent}>{currentBlockType.title}</div>
+          <ButtonContent>{currentBlockType.title}</ButtonContent>
         </AkButton>
       </DropdownMenu>
     );

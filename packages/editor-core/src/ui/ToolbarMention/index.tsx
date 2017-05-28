@@ -4,8 +4,7 @@ import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { EditorView } from '../../prosemirror';
 import { MentionsState } from '../../plugins/mentions';
-import ToolbarButton from '../ToolbarButton';
-import * as styles from './styles';
+import { ToolbarButton } from './styles';
 
 export interface Props {
   editorView: EditorView;
@@ -32,7 +31,6 @@ export default class ToolbarMention extends PureComponent<Props, State> {
 
     return (
       <ToolbarButton
-        wrapperClassName={styles.button}
         onClick={this.handleInsertMention}
         disabled={disabled}
         title="Mention a person (@)"

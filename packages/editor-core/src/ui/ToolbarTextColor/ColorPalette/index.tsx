@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import Color from '../Color';
 
-import * as styles from './styles';
+import { ColorPaletteWrapper } from './styles';
 
 export interface Props {
   palette: Map<string, string>;
@@ -15,7 +15,7 @@ export default class ColorPalette extends PureComponent<Props, undefined> {
   render() {
     const { palette, cols = 6, onClick, selectedColor } = this.props;
     return (
-      <div className={styles.colorPalette} style={{ maxWidth: cols * 32 }}>
+      <ColorPaletteWrapper style={{ maxWidth: cols * 32 }}>
         {Array.from(palette).map(([color, label]) => (
           <Color
             key={color}
@@ -25,7 +25,7 @@ export default class ColorPalette extends PureComponent<Props, undefined> {
             isSelected={color === selectedColor}
           />
         ))}
-      </div>
+      </ColorPaletteWrapper>
     );
   }
 }

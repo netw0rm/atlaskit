@@ -1,18 +1,4 @@
-import { akColorN50 } from '@atlaskit/util-shared-styles';
-import { style } from 'typestyle';
 import { NodeSpec } from '../../prosemirror';
-
-const emojiStyle = style({
-  display: 'inline-block',
-  userSelect: 'all',
-
-  $nest: {
-    '&.ProseMirror-selectednode': {
-      backgroundColor: akColorN50,
-      outline: 'none'
-    },
-  }
-});
 
 export const emoji: NodeSpec = {
   inline: true,
@@ -33,7 +19,6 @@ export const emoji: NodeSpec = {
   toDOM(node: any): [string, any, string] {
     const { shortName, id, text } = node.attrs;
     const attrs = {
-      'class': emojiStyle,
       'data-emoji-short-name': shortName,
       'data-emoji-id': id,
       'data-emoji-text': text,

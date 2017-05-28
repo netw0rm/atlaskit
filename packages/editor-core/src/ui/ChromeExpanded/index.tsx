@@ -34,7 +34,14 @@ import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
-import * as styles from './styles';
+import {
+  Container,
+  Content,
+  Footer,
+  FooterActions,
+  Toolbar,
+  SecondaryToolbar
+} from './styles';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
@@ -84,8 +91,8 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       : 'primary';
 
     return (
-      <div className={styles.container} data-editor-chrome={true} tabIndex={-1} ref={this.handleEditorContainerRef}>
-        <div className={styles.toolbar}>
+      <Container data-editor-chrome={true} tabIndex={-1} innerRef={this.handleEditorContainerRef}>
+        <Toolbar>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
           {props.pluginStateTextColor ?
@@ -108,17 +115,17 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
           <span style={{ flexGrow: 1 }} />
           {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
-        </div>
-        <div className={styles.content}>
+        </Toolbar>
+        <Content>
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
           {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} editorView={props.editorView} /> : null}
           {props.pluginStateMentions && props.mentionProvider ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionProvider} /> : null}
           {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
           {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} editorView={props.editorView} /> : null}
-        </div>
-        <div className={styles.footer}>
-          <div className={styles.footerActions}>
+        </Content>
+        <Footer>
+          <FooterActions>
             <AkButtonGroup>
               {!this.props.onSave ? null :
                 <span onClick={this.handleSave}>
@@ -137,14 +144,14 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
                 </span>
               }
             </AkButtonGroup>
-          </div>
-          <div className={styles.secondaryToolbar}>
+          </FooterActions>
+          <SecondaryToolbar>
             {props.pluginStateMentions ? <ToolbarMention pluginState={props.pluginStateMentions} editorView={props.editorView} /> : null}
             {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
             {props.pluginStateMedia ? <ToolbarMedia pluginState={props.pluginStateMedia} /> : null}
-          </div>
-        </div>
-      </div>
+          </SecondaryToolbar>
+        </Footer>
+      </Container>
     );
   }
 

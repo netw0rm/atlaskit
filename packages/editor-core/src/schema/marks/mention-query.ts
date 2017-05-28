@@ -1,10 +1,5 @@
 import { akColorB400 } from '@atlaskit/util-shared-styles';
-import { style } from 'typestyle';
 import { MarkSpec } from '../../prosemirror';
-
-const mentionQueryStyle = style({
-  color: akColorB400
-});
 
 export const mentionQuery: MarkSpec = {
   inclusive: true,
@@ -14,7 +9,7 @@ export const mentionQuery: MarkSpec = {
   toDOM(): [string, any] {
     return ['span', {
       'data-mention-query': true,
-      'class': mentionQueryStyle
+      style: `color: ${akColorB400}`
     }];
   }
 };

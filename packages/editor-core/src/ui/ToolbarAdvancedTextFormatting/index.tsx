@@ -8,7 +8,7 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import ToolbarButton from '../ToolbarButton';
 import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
-import * as styles from './styles';
+import { TriggerWrapper, ExpandIconWrapper } from './styles';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
@@ -95,12 +95,12 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           <ToolbarButton
             selected={isOpen || codeActive || strikethroughActive}
             iconBefore={
-              <div className={styles.triggerWrapper}>
+              <TriggerWrapper>
                 <AdvancedIcon label="Open or close advance text formatting dropdown" />
-                <div className={styles.expandIcon}>
+                <ExpandIconWrapper>
                   <ExpandIcon label="Open or close advance text formatting dropdown" />
-                </div>
-              </div>}
+                </ExpandIconWrapper>
+              </TriggerWrapper>}
           />
         </DropdownMenu>
       );
@@ -109,12 +109,12 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
         selected={isOpen || codeActive || strikethroughActive}
         disabled={true}
         iconBefore={
-          <div className={styles.triggerWrapper}>
+          <TriggerWrapper>
             <AdvancedIcon label="Open or close advance text formatting dropdown"/>
-            <div className={styles.expandIcon}>
+            <ExpandIconWrapper>
               <ExpandIcon label="Open or close advance text formatting dropdown" />
-            </div>
-          </div>}
+            </ExpandIconWrapper>
+          </TriggerWrapper>}
       />;
     }
   }

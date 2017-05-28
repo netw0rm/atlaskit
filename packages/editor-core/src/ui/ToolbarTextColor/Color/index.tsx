@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import * as styles from './styles';
+import { Button, ButtonWrapper } from './styles';
 import Icon from '@atlaskit/icon';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 import { akColorN0 } from '@atlaskit/util-shared-styles';
@@ -17,12 +17,12 @@ export default class Color extends PureComponent<Props, undefined> {
   render() {
     const { tabIndex, value, label, isSelected } = this.props;
     return (
-      <span className={styles.buttonWrapper}>
-        <button
+      <ButtonWrapper>
+        <Button
           onClick={this.onClick}
           onMouseDown={this.onMouseDown}
           tabIndex={tabIndex}
-          className={`${styles.button} ${isSelected ? 'selected' : ''}`}
+          className={`${isSelected ? 'selected' : ''}`}
           title={label}
           style={{ backgroundColor: value }}
         >
@@ -33,8 +33,8 @@ export default class Color extends PureComponent<Props, undefined> {
               glyph={EditorDoneIcon}
             />
           }
-        </button>
-      </span>
+        </Button>
+      </ButtonWrapper>
     );
   }
 

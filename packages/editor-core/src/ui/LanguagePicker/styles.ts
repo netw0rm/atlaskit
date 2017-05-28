@@ -1,19 +1,20 @@
 import { akEditorPopupText } from '../../styles';
-import { style } from 'typestyle';
+import styled from 'styled-components';
+import FloatingToolbarDefault from '../FloatingToolbar';
 
-export const container = style({
-  $nest: {
-    '& button > span > span:first-child': {
-      color: akEditorPopupText,
-      minWidth: '80px',
-      textAlign: 'left'
-    },
-    '& span[role="menuitem"]': {
-      padding: '0 16px'
-    }
+// tslint:disable-next-line:variable-name
+export const Container = styled.div`
+  & button > span > span:first-child {
+    color: ${akEditorPopupText};
+    min-width: 80px;
+    text-align: left;
   }
-});
+  & span[role="menuitem"] {
+    padding: 0 16px;
+  }
+`;
 
-export const floatingToolbar = style({
-  backgroundColor: 'transparent',
-});
+// tslint:disable-next-line:variable-name
+export const FloatingToolbar: any = styled(FloatingToolbarDefault)`
+  background-color: transparent;
+`;

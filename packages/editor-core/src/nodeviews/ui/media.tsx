@@ -74,6 +74,7 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
           renderNode={providers => {
             return (
               <MediaComponent
+                key={`medianode-${id}`}
                 mediaProvider={providers['mediaProvider']}
                 editorView={view}
                 id={id!}

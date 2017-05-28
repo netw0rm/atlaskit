@@ -57,6 +57,14 @@ export class MediaPluginState {
   private useDefaultStateManager = true;
   private destroyed = false;
   private mediaProvider: MediaProvider;
+
+  /*
+    MediaPluginState.setMediaProvider(providerPromise) is async method which is setting pickers.
+    When it's called pickers are destroyed. New pickers are set when providerPromise is resolved.
+    The problem is that setMediaProvider can be called at any moment, even when providerPromise hasn't been resolved yet.
+    To prevent this MediaPluginState stores reference to last media provider set
+  */
+  private lastMediaProvider: Promise<MediaProvider> | undefined;
   private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
   private binaryPicker?: PickerFacade;
@@ -86,6 +94,13 @@ export class MediaPluginState {
   }
 
   setMediaProvider = async (mediaProvider?: Promise<MediaProvider>) => {
+    if (this.lastMediaProvider === mediaProvider) {
+      return;
+    }
+
+    this.destroyPickers();
+    this.lastMediaProvider = mediaProvider;
+
     if (!mediaProvider) {
       this.allowsPastingLinks = false;
       this.allowsUploads = false;
@@ -95,7 +110,7 @@ export class MediaPluginState {
       return;
     }
 
-    let resolvedMediaProvider;
+    let resolvedMediaProvider: MediaProvider;
 
     try {
       resolvedMediaProvider = await mediaProvider;
@@ -130,13 +145,15 @@ export class MediaPluginState {
     if (this.allowsUploads) {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
-      // TODO: re-initialize pickers ?
-      if (resolvedMediaProvider.uploadParams) {
+      if (resolvedMediaProvider.uploadParams && uploadContext) {
         if (this.popupPicker) {
           this.popupPicker.setUploadParams(resolvedMediaProvider.uploadParams);
         }
 
-        this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+        // race condition fix
+        if (this.lastMediaProvider === mediaProvider) {
+          this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+        }
       }
     }
 
@@ -203,12 +220,9 @@ export class MediaPluginState {
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
     const { binaryPicker } = this;
+    assert(binaryPicker, 'Unable to insert file because media pickers have not been initialized yet');
 
-    if (!binaryPicker) {
-      throw new Error('Unable to insert file because media pickers have not been initialized yet');
-    }
-
-    binaryPicker.upload(url, fileName);
+    binaryPicker!.upload(url, fileName);
   }
 
   showMediaPicker = () => {
@@ -318,12 +332,10 @@ export class MediaPluginState {
 
     this.destroyed = true;
 
-    const { pickers, mediaNodes } = this;
-
-    pickers.forEach(picker => picker.destroy());
-    pickers.splice(0, pickers.length);
+    const { mediaNodes } = this;
     mediaNodes.splice(0, mediaNodes.length);
-    this.popupPicker = undefined;
+
+    this.destroyPickers();
   }
 
   findMediaNode = (id: string): MediaNodeWithPosHandler | null => {
@@ -342,6 +354,16 @@ export class MediaPluginState {
 
       return memo;
     }, null);
+  }
+
+  private destroyPickers = () => {
+    const { pickers } = this;
+
+    pickers.forEach(picker => picker.destroy());
+    pickers.splice(0, pickers.length);
+
+    this.popupPicker = undefined;
+    this.binaryPicker = undefined;
   }
 
   /**

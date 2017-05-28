@@ -1,6 +1,5 @@
 // Icons
-import WarningIcon from 'ak-icon/glyph/warning';
-import SuccessIcon from 'ak-icon/glyph/success';
+import { WarningIcon, CheckCircleIcon } from '@atlaskit/icon';
 
 // Colours
 import {
@@ -17,7 +16,7 @@ const typesMapping = {
     iconColor: akColorB400,
   },
   confirmation: {
-    icon: SuccessIcon,
+    icon: CheckCircleIcon,
     iconColor: akColorG300,
   },
   info: {

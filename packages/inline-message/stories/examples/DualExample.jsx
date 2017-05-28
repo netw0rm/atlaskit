@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import InlineMessage from '../../src';
-import { types } from '../../src/internal/types';
+import InlineMessage from '@atlaskit/inline-message';
+import { types } from '../../src/components/types';
 
 const exampleContent = (
   <div>

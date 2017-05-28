@@ -83,12 +83,22 @@ export function transformHtml(html: string): HTMLElement {
   // Parse emojis i.e.
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
   arrayFrom(el.querySelectorAll('img.emoji')).forEach((img: HTMLImageElement) => {
-    const src = img.getAttribute('src');
-    const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
     const span = document.createElement('span');
+    let shortName = img.getAttribute('data-emoji-short-name') || '';
 
-    if (idMatch) {
-      span.setAttribute('data-emoji-short-name', `:${decodeURIComponent(idMatch[1])}:`);
+    if (!shortName) {
+      // Fallback to parsing Bitbucket's src attributes to find the
+      // short name
+      const src = img.getAttribute('src');
+      const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
+
+      if (idMatch) {
+        shortName = `:${decodeURIComponent(idMatch[1])}:`;
+      }
+    }
+
+    if (shortName) {
+      span.setAttribute('data-emoji-short-name', shortName);
     }
 
     img.parentNode!.insertBefore(span, img);

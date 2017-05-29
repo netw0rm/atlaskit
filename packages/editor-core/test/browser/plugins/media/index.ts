@@ -2,7 +2,10 @@ import * as assert from 'assert';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
+import {
+  DefaultMediaStateManager,
+  MediaStateStatus,
+} from '@atlaskit/media-core';
 import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   baseKeymap,
@@ -498,10 +501,6 @@ describe('Media plugin', () => {
     (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
     expect(pluginState.pickers).to.have.length(0);
   });
-
-  // TODO use media-core status type for that, not own ones
-  // @see https://product-fabric.atlassian.net/browse/ED-1782
-  type MediaStateStatus = 'unfinalized' | 'unknown' | 'ready' | 'error' | 'cancelled';
 
   [
     'unfinalized',

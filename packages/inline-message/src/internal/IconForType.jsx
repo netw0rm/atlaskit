@@ -1,5 +1,6 @@
-import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../styles.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import styles from '../styles.less';
 import typesMapping, { types } from './types';
 
 export default class SelectedIconForType extends PureComponent {

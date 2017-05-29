@@ -1,31 +1,64 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import uid from 'uid';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 const Icon = <ExpandIcon label="" />;
 
 /* eslint-disable react/no-unused-prop-types */
 export default class StatelessDropdownMenu extends PureComponent {
   static propTypes = {
+    /**
+      * Controls the appearance of the menu.
+      * Default menu has scroll after its height exceeds the pre-defined amount.
+      * Tall menu has no restrictions.
+      */
     appearance: PropTypes.oneOf(['default', 'tall']),
+    /** Content that will be rendered inside the trigger element. */
     children: PropTypes.node,
+    /** If true, a Spinner is rendered instead of the items */
+    isLoading: PropTypes.bool,
+    /** Controls the open state of the dropdown. */
     isOpen: PropTypes.bool,
+    /** Controls whether it is possible to tab to the trigger.
+      * This should be true if some interactive element is used inside trigger (links, buttons).
+      */
     isTriggerNotTabbable: PropTypes.bool,
+    /** List of items.
+      * Should be an array of groups (see @atlastkit/droplist-group for available props).
+      * Every group must contain array of items (see @atlastkit/droplist-item for available props).
+      */
     items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    /** Called when an item is activated. Receives an object with the activated item. */
     onItemActivated: PropTypes.func,
+    /** Called when the menu should be open/closed. Received an object with isOpen state. */
     onOpenChange: PropTypes.func,
+    /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
     position: PropTypes.string,
+    /** Types of the menu's built-in trigger.
+      * default trigger is empty.
+      * button trigger uses the Button component with the 'expand' icon.
+      */
     triggerType: PropTypes.oneOf(['default', 'button']),
+    /** Props to pass through to the trigger button. see @atlaskit/button for options. */
     triggerButtonProps: PropTypes.shape(Button.propTypes),
+    /** Flip its position to the opposite side of its target if it does not fit. */
     shouldFlip: PropTypes.bool,
+    /** Option to fit dropdown menu width to its parent width. */
+    shouldFitContainer: PropTypes.bool,
+    /** Option to display multiline items when content is too long.
+      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
+      */
+    shouldAllowMultilineItems: PropTypes.bool,
   }
 
   static defaultProps = {
     appearance: 'default',
+    isLoading: false,
     isOpen: false,
     isTriggerNotTabbable: false,
     items: [],
@@ -35,6 +68,8 @@ export default class StatelessDropdownMenu extends PureComponent {
     triggerType: 'default',
     triggerButtonProps: {},
     shouldFlip: true,
+    shouldFitContainer: false,
+    shouldAllowMultilineItems: false,
   }
 
   state = {
@@ -180,8 +215,8 @@ export default class StatelessDropdownMenu extends PureComponent {
     <Item
       {...item}
       key={itemIndex}
-      onActivate={() => {
-        this.props.onItemActivated({ item });
+      onActivate={({ event }) => {
+        this.props.onItemActivated({ item, event });
       }}
     >
       {item.content}
@@ -189,7 +224,9 @@ export default class StatelessDropdownMenu extends PureComponent {
   )
 
   renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group heading={group.heading} key={groupIndex}>{this.renderItems(group.items)}</Group>
+    <Group heading={group.heading} elemAfter={group.elemAfter} key={groupIndex}>
+      {this.renderItems(group.items)}
+    </Group>
   )
 
   renderTrigger = () => {
@@ -216,6 +253,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     return (
       <Droplist
         appearance={props.appearance}
+        isLoading={props.isLoading}
         isOpen={props.isOpen}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyboardInteractions}
@@ -223,6 +261,8 @@ export default class StatelessDropdownMenu extends PureComponent {
         position={props.position}
         shouldFlip={props.shouldFlip}
         trigger={this.renderTrigger()}
+        shouldFitContainer={this.props.shouldFitContainer}
+        shouldAllowMultilineItems={this.props.shouldAllowMultilineItems}
       >
         <div
           id={state.id}
@@ -231,7 +271,9 @@ export default class StatelessDropdownMenu extends PureComponent {
             this.domItemsList = ref ? ref.querySelectorAll('[data-role="droplistItem"]') : undefined;
           }}
           role="menu"
-          className={styles.menuContainer}
+          className={this.props.shouldFitContainer
+            ? styles.menuContainerWithoutLimit
+            : styles.menuContainer}
         >
           {this.renderGroups(props.items)}
         </div>

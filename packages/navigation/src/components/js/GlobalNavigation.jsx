@@ -1,31 +1,31 @@
-import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from 'style!../less/GlobalNavigation.less';
-import { globalOpenWidth } from '../../shared-variables';
-import Spacer from './Spacer';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { ThemeProvider } from 'styled-components';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
 import DefaultLinkComponent from './DefaultLinkComponent';
+import GlobalNavigationInner from '../styled/GlobalNavigationInner';
+import GlobalNavigationPrimaryContainer from '../styled/GlobalNavigationPrimaryContainer';
+import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
+    appearance: PropTypes.oneOf([appearanceEnum.global, appearanceEnum.settings]),
+    createIcon: PropTypes.node,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
-    shouldAnimate: PropTypes.bool,
+    secondaryActions: PropTypes.arrayOf(PropTypes.node),
     searchIcon: PropTypes.node,
     onSearchActivate: PropTypes.func,
     onCreateActivate: PropTypes.func,
-    createIcon: PropTypes.node,
-    secondaryActions: PropTypes.arrayOf(PropTypes.node),
   };
   static defaultProps = {
+    appearance: appearanceEnum.global,
     accountItem: null,
-    helpItem: null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
-    shouldAnimate: false,
     secondaryActions: [],
   };
 
@@ -39,27 +39,17 @@ export default class GlobalNavigation extends PureComponent {
       primaryIcon,
       primaryItemHref,
       searchIcon,
-      shouldAnimate,
       secondaryActions,
     } = this.props;
     return (
-      <nav
-        className={classNames(styles.globalNavigationOuter, {
-          [styles.shouldAnimate]: shouldAnimate,
-          [styles.hasSettingsAppearance]: appearance === 'settings',
-          [styles.test]: true,
-        })}
+      <ThemeProvider
+        theme={{
+          [themeVariables.appearance]: appearance,
+        }}
       >
-        <Spacer
-          shouldAnimate={shouldAnimate}
-          width={globalOpenWidth}
-        />
-        <div
-          className={styles.globalNavigation}
-        >
-          <div className={styles.primaryContainer}>
+        <GlobalNavigationInner>
+          <GlobalNavigationPrimaryContainer>
             <GlobalPrimaryActions
-              appearance={appearance}
               createIcon={createIcon}
               linkComponent={linkComponent}
               onCreateActivate={onCreateActivate}
@@ -68,14 +58,14 @@ export default class GlobalNavigation extends PureComponent {
               primaryItemHref={primaryItemHref}
               searchIcon={searchIcon}
             />
-          </div>
-          <div className={styles.secondaryContainer}>
-            {secondaryActions.length ? <GlobalSecondaryActions
-              actions={secondaryActions}
-            /> : null}
-          </div>
-        </div>
-      </nav>
+          </GlobalNavigationPrimaryContainer>
+          <GlobalNavigationSecondaryContainer>
+            {secondaryActions.length ? (
+              <GlobalSecondaryActions actions={secondaryActions} />
+            ) : null}
+          </GlobalNavigationSecondaryContainer>
+        </GlobalNavigationInner>
+      </ThemeProvider>
     );
   }
 }

@@ -38,8 +38,8 @@ export class Converter {
 
   convert(
     files: File[],
-    fn = (base64src: string) => {},
-    errFn = (file: File) => {}
+    fn = (base64src: string) => { },
+    errFn = (file: File) => { }
   ) {
     if (files && files[0]) {
       files.forEach((
@@ -102,7 +102,7 @@ export function dropHandler(
   converter.convert(files, (src: string) => fn({ src }));
 
   return true;
-};
+}
 
 export function pasteHandler(
   converter: Converter,

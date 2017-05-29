@@ -1,47 +1,42 @@
 import profiles from './profile-data';
-import { modifyResponse } from '../src/api/profile-client';
+import ProfileClient, { modifyResponse } from '../src/api/profile-client';
 import { random, getWeekday, getTimeString } from './util';
 
 if (!window.Promise) {
   window.Promise = Promise;
 }
 
-const requestService = (fail) => {
-  const timeout = random(500) + 500;
+const requestService = (cloudId, userId) => {
+  const timeout = random(1500) + 500;
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (fail) {
-        reject(new Error('Not Found'));
-        return;
+      if (userId === '404') {
+        return reject();
       }
 
-      const id = random(10);
+      const profile = profiles[userId];
+
+      if (!profile) {
+        return reject(new Error('Not Found'));
+      }
+
       const weekday = getWeekday();
 
-      const data = { ...profiles[id] };
+      const data = { ...profile };
 
       data.remoteTimeString = getTimeString();
       data.remoteWeekdayIndex = weekday.index;
       data.remoteWeekdayString = weekday.string;
 
-      resolve(modifyResponse(data));
+      return resolve(modifyResponse(data));
     }, timeout);
   });
 };
 
-class MockProfileClient {
-  constructor(config) {
-    this.config = config;
-  }
-
-  fetch(options) {
-    let fail = !(options.userId && options.cloudId);
-    if (options.userId === '404') {
-      fail = true;
-    }
-    return requestService(fail, this.config);
+export default class MockProfileClient extends ProfileClient {
+  // eslint-disable-next-line class-methods-use-this
+  makeRequest(cloudId, userId) {
+    return requestService(cloudId, userId);
   }
 }
-
-export default new MockProfileClient({});

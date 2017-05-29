@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from '../styles.less';
 
@@ -17,7 +18,7 @@ export default class CommentField extends PureComponent {
     return (this.props.href ?
       <a
         href={this.props.href}
-        className={classNames(styles.locals.topButtonLink, this.props.extraClasses)}
+        className={classNames(styles.topButtonLink, this.props.extraClasses)}
         onClick={this.props.onClick}
         onFocus={this.props.onFocus}
         onMouseOver={this.props.onMouseOver}
@@ -26,7 +27,7 @@ export default class CommentField extends PureComponent {
       </a>
     :
       <span
-        className={classNames(styles.locals.topButtonText, this.props.extraClasses)}
+        className={classNames(styles.topButtonText, this.props.extraClasses)}
         onClick={this.props.onClick}
         onFocus={this.props.onFocus}
         onMouseOver={this.props.onMouseOver}

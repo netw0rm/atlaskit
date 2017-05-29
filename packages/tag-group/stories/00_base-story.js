@@ -4,7 +4,6 @@ import React from 'react';
 
 import Group from '../src';
 import { name } from '../package.json';
-import styles from '../src/styles.less';
 
 const imports = [
   ['React', 'react'],
@@ -14,7 +13,7 @@ const imports = [
 
 storiesOf(name, module)
   .addCodeExampleStory('a simple @atlaskit/tag-group', () => (
-    <Group className={styles.locals.akTagGroup}>
+    <Group>
       <Tag text="Cupcake" />
       <Tag text="Wagon Wheel" />
       <Tag text="Jelly beans" />

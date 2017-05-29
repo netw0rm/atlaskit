@@ -4,12 +4,13 @@ import { MouseEvent, PureComponent } from 'react';
 import Spinner from '@atlaskit/spinner';
 
 import * as styles from './styles';
+import { emojiTypeAheadMaxHeight } from '../../shared-styles';
 import EmojiItem from './EmojiTypeAheadItem';
-import Scrollable from './Scrollable';
+import Scrollable from '../common/Scrollable';
 import { EmojiDescription, EmojiId, OnEmojiEvent } from '../../types';
 import debug from '../../util/logger';
 import { mouseLocation, actualMouseMove, Position } from '../../util/mouse';
-import { toEmojiId } from '../../api/EmojiService';
+import { toEmojiId } from '../../type-helpers';
 
 function wrapIndex(emojis: EmojiDescription[], index: number): number {
   const len = emojis.length;
@@ -20,8 +21,16 @@ function wrapIndex(emojis: EmojiDescription[], index: number): number {
   return newIndex % len;
 }
 
-function getKey(emojis: EmojiDescription[], index: number): string {
-  return emojis && emojis[index] && emojis[index].id;
+function getKey(emoji: EmojiDescription) {
+  return emoji.id || `${emoji.shortName}-${emoji.type}`;
+}
+
+function getKeyByIndex(emojis: EmojiDescription[], index: number): string | undefined {
+  const emoji = emojis && emojis[index];
+  if (emoji) {
+    return getKey(emoji);
+  }
+  return undefined;
 }
 
 export interface Props {
@@ -52,7 +61,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      selectedKey: getKey(props.emojis, 0),
+      selectedKey: getKeyByIndex(props.emojis, 0),
       selectedIndex: 0,
     };
   }
@@ -81,7 +90,8 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
     const { emojis } = this.props;
     const { selectedIndex } = this.state;
     if (emojis && emojis[selectedIndex]) {
-      this.revealItem(emojis[selectedIndex].id);
+      const selectedEmoji = emojis[selectedIndex];
+      this.revealItem(selectedEmoji.id || selectedEmoji.shortName);
     }
   }
 
@@ -117,7 +127,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
   private selectIndexNewEmoji(index: number, emojis: EmojiDescription[]) {
     this.setState({
       selectedIndex: index,
-      selectedKey: getKey(emojis, index),
+      selectedKey: getKeyByIndex(emojis, index),
     });
   }
 
@@ -125,34 +135,38 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
     const { emojis } = this.props;
     this.setState({
       selectedIndex: index,
-      selectedKey: getKey(emojis, index),
+      selectedKey: getKeyByIndex(emojis, index),
     }, callback);
   }
 
-  private selectKey(key: string, callback?: () => any) {
+  private selectByEmojiId(emojiId: EmojiId, callback?: () => any) {
     const { emojis } = this.props;
-    let index = -1;
     for (let i = 0; i < emojis.length; i++) {
-      if (emojis[i].id === key) {
-        index = i;
-        break;
+      const emoji = emojis[i];
+      if (emoji.id === emojiId.id) {
+        this.selectIndex(i, callback);
+        return;
       }
     }
-    if (index >= 0) {
-      this.selectIndex(index, callback);
+    for (let i = 0; i < emojis.length; i++) {
+      const emoji = emojis[i];
+      if (emoji.shortName === emojiId.shortName) {
+        this.selectIndex(i, callback);
+        return;
+      }
     }
   }
 
   private selectIndexOnHover = (emojiId: EmojiId, emoji: EmojiDescription, event: MouseEvent<any>) => {
     const mousePosition = mouseLocation(event);
     if (actualMouseMove(this.lastMousePosition, mousePosition)) {
-      this.selectKey(emojiId.id);
+      this.selectByEmojiId(emojiId);
     }
     this.lastMousePosition = mousePosition;
   }
 
   private itemSelected = (emojiId: EmojiId) => {
-    this.selectKey(emojiId.id, () => {
+    this.selectByEmojiId(emojiId, () => {
       this.chooseCurrentSelection();
     });
   }
@@ -167,7 +181,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
         <div>
           {emojis.map((emoji) => {
             const selected = selectedKey === emoji.id;
-            const key = emoji.id;
+            const key = getKey(emoji);
             const item = (
               <EmojiItem
                 emoji={emoji}
@@ -175,6 +189,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
                 selected={selected}
                 onMouseMove={this.selectIndexOnHover}
                 onSelection={this.itemSelected}
+                // tslint:disable-next-line:jsx-no-lambda
                 ref={(ref) => {
                   if (ref) {
                     this.items[key] = ref;
@@ -221,12 +236,17 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
       <div className={styles.typeAheadListContainer}>
         <div className={classes}>
           <Scrollable
-            ref={(ref) => { this.scrollable = ref; }}
+            ref={this.handleScrollableRef}
+            maxHeight={`${emojiTypeAheadMaxHeight}px`}
           >
             {listBody}
           </Scrollable>
         </div>
       </div>
     );
+  }
+
+  private handleScrollableRef = (ref) => {
+    this.scrollable = ref;
   }
 }

@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { ariaRoles, baseTypes } from './constants';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */

@@ -1,9 +1,12 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import decamelize from 'decamelize';
 import Chrome from './Chrome';
 import Description from './Description';
 import DynamicProps from './DynamicProps';
 import Usage from './Usage';
+
+export { DynamicProps };
 
 export default class Readme extends PureComponent {
   static propTypes = {

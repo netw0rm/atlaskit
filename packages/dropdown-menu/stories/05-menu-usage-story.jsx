@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import Question from '@atlaskit/icon/glyph/question';
-import { Code, Chrome, Description } from '@atlaskit/util-readme';
 
 import DropdownMenu from '../src';
 import { name } from '../package.json';
@@ -16,6 +15,8 @@ import StatusDropdown from './examples/StatusDropdown';
 import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
 import LongItemsDropdownRaw from '!raw!./examples/LongItemsDropdown';
+import WideDropdown from './examples/WideDropdown';
+import WideDropdownRaw from '!raw!./examples/WideDropdown';
 /* eslint-enable import/first, import/no-duplicates */
 
 import {
@@ -25,6 +26,7 @@ import {
   dropdownItemsWithGroups,
   simpleDropdownItemsWithCheckboxes,
   simpleDropdownItemsWithRadio,
+  itemsWithTooltips,
 } from './DropdownsData';
 
 const itemsOverride = `const simpleDropdownItems = ${JSON.stringify(simpleDropdownItems, null, 2)}`;
@@ -185,6 +187,21 @@ storiesOf(name, module)
       DropdownLoadItemsExampleRaw,
     ],
   })
+  .addCodeExampleStory('Loading dropdown', () => (
+    <div style={{ padding: '40px' }}>
+      <p>
+        This is an example of a dropdown that is loading.
+      </p>
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu
+          defaultOpen
+          isLoading
+          isOpen
+          triggerType="button"
+        />
+      </div>
+    </div>
+  ))
   .addCodeExampleStory('Basic Dropdown menu with customized trigger button', () => (
     <DropdownWithTriggerOptions />
   ),
@@ -193,26 +210,29 @@ storiesOf(name, module)
       DropdownWithTriggerOptionsRaw,
     ],
   })
-  .add('Status Dropdown (special for JIRA)', () => (
-    <Chrome title="Status Dropdown">
-      <Description>
-        <p>Example of the Status Dropdown for JIRA</p>
-      </Description>
-      {StatusDropdown}
-      <Code>
-        {StatusDropdownRaw}
-      </Code>
-    </Chrome>
+  .addCodeExampleStory(
+    'Status Dropdown (special for JIRA)',
+    () => (StatusDropdown),
+    { scripts: [StatusDropdownRaw] }
+  )
+  .addCodeExampleStory(
+    'Dropdown with long items and titles',
+    () => (LongItemsDropdown),
+    { scripts: [LongItemsDropdownRaw] }
+  )
+  .addCodeExampleStory(
+    'Dropdown that fits container width',
+    () => (WideDropdown),
+    { scripts: [WideDropdownRaw] },
+  )
+  .addCodeExampleStory('Dropdown menu with tooltips', () => (
+    <div style={{ padding: '40px' }}>
+      <p>Try hovering over items in the dropdown</p>
+      <div style={{ padding: '20px 0', width: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <DropdownMenu triggerType="button" items={itemsWithTooltips}>
+          Open me
+        </DropdownMenu>
+      </div>
+    </div>
   ))
-  .add('Dropdown with long items and titles', () => (
-    <Chrome title="Status Dropdown">
-      <Description>
-        <p>This is an example of how to use titles for those dropdowns that have very long text
-          in the items</p>
-      </Description>
-      {LongItemsDropdown}
-      <Code>
-        {LongItemsDropdownRaw}
-      </Code>
-    </Chrome>
-  ));
+;

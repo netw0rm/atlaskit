@@ -1,88 +1,83 @@
 import {
-  BlockTypePlugin,
-  DocNode,
+  AnalyticsHandler,
+  analyticsService,
+  baseKeymap,
+  blockTypePlugins,
+  EditorState,
+  EditorView,
+  EmojiTypeAhead,
+  LanguagePicker,
+  emojisPlugins,
+  emojisStateKey,
+  history,
   HyperlinkEdit,
-  HyperlinkPlugin,
-  Keymap,
+  hyperlinkPlugins,
+  hyperlinkStateKey,
+  codeBlockPlugins,
+  codeBlockStateKey,
+  keymap,
+  mediaPluginFactory,
+  mediaStateKey,
+  MediaPluginState,
+  MediaProvider,
+  MediaState,
   MentionPicker,
-  MentionsPlugin,
-  ProseMirror,
+  mentionsPlugins,
+  mentionsStateKey,
+  Node,
+  Plugin,
+  ProviderFactory,
+  textFormattingPlugins,
   TextSelection,
-  DefaultKeymapsPlugin,
-  TextFormattingPlugin,
+  toJSON,
   version as coreVersion,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactEmojiNode,
+  ReactMediaGroupNode,
+  ReactMediaNode,
+  ReactMentionNode,
+  reactNodeViewPlugins,
 } from '@atlaskit/editor-core';
+import { EmojiProvider } from '@atlaskit/emoji';
+import { MentionProvider } from '@atlaskit/mention';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import schema from './schema';
+import { HCSchema, default as schema } from './schema/schema';
 import { version } from './version';
+import { hipchatEncoder } from './encoders';
+import { hipchatDecoder } from './decoders';
 
 let debounced: number | null = null;
 
-const hipchatSerializer = (doc: any) => {
-  const root = doc.content[0];
-
-  if (!root.content) {
-    return [];
-  }
-
-  return root.content.map(node => {
-    switch (node.type) {
-      case 'mention':  // Hipchat expects a 'text'-field for mentions
-        node.text = node.attrs.displayName;
-        break;
-
-      case 'text':  // Hipchat expects text nodes to always have a marks array
-        node.marks = (node.marks || []).map(mark => {
-          if (mark._ === 'link') {
-            return {
-              type: mark._,
-              attrs: {
-                url: mark.href
-              }
-            };
-          }
-
-          if (mark._ === 'u') {
-            mark._ = 'underline';
-          }
-
-          mark.type = mark._;
-          return mark;
-        });
-        break;
-
-      case 'hard_break': // Hipchat expects hard breaks to be text
-        node = {
-          type: 'text',
-          text: '\n',
-          marks: []
-        };
-        break;
-    }
-
-    return node;
-  });
-};
-
 export type Doc = {
   type: 'doc',
+  version: 1,
   content?: any[]
 };
+
+export { schema };
 
 export interface Props {
   id?: string;
   maxContentSize?: number;
-  onSubmit?: (doc: Doc) => void;
+  onSubmit?: (value: Doc) => void;
   onChange?: () => void;
-  mentionResourceProvider?: any;
-  presenceResourceProvider?: any;
+  emojiProvider?: Promise<EmojiProvider>;
+  mediaProvider?: Promise<MediaProvider>;
+  mentionProvider?: Promise<MentionProvider>;
+  presenceProvider?: any;
   reverseMentionPicker?: boolean;
+  uploadErrorHandler?: (state: MediaState) => void;
+  useLegacyFormat?: boolean;
+  analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
-  pm?: ProseMirror;
+  editorView?: EditorView;
+  schema: HCSchema;
   maxLengthReached?: boolean;
   flashToggle?: boolean;
 }
@@ -90,23 +85,192 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   version = `${version} (editor-core ${coreVersion})`;
 
+  private mediaPlugins: Plugin[];
+
   public static defaultProps: Props = {
     reverseMentionPicker: true
   };
 
   state: State;
 
+  providerFactory: ProviderFactory;
+
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = { schema };
+
+    this.providerFactory = new ProviderFactory();
+
+    const { mediaProvider, uploadErrorHandler } = props;
+
+    if (mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
+
+    this.mediaPlugins = mediaPluginFactory(schema, {
+      uploadErrorHandler,
+      providerFactory: this.providerFactory,
+      behavior: 'default'
+    });
+
+    analyticsService.handler = props.analyticsHandler || ((name) => { });
+  }
+
+
+  /**
+   * The current size of the document
+   */
+  get documentSize(): number {
+    const { editorView } = this.state;
+    return editorView ? editorView.state.doc.nodeSize : 0;
+  }
+
+  /**
+   * The current value of the editor
+   */
+  get value(): Doc {
+    const { editorView } = this.state;
+    const doc = editorView && toJSON(editorView.state.doc);
+
+    if (!doc) {
+      return { type: 'doc', version: 1, content: [] };
+    }
+
+    return this.props.useLegacyFormat ? hipchatEncoder(doc) : doc;
+  }
+
+  /**
+   * Clear the content of the editor, making it an empty document.
+   */
+  clear(): void {
+    const { editorView } = this.state;
+
+    if (editorView) {
+      const { state } = editorView;
+      const tr = state.tr
+        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .deleteSelection();
+      editorView.dispatch(tr);
+    }
+  }
+
+  /**
+   * Focus the content region of the editor.
+   */
+  focus(): void {
+    const { editorView } = this.state;
+
+    if (editorView && !editorView.hasFocus()) {
+      editorView.focus();
+    }
+  }
+
+  /**
+   * Set document from JSON
+   */
+  setFromJson(value: any): void {
+    const { editorView } = this.state;
+    if (editorView) {
+      const { state } = editorView;
+      const { useLegacyFormat } = this.props;
+
+      let content: Node[];
+
+      if (useLegacyFormat) {
+        content = [schema.nodeFromJSON(hipchatDecoder(value).content[0])];
+      } else {
+        content = [];
+        (value.content || []).forEach(child => {
+          content.push(schema.nodeFromJSON(child));
+        });
+      }
+
+      if (content && content.length > 0) {
+        const tr = state.tr
+          .replaceWith(0, state.doc.nodeSize - 2, content)
+          .scrollIntoView();
+        editorView.dispatch(tr);
+      }
+
+      if (useLegacyFormat && !value.length) {
+        this.clear();
+      }
+    }
+  }
+
+  appendText(text: string): void {
+    const { editorView } = this.state;
+    if (editorView) {
+      const { state } = editorView;
+      const tr = state.tr
+        .insertText(text)
+        .scrollIntoView();
+      editorView.dispatch(tr);
+    }
+  }
+
+  showMediaPicker() {
+    const { editorView } = this.state;
+    if (editorView) {
+      const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
+      mediaPluginState.showMediaPicker();
+    }
+  }
+
+  insertFileFromDataUrl (url: string, fileName: string) {
+    const { editorView } = this.state;
+    if (editorView) {
+      const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
+      mediaPluginState.insertFileFromDataUrl(url, fileName);
+    }
+  }
+
+  componentWillMount() {
+    this.handleProviders(this.props);
+  }
+
+  componentWillUnmount() {
+    const { editorView } = this.state;
+    if (editorView) {
+      if (editorView.state) {
+        mediaStateKey.getState(editorView.state).destroy();
+      }
+
+      editorView.destroy();
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { props } = this;
+    if (
+      props.emojiProvider !== nextProps.emojiProvider ||
+      props.mentionProvider !== nextProps.mentionProvider ||
+      props.mediaProvider !== nextProps.mediaProvider
+    ) {
+      this.handleProviders(nextProps);
+    }
+  }
+
+  handleProviders = (props: Props) => {
+    const { emojiProvider, mentionProvider, mediaProvider } = props;
+
+    this.providerFactory.setProvider('emojiProvider', emojiProvider);
+    this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.providerFactory.setProvider('mediaProvider', mediaProvider);
   }
 
   render() {
     const { props } = this;
-    const { pm } = this.state;
+    const { editorView } = this.state;
+    const { emojiProvider, mentionProvider } = props;
 
-    const pluginStateMentions = props.mentionResourceProvider && pm && MentionsPlugin.get(pm);
-    const pluginStateHyperlink = pm && HyperlinkPlugin.get(pm);
+    const editorState = editorView && editorView.state;
+    const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);
+    const mentionsState = editorState && mentionProvider && mentionsStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
       'flash-toggle': this.state.flashToggle
@@ -115,15 +279,28 @@ export default class Editor extends PureComponent<Props, State> {
     return (
       <div className={classNames} id={this.props.id}>
         <div ref={this.handleRef}>
-          {!pluginStateHyperlink ? null :
-            <HyperlinkEdit pluginState={pluginStateHyperlink} />
+          {!hyperlinkState ? null :
+            <HyperlinkEdit pluginState={hyperlinkState} editorView={editorView!} />
           }
-          {!pluginStateMentions ? null :
-            <MentionPicker
-              resourceProvider={props.mentionResourceProvider}
-              presenceProvider={props.presenceResourceProvider}
-              pluginState={pluginStateMentions}
+          {!emojisState ? null :
+            <EmojiTypeAhead
+              pluginState={emojisState}
+              emojiProvider={emojiProvider!}
               reversePosition={props.reverseMentionPicker}
+            />
+          }
+          {!mentionsState ? null :
+            <MentionPicker
+              resourceProvider={mentionProvider!}
+              presenceProvider={props.presenceProvider}
+              pluginState={mentionsState}
+              reversePosition={props.reverseMentionPicker}
+            />
+          }
+          {!codeBlockState ? null :
+            <LanguagePicker
+              pluginState={codeBlockState}
+              editorView={editorView!}
             />
           }
         </div>
@@ -133,21 +310,77 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (!place) {
-      return this.setState({ pm: undefined });
+      return this.setState({ editorView: undefined });
     }
 
-    const { props } = this;
-    const pm = new ProseMirror({
-      place,
-      doc: schema.nodes.doc.createAndFill(),
+    const { mediaPlugins } = this;
+    const hcKeymap = {
+      'Enter': this.handleSubmit
+    };
+
+    const editorState = EditorState.create({
+      schema,
+      doc: '',
       plugins: [
-        BlockTypePlugin,
-        HyperlinkPlugin,
-        DefaultKeymapsPlugin,
-        TextFormattingPlugin,
-        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
-      ],
+        ...mentionsPlugins(schema),
+        ...mediaPlugins,
+        ...emojisPlugins(schema),
+        ...blockTypePlugins(schema),
+        ...hyperlinkPlugins(schema),
+        ...textFormattingPlugins(schema),
+        ...reactNodeViewPlugins(schema),
+        ...codeBlockPlugins(schema),
+        history(),
+        keymap(hcKeymap),
+        keymap(baseKeymap) // should be last
+      ]
     });
+
+    const { maxContentSize }  = this.props;
+
+    const editorView = new EditorView(place, {
+      state: editorState,
+      dispatchTransaction: (tr) => {
+        if (maxContentSize) {
+          if (tr.doc.nodeSize > maxContentSize) {
+            this.setState({
+              maxLengthReached: true,
+              flashToggle: this.state.maxLengthReached && !this.state.flashToggle
+            });
+            return;
+          } else if (this.state.maxLengthReached) {
+            this.setState({
+              maxLengthReached: false,
+              flashToggle: false
+            });
+          }
+        }
+
+        const newState = editorView.state.apply(tr);
+        editorView.updateState(newState);
+        this.handleChange();
+      },
+      nodeViews: {
+        emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
+        mediaGroup: nodeViewFactory(this.providerFactory, {
+          mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+        mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
+      },
+      handleDOMEvents: {
+        paste(view: EditorView, event: ClipboardEvent) {
+          analyticsService.trackEvent('atlassian.editor.paste');
+          return false;
+        }
+      },
+      transformPastedHTML: (html: string) => {
+        return html.replace(/<br\s*[\/]?>/gi, '\n');
+      },
+    });
+
+    emojisStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+    mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
     if (place instanceof HTMLElement) {
       const content = place.querySelector('[contenteditable]');
@@ -157,36 +390,20 @@ export default class Editor extends PureComponent<Props, State> {
       }
     }
 
-    pm.addKeymap(new Keymap({
-      'Enter': () => {
-        if (this.props.onSubmit) {
-          this.props.onSubmit(hipchatSerializer(pm.doc.toJSON()));
-        }
-      }
-    }), -10);
+    this.setState({ editorView });
+    this.focus();
 
-    const { maxContentSize } = props;
-    if (maxContentSize) {
-      pm.on.transform.add((tr) => {
-        if (tr.doc.nodeSize > maxContentSize) {
-          const doc = tr.docs[0] as DocNode;
-          pm.setDoc(doc, new TextSelection(doc.resolve(doc.nodeSize - 3)));
-          this.setState({
-            maxLengthReached: true,
-            flashToggle: this.state.maxLengthReached && !this.state.flashToggle
-          });
-        } else if (this.state.maxLengthReached) {
-          this.setState({
-            maxLengthReached: false,
-            flashToggle: false
-          });
-        }
-      });
+    analyticsService.trackEvent('atlassian.editor.start');
+  }
+
+  private handleSubmit = () => {
+    const { onSubmit } = this.props;
+    const { editorView } = this.state;
+    if (onSubmit && editorView) {
+      onSubmit(this.value);
     }
 
-    pm.on.change.add(this.handleChange);
-
-    this.setState({ pm });
+    return true;
   }
 
   private handleChange = () => {
@@ -200,54 +417,4 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  get documentSize(): number {
-    const { pm } = this.state;
-    return pm ? pm.doc.nodeSize : 0;
-  }
-
-  get value(): string {
-    const { pm } = this.state;
-    return pm
-      ? hipchatSerializer(pm.doc.toJSON())
-      : '';
-  }
-
-  setFromJson(value: any): void {
-    const { pm } = this.state;
-    if (pm) {
-      const val = {
-        type: 'paragraph',
-        content: (value.length ? value : [{ type: 'text', text: ' ' }]) // We need to insert a space instead of an empty node in order to trigger the update event (which will close the mentions picker)
-      };
-
-      pm.setDoc(schema.nodes.doc.create({}, pm.schema.nodeFromJSON(val)));
-      pm.setSelection(new TextSelection(pm.doc.resolve(pm.doc.nodeSize - 3)));
-      pm.flush();
-
-      if (!value.length) {
-        this.clear(); // Part of hack above
-      }
-    }
-  }
-
-  clear(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
-    }
-  }
-
-  focus(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.focus();
-    }
-  }
-
-  appendText(text: string): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.tr.typeText(text).applyAndScroll();
-    }
-  }
 }

@@ -1,10 +1,10 @@
 import { storiesOf } from '@kadira/storybook';
-import ReactAkButton from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import Dropdown from '@atlaskit/dropdown-menu';
-import CharlieIcon from 'ak-icon/glyph/atlassian';
+import CharlieIcon from '@atlaskit/icon/glyph/atlassian';
 import React from 'react';
 
-import ReactAkButtonGroup from '../src';
+import ButtonGroup from '../src';
 import { name } from '../package.json';
 
 const items = [
@@ -23,85 +23,84 @@ const items = [
 
 const imports = [
   ['React', 'react'],
-  ['ReactAkButtonGroup', 'ak-button-group'],
-  ['ReactAkButton', 'ak-button'],
+  ['ButtonGroup', '@atlaskit/button-group'],
+  ['Button', '@atlaskit/button'],
 ];
 
 storiesOf(name, module)
   .addCodeExampleStory('plain group', () => (
-    <ReactAkButtonGroup>
-      <ReactAkButton>One</ReactAkButton>
-      <ReactAkButton>Two</ReactAkButton>
-      <ReactAkButton>Three</ReactAkButton>
-    </ReactAkButtonGroup>
+    <ButtonGroup>
+      <Button>One</Button>
+      <Button>Two</Button>
+      <Button>Three</Button>
+    </ButtonGroup>
   ), { imports })
   .addCodeExampleStory('with one Button disabled', () => (
-    <ReactAkButtonGroup>
-      <ReactAkButton selected>One</ReactAkButton>
-      <ReactAkButton>Two</ReactAkButton>
-      <ReactAkButton disabled>Three</ReactAkButton>
-    </ReactAkButtonGroup>
+    <ButtonGroup>
+      <Button selected>One</Button>
+      <Button>Two</Button>
+      <Button disabled>Three</Button>
+    </ButtonGroup>
   ), { imports })
   .addCodeExampleStory('with one button selected and all disabled', () => (
-    <ReactAkButtonGroup>
-      <ReactAkButton disabled selected>One</ReactAkButton>
-      <ReactAkButton disabled>Two</ReactAkButton>
-      <ReactAkButton disabled>Three</ReactAkButton>
-    </ReactAkButtonGroup>
+    <ButtonGroup>
+      <Button disabled selected>One</Button>
+      <Button disabled>Two</Button>
+      <Button disabled>Three</Button>
+    </ButtonGroup>
   ), { imports })
   .addCodeExampleStory('with an input before for focus testing', () => (
     <div>
       <input type="text" placeholder="focus here first" />
-      <ReactAkButtonGroup>
-        <ReactAkButton>One</ReactAkButton>
-        <ReactAkButton disabled>Two</ReactAkButton>
-        <ReactAkButton>Three</ReactAkButton>
-      </ReactAkButtonGroup>
+      <ButtonGroup>
+        <Button>One</Button>
+        <Button disabled>Two</Button>
+        <Button>Three</Button>
+      </ButtonGroup>
     </div>
   ), { imports })
   .addCodeExampleStory('with an unexpected paragraph inside', () => (
-    <ReactAkButtonGroup>
-      <ReactAkButton>One</ReactAkButton>
-      <ReactAkButton>Two</ReactAkButton>
-      <ReactAkButton>Three</ReactAkButton>
+    <ButtonGroup>
+      <Button>One</Button>
+      <Button>Two</Button>
+      <Button>Three</Button>
       <p>Paragraph</p>
-    </ReactAkButtonGroup>
+    </ButtonGroup>
   ), { imports })
   .addCodeExampleStory('overflows the parent div', () => (
     <div style={{ border: '1px solid #AAA', width: 75 }}>
-      <ReactAkButtonGroup>
-        <ReactAkButton>One</ReactAkButton>
-        <ReactAkButton>Two</ReactAkButton>
-        <ReactAkButton>Three</ReactAkButton>
-      </ReactAkButtonGroup>
+      <ButtonGroup>
+        <Button>One</Button>
+        <Button>Two</Button>
+        <Button>Three</Button>
+      </ButtonGroup>
     </div>
   ), { imports })
   .addCodeExampleStory('with CSS display: block', () => (
-    <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
-      <ReactAkButton>One</ReactAkButton>
-      <ReactAkButton>Two</ReactAkButton>
-      <ReactAkButton>Three</ReactAkButton>
-    </ReactAkButtonGroup>
+    <ButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
+      <Button>One</Button>
+      <Button>Two</Button>
+      <Button>Three</Button>
+    </ButtonGroup>
   ), { imports })
-  .addCodeExampleStory('with ak-button > ak-icon', () => (
+  .addCodeExampleStory('with button > icon', () => (
     <div style={{ border: '1px solid #AAA', display: 'block' }}>
-      <ReactAkButtonGroup>
-        <ReactAkButton>Edit</ReactAkButton>
-        <ReactAkButton iconBefore={<CharlieIcon label="button with icon" />} />
-      </ReactAkButtonGroup>
+      <ButtonGroup>
+        <Button>Edit</Button>
+        <Button iconBefore={<CharlieIcon label="button with icon" />} />
+      </ButtonGroup>
     </div>
-  ), { imports: [...imports, ['CharlieIcon', 'ak-icon/glyph/atlassian']] })
-  .addCodeExampleStory('with ak-dropdown > ak-button (split button)', () => (
+  ), { imports: [...imports, ['CharlieIcon', 'icon/glyph/atlassian']] })
+  .addCodeExampleStory('with dropdown > button (split button)', () => (
     <div style={{ display: 'block' }}>
-      <ReactAkButtonGroup>
-        <ReactAkButton appearance="subtle" iconBefore={<CharlieIcon />} />
-        <ReactAkButton appearance="subtle" iconBefore={<CharlieIcon />} />
+      <ButtonGroup>
+        <Button appearance="subtle" iconBefore={<CharlieIcon />} />
+        <Button appearance="subtle" iconBefore={<CharlieIcon />} />
         <Dropdown items={items}>
-          <ReactAkButton appearance="subtle" iconBefore={<CharlieIcon />} />
+          <Button appearance="subtle" iconBefore={<CharlieIcon />} />
         </Dropdown>
-      </ReactAkButtonGroup>
+      </ButtonGroup>
     </div>
   ), {
-    imports: [...imports, ['AkDropdown', 'ak-dropdown'], ['reactify', 'akutil-react']],
-    scripts: ['const ReactDropdown = reactify(AkDropdown)'],
+    imports: [...imports, ['Dropdown', '@atlaskit/dropdown']],
   });

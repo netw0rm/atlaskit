@@ -32,10 +32,10 @@ storiesOf(name, module)
   .addCodeExampleStory('Presence: custom presences', () => (<div style={{ padding: '20px' }}>
     <p>
       Aside from the default supported presences, you can also create custom presences by passing
-      arbitrary HTML to the Presence component. This could be anything from an image, an svg or
+      arbitrary HTML to the Presence component. This could be anything from an image, an SVG or
       even simply a styled div.
     </p>
-    <p>For best results it is recommended that whatever you pass in is square and has it&#39;s
+    <p>For best results it is recommended that whatever you pass in is square and has its
       height and width set to 100%</p>
     <div style={containerStyles}>
 

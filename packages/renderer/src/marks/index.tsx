@@ -8,6 +8,8 @@ import SubSup from './subsup';
 import Underline from './underline';
 import Code from './code';
 import { Renderable } from '../nodes';
+import HardBreak from '../nodes/hardBreak';
+import { isSafeUrl } from '../utils';
 
 import { isSubSupType } from '../marks/subsup';
 
@@ -69,8 +71,13 @@ export const getValidMark = (mark: Renderable): Renderable => {
         const { attrs } = mark;
         if (attrs) {
           const { href, url } = attrs;
-          const linkHref = href || url;
-          if (linkHref) {
+          let linkHref = href || url;
+
+          if (linkHref.indexOf(':') === -1) {
+            linkHref = `//${linkHref}`;
+          }
+
+          if (linkHref && isSafeUrl(linkHref)) {
             return {
               type,
               content,
@@ -153,7 +160,8 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.link: {
       const { attrs } = validMark;
       const { href } = attrs as { href: string };
-      return <Link key={key} href={href}>{content}</Link>;
+      // NOTE: https://product-fabric.atlassian.net/browse/ED-1236
+      return <Link key={key} href={href} target="_blank">{content}</Link>;
     }
     case MarkType.mono:
       return <Mono key={key}>{content}</Mono>;
@@ -169,12 +177,15 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.underline:
       return <Underline key={key}>{content}</Underline>;
     case MarkType.code:
-      return <Code key={key}>{content}</Code>;
+      return <Code key={key} text={content.join()} />;
     case MarkType.text:
+      if (validMark.text === '\n') {
+        return <HardBreak key={key} />;
+      }
       return validMark.text;
     default: {
-      // Mark is unkown, render it's content
-      return renderMark(validMark.content![0] as Renderable);
+      // Mark is unkown, render it's content (if any)
+      return validMark.content ? renderMark(validMark.content![0] as Renderable) : null;
     }
   }
 };

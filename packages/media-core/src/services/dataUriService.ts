@@ -1,6 +1,7 @@
 import createRequest, {CreateRequestFunc} from './util/createRequest';
 import { MediaItem, JwtTokenProvider } from '../';
-import { DataUri } from '../index';
+
+export type DataUri = string;
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
@@ -49,10 +50,9 @@ export class MediaDataUriService implements DataUriService {
     return this.request({
       url,
       params,
-      responseType: 'blob'
+      responseType: 'image'
     })
       .then(this.readBlob);
-    ;
   }
 
   private readBlob(blob: Blob): Promise<DataUri> {

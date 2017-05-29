@@ -1,17 +1,54 @@
-import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/Navigation.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
+import NavigationFixedContainer from '../styled/NavigationFixedContainer';
+import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigationWrapper';
+import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
 import Spacer from './Spacer';
 import {
   containerClosedWidth,
+  containerOpenWidth,
   globalOpenWidth,
-  navigationOpenWidth,
   resizeClosedBreakpoint,
+  standardOpenWidth,
 } from '../../shared-variables';
-import getContainerWidth from '../../utils/collapse';
+
+const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
+  if (!isCollapsible && !isOpen) {
+    // eslint-disable-next-line no-console
+    console.warn(`
+        Navigation is being told it cannot collapse and that it is not open.
+        When Navigation cannot collapse it must always be open.
+        Ignoring isOpen={true}
+      `);
+  }
+};
+
+const getSnappedWidth = (width) => {
+  // |------------------------------|
+  //      |           |             |
+  //    closed    breakpoint       open
+  //          * snap closed
+  //                       * snap open
+  //                                    * maintain expanded width
+
+  // Snap closed if width ever goes below the resizeClosedBreakpoint
+  if (width < resizeClosedBreakpoint) {
+    return globalOpenWidth;
+  }
+
+  // Snap open if in between the closed breakpoint and the standard width
+  if (width > resizeClosedBreakpoint && width < standardOpenWidth) {
+    return standardOpenWidth;
+  }
+
+  // At this point the width > standard width.
+  // We allow you to have your own wider width.
+  return width;
+};
 
 export default class Navigation extends PureComponent {
   static propTypes = {
@@ -47,56 +84,64 @@ export default class Navigation extends PureComponent {
     isResizeable: true,
     isSearchDrawerOpen: false,
     linkComponent: DefaultLinkComponent,
-    onCreateDrawerOpen: () => {},
-    onResize: () => {},
-    onResizeStart: () => {},
-    onSearchDrawerOpen: () => {},
-    width: navigationOpenWidth,
+    onCreateDrawerOpen: () => { },
+    onResize: () => { },
+    onResizeStart: () => { },
+    onSearchDrawerOpen: () => { },
+    width: globalOpenWidth + containerOpenWidth,
   };
 
   constructor(props, context) {
     super(props, context);
+
     this.state = {
       resizeDelta: 0,
+      isResizing: false,
+      isTogglingIsOpen: false,
     };
+
+    warnIfCollapsedPropsAreInvalid(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      isTogglingIsOpen: this.props.isOpen !== nextProps.isOpen,
+    });
+
+    warnIfCollapsedPropsAreInvalid(nextProps);
   }
 
   onResize = (resizeDelta) => {
-    this.setState({ resizeDelta });
+    this.setState({
+      isResizing: true,
+      resizeDelta,
+    });
   }
 
-  getRenderedWidth = () => {
-    const baselineWidth = this.props.isOpen ? this.props.width : containerClosedWidth;
-    const minWidth = this.props.isCollapsible ? containerClosedWidth : navigationOpenWidth;
-    return Math.max(
-      minWidth,
-      baselineWidth + this.state.resizeDelta
-    );
-  }
-
-  triggerResizeHandler = () => {
+  onResizeEnd = () => {
     const width = this.getRenderedWidth();
-
-    const snappedWidth = (() => {
-      if (width > navigationOpenWidth) {
-        return width;
-      }
-      if (width < resizeClosedBreakpoint) {
-        return containerClosedWidth;
-      }
-      return navigationOpenWidth;
-    })();
+    const snappedWidth = getSnappedWidth(width);
 
     const resizeState = {
-      isOpen: (width >= resizeClosedBreakpoint),
+      isOpen: (snappedWidth >= standardOpenWidth),
       width: snappedWidth,
     };
 
     this.setState({
       resizeDelta: 0,
+      isResizing: false,
     }, function callOnResizeAfterSetState() {
       this.props.onResize(resizeState);
     });
+  }
+
+  getRenderedWidth = () => {
+    const baselineWidth = this.props.isOpen ? this.props.width : containerClosedWidth;
+    const minWidth = this.props.isCollapsible ? containerClosedWidth : standardOpenWidth;
+    return Math.max(
+      minWidth,
+      baselineWidth + this.state.resizeDelta
+    );
   }
 
   triggerResizeButtonHandler = (resizeState) => {
@@ -115,72 +160,101 @@ export default class Navigation extends PureComponent {
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
-      isOpen,
+      isCollapsible,
       isResizeable,
+      isOpen,
       linkComponent,
       onCreateDrawerOpen,
       onResizeStart,
       onSearchDrawerOpen,
     } = this.props;
 
-    const shouldAnimate = this.state.resizeDelta === 0;
+    const {
+      isTogglingIsOpen,
+      isResizing,
+    } = this.state;
+
+    // if collapsed then:
+    // 1. isOpen is ignored
+    // 2. You cannot resize to a size smaller than the default open size
+
     const renderedWidth = this.getRenderedWidth();
-    const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
-    return (
-      <div className={styles.navigation}>
-        <Spacer
-          shouldAnimate={shouldAnimate}
-          width={renderedWidth}
+
+    const isGlobalNavPartiallyCollapsed = isResizing &&
+      renderedWidth < (globalOpenWidth + containerClosedWidth);
+
+    // Cover over the global navigation when it is partially collapsed
+    const containerOffsetX = isGlobalNavPartiallyCollapsed ?
+      renderedWidth - (globalOpenWidth + containerClosedWidth) : 0;
+
+    // always show global navigation if it is not collapsible
+    const showGlobalNavigation = !isCollapsible || isOpen || isResizing;
+
+    const containerWidth = showGlobalNavigation ?
+      Math.max(renderedWidth - globalOpenWidth, containerClosedWidth) :
+      containerClosedWidth;
+
+    const isContainerCollapsed = !showGlobalNavigation || containerWidth === containerClosedWidth;
+    const shouldAnimateContainer = isTogglingIsOpen && !isResizing;
+
+    const globalNavigation = showGlobalNavigation ? (
+      <NavigationGlobalNavigationWrapper>
+        <GlobalNavigation
+          appearance={globalAppearance}
+          createIcon={globalCreateIcon}
+          linkComponent={linkComponent}
+          onCreateActivate={onCreateDrawerOpen}
+          onSearchActivate={onSearchDrawerOpen}
+          primaryIcon={globalPrimaryIcon}
+          primaryItemHref={globalPrimaryItemHref}
+          searchIcon={globalSearchIcon}
+          secondaryActions={globalSecondaryActions}
         />
-        <div className={styles.navigationInner}>
-          <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
-            <GlobalNavigation
-              appearance={globalAppearance}
-              createIcon={globalCreateIcon}
-              linkComponent={linkComponent}
-              onCreateActivate={onCreateDrawerOpen}
-              onSearchActivate={onSearchDrawerOpen}
-              primaryIcon={globalPrimaryIcon}
-              primaryItemHref={globalPrimaryItemHref}
-              searchIcon={globalSearchIcon}
-              shouldAnimate={shouldAnimate}
-              secondaryActions={globalSecondaryActions}
-            />
-          </div>
-          <div style={{ zIndex: 2, position: 'relative' }}>
-            {drawers}
-          </div>
-          <div>
-            <ContainerNavigation
-              appearance={containerAppearance}
-              areGlobalActionsVisible={!isOpen && (this.state.resizeDelta <= 0)}
-              globalCreateIcon={globalCreateIcon}
-              globalPrimaryIcon={globalPrimaryIcon}
-              globalPrimaryItemHref={globalPrimaryItemHref}
-              globalSearchIcon={globalSearchIcon}
-              headerComponent={containerHeaderComponent}
-              linkComponent={linkComponent}
-              offsetX={Math.min(renderedWidth - (globalOpenWidth + containerClosedWidth), 0)}
-              onGlobalCreateActivate={onCreateDrawerOpen}
-              onGlobalSearchActivate={onSearchDrawerOpen}
-              shouldAnimate={shouldAnimate}
-              width={getContainerWidth(renderedWidth)}
+      </NavigationGlobalNavigationWrapper>
+    ) : null;
+
+    const resizer = isResizeable ? (
+      <Resizer
+        navigationWidth={renderedWidth}
+        onResize={this.onResize}
+        onResizeButton={this.triggerResizeButtonHandler}
+        onResizeStart={onResizeStart}
+        onResizeEnd={this.onResizeEnd}
+      />
+    ) : null;
+
+    return (
+      <div>
+        {/* Used to push the page to the right the width of the nav */}
+        <Spacer
+          shouldAnimate={shouldAnimateContainer}
+          width={renderedWidth}
+        >
+          <NavigationFixedContainer>
+            {globalNavigation}
+            <NavigationContainerNavigationWrapper
+              horizontalOffset={containerOffsetX}
             >
-              {children}
-            </ContainerNavigation>
-          </div>
-          {
-            isResizeable
-            ? <Resizer
-              navigationWidth={renderedWidth}
-              onResize={this.onResize}
-              onResizeButton={this.triggerResizeButtonHandler}
-              onResizeStart={onResizeStart}
-              onResizeEnd={this.triggerResizeHandler}
-            />
-            : null
-          }
-        </div>
+              <ContainerNavigation
+                appearance={containerAppearance}
+                showGlobalPrimaryActions={!showGlobalNavigation}
+                globalCreateIcon={globalCreateIcon}
+                globalPrimaryIcon={globalPrimaryIcon}
+                globalPrimaryItemHref={globalPrimaryItemHref}
+                globalSearchIcon={globalSearchIcon}
+                headerComponent={containerHeaderComponent}
+                linkComponent={linkComponent}
+                onGlobalCreateActivate={onCreateDrawerOpen}
+                onGlobalSearchActivate={onSearchDrawerOpen}
+                isCollapsed={isContainerCollapsed}
+              >
+                {children}
+              </ContainerNavigation>
+            </NavigationContainerNavigationWrapper>
+            {resizer}
+          </NavigationFixedContainer>
+        </Spacer>
+        {drawers}
       </div>
     );
   }

@@ -1,12 +1,15 @@
-import React, { PropTypes, PureComponent } from 'react';
-import 'style!./styles.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import './styles.less';
 import StatelessTabs from './Tabs';
 
 export { StatelessTabs };
 
 export default class Tabs extends PureComponent {
   static propTypes = {
+    /** Handler for selecting a new tab. Called with the number of the tab, zero-indexed */
     onSelect: PropTypes.func,
+    /** The tabs to display, with content being hidden unless the tab is selected. */
     tabs: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
       defaultSelected: PropTypes.bool,

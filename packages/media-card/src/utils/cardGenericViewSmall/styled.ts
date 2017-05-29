@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeOutExpo } from '../../styles';
 import {
-  akColorN30,
+  akColorN20,
   akColorN70
 } from '@atlaskit/util-shared-styles';
 
@@ -10,7 +10,6 @@ const imgSize = 32;
 
 export const SmallCard = styled(Root)`
   ${borderRadius}
-  font-family: sans-serif;
   cursor: pointer;
   box-sizing: border-box;
   height: 42px;
@@ -20,13 +19,13 @@ export const SmallCard = styled(Root)`
   transition: .8s background-color ${easeOutExpo};
 
   &:hover {
-    background-color: ${akColorN30};
+    background-color: ${akColorN20};
 
     .title {
       color: #0065FF;
     }
   }
-  
+
   &.loading {
     background: transparent;
     box-shadow: none;
@@ -35,10 +34,10 @@ export const SmallCard = styled(Root)`
     .title, .size {
       ${borderRadius}
       color: transparent;
-      background-color: ${akColorN30};
+      background-color: ${akColorN20};
       height: 10px;
     }
-  
+
     .size {
       width: 50%;
     }
@@ -51,7 +50,7 @@ export const SmallCard = styled(Root)`
       box-shadow: none;
     }
   }
-  
+
   .error-icon {
     height: 20px;
   }
@@ -90,7 +89,7 @@ export const ImgWrapper = styled.div`
 
   img {
     max-width: 100%;
-    max-height: 100%;   
+    max-height: 100%;
   }
 `;
 
@@ -125,28 +124,30 @@ export const RoundedBackground = styled.div`
   ${borderRadius}
   min-width: ${imgSize}px;
   height: inherit;
-  overflow: hidden;  
+  overflow: hidden;
 `;
 
 export const InfoWrapper = styled.div`
   display: flex;
   padding-left: 8px;
   position: relative;
-  width: calc(100% - ${imgSize}px);
+  width: 0;
+  flex: 1;
+  overflow: hidden;
 `;
 
 export const LoadingWrapper = styled.div`
   ${center}
   ${size()}
   color: #cfd4db;
-  background-color: ${akColorN30};
+  background-color: ${akColorN20};
 `;
 
 export const PlaceholderSmallWrapper = styled.div`
   ${size(imgSize)}
   ${center}
   position: relative;
-  
+
   .file-type-icon {
     position: absolute;
 

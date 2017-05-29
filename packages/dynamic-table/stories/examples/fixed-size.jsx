@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
-import AkDynamicTable from '@atlaskit/dynamic-table';
+import DynamicTable from '@atlaskit/dynamic-table';
 import { caption, head, rows } from './sample-data';
 
 export default class extends PureComponent {
   render() {
     return (
-      <AkDynamicTable
+      <DynamicTable
         caption={caption}
         head={head}
         rows={rows}

@@ -1,3 +1,4 @@
+import Button from '@atlaskit/button';
 import { EmojiPicker } from '@atlaskit/emoji';
 import { EditorMoreIcon } from '@atlaskit/icon';
 import * as chai from 'chai';
@@ -15,11 +16,23 @@ const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
-const renderPicker = (onSelection: Function = () => {}) => {
-  return <ReactionPicker emojiProvider={getEmojiResourcePromise()} onSelection={onSelection} />;
+const renderPicker = (onSelection: Function = () => {}, text?: string) => {
+  return <ReactionPicker emojiProvider={getEmojiResourcePromise()} onSelection={onSelection} allowAllEmojis={true} text={text} />;
 };
 
 describe('@atlaskit/reactions/reaction-picker', () => {
+  let clock;
+  const animStub = window.cancelAnimationFrame;
+
+  beforeEach(function () {
+    window.cancelAnimationFrame = () => {};
+    clock = sinon.useFakeTimers();
+  });
+
+  afterEach(function () {
+    clock.restore();
+    window.cancelAnimationFrame = animStub;
+  });
 
   it('should render a trigger', () => {
     const picker = shallow(renderPicker());
@@ -49,7 +62,14 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     trigger.simulate('mousedown', { button: 0 });
     const selector = picker.find(Selector);
     selector.find(EmojiButton).first().simulate('mouseup', { button: 0 });
+
+    clock.tick(500);
     expect(onSelectionSpy.called).to.equal(true);
+  });
+
+  it('should render a button if text-prop is set', () => {
+    const picker = mount(renderPicker(() => {}, 'Like'));
+    expect(picker.find(Button).length).to.equal(1);
   });
 
 });

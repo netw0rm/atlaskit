@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import 'style-loader!../src/index.less';
+import '../src/index.less';
 
 import { name } from '../package.json';
 

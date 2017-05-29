@@ -1,16 +1,6 @@
-import { ProseMirror } from '../';
+import { EditorView } from '../';
+import { TestingEditorView } from './types/prosemirror';
 import createEvent from './create-event';
-
-function focusAndSelect(element: HTMLElement) {
-  const range = document.createRange();
-  const selection = window.getSelection();
-
-  range.selectNodeContents(element);
-  selection.removeAllRanges();
-  selection.addRange(range);
-
-  element.focus();
-}
 
 export interface PasteContent {
   plain?: string;
@@ -25,17 +15,17 @@ export interface PasteContent {
  *         plain: 'copied text'
  *     });
  */
-export default (pm: ProseMirror, content: PasteContent) => {
+export default (editorView: EditorView, content: PasteContent) => {
   const event = createEvent('paste');
 
   const clipboardData = {
     getData(type: string) {
-       if (type === 'text/plain') {
-         return content.plain;
-       }
-       if (type === 'text/html') {
-         return content.html;
-       }
+      if (type === 'text/plain') {
+        return content.plain;
+      }
+      if (type === 'text/html') {
+        return content.html;
+      }
     },
     types: [],
   };
@@ -48,9 +38,6 @@ export default (pm: ProseMirror, content: PasteContent) => {
     return false;
   }
 
-  // ProseMirror must be focused, else it does not attempt to handle pasted content.
-  focusAndSelect(pm.content);
-
-  pm.content.dispatchEvent(event);
+  (editorView as TestingEditorView).dispatchEvent(event);
   return true;
 };

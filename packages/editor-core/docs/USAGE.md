@@ -31,7 +31,7 @@ Plugins (and "plugin states") are the mechanisms by which functionality is added
 
     - `HyperlinkPlugin` for hyperlinks.
     - `MentionsPlugin` for mentions.
-    - `HorizontalRulePlugin` for horizontal rules.
+    - `RulePlugin` for horizontal rules.
 
 - Plugins are responsible for attaching keymaps and input rules that are specific to the content.
   For example MentionsPlugin intercepts arrow keys when the selection is in a mention query and
@@ -60,7 +60,7 @@ Plugins (and "plugin states") are the mechanisms by which functionality is added
 
 ### ProseMirror
 
-**Source location:** `src/prosemirror/`  
+**Source location:** `src/prosemirror/`
 **Import:** `import { … } from '@NAME@'`
 
 The prosemirror directory provides a flat export of ProseMirror 0.10 objects, to solve the recurring
@@ -73,7 +73,7 @@ browserkeymap too. As a general practice, ProseMirror objects should be imported
 
 ### Schema
 
-**Source location:** `src/schema/`  
+**Source location:** `src/schema/`
 **Import:** `import { … } from '@NAME@'`
 
 The schema modules implement node and mark types for use in product-specific schemas. Node and mark
@@ -96,7 +96,7 @@ Some complex node and mark types (to use as examples):
 
 ### UI
 
-**Source location:** `src/ui/`  
+**Source location:** `src/ui/`
 **Import:** `import { … } from '@NAME@'`
 
 The UI modules are responsible for implementing non-content elements of the user interface, for
@@ -118,7 +118,7 @@ A few notes on development:
 - The UI is only intended for use in a web browser, it is not used for the mobile native web view
   editor.
 - Although ProseMirror is not built on React, the UI **is**.
-- Styling is achived via [TypeStyle](http://typestyle.io/).
+- Styling is achived via [styled-components](https://github.com/styled-components/styled-components).
 - The UI can be coupled to (have knowledge of) plugins, but not the other way around.
 
     This allows the plugins to be used on mobile with a completely different UI (a native one) to
@@ -130,7 +130,7 @@ as they can enable tree shaking with webpack 2.
 
 ### Test helpers
 
-**Source location:** `src/test-helper/`  
+**Source location:** `src/test-helper/`
 **Import:** `import { … } from '@NAME@/src/test-helper'`
 
 A set of testing utilities are provided that making testing the editor easier, these include:

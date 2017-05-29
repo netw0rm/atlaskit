@@ -65,16 +65,27 @@ import Editor from '@NAME@';
 
 ### Props
 
-#### `context?: 'default' | 'comment'`
+#### `mentionProvider?: Promise<MentionProvider>`
 
-Adjusts the "context" of the editor. This affects the UI of the editor by making it appropriate
-for the given situation.
+A resource required for enabling Fabric mentions support. Please refer to the 
+[source of MentionProvider interface](https://bitbucket.org/atlassian/atlaskit/src/master/packages/mention/src/api/MentionResource.ts?at=master&fileviewer=file-view-default) for more details.
+
+#### `mediaProvider?: Promise<MediaProvider>`
+
+A resource required for enabling Fabric mentions support. Please refer to the 
+[source of MediaProvider interface](https://bitbucket.org/atlassian/atlaskit/src/master/packages/editor-core/src/media/index.ts?at=master&fileviewer=file-view-default) for more details.
 
 #### `isExpandedByDefault?: boolean`
 
 The initial "expanded" value. When the editor is expanded it can have content added by the user.
 The non-expanded mode renders a small placeholder field that when focused, will switch to the expanded
 mode.
+
+#### `expanded?: boolean`
+
+A run-time way for controlling Editor expansion. Setting this to "true" will expand the editor, 
+if it was collapsed; setting this to "false" will collapse the Editor if it was expanded. Note that
+properties are write-only so this can not be used to check if the Editor is currently expanded.
 
 #### `defaultValue?: string`
 

@@ -1,16 +1,11 @@
 import React, { PureComponent } from 'react';
-
-import storyStyles from './animation-story.less';
+import { Container } from './styled';
 import AnimatedBox from './AnimatedBox';
 
 /* This component simply renders three AnimatedBoxes with a button underneath
    to run the animationClass of each at the same time */
-class AnimatedBoxGroup extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.clickAll = this.clickAll.bind(this);
-  }
-  clickAll() {
+export default class AnimatedBoxGroup extends PureComponent {
+  clickAll = () => {
     this.boldBox.handleClick();
     this.optimisticBox.handleClick();
     this.combinedBox.handleClick();
@@ -18,30 +13,22 @@ class AnimatedBoxGroup extends PureComponent {
 
   render() {
     return (
-      <div className={storyStyles.locals.container}>
-        <div>
-          <AnimatedBox
-            boxStyle="bold"
-            animationClass="boldBounce"
-            ref={n => (this.boldBox = n)}
-          >Bold</AnimatedBox>
-          <AnimatedBox
-            boxStyle="optimistic"
-            animationClass="optimisticBounce"
-            ref={n => (this.optimisticBox = n)}
-          >Optimistic</AnimatedBox>
-          <AnimatedBox
-            boxStyle="combined"
-            animationClass="combinedBounce"
-            ref={n => (this.combinedBox = n)}
-          >Combined</AnimatedBox>
+      <Container>
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <AnimatedBox appearance="bold" ref={n => (this.boldBox = n)}>
+            Bold
+          </AnimatedBox>
+          <AnimatedBox appearance="optimistic" ref={n => (this.optimisticBox = n)}>
+            Optimistic
+          </AnimatedBox>
+          <AnimatedBox appearance="combined" ref={n => (this.combinedBox = n)} >
+            Combined
+          </AnimatedBox>
         </div>
-        <div className={storyStyles.locals.centerContent}>
-          <button onClick={this.clickAll}>All</button>
+        <div style={{ textAlign: 'center' }}>
+          <button onClick={this.clickAll}>Animate All</button>
         </div>
-      </div>
+      </Container>
     );
   }
 }
-
-export default AnimatedBoxGroup;

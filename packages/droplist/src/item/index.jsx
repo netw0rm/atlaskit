@@ -1,8 +1,10 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
-import { locals as styles } from '../styles.less';
+import Tooltip from '@atlaskit/tooltip';
+import styles from '../styles.less';
 
 import Element from './internal/Element';
 import SecondaryText from './internal/SecondaryText';
@@ -11,6 +13,7 @@ import SecondaryText from './internal/SecondaryText';
 export default class Item extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    description: PropTypes.string,
     elemBefore: PropTypes.node,
     elemAfter: PropTypes.node,
     href: PropTypes.string,
@@ -24,10 +27,13 @@ export default class Item extends PureComponent {
     target: PropTypes.string,
     title: PropTypes.string,
     type: PropTypes.oneOf(['link', 'radio', 'checkbox', 'option']),
+    tooltipDescription: PropTypes.string,
+    tooltipPosition: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
   }
 
   static defaultProps = {
     children: null,
+    description: '',
     elemBefore: null,
     elemAfter: null,
     href: null,
@@ -42,6 +48,8 @@ export default class Item extends PureComponent {
     target: null,
     title: null,
     type: 'link',
+    tooltipDescription: null,
+    tooltipPosition: 'right',
   }
 
   getClasses = props => classNames(
@@ -77,44 +85,64 @@ export default class Item extends PureComponent {
 
   render() {
     const { props } = this;
-    return (
-      <span role="presentation">
-        <Element
-          className={this.getClasses(props)}
-          handleClick={this.handleClick}
-          handleKeyPress={this.handleKeyPress}
-          href={props.href}
-          isChecked={props.isChecked}
-          isDisabled={props.isDisabled}
-          isHidden={props.isHidden}
-          isSelected={props.isSelected}
-          target={props.target}
-          title={props.title}
-          type={props.type}
-        >
-          {
-            props.type === 'checkbox'
-            ? <span className={styles.checkradio}><Checkbox label="" /></span>
-            : null
-          }
-          {
-            props.type === 'radio'
-            ? <span className={styles.checkradio}><Radio label="" /></span>
-            : null
-          }
-          {
-            props.elemBefore
-            ? <span className={styles.elemBefore}>{ props.elemBefore }</span>
-            : null
-          }
-          <span className={styles.itemContent}>{ props.children }</span>
-          {
-            props.elemAfter
-              ? <span className={styles.elemAfter}>{ props.elemAfter }</span>
-              : null
-          }
-        </Element>
+
+    const element = (<Element
+      className={this.getClasses(props)}
+      handleClick={this.handleClick}
+      handleKeyPress={this.handleKeyPress}
+      href={props.href}
+      isChecked={props.isChecked}
+      isDisabled={props.isDisabled}
+      isHidden={props.isHidden}
+      isSelected={props.isSelected}
+      target={props.target}
+      title={props.title}
+      type={props.type}
+    >
+      {
+        props.type === 'checkbox'
+        ? <span className={styles.checkradio}><Checkbox label="" /></span>
+        : null
+      }
+      {
+        props.type === 'radio'
+        ? <span className={styles.checkradio}><Radio label="" /></span>
+        : null
+      }
+      {
+        props.elemBefore
+        ? <span className={styles.elemBefore}>{ props.elemBefore }</span>
+        : null
+      }
+      <span className={styles.itemContentWrapper}>
+        <span className={styles.itemContent}>{ props.children }</span>
+        {
+          props.description
+          ? <span className={styles.itemDescription}>{ props.description }</span>
+          : null
+        }
       </span>
+      {
+        props.elemAfter
+          ? <span className={styles.elemAfter}>{ props.elemAfter }</span>
+          : null
+      }
+    </Element>);
+
+    return (
+      props.tooltipDescription ?
+        <span role="presentation">
+          <Tooltip
+            position={props.tooltipPosition}
+            description={props.tooltipDescription}
+          >
+            {element}
+          </Tooltip>
+        </span>
+      :
+        <span role="presentation">
+          {element}
+        </span>
     );
   }
 }

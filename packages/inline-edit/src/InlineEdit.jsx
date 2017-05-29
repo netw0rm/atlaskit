@@ -1,29 +1,49 @@
-import React, { PureComponent, PropTypes, cloneElement } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
-import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
+import styles from './styles.less';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
+    /** Label above the input. */
     label: PropTypes.string.isRequired,
+    /** Component to be shown when reading only */
     readView: PropTypes.node.isRequired,
+    /** Component to be shown when editing. Should be an @atlaskit/input. */
     editView: PropTypes.node,
+    /** Whether the component shows the readView or the editView. */
     isEditing: PropTypes.bool.isRequired,
+    /** Greys out text and shows spinner. Does not disable input. */
     isWaiting: PropTypes.bool,
+    /** Sets yellow border with warning symbol at end of input. Removes confirm
+    and cancel buttons. */
     isInvalid: PropTypes.bool,
+    /** Determine whether the label is shown. */
     isLabelHidden: PropTypes.bool,
+    /** Sets whether the checkmark and cross are displayed in the bottom right fo the field. */
     areActionButtonsHidden: PropTypes.bool,
+    /** Sets whether the confirm function is called when the input loses focus. */
     isConfirmOnBlurDisabled: PropTypes.bool,
+    /** Handler called when the wrapper or the label are clicked. */
     onEditRequested: PropTypes.func.isRequired,
+    /** Handler called when checkmark is clicked. Also by default
+    called when the input loses focus. */
     onConfirm: PropTypes.func.isRequired,
+    /** Handler called when the cross is clicked on. */
     onCancel: PropTypes.func.isRequired,
+    /** html to pass down to the label htmlFor prop. */
     labelHtmlFor: PropTypes.string,
+    /** Set whether onConfirm is called on pressing enter. */
     shouldConfirmOnEnter: PropTypes.bool,
+    /** Set whether default stylings should be disabled when editing. */
     disableEditViewFieldBase: PropTypes.bool,
+    /** Component to b shown in an @atlaskit/inline-dialog when edit view is open. */
+    invalidMessage: PropTypes.node,
   }
 
   static defaultProps = {
@@ -34,6 +54,7 @@ export default class InlineEdit extends PureComponent {
     isConfirmOnBlurDisabled: false,
     shouldConfirmOnEnter: false,
     disableEditViewFieldBase: false,
+    invalidMessage: '',
   }
 
   state = {
@@ -63,6 +84,7 @@ export default class InlineEdit extends PureComponent {
     if (this.isReadOnly() || !this.props.isEditing || this.props.isConfirmOnBlurDisabled) {
       return;
     }
+
     this.setState({ wasFocusReceivedSinceLastBlur: false });
     setTimeout(this.confirmIfUnfocused, 10);
   }
@@ -85,6 +107,10 @@ export default class InlineEdit extends PureComponent {
 
     event.preventDefault();
     this.props.onCancel();
+  }
+
+  onDialogClick = (event) => {
+    event.stopPropagation();
   }
 
   getRootClasses = () =>
@@ -119,6 +145,8 @@ export default class InlineEdit extends PureComponent {
       isDisabled={this.shouldRenderSpinner()}
       isLoading={this.shouldRenderSpinner()}
       shouldReset={this.state.shouldResetFieldBase}
+      invalidMessage={this.props.invalidMessage}
+      onDialogClick={this.onDialogClick}
     >
       {children}
     </FieldBase>
@@ -129,7 +157,7 @@ export default class InlineEdit extends PureComponent {
       <div className={styles.buttonsWrapper}>
         <div className={styles.buttonWrapper}>
           <Button
-            iconBefore={<ConfirmIcon label="confirm" />}
+            iconBefore={<ConfirmIcon label="confirm" size="small" />}
             onClick={this.onConfirmClick}
             ref={(ref) => { this.confirmButtonRef = ref; }}
             className={styles.button}
@@ -137,7 +165,7 @@ export default class InlineEdit extends PureComponent {
         </div>
         <div className={styles.buttonWrapper}>
           <Button
-            iconBefore={<CancelIcon label="cancel" />}
+            iconBefore={<CancelIcon label="cancel" size="small" />}
             onClick={this.onCancelClick}
             ref={(ref) => { this.cancelButtonRef = ref; }}
             className={styles.button}

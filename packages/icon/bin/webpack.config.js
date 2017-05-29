@@ -3,20 +3,19 @@
 const webpack = require('webpack');
 const path = require('path');
 const baseIconChunkName = require('./constants').baseIconChunkName;
+// eslint-disable-next-line import/no-dynamic-require
+const pkg = require(path.join(process.cwd(), 'package.json'));
 
 const relativePathToIcon = path.join('..', 'src', 'Icon');
-const pathToIcon = path.join(__dirname, relativePathToIcon);
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-let cssOptions = '?camelCase=true&modules=true&mergeRules=false';
+let cssOptions = `?camelCase=true&modules=true&mergeRules=false&hashPrefix=${pkg.name}${pkg.version}`;
 if (isDevelopment) {
   cssOptions += '&-minimize';
 }
 
 module.exports = (tmpFolder, entry) => ({
-  entry: Object.assign({
-    [baseIconChunkName]: [pathToIcon],
-  }, entry),
+  entry,
   output: {
     path: tmpFolder,
     filename: '[name].js',
@@ -39,7 +38,7 @@ module.exports = (tmpFolder, entry) => ({
     loaders: [
       {
         test: /\.less$/,
-        loader: `css${cssOptions}!less`,
+        loader: `style!css${cssOptions}!less`,
       },
       {
         test: /\.jsx?$/,

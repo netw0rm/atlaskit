@@ -1,36 +1,38 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowleftIcon } from '@atlaskit/icon';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
 import BasicSearch from './BasicSearch';
-import Navigation, { AkContainerTitle, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
+import Navigation, { AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
 export default class BasicNavigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    isOpen: PropTypes.bool,
     width: PropTypes.number,
     containerHeaderComponent: PropTypes.func,
     openDrawer: PropTypes.string,
     searchDrawerContent: PropTypes.node,
     createDrawerContent: PropTypes.node,
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
+    onResizeCallback: PropTypes.func,
   }
 
   static defaultProps = {
+    onResizeCallback: () => {},
     children: (<div>
-      <AkContainerItem
+      <AkNavigationItem
         icon={<DashboardIcon label="Dashboard" />}
         text="Item A"
       />
-      <AkContainerItem
+      <AkNavigationItem
         icon={<SettingsIcon label="Settings" />}
         text="Item B"
       />
-      <AkContainerItem
+      <AkNavigationItem
         icon={<IssuesIcon label="Projects" />}
         text="Item C"
       />
@@ -44,24 +46,23 @@ export default class BasicNavigation extends PureComponent {
         text="AtlasKit"
         subText="Is the king"
       />),
-    searchDrawerContent: (<BasicSearch />),
     createDrawerContent: (
       <div>
-        <AkDrawerItem
+        <AkNavigationItem
           text="Item outside a group"
         />
-        <AkContainerItemGroup
+        <AkNavigationItemGroup
           title="Create item group"
         >
-          <AkDrawerItem
+          <AkNavigationItem
             icon={<img alt="icon" src={nucleusLogo} />}
             text="Item with an icon"
           />
-          <AkDrawerItem
+          <AkNavigationItem
             icon={<img alt="icon" src={nucleusLogo} />}
             text="A really, really, quite long, actually super long container name"
           />
-        </AkContainerItemGroup>
+        </AkNavigationItemGroup>
       </div>),
     globalSecondaryActions: [
       <AkDropdownMenu
@@ -129,13 +130,19 @@ export default class BasicNavigation extends PureComponent {
   constructor(...args) {
     super(...args);
     this.state = {
-      isOpen: this.props.isOpen,
       openDrawer: this.props.openDrawer,
       width: this.props.width,
     };
   }
 
   openDrawer = (name) => {
+    if (name === 'search') {
+      action('onSearchDrawerOpen')();
+    }
+
+    if (name === 'create') {
+      action('onCreateDrawerOpen')();
+    }
     this.setState({
       openDrawer: name,
     });
@@ -148,6 +155,8 @@ export default class BasicNavigation extends PureComponent {
   }
 
   resize = (resizeState) => {
+    action('onResize')();
+    this.props.onResizeCallback(resizeState);
     this.setState({
       isOpen: resizeState.isOpen,
       width: resizeState.width,
@@ -175,7 +184,11 @@ export default class BasicNavigation extends PureComponent {
             onBackButton={this.closeDrawer}
             primaryIcon={globalPrimaryIcon}
           >
-            {this.props.searchDrawerContent}
+            {
+              this.props.searchDrawerContent ?
+              this.props.searchDrawerContent :
+              <BasicSearch />
+            }
           </AkSearchDrawer>),
           (<AkCreateDrawer
             backIcon={backIcon}

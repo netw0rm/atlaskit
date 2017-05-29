@@ -1,23 +1,19 @@
-import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ResizerButton.less';
-import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import ResizerButtonInner from '../styled/ResizerButtonInner';
 
 export default class ResizerButton extends PureComponent {
   static propTypes = {
-    isVisible: PropTypes.bool,
     isPointingRight: PropTypes.bool,
     onClick: PropTypes.func,
   }
   render() {
     return (
-      <button
-        onMouseDown={e => e.preventDefault()}
-        onClick={this.props.onClick}
-        className={classNames(styles.button, {
-          [styles.isVisible]: this.props.isVisible,
-          [styles.isPointingRight]: this.props.isPointingRight,
-        })}
+      <ResizerButtonInner
         aria-expanded={!this.props.isPointingRight}
+        isPointingRight={this.props.isPointingRight}
+        onClick={this.props.onClick}
+        onMouseDown={e => e.preventDefault()}
       />
     );
   }

@@ -1,4 +1,4 @@
-import { Node } from '@atlaskit/editor-core';
+import { Node, DOMParser } from '@atlaskit/editor-core';
 import schema from './schema';
 import arrayFrom from './util/array-from';
 
@@ -34,8 +34,8 @@ export function transformHtml(html: string): HTMLElement {
       }
     }
 
-    const displayName = a.textContent || '';
-    if (displayName.indexOf('@') === 0) {
+    const text = a.textContent || '';
+    if (text.indexOf('@') === 0) {
       span.textContent = a.textContent;
     } else {
       span.textContent = `@${a.textContent}`;
@@ -83,14 +83,25 @@ export function transformHtml(html: string): HTMLElement {
   // Parse emojis i.e.
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
   arrayFrom(el.querySelectorAll('img.emoji')).forEach((img: HTMLImageElement) => {
-    const src = img.getAttribute('src');
-    const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
+    const span = document.createElement('span');
+    let shortName = img.getAttribute('data-emoji-short-name') || '';
 
-    if (idMatch) {
-      const emoji = document.createTextNode(`:${decodeURIComponent(idMatch[1])}:`);
-      img.parentNode!.insertBefore(emoji, img);
+    if (!shortName) {
+      // Fallback to parsing Bitbucket's src attributes to find the
+      // short name
+      const src = img.getAttribute('src');
+      const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
+
+      if (idMatch) {
+        shortName = `:${decodeURIComponent(idMatch[1])}:`;
+      }
     }
 
+    if (shortName) {
+      span.setAttribute('data-emoji-short-name', shortName);
+    }
+
+    img.parentNode!.insertBefore(span, img);
     img.parentNode!.removeChild(img);
   });
 
@@ -109,5 +120,5 @@ export function transformHtml(html: string): HTMLElement {
  * Note that all unsupported elements will be discarded after parsing.
  */
 export function parseHtml(html: string): Node {
-  return schema.parseDOM(transformHtml(html));
-};
+  return DOMParser.fromSchema(schema).parse(transformHtml(html));
+}

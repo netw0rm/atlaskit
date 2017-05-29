@@ -22,26 +22,9 @@
    Ensure that you pass <code>done</code> into the test and that you call it at the end
    as this will make your tests asyncronous.</p>
 </dd>
-<dt><a href="#default">default(define, definition, [target])</a> ⇒ <code>Promise.&lt;Component&gt;</code></dt>
-<dd><p>Creates a temporary component from a SkateJS module definition</p>
-</dd>
-<dt><a href="#getRootNode">getRootNode(component)</a> ⇒ <code>Node</code></dt>
-<dd><p>Returns the root node of the passed component</p>
-</dd>
-<dt><a href="#getShadowRoot">getShadowRoot(component)</a></dt>
-<dd><p>A simple helper method to retrieve a shadowRoot from a component</p>
-</dd>
 <dt><a href="#hasClass">hasClass(component, [...classes])</a></dt>
 <dd><p>A simple helper method to check whether a node has a set of classNames on it.
  Will return true, only if a component is provided and it has all the classNames applied to it.</p>
-</dd>
-<dt><a href="#locateWebComponent">locateWebComponent(componentNamePrefix, [parentElement])</a> ⇒ <code>Array.&lt;Node&gt;</code></dt>
-<dd><p>locates a web component by its prefix.</p>
-<p>Note: this is also used in protractor as a custom locator, so the signature of the method has
-to follow the protractor spec</p>
-</dd>
-<dt><a href="#tearDownComponent">tearDownComponent(component, [target])</a></dt>
-<dd><p>Removes a component from the target node</p>
 </dd>
 <dt><a href="#keydown">keydown(key, options)</a></dt>
 <dd><p>Simulate a user&#39;s keydown input</p>
@@ -95,49 +78,7 @@ it('should respond to prop changes', (done) => {
    );
  });
 ```
-<a name="default"></a>
 
-## default(define, definition, [target]) ⇒ <code>Promise.&lt;Component&gt;</code>
-Creates a temporary component from a SkateJS module definition
-
-**Kind**: global function
-**Returns**: <code>Promise.&lt;Component&gt;</code> - A promise resolving to a ready-to-use instance of the created
-temporary SkateJS WebComponent.
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| define | <code>function</code> |  | The SkateJS define function. This needs to be passed in so that vdom doesn't get confused between your components skate and the skate from akutil-common-test. |
-| definition | <code>object</code> &#124; <code>Component</code> |  | The SkateJS definition to base the temporary component upon |
-| [target] | <code>Node</code> | <code>document.body</code> | The target element to which the component should be appended |
-
-<a name="getRootNode"></a>
-
-## getRootNode(component) ⇒ <code>Node</code>
-Returns the root node of the passed component
-
-**Kind**: global function
-**Returns**: <code>Node</code> - The root node of the passed component
-
-| Param | Type | Description |
-| --- | --- | --- |
-| component | <code>Component</code> | The component to get the root node for |
-
-<a name="getShadowRoot"></a>
-
-## getShadowRoot(component)
-A simple helper method to retrieve a shadowRoot from a component
-
-**Kind**: global function
-
-| Param | Type | Description |
-| --- | --- | --- |
-| component | <code>Node</code> | A node to pull the shadowRoot from. |
-
-**JS Example**
-```js
-const elem = document.querySelector('.fixture').firstChild;
- const sr = getShadowRoot(elem);
-```
 <a name="hasClass"></a>
 
 ## hasClass(component, [...classes])
@@ -157,33 +98,6 @@ const elem = document.querySelector('.fixture').firstChild;
  const elemIsHidden = hasClass(elem, 'hidden');
  const elemIsSelectedAndHidden = hasClass(elem, 'hidden', 'selected');
 ```
-<a name="locateWebComponent"></a>
-
-## locateWebComponent(componentNamePrefix, [parentElement]) ⇒ <code>Array.&lt;Node&gt;</code>
-locates a web component by its prefix.
-
-Note: this is also used in protractor as a custom locator, so the signature of the method has
-to follow the protractor spec
-
-**Kind**: global function
-**Returns**: <code>Array.&lt;Node&gt;</code> - An array of DOM elements
-
-| Param | Type | Description |
-| --- | --- | --- |
-| componentNamePrefix | <code>String</code> | The name of the web component (will be used as a prefix) |
-| [parentElement] | <code>Node</code> | The parent element to search in. Will use document if omitted. |
-
-<a name="tearDownComponent"></a>
-
-## tearDownComponent(component, [target])
-Removes a component from the target node
-
-**Kind**: global function
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| component | <code>object</code> |  | The component that needs to be removed |
-| [target] | <code>object</code> | <code>document.body</code> | The target element from which the component needs to be removed |
 
 <a name="keydown"></a>
 

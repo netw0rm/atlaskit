@@ -35,7 +35,7 @@ function build_storybook() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
+  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" --concurrency 2 -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
   $BASEDIR/generate.index.html.js $TARGET_PATH "PR storybook for ${BITBUCKET_COMMIT}" > "$TARGET_PATH/index.html"
 }
 

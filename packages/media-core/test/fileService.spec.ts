@@ -4,6 +4,7 @@ import * as sinon from 'sinon';
 import {MediaFileService} from '../src/services/fileService';
 import {JwtTokenProvider, MediaItem} from '../src';
 import {LRUCache} from 'lru-fast';
+import {FileDetails} from '../src/item';
 
 const serviceHost = 'some-host';
 const token = 'some-token';
@@ -13,16 +14,16 @@ const unprocessedFileId = 'some-unprocessed-file-id';
 const clientId = 'some-client-id';
 const collection = 'some-collection';
 
-const fileDetails = {
+const defaultFileDetails = {
   id: 'some-file-id',
-  mediaType: 'some-media-type',
+  mediaType: 'image',
   mimeType: 'some-mime-type',
   name: 'some-name',
   processingStatus: 'succeeded',
   size: 12345,
   artifacts: {
-    'document.pdf': { href: `/file/${fileId}/artifact/document.pdf` },
-    'presentation.ppt': { href: `/file/${fileId}/artifact/presentation.ppt` }
+    'document.pdf': {href: `/file/${fileId}/artifact/document.pdf`},
+    'presentation.ppt': {href: `/file/${fileId}/artifact/presentation.ppt`}
   }
 };
 
@@ -45,13 +46,14 @@ describe('MediaFileService', () => {
     };
   };
 
-  const respondFakeXhr = () => {
+  const respondFakeXhr = (fileDetails?: FileDetails) => {
     setTimeout(() => {
       const mockedResponse = {
-        data: fileDetails
+        data: fileDetails || defaultFileDetails
       };
-      requests[0].respond(200, { 'Content-Type': 'application/json' },
-          JSON.stringify(mockedResponse));
+      if (requests[0]) {
+        requests[0].respond(200, { 'Content-Type': 'application/json' }, JSON.stringify(mockedResponse));
+      }
     });
   };
 
@@ -70,7 +72,7 @@ describe('MediaFileService', () => {
     const response = fileService.getFileItem(fileId, clientId, collection)
       .then(fileItem => {
         expect(fileItem.type).to.equal('file');
-        expect(fileItem.details).to.deep.equal(fileDetails);
+        expect(fileItem.details).to.deep.equal(defaultFileDetails);
       })
       .then(() => {
         // Validate call to token provider
@@ -92,7 +94,7 @@ describe('MediaFileService', () => {
     const response = fileService.getFileItem(fileId, clientId)
       .then(fileItem => {
         expect(fileItem.type).to.equal('file');
-        expect(fileItem.details).to.deep.equal(fileDetails);
+        expect(fileItem.details).to.deep.equal(defaultFileDetails);
       })
       .then(() => {
         // Validate call to token provider
@@ -122,14 +124,14 @@ describe('MediaFileService', () => {
   });
 
   describe('cache', () => {
-    const shouldReturnFileFromService = (id: string, cache: LRUCache<string, MediaItem>) => {
+    const shouldReturnFileFromService = (id: string, cache: LRUCache<string, MediaItem>, fileDetails?: FileDetails) => {
       tokenProvider = sinon.stub().returns(Promise.resolve(token));
       fileService = new MediaFileService({ serviceHost, tokenProvider }, cache);
       const response = fileService.getFileItem(id, clientId, collection).then(() => {
         assert((tokenProvider as any).calledOnce);
       });
 
-      respondFakeXhr();
+      respondFakeXhr(fileDetails);
 
       return response;
     };
@@ -157,11 +159,23 @@ describe('MediaFileService', () => {
     });
 
     it('should not cache unprocessed files', () => {
+      const unprocessedFileDetails: FileDetails = {
+        id: 'some-file-id',
+        mediaType: 'image',
+        mimeType: 'some-mime-type',
+        name: 'some-name',
+        processingStatus: 'pending',
+        size: 12345,
+        artifacts: {
+          'document.pdf': { href: `/file/${fileId}/artifact/document.pdf` },
+          'presentation.ppt': { href: `/file/${fileId}/artifact/presentation.ppt` }
+        }
+      };
       const cache = new LRUCache<string, MediaItem>(1);
-      return shouldReturnFileFromService(unprocessedFileId, cache).then(() => {
+      return shouldReturnFileFromService(unprocessedFileId, cache, unprocessedFileDetails).then(() => {
         xhr.restore();
         setupFakeXhr();
-        shouldReturnFileFromService(unprocessedFileId, cache);
+        shouldReturnFileFromService(unprocessedFileId, cache, unprocessedFileDetails);
       });
     });
   });

@@ -1,14 +1,14 @@
 import { EmojiDescription } from '../types';
 
-const toneEmojiShortName = 'raised_back_of_hand';
+const toneEmojiShortName = ':raised_back_of_hand:';
 
-const byShortcut = (emojis: EmojiDescription[], shortcut: string): EmojiDescription =>
-  emojis.filter(emoji => emoji.shortcut === shortcut)[0];
+const byShortName = (emojis: EmojiDescription[], shortName: string): EmojiDescription =>
+  emojis.filter(emoji => emoji.shortName === shortName)[0];
 
 const toneEmoji = (emojis: EmojiDescription[]) =>
-  byShortcut(emojis, toneEmojiShortName);
+  byShortName(emojis, toneEmojiShortName);
 
 export default {
-  byShortcut,
+  byShortName,
   toneEmoji,
 };

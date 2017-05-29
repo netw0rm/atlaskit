@@ -13,34 +13,49 @@ export interface Props {
 
 export interface State {
   emoji: OptionalEmojiDescription;
+  loaded: boolean;
 }
 
 export default class ResourcedEmoji extends PureComponent<Props, State> {
+  private ready = false;
 
   constructor(props) {
     super(props);
 
     this.state = {
       emoji: undefined,
+      loaded: false,
     };
   }
 
   private refreshEmoji(emojiProviderPromise: Promise<EmojiProvider>, emojiId: EmojiId) {
     if (emojiProviderPromise) {
+      this.setState({
+        loaded: false,
+      });
       emojiProviderPromise.then(emojiProvider => {
-        emojiProvider.findById(emojiId).then(emoji => {
-          this.setState({
-            emoji,
-          });
+        emojiProvider.findByEmojiId(emojiId).then(emoji => {
+          if (this.ready) {
+            // don't update state if component was unmounted
+            this.setState({
+              emoji,
+              loaded: true,
+            });
+          }
         });
       });
     }
   }
 
   componentWillMount() {
+    this.ready = true;
     if (!this.state.emoji) {
       this.refreshEmoji(this.props.emojiProvider, this.props.emojiId);
     }
+  }
+
+  componentWillUnmount() {
+    this.ready = false;
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -50,12 +65,16 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
   }
 
   render() {
-    const { emoji } = this.state;
+    const { emoji, loaded } = this.state;
     if (emoji) {
       return (<Emoji emoji={emoji} />);
+    } else if (loaded) {
+      // loaded but not found - render fallback
+      const { shortName, fallback } = this.props.emojiId;
+      return (<span>{fallback || shortName}</span>);
     }
 
-    const title = this.props.emojiId.id;
-    return <EmojiPlaceholder title={title} />;
+    const { shortName } = this.props.emojiId;
+    return <EmojiPlaceholder shortName={shortName} />;
   }
 }

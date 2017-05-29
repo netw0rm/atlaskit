@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import styles from './styles.less';
 
 import AKLayer from '../src';
@@ -28,7 +29,7 @@ export default class ExampleAlignment extends PureComponent {
     return (
       <div>
         <AKLayer {...this.props} content={popperContent}>
-          <div className={styles.locals.alignmentContainer}>
+          <div className={styles.alignmentContainer}>
             {this.props.targetContent}
           </div>
         </AKLayer>

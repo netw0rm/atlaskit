@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Lorem from 'react-lorem-component';
 /**
  * Navigation needs to be able to work in a plain old HTML page,
@@ -29,6 +30,7 @@ export default class HtmlPage extends PureComponent {
           height: '100vh',
           overflowY: 'scroll',
           boxSizing: 'border-box',
+          position: 'relative',
         }}
       >
         <style>{'body { margin: 0 }'}</style>

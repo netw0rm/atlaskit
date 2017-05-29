@@ -1,6 +1,7 @@
-import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from 'style!../less/DrawerBackIcon.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import DrawerBackIconInner from '../styled/DrawerBackIconInner';
+import DrawerBackIconOuter from '../styled/DrawerBackIconOuter';
 
 export default class DrawerBackIcon extends PureComponent {
   static propTypes = {
@@ -18,13 +19,9 @@ export default class DrawerBackIcon extends PureComponent {
       isVisible,
     } = this.props;
     return (
-      <div
-        className={classNames(styles.backIcon, {
-          [styles.isVisible]: isVisible,
-        })}
-      >
-        <div className={classNames(styles.icon)}>{children}</div>
-      </div>
+      <DrawerBackIconOuter>
+        <DrawerBackIconInner isVisible={isVisible}>{children}</DrawerBackIconInner>
+      </DrawerBackIconOuter>
     );
   }
 }

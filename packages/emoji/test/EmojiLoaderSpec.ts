@@ -4,9 +4,11 @@ import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
-import EmojiLoader, { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
-import { SpriteRepresentation } from '../src/types';
+import { SecurityOptions } from '../src/api/SharedResourceUtils';
+import EmojiLoader, { denormaliseEmojiServiceResponse, EmojiLoaderConfig } from '../src/api/EmojiLoader';
+import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../src/types';
+
+import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../test/TestData';
 
 const p1Url = 'https://p1/';
 
@@ -22,7 +24,7 @@ const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
 
 const defaultSecurityCode = '10804';
 
-const provider1: ServiceConfig = {
+const provider1: EmojiLoaderConfig = {
   url: p1Url,
   securityProvider: () => header(defaultSecurityCode),
 };
@@ -56,6 +58,71 @@ describe('EmojiLoader', () => {
       });
 
       const resource = new EmojiLoader(provider1);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
+    it('is only passed a baseUrl with no params or securityProvider', () => {
+      const simpleProvider: EmojiLoaderConfig = {
+        url: p1Url,
+      };
+      fetchMock.mock({
+        matcher: `${simpleProvider.url}`,
+        response: fetchResponse(providerData1),
+      });
+
+      const resource = new EmojiLoader(simpleProvider);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
+    it('can handle when a version is specified in the query params', () => {
+      const params = '?maxVersion=2';
+      fetchMock.mock({
+        matcher: `end:${params}`,
+        response: fetchResponse(providerData1),
+      });
+
+      const provider2 = {
+        ...provider1,
+        url: `${provider1.url}${params}`
+      };
+
+      const resource = new EmojiLoader(provider2);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
+    it('does not add a scale param when it detects the pixel ratio is <= 1', () => {
+      const provider2 = {
+        ...provider1,
+        getRatio: () => 1
+      };
+      fetchMock.mock({
+        matcher: `${provider1.url}`,
+        response: fetchResponse(providerData1),
+      });
+
+      const resource = new EmojiLoader(provider2);
+      return resource.loadEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
+      });
+    });
+
+    it('adds a scale param when it detects the pixel ratio is > 1', () => {
+      const provider2 = {
+        ...provider1,
+        getRatio: () => 2
+      };
+      fetchMock.mock({
+        matcher: `end:?scale=XHDPI`,
+        response: fetchResponse(providerData1),
+      });
+
+      const resource = new EmojiLoader(provider2);
       return resource.loadEmoji().then((emojiResponse) => {
         checkOrder(providerData1, emojiResponse.emojis);
       });
@@ -126,7 +193,7 @@ describe('EmojiLoader', () => {
   });
 
   describe('#denormaliseEmojiServiceResponse', () => {
-    const emojiFields = ['id', 'name', 'shortcut', 'type', 'category', 'order'];
+    const emojiFields = ['id', 'name', 'shortName', 'type', 'category', 'order'];
 
     const checkFields = (actual, expected, fields) => {
       fields.forEach((field) => {
@@ -136,22 +203,30 @@ describe('EmojiLoader', () => {
 
     it('denormaliseEmojiServiceResponse emoji with sprite', () => {
       const spriteRef = 'http://spriteref/test.png';
-      const emoji = {
+      const emoji: EmojiServiceDescriptionWithVariations = {
         id: '1f600',
         name: 'grinning face',
-        shortcut: 'grinning',
+        shortName: 'grinning',
         type: 'STANDARD',
         category: 'PEOPLE',
         order: 1,
         skinVariations: [
           {
-            spriteRef,
-            x: 666,
-            y: 777,
-            height: 42,
-            width: 43,
-            xIndex: 6,
-            yIndex: 23,
+            id: '1f600-1f3fb',
+            name: 'grinning face',
+            shortName: ':grinning::skin-tone-2',
+            type: 'STANDARD',
+            category: 'PEOPLE',
+            order: 1,
+            representation: {
+              spriteRef,
+              x: 666,
+              y: 777,
+              height: 42,
+              width: 43,
+              xIndex: 6,
+              yIndex: 23,
+            }
           },
         ],
         representation: {
@@ -189,10 +264,11 @@ describe('EmojiLoader', () => {
       const representation = e.representation as SpriteRepresentation;
       checkFields(representation && representation.sprite, spriteSheet, spriteSheetFields);
       expect(e.skinVariations && e.skinVariations.length).to.equal(1);
-      if (e.skinVariations) {
-        const skin0 = e.skinVariations[0] as SpriteRepresentation;
-        checkFields(skin0, emoji.skinVariations[0], spriteFields);
-        checkFields(skin0.sprite, spriteSheet, spriteSheetFields);
+      if (e.skinVariations && emoji.skinVariations && emoji.skinVariations.length) {
+        const skinEmoji0 = e.skinVariations[0];
+        checkFields(skinEmoji0, emoji.skinVariations[0], spriteFields);
+        const skinEmoji0Rep = skinEmoji0.representation as SpriteRepresentation;
+        checkFields(skinEmoji0Rep.sprite, spriteSheet, spriteSheetFields);
       }
     });
 
@@ -200,15 +276,23 @@ describe('EmojiLoader', () => {
       const emoji = {
         id: '13d29267-ff9e-4892-a484-1a1eef3b5ca3',
         name: 'standup.png',
-        shortcut: 'standup.png',
+        shortName: 'standup.png',
         type: 'SITE',
         category: 'CUSTOM',
         order: -1,
         skinVariations: [
           {
-            imagePath: 'https://something/something2.png',
-            height: 666,
-            width: 666,
+            id: '13d29267-ff9e-4892-a484-1a1eef3b5c45',
+            name: 'standup-large.png',
+            shortName: ':standup-large:',
+            type: 'SITE',
+            category: 'CUSTOM',
+            order: -1,
+            representation: {
+              imagePath: 'https://something/something2.png',
+              height: 666,
+              width: 666,
+            },
           },
         ],
         representation: {
@@ -227,6 +311,27 @@ describe('EmojiLoader', () => {
       checkFields(e.representation, emoji.representation, ['imagePath', 'height', 'width']);
       expect(e.skinVariations && e.skinVariations.length).to.equal(1);
       checkFields(e.skinVariations && e.skinVariations[0], emoji.skinVariations[0], ['imagePath', 'height', 'width']);
+    });
+  });
+
+  describe('#denormaliseServiceRepresentation', () => {
+    it('media emoji converted to media representation', () => {
+      const mediaApiToken = defaultMediaApiToken();
+      const emojiServiceData: EmojiServiceResponse = {
+        emojis: [ mediaServiceEmoji ],
+        meta: {
+          mediaApiToken,
+        },
+      };
+      const serviceRepresentation = mediaServiceEmoji.representation as ImageRepresentation;
+      expect(serviceRepresentation.imagePath.indexOf(mediaApiToken.url), 'Test data matches').to.equal(0);
+
+      const emojiData = denormaliseEmojiServiceResponse(emojiServiceData);
+      expect(emojiData.mediaApiToken, 'mediaApiToken copied').to.deep.equal(mediaApiToken);
+      expect(emojiData.emojis.length, 'Same number of emoji').to.equal(1);
+
+      const convertedEmoji = emojiData.emojis[0];
+      expect(convertedEmoji, 'Converted emoji').to.deep.equal(mediaEmoji);
     });
   });
 });

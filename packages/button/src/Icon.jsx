@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 import styles from './less/styles.less';
 
@@ -13,6 +14,6 @@ export default class Icon extends PureComponent {
   }
 
   render() {
-    return (<span className={styles.locals.IconWrapper}>{this.props.source}</span>);
+    return (<span className={styles.IconWrapper}>{this.props.source}</span>);
   }
 }

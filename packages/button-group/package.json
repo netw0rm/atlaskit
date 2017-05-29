@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/button-group",
-  "version": "1.0.10",
+  "version": "1.1.3",
   "config": {
     "access": "public"
   },
@@ -8,6 +8,9 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "ak:component": {
+    "name": "Button Group"
+  },
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/button-group; } || ../../node_modules/.bin/not-in-publish"
@@ -17,7 +20,9 @@
     "src/index.d.ts"
   ],
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^1.0.0"
+    "@atlaskit/util-shared-styles": "^2.0.1",
+    "prop-types": "^15.5.10",
+    "styled-components": "^1.3.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -33,9 +38,8 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/button-group": "*",
     "@atlaskit/dropdown-menu": "^1.0.0",
-    "ak-icon": "^12.1.2",
-    "akutil-react": "*",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/icon": "^6.5.0",
+    "@atlaskit/util-readme": "^3.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

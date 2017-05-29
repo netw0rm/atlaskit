@@ -1,5 +1,6 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
+import { LRUCache } from 'lru-fast';
 
 /**
  * Transform response from GraphQL
@@ -37,49 +38,52 @@ const buildHeaders = () => {
 };
 
 /**
- * Build query string for GraphQL
- * @ignore
  * @param  {string} userId
- * @param  {string} [timeformat='h:mma']
- * @return {string}
+ * @param  {string} cloudId
+ * @return {string} GraphQL Query String
  */
-const buildQueryString = (userId, cloudId, timeformat = 'h:mma') => {
-  const fields = [
-    'id',
-    'fullName',
-    'nickname',
-    'email',
-    'meta: position',
-    'location',
-    'companyName',
-    'avatarUrl(size: 100)',
-    'remoteWeekdayIndex: localTime(format: "d")',
-    'remoteWeekdayString: localTime(format: "ddd")',
-    `remoteTimeString: localTime(format: "${timeformat}")`,
-  ];
+const buildUserQuery = (cloudId, userId) => ({
+  query: `query User($userId: String!, $cloudId: String!) {
+    User: CloudUser(userId: $userId, cloudId: $cloudId) {
+      id,
+      fullName,
+      nickname,
+      email,
+      meta: position,
+      location,
+      companyName,
+      avatarUrl(size: 100),
+      remoteWeekdayIndex: localTime(format: "d"),
+      remoteWeekdayString: localTime(format: "ddd"),
+      remoteTimeString: localTime(format: "h:mma"),
+    }
+    Presence: Presence(organizationId: $cloudId, userId: $userId) {
+      state,
+      type,
+      date
+    }
+  }`,
+  variables: {
+    cloudId,
+    userId,
+  },
+});
 
-  const presence = [
-    'state',
-    'type',
-    'date',
-  ];
-
-  const queryUser = `User(id: "${userId}") {${fields.join(', ')}}`;
-  const queryPresence = `Presence(organizationId: "${cloudId}", userId: "${userId}") {${presence.join(', ')}}`;
-
-  return `{${queryUser} ${queryPresence}}`;
-};
-
-const requestService = (baseUrl, options) => {
+/**
+* @param {string} serviceUrl - GraphQL service endpoint
+* @param {string} userId
+* @param {string} cloudI
+*/
+const requestService = (serviceUrl, cloudId, userId) => {
   const headers = buildHeaders();
-  const query = buildQueryString(options.userId, options.cloudId, options.timeformat);
+  const userQuery = buildUserQuery(cloudId, userId);
 
-  return fetch(new Request(baseUrl, {
+  return fetch(new Request(serviceUrl, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
     headers,
-    body: JSON.stringify({ query }),
+    body: JSON.stringify(userQuery),
   }))
   .then((response) => {
     if (!response.ok) {
@@ -102,16 +106,99 @@ const requestService = (baseUrl, options) => {
 };
 
 class ProfileClient {
+  /**
+   * @param {object} config
+   * @param {string} config.url
+   * @param {string} [config.cacheSize=10]
+   * @param {string} [config.cacheMaxAge=null]
+   */
   constructor(config) {
-    if (!config.url) {
+    const defaults = {
+      cacheSize: 10,
+      cacheMaxAge: null,
+    };
+
+    this.config = { ...defaults, ...config };
+    // Set maxCacheAge only if it's a positive number
+    this.cacheMaxAge = Math.max(
+      parseInt(this.config.cacheMaxAge, 10), 0
+    ) || null;
+    // Only set cache if maxCacheAge is set
+    this.cache = this.cacheMaxAge === null
+      ? null : new LRUCache(this.config.cacheSize);
+  }
+
+  makeRequest(cloudId, userId) {
+    if (!this.config.url) {
       throw new Error('config.url is a required parameter');
     }
 
-    this.config = config;
+    return requestService(this.config.url, cloudId, userId);
   }
 
-  fetch(options) {
-    return requestService(this.config.url, options);
+  setCachedProfile(cloudId, userId, cacheItem) {
+    const cacheIdentifier = `${cloudId}/${userId}`;
+    this.cache.put(cacheIdentifier, cacheItem);
+  }
+
+  getCachedProfile(cloudId, userId) {
+    const cacheIdentifier = `${cloudId}/${userId}`;
+
+    const cached = this.cache && this.cache.get(cacheIdentifier);
+
+    if (!cached) {
+      return null;
+    }
+
+    if (cached.expire < Date.now()) {
+      this.cache.remove(cacheIdentifier);
+      return null;
+    }
+
+    this.cache.set(cacheIdentifier, {
+      expire: Date.now() + this.cacheMaxAge,
+      profile: cached.profile,
+    });
+
+    return cached.profile;
+  }
+
+  flushCache() {
+    if (this.cache) {
+      this.cache.removeAll();
+    }
+  }
+
+  getProfile(cloudId, userId) {
+    if (!cloudId || !userId) {
+      return Promise.reject(new Error('cloudId or userId missing'));
+    }
+
+    const cache = this.getCachedProfile(cloudId, userId);
+
+    if (cache) {
+      return Promise.resolve(cache);
+    }
+
+    return new Promise((resolve, reject) => {
+      this.makeRequest(cloudId, userId)
+      .then((data) => {
+        if (this.cache) {
+          this.setCachedProfile(
+            cloudId,
+            userId,
+            {
+              expire: Date.now() + this.cacheMaxAge,
+              profile: data,
+            }
+          );
+        }
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
   }
 }
 

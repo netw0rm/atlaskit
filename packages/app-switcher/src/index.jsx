@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
 
 import AppSwitcherPropTypes from './internal/prop-types';
@@ -7,6 +8,8 @@ import getHomeLink from './items/home-link';
 import getRecentContainers from './items/recent-containers';
 import getLinkedApplications from './items/linked-applications';
 import getSuggestedApplication from './items/suggested-application';
+
+import { AppSwitcherContainer } from './styled';
 
 export default class AppSwitcher extends Component {
 
@@ -21,6 +24,8 @@ export default class AppSwitcher extends Component {
     analytics: PropTypes.func,
     isDropdownOpenInitially: PropTypes.bool,
     dropdownOptions: AppSwitcherPropTypes.dropdownOptions,
+    isLoading: PropTypes.bool,
+    onAppSwitcherOpen: PropTypes.func,
   };
 
   static defaultProps = {
@@ -28,6 +33,8 @@ export default class AppSwitcher extends Component {
     isDropdownOpenInitially: true,
     dropdownOptions: {},
     isHomeLinkEnabled: true,
+    isLoading: false,
+    onAppSwitcherOpen: () => {},
   };
 
   constructor(props) {
@@ -52,11 +59,21 @@ export default class AppSwitcher extends Component {
     }
   };
 
+  onOpenChange = (attrs) => {
+    if (!this.state.isDropdownOpen && attrs.isOpen) {
+      this.props.analytics('appswitcher.trigger.click');
+      this.props.onAppSwitcherOpen();
+    }
+
+    this.setState({ isDropdownOpen: attrs.isOpen });
+  };
+
   render = () => {
     const {
       i18n,
       isAnonymousUser,
       isHomeLinkEnabled,
+      isLoading,
       recentContainers,
       linkedApplications,
       suggestedApplication,
@@ -73,18 +90,21 @@ export default class AppSwitcher extends Component {
     ].filter(item => item != null);
 
     return (
-      <StatelessDropdownMenu
-        items={dropdownItems}
-        isOpen={this.state.isDropdownOpen}
-        onOpenChange={(attrs) => { this.setState({ isDropdownOpen: attrs.isOpen }); }}
-        onItemActivated={this.onItemActivated}
-        appearance="tall"
-        position="bottom left"
-        shouldFlip={false}
-        {...dropdownOptions}
-      >
-        {trigger(this.state.isDropdownOpen)}
-      </StatelessDropdownMenu>
+      <AppSwitcherContainer>
+        <StatelessDropdownMenu
+          items={dropdownItems}
+          isLoading={isLoading}
+          isOpen={this.state.isDropdownOpen}
+          onOpenChange={this.onOpenChange}
+          onItemActivated={this.onItemActivated}
+          appearance="tall"
+          position="bottom left"
+          shouldFlip={false}
+          {...dropdownOptions}
+        >
+          {trigger(this.state.isDropdownOpen)}
+        </StatelessDropdownMenu>
+      </AppSwitcherContainer>
     );
   }
 }

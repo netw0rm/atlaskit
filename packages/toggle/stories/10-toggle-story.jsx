@@ -3,30 +3,46 @@ import React from 'react';
 import AkToggle from '../src';
 import { name } from '../package.json';
 
-const containerStyles = {
-  margin: 10,
-  display: 'inline-flex',
-  flexDirection: 'column',
+const styles = {
+  container: {
+    alignItems: 'flex-start',
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 10,
+  },
+  form: {
+    backgroundColor: 'white',
+    padding: 40,
+    width: 500,
+  },
+  iframe: {
+    backgroundColor: '#fafafa',
+    border: '1px solid #eee',
+    borderRadius: 4,
+    height: 280,
+    marginTop: 20,
+    width: '100%',
+  },
 };
 
 storiesOf(name, module)
   .add('with no properties', () =>
-    <div style={containerStyles}>
+    <div style={styles.container}>
       <AkToggle label="wifi enabled" />
     </div>
   )
   .add('with large size', () =>
-    <div style={containerStyles}>
+    <div style={styles.container}>
       <AkToggle label="wifi enabled" size="large" />
     </div>
   )
   .add('with checked state by default', () =>
-    <div style={containerStyles}>
+    <div style={styles.container}>
       <AkToggle isDefaultChecked label="wifi enabled" />
     </div>
   )
   .add('with disabled state', () =>
-    <div style={containerStyles}>
+    <div style={styles.container}>
       <AkToggle isDisabled />
       <AkToggle size="large" isDisabled />
       <AkToggle isDefaultChecked isDisabled />
@@ -34,11 +50,11 @@ storiesOf(name, module)
     </div>
   )
   .add('within a form', () =>
-    <div style={containerStyles}>
+    <div style={styles.container}>
       <form
         action={'//httpbin.org/get'}
         method="get"
-        style={{ backgroundColor: 'white', padding: '40px', width: '500px' }}
+        style={styles.form}
         target="myFrame"
       >
         <h2>Submit test</h2>
@@ -50,6 +66,6 @@ storiesOf(name, module)
           <button type="submit">Submit</button>
         </p>
       </form>
-      <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }} />
+      <iframe src="" name="myFrame" style={styles.iframe} />
     </div>
   );

@@ -1,4 +1,5 @@
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+import * as URL from 'url';
 
 import debug from '../util/logger';
 
@@ -30,10 +31,11 @@ export interface ServiceConfig {
   url: string;
   securityProvider?: SecurityProvider;
   refreshedSecurityProvider?: RefreshSecurityProvider;
-};
+}
 
 const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions | undefined): string => {
-  const searchParam = new URLSearchParams();
+  const searchParam = new URLSearchParams(URL.parse(baseUrl).search || undefined);
+  baseUrl = baseUrl.split('?')[0];
   for (const key in data) { // eslint-disable-line no-restricted-syntax
     if ({}.hasOwnProperty.call(data, key)) {
       searchParam.append(key, data[key]);
@@ -57,7 +59,12 @@ const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, se
   if (path && baseUrl.substr(-1) !== '/') {
     seperator = '/';
   }
-  return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
+  let params = searchParam.toString();
+  if (params) {
+    params = '?' + params;
+  }
+
+  return `${baseUrl}${seperator}${path}${params}`;
 };
 
 const buildHeaders = (secOptions?: SecurityOptions): Headers => {
@@ -90,6 +97,7 @@ export const requestService = (baseUrl: string, path: string | undefined, data: 
   const options = {
     ...opts,
     ...{ headers },
+    credentials: 'include' as RequestCredentials,
   };
   return fetch(new Request(url, options))
     .then((response: Response) => {

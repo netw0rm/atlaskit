@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 import styles from './styles.less';
 import TabPane from './internal/TabPane';
@@ -6,7 +7,9 @@ import TabsNav from './internal/TabsNav';
 
 export default class Tabs extends PureComponent {
   static propTypes = {
+    /** Handler for navigation using the keyboard buttons. */
     onKeyboardNav: PropTypes.func.isRequired,
+    /** The tabs to display, with content being hidden unless the tab is selected. */
     tabs: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
       isSelected: PropTypes.bool,
@@ -28,7 +31,7 @@ export default class Tabs extends PureComponent {
     ) : null;
 
     return (
-      <div className={styles.locals.akTabsRoot}>
+      <div className={styles.akTabsRoot}>
         <TabsNav
           onKeyboardNav={this.props.onKeyboardNav}
           tabs={this.props.tabs}

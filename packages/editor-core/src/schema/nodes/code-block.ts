@@ -1,63 +1,16 @@
-import { Attribute, Block, browser, Node, Schema } from '../../prosemirror';
+import { NodeSpec, browser } from '../../prosemirror';
 
-export class CodeBlockNodeType extends Block {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'code_block') {
-      throw new Error('CodeBlockNodeType must be named "code_block".');
-    }
-  }
-
-  get attrs() {
-    return {
-      language: new Attribute({default: null})
-    };
-  }
-
-  get isCode() {
-    return true;
-  }
-
-  get matchDOMTag() {
-    return {
-      'pre': (dom: HTMLElement) => {
-        const language = getLanguageFromEditorStyle(dom) || getLanguageFromBitbucketStyle(dom);
-        return [
-          {
-            'language': language
-          },
-          {
-            preserveWhitespace: true
-          }
-        ] as any;
-      }
-    };
-  }
-
-  toDOM(node: CodeBlockNode): [string, any, number] {
-    const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
-    return ['pre', { 'data-language': node.attrs.language, 'class': className }, 0];
-  }
-}
+const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
+  return dom.dataset['language'];
+};
 
 // example of BB style:
 // <div class="codehilite language-javascript"><pre><span>hello world</span><span>\n</span></pre></div>
 const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | undefined => {
-  const parent = dom.parentElement;
-
-  if (parent && parent.classList.contains('codehilite')) {
+  if (dom && dom.classList.contains('codehilite')) {
     // code block html from Bitbucket always contains an extra new line
-    removeLastNewLine(dom);
-    return extractLanguageFromClass(parent.className);
+    return extractLanguageFromClass(dom.className);
   }
-};
-
-const removeLastNewLine = (dom: HTMLElement): void => {
-  dom.textContent = dom.textContent!.replace(/\n$/, '');
-};
-
-const getLanguageFromEditorStyle = (dom: HTMLElement): string => {
-  return dom.dataset['language'] || '';
 };
 
 const extractLanguageFromClass = (className: string): string | undefined => {
@@ -68,13 +21,79 @@ const extractLanguageFromClass = (className: string): string | undefined => {
   }
 };
 
-export interface CodeBlockNode extends Node {
-  type: CodeBlockNodeType;
-  attrs: {
-    language: string;
-  };
-}
+const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
+  const parent = dom && dom.parentElement;
+  if (parent && parent.classList.contains('codehilite')) {
+    dom.textContent = dom.textContent!.replace(/\n$/, '');
+  }
+  return dom;
+};
 
-export function isCodeBlockNode(node: Node): node is CodeBlockNode {
-  return node.type instanceof CodeBlockNodeType;
-}
+const isBlock = (node: HTMLElement) => {
+  const blockElementsInsideCode = ['DIV', 'P', 'BR'];
+  return blockElementsInsideCode.indexOf(node.nodeName.toUpperCase()) > -1 &&
+    (!node.style.display || node.style.display === 'block');
+};
+
+const getTextFromDOM = (dom: HTMLElement): string => {
+  const content: Array<string> = [];
+  let line = '';
+  // TS doesn't allow Array.from or [...] because of type mismatch
+  [].slice.call(dom.childNodes).forEach((child: Node) => {
+    if (child.nodeType === Node.TEXT_NODE) {
+      line += child.textContent || '';
+    }
+    else if (child.nodeType === Node.ELEMENT_NODE) {
+      line += getTextFromDOM(child as HTMLElement) || '';
+      if (isBlock(child as HTMLElement)) {
+        content.push(line);
+        line = '\n';
+      }
+    }
+  });
+  if (line) {
+    content.push(line);
+  }
+  return content.join('');
+};
+
+export const codeBlock: NodeSpec = {
+  attrs: { language: { default: null } },
+  content: 'text*',
+  group: 'block',
+  code: true,
+  defining: true,
+  parseDOM: [{
+    tag: 'pre',
+    preserveWhitespace: 'full',
+    getAttrs: (dom: HTMLElement) => {
+      const language = (
+        getLanguageFromBitbucketStyle(dom.parentElement!) ||
+        getLanguageFromEditorStyle(dom.parentElement!) ||
+        dom.getAttribute('data-language')!
+      );
+      dom.textContent = getTextFromDOM(removeLastNewLine(dom));
+      return { language };
+    }
+  },
+  // Handle VSCode paste, it wraps copied content with
+  // <div style="...white-space: pre;...">
+  {
+    tag: 'div[style]',
+    preserveWhitespace: 'full',
+    getAttrs: (dom: HTMLElement) => {
+      if (
+        dom.style.whiteSpace === 'pre' || dom.style.whiteSpace === 'pre-wrap' ||
+        (dom.style.fontFamily && dom.style.fontFamily.toLowerCase().indexOf('monospace') > -1)
+      ) {
+        dom.textContent = getTextFromDOM(dom).replace(/\n$/, '');
+        return {};
+      }
+      return false;
+    }
+  }],
+  toDOM(node): [string, any, number] {
+    const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
+    return ['pre', { 'data-language': node.attrs.language, 'class': className }, 0];
+  }
+};

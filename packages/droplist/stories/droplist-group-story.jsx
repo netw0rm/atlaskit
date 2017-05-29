@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import styles from 'style!./story-styles.less';
+import styles from './story-styles.less';
 
 import { Group, Item } from '../src';
 import { name } from '../package.json';

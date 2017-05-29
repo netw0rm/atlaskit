@@ -156,9 +156,13 @@ export default class MentionPicker extends PureComponent<Props, State> {
     });
     if (wasVisible !== visible) {
       if (visible) {
-        this.props.onOpen && this.props.onOpen();
+        if (this.props.onOpen) {
+          this.props.onOpen();
+        }
       } else {
-        this.props.onClose && this.props.onClose();
+        if (this.props.onClose) {
+          this.props.onClose();
+        }
       }
     }
   }
@@ -177,6 +181,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
       info,
     } as State);
   }
+
+  private handleMentionListRef = (ref) => { this.mentionListRef = ref; };
 
   render() {
     const { resourceProvider, presenceProvider, onSelection, query,
@@ -197,7 +203,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         presenceProvider={presenceProvider}
         onSelection={onSelection}
         query={query}
-        ref={(ref) => { this.mentionListRef = ref; }}
+        ref={this.handleMentionListRef}
       />
     );
 

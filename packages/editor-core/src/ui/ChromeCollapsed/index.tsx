@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import * as styles from './styles';
+import { Input } from './styles';
 
 export interface Props {
   text?: string;
@@ -12,11 +12,10 @@ export default class ChromeCollapsed extends PureComponent<Props, {}> {
     const placeholder = this.props.text || 'Type something…';
 
     return (
-      <input
-        className={styles.input}
+      <Input
         onFocus={this.props.onFocus}
         placeholder={placeholder}
       />
     );
   }
-};
+}

@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
@@ -6,38 +7,78 @@ import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
-import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
+import { mapAppearanceToFieldBase } from './internal/appearances';
 
 const groupShape = DummyGroup.propTypes;
 const itemShape = DummyItem.propTypes;
 
+// =============================================================
+// NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
+// -------------------------------------------------------------
+// DO NOT update values here without updating the other.
+// =============================================================
+
+const appearances = {
+  values: [
+    'default',
+    'subtle',
+  ],
+  default: 'default',
+};
+
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
+    /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
+    /** id property to be passed down to the html select component. */
     id: PropTypes.string,
+    /** Sets whether the select is selectable. Changes hover state. */
     isDisabled: PropTypes.bool,
+    /** controls the top margin of the label component rendered. */
     isFirstChild: PropTypes.bool,
+    /** Sets whether the field will become focused. */
     shouldFocus: PropTypes.bool,
+    /** Set whether there is an error with the selection. Sets an orange border
+    and shows the warning icon. */
     isInvalid: PropTypes.bool,
+    /** Sets whether the Select dropdown is open. */
     isOpen: PropTypes.bool,
+    /** Sets whether form including select can be submitted without an option
+    being made. */
     isRequired: PropTypes.bool,
+    /** An array of objects, each one of which must have an array of items, and
+    may have a heading. All items should have content and value properties, with
+    content being the displayed text. */
     items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    /** Label to be displayed above select. */
     label: PropTypes.string,
+    /** Mesage to display in any group in items if there are no items in it,
+    including if there is one item that has been selected. */
     noMatchesFound: PropTypes.string,
+    /** name property to be passed to the html select element. */
     name: PropTypes.string,
+    /** Handler to be called when the filtered items changes.*/
     onFilterChange: PropTypes.func,
+    /** Handler called when the select is opened or closed. Called with an object
+    that has both the event, and the new isOpen state. */
     onOpenChange: PropTypes.func,
+    /** Handler called when a selection is made, with the item chosen. */
     onSelected: PropTypes.func,
     onRemoved: PropTypes.func,
+    /** Text to be shown within the select when no item is selected. */
     placeholder: PropTypes.string,
+    /** Where the select dropdown should be displayed relative to the field position. */
     position: PropTypes.string,
+    /** Array of selected items */
     selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
+    /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
   }
 
@@ -78,7 +119,18 @@ export default class StatelessMultiSelect extends PureComponent {
   onFocus = () => {
     if (!this.props.isDisabled) {
       this.setState({ isFocused: true });
-      this.inputNode.focus();
+
+      /**
+       * Check if we're tabbing to the Remove button on a tag.
+       * This is a hacky workaround for now and should be fixed when
+       * we implement proper traversal for tags with the keyboard.
+       *
+       * @see {@link https://ecosystem.atlassian.net/browse/AK-2250}
+       * @todo Implement traversal of tags with arrow keys, then remove this.
+       */
+      if (document.activeElement.tagName.toLowerCase() !== 'button') {
+        this.inputNode.focus();
+      }
     }
   }
 
@@ -241,41 +293,45 @@ export default class StatelessMultiSelect extends PureComponent {
   filterItems = (items) => {
     const value = this.props.filterValue;
     const trimmedValue = value && value.toLowerCase().trim();
-    const selectedItems = this.props.selectedItems;
-    const unselectedItems = items.filter(item => selectedItems.indexOf(item) === -1);
+    const selectedValues = this.props.selectedItems.map(item => item.value);
+    const unselectedItems = items.filter(item => selectedValues.indexOf(item.value) === -1);
 
     return trimmedValue ?
       unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
       unselectedItems;
   }
 
-  renderItems = (items) => {
-    const filteredItems = this.filterItems(items);
-    if (filteredItems.length) {
-      return filteredItems.map((item, itemIndex) => (<Item
-        {...item}
-        elemBefore={item.elemBefore}
-        isFocused={itemIndex === this.state.focusedItemIndex}
-        key={itemIndex}
-        onActivate={(attrs) => {
-          this.handleItemSelect(item, attrs);
-        }}
-      >
-        {item.content}
-      </Item>));
-    }
-
-    return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
-  }
-
-  renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group
-      heading={group.heading}
-      key={groupIndex}
+  renderItems = items => items.map((item, itemIndex) => (
+    <Item
+      {...item}
+      elemBefore={item.elemBefore}
+      isFocused={itemIndex === this.state.focusedItemIndex}
+      key={itemIndex}
+      onActivate={(attrs) => {
+        this.handleItemSelect(item, attrs);
+      }}
     >
-      {this.renderItems(group.items)}
-    </Group>
+      {item.content}
+    </Item>)
   )
+
+  renderNoItemsMessage = () => <NothingWasFound noMatchesFound={this.props.noMatchesFound} />
+
+  renderGroups = (groups) => {
+    const renderedGroups = groups.map((group, groupIndex) => {
+      const filteredItems = this.filterItems(group.items);
+      return filteredItems.length > 0 ?
+        <Group
+          heading={group.heading}
+          key={groupIndex}
+        >
+          {this.renderItems(filteredItems)}
+        </Group>
+        : null;
+    }).filter(group => !!group);
+
+    return renderedGroups.length > 0 ? renderedGroups : this.renderNoItemsMessage();
+  }
 
   renderOptions = items => items.map((item, itemIndex) => (<option
     disabled={item.isDisabled}
@@ -350,7 +406,8 @@ export default class StatelessMultiSelect extends PureComponent {
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
                   {this.props.selectedItems.map(item =>
                     <Tag
-                      elemBefore={item.tagElemBefore}
+                      appearance={item.tag ? item.tag.appearance : undefined}
+                      elemBefore={item.tag ? item.tag.elemBefore : undefined}
                       key={item.value}
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);

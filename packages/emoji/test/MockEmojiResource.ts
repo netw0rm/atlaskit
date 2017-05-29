@@ -1,6 +1,6 @@
-import { EmojiDescription, EmojiId, OptionalEmojiDescription } from '../src/types';
+import { EmojiDescription, EmojiId, OptionalEmojiDescription, SearchOptions } from '../src/types';
 import { EmojiProvider } from '../src/api/EmojiResource';
-import EmojiService, { EmojiSearchResult } from '../src/api/EmojiService';
+import EmojiRepository, { EmojiSearchResult } from '../src/api/EmojiRepository';
 import { AbstractResource } from '../src/api/SharedResources';
 import debug from '../src/util/logger';
 
@@ -12,15 +12,15 @@ export interface MockEmojiResourceConfig {
   promiseBuilder?: PromiseBuilder<any>;
 }
 
-export class MockEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined> implements EmojiProvider {
-  private emojiService: EmojiService;
+export class MockEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider {
+  private emojiRepository: EmojiRepository;
   private promiseBuilder: PromiseBuilder<any>;
 
   recordedSelections: EmojiId[] = [];
 
-  constructor(emojiService: EmojiService, config?: MockEmojiResourceConfig) {
+  constructor(emojiService: EmojiRepository, config?: MockEmojiResourceConfig) {
     super();
-    this.emojiService = emojiService;
+    this.emojiRepository = emojiService;
     this.promiseBuilder = (result) => Promise.resolve(result);
     if (config) {
       if (config.promiseBuilder) {
@@ -29,27 +29,33 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
     }
   }
 
-  filter(query: string) {
+  filter(query: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
-    this.promiseBuilder(this.emojiService.search(query)).then((result: EmojiSearchResult) => {
+    this.promiseBuilder(this.emojiRepository.search(query, options)).then((result: EmojiSearchResult) => {
       this.notifyResult(result);
     });
   }
 
-  findByShortcut(shortcut: string): Promise<OptionalEmojiDescription> {
-    const emoji = this.emojiService.findByShortcut(shortcut);
-    debug('MockEmojiResource.findByShortcut', shortcut, emoji);
+  findByShortName(shortName: string): Promise<OptionalEmojiDescription> {
+    const emoji = this.emojiRepository.findByShortName(shortName);
+    debug('MockEmojiResource.findByShortcut', shortName, emoji);
     return this.promiseBuilder(emoji);
   }
 
-  findById(id: EmojiId): Promise<OptionalEmojiDescription> {
-    const emoji = this.emojiService.findById(id);
-    debug('MockEmojiResource.findById', id, emoji);
+  findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
+    const { id, shortName } = emojiId;
+    if (id) {
+      const emoji = this.emojiRepository.findById(id);
+      debug('MockEmojiResource.findById', emojiId, emoji);
+      return this.promiseBuilder(emoji);
+    }
+    const emoji = this.emojiRepository.findByShortName(shortName);
+    debug('MockEmojiResource.findById; not id using shortName', emojiId, emoji);
     return this.promiseBuilder(emoji);
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {
-    const emojis = this.emojiService.findInCategory(categoryId);
+    const emojis = this.emojiRepository.findInCategory(categoryId);
     return this.promiseBuilder(emojis);
   }
 
@@ -65,8 +71,8 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
 
 }
 
-export const mockEmojiResourceFactory = (emojiService: EmojiService, config?: MockEmojiResourceConfig, promiseBuilder?: PromiseBuilder<MockEmojiResource>) => {
-  const mockEmojiResource = new MockEmojiResource(emojiService, config);
+export const mockEmojiResourceFactory = (emojiRepository: EmojiRepository, config?: MockEmojiResourceConfig, promiseBuilder?: PromiseBuilder<MockEmojiResource>) => {
+  const mockEmojiResource = new MockEmojiResource(emojiRepository, config);
   if (promiseBuilder) {
     return promiseBuilder(mockEmojiResource);
   }

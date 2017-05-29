@@ -3,7 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import * as styles from './styles';
-import { EmojiSearchResult } from '../../api/EmojiService';
+import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { EmojiDescription, OnEmojiEvent, RelativePosition } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
@@ -14,7 +14,7 @@ export const defaultListLimit = 50;
 
 export interface OnLifecycle {
   (): void;
-};
+}
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
@@ -56,7 +56,9 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
       emojis: [],
       loading: true,
     };
-    this.props.onOpen && this.props.onOpen();
+    if (this.props.onOpen) {
+      this.props.onOpen();
+    }
   }
 
   componentWillMount() {
@@ -114,30 +116,41 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     }
   }
 
+  count = (): number => {
+    const { emojis } = this.state;
+    return emojis && emojis.length || 0;
+  }
+
   private onSearch(query?: string) {
     this.props.emojiProvider.then(provider => {
-      provider.filter(query);
+      const { listLimit } = this.props;
+      provider.filter(query, {
+        limit: listLimit || defaultListLimit,
+      });
     });
   }
 
   private onSearchResult = (result: EmojiSearchResult): void => {
     const { emojis } = result;
-    const { listLimit } = this.props;
     const wasVisible = this.state.visible;
     const visible = emojis.length > 0;
     debug('emoji-typeahead.applyPropChanges', emojis.length, wasVisible, visible);
 
     this.setState({
-      emojis: emojis.slice(0, listLimit || defaultListLimit),
+      emojis: emojis,
       visible,
       loading: false,
     });
 
     if (wasVisible !== visible) {
       if (visible) {
-        this.props.onOpen && this.props.onOpen();
+        if (this.props.onOpen) {
+          this.props.onOpen();
+        }
       } else {
-        this.props.onClose && this.props.onClose();
+        if (this.props.onClose) {
+          this.props.onClose();
+        }
       }
     }
   }
@@ -145,6 +158,10 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private onProviderChange: OnEmojiProviderChange = {
     result: this.onSearchResult,
   };
+
+  private onEmojiListRef = (ref) => {
+    this.emojiListRef = ref;
+  }
 
   render() {
     const { onSelection, target, position, zIndex, offsetX, offsetY } = this.props;
@@ -163,7 +180,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         <EmojiList
           emojis={emojis}
           onEmojiSelected={onSelection}
-          ref={(ref) => { this.emojiListRef = ref; }}
+          ref={this.onEmojiListRef}
           loading={loading}
         />
       </div>

@@ -7,6 +7,7 @@ declare namespace Chai {
   // - https://github.com/Microsoft/TypeScript/pull/6213
   interface Assertion {
     nodeType(nodeType: new (...args: any[]) => any): Assertion;
+    nodeSpec(nodeType: any): Assertion;
     textWithMarks(text: string, marks: any[]): Assertion;
   }
 }

@@ -1,11 +1,12 @@
-import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from 'style!../less/Spacer.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import SpacerInner from '../styled/SpacerInner';
 
 export default class Spacer extends PureComponent {
   static propTypes = {
     width: PropTypes.number,
     shouldAnimate: PropTypes.bool,
+    children: PropTypes.node,
   }
   static defaultProps = {
     width: 0,
@@ -13,14 +14,14 @@ export default class Spacer extends PureComponent {
   }
   render() {
     return (
-      <div
-        className={classNames(styles.spacer, {
-          [styles.shouldAnimate]: this.props.shouldAnimate,
-        })}
+      <SpacerInner
+        shouldAnimate={this.props.shouldAnimate}
         style={{
           width: this.props.width,
         }}
-      />
+      >
+        {this.props.children}
+      </SpacerInner>
     );
   }
 }

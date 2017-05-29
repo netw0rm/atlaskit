@@ -1,10 +1,12 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
+import Spinner from '@atlaskit/spinner';
 import classnames from 'classnames';
 import { akGridSize } from '@atlaskit/util-shared-styles';
 
-import { locals as styles } from '../styles.less';
+import styles from '../styles.less';
 
 const halfFocusRing = 1;
 const numberOfVisibleItems = 9;
@@ -15,6 +17,7 @@ export default class DropdownList extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(['default', 'tall']),
     children: PropTypes.node,
+    isLoading: PropTypes.bool,
     isOpen: PropTypes.bool,
     onClick: PropTypes.func,
     onKeyDown: PropTypes.func,
@@ -23,11 +26,13 @@ export default class DropdownList extends PureComponent {
     shouldFitContainer: PropTypes.bool,
     shouldFlip: PropTypes.bool,
     trigger: PropTypes.node,
+    shouldAllowMultilineItems: PropTypes.bool,
   }
 
   static defaultProps = {
     appearance: 'default',
     children: null,
+    isLoading: false,
     isOpen: false,
     shouldFitContainer: false,
     onClick: () => {},
@@ -36,6 +41,7 @@ export default class DropdownList extends PureComponent {
     position: 'bottom left',
     trigger: null,
     shouldFlip: true,
+    shouldAllowMultilineItems: false,
   }
 
   componentDidMount = () => {
@@ -57,14 +63,16 @@ export default class DropdownList extends PureComponent {
 
   componentWillUnmount = () => {
     document.removeEventListener('click', this.handleClickOutside);
-    document.addEventListener('keydown', this.handleEsc);
+    document.removeEventListener('keydown', this.handleEsc);
   }
 
   setMaxHeight = (dropDomRef) => {
     const { appearance } = this.props;
     const maxHeight = this.getMaxHeight();
-    const height = maxHeight ? `${maxHeight}px` : 'none';
-    dropDomRef.style.maxHeight = appearance !== 'tall' ? height : 'none';
+
+    if (maxHeight && appearance !== 'tall') {
+      dropDomRef.style.maxHeight = `${maxHeight}px`;
+    }
   }
 
   getMaxHeight = () => {
@@ -75,16 +83,9 @@ export default class DropdownList extends PureComponent {
     const scrollThresholdItemIndex = Math.min(items.length, numberOfVisibleItems);
     const scrollThresholdItem = items[scrollThresholdItemIndex - 1];
 
-    if (!scrollThresholdItem) return null;
+    if (!scrollThresholdItem || (scrollThresholdItemIndex < numberOfVisibleItems)) return null;
 
-    // It really should be something like this.dropContentRef.lastChild.offsetBottom,
-    // but since there is no offsetBottom method, it's just easier to do it like this
-    // since the values are the same.
-    const bottomPadding = this.dropContentRef.firstChild.offsetTop;
-
-    return scrollThresholdItemIndex < numberOfVisibleItems ?
-      scrollThresholdItem.offsetTop + scrollThresholdItem.clientHeight + bottomPadding :
-      scrollThresholdItem.offsetTop + (scrollThresholdItem.clientHeight / 2);
+    return scrollThresholdItem.offsetTop + (scrollThresholdItem.clientHeight / 2);
   }
 
   handleEsc = (event) => {
@@ -114,12 +115,13 @@ export default class DropdownList extends PureComponent {
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
         className={classnames([styles.dropWrapper, {
           [styles.fitContainer]: props.shouldFitContainer,
+          [styles.allowMultilineItems]: props.shouldAllowMultilineItems,
         }])}
         onClick={this.props.onClick}
         onKeyDown={this.props.onKeyDown}
       >
         <Layer
-          autoPosition={props.shouldFlip}
+          autoFlip={props.shouldFlip}
           content={props.isOpen ?
             <div
               className={styles.dropContent}
@@ -131,7 +133,11 @@ export default class DropdownList extends PureComponent {
                 }
               }}
             >
-              {props.children}
+              {
+                props.isLoading
+                  ? <div className={styles.spinnerContainer}><Spinner /></div>
+                  : props.children
+              }
             </div> :
             null
           }

@@ -1,4 +1,4 @@
-import * as module from 'popper.js';
+import * as popperCtor from 'popper.js';
 
 export interface State {
   offsets: {
@@ -13,10 +13,11 @@ export interface IPopper {
   destroy(): void;
   onCreate(cb: (state: State) => void);
   onUpdate(cb: (state: State) => void);
+  update(): void;
 }
 
 export interface IPopperConstructor {
   new (reference: HTMLElement, popper: HTMLElement, options: any): IPopper;
 }
 
-export default module as IPopperConstructor;
+export default popperCtor as IPopperConstructor;

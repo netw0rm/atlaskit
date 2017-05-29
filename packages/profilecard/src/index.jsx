@@ -1,6 +1,10 @@
-import Profilecard from './profilecard';
-import ProfilecardResourced from './profilecard-resourced';
+import AkProfilecard from './profilecard';
+import AkProfileClient from './api/profile-client';
+import AkProfilecardResourced from './profilecard-resourced';
+import AkProfilecardTrigger from './profilecard-trigger';
 
-export const AkProfilecard = Profilecard;
+export { AkProfilecard };
+export { AkProfilecardTrigger };
+export { AkProfileClient };
 
-export default ProfilecardResourced;
+export default AkProfilecardResourced;

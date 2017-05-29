@@ -9,6 +9,10 @@ import DroplistOverviewExample from './examples/DroplistOverview';
 import DroplistOverviewExampleRaw from '!raw!./examples/DroplistOverview';
 import DroplistFitExample from './examples/DroplistFit';
 import DroplistFitExampleRaw from '!raw!./examples/DroplistFit';
+import DroplistOverflowItemsExample from './examples/DroplistOverflowItems';
+import DroplistOverflowItemsExampleRaw from '!raw!./examples/DroplistOverflowItems';
+import DroplistMultilineItemsExample from './examples/DroplistMultilineItems';
+import DroplistMultilineItemsExampleRaw from '!raw!./examples/DroplistMultilineItems';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -18,6 +22,7 @@ const droplistPropDescriptions = {
   Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no
   restrictions.`,
   position: 'Position of the menu. See the documentation of ak-layer for more details.',
+  isLoading: 'Controls whether or not a Spinner will be shown (if isOpen)',
   isOpen: 'Controls the open state of the dropdown',
   onOpenChange: `This is a handler function which is called when the droplist should be open/closed.
   Received an object with isOpen state. Activates when page is clicked outside of the dropdown or
@@ -62,5 +67,35 @@ storiesOf(name, module)
       <Code>
         {DroplistFitExampleRaw}
       </Code>
+    </Chrome>
+  ))
+  .add('Droplist with long items (default behaviour)', () => (
+    <Chrome title={name}>
+      <Description>
+        <p>Droplist with long items (default behaviour).</p>
+        {DroplistOverflowItemsExample}
+      </Description>
+      <Code>
+        {DroplistOverflowItemsExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Droplist with long items with multiline option', () => (
+    <Chrome title={name}>
+      <Description>
+        <p>Droplist with long items with multiline option.</p>
+        {DroplistMultilineItemsExample}
+      </Description>
+      <Code>
+        {DroplistMultilineItemsExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Droplist that is loading', () => (
+    <Chrome title={name}>
+      <Description>
+        <p>Droplist that is loading</p>
+        <DropList isLoading isOpen />
+      </Description>
     </Chrome>
   ));

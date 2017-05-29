@@ -54,6 +54,12 @@ storiesOf(name, module)
               <td>--</td>
               <td>Optional boundariesElement for the popup. Takes a css-selector.</td>
             </tr>
+            <tr>
+              <td><code>allowAllEmojis</code></td>
+              <td><code>boolean</code></td>
+              <td>false</td>
+              <td>When set to true the picker will allow inserting any emoji from the emoji picker. Default to false.</td>
+            </tr>
           </tbody>
         </table>
         <Heading type="2">Reactions Props</Heading>
@@ -96,6 +102,12 @@ storiesOf(name, module)
               <td><code>string</code></td>
               <td>--</td>
               <td>Optional boundariesElement for the popup. Takes a css-selector.</td>
+            </tr>
+            <tr>
+              <td><code>allowAllEmojis</code></td>
+              <td><code>boolean</code></td>
+              <td>false</td>
+              <td>When set to true the picker will allow inserting any emoji from the emoji picker.</td>
             </tr>
           </tbody>
         </table>

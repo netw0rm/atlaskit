@@ -1,30 +1,22 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import {
-  action,
-  isSelected,
-  isCompact,
-  navigationItemOuter,
-  link,
-} from 'style!../src/components/less/NavigationItem.less';
 import NavigationItem from '../src/components/js/NavigationItem';
+import NavigationItemIcon from '../src/components/styled/NavigationItemIcon';
+import NavigationItemAfter from '../src/components/styled/NavigationItemAfter';
 
 describe('<NavigationItem />', () => {
   describe('props', () => {
     it('icon should render an image', () => {
       expect(mount(<NavigationItem icon={<img alt="foo" />} />).find('img').length).to.equal(1);
     });
-    it('isSelected=true should render with the isSelected class', () => {
-      expect((mount(<NavigationItem isSelected />).find(`.${navigationItemOuter}`)).hasClass((isSelected))).to.equal(true);
+    it('isSelected=true should render a child with the isSelected prop', () => {
+      expect((mount(<NavigationItem isSelected />).find('NavigationItemOuter')).props().isSelected).to.equal(true);
     });
-    it('isSelected=false should not render with the isSelected class', () => {
-      expect(mount(<NavigationItem />).find(`.${navigationItemOuter}`).hasClass(isSelected)).to.equal(false);
-    });
-    it('isCompact=true should render with the isCompact class', () => {
-      expect((mount(<NavigationItem isCompact />).find(`.${navigationItemOuter}`)).hasClass((isCompact))).to.equal(true);
+    it('isSelected=false should not render a child with the isSelected prop', () => {
+      expect(mount(<NavigationItem />).find('NavigationItemOuter').props().isSelected).to.equal(false);
     });
     it('with a href should render onto the link', () => {
-      expect(mount(<NavigationItem href="foo" />).find(`.${link}`).props().href).to.equal('foo');
+      expect(mount(<NavigationItem href="foo" />).find('InteractiveWrapper').props().href).to.equal('foo');
     });
     it('with no href should not render a link', () => {
       expect(mount(<NavigationItem />).find('a').length).to.equal(0);
@@ -62,7 +54,7 @@ describe('<NavigationItem />', () => {
       expect(mount(<NavigationItem />).find('TextAfter').length).to.equal(0);
     });
     it('action should not render if the prop is not set', () => {
-      expect(mount(<NavigationItem />).find(`.${action}`).length).to.equal(0);
+      expect(mount(<NavigationItem />).find('NavigationItemAction').length).to.equal(0);
     });
     it('textAfter and action should both be renderable at the same time', () => {
       const both = mount(
@@ -77,14 +69,46 @@ describe('<NavigationItem />', () => {
     it('subText should render in the navigation item', () => {
       expect(mount(<NavigationItem subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
     });
-    it('subText should render in the navigation item when it is compact', () => {
-      expect(mount(<NavigationItem isCompact subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
+
+    describe('isDropdownTrigger=true and dropIcon is provided', () => {
+      const navigationWrapper = mount(<NavigationItem isDropdownTrigger dropIcon={<img alt="foo" />} />);
+
+      it('should render dropIcon', () => (
+        expect(navigationWrapper.find('img').length).to.equal(1)
+      ));
+
+      it('should render NavigationItemIcon wrapper with isDropdownTrigger prop forwarded', () => (
+        expect(navigationWrapper.find(NavigationItemIcon).prop('isDropdownTrigger')).to.equal(true)
+      ));
+
+      describe('if textAfter is provided', () => {
+        navigationWrapper.setProps({ textAfter: 'test' });
+        it('should render NavigationItemAfter wrapper with isDropdownTrigger prop forwarded', () => {
+          expect(navigationWrapper.find(NavigationItemAfter).prop('isDropdownTrigger')).to.equal(true);
+        });
+      });
+    });
+
+    describe('isDropdownTrigger=false and dropIcon is provided', () => {
+      const navigationWrapper = mount(<NavigationItem dropIcon={<img alt="foo" />} />);
+
+      it('should not render dropIcon', () => {
+        expect(navigationWrapper.find(NavigationItemIcon).length).to.equal(0);
+        expect(navigationWrapper.find('img').length).to.equal(0);
+      });
+
+      describe('if textAfter is provided', () => {
+        navigationWrapper.setProps({ textAfter: 'test' });
+        it('should render NavigationItemAfter wrapper without isDropdownTrigger prop forwarded', () => {
+          expect(navigationWrapper.find(NavigationItemAfter).prop('isDropdownTrigger')).to.equal(false);
+        });
+      });
     });
   });
   describe('behaviour', () => {
     it('mousedown on the link is prevented', () => {
       const spy = sinon.spy();
-      mount(<NavigationItem href="foo" />).find(`.${link}`).simulate('mouseDown', {
+      mount(<NavigationItem href="foo" />).find('InteractiveWrapper').simulate('mouseDown', {
         preventDefault: spy,
       });
       expect(spy.called).to.equal(true);

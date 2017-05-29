@@ -11,7 +11,7 @@ export interface State {
   query: string;
 }
 
-class ResourcedMentionListStoryDemo extends Component<undefined, State> {
+class ResourcedMentionListStoryDemo extends Component<{}, State> {
   private resourcedMentionListRef: ResourcedMentionList;
 
   constructor(props) {
@@ -28,13 +28,21 @@ class ResourcedMentionListStoryDemo extends Component<undefined, State> {
     });
   }
 
+  private handleMentionListRef = (ref) => {
+    this.resourcedMentionListRef = ref;
+  }
+
+  private handleInputUp = () => { this.resourcedMentionListRef.selectPrevious(); };
+  private handleInputDown = () => { this.resourcedMentionListRef.selectNext(); };
+  private handleInputEnter = () => { this.resourcedMentionListRef.chooseCurrentSelection(); };
+
   render() {
     const mentionList = (
       <ResourcedMentionList
         onSelection={action('mention selected')}
         resourceProvider={resourceProvider}
         query={this.state.query}
-        ref={(ref) => { this.resourcedMentionListRef = ref; }}
+        ref={this.handleMentionListRef}
       />
     );
 
@@ -44,9 +52,9 @@ class ResourcedMentionListStoryDemo extends Component<undefined, State> {
           inputId="mention-input"
           label="User search"
           onChange={this.updateQuery}
-          onUp={() => { this.resourcedMentionListRef.selectPrevious; }}
-          onDown={() => { this.resourcedMentionListRef.selectNext; }}
-          onEnter={() => { this.resourcedMentionListRef.chooseCurrentSelection; }}
+          onUp={this.handleInputUp}
+          onDown={this.handleInputDown}
+          onEnter={this.handleInputEnter}
         />
         {mentionList}
       </div>

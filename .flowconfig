@@ -1,0 +1,18 @@
+[ignore]
+
+.*/node_modules/styled-components/.*
+.*/node_modules/polished/.*
+.*/node_modules/fbjs/.*
+
+[include]
+
+[libs]
+
+[options]
+
+# Automatically map @atlaskit/* imports to local packages
+module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/\1/src/index'
+
+# Provides a way to suppress flow errors in the following line.
+# Example: // $FlowFixMe: This following line is borked because of reasons.
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe

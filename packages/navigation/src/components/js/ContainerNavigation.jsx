@@ -1,24 +1,25 @@
-import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from 'style!../less/ContainerNavigation.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { ThemeProvider } from 'styled-components';
+import memoizeOne from 'memoize-one';
+import { themeVariables } from '../../utils/theme';
 import ContainerHeader from './ContainerHeader';
+import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
-import {
-  containerOpenWidth,
-  containerClosedWidth,
-} from '../../shared-variables';
-import Spacer from './Spacer';
+import Reveal from './Reveal';
+import ContainerNavigationInner from '../styled/ContainerNavigationInner';
+import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
+import subscribe from '../../watch-scroll-top';
+import { globalPrimaryActions } from '../../shared-variables';
 
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
     appearance: PropTypes.string,
-    areGlobalActionsVisible: PropTypes.bool,
+    showGlobalPrimaryActions: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
-    shouldAnimate: PropTypes.bool,
-    width: PropTypes.number,
-    offsetX: PropTypes.number,
+    isCollapsed: PropTypes.bool,
     linkComponent: PropTypes.func,
     globalPrimaryItemHref: PropTypes.string,
     globalPrimaryIcon: PropTypes.node,
@@ -30,24 +31,70 @@ export default class ContainerNavigation extends PureComponent {
 
   static defaultProps = {
     appearance: 'container',
-    areGlobalActionsVisible: false,
-    shouldAnimate: false,
-    width: containerOpenWidth,
-    offsetX: 0,
+    showGlobalPrimaryActions: false,
+    isCollapsed: false,
     linkComponent: DefaultLinkComponent,
   }
 
-  getOuterStyles() {
-    return {
-      transform: `translateX(${this.props.offsetX}px)`,
-      width: this.props.width,
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      isScrolling: false,
+      isInitiallyRendered: false,
     };
+
+    // Memoizing this function so that it will only be called
+    // when the underlying DOM node is changing OR if it is
+    // unmounting (in which case it will be `null`).
+    this.onRefChange = memoizeOne(this.onRefChange);
+  }
+
+  componentWillReceiveProps() {
+    // After any update we are going to start animating.
+    // Not doing this in componentDidMount to prevent an
+    // unneeded second render on mount.
+    if (!this.state.isInitiallyRendered) {
+      this.setState({
+        isInitiallyRendered: true,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
+
+  onScrollTopChange = (number) => {
+    const isScrolling = number > 0;
+
+    if (isScrolling === this.state.isScrolling) {
+      return;
+    }
+
+    this.setState({
+      isScrolling,
+    });
+  }
+
+  onRefChange = (el) => {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+
+    if (!el) {
+      return;
+    }
+
+    this.unsubscribe = subscribe(el, this.onScrollTopChange);
   }
 
   render() {
     const {
       appearance,
-      areGlobalActionsVisible,
+      showGlobalPrimaryActions,
       children,
       globalCreateIcon,
       globalPrimaryIcon,
@@ -55,62 +102,58 @@ export default class ContainerNavigation extends PureComponent {
       globalSearchIcon,
       headerComponent,
       linkComponent,
-      offsetX,
       onGlobalCreateActivate,
       onGlobalSearchActivate,
-      shouldAnimate,
-      width,
+      isCollapsed,
     } = this.props;
 
-    const isWidthCollapsed = width <= containerClosedWidth;
+    // Only animating the revealing of GlobalPrimaryActions
+    // after the first render. Before that it is rendered
+    // without animation.
+    const { isInitiallyRendered } = this.state;
+
+    const header = headerComponent ? (
+      <ContainerHeader
+        appearance={appearance}
+        isContentScrolled={this.state.isScrolling}
+      >
+        {headerComponent({ isCollapsed })}
+      </ContainerHeader>) : <ContainerNoHeader />;
 
     return (
-      <nav
-        className={classNames({
-          [styles.shouldAnimate]: shouldAnimate,
-        })}
-        data-__ak-navigation-container-closed={isWidthCollapsed}
+      <ThemeProvider
+        theme={{
+          [themeVariables.appearance]: appearance,
+          isCollapsed,
+        }}
       >
-        <Spacer
-          shouldAnimate={shouldAnimate}
-          width={width + offsetX}
-        />
-        <div
-          className={styles.containerNavigationOuter}
-          style={this.getOuterStyles()}
-        >
-          <div
-            className={classNames(styles.containerNavigationInner, {
-              [styles.hasContainerHeader]: headerComponent !== null,
-              [styles.hasGlobalAppearance]: appearance === 'global',
-              [styles.hasSettingsAppearance]: appearance === 'settings',
-            })}
+        <div data-__ak-navigation-container-closed={isCollapsed}>
+          <ContainerNavigationInner
+            innerRef={this.onRefChange}
           >
-            <GlobalPrimaryActions
-              appearance={appearance}
-              createIcon={globalCreateIcon}
-              isVisible={areGlobalActionsVisible}
-              linkComponent={linkComponent}
-              onCreateActivate={onGlobalCreateActivate}
-              onSearchActivate={onGlobalSearchActivate}
-              primaryIcon={globalPrimaryIcon}
-              primaryItemHref={globalPrimaryItemHref}
-              searchIcon={globalSearchIcon}
-            />
-            <div>
-              {
-                this.props.headerComponent ? (
-                  <ContainerHeader>
-                    {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
-                  </ContainerHeader>) : null
-              }
-            </div>
-            <div>
+            <Reveal
+              shouldAnimate={isInitiallyRendered}
+              isOpen={showGlobalPrimaryActions}
+              openHeight={globalPrimaryActions.height.outer}
+            >
+              <GlobalPrimaryActions
+                appearance={appearance}
+                createIcon={globalCreateIcon}
+                linkComponent={linkComponent}
+                onCreateActivate={onGlobalCreateActivate}
+                onSearchActivate={onGlobalSearchActivate}
+                primaryIcon={globalPrimaryIcon}
+                primaryItemHref={globalPrimaryItemHref}
+                searchIcon={globalSearchIcon}
+              />
+            </Reveal>
+            {header}
+            <ContainerNavigationChildren>
               {children}
-            </div>
-          </div>
+            </ContainerNavigationChildren>
+          </ContainerNavigationInner>
         </div>
-      </nav>
+      </ThemeProvider>
     );
   }
 }

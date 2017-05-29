@@ -1,4 +1,5 @@
 import {
+  akBorderRadius,
   akColorN200,
   akColorN900,
 } from '@atlaskit/util-shared-styles';
@@ -10,28 +11,31 @@ export const selected = 'selected';
 export const emojiSprite = 'emoji-sprite';
 
 export const emoji = style({
-  cursor: 'pointer',
+  borderRadius: '5px',
   backgroundColor: 'transparent',
-  backgroundPosition: '50%',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: '22px 22px',
   display: 'inline-block',
-  height: '32px',
-  width: '32px',
+  verticalAlign: 'middle',
+  // Ensure along with vertical align middle, we don't increase the line height for p and some
+  // headings. Smaller headings get a slight increase in height, cannot add more negative margin
+  // as a "selected" emoji (e.g. in the editor) will not look good.
+  margin: '-1px 0',
 
   $nest: {
     [`&.${selected}`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
+    '&>img': {
+      maxHeight: '24px',
+      display: 'block',
+    }
   },
 });
 
 export const emojiContainer = style({
-  borderRadius: '5px',
-  cursor: 'pointer',
   display: 'inline-block',
-  height: '32px',
-  width: '32px',
+  verticalAlign: 'middle',
+  // Ensure along with vertical align middle, we don't increase the line height for h1..h6, and p
+  margin: '-1px 0',
 
   $nest: {
     [`&.${selected}`]: {
@@ -40,22 +44,17 @@ export const emojiContainer = style({
 
     [`.${emojiSprite}`]: {
       background: 'transparent no-repeat',
-      border: 0,
-      boxSizing: 'border-box',
-      cursor: 'pointer',
-      display: 'inline-block',
+      display: 'block',
       height: '24px',
-      margin: '4px',
       width: '24px',
     },
   },
 });
 
-export const missingEmoji = style({
-  height: '32px',
-  width: '32px',
+export const placeholderEmoji = style({
   display: 'inline-block',
   fill: '#f7f7f7',
+  verticalAlign: 'middle',
 });
 
 export const emojiButton = style({
@@ -65,6 +64,14 @@ export const emojiButton = style({
   cursor: 'pointer',
   margin: '0',
   padding: '4px',
+
+  $nest: {
+    /* Firefox */
+    ['&::-moz-focus-inner']: {
+      border: '0 none',
+      padding: 0,
+    },
+  },
 });
 
 export const buttons = 'buttons';
@@ -85,6 +92,7 @@ export const emojiPreview = style({
     [`.${preview}`]: {
       display: 'flex',
       flexDirection: 'row',
+      flexWrap: 'wrap',
 
       $nest: {
         [`.${emojiSprite}`]: {
@@ -95,19 +103,42 @@ export const emojiPreview = style({
 
         [`.${previewImg}`]: {
           display: 'inline-block',
-          backgroundPosition: '50%',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: '32px 32px',
+          flex: 'initial',
+          width: '32px',
+
+          $nest: {
+            '&>span': {
+              width: '32px',
+              height: '32px',
+              padding: 0,
+              maxHeight: 'inherit',
+
+              $nest: {
+                '&>img': {
+                  position: 'relative',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translateX(-50%) translateY(-50%)',
+                  maxHeight: '32px',
+                  maxWidth: '32px',
+                  padding: 0,
+                  display: 'block',
+                }
+              }
+            }
+          }
         },
 
         [`.${previewText}`]: {
-          flex: 1,
+          flex: 'column',
           marginLeft: '10px',
           marginTop: '-2px',
           maxWidth: '285px',
+          width: '285px', /* IE */
 
           $nest: {
             [`.${name}`]: {
+              display: 'block',
               color: akColorN900,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -121,12 +152,13 @@ export const emojiPreview = style({
             },
 
             [`.${shortName}`]: {
+              display: 'block',
               color: akColorN200,
               fontSize: '12px',
               lineHeight: 1,
-              marginBottom: '-1px',
+              marginBottom: '-2px',
               overflow: 'hidden',
-              paddingBottom: '1px',
+              paddingBottom: '2px',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
             },
@@ -165,4 +197,14 @@ export const emojiPreview = style({
       maxWidth: '255px',
     },
   },
+});
+
+export const emojiScrollable = style({
+  border: '1px solid #fff',
+  borderRadius: akBorderRadius,
+  display: 'block',
+  margin: '0',
+  overflowX: 'hidden',
+  overflowY: 'auto',
+  padding: '0',
 });

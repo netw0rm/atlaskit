@@ -122,6 +122,7 @@ separator item will display all the items.
 
     *  [breadcrumbsItem.href](#BreadcrumbsItem+href) : <code>string</code>
     *  [breadcrumbsItem.text](#BreadcrumbsItem+text) : <code>string</code>
+    *  [breadcrumbsItem.target](#BreadcrumbsItem+target) : <code>'_blank', '_parent', '_self', '_top'</code>
     *  [BreadcrumbsItem.iconBefore](#BreadcrumbsItem.iconBefore) : <code>element</code>
     *  [BreadcrumbsItem.iconAfter](#BreadcrumbsItem.iconAfter) : <code>element</code>
 
@@ -145,6 +146,12 @@ The target URL.
 
 ### breadcrumbsItem.text : <code>string</code>
 The text content of the item.
+
+**Kind**: instance property of <code>[BreadcrumbsItem](#BreadcrumbsItem)</code>
+<a name="BreadcrumbsItem+target"></a>
+
+### breadcrumbsItem.target : <code>'_blank', '_parent', '_self', '_top'</code>
+The target attribute of the item.
 
 **Kind**: instance property of <code>[BreadcrumbsItem](#BreadcrumbsItem)</code>
 <a name="BreadcrumbsItem.iconBefore"></a>

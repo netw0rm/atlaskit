@@ -1,21 +1,23 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 import AkProfilecardStatic from './profilecard';
-import ProfileClient from './api/profile-client';
 
 export default class ProfilecardResourced extends PureComponent {
   static propTypes = {
     userId: PropTypes.string.isRequired,
     cloudId: PropTypes.string.isRequired,
-    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-      callback: React.PropTypes.func,
-      label: React.PropTypes.string,
+    actions: PropTypes.arrayOf(PropTypes.shape({
+      callback: PropTypes.func,
+      id: PropTypes.string,
+      label: PropTypes.string,
     })),
-    apiEndpoint: React.PropTypes.string,
-
-    resourceClient: React.PropTypes.shape({
-      fetch: React.PropTypes.func,
-    }),
+    resourceClient: PropTypes.shape({
+      getProfile: PropTypes.func,
+      getCachedProfile: PropTypes.func,
+      makeRequest: PropTypes.func,
+    }).isRequired,
+    analytics: PropTypes.func,
   }
 
   static defaultProps = {
@@ -25,9 +27,7 @@ export default class ProfilecardResourced extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.profileClient = props.resourceClient || new ProfileClient({
-      url: props.apiEndpoint,
-    });
+    this._isMounted = false;
 
     this.state = {
       isLoading: false,
@@ -39,6 +39,7 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.clientFetchProfile();
   }
 
@@ -51,19 +52,20 @@ export default class ProfilecardResourced extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   clientFetchProfile() {
+    const { cloudId, userId } = this.props;
+
     this.setState({
       isLoading: true,
       hasError: false,
       data: {},
     });
 
-    const options = {
-      cloudId: this.props.cloudId,
-      userId: this.props.userId,
-    };
-
-    this.profileClient.fetch(options)
+    this.props.resourceClient.getProfile(cloudId, userId)
     .then(
       res => this.handleClientSuccess(res),
       err => this.handleClientError(err),
@@ -72,6 +74,8 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   handleClientSuccess(res) {
+    if (!this._isMounted) { return; }
+
     this.setState({
       isLoading: false,
       hasError: false,
@@ -80,6 +84,8 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   handleClientError(err) {
+    if (!this._isMounted) { return; }
+
     this.setState({
       isLoading: false,
       hasError: true,
@@ -88,11 +94,14 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   render() {
-    const newProps = Object.assign(this.state.data, {
+    const newProps = {
       isLoading: this.state.isLoading,
       hasError: this.state.hasError,
       clientFetchProfile: this.clientFetchProfile,
-    });
+      analytics: this.props.analytics,
+      ...this.state.data,
+    };
+
     return (
       <AkProfilecardStatic {...newProps} actions={this.props.actions} />
     );

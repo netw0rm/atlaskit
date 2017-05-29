@@ -1,25 +1,43 @@
 import {
-  BulletListNodeType,
-  CodeBlockNodeType,
-  DocNodeType,
-  EmMarkType,
-  HardBreakNodeType,
-  HeadingNodeType,
-  HorizontalRuleNodeType,
-  LinkMarkType,
-  ListItemNodeType,
-  MentionNodeType,
-  MentionQueryMarkType,
-  CodeMarkType,
-  OrderedListNodeType,
-  ParagraphNodeType,
+  code as codeBase,
+  MarkSpec,
+  NodeSpec,
   Schema,
-  StrikeMarkType,
-  StrongMarkType,
-  SubSupMarkType,
-  Text,
-  UnderlineMarkType
+  createSchema
 } from '@atlaskit/editor-core';
+
+const code = {
+  ...codeBase,
+  excludes: 'em strike strong underline'
+};
+
+export interface JIRASchemaNodes {
+  blockquote?: NodeSpec;
+  bulletList?: NodeSpec;
+  codeBlock?: NodeSpec;
+  doc: NodeSpec;
+  hardBreak: NodeSpec;
+  heading: NodeSpec;
+  listItem?: NodeSpec;
+  mention?: NodeSpec;
+  orderedList?: NodeSpec;
+  paragraph: NodeSpec;
+  rule: NodeSpec;
+  text: NodeSpec;
+}
+
+export interface JIRASchemaMarks {
+  code?: MarkSpec;
+  em: MarkSpec;
+  link?: MarkSpec;
+  mentionQuery?: MarkSpec;
+  strike?: MarkSpec;
+  strong: MarkSpec;
+  subsup?: MarkSpec;
+  underline: MarkSpec;
+}
+
+export interface JIRASchema extends Schema<JIRASchemaNodes, JIRASchemaMarks> {}
 
 export interface JIRASchemaConfig {
   allowLists?: boolean;
@@ -27,36 +45,12 @@ export interface JIRASchemaConfig {
   allowLinks?: boolean;
   allowAdvancedTextFormatting?: boolean;
   allowCodeBlock?: boolean;
-}
-
-export interface JIRASchema extends Schema {
-  nodes: {
-    doc: DocNodeType;
-    paragraph: ParagraphNodeType;
-    heading: HeadingNodeType;
-    text: Text;
-    hard_break: HardBreakNodeType;
-    horizontal_rule: HorizontalRuleNodeType;
-    ordered_list?: OrderedListNodeType;
-    bullet_list?: BulletListNodeType;
-    list_item?: ListItemNodeType;
-    mention?: MentionNodeType;
-    code_block?: CodeBlockNodeType;
-  };
-  marks: {
-    link?: LinkMarkType;
-    strong: StrongMarkType;
-    em: EmMarkType;
-    strike?: StrikeMarkType;
-    subsup: SubSupMarkType;
-    u: UnderlineMarkType;
-    code?: CodeMarkType;
-    mention_query?: MentionQueryMarkType;
-  };
+  allowBlockQuote?: boolean;
+  allowSubSup?: boolean;
 }
 
 export function isSchemaWithLists(schema: JIRASchema): boolean {
-  return !!schema.nodes.bullet_list;
+  return !!schema.nodes.bulletList;
 }
 
 export function isSchemaWithMentions(schema: JIRASchema): boolean {
@@ -71,59 +65,52 @@ export function isSchemaWithAdvancedTextFormattingMarks(schema: JIRASchema): boo
   return !!schema.marks.code && !!schema.marks.strike;
 }
 
+export function isSchemaWithSubSupMark(schema: JIRASchema): boolean {
+  return !!schema.marks.subsup;
+}
+
 export function isSchemaWithCodeBlock(schema: JIRASchema): boolean {
-  return !!schema.nodes.code_block;
+  return !!schema.nodes.codeBlock;
+}
+
+export function isSchemaWithBlockQuotes(schema: JIRASchema): boolean {
+  return !!schema.nodes.blockquote;
 }
 
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
-  const nodes = {
-    doc: { type: DocNodeType, content: 'block+' },
-    paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
-    ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
-    bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
-    heading: { type: HeadingNodeType, content: 'inline<_>*', group: 'block' },
-    list_item: { type: ListItemNodeType, content: 'paragraph block*' },
-    text: { type: Text, group: 'inline' },
-    hard_break: { type: HardBreakNodeType, group: 'inline' },
-    horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' },
-    mention: { type: MentionNodeType, group: 'inline' },
-    code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
-  };
+  const nodes = ['doc', 'paragraph', 'text', 'hardBreak', 'heading', 'rule'];
+  const marks = ['strong', 'em', 'underline'];
+  const customMarkSpecs: {[name: string]: any} = {};
 
-  const marks = {
-    link: LinkMarkType,
-    strong: StrongMarkType,
-    em: EmMarkType,
-    strike: StrikeMarkType,
-    subsup: SubSupMarkType,
-    u: UnderlineMarkType,
-    code: CodeMarkType,
-    mention_query: MentionQueryMarkType,
-  };
-
-  if (!config.allowLinks) {
-    delete marks.link;
+  if (config.allowLinks) {
+    marks.push('link');
   }
 
-  if (!config.allowLists) {
-    delete nodes.ordered_list;
-    delete nodes.bullet_list;
-    delete nodes.list_item;
+  if (config.allowLists) {
+    nodes.push('orderedList', 'bulletList', 'listItem');
   }
 
-  if (!config.allowMentions) {
-    delete nodes.mention;
-    delete marks.mention_query;
+  if (config.allowMentions) {
+    nodes.push('mention');
+    marks.push('mentionQuery');
   }
 
-  if (!config.allowAdvancedTextFormatting) {
-    delete marks.strike;
-    delete marks.code;
+  if (config.allowAdvancedTextFormatting) {
+    marks.push('strike');
+    customMarkSpecs.code = code;
   }
 
-  if (!config.allowCodeBlock) {
-    delete nodes.code_block;
+  if (config.allowSubSup) {
+    marks.push('subsup');
   }
 
-  return new Schema({ nodes, marks });
+  if (config.allowCodeBlock) {
+    nodes.push('codeBlock');
+  }
+
+  if (config.allowBlockQuote) {
+    nodes.push('blockquote');
+  }
+
+  return createSchema({ nodes, marks, customMarkSpecs });
 }

@@ -6,7 +6,7 @@ import SplitPane from '@kadira/react-split-pane';
 // need non-uglified css here in order to override the default styles of the react-split-pane
 import 'style-loader!css-loader!./PanelOverride.css';
 
-import { locals as styles } from './styles.less';
+import styles from './styles.less';
 
 const transformScripts = scripts => scripts.map(scr => scr.toString()).join('\n\n');
 

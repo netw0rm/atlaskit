@@ -1,6 +1,7 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { locals as styles } from '../styles.less';
+import styles from '../styles.less';
 
 /* eslint-disable react/no-unused-prop-types */
 export default class Group extends PureComponent {

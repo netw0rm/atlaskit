@@ -1,7 +1,8 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Lorem from 'react-lorem-component';
 import { ArrowleftIcon, ArrowrightIcon } from '@atlaskit/icon';
-import { AkContainerNavigationNested, AkContainerItem } from '../../../src/index';
+import { AkContainerNavigationNested, AkNavigationItem } from '../../../src/index';
 
 const pageStyle = {
   height: 300,
@@ -89,14 +90,14 @@ export default class PagedContainerNavigation extends PureComponent {
           onClick={this.goToPrev}
           style={!this.isPrevEnabled() ? disabledLinkStyles : enabledLinkStyles}
         >
-          <AkContainerItem icon={<ArrowleftIcon label="Previous" />} text="Previous" />
+          <AkNavigationItem icon={<ArrowleftIcon label="Previous" />} text="Previous" />
         </a>
         <a
           href="#next"
           onClick={this.goToNext}
           style={!this.isNextEnabled() ? disabledLinkStyles : enabledLinkStyles}
         >
-          <AkContainerItem icon={<ArrowrightIcon label="Next" />} text="Next" />
+          <AkNavigationItem icon={<ArrowrightIcon label="Next" />} text="Next" />
         </a>
       </div>
     );

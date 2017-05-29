@@ -45,7 +45,6 @@ export class MediaFileService implements FileService {
           }
           return fileItem;
         });
-      ;
     }
   }
 }

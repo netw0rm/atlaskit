@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
+import {size} from '../../styles';
 
 export const FileTypeIcon = styled.div`
   float: left;
@@ -27,8 +28,7 @@ export const FileTypeIcon = styled.div`
     color: #3dc7dc;
   }
 
-  span{
-    width: 12px !important;
-    height: 12px !important;
+  span, img {
+    ${size('12px !important')}
   }
 `;

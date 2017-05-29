@@ -45,12 +45,17 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     };
   }
 
-  componentWillMount() {
-    const img = new Image();
+  private img;
 
-    img.src = this.props.dataURI;
-    img.onload = this.onImageLoad(this);
-    if (this.props.onError) { img.onerror = this.props.onError; }
+  // TODO FIL-4060 we need to check whether the dataURI changes in componentWillReceiveProps()
+  // and if it does recalculate the image height and width
+
+  componentWillMount() {
+    this.img = new Image();
+
+    this.img.src = this.props.dataURI;
+    this.img.onload = this.onImageLoad(this);
+    if (this.props.onError) { this.img.onerror = this.props.onError; }
   }
 
   componentDidMount() {
@@ -62,6 +67,10 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
       parentWidth: width,
       parentHeight: height
     });
+  }
+
+  componentWillUnmont() {
+    this.img.onload = null;
   }
 
   onImageLoad(component) {

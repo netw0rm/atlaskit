@@ -1,4 +1,4 @@
-import { Emoji, EmojiDescription, EmojiId, OnEmojiEvent } from '@atlaskit/emoji';
+import { Emoji, EmojiDescription, EmojiId, OnEmojiEvent, toEmojiId } from '@atlaskit/emoji';
 import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
@@ -9,13 +9,12 @@ import { emojiVisible } from './test-utils';
 import EmojiButton from '../src/internal/emoji-button';
 import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 
-const { getEmojiResourcePromise, getEmojiService } = emojiTestData.emojiTestData;
+const { getEmojiResourcePromise, emojiRepository } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
-// const emojiData = emojiService.all().emojis.filter(e => e.shortcut === 'smiley')[0];
-const smiley: EmojiDescription = getEmojiService().findByShortcut('smiley') as EmojiDescription;
-const emojiId: EmojiId = { id: smiley.id };
+const smiley: EmojiDescription = emojiRepository.findByShortName(':smiley:') as EmojiDescription;
+const emojiId: EmojiId = toEmojiId(smiley);
 
 const renderEmojiButton = (onClick: OnEmojiEvent = () => {} ) => {
   return <EmojiButton onClick={onClick} emojiId={emojiId} emojiProvider={getEmojiResourcePromise()} />;

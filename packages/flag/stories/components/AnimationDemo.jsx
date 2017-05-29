@@ -10,7 +10,6 @@ const descriptions = [
   'Fruitcake topping wafer pie candy dragée sesame snaps cake. Cake cake cheesecake. Pie tiramisu carrot cake tart tart dessert cookie. Lemon drops cookie tootsie roll marzipan liquorice cotton candy brownie halvah.',
 ];
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class AnimationDemo extends PureComponent {
   constructor() {
     super();

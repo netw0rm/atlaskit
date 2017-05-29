@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 import styles from './less/styles.less';
 
@@ -12,6 +13,6 @@ export default class Content extends PureComponent {
   }
 
   render() {
-    return (<span className={styles.locals.buttonContent}>{this.props.children}</span>);
+    return (<span className={styles.buttonContent}>{this.props.children}</span>);
   }
 }

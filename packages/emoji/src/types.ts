@@ -1,4 +1,3 @@
-import { SecurityProvider, RefreshSecurityProvider } from './api/SharedResourceUtils';
 import { SyntheticEvent } from 'react';
 
 export type RelativePosition = 'above' | 'below' | 'auto';
@@ -8,12 +7,16 @@ export interface Styles {
 }
 
 /**
- * Can unique identify an emoji, including an optional variation of that emoji.
- * Unknown variations will be ignored and the default emoji used.
+ * Minimum information to defined an emoji is the shortName.
+ * In order to uniquely define an emoji, the id should be included, and is
+ * used in preference to shortName if provided, and has a matching emoji.
+ * If not emoji can be found by id (e.g. a custom emoji has been removed),
+ * fallback behaviour will be to attempt to find a matching emoji by shortName.
  */
 export interface EmojiId {
-  id: string;
-  variation?: number;
+  shortName: string;
+  id?: string;
+  fallback?: string;
 }
 
 export interface SpriteSheet {
@@ -41,7 +44,6 @@ export interface SpriteImageRepresentation extends EmojiImageRepresentation {
  */
 export interface SpriteRepresentation extends SpriteImageRepresentation {
   sprite: SpriteSheet;
-  mediaApi?: boolean;
 }
 
 /**
@@ -54,35 +56,46 @@ export interface SpriteServiceRepresentation extends SpriteImageRepresentation {
 
 export interface ImageRepresentation extends EmojiImageRepresentation {
   imagePath: string;
-  mediaApi?: boolean;
 }
 
-export type EmojiRepresentation = SpriteRepresentation | ImageRepresentation | undefined;
+export interface MediaApiRepresentation extends EmojiImageRepresentation {
+  mediaPath: string;
+}
+
+export type EmojiRepresentation = SpriteRepresentation | ImageRepresentation | MediaApiRepresentation | undefined;
 
 export interface EmojiDescription extends EmojiId {
   name?: string;
-  shortcut: string;
+  order?: number;
   type: string;
   category: string;
-  order: number;
   representation: EmojiRepresentation;
-  skinVariations?: EmojiRepresentation[];
-};
+}
+
+export interface EmojiDescriptionWithVariations extends EmojiDescription {
+  skinVariations?: EmojiDescription[];
+}
 
 export type OptionalEmojiDescription = EmojiDescription | undefined;
+export type OptionalEmojiDescriptionWithVariations = EmojiDescriptionWithVariations | undefined;
 
 export type EmojiServiceRepresentation = SpriteServiceRepresentation | ImageRepresentation;
 
 export interface EmojiServiceDescription {
   id: string;
+  shortName: string;
   name?: string;
-  shortcut: string;
+  order?: number;
+  fallback?: string;
   type: string;
   category: string;
-  order: number;
   representation: EmojiServiceRepresentation;
-  skinVariations?: EmojiServiceRepresentation[];
-};
+}
+
+export interface EmojiServiceDescriptionWithVariations extends EmojiServiceDescription {
+  skinVariations?: EmojiServiceDescription[];
+}
+
 
 export interface SpriteSheets {
   [index: string]: SpriteSheet;
@@ -97,7 +110,7 @@ export interface MediaApiToken {
   clientId: string;
   jwt: string;
   collectionName: string;
-  expiresIn: number;
+  expiresAt: number; // seconds since Epoch UTC
 }
 
 export interface EmojiMeta {
@@ -109,12 +122,12 @@ export interface EmojiMeta {
  * The expected response from an Emoji service.
  */
 export interface EmojiServiceResponse {
-  emojis: EmojiServiceDescription[];
+  emojis: EmojiServiceDescriptionWithVariations[];
   meta?: EmojiMeta;
 }
 
 export interface EmojiResponse {
-  emojis: EmojiDescription[];
+  emojis: EmojiDescriptionWithVariations[];
   mediaApiToken?: MediaApiToken;
 }
 
@@ -138,12 +151,10 @@ export interface OnEmojiEvent {
 }
 
 export interface OnCategory {
-  (categoryId: string): void;
+  (categoryId: string | null): void;
 }
 
-export interface EmojiResourceItemConfig {
-  url: string; /* url for this specific emoji configuration */
-  securityProvider?: SecurityProvider;
-  refreshedSecurityProvider?: RefreshSecurityProvider;
+export interface SearchOptions {
+  skinTone?: number; // skin tone offset starting at 1
+  limit?: number;
 }
-

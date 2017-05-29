@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook'; // eslint-disable-line import/no-extraneous-dependencies
 import React from 'react';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 import { name } from '../package.json';
 import ExampleAlignment from './ExampleAlignment';
 

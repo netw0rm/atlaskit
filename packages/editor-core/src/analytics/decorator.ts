@@ -52,7 +52,7 @@ export default function analytics(name: string) {
       value: trackFunction(name, fn)
     };
   };
-};
+}
 
 /**
  * Returns a sequence that will track analytics event before calling the passed function.

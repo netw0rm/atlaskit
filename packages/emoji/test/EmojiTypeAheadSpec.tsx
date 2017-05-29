@@ -4,12 +4,13 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiService, getEmojiResourcePromise } from './TestData';
+import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji } from './TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../src/components/typeahead/EmojiTypeAheadItem';
-import { OptionalEmojiDescription } from '../src/types';
+import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
+import { OptionalEmojiDescription, EmojiId } from '../src/types';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import { Props as TypeAheadProps, State as TypeAheadState } from '../src/components/typeahead/EmojiTypeAhead';
 
@@ -23,7 +24,7 @@ function setupPicker(props?: Props): ReactWrapper<any, any> {
   );
 }
 
-const allEmojis = emojiService.all().emojis;
+const allEmojis = emojiRepository.all().emojis;
 
 const leftClick = {
   button: 0,
@@ -55,7 +56,7 @@ describe('EmojiTypeAhead', () => {
       query: 'ball',
     } as Props);
     return waitUntil(() => doneLoading(component)).then(() => {
-      expect(findEmojiItems(component).length).to.equal(3);
+      expect(findEmojiItems(component).length).to.equal(2);
     });
   });
 
@@ -193,6 +194,61 @@ describe('EmojiTypeAhead', () => {
         expect(onOpen.callCount, 'opened 2').to.equal(1);
         expect(onClose.callCount, 'closed 2').to.equal(1);
       });
+    });
+  });
+
+  it('should find two matches when querying "boom"', () => {
+    const component = setupPicker({
+      query: 'boom',
+    } as Props);
+    // Confirm initial state for later conflicting shortName tests
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(findEmojiItems(component).length).to.equal(2);
+    });
+  });
+
+  it('should highlight emojis by matching on id then falling back to shortName', () => {
+    const component = setupPicker({
+      query: 'boom',
+    } as Props);
+    const standardBoomId: EmojiId = {
+      ...standardBoomEmoji
+    };
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      const item = getEmojiTypeAheadItemById(component, standardBoomEmoji.id);
+      item.prop('onMouseMove')(standardBoomId, standardBoomEmoji, item.simulate('mouseover'));
+      expect(isEmojiTypeAheadItemSelected(component, standardBoomEmoji.id)).to.equal(true);
+    });
+  });
+
+  it('should highlight correct emoji regardless of conflicting shortName', () => {
+    const component = setupPicker({
+      query: 'boom',
+    } as Props);
+    const atlassianBoomId: EmojiId = {
+      ...atlassianBoomEmoji
+    };
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      const item = getEmojiTypeAheadItemById(component, atlassianBoomEmoji.id);
+      item.prop('onMouseMove')(atlassianBoomId, atlassianBoomEmoji, item.simulate('mouseover'));
+      expect(isEmojiTypeAheadItemSelected(component, atlassianBoomEmoji.id)).to.equal(true);
+    });
+  });
+
+  it('should render placeholder for unloaded media emoji', () => {
+    const component = setupPicker({
+      query: 'media',
+    } as Props);
+    return waitUntil(() => doneLoading(component)).then(() => {
+      const emojiItems = findEmojiItems(component);
+      expect(emojiItems.length).to.equal(1);
+      const placeholders = emojiItems.find(EmojiPlaceholder);
+      expect(placeholders.length).to.equal(1);
+      const props = placeholders.get(0).props;
+      expect(props.name, 'name').to.equals(mediaEmoji.name);
+      expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
     });
   });
 });

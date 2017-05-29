@@ -1,5 +1,6 @@
 /// <reference path="./types/chai.d.ts"/>
 import { Fragment, Mark, Node, NodeType, Slice } from '../';
+import { NodeSpec } from '../prosemirror';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {
   // Using a simple `instanceof` check is intentionally avoided here to make
@@ -18,11 +19,11 @@ export default (chai: any) => {
 
   // Node and Fragment
   Assertion.overwriteMethod('equal', (equalSuper: Function) => {
-    return function(right: any) {
+    return function (right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
-        this.assert(left.eq(right),
+        this.assert((left as any).eq(right),
           'expected #{exp} to equal #{act}',
           'expected #{exp} to not equal #{act}',
           left.toString(),
@@ -35,7 +36,7 @@ export default (chai: any) => {
 
   // Slice
   Assertion.overwriteMethod('equal', (equalSuper: Function) => {
-    return function(right: any) {
+    return function (right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (deep && isSlice(left) && isSlice(right)) {
@@ -60,7 +61,7 @@ export default (chai: any) => {
     };
   });
 
-  Assertion.addMethod('nodeType', function(nodeType: NodeType) {
+  Assertion.addMethod('nodeType', function (nodeType: NodeType) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 
@@ -70,7 +71,7 @@ export default (chai: any) => {
     return new Assertion(obj.type).to.be.an.instanceof(nodeType);
   });
 
-  Assertion.addMethod('textWithMarks', function(text: string, marks: Mark[] ) {
+  Assertion.addMethod('textWithMarks', function (text: string, marks: Mark[]) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 
@@ -87,5 +88,15 @@ export default (chai: any) => {
       return new Assertion(matched).not.to.be.true;
     }
     return new Assertion(matched).to.be.true;
+  });
+
+  Assertion.addMethod('nodeSpec', function(nodeSpec: NodeSpec) {
+    const obj: Node = util.flag(this, 'object');
+    const negate: boolean = util.flag(this, 'negate');
+
+    if (negate) {
+      return new Assertion(obj.type.spec).not.to.deep.equal(nodeSpec);
+    }
+    return new Assertion(obj.type.spec).to.deep.equal(nodeSpec);
   });
 };

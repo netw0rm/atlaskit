@@ -8,6 +8,7 @@ import mentionData from './_mention-data';
 const search = new Search('id');
 search.addIndex('name');
 search.addIndex('mentionName');
+search.addIndex('nickname');
 
 search.addDocuments(mentionData.mentions);
 

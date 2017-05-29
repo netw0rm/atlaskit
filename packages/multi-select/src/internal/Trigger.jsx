@@ -1,8 +1,9 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import classNames from 'classnames';
 
-import { locals as styles } from '../styles.less';
+import styles from '../styles.less';
 
 export default class Trigger extends PureComponent {
   static propTypes = {
@@ -27,7 +28,6 @@ export default class Trigger extends PureComponent {
           [styles.disabled]: this.props.isDisabled,
         }])}
         onClick={this.props.onClick}
-        tabIndex={this.props.isDisabled ? -1 : 0}
       >
         <div className={styles.content}>
           {this.props.children}

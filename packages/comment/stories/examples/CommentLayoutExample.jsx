@@ -1,9 +1,7 @@
 import React from 'react';
 import Comment, { CommentAuthor, CommentLayout } from '@atlaskit/comment';
 import Avatar from '@atlaskit/avatar';
-import EditorBB from '@atlaskit/editor-bitbucket';
-
-const Editor = EditorBB.default;
+import Editor from '@atlaskit/editor-bitbucket';
 
 const avatar = (<Avatar
   src="https://design.atlassian.com/images/avatars/project-128.png"

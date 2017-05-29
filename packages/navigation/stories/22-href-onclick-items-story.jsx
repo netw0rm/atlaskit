@@ -3,31 +3,31 @@ import React from 'react';
 import Lorem from 'react-lorem-component';
 import { DashboardIcon } from '@atlaskit/icon';
 import { name } from '../package.json';
-import Page from './components/HtmlPage';
+import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
-import { AkContainerItem } from '../src/index';
+import { AkNavigationItem } from '../src/index';
 
 storiesOf(name, module)
   .add('with hrefs and onClick handlers', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
-        <AkContainerItem
+        <AkNavigationItem
           href="//atlassian.com"
           icon={<DashboardIcon label="Dashboard" />}
           text="Just a href"
         />
-        <AkContainerItem
+        <AkNavigationItem
           onClick={action('onClick')}
           icon={<DashboardIcon label="Dashboard" />}
           text="Just an onClick"
         />
-        <AkContainerItem
+        <AkNavigationItem
           onClick={action('onClick')}
           href="//atlassian.com"
           icon={<DashboardIcon label="Dashboard" />}
           text="href and an onClick"
         />
-        <AkContainerItem
+        <AkNavigationItem
           icon={<DashboardIcon label="Dashboard" />}
           text="No href and no onClick"
         />
@@ -35,5 +35,5 @@ storiesOf(name, module)
       <div>
         <Lorem count="30" />
       </div>
-    </Page>
+    </HtmlPage>
   ));

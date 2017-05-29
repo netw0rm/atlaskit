@@ -1,15 +1,19 @@
+/* tslint:disable:variable-name */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Component, DragEvent as ReactDragEvent, DragEventHandler, WheelEvent} from 'react';
 import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
+import LazyLoad from 'react-lazy-load';
 
 export interface FilmstripNavigatorProps {
+  children?: any;
+  width?: number;
+
   onDrop?: (event: DragEvent) => void;
   onDragEnter?: (event: DragEvent) => void;
   onDragOver?: (event: DragEvent) => void;
-  width?: number;
 }
 
 function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLDivElement> {
@@ -77,40 +81,75 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   render() {
-    const props = this.props;
-    const defaultWidth = 'auto';
-    const width = `${this.props.width || defaultWidth}px`;
-    const transform = `translateX(${-this.state.position}px)`;
-    const leftArrow = <ShadowLeft>
-                        <ArrowLeftWrapper className="arrow" onClick={this.navigate('left')}>
-                          <ArrowLeft label="left"/>
-                        </ArrowLeftWrapper>
-                      </ShadowLeft>;
-    const rightArrow = <ShadowRight>
-                         <ArrowRightWrapper className="arrow" onClick={this.navigate('right')}>
-                           <ArrowRight label="right"/>
-                         </ArrowRightWrapper>
-                       </ShadowRight>;
-    const transitionProperty = this.state.showTransition ? 'transform' : 'none';
-    const transitionDuration = `${this.state.transitionDuration}s`;
-    return <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
-             {this.state.showLeft ? leftArrow : undefined}
-             <FilmStripListWrapper>
-               <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
-                 {props.children}
-               </FilmStripList>
-             </FilmStripListWrapper>
-             {this.state.showRight ? rightArrow : undefined}
-           </FilmStripViewWrapper>;
+    const {
+      width: propWidth,
+      children,
+      onDrop,
+      onDragEnter,
+      onDragOver
+    } = this.props;
+
+    const {
+      position,
+      showTransition,
+      transitionDuration: stateTransistionDuration,
+      showLeft,
+      showRight
+    } = this.state;
+
+    const width = propWidth ? `${propWidth}px`: undefined;
+
+    const transform = `translateX(${-position}px)`;
+    const leftArrow = this.arrowFor('left');
+    const rightArrow = this.arrowFor('right');
+
+    const transitionProperty = showTransition ? 'transform' : 'none';
+    const transitionDuration = `${stateTransistionDuration}s`;
+
+    const items = children ? children.map((item, k) => (
+      <li key={k}>
+        {item}
+      </li>
+    )) : null;
+
+    return <LazyLoad height={100} >
+             <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}>
+               {showLeft ? leftArrow : undefined}
+               <FilmStripListWrapper>
+                 <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
+                   {items}
+                 </FilmStripList>
+               </FilmStripListWrapper>
+               {showRight ? rightArrow : undefined}
+             </FilmStripViewWrapper>
+           </LazyLoad>;
   }
 
   componentDidUpdate() {
+    if (!this.listElement) { return; }
+
     const newListWidth = this.listElement.getBoundingClientRect().width;
 
     // Update dimensions if the list has grown
     if (newListWidth !== this.listWidth) {
       this.getDimensions();
     }
+  }
+
+  private arrowFor(direction: NavigationDirection): JSX.Element {
+    if (direction === 'left') {
+      return <ShadowLeft>
+               <ArrowLeftWrapper className="arrow" onClick={this.navigate('left')}>
+                 <ArrowLeft label="left"/>
+               </ArrowLeftWrapper>
+             </ShadowLeft>;
+    }
+
+    return <ShadowRight>
+             <ArrowRightWrapper className="arrow" onClick={this.navigate('right')}>
+               <ArrowRight label="right"/>
+             </ArrowRightWrapper>
+           </ShadowRight>;
   }
 
   private onWindowResize = (event) => {
@@ -147,7 +186,9 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       this.cardWidth = 0;
     }
 
-    !this.unmounted && this.setNewPosition(0, this.state.showTransition);
+    if (!this.unmounted) {
+      this.setNewPosition(0, this.state.showTransition);
+    }
   }
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {

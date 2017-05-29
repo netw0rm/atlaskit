@@ -18,6 +18,14 @@ const renderSelector = (onSelection: OnEmojiEvent = () => {}) => {
 };
 
 describe('@atlaskit/reactions/selector', () => {
+  let clock;
+  beforeEach(function () {
+    clock = sinon.useFakeTimers();
+  });
+
+  afterEach(function () {
+    clock.restore();
+  });
 
   it('should render default reactions', () => {
     const selector = shallow(renderSelector());
@@ -26,7 +34,7 @@ describe('@atlaskit/reactions/selector', () => {
     expect(emojis.length).to.equal(defaultReactions.length);
 
     emojis.forEach(emoji => {
-      expect(isDefaultReaction(emoji.props().emojiId.id)).to.equal(true);
+      expect(isDefaultReaction(emoji.props().emojiId)).to.equal(true);
     });
   });
 
@@ -34,6 +42,8 @@ describe('@atlaskit/reactions/selector', () => {
     const onSelection = sinon.spy();
     const selector = mount(renderSelector(onSelection));
     selector.find(EmojiButton).first().simulate('mouseup', { button: 0 });
+
+    clock.tick(500);
     expect(onSelection.called).to.equal(true);
   });
 

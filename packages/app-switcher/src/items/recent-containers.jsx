@@ -6,9 +6,11 @@ export default function (i18n, isAnonymousUser, recentContainers) {
     return null;
   }
 
+  const limitedRecentContainers = recentContainers.slice(0, 6);
+
   return {
     heading: i18n.recent,
-    items: recentContainers.map(container => ({
+    items: limitedRecentContainers.map(container => ({
       content: (
         <ItemWithIcon>
           <RecentContainerName>{container.name}</RecentContainerName>

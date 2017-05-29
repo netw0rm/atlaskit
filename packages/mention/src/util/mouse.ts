@@ -3,7 +3,7 @@ import { MouseEvent } from '@types/react';
 export interface Position {
   x: number;
   y: number;
-};
+}
 
 export function mouseLocation(event: MouseEvent<any>): Position {
   return {

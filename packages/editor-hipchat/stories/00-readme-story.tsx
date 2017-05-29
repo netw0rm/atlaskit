@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import Readme, { Code, Heading } from '@atlaskit/util-readme';
 import * as React from 'react';
 
-import * as SchemaRaw from '!raw!../src/schema.ts';
+import * as SchemaRaw from '!raw!../src/schema/schema.ts';
 import * as exampleMediaServicesFileJson from '!raw!./examples/mediaservices-file.json';
 import * as exampleMessageJson from '!raw!./examples/message.json';
 import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
@@ -57,23 +57,29 @@ storiesOf(name, module)
               <td>A callback for when the document is changed.</td>
             </tr>
             <tr>
-              <td><code>mentionResourceProvider</code></td>
+              <td><code>mentionProvider</code></td>
+              <td><code>Promise&lt;MentionProvider&gt;</code></td>
+              <td>--</td>
+              <td>A resource provider for mentions. If provided, mentions is enabled.<br />See @atlaskit/mention for details.</td>
+            </tr>
+            <tr>
+              <td><code>presenceProvider</code></td>
               <td><code>any</code></td>
               <td>--</td>
-              <td>A resource provider for mentions. If provided, mentions is enabled.<br />See ak-mention for details.</td>
+              <td>A resource provider for presence. If provided, presence is enabled in mention picker.<br />See @atlaskit/mention for details.</td>
             </tr>
             <tr>
               <td><code>reverseMentionPicker</code></td>
               <td><code>boolean</code></td>
               <td><code>true</code></td>
-              <td>If true, mention picker position is reversed. See ak-mention for details.</td>
+              <td>If true, mention picker position is reversed. See @atlaskit/mention for details.</td>
             </tr>
           </tbody>
         </table>
         <Heading type="2">Document</Heading>
-        <p>The editor produces a "document" that is a precise description of the content. This is
-        enforced internally using a combination of a <a href="https://prosemirror.net/guide/schema.html">ProseMirror schema</a>
-         and a filter pass using encoding to strip unwanted content (e.g. a mention query).</p>
+        <p>
+          The editor produces a "document" that is a precise description of the content. This is enforced internally using a combination of a <a href="https://prosemirror.net/guide/schema.html">ProseMirror schema</a> and a filter pass using encoding to strip unwanted content (e.g. a mention query).
+        </p>
         <Heading type="3">JSON Schema</Heading>
         <p>This schema describes the exposed document structure and is subject to change.</p>
         <Code language="js">{documentJsonSchema}</Code>
@@ -128,4 +134,4 @@ function SchemaDoc(props: { schemaSourceFile: string }) {
   return schema
     ? <Code language="js">{schema}</Code>
     : <p>Unable to show the schema.</p>;
-};
+}

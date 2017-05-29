@@ -1,10 +1,14 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { Button, Container } from './styled';
 
 export default class Toggle extends PureComponent {
   static propTypes = {
+    /** the label for the toggle */
     label: PropTypes.string,
+    /** callback to run when toggled */
     onToggle: PropTypes.func,
+    /** control boolean to pass in toggle state */
     isActive: PropTypes.bool,
   }
 

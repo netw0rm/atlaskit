@@ -3,18 +3,31 @@ import React from 'react';
 import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
-import { AkContainerItem, AkContainerItemGroup, AkContainerTitle } from '../src/index';
-import Page from './components/HtmlPage';
+import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle } from '../src/index';
+import NavigationWithDropdown from './components/NavigationWithDropdown';
+import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleusLogo from './nucleus.png';
 import { name } from '../package.json';
 import RandomBadge from './components/RandomBadge';
 
-const manyContainerItems = () => {
+const dropdownItemsSample = [
+  {
+    heading: 'Cities',
+    items: [
+      { content: 'Sydney', value: 1 },
+      { content: 'Canberra', value: 2 },
+      { content: 'Melbourne', value: 3 },
+      { content: 'Perth', value: 4 },
+    ],
+  },
+];
+
+const manyNavigationItems = () => {
   const items = [];
   for (let i = 0; i < 40; i++) {
     items.push(
-      <AkContainerItem
+      <AkNavigationItem
         href={`#${i}`}
         key={i}
         text="Test page"
@@ -26,87 +39,131 @@ const manyContainerItems = () => {
 
 storiesOf(name, module)
   .add('with a few container items', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
-        <AkContainerItem
+        <AkNavigationItem
           text="Test page"
           href="#1"
         />
-        <AkContainerItem
+        <AkNavigationItem
           icon={<img src={nucleusLogo} alt="icon" />}
           text="Item with an icon"
           href="#2"
         />
-        <AkContainerItem
+        <AkNavigationItem
           icon={<img src={nucleusLogo} alt="icon" />}
           text="Item with two lines"
           subText="Another line of text, which could possibly be long"
           href="#3"
         />
-        <AkContainerItem
+        <AkNavigationItem
           icon={<img src={nucleusLogo} alt="icon" />}
           text="A really, really, quite long, actually super long container name"
           href="#4"
         />
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with many container items', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
-        <AkContainerItem
+        <AkNavigationItem
           icon={<img alt="icon" src={nucleusLogo} />}
           isSelected
           text="This one is selected"
         />
-        {manyContainerItems()}
+        {manyNavigationItems()}
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
+  ))
+  .add('with a dropdown trigger item', () => (
+    <HtmlPage>
+      <NavigationWithDropdown
+        dropdownProps={{ items: dropdownItemsSample }}
+      >
+        <AkNavigationItem
+          text="Test page 1"
+          icon={<DashboardIcon label="Dashboard" />}
+        />
+        <AkNavigationItem
+          text="Test page 3"
+          icon={<DashboardIcon label="Dashboard" />}
+        />
+        <AkNavigationItem
+          text="Test page 4"
+          icon={<DashboardIcon label="Dashboard" />}
+        />
+      </NavigationWithDropdown>
+    </HtmlPage>
+  ))
+  .add('with a dropdown trigger item + after text', () => (
+    <HtmlPage>
+      <NavigationWithDropdown
+        dropdownProps={{ items: dropdownItemsSample }}
+        navigationItemProps={{ textAfter: 'text', text: 'Menu' }}
+      >
+        <AkNavigationItem
+          text="Test page 1"
+          icon={<DashboardIcon label="Dashboard" />}
+          textAfter="text"
+        />
+        <AkNavigationItem
+          text="Test page 3"
+          icon={<DashboardIcon label="Dashboard" />}
+          textAfter="text"
+        />
+        <AkNavigationItem
+          text="Test page 4"
+          icon={<DashboardIcon label="Dashboard" />}
+          textAfter="text"
+        />
+      </NavigationWithDropdown>
+    </HtmlPage>
   ))
   .add('with a selected item', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
-        <AkContainerItem
+        <AkNavigationItem
           icon={<img alt="icon" src={nucleusLogo} />}
           isSelected
           text="Nucleus"
         />
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .addStencilStory('with a stencil in the open state', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation />
-    </Page>
+    </HtmlPage>
   ), { image: navigationStencil })
   .add('with global appearance', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerAppearance="global"
         containerHeaderComponent={AtlassianLogo}
       >
-        <AkContainerItem
+        <AkNavigationItem
           appearance="global"
           icon={<DashboardIcon label="Dashboard" />}
           isSelected
           text="Selected"
           textAfter={<RandomBadge theme="dark" />}
         />
-        <AkContainerItem
+        <AkNavigationItem
           appearance="global"
           icon={<SettingsIcon label="Settings" />}
           text="Item B"
           textAfter={<RandomBadge theme="dark" />}
         />
-        <AkContainerItem
+        <AkNavigationItem
           appearance="global"
           icon={<TrayIcon label="Tray" />}
           text="Item C"
           isSelected
           textAfter={<RandomBadge theme="dark" />}
         />
-        <AkContainerItemGroup hasSeparator appearance="global">
-          <AkContainerItem
+        <AkNavigationItemGroup hasSeparator appearance="global">
+          <AkNavigationItem
             appearance="global"
             isSelected
             icon={<CalendarIcon label="Calendar" />}
@@ -114,12 +171,12 @@ storiesOf(name, module)
             text="A very long first line of text"
             textAfter={<RandomBadge />}
           />
-        </AkContainerItemGroup>
+        </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with settings appearance', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerHeaderComponent={() => (
           <AkContainerTitle
@@ -135,134 +192,134 @@ storiesOf(name, module)
         containerAppearance="settings"
         globalAppearance="settings"
       >
-        <AkContainerItemGroup>
-          <AkContainerItem
+        <AkNavigationItemGroup>
+          <AkNavigationItem
             appearance="settings"
             icon={<DashboardIcon label="Dashboard" />}
             isSelected
             text="Item A"
             textAfter={<RandomBadge theme="dark" />}
           />
-          <AkContainerItem
+          <AkNavigationItem
             appearance="settings"
             icon={<SettingsIcon label="Settings" />}
             text="Item B"
             textAfter={<RandomBadge theme="dark" />}
           />
-          <AkContainerItem
+          <AkNavigationItem
             appearance="settings"
             icon={<TrayIcon label="Tray" />}
             text="Item C"
           />
-          <AkContainerItemGroup hasSeparator appearance="settings" title="Alpha">
-            <AkContainerItem
+          <AkNavigationItemGroup hasSeparator appearance="settings" title="Alpha">
+            <AkNavigationItem
               appearance="settings"
               text="Item D"
               textAfter={<RandomBadge theme="dark" />}
             />
-            <AkContainerItem
+            <AkNavigationItem
               appearance="settings"
               text="Item E"
               isSelected
               textAfter={<RandomBadge />}
             />
-          </AkContainerItemGroup>
-        </AkContainerItemGroup>
-        <AkContainerItemGroup appearance="settings" title="Beta">
-          <AkContainerItem
+          </AkNavigationItemGroup>
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup appearance="settings" title="Beta">
+          <AkNavigationItem
             appearance="settings"
             icon={<CalendarIcon label="Calendar" />}
             text="Item X"
           />
-          <AkContainerItem
+          <AkNavigationItem
             icon={<img src={nucleusLogo} alt="icon" />}
             text="Item Y"
             href="#2"
           />
-        </AkContainerItemGroup>
+        </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with multiple groups', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerAppearance="global"
         containerHeaderComponent={AtlassianLogo}
       >
-        <AkContainerItemGroup>
-          <AkContainerItem
+        <AkNavigationItemGroup>
+          <AkNavigationItem
             appearance="global"
             icon={<DashboardIcon label="Dashboard" />}
             isSelected
             text="Selected"
             textAfter={<RandomBadge theme="dark" />}
           />
-        </AkContainerItemGroup>
-        <AkContainerItemGroup>
-          <AkContainerItem
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup>
+          <AkNavigationItem
             appearance="global"
             icon={<SettingsIcon label="Settings" />}
             text="Item B"
             textAfter={<RandomBadge theme="dark" />}
           />
-        </AkContainerItemGroup>
-        <AkContainerItemGroup title="one section">
-          <AkContainerItem
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup title="one section">
+          <AkNavigationItem
             appearance="global"
             icon={<TrayIcon label="Tray" />}
             text="Item C"
             textAfter={<RandomBadge theme="dark" />}
           />
-        </AkContainerItemGroup>
-        <AkContainerItemGroup hasSeparator appearance="global">
-          <AkContainerItem
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup hasSeparator appearance="global">
+          <AkNavigationItem
             appearance="global"
             icon={<CalendarIcon label="Calendar" />}
             subText="And a very long second line of text"
             text="A very long first line of text"
             textAfter={<RandomBadge />}
           />
-        </AkContainerItemGroup>
+        </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('that is not resizeable', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation isResizeable={false} />
-    </Page>
+    </HtmlPage>
   ))
   .add('with isCollapsible=false', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation isCollapsible={false} />
-    </Page>
+    </HtmlPage>
   ))
   .add('that starts closed', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation isOpen={false}>
-        <AkContainerItem
+        <AkNavigationItem
           icon={<img alt="icon" src={nucleusLogo} />}
           isSelected
           text="This one is selected"
         />
-        <AkContainerItem
+        <AkNavigationItem
           icon={<img alt="icon" src={nucleusLogo} />}
           text="This one is not selected"
         />
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ))
   .add('with controllable drawers', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         onCreateDrawerClose={action('create-close')}
         onCreateDrawerOpen={action('create-open')}
         onSearchDrawerClose={action('search-close')}
         onSearchDrawerOpen={action('search-open')}
       />
-    </Page>
+    </HtmlPage>
   ))
   .add('with a long ContainerTitle', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerHeaderComponent={() => (
           <AkContainerTitle
@@ -275,10 +332,10 @@ storiesOf(name, module)
           />
         )}
       />
-    </Page>
+    </HtmlPage>
   ))
   .add('with no ContainerTitle subText', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation
         containerHeaderComponent={() => (
           <AkContainerTitle
@@ -290,5 +347,5 @@ storiesOf(name, module)
           />
         )}
       />
-    </Page>
+    </HtmlPage>
   ));

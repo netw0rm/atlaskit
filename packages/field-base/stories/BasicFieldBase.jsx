@@ -1,5 +1,5 @@
 import React from 'react';
-import AkFieldBase, { Label } from '../src';
+import FieldBase, { Label } from '../src';
 
 const containerStyles = {
   display: 'inline-flex',
@@ -17,7 +17,7 @@ export default props => (
       appearance={props.labelAppearance}
       isFirstChild={props.isFirstChild}
     />
-    <AkFieldBase
+    <FieldBase
       invalidMessage={props.invalidMessage}
       isCompact={props.isCompact}
       defaultIsDialogOpen={props.defaultIsDialogOpen}
@@ -31,6 +31,6 @@ export default props => (
       isLoading={props.isLoading}
     >
       {props.children}
-    </AkFieldBase>
+    </FieldBase>
   </div>
 );

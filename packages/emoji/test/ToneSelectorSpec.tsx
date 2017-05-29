@@ -5,27 +5,23 @@ import { expect } from 'chai';
 
 import ToneSelector from '../src/components/common/ToneSelector';
 import EmojiButton from '../src/components/common/EmojiButton';
-import { EmojiDescription, EmojiRepresentation } from '../src/types';
-import { imageEmoji } from './TestData';
+import { EmojiDescription, EmojiDescriptionWithVariations } from '../src/types';
+import { imageEmoji, generateSkinVariation } from './TestData';
 
-function skinVariation(id): EmojiRepresentation {
-  return {
-    imagePath: `https://path-to-skin-variation-tone${id}.png`,
-    width: 24,
-    height: 24,
-  };
-}
-
-const handEmoji: EmojiDescription = {
+const baseHandEmoji: EmojiDescription = {
   ...imageEmoji,
   id: 'raised_back_of_hand',
-  shortcut: ':raised_back_of_hand:',
+  shortName: ':raised_back_of_hand:',
+};
+
+const handEmoji: EmojiDescriptionWithVariations = {
+  ...baseHandEmoji,
   skinVariations: [
-    skinVariation(1),
-    skinVariation(2),
-    skinVariation(3),
-    skinVariation(4),
-    skinVariation(5),
+    generateSkinVariation(baseHandEmoji, 1),
+    generateSkinVariation(baseHandEmoji, 2),
+    generateSkinVariation(baseHandEmoji, 3),
+    generateSkinVariation(baseHandEmoji, 4),
+    generateSkinVariation(baseHandEmoji, 5),
   ],
 };
 

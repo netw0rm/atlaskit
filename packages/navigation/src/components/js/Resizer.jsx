@@ -1,9 +1,11 @@
-import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/Resizer.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import ResizerInner from '../styled/ResizerInner';
 import ResizerButton from './ResizerButton';
 import {
-  navigationOpenWidth,
- } from '../../shared-variables';
+  globalOpenWidth,
+  standardOpenWidth,
+} from '../../shared-variables';
 
 export default class Resizer extends PureComponent {
   static propTypes = {
@@ -18,7 +20,7 @@ export default class Resizer extends PureComponent {
     onResizeEnd: () => {},
     onResizeButton: () => {},
     onResize: () => {},
-    navigationWidth: navigationOpenWidth,
+    navigationWidth: standardOpenWidth,
   }
   constructor(props) {
     super(props);
@@ -63,31 +65,31 @@ export default class Resizer extends PureComponent {
     });
   }
 
-  isPointingRight = () => this.props.navigationWidth < navigationOpenWidth
+  isPointingRight = () => this.props.navigationWidth < standardOpenWidth
 
   resizeButtonHandler = () => {
-    const isExpanded = (this.props.navigationWidth > navigationOpenWidth);
+    const isExpanded = (this.props.navigationWidth > standardOpenWidth);
     const isPointingRight = this.isPointingRight();
 
     if (isPointingRight || isExpanded) {
       this.props.onResizeButton({
         isOpen: true,
-        width: navigationOpenWidth,
+        width: standardOpenWidth,
       });
     } else {
       this.props.onResizeButton({
         isOpen: false,
+        width: globalOpenWidth,
       });
     }
   }
 
   render() {
     return (
-      <div
-        ref={(resizerNode) => {
+      <ResizerInner
+        innerRef={(resizerNode) => {
           this.resizerNode = resizerNode;
         }}
-        className={styles.resizer}
         onMouseDown={this.mouseDownHandler}
         onMouseEnter={this.mouseEnterHandler}
         onMouseLeave={this.mouseLeaveHandler}
@@ -97,7 +99,7 @@ export default class Resizer extends PureComponent {
           isPointingRight={this.isPointingRight()}
           onClick={this.resizeButtonHandler}
         />
-      </div>
+      </ResizerInner>
     );
   }
 }

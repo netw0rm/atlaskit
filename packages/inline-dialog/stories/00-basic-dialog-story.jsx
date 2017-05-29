@@ -49,6 +49,18 @@ storiesOf(name, module)
         </InlineDialog>
       </div>);
   }, { overrides: codeExampleOverrrides })
+  .addCodeExampleStory('Dialog with custom flipping enabled', () => (
+    <div style={centeredContainerStyles}>
+      <InlineDialog
+        content="I will flip to the top instead of the right!"
+        position="left middle"
+        isOpen
+        shouldFlip={['top']}
+      >
+        <div style={targetStyles}>I am the target</div>
+      </InlineDialog>
+    </div>
+  ), { overrides: codeExampleOverrrides })
   .addCodeExampleStory('Dialog with trigger that takes full width', () => (
     <div
       style={{

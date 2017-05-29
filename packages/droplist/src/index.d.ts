@@ -1,9 +1,7 @@
-import DropdownList from './droplist';
-import Item from './item';
+import Item, { SecondaryText } from './item';
+import Droplist from './droplist';
 import Group from './group';
 
-export {
-  Item,
-  Group
-}
-export default DropdownList;
+export default Droplist;
+
+export { Item, Group, SecondaryText };

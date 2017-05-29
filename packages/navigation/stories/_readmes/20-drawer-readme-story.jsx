@@ -8,7 +8,7 @@ import { name, description } from '../../package.json';
 
 const drawerComponentPropDescriptions = {
   backIcon: 'The icon to use as the back icon for this drawer',
-  backIconOffset: 'The Y offset in pixels to use for the back icon. This is necessary for ContainerItems that can trigger Drawers.',
+  backIconOffset: 'The Y offset in pixels to use for the back icon. This is necessary for NavigationItems that can trigger Drawers.',
   children: 'The drawer contents',
   header: 'The header for this Drawer – often the ContainerTitle for a given Container',
   isOpen: 'Whether the Drawer is currently open',
@@ -30,7 +30,7 @@ storiesOf(name, module)
         to create content and containers.
 
         Usually the Navigation contaisn two main Drawers – search and create.
-        Other Drawers can be added that are triggered from ContainerItems – you
+        Other Drawers can be added that are triggered from NavigationItems – you
         may want to do this instead of NestedNavigation in the collapsed state.
 
         You can specify custom drawers with the CustomDrawer component - see the

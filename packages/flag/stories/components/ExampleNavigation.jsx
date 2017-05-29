@@ -1,10 +1,10 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Navigation, {
   AkContainerHeader,
   AkContainerItem,
 } from '@atlaskit/navigation';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

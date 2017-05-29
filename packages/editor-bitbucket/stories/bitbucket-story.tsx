@@ -3,6 +3,9 @@ import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/dist/
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { EmojiProvider } from '@atlaskit/emoji';
+
 import { default as Editor, version as editorVersion } from '../src';
 import { MockMentionSource } from './_mock-mentionsource';
 import exampleHTML from './exampleHTML';
@@ -12,6 +15,7 @@ import { name } from '../package.json';
 const CANCEL_ACTION = () => action('Cancel')();
 const CHANGE_ACTION = () => action('Change')();
 const SAVE_ACTION = () => action('Save')();
+const NOOP = () => {};
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
@@ -42,6 +46,8 @@ const imageUploadHandler = (e: any, fn: any) => {
 };
 
 const mentionSource = new MockMentionSource();
+const emojiProvider = emojiData.emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
+const analyticsHandler = (actionName, props) => action(actionName)(props);
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(editorVersion))
@@ -68,9 +74,17 @@ storiesOf(name, module)
       mentionSource={mentionSource}
     />
   )
+  .add('With emoji', () =>
+    <Editor
+      onCancel={CANCEL_ACTION}
+      onChange={CHANGE_ACTION}
+      onSave={SAVE_ACTION}
+      emojiProvider={emojiProvider}
+    />
+  )
   .add('With imageUploadHandler', () =>
     <Editor
-      isExpandedByDefault
+      isExpandedByDefault={true}
       imageUploadHandler={imageUploadHandler}
       onCancel={CANCEL_ACTION}
       onChange={CHANGE_ACTION}
@@ -78,31 +92,50 @@ storiesOf(name, module)
     />
   )
   .add('With attaching/detaching', () => {
-    let ref: Node;
-    let editor;
-    return (
-      <div>
-        <div id="editor">
-          <div ref={(elem) => ref = elem as Node}>
-            <Editor
-              ref={(e) => editor = e}
-              onCancel={() => (ref.parentNode as Node).removeChild(ref)}
-              onChange={CHANGE_ACTION}
-              onSave={SAVE_ACTION}
-              isExpandedByDefault
-            />
+    class Story extends React.Component<{}, {}> {
+      private ref: Node;
+      private editor;
+
+      render () {
+        return (
+          <div>
+            <div id="editor">
+              <div ref={this.handleDivRef}>
+                <Editor
+                  ref={this.handleEditorRef}
+                  onCancel={this.handleEditorCancel}
+                  onChange={CHANGE_ACTION}
+                  onSave={SAVE_ACTION}
+                  isExpandedByDefault={true}
+                />
+              </div>
+            </div>
+            <button onClick={this.handleButtonClick}>Attach</button>
           </div>
-        </div>
-        <button
-          onClick={() => {
-            (document.getElementById('editor') as Node).appendChild(ref);
-            editor && editor.clear();
-          }}
-        >
-          Attach
-        </button>
-      </div>
-    );
+        );
+      }
+
+      private handleDivRef = (elem) => {
+        this.ref = elem as Node;
+      }
+
+      private handleEditorRef = (elem) => {
+        this.editor = elem;
+      }
+
+      private handleEditorCancel = () => {
+        (this.ref.parentNode as Node).removeChild(this.ref);
+      }
+
+      private handleButtonClick = () => {
+        (document.getElementById('editor') as Node).appendChild(this.ref);
+        if (this.editor) {
+          this.editor.clear();
+        }
+      }
+    }
+
+    return <Story />;
   })
   .add('Analytics events', () => {
     return (
@@ -110,10 +143,10 @@ storiesOf(name, module)
         <h5 style={{ marginBottom: 20 }}>Interact with the editor and observe analytics events in the Action Logger below</h5>
         <Editor
           placeholder="Click me to expand ..."
-          analyticsHandler={(actionName, props) => action(actionName)(props)}
-          onSave={() => {}}
-          onCancel={() => {}}
-          imageUploadHandler={() => {}}
+          analyticsHandler={analyticsHandler}
+          onSave={NOOP}
+          onCancel={NOOP}
+          imageUploadHandler={NOOP}
         />
       </div>
     );
@@ -136,6 +169,7 @@ storiesOf(name, module)
               onChange={this.handleChange}
               onSave={SAVE_ACTION}
               mentionSource={mentionSource}
+              emojiProvider={emojiProvider}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>Markdown</legend>
@@ -221,7 +255,8 @@ storiesOf(name, module)
             <div style={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'stretch', alignContent: 'stretch' }}>
               <Editor
                 ref={this.handleEditorRef}
-                isExpandedByDefault
+                isExpandedByDefault={true}
+                emojiProvider={emojiProvider}
               />
             </div>
           </div>
@@ -276,4 +311,40 @@ storiesOf(name, module)
 
     return <EditorWithFeedback />;
   })
-;
+  .add('All bitbucket features enabled', () => {
+    type Props = {};
+    type State = { markdown?: string };
+    class EditorWithAllFeatures extends PureComponent<Props, State> {
+      state: State = { markdown: '' };
+
+      handleChange = (editor: Editor) => {
+        this.setState( CHANGE_ACTION );
+        this.setState({ markdown: editor.value });
+      }
+
+      render() {
+        return (
+          <div ref="root">
+            <Editor
+              placeholder = "Test editor"
+              onCancel={CANCEL_ACTION}
+              onChange={this.handleChange}
+              onSave={SAVE_ACTION}
+              mentionSource={mentionSource}
+              emojiProvider={emojiProvider}
+              analyticsHandler = {analyticsHandler}
+              imageUploadHandler={imageUploadHandler}
+            />
+            <fieldset style={{ marginTop: 20 }}>
+              <legend>Markdown</legend>
+              <pre>{this.state.markdown}</pre>
+            </fieldset>
+          </div>
+        );
+      }
+    }
+
+    return (
+      <EditorWithAllFeatures />
+    );
+  });

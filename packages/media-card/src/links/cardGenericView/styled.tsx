@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akColorN300 } from '@atlaskit/util-shared-styles';
-import { size, ellipsis } from '../../styles';
+import { akColorN20, akColorN70, akColorN300 } from '@atlaskit/util-shared-styles';
+import { size, ellipsis, antialiased } from '../../styles';
 
 export const Title = styled.div`
   ${ellipsis('100%')}
@@ -12,9 +12,11 @@ export const Title = styled.div`
 
 export const Description = styled.div`
   user-select: text;
+  overflow: hidden;
 
   .ellipsed-text {
     font-size: 12px;
+    white-space: initial;
   }
 `;
 
@@ -43,3 +45,24 @@ export const Link = styled.div`
   }
 `;
 
+export const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  ${size()}
+
+  padding: 16px;
+  background: ${akColorN20};
+`;
+
+export const ErrorHeader = styled.div`
+  color: ${akColorN70};
+  ${antialiased}
+
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+
+  ${ellipsis('calc(100% - 24px)')}
+`;

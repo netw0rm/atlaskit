@@ -1,10 +1,17 @@
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import FieldText from './FieldText';
 
 export { FieldText };
 
-/* eslint-disable react/prop-types */
 export default class extends PureComponent {
+  static propTypes = {
+    /** The default value on component render. */
+    value: PropTypes.string,
+    /** Handler to be called after the value is updated. */
+    onChange: PropTypes.func,
+  }
+
   static defaultProps = {
     onChange: () => {},
   }

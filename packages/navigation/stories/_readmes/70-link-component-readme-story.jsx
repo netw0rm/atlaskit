@@ -33,7 +33,7 @@ storiesOf(name, module)
       <Props component={DefaultLinkComponent} descriptions={defaultLinkComponentPropDescriptions} />
       <Description>
         As an example, you could provide a custom linkComponent prop to
-        ContainerItem to make the links react-router compatible.
+        NavigationItem to make the links react-router compatible.
       </Description>
       <Code>{ReactRouterLinkComponentRaw}</Code>
       <Code>{ReactRouterLinkItemRaw}</Code>

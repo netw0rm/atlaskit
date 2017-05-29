@@ -1,16 +1,24 @@
-import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!./styles.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
 import IconForType from './internal/IconForType';
 import { types, defaultType } from './internal/types';
+import styles from './styles.less';
 
 export default class InlineMessage extends PureComponent {
   static propTypes = {
+    /** The elements to be displayed by the inline dialog. */
     children: PropTypes.node,
+    /** Text to display first, bolded for emphasis. */
     title: PropTypes.string,
+    /** Set the icon to be used before the title. Options are: connectivity,
+    confirmation, info, warning, and error. */
     type: PropTypes.oneOf(types),
+    /** Text to display second. */
     secondaryText: PropTypes.string,
+    /** Position prop to be passed to the inline dialog. Determines where around
+    the text the dialog is displayed. */
     position: InlineDialog.propTypes.position,
   }
 

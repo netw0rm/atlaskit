@@ -1,47 +1,25 @@
-import {
-  Mark,
-  Schema,
-  CodeMark as BaseCodeMark
-} from '../../prosemirror';
+import { MarkSpec } from '../../prosemirror';
 
-export class CodeMarkType extends BaseCodeMark {
-  constructor(name: string, rank: number, schema: Schema) {
-    if (name !== 'code') {
-      throw new Error('CodeMarkType must be named "code".');
-    }
-    super(name, rank, schema);
-  }
-
-  get isCode() {
-    return true;
-  }
-
-  get matchDOMTag() {
-    return {
-      code: null,
-      tt: null
-    };
-  }
-
-  get matchDOMStyle() {
-    return {
-      'font-family': (value: string) => value === 'monospace' ? null : false,
-      'white-space': (value: string) => value === 'pre' ? null : false
-    };
-  }
-
+export const code: MarkSpec = {
+  excludes: 'em strike strong underline emojiQuery mentionQuery textColor',
+  inclusive: true,
+  parseDOM: [
+    { tag: 'code', preserveWhitespace: true },
+    { tag: 'tt', preserveWhitespace: true },
+    {
+      style: 'font-family',
+      preserveWhitespace: true,
+      getAttrs: (value: string) => (value.toLowerCase().indexOf('monospace') > -1) && null,
+    },
+    { style: 'white-space',
+      preserveWhitespace: true,
+      getAttrs: value => value === 'pre' && null
+    },
+  ],
   toDOM(): [string, any] {
     return ['span', {
       style: 'font-family: monospace; white-space: pre-wrap;',
       class: 'code'
     }];
   }
-}
-
-export interface CodeMark extends Mark {
-  type: CodeMarkType;
-}
-
-export function isCodeMark(mark: Mark): mark is CodeMark {
-  return mark.type instanceof CodeMarkType;
-}
+};

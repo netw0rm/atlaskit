@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { mount } from 'enzyme';
-import { FileCardViewSmall, FileCardViewSmallProps } from '../../src';
+import { shallow, mount } from 'enzyme';
+import { FileCardViewSmall, FileCardViewSmallProps } from '../../src/files';
 import { FileIcon, ErrorIcon } from '../../src/utils/index';
 
 describe('FileCardViewSmall', () => {
@@ -21,20 +21,19 @@ describe('FileCardViewSmall', () => {
         mediaType={'image'}
         mediaSize={1024}
         dataURI={'some-data-uri'}
-      />);
+      />) as any;
 
     expect(cardView.find('.media-card').first().props().style.backgroundImage).to.contain('some-data-uri');
     expect(cardView.find('.title').first().text()).to.equal('some-name');
     expect(cardView.find('.size').first().text()).to.equal('1 KB');
   });
 
-  it('should display file icon when file loaded', () => {
+  it('should display file icon when file loaded and dataURI is undefined', () => {
     const cardView = mount<FileCardViewSmallProps, {}>(
       <FileCardViewSmall
         mediaName={'some-audio'}
         mediaType={'audio'}
         mediaSize={1024}
-        dataURI={'some-data-uri'}
       />);
 
     expect(cardView.find(FileIcon).length).to.equal(1);
@@ -76,5 +75,19 @@ describe('FileCardViewSmall', () => {
     expect(cardView.find(ErrorIcon).length).to.equal(1);
     expect(cardView.find('.error').length).to.equal(1);
     expect(cardView.find('.retry').length).to.equal(0);
+  });
+
+  it('should pass onClick handlers through to root component', () => {
+    const handler = () => {};
+    const card = shallow(<FileCardViewSmall onClick={handler} />);
+
+    expect(card.props().onClick).to.deep.equal(handler);
+  });
+
+  it('should pass onMouseEnter handlers through to root component', () => {
+    const handler = () => {};
+    const card = shallow(<FileCardViewSmall onMouseEnter={handler} />);
+
+    expect(card.props().onMouseEnter).to.deep.equal(handler);
   });
 });

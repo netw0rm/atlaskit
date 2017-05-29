@@ -5,12 +5,14 @@ import * as classNames from 'classnames';
 import * as styles from './styles';
 import AkButton from '@atlaskit/button';
 import Emoji from '../../components/common/Emoji';
+import EmojiPlaceholder from '../../components/common/EmojiPlaceholder';
 import ToneSelector from './ToneSelector';
-import { EmojiDescription, OnToneSelected } from '../../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
+import { isEmojiLoaded } from '../../type-helpers';
 
 export interface Props {
   emoji?: EmojiDescription;
-  toneEmoji?: EmojiDescription;
+  toneEmoji?: EmojiDescriptionWithVariations;
   selectedTone?: number;
   onToneSelected?: OnToneSelected;
 }
@@ -66,10 +68,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
 
     let previewEmoji = toneEmoji;
     if (selectedTone && previewEmoji.skinVariations) {
-      previewEmoji = {
-        ...previewEmoji,
-        representation: previewEmoji.skinVariations[(selectedTone || 1) - 1],
-      };
+      previewEmoji = previewEmoji.skinVariations[(selectedTone || 1) - 1];
     }
 
     return (
@@ -102,12 +101,27 @@ export default class EmojiPreview extends PureComponent<Props, State> {
       [styles.previewSingleLine]: !emoji.name,
     });
 
+    let emojiComponent;
+
+    if (isEmojiLoaded(emoji)) {
+      emojiComponent = (
+        <Emoji emoji={emoji} />
+      );
+    } else {
+      const { shortName, name } = emoji;
+      emojiComponent = (
+        <EmojiPlaceholder shortName={shortName} name={name} size={32} />
+      );
+    }
+
     return (
       <div className={previewClasses}>
-        <Emoji emoji={emoji} />
+        <span className={styles.previewImg}>
+          {emojiComponent}
+        </span>
         <div className={previewTextClasses}>
-          <div className={styles.name}>{emoji.name}</div>
-          <div className={styles.shortName}>:{emoji.shortcut}:</div>
+          <span className={styles.name}>{emoji.name}</span>
+          <span className={styles.shortName}>{emoji.shortName}</span>
         </div>
       </div>
     );

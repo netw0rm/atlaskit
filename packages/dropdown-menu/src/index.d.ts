@@ -4,6 +4,7 @@ interface Props {
   appearance?: 'default' | 'tall';
   children?: ReactNode;
   defaultOpen?: boolean;
+  isLoading?: boolean;
   isTriggerNotTabbable?: boolean;
   items: Array<Object>;
   onItemActivated?: Function;
@@ -12,6 +13,8 @@ interface Props {
   triggerType?: 'default' | 'button';
   triggerButtonProps?: any;
   shouldFlip?: boolean;
+  shouldFitContainer?: boolean;
+  shouldAllowMultilineItems?: boolean;
 }
 
 interface State {}

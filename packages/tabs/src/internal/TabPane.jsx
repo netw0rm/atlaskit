@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from '../styles.less';
 
@@ -16,8 +17,8 @@ export default class TabPane extends PureComponent {
     return (
       <div
         aria-hidden={this.props.isSelected ? 'false' : 'true'}
-        className={classNames(styles.locals.akTabPane, {
-          [styles.locals.selected]: this.props.isSelected,
+        className={classNames(styles.akTabPane, {
+          [styles.selected]: this.props.isSelected,
         })}
         role="tabpanel"
       >

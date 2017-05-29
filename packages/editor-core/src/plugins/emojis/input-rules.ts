@@ -1,33 +1,42 @@
-import { InputRule, Mark, ProseMirror, Schema } from '../../prosemirror';
+import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
+import { EmojiState, stateKey } from './';
+import { createInputRule } from '../utils';
 
-function replaceWithMark(
-  pm: ProseMirror,
-  match: string[],
-  pos: number,
-  mark: string
-): boolean {
-  const schema: Schema = pm.schema;
-  const to = pos;
-  const from = pos - 1;
-  const markType: Mark = schema.mark(mark);
-  const marks: Mark[] = [...pm.tr.doc.marksAt(pos), markType];
+export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+  const rules: Array<InputRule> = [];
 
-  pm.tr.replaceWith(
-    from,
-    to,
-    schema.text(
-      ':',
-      marks,
-    )
-  ).apply();
+  if (schema.nodes.emoji && schema.marks.emojiQuery) {
+    const emojiQueryRule = createInputRule(/(^|[^\w\`]):$/, (state, match, start, end): Transaction | undefined => {
+      const emojisState = stateKey.getState(state) as EmojiState;
 
-  pm.addActiveMark(markType);
+      if (!emojisState.emojiProvider) {
+        return undefined;
+      }
 
-  return true;
+      if (emojisState.emojiDisabled()) {
+        return undefined;
+      }
+
+      const markType = schema.mark('emojiQuery');
+      const { tr } = state;
+
+      return tr.replaceWith(
+        end,
+        end,
+        schema.text(
+          ':',
+          [markType]
+        )
+      );
+
+    });
+
+    rules.push(emojiQueryRule);
+  }
+
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 }
 
-export const emojiQueryRule = new InputRule(/(^|[^\w]):$/, ':', (
-  pm: ProseMirror,
-  match: string[],
-  pos: number
-) => replaceWithMark(pm, match, pos, 'emoji_query'));
+export default inputRulePlugin;

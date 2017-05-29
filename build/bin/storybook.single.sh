@@ -6,4 +6,4 @@ PKG="$1"
 # TODO: Remove in AK-1586
 SAFE_PKG=$(echo "$PKG" | sed -e "s/^@atlaskit\///")
 
-NODE_ENV="development" PACKAGE="$SAFE_PKG" yarn run storybook
+NODE_ENV="development" PACKAGE="$SAFE_PKG" start-storybook --dont-track -p 9001 -c ./build/storybook

@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme, { Code, Description, Heading, Props } from '@atlaskit/util-readme';
-import readmeStyles from 'style!./_readme/readme-styles.less';
+import readmeStyles from './_readme/readme-styles.less';
 
 /* eslint-disable import/no-duplicates, import/first */
 import LayerExample from './_readme/LayerExample';

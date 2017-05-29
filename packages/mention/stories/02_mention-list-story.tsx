@@ -46,12 +46,16 @@ class RefreshableMentionList extends Component<Props, State> {
     }
   }
 
+  private handleMentionListRef = (ref) => {
+    this.mentionListRef = ref;
+  }
+
   render() {
     const mentionList = (
       <MentionList
         mentions={this.state.mentions}
         onSelection={action('onSelection')}
-        ref={(ref) => { this.mentionListRef = ref; }}
+        ref={this.handleMentionListRef}
       />
     );
 
@@ -72,6 +76,6 @@ storiesOf(`${name}/MentionList`, module)
   .add('simple mention list', () => <RefreshableMentionList />)
   .add('error mention list', () => (
     <div style={{ padding: '10px' }} >
-      <MentionList showError mentions={[]} />
+      <MentionList showError={true} mentions={[]} />
     </div>
   ));

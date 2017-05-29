@@ -1,5 +1,6 @@
-import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerLogo.less';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import ContainerLogoStyled from '../styled/ContainerLogo';
 
 export default class ContainerLogo extends PureComponent {
   static propTypes = {
@@ -8,9 +9,9 @@ export default class ContainerLogo extends PureComponent {
 
   render() {
     return (
-      <div className={styles.containerLogo}>
+      <ContainerLogoStyled>
         {this.props.children}
-      </div>
+      </ContainerLogoStyled>
     );
   }
 }

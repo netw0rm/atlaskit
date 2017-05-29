@@ -2,12 +2,12 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
+import { EmojiDescription } from '../src/types';
+import ResourcedEmojiList from './demo-resourced-emoji-list';
 import ResourcedEmojiControl from './demo-resource-control';
 import EmojiPickerTextInput from './demo-emoji-picker-text-input';
 import EmojiTypeAheadTextInput from './demo-emoji-typeahead-text-input';
 import { getEmojiResource } from './story-data';
-
-import sampleEmojiConfig from '../local-config-example';
 
 declare var require: {
     <T>(path: string): T;
@@ -18,7 +18,8 @@ try {
   // tslint:disable-next-line import/no-unresolved, no-var-requires
   emojiConfig = require('../local-config')['default'];
 } catch (e) {
-  emojiConfig = sampleEmojiConfig;
+  // tslint:disable-next-line import/no-unresolved, no-var-requires
+  emojiConfig = require('../local-config-example')['default'];
 }
 
 const defaultEmojiProvider = Promise.resolve(getEmojiResource());
@@ -45,7 +46,7 @@ storiesOf(`${name}/external-emoji`, module)
         label="Emoji search"
         onSelection={action('emoji selected')}
         position="below"
-        afterContent
+        afterContent={true}
         emojiProvider={defaultEmojiProvider}
       />
     );
@@ -53,6 +54,21 @@ storiesOf(`${name}/external-emoji`, module)
       <ResourcedEmojiControl
         emojiConfig={emojiConfig}
         children={typeAhead}
+      />
+    );
+  })
+  .add('resource emoji - media api', () => {
+    const filter = (emoji: EmojiDescription) => (emoji.category === 'CUSTOM');
+    const emojiList = (
+      <ResourcedEmojiList
+        filter={filter}
+        emojiProvider={defaultEmojiProvider}
+      />
+    );
+    return (
+      <ResourcedEmojiControl
+        emojiConfig={emojiConfig}
+        children={emojiList}
       />
     );
   });

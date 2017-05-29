@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { AtlassianIcon, CrossIcon, DashboardIcon } from '@atlaskit/icon';
-import { AkSearch, AkContainerItem } from '../../src/index';
+import { AkSearch, AkNavigationItem } from '../../src/index';
 
 const data = [
   {
@@ -86,23 +86,31 @@ function search(query) {
     )
   ).reduce((a, b) => a.concat(b));
   return results.map(({ item, group }, idx) => (
-    <AkContainerItem href="#foo" icon={icons[group]} subText={group} text={item} key={idx} />
+    <AkNavigationItem href="#foo" icon={icons[group]} subText={group} text={item} key={idx} />
   ));
 }
 
+// a little fake store for holding the query after a component unmounts
+const store = {};
+
 export default class BasicSearch extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      query: '',
-    };
+  state = {
+    query: store.query || '',
   }
+
+  setQuery(query) {
+    store.query = query;
+    this.setState({
+      query,
+    });
+  }
+
   render() {
     return (
       <AkSearch
         clearIcon={<CrossIcon label="clear" size="medium" />}
-        onChange={({ target }) => { this.setState({ query: target.value }); }}
-        onSearchClear={() => { this.setState({ query: '' }); }}
+        onChange={({ target }) => { this.setQuery(target.value); }}
+        onSearchClear={() => { this.setQuery(''); }}
         value={this.state.query}
       >
         {search(this.state.query)}

@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-import { getEmojis } from './story-data';
+import { getEmojis, getStandardEmojis, getAtlassianEmojis } from './story-data';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
@@ -18,7 +18,7 @@ import RefreshableEmojiList from './demo-refreshable-emoji-list';
 const emoji = {
   id: '118608',
   name: 'Zoidberg',
-  shortcut: 'zoidberg',
+  shortName: ':zoidberg:',
   type: 'ATLASSIAN',
   category: 'ATLASSIAN',
   order: 2147483647,
@@ -33,11 +33,11 @@ const emoji = {
 
 const emojis = getEmojis();
 
-const tongueEmoji = filters.byShortcut(emojis, 'stuck_out_tongue_closed_eyes');
+const tongueEmoji = filters.byShortName(emojis, ':stuck_out_tongue_closed_eyes:');
 const longTongueEmoji = {
   ...tongueEmoji,
   name: `${tongueEmoji.name} ${tongueEmoji.name} ${tongueEmoji.name}`,
-  shortcut: `${tongueEmoji.shortcut}_${tongueEmoji.shortcut}_${tongueEmoji.shortcut}`,
+  shortName: `${tongueEmoji.shortName}_${tongueEmoji.shortName}_${tongueEmoji.shortName}`,
 };
 
 const toneEmoji = filters.toneEmoji(emojis);
@@ -73,6 +73,22 @@ storiesOf(`${name}/Internal components`, module)
       <EmojiPreview emoji={longTongueEmoji} toneEmoji={toneEmoji} />
     </div>
   ))
+  .add('emoji preview with placeholder for media api', () => {
+    const emoji = {
+      ...longTongueEmoji,
+      representation: {
+        mediaPath: 'http://example.com/sample.png',
+        height: 24,
+        width: 24,
+      }
+    };
+
+    return (
+      <div style={borderedStyle} >
+        <EmojiPreview emoji={emoji} />
+      </div>
+    );
+  })
   .add('category selector', () => (
     <CategorySelector
       activeCategoryId="OBJECT"
@@ -100,4 +116,17 @@ storiesOf(`${name}/Internal components`, module)
       emojis={emojis}
       onEmojiSelected={action('onSelection')}
     />
-  ));
+  ))
+  .add('fallback emoji rendering', () => {
+    const emojis = [
+      ...getStandardEmojis(),
+      ...getAtlassianEmojis().slice(0, 20),
+    ];
+    return (
+      <div>
+        {emojis.map(emoji => {
+          return (<span key={emoji.id}>{emoji.fallback} </span>);
+        })}
+      </div>
+    );
+  });

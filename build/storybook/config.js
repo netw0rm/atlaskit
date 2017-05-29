@@ -1,15 +1,16 @@
 import { configure, setAddon } from '@kadira/storybook';
-import 'akutil-polyfills';
+import 'babel-polyfill';
 import React from 'react';
 import 'storybook-addon-i18n-tools';
 import 'style-loader!css-loader!ak-css-reset/dist/bundle.css';
 import 'style-loader!css-loader!highlight.js/styles/github.css';
 
-import 'style!./styles.less';
+import './styles.less';
 
 import MonitoredStory from './MonitoredStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';
 import CodeExampleStory from './CodeExampleStory';
+import ExampleWithCode from './ExampleWithCode';
 import StencilStory from './StencilStory';
 
 function loadStories() {
@@ -56,6 +57,16 @@ setAddon({
       >
         {storyFn(context)}
       </CodeExampleStory>
+    ));
+  },
+
+  addExampleWithCodeStory(storyName, storyFn, options = {}) {
+    this.add(`${storyName} (with code)`, context => (
+      <ExampleWithCode
+        scripts={options.scripts}
+      >
+        {storyFn(context)}
+      </ExampleWithCode>
     ));
   },
 });

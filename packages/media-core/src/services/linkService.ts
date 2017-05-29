@@ -36,8 +36,6 @@ export class MediaLinkService implements LinkService {
           }
         } as LinkItem;
       });
-    ;
-
   }
 
   addLinkItem(url: string, clientId: string, collectionName: string, metadata?: UrlPreview): Promise<string> {
@@ -48,7 +46,7 @@ export class MediaLinkService implements LinkService {
       collectionName: collectionName
     });
 
-    return request({method: 'post', url: '/link', data: {url, ...metadata}})
+    return request({method: 'post', url: '/link', data: {url, metadata}})
       .then(json => json.data.id)
     ;
   }

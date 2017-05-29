@@ -25,8 +25,6 @@ export interface RequestOptions {
 const buildHeaders = (requesterOptions: RequesterOptions, requestOptions: RequestOptions, token: string) => {
   const headers = {
     ...requestOptions.headers,
-    'X-Client-Id': requesterOptions.clientId,
-    'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
   } as any;
 
@@ -61,6 +59,7 @@ export default (requesterOptions: RequesterOptions) => (requestOptions: RequestO
       const responseType = responseTypeToAxios(requestOptions.responseType);
       const {method, url, params, data} = requestOptions;
       const {config, collectionName} = requesterOptions;
+      const client = requesterOptions.clientId;
 
       return axios({
         method: method || 'get',
@@ -69,6 +68,8 @@ export default (requesterOptions: RequesterOptions) => (requestOptions: RequestO
         headers,
         params: {
           collection: collectionName,
+          token,
+          client,
           ...params
         },
         data: data,

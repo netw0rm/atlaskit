@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import {
-    akGridSizeUnitless,
- } from '@atlaskit/util-shared-styles';
+import { gridSize } from '../../shared-variables';
 
 const SearchResults = styled.div`
-  margin-top: ${akGridSizeUnitless * 3}px;
+  margin-top: ${gridSize * 3}px;
 `;
 
 SearchResults.displayName = 'SearchResults';

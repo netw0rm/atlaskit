@@ -39,6 +39,7 @@ export default class Layer extends PureComponent {
       flipped: false,
       actualPosition: null,
       originalPosition: null,
+      cssPosition: 'absolute',
     };
   }
 

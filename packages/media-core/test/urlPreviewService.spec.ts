@@ -10,6 +10,7 @@ const clientId = 'some-client-id';
 
 const expect = chai.expect;
 const assert = chai.assert;
+const authParams = `token=${token}&client=${clientId}`;
 
 describe('UrlPreviewService', () => {
   let tokenProvider: JwtTokenProvider;
@@ -62,10 +63,7 @@ describe('UrlPreviewService', () => {
         assert((tokenProvider as any).calledOnce);
       })
       .then(() => {
-        const headers = requests[0].requestHeaders;
-        expect(headers['X-Client-Id']).to.equal(clientId);
-        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
-        expect(requests[0].url).to.equal('some-host/link/preview?url=http:%2F%2Fatlassian.com');
+        expect(requests[0].url).to.equal(`some-host/link/preview?${authParams}&url=http:%2F%2Fatlassian.com`);
       });
 
     setTimeout(() => {
@@ -93,10 +91,7 @@ describe('UrlPreviewService', () => {
         assert((tokenProvider as any).calledOnce);
       })
       .then(() => {
-        const headers = requests[0].requestHeaders;
-        expect(headers['X-Client-Id']).to.equal(clientId);
-        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
-        expect(requests[0].url).to.equal('some-host/link/preview?url=http:%2F%2Fatlassian.com');
+        expect(requests[0].url).to.equal(`some-host/link/preview?${authParams}&url=http:%2F%2Fatlassian.com`);
       });
 
     setTimeout(() => {

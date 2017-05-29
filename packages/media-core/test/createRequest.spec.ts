@@ -7,6 +7,8 @@ let fakeXhr;
 let myFakeResponses;
 
 describe('createRequest()', () => {
+  const clientId = '1234';
+  const token = 'ABCD';
 
   beforeEach(() => {
     myFakeResponses = [];
@@ -19,10 +21,10 @@ describe('createRequest()', () => {
   });
 
   it('should send the client ID and auth token', () => {
-    const tokenProvider = sinon.stub().returns(Promise.resolve('ABCD'));
+    const tokenProvider = sinon.stub().returns(Promise.resolve(token));
 
     const request = createRequest({
-      clientId: '1234',
+      clientId,
       config: {
         tokenProvider,
         serviceHost: 'http://example.com'
@@ -33,9 +35,7 @@ describe('createRequest()', () => {
 
     return request({url: '/some-api/links'}).then(json => {
       expect(tokenProvider.calledOnce).to.be.true;
-      expect(myFakeResponses[0].url).to.equal('http://example.com/some-api/links');
-      expect(myFakeResponses[0].requestHeaders['X-Client-Id']).to.equal('1234');
-      expect(myFakeResponses[0].requestHeaders['Authorization']).to.equal('Bearer ABCD');
+      expect(myFakeResponses[0].url).to.equal(`http://example.com/some-api/links?token=${token}&client=${clientId}`);
     });
 
   });

@@ -1,8 +1,10 @@
 import { ContextConfig, Context } from '../';
 
+export type MediaStateStatus = 'unknown' | 'uploading' | 'processing' | 'unfinalized' | 'ready' | 'error' | 'cancelled';
+
 export interface MediaState {
   id: string;
-  status?: 'unknown' | 'uploading' | 'processing' | 'unfinalized' | 'ready' | 'error' | 'cancelled';
+  status?: MediaStateStatus;
   publicId?: string;
   fileName?: string;
   fileSize?: number;

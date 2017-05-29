@@ -131,5 +131,14 @@ describe('hyperlink', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://foo.com' })(`${linkedText}`), 'hello')));
     });
+
+    it('does not convert to hyperlink if the previous part already contains a hyperlink', () => {
+      const { editorView, sel } = editor(doc(linkable('{<>}')));
+      const linkedText = 'http://foo.com';
+      insertText(editorView, `[${linkedText}](http://foo.com)`, sel, sel);
+      insertText(editorView, '. ', sel + linkedText.length, sel + linkedText.length);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://foo.com' })(`${linkedText}`), '. ')));
+    });
   });
 });

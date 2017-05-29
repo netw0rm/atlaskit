@@ -13,13 +13,15 @@ export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) =
     const url = formatUrl(match);
     const markType = schema.mark('link', { href: url, });
 
-    analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');
+    if (!state.doc.rangeHasMark(start, end, schema.marks.link)) {
+      analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');
 
-    return state.tr.replaceWith(
-      start,
-      end,
-      schema.text(match[0], [markType])
-    ).removeMark(end, end + 1);
+      return state.tr.replaceWith(
+        start,
+        end,
+        schema.text(match[0], [markType])
+      ).removeMark(end, end + 1);
+    }
   });
 }
 

@@ -1,24 +1,18 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { colors } from '../../shared-variables';
-import { appearanceEnum, themeVariables } from '../../utils/theme';
+import { gridSize } from '../../shared-variables';
+import { getProvided } from '../../theme/util';
 
 const dividerLineHeight = 2;
-const dividerTotalHeight = akGridSizeUnitless * 5;
+const dividerTotalHeight = gridSize * 5;
 
 const NavigationItemGroupSeparator = styled.div`
   margin-top: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
   margin-bottom: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
   height: ${dividerLineHeight}px;
-  background: ${({ theme }) => colors[theme[themeVariables.appearance]].keyline};
+  background: ${({ theme }) => getProvided(theme).keyline};
   border-radius: 1px;
 `;
 
-NavigationItemGroupSeparator.defaultProps = {
-  theme: {
-    [themeVariables.appearance]: appearanceEnum.container,
-  },
-};
-
 NavigationItemGroupSeparator.displayName = 'NavigationItemGroupSeparator';
+
 export default NavigationItemGroupSeparator;

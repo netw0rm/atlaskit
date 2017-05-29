@@ -1,27 +1,31 @@
 import styled from 'styled-components';
-import { layout, colors } from '../../shared-variables';
-import { appearanceEnum, themeVariables } from '../../utils/theme';
+import { layout } from '../../shared-variables';
+import { isCollapsed, getProvided } from '../../theme/util';
 
 const ContainerNavigationInner = styled.div`
-  background-color: ${({ theme }) => colors[theme[themeVariables.appearance]].background};
+  background-color: ${({ theme }) => {
+    const background = getProvided(theme).background;
+    if (background.secondary) {
+      return background.secondary;
+    }
+
+    return background.primary;
+  }};
   box-sizing: border-box;
-  color: ${({ theme }) => colors[theme[themeVariables.appearance]].color};
-  height: 100vh;
+  color: ${({ theme }) => getProvided(theme).text};
   overflow-x: hidden;
   overflow-y: auto;
-  padding-top: ${({ theme }) => (theme.isCollapsed ? layout.padding.top : 0)}px;
-  padding-left: ${({ theme }) => (theme.isCollapsed ? layout.padding.side : 0)}px;
-  padding-right: ${({ theme }) => (theme.isCollapsed ? layout.padding.side : 0)}px;
+  padding-top: ${({ theme }) => (isCollapsed(theme) ? layout.padding.top : 0)}px;
+  padding-left: ${({ theme }) => (isCollapsed(theme) ? layout.padding.side : 0)}px;
+  padding-right: ${({ theme }) => (isCollapsed(theme) ? layout.padding.side : 0)}px;
   padding-bottom: 0;
+
+  /* fill the entire space of the flex container */
   width: 100%;
 
   // needed to fix sticky header on retina displays 🙃
   transform-style: preserve-3d;
 `;
-
-ContainerNavigationInner.defaultProps = {
-  [themeVariables.appearance]: appearanceEnum.container,
-};
 
 ContainerNavigationInner.displayName = 'ContainerNavigationInner';
 

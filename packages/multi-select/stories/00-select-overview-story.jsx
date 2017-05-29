@@ -28,6 +28,8 @@ import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
 import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 import SmartSelectWithDescriptions from './examples/SmartSelectWithDescriptions';
 import SmartSelectWithDescriptionsRaw from '!raw!./examples/SmartSelectWithDescriptions';
+import SmartSelectWithCreateNewItem from './examples/SmartSelectWithCreateNewItem';
+import SmartSelectWithCreateNewItemRaw from '!raw!./examples/SmartSelectWithCreateNewItem';
 /* eslint-enable import/first, import/no-duplicates */
 
 // Dummy components exist so that we have a component to pass to <Props/>
@@ -220,6 +222,16 @@ storiesOf(name, module)
       </div>
       <Code>
         {SmartSelectWithDescriptionsRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select with "create new item" functionality', () => (
+    <Chrome title="Multi select - 'create new item' functionality">
+      <div style={{ width: '300px' }}>
+        {SmartSelectWithCreateNewItem}
+      </div>
+      <Code>
+        {SmartSelectWithCreateNewItemRaw}
       </Code>
     </Chrome>
   ));

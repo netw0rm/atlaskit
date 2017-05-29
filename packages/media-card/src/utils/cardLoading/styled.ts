@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import styled, { keyframes } from 'styled-components';
 import {center, size} from '../../styles';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import { akColorN20 } from '@atlaskit/util-shared-styles';
 
 export const blinkLoadingAnimation = keyframes`
   0%{
@@ -20,7 +20,7 @@ export const blinkLoadingAnimation = keyframes`
 export const Wrapper = styled.div`
   ${center}
   ${size()}
-  background: ${akColorN30};
+  background: ${akColorN20};
   color: #cfd4db;
   border-radius: inherit;
 

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import codeBlockPlugins from '../../../src/plugins/code-block';
-import FloatingToolbar from '../../../src/ui/FloatingToolbar';
+import { FloatingToolbar } from '../../../src/ui/LanguagePicker/styles';
 import Select from '@atlaskit/single-select';
 import LanguagePicker from '../../../src/ui/LanguagePicker';
 import { code_block, doc, p, makeEditor, fixtures, createEvent } from '../../../src/test-helper';

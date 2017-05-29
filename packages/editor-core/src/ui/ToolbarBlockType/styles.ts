@@ -1,5 +1,6 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-export const buttonContent = style({
-  width: '80px',
-});
+// tslint:disable-next-line:variable-name
+export const ButtonContent = styled.div`
+  width: 80px;
+`;

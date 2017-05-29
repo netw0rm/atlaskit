@@ -41,12 +41,16 @@ import { default as defaultSchema, compactSchema } from '../../../../src/test-he
 chai.use(chaiPlugin);
 
 const noop = () => {};
+const stateManager = new DefaultMediaStateManager();
+const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+
+const getFreshResolvedProvider = () => {
+  return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+};
 
 describe('Media plugin', () => {
   const fixture = fixtures();
-  const stateManager = new DefaultMediaStateManager();
-  const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
-  const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+  const resolvedProvider = getFreshResolvedProvider();
   const testFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();
@@ -461,5 +465,75 @@ describe('Media plugin', () => {
         p(),
       )
     );
+  });
+
+  it('should set new pickers exactly when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
+    expect(pluginState.pickers).to.have.length(0);
+
+    const mediaProvider1 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    const mediaProvider2 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+
+    const resolvedMediaProvider1 = await mediaProvider1;
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider1.uploadContext;
+    await resolvedMediaProvider2.uploadContext;
+
+    expect(pluginState.pickers).to.have.length(4);
+  });
+
+  it('should remove old pickers exactly when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
+    expect(pluginState.pickers).to.have.length(0);
+
+    const mediaProvider1 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+
+    const resolvedMediaProvider1 = await mediaProvider1;
+    await resolvedMediaProvider1.uploadContext;
+
+    const mediaProvider2 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    expect(pluginState.pickers).to.have.length(0);
+  });
+
+  // TODO use media-core status type for that, not own ones
+  // @see https://product-fabric.atlassian.net/browse/ED-1782
+  type MediaStateStatus = 'unfinalized' | 'unknown' | 'ready' | 'error' | 'cancelled';
+
+  [
+    'unfinalized',
+    'unknown',
+    'ready',
+    'error',
+    'cancelled',
+  ].forEach((status: MediaStateStatus) => {
+    it(`should remove ${status} media nodes`, async () => {
+      const mediaNode = media({ id: 'foo', type: 'file', collection: testCollectionName });
+      const { editorView, pluginState } = editor(
+        doc(
+          mediaGroup(mediaNode),
+          mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })),
+        ),
+      );
+
+      await resolvedProvider;
+
+      stateManager.updateState('foo', {
+        status,
+        id: 'foo',
+      });
+
+      const pos = getNodePos(pluginState, 'foo');
+      (pluginState as MediaPluginState).handleMediaNodeRemove(mediaNode, () => pos);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
+        )
+      ));
+    });
   });
 });

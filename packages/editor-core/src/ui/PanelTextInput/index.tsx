@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { KeyboardEvent, PureComponent } from 'react';
-import * as styles from './styles';
+import { Input } from './styles';
 
 export interface Props {
   autoFocus?: boolean;
@@ -52,16 +52,15 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     const { placeholder } = this.props;
     const { value } = this.state;
     return (
-      <input
+      <Input
         type="text"
-        className={styles.input}
         placeholder={placeholder}
         value={value}
         onChange={this.handleChange}
         onKeyDown={this.handleKeydown}
         onMouseDown={this.onMouseDown}
         onBlur={this.onBlur}
-        ref={this.handleRef}
+        innerRef={this.handleRef}
       />
     );
   }

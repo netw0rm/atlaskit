@@ -1,5 +1,6 @@
 import {
   doc,
+  code as codeBase,
   MarkSpec,
   NodeSpec,
   Schema,
@@ -8,6 +9,7 @@ import {
 
 export interface HCSchemaNodes {
   doc: NodeSpec;
+  codeBlock: NodeSpec;
   paragraph: NodeSpec;
   text: NodeSpec;
   hardBreak: NodeSpec;
@@ -18,6 +20,7 @@ export interface HCSchemaNodes {
 }
 
 export interface HCSchemaMarks {
+  code: MarkSpec;
   link: MarkSpec;
   em: MarkSpec;
   strong: MarkSpec;
@@ -25,6 +28,11 @@ export interface HCSchemaMarks {
   mentionQuery: MarkSpec;
   emojiQuery: MarkSpec;
 }
+
+const code: MarkSpec = {
+  ...codeBase,
+  excludes: 'em strong underline mentionQuery emojiQuery',
+};
 
 const nodes = [
   // A paragraph node.
@@ -48,11 +56,14 @@ const nodes = [
   // media
   'mediaGroup',
   'media',
+
+  // code
+  'codeBlock',
 ];
 
 const customNodeSpecs = {
   // The top level node for a document.
-  doc
+  doc,
 };
 
 const marks = [
@@ -84,9 +95,14 @@ const marks = [
 
   // We are forced to add this, because link mark excludes: 'textColor'
   // Without this ProseMirror is unable to construct the schema
-  'textColor'
+  'textColor',
+
+  // Represents inline code
+  'code',
 ];
+
+const customMarkSpecs = { code };
 
 export interface HCSchema extends Schema<HCSchemaNodes, HCSchemaMarks> {}
 
-export default createSchema({ nodes, marks, customNodeSpecs }) as HCSchema;
+export default createSchema({ nodes, marks, customNodeSpecs, customMarkSpecs }) as HCSchema;

@@ -90,6 +90,13 @@ function escapeWhiteSpaces(text: string): string {
   );
 }
 
+// Concatenate all text into a single string
+export const stringifyTextNodes = (nodes: Renderable[] = []) => {
+  return nodes.reduce<string>((acc: string, current: Renderable) => {
+    return acc += current.text;
+  }, '');
+};
+
 export const renderTextNodes = (textNodes: TextNode[]) => {
   let currentMarkNode: Renderable;
   const content = textNodes.reduce((acc, node, index) => {

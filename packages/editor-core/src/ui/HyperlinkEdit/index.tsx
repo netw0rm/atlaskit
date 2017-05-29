@@ -6,7 +6,7 @@ import { HyperlinkState } from '../../plugins/hyperlink';
 import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
-import * as styles from './styles';
+import { Seperator, Container } from './styles';
 import { EditorView } from '../../prosemirror';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
 
@@ -92,7 +92,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           onExtractStyle={this.updatePosition}
           autoPosition={true}
         >
-          <div className={styles.container}>
+          <Container>
             {!showOpenButton ? null :
               <ToolbarButton
                 href={href}
@@ -104,7 +104,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               </ToolbarButton>
             }
             {!showOpenButton ? null :
-              <span className={styles.seperator} />
+              <Seperator />
             }
             {!showUnlinkButton ? null :
               <ToolbarButton
@@ -116,7 +116,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               </ToolbarButton>
             }
             {!showUnlinkButton ? null :
-              <span className={styles.seperator} />
+              <Seperator />
             }
             { normalizedOldText && href === normalizedOldText ?
             <PanelTextInput
@@ -136,7 +136,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               onMouseDown={this.setInputActive}
               onBlur={this.handleOnBlur}
             />}
-          </div>
+          </Container>
         </FloatingToolbar>
       );
     } else {

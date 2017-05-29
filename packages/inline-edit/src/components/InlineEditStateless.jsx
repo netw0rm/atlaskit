@@ -1,12 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
-import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
-import styles from './styles.less';
+import FieldBase, { Label } from '@atlaskit/field-base';
+
+import RootWrapper from '../styled/RootWrapper';
+import ContentWrapper from '../styled/ContentWrapper';
+import ReadViewContentWrapper from '../styled/ReadViewContentWrapper';
+import FieldBaseWrapper from '../styled/FieldBaseWrapper';
+import ButtonsWrapper from '../styled/ButtonsWrapper';
+import ButtonWrapper from '../styled/ButtonWrapper';
+import EditButton from '../styled/EditButton';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -42,25 +48,26 @@ export default class InlineEdit extends PureComponent {
     shouldConfirmOnEnter: PropTypes.bool,
     /** Set whether default stylings should be disabled when editing. */
     disableEditViewFieldBase: PropTypes.bool,
-    /** Component to b shown in an @atlaskit/inline-dialog when edit view is open. */
+    /** Component to be shown in an @atlaskit/inline-dialog when edit view is open. */
     invalidMessage: PropTypes.node,
   }
 
   static defaultProps = {
-    isInvalid: false,
-    isWaiting: false,
-    isLabelHidden: false,
     areActionButtonsHidden: false,
-    isConfirmOnBlurDisabled: false,
-    shouldConfirmOnEnter: false,
     disableEditViewFieldBase: false,
     invalidMessage: '',
+    isConfirmOnBlurDisabled: false,
+    isInvalid: false,
+    isLabelHidden: false,
+    isWaiting: false,
+    shouldConfirmOnEnter: false,
   }
 
   state = {
-    wasFocusReceivedSinceLastBlur: false,
+    fieldBaseWrapperIsHover: false,
     resetFieldBase: false,
     shouldResetFieldBase: false,
+    wasFocusReceivedSinceLastBlur: false,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -113,11 +120,9 @@ export default class InlineEdit extends PureComponent {
     event.stopPropagation();
   }
 
-  getRootClasses = () =>
-    classNames({
-      [styles.root]: true,
-      [styles.readViewWrapper]: !this.props.isEditing,
-    })
+  onFieldBaseWrapperMouseEnter = () => this.setState({ fieldBaseWrapperIsHover: true })
+
+  onFieldBaseWrapperMouseLeave = () => this.setState({ fieldBaseWrapperIsHover: false })
 
   confirmIfUnfocused = () => {
     if (!this.state.wasFocusReceivedSinceLastBlur) {
@@ -125,11 +130,9 @@ export default class InlineEdit extends PureComponent {
     }
   }
 
-  isReadOnly = () =>
-    !this.props.editView
+  isReadOnly = () => !this.props.editView
 
-  shouldShowEditView = () =>
-    this.props.isEditing && !this.isReadOnly()
+  shouldShowEditView = () => this.props.isEditing && !this.isReadOnly()
 
   shouldRenderEditIcon = () => !this.isReadOnly() && !this.props.isInvalid;
 
@@ -154,33 +157,31 @@ export default class InlineEdit extends PureComponent {
 
   renderActionButtons = () => (
     this.props.isEditing && !this.props.areActionButtonsHidden ?
-      <div className={styles.buttonsWrapper}>
-        <div className={styles.buttonWrapper}>
+      <ButtonsWrapper>
+        <ButtonWrapper>
           <Button
             iconBefore={<ConfirmIcon label="confirm" size="small" />}
             onClick={this.onConfirmClick}
             ref={(ref) => { this.confirmButtonRef = ref; }}
-            className={styles.button}
           />
-        </div>
-        <div className={styles.buttonWrapper}>
+        </ButtonWrapper>
+        <ButtonWrapper>
           <Button
             iconBefore={<CancelIcon label="cancel" size="small" />}
             onClick={this.onCancelClick}
             ref={(ref) => { this.cancelButtonRef = ref; }}
-            className={styles.button}
           />
-        </div>
-      </div> :
+        </ButtonWrapper>
+      </ButtonsWrapper> :
       null
   )
 
   renderReadView = () => (
     this.wrapWithFieldBase(
-      <div className={styles.readViewContentWrapper}>
+      <ReadViewContentWrapper>
         {this.props.readView}
-        <button className={styles.editButton} />
-      </div>
+        <EditButton fieldBaseWrapperIsHover={this.state.fieldBaseWrapperIsHover} />
+      </ReadViewContentWrapper>
     )
   )
 
@@ -196,7 +197,7 @@ export default class InlineEdit extends PureComponent {
 
   render() {
     return (
-      <div className={this.getRootClasses()}>
+      <RootWrapper isEditing={this.props.isEditing}>
         <div style={{ position: (this.props.isLabelHidden ? 'absolute' : 'relative') }}>
           <Label
             appearance="inline-edit"
@@ -206,20 +207,20 @@ export default class InlineEdit extends PureComponent {
             onClick={this.onWrapperClick}
           />
         </div>
-        <div
-          className={styles.contentWrapper}
+        <ContentWrapper
           onBlur={this.onWrapperBlur}
           onFocus={this.onWrapperFocus}
         >
-          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-            className={styles.fieldBaseWrapper}
+          <FieldBaseWrapper // eslint-disable-line jsx-a11y/no-static-element-interactions
             onClick={this.onWrapperClick}
+            onMouseEnter={this.onFieldBaseWrapperMouseEnter}
+            onMouseLeave={this.onFieldBaseWrapperMouseLeave}
           >
             {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
-          </div>
+          </FieldBaseWrapper>
           {!this.shouldRenderSpinner() ? this.renderActionButtons() : null}
-        </div>
-      </div>
+        </ContentWrapper>
+      </RootWrapper>
     );
   }
 }

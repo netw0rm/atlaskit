@@ -1,19 +1,17 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
-import classnames from 'classnames';
 import { akGridSize } from '@atlaskit/util-shared-styles';
 
-import styles from '../styles.less';
+import Wrapper, { Content, SpinnerContainer, Trigger } from '../styled/Droplist';
 
 const halfFocusRing = 1;
 const numberOfVisibleItems = 9;
 const dropOffset = `0 ${akGridSize}`;
 
-/* eslint-disable react/no-unused-prop-types */
-export default class DropdownList extends PureComponent {
+export default class Droplist extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(['default', 'tall']),
     children: PropTypes.node,
@@ -23,25 +21,31 @@ export default class DropdownList extends PureComponent {
     onKeyDown: PropTypes.func,
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
+    shouldAllowMultilineItems: PropTypes.bool,
     shouldFitContainer: PropTypes.bool,
     shouldFlip: PropTypes.bool,
     trigger: PropTypes.node,
-    shouldAllowMultilineItems: PropTypes.bool,
   }
-
   static defaultProps = {
     appearance: 'default',
     children: null,
     isLoading: false,
     isOpen: false,
-    shouldFitContainer: false,
     onClick: () => {},
     onKeyDown: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
-    trigger: null,
-    shouldFlip: true,
     shouldAllowMultilineItems: false,
+    shouldFitContainer: false,
+    shouldFlip: true,
+    trigger: null,
+  }
+  static childContextTypes = {
+    shouldAllowMultilineItems: PropTypes.bool,
+  }
+
+  getChildContext() {
+    return { shouldAllowMultilineItems: this.props.shouldAllowMultilineItems };
   }
 
   componentDidMount = () => {
@@ -54,10 +58,10 @@ export default class DropdownList extends PureComponent {
   }
 
   componentDidUpdate = () => {
-    if (this.props.isOpen) {
-      if (this.props.shouldFitContainer && this.dropContentRef) {
-        this.dropContentRef.style.width = `${this.triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
-      }
+    const { isOpen, shouldFitContainer } = this.props;
+
+    if (isOpen && shouldFitContainer && this.dropContentRef) {
+      this.dropContentRef.style.width = `${this.triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
     }
   }
 
@@ -108,52 +112,45 @@ export default class DropdownList extends PureComponent {
   }
 
   render() {
-    const { props } = this;
+    const {
+      children, isOpen, isLoading, onClick, onKeyDown, position, shouldFlip,
+      shouldFitContainer, trigger,
+    } = this.props;
 
-    // items' event delegation
+    const triggerRef = ref => (this.triggerRef = ref);
+    const contentRef = (ref) => {
+      if (ref) {
+        this.dropContentRef = ref;
+        this.setMaxHeight(ref);
+      }
+    };
+    const layerContent = isOpen ? (
+      <Content data-role="droplistContent" innerRef={contentRef}>
+        {isLoading ? (
+          <SpinnerContainer>
+            <Spinner />
+          </SpinnerContainer>
+        ) : children}
+      </Content>
+    ) : null;
+
     return (
-      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-        className={classnames([styles.dropWrapper, {
-          [styles.fitContainer]: props.shouldFitContainer,
-          [styles.allowMultilineItems]: props.shouldAllowMultilineItems,
-        }])}
-        onClick={this.props.onClick}
-        onKeyDown={this.props.onKeyDown}
+      <Wrapper
+        fit={shouldFitContainer}
+        onClick={onClick}
+        onKeyDown={onKeyDown}
       >
         <Layer
-          autoFlip={props.shouldFlip}
-          content={props.isOpen ?
-            <div
-              className={styles.dropContent}
-              data-role="droplistContent"
-              ref={(ref) => {
-                if (ref) {
-                  this.dropContentRef = ref;
-                  this.setMaxHeight(ref);
-                }
-              }}
-            >
-              {
-                props.isLoading
-                  ? <div className={styles.spinnerContainer}><Spinner /></div>
-                  : props.children
-              }
-            </div> :
-            null
-          }
+          autoFlip={shouldFlip}
+          content={layerContent}
           offset={dropOffset}
-          position={props.position}
+          position={position}
         >
-          <div
-            className={classnames(styles.trigger, {
-              [styles.triggerFitContainer]: props.shouldFitContainer,
-            })}
-            ref={ref => (this.triggerRef = ref)}
-          >
-            {props.trigger}
-          </div>
+          <Trigger fit={shouldFitContainer} innerRef={triggerRef}>
+            {trigger}
+          </Trigger>
         </Layer>
-      </div>
+      </Wrapper>
     );
   }
 }

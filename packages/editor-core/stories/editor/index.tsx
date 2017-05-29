@@ -42,6 +42,16 @@ import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
+import {
+  mediaPluginFactory,
+  mediaStateKey,
+  MediaProvider,
+  MediaState,
+  Plugin,
+  ReactMediaGroupNode,
+  ReactMediaNode,
+} from '../../src';
+
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
   context?: ContextName;
@@ -54,7 +64,9 @@ export interface Props {
   imageUploadHandler?: ImageUploadHandler;
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
+  mediaProvider?: Promise<MediaProvider>;
   analyticsHandler?: AnalyticsHandler;
+  uploadErrorHandler?: (state: MediaState) => void;
 }
 
 export interface State {
@@ -65,9 +77,9 @@ export interface State {
 }
 
 export default class Editor extends PureComponent<Props, State> {
+  private mediaPlugins: Plugin[];
 
   state: State;
-
   providerFactory: ProviderFactory;
 
   constructor(props: Props) {
@@ -82,6 +94,17 @@ export default class Editor extends PureComponent<Props, State> {
     this.handleProviders(this.props);
   }
 
+  componentWillUnmount() {
+    const { editorView } = this.state;
+    if (editorView) {
+      if (editorView.state) {
+        mediaStateKey.getState(editorView.state).destroy();
+      }
+
+      editorView.destroy();
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
     if (props.mentionProvider !== nextProps.mentionProvider) {
@@ -90,9 +113,19 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mentionProvider } = props;
+    const { emojiProvider, mediaProvider, mentionProvider, uploadErrorHandler } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
+
+    if (mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
+
+    this.mediaPlugins = mediaPluginFactory(schema, {
+      uploadErrorHandler,
+      providerFactory: this.providerFactory,
+    });
+
     this.setState({
       emojiProvider,
       mentionProvider
@@ -170,6 +203,7 @@ export default class Editor extends PureComponent<Props, State> {
     const textFormattingState = getStateFromKey(textFormattingStateKey);
     const hyperlinkState = getStateFromKey(hyperlinkStateKey);
     const imageUploadState = getStateFromKey(imageUploadStateKey);
+    const mediaState = this.mediaPlugins && this.props.mediaProvider && getStateFromKey(mediaStateKey);
     const mentionsState = getStateFromKey(mentionsStateKey);
     const emojiState = getStateFromKey(emojiStateKey);
     const textColorState = getStateFromKey(textColorStateKey);
@@ -192,6 +226,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateClearFormatting={clearFormattingState}
         pluginStateHyperlink={hyperlinkState}
         pluginStateImageUpload={imageUploadState}
+        pluginStateMedia={mediaState}
         pluginStateMentions={mentionsState}
         pluginStateEmojis={emojiState}
         pluginStateTextColor={textColorState}
@@ -223,6 +258,8 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
+    const { mediaPlugins } = this;
+
     if (place) {
       const editorState = EditorState.create(
         {
@@ -243,6 +280,7 @@ export default class Editor extends PureComponent<Props, State> {
             // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
             // if converting is possible
             ...blockTypePlugins(schema),
+            ...mediaPlugins,
             ...reactNodeViewPlugins(schema),
             history(),
             keymap(baseKeymap) // should be last :(
@@ -258,6 +296,10 @@ export default class Editor extends PureComponent<Props, State> {
         },
         nodeViews: {
           emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
+          mediaGroup: nodeViewFactory(this.providerFactory, {
+            mediaGroup: ReactMediaGroupNode,
+            media: ReactMediaNode,
+          }, true),
           mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
           panel: panelNodeView,
         },

@@ -1,14 +1,11 @@
 import styled from 'styled-components';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { layout } from '../../shared-variables';
 import { themeVariables } from '../../utils/theme';
 
 const size = akGridSizeUnitless * 3;
 const offsetLeft = akGridSizeUnitless * 3;
 const openPadding = `0 ${akGridSizeUnitless * 2}px 0 ${offsetLeft - (akGridSizeUnitless * 2)}px`;
 const compactPadding = `0 ${akGridSizeUnitless}px 0 0`;
-const closedHorizontalPadding = (layout.width.closed - (akGridSizeUnitless * 4) - size) / 2;
-const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPadding}px`;
 
 const NavigationItemIcon = styled.div`
   transition: padding 200ms;
@@ -19,7 +16,7 @@ const NavigationItemIcon = styled.div`
   ${({ hasNoPadding }) => (hasNoPadding ? 'padding: 0px' : '')};
 
   [data-__ak-navigation-container-closed="true"] & {
-    padding: ${closedPadding};
+    padding: 0;
     ${({ isDropdownTrigger }) => (isDropdownTrigger ? 'display: none' : '')}
   }
 

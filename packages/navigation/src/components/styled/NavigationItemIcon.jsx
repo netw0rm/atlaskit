@@ -1,13 +1,11 @@
 import styled from 'styled-components';
-import { layout, gridSize } from '../../shared-variables';
+import { gridSize } from '../../shared-variables';
 import { isInCompactGroup } from '../../theme/util';
 
 const size = gridSize * 3;
 const offsetLeft = gridSize * 3;
 const openPadding = `0 ${gridSize * 2}px 0 ${offsetLeft - (gridSize * 2)}px`;
 const compactPadding = `0 ${gridSize}px 0 0`;
-const closedHorizontalPadding = (layout.width.closed - (gridSize * 4) - size) / 2;
-const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPadding}px`;
 
 const NavigationItemIcon = styled.div`
   transition: padding 200ms;
@@ -18,7 +16,7 @@ const NavigationItemIcon = styled.div`
   ${({ hasNoPadding }) => (hasNoPadding ? 'padding: 0px' : '')};
 
   [data-__ak-navigation-container-closed="true"] & {
-    padding: ${closedPadding};
+    padding: 0;
     ${({ isDropdownTrigger }) => (isDropdownTrigger ? 'display: none' : '')}
   }
 

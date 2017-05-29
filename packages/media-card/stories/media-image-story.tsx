@@ -64,6 +64,14 @@ storiesOf('MediaImage', {})
             <MediaImage dataURI="https://wac-cdn-a.atlassian.com/dam/jcr:89e146b4-642e-41fc-8e65-7848337d7bdd/atlassian_charlie_square.png" />
           </ImageWrapper>
         )
+      }, {
+        title: 'Flexbox wrapper',
+        content: (
+          <div style={{width: '430px', height: '116px', display: 'flex', background: '#eee', border: '1px solid black'}}>
+            <MediaImage dataURI="https://wac-cdn-a.atlassian.com/dam/jcr:89e146b4-642e-41fc-8e65-7848337d7bdd/atlassian_charlie_square.png" />
+            <div style={{minWidth: '320px'}} />
+          </div>
+        )
       }]}
     </StoryList>
   ));

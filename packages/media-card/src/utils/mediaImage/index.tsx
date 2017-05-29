@@ -83,7 +83,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   render() {
-    const {transparentFallback, crop, dataURI} = this.props;
+    const {transparentFallback, crop, dataURI, fadeIn} = this.props;
     const {implicitNoCrop, backgroundSize} = this;
     const transparentBg = transparentFallback ? `, ${transparentFallbackBackground}` : '';
     const style = {
@@ -91,17 +91,20 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
       backgroundImage: `url(${dataURI})${transparentBg}`
     };
     const className = cx('media-card', {
-      'fade-in': this.props.fadeIn,
+      'fade-in': fadeIn,
       crop: crop && !implicitNoCrop
     });
 
     return <ImageViewWrapper className={className} style={style} />;
   }
 
-  private get isSmall() {
-    return parseInt(this.state.maxWidth, 0) < this.state.parentWidth || parseInt(this.state.maxHeight, 0) < this.state.parentHeight;
+  private get isSmallerThanWrapper() {
+    const {maxWidth, parentWidth, maxHeight, parentHeight} = this.state;
+
+    return parseInt(maxWidth, 0) < parentWidth && parseInt(maxHeight, 0) < parentHeight;
   }
 
+  // If users specifies a custom dimensions, we take that as a no-crop and prioritize it over the 'crop' property
   private get implicitNoCrop() {
     return this.props.width !== '100%' || this.props.height !== '100%';
   }
@@ -110,6 +113,6 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     const {width, height} = this.props;
     const {maxWidth, maxHeight} = this.state;
 
-    return this.implicitNoCrop ? `${width} ${height}, auto` : (this.isSmall ? `${maxWidth} ${maxHeight}, auto` : null);
+    return this.implicitNoCrop ? `${width} ${height}, auto` : (this.isSmallerThanWrapper ? `${maxWidth} ${maxHeight}, auto` : null);
   }
 }

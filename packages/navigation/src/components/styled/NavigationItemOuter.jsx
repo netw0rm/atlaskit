@@ -80,6 +80,7 @@ const colors = {
 };
 
 const borderRadius = 3;
+const nestedBackButtonMargin = 2;
 
 const defaultTheme = {
   [themeVariables.appearance]: appearanceEnum.container,
@@ -109,13 +110,36 @@ function getBackgroundCss(props) {
   `;
 }
 
+function getWidthCss(props) {
+  // If this is a back icon in a nested container navigation, width equals to height;
+  const width = props.isNestedBackButton ? `${getHeight(props.theme)}px` : '100%';
+
+  return `
+    width: ${width};
+  `;
+}
+
+function getNestedBackButtonCss() {
+  return `
+    flex-shrink: 0;
+    text-align: center;
+    margin-right: ${nestedBackButtonMargin}px;
+    [dir="rtl"] & {
+      margin-right: 0;
+      margin-left: ${nestedBackButtonMargin}px;
+    }
+  `;
+}
+
 const NavigationItemOuter = styled.div`
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
   height: ${({ theme }) => getHeight(theme)}px;
   position: relative;
   text-overflow: ellipsis;
-  width: 100%;
+  ${getWidthCss}
+  
+  ${({ isNestedBackButton }) => (isNestedBackButton ? getNestedBackButtonCss() : '')}
 
   button, a {
     ${getBackgroundCss}

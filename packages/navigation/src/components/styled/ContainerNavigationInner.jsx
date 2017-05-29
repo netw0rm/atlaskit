@@ -15,8 +15,9 @@ const ContainerNavigationInner = styled.div`
   padding-bottom: 0;
   width: 100%;
 
-  // needed to fix sticky header on retina displays 🙃
-  transform-style: ${({ isOpen }) => (isOpen ? 'preserve-3d' : 'inherit')};
+  // needed to fix sticky header on retina displays
+  // inherit value is for the collapsed state, to fix stacking context in Firefox and Edge
+  transform-style: ${({ theme }) => (theme.isCollapsed ? 'inherit' : 'preserve-3d')};
 `;
 
 ContainerNavigationInner.defaultProps = {

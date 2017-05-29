@@ -4,8 +4,8 @@ import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 import { normalizeUrl } from './utils';
 
-const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
-const emailAtEndOfLine = new RegExp(`${EMAIL_REGEX.source}$`);
+const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}\\s$`);
+const emailAtEndOfLine = new RegExp(`${EMAIL_REGEX.source}\\s$`);
 
 export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) => string): InputRule {
   return createInputRule(regexp, (state, match, start, end) => {
@@ -18,8 +18,8 @@ export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) =
     return state.tr.replaceWith(
       start,
       end,
-      schema.text(match[1], [markType])
-    );
+      schema.text(match[0], [markType])
+    ).removeMark(end, end + 1);
   });
 }
 

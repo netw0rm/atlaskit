@@ -39,7 +39,7 @@
     "@atlaskit/util-readme": "^3.0.0",
     "@atlaskit/dropdown-menu": "*",
     "@atlaskit/lozenge": "^1.0.0",
-    "@atlaskit/tooltip": "*"
+    "@atlaskit/tooltip": "^1.2.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

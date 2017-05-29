@@ -465,7 +465,7 @@ export class MediaPluginState {
         this.removeMediaNode(id);
         break;
 
-      case 'ready':
+      default:
         if (!activeUserAction) {
           return;
         }

@@ -467,7 +467,7 @@ describe('Media plugin', () => {
     );
   });
 
-  it('should remove old pickers and set new ones exactly when new media provider is set', async () => {
+  it('should set new pickers exactly when new media provider is set', async () => {
     const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
 
@@ -497,5 +497,43 @@ describe('Media plugin', () => {
     const mediaProvider2 = getFreshResolvedProvider();
     (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
     expect(pluginState.pickers).to.have.length(0);
+  });
+
+  // TODO use media-core status type for that, not own ones
+  // @see https://product-fabric.atlassian.net/browse/ED-1782
+  type MediaStateStatus = 'unfinalized' | 'unknown' | 'ready' | 'error' | 'cancelled';
+
+  [
+    'unfinalized',
+    'unknown',
+    'ready',
+    'error',
+    'cancelled',
+  ].forEach((status: MediaStateStatus) => {
+    it(`should remove ${status} media nodes`, async () => {
+      const mediaNode = media({ id: 'foo', type: 'file', collection: testCollectionName });
+      const { editorView, pluginState } = editor(
+        doc(
+          mediaGroup(mediaNode),
+          mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })),
+        ),
+      );
+
+      await resolvedProvider;
+
+      stateManager.updateState('foo', {
+        status,
+        id: 'foo',
+      });
+
+      const pos = getNodePos(pluginState, 'foo');
+      (pluginState as MediaPluginState).handleMediaNodeRemove(mediaNode, () => pos);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
+        )
+      ));
+    });
   });
 });

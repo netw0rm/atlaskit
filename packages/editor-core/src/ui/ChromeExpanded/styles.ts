@@ -1,6 +1,7 @@
 import { akEditorSubtleAccent, akEditorMentionSelected } from '../../styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { browser } from '../../prosemirror';
 
 export const createNestedListStyles = (): any => {
   const styles = {};
@@ -157,6 +158,8 @@ export const Toolbar = styled.div`
     align-items: center;
     display: flex;
     margin-left: 10px;
+    /* Firefox toolbar icons fix: https://product-fabric.atlassian.net/browse/ED-1787 */
+    ${browser.webkit ? '' : 'min-width: 0;'}
 
     &:first-child {
       margin-left: 0;

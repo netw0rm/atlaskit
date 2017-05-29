@@ -705,6 +705,48 @@ describe('EmojiResource', () => {
     });
   });
 
+  describe('#findById', () => {
+    it('unknown id', () => {
+      let resolveProvider1;
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: new Promise(resolve => {
+          resolveProvider1 = resolve;
+        }),
+      });
+
+      const resource = new EmojiResource(defaultApiConfig);
+
+      const emojiPromise = resource.findById('unknownid');
+      const done = emojiPromise.then(emoji => {
+        expect(emoji).to.equal(undefined);
+      });
+      resolveProvider1(providerServiceData1);
+      return done;
+    });
+
+    it('valid emoji id', () => {
+      let resolveProvider1;
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: new Promise(resolve => {
+          resolveProvider1 = resolve;
+        }),
+      });
+
+      const resource = new EmojiResource(defaultApiConfig);
+
+      const emojiPromise = resource.findById('1f601');
+      const done = emojiPromise.then(emoji => {
+        checkEmoji(grinEmoji, emoji);
+      });
+      resolveProvider1(providerServiceData1);
+      return done;
+    });
+  });
+
   describe('#findByShortcut', () => {
     it('Before loaded, promise eventually resolved; one provider', () => {
       let resolveProvider1;

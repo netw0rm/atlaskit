@@ -1,11 +1,13 @@
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import * as commands from '../../commands';
+import * as twemoji from 'twemoji';
 import {
   EditorState,
   EditorView,
   Schema,
   Plugin,
   PluginKey,
+  TextSelection,
 } from '../../prosemirror';
 import { isMarkAllowedAtPosition } from '../../utils';
 import { inputRulePlugin } from './input-rules';
@@ -223,7 +225,56 @@ const plugin = new Plugin({
         pluginState.update(view.state, view);
       }
     };
-  }
+  },
+   props: {
+    // TODO Note this implementation only expects to handle a text parameter containing a single emoji (or non-emoji character)
+    handleTextInput: (view: EditorView, from: number, to: number, text: string) => {
+      console.log('PAC: handleTextInput. from = ' + from + ', to = ' + to + ' and text = ' + text);
+
+      let emojiId;
+
+      // Use twemoji.replace to understand the String but not to actually do anything to the inserted text.
+      twemoji.replace(text, function(rawText, offset, fullStr) {
+        // only do our thing if a single emoji is being inserted. If somehow a String containing more than just a single emoji gets through do nothing
+        // as a safe fallback. (Alternative is to lose entered content which is not desirable.)
+        if (rawText !== fullStr) {
+          return rawText;
+        }
+
+        emojiId = twemoji.convert.toCodePoint(rawText.includes(String.fromCharCode(0x200D)) ? rawText : rawText.replace(/\uFE0F/g, ''));
+        return rawText;
+      });
+
+      const state = view.state;
+      const emojiProvider = this.stateKey.getState(state).emojiProvider;
+
+      if (emojiId && emojiProvider) {
+        console.log('PAC: We have an emojiId and an emojiProvider (' + this.emojiProvider + ')');
+        // insert a mark around the native emoji with an attribute containing the emoji Id
+        const schema = state.schema;
+        const markedNativeEmojiText = schema.text(text, schema.mark('nativeEmoji', { emojiId : emojiId }));
+        view.dispatch(state.tr.replaceWith(from, to, markedNativeEmojiText));
+
+        const newState = view.state;
+        if (newState.selection) {
+          // cancel any existing text selection and move the cursor to immediately following the inserted emoji
+          view.dispatch(newState.tr.setSelection(new TextSelection(newState.doc.resolve(from + 1))));
+        }
+
+        // get the EmojiId from the EmojiProvider
+        emojiProvider.then(provider => {
+          provider.findById(emojiId).then((loadedEmoji) => {
+            // create an emoji ProseMirror node and insert it at the mark
+          });
+
+        });
+
+        console.log('PAC: Marked up an emoji with id = ' + emojiId);
+        return true;
+      }
+      return false;
+    }
+   }
 });
 
 const plugins = (schema: Schema<any, any>) => {

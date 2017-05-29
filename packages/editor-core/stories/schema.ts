@@ -27,6 +27,7 @@ export default createSchema({
     'link',
     'mentionQuery',
     'emojiQuery',
+    'nativeEmoji',
     'textColor',
     'subsup',
   ]

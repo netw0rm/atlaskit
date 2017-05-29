@@ -31,6 +31,7 @@ import {
   mentionQuery,
   emojiQuery,
   textColor,
+  nativeEmoji,
 } from '../schema';
 
 const nodesInOrder: SchemaBuiltInItem[] = [
@@ -63,6 +64,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'code', spec: code },
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
+  { name: 'nativeEmoji', spec: nativeEmoji },
   { name: 'textColor', spec: textColor },
 ];
 

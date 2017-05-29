@@ -1,4 +1,4 @@
-import { NodeSpec } from '../../prosemirror';
+import { Node, NodeSpec } from '../../prosemirror';
 
 export const emoji: NodeSpec = {
   inline: true,
@@ -16,7 +16,7 @@ export const emoji: NodeSpec = {
       text: dom.getAttribute('data-emoji-text')!,
     })
   }],
-  toDOM(node: any): [string, any, string] {
+  toDOM(node: Node): [string, any, string] {
     const { shortName, id, text } = node.attrs;
     const attrs = {
       'data-emoji-short-name': shortName,
@@ -24,8 +24,6 @@ export const emoji: NodeSpec = {
       'data-emoji-text': text,
       'contenteditable': 'false',
     };
-    // Don't render any text as it will be replaced quite quickly by
-    // the placeholder in ResourcedEmoji
-    return ['span', attrs, ' '];
+    return ['span', attrs, text];
   }
 };

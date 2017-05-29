@@ -80,10 +80,14 @@ export default class PickerFacade {
 
     picker.removeAllListeners();
 
-    if (picker.teardown) {
-      picker.teardown();
-    } else if (picker.deactivate) {
-      picker.deactivate();
+    try {
+      if (picker.teardown) {
+        picker.teardown();
+      } else if (picker.deactivate) {
+        picker.deactivate();
+      }
+    } catch (ex) {
+      // TODO: report errors somewhere
     }
 
     this.picker = null;

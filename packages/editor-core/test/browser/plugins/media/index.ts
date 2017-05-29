@@ -41,12 +41,16 @@ import { default as defaultSchema, compactSchema } from '../../../../src/test-he
 chai.use(chaiPlugin);
 
 const noop = () => {};
+const stateManager = new DefaultMediaStateManager();
+const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+
+const getFreshResolvedProvider = () => {
+  return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+};
 
 describe('Media plugin', () => {
   const fixture = fixtures();
-  const stateManager = new DefaultMediaStateManager();
-  const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
-  const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+  const resolvedProvider = getFreshResolvedProvider();
   const testFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();
@@ -461,5 +465,37 @@ describe('Media plugin', () => {
         p(),
       )
     );
+  });
+
+  it('should remove old pickers and set new ones exactly when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
+    expect(pluginState.pickers).to.have.length(0);
+
+    const mediaProvider1 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    const mediaProvider2 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+
+    const resolvedMediaProvider1 = await mediaProvider1;
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider1.uploadContext;
+    await resolvedMediaProvider2.uploadContext;
+
+    expect(pluginState.pickers).to.have.length(4);
+  });
+
+  it('should remove old pickers exactly when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
+    expect(pluginState.pickers).to.have.length(0);
+
+    const mediaProvider1 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+
+    const resolvedMediaProvider1 = await mediaProvider1;
+    await resolvedMediaProvider1.uploadContext;
+
+    const mediaProvider2 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    expect(pluginState.pickers).to.have.length(0);
   });
 });

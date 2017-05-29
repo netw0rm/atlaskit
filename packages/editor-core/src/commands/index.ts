@@ -6,6 +6,8 @@ import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
 import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
+import { URL_REGEX } from '../plugins/hyperlink/regex';
+import { normalizeUrl } from '../plugins/hyperlink/utils';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
@@ -208,7 +210,7 @@ export function toggleCodeBlock(): Command {
 
 export function setNormalText(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from : initialFrom } = state.selection;
+    const { $from: initialFrom } = state.selection;
     const currentBlock = initialFrom.parent;
 
     if (currentBlock.type !== state.schema.nodes.paragraph) {
@@ -223,7 +225,7 @@ export function setNormalText(): Command {
 
 export function toggleHeading(level: number): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from : initialFrom } = state.selection;
+    const { $from: initialFrom } = state.selection;
     const currentBlock = initialFrom.parent;
     const { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
@@ -284,8 +286,37 @@ export function showLinkPanel(): Command {
   };
 }
 
+export function convertToHyperlink(): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean | null {
+    const parent = state.selection.$from.parent;
+    if (parent.isTextblock) {
+      const lastChild = parent.lastChild;
+      if (lastChild && lastChild!.isText) {
+        const words = lastChild.text!.split(' ');
+        const lastWord = words[words.length - 1];
+        const match = new RegExp(`${URL_REGEX.source}$`).exec(lastWord);
+
+        if (match) {
+          const start = state.selection.$from.pos - match[1].length;
+          const end = state.selection.$from.pos;
+
+          const url = normalizeUrl(match[1]);
+          const markType = state.schema.mark('link', { href: url, });
+
+          dispatch(state.tr.replaceWith(
+            start,
+            end,
+            state.schema.text(match[1], [markType])
+          ));
+        }
+      }
+    }
+    return null;
+  };
+}
+
 export function insertNewLine(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean | null {
     const { $from } = state.selection;
     const node = $from.parent;
     const { hardBreak } = state.schema.nodes;
@@ -295,7 +326,7 @@ export function insertNewLine(): Command {
 
       if (node.type.validContent(Fragment.from(hardBreakNode))) {
         dispatch(state.tr.replaceSelectionWith(hardBreakNode));
-        return true;
+        return null;
       }
     }
 
@@ -464,7 +495,7 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 
 function toggleNodeType(nodeType: NodeType): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    let { $from : selFrom } = state.selection;
+    let { $from: selFrom } = state.selection;
     const potentialNodePresent = selFrom.node(selFrom.depth - 1);
 
     // lift the node and convert to given nodeType
@@ -488,5 +519,5 @@ function toggleNodeType(nodeType: NodeType): Command {
 }
 
 export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean;
+  (state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean | null;
 }

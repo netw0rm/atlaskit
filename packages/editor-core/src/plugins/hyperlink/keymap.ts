@@ -15,6 +15,24 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     list
   );
 
+  keymaps.bindKeymapWithCommand(
+    keymaps.enter.common!,
+    trackAndInvoke(
+      'atlassian.editor.format.hyperlink.autoformatting',
+      commands.convertToHyperlink()
+    ),
+    list
+  );
+
+  keymaps.bindKeymapWithCommand(
+    keymaps.insertNewLine.common!,
+    trackAndInvoke(
+      'atlassian.editor.format.hyperlink.autoformatting',
+      commands.convertToHyperlink()
+    ),
+    list
+  );
+
   return keymap(list);
 }
 

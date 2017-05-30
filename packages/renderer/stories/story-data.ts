@@ -380,6 +380,15 @@ export const document = {
       ]
     },
     {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
       type: 'mediaGroup',
       content: [
         {

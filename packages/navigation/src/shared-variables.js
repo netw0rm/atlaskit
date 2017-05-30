@@ -73,3 +73,11 @@ export const globalPrimaryActions = (() => {
     itemSizes,
   };
 })();
+
+export const item = {
+  borderRadius: 3,
+  width: {
+    compact: gridSize * 4.5,
+    standard: gridSize * 5,
+  },
+};

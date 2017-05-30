@@ -7,7 +7,7 @@ import {
   Plugin,
   PluginKey,
 } from '../../prosemirror';
-import { isMarkAllowedAtPosition } from '../../utils';
+import { isMarkExcludedAtPosition } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
@@ -121,7 +121,7 @@ export class EmojiState {
   emojiDisabled() {
     const { schema, selection } = this.state;
     const { emojiQuery } = schema.marks;
-    return isMarkAllowedAtPosition(emojiQuery, selection);
+    return isMarkExcludedAtPosition(emojiQuery, selection);
   }
 
   private canAddEmojiToActiveNode(): boolean {

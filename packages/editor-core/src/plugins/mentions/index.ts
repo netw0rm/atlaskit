@@ -9,7 +9,7 @@ import {
   Fragment
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
-import { isMarkAllowedAtPosition } from '../../utils';
+import { isMarkExcludedAtPosition } from '../../utils';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -113,7 +113,7 @@ export class MentionsState {
   mentionDisabled() {
     const { schema, selection } = this.state;
     const { mentionQuery } = schema.marks;
-    return isMarkAllowedAtPosition(mentionQuery, selection);
+    return isMarkExcludedAtPosition(mentionQuery, selection);
   }
 
   private findMentionQueryMark() {

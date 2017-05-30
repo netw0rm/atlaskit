@@ -157,6 +157,8 @@ export const Toolbar = styled.div`
     align-items: center;
     display: flex;
     margin-left: 10px;
+    /* Firefox|IE toolbar icons fix: https://product-fabric.atlassian.net/browse/ED-1787 */
+    min-width: 0;
 
     &:first-child {
       margin-left: 0;

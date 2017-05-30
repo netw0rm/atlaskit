@@ -3,10 +3,10 @@ import chai from 'chai';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import TabsNav from '../../src/internal/TabsNav';
-import styles from '../../src/styles.less';
+import TabsNav from '../../src/components/TabsNav';
 import { name } from '../../package.json';
 import { sampleTabs } from './_constants';
+import { TabLabels, TabLabel } from '../../src/styled/TabsNav';
 
 const { expect } = chai;
 
@@ -31,9 +31,9 @@ describe(name, () => {
       it('should render a list container', () => {
         const wrapper = shallow(<TabsNav />);
         expect(wrapper.type()).to.equal('div');
-        const ul = wrapper.find('ul').at(0);
-        expect(ul.props().className).to.equal(styles.akTabLabels);
-        expect(ul.props().role).to.equal('tablist');
+        const tabLabel = wrapper.find(TabLabels);
+        expect(tabLabel.length).to.equal(1);
+        expect(tabLabel.props().role).to.equal('tablist');
       });
     });
 
@@ -41,7 +41,7 @@ describe(name, () => {
       describe('tabs prop', () => {
         it('should render a matching list item for each tab', () => {
           const wrapper = shallow(<TabsNav tabs={sampleTabs} onKeyboardNav={kbNav} />);
-          const items = wrapper.find(`.${styles.akTabLabel}`);
+          const items = wrapper.find(TabLabel);
           expect(items).to.have.length(sampleTabs.length);
 
           items.forEach((item, i) => {
@@ -52,9 +52,7 @@ describe(name, () => {
             expect(item.props().children).to.equal(sampleTabs[i].label);
             if (sampleTabs[i].isSelected) {
               expect(item.props()['aria-selected']).to.equal(sampleTabs[i].isSelected);
-              expect(item.props().className).to.contain(styles.akTabLabelSelected);
-            } else {
-              expect(item.props().className).to.equal(styles.akTabLabel);
+              expect(item.props().isSelected).to.equal(true);
             }
           });
         });
@@ -71,7 +69,7 @@ describe(name, () => {
               onKeyboardNav={spy}
               tabs={sampleTabs}
             />);
-            wrapper.find(`.${styles.akTabLabel}`).at(1).simulate('keyDown', { key });
+            wrapper.find(TabLabel).at(1).simulate('keyDown', { key });
             expect(spy.calledOnce).to.equal(true);
             expect(spy.args[0][0]).to.equal(key);
           });

@@ -39,7 +39,6 @@ const pickerStyle = style({
   $nest: {
     '&.miniMode': {
       display: 'inline-block',
-      overflow: 'hidden',
       margin: '0 4px',
     }
   }

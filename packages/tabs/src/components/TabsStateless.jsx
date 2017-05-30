@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import TabsDiv from '../styled/Tabs';
 
-import styles from './styles.less';
-import TabPane from './internal/TabPane';
-import TabsNav from './internal/TabsNav';
+import TabPane from './TabPane';
+import TabsNav from './TabsNav';
 
 export default class Tabs extends PureComponent {
   static propTypes = {
@@ -31,13 +31,13 @@ export default class Tabs extends PureComponent {
     ) : null;
 
     return (
-      <div className={styles.akTabsRoot}>
+      <TabsDiv>
         <TabsNav
           onKeyboardNav={this.props.onKeyboardNav}
           tabs={this.props.tabs}
         />
         {selectedTab}
-      </div>
+      </TabsDiv>
     );
   }
 }

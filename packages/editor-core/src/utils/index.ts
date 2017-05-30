@@ -28,7 +28,7 @@ export {
  * Check if a mark is allowed at a given position
  */
 export function isMarkExcludedAtPosition(markType: MarkType, selection: Selection) {
-  return selection.$from.marks().filter(mark => mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1).length > 0;
+  return selection.$from.marks().some(mark => !!mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1);
 }
 
 /**

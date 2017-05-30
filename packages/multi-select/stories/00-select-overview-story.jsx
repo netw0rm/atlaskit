@@ -38,10 +38,10 @@ import DummyGroup from '../src/internal/DummyGroup';
 import DummyTag from '../src/internal/DummyTag';
 import { name, description } from '../package.json';
 
-import SmartMultiSelect, { StatelessMultiSelect } from '../src';
+import SmartMultiSelect, { MultiSelectStateless } from '../src';
 import {
-  statelessMultiSelectPropTypes,
-  statelessMultiSelectPropDescriptions,
+  MultiSelectStatelessPropTypes,
+  MultiSelectStatelessPropDescriptions,
   smartMultiSelectPropDescriptions,
   smartMultiSelectPropTypes,
   itemPropDescriptions,
@@ -95,9 +95,9 @@ storiesOf(name, module)
       </Code>
       {CustomMultiSelectOverview}
       <Props
-        component={StatelessMultiSelect}
-        descriptions={statelessMultiSelectPropDescriptions}
-        types={statelessMultiSelectPropTypes}
+        component={MultiSelectStateless}
+        descriptions={MultiSelectStatelessPropDescriptions}
+        types={MultiSelectStatelessPropTypes}
       />
     </Chrome>
   ))

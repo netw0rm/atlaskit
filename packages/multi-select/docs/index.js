@@ -23,7 +23,7 @@ export const description = (
       selected items, and a stateless component if you want to handle updates manually.
     </p>
     <Usage>
-      {"import MultiSelect, { StatelessMultiSelect } from '@atlaskit/multi-select'"}
+      {"import MultiSelect, { MultiSelectStateless } from '@atlaskit/multi-select'"}
     </Usage>
   </div>
 );

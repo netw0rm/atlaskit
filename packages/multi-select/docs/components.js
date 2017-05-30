@@ -1,6 +1,6 @@
 const path = require('path');
 
 module.exports = [
-  { name: 'Multi Select', src: path.join(__dirname, '../src/index.jsx') },
-  { name: 'StatelessMultiSelect', src: path.join(__dirname, '../src/StatelessMultiSelect.jsx') },
+  { name: 'Multi Select', src: path.join(__dirname, '../src/components/Stateful.jsx') },
+  { name: 'MultiSelectStateless', src: path.join(__dirname, '../src/components/Stateless.jsx') },
 ];

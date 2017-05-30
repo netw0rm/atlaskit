@@ -1,4 +1,4 @@
-const statelessMultiSelectPropDescriptions = {
+const multiSelectStatelessPropDescriptions = {
   appearance: 'Controls the appearance of the dropdown. Available types: \'default\', \'subtle\'.',
   filterValue: 'Text used in the filter input box to filter items. Use the `onFilterChange` prop to keep this in sync with the users text',
   id: 'The id of the component (same as the regular HTML id attribute)',
@@ -33,7 +33,7 @@ const statelessMultiSelectPropTypes = {
 
 // we can reuse most of the descriptions from the stateless component here to make updating easier
 const smartMultiSelectPropDescriptions = {
-  ...statelessMultiSelectPropDescriptions,
+  ...multiSelectStatelessPropDescriptions,
   defaultSelected: 'List of items that should be selected by default (must be references to the actual elements from the items prop)',
   isDefaultOpen: 'Boolean flag to indicate if a multi-select\'s dropdown should be open by default (user interaction will change this state but not update this prop).',
   onFilterChange: 'Callback called when the user changes the filter value.',
@@ -78,7 +78,7 @@ const tagPropDescriptions = {
 
 /* eslint-disable import/prefer-default-export */
 export {
-  statelessMultiSelectPropDescriptions,
+  multiSelectStatelessPropDescriptions,
   statelessMultiSelectPropTypes,
   smartMultiSelectPropDescriptions,
   smartMultiSelectPropTypes,

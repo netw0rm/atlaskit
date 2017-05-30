@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 
-import { StatelessMultiSelect } from '@atlaskit/multi-select';
+import { MultiSelectStateless } from '@atlaskit/multi-select';
 
 export default class CustomMultiSelect extends PureComponent {
   static propTypes = {
@@ -10,7 +10,7 @@ export default class CustomMultiSelect extends PureComponent {
     shouldFocus: PropTypes.bool,
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    items: StatelessMultiSelect.propTypes.items, // Array, same shape as StatelessMultiSelect
+    items: MultiSelectStateless.propTypes.items, // Array, same shape as MultiSelectStateless
     label: PropTypes.string,
     name: PropTypes.string,
     placeholder: PropTypes.string,
@@ -23,7 +23,7 @@ export default class CustomMultiSelect extends PureComponent {
     isRequired: false,
   }
 
-  // we need to keep track of this state ourselves and pass it back into the StatelessMultiSelect
+  // we need to keep track of this state ourselves and pass it back into the MultiSelectStateless
   state = {
     isOpen: this.props.isDefaultOpen,
     selectedItems: [],
@@ -62,7 +62,7 @@ export default class CustomMultiSelect extends PureComponent {
 
   render() {
     return (
-      <StatelessMultiSelect
+      <MultiSelectStateless
         filterValue={this.state.filterValue}
         id={this.props.id}
         isDisabled={this.props.isDisabled}

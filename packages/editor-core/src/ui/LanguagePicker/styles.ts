@@ -1,7 +1,6 @@
 import { akColorN10 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import FloatingToolbarDefault from '../FloatingToolbar';
-import ToolbarButtonDefault from '../ToolbarButton';
 
 // tslint:disable-next-line:variable-name
 export const FloatingToolbar: any = styled(FloatingToolbarDefault)`

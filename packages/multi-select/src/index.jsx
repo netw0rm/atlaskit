@@ -97,6 +97,12 @@ export default class AkMultiSelect extends PureComponent {
     items: this.props.items,
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.items !== this.state.items) {
+      this.setState({ items: [...nextProps.items] });
+    }
+  }
+
   selectItem = (item) => {
     const selectedItems = [...this.state.selectedItems, item];
     this.setState({ selectedItems });

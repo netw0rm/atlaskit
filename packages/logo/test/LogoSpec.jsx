@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import Logo from '../src/Logo';
+import Logo from '../src/components/LogoBase';
 
 describe('<Logo />', () => {
   describe('props', () => {

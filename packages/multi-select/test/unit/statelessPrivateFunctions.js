@@ -385,7 +385,7 @@ describe(`${name} - stateless`, () => {
         instance.handleItemCreate({});
         expect(spyCreate.called).to.equal(false);
         expect(spySelect.calledOnce).to.equal(true);
-        expect(spySelect.calledWith({ value: 1, content: 'Test1' }, { event: {} }));
+        expect(spySelect.calledWith({ value: 1, content: 'Test1' }, { event: {} })).to.equal(true);
       });
     });
 

@@ -6,6 +6,7 @@ import InteractiveWrapper from './InteractiveWrapper';
 import NavigationItemIcon from '../styled/NavigationItemIcon';
 import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemAction from '../styled/NavigationItemAction';
+import NavigationItemCaption from '../styled/NavigationItemCaption';
 import NavigationItemText from '../styled/NavigationItemText';
 import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
 import NavigationItemInner from '../styled/NavigationItemInner';
@@ -16,6 +17,7 @@ import NavigationItemSubText from '../styled/NavigationItemSubText';
 export default class NavigationItem extends PureComponent {
   static propTypes = {
     action: PropTypes.node,
+    caption: PropTypes.string,
     href: PropTypes.string,
     icon: PropTypes.node,
     dropIcon: PropTypes.node,
@@ -75,6 +77,10 @@ export default class NavigationItem extends PureComponent {
       </NavigationItemAfter>
     : null);
 
+    const wrappedCaption = this.props.caption
+      ? <NavigationItemCaption>{this.props.caption}</NavigationItemCaption>
+      : null;
+
     const interactiveWrapperProps = {
       onMouseDown: this.onMouseDown,
       onClick: this.props.onClick,
@@ -98,6 +104,7 @@ export default class NavigationItem extends PureComponent {
             <NavigationItemText>
               <NavigationItemMainText>
                 {this.props.text}
+                {wrappedCaption}
               </NavigationItemMainText>
               <NavigationItemSubText>
                 {this.props.subText}

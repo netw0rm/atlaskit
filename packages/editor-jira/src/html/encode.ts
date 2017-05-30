@@ -9,6 +9,7 @@ import {
   isSchemaWithCodeBlock,
   isSchemaWithLists,
   isSchemaWithMentions,
+  isSchemaWithMedia,
 } from '../schema';
 
 export interface JIRACustomEncoders {
@@ -44,6 +45,8 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
       orderedList,
       paragraph,
       rule,
+      mediaGroup,
+      media
     } = schema.nodes;
 
     if (node.isText) {
@@ -78,6 +81,15 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
 
     if (isSchemaWithBlockQuotes(schema) && node.type === blockquote) {
       return encodeBlockQuote(node);
+    }
+
+    if (isSchemaWithMedia(schema)) {
+      // TODO: Replace with encoding in ED-1726
+      if (node.type === media) {
+        return encodeText(node);
+      } else if (node.type === mediaGroup) {
+        return encodeText(node);
+      }
     }
 
     throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);

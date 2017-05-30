@@ -9,7 +9,7 @@ import sinon from 'sinon';
 
 import { name } from '../../package.json';
 
-import Menu, { StatelessDropdownMenu as StatelessMenu } from '../../src';
+import Menu, { DropdownMenuStateless as StatelessMenu } from '../../src';
 
 const itemsList = [
   {
@@ -191,7 +191,7 @@ describe(name, () => {
   });
 
   describe('onItemActivated', () => {
-    it('should be call when an item was activated', () => {
+    it('should be called when an item was activated', () => {
       const items = [{
         heading: 'group',
         items: [
@@ -199,14 +199,16 @@ describe(name, () => {
         ],
       }];
       const spy = sinon.spy();
-      const wrapper = mount(<Menu items={items} defaultOpen onItemActivated={spy}>
-        test</Menu>);
+      const wrapper = mount(
+        <Menu items={items} defaultOpen onItemActivated={spy}>
+          Test
+        </Menu>
+      );
       const item = wrapper.find('[role="menuitemcheckbox"]');
       item.simulate('click');
-      expect(spy.called).to.equal(true);
+      expect(spy.calledOnce).to.equal(true);
       expect(spy.calledWith(sinon.match({
-        item: sinon.match.defined,
-        event: sinon.match.defined,
+        item: sinon.match({ content: 'item 1', type: 'checkbox' }),
       }))).to.equal(true);
     });
 

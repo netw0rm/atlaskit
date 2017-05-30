@@ -719,13 +719,19 @@ babel-eslint@^7.1.1:
     babylon "^6.13.0"
     lodash.pickby "^4.6.0"
 
-babel-explode-module@^1.2.0, babel-explode-module@^1.2.1:
+babel-explode-module@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/babel-explode-module/-/babel-explode-module-1.2.1.tgz#287b5e73ea67f9891ad90d9b47750892bb26660b"
   dependencies:
     babel-types "^6.24.1"
 
-babel-file-loader@^1.0.0, babel-file-loader@^1.0.1:
+babel-explode-module@^1.3.2:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/babel-explode-module/-/babel-explode-module-1.3.3.tgz#c86c8a9c286a76579d9c77dae41ec0cf0e2a34d8"
+  dependencies:
+    babel-types "^6.24.1"
+
+babel-file-loader@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/babel-file-loader/-/babel-file-loader-1.0.1.tgz#3bf60520c2fa52cafb4cbd37921eacf582345390"
   dependencies:
@@ -903,11 +909,11 @@ babel-helper-replace-supers@^6.18.0, babel-helper-replace-supers@^6.8.0:
     babel-traverse "^6.18.0"
     babel-types "^6.18.0"
 
-babel-helper-simplify-module@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/babel-helper-simplify-module/-/babel-helper-simplify-module-2.1.0.tgz#1e7f1b7bd385fb58042e9b39c3f64bf270537db4"
+babel-helper-simplify-module@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/babel-helper-simplify-module/-/babel-helper-simplify-module-2.1.2.tgz#5f40593a1ca6ffdc3d2ed5550b39f967e714610c"
   dependencies:
-    babel-explode-module "^1.2.0"
+    babel-explode-module "^1.3.2"
 
 babel-helpers@^6.16.0:
   version "6.16.0"
@@ -999,14 +1005,14 @@ babel-plugin-react-docgen@^1.4.1:
     lodash "4.x.x"
     react-docgen "^2.12.1"
 
-babel-plugin-react-flow-props-to-prop-types@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.5.0.tgz#1b95b675f2ffde9a063abda1eafb4ce3f8204bd5"
+babel-plugin-react-flow-props-to-prop-types@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.6.0.tgz#051f236700904d580b6e6c10aa2131794d4be15d"
   dependencies:
     babel-errors "^1.1.0"
     babel-explode-module "^1.2.1"
-    babel-file-loader "^1.0.0"
-    babel-helper-simplify-module "^2.1.0"
+    babel-file-loader "^1.0.1"
+    babel-helper-simplify-module "^2.1.1"
     babel-log "^1.0.3"
     babel-react-components "^1.0.1"
     babel-types "^6.24.1"

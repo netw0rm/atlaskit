@@ -6,11 +6,27 @@
 const fs = require('fs');
 const path = require('path');
 const reactDocs = require('react-docgen');
+const babel = require('babel-core');
+const createBabylonOptions = require('babylon-options');
 
 const getExternalMetadata = require('./getExternalMetadata');
 const template = require('./data.template');
 
-const parseProps = src => reactDocs.parse(fs.readFileSync(src).toString());
+const parseProps = (src) => {
+  const fileContents = fs.readFileSync(src).toString();
+  const transformed = babel.transform(fileContents, {
+    filename: src,
+    babelrc: false,
+    parserOpts: createBabylonOptions({
+      stage: 0,
+      plugins: ['flow', 'jsx'],
+    }),
+    plugins: [
+      require('babel-plugin-react-flow-props-to-prop-types').default,
+    ],
+  }).code;
+  return reactDocs.parse(transformed);
+};
 
 // Loop through the folders up a level, i.e. atlaskit/packages to build up
 // a list of components that we process and filter. Falsy values are filtered
@@ -37,7 +53,13 @@ const components = fs.readdirSync('..').map((key) => {
     const sourcesFile = path.resolve(__dirname, '../../', key, 'docs', 'components.js');
     docs = fs.statSync(docsFile).isFile();
     props = require(sourcesFile).map(({ name, src }) => ({ name, props: parseProps(src) }));
-  } catch (e) {}
+  } catch (e) {
+    if (e.code !== 'ENOENT') {
+      throw e;
+    } else {
+      return null;
+    }
+  }
   // The name of the component may be in the "ak:component" section; we default
   // to the directory name if it isn't present
   const name = pkg['ak:component'].name || key;

@@ -8,7 +8,6 @@ export { emojiQuery } from './marks/emoji-query';
 export { mentionQuery } from './marks/mention-query';
 export { subsup } from './marks/subsup';
 export { textColor } from './marks/text-color';
-export { nativeEmoji } from './marks/native-emoji';
 
 export { doc } from './nodes/doc';
 export { docCompact } from './nodes/doc';
@@ -21,6 +20,7 @@ export { rule } from './nodes/rule';
 export { orderedList } from './nodes/ordered-list';
 export { paragraph } from './nodes/paragraph';
 export { emoji } from './nodes/emoji';
+export { nativeEmoji } from './nodes/native-emoji';
 export { image } from './nodes/image';
 export { mention } from './nodes/mention';
 export { listItem } from './nodes/list-item';

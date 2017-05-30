@@ -19,6 +19,7 @@ import {
   mediaGroup,
   hardBreak,
   emoji,
+  nativeEmoji,
 
   // Marks
   link,
@@ -31,7 +32,6 @@ import {
   mentionQuery,
   emojiQuery,
   textColor,
-  nativeEmoji,
 } from '../schema';
 
 const nodesInOrder: SchemaBuiltInItem[] = [
@@ -52,6 +52,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
+  { name: 'nativeEmoji', spec: nativeEmoji },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [
@@ -64,7 +65,6 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'code', spec: code },
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
-  { name: 'nativeEmoji', spec: nativeEmoji },
   { name: 'textColor', spec: textColor },
 ];
 

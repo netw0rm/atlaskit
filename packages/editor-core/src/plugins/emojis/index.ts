@@ -1,6 +1,5 @@
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import * as commands from '../../commands';
-import * as twemoji from 'twemoji';
 import {
   EditorState,
   EditorView,
@@ -13,6 +12,7 @@ import { isMarkAllowedAtPosition } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
+import { getIdForUnicodeEmoji } from './unicode-emoji';
 
 export type StateChangeHandler = (state: EmojiState) => any;
 
@@ -205,6 +205,47 @@ export class EmojiState {
 
 export const stateKey = new PluginKey('emojiPlugin');
 
+/**
+ * Wrap the 'text' in the Editor with a native emoji node marker, so it can be dealt with later.
+ * If no emojiProvider has been configured then the native emoji will not be marked.
+ *
+ * @param view the EditorView to operate on
+ * @param emojiId the id of the emoji represented by the text
+ * @param from the text starting position in the document
+ * @param to the text ending position in the document
+ * @param text the text to be marked if it is a native emoji
+ * @return true if the native emoji was marked; otherwise false
+ */
+// const wrapNativeEmojiWithMark = function(view: EditorView, emojiId: string, from: number, to: number, text: string): void {
+//   const state = view.state;
+//   // insert a mark around the native emoji with an attribute containing the emoji Id
+//   const schema = state.schema;
+//   const markedNativeEmojiText = schema.text(text, schema.mark('nativeEmoji', { emojiId : emojiId }));
+//   view.dispatch(state.tr.replaceWith(from, to, markedNativeEmojiText));
+
+//   const newState = view.state;
+//   if (newState.selection) {
+//     // cancel any existing text selection and move the cursor to immediately following the inserted emoji
+//     view.dispatch(newState.tr.setSelection(new TextSelection(newState.doc.resolve(from + 1))));
+//   }
+// }
+
+// const replaceNativeEmojiMarkWithEmoji = function(view: EditorView, providerPromise: Promise<EmojiProvider>, emojiId: string): void {
+//   // now find the emoji from the provider and replace the mark with a proper emoji node
+//   providerPromise.then(provider => {
+//     provider.findById(emojiId).then((loadedEmoji) => {
+//       if (loadedEmoji) {
+//         // create an emoji ProseMirror node and insert it at the mark
+
+//       } else {
+//         // Remove the mark and stick with the native emoji
+
+//       }
+//     });
+
+//   });
+// }
+
 const plugin = new Plugin({
   state: {
     init(config, state) {
@@ -227,33 +268,14 @@ const plugin = new Plugin({
     };
   },
    props: {
-    // TODO Note this implementation only expects to handle a text parameter containing a single emoji (or non-emoji character)
     handleTextInput: (view: EditorView, from: number, to: number, text: string) => {
       console.log('PAC: handleTextInput. from = ' + from + ', to = ' + to + ' and text = ' + text);
+      let emojiId = getIdForUnicodeEmoji(text);
+      if (emojiId) {
+        const state = view.state;
+        const nativeEmoji = state.schema.nodes.nativeEmoji.create({ id: emojiId, text: text });
 
-      let emojiId;
-
-      // Use twemoji.replace to understand the String but not to actually do anything to the inserted text.
-      twemoji.replace(text, function(rawText, offset, fullStr) {
-        // only do our thing if a single emoji is being inserted. If somehow a String containing more than just a single emoji gets through do nothing
-        // as a safe fallback. (Alternative is to lose entered content which is not desirable.)
-        if (rawText !== fullStr) {
-          return rawText;
-        }
-
-        emojiId = twemoji.convert.toCodePoint(rawText.includes(String.fromCharCode(0x200D)) ? rawText : rawText.replace(/\uFE0F/g, ''));
-        return rawText;
-      });
-
-      const state = view.state;
-      const emojiProvider = this.stateKey.getState(state).emojiProvider;
-
-      if (emojiId && emojiProvider) {
-        console.log('PAC: We have an emojiId and an emojiProvider (' + this.emojiProvider + ')');
-        // insert a mark around the native emoji with an attribute containing the emoji Id
-        const schema = state.schema;
-        const markedNativeEmojiText = schema.text(text, schema.mark('nativeEmoji', { emojiId : emojiId }));
-        view.dispatch(state.tr.replaceWith(from, to, markedNativeEmojiText));
+        view.dispatch(state.tr.replaceWith(from, to, nativeEmoji));
 
         const newState = view.state;
         if (newState.selection) {
@@ -261,17 +283,15 @@ const plugin = new Plugin({
           view.dispatch(newState.tr.setSelection(new TextSelection(newState.doc.resolve(from + 1))));
         }
 
-        // get the EmojiId from the EmojiProvider
-        emojiProvider.then(provider => {
-          provider.findById(emojiId).then((loadedEmoji) => {
-            // create an emoji ProseMirror node and insert it at the mark
-          });
 
-        });
+        // keep a reference to the nativeEmoji and update it in the promise
+        // this might to be enough to cause a re-render in react. Test this by removing the 'forceUpdate'
+        // (The promise stuff is currently in the react component but should be moved to here)
 
         console.log('PAC: Marked up an emoji with id = ' + emojiId);
         return true;
       }
+
       return false;
     }
    }

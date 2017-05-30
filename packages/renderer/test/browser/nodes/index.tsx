@@ -288,10 +288,11 @@ describe('Nodes', () => {
 
   describe('renderTextNodes', () => {
     it('should retain multiple whitespaces', () => {
-      expect(renderTextNodes([{
+      const rendered = renderTextNodes([{
         type: 'text',
         text: 'hello   \t\t\t   \t world!'
-      } as TextNode])[0]).to.equal('hello &nbsp; &#09;\t&#09; &nbsp; &#09; world!');
+      } as TextNode])[0];
+      expect(rendered).to.equal('hello\u00A0\u00A0\u00A0\u0009\u0009\u0009\u00A0\u00A0\u00A0\u0009\u00A0world!');
     });
   });
 });

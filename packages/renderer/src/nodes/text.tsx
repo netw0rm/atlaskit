@@ -85,8 +85,8 @@ export const mergeTextNodes = (nodes: Renderable[]) => {
 // Only handles space & tab now
 function escapeWhiteSpaces(text: string): string {
   return text.replace(
-    /(\t| )(\t| )/g,
-    (match, p1, p2) => `${p1}${p2 === '\t' ? '&#09;' : '&nbsp;'}`
+    /(\t| )/g,
+    (match, p1) => `${p1 === '\t' ? '\u0009' : '\u00A0'}`
   );
 }
 

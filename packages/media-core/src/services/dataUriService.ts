@@ -1,5 +1,6 @@
 import createRequest, {CreateRequestFunc} from './util/createRequest';
 import { MediaItem, JwtTokenProvider } from '../';
+import cache from '../cache';
 
 export type DataUri = string;
 
@@ -28,22 +29,26 @@ export class MediaDataUriService implements DataUriService {
   }
 
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri> {
-    return this.fetchSomeDataUri(
-      `/file/${mediaItem.details.id}/binary`, {
+    const {id} = mediaItem.details;
+    return cache.getWithDefault(id, () => (
+      this.fetchSomeDataUri(`/file/${id}/binary`, {
         'max-age': 3600,
         collection: this.collectionName
-      });
+      })
+    ));
   }
 
   fetchImageDataUri(mediaItem: MediaItem, width: number, height: number): Promise<DataUri> {
-    return this.fetchSomeDataUri(
-      `/file/${mediaItem.details.id}/image`, {
+    const {id} = mediaItem.details;
+    return cache.getWithDefault(id, () => (
+      this.fetchSomeDataUri(`/file/${id}/image`, {
         width,
         height,
         mode: 'crop',
         'max-age': 3600,
         collection: this.collectionName
-      });
+      })
+    ));
   }
 
   private fetchSomeDataUri(url: string, params: Object): Promise<DataUri> {

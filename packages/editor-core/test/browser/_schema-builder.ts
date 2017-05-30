@@ -13,11 +13,11 @@ export const schema = createSchema({
     'rule',
   ],
   marks: [
-  'em',
-  'strong',
-  'code',
-  'strike',
-  'underline',
-  'textColor',
+    'em',
+    'strong',
+    'code',
+    'strike',
+    'underline',
+    'textColor',
   ]
 });

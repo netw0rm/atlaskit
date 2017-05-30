@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { browser, Schema } from '../../../../src/prosemirror';
+import { browser } from '../../../../src/prosemirror';
 import {
   setTextSelection,
   setNodeSelection,
@@ -26,11 +26,10 @@ import {
   hr,
   ul,
   li,
-  nodes,
-  marks,
   hardBreak,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { createSchema } from '../../../../src/schema';
 
 import blockTypePlugins from '../../../../src/plugins/block-type';
 
@@ -421,16 +420,19 @@ describe('block-type', () => {
 
         context('when panel nodetype is not in schema', () => {
           it('corresponding keymaps should not work', () => {
-            const schema = {
-              nodes: { ...nodes },
-              marks: { ...marks },
-            } as Schema<any, any>;
+            const schema = createSchema({
+              nodes: [
+                'doc',
+                'paragraph',
+                'text',
+              ]
+            });
             delete schema.nodes.panel;
             const edit = (doc: any) => makeEditor({
               doc,
               plugins: blockTypePlugins(schema),
               place: fixture(),
-              schema: new Schema(schema),
+              schema,
             });
             const { editorView } = edit(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-9');
@@ -440,16 +442,18 @@ describe('block-type', () => {
 
         context('when blockquote nodetype is not in schema', () => {
           it('corresponding keymaps should not work', () => {
-            const schema = {
-              nodes: { ...nodes },
-              marks: { ...marks },
-            } as Schema<any, any>;
-            delete schema.nodes.blockquote;
+            const schema = createSchema({
+              nodes: [
+                'doc',
+                'paragraph',
+                'text',
+              ]
+            });
             const edit = (doc: any) => makeEditor({
               doc,
               plugins: blockTypePlugins(schema),
               place: fixture(),
-              schema: new Schema(schema),
+              schema,
             });
             const { editorView } = edit(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');

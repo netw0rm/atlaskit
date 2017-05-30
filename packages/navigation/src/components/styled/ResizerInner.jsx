@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { akColorB200 } from '@atlaskit/util-shared-styles';
+import { unthemedColors } from '../../shared-variables';
 
 const resizerClickableWidth = 12;
 const resizerVisibleWidth = 2;
@@ -15,7 +15,7 @@ const ResizerInner = styled.div`
   width: ${resizerClickableWidth}px;
 
   &:hover::before {
-    background: ${akColorB200};
+    background: ${unthemedColors.resizer};
   }
   &:before {
     content: '';

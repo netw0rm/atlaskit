@@ -1,8 +1,8 @@
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { gridSize } from '../../shared-variables';
 
 const ContainerTitleTextWrapper = styled.div`
-  margin-left: ${akGridSizeUnitless}px;
+  margin-left: ${gridSize}px;
   width: 100%;
   min-width: 0;
 

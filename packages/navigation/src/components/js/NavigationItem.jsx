@@ -46,7 +46,10 @@ export default class NavigationItem extends PureComponent {
     : null);
 
     const DropIcon = () => (this.props.dropIcon && this.props.isDropdownTrigger ?
-      <NavigationItemIcon hasNoPadding={this.props.isDropdownTrigger} isDropdownTrigger>
+      <NavigationItemIcon
+        isDropdownTrigger
+        hasNoPadding={this.props.isDropdownTrigger}
+      >
         {this.props.dropIcon}
       </NavigationItemIcon>
     : null);
@@ -85,7 +88,7 @@ export default class NavigationItem extends PureComponent {
     return (
       <NavigationItemOuter
         isSelected={this.props.isSelected}
-        isDropdownTrigger={this.props.isDropdownTrigger}
+        isDropdown={this.props.isDropdownTrigger}
       >
         <InteractiveWrapper
           {...interactiveWrapperProps}

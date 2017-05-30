@@ -3,16 +3,26 @@ import { SearchIcon } from '@atlaskit/icon';
 import React, { PureComponent } from 'react';
 import { name } from '../package.json';
 import Reveal from '../src/components/js/Reveal';
-import GlobalItem from '../src/components/js/GlobalItem';
+import styled from 'styled-components';
+
+const itemHeight = 50;
+
+const Item = styled.div`
+  background-color: lightblue;
+  display: flex;
+  justify-content: center;
+  height: ${itemHeight}px;
+  width: ${itemHeight}px;
+`;
 
 const FakeChild = () => (
-  <div style={{ backgroundColor: 'lightblue', width: 40 }}>
-    <GlobalItem size="medium">
+  <div>
+    <Item>
       <SearchIcon label="Search icon" />
-    </GlobalItem>
-    <GlobalItem size="medium">
+    </Item>
+    <Item>
       <SearchIcon label="Search icon" />
-    </GlobalItem>
+    </Item>
   </div>
 );
 
@@ -41,15 +51,15 @@ class ChildWithControls extends PureComponent {
         <Reveal
           isOpen={isOpen}
           shouldAnimate={shouldAnimate}
-          openHeight={100}
+          openHeight={itemHeight * 2}
         >
           <div style={{ backgroundColor: 'lightblue', width: 40 }}>
-            <GlobalItem size="medium">
+            <Item>
               <SearchIcon label="Search icon" />
-            </GlobalItem>
-            <GlobalItem size="medium">
+            </Item>
+            <Item>
               <SearchIcon label="Search icon" />
-            </GlobalItem>
+            </Item>
           </div>
         </Reveal>
 
@@ -83,7 +93,7 @@ storiesOf(`${name} - Reveal (interal)`, module)
   .add('mount open with no animation', () => (
     <div>
       <div>some content above</div>
-      <Reveal isOpen shouldAnimate={false} openHeight={100}>
+      <Reveal isOpen shouldAnimate={false} openHeight={itemHeight * 2}>
         <FakeChild />
       </Reveal>
       <div>some content below</div>
@@ -92,7 +102,7 @@ storiesOf(`${name} - Reveal (interal)`, module)
   .add('mount closed with no animation', () => (
     <div>
       <div>some content above</div>
-      <Reveal isOpen={false} shouldAnimate={false} openHeight={100}>
+      <Reveal isOpen={false} shouldAnimate={false} openHeight={itemHeight * 2}>
         <FakeChild />
       </Reveal>
       <div>some content below</div>
@@ -101,7 +111,7 @@ storiesOf(`${name} - Reveal (interal)`, module)
   .add('mount open with animation', () => (
     <div>
       <div>some content above</div>
-      <Reveal isOpen shouldAnimate openHeight={100}>
+      <Reveal isOpen shouldAnimate openHeight={itemHeight * 2}>
         <FakeChild />
       </Reveal>
       <div>some content below</div>

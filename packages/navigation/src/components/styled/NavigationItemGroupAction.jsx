@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '../../shared-variables';
 
 const NavigationItemGroupAction = styled.div`
-  margin-right: ${akGridSizeUnitless}px;
-  
+  margin-right: ${gridSize}px;
+
   [data-__ak-navigation-container-closed="true"] & {
     visibility: hidden;
   }

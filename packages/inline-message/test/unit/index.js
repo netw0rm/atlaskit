@@ -36,12 +36,12 @@ describe(name, () => {
   describe('props', () => {
     describe('title', () => {
       it('supplied title should be rendered', () => {
-        expect(shallow(<InlineMessage title="Title goes here" />).find(Text).text()).to.equal('Title goes here');
+        expect(mount(<InlineMessage title="Title goes here" />).find(Text).text()).to.equal('Title goes here');
       });
     });
     describe('secondaryText', () => {
       it('supplied secondary text should be rendered', () => {
-        expect(shallow(<InlineMessage secondaryText="Secondary goes here" />).find(Text).text()).to.equal('Secondary goes here');
+        expect(mount(<InlineMessage secondaryText="Secondary goes here" />).find(Text).text()).to.equal('Secondary goes here');
       });
     });
     describe('type', () => {

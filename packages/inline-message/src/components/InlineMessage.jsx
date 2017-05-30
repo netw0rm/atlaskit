@@ -4,7 +4,6 @@ import Button from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
 import IconForType from './IconForType';
 import { types, defaultType } from './types';
-// import styles from './styles.less';
 import { Root, ButtonContents, Text } from '../styled/InlineMessage';
 
 export default class InlineMessage extends PureComponent {
@@ -46,13 +45,7 @@ export default class InlineMessage extends PureComponent {
   }
 
   render() {
-    const {
-      children,
-      position,
-      secondaryText,
-      title,
-      type,
-    } = this.props;
+    const { children, position, secondaryText, title, type } = this.props;
 
     return (
       <Root

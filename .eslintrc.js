@@ -1,4 +1,4 @@
-const config = require('./build/storybook-nwb/webpack.config');
+const config = require('./build/webpack.config');
 
 module.exports = {
   root: true,

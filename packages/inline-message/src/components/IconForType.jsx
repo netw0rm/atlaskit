@@ -13,12 +13,16 @@ export default class SelectedIconForType extends PureComponent {
       [this.props.type]: {
         icon: SelectedIcon,
         iconColor,
+        iconSize,
       },
     } = typesMapping;
 
     return (
       <IconWrapper iconColor={iconColor}>
-        <SelectedIcon label="Inline message icon" />
+        <SelectedIcon
+          label="Inline message icon"
+          size={iconSize}
+        />
       </IconWrapper>
     );
   }

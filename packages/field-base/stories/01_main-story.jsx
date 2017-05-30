@@ -9,6 +9,7 @@ import HelpIcon from '@atlaskit/icon/glyph/help';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import BasicFieldBase from './BasicFieldBase';
 import RightGutterFieldBase from './RightGutterFieldBase';
+import Calendar from '@atlaskit/calendar';
 import { name } from '../package.json';
 import FieldBase, { Label } from '../src';
 
@@ -308,10 +309,10 @@ storiesOf(name, module)
       }
     </div>
   )
-  .add('with button + no padding', () =>
+  .add('with a custom view (disabled padding)', () =>
     <div style={{ display: 'inline-block', padding: 20 }}>
-      <Label label="Button with no padding example" />
-      <div style={{ backgroundColor: 'white' }}>
+      <Label label="With a dropdown" />
+      <div>
         <FieldBase
           isPaddingDisabled
         >
@@ -320,6 +321,39 @@ storiesOf(name, module)
           >
             Imagine a Dropdown
           </Button>
+        </FieldBase>
+      </div>
+
+      <Label label="With a dropdown and an invalid icon" />
+      <div>
+        <FieldBase
+          isPaddingDisabled
+          isInvalid
+        >
+          <Button
+            iconAfter={<ExpandIcon />}
+          >
+            Imagine a Dropdown
+          </Button>
+        </FieldBase>
+      </div>
+
+      <Label label="With a tall editor" />
+      <div>
+        <FieldBase
+          isPaddingDisabled
+        >
+          <Calendar />
+        </FieldBase>
+      </div>
+
+      <Label label="With a tall editor and an invalid icon" />
+      <div>
+        <FieldBase
+          isPaddingDisabled
+          isInvalid
+        >
+          <Calendar />
         </FieldBase>
       </div>
     </div>

@@ -214,9 +214,16 @@ export default class StatelessMultiSelect extends PureComponent {
     return allFilteredItems;
   }
 
-  handleItemCreate = () => {
-    if (this.props.filterValue) {
-      this.props.onNewItemCreated({ value: this.props.filterValue });
+  handleItemCreate = (event) => {
+    const { filterValue: value, items } = this.props;
+    if (value) {
+      const allVisible = this.getAllVisibleItems(items);
+      const matchingElement = allVisible.filter(item => item.content === value);
+      if (!matchingElement.length) {
+        this.props.onNewItemCreated({ value });
+      } else {
+        this.handleItemSelect(matchingElement[0], { event });
+      }
     }
   }
 

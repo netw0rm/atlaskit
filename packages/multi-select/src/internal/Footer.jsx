@@ -18,7 +18,11 @@ export default class NothingWasFound extends PureComponent {
     return (
       <div className={classes}>
         {this.props.children}
-        <span className={styles.footerNewLabel}> ({ this.props.newLabel })</span>
+        {
+          this.props.newLabel ?
+            <span className={styles.footerNewLabel}> ({ this.props.newLabel })</span> :
+            null
+        }
       </div>
     );
   }

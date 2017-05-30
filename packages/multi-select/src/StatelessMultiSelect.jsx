@@ -41,6 +41,7 @@ export default class StatelessMultiSelect extends PureComponent {
     createNewItemLabel: PropTypes.string,
     /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
+    footer: PropTypes.node,
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
     /** Sets whether the select is selectable. Changes hover state. */
@@ -304,7 +305,13 @@ export default class StatelessMultiSelect extends PureComponent {
         break;
       case 'Enter':
         if (isSelectOpen) {
-          event.preventDefault();
+          // Only prevent default behavior when the focus is inside search field or on selected tags
+          // Default behavior on Enter is needed if there is a focusable element in the footer,
+          // for example a link
+          // eslint-disable-next-line react/no-find-dom-node
+          if (ReactDOM.findDOMNode(this.tagGroup).contains(document.activeElement)) {
+            event.preventDefault();
+          }
           if (this.state.focusedItemIndex !== null) {
             this.handleItemSelect(
               this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
@@ -319,6 +326,20 @@ export default class StatelessMultiSelect extends PureComponent {
           this.removeLatestItem();
           this.onOpenChange({ event, isOpen: true });
         }
+        break;
+      case 'Tab':
+        // setTimeout so that the document.activeElement is in sync with the actual focus
+        setTimeout(() => {
+          // When tab is pressed the focus should go to the footer element if it's present.
+          // Fake focus should be neutralized in this case to avoid confusion.
+          // Users can return to the input field by pressing cmd + tab (usual tab behavior)
+          // If there is no footer, the dropdown should close itself
+          if (this.multiSelectContainer.contains(document.activeElement)) {
+            this.setState({ focusedItemIndex: null });
+          } else {
+            this.onOpenChange({ event, isOpen: false });
+          }
+        });
         break;
       default:
         break;
@@ -372,15 +393,20 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   renderFooter = () => {
-    const { filterValue: newValue, shouldAllowCreateItem } = this.props;
-    return shouldAllowCreateItem && newValue ?
-      <Footer
+    const { filterValue: newValue, shouldAllowCreateItem, footer } = this.props;
+    if ( shouldAllowCreateItem ) {
+      if ( newValue ) {
+      return (<Footer
         newLabel={this.props.createNewItemLabel}
         shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
       >
         { newValue }
-      </Footer> :
-      null;
+      </Footer> );
+      }
+    } else if (footer) {
+      return (<Footer>{ footer }</Footer>);
+    }
+    return null;
   }
 
   renderOptions = items => items.map((item, itemIndex) => (<option
@@ -421,6 +447,7 @@ export default class StatelessMultiSelect extends PureComponent {
       <div
         className={classes}
         onKeyDown={this.handleKeyboardInteractions}
+        ref={ref => (this.multiSelectContainer = ref)}
       >
         {this.renderSelect()}
         {this.props.label ? <Label

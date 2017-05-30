@@ -27,6 +27,7 @@ export default class AkMultiSelect extends PureComponent {
   static propTypes = {
     /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    footer: PropTypes.node,
     /** Message to display in footer after the name of the new item. Only applicable if
      * shouldAllowCreateItem prop is set to true. */
     createNewItemLabel: PropTypes.string,
@@ -160,6 +161,7 @@ export default class AkMultiSelect extends PureComponent {
         appearance={this.props.appearance}
         createNewItemLabel={this.props.createNewItemLabel}
         filterValue={this.state.filterValue}
+        footer={this.props.footer}
         id={this.props.id}
         isDisabled={this.props.isDisabled}
         isFirstChild={this.props.isFirstChild}

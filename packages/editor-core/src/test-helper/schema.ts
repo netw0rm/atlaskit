@@ -1,69 +1,48 @@
-import { Schema, AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule } from '../prosemirror';
+import { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule } from '../prosemirror';
 import {
-  doc,
   paragraph,
-  text,
-  em,
-  strong,
-  code,
-  strike,
-  underline,
-  bulletList,
-  orderedList,
-  listItem,
-  heading,
-  blockquote,
-  codeBlock,
-  panel,
-  rule,
-  hardBreak,
-  media,
-  mediaGroup,
-  mention,
-  emoji,
-  link,
-  image,
-  mentionQuery,
-  subsup,
-  emojiQuery,
-  textColor
+  createSchema
 } from '../schema';
 
-const nodes = {
-  doc,
-  paragraph,
-  text,
-  bulletList,
-  orderedList,
-  listItem,
-  heading,
-  blockquote,
-  codeBlock,
-  panel,
-  rule,
-  hardBreak,
-  mention,
-  emoji,
-  image,
-  media,
-  mediaGroup,
-  linkable: { ...paragraph, content: 'text<link>*' },
-  unlinkable: { ...paragraph, content: 'text*' },
-  plain: { ...paragraph, content: 'text*' }
-};
-
-const marks = {
-  em,
-  strong,
-  code,
-  strike,
-  underline,
-  link,
-  mentionQuery,
-  subsup,
-  emojiQuery,
-  textColor,
-};
-
-export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, nodes, marks };
-export default new Schema<typeof nodes, typeof marks>({ nodes, marks });
+export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule };
+export default createSchema({
+  nodes: [
+  'doc',
+  'paragraph',
+  'text',
+  'bulletList',
+  'orderedList',
+  'listItem',
+  'heading',
+  'blockquote',
+  'codeBlock',
+  'panel',
+  'rule',
+  'hardBreak',
+  'mention',
+  'emoji',
+  'image',
+  'media',
+  'mediaGroup',
+    'linkable',
+    'unlinkable',
+    'plain'
+  ],
+  marks: [
+  'em',
+  'strong',
+  'code',
+  'strike',
+  'underline',
+  'link',
+  'mentionQuery',
+  'subsup',
+  'emojiQuery',
+  'textColor',
+  ],
+  customNodeSpecs: {
+    linkable: { ...paragraph, content: 'text<link>*' },
+    unlinkable: { ...paragraph, content: 'text*' },
+    plain: { ...paragraph, content: 'text*' }
+  }
+});

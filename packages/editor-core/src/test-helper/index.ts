@@ -18,7 +18,6 @@ export {
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';
-export { nodes, marks } from './schema';
 export { storyMediaProviderFactory } from './media-provider';
 export { default as randomId } from './random-id';
 export { default as sleep } from './sleep';

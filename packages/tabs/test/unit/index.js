@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import Tabs, { StatelessTabs } from '../../src';
-import styles from '../../src/styles.less';
+import Tabs, { TabsStateless } from '../../src/index';
 import { sampleTabs, sampleTabsNoSelection, sampleTabsDefaultSelected } from './_constants';
 import { name } from '../../package.json';
+import { TabLabel } from '../../src/styled/TabsNav';
 
 const { expect } = chai;
 
@@ -26,40 +26,40 @@ describe(name, () => {
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
-      it('should render the StatelessTabs', () => {
+      it('should render the TabsStateless', () => {
         const wrapper = shallow(<Tabs tabs={sampleTabsDefaultSelected} />);
-        const statelessTabs = wrapper.find(StatelessTabs);
+        const statelessTabs = wrapper.find(TabsStateless);
         expect(statelessTabs).to.have.lengthOf(1);
       });
     });
 
     describe('props', () => {
       describe('tabs prop', () => {
-        it('is reflected to the StatelessTabs with no selection when no defaultSelected tab is specified', () => {
+        it('is reflected to the TabsStateless with no selection when no defaultSelected tab is specified', () => {
           const wrapper = shallow(<Tabs tabs={sampleTabsNoSelection} />);
-          expect(wrapper.find(StatelessTabs).prop('tabs').filter(tab => tab.isSelected).length)
+          expect(wrapper.find(TabsStateless).prop('tabs').filter(tab => tab.isSelected).length)
             .to.equal(0);
         });
 
-        it('is reflected to the StatelessTabs with no selection when isSelected tab is specified', () => {
+        it('is reflected to the TabsStateless with no selection when isSelected tab is specified', () => {
           const wrapper = shallow(<Tabs tabs={sampleTabs} />);
-          expect(wrapper.find(StatelessTabs).prop('tabs').filter(tab => tab.isSelected).length)
+          expect(wrapper.find(TabsStateless).prop('tabs').filter(tab => tab.isSelected).length)
             .to.equal(0);
         });
 
-        it('is reflected to the StatelessTabs with selection when defaultSelected is specified', () => {
+        it('is reflected to the TabsStateless with selection when defaultSelected is specified', () => {
           const wrapper = shallow(<Tabs tabs={sampleTabsDefaultSelected} />);
-          expect(wrapper.find(StatelessTabs).prop('tabs').filter(tab => tab.isSelected).length)
+          expect(wrapper.find(TabsStateless).prop('tabs').filter(tab => tab.isSelected).length)
             .to.equal(1);
-          expect(wrapper.find(StatelessTabs).prop('tabs')[1].isSelected).to.equal(true);
+          expect(wrapper.find(TabsStateless).prop('tabs')[1].isSelected).to.equal(true);
         });
 
-        it('is reflected to the StatelessTabs with selection when defaultSelected is specified and the first tab is selected', () => {
+        it('is reflected to the TabsStateless with selection when defaultSelected is specified and the first tab is selected', () => {
           const wrapper = shallow(<Tabs tabs={sampleTabsDefaultSelected} />);
           wrapper.setState({ selectedTab: 0 });
-          expect(wrapper.find(StatelessTabs).prop('tabs').filter(tab => tab.isSelected).length)
+          expect(wrapper.find(TabsStateless).prop('tabs').filter(tab => tab.isSelected).length)
             .to.equal(1);
-          expect(wrapper.find(StatelessTabs).prop('tabs')[0].isSelected).to.equal(true);
+          expect(wrapper.find(TabsStateless).prop('tabs')[0].isSelected).to.equal(true);
         });
       });
 
@@ -84,7 +84,7 @@ describe(name, () => {
           );
 
           // Clicks on the tab at index 2, then checks that the spy is called with 2 as argument
-          wrapper.find(`.${styles.akTabLabel}`).at(2).simulate('click');
+          wrapper.find(TabLabel).at(2).simulate('click');
           expect(spy.calledOnce).to.equal(true);
           expect(spy.calledWith(2)).to.equal(true);
         });
@@ -99,7 +99,7 @@ describe(name, () => {
 
           // Triggers right arrow click on the tabs, then checks that handler prop was called
           // with correct new selected tab index
-          wrapper.find(`.${styles.akTabLabel}`).at(1).simulate('keyDown', {
+          wrapper.find(TabLabel).at(1).simulate('keyDown', {
             key: 'ArrowRight',
           });
           expect(spy.calledOnce).to.equal(true);
@@ -113,7 +113,7 @@ describe(name, () => {
         describe('with 3 tabs, when the 2nd tab is selected', () => {
           let wrapper;
           const simulateKeyboardNav = (key) => {
-            wrapper.find(`.${styles.akTabLabelSelected}`).simulate('keyDown', { key });
+            wrapper.find(TabLabel).findWhere(n => n.prop('isSelected')).simulate('keyDown', { key });
           };
 
           beforeEach(() => {

@@ -50,6 +50,8 @@ export default class Element extends PureComponent {
     }
     if (props.type === 'option') {
       ariaAttributes['aria-selected'] = props.isSelected;
+    } else {
+      commonAttributes['tab-index'] = 0;
     }
 
     if (href && !isDisabled) {
@@ -67,7 +69,6 @@ export default class Element extends PureComponent {
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <span
-        tabIndex="0"
         {...commonAttributes}
         {...ariaAttributes}
       >{props.children}</span>

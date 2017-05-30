@@ -88,6 +88,10 @@ describe('<NavigationItem />', () => {
         });
       });
     });
+    it('should render a caption if one is provided', () => {
+      const wrapper = mountWithRootTheme(<NavigationItem caption="CAPTION" />);
+      expect(wrapper.html()).to.contain('CAPTION');
+    });
 
     describe('isDropdownTrigger=false and dropIcon is provided', () => {
       it('should not render dropIcon', () => {

@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import styles from './styles.less';
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
+import DummyFooter from './internal/DummyFooter';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
 import Footer from './internal/Footer';
@@ -17,6 +18,7 @@ import { mapAppearanceToFieldBase } from './internal/appearances';
 
 const groupShape = DummyGroup.propTypes;
 const itemShape = DummyItem.propTypes;
+const footerShape = DummyFooter.propTypes;
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
@@ -41,6 +43,11 @@ export default class StatelessMultiSelect extends PureComponent {
     createNewItemLabel: PropTypes.string,
     /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
+    /** Element to show after the list of item. Could be an interactive element like a link or
+     * a button. In this case the normal tab behavior applies, and after pressing 'tab' focus moves
+     * to the next focusable element in the footer. Doesn't work with shouldAllowCreateItem set to
+     * true. */
+    footer: PropTypes.shape(footerShape),
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
     /** Sets whether the select is selectable. Changes hover state. */
@@ -88,7 +95,8 @@ export default class StatelessMultiSelect extends PureComponent {
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
     /** Sets whether a new item could be created and added to the list by pressing Enter
-     * inside the autocomplete field */
+     * inside the autocomplete field. If set to true then no additional footer from the 'footer'
+     * property would be rendered. */
     shouldAllowCreateItem: PropTypes.bool,
   }
 
@@ -96,6 +104,7 @@ export default class StatelessMultiSelect extends PureComponent {
     appearance: appearances.default,
     createNewItemLabel: 'New item',
     filterValue: '',
+    footer: {},
     shouldFocus: false,
     isOpen: false,
     items: [],
@@ -110,10 +119,11 @@ export default class StatelessMultiSelect extends PureComponent {
     shouldAllowCreateItem: false,
   }
 
-  // This is used only to show the focus ring around , it's okay to have state in this case.
+  // This is used only to manipulate focus , it's okay to have state in this case.
   state = {
     isFocused: this.props.isOpen || this.props.shouldFocus,
     focusedItemIndex: null,
+    isFooterFocused: null,
   }
 
   componentDidMount = () => {
@@ -227,6 +237,11 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
+  handleFooterItemSelect = (event) => {
+    const { footer } = this.props;
+    console.log(event, footer);
+  }
+
   handleItemSelect = (item, attrs) => {
     if (!item.isDisabled) {
       this.props.onOpenChange({ isOpen: false, event: attrs.event });
@@ -270,20 +285,71 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
+  focusCorrectElement = (focused, length) => {
+    if (this.shouldFocusFooter(focused, length)) {
+      this.focusFooter();
+    } else {
+      this.setState({
+        focusedItemIndex: focused,
+        isFooterFocused: false,
+      });
+    }
+  }
+
+  shouldFocusFooter = (focused, length) => {
+    console.log(focused, length);
+    const { shouldAllowCreateItem, filterValue, footer } = this.props;
+    return (
+      (
+        (shouldAllowCreateItem && filterValue) || footer.content
+      ) &&
+      (focused === length) &&
+      this.state.focusedItemIndex !== null
+    );
+  }
+
+  focusFooter = () => {
+    this.setState({
+      focusedItemIndex: null,
+      isFooterFocused: true,
+    });
+  }
+
   focusNextItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
-    const length = filteredItems.length - 1;
-    this.setState({
-      focusedItemIndex: this.getNextFocusable(this.state.focusedItemIndex, length),
-    });
+    if (filteredItems.length) {
+      const length = filteredItems.length - 1;
+      const nextFocused = this.getNextFocusable(this.state.focusedItemIndex, length);
+
+      this.focusCorrectElement(nextFocused, 0);
+    } else {
+      this.focusFooter();
+    }
   }
 
   focusPreviousItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
-    const length = filteredItems.length - 1;
-    this.setState({
-      focusedItemIndex: this.getPrevFocusable(this.state.focusedItemIndex, length),
-    });
+    if (filteredItems.length) {
+      const length = filteredItems.length - 1;
+      const prevFocused = this.getPrevFocusable(this.state.focusedItemIndex, length);
+
+      this.focusCorrectElement(prevFocused, length);
+    } else {
+      this.focusFooter();
+    }
+  }
+
+  handleFooterEnter = (event) => {
+    const { footer } = this.props;
+    const footerNode = this.multiSelectContainer.querySelector('[data-role="multi-select-footer"]');
+
+    if (footer.href) {
+      footerNode.querySelector('a').click();
+    }
+
+    if (footer.onClick) {
+      footer.onClick(event);
+    }
   }
 
   handleKeyboardInteractions = (event) => {
@@ -295,22 +361,36 @@ export default class StatelessMultiSelect extends PureComponent {
           this.onOpenChange({ event, isOpen: true });
         }
         this.focusNextItem();
+        if (this.inputNode) {
+          this.inputNode.focus();
+        }
         break;
       case 'ArrowUp':
         event.preventDefault();
         if (isSelectOpen) {
           this.focusPreviousItem();
+          if (this.inputNode) {
+            this.inputNode.focus();
+          }
         }
         break;
       case 'Enter':
         if (isSelectOpen) {
-          event.preventDefault();
+          // Only prevent default behavior when the focus is inside search field or on selected tags
+          // Default behavior on Enter is needed if there is a focusable element in the footer,
+          // for example a link
+          // eslint-disable-next-line react/no-find-dom-node
+          if (ReactDOM.findDOMNode(this.tagGroup).contains(document.activeElement)) {
+            event.preventDefault();
+          }
           if (this.state.focusedItemIndex !== null) {
             this.handleItemSelect(
               this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
             );
           } else if (this.props.shouldAllowCreateItem) {
             this.handleItemCreate();
+          } else if (this.props.footer.content) {
+            this.handleFooterEnter();
           }
         }
         break;
@@ -319,6 +399,20 @@ export default class StatelessMultiSelect extends PureComponent {
           this.removeLatestItem();
           this.onOpenChange({ event, isOpen: true });
         }
+        break;
+      case 'Tab':
+        // setTimeout so that the document.activeElement is in sync with the actual focus
+        setTimeout(() => {
+          // When tab is pressed the focus should go to the footer element if it's present.
+          // Fake focus should be neutralized in this case to avoid confusion.
+          // Users can return to the input field by pressing cmd + tab (usual tab behavior)
+          // If there is no footer, the dropdown should close itself
+          if (this.multiSelectContainer.contains(document.activeElement)) {
+            this.setState({ focusedItemIndex: null });
+          } else {
+            this.onOpenChange({ event, isOpen: false });
+          }
+        });
         break;
       default:
         break;
@@ -372,15 +466,29 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   renderFooter = () => {
-    const { filterValue: newValue, shouldAllowCreateItem } = this.props;
-    return shouldAllowCreateItem && newValue ?
-      <Footer
-        newLabel={this.props.createNewItemLabel}
+    const { filterValue: newValue, shouldAllowCreateItem, footer } = this.props;
+    if (shouldAllowCreateItem) {
+      if (newValue) {
+        return (<Footer
+          isFocused={this.state.isFooterFocused}
+          newLabel={this.props.createNewItemLabel}
+          appearance="text"
+          onClick={this.handleItemCreate}
+          shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
+        >
+          { newValue }
+        </Footer>);
+      }
+    } else if (footer) {
+      return (<Footer
+        href={this.props.footer.href}
+        isFocused={this.state.isFooterFocused}
+        onClick={this.handleFooterItemSelect}
         shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
-      >
-        { newValue }
-      </Footer> :
-      null;
+        appearance={(this.props.footer.href || this.props.footer.onClick) ? 'link' : 'text'}
+      >{ footer.content }</Footer>);
+    }
+    return null;
   }
 
   renderOptions = items => items.map((item, itemIndex) => (<option
@@ -421,6 +529,7 @@ export default class StatelessMultiSelect extends PureComponent {
       <div
         className={classes}
         onKeyDown={this.handleKeyboardInteractions}
+        ref={ref => (this.multiSelectContainer = ref)}
       >
         {this.renderSelect()}
         {this.props.label ? <Label

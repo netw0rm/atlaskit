@@ -30,6 +30,8 @@ import SmartSelectWithDescriptions from './examples/SmartSelectWithDescriptions'
 import SmartSelectWithDescriptionsRaw from '!raw!./examples/SmartSelectWithDescriptions';
 import SmartSelectWithCreateNewItem from './examples/SmartSelectWithCreateNewItem';
 import SmartSelectWithCreateNewItemRaw from '!raw!./examples/SmartSelectWithCreateNewItem';
+import SmartSelectWithFooter from './examples/SmartSelectWithFooter';
+import SmartSelectWithFooterRaw from '!raw!./examples/SmartSelectWithFooter';
 /* eslint-enable import/first, import/no-duplicates */
 
 // Dummy components exist so that we have a component to pass to <Props/>
@@ -232,6 +234,16 @@ storiesOf(name, module)
       </div>
       <Code>
         {SmartSelectWithCreateNewItemRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select with footer', () => (
+    <Chrome title="Multi select with footer">
+      <div style={{ width: '300px' }}>
+        {SmartSelectWithFooter}
+      </div>
+      <Code>
+        {SmartSelectWithFooterRaw}
       </Code>
     </Chrome>
   ));

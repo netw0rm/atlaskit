@@ -130,7 +130,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.hyperlink.autoformatting with url format', () => {
-    insertText(editorView, 'www.google.com', 1);
+    insertText(editorView, 'www.google.com ', 1);
     expect(handler.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
   });
 

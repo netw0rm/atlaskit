@@ -12,6 +12,7 @@ import { TriggerWrapper, ExpandIconWrapper } from './styles';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
+  disabled?: boolean;
   editorView: EditorView;
   softBlurEditor: () => void;
   focusEditor: () => void;
@@ -84,7 +85,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       clearFormattingDisabled,
     } = this.state;
     const items = this.createItems();
-    if (!(codeDisabled && strikethroughDisabled && clearFormattingDisabled) &&
+    if (!this.props.disabled &&
+      !(codeDisabled && strikethroughDisabled && clearFormattingDisabled) &&
       items[0].items.length > 0) {
       return (
         <DropdownMenu

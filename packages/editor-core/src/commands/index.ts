@@ -6,8 +6,6 @@ import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
 import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
-import { URL_REGEX } from '../plugins/hyperlink/regex';
-import { normalizeUrl } from '../plugins/hyperlink/utils';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
@@ -286,38 +284,8 @@ export function showLinkPanel(): Command {
   };
 }
 
-export function convertToHyperlink(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean | null {
-    const nodeBefore = state.selection.$from.nodeBefore;
-    if (nodeBefore && nodeBefore.isText) {
-      const words = nodeBefore.text!.split(' ');
-      const lastWord = words[words.length - 1];
-      const match = new RegExp(`${URL_REGEX.source}$`).exec(lastWord);
-
-      if (match) {
-        const hyperilnkedText = match[1];
-        const start = state.selection.$from.pos - hyperilnkedText.length;
-        const end = state.selection.$from.pos;
-        if (state.doc.rangeHasMark(start, end, state.schema.marks.link)) {
-          return null;
-        }
-
-        const url = normalizeUrl(hyperilnkedText);
-        const markType = state.schema.mark('link', { href: url, });
-
-        dispatch(state.tr.replaceWith(
-          start,
-          end,
-          state.schema.text(hyperilnkedText, [markType])
-        ));
-      }
-    }
-    return null;
-  };
-}
-
 export function insertNewLine(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean | null {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const node = $from.parent;
     const { hardBreak } = state.schema.nodes;
@@ -327,7 +295,7 @@ export function insertNewLine(): Command {
 
       if (node.type.validContent(Fragment.from(hardBreakNode))) {
         dispatch(state.tr.replaceSelectionWith(hardBreakNode));
-        return null;
+        return true;
       }
     }
 
@@ -520,5 +488,5 @@ function toggleNodeType(nodeType: NodeType): Command {
 }
 
 export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean | null;
+  (state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean;
 }

@@ -29,34 +29,6 @@ const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
   return dom;
 };
 
-const isBlock = (node: HTMLElement) => {
-  const blockElementsInsideCode = ['DIV', 'P', 'BR'];
-  return blockElementsInsideCode.indexOf(node.nodeName.toUpperCase()) > -1 &&
-    (!node.style.display || node.style.display === 'block');
-};
-
-const getTextFromDOM = (dom: HTMLElement): string => {
-  const content: Array<string> = [];
-  let line = '';
-  // TS doesn't allow Array.from or [...] because of type mismatch
-  [].slice.call(dom.childNodes).forEach((child: Node) => {
-    if (child.nodeType === Node.TEXT_NODE) {
-      line += child.textContent || '';
-    }
-    else if (child.nodeType === Node.ELEMENT_NODE) {
-      line += getTextFromDOM(child as HTMLElement) || '';
-      if (isBlock(child as HTMLElement)) {
-        content.push(line);
-        line = '\n';
-      }
-    }
-  });
-  if (line) {
-    content.push(line);
-  }
-  return content.join('');
-};
-
 export const codeBlock: NodeSpec = {
   attrs: { language: { default: null } },
   content: 'text*',
@@ -72,7 +44,7 @@ export const codeBlock: NodeSpec = {
         getLanguageFromEditorStyle(dom.parentElement!) ||
         dom.getAttribute('data-language')!
       );
-      dom.textContent = getTextFromDOM(removeLastNewLine(dom));
+      dom = removeLastNewLine(dom);
       return { language };
     }
   },
@@ -86,7 +58,19 @@ export const codeBlock: NodeSpec = {
         dom.style.whiteSpace === 'pre' || dom.style.whiteSpace === 'pre-wrap' ||
         (dom.style.fontFamily && dom.style.fontFamily.toLowerCase().indexOf('monospace') > -1)
       ) {
-        dom.textContent = getTextFromDOM(dom).replace(/\n$/, '');
+        dom.textContent = dom.textContent!.replace(/\n$/, '');
+        return {};
+      }
+      return false;
+    }
+  },
+  // Handle GitHub paste
+  {
+    tag: 'table[class*="js-file-line-container"]',
+    preserveWhitespace: 'full',
+    getAttrs: (dom: HTMLElement) => {
+      if (dom.querySelector('td[class*="blob-code"]')) {
+        dom.textContent = dom.textContent!.replace(/\n$/, '');
         return {};
       }
       return false;

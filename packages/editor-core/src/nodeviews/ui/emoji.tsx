@@ -34,6 +34,7 @@ export default class EmojiNode extends PureComponent<Props, {}> {
       return;
     }
 
+    // TODO find a 'legal' mechanism for getting access to the emojiProvider
     const emojiProvider = this.props.providerFactory.providers.get("emojiProvider");
     console.log('PAC: emojiProvider = ' + emojiProvider);
     const node = this.props.node;
@@ -44,7 +45,6 @@ export default class EmojiNode extends PureComponent<Props, {}> {
         provider.findById(emojiId).then((loadedEmoji) => {
           if (loadedEmoji) {
             console.log('PAC: Found emoji for id = ' + emojiId + ' which is [id=' + loadedEmoji.id + ', shortName=' + loadedEmoji.shortName + ', fallback=' + loadedEmoji.fallback + ']');
-            node.attrs.id = loadedEmoji.id;
             node.attrs.shortName = loadedEmoji.shortName;
             node.attrs.text = loadedEmoji.fallback;
 
@@ -66,7 +66,7 @@ export default class EmojiNode extends PureComponent<Props, {}> {
    */
   shouldResolve() {
     const node = this.props.node;
-    if (node.attrs.shortName != null && node.attrs.shortName != undefined) {
+    if (node.attrs.shortName) {
       return false;
     }
 
@@ -77,26 +77,26 @@ export default class EmojiNode extends PureComponent<Props, {}> {
     const { node, providerFactory } = this.props;
     const { shortName, id, text } = node.attrs;
 
-    if (node.type.name === 'nativeEmoji' && !shortName) {
-      console.log('PAC: React render of nativeEmoji');
-      return (<span className='native-emoji'>{text}</span>); // render the native emoji as plain text // TODO remove the need for the span
+    if (shortName) {
+      console.log('PAC: React render of resolved emoji (has shortName)');
+      return (
+        <Wrapper>
+          <WithProviders
+            providers={['emojiProvider']}
+            providerFactory={providerFactory}
+            // tslint:disable-next-line:jsx-no-lambda
+            renderNode={providers =>
+              <ResourcedEmoji
+                emojiId={{ shortName, id, fallback: text }}
+                emojiProvider={providers['emojiProvider']}
+              />
+            }
+          />
+        </Wrapper>
+      );
     }
 
-    console.log('PAC: React render of resolved emoji');
-    return (
-      <Wrapper>
-        <WithProviders
-          providers={['emojiProvider']}
-          providerFactory={providerFactory}
-          // tslint:disable-next-line:jsx-no-lambda
-          renderNode={providers =>
-            <ResourcedEmoji
-              emojiId={{ shortName, id, fallback: text }}
-              emojiProvider={providers['emojiProvider']}
-            />
-          }
-        />
-      </Wrapper>
-    );
+    console.log('PAC: React render of native emoji (no shortName)');
+    return (<span className='native-emoji'>{text}</span>); // render the native emoji as plain text
   }
 }

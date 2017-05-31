@@ -19,7 +19,6 @@ import {
   mediaGroup,
   hardBreak,
   emoji,
-  nativeEmoji,
 
   // Marks
   link,
@@ -52,7 +51,6 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
-  { name: 'nativeEmoji', spec: nativeEmoji },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [

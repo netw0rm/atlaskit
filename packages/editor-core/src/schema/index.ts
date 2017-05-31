@@ -20,7 +20,6 @@ export { rule } from './nodes/rule';
 export { orderedList } from './nodes/ordered-list';
 export { paragraph } from './nodes/paragraph';
 export { emoji } from './nodes/emoji';
-export { nativeEmoji } from './nodes/native-emoji';
 export { image } from './nodes/image';
 export { mention } from './nodes/mention';
 export { listItem } from './nodes/list-item';

@@ -254,7 +254,6 @@ export default class Editor extends PureComponent<Props, State> {
         },
         nodeViews: {
           emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
-          nativeEmoji: nodeViewFactory(this.providerFactory, { nativeEmoji: ReactEmojiNode }),
           mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
         },
       });

@@ -17,7 +17,6 @@ export default createSchema({
     'mention',
     'hardBreak',
     'emoji',
-    'nativeEmoji',
   ],
   marks: [
     'em',

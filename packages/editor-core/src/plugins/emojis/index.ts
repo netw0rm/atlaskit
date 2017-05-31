@@ -273,20 +273,15 @@ const plugin = new Plugin({
       let emojiId = getIdForUnicodeEmoji(text);
       if (emojiId) {
         const state = view.state;
-        const nativeEmoji = state.schema.nodes.nativeEmoji.create({ id: emojiId, text: text });
+        const emojiNode = state.schema.nodes.emoji.create({ id: emojiId, text: text });
 
-        view.dispatch(state.tr.replaceWith(from, to, nativeEmoji));
+        view.dispatch(state.tr.replaceWith(from, to, emojiNode));
 
         const newState = view.state;
         if (newState.selection) {
           // cancel any existing text selection and move the cursor to immediately following the inserted emoji
           view.dispatch(newState.tr.setSelection(new TextSelection(newState.doc.resolve(from + 1))));
         }
-
-
-        // keep a reference to the nativeEmoji and update it in the promise
-        // this might to be enough to cause a re-render in react. Test this by removing the 'forceUpdate'
-        // (The promise stuff is currently in the react component but should be moved to here)
 
         console.log('PAC: Marked up an emoji with id = ' + emojiId);
         return true;

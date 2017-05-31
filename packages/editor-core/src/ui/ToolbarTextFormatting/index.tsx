@@ -10,8 +10,9 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
-    editorView: EditorView;
-    pluginState: TextFormattingState;
+  editorView: EditorView;
+  pluginState: TextFormattingState;
+  disabled?: boolean;
 }
 
 export interface State {
@@ -38,13 +39,15 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
     }
 
     render() {
+        const { disabled } = this.props;
+
         return (
             <span>
         {this.state.boldHidden ? null :
             <ToolbarButton
                 onClick={this.handleBoldClick}
                 selected={this.state.boldActive}
-                disabled={this.state.boldDisabled}
+                disabled={disabled || this.state.boldDisabled}
                 title={tooltip(toggleBold)}
                 iconBefore={<BoldIcon label="Bold" />}
             />
@@ -54,7 +57,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
                     <ToolbarButton
                         onClick={this.handleItalicClick}
                         selected={this.state.italicActive}
-                        disabled={this.state.italicDisabled}
+                        disabled={disabled || this.state.italicDisabled}
                         title={tooltip(toggleItalic)}
                         iconBefore={<ItalicIcon label="Italic" />}
                     />
@@ -64,7 +67,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
                     <ToolbarButton
                         onClick={this.handleUnderlineClick}
                         selected={this.state.underlineActive}
-                        disabled={this.state.underlineDisabled}
+                        disabled={disabled || this.state.underlineDisabled}
                         title={tooltip(toggleUnderline)}
                         iconBefore={<UnderlineIcon label="Underline" />}
                     />

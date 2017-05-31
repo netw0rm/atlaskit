@@ -167,7 +167,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     this.emojiRepository = new EmojiRepository(emojis);
   }
 
-  private initMediaEmojiResource(emojiResponse: EmojiResponse, provider: ServiceConfig): void {
+  protected initMediaEmojiResource(emojiResponse: EmojiResponse, provider: ServiceConfig): void {
     if (!this.mediaEmojiResource && emojiResponse.mediaApiToken) {
       this.mediaEmojiResource = new MediaEmojiResource(provider, emojiResponse.mediaApiToken);
     }
@@ -347,6 +347,9 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
 
   uploadCustomEmoji(upload: EmojiUpload): Promise<EmojiDescription> {
     if (!this.mediaEmojiResource) {
+      if (!this.isLoaded()) {
+        return this.retryIfLoading(() => this.uploadCustomEmoji(upload));
+      }
       return Promise.reject('No media api support is configured');
     }
 

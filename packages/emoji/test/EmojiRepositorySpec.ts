@@ -1,7 +1,9 @@
+import { customCategory, customType } from '../src/constants';
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import { expect } from 'chai';
 
 import { EmojiDescription } from '../src/types';
+import { containsEmojiId, toEmojiId } from '../src/type-helpers';
 import EmojiRepository from '../src/api/EmojiRepository';
 
 import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji } from './TestData';
@@ -41,8 +43,8 @@ const siteTest: EmojiDescription = {
   id: '1f921',
   name: 'collision symbol',
   shortName: ':test:',
-  type: 'SITE',
-  category: 'SYMBOL',
+  type: customType,
+  category: customCategory,
   representation: {
     sprite: {
       url: 'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
@@ -183,6 +185,30 @@ describe('EmojiRepository', () => {
       const service = new EmojiRepository(allEmojis);
       const emojis = service.search('', { limit: 10 }).emojis;
       checkOrder(allEmojis.slice(0, 10), emojis);
+    });
+  });
+
+  describe('#addCustomEmoji', () => {
+    it('add custom emoji', () => {
+      const siteEmojiId = toEmojiId(siteTest);
+      const service = new EmojiRepository(allEmojis);
+      service.addCustomEmoji(siteTest);
+      const searchEmojis = service.search('').emojis;
+      expect(searchEmojis.length, 'Extra emoji in results').to.equal(allEmojis.length + 1);
+      expect(containsEmojiId(searchEmojis, siteEmojiId), 'Contains site emoji').to.equal(true);
+
+      expect(service.findById(siteEmojiId.id as string)).to.be.deep.equal(siteTest);
+      expect(service.findByShortName(siteEmojiId.shortName)).to.be.deep.equal(siteTest);
+    });
+
+    it('add non-custom emoji rejected', () => {
+      try {
+        const service = new EmojiRepository(allEmojis);
+        service.addCustomEmoji(standardTest);
+        expect(false, 'Should throw exception').to.equal(true);
+      } catch (e) {
+        expect(true, 'Exception should be thrown').to.equal(true);
+      }
     });
   });
 });

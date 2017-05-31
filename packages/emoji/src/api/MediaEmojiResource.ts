@@ -34,7 +34,7 @@ interface TokenDetail {
   activeTokenRefresh?: Promise<MediaApiToken>;
 }
 
-type TokenType = 'read' | 'upload';
+export type TokenType = 'read' | 'upload';
 
 // Temporoary token for new types, which generating
 const expiredMediaToken: MediaApiToken = {
@@ -45,7 +45,7 @@ const expiredMediaToken: MediaApiToken = {
   expiresAt: 0, // expired
 };
 
-class TokenManager {
+export class TokenManager {
   private siteServiceConfig: ServiceConfig;
   private tokens: Map<TokenType, TokenDetail>;
 
@@ -55,13 +55,13 @@ class TokenManager {
   }
 
   addToken(type: TokenType, mediaApiToken: MediaApiToken): void {
-    this.tokens[type] = {
+    this.tokens.set(type, {
       mediaApiToken,
-    };
+    });
   }
 
   getToken(type: TokenType, forceRefresh?: boolean): Promise<MediaApiToken> {
-    let tokenDetail: TokenDetail = this.tokens[type];
+    let tokenDetail: TokenDetail = this.tokens.get(type) as TokenDetail;
     if (tokenDetail) {
       const { mediaApiToken, activeTokenRefresh } = tokenDetail;
       const nowInSeconds = Date.now() / 1000;
@@ -95,7 +95,7 @@ class TokenManager {
 
 export default class MediaEmojiResource {
   private siteServiceConfig: ServiceConfig;
-  private tokenManager: TokenManager;
+  protected tokenManager: TokenManager;
 
   constructor(siteServiceConfig: ServiceConfig, mediaApiToken: MediaApiToken) {
     this.siteServiceConfig = siteServiceConfig;

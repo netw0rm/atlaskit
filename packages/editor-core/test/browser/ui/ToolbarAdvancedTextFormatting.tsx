@@ -191,6 +191,21 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         expect(clearformattingPluginSet[0].getState(editorView.state).clearFormatting.callCount).to.equal(1);
     });
 
+    it('should render disabled ToolbarButton if isDisabled property is true', () => {
+        const { editorView } = editor(doc(p('text')));
+        const toolbarOption = mount(
+            <ToolbarAdvancedTextFormatting
+                pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
+                pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
+                editorView={editorView}
+                focusEditor={noop}
+                softBlurEditor={noop}
+                isDisabled={true}
+            />
+        );
+        expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
+    });
+
     it('should render disabled ToolbarButton if all code and strikethrough and clearformatting are disabled', () => {
         const { editorView } = editor(doc(p('text')));
         const pluginState = textFormattingPluginSet[0].getState(editorView.state);

@@ -380,6 +380,15 @@ export const document = {
       ]
     },
     {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
       type: 'mediaGroup',
       content: [
         {
@@ -387,6 +396,27 @@ export const document = {
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        }
+      ]
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
             collection: 'MediaServicesSample'
           }
         }

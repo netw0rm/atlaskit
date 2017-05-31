@@ -32,6 +32,7 @@ export default class ToolbarImage extends PureComponent<Props, State> {
     return (
       <ToolbarButton
         onClick={this.handleInsertImage}
+        title="Insert image"
         disabled={disabled}
         iconBefore={<ImageIcon label="Add image" />}
       />

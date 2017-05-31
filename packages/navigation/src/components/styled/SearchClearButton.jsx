@@ -1,11 +1,7 @@
+// @flow
 import styled from 'styled-components';
-import {
-    akColorB50,
-    akColorB400,
-    akColorN20A,
-    akGridSizeUnitless,
- } from '@atlaskit/util-shared-styles';
-import focusRingMixin from '../../utils/focus-ring-mixin';
+import { gridSize } from '../../shared-variables';
+import { getProvided } from '../../theme/util';
 
 const SearchClearButton = styled.button`
   display: flex;
@@ -16,20 +12,17 @@ const SearchClearButton = styled.button`
   border: none;
   border-radius: 50%;
   padding: 0;
-  width: ${akGridSizeUnitless * 4}px;
-  height: ${akGridSizeUnitless * 4}px;
+  width: ${gridSize * 4}px;
+  height: ${gridSize * 4}px;
   outline: none;
   color: inherit;
 
-  ${focusRingMixin()}
-
   &:hover {
-    background: ${akColorN20A};
+    background-color: ${({ theme }) => getProvided(theme).item.hover.background};
   }
 
   &:active {
-    background: ${akColorB50};
-    color: ${akColorB400};
+    background-color: ${({ theme }) => getProvided(theme).item.active.background};
   }
 `;
 

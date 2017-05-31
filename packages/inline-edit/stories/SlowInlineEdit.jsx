@@ -1,7 +1,7 @@
 import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
-import { InlineEdit } from '../src';
+import { InlineEditStateless } from '../src';
 
 /* eslint-disable react/prop-types */
 export default class extends PureComponent {
@@ -41,7 +41,7 @@ export default class extends PureComponent {
 
   render() {
     return (
-      <InlineEdit
+      <InlineEditStateless
         editView={this.renderInput({ isEditing: !this.state.isWaiting })}
         readView={this.renderInput({ isEditing: false })}
         isEditing={this.state.isEditing}

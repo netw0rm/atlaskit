@@ -24,14 +24,13 @@ import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
 
-import { MediaPluginBehavior, MediaPluginOptions } from './media-plugin-options';
+import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
-export type MediaPluginBehavior = MediaPluginBehavior;
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
 export interface MediaNode extends PMNode {
@@ -170,7 +169,7 @@ export class MediaPluginState {
   }
 
   insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
-    const { options, view } = this;
+    const { view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
 
@@ -196,7 +195,7 @@ export class MediaPluginState {
 
     let transaction;
 
-    if (this.isInsideEmptyParagraph() && options.behavior !== 'compact') {
+    if (this.isInsideEmptyParagraph()) {
       const { $from } = state.selection;
 
       // empty paragraph always exists inside the document
@@ -404,12 +403,6 @@ export class MediaPluginState {
       return adjacentPos;
     }
 
-    // TODO: review this for HCNG
-    // Compact behavior disallows multiple media groups, so prepend the item inside
-    // if (this.behavior === 'compact' && adjacentNode.type instanceof MediaGroupNodeType) {
-      // return adjacentPos + 1;
-    // }
-
     // The adjacent node is a media group, so let's append there...
     if (adjacentNode.type === state.schema.nodes.mediaGroup) {
       return adjacentPos + 1;
@@ -440,13 +433,10 @@ export class MediaPluginState {
     }
 
     const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
-    const { options, view } = this;
+    const { view } = this;
 
     view.dispatch(transaction);
-
-    if (options.behavior !== 'compact') {
-      this.selectInsertedMediaNode(node);
-    }
+    this.selectInsertedMediaNode(node);
   }
 
   private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {

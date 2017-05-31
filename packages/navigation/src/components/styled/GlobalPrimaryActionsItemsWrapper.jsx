@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '../../shared-variables';
 
-export const actionsMarginTop = akGridSizeUnitless * 2;
+export const actionsMarginTop = gridSize * 2;
 
 const GlobalPrimaryActionsItemsWrapper = styled.div`
   align-items: center;

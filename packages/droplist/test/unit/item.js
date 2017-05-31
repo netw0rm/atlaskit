@@ -6,9 +6,10 @@ import Checkbox from '@atlaskit/icon/glyph/checkbox';
 import Tooltip from '@atlaskit/tooltip';
 
 import { name } from '../../package.json';
-import styles from '../../src/styles.less';
 
 import { SecondaryText, Item } from '../../src';
+import Element from '../../src/components/Element';
+import { Anchor, Span } from '../../src/styled/Item';
 
 describe(`${name} - item`, () => {
   it('should be possible to create a component', () => {
@@ -61,45 +62,45 @@ describe(`${name} - item`, () => {
     });
   });
 
-  describe('classes', () => {
-    it('should have "item" class by default', () => {
-      expect(mount(<Item type="link" />).find(`.${styles.item}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" />).find(`.${styles.item}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" />).find(`.${styles.item}`)).to.have.length.above(0);
+  describe('variants', () => {
+    it('should render the correct "type" of styled component', () => {
+      expect(mount(<Item type="link" href="https://atlassian.design" />).find(Anchor).exists()).to.equal(true);
+      expect(mount(<Item type="checkbox" />).find(Span).exists()).to.equal(true);
+      expect(mount(<Item type="radio" />).find(Span).exists()).to.equal(true);
     });
 
-    it('should have "disabled" class when disabled', () => {
-      expect(mount(<Item type="link" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
+    it('should have "disabled" data-attribute when disabled', () => {
+      expect(mount(<Item type="link" isDisabled />).find(Span).prop('data-test-disabled')).to.equal(true);
+      expect(mount(<Item type="radio" isDisabled />).find(Span).prop('data-test-disabled')).to.equal(true);
+      expect(mount(<Item type="checkbox" isDisabled />).find(Span).prop('data-test-disabled')).to.equal(true);
     });
 
-    it('should have "active" class when link item is active', () => {
-      expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.have.length.above(0);
+    it('should have "active" data-attribute when link item is active', () => {
+      expect(mount(<Item type="link" isActive />).find(Span).prop('data-test-active')).to.equal(true);
     });
 
-    it('should have "active" class when option item is selected', () => {
-      expect(mount(<Item type="option" isSelected />).find(`.${styles.active}`)).to.have.length.above(0);
+    it('should have "selected" data-attribute when option item is selected', () => {
+      expect(mount(<Item type="option" isSelected />).find(Span).prop('data-test-selected')).to.equal(true);
     });
 
-    it('should NOT have "active" class for any other item types', () => {
-      expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`).length).to.equal(0);
-      expect(mount(<Item type="checkbox" isActive />).find(`.${styles.active}`).length).to.equal(0);
+    it('should NOT have "active" prop passed to Element for any other item types', () => {
+      expect(mount(<Item type="radio" isActive />).find(Element).prop('isActive')).to.equal(false);
+      expect(mount(<Item type="checkbox" isActive />).find(Element).prop('isActive')).to.equal(false);
     });
 
-    it('should have "checked" class when checkbox or radio is checked', () => {
-      expect(mount(<Item type="checkbox" isChecked />).find(`.${styles.checked}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isChecked />).find(`.${styles.checked}`)).to.have.length.above(0);
+    it('should have "checked" data-attribute when checkbox or radio is checked', () => {
+      expect(mount(<Item type="checkbox" isChecked />).find(Span).prop('data-test-checked')).to.equal(true);
+      expect(mount(<Item type="radio" isChecked />).find(Span).prop('data-test-checked')).to.equal(true);
     });
 
     it('should NOT have "checked" class for any other items', () => {
-      expect(mount(<Item type="link" isChecked />).find(`.${styles.checked}`).length).to.equal(0);
+      expect(mount(<Item type="link" isChecked />).find(Span).prop('data-test-checked')).to.equal(false);
     });
 
-    it('should have "hidden" class when item is hidden', () => {
-      expect(mount(<Item type="link" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
+    it('should have "hidden" data-attribute when item is hidden', () => {
+      expect(mount(<Item type="link" isHidden />).find(Span).prop('data-test-hidden')).to.equal(true);
+      expect(mount(<Item type="checkbox" isHidden />).find(Span).prop('data-test-hidden')).to.equal(true);
+      expect(mount(<Item type="radio" isHidden />).find(Span).prop('data-test-hidden')).to.equal(true);
     });
   });
 
@@ -117,8 +118,7 @@ describe(`${name} - item`, () => {
       let wrapper;
       beforeEach(() => {
         onActivate = sinon.spy();
-        // The event listener is on the `Element` in Item which we cant select with a css selector
-        wrapper = mount(<Item onActivate={onActivate} />).find(Item).childAt(0);
+        wrapper = mount(<Item onActivate={onActivate} />).find(Element);
       });
 
       it('should be activated when enter is pressed', () => {
@@ -149,34 +149,29 @@ describe(`${name} - item`, () => {
 
   describe('secondary text', () => {
     it('should render content inside', () => {
-      expect(mount(<SecondaryText>text</SecondaryText>).text()).to.equal('text');
-    });
-
-    it('should have className', () => {
-      expect(mount(<SecondaryText>text</SecondaryText>)
-        .find(`.${styles.secondaryText}`).length).to.equal(1);
+      expect(mount(<SecondaryText>secondary text</SecondaryText>).text()).to.equal('secondary text');
     });
   });
 
   describe('accessibility', () => {
     it('disabled item', () => {
-      expect(mount(<Item />).find('[aria-disabled]').length).to.equal(0);
-      expect(mount(<Item isDisabled />).find('[aria-disabled]').length).to.equal(1);
+      expect(mount(<Item />).find(Span).prop('aria-disabled')).to.equal(false);
+      expect(mount(<Item isDisabled />).find(Span).prop('aria-disabled')).to.equal(true);
     });
 
     it('hidden item', () => {
-      expect(mount(<Item />).find('[aria-hidden]').length).to.equal(0);
-      expect(mount(<Item isHidden />).find('[aria-hidden]').length).to.equal(1);
+      expect(mount(<Item />).find(Span).prop('aria-hidden')).to.equal(false);
+      expect(mount(<Item isHidden />).find(Span).prop('aria-hidden')).to.equal(true);
     });
 
     it('checked item', () => {
-      expect(mount(<Item />).find('[aria-checked]').length).to.equal(0);
-      expect(mount(<Item isChecked />).find('[aria-checked]').length).to.equal(1);
+      expect(mount(<Item />).find(Span).prop('aria-checked')).to.equal(false);
+      expect(mount(<Item type="checkbox" isChecked />).find(Span).prop('aria-checked')).to.equal(true);
     });
 
     it('option item', () => {
-      expect(mount(<Item type="option" />).find('[aria-selected=false]').length).to.equal(1);
-      expect(mount(<Item type="option" isSelected />).find('[aria-selected=true]').length).to.equal(1);
+      expect(mount(<Item type="option" />).find(Span).prop('aria-selected')).to.equal(false);
+      expect(mount(<Item type="option" isSelected />).find(Span).prop('aria-selected')).to.equal(true);
     });
 
     it('data-role', () => {

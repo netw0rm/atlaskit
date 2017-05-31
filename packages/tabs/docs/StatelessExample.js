@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StatelessTabs } from '@atlaskit/tabs';
+import { TabsStateless } from '@atlaskit/tabs';
 
 const tabs2 = [
   { label: 'Tab a', content: 'Tab a content' },
@@ -8,7 +8,7 @@ const tabs2 = [
   { label: 'Tab d', content: 'Tab d content' },
 ];
 
-export default class StatelessTabsExample extends PureComponent {
+export default class TabsStatelessExample extends PureComponent {
   state = {
     selectedTab: null,
     tabs: tabs2,
@@ -48,7 +48,7 @@ export default class StatelessTabsExample extends PureComponent {
 
   render() {
     return (
-      <StatelessTabs
+      <TabsStateless
         tabs={this.getTabs()}
         onKeyboardNav={this.tabKeyboardNavHandler}
       />

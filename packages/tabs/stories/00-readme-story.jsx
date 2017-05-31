@@ -6,7 +6,7 @@ import TabsExample from './examples/TabsExample'; // eslint-disable-line import/
 import TabsExampleRaw from '!raw!./examples/TabsExample'; // eslint-disable-line import/first, import/no-duplicates
 
 import { name, description } from '../package.json';
-import Tabs from '../src';
+import Tabs from '@atlaskit/tabs';
 
 const propDescriptions = {
   onSelect: 'Function that is called when the user selects a different tab. Not called on initial render.',

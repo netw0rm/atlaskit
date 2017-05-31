@@ -433,10 +433,10 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
   const placeholderUrl = getAcProperty(node, 'placeholder-url');
   const macroName = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
-  const params = toParamsString(getAcParameters(node));
+  const params = getAcParameters(node);
 
   // Switch on name first to check for macros that the Atlassian editor supports "natively"
-  switch (macroName) {
+  switch (macroName.toUpperCase()) {
     case 'INFO':
     case 'WARNING':
     case 'TIP':
@@ -523,7 +523,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 }
 
 function getAcName(node: Element): string | undefined {
-  return (node.getAttribute('ac:name') || '').toUpperCase();
+  return (node.getAttribute('ac:name') || '');
 }
 
 function getAcProperty(node: Element, property: string): string | null {
@@ -555,15 +555,15 @@ function getAcParameters(node: Element): Object {
   }
   return params;
 }
-
-function toParamsString(params: Object): string {
-  const paramsArray = [] as String[];
-  Object.keys(params).forEach((key) => {
-    paramsArray.push(`${key}=${params[key]}`);
-  });
-
-  return paramsArray.join('&');
-}
+//
+// function toParamsString(params: Object): string {
+//   const paramsArray = [] as String[];
+//   Object.keys(params).forEach((key) => {
+//     paramsArray.push(`${key}=${params[key]}`);
+//   });
+//
+//   return paramsArray.join('&');
+// }
 //
 // function getAcTagContent(node: Element, tagName: string): string | null {
 //   for (let i = 0; i < node.childNodes.length; i++) {

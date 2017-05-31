@@ -86,7 +86,7 @@ export const plainTextBlockMacroNodeView = (node: any, view: any, getPos: () => 
         );
     } else {
         ReactDOM.render(
-            <div className={macroNodeClassName} >{bodyContent}</div>,
+            <div className={macroNodeClassName}>{bodyContent}</div>,
             dom
         );
     }

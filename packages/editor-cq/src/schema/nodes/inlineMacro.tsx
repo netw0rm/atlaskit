@@ -5,7 +5,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import { NodeSpec, NodeView } from '@atlaskit/editor-core';
 import { style } from 'typestyle';
-import bodylessMacroNodeView from './bodylessMacroNodeView';
+import bodylessMacroNodeView, { bodylessMacroToDom } from './bodylessMacroNodeView';
 
 const nodeClassName = style({
     alignItems: 'center',
@@ -46,12 +46,10 @@ export default {
             macroId: dom.dataset.macroId,
             macroName: dom.dataset.macroName,
             placeholderUrl: dom.dataset.placeholderUrl,
-            params: dom.dataset.params,
+            params: JSON.parse(dom.dataset.params || ''),
         })
     }],
-    toDOM(node: any) {
-        return ['span', node.attrs, node.attrs.macroId];
-    }
+    toDOM: bodylessMacroToDom('span', nodeClassName),
 } as NodeSpec;
 
 export const inlineMacroNodeView: (node: any, view: any, getPos: () => number) => NodeView  = bodylessMacroNodeView('span', nodeClassName);

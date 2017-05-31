@@ -5,7 +5,7 @@ import {
   akColorN30,
   akColorN50,
 } from '@atlaskit/util-shared-styles';
-import bodylessMacroNodeView from './bodylessMacroNodeView';
+import bodylessMacroNodeView, { bodylessMacroToDom } from './bodylessMacroNodeView';
 
 const nodeClassName = style({
   background: akColorN30,
@@ -30,6 +30,7 @@ const nodeClassName = style({
 
 export default {
     group: 'block',
+    inline: false,
     atom: true,
     attrs: {
         macroId: { default: null },
@@ -43,12 +44,10 @@ export default {
             macroId: dom.dataset.macroId,
             macroName: dom.dataset.macroName,
             placeholderUrl: dom.dataset.placeholderUrl,
-            params: dom.dataset.params
+            params: dom.dataset.params,
         })
     }],
-    toDOM(node: any) {
-        return ['div', node.attrs, node.attrs.macroId];
-    }
+    toDOM: bodylessMacroToDom('div', nodeClassName),
 } as NodeSpec;
 
 export const bodylessBlockMacroNodeView: (node: any, view: any, getPos: () => number) => NodeView = bodylessMacroNodeView('div', nodeClassName);

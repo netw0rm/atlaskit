@@ -1,5 +1,20 @@
 import { NodeView } from '@atlaskit/editor-core';
 
+export function bodylessMacroToDom(elementType: string, nodeClassName: string) {
+  return (node: any) => {
+    const { macroName, macroId, params, placeholderUrl } = node.attrs;
+    const attrs = {
+      'class': nodeClassName,
+      'contenteditable': 'false',
+      'data-macro-id': macroId,
+      'data-macro-name': macroName,
+      'data-placeholder-url': placeholderUrl,
+      'data-params': JSON.stringify(params),
+    };
+    return [elementType, attrs];
+  };
+}
+
 export default function (elementType: string, nodeClassName: string): (node: any, view: any, getPos: () => number) => NodeView {
   return (node: any, view: any, getPos: () => number): NodeView => {
     const { macroId, macroName, placeholderUrl, params } = node.attrs;
@@ -9,7 +24,7 @@ export default function (elementType: string, nodeClassName: string): (node: any
     dom.dataset.macroName = macroName;
     dom.dataset.macroId = macroId;
     dom.dataset.placeholderUrl = placeholderUrl;
-    dom.dataset.params = params;
+    dom.dataset.params = JSON.stringify(params);
 
     dom.setAttribute('spellcheck', 'false');
 
@@ -28,11 +43,11 @@ export default function (elementType: string, nodeClassName: string): (node: any
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: JSON.stringify({
-          'contentId': '65654',
+          'contentId': '65654', // need to get this from Confluence
           'macro': {
             'name': macroName.toLowerCase(),
             'body': '', // should always be empty for bodyless
-            'params': {}, // key value json pairs of params string
+            'params': params,
           },
         }),
       }
@@ -43,14 +58,20 @@ export default function (elementType: string, nodeClassName: string): (node: any
       .then((responseText) => {
         const parser = new DOMParser();
         const html = parser.parseFromString(responseText, 'text/html');
-        return html.querySelector('.wiki-content > *');
+        return html.querySelectorAll('.wiki-content > *');
       })
-      .then((macroBody) => {
-        if (!macroBody) {
+      .then((macroBodies) => {
+        if (!macroBodies || !macroBodies.length) {
           return;
         }
         dom!.className = '';
-        dom!.innerHTML = macroBody.outerHTML;
+        dom!.innerHTML = '';
+        for (let ii = 0; ii < macroBodies.length; ii++) {
+          const element = macroBodies[ii];
+          if (element.tagName.toUpperCase() !== 'BR') {
+            dom!.appendChild(element);
+          }
+        }
       })
       .catch(() => null);
 

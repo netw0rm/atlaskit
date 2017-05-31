@@ -12,3 +12,4 @@ export { default as textColorPlugins, stateKey as textColorStateKey } from './te
 export { default as rulePlugins, stateKey as ruleStateKey } from './rule';
 export { default as panelPlugins, stateKey as panelStateKey } from './panel';
 export { default as reactNodeViewPlugins, ReactNodeViewState, stateKey as reactNodeViewStateKey } from './react-nodeview';
+export { default as collabPlugins, stateKey as collabStateKey, withCollabEdit } from './collab-edit';

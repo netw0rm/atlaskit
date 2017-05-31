@@ -1,3 +1,4 @@
+Object.assign(exports, require('./prosemirror-collab'));
 Object.assign(exports, require('./prosemirror-commands'));
 Object.assign(exports, require('./prosemirror-history'));
 Object.assign(exports, require('./prosemirror-inputrules'));

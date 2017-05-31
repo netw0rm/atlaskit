@@ -1,0 +1,12 @@
+import type { Position } from '../types';
+
+export default (el: Element): Position => {
+  const { top, right, bottom, left } = el.getBoundingClientRect();
+  const centerX = (left + right) / 2;
+  const centerY = (top + bottom) / 2;
+
+  return {
+    x: centerX,
+    y: centerY,
+  };
+};

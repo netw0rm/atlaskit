@@ -58,7 +58,6 @@ export const codeBlock: NodeSpec = {
         dom.style.whiteSpace === 'pre' || dom.style.whiteSpace === 'pre-wrap' ||
         (dom.style.fontFamily && dom.style.fontFamily.toLowerCase().indexOf('monospace') > -1)
       ) {
-        dom.textContent = dom.textContent!.replace(/\n$/, '');
         return {};
       }
       return false;
@@ -70,7 +69,6 @@ export const codeBlock: NodeSpec = {
     preserveWhitespace: 'full',
     getAttrs: (dom: HTMLElement) => {
       if (dom.querySelector('td[class*="blob-code"]')) {
-        dom.textContent = dom.textContent!.replace(/\n$/, '');
         return {};
       }
       return false;

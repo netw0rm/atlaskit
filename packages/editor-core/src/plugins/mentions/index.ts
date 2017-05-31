@@ -1,5 +1,4 @@
 import { MentionProvider } from '@atlaskit/mention';
-import * as commands from '../../commands';
 import {
   EditorState,
   EditorView,
@@ -10,7 +9,7 @@ import {
   Fragment
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
-import { isMarkExcludedAtPosition } from '../../utils';
+import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -61,7 +60,7 @@ export class MentionsState {
 
     let dirty = false;
 
-    const newEnabled = !this.mentionDisabled();
+    const newEnabled = this.isEnabled();
     if (newEnabled !== this.enabled) {
       this.enabled = newEnabled;
       dirty = true;
@@ -118,15 +117,10 @@ export class MentionsState {
     return true;
   }
 
-  mentionDisabled() {
-    const { schema, selection } = this.state;
+  isEnabled() {
+    const { schema } = this.state;
     const { mentionQuery } = schema.marks;
-    return isMarkExcludedAtPosition(mentionQuery, selection) || !this.canAddMentionToActiveNode();
-  }
-
-  private canAddMentionToActiveNode() {
-    const { mentionQuery } = this.state.schema.marks;
-    return !!mentionQuery && commands.toggleMark(mentionQuery)(this.state);
+    return isMarkTypeAllowedAtCurrentPosition(mentionQuery, this.state);
   }
 
   private findMentionQueryMark() {

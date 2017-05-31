@@ -13,7 +13,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
         return undefined;
       }
 
-      if (emojisState.emojiDisabled()) {
+      if (!emojisState.isEnabled()) {
         return undefined;
       }
 

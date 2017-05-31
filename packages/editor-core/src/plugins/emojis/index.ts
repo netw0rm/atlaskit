@@ -1,5 +1,4 @@
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
-import * as commands from '../../commands';
 import {
   EditorState,
   EditorView,
@@ -7,7 +6,7 @@ import {
   Plugin,
   PluginKey,
 } from '../../prosemirror';
-import { isMarkExcludedAtPosition } from '../../utils';
+import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
@@ -61,7 +60,7 @@ export class EmojiState {
 
     let dirty = false;
 
-    const newEnabled = this.canAddEmojiToActiveNode();
+    const newEnabled = this.isEnabled();
     if (newEnabled !== this.enabled) {
       this.enabled = newEnabled;
       dirty = true;
@@ -118,15 +117,10 @@ export class EmojiState {
     return true;
   }
 
-  emojiDisabled() {
-    const { schema, selection } = this.state;
+  isEnabled() {
+    const { schema } = this.state;
     const { emojiQuery } = schema.marks;
-    return isMarkExcludedAtPosition(emojiQuery, selection);
-  }
-
-  private canAddEmojiToActiveNode(): boolean {
-    const { emojiQuery } = this.state.schema.marks;
-    return !!emojiQuery && commands.toggleMark(emojiQuery)(this.state);
+    return isMarkTypeAllowedAtCurrentPosition(emojiQuery, this.state);
   }
 
   private findEmojiQueryMark() {

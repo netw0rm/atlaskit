@@ -1,5 +1,6 @@
 import {
   liftTarget,
+  Mark,
   MarkType,
   Node,
   NodeSelection,
@@ -14,21 +15,43 @@ import {
   Fragment,
   findWrapping
 } from '../prosemirror';
-
-function validateNode(node: Node): boolean {
-  return false;
-}
+import * as commands from '../commands';
 
 export {
   default as ErrorReporter,
   ErrorReportingHandler,
 } from './error-reporter';
 
+function validateNode(node: Node): boolean {
+  return false;
+}
+
+function isMarkTypeExcludedFromMark(markType: MarkType, mark: Mark): boolean {
+  return !!mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1;
+}
+
+function isMarkTypeAllowedInNode(markType: MarkType, state: EditorState<any>): boolean {
+  return commands.toggleMark(markType)(state);
+}
+
 /**
- * Check if a mark is allowed at a given position
+ * Check if a mark is allowed at the current position based on a given state.
+ * This method looks both at the currently active marks as well as the node and marks
+ * at the current position to determine if the given mark type is allowed.
+ * If there's a non-empty selection, the current position corresponds to the start
+ * of the selection.
  */
-export function isMarkExcludedAtPosition(markType: MarkType, selection: Selection) {
-  return selection.$from.marks().some(mark => !!mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1);
+export function isMarkTypeAllowedAtCurrentPosition(markType: MarkType, state: EditorState<any>) {
+  if (!isMarkTypeAllowedInNode(markType, state)) { return false; }
+
+  let allowedInActiveMarks = true;
+  let excludesMarkType = mark => isMarkTypeExcludedFromMark(markType, mark);
+  if (state.tr.storedMarks) {
+    allowedInActiveMarks = !state.tr.storedMarks.some(excludesMarkType);
+  } else {
+    allowedInActiveMarks = !state.selection.$from.marks().some(excludesMarkType);
+  }
+  return allowedInActiveMarks;
 }
 
 /**

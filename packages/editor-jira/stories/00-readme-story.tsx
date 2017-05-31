@@ -112,6 +112,12 @@ storiesOf(name, module)
               <td>If <code>true</code>, blockquote can be used in the editor.</td>
             </tr>
             <tr>
+              <td><code>mediaProvider</code></td>
+              <td><code>Promise?</code></td>
+              <td><code>--</code></td>
+              <td>If <code>provided</code>, media can be used in the editor.</td>
+            </tr>
+            <tr>
               <td><code>mentionProvider</code></td>
               <td><code>Promise?</code></td>
               <td><code>--</code></td>

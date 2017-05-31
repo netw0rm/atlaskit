@@ -1,10 +1,10 @@
-import { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule } from '../prosemirror';
+import { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema } from '../prosemirror';
 import {
   paragraph,
   createSchema
 } from '../schema';
 
-export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule };
+export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema };
 export default createSchema({
   nodes: [
     'doc',

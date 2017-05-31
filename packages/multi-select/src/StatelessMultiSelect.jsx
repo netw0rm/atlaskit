@@ -345,6 +345,7 @@ export default class StatelessMultiSelect extends PureComponent {
       onActivate={(attrs) => {
         this.handleItemSelect(item, attrs);
       }}
+      type="option"
     >
       {item.content}
     </Item>)

@@ -114,10 +114,11 @@ export default class StatelessMultiSelect extends PureComponent {
     shouldAllowCreateItem: false,
   }
 
-  // This is used only to show the focus ring around , it's okay to have state in this case.
+  // This is used only to manipulate focus , it's okay to have state in this case.
   state = {
     isFocused: this.props.isOpen || this.props.shouldFocus,
     focusedItemIndex: null,
+    isNewLabelFocused: null,
   }
 
   componentDidMount = () => {
@@ -274,13 +275,37 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
+  focusCorrectElement = (focused, length) => {
+    if (this.props.shouldAllowCreateItem && this.props.filterValue &&
+      focused === length && this.state.focusedItemIndex !== null) {
+      this.setState({
+        focusedItemIndex: null,
+        isNewLabelFocused: true,
+      });
+    } else {
+      this.setState({
+        focusedItemIndex: focused,
+        isNewLabelFocused: false,
+      });
+    }
+  }
+
+  focusNewLabel = () => {
+    this.setState({
+      focusedItemIndex: null,
+      isNewLabelFocused: true,
+    });
+  }
+
   focusNextItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
     if (filteredItems.length) {
       const length = filteredItems.length - 1;
-      this.setState({
-        focusedItemIndex: this.getNextFocusable(this.state.focusedItemIndex, length),
-      });
+      const nextFocused = this.getNextFocusable(this.state.focusedItemIndex, length);
+
+      this.focusCorrectElement(nextFocused, 0);
+    } else {
+      this.focusNewLabel();
     }
   }
 
@@ -288,9 +313,11 @@ export default class StatelessMultiSelect extends PureComponent {
     const filteredItems = this.getAllVisibleItems(this.props.items);
     if (filteredItems.length) {
       const length = filteredItems.length - 1;
-      this.setState({
-        focusedItemIndex: this.getPrevFocusable(this.state.focusedItemIndex, length),
-      });
+      const prevFocused = this.getPrevFocusable(this.state.focusedItemIndex, length);
+
+      this.focusCorrectElement(prevFocused, length);
+    } else {
+      this.focusNewLabel();
     }
   }
 
@@ -303,11 +330,17 @@ export default class StatelessMultiSelect extends PureComponent {
           this.onOpenChange({ event, isOpen: true });
         }
         this.focusNextItem();
+        if (this.inputNode) {
+          this.inputNode.focus();
+        }
         break;
       case 'ArrowUp':
         event.preventDefault();
         if (isSelectOpen) {
           this.focusPreviousItem();
+          if (this.inputNode) {
+            this.inputNode.focus();
+          }
         }
         break;
       case 'Enter':
@@ -404,7 +437,9 @@ export default class StatelessMultiSelect extends PureComponent {
     if (shouldAllowCreateItem) {
       if (newValue) {
         return (<Footer
+          isFocused={this.state.isNewLabelFocused}
           newLabel={this.props.createNewItemLabel}
+          onClick={this.handleItemCreate}
           shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
         >
           { newValue }

@@ -15,7 +15,7 @@ const selectItems = [
   },
 ];
 
-const Footer = () => (<a href="http://atlassian.com">+ Create new component</a>);
+const Footer = () => (<a href="https://atlassian.com">+ Create new component</a>);
 
 export default (
   <Select

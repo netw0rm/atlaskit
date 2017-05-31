@@ -56,8 +56,31 @@
 }
 
 .footer {
-  padding: @ak-grid-size * 2 @ak-grid-size * 3 / 2;
   border-top: 2px solid @ak-color-N40A;
+  padding: @ak-grid-size 0 @ak-grid-size / 2;
+}
+
+.footerNewItem {
+  padding: @ak-grid-size @ak-grid-size * 3 / 2;
+  display: block;
+
+  &:hover {
+    background-color: @ak-color-N20;
+    cursor:pointer;
+  }
+
+  &:active {
+    background-color: @ak-color-B75;
+  }
+}
+
+.footerNewItemFocused {
+  box-shadow: 0 0 0 2px @ak-color-B100 inset;
+}
+
+.emptyFooter {
+  padding: @ak-grid-size @ak-grid-size * 3 / 2;
+  display: block;
 }
 
 .noSeparator {

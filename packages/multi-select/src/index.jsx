@@ -27,6 +27,9 @@ export default class AkMultiSelect extends PureComponent {
   static propTypes = {
     /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Message to display in footer after the name of the new item. Only applicable if
+     * shouldAllowCreateItem prop is set to true. */
+    createNewItemLabel: PropTypes.string,
     /** An array of items that will be selected on component mount. */
     defaultSelected: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     /** id property to be passed down to the html select component. */
@@ -72,11 +75,14 @@ export default class AkMultiSelect extends PureComponent {
     position: PropTypes.string,
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
+    /** Sets whether a new item could be created and added to the list by pressing Enter
+     * inside the autocomplete field */
     shouldAllowCreateItem: PropTypes.bool,
   }
 
   static defaultProps = {
     appearance: appearances.default,
+    createNewItemLabel: 'New item',
     defaultSelected: [],
     shouldFocus: false,
     isRequired: false,
@@ -136,7 +142,7 @@ export default class AkMultiSelect extends PureComponent {
   handleNewItemCreate = ({ value: textValue }) => {
     const { items, selectedItems } = this.state;
     const id = uid();
-    const newItem = { value: `${textValue}_${id}`, content: textValue };
+    const newItem = { value: id, content: textValue };
     const newItemsArray = [...items];
     newItemsArray[newItemsArray.length - 1].items.push(newItem);
 
@@ -145,13 +151,14 @@ export default class AkMultiSelect extends PureComponent {
       selectedItems: [...selectedItems, newItem],
       filterValue: '',
     });
-    this.props.onNewItemCreated({ value: textValue });
+    this.props.onNewItemCreated({ value: textValue, item: newItem });
   }
 
   render() {
     return (
       <StatelessMultiSelect
         appearance={this.props.appearance}
+        createNewItemLabel={this.props.createNewItemLabel}
         filterValue={this.state.filterValue}
         id={this.props.id}
         isDisabled={this.props.isDisabled}

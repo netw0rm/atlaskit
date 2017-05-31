@@ -56,6 +56,10 @@ describe(`${name} - stateless`, () => {
       expect(mount(<StatelessMultiSelect filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).to.equal(1);
     });
 
+    it('should NOT render Footer if shouldAllowCreateItem is false', () => {
+      expect(mount(<StatelessMultiSelect filterValue="test" isOpen />).find(Footer).length).to.equal(0);
+    });
+
     it('should render search text and label in the footer when shouldAllowCreateItem is true', () => {
       const wrapper = mount(<StatelessMultiSelect createNewItemLabel="new" filterValue="test" isOpen shouldAllowCreateItem />);
       expect(wrapper.find(Footer).text()).to.equal('test (new)');

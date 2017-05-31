@@ -8,12 +8,12 @@ export default class NothingWasFound extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     newLabel: PropTypes.string,
-    shouldHideBorder: PropTypes.bool,
+    shouldHideSeparator: PropTypes.bool,
   }
 
   render() {
     const classes = classNames([styles.footer, {
-      [styles.noborder]: this.props.shouldHideBorder,
+      [styles.noSeparator]: this.props.shouldHideSeparator,
     }]);
     return (
       <div className={classes}>

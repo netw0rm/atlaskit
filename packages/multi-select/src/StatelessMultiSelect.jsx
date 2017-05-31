@@ -36,8 +36,8 @@ export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
     /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
-    /** Mesage to display in footer after the name of the new item. Only applicable is the
-     * shouldAllowCreateItem prop is set to true. */
+    /** Message to display in footer after the name of the new item. Only applicable if
+     * shouldAllowCreateItem prop is set to true. Default: 'New item'*/
     createNewItemLabel: PropTypes.string,
     /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
@@ -94,7 +94,7 @@ export default class StatelessMultiSelect extends PureComponent {
 
   static defaultProps = {
     appearance: appearances.default,
-    createNewItemLabel: 'New label',
+    createNewItemLabel: 'New item',
     filterValue: '',
     shouldFocus: false,
     isOpen: false,
@@ -251,6 +251,10 @@ export default class StatelessMultiSelect extends PureComponent {
     const value = event.target.value;
 
     if (value !== this.props.filterValue) {
+      // We want to get rid of the focus on the items when the shouldAllowCreateItem enabled.
+      // When a user presses Enter multi-select should create a new value if nothing is focused, but
+      // it still should allow to focus an item in the list and select it by pressing Enter
+      // as normal multi-select does.
       if (this.props.shouldAllowCreateItem) {
         this.setState({ focusedItemIndex: null });
       }
@@ -371,7 +375,7 @@ export default class StatelessMultiSelect extends PureComponent {
     return shouldAllowCreateItem && newValue ?
       <Footer
         newLabel={this.props.createNewItemLabel}
-        shouldHideBorder={!this.getAllVisibleItems(this.props.items).length}
+        shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
       >
         { newValue }
       </Footer> :

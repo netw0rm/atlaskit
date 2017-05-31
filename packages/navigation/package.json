@@ -49,6 +49,7 @@
     "@atlaskit/logo": "^2.0.0",
     "@atlaskit/navigation": "*",
     "@atlaskit/page": "^4.0.0",
+    "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-common-test": "*",
     "@atlaskit/util-readme": "^1.0.0",
     "karma-sinon-chai": "^1.2.4",

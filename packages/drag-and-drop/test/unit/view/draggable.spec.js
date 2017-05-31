@@ -4,19 +4,15 @@ import React, { PureComponent } from 'react';
 import { shallow, mount } from 'enzyme';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
+import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import makeDraggable, { Placeholder } from '../../src/view/draggable/make-draggable';
-import DragHandle from '../../src/view/drag-handle/drag-handle';
-import Moveable from '../../src/view/moveable';
-import { dragDropContext } from '../../src/';
-import type { DraggingInitial, Position } from '../../src/types';
-import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapState } from '../../src/view/draggable/draggable-types';
-
-const describe = window.describe;
-const it = window.it;
-const beforeEach = window.beforeEach;
-const afterEach = window.afterEach;
+import makeDraggable, { Placeholder } from '../../../src/view/draggable/make-draggable';
+import DragHandle from '../../../src/view/drag-handle/drag-handle';
+import Moveable from '../../../src/view/moveable';
+import { dragDropContext } from '../../../src/';
+import type { DraggingInitial, Position } from '../../../src/types';
+import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapState } from '../../../src/view/draggable/draggable-types';
 
 class Child extends PureComponent {
   render() {

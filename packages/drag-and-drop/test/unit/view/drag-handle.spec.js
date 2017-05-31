@@ -3,16 +3,12 @@ import React, { PureComponent } from 'react';
 import { mount } from 'enzyme';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
+import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import DragHandle, { getCursor } from '../../src/view/drag-handle/drag-handle';
-import type { Callbacks } from '../../src/view/drag-handle';
-import createDragHandle from '../../src/view/drag-handle/';
-
-const describe = window.describe;
-const it = window.it;
-const beforeEach = window.beforeEach;
-const afterEach = window.afterEach;
+import DragHandle, { getCursor } from '../../../src/view/drag-handle/drag-handle';
+import type { Callbacks } from '../../../src/view/drag-handle';
+import createDragHandle from '../../../src/view/drag-handle/';
 
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;

@@ -1,13 +1,11 @@
 // @flow
 import React, { PureComponent, PropTypes } from 'react';
 import { mount } from 'enzyme';
+import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import TestUtils from 'react-addons-test-utils';
-import { dragDropContext } from '../../src/';
-import storeKey from '../../src/state/get-store-key';
-
-const describe = window.describe;
-const it = window.it;
+import { dragDropContext } from '../../../src/';
+import storeKey from '../../../src/state/get-store-key';
 
 class App extends PureComponent {
   static contextTypes = {

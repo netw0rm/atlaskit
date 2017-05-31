@@ -12,6 +12,7 @@ import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
+import Footer from './internal/Footer';
 import { mapAppearanceToFieldBase } from './internal/appearances';
 
 const groupShape = DummyGroup.propTypes;
@@ -35,6 +36,9 @@ export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
     /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Message to display in footer after the name of the new item. Only applicable if
+     * shouldAllowCreateItem prop is set to true. Default: 'New item'*/
+    createNewItemLabel: PropTypes.string,
     /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
     /** id property to be passed down to the html select component. */
@@ -66,6 +70,9 @@ export default class StatelessMultiSelect extends PureComponent {
     name: PropTypes.string,
     /** Handler to be called when the filtered items changes.*/
     onFilterChange: PropTypes.func,
+    /** Handler to be called when a new item is created.
+     * Only applicable when the shouldAllowCreateItem is set to true.*/
+    onNewItemCreated: PropTypes.func,
     /** Handler called when the select is opened or closed. Called with an object
     that has both the event, and the new isOpen state. */
     onOpenChange: PropTypes.func,
@@ -80,10 +87,14 @@ export default class StatelessMultiSelect extends PureComponent {
     selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
+    /** Sets whether a new item could be created and added to the list by pressing Enter
+     * inside the autocomplete field */
+    shouldAllowCreateItem: PropTypes.bool,
   }
 
   static defaultProps = {
     appearance: appearances.default,
+    createNewItemLabel: 'New item',
     filterValue: '',
     shouldFocus: false,
     isOpen: false,
@@ -96,6 +107,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onRemoved: () => {},
     position: 'bottom left',
     selectedItems: [],
+    shouldAllowCreateItem: false,
   }
 
   // This is used only to show the focus ring around , it's okay to have state in this case.
@@ -202,6 +214,19 @@ export default class StatelessMultiSelect extends PureComponent {
     return allFilteredItems;
   }
 
+  handleItemCreate = (event) => {
+    const { filterValue: value, items } = this.props;
+    if (value) {
+      const allVisible = this.getAllVisibleItems(items);
+      const matchingElement = allVisible.filter(item => item.content === value);
+      if (!matchingElement.length) {
+        this.props.onNewItemCreated({ value });
+      } else {
+        this.handleItemSelect(matchingElement[0], { event });
+      }
+    }
+  }
+
   handleItemSelect = (item, attrs) => {
     if (!item.isDisabled) {
       this.props.onOpenChange({ isOpen: false, event: attrs.event });
@@ -226,6 +251,14 @@ export default class StatelessMultiSelect extends PureComponent {
     const value = event.target.value;
 
     if (value !== this.props.filterValue) {
+      // We want to get rid of the focus on the items when the shouldAllowCreateItem enabled.
+      // When a user presses Enter multi-select should create a new value if nothing is focused, but
+      // it still should allow to focus an item in the list and select it by pressing Enter
+      // as normal multi-select does.
+      if (this.props.shouldAllowCreateItem) {
+        this.setState({ focusedItemIndex: null });
+      }
+
       this.props.onFilterChange(value);
       this.onOpenChange({ event, isOpen: true });
     }
@@ -276,6 +309,8 @@ export default class StatelessMultiSelect extends PureComponent {
             this.handleItemSelect(
               this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
             );
+          } else if (this.props.shouldAllowCreateItem) {
+            this.handleItemCreate();
           }
         }
         break;
@@ -310,6 +345,7 @@ export default class StatelessMultiSelect extends PureComponent {
       onActivate={(attrs) => {
         this.handleItemSelect(item, attrs);
       }}
+      type="option"
     >
       {item.content}
     </Item>)
@@ -330,7 +366,21 @@ export default class StatelessMultiSelect extends PureComponent {
         : null;
     }).filter(group => !!group);
 
-    return renderedGroups.length > 0 ? renderedGroups : this.renderNoItemsMessage();
+    // don't show the 'noItems' message when the new item functinality is enabled
+    return (renderedGroups.length > 0 || this.props.shouldAllowCreateItem)
+      ? renderedGroups : this.renderNoItemsMessage();
+  }
+
+  renderFooter = () => {
+    const { filterValue: newValue, shouldAllowCreateItem } = this.props;
+    return shouldAllowCreateItem && newValue ?
+      <Footer
+        newLabel={this.props.createNewItemLabel}
+        shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
+      >
+        { newValue }
+      </Footer> :
+      null;
   }
 
   renderOptions = items => items.map((item, itemIndex) => (<option
@@ -430,6 +480,7 @@ export default class StatelessMultiSelect extends PureComponent {
           }
         >
           {this.renderGroups(this.props.items)}
+          {this.renderFooter()}
         </Droplist>
       </div>
     );

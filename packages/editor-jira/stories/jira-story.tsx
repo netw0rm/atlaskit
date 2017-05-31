@@ -1,6 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
-import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import InlineEdit from '@atlaskit/inline-edit';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { name, version } from '../package.json';
@@ -9,6 +10,7 @@ import MentionResource from './mentions/mention-resource';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
+const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 
 type State = { html?: string };
 class Demo extends PureComponent<Props, State> {
@@ -48,8 +50,7 @@ storiesOf(name, module)
   .add('Editor (Mentions)', () =>
     <Demo
       mentionProvider={Promise.resolve(new MentionResource())}
-      // tslint:disable-next-line:jsx-no-lambda
-      mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}
+      mentionEncoder={mentionEncoder}
     />
   )
   .add('Editor with InlineEdit', () => {
@@ -77,6 +78,19 @@ storiesOf(name, module)
       />
     );
   })
+  .add('Editor (Media)', () =>
+    //  TODO: remove the following note and link after the login is not required anymore or there's better way to run the story.
+    <div>
+      <div style={{ padding: '5px 0' }}>
+        ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
+      </div>
+      <Demo
+        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+        onCancel={CANCEL_ACTION}
+        onSave={SAVE_ACTION}
+      />
+    </div>
+  )
   .add('Editor (All flags)', () =>
     <Demo
       allowLists={true}
@@ -85,8 +99,8 @@ storiesOf(name, module)
       allowAdvancedTextFormatting={true}
       allowSubSup={true}
       allowBlockQuote={true}
+      mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
       mentionProvider={Promise.resolve(new MentionResource())}
-      // tslint:disable-next-line:jsx-no-lambda
-      mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}
+      mentionEncoder={mentionEncoder}
     />
   );

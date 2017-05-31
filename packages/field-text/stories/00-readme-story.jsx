@@ -12,6 +12,7 @@ const fieldTextPropDescriptions = {
   compact: 'Whether to use compact sizing for the field.',
   type: 'The type of control to display.',
   disabled: 'Whether the field is disabled.',
+  isReadOnly: 'Whether the field is readonly.',
   required: 'Whether the field is required.',
   isInvalid: 'Whether the field is invalid. An invalid field will display a warning icon, and clicking the icon will show a warning dialog if `invalidMessage` is provided.',
   invalidMessage: 'The message to show in the warning dialog when isInvalid is set.',

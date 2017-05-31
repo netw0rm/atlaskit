@@ -65,6 +65,7 @@ export default class Element extends PureComponent {
       onMouseUp: props.handleMouseUp,
       role: ariaRoles[props.type],
       title: props.title,
+      tabIndex: props.type === 'option' ? null : 0,
     };
     const testingProps = process.env.NODE_ENV === 'test' ? {
       'data-test-active': isActive,
@@ -84,7 +85,7 @@ export default class Element extends PureComponent {
     }
 
     return (
-      <Span tabIndex="0" {...consolidatedProps}>
+      <Span {...consolidatedProps}>
         {props.children}
       </Span>
     );

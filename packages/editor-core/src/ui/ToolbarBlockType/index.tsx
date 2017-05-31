@@ -12,6 +12,7 @@ import { EditorView } from '../../prosemirror';
 import { ButtonContent } from './styles';
 
 export interface Props {
+  isDisabled?: boolean;
   editorView: EditorView;
   pluginState: BlockTypeState;
   softBlurEditor: () => void;
@@ -60,6 +61,18 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   render() {
     const { active, currentBlockType } = this.state;
     const items = this.createItems();
+    if (this.props.isDisabled) {
+      return (
+        <AkButton
+          isSelected={active}
+          appearance="subtle"
+          isDisabled={true}
+          spacing="compact"
+        >
+          <ButtonContent>{currentBlockType.title}</ButtonContent>
+        </AkButton>
+      );
+    }
     return (
       <DropdownMenu
         items={items}

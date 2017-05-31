@@ -35,24 +35,27 @@ const dropdownItemsWithGroupsOverride =
 
 const imports = [
   ['React', 'react'],
-  ['DropdownMenu', 'ak-dropdown-menu'],
+  ['DropdownMenu', '@atlaskit/dropdown-menu'],
 ];
+
+const DropdownWrapper = props => (<div style={{ padding: '20px 0' }} {...props} />);
+const StoryContainer = props => (<div style={{ padding: 40 }} {...props} />);
 
 storiesOf(name, module)
   .addCodeExampleStory('Basic Dropdown menu with a button', () => (
-    <div style={{ padding: '40px' }}>
+    <StoryContainer>
       <p>This is an example of a basic dropdown menu with the build-in trigger which looks like a
         button with the `expand` icon.</p>
-      <div style={{ padding: '20px 0' }}>
+      <DropdownWrapper>
         <DropdownMenu triggerType="button" items={simpleDropdownItems}>
           Test
         </DropdownMenu>
-      </div>
+      </DropdownWrapper>
       <p>Empty button is also possible</p>
-      <div style={{ padding: '20px 0' }}>
+      <DropdownWrapper>
         <DropdownMenu triggerType="button" items={simpleDropdownItems} />
-      </div>
-    </div>
+      </DropdownWrapper>
+    </StoryContainer>
   ), {
     imports,
     overrides: {
@@ -63,10 +66,10 @@ storiesOf(name, module)
     ],
   })
   .addCodeExampleStory('Basic Dropdown menu avatars/icons', () => (
-    <div style={{ padding: '40px' }}>
+    <StoryContainer>
       <p>This is an example of a basic dropdown menu with the build-in trigger which looks like a
         button with the `expand` icon.</p>
-      <div style={{ padding: '20px 0' }}>
+      <DropdownWrapper>
         <DropdownMenu
           defaultOpen
           triggerType="button"
@@ -74,14 +77,14 @@ storiesOf(name, module)
         >
           Drop menu
         </DropdownMenu>
-      </div>
-    </div>
+      </DropdownWrapper>
+    </StoryContainer>
   ), { imports })
   .addCodeExampleStory('Basic Dropdown menu with checkbox items', () => (
-    <div style={{ padding: '40px' }}>
+    <StoryContainer>
       <p>This is an example of a basic dropdown menu with checkbox items.
         Use it when you want to present options the user can select or enable.</p>
-      <div style={{ padding: '20px 0' }}>
+      <DropdownWrapper>
         <DropdownMenu
           defaultOpen
           triggerType="button"
@@ -90,14 +93,14 @@ storiesOf(name, module)
         >
           Drop menu
         </DropdownMenu>
-      </div>
-    </div>
+      </DropdownWrapper>
+    </StoryContainer>
   ), { imports, overrides: { style: '...' } })
   .addCodeExampleStory('Basic Dropdown menu with radio items', () => (
-    <div style={{ padding: '40px' }}>
+    <StoryContainer>
       <p>This is an example of a basic dropdown menu with radio items.
         Use it when you want to present options the user can select or enable.</p>
-      <div style={{ padding: '20px 0' }}>
+      <DropdownWrapper>
         <DropdownMenu
           defaultOpen
           triggerType="button"
@@ -106,11 +109,11 @@ storiesOf(name, module)
         >
           Drop menu
         </DropdownMenu>
-      </div>
-    </div>
+      </DropdownWrapper>
+    </StoryContainer>
   ), { imports, overrides: { style: '...' } })
   .addCodeExampleStory('Basic Dropdown menu with anything as a trigger', () => (
-    <div style={{ padding: '40px' }} >
+    <StoryContainer >
       <p>Anything can be a trigger for the dropdown menu.</p>
       <div
         style={{
@@ -131,7 +134,7 @@ storiesOf(name, module)
           <span tabIndex="0"><Question label="dropdown`s trigger" /></span>
         </DropdownMenu>
       </div>
-    </div>
+    </StoryContainer>
   ), {
     imports: [...imports, ['t', '@atlaskit/icon/glyph/question']],
     overrides: {
@@ -142,22 +145,22 @@ storiesOf(name, module)
     ],
   })
   .addCodeExampleStory('Different appearances of the dropdown menu: default, tall', () => (
-    <div style={{ padding: '40px' }}>
+    <StoryContainer>
       <p>This is an example of a default dropdown with lots of items. If there are
       more items than it can handle then the scroll appears.</p>
-      <div style={{ padding: '20px 0' }}>
+      <DropdownWrapper>
         <DropdownMenu triggerType="button" items={lotsOfItems}>
           Drop it!
         </DropdownMenu>
-      </div>
+      </DropdownWrapper>
       <p>This is an example of a tall dropdown with lots of items. It will never have scroll, so
       use it with caution.</p>
-      <div style={{ padding: '20px 0' }}>
+      <DropdownWrapper>
         <DropdownMenu triggerType="button" items={lotsOfItems} appearance="tall">
           Drop it!
         </DropdownMenu>
-      </div>
-    </div>
+      </DropdownWrapper>
+    </StoryContainer>
   ), {
     imports,
     overrides: {
@@ -165,14 +168,14 @@ storiesOf(name, module)
     },
   })
   .addCodeExampleStory('Dropdown menu with a few groups', () => (
-    <div style={{ padding: '40px' }}>
+    <StoryContainer>
       <p>If the dropdown menu has more than one group, then all the groups should have headings.</p>
-      <div style={{ padding: '20px 0' }}>
+      <DropdownWrapper>
         <DropdownMenu triggerType="button" items={dropdownItemsWithGroups}>
           Test
         </DropdownMenu>
-      </div>
-    </div>
+      </DropdownWrapper>
+    </StoryContainer>
   ), {
     imports,
     overrides: {
@@ -188,19 +191,16 @@ storiesOf(name, module)
     ],
   })
   .addCodeExampleStory('Loading dropdown', () => (
-    <div style={{ padding: '40px' }}>
+    <StoryContainer>
+      <p>This is an example of a dropdown that is loading.</p>
       <p>
-        This is an example of a dropdown that is loading.
-      </p>
-      <div style={{ padding: '20px 0' }}>
         <DropdownMenu
           defaultOpen
           isLoading
-          isOpen
           triggerType="button"
         />
-      </div>
-    </div>
+      </p>
+    </StoryContainer>
   ))
   .addCodeExampleStory('Basic Dropdown menu with customized trigger button', () => (
     <DropdownWithTriggerOptions />
@@ -226,13 +226,13 @@ storiesOf(name, module)
     { scripts: [WideDropdownRaw] },
   )
   .addCodeExampleStory('Dropdown menu with tooltips', () => (
-    <div style={{ padding: '40px' }}>
+    <StoryContainer>
       <p>Try hovering over items in the dropdown</p>
       <div style={{ padding: '20px 0', width: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
         <DropdownMenu triggerType="button" items={itemsWithTooltips}>
           Open me
         </DropdownMenu>
       </div>
-    </div>
+    </StoryContainer>
   ))
 ;

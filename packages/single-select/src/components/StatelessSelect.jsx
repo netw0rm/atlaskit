@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
-import { Label, FieldBase } from '@atlaskit/field-base';
+import { Label, FieldBaseStateless } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import { mapAppearanceToFieldBase } from './appearances';
 import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
@@ -391,6 +391,7 @@ export default class StatelessSelect extends PureComponent {
         onActivate={(attrs) => {
           this.handleItemSelect(item, attrs);
         }}
+        type="option"
       >
         {item.content}
       </Item>));
@@ -482,7 +483,7 @@ export default class StatelessSelect extends PureComponent {
           position={position}
           shouldFitContainer={droplistShouldFitContainer}
           trigger={
-            <FieldBase
+            <FieldBaseStateless
               appearance={mapAppearanceToFieldBase([appearance])}
               isDisabled={isDisabled}
               isFitContainerWidthEnabled
@@ -528,7 +529,7 @@ export default class StatelessSelect extends PureComponent {
                   <ExpandIcon label="" />
                 </Expand>
               </Trigger>
-            </FieldBase>
+            </FieldBaseStateless>
           }
         >
           <div

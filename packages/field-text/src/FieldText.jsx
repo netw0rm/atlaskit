@@ -11,6 +11,8 @@ export default class FieldText extends PureComponent {
     type: PropTypes.string,
     /** Sets the field as uneditable, with a changed hover state. */
     disabled: PropTypes.bool,
+    /** If true, prevents the value of the input from being edited. */
+    isReadOnly: PropTypes.bool,
     /** Add asterisk to label. Set required for form that the field is part of. */
     required: PropTypes.bool,
     /** Sets styling to indicate that the input is invalid. */
@@ -46,6 +48,7 @@ export default class FieldText extends PureComponent {
   static defaultProps = {
     compact: false,
     disabled: false,
+    isReadOnly: false,
     required: false,
     isInvalid: false,
     type: 'text',
@@ -69,6 +72,7 @@ export default class FieldText extends PureComponent {
           isCompact={this.props.compact}
           isDisabled={this.props.disabled}
           isInvalid={this.props.isInvalid}
+          isReadOnly={this.props.isReadOnly}
           isRequired={this.props.required}
           invalidMessage={this.props.invalidMessage}
           isFitContainerWidthEnabled={this.props.shouldFitContainer}
@@ -77,6 +81,7 @@ export default class FieldText extends PureComponent {
             className={styles.input}
             type={this.props.type}
             disabled={this.props.disabled}
+            readOnly={this.props.isReadOnly}
             name={this.props.name}
             placeholder={this.props.placeholder}
             value={this.props.value}

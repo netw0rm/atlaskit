@@ -1,21 +1,21 @@
 // @flow
 import styled from 'styled-components';
-import { gridSize } from '../../shared-variables';
-import { focusOutline, truncate } from '../../utils/mixins';
+import { item as itemStyles } from '../../shared-variables';
+import { focusOutline } from '../../utils/mixins';
 import { isInCompactGroup, getProvided } from '../../theme/util';
 
-const borderRadius = 3;
+const itemBorderRadius = itemStyles.borderRadius;
 
 const getItemOrDropdown = ({ theme, isDropdown }) =>
     getProvided(theme)[isDropdown ? 'dropdown' : 'item'];
 
 const NavigationItemOuter = styled.div`
-  border-radius: ${borderRadius}px;
+  border-radius: ${itemBorderRadius}px;
   box-sizing: border-box;
-  height: ${({ theme }) => (isInCompactGroup(theme) ? gridSize * 4.5 : gridSize * 5)}px;
+  height: ${({ theme }) => (isInCompactGroup(theme) ? itemStyles.width.compact : itemStyles.width.standard)}px;
   position: relative;
-  ${truncate('100%')}
 
+  /* AK-2548: rather than targeting like this - the styles should be applied on the InteractionWrapper */
   button, a {
     background-color: ${(props) => {
       const item = getItemOrDropdown(props);
@@ -24,7 +24,7 @@ const NavigationItemOuter = styled.div`
       }
       return item.default.background;
     }};
-    border-radius: ${borderRadius}px;
+    border-radius: ${itemBorderRadius}px;
     color: ${(props) => {
       const item = getItemOrDropdown(props);
 

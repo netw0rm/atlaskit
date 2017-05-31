@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Label, FieldBase } from '@atlaskit/field-base';
+import { Label, FieldBaseStateless } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import { Tooltip } from '@atlaskit/tooltip';
@@ -35,8 +35,8 @@ describe(name, () => {
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessSelect />).find(FieldBase).length).to.equal(1);
-      expect(mount(<StatelessSelect />).find(Droplist).find(FieldBase).length).to.equal(1);
+      expect(mount(<StatelessSelect />).find(FieldBaseStateless).length).to.equal(1);
+      expect(mount(<StatelessSelect />).find(Droplist).find(FieldBaseStateless).length).to.equal(1);
     });
 
     it('should render placeholder in trigger if there is no selected item', () => {
@@ -114,7 +114,7 @@ describe(name, () => {
 
     it('should pass props to fieldBase', () => {
       const select = mount(<StatelessSelect isDisabled isInvalid isOpen />);
-      const fieldbaseProps = select.find(FieldBase).props();
+      const fieldbaseProps = select.find(FieldBaseStateless).props();
       expect(fieldbaseProps.isDisabled, 'isDisabled').to.equal(true);
       expect(fieldbaseProps.isInvalid, 'isInvalid').to.equal(true);
       expect(fieldbaseProps.onFocus, 'onFocus').to.equal(select.instance().onFocus);
@@ -694,9 +694,9 @@ describe(name, () => {
 
     it('should correctly map appearance prop to FieldBase', () => {
       const defaultMultiSelect = mount(<StatelessSelect />);
-      const standardFieldBase = defaultMultiSelect.find(FieldBase);
+      const standardFieldBase = defaultMultiSelect.find(FieldBaseStateless);
       const subtleMultiSelect = mount(<StatelessSelect appearance="subtle" />);
-      const subtleFieldBase = subtleMultiSelect.find(FieldBase);
+      const subtleFieldBase = subtleMultiSelect.find(FieldBaseStateless);
       expect(standardFieldBase.prop('appearance')).to.equal('standard');
       expect(subtleFieldBase.prop('appearance')).to.equal('subtle');
     });

@@ -35,6 +35,28 @@ describe('ak-field-text', () => {
       });
     });
 
+    describe('isReadOnly prop', () => {
+      describe('set to true', () => {
+        it('should sets its value on the input', () => {
+          expect(shallow(<FieldText isReadOnly />).find('input').props().readOnly).to.equal(true);
+        });
+
+        it('should reflect its value to the FieldBase', () => {
+          expect(shallow(<FieldText isReadOnly />).find(Base).props().isReadOnly).to.equal(true);
+        });
+      });
+
+      describe('set to false', () => {
+        it('should sets its value on the input', () => {
+          expect(shallow(<FieldText />).find('input').props().readOnly).to.equal(false);
+        });
+
+        it('should reflect its value to the FieldBase', () => {
+          expect(shallow(<FieldText />).find(Base).props().isReadOnly).to.equal(false);
+        });
+      });
+    });
+
     describe('required prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(shallow(<FieldText required />).find(Base).props().isRequired).to.equal(true);

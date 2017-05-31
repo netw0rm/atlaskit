@@ -178,6 +178,23 @@ describe(`${name} - stateless`, () => {
         expect(spy.called).to.equal(false);
         expect(preventDefaultSpy.calledOnce).to.equal(false);
       });
+
+      it('should call handleItemCreate when Enter is pressed and shouldAllowCreateItem is true', () => {
+        wrapper.setState({ focusedItemIndex: null });
+        const spy = sinon.spy(instance, 'handleItemCreate');
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'Enter', preventDefault: preventDefaultSpy };
+
+        wrapper.setProps({ shouldAllowCreateItem: false });
+        instance.handleKeyboardInteractions(event);
+        expect(spy.called).to.equal(false);
+
+        wrapper.setProps({ shouldAllowCreateItem: true });
+        instance.handleKeyboardInteractions(event);
+        expect(spy.calledOnce).to.equal(true);
+
+        expect(preventDefaultSpy.calledTwice).to.equal(true);
+      });
     });
 
     describe('handleOnChange', () => {
@@ -203,6 +220,14 @@ describe(`${name} - stateless`, () => {
         wrapper.setProps({ filterValue: value });
         instance.handleOnChange(event);
         expect(onFilterChangeSpy.called).to.equal(false);
+      });
+
+      it('should reset focus if shouldAllowCreateItem is set to true', () => {
+        const event = { key: '', target: { value: '1' } };
+        wrapper.setProps({ shouldAllowCreateItem: true });
+        wrapper.setState({ focusedItemIndex: 1 });
+        instance.handleOnChange(event);
+        expect(wrapper.state().focusedItemIndex).to.equal(null);
       });
     });
 
@@ -334,6 +359,33 @@ describe(`${name} - stateless`, () => {
         instance.handleItemSelect(item, attrs);
         expect(onFilterChangeSpy.callCount).to.equal(1);
         expect(onFilterChangeSpy.calledWith('')).to.equal(true);
+      });
+    });
+
+    describe('handleItemCreate', () => {
+      beforeEach(() => {
+        wrapper.setProps({ shouldAllowCreateItem: true });
+      });
+
+      it('should call onNewItemCreated prop when there is a new value', () => {
+        const spy = sinon.spy();
+        const testValue = 'test';
+        wrapper.setProps({ onNewItemCreated: spy, filterValue: testValue });
+        instance.handleItemCreate({});
+        expect(spy.calledOnce).to.equal(true);
+        expect(spy.calledWith({ value: testValue })).to.equal(true);
+      });
+
+      it('should call handleItemSelect when the value match the existing value', () => {
+        const spyCreate = sinon.spy();
+        const spySelect = sinon.spy(instance, 'handleItemSelect');
+        const testValue = 'Test1';
+
+        wrapper.setProps({ onNewItemCreated: spyCreate, filterValue: testValue });
+        instance.handleItemCreate({});
+        expect(spyCreate.called).to.equal(false);
+        expect(spySelect.calledOnce).to.equal(true);
+        expect(spySelect.calledWith({ value: 1, content: 'Test1' }, { event: {} })).to.equal(true);
       });
     });
 

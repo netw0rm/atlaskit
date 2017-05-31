@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import uid from 'uid';
 
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
@@ -26,6 +27,9 @@ export default class AkMultiSelect extends PureComponent {
   static propTypes = {
     /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Message to display in footer after the name of the new item. Only applicable if
+     * shouldAllowCreateItem prop is set to true. */
+    createNewItemLabel: PropTypes.string,
     /** An array of items that will be selected on component mount. */
     defaultSelected: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     /** id property to be passed down to the html select component. */
@@ -57,6 +61,9 @@ export default class AkMultiSelect extends PureComponent {
     noMatchesFound: PropTypes.string,
     /** Handler to be called when the filtered items changes.*/
     onFilterChange: PropTypes.func,
+    /** Handler to be called when a new item is created.
+     * Only applicable when the shouldAllowCreateItem is set to true.*/
+    onNewItemCreated: PropTypes.func,
     /** Handler to be called on select change. */
     onSelectedChange: PropTypes.func,
     /** Handler called when the select is opened or closed. Called with an object
@@ -68,25 +75,38 @@ export default class AkMultiSelect extends PureComponent {
     position: PropTypes.string,
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
+    /** Sets whether a new item could be created and added to the list by pressing Enter
+     * inside the autocomplete field */
+    shouldAllowCreateItem: PropTypes.bool,
   }
 
   static defaultProps = {
     appearance: appearances.default,
+    createNewItemLabel: 'New item',
     defaultSelected: [],
     shouldFocus: false,
     isRequired: false,
     items: [],
     label: '',
     onFilterChange: () => {},
+    onNewItemCreated: () => {},
     onOpenChange: () => {},
     onSelectedChange: () => {},
     position: 'bottom left',
+    shouldAllowCreateItem: false,
   }
 
   state = {
     isOpen: this.props.isDefaultOpen,
     selectedItems: this.props.defaultSelected,
     filterValue: '',
+    items: this.props.items,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.items !== this.state.items) {
+      this.setState({ items: [...nextProps.items] });
+    }
   }
 
   selectItem = (item) => {
@@ -119,10 +139,26 @@ export default class AkMultiSelect extends PureComponent {
     this.props.onOpenChange(attrs);
   }
 
+  handleNewItemCreate = ({ value: textValue }) => {
+    const { items, selectedItems } = this.state;
+    const id = uid();
+    const newItem = { value: id, content: textValue };
+    const newItemsArray = [...items];
+    newItemsArray[newItemsArray.length - 1].items.push(newItem);
+
+    this.setState({
+      items: newItemsArray,
+      selectedItems: [...selectedItems, newItem],
+      filterValue: '',
+    });
+    this.props.onNewItemCreated({ value: textValue, item: newItem });
+  }
+
   render() {
     return (
       <StatelessMultiSelect
         appearance={this.props.appearance}
+        createNewItemLabel={this.props.createNewItemLabel}
         filterValue={this.state.filterValue}
         id={this.props.id}
         isDisabled={this.props.isDisabled}
@@ -130,19 +166,21 @@ export default class AkMultiSelect extends PureComponent {
         isInvalid={this.props.isInvalid}
         isOpen={this.state.isOpen}
         isRequired={this.props.isRequired}
-        items={this.props.items}
+        items={this.state.items}
         label={this.props.label}
         name={this.props.name}
         noMatchesFound={this.props.noMatchesFound}
         onFilterChange={this.handleFilterChange}
+        onNewItemCreated={this.handleNewItemCreate}
         onOpenChange={this.handleOpenChange}
         onRemoved={this.selectedChange}
         onSelected={this.selectedChange}
         placeholder={this.props.placeholder}
         position={this.props.position}
         selectedItems={this.state.selectedItems}
-        shouldFocus={this.props.shouldFocus}
+        shouldAllowCreateItem={this.props.shouldAllowCreateItem}
         shouldFitContainer={this.props.shouldFitContainer}
+        shouldFocus={this.props.shouldFocus}
       />
     );
   }

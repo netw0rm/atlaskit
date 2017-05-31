@@ -1,9 +1,3 @@
 {
-  "extends": [
-    "@atlaskit/eslint-config-tests",
-    "plugin:flowtype/recommended"
-  ],
-  "plugins": [
-    "flowtype"
-  ]
+  "extends": "@atlaskit/eslint-config-tests"
 }

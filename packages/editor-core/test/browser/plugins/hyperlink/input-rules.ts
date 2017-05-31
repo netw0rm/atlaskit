@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import HyperlinkPlugin from '../../../../src/plugins/hyperlink';
 import {
-  insertText, chaiPlugin, fixtures, makeEditor, doc, a as link, linkable, code_block
+  insertText, chaiPlugin, fixtures, makeEditor, doc, br, a as link, linkable, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -139,6 +139,15 @@ describe('hyperlink', () => {
       insertText(editorView, '. ', sel + linkedText.length, sel + linkedText.length);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://foo.com' })(`${linkedText}`), '. ')));
+    });
+
+    it('converts to hyperlink if possible hyperink text is after a new line and previous line has an hyperlink', () => {
+      const firstLink = link({ href: 'http://www.google.com' })('www.google.com');
+      const secondLink = link({ href: 'http://www.baidu.com' })('www.baidu.com');
+      const { editorView, sel } = editor(doc(linkable(firstLink, br, linkable('{<>}'))));
+      insertText(editorView, 'www.baidu.com ', sel, sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(firstLink, br, linkable(secondLink, ' '))));
     });
   });
 });

@@ -13,7 +13,7 @@ export const FloatingToolbar: any = styled(FloatingToolbarDefault)`
     button {
       margin-left: 5px;
       > span {
-        padding: 4px;
+        padding: 7px;
       }
     }
   }

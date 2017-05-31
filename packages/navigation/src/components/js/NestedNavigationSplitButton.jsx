@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import NestedNavigationSplitButtonWrapper from '../styled/NestedNavigationSplitButtonWrapper';
 import InteractiveWrapper from './InteractiveWrapper';
-import NavigationItemOuter from '../styled/NavigationItemOuter';
-import NavigationItemIcon from '../styled/NavigationItemIcon';
+import BackButtonWrapper from '../styled/BackButtonWrapper';
+import BackButtonIconWrapper from '../styled/BackButtonIconWrapper';
 
 export default class NestedNavigationSplitButton extends PureComponent {
   static propTypes = {
@@ -24,20 +24,16 @@ export default class NestedNavigationSplitButton extends PureComponent {
     const { backButtonIcon, mainNavigationItem, onBackButtonClick } = this.props;
     return (
       <NestedNavigationSplitButtonWrapper>
-        <NavigationItemOuter
-          isNestedBackButton
-        >
+        <BackButtonWrapper>
           <InteractiveWrapper
             onMouseDown={this.onBackButtonMouseDown}
             onClick={onBackButtonClick}
           >
-            <NavigationItemIcon
-              hasNoPadding
-            >
+            <BackButtonIconWrapper>
               {backButtonIcon}
-            </NavigationItemIcon>
+            </BackButtonIconWrapper>
           </InteractiveWrapper>
-        </NavigationItemOuter>
+        </BackButtonWrapper>
         {mainNavigationItem}
       </NestedNavigationSplitButtonWrapper>
     );

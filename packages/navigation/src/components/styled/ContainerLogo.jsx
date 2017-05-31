@@ -1,9 +1,9 @@
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { gridSize } from '../../shared-variables';
 
 const ContainerLogo = styled.div`
-  height: ${akGridSizeUnitless * 3}px;
-  margin: ${akGridSizeUnitless * 3.5}px 0 ${akGridSizeUnitless * 3.5}px ${akGridSizeUnitless * 3};
+  height: ${gridSize * 3}px;
+  margin: ${gridSize * 3.5}px 0 ${gridSize * 3.5}px ${gridSize * 3};
 `;
 
 ContainerLogo.displayName = 'ContainerLogo';

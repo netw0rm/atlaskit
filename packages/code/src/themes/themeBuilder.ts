@@ -63,7 +63,8 @@ const lineNumberContainerStyle = (theme: Theme) => ({
   backgroundColor: theme.lineNumberBgColor,
   padding: akGridSize,
   float: 'left',
-  textAlign: 'right'
+  textAlign: 'right',
+  userSelect: 'none'
 });
 
 const codeBlockStyle = (theme: Theme) => ({
@@ -84,7 +85,8 @@ const codeBlockStyle = (theme: Theme) => ({
     color: theme.substringColor
   },
   'hljs-keyword': {
-    color: theme.keywordColor
+    color: theme.keywordColor,
+    fontWeight: 'bolder'
   },
   'hljs-attribute': {
     color: theme.attributeColor
@@ -156,15 +158,15 @@ const codeBlockStyle = (theme: Theme) => ({
     color: theme.deletionColor
   },
   'hljs-title': {
-    color: theme.titleColor,
-    fontWeight: 'bolder'
+    color: theme.titleColor
   },
   'hljs-section': {
-    color: theme.sectionColor,
-    fontWeight: 'bolder'
+    color: theme.sectionColor
   },
   'hljs-comment': {
-    color: theme.commentColor
+    color: theme.commentColor,
+    fontFamily: `SFMono-MediumItalic, ${akCodeFontFamily}`,
+    fontStyle: 'italic'
   },
   'hljs-meta-keyword': {
     color: theme.metaKeywordColor

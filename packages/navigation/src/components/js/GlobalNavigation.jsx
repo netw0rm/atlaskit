@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { ThemeProvider } from 'styled-components';
-import { appearanceEnum, themeVariables } from '../../utils/theme';
+import { WithRootTheme } from '../../theme/util';
+import * as presets from '../../theme/presets';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -11,7 +11,7 @@ import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecond
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf([appearanceEnum.global, appearanceEnum.settings]),
+    appearance: PropTypes.oneOf(Object.keys(presets)),
     createIcon: PropTypes.node,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
@@ -22,7 +22,7 @@ export default class GlobalNavigation extends PureComponent {
     onCreateActivate: PropTypes.func,
   };
   static defaultProps = {
-    appearance: appearanceEnum.global,
+    appearance: 'global',
     accountItem: null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
@@ -42,10 +42,8 @@ export default class GlobalNavigation extends PureComponent {
       secondaryActions,
     } = this.props;
     return (
-      <ThemeProvider
-        theme={{
-          [themeVariables.appearance]: appearance,
-        }}
+      <WithRootTheme
+        provided={presets[appearance]}
       >
         <GlobalNavigationInner>
           <GlobalNavigationPrimaryContainer>
@@ -65,7 +63,7 @@ export default class GlobalNavigation extends PureComponent {
             ) : null}
           </GlobalNavigationSecondaryContainer>
         </GlobalNavigationInner>
-      </ThemeProvider>
+      </WithRootTheme>
     );
   }
 }

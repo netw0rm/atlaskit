@@ -1,25 +1,31 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { layout } from '../../shared-variables';
-import { themeVariables } from '../../utils/theme';
+import { gridSize } from '../../shared-variables';
+import { isInCompactGroup, isCollapsed } from '../../theme/util';
 
-const size = akGridSizeUnitless * 3;
-const offsetLeft = akGridSizeUnitless * 3;
-const openPadding = `0 ${akGridSizeUnitless * 2}px 0 ${offsetLeft - (akGridSizeUnitless * 2)}px`;
-const compactPadding = `0 ${akGridSizeUnitless}px 0 0`;
-const closedHorizontalPadding = (layout.width.closed - (akGridSizeUnitless * 4) - size) / 2;
-const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPadding}px`;
+const size = gridSize * 3;
+const offsetLeft = gridSize * 3;
+const openPadding = `0 ${gridSize * 2}px 0 ${offsetLeft - (gridSize * 2)}px`;
+const compactPadding = `0 ${gridSize}px 0 0`;
+
+const getPadding = ({ theme, hasNoPadding }) => {
+  if (hasNoPadding) {
+    return '0';
+  }
+
+  if (isCollapsed(theme)) {
+    return '0';
+  }
+
+  return isInCompactGroup(theme) ? compactPadding : openPadding;
+};
 
 const NavigationItemIcon = styled.div`
   transition: padding 200ms;
-  padding: ${({ theme }) => (theme[themeVariables.isCompact] ? compactPadding : openPadding)}
+  padding: ${getPadding};
   display: flex;
   flex-shrink: 0;
 
-  ${({ hasNoPadding }) => (hasNoPadding ? 'padding: 0px' : '')};
-
   [data-__ak-navigation-container-closed="true"] & {
-    padding: ${closedPadding};
     ${({ isDropdownTrigger }) => (isDropdownTrigger ? 'display: none' : '')}
   }
 
@@ -33,12 +39,6 @@ const NavigationItemIcon = styled.div`
     width: ${size}px;
   }
 `;
-
-NavigationItemIcon.defaultProps = {
-  theme: {
-    [themeVariables.isCompact]: false,
-  },
-};
 
 NavigationItemIcon.displayName = 'NavigationItemIcon';
 export default NavigationItemIcon;

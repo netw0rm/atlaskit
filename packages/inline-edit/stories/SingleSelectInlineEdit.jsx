@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
 import Select from '@atlaskit/single-select';
 import styled from 'styled-components';
-import { InlineEdit } from '../src';
+import { InlineEditStateless } from '../src';
 
 // Prevent edit views that use their own field-base from shifting due to negative margin
 // set in 'no-padding' mode. Fixes shifting content for single-select
@@ -65,7 +65,7 @@ export default class extends PureComponent {
 
   render() {
     return (
-      <InlineEdit
+      <InlineEditStateless
         editView={this.renderEditView()}
         readView={this.renderReadView()}
         isEditing={this.state.isEditing}

@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import {
-    akColorN800,
- } from '@atlaskit/util-shared-styles';
+import { getProvided } from '../../theme/util';
 
 const SearchBox = styled.div`
+  background-color: ${({ theme }) => getProvided(theme).background.tertiary};
+  color: ${({ theme }) => getProvided(theme).text};
   display: flex;
-  color: ${akColorN800};
 `;
 
 SearchBox.displayName = 'SearchBox';

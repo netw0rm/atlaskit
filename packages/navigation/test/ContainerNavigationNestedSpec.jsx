@@ -4,6 +4,7 @@ import { ArrowleftIcon } from '@atlaskit/icon';
 import styles from '../src/components/less/ContainerNavigationNested.less';
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
 import NavigationItem from '../src/components/js/NavigationItem';
+import { mountWithRootTheme } from './theme-util';
 
 describe('<ContainerNavigationNested />', () => {
   describe('state', () => {
@@ -83,7 +84,7 @@ describe('<ContainerNavigationNested />', () => {
 
     it('should have the split back button if backButtonIcon and mainNavigationItem options are not empty', () => {
       const navItemInSplitBackButton = <NavigationItem text="Go back" />;
-      const component = mount(
+      const component = mountWithRootTheme(
         <ContainerNavigationNested
           backButtonIcon={<ArrowleftIcon label="Left icon" />}
           mainNavigationItem={navItemInSplitBackButton}

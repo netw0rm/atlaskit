@@ -1,9 +1,7 @@
-import {
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { gridSize } from '../../shared-variables';
 
-const size = akGridSizeUnitless * 5;
+const size = gridSize * 5;
 const borderRadius = 4;
 
 const ContainerTitleIcon = styled.div`

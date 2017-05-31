@@ -5,7 +5,7 @@ import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base';
 import sinon from 'sinon';
 
-import InlineEdit from '../../src/InlineEdit';
+import InlineEditStateless from '../../src/components/InlineEditStateless';
 
 const noop = () => {};
 const Input = props =>
@@ -31,7 +31,7 @@ const defaultProps = {
 describe('@atlaskit/inline-edit', () => {
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
-    const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);
+    const wrapper = mount(<InlineEditStateless {...defaultProps} readView={readView} />);
     expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase.contains(readView)).to.equal(true);
@@ -39,7 +39,7 @@ describe('@atlaskit/inline-edit', () => {
 
   it('should render edit view inside FieldBase when in editing mode', () => {
     const editView = <span>edit</span>;
-    const wrapper = mount(<InlineEdit {...defaultProps} isEditing editView={editView} />);
+    const wrapper = mount(<InlineEditStateless {...defaultProps} isEditing editView={editView} />);
     expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase.contains(editView)).to.equal(true);
@@ -49,7 +49,7 @@ describe('@atlaskit/inline-edit', () => {
     it('should render the read view when "false" is supplied as the edit view', () => {
       const readView = <span>read</span>;
       const wrapper = shallow(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
           readView={readView}
@@ -62,7 +62,7 @@ describe('@atlaskit/inline-edit', () => {
     it('should render the read view when "null" is supplied as the edit view', () => {
       const readView = <span>read</span>;
       const wrapper = shallow(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
           readView={readView}
@@ -75,7 +75,7 @@ describe('@atlaskit/inline-edit', () => {
     it('should render the read view when "undefined" is supplied as the edit view', () => {
       const readView = <span>read</span>;
       const wrapper = shallow(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
           readView={readView}
@@ -90,7 +90,7 @@ describe('@atlaskit/inline-edit', () => {
     it('should be called when the read view is clicked', () => {
       const spy = sinon.spy();
       const wrapper = mount(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           onEditRequested={spy}
         />
@@ -102,7 +102,7 @@ describe('@atlaskit/inline-edit', () => {
     it('should not be called when the edit view is clicked', () => {
       const spy = sinon.spy();
       const wrapper = mount(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
           onEditRequested={spy}
@@ -117,7 +117,7 @@ describe('@atlaskit/inline-edit', () => {
     it('should be called when confirmation button is clicked', () => {
       const spy = sinon.spy();
       const wrapper = mount(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
           onConfirm={spy}
@@ -132,7 +132,7 @@ describe('@atlaskit/inline-edit', () => {
     it('should be called when cancel button is clicked', () => {
       const spy = sinon.spy();
       const wrapper = mount(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
           onCancel={spy}
@@ -145,12 +145,12 @@ describe('@atlaskit/inline-edit', () => {
 
   describe('label', () => {
     it('should set parameter into FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(Label).prop('label'))
+      expect(shallow(<InlineEditStateless {...defaultProps} label="test" />).find(Label).prop('label'))
         .to.equal('test');
     });
 
     it('should set both isLabelHidden and label parameter into FieldBase', () => {
-      const wrapper = shallow(<InlineEdit {...defaultProps} label="test" isLabelHidden />);
+      const wrapper = shallow(<InlineEditStateless {...defaultProps} label="test" isLabelHidden />);
       const fieldBase = wrapper.find(Label);
       expect(fieldBase.prop('label')).to.equal('test');
       expect(fieldBase.prop('isLabelHidden')).to.equal(true);
@@ -159,7 +159,7 @@ describe('@atlaskit/inline-edit', () => {
     it('it should not call onClick if is read only', () => {
       const spy = sinon.spy();
       const wrapper = mount(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           label="test"
           onEditRequested={spy}
@@ -185,7 +185,7 @@ describe('@atlaskit/inline-edit', () => {
   describe('shouldResetFieldBase', () => {
     describe('when switching from isEditing=true to isEditing=false', () =>
       it('should set shouldReset property on FieldBase', () => {
-        const wrapper = shallow(<InlineEdit {...defaultProps} isEditing />);
+        const wrapper = shallow(<InlineEditStateless {...defaultProps} isEditing />);
         wrapper.setProps({ isEditing: false });
         expect(wrapper.find(FieldBase).prop('shouldReset')).to.equal(true);
       })
@@ -193,7 +193,7 @@ describe('@atlaskit/inline-edit', () => {
 
     describe('when switching from isEditing=false to isEditing=true', () =>
       it('should not set shouldReset property on FieldBase', () => {
-        const wrapper = shallow(<InlineEdit {...defaultProps} />);
+        const wrapper = shallow(<InlineEditStateless {...defaultProps} />);
         wrapper.setProps({ isEditing: true });
         expect(wrapper.find(FieldBase).prop('shouldReset')).to.equal(false);
       })
@@ -203,7 +203,7 @@ describe('@atlaskit/inline-edit', () => {
   describe('isWaiting', () => {
     describe('when isEditing is false', () =>
       it('FieldBase should not have isLoading prop', () => {
-        const wrapper = mount(<InlineEdit {...defaultProps} isWaiting />);
+        const wrapper = mount(<InlineEditStateless {...defaultProps} isWaiting />);
         expect(wrapper.find(FieldBase).prop('isLoading')).to.equal(false);
       })
     );
@@ -212,7 +212,7 @@ describe('@atlaskit/inline-edit', () => {
       let wrapper;
 
       beforeEach(() => (
-        wrapper = shallow(<InlineEdit {...defaultProps} isWaiting isEditing />)
+        wrapper = shallow(<InlineEditStateless {...defaultProps} isWaiting isEditing />)
       ));
 
       it('FieldBase should have prop isLoading', () =>
@@ -228,7 +228,7 @@ describe('@atlaskit/inline-edit', () => {
   describe('disableEditViewFieldBase', () => {
     it('should not wrap editView in a FieldBase when set to true', () => {
       const wrapper = mount(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
           disableEditViewFieldBase
@@ -240,7 +240,7 @@ describe('@atlaskit/inline-edit', () => {
 
     it('should wrap editView in a FieldBase when set to false', () => {
       const wrapper = mount(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
           disableEditViewFieldBase={false}
@@ -252,7 +252,7 @@ describe('@atlaskit/inline-edit', () => {
 
     it('should default to false', () => {
       const wrapper = mount(
-        <InlineEdit
+        <InlineEditStateless
           {...defaultProps}
           isEditing
         />
@@ -264,14 +264,14 @@ describe('@atlaskit/inline-edit', () => {
 
   describe('invalidMessage prop', () => {
     it('should be reflected to the FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} invalidMessage="test" />)
+      expect(shallow(<InlineEditStateless {...defaultProps} invalidMessage="test" />)
         .find(FieldBase).props().invalidMessage).to.equal('test');
     });
   });
 
   describe('isInvalid prop', () => {
     it('should be reflected to the FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} isInvalid />)
+      expect(shallow(<InlineEditStateless {...defaultProps} isInvalid />)
         .find(FieldBase).props().isInvalid).to.equal(true);
     });
   });

@@ -32,13 +32,18 @@ const shakeAnimation = keyframes({
   },
 });
 
-const styled = style({
+const reactionStyle = style({
   display: 'inline-block',
+  margin: '4px 4px 0 4px',
   $nest: {
     '&.shake': {
       animation: `${shakeAnimation} 200ms 2 ease-in-out`
     }
   }
+});
+
+const reactionsGroupStyle = style({
+  marginTop: '-4px', // Cancel 4px marginTop when not wrapped on reactionStyle
 });
 
 export interface Props {
@@ -65,12 +70,7 @@ const reactionsStyle = style({
   $nest: {
     '&> div': {
       display: 'flex',
-    },
-    '&> div > div': {
-      margin: '0 4px 4px 4px'
-    },
-    '&> div > div:first-child': {
-      margin: '0 4px 0 0',
+      flexWrap: 'wrap',
     }
   }
 });
@@ -148,6 +148,7 @@ export default class Reactions extends Component<Props, State> {
       <div className={reactionsStyle}>
         {this.renderPicker()}
         <CSSTransitionGroup
+            className={reactionsGroupStyle}
             transitionName="reaction"
             transitionEnterTimeout={500}
             transitionLeaveTimeout={300}
@@ -157,7 +158,7 @@ export default class Reactions extends Component<Props, State> {
             const { emojiId } = reaction;
             const key = emojiId || `unknown-${index}`;
 
-            const classNames = cx(styled, {
+            const classNames = cx(reactionStyle, {
               'shake': emojiId === this.state.shake,
             });
 

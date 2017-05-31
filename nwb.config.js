@@ -18,6 +18,27 @@ const pkg = require(path.join(cwd, 'package.json'));
 // The nwb command we are running
 const cmd = process.argv.slice(2)[0];
 
+const karmaPatterns = (() => {
+  try {
+    fs.statSync('./test/index.js');
+    return ['./test/index.js'];
+  } catch (e) {
+    return [
+      // This is the default NWB convention.
+      '+(src|test?(s))/**/*+(-test|.spec|.test).js',
+
+      // This is our current convention.
+      'test/**Spec.@(js|jsx|ts|tsx)',
+
+      // Some follow this convention.
+      '@(test|tests)/**!(_)*.@(js|jsx|ts|tsx)',
+
+      // Some TypeScript tests follow yet another convention.
+      'test/**/!(_)*.+(js|jsx|ts|tsx)',
+    ];
+  }
+})();
+
 // TODO come up with a per-package stategy to run these.
 const runInRealBrowsers = [
   /editor-/,
@@ -90,21 +111,7 @@ module.exports = {
       [babelPolyfill]: ['webpack', 'sourcemap'],
     },
     // TODO remove this when following the default convention.
-    testFiles: [
-      customEventPolyfill,
-      // This is the default NWB convention.
-      '+(src|test?(s))/**/*+(-test|.spec|.test).js',
-
-      // This is our current convention.
-      'test/**Spec.@(js|jsx|ts|tsx)',
-
-      // Some follow this convention.
-      '@(test|tests)/**!(_)*.@(js|jsx|ts|tsx)',
-
-      // Some TypeScript tests follow yet another convention.
-      'test/**/!(_)*.+(js|jsx|ts|tsx)',
-    ],
-
+    testFiles: [customEventPolyfill].concat(karmaPatterns),
     extra: {
       captureTimeout: 210000,
       browserDisconnectTolerance: 3,

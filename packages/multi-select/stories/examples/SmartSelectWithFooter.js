@@ -4,21 +4,25 @@ import Select from '@atlaskit/multi-select';
 const selectItems = [
   {
     items: [
-      { content: 'Admin', value: 'role1', description: 'Admin can do allthethings and even more' },
-      { content: 'User', value: 'role2', description: 'User is a permanent slave of the Admin' },
-      { content: 'Guest', value: 'role3', description: 'Guest can only admire Admin`s grandeur from far away' },
+      { content: 'Quote builder form', value: 'comp1' },
+      { content: 'Sidebar', value: 'comp2' },
+      { content: 'Navigation', value: 'comp3' },
+      { content: 'Login', value: 'comp4' },
+      { content: 'Directory', value: 'comp5' },
+      { content: 'Payment gateway', value: 'comp6' },
+      { content: 'Email system', value: 'comp7' },
     ],
   },
 ];
 
-const Footer = () => (<a href="http://atlassian.com">Create new Role</a>);
+const Footer = () => (<a href="http://atlassian.com">+ Create new component</a>);
 
 export default (
   <Select
     footer={<Footer />}
     items={selectItems}
-    label="Who do you trust?"
-    placeholder="Choose them!"
+    label="Components"
+    placeholder="Choose a component"
     shouldFitContainer
   />
 );

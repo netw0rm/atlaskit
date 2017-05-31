@@ -56,12 +56,25 @@ describe(`${name} - stateless`, () => {
       expect(mount(<StatelessMultiSelect filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).to.equal(1);
     });
 
-    it('should NOT render Footer if shouldAllowCreateItem is false', () => {
+    it('should NOT render Footer if shouldAllowCreateItem is false and footer is not passed', () => {
       expect(mount(<StatelessMultiSelect filterValue="test" isOpen />).find(Footer).length).to.equal(0);
     });
 
     it('should render search text and label in the footer when shouldAllowCreateItem is true', () => {
       const wrapper = mount(<StatelessMultiSelect createNewItemLabel="new" filterValue="test" isOpen shouldAllowCreateItem />);
+      expect(wrapper.find(Footer).text()).to.equal('test (new)');
+    });
+
+    it('should render Footer if footer prop is passed', () => {
+      const footer = <div>footer</div>;
+      const wrapper = mount(<StatelessMultiSelect footer={footer} isOpen />);
+      expect(wrapper.find(Footer).length).to.equal(1);
+      expect(wrapper.find(Footer).text()).to.equal('footer');
+    });
+
+    it('if shouldAllowCreateItem and footer are passed at the same time, "new item" footer has the priority and general footer shouldnt be rendered', () => {
+      const footer = <div>footer</div>;
+      const wrapper = mount(<StatelessMultiSelect createNewItemLabel="new" filterValue="test" footer={footer} isOpen shouldAllowCreateItem />);
       expect(wrapper.find(Footer).text()).to.equal('test (new)');
     });
 

@@ -64,9 +64,9 @@ export const codeBlock: NodeSpec = {
       return false;
     }
   },
-  // Handle GitHub paste
+  // Handle GitHub/Gist paste
   {
-    tag: 'table[class*="js-file-line-container"]',
+    tag: 'table[style]',
     preserveWhitespace: 'full',
     getAttrs: (dom: HTMLElement) => {
       if (dom.querySelector('td[class*="blob-code"]')) {

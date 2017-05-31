@@ -288,27 +288,28 @@ export function showLinkPanel(): Command {
 
 export function convertToHyperlink(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean | null {
-    const parent = state.selection.$from.parent;
-    if (parent.isTextblock) {
-      const lastChild = parent.lastChild;
-      if (lastChild && lastChild!.isText) {
-        const words = lastChild.text!.split(' ');
-        const lastWord = words[words.length - 1];
-        const match = new RegExp(`${URL_REGEX.source}$`).exec(lastWord);
+    const nodeBefore = state.selection.$from.nodeBefore;
+    if (nodeBefore && nodeBefore.isText) {
+      const words = nodeBefore.text!.split(' ');
+      const lastWord = words[words.length - 1];
+      const match = new RegExp(`${URL_REGEX.source}$`).exec(lastWord);
 
-        if (match) {
-          const start = state.selection.$from.pos - match[1].length;
-          const end = state.selection.$from.pos;
-
-          const url = normalizeUrl(match[1]);
-          const markType = state.schema.mark('link', { href: url, });
-
-          dispatch(state.tr.replaceWith(
-            start,
-            end,
-            state.schema.text(match[1], [markType])
-          ));
+      if (match) {
+        const hyperilnkedText = match[1];
+        const start = state.selection.$from.pos - hyperilnkedText.length;
+        const end = state.selection.$from.pos;
+        if (state.doc.rangeHasMark(start, end, state.schema.marks.link)) {
+          return null;
         }
+
+        const url = normalizeUrl(hyperilnkedText);
+        const markType = state.schema.mark('link', { href: url, });
+
+        dispatch(state.tr.replaceWith(
+          start,
+          end,
+          state.schema.text(hyperilnkedText, [markType])
+        ));
       }
     }
     return null;

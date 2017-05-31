@@ -55,6 +55,7 @@ const components = fs.readdirSync('..').map((key) => {
     props = require(sourcesFile).map(({ name, src }) => ({ name, props: parseProps(src) }));
   } catch (e) {
     if (e.code !== 'ENOENT') {
+      e.message += ` (in ${pkg.name})`;
       throw e;
     } else {
       return null;

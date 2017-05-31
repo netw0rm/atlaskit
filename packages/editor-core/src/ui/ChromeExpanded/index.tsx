@@ -41,6 +41,7 @@ import ToolbarTextColor from '../ToolbarTextColor';
 import TableFloatingControls from '../TableFloatingControls';
 import ToolbarTable from '../ToolbarTable';
 import TableFloatingToolbar from '../TableFloatingToolbar';
+import Collab from '../Collab';
 import {
   Container,
   Content,
@@ -82,6 +83,8 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   maxHeight?: number | undefined;
 }
+
+import { stateKey as collabStateKey } from '../../plugins/collab-edit';
 
 export interface State {
   maxHeightStyle?: any;
@@ -173,8 +176,13 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       ? 'default'
       : 'primary';
 
+    const collabPluginState = editorView && editorView.state && collabStateKey.getState(editorView.state);
+
     return (
       <Container data-editor-chrome={true} tabIndex={-1} innerRef={this.handleEditorContainerRef}>
+        {collabPluginState ?
+          <Collab participants={collabPluginState.participants} clientID={collabPluginState.clientID} /> : null
+        }
         <Toolbar>
           {pluginStateBlockType ?
             <ToolbarBlockType

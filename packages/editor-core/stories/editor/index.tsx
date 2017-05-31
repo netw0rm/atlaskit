@@ -18,6 +18,7 @@ import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emoji
 import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
 import { reactNodeViewPlugins } from '../../src/plugins';
+import { setupEditorState } from '../../src/plugins';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
 import {
@@ -62,6 +63,8 @@ export interface Props {
   uploadErrorHandler?: (state: MediaState) => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  collaborative?: boolean;
+  maxHeight?: number;
 }
 
 export interface State {
@@ -234,7 +237,7 @@ export default class Editor extends PureComponent<Props, State> {
         emojiProvider={emojiProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
-        maxHeight={200}
+        maxHeight={this.props.maxHeight || 200}
       />
     );
   }
@@ -268,13 +271,12 @@ export default class Editor extends PureComponent<Props, State> {
     if (defaultValue && defaultValue !== '{}') {
       doc = schema.nodeFromJSON(JSON.parse(defaultValue));
     } else {
-      doc = schema.nodeFromJSON({type:'doc', content: [{type: 'paragraph'}]});
+      doc = schema.nodeFromJSON({ type: 'doc', content: [{ type: 'paragraph' }] });
     }
 
     if (place) {
-      const editorState = EditorState.create({
+      setupEditorState({
         schema,
-        doc,
         plugins: [
           ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
           ...emojiPlugins(schema, this.providerFactory),
@@ -302,23 +304,24 @@ export default class Editor extends PureComponent<Props, State> {
           history(),
           keymap(baseKeymap) // should be last :(
         ]
-      });
-      const editorView = new EditorView(place, {
-        state: editorState,
-        dispatchTransaction: tr => {
-          const newState = editorView.state.apply(tr);
-          editorView.updateState(newState);
-          this.handleChange();
+      }, !!this.props.collaborative).then(editorState => {
+        const editorView = new EditorView(place, {
+          state: editorState,
+          dispatchTransaction: tr => {
+            const newState = editorView.state.apply(tr);
+            editorView.updateState(newState);
+            this.handleChange();
+          }
+        });
+
+        if (this.props.devTools) {
+          applyDevTools(editorView);
         }
+
+        editorView.focus();
+
+        this.setState({ editorView });
       });
-
-      if (this.props.devTools) {
-        applyDevTools(editorView);
-      }
-
-      editorView.focus();
-
-      this.setState({ editorView });
     } else {
       this.setState({ editorView: undefined });
     }

@@ -14,3 +14,4 @@ export { default as rulePlugins, stateKey as ruleStateKey } from './rule';
 export { default as panelPlugins, stateKey as panelStateKey } from './panel';
 export { default as reactNodeViewPlugins, ReactNodeViewState, stateKey as reactNodeViewStateKey } from './react-nodeview';
 export { default as tablePlugins, TableState, stateKey as tableStateKey } from './table';
+export { default as collabPlugins, stateKey as collabStateKey, setupEditorState } from './collab-edit';

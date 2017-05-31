@@ -40,6 +40,7 @@
     }
   ],
   "dependencies": {
+    "@atlaskit/avatar": "^4.0.5",
     "@atlaskit/button": "^1.0.10",
     "@atlaskit/button-group": "^1.0.7",
     "@atlaskit/code": "^2.1.2",
@@ -59,6 +60,7 @@
     "@types/orderedmap": "^1.0.0",
     "mediapicker": "^5.0.4",
     "orderedmap": "^1.0.0",
+    "prosemirror-collab": "^0.22.0",
     "prosemirror-commands": "^0.22.0",
     "prosemirror-history": "^0.22.0",
     "prosemirror-inputrules": "^0.22.0",

@@ -1,3 +1,4 @@
+export * from './prosemirror-collab';
 export * from './prosemirror-commands';
 export * from './prosemirror-history';
 export * from './prosemirror-inputrules';

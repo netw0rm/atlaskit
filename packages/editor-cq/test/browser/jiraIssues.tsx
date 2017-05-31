@@ -1,20 +1,29 @@
+import * as React from 'react';
 import { expect } from 'chai';
-import { jiraIssueNodeView } from '../../src/schema/nodes/jiraIssue';
-import 'react';
+import { mount } from 'enzyme';
+import { JiraLogo } from '@atlaskit/logo';
+import ReactJIRAIssueNode from '../../src/nodeviews/ui/jiraIssue';
+import { jiraIssue } from './_schema-builder';
 
-describe('jiraIssueNodeView', () => {
-  it('should have a not null html dom', () => {
-    const dom = jiraIssueNodeView({ attrs: { issueKey: 'test' } }).dom;
-    expect(dom).to.not.equal(undefined);
-  });
-
+describe('jiraIssue - React component', () => {
   it('should return a node of type span', () => {
-    const dom = jiraIssueNodeView({ attrs: { issueKey: 'test' } }).dom;
-    expect(dom!.nodeName).to.equal('SPAN');
+    const node = jiraIssue({ issueKey: 'test' });
+    const wrapper = mount(<ReactJIRAIssueNode node={node}/>);
+
+    expect(wrapper.getDOMNode().tagName).to.equal('SPAN');
   });
 
-  it('should have well defined class on first child span', () => {
-    const dom = jiraIssueNodeView({ attrs: { issueKey: 'test' } }).dom;
-    expect(dom!.firstChild!.attributes.getNamedItem('class')).to.not.equal(undefined);
+  it('should use JiraLogo component', () => {
+    const node = jiraIssue({ issueKey: 'test' });
+    const wrapper = mount(<ReactJIRAIssueNode node={node}/>);
+
+    expect(wrapper.find(JiraLogo)).to.have.length(1);
+  });
+
+  it('should use issue key as a text', () => {
+    const node = jiraIssue({ issueKey: 'test' });
+    const wrapper = mount(<ReactJIRAIssueNode node={node}/>);
+
+    expect(wrapper.text()).to.equal('test');
   });
 });

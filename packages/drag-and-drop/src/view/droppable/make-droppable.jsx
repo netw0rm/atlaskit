@@ -39,7 +39,6 @@ export default (type: TypeId, map: MapState): Function =>
 
       render() {
         const { mapProps, ownProps } = this.props;
-        console.log('rendering droppable', mapProps.id);
 
         const snapshot: DroppableState = {
           isDraggingOver: mapProps.isDraggingOver,
@@ -59,13 +58,7 @@ export default (type: TypeId, map: MapState): Function =>
               type={type}
               targetRef={this.state.ref}
             >
-              <ScrollTopWatcher
-                shouldPublish={mapProps.isDraggingOver}
-                droppableId={mapProps.id}
-                targetRef={this.state.ref}
-              >
-                <Component {...enhancedProps} innerRef={this.setRef} />
-              </ScrollTopWatcher>
+              <Component {...enhancedProps} innerRef={this.setRef} />
             </DroppableDimensionPublisher>
           </Container>
         );

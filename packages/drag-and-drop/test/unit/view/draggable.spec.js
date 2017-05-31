@@ -124,7 +124,7 @@ const disableMapProps = (mapProps: MapProps): MapProps => ({
 type MountConnected = {
   type?: string,
   map?: MapState,
-  Component?: any,
+  Component?: ReactClass<any>,
   mapProps?: MapProps,
   dispatchProps?: DispatchProps,
   ownProps?: OwnProps,
@@ -213,7 +213,6 @@ const lift = (fn: 'onLift' | 'onKeyLift') => (wrapper: ReactWrapper<any>) => ({
     Element.prototype.getBoundingClientRect.restore();
   }
 
-  // $ExpectError
   const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg]
           = wrapper.find('Draggable').at(0).props().dispatchProps.lift.args[0] || [];
 
@@ -735,9 +734,9 @@ describe('Draggable', () => {
     });
 
     describe('movement', () => {
-    // reaching into Movable to get the inline style
+      // reaching into Movable to get the inline style
       const getInlineStyle = (wrapper: ReactWrapper<any>): Object =>
-      wrapper.find(Moveable).props().style;
+        wrapper.find(Moveable).props().style;
 
       it('should move by the provided offset on mount', () => {
         expect(draggingWrapper.find(Moveable).props().destination)
@@ -745,10 +744,10 @@ describe('Draggable', () => {
       });
 
       it('should move by the provided offset on update', () => {
-        const offsets: Position[] = [
-        { x: 12, y: 3 },
-        { x: 20, y: 100 },
-        { x: -100, y: 20 },
+        const offsets: Array<Position> = [
+          { x: 12, y: 3 },
+          { x: 20, y: 100 },
+          { x: -100, y: 20 },
         ];
 
         offsets.forEach((offset: Position) => {
@@ -774,7 +773,7 @@ describe('Draggable', () => {
           expect(notDraggingWrapper.find(Placeholder).length).to.equal(0);
         });
 
-        it('should have its initial zindex', () => {
+        it('should have its initial z index', () => {
           expect(getInlineStyle(notDraggingWrapper)).to.not.have.property('zIndex');
         });
 
@@ -787,7 +786,7 @@ describe('Draggable', () => {
         });
 
         it('should instantly move out of the way if animation is disabled', () => {
-        // $FlowFixMe
+          // $FlowFixMe
           const mapProps: MapProps = {
             ...notDraggingMapProps,
             canAnimate: false,
@@ -811,14 +810,14 @@ describe('Draggable', () => {
           expect(getInlineStyle(draggingWrapper).zIndex).to.be.a('number');
         });
 
-        it('should be above draggables returning to home', () => {
+        it('should be above Draggables returning to home', () => {
           expect(getInlineStyle(draggingWrapper).zIndex)
           .to.be.above(getInlineStyle(returningHomeWrapper).zIndex);
         });
 
         it('should be positioned absolutely in the same spot as before', () => {
           const draggingInlineStyle = getInlineStyle(draggingWrapper);
-        // appeasing flow
+          // appeasing flow
           if (!draggingMapProps.initial) {
             throw new Error('invalid data');
           }
@@ -833,7 +832,7 @@ describe('Draggable', () => {
         });
 
         it('should move quickly if it should animate', () => {
-        // $FlowFixMe - spead operator on exact type
+          // $ExpectError - spread operator on exact type
           const mapProps: MapProps = {
             ...draggingMapProps,
             canAnimate: true,
@@ -867,10 +866,7 @@ describe('Draggable', () => {
 
         it('should be positioned absolutely in the same spot as before', () => {
           const inlineStyle = getInlineStyle(returningHomeWrapper);
-        // appeasing flow
-          if (!returningHomeMapProps.initial) {
-            throw new Error('invalid data');
-          }
+          // $ExpectError - initial is nullable
           const dimension = returningHomeMapProps.initial.dimension;
 
           expect(inlineStyle.position).to.equal('absolute');
@@ -883,7 +879,7 @@ describe('Draggable', () => {
       });
 
       describe('dropped and return to home animation is finished', () => {
-      // $FlowFixMe - spead operator and exact type
+        // $ExpectError - spead operator and exact type
         const mapProps: MapProps = {
           ...returningHomeMapProps,
           isDropAnimating: false,
@@ -922,18 +918,6 @@ describe('Draggable', () => {
           expect(getInlineStyle(wrapper)).to.not.have.property('position');
         });
       });
-    });
-
-    describe('not dragging', () => {
-
-    });
-
-    describe('dragging', () => {
-
-    });
-
-    describe('finished dragging', () => {
-
     });
   });
 

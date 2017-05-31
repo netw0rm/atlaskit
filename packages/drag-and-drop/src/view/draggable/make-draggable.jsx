@@ -74,7 +74,7 @@ export default (type: TypeId, map: MapState): Function =>
       // Just being extra clear here
       throwIfCannotDrag() {
         invariant(this.state.childRef,
-          'Draggable: cannot drag if no attached child node'
+          'Draggable: cannot drag if not attached child node'
         );
 
         invariant(this.props.mapProps.isDragEnabled,
@@ -100,13 +100,9 @@ export default (type: TypeId, map: MapState): Function =>
         this.throwIfCannotDrag();
 
         const {
-          mapProps: { id, isDragEnabled },
+          mapProps: { id },
           dispatchProps: { lift },
         } = this.props;
-
-        if (isDragEnabled === false) {
-          return;
-        }
 
         const scroll: Position = getScrollPosition();
         const center: Position = getCenterPosition(this.state.childRef);
@@ -118,13 +114,9 @@ export default (type: TypeId, map: MapState): Function =>
         this.throwIfCannotDrag();
 
         const {
-          mapProps: { id, isDragEnabled },
+          mapProps: { id },
           dispatchProps: { lift },
         } = this.props;
-
-        if (isDragEnabled === false) {
-          return;
-        }
 
         const scroll: Position = getScrollPosition();
         const center: Position = getCenterPosition(this.state.childRef);
@@ -204,9 +196,8 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onCancel = () => {
-        // not checking if drag is enabled
-        // cancel is an escape mechanism
-
+        // Not checking if drag is enabled.
+        // Cancel is an escape mechanism
         const {
           mapProps: { id },
           dispatchProps: { cancel },

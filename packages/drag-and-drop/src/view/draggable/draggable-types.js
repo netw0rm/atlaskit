@@ -54,4 +54,4 @@ export type StateSnapshot = {|
 |}
 
 export type MapState =
-  (state: StateSnapshot, ownProps: OwnProps, getDragHandle: Function) => Object;
+  (state: StateSnapshot, ownProps: OwnProps, getDragHandle: () => mixed) => Object;

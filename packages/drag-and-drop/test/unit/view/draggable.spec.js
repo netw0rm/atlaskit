@@ -22,12 +22,12 @@ class Child extends PureComponent {
 
 class Container extends PureComponent {
   props: {|
-  innerRef: Function,
+    innerRef: Function,
   |}
   render() {
     return (
       <div ref={this.props.innerRef}>
-      Hello world!
+        Hello world!
       </div>
     );
   }
@@ -35,8 +35,8 @@ class Container extends PureComponent {
 
 class ContainerWithHandle extends PureComponent {
   props: {|
-  dragHandle: Function,
-  innerRef: Function,
+    dragHandle: Function,
+    innerRef: Function,
   |}
   render() {
     return (
@@ -115,7 +115,7 @@ const returningHomeMapProps: MapProps = {
   offset: { x: 75, y: 75 },
 };
 
-// $FlowFixMe - spread and exact types
+// $ExpectError - spread and exact types
 const disableMapProps = (mapProps: MapProps): MapProps => ({
   ...mapProps,
   isDragEnabled: false,
@@ -124,7 +124,7 @@ const disableMapProps = (mapProps: MapProps): MapProps => ({
 type MountConnected = {
   type?: string,
   map?: MapState,
-  Component?: ReactClass<any>,
+  Component?: any,
   mapProps?: MapProps,
   dispatchProps?: DispatchProps,
   ownProps?: OwnProps,
@@ -155,11 +155,7 @@ const mountDraggable = ({
   dispatchProps = getDispatchPropsStub(),
   ownProps = empty,
 }: MountConnected = {}): ReactWrapper => {
-  class App extends PureComponent {
-    render() {
-      return this.props.children;
-    }
-  }
+  const App = ({ children }) => children;
 
   const ConnectedApp = dragDropContext()(App);
 
@@ -185,13 +181,61 @@ const setScroll = (point: Position) => {
   window.pageYOffset = point.y;
 };
 
+type LiftHelper = {|
+  dispatchProps?: DispatchProps,
+  scroll ?: Position,
+  center ?: Position,
+  selection ?: Position,
+|}
+const lift = (fn: 'onLift' | 'onKeyLift') => (wrapper: ReactWrapper<any>) => ({
+  scroll,
+  center = origin,
+  selection = origin,
+  }: LiftHelper = {}) => {
+  if (scroll) {
+    setScroll(scroll);
+  }
+
+    // fake some position to get the center we want
+  sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
+    left: 0,
+    top: 0,
+    right: center.x * 2,
+    bottom: center.y * 2,
+  });
+
+  try {
+    wrapper.find(DragHandle).props()[fn](selection);
+  } catch (e) {
+    throw e;
+  } finally {
+    // unstubbing getBoundingClientRect
+    Element.prototype.getBoundingClientRect.restore();
+  }
+
+  // $ExpectError
+  const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg]
+          = wrapper.find('Draggable').at(0).props().dispatchProps.lift.args[0] || [];
+
+  return {
+    draggableId: draggableIdArg,
+    type: typeArg,
+    center: centerArg,
+    scroll: scrollArg,
+    selection: selectionArg,
+  };
+};
+
+const mouseLift = lift('onLift');
+const keyLift = lift('onKeyLift');
+
 describe('Draggable', () => {
   let draggingWrapper;
   let notDraggingWrapper;
   let returningHomeWrapper;
 
   beforeEach(() => {
-    // recreateing the wrappers before every test to guard against side effects
+    // recreating the wrappers before every test to guard against side effects
     draggingWrapper = shallowDraggable({
       mapProps: draggingMapProps,
     });
@@ -205,9 +249,6 @@ describe('Draggable', () => {
 
   afterEach(() => {
     setScroll(originalScroll);
-    if (Element.prototype.getBoundingClientRect.restore) {
-      Element.prototype.getBoundingClientRect.restore();
-    }
   });
 
   describe('unconnected', () => {
@@ -234,7 +275,7 @@ describe('Draggable', () => {
         expect(map.args[0][0]).to.deep.equal(expected);
       });
 
-      it('should provide the map function with the childrens own props', () => {
+      it('should provide the map function with the children\'s own props', () => {
         const map: MapState = sinon.stub().returns(empty);
         const ownProps = {
           foo: 'bar',
@@ -336,50 +377,6 @@ describe('Draggable', () => {
           let standardWrapper;
           let dispatchProps;
 
-          type LiftHelper = {|
-            selection?: Position,
-              scroll ?: Position,
-              center ?: Position,
-          |}
-
-          const lift = (wrapper: ReactWrapper<any>) => ({
-            selection = origin,
-          scroll,
-          center = origin,
-          }: LiftHelper = {}) => {
-            if (scroll) {
-              setScroll(scroll);
-            }
-
-            if (center) {
-            // fake some position to get the center we want
-              sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
-                left: 0,
-                top: 0,
-                right: center.x * 2,
-                bottom: center.y * 2,
-              });
-            }
-
-            wrapper.find(DragHandle).props().onLift(selection);
-
-            if (center) {
-              console.log('unstubbing getBoundingClientRect');
-              Element.prototype.getBoundingClientRect.restore();
-            }
-
-            const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg]
-              = dispatchProps.lift.args[0] || [];
-
-            return {
-              draggableId: draggableIdArg,
-              type: typeArg,
-              center: centerArg,
-              scroll: scrollArg,
-              selection: selectionArg,
-            };
-          };
-
           beforeEach(() => {
             dispatchProps = getDispatchPropsStub();
             standardWrapper = mountDraggable({
@@ -393,26 +390,36 @@ describe('Draggable', () => {
               mapProps: disableMapProps(notDraggingMapProps),
             });
 
-            expect(() => lift(wrapper)()).to.throw();
+            expect(() => mouseLift(wrapper)()).to.throw();
           });
 
           it('should throw if lifted when not attached to the dom', () => {
             standardWrapper.unmount();
 
-            expect(() => lift(standardWrapper)()).to.throw();
+            expect(() => mouseLift(standardWrapper)()).to.throw();
           });
 
           it('should lift with the draggable id', () => {
-            const result = lift(standardWrapper)();
+            const result = mouseLift(standardWrapper)();
 
             expect(result.draggableId).to.equal(defaultDraggableId);
             expect(result.type).to.equal('TYPE');
           });
 
           it('should lift with the draggable type', () => {
-            const result = lift(standardWrapper)();
+            const result = mouseLift(standardWrapper)();
 
             expect(result.type).to.equal('TYPE');
+          });
+
+          it('should lift with the selected position', () => {
+            const selection: Position = {
+              x: 100,
+              y: 200,
+            };
+            const result = mouseLift(standardWrapper)({ selection });
+
+            expect(result.selection).to.deep.equal(selection);
           });
 
           it('should lift with the scroll position', () => {
@@ -420,7 +427,7 @@ describe('Draggable', () => {
               x: 100,
               y: 200,
             };
-            const result = lift(standardWrapper)({ scroll });
+            const result = mouseLift(standardWrapper)({ scroll });
 
             expect(result.scroll).to.deep.equal(scroll);
           });
@@ -430,7 +437,7 @@ describe('Draggable', () => {
               x: 50,
               y: 80,
             };
-            const result = lift(standardWrapper)({ center });
+            const result = mouseLift(standardWrapper)({ center });
 
             expect(result.center).to.deep.equal(center);
           });
@@ -557,72 +564,171 @@ describe('Draggable', () => {
         });
 
         describe('onKeyLift', () => {
+          let standardWrapper;
+          let dispatchProps;
+
+          beforeEach(() => {
+            dispatchProps = getDispatchPropsStub();
+            standardWrapper = mountDraggable({
+              mapProps: notDraggingMapProps,
+              dispatchProps,
+            });
+          });
+
           it('should throw if dragging is disabled', () => {
             const wrapper = shallowDraggable({
               mapProps: disableMapProps(notDraggingMapProps),
             });
 
-            const onKeyLift = () => wrapper.find(DragHandle).props.onKeyLift();
+            const onKeyLift = () => keyLift(wrapper)();
 
             expect(onKeyLift).to.throw();
           });
 
           it('should throw if not attached to the DOM', () => {
-            const onKeyLift = () => notDraggingWrapper.find(DragHandle).props.onKeyLift();
+            const onKeyLift = () => keyLift(standardWrapper)();
 
-            notDraggingWrapper.unmount();
+            standardWrapper.unmount();
 
             expect(onKeyLift).to.throw();
           });
 
-          it('should trigger lift with the draggableId', () => {
-            const dispatchProps = getDispatchPropsStub();
-            const wrapper = mountDraggable({
-              mapProps: notDraggingMapProps,
-              dispatchProps,
-            });
+          it('should lift with the draggableId', () => {
+            const result = keyLift(standardWrapper)();
 
-            wrapper.find(DragHandle).props().onKeyLift();
-
-            expect(dispatchProps.lift.args[0][0]).to.equal(defaultDraggableId);
+            expect(result.draggableId).to.equal(defaultDraggableId);
           });
 
-          it('should trigger lift with the current center position', () => {
+          it('should lift with the current center position', () => {
+            const center: Position = {
+              x: 50,
+              y: 80,
+            };
+            const result = keyLift(standardWrapper)({ center });
 
+            expect(result.center).to.deep.equal(center);
           });
 
-          it('should trigger lift with the current scroll position', () => {
+          it('should lift with the current scroll position', () => {
+            const scroll: Position = {
+              x: 100,
+              y: 200,
+            };
+            const result = keyLift(standardWrapper)({ scroll });
 
+            expect(result.scroll).to.deep.equal(scroll);
+          });
+
+          it('should lift with the center point as the selected position', () => {
+            const center: Position = {
+              x: 100,
+              y: 200,
+            };
+            const result = keyLift(standardWrapper)({ center });
+
+            expect(result.selection).to.deep.equal(center);
           });
         });
 
         describe('onMoveBackward', () => {
           it('should throw if dragging is disabled', () => {
+            const wrapper = shallowDraggable({
+              mapProps: disableMapProps(notDraggingMapProps),
+            });
 
+            const tryMove = () => wrapper.find(DragHandle).props().onMoveBackward(defaultDraggableId);
+
+            expect(tryMove).to.throw();
           });
 
           it('should throw if not attached to the DOM', () => {
+            notDraggingWrapper.unmount();
 
+            const tryMove = () => notDraggingWrapper.find(DragHandle).props().onMoveBackward(defaultDraggableId);
+
+            expect(tryMove).to.throw();
+          });
+
+          it('should call the move backward action', () => {
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = mountDraggable({
+              mapProps: draggingMapProps,
+              dispatchProps,
+            });
+
+            wrapper.find(DragHandle).props().onMoveBackward(defaultDraggableId);
+
+            expect(dispatchProps.moveBackward.calledWith(defaultDraggableId)).to.equal(true);
           });
         });
 
         describe('onMoveForward', () => {
           it('should throw if dragging is disabled', () => {
+            const wrapper = shallowDraggable({
+              mapProps: disableMapProps(notDraggingMapProps),
+            });
 
+            const tryMove = () => wrapper.find(DragHandle).props().onMoveForward(defaultDraggableId);
+
+            expect(tryMove).to.throw();
           });
 
           it('should throw if not attached to the DOM', () => {
+            notDraggingWrapper.unmount();
 
+            const tryMove = () => notDraggingWrapper.find(DragHandle).props().onMoveForward(defaultDraggableId);
+
+            expect(tryMove).to.throw();
+          });
+
+          it('should call the move forward action', () => {
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = mountDraggable({
+              mapProps: draggingMapProps,
+              dispatchProps,
+            });
+
+            wrapper.find(DragHandle).props().onMoveForward(defaultDraggableId);
+
+            expect(dispatchProps.moveForward.calledWith(defaultDraggableId)).to.equal(true);
           });
         });
 
         describe('onCancel', () => {
-          it('should allow the action even if dragging is disabled', () => {
+          it('should call the cancel dispatch prop', () => {
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = shallowDraggable({
+              mapProps: draggingMapProps,
+              dispatchProps,
+            });
 
+            wrapper.find(DragHandle).props().onCancel(defaultDraggableId);
+
+            expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
+          });
+
+          it('should allow the action even if dragging is disabled', () => {
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = shallowDraggable({
+              mapProps: disableMapProps(draggingMapProps),
+              dispatchProps,
+            });
+
+            wrapper.find(DragHandle).props().onCancel(defaultDraggableId);
+
+            expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
           });
 
           it('should allow the action even when not attached to the dom', () => {
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = mountDraggable({
+              mapProps: draggingMapProps,
+              dispatchProps,
+            });
 
+            wrapper.find(DragHandle).props().onCancel(defaultDraggableId);
+
+            expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
           });
         });
       });
@@ -797,7 +903,7 @@ describe('Draggable', () => {
       });
 
       describe('dropped but no return to home animation is needed', () => {
-      // $FlowFixMe - spead operator and exact type
+        // $FlowFixMe - spead operator and exact type
         const mapProps: MapProps = {
           ...returningHomeMapProps,
           canAnimate: false,

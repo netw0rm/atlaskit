@@ -14,7 +14,7 @@ export type Callbacks = {
   onCancel: () => void,
 }
 
-const noop = () => {};
+const noop = (): void => {};
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
 const primaryButton = 0;
@@ -24,13 +24,13 @@ const allowDragProps = {
 };
 
 type Props = {
-  children?: React$Element<*>,
+  children?: any,
   isEnabled: boolean,
 } & Callbacks
 
 type DragTypes = 'KEYBOARD' | 'MOUSE';
 
-const logError = (...args) => console.error(...args);
+const logError = (...args: Array<mixed>) => console.error(...args);
 
 // exporting for testing
 export const getCursor = (isEnabled: boolean, isDragging: boolean) => {
@@ -50,12 +50,13 @@ export default class Handle extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
   state: {|
-    draggingWith: ?DragTypes;
+    draggingWith: ?DragTypes,
   |}
 
+  // $FlowFixMe - typing draggingWith to always be null
   state = {
     draggingWith: null,
-  }
+  };
   /* eslint-enable react/sort-comp */
 
   componentWillUnmount() {
@@ -73,7 +74,7 @@ export default class Handle extends PureComponent {
     }
   }
 
-  onWindowMouseMove = (event: SyntheticMouseEvent) => {
+  onWindowMouseMove = (event: MouseEvent) => {
     if (this.state.draggingWith === 'KEYBOARD') {
       return;
     }
@@ -108,15 +109,15 @@ export default class Handle extends PureComponent {
   onWindowMouseDown = () => {
     if (this.state.draggingWith === 'MOUSE') {
       this.stopDragging(() => this.props.onCancel());
-      logError(`should not be able to trigger a mousedown
-                  while a MOUSE drag is occuring. Expecting a mouseup first.`);
+      logError(`Should not be able to trigger a mousedown while a MOUSE drag is occurring.
+                Expecting a mouseup first.`);
       return;
     }
 
     this.stopDragging(() => this.props.onDrop());
   }
 
-  onMouseDown = (event: SyntheticMouseEvent) => {
+  onMouseDown = (event: MouseEvent) => {
     if (this.state.draggingWith === 'KEYBOARD') {
       // allowing any type of mouse down to cancel
       this.stopDragging(() => this.props.onCancel());
@@ -148,7 +149,7 @@ export default class Handle extends PureComponent {
     this.startDragging('MOUSE', () => this.props.onLift(point));
   };
 
-  onKeyDown = (event: SyntheticKeyboardEvent) => {
+  onKeyDown = (event: KeyboardEvent) => {
     if (!this.props.isEnabled) {
       return;
     }
@@ -195,7 +196,7 @@ export default class Handle extends PureComponent {
     }
   }
 
-  startDragging = (type: DragTypes, done?: Function = noop) => {
+  startDragging = (type: DragTypes, done?: () => void = noop) => {
     invariant(!this.state.draggingWith, 'cannot start dragging when already dragging');
     this.bindWindowEvents();
     this.setState({
@@ -203,7 +204,7 @@ export default class Handle extends PureComponent {
     }, done);
   }
 
-  stopDragging = (done?: Function = noop) => {
+  stopDragging = (done?: () => void = noop) => {
     invariant(this.state.draggingWith, 'cannot stop dragging when not dragging');
 
     this.unbindWindowEvents();

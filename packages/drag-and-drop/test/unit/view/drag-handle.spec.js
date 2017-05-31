@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
@@ -13,11 +13,7 @@ import createDragHandle from '../../../src/view/drag-handle/';
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
 
-class Child extends PureComponent {
-  render() {
-    return <div>hello world!</div>;
-  }
-}
+const Child = () => <div>hello world!</div>;
 
 const getStubCallbacks = (): Callbacks => ({
   onLift: sinon.stub(),
@@ -93,6 +89,7 @@ const areWindowEventsBound = (wrapper: ReactWrapper<any>, callbacks: Callbacks):
   return beforeCount !== afterCount;
 };
 
+// Reaching into internal state which is sad. But isolating it to this function
 const isDragging = (wrapper: ReactWrapper<any>) =>
   wrapper.state().draggingWith !== null;
 

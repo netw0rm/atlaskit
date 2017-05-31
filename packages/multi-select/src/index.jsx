@@ -29,7 +29,8 @@ export default class AkMultiSelect extends PureComponent {
     appearance: PropTypes.oneOf(appearances.values),
     /** Element to show after the list of item. Could be an interactive element like a link or
      * a button. In this case the normal tab behavior applies, and after pressing 'tab' focus moves
-     * to the next focusable elemenent in the footer */
+     * to the next focusable element in the footer. Doesn't work with shouldAllowCreateItem set to
+     * true. */
     footer: PropTypes.node,
     /** Message to display in footer after the name of the new item. Only applicable if
      * shouldAllowCreateItem prop is set to true. */
@@ -80,7 +81,8 @@ export default class AkMultiSelect extends PureComponent {
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
     /** Sets whether a new item could be created and added to the list by pressing Enter
-     * inside the autocomplete field */
+     * inside the autocomplete field. If set to true then no additional footer from the 'footer'
+     * property would be rendered. */
     shouldAllowCreateItem: PropTypes.bool,
   }
 

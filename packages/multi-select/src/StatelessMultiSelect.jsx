@@ -43,7 +43,8 @@ export default class StatelessMultiSelect extends PureComponent {
     filterValue: PropTypes.string,
     /** Element to show after the list of item. Could be an interactive element like a link or
      * a button. In this case the normal tab behavior applies, and after pressing 'tab' focus moves
-     * to the next focusable elemenent in the footer */
+     * to the next focusable element in the footer. Doesn't work with shouldAllowCreateItem set to
+     * true. */
     footer: PropTypes.node,
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
@@ -92,7 +93,8 @@ export default class StatelessMultiSelect extends PureComponent {
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
     /** Sets whether a new item could be created and added to the list by pressing Enter
-     * inside the autocomplete field */
+     * inside the autocomplete field. If set to true then no additional footer from the 'footer'
+     * property would be rendered. */
     shouldAllowCreateItem: PropTypes.bool,
   }
 

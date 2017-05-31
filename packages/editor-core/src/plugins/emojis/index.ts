@@ -1,4 +1,5 @@
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
+import { analyticsService } from '../../analytics';
 import * as commands from '../../commands';
 import {
   EditorState,
@@ -205,47 +206,6 @@ export class EmojiState {
 
 export const stateKey = new PluginKey('emojiPlugin');
 
-/**
- * Wrap the 'text' in the Editor with a native emoji node marker, so it can be dealt with later.
- * If no emojiProvider has been configured then the native emoji will not be marked.
- *
- * @param view the EditorView to operate on
- * @param emojiId the id of the emoji represented by the text
- * @param from the text starting position in the document
- * @param to the text ending position in the document
- * @param text the text to be marked if it is a native emoji
- * @return true if the native emoji was marked; otherwise false
- */
-// const wrapNativeEmojiWithMark = function(view: EditorView, emojiId: string, from: number, to: number, text: string): void {
-//   const state = view.state;
-//   // insert a mark around the native emoji with an attribute containing the emoji Id
-//   const schema = state.schema;
-//   const markedNativeEmojiText = schema.text(text, schema.mark('nativeEmoji', { emojiId : emojiId }));
-//   view.dispatch(state.tr.replaceWith(from, to, markedNativeEmojiText));
-
-//   const newState = view.state;
-//   if (newState.selection) {
-//     // cancel any existing text selection and move the cursor to immediately following the inserted emoji
-//     view.dispatch(newState.tr.setSelection(new TextSelection(newState.doc.resolve(from + 1))));
-//   }
-// }
-
-// const replaceNativeEmojiMarkWithEmoji = function(view: EditorView, providerPromise: Promise<EmojiProvider>, emojiId: string): void {
-//   // now find the emoji from the provider and replace the mark with a proper emoji node
-//   providerPromise.then(provider => {
-//     provider.findById(emojiId).then((loadedEmoji) => {
-//       if (loadedEmoji) {
-//         // create an emoji ProseMirror node and insert it at the mark
-
-//       } else {
-//         // Remove the mark and stick with the native emoji
-
-//       }
-//     });
-
-//   });
-// }
-
 const plugin = new Plugin({
   state: {
     init(config, state) {
@@ -267,11 +227,12 @@ const plugin = new Plugin({
       }
     };
   },
-   props: {
+  props: {
     handleTextInput: (view: EditorView, from: number, to: number, text: string) => {
       console.log('PAC: handleTextInput. from = ' + from + ', to = ' + to + ' and text = ' + text);
       let emojiId = getIdForUnicodeEmoji(text);
       if (emojiId) {
+        analyticsService.trackEvent('atlassian.editor.emoji.native.insert');
         const state = view.state;
         const emojiNode = state.schema.nodes.emoji.create({ id: emojiId, text: text });
 

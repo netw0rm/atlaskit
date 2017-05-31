@@ -34,28 +34,37 @@ export default class EmojiNode extends PureComponent<Props, {}> {
       return;
     }
 
-    // TODO find a 'legal' mechanism for getting access to the emojiProvider
-    const emojiProvider = this.props.providerFactory.providers.get("emojiProvider");
-    console.log('PAC: emojiProvider = ' + emojiProvider);
-    const node = this.props.node;
-    const emojiId = node.attrs.id;
+    const emojiProviderName = 'emojiProvider';
+    const emojiId = this.props.node.attrs.id;
+    const component = this;
 
-    if (emojiProvider) {
-      emojiProvider.then(provider => {
-        provider.findById(emojiId).then((loadedEmoji) => {
-          if (loadedEmoji) {
-            console.log('PAC: Found emoji for id = ' + emojiId + ' which is [id=' + loadedEmoji.id + ', shortName=' + loadedEmoji.shortName + ', fallback=' + loadedEmoji.fallback + ']');
-            node.attrs.shortName = loadedEmoji.shortName;
-            node.attrs.text = loadedEmoji.fallback;
+    const emojiResolvingHandler = function(name: string, providerPromise?: Promise<any>) {
+      console.log('PAC: emojiResolvingHandler running. emojiProvider = ' + providerPromise);
+      if (providerPromise) {
+        providerPromise.then(emojiProvider => {
+          emojiProvider.findById(emojiId).then((loadedEmoji) => {
+            if (loadedEmoji) {
+              const node = component.props.node;
+              console.log('PAC: Found emoji for id = ' + emojiId + ' which is [id=' + loadedEmoji.id + ', shortName=' + loadedEmoji.shortName + ', fallback=' + loadedEmoji.fallback + ']');
+              node.attrs.shortName = loadedEmoji.shortName;
+              node.attrs.text = loadedEmoji.fallback;
+              component.forceUpdate();
+            } else {
+              console.log('PAC: No emoji found for id = ' + emojiId);
+            }
 
-            this.forceUpdate();
-          } else {
-            console.log('PAC: No emoji found for id = ' + emojiId);
-          }
-        });
-      });
-    }
+          }, unsubscribeHandler);
+        }, unsubscribeHandler);
+      }
+    };
 
+    const unsubscribeHandler = function() {
+      console.log('PAC: unsubscribed the emojiResolvingHandler');
+      component.props.providerFactory.unsubscribe(emojiProviderName, emojiResolvingHandler);
+    };
+
+    // kick off the emoji resolution
+    this.props.providerFactory.subscribe(emojiProviderName, emojiResolvingHandler);
     this.resolvingAttempted = true;
   }
 

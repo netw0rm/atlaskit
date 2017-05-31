@@ -30,6 +30,13 @@ const grinEmojiId = {
   fallback: grinEmoji.fallback,
 };
 
+const watchEmoji = emojiData.emojiTestData.watchEmoji;
+const watchEmojiId = {
+  shortName: watchEmoji.shortName,
+  id: watchEmoji.id,
+  fallback: watchEmoji.fallback
+};
+
 const evilburnsEmoji = emojiData.emojiTestData.evilburnsEmoji;
 const evilburnsEmojiId = {
   shortName: evilburnsEmoji.shortName,
@@ -383,4 +390,32 @@ describe('emojis', () => {
     });
   });
 
+  describe('inserted native emoji', () => {
+    it('should convert to emoji node', () => {
+      const { editorView } = editor(doc(p('Hello{<>}')));
+      // a low charCode emoji since ProseMirror wrongly uses String.charCode instead of String.codePoint
+      sendKeyToPm(editorView, '⌚');
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('Hello', emoji(watchEmojiId))));
+      // check it - might be a watchEmojiId but without the shortName
+    });
+
+    it('should preserve formatting for text typed after conversion', () => {
+      expect(true, 'TODO').to.equal(false);
+    });
+
+    it('should convert to emoji node and replace selected text', () => {
+      expect(true, 'TODO').to.equal(false);
+    });
+
+    it('should convert to emoji node in link text', () => {
+      expect(true, 'TODO').to.equal(false);
+      // ensure the link does not break in two.
+      // don't implement this test - create an issue to track fixing this behaviour
+    });
+
+    it('should not convert to emoji node in code block', () => {
+      expect(true, 'TODO').to.equal(false);
+    });
+  });
 });

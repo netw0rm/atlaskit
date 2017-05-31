@@ -39,6 +39,19 @@ describe('@atlaskit/editor-cq', () => {
       expect(mount(<Editor expanded={true} />).find('ChromeExpanded')).to.have.length.above(0);
     });
 
+    it('should render disabled chrome if disabled=true', () => {
+      const chrome = mount(<Editor isExpandedByDefault={true} disabled={true} />).find('ChromeExpanded');
+      expect(chrome.prop('disabled')).to.equal(true);
+    });
+
+    it('should disable chrome when disabled is changed', () => {
+      const chrome = mount(<Editor isExpandedByDefault={true} />);
+      expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(false);
+
+      chrome.setProps({ disabled: true });
+      expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(true);
+    });
+
     it('should have higher priority for expanded over isExpandedByDefault', () => {
       expect(
         mount(<Editor expanded={false} isExpandedByDefault={true} />).find('ChromeCollapsed')

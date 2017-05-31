@@ -27,6 +27,9 @@ export default class AkMultiSelect extends PureComponent {
   static propTypes = {
     /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
+    /** Element to show after the list of item. Could be an interactive element like a link or
+     * a button. In this case the normal tab behavior applies, and after pressing 'tab' focus moves
+     * to the next focusable elemenent in the footer */
     footer: PropTypes.node,
     /** Message to display in footer after the name of the new item. Only applicable if
      * shouldAllowCreateItem prop is set to true. */

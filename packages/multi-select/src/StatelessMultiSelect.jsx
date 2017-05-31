@@ -41,6 +41,9 @@ export default class StatelessMultiSelect extends PureComponent {
     createNewItemLabel: PropTypes.string,
     /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
+    /** Element to show after the list of item. Could be an interactive element like a link or
+     * a button. In this case the normal tab behavior applies, and after pressing 'tab' focus moves
+     * to the next focusable elemenent in the footer */
     footer: PropTypes.node,
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,

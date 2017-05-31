@@ -280,6 +280,14 @@ describe('code-block', () => {
     });
   });
 
+  context('removeCodeBlock', () => {
+    it('should change current code_block to simple paragraph', () => {
+      const { pluginState, editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
+      pluginState.removeCodeBlock(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('codeBlock')));
+    });
+  });
+
   describe('language', () => {
     it('is the same as activeCodeBlock language', () => {
       const { pluginState } = editor(doc(code_block({ language: 'java' })('te{<>}xt')));

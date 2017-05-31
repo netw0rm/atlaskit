@@ -45,6 +45,11 @@ export class CodeBlockState {
     }
   }
 
+  removeCodeBlock(view: EditorView): void {
+    commands.setBlockType(view.state.schema.nodes.paragraph)(view.state, view.dispatch);
+  }
+
+
   updateEditorFocused(editorFocused: boolean) {
     this.editorFocused = editorFocused;
   }

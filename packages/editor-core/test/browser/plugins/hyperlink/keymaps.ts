@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import HyperlinkPlugin from '../../../../src/plugins/hyperlink';
 import {
-  chaiPlugin, fixtures, makeEditor, doc, p, br, a as link, linkable, sendKeyToPm
+  chaiPlugin, fixtures, makeEditor, doc, p, a as link, linkable, sendKeyToPm
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 

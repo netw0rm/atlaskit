@@ -50,7 +50,9 @@ import { MentionProvider } from '@atlaskit/mention';
 import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
-import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
+import ReactJIRAIssueNode from './nodeviews/ui/jiraIssue';
+import ReactUnsupportedBlockNode from './nodeviews/ui/unsupportedBlock';
+import ReactUnsupportedInlineNode from './nodeviews/ui/unsupportedInline';
 export { version };
 
 export interface Props {
@@ -297,7 +299,9 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          jiraIssue: jiraIssueNodeView,
+          jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
+          unsupportedBlock: nodeViewFactory(this.providerFactory, { unsupportedBlock: ReactUnsupportedBlockNode }, true),
+          unsupportedInline: nodeViewFactory(this.providerFactory, { unsupportedInline: ReactUnsupportedInlineNode }),
           mediaGroup: nodeViewFactory(this.providerFactory, {
             mediaGroup: ReactMediaGroupNode,
             media: ReactMediaNode,

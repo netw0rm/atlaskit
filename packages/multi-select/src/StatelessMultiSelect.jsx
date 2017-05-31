@@ -273,18 +273,22 @@ export default class StatelessMultiSelect extends PureComponent {
 
   focusNextItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
-    const length = filteredItems.length - 1;
-    this.setState({
-      focusedItemIndex: this.getNextFocusable(this.state.focusedItemIndex, length),
-    });
+    if (filteredItems.length) {
+      const length = filteredItems.length - 1;
+      this.setState({
+        focusedItemIndex: this.getNextFocusable(this.state.focusedItemIndex, length),
+      });
+    }
   }
 
   focusPreviousItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
-    const length = filteredItems.length - 1;
-    this.setState({
-      focusedItemIndex: this.getPrevFocusable(this.state.focusedItemIndex, length),
-    });
+    if (filteredItems.length) {
+      const length = filteredItems.length - 1;
+      this.setState({
+        focusedItemIndex: this.getPrevFocusable(this.state.focusedItemIndex, length),
+      });
+    }
   }
 
   handleKeyboardInteractions = (event) => {
@@ -394,14 +398,14 @@ export default class StatelessMultiSelect extends PureComponent {
 
   renderFooter = () => {
     const { filterValue: newValue, shouldAllowCreateItem, footer } = this.props;
-    if ( shouldAllowCreateItem ) {
-      if ( newValue ) {
-      return (<Footer
-        newLabel={this.props.createNewItemLabel}
-        shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
-      >
-        { newValue }
-      </Footer> );
+    if (shouldAllowCreateItem) {
+      if (newValue) {
+        return (<Footer
+          newLabel={this.props.createNewItemLabel}
+          shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
+        >
+          { newValue }
+        </Footer>);
       }
     } else if (footer) {
       return (<Footer>{ footer }</Footer>);

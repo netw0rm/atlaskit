@@ -33,7 +33,8 @@ export default class BasicNavigation extends PureComponent {
       />
       <AkNavigationItem
         icon={<SettingsIcon label="Settings" />}
-        text="Item B"
+        isSelected
+        text="Selected item"
       />
       <AkNavigationItem
         icon={<IssuesIcon label="Projects" />}

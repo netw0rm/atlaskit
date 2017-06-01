@@ -50,21 +50,21 @@ function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: T
   const match = new RegExp(`${URL_REGEX.source}$`).exec(lastWord);
 
   if (match) {
-    const hyperilnkedText = match[1];
-    const start = state.selection.$from.pos - hyperilnkedText.length;
+    const hyperlinkedText = match[1];
+    const start = state.selection.$from.pos - hyperlinkedText.length;
     const end = state.selection.$from.pos;
 
     if (state.doc.rangeHasMark(start, end, state.schema.marks.link)) {
       return false;
     }
 
-    const url = normalizeUrl(hyperilnkedText);
+    const url = normalizeUrl(hyperlinkedText);
     const markType = state.schema.mark('link', { href: url, });
 
     dispatch(state.tr.replaceWith(
       start,
       end,
-      state.schema.text(hyperilnkedText, [markType])
+      state.schema.text(hyperlinkedText, [markType])
     ));
   }
 }

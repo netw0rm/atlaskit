@@ -11,39 +11,39 @@ import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecond
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(Object.keys(presets)),
     createIcon: PropTypes.node,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
+    theme: PropTypes.obj,
     secondaryActions: PropTypes.arrayOf(PropTypes.node),
     searchIcon: PropTypes.node,
     onSearchActivate: PropTypes.func,
     onCreateActivate: PropTypes.func,
   };
   static defaultProps = {
-    appearance: 'global',
     accountItem: null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
+    theme: presets.global,
     secondaryActions: [],
   };
 
   render() {
     const {
-      appearance,
       createIcon,
       linkComponent,
       onCreateActivate,
       onSearchActivate,
       primaryIcon,
       primaryItemHref,
+      theme,
       searchIcon,
       secondaryActions,
     } = this.props;
     return (
       <WithRootTheme
-        provided={presets[appearance]}
+        provided={theme}
       >
         <GlobalNavigationInner>
           <GlobalNavigationPrimaryContainer>

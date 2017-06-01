@@ -15,7 +15,7 @@ import { globalPrimaryActions } from '../../shared-variables';
 
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
+    theme: PropTypes.obj,
     showGlobalPrimaryActions: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
@@ -30,7 +30,7 @@ export default class ContainerNavigation extends PureComponent {
   }
 
   static defaultProps = {
-    appearance: 'container',
+    theme: presets.container,
     showGlobalPrimaryActions: false,
     isCollapsed: false,
     linkComponent: DefaultLinkComponent,
@@ -93,7 +93,6 @@ export default class ContainerNavigation extends PureComponent {
 
   render() {
     const {
-      appearance,
       showGlobalPrimaryActions,
       children,
       globalCreateIcon,
@@ -104,6 +103,7 @@ export default class ContainerNavigation extends PureComponent {
       linkComponent,
       onGlobalCreateActivate,
       onGlobalSearchActivate,
+      theme,
       isCollapsed,
     } = this.props;
 
@@ -121,7 +121,7 @@ export default class ContainerNavigation extends PureComponent {
 
     return (
       <WithRootTheme
-        provided={presets[appearance]}
+        provided={theme}
         isCollapsed={isCollapsed}
       >
         {/* This div is needed for legacy reasons.
@@ -136,7 +136,6 @@ export default class ContainerNavigation extends PureComponent {
             openHeight={globalPrimaryActions.height.outer}
           >
             <GlobalPrimaryActions
-              appearance={appearance}
               createIcon={globalCreateIcon}
               linkComponent={linkComponent}
               onCreateActivate={onGlobalCreateActivate}

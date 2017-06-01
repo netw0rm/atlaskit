@@ -6,6 +6,9 @@ import { expect } from 'chai';
 import TestUtils from 'react-addons-test-utils';
 import { dragDropContext } from '../../../src/';
 import storeKey from '../../../src/state/get-store-key';
+import createStore from '../../../src/state/create-store';
+import type { Store } from '../../../src/types';
+import type { Hooks } from '../../../src/view/drag-drop-context/hooks';
 
 class App extends PureComponent {
   // Part of react's api is to use flow types for this.
@@ -19,7 +22,7 @@ class App extends PureComponent {
   };
 
   render() {
-    return <div>hello world!</div>;
+    return <div>hi there</div>;
   }
 }
 
@@ -48,6 +51,16 @@ describe('DragDropContext', () => {
 
   describe('hooks', () => {
     it('should call the onDragStart hook when a drag starts', () => {
+      // const hooks: Hooks = {
+      //   onDragStart: sinon.stub(),
+      // };
+      // const DragItem = (() => {
+      //   const Item = () => <div>You can drag me</div>;
+
+      //   const mapStateToProps: MapStateToProps = () => {};
+
+      //   return draggable('ITEM', provide)(Item);
+      // })();
     });
 
     it('should call the onDragEnd hook when a drag ends', () => {

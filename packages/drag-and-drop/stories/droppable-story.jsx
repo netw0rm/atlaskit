@@ -139,11 +139,11 @@ const DroppableList = (() => {
     id: ownProps.listId,
   });
 
-  const map = state => ({
+  const mapStateToProps = state => ({
     isDraggingOver: state.isDraggingOver,
   });
 
-  return droppable('ITEM', 'vertical', provide, map)(List);
+  return droppable('ITEM', 'vertical', provide, mapStateToProps)(List);
 })();
 
 const ConnectedApp: ReactClass<any> = (() => {

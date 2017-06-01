@@ -7,7 +7,7 @@ import makeDroppable from './make-droppable';
 import storeKey from '../../state/get-store-key';
 import { currentDragSelector } from '../../state/selectors';
 import type { Direction, TypeId, State, CurrentDrag, DraggableLocation } from '../../types';
-import type { NeedsProviding, Provide, MapState, Props, OwnProps, MapProps } from './droppable-types';
+import type { NeedsProviding, Provide, MapStateToProps, Props, OwnProps, MapProps } from './droppable-types';
 
 const makeSelector = (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
@@ -55,9 +55,9 @@ const makeMapStateToProps = (provide: Provide) => {
 export default (type: TypeId,
     direction: Direction,
     provide: Provide,
-    map?: MapState = () => ({})): Function =>
+    mapStateToProps?: MapStateToProps = () => ({})): Function =>
     (Component: ReactClass<any>): ReactClass<any> => {
-      const Droppable = makeDroppable(type, map)(Component);
+      const Droppable = makeDroppable(type, mapStateToProps)(Component);
       return connect(
         makeMapStateToProps(provide),
         () => ({}),

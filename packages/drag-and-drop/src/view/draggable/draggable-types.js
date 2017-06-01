@@ -53,5 +53,5 @@ export type StateSnapshot = {|
   isDragging: boolean
 |}
 
-export type MapState =
+export type MapStateToProps =
   (state: StateSnapshot, ownProps: OwnProps, getDragHandle: () => mixed) => Object;

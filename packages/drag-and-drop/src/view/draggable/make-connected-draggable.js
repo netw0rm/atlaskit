@@ -30,7 +30,7 @@ import type {
     OwnProps,
     DispatchProps,
     Props,
-    MapState,
+    MapStateToProps,
     NeedsProviding,
 } from './draggable-types';
 
@@ -180,9 +180,9 @@ const mergeProps = (mapProps: MapProps,
 
 export default (type: TypeId,
   provide: Provide,
-  map?: MapState = () => empty) =>
+  mapStateToProps?: MapStateToProps = () => empty) =>
   (Component: any) => {
-    const Draggable = makeDraggable(type, map)(Component);
+    const Draggable = makeDraggable(type, mapStateToProps)(Component);
     return connect(
       makeMapStateToProps(provide),
       mapDispatchToProps,

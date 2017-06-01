@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import type { MapState, Props, StateSnapshot } from './droppable-types';
+import type { MapStateToProps, Props, StateSnapshot } from './droppable-types';
 import type { TypeId } from '../../types';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
@@ -15,7 +15,7 @@ type ComponentState = {|
   ref: ?Element,
 |}
 
-export default (type: TypeId, map: MapState): Function =>
+export default (type: TypeId, map: MapStateToProps): Function =>
   // Component must be a styled-component
   (Component: ReactClass<any>): ReactClass<any> =>
     class Droppable extends PureComponent {

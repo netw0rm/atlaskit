@@ -23,4 +23,4 @@ export type StateSnapshot = {|
 |}
 
 export type Provide = (ownProps: OwnProps) => NeedsProviding;
-export type MapState = (state: StateSnapshot, ownProps: OwnProps) => Object;
+export type MapStateToProps = (state: StateSnapshot, ownProps: OwnProps) => Object;

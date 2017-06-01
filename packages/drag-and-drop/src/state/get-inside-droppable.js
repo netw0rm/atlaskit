@@ -7,8 +7,7 @@ export default memoizeOne(
   (droppableDimension, draggableDimensions: DimensionMap): Dimension[] =>
     Object.keys(draggableDimensions)
       .map((key: Id): Dimension => draggableDimensions[key])
-      .filter((dimension: Dimension): boolean =>
-         isInsideDimension(dimension.center, droppableDimension))
+      .filter((dimension: Dimension): boolean => isInsideDimension(dimension.center, droppableDimension))
       // dimensions might not be sorted (which is true after a reorder)
       .sort((a: Dimension, b: Dimension): number => a.center.y - b.center.y)
   );

@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import invariant from 'invariant';
 import styled from 'styled-components';
 import type { TypeId, Position, ZIndex } from '../../types';
-import type { Props, MapState, StateSnapshot } from './draggable-types';
+import type { Props, MapStateToProps, StateSnapshot } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import type { Speed } from '../moveable';
@@ -37,7 +37,7 @@ type PlacementInfo = {|
 
 export const Placeholder = styled.div``;
 
-export default (type: TypeId, map: MapState): Function =>
+export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
   (Component: ReactClass<any>): ReactClass<any> =>
     class Draggable extends PureComponent {
       /* eslint-disable react/sort-comp */
@@ -287,7 +287,7 @@ export default (type: TypeId, map: MapState): Function =>
           isDragging: mapProps.isDragging,
         };
 
-        const additionalProps = map(snapshot, ownProps, requestDragHandle);
+        const additionalProps = mapStateToProps(snapshot, ownProps, requestDragHandle);
 
         const enhancedOwnProps = {
           ...ownProps,

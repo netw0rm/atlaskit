@@ -8,7 +8,7 @@ import type { ReactWrapper } from 'enzyme';
 import makeDroppable from '../../../src/view/droppable/make-droppable';
 import { dragDropContext } from '../../../src/';
 import type { TypeId, DroppableId } from '../../../src/types';
-import type { MapProps, OwnProps, MapState, StateSnapshot } from '../../../src/view/droppable/droppable-types';
+import type { MapProps, OwnProps, MapStateToProps, StateSnapshot } from '../../../src/view/droppable/droppable-types';
 
 const empty = {};
 const noop = () => {};
@@ -29,7 +29,7 @@ type MountArgs = {|
       Component?: ReactClass<any>,
       mapProps?: MapProps,
       ownProps?: OwnProps,
-      map?: () => mixed,
+      mapStateToProps?: () => mixed,
     |}
 
 const shallowDroppable = ({
@@ -37,9 +37,9 @@ const shallowDroppable = ({
       Component = Child,
       mapProps = notDraggingOverMapProps,
       ownProps = {},
-      map = () => {},
+      mapStateToProps = () => {},
     }: MountArgs = {}): ReactWrapper => {
-  const Droppable = makeDroppable(type, map)(Component);
+  const Droppable = makeDroppable(type, mapStateToProps)(Component);
   return shallow(
     <Droppable
       mapProps={mapProps}
@@ -53,11 +53,11 @@ const mountDroppable = ({
       Component = Child,
       mapProps = notDraggingOverMapProps,
       ownProps = {},
-      map = () => {},
+      mapStateToProps = () => {},
     }: MountArgs = {}): ReactWrapper => {
   const App = ({ children }) => children;
   const ConnectedApp = dragDropContext()(App);
-  const Droppable = makeDroppable(type, map)(Component);
+  const Droppable = makeDroppable(type, mapStateToProps)(Component);
 
   return mount(
     <ConnectedApp>
@@ -69,7 +69,7 @@ const mountDroppable = ({
     );
 };
 
-describe.only('Droppable - unconnected', () => {
+describe('Droppable - unconnected', () => {
   it('should set the display name to reflect the component being wrapped', () => {
     const wrapper = mountDroppable({
       Component: Child,
@@ -78,23 +78,23 @@ describe.only('Droppable - unconnected', () => {
     expect(wrapper.find('Droppable').name()).to.equal('Droppable(Child)');
   });
 
-  describe('providing a state snapshot to the provided map function', () => {
-    it('should provide the map function with a snapshot of the current droppable state', () => {
-      const map: MapState = sinon.stub().returns({});
+  describe('providing a state snapshot to the provided mapStateToProps function', () => {
+    it('should provide the mapStateToProps function with a snapshot of the current droppable state', () => {
+      const mapStateToProps: MapStateToProps = sinon.stub().returns({});
       const expected: StateSnapshot = {
         isDraggingOver: true,
       };
 
       shallowDroppable({
-        map,
+        mapStateToProps,
         mapProps: isDraggingOverMapProps,
       });
 
-      expect(map.calledWith(expected)).to.equal(true);
+      expect(mapStateToProps.calledWith(expected)).to.equal(true);
     });
 
-    it('should provide the map function with the children\'s own props', () => {
-      const map: MapState = sinon.stub().returns(empty);
+    it('should provide the mapStateToProps function with the children\'s own props', () => {
+      const mapStateToProps: MapStateToProps = sinon.stub().returns(empty);
       const ownProps = {
         foo: 'bar',
         bar: {
@@ -104,14 +104,14 @@ describe.only('Droppable - unconnected', () => {
 
       shallowDroppable({
         ownProps,
-        map,
+        mapStateToProps,
       });
 
-      expect(map.args[0][1]).to.equal(ownProps);
+      expect(mapStateToProps.args[0][1]).to.equal(ownProps);
     });
 
-    it('should enhance the child\'s props with the result of the map function', () => {
-      const map: MapState = sinon.spy(
+    it('should enhance the child\'s props with the result of the mapStateToProps function', () => {
+      const mapStateToProps: MapStateToProps = sinon.spy(
         (snapshot: StateSnapshot, ownProps: Object) => ({
           isDraggingOver: snapshot.isDraggingOver,
           name: ownProps.name,
@@ -123,7 +123,7 @@ describe.only('Droppable - unconnected', () => {
       };
 
       const wrapper = shallowDroppable({
-        map,
+        mapStateToProps,
         Component: Child,
         mapProps: isDraggingOverMapProps,
         ownProps: myOwnProps,

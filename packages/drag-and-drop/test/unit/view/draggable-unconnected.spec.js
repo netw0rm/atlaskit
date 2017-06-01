@@ -12,7 +12,7 @@ import DragHandle from '../../../src/view/drag-handle/drag-handle';
 import Moveable from '../../../src/view/moveable';
 import { dragDropContext } from '../../../src/';
 import type { DraggingInitial, Position } from '../../../src/types';
-import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapState } from '../../../src/view/draggable/draggable-types';
+import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapStateToProps } from '../../../src/view/draggable/draggable-types';
 
 class Child extends PureComponent {
   render() {
@@ -123,7 +123,7 @@ const disableMapProps = (mapProps: MapProps): MapProps => ({
 
 type MountConnected = {
   type?: string,
-  map?: MapState,
+  mapStateToProps?: MapStateToProps,
   Component?: ReactClass<any>,
   mapProps?: MapProps,
   dispatchProps?: DispatchProps,
@@ -132,13 +132,13 @@ type MountConnected = {
 
 const shallowDraggable = ({
   type = 'TYPE',
-  map = () => empty,
+  mapStateToProps = () => empty,
   Component = Container,
   mapProps = notDraggingMapProps,
   dispatchProps = getDispatchPropsStub(),
   ownProps = empty,
 }: MountConnected = {}): ReactWrapper => {
-  const Draggable = makeDraggable(type, map)(Component);
+  const Draggable = makeDraggable(type, mapStateToProps)(Component);
   return shallow(
     <Draggable
       mapProps={mapProps}
@@ -149,7 +149,7 @@ const shallowDraggable = ({
 
 const mountDraggable = ({
   type = 'TYPE',
-  map = () => empty,
+  mapStateToProps = () => empty,
   Component = Container,
   mapProps = notDraggingMapProps,
   dispatchProps = getDispatchPropsStub(),
@@ -159,7 +159,7 @@ const mountDraggable = ({
 
   const ConnectedApp = dragDropContext()(App);
 
-  const Draggable = makeDraggable(type, map)(Component);
+  const Draggable = makeDraggable(type, mapStateToProps)(Component);
   return mount(
     <ConnectedApp>
       <Draggable
@@ -258,49 +258,49 @@ describe('Draggable', () => {
     expect(wrapper.find('Draggable').name()).to.equal('Draggable(Container)');
   });
 
-  describe('providing a state snapshot to the provided map function', () => {
-    it('should provide the map function with a snapshot of the current drag state', () => {
-      const map: MapState = sinon.stub().returns(empty);
+  describe('providing a state snapshot to the provided mapStateToProps function', () => {
+    it('should provide the mapStateToProps function with a snapshot of the current drag state', () => {
+      const mapStateToProps: MapStateToProps = sinon.stub().returns(empty);
       const expected: StateSnapshot = {
         isDragging: true,
       };
 
       shallowDraggable({
-        map,
+        mapStateToProps,
         mapProps: draggingMapProps,
       });
 
-      expect(map.args[0][0]).to.deep.equal(expected);
+      expect(mapStateToProps.args[0][0]).to.deep.equal(expected);
     });
 
-    it('should provide the map function with the children\'s own props', () => {
-      const map: MapState = sinon.stub().returns(empty);
+    it('should provide the mapStateToProps function with the children\'s own props', () => {
+      const mapStateToProps: MapStateToProps = sinon.stub().returns(empty);
       const ownProps = {
         foo: 'bar',
       };
 
       shallowDraggable({
         ownProps,
-        map,
+        mapStateToProps,
       });
 
-      expect(map.args[0][1]).to.have.property('foo', 'bar');
+      expect(mapStateToProps.args[0][1]).to.have.property('foo', 'bar');
     });
 
-    it('should provide the map function a getDragHandle function which returns a DragHandle', () => {
-      const map: MapState = sinon.spy(
+    it('should provide the mapStateToProps function a getDragHandle function which returns a DragHandle', () => {
+      const mapStateToProps: MapStateToProps = sinon.spy(
           (snapshot: StateSnapshot, ownProps: Object, requestDragHandle: Function) => ({
             dragHandle: requestDragHandle(),
           })
         );
 
       shallowDraggable({
-        map,
+        mapStateToProps,
         mapProps: draggingMapProps,
       });
 
         // grab the requestDragHandle function
-      const requestDragHandle = map.args[0][2];
+      const requestDragHandle = mapStateToProps.args[0][2];
 
         // mount the DragHandle independently
       const wrapper = mount(requestDragHandle()(<Child />));
@@ -309,8 +309,8 @@ describe('Draggable', () => {
       expect(wrapper.find(DragHandle).find(Child).length).to.equal(1);
     });
 
-    it('should enhance the childs props with the result of the map function', () => {
-      const map: MapState = sinon.spy(
+    it('should enhance the childs props with the result of the mapStateToProps function', () => {
+      const mapStateToProps: MapStateToProps = sinon.spy(
           (snapshot: StateSnapshot, ownProps: Object, requestDragHandle: Function) => ({
             isDragging: snapshot.isDragging,
             name: ownProps.name,
@@ -323,7 +323,7 @@ describe('Draggable', () => {
       };
 
       const wrapper = shallowDraggable({
-        map,
+        mapStateToProps,
         mapProps: draggingMapProps,
         ownProps: myOwnProps,
       });
@@ -345,24 +345,24 @@ describe('Draggable', () => {
       });
 
       it('should not wrap the draggable in a drag handle if the user requests to manage it', () => {
-        const map = (state, ownProps, requestDragHandle) => ({
+        const mapStateToProps = (state, ownProps, requestDragHandle) => ({
           dragHandle: requestDragHandle(),
         });
 
         const wrapper = shallowDraggable({
-          map,
+          mapStateToProps,
         });
 
         expect(wrapper.find(DragHandle).find(Container).length).to.equal(0);
       });
 
       it('should allow a draggable to handle its own drag handle', () => {
-        const map: MapState = (state: StateSnapshot, ownProps: OwnProps, requestDragHandle) => ({
+        const mapStateToProps: MapStateToProps = (state: StateSnapshot, ownProps: OwnProps, requestDragHandle) => ({
           dragHandle: requestDragHandle(),
         });
 
         const wrapper = shallowDraggable({
-          map,
+          mapStateToProps,
           Component: ContainerWithHandle,
         });
 

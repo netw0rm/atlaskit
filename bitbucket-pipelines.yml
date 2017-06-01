@@ -46,13 +46,12 @@ pipelines:
   default:
     - step:
         script:
-          - ls -la node_modules
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
-          - yarn --verbose
+          - yarn
           - (cd packages/website; yarn run build-data)
           # we have to run this after `yarn` to have access to child-process-promise
           - ./build/bin/generate.changed.packages.file.pr.sh

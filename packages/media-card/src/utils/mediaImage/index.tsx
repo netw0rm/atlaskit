@@ -19,8 +19,8 @@ export interface MediaImageProps {
 }
 
 export interface MediaImageState {
-  maxWidth: string;
-  maxHeight: string;
+  imgWidth: number;
+  imgHeight: number;
   parentWidth: number;
   parentHeight: number;
 }
@@ -38,8 +38,8 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     super(props);
 
     this.state = {
-      maxWidth: '100%',
-      maxHeight: '100%',
+      imgWidth: 0,
+      imgHeight: 0,
       parentWidth: Infinity,
       parentHeight: Infinity
     };
@@ -76,8 +76,8 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   onImageLoad(component) {
     return function () {
       component.setState({
-        maxWidth: `${this.width}px`,
-        maxHeight: `${this.height}px`
+        imgWidth: this.width,
+        imgHeight: this.height
       });
     };
   }
@@ -99,9 +99,9 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   private get isSmallerThanWrapper() {
-    const {maxWidth, parentWidth, maxHeight, parentHeight} = this.state;
+    const {imgWidth, parentWidth, imgHeight, parentHeight} = this.state;
 
-    return parseInt(maxWidth, 0) < parentWidth && parseInt(maxHeight, 0) < parentHeight;
+    return imgWidth < parentWidth && imgHeight < parentHeight;
   }
 
   // If users specifies a custom dimensions, we take that as a no-crop and prioritize it over the 'crop' property
@@ -111,8 +111,8 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
   private get backgroundSize() {
     const {width, height} = this.props;
-    const {maxWidth, maxHeight} = this.state;
+    const {imgWidth, imgHeight} = this.state;
 
-    return this.implicitNoCrop ? `${width} ${height}, auto` : (this.isSmallerThanWrapper ? `${maxWidth} ${maxHeight}, auto` : null);
+    return this.implicitNoCrop ? `${width} ${height}, auto` : (this.isSmallerThanWrapper ? `${imgWidth}px ${imgHeight}px, auto` : null);
   }
 }

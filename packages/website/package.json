@@ -10,7 +10,7 @@
     "start": "yarn run build-data && webpack-dev-server"
   },
   "dependencies": {
-    "@atlaskit/button": "^2.0.0",
+    "@atlaskit/button": "^3.0.0",
     "@atlaskit/button-group": "^1.0.11",
     "@atlaskit/css-reset": "^1.0.5",
     "@atlaskit/dropdown-menu": "^1.1.13",

@@ -308,10 +308,7 @@ export default class Editor extends PureComponent<Props, State> {
       mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
-      if (this.props.devTools) {
-        applyDevTools(editorView);
-      }
-
+      applyDevTools(editorView);
       editorView.focus();
 
       this.setState({ editorView });

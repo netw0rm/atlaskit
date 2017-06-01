@@ -23,6 +23,7 @@ import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
+import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
@@ -56,6 +57,7 @@ export class MediaPluginState {
   private useDefaultStateManager = true;
   private destroyed = false;
   private mediaProvider: MediaProvider;
+  private errorReporter: ErrorReporter;
 
   /*
     MediaPluginState.setMediaProvider(providerPromise) is async method which is setting pickers.
@@ -76,6 +78,8 @@ export class MediaPluginState {
 
     this.stateManager = new DefaultMediaStateManager();
     options.providerFactory.subscribe('mediaProvider', (name, provider: Promise<MediaProvider>) => this.setMediaProvider(provider));
+
+    this.errorReporter = options.errorReporter || new ErrorReporter();
   }
 
   subscribe(cb: PluginStateChangeSubscriber) {
@@ -114,7 +118,8 @@ export class MediaPluginState {
     try {
       resolvedMediaProvider = await mediaProvider;
     } catch (err) {
-      console.error('Editor Media Provider promise was rejected. Media functionality will be disabled.', err);
+      const wrappedError = new Error(`Media functionality disabled due to rejected provider: ${err.message}`);
+      this.errorReporter.captureException(wrappedError);
 
       this.allowsPastingLinks = false;
       this.allowsUploads = false;

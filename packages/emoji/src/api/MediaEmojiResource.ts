@@ -14,7 +14,7 @@ export const mediaMaxAge = '9223372036854776000'; // max according to API docs
 
 export type DataURL = string;
 
-interface EmojiUploadResponse {
+export interface EmojiUploadResponse {
   emojis: EmojiServiceDescription[];
 }
 
@@ -27,7 +27,7 @@ export interface EmojiProgessCallback {
 }
 
 // Assume media is 95% of total upload time.
-const mediaProportion = 100/95;
+export const mediaProportionOfProgress = 100/95;
 
 interface TokenDetail {
   mediaApiToken: MediaApiToken;
@@ -136,19 +136,23 @@ export default class MediaEmojiResource {
           },
         };
 
-        const mpBinary = MediaPicker('binary', mpConfig);
+        const mpBinary = this.createMediaPicker('binary', mpConfig);
         mpBinary.on('upload-end', (result: MediaUploadEnd) => {
           const totalUploadTime = Date.now() - startTime;
           const mediaUploadTime = totalUploadTime - tokenLoadTime;
           debug('total upload / media upload times', totalUploadTime, mediaUploadTime);
-          resolve(this.postToEmojiService(upload, result.public));
+          this.postToEmojiService(upload, result.public).then(emoji => {
+            resolve(emoji);
+          }).catch(httpError => {
+            reject(httpError.reason || httpError);
+          });
         }).on('upload-error', (errorResult: MediaUploadError) => {
           reject(errorResult.error);
         }).on('upload-status-update', (statusUpdate: MediaUploadStatusUpdate) => {
           debug('upload progress', statusUpdate.progress);
           if (progressCallback) {
             progressCallback({
-              percent: statusUpdate.progress.portion * mediaProportion,
+              percent: statusUpdate.progress.portion * mediaProportionOfProgress,
             });
           }
         }).upload(upload.dataURL, upload.filename);
@@ -161,6 +165,13 @@ export default class MediaEmojiResource {
     // as future request to uploadEmoji will use this, this to preload it, as it
     // usually takes 1-2 seconds to generate
     this.tokenManager.getToken('upload');
+  }
+
+  /**
+   * Intended to be overridden for unit testing.
+   */
+  protected createMediaPicker(type, mpConfig) {
+    return MediaPicker(type, mpConfig);
   }
 
   private postToEmojiService = (upload: EmojiUpload, mediaApiData: MediaApiData): Promise<EmojiDescription> => {

@@ -45,3 +45,4 @@ export {
   ErrorReportingHandler,
   toJSON,
 } from './utils';
+export { colorPalette } from './schema/marks/text-color';

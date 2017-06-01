@@ -1,3 +1,5 @@
+// @flow
+
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Blanket from '@atlaskit/blanket';
@@ -11,7 +13,7 @@ import DrawerMain from '../styled/DrawerMain';
 import DrawerContent from '../styled/DrawerContent';
 import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
 import { WithRootTheme } from '../../theme/util';
-import * as presets from '../../theme/presets';
+import { container } from '../../theme/presets';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
@@ -73,10 +75,10 @@ export default class Drawer extends PureComponent {
       </DrawerMain>
     ) : null;
 
+    // Note: even though we are using WithRootTheme here, the Drawer appearance is not able
+    // to be customised via a preset or custom theme.
     return (
-      <WithRootTheme
-        provided={presets.container}
-      >
+      <WithRootTheme provided={container}>
         <div>
           <Blanket
             isTinted={isOpen}

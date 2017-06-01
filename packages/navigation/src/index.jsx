@@ -1,5 +1,7 @@
 // @flow
 
+import * as presets from './theme/presets';
+
 export { default } from './components/js/Navigation';
 export { default as AkNavigationItemGroup } from './components/js/NavigationItemGroup';
 export { default as AkContainerLogo } from './components/js/ContainerLogo.jsx';
@@ -14,3 +16,5 @@ export { default as AkGlobalNavigation } from './components/js/GlobalNavigation'
 export { default as AkGlobalItem } from './components/js/GlobalItem';
 export { default as AkSearch } from './components/js/Search';
 export { createGlobalTheme } from './theme/create-provided-theme';
+
+export { presets as presetThemes };

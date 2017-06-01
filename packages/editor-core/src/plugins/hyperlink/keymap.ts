@@ -70,4 +70,3 @@ function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: T
 }
 
 export default keymapPlugin;
-

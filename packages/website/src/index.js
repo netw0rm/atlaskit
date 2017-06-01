@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './containers/App';
+import '@atlaskit/css-reset'; // eslint-disable-line
 
-require('@atlaskit/css-reset');
+import App from './containers/App';
 
 ReactDOM.render(
   <App />,

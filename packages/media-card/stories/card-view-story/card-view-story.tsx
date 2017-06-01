@@ -24,7 +24,7 @@ import {createMissingMetadataFileCards, createMissingMetadataLinkCards} from './
 import {createApiCards} from './chapters/api';
 import {createMenuActionCards} from './chapters/menu';
 import {createErrorAndLoadingCards} from './chapters/error-and-loading';
-import {createSelectableCards} from './chapters/selectable';
+import {createSelectableCards, createSelectableCardsWithMenu} from './chapters/selectable';
 import {actions} from './chapters/utils';
 
 
@@ -50,6 +50,9 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
   // selectable
   const fileSelectableCards = createSelectableCards(appearance, imageFileDetails, 'file');
+
+  // selectable with menu
+  const fileSelectableWithMenu = createSelectableCardsWithMenu(appearance, imageFileDetails, 'file');
 
   // api cards
   const apiCards = createApiCards(appearance, genericFileDetails);
@@ -86,13 +89,16 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
       {appearance === 'image' || appearance === 'auto' ? (
           <div>
-            <h4>Seletable</h4>
+            <h4>Selectable</h4>
             <StoryList>{fileSelectableCards}</StoryList>
           </div>
         ) : null}
 
       <h4>Missing metadata or data uri</h4>
       <StoryList>{fileMissingMetadataOrDataUriCards}</StoryList>
+
+      <h4>Selectable with menu</h4>
+      <StoryList>{fileSelectableWithMenu}</StoryList>
     </div>
   );
 };

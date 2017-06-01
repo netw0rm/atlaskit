@@ -671,7 +671,7 @@ describe('block-type', () => {
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
-                  expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', text: '@bar1' }))));
+                  expect(editorView.state.doc).to.deep.equal(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
                 });
               });
 

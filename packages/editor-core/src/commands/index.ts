@@ -343,7 +343,7 @@ export function createNewParagraphAbove(view: EditorView): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = false;
 
-    if (!canMoveUp(state)) {
+    if (!canMoveUp(state) && canCreateParagraphNear(state)) {
       createParagraphNear(view, append);
       return true;
     }
@@ -356,7 +356,7 @@ export function createNewParagraphBelow(view: EditorView): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = true;
 
-    if (!canMoveDown(state)) {
+    if (!canMoveDown(state) && canCreateParagraphNear(state)) {
       createParagraphNear(view, append);
       return true;
     }
@@ -385,6 +385,14 @@ function canMoveDown(state: EditorState<any>): boolean {
   }
 
   return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
+}
+
+function canCreateParagraphNear(state: EditorState<any>): boolean {
+  const { selection: { $from } } = state;
+  const node = $from.node($from.depth);
+  const insideCodeBlock = !!node && node.type === state.schema.nodes.codeBlock;
+  const isNodeSelection = state.selection instanceof NodeSelection;
+  return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
 function createParagraphNear(view: EditorView, append: boolean = true): void {

@@ -145,14 +145,13 @@
   },
   "scripts": {
     "branch": "git branch | grep \\* | cut -d ' ' -f2",
-    "branch-source": "git show-branch | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//'",
     "bootstrap": "lerna exec -- git clean -Xdf . && lerna bootstrap",
     "clean": "lerna exec -- git clean -Xdf . && rm -rf node_modules",
     "commit": "./build/bin/commit.sh",
     "create": "./build/bin/create.new.component.sh",
     "create-ts": "./build/bin/create.new.ts.component.sh",
     "health-check": "./build/bin/health-check-scripts/health.check.js",
-    "lint": "lerna exec --stream --since $(npm run branch-source -s) -- npm run lint",
+    "lint": "lerna exec --stream --since -- npm run lint",
     "postinstall": "./build/bin/postinstall.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "release": "./build/bin/release.process.bash",
@@ -161,9 +160,9 @@
     "release/check/can-ff": "git pull --ff-only --no-edit origin || (chalk --no-stdin -t \"{blue We are not the leading build - nothing to do here!}\"; exit 1)",
     "release/registry": "./build/bin/release.registry.sh || (chalk --no-stdin -t \"{red Registry generation failed!}\"; exit 1)",
     "release/storybooks": "./build/bin/release.storybooks.sh || (chalk --no-stdin -t \"{red Storybook generation failed!}\"; exit 1)",
-    "test": "lerna exec --stream --since $(npm run branch-source -s) -- npm run test",
+    "test": "lerna exec --stream --since -- npm run test",
     "validate/lint-changed": "lerna exec --since $(npm run branch -s) -- npm run lint",
-    "validate/lint-changed/fix": "lerna exec --since $(npm run branch -s) -- validated/lint-changed -- --fix"
+    "validate/lint-changed/fix": "lerna exec --since $(npm run branch -s) -- validate/lint-changed -- --fix"
   },
   "devDependencies": {}
 }

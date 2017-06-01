@@ -19,10 +19,10 @@ const ExampleContainerNavigation = ({ theme, themeName, isCollapsed = false }) =
     theme={theme}
     showGlobalPrimaryActions={isCollapsed}
     isCollapsed={isCollapsed}
-    globalCreateIcon={<AddIcon size="small" label="Create icon" />}
-    globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+    globalCreateIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
+    globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" secondaryColor="inherit" />}
     globalPrimaryItemHref="//www.atlassian.com"
-    globalSearchIcon={<SearchIcon label="Search icon" />}
+    globalSearchIcon={<SearchIcon label="Search icon" secondaryColor="inherit" />}
     headerComponent={() => (
       <AkContainerTitle
         href="#foo"
@@ -90,10 +90,10 @@ const ExampleContainerNavigation = ({ theme, themeName, isCollapsed = false }) =
 const ExampleGlobalNavigation = ({ theme }) => (
   <AkGlobalNavigation
     theme={theme}
-    primaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+    primaryIcon={<AtlassianIcon label="Atlassian icon" secondaryColor="inherit" />}
     primaryItemHref="//www.atlassian.com"
-    createIcon={<AddIcon size="small" label="Create icon" />}
-    searchIcon={<SearchIcon label="Search icon" />}
+    createIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
+    searchIcon={<SearchIcon label="Search icon" secondaryColor="inherit" />}
     secondaryActions={[
       <AkDropdownMenu
         appearance="tall"
@@ -130,7 +130,7 @@ const ExampleGlobalNavigation = ({ theme }) => (
         position="right bottom"
       >
         <AkGlobalItem>
-          <QuestionCircleIcon label="Help icon" />
+          <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
         </AkGlobalItem>
       </AkDropdownMenu>,
       <AkDropdownMenu

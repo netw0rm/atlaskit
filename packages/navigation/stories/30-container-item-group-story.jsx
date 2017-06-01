@@ -20,7 +20,7 @@ storiesOf(name, module)
           action={
             <AkButton
               appearance="subtle"
-              iconBefore={<EmojiCustomIcon label="add" size="small" />}
+              iconBefore={<EmojiCustomIcon label="add" />}
               spacing="none"
             />
           }

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon, ArrowleftIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowrightIcon, QuestionCircleIcon } from '@atlaskit/icon';
+import { AtlassianIcon, ArrowLeftIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowRightIcon, QuestionCircleIcon } from '@atlaskit/icon';
 import { AkCustomDrawer, AkSearchDrawer, AkCreateDrawer, AkNavigationItemGroup, AkNavigationItem, AkGlobalItem } from '../../src/index';
 import BasicNavigation from './BasicNavigation';
 
@@ -16,7 +16,7 @@ export default class CustomDrawerNavigation extends PureComponent {
   }
 
   getBackIcon = () => (
-    <ArrowleftIcon label="Back icon" size="medium" />
+    <ArrowLeftIcon label="Back icon" size="medium" />
   );
 
   getPrimaryIcon = () => (
@@ -112,13 +112,13 @@ export default class CustomDrawerNavigation extends PureComponent {
   render() {
     const queuesItemOpen = (<AkNavigationItem icon={<DashboardIcon label="Queues" />} text="Queues" />);
     const queuesItemCollapsed = (<AkNavigationItem
-      icon={<ArrowrightIcon label="Queues" />}
+      icon={<ArrowRightIcon label="Queues" />}
       onClick={() => { this.setDrawer('queues'); }}
       text="Queues"
     />);
     const reportsItemOpen = (<AkNavigationItem icon={<SettingsIcon label="Reports" />} text="Reports" />);
     const reportsItemCollapsed = (<AkNavigationItem
-      icon={<ArrowrightIcon label="Reports" />}
+      icon={<ArrowRightIcon label="Reports" />}
       onClick={() => { this.setDrawer('reports'); }}
       text="Reports"
     />);

@@ -66,6 +66,7 @@ const reactionsStyle = style({
   display: 'flex',
   position: 'relative',
   background: 'white',
+  alignItems: 'center',
   borderRadius: '15px',
   $nest: {
     '&> div': {

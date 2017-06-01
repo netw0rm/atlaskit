@@ -1,12 +1,12 @@
-import { customCategory, customType } from '../src/constants';
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import { expect } from 'chai';
 
-import { EmojiDescription } from '../src/types';
-import { containsEmojiId, toEmojiId } from '../src/type-helpers';
-import EmojiRepository from '../src/api/EmojiRepository';
+import { customCategory, customType } from '../../src/constants';
+import { EmojiDescription } from '../../src/types';
+import { containsEmojiId, toEmojiId } from '../../src/type-helpers';
+import EmojiRepository from '../../src/api/EmojiRepository';
 
-import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji } from './TestData';
+import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji } from '../TestData';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);

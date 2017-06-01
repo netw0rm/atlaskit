@@ -6,18 +6,18 @@ import * as sinon from 'sinon';
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { customCategory } from '../src/constants';
-import { EmojiDescription, ImageRepresentation } from '../src/types';
-import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
-import { OnProviderChange } from '../src/api/SharedResources';
-import MediaEmojiResource from '../src/api/MediaEmojiResource';
+import { customCategory } from '../../src/constants';
+import { EmojiDescription, ImageRepresentation } from '../../src/types';
+import { SecurityOptions, ServiceConfig } from '../../src/api/SharedResourceUtils';
+import { OnProviderChange } from '../../src/api/SharedResources';
+import MediaEmojiResource from '../../src/api/MediaEmojiResource';
 import EmojiResource, {
     EmojiProvider,
     EmojiResourceConfig,
     supportsUploadFeature,
     UploadingEmojiProvider,
-} from '../src/api/EmojiResource';
-import { EmojiSearchResult } from '../src/api/EmojiRepository';
+} from '../../src/api/EmojiResource';
+import { EmojiSearchResult } from '../../src/api/EmojiRepository';
 
 import {
   atlassianEmojis,
@@ -31,7 +31,7 @@ import {
   standardEmojis,
   standardServiceEmojis,
   thumbsupEmoji
-} from './TestData';
+} from '../TestData';
 
 const baseUrl = 'https://bogus/';
 const p1Url = 'https://p1/';

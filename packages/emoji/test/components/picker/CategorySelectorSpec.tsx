@@ -2,8 +2,8 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
-import * as styles from '../src/components/picker/styles';
-import CategorySelector, { Props } from '../src/components/picker/CategorySelector';
+import * as styles from '../../../src/components/picker/styles';
+import CategorySelector, { Props } from '../../../src/components/picker/CategorySelector';
 
 const toAvailableCategories = categories => (
   categories.reduce((availableCategories, category) => {

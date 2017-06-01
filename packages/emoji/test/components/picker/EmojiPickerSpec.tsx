@@ -3,19 +3,19 @@ import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, getEmojiResourcePromise, mediaEmoji } from './TestData';
+import { emojiRepository, getEmojiResourcePromise, mediaEmoji } from '../../TestData';
 
-import { customCategory } from '../src/constants';
-import CategorySelector from '../src/components/picker/CategorySelector';
-import Emoji from '../src/components/common/Emoji';
-import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
-import EmojiPreview from '../src/components/common/EmojiPreview';
-import EmojiPicker, { Props } from '../src/components/picker/EmojiPicker';
-import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
-import EmojiPickerList from '../src/components/picker/EmojiPickerList';
-import EmojiPickerListSection from '../src/components/picker/EmojiPickerListSection';
-import { EmojiProvider } from '../src/api/EmojiResource';
-import { OptionalEmojiDescription } from '../src/types';
+import { customCategory } from '../../../src/constants';
+import CategorySelector from '../../../src/components/picker/CategorySelector';
+import Emoji from '../../../src/components/common/Emoji';
+import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
+import EmojiPreview from '../../../src/components/common/EmojiPreview';
+import EmojiPicker, { Props } from '../../../src/components/picker/EmojiPicker';
+import EmojiPickerFooter from '../../../src/components/picker/EmojiPickerFooter';
+import EmojiPickerList from '../../../src/components/picker/EmojiPickerList';
+import EmojiPickerListSection from '../../../src/components/picker/EmojiPickerListSection';
+import { EmojiProvider } from '../../../src/api/EmojiResource';
+import { OptionalEmojiDescription } from '../../../src/types';
 
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   return mount(

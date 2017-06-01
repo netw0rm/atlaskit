@@ -6,9 +6,9 @@ import * as sinon from 'sinon';
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import MediaEmojiResource, { EmojiProgress, EmojiProgessCallback, EmojiUploadResponse, mediaProportionOfProgress, TokenManager } from '../src/api/MediaEmojiResource';
-import { EmojiDescription, EmojiUpload, ImageRepresentation, MediaApiToken, MediaApiRepresentation } from '../src/types';
-import { MediaUploadStatusUpdate, MediaUploadEnd, MediaUploadError } from '../src/media-types';
+import MediaEmojiResource, { EmojiProgress, EmojiProgessCallback, EmojiUploadResponse, mediaProportionOfProgress, TokenManager } from '../../src/api/MediaEmojiResource';
+import { EmojiDescription, EmojiUpload, ImageRepresentation, MediaApiToken, MediaApiRepresentation } from '../../src/types';
+import { MediaUploadStatusUpdate, MediaUploadEnd, MediaUploadError } from '../../src/media-types';
 
 import {
     blobResponse,
@@ -18,7 +18,7 @@ import {
     mediaEmoji,
     siteServiceConfig,
     siteUrl
-} from './TestData';
+} from '../TestData';
 
 const createMediaEmojiResource = (mediaApiToken?: MediaApiToken) => {
   mediaApiToken = mediaApiToken || defaultMediaApiToken();

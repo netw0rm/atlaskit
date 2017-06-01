@@ -152,7 +152,7 @@
     "create-ts": "./build/bin/create.new.ts.component.sh",
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",
     "health-check": "./build/bin/health-check-scripts/health.check.js",
-    "lint": "lerna exec --stream --since -- npm run lint",
+    "lint": "lerna exec --stream --scope '@atlaskit/!(eslint|css-reset|util)*' --since -- npm run lint",
     "postinstall": "./build/bin/postinstall.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "release": "./build/bin/release.process.bash",

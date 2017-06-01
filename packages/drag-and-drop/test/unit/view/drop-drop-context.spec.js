@@ -8,6 +8,8 @@ import { dragDropContext } from '../../../src/';
 import storeKey from '../../../src/state/get-store-key';
 
 class App extends PureComponent {
+  // Part of react's api is to use flow types for this.
+  // Sadly cannot use flow
   static contextTypes = {
     [storeKey]: PropTypes.shape({
       dispatch: PropTypes.func.isRequired,
@@ -37,7 +39,7 @@ describe('DragDropContext', () => {
     expect(app.context[storeKey]).to.have.property('subscribe').that.is.a('function');
   });
 
-  it('should pass through props to the unconnect component', () => {
+  it('should pass through props to the unconnected component', () => {
     const Connected = dragDropContext()(App);
     const wrapper = mount(<Connected superhero="batman" />);
 
@@ -46,7 +48,6 @@ describe('DragDropContext', () => {
 
   describe('hooks', () => {
     it('should call the onDragStart hook when a drag starts', () => {
-
     });
 
     it('should call the onDragEnd hook when a drag ends', () => {

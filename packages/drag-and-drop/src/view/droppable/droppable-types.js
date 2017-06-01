@@ -18,9 +18,9 @@ export type Props = {|
   mapProps: MapProps,
 |}
 
-export type DroppableState = {|
+export type StateSnapshot = {|
   isDraggingOver: boolean
 |}
 
 export type Provide = (ownProps: OwnProps) => NeedsProviding;
-export type MapState = (state: DroppableState, ownProps: OwnProps) => Object;
+export type MapState = (state: StateSnapshot, ownProps: OwnProps) => Object;

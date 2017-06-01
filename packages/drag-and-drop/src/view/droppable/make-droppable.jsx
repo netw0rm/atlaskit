@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import type { MapState, Props, DroppableState } from './droppable-types';
+import type { MapState, Props, StateSnapshot } from './droppable-types';
 import type { TypeId } from '../../types';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
@@ -40,7 +40,7 @@ export default (type: TypeId, map: MapState): Function =>
       render() {
         const { mapProps, ownProps } = this.props;
 
-        const snapshot: DroppableState = {
+        const snapshot: StateSnapshot = {
           isDraggingOver: mapProps.isDraggingOver,
         };
 

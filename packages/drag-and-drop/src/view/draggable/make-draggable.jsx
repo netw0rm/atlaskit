@@ -316,6 +316,7 @@ export default (type: TypeId, map: MapState): Function =>
                 )}
               </DraggableDimensionPublisher>
             </Moveable>
+            {/* ideally this will use the new portal solution */}
             {info.showPlaceholder ? this.getPlaceholder() : null}
           </div>
         );

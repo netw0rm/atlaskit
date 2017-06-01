@@ -1,7 +1,7 @@
 import { Mark, MarkSpec } from '../../prosemirror';
 import {
   akColorN80, akColorB500, akColorB200, akColorG500, akColorG200,
-  akColorY500, akColorY200, akColorR500, akColorR200, akColorP500, akColorP200,
+  akColorY500, akColorY100, akColorR500, akColorR100, akColorP500, akColorP200,
 } from '@atlaskit/util-shared-styles';
 
 export interface TextColorMark extends Mark {
@@ -19,19 +19,20 @@ const rgbToHex = (value: string): string | undefined => {
   }
 };
 
+// @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/55979455/Colour+picker+decisions#Colourpickerdecisions-Visualdesigndecisions
 export const colorPalette = new Map<string, string>();
 [
-  // First item of the colour palette is remove colour
-  [akColorB500, 'Blue'],
-  [akColorG500, 'Green'],
-  [akColorY500, 'Orange'],
-  [akColorR500, 'Red'],
-  [akColorP500, 'Purple'],
+  // [akColorN80, default],
   [akColorN80, 'Light grey'],
+  [akColorB500, 'Blue'],
   [akColorB200, 'Light blue'],
+  [akColorG500, 'Green'],
   [akColorG200, 'Light green'],
-  [akColorY200, 'Yellow'],
-  [akColorR200, 'Pink'],
+  [akColorY500, 'Orange'],
+  [akColorY100, 'Yellow'],
+  [akColorR500, 'Red'],
+  [akColorR100, 'Pink'],
+  [akColorP500, 'Purple'],
   [akColorP200, 'Light purple'],
 ].forEach(([color, label]) => colorPalette.set(color.toLowerCase(), label));
 

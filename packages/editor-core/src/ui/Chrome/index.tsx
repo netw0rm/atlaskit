@@ -20,6 +20,7 @@ import ChromeExpanded from '../ChromeExpanded';
 
 export interface Props {
   editorView: EditorView;
+  disabled?: boolean;
   isExpanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;
@@ -55,6 +56,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         onCancel={props.onCancel}
         onSave={props.onSave}
         saveDisabled={props.saveDisabled}
+        disabled={props.disabled}
         feedbackFormUrl={props.feedbackFormUrl}
         pluginStateBlockType={props.pluginStateBlockType}
         pluginStateCodeBlock={props.pluginStateCodeBlock}

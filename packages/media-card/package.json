@@ -65,6 +65,8 @@
     "@atlaskit/droplist": "^3.6.0",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-test-helpers": "^6.0.0",
+    "@atlaskit/field-radio-group": "^1.2.1",
+    "@atlaskit/media-avatar-picker": "^2.0.2",
     "akutil-common-test": "*",
     "deepcopy": "0.6.3"
   },

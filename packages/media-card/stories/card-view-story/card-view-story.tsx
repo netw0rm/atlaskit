@@ -26,7 +26,7 @@ import {createMenuActionCards} from './chapters/menu';
 import {createErrorAndLoadingCards} from './chapters/error-and-loading';
 import {createSelectableCards, createSelectableCardsWithMenu} from './chapters/selectable';
 import {actions} from './chapters/utils';
-
+import {generateStoriesForEditableCards} from './editableCard';
 
 const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
   const fileCards = createFileCardsWithDifferentDataURIs(appearance);
@@ -63,7 +63,7 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
       <h3>Files</h3>
       <StoryList>{fileCards}</StoryList>
 
-      <h3>Sizes</h3>
+      <h3>Sizes (Breakpoints check)</h3>
       <StoryList>{createCardsOfDifferentSize(appearance, genericFileDetails, gifDataUri)}</StoryList>
 
       <h4>Media Types - no placeholders</h4>
@@ -170,4 +170,5 @@ storiesOf('CardView', {})
   .add('Small cards', generateStoriesForAppearance('small'))
   .add('Image cards', generateStoriesForAppearance('image'))
   .add('Horizontal cards', generateStoriesForAppearance('horizontal'))
-  .add('Square cards', generateStoriesForAppearance('square'));
+  .add('Square cards', generateStoriesForAppearance('square'))
+  .add('Make it your way 🍽', generateStoriesForEditableCards);

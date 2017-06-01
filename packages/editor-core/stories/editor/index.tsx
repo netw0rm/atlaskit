@@ -248,7 +248,6 @@ export default class Editor extends PureComponent<Props, State> {
           keymap(baseKeymap) // should be last :(
         ]
       }).then(editorState => {
-
         const editorView = new EditorView(place, {
           state: editorState,
           dispatchTransaction: (tr) => {

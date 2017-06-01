@@ -150,6 +150,7 @@
     "commit": "./build/bin/commit.sh",
     "create": "./build/bin/create.new.component.sh",
     "create-ts": "./build/bin/create.new.ts.component.sh",
+    "docs": "lerna exec -- ../../build/bin/generate.readme.sh",
     "health-check": "./build/bin/health-check-scripts/health.check.js",
     "lint": "lerna exec --stream --since -- npm run lint",
     "postinstall": "./build/bin/postinstall.sh",

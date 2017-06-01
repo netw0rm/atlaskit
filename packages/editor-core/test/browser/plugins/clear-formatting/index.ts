@@ -5,7 +5,7 @@ import { browser } from '../../../../src/prosemirror';
 import clearFormattingPlugins from '../../../../src/plugins/clear-formatting';
 import {
   a as link, blockquote, chaiPlugin, code_block, code, doc, em, fixtures, h1,
-  li, linkable, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline
+  li, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -32,26 +32,26 @@ describe('clear-formatting', () => {
 
     it('should be false if no marks are present', () => {
       const { pluginState } = editor(doc(p('text')));
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should be false if all present marks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p(strong('{<}text{>}'))));
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should be false if all present blocks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should be false if all present marks and blocks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p('parag{<raph'), code_block({ language: 'java' })('code>}Block')));
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
   });
 
@@ -68,7 +68,7 @@ describe('clear-formatting', () => {
         expect(pluginState.formattingIsPresent).to.equal(true);
 
         pluginState.clearFormatting(editorView);
-        expect(pluginState.formattingIsPresent).not.to.equal(true);
+        expect(pluginState.formattingIsPresent).to.equal(false);
       });
     });
 
@@ -77,7 +77,7 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should remove panel block if present', () => {
@@ -85,7 +85,7 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should remove panel block even if selection is at the end of the block', () => {
@@ -93,7 +93,7 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should remove block-quote if present', () => {
@@ -101,15 +101,15 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should remove link if present', () => {
-      const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{<ex>}t'))));
+      const { editorView, pluginState } = editor(doc(p(link({ href: 'http://www.atlassian.com' })('t{<}ex{>}t'))));
       expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should remove ordered list item if present', () => {
@@ -117,7 +117,7 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should remove nested ordered list item if present', () => {
@@ -125,7 +125,7 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should remove nested ordered list item even if sleection is on partial list', () => {
@@ -133,7 +133,7 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
   });
 
@@ -148,7 +148,7 @@ describe('clear-formatting', () => {
         sendKeyToPm(editorView, 'Ctrl-\\');
       }
 
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
   });
 });

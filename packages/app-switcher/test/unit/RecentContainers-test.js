@@ -1,5 +1,5 @@
-import getRecentContainers from '../src/items/recent-containers';
-import { name } from '../package.json';
+import getRecentContainers from '../../src/items/recent-containers';
+import { name } from '../../package.json';
 
 const container = {
   name: 'Recent container',

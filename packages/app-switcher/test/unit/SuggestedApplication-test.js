@@ -1,5 +1,5 @@
-import getSuggestedApplication from '../src/items/suggested-application';
-import { name } from '../package.json';
+import getSuggestedApplication from '../../src/items/suggested-application';
+import { name } from '../../package.json';
 
 const exampleApp = {
   show: true,

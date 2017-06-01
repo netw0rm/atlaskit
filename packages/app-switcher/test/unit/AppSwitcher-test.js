@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
-import AppSwitcher from '../src';
-import { name } from '../package.json';
+import AppSwitcher from '../../src';
+import { name } from '../../package.json';
 
 const data = {
   recentContainers: [

@@ -11,7 +11,6 @@ export const TickBox = styled.div`
   top: 8px;
   right: 8px;
   border-radius: 20px;
-  z-index: 20;
   color: #798599; // TODO FIL-3884: Align color with new design
   display: flex;
   opacity: 0;

@@ -57,6 +57,7 @@ export { version };
 
 export interface Props {
   context?: ContextName;
+  disabled?: boolean;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   expanded?: boolean;
@@ -186,6 +187,18 @@ export default class Editor extends PureComponent<Props, State> {
         onExpanded(this);
       }
     }
+
+    if (nextProps.disabled !== this.props.disabled) {
+      const { editorView } = this.state;
+
+      if (editorView) {
+        editorView.dom.contentEditable = String(!nextProps.disabled);
+
+        if (!nextProps.disabled) {
+          editorView.focus();
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -200,6 +213,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
+    const { disabled = false } = this.props;
     const { editorView, isExpanded, isMediaReady } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
@@ -218,6 +232,7 @@ export default class Editor extends PureComponent<Props, State> {
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
+        disabled={disabled}
         editorView={editorView!}
         isExpanded={isExpanded}
         feedbackFormUrl="yes"
@@ -293,6 +308,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       const editorView = new EditorView(place, {
         state: editorState,
+        editable: (state: EditorState<any>) => !this.props.disabled,
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);

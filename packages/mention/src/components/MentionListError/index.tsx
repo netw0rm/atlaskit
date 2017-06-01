@@ -1,11 +1,10 @@
 import * as React from 'react';
-import * as styles from './styles';
-
+import { MentionListErrorStyle } from './styles';
 import { whoopsUri } from './icons';
 
 export default () => (
-  <div className={styles.mentionListError}>
+  <MentionListErrorStyle>
     <p><img src={whoopsUri} alt="whoops" /></p>
     <p>Something went wrong</p>
-  </div>
+  </MentionListErrorStyle>
 );

@@ -1,8 +1,10 @@
 [ignore]
 
+<PROJECT_ROOT>/node_modules/.*
 .*/node_modules/styled-components/.*
 .*/node_modules/polished/.*
 .*/node_modules/fbjs/.*
+.*/node_modules/memoize-one/test/.*
 
 [include]
 

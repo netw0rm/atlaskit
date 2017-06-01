@@ -4,7 +4,7 @@ import Icon from '@atlaskit/icon/glyph/question';
 
 export default (
   <Button
-    iconAfter={<Icon />}
+    iconAfter={<Icon label="question icon" />}
   >
     Info
   </Button>

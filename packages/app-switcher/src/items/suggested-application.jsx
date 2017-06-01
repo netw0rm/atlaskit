@@ -1,13 +1,20 @@
+// @flow
 import React from 'react';
 import { ConfluenceLogo, JiraLogo } from '@atlaskit/logo';
 import { LogoContainer, SuggestedApplicationTagline, Link, Item } from '../styled';
+import type { Translations, SuggestedApplication, DropdownConfig } from '../internal/types';
 
 const logos = {
   jira: <JiraLogo />,
   confluence: <ConfluenceLogo />,
 };
 
-export default function (i18n, isAnonymousUser, suggestedApplication, hiddenByUser) {
+export default function (
+  i18n: Translations,
+  isAnonymousUser: boolean,
+  suggestedApplication: SuggestedApplication,
+  hiddenByUser: boolean
+): DropdownConfig | null {
   const { application, show, url } = suggestedApplication;
 
   if (isAnonymousUser || !show || hiddenByUser) {

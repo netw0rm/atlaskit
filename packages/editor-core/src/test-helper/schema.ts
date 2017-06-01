@@ -24,8 +24,6 @@ export default createSchema({
     'image',
     'media',
     'mediaGroup',
-    'linkable',
-    'unlinkable',
     'plain'
   ],
   marks: [
@@ -41,8 +39,6 @@ export default createSchema({
     'textColor',
   ],
   customNodeSpecs: {
-    linkable: { ...paragraph, content: 'text<link>*' },
-    unlinkable: { ...paragraph, content: 'text*' },
     plain: { ...paragraph, content: 'text*' }
   }
 });

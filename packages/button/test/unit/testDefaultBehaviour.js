@@ -3,7 +3,6 @@ import React from 'react';
 import sinon from 'sinon';
 
 import Button from '../../src/index';
-import Span from '../../src/Span';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
@@ -30,14 +29,14 @@ describe('ak-button/default-behaviour', () => {
 
   it('should render span when the button is disabled and has href property', () => {
     const wrapper = mount(<Button isDisabled href="test" />);
-    expect(wrapper.find(Span).length).to.equal(1);
+    expect(wrapper.find('StyledSpan').length).to.equal(1);
     expect(wrapper.find('button').length).to.equal(0);
     expect(wrapper.find('a').length).to.equal(0);
   });
 
   it('should not render span when the button is disabled, but doesn\'t have href', () => {
     const wrapper = mount(<Button isDisabled />);
-    expect(wrapper.find(Span).length).to.equal(0);
+    expect(wrapper.find('StyledSpan').length).to.equal(0);
     expect(wrapper.find('button').length).to.equal(1);
     expect(wrapper.find('a').length).to.equal(0);
   });

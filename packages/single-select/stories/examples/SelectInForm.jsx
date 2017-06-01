@@ -75,9 +75,10 @@ export default (
     />
     <Select
       id="invalid_id"
-      items={colors}
+      invalidMessage="This is a error message"
       isInvalid
-      label="With Invalid Icon"
+      items={colors}
+      label="Invalid field"
       name="invalid"
       placeholder="Select color"
       shouldFitContainer

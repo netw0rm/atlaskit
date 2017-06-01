@@ -237,7 +237,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
 
     return (
-      <MentionPickerStyle visible={visible || info}>
+      /* old classnames are essential for Confluence tests */
+      <MentionPickerStyle className="ak-mention-picker" visible={visible || info}>
         {content}
       </MentionPickerStyle>
     );

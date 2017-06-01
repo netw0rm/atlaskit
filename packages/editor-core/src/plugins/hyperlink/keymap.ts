@@ -61,10 +61,10 @@ function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: T
     const url = normalizeUrl(hyperlinkedText);
     const markType = state.schema.mark('link', { href: url, });
 
-    dispatch(state.tr.replaceWith(
+    dispatch(state.tr.addMark(
       start,
       end,
-      state.schema.text(hyperlinkedText, [markType])
+      markType
     ));
   }
 }

@@ -19,11 +19,11 @@ export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) =
 
     analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');
 
-    return state.tr.replaceWith(
+    return state.tr.addMark(
       start,
       end,
-      schema.text(match[0], [markType])
-    ).removeMark(end, end + 1);
+      markType
+    ).insertText(' ');
   });
 }
 

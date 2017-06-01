@@ -2,7 +2,8 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import HyperlinkPlugin from '../../../../src/plugins/hyperlink';
 import {
-  insertText, chaiPlugin, fixtures, makeEditor, doc, br, p, a as link, code_block
+  insertText, chaiPlugin, fixtures, makeEditor, doc, br, p, a as link,
+  strong, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -141,14 +142,12 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://foo.com' })(`${linkedText}`), '. ')));
     });
 
-    // it('does not remove existsing other mark', () => {
-    //   const { editorView, sel } = editor(doc(p(strong('www.{<>}'))));
-    //   insertText(editorView, 'google.com ', sel, sel);
+    it('does not remove existsing other mark', () => {
+      const { editorView, sel } = editor(doc(p(strong('www.{<>}'))));
+      insertText(editorView, 'google.com ', sel, sel);
 
-    //   debugger;
-
-    //   expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://www.google.com' })(strong('www.google.com')), strong(' '))));
-    // });
+      expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://www.google.com' })(strong('www.google.com')), strong(' '))));
+    });
 
     it('converts to hyperlink if possible hyperink text is after a new line and previous line has an hyperlink', () => {
       const firstLink = link({ href: 'http://www.google.com' })('www.google.com');

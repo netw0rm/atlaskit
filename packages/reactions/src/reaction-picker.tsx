@@ -36,10 +36,11 @@ export interface State {
 
 const pickerStyle = style({
   verticalAlign: 'middle',
+  width: '24px',
   $nest: {
     '&.miniMode': {
       display: 'inline-block',
-      margin: '0 4px',
+      marginRight: '4px',
     }
   }
 });

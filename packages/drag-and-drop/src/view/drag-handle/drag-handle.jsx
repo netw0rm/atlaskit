@@ -53,7 +53,6 @@ export default class Handle extends PureComponent {
     draggingWith: ?DragTypes,
   |}
 
-  // $FlowFixMe - typing draggingWith to always be null
   state = {
     draggingWith: null,
   };

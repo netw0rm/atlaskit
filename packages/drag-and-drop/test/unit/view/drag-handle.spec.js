@@ -9,6 +9,7 @@ import sinon from 'sinon';
 import DragHandle, { getCursor } from '../../../src/view/drag-handle/drag-handle';
 import type { Callbacks } from '../../../src/view/drag-handle';
 import createDragHandle from '../../../src/view/drag-handle/';
+import { dispatchWindowMouseEvent, liftWithMouse } from './util';
 
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
@@ -24,31 +25,6 @@ const getStubCallbacks = (): Callbacks => ({
   onDrop: sinon.stub(),
   onCancel: sinon.stub(),
 });
-
-const liftWithMouse = (wrapper: ReactWrapper<any>,
-  clientX?: number = 0,
-  clientY?: number = 0,
-  button?: number = primaryButton,
-  options?: Object = {},
-): void =>
-  wrapper.simulate('mousedown', { button, clientX, clientY, ...options });
-
-const dispatchWindowMouseEvent = (
-  eventName: string,
-  clientX?: number = 0,
-  clientY?: number = 0,
-  button?: number = primaryButton,
-) => {
-  const event = new window.MouseEvent(eventName, {
-    bubbles: true,
-    cancelable: true,
-    view: window,
-    clientX,
-    clientY,
-    button,
-  });
-  window.dispatchEvent(event);
-};
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const windowMouseDown = dispatchWindowMouseEvent.bind(null, 'mousedown');

@@ -1,4 +1,4 @@
-export default (Component: React$Component) =>
+export default (Component: ReactComponent) =>
     Component.displayName ||
     Component.name ||
     'Component';

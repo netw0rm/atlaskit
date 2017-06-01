@@ -5,6 +5,7 @@ import type { Dimension, Position } from '../../types';
 import type { Props } from './dimension-publisher-types';
 
 const getBounds = (ref: Element) => {
+  console.log('about to get bounds');
   const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();
   const style = window.getComputedStyle(ref);
 

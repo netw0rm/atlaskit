@@ -3,7 +3,7 @@
 ## `dragDropContext`
 
 ```js
-const Connected = dragDropContext(hooks)(Component)
+const Wrapped = dragDropContext(hooks)(Component)
 
 export type Hooks = {|
   onDragStart?: (id: DraggableId, location: DraggableLocation) => void,
@@ -14,13 +14,13 @@ export type Hooks = {|
 ## `droppable`
 
 ```js
-const Droppable = droppable(type, axis, provide, mapStateToProps)(Component);
+const Droppable = droppable(type, axis, provide, mapStateToProps)(List);
 ```
 
 ## `draggable`
 
 ```js
-const Draggable = draggable(type, provide, mapStateToProps)(Component);
+const Draggable = draggable(type, provide, mapStateToProps)(Item);
 ```
 
 using `flow`

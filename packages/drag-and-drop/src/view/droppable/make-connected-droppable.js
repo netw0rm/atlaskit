@@ -14,28 +14,28 @@ const makeSelector = (provide: Provide) => {
   const getProvided = (state: State, ownProps: OwnProps) => memoizedProvide(ownProps);
 
   return createSelector(
-        [currentDragSelector, getProvided],
-        (currentDrag: ?CurrentDrag, provided: NeedsProviding): MapProps => {
-          const { id, isDropEnabled = true } = provided;
+    [currentDragSelector, getProvided],
+      (currentDrag: ?CurrentDrag, provided: NeedsProviding): MapProps => {
+        const { id, isDropEnabled = true } = provided;
 
-          if (!currentDrag || !isDropEnabled) {
-            return {
-              id,
-              isDraggingOver: false,
-            };
-          }
-
-          const destination: ?DraggableLocation = currentDrag.impact.destination;
-          const isDraggingOver = Boolean(
-                destination &&
-                destination.droppableId === provided.id
-            );
-
+        if (!currentDrag || !isDropEnabled) {
           return {
             id,
-            isDraggingOver,
+            isDraggingOver: false,
           };
         }
+
+        const destination: ?DraggableLocation = currentDrag.impact.destination;
+        const isDraggingOver = Boolean(
+              destination &&
+              destination.droppableId === provided.id
+          );
+
+        return {
+          id,
+          isDraggingOver,
+        };
+      }
     );
 };
 

@@ -1,5 +1,12 @@
 import { configure, setAddon } from '@kadira/storybook';
+
+// add polyfills
 import 'babel-polyfill';
+import 'element-closest';
+import URLSearchParamsPolyfill from 'url-search-params';
+import 'es6-promise/auto';
+import 'whatwg-fetch';
+
 import React from 'react';
 import 'storybook-addon-i18n-tools';
 import 'style-loader!css-loader!ak-css-reset/dist/bundle.css';
@@ -12,6 +19,8 @@ import BaselineAlignmentStory from './BaselineAlignmentStory';
 import CodeExampleStory from './CodeExampleStory';
 import ExampleWithCode from './ExampleWithCode';
 import StencilStory from './StencilStory';
+
+window.URLSearchParams = window.URLSearchParams || URLSearchParamsPolyfill;
 
 function loadStories() {
   // Use a webpack loader to dynamically require stories.

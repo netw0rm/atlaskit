@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import SearchInner from '../styled/SearchInner';
+import FieldBase from '@atlaskit/field-base';
 import SearchBox from '../styled/SearchBox';
-import SearchResults from '../styled/SearchResults';
+import SearchFieldBaseInner from '../styled/SearchFieldBaseInner';
+import SearchInner from '../styled/SearchInner';
 import SearchInput from '../styled/SearchInput';
+import SearchResults from '../styled/SearchResults';
 
 export default class Search extends PureComponent {
   static propTypes = {
-    placeholder: PropTypes.string,
     children: PropTypes.node,
+    isLoading: PropTypes.boolean,
     onChange: PropTypes.func.isRequired,
     onSearchClear: PropTypes.func,
+    placeholder: PropTypes.string,
     value: PropTypes.string,
   }
 
@@ -59,16 +62,25 @@ export default class Search extends PureComponent {
         <SearchBox
           onMouseDown={this.onSearchBoxMouseDown}
         >
-          <SearchInput
-            autoFocus
-            innerRef={this.setInputRef}
-            onChange={onChange}
-            placeholder={placeholder}
-            spellCheck={false}
-            type="text"
-            value={value}
-            onKeyDown={this.onInputKeyDown}
-          />
+          <FieldBase
+            appearance="none"
+            isFitContainerWidthEnabled
+            isPaddingDisabled
+            isLoading={this.props.isLoading}
+          >
+            <SearchFieldBaseInner>
+              <SearchInput
+                autoFocus
+                innerRef={this.setInputRef}
+                onChange={onChange}
+                placeholder={placeholder}
+                spellCheck={false}
+                type="text"
+                value={value}
+                onKeyDown={this.onInputKeyDown}
+              />
+            </SearchFieldBaseInner>
+          </FieldBase>
         </SearchBox>
         <SearchResults>
           {children}

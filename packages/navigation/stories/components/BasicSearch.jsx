@@ -78,7 +78,7 @@ function contains(string, query) {
   return string.toLowerCase().indexOf(query.toLowerCase()) > -1;
 }
 
-function search(query) {
+function searchData(query) {
   const results = data.map(
     ({ group, items }) => (items
       .filter(item => contains(item.name, query) || contains(group, query))
@@ -88,9 +88,7 @@ function search(query) {
       }))
     )
   ).reduce((a, b) => a.concat(b));
-  return results.map(({ item, group }, idx) => (
-    <AkNavigationItem href="#foo" icon={icons[group]} subText={group} text={item.name} caption={item.caption} key={idx} />
-  ));
+  return results;
 }
 
 // a little fake store for holding the query after a component unmounts
@@ -99,6 +97,7 @@ const store = {};
 export default class BasicSearch extends PureComponent {
   state = {
     query: store.query || '',
+    results: searchData(''),
   }
 
   setQuery(query) {
@@ -108,15 +107,37 @@ export default class BasicSearch extends PureComponent {
     });
   }
 
+  search = (query) => {
+    clearTimeout(this.searchTOID);
+    this.setState({
+      isLoading: true,
+    });
+    this.setQuery(query);
+    const results = searchData(query);
+    this.searchTOID = setTimeout(() => {
+      this.setState({
+        results,
+        isLoading: false,
+      });
+    }, this.props.delay || 0);
+  }
+
+  renderResults = () => (
+    this.state.results.map(({ item, group }, idx) => (
+      <AkNavigationItem href="#foo" icon={icons[group]} subText={group} text={item.name} caption={item.caption} key={idx} />
+    ))
+  );
+
   render() {
     return (
       <AkSearch
         clearIcon={<CrossIcon label="clear" size="medium" />}
-        onChange={({ target }) => { this.setQuery(target.value); }}
-        onSearchClear={() => { this.setQuery(''); }}
+        onChange={({ target }) => { this.search(target.value); }}
+        onSearchClear={() => { this.search(''); }}
         value={this.state.query}
+        isLoading={this.state.isLoading}
       >
-        {search(this.state.query)}
+        {this.renderResults()}
       </AkSearch>
     );
   }

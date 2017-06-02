@@ -5,6 +5,7 @@ import searchStencil from 'url-loader!./stencils/search.svg';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
+import BasicSearch from './components/BasicSearch';
 import nucleus from './nucleus.png';
 import { name } from '../package.json';
 
@@ -133,6 +134,16 @@ storiesOf(name, module)
           <div>{manyNavigationItems()}</div>
         )}
         openDrawer="create"
+      />
+    </HtmlPage>
+  ))
+  .add('with search delay', () => (
+    <HtmlPage>
+      <BasicNavigation
+        searchDrawerContent={(
+          <BasicSearch delay={800} />
+        )}
+        openDrawer="search"
       />
     </HtmlPage>
   ))

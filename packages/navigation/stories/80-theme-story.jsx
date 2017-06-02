@@ -11,8 +11,10 @@ import * as presets from '../src/theme/presets';
 import { AkContainerNavigation, AkGlobalNavigation, AkGlobalItem, AkContainerTitle, AkNavigationItemGroup, AkNavigationItem } from '../src/';
 import { containerOpenWidth, containerClosedWidth, gridSize } from '../src/shared-variables';
 import BasicNavigation from './components/BasicNavigation';
+import ThemePreview from './components/ThemePreview';
 import nucleusLogo from './nucleus.png';
 
+// eslint-disable-next-line react/prop-types
 const ExampleContainerNavigation = ({ appearance, isCollapsed = false }) => (
   <AkContainerNavigation
     appearance={appearance}
@@ -85,6 +87,7 @@ const ExampleContainerNavigation = ({ appearance, isCollapsed = false }) => (
   </AkContainerNavigation>
 );
 
+// eslint-disable-next-line react/prop-types
 const ExampleGlobalNavigation = ({ appearance }) => (
   <AkGlobalNavigation
     appearance={appearance}
@@ -317,4 +320,7 @@ storiesOf(`${name} - theming`, module)
   ))
   .add('preset picker', () => (
     <PresetPicker />
+  ))
+  .add('theme playground', () => (
+    <ThemePreview />
   ));

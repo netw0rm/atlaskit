@@ -39,6 +39,10 @@ import {
   ReactMediaNode,
   ReactMentionNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
@@ -73,6 +77,7 @@ export interface Props {
   uploadErrorHandler?: (state: MediaState) => void;
   useLegacyFormat?: boolean;
   analyticsHandler?: AnalyticsHandler;
+  errorReporter?: ErrorReportingHandler;
 }
 
 export interface State {
@@ -107,8 +112,14 @@ export default class Editor extends PureComponent<Props, State> {
       this.providerFactory.setProvider('mediaProvider', mediaProvider);
     }
 
+    const errorReporter = new ErrorReporter();
+    if (props.errorReporter) {
+      errorReporter.handler = props.errorReporter;
+    }
+
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
+      errorReporter,
       providerFactory: this.providerFactory,
     });
 

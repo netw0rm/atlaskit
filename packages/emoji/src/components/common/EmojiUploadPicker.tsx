@@ -8,6 +8,7 @@ import Spinner from '@atlaskit/spinner';
 
 import { customCategory } from '../../constants';
 import { EmojiDescription, EmojiUpload } from '../../types';
+import debug from '../../util/logger';
 import * as styles from './styles';
 import Emoji from './Emoji';
 import FileChooser from './FileChooser';
@@ -41,6 +42,14 @@ const disallowedNameChars = new Map([
   [' ', '_'],
 ]);
 
+const sanitizeName = (name: string): string => {
+    // prevent / replace certain characters, allow others
+    disallowedNameChars.forEach((replaceWith, exclude) => {
+      name = name.split(exclude).join(replaceWith);
+    });
+    return name;
+};
+
 const maxNameLength = 50;
 
 const toEmojiName = (uploadName: string): string => {
@@ -51,14 +60,14 @@ const toEmojiName = (uploadName: string): string => {
 const getNaturalImageSize = (dataURL: string): Promise<{ width: number, height: number }> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.src = dataURL;
     img.addEventListener('load', () => {
       resolve({
-        width: img.naturalHeight,
-        height: img.naturalWidth,
+        width: img.naturalWidth,
+        height: img.naturalHeight,
       });
     });
     img.addEventListener('error', reject);
+    img.src = dataURL;
   });
 };
 
@@ -73,29 +82,30 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
     if (props.errorMessage) {
       this.state.uploadStatus = UploadStatus.Error;
     }
-    this.state.name = props.initialUploadName;
-  }
-
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.errorMessage) {
-      this.setState({
-        uploadStatus: UploadStatus.Error,
-      });
-    } else {
-      if (this.state.uploadStatus === UploadStatus.Error) {
-        this.setState({
-          uploadStatus: UploadStatus.Waiting,
-        });
-      }
+    if (props.initialUploadName) {
+      this.state.name = sanitizeName(props.initialUploadName);
     }
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    const updatedState: State = {};
+    if (nextProps.errorMessage) {
+      updatedState.uploadStatus = UploadStatus.Error;
+    } else {
+      if (this.state.uploadStatus === UploadStatus.Error) {
+        updatedState.uploadStatus = UploadStatus.Waiting;
+      }
+    }
+    if (nextProps.initialUploadName) {
+      if (!this.state.name) {
+        updatedState.name = sanitizeName(nextProps.initialUploadName);
+      }
+    }
+    this.setState(updatedState);
+  }
+
   private onNameChange = (event) => {
-    let newName = event.target.value;
-    // prevent / replace certain characters, allow others
-    disallowedNameChars.forEach((replaceWith, exclude) => {
-      newName = newName.split(exclude).join(replaceWith);
-    });
+    let newName = sanitizeName(event.target.value);
     if (this.state.name !== newName) {
       this.setState({
         name: newName
@@ -107,7 +117,7 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
     const { onUploadEmoji } = this.props;
     const { filename, name, previewImage } = this.state;
     if (onUploadEmoji && filename && name && previewImage) {
-      getNaturalImageSize(previewImage).then(size => {
+      const notifyUpload = (size) => {
         const { width, height } = size;
         onUploadEmoji({
           name: toEmojiName(name),
@@ -119,6 +129,17 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
         });
         this.setState({
           uploadStatus: UploadStatus.Uploading,
+        });
+      };
+      getNaturalImageSize(previewImage).then(size => {
+        notifyUpload(size);
+      }).catch(error => {
+        debug('getNaturalImageSize error', error);
+        // Just set arbitrary size, worse case is it may render
+        // in wrong aspect ratio in some circumstances.
+        notifyUpload({
+          width: 32,
+          height: 32,
         });
       });
     }

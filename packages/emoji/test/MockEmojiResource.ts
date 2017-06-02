@@ -14,6 +14,7 @@ export interface PromiseBuilder<R> {
 export interface MockEmojiResourceConfig {
   promiseBuilder?: PromiseBuilder<any>;
   uploadSupported?: boolean;
+  uploadError?: string;
 }
 
 export const emojiFromUpload = (upload: EmojiUpload) => {
@@ -22,6 +23,7 @@ export const emojiFromUpload = (upload: EmojiUpload) => {
     id: uid(),
     shortName,
     name,
+    fallback: shortName,
     type: customType,
     category: customCategory,
     order: -1,
@@ -33,11 +35,10 @@ export const emojiFromUpload = (upload: EmojiUpload) => {
   };
 };
 
-export class MockEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements UploadingEmojiProvider {
-  private emojiRepository: EmojiRepository;
-  private promiseBuilder: PromiseBuilder<any>;
-  private uploadSupported: boolean;
-  private lastQuery: string = '';
+export class MockNonUploadingEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> {
+  protected emojiRepository: EmojiRepository;
+  protected promiseBuilder: PromiseBuilder<any>;
+  protected lastQuery: string = '';
 
   recordedSelections: EmojiId[] = [];
 
@@ -45,12 +46,10 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
     super();
     this.emojiRepository = emojiService;
     this.promiseBuilder = (result) => Promise.resolve(result);
-    this.uploadSupported = false;
     if (config) {
       if (config.promiseBuilder) {
         this.promiseBuilder = config.promiseBuilder;
       }
-      this.uploadSupported = !!config.uploadSupported;
     }
   }
 
@@ -58,7 +57,7 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
     debug('MockEmojiResource.filter', query);
     this.lastQuery = query;
     this.promiseBuilder(this.emojiRepository.search(query, options)).then((result: EmojiSearchResult) => {
-      this.notifyResult(addCustomCategoryToResult(this.uploadSupported, result));
+      this.notifyResult(result);
     });
   }
 
@@ -89,16 +88,55 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
     this.recordedSelections.push(id);
     return this.promiseBuilder(undefined);
   }
+}
+
+export interface UploadDetail {
+  upload: EmojiUpload;
+  emoji: EmojiDescription;
+}
+
+export class MockEmojiResource extends MockNonUploadingEmojiResource implements UploadingEmojiProvider {
+  private uploads: UploadDetail[] = [];
+  private uploadSupported: boolean;
+  private uploadError?: string;
+
+  constructor(emojiService: EmojiRepository, config?: MockEmojiResourceConfig) {
+    super(emojiService, config);
+    this.uploadSupported = false;
+    if (config) {
+      this.uploadSupported = !!config.uploadSupported;
+      this.uploadError = config.uploadError;
+    }
+  }
+
+  filter(query: string, options?: SearchOptions) {
+    debug('MockEmojiResource.filter', query);
+    this.lastQuery = query;
+    this.promiseBuilder(this.emojiRepository.search(query, options)).then((result: EmojiSearchResult) => {
+      this.notifyResult(addCustomCategoryToResult(this.uploadSupported, result));
+    });
+  }
 
   isUploadSupported(): Promise<boolean> {
     return this.promiseBuilder(this.uploadSupported);
   }
 
   uploadCustomEmoji(upload: EmojiUpload) {
+    if (this.uploadError) {
+      return Promise.reject(this.uploadError);
+    }
     const emoji = emojiFromUpload(upload);
+    this.uploads.push({
+      upload,
+      emoji,
+    });
     this.emojiRepository.addCustomEmoji(emoji);
     this.filter(this.lastQuery);
     return this.promiseBuilder(emoji);
+  }
+
+  getUploads(): UploadDetail[] {
+    return this.uploads;
   }
 
   prepareForUpload() {}
@@ -109,6 +147,14 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
   }
 
 }
+
+export const mockNonUploadingEmojiResourceFactory = (emojiRepository: EmojiRepository, config?: MockEmojiResourceConfig, promiseBuilder?: PromiseBuilder<MockNonUploadingEmojiResource>) => {
+  const mockEmojiResource = new MockNonUploadingEmojiResource(emojiRepository, config);
+  if (promiseBuilder) {
+    return promiseBuilder(mockEmojiResource);
+  }
+  return Promise.resolve(mockEmojiResource);
+};
 
 export const mockEmojiResourceFactory = (emojiRepository: EmojiRepository, config?: MockEmojiResourceConfig, promiseBuilder?: PromiseBuilder<MockEmojiResource>) => {
   const mockEmojiResource = new MockEmojiResource(emojiRepository, config);

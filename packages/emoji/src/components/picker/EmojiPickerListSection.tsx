@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import * as classnames from 'classnames';
 import AkButton from '@atlaskit/button';
 
 import { akColorB300 } from '@atlaskit/util-shared-styles';
@@ -22,6 +23,8 @@ export interface Props {
   onOpenUpload?: () => void;
 }
 
+export const addEmojiClassName = 'emoji-picker-add-emoji';
+
 export default class EmojiPickerListSection extends PureComponent<Props, {}> {
 
   renderUploadPrompt() {
@@ -33,8 +36,13 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
 
     if (emojis.length) {
       // Button style
+      const addButtonClassNames = classnames([
+        styles.addEmoji,
+        addEmojiClassName,
+      ]);
+
       return (
-        <button className={styles.addEmoji} onClick={onOpenUpload}>
+        <button className={addButtonClassNames} onClick={onOpenUpload}>
           <svg viewBox={`0 0 30 30`} xmlns="http://www.w3.org/2000/svg" width="28px" height="28px">
             <line x1="15" y1="10" x2="15" y2="20" stroke={akColorB300} strokeWidth="2" strokeLinecap="round" />
             <line x1="10" y1="15" x2="20" y2="15" stroke={akColorB300} strokeWidth="2" strokeLinecap="round" />
@@ -46,6 +54,7 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
     // Message style
     return (
       <AkButton
+        className={addEmojiClassName}
         appearance="link"
         onClick={onOpenUpload}
       >

@@ -8,10 +8,10 @@ import { name, description } from '../../package.json';
 
 const navigationPropDescriptions = {
   children: 'Content to go inside the Container Navigation',
-  containerAppearance: 'The appearance of the container navigation',
+  containerTheme: 'The theme of the container navigation. Presets are available via the presetThemes named export.',
   containerHeaderComponent: 'The component to be rendered in the container as the header – usually a product logo or a container title',
   drawers: 'An array of Drawer components that the navigation will render',
-  globalAppearance: 'The appearance of the global navigation',
+  globalTheme: 'The theme of the global navigation. Presets are available via the presetThemes named export, or you can generate your own using the the createGlobalTheme named export function.',
   globalCreateIcon: 'The icon to be used for the create button in the global navigation',
   globalPrimaryIcon: 'The topmost icon to be placed in the global navigation - usually the product logo, or the product home icon',
   globalPrimaryItemHref: 'A link to place around the primary icon. The rendering of this link is controlled by Navigation.linkComponent',

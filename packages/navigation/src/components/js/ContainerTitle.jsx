@@ -8,7 +8,7 @@ import ContainerTitleSubText from '../styled/ContainerTitleSubText';
 import ContainerTitleText from '../styled/ContainerTitleText';
 import ContainerTitleTextWrapper from '../styled/ContainerTitleTextWrapper';
 
-const getStyledLink = component => styled(component) `
+const getStyledLink = component => styled(component)`
   display: block;
   text-decoration: none;
   &:hover {

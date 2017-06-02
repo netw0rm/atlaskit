@@ -3,7 +3,7 @@ import React from 'react';
 import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
-import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle } from '../src/index';
+import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle, presetThemes } from '../src/index';
 import NavigationWithDropdown from './components/NavigationWithDropdown';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -139,12 +139,11 @@ storiesOf(name, module)
   .add('with multiple groups', () => (
     <HtmlPage>
       <BasicNavigation
-        containerAppearance="global"
+        containerTheme={presetThemes.global}
         containerHeaderComponent={AtlassianLogo}
       >
         <AkNavigationItemGroup>
           <AkNavigationItem
-            appearance="global"
             icon={<DashboardIcon label="Dashboard" />}
             isSelected
             text="Selected"
@@ -153,7 +152,6 @@ storiesOf(name, module)
         </AkNavigationItemGroup>
         <AkNavigationItemGroup>
           <AkNavigationItem
-            appearance="global"
             icon={<SettingsIcon label="Settings" />}
             text="Item B"
             textAfter={<RandomBadge theme="dark" />}
@@ -161,15 +159,13 @@ storiesOf(name, module)
         </AkNavigationItemGroup>
         <AkNavigationItemGroup title="one section">
           <AkNavigationItem
-            appearance="global"
             icon={<TrayIcon label="Tray" />}
             text="Item C"
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkNavigationItemGroup>
-        <AkNavigationItemGroup hasSeparator appearance="global">
+        <AkNavigationItemGroup hasSeparator>
           <AkNavigationItem
-            appearance="global"
             icon={<CalendarIcon label="Calendar" />}
             subText="And a very long second line of text"
             text="A very long first line of text"

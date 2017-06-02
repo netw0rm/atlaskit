@@ -1,6 +1,7 @@
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
+import * as presets from '../src/theme/presets';
 
 class Child extends PureComponent {
   render() {
@@ -15,6 +16,9 @@ describe('<GlobalNavigation />', () => {
     });
   });
   describe('props', () => {
+    it('should default theme to presets.global', () => {
+      expect(mount(<GlobalNavigation />).props().theme).to.equal(presets.global);
+    });
     it('primaryIcon prop is passed to <GlobalPrimaryActions />', () => {
       const icon = <img alt="foo" />;
       expect(shallow(<GlobalNavigation primaryIcon={icon} />)

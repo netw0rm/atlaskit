@@ -815,19 +815,8 @@
           "type": "object",
           "properties": {
             "color": {
-              "enum": [
-                "#97a0af",
-                "#0747a6",
-                "#4c9aff",
-                "#006644",
-                "#79f3c0",
-                "#ff8b00",
-                "#ffe47f",
-                "#bf2600",
-                "#ff8f73",
-                "#403294",
-                "#998dd9"
-              ]
+              "type": "string",
+              "pattern": "^#[0-9a-f]{6}$"
             }
           },
           "required": [

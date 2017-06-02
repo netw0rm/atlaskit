@@ -27,20 +27,11 @@ export interface EmojiProgessCallback {
 export const mediaProportionOfProgress = 95/100;
 
 interface TokenDetail {
-  mediaApiToken: MediaApiToken;
+  mediaApiToken?: MediaApiToken;
   activeTokenRefresh?: Promise<MediaApiToken>;
 }
 
 export type TokenType = 'read' | 'upload';
-
-// Temporoary token for new types, which generating
-const expiredMediaToken: MediaApiToken = {
-  url: '',
-  clientId: '',
-  jwt: '',
-  collectionName: '',
-  expiresAt: 0, // expired
-};
 
 export class TokenManager {
   private siteServiceConfig: ServiceConfig;
@@ -59,8 +50,12 @@ export class TokenManager {
 
   getToken(type: TokenType, forceRefresh?: boolean): Promise<MediaApiToken> {
     let tokenDetail: TokenDetail = this.tokens.get(type) as TokenDetail;
-    if (tokenDetail) {
-      const { mediaApiToken, activeTokenRefresh } = tokenDetail;
+    if (!tokenDetail) {
+      tokenDetail = {};
+      this.tokens.set(type, tokenDetail);
+    }
+    const { mediaApiToken, activeTokenRefresh } = tokenDetail;
+    if (mediaApiToken) {
       const nowInSeconds = Date.now() / 1000;
       const expiresAt = mediaApiToken.expiresAt - expireAdjustment;
       if (nowInSeconds < expiresAt && !forceRefresh) {
@@ -71,15 +66,13 @@ export class TokenManager {
         // refresh already active, return that
         return activeTokenRefresh;
       }
-    } else {
-      tokenDetail = {
-        mediaApiToken: expiredMediaToken,
-      };
-      this.tokens.set(type, tokenDetail);
+      // clear expired token
+      tokenDetail.mediaApiToken = undefined;
     }
 
     const path = `token/${type}`;
 
+    // request a new token and track the promise for future requests until completed
     tokenDetail.activeTokenRefresh = requestService<MediaApiToken>(this.siteServiceConfig, { path }).then(mediaApiToken => {
       tokenDetail.activeTokenRefresh = undefined;
       tokenDetail.mediaApiToken = mediaApiToken;

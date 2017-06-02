@@ -1,11 +1,13 @@
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import React from 'react';
 import Logo from '../src/components/LogoBase';
 
 describe('<Logo />', () => {
   describe('props', () => {
     it('should render an svg', () => {
-      expect(shallow(<Logo logoText={<svg />} />).find('svg')).to.have.length(1);
+      const wrapper = mount(<Logo><svg /></Logo>);
+      // throw shallow(<svg />);
+      expect(wrapper.find('svg')).to.have.length(1);
     });
     describe('collapseTo prop', () => {
       it('should not collapse by default', () => {

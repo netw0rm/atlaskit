@@ -636,7 +636,7 @@ describe('block-type', () => {
         context('when selection is empty', () => {
           context('on a non nested structure', () => {
             context('inside a paragraph', () => {
-              it('creates a new paragraph above', () => {
+              it('doesn not create a new paragraph above', () => {
                 const { editorView } = editor(doc(p('{<>}text')));
 
                 sendKeyToPm(editorView, 'ArrowUp');

@@ -208,7 +208,7 @@ export function toggleCodeBlock(): Command {
 
 export function setNormalText(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from : initialFrom } = state.selection;
+    const { $from: initialFrom } = state.selection;
     const currentBlock = initialFrom.parent;
 
     if (currentBlock.type !== state.schema.nodes.paragraph) {
@@ -223,7 +223,7 @@ export function setNormalText(): Command {
 
 export function toggleHeading(level: number): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from : initialFrom } = state.selection;
+    const { $from: initialFrom } = state.selection;
     const currentBlock = initialFrom.parent;
     const { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
@@ -472,7 +472,7 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 
 function toggleNodeType(nodeType: NodeType): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    let { $from : selFrom } = state.selection;
+    let { $from: selFrom } = state.selection;
     const potentialNodePresent = selFrom.node(selFrom.depth - 1);
 
     // lift the node and convert to given nodeType

@@ -418,6 +418,7 @@ describe('MediaEmojiResource', () => {
       const portion = 0.5;
 
       const donePromise = waitUntil(() => progress).then(() => {
+        expect(progress.percent < portion, 'progress percent less than media portion').to.equal(true);
         expect(progress.percent, 'progress percent').to.equal(portion * mediaProportionOfProgress);
       });
 

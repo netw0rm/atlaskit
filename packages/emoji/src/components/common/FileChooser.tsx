@@ -24,7 +24,7 @@ export default class FileChooser extends PureComponent<Props, {}> {
     return (
       <span>
         <AkButton onClick={this.onChooseFile} isDisabled={isDisabled}>{label}</AkButton>
-        <input ref="chooseFile" onChange={onChange} type="file" accept={accept} style={{ display: 'none' }}/>
+        <input className="emojiUploadFileInput" ref="chooseFile" onChange={onChange} type="file" accept={accept} style={{ display: 'none' }}/>
       </span>
     );
   }

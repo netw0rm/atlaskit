@@ -104,6 +104,8 @@ storiesOf(`${name}/Internal components`, module)
     <EmojiPickerFooter
       selectedEmoji={emojis[0]}
       uploading={false}
+      onUploadEmoji={action('emoji uploaded')}
+      onUploadCancelled={action('emoji cancelled')}
     />
     ))
   .add('tone selector', () => (
@@ -140,7 +142,10 @@ storiesOf(`${name}/Internal components`, module)
     };
     return (
       <div style={styles}>
-        <EmojiUploadPicker onUploadEmoji={action('emoji uploaded')} onUploadCancelled={action('emoji cancelled')} />
+        <EmojiUploadPicker
+          onUploadEmoji={action('emoji uploaded')}
+          onUploadCancelled={action('emoji cancelled')}
+        />
       </div>
     );
   })
@@ -152,7 +157,11 @@ storiesOf(`${name}/Internal components`, module)
     };
     return (
       <div style={styles}>
-        <EmojiUploadPicker errorMessage="Unable to upload"/>
+        <EmojiUploadPicker
+          errorMessage="Unable to upload"
+          onUploadEmoji={action('emoji uploaded')}
+          onUploadCancelled={action('emoji cancelled')}
+        />
       </div>
     );
   });

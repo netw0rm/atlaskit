@@ -43,14 +43,14 @@ const buildUrl = (baseUrl: string, path: string = '', queryParams?: KeyValues, s
   const searchParam = new URLSearchParams(URL.parse(baseUrl).search || undefined);
   baseUrl = baseUrl.split('?')[0];
   if (queryParams) {
-    for (const key in queryParams) { // eslint-disable-line no-restricted-syntax
+    for (const key in queryParams) {
       if ({}.hasOwnProperty.call(queryParams, key)) {
         searchParam.append(key, queryParams[key]);
       }
     }
   }
   if (secOptions && secOptions.params) {
-    for (const key in secOptions.params) { // eslint-disable-line no-restricted-syntax
+    for (const key in secOptions.params) {
       if ({}.hasOwnProperty.call(secOptions.params, key)) {
         const values = secOptions.params[key];
         if (Array.isArray(values)) {
@@ -77,7 +77,7 @@ const buildUrl = (baseUrl: string, path: string = '', queryParams?: KeyValues, s
 
 const addToHeaders = (headers: Headers, keyValues?: KeyValues) => {
   if (keyValues) {
-    for (const key in keyValues) { // eslint-disable-line no-restricted-syntax
+    for (const key in keyValues) {
       if ({}.hasOwnProperty.call(keyValues, key)) {
         const values = keyValues[key];
         if (Array.isArray(values)) {

@@ -9,9 +9,6 @@ import debug from '../util/logger';
 // expire 30 seconds early to factor in latency, slow services, etc
 export const expireAdjustment = 30;
 
-// Keep media emoji cached as long as possible (performance + data leakage risk low as only emoji)
-export const mediaMaxAge = '9223372036854776000'; // max according to API docs
-
 export type DataURL = string;
 
 export interface EmojiUploadResponse {
@@ -27,7 +24,7 @@ export interface EmojiProgessCallback {
 }
 
 // Assume media is 95% of total upload time.
-export const mediaProportionOfProgress = 100/95;
+export const mediaProportionOfProgress = 95/100;
 
 interface TokenDetail {
   mediaApiToken: MediaApiToken;

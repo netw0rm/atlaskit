@@ -8,6 +8,7 @@ import Spinner from '@atlaskit/spinner';
 
 import { customCategory } from '../../constants';
 import { EmojiDescription, EmojiUpload } from '../../types';
+import { getNaturalImageSize } from '../../util/image';
 import debug from '../../util/logger';
 import * as styles from './styles';
 import Emoji from './Emoji';
@@ -18,8 +19,8 @@ export interface OnUploadEmoji {
 }
 
 export interface Props {
-  onUploadEmoji?: OnUploadEmoji;
-  onUploadCancelled?: () => void;
+  onUploadEmoji: OnUploadEmoji;
+  onUploadCancelled: () => void;
   errorMessage?: string;
   initialUploadName?: string;
 }
@@ -37,14 +38,23 @@ export interface State {
   uploadStatus?: UploadStatus;
 }
 
-const disallowedNameChars = new Map([
+const disallowedReplacementsMap = new Map([
   [':', ''],
+  ['!', ''],
+  ['@', ''],
+  ['#', ''],
+  ['%', ''],
+  ['^', ''],
+  ['&', ''],
+  ['*', ''],
+  ['(', ''],
+  [')', ''],
   [' ', '_'],
 ]);
 
 const sanitizeName = (name: string): string => {
     // prevent / replace certain characters, allow others
-    disallowedNameChars.forEach((replaceWith, exclude) => {
+    disallowedReplacementsMap.forEach((replaceWith, exclude) => {
       name = name.split(exclude).join(replaceWith);
     });
     return name;
@@ -55,20 +65,6 @@ const maxNameLength = 50;
 const toEmojiName = (uploadName: string): string => {
   const name = uploadName.split('_').join(' ');
   return `${name.substr(0, 1).toLocaleUpperCase()}${name.substr(1)}`;
-};
-
-const getNaturalImageSize = (dataURL: string): Promise<{ width: number, height: number }> => {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.addEventListener('load', () => {
-      resolve({
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-      });
-    });
-    img.addEventListener('error', reject);
-    img.src = dataURL;
-  });
 };
 
 export default class EmojiUploadPicker extends PureComponent<Props, State> {
@@ -116,7 +112,7 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
   private onAddEmoji = () => {
     const { onUploadEmoji } = this.props;
     const { filename, name, previewImage } = this.state;
-    if (onUploadEmoji && filename && name && previewImage) {
+    if (filename && name && previewImage) {
       const notifyUpload = (size) => {
         const { width, height } = size;
         onUploadEmoji({
@@ -147,6 +143,12 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
 
   private onChooseFile = (event: ChangeEvent<any>) => {
     const files = event.target.files;
+    const cancelChooseFile = () => {
+      this.setState({
+        previewImage: undefined,
+      });
+    };
+
     if (files.length) {
       const reader = new FileReader();
       const file: File = files[0];
@@ -157,11 +159,11 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
         };
         this.setState(state);
       });
+      reader.addEventListener('abort', cancelChooseFile);
+      reader.addEventListener('error', cancelChooseFile);
       reader.readAsDataURL(file);
     } else {
-      this.setState({
-        previewImage: undefined,
-      });
+      cancelChooseFile();
     }
   }
 
@@ -231,7 +233,6 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
                 value={name}
                 ref="name"
                 autoFocus={true}
-                type="text"
               />
             </AkFieldBase>
           </span>

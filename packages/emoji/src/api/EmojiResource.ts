@@ -75,9 +75,9 @@ export interface UploadingEmojiProvider extends EmojiProvider {
   /**
    * Uploads an emoji to the configured repository.
    *
-   * Well return a promise with the EmojiDescription once completed.
+   * Will return a promise with the EmojiDescription once completed.
    *
-   * The last search will also be performed to include the new emoji.
+   * The last search will be re-run to ensure the new emoji is considered in the search.
    */
   uploadCustomEmoji(upload: EmojiUpload): Promise<EmojiDescription>;
 
@@ -346,17 +346,16 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
   }
 
   uploadCustomEmoji(upload: EmojiUpload): Promise<EmojiDescription> {
-    if (!this.mediaEmojiResource) {
-      if (!this.isLoaded()) {
-        return this.retryIfLoading(() => this.uploadCustomEmoji(upload));
+    return this.isUploadSupported().then(supported => {
+      if (!supported || !this.mediaEmojiResource) {
+        return Promise.reject('No media api support is configured');
       }
-      return Promise.reject('No media api support is configured');
-    }
 
-    return this.mediaEmojiResource.uploadEmoji(upload).then(emoji => {
-      this.emojiRepository.addCustomEmoji(emoji);
-      this.refreshLastFilter();
-      return emoji;
+      return this.mediaEmojiResource.uploadEmoji(upload).then(emoji => {
+        this.emojiRepository.addCustomEmoji(emoji);
+        this.refreshLastFilter();
+        return emoji;
+      });
     });
   }
 

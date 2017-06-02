@@ -14,8 +14,8 @@ export interface Props {
   uploading: boolean;
   initialUploadName?: string;
   uploadErrorMessage?: string;
-  onUploadCancelled?: () => void;
-  onUploadEmoji?: OnUploadEmoji;
+  onUploadCancelled: () => void;
+  onUploadEmoji: OnUploadEmoji;
 }
 
 export default class EmojiPickerFooter extends PureComponent<Props, undefined> {

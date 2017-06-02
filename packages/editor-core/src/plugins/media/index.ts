@@ -23,15 +23,15 @@ import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
+import { ErrorReporter } from '../../utils';
 
-import { MediaPluginBehavior, MediaPluginOptions } from './media-plugin-options';
+import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
-export type MediaPluginBehavior = MediaPluginBehavior;
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
 export interface MediaNode extends PMNode {
@@ -57,6 +57,15 @@ export class MediaPluginState {
   private useDefaultStateManager = true;
   private destroyed = false;
   private mediaProvider: MediaProvider;
+  private errorReporter: ErrorReporter;
+
+  /*
+    MediaPluginState.setMediaProvider(providerPromise) is async method which is setting pickers.
+    When it's called pickers are destroyed. New pickers are set when providerPromise is resolved.
+    The problem is that setMediaProvider can be called at any moment, even when providerPromise hasn't been resolved yet.
+    To prevent this MediaPluginState stores reference to last media provider set
+  */
+  private lastMediaProvider: Promise<MediaProvider> | undefined;
   private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
   private binaryPicker?: PickerFacade;
@@ -69,6 +78,8 @@ export class MediaPluginState {
 
     this.stateManager = new DefaultMediaStateManager();
     options.providerFactory.subscribe('mediaProvider', (name, provider: Promise<MediaProvider>) => this.setMediaProvider(provider));
+
+    this.errorReporter = options.errorReporter || new ErrorReporter();
   }
 
   subscribe(cb: PluginStateChangeSubscriber) {
@@ -86,6 +97,13 @@ export class MediaPluginState {
   }
 
   setMediaProvider = async (mediaProvider?: Promise<MediaProvider>) => {
+    if (this.lastMediaProvider === mediaProvider) {
+      return;
+    }
+
+    this.destroyPickers();
+    this.lastMediaProvider = mediaProvider;
+
     if (!mediaProvider) {
       this.allowsPastingLinks = false;
       this.allowsUploads = false;
@@ -95,12 +113,13 @@ export class MediaPluginState {
       return;
     }
 
-    let resolvedMediaProvider;
+    let resolvedMediaProvider: MediaProvider;
 
     try {
       resolvedMediaProvider = await mediaProvider;
     } catch (err) {
-      console.error('Editor Media Provider promise was rejected. Media functionality will be disabled.', err);
+      const wrappedError = new Error(`Media functionality disabled due to rejected provider: ${err.message}`);
+      this.errorReporter.captureException(wrappedError);
 
       this.allowsPastingLinks = false;
       this.allowsUploads = false;
@@ -130,13 +149,15 @@ export class MediaPluginState {
     if (this.allowsUploads) {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
-      // TODO: re-initialize pickers ?
-      if (resolvedMediaProvider.uploadParams) {
+      if (resolvedMediaProvider.uploadParams && uploadContext) {
         if (this.popupPicker) {
           this.popupPicker.setUploadParams(resolvedMediaProvider.uploadParams);
         }
 
-        this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+        // race condition fix
+        if (this.lastMediaProvider === mediaProvider) {
+          this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+        }
       }
     }
 
@@ -153,7 +174,7 @@ export class MediaPluginState {
   }
 
   insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
-    const { options, view } = this;
+    const { view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
 
@@ -179,7 +200,7 @@ export class MediaPluginState {
 
     let transaction;
 
-    if (this.isInsideEmptyParagraph() && options.behavior !== 'compact') {
+    if (this.isInsideEmptyParagraph()) {
       const { $from } = state.selection;
 
       // empty paragraph always exists inside the document
@@ -203,12 +224,9 @@ export class MediaPluginState {
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
     const { binaryPicker } = this;
+    assert(binaryPicker, 'Unable to insert file because media pickers have not been initialized yet');
 
-    if (!binaryPicker) {
-      throw new Error('Unable to insert file because media pickers have not been initialized yet');
-    }
-
-    binaryPicker.upload(url, fileName);
+    binaryPicker!.upload(url, fileName);
   }
 
   showMediaPicker = () => {
@@ -318,12 +336,10 @@ export class MediaPluginState {
 
     this.destroyed = true;
 
-    const { pickers, mediaNodes } = this;
-
-    pickers.forEach(picker => picker.destroy());
-    pickers.splice(0, pickers.length);
+    const { mediaNodes } = this;
     mediaNodes.splice(0, mediaNodes.length);
-    this.popupPicker = undefined;
+
+    this.destroyPickers();
   }
 
   findMediaNode = (id: string): MediaNodeWithPosHandler | null => {
@@ -342,6 +358,16 @@ export class MediaPluginState {
 
       return memo;
     }, null);
+  }
+
+  private destroyPickers = () => {
+    const { pickers } = this;
+
+    pickers.forEach(picker => picker.destroy());
+    pickers.splice(0, pickers.length);
+
+    this.popupPicker = undefined;
+    this.binaryPicker = undefined;
   }
 
   /**
@@ -382,12 +408,6 @@ export class MediaPluginState {
       return adjacentPos;
     }
 
-    // TODO: review this for HCNG
-    // Compact behavior disallows multiple media groups, so prepend the item inside
-    // if (this.behavior === 'compact' && adjacentNode.type instanceof MediaGroupNodeType) {
-      // return adjacentPos + 1;
-    // }
-
     // The adjacent node is a media group, so let's append there...
     if (adjacentNode.type === state.schema.nodes.mediaGroup) {
       return adjacentPos + 1;
@@ -418,13 +438,10 @@ export class MediaPluginState {
     }
 
     const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
-    const { options, view } = this;
+    const { view } = this;
 
     view.dispatch(transaction);
-
-    if (options.behavior !== 'compact') {
-      this.selectInsertedMediaNode(node);
-    }
+    this.selectInsertedMediaNode(node);
   }
 
   private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
@@ -443,7 +460,7 @@ export class MediaPluginState {
         this.removeMediaNode(id);
         break;
 
-      case 'ready':
+      default:
         if (!activeUserAction) {
           return;
         }

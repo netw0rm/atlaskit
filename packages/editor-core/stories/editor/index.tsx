@@ -36,6 +36,7 @@ import {
   nodeViewFactory,
   ReactEmojiNode,
   ReactMentionNode,
+  panelNodeView,
 } from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
@@ -230,7 +231,6 @@ export default class Editor extends PureComponent<Props, State> {
             ...mentionsPlugins(schema), // mentions and emoji needs to be first
             ...emojiPlugins(schema),
             ...listsPlugins(schema),
-            ...blockTypePlugins(schema),
             ...clearFormattingPlugins(schema),
             ...codeBlockPlugins(schema),
             ...panelPlugins(schema),
@@ -239,6 +239,10 @@ export default class Editor extends PureComponent<Props, State> {
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
             ...textColorPlugins(schema),
+            // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+            // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+            // if converting is possible
+            ...blockTypePlugins(schema),
             ...reactNodeViewPlugins(schema),
             history(),
             keymap(baseKeymap) // should be last :(
@@ -255,6 +259,7 @@ export default class Editor extends PureComponent<Props, State> {
         nodeViews: {
           emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
           mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
+          panel: panelNodeView,
         },
       });
       imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);

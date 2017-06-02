@@ -32,22 +32,16 @@ storiesOf(name, module)
   )
   .add('CodeBlock Example', () => {
     const props = {
-      text: `// Create a map.
-final IntIntOpenHashMap map = new IntIntOpenHashMap();
-map.put(1, 2);
-map.put(2, 5);
-map.put(3, 10);
+      text: `import _ from 'lodash';
 
-int count = map.forEach(new IntIntProcedure()
-{
-   int count;
-   public void apply(int key, int value)
-   {
-       if (value >= 5) count++;
-   }
-}).count;
-System.out.println("There are " + count + " values >= 5");`,
-      language: 'java',
+export class HttpError {
+  constructor({ message, statusCode }) {
+    this.message = message;
+    this.statusCode = statusCode;
+    this.stack = new Error().stack;
+  }
+}`,
+      language: 'javascript',
       showLineNumbers: true,
 
     };

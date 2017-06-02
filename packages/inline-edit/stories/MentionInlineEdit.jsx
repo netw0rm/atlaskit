@@ -3,7 +3,7 @@ import InlineDialog from '@atlaskit/inline-dialog';
 import AkAvatar from '@atlaskit/avatar';
 import { MentionList } from '@atlaskit/mention';
 import SingleLineTextInput from '@atlaskit/input';
-import AkInlineEdit from '../src';
+import InlineEdit from '../src';
 
 const keyCodes = {
   up: 38,
@@ -157,7 +157,7 @@ export default class extends PureComponent {
     return (
       <div>
         <div ref={(field) => { this.field = field; }}>
-          <AkInlineEdit
+          <InlineEdit
             label={this.props.label}
             editView={this.renderEditView()}
             readView={this.renderReadView()}

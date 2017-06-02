@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { akZIndexNavigation } from '@atlaskit/util-shared-styles';
+import { zIndex } from '../../shared-variables';
 
 const NavigationFixedContainer = styled.div`
   height: 100%;
@@ -9,7 +9,7 @@ const NavigationFixedContainer = styled.div`
   left: 0;
   /* force this to have the width of the Spacer above */
   width: inherit;
-  z-index: ${akZIndexNavigation};
+  z-index: ${zIndex.base};
 `;
 
 NavigationFixedContainer.displayName = 'NavigationFixedContainer';

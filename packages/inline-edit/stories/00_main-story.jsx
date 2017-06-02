@@ -7,7 +7,7 @@ import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
 import SlowInlineEdit from './SlowInlineEdit';
 import SingleSelectInlineEdit from './SingleSelectInlineEdit';
 import exampleMentions from './example-mentions';
-import AkInlineEdit, { InlineEdit } from '../src';
+import InlineEdit, { InlineEditStateless } from '../src';
 import { name } from '../package.json';
 
 const containerStyle = {
@@ -86,7 +86,7 @@ storiesOf(name, module)
   ))
   .add('with no edit view', () => (
     <div style={containerStyle}>
-      <AkInlineEdit
+      <InlineEdit
         label="Read-only"
         readView="Can't touch this"
       />
@@ -94,7 +94,7 @@ storiesOf(name, module)
   ))
   .add('with no edit view and label hidden', () => (
     <div style={containerStyle}>
-      <AkInlineEdit
+      <InlineEdit
         label="Read-only"
         readView="Can't touch this"
         isLabelHidden
@@ -124,7 +124,7 @@ storiesOf(name, module)
   })
   .add('with spinner', () => (
     <div style={containerStyle}>
-      <InlineEdit
+      <InlineEditStateless
         label="Not able to edit"
         readView="Can't touch this"
         isEditing

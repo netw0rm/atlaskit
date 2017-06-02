@@ -6,12 +6,15 @@ import {
   EditorState,
   EditorView,
   EmojiTypeAhead,
+  LanguagePicker,
   emojisPlugins,
   emojisStateKey,
   history,
   HyperlinkEdit,
   hyperlinkPlugins,
   hyperlinkStateKey,
+  codeBlockPlugins,
+  codeBlockStateKey,
   keymap,
   mediaPluginFactory,
   mediaStateKey,
@@ -42,7 +45,7 @@ import { MentionProvider } from '@atlaskit/mention';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { HCSchema, default as schema } from './schema';
+import { HCSchema, default as schema } from './schema/schema';
 import { version } from './version';
 import { hipchatEncoder } from './encoders';
 import { hipchatDecoder } from './decoders';
@@ -107,7 +110,6 @@ export default class Editor extends PureComponent<Props, State> {
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
       providerFactory: this.providerFactory,
-      behavior: 'default'
     });
 
     analyticsService.handler = props.analyticsHandler || ((name) => { });
@@ -266,6 +268,7 @@ export default class Editor extends PureComponent<Props, State> {
     const editorState = editorView && editorView.state;
     const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);
     const mentionsState = editorState && mentionProvider && mentionsStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
@@ -291,6 +294,12 @@ export default class Editor extends PureComponent<Props, State> {
               presenceProvider={props.presenceProvider}
               pluginState={mentionsState}
               reversePosition={props.reverseMentionPicker}
+            />
+          }
+          {!codeBlockState ? null :
+            <LanguagePicker
+              pluginState={codeBlockState}
+              editorView={editorView!}
             />
           }
         </div>
@@ -319,6 +328,7 @@ export default class Editor extends PureComponent<Props, State> {
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         ...reactNodeViewPlugins(schema),
+        ...codeBlockPlugins(schema),
         history(),
         keymap(hcKeymap),
         keymap(baseKeymap) // should be last
@@ -362,7 +372,10 @@ export default class Editor extends PureComponent<Props, State> {
           analyticsService.trackEvent('atlassian.editor.paste');
           return false;
         }
-      }
+      },
+      transformPastedHTML: (html: string) => {
+        return html.replace(/<br\s*[\/]?>/gi, '\n');
+      },
     });
 
     emojisStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);

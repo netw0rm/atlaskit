@@ -2,12 +2,12 @@ import * as assert from 'assert';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
+import {
+  DefaultMediaStateManager,
+  MediaStateStatus,
+} from '@atlaskit/media-core';
 import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
-  baseKeymap,
-  keymap,
-  MediaPluginBehavior,
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
@@ -28,52 +28,42 @@ import {
   makeEditor,
   mediaGroup,
   media,
-  nodeFactory,
   fixtures,
   p,
-  sendKeyToPm,
   storyMediaProviderFactory,
   randomId,
   sleep,
 } from '../../../../src/test-helper';
-import { default as defaultSchema, compactSchema } from '../../../../src/test-helper/schema';
+import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
-const noop = () => {};
+const stateManager = new DefaultMediaStateManager();
+const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+
+const getFreshResolvedProvider = () => {
+  return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+};
 
 describe('Media plugin', () => {
   const fixture = fixtures();
-  const stateManager = new DefaultMediaStateManager();
-  const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
-  const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+  const resolvedProvider = getFreshResolvedProvider();
   const testFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();
   providerFactory.setProvider('mediaProvider', resolvedProvider);
 
-  const editor = (doc: any, uploadErrorHandler?: () => void, behavior?: MediaPluginBehavior) => {
-    behavior = behavior || 'default';
-    const schema = (behavior === 'compact') ? compactSchema : defaultSchema;
-    const addBaseKeymap = behavior !== 'compact';
+  const editor = (doc: any, uploadErrorHandler?: () => void) => {
     const plugins = [
-      ...mediaPluginFactory(defaultSchema, { providerFactory, behavior, uploadErrorHandler }),
-      ...reactNodeViewPlugins(schema),
+      ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
+      ...reactNodeViewPlugins(defaultSchema),
       history(),
     ];
 
-    if (behavior === 'compact') {
-      const baseKeymapForCompactBehaviour = { ...baseKeymap };
-      delete baseKeymapForCompactBehaviour.Enter;
-
-      plugins.push(keymap(baseKeymapForCompactBehaviour));
-    }
-
     return makeEditor({
       doc,
-      schema,
-      addBaseKeymap,
       plugins,
+      schema: defaultSchema,
       nodeViews: {
         mediaGroup: nodeViewFactory(providerFactory, {
           mediaGroup: ReactMediaGroupNode,
@@ -244,38 +234,6 @@ describe('Media plugin', () => {
     );
 
     expect(pluginState.binaryPicker!.upload.calledOnce).to.equal(true);
-  });
-
-  describe('Compact behaviour', () => {
-    const doc = nodeFactory(compactSchema.nodes.doc);
-    const p = nodeFactory(compactSchema.nodes.paragraph);
-    const mediaGroup = nodeFactory(compactSchema.nodes.mediaGroup);
-    const media = (attrs: {
-      id: string;
-      type: 'file' | 'link';
-      collection: string;
-    }) => compactSchema.nodes.media.create(attrs);
-
-    it('should not react to Enter keypress', () => {
-      const { editorView } = editor(doc(p('te{<>}xt')), noop, 'compact');
-
-      sendKeyToPm(editorView, 'Enter');
-
-      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-    });
-
-    it('should insert media on the second line', () => {
-      const { editorView, pluginState } = editor(doc(p('{<>}')), noop, 'compact');
-
-      insertFile(editorView, pluginState);
-
-      expect(editorView.state.doc).to.deep.equal(
-        doc(
-          p(),
-          mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
-        )
-      );
-    });
   });
 
   it('should call uploadErrorHandler on upload error', async () => {
@@ -461,5 +419,71 @@ describe('Media plugin', () => {
         p(),
       )
     );
+  });
+
+  it('should set new pickers exactly when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
+    expect(pluginState.pickers).to.have.length(0);
+
+    const mediaProvider1 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    const mediaProvider2 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+
+    const resolvedMediaProvider1 = await mediaProvider1;
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider1.uploadContext;
+    await resolvedMediaProvider2.uploadContext;
+
+    expect(pluginState.pickers).to.have.length(4);
+  });
+
+  it('should remove old pickers exactly when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
+    expect(pluginState.pickers).to.have.length(0);
+
+    const mediaProvider1 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+
+    const resolvedMediaProvider1 = await mediaProvider1;
+    await resolvedMediaProvider1.uploadContext;
+
+    const mediaProvider2 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    expect(pluginState.pickers).to.have.length(0);
+  });
+
+  [
+    'unfinalized',
+    'unknown',
+    'ready',
+    'error',
+    'cancelled',
+  ].forEach((status: MediaStateStatus) => {
+    it(`should remove ${status} media nodes`, async () => {
+      const mediaNode = media({ id: 'foo', type: 'file', collection: testCollectionName });
+      const { editorView, pluginState } = editor(
+        doc(
+          mediaGroup(mediaNode),
+          mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })),
+        ),
+      );
+
+      await resolvedProvider;
+
+      stateManager.updateState('foo', {
+        status,
+        id: 'foo',
+      });
+
+      const pos = getNodePos(pluginState, 'foo');
+      (pluginState as MediaPluginState).handleMediaNodeRemove(mediaNode, () => pos);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
+        )
+      ));
+    });
   });
 });

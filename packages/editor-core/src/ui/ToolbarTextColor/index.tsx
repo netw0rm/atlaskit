@@ -9,13 +9,14 @@ import Icon from '@atlaskit/icon';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import TextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
 import ColorPalette from './ColorPalette';
-import * as styles from './styles';
+import { ExpandIconWrap, TriggerWrapper } from './styles';
 
 export interface Props {
   editorView: EditorView;
   pluginState: TextColorState;
   softBlurEditor: () => void;
   focusEditor: () => void;
+  disabled?: boolean;
 }
 
 export interface State {
@@ -44,27 +45,27 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
 
     return (
       <DropdownList
-        isOpen={isOpen && !disabled}
+        isOpen={isOpen && !disabled && !this.props.disabled}
         onOpenChange={this.handleOpenChange}
         appearance="tall"
         position="top left"
         trigger={
           <ToolbarButton
-            disabled={disabled}
+            disabled={disabled || this.props.disabled}
             selected={isOpen}
             title="Text color"
             onClick={this.toggleOpen}
             iconBefore={
-              <div className={styles.triggerWrapper}>
+              <TriggerWrapper>
                 <Icon
                   primaryColor={this.getIconColor()}
                   label="Text color"
                   glyph={TextColorIcon}
                 />
-                <div className={styles.expandIcon}>
+                <ExpandIconWrap>
                   <ExpandIcon label="expand-dropdown-menu" />
-                </div>
-              </div>}
+                </ExpandIconWrap>
+              </TriggerWrapper>}
           />
         }
       >

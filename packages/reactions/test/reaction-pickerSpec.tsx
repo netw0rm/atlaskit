@@ -22,12 +22,16 @@ const renderPicker = (onSelection: Function = () => {}, text?: string) => {
 
 describe('@atlaskit/reactions/reaction-picker', () => {
   let clock;
+  const animStub = window.cancelAnimationFrame;
+
   beforeEach(function () {
+    window.cancelAnimationFrame = () => {};
     clock = sinon.useFakeTimers();
   });
 
   afterEach(function () {
     clock.restore();
+    window.cancelAnimationFrame = animStub;
   });
 
   it('should render a trigger', () => {

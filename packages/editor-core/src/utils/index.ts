@@ -19,6 +19,11 @@ function validateNode(node: Node): boolean {
   return false;
 }
 
+export {
+  default as ErrorReporter,
+  ErrorReportingHandler,
+} from './error-reporter';
+
 /**
  * Check if a mark is allowed at a given position
  */

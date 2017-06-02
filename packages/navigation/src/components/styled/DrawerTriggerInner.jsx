@@ -1,9 +1,15 @@
-import {
-  akGridSizeUnitless,
-  akColorN0,
-} from '@atlaskit/util-shared-styles';
+// @flow
 import styled from 'styled-components';
-import focusRingMixin from '../../utils/focus-ring-mixin';
+import { focusOutline } from '../../utils/mixins';
+import { getProvided } from '../../theme/util';
+import { gridSize } from '../../shared-variables';
+import type { Provided } from '../../theme/types';
+
+const getOutline = (props) => {
+  const provided: Provided = getProvided(props.theme);
+
+  return focusOutline(provided.item.focus.outline);
+};
 
 const DrawerTriggerInner = styled.button`
   display: flex;
@@ -14,12 +20,15 @@ const DrawerTriggerInner = styled.button`
   border: none;
   border-radius: 50%;
   padding: 0;
-  width: ${akGridSizeUnitless * 5}px;
-  height: ${akGridSizeUnitless * 5}px;
+  width: ${gridSize * 5}px;
+  height: ${gridSize * 5}px;
   outline: none;
-  color: ${akColorN0};
 
-  ${focusRingMixin()}
+  /* other color states handled by GlobalItem */
+
+  &:focus {
+    ${getOutline}
+  }
 `;
 
 DrawerTriggerInner.displayName = 'DrawerTriggerInner';

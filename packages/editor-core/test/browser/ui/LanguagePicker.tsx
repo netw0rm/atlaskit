@@ -2,8 +2,9 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import codeBlockPlugins from '../../../src/plugins/code-block';
-import FloatingToolbar from '../../../src/ui/FloatingToolbar';
+import { FloatingToolbar } from '../../../src/ui/LanguagePicker/styles';
 import Select from '@atlaskit/single-select';
+import ToolbarButton from '../../../src/ui/ToolbarButton';
 import LanguagePicker from '../../../src/ui/LanguagePicker';
 import { code_block, doc, p, makeEditor, fixtures, createEvent } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
@@ -112,6 +113,17 @@ describe('LanguagePicker', () => {
       const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
       expect(languagePicker.state('language')).to.equal('Language');
+    });
+  });
+
+  describe('TrashIcon', () => {
+    it('should be rendered in language picker floating toolbar', () => {
+      const { editorView, pluginState } = editor(doc(code_block({ language: 'js' })('text')));
+
+      const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      languagePicker.setState({ languageSelectFocused: true, toolbarVisible: false });
+
+      expect(languagePicker.find(ToolbarButton)).to.have.length(1);
     });
   });
 });

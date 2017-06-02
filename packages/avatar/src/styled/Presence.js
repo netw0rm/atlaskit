@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import { PRESENCE_BORDER_WIDTH } from './constants';
@@ -5,7 +6,7 @@ import { PRESENCE_BORDER_WIDTH } from './constants';
 // set fallbacks for border color/width to protect consumers from invalid values
 export default styled.div`
   align-content: center;
-  align-items: middle;
+  align-items: center;
   border-color: ${akColorPrimary3};
   border-radius: 100%;
   border-style: solid;

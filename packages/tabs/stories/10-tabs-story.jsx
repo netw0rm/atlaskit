@@ -4,7 +4,7 @@ import Lorem from 'react-lorem-component';
 import Spinner from '@atlaskit/spinner';
 import { akColorN100 } from '@atlaskit/util-shared-styles';
 
-import Tabs from '../src';
+import Tabs from '@atlaskit/tabs';
 import { name } from '../package.json';
 import HipChatExample from './examples/HipChatExample';
 import OverflowExamples from './examples/OverflowExamples';

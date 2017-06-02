@@ -82,13 +82,12 @@ export const mergeTextNodes = (nodes: Renderable[]) => {
   }, []);
 };
 
-// Only handles space & tab now
-function escapeWhiteSpaces(text: string): string {
-  return text.replace(
-    /(\t| )(\t| )/g,
-    (match, p1, p2) => `${p1}${p2 === '\t' ? '&#09;' : '&nbsp;'}`
-  );
-}
+// Concatenate all text into a single string
+export const stringifyTextNodes = (nodes: Renderable[] = []) => {
+  return nodes.reduce<string>((acc: string, current: Renderable) => {
+    return acc += current.text;
+  }, '');
+};
 
 export const renderTextNodes = (textNodes: TextNode[]) => {
   let currentMarkNode: Renderable;
@@ -96,7 +95,7 @@ export const renderTextNodes = (textNodes: TextNode[]) => {
     if (!node.marks || !node.marks.length) {
       currentMarkNode = {
         type: 'text',
-        text: escapeWhiteSpaces(node.text)
+        text: node.text,
       };
       acc.push(currentMarkNode);
     } else {
@@ -124,7 +123,7 @@ export const renderTextNodes = (textNodes: TextNode[]) => {
 
       currentMarkNode.content!.push({
         type: 'text',
-        text: escapeWhiteSpaces(node.text)
+        text: node.text,
       });
     }
 

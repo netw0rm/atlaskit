@@ -1,19 +1,20 @@
-import { akEditorPopupText } from '../../styles';
-import { style } from 'typestyle';
+import { akColorN10 } from '@atlaskit/util-shared-styles';
+import styled from 'styled-components';
+import FloatingToolbarDefault from '../FloatingToolbar';
 
-export const container = style({
-  $nest: {
-    '& button > span > span:first-child': {
-      color: akEditorPopupText,
-      minWidth: '80px',
-      textAlign: 'left'
-    },
-    '& span[role="menuitem"]': {
-      padding: '0 16px'
+// tslint:disable-next-line:variable-name
+export const FloatingToolbar: any = styled(FloatingToolbarDefault)`
+  background-color: transparent;
+  > div {
+    background-color: ${akColorN10};
+    display: flex;
+    alignItems: center;
+    padding: 4px 8px;
+    button {
+      margin-left: 5px;
+      > span {
+        padding: 7px;
+      }
     }
   }
-});
-
-export const floatingToolbar = style({
-  backgroundColor: 'transparent',
-});
+`;

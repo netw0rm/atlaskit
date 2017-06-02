@@ -230,6 +230,7 @@ describe(name, () => {
         'lock-circle',
         'lock-filled',
         'lock',
+        'log-in',
         'marketplace',
 
         'media-services/actual-size',

@@ -182,5 +182,23 @@ describe(`${name} - smart`, () => {
         expect(onSelectedChange.calledWith({ items: [items[0].items[0], item], action: 'select', changed: item })).to.equal(true);
       });
     });
+
+    describe('handleNewItemCreate', () => {
+      it('should append new item to the list', () => {
+        const newValue = 'new';
+        instance.handleNewItemCreate({ value: newValue });
+        const { items: itemsList } = wrapper.state().items[0];
+        expect(itemsList.length).to.equal(3);
+        expect(itemsList[2].content).to.equal(newValue);
+      });
+
+      it('should make new value selected', () => {
+        const newValue = 'new';
+        instance.handleNewItemCreate({ value: newValue });
+        const { selectedItems } = wrapper.state();
+        expect(selectedItems.length).to.equal(2);
+        expect(selectedItems[1].content).to.equal(newValue);
+      });
+    });
   });
 });

@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import {
   akColorB400,
@@ -19,14 +20,14 @@ export const Item = styled.div`
   line-height: 1.2;
   max-width: 225px;
   min-width: 208px;
-  
+
   ${ellipsis}
 `;
 
 export const ItemWithIcon = styled.div`
   max-width: 177px;
   min-width: 160px;
-  
+
   ${ellipsis}
 `;
 

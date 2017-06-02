@@ -9,9 +9,10 @@ import { BlockType } from '../../plugins/block-type/types';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { EditorView } from '../../prosemirror';
 
-import * as styles from './styles';
+import { ButtonContent } from './styles';
 
 export interface Props {
+  isDisabled?: boolean;
   editorView: EditorView;
   pluginState: BlockTypeState;
   softBlurEditor: () => void;
@@ -59,6 +60,20 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
 
   render() {
     const { active, currentBlockType } = this.state;
+
+    if (this.props.isDisabled) {
+      return (
+        <AkButton
+          isSelected={active}
+          appearance="subtle"
+          isDisabled={true}
+          spacing="compact"
+        >
+          <ButtonContent>{currentBlockType.title}</ButtonContent>
+        </AkButton>
+      );
+    }
+
     const items = this.createItems();
     return (
       <DropdownMenu
@@ -73,7 +88,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           appearance="subtle"
           spacing="compact"
         >
-          <div className={styles.buttonContent}>{currentBlockType.title}</div>
+          <ButtonContent>{currentBlockType.title}</ButtonContent>
         </AkButton>
       </DropdownMenu>
     );

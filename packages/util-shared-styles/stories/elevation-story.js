@@ -9,7 +9,7 @@ import ElevationExampleRaw from '!raw!./examples/elevation';
 /* eslint-enable import/first, import/no-duplicates */
 
 storiesOf(name, module)
-  .add('Elevation Mixin', () => (
+  .add('Mixin: Elevation', () => (
     <Chrome>
       <Description>
         Below are representations of each increment in the elevation mixin:

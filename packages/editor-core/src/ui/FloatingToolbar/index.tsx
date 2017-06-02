@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import OutsideClickable from '../OutsideClickable';
 import Popper, { IPopper } from './../../popper';
-import * as styles from './styles';
+import { Container } from './styles';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 export type Coordniates = { left: number, right: number, top: number, bottom: number };
 
@@ -100,13 +100,13 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
 
     return (
       <OutsideClickable onClick={this.props.onOutsideClick}>
-        <div
-          ref={this.handleOutsideClickableRef}
+        <Container
+          innerRef={this.handleOutsideClickableRef}
           style={{ top: 0, left: 0, position, transform, padding, zIndex: akEditorFloatingPanelZIndex }}
-          className={`${styles.container} ${className || ''}`}
+          className={`${className || ''}`}
         >
           {this.props.children}
-        </div>
+        </Container>
       </OutsideClickable>
     );
   }

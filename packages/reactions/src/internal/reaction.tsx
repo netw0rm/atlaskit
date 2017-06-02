@@ -58,14 +58,18 @@ const emojiStyle = style({
       flex: 'auto',
       width: 'auto',
       minWidth: '24px',
-      height: '20px',
       backgroundSize: '16px 16px',
       verticalAlign: 'middle',
       $nest: {
         '> span': {
           margin: '2px 4px',
-          width: '16px',
-          height: '16px'
+          maxWidth: '16px',
+          maxHeight: '16px'
+        },
+        '> img': {
+          margin: '2px 4px',
+          maxWidth: '16px',
+          maxHeight: '16px'
         }
       }
     }
@@ -140,6 +144,7 @@ export interface Props {
 export interface State {
   showTooltip: boolean;
   startBouncing: boolean;
+  emojiName: string | undefined;
 }
 
 export default class Reaction extends PureComponent<Props, State> {
@@ -152,12 +157,29 @@ export default class Reaction extends PureComponent<Props, State> {
     this.state = {
       showTooltip: false,
       startBouncing: false,
+      emojiName: undefined,
     };
 
     this.timeouts = [];
   }
 
   componentWillMount() {
+    this.props.emojiProvider.then((emojiResource) => {
+      const emojiPromise = emojiResource.findByEmojiId({
+        shortName: '',
+        id: this.props.reaction.emojiId
+      });
+
+      if (emojiPromise) {
+        emojiPromise.then(emoji => {
+          if (emoji) {
+            this.setState({
+              emojiName: emoji.name
+            });
+          }
+        });
+      }
+    });
     this.bounce();
   }
 
@@ -202,7 +224,7 @@ export default class Reaction extends PureComponent<Props, State> {
 
       this.tooltipTimeout = setTimeout(() => this.setState({
         showTooltip: true
-      }), 1000);
+      }), 500);
       this.timeouts.push(this.tooltipTimeout);
     }
   }
@@ -220,6 +242,7 @@ export default class Reaction extends PureComponent<Props, State> {
 
   render() {
     const { emojiProvider, reaction } = this.props;
+    const { emojiName, showTooltip } = this.state;
 
     const classNames = cx(reactionStyle, {
       'reacted': reaction.reacted,
@@ -229,7 +252,7 @@ export default class Reaction extends PureComponent<Props, State> {
     const { users } = reaction;
 
     const emojiId = { id: reaction.emojiId, shortName: '' };
-    const tooltip = this.state.showTooltip && users && users.length ? <ReactionTooltip target={this} users={users} /> : null;
+    const tooltip = showTooltip && users && users.length ? <ReactionTooltip target={this} emojiName={emojiName} users={users} /> : null;
 
     return (
       <button
@@ -239,10 +262,10 @@ export default class Reaction extends PureComponent<Props, State> {
         onMouseOut={this.handleMouseOut}
       >
         {tooltip}
-        <span className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} /></span>
-        <span className={countStyle}>
+        <div className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} /></div>
+        <div className={countStyle}>
           {reaction.count < 100 ? reaction.count : '99+'}
-        </span>
+        </div>
       </button>
     );
   }

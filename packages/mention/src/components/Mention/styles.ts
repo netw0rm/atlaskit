@@ -1,21 +1,21 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 import {
   akColorB400,
   akColorN20,
   akColorN30,
-  akColorN500
+  akColorN500,
 } from '@atlaskit/util-shared-styles';
 
-export const mention = style({
-  background: akColorN30,
-  borderRadius: '20px',
-  color: akColorN500,
-  cursor: 'pointer',
-  padding: '0 4px 2px 3px',
-  whiteSpace: 'nowrap'
-});
+export interface MentionStyleProps {
+  highlighted?: boolean;
+}
 
-export const highlighted = style({
-  background: akColorB400,
-  color: akColorN20
-});
+// tslint:disable:next-line variable-name
+export const MentionStyle = styled.span`
+  background: ${(props: MentionStyleProps) => props.highlighted ? akColorB400 : akColorN30};
+  border-radius: 20px;
+  color: ${(props: MentionStyleProps) => props.highlighted ? akColorN20 : akColorN500};
+  cursor: pointer;
+  padding: 0 4px 2px 3px;
+  white-space: nowrap;
+`;

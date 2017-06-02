@@ -1,15 +1,13 @@
-import {
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
+import { gridSize } from '../shared-variables';
 
 const fullWidth = '100vw';
-const narrowWidth = 45 * akGridSizeUnitless;
-const wideWidth = 75 * akGridSizeUnitless;
+const narrowWidth = 45 * gridSize;
+const wideWidth = 75 * gridSize;
 
-export const boxShadowSpread = akGridSizeUnitless * 4;
+export const boxShadowSpread = gridSize * 4;
 export const transformTransition = 'transform 220ms cubic-bezier(0.15, 1, 0.3, 1)';
 export const widthTransition = 'width 220ms cubic-bezier(0.15, 1, 0.3, 1)';
-export const drawerBackIconSize = akGridSizeUnitless * 5;
+export const drawerBackIconSize = gridSize * 5;
 
 export const widths = {
   narrow: {

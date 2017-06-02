@@ -1,4 +1,4 @@
-import { NodeSpec } from '../../prosemirror';
+import { Node, NodeSpec } from '../../prosemirror';
 
 export const emoji: NodeSpec = {
   inline: true,
@@ -16,6 +16,7 @@ export const emoji: NodeSpec = {
       text: dom.getAttribute('data-emoji-text'),
     })
   }],
+
   toDOM(node: any): [string, any, string] {
     const attrs = {
       'class': 'emoji-node',
@@ -35,6 +36,6 @@ export const emoji: NodeSpec = {
     }
 
     // Don't render any content as the EmojiNode NodeView will take care of display
-    return ['span', attrs, ' '];
+    return ['span', attrs, node.attrs.text];
   }
 };

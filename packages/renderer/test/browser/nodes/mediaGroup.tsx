@@ -2,7 +2,7 @@ import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import { FilmStripNavigator } from '@atlaskit/media-filmstrip';
-import MediaGroup, { LargeCard, CardWrapper } from '../../../src/nodes/mediaGroup';
+import MediaGroup, { LargeCard, CardWrapper, FilmStripWrapper } from '../../../src/nodes/mediaGroup';
 import Media, { MediaNode } from '../../../src/nodes/media';
 
 describe('MediaGroup', () => {
@@ -10,6 +10,11 @@ describe('MediaGroup', () => {
   it('should render a CardWrapper component if the numOfCards prop equals 1', () => {
     const mediaGroup = shallow(<MediaGroup numOfCards={1}/>);
     expect(mediaGroup.find(CardWrapper).length).to.equal(1);
+  });
+
+  it('should render a FilmStripWrapper component if the numOfCards prop is more than 1', () => {
+    const mediaGroup = shallow(<MediaGroup numOfCards={2}/>);
+    expect(mediaGroup.find(FilmStripWrapper).length).to.equal(1);
   });
 
   it('should render children with the proper cardDimensions prop', () => {

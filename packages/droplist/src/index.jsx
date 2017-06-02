@@ -1,9 +1,4 @@
-import './styles.less';
-
-import Item, { SecondaryText } from './item/index';
-import Droplist from './droplist/index';
-import Group from './group/index';
-
-export default Droplist;
-
-export { Item, Group, SecondaryText };
+export { default } from './components/Droplist';
+export { default as Item } from './components/Item';
+export { default as Group } from './components/Group';
+export { SecondaryText } from './styled/Item';

@@ -248,7 +248,7 @@ Note: it automatically runs [linting](#markdown-header-follow-code-style-guideli
 
 
 ## Merge into master
-All new feature code must be completed in a feature branch.
+All new feature code must be completed in a feature branch and have a corresponding Feature or Bug issue in the AtlasKit project. Create your branch off `master` and include both the issue key and brief summary in the branch name like this: `issue/AK-9001-dropdown-click-events-now-propagate-correctly`.
 
 Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the AtlasKit team. Once the pull request has been approved it may be merged into master.
 

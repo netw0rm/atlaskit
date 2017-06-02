@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { getValidNode, renderNode } from '../../../src/nodes';
-import { renderTextNodes, TextNode } from '../../../src/nodes/text';
 
 describe('Nodes', () => {
   describe('getValidNode', () => {
@@ -284,14 +283,5 @@ describe('Nodes', () => {
       expect(rendered.type).to.equal('span');
     });
 
-  });
-
-  describe('renderTextNodes', () => {
-    it('should retain multiple whitespaces', () => {
-      expect(renderTextNodes([{
-        type: 'text',
-        text: 'hello   \t\t\t   \t world!'
-      } as TextNode])[0]).to.equal('hello &nbsp; &#09;\t&#09; &nbsp; &#09; world!');
-    });
   });
 });

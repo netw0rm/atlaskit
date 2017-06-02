@@ -2,8 +2,8 @@ import chai from 'chai';
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
-import TabPane from '../../src/internal/TabPane';
-import styles from '../../src/styles.less';
+import TabPane from '../../src/components/TabPane';
+import TabPaneDiv from '../../src/styled/TabPane';
 import { name } from '../../package.json';
 
 const { expect } = chai;
@@ -27,7 +27,7 @@ describe(name, () => {
       it('should render a container wrapping the content', () => {
         const content = <span>My content</span>;
         const wrapper = shallow(<TabPane>{content}</TabPane>);
-        const container = wrapper.find(`.${styles.akTabPane}`);
+        const container = wrapper.find(TabPaneDiv);
         expect(container.props().children).to.equal(content);
       });
     });
@@ -37,13 +37,13 @@ describe(name, () => {
         it('should default to false and set aria-hidden to true', () => {
           const wrapper = shallow(<TabPane />);
           expect(wrapper.props()['aria-hidden']).to.equal('true');
-          expect(wrapper.find(`.${styles.akTabPane}`).props().className).to.not.contain(styles.selected);
+          expect(wrapper.find(TabPaneDiv).props().selected).to.equal(false);
         });
 
         it('should set aria attribute and styles', () => {
           const wrapper = shallow(<TabPane isSelected />);
           expect(wrapper.props()['aria-hidden']).to.equal('false');
-          expect(wrapper.find(`.${styles.akTabPane}`).props().className).to.contain(styles.selected);
+          expect(wrapper.find(TabPaneDiv).props().selected).to.equal(true);
         });
       });
     });

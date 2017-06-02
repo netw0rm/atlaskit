@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PropTypes } from 'prop-types';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { applyTheme } from './themes/themeBuilder';
+import { normalizeLanguage, languageList } from './supportedLanguages';
+import { Theme, applyTheme } from './themes/themeBuilder';
 
 export interface CodeBlockProps {
+  text: string;
   language?: string;
   showLineNumbers?: boolean;
-  text: string;
-  theme?: object;
+  theme?: Theme;
 }
 
 export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
@@ -16,35 +18,59 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
 
   static propTypes = {
 
-    /** The language in which the code is written */
-    language: 'string',
-
-    /** Whether or not to show line numbers */
-    showLineNumbers: 'bool',
-
     /** The code to be formatted */
-    text: 'string',
+    text: PropTypes.string.isRequired,
+
+    /** The language in which the code is written */
+    language: PropTypes.oneOf(languageList),
+
+    /** Indicates whether or not to show line numbers */
+    showLineNumbers: PropTypes.bool,
 
     /** A custom theme to be applied, implements the Theme interface */
-    theme: 'object'
+    theme: PropTypes.object
   };
 
   static defaultProps = {
     showLineNumbers: true,
+    language: 'md',
     theme: {}
   };
 
+  handleCopy(event) {
+    /**
+     * We don't want to copy the markup after highlighting, but rather the preformatted text in the selection
+     */
+    const data = event.nativeEvent.clipboardData;
+    if (data) {
+      event.preventDefault();
+      const selectedText = window.getSelection().toString();
+      const document = `<!doctype html><html><head></head><body><pre>${selectedText}</pre></body></html>`;
+      data.clearData();
+      data.setData('text/html', document);
+      data.setData('text/plain', selectedText);
+    }
+  }
+
   render() {
+    const { language } = this.props;
     const { lineNumberContainerStyle, codeBlockStyle, codeContainerStyle } = applyTheme(this.props.theme);
+    const props = {
+      language: normalizeLanguage(language),
+      style: codeBlockStyle,
+      showLineNumbers: this.props.showLineNumbers,
+      PreTag: 'span',
+      codeTagProps: { style: codeContainerStyle },
+      lineNumberContainerStyle
+    };
+    const codeText = this.props.text.toString();
+
     return (
       <SyntaxHighlighter
-        language={this.props.language}
-        style={codeBlockStyle}
-        lineNumberContainerStyle={lineNumberContainerStyle}
-        showLineNumbers={this.props.showLineNumbers}
-        codeTagProps={{style: codeContainerStyle}}
+        {...props}
+        onCopy={this.handleCopy}
       >
-        {this.props.text.toString()}
+        {codeText}
       </SyntaxHighlighter>
     );
   }

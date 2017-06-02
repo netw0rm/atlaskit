@@ -291,6 +291,24 @@ export const document = {
       type: 'paragraph',
       content: [
         {
+          type: 'text',
+          text: 'some inline code: '
+        },
+        {
+          type: 'text',
+          text: 'const foo = bar();',
+          marks: [
+            {
+              type: 'code'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
           type: 'unkown type',
           attrs: {
             text: 'fallback text'
@@ -362,6 +380,15 @@ export const document = {
       ]
     },
     {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
       type: 'mediaGroup',
       content: [
         {
@@ -369,6 +396,27 @@ export const document = {
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        }
+      ]
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
             collection: 'MediaServicesSample'
           }
         }
@@ -423,6 +471,35 @@ export const document = {
           ]
         }
       ]
+    },
+    {
+      type: 'codeBlock',
+      content: [
+        {
+          type: 'text',
+          text: `// Create a map.
+final IntIntOpenHashMap map = new IntIntOpenHashMap();
+map.put(1, 2);
+map.put(2, 5);
+map.put(3, 10);`
+        },
+        {
+          type: 'text',
+          text: `
+int count = map.forEach(new IntIntProcedure()
+{
+   int count;
+   public void apply(int key, int value)
+   {
+       if (value >= 5) count++;
+   }
+}).count;
+System.out.println("There are " + count + " values >= 5");`
+        }
+      ],
+      attrs: {
+        language: 'javascript'
+      }
     },
     {
       type: 'heading',

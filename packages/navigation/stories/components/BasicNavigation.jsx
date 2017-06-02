@@ -4,6 +4,7 @@ import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowleftIcon } from '@atlaskit/icon';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
+import Tooltip from '@atlaskit/tooltip';
 import BasicSearch from './BasicSearch';
 import Navigation, { AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
@@ -19,6 +20,8 @@ export default class BasicNavigation extends PureComponent {
     createDrawerContent: PropTypes.node,
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     onResizeCallback: PropTypes.func,
+    globalAppearance: PropTypes.string,
+    containerAppearance: PropTypes.string,
   }
 
   static defaultProps = {
@@ -108,7 +111,7 @@ export default class BasicNavigation extends PureComponent {
 
         items={[
           {
-            heading: 'Joshua Nelson',
+            heading: 'Luke Skywalker',
             items: [
               { content: 'View profile' },
               { content: 'Manage Atlassian account' },
@@ -164,17 +167,19 @@ export default class BasicNavigation extends PureComponent {
   }
 
   render() {
-    const backIcon = <ArrowleftIcon label="Back icon" size="medium" />;
+    const backIcon = <Tooltip position="right" description="Back"><ArrowleftIcon label="Back icon" size="medium" /></Tooltip>;
     const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
+        containerAppearance={this.props.containerAppearance}
+        globalAppearance={this.props.globalAppearance}
         backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
-        globalCreateIcon={<AddIcon size="small" label="Create icon" />}
+        globalCreateIcon={<Tooltip position="right" description="Create"><AddIcon size="small" label="Create icon" /></Tooltip>}
         globalPrimaryIcon={globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
-        globalSearchIcon={<SearchIcon label="Search icon" />}
+        globalSearchIcon={<Tooltip position="right" description="Search"><SearchIcon label="Search icon" /></Tooltip>}
         globalSecondaryActions={this.props.globalSecondaryActions}
         drawers={[
           (<AkSearchDrawer

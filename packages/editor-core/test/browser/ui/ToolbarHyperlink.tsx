@@ -40,4 +40,17 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     toolbarHyperlink.find(ToolbarButton).simulate('click');
     expect(pluginState.showToolbarPanel).to.equal(false);
   });
+
+  it('should render disabled ToolbarButton if disabled property is true', () => {
+    const { editorView, pluginState } = editor(doc(p('text')));
+    const toolbarTextColor = mount(
+      <ToolbarHyperlink
+        disabled={true}
+        pluginState={pluginState}
+        editorView={editorView}
+      />
+    );
+
+    expect(toolbarTextColor.find(ToolbarButton).prop('disabled')).to.equal(true);
+  });
 });

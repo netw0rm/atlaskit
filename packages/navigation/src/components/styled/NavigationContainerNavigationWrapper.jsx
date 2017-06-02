@@ -14,5 +14,8 @@ export default styled.div`
   /* allowing the container to collapse down to its min width */
   min-width: ${containerClosedWidth}px;
   ${getTransform}
+
+   /* make full height */
+  display: flex;
 `;
 

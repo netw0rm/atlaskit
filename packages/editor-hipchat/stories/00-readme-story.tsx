@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import Readme, { Code, Heading } from '@atlaskit/util-readme';
 import * as React from 'react';
 
-import * as SchemaRaw from '!raw!../src/schema.ts';
+import * as SchemaRaw from '!raw!../src/schema/schema.ts';
 import * as exampleMediaServicesFileJson from '!raw!./examples/mediaservices-file.json';
 import * as exampleMessageJson from '!raw!./examples/message.json';
 import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';

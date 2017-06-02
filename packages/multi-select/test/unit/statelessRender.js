@@ -10,6 +10,7 @@ import NothingWasFound from '../../src/internal/NothingWasFound';
 import styles from '../../src/styles.less';
 import { StatelessMultiSelect } from '../../src';
 import Trigger from '../../src/internal/Trigger';
+import Footer from '../../src/internal/Footer';
 
 import { name } from '../../package.json';
 
@@ -49,6 +50,19 @@ describe(`${name} - stateless`, () => {
     it('should render Trigger inside Fieldbase', () => {
       expect(mount(<StatelessMultiSelect />).find(Trigger).length).to.equal(1);
       expect(mount(<StatelessMultiSelect />).find(FieldBase).find(Trigger).length).to.equal(1);
+    });
+
+    it('should render Footer if shouldAllowCreateItem is true and the search value is not empty', () => {
+      expect(mount(<StatelessMultiSelect filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).to.equal(1);
+    });
+
+    it('should NOT render Footer if shouldAllowCreateItem is false', () => {
+      expect(mount(<StatelessMultiSelect filterValue="test" isOpen />).find(Footer).length).to.equal(0);
+    });
+
+    it('should render search text and label in the footer when shouldAllowCreateItem is true', () => {
+      const wrapper = mount(<StatelessMultiSelect createNewItemLabel="new" filterValue="test" isOpen shouldAllowCreateItem />);
+      expect(wrapper.find(Footer).text()).to.equal('test (new)');
     });
 
     describe('groups and items', () => {

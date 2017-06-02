@@ -1,3 +1,4 @@
+// @flow
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 export const AVATAR_SIZES = {

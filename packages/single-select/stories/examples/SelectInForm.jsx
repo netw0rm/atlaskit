@@ -74,6 +74,16 @@ export default (
       hasAutocomplete
     />
     <Select
+      id="invalid_id"
+      invalidMessage="This is a error message"
+      isInvalid
+      items={colors}
+      label="Invalid field"
+      name="invalid"
+      placeholder="Select color"
+      shouldFitContainer
+    />
+    <Select
       id="colors_id"
       items={cities}
       label="Disabled autocomplete field"

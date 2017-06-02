@@ -18,7 +18,6 @@ chai.use(chaiPlugin);
 
 describe('media', () => {
   const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers);
-  const rejectedProvider = Promise.reject(new Error('foo'));
   const noop = () => {};
 
   it('should show media icon if provider is set', async () => {
@@ -63,6 +62,8 @@ describe('media', () => {
   });
 
   it('should hide media icon if provider setting promise has been updated to rejected', async () => {
+    const rejectedProvider = Promise.reject(new Error('foo'));
+
     const editor = mount(<Editor
       isExpandedByDefault={true}
       mediaProvider={resolvedProvider}
@@ -83,6 +84,8 @@ describe('media', () => {
   });
 
   it('should show media icon if provider setting promise has been updated to resolved', async () => {
+    const rejectedProvider = Promise.reject(new Error('foo'));
+
     const editor = mount(<Editor
       isExpandedByDefault={true}
       mediaProvider={rejectedProvider}

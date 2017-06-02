@@ -5,7 +5,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
 import Editor from './editor';
-import * as styles from './styles';
+import { Content } from './styles';
 import { name } from '../package.json';
 import * as v1schema from '../src/json-schema/v1.json';
 import imageUploadHandler from '../stories/imageUpload/handler';
@@ -79,7 +79,7 @@ class DemoEditor extends React.PureComponent<Props, State> {
   render() {
     const { mentionProvider, emojiProvider, jsonDocument } = this.state;
     return (
-      <div className={styles.content}>
+      <Content>
         <Editor
           imageUploadHandler={imageUploadHandler}
           analyticsHandler={analyticsHandler}
@@ -100,18 +100,18 @@ class DemoEditor extends React.PureComponent<Props, State> {
           <button onClick={this.extractDocument}>Extract document</button>
         </div>
         <pre>{jsonDocument}</pre>
-      </div>
+      </Content>
     );
   }
 }
 
 storiesOf(name, module)
   .add('Example editor', () => (
-    <div className={styles.content} >
+    <Content>
       <DemoEditor
         onChange={this.fetchEditorState}
       />
-    </div>
+    </Content>
   ))
   .add('v1 JSON Schema', () => (
     <pre><code className="json">{jsonPretty(v1schema)}</code></pre>

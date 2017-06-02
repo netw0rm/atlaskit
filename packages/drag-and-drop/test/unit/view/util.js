@@ -26,3 +26,7 @@ export const liftWithMouse = (wrapper: ReactWrapper<any>,
   options?: Object = {},
 ): void =>
   wrapper.simulate('mousedown', { button, clientX, clientY, ...options });
+
+export const withKeyboard = (key: string): Function =>
+  (wrapper: ReactWrapper<any>, options?: Object = {}) =>
+    wrapper.simulate('keydown', { key, ...options });

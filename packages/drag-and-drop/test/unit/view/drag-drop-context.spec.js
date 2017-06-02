@@ -8,12 +8,13 @@ import TestUtils from 'react-addons-test-utils';
 import { dragDropContext, draggable, droppable } from '../../../src/';
 import DragHandle from '../../../src/view/drag-handle/drag-handle';
 import storeKey from '../../../src/state/get-store-key';
-import { dispatchWindowMouseEvent, liftWithMouse } from './util';
+import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from './util';
 import type { DraggableLocation, DraggableId, DroppableId } from '../../../src/types';
 import type { Hooks } from '../../../src/view/drag-drop-context/hooks';
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
+const cancelWithKeyboard = withKeyboard('Escape');
 
 class App extends PureComponent {
   // Part of react's api is to use flow types for this.
@@ -176,8 +177,9 @@ describe.only('DragDropContext', () => {
       }
     });
 
-    const startDrag = () => {
-      liftWithMouse(
+    const drag = (() => {
+      const start = () => {
+        liftWithMouse(
           wrapper.find(DragHandle),
           itemBox.left + 1,
           itemBox.bottom + 1
@@ -185,16 +187,37 @@ describe.only('DragDropContext', () => {
         // Need to wait for the nested async lift action to complete
         // this takes two async actions. However, this caller should not
         // know that - so ticking '10ms' to indicate that this is a nested async
-      clock.tick(10);
-    };
+        clock.tick(10);
+      };
 
-    const stopDrag = () => {
-      windowMouseUp();
-    };
+      const move = () => windowMouseMove(10, 20);
+
+      const stop = () => {
+        windowMouseUp();
+
+        // flush the return to home animation
+        requestAnimationFrame.flush();
+
+        // animation finishing waits a tick before calling the callback
+        clock.tick();
+      };
+
+      const cancel = () => {
+        cancelWithKeyboard(wrapper.find(DragHandle));
+      };
+
+      const perform = () => {
+        start();
+        move();
+        stop();
+      };
+
+      return { start, move, stop, cancel, perform };
+    })();
 
     describe('drag start', () => {
       it('should call the onDragStart hook when a drag starts', () => {
-        startDrag();
+        drag.start();
 
         const args = hooks.onDragStart.args[0];
         const start: DraggableLocation = {
@@ -207,11 +230,10 @@ describe.only('DragDropContext', () => {
       });
 
       it('should not call onDragStart while the drag is occurring', () => {
-        startDrag();
+        drag.start();
         expect(hooks.onDragStart.calledOnce).to.equal(true);
 
-        // move around a little
-        windowMouseMove(10, 20);
+        drag.move();
 
         // should not have called on drag start again
         expect(hooks.onDragStart.calledOnce).to.equal(true);
@@ -220,26 +242,33 @@ describe.only('DragDropContext', () => {
 
     describe('on drag end', () => {
       it('should call the onDragEnd hook when a drag ends', () => {
-        startDrag();
-        windowMouseMove(10, 20);
-        stopDrag();
+        drag.perform();
 
         expect(hooks.onDragEnd.called).to.equal(true);
       });
 
       it('should call the onDragEnd hook when a drag ends when instantly stopped', () => {
-        startDrag();
-        stopDrag();
+        drag.start();
+        drag.stop();
 
         expect(hooks.onDragEnd.called).to.equal(true);
       });
 
-      it('should call onDragEnd when a drag is canceled', () => {
+      it.only('should call onDragEnd when a drag is canceled', () => {
+        drag.start();
+        drag.cancel();
 
+        expect(hooks.onDragEnd.called).to.equal(true);
       });
 
-      it('should call onDragStart when another drag starts again', () => {
+      it('should allow subsequent drags', () => {
+        drag.perform();
+        expect(hooks.onDragStart.calledOnce).to.equal(true);
+        expect(hooks.onDragEnd.calledOnce).to.equal(true);
 
+        drag.perform();
+        expect(hooks.onDragStart.calledTwice).to.equal(true);
+        expect(hooks.onDragEnd.calledTwice).to.equal(true);
       });
     });
   });

@@ -35,7 +35,7 @@ const shout = (message, ...rest) => {
   console.log('payload:', ...rest);
 };
 
-const cancel = () => initialState;
+const reset = () => initialState;
 
 export default (state: State = initialState, action: Action): State => {
   shout(`reducing ${action.type}`, action.payload ? action.payload : 'no payload');
@@ -234,8 +234,8 @@ export default (state: State = initialState, action: Action): State => {
 
   if (action.type === 'DROP') {
     if (state.currentDrag == null) {
-      console.log('not dropping as there is nothing dragging in the state');
-      return cancel();
+      console.error('not dropping as there is nothing dragging in the state');
+      return reset();
     }
 
     const { impact, dragging } = state.currentDrag;
@@ -303,7 +303,7 @@ export default (state: State = initialState, action: Action): State => {
   }
 
   if (action.type === 'CANCEL') {
-    return cancel();
+    return reset();
   }
 
   return state;

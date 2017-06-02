@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import DragHandle, { getCursor } from '../../../src/view/drag-handle/drag-handle';
 import type { Callbacks } from '../../../src/view/drag-handle';
 import createDragHandle from '../../../src/view/drag-handle/';
-import { dispatchWindowMouseEvent, liftWithMouse } from './util';
+import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from './util';
 
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
@@ -29,10 +29,6 @@ const getStubCallbacks = (): Callbacks => ({
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const windowMouseDown = dispatchWindowMouseEvent.bind(null, 'mousedown');
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
-
-const withKeyboard = (key: string): Function =>
-  (wrapper: ReactWrapper<any>, options?: Object = {}) =>
-    wrapper.simulate('keydown', { key, ...options });
 
 const liftWithKeyboard = withKeyboard(' ');
 const dropWithKeyboard = withKeyboard(' ');

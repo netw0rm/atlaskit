@@ -8,6 +8,7 @@ export const EditableCardOptions = styled.div`
 
 export const SliderWrapper = styled.div`
   display: flex;
+  width: 50%;
 
   > * {
     flex: 1;
@@ -23,3 +24,16 @@ export const EditableCardContent = styled.div`
   flex-direction: column;
 `;
 
+export const OptionsWrapper = styled.div`
+  display: flex;
+
+  > * {
+    flex: 1;
+    margin: 10px;
+  }
+`;
+
+export const CardDimensionsWrapper = styled.div`
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
+`;

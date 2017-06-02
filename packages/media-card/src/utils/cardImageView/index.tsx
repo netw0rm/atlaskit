@@ -1,3 +1,7 @@
+/**
+ * This is actually the Class that contains the View logic.
+ * Overlay, Content, dimensions logic lives here.
+ */
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
@@ -59,6 +63,20 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return getCSSUnitValue(height);
   }
 
+  private get breakpointClassName(): string {
+    const width = parseInt(this.width, 0);
+
+    if (width < 173) {
+      return 'small-breakpoint';
+    } else if (width < 225) {
+      return 'medium-breakpoint';
+    } else if (width < 300) {
+      return 'large-breakpoint';
+    }
+
+    return 'xlarge';
+  }
+
   private isDownloadingOrProcessing() {
     const {status} = this.props;
     return status === 'loading' || status === 'processing';
@@ -73,7 +91,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     const cardStyle = this.cardStyle;
 
     return (
-      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter}>
+      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter} className={this.breakpointClassName}>
         {this.getCardContents()}
       </Wrapper>
     );

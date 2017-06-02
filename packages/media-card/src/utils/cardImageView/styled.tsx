@@ -12,6 +12,13 @@ export const Card = styled(Root)`
   line-height: normal;
   position: relative;
 
+  &.small-breakpoint {
+    .top-row {
+      padding-top: 16px;
+      padding-left: 16px;
+    }
+  }
+
   .wrapper {
     ${borderRadius}
     background: ${akColorN20};

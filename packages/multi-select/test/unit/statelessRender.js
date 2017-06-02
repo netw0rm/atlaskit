@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Label, FieldBase } from '@atlaskit/field-base';
+import { Label, FieldBaseStateless as FieldBase } from '@atlaskit/field-base';
 import Avatar from '@atlaskit/avatar';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import Tag from '@atlaskit/tag';
@@ -192,7 +192,7 @@ describe(`${name} - stateless`, () => {
       it('should filter selected items by their values not reference', () => {
         const select = mount(<StatelessMultiSelect
           items={items}
-          selectedItems={[{ value: 2 }]}
+          selectedItems={[{ content: 'new', value: 2 }]}
           isOpen
         />);
 

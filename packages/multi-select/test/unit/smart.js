@@ -138,7 +138,7 @@ describe(`${name} - smart`, () => {
 
       it('should call selectItem when an item was added', () => {
         const spy = sinon.spy(instance, 'selectItem');
-        instance.selectedChange({ content: 'something new' });
+        instance.selectedChange({ content: 'something new', value: 2 });
         expect(spy.called).to.equal(true);
       });
     });
@@ -165,19 +165,19 @@ describe(`${name} - smart`, () => {
 
     describe('selectItem', () => {
       it('should add the item and set the new selectedItems state', () => {
-        const item = { content: 'new' };
+        const item = { content: 'new', value: 2 };
         instance.selectItem(item);
         expect(wrapper.state().selectedItems).to.deep.equal([items[0].items[0], item]);
       });
 
       it('should add the item and call onSelectedChange', () => {
-        const item = { content: 'new' };
+        const item = { content: 'new', value: 2 };
         instance.selectItem(item);
         expect(onSelectedChange.callCount).to.equal(1);
       });
 
       it('onSelectedChange should be called with the correct params', () => {
-        const item = { content: 'new' };
+        const item = { content: 'new', value: 2 };
         instance.selectItem(item);
         expect(onSelectedChange.calledWith({ items: [items[0].items[0], item], action: 'select', changed: item })).to.equal(true);
       });

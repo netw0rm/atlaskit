@@ -347,7 +347,7 @@ export default class Editor extends PureComponent<Props, State> {
           if (html) {
             const doc = parse(html.replace(/^<meta[^>]+>/, ''));
             view.dispatch(
-              view.state.tr.replaceSelection(new Slice(doc.content, slice.openLeft, slice.openRight))
+              view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
             );
             return true;
           }

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
-import { Label, FieldBase } from '@atlaskit/field-base';
+import FieldBase, { Label } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import { mapAppearanceToFieldBase } from './appearances';
 import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
@@ -45,6 +45,8 @@ export default class StatelessSelect extends PureComponent {
     hasAutocomplete: PropTypes.bool,
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
+    /** message to show on the dialog when isInvalid is true */
+    invalidMessage: PropTypes.node,
     /** Sets whether the select is selectable. Changes hover state. */
     isDisabled: PropTypes.bool,
     /** controls the top margin of the label component rendered. */
@@ -65,12 +67,12 @@ export default class StatelessSelect extends PureComponent {
     label: PropTypes.string,
     /** name property to be passed to the html select element. */
     name: PropTypes.string,
-    /** Mesage to display in any group in items if there are no items in it,
+    /** Message to display in any group in items if there are no items in it,
     including if there is one item that has been selected. */
     noMatchesFound: PropTypes.string,
     /** Handler called when a selection is made, with the item chosen. */
     onSelected: PropTypes.func,
-    /** Handler to be called when the filtered items changes.*/
+    /** Handler to be called when the filtered items changes. */
     onFilterChange: PropTypes.func,
     /** Handler called when the select is opened or closed. Called with an object
     that has both the event, and the new isOpen state. */
@@ -106,12 +108,10 @@ export default class StatelessSelect extends PureComponent {
     selectedItem: {},
   }
 
-  state = {
-    isFocused: this.props.isOpen,
-  }
+  state = { }
 
   componentDidMount = () => {
-    if (this.state.isFocused) {
+    if (this.props.isOpen) {
       this.focus();
     }
 
@@ -127,19 +127,6 @@ export default class StatelessSelect extends PureComponent {
 
     if (!this.props.droplistShouldFitContainer && this.droplistNode) {
       this.setDroplistMinWidth();
-    }
-  }
-
-  onFocus = () => {
-    if (!this.props.isDisabled) {
-      this.setState({ isFocused: true });
-      this.focus();
-    }
-  }
-
-  onBlur = () => {
-    if (!this.props.isDisabled) {
-      this.setState({ isFocused: false });
     }
   }
 
@@ -444,6 +431,7 @@ export default class StatelessSelect extends PureComponent {
       filterValue,
       hasAutocomplete,
       id,
+      invalidMessage,
       isDisabled,
       isFirstChild,
       isInvalid,
@@ -487,11 +475,9 @@ export default class StatelessSelect extends PureComponent {
               appearance={mapAppearanceToFieldBase([appearance])}
               isDisabled={isDisabled}
               isFitContainerWidthEnabled
-              isFocused={isOpen || this.state.isFocused}
               isInvalid={isInvalid}
+              invalidMessage={invalidMessage}
               isPaddingDisabled
-              onBlur={this.onBlur}
-              onFocus={this.onFocus}
             >
               <Trigger
                 onClick={this.handleTriggerClick}

@@ -1,15 +1,9 @@
 import {
-  code as codeBase,
   MarkSpec,
   NodeSpec,
   Schema,
   createSchema
 } from '@atlaskit/editor-core';
-
-const code = {
-  ...codeBase,
-  excludes: 'em strike strong underline'
-};
 
 export interface JIRASchemaNodes {
   blockquote?: NodeSpec;
@@ -24,6 +18,8 @@ export interface JIRASchemaNodes {
   paragraph: NodeSpec;
   rule: NodeSpec;
   text: NodeSpec;
+  media: NodeSpec;
+  mediaGroup: NodeSpec;
 }
 
 export interface JIRASchemaMarks {
@@ -47,6 +43,7 @@ export interface JIRASchemaConfig {
   allowCodeBlock?: boolean;
   allowBlockQuote?: boolean;
   allowSubSup?: boolean;
+  allowMedia?: boolean;
 }
 
 export function isSchemaWithLists(schema: JIRASchema): boolean {
@@ -77,10 +74,13 @@ export function isSchemaWithBlockQuotes(schema: JIRASchema): boolean {
   return !!schema.nodes.blockquote;
 }
 
+export function isSchemaWithMedia(schema: JIRASchema): boolean {
+  return !!schema.nodes.mediaGroup && !!schema.nodes.media;
+}
+
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   const nodes = ['doc', 'paragraph', 'text', 'hardBreak', 'heading', 'rule'];
   const marks = ['strong', 'em', 'underline'];
-  const customMarkSpecs: {[name: string]: any} = {};
 
   if (config.allowLinks) {
     marks.push('link');
@@ -96,8 +96,7 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   }
 
   if (config.allowAdvancedTextFormatting) {
-    marks.push('strike');
-    customMarkSpecs.code = code;
+    marks.push('strike', 'code');
   }
 
   if (config.allowSubSup) {
@@ -112,5 +111,9 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
     nodes.push('blockquote');
   }
 
-  return createSchema({ nodes, marks, customMarkSpecs });
+  if (config.allowMedia) {
+    nodes.push('mediaGroup', 'media');
+  }
+
+  return createSchema({ nodes, marks });
 }

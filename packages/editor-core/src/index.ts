@@ -40,4 +40,9 @@ export {
   baseKeymap,
   keymap,
 } from './prosemirror';
-export { toJSON } from './utils';
+export {
+  ErrorReporter,
+  ErrorReportingHandler,
+  toJSON,
+} from './utils';
+export { colorPalette } from './schema/marks/text-color';

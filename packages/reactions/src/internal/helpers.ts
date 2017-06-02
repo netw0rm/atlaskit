@@ -40,7 +40,7 @@ const isEmojiId = (emojiId: EmojiId | string): emojiId is EmojiId => {
 };
 
 export const compareEmojiId = (l: string, r: string): number => {
-  return l > r ? 1 : 0;
+  return l.localeCompare(r);
 };
 
 export const sortReactions = (a: ReactionSummary, b: ReactionSummary) => {

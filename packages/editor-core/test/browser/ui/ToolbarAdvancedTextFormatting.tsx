@@ -23,11 +23,11 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     });
 
     it('should render disabled ToolbarButton if both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
-
         const { editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
           <ToolbarAdvancedTextFormatting editorView={editorView} focusEditor={noop} softBlurEditor={noop} />
         );
+
         expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
     });
 

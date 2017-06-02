@@ -16,6 +16,7 @@ export interface Props {
   pluginState: TextColorState;
   softBlurEditor: () => void;
   focusEditor: () => void;
+  disabled?: boolean;
 }
 
 export interface State {
@@ -44,13 +45,13 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
 
     return (
       <DropdownList
-        isOpen={isOpen && !disabled}
+        isOpen={isOpen && !disabled && !this.props.disabled}
         onOpenChange={this.handleOpenChange}
         appearance="tall"
         position="top left"
         trigger={
           <ToolbarButton
-            disabled={disabled}
+            disabled={disabled || this.props.disabled}
             selected={isOpen}
             title="Text color"
             onClick={this.toggleOpen}

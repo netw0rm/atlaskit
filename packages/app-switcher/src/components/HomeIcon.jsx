@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 
 /* eslint-disable react/prefer-stateless-function */

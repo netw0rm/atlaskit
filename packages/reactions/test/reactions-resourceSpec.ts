@@ -339,6 +339,16 @@ describe('@atlaskit/reactions/reactions-provider', () => {
           });
     });
 
+    it('should not query if request already in flight', () => {
+      const firstCall = reactionsProvider.fetchReactionDetails(reaction);
+
+      const spy = sinon.spy(reactionsProvider, 'getDetailedReaction');
+      const secondCall = reactionsProvider.fetchReactionDetails(reaction);
+      expect(spy.called).to.equal(false);
+      expect(secondCall).to.equal(firstCall);
+      spy.restore();
+    });
+
   });
 });
 

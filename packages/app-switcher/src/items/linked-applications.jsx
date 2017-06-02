@@ -1,7 +1,13 @@
+// @flow
 import React from 'react';
 import { Item, Link } from '../styled';
+import type { Translations, LinkedApplications, DropdownConfig } from '../internal/types';
 
-export default function (i18n, isAnonymousUser, linkedApplications) {
+export default function (
+  i18n: Translations,
+  isAnonymousUser: boolean,
+  linkedApplications: LinkedApplications
+): DropdownConfig {
   if (linkedApplications.error) {
     return {
       heading: i18n.apps,

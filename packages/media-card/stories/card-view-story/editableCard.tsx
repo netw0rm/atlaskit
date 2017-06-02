@@ -89,8 +89,8 @@ export const generateStoriesForEditableCards = () => {
         {value: 'processing', label: 'processing'},
         {value: 'error', label: 'error'}
       ];
-      const width = parseInt(dimensions.width, 0);
-      const height = parseInt(dimensions.height, 0);
+      const width = parseInt(`${dimensions.width}`, 0);
+      const height = parseInt(`${dimensions.height}`, 0);
       const menuActions = hasActions ? actions : undefined;
 
       return (

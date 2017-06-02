@@ -2,15 +2,12 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import SearchInner from '../styled/SearchInner';
 import SearchBox from '../styled/SearchBox';
-import SearchClearButtonOuter from '../styled/SearchClearButtonOuter';
-import SearchClearButton from '../styled/SearchClearButton';
 import SearchResults from '../styled/SearchResults';
 import SearchInput from '../styled/SearchInput';
 
 export default class Search extends PureComponent {
   static propTypes = {
     placeholder: PropTypes.string,
-    clearIcon: PropTypes.node,
     children: PropTypes.node,
     onChange: PropTypes.func.isRequired,
     onSearchClear: PropTypes.func,
@@ -19,24 +16,6 @@ export default class Search extends PureComponent {
 
   static defaultProps = {
     placeholder: 'Search',
-  }
-
-  // Attaching a mouse down handler to the whole search box rather than
-  // just the button. This is done so that the input field never looses
-  // focus when the user is clearing the input. This is really useful
-  // on devices that close the keyboard input if the text field looses
-  // focus.
-  onSearchBoxMouseDown = (event) => {
-    const { target } = event;
-    const shouldClearInput = target === this.clearButtonRef ||
-                             this.clearButtonRef.contains(target);
-
-    if (!shouldClearInput) {
-      return;
-    }
-
-    event.preventDefault();
-    this.clear();
   }
 
   // clear the input when the user hits Escape
@@ -51,10 +30,6 @@ export default class Search extends PureComponent {
 
   setInputRef = (ref) => {
     this.inputRef = ref;
-  }
-
-  setClearButtonRef = (ref) => {
-    this.clearButtonRef = ref;
   }
 
   clear() {
@@ -78,6 +53,7 @@ export default class Search extends PureComponent {
       onChange,
       placeholder,
     } = this.props;
+
     return (
       <SearchInner>
         <SearchBox
@@ -93,21 +69,6 @@ export default class Search extends PureComponent {
             value={value}
             onKeyDown={this.onInputKeyDown}
           />
-          <SearchClearButtonOuter>
-            {/*
-              Actively preventing tabbing to the close button
-              so that users can tab directly to results.
-              Users can still clear the input with the keyboard
-              by pressing 'Escape'.
-            */}
-            <SearchClearButton
-              type="button"
-              tabIndex="-1"
-              innerRef={this.setClearButtonRef}
-            >
-              {this.props.clearIcon}
-            </SearchClearButton>
-          </SearchClearButtonOuter>
         </SearchBox>
         <SearchResults>
           {children}

@@ -10,6 +10,7 @@ import {
   mentionsPlugins,
   rulePlugins,
   textFormattingPlugins,
+  textColorPlugins,
   listsPlugins,
   blockTypeStateKey,
   clearFormattingStateKey,
@@ -17,6 +18,7 @@ import {
   hyperlinkStateKey,
   mentionsStateKey,
   textFormattingStateKey,
+  textColorStateKey,
   listsStateKey,
   ContextName,
   EditorState,
@@ -57,6 +59,7 @@ import {
   isSchemaWithLinks,
   isSchemaWithMentions,
   isSchemaWithMedia,
+  isSchemaWithTextColor,
   makeSchema,
 } from './schema';
 import { version, name } from './version';
@@ -79,6 +82,7 @@ export interface Props {
   allowAdvancedTextFormatting?: boolean;
   allowBlockQuote?: boolean;
   allowSubSup?: boolean;
+  allowTextColor?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
   mediaProvider ?: Promise<MediaProvider>;
@@ -105,7 +109,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const {
       allowLists, allowLinks, allowAdvancedTextFormatting,
-      allowCodeBlock, allowBlockQuote, allowSubSup,
+      allowCodeBlock, allowBlockQuote, allowSubSup, allowTextColor,
 
       analyticsHandler,
 
@@ -123,6 +127,7 @@ export default class Editor extends PureComponent<Props, State> {
       allowCodeBlock: !!allowCodeBlock,
       allowBlockQuote: !!allowBlockQuote,
       allowSubSup: !!allowSubSup,
+      allowTextColor: !!allowTextColor,
       allowMedia: !!mediaProvider,
     });
 
@@ -237,6 +242,7 @@ export default class Editor extends PureComponent<Props, State> {
     const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
     const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const textColorState = editorState && textColorStateKey.getState(editorState);
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
     const mediaState = editorState && mediaProvider && this.mediaPlugins && mediaStateKey.getState(editorState);
@@ -255,6 +261,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateCodeBlock={codeBlockState}
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
+        pluginStateTextColor={textColorState}
         pluginStateClearFormatting={clearFormattingState}
         pluginStateMentions={mentionsState}
         pluginStateHyperlink={hyperlinkState}
@@ -319,6 +326,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...rulePlugins(schema as Schema<any, any>),
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
           ...textFormattingPlugins(schema as Schema<any, any>),
+          ...(isSchemaWithTextColor(schema) ? textColorPlugins(schema as Schema<any, any>) : []),
           ...reactNodeViewPlugins(schema as Schema<any, any>),
           history(),
           keymap(jiraKeymap),

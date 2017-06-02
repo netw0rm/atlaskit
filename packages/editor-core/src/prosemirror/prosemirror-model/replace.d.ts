@@ -3,11 +3,11 @@ import { ContentMatch, Fragment, Mark, MarkType, NodeType, ResolvedPos, Schema }
 export class ReplaceError extends Error {}
 
 export class Slice {
-  constructor(content: Fragment, openLeft: number, openRight: number);
+  constructor(content: Fragment, openStart: number, openEnd: number);
 
   content: Fragment;
-  openLeft: number;
-  openRight: number;
+  openStart: number;
+  openEnd: number;
   size: number;
   toJSON(): { [key: string]: any } | null;
 

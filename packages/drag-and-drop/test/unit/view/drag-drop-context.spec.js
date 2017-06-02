@@ -9,7 +9,7 @@ import { dragDropContext, draggable, droppable } from '../../../src/';
 import DragHandle from '../../../src/view/drag-handle/drag-handle';
 import storeKey from '../../../src/state/get-store-key';
 import { dispatchWindowMouseEvent, liftWithMouse } from './util';
-import type { DraggableLocation } from '../../../src/types';
+import type { DraggableLocation, DraggableId, DroppableId } from '../../../src/types';
 import type { Hooks } from '../../../src/view/drag-drop-context/hooks';
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');

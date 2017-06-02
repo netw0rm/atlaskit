@@ -85,6 +85,7 @@ const makeSelector = (provide: Provide) => {
           }
 
           // waiting for animation to finish
+          // $ExpectError - flow does not play well with spread
           return {
             ...getDefaultProps(id, isDragEnabled),
             isDropAnimating: true,
@@ -106,6 +107,7 @@ const makeSelector = (provide: Provide) => {
           const amount = movement.isMovingForward ?
             -movement.amount : movement.amount;
 
+          // $ExpectError - flow does not play well with spread
           return {
             ...getDefaultProps(id, isDragEnabled),
             offset: memoizedOffset(0, amount),
@@ -144,6 +146,7 @@ const makeSelector = (provide: Provide) => {
         const amount = movement.isMovingForward ?
           -movement.amount : movement.amount;
 
+        // $ExpectError - flow does not play well with spread
         return {
           ...getDefaultProps(id, isDragEnabled),
           offset: memoizedOffset(0, amount),

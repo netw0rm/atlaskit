@@ -5,7 +5,6 @@ import type { Dimension, Position } from '../../types';
 import type { Props } from './dimension-publisher-types';
 
 const getBounds = (ref: Element) => {
-  console.log('about to get bounds');
   const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();
   const style = window.getComputedStyle(ref);
 
@@ -59,6 +58,7 @@ export default class DimensionPublisher extends PureComponent {
 
   componentWillReceiveProps(nextProps: Props) {
     // no request - publish not needed
+    // $FlowFixMe - not sure why flow complains about this
     if (!nextProps.shouldPublish) {
       return;
     }

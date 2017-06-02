@@ -7,11 +7,10 @@ import sinon from 'sinon';
 import type { ReactWrapper } from 'enzyme';
 import makeDroppable from '../../../src/view/droppable/make-droppable';
 import { dragDropContext } from '../../../src/';
-import type { TypeId, DroppableId } from '../../../src/types';
+import type { TypeId } from '../../../src/types';
 import type { MapProps, OwnProps, MapStateToProps, StateSnapshot } from '../../../src/view/droppable/droppable-types';
 
 const empty = {};
-const noop = () => {};
 
 const Child = () => <div>Hello world</div>;
 const defaultId = '1';
@@ -29,7 +28,7 @@ type MountArgs = {|
       Component?: ReactClass<any>,
       mapProps?: MapProps,
       ownProps?: OwnProps,
-      mapStateToProps?: () => mixed,
+      mapStateToProps?: Function,
     |}
 
 const shallowDroppable = ({

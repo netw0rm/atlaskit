@@ -16,8 +16,10 @@ import {
   wideTransparentImage
 } from '@atlaskit/media-test-helpers';
 import {MediaItemDetails} from '@atlaskit/media-core';
+import Toggle from '@atlaskit/toggle';
 import {CardView} from '../../src/cardView';
 import {CardAppearance, CardStatus, CardDimensions} from '../../src';
+import {actions} from './chapters/utils';
 import {EditableCardOptions, EditableCardContent, SliderWrapper, OptionsWrapper, CardDimensionsWrapper} from './styled';
 import {Slider} from '@atlaskit/media-avatar-picker';
 
@@ -33,6 +35,7 @@ export const generateStoriesForEditableCards = () => {
     dimensions: CardDimensions;
     metadata: MediaItemDetails;
     dataURI: string;
+    hasActions: boolean;
   }
 
   class EditableCard extends Component<EditableCardProps, EditableCardState> {
@@ -46,6 +49,7 @@ export const generateStoriesForEditableCards = () => {
         status: 'complete',
         metadata: imageFileDetails,
         dataURI: gifDataUri,
+        hasActions: true,
         dimensions: {
           width: 156,
           height: 104
@@ -54,7 +58,7 @@ export const generateStoriesForEditableCards = () => {
     }
 
     render() {
-      const {appearance, status, dataURI, dimensions, metadata} = this.state;
+      const {appearance, status, dataURI, dimensions, metadata, hasActions} = this.state;
       const appearanceOptions = [
         { value: 'auto', label: 'Auto', defaultSelected: true },
         { value: 'small', label: 'Small', },
@@ -87,6 +91,7 @@ export const generateStoriesForEditableCards = () => {
       ];
       const width = parseInt(dimensions.width, 0);
       const height = parseInt(dimensions.height, 0);
+      const menuActions = hasActions ? actions : undefined;
 
       return (
         <div>
@@ -94,12 +99,19 @@ export const generateStoriesForEditableCards = () => {
             <h3>Edit me</h3>
             <SliderWrapper>
               <div>
-                Width
+                Width ({width})
                 <Slider value={width} min={144} max={800} onChange={this.onWidthChange} />
               </div>
               <div>
-                Height
+                Height ({height})
                 <Slider value={height} min={50} max={800} onChange={this.onHeightChange} />
+              </div>
+              <div>
+                Actions
+                <Toggle
+                  isDefaultChecked={true}
+                  onChange={this.onActionsPresenceChange}
+                />
               </div>
             </SliderWrapper>
             <OptionsWrapper>
@@ -135,10 +147,15 @@ export const generateStoriesForEditableCards = () => {
               metadata={metadata}
               dataURI={dataURI}
               dimensions={dimensions}
+              actions={menuActions}
             />
           </EditableCardContent>
         </div>
       );
+    }
+
+    onActionsPresenceChange = (e) => {
+      this.setState({hasActions: !this.state.hasActions});
     }
 
     onAppearanceChange = (e) => {

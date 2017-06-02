@@ -12,6 +12,7 @@ import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 import {UploadingView} from '../../utils/uploadingView';
+import {breakpointClassName} from '..';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;
@@ -63,20 +64,6 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return getCSSUnitValue(height);
   }
 
-  private get breakpointClassName(): string {
-    const width = parseInt(this.width, 0);
-
-    if (width < 173) {
-      return 'small-breakpoint';
-    } else if (width < 225) {
-      return 'medium-breakpoint';
-    } else if (width < 300) {
-      return 'large-breakpoint';
-    }
-
-    return 'xlarge';
-  }
-
   private isDownloadingOrProcessing() {
     const {status} = this.props;
     return status === 'loading' || status === 'processing';
@@ -89,9 +76,15 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   render() {
     const {onClick, onMouseEnter} = this.props;
     const cardStyle = this.cardStyle;
+    const className = breakpointClassName({
+      small: 173,
+      medium: 225,
+      large: 300,
+      xlarge: Infinity
+    }, this.width);
 
     return (
-      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter} className={this.breakpointClassName}>
+      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter} className={className}>
         {this.getCardContents()}
       </Wrapper>
     );

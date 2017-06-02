@@ -2,6 +2,7 @@ import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
 import Navigation from '../src/components/js/Navigation';
 import Drawer from '../src/components/js/Drawer';
+import * as presets from '../src/theme/presets';
 import {
   containerClosedWidth,
   globalOpenWidth,
@@ -230,9 +231,14 @@ describe('<Navigation />', () => {
       expect(mount(<Navigation globalCreateIcon={icon} />).find('GlobalNavigation').props().createIcon).to.equal(icon);
     });
 
-    it('should pass globalAppearance onto <GlobalNavigation />', () => {
-      const appearance = 'settings';
-      expect(mount(<Navigation globalAppearance={appearance} />).find('GlobalNavigation').props().appearance).to.equal(appearance);
+    it('should pass globalTheme onto <GlobalNavigation />', () => {
+      const theme = presets.settings;
+      expect(mount(<Navigation globalTheme={theme} />).find('GlobalNavigation').props().theme).to.equal(theme);
+    });
+
+    it('should pass containerTheme onto <ContainerNavigation />', () => {
+      const theme = presets.settings;
+      expect(mount(<Navigation containerTheme={theme} />).find('ContainerNavigation').props().theme).to.equal(theme);
     });
 
     it('should pass globalSearchIcon onto <ContainerNavigation />', () => {

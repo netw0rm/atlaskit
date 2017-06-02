@@ -5,31 +5,33 @@ import debounce from 'lodash.debounce';
 import { AtlassianIcon } from '@atlaskit/icon';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { createGlobalTheme } from '../../src/theme/create-provided-theme';
+import BasicNavigation from './BasicNavigation';
+import * as presets from '../../src/theme/presets';
 
 const debounceDuration = 100;
 const famousThemes = [
   {
-    name: 'CommBank',
+    name: 'Yellow',
     text: '#000000',
     background: '#FFCC00',
   },
   {
-    name: 'Coca Cola',
+    name: 'Red',
     text: '#FFFFFF',
     background: '#fe001a',
   },
   {
-    name: 'Victoria\'s Secret',
+    name: 'Pink',
     text: '#FFFFFF',
     background: '#F1396D',
   },
   {
-    name: 'Iron Maiden',
+    name: 'Black',
     text: '#FFFFFF',
     background: '#251F19',
   },
   {
-    name: 'Cadbury',
+    name: 'Purple',
     text: '#FFFFFF',
     background: '#550f9d',
   },
@@ -124,50 +126,60 @@ export default class ThemePreview extends PureComponent {
     const { textColor, backgroundColor } = this.state;
     const myTheme = createGlobalTheme(textColor, backgroundColor);
     return (
-      <Container>
-        <h3>Theme playground</h3>
-        <p>Pick from one of the examples below:</p>
-        <p>
-          {
-            famousThemes.map(({ name, text, background }) => (
-              <Button
-                onClick={this.showBrand(text, background)}
-                key={name}
-              >
-                {name}
-              </Button>
-            ))
-          }
-        </p>
-        <p>Or choose your own custom colors:</p>
-        <p>
-          <ColorPickerParent>
-            Background:
-            <input
-              type="color"
-              onChange={this.handleBackgroundColorChange}
-            />
-          </ColorPickerParent>
-          <ColorPickerParent>
-            Text:
-            <input
-              type="color"
-              onChange={this.handleTextColorChange}
-            />
-          </ColorPickerParent>
-        </p>
-        <pre>
-          {`import { createGlobalTheme } from '@atlaskit/navigation'
-const myTheme = createGlobalTheme('${textColor}', '${backgroundColor}')`}
-        </pre>
-        <ThemeSwatches theme={myTheme} />
-      </Container>
+      <div>
+        <BasicNavigation
+          globalTheme={myTheme}
+          containerTheme={presets.container}
+        />
+        <Container>
+          <h3>Theme playground</h3>
+          <p>Pick from one of the examples below:</p>
+          <p>
+            {
+              famousThemes.map(({ name, text, background }) => (
+                <Button
+                  onClick={this.showBrand(text, background)}
+                  key={name}
+                >
+                  {name}
+                </Button>
+              ))
+            }
+          </p>
+          <p>Or choose your own custom colors:</p>
+          <p>
+            <ColorPickerParent>
+              Background:
+              <input
+                type="color"
+                onChange={this.handleBackgroundColorChange}
+              />
+            </ColorPickerParent>
+            <ColorPickerParent>
+              Text:
+              <input
+                type="color"
+                onChange={this.handleTextColorChange}
+              />
+            </ColorPickerParent>
+          </p>
+          <pre>
+            {`import { createGlobalTheme } from '@atlaskit/navigation';
+const myTheme = createGlobalTheme('${textColor}', '${backgroundColor}');
+<Navigation globalTheme={myTheme} />
+// or
+<GlobalNavigation theme={myTheme} />`}
+          </pre>
+          <ThemeSwatches theme={myTheme} />
+        </Container>
+      </div>
     );
   }
 }
 
 const Container = styled.div`
-  margin: ${akGridSizeUnitless}px auto;
+  margin: 0 auto;
+  padding: ${akGridSizeUnitless * 3}px 0;
   width: 50vw;
 `;
 

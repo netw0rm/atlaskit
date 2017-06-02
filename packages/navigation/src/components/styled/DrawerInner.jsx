@@ -16,7 +16,7 @@ const DrawerInner = styled.div`
   overflow: hidden;
   position: fixed;
   top: 0;
-  transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(${widths[width].offScreenTranslateX})`)}
+  transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(${widths[width].offScreenTranslateX})`)};
   transition: ${transformTransition}, ${widthTransition};
   width: ${({ width }) => widths[width].width};
   z-index: ${zIndex.drawer};

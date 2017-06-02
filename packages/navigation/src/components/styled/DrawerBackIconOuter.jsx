@@ -3,9 +3,9 @@ import { drawerBackIconSize } from '../../utils/drawer-style-variables';
 import { getProvided } from '../../theme/util';
 
 const DrawerBackIconOuter = styled.div`
-  background-color: ${({ theme }) => getProvided(theme).item.hover.background}
+  background-color: ${({ theme }) => getProvided(theme).item.hover.background};
   border-radius: 50%;
-  color: ${({ theme }) => getProvided(theme).text}
+  color: ${({ theme }) => getProvided(theme).text};
   cursor: pointer;
   display: flex;
   height: ${drawerBackIconSize}px;
@@ -13,7 +13,7 @@ const DrawerBackIconOuter = styled.div`
   width: ${drawerBackIconSize}px;
 
   &:active {
-    background-color: ${({ theme }) => getProvided(theme).item.active.background}
+    background-color: ${({ theme }) => getProvided(theme).item.active.background};
   }
 `;
 

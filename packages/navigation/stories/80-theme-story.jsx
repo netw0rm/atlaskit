@@ -200,7 +200,7 @@ class ContainerNavigationExplorer extends PureComponent {
           {Object.keys(presetThemes).map(key => (
             <Column isCollapsed={isCollapsed} key={key}>
               <ExampleContainerNavigation
-                theme={presetThemes[key].secondary}
+                theme={presetThemes[key]}
                 themeName={key}
                 isCollapsed={isCollapsed}
               />

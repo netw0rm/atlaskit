@@ -1,8 +1,8 @@
 import { storiesOf, action } from '@kadira/storybook';
 
 import React from 'react';
-import Calendar from '@atlaskit/icon/glyph/confluence/calendar';
-import Page from '@atlaskit/icon/glyph/confluence/page';
+import Calendar from '@atlaskit/icon/glyph/calendar';
+import Page from '@atlaskit/icon/glyph/page';
 import Question from '@atlaskit/icon/glyph/question';
 import Expand from '@atlaskit/icon/glyph/expand';
 import Unlink from '@atlaskit/icon/glyph/editor/unlink';

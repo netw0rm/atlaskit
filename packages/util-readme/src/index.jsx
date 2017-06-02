@@ -28,6 +28,7 @@ export default class Readme extends PureComponent {
   }
 
   render() {
+    console.log(this.props);
     const {
       example,
       exampleSource,

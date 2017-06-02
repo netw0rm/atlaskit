@@ -1,6 +1,5 @@
 import React from 'react';
-import ButtonGroup from '@atlaskit/button-group';
-import Button from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 
 export default (
   <ButtonGroup>

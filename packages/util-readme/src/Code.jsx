@@ -38,6 +38,7 @@ export default class ReadmeCode extends PureComponent {
     code: PropTypes.string,
     language: PropTypes.string,
   }
+
   render() {
     const { children, code, language } = this.props;
     const { code: customStyle, codeExample } = style;

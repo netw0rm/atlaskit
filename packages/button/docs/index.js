@@ -9,6 +9,8 @@ import ButtonSelect from './ButtonSelect';
 import buttonSelectSrc from '!raw-loader!./ButtonSelect';
 import ButtonDark from './ButtonDark';
 import buttonDarkSrc from '!raw-loader!./ButtonDark';
+import ButtonGroupExample from './ButtonGroupExample';
+import buttonGroupExampleSrc from '!raw-loader!./ButtonGroupExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 export const description = (
@@ -46,5 +48,9 @@ export const examples = [
     Component: ButtonOptions,
     src: buttonOptionsSrc,
   },
-
+  {
+    title: 'Using Button Group',
+    Component: ButtonGroupExample,
+    src: buttonGroupExampleSrc,
+  },
 ];

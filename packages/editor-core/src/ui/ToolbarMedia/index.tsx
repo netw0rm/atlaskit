@@ -31,7 +31,8 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
     return (
       <ToolbarButton
         onClick={this.handleClickMediaButton}
-        iconBefore={<ImageIcon label="Add media" />}
+        title="Insert files and images"
+        iconBefore={<ImageIcon label="Insert files and images" />}
       />
     );
   }

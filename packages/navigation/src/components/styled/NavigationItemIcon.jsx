@@ -26,7 +26,7 @@ const NavigationItemIcon = styled.div`
   flex-shrink: 0;
 
   [data-__ak-navigation-container-closed="true"] & {
-    ${({ isDropdownTrigger }) => (isDropdownTrigger ? 'display: none' : '')}
+    ${({ isDropdownTrigger }) => (isDropdownTrigger ? 'display: none;' : '')}
   }
 
   /* We need to ensure that any image passed in as a child (<img/>, <svg/>

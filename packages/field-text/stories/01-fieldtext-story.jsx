@@ -190,4 +190,7 @@ storiesOf(name, module)
         <Button appearance="primary" onClick={focus1}>Focus First Field</Button>
       </p>
     </form>
+  ))
+  .add('field-text set to readonly', () => (
+    generateFormWithInput({ value: 'This input cannot be edited', isReadOnly: true })
   ));

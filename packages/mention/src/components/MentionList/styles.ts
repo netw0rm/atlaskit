@@ -1,4 +1,4 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
 import {
   mentionListWidth,
@@ -7,19 +7,19 @@ import {
   noDialogContainerBoxShadow,
 } from '../../shared-styles';
 
-export const akMentionList = style({
-  display: 'block',
-});
+export interface MentionListStyleProps {
+  empty?: boolean;
+}
 
-export const list = style({
-  width: mentionListWidth,
-  color: '#333',
+// tslint:disable:next-line variable-name
+export const MentionListStyle = styled.div`
+  display: ${(props: MentionListStyleProps) => props.empty ? 'none' : 'block'};
 
-  border: `1px solid ${noDialogContainerBorderColor}`,
-  borderRadius: noDialogContainerBorderRadius,
-  boxShadow: noDialogContainerBoxShadow,
-});
+  /* list style */
+  width: ${mentionListWidth};
+  color: #333;
 
-export const empty = style({
-  display: 'none',
-});
+  border: 1px solid ${noDialogContainerBorderColor};
+  border-radius: ${noDialogContainerBorderRadius};
+  box-shadow: ${noDialogContainerBoxShadow};
+`;

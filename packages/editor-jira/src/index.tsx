@@ -28,10 +28,24 @@ import {
   TextSelection,
   version as coreVersion,
 
+  MediaProvider,
+  MediaState,
+  MediaPluginState,
+  mediaPluginFactory,
+  mediaStateKey,
+
+  Plugin,
+
   // nodeviews
   nodeViewFactory,
   ReactMentionNode,
+  ReactMediaNode,
+  ReactMediaGroupNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
@@ -42,6 +56,7 @@ import {
   isSchemaWithCodeBlock,
   isSchemaWithLinks,
   isSchemaWithMentions,
+  isSchemaWithMedia,
   makeSchema,
 } from './schema';
 import { version, name } from './version';
@@ -66,40 +81,75 @@ export interface Props {
   allowSubSup?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
+  mediaProvider ?: Promise<MediaProvider>;
+  uploadErrorHandler ?: (state: MediaState) => void;
+  errorReporter?: ErrorReportingHandler;
 }
 
 export interface State {
   editorView?: EditorView;
   editorState?: EditorState<any>;
+  isMediaReady: boolean;
   isExpanded?: boolean;
   schema: JIRASchema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
-  providerFactory: ProviderFactory;
+  private providerFactory: ProviderFactory;
+  private mediaPlugins: Plugin[];
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
 
-    this.state = {
-      isExpanded: props.isExpandedByDefault,
-      schema: makeSchema({
-        allowLists: !!props.allowLists,
-        allowMentions: !!props.mentionProvider,
-        allowLinks: !!props.allowLinks,
-        allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting,
-        allowCodeBlock: !!props.allowCodeBlock,
-        allowBlockQuote: !!props.allowBlockQuote,
-        allowSubSup: !!props.allowSubSup
-      }),
-    };
+    const {
+      allowLists, allowLinks, allowAdvancedTextFormatting,
+      allowCodeBlock, allowBlockQuote, allowSubSup,
+
+      analyticsHandler,
+
+      mentionProvider,
+      mediaProvider, uploadErrorHandler,
+
+      isExpandedByDefault: isExpanded
+    } = props;
+
+    const schema = makeSchema({
+      allowLists: !!allowLists,
+      allowMentions: !!mentionProvider,
+      allowLinks: !!allowLinks,
+      allowAdvancedTextFormatting: !!allowAdvancedTextFormatting,
+      allowCodeBlock: !!allowCodeBlock,
+      allowBlockQuote: !!allowBlockQuote,
+      allowSubSup: !!allowSubSup,
+      allowMedia: !!mediaProvider,
+    });
+
+    this.state = { isExpanded, schema, isMediaReady: true };
 
     this.providerFactory = new ProviderFactory();
-    this.providerFactory.setProvider('mentionProvider', props.mentionProvider);
 
-    analyticsService.handler = props.analyticsHandler || ((name) => { });
+    if (mentionProvider) {
+      this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    }
+
+    if (mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', mediaProvider);
+
+      const errorReporter = new ErrorReporter();
+      if (props.errorReporter) {
+        errorReporter.handler = props.errorReporter;
+      }
+
+      this.mediaPlugins = mediaPluginFactory(schema, {
+        uploadErrorHandler,
+        errorReporter,
+        providerFactory: this.providerFactory
+      });
+    }
+
+    analyticsService.handler = analyticsHandler || ((name) => { });
   }
 
   /**
@@ -176,8 +226,8 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { editorView, isExpanded } = this.state;
-    const { mentionProvider } = this.props;
+    const { editorView, isExpanded, isMediaReady } = this.state;
+    const { mentionProvider, mediaProvider } = this.props;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
@@ -189,6 +239,7 @@ export default class Editor extends PureComponent<Props, State> {
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
+    const mediaState = editorState && mediaProvider && this.mediaPlugins && mediaStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -207,8 +258,10 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateClearFormatting={clearFormattingState}
         pluginStateMentions={mentionsState}
         pluginStateHyperlink={hyperlinkState}
+        pluginStateMedia={mediaState}
         packageVersion={version}
         packageName={name}
+        saveDisabled={!isMediaReady}
       />
     );
   }
@@ -220,10 +273,20 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  private handleChange = () => {
+  private handleChange = async () => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(this);
+    }
+
+
+    const { editorView } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+
+    if (mediaPluginState) {
+      this.setState({ isMediaReady: false });
+      await mediaPluginState.waitForPendingTasks();
+      this.setState({ isMediaReady: true });
     }
   }
 
@@ -254,6 +317,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
           ...listsPlugins(schema as Schema<any, any>),
           ...rulePlugins(schema as Schema<any, any>),
+          ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
           ...textFormattingPlugins(schema as Schema<any, any>),
           ...reactNodeViewPlugins(schema as Schema<any, any>),
           history(),
@@ -276,6 +340,10 @@ export default class Editor extends PureComponent<Props, State> {
         },
         nodeViews: {
           mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
+          mediaGroup: nodeViewFactory(this.providerFactory, {
+            mediaGroup: ReactMediaGroupNode,
+            media: ReactMediaNode,
+          }, true),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

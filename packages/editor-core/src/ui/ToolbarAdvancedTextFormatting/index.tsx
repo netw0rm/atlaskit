@@ -12,6 +12,7 @@ import { TriggerWrapper, ExpandIconWrapper } from './styles';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
+  isDisabled?: boolean;
   editorView: EditorView;
   softBlurEditor: () => void;
   focusEditor: () => void;
@@ -83,31 +84,12 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       strikethroughDisabled,
       clearFormattingDisabled,
     } = this.state;
+
     const items = this.createItems();
-    if (!(codeDisabled && strikethroughDisabled && clearFormattingDisabled) &&
-      items[0].items.length > 0) {
-      return (
-        <DropdownMenu
-          items={items}
-          onItemActivated={this.onItemActivated}
-          onOpenChange={this.onOpenChange}
-        >
-          <ToolbarButton
-            selected={isOpen || codeActive || strikethroughActive}
-            iconBefore={
-              <TriggerWrapper>
-                <AdvancedIcon label="Open or close advance text formatting dropdown" />
-                <ExpandIconWrapper>
-                  <ExpandIcon label="Open or close advance text formatting dropdown" />
-                </ExpandIconWrapper>
-              </TriggerWrapper>}
-          />
-        </DropdownMenu>
-      );
-    } else {
-      return <ToolbarButton
+    const toolbarButtonFactory = (disabled: boolean) => (
+      <ToolbarButton
         selected={isOpen || codeActive || strikethroughActive}
-        disabled={true}
+        disabled={disabled}
         iconBefore={
           <TriggerWrapper>
             <AdvancedIcon label="Open or close advance text formatting dropdown"/>
@@ -115,7 +97,28 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
               <ExpandIcon label="Open or close advance text formatting dropdown" />
             </ExpandIconWrapper>
           </TriggerWrapper>}
-      />;
+      />
+    );
+
+    if (!this.props.isDisabled &&
+      !(codeDisabled && strikethroughDisabled && clearFormattingDisabled) &&
+      items[0].items.length > 0) {
+      return (
+        <DropdownMenu
+          items={items}
+          onItemActivated={this.onItemActivated}
+          onOpenChange={this.onOpenChange}
+        >
+          {toolbarButtonFactory(false)}
+        </DropdownMenu>
+      );
+    } else {
+      // span is a flex element
+      return (
+        <span>
+          <div>{toolbarButtonFactory(true)}</div>
+        </span>
+      );
     }
   }
 

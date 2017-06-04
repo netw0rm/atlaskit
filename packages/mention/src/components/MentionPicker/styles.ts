@@ -1,5 +1,4 @@
-import { style } from 'typestyle';
-
+import styled from 'styled-components';
 import { akColorN100 } from '@atlaskit/util-shared-styles';
 
 import {
@@ -9,26 +8,32 @@ import {
   noDialogContainerBoxShadow,
 } from '../../shared-styles';
 
-export const akMentionPicker = style({
-  display: 'block',
-});
+export interface MentionPickerStyleProps {
+  visible?: boolean | string;
+}
 
-export const akMentionPickerInfo = style({
-  background: '#fff',
-  color: akColorN100,
-  border: `1px solid ${noDialogContainerBorderColor}`,
-  borderRadius: noDialogContainerBorderRadius,
-  boxShadow: noDialogContainerBoxShadow,
-  display: 'block',
-  width: mentionListWidth,
-  whiteSpace: 'nowrap',
+// tslint:disable:next-line variable-name
+export const MentionPickerStyle = styled.div`
+  display: ${(props: MentionPickerStyleProps) => props.visible ? 'block' : 'none'};
+`;
 
-  $nest: {
-    p: {
-      margin: 0,
-      overflow: 'hidden',
-      padding: '9px',
-      textOverflow: 'ellipsis',
-    },
-  },
-});
+// tslint:disable:next-line variable-name
+export const MentionPickerInfoStyle = styled.div`
+  background: #fff;
+  color: ${akColorN100};
+  border: 1px solid ${noDialogContainerBorderColor};
+  border-radius: ${noDialogContainerBorderRadius};
+  box-shadow: ${noDialogContainerBoxShadow}
+  display: block;
+  width: ${mentionListWidth};
+  white-space: nowrap;
+
+  & {
+    p {
+      margin: 0;
+      overflow: hidden;
+      padding: 9px;
+      text-overflow: ellipsis;
+    }
+  }
+`;

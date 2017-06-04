@@ -3,7 +3,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import * as styles from '../../src/components/Mention/styles';
+import { MentionStyle } from '../../src/components/Mention/styles';
 import Mention from '../../src/components/Mention';
 import ResourcedMention from '../../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../_mock-mention-provider';
@@ -12,12 +12,12 @@ describe('<Mention />', () => {
   describe('Mention', () => {
     it('should render based on mention data', () => {
       const mention = shallow(<Mention {...mentionData} />);
-      expect(mention.text()).to.equal(mentionData.text);
+      expect(mention.html()).to.contain(mentionData.text);
     });
 
     it('should add a highlight class if `isHighlighted` is set to true', () => {
       const mention = shallow(<Mention {...mentionData} isHighlighted={true} />);
-      expect(mention.hasClass(styles.highlighted)).to.equal(true);
+      expect(mention.find(MentionStyle).prop('highlighted')).to.equal(true);
     });
 
     it('should dispatch onClick-event', () => {
@@ -51,17 +51,16 @@ describe('<Mention />', () => {
       expect(mention.find(Mention).first().text()).to.equal(mentionData.text);
     });
 
-    it('should render a highlighted statless mention component if mentionProvider.shouldHighlightMention returns true', () => {
+    it('should render a highlighted statless mention component if mentionProvider.shouldHighlightMention returns true', async () => {
       const mention = mount(<ResourcedMention id="oscar" text="@Oscar Wallhult" mentionProvider={mentionProvider} />);
 
-      return mentionProvider.then(() => {
-        expect(mention.find(Mention).first().hasClass(styles.highlighted)).to.equal(true);
-      });
+      await mentionProvider;
+      expect(mention.find(Mention).first().find(MentionStyle).prop('highlighted')).to.equal(true);
     });
 
     it('should not render highlighted mention component if there is no mentionProvider', () => {
       const mention = mount(<ResourcedMention id="oscar" text="@Oscar Wallhult" />);
-      expect(mention.find(Mention).first().hasClass(styles.highlighted)).to.equal(false);
+      expect(mention.find(Mention).first().find(MentionStyle).prop('highlighted')).to.equal(false);
     });
 
     it('should dispatch onClick-event', () => {

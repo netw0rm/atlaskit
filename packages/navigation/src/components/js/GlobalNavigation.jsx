@@ -1,17 +1,18 @@
+// @flow
+
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { WithRootTheme } from '../../theme/util';
-import * as presets from '../../theme/presets';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalNavigationInner from '../styled/GlobalNavigationInner';
 import GlobalNavigationPrimaryContainer from '../styled/GlobalNavigationPrimaryContainer';
 import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
+import * as presets from '../../theme/presets';
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(Object.keys(presets)),
     createIcon: PropTypes.node,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
@@ -20,18 +21,18 @@ export default class GlobalNavigation extends PureComponent {
     searchIcon: PropTypes.node,
     onSearchActivate: PropTypes.func,
     onCreateActivate: PropTypes.func,
+    theme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   };
   static defaultProps = {
-    appearance: 'global',
     accountItem: null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
     secondaryActions: [],
+    theme: presets.global,
   };
 
   render() {
     const {
-      appearance,
       createIcon,
       linkComponent,
       onCreateActivate,
@@ -40,11 +41,10 @@ export default class GlobalNavigation extends PureComponent {
       primaryItemHref,
       searchIcon,
       secondaryActions,
+      theme,
     } = this.props;
     return (
-      <WithRootTheme
-        provided={presets[appearance]}
-      >
+      <WithRootTheme provided={theme}>
         <GlobalNavigationInner>
           <GlobalNavigationPrimaryContainer>
             <GlobalPrimaryActions

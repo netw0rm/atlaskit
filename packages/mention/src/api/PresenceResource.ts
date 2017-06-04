@@ -1,5 +1,3 @@
-import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
-import 'whatwg-fetch';
 import debug from '../util/logger';
 
 import { Presence } from '../types';
@@ -136,7 +134,7 @@ class PresenceResource extends AbstractPresenceResource {
       credentials: 'include' as 'include',
       body: JSON.stringify(data)
     };
-    return fetch(new Request(this.config.url + 'graphql', options)).then(response => response.json());
+    return fetch(new Request(this.config.url, options)).then(response => response.json());
   }
 
   private static cleanUrl(url: string): string {

@@ -58,19 +58,18 @@ const emojiStyle = style({
       flex: 'auto',
       width: 'auto',
       minWidth: '24px',
-      height: '20px',
       backgroundSize: '16px 16px',
       verticalAlign: 'middle',
       $nest: {
         '> span': {
           margin: '2px 4px',
-          width: '16px',
-          height: '16px'
+          maxWidth: '16px',
+          maxHeight: '16px'
         },
         '> img': {
           margin: '2px 4px',
-          width: '16px',
-          height: '16px'
+          maxWidth: '16px',
+          maxHeight: '16px'
         }
       }
     }
@@ -225,7 +224,7 @@ export default class Reaction extends PureComponent<Props, State> {
 
       this.tooltipTimeout = setTimeout(() => this.setState({
         showTooltip: true
-      }), 1000);
+      }), 500);
       this.timeouts.push(this.tooltipTimeout);
     }
   }

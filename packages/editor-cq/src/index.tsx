@@ -43,6 +43,10 @@ import {
   ReactMediaNode,
   ReactMentionNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -50,11 +54,14 @@ import { MentionProvider } from '@atlaskit/mention';
 import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
-import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
+import ReactJIRAIssueNode from './nodeviews/ui/jiraIssue';
+import ReactUnsupportedBlockNode from './nodeviews/ui/unsupportedBlock';
+import ReactUnsupportedInlineNode from './nodeviews/ui/unsupportedInline';
 export { version };
 
 export interface Props {
   context?: ContextName;
+  disabled?: boolean;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   expanded?: boolean;
@@ -65,6 +72,7 @@ export interface Props {
   placeholder?: string;
   uploadErrorHandler?: (state: MediaState) => void;
   analyticsHandler?: AnalyticsHandler;
+  errorReporter?: ErrorReportingHandler;
   mediaProvider?: Promise<MediaProvider>;
   mentionProvider?: Promise<MentionProvider>;
 }
@@ -107,8 +115,14 @@ export default class Editor extends PureComponent<Props, State> {
       this.providerFactory.setProvider('mediaProvider', mediaProvider);
     }
 
+    const errorReporter = new ErrorReporter();
+    if (props.errorReporter) {
+      errorReporter.handler = props.errorReporter;
+    }
+
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
+      errorReporter,
       providerFactory: this.providerFactory,
     });
   }
@@ -184,6 +198,18 @@ export default class Editor extends PureComponent<Props, State> {
         onExpanded(this);
       }
     }
+
+    if (nextProps.disabled !== this.props.disabled) {
+      const { editorView } = this.state;
+
+      if (editorView) {
+        editorView.dom.contentEditable = String(!nextProps.disabled);
+
+        if (!nextProps.disabled) {
+          editorView.focus();
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -198,6 +224,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
+    const { disabled = false } = this.props;
     const { editorView, isExpanded, isMediaReady } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
@@ -216,6 +243,7 @@ export default class Editor extends PureComponent<Props, State> {
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
+        disabled={disabled}
         editorView={editorView!}
         isExpanded={isExpanded}
         feedbackFormUrl="yes"
@@ -291,13 +319,16 @@ export default class Editor extends PureComponent<Props, State> {
 
       const editorView = new EditorView(place, {
         state: editorState,
+        editable: (state: EditorState<any>) => !this.props.disabled,
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
         },
         nodeViews: {
-          jiraIssue: jiraIssueNodeView,
+          jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
+          unsupportedBlock: nodeViewFactory(this.providerFactory, { unsupportedBlock: ReactUnsupportedBlockNode }, true),
+          unsupportedInline: nodeViewFactory(this.providerFactory, { unsupportedInline: ReactUnsupportedInlineNode }),
           mediaGroup: nodeViewFactory(this.providerFactory, {
             mediaGroup: ReactMediaGroupNode,
             media: ReactMediaNode,
@@ -316,7 +347,7 @@ export default class Editor extends PureComponent<Props, State> {
           if (html) {
             const doc = parse(html.replace(/^<meta[^>]+>/, ''));
             view.dispatch(
-              view.state.tr.replaceSelection(new Slice(doc.content, slice.openLeft, slice.openRight))
+              view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
             );
             return true;
           }

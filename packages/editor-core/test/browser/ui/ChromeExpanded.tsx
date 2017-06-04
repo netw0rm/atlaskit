@@ -4,6 +4,14 @@ import * as React from 'react';
 import AkButton from '@atlaskit/button';
 import { fixtures, doc, p, makeEditor } from '../../../src/test-helper';
 import ChromeExpanded from '../../../src/ui/ChromeExpanded';
+import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
+import LanguagePicker from '../../../src/ui/LanguagePicker';
+import MentionPicker from '../../../src/ui/MentionPicker';
+import EmojiTypeAhead from '../../../src/ui/EmojiTypeAhead';
+import PanelEdit from '../../../src/ui/PanelEdit';
+import ToolbarMention from '../../../src/ui/ToolbarMention';
+import ToolbarImage from '../../../src/ui/ToolbarImage';
+import ToolbarMedia from '../../../src/ui/ToolbarMedia';
 import { createNestedListStyles } from '../../../src/ui/ChromeExpanded/styles';
 
 const noop = () => {};
@@ -39,6 +47,24 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
       const button = chrome.find(AkButton);
       expect(button.prop('isDisabled')).to.equal(true);
+    });
+
+    it('should disable UI elements when disabled=true', () => {
+      const { editorView } = editor(doc(p()));
+      const chrome = mount(<ChromeExpanded
+        editorView={editorView}
+        onSave={noop}
+        disabled={true}
+      />);
+
+      expect(chrome.find(HyperlinkEdit)).to.have.length(0);
+      expect(chrome.find(LanguagePicker)).to.have.length(0);
+      expect(chrome.find(MentionPicker)).to.have.length(0);
+      expect(chrome.find(EmojiTypeAhead)).to.have.length(0);
+      expect(chrome.find(PanelEdit)).to.have.length(0);
+      expect(chrome.find(ToolbarMention)).to.have.length(0);
+      expect(chrome.find(ToolbarImage)).to.have.length(0);
+      expect(chrome.find(ToolbarMedia)).to.have.length(0);
     });
   });
 

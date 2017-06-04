@@ -1,7 +1,7 @@
 // @flow
 import styled from 'styled-components';
 import { item as itemStyles } from '../../shared-variables';
-import { focusOutline, truncate } from '../../utils/mixins';
+import { focusOutline } from '../../utils/mixins';
 import { isInCompactGroup, getProvided } from '../../theme/util';
 
 const itemBorderRadius = itemStyles.borderRadius;
@@ -14,8 +14,8 @@ const NavigationItemOuter = styled.div`
   box-sizing: border-box;
   height: ${({ theme }) => (isInCompactGroup(theme) ? itemStyles.width.compact : itemStyles.width.standard)}px;
   position: relative;
-  ${truncate('100%')}
 
+  /* AK-2548: rather than targeting like this - the styles should be applied on the InteractionWrapper */
   button, a {
     background-color: ${(props) => {
       const item = getItemOrDropdown(props);
@@ -33,7 +33,7 @@ const NavigationItemOuter = styled.div`
         return item.selected.text;
       }
       return getProvided(props.theme).text;
-    }}
+    }};
     display: block;
     height: 100%;
     /* In theory this wouldn't be required, but Chrome does not place focus styles correctly without it */

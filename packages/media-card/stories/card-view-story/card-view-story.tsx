@@ -24,7 +24,7 @@ import {createMissingMetadataFileCards, createMissingMetadataLinkCards} from './
 import {createApiCards} from './chapters/api';
 import {createMenuActionCards} from './chapters/menu';
 import {createErrorAndLoadingCards} from './chapters/error-and-loading';
-import {createSelectableCards} from './chapters/selectable';
+import {createSelectableCards, createSelectableCardsWithMenu} from './chapters/selectable';
 import {actions} from './chapters/utils';
 
 
@@ -50,6 +50,7 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
   // selectable
   const fileSelectableCards = createSelectableCards(appearance, imageFileDetails, 'file');
+  const selectableWithMenu = createSelectableCardsWithMenu(appearance, imageFileDetails, 'file');
 
   // api cards
   const apiCards = createApiCards(appearance, genericFileDetails);
@@ -74,6 +75,13 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
       <h4>Menu actions</h4>
       <StoryList>{fileMenuActionsCards}</StoryList>
 
+      {appearance === 'image' ? (
+        <div>
+          <h4>Selectable with menu actions</h4>
+          <StoryList display="column">{selectableWithMenu}</StoryList>
+        </div>
+      ) : null}
+
       <h4>API methods</h4>
       <StoryList>{apiCards}</StoryList>
 
@@ -86,7 +94,7 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
 
       {appearance === 'image' || appearance === 'auto' ? (
           <div>
-            <h4>Seletable</h4>
+            <h4>Selectable</h4>
             <StoryList>{fileSelectableCards}</StoryList>
           </div>
         ) : null}

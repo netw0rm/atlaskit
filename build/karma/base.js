@@ -47,7 +47,7 @@ module.exports = (config) => {
 
     singleRun: true,
 
-    concurrency: Infinity,
+    concurrency: 20,
 
     mochaReporter: {
       showDiff: true,

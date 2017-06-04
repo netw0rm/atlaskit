@@ -1,5 +1,6 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
+import * as URLSearchParams from 'url-search-params';
 import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -32,6 +33,10 @@ import {
   standardServiceEmojis,
   thumbsupEmoji
 } from '../TestData';
+
+// patch URLSearchParams API for jsdom tests
+declare var global: any;
+global.URLSearchParams = URLSearchParams;
 
 const baseUrl = 'https://bogus/';
 const p1Url = 'https://p1/';

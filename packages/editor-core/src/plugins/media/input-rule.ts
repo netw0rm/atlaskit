@@ -3,7 +3,7 @@ import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosem
 import { MediaPluginState, stateKey } from './';
 import { createInputRule } from '../utils';
 
-const urlWithASpace = new RegExp(`${URL_REGEX.source} $`);
+const urlWithASpace = new RegExp(`${URL_REGEX.source}\\s$`);
 
 export default function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];

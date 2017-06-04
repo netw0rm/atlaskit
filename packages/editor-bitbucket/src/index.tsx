@@ -37,6 +37,10 @@ import {
   ReactEmojiNode,
   ReactMentionNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  // ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
@@ -64,6 +68,7 @@ export interface Props {
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
+  errorReporter?: ErrorReportingHandler;
   mentionSource?: MentionSource;
   emojiProvider?: Promise<EmojiProvider>;
 }

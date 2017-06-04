@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Label, FieldBase } from '@atlaskit/field-base';
+import FieldBase, { Label } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import { Tooltip } from '@atlaskit/tooltip';
@@ -113,13 +113,13 @@ describe(name, () => {
     });
 
     it('should pass props to fieldBase', () => {
-      const select = mount(<StatelessSelect isDisabled isInvalid isOpen />);
+      const select = mount(<StatelessSelect isDisabled isInvalid isOpen invalidMessage="foobar" />);
       const fieldbaseProps = select.find(FieldBase).props();
       expect(fieldbaseProps.isDisabled, 'isDisabled').to.equal(true);
       expect(fieldbaseProps.isInvalid, 'isInvalid').to.equal(true);
-      expect(fieldbaseProps.onFocus, 'onFocus').to.equal(select.instance().onFocus);
       expect(fieldbaseProps.isPaddingDisabled, 'isPaddingDisabled').to.equal(true);
       expect(fieldbaseProps.isFitContainerWidthEnabled, 'isFitContainerWidthEnabled').to.equal(true);
+      expect(fieldbaseProps.invalidMessage, 'invalidMessage').to.equal('foobar');
     });
 
     it('should pass props to Item', () => {
@@ -503,36 +503,6 @@ describe(name, () => {
         wrapper.setProps({ filterValue: 'Test' });
         wrapper.setProps({ selectedItem: items[0] });
         expect(instance.filterItems(items)).to.deep.equal([items[1], items[2]]);
-      });
-    });
-
-    describe('onFocus', () => {
-      it('default behavior', () => {
-        wrapper.setState({ isFocused: false });
-        instance.onFocus();
-        expect(wrapper.state().isFocused).to.equal(true);
-      });
-
-      it('disabled select', () => {
-        wrapper.setState({ isFocused: false });
-        wrapper.setProps({ isDisabled: true });
-        instance.onFocus();
-        expect(wrapper.state().isFocused).to.equal(false);
-      });
-    });
-
-    describe('onBlur', () => {
-      it('default behavior', () => {
-        wrapper.setState({ isFocused: true });
-        instance.onBlur();
-        expect(wrapper.state().isFocused).to.equal(false);
-      });
-
-      it('disabled select', () => {
-        wrapper.setState({ isFocused: true });
-        wrapper.setProps({ isDisabled: true });
-        instance.onBlur();
-        expect(wrapper.state().isFocused).to.equal(true);
       });
     });
 

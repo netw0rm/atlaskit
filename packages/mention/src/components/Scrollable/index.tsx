@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { PureComponent, ReactNode } from 'react';
 import { findDOMNode } from 'react-dom';
-
-import * as styles from './styles';
+import { ScrollableStyle } from './styles';
 
 export interface Props {
   children?: ReactNode | ReactNode[];
@@ -33,12 +32,9 @@ export default class Scrollable extends PureComponent<Props, undefined> {
 
   render() {
     return (
-      <div
-        className={styles.akScrollable}
-        ref={this.handleRef}
-      >
+      <ScrollableStyle innerRef={this.handleRef}>
         {this.props.children}
-      </div>
+      </ScrollableStyle>
     );
   }
 }

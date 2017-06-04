@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import { PRESENCE_BORDER_WIDTH } from './constants';

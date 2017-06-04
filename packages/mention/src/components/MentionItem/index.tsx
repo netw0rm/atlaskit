@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { MouseEvent } from '@types/react';
 import { PureComponent } from 'react';
+import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
+import Tooltip from '@atlaskit/tooltip';
 import * as styles from './styles';
 
 import * as classNames from 'classnames';
@@ -8,7 +10,7 @@ import * as classNames from 'classnames';
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 
-import { HighlightDetail, Mention, OnMentionEvent, Presence } from '../../types';
+import { HighlightDetail, Mention, OnMentionEvent, Presence, UserAccessLevel } from '../../types';
 import { leftClick } from '../../util/mouse';
 
 interface Part {
@@ -107,13 +109,16 @@ export default class MentionItem extends PureComponent<Props, undefined> {
   }
 
   render() {
-    const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge } = this.props.mention;
+    const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge, accessLevel } = this.props.mention;
     const { status, time } = presence || {} as Presence;
     const { selected } = this.props;
+    const restrictedAccess = accessLevel && UserAccessLevel[accessLevel] !== UserAccessLevel.CONTAINER;
+
     const classes = classNames({
       'ak-mention-item': true,
       [styles.mentionItem]: true,
       [styles.selected]: selected,
+      [styles.restricted]: restrictedAccess,
     });
 
     const nameHighlights = highlight && highlight.name;
@@ -142,6 +147,16 @@ export default class MentionItem extends PureComponent<Props, undefined> {
             {renderLozenge(lozenge)}
             {renderTime(time)}
           </div>
+          {restrictedAccess ?
+            <Tooltip
+                description={`${name} won't be notified as they have no access`}
+                position="left"
+            >
+              <div className={styles.permissionSection}>
+                <LockCircleIcon label="No access"/>
+              </div>
+            </Tooltip> : null
+          }
         </div>
       </div>
     );

@@ -1,5 +1,10 @@
 import { style } from 'typestyle';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import {
+  akColorN30,
+  akColorN100,
+  akColorN500,
+  akColorN900
+} from '@atlaskit/util-shared-styles';
 
 export const row = style({
   alignItems: 'center',
@@ -7,8 +12,7 @@ export const row = style({
   flexDirection: 'row',
   flexWrap: 'wrap',
   overflow: 'hidden',
-  padding: '9px 20px',
-  position: 'relative',
+  padding: '8px 16px',
   textOverflow: 'ellipsis',
   verticalAlign: 'middle',
 });
@@ -22,7 +26,7 @@ export const akAvatar = style({
 export const nameSection = style({
   flex: 1,
   minWidth: 0,
-  marginLeft: '10px',
+  marginLeft: '16px',
 });
 
 export const fullName = style({
@@ -30,12 +34,13 @@ export const fullName = style({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+  color: akColorN900
 });
 
 export const selected = style({});
 
 export const mentionName = style({
-  color: '#747474',
+  color: akColorN100,
   fontSize: '12px',
 
   marginTop: '2px',
@@ -62,7 +67,7 @@ export const infoSection = style({
 export const time = style({
   marginLeft: '20px',
   flex: 'none',
-  color: '#747474',
+  color: akColorN100,
   fontSize: '12px',
 });
 
@@ -79,5 +84,25 @@ export const mentionItem = style({
       backgroundColor: akColorN30
     },
   },
+});
+
+export const permissionSection = style({
+  paddingLeft: '5px',
+  color: akColorN500,
+});
+
+
+export const restricted = style({
+    $nest: {
+      [`& .${akAvatar}`]: {
+          opacity: 0.5
+      },
+      [`& .${nameSection}`]: {
+          opacity: 0.5
+      },
+      [`& .${infoSection}`]: {
+        opacity: 0.5
+      }
+    }
 });
 

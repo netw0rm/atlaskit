@@ -13,6 +13,8 @@ export const mentions = [
     avatarUrl: sampleAvatarUrl,
     name: 'Craig Petchell',
     mentionName: 'petch',
+    lozenge: 'teammate',
+    accessLevel: 'CONTAINER',
     presence: {
       status: 'online',
       time: '11:57am',
@@ -23,6 +25,8 @@ export const mentions = [
     avatarUrl: 'https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64',
     name: 'Jack Sparrow',
     mentionName: 'captainjack',
+    lozenge: 'teammate',
+    accessLevel: 'SITE',
     presence: {
       status: 'offline',
     },
@@ -43,6 +47,8 @@ export const mentions = [
     name: 'Doctor Who',
     mentionName: 'thedoctor',
     nickname: 'doctor',
+    lozenge: 'teammate',
+    accessLevel: 'CONTAINER',
     presence: {
       status: 'busy',
     },
@@ -52,6 +58,8 @@ export const mentions = [
     avatarUrl: '//seatfleet.io/system/users/pictures/54a7/6630/7365/6111/ba00/0000/thumb/picard_s5hq_pbvariant.jpg?1420256904',
     name: 'Jean Luc Picard',
     mentionName: 'makeitso',
+    lozenge: 'teammate',
+    accessLevel: 'APPLICATION',
     presence: {
       status: 'none',
       time: '1:57am',
@@ -62,7 +70,8 @@ export const mentions = [
     avatarUrl: '//cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ab/abee9ce4fbd1c9c94b695b16062b8fdf57a21de7_medium.jpg',
     name: 'James T. Kirk',
     mentionName: 'wheresmyshirt',
-    nickname: 'jim'
+    nickname: 'jim',
+    accessLevel: 'NONE',
   },
   {
     id: '12312312',

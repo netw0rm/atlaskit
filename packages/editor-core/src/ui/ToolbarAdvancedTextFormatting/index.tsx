@@ -84,7 +84,22 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       strikethroughDisabled,
       clearFormattingDisabled,
     } = this.state;
+
     const items = this.createItems();
+    const toolbarButtonFactory = (disabled: boolean) => (
+      <ToolbarButton
+        selected={isOpen || codeActive || strikethroughActive}
+        disabled={disabled}
+        iconBefore={
+          <TriggerWrapper>
+            <AdvancedIcon label="Open or close advance text formatting dropdown"/>
+            <ExpandIconWrapper>
+              <ExpandIcon label="Open or close advance text formatting dropdown" />
+            </ExpandIconWrapper>
+          </TriggerWrapper>}
+      />
+    );
+
     if (!this.props.isDisabled &&
       !(codeDisabled && strikethroughDisabled && clearFormattingDisabled) &&
       items[0].items.length > 0) {
@@ -94,30 +109,16 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           onItemActivated={this.onItemActivated}
           onOpenChange={this.onOpenChange}
         >
-          <ToolbarButton
-            selected={isOpen || codeActive || strikethroughActive}
-            iconBefore={
-              <TriggerWrapper>
-                <AdvancedIcon label="Open or close advance text formatting dropdown" />
-                <ExpandIconWrapper>
-                  <ExpandIcon label="Open or close advance text formatting dropdown" />
-                </ExpandIconWrapper>
-              </TriggerWrapper>}
-          />
+          {toolbarButtonFactory(false)}
         </DropdownMenu>
       );
     } else {
-      return <ToolbarButton
-        selected={isOpen || codeActive || strikethroughActive}
-        disabled={true}
-        iconBefore={
-          <TriggerWrapper>
-            <AdvancedIcon label="Open or close advance text formatting dropdown"/>
-            <ExpandIconWrapper>
-              <ExpandIcon label="Open or close advance text formatting dropdown" />
-            </ExpandIconWrapper>
-          </TriggerWrapper>}
-      />;
+      // span is a flex element
+      return (
+        <span>
+          <div>{toolbarButtonFactory(true)}</div>
+        </span>
+      );
     }
   }
 

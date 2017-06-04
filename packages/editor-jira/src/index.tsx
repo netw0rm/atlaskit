@@ -42,6 +42,10 @@ import {
   ReactMediaNode,
   ReactMediaGroupNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
@@ -79,6 +83,7 @@ export interface Props {
   mentionEncoder?: (userId: string) => string;
   mediaProvider ?: Promise<MediaProvider>;
   uploadErrorHandler ?: (state: MediaState) => void;
+  errorReporter?: ErrorReportingHandler;
 }
 
 export interface State {
@@ -132,8 +137,14 @@ export default class Editor extends PureComponent<Props, State> {
     if (mediaProvider) {
       this.providerFactory.setProvider('mediaProvider', mediaProvider);
 
+      const errorReporter = new ErrorReporter();
+      if (props.errorReporter) {
+        errorReporter.handler = props.errorReporter;
+      }
+
       this.mediaPlugins = mediaPluginFactory(schema, {
-        uploadErrorHandler: uploadErrorHandler,
+        uploadErrorHandler,
+        errorReporter,
         providerFactory: this.providerFactory
       });
     }

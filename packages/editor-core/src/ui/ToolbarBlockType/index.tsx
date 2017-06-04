@@ -60,7 +60,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
 
   render() {
     const { active, currentBlockType } = this.state;
-    const items = this.createItems();
+
     if (this.props.isDisabled) {
       return (
         <AkButton
@@ -73,6 +73,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         </AkButton>
       );
     }
+
+    const items = this.createItems();
     return (
       <DropdownMenu
         items={items}

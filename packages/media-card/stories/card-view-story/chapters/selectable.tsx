@@ -29,3 +29,17 @@ export const createSelectableCards = (appearance: CardAppearance, metadata: Medi
     }
   ];
 };
+
+export const createSelectableCardsWithMenu = (appearance: CardAppearance, metadata: MediaItemDetails, mediaItemType: MediaItemType) => {
+  const dataURI = mediaItemType === 'file' ? gifDataUri : undefined;
+
+  return [
+    {
+      title: 'Card with menu',
+      content: <CardView appearance={appearance} status="complete" metadata={metadata} dataURI={dataURI} actions={actions} />
+    }, {
+      title: 'Selected card',
+      content: <CardView appearance={appearance} status="complete" metadata={metadata} dataURI={dataURI} selectable={true} selected={true} />
+    }
+  ];
+};

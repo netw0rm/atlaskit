@@ -46,6 +46,7 @@ import { EditorView } from '../../prosemirror';
 
 export interface Props {
   editorView: EditorView;
+  disabled?: boolean;
   feedbackFormUrl?: string;
   onCancel?: () => void;
   onInsertImage?: () => void;
@@ -81,64 +82,116 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
   private handleSpinnerComplete() {}
 
   render() {
-    const { props } = this;
-    const iconAfter = props.saveDisabled
+    const {
+      disabled,
+      editorView,
+      emojiProvider,
+      feedbackFormUrl,
+      mentionProvider,
+      onCancel,
+      onSave,
+      packageName,
+      packageVersion,
+      pluginStateBlockType,
+      pluginStateClearFormatting,
+      pluginStateCodeBlock,
+      pluginStateEmojis,
+      pluginStateHyperlink,
+      pluginStateImageUpload,
+      pluginStateLists,
+      pluginStateMedia,
+      pluginStateMentions,
+      pluginStatePanel,
+      pluginStateTextColor,
+      pluginStateTextFormatting,
+      saveDisabled
+    } = this.props;
+    const iconAfter = saveDisabled
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
 
-    const saveButtonAppearance = props.saveDisabled
+    const saveButtonAppearance = saveDisabled || disabled
       ? 'default'
       : 'primary';
 
     return (
       <Container data-editor-chrome={true} tabIndex={-1} innerRef={this.handleEditorContainerRef}>
         <Toolbar>
-          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} softBlurEditor={this.softBlurEditor} focusEditor={this.focusEditor} /> : null}
-          {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
-          {props.pluginStateTextColor ?
-            <ToolbarTextColor
-              pluginState={props.pluginStateTextColor}
-              editorView={props.editorView}
+          {pluginStateBlockType ?
+            <ToolbarBlockType
+              isDisabled={disabled}
+              pluginState={pluginStateBlockType}
+              editorView={editorView}
               softBlurEditor={this.softBlurEditor}
               focusEditor={this.focusEditor}
             /> : null
           }
-          {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
-            <ToolbarAdvancedTextFormatting
-              pluginStateTextFormatting={props.pluginStateTextFormatting}
-              pluginStateClearFormatting={props.pluginStateClearFormatting}
-              editorView={props.editorView}
+          {pluginStateTextFormatting ?
+            <ToolbarTextFormatting
+              disabled={disabled}
+              pluginState={pluginStateTextFormatting}
+              editorView={editorView}
+            /> : null
+          }
+          {pluginStateTextColor ?
+            <ToolbarTextColor
+              disabled={disabled}
+              pluginState={pluginStateTextColor}
+              editorView={editorView}
               softBlurEditor={this.softBlurEditor}
               focusEditor={this.focusEditor}
-            /> : null}
-          {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
-          {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
+            /> : null
+          }
+          {pluginStateTextFormatting || pluginStateClearFormatting ?
+            <ToolbarAdvancedTextFormatting
+              isDisabled={disabled}
+              pluginStateTextFormatting={pluginStateTextFormatting}
+              pluginStateClearFormatting={pluginStateClearFormatting}
+              editorView={editorView}
+              softBlurEditor={this.softBlurEditor}
+              focusEditor={this.focusEditor}
+            /> : null
+          }
+          {pluginStateLists ?
+            <ToolbarLists
+              disabled={disabled}
+              pluginState={pluginStateLists}
+              editorView={editorView}
+            /> : null
+          }
+          {pluginStateHyperlink ?
+            <ToolbarHyperlink
+              disabled={disabled}
+              pluginState={pluginStateHyperlink}
+              editorView={editorView}
+            /> : null
+          }
           <span style={{ flexGrow: 1 }} />
-          {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
+          {feedbackFormUrl ? <ToolbarFeedback packageVersion={packageVersion} packageName={packageName} /> : null}
         </Toolbar>
         <Content>
-          {props.children}
-          {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
-          {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} editorView={props.editorView} /> : null}
-          {props.pluginStateMentions && props.mentionProvider ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionProvider} /> : null}
-          {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
-          {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} editorView={props.editorView} /> : null}
+          {this.props.children}
+          {pluginStateHyperlink && !disabled ? <HyperlinkEdit pluginState={pluginStateHyperlink} editorView={editorView} /> : null}
+          {pluginStateCodeBlock && !disabled ? <LanguagePicker pluginState={pluginStateCodeBlock} editorView={editorView} /> : null}
+          {pluginStateMentions && mentionProvider && !disabled ? <MentionPicker pluginState={pluginStateMentions} resourceProvider={mentionProvider} /> : null}
+          {pluginStateEmojis && emojiProvider && !disabled ? <EmojiTypeAhead pluginState={pluginStateEmojis} emojiProvider={emojiProvider} /> : null}
+          {pluginStatePanel && !disabled ? <PanelEdit pluginState={pluginStatePanel} editorView={editorView} /> : null}
         </Content>
         <Footer>
           <FooterActions>
             <AkButtonGroup>
-              {!this.props.onSave ? null :
+              {!onSave ? null :
                 <span onClick={this.handleSave}>
                   <AkButton
                     iconAfter={iconAfter}
-                    isDisabled={this.props.saveDisabled}
+                    isDisabled={saveDisabled}
                     appearance={saveButtonAppearance}
                   >
                     Save
                   </AkButton>
                 </span>
               }
-              {!this.props.onCancel ? null :
+              {!onCancel ? null :
                 <span onClick={this.handleCancel}>
                   <AkButton appearance="subtle">Cancel</AkButton>
                 </span>
@@ -146,9 +199,9 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             </AkButtonGroup>
           </FooterActions>
           <SecondaryToolbar>
-            {props.pluginStateMentions ? <ToolbarMention pluginState={props.pluginStateMentions} editorView={props.editorView} /> : null}
-            {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
-            {props.pluginStateMedia ? <ToolbarMedia pluginState={props.pluginStateMedia} /> : null}
+            {pluginStateMentions && !disabled ? <ToolbarMention pluginState={pluginStateMentions} editorView={editorView} /> : null}
+            {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
+            {pluginStateMedia && !disabled ? <ToolbarMedia pluginState={pluginStateMedia} /> : null}
           </SecondaryToolbar>
         </Footer>
       </Container>

@@ -20,8 +20,8 @@ export default class BasicNavigation extends PureComponent {
     createDrawerContent: PropTypes.node,
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     onResizeCallback: PropTypes.func,
-    globalAppearance: PropTypes.string,
-    containerAppearance: PropTypes.string,
+    globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
@@ -33,7 +33,8 @@ export default class BasicNavigation extends PureComponent {
       />
       <AkNavigationItem
         icon={<SettingsIcon label="Settings" />}
-        text="Item B"
+        isSelected
+        text="Selected item"
       />
       <AkNavigationItem
         icon={<IssuesIcon label="Projects" />}
@@ -172,8 +173,8 @@ export default class BasicNavigation extends PureComponent {
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
-        containerAppearance={this.props.containerAppearance}
-        globalAppearance={this.props.globalAppearance}
+        containerTheme={this.props.containerTheme}
+        globalTheme={this.props.globalTheme}
         backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
         globalCreateIcon={<Tooltip position="right" description="Create"><AddIcon size="small" label="Create icon" /></Tooltip>}

@@ -11,6 +11,7 @@ import { OuterContainer } from './styles';
 export interface Props {
   editorView: EditorView;
   pluginState: HyperlinkState;
+  disabled?: boolean;
 }
 
 export interface State {
@@ -37,7 +38,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     return (
       <OuterContainer>
         <ToolbarButton
-          disabled={disabled}
+          disabled={disabled || this.props.disabled}
           onClick={this.toggleLinkPanel}
           selected={adding}
           title={tooltip(addLink)}

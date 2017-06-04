@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Label, FieldBaseStateless } from '@atlaskit/field-base';
+import FieldBase, { Label } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import { Tooltip } from '@atlaskit/tooltip';
@@ -35,8 +35,8 @@ describe(name, () => {
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessSelect />).find(FieldBaseStateless).length).to.equal(1);
-      expect(mount(<StatelessSelect />).find(Droplist).find(FieldBaseStateless).length).to.equal(1);
+      expect(mount(<StatelessSelect />).find(FieldBase).length).to.equal(1);
+      expect(mount(<StatelessSelect />).find(Droplist).find(FieldBase).length).to.equal(1);
     });
 
     it('should render placeholder in trigger if there is no selected item', () => {
@@ -113,13 +113,13 @@ describe(name, () => {
     });
 
     it('should pass props to fieldBase', () => {
-      const select = mount(<StatelessSelect isDisabled isInvalid isOpen />);
-      const fieldbaseProps = select.find(FieldBaseStateless).props();
+      const select = mount(<StatelessSelect isDisabled isInvalid isOpen invalidMessage="foobar" />);
+      const fieldbaseProps = select.find(FieldBase).props();
       expect(fieldbaseProps.isDisabled, 'isDisabled').to.equal(true);
       expect(fieldbaseProps.isInvalid, 'isInvalid').to.equal(true);
-      expect(fieldbaseProps.onFocus, 'onFocus').to.equal(select.instance().onFocus);
       expect(fieldbaseProps.isPaddingDisabled, 'isPaddingDisabled').to.equal(true);
       expect(fieldbaseProps.isFitContainerWidthEnabled, 'isFitContainerWidthEnabled').to.equal(true);
+      expect(fieldbaseProps.invalidMessage, 'invalidMessage').to.equal('foobar');
     });
 
     it('should pass props to Item', () => {
@@ -506,36 +506,6 @@ describe(name, () => {
       });
     });
 
-    describe('onFocus', () => {
-      it('default behavior', () => {
-        wrapper.setState({ isFocused: false });
-        instance.onFocus();
-        expect(wrapper.state().isFocused).to.equal(true);
-      });
-
-      it('disabled select', () => {
-        wrapper.setState({ isFocused: false });
-        wrapper.setProps({ isDisabled: true });
-        instance.onFocus();
-        expect(wrapper.state().isFocused).to.equal(false);
-      });
-    });
-
-    describe('onBlur', () => {
-      it('default behavior', () => {
-        wrapper.setState({ isFocused: true });
-        instance.onBlur();
-        expect(wrapper.state().isFocused).to.equal(false);
-      });
-
-      it('disabled select', () => {
-        wrapper.setState({ isFocused: true });
-        wrapper.setProps({ isDisabled: true });
-        instance.onBlur();
-        expect(wrapper.state().isFocused).to.equal(true);
-      });
-    });
-
     describe('handleItemSelect', () => {
       const item = selectItems[0].items[0];
       const attrs = { event: {} };
@@ -694,9 +664,9 @@ describe(name, () => {
 
     it('should correctly map appearance prop to FieldBase', () => {
       const defaultMultiSelect = mount(<StatelessSelect />);
-      const standardFieldBase = defaultMultiSelect.find(FieldBaseStateless);
+      const standardFieldBase = defaultMultiSelect.find(FieldBase);
       const subtleMultiSelect = mount(<StatelessSelect appearance="subtle" />);
-      const subtleFieldBase = subtleMultiSelect.find(FieldBaseStateless);
+      const subtleFieldBase = subtleMultiSelect.find(FieldBase);
       expect(standardFieldBase.prop('appearance')).to.equal('standard');
       expect(subtleFieldBase.prop('appearance')).to.equal('subtle');
     });

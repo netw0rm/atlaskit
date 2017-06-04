@@ -34,12 +34,12 @@ function setupMentionItem(mention: Mention, props?: Props): ShallowWrapper<Props
 describe('MentionItem', () => {
   it('should display @-nickname if nickname is present', () => {
     const component = setupMentionItem(mentionWithNickname);
-    expect(component.text()).contains('@' + mentionWithNickname.nickname);
+    expect(component.html()).contains(`@${mentionWithNickname.nickname}`);
   });
 
   it('should display @-name if nickname is not present', () => {
     const component = setupMentionItem(mentionWithoutNickname);
-    expect(component.text()).contains('@' + mentionWithoutNickname.name);
+    expect(component.html()).contains(`@${mentionWithoutNickname.name}`);
   });
 
   it('should display access restriction if accessLevel is not CONTAINER', () => {

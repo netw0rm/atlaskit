@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import textColorPlugin from '../../../src/plugins/text-color';
+import ToolbarButton from '../../../src/ui/ToolbarButton';
 import ToolbarTextColor from '../../../src/ui/ToolbarTextColor';
 import { doc, code_block, p, makeEditor, fixtures } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
@@ -80,5 +81,20 @@ describe('ToolbarTextColor', () => {
     expect(toolbarTextColor.state('isOpen')).to.equal(true);
     toolbarTextColor.find('ColorPalette button').first().simulate('click');
     expect(toolbarTextColor.state('isOpen')).to.equal(false);
+  });
+
+  it('should render disabled ToolbarButton if disabled property is true', () => {
+    const { editorView, pluginState } = editor(doc(p('text')));
+    const toolbarTextColor = mount(
+      <ToolbarTextColor
+        disabled={true}
+        pluginState={pluginState}
+        editorView={editorView}
+        focusEditor={noop}
+        softBlurEditor={noop}
+      />
+    );
+
+    expect(toolbarTextColor.find(ToolbarButton).prop('disabled')).to.equal(true);
   });
 });

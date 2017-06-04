@@ -15,6 +15,7 @@ import {
   resizeClosedBreakpoint,
   standardOpenWidth,
 } from '../../shared-variables';
+import * as presets from '../../theme/presets';
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   if (!isCollapsible && !isOpen) {
@@ -53,10 +54,10 @@ const getSnappedWidth = (width) => {
 export default class Navigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    containerAppearance: PropTypes.string,
+    containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerHeaderComponent: PropTypes.func,
     drawers: PropTypes.arrayOf(PropTypes.node),
-    globalAppearance: PropTypes.string,
+    globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     globalCreateIcon: PropTypes.node,
     globalPrimaryIcon: PropTypes.node,
     globalPrimaryItemHref: PropTypes.string,
@@ -74,9 +75,9 @@ export default class Navigation extends PureComponent {
   };
 
   static defaultProps = {
-    containerAppearance: 'container',
+    containerTheme: presets.container,
     drawers: [],
-    globalAppearance: 'global',
+    globalTheme: presets.global,
     globalSecondaryActions: [],
     isCollapsible: true,
     isCreateDrawerOpen: false,
@@ -151,10 +152,10 @@ export default class Navigation extends PureComponent {
   render() {
     const {
       children,
-      containerAppearance,
+      containerTheme,
       containerHeaderComponent,
       drawers,
-      globalAppearance,
+      globalTheme,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
@@ -200,7 +201,7 @@ export default class Navigation extends PureComponent {
     const globalNavigation = showGlobalNavigation ? (
       <NavigationGlobalNavigationWrapper>
         <GlobalNavigation
-          appearance={globalAppearance}
+          theme={globalTheme}
           createIcon={globalCreateIcon}
           linkComponent={linkComponent}
           onCreateActivate={onCreateDrawerOpen}
@@ -236,7 +237,7 @@ export default class Navigation extends PureComponent {
               horizontalOffset={containerOffsetX}
             >
               <ContainerNavigation
-                appearance={containerAppearance}
+                theme={containerTheme}
                 showGlobalPrimaryActions={!showGlobalNavigation}
                 globalCreateIcon={globalCreateIcon}
                 globalPrimaryIcon={globalPrimaryIcon}

@@ -229,7 +229,6 @@ const plugin = new Plugin({
   },
   props: {
     handleTextInput: (view: EditorView, from: number, to: number, text: string) => {
-      console.log('PAC: handleTextInput. from = ' + from + ', to = ' + to + ' and text = ' + text);
       let emojiId = getIdForUnicodeEmoji(text);
       if (emojiId) {
         analyticsService.trackEvent('atlassian.editor.emoji.native.insert');
@@ -244,7 +243,6 @@ const plugin = new Plugin({
           view.dispatch(newState.tr.setSelection(new TextSelection(newState.doc.resolve(from + 1))));
         }
 
-        console.log('PAC: Marked up an emoji with id = ' + emojiId);
         return true;
       }
 

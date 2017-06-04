@@ -39,27 +39,21 @@ export default class EmojiNode extends PureComponent<Props, {}> {
     const component = this;
 
     const emojiResolvingHandler = function(name: string, providerPromise?: Promise<any>) {
-      console.log('PAC: emojiResolvingHandler running. emojiProvider = ' + providerPromise);
       if (providerPromise) {
         providerPromise.then(emojiProvider => {
           emojiProvider.findById(emojiId).then((loadedEmoji) => {
             if (loadedEmoji) {
               const node = component.props.node;
-              console.log('PAC: Found emoji for id = ' + emojiId + ' which is [id=' + loadedEmoji.id + ', shortName=' + loadedEmoji.shortName + ', fallback=' + loadedEmoji.fallback + ']');
               node.attrs.shortName = loadedEmoji.shortName;
               node.attrs.text = loadedEmoji.fallback;
               component.forceUpdate();
-            } else {
-              console.log('PAC: No emoji found for id = ' + emojiId);
             }
-
           }, unsubscribeHandler);
         }, unsubscribeHandler);
       }
     };
 
     const unsubscribeHandler = function() {
-      console.log('PAC: unsubscribed the emojiResolvingHandler');
       component.props.providerFactory.unsubscribe(emojiProviderName, emojiResolvingHandler);
     };
 
@@ -87,7 +81,6 @@ export default class EmojiNode extends PureComponent<Props, {}> {
     const { shortName, id, text } = node.attrs;
 
     if (shortName) {
-      console.log('PAC: React render of resolved emoji (has shortName)');
       return (
         <Wrapper>
           <WithProviders
@@ -105,7 +98,6 @@ export default class EmojiNode extends PureComponent<Props, {}> {
       );
     }
 
-    console.log('PAC: React render of native emoji (no shortName)');
     return (<span className='native-emoji'>{text}</span>); // render the native emoji as plain text
   }
 }

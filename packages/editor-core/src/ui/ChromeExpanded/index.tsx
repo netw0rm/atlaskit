@@ -34,6 +34,7 @@ import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
+import Collab from '../Collab';
 import {
   Container,
   Content,
@@ -116,6 +117,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
 
     return (
       <Container data-editor-chrome={true} tabIndex={-1} innerRef={this.handleEditorContainerRef}>
+        <Collab />
         <Toolbar>
           {pluginStateBlockType ?
             <ToolbarBlockType

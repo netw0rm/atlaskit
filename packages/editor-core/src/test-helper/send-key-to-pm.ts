@@ -7,6 +7,14 @@ import { TestingEditorView } from './types/prosemirror';
  * Accepts key descriptions similar to Keymap, i.e. 'Shift-Ctrl-L'
  */
 export default function sendKeyToPm(editorView: EditorView, keys: string) {
+  sendKeyEventToPm(editorView, keys, 'keydown');
+}
+
+export function sendKeyPressToPm(editorView: EditorView, keys: string) {
+  sendKeyEventToPm(editorView, keys, 'keypress');
+}
+
+function sendKeyEventToPm(editorView: EditorView, keys: string, eventName: string) {
   const parts = keys.split(/-(?!'?$)/);
   const modKey = parts.indexOf('Mod') !== -1;
   const cmdKey = parts.indexOf('Cmd') !== -1;
@@ -17,9 +25,10 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
 
   // all of the browsers are using the same keyCode for alphabetical keys
   // and it's the uppercased character code in real world
-  const code = keyCodes[key] ? keyCodes[key] : (key.toUpperCase()).charCodeAt(0);
+  const keyCode = keyCodes[key] ? keyCodes[key] : (key.toUpperCase()).charCodeAt(0);
+  const charCode = key.charCodeAt(0);
 
-  const event = new CustomEvent('keydown', {
+  const event = new CustomEvent(eventName, {
     bubbles: true,
     cancelable: true,
   });
@@ -29,8 +38,9 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
   (event as any).altKey = altKey;
   (event as any).ctrlKey = ctrlKey || (!browser.mac && modKey);
   (event as any).metaKey = cmdKey || (browser.mac && modKey);
-  (event as any).keyCode = code;
-  (event as any).which = code;
+  (event as any).keyCode = keyCode;
+  (event as any).charCode = charCode;
+  (event as any).which = keyCode;
   (event as any).view = window;
 
   (editorView as TestingEditorView).dispatchEvent(event);

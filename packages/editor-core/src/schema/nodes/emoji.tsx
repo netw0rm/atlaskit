@@ -1,4 +1,4 @@
-import { Node, NodeSpec } from '../../prosemirror';
+import { NodeSpec } from '../../prosemirror';
 
 export const emoji: NodeSpec = {
   inline: true,

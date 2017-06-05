@@ -34,6 +34,7 @@ const ResizerButtonInner = styled.button`
     height: ${toggleArrowHeight / 2}px;
     position: absolute;
     left: 13px;
+    opacity: ${props => (props.isVisible ? 1 : 0)};
     transition: ${transformTransition}, ${opacityTransition};
     transform: rotate(0deg);
   }

@@ -8,13 +8,49 @@ import {
 
 export interface MentionStyleProps {
   highlighted?: boolean;
+  accessLevel?: string;
 }
+
+interface HighlightStyle {
+  background: string;
+  border: string;
+  text: string;
+}
+
+const getUserStyle = (props: MentionStyleProps): HighlightStyle => {
+  const highlightStyle = {
+    'CURRENT': {
+      background: akColorB400,
+      border: akColorB400,
+      text: akColorN20,
+    },
+    'OTHER': {
+      background: akColorN30,
+      border: akColorN30,
+      text: akColorN500,
+    },
+    'UNPERMITTED': {
+      background: akColorN20,
+      border: akColorN500,
+      text: akColorN500,
+    },
+  };
+
+  if (props.highlighted) {
+    return highlightStyle['CURRENT'];
+  }
+  if (props.accessLevel !== 'CONTAINER') {
+    return highlightStyle['UNPERMITTED'];
+  }
+  return highlightStyle['OTHER'];
+};
 
 // tslint:disable:next-line variable-name
 export const MentionStyle = styled.span`
-  background: ${(props: MentionStyleProps) => props.highlighted ? akColorB400 : akColorN30};
+  background: ${(props: MentionStyleProps) => getUserStyle(props).background};
+  border-color: ${(props: MentionStyleProps) => getUserStyle(props).border};
   border-radius: 20px;
-  color: ${(props: MentionStyleProps) => props.highlighted ? akColorN20 : akColorN500};
+  color: ${(props: MentionStyleProps) => getUserStyle(props).text};
   cursor: pointer;
   padding: 0 4px 2px 3px;
   white-space: nowrap;

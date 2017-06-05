@@ -8,6 +8,7 @@ export interface Props {
   id: string;
   text: string;
   isHighlighted?: boolean;
+  accessLevel?: string;
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
   onMouseLeave?: MentionEventHandler;

@@ -11,7 +11,7 @@ import {
   FullNameStyle,
   InfoSectionStyle,
   MentionItemStyle,
-  MentionNameStyle,
+  NicknameStyle,
   NameSectionStyle,
   AccessSectionStyle,
   RowStyle,
@@ -128,9 +128,6 @@ export default class MentionItem extends PureComponent<Props, undefined> {
     const nameHighlights = highlight && highlight.name;
     const nicknameHighlights = highlight && highlight.nickname;
 
-    const renderName = nickname ? nickname : name;
-    const renderHighlights = nickname ? nicknameHighlights : nameHighlights;
-
     return (
       <MentionItemStyle
         selected={selected}
@@ -145,7 +142,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
           </AvatarStyle>
           <NameSectionStyle restricted={restricted}>
             {renderHighlight(FullNameStyle, name, nameHighlights)}
-            {renderHighlight(MentionNameStyle, renderName, renderHighlights, '@')}
+            {renderHighlight(NicknameStyle, nickname, nicknameHighlights, '@')}
           </NameSectionStyle>
           <InfoSectionStyle restricted={restricted}>
             {renderLozenge(lozenge)}

@@ -37,9 +37,9 @@ describe('MentionItem', () => {
     expect(component.html()).contains(`@${mentionWithNickname.nickname}`);
   });
 
-  it('should display @-name if nickname is not present', () => {
+  it('should not display @-name if nickname is not present', () => {
     const component = setupMentionItem(mentionWithoutNickname);
-    expect(component.html()).contains(`@${mentionWithoutNickname.name}`);
+    expect(component.html()).to.not.contains('@');
   });
 
   it('should display access restriction if accessLevel is not CONTAINER', () => {

@@ -59,6 +59,7 @@ export interface Props {
   uploadErrorHandler?: (state: MediaState) => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  maxHeight?: number;
 }
 
 export interface State {

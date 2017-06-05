@@ -38,6 +38,7 @@ import SmartSelectWithFooterRaw from '!raw!./examples/SmartSelectWithFooter';
 import DummyItem from '../src/internal/DummyItem';
 import DummyGroup from '../src/internal/DummyGroup';
 import DummyTag from '../src/internal/DummyTag';
+import DummyFooter from '../src/internal/DummyFooter';
 import { name, description } from '../package.json';
 
 import SmartMultiSelect, { StatelessMultiSelect } from '../src';
@@ -51,6 +52,8 @@ import {
   groupPropDescriptions,
   groupPropTypes,
   tagPropDescriptions,
+  footerPropDescriptions,
+  footerPropTypes,
 } from './props';
 
 storiesOf(name, module)
@@ -134,6 +137,17 @@ storiesOf(name, module)
         </p>
       </Description>
       <Props component={DummyTag} descriptions={tagPropDescriptions} />
+    </Chrome>
+  ))
+  .add('📖 Multi select Footer - readme', () => (
+    <Chrome title="Multi select Footer - overview">
+      <Heading>Footer</Heading>
+      <Description>
+        <p>Show a specific item at the bottom of the list, that looks like a footer.</p>
+      </Description>
+      <Props
+        component={DummyFooter} descriptions={footerPropDescriptions} types={footerPropTypes}
+      />
     </Chrome>
   ))
   .add('Multi select is submittable', () => (

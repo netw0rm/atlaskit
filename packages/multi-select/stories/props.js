@@ -56,6 +56,20 @@ const groupPropTypes = {
   items: 'Array(Item)',
 };
 
+const footerPropDescriptions = {
+  content: 'Text to show in the footer',
+  elemBefore: 'An element (usualy an icon) to show before the text',
+  onActivate: 'Handler to be called when footer is clicked or Enter is pressed',
+  textColor: 'Color of the text in the Footer',
+};
+
+const footerPropTypes = {
+  content: 'string',
+  elemBefore: 'node',
+  onActivate: 'func',
+  textColor: 'string',
+};
+
 const itemPropDescriptions = {
   content: 'The text/content to display in the option and in the rendered tags (selected options).',
   description: 'The text/content to display underneath the content. Doesn`t show in the rendered tags',
@@ -87,5 +101,7 @@ export {
   groupPropDescriptions,
   groupPropTypes,
   tagPropDescriptions,
+  footerPropDescriptions,
+  footerPropTypes,
 };
 /* eslint-enable import/prefer-default-export */

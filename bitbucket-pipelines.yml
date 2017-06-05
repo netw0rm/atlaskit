@@ -71,3 +71,8 @@ pipelines:
           # - yarn run "pr/storybook"
         caches:
           - node
+          - lerna
+          
+definitions:
+  caches:
+    lerna: packages/*/node_modules    

@@ -1,8 +1,25 @@
 import styled from 'styled-components';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import {
+  akColorN30,
+  akColorN100,
+  akColorN500,
+  akColorN900
+} from '@atlaskit/util-shared-styles';
 
-interface MentionItemStyleProps {
+export interface MentionItemStyleProps {
   selected?: boolean;
+}
+
+export interface AvatarSectionStyleProps {
+  restricted?: boolean;
+}
+
+export interface NameSectionStyleProps {
+  restricted?: boolean;
+}
+
+export interface InfoSectionStyleProps {
+  restricted?: boolean;
 }
 
 // tslint:disable:next-line variable-name
@@ -12,8 +29,7 @@ export const RowStyle = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   overflow: hidden;
-  padding: 9px 20px;
-  position: relative;
+  padding: 8px 16px;
   text-overflow: ellipsis;
   vertical-align: middle;
 `;
@@ -23,13 +39,15 @@ export const AvatarStyle = styled.span`
   position: relative;
   flex: initial;
   margin-top: -2px;
+  opacity: ${(props: AvatarSectionStyleProps) => props.restricted ? '0.5' : 'inherit'};
 `;
 
 // tslint:disable:next-line variable-name
 export const NameSectionStyle = styled.div`
   flex: 1;
   min-width: 0;
-  margin-left: 10px;
+  margin-left: 16px;
+  opacity: ${(props: NameSectionStyleProps) => props.restricted ? '0.5' : 'inherit'};
 `;
 
 // tslint:disable:next-line variable-name
@@ -38,11 +56,12 @@ export const FullNameStyle = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: ${akColorN900};
 `;
 
 // tslint:disable:next-line variable-name
 export const MentionNameStyle = styled.span`
-  color: #747474;
+  color: ${akColorN100};
   font-size: 12px;
 
   margin-top: 2px;
@@ -58,6 +77,7 @@ export const InfoSectionStyle = styled.div`
   display: flex;
   flex-direction: column;
   text-align: right;
+  opacity: ${(props: InfoSectionStyleProps) => props.restricted ? '0.5' : 'inherit'};
 
   & {
     /* Lozenge */
@@ -71,7 +91,7 @@ export const InfoSectionStyle = styled.div`
 export const TimeStyle = styled.div`
   margin-left: 20px;
   flex: none;
-  color: #747474;
+  color: ${akColorN100};
   font-size: 12px;
 `;
 
@@ -84,4 +104,10 @@ export const MentionItemStyle = styled.div`
   height: 48px;
   line-height: 1.2;
   cursor: pointer;
+`;
+
+// tslint:disable:next-line variable-name
+export const AccessSectionStyle = styled.div`
+  padding-left: 5px;
+  color: ${akColorN500}
 `;

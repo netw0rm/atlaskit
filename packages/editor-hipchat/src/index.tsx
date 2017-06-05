@@ -6,15 +6,11 @@ import {
   EditorState,
   EditorView,
   EmojiTypeAhead,
-  LanguagePicker,
   emojisPlugins,
   emojisStateKey,
   history,
-  HyperlinkEdit,
   hyperlinkPlugins,
-  hyperlinkStateKey,
   codeBlockPlugins,
-  codeBlockStateKey,
   keymap,
   mediaPluginFactory,
   mediaStateKey,
@@ -39,6 +35,10 @@ import {
   ReactMediaNode,
   ReactMentionNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
@@ -73,6 +73,7 @@ export interface Props {
   uploadErrorHandler?: (state: MediaState) => void;
   useLegacyFormat?: boolean;
   analyticsHandler?: AnalyticsHandler;
+  errorReporter?: ErrorReportingHandler;
 }
 
 export interface State {
@@ -107,8 +108,14 @@ export default class Editor extends PureComponent<Props, State> {
       this.providerFactory.setProvider('mediaProvider', mediaProvider);
     }
 
+    const errorReporter = new ErrorReporter();
+    if (props.errorReporter) {
+      errorReporter.handler = props.errorReporter;
+    }
+
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
+      errorReporter,
       providerFactory: this.providerFactory,
     });
 
@@ -268,8 +275,6 @@ export default class Editor extends PureComponent<Props, State> {
     const editorState = editorView && editorView.state;
     const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);
     const mentionsState = editorState && mentionProvider && mentionsStateKey.getState(editorState);
-    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
-    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
       'flash-toggle': this.state.flashToggle
@@ -278,9 +283,6 @@ export default class Editor extends PureComponent<Props, State> {
     return (
       <div className={classNames} id={this.props.id}>
         <div ref={this.handleRef}>
-          {!hyperlinkState ? null :
-            <HyperlinkEdit pluginState={hyperlinkState} editorView={editorView!} />
-          }
           {!emojisState ? null :
             <EmojiTypeAhead
               pluginState={emojisState}
@@ -294,12 +296,6 @@ export default class Editor extends PureComponent<Props, State> {
               presenceProvider={props.presenceProvider}
               pluginState={mentionsState}
               reversePosition={props.reverseMentionPicker}
-            />
-          }
-          {!codeBlockState ? null :
-            <LanguagePicker
-              pluginState={codeBlockState}
-              editorView={editorView!}
             />
           }
         </div>

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Lorem from 'react-lorem-component';
-import { ArrowleftIcon, ArrowrightIcon } from '@atlaskit/icon';
+import { ArrowLeftIcon, ArrowRightIcon } from '@atlaskit/icon';
 import { AkContainerNavigationNested, AkNavigationItem } from '../../../src/index';
 
 const pageStyle = {
@@ -84,7 +84,7 @@ export default class PagedContainerNavigation extends PureComponent {
       <div>
         <AkContainerNavigationNested
           animationDirection={this.state.animationDirection}
-          backButtonIcon={<ArrowleftIcon label="Previous" />}
+          backButtonIcon={<ArrowLeftIcon label="Previous" />}
           onBackButtonClick={this.goToPrev}
           mainNavigationItem={<AkNavigationItem text="Previous" />}
         >
@@ -95,7 +95,7 @@ export default class PagedContainerNavigation extends PureComponent {
           onClick={this.goToNext}
           style={!this.isNextEnabled() ? disabledLinkStyles : enabledLinkStyles}
         >
-          <AkNavigationItem icon={<ArrowrightIcon label="Next" />} text="Next" />
+          <AkNavigationItem icon={<ArrowRightIcon label="Next" />} text="Next" />
         </a>
       </div>
     );

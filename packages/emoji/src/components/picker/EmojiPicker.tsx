@@ -152,11 +152,8 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   private loadEmoji = (provider: EmojiProvider, selectedEmoji?: EmojiDescription) => {
       if (selectedEmoji && !isEmojiLoaded(selectedEmoji)) {
         provider.findByEmojiId(selectedEmoji).then(loadedEmoji => {
-          const lastestSelectedEmoji = this.state.selectedEmoji;
-          if (loadedEmoji && (
-                !lastestSelectedEmoji ||
-                (lastestSelectedEmoji && isEmojiIdEqual(lastestSelectedEmoji, loadedEmoji) )
-          )) {
+          const latestSelectedEmoji = this.state.selectedEmoji;
+          if (loadedEmoji && (!latestSelectedEmoji ||isEmojiIdEqual(latestSelectedEmoji, loadedEmoji))) {
             // Emoji is still selected, update
             this.setState({
               selectedEmoji: loadedEmoji,

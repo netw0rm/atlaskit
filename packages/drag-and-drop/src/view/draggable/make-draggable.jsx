@@ -218,7 +218,6 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
         const style = {
           width: dimension.width,
           height: dimension.height,
-          // backgroundColor: 'pink',
         };
 
         return (

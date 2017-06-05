@@ -1,5 +1,7 @@
+// @flow
 import React, { PureComponent } from 'react';
-import { describe, it } from 'mocha';
+import { describe, it, afterEach } from 'mocha';
+import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import DimensionPublisher from '../../../src/view/dimension-publisher/dimension-publisher';
@@ -9,10 +11,10 @@ const itemId: Id = 'item-1';
 
 class Item extends PureComponent {
   /* eslint-disable react/sort-comp */
-  props: {|
+  props: {
     publish: Function,
-    shouldPublish?: boolean
-  |}
+    shouldPublish?: boolean,
+  }
 
   state: {|
     ref: ?Element
@@ -31,10 +33,11 @@ class Item extends PureComponent {
   render() {
     return (
       <DimensionPublisher
-        targetRef={this.state.ref}
+        shouldPublish={this.props.shouldPublish}
         publish={this.props.publish}
         itemId={itemId}
-        shouldPublish={this.props.shouldPublish}
+        targetRef={this.state.ref}
+        typeId="TYPE"
       >
         <div ref={this.setRef}>hi</div>
       </DimensionPublisher>
@@ -49,7 +52,7 @@ const getDimension = ({
   left = 0,
   right = 100,
   margin = 0,
-} = {}): Dimension => {
+}: Object = {}): Dimension => {
   const dimension: Dimension = (() => {
     const height = (top + margin) + (bottom + margin);
     const width = (left + margin) + (right + margin);

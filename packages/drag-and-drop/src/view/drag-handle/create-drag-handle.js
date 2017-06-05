@@ -4,7 +4,7 @@ import DragHandle from './drag-handle';
 // eslint-disable-next-line no-duplicate-imports
 import type { Callbacks } from './drag-handle';
 
-export default (callbacks: Callbacks) => (isEnabled: boolean) => (el: ReactElement<any>) => (
+export default (callbacks: Callbacks) => (isEnabled: boolean) => (el: any) => (
   <DragHandle
     {...callbacks}
     isEnabled={isEnabled}

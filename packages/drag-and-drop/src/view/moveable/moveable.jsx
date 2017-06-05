@@ -16,12 +16,12 @@ const isAtOrigin = (point: PositionLike): boolean =>
   point.x === 0 && point.y === 0;
 
 type Props = {|
-  children?: React$Element<*>,
+  children?: any,
   destination: Position,
   speed: Speed,
-  onMoveEnd?: Function,
-  innerRef?: Function,
-  style ?: Object,
+  onMoveEnd?: () => void,
+  innerRef?: (Element) => void,
+  style?: Object,
   extraCSS?: String,
 |}
 

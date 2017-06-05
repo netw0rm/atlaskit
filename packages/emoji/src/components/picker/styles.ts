@@ -175,6 +175,10 @@ export const emojiPickerSpinner = style({
 
 //// Category/Result
 
+export const emojiPickerSection = style({
+  flex: '1 0 auto',
+});
+
 export const emojiPickerRow = style({
   boxSizing: 'border-box',
   padding: '0 8px',

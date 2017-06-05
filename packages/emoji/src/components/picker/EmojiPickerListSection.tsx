@@ -65,12 +65,16 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
 
   render() {
     const { className, emojis, id, onMouseMove, onSelected, selectedEmoji, title } = this.props;
+    const sectionClassNames = [
+      className,
+      styles.emojiPickerSection,
+    ];
 
     return (
       <div
         id={id}
         data-category-id={title}
-        className={className}
+        className={classnames(sectionClassNames)}
       >
         <div className={styles.emojiCategoryTitle} >
           {title}

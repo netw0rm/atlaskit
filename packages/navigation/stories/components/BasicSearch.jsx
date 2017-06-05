@@ -108,13 +108,13 @@ export default class BasicSearch extends PureComponent {
   }
 
   search = (query) => {
-    clearTimeout(this.searchTOID);
+    clearTimeout(this.searchTimeoutId);
     this.setState({
       isLoading: true,
     });
     this.setQuery(query);
     const results = searchData(query);
-    this.searchTOID = setTimeout(() => {
+    this.searchTimeoutId = setTimeout(() => {
       this.setState({
         results,
         isLoading: false,

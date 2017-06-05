@@ -141,7 +141,7 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation
         searchDrawerContent={(
-          <BasicSearch delay={800} />
+          <BasicSearch fakeNetworkLatency={800} />
         )}
         openDrawer="search"
       />

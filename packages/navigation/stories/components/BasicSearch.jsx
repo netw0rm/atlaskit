@@ -119,7 +119,7 @@ export default class BasicSearch extends PureComponent {
         results,
         isLoading: false,
       });
-    }, this.props.delay || 0);
+    }, this.props.fakeNetworkLatency || 0);
   }
 
   renderResults = () => (

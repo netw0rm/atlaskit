@@ -71,6 +71,7 @@ describe(`${name} html:`, () => {
     describe('checkParseEncodeRoundTrips', () => {
       let customSchema;
       let code;
+
       before(() => {
         customSchema = makeSchema({ allowAdvancedTextFormatting: true, allowSubSup: true }) as JIRASchema;
         code = markFactory(customSchema.marks.code);
@@ -78,6 +79,7 @@ describe(`${name} html:`, () => {
         p = nodeFactory(customSchema.nodes.paragraph);
         strong = markFactory(customSchema.marks.strong);
       });
+
       it(`parses HTML: <tt> tag`, () => {
         const node = doc(p(
           'Text with ',
@@ -107,7 +109,6 @@ describe(`${name} html:`, () => {
         const roundTripped = parse(encode(node, customSchema), customSchema);
         expect(roundTripped).to.deep.equal(node);
       });
-
 
       it(`parses HTML: <tt> and <b>`, () => {
         const node = doc(p(
@@ -173,12 +174,6 @@ describe(`${name} html:`, () => {
         '.'
       )),
       '<p>Text with <em><b>strong emphasised words</b></em>.</p>');
-
-    // checkParseEncodeRoundTrips('<del>',
-    //   schema,
-    //   '<p><del>struck</del></p>',
-    //   doc(p(strike('struck'))));
-
 
     describe('checkParseEncodeRoundTrips', () => {
       it(`parses HTML: <del> tag`, () => {

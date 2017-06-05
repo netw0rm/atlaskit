@@ -1,6 +1,14 @@
 import { expect } from 'chai';
-import TextSerializer from '../../../../src/renderer/text';
+import {
+  default as TextSerializer,
+  serializeNode,
+} from '../../../../src/renderer/text';
+import {
+  media,
+  p as paragraph,
+} from '../../../../src/test-helper';
 import schema from '../../../../src/test-helper/schema';
+import applyMark from '../../../../src/renderer/text/marks';
 
 const doc = {
   'type': 'doc',
@@ -69,4 +77,23 @@ media attachment (foo in collection SampleItems)`);
 
   });
 
+  it('should return node text if there is no special mark behaviour', () => {
+    const mark = schema.marks.underline.create();
+    expect(applyMark('https://www.atlassian.com', mark)).to.equal('https://www.atlassian.com');
+  });
+
+  it('should use node text if there is no special node serialization behaviour', () => {
+    const node = paragraph('Atlassian');
+    expect(serializeNode(node)).to.equal('Atlassian');
+  });
+
+  it('should use special node serialization behaviour if it exists', () => {
+    const node = media({
+      id: 'foo',
+      type: 'file',
+      collection: 'bar'
+    });
+
+    expect(serializeNode(node)).to.not.equal('');
+  });
 });

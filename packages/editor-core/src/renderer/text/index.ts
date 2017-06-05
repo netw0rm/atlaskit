@@ -70,13 +70,18 @@ const serializeFragment = (fragment: Fragment) => {
   const preparedNodes: PreparedNode[] = [];
 
   fragment.forEach(node => {
-    preparedNodes.push(serializeNode(node));
+    const text = serializeNode(node);
+
+    preparedNodes.push({
+      text: applyMarksToNodeText(text, node.marks),
+      isBlock: node.isBlock,
+    });
   });
 
   return serializePrepared(preparedNodes);
 };
 
-const serializeNode = (node: PMNode): PreparedNode => {
+export const serializeNode = (node: PMNode): string => {
   let text;
 
   if (nodesToText[node.type.name]) {
@@ -87,10 +92,7 @@ const serializeNode = (node: PMNode): PreparedNode => {
     text = node.text || '';
   }
 
-  return {
-    text: applyMarksToNodeText(text, node.marks),
-    isBlock: node.isBlock,
-  };
+  return text;
 };
 
 export default class TextSerializer implements Serializer<string> {

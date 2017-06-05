@@ -10,6 +10,7 @@ import BasicNavigation from './components/BasicNavigation';
 import nucleusLogo from './nucleus.png';
 import { name } from '../package.json';
 import RandomBadge from './components/RandomBadge';
+import StickyInlineDialogExample from './components/StickyInlineDialogExample';
 
 const dropdownItemsSample = [
   {
@@ -240,4 +241,7 @@ storiesOf(name, module)
         )}
       />
     </HtmlPage>
+  ))
+  .add('with an InlineDialog in the ContainerHeader', () => (
+    <StickyInlineDialogExample />
   ));

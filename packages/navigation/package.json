@@ -18,9 +18,9 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^1.2.0",
+    "@atlaskit/blanket": "^2.0.4",
     "@atlaskit/util-common": "^1.0.0",
-    "@atlaskit/util-shared-styles": "^2.0.0",
+    "@atlaskit/util-shared-styles": "^2.3.1",
     "babel-runtime": "^6.11.6",
     "chromatism": "^2.5.8",
     "classnames": "^2.2.5",
@@ -44,9 +44,10 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/badge": "^1.0.0",
-    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button": "^3.0.0",
     "@atlaskit/dropdown-menu": "^1.0.0",
     "@atlaskit/icon": "^6.6.0",
+    "@atlaskit/inline-dialog": "^3.2.0",
     "@atlaskit/logo": "^2.0.0",
     "@atlaskit/navigation": "*",
     "@atlaskit/page": "^4.0.0",

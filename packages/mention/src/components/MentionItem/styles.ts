@@ -6,19 +6,19 @@ import {
   akColorN900
 } from '@atlaskit/util-shared-styles';
 
-interface MentionItemStyleProps {
+export interface MentionItemStyleProps {
   selected?: boolean;
 }
 
-interface AvatarSectionStyleProps {
+export interface AvatarSectionStyleProps {
   restricted?: boolean;
 }
 
-interface NameSectionStyleProps {
+export interface NameSectionStyleProps {
   restricted?: boolean;
 }
 
-interface InfoSectionStyleProps {
+export interface InfoSectionStyleProps {
   restricted?: boolean;
 }
 

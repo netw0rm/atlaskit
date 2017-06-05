@@ -37,9 +37,8 @@ export default class HtmlPage extends PureComponent {
         {this.props.children}
         <div
           style={{
+            boxSizing: 'border-box',
             padding: '32px',
-            height: '100vh',
-            overflowY: 'scroll',
           }}
         >
           {this.props.content}

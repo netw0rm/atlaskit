@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChangeEvent, PureComponent } from 'react';
+import { ChangeEvent, ChangeEventHandler, PureComponent } from 'react';
 
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import AkButton from '@atlaskit/button';
@@ -67,6 +67,101 @@ const toEmojiName = (uploadName: string): string => {
   return `${name.substr(0, 1).toLocaleUpperCase()}${name.substr(1)}`;
 };
 
+interface ChooseEmojiFileProps {
+  name?: string;
+  onChooseFile: ChangeEventHandler<any>;
+  onNameChange: ChangeEventHandler<any>;
+}
+
+class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
+  render() {
+    const { name, onChooseFile, onNameChange } = this.props;
+    const disableChooser = !name;
+
+    return (
+      <div className={styles.emojiUpload}>
+        <div className={styles.uploadChooseFileMessage}>For best results use square images of at least 120px</div>
+        <div className={styles.uploadChooseFileRow}>
+          <span className={styles.uploadChooseFileEmojiName} >
+            <AkFieldBase
+              appearance="standard"
+              isCompact={true}
+              isLabelHidden={true}
+              isFocused={true}
+              isFitContainerWidthEnabled={true}
+            >
+              <input
+                placeholder="Emoji name"
+                maxLength={maxNameLength}
+                onChange={onNameChange}
+                value={name}
+                ref="name"
+                autoFocus={true}
+              />
+            </AkFieldBase>
+          </span>
+          <span className={styles.uploadChooseFileBrowse} >
+            <FileChooser label="Choose file" onChange={onChooseFile} accept="image/*" isDisabled={disableChooser} />
+          </span>
+        </div>
+      </div>
+    );
+  }
+}
+
+interface PreviewEmojiUploadProps {
+  name: string;
+  previewImage: string;
+  uploadStatus?: UploadStatus;
+  errorMessage?: string;
+  onUploadCancelled: () => void;
+  onAddEmoji: () => void;
+}
+
+class PreviewEmojiUpload extends PureComponent<PreviewEmojiUploadProps, {}> {
+  render() {
+    const { name, previewImage, uploadStatus, errorMessage, onAddEmoji, onUploadCancelled } = this.props;
+
+    let emojiComponent;
+
+    if (previewImage) {
+      const emoji: EmojiDescription = {
+        shortName: `:${name}:`,
+        type: customCategory,
+        category: customCategory,
+        representation: {
+          imagePath: previewImage,
+          width: 24,
+          height: 24,
+        }
+      };
+
+      emojiComponent = (<Emoji emoji={emoji} />);
+    }
+
+    const uploading = uploadStatus === UploadStatus.Uploading;
+    const spinner = uploading ? (<Spinner size="medium"/>) : undefined;
+
+    const error = !errorMessage ? undefined : (
+      <span className={styles.uploadError}><ErrorIcon label="Error" />  {errorMessage}</span>
+    );
+
+    return (
+      <div className={styles.emojiUpload}>
+        <div className={styles.uploadPreview}>
+          Your new emoji {emojiComponent} looks great!
+        </div>
+        <div className={styles.uploadAddRow}>
+          <AkButton onClick={onAddEmoji} appearance="primary" isDisabled={uploading}>Add emoji</AkButton>
+          <AkButton onClick={onUploadCancelled} appearance="link" isDisabled={uploading}>Cancel</AkButton>
+          {spinner}
+          {error}
+        </div>
+      </div>
+    );
+  }
+}
+
 export default class EmojiUploadPicker extends PureComponent<Props, State> {
 
   state = {
@@ -100,7 +195,7 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
     this.setState(updatedState);
   }
 
-  private onNameChange = (event) => {
+  private onNameChange = (event: ChangeEvent<any>) => {
     let newName = sanitizeName(event.target.value);
     if (this.state.name !== newName) {
       this.setState({
@@ -141,7 +236,7 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
     }
   }
 
-  private onChooseFile = (event: ChangeEvent<any>) => {
+  private onChooseFile = (event: ChangeEvent<any>): void => {
     const files = event.target.files;
     const cancelChooseFile = () => {
       this.setState({
@@ -167,88 +262,29 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
     }
   }
 
-  private renderPreview() {
-    const { name, previewImage, uploadStatus } = this.state;
-    const { errorMessage, onUploadCancelled } = this.props;
-
-    let emojiComponent;
-
-    if (previewImage) {
-      const emoji: EmojiDescription = {
-        shortName: `:${name}:`,
-        type: customCategory,
-        category: customCategory,
-        representation: {
-          imagePath: previewImage,
-          width: 24,
-          height: 24,
-        }
-      };
-
-      emojiComponent = (<Emoji emoji={emoji} />);
-    }
-
-    const uploading = uploadStatus === UploadStatus.Uploading;
-    const spinner = uploading ? (<Spinner size="medium"/>) : undefined;
-
-    const error = !errorMessage ? undefined : (
-      <span className={styles.uploadError}><ErrorIcon label="Error" />  {errorMessage}</span>
-    );
-
-    return (
-      <div className={styles.emojiUpload}>
-        <div className={styles.uploadPreview}>
-          Your new emoji {emojiComponent} looks great!
-        </div>
-        <div className={styles.uploadAddRow}>
-          <AkButton onClick={this.onAddEmoji} appearance="primary" isDisabled={uploading}>Add emoji</AkButton>
-          <AkButton onClick={onUploadCancelled} appearance="link" isDisabled={uploading}>Cancel</AkButton>
-          {spinner}
-          {error}
-        </div>
-      </div>
-    );
-  }
-
-  private renderChooseFile() {
-    const { name } = this.state;
-    const disableChooser = !name;
-
-    return (
-      <div className={styles.emojiUpload}>
-        <div className={styles.uploadChooseFileMessage}>For best results use square images of at least 120px</div>
-        <div className={styles.uploadChooseFileRow}>
-          <span className={styles.uploadChooseFileEmojiName} >
-            <AkFieldBase
-              appearance="standard"
-              isCompact={true}
-              isLabelHidden={true}
-              isFocused={true}
-              isFitContainerWidthEnabled={true}
-            >
-              <input
-                placeholder="Emoji name"
-                maxLength={maxNameLength}
-                onChange={this.onNameChange}
-                value={name}
-                ref="name"
-                autoFocus={true}
-              />
-            </AkFieldBase>
-          </span>
-          <span className={styles.uploadChooseFileBrowse} >
-            <FileChooser label="Choose file" onChange={this.onChooseFile} accept="image/*" isDisabled={disableChooser} />
-          </span>
-        </div>
-      </div>
-    );
-  }
-
   render() {
-    if (this.state.previewImage || this.state.uploadStatus === UploadStatus.Error) {
-      return this.renderPreview();
+    const { errorMessage, onUploadCancelled } = this.props;
+    const { name, previewImage, uploadStatus } = this.state;
+
+    if (name && previewImage) {
+      return (
+        <PreviewEmojiUpload
+          errorMessage={errorMessage}
+          name={name}
+          onAddEmoji={this.onAddEmoji}
+          onUploadCancelled={onUploadCancelled}
+          previewImage={previewImage}
+          uploadStatus={uploadStatus}
+        />
+      );
     }
 
-    return this.renderChooseFile();
+    return (
+      <ChooseEmojiFile
+        name={name}
+        onChooseFile={this.onChooseFile}
+        onNameChange={this.onNameChange}
+      />
+    );
   }
 }

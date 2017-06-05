@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { gridSize } from '../../shared-variables';
 
 const SearchFieldBaseInner = styled.div`
-  padding-right: 16px;
+  padding-right: ${2 * gridSize}px;
   width: 100%;
   display: flex;
 `;

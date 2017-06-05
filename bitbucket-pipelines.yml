@@ -39,6 +39,8 @@ pipelines:
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce
             - ./build/bin/release.restart.last.stopped.pipeline.js
+          caches:
+            - node
     invalidate-atlaskit-cache:
       - step:
           script:
@@ -51,6 +53,7 @@ pipelines:
           - ./build/bin/setup.sh
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
+          - du -h ./node_modules
           - yarn
           - (cd packages/website; yarn run build-data)
           # we have to run this after `yarn` to have access to child-process-promise
@@ -64,3 +67,5 @@ pipelines:
           - yarn run test/browserstack
           - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"
+        caches:
+          - node

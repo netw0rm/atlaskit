@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
 import { name } from '../package.json';
-import { Mention } from '../src/types';
+import { MentionData } from '../src/types';
 import MentionList from '../src/components/MentionList';
 import { mentions } from './story-data';
 
@@ -14,7 +14,7 @@ function randomMentions() {
 export interface Props {}
 
 export interface State {
-  mentions: Mention[];
+  mentions: MentionData[];
 }
 
 class RefreshableMentionList extends Component<Props, State> {

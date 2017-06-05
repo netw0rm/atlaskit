@@ -6,6 +6,7 @@ import ResourcedMentionList from './components/ResourcedMentionList';
 import MentionPicker from './components/MentionPicker';
 import Mention from './components/Mention';
 import ResourcedMention from './components/Mention/ResourcedMention';
+import { MentionData } from './types';
 
 export {
   MentionResource,
@@ -19,7 +20,8 @@ export {
   ResourcedMentionList,
   MentionPicker,
   Mention,
-  ResourcedMention
+  ResourcedMention,
+  MentionData,
 };
 
 export default MentionPicker;

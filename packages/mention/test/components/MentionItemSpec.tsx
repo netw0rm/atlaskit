@@ -3,7 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { expect } from 'chai';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 
-import { Mention } from '../../src/types';
+import { MentionData } from '../../src/types';
 import { Props, State } from '../../src/components/MentionList';
 import MentionItem from '../../src/components/MentionItem';
 
@@ -22,7 +22,7 @@ const mentionWithoutNickname =  {
     avatarUrl: ''
 };
 
-function setupMentionItem(mention: Mention, props?: Props): ShallowWrapper<Props, State> {
+function setupMentionItem(mention: MentionData, props?: Props): ShallowWrapper<Props, State> {
   return shallow(
     <MentionItem
       mention={mention}

@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { Mention, OnMentionEvent } from '../../types';
+import { MentionData, OnMentionEvent } from '../../types';
 import { MentionProvider } from '../../api/MentionResource';
 import { PresenceProvider, PresenceMap } from '../../api/PresenceResource';
 import MentionList from '../MentionList';
 import debug from '../../util/logger';
 import uniqueId from '../../util/id';
 
-function applyPresence(mentions: Mention[], presences: PresenceMap) {
-  const updatedMentions: Mention[] = [];
+function applyPresence(mentions: MentionData[], presences: PresenceMap) {
+  const updatedMentions: MentionData[] = [];
   for (let i = 0; i < mentions.length; i++) {
     // Shallow copy
     const mention = {
@@ -24,7 +24,7 @@ function applyPresence(mentions: Mention[], presences: PresenceMap) {
   return updatedMentions;
 }
 
-function extractPresences(mentions: Mention[]) {
+function extractPresences(mentions: MentionData[]) {
   const presences: PresenceMap = {};
   for (let i = 0; i < mentions.length; i++) {
     const mention = mentions[i];
@@ -44,7 +44,7 @@ export interface Props {
 
 export interface State {
   showError: boolean;
-  mentions: Mention[];
+  mentions: MentionData[];
 }
 
 export default class ResourcedMentionList extends PureComponent<Props, State> {
@@ -172,7 +172,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
   }
 
-  private refreshPresences(mentions: Mention[]) {
+  private refreshPresences(mentions: MentionData[]) {
     if (this.props.presenceProvider) {
       const ids = mentions.map(mention => mention.id);
       this.props.presenceProvider.refreshPresence(ids);
@@ -180,7 +180,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
   }
 
   // internal, used for callbacks
-  private filterChange = (mentions: Mention[]) => {
+  private filterChange = (mentions: MentionData[]) => {
     // Retain known presence
     const currentPresences = extractPresences(this.state.mentions);
     this.setState({
@@ -203,7 +203,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     } as State);
   }
 
-  private notifySelection = (mention: Mention) => {
+  private notifySelection = (mention: MentionData) => {
     this.props.resourceProvider.recordMentionSelection(mention);
     if (this.props.onSelection) {
       this.props.onSelection(mention);

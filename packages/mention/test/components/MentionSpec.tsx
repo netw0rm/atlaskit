@@ -8,7 +8,7 @@ import Mention from '../../src/components/Mention';
 import ResourcedMention from '../../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../_mock-mention-provider';
 
-describe('<Mention />', () => {
+describe('<MentionData />', () => {
   describe('Mention', () => {
     it('should render based on mention data', () => {
       const mention = shallow(<Mention {...mentionData} />);

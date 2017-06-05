@@ -20,7 +20,7 @@ import {
 
 type ReactComponentConstructor = new() => React.Component<any, any>;
 
-import { HighlightDetail, Mention, OnMentionEvent, Presence, UserAccessLevel } from '../../types';
+import { HighlightDetail, MentionData, OnMentionEvent, Presence, UserAccessLevel } from '../../types';
 import { leftClick } from '../../util/mouse';
 
 interface Part {
@@ -98,7 +98,7 @@ function renderTime(time) {
 }
 
 export interface Props {
-  mention: Mention;
+  mention: MentionData;
   selected?: boolean;
   onMouseMove?: OnMentionEvent;
   onSelection?: OnMentionEvent;

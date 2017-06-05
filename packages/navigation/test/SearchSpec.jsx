@@ -1,4 +1,5 @@
 import React from 'react';
+import FieldBase from '@atlaskit/field-base';
 import { mountWithRootTheme } from './theme-util';
 import Search from '../src/components/js/Search';
 
@@ -81,5 +82,10 @@ describe('Search', () => {
         expect(onSearchClearStub.called).to.equal(false);
       });
     });
+  });
+
+  it('should pass on its isLoading prop to the internal FieldBase for it to handle', () => {
+    expect(mountWithRootTheme(<Search isLoading />).find(FieldBase).at(0).prop('isLoading')).to.equal(true);
+    expect(mountWithRootTheme(<Search isLoading={false} />).find(FieldBase).at(0).prop('isLoading')).to.equal(false);
   });
 });

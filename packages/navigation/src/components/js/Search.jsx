@@ -10,7 +10,7 @@ import SearchResults from '../styled/SearchResults';
 export default class Search extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    isLoading: PropTypes.boolean,
+    isLoading: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onSearchClear: PropTypes.func,
     placeholder: PropTypes.string,

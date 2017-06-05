@@ -56,7 +56,7 @@ pipelines:
           - du -h ./node_modules
           - yarn --ignore-scripts
           - du -h ./node_modules
-          # Test
+          # Test 2
           # - (cd packages/website; yarn run build-data)
           # we have to run this after `yarn` to have access to child-process-promise
           # - ./build/bin/generate.changed.packages.file.pr.sh

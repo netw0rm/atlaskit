@@ -5,15 +5,17 @@ import {
   EditorState,
   EditorView,
   Schema,
+  Node,
   Plugin,
   PluginKey,
+  Slice,
   TextSelection,
 } from '../../prosemirror';
 import { isMarkAllowedAtPosition } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
-import { getIdForUnicodeEmoji } from './unicode-emoji';
+import { getIdForUnicodeEmoji, splitToEmojiAndText, EmojiOrText } from './unicode-emoji';
 
 export type StateChangeHandler = (state: EmojiState) => any;
 
@@ -228,7 +230,7 @@ const plugin = new Plugin({
     };
   },
   props: {
-    handleTextInput: (view: EditorView, from: number, to: number, text: string) => {
+    handleTextInput: (view: EditorView, from: number, to: number, text: string): boolean => {
       let emojiId = getIdForUnicodeEmoji(text);
       if (emojiId) {
         analyticsService.trackEvent('atlassian.editor.emoji.native.insert');
@@ -247,9 +249,43 @@ const plugin = new Plugin({
       }
 
       return false;
-    }
-   }
+    },
+
+    handlePaste: (view: EditorView, event: ClipboardEvent, slice: Slice): boolean => {
+      slice.content.descendants((node: Node, pos: number, parent: Node): boolean => {
+        if (node.isText && node.text) {
+          console.log('PAC: Text node found at position ' + pos + ' on parent node ' + parent);
+          let split = splitToEmojiAndText(node.text);
+
+          if (split.length > 1) {
+            let schema = view.state.schema;
+            // build a new series of nodes, preserving marks as we go
+            let marks = node.marks;
+            let replacementNodes: Node[] = [];
+            split.forEach(nodeOrText => {
+              if (nodeOrText.emojiId) {
+                replacementNodes.push(schema.nodes.emoji.create({ id: nodeOrText.emojiId, text: nodeOrText.text }));
+              } else {
+                replacementNodes.push(schema.text(nodeOrText.text, marks));
+              }
+            });
+            replacementNodes.forEach(replacement => {
+              console.log('PAC: replacementNode = ' + replacement);
+            });
+
+          } else {
+            console.log('PAC: No emoji found in pasted text node: ' + node.text);
+          }
+        }
+
+        return true;
+      });
+
+      return false;
+    },
+  },
 });
+
 
 const plugins = (schema: Schema<any, any>) => {
   return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];

@@ -25,3 +25,56 @@ export function getIdForUnicodeEmoji(text: string) : string | undefined {
 
   return emojiId;
 }
+
+// TODO probably don't use so remove
+export type EmojiIdAtPosition = { emojiId: number, position: number };
+// TODO probably don't use so remove
+export function getEmojiAndPositions(text: string): EmojiIdAtPosition[] {
+  let positions: EmojiIdAtPosition[] = [];
+
+  twemoji.replace(text, function(rawText, offset, fullStr) {
+    let emojiId = twemoji.convert.toCodePoint(rawText.includes(String.fromCharCode(0x200D)) ? rawText : rawText.replace(/\uFE0F/g, ''));
+    // TODO test with multi-byte characters.
+    positions.push({ emojiId: emojiId, position: offset})
+    return rawText;
+  });
+
+  return positions;
+}
+
+export type EmojiOrText = {
+  emojiId?: number,
+  text: string
+};
+
+/**
+ * Split a supplied string into a number of parts split on each emoji encountered. The emojis
+ * themselves are also returned in the result array. As an example the original text abc😀def😬ghj
+ * should become: 'abc', 1F600, 'def', 1F62C, 'ghj'.
+ *
+ * @param text The string to split
+ * @return an array of text and emoji in the order they are encountered
+ */
+export function splitToEmojiAndText(text: string) : EmojiOrText[] {
+  let parts: EmojiOrText[] = [];
+
+  let lastPos = 0;
+  twemoji.replace(text, function(rawText, offset, fullStr) {
+    parts.push({ text: fullStr.substring(lastPos, offset)});
+    lastPos = offset + rawText.length;
+    let emojiId = twemoji.convert.toCodePoint(rawText.includes(String.fromCharCode(0x200D)) ? rawText : rawText.replace(/\uFE0F/g, ''));
+    parts.push({ emojiId: emojiId, text: rawText });
+  });
+
+  if (lastPos == 0) {
+    // no emoji found, so return empty array
+    return parts;
+  }
+
+  // Capture any text following the final emoji in the string
+  if (lastPos < text.length) {
+    parts.push({ text: text.substring(lastPos) });
+  }
+
+  return parts;
+}

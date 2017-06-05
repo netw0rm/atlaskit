@@ -12,6 +12,7 @@ export class Fragment {
   lastChild?: Node;
   childCount: number;
   child(index: number): Node;
+  descendants(f: (node: Node, pos: number, parent: Node) => boolean): void;
   offsetAt(index: number): number;
   maybeChild(index: number): Node | null;
   forEach(f: (node: Node, offset: number, index: number) => void): void;

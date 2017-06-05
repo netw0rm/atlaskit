@@ -6,6 +6,8 @@ import {
   UploadParams,
 } from '@atlaskit/media-core';
 
+import { ErrorReportingHandler } from '../../utils';
+
 export type PickerEvent = {
   file: PickerEventFile,
   preview?: Blob
@@ -41,21 +43,27 @@ export type PickerEventError = {
 export default class PickerFacade {
   private picker: any;
   private onStartListeners: Array<(state: MediaState) => void> = [];
+  private errorReporter: ErrorReportingHandler;
+  private uploadParams: UploadParams;
 
   constructor(
     pickerType: string,
     uploadParams: UploadParams,
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
+    errorReporter: ErrorReportingHandler,
     mediaPickerFactory?: (pickerType: string, pickerConfig: any) => any
   ) {
+    this.errorReporter = errorReporter;
+    this.uploadParams = uploadParams;
+
     if (!mediaPickerFactory) {
       mediaPickerFactory = MediaPicker;
     }
 
     const picker = this.picker = mediaPickerFactory(
       pickerType,
-      this.buildPickerConfigFromContext(uploadParams, contextConfig)
+      this.buildPickerConfigFromContext(contextConfig)
     );
 
     picker.on('upload-start', this.handleUploadStart);
@@ -81,19 +89,22 @@ export default class PickerFacade {
     picker.removeAllListeners();
 
     try {
-      if (picker.teardown) {
-        picker.teardown();
-      } else if (picker.deactivate) {
+      if (picker.deactivate) {
         picker.deactivate();
       }
+
+      if (picker.teardown) {
+        picker.teardown();
+      }
     } catch (ex) {
-      // TODO: report errors somewhere
+      this.errorReporter.captureException(ex);
     }
 
     this.picker = null;
   }
 
   setUploadParams(params: UploadParams): void {
+    this.uploadParams = params;
     this.picker.setUploadParams(params);
   }
 
@@ -137,20 +148,20 @@ export default class PickerFacade {
     this.onStartListeners.push(cb);
   }
 
-  private buildPickerConfigFromContext(uploadParams: UploadParams, context: ContextConfig) {
+  private buildPickerConfigFromContext(context: ContextConfig) {
     return {
-      uploadParams: uploadParams,
+      uploadParams: this.uploadParams,
       apiUrl: context.serviceHost,
       apiClientId: context.clientId,
-      container: this.getDropzoneContainer(uploadParams),
+      container: this.getDropzoneContainer(),
       tokenSource: { getter: (reject, resolve) => {
-        context.tokenProvider(uploadParams.collection).then(resolve, reject);
+        context.tokenProvider(this.uploadParams.collection).then(resolve, reject);
       }},
     };
   }
 
-  private getDropzoneContainer(uploadParams: UploadParams) {
-    const { dropzoneContainer } = uploadParams;
+  private getDropzoneContainer() {
+    const { dropzoneContainer } = this.uploadParams;
 
     return dropzoneContainer ? dropzoneContainer : document.body;
   }
@@ -222,7 +233,9 @@ export default class PickerFacade {
     const { file, error } = event;
 
     if (!file || !file.id) {
-      console.error('Editor: Media: unknown upload-error received from Media Picker', error);
+      const err = new Error(`Media: unknown upload-error received from Media Picker: ${error && error.name}`);
+      this.errorReporter.captureException(err);
+
       return;
     }
 

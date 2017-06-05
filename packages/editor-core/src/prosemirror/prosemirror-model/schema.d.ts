@@ -28,6 +28,7 @@ export interface NodeSpec {
   defining?: boolean;
   toDOM?: (_0: Node) => {};
   parseDOM?: ParseRule[];
+  tableRole?: string;
 }
 
 export class NodeType {

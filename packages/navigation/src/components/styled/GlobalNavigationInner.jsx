@@ -4,8 +4,8 @@ import { getProvided } from '../../theme/util';
 
 const GlobalNavigationInner = styled.div`
   align-items: center;
-  color: ${({ theme }) => getProvided(theme).text}
-  background-color: ${({ theme }) => getProvided(theme).background.primary}
+  color: ${({ theme }) => getProvided(theme).text};
+  background-color: ${({ theme }) => getProvided(theme).background.primary};
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

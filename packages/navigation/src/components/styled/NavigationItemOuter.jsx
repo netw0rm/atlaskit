@@ -33,7 +33,7 @@ const NavigationItemOuter = styled.div`
         return item.selected.text;
       }
       return getProvided(props.theme).text;
-    }}
+    }};
     display: block;
     height: 100%;
     /* In theory this wouldn't be required, but Chrome does not place focus styles correctly without it */

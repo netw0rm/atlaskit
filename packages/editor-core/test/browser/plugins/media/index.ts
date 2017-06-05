@@ -438,19 +438,50 @@ describe('Media plugin', () => {
     expect(pluginState.pickers).to.have.length(4);
   });
 
-  it('should remove old pickers exactly when new media provider is set', async () => {
+  it('should re-use old pickers when new media provider is set', async () => {
     const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
 
     const mediaProvider1 = getFreshResolvedProvider();
     (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
-
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
+    const pickersAfterMediaProvider1 = pluginState.pickers;
+    expect(pickersAfterMediaProvider1).to.have.length(4);
 
     const mediaProvider2 = getFreshResolvedProvider();
     (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider2.uploadContext;
+    const pickersAfterMediaProvider2 = pluginState.pickers;
+
+    expect(pickersAfterMediaProvider1).to.have.length(pickersAfterMediaProvider2.length);
+    for (let i = 0; i < pickersAfterMediaProvider1.length; i++) {
+      expect(pickersAfterMediaProvider1[i]).to.equal(pickersAfterMediaProvider2[i]);
+    }
+  });
+
+  it('should set new upload params for existing pickers when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
+
+    const mediaProvider1 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    const resolvedMediaProvider1 = await mediaProvider1;
+    await resolvedMediaProvider1.uploadContext;
+
+    pluginState.pickers.forEach(picker => {
+      picker.setUploadParams = sinon.spy();
+    });
+
+    const mediaProvider2 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider2.uploadContext;
+
+    pluginState.pickers.forEach(picker => {
+      expect(picker.setUploadParams.calledOnce).to.equal(true);
+    });
   });
 
   [

@@ -7,6 +7,7 @@ import { AkGlobalNavigation } from '../../src/index';
 import { name, description } from '../../package.json';
 
 const globalNavigationPropDescriptions = {
+  theme: 'The visual style of the GlobalNavigation. Presets are available via the presetThemes named export, or you can generate your own using the the createGlobalTheme named export function.',
   accountItem: 'The user profile item to place at the bottom, usually an avatar and a dropdown trigger',
   createIcon: 'The icon to use for the create item - usually a + plus sign',
   linkComponent: 'Used to render all links in the GlobalNavigation. See linkComponent docs for more details',

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
-import { Label, FieldBase } from '@atlaskit/field-base';
+import { Label, FieldBaseStateless } from '@atlaskit/field-base';
 import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
@@ -438,7 +438,7 @@ export default class StatelessMultiSelect extends PureComponent {
           position={this.props.position}
           shouldFitContainer
           trigger={
-            <FieldBase
+            <FieldBaseStateless
               appearance={mapAppearanceToFieldBase(this.props.appearance)}
               isDisabled={this.props.isDisabled}
               isFitContainerWidthEnabled
@@ -476,7 +476,7 @@ export default class StatelessMultiSelect extends PureComponent {
                   />}
                 </TagGroup>
               </Trigger>
-            </FieldBase>
+            </FieldBaseStateless>
           }
         >
           {this.renderGroups(this.props.items)}

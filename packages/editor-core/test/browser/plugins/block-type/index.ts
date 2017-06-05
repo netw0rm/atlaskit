@@ -635,6 +635,16 @@ describe('block-type', () => {
 
         context('when selection is empty', () => {
           context('on a non nested structure', () => {
+            context('inside a paragraph', () => {
+              it('doesn not create a new paragraph above', () => {
+                const { editorView } = editor(doc(p('{<>}text')));
+
+                sendKeyToPm(editorView, 'ArrowUp');
+
+                expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+              });
+            });
+
             context('when cursor is in the middle of the first block node', () => {
               it('does not create a new paragraph above', () => {
                 const { editorView } = editor(doc(code_block()('te{<>}xt')));
@@ -671,7 +681,7 @@ describe('block-type', () => {
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
-                  expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', text: '@bar1' }))));
+                  expect(editorView.state.doc).to.deep.equal(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
                 });
               });
 

@@ -26,7 +26,7 @@ const ContainerHeaderWrapper = styled.div`
 
     /* keyline */
     &::after {
-      background-color: ${({ isContentScrolled, theme }) => (isContentScrolled ? getProvided(theme).keyline : 'none')}
+      background-color: ${({ isContentScrolled, theme }) => (isContentScrolled ? getProvided(theme).keyline : 'none')};
       bottom: -${keylineHeight}px;
       border-radius: 1px;
       content: "";
@@ -34,7 +34,7 @@ const ContainerHeaderWrapper = styled.div`
       left: ${gridSize}px;
       position: absolute;
       right: ${gridSize}px;
-      transition: background-color ${resizeAnimationTime}
+      transition: background-color ${resizeAnimationTime};
     }
   }
 

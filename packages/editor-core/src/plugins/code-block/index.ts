@@ -144,7 +144,7 @@ const plugin = new Plugin({
       if (html && text && node && node.type === schema.nodes.codeBlock) {
         const codeBlockNode = schema.nodes.codeBlock.create(node.attrs, schema.text(text));
         const tr = view.state.tr.replaceSelection(
-          new Slice(Fragment.from(codeBlockNode), slice.openLeft, slice.openRight)
+          new Slice(Fragment.from(codeBlockNode), slice.openStart, slice.openEnd)
         );
         view.dispatch(tr.scrollIntoView());
         return true;

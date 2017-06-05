@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import memoizeOne from 'memoize-one';
-import * as presets from '../../theme/presets';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
 import ContainerNoHeader from '../styled/ContainerNoHeader';
@@ -12,10 +11,10 @@ import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
 import subscribe from '../../watch-scroll-top';
 import { globalPrimaryActions } from '../../shared-variables';
+import { container } from '../../theme/presets';
 
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
     showGlobalPrimaryActions: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
@@ -27,13 +26,14 @@ export default class ContainerNavigation extends PureComponent {
     globalCreateIcon: PropTypes.node,
     onGlobalCreateActivate: PropTypes.func,
     onGlobalSearchActivate: PropTypes.func,
+    theme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
-    appearance: 'container',
     showGlobalPrimaryActions: false,
     isCollapsed: false,
     linkComponent: DefaultLinkComponent,
+    theme: container,
   }
 
   constructor(props, context) {
@@ -93,7 +93,6 @@ export default class ContainerNavigation extends PureComponent {
 
   render() {
     const {
-      appearance,
       showGlobalPrimaryActions,
       children,
       globalCreateIcon,
@@ -105,6 +104,7 @@ export default class ContainerNavigation extends PureComponent {
       onGlobalCreateActivate,
       onGlobalSearchActivate,
       isCollapsed,
+      theme,
     } = this.props;
 
     // Only animating the revealing of GlobalPrimaryActions
@@ -121,7 +121,7 @@ export default class ContainerNavigation extends PureComponent {
 
     return (
       <WithRootTheme
-        provided={presets[appearance]}
+        provided={theme}
         isCollapsed={isCollapsed}
       >
         {/* This div is needed for legacy reasons.
@@ -136,7 +136,6 @@ export default class ContainerNavigation extends PureComponent {
             openHeight={globalPrimaryActions.height.outer}
           >
             <GlobalPrimaryActions
-              appearance={appearance}
               createIcon={globalCreateIcon}
               linkComponent={linkComponent}
               onCreateActivate={onGlobalCreateActivate}

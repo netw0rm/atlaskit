@@ -14,6 +14,7 @@ export interface Serializer<T> {
 }
 
 export { default as ReactSerializer } from './react';
+export { default as TextSerializer } from './text';
 
 export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: Schema<NodeSpec, MarkSpec>): T | null => {
   const validDoc = getValidDocument(doc);

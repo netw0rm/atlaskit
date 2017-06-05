@@ -38,10 +38,10 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(ul(li(p())))));
     });
 
-    it('should be possible to convert a code_clock to a list item', () => {
+    it('should be not be possible to convert a code_clock to a list item', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
       insertText(editorView, '* ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(ul(li(code_block()()))));
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('* ')));
     });
 
     it('should be possible to convert a heading block to a list item', () => {
@@ -77,7 +77,7 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '1. ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(ol(li(code_block()()))));
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('1. ')));
     });
   });
 });

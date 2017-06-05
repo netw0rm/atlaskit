@@ -1,6 +1,6 @@
 import { customCategory, customType } from '../src/constants';
 import EmojiRepository from '../src/api/EmojiRepository';
-import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
+import { denormaliseEmojiServiceResponse } from '../src/api/EmojiUtils';
 import { EmojiDescription, EmojiDescriptionWithVariations, EmojiServiceDescription, EmojiServiceResponse } from '../src/types';
 import { mockEmojiResourceFactory, mockNonUploadingEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from './MockEmojiResource';
 

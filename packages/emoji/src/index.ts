@@ -6,7 +6,8 @@ import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
 import EmojiResource, { EmojiProvider, UploadingEmojiProvider } from './api/EmojiResource';
 import { AbstractResource } from './api/SharedResources';
 import EmojiRepository, { EmojiSearchResult } from './api/EmojiRepository';
-import EmojiLoader, { denormaliseEmojiServiceResponse } from './api/EmojiLoader';
+import EmojiLoader from './api/EmojiLoader';
+import { denormaliseEmojiServiceResponse } from './api/EmojiUtils';
 import { toEmojiId, toOptionalEmojiId } from './type-helpers';
 import { customCategory, defaultEmojiHeight, emojiPickerWidth, emojiPickerHeight } from './constants';
 

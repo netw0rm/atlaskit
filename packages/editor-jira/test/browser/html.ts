@@ -3,29 +3,29 @@ import { checkParse, checkEncode, checkParseEncodeRoundTrips } from '../../test-
 
 import { name } from '../../package.json';
 import { JIRASchema, makeSchema } from '../../src/schema';
+import { expect } from 'chai';
+import { encode, parse } from '../../src/html';
 
-export const schema = makeSchema({ allowAdvancedTextFormatting: true, allowSubSup: true }) as JIRASchema;
+export const schema = makeSchema({ allowSubSup: true }) as JIRASchema;
 
 // Nodes
-const doc = nodeFactory(schema.nodes.doc);
-const p = nodeFactory(schema.nodes.paragraph);
-const br = schema.node(schema.nodes.hardBreak);
-const h1 = nodeFactory(schema.nodes.heading, { level: 1 });
-const h2 = nodeFactory(schema.nodes.heading, { level: 2 });
-const h3 = nodeFactory(schema.nodes.heading, { level: 3 });
-const h4 = nodeFactory(schema.nodes.heading, { level: 4 });
-const h5 = nodeFactory(schema.nodes.heading, { level: 5 });
-const h6 = nodeFactory(schema.nodes.heading, { level: 6 });
-const hr = nodeFactory(schema.nodes.rule);
+let doc = nodeFactory(schema.nodes.doc);
+let p = nodeFactory(schema.nodes.paragraph);
+let br = schema.node(schema.nodes.hardBreak);
+let h1 = nodeFactory(schema.nodes.heading, { level: 1 });
+let h2 = nodeFactory(schema.nodes.heading, { level: 2 });
+let h3 = nodeFactory(schema.nodes.heading, { level: 3 });
+let h4 = nodeFactory(schema.nodes.heading, { level: 4 });
+let h5 = nodeFactory(schema.nodes.heading, { level: 5 });
+let h6 = nodeFactory(schema.nodes.heading, { level: 6 });
+let hr = nodeFactory(schema.nodes.rule);
 
 // Marks
-const em = markFactory(schema.marks.em);
-const code = markFactory(schema.marks.code!);
-const strike = markFactory(schema.marks.strike!);
-const strong = markFactory(schema.marks.strong);
-const sub = markFactory(schema.marks.subsup, { type: 'sub' });
-const sup = markFactory(schema.marks.subsup, { type: 'sup' });
-const u = markFactory(schema.marks.underline);
+let em = markFactory(schema.marks.em);
+let strong = markFactory(schema.marks.strong);
+let sub = markFactory(schema.marks.subsup, { type: 'sub' });
+let sup = markFactory(schema.marks.subsup, { type: 'sup' });
+let u = markFactory(schema.marks.underline);
 
 describe(`${name} html:`, () => {
   describe('paragraphs:', () => {
@@ -68,26 +68,63 @@ describe(`${name} html:`, () => {
   });
 
   describe('marks formatting:', () => {
-    checkParseEncodeRoundTrips('<tt> tag',
-      schema,
-      '<p>Text with <tt>code words</tt>.</p>',
-      doc(p(
-        'Text with ',
-        code('code words'),
-        '.'
-      )));
+    describe('checkParseEncodeRoundTrips', () => {
+      let customSchema;
+      let code;
+      before(() => {
+        customSchema = makeSchema({ allowAdvancedTextFormatting: true, allowSubSup: true }) as JIRASchema;
+        code = markFactory(customSchema.marks.code);
+        doc = nodeFactory(customSchema.nodes.doc);
+        p = nodeFactory(customSchema.nodes.paragraph);
+        strong = markFactory(customSchema.marks.strong);
+      });
+      it(`parses HTML: <tt> tag`, () => {
+        const node = doc(p(
+          'Text with ',
+          code('code words'),
+          '.'
+        ));
+        const actual = parse('<p>Text with <tt>code words</tt>.</p>', customSchema);
+        expect(actual).to.deep.equal(node);
+      });
 
-    checkParse('<tt> and <b>',
-      schema,
-      [
-        '<p>Text with <tt><b>code words</b></tt>.</p>',
-        '<p>Text with <b><tt>code words</tt></b>.</p>'
-      ],
-      doc(p(
-        'Text with ',
-        strong(code('code words')),
-        '.'
-      )));
+      it(`encodes HTML: <tt> tag`, () => {
+        const node = doc(p(
+          'Text with ',
+          code('code words'),
+          '.'
+        ));
+        const encoded = encode(node, customSchema);
+        expect('<p>Text with <tt>code words</tt>.</p>').to.deep.equal(encoded);
+      });
+
+      it(`round-trips HTML: <tt> tag`, () => {
+        const node = doc(p(
+          'Text with ',
+          code('code words'),
+          '.'
+        ));
+        const roundTripped = parse(encode(node, customSchema), customSchema);
+        expect(roundTripped).to.deep.equal(node);
+      });
+
+
+      it(`parses HTML: <tt> and <b>`, () => {
+        const node = doc(p(
+          'Text with ',
+          strong(code('code words')),
+          '.'
+        ));
+        const htmls = [
+          '<p>Text with <tt><b>code words</b></tt>.</p>',
+          '<p>Text with <b><tt>code words</tt></b>.</p>'
+        ];
+        for (const html of htmls) {
+          const actual = parse(html, customSchema);
+          expect(actual).to.deep.equal(node);
+        }
+      });
+    });
 
     checkParseEncodeRoundTrips('<ins> tag',
       schema,
@@ -137,10 +174,43 @@ describe(`${name} html:`, () => {
       )),
       '<p>Text with <em><b>strong emphasised words</b></em>.</p>');
 
-    checkParseEncodeRoundTrips('<del>',
-      schema,
-      '<p><del>struck</del></p>',
-      doc(p(strike('struck'))));
+    // checkParseEncodeRoundTrips('<del>',
+    //   schema,
+    //   '<p><del>struck</del></p>',
+    //   doc(p(strike('struck'))));
+
+
+    describe('checkParseEncodeRoundTrips', () => {
+      it(`parses HTML: <del> tag`, () => {
+        const customSchema = makeSchema({ allowAdvancedTextFormatting: true, allowSubSup: true }) as JIRASchema;
+        const strike = markFactory(customSchema.marks.strike);
+        doc = nodeFactory(customSchema.nodes.doc);
+        p = nodeFactory(customSchema.nodes.paragraph);
+        const node = doc(p(strike('struck')));
+        const actual = parse('<p><del>struck</del></p>', customSchema);
+        expect(actual).to.deep.equal(node);
+      });
+
+      it(`encodes HTML: <del> tag`, () => {
+        const customSchema = makeSchema({ allowAdvancedTextFormatting: true, allowSubSup: true }) as JIRASchema;
+        const strike = markFactory(customSchema.marks.strike);
+        doc = nodeFactory(customSchema.nodes.doc);
+        p = nodeFactory(customSchema.nodes.paragraph);
+        const node = doc(p(strike('struck')));
+        const encoded = encode(node, customSchema);
+        expect('<p><del>struck</del></p>').to.deep.equal(encoded);
+      });
+
+      it(`round-trips HTML: <del> tag`, () => {
+        const customSchema = makeSchema({ allowAdvancedTextFormatting: true, allowSubSup: true }) as JIRASchema;
+        const strike = markFactory(customSchema.marks.strike);
+        doc = nodeFactory(customSchema.nodes.doc);
+        p = nodeFactory(customSchema.nodes.paragraph);
+        const node = doc(p(strike('struck')));
+        const roundTripped = parse(encode(node, customSchema), customSchema);
+        expect(roundTripped).to.deep.equal(node);
+      });
+    });
 
     checkParseEncodeRoundTrips('<sub>',
       schema,
@@ -274,13 +344,13 @@ describe(`${name} html:`, () => {
       schema,
       [
         '<span class="jira-issue-macro" data-jira-key="ED-1" >' +
-          '<a href="https://product-fabric.atlassian.net/browse/ED-1" class="jira-issue-macro-key issue-link"  title="BitBucket RTE experiment" >' +
-            '<img class="icon" src="https://product-fabric.atlassian.net/images/icons/issuetypes/epic.svg" />' +
-            'ED-1' +
-          '</a>' +
-          '<span class="aui-lozenge aui-lozenge-subtle aui-lozenge-current jira-macro-single-issue-export-pdf">' +
-            'In Progress' +
-          '</span>' +
+        '<a href="https://product-fabric.atlassian.net/browse/ED-1" class="jira-issue-macro-key issue-link"  title="BitBucket RTE experiment" >' +
+        '<img class="icon" src="https://product-fabric.atlassian.net/images/icons/issuetypes/epic.svg" />' +
+        'ED-1' +
+        '</a>' +
+        '<span class="aui-lozenge aui-lozenge-subtle aui-lozenge-current jira-macro-single-issue-export-pdf">' +
+        'In Progress' +
+        '</span>' +
         '</span>'
       ],
       doc(p('ED-1')));

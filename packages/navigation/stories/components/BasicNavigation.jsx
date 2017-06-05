@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
-import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowleftIcon } from '@atlaskit/icon';
+import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowLeftIcon } from '@atlaskit/icon';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
@@ -28,16 +28,16 @@ export default class BasicNavigation extends PureComponent {
     onResizeCallback: () => {},
     children: (<div>
       <AkNavigationItem
-        icon={<DashboardIcon label="Dashboard" />}
+        icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
         text="Item A"
       />
       <AkNavigationItem
-        icon={<SettingsIcon label="Settings" />}
+        icon={<SettingsIcon label="Settings" secondaryColor="inherit" />}
         isSelected
         text="Selected item"
       />
       <AkNavigationItem
-        icon={<IssuesIcon label="Projects" />}
+        icon={<IssuesIcon label="Projects" secondaryColor="inherit" />}
         text="Item C"
       />
     </div>),
@@ -104,7 +104,7 @@ export default class BasicNavigation extends PureComponent {
         position="right bottom"
       >
         <AkGlobalItem>
-          <QuestionCircleIcon label="Help icon" />
+          <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
         </AkGlobalItem>
       </AkDropdownMenu>,
       <AkDropdownMenu
@@ -168,7 +168,7 @@ export default class BasicNavigation extends PureComponent {
   }
 
   render() {
-    const backIcon = <Tooltip position="right" description="Back"><ArrowleftIcon label="Back icon" size="medium" /></Tooltip>;
+    const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
     const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
@@ -177,10 +177,10 @@ export default class BasicNavigation extends PureComponent {
         globalTheme={this.props.globalTheme}
         backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
-        globalCreateIcon={<Tooltip position="right" description="Create"><AddIcon size="small" label="Create icon" /></Tooltip>}
+        globalCreateIcon={<Tooltip position="right" description="Create"><AddIcon label="Create icon" secondaryColor="inherit" /></Tooltip>}
         globalPrimaryIcon={globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
-        globalSearchIcon={<Tooltip position="right" description="Search"><SearchIcon label="Search icon" /></Tooltip>}
+        globalSearchIcon={<Tooltip position="right" description="Search"><SearchIcon label="Search icon" secondaryColor="inherit" /></Tooltip>}
         globalSecondaryActions={this.props.globalSecondaryActions}
         drawers={[
           (<AkSearchDrawer

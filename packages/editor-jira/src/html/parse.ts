@@ -7,9 +7,11 @@ import {
   isSchemaWithCodeBlock,
   isSchemaWithBlockQuotes,
   isSchemaWithSubSupMark,
+  isSchemaWithTextColor,
   JIRASchema,
 } from '../schema';
 import parseHtml from './parse-html';
+import * as namedColors from 'css-color-names';
 
 const convertedNodes = new WeakMap();
 
@@ -84,26 +86,31 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
       if (!isSchemaWithAdvancedTextFormattingMarks(schema)) {
           return null;
         }
-        return content ? addMarks(content, [schema.marks.strike!.create()]) : null;
+        return addMarks(content, [schema.marks.strike!.create()]);
       case 'B':
-        return content ? addMarks(content, [schema.marks.strong.create()]) : null;
+        return addMarks(content, [schema.marks.strong.create()]);
       case 'EM':
-        return content ? addMarks(content, [schema.marks.em.create()]) : null;
+        return addMarks(content, [schema.marks.em.create()]);
       case 'TT':
         if (!isSchemaWithAdvancedTextFormattingMarks(schema)) {
           return null;
         }
-        return content ? addMarks(content, [schema.marks.code!.create()]) : null;
+        return addMarks(content, [schema.marks.code!.create()]);
       case 'SUB':
       case 'SUP':
         if (!isSchemaWithSubSupMark(schema)) {
           return null;
         }
         const type = tag === 'SUB' ? 'sub' : 'sup';
-        return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
+        return addMarks(content, [schema.marks.subsup.create({ type })]);
       case 'INS':
-        return content ? addMarks(content, [schema.marks.underline.create()]) : null;
-
+        return addMarks(content, [schema.marks.underline.create()]);
+      case 'FONT':
+        if (!isSchemaWithTextColor(schema)) {
+          return null;
+        }
+        const color = getValidColor(node.getAttribute('color'));
+        return color ? addMarks(content, [schema.marks.textColor.create({ color })]) : content;
       // Nodes
       case 'A':
         if (node.className === 'user-hover' && isSchemaWithMentions(schema)) {
@@ -281,4 +288,33 @@ function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
     result = result.replaceChild(i, newChild);
   }
   return result;
+}
+
+function getValidColor(color: string | null): string | null {
+  if (!color) {
+    return null;
+  }
+
+  // Normalize
+  color = color.trim().toLowerCase();
+  if (color[0] === '#' && color.length === 4 || color.length === 7) {
+    if (/^#[\da-f]{3}$/.test(color)) {
+      color = color.split('').map(c => c === '#' ? '#' : `${c}${c}`).join('');
+    }
+  } else {
+    // http://dev.w3.org/csswg/css-color/#named-colors
+    if (namedColors[color]) {
+      color = namedColors[color];
+    }
+    else {
+      return null;
+    }
+  }
+
+  // Default colour from old JIRA colour palette
+  if (color === '#333333') {
+    return null;
+  }
+
+  return color;
 }

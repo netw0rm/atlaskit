@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "13.0.2",
+  "version": "13.0.3",
   "config": {
     "access": "public"
   },
@@ -46,7 +46,7 @@
     "@atlaskit/badge": "^1.0.0",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/dropdown-menu": "^1.0.0",
-    "@atlaskit/icon": "^2.3.0",
+    "@atlaskit/icon": "^6.6.0",
     "@atlaskit/logo": "^2.0.0",
     "@atlaskit/navigation": "*",
     "@atlaskit/page": "^4.0.0",

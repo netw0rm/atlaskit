@@ -95,6 +95,10 @@ function searchData(query) {
 const store = {};
 
 export default class BasicSearch extends PureComponent {
+  static defaultProp = {
+    fakeNetworkLatency: 0,
+  }
+
   state = {
     query: store.query || '',
     results: searchData(''),
@@ -119,7 +123,7 @@ export default class BasicSearch extends PureComponent {
         results,
         isLoading: false,
       });
-    }, this.props.fakeNetworkLatency || 0);
+    }, this.props.fakeNetworkLatency);
   }
 
   renderResults = () => (

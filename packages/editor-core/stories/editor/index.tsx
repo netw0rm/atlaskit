@@ -19,6 +19,7 @@ import imageUploadPlugins, {stateKey as imageUploadStateKey} from '../../src/plu
 import listsPlugins, {stateKey as listsStateKey} from '../../src/plugins/lists';
 import mentionsPlugins, {stateKey as mentionsStateKey} from '../../src/plugins/mentions';
 import emojiPlugins, {stateKey as emojiStateKey} from '../../src/plugins/emojis';
+import editorSizePlugins from '../../src/plugins/editor-size';
 import { reactNodeViewPlugins } from '../../src/plugins';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
@@ -55,6 +56,7 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
   analyticsHandler?: AnalyticsHandler;
+  maxHeight?: string;
 }
 
 export interface State {
@@ -224,29 +226,34 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
+      const { maxHeight } = this.props;
+      const plugins = [
+        ...mentionsPlugins(schema), // mentions and emoji needs to be first
+        ...emojiPlugins(schema),
+        ...listsPlugins(schema),
+        ...clearFormattingPlugins(schema),
+        ...codeBlockPlugins(schema),
+        ...panelPlugins(schema),
+        ...textFormattingPlugins(schema),
+        ...hyperlinkPlugins(schema),
+        ...rulePlugins(schema),
+        ...imageUploadPlugins(schema),
+        ...textColorPlugins(schema),
+        // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+        // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+        // if converting is possible
+        ...blockTypePlugins(schema),
+        ...reactNodeViewPlugins(schema),
+        history(),
+        keymap(baseKeymap) // should be last :(
+      ];
+      if (maxHeight) {
+        plugins.unshift(...editorSizePlugins(schema, maxHeight));
+      }
       const editorState = EditorState.create(
         {
           schema,
-          plugins: [
-            ...mentionsPlugins(schema), // mentions and emoji needs to be first
-            ...emojiPlugins(schema),
-            ...listsPlugins(schema),
-            ...clearFormattingPlugins(schema),
-            ...codeBlockPlugins(schema),
-            ...panelPlugins(schema),
-            ...textFormattingPlugins(schema),
-            ...hyperlinkPlugins(schema),
-            ...rulePlugins(schema),
-            ...imageUploadPlugins(schema),
-            ...textColorPlugins(schema),
-            // block type plugin needs to be after hyperlink plugin until we implement keymap priority
-            // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
-            // if converting is possible
-            ...blockTypePlugins(schema),
-            ...reactNodeViewPlugins(schema),
-            history(),
-            keymap(baseKeymap) // should be last :(
-          ]
+          plugins,
         }
       );
       const editorView = new EditorView(place, {

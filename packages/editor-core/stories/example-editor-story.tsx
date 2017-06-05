@@ -81,6 +81,7 @@ class DemoEditor extends React.PureComponent<Props, State> {
     return (
       <Content>
         <Editor
+          maxHeight="200px"
           imageUploadHandler={imageUploadHandler}
           analyticsHandler={analyticsHandler}
           onCancel={CANCEL_ACTION}

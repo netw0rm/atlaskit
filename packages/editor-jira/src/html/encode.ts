@@ -144,6 +144,7 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
         strong,
         subsup,
         underline,
+        textColor,
       } = schema.marks;
 
       for (const mark of node.marks) {
@@ -184,6 +185,11 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
             }
 
             elem = elem.appendChild(linkElem);
+            break;
+          case textColor:
+            const fontElem = doc.createElement('font');
+            fontElem.setAttribute('color', mark.attrs['color']);
+            elem = elem.appendChild(fontElem);
             break;
           case mentionQuery:
             break;

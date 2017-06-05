@@ -83,15 +83,15 @@ storiesOf(name, module)
       >
         <AkNavigationItem
           text="Test page 1"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
         />
         <AkNavigationItem
           text="Test page 3"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
         />
         <AkNavigationItem
           text="Test page 4"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
         />
       </NavigationWithDropdown>
     </HtmlPage>
@@ -104,17 +104,17 @@ storiesOf(name, module)
       >
         <AkNavigationItem
           text="Test page 1"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
           textAfter="text"
         />
         <AkNavigationItem
           text="Test page 3"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
           textAfter="text"
         />
         <AkNavigationItem
           text="Test page 4"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
           textAfter="text"
         />
       </NavigationWithDropdown>
@@ -144,7 +144,7 @@ storiesOf(name, module)
       >
         <AkNavigationItemGroup>
           <AkNavigationItem
-            icon={<DashboardIcon label="Dashboard" />}
+            icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
             isSelected
             text="Selected"
             textAfter={<RandomBadge theme="dark" />}
@@ -152,21 +152,21 @@ storiesOf(name, module)
         </AkNavigationItemGroup>
         <AkNavigationItemGroup>
           <AkNavigationItem
-            icon={<SettingsIcon label="Settings" />}
+            icon={<SettingsIcon label="Settings" secondaryColor="inherit" />}
             text="Item B"
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkNavigationItemGroup>
         <AkNavigationItemGroup title="one section">
           <AkNavigationItem
-            icon={<TrayIcon label="Tray" />}
+            icon={<TrayIcon label="Tray" secondaryColor="inherit" />}
             text="Item C"
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkNavigationItemGroup>
         <AkNavigationItemGroup hasSeparator>
           <AkNavigationItem
-            icon={<CalendarIcon label="Calendar" />}
+            icon={<CalendarIcon label="Calendar" secondaryColor="inherit" />}
             subText="And a very long second line of text"
             text="A very long first line of text"
             textAfter={<RandomBadge />}

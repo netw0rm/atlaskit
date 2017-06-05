@@ -18,6 +18,7 @@ export default class Search extends PureComponent {
   }
 
   static defaultProps = {
+    isLoading: false,
     placeholder: 'Search',
   }
 

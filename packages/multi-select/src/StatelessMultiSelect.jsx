@@ -239,7 +239,9 @@ export default class StatelessMultiSelect extends PureComponent {
 
   handleFooterItemSelect = (event) => {
     const { footer } = this.props;
-    console.log(event, footer);
+    if (footer.onClick) {
+      footer.onClick(event);
+    }
   }
 
   handleItemSelect = (item, attrs) => {

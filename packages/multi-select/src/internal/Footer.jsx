@@ -12,6 +12,7 @@ export default class Footer extends PureComponent {
     href: PropTypes.string,
     newLabel: PropTypes.string,
     shouldHideSeparator: PropTypes.bool,
+    onClick: PropTypes.func,
   }
 
   static defaultProps = {
@@ -30,10 +31,13 @@ export default class Footer extends PureComponent {
       [styles.newItem]: this.props.newLabel || this.props.appearance === 'link',
     }]);
 
+    // keyboard navigation is handled in the main component
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <div
         className={footerClasses}
         data-role="multi-select-footer"
+        onClick={this.props.onClick}
       >
         {
           <span className={itemClasses}>

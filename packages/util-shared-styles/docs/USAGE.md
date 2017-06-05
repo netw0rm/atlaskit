@@ -4,8 +4,8 @@ This package provides you with the ADG colors & typography in a programmatic way
 You can either use the less files by importing them via
 
 ```less
-@import '~akutil-shared-styles/src/colors.less';
-@import '~akutil-shared-styles/src/fonts.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
+@import '~@atlaskit/util-shared-styles/src/fonts.less';
 
 .myclass {
   color: @ak-color-R100;
@@ -20,5 +20,5 @@ import {
   akColorN500 as defaultColor,
   akColorR500 as highlightColor,
   akFontFamily as fontFamily,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 ```

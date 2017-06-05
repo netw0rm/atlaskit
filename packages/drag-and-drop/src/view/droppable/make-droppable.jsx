@@ -5,7 +5,6 @@ import type { MapStateToProps, Props, StateSnapshot } from './droppable-types';
 import type { TypeId } from '../../types';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
-import ScrollTopWatcher from '../scroll-top-watcher/';
 
 const Container = styled.div`
   user-select: none;

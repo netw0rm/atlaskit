@@ -47,33 +47,15 @@ export default class DimensionPublisher extends PureComponent {
       width,
       height,
       center,
-      scrollTop: ref.scrollTop,
-      scrollLeft: ref.scrollLeft,
-      scrollHeight: ref.scrollHeight,
-      scrollWidth: ref.scrollWidth,
     };
 
     return dimension;
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    // no request - publish not needed
-    // $FlowFixMe - not sure why flow complains about this
-    if (!nextProps.shouldPublish) {
-      return;
+    if (nextProps.shouldPublish) {
+      this.props.publish(this.getDimension());
     }
-
-    // no change - publish not needed
-    if (this.props.shouldPublish === nextProps.shouldPublish) {
-      return;
-    }
-
-    // TODO:
-    // - get ref of child similar to draggable
-    // - use MutationObserver rather than interval
-    // - make this chore its own component
-
-    this.props.publish(this.getDimension());
   }
 
   render() {

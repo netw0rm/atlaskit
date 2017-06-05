@@ -1,6 +1,5 @@
 // @flow
 import type {
-  Id,
   DraggableId,
   TypeId,
   Dimension,
@@ -182,23 +181,6 @@ export const lift = (id: DraggableId,
   });
 };
 
-export type UpdateDimensionScrollTopAction = {
-  type: 'UPDATE_DIMENSION_SCROLL_TOP',
-  payload: {|
-    id: Id,
-    scrollTop: number,
-  |}
-}
-
-export const updateDimensionScrollTop =
-  (id: Id, scrollTop: number): UpdateDimensionScrollTopAction => ({
-    type: 'UPDATE_DIMENSION_SCROLL_TOP',
-    payload: {
-      id,
-      scrollTop,
-    },
-  });
-
 export type Action = BeginLiftAction |
   CompleteLiftAction |
   RequestDimensionsAction |
@@ -209,5 +191,4 @@ export type Action = BeginLiftAction |
   MoveForwardAction |
   DropAction |
   DropAnimationFinishedAction |
-  CancelAction |
-  UpdateDimensionScrollTopAction;
+  CancelAction;

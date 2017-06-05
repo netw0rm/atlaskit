@@ -79,10 +79,6 @@ const mockInitial: DraggingInitial = {
     width: 100,
     height: 100,
     center: { x: 50, y: 50 },
-    scrollHeight: 100,
-    scrollWidth: 100,
-    scrollTop: 0,
-    scrollLeft: 0,
   },
 };
 
@@ -898,7 +894,7 @@ describe('Draggable', () => {
     });
 
     describe('dropped but no return to home animation is needed', () => {
-        // $FlowFixMe - spead operator and exact type
+        // $ExpectError - spread operator and exact type
       const mapProps: MapProps = {
         ...returningHomeMapProps,
         canAnimate: false,

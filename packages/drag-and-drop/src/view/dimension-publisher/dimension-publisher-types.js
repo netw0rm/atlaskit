@@ -12,7 +12,7 @@ export type DispatchProps = {|
 export type ConnectedProps = {|
   itemId: Id,
   type: TypeId,
-  children?: React$Element<any>,
+  children?: any,
   targetRef: ?Element
 |}
 

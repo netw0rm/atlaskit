@@ -154,37 +154,6 @@ export default (state: State = initialState, action: Action): State => {
     };
   }
 
-  if (action.type === 'UPDATE_DIMENSION_SCROLL_TOP') {
-    const { id, scrollTop } = action.payload;
-    const dimension = state.droppableDimensions[id];
-
-    if (!dimension || !state.currentDrag || dimension.scrollTop === scrollTop) {
-      return state;
-    }
-
-    const impact: DragImpact = getDragImpact(
-      state.currentDrag.dragging.center,
-      state.currentDrag.dragging.id,
-      state.draggableDimensions,
-      state.droppableDimensions
-    );
-
-    return {
-      ...state,
-      droppableDimensions: {
-        ...state.droppableDimensions,
-        [id]: {
-          ...dimension,
-          scrollTop,
-        },
-      },
-      currentDrag: {
-        ...state.currentDrag,
-        impact,
-      },
-    };
-  }
-
   if (action.type === 'MOVE') {
     const { offset, center } = action.payload;
     const previous: ?CurrentDrag = state.currentDrag;

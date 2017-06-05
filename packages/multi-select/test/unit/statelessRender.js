@@ -65,8 +65,10 @@ describe(`${name} - stateless`, () => {
       expect(wrapper.find(Footer).text()).to.equal('test (new)');
     });
 
-    it('should render Footer if footer prop is passed', () => {
-      const footer = <div>footer</div>;
+    it('should render Footer if footer`s content prop is passed', () => {
+      const footer = {
+        content: 'footer',
+      };
       const wrapper = mount(<StatelessMultiSelect footer={footer} isOpen />);
       expect(wrapper.find(Footer).length).to.equal(1);
       expect(wrapper.find(Footer).text()).to.equal('footer');

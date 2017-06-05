@@ -48,7 +48,7 @@ export default class Footer extends PureComponent {
               >{this.props.children}</a> :
               (this.props.children)}
             {
-              this.props.newLabel ? `(${this.props.newLabel})` : null
+              this.props.newLabel ? ` (${this.props.newLabel})` : null
             }
           </span>
         }

@@ -299,7 +299,6 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   shouldFocusFooter = (focused, length) => {
-    console.log(focused, length);
     const { shouldAllowCreateItem, filterValue, footer } = this.props;
     return (
       (
@@ -481,7 +480,7 @@ export default class StatelessMultiSelect extends PureComponent {
           { newValue }
         </Footer>);
       }
-    } else if (footer) {
+    } else if (footer.content) {
       return (<Footer
         href={this.props.footer.href}
         isFocused={this.state.isFooterFocused}

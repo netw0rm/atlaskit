@@ -24,7 +24,6 @@
     "@atlaskit/icon": "^2.4.0",
     "@atlaskit/media-card": "^17.1.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "react-lazy-load": "^3.0.12",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",

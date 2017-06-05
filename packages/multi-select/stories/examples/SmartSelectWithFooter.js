@@ -15,6 +15,10 @@ const selectItems = [
       { content: 'Directory', value: 'comp5' },
       { content: 'Payment gateway', value: 'comp6' },
       { content: 'Email system', value: 'comp7' },
+      { content: 'Some other component', value: 'comp8' },
+      { content: 'Random name', value: 'comp9' },
+      { content: 'Cats everywhere!!', value: 'comp10' },
+      { content: 'Another awesome component', value: 'comp11' },
     ],
   },
 ];

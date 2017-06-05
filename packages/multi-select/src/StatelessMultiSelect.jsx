@@ -423,6 +423,8 @@ export default class StatelessMultiSelect extends PureComponent {
       unselectedItems;
   }
 
+  hasFooter = () => this.props.footer.content || this.props.shouldAllowCreateItem
+
   renderItems = items => items.map((item, itemIndex) => (
     <Item
       {...item}
@@ -540,6 +542,7 @@ export default class StatelessMultiSelect extends PureComponent {
           onOpenChange={this.onOpenChange}
           position={this.props.position}
           shouldFitContainer
+          appearance={this.hasFooter() ? 'tall' : 'default'}
           trigger={
             <FieldBaseStateless
               appearance={mapAppearanceToFieldBase(this.props.appearance)}
@@ -582,7 +585,13 @@ export default class StatelessMultiSelect extends PureComponent {
             </FieldBaseStateless>
           }
         >
-          {this.renderGroups(this.props.items)}
+          <div
+            className={classNames([{
+              [styles.scrolledGroups]: this.hasFooter(),
+            }])}
+          >
+            {this.renderGroups(this.props.items)}
+          </div>
           {this.renderFooter()}
         </Droplist>
       </div>

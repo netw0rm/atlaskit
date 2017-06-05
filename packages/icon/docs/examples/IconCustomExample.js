@@ -1,9 +1,5 @@
-import React from 'react';
-import Icon from '@atlaskit/icon';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-
-// The module exports an Icon component which accepts a glyph.
-// To use a built-in icon import it directly.
+import React, { PureComponent } from 'react';
+import Icon, { size } from '@atlaskit/icon';
 
 const customGlyph = props => (<svg viewBox="0 0 24 24" {...props}>
   <g fill="currentColor" fillRule="evenodd">
@@ -12,9 +8,16 @@ const customGlyph = props => (<svg viewBox="0 0 24 24" {...props}>
   </g>
 </svg>);
 
-export default (
-  <div>
-    <Icon label="foo" size="medium" glyph={customGlyph} />
-    <AtlassianIcon label="bar" size="medium" />
-  </div>
-);
+class IconCustomExample extends PureComponent {
+  render() {
+    return (
+      <Icon
+        glyph={customGlyph}
+        label="Custom icon"
+        size={size.xlarge}
+      />
+    );
+  }
+}
+
+export default IconCustomExample;

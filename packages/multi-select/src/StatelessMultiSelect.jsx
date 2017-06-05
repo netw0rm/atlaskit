@@ -43,10 +43,7 @@ export default class StatelessMultiSelect extends PureComponent {
     createNewItemLabel: PropTypes.string,
     /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
-    /** Element to show after the list of item. Could be an interactive element like a link or
-     * a button. In this case the normal tab behavior applies, and after pressing 'tab' focus moves
-     * to the next focusable element in the footer. Doesn't work with shouldAllowCreateItem set to
-     * true. */
+    /** Element to show after the list of item. Accepts an object of the specific shape */
     footer: PropTypes.shape(footerShape),
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
@@ -237,10 +234,10 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
-  handleFooterItemSelect = (event) => {
+  handleFooterActivate = (event) => {
     const { footer } = this.props;
-    if (footer.onClick) {
-      footer.onClick(event);
+    if (footer.onActivate) {
+      footer.onActivate(event);
     }
   }
 
@@ -342,14 +339,9 @@ export default class StatelessMultiSelect extends PureComponent {
 
   handleFooterEnter = (event) => {
     const { footer } = this.props;
-    const footerNode = this.multiSelectContainer.querySelector('[data-role="multi-select-footer"]');
 
-    if (footer.href) {
-      footerNode.querySelector('a').click();
-    }
-
-    if (footer.onClick) {
-      footer.onClick(event);
+    if (footer.onActivate) {
+      footer.onActivate(event);
     }
   }
 
@@ -482,11 +474,12 @@ export default class StatelessMultiSelect extends PureComponent {
       }
     } else if (footer.content) {
       return (<Footer
-        href={this.props.footer.href}
+        elemBefore={footer.elemBefore}
         isFocused={this.state.isFooterFocused}
-        onClick={this.handleFooterItemSelect}
+        onClick={this.handleFooterActivate}
         shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
-        appearance={(this.props.footer.href || this.props.footer.onClick) ? 'link' : 'text'}
+        appearance={(footer.onActivate) ? 'link' : 'text'}
+        textColor={footer.textColor}
       >{ footer.content }</Footer>);
     }
     return null;

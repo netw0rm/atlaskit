@@ -4,10 +4,12 @@ import uid from 'uid';
 
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';
+import DummyFooter from './internal/DummyFooter';
 import StatelessMultiSelect from './StatelessMultiSelect';
 
 const itemShape = DummyItem.propTypes;
 const groupShape = DummyGroup.propTypes;
+const footerShape = DummyFooter.propTypes;
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
@@ -27,11 +29,8 @@ export default class AkMultiSelect extends PureComponent {
   static propTypes = {
     /** Subtle items do not have a background color. */
     appearance: PropTypes.oneOf(appearances.values),
-    /** Element to show after the list of item. Could be an interactive element like a link or
-     * a button. In this case the normal tab behavior applies, and after pressing 'tab' focus moves
-     * to the next focusable element in the footer. Doesn't work with shouldAllowCreateItem set to
-     * true. */
-    footer: PropTypes.node,
+    /** Element to show after the list of item. Accepts an object of a specific shape */
+    footer: PropTypes.shape(footerShape),
     /** Message to display in footer after the name of the new item. Only applicable if
      * shouldAllowCreateItem prop is set to true. */
     createNewItemLabel: PropTypes.string,

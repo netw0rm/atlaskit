@@ -8,7 +8,8 @@ import { PureComponent } from 'react';
 export default class DummyFooter extends PureComponent {
   static propTypes = {
     content: PropTypes.string,
-    href: PropTypes.string,
-    onClick: PropTypes.func,
+    elemBefore: PropTypes.node,
+    onActivate: PropTypes.func,
+    textColor: PropTypes.string,
   }
 }

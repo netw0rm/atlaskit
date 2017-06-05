@@ -1,5 +1,9 @@
 import React from 'react';
 import Select from '@atlaskit/multi-select';
+import AddIcon from '@atlaskit/icon/glyph/add';
+import {
+  akColorB400,
+} from '@atlaskit/util-shared-styles';
 
 const selectItems = [
   {
@@ -16,16 +20,20 @@ const selectItems = [
 ];
 
 const FooterWithLink = {
-  content: '+ Create new component',
-  href: 'http://atlassian.com',
-  onClick: () => {
-    console.log('Footer click! Do something!');
+  content: 'Create new component',
+  elemBefore: <AddIcon label="" primaryColor={akColorB400} />,
+  textColor: akColorB400,
+  onActivate: () => {
+    // this looks a bit weird, but it can't be a link because of the accessibility issues
+    window.location.href = 'http://atlassian.com';
   },
 };
 
 const FooterWithoutLink = {
-  content: '+ Create new component',
-  onClick: () => {
+  content: 'Create new component',
+  elemBefore: <AddIcon label="" primaryColor={akColorB400} />,
+  textColor: akColorB400,
+  onActivate: () => {
     console.log('Footer click! Do something!');
   },
 };
@@ -39,21 +47,21 @@ export default (
     <Select
       footer={FooterWithLink}
       items={selectItems}
-      label="Link in the footer"
+      label="How to behave like a link"
       placeholder="Choose a component"
       shouldFitContainer
     />
     <Select
       footer={FooterWithoutLink}
       items={selectItems}
-      label="onClick in the footer"
+      label="How to behave like not a link"
       placeholder="Choose a component"
       shouldFitContainer
     />
     <Select
       footer={FooterJustText}
       items={selectItems}
-      label="Just text in footer"
+      label="How not to behave at all"
       placeholder="Choose a component"
       shouldFitContainer
     />

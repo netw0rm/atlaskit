@@ -53,9 +53,9 @@ pipelines:
           - ./build/bin/setup.sh
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
-          - du -h ./node_modules
+          - du -chd1 .
           - yarn
-          - du -h ./node_modules
+          - du -chd1 .
           # Test 3
           # - (cd packages/website; yarn run build-data)
           # we have to run this after `yarn` to have access to child-process-promise

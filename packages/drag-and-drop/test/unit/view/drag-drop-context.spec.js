@@ -9,7 +9,7 @@ import { dragDropContext, draggable, droppable } from '../../../src/';
 import DragHandle from '../../../src/view/drag-handle/drag-handle';
 import storeKey from '../../../src/state/get-store-key';
 import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from './util';
-import type { DraggableLocation, DraggableId, DroppableId } from '../../../src/types';
+import type { DraggableLocation, DraggableId, DroppableId, DragResult, Position } from '../../../src/types';
 import type { Hooks } from '../../../src/view/drag-drop-context/hooks';
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
@@ -32,7 +32,7 @@ class App extends PureComponent {
   }
 }
 
-describe.only('DragDropContext', () => {
+describe('DragDropContext', () => {
   it('should put a store on the context', () => {
     const Connected = dragDropContext()(App);
 
@@ -63,22 +63,14 @@ describe.only('DragDropContext', () => {
     const draggableId: DraggableId = 'drag-1';
     const droppableId: DroppableId = 'drop-1';
 
-    const listBox = {
+    // both our list and item have the same dimenions for now
+    const fakeBox = {
       top: 0,
       right: 100,
       bottom: 100,
       left: 0,
       height: 100,
       width: 100,
-    };
-
-    const itemBox = {
-      top: 20,
-      right: 80,
-      bottom: 80,
-      left: 20,
-      height: 60,
-      width: 60,
     };
 
     const getMountedApp = () => {
@@ -125,18 +117,10 @@ describe.only('DragDropContext', () => {
         return dragDropContext(hooks)(RootUnconnected);
       })();
 
-      sinon.stub(Element.prototype, 'getBoundingClientRect');
+      // Both list and item will have the same dimensions
+      sinon.stub(Element.prototype, 'getBoundingClientRect').returns(fakeBox);
 
-      // First is to get the center position of the draggable
-      Element.prototype.getBoundingClientRect.onCall(0).returns(itemBox);
-
-      // Second is to get the dimensions of the list (parent)
-      Element.prototype.getBoundingClientRect.onCall(1).returns(listBox);
-
-      // Third is to get the dimensions of the item (child)
-      Element.prototype.getBoundingClientRect.onCall(2).returns(itemBox);
-
-      // stubbing out
+      // Stubbing out totally - not including margins in this
       sinon.stub(window, 'getComputedStyle').returns({
         marginTop: '0',
         marginRight: '0',
@@ -178,11 +162,16 @@ describe.only('DragDropContext', () => {
     });
 
     const drag = (() => {
+      const point: Position = {
+        x: fakeBox.left + 1,
+        y: fakeBox.top - 1,
+      };
+
       const start = () => {
         liftWithMouse(
           wrapper.find(DragHandle),
-          itemBox.left + 1,
-          itemBox.bottom + 1
+          point.x,
+          point.y,
         );
         // Need to wait for the nested async lift action to complete
         // this takes two async actions. However, this caller should not
@@ -190,7 +179,7 @@ describe.only('DragDropContext', () => {
         clock.tick(10);
       };
 
-      const move = () => windowMouseMove(10, 20);
+      const move = () => windowMouseMove(point.x, point.y - 1);
 
       const stop = () => {
         windowMouseUp();
@@ -215,23 +204,60 @@ describe.only('DragDropContext', () => {
       return { start, move, stop, cancel, perform };
     })();
 
+    const expected = (() => {
+      const start: DraggableLocation = {
+        droppableId,
+        index: 0,
+      };
+      const end: DraggableLocation = {
+        droppableId,
+        index: 0,
+      };
+
+      const completed: DragResult = {
+        draggableId,
+        source: start,
+        destination: end,
+      };
+
+      const cancelled: DragResult = {
+        draggableId,
+        source: start,
+        destination: null,
+      };
+
+      return { completed, cancelled };
+    })();
+
+    const wasDragStarted = (amountOfDrags?: number = 1) => {
+      expect(hooks.onDragStart.callCount).to.equal(amountOfDrags);
+      expect(hooks.onDragStart.args[amountOfDrags - 1])
+            .to.deep.equal([draggableId, expected.completed.source]);
+    };
+
+    const wasDragCompleted = (amountOfDrags?: number = 1) => {
+      expect(hooks.onDragEnd.callCount).to.equal(amountOfDrags);
+      expect(hooks.onDragEnd.args[amountOfDrags - 1][0])
+            .to.deep.equal(expected.completed);
+    };
+
+    const wasDragCancelled = (amountOfDrags?: number = 1) => {
+      expect(hooks.onDragEnd.callCount).to.equal(amountOfDrags);
+      expect(hooks.onDragEnd.args[amountOfDrags - 1][0])
+          .to.deep.equal(expected.cancelled);
+    };
+
     describe('drag start', () => {
       it('should call the onDragStart hook when a drag starts', () => {
         drag.start();
 
         const args = hooks.onDragStart.args[0];
-        const start: DraggableLocation = {
-          droppableId,
-          index: 0,
-        };
-        expect(hooks.onDragStart.called).to.equal(true);
-        expect(args[0]).to.equal(draggableId);
-        expect(args[1]).to.deep.equal(start);
+        wasDragStarted();
       });
 
       it('should not call onDragStart while the drag is occurring', () => {
         drag.start();
-        expect(hooks.onDragStart.calledOnce).to.equal(true);
+        wasDragStarted();
 
         drag.move();
 
@@ -240,35 +266,58 @@ describe.only('DragDropContext', () => {
       });
     });
 
-    describe('on drag end', () => {
+    describe('drag end', () => {
       it('should call the onDragEnd hook when a drag ends', () => {
         drag.perform();
 
-        expect(hooks.onDragEnd.called).to.equal(true);
+        wasDragCompleted();
       });
 
       it('should call the onDragEnd hook when a drag ends when instantly stopped', () => {
         drag.start();
         drag.stop();
 
-        expect(hooks.onDragEnd.called).to.equal(true);
+        wasDragCompleted();
+      });
+    });
+
+    describe('drag cancel', () => {
+      it('should call onDragEnd when a drag is canceled', () => {
+        drag.start();
+        drag.move();
+        drag.cancel();
+
+        wasDragCancelled();
       });
 
-      it.only('should call onDragEnd when a drag is canceled', () => {
+      it('should call onDragEnd when a drag is canceled instantly', () => {
         drag.start();
         drag.cancel();
 
-        expect(hooks.onDragEnd.called).to.equal(true);
+        wasDragCancelled();
+      });
+    });
+
+    describe('subsequent drags', () => {
+      it('should publish subsequent drags', () => {
+        drag.perform();
+        wasDragStarted(1);
+        wasDragCompleted(1);
+
+        drag.perform();
+        wasDragStarted(2);
+        wasDragCompleted(2);
       });
 
-      it('should allow subsequent drags', () => {
-        drag.perform();
-        expect(hooks.onDragStart.calledOnce).to.equal(true);
-        expect(hooks.onDragEnd.calledOnce).to.equal(true);
+      it('should publish subsequent drags after a cancel', () => {
+        drag.start();
+        drag.cancel();
+        wasDragStarted(1);
+        wasDragCancelled(1);
 
         drag.perform();
-        expect(hooks.onDragStart.calledTwice).to.equal(true);
-        expect(hooks.onDragEnd.calledTwice).to.equal(true);
+        wasDragStarted(2);
+        wasDragCompleted(2);
       });
     });
   });

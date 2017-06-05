@@ -13,52 +13,55 @@ export type Hooks = {
   onDragEnd?: (result: DragResult) => void,
 }
 
-export default (hooks: Hooks, store: Store) => {
+const getFireHooks = (hooks: Hooks) => (state: State, previous: State): void => {
   const { onDragStart, onDragEnd } = hooks;
+
+  // Drag start
+  // 1. Now dragging
+  // 2. was previously not dragging
+  if (onDragStart && state.currentDrag && !previous.currentDrag) {
+    const dragging: Dragging = state.currentDrag.dragging;
+    onDragStart(dragging.id, dragging.initial.source);
+    return;
+  }
+
+  // Drag end
+  const isComplete: boolean = Boolean(state.complete && !state.complete.isWaitingForAnimation);
+  const wasComplete: boolean = Boolean(previous.complete && !previous.complete.isWaitingForAnimation);
+
+  if (onDragEnd && isComplete && !wasComplete) {
+    // will never happen - but doing it for flow
+    if (!state.complete) {
+      return;
+    }
+    onDragEnd(state.complete.result);
+    return;
+  }
+
+  // Drag cancel
+  // 1. not dragging
+  // 2. not complete
+  // 3. was previously dragging
+  if (onDragEnd && !state.currentDrag && !state.complete && previous.currentDrag) {
+    const result: DragResult = {
+      draggableId: previous.currentDrag.dragging.id,
+      source: previous.currentDrag.dragging.initial.source,
+      destination: null,
+    };
+    onDragEnd(result);
+  }
+};
+
+export default (hooks: Hooks, store: Store) => {
   let previous: ?State = null;
+
+  const fireHooks = getFireHooks(hooks);
 
   const unsubscribe = store.subscribe(() => {
     const state = store.getState();
 
-    if (!previous) {
-      previous = state;
-      return;
-    }
-
-    // drag start
-    if (onDragStart && !previous.currentDrag && state.currentDrag) {
-      const dragging: Dragging = state.currentDrag.dragging;
-      onDragStart(dragging.id, dragging.initial.source);
-      previous = state;
-      return;
-    }
-
-    // drag end
-    const isComplete = Boolean(state.complete && !state.complete.isWaitingForAnimation);
-    const wasComplete = Boolean(previous.complete && !previous.complete.isWaitingForAnimation);
-
-    if (onDragEnd && isComplete && !wasComplete) {
-      onDragEnd(state.complete.result);
-      previous = state;
-      return;
-    }
-
-    // drag cancel
-    const isDragging = Boolean(state.currentDrag);
-    const wasDragging = Boolean(previous.currentDrag);
-
-    if (!isDragging && wasDragging) {
-      if (!previous.currentDrag) {
-        return;
-      }
-      const result: DragResult = {
-        draggableId: previous.currentDrag.dragging.id,
-        source: previous.currentDrag.dragging.initial.source,
-        destination: null,
-      };
-      onDragEnd(result);
-      previous = state;
-      return;
+    if (previous) {
+      fireHooks(state, previous);
     }
 
     previous = state;

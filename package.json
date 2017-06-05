@@ -62,6 +62,7 @@
     "glob": "^7.1.1",
     "glob-loader": "^0.3.0",
     "hipchat-msg": "^0.1.0",
+    "husky": "^0.13.4",
     "imports-loader": "^0.6.5",
     "in-publish": "^2.0.0",
     "jsdom-global": "^2.1.1",
@@ -79,7 +80,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.26",
     "karma-webpack": "^1.8.0",
-    "lerna": "2.0.0-rc.4",
+    "lerna": "treshugart/lerna#cc429c89a58024ee34cafe9a474a2e79808c7cbe",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "minilog": "^3.0.1",
@@ -135,9 +136,6 @@
   "os": [
     "!win32"
   ],
-  "pre-commit": [
-    "validate/lint-changed"
-  ],
   "private": true,
   "repository": {
     "type": "git",
@@ -153,8 +151,9 @@
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",
     "health-check": "./build/bin/health-check-scripts/health.check.js",
     "lint": "lerna exec --stream --scope '@atlaskit/!(eslint|css-reset|util)*' --since -- npm run lint",
-    "postinstall": "./build/bin/postinstall.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
+    "precommit": "npm run validate/lint-changed",
+    "postinstall": "yarn link @atlaskit/eslint-config-base && yarn link @atlaskit/eslint-config-stories && yarn link @atlaskit/eslint-config-tests && cd node_modules/lerna && npm run build",
     "release": "./build/bin/release.process.bash",
     "release/announce": "./build/bin/release.announce.js",
     "release/check/is-workspace-clean": "git diff --exit-code || (chalk --no-stdin -t \"{red \n^ Workspace is not clean!}\"; exit 1)",
@@ -162,8 +161,6 @@
     "release/registry": "./build/bin/release.registry.sh || (chalk --no-stdin -t \"{red Registry generation failed!}\"; exit 1)",
     "release/storybooks": "./build/bin/release.storybooks.sh || (chalk --no-stdin -t \"{red Storybook generation failed!}\"; exit 1)",
     "test": "lerna exec --stream --since -- npm run test",
-    "validate/lint-changed": "lerna exec --since $(npm run branch -s) -- npm run lint",
-    "validate/lint-changed/fix": "lerna exec --since $(npm run branch -s) -- validate/lint-changed -- --fix"
-  },
-  "devDependencies": {}
+    "validate/lint-changed": "lerna exec --stream --scope '@atlaskit/!(eslint|css-reset|util)*' --since $(npm run branch -s) -- npm run lint"
+  }
 }

@@ -272,7 +272,6 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
       }
 
       render() {
-        console.info('rendering draggable');
         const { mapProps, ownProps } = this.props;
 
         const info: PlacementInfo = this.getPlacementInfo();

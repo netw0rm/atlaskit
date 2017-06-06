@@ -23,4 +23,4 @@ const Droppable = droppable(type, axis, provide, mapStateToProps)(List);
 const Draggable = draggable(type, provide, mapStateToProps)(Item);
 ```
 
-using `flow`
+Using `flowtype`

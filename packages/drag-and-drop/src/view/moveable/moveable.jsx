@@ -12,13 +12,18 @@ type PositionLike = {|
   y: any,
 |};
 
+const origin: Position = {
+  x: 0,
+  y: 0,
+};
+
 const isAtOrigin = (point: PositionLike): boolean =>
-  point.x === 0 && point.y === 0;
+  point.x === origin.x && point.y === origin.y;
 
 type Props = {|
   children?: any,
-  destination: Position,
   speed: Speed,
+  destination?: Position,
   onMoveEnd?: () => void,
   innerRef?: (Element) => void,
   style?: Object,
@@ -26,23 +31,15 @@ type Props = {|
 |}
 
 type DefaultProps = {|
+  innerRef: (Element) => void,
   destination: Position,
-  innerRef: Function,
   style: Object,
 |}
 
-const origin: Position = {
-  x: 0, y: 0,
-};
-
-const start: Position = {
-  x: 0,
-  y: 0,
-};
-
-const getMovement = (point: Position): Object => {
+const getMovement = (point: Position): ?Object => {
+  // not applying any transforms when not moving
   if (isAtOrigin(point)) {
-    return origin;
+    return null;
   }
   return {
     transform: `translate(${point.x}px, ${point.y}px)`,
@@ -50,18 +47,16 @@ const getMovement = (point: Position): Object => {
 };
 
 const Canvas = styled.div`
-  background-color: red;
   ${props => (props.extraCSS ? props.extraCSS : '')}
 `;
 
 export default class Movable extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
-  defaultProps: DefaultProps
 
   static defaultProps: DefaultProps = {
-    innerRef: () => { },
-    destination: start,
+    innerRef: () => {},
+    destination: origin,
     style: {},
   }
   /* eslint-enable */
@@ -73,15 +68,18 @@ export default class Movable extends PureComponent {
       return;
     }
 
-    // needs to be async otherwise Motion will not re-execute if
+    // This needs to be async otherwise Motion will not re-execute if
     // offset or start change
 
-    // could check to see if another move has started and abort the previous onMoveEnd
+    // Could check to see if another move has started
+    // and abort the previous onMoveEnd
     setTimeout(() => onMoveEnd());
   }
 
-  getFinal = () => {
-    const { destination, speed } = this.props;
+  getFinal = (): PositionLike => {
+    // $ExpectError - flow does not play well with default props
+    const destination: Position = this.props.destination;
+    const speed = this.props.speed;
 
     if (speed === 'INSTANT') {
       return destination;
@@ -101,12 +99,12 @@ export default class Movable extends PureComponent {
     // bug with react-motion: https://github.com/chenglou/react-motion/issues/437
     // even if both defaultStyle and style are {x: 0, y: 0 } if there was
     // a previous animation it uses the last value rather than the final value
-    const isNotMoving: boolean = isAtOrigin(start) && isAtOrigin(final);
+    const isNotMoving: boolean = isAtOrigin(final);
 
     return (
       // https://github.com/chenglou/react-motion/issues/375
-      // $FlowFixMe
-      <Motion defaultStyle={start} style={final} onRest={this.onRest}>
+      // $ExpectError - React motion! *fist shake*
+      <Motion defaultStyle={origin} style={final} onRest={this.onRest}>
         {(current: Position) => {
           const style = {
             ...(isNotMoving ? {} : getMovement(current)),

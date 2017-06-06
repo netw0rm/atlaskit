@@ -296,13 +296,16 @@ export default class Editor extends PureComponent<Props, State> {
             ...mentionsPlugins(schema), // mentions and emoji needs to be first
             ...emojisPlugins(schema),
             ...listsPlugins(schema),
-            ...blockTypePlugins(schema),
             ...clearFormattingPlugins(schema),
             ...codeBlockPlugins(schema),
             ...textFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
+            // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+            // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+            // if converting is possible
+            ...blockTypePlugins(schema),
             ...reactNodeViewPlugins(schema),
             history(),
             keymap(bitbucketKeymap),

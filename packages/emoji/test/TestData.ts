@@ -1,7 +1,7 @@
 import { customCategory, customType } from '../src/constants';
 import EmojiRepository from '../src/api/EmojiRepository';
 import { denormaliseEmojiServiceResponse } from '../src/api/EmojiUtils';
-import { EmojiDescription, EmojiDescriptionWithVariations, EmojiServiceDescription, EmojiServiceResponse } from '../src/types';
+import { EmojiDescription, EmojiDescriptionWithVariations, EmojiId, EmojiServiceDescription, EmojiServiceResponse } from '../src/types';
 import { mockEmojiResourceFactory, mockNonUploadingEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from './MockEmojiResource';
 
 export const spriteEmoji: EmojiDescription = {
@@ -42,9 +42,10 @@ export const imageEmoji: EmojiDescription = {
   },
 };
 
-export const testMediaBaseUrl = 'https://media.example.com/';
+export const siteUrl = 'https://emoji.example.com/emoji/site/blah';
 
-export const mediaEmojiImagePath = `${testMediaBaseUrl}path-to-image.png`;
+export const mediaBaseUrl = 'https://media.example.com/';
+export const mediaEmojiImagePath = `${mediaBaseUrl}path-to-image.png`;
 
 export const mediaServiceEmoji: EmojiServiceDescription = {
   id: 'media',
@@ -77,7 +78,44 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
   skinVariations: [],
 };
 
-export const siteUrl = 'https://example.com/emoji/site/blah';
+export const loadedMediaEmoji = {
+  ...mediaEmoji,
+  representation: {
+    imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)
+    width: 24,
+    height: 24,
+  }
+};
+
+const missingMediaId = 'some-new-emoji';
+
+export const missingMediaEmojiId: EmojiId = {
+  id: missingMediaId,
+  shortName: `:${missingMediaId}:`,
+  fallback: `:${missingMediaId}:`,
+};
+
+export const missingMediaServiceEmoji: EmojiServiceDescription = {
+  ...mediaServiceEmoji,
+  ...missingMediaEmojiId,
+};
+
+export const missingMediaEmoji: EmojiDescription = {
+  ...mediaEmoji,
+  ...missingMediaEmojiId,
+};
+
+export const loadedMissingMediaEmoji: EmojiDescription = {
+  ...mediaEmoji,
+  ...missingMediaEmojiId,
+  representation: {
+    imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)
+    width: 24,
+    height: 24,
+  }
+};
+
+export const fetchSiteEmojiUrl = (emojiId: EmojiId): string => `${siteUrl}/../${emojiId.id}`;
 
 export const siteServiceConfig = {
   url: siteUrl,
@@ -86,7 +124,7 @@ export const siteServiceConfig = {
 export const expiresAt = (offsetSeconds: number = 0): number => Math.floor(Date.now() / 1000) + offsetSeconds;
 
 export const defaultMediaApiToken = () => ({
-  url: testMediaBaseUrl,
+  url: mediaBaseUrl,
   clientId: '1234',
   jwt: 'abcd',
   collectionName: 'emoji-collection',

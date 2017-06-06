@@ -30,14 +30,6 @@ export default class ResourcedEmojiById extends PureComponent<Props, State> {
     const { emojiProvider } = this.props;
     const { id = '' } = this.state;
 
-    // const resourcedEmoji = !id ? undefined : (
-      // <ResourcedEmoji
-        // emojiProvider={emojiProvider}
-        // emojiId={{ id, shortName: `:${id}:` }}
-      // />
-    // );
-//        <p>{resourcedEmoji}</p>
-
     return (
       <div>
         <p>Emoji id: <input onChange={this.onIdChange} /></p>

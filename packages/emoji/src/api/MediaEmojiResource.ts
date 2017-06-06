@@ -172,6 +172,9 @@ export default class MediaEmojiResource {
     return emojiRequest(this.siteServiceConfig, { path }).then(serviceResponse => {
       const response = denormaliseEmojiServiceResponse(serviceResponse);
       return response.emojis[0];
+    }).catch(error => {
+      debug('failed to load emoji', emojiId, error);
+      return undefined;
     });
   }
 

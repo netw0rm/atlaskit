@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import nodeToText from '../../../../../src/renderer/text/nodes/media';
+import customNodeSerializers from '../../../../../src/renderer/text/nodes';
+import MediaSerializer from '../../../../../src/renderer/text/nodes/media';
 import { media } from '../../../../../src/test-helper';
 
 describe('Renderer - TextSerializer - Nodes', () => {
@@ -10,6 +11,7 @@ describe('Renderer - TextSerializer - Nodes', () => {
       collection: 'bar',
     });
 
-    expect(nodeToText(node)).to.equal('media attachment (foo in collection bar)');
+    const nodeSerializer = new MediaSerializer(node, customNodeSerializers);
+    expect(nodeSerializer.serialize()).to.equal('media attachment (foo in collection bar)');
   });
 });

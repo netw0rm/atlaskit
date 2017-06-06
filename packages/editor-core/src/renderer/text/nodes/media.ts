@@ -1,5 +1,8 @@
-import { Node as PMNode } from '../../../prosemirror';
+import { BasicNodeSerializer } from '../util';
 
-export default function nodeToText(node: PMNode): string {
-  return `media attachment (${node.attrs.id} in collection ${node.attrs.collection})`;
+export default class MediaSerializer extends BasicNodeSerializer {
+  serialize() {
+    const { id, collection } = this.node.attrs;
+    return `media attachment (${id} in collection ${collection})`;
+  }
 }

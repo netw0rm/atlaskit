@@ -8,7 +8,7 @@ import type { DraggableId,
   DragImpact,
   Position } from '../types';
 import getDroppableOver from './get-droppable-over';
-import getInsideDroppable from './get-inside-droppable';
+import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 
 const noMovement: DragMovement = {
   draggables: [],
@@ -36,10 +36,9 @@ export default (target: Position,
   const droppableDimension: Dimension = droppableDimensions[droppableId];
 
   const isMovingForward: boolean = target.y - draggingDimension.center.y > 0;
-  console.log('impact - isMovingForward', isMovingForward);
 
   // get all draggables inside the draggable
-  const insideDroppable: Dimension[] = getInsideDroppable(droppableDimension, draggableDimensions);
+  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(droppableDimension, draggableDimensions);
 
   const moved: DraggableId[] = insideDroppable
     .filter((dimension: Dimension): boolean => {
@@ -79,8 +78,6 @@ export default (target: Position,
     // is moving backwards
     return startIndex - moved.length;
   })();
-
-  console.log('current index', index);
 
   const amount = draggingDimension.height;
   const movement: DragMovement = {

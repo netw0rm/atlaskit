@@ -11,7 +11,7 @@ import type { Speed } from '../../../src/view/moveable/';
 
 const Child = () => <div>hi there</div>;
 
-describe.only('Moveable', () => {
+describe('Moveable', () => {
   let clock;
   let wrapper;
 

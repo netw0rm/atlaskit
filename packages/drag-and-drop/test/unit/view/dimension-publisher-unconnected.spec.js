@@ -6,6 +6,7 @@ import { mount } from 'enzyme';
 import sinon from 'sinon';
 import DimensionPublisher from '../../../src/view/dimension-publisher/dimension-publisher';
 import type { Id, Dimension } from '../../../src/types';
+import getDimension from '../get-dimension-util';
 
 const itemId: Id = 'item-1';
 
@@ -45,35 +46,6 @@ class Item extends PureComponent {
   }
 }
 
-const getDimension = ({
-  id = itemId,
-  top = 0,
-  bottom = 100,
-  left = 0,
-  right = 100,
-  margin = 0,
-}: Object = {}): Dimension => {
-  const dimension: Dimension = (() => {
-    const height = (top + margin) + (bottom + margin);
-    const width = (left + margin) + (right + margin);
-    return {
-      id,
-      top: top + margin,
-      bottom: bottom + margin,
-      left: left + margin,
-      right: right + margin,
-      center: {
-        x: width / 2,
-        y: height / 2,
-      },
-      height,
-      width,
-    };
-  })();
-
-  return dimension;
-};
-
 describe('DimensionPublisher', () => {
   afterEach(() => {
     // clean up any stubs
@@ -98,7 +70,7 @@ describe('DimensionPublisher', () => {
 
   it('should publish the dimensions of the target', () => {
     const publish = sinon.stub();
-    const dimension: Dimension = getDimension();
+    const dimension: Dimension = getDimension({ id: itemId });
 
     sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
       top: dimension.top,
@@ -127,8 +99,8 @@ describe('DimensionPublisher', () => {
   it('should consider any margins when calculating dimensions', () => {
     const margin: number = 10;
     const publish = sinon.stub();
-    const base: Dimension = getDimension();
-    const expected: Dimension = getDimension({ margin });
+    const base: Dimension = getDimension({ id: itemId });
+    const expected: Dimension = getDimension({ id: itemId, margin });
     sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
       top: base.top,
       bottom: base.bottom,

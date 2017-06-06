@@ -1,12 +1,12 @@
 // @flow
 import type { Position, CurrentDrag, DragImpact, Dragging, Dimension, DimensionMap, State } from '../types';
-import getInsideDroppable from './get-inside-droppable';
+import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 import getDragImpact from './get-drag-impact';
 
 const positionMove = (isMovingFoward: boolean, state: State): State => {
   const previous: ?CurrentDrag = state.currentDrag;
   if (!previous) {
-    console.warn('cannot move when there is no current drag');
+    console.error('cannot move when there is no current drag');
     return state;
   }
 
@@ -22,14 +22,14 @@ const positionMove = (isMovingFoward: boolean, state: State): State => {
   );
 
   if (!impact.destination) {
-    console.warn('cannot move when there is no destination');
+    console.error('cannot move when there is no destination');
     return state;
   }
 
   const draggableDimension: Dimension = draggableDimensions[previous.dragging.id];
   const droppableDimension: Dimension = droppableDimensions[impact.destination.droppableId];
 
-  const insideDroppable: Dimension[] = getInsideDroppable(droppableDimension, draggableDimensions);
+  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(droppableDimension, draggableDimensions);
 
   const currentIndex: number = impact.destination.index;
 
@@ -61,7 +61,7 @@ const positionMove = (isMovingFoward: boolean, state: State): State => {
     y: previous.dragging.initial.center.y + offset.y,
   };
 
-  // $FlowFixMe
+  // $ExpectError - flow does not play well with spread
   const dragging: Dragging = {
     ...previous.dragging,
     shouldAnimate: true,

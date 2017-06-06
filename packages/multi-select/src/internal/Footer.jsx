@@ -13,7 +13,6 @@ export default class Footer extends PureComponent {
     onClick: PropTypes.func,
     newLabel: PropTypes.string,
     shouldHideSeparator: PropTypes.bool,
-    textColor: PropTypes.string,
   }
 
   static defaultProps = {
@@ -40,12 +39,10 @@ export default class Footer extends PureComponent {
             isFocused={this.props.isFocused}
             type="option"
           >
-            <span style={{ color: this.props.textColor || null }}>
-              {this.props.children}
-              {
-                this.props.newLabel ? ` (${this.props.newLabel})` : null
-              }
-            </span>
+            {this.props.children}
+            {
+              this.props.newLabel ? ` (${this.props.newLabel})` : null
+            }
           </Item>
         }
       </div>

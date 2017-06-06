@@ -60,14 +60,14 @@ const footerPropDescriptions = {
   content: 'Text to show in the footer',
   elemBefore: 'An element (usualy an icon) to show before the text',
   onActivate: 'Handler to be called when footer is clicked or Enter is pressed',
-  textColor: 'Color of the text in the Footer',
+  appearance: 'Appearance of the footer. Can be either "default" or "primary".',
 };
 
 const footerPropTypes = {
   content: 'string',
   elemBefore: 'node',
   onActivate: 'func',
-  textColor: 'string',
+  appearance: 'string',
 };
 
 const itemPropDescriptions = {

@@ -10,6 +10,6 @@ export default class DummyFooter extends PureComponent {
     content: PropTypes.string,
     elemBefore: PropTypes.node,
     onActivate: PropTypes.func,
-    textColor: PropTypes.string,
+    appearance: PropTypes.string,
   }
 }

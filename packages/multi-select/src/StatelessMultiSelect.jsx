@@ -465,9 +465,9 @@ export default class StatelessMultiSelect extends PureComponent {
     if (shouldAllowCreateItem) {
       if (newValue) {
         return (<Footer
+          appearance={footer.appearance}
           isFocused={this.state.isFooterFocused}
           newLabel={this.props.createNewItemLabel}
-          appearance={footer.appearance}
           onClick={this.handleItemCreate}
           shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
         >
@@ -476,12 +476,11 @@ export default class StatelessMultiSelect extends PureComponent {
       }
     } else if (footer.content) {
       return (<Footer
+        appearance={footer.appearance}
         elemBefore={footer.elemBefore}
         isFocused={this.state.isFooterFocused}
         onClick={this.handleFooterActivate}
         shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
-        appearance={footer.appearance}
-        textColor={footer.textColor}
       >{ footer.content }</Footer>);
     }
     return null;

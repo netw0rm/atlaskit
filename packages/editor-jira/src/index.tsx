@@ -222,12 +222,17 @@ export default class Editor extends PureComponent<Props, State> {
   /**
    * The current value of the editor, encoded as HTML.
    */
-  get value(): string | undefined {
+  get value(): Promise<string | undefined> {
     const { editorView, schema } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
 
-    return editorView && editorView.state.doc
-      ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
-      : this.props.defaultValue;
+    return (async () => {
+      await mediaPluginState.waitForPendingTasks();
+
+      return editorView && editorView.state.doc
+        ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
+        : this.props.defaultValue;
+    })();
   }
 
   render() {

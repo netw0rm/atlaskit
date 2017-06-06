@@ -5,7 +5,7 @@ import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import Container, { ImageWrapper, PresenceWrapper } from '../styled/Avatar';
 import Presence from './Presence';
 import Image from './Image';
-import { PresenceType, Size } from '../types';
+import type { PresenceType, Size } from '../types';
 
 type Element = Object;
 

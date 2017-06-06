@@ -21,13 +21,13 @@ storiesOf(name, module)
       <BasicNavigation
         globalSecondaryActions={[
           <AkGlobalItem>
-            <SettingsIcon label="Settings" />
+            <SettingsIcon label="Settings" secondaryColor="inherit" />
           </AkGlobalItem>,
           <AkGlobalItem>
-            <ListIcon label="Some super cool list" />
+            <ListIcon label="Some super cool list" secondaryColor="inherit" />
           </AkGlobalItem>,
           <AkGlobalItem>
-            <QuestionCircleIcon label="Help icon" />
+            <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
           </AkGlobalItem>,
           <AkGlobalItem>
             <AkAvatar size="small" src={emmaAvatar} />

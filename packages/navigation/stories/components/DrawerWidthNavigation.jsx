@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon, ArrowleftIcon, IssuesIcon, QuestionCircleIcon } from '@atlaskit/icon';
+import { AtlassianIcon, ArrowLeftIcon, IssuesIcon, QuestionCircleIcon } from '@atlaskit/icon';
 import AkButton from '@atlaskit/button';
 import { AkSearchDrawer, AkCreateDrawer, AkCustomDrawer, AkNavigationItem, AkGlobalItem } from '../../src/index';
 import BasicNavigation from './BasicNavigation';
@@ -13,7 +13,7 @@ export default class DrawerWidthNavigation extends PureComponent {
   }
 
   getBackIcon = () => (
-    <ArrowleftIcon label="Back icon" size="medium" />
+    <ArrowLeftIcon label="Back icon" size="medium" />
   );
 
   getPrimaryIcon = () => (

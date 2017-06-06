@@ -60,7 +60,7 @@ class RefreshableMentionList extends Component<Props, State> {
     );
 
     return (
-      <div>
+      <div style={{ paddingLeft: '10px' }}>
         <div style={{ paddingBottom: '10px' }}>
           <button onClick={this.updateData} style={{ height: '30px', marginRight: '10px' }}>Random refresh</button>
           <button onClick={this.moveUp} style={{ height: '30px', marginRight: '10px' }}>Up</button>

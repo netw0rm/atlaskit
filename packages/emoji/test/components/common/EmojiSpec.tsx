@@ -2,9 +2,9 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
-import * as styles from '../src/components/common/styles';
-import Emoji from '../src/components/common/Emoji';
-import { spriteEmoji, imageEmoji } from './TestData';
+import * as styles from '../../../src/components/common/styles';
+import Emoji from '../../../src/components/common/Emoji';
+import { spriteEmoji, imageEmoji } from '../../TestData';
 
 describe('<Emoji />', () => {
   describe('as sprite', () => {

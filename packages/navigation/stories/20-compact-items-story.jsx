@@ -18,7 +18,7 @@ const RandomAvatar = props => <AkAvatar
 
 const CompactItem = ({ children }) => (
   <AkNavigationItem
-    action={<CrossIcon label="close" />}
+    action={<CrossIcon label="close" secondaryColor="inherit" />}
     icon={<RandomAvatar />}
     text={children}
     textAfter={<RandomBadge />}
@@ -40,7 +40,7 @@ storiesOf(name, module)
             text="Available"
           />
           <AkNavigationItem
-            icon={<DashboardIcon label="Lobby" />}
+            icon={<DashboardIcon label="Lobby" secondaryColor="inherit" />}
             text="Lobby"
           />
         </AkNavigationItemGroup>
@@ -48,7 +48,7 @@ storiesOf(name, module)
           action={
             <AkButton
               appearance="subtle"
-              iconBefore={<EmojiCustomIcon label="add" size="small" />}
+              iconBefore={<EmojiCustomIcon label="add" size="small" secondaryColor="inherit" />}
               spacing="none"
             />
           }

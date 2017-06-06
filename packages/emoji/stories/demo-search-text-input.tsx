@@ -28,7 +28,7 @@ class SearchTextInput extends PureComponent<Props, undefined> {
   handleKeyDown = (event) => {
     if (noModifiers(event)) {
       let notify: Callback | undefined;
-      switch (event.keyCode) { /* eslint default-case: 0 */
+      switch (event.keyCode) {
         case 38: // Up
           notify = this.props.onUp;
           break;
@@ -59,7 +59,6 @@ class SearchTextInput extends PureComponent<Props, undefined> {
   private handleRef = (ref) => { this.inputRefUpdate(ref); };
 
   render() {
-    /* eslint no-unused-vars: 0 */
     const { onUp, onDown, onEnter, onEscape, label, inputRef, inputId, ...other } = this.props;
     let labelComponent;
     const id = inputId || uid();
@@ -72,7 +71,6 @@ class SearchTextInput extends PureComponent<Props, undefined> {
         <input
           {...other}
           id={id}
-          type="text"
           onKeyDown={this.handleKeyDown}
           ref={this.handleRef}
           style={{

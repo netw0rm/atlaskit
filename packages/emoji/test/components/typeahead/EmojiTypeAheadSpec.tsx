@@ -4,15 +4,15 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji } from './TestData';
-import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
+import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji } from '../../TestData';
+import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
 
-import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
-import EmojiTypeAheadItem from '../src/components/typeahead/EmojiTypeAheadItem';
-import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
-import { OptionalEmojiDescription, EmojiId } from '../src/types';
-import { EmojiProvider } from '../src/api/EmojiResource';
-import { Props as TypeAheadProps, State as TypeAheadState } from '../src/components/typeahead/EmojiTypeAhead';
+import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAhead';
+import EmojiTypeAheadItem from '../../../src/components/typeahead/EmojiTypeAheadItem';
+import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
+import { OptionalEmojiDescription, EmojiId } from '../../../src/types';
+import { EmojiProvider } from '../../../src/api/EmojiResource';
+import { Props as TypeAheadProps, State as TypeAheadState } from '../../../src/components/typeahead/EmojiTypeAhead';
 
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   return mount(

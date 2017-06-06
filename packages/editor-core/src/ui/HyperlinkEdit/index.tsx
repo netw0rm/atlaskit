@@ -191,6 +191,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     if (text && text.length > 0 && text !== this.state.oldText) {
       const { editorView, pluginState } = this.props;
       pluginState.updateLinkText(text, editorView);
+      this.setState({ text: '' });
     }
   }
 

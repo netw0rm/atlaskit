@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
+import { customCategory } from '../src/constants';
 import { name } from '../package.json';
 import { EmojiDescription } from '../src/types';
 import ResourcedEmojiList from './demo-resourced-emoji-list';
@@ -58,7 +59,7 @@ storiesOf(`${name}/external-emoji`, module)
     );
   })
   .add('resource emoji - media api', () => {
-    const filter = (emoji: EmojiDescription) => (emoji.category === 'CUSTOM');
+    const filter = (emoji: EmojiDescription) => (emoji.category === customCategory);
     const emojiList = (
       <ResourcedEmojiList
         filter={filter}

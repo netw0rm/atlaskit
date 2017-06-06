@@ -332,3 +332,39 @@ function splitCodeBlockAtSelectionEnd(state: EditorState<any>, tr: Transaction) 
   }
   return tr;
 }
+
+// TODO documentation
+export interface VisitReplacer {
+  (node: Node): Node[]
+}
+
+// TODO documentation
+export function replaceTextNodes(fragment: Fragment, replacer: VisitReplacer): Fragment {
+  let nodes: Node[] = [];
+  for (let i = 0; i < fragment.childCount; i++) {
+    nodes = nodes.concat(visitAndReplace(fragment.child(i), (node: Node) => { return node.isText; }, replacer));
+  }
+
+  return Fragment.fromArray(nodes);
+};
+
+// TODO documentation
+function visitAndReplace(node: Node, isCandidate: (node: Node) => boolean, replacer: (node: Node) => Node[]): Node[] {
+  if (isCandidate(node)) {
+    return replacer(node);
+  }
+
+  if (node.isLeaf) {
+    return [node.copy()];
+  }
+
+  let children: Node[] = [];
+  for (let i = 0; i < node.childCount; i++) {
+    let c = visitAndReplace(node.child(i), isCandidate, replacer);
+    children = children.concat(c);
+  }
+
+  // create a shallow copy of this node and assign the children
+  let frag = Fragment.fromArray(children);
+  return [node.copy(frag)];
+};

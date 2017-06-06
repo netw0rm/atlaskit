@@ -1,4 +1,5 @@
 import * as twemoji from 'twemoji';
+import { Node, Schema } from '../../prosemirror';
 
 /**
  * Get the id of the Unicode emoji represented by the supplied text. Undefined will be
@@ -24,22 +25,6 @@ export function getIdForUnicodeEmoji(text: string) : string | undefined {
   });
 
   return emojiId;
-}
-
-// TODO probably don't use so remove
-export type EmojiIdAtPosition = { emojiId: number, position: number };
-// TODO probably don't use so remove
-export function getEmojiAndPositions(text: string): EmojiIdAtPosition[] {
-  let positions: EmojiIdAtPosition[] = [];
-
-  twemoji.replace(text, function(rawText, offset, fullStr) {
-    let emojiId = twemoji.convert.toCodePoint(rawText.includes(String.fromCharCode(0x200D)) ? rawText : rawText.replace(/\uFE0F/g, ''));
-    // TODO test with multi-byte characters.
-    positions.push({ emojiId: emojiId, position: offset})
-    return rawText;
-  });
-
-  return positions;
 }
 
 export type EmojiOrText = {
@@ -77,4 +62,27 @@ export function splitToEmojiAndText(text: string) : EmojiOrText[] {
   }
 
   return parts;
+}
+
+// TODO documentation
+export function splitTextNodeToEmojiAndTextNodes(textNode: Node, schema: Schema<any,any>) : Node[] {
+  if (!textNode.isText) {
+    return [textNode];
+  }
+
+  const emojiOrText = splitToEmojiAndText(textNode.textContent);
+  if (!emojiOrText) {
+    return [schema.text(textNode.textContent, textNode.marks)];
+  }
+
+  const nodes: Node[] = [];
+  emojiOrText.forEach(eot => {
+    if (eot.emojiId) {
+      nodes.push(schema.nodes.emoji.create({ id: eot.emojiId, text: eot.text }));
+    } else {
+      nodes.push(schema.text(eot.text, textNode.marks));
+    }
+  });
+
+  return nodes;
 }

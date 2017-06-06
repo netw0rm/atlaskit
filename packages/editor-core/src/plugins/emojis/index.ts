@@ -4,6 +4,7 @@ import * as commands from '../../commands';
 import {
   EditorState,
   EditorView,
+  Fragment,
   Schema,
   Node,
   Plugin,
@@ -11,11 +12,11 @@ import {
   Slice,
   TextSelection,
 } from '../../prosemirror';
-import { isMarkAllowedAtPosition } from '../../utils';
+import { isMarkAllowedAtPosition, replaceTextNodes, VisitReplacer } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
-import { getIdForUnicodeEmoji, splitToEmojiAndText, EmojiOrText } from './unicode-emoji';
+import { getIdForUnicodeEmoji, splitTextNodeToEmojiAndTextNodes } from './unicode-emoji';
 
 export type StateChangeHandler = (state: EmojiState) => any;
 
@@ -252,40 +253,46 @@ const plugin = new Plugin({
     },
 
     handlePaste: (view: EditorView, event: ClipboardEvent, slice: Slice): boolean => {
-      slice.content.descendants((node: Node, pos: number, parent: Node): boolean => {
-        if (node.isText && node.text) {
-          console.log('PAC: Text node found at position ' + pos + ' on parent node ' + parent);
-          let split = splitToEmojiAndText(node.text);
-
-          if (split.length > 1) {
-            let schema = view.state.schema;
-            // build a new series of nodes, preserving marks as we go
-            let marks = node.marks;
-            let replacementNodes: Node[] = [];
-            split.forEach(nodeOrText => {
-              if (nodeOrText.emojiId) {
-                replacementNodes.push(schema.nodes.emoji.create({ id: nodeOrText.emojiId, text: nodeOrText.text }));
-              } else {
-                replacementNodes.push(schema.text(nodeOrText.text, marks));
-              }
-            });
-            replacementNodes.forEach(replacement => {
-              console.log('PAC: replacementNode = ' + replacement);
-            });
-
-          } else {
-            console.log('PAC: No emoji found in pasted text node: ' + node.text);
-          }
-        }
-
-        return true;
-      });
-
-      return false;
+      // TODO analytics
+      const replacement = replaceTextNodes(slice.content, createTextNodeVisitReplacer(view.state.schema));
+      view.dispatch(view.state.tr.replaceSelection(new Slice(replacement, slice.openLeft, slice.openRight)));
+      return true;
     },
   },
 });
 
+const createTextNodeVisitReplacer = (schema: Schema<any,any>): VisitReplacer =>
+  (node:Node) => splitTextNodeToEmojiAndTextNodes(node, schema);
+
+
+// const convertToZ = (slice: Slice, schema: Schema<any,any>): Slice => {
+//   let fragment = slice.content;
+//   let nodes: Node[] = [];
+//   for (let i = 0; i < fragment.childCount; i++) {
+//     nodes = nodes.concat(create(fragment.child(i), schema));
+//   }
+//   return new Slice(Fragment.fromArray(nodes), slice.openLeft, slice.openRight);
+// };
+
+// const create = (node: Node, schema: Schema<any,any>): Node[] => {
+//   if (node.isLeaf) {
+//     if (node.isText) {
+//       return [schema.text('Z', node.marks)];
+//     } else {
+//       return [node.copy()];
+//     }
+//   } else {
+//     let children: Node[] = [];
+//     for (let i = 0; i < node.childCount; i++) {
+//       let c = create(node.child(i), schema);
+//       children = children.concat(c);
+//     }
+
+//     // create a shallow copy of this node and assign the children
+//     let frag = Fragment.fromArray(children);
+//     return [node.copy(frag)];
+//   }
+// };
 
 const plugins = (schema: Schema<any, any>) => {
   return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];

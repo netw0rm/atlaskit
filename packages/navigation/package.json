@@ -18,7 +18,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^1.2.0",
+    "@atlaskit/blanket": "^2.0.4",
     "@atlaskit/field-base": "^7.0.1",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^2.0.0",

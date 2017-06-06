@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "Editor web component",
+  "description": "Atlassian Editor component for Bitbucket",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^27.1.0",
+    "@atlaskit/editor-core": "^28.0.0",
     "@atlaskit/emoji": "^14.1.0",
     "@atlaskit/mention": "^4.0.4",
     "tslib": "^1.2.0"

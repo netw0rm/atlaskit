@@ -12,6 +12,7 @@ export * from './schema';
 export * from './ui';
 export * from './analytics';
 export * from './nodeviews';
+export * from './renderer';
 export { ProviderFactory };
 export type ContextName = 'default';
 export {

@@ -1,14 +1,14 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import * as styles from '../src/components/common/styles';
 import { expect } from 'chai';
 
-import EmojiPreview from '../src/components/common/EmojiPreview';
-import ToneSelector from '../src/components/common/ToneSelector';
-import Emoji from '../src/components/common/Emoji';
-import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
-import { EmojiDescription, EmojiDescriptionWithVariations } from '../src/types';
-import { imageEmoji, generateSkinVariation, mediaEmoji } from './TestData';
+import * as styles from '../../../src/components/common/styles';
+import EmojiPreview from '../../../src/components/common/EmojiPreview';
+import ToneSelector from '../../../src/components/common/ToneSelector';
+import Emoji from '../../../src/components/common/Emoji';
+import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
+import { EmojiDescription, EmojiDescriptionWithVariations } from '../../../src/types';
+import { imageEmoji, generateSkinVariation, mediaEmoji } from '../../TestData';
 
 const baseEmoji = imageEmoji;
 

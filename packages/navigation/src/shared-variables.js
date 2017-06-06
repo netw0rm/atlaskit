@@ -81,3 +81,18 @@ export const item = {
     standard: gridSize * 5,
   },
 };
+
+export const search = {
+  layout: {
+    padding: {
+      top: gridSize * 0.5,
+      bottom: 0,
+      side: gridSize * 3,
+    },
+    /**
+     * Restore the height setting that was lost due to the ClearButton no longer being there to
+     * stretch the box. (this height aligns it nicely with the back button in drawers)
+     */
+    height: gridSize * 4,
+  },
+};

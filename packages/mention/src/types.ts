@@ -25,6 +25,14 @@ export interface Mention {
   highlight?: Highlight;
   lozenge?: string;
   presence?: Presence;
+  accessLevel?: string;
+}
+
+export enum UserAccessLevel {
+    NONE,
+    SITE,
+    APPLICATION,
+    CONTAINER,
 }
 
 export interface OnMentionEvent {

@@ -10,6 +10,7 @@ export interface CreateRequestFunc {
 export interface RequesterOptions {
   clientId: string;
   collectionName?: string;
+  preventPreflight?: boolean;
   config: MediaApiConfig;
 }
 
@@ -25,10 +26,13 @@ export interface RequestOptions {
 const buildHeaders = (requesterOptions: RequesterOptions, requestOptions: RequestOptions, token: string) => {
   const headers = {
     ...requestOptions.headers,
-    'X-Client-Id': requesterOptions.clientId,
-    'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
   } as any;
+  // We can add custom headers if we don't want to avoid preflight - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method
+  if (!requesterOptions.preventPreflight) {
+    headers['X-Client-Id'] = requesterOptions.clientId;
+    headers['Authorization'] = `Bearer ${token}`;
+  }
 
   if (requestOptions.responseType === 'image') {
     return checkWebpSupport().then(isWebpSupported => {
@@ -42,6 +46,24 @@ const buildHeaders = (requesterOptions: RequesterOptions, requestOptions: Reques
   }
 
   return Promise.resolve(headers);
+};
+
+const buildParams = (requesterOptions: RequesterOptions, requestOptions: RequestOptions, token: string) => {
+  const {params} = requestOptions;
+  const {collectionName: collection, preventPreflight, clientId} = requesterOptions;
+  const defaultParams = {
+    collection,
+    ...params
+  };
+  const authParams = preventPreflight ? {
+    token,
+    client: clientId
+  } : null;
+
+  return {
+    ...defaultParams,
+    ...authParams
+  };
 };
 
 const responseTypeToAxios = (responseType?: ResponseType): string => {
@@ -59,18 +81,16 @@ export default (requesterOptions: RequesterOptions) => (requestOptions: RequestO
   return requesterOptions.config.tokenProvider(requesterOptions.collectionName).then(token => {
     return buildHeaders(requesterOptions, requestOptions, token).then(headers => {
       const responseType = responseTypeToAxios(requestOptions.responseType);
-      const {method, url, params, data} = requestOptions;
-      const {config, collectionName} = requesterOptions;
+      const params = buildParams(requesterOptions, requestOptions, token);
+      const {method, url, data} = requestOptions;
+      const {config} = requesterOptions;
 
       return axios({
         method: method || 'get',
         url: url,
         baseURL: config.serviceHost,
         headers,
-        params: {
-          collection: collectionName,
-          ...params
-        },
+        params,
         data: data,
         responseType
       }).then(response => response.data);

@@ -467,7 +467,7 @@ export default class StatelessMultiSelect extends PureComponent {
         return (<Footer
           isFocused={this.state.isFooterFocused}
           newLabel={this.props.createNewItemLabel}
-          appearance="text"
+          appearance={footer.appearance}
           onClick={this.handleItemCreate}
           shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
         >
@@ -480,7 +480,7 @@ export default class StatelessMultiSelect extends PureComponent {
         isFocused={this.state.isFooterFocused}
         onClick={this.handleFooterActivate}
         shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
-        appearance={(footer.onActivate) ? 'link' : 'text'}
+        appearance={footer.appearance}
         textColor={footer.textColor}
       >{ footer.content }</Footer>);
     }

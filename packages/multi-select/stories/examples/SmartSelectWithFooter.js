@@ -1,9 +1,6 @@
 import React from 'react';
 import Select from '@atlaskit/multi-select';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import {
-  akColorB400,
-} from '@atlaskit/util-shared-styles';
 
 const selectItems = [
   {
@@ -24,9 +21,9 @@ const selectItems = [
 ];
 
 const FooterWithLink = {
+  appearance: 'primary',
   content: 'Create new component',
-  elemBefore: <AddIcon label="" primaryColor={akColorB400} />,
-  textColor: akColorB400,
+  elemBefore: <AddIcon label="" />,
   onActivate: () => {
     // this looks a bit weird, but it can't be a link because of the accessibility issues
     window.location.href = 'http://atlassian.com';
@@ -34,9 +31,9 @@ const FooterWithLink = {
 };
 
 const FooterWithoutLink = {
+  appearance: 'primary',
   content: 'Create new component',
-  elemBefore: <AddIcon label="" primaryColor={akColorB400} />,
-  textColor: akColorB400,
+  elemBefore: <AddIcon label="" />,
   onActivate: () => {
     console.log('Footer click! Do something!');
   },

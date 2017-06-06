@@ -6,16 +6,18 @@ import styles from '../styles.less';
 
 export default class Footer extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.oneOf(['default', 'primary']),
+    children: PropTypes.node,
     elemBefore: PropTypes.node,
     isFocused: PropTypes.bool,
-    children: PropTypes.node,
+    onClick: PropTypes.func,
     newLabel: PropTypes.string,
     shouldHideSeparator: PropTypes.bool,
     textColor: PropTypes.string,
-    onClick: PropTypes.func,
   }
 
   static defaultProps = {
+    appearance: 'default',
     onClick: () => {},
   }
 
@@ -33,6 +35,7 @@ export default class Footer extends PureComponent {
       >
         {
           <Item
+            appearance={this.props.appearance}
             elemBefore={this.props.elemBefore}
             isFocused={this.props.isFocused}
             type="option"

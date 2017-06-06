@@ -23,6 +23,7 @@ pipelines:
             - export FORCE_COLOR=1
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
+            - yarn cache dir
             - yarn
             - (cd packages/website; yarn run build-data)
             - ./build/bin/release.stop.pipeline.if.other.master.running.js

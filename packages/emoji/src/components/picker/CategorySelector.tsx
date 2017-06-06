@@ -4,6 +4,7 @@ import * as classNames from 'classnames';
 
 import * as styles from './styles';
 import { AvailableCategories, CategoryDescription, OnCategory } from '../../types';
+import { customCategory } from '../../constants';
 
 import EmojiActivityIcon from '@atlaskit/icon/glyph/emoji/activity';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
@@ -78,7 +79,7 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
         icon: EmojiAtlassianIcon,
       },
       {
-        id: 'CUSTOM',
+        id: customCategory,
         name: 'Custom',
         icon: EmojiCustomIcon,
       },

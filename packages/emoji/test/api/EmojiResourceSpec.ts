@@ -3,12 +3,22 @@ import 'whatwg-fetch';
 import * as URLSearchParams from 'url-search-params';
 import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
-import { EmojiDescription, ImageRepresentation } from '../src/types';
-import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
-import { OnProviderChange } from '../src/api/SharedResources';
-import EmojiResource, { EmojiResourceConfig } from '../src/api/EmojiResource';
-import { EmojiSearchResult } from '../src/api/EmojiRepository';
+import { waitUntil } from '@atlaskit/util-common-test';
+
+import { customCategory } from '../../src/constants';
+import { EmojiDescription, ImageRepresentation } from '../../src/types';
+import { SecurityOptions, ServiceConfig } from '../../src/api/SharedResourceUtils';
+import { OnProviderChange } from '../../src/api/SharedResources';
+import MediaEmojiResource from '../../src/api/MediaEmojiResource';
+import EmojiResource, {
+    EmojiProvider,
+    EmojiResourceConfig,
+    supportsUploadFeature,
+    UploadingEmojiProvider,
+} from '../../src/api/EmojiResource';
+import { EmojiSearchResult } from '../../src/api/EmojiRepository';
 
 import {
   atlassianEmojis,
@@ -16,12 +26,13 @@ import {
   blobResponse,
   evilburnsEmoji,
   grinEmoji,
+  mediaEmoji,
   mediaEmojiImagePath,
   siteServiceEmojis,
   standardEmojis,
   standardServiceEmojis,
   thumbsupEmoji
-} from './TestData';
+} from '../TestData';
 
 // patch URLSearchParams API for jsdom tests
 declare var global: any;
@@ -85,7 +96,7 @@ const checkEmoji = (expected: EmojiDescription, actual: EmojiDescription | undef
   }
 };
 
-const customEmoji = (emoji: EmojiDescription) => emoji.category === 'CUSTOM';
+const customEmoji = (emoji: EmojiDescription) => emoji.category === customCategory;
 
 class MockOnProviderChange implements OnProviderChange<EmojiSearchResult, any, undefined> {
   resultCalls: EmojiSearchResult[] = [];
@@ -1014,4 +1025,138 @@ describe('EmojiResource', () => {
       });
     });
   });
+
+});
+
+describe('UploadingEmojiResource', () => {
+
+  beforeEach(() => {
+    fetchMock.mock({
+      matcher: `begin:${provider1.url}`,
+      response: providerServiceData1,
+    });
+  });
+
+  afterEach(() => {
+    fetchMock.restore();
+  });
+
+  class TestUploadingEmojiResource extends EmojiResource {
+    private mockMediaEmojiResource?: MediaEmojiResource;
+
+    constructor(mockMediaEmojiResource?: MediaEmojiResource) {
+      super({
+        providers: [provider1],
+      });
+      this.mockMediaEmojiResource = mockMediaEmojiResource;
+    }
+
+    protected initMediaEmojiResource(emojiResponse, provider): void {
+      this.mediaEmojiResource = this.mockMediaEmojiResource;
+    }
+  }
+
+  describe('#isUploadSupported', () => {
+    it('resource has custom emoji with media support', () => {
+      const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(MediaEmojiResource) as any);
+      return emojiResource.isUploadSupported().then(supported => {
+        expect(supported, 'Upload is supported').to.equal(true);
+      });
+    });
+
+    it('resource has no media support', () => {
+      const emojiResource = new TestUploadingEmojiResource();
+      return emojiResource.isUploadSupported().then(supported => {
+        expect(supported, 'Upload is not supported').to.equal(false);
+      });
+    });
+  });
+
+  describe('#uploadCustomEmoji', () => {
+    const upload = {
+      name: 'cheese',
+      shortName: ':cheese:',
+      filename: 'cheese.png',
+      dataURL: 'data:blah',
+      width: 32,
+      height: 32,
+    };
+
+    it('no media support - throw error', () => {
+      const emojiResource = new TestUploadingEmojiResource();
+      return emojiResource.uploadCustomEmoji(upload).then(emoji => {
+        expect(true, 'Promise should have been rejected').to.equal(false);
+      }).catch(error => {
+        expect(true, 'Promise should be rejected').to.equal(true);
+      });
+    });
+
+    it('media support - upload successful', () => {
+      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
+      const uploadEmojiStub = mediaEmojiResource.uploadEmoji;
+      uploadEmojiStub.returns(Promise.resolve(mediaEmoji));
+      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+      return emojiResource.uploadCustomEmoji(upload).then(emoji => {
+        expect(uploadEmojiStub.calledWith(upload), 'upload called on mediaEmojiResource').to.equal(true);
+        expect(emoji, 'Emoji uploaded').to.equal(mediaEmoji);
+      });
+    });
+
+    it('media support - upload error', () => {
+      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
+      const uploadEmojiStub = mediaEmojiResource.uploadEmoji;
+      uploadEmojiStub.returns(Promise.reject('bad things'));
+      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+      return emojiResource.uploadCustomEmoji(upload).then(emoji => {
+        expect(true, 'Promise should have been rejected').to.equal(false);
+      }).catch(error => {
+        expect(uploadEmojiStub.calledWith(upload), 'upload called on mediaEmojiResource').to.equal(true);
+        expect(true, 'Promise should be rejected').to.equal(true);
+      });
+    });
+  });
+
+  describe('#prepareForUpload', () => {
+    it('no media support - no error', () => {
+      const emojiResource = new TestUploadingEmojiResource();
+      emojiResource.prepareForUpload();
+      expect(true, 'executed without error').to.equal(true);
+    });
+
+    it('media support - token primed', () => {
+      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
+      const prepareForUploadStub = mediaEmojiResource.prepareForUpload;
+      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+      emojiResource.prepareForUpload();
+      return waitUntil(() => prepareForUploadStub.called).then(() => {
+        expect(prepareForUploadStub.called, 'upload called on mediaEmojiResource').to.equal(true);
+      });
+    });
+  });
+});
+
+describe('helpers', () => {
+  class TestEmojiProvider implements EmojiProvider {
+    findByShortName = shortName => Promise.resolve(evilburnsEmoji);
+    findByEmojiId = emojiId => Promise.resolve(evilburnsEmoji);
+    findInCategory = categoryId => Promise.resolve([]);
+    filter = (query, options) => {};
+    subscribe = onChange => {};
+    unsubscribe = onChange => {};
+  }
+
+  class TestUploadingEmojiProvider extends TestEmojiProvider implements UploadingEmojiProvider {
+    isUploadSupported = () => Promise.resolve(true);
+    uploadCustomEmoji = upload => Promise.resolve(evilburnsEmoji);
+    prepareForUpload = () => {};
+  }
+
+  it('supportsUploadFeature for UploadingEmojiProvider is true', () => {
+    expect(supportsUploadFeature(new TestUploadingEmojiProvider()), 'Supports upload feature').to.equal(true);
+  });
+
+  it('supportsUploadFeature for plain old EmojiProvider is false', () => {
+    expect(supportsUploadFeature(new TestEmojiProvider()), 'Does not support upload feature').to.equal(false);
+  });
+
 });

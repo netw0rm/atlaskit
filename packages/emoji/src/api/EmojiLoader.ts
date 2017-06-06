@@ -22,11 +22,9 @@ export interface EmojiLoaderConfig extends ServiceConfig {
 }
 
 const emojiRequest = (provider: EmojiLoaderConfig): Promise<EmojiServiceResponse> => {
-  const { url, securityProvider, refreshedSecurityProvider } = provider;
-  const secOptions = securityProvider && securityProvider();
-  const getRatio = provider.getRatio ? provider.getRatio : getPixelRatio;
-  const scale: KeyValues = calculateScale(getRatio);
-  return requestService(url, '', scale, {}, secOptions, refreshedSecurityProvider);
+  const { getRatio = getPixelRatio, ...serviceConfig } = provider;
+  const queryParams: KeyValues = calculateScale(getRatio);
+  return requestService<EmojiServiceResponse>(serviceConfig, { queryParams });
 };
 
 const calculateScale = (getRatio: () => number): KeyValues => {

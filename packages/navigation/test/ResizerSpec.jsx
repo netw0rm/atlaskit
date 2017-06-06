@@ -36,6 +36,10 @@ describe('<Resizer />', () => {
   });
 
   describe('resizer button', () => {
+    it('should not be visible if showResizeButton is false', () => {
+      expect(mount(<Resizer showResizeButton={false} />).find('ResizerButton').length).to.equal(0);
+    });
+
     it('by default, <ResizerButton /> points left', () => {
       expect(mount(<Resizer />).find('ResizerButton').props().isPointingRight).equal(false);
     });

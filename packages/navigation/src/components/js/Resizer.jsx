@@ -14,6 +14,7 @@ export default class Resizer extends PureComponent {
     onResizeButton: PropTypes.func,
     onResize: PropTypes.func,
     navigationWidth: PropTypes.number,
+    showResizeButton: PropTypes.bool,
   }
   static defaultProps = {
     onResizeStart: () => {},
@@ -21,6 +22,7 @@ export default class Resizer extends PureComponent {
     onResizeButton: () => {},
     onResize: () => {},
     navigationWidth: standardOpenWidth,
+    showResizeButton: true,
   }
   constructor(props) {
     super(props);
@@ -85,6 +87,14 @@ export default class Resizer extends PureComponent {
   }
 
   render() {
+    const resizerButton = this.props.showResizeButton ? (
+      <ResizerButton
+        isVisible={this.state.isHovering}
+        isPointingRight={this.isPointingRight()}
+        onClick={this.resizeButtonHandler}
+      />
+    ) : null;
+
     return (
       <ResizerInner
         innerRef={(resizerNode) => {
@@ -94,11 +104,7 @@ export default class Resizer extends PureComponent {
         onMouseEnter={this.mouseEnterHandler}
         onMouseLeave={this.mouseLeaveHandler}
       >
-        <ResizerButton
-          isVisible={this.state.isHovering}
-          isPointingRight={this.isPointingRight()}
-          onClick={this.resizeButtonHandler}
-        />
+        {resizerButton}
       </ResizerInner>
     );
   }

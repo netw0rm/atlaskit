@@ -21,7 +21,7 @@ describe('createRequest()', () => {
     fakeXhr.restore();
   });
 
-  it('should send the client ID and auth token', () => {
+  it('should send the client ID and auth token in header fields by default', () => {
     const tokenProvider = sinon.stub().returns(Promise.resolve(token));
 
     const request = createRequest({

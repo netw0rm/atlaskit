@@ -58,7 +58,7 @@ const buildParams = (requesterOptions: RequesterOptions, requestOptions: Request
   const authParams = preventPreflight ? {
     token,
     client: clientId
-  } : null;
+  } : {};
 
   return {
     ...defaultParams,

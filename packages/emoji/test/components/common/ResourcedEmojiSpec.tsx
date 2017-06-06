@@ -3,14 +3,14 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { EmojiDescription } from '../src/types';
-import Emoji from '../src/components/common/Emoji';
-import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
-import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
-import { EmojiProvider } from '../src/api/EmojiResource';
+import { EmojiDescription } from '../../../src/types';
+import Emoji from '../../../src/components/common/Emoji';
+import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
+import ResourcedEmoji from '../../../src/components/common/ResourcedEmoji';
+import { EmojiProvider } from '../../../src/api/EmojiResource';
 
-import { MockEmojiResourceConfig } from './MockEmojiResource';
-import { evilburnsEmoji, grinEmoji, getEmojiResourcePromise } from './TestData';
+import { MockEmojiResourceConfig } from '../../MockEmojiResource';
+import { evilburnsEmoji, grinEmoji, getEmojiResourcePromise } from '../../TestData';
 
 const findEmoji = component => component.find(Emoji);
 const emojiVisible = (component) => findEmoji(component).length === 1;

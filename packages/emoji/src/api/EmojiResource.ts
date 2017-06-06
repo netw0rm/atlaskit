@@ -1,4 +1,5 @@
-import { EmojiDescription, EmojiId, EmojiResponse, OptionalEmojiDescription, SearchOptions } from '../types';
+import { customCategory } from '../constants';
+import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isMediaApiRepresentation } from '../type-helpers';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
@@ -63,7 +64,41 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   recordSelection?(id: EmojiId): Promise<any>;
 }
 
-interface LastQuery {
+export interface UploadingEmojiProvider extends EmojiProvider {
+  /**
+   * Returns true if upload is supported.
+   *
+   * Waits until resources have loaded before returning.
+   */
+  isUploadSupported(): Promise<boolean>;
+
+  /**
+   * Uploads an emoji to the configured repository.
+   *
+   * Will return a promise with the EmojiDescription once completed.
+   *
+   * The last search will be re-run to ensure the new emoji is considered in the search.
+   */
+  uploadCustomEmoji(upload: EmojiUpload): Promise<EmojiDescription>;
+
+  /**
+   * Allows the preloading of data (e.g. authentication tokens) to speed the uploading of emoji.
+   */
+  prepareForUpload();
+}
+
+/**
+ * Checks if the emojiProvider can support uploading at a feature level.
+ *
+ * Follow this up with an isUploadSupported() check to see if the provider is actually
+ * configured to support uploads.
+ */
+export const supportsUploadFeature = (emojiProvider: EmojiProvider): emojiProvider is UploadingEmojiProvider => {
+  const { isUploadSupported, prepareForUpload, uploadCustomEmoji } = emojiProvider as UploadingEmojiProvider;
+  return !!(isUploadSupported && prepareForUpload && uploadCustomEmoji);
+};
+
+export interface LastQuery {
   query?: string;
   options?: SearchOptions;
 }
@@ -71,13 +106,28 @@ interface LastQuery {
 // Batch size === 1 row in the emoji picker
 const mediaEmojiBatchSize = 8;
 
-export default class EmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider {
-  private recordConfig?: ServiceConfig;
-  private emojiRepository: EmojiRepository;
-  private lastQuery: LastQuery;
-  private activeLoaders: number = 0;
-  private retries: Map<Retry<any>, ResolveReject<any>> = new Map();
-  private mediaEmojiResource?: MediaEmojiResource;
+export const addCustomCategoryToResult = (includeCustom: boolean, searchResult: EmojiSearchResult): EmojiSearchResult => {
+  if (searchResult.categories[customCategory] || !includeCustom) {
+    return searchResult;
+  }
+
+  const categories = {
+    ...searchResult.categories,
+    [customCategory]: true,
+  };
+  return {
+    ...searchResult,
+    categories
+  };
+};
+
+export class EmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider {
+  protected recordConfig?: ServiceConfig;
+  protected emojiRepository: EmojiRepository;
+  protected lastQuery: LastQuery;
+  protected activeLoaders: number = 0;
+  protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
+  protected mediaEmojiResource?: MediaEmojiResource;
 
   constructor(config: EmojiResourceConfig) {
     super();
@@ -95,7 +145,7 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
         this.activeLoaders--;
         emojiResponses[index] = emojiResponse;
         this.initEmojiRepository(emojiResponses);
-        this.initMediaEmojiResource(emojiResponse, provider.url);
+        this.initMediaEmojiResource(emojiResponse, provider);
         this.performRetries();
         this.refreshLastFilter();
       }).catch((reason) => {
@@ -117,9 +167,9 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     this.emojiRepository = new EmojiRepository(emojis);
   }
 
-  private initMediaEmojiResource(emojiResponse: EmojiResponse, siteUrl: string): void {
+  protected initMediaEmojiResource(emojiResponse: EmojiResponse, provider: ServiceConfig): void {
     if (!this.mediaEmojiResource && emojiResponse.mediaApiToken) {
-      this.mediaEmojiResource = new MediaEmojiResource(siteUrl, emojiResponse.mediaApiToken);
+      this.mediaEmojiResource = new MediaEmojiResource(provider, emojiResponse.mediaApiToken);
     }
   }
 
@@ -136,18 +186,18 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     });
   }
 
-  private refreshLastFilter(): void {
+  protected refreshLastFilter(): void {
     if (typeof this.lastQuery !== 'undefined') {
       const { query, options } = this.lastQuery;
       this.filter(query, options);
     }
   }
 
-  private isLoaded = () => {
+  protected isLoaded = () => {
     return !this.activeLoaders;
   }
 
-  private retryIfLoading<T>(retry: Retry<T>, defaultResponse?: T): Promise<T | undefined> {
+  protected retryIfLoading<T>(retry: Retry<T>, defaultResponse?: T): Promise<T | undefined> {
     if (!this.isLoaded()) {
       return new Promise<T>((resolve, reject) => {
         this.retries.set(retry, { resolve, reject });
@@ -207,7 +257,7 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     };
     if (this.emojiRepository) {
       const searchResult = this.emojiRepository.search(query, options);
-      this.notifyResult(searchResult);
+      this.notifyResult(addCustomCategoryToResult(!!this.mediaEmojiResource, searchResult));
     } else {
       // not ready
       this.notifyNotReady();
@@ -255,16 +305,15 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
   }
 
   recordSelection(id: EmojiId): Promise<any> {
-    if (this.recordConfig) {
-      const { refreshedSecurityProvider, securityProvider, url } = this.recordConfig;
-      const secOptions = securityProvider && securityProvider();
-      const data = {
+    const { recordConfig } = this;
+    if (recordConfig) {
+      const queryParams = {
         emojiId: id,
       };
-      const options = {
+      const requestInit = {
         method: 'POST',
       };
-      return requestService(url, undefined, data, options, secOptions, refreshedSecurityProvider);
+      return requestService(recordConfig, { queryParams, requestInit });
     }
     return Promise.reject('Resource does not support recordSelection');
   }
@@ -285,5 +334,35 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
       return Promise.resolve(emoji);
     }
     return this.mediaEmojiResource.getMediaEmojiAsImageEmoji(emoji);
+  }
+}
+
+export default class UploadingEmojiResource extends EmojiResource implements UploadingEmojiProvider {
+  isUploadSupported(): Promise<boolean> {
+    if (this.mediaEmojiResource) {
+      return Promise.resolve(true);
+    }
+    return this.retryIfLoading(() => this.isUploadSupported(), false);
+  }
+
+  uploadCustomEmoji(upload: EmojiUpload): Promise<EmojiDescription> {
+    return this.isUploadSupported().then(supported => {
+      if (!supported || !this.mediaEmojiResource) {
+        return Promise.reject('No media api support is configured');
+      }
+
+      return this.mediaEmojiResource.uploadEmoji(upload).then(emoji => {
+        this.emojiRepository.addCustomEmoji(emoji);
+        this.refreshLastFilter();
+        return emoji;
+      });
+    });
+  }
+
+  prepareForUpload() {
+    if (this.mediaEmojiResource) {
+      this.mediaEmojiResource.prepareForUpload();
+    }
+    return this.retryIfLoading(() => this.prepareForUpload());
   }
 }

@@ -45,6 +45,7 @@ storiesOf(name, module)
   .add('Editor (allowLinks)', () => <Demo allowLinks={true} />)
   .add('Editor (allowAdvancedTextFormatting)', () => <Demo allowAdvancedTextFormatting={true} />)
   .add('Editor (allowSubSup)', () => <Demo allowSubSup={true} />)
+  .add('Editor (allowTextColor)', () => <Demo allowTextColor={true} />)
   .add('Editor (allowCodeBlock)', () => <Demo allowCodeBlock={true} />)
   .add('Editor (allowBlockQuote)', () => <Demo allowBlockQuote={true} />)
   .add('Editor (Mentions)', () =>
@@ -98,6 +99,7 @@ storiesOf(name, module)
       allowCodeBlock={true}
       allowAdvancedTextFormatting={true}
       allowSubSup={true}
+      allowTextColor={true}
       allowBlockQuote={true}
       mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
       mentionProvider={Promise.resolve(new MentionResource())}

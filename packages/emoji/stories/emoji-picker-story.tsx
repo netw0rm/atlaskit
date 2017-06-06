@@ -70,4 +70,23 @@ storiesOf(`${name}/EmojiPicker`, module)
         />
       </div>
     );
-  });
+  })
+  .add('picker popup with upload support', () => (
+    <div style={{ padding: '10px' }} >
+      <input
+        id="picker-input"
+        style={{
+          height: '20px',
+          margin: '10px',
+        }}
+      />
+      <p style={{ width: '400px' }}>{lorem}</p>
+      <EmojiPicker
+        emojiProvider={getEmojiResource({ uploadSupported: true })}
+        onSelection={action('emoji selected')}
+        target="#picker-input"
+        position="below"
+      />
+    </div>
+  ));
+

@@ -4,11 +4,12 @@ import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { SecurityOptions } from '../src/api/SharedResourceUtils';
-import EmojiLoader, { denormaliseEmojiServiceResponse, EmojiLoaderConfig } from '../src/api/EmojiLoader';
-import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../src/types';
+import { customCategory } from '../../src/constants';
+import { SecurityOptions } from '../../src/api/SharedResourceUtils';
+import EmojiLoader, { denormaliseEmojiServiceResponse, EmojiLoaderConfig } from '../../src/api/EmojiLoader';
+import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../src/types';
 
-import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../test/TestData';
+import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../TestData';
 
 const p1Url = 'https://p1/';
 
@@ -278,7 +279,7 @@ describe('EmojiLoader', () => {
         name: 'standup.png',
         shortName: 'standup.png',
         type: 'SITE',
-        category: 'CUSTOM',
+        category: customCategory,
         order: -1,
         skinVariations: [
           {
@@ -286,7 +287,7 @@ describe('EmojiLoader', () => {
             name: 'standup-large.png',
             shortName: ':standup-large:',
             type: 'SITE',
-            category: 'CUSTOM',
+            category: customCategory,
             order: -1,
             representation: {
               imagePath: 'https://something/something2.png',

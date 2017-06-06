@@ -93,6 +93,7 @@ export class MediaCollectionService implements CollectionService {
     const request = createRequest({
       config: this.config,
       clientId: this.clientId,
+      preventPreflight: true,
       collectionName
     });
 

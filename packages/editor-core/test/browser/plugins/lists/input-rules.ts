@@ -19,19 +19,6 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p()))));
     });
 
-    // We now allow any block type to be child of list item thus this test case is no more applicable
-    it.skip('should not convert "** " to a nested bullet list item', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
-      insertText(editorView, '** ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(p('** ')));
-    });
-
-    it.skip('should not convert "* " to a bullet list item when already inside a list', () => {
-      const { editorView, sel } = editor(doc(ul(li(p('{<>}')))));
-      insertText(editorView, '* ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('* ')))));
-    });
-
     it('should convert "* " to a bullet list item when inside a blockquote', () => {
       const { editorView, sel } = editor(doc(blockquote(p('{<>}'))));
       insertText(editorView, '* ', sel);

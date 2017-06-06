@@ -10,9 +10,9 @@ import {PredefinedAvatarList} from '../predefined-avatar-list';
 
 import {AvatarPickerViewWrapper} from './styled';
 import {PredefinedAvatarView} from '../predefined-avatar-view';
-import {tallImage} from '@atlaskit/media-test-helpers';
 
 export interface AvatarPickerDialogProps {
+  imageSource: string;
   avatars: Array<Avatar>;
 }
 
@@ -42,7 +42,7 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
   render() {
     return (
       <ModalDialog
-        width="352"
+        width="352px"
         header="Upload an avatar"
         footer={
           <div>
@@ -60,16 +60,19 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
   }
 
   renderContent() {
-    switch (this.state.mode) {
+    const {imageSource, avatars} = this.props;
+    const {mode} = this.state;
+
+    switch (mode) {
       case Mode.Cropping:
         return (
           <div className="cropping-wrapper">
             <div className="cropper">
-              <ImageNavigator imageSource={tallImage}/>
+              <ImageNavigator imageSource={imageSource} />
             </div>
             <div className="predefined-avatars">
               <PredefinedAvatarList
-                avatars={this.props.avatars.slice(0, 5)}
+                avatars={avatars.slice(0, 5)}
                 onShowMore={this.onShowMore}
               />
             </div>
@@ -79,7 +82,7 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
         return (
           <div className="predefined-avatars-wrapper">
             <PredefinedAvatarView
-              avatars={this.props.avatars}
+              avatars={avatars}
               onGoBack={this.onGoBack}
             />
           </div>

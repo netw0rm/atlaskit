@@ -33,6 +33,7 @@ pipelines:
               indexifier@2.0.0
               @atlassian/prebake-distributor-runner@1.0.2
             - yarn
+            - ./build/bin/release.stop.pipeline.if.other.master.running.js
             - lerna bootstrap | cat
             - lerna run lint --stream
             - lerna run test --concurrency=1 --stream

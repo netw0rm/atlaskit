@@ -48,6 +48,8 @@ export interface CollectionService {
     inclusiveStartKey?: string,
     sortDirection?: SortDirection,
     details?: DetailsType): Promise<RemoteCollectionItemsResponse>;
+
+  clearCache(collectionName: string);
 }
 
 export type DetailsType = 'minimal' | 'full';
@@ -79,6 +81,16 @@ export class MediaCollectionService implements CollectionService {
       return Promise.resolve(cachedCollectionItems);
     } else {
       return this.getRemoteCollectionItems(params);
+    }
+  }
+
+  clearCache(collectionName: string) {
+    if (this.cache) {
+      this.cache.forEach((context, key, value, self) => {
+        if (key.indexOf(collectionName) === 0) {
+          self.remove(key);
+        }
+      });
     }
   }
 

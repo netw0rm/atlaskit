@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import applyMark from '../../../../../src/renderer/text/marks/link';
+import { applyMark } from '../../../../../src/renderer/text/util';
 import schema from '../../../../../src/test-helper/schema';
 
 describe('Renderer - TextSerializer - Marks', () => {

@@ -1,4 +1,4 @@
-import { Mark } from '../../../prosemirror';
+import { Mark } from './';
 
 export default function applyMark(nodeText: string, mark: Mark): string {
   if (mark.attrs.href === nodeText) {

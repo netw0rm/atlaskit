@@ -7,72 +7,18 @@ import {
   p as paragraph,
 } from '../../../../src/test-helper';
 import schema from '../../../../src/test-helper/schema';
-
-const doc = {
-  'type': 'doc',
-  'content': [
-    {
-      'type': 'paragraph',
-      'content': [
-        {
-          type: 'text',
-          text: 'Hello, ',
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                href: 'https://www.atlassian.com'
-              }
-            }
-          ]
-        },
-        {
-          type: 'text',
-          text: 'World!',
-          marks: [
-            {
-              type: 'strong'
-            },
-            {
-              type: 'link',
-              attrs: {
-                href: 'https://www.atlassian.com'
-              }
-            }
-          ]
-        },
-      ]
-    },
-    {
-      type: 'mediaGroup',
-      content: [
-        {
-          type: 'media',
-          attrs: {
-            id: 'foo',
-            collection: 'SampleItems',
-            type: 'image',
-          },
-        },
-      ],
-    },
-  ]
-};
+import doc from './_document';
+import expectedText from './_expected-text';
 
 const docFromSchema = schema.nodeFromJSON(doc);
 
 describe('Renderer - TextSerializer', () => {
 
-  describe('serializeFragment', () => {
+  it('should render document', () => {
+    const serializer = TextSerializer.fromSchema(schema);
+    const text = serializer.serializeFragment(docFromSchema.content);
 
-    it('should render document', () => {
-      const serializer = TextSerializer.fromSchema(schema);
-      const text = serializer.serializeFragment(docFromSchema.content);
-
-      expect(text).to.equal(`Hello, (https://www.atlassian.com) World! (https://www.atlassian.com)
-media attachment (foo in collection SampleItems)`);
-    });
-
+    expect(text).to.equal(expectedText);
   });
 
   it('should return node text if there is no special mark behaviour', () => {

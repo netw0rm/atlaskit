@@ -5,13 +5,9 @@ import { blockquote } from '../../../../../src/test-helper';
 
 describe('Renderer - TextSerializer - Nodes', () => {
   it('should render blockquote', () => {
-    const node = blockquote(`foo
-bar
-baz`);
+    const node = blockquote('foo\nbar\nbaz');
 
     const nodeSerializer = new BlockquoteSerializer(node, customNodeSerializers);
-    expect(nodeSerializer.serialize()).to.equal(`> foo
-> bar
-> baz`);
+    expect(nodeSerializer.serialize()).to.equal('> foo\n> bar\n> baz');
   });
 });

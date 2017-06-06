@@ -1,4 +1,4 @@
-/// <reference path="./types/chai.d.ts"/>
+/// <reference path="../../umd/types/test-helper/types/chai.d.ts"/>
 import { Fragment, Mark, Node, NodeType, Slice } from '../';
 import { NodeSpec } from '../prosemirror';
 

@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^6.0.3",
+    "@atlaskit/field-text": "^2.7.0",
     "akutil-common-test": "*"
   },
   "keywords": [

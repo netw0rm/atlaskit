@@ -10,6 +10,9 @@ export type MediaApiConfig = {
 export interface MediaImageProps {
   id: string;
   mediaApiConfig: MediaApiConfig;
+  className?: string;
+  width?: number;
+  height?: number;
   collectionName?: string;
 }
 
@@ -30,12 +33,23 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     return !!clientId && !!token && !!serviceHost;
   }
 
+  private get style() {
+    const {width, height} = this.props;
+
+    return {
+      width: `${width}px`,
+      height: `${height}px`
+    };
+  }
+
   render() {
-    const {hasAuth, imgSrc} = this;
+    const {hasAuth, style, imgSrc} = this;
     if (!hasAuth) { return null; }
 
+    const {className} = this.props;
+
     return (
-      <img src={imgSrc} />
+      <img src={imgSrc} style={style} className={className} />
     );
   }
 }

@@ -3,10 +3,10 @@ import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 
-import ToneSelector from '../src/components/common/ToneSelector';
-import EmojiButton from '../src/components/common/EmojiButton';
-import { EmojiDescription, EmojiDescriptionWithVariations } from '../src/types';
-import { imageEmoji, generateSkinVariation } from './TestData';
+import ToneSelector from '../../../src/components/common/ToneSelector';
+import EmojiButton from '../../../src/components/common/EmojiButton';
+import { EmojiDescription, EmojiDescriptionWithVariations } from '../../../src/types';
+import { imageEmoji, generateSkinVariation } from '../../TestData';
 
 const baseHandEmoji: EmojiDescription = {
   ...imageEmoji,

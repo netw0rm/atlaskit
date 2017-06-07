@@ -6,6 +6,7 @@ import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
 import { requestService, ServiceConfig } from './SharedResourceUtils';
 import { AbstractResource, OnProviderChange, Provider } from './SharedResources';
 import MediaEmojiResource from './MediaEmojiResource';
+import MediaEmojiCache from './MediaEmojiCache';
 
 export interface EmojiResourceConfig {
   /**
@@ -128,6 +129,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected activeLoaders: number = 0;
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected mediaEmojiResource?: MediaEmojiResource;
+  protected mediaEmojiCache: MediaEmojiCache = new MediaEmojiCache();
 
   constructor(config: EmojiResourceConfig) {
     super();
@@ -208,8 +210,13 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 
   protected notifyResult(result: EmojiSearchResult): void {
     if (result.query === this.lastQuery.query) {
-      super.notifyResult(result);
-      this.loadMediaEmoji(result);
+      const { emojis, ...otherResults } = result;
+      const newResult = {
+        ...otherResults,
+        emojis: this.mediaEmojiCache.loadFromCache(emojis),
+      };
+      super.notifyResult(newResult);
+      this.loadMediaEmoji(newResult);
     }
   }
 
@@ -235,6 +242,8 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
               if (!isMediaApiRepresentation(representation)) {
                 // loaded, keep, if not loaded, drop as it's not going to load
                 newEmojis.push(loadedEmoji);
+                // media emoji loaded - cache it
+                this.mediaEmojiCache.addEmoji(loadedEmoji);
               }
             } else {
               newEmojis.push(emoji);
@@ -351,7 +360,14 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     if (!this.mediaEmojiResource) {
       return Promise.resolve(emoji);
     }
-    return this.mediaEmojiResource.getMediaEmojiAsImageEmoji(emoji);
+    const cachedEmoji = this.mediaEmojiCache.getEmoji(emoji);
+    if (cachedEmoji) {
+      return Promise.resolve(cachedEmoji);
+    }
+    return this.mediaEmojiResource.getMediaEmojiAsImageEmoji(emoji).then(emoji => {
+      this.mediaEmojiCache.addEmoji(emoji);
+      return emoji;
+    });
   }
 }
 

@@ -38,6 +38,7 @@ import {
   ReactEmojiNode,
   ReactMentionNode,
   panelNodeView,
+  codeBlockNodeView,
 } from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
@@ -267,6 +268,7 @@ export default class Editor extends PureComponent<Props, State> {
           emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
           mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
           panel: panelNodeView,
+          codeBlock: codeBlockNodeView,
         },
       });
       imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);

@@ -1,6 +1,7 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import {Component} from 'react';
+import * as cx from 'classnames';
 import {ImageCropper, OnLoadHandler} from '../image-cropper';
 import {Slider} from '../slider';
 import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText} from './styled';
@@ -32,6 +33,7 @@ export interface State {
   isDragging: boolean;
   minScale?: number;
   fileImageSource?: string;
+  isDroppingFile: boolean;
 }
 
 export class ImageNavigator extends Component<Props, State> {
@@ -44,7 +46,8 @@ export class ImageNavigator extends Component<Props, State> {
       scale: 1,
       isDragging: false,
       imageInitPos: {x: 0, y: 0},
-      fileImageSource: ''
+      fileImageSource: '',
+      isDroppingFile: false
     };
   }
 
@@ -132,17 +135,7 @@ export class ImageNavigator extends Component<Props, State> {
     }
   }
 
-  // Trick to have a nice <input /> appearance
-  onUploadButtonClick = (e) => {
-    const input = e.target.querySelector('#image-input');
-    if (!input) { return; }
-
-    input.click();
-  }
-
-  onFileChange = (e) => {
-    e.stopPropagation();
-    const file = e.target.files[0] as File;
+  readFile(file: File) {
     const {type} = file;
 
     // TODO: Show feedback about invalid file type
@@ -157,10 +150,56 @@ export class ImageNavigator extends Component<Props, State> {
     reader.readAsDataURL(file);
   }
 
+  // Trick to have a nice <input /> appearance
+  onUploadButtonClick = (e) => {
+    const input = e.target.querySelector('#image-input');
+    if (!input) { return; }
+
+    input.click();
+  }
+
+  onFileChange = (e) => {
+    e.stopPropagation();
+    const file = e.target.files[0];
+
+    this.readFile(file);
+  }
+
+  updateDroppingState(e: Event, state: boolean) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState({isDroppingFile: state});
+  }
+
+  onDragEnter = (e) => {
+    this.updateDroppingState(e, true);
+  }
+
+  onDragOver = (e) => {
+    this.updateDroppingState(e, true);
+  }
+
+  onDragLeave = (e) => {
+    this.updateDroppingState(e, false);
+  }
+
+  onDrop = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const dt = e.dataTransfer;
+    const file = dt.files[0];
+
+    this.setState({isDroppingFile: false});
+    this.readFile(file);
+  }
+
   renderImageUploader() {
+    const {isDroppingFile} = this.state;
+    const className = cx({isDroppingFile});
+
     return (
       <ImageUploader>
-        <DragZone>
+        <DragZone className={className} onDragLeave={this.onDragLeave} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver} onDrop={this.onDrop}>
           <DragZoneImage src={uploadPlaceholder} alt="upload image" />
           <DragZoneText>Drag and drop your photos here</DragZoneText>
         </DragZone>

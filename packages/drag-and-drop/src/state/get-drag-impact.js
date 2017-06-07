@@ -16,26 +16,33 @@ const noMovement: DragMovement = {
   isMovingForward: false,
 };
 
-export default (target: Position,
+const noImpact: DragImpact = {
+  movement: noMovement,
+  destination: null,
+};
+
+// It is the responsiblity of this function to return
+// the impact of a drag
+
+export default (
+  newCenter: Position,
   draggableId: DraggableId,
   draggableDimensions: DimensionMap,
-  droppableDimensions: DimensionMap): DragImpact => {
+  droppableDimensions: DimensionMap
+): DragImpact => {
   const droppableId: ?DroppableId = getDroppableOver(
-    target, droppableDimensions
+    newCenter, droppableDimensions
   );
 
-  // to cut scope: assume in same list
+  // not dragging over anything
   if (!droppableId) {
-    return {
-      movement: noMovement,
-      destination: null,
-    };
+    return noImpact;
   }
 
   const draggingDimension: Dimension = draggableDimensions[draggableId];
   const droppableDimension: Dimension = droppableDimensions[droppableId];
 
-  const isMovingForward: boolean = target.y - draggingDimension.center.y > 0;
+  const isMovingForward: boolean = newCenter.y - draggingDimension.center.y > 0;
 
   // get all draggables inside the draggable
   const insideDroppable: Dimension[] = getDraggablesInsideDroppable(droppableDimension, draggableDimensions);
@@ -54,7 +61,7 @@ export default (target: Position,
           return false;
         }
 
-        return target.y > dimension.top;
+        return newCenter.y > dimension.top;
       }
       // moving backwards
       // 1. item needs to start behind the moving item
@@ -63,15 +70,17 @@ export default (target: Position,
         return false;
       }
 
-      return target.y < dimension.bottom;
+      return newCenter.y < dimension.bottom;
     })
     .map((dimension: Dimension): DroppableId => dimension.id);
 
+  // nothing has needed to move out of the way
+  if (!moved.length) {
+    return noImpact;
+  }
+
   const startIndex = insideDroppable.indexOf(draggingDimension);
   const index: number = (() => {
-    if (!moved.length) {
-      return startIndex;
-    }
     if (isMovingForward) {
       return startIndex + moved.length;
     }
@@ -86,11 +95,13 @@ export default (target: Position,
     isMovingForward,
   };
 
-  return {
+  const impact: DragImpact = {
     movement,
     destination: {
       droppableId,
       index,
     },
   };
+
+  return impact;
 };

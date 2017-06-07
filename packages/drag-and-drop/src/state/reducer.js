@@ -12,6 +12,7 @@ import type { TypeId,
   DragComplete,
 } from '../types';
 import getDragImpact from './get-drag-impact';
+import getInitialLocation from './get-initial-location';
 import { moveForward, moveBackward } from './get-position-move';
 
 const initialState: State = {
@@ -73,18 +74,16 @@ export default (state: State = initialState, action: Action): State => {
 
     const { id, type, center, scroll, selection } = action.payload;
 
-    const initialImpact: DragImpact = getDragImpact(
+    const source: ?DraggableLocation = getInitialLocation(
       center,
       id,
       state.draggableDimensions,
-      state.droppableDimensions
+      state.droppableDimensions,
     );
-
-    const source: ?DraggableLocation = initialImpact.destination;
 
     if (!source) {
       console.error('lifting a draggable that is not inside a droppable');
-      return state;
+      return reset();
     }
 
     const dragging: Dragging = {

@@ -65,7 +65,7 @@ export default class Mention extends PureComponent<Props, {}> {
       {tooltip ?
         <Tooltip
             description={`${props.text} won't be notified as they have no access`}
-            position="left"
+            position="right"
         >
           {mentionComponent}
         </Tooltip>

@@ -2,7 +2,7 @@ import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-
+import Tooltip from '@atlaskit/tooltip';
 import { MentionStyle } from '../../src/components/Mention/styles';
 import Mention from '../../src/components/Mention';
 import ResourcedMention from '../../src/components/Mention/ResourcedMention';
@@ -42,6 +42,26 @@ describe('<MentionData />', () => {
       mention.simulate('mouseleave');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
+    });
+
+    it('should not display a tooltip if no accessLevel data', () => {
+      const mention = mount(<Mention {...mentionData} />);
+      expect(mention.find(Tooltip).length).to.equal(0);
+    });
+
+    it('should display tooltip if mentioned user does not have container permission', () => {
+      const mention = mount(<Mention {...mentionData} accessLevel="NONE" />);
+      expect(mention.find(Tooltip).length).to.equal(1);
+    });
+
+     it('should not display tooltip if mentioned user has container permission', () => {
+      const mention = mount(<Mention {...mentionData} accessLevel="CONTAINER" />);
+      expect(mention.find(Tooltip).length).to.equal(0);
+    });
+
+    it('should not display tooltip if mention is highlighted', () => {
+      const mention = mount(<Mention {...mentionData} isHighlighted={true} />);
+      expect(mention.find(Tooltip).length).to.equal(0);
     });
   });
 

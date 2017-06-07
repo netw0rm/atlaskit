@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
-import { MentionStyle } from './styles';
+import { MentionStyle, MentionContainer } from './styles';
+import Tooltip from '@atlaskit/tooltip';
+import { UserAccessLevel } from '../../types';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -44,16 +46,32 @@ export default class Mention extends PureComponent<Props, {}> {
       handleOnMouseLeave,
       props,
     } = this;
+    const tooltip: boolean = !!(props.accessLevel && UserAccessLevel[props.accessLevel] !== UserAccessLevel.CONTAINER)
+                             && !props.isHighlighted;
+
+    const mentionComponent =
+         <MentionStyle
+              highlighted={props.isHighlighted}
+              accessLevel={props.accessLevel}
+              onClick={handleOnClick}
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+         >
+            {props.text}
+         </MentionStyle>;
 
     return (
-      <MentionStyle
-        highlighted={props.isHighlighted}
-        onClick={handleOnClick}
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
-      >
-        {props.text}
-      </MentionStyle>
+      <MentionContainer>
+      {tooltip ?
+        <Tooltip
+            description={`${props.text} won't be notified as they have no access`}
+            position="left"
+        >
+          {mentionComponent}
+        </Tooltip>
+        : {mentionComponent}
+      }
+      </MentionContainer>
     );
   }
 }

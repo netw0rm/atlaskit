@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {
   akColorB400,
+  akColorN0,
   akColorN20,
   akColorN30,
   akColorN500,
@@ -30,7 +31,7 @@ const getUserStyle = (props: MentionStyleProps): HighlightStyle => {
       text: akColorN500,
     },
     'UNPERMITTED': {
-      background: akColorN20,
+      background: akColorN0,
       border: akColorN500,
       text: akColorN500,
     },
@@ -48,10 +49,15 @@ const getUserStyle = (props: MentionStyleProps): HighlightStyle => {
 // tslint:disable:next-line variable-name
 export const MentionStyle = styled.span`
   background: ${(props: MentionStyleProps) => getUserStyle(props).background};
-  border-color: ${(props: MentionStyleProps) => getUserStyle(props).border};
+  border: 1px solid ${(props: MentionStyleProps) => getUserStyle(props).border};
   border-radius: 20px;
   color: ${(props: MentionStyleProps) => getUserStyle(props).text};
   cursor: pointer;
   padding: 0 4px 2px 3px;
   white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const MentionContainer = styled.span`
+  display: inline-block;
 `;

@@ -151,7 +151,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
           {restricted ?
             <Tooltip
                 description={`${name} won't be notified as they have no access`}
-                position="left"
+                position="right"
             >
               <AccessSectionStyle>
                 <LockCircleIcon label="No access"/>

@@ -181,6 +181,7 @@
     "test/base": "mocha --colors",
     "test/wc": "./build/bin/test.sh",
     "test/browserstack": "./build/bin/test.browserstack.sh",
+    "test/browserstack/pr": "./build/bin/test.browserstack.pr.sh",
     "test/wc/single": "./build/bin/test.single.sh",
     "test/browserstack/single": "./build/bin/test.single.browserstack.sh",
     "test/wc/single/watch": "NODE_ENV=development ./build/bin/test.single.watch.sh",

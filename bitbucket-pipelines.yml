@@ -61,6 +61,6 @@ pipelines:
           - yarn run test/unit
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
-          - yarn run test/browserstack
+          - yarn run test/browserstack/pr
           - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"

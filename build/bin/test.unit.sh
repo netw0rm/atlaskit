@@ -20,4 +20,4 @@ else
 fi
 
 export NODE_ENV="test"
-mocha --colors --require test-setup "packages/$PKG/test/unit/**/*.js" $@
+mocha --colors --require test-setup "packages/$PKG/test/unit/**/*.js"  --timeout 10000 $@

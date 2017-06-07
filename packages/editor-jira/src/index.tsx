@@ -85,8 +85,8 @@ export interface Props {
   allowTextColor?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
-  mediaProvider ?: Promise<MediaProvider>;
-  uploadErrorHandler ?: (state: MediaState) => void;
+  mediaProvider?: Promise<MediaProvider>;
+  uploadErrorHandler?: (state: MediaState) => void;
   errorReporter?: ErrorReportingHandler;
 }
 
@@ -222,12 +222,17 @@ export default class Editor extends PureComponent<Props, State> {
   /**
    * The current value of the editor, encoded as HTML.
    */
-  get value(): string | undefined {
+  get value(): Promise<string | undefined> {
     const { editorView, schema } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
 
-    return editorView && editorView.state.doc
-      ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
-      : this.props.defaultValue;
+    return (async () => {
+      await mediaPluginState.waitForPendingTasks();
+
+      return editorView && editorView.state.doc
+        ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
+        : this.props.defaultValue;
+    })();
   }
 
   render() {
@@ -319,7 +324,6 @@ export default class Editor extends PureComponent<Props, State> {
         plugins: [
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
           ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
-          ...blockTypePlugins(schema as Schema<any, any>),
           ...clearFormattingPlugins(schema as Schema<any, any>),
           ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
           ...listsPlugins(schema as Schema<any, any>),
@@ -327,6 +331,10 @@ export default class Editor extends PureComponent<Props, State> {
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
           ...textFormattingPlugins(schema as Schema<any, any>),
           ...(isSchemaWithTextColor(schema) ? textColorPlugins(schema as Schema<any, any>) : []),
+          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+          // if converting is possible
+          ...blockTypePlugins(schema as Schema<any, any>),
           ...reactNodeViewPlugins(schema as Schema<any, any>),
           history(),
           keymap(jiraKeymap),

@@ -90,6 +90,10 @@ const ThemeSwatches = ({ theme }) => (
 );
 
 export default class ThemePreview extends PureComponent {
+  defaultProps = {
+    isGlobal: false,
+  }
+
   state = {
     backgroundColor: famousThemes[0].background,
     textColor: famousThemes[0].text,
@@ -123,13 +127,18 @@ export default class ThemePreview extends PureComponent {
   )
 
   render() {
+    const { isGlobal } = this.props;
     const { textColor, backgroundColor } = this.state;
     const myTheme = createGlobalTheme(textColor, backgroundColor);
+
+    const globalTheme = myTheme;
+    const containerTheme = isGlobal ? myTheme : presets.container;
+
     return (
       <div>
         <BasicNavigation
-          globalTheme={myTheme}
-          containerTheme={presets.container}
+          globalTheme={globalTheme}
+          containerTheme={containerTheme}
         />
         <Container>
           <h3>Theme playground</h3>

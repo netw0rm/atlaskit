@@ -224,7 +224,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  insertFileFromDataUrl (url: string, fileName: string) {
+  insertFileFromDataUrl(url: string, fileName: string) {
     const { editorView } = this.state;
     if (editorView) {
       const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
@@ -320,18 +320,21 @@ export default class Editor extends PureComponent<Props, State> {
         ...mentionsPlugins(schema),
         ...mediaPlugins,
         ...emojisPlugins(schema),
-        ...blockTypePlugins(schema),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         ...reactNodeViewPlugins(schema),
         ...codeBlockPlugins(schema),
+        // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+        // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+        // if converting is possible
+        ...blockTypePlugins(schema),
         history(),
         keymap(hcKeymap),
         keymap(baseKeymap) // should be last
       ]
     });
 
-    const { maxContentSize }  = this.props;
+    const { maxContentSize } = this.props;
 
     const editorView = new EditorView(place, {
       state: editorState,

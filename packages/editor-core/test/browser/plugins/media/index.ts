@@ -517,4 +517,23 @@ describe('Media plugin', () => {
       ));
     });
   });
+
+  it('should focus the editor after files are added to the document', async () => {
+    const { editorView, pluginState } = editor(doc(p('')));
+    await resolvedProvider;
+
+    pluginState.handleNewMediaPicked({ id: 'foo' });
+    expect(editorView.hasFocus()).to.be.equal(true);
+
+    pluginState.handleNewMediaPicked({ id: 'bar' });
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        mediaGroup(
+          media({ id: 'bar', type: 'file', collection: testCollectionName }),
+          media({ id: 'foo', type: 'file', collection: testCollectionName }),
+        ),
+        p(),
+      ),
+    );
+  });
 });

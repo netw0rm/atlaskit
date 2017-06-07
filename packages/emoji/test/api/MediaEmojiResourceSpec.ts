@@ -7,7 +7,7 @@ import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
 import MediaEmojiResource, { EmojiProgress, EmojiProgessCallback, EmojiUploadResponse, mediaProportionOfProgress, TokenManager } from '../../src/api/MediaEmojiResource';
-import { EmojiDescription, EmojiUpload, ImageRepresentation, MediaApiToken, MediaApiRepresentation } from '../../src/types';
+import { EmojiDescription, EmojiServiceResponse, EmojiUpload, ImageRepresentation, MediaApiToken, MediaApiRepresentation } from '../../src/types';
 import { MediaUploadStatusUpdate, MediaUploadEnd, MediaUploadError } from '../../src/media-types';
 
 import {
@@ -15,7 +15,11 @@ import {
     defaultMediaApiToken,
     expiresAt,
     evilburnsEmoji,
+    fetchSiteEmojiUrl,
     mediaEmoji,
+    missingMediaEmoji,
+    missingMediaEmojiId,
+    missingMediaServiceEmoji,
     siteServiceConfig,
     siteUrl
 } from '../TestData';
@@ -449,6 +453,82 @@ describe('MediaEmojiResource', () => {
       const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub);
       mediaEmojiResource.prepareForUpload();
       expect(getTokenStub.called, 'getToken called').to.equal(true);
+    });
+  });
+
+
+  describe('#findSiteEmoji', () => {
+    it('Emoji found', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const mockMediaPicker = new MockMediaPicker();
+      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+
+      const serviceResponse: EmojiServiceResponse = {
+        emojis: [ missingMediaServiceEmoji ],
+        meta: {
+          mediaApiToken: defaultMediaApiToken(),
+        }
+      };
+
+      fetchMock.post({
+        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        response: {
+          body: serviceResponse,
+        },
+        name: 'fetch-site-emoji'
+      });
+
+      return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
+        expect(emoji, 'Emoji defined').to.not.equal(undefined);
+        expect(emoji).to.deep.equal(missingMediaEmoji);
+        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+        expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
+      });
+    });
+
+    it('Emoji not found', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const mockMediaPicker = new MockMediaPicker();
+      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+
+      const serviceResponse: EmojiServiceResponse = {
+        emojis: [],
+        meta: {
+          mediaApiToken: defaultMediaApiToken(),
+        }
+      };
+
+      fetchMock.post({
+        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        response: {
+          body: serviceResponse,
+        },
+        name: 'fetch-site-emoji'
+      });
+
+      return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
+        expect(emoji, 'Emoji undefined').to.equal(undefined);
+        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+        expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
+      });
+    });
+
+    it('Request error', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const mockMediaPicker = new MockMediaPicker();
+      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+
+      fetchMock.post({
+        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        response: 403,
+        name: 'fetch-site-emoji'
+      });
+
+      return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
+        expect(emoji, 'Emoji undefined').to.equal(undefined);
+        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+        expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
+      });
     });
   });
 });

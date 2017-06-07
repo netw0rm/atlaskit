@@ -59,13 +59,6 @@ export class MediaPluginState {
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
 
-  /*
-    MediaPluginState.setMediaProvider(providerPromise) is async method which is setting pickers.
-    When it's called pickers are destroyed. New pickers are set when providerPromise is resolved.
-    The problem is that setMediaProvider can be called at any moment, even when providerPromise hasn't been resolved yet.
-    To prevent this MediaPluginState stores reference to last media provider set
-  */
-  private lastMediaProvider: Promise<MediaProvider> | undefined;
   private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
   private binaryPicker?: PickerFacade;
@@ -97,14 +90,9 @@ export class MediaPluginState {
   }
 
   setMediaProvider = async (mediaProvider?: Promise<MediaProvider>) => {
-    if (this.lastMediaProvider === mediaProvider) {
-      return;
-    }
-
-    this.destroyPickers();
-    this.lastMediaProvider = mediaProvider;
-
     if (!mediaProvider) {
+      this.destroyPickers();
+
       this.allowsPastingLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
@@ -113,6 +101,8 @@ export class MediaPluginState {
       return;
     }
 
+    // TODO disable (not destroy!) pickers until mediaProvider is resolved
+
     let resolvedMediaProvider: MediaProvider;
 
     try {
@@ -120,6 +110,8 @@ export class MediaPluginState {
     } catch (err) {
       const wrappedError = new Error(`Media functionality disabled due to rejected provider: ${err.message}`);
       this.errorReporter.captureException(wrappedError);
+
+      this.destroyPickers();
 
       this.allowsPastingLinks = false;
       this.allowsUploads = false;
@@ -150,15 +142,12 @@ export class MediaPluginState {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (resolvedMediaProvider.uploadParams && uploadContext) {
-        if (this.popupPicker) {
-          this.popupPicker.setUploadParams(resolvedMediaProvider.uploadParams);
-        }
-
-        // race condition fix
-        if (this.lastMediaProvider === mediaProvider) {
-          this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
-        }
+        this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+      } else {
+        this.destroyPickers();
       }
+    } else {
+      this.destroyPickers();
     }
 
     this.notifyPluginStateSubscribers();
@@ -422,14 +411,24 @@ export class MediaPluginState {
       return;
     }
 
-    const { stateManager, pickers } = this;
+    const {
+      errorReporter,
+      pickers,
+      stateManager,
+    } = this;
 
-    pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager));
-    pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager));
-    pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager));
-    pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager));
+    // create pickers if they don't exist, re-use otherwise
+    if (!pickers.length) {
+      pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager, errorReporter));
+      pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager, errorReporter));
+      pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
+      pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
-    pickers.forEach(picker => picker.onNewMedia(this.handleNewMediaPicked));
+      pickers.forEach(picker => picker.onNewMedia(this.handleNewMediaPicked));
+    }
+
+    // set new upload params for the pickers
+    pickers.forEach(picker => picker.setUploadParams(uploadParams));
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
@@ -441,6 +440,11 @@ export class MediaPluginState {
     const { view } = this;
 
     view.dispatch(transaction);
+
+    if (!view.hasFocus()) {
+      view.focus();
+    }
+
     this.selectInsertedMediaNode(node);
   }
 

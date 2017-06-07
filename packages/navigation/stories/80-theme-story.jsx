@@ -7,28 +7,29 @@ import AkAvatar from '@atlaskit/avatar';
 import { AddIcon, AtlassianIcon, SearchIcon, ExpandIcon, ListIcon, QuestionCircleIcon } from '@atlaskit/icon';
 import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
-import * as presets from '../src/theme/presets';
-import { AkContainerNavigation, AkGlobalNavigation, AkGlobalItem, AkContainerTitle, AkNavigationItemGroup, AkNavigationItem } from '../src/';
+import { AkContainerNavigation, AkGlobalNavigation, AkGlobalItem, AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, presetThemes } from '../src/';
 import { containerOpenWidth, containerClosedWidth, gridSize } from '../src/shared-variables';
 import BasicNavigation from './components/BasicNavigation';
+import ThemePreview from './components/ThemePreview';
 import nucleusLogo from './nucleus.png';
 
-const ExampleContainerNavigation = ({ appearance, isCollapsed = false }) => (
+// eslint-disable-next-line react/prop-types
+const ExampleContainerNavigation = ({ theme, themeName, isCollapsed = false }) => (
   <AkContainerNavigation
-    appearance={appearance}
+    theme={theme}
     showGlobalPrimaryActions={isCollapsed}
     isCollapsed={isCollapsed}
-    globalCreateIcon={<AddIcon size="small" label="Create icon" />}
-    globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+    globalCreateIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
+    globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" secondaryColor="inherit" />}
     globalPrimaryItemHref="//www.atlassian.com"
-    globalSearchIcon={<SearchIcon label="Search icon" />}
+    globalSearchIcon={<SearchIcon label="Search icon" secondaryColor="inherit" />}
     headerComponent={() => (
       <AkContainerTitle
         href="#foo"
         icon={
           <img alt="nucleus" src={nucleusLogo} />
         }
-        text={`${appearance} theme`}
+        text={`${themeName} theme`}
         subText="ContainerNavigation"
       />)}
   >
@@ -85,13 +86,14 @@ const ExampleContainerNavigation = ({ appearance, isCollapsed = false }) => (
   </AkContainerNavigation>
 );
 
-const ExampleGlobalNavigation = ({ appearance }) => (
+// eslint-disable-next-line react/prop-types
+const ExampleGlobalNavigation = ({ theme }) => (
   <AkGlobalNavigation
-    appearance={appearance}
-    primaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+    theme={theme}
+    primaryIcon={<AtlassianIcon label="Atlassian icon" secondaryColor="inherit" />}
     primaryItemHref="//www.atlassian.com"
-    createIcon={<AddIcon size="small" label="Create icon" />}
-    searchIcon={<SearchIcon label="Search icon" />}
+    createIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
+    searchIcon={<SearchIcon label="Search icon" secondaryColor="inherit" />}
     secondaryActions={[
       <AkDropdownMenu
         appearance="tall"
@@ -128,7 +130,7 @@ const ExampleGlobalNavigation = ({ appearance }) => (
         position="right bottom"
       >
         <AkGlobalItem>
-          <QuestionCircleIcon label="Help icon" />
+          <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
         </AkGlobalItem>
       </AkDropdownMenu>,
       <AkDropdownMenu
@@ -195,10 +197,11 @@ class ContainerNavigationExplorer extends PureComponent {
     return (
       <Container>
         <Grid>
-          {Object.keys(presets).map(key => (
+          {Object.keys(presetThemes).map(key => (
             <Column isCollapsed={isCollapsed} key={key}>
               <ExampleContainerNavigation
-                appearance={key}
+                theme={presetThemes[key]}
+                themeName={key}
                 isCollapsed={isCollapsed}
               />
             </Column>
@@ -233,24 +236,27 @@ const GlobalLabel = styled.div`
 const GlobalNavigationExplorer = () => (
   <Container>
     <Grid>
-      {Object.keys(presets).map(key => (
-        <Column isCollapsed key={key}>
-          <GlobalLabel color={presets[key].text}>
-            {key} theme
-          </GlobalLabel>
-          <ExampleGlobalNavigation
-            appearance={key}
-          />
-        </Column>
-      ))}
+      {Object.keys(presetThemes).map((key) => {
+        const presetGlobal = presetThemes[key];
+        return (
+          <Column isCollapsed key={key}>
+            <GlobalLabel color={presetGlobal.text}>
+              {key} theme
+            </GlobalLabel>
+            <ExampleGlobalNavigation
+              theme={presetGlobal}
+            />
+          </Column>
+        );
+      })}
     </Grid>
   </Container>
 );
 
 const presetOptions = [
   {
-    heading: 'Appearance',
-    items: Object.keys(presets).map(key => ({
+    heading: 'Theme',
+    items: Object.keys(presetThemes).map(key => ({
       content: key,
       type: 'radio',
     })),
@@ -259,48 +265,48 @@ const presetOptions = [
 
 class PresetPicker extends PureComponent {
   state = {
-    containerAppearance: 'container',
-    globalAppearance: 'global',
+    containerThemeName: 'container',
+    globalThemeName: 'global',
   }
 
-  changeContainerAppearance = (e) => {
+  changeContainerTheme = (e) => {
     this.setState({
-      containerAppearance: e.item.content,
+      containerThemeName: e.item.content,
     });
   };
 
-  changeGlobalAppearance = (e) => {
+  changeGlobalTheme = (e) => {
     this.setState({
-      globalAppearance: e.item.content,
+      globalThemeName: e.item.content,
     });
   };
 
   render() {
-    const { globalAppearance, containerAppearance } = this.state;
+    const { globalThemeName, containerThemeName } = this.state;
 
     return (
       <div>
         <BasicNavigation
-          globalAppearance={globalAppearance}
-          containerAppearance={containerAppearance}
+          globalTheme={presetThemes[globalThemeName]}
+          containerTheme={presetThemes[containerThemeName]}
         />
         <Container>
-          <h3 style={{ marginBottom: gridSize }}>Container appearance</h3>
+          <h3 style={{ marginBottom: gridSize }}>Container theme</h3>
           <AkDropdownMenu
             triggerType="button"
             items={presetOptions}
-            onItemActivated={this.changeContainerAppearance}
+            onItemActivated={this.changeContainerTheme}
           >
-            {containerAppearance}
+            {containerThemeName}
           </AkDropdownMenu>
 
-          <h3 style={{ marginBottom: gridSize }}>Global appearance</h3>
+          <h3 style={{ marginBottom: gridSize }}>Global theme</h3>
           <AkDropdownMenu
             triggerType="button"
             items={presetOptions}
-            onItemActivated={this.changeGlobalAppearance}
+            onItemActivated={this.changeGlobalTheme}
           >
-            {globalAppearance}
+            {globalThemeName}
           </AkDropdownMenu>
         </Container>
       </div>
@@ -317,4 +323,10 @@ storiesOf(`${name} - theming`, module)
   ))
   .add('preset picker', () => (
     <PresetPicker />
+  ))
+  .add('theme playground', () => (
+    <ThemePreview />
+  ))
+  .add('theme playground with global only', () => (
+    <ThemePreview isGlobal />
   ));

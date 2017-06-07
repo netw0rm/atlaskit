@@ -1,7 +1,6 @@
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import { analyticsService } from '../../analytics';
-import { AnalyticsService } from '../../service';
-import * as commands from '../../commands';
+import { AnalyticsService } from '../../analytics/service';
 import {
   EditorState,
   EditorView,
@@ -12,11 +11,11 @@ import {
   Slice,
   TextSelection,
 } from '../../prosemirror';
-import { isMarkAllowedAtPosition, visitAndReplaceFragment, VisitReplacer } from '../../utils';
+import { isMarkTypeAllowedAtCurrentPosition, visitAndReplaceFragment, VisitReplacer } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
-import { getIdForUnicodeEmoji, splitToEmojiAndText, splitTextNodeToEmojiAndTextNodes } from './unicode-emoji';
+import { getIdForUnicodeEmoji, splitToEmojiAndText } from './unicode-emoji';
 
 export type StateChangeHandler = (state: EmojiState) => any;
 
@@ -67,7 +66,7 @@ export class EmojiState {
 
     let dirty = false;
 
-    const newEnabled = this.canAddEmojiToActiveNode();
+    const newEnabled = this.isEnabled();
     if (newEnabled !== this.enabled) {
       this.enabled = newEnabled;
       dirty = true;
@@ -124,15 +123,10 @@ export class EmojiState {
     return true;
   }
 
-  emojiDisabled() {
-    const { schema, selection } = this.state;
+  isEnabled() {
+    const { schema } = this.state;
     const { emojiQuery } = schema.marks;
-    return isMarkAllowedAtPosition(emojiQuery, selection);
-  }
-
-  private canAddEmojiToActiveNode(): boolean {
-    const { emojiQuery } = this.state.schema.marks;
-    return !!emojiQuery && commands.toggleMark(emojiQuery)(this.state);
+    return isMarkTypeAllowedAtCurrentPosition(emojiQuery, this.state);
   }
 
   private findEmojiQueryMark() {
@@ -254,7 +248,7 @@ const plugin = new Plugin({
 
     handlePaste: (view: EditorView, event: ClipboardEvent, slice: Slice): boolean => {
       const replacement = visitAndReplaceFragment(slice.content, new TextToEmojiReplacer(view.state.schema, analyticsService));
-      view.dispatch(view.state.tr.replaceSelection(new Slice(replacement, slice.openLeft, slice.openRight)));
+      view.dispatch(view.state.tr.replaceSelection(new Slice(replacement, slice.openStart, slice.openEnd)));
       return true;
     },
   },

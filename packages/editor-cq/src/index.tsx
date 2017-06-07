@@ -43,6 +43,10 @@ import {
   ReactMediaNode,
   ReactMentionNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -68,6 +72,7 @@ export interface Props {
   placeholder?: string;
   uploadErrorHandler?: (state: MediaState) => void;
   analyticsHandler?: AnalyticsHandler;
+  errorReporter?: ErrorReportingHandler;
   mediaProvider?: Promise<MediaProvider>;
   mentionProvider?: Promise<MentionProvider>;
 }
@@ -110,8 +115,14 @@ export default class Editor extends PureComponent<Props, State> {
       this.providerFactory.setProvider('mediaProvider', mediaProvider);
     }
 
+    const errorReporter = new ErrorReporter();
+    if (props.errorReporter) {
+      errorReporter.handler = props.errorReporter;
+    }
+
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
+      errorReporter,
       providerFactory: this.providerFactory,
     });
   }
@@ -282,7 +293,6 @@ export default class Editor extends PureComponent<Props, State> {
         doc,
         plugins: [
           ...mentionsPlugins(schema),
-          ...blockTypePlugins(schema),
           ...clearFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
           ...hyperlinkPlugins(schema),
@@ -291,6 +301,10 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...mediaPlugins,
           ...panelPlugins(schema),
+          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+          // if converting is possible
+          ...blockTypePlugins(schema),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),
@@ -336,7 +350,7 @@ export default class Editor extends PureComponent<Props, State> {
           if (html) {
             const doc = parse(html.replace(/^<meta[^>]+>/, ''));
             view.dispatch(
-              view.state.tr.replaceSelection(new Slice(doc.content, slice.openLeft, slice.openRight))
+              view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
             );
             return true;
           }

@@ -8,6 +8,8 @@ import {
   makeEditor,
   doc,
   p,
+  code_block,
+  code,
 } from '../../../../src/test-helper';
 import { resourceProvider } from '../../../../stories/mentions/story-data';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -22,8 +24,8 @@ describe('mentions - input rules', () => {
     place: fixture()
   });
 
-  const assert = (what: string, expected: boolean) => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+  const assert = (what: string, expected: boolean, docContents?: any) => {
+    const { editorView, pluginState, sel } = editor(doc(docContents || p('{<>}')));
     return pluginState
       .setMentionProvider(Promise.resolve(resourceProvider))
       .then(() => {
@@ -57,7 +59,15 @@ describe('mentions - input rules', () => {
     assert('@', true);
   });
 
-  it('should replace "@" if there are multiple spaces infront of it', () => {
+  it('should replace "@" if there are multiple spaces in front of it', () => {
     assert('  @', true);
+  });
+
+  it('should not replace "@" when in an unsupported node', () => {
+    assert('@', false, code_block()('{<>}'));
+  });
+
+  it('should not replace "@" when there is an unsupported stored mark', () => {
+    assert('@', false, p(code('{<>}')));
   });
 });

@@ -13,7 +13,7 @@ const fileId = 'some-file-id';
 const unprocessedFileId = 'some-unprocessed-file-id';
 const clientId = 'some-client-id';
 const collection = 'some-collection';
-
+const authParams = `token=${token}&client=${clientId}`;
 const defaultFileDetails = {
   id: 'some-file-id',
   mediaType: 'image',
@@ -79,10 +79,7 @@ describe('MediaFileService', () => {
         expect((tokenProvider as any).calledWith(collection));
       })
       .then(() => {
-        const headers = requests[0].requestHeaders;
-        expect(headers['X-Client-Id']).to.equal(clientId);
-        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
-        expect(requests[0].url).to.equal('some-host/file/some-file-id?collection=some-collection');
+        expect(requests[0].url).to.equal(`some-host/file/some-file-id?collection=some-collection&${authParams}`);
       });
 
     respondFakeXhr();
@@ -101,10 +98,7 @@ describe('MediaFileService', () => {
         expect((tokenProvider as any).calledWith(undefined));
       })
       .then(() => {
-        const headers = requests[0].requestHeaders;
-        expect(headers['X-Client-Id']).to.equal(clientId);
-        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
-        expect(requests[0].url).to.equal('some-host/file/some-file-id');
+        expect(requests[0].url).to.equal(`some-host/file/some-file-id?${authParams}`);
       });
 
     respondFakeXhr();

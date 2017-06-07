@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { FieldBase } from '@atlaskit/field-base';
+import { FieldBaseStateless as FieldBase } from '@atlaskit/field-base';
 import { StatelessMultiSelect } from '../../src';
 import Trigger from '../../src/internal/Trigger';
 

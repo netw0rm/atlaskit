@@ -17,7 +17,7 @@ const BackButtonWrapper = styled.div`
   flex-shrink: 0; /* prevent the button from shrinking, width and height should always be the same. */
   text-align: center;
   margin-right: ${nestedBackButtonMargin}px;
-  
+
   [dir="rtl"] & {
     margin-right: 0;
     margin-left: ${nestedBackButtonMargin}px;
@@ -26,7 +26,7 @@ const BackButtonWrapper = styled.div`
   button {
     background-color: ${({ theme }) => getProvided(theme).item.default.background};
     border-radius: ${itemBorderRadius}px;
-    color: ${({ theme }) => getProvided(theme).text}
+    color: ${({ theme }) => getProvided(theme).text};
     display: block;
     /* In theory this wouldn't be required, but Chrome does not place focus styles correctly without it */
     position: relative;

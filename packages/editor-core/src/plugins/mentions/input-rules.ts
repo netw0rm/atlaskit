@@ -15,7 +15,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
         return undefined;
       }
 
-      if (mentionsState.mentionDisabled()) {
+      if (!mentionsState.isEnabled()) {
         return undefined;
       }
 

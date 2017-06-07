@@ -17,6 +17,7 @@ import {
   li,
   p,
   ul,
+  code,
 } from '../../../../src/test-helper';
 
 import { sendKeyPressToPm } from '../../../../src/test-helper/send-key-to-pm';
@@ -404,6 +405,18 @@ describe('emojis', () => {
       expect(editorView.state.doc.nodeAt(8), 'emoji node').to.be.of.nodeSpec(emojiNode);
       expect(editorView.state.doc.nodeAt(10), 'no node').to.equal(null);
     });
+  });
+
+  describe('isEnabled', () => {
+      it('returns true when the emoji mark can be applied', () => {
+        const {pluginState} = editor(doc(p('te{<>}xt')));
+        expect(pluginState.isEnabled()).to.equal(true);
+      });
+
+      it('returns false when the emoji mark cannot be applied', () => {
+        const {pluginState} = editor(doc(p(code('te{<>}xt'))));
+        expect(pluginState.isEnabled()).to.equal(false);
+      });
   });
 
   describe('inserted native emoji', () => {

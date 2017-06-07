@@ -24,7 +24,11 @@ export default createSchema({
     'image',
     'media',
     'mediaGroup',
-    'plain'
+    'plain',
+    'table',
+    'table_cell',
+    'table_header',
+    'table_row',
   ],
   marks: [
     'em',

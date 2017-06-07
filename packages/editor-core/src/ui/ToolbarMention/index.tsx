@@ -41,7 +41,7 @@ export default class ToolbarMention extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: MentionsState) => {
     this.setState({
-      disabled: pluginState.mentionDisabled()
+      disabled: !pluginState.enabled,
     });
   }
 

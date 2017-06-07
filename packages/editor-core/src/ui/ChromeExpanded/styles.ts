@@ -115,6 +115,37 @@ export const Content = styled.div`
     border: 2px solid #8cf;
     pointer-events: none;
   }
+
+  .ProseMirror table {
+    border-collapse: collapse;
+    margin: 1em 0;
+    width: auto;
+  }
+  .ProseMirror tbody {
+    border-bottom: none;
+  }
+  .ProseMirror th, .ProseMirror td {
+    min-width: 1em;
+    vertical-align: top;
+    border: 1px solid #ddd;
+    padding: 3px 5px;
+  }
+  .ProseMirror th {
+    font-weight: bold;
+    text-align: left;
+  }
+  /* Give selected cells a blue overlay */
+  .ProseMirror .selectedCell {
+    position: relative;
+  }
+  .ProseMirror .selectedCell:after {
+     z-index: 2;
+     position: absolute;
+     content: "";
+     left: 0; right: 0; top: 0; bottom: 0;
+     background: rgba(200, 200, 255, 0.4);
+     pointer-events: none;
+  }
 `;
 
 // tslint:disable-next-line:variable-name

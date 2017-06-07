@@ -8,7 +8,7 @@ import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
 import { customCategory } from '../../src/constants';
-import { EmojiDescription, ImageRepresentation } from '../../src/types';
+import { EmojiDescription, EmojiServiceResponse, ImageRepresentation, MediaApiRepresentation } from '../../src/types';
 import { SecurityOptions, ServiceConfig } from '../../src/api/SharedResourceUtils';
 import { OnProviderChange } from '../../src/api/SharedResources';
 import MediaEmojiResource from '../../src/api/MediaEmojiResource';
@@ -21,17 +21,24 @@ import EmojiResource, {
 import { EmojiSearchResult } from '../../src/api/EmojiRepository';
 
 import {
-  atlassianEmojis,
-  atlassianServiceEmojis,
-  blobResponse,
-  evilburnsEmoji,
-  grinEmoji,
-  mediaEmoji,
-  mediaEmojiImagePath,
-  siteServiceEmojis,
-  standardEmojis,
-  standardServiceEmojis,
-  thumbsupEmoji
+    atlassianEmojis,
+    atlassianServiceEmojis,
+    blobResponse,
+    defaultMediaApiToken,
+    evilburnsEmoji,
+    fetchSiteEmojiUrl,
+    grinEmoji,
+    loadedMediaEmoji,
+    loadedMissingMediaEmoji,
+    mediaEmoji,
+    mediaEmojiImagePath,
+    missingMediaEmojiId,
+    missingMediaServiceEmoji,
+    siteServiceEmojis,
+    siteUrl,
+    standardEmojis,
+    standardServiceEmojis,
+    thumbsupEmoji,
 } from '../TestData';
 
 // patch URLSearchParams API for jsdom tests
@@ -719,9 +726,135 @@ describe('EmojiResource', () => {
         }
       });
     });
+
+    it('not found by id - found on server', () => {
+      const serviceResponse: EmojiServiceResponse = {
+        emojis: [missingMediaServiceEmoji],
+        meta: {
+          mediaApiToken: defaultMediaApiToken(),
+        }
+      };
+
+      fetchMock.mock({
+        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        response: serviceResponse,
+        name: 'fetch-site-emoji',
+      }).mock({
+        matcher: `begin:${siteUrl}`,
+        response: siteServiceEmojis(),
+        times: 1,
+      }).mock({
+        matcher: mediaEmojiImagePath,
+        response: blobResponse(new Blob()),
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [{
+          url: siteUrl,
+        }],
+      };
+
+      const resource = new EmojiResource(config);
+
+      return resource.findByEmojiId(missingMediaEmojiId).then(emoji => {
+        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+        expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
+        expect(emoji).to.deep.equal(loadedMissingMediaEmoji);
+      });
+    });
+
+    it('not found by id - not found on server - try by shortName', () => {
+      const serviceResponse: EmojiServiceResponse = {
+        emojis: [],
+        meta: {
+          mediaApiToken: defaultMediaApiToken(),
+        }
+      };
+
+      fetchMock.mock({
+        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        response: serviceResponse,
+        name: 'fetch-site-emoji',
+      }).mock({
+        matcher: `begin:${siteUrl}`,
+        response: siteServiceEmojis(),
+        times: 1,
+      }).mock({
+        matcher: mediaEmojiImagePath,
+        response: blobResponse(new Blob()),
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [{
+          url: siteUrl,
+        }],
+      };
+
+      const resource = new EmojiResource(config);
+
+      const emojiId = {
+        ...missingMediaEmojiId,
+        shortName: ':media:', // fallback - match existing by shortName (but different id)
+      };
+
+      return resource.findByEmojiId(emojiId).then(emoji => {
+        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+        expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
+        expect(emoji).to.deep.equal(loadedMediaEmoji);
+      });
+    });
+
+    it('not found by id - no media resource - try by shortName', () => {
+      fetchMock.mock({
+        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        response: 400,
+        name: 'fetch-site-emoji',
+      }).mock({
+        matcher: `begin:${siteUrl}`,
+        response: {
+          emojis: siteServiceEmojis().emojis,
+          // no meta.mediaApiToken means not media resource created
+        },
+        times: 1,
+      }).mock({
+        matcher: mediaEmojiImagePath,
+        response: blobResponse(new Blob()),
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [{
+          url: siteUrl,
+        }],
+      };
+
+      const resource = new EmojiResource(config);
+
+      const emojiId = {
+        ...missingMediaEmojiId,
+        shortName: ':media:', // fallback - match existing by shortName (but different id)
+      };
+
+      return resource.findByEmojiId(emojiId).then(emoji => {
+        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+        expect (fetchSiteEmojiCalls.length, 'No call fetch site emoji on server').to.equal(0);
+        // media url not loaded - url pass through
+        const { width, height, mediaPath } = mediaEmoji.representation as MediaApiRepresentation;
+        expect(emoji).to.deep.equal({
+          ...mediaEmoji,
+          representation: {
+            imagePath: mediaPath,
+            width,
+            height,
+          }
+        });
+      });
+    });
   });
 
-  describe('#findByShortcut', () => {
+  describe('#findByShortName', () => {
     it('Before loaded, promise eventually resolved; one provider', () => {
       let resolveProvider1;
 

@@ -16,7 +16,7 @@ const noMovement: DragMovement = {
   isMovingForward: false,
 };
 
-const noImpact: DragImpact = {
+export const noImpact: DragImpact = {
   movement: noMovement,
   destination: null,
 };

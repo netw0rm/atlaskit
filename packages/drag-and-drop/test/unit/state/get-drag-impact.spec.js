@@ -2,11 +2,10 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import getDimension from '../get-dimension-util';
-import getDragImpact from '../../../src/state/get-drag-impact';
+import getDragImpact, { noImpact } from '../../../src/state/get-drag-impact';
 import type {
   Dimension,
   DimensionMap,
-  DragMovement,
   DragImpact,
   Position,
 } from '../../../src/types';
@@ -57,17 +56,6 @@ const draggables: DimensionMap = {
   [draggable1.id]: draggable1,
   [draggable2.id]: draggable2,
   [draggable3.id]: draggable3,
-};
-
-const noMovement: DragMovement = {
-  draggables: [],
-  amount: 0,
-  isMovingForward: false,
-};
-
-const noImpact: DragImpact = {
-  movement: noMovement,
-  destination: null,
 };
 
 describe('get drag impact', () => {

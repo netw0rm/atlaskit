@@ -209,15 +209,14 @@ describe('DragDropContext', () => {
         droppableId,
         index: 0,
       };
-      const end: DraggableLocation = {
-        droppableId,
-        index: 0,
-      };
 
+      // Unless we do some more hardcore stubbing
+      // both completed and cancelled look the same.
+      // Ideally we would move one item below another
       const completed: DragResult = {
         draggableId,
         source: start,
-        destination: end,
+        destination: null,
       };
 
       const cancelled: DragResult = {

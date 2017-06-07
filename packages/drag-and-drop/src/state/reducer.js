@@ -11,7 +11,7 @@ import type { TypeId,
   Position,
   DragComplete,
 } from '../types';
-import getDragImpact from './get-drag-impact';
+import getDragImpact, { noImpact } from './get-drag-impact';
 import getInitialLocation from './get-initial-location';
 import { moveForward, moveBackward } from './get-position-move';
 
@@ -22,12 +22,6 @@ const initialState: State = {
   complete: null,
   requestDimensions: null,
   isProcessingLift: false,
-};
-
-const noMovement = {
-  draggables: [],
-  amount: 0,
-  isMovingForward: false,
 };
 
 const shout = (message, ...rest) => {
@@ -106,10 +100,7 @@ export default (state: State = initialState, action: Action): State => {
       isProcessingLift: false,
       currentDrag: {
         dragging,
-        impact: {
-          movement: noMovement,
-          destination: source,
-        },
+        impact: noImpact,
       },
     };
   }

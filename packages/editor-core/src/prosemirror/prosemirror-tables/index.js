@@ -1,1 +1,1 @@
-Object.assign(exports, require('table-prototype/dist'));
+Object.assign(exports, require('prosemirror-tables/dist'));

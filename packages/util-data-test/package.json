@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@atlaskit/emoji": "^16.2.0",
+    "@atlaskit/mention": "^5.1.0",
     "akutil-common-test": "*"
   },
   "keywords": [

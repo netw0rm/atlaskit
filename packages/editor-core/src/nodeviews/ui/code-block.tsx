@@ -1,19 +1,33 @@
-import { Node as PMNode, NodeView, browser } from '../../prosemirror';
+import { Node as PMNode, browser, Decoration } from '../../prosemirror';
 import * as hljs from 'highlight.js';
 
-class CodeBlock implements NodeView {
+class CodeBlock {
   private domRef: HTMLElement | undefined;
 
   constructor(node: PMNode) {
     const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
     this.domRef = document.createElement('pre');
-    this.domRef.innerText = 'var i = 10;';
     this.domRef.className = className;
-    this.domRef.dataset['language'] = node.attrs.language;
+    if (node.attrs.language) {
+      this.domRef.dataset['language'] = node.attrs.language;
+    }
     hljs.highlightBlock(this.domRef);
   }
 
+  update(node: PMNode, decoration: [Decoration]): boolean | undefined {
+    this.domRef!.innerText = 'var i = 10; /** testing */\nvar i = 10; /** testing */var i = 10; /** testing */\nvar i = 10; /** testing */';
+    if (node.attrs.language) {
+      this.domRef!.dataset['language'] = node.attrs.language;
+    }
+    hljs.highlightBlock(this.domRef!);
+    return true;
+  }
+
   get dom() {
+    return this.domRef;
+  }
+
+  get contentDOM() {
     return this.domRef;
   }
 
@@ -22,6 +36,6 @@ class CodeBlock implements NodeView {
   }
 }
 
-export const codeBlockNodeView = (node: any): NodeView => {
+export const codeBlockNodeView = (node: any): any => {
   return new CodeBlock(node);
 };

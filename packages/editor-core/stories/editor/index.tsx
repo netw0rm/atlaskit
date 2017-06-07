@@ -15,7 +15,6 @@ import panelPlugins, {stateKey as panelStateKey} from '../../src/plugins/panel';
 import textFormattingPlugins, {stateKey as textFormattingStateKey} from '../../src/plugins/text-formatting';
 import hyperlinkPlugins, {stateKey as hyperlinkStateKey} from '../../src/plugins/hyperlink';
 import rulePlugins from '../../src/plugins/rule';
-import imageUploadPlugins, {stateKey as imageUploadStateKey} from '../../src/plugins/image-upload';
 import listsPlugins, {stateKey as listsStateKey} from '../../src/plugins/lists';
 import mentionsPlugins, {stateKey as mentionsStateKey} from '../../src/plugins/mentions';
 import emojiPlugins, {stateKey as emojiStateKey} from '../../src/plugins/emojis';
@@ -202,7 +201,6 @@ export default class Editor extends PureComponent<Props, State> {
     const panelState = getStateFromKey(panelStateKey);
     const textFormattingState = getStateFromKey(textFormattingStateKey);
     const hyperlinkState = getStateFromKey(hyperlinkStateKey);
-    const imageUploadState = getStateFromKey(imageUploadStateKey);
     const mediaState = this.mediaPlugins && this.props.mediaProvider && getStateFromKey(mediaStateKey);
     const mentionsState = getStateFromKey(mentionsStateKey);
     const emojiState = getStateFromKey(emojiStateKey);
@@ -225,7 +223,6 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
         pluginStateHyperlink={hyperlinkState}
-        pluginStateImageUpload={imageUploadState}
         pluginStateMedia={mediaState}
         pluginStateMentions={mentionsState}
         pluginStateEmojis={emojiState}
@@ -274,7 +271,6 @@ export default class Editor extends PureComponent<Props, State> {
             ...textFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
-            ...imageUploadPlugins(schema),
             ...textColorPlugins(schema),
             // block type plugin needs to be after hyperlink plugin until we implement keymap priority
             // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
@@ -304,7 +300,6 @@ export default class Editor extends PureComponent<Props, State> {
           panel: panelNodeView,
         },
       });
-      imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
       mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 

@@ -22,7 +22,7 @@ export interface Props {
 
 export default class EmojiNode extends PureComponent<Props, {}> {
 
-  resolvingAttempted: boolean
+  resolvingAttempted: boolean;
 
   constructor(props) {
     super(props);
@@ -98,6 +98,6 @@ export default class EmojiNode extends PureComponent<Props, {}> {
       );
     }
 
-    return (<span className='native-emoji'>{text}</span>); // render the native emoji as plain text
+    return (<span className="native-emoji">{text}</span>); // render the native emoji as plain text
   }
 }

@@ -333,38 +333,73 @@ function splitCodeBlockAtSelectionEnd(state: EditorState<any>, tr: Transaction) 
   return tr;
 }
 
-// TODO documentation
+/**
+ * Describes the signature of a function that is used to provide replacement nodes in
+ * a Fragment during a visit across the nodes.
+ *
+ * You should note that the original node is being replaced. So even if it turns out you
+ * don't want to replace it you should at the very least return a copy rather than the
+ * supplied node parameter.
+ */
 export interface VisitReplacer {
-  (node: Node): Node[]
+  isCandidate: (node: Node) => boolean;
+  replace: (node: Node) => Node[];
 }
 
-// TODO documentation
-export function replaceTextNodes(fragment: Fragment, replacer: VisitReplacer): Fragment {
+/**
+ * A function that will return a new fragment where all text nodes have been replaced
+ * by nodes returned by the replacer function. Even 'unreplaced' nodes in the new
+ * fragment are actually copies of the original node.
+ *
+ * @param fragment the fragment to be traversed
+ * @param replacer the function that will replace nodes in the fragment.
+ * @return a whole new Fragment containing new nodes.
+ */
+export function visitAndReplaceFragment(fragment: Fragment, replacer: VisitReplacer): Fragment {
   let nodes: Node[] = [];
   for (let i = 0; i < fragment.childCount; i++) {
-    nodes = nodes.concat(visitAndReplace(fragment.child(i), (node: Node) => { return node.isText; }, replacer));
+    nodes = nodes.concat(visitAndReplace(fragment.child(i), replacer));
   }
 
   return Fragment.fromArray(nodes);
-};
+}
 
-// TODO documentation
-function visitAndReplace(node: Node, isCandidate: (node: Node) => boolean, replacer: (node: Node) => Node[]): Node[] {
-  if (isCandidate(node)) {
-    return replacer(node);
+/**
+ * Visit a Node and all it's children, applying the 'isCandidate' function to each. If it is a candidate for
+ * replacement then apply the replacer function.
+ *
+ * If a replaced Node has children they will not be automatically preserved in the returned Node. It is the
+ * responsibility of the replacer function to look after any specific needs like this.
+ *
+ * @param node the node to be visited, including all it's children
+ * @param replacer the function that may replace a node with one or more alternatives.
+ * @return a new Node matching the passed node but with certain nodes replaced. It should be noted that the new
+ * Node and any children are copies of the supplied Node.
+ */
+export function visitAndReplace(node: Node, replacer: VisitReplacer): Node[] {
+  if (replacer.isCandidate(node)) {
+    return replacer.replace(node);
   }
 
   if (node.isLeaf) {
-    return [node.copy()];
+    if (node.isText) {
+      // text nodes won't copy without doing this due to them having no content and ProseMirror asserting
+      // 'RangeError: Empty text nodes are not allowed'. I'm leaning towards this being a bug in PM but I'm
+      // not completely confident of that. Anyway, this is the work around. There is a test to assert that
+      // this keeps working.
+      return [node.copy(node.textContent)];
+    } else {
+      return [node.copy(node.content)];
+    }
   }
 
   let children: Node[] = [];
   for (let i = 0; i < node.childCount; i++) {
-    let c = visitAndReplace(node.child(i), isCandidate, replacer);
+    let c = visitAndReplace(node.child(i), replacer);
     children = children.concat(c);
   }
 
   // create a shallow copy of this node and assign the children
   let frag = Fragment.fromArray(children);
   return [node.copy(frag)];
-};
+}

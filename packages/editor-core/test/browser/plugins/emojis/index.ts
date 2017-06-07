@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { emoji as emojiNode } from '../../../../src';
-import emojiPlugins from '../../../../src/plugins/emojis';
+import emojiPlugins, { TextToEmojiReplacer } from '../../../../src/plugins/emojis';
 import {
   chaiPlugin,
   fixtures,
@@ -44,14 +44,14 @@ const watchEmojiId = {
  * emoji nodes with no shortname
  */
 function createEmojiNodeWithNoShortname(attrs: {id?: string, fallback?: string }) {
-  var fallback = attrs.fallback;
+  let fallback = attrs.fallback;
   if (fallback) {
     // here's how I make the representation of watch match between what's in the watchEmoji test data and what ProseMirror inserts
     fallback = String.fromCharCode(fallback.charCodeAt(0));
   }
 
   return emoji({ shortName: '', id: attrs.id, fallback: fallback});
-};
+}
 
 const evilburnsEmoji = emojiData.emojiTestData.evilburnsEmoji;
 const evilburnsEmojiId = {
@@ -414,7 +414,7 @@ describe('emojis', () => {
       sendKeyPressToPm(editorView, '⌚');
 
       const emojiNode = createEmojiNodeWithNoShortname(watchEmojiId);
-      var expectedDoc = doc(p(emojiNode));
+      const expectedDoc = doc(p(emojiNode));
 
       expect(editorView.state.doc, 'comparing document node').to.deep.equal(expectedDoc);
     });
@@ -448,6 +448,47 @@ describe('emojis', () => {
 
       // ensure the emoji is not converted
       // Implement this test with https://product-fabric.atlassian.net/browse/FS-1036
+    });
+  });
+
+  describe('TextToEmojiReplacer', () => {
+    let replacer: TextToEmojiReplacer;
+
+    beforeEach(() => {
+      replacer = new TextToEmojiReplacer(defaultSchema);
+    });
+
+    it('should pass text nodes only as candidates', () => {
+      expect(replacer.isCandidate(p('anything'))).to.equal(false);
+      expect(replacer.isCandidate(defaultSchema.text('monkey trousers'))).to.equal(true);
+    });
+
+    it('should not return same node when no emoji in text', () => {
+      const original = defaultSchema.text('monkey trousers');
+      const replaced = replacer.replace(original);
+
+      expect(replaced.length).to.equal(1);
+      expect(original).to.not.equal(replaced[0]);
+      expect(replaced[0]).to.deep.equal(original);
+    });
+
+    it('should return new node which has same text and marks', () => {
+      const original = defaultSchema.text('monkey trousers', [ defaultSchema.mark('underline')] );
+      const replaced = replacer.replace(original);
+
+      expect(replaced.length).to.equal(1);
+      expect(original === replaced[0]).to.equal(false);
+      expect(replaced[0]).to.deep.equal(original);
+    });
+
+    it('should map any splits into Nodes', () => {
+      const original = defaultSchema.text('a⌚b');
+      const replaced = replacer.replace(original);
+
+      expect(replaced.length).to.equal(3);
+      expect(replaced[0]).to.deep.equal(defaultSchema.text('a'));
+      expect(replaced[1]).to.deep.equal(createEmojiNodeWithNoShortname(watchEmojiId));
+      expect(replaced[2]).to.deep.equal(defaultSchema.text('b'));
     });
   });
 });

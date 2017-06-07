@@ -20,7 +20,7 @@ export class Node {
   eq(other: Node): boolean;
   sameMarkup(other: Node): boolean;
   hasMarkup(type: NodeType, attrs?: { [key: string]: any }, marks?: Mark[]): boolean;
-  copy(content?: Fragment): Node;
+  copy(content?: Fragment | string): Node;
   mark(marks: Mark[]): Node;
   cut(from: number, to?: number): Node;
   slice(from: number, to?: number): Slice;

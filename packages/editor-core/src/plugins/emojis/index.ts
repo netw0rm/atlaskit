@@ -1,10 +1,10 @@
 import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import { analyticsService } from '../../analytics';
+import { AnalyticsService } from '../../service';
 import * as commands from '../../commands';
 import {
   EditorState,
   EditorView,
-  Fragment,
   Schema,
   Node,
   Plugin,
@@ -12,11 +12,11 @@ import {
   Slice,
   TextSelection,
 } from '../../prosemirror';
-import { isMarkAllowedAtPosition, replaceTextNodes, VisitReplacer } from '../../utils';
+import { isMarkAllowedAtPosition, visitAndReplaceFragment, VisitReplacer } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
-import { getIdForUnicodeEmoji, splitTextNodeToEmojiAndTextNodes } from './unicode-emoji';
+import { getIdForUnicodeEmoji, splitToEmojiAndText, splitTextNodeToEmojiAndTextNodes } from './unicode-emoji';
 
 export type StateChangeHandler = (state: EmojiState) => any;
 
@@ -253,46 +253,45 @@ const plugin = new Plugin({
     },
 
     handlePaste: (view: EditorView, event: ClipboardEvent, slice: Slice): boolean => {
-      // TODO analytics
-      const replacement = replaceTextNodes(slice.content, createTextNodeVisitReplacer(view.state.schema));
+      const replacement = visitAndReplaceFragment(slice.content, new TextToEmojiReplacer(view.state.schema, analyticsService));
       view.dispatch(view.state.tr.replaceSelection(new Slice(replacement, slice.openLeft, slice.openRight)));
       return true;
     },
   },
 });
 
-const createTextNodeVisitReplacer = (schema: Schema<any,any>): VisitReplacer =>
-  (node:Node) => splitTextNodeToEmojiAndTextNodes(node, schema);
+export class TextToEmojiReplacer implements VisitReplacer {
+  schema: Schema<any,any>;
+  analyticsService?: AnalyticsService;
 
+  constructor(schema: Schema<any,any>, analyticsService?: AnalyticsService) {
+    this.schema = schema;
+    this.analyticsService = analyticsService;
+  }
 
-// const convertToZ = (slice: Slice, schema: Schema<any,any>): Slice => {
-//   let fragment = slice.content;
-//   let nodes: Node[] = [];
-//   for (let i = 0; i < fragment.childCount; i++) {
-//     nodes = nodes.concat(create(fragment.child(i), schema));
-//   }
-//   return new Slice(Fragment.fromArray(nodes), slice.openLeft, slice.openRight);
-// };
+  isCandidate(node: Node) {
+    return node.isText && node.text !== undefined;
+  }
 
-// const create = (node: Node, schema: Schema<any,any>): Node[] => {
-//   if (node.isLeaf) {
-//     if (node.isText) {
-//       return [schema.text('Z', node.marks)];
-//     } else {
-//       return [node.copy()];
-//     }
-//   } else {
-//     let children: Node[] = [];
-//     for (let i = 0; i < node.childCount; i++) {
-//       let c = create(node.child(i), schema);
-//       children = children.concat(c);
-//     }
+  replace(node: Node) {
+    if (!node.text) {
+      return [];
+    }
 
-//     // create a shallow copy of this node and assign the children
-//     let frag = Fragment.fromArray(children);
-//     return [node.copy(frag)];
-//   }
-// };
+    const emojiOrText = splitToEmojiAndText(node.text);
+    if (!emojiOrText) {
+      // it's part of the contract that the replacer must not return the original node.
+      return [ node.copy(node.text) ];
+    }
+
+    return emojiOrText.map((eot, index, arr) => {
+      if (analyticsService && eot.isEmoji) {
+        analyticsService.trackEvent('atlassian.editor.emoji.native.paste');
+      }
+      return eot.createNode(this.schema, node.marks);
+    });
+  }
+}
 
 const plugins = (schema: Schema<any, any>) => {
   return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];

@@ -1,8 +1,4 @@
-export {
-  DefaultMediaStateManager,
-  MediaProvider,
-  MediaState,
-} from '@atlaskit/media-core';
+export { DefaultMediaStateManager, MediaProvider, MediaState } from '@atlaskit/media-core';
 
 import ProviderFactory from './providerFactory';
 export { version, name } from './version';
@@ -41,11 +37,9 @@ export {
   keymap,
   tableNodes,
   CellSelection,
-  tableEditing,
+  tableEditing
 } from './prosemirror';
-export {
-  ErrorReporter,
-  ErrorReportingHandler,
-  toJSON,
-} from './utils';
+
+export { ErrorReporter, ErrorReportingHandler, toJSON } from './utils';
+
 export { colorPalette } from './schema/marks/text-color';

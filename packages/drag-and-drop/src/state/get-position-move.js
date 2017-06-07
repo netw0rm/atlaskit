@@ -3,7 +3,7 @@ import type { Position, CurrentDrag, DragImpact, Dragging, Dimension, DimensionM
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 import getDragImpact from './get-drag-impact';
 
-const positionMove = (isMovingFoward: boolean, state: State): State => {
+const positionMove = (isMovingFoward: boolean) => (state: State): State => {
   const previous: ?CurrentDrag = state.currentDrag;
   if (!previous) {
     console.error('cannot move when there is no current drag');
@@ -41,8 +41,8 @@ const positionMove = (isMovingFoward: boolean, state: State): State => {
     return state;
   }
 
-  const nextDimension: Dimension =
-    insideDroppable[isMovingFoward ? currentIndex + 1 : currentIndex - 1];
+  const nextIndex: number = isMovingFoward ? currentIndex + 1 : currentIndex - 1;
+  const nextDimension: Dimension = insideDroppable[nextIndex];
 
   // move down 1/2 height of next dimension
   const amount: number = (draggableDimension.height / 2) + (nextDimension.height / 2);
@@ -85,5 +85,5 @@ const positionMove = (isMovingFoward: boolean, state: State): State => {
   };
 };
 
-export const moveForward = positionMove.bind(null, true);
-export const moveBackward = positionMove.bind(null, false);
+export const moveForward = positionMove(true);
+export const moveBackward = positionMove(false);

@@ -1,7 +1,6 @@
 // @flow
 import getDroppableOver from './get-droppable-over';
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
-
 import type {
   DraggableLocation,
   Dimension,
@@ -27,7 +26,10 @@ export default (
 
   const droppableDimension: Dimension = droppableDimensions[droppableId];
 
-  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(droppableDimension, draggableDimensions);
+  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(
+    droppableDimension,
+    draggableDimensions
+  );
   const index: number = insideDroppable.indexOf(draggingDimension);
 
   const location: DraggableLocation = {

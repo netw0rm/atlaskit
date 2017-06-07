@@ -69,7 +69,6 @@ export default (state: State = initialState, action: Action): State => {
     const { id, type, center, scroll, selection } = action.payload;
 
     const source: ?DraggableLocation = getInitialLocation(
-      center,
       id,
       state.draggableDimensions,
       state.droppableDimensions,

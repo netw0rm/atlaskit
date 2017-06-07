@@ -8,24 +8,23 @@ import type {
   DimensionMap,
   DroppableId,
   DraggableId,
-  Position,
 } from '../types';
 
 export default (
-  target: Position,
   draggableId: DraggableId,
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap,
 ): ?DraggableLocation => {
+  const draggingDimension: Dimension = draggableDimensions[draggableId];
+
   const droppableId: ?DroppableId = getDroppableOver(
-    target, droppableDimensions
+    draggingDimension.center, droppableDimensions
   );
 
   if (!droppableId) {
     return null;
   }
 
-  const draggingDimension: Dimension = draggableDimensions[draggableId];
   const droppableDimension: Dimension = droppableDimensions[droppableId];
 
   const insideDroppable: Dimension[] = getDraggablesInsideDroppable(droppableDimension, draggableDimensions);

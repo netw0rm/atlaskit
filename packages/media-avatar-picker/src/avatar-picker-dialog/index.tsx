@@ -12,7 +12,7 @@ import {AvatarPickerViewWrapper} from './styled';
 import {PredefinedAvatarView} from '../predefined-avatar-view';
 
 export interface AvatarPickerDialogProps {
-  imageSource: string;
+  imageSource?: string;
   avatars: Array<Avatar>;
 }
 
@@ -34,9 +34,6 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
     super();
 
     this.state = {mode: Mode.Cropping};
-
-    this.onShowMore = this.onShowMore.bind(this);
-    this.onGoBack = this.onGoBack.bind(this);
   }
 
   render() {
@@ -90,13 +87,13 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
     }
   }
 
-  onShowMore() {
+  onShowMore = () => {
     this.setState(state => {
       return {...state, mode: Mode.PredefinedAvatars};
     });
   }
 
-  onGoBack() {
+  onGoBack = () => {
     this.setState(state => {
       return {...state, mode: Mode.Cropping};
     });

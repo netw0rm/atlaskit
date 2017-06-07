@@ -3,15 +3,17 @@ import * as React from 'react';
 import {Component} from 'react';
 import {ImageCropper, OnLoadHandler} from '../image-cropper';
 import {Slider} from '../slider';
-import {Container, SliderContainer} from './styled';
+import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText} from './styled';
 import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
+import Button from '@atlaskit/button';
 import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
 import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
+import {uploadPlaceholder} from './images';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
 export interface Props {
-  imageSource: string;
+  imageSource?: string;
   onLoad?: OnLoadHandler;
 }
 
@@ -29,6 +31,7 @@ export interface State {
   scale: number;
   isDragging: boolean;
   minScale?: number;
+  fileImageSource?: string;
 }
 
 export class ImageNavigator extends Component<Props, State> {
@@ -40,7 +43,8 @@ export class ImageNavigator extends Component<Props, State> {
       imagePos: {x: 0, y: 0},
       scale: 1,
       isDragging: false,
-      imageInitPos: {x: 0, y: 0}
+      imageInitPos: {x: 0, y: 0},
+      fileImageSource: ''
     };
   }
 
@@ -128,10 +132,48 @@ export class ImageNavigator extends Component<Props, State> {
     }
   }
 
-  render() {
-    const {
-      imageSource
-    } = this.props;
+  // Trick to have a nice <input /> appearance
+  onUploadButtonClick = (e) => {
+    const input = e.target.querySelector('#image-input');
+    if (!input) { return; }
+
+    input.click();
+  }
+
+  onFileChange = (e) => {
+    e.stopPropagation();
+    const file = e.target.files[0] as File;
+    const {type} = file;
+
+    // TODO: Show feedback about invalid file type
+    if (type.indexOf('image/') !== 0) { return; }
+
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent) => {
+      const fileImageSource = (e.target as FileReader).result;
+
+      this.setState({fileImageSource});
+    };
+    reader.readAsDataURL(file);
+  }
+
+  renderImageUploader() {
+    return (
+      <ImageUploader>
+        <DragZone>
+          <DragZoneImage src={uploadPlaceholder} alt="upload image" />
+          <DragZoneText>Drag and drop your photos here</DragZoneText>
+        </DragZone>
+        or
+        <Button onClick={this.onUploadButtonClick as any}>
+          Upload a photo
+          <FileInput type="file" id="image-input" onChange={this.onFileChange} />
+        </Button>
+      </ImageUploader>
+    );
+  }
+
+  renderImageCropper(dataURI: string) {
     const {
       imageWidth,
       imagePos,
@@ -139,29 +181,50 @@ export class ImageNavigator extends Component<Props, State> {
       minScale
     } = this.state;
 
-    return <Container>
-      <ImageCropper
-        scale={scale}
-        imageSource={imageSource}
-        imageWidth={imageWidth}
-        containerSize={CONTAINER_SIZE}
-        isCircularMask={false}
-        top={imagePos.y}
-        left={imagePos.x}
-        onDragStarted={this.onDragStarted}
-        onImageSize={this.onImageSize}
-        onLoad={this.props.onLoad}
-      />
-      <SliderContainer>
-        <ScaleSmallIcon label="scale-small-icon" />
-        <Slider
-          value={100 * scale}
-          min={minScale}
-          max={100}
-          onChange={this.onScaleChange}
+    return (
+      <div>
+        <ImageCropper
+          scale={scale}
+          imageSource={dataURI}
+          imageWidth={imageWidth}
+          containerSize={CONTAINER_SIZE}
+          isCircularMask={false}
+          top={imagePos.y}
+          left={imagePos.x}
+          onDragStarted={this.onDragStarted}
+          onImageSize={this.onImageSize}
+          onLoad={this.props.onLoad}
         />
-        <ScaleLargeIcon label="scale-large-icon" />
-      </SliderContainer>
-    </Container>;
+        <SliderContainer>
+          <ScaleSmallIcon label="scale-small-icon" />
+          <Slider
+            value={100 * scale}
+            min={minScale}
+            max={100}
+            onChange={this.onScaleChange}
+          />
+          <ScaleLargeIcon label="scale-large-icon" />
+        </SliderContainer>
+      </div>
+    );
+  }
+
+  // We prioritize passed image rather than the one coming from the uploader
+  private get dataURI(): string | undefined {
+    const {imageSource} = this.props;
+    const {fileImageSource} = this.state;
+
+    return imageSource || fileImageSource;
+  }
+
+  render() {
+    const {dataURI} = this;
+    const content = dataURI ? this.renderImageCropper(dataURI) : this.renderImageUploader();
+
+    return (
+      <Container>
+        {content}
+      </Container>
+    );
   }
 }

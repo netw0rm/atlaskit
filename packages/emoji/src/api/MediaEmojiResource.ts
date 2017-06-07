@@ -1,8 +1,18 @@
 import { MediaPicker } from 'mediapicker';
 
-import { EmojiDescription, EmojiServiceDescription, EmojiUpload, ImageRepresentation, MediaApiToken, MediaApiRepresentation } from '../types';
+import {
+  EmojiDescription,
+  EmojiId,
+  EmojiServiceDescription,
+  EmojiUpload,
+  ImageRepresentation,
+  MediaApiRepresentation,
+  MediaApiToken,
+  OptionalEmojiDescription,
+} from '../types';
 import { MediaApiData, MediaUploadEnd, MediaUploadError, MediaUploadStatusUpdate } from '../media-types';
 import { isMediaApiRepresentation } from '../type-helpers';
+import { denormaliseEmojiServiceResponse, emojiRequest } from './EmojiUtils';
 import { requestService, ServiceConfig } from './SharedResourceUtils';
 import debug from '../util/logger';
 
@@ -155,6 +165,17 @@ export default class MediaEmojiResource {
     // as future request to uploadEmoji will use this, this to preload it, as it
     // usually takes 1-2 seconds to generate
     this.tokenManager.getToken('upload');
+  }
+
+  findSiteEmoji(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
+    const path = `../${emojiId.id}`;
+    return emojiRequest(this.siteServiceConfig, { path }).then(serviceResponse => {
+      const response = denormaliseEmojiServiceResponse(serviceResponse);
+      return response.emojis[0];
+    }).catch(error => {
+      debug('failed to load emoji', emojiId, error);
+      return undefined;
+    });
   }
 
   /**

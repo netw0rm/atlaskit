@@ -285,7 +285,21 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
           return this.loadIfMediaEmoji(emoji);
         }
         if (this.isLoaded()) {
-          // all loaded but not found by id, fallback to searching by shortName to
+          // all loaded but not found by id, try server to see if
+          // this is a newly uploaded emoji
+          if (this.mediaEmojiResource) {
+            return this.mediaEmojiResource.findSiteEmoji(emojiId).then(emoji => {
+              if (!emoji) {
+                // if not, fallback to searching by shortName to
+                // at least render an alternative
+                return this.findByShortName(shortName);
+              }
+              this.addCustomEmoji(emoji);
+              return this.loadIfMediaEmoji(emoji);
+            });
+          }
+
+          // if not, fallback to searching by shortName to
           // at least render an alternative
           return this.findByShortName(shortName);
         }
@@ -316,6 +330,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       return requestService(recordConfig, { queryParams, requestInit });
     }
     return Promise.reject('Resource does not support recordSelection');
+  }
+
+  protected addCustomEmoji(emoji: EmojiDescription) {
+    this.emojiRepository.addCustomEmoji(emoji);
   }
 
   /**
@@ -352,7 +370,7 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
       }
 
       return this.mediaEmojiResource.uploadEmoji(upload).then(emoji => {
-        this.emojiRepository.addCustomEmoji(emoji);
+        this.addCustomEmoji(emoji);
         this.refreshLastFilter();
         return emoji;
       });

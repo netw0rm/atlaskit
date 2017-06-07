@@ -9,7 +9,7 @@ import {
   Fragment
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
-import { isMarkAllowedAtPosition } from '../../utils';
+import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -20,6 +20,7 @@ export class MentionsState {
   // public state
   query?: string;
   queryActive = false;
+  enabled = true;
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
 
@@ -58,6 +59,12 @@ export class MentionsState {
     const { from, to } = selection;
 
     let dirty = false;
+
+    const newEnabled = this.isEnabled();
+    if (newEnabled !== this.enabled) {
+      this.enabled = newEnabled;
+      dirty = true;
+    }
 
     if (doc.rangeHasMark(from - 1, to, mentionQuery)) {
       if (!this.queryActive) {
@@ -110,10 +117,10 @@ export class MentionsState {
     return true;
   }
 
-  mentionDisabled() {
-    const { schema, selection } = this.state;
+  isEnabled() {
+    const { schema } = this.state;
     const { mentionQuery } = schema.marks;
-    return isMarkAllowedAtPosition(mentionQuery, selection);
+    return isMarkTypeAllowedAtCurrentPosition(mentionQuery, this.state);
   }
 
   private findMentionQueryMark() {
@@ -151,7 +158,7 @@ export class MentionsState {
       const { start, end } = this.findMentionQueryMark();
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
       const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id })];
-      if (!this.isNextCharacterSpace(end)) {
+      if (!this.isNextCharacterSpace()) {
         nodes.push(state.schema.text(' '));
       }
       view.dispatch(
@@ -162,7 +169,7 @@ export class MentionsState {
     }
   }
 
-  isNextCharacterSpace(end) {
+  isNextCharacterSpace() {
     const { $from } = this.state.selection;
     return $from.nodeAfter && $from.nodeAfter.textContent.indexOf(' ') === 0;
   }

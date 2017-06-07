@@ -26,5 +26,5 @@ export { panel } from './nodes/panel';
 export { text } from './nodes/text';
 export { media, MediaType } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
+export { table, table_cell, table_header, table_row } from './nodes/tableNodes';
 export { createSchema } from './create-schema';
-

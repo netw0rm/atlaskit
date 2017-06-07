@@ -39,6 +39,9 @@ export {
   history,
   baseKeymap,
   keymap,
+  tableNodes,
+  CellSelection,
+  tableEditing,
 } from './prosemirror';
 export {
   ErrorReporter,

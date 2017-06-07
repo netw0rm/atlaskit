@@ -1,1 +1,1 @@
-Object.assign(exports, require('table-prototype'));
+Object.assign(exports, require('table-prototype/dist'));

@@ -1,5 +1,11 @@
 import { Node, Slice, Transaction, ResolvedPos } from '../';
 
+export interface CellSelectionJSON {
+  type: string;
+  anchor: number;
+  head: number;
+}
+
 export class CellSelection {
   map(doc: Node, mapping: any): any;
   content(): Slice;
@@ -9,10 +15,11 @@ export class CellSelection {
   isRowSelection(): boolean;
   isColSelection(): boolean;
   eq(other: any): boolean;
-  toJSON(): object;
-  getBookmark(): object;
+  toJSON(): CellSelectionJSON;
+  getBookmark(): {anchor: number, head: number};
 
   static colSelection(anchorCell: ResolvedPos, headCell?: ResolvedPos): CellSelection;
   static rowSelection(anchorCell: ResolvedPos, headCell?: ResolvedPos): CellSelection;
   static create(doc: Node, anchorCell: number, headCell?: number): CellSelection;
+  static fromJSON(doc: Node, json: CellSelectionJSON): CellSelection;
 }

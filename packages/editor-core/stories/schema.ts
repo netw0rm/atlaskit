@@ -17,6 +17,10 @@ export default createSchema({
     'mention',
     'hardBreak',
     'emoji',
+    'table',
+    'table_cell',
+    'table_header',
+    'table_row',
   ],
   marks: [
     'em',

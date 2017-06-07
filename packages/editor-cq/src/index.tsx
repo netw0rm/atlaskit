@@ -293,7 +293,6 @@ export default class Editor extends PureComponent<Props, State> {
         doc,
         plugins: [
           ...mentionsPlugins(schema),
-          ...blockTypePlugins(schema),
           ...clearFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
           ...hyperlinkPlugins(schema),
@@ -302,6 +301,10 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...mediaPlugins,
           ...panelPlugins(schema),
+          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+          // if converting is possible
+          ...blockTypePlugins(schema),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),

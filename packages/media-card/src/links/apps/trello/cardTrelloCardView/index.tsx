@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Component } from 'react';
 import ClockIcon from '@atlaskit/icon/glyph/recent';
 import AttachmentIcon from '@atlaskit/icon/glyph/attachment';
-import Icon from '@atlaskit/icon/lib/Icon';
 import {MembersList, MemberAvatars} from '../shared';
 import {
     Lists,
@@ -73,16 +72,14 @@ export class LinkCardTrelloCardView extends Component<LinkCardTrelloCardViewProp
                     </Lists>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon
-                                glyph={ClockIcon}
+                            <ClockIcon
                                 label="due"
                                 size="small"
                             />
                             <span>Today</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon
-                                glyph={AttachmentIcon}
+                            <AttachmentIcon
                                 label="attachments"
                                 size="small"
                             />

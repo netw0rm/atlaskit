@@ -326,4 +326,7 @@ storiesOf(`${name} - theming`, module)
   ))
   .add('theme playground', () => (
     <ThemePreview />
+  ))
+  .add('theme playground with global only', () => (
+    <ThemePreview isGlobal />
   ));

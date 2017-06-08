@@ -1,5 +1,6 @@
 import {
   akColorB200,
+  akColorPrimary3,
   akGridSizeUnitless,
   akZIndexBlanket,
   akZIndexNavigation,
@@ -49,6 +50,7 @@ export const zIndex = {
 // these are colors that are currently not controllable via theming
 export const unthemedColors = {
   resizer: akColorB200,
+  presenceIconBg: akColorPrimary3,
 };
 
 export const globalPrimaryActions = (() => {
@@ -88,6 +90,11 @@ export const search = {
       top: gridSize * 0.5,
       bottom: 0,
       side: gridSize * 3,
+    },
+    margin: {
+      top: 0,
+      bottom: gridSize * 3,
+      side: 0,
     },
     /**
      * Restore the height setting that was lost due to the ClearButton no longer being there to

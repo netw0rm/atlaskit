@@ -124,4 +124,39 @@ describe('DimensionPublisher', () => {
 
     expect(publish.calledWith(expected)).to.equal(true);
   });
+
+  it('should not publish unless it is freshly required to do', () => {
+    const publish = sinon.stub();
+    const dimension: Dimension = getDimension({ id: itemId });
+    sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
+      top: dimension.top,
+      bottom: dimension.bottom,
+      left: dimension.left,
+      right: dimension.right,
+      height: dimension.height,
+      width: dimension.width,
+    });
+
+    // initial publish
+    const wrapper = mount(<Item publish={publish} />);
+    wrapper.setProps({
+      shouldPublish: true,
+    });
+    expect(publish.calledOnce).to.equal(true);
+
+    // should not publish if the props have not changed
+    wrapper.update();
+    expect(publish.calledOnce).to.equal(true);
+
+    // should publish when freshly required to do so
+    wrapper.setProps({
+      shouldPublish: false,
+      publish,
+    });
+    wrapper.setProps({
+      shouldPublish: true,
+      publish,
+    });
+    expect(publish.calledTwice).to.equal(true);
+  });
 });

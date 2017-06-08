@@ -113,7 +113,8 @@ export default class Handle extends PureComponent {
       return;
     }
 
-    this.stopDragging(() => this.props.onDrop());
+    // if dragging with a keyboard - cancel the drag
+    this.stopDragging(() => this.props.onCancel());
   }
 
   onMouseDown = (event: MouseEvent) => {

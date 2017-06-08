@@ -671,6 +671,24 @@ describe('Drag handle', () => {
         expect(callbacks.onCancel.called).to.equal(true);
         expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
       });
+
+      it('should cancel if the user clicks while dragging', () => {
+        const callbacks = getStubCallbacks();
+        const wrapper = mount(
+          <DragHandle
+            {...callbacks}
+            isEnabled
+          >
+            <Child />
+          </DragHandle>
+        );
+
+        liftWithKeyboard(wrapper);
+        windowMouseDown(wrapper);
+
+        expect(callbacks.onCancel.called).to.equal(true);
+        expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
+      });
     });
   });
 

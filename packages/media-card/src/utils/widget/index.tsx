@@ -6,6 +6,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Rnd from 'react-rnd';
 
+import {AudioWidget} from '../../utils/cardAudioView/audioWidget';
+import {Wrapper as VideoWidgetWrapper, Video} from '../../utils/cardVideoView/styled';
+import {VideoCardOverlay} from '../../utils/cardVideoView/videoOverlay';
+
 import {CardDimensions} from '../../index';
 import {
   // object literals
@@ -95,3 +99,47 @@ export default class Widget {
     };
   }
 }
+
+const removeWidget = () => {
+  Widget.remove();
+};
+
+export const showAudioWidget = (spec): void => {
+  const dimensions = {width: '200px', height: '150px'};
+
+  const options = {
+    dimensions,
+    enableResizing: false
+  };
+
+  spec.audioUrl.then((audioSrc) => {
+    Widget.add(
+      <AudioWidget
+        audioSrc={audioSrc}
+        onClose={removeWidget}
+        title={spec.title}
+        dimensions={dimensions}
+      />,
+      options
+    );
+  });
+};
+
+export const showVideoWidget = (spec): void => {
+  // TODO remove hardcoded dimensions
+  const dimensions = {width: '300px', height: '300px'};
+
+  spec.videoUrl.then((videoSrc) => {
+    const widgetComponent = (
+      <VideoWidgetWrapper style={{width: '100%', height: '100%'}}>
+        <VideoCardOverlay
+          videoName={spec.title}
+          onClose={removeWidget}
+        />
+        <Video autoPlay={true} loop={true} src={videoSrc} preload="metadata" controls={true} />
+      </VideoWidgetWrapper>
+    );
+
+    Widget.add(widgetComponent, {dimensions});
+  });
+};

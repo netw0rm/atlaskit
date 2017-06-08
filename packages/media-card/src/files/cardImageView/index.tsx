@@ -23,6 +23,9 @@ export interface FileCardImageViewProps {
 
   error?: string;
 
+  audioUrl?: Promise<string>;
+  videoUrl?: Promise<string>;
+
   actions?: Array<CardAction>;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
@@ -37,7 +40,8 @@ export const DEFAULT_CARD_DIMENSIONS = {
 export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   render() {
     const {mediaSize, mediaType, mediaName, dataURI, status,
-      progress, dimensions, selectable, selected, actions, onClick, error, onRetry, onMouseEnter} = this.props;
+      progress, dimensions, selectable, selected, actions, onClick, error, onRetry, onMouseEnter,
+      audioUrl, videoUrl} = this.props;
     const fileSize = toHumanReadableMediaSize(mediaSize || 0);
 
     return <CardImageView
@@ -52,6 +56,9 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
       selectable={selectable}
       selected={selected}
       actions={actions}
+
+      audioUrl={audioUrl}
+      videoUrl={videoUrl}
 
       onClick={onClick}
       onMouseEnter={onMouseEnter}

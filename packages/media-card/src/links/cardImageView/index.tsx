@@ -19,6 +19,9 @@ export interface LinkCardImageViewProps {
   actions?: Array<CardAction>;
   error?: string;
 
+  audioUrl?: Promise<string>;
+  videoUrl?: Promise<string>;
+
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
 }
@@ -38,7 +41,7 @@ export class LinkCardImageView extends Component<LinkCardImageViewProps, {}> {
   }
 
   private getCardImageView(): JSX.Element {
-    const {title, site, thumbnailUrl, status, dimensions, actions, onClick, onMouseEnter, error, iconUrl, linkUrl} = this.props;
+    const {title, site, thumbnailUrl, status, dimensions, actions, onClick, onMouseEnter, error, iconUrl, linkUrl, videoUrl, audioUrl} = this.props;
 
     return (
       <CardImageView
@@ -52,6 +55,9 @@ export class LinkCardImageView extends Component<LinkCardImageViewProps, {}> {
         actions={actions}
         error={error}
         icon={iconUrl}
+
+        audioUrl={audioUrl}
+        videoUrl={videoUrl}
 
         onClick={onClick}
         onMouseEnter={onMouseEnter}

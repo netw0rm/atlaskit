@@ -9,6 +9,9 @@ import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 import {UploadingView} from '../../utils/uploadingView';
 
+// Audio and video widget imports
+import {showAudioWidget, showVideoWidget} from '../../utils/widget';
+
 export interface CardImageViewProps {
   id?: string;
   mediaItemType?: MediaItemType;
@@ -27,6 +30,9 @@ export interface CardImageViewProps {
 
   error?: string;
   icon?: string;
+
+  audioUrl?: Promise<string>;
+  videoUrl?: Promise<string>;
 
   actions?: Array<CardAction>;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
@@ -70,11 +76,11 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   render() {
-    const {onClick, onMouseEnter} = this.props;
+    const {onMouseEnter} = this.props;
     const cardStyle = this.cardStyle;
 
     return (
-      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter}>
+      <Wrapper style={cardStyle} onClick={this.getClickHandler} onMouseEnter={onMouseEnter}>
         {this.getCardContents()}
       </Wrapper>
     );
@@ -193,6 +199,46 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
         icon={icon}
       />
     );
+  }
+
+  private getClickHandler = () => {
+    const {onClick, audioUrl, videoUrl} = this.props;
+
+    if (onClick) {
+      return onClick;
+    }
+
+    if (audioUrl) {
+      return this.makeAudioWidget;
+    }
+
+    if (videoUrl) {
+      return this.makeVideoWidget;
+    }
+  }
+
+  private makeAudioWidget = (evt): void => {
+    const {mediaName, audioUrl} = this.props;
+
+    if (!audioUrl) {
+      return;
+    }
+
+    evt.preventDefault();
+    evt.stopPropagation();
+    showAudioWidget({title: mediaName, audioUrl});
+  }
+
+  private makeVideoWidget = (evt): void => {
+    const {mediaName, videoUrl} = this.props;
+
+    if (!videoUrl) {
+      return;
+    }
+
+    evt.preventDefault();
+    evt.stopPropagation();
+    showVideoWidget({title: mediaName, videoUrl});
   }
 }
 

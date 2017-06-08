@@ -35,27 +35,37 @@ const context = createStorybookContext();
 const wrongContext = createStorybookContext(wrongClientId);
 
 const createGroupedListExamples = (cardAppearance?) => {
+  const minWidth = cardAppearance === 'small' ? '250px' : null;
+
   return [
     {
       title: 'Standard',
-      content: <CardList
-        context={context}
-        collectionName={defaultCollectionName}
-        shouldGroupByDate={true}
-        pageSize={5}
-        cardAppearance={cardAppearance}
-      />
+      content: (
+        <div style={{minWidth}}>
+          <CardList
+            context={context}
+            collectionName={defaultCollectionName}
+            shouldGroupByDate={true}
+            pageSize={5}
+            cardAppearance={cardAppearance}
+          />
+        </div>
+      )
     },
     {
       title: 'Infinite scroll',
-      content: <CardList
-        context={context}
-        collectionName={defaultCollectionName}
-        shouldGroupByDate={true}
-        pageSize={10}
-        height={500}
-        cardAppearance={cardAppearance}
-      />
+      content: (
+        <div style={{minWidth}}>
+          <CardList
+            context={context}
+            collectionName={defaultCollectionName}
+            shouldGroupByDate={true}
+            pageSize={10}
+            height={500}
+            cardAppearance={cardAppearance}
+          />
+        </div>
+      )
     }
   ];
 };

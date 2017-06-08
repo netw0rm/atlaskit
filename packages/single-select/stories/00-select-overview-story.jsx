@@ -33,11 +33,13 @@ import SelectWithTooltips from './examples/SelectWithTooltips';
 import SelectWithTooltipsRaw from '!raw!./examples/SelectWithTooltips';
 import ItemsOverview from './examples/ItemsOverview';
 import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
+import SelectOpenedByDefault from './examples/SelectOpenedByDefault';
+import SelectOpenedByDefaultRaw from '!raw!./examples/SelectOpenedByDefault';
 /* eslint-enable import/first, import/no-duplicates */
 
 // Dummy components exist so that we have a component to pass to <Props/>
-import DummyItem from '../src/internal/DummyItem';
-import DummyGroup from '../src/internal/DummyGroup';
+import DummyItem from '../src/components/DummyItem';
+import DummyGroup from '../src/components/DummyGroup';
 import { name } from '../package.json';
 import Select, { StatelessSelect } from '../src';
 
@@ -46,10 +48,11 @@ const propDescriptions = {
   defaultSelected: 'Default selected item',
   droplistShouldFitContainer: 'Specifies whether a dropdown should be constrained to the width of its trigger',
   id: 'id of the form element',
+  invalidMessage: 'Specifies a error message. It is used together with isInvalid property',
   isDisabled: 'Specifies that a select should be disabled',
   isDefaultOpen: 'Controls the open state of the select',
-  isRequired: 'Specifies that the user is required to select a value before submitting the form',
   isInvalid: 'Specifies that selected value is not correct',
+  isRequired: 'Specifies that the user is required to select a value before submitting the form',
   isOpen: 'Controls the open state of the select',
   items: 'List of items',
   label: 'Text that you will see above the element',
@@ -252,6 +255,18 @@ storiesOf(name, module)
       {SelectWithHeapsOfOptions}
       <Code>
         {SelectWithHeapsOfOptionsRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select is opened by default', () => (
+    <Chrome title="Select is opened by default">
+      <Description>
+        <p style={{ marginBottom: '12px' }}>Select is opened on first appearance</p>
+      </Description>
+      {SelectOpenedByDefault}
+      <Code>
+        {SelectOpenedByDefaultRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

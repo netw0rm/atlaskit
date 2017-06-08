@@ -1,10 +1,12 @@
+/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
 import { fakeContext } from '@atlaskit/media-test-helpers';
 
-import { Card, UrlPreviewIdentifier, MediaIdentifier } from '../src';
+import { Card, UrlPreviewIdentifier, MediaIdentifier, CardEvent } from '../src';
 import { MediaCard } from '../src/mediaCard';
 
 describe('Card', function() {
@@ -143,4 +145,40 @@ describe('Card', function() {
     expect(mediaCard.props().provider).to.equal(dummyProvider);
   });
 
+  it('should fire onClick when passed in as a prop and MediaCard fires onClick', function() {
+    const identifier: MediaIdentifier = {
+      id: 'some-random-id',
+      mediaItemType: 'file',
+      collectionName: 'some-collection-name'
+    };
+
+    const context = fakeContext() as any;
+    const clickHandler = sinon.spy();
+
+    const card = shallow(<Card context={context} identifier={identifier} onClick={clickHandler} />);
+    const mediaCardOnClick = card.find(MediaCard).props().onClick;
+
+    if (!mediaCardOnClick) {
+      throw new Error('MediaCard onClick was undefined');
+    }
+
+    expect(clickHandler.called).to.be.false;
+
+    mediaCardOnClick({} as any);
+    expect(clickHandler.calledOnce).to.be.true;
+  });
+
+  it('should pass onMouseEnter to MediaCard', function() {
+    const identifier: MediaIdentifier = {
+      id: 'some-random-id',
+      mediaItemType: 'file',
+      collectionName: 'some-collection-name'
+    };
+
+    const context = fakeContext() as any;
+    const hoverHandler = (result: CardEvent) => {};
+    const card = shallow(<Card context={context} identifier={identifier} onMouseEnter={hoverHandler} />);
+
+    expect(card.find(MediaCard).props().onMouseEnter).to.deep.equal(hoverHandler);
+  });
 });

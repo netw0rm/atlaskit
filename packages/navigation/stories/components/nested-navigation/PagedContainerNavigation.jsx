@@ -1,6 +1,7 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Lorem from 'react-lorem-component';
-import { ArrowleftIcon, ArrowrightIcon } from '@atlaskit/icon';
+import { ArrowLeftIcon, ArrowRightIcon } from '@atlaskit/icon';
 import { AkContainerNavigationNested, AkNavigationItem } from '../../../src/index';
 
 const pageStyle = {
@@ -81,22 +82,20 @@ export default class PagedContainerNavigation extends PureComponent {
   render() {
     return (
       <div>
-        <AkContainerNavigationNested animationDirection={this.state.animationDirection}>
+        <AkContainerNavigationNested
+          animationDirection={this.state.animationDirection}
+          backButtonIcon={<ArrowLeftIcon label="Previous" />}
+          onBackButtonClick={this.goToPrev}
+          mainNavigationItem={<AkNavigationItem text="Previous" />}
+        >
           {this.props.children[this.state.selectedIndex]}
         </AkContainerNavigationNested>
-        <a
-          href="#prev"
-          onClick={this.goToPrev}
-          style={!this.isPrevEnabled() ? disabledLinkStyles : enabledLinkStyles}
-        >
-          <AkNavigationItem icon={<ArrowleftIcon label="Previous" />} text="Previous" />
-        </a>
         <a
           href="#next"
           onClick={this.goToNext}
           style={!this.isNextEnabled() ? disabledLinkStyles : enabledLinkStyles}
         >
-          <AkNavigationItem icon={<ArrowrightIcon label="Next" />} text="Next" />
+          <AkNavigationItem icon={<ArrowRightIcon label="Next" />} text="Next" />
         </a>
       </div>
     );

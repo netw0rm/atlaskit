@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Droplist from '@atlaskit/droplist';
+import Droplist, { Group } from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
@@ -9,11 +9,12 @@ import sinon from 'sinon';
 
 import { name } from '../../package.json';
 
-import Menu, { StatelessDropdownMenu as StatelessMenu } from '../../src';
+import Menu, { DropdownMenuStateless as StatelessMenu } from '../../src';
 
 const itemsList = [
   {
     heading: 'test1',
+    elemAfter: <span>test element after</span>,
     items: [
       {
         content: 'Some text',
@@ -59,6 +60,7 @@ describe(name, () => {
       expect(droplist.prop('shouldFlip')).to.equal(wrapper.props().shouldFlip);
       expect(droplist.prop('isOpen')).to.equal(wrapper.state().isOpen);
       expect(droplist.prop('trigger')).to.equal('text');
+      expect(droplist.prop('isLoading')).to.equal(wrapper.props().isLoading);
     });
 
     it('should pass required properties to the button trigger', () => {
@@ -73,6 +75,12 @@ describe(name, () => {
         expect(button.prop('ariaExpanded')).to.equal(menu.props().defaultOpen);
         expect(button.prop('ariaControls')).to.not.equal(undefined);
       });
+    });
+
+    it('should pass elemAfter to Group', () => {
+      const menu = mount(<Menu items={itemsList} defaultOpen>text</Menu>);
+      const group = menu.find(Group).at(0);
+      expect(group.prop('elemAfter')).to.equal(itemsList[0].elemAfter);
     });
 
     it('should default to button with expand icon for triggerType=button with no overrides', () => {
@@ -183,7 +191,7 @@ describe(name, () => {
   });
 
   describe('onItemActivated', () => {
-    it('should be call when an item was activated', () => {
+    it('should be called when an item was activated', () => {
       const items = [{
         heading: 'group',
         items: [
@@ -191,11 +199,17 @@ describe(name, () => {
         ],
       }];
       const spy = sinon.spy();
-      const wrapper = mount(<Menu items={items} defaultOpen onItemActivated={spy}>
-        test</Menu>);
+      const wrapper = mount(
+        <Menu items={items} defaultOpen onItemActivated={spy}>
+          Test
+        </Menu>
+      );
       const item = wrapper.find('[role="menuitemcheckbox"]');
       item.simulate('click');
-      expect(spy.called).to.equal(true);
+      expect(spy.calledOnce).to.equal(true);
+      expect(spy.calledWith(sinon.match({
+        item: sinon.match({ content: 'item 1', type: 'checkbox' }),
+      }))).to.equal(true);
     });
 
     it('should pass the item when activated', () => {

@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Popper from 'popper.js';
 import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 
@@ -38,6 +39,8 @@ export default class Layer extends PureComponent {
       flipped: false,
       actualPosition: null,
       originalPosition: null,
+      // fix Safari parent width: https://product-fabric.atlassian.net/browse/ED-1784
+      cssPosition: 'absolute',
     };
   }
 

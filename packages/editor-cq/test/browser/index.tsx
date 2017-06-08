@@ -39,6 +39,19 @@ describe('@atlaskit/editor-cq', () => {
       expect(mount(<Editor expanded={true} />).find('ChromeExpanded')).to.have.length.above(0);
     });
 
+    it('should render disabled chrome if disabled=true', () => {
+      const chrome = mount(<Editor isExpandedByDefault={true} disabled={true} />).find('ChromeExpanded');
+      expect(chrome.prop('disabled')).to.equal(true);
+    });
+
+    it('should disable chrome when disabled is changed', () => {
+      const chrome = mount(<Editor isExpandedByDefault={true} />);
+      expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(false);
+
+      chrome.setProps({ disabled: true });
+      expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(true);
+    });
+
     it('should have higher priority for expanded over isExpandedByDefault', () => {
       expect(
         mount(<Editor expanded={false} isExpandedByDefault={true} />).find('ChromeCollapsed')
@@ -51,6 +64,20 @@ describe('@atlaskit/editor-cq', () => {
 
       node.setProps({ expanded: false });
       expect(node.find('ChromeCollapsed')).to.have.length.above(0);
+    });
+
+    it('should call onExpanded after editor is expanded via click', () => {
+      const spy = sinon.spy();
+      const node = mount(<Editor onExpanded={spy} isExpandedByDefault={false} />);
+      node.find('ChromeCollapsed input').simulate('focus');
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should call onExpanded after editor is expanded via expanded prop', () => {
+      const spy = sinon.spy();
+      const node = mount(<Editor onExpanded={spy} isExpandedByDefault={false} />);
+      node.setProps({ expanded: true });
+      expect(spy.callCount).to.equal(1);
     });
   });
 

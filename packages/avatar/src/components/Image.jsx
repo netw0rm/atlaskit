@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+import React, { PureComponent } from 'react';
 import Img from '../styled/Image';
 
 export const DefaultImage = () => (
@@ -13,19 +14,19 @@ export const DefaultImage = () => (
 );
 
 export default class Image extends PureComponent {
-  static propTypes = {
-    alt: PropTypes.string,
-    hasError: PropTypes.bool,
-    isLoading: PropTypes.bool,
-    onError: PropTypes.func,
-    onLoad: PropTypes.func,
-    src: PropTypes.string,
-  }
+  props: {
+    alt?: string,
+    hasError?: boolean,
+    isLoading?: boolean,
+    onError?: Function,
+    onLoad?: Function,
+    src?: string,
+  };
 
   render() {
     const { hasError, isLoading, ...props } = this.props;
     const showDefault = !isLoading && (!this.props.src || hasError);
 
-    return showDefault ? <DefaultImage /> : <Img {...props} />;
+    return showDefault ? <DefaultImage /> : <Img isLoading={isLoading} {...props} />;
   }
 }

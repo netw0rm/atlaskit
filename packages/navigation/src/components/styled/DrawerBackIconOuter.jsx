@@ -1,16 +1,11 @@
-import {
-  akColorN20,
-  akColorN500,
-  akColorB50,
-  akColorB400,
-} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import { drawerBackIconSize } from '../../utils/drawer-style-variables';
+import { getProvided } from '../../theme/util';
 
 const DrawerBackIconOuter = styled.div`
-  background: ${akColorN20};
+  background-color: ${({ theme }) => getProvided(theme).item.hover.background};
   border-radius: 50%;
-  color: ${akColorN500};
+  color: ${({ theme }) => getProvided(theme).text};
   cursor: pointer;
   display: flex;
   height: ${drawerBackIconSize}px;
@@ -18,8 +13,7 @@ const DrawerBackIconOuter = styled.div`
   width: ${drawerBackIconSize}px;
 
   &:active {
-    background: ${akColorB50};
-    color: ${akColorB400};
+    background-color: ${({ theme }) => getProvided(theme).item.active.background};
   }
 `;
 

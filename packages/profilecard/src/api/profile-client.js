@@ -42,32 +42,32 @@ const buildHeaders = () => {
  * @param  {string} cloudId
  * @return {string} GraphQL Query String
  */
-const buildQueryString = (cloudId, userId) => {
-  const fields = [
-    'id',
-    'fullName',
-    'nickname',
-    'email',
-    'meta: position',
-    'location',
-    'companyName',
-    'avatarUrl(size: 100)',
-    'remoteWeekdayIndex: localTime(format: "d")',
-    'remoteWeekdayString: localTime(format: "ddd")',
-    'remoteTimeString: localTime(format: "h:mma")',
-  ];
-
-  const presence = [
-    'state',
-    'type',
-    'date',
-  ];
-
-  const queryUser = `User:CloudUser(userId: "${userId}", cloudId: "${cloudId}") {${fields.join(', ')}}`;
-  const queryPresence = `Presence(organizationId: "${cloudId}", userId: "${userId}") {${presence.join(', ')}}`;
-
-  return `{${queryUser} ${queryPresence}}`;
-};
+const buildUserQuery = (cloudId, userId) => ({
+  query: `query User($userId: String!, $cloudId: String!) {
+    User: CloudUser(userId: $userId, cloudId: $cloudId) {
+      id,
+      fullName,
+      nickname,
+      email,
+      meta: position,
+      location,
+      companyName,
+      avatarUrl(size: 100),
+      remoteWeekdayIndex: localTime(format: "d"),
+      remoteWeekdayString: localTime(format: "ddd"),
+      remoteTimeString: localTime(format: "h:mma"),
+    }
+    Presence: Presence(organizationId: $cloudId, userId: $userId) {
+      state,
+      type,
+      date
+    }
+  }`,
+  variables: {
+    cloudId,
+    userId,
+  },
+});
 
 /**
 * @param {string} serviceUrl - GraphQL service endpoint
@@ -76,14 +76,14 @@ const buildQueryString = (cloudId, userId) => {
 */
 const requestService = (serviceUrl, cloudId, userId) => {
   const headers = buildHeaders();
-  const query = buildQueryString(cloudId, userId);
+  const userQuery = buildUserQuery(cloudId, userId);
 
   return fetch(new Request(serviceUrl, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
     headers,
-    body: JSON.stringify({ query }),
+    body: JSON.stringify(userQuery),
   }))
   .then((response) => {
     if (!response.ok) {
@@ -136,7 +136,14 @@ class ProfileClient {
     return requestService(this.config.url, cloudId, userId);
   }
 
-  getCachedProfile(cacheIdentifier) {
+  setCachedProfile(cloudId, userId, cacheItem) {
+    const cacheIdentifier = `${cloudId}/${userId}`;
+    this.cache.put(cacheIdentifier, cacheItem);
+  }
+
+  getCachedProfile(cloudId, userId) {
+    const cacheIdentifier = `${cloudId}/${userId}`;
+
     const cached = this.cache && this.cache.get(cacheIdentifier);
 
     if (!cached) {
@@ -167,8 +174,7 @@ class ProfileClient {
       return Promise.reject(new Error('cloudId or userId missing'));
     }
 
-    const cacheIdentifier = `${cloudId}/${userId}`;
-    const cache = this.getCachedProfile(cacheIdentifier);
+    const cache = this.getCachedProfile(cloudId, userId);
 
     if (cache) {
       return Promise.resolve(cache);
@@ -178,10 +184,14 @@ class ProfileClient {
       this.makeRequest(cloudId, userId)
       .then((data) => {
         if (this.cache) {
-          this.cache.put(userId, {
-            expire: Date.now() + this.cacheMaxAge,
-            profile: data,
-          });
+          this.setCachedProfile(
+            cloudId,
+            userId,
+            {
+              expire: Date.now() + this.cacheMaxAge,
+              profile: data,
+            }
+          );
         }
         resolve(data);
       })

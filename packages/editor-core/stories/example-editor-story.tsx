@@ -1,16 +1,18 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
 import Editor from './editor';
-import * as styles from './styles';
+import { Content } from './styles';
 import { name } from '../package.json';
 import * as v1schema from '../src/json-schema/v1.json';
 import imageUploadHandler from '../stories/imageUpload/handler';
 import { resourceProvider, resourceProvider2 } from './mentions/story-data';
 import { toJSON } from '../src/utils';
+import { storyMediaProviderFactory } from '../src/test-helper';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
@@ -79,13 +81,17 @@ class DemoEditor extends React.PureComponent<Props, State> {
   render() {
     const { mentionProvider, emojiProvider, jsonDocument } = this.state;
     return (
-      <div className={styles.content}>
+      <Content>
+        <div style={{ padding: '5px 0'}}>
+          ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
+        </div>
         <Editor
           imageUploadHandler={imageUploadHandler}
           analyticsHandler={analyticsHandler}
           onCancel={CANCEL_ACTION}
           onSave={SAVE_ACTION}
           onChange={this.props.onChange}
+          mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           isExpandedByDefault={true}
@@ -100,18 +106,18 @@ class DemoEditor extends React.PureComponent<Props, State> {
           <button onClick={this.extractDocument}>Extract document</button>
         </div>
         <pre>{jsonDocument}</pre>
-      </div>
+      </Content>
     );
   }
 }
 
 storiesOf(name, module)
   .add('Example editor', () => (
-    <div className={styles.content} >
+    <Content>
       <DemoEditor
         onChange={this.fetchEditorState}
       />
-    </div>
+    </Content>
   ))
   .add('v1 JSON Schema', () => (
     <pre><code className="json">{jsonPretty(v1schema)}</code></pre>

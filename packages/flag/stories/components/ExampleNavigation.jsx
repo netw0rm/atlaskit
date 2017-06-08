@@ -1,8 +1,7 @@
-import React, { PropTypes, PureComponent } from 'react';
-import Navigation, {
-  AkContainerHeader,
-  AkContainerItem,
-} from '@atlaskit/navigation';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
+import Page, { Grid, GridColumn } from '@atlaskit/page';
 
 export default class Flag extends PureComponent {
   static propTypes = {
@@ -11,33 +10,18 @@ export default class Flag extends PureComponent {
 
   render() {
     return (
-      <div
-        style={{
-          boxSizing: 'border-box',
-          display: 'flex',
-          height: '100vh',
-          overflowY: 'auto',
-          padding: 32,
-        }}
+      <Page
+        navigation={
+          <Navigation isResizeable={false}>
+            <AkNavigationItem text="Test page" />
+            <AkNavigationItem text="Another page" />
+          </Navigation>
+        }
       >
-        <Navigation
-          containerHeader={
-            <a href="#foo">
-              <AkContainerHeader
-                text="AtlasCat"
-              />
-            </a>
-          }
-        >
-          <a>
-            <AkContainerItem text="Test page" />
-          </a>
-          <a>
-            <AkContainerItem text="Item with an icon" />
-          </a>
-        </Navigation>
-        {this.props.children}
-      </div>
+        <Grid>
+          <GridColumn>{this.props.children}</GridColumn>
+        </Grid>
+      </Page>
     );
   }
 }

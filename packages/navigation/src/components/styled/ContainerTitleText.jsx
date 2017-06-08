@@ -1,29 +1,12 @@
-import {
-  akColorN500,
-  akColorN0,
-} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
-import { appearanceEnum, themeVariables } from '../../utils/theme';
-
-const colors = {
-  global: akColorN0,
-  settings: akColorN0,
-  container: akColorN500,
-};
+import { getProvided } from '../../theme/util';
+import { truncate } from '../../utils/mixins';
 
 const ContainerTitleText = styled.div`
-  color: ${({ theme }) => colors[theme[themeVariables.appearance]]};
+  color: ${({ theme }) => getProvided(theme).text};
   font-weight: 500;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  ${truncate()}
 `;
-
-ContainerTitleText.defaultProps = {
-  theme: {
-    [themeVariables.appearance]: appearanceEnum.container,
-  },
-};
 
 ContainerTitleText.displayName = 'ContainerTitleText';
 export default ContainerTitleText;

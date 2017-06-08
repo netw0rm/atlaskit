@@ -8,10 +8,23 @@ let debounced: number | null = null;
 
 export interface ReactionSummary {
   ari: string;
+  containerAri: string;
   emojiId: string;
   count: number;
   reacted: boolean;
   users?: User[];
+}
+
+export interface User {
+  id: string;
+  displayName: string;
+}
+
+export interface DetailedReaction {
+  ari: string;
+  emojiId: string;
+  count: number;
+  users: User[];
 }
 
 export interface User {
@@ -27,16 +40,21 @@ export interface Reactions {
   [key: string]: ReactionSummary[];
 }
 
+export interface ObjectReactionKey {
+  containerAri: string;
+  ari: string;
+}
+
 export interface ReactionsProvider {
-  getReactions(aris: string[]): Promise<Reactions>;
+  getReactions(keys: ObjectReactionKey[]): Promise<Reactions>;
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary>;
   toggleReaction(containerAri: string, ari: string, emojiId: string);
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
   fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary>;
-  notifyUpdated(ari: string, state: ReactionSummary[]): void;
-  subscribe(ari: string, handler: Function): void;
-  unsubscribe(ari: string, handler: Function): void;
+  notifyUpdated(containerAri: string, ari: string, state: ReactionSummary[]): void;
+  subscribe(objectReactionKey: ObjectReactionKey, handler: Function): void;
+  unsubscribe(objectReactionKey: ObjectReactionKey, handler: Function): void;
 }
 
 export default class AbstractReactionsResource implements ReactionsProvider {
@@ -46,7 +64,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
   protected subscribers: { [ari: string]: Listener[] } = {};
   protected lastActionForAri: { [ari: string]: number } = {};
 
-  private batchedAris: string[] = [];
+  private batchedKeys: ObjectReactionKey[] = [];
 
   protected autoPoll(autoPollInterval) {
     if (!autoPollInterval) {
@@ -56,12 +74,20 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     setTimeout(() => {
       const aris = Object.keys(this.subscribers);
 
+      let subscriptionKeys = aris.map(ari => {
+        let tokens = ari.split('|');
+        return {
+          ari: tokens[1],
+          containerAri: tokens[0]
+        };
+      });
+
       if (aris.length) {
-        this.getReactions(aris)
+        this.getReactions(subscriptionKeys)
           .then(reactions => {
             Object.keys(reactions).forEach(ari => {
               this.includeAriInAutoPoll(ari);
-              this.notifyUpdated(ari, reactions[ari]);
+              this.notifyUpdated(reactions[ari][0].containerAri, ari, reactions[ari]);
             });
             this.autoPoll(autoPollInterval);
           });
@@ -71,7 +97,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     }, autoPollInterval);
   }
 
-  getReactions(aris: string[]): Promise<Reactions> {
+  getReactions(keys: ObjectReactionKey[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
       resolve({});
     });
@@ -90,105 +116,122 @@ export default class AbstractReactionsResource implements ReactionsProvider {
   }
 
   toggleReaction(containerAri: string, ari: string, emojiId: string) {
-    if (!this.cachedReactions[ari]) {
-      this.cachedReactions[ari] = [];
+    const key = `${containerAri}|${ari}`;
+    if (!this.cachedReactions[key]) {
+      this.cachedReactions[key] = [];
     }
 
-    const hasReaction = this.cachedReactions[ari] && this.cachedReactions[ari].filter(r => equalEmojiId(r.emojiId, emojiId));
+    const hasReaction = this.cachedReactions[key] && this.cachedReactions[key].filter(r => equalEmojiId(r.emojiId, emojiId));
     const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
 
     if (hasReacted) {
       this.deleteReaction(containerAri, ari, emojiId)
         .then(state => {
-          this.notifyUpdated(ari, state);
+          this.notifyUpdated(containerAri, ari, state);
         })
         .catch(() => {
-          this.optimisticAddReaction(ari, emojiId);
-          this.notifyUpdated(ari, this.cachedReactions[ari]);
+          this.optimisticAddReaction(containerAri, ari, emojiId);
+          this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
         });
     } else {
       this.addReaction(containerAri, ari, emojiId)
         .then(state => {
-          this.notifyUpdated(ari, state);
+          this.notifyUpdated(containerAri, ari, state);
         })
         .catch(() => {
-          this.optimisticDeleteReaction(ari, emojiId);
-          this.notifyUpdated(ari, this.cachedReactions[ari]);
+          this.optimisticDeleteReaction(containerAri, ari, emojiId);
+          this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
         });
     }
   }
 
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
-    analyticsService.trackEvent('reactions.add.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
-    analyticsService.trackEvent('reactions.delete.reaction', { containerAri, ari, emojiId });
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
-  notifyUpdated(ari: string, state: ReactionSummary[]): void {
-    if (!this.subscribers[ari]) {
+  notifyUpdated(containerAri: string, ari: string, state: ReactionSummary[]): void {
+    const key = this.objectReactionKey(containerAri, ari);
+    if (!this.subscribers[key]) {
       return;
     }
 
-    this.subscribers[ari].forEach(listener => {
+    this.subscribers[key].forEach(listener => {
       listener.handler(state);
     });
   }
 
-  subscribe(ari: string, handler: Function): void {
-    if (!this.subscribers[ari]) {
-      this.subscribers[ari] = [];
+  objectReactionKeyToString(key: ObjectReactionKey): string {
+    return this.objectReactionKey(key.containerAri, key.ari);
+  }
+
+  objectReactionKey(containerAri: string, ari: string): string {
+    return `${containerAri}|${ari}`;
+  }
+
+  subscribe(subscriptionKey: ObjectReactionKey, handler: Function): void {
+    let key = this.objectReactionKeyToString(subscriptionKey);
+    if (!this.subscribers[key]) {
+      this.subscribers[key] = [];
     }
 
-    this.subscribers[ari].push({ handler });
+    this.subscribers[key].push({ handler });
 
     if (debounced) {
       clearTimeout(debounced);
     }
 
-    this.queueAri(ari);
+    this.queueAri(subscriptionKey);
 
     debounced = setTimeout(() => {
-      this.getReactions(this.batchedAris)
+      this.getReactions(this.batchedKeys)
         .then(reactions => {
-          Object.keys(reactions).forEach(ari => {
-            this.dequeueAri(ari);
-            this.notifyUpdated(ari, reactions[ari]);
+          Object.keys(reactions).forEach(key => {
+
+            let objectReactions = reactions[key];
+            const containerAri = subscriptionKey.containerAri;
+            const ari = key;
+            this.dequeueAri({
+              ari: ari,
+              containerAri: containerAri
+            });
+            this.notifyUpdated(containerAri, ari, objectReactions);
           });
         });
     }, 1);
   }
 
-  unsubscribe(ari: string, handler: Function): void {
-    if (!this.subscribers[ari]) {
+  unsubscribe(subscriptionKey: ObjectReactionKey, handler: Function): void {
+    let key = this.objectReactionKeyToString(subscriptionKey);
+    if (!this.subscribers[key]) {
       return;
     }
 
-    const index = findIndex(this.subscribers[ari], (listener: Listener) => listener.handler === handler);
+    const index = findIndex(this.subscribers[key], (listener: Listener) => listener.handler === handler);
 
     if (index !== -1) {
-      this.subscribers[ari].splice(index, 1);
+      this.subscribers[key].splice(index, 1);
     }
   }
 
-  private queueAri(ari: string): void {
-    const index = findIndex(this.batchedAris, (i => i === ari));
+  private queueAri(subscriptionKey: ObjectReactionKey): void {
+    const index = findIndex(this.batchedKeys, (i => i.ari === subscriptionKey.ari && i.containerAri === subscriptionKey.containerAri));
     if (index === -1) {
-      this.batchedAris.push(ari);
+      this.batchedKeys.push(subscriptionKey);
     }
   }
 
-  private dequeueAri(ari: string): void {
-    const index = findIndex(this.batchedAris, (i => i === ari));
+  private dequeueAri(subscriptionKey: ObjectReactionKey): void {
+    const index = findIndex(this.batchedKeys, (i => i.ari === subscriptionKey.ari && i.containerAri === subscriptionKey.containerAri));
     if (index !== -1) {
-      this.batchedAris.splice(index, 1);
+      this.batchedKeys.splice(index, 1);
     }
   }
 
@@ -206,49 +249,52 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     this.excludeArisFromAutoPoll.splice(index, 1);
   }
 
-  protected optimisticAddReaction(ari: string, emojiId: string): void {
+  protected optimisticAddReaction(containerAri: string, ari: string, emojiId: string): void {
+    const key = this.objectReactionKey(containerAri, ari);
     this.excludeAriFromAutoPoll(ari);
 
-    if (!this.cachedReactions[ari]) {
-      this.cachedReactions[ari] = [];
+    if (!this.cachedReactions[key]) {
+      this.cachedReactions[key] = [];
     }
 
-    const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
+    const index = findIndex(this.cachedReactions[key], reaction => equalEmojiId(reaction.emojiId, emojiId));
 
     if (index !== -1) {
-      const reaction = this.cachedReactions[ari][index];
+      const reaction = this.cachedReactions[key][index];
       reaction.reacted = true;
       reaction.count++;
     } else {
-      this.cachedReactions[ari].push({
+      this.cachedReactions[key].push({
         ari: ari,
+        containerAri: containerAri,
         emojiId: emojiId,
         count: 1,
         reacted: true
       });
     }
 
-    this.notifyUpdated(ari, this.cachedReactions[ari]);
+    this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
   }
 
-  protected optimisticDeleteReaction(ari: string, emojiId: string): void {
+  protected optimisticDeleteReaction(containerAri: string, ari: string, emojiId: string): void {
+    const key = this.objectReactionKey(containerAri, ari);
     this.excludeAriFromAutoPoll(ari);
 
-    if (!this.cachedReactions[ari]) {
-      this.cachedReactions[ari] = [];
+    if (!this.cachedReactions[key]) {
+      this.cachedReactions[key] = [];
     }
 
-    const index = findIndex(this.cachedReactions[ari], reaction => equalEmojiId(reaction.emojiId, emojiId));
-    const reaction = this.cachedReactions[ari][index];
+    const index = findIndex(this.cachedReactions[key], reaction => equalEmojiId(reaction.emojiId, emojiId));
+    const reaction = this.cachedReactions[key][index];
 
     reaction.reacted = false;
     reaction.count--;
 
     if (reaction.count < 1) {
-      this.cachedReactions[ari].splice(index, 1);
+      this.cachedReactions[key].splice(index, 1);
     }
 
-    this.notifyUpdated(ari, this.cachedReactions[ari]);
+    this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
   }
 }
 
@@ -281,6 +327,8 @@ const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
 
 export class ReactionsResource extends AbstractReactionsResource implements ReactionsProvider {
 
+  private inFlightDetailsRequests = {};
+
   constructor(private config: ReactionsProviderConfig) {
     super();
 
@@ -301,47 +349,63 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
   }
 
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
-    const reactionId = `${reaction.ari}|${reaction.emojiId}`;
+    const { containerAri, ari, emojiId } = reaction;
+    analyticsService.trackEvent('reactions.detailed.reaction', { containerAri, ari, emojiId });
+    const reactionId = `${containerAri}|${ari}|${emojiId}`;
+    const headers = this.getHeaders();
+    headers.delete('Content-Type');
     return requestService<ReactionSummary>(this.config.baseUrl, `reactions?reactionId=${encodeURIComponent(reactionId)}`, {
       'method': 'GET',
-      'headers': this.getHeaders(),
+      'headers': headers,
       'credentials': 'include'
     });
   }
 
   fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
-    return new Promise<ReactionSummary>((resolve, reject) => {
-      this
+    const { containerAri, ari, emojiId } = reaction;
+    analyticsService.trackEvent('reactions.detailed.reaction', { containerAri, ari, emojiId });
+    const reactionId = `${containerAri}|${ari}|${emojiId}`;
+
+    if (!this.inFlightDetailsRequests[reactionId]) {
+      this.inFlightDetailsRequests[reactionId] = this
         .getDetailedReaction(reaction)
         .then(reactionDetails => {
-          const { ari, emojiId } = reactionDetails;
-          if (!this.cachedReactions[ari]) {
-            this.cachedReactions[ari] = [];
+          const { containerAri, ari, emojiId } = reactionDetails;
+          const key = this.objectReactionKey(containerAri, ari);
+          if (!this.cachedReactions[key]) {
+            this.cachedReactions[key] = [];
           }
 
-          const index = findIndex(this.cachedReactions[ari], r => r.emojiId === emojiId);
+          const index = findIndex(this.cachedReactions[key], r => r.emojiId === emojiId);
           if (index !== -1) {
-            this.cachedReactions[ari][index] = reactionDetails;
-          } else {
-            this.cachedReactions[ari].push(reactionDetails);
+            this.cachedReactions[key][index] = reactionDetails;
+            this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
           }
 
-          this.notifyUpdated(ari, this.cachedReactions[ari]);
-          resolve(reactionDetails);
-        });
-    });
+          delete this.inFlightDetailsRequests[reactionId];
+          return reactionDetails;
+        }, () => delete this.inFlightDetailsRequests[reactionId]);
+    }
+
+    return this.inFlightDetailsRequests[reactionId];
   }
 
-  getReactions(aris: string[]): Promise<Reactions> {
+  getReactions(keys: ObjectReactionKey[]): Promise<Reactions> {
+    let aris = keys.map(key => key.ari);
+    const containerAri = keys[0].containerAri;
     return new Promise<Reactions>((resolve, reject) => {
       requestService<Reactions>(this.config.baseUrl, 'reactions/view', {
         'method': 'POST',
         'headers': this.getHeaders(),
-        'body': JSON.stringify({ aris }),
+        'body': JSON.stringify({
+          containerAri: containerAri,
+          aris
+        }),
         'credentials': 'include'
       }).then(reactions => {
         Object.keys(reactions).forEach(ari => {
-          this.cachedReactions[ari] = reactions[ari];
+          const cacheKey = this.objectReactionKey(containerAri, ari);
+          this.cachedReactions[cacheKey] = reactions[ari];
         });
         resolve(reactions);
       });
@@ -349,7 +413,8 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
   }
 
   addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
-    this.optimisticAddReaction(ari, emojiId);
+    analyticsService.trackEvent('reactions.add.reaction', { containerAri, ari, emojiId });
+    this.optimisticAddReaction(containerAri, ari, emojiId);
 
     const timestamp = Date.now();
     this.lastActionForAri[ari] = timestamp;
@@ -361,19 +426,20 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
         'body': JSON.stringify({ emojiId, ari, containerAri }),
         'credentials': 'include'
       }).then(reactions => {
-
+        const key = this.objectReactionKey(containerAri, ari);
         // Do not update cache if it was already updated by a more recent action
         if (this.lastActionForAri[ari] === timestamp) {
-          this.cachedReactions[ari] = reactions.reactions;
+          this.cachedReactions[key] = reactions.reactions;
         }
 
-        resolve(this.cachedReactions[ari]);
+        resolve(this.cachedReactions[key]);
       }).catch(() => reject());
     });
   }
 
   deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
-    this.optimisticDeleteReaction(ari, emojiId);
+    analyticsService.trackEvent('reactions.delete.reaction', { containerAri, ari, emojiId });
+    this.optimisticDeleteReaction(containerAri, ari, emojiId);
 
     const timestamp = Date.now();
     this.lastActionForAri[ari] = timestamp;
@@ -384,13 +450,13 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
         'headers': this.getHeaders(),
         'credentials': 'include'
       }).then(reactions => {
-
+        const key = this.objectReactionKey(containerAri, ari);
         // Do not update cache if it was already updated by a more recent action
         if (this.lastActionForAri[ari] === timestamp) {
-          this.cachedReactions[ari] = reactions.reactions;
+          this.cachedReactions[key] = reactions.reactions;
         }
 
-        resolve(this.cachedReactions[ari]);
+        resolve(this.cachedReactions[key]);
       }).catch(() => reject());
     });
   }

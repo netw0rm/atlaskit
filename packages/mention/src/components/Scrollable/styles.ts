@@ -1,19 +1,18 @@
-import { style } from 'typestyle';
-
+import styled from 'styled-components';
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { scrollableMaxHeight } from '../../shared-styles';
 
-export const akScrollable = style({
-  display: 'block',
-  overflowX: 'hidden',
-  overflowY: 'auto',
+// tslint:disable:next-line variable-name
+export const ScrollableStyle = styled.div`
+  display: block;
+  overflowX: hidden;
+  overflowY: auto;
 
-  padding: 0,
-  margin: 0,
+  padding: 4px 0;
+  margin: 0;
 
-  background: 'white',
-  maxHeight: scrollableMaxHeight,
+  background: white;
+  maxHeight: ${scrollableMaxHeight};
 
-  border: '1px solid #fff',
-  borderRadius: akBorderRadius,
-});
+  borderRadius: ${akBorderRadius};
+`;

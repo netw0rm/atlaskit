@@ -13,12 +13,11 @@ export {
   li, ul, ol, br, img, hr, em, strong, code, a, underline, subsup,
   strike, text, fragment, slice, mention, emoji, plain,
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
-  linkable, unlinkable, panel, panelNote, mentionQuery, hardBreak, emojiQuery,
-  media, mediaGroup,
+  panel, panelNote, mentionQuery, hardBreak, emojiQuery,
+  media, mediaGroup, textColor, table, tr, td, th, cEmpty, c11, h11, cCursor
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';
-export { nodes, marks } from './schema';
 export { storyMediaProviderFactory } from './media-provider';
 export { default as randomId } from './random-id';
 export { default as sleep } from './sleep';

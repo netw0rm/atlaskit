@@ -8,7 +8,7 @@ import { sampleAvatarUrl as avatarUrl } from './story-data';
 function renderSingleMention(mention) {
   return (
     <div className="ak-mention-list">
-      <ul>
+      <ul style={{ padding: 0}}>
         {mention}
       </ul>
     </div>
@@ -121,6 +121,19 @@ storiesOf(`${name}/MentionItem`, module)
       <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
     );
   })
+  .add('mention with restricted access', () => {
+      const mention = {
+          id: '666',
+          name: 'Oscar Wallhult',
+          mentionName: 'oscar',
+          selected: false,
+          accessLevel: 'SITE',
+      };
+
+      return renderSingleMention(
+          <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
+      );
+  })
   .add('mention with lozenge and presence', () => {
     const mention = {
       id: '666',
@@ -137,5 +150,23 @@ storiesOf(`${name}/MentionItem`, module)
     return renderSingleMention(
       <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
     );
+  })
+  .add('mention with lozenge, presence and restricted access', () => {
+      const mention = {
+          id: '666',
+          name: 'Oscar Wallhult',
+          mentionName: 'oscar',
+          selected: false,
+          lozenge: 'teammate',
+          accessLevel: 'SITE',
+          presence: {
+              status: 'online',
+              time: '11:23am',
+          },
+      };
+
+      return renderSingleMention(
+          <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
+      );
   })
 ;

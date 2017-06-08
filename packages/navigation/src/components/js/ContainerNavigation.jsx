@@ -1,21 +1,20 @@
-import React, { PureComponent, PropTypes } from 'react';
-import { ThemeProvider } from 'styled-components';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import memoizeOne from 'memoize-one';
-import { themeVariables } from '../../utils/theme';
+import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
 import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import Reveal from './Reveal';
-import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
 import subscribe from '../../watch-scroll-top';
 import { globalPrimaryActions } from '../../shared-variables';
+import { container } from '../../theme/presets';
 
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
     showGlobalPrimaryActions: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
@@ -27,13 +26,14 @@ export default class ContainerNavigation extends PureComponent {
     globalCreateIcon: PropTypes.node,
     onGlobalCreateActivate: PropTypes.func,
     onGlobalSearchActivate: PropTypes.func,
+    theme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
-    appearance: 'container',
     showGlobalPrimaryActions: false,
     isCollapsed: false,
     linkComponent: DefaultLinkComponent,
+    theme: container,
   }
 
   constructor(props, context) {
@@ -93,7 +93,6 @@ export default class ContainerNavigation extends PureComponent {
 
   render() {
     const {
-      appearance,
       showGlobalPrimaryActions,
       children,
       globalCreateIcon,
@@ -105,6 +104,7 @@ export default class ContainerNavigation extends PureComponent {
       onGlobalCreateActivate,
       onGlobalSearchActivate,
       isCollapsed,
+      theme,
     } = this.props;
 
     // Only animating the revealing of GlobalPrimaryActions
@@ -114,48 +114,43 @@ export default class ContainerNavigation extends PureComponent {
 
     const header = headerComponent ? (
       <ContainerHeader
-        appearance={appearance}
         isContentScrolled={this.state.isScrolling}
       >
         {headerComponent({ isCollapsed })}
       </ContainerHeader>) : <ContainerNoHeader />;
 
     return (
-      <ThemeProvider
-        theme={{
-          [themeVariables.appearance]: appearance,
-          isCollapsed,
-        }}
+      <WithRootTheme
+        provided={theme}
+        isCollapsed={isCollapsed}
       >
-        <ContainerNavigationOuter
+        {/* This div is needed for legacy reasons.
+        All children should use isCollapsed on the theme */}
+        <ContainerNavigationInner
           data-__ak-navigation-container-closed={isCollapsed}
+          innerRef={this.onRefChange}
         >
-          <ContainerNavigationInner
-            innerRef={this.onRefChange}
+          <Reveal
+            shouldAnimate={isInitiallyRendered}
+            isOpen={showGlobalPrimaryActions}
+            openHeight={globalPrimaryActions.height.outer}
           >
-            <Reveal
-              shouldAnimate={isInitiallyRendered}
-              isOpen={showGlobalPrimaryActions}
-              openHeight={globalPrimaryActions.height.outer}
-            >
-              <GlobalPrimaryActions
-                appearance={appearance}
-                createIcon={globalCreateIcon}
-                linkComponent={linkComponent}
-                onCreateActivate={onGlobalCreateActivate}
-                onSearchActivate={onGlobalSearchActivate}
-                primaryIcon={globalPrimaryIcon}
-                primaryItemHref={globalPrimaryItemHref}
-                searchIcon={globalSearchIcon}
-              />
-            </Reveal>
-            {header}
-            <ContainerNavigationChildren>
-              {children}
-            </ContainerNavigationChildren>
-          </ContainerNavigationInner>
-        </ContainerNavigationOuter>
-      </ThemeProvider >
+            <GlobalPrimaryActions
+              createIcon={globalCreateIcon}
+              linkComponent={linkComponent}
+              onCreateActivate={onGlobalCreateActivate}
+              onSearchActivate={onGlobalSearchActivate}
+              primaryIcon={globalPrimaryIcon}
+              primaryItemHref={globalPrimaryItemHref}
+              searchIcon={globalSearchIcon}
+            />
+          </Reveal>
+          {header}
+          <ContainerNavigationChildren>
+            {children}
+          </ContainerNavigationChildren>
+        </ContainerNavigationInner>
+      </WithRootTheme>
     );
   }
 }

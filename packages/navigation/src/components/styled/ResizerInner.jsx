@@ -1,17 +1,21 @@
 import styled from 'styled-components';
-import { akColorB200 } from '@atlaskit/util-shared-styles';
+import { unthemedColors } from '../../shared-variables';
 
 const resizerClickableWidth = 12;
 const resizerVisibleWidth = 2;
 
 const ResizerInner = styled.div`
-  height: 100%;
-  width: ${resizerClickableWidth}px;
-  position: relative;
-  left: -${resizerClickableWidth / 2}px;
   cursor: ew-resize;
-  &:hover:before {
-    background: ${akColorB200};
+  height: 100%;
+
+  /* position: absolute so that it will not effect the width of the navigation */
+  position: absolute;
+
+  right: -${resizerClickableWidth / 2}px;
+  width: ${resizerClickableWidth}px;
+
+  &:hover::before {
+    background: ${unthemedColors.resizer};
   }
   &:before {
     content: '';

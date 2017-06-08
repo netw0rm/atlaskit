@@ -2,7 +2,7 @@ import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
 import uid from 'uid';
-import AkInlineEdit from '../src';
+import InlineEdit from '../src';
 
 /* eslint-disable react/prop-types */
 export default class extends PureComponent {
@@ -42,7 +42,7 @@ export default class extends PureComponent {
   render() {
     const id = uid();
     return (
-      <AkInlineEdit
+      <InlineEdit
         label={this.props.label}
         labelHtmlFor={id}
         editView={this.renderInput({ isEditing: true, id })}

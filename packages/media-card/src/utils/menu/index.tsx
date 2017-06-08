@@ -15,8 +15,7 @@ import {
 export interface MenuProps {
   actions?: Array<CardAction>;
   onToggle?: (attrs: {isOpen: boolean}) => void;
-
-  deleteBtnColor?: string;
+  triggerColor?: string;
 }
 
 export class Menu extends Component<MenuProps, {}> {
@@ -39,9 +38,15 @@ export class Menu extends Component<MenuProps, {}> {
     );
   }
 
+  private shouldRenderDeleteButton(actions: Array<CardAction>) {
+    return actions.length === 1 && actions[0].type === CardActionType.delete;
+  }
+
   private renderDeleteButton(action) {
+    const {triggerColor} = this.props;
+
     return (
-      <DeleteBtn onClick={this.deleteBtnClick(action.handler)} style={{color: this.props.deleteBtnColor}} >
+      <DeleteBtn onClick={this.deleteBtnClick(action.handler)} style={{color: triggerColor}} >
         <Icon glyph={CrossIcon} size="small" label="delete" />
       </DeleteBtn>
     );
@@ -52,34 +57,42 @@ export class Menu extends Component<MenuProps, {}> {
     const dropdownItems = [{items}];
 
     return (
-      <DropdownMenu
-        items={dropdownItems}
-        onOpenChange={this.props.onToggle}
-        onItemActivated={this.onItemActivated}
-        triggerType="button"
-        triggerButtonProps={{
-          className: 'meat-balls-button',
-          appearance: 'subtle',
-          iconBefore: this.renderIconBefore()
-        }}
-      />
+      <span onClick={this.meatballsBtnClick}>
+        <DropdownMenu
+          items={dropdownItems}
+          onOpenChange={this.props.onToggle}
+          onItemActivated={this.onItemActivated}
+          triggerType="button"
+          triggerButtonProps={{
+            className: 'meat-balls-button',
+            appearance: 'subtle',
+            iconBefore: this.renderIconBefore()
+          }}
+        />
+      </span>
     );
   }
 
-  private shouldRenderDeleteButton(actions: Array<CardAction>) {
-    return actions.length === 1 && actions[0].type === CardActionType.delete;
-  }
-
   private renderIconBefore = () => {
+    const {triggerColor} = this.props;
+
     return (
-      <MeatBallsWrapper>
-        <Icon glyph={MoreIcon} label="more"/>
+      <MeatBallsWrapper style={{color: triggerColor}} >
+        <Icon glyph={MoreIcon} label="more" />
       </MeatBallsWrapper>
     );
   }
 
+  private meatballsBtnClick(e: MouseEvent<HTMLElement>) {
+    // we don't want the click to through to the consumers onClick API function
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
   private deleteBtnClick(handler: CardEventHandler) {
     return (e: MouseEvent<HTMLDivElement>) => {
+      // we don't want the click to through to the consumers onClick API function
+      e.stopPropagation();
       e.preventDefault();
       handler();
     };

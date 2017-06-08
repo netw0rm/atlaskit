@@ -64,7 +64,7 @@ export const unknownUrlPreviewId = {
 // === LINK ===
 
 export const genericLinkId = {
-  id: '517dade5-5489-4e8c-a113-42319878c4a5',
+  id: '15a9fb95-2d72-4d28-b338-00fd6bea121b',
   mediaItemType: linkType,
   collectionName
 };
@@ -76,19 +76,19 @@ export const spotifyLinkId = {
 };
 
 export const youtubeLinkId = {
-  id: '5c024c78-8dee-4a6c-9967-6276abd80286',
+  id: '3095fca9-9b76-4669-8905-bc874eebd3db',
   mediaItemType: linkType,
   collectionName
 };
 
 export const trelloLinkId = {
-  id: '70997118-3b5a-49f0-8608-43f6e0b9796e',
+  id: '9a2e988d-406c-489c-aa91-f2b03857d4d5',
   mediaItemType: linkType,
   collectionName
 };
 
 export const twitterLinkId = {
-  id: 'c3e22950-99b2-4f6e-9696-26117310741f',
+  id: 'b1c15338-a600-4104-be95-aeb878ff768c',
   mediaItemType: linkType
 };
 
@@ -220,7 +220,6 @@ export const genericFileDetails: FileDetails = {
     }
   }
 };
-
 
 export const imageFileDetails: FileDetails = {
   id: 'some-id',

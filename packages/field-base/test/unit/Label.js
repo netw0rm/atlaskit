@@ -2,8 +2,11 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 
-import Label from '../../src/Label';
-import styles from '../../src/styles.less';
+import { Label } from '@atlaskit/field-base';
+import {
+  RequiredIndicator,
+  LabelInner,
+} from '../../src/styled/Label';
 
 const defaultProps = {
   label: 'test',
@@ -13,53 +16,54 @@ const defaultProps = {
 describe('ak-field-base', () =>
   describe('Label', () => {
     describe('by default', () =>
-      it('should render a label element', () =>
-        expect(shallow(<Label {...defaultProps} />).find('label').length).to.be.above(0)
-      )
+      it('should render a label element', () => {
+        expect(shallow(<Label {...defaultProps} />).find(LabelInner).length).to.be.above(0);
+      })
     );
 
     describe('label prop', () => {
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
-        const wrapper = shallow(<Label label={label} />);
-        expect(wrapper.find('label').text()).to.equal(label);
+        const wrapper = mount(<Label label={label} />);
+        expect(wrapper.find(LabelInner).childAt(0).text()).to.equal(label);
       });
     });
 
     describe('hideLabel prop', () => {
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
-        const wrapper = shallow(<Label label={label} isLabelHidden />);
-        expect(wrapper.find(`.${styles.labelText}`).hasClass(styles.hidden)).to.equal(true);
+        const wrapper = mount(<Label label={label} isLabelHidden />);
+        expect(wrapper.find(LabelInner).prop('isHidden')).to.equal(true);
       });
     });
 
     describe('required prop', () => {
       it('should append an asterisk to the content', () =>
-        expect(shallow(<Label {...defaultProps} isRequired />).find(`.${styles.requiredAsterisk}`).text()).to.equal('*')
+        expect(shallow(<Label {...defaultProps} isRequired />)
+          .find(RequiredIndicator).length).to.be.above(0)
       );
 
       it('should not append an asterisk to the content if required is not set', () => {
-        expect(shallow(<Label {...defaultProps} />).find(`.${styles.required}`).length).to.equal(0);
-        expect(shallow(<Label {...defaultProps} />).text()).to.equal('test');
+        expect(shallow(<Label {...defaultProps} />).find(RequiredIndicator).length).to.equal(0);
+        expect(shallow(<Label {...defaultProps} />).find('span').text()).to.equal('test');
       });
     });
 
     describe('appearance prop', () => {
       it('should be "default" appearance by default', () => {
-        expect(mount(<Label />).prop('appearance')).to.equal('default');
+        expect(mount(<Label label="required prop label" />).prop('appearance')).to.equal('default');
       });
 
-      it('should set className for it', () => {
-        expect(mount(<Label />).find(`.${styles.inlineEdit}`).length).to.equal(0);
-        expect(mount(<Label appearance="inline-edit" />).find(`.${styles.inlineEdit}`).length).to.equal(1);
+      it('should set prop for it', () => {
+        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('inlineEdit')).to.equal(false);
+        expect(mount(<Label label="required prop label" appearance="inline-edit" />).find(LabelInner).prop('inlineEdit')).to.equal(true);
       });
     });
 
     describe('isFirstChild prop', () => {
-      it('should set className for it', () => {
-        expect(mount(<Label />).find(`.${styles.firstChild}`).length).to.equal(0);
-        expect(mount(<Label isFirstChild />).find(`.${styles.firstChild}`).length).to.equal(1);
+      it('should set prop for it', () => {
+        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('firstChild')).to.equal(undefined);
+        expect(mount(<Label label="required prop label" isFirstChild />).find(LabelInner).prop('firstChild')).to.equal(true);
       });
     });
 

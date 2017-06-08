@@ -9,6 +9,7 @@ import {
   isSchemaWithCodeBlock,
   isSchemaWithLists,
   isSchemaWithMentions,
+  isSchemaWithMedia,
 } from '../schema';
 
 export interface JIRACustomEncoders {
@@ -44,6 +45,8 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
       orderedList,
       paragraph,
       rule,
+      mediaGroup,
+      media
     } = schema.nodes;
 
     if (node.isText) {
@@ -78,6 +81,15 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
 
     if (isSchemaWithBlockQuotes(schema) && node.type === blockquote) {
       return encodeBlockQuote(node);
+    }
+
+    if (isSchemaWithMedia(schema)) {
+      // TODO: Replace with encoding in ED-1726
+      if (node.type === media) {
+        return encodeText(node);
+      } else if (node.type === mediaGroup) {
+        return encodeText(node);
+      }
     }
 
     throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
@@ -132,6 +144,7 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
         strong,
         subsup,
         underline,
+        textColor,
       } = schema.marks;
 
       for (const mark of node.marks) {
@@ -172,6 +185,11 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
             }
 
             elem = elem.appendChild(linkElem);
+            break;
+          case textColor:
+            const fontElem = doc.createElement('font');
+            fontElem.setAttribute('color', mark.attrs['color']);
+            elem = elem.appendChild(fontElem);
             break;
           case mentionQuery:
             break;

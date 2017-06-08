@@ -1,18 +1,15 @@
 import styled from 'styled-components';
-import {
-  akGridSizeUnitless,
-  akColorB200,
-} from '@atlaskit/util-shared-styles';
-import focusRingMixin from '../../utils/focus-ring-mixin';
+import { animationTime, animationTimeUnitless, unthemedColors, gridSize } from '../../shared-variables';
+import { focusOutline } from '../../utils/mixins';
 
-const toggleButtonHeight = akGridSizeUnitless * 4.5;
-const toggleArrowHeight = akGridSizeUnitless * 2;
+const toggleButtonHeight = gridSize * 4.5;
+const toggleArrowHeight = gridSize * 2;
 const toggleArrowWidth = 2;
 const toggleArrowTopVerticalOffset = (toggleButtonHeight - toggleArrowHeight) / 2;
 const toggleArrowBottomVerticalOffset =
   (toggleArrowTopVerticalOffset - toggleArrowWidth) + (toggleArrowHeight / 2);
-const opacityTransition = 'opacity 0.3s ease-in-out';
-const transformTransition = 'transform 0.2s ease-in-out';
+const opacityTransition = `opacity ${animationTimeUnitless + 100}ms ease-in-out`;
+const transformTransition = `transform ${animationTime} ease-in-out`;
 
 const ResizerButtonInner = styled.button`
   position: relative;
@@ -21,20 +18,23 @@ const ResizerButtonInner = styled.button`
   background: none;
   border: none;
   color: transparent;
-  width: ${akGridSizeUnitless * 3}px;
+  width: ${gridSize * 3}px;
   left: 0;
   cursor: pointer;
 
-  ${focusRingMixin()}
+  &:focus {
+    ${focusOutline(unthemedColors.resizer)}
+  }
 
   &:before, &:after {
     content: '';
-    background: ${akColorB200};
+    background-color: ${unthemedColors.resizer};
     width: ${toggleArrowWidth}px;
     border-radius: ${toggleArrowHeight}px;
     height: ${toggleArrowHeight / 2}px;
     position: absolute;
     left: 13px;
+    opacity: ${props => (props.isVisible ? 1 : 0)};
     transition: ${transformTransition}, ${opacityTransition};
     transform: rotate(0deg);
   }

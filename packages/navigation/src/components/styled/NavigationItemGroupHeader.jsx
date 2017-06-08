@@ -1,19 +1,17 @@
 import styled from 'styled-components';
-import {
-  akGridSizeUnitless,
-  akColorN40A,
- } from '@atlaskit/util-shared-styles';
+import { gridSize } from '../../shared-variables';
+import { getProvided } from '../../theme/util';
 
 const NavigationItemGroupHeader = styled.div`
   display: flex;
-  margin-bottom: ${akGridSizeUnitless}px;
-  margin-left: ${akGridSizeUnitless}px;
-  margin-top: ${akGridSizeUnitless * 2}px;
+  margin-bottom: ${gridSize}px;
+  margin-left: ${gridSize * 1.5}px;
+  margin-top: ${gridSize * 2}px;
 
   [data-__ak-navigation-container-closed="true"] & {
-    margin-left: ${akGridSizeUnitless * 0.5}px;
-    margin-right: ${akGridSizeUnitless * 0.5}px;
-    border-top: 1px solid ${akColorN40A};
+    margin-left: ${gridSize * 0.5}px;
+    margin-right: ${gridSize * 0.5}px;
+    border-top: 1px solid ${({ theme }) => getProvided(theme).keyline};
   }
 `;
 

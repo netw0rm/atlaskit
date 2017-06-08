@@ -1,13 +1,27 @@
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
-const toEmojiId = (emoji) => {
+const toEmojiAttrs = (emoji) => {
   const { shortName, id, fallback } = emoji;
-  return { shortName, id, fallback };
+  return {
+    shortName,
+    id,
+    text: fallback || shortName,
+  };
+};
+
+const toEmojiId = (emoji) => {
+   const { shortName, id, fallback } = emoji;
+   return { shortName, id, fallback };
 };
 
 const { emojiTestData, emojiStoryData } = emojiData;
+export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
+export const evilburnsEmojiAttrs = toEmojiAttrs(emojiTestData.evilburnsEmoji);
+
 export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
 export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+
+
 export const lorem = emojiStoryData.lorem;
 
 export const document = {
@@ -96,7 +110,7 @@ export const document = {
         {
           type: 'emoji',
           attrs: {
-            ...grinEmojiId,
+            ...grinEmojiAttrs,
           }
         },
         {
@@ -106,7 +120,7 @@ export const document = {
         {
           type: 'emoji',
           attrs: {
-            ...evilburnsEmojiId,
+            ...evilburnsEmojiAttrs,
           }
         },
         {
@@ -277,6 +291,24 @@ export const document = {
       type: 'paragraph',
       content: [
         {
+          type: 'text',
+          text: 'some inline code: '
+        },
+        {
+          type: 'text',
+          text: 'const foo = bar();',
+          marks: [
+            {
+              type: 'code'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
           type: 'unkown type',
           attrs: {
             text: 'fallback text'
@@ -348,6 +380,15 @@ export const document = {
       ]
     },
     {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
       type: 'mediaGroup',
       content: [
         {
@@ -355,6 +396,27 @@ export const document = {
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        }
+      ]
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
             collection: 'MediaServicesSample'
           }
         }
@@ -409,7 +471,341 @@ export const document = {
           ]
         }
       ]
-    }
-
+    },
+    {
+      type: 'codeBlock',
+      content: [
+        {
+          type: 'text',
+          text: `// Create a map.
+final IntIntOpenHashMap map = new IntIntOpenHashMap();
+map.put(1, 2);
+map.put(2, 5);
+map.put(3, 10);`
+        },
+        {
+          type: 'text',
+          text: `
+int count = map.forEach(new IntIntProcedure()
+{
+   int count;
+   public void apply(int key, int value)
+   {
+       if (value >= 5) count++;
+   }
+}).count;
+System.out.println("There are " + count + " values >= 5");`
+        }
+      ],
+      attrs: {
+        language: 'javascript'
+      }
+    },
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 1'
+        },
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 2 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 2',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'www.atlassian.com'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 3 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 3',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 4 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 4',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 5 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 5',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 6 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 6',
+        }
+      ]
+    },
+    {
+      type: 'bulletList',
+      content: [
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'First list item'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Second list item'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Third list item'
+                }
+              ]
+            }
+          ]
+        },
+      ]
+    },
+    {
+      type: 'orderedList',
+      content: [
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'First list item'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Second list item'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Third list item'
+                }
+              ]
+            }
+          ]
+        },
+      ]
+    },
+    {
+      type: 'blockquote',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'All that is gold does not glitter, not all those who wander are lost; The old that is strong does not wither, deep roots are not reached by the frost.',
+            },
+          ]
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'From the ashes a fire shall be woken, a light from the shadows shall spring; Renewed shall be blade that was broken, the crownless again shall be king.',
+            }
+          ]
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'J.R.R. Tolkien, The Fellowship of the Ring.',
+              marks: [
+                {
+                  type: 'em',
+                }
+              ],
+            }
+          ]
+        },
+      ]
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'info'
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is an info panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                }
+              ],
+            },
+          ]
+        },
+      ]
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'note'
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a note panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                }
+              ],
+            },
+          ]
+        },
+      ]
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'tip'
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a tip panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                }
+              ],
+            },
+          ]
+        },
+      ]
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'warning'
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a warning panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                }
+              ],
+            },
+          ]
+        },
+      ]
+    },
+    {
+      type: 'rule'
+    },
   ]
 };

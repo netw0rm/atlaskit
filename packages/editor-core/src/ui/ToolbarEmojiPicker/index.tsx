@@ -1,13 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as styles from './styles';
+import { ToolbarButton, offsetY, marginRight } from './styles';
 import { PureComponent } from 'react';
 import { akZIndexModal } from '@atlaskit/util-shared-styles';
 import { analyticsDecorator as analytics } from '../../analytics';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth, emojiPickerHeight } from '@atlaskit/emoji';
 import { EmojiState } from '../../plugins/emojis';
-import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror';
 
 type Position = 'above' | 'below';
@@ -26,13 +25,14 @@ export interface State {
 
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   private pickerRef: any;
+  private button?: any;
 
   state: State = {
     isOpen: false,
   };
 
   componentDidMount() {
-    this.state.button = ReactDOM.findDOMNode(this.refs.button) as HTMLElement;
+    this.state.button = ReactDOM.findDOMNode(this.button) as HTMLElement;
     this.props.pluginState.subscribe(this.handlePluginStateChange);
 
   }
@@ -54,12 +54,11 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     return (
       <span>
         <ToolbarButton
-          wrapperClassName={styles.button}
           selected={isOpen}
           disabled={disabled}
           onClick={this.toggleOpen}
           iconBefore={<EmojiIcon label="Emoji" />}
-          ref="button"
+          innerRef={this.handleButtonRef}
         />
         {!isOpen ? null :
           <AkEmojiPicker
@@ -68,7 +67,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
             target={button}
             position={position}
             offsetX={offsetX}
-            offsetY={styles.offsetY}
+            offsetY={offsetY}
             zIndex={akZIndexModal}
             onPickerRef={this.onPickerRef}
           />
@@ -123,7 +122,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
 
   private getOffsetX = (buttonRect: ClientRect): number => {
     const editorRect = this.props.editorView.dom.getBoundingClientRect();
-    return -(buttonRect.left + emojiPickerWidth - editorRect.right) - styles.marginRight;
+    return -(buttonRect.left + emojiPickerWidth - editorRect.right) - marginRight;
   }
 
   @analytics('atlassian.editor.emoji.button')
@@ -131,6 +130,14 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     if (this.state.isOpen) {
       this.props.pluginState.insertEmoji(emojiId);
       this.close();
+    }
+  }
+
+  private handleButtonRef = (button: HTMLButtonElement | null) => {
+    if (button instanceof HTMLButtonElement) {
+      this.button = button;
+    } else {
+      this.button = undefined;
     }
   }
 }

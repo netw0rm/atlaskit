@@ -14,11 +14,14 @@ import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { EditorView } from '../../prosemirror';
 import { PanelState } from '../../plugins/panel';
 import { MediaPluginState } from '../../plugins/media';
+import { TextColorState } from '../../plugins/text-color';
+import { TableState } from '../../plugins/table';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
 export interface Props {
   editorView: EditorView;
+  disabled?: boolean;
   isExpanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;
@@ -37,6 +40,8 @@ export interface Props {
   pluginStatePanel?: PanelState;
   pluginStateMedia?: MediaPluginState;
   pluginStateEmojis?: EmojiState;
+  pluginStateTextColor?: TextColorState;
+  pluginStateTable?: TableState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
@@ -53,6 +58,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         onCancel={props.onCancel}
         onSave={props.onSave}
         saveDisabled={props.saveDisabled}
+        disabled={props.disabled}
         feedbackFormUrl={props.feedbackFormUrl}
         pluginStateBlockType={props.pluginStateBlockType}
         pluginStateCodeBlock={props.pluginStateCodeBlock}
@@ -64,11 +70,13 @@ export default class Chrome extends PureComponent<Props, {}> {
         pluginStateMentions={props.pluginStateMentions}
         pluginStateEmojis={props.pluginStateEmojis}
         pluginStateMedia={props.pluginStateMedia}
+        pluginStatePanel={props.pluginStatePanel}
+        pluginStateTextColor={props.pluginStateTextColor}
+        pluginStateTable={props.pluginStateTable}
         mentionProvider={props.mentionProvider}
         presenceResourceProvider={props.presenceResourceProvider}
         emojiProvider={props.emojiProvider}
         editorView={props.editorView}
-        pluginStatePanel={props.pluginStatePanel}
         packageVersion={props.packageVersion}
         packageName={props.packageName}
       >

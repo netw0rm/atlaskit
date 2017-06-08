@@ -3,11 +3,13 @@
 const webpack = require('webpack');
 const path = require('path');
 const baseIconChunkName = require('./constants').baseIconChunkName;
+// eslint-disable-next-line import/no-dynamic-require
+const pkg = require(path.join(process.cwd(), 'package.json'));
 
 const relativePathToIcon = path.join('..', 'src', 'Icon');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-let cssOptions = '?camelCase=true&modules=true&mergeRules=false';
+let cssOptions = `?camelCase=true&modules=true&mergeRules=false&hashPrefix=${pkg.name}${pkg.version}`;
 if (isDevelopment) {
   cssOptions += '&-minimize';
 }

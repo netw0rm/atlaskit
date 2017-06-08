@@ -1,10 +1,9 @@
 import { MediaState } from '@atlaskit/media-core';
 import { default as ProviderFactory } from '../../providerFactory';
-
-export type MediaPluginBehavior = 'default' | 'compact';
+import { ErrorReporter } from '../../utils';
 
 export type MediaPluginOptions = {
   providerFactory: ProviderFactory;
-  behavior: MediaPluginBehavior;
+  errorReporter?: ErrorReporter;
   uploadErrorHandler?: (state: MediaState) => void;
 };

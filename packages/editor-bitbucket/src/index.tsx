@@ -27,12 +27,20 @@ import {
   Node,
   TextSelection,
   ProviderFactory,
-  emojiNodeView,
-  mentionNodeView,
   history,
   keymap,
   baseKeymap,
-  version as coreVersion
+  version as coreVersion,
+
+  // nodeviews
+  nodeViewFactory,
+  ReactEmojiNode,
+  ReactMentionNode,
+  reactNodeViewPlugins,
+
+  // error-reporting
+  // ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
@@ -60,6 +68,7 @@ export interface Props {
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
+  errorReporter?: ErrorReportingHandler;
   mentionSource?: MentionSource;
   emojiProvider?: Promise<EmojiProvider>;
 }
@@ -287,13 +296,17 @@ export default class Editor extends PureComponent<Props, State> {
             ...mentionsPlugins(schema), // mentions and emoji needs to be first
             ...emojisPlugins(schema),
             ...listsPlugins(schema),
-            ...blockTypePlugins(schema),
             ...clearFormattingPlugins(schema),
             ...codeBlockPlugins(schema),
             ...textFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
+            // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+            // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+            // if converting is possible
+            ...blockTypePlugins(schema),
+            ...reactNodeViewPlugins(schema),
             history(),
             keymap(bitbucketKeymap),
             keymap(baseKeymap) // should be last :(
@@ -319,8 +332,8 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory),
-          emoji: emojiNodeView(this.providerFactory)
+          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
+          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

@@ -1,7 +1,10 @@
 import { mount } from 'enzyme';
 import React from 'react';
+import { ArrowLeftIcon } from '@atlaskit/icon';
 import styles from '../src/components/less/ContainerNavigationNested.less';
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
+import NavigationItem from '../src/components/js/NavigationItem';
+import { mountWithRootTheme } from './theme-util';
 
 describe('<ContainerNavigationNested />', () => {
   describe('state', () => {
@@ -52,6 +55,45 @@ describe('<ContainerNavigationNested />', () => {
       const newPane = <h1>New Pane</h1>;
       component.setProps({ children: newPane, animationDirection: 'right' });
       expect(component.find('div').first().hasClass(styles.containerNavigationNestedRightAnimate)).to.equal(true);
+    });
+
+    it('should not have the split back button if backButtonIcon option is empty', () => {
+      const navItemInSplitBackButton = <NavigationItem text="Go back" />;
+      const component = mount(
+        <ContainerNavigationNested
+          mainNavigationItem={navItemInSplitBackButton}
+        >
+          <h1>Content</h1>
+        </ContainerNavigationNested>
+      );
+      expect(component.find('ArrowLeftIcon').length).to.equal(0);
+      expect(component.find('NavigationItem').length).to.equal(0);
+    });
+
+    it('should not have the split back button if mainNavigationItem option is empty', () => {
+      const component = mount(
+        <ContainerNavigationNested
+          backButtonIcon={<ArrowLeftIcon label="Left icon" />}
+        >
+          <h1>Content</h1>
+        </ContainerNavigationNested>
+      );
+      expect(component.find('ArrowLeftIcon').length).to.equal(0);
+      expect(component.find('NavigationItem').length).to.equal(0);
+    });
+
+    it('should have the split back button if backButtonIcon and mainNavigationItem options are not empty', () => {
+      const navItemInSplitBackButton = <NavigationItem text="Go back" />;
+      const component = mountWithRootTheme(
+        <ContainerNavigationNested
+          backButtonIcon={<ArrowLeftIcon label="Left icon" />}
+          mainNavigationItem={navItemInSplitBackButton}
+        >
+          <h1>Content</h1>
+        </ContainerNavigationNested>
+      );
+      expect(component.find('ArrowLeftIcon').at(0).text()).to.equal('Left icon');
+      expect(component.find('NavigationItem').at(0).text()).to.equal('Go back');
     });
   });
 

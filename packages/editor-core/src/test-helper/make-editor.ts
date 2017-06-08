@@ -4,7 +4,7 @@ import {
   EditorState,
   EditorView,
   baseKeymap,
-  keymap
+  keymap,
 } from '../prosemirror';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
@@ -29,11 +29,9 @@ export default (options: Options): EditorInstance => {
     plugins.push(...options.plugins);
   }
 
-  if (options.addBaseKeymap !== false) {
-    plugins.push(
-      keymap(baseKeymap)
-    );
-  }
+  plugins.push(
+    keymap(baseKeymap)
+  );
 
   const editorState = EditorState.create({
     plugins,
@@ -86,7 +84,6 @@ export interface Options {
   nodeViews?: { [key: string]: any };
   place?: HTMLElement;
   schema?: Schema<any, any>;
-  addBaseKeymap?: boolean;
 }
 
 export interface EditorInstance {

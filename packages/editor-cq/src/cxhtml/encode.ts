@@ -46,7 +46,7 @@ export default function encode(node: PMNode) {
     } else if (node.type === schema.nodes.mediaGroup) {
       return encodeMediaGroup(node);
     } else if (node.type === schema.nodes.media) {
-      return encodeMedia(node);
+      return encodeMedia(node as MediaNode);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -246,13 +246,17 @@ export default function encode(node: PMNode) {
   }
 
   function encodeMention(node: PMNode) {
-    const elem = doc.createElementNS(FAB_XMLNS, 'fab:mention');
-    elem.setAttribute('atlassian-id', node.attrs['id']);
+    const link = doc.createElementNS(FAB_XMLNS, 'fab:link');
+    const mention = doc.createElementNS(FAB_XMLNS, 'fab:mention');
+    mention.setAttribute('atlassian-id', node.attrs['id']);
 
-    const cdata = doc.createCDATASection(node.attrs['text']);
-    elem.appendChild(cdata);
+    // NOTE: (ED-1736) We're stripping @ from beginning of mention text, due to Confluence compatibility issues.
+    const cdata = doc.createCDATASection(node.attrs['text'].replace(/^@/, ''));
+    mention.appendChild(cdata);
 
-    return elem;
+    link.appendChild(mention);
+
+    return link;
   }
 
   function encodeUnsupported(node: PMNode) {

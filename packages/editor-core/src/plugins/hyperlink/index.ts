@@ -8,16 +8,18 @@ import {
   PluginKey,
   NodeViewDesc,
   TextSelection,
+  Slice,
 } from '../../prosemirror';
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { normalizeUrl } from './utils';
+import { normalizeUrl, linkify } from './utils';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
 export interface HyperlinkOptions {
   href: string;
+  text?: string;
 }
 export type Coordniates = { left: number, right: number, top: number, bottom: number };
 interface NodeInfo {
@@ -87,6 +89,18 @@ export class HyperlinkState {
       view.dispatch(state.tr
         .removeMark(from, to, this.activeLinkMark)
         .addMark(from, to, state.schema.mark('link', { href: normalizeUrl(options.href) })));
+    }
+  }
+
+  updateLinkText(text: string, view: EditorView) {
+    if (this.activeLinkStartPos) {
+      const { state } = this;
+      const from = this.activeLinkStartPos;
+      const to = from + (this.text ? this.text.length : 0);
+      const newTo = from + (text ? text.length : 0);
+      view.dispatch(state.tr.insertText(text, from, to)
+        .addMark(from, newTo, this.activeLinkMark!));
+      view.focus();
     }
   }
 
@@ -268,6 +282,24 @@ const plugin = new Plugin({
       pluginState.editorFocused = true;
 
       return true;
+    },
+    handlePaste(view: EditorView, event: any, slice: Slice) {
+      const { clipboardData } = event;
+      const html = clipboardData && clipboardData.getData('text/html');
+      if (html) {
+        return false;
+      }
+      const text = clipboardData && clipboardData.getData('text/plain');
+      if (!text) {
+        return false;
+      }
+      const contentSlices = linkify(view.state.schema, text);
+      if (contentSlices) {
+        const { dispatch, state: { tr }} = view;
+        dispatch(tr.replaceSelection(contentSlices));
+        return true;
+      }
+      return false;
     }
   },
   state: {

@@ -1,4 +1,5 @@
 import '!style!css!less!./cq-styles.less';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -46,10 +47,15 @@ storiesOf(name, module)
       handleChange = (editor: Editor) => {
         this.setState({ isMediaReady: false });
 
-        editor.value.then((value) => this.setState({
-          isMediaReady: true,
-          cxhtml: value
-        }));
+        action('Change')();
+
+        editor.value.then((value) => {
+          action('Value has been resolved')(value);
+          this.setState({
+            isMediaReady: true,
+            cxhtml: value
+          });
+        });
       }
 
       togglePrettify = () => {
@@ -94,15 +100,52 @@ storiesOf(name, module)
     />
   )
   .add('With Media support', () =>
-    <Editor
-      isExpandedByDefault={true}
-      mentionProvider={mentionProvider}
-      mediaProvider={storyMediaProviderFactory()}
-      onCancel={CANCEL_ACTION}
-      onSave={SAVE_ACTION}
-      onChange={handleChange}
-    />
+    //  TODO: remove the following note and link after the login is not required anymore or there's better way to run the story.
+    <div>
+      <div style={{ padding: '5px 0'}}>
+        ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
+      </div>
+      <Editor
+        isExpandedByDefault={true}
+        mentionProvider={mentionProvider}
+        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+        onCancel={CANCEL_ACTION}
+        onSave={SAVE_ACTION}
+        onChange={handleChange}
+      />
+    </div>
   )
+  .add('Disabled', () => {
+    type Props = {};
+    type State = { disabled: boolean };
+
+    class Demo extends PureComponent<Props, State> {
+      state = { disabled: true };
+
+      render() {
+        return (
+          <div>
+            <Editor
+              disabled={this.state.disabled}
+              isExpandedByDefault={true}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              onChange={handleChange}
+              mentionProvider={mentionProvider}
+            />
+
+            <fieldset style={{ marginTop: 20 }}>
+              <button onClick={this.toggleDisabled}>Toggle disabled state</button>
+            </fieldset>
+          </div>
+        );
+      }
+
+      private toggleDisabled = () => this.setState({ disabled: !this.state.disabled });
+    }
+
+    return <Demo />;
+  })
   .add('CXHTML input', () => {
     type Props = {};
     type State = { input: string, output: string };

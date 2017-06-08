@@ -7,7 +7,6 @@ import { AkGlobalItem } from '../../src/index';
 import { name, description } from '../../package.json';
 
 const globalItemPropDescriptions = {
-  appearance: 'The appearance of the navigation item – can be styled to match a container background, for use in the ContainerNavigation',
   children: 'The contents of the GlobalItem - usually an icon',
   href: 'The href that the GlobalItem links to',
   isSelected: 'Whether the GlobalItem is currently in the selected state - usually when the popup they are controlling is open',

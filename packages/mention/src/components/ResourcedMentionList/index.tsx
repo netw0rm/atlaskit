@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import * as classNames from 'classnames';
-
 import { Mention, OnMentionEvent } from '../../types';
 import { MentionProvider } from '../../api/MentionResource';
 import { PresenceProvider, PresenceMap } from '../../api/PresenceResource';
@@ -219,19 +217,13 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
   render() {
     const { mentions, showError } = this.state;
 
-    const classes = classNames([
-      'ak-resourced-mention-list',
-    ]);
-
     return (
-      <div className={classes}>
-        <MentionList
-          mentions={mentions}
-          showError={showError}
-          onSelection={this.notifySelection}
-          ref={this.handleMentionListRef}
-        />
-      </div>
+      <MentionList
+        mentions={mentions}
+        showError={showError}
+        onSelection={this.notifySelection}
+        ref={this.handleMentionListRef}
+      />
     );
   }
 }

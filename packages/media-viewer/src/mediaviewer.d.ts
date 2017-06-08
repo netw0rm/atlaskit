@@ -24,8 +24,8 @@ export type MediaViewerAssets = {
 export type MediaViewerType = 'image' | 'document' | 'video' | '3d';
 
 export interface MediaViewerConfig {
-  readonly assets: MediaViewerAssets;
-  readonly fetchToken: (file: MediaFile) => JQueryPromise<MediaFileAttributes>;
+  readonly assets?: MediaViewerAssets;
+  readonly fetchToken?: (file: MediaFile) => JQueryPromise<MediaFileAttributes>;
 
   readonly appendTo?: (node: Node) => void;
   readonly files?: Array<MediaFileAttributes>;
@@ -37,6 +37,7 @@ export interface MediaViewerConfig {
 
   readonly enableListLoop?: boolean;
   readonly enablePresentationMode?: boolean;
+  readonly enableMiniMode?: boolean;
   readonly preloadImagesAfterCurrent?: number;
   readonly preloadImagesBeforeCurrent?: number;
   readonly videoDefaultQualityHd?: boolean;

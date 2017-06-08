@@ -1,9 +1,11 @@
-import { style } from 'typestyle';
+import styled from 'styled-components';
 
-export const triggerWrapper = style({
-  display: 'flex',
-});
+// tslint:disable-next-line:variable-name
+export const TriggerWrapper = styled.div`
+  display: flex;
+`;
 
-export const expandIcon = style({
-  marginLeft: -8,
-});
+// tslint:disable-next-line:variable-name
+export const ExpandIconWrapper = styled.div`
+  margin-left: -8px;
+`;

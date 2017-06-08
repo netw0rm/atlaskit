@@ -1,7 +1,9 @@
 import {
   akBorderRadius,
   akColorN200,
+  akColorN300,
   akColorN900,
+  akColorR500,
 } from '@atlaskit/util-shared-styles';
 
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
@@ -9,6 +11,8 @@ import { style } from 'typestyle';
 
 export const selected = 'selected';
 export const emojiSprite = 'emoji-sprite';
+
+const checkerBoard = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABlBMVEXY3OHs7vHTc6akAAAAE0lEQVR4AWNg4P9PEv7/gYEUDAC8yyPd+MDI9AAAAABJRU5ErkJggg==';
 
 export const emoji = style({
   borderRadius: '5px',
@@ -54,8 +58,6 @@ export const emojiContainer = style({
 export const placeholderEmoji = style({
   display: 'inline-block',
   fill: '#f7f7f7',
-  width: '24px',
-  height: '24px',
   verticalAlign: 'middle',
 });
 
@@ -76,6 +78,8 @@ export const emojiButton = style({
   },
 });
 
+// Emoji Preview
+
 export const buttons = 'buttons';
 export const preview = 'preview';
 export const previewImg = 'preview-image';
@@ -89,6 +93,8 @@ export const withToneSelector = 'with-tone-selector';
 export const emojiPreview = style({
   display: 'flex',
   padding: '10px',
+  height: '50px',
+  boxSizing: 'border-box',
 
   $nest: {
     [`.${preview}`]: {
@@ -201,6 +207,8 @@ export const emojiPreview = style({
   },
 });
 
+// Scrollable
+
 export const emojiScrollable = style({
   border: '1px solid #fff',
   borderRadius: akBorderRadius,
@@ -209,4 +217,102 @@ export const emojiScrollable = style({
   overflowX: 'hidden',
   overflowY: 'auto',
   padding: '0',
+});
+
+// EmojiUpload
+
+export const emojiUpload = style ({
+  height: '78px',
+  padding: '10px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+});
+
+export const uploadChooseFileMessage = style({
+  color: akColorN300,
+  marginBottom: '20px',
+  fontSize: '0.9em',
+
+});
+
+export const uploadChooseFileRow = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+});
+
+export const uploadChooseFileEmojiName = style({
+  flex: '1 1 auto',
+  marginRight: '5px',
+
+  '$nest': {
+    input: {
+      background: 'transparent',
+      border: 0,
+      fontSize: '14px',
+      outline: 'none',
+      width: '100%',
+
+      $nest: {
+        ['&:invalid']: {
+          boxShadow: 'none',
+        },
+        ['&::-ms-clear']: {
+          display: 'none',
+        },
+      },
+    },
+  }
+});
+
+export const uploadChooseFileBrowse = style({
+  flex: '0 0 auto',
+});
+
+export const uploadPreview = style({
+  background: `url(${checkerBoard})`,
+  borderRadius: akBorderRadius,
+  marginBottom: '10px',
+  padding: '7px',
+  width: '286px',
+
+  $nest: {
+    'img': {
+      maxWidth: '100px',
+    }
+  }
+});
+
+export const uploadError = style({
+  margin: '12px 0',
+
+  $nest: {
+    span: {
+      verticalAlign: 'middle',
+      $nest: {
+        '&:first-child': {
+          marginRight: 0,
+        }
+      }
+    },
+    svg: {
+      color: akColorR500,
+      $nest: {
+        '&:first-child': {
+          marginRight: 0,
+        }
+      }
+    },
+  },
+});
+
+export const uploadAddRow = style({
+  display: 'flex',
+  alignItems: 'center',
+
+  $nest: {
+    ':first-child': {
+      marginRight: '5px',
+    }
+  },
 });

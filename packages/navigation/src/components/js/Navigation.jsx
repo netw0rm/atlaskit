@@ -1,6 +1,10 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
+import NavigationFixedContainer from '../styled/NavigationFixedContainer';
+import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigationWrapper';
+import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
 import Spacer from './Spacer';
@@ -11,8 +15,7 @@ import {
   resizeClosedBreakpoint,
   standardOpenWidth,
 } from '../../shared-variables';
-import NavigationOuter from '../styled/NavigationOuter';
-import NavigationInner from '../styled/NavigationInner';
+import * as presets from '../../theme/presets';
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   if (!isCollapsible && !isOpen) {
@@ -51,10 +54,10 @@ const getSnappedWidth = (width) => {
 export default class Navigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    containerAppearance: PropTypes.string,
+    containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerHeaderComponent: PropTypes.func,
     drawers: PropTypes.arrayOf(PropTypes.node),
-    globalAppearance: PropTypes.string,
+    globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     globalCreateIcon: PropTypes.node,
     globalPrimaryIcon: PropTypes.node,
     globalPrimaryItemHref: PropTypes.string,
@@ -72,9 +75,9 @@ export default class Navigation extends PureComponent {
   };
 
   static defaultProps = {
-    containerAppearance: 'container',
+    containerTheme: presets.container,
     drawers: [],
-    globalAppearance: 'global',
+    globalTheme: presets.global,
     globalSecondaryActions: [],
     isCollapsible: true,
     isCreateDrawerOpen: false,
@@ -149,10 +152,10 @@ export default class Navigation extends PureComponent {
   render() {
     const {
       children,
-      containerAppearance,
+      containerTheme,
       containerHeaderComponent,
       drawers,
-      globalAppearance,
+      globalTheme,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
@@ -196,9 +199,9 @@ export default class Navigation extends PureComponent {
     const shouldAnimateContainer = isTogglingIsOpen && !isResizing;
 
     const globalNavigation = showGlobalNavigation ? (
-      <Spacer width={globalOpenWidth + containerOffsetX}>
+      <NavigationGlobalNavigationWrapper>
         <GlobalNavigation
-          appearance={globalAppearance}
+          theme={globalTheme}
           createIcon={globalCreateIcon}
           linkComponent={linkComponent}
           onCreateActivate={onCreateDrawerOpen}
@@ -208,7 +211,7 @@ export default class Navigation extends PureComponent {
           searchIcon={globalSearchIcon}
           secondaryActions={globalSecondaryActions}
         />
-      </Spacer>
+      </NavigationGlobalNavigationWrapper>
     ) : null;
 
     const resizer = isResizeable ? (
@@ -222,26 +225,19 @@ export default class Navigation extends PureComponent {
     ) : null;
 
     return (
-      <NavigationOuter>
+      <div>
         {/* Used to push the page to the right the width of the nav */}
         <Spacer
           shouldAnimate={shouldAnimateContainer}
           width={renderedWidth}
-        />
-        <NavigationInner>
-          <div style={{ zIndex: isGlobalNavPartiallyCollapsed ? false : 1 }}>
+        >
+          <NavigationFixedContainer>
             {globalNavigation}
-          </div>
-          <div style={{ zIndex: 2, position: 'relative' }}>
-            {drawers}
-          </div>
-          <div>
-            <Spacer
-              shouldAnimate={shouldAnimateContainer}
-              width={containerWidth}
+            <NavigationContainerNavigationWrapper
+              horizontalOffset={containerOffsetX}
             >
               <ContainerNavigation
-                appearance={containerAppearance}
+                theme={containerTheme}
                 showGlobalPrimaryActions={!showGlobalNavigation}
                 globalCreateIcon={globalCreateIcon}
                 globalPrimaryIcon={globalPrimaryIcon}
@@ -255,11 +251,12 @@ export default class Navigation extends PureComponent {
               >
                 {children}
               </ContainerNavigation>
-            </Spacer>
-          </div>
-          {resizer}
-        </NavigationInner>
-      </NavigationOuter>
+            </NavigationContainerNavigationWrapper>
+            {resizer}
+          </NavigationFixedContainer>
+        </Spacer>
+        {drawers}
+      </div>
     );
   }
 }

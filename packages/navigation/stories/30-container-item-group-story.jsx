@@ -3,13 +3,13 @@ import React from 'react';
 import { SearchIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, EmojiCustomIcon } from '@atlaskit/icon';
 import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
-import Page from './components/HtmlPage';
+import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 
 storiesOf(name, module)
   .add('with a container item group', () => (
-    <Page>
+    <HtmlPage>
       <BasicNavigation>
         <AkNavigationItem
           icon={<SearchIcon label="Search" />}
@@ -20,7 +20,7 @@ storiesOf(name, module)
           action={
             <AkButton
               appearance="subtle"
-              iconBefore={<EmojiCustomIcon label="add" size="small" />}
+              iconBefore={<EmojiCustomIcon label="add" />}
               spacing="none"
             />
           }
@@ -55,5 +55,5 @@ storiesOf(name, module)
           />
         </AkNavigationItemGroup>
       </BasicNavigation>
-    </Page>
+    </HtmlPage>
   ));

@@ -1,4 +1,4 @@
-import { NodeSpec, dom, browser } from '../../prosemirror';
+import { NodeSpec, browser } from '../../prosemirror';
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
   return dom.dataset['language'];
@@ -36,14 +36,42 @@ export const codeBlock: NodeSpec = {
   code: true,
   defining: true,
   parseDOM: [{
-    tag: 'pre', preserveWhitespace: 'full', getAttrs: (dom: Element) => {
+    tag: 'pre',
+    preserveWhitespace: 'full',
+    getAttrs: (dom: HTMLElement) => {
       const language = (
-        getLanguageFromBitbucketStyle((dom as dom.Node).parentElement!) ||
-        getLanguageFromEditorStyle((dom as dom.Node).parentElement!) ||
+        getLanguageFromBitbucketStyle(dom.parentElement!) ||
+        getLanguageFromEditorStyle(dom.parentElement!) ||
         dom.getAttribute('data-language')!
       );
-      dom = removeLastNewLine(dom as HTMLElement);
-      return { language, preserveWhitespace: 'full' };
+      dom = removeLastNewLine(dom);
+      return { language };
+    }
+  },
+  // Handle VSCode paste, it wraps copied content with
+  // <div style="...white-space: pre;...">
+  {
+    tag: 'div[style]',
+    preserveWhitespace: 'full',
+    getAttrs: (dom: HTMLElement) => {
+      if (
+        dom.style.whiteSpace === 'pre' || dom.style.whiteSpace === 'pre-wrap' ||
+        (dom.style.fontFamily && dom.style.fontFamily.toLowerCase().indexOf('monospace') > -1)
+      ) {
+        return {};
+      }
+      return false;
+    }
+  },
+  // Handle GitHub/Gist paste
+  {
+    tag: 'table[style]',
+    preserveWhitespace: 'full',
+    getAttrs: (dom: HTMLElement) => {
+      if (dom.querySelector('td[class*="blob-code"]')) {
+        return {};
+      }
+      return false;
     }
   }],
   toDOM(node): [string, any, number] {

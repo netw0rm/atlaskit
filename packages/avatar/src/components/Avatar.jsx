@@ -1,9 +1,13 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+import React, { PureComponent } from 'react';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 
 import Container, { ImageWrapper, PresenceWrapper } from '../styled/Avatar';
 import Presence from './Presence';
 import Image from './Image';
+import type { PresenceType, Size } from '../types';
+
+type Element = Object;
 
 // =============================================================
 // NOTE: Duplicated in Presence unitl docgen can follow imports.
@@ -26,29 +30,31 @@ export const PRESENCE_TYPE = {
   defaultValue: 'none',
 };
 
+type Props = {
+  /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
+  can be used for 'container' objects. */
+  appearance?: 'circle' | 'square',
+  /** Content to use as a custom presence indicator. Accepts any React element.
+  For best results, it is recommended to use square content with height and
+  width of 100%. */
+  icon?: Element,
+  /** Defines the label for the Avatar used by screen readers as fallback
+  content if the image fails to load. */
+  label?: string,
+  /** Used to override the default border color of the presence indicator.
+  Accepts any color argument that the border-color CSS property accepts. */
+  presenceBorderColor?: string,
+  /** Indicates a user's online status by showing a small icon on the avatar.
+  Refer to presence values on the Presence component. */
+  presence?: PresenceType,
+  /** Defines the size of the avatar */
+  size?: Size,
+  /** A url to load an image from (this can also be a base64 encoded image). */
+  src?: string,
+};
+
 export default class Avatar extends PureComponent {
-  static propTypes = {
-    /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
-    can be used for 'container' objects. */
-    appearance: PropTypes.oneOf(APPEARANCE_TYPE.values),
-    /** Content to use as a custom presence indicator. Accepts any React element.
-    For best results, it is recommended to use square content with height and
-    width of 100% */
-    icon: PropTypes.element,
-    /** Defines the label for the Avatar used by screen readers as fallback
-    content if the image fails to load. */
-    label: PropTypes.string,
-    /** Used to override the default border color of the presence indicator.
-    Accepts any color argument that the border-color CSS property accepts. */
-    presenceBorderColor: PropTypes.string,
-    /** Indicates a user's online status by showing a small icon on the avatar.
-    Refer to presence values on the Presence component */
-    presence: PropTypes.oneOf(PRESENCE_TYPE.values),
-    /** Defines the size of the avatar */
-    size: PropTypes.oneOf(SIZE.values),
-    /** A url to load an image from (this can also be a base64 encoded image) */
-    src: PropTypes.string,
-  }
+  props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     appearance: APPEARANCE_TYPE.defaultValue,
@@ -57,12 +63,14 @@ export default class Avatar extends PureComponent {
     size: SIZE.defaultValue,
   }
 
+  // We set isLoading conditionally here in the event that the src prop is applied at mount.
   state = {
     hasError: false,
-    isLoading: false,
-  }
+    isLoading: !!this.props.src,
+  };
 
-  componentWillReceiveProps(nextProps) {
+  // We set isLoading conditionally here in the event that the src prop is updated after mount.
+  componentWillReceiveProps(nextProps: Props) {
     if (this.props.src !== nextProps.src) {
       this.setState({ isLoading: true });
     }
@@ -90,15 +98,14 @@ export default class Avatar extends PureComponent {
     return (
       <Container size={size}>
         <ImageWrapper appearance={appearance} size={size} isLoading={isLoading} aria-label={label}>
-          {isLoading ? null : (
-            <Image
-              alt={label}
-              src={src}
-              onLoad={this.imageLoadedHandler}
-              onError={this.imageErrorHandler}
-              hasError={hasError}
-            />
-          )}
+          <Image
+            alt={label}
+            isLoading={isLoading}
+            src={src}
+            onLoad={this.imageLoadedHandler}
+            onError={this.imageErrorHandler}
+            hasError={hasError}
+          />
         </ImageWrapper>
 
         {showPresence ? (

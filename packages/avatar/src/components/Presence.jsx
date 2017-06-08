@@ -1,7 +1,9 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+import React, { PureComponent } from 'react';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import Div from '../styled/Presence';
 import getPresenceSVG from '../utils/getPresenceSVG';
+import type { PresenceType, Size } from '../types';
 
 // TODO: This probably shouldn't be part of the public API; it can probably
 // safely be removed but we should check because it's technically a breaking change
@@ -22,20 +24,22 @@ export const PRESENCE_TYPE = {
   defaultValue: 'none',
 };
 
+type Element = Object;
+
 export default class Presence extends PureComponent {
-  static propTypes = {
+  props: { // eslint-disable-line react/sort-comp
     /** Used to override the default border color of the presence indicator.
-    Accepts any color argument that the border-color CSS property accepts */
-    borderColor: PropTypes.string,
-    /** Content to use as a custom presence indicator (usually not required if
-    consuming Presence separate to Avatar) */
-    children: PropTypes.element,
+    Accepts any color argument that the border-color CSS property accepts. */
+    borderColor?: string,
     /** Content to use as a custom presence indicator (usually not required if
     consuming Presence separate to Avatar). */
-    presence: PropTypes.oneOf(PRESENCE_TYPE.values),
-    /** Defines the size of the presence */
-    size: PropTypes.oneOf(SIZE.values),
-  }
+    children?: Element,
+    /** Content to use as a custom presence indicator (usually not required if
+    consuming Presence separate to Avatar). */
+    presence?: PresenceType,
+    /** Defines the size of the presence. */
+    size?: Size,
+  };
 
   static defaultProps = {
     borderColor: akColorPrimary3, // white
@@ -48,7 +52,7 @@ export default class Presence extends PureComponent {
 
     return (
       <Div size={size} style={style}>
-        {children || getPresenceSVG(presence)}
+        {children || (presence && getPresenceSVG(presence))}
       </Div>
     );
   }

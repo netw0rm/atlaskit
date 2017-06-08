@@ -1,4 +1,6 @@
 import { Search, UnorderedSearchIndex } from 'js-search';
+
+import { customCategory } from '../constants';
 import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
@@ -52,6 +54,9 @@ const findByKey = (map: EmojiByKey, key: any): OptionalEmojiDescription => {
 
 const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
   if (options) {
+    if (options.limit && options.limit > 0) {
+      emojis = emojis.slice(0, options.limit);
+    }
     return emojis.map(emoji => {
       return getEmojiVariation(emoji, options);
     });
@@ -144,6 +149,18 @@ export default class EmojiRepository {
     );
   }
 
+  addCustomEmoji(emoji: EmojiDescription) {
+    if (emoji.category !== customCategory) {
+      throw new Error(`Emoji is not a custom emoji, but from category ${emoji.category}`);
+    }
+    this.emojis = [
+      ...this.emojis,
+      emoji,
+    ];
+    this.fullSearch.addDocuments([ emoji ]);
+    this.addToMaps(emoji);
+  }
+
   /**
    * Optimisation to initialise all map member variables in single loop over emojis
    */
@@ -152,6 +169,11 @@ export default class EmojiRepository {
     this.idMap = new Map();
 
     this.emojis.forEach(emoji => {
+      this.addToMaps(emoji);
+    });
+  }
+
+  private addToMaps(emoji: EmojiDescription): void {
       // Give default value and assign higher weight to Atlassian emojis for logical order when sorting
       if (typeof emoji.order === 'undefined' || emoji.order === -1) {
         emoji.order = EmojiRepository.defaultEmojiWeight;
@@ -161,7 +183,6 @@ export default class EmojiRepository {
       }
       addAllVariants(emoji, e => e.shortName, this.shortNameMap);
       addAllVariants(emoji, e => e.id, this.idMap);
-    });
   }
 
   /**

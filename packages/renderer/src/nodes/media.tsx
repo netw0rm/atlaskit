@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import {
-  CardEventHandler,
-  CardClick,
   Context,
   ContextConfig,
   ContextFactory,
+  FileDetails,
   MediaItemType,
   MediaProvider,
   MediaState,
@@ -14,14 +13,15 @@ import {
 import {
   Card,
   CardDimensions,
+  CardEvent,
+  CardStatus,
   CardView,
   MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
 
-import {
-  Renderable,
-} from './';
+import { Renderable } from './';
+import { CardEventClickHandler } from '../config';
 
 export interface MediaNode extends Renderable {
   type: string;
@@ -34,7 +34,7 @@ export interface MediaNode extends Renderable {
 
 export interface MediaProps {
   mediaProvider?: Promise<MediaProvider>;
-  onClick?: CardEventHandler;
+  onClick?: CardEventClickHandler;
   cardDimensions?: CardDimensions;
   item: MediaNode;
 }
@@ -44,13 +44,36 @@ export interface State extends MediaState {
   viewContext?: Context;
 }
 
-export interface State {
-  viewContext?: Context;
+/**
+ * Map media state status into CardView processing status
+ * Media state status is more broad than CardView API so we need to reduce it
+ */
+function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
+  switch (state.status) {
+    case 'ready':
+    case 'unknown':
+    case 'unfinalized':
+      return 'complete';
+
+    case 'processing':
+      return 'processing';
+
+    case 'uploading':
+      return 'uploading';
+
+    // default case is to let TypeScript know that this function always returns a string
+    case 'error':
+    default:
+      return 'error';
+  }
 }
 
 const noop = () => {};
 
 export default class Media extends PureComponent<MediaProps, State> {
+  private destroyed = false;
+  private thumbnailWm = new WeakMap();
+
   state: State = {
     id: '',
     status: 'unknown'
@@ -61,6 +84,8 @@ export default class Media extends PureComponent<MediaProps, State> {
   }
 
   componentWillUnmount() {
+    this.destroyed = true;
+
     const { mediaProvider } = this.state;
     if (!mediaProvider) {
       return;
@@ -95,6 +120,10 @@ export default class Media extends PureComponent<MediaProps, State> {
   }
 
   private async handleMediaProvider(props: MediaProps) {
+    if (this.destroyed) {
+      return;
+    }
+
     const { mediaProvider } = props;
     const { id } = props.item.attrs;
 
@@ -104,6 +133,10 @@ export default class Media extends PureComponent<MediaProps, State> {
     }
 
     const resolvedMediaProvider = await mediaProvider;
+    if (this.destroyed) {
+      return;
+    }
+
     if (!resolvedMediaProvider) {
       this.setState({ mediaProvider: undefined });
       return;
@@ -124,15 +157,23 @@ export default class Media extends PureComponent<MediaProps, State> {
       context = ContextFactory.create(context as ContextConfig);
     }
 
+    if (this.destroyed) {
+      return;
+    }
+
     this.setState({ viewContext: context as Context });
   }
 
   private handleMediaStateChange = (mediaState: MediaState) => {
+    if (this.destroyed) {
+      return;
+    }
+
     this.setState({ ...mediaState });
   }
 
-  private handleLinkCardViewClick(item: any, event: Event) {
-    event.preventDefault();
+  private handleLinkCardViewClick(result: CardEvent) {
+    result.event.preventDefault();
   }
 
   private renderLink() {
@@ -155,7 +196,7 @@ export default class Media extends PureComponent<MediaProps, State> {
         dimensions={cardDimensions}
 
         // SharedCardProps
-        actions={[ CardClick(this.handleLinkCardViewClick) ]}
+        onClick={this.handleLinkCardViewClick}
       />;
     }
 
@@ -175,7 +216,7 @@ export default class Media extends PureComponent<MediaProps, State> {
         context={viewContext}
         dimensions={cardDimensions}
         identifier={id ? mediaIdentifier : urlPreviewIdentifier}
-        actions={[ CardClick(onClick || noop) ]}
+        onClick={onClick || noop}
       />
     );
   }
@@ -183,14 +224,27 @@ export default class Media extends PureComponent<MediaProps, State> {
   private renderFile() {
     const { mediaProvider, viewContext } = this.state;
     const { cardDimensions, item } = this.props;
-    const { collection, id } = item.attrs;
+    const { id } = item.attrs;
 
     if (!mediaProvider || !viewContext) {
       return <CardView
         status="loading"
         mediaItemType="file"
+        dimensions={cardDimensions}
       />;
     }
+
+    if (id.substr(0, 10) === 'temporary:') {
+      return this.renderTemporaryFile();
+    } else {
+      return this.renderPublicFile();
+    }
+  }
+
+  private renderPublicFile() {
+    const { viewContext } = this.state;
+    const { cardDimensions, item, onClick } = this.props;
+    const { collection, id } = item.attrs;
 
     return (
       <Card
@@ -202,7 +256,49 @@ export default class Media extends PureComponent<MediaProps, State> {
           collectionName: collection
         }}
         selectable={false}
+        onClick={onClick || noop}
       />
     );
+  }
+
+  private renderTemporaryFile() {
+    const { state } = this;
+    const { thumbnail, fileName, fileSize, fileType} = state;
+
+    // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
+    let dataURI: string | undefined;
+    if (thumbnail) {
+      if (this.thumbnailWm.has(thumbnail)) {
+        dataURI = this.thumbnailWm.get(thumbnail);
+      } else {
+        dataURI = URL.createObjectURL(thumbnail);
+        this.thumbnailWm.set(thumbnail, dataURI);
+      }
+    }
+
+    // Make sure that we always display progress bar when the file is uploading (prevents flicker)
+    let progress = state.progress;
+    if (!progress && state.status === 'uploading') {
+      progress = .0;
+    }
+
+    // Construct file details object
+    const fileDetails: FileDetails = {
+      name: fileName,
+      size: fileSize,
+      mimeType: fileType,
+      mediaType: (thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')
+    };
+
+    return <CardView
+      // CardViewProps
+      status={mapMediaStatusIntoCardStatus(state)}
+      mediaItemType="file"
+      metadata={fileDetails}
+
+      // FileCardProps
+      dataURI={dataURI}
+      progress={progress}
+    />;
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 import { name } from '../package.json';
-import AkDynamicTable, { DynamicTable } from '../src/';
+import DynamicTable, { DynamicTableStateless } from '../src/';
 
 /* eslint-disable import/no-duplicates, import/first */
 import Readme from './examples/readme';
@@ -84,7 +84,7 @@ storiesOf(name, module)
         {SampleDataRaw}
       </Code>
       <Props
-        component={AkDynamicTable}
+        component={DynamicTable}
         descriptions={propDescriptionsStateful}
         types={propTypesStateful}
       />
@@ -100,7 +100,7 @@ storiesOf(name, module)
         {OverviewStatelessExampleRaw}
       </Code>
       <Props
-        component={DynamicTable}
+        component={DynamicTableStateless}
         descriptions={propDescriptionsStateless}
         types={propTypesStateless}
       />

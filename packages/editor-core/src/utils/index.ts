@@ -1,5 +1,6 @@
 import {
   liftTarget,
+  Mark,
   MarkType,
   Node,
   NodeSelection,
@@ -14,16 +15,43 @@ import {
   Fragment,
   findWrapping
 } from '../prosemirror';
+import * as commands from '../commands';
+
+export {
+  default as ErrorReporter,
+  ErrorReportingHandler,
+} from './error-reporter';
 
 function validateNode(node: Node): boolean {
   return false;
 }
 
+function isMarkTypeExcludedFromMark(markType: MarkType, mark: Mark): boolean {
+  return !!mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1;
+}
+
+function isMarkTypeAllowedInNode(markType: MarkType, state: EditorState<any>): boolean {
+  return commands.toggleMark(markType)(state);
+}
+
 /**
- * Check if a mark is allowed at a given position
+ * Check if a mark is allowed at the current position based on a given state.
+ * This method looks both at the currently active marks as well as the node and marks
+ * at the current position to determine if the given mark type is allowed.
+ * If there's a non-empty selection, the current position corresponds to the start
+ * of the selection.
  */
-export function isMarkAllowedAtPosition(markType: MarkType, selection: Selection) {
-  return selection.$from.marks().filter(mark => mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1).length > 0;
+export function isMarkTypeAllowedAtCurrentPosition(markType: MarkType, state: EditorState<any>) {
+  if (!isMarkTypeAllowedInNode(markType, state)) { return false; }
+
+  let allowedInActiveMarks = true;
+  let excludesMarkType = mark => isMarkTypeExcludedFromMark(markType, mark);
+  if (state.tr.storedMarks) {
+    allowedInActiveMarks = !state.tr.storedMarks.some(excludesMarkType);
+  } else {
+    allowedInActiveMarks = !state.selection.$from.marks().some(excludesMarkType);
+  }
+  return allowedInActiveMarks;
 }
 
 /**
@@ -259,43 +287,6 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
     tr = tr.wrap(range, wrapping).scrollIntoView();
   }
   return tr;
-}
-
-/**
- * Returns a method which removes a single node at position obtained from getPos() callback.
- * This is designed to be used with node views for interactions, where a node is to be removed.
- *
- * For example:
- *
- *   const nv:NodeView = (node: any, view: any, getPos: () => number) => {
- *     let div: HTMLElement | undefined = document.createElement('div');
- *
- *     ReactDOM.render(
- *       <Component>
- *         <Button onClick={locateAndRemoveNode(view, getPos)}>
- *           Click to remove
- *         </Button>
- *       </Component>
- *     );
- *     return {
- *       get dom() {
- *         return div;
- *       }
- *     }
- *   }
- *
- * @param getPos Callback normally passed into Node View by ProseMirror.
- * @param view A View instance which will be updated
- */
-export function locateAndRemoveNode(view: EditorView, getPos: () => number): () => void {
-  return function() {
-    const pos = getPos();
-    if (!pos || pos <= 0) {
-      return;
-    }
-
-    view.dispatch(view.state.tr.deleteRange(pos, pos + 1));
-  };
 }
 
 export function toJSON(node: Node) {

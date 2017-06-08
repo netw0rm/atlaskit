@@ -58,7 +58,6 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
           </span>
           <input
             className={styles.input}
-            type="text"
             autoComplete="off"
             disabled={false}
             name="search"

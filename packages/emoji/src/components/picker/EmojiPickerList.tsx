@@ -3,13 +3,12 @@ import { MouseEvent, PureComponent } from 'react';
 import * as classNames from 'classnames';
 import Spinner from '@atlaskit/spinner';
 import * as uid from 'uid';
-import 'element-closest';
 
+import { customCategory } from '../../constants';
 import * as styles from './styles';
 import Scrollable from '../common/Scrollable';
 import EmojiPickerListSearch from './EmojiPickerListSearch';
 import EmojiPickerListSection from './EmojiPickerListSection';
-import { emojiPickerListHeight } from '../../shared-styles';
 import { toOptionalEmojiId } from '../../type-helpers';
 import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent } from '../../types';
 
@@ -29,9 +28,12 @@ export interface OnSearch {
 
 export interface Props {
   emojis: EmojiDescription[];
+  showCustomCategory?: boolean;
+  showUploadOption?: boolean;
   onEmojiSelected?: OnEmojiEvent;
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
+  onOpenUpload?: () => void;
   selectedCategory?: string;
   selectedTone?: number;
   onSearch?: OnSearch;
@@ -137,6 +139,10 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
     this.scrollable.reveal(categoryElement as HTMLElement, true);
   }
 
+  scrollToBottom() {
+    this.scrollable.scrollToBottom();
+  }
+
   private categoryId = category => `category_${category}_${this.idSuffix}`;
 
   private buildGroups = (emojis: EmojiDescription[]): EmojiGroup[] => {
@@ -181,15 +187,23 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
   }
 
   private renderGroups = () => {
-    const selectedEmojiId = toOptionalEmojiId(this.state.selectedEmoji);
-    const selectedCategory = this.state.selectedEmoji && this.state.selectedEmoji.category;
+    const { selectedEmoji } = this.state;
+    const { query, onEmojiSelected, onOpenUpload, showCustomCategory, showUploadOption } = this.props;
+    const selectedEmojiId = toOptionalEmojiId(selectedEmoji);
+    const selectedCategory = selectedEmoji && selectedEmoji.category;
 
-    if (!this.props.query) {
+    if (!query) {
+      let customGroupRendered = false;
       // Not searching show in categories.
-      return this.allEmojiGroups.map((group) => {
+      const groups = this.allEmojiGroups.map((group) => {
         // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
         // by not passing it to irrelevant groups
         const groupSelectedEmojiId = selectedCategory === group.category ? selectedEmojiId : undefined;
+        let showUploadPrompt = false;
+        if (group.category === customCategory) {
+          customGroupRendered = true;
+          showUploadPrompt = !!showUploadOption;
+        }
 
         return (
           <EmojiPickerListSection
@@ -199,11 +213,29 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
             key={group.category}
             selectedEmoji={groupSelectedEmojiId}
             onMouseMove={this.onEmojiMouseEnter}
-            onSelected={this.props.onEmojiSelected}
+            onOpenUpload={onOpenUpload}
+            onSelected={onEmojiSelected}
             className={categoryClassname}
+            showUploadPrompt={showUploadPrompt}
           />
         );
       });
+
+      if (!customGroupRendered && (showUploadOption || showCustomCategory)) {
+        groups.push(
+          <EmojiPickerListSection
+            id={this.categoryId(customCategory)}
+            title={customCategory}
+            emojis={[]}
+            key={customCategory}
+            className={categoryClassname}
+            showUploadPrompt={showUploadOption}
+            onOpenUpload={onOpenUpload}
+          />
+        );
+      }
+
+      return groups;
     }
 
     // Searching show as one search result section
@@ -215,6 +247,8 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
         onMouseMove={this.onEmojiMouseEnter}
         onSelected={this.props.onEmojiSelected}
         className={categoryClassname}
+        showUploadPrompt={showUploadOption}
+        onOpenUpload={onOpenUpload}
       />
     );
   }
@@ -224,31 +258,25 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
     const classes = [styles.emojiPickerList];
 
     const loadingSpinner = !this.props.loading ? null : (
-      <div className={styles.emojiPickerSpinnerContainer}>
-        <div className={styles.emojiPickerSpinner}>
-          <Spinner size="medium" />
-        </div>
+      <div className={styles.emojiPickerSpinner}>
+        <Spinner size="medium" />
       </div>
     );
 
     return (
-      <div
+      <Scrollable
         className={classNames(classes)}
+        ref={this.handleRef}
+        onScroll={this.checkCategoryChange}
         onMouseLeave={this.onMouseLeave}
       >
+        <EmojiPickerListSearch
+          onChange={this.onSearch}
+          query={this.props.query}
+        />
         {loadingSpinner}
-        <Scrollable
-          ref={this.handleRef}
-          maxHeight={`${emojiPickerListHeight}px`}
-          onScroll={this.checkCategoryChange}
-        >
-          <EmojiPickerListSearch
-            onChange={this.onSearch}
-            query={this.props.query}
-          />
-          {this.renderGroups()}
-        </Scrollable>
-      </div>
+        {this.renderGroups()}
+      </Scrollable>
     );
   }
 

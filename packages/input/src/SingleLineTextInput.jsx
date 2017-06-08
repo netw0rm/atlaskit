@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import keyCode from 'keycode';
 import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';

@@ -1,4 +1,4 @@
-import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
+import { denormaliseEmojiServiceResponse } from '../src/api/EmojiUtils';
 import EmojiRepository from '../src/api/EmojiRepository';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from '../test/MockEmojiResource';
 import { EmojiDescription, EmojiServiceResponse } from '../src/types';
@@ -47,6 +47,7 @@ const getEmojiSet = (name: string): EmojiDescription[] => {
 
 export const getStandardEmojis = (): EmojiDescription[] => getEmojiSet('standard');
 export const getAtlassianEmojis = (): EmojiDescription[] => getEmojiSet('atlassian');
+export const getSiteEmojis = (): EmojiDescription[] => getEmojiSet('site');
 export const getEmojis = (): EmojiDescription[] => getEmojiSet('all');
 
 export const lorem = `

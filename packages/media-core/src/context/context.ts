@@ -2,6 +2,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import { MediaItemProvider, MediaCollectionProvider, MediaUrlPreviewProvider } from '../providers/';
+import {RemoteMediaCollectionProviderFactory} from '../providers/remoteMediaCollectionProviderFactory';
 import { JwtTokenProvider, MediaItemType, MediaItem, UrlPreview } from '../';
 import { MediaDataUriService, DataUriService } from '../services/dataUriService';
 import { MediaLinkService } from '../services/linkService';
@@ -35,7 +36,7 @@ export class ContextFactory {
 }
 
 class ContextImpl implements Context {
-  private readonly collectionPool = MediaCollectionProvider.createPool();
+  private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly lruCache: LRUCache<string, MediaItem>;
@@ -70,7 +71,7 @@ class ContextImpl implements Context {
   }
 
   getMediaCollectionProvider(collectionName: string, pageSize: number = DEFAULT_COLLECTION_PAGE_SIZE): MediaCollectionProvider {
-    return MediaCollectionProvider.fromPool(this.collectionPool, this.apiConfig, collectionName, this.config.clientId, pageSize);
+    return RemoteMediaCollectionProviderFactory.fromPool(this.collectionPool, this.apiConfig, collectionName, this.config.clientId, pageSize);
   }
 
   getDataUriService(collectionName?: string): DataUriService {
@@ -87,7 +88,7 @@ class ContextImpl implements Context {
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {
-    this.getMediaCollectionProvider(collectionName, pageSize).controller().refresh();
+    this.getMediaCollectionProvider(collectionName, pageSize).refresh();
   }
 
   getFileBinary = (id: string): Promise<string> =>  {

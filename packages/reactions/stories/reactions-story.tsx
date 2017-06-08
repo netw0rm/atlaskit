@@ -16,6 +16,7 @@ const { getEmojiResource } = emojiTestData.emojiStoryData;
 import { name } from '../package.json';
 
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
+const demoAri2 = 'ari:cloud:owner:demo-cloud-id:item/2';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 analyticsService.handler = (name, properties) => {
@@ -35,6 +36,7 @@ storiesOf(name, module)
       </div>
       <hr />
       <Reactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
@@ -60,6 +62,7 @@ storiesOf(name, module)
     <div>
       <p>This is a message with some reactions</p>
       <Reactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
@@ -67,10 +70,24 @@ storiesOf(name, module)
       />
     </div>
   ))
+  .add('Empty Reactions', () => (
+      <div>
+          <p>This is a message with some reactions</p>
+          <Reactions
+              containerAri={containerAri}
+              ari={demoAri2}
+              emojiProvider={getEmojiResource()}
+              reactionsProvider={reactionsProvider}
+              onReactionClick={action('reaction clicked')}
+              allowAllEmojis={true}
+          />
+      </div>
+  ))
   .add('Reactions with all emojis enabled', () => (
     <div>
       <p>This is a message with some reactions</p>
       <Reactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
@@ -118,6 +135,7 @@ storiesOf(`${name}/Resourced Components`, module)
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProviderPromise}
+        allowAllEmojis={true}
       />
     </div>
   ))
@@ -126,14 +144,14 @@ storiesOf(`${name}/Resourced Components`, module)
 storiesOf(`${name}/Internal Components`, module)
   .add('Reaction', () => (
     <Reaction
-      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: false, ari: demoAri }}
+      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: false, ari: demoAri, containerAri: containerAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />
   ))
   .add('Reaction - reacted', () => (
     <Reaction
-      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: true, ari: demoAri }}
+      reaction={{ emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId).id!, count: 1, reacted: true, ari: demoAri, containerAri: containerAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />

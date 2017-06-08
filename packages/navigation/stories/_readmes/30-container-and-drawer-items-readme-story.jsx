@@ -7,7 +7,6 @@ import { AkNavigationItem } from '../../src/index';
 import { name, description } from '../../package.json';
 
 const NavigationItemSpeificPropDescriptions = {
-  appearance: 'The appearance of the navigation item – can be styled to match a global container',
   isSelected: 'Whether the item is currently in a selected state',
 };
 

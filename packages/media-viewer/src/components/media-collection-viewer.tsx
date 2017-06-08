@@ -4,15 +4,16 @@ import { Context, MediaCollectionProvider } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import { fetchToken } from '../domain/fetch-token';
 import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
-import { MediaViewerConstructor, MediaViewerInterface } from '../mediaviewer';
+import { MediaViewerConstructor, MediaViewerInterface, MediaViewerConfig } from '../mediaviewer';
 
 export interface MediaCollectionViewerProps {
   readonly context: Context;
-  readonly occurenceKey: string;
+  readonly occurrenceKey: string;
   readonly collectionName: string;
   readonly pageSize?: number;
 
   readonly MediaViewer: MediaViewerConstructor;
+  readonly mediaViewerConfiguration?: MediaViewerConfig;
   readonly basePath: string;
 
   readonly onClose?: () => void;
@@ -31,7 +32,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
   constructor(props: MediaCollectionViewerProps) {
     super(props);
 
-    const { context, collectionName, basePath, MediaViewer } = props;
+    const { context, collectionName, basePath, MediaViewer, mediaViewerConfiguration } = props;
     const { config } = context;
     const { clientId, tokenProvider } = config;
     const pageSize = this.props.pageSize || MediaCollectionViewer.defaultPageSize;
@@ -39,17 +40,17 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
     this.state = {
       provider: context.getMediaCollectionProvider(collectionName, pageSize),
       mediaViewer: new MediaViewer({
+        ...mediaViewerConfiguration,
         assets: {
           basePath: basePath
         },
-        enableListLoop: false,
         fetchToken: fetchToken(clientId, tokenProvider, collectionName)
       })
     };
   }
 
   componentDidMount(): void {
-    const { context, occurenceKey, onClose } = this.props;
+    const { context, occurrenceKey, onClose } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer, provider } = this.state;
@@ -69,7 +70,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
             mediaViewer.setFiles(files, { id: mediaViewer.getCurrent().id });
           } else {
             mediaViewer.setFiles(files);
-            mediaViewer.open({ id: occurenceKey });
+            mediaViewer.open({ id: occurrenceKey });
           }
         }
       });
@@ -95,9 +96,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
   private loadNextPageIfRequired = () => {
     const { mediaViewer, provider } = this.state;
     if (mediaViewer.isShowingLastFile()) {
-      provider
-        .controller()
-        .loadNextPage();
+      provider.loadNextPage();
     }
   }
 }

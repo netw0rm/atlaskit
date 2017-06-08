@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Lorem from 'react-lorem-component';
 /**
  * Navigation needs to be able to work in a plain old HTML page,
@@ -29,21 +30,15 @@ export default class HtmlPage extends PureComponent {
           height: '100vh',
           overflowY: 'scroll',
           boxSizing: 'border-box',
-
-          /**
-           * Fixes bug in Edge where the navigation is rendered outside the iframe
-           * @see {@link https://ecosystem.atlassian.net/browse/AK-2166}
-           */
-          transform: 'translate3d(0, 0, 0)',
+          position: 'relative',
         }}
       >
         <style>{'body { margin: 0 }'}</style>
         {this.props.children}
         <div
           style={{
+            boxSizing: 'border-box',
             padding: '32px',
-            height: '100vh',
-            overflowY: 'scroll',
           }}
         >
           {this.props.content}

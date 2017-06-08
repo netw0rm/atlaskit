@@ -1,10 +1,5 @@
 import { akColorB400 } from '@atlaskit/util-shared-styles';
-import { style } from 'typestyle';
 import { MarkSpec } from '../../prosemirror';
-
-const emojiQueryStyle = style({
-  color: akColorB400
-});
 
 export const emojiQuery: MarkSpec = {
   inclusive: true,
@@ -14,7 +9,7 @@ export const emojiQuery: MarkSpec = {
   toDOM(): [string, any] {
     return ['span', {
       'data-emoji-query': true,
-      'class': emojiQueryStyle
+      style: `color: ${akColorB400}`
     }];
   }
 };

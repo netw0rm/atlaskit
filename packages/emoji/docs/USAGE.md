@@ -1,6 +1,6 @@
 # Emoji
 
-Use emoji....
+Use emoji...
 
 ## Try it out
 
@@ -20,6 +20,13 @@ Import the component in your React app as follows:
 import EmojiPicker from '@NAME@';
 ReactDOM.render(<EmojiPicker />, container);
 ```
+
+Don't forget to add these polyfills to your product build if you want to target older browsers:
+
+ * Promise ([polyfill](https://www.npmjs.com/package/es6-promise), [browser support](http://caniuse.com/#feat=promises))
+ * Fetch API ([polyfill](https://www.npmjs.com/package/whatwg-fetch), [browser support](http://caniuse.com/#feat=promises))
+ * URLSearchParams API ([polyfill](https://www.npmjs.com/package/url-search-params), [browser support](http://caniuse.com/#feat=urlsearchparams)) 
+ * Element.closest ([polyfill](https://www.npmjs.com/package/element-closest), [browser support](http://caniuse.com/#feat=element-closest))
 
 ## Storybook
 

@@ -16,7 +16,13 @@ export default createSchema({
     'image',
     'mention',
     'hardBreak',
-    'emoji'
+    'emoji',
+    'mediaGroup',
+    'media',
+    'table',
+    'table_cell',
+    'table_header',
+    'table_row',
   ],
   marks: [
     'em',
@@ -26,6 +32,8 @@ export default createSchema({
     'underline',
     'link',
     'mentionQuery',
-    'emojiQuery'
+    'emojiQuery',
+    'textColor',
+    'subsup',
   ]
 });

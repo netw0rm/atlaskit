@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
-import {FilmStripView, FilmStripViewItem} from '../src';
+import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../src';
 import {ListActionCreator, CardActionType, ListEventHandler} from '@atlaskit/media-core';
 import {MediaItem} from '@atlaskit/media-core';
 
@@ -20,8 +20,8 @@ const deleteAction = ListCardDelete((item: MediaItem, items: Array<{id: string}>
   action('delete')(item, items);
 });
 
-const clickAction = (item: MediaItem, items: Array<{id: string}>, e?: Event) => {
-  action('click')(item, items);
+const clickAction = (event: FilmStripCardClickEvent) => {
+  action('click')(event.item, event.items);
 };
 
 const menuActions = [deleteAction];
@@ -69,7 +69,7 @@ storiesOf('FilmStripView', {})
     return <ChatWrapper>
             <FilmStripView
               items={items}
-              onClick={clickAction}
+              onCardClick={clickAction}
               menuActions={menuActions}
               width={550}
             />
@@ -84,7 +84,7 @@ storiesOf('FilmStripView', {})
     return (
       <FilmStripView
         items={items}
-        onClick={clickAction}
+        onCardClick={clickAction}
         menuActions={menuActions}
       />
     );
@@ -107,7 +107,7 @@ storiesOf('FilmStripView', {})
     return (
       <FilmStripView
         items={items}
-        onClick={clickAction}
+        onCardClick={clickAction}
         menuActions={menuActions}
       />
     );
@@ -120,7 +120,7 @@ storiesOf('FilmStripView', {})
     return <SmallChatWrapper>
       <FilmStripView
         items={items}
-        onClick={clickAction}
+        onCardClick={clickAction}
         menuActions={menuActions}
       />
     </SmallChatWrapper>;

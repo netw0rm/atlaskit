@@ -6,12 +6,13 @@ export {
 
 import ProviderFactory from './providerFactory';
 export { version, name } from './version';
-export { default as Keymap } from 'browserkeymap';
 export * from './config';
 export * from './plugins';
 export * from './schema';
 export * from './ui';
 export * from './analytics';
+export * from './nodeviews';
+export * from './renderer';
 export { ProviderFactory };
 export type ContextName = 'default';
 export {
@@ -39,5 +40,13 @@ export {
   history,
   baseKeymap,
   keymap,
+  tableNodes,
+  CellSelection,
+  tableEditing,
 } from './prosemirror';
-export { toJSON } from './utils';
+export {
+  ErrorReporter,
+  ErrorReportingHandler,
+  toJSON,
+} from './utils';
+export { colorPalette } from './schema/marks/text-color';

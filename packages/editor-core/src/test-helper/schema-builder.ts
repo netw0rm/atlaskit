@@ -214,10 +214,11 @@ export function markFactory(type: MarkType, attrs = {}) {
   };
 }
 
+export const createCell = (colspan, rowspan) => td({colspan, rowspan})(p('x'));
+export const createHeaderCell = (colspan, rowspan) => th({colspan, rowspan})(p('x'));
+
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
-export const linkable = nodeFactory(sampleSchema.nodes.linkable, {});
-export const unlinkable = nodeFactory(sampleSchema.nodes.unlinkable, {});
 export const blockquote = nodeFactory(sampleSchema.nodes.blockquote, {});
 export const h1 = nodeFactory(sampleSchema.nodes.heading, { level: 1 });
 export const h2 = nodeFactory(sampleSchema.nodes.heading, { level: 2 });
@@ -236,7 +237,14 @@ export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
 // tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.codeBlock, attrs);
 export const img = (attrs: { src: string, alt?: string, title?: string }) => sampleSchema.nodes.image.createChecked(attrs);
-export const emoji = (attrs: { shortName: string, id?: string, fallback?: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
+export const emoji = (attrs: { shortName: string, id?: string, fallback?: string }) => {
+  const emojiNodeAttrs = {
+    shortName: attrs.shortName,
+    id: attrs.id,
+    text: attrs.fallback || attrs.shortName,
+  };
+  return sampleSchema.nodes.emoji.createChecked(emojiNodeAttrs);
+};
 export const mention = (attrs: { id: string, text?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
@@ -259,3 +267,12 @@ export const media = (attrs: {
   fileSize?: number;
   fileMimeType?: string;
 }) => sampleSchema.nodes.media.create(attrs);
+export const textColor = (attrs: { color: string }) => markFactory(sampleSchema.marks.textColor, attrs);
+export const table = nodeFactory(sampleSchema.nodes.table, {});
+export const tr = nodeFactory(sampleSchema.nodes.table_row, {});
+export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_cell, attrs);
+export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_cell, attrs);
+export const cEmpty = td({})(p(''));
+export const cCursor = td({})(p('{<>}'));
+export const c11 = createCell(1, 1);
+export const h11 = createHeaderCell(1, 1);

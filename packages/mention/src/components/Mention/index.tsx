@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
-import * as cx from 'classnames';
-import * as styles from './styles';
+import { MentionStyle } from './styles';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -38,20 +37,22 @@ export default class Mention extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { props } = this;
-    const classNames = cx('ak-mention', styles.mention, {
-      [styles.highlighted]: props.isHighlighted
-    });
+    const {
+      handleOnClick,
+      handleOnMouseEnter,
+      handleOnMouseLeave,
+      props,
+    } = this;
 
     return (
-      <span
-        className={classNames}
-        onClick={this.handleOnClick}
-        onMouseEnter={this.handleOnMouseEnter}
-        onMouseLeave={this.handleOnMouseLeave}
+      <MentionStyle
+        highlighted={props.isHighlighted}
+        onClick={handleOnClick}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
       >
         {props.text}
-      </span>
+      </MentionStyle>
     );
   }
 }

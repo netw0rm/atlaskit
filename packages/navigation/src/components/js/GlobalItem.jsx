@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import GlobalItemInner from '../styled/GlobalItemInner';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
@@ -10,7 +11,6 @@ export default class GlobalItem extends PureComponent {
     linkComponent: PropTypes.func,
   };
   static defaultProps = {
-    appearance: 'global',
     size: 'small',
     linkComponent: DefaultLinkComponent,
   };

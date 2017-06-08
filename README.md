@@ -10,7 +10,7 @@ AtlasKit is the technical implementation of the [Atlassian Design Guidelines][AD
 **This project is bound by a [Code of Conduct][codeofconduct].**
 
 Usage
-====== 
+======
 
 #### Example for React projects
 
@@ -44,7 +44,7 @@ To use:
 <link rel="stylesheet" href="//unpkg.com/@atlaskit/css-reset@latest" />
 <link rel="stylesheet" href="//unpkg.com/@atlaskit/reduced-ui-pack@latest" />
 ```
-2. Then you can style HTML with 
+2. Then you can style HTML with
 
 `<button class="ak-button ak-button__appearance-primary">Submit</button>`
 
@@ -58,7 +58,7 @@ Installation
 
 * [node](https://nodejs.org/) version should be 6 or above (to check `node -v`)
 * [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`) or use [nvm](https://github.com/creationix/nvm)
-* [yarn](https://yarnpkg.com/) should be installed globally (`npm install -g yarn@0.18.1`)
+* [yarn](https://yarnpkg.com/) should be installed globally (see yarn website for installation instructions)
 
 #### Clone the repo and install
 
@@ -90,9 +90,9 @@ Once you made some changes, stage them and then commit them using `yarn run comm
 
 Documentation
 =============
-A comprehensive list of components and detail usage of each can be found in the [AtlasKit Registry][AtlasKitRegistry].
+A comprehensive list of components and detailed usage of each can be found in the [AtlasKit Registry][AtlasKitRegistry].
 
-You can also find how each component is meant to be used on the [Atlassian Design Guideline][ADG]. 
+You can also find how each component is meant to be used from a design perspective on the [Atlassian Design Guidelines][ADG] website.
 
 
 Tests
@@ -107,7 +107,7 @@ Tests
 
 **Note: The above information is slightly out of date in some cases as we are currently undergoing a major refactor for how we run tests**
 
-Some packages will have moved to the new unit testing frame work (using mocha to run jsdom rather than karma).
+Some packages will have moved to the new unit testing framework (using mocha to run jsdom rather than karma).
 
 For these packages you'll need to run the `test/unit` script
 
@@ -115,7 +115,7 @@ For these packages you'll need to run the `test/unit` script
 yarn run test/unit
 ```
 
-To run for a single package you can pass the package name (the name used in the directory not the package.json) like so:
+To run tests for a single package you can pass the package name (the name used in the directory not the package.json) like so:
 
 ```
 yarn run test/unit avatar
@@ -166,9 +166,9 @@ those contributing as an individual.
 License
 ========
 
-This is a [mono-repo](https://github.com/babel/babel/blob/master/doc/design/monorepo.md), which means that different parts of this repository can have different licenses. 
+This is a [mono-repo](https://github.com/babel/babel/blob/master/doc/design/monorepo.md), which means that different parts of this repository can have different licenses.
 
-The base level of the repository is licensed under [Apache 2.0][LICENSE]. There are separate license files (`LICENSE`)  for each component under `/packages` that specify the license restrictions for each component. While most componets are licensed under the Apache 2.0 license, please note packages containing styles, assets & icons are most likely licensed under the [Atlassian Design Guidelines license][ADG_License]. 
+The base level of the repository is licensed under [Apache 2.0][LICENSE]. There are separate license files (`LICENSE`)  for each component under `/packages` that specify the license restrictions for each component. While most components are licensed under the Apache 2.0 license, please note packages containing styles, assets & icons are most likely licensed under the [Atlassian Design Guidelines license][ADG_License].
 
 If you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions. If you want to redistribute this repository, you will need to replace these Atlassian Design Guidelines licensed components with your own implementation.
 
@@ -181,6 +181,3 @@ Copyright (c) 2016 Atlassian and others.
 [LICENSE]: ./LICENSE
 [AtlasKitRegistry]: http://go.atlassian.com/atlaskit  "AtlasKit Registry"
 [CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md
-
-
-

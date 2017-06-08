@@ -1,63 +1,67 @@
-import React, { PureComponent, PropTypes } from 'react';
-import { ThemeProvider } from 'styled-components';
-import { appearanceEnum, themeVariables, getFromOuterTheme } from '../../utils/theme';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
 import NavigationItemGroupInner from '../styled/NavigationItemGroupInner';
 import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
 import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
 import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
-
-const getAppearance = getFromOuterTheme(themeVariables.appearance, appearanceEnum.container);
+import { WithGroupTheme } from '../../theme/util';
 
 export default class NavigationItemGroup extends PureComponent {
   static propTypes = {
     action: PropTypes.node,
     children: PropTypes.node,
-    hasSeparator: PropTypes.bool,
     isCompact: PropTypes.bool,
+    hasSeparator: PropTypes.bool,
     title: PropTypes.string,
+  }
+
+  static defaultProps = {
+    isCompact: false,
+    hasSeparator: false,
   }
 
   render() {
     const {
       title,
       action,
-      hasSeparator,
       isCompact,
+      hasSeparator,
     } = this.props;
 
-    const Title = () => (title ?
+    const wrappedTitle = title ?
       <NavigationItemGroupTitle>{title}</NavigationItemGroupTitle>
-    : null);
+      : null;
 
-    const Action = () => (action ?
-      <NavigationItemGroupAction>
+    const wrappedAction = action ?
+      (<NavigationItemGroupAction>
         {this.props.action}
-      </NavigationItemGroupAction>
-    : null);
+      </NavigationItemGroupAction>)
+      : null;
+
+    const separator = hasSeparator ? (
+      <NavigationItemGroupSeparator />
+    ) : null;
+
+    const header = title || action ? (
+      <NavigationItemGroupHeader>
+        {wrappedTitle}
+        {wrappedAction}
+      </NavigationItemGroupHeader>
+    ) : null;
 
     return (
-      <ThemeProvider
-        theme={outerTheme => ({
-          [themeVariables.appearance]: getAppearance(outerTheme),
-          [themeVariables.isCompact]: isCompact,
-        })}
+      <WithGroupTheme
+        isCompact={isCompact}
       >
-        <NavigationItemGroupInner hasHeaderContent={(title || action || hasSeparator)}>
-          {hasSeparator ? (
-            <NavigationItemGroupSeparator />
-          ) : null}
-          {title || action ? (
-            <NavigationItemGroupHeader>
-              <Title />
-              <Action />
-            </NavigationItemGroupHeader>) : null
-          }
-          <div>
+        <div>
+          <NavigationItemGroupInner hasHeaderContent={(separator || header)}>
+            {separator}
+            {header}
             {this.props.children}
-          </div>
-        </NavigationItemGroupInner>
-      </ThemeProvider>
+          </NavigationItemGroupInner>
+        </div>
+      </WithGroupTheme>
     );
   }
 }

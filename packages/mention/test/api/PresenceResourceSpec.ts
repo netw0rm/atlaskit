@@ -1,5 +1,3 @@
-import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
-import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 
@@ -74,12 +72,12 @@ describe('PresenceCache', () => {
   it('should know whether it contains a user by ID', () => {
     cache.update(testPresenceMap);
     const userId = Object.keys(testPresenceMap)[0];
-    expect(cache.contains(userId)).to.be.true;
+    expect(cache.contains(userId)).to.be.equal(true);
    });
 
   it('should not contain IDs that not have been manually added to the cache', () => {
     cache.update(testPresenceMap);
-    expect(cache.contains('DEFINITELY-N0T-A-TEST-US3R-1D'), 'Claimed to contain a user ID it shouldn\'t have').to.be.false;
+    expect(cache.contains('DEFINITELY-N0T-A-TEST-US3R-1D'), 'Claimed to contain a user ID it shouldn\'t have').to.be.equal(false);
   });
 
   it('should retrieve a user given their ID', () => {
@@ -91,6 +89,8 @@ describe('PresenceCache', () => {
 
   it('should return no presence if queried for users not present in the cache', () => {
     cache.update(testPresenceMap);
+
+    // tslint:disable-next-line:no-unused-expression
     expect(cache.get('DEFINITELY-N0T-A-TEST-US3R-1D')).to.be.empty;
   });
 
@@ -156,7 +156,7 @@ describe('PresenceCache', () => {
     const expiredCache = new DefaultPresenceCache(-1);
     expiredCache.update(testPresenceMap);
     expiredCache.get(testIds[0]);
-    expect(expiredCache.contains(testIds[0])).to.be.false;
+    expect(expiredCache.contains(testIds[0])).to.be.equal(false);
   });
 
   it('should remove all expired users if the cache hits its trigger point', () => {
@@ -164,7 +164,7 @@ describe('PresenceCache', () => {
     limitedCache.update(testPresenceMap);
     limitedCache.update(extraPresences);
     validPresenceData['data'].PresenceBulk.forEach((response) => {
-      expect(limitedCache.contains(response.userId)).to.be.false;
+      expect(limitedCache.contains(response.userId)).to.be.equal(false);
     });
   });
 });

@@ -1,6 +1,7 @@
+// @flow
 import React from 'react';
 
-export default function getPresenceSvg(presence) {
+export default function getPresenceSvg(presence: string) {
   const Svg = props => (
     <svg height="100%" version="1.1" viewBox="0 0 8 8" width="100%" xmlns="http://www.w3.org/2000/svg" {...props} />
   );

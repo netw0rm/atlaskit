@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { MouseEvent } from '@types/react';
 import { PureComponent } from 'react';
-import * as classNames from 'classnames';
 
-import * as styles from './styles';
+import { MentionListStyle } from './styles';
 import Error from '../MentionListError';
 import MentionItem from '../MentionItem';
 import Scrollable from '../Scrollable';
@@ -220,18 +219,11 @@ export default class MentionList extends PureComponent<Props, State> {
 
   render() {
     const { mentions, showError } = this.props;
-
     const hasMentions = mentions && mentions.length;
 
     // If we get an error, but existing mentions are displayed, lets
     // just continue to show the existing mentions we have
     const mustShowError = showError && !hasMentions;
-
-    const classes = classNames({
-      'ak-mention-list': true,
-      [styles.list]: true,
-      [styles.empty]: !hasMentions && !showError,
-    });
 
     let errorSection: JSX.Element | undefined;
     let resultSection: JSX.Element | undefined;
@@ -246,12 +238,10 @@ export default class MentionList extends PureComponent<Props, State> {
     }
 
     return (
-      <div className={styles.akMentionList}>
-        <div className={classes}>
-          {errorSection}
-          {resultSection}
-        </div>
-      </div>
+      <MentionListStyle empty={!hasMentions && !showError}>
+        {errorSection}
+        {resultSection}
+      </MentionListStyle>
     );
   }
 }

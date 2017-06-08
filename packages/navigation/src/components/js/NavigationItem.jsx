@@ -1,10 +1,12 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import InteractiveWrapper from './InteractiveWrapper';
 
 import NavigationItemIcon from '../styled/NavigationItemIcon';
 import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemAction from '../styled/NavigationItemAction';
+import NavigationItemCaption from '../styled/NavigationItemCaption';
 import NavigationItemText from '../styled/NavigationItemText';
 import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
 import NavigationItemInner from '../styled/NavigationItemInner';
@@ -15,6 +17,7 @@ import NavigationItemSubText from '../styled/NavigationItemSubText';
 export default class NavigationItem extends PureComponent {
   static propTypes = {
     action: PropTypes.node,
+    caption: PropTypes.string,
     href: PropTypes.string,
     icon: PropTypes.node,
     dropIcon: PropTypes.node,
@@ -38,38 +41,39 @@ export default class NavigationItem extends PureComponent {
   }
 
   render() {
-    const Icon = () => (this.props.icon ?
-      <NavigationItemIcon>
-        {this.props.icon}
-      </NavigationItemIcon>
-    : null);
+    const icon = this.props.icon
+      ? <NavigationItemIcon>{this.props.icon}</NavigationItemIcon>
+      : null;
 
-    const DropIcon = () => (this.props.dropIcon && this.props.isDropdownTrigger ?
-      <NavigationItemIcon hasNoPadding={this.props.isDropdownTrigger} isDropdownTrigger>
+    const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
+      <NavigationItemIcon
+        isDropdownTrigger
+        hasNoPadding={this.props.isDropdownTrigger}
+      >
         {this.props.dropIcon}
       </NavigationItemIcon>
-    : null);
+    ) : null;
 
-    const TextAfter = () => (this.props.textAfter ?
-      <NavigationItemTextAfter>
-        {this.props.textAfter}
-      </NavigationItemTextAfter>
-    : null);
+    const textAfter = this.props.textAfter
+      ? <NavigationItemTextAfter>{this.props.textAfter}</NavigationItemTextAfter>
+      : null;
 
-    const Action = () => (this.props.action ?
-      <NavigationItemAction>
-        {this.props.action}
-      </NavigationItemAction>
-    : null);
+    const action = this.props.action
+      ? <NavigationItemAction>{this.props.action}</NavigationItemAction>
+      : null;
 
-    const After = ({ children }) => (this.props.textAfter ?
+    const after = this.props.textAfter ? (
       <NavigationItemAfter
         shouldTakeSpace={this.props.action || this.props.textAfter}
         isDropdownTrigger={this.props.isDropdownTrigger}
       >
-        {children}
+        {textAfter}
       </NavigationItemAfter>
-    : null);
+    ) : null;
+
+    const wrappedCaption = this.props.caption
+      ? <NavigationItemCaption>{this.props.caption}</NavigationItemCaption>
+      : null;
 
     const interactiveWrapperProps = {
       onMouseDown: this.onMouseDown,
@@ -84,28 +88,27 @@ export default class NavigationItem extends PureComponent {
     return (
       <NavigationItemOuter
         isSelected={this.props.isSelected}
-        isDropdownTrigger={this.props.isDropdownTrigger}
+        isDropdown={this.props.isDropdownTrigger}
       >
         <InteractiveWrapper
           {...interactiveWrapperProps}
         >
           <NavigationItemInner>
-            <Icon />
+            {icon}
             <NavigationItemText>
               <NavigationItemMainText>
                 {this.props.text}
+                {wrappedCaption}
               </NavigationItemMainText>
               <NavigationItemSubText>
                 {this.props.subText}
               </NavigationItemSubText>
             </NavigationItemText>
-            <After>
-              <TextAfter />
-            </After>
-            <DropIcon />
+            {after}
+            {dropIcon}
           </NavigationItemInner>
         </InteractiveWrapper>
-        <Action />
+        {action}
       </NavigationItemOuter>
     );
   }

@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeOutExpo } from '../../styles';
 import {
-  akColorN30,
+  akColorN20,
   akColorN70
 } from '@atlaskit/util-shared-styles';
 
@@ -19,7 +19,7 @@ export const SmallCard = styled(Root)`
   transition: .8s background-color ${easeOutExpo};
 
   &:hover {
-    background-color: ${akColorN30};
+    background-color: ${akColorN20};
 
     .title {
       color: #0065FF;
@@ -34,7 +34,7 @@ export const SmallCard = styled(Root)`
     .title, .size {
       ${borderRadius}
       color: transparent;
-      background-color: ${akColorN30};
+      background-color: ${akColorN20};
       height: 10px;
     }
 
@@ -133,13 +133,14 @@ export const InfoWrapper = styled.div`
   position: relative;
   width: 0;
   flex: 1;
+  overflow: hidden;
 `;
 
 export const LoadingWrapper = styled.div`
   ${center}
   ${size()}
   color: #cfd4db;
-  background-color: ${akColorN30};
+  background-color: ${akColorN20};
 `;
 
 export const PlaceholderSmallWrapper = styled.div`

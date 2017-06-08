@@ -1,19 +1,23 @@
 import styled from 'styled-components';
 import {
   akBorderRadius,
-  akColorN0,
-  akColorN500,
-  akColorN900,
   akGridSize,
   akGridSizeUnitless,
   akElevationMixins,
 } from '@atlaskit/util-shared-styles';
-import { flagWidthUnitless, focusRingMixin } from './constants';
+import { focusRingMixin } from './constants';
+import { getAppearance } from '../shared-variables';
+import { getFocusRingStyle } from './CustomFocusButton';
+
+const getBackgroundColor = ({ appearance }) => getAppearance(appearance).backgroundColor;
+const getBodyColor = ({ appearance }) => getAppearance(appearance).bodyColor;
+const getTitleColor = ({ appearance }) => getAppearance(appearance).titleColor;
 
 export default styled.div`
-  background-color: ${akColorN0};
+  background-color: ${getBackgroundColor};
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
+  color: ${getBodyColor};
   display: flex;
   padding: ${akGridSizeUnitless * 2}px;
   width: 100%;
@@ -26,43 +30,56 @@ export default styled.div`
 export const Header = styled.div`
   display: flex;
 `;
+
 export const Title = styled.span`
+  color: ${getTitleColor};
   font-weight: 600;
-  flex: 1 0 auto;
-  max-width: ${flagWidthUnitless - (akGridSizeUnitless * 12)}px;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
+
 export const DismissButton = styled.button`
   appearance: none;
   background: none;
   border: none;
-  color: ${akColorN500};
+  border-radius: ${akBorderRadius};
+  color: ${getBodyColor};
   cursor: pointer;
   display: flex;
-  flex: 0 1 auto;
-  justify-content: flex-end;
-  margin: 0;
+  margin-left: ${akGridSize};
   padding: 0;
-  width: ${akGridSizeUnitless * 4}px;
+  white-space: nowrap;
 
-  &:hover {
-    color: ${akColorN900};
-  }
-
-  ${focusRingMixin}
+  ${getFocusRingStyle}
 `;
 
 // Content
 export const Content = styled.div`
-  flex: 1 1 auto;
+  display: flex;
+  flex: 1 1 100%;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
 `;
+
+export const Expander = styled.div`
+  max-height: ${({ isExpanded }) => (isExpanded ? 150 : 0)}px;
+  opacity: ${({ isExpanded }) => (isExpanded ? 1 : 0)};
+  overflow: ${({ isExpanded }) => (isExpanded ? 'visible' : 'hidden')};
+  transition: max-height 0.3s, opacity 0.3s;
+`;
+
 export const Description = styled.div`
-  color: ${akColorN500};
+  color: ${getBodyColor};
   margin-top: ${akGridSize};
 `;
+
 export const Icon = styled.div`
+  align-items: flex-start;
+  display: inline-flex;
   flex: 0 0 auto;
+  flex-direction: column;
   width: ${akGridSizeUnitless * 4}px;
 `;

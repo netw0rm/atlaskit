@@ -1,4 +1,7 @@
-import React, { PureComponent, PropTypes } from 'react';
+// @flow
+
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import Blanket from '@atlaskit/blanket';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
@@ -9,6 +12,8 @@ import DrawerPrimaryIcon from '../styled/DrawerPrimaryIcon';
 import DrawerMain from '../styled/DrawerMain';
 import DrawerContent from '../styled/DrawerContent';
 import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
+import { WithRootTheme } from '../../theme/util';
+import { container } from '../../theme/presets';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
@@ -70,21 +75,22 @@ export default class Drawer extends PureComponent {
       </DrawerMain>
     ) : null;
 
+    // Note: even though we are using WithRootTheme here, the Drawer appearance is not able
+    // to be customised via a preset or custom theme.
     return (
-      <div>
-        <div style={{ zIndex: 0, position: 'relative' }}>
+      <WithRootTheme provided={container}>
+        <div>
           <Blanket
             isTinted={isOpen}
             canClickThrough={!isOpen}
             onBlanketClicked={onBackButton}
           />
+          <DrawerInner isOpen={isOpen} width={width}>
+            {sidebar}
+            {content}
+          </DrawerInner>
         </div>
-        <DrawerInner isOpen={isOpen} width={width}>
-          {sidebar}
-          {content}
-        </DrawerInner>
-      </div>
+      </WithRootTheme>
     );
   }
 }
-

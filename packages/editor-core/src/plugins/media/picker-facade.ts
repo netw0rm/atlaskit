@@ -6,6 +6,8 @@ import {
   UploadParams,
 } from '@atlaskit/media-core';
 
+import { ErrorReportingHandler } from '../../utils';
+
 export type PickerEvent = {
   file: PickerEventFile,
   preview?: Blob
@@ -41,21 +43,27 @@ export type PickerEventError = {
 export default class PickerFacade {
   private picker: any;
   private onStartListeners: Array<(state: MediaState) => void> = [];
+  private errorReporter: ErrorReportingHandler;
+  private uploadParams: UploadParams;
 
   constructor(
     pickerType: string,
     uploadParams: UploadParams,
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
+    errorReporter: ErrorReportingHandler,
     mediaPickerFactory?: (pickerType: string, pickerConfig: any) => any
   ) {
+    this.errorReporter = errorReporter;
+    this.uploadParams = uploadParams;
+
     if (!mediaPickerFactory) {
       mediaPickerFactory = MediaPicker;
     }
 
     const picker = this.picker = mediaPickerFactory(
       pickerType,
-      this.buildPickerConfigFromContext(uploadParams, contextConfig)
+      this.buildPickerConfigFromContext(contextConfig)
     );
 
     picker.on('upload-start', this.handleUploadStart);
@@ -80,16 +88,23 @@ export default class PickerFacade {
 
     picker.removeAllListeners();
 
-    if (picker.teardown) {
-      picker.teardown();
-    } else if (picker.deactivate) {
-      picker.deactivate();
+    try {
+      if (picker.deactivate) {
+        picker.deactivate();
+      }
+
+      if (picker.teardown) {
+        picker.teardown();
+      }
+    } catch (ex) {
+      this.errorReporter.captureException(ex);
     }
 
     this.picker = null;
   }
 
   setUploadParams(params: UploadParams): void {
+    this.uploadParams = params;
     this.picker.setUploadParams(params);
   }
 
@@ -123,24 +138,30 @@ export default class PickerFacade {
     });
   }
 
+  upload(url: string, fileName: string): void {
+    if (this.picker.upload) {
+      this.picker.upload(url, fileName);
+    }
+  }
+
   onNewMedia(cb: (state: MediaState) => any) {
     this.onStartListeners.push(cb);
   }
 
-  private buildPickerConfigFromContext(uploadParams: UploadParams, context: ContextConfig) {
+  private buildPickerConfigFromContext(context: ContextConfig) {
     return {
-      uploadParams: uploadParams,
+      uploadParams: this.uploadParams,
       apiUrl: context.serviceHost,
       apiClientId: context.clientId,
-      container: this.getDropzoneContainer(uploadParams),
+      container: this.getDropzoneContainer(),
       tokenSource: { getter: (reject, resolve) => {
-        context.tokenProvider(uploadParams.collection).then(resolve, reject);
+        context.tokenProvider(this.uploadParams.collection).then(resolve, reject);
       }},
     };
   }
 
-  private getDropzoneContainer(uploadParams: UploadParams) {
-    const { dropzoneContainer } = uploadParams;
+  private getDropzoneContainer() {
+    const { dropzoneContainer } = this.uploadParams;
 
     return dropzoneContainer ? dropzoneContainer : document.body;
   }
@@ -153,7 +174,7 @@ export default class PickerFacade {
       status: 'uploading',
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     };
 
     this.stateManager.updateState(tempId, state as MediaState);
@@ -170,7 +191,7 @@ export default class PickerFacade {
       progress: progress ? progress.portion : undefined,
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 
@@ -184,7 +205,7 @@ export default class PickerFacade {
       status: 'processing',
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 
@@ -204,7 +225,7 @@ export default class PickerFacade {
       status: 'unfinalized',
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 
@@ -212,7 +233,9 @@ export default class PickerFacade {
     const { file, error } = event;
 
     if (!file || !file.id) {
-      console.error('Editor: Media: unknown upload-error received from Media Picker', error);
+      const err = new Error(`Media: unknown upload-error received from Media Picker: ${error && error.name}`);
+      this.errorReporter.captureException(err);
+
       return;
     }
 
@@ -224,7 +247,7 @@ export default class PickerFacade {
       error: error ? { description: error!.description, name: error!.name } : undefined,
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 
@@ -238,7 +261,7 @@ export default class PickerFacade {
       status: 'ready',
       fileName: file.name as string,
       fileSize: file.size as number,
-      fileType: file.type as string,
+      fileMimeType: file.type as string,
     });
   }
 

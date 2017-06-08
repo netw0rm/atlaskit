@@ -1,11 +1,10 @@
 import * as React from 'react';
-import * as styles from './styles';
-
-import { whoopsUri } from './icons';
+import { MentionListErrorStyle } from './styles';
+import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
 
 export default () => (
-  <div className={styles.mentionListError}>
-    <p><img src={whoopsUri} alt="whoops" /></p>
-    <p>Something went wrong</p>
-  </div>
+  <MentionListErrorStyle>
+    <div><EditorWarningIcon label="whoops" size="xlarge"/></div>
+    <div>Something went wrong</div>
+  </MentionListErrorStyle>
 );

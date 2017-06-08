@@ -208,7 +208,7 @@ export function toggleCodeBlock(): Command {
 
 export function setNormalText(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from : initialFrom } = state.selection;
+    const { $from: initialFrom } = state.selection;
     const currentBlock = initialFrom.parent;
 
     if (currentBlock.type !== state.schema.nodes.paragraph) {
@@ -223,7 +223,7 @@ export function setNormalText(): Command {
 
 export function toggleHeading(level: number): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from : initialFrom } = state.selection;
+    const { $from: initialFrom } = state.selection;
     const currentBlock = initialFrom.parent;
     const { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
@@ -343,7 +343,7 @@ export function createNewParagraphAbove(view: EditorView): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = false;
 
-    if (!canMoveUp(state)) {
+    if (!canMoveUp(state) && canCreateParagraphNear(state)) {
       createParagraphNear(view, append);
       return true;
     }
@@ -356,7 +356,7 @@ export function createNewParagraphBelow(view: EditorView): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = true;
 
-    if (!canMoveDown(state)) {
+    if (!canMoveDown(state) && canCreateParagraphNear(state)) {
       createParagraphNear(view, append);
       return true;
     }
@@ -385,6 +385,14 @@ function canMoveDown(state: EditorState<any>): boolean {
   }
 
   return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
+}
+
+function canCreateParagraphNear(state: EditorState<any>): boolean {
+  const { selection: { $from } } = state;
+  const node = $from.node($from.depth);
+  const insideCodeBlock = !!node && node.type === state.schema.nodes.codeBlock;
+  const isNodeSelection = state.selection instanceof NodeSelection;
+  return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
 function createParagraphNear(view: EditorView, append: boolean = true): void {
@@ -464,7 +472,7 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 
 function toggleNodeType(nodeType: NodeType): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    let { $from : selFrom } = state.selection;
+    let { $from: selFrom } = state.selection;
     const potentialNodePresent = selFrom.node(selFrom.depth - 1);
 
     // lift the node and convert to given nodeType

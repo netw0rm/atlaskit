@@ -8,7 +8,7 @@ import ConfigurableMentionPicker from './demo-configurable-mention-picker';
 let config;
 
 declare var require: {
-    <T>(path: string): T;
+  <T>(path: string): T;
 };
 
 interface DefaultExport {

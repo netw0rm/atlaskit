@@ -7,8 +7,15 @@ import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import ContainerHeader from '../src/components/js/ContainerHeader';
 import Spacer from '../src/components/js/Spacer';
 import { layout } from '../src/shared-variables';
+import * as presets from '../src/theme/presets';
 
 describe('<ContainerNavigation />', () => {
+  describe('props', () => {
+    it('should default theme to presets.container', () => {
+      expect(mount(<ContainerNavigation />).props().theme).to.equal(presets.container);
+    });
+  });
+
   describe('behaviour', () => {
     it('renders [data-__ak-navigation-container-closed="true"] if it is collapsed', () => {
       expect(mount(<ContainerNavigation isCollapsed />).getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(true);

@@ -19,6 +19,10 @@ import {
   mediaGroup,
   hardBreak,
   emoji,
+  table,
+  table_cell,
+  table_header,
+  table_row,
 
   // Marks
   link,
@@ -30,6 +34,7 @@ import {
   code,
   mentionQuery,
   emojiQuery,
+  textColor,
 } from '../schema';
 
 const nodesInOrder: SchemaBuiltInItem[] = [
@@ -49,7 +54,11 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'media', spec: media },
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'hardBreak', spec: hardBreak },
-  { name: 'emoji', spec: emoji }
+  { name: 'emoji', spec: emoji },
+  { name: 'table', spec: table },
+  { name: 'table_cell', spec: table_cell },
+  { name: 'table_row', spec: table_row },
+  { name: 'table_header', spec: table_header },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [
@@ -62,6 +71,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'code', spec: code },
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
+  { name: 'textColor', spec: textColor },
 ];
 
 function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}) {
@@ -94,6 +104,20 @@ function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpe
   }, items);
 }
 
+function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]: MarkSpec } {
+  const markKeys = Object.keys(marks);
+  markKeys.map(markKey => {
+    const mark = marks[markKey];
+    if (mark.excludes) {
+      mark.excludes = mark.excludes
+        .split(' ')
+        .filter(exMarkKey => markKeys.indexOf(exMarkKey) > -1)
+        .join(' ');
+    }
+  });
+  return marks;
+}
+
 /**
  * Creates a schema preserving order of marks and nodes.
  */
@@ -103,7 +127,7 @@ export function createSchema(config: SchemaConfig): Schema<any, any> {
   const marksConfig = Object.keys(customMarkSpecs || {}).concat(marks || []);
   return new Schema({
     nodes: addItems(nodesInOrder, nodesConfig, customNodeSpecs),
-    marks: addItems(marksInOrder, marksConfig, customMarkSpecs)
+    marks: fixExcludes(addItems(marksInOrder, marksConfig, customMarkSpecs))
   });
 }
 

@@ -9,8 +9,9 @@ import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
 import EmojiPreview from '../src/components/common/EmojiPreview';
 import ToneSelector from '../src/components/common/ToneSelector';
 import EmojiTypeAheadList from '../src/components/typeahead/EmojiTypeAheadList';
+import EmojiUploadPicker from '../src/components/common/EmojiUploadPicker';
 
-import { emojiPickerWidth } from '../src/shared-styles';
+import { emojiPickerWidth } from '../src/constants';
 import filters from '../src/util/filters';
 
 import RefreshableEmojiList from './demo-refreshable-emoji-list';
@@ -73,6 +74,22 @@ storiesOf(`${name}/Internal components`, module)
       <EmojiPreview emoji={longTongueEmoji} toneEmoji={toneEmoji} />
     </div>
   ))
+  .add('emoji preview with placeholder for media api', () => {
+    const emoji = {
+      ...longTongueEmoji,
+      representation: {
+        mediaPath: 'http://example.com/sample.png',
+        height: 24,
+        width: 24,
+      }
+    };
+
+    return (
+      <div style={borderedStyle} >
+        <EmojiPreview emoji={emoji} />
+      </div>
+    );
+  })
   .add('category selector', () => (
     <CategorySelector
       activeCategoryId="OBJECT"
@@ -86,6 +103,9 @@ storiesOf(`${name}/Internal components`, module)
   .add('picker footer', () => (
     <EmojiPickerFooter
       selectedEmoji={emojis[0]}
+      uploading={false}
+      onUploadEmoji={action('emoji uploaded')}
+      onUploadCancelled={action('emoji cancelled')}
     />
     ))
   .add('tone selector', () => (
@@ -111,6 +131,37 @@ storiesOf(`${name}/Internal components`, module)
         {emojis.map(emoji => {
           return (<span key={emoji.id}>{emoji.fallback} </span>);
         })}
+      </div>
+    );
+  })
+  .add('Emoji upload component', () => {
+    const styles = {
+      width: emojiPickerWidth,
+      border: '1px solid #ccc',
+      margin: '20px',
+    };
+    return (
+      <div style={styles}>
+        <EmojiUploadPicker
+          onUploadEmoji={action('emoji uploaded')}
+          onUploadCancelled={action('emoji cancelled')}
+        />
+      </div>
+    );
+  })
+  .add('Emoji upload component error', () => {
+    const styles = {
+      width: emojiPickerWidth,
+      border: '1px solid #ccc',
+      margin: '20px',
+    };
+    return (
+      <div style={styles}>
+        <EmojiUploadPicker
+          errorMessage="Unable to upload"
+          onUploadEmoji={action('emoji uploaded')}
+          onUploadCancelled={action('emoji cancelled')}
+        />
       </div>
     );
   });

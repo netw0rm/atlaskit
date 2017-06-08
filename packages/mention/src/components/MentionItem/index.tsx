@@ -1,14 +1,26 @@
 import * as React from 'react';
 import { MouseEvent } from '@types/react';
 import { PureComponent } from 'react';
-import * as styles from './styles';
-
-import * as classNames from 'classnames';
-
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
+import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
+import Tooltip from '@atlaskit/tooltip';
 
-import { HighlightDetail, Mention, OnMentionEvent, Presence } from '../../types';
+import {
+  AvatarStyle,
+  FullNameStyle,
+  InfoSectionStyle,
+  MentionItemStyle,
+  MentionNameStyle,
+  NameSectionStyle,
+  AccessSectionStyle,
+  RowStyle,
+  TimeStyle,
+} from './styles';
+
+type ReactComponentConstructor = new() => React.Component<any, any>;
+
+import { HighlightDetail, Mention, OnMentionEvent, Presence, UserAccessLevel } from '../../types';
 import { leftClick } from '../../util/mouse';
 
 interface Part {
@@ -16,7 +28,8 @@ interface Part {
   matches: boolean;
 }
 
-function renderHighlight(className?: string, value?: string, highlights?: HighlightDetail[], prefix?: string) {
+// tslint:disable:next-line variable-name
+function renderHighlight(ReactComponent: ReactComponentConstructor, value?: string, highlights?: HighlightDetail[], prefix?: string) {
   if (!value) {
     return null;
   }
@@ -56,7 +69,7 @@ function renderHighlight(className?: string, value?: string, highlights?: Highli
   }
 
   return (
-    <span className={className}>
+    <ReactComponent>
       {prefixText}
       {parts.map((part) => {
         if (part.matches) {
@@ -64,7 +77,7 @@ function renderHighlight(className?: string, value?: string, highlights?: Highli
         }
         return part.value;
       })}
-    </span>
+    </ReactComponent>
   );
 }
 
@@ -78,7 +91,7 @@ function renderLozenge(lozenge) {
 function renderTime(time) {
   if (time) {
     return (
-      <div className={styles.time}>{time}</div>
+      <TimeStyle>{time}</TimeStyle>
     );
   }
   return null;
@@ -107,14 +120,10 @@ export default class MentionItem extends PureComponent<Props, undefined> {
   }
 
   render() {
-    const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge } = this.props.mention;
+    const { mention, selected } = this.props;
+    const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge, accessLevel } = mention;
     const { status, time } = presence || {} as Presence;
-    const { selected } = this.props;
-    const classes = classNames({
-      'ak-mention-item': true,
-      [styles.mentionItem]: true,
-      [styles.selected]: selected,
-    });
+    const restricted = !!(accessLevel && UserAccessLevel[accessLevel] !== UserAccessLevel.CONTAINER);
 
     const nameHighlights = highlight && highlight.name;
     const nicknameHighlights = highlight && highlight.nickname;
@@ -123,27 +132,37 @@ export default class MentionItem extends PureComponent<Props, undefined> {
     const renderHighlights = nickname ? nicknameHighlights : nameHighlights;
 
     return (
-      <div
-        className={classes}
+      <MentionItemStyle
+        selected={selected}
         onMouseDown={this.onMentionSelected}
         onMouseMove={this.onMentionMenuItemMouseMove}
         data-mention-id={id}
         data-mention-name={mentionName}
       >
-        <div className={styles.row}>
-          <span className={styles.akAvatar}>
+        <RowStyle>
+          <AvatarStyle restricted={restricted}>
             <Avatar src={avatarUrl} size="medium" presence={status} />
-          </span>
-          <div className={styles.nameSection}>
-            {renderHighlight(styles.fullName, name, nameHighlights)}
-            {renderHighlight(styles.mentionName, renderName, renderHighlights, '@')}
-          </div>
-          <div className={styles.infoSection}>
+          </AvatarStyle>
+          <NameSectionStyle restricted={restricted}>
+            {renderHighlight(FullNameStyle, name, nameHighlights)}
+            {renderHighlight(MentionNameStyle, renderName, renderHighlights, '@')}
+          </NameSectionStyle>
+          <InfoSectionStyle restricted={restricted}>
             {renderLozenge(lozenge)}
             {renderTime(time)}
-          </div>
-        </div>
-      </div>
+          </InfoSectionStyle>
+          {restricted ?
+            <Tooltip
+                description={`${name} won't be notified as they have no access`}
+                position="left"
+            >
+              <AccessSectionStyle>
+                <LockCircleIcon label="No access"/>
+              </AccessSectionStyle>
+            </Tooltip> : null
+          }
+        </RowStyle>
+      </MentionItemStyle>
     );
   }
 }

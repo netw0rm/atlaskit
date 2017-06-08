@@ -1,17 +1,19 @@
 import Select from '@atlaskit/single-select';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 
 import { CodeBlockState } from '../../plugins/code-block';
 import { EditorView } from '../../prosemirror';
-import FloatingToolbar from '../FloatingToolbar';
+import ToolbarButton from '../ToolbarButton';
+import { FloatingToolbar } from './styles';
+
 import {
   createLanguageList,
   filterSupportedLanguages,
   findMatchedLanguage,
   NO_LANGUAGE
 } from './languageList';
-import * as styles from './styles';
 
 export interface Props {
   editorView: EditorView;
@@ -30,6 +32,7 @@ export interface State {
 
 export default class LanguagePicker extends PureComponent<Props, State> {
   items: object[];
+  selectRef: HTMLElement;
 
   constructor (props) {
     super(props);
@@ -54,14 +57,16 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  setLanguageSelectFocused = (event) => {
-    if (event.target.tagName.toLowerCase() === 'input') {
-      this.setState({
-        languageSelectFocused: true,
-      });
-    } else {
-      event.preventDefault();
-    }
+  setSelelectRef = (ref) => {
+    this.selectRef = ref;
+  }
+
+  onLanguageSelectMouseDown = (event) => {
+    this.selectRef.getElementsByTagName('input')[0].focus();
+    event.preventDefault();
+    this.setState({
+      languageSelectFocused: true,
+    });
   }
 
   resetLanguageSelectFocused = (event) => {
@@ -80,11 +85,11 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     if (toolbarVisible || languageSelectFocused) {
       return (
-        <FloatingToolbar target={element} align="left" autoPosition={true} className={styles.floatingToolbar}>
+        <FloatingToolbar target={element} align="left" autoPosition={true}>
           <div
             tabIndex={0}
-            className={styles.container}
-            onMouseDown={this.setLanguageSelectFocused}
+            ref={this.setSelelectRef}
+            onMouseDown={this.onLanguageSelectMouseDown}
             onBlur={this.resetLanguageSelectFocused}
           >
             <Select
@@ -94,6 +99,10 @@ export default class LanguagePicker extends PureComponent<Props, State> {
               onSelected={this.handleLanguageChange}
               defaultSelected={{ content: language, value: language }}
               placeholder="Select language"
+            />
+            <ToolbarButton
+              onClick={this.handleRemoveCodeBlock}
+              iconBefore={<RemoveIcon label="Reset block type" />}
             />
           </div>
         </FloatingToolbar>
@@ -127,6 +136,11 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     this.setState({
       toolbarVisible: true,
     });
+  }
+
+  private handleRemoveCodeBlock = () => {
+    this.props.pluginState.removeCodeBlock(this.props.editorView);
+    this.props.editorView.focus();
   }
 
   private optionToLanguage(languageOption: string): string | undefined {

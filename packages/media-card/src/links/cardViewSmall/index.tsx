@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Component} from 'react';
+import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
@@ -12,31 +12,41 @@ export interface LinkCardViewSmallProps {
   site?: string;
   thumbnailUrl?: string;
   loading?: boolean;
-  onClick?: (event: Event) => void;
   error?: string;
   actions?: Array<CardAction>;
+
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
 }
 
 export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
   render() {
-    const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onRetry, error} = this.props;
+    const {error, loading, linkUrl} = this.props;
+
+    return error || loading
+      ? this.getCardGenericViewSmall()
+      : <Href linkUrl={linkUrl}>{this.getCardGenericViewSmall()}</Href>;
+  }
+
+  private getCardGenericViewSmall(): JSX.Element {
+    const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onMouseEnter, onRetry, error} = this.props;
 
     return (
-      <Href linkUrl={linkUrl}>
-        <CardGenericViewSmall
-          title={title}
-          subtitle={site || linkUrl}
-          thumbnailUrl={thumbnailUrl}
-          width={width}
-          loading={loading}
-          actions={actions}
-          onClick={onClick}
-          error={error}
-          onRetry={onRetry}
-          mediaType={'image'}
-        />
-      </Href>
+      <CardGenericViewSmall
+        title={title}
+        subtitle={site || linkUrl}
+        thumbnailUrl={thumbnailUrl}
+        width={width}
+        loading={loading}
+        actions={actions}
+        error={error}
+        mediaType="image"
+
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onRetry={onRetry}
+      />
     );
   }
 }

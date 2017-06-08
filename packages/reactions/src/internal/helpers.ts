@@ -1,4 +1,5 @@
 import { EmojiId } from '@atlaskit/emoji';
+import { ReactionSummary } from '../reactions-resource';
 
 export const isLeftClick = event => (
   event.button === 0
@@ -39,5 +40,15 @@ const isEmojiId = (emojiId: EmojiId | string): emojiId is EmojiId => {
 };
 
 export const compareEmojiId = (l: string, r: string): number => {
-  return l > r ? 1 : 0;
+  return l.localeCompare(r);
+};
+
+export const sortReactions = (a: ReactionSummary, b: ReactionSummary) => {
+  if (a.count > b.count) {
+    return -1;
+  } else if (a.count < b.count) {
+    return 1;
+  } else {
+    return compareEmojiId(a.emojiId, b.emojiId);
+  }
 };

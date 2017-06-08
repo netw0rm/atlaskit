@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, defaultCollectionName} from '@atlaskit/media-test-helpers';
-import { CardList } from '../src';
+import { CardList, CardListEvent } from '../src';
 
 const wrongCollection = 'adfasdf';
 const wrongClientId = 'wrong-client-id';
@@ -17,7 +17,7 @@ const anotherAction = {
   type: -2,
   label: 'Some other action',
   handler: (item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
-    action('annotate')(item, collection);
+    action('Some other action')(item, collection);
   }
 };
 
@@ -166,13 +166,43 @@ storiesOf('CardList', {})
        }]}
      </StoryList>
    ))
-   .add('Custom actions dropdown', () => (
-     <CardList
-       context={context}
-       collectionName={defaultCollectionName}
-       actions={cardsActions}
-     />
-   ))
+   .add('Actions and exposed events', () => {
+     const cardClickHandler = (result: CardListEvent) => {
+       result.event.preventDefault();
+       action('click')([result.mediaCollectionItem, result.collectionName]);
+     };
+
+     const cardLists = [
+       {
+          title: 'Actions',
+          content: (
+            <CardList
+              context={context}
+              collectionName={defaultCollectionName}
+              actions={cardsActions}
+            />
+          )
+       },
+       {
+          title: 'onCardClick',
+          content: (
+            <CardList
+              context={context}
+              collectionName={defaultCollectionName}
+              onCardClick={cardClickHandler}
+            />
+          )
+       }
+     ];
+
+     return (
+       <div style={{margin: '40px'}}>
+         <StoryList>
+           {cardLists}
+         </StoryList>
+       </div>
+     );
+   })
    .add('Custom loading state', () => {
      const customLoadingComponent = <div>this is a custom loading...</div>;
      return <CardList
@@ -253,4 +283,54 @@ storiesOf('CardList', {})
       pageSize={10}
       height={500}
     />;
+  })
+  .add('Refresh cards', () => {
+
+    const sampleURLs = [
+      'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/s750x750/sh0.08/e35/18013123_289517061492259_5387236423503970304_n.jpg',
+      'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/sh0.08/e35/p750x750/17932355_1414135458643877_7397381955274145792_n.jpg',
+      'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/e35/17934651_290135948064496_9023380363640045568_n.jpg',
+      'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/e35/18013337_1868376446765095_7156944441888997376_n.jpg',
+      'https://instagram.fmel2-1.fna.fbcdn.net/t50.2886-16/17993161_923799904389578_6802183987235127296_n.mp4',
+      'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/18013865_724397224396655_6018996846838415360_n.jpg'
+    ];
+
+    const handleAddItem = () => {
+      const url = sampleURLs[Math.floor(Math.random() * sampleURLs.length)];
+      context.getUrlPreviewProvider(url).observable().subscribe(
+        metadata => context.addLinkItem(url, defaultCollectionName, metadata)
+      );
+    };
+
+    const handleRefresh = () => {
+      context.refreshCollection(defaultCollectionName, 10);
+    };
+
+    const RefreshDemo = (): JSX.Element => { // tslint:disable-line:variable-name
+      return (
+        <div style={{display: 'flex'}}>
+          <div style={{width: '25%'}}>
+            <CardList
+              context={context}
+              pageSize={10}
+              collectionName={defaultCollectionName}
+            />
+          </div>
+          <div style={{width: '25%'}}>
+            <CardList
+              context={context}
+              pageSize={10}
+              collectionName={defaultCollectionName}
+              cardAppearance="small"
+            />
+          </div>
+          <div>
+            <button onClick={handleAddItem}>Add an item to the collection</button>
+            <button onClick={handleRefresh}>Refresh the collection</button>
+          </div>
+        </div>
+      );
+    };
+
+    return <RefreshDemo />;
   });

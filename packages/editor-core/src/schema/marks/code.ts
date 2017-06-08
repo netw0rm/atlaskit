@@ -1,13 +1,20 @@
 import { MarkSpec } from '../../prosemirror';
 
 export const code: MarkSpec = {
-  excludes: 'em strike strong underline emojiQuery mentionQuery',
-  inclusive: false,
+  excludes: 'em strike strong underline emojiQuery mentionQuery textColor',
+  inclusive: true,
   parseDOM: [
-    { tag: 'code' },
-    { tag: 'tt' },
-    { style: 'font-family', getAttrs: value => value === 'monospace' && null },
-    { style: 'white-space', getAttrs: value => value === 'pre' && null }
+    { tag: 'code', preserveWhitespace: true },
+    { tag: 'tt', preserveWhitespace: true },
+    {
+      style: 'font-family',
+      preserveWhitespace: true,
+      getAttrs: (value: string) => (value.toLowerCase().indexOf('monospace') > -1) && null,
+    },
+    { style: 'white-space',
+      preserveWhitespace: true,
+      getAttrs: value => value === 'pre' && null
+    },
   ],
   toDOM(): [string, any] {
     return ['span', {

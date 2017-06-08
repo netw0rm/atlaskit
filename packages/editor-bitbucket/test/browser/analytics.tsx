@@ -130,7 +130,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.hyperlink.autoformatting with url format', () => {
-    insertText(editorView, 'www.google.com', 1);
+    insertText(editorView, 'www.google.com ', 1);
     expect(handler.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
   });
 
@@ -340,23 +340,24 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   [
-    'codeblock',
-    'blockquote',
-    'heading1',
-    'heading2',
-    'heading3',
-    'heading4',
-    'heading5',
-  ].forEach(blockTypeName => {
-    it(`atlassian.editor.format.${blockTypeName}.button`, () => {
+    { value: 'codeblock', name: 'Code block' },
+    { value: 'blockquote', name: 'Block quote' },
+    { value: 'heading1', name: 'Heading 1' },
+    { value: 'heading2', name: 'Heading 2' },
+    { value: 'heading3', name: 'Heading 3' },
+    { value: 'heading4', name: 'Heading 4' },
+    { value: 'heading5', name: 'Heading 5' },
+  ].forEach(blockType => {
+    it(`atlassian.editor.format.${blockType.value}.button`, () => {
       editor.find('ToolbarBlockType').find('AkButton').simulate('click');
       editor
+        .find('ToolbarBlockType')
         .find('Item')
-        .filterWhere(n => n.key() === blockTypeName)
+        .filterWhere(n => n.text() === blockType.name)
         .find('Element')
         .simulate('click');
 
-      expect(handler.calledWith(`atlassian.editor.format.${blockTypeName}.button`)).to.equal(true);
+      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(true);
     });
   });
 

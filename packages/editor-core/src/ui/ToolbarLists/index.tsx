@@ -12,6 +12,7 @@ import { EditorView } from '../../prosemirror';
 export interface Props {
   editorView: EditorView;
   pluginState: ListsState | FutureListsState;
+  disabled?: boolean;
 }
 
 export interface State {
@@ -56,7 +57,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           <ToolbarButton
             onClick={this.handleBulletListClick}
             selected={this.state.bulletListActive}
-            disabled={this.state.bulletListDisabled}
+            disabled={this.state.bulletListDisabled || this.props.disabled}
             title={tooltip(toggleBulletList)}
             iconBefore={<BulletListIcon label="Unordered list" />}
           />
@@ -66,7 +67,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           <ToolbarButton
             onClick={this.handleOrderedListClick}
             selected={this.state.orderedListActive}
-            disabled={this.state.orderedListDisabled}
+            disabled={this.state.orderedListDisabled || this.props.disabled}
             title={tooltip(toggleOrderedList)}
             iconBefore={<NumberListIcon label="Ordered list" />}
           />

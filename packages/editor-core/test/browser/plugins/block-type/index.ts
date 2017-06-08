@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { browser, Schema } from '../../../../src/prosemirror';
+import { browser } from '../../../../src/prosemirror';
 import {
   setTextSelection,
   setNodeSelection,
@@ -26,11 +26,10 @@ import {
   hr,
   ul,
   li,
-  nodes,
-  marks,
   hardBreak,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { createSchema } from '../../../../src/schema';
 
 import blockTypePlugins from '../../../../src/plugins/block-type';
 
@@ -257,6 +256,16 @@ describe('block-type', () => {
     expect(pluginState.currentBlockType.name).to.equal('normal');
   });
 
+  it('should be able to identify normal even if there are multiple blocks', () => {
+    const { pluginState } = editor(doc(p('te{<}xt'), p('text'), p('te{>}xt')));
+    expect(pluginState.currentBlockType.name).to.equal('normal');
+  });
+
+  it('should set currentBlockType to Other if there are blocks of multiple types', () => {
+    const { pluginState } = editor(doc(p('te{<}xt'), h1('text'), p('te{>}xt')));
+    expect(pluginState.currentBlockType.name).to.equal('other');
+  });
+
   it('should be able to identify heading1', () => {
     const { pluginState } = editor(doc(h1('te{<>}xt')));
     expect(pluginState.currentBlockType.name).to.equal('heading1');
@@ -421,16 +430,19 @@ describe('block-type', () => {
 
         context('when panel nodetype is not in schema', () => {
           it('corresponding keymaps should not work', () => {
-            const schema = {
-              nodes: { ...nodes },
-              marks: { ...marks },
-            } as Schema<any, any>;
+            const schema = createSchema({
+              nodes: [
+                'doc',
+                'paragraph',
+                'text',
+              ]
+            });
             delete schema.nodes.panel;
             const edit = (doc: any) => makeEditor({
               doc,
               plugins: blockTypePlugins(schema),
               place: fixture(),
-              schema: new Schema(schema),
+              schema,
             });
             const { editorView } = edit(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-9');
@@ -440,16 +452,18 @@ describe('block-type', () => {
 
         context('when blockquote nodetype is not in schema', () => {
           it('corresponding keymaps should not work', () => {
-            const schema = {
-              nodes: { ...nodes },
-              marks: { ...marks },
-            } as Schema<any, any>;
-            delete schema.nodes.blockquote;
+            const schema = createSchema({
+              nodes: [
+                'doc',
+                'paragraph',
+                'text',
+              ]
+            });
             const edit = (doc: any) => makeEditor({
               doc,
               plugins: blockTypePlugins(schema),
               place: fixture(),
-              schema: new Schema(schema),
+              schema,
             });
             const { editorView } = edit(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');
@@ -621,6 +635,16 @@ describe('block-type', () => {
 
         context('when selection is empty', () => {
           context('on a non nested structure', () => {
+            context('inside a paragraph', () => {
+              it('doesn not create a new paragraph above', () => {
+                const { editorView } = editor(doc(p('{<>}text')));
+
+                sendKeyToPm(editorView, 'ArrowUp');
+
+                expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+              });
+            });
+
             context('when cursor is in the middle of the first block node', () => {
               it('does not create a new paragraph above', () => {
                 const { editorView } = editor(doc(code_block()('te{<>}xt')));
@@ -657,7 +681,7 @@ describe('block-type', () => {
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
-                  expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', text: '@bar1' }))));
+                  expect(editorView.state.doc).to.deep.equal(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
                 });
               });
 

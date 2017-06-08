@@ -11,7 +11,6 @@ export const TickBox = styled.div`
   top: 8px;
   right: 8px;
   border-radius: 20px;
-  z-index: 20;
   color: #798599; // TODO FIL-3884: Align color with new design
   display: flex;
   opacity: 0;
@@ -20,6 +19,11 @@ export const TickBox = styled.div`
     opacity: 1;
     color: white;
     background-color: #0052CC; // TODO FIL-3884: Align with tickbox icons
+  }
+
+  // Enforce dimensions of "tick" icon
+  svg {
+    width: 14px;
   }
 `;
 
@@ -264,7 +268,7 @@ export const TitleWrapper = styled.div`
   line-height: 18px;
 `;
 
-export const FileSize = styled.div`
+export const Subtitle = styled.div`
   ${ellipsis('100px')}
   font-size: 12px;
   color: #5E6C84;

@@ -18,6 +18,7 @@ import {
   li,
   p,
   ul,
+  code,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -383,4 +384,15 @@ describe('emojis', () => {
     });
   });
 
+  describe('isEnabled', () => {
+    it('returns true when the emoji mark can be applied', () => {
+      const {pluginState} = editor(doc(p('te{<>}xt')));
+      expect(pluginState.isEnabled()).to.equal(true);
+    });
+
+    it('returns false when the emoji mark cannot be applied', () => {
+      const {pluginState} = editor(doc(p(code('te{<>}xt'))));
+      expect(pluginState.isEnabled()).to.equal(false);
+    });
+  });
 });

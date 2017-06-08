@@ -1,20 +1,18 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import Tooltip from '@atlaskit/tooltip';
-import DropdownList from '@atlaskit/droplist';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
+import DropdownMenu from '@atlaskit/dropdown-menu';
 import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
-import { analyticsDecorator as analytics } from '../../analytics';
+import { analyticsService } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import ToolbarButton from '../ToolbarButton';
 import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
-import * as styles from './styles';
+import { TriggerWrapper, ExpandIconWrapper } from './styles';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
+  isDisabled?: boolean;
   editorView: EditorView;
   softBlurEditor: () => void;
   focusEditor: () => void;
@@ -27,8 +25,8 @@ export interface State {
   codeActive?: boolean;
   codeDisabled?: boolean;
   codeHidden?: boolean;
-  strikeActive?: boolean;
-  strikeDisabled?: boolean;
+  strikethroughActive?: boolean;
+  strikethroughDisabled?: boolean;
   strikeHidden?: boolean;
   subscriptActive?: boolean;
   subscriptDisabled?: boolean;
@@ -64,125 +62,102 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     }
   }
 
+  private onOpenChange = (attrs: any) => {
+    // Hack for IE needed to prevent caret blinking above the opened dropdown.
+    if (attrs.isOpen) {
+      this.props.softBlurEditor();
+    } else {
+      this.props.focusEditor();
+    }
+
+    this.setState({
+      isOpen: attrs.isOpen,
+    });
+  }
+
   render() {
     const {
       isOpen,
       codeActive,
       codeDisabled,
-      codeHidden,
-      strikeActive,
-      strikeDisabled,
-      strikeHidden,
-      subscriptActive,
-      subscriptDisabled,
-      subscriptHidden,
-      superscriptActive,
-      superscriptDisabled,
-      superscriptHidden,
+      strikethroughActive,
+      strikethroughDisabled,
       clearFormattingDisabled,
     } = this.state;
-    const {
-      pluginStateTextFormatting,
-      pluginStateClearFormatting,
-    } = this.props;
-    const hasMarksInSchema = !codeHidden || !strikeHidden || !subscriptHidden || !superscriptHidden;
-    if ((pluginStateTextFormatting && hasMarksInSchema) || pluginStateClearFormatting) {
+
+    const items = this.createItems();
+    const toolbarButtonFactory = (disabled: boolean) => (
+      <ToolbarButton
+        selected={isOpen || codeActive || strikethroughActive}
+        disabled={disabled}
+        iconBefore={
+          <TriggerWrapper>
+            <AdvancedIcon label="Open or close advance text formatting dropdown"/>
+            <ExpandIconWrapper>
+              <ExpandIcon label="Open or close advance text formatting dropdown" />
+            </ExpandIconWrapper>
+          </TriggerWrapper>}
+      />
+    );
+
+    if (!this.props.isDisabled &&
+      !(codeDisabled && strikethroughDisabled && clearFormattingDisabled) &&
+      items[0].items.length > 0) {
       return (
-        <DropdownList
-          isOpen={isOpen}
-          onOpenChange={this.toggleOpen}
-          appearance="tall"
-          position="top left"
-          trigger={
-            <ToolbarButton
-              selected={isOpen || codeActive || strikeActive}
-              disabled={codeDisabled && strikeDisabled && clearFormattingDisabled}
-              iconBefore={
-                <div className={styles.triggerWrapper}>
-                  <AdvancedIcon label="Open or close advance text formatting dropdown" />
-                  <div className={styles.expandIcon}>
-                    <ExpandIcon label="Open or close advance text formatting dropdown" />
-                  </div>
-                </div>}
-            />
-          }
+        <DropdownMenu
+          items={items}
+          onItemActivated={this.onItemActivated}
+          onOpenChange={this.onOpenChange}
         >
-          {(pluginStateTextFormatting && hasMarksInSchema) && <Group>
-            {!codeHidden &&
-              <Tooltip position="right" description={tooltip(toggleCode)}>
-                <Item
-                  isActive={codeActive}
-                  isDisabled={codeDisabled}
-                  onActivate={this.handleCodeClick}
-                >
-                  <span>Code</span>
-                </Item>
-              </Tooltip>}
-            {!strikeHidden &&
-              <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
-                <Item
-                  isActive={strikeActive}
-                  isDisabled={strikeDisabled}
-                  onActivate={this.handleStrikeClick}
-                >
-                  <span>Strikethrough</span>
-                </Item>
-              </Tooltip>}
-            {!subscriptHidden &&
-              <Tooltip position="right" description="Toggle subscript">
-                <Item
-                  isActive={subscriptActive}
-                  isDisabled={subscriptDisabled}
-                  onActivate={this.handleSubscriptClick}
-                >
-                  <span>Subscript</span>
-                </Item>
-              </Tooltip>
-            }
-            {!superscriptHidden &&
-              <Tooltip position="right" description="Toggle superscript">
-                <Item
-                  isActive={superscriptActive}
-                  isDisabled={superscriptDisabled}
-                  onActivate={this.handleSuperscriptClick}
-                >
-                  <span>Superscript</span>
-                </Item>
-              </Tooltip>
-            }
-          </Group>}
-          {pluginStateClearFormatting &&
-            <Group>
-              <Tooltip position="right" description={tooltip(clearFormatting)}>
-                <Item
-                  isDisabled={clearFormattingDisabled}
-                  onActivate={this.handleClearFormattingClick}
-                >
-                  <span>Clear formatting</span>
-                </Item>
-              </Tooltip>
-            </Group>}
-        </DropdownList>
+          {toolbarButtonFactory(false)}
+        </DropdownMenu>
       );
     } else {
-      return null;
+      // span is a flex element
+      return (
+        <span>
+          <div>{toolbarButtonFactory(true)}</div>
+        </span>
+      );
     }
   }
 
-  private toggleOpen = () => {
-    const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
-    if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
+  private createItems = () => {
+    const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
+    let items: any[] = [];
 
-      if (!isOpen) {
-        this.props.softBlurEditor();
-      } else {
-        this.props.focusEditor();
+    if (pluginStateTextFormatting) {
+      const { codeHidden, strikeHidden, subscriptHidden, superscriptHidden } = this.state;
+      if (!codeHidden) {
+        this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode));
       }
-
-      this.setState({
-        isOpen: !isOpen,
-      });
+      if (!strikeHidden) {
+        this.addRecordToItems(items, 'Strikethrough', 'strikethrough', tooltip(toggleStrikethrough));
+      }
+      if (!subscriptHidden) {
+        this.addRecordToItems(items, 'Subscript', 'subscript', 'Toggle subscript');
+      }
+      if (!superscriptHidden) {
+        this.addRecordToItems(items, 'Superscript', 'superscript', 'Toggle superscript');
+      }
     }
+    if (pluginStateClearFormatting) {
+      this.addRecordToItems(items, 'Clear Formatting', 'clear', tooltip(clearFormatting));
+    }
+    return [{
+      items,
+    }];
+  }
+
+  private addRecordToItems = (items, content, value, tooltipDescription) => {
+    items.push({
+      content,
+      value,
+      isActive: this.state[`${value}Active`],
+      isDisabled: this.state[`${value}Disabled`],
+      tooltipDescription,
+      tooltipPosition: 'right',
+    });
   }
 
   private handlePluginStateTextFormattingChange = (pluginState: TextFormattingState) => {
@@ -191,8 +166,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       codeDisabled: pluginState.codeDisabled,
       codeHidden: pluginState.codeHidden,
 
-      strikeActive: pluginState.strikeActive,
-      strikeDisabled: pluginState.strikeDisabled,
+      strikethroughActive: pluginState.strikeActive,
+      strikethroughDisabled: pluginState.strikeDisabled,
       strikeHidden: pluginState.strikeHidden,
 
       subscriptActive: pluginState.subscriptActive,
@@ -211,58 +186,25 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     });
   }
 
-  @analytics('atlassian.editor.format.strikethrough.button')
-  private handleStrikeClick = () => {
-    if (!this.state.strikeDisabled) {
-      const { pluginStateTextFormatting } = this.props;
-      if (pluginStateTextFormatting) {
-        pluginStateTextFormatting.toggleStrike(this.props.editorView);
-      }
-      this.toggleOpen();
-    }
-  }
-
-  @analytics('atlassian.editor.format.subscript.button')
-  private handleSubscriptClick = () => {
-    if (!this.state.subscriptDisabled) {
-      const { pluginStateTextFormatting } = this.props;
-      if (pluginStateTextFormatting) {
-        pluginStateTextFormatting.toggleSubscript(this.props.editorView);
-      }
-      this.toggleOpen();
-    }
-  }
-
-  @analytics('atlassian.editor.format.superscript.button')
-  private handleSuperscriptClick = () => {
-    if (!this.state.subscriptDisabled) {
-      const { pluginStateTextFormatting } = this.props;
-      if (pluginStateTextFormatting) {
-        pluginStateTextFormatting.toggleSuperscript(this.props.editorView);
-      }
-      this.toggleOpen();
-    }
-  }
-
-  @analytics('atlassian.editor.format.code.button')
-  private handleCodeClick = () => {
-    if (!this.state.codeDisabled) {
-      const { pluginStateTextFormatting } = this.props;
-      if (pluginStateTextFormatting) {
-        pluginStateTextFormatting.toggleCode(this.props.editorView);
-      }
-      this.toggleOpen();
-    }
-  }
-
-  @analytics('atlassian.editor.format.clear.button')
-  private handleClearFormattingClick = () => {
-    if (!this.state.clearFormattingDisabled) {
-      const { pluginStateClearFormatting } = this.props;
-      if (pluginStateClearFormatting) {
-        pluginStateClearFormatting.clearFormatting(this.props.editorView);
-      }
-      this.toggleOpen();
+  private onItemActivated = ({ item }) => {
+    analyticsService.trackEvent(`atlassian.editor.format.${item.value}.button`);
+    const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
+    switch(item.value) {
+      case 'code':
+        pluginStateTextFormatting!.toggleCode(this.props.editorView);
+        break;
+      case 'strikethrough':
+        pluginStateTextFormatting!.toggleStrike(this.props.editorView);
+        break;
+      case 'subscript':
+        pluginStateTextFormatting!.toggleSubscript(this.props.editorView);
+        break;
+      case 'superscript':
+        pluginStateTextFormatting!.toggleSuperscript(this.props.editorView);
+        break;
+      case 'clear':
+        pluginStateClearFormatting!.clearFormatting(this.props.editorView);
+        break;
     }
   }
 }

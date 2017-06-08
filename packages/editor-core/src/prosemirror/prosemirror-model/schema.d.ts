@@ -28,6 +28,7 @@ export interface NodeSpec {
   defining?: boolean;
   toDOM?: (_0: Node) => {};
   parseDOM?: ParseRule[];
+  tableRole?: string;
 }
 
 export class NodeType {
@@ -54,7 +55,7 @@ export class MarkType {
   create(attrs?: { [key: string]: any }): Mark;
   removeFromSet(set: Mark[]): Mark[];
   isInSet(set: Mark[]): Mark | null;
-  excludes: MarkType;
+  excludes(type: MarkType): boolean;
 }
 
 export class Schema<N, M> {

@@ -288,10 +288,10 @@ describe('text-formatting', () => {
 
   describe('code', () => {
     context('when the cursor is right after the code mark', () => {
-      it('should be able to delete character with "Backspace" without entering into mark editing mode', () => {
+      it('should not be able to delete character with "Backspace" without entering into mark editing mode', () => {
         const { editorView, pluginState } = editor(doc(p( code('hell{<}o{>}') )));
         sendKeyToPm(editorView, 'Backspace');
-        expect(pluginState.codeActive).to.equal(false);
+        expect(pluginState.codeActive).to.equal(true);
       });
     });
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Card,
+  CardEvent,
   CardStatus,
   CardView,
   MediaIdentifier,
@@ -11,8 +12,8 @@ import {
   ContextConfig,
   ContextFactory,
   Context,
-  CardClick,
   CardDelete,
+  CardEventHandler,
   FileDetails,
   MediaProvider,
   MediaState,
@@ -26,7 +27,7 @@ import { EditorView, mediaStateKey } from '../../index';
 export interface Props extends Attributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
-  onDelete?: () => void;
+  onDelete?: CardEventHandler;
 }
 
 export interface State extends MediaState {
@@ -42,10 +43,10 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
   switch (state.status) {
     case 'ready':
     case 'unknown':
+    case 'unfinalized':
       return 'complete';
 
     case 'processing':
-    case 'unfinalized':
       return 'processing';
 
     case 'uploading':
@@ -61,6 +62,7 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
 
 export default class MediaComponent extends React.PureComponent<Props, State> {
   private thumbnailWm = new WeakMap();
+  private destroyed = false;
 
   state: State = {
     id: '',
@@ -86,6 +88,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   public componentWillUnmount() {
+    this.destroyed = true;
+
     const { editorView, id } = this.props;
 
     if (!editorView) {
@@ -114,8 +118,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleLinkCardViewClick(item: any, event: Event) {
-    event.preventDefault();
+  private handleLinkCardViewClick(result: CardEvent) {
+    result.event.preventDefault();
   }
 
   private renderLink() {
@@ -137,7 +141,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         metadata={previewDetails}
 
         // SharedCardProps
-        actions={[ CardClick(this.handleLinkCardViewClick) ]}
+        onClick={this.handleLinkCardViewClick}
       />;
     }
 
@@ -181,7 +185,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderPublicFile() {
     const { viewContext } = this.state;
-    const { id, collection, onDelete } = this.props;
+    const { collection, id, onDelete } = this.props;
 
     return (
       <Card
@@ -199,7 +203,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType} = state;
+    const { thumbnail, fileName, fileSize, fileType } = state;
     const { onDelete } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
@@ -243,8 +247,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaStateChange = (mediaState: MediaState) => {
+    if (this.destroyed) {
+      return;
+    }
+
     const newState = {
-      ...this.state,
       ...mediaState
     };
 
@@ -258,6 +265,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return;
     }
 
+    if (this.destroyed) {
+      return;
+    }
+
     const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
 
     if (!pluginState) {
@@ -265,11 +276,16 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     const { stateManager } = pluginState;
+    const mediaState = stateManager.getState(id);
 
     stateManager.subscribe(id, this.handleMediaStateChange);
-    this.setState({ ...this.state, mediaProvider });
+    this.setState({ mediaProvider, ...mediaState });
 
     mediaProvider.viewContext.then((context: ContextConfig | Context) => {
+      if (this.destroyed) {
+        return;
+      }
+
       if ('clientId' in (context as ContextConfig)) {
         context = ContextFactory.create(context as ContextConfig);
       }

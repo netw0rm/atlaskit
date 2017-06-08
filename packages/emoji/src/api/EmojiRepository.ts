@@ -5,7 +5,7 @@ import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 import CategorySelector from '../components/picker/CategorySelector';
-// import AsciiEmojiRecognisingTokenizer from '../search/AsciiEmojiRecognisingTokenizer';
+import { AsciiEmojiRecognisingTokenizer } from '../search/AsciiEmojiRecognisingTokenizer';
 
 export interface EmojiSearchResult {
   emojis: EmojiDescription[];
@@ -96,9 +96,10 @@ export default class EmojiRepository {
     this.initMaps();
     this.fullSearch = new Search('id');
     this.fullSearch.searchIndex = new UnorderedSearchIndex();
-    // this.fullSearch.tokenizer = new AsciiEmojiRecognisingTokenizer(new SimpleTokenizer());
+    this.fullSearch.tokenizer = new AsciiEmojiRecognisingTokenizer(new SimpleTokenizer());
     this.fullSearch.addIndex('name');
     this.fullSearch.addIndex('shortName');
+    this.fullSearch.addIndex('ascii');
     this.fullSearch.addDocuments(emojis);
   }
 
@@ -117,7 +118,9 @@ export default class EmojiRepository {
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[];
     if (query) {
+      console.log('PAC: searching for query = ' + query);
       filteredEmoji = this.fullSearch.search(query);
+      console.log('PAC: found ' + filteredEmoji.length + ' matching results.');
       this.sortFiltered(filteredEmoji, query);
     } else {
       filteredEmoji = this.emojis;

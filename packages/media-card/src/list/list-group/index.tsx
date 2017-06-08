@@ -10,17 +10,18 @@ import {
 export interface ListGroupProps {
   title: string;
   items: Array<MediaCollectionItem>;
-  buildCard: Function;
+  buildCard: (mediaItem: MediaCollectionItem, index: number) => JSX.Element | null;
 }
 
 export class ListGroup extends Component<ListGroupProps, {}> {
   render() {
     const {title, items, buildCard} = this.props;
 
-    const cards = items.map(buildCard);
-    (mediaItem: MediaCollectionItem, index: number) => {
-    });
+    if (items.length === 0) {
+      return null;
+    }
 
+    const cards = items.map(buildCard);
     return (
       <div>
         <Title>{title}</Title>

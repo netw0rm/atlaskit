@@ -154,7 +154,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     this.loadNextPage();
   }
 
-  render(): Array<JSX.Element> | JSX.Element {
+  render() {
     const {height} = this.props;
     const {loading, error, collection} = this.state;
     const emptyComponent = this.props.emptyComponent || EmptyComponent;
@@ -209,6 +209,9 @@ export class CardList extends Component<CardListProps, CardListState> {
         };
       });
 
+    const {cardAppearance, cardDimensions} = this.props;
+    const buildCard = this.createBuildCardMethod(cardActions, cardAppearance, cardDimensions);
+
     const items = this.addFakeTimesToItems(collection && collection.items);
     if (shouldGroupByDate) {
       const timeFrames = {
@@ -227,7 +230,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
       const currentEpoch = Date.now();
       const groupedItems = items.reduce((acc, item) => {
-        const itemAge = differenceInDays(currentEpoch, item.details.createdAt);
+        const itemAge = differenceInDays(currentEpoch, item.details.createdAt || currentEpoch);
 
         Object.keys(timeFrames).some(timeFrame => {
           if (timeFrames[timeFrame] >= itemAge) {
@@ -242,19 +245,33 @@ export class CardList extends Component<CardListProps, CardListState> {
       }, groups);
 
       const listGroups = Object.keys(groupedItems).map(title => {
+        const itemsInGroup = groupedItems[title];
+
         return (
-          <ListGroup title={title} />
+          <ListGroup key={title} title={title} items={itemsInGroup} buildCard={buildCard} />
         );
       });
 
-      return (
-        listGroups
-      );
+      return listGroups;
     }
 
-    const cards = items.map((mediaItem: MediaCollectionItem, index: number) => {
-      const {cardAppearance, cardDimensions} = this.props;
+    const cards = items.map(buildCard);
 
+    return (
+      <CSSTransitionGroup
+        transitionName="card-list-item"
+        transitionEnterTimeout={750}
+        transitionLeave={false}
+        component="div"
+        className="card-list"
+      >
+        {cards}
+      </CSSTransitionGroup>
+    );
+  }
+
+  private createBuildCardMethod = (cardActions, cardAppearance, cardDimensions?: CardDimensions) => {
+    const buildCard = (mediaItem: MediaCollectionItem, index: number) => {
       if (!mediaItem.details || !mediaItem.details.id) {
         return null;
       }
@@ -276,44 +293,10 @@ export class CardList extends Component<CardListProps, CardListState> {
           />
         </CardListItemWrapper>
       );
-    });
-
-    return (
-      <CSSTransitionGroup
-        transitionName="card-list-item"
-        transitionEnterTimeout={750}
-        transitionLeave={false}
-        component="div"
-        className="card-list"
-      >
-        {cards}
-      </CSSTransitionGroup>
-    );
-  }
-
-  private createBuildCardMethod() {
-    const buildCard = (mediaItem: MediaCollectionItem, index: number) => {
-      return (
-        <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
-          <MediaCard
-            provider={this.providersByMediaItemId[mediaItem.details.id]}
-            dataURIService={this.dataURIService}
-
-            appearance={cardAppearance}
-            dimensions={{
-              width: this.cardWidth,
-              height: cardDimensions && cardDimensions.height
-            }}
-
-            onClick={this.handleCardClick.bind(this, mediaItem)}
-            actions={cardActions(mediaItem)}
-          />
-        </CardListItemWrapper>
-      );
     };
 
+    return buildCard;
   }
-
 
   private addFakeTimesToItems(items: Array<MediaCollectionItem> | void): Array<MediaCollectionItem> {
     if (!items) {

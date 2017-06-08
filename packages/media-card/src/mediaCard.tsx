@@ -1,6 +1,8 @@
+
 import * as React from 'react';
 import {Component} from 'react';
 import {Observable, Subscription} from 'rxjs';
+import 'rxjs/add/operator/map';
 import {MediaItemType, MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardStatus} from '.';

@@ -7,6 +7,8 @@ import {
   MediaItem,
   MediaCollection,
   MediaCollectionItem,
+  MediaCollectionFileItem,
+  MediaCollectionLinkItem,
   Context,
   CollectionAction,
   DataUriService
@@ -271,10 +273,37 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private createBuildCardMethod = (cardActions, cardAppearance, cardDimensions?: CardDimensions) => {
+    const isMediaCollectionLinkItem = (mediaItem: MediaCollectionItem): mediaItem is MediaCollectionLinkItem => {
+      return mediaItem.type === 'link';
+    };
+
+    const isVideoOrAudioLink = (mediaItem: MediaCollectionItem): boolean => {
+      if (isMediaCollectionLinkItem(mediaItem)) {
+        const {resources} = mediaItem.details;
+        return !!(mediaItem.type === 'link' && resources && resources.file && resources.file.type &&
+          (resources.file.type.indexOf('video') === 0 || resources.file.type.indexOf('audio') === 0));
+      }
+
+      return false;
+    };
+
+    const isVideoOrAudioFile = (mediaItem: MediaCollectionItem): boolean => {
+      if (!isMediaCollectionLinkItem(mediaItem)) {
+        const mediaType = mediaItem.details.mediaType;
+        return !!(mediaType === 'video' || mediaType === 'audio');
+      }
+
+      return false;
+    };
+
     const buildCard = (mediaItem: MediaCollectionItem, index: number) => {
       if (!mediaItem.details || !mediaItem.details.id) {
         return null;
       }
+
+      const appearance = cardAppearance === 'image' && (isVideoOrAudioFile(mediaItem) || isVideoOrAudioLink(mediaItem))
+        ? undefined
+        : cardAppearance;
 
       return (
         <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
@@ -282,7 +311,7 @@ export class CardList extends Component<CardListProps, CardListState> {
             provider={this.providersByMediaItemId[mediaItem.details.id]}
             dataURIService={this.dataURIService}
 
-            appearance={cardAppearance}
+            appearance={appearance}
             dimensions={{
               width: this.cardWidth,
               height: cardDimensions && cardDimensions.height
@@ -359,7 +388,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
 
     if (cardAppearance === 'small') {
-      return '250px';
+      return '100%';
     }
 
     return undefined;

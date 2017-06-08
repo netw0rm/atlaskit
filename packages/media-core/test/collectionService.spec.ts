@@ -121,16 +121,41 @@ describe('MediaCollectionService', () => {
     it('should not cache the response if no cache object is provided', () => {
         const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId);
         const firstResponse = collectionService.getCollectionItems(collectionName)
-            .then( _ => {
+            .then(() => {
                 expect(requests.length).to.equal(1);
             });
         respond(JSON.stringify(Mocks.collectionItemsResponse));
 
         return firstResponse.then(() => {
-            collectionService.getCollectionItems(collectionName).then(() => {
-                expect(requests.length).to.equal(2);
-            });
+            const secondResponse = collectionService.getCollectionItems(collectionName)
+                .then(() => {
+                    expect(requests.length).to.equal(2);
+                });
             respond(JSON.stringify(Mocks.collectionItemsResponse), 200, undefined, 1);
+            return secondResponse;
+        });
+    });
+
+    it('should clear cache', () => {
+        const cache = new LRUCache<string, RemoteCollectionItemsResponse>(2);
+
+        const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId, cache);
+        const firstResponse = collectionService.getCollectionItems(collectionName)
+            .then(() => {
+                expect(requests.length).to.equal(1);
+            });
+        respond(JSON.stringify(Mocks.collectionItemsResponse));
+
+        return firstResponse.then(() => {
+
+            collectionService.clearCache(collectionName);
+
+            const secondResponse = collectionService.getCollectionItems(collectionName)
+                .then(() => {
+                    expect(requests.length).to.equal(2);
+                });
+            respond(JSON.stringify(Mocks.collectionItemsResponse), 200, undefined, 1);
+            return secondResponse;
         });
     });
 

@@ -1,11 +1,9 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
-    "outDir": "../../dist/es5",
-    "lib": ["dom", "es6"],
-    "target": "es5",
     "declaration": true,
-    "module": "umd"
+    "outDir": "../../dist/es2015",
+    "target": "es2015"
   },
   "include": [
     "../../src/**/*.ts",

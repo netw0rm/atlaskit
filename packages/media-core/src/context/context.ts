@@ -7,7 +7,7 @@ import { JwtTokenProvider, MediaItemType, MediaItem, UrlPreview } from '../';
 import { MediaDataUriService, DataUriService } from '../services/dataUriService';
 import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
-import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
+import { DEFAULT_COLLECTION_PAGE_SIZE, RemoteCollectionItemsResponse } from '../services/collectionService';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -39,9 +39,11 @@ class ContextImpl implements Context {
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly lruCache: LRUCache<string, MediaItem>;
+  private readonly lruCollectionCache: LRUCache<string, RemoteCollectionItemsResponse>;
 
   constructor(readonly config: ContextConfig) {
     this.lruCache = new LRUCache<string, MediaItem>(config.cacheSize || DEFAULT_CACHE_SIZE);
+    this.lruCollectionCache = new LRUCache<string, RemoteCollectionItemsResponse>(config.cacheSize || DEFAULT_CACHE_SIZE);
   }
 
   getMediaItemProvider(id: string, mediaItemType: MediaItemType, collectionName?: string, mediaItem?: MediaItem): MediaItemProvider {
@@ -70,7 +72,15 @@ class ContextImpl implements Context {
   }
 
   getMediaCollectionProvider(collectionName: string, pageSize: number = DEFAULT_COLLECTION_PAGE_SIZE): MediaCollectionProvider {
-    return RemoteMediaCollectionProviderFactory.fromPool(this.collectionPool, this.apiConfig, collectionName, this.config.clientId, pageSize);
+    return RemoteMediaCollectionProviderFactory.fromPool(
+      this.collectionPool,
+      this.apiConfig,
+      collectionName,
+      this.config.clientId,
+      pageSize,
+      'desc',
+      this.lruCollectionCache
+    );
   }
 
   getDataUriService(collectionName?: string): DataUriService {

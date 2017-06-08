@@ -93,6 +93,8 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
     const newItems: Array<MediaCollectionItem> = [];
     let nextInclusiveStartKey;
 
+    this.collectionService.clearCache(this.collectionName);
+
     const fetchNewItems = () => {
       this.collectionService.getCollectionItems(
         this.collectionName,

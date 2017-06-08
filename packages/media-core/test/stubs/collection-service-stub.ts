@@ -48,7 +48,8 @@ export class CollectionServiceStub {
       .returns(Promise.resolve(pages[index])));
 
     return {
-      getCollectionItems: stub
+      getCollectionItems: stub,
+      clearCache: sinon.stub()
     };
   }
 
@@ -69,5 +70,5 @@ export class CollectionServiceStub {
         occurrenceKey
       }
     };
-  };
+  }
 }

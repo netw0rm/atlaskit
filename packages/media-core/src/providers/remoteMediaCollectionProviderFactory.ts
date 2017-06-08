@@ -1,8 +1,9 @@
 import {MediaApiConfig} from '../config';
 import {RemoteMediaCollectionProvider} from './remoteMediaCollectionProvider';
-import {CollectionService, MediaCollectionService, SortDirection} from '../services/collectionService';
+import {CollectionService, MediaCollectionService, SortDirection, RemoteCollectionItemsResponse} from '../services/collectionService';
 import {mediaCollectionProviderFromPool} from './util/mediaCollectionProviderFromPool';
 import {Pool} from './util/pool';
+import {LRUCache} from 'lru-fast';
 
 export class RemoteMediaCollectionProviderFactory {
 
@@ -39,11 +40,12 @@ export class RemoteMediaCollectionProviderFactory {
     collectionName: string,
     clientId: string,
     pageSize: number,
-    sortDirection: SortDirection = 'desc'): RemoteMediaCollectionProvider {
+    sortDirection: SortDirection = 'desc',
+    cache?: LRUCache<string, RemoteCollectionItemsResponse>): RemoteMediaCollectionProvider {
 
     const poolId = [collectionName, pageSize, sortDirection].join('-');
     const createFn = () => {
-      const collectionService = new MediaCollectionService(config, clientId);
+      const collectionService = new MediaCollectionService(config, clientId, cache);
       return new RemoteMediaCollectionProvider(
         collectionService,
         collectionName,

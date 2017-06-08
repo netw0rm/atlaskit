@@ -115,6 +115,7 @@ describe('RemoteMediaCollectionProvider', () => {
 
     it('should fetch and not add any new items to the collection when there are no new items', done => {
       const getCollectionItems = sinon.stub();
+      const clearCache = sinon.stub();
 
       const firstPageItems = [{details: {id: 'd'}}, {details: {id: 'e'}}, {details: {id: 'f'}}];
 
@@ -130,7 +131,7 @@ describe('RemoteMediaCollectionProvider', () => {
       ;
 
       const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
-        {getCollectionItems},
+        {getCollectionItems, clearCache},
         defaultCollectionName,
         itemsPerPageCount,
         sortDirection
@@ -156,6 +157,7 @@ describe('RemoteMediaCollectionProvider', () => {
 
     it('should fetch and add new items from the first page to the collection when we have loaded the first page', done => {
       const getCollectionItems = sinon.stub();
+      const clearCache = sinon.stub();
 
       const firstPageItems = [{details: {id: 'd'}}, {details: {id: 'e'}}, {details: {id: 'f'}}];
       const newItems = [{details: {id: 'a'}}, {details: {id: 'b'}}, {details: {id: 'c'}}];
@@ -172,7 +174,7 @@ describe('RemoteMediaCollectionProvider', () => {
       ;
 
       const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
-        {getCollectionItems},
+        {getCollectionItems, clearCache},
         defaultCollectionName,
         itemsPerPageCount,
         sortDirection
@@ -198,6 +200,7 @@ describe('RemoteMediaCollectionProvider', () => {
 
     it('should fetch and add new items from the first page to the collection when we have loaded the first page and multiple items have the same ID', done => {
       const getCollectionItems = sinon.stub();
+      const clearCache = sinon.stub();
 
       const firstPageItems = [{details: {id: 'a', occurrenceKey: 'X'}}];
       const newItems = [{details: {id: 'a', occurrenceKey: 'Y'}}];
@@ -214,7 +217,7 @@ describe('RemoteMediaCollectionProvider', () => {
       ;
 
       const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
-        {getCollectionItems},
+        {getCollectionItems, clearCache},
         defaultCollectionName,
         itemsPerPageCount,
         sortDirection
@@ -240,6 +243,7 @@ describe('RemoteMediaCollectionProvider', () => {
 
     it('should fetch and add new items from the first page to the collection when we have loaded the second page', done => {
       const getCollectionItems = sinon.stub();
+      const clearCache = sinon.stub();
 
       const firstPageItems = [{details: {id: 'd'}}, {details: {id: 'e'}}, {details: {id: 'f'}}];
       const secondPageItems = [{details: {id: 'g'}}, {details: {id: 'h'}}, {details: {id: 'i'}}];
@@ -261,7 +265,7 @@ describe('RemoteMediaCollectionProvider', () => {
       ;
 
       const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
-        {getCollectionItems},
+        {getCollectionItems, clearCache},
         defaultCollectionName,
         itemsPerPageCount,
         sortDirection
@@ -299,6 +303,7 @@ describe('RemoteMediaCollectionProvider', () => {
 
     it('should fetch and add new items from the first two pages to the collection when we have loaded the first page', done => {
       const getCollectionItems = sinon.stub();
+      const clearCache = sinon.stub();
 
       const firstPageItems = [{details: {id: 'g'}}, {details: {id: 'h'}}, {details: {id: 'i'}}];
       const newItemsPage1 = [{details: {id: 'a'}}, {details: {id: 'b'}}, {details: {id: 'c'}}];
@@ -324,7 +329,7 @@ describe('RemoteMediaCollectionProvider', () => {
       ;
 
       const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
-        {getCollectionItems},
+        {getCollectionItems, clearCache},
         defaultCollectionName,
         itemsPerPageCount,
         sortDirection

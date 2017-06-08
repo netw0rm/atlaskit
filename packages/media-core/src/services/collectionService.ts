@@ -1,6 +1,7 @@
 import { MediaApiConfig } from '../config';
-import {MediaCollectionItem} from '../collection';
-import {Resources} from '../item';
+import { MediaCollectionItem } from '../collection';
+import { Resources } from '../item';
+import { LRUCache } from 'lru-fast';
 import createRequest from './util/createRequest';
 
 export const DEFAULT_COLLECTION_PAGE_SIZE: number = 10;
@@ -47,40 +48,25 @@ export interface CollectionService {
     inclusiveStartKey?: string,
     sortDirection?: SortDirection,
     details?: DetailsType): Promise<RemoteCollectionItemsResponse>;
+
+  clearCache(collectionName: string);
 }
 
 export type DetailsType = 'minimal' | 'full';
 
+type RequestParams = {
+  collectionName: string,
+  limit: number,
+  inclusiveStartKey?: string,
+  sortDirection?: SortDirection,
+  details?: DetailsType
+};
+
 export class MediaCollectionService implements CollectionService {
-
-  constructor(private config: MediaApiConfig, private clientId: string) {
-  }
-
-  private mapToMediaCollectionItem(item: RemoteCollectionItem): MediaCollectionItem {
-    const {id, type, occurrenceKey, details} = item;
-    if (type === 'file') {
-      const fileDetails = details as RemoteCollectionFileItemDetails;
-      return {
-        type: 'file',
-        details: {
-          id,
-          occurrenceKey,
-          ...fileDetails
-        }
-      };
-    } else {
-      const linkDetails = details as RemoteCollectionLinkItemDetails;
-      return {
-        type: 'link',
-        details: {
-          id,
-          type: 'link',
-          occurrenceKey,
-          title: linkDetails.title || '',
-          ...linkDetails
-        }
-      };
-    }
+  constructor(
+    private config: MediaApiConfig,
+    private clientId: string,
+    private cache?: LRUCache<string, RemoteCollectionItemsResponse>) {
   }
 
   getCollectionItems(
@@ -89,7 +75,39 @@ export class MediaCollectionService implements CollectionService {
     inclusiveStartKey?: string,
     sortDirection?: SortDirection,
     details?: DetailsType): Promise<RemoteCollectionItemsResponse> {
+    const params = { collectionName, limit, inclusiveStartKey, sortDirection, details };
+    const cachedCollectionItems = this.getCachedCollectionItems(params);
+    if (cachedCollectionItems) {
+      return Promise.resolve(cachedCollectionItems);
+    } else {
+      return this.getRemoteCollectionItems(params);
+    }
+  }
 
+  clearCache(collectionName: string) {
+    const cache = this.cache;
+    if (cache) {
+      cache.keys().forEach(key => {
+        if (key.indexOf(collectionName) === 0) {
+          cache.remove(key);
+        }
+      });
+    }
+  }
+
+  private cacheKey(params: RequestParams) {
+    const { collectionName, limit, inclusiveStartKey, sortDirection, details } = params;
+    return `${collectionName}-${limit}-${inclusiveStartKey}-${sortDirection}-${details}`;
+  }
+
+  private getCachedCollectionItems(params: RequestParams): RemoteCollectionItemsResponse | undefined {
+    if (this.cache) {
+      return this.cache.get(this.cacheKey(params));
+    }
+  }
+
+  private getRemoteCollectionItems(params: RequestParams): Promise<RemoteCollectionItemsResponse> {
+    const { collectionName, limit, inclusiveStartKey, sortDirection, details } = params;
     const request = createRequest({
       config: this.config,
       clientId: this.clientId,
@@ -105,13 +123,44 @@ export class MediaCollectionService implements CollectionService {
         sortDirection,
         details
       }
-    })
-      .then(response => {
+    }).then(({ data: { contents, nextInclusiveStartKey } }) => {
+      const response = {
+        items: contents.map(this.toMediaCollectionItem),
+        nextInclusiveStartKey
+      };
+
+      if (this.cache) {
+        this.cache.set(this.cacheKey(params), response);
+      }
+
+      return response;
+    });
+  }
+
+  private toMediaCollectionItem(item: RemoteCollectionItem): MediaCollectionItem {
+    const { id, occurrenceKey } = item;
+    switch (item.type) {
+      case 'file':
         return {
-          items: response.data.contents.map(this.mapToMediaCollectionItem),
-          nextInclusiveStartKey: response.data.nextInclusiveStartKey
+          type: 'file',
+          details: {
+            id,
+            occurrenceKey,
+            ...item.details
+          }
         };
-      })
-    ;
+
+      case 'link':
+        return {
+          type: 'link',
+          details: {
+            id,
+            type: 'link',
+            occurrenceKey,
+            title: item.details.title || '',
+            ...item.details
+          }
+        };
+    }
   }
 }

@@ -12,12 +12,14 @@ import {
   DataUriService
 } from '@atlaskit/media-core';
 import { CSSTransitionGroup } from 'react-transition-group';
+import * as differenceInDays from 'date-fns/difference_in_days';
 
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
 import { CardDimensions, CardListEvent, CardEvent } from '../index';
 import { Provider } from '../card';
 import { MediaCard } from '../mediaCard';
 import { InfiniteScroll } from './infiniteScroll';
+import { ListGroup } from './list-group';
 import { CardListItemWrapper, Spinner } from './styled';
 
 export interface CardListProps {
@@ -33,10 +35,11 @@ export interface CardListProps {
   onCardClick?: (result: CardListEvent) => void;
   actions?: Array<CollectionAction>;
 
-  /**
-   * Infinite scrolling is only enabled when height has also been specified.
-   */
+  // Infinite scrolling is only enabled when height has also been specified.
   useInfiniteScroll?: boolean;
+
+  // Group by recent items
+  shouldGroupByDate?: boolean;
 
   errorComponent?: JSX.Element;
   loadingComponent?: JSX.Element;
@@ -151,7 +154,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     this.loadNextPage();
   }
 
-  render(): JSX.Element {
+  render(): Array<JSX.Element> | JSX.Element {
     const {height} = this.props;
     const {loading, error, collection} = this.state;
     const emptyComponent = this.props.emptyComponent || EmptyComponent;
@@ -186,10 +189,10 @@ export class CardList extends Component<CardListProps, CardListState> {
     } else {
       return this.renderList();
     }
-
   }
 
-  private renderList(): JSX.Element {
+  private renderList(): Array<JSX.Element> | JSX.Element {
+    const { shouldGroupByDate } = this.props;
     const { collection } = this.state;
 
     const actions = this.props.actions || [];
@@ -204,36 +207,76 @@ export class CardList extends Component<CardListProps, CardListState> {
             }
           }
         };
-      })
-    ;
+      });
 
-    const cards = collection ? collection.items
-      .map((mediaItem: MediaCollectionItem, index: number) => {
-        const {cardAppearance, cardDimensions} = this.props;
+    const items = this.addFakeTimesToItems(collection && collection.items);
+    if (shouldGroupByDate) {
+      const timeFrames = {
+        'today': 0,
+        'yesterday': 1,
+        '3 days ago': 3,
+        'one month ago': 30
+      };
 
-        if (!mediaItem.details || !mediaItem.details.id) {
-          return null;
+      const groups = Object.keys(timeFrames).reduce(
+        (acc, key) => {
+          acc[key] = [];
+          return acc;
         }
+      , {});
 
+      const currentEpoch = Date.now();
+      const groupedItems = items.reduce((acc, item) => {
+        const itemAge = differenceInDays(currentEpoch, item.details.createdAt);
+
+        Object.keys(timeFrames).some(timeFrame => {
+          if (timeFrames[timeFrame] >= itemAge) {
+            acc[timeFrame].push(item);
+            return true;
+          }
+
+          return false;
+        });
+
+        return acc;
+      }, groups);
+
+      const listGroups = Object.keys(groupedItems).map(title => {
         return (
-          <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
-            <MediaCard
-              provider={this.providersByMediaItemId[mediaItem.details.id]}
-              dataURIService={this.dataURIService}
-
-              appearance={cardAppearance}
-              dimensions={{
-                width: this.cardWidth,
-                height: cardDimensions && cardDimensions.height
-              }}
-
-              onClick={this.handleCardClick.bind(this, mediaItem)}
-              actions={cardActions(mediaItem)}
-            />
-          </CardListItemWrapper>
+          <ListGroup title={title} />
         );
-      }) : null
-    ;
+      });
+
+      return (
+        listGroups
+      );
+    }
+
+    const cards = items.map((mediaItem: MediaCollectionItem, index: number) => {
+      const {cardAppearance, cardDimensions} = this.props;
+
+      if (!mediaItem.details || !mediaItem.details.id) {
+        return null;
+      }
+
+      return (
+        <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
+          <MediaCard
+            provider={this.providersByMediaItemId[mediaItem.details.id]}
+            dataURIService={this.dataURIService}
+
+            appearance={cardAppearance}
+            dimensions={{
+              width: this.cardWidth,
+              height: cardDimensions && cardDimensions.height
+            }}
+
+            onClick={this.handleCardClick.bind(this, mediaItem)}
+            actions={cardActions(mediaItem)}
+          />
+        </CardListItemWrapper>
+      );
+    });
 
     return (
       <CSSTransitionGroup
@@ -246,6 +289,48 @@ export class CardList extends Component<CardListProps, CardListState> {
         {cards}
       </CSSTransitionGroup>
     );
+  }
+
+  private createBuildCardMethod() {
+    const buildCard = (mediaItem: MediaCollectionItem, index: number) => {
+      return (
+        <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
+          <MediaCard
+            provider={this.providersByMediaItemId[mediaItem.details.id]}
+            dataURIService={this.dataURIService}
+
+            appearance={cardAppearance}
+            dimensions={{
+              width: this.cardWidth,
+              height: cardDimensions && cardDimensions.height
+            }}
+
+            onClick={this.handleCardClick.bind(this, mediaItem)}
+            actions={cardActions(mediaItem)}
+          />
+        </CardListItemWrapper>
+      );
+    };
+
+  }
+
+
+  private addFakeTimesToItems(items: Array<MediaCollectionItem> | void): Array<MediaCollectionItem> {
+    if (!items) {
+      return [];
+    }
+
+    const sixHours = 6 * 60 * 60 * 1000;
+
+    return items.map((item, i) => {
+      return {
+        type: item.type,
+        details: {
+          ...item.details,
+          createdAt: Date.now() - (sixHours * i)
+        }
+      };
+    }) as Array<MediaCollectionItem>;
   }
 
   private handleCardClick(oldItem: MediaCollectionItem, cardEvent: CardEvent) {

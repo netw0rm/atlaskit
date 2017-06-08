@@ -48,6 +48,7 @@ export const CardListItemWrapper = styled.div`
   }}
 
   padding-top: 5px;
+
   &:first-child {
     padding-top: 0;
   }
@@ -55,5 +56,4 @@ export const CardListItemWrapper = styled.div`
   &.card-list-item-enter.card-list-item-enter-active {
     animation: ${cardEntryAnimation} 0.75s forwards;
   }
-
 `;

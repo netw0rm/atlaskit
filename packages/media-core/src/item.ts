@@ -20,7 +20,7 @@ export interface FileDetails {
   size?: number;
   mimeType?: string;
   mediaType?: MediaType;
-  creationDate?: number; // timestamp in milliseconds from EPOCH
+  createdAt?: number; // timestamp in milliseconds from EPOCH
   processingStatus?: FileProcessingStatus;
   artifacts?: Object;
 }
@@ -32,6 +32,7 @@ export interface LinkItem {
 
 export interface LinkDetails extends UrlPreview {
   id: string;
+  createdAt?: number; // timestamp in milliseconds from EPOCH
 }
 
 export interface UrlPreview {

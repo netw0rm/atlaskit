@@ -35,6 +35,33 @@ const context = createStorybookContext();
 const wrongContext = createStorybookContext(wrongClientId);
 
 storiesOf('CardList', {})
+  .add('Grouped list', () => {
+    const groupedLists = [
+      {
+        title: 'Standard',
+        content: <CardList
+          context={context}
+          collectionName={defaultCollectionName}
+          shouldGroupByDate={true}
+          pageSize={5}
+        />
+      },
+      {
+        title: 'Infinite scroll',
+        content: <CardList
+          context={context}
+          collectionName={defaultCollectionName}
+          shouldGroupByDate={true}
+          pageSize={10}
+          height={500}
+        />
+      }
+    ];
+
+    return (
+      <StoryList>{groupedLists}</StoryList>
+    );
+  })
   .add('Normal cards', () => (
     <CardList
       context={context}
@@ -285,7 +312,6 @@ storiesOf('CardList', {})
     />;
   })
   .add('Refresh cards', () => {
-
     const sampleURLs = [
       'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/s750x750/sh0.08/e35/18013123_289517061492259_5387236423503970304_n.jpg',
       'https://instagram.fmel2-1.fna.fbcdn.net/t51.2885-15/sh0.08/e35/p750x750/17932355_1414135458643877_7397381955274145792_n.jpg',

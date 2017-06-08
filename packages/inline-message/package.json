@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-message",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "config": {
     "access": "public"
   },
@@ -31,7 +31,6 @@
     "@atlaskit/inline-message": "*",
     "@atlaskit/util-readme": "^1.0.0",
     "react-router-dom": "^4.0.0"
-
   },
   "peerDependencies": {
     "react": "^15.3.2",

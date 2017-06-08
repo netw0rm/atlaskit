@@ -190,9 +190,8 @@ export default (state: State = reset(), action: Action): State => {
       console.warn('cannot move forward when there is not previous location');
       return state;
     }
-
     const diff: ?Position = jumpForward(
-      previous.dragging.id,
+      previous.dragging.center,
       previous.impact.destination,
       state.draggableDimensions,
       state.droppableDimensions
@@ -208,8 +207,8 @@ export default (state: State = reset(), action: Action): State => {
     };
 
     const center: Position = {
-      x: previous.dragging.center.x + offset.x,
-      y: previous.dragging.center.y + offset.y,
+      x: previous.dragging.center.x + diff.x,
+      y: previous.dragging.center.y + diff.y,
     };
 
     // $ExpectError - flow does not play well with spread

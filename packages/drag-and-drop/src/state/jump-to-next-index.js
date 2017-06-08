@@ -1,6 +1,5 @@
 // @flow
 import type {
-  DraggableId,
   DraggableLocation,
   Dimension,
   DimensionMap,
@@ -9,12 +8,11 @@ import type {
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 
 const getDiff = (isMovingForward: boolean) => (
-  draggableId: DraggableId,
+  center: Position,
   location: DraggableLocation,
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap,
 ): ?Position => {
-  const draggableDimension: Dimension = draggableDimensions[draggableId];
   const droppableDimension: Dimension = droppableDimensions[location.droppableId];
   const currentIndex: number = location.index;
 
@@ -40,8 +38,8 @@ const getDiff = (isMovingForward: boolean) => (
   // want to move to the next dimension's center position
 
   const diff: Position = {
-    x: nextDimension.center.x - draggableDimension.center.x,
-    y: nextDimension.center.y - draggableDimension.center.y,
+    x: nextDimension.center.x - center.x,
+    y: nextDimension.center.y - center.y,
   };
 
   const directional: Position = {

@@ -57,7 +57,7 @@ describe('jump to next index', () => {
       };
 
       const point: ?Position = jumpForward(
-        draggable3.id,
+        draggable3.center,
         location,
         draggables,
         droppables,
@@ -78,7 +78,7 @@ describe('jump to next index', () => {
         };
 
         const result: ?Position = jumpForward(
-          draggable1.id,
+          draggable1.center,
           location,
           draggables,
           droppables,
@@ -100,7 +100,7 @@ describe('jump to next index', () => {
         };
 
         const result: ?Position = jumpForward(
-          draggable2.id,
+          draggable2.center,
           location,
           draggables,
           droppables,
@@ -119,7 +119,7 @@ describe('jump to next index', () => {
       };
 
       const point: ?Position = jumpBackward(
-        draggable1.id,
+        draggable1.center,
         location,
         draggables,
         droppables,
@@ -141,7 +141,7 @@ describe('jump to next index', () => {
         };
 
         const result: ?Position = jumpBackward(
-          draggable3.id,
+          draggable3.center,
           location,
           draggables,
           droppables,
@@ -164,7 +164,7 @@ describe('jump to next index', () => {
         };
 
         const result: ?Position = jumpBackward(
-          draggable2.id,
+          draggable2.center,
           location,
           draggables,
           droppables,

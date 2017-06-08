@@ -1,14 +1,13 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import {Component} from 'react';
-import * as cx from 'classnames';
-import {ImageCropper, OnLoadHandler} from '../image-cropper';
-import {Slider} from '../slider';
-import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText} from './styled';
 import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
 import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
 import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
+import {ImageCropper, OnLoadHandler} from '../image-cropper';
+import {Slider} from '../slider';
+import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText} from './styled';
 import {uploadPlaceholder} from './images';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
@@ -138,7 +137,7 @@ export class ImageNavigator extends Component<Props, State> {
   readFile(file: File) {
     const {type} = file;
 
-    // TODO: Show feedback about invalid file type
+    // TODO FIL-4342: Show feedback about invalid file type
     if (type.indexOf('image/') !== 0) { return; }
 
     const reader = new FileReader();
@@ -153,9 +152,8 @@ export class ImageNavigator extends Component<Props, State> {
   // Trick to have a nice <input /> appearance
   onUploadButtonClick = (e) => {
     const input = e.target.querySelector('#image-input');
-    if (!input) { return; }
 
-    input.click();
+    if (input) { input.click(); }
   }
 
   onFileChange = (e) => {
@@ -195,11 +193,10 @@ export class ImageNavigator extends Component<Props, State> {
 
   renderImageUploader() {
     const {isDroppingFile} = this.state;
-    const className = cx({isDroppingFile});
 
     return (
       <ImageUploader>
-        <DragZone className={className} onDragLeave={this.onDragLeave} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver} onDrop={this.onDrop}>
+        <DragZone isDroppingFile={isDroppingFile} onDragLeave={this.onDragLeave} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver} onDrop={this.onDrop}>
           <DragZoneImage src={uploadPlaceholder} alt="upload image" />
           <DragZoneText>Drag and drop your photos here</DragZoneText>
         </DragZone>

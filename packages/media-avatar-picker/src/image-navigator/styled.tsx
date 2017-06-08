@@ -10,7 +10,7 @@ const spin = keyframes`
 export const Container = styled.div`
   width: ${akGridSizeUnitless * 32}px;
   box-sizing: border-box;
-  * {box-sizing: border-box;}
+  *, *:before, *:after {box-sizing: border-box;}
 `;
 
 export const SliderContainer = styled.div`
@@ -34,9 +34,13 @@ export const ImageUploader = styled.div`
 `;
 const droppingAnimation = `
   border-color: #0e56c4;
-  background-color: #ddecfe;
   animation: ${spin} 8s linear infinite;
 `;
+
+export interface DragZoneProps {
+  isDroppingFile: boolean;
+}
+
 export const DragZone = styled.div`
   width: 200px;
   height: 200px;
@@ -46,8 +50,10 @@ export const DragZone = styled.div`
   justify-content: center;
   padding: 15px;
   position: relative;
+  border-radius: 100%;
+  transition: background-color .3s cubic-bezier(0.215, 0.61, 0.355, 1);
 
-  &:before {
+  &:after {
     content: '';
     border: 2px dashed #d0d6d0;
     border-radius: 100%;
@@ -56,14 +62,15 @@ export const DragZone = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    transition: border-color .3s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
-  &.isDroppingFile {
-    &:before {
+  ${(props: DragZoneProps) => props.isDroppingFile && `
+    background-color: #ddecfe;
+    &:after {
       ${droppingAnimation}
     }
-  }
+  ` || ''}
 `;
 
 export const DragZoneImage = styled.img`

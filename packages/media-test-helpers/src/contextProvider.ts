@@ -1,18 +1,18 @@
 import { StoryBookTokenProvider } from './tokenProvider';
-import { defaultCollectionName } from './collectionNames';
+import { collectionNames } from './collectionNames';
 import { ContextFactory, Context } from '@atlaskit/media-core';
 
 export const defaultClientId = '5a9812fc-d029-4a39-8a46-d3cc36eed7ab';
 export const defaultServiceHost = 'https://dt-api-filestore.internal.app.dev.atlassian.io';
 
 export const createStorybookContext = (clientId = defaultClientId, serviceHost = defaultServiceHost): Context => {
-  const tokenProvider = StoryBookTokenProvider.withAccess({
-    [`urn:filestore:collection:${defaultCollectionName}`]: [
-      'read',
-      'update'
-    ]
+  const scopes = {
+    'urn:filestore:file:*': ['read'],
+    'urn:filestore:chunk:*': ['read']
+  };
+  collectionNames.forEach(c => {
+    scopes[`urn:filestore:collection:${c}`] = ['read', 'update'];
   });
-  const context = ContextFactory.create({ clientId, serviceHost, tokenProvider });
-
-  return context;
+  const tokenProvider = StoryBookTokenProvider.withAccess(scopes);
+  return ContextFactory.create({ clientId, serviceHost, tokenProvider });
 };

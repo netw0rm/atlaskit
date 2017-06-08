@@ -2,7 +2,9 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import getDimension from '../get-dimension-util';
-import getDragImpact, { noImpact } from '../../../src/state/get-drag-impact';
+import getDragImpact from '../../../src/state/get-drag-impact';
+import noImpact from '../../../src/state/no-impact';
+
 import type {
   Dimension,
   DimensionMap,
@@ -73,16 +75,27 @@ describe('get drag impact', () => {
 
   describe('moving forward', () => {
     describe('not moved far enough', () => {
-      it('should have no drag impact', () => {
+      it('should return the starting position', () => {
         // moving forward - but not enough
         const newCenter: Position = {
-          x: draggable1.center.x,
-          y: draggable1.center.y + 1,
+          x: draggable2.center.x,
+          y: draggable2.center.y + 1,
+        };
+        const expected: DragImpact = {
+          movement: {
+            amount: 0,
+            draggables: [],
+            isMovingForward: true,
+          },
+          destination: {
+            droppableId: droppable.id,
+            index: 1,
+          },
         };
 
-        const impact: DragImpact = getDragImpact(newCenter, draggable1.id, draggables, droppables);
+        const impact: DragImpact = getDragImpact(newCenter, draggable2.id, draggables, droppables);
 
-        expect(impact).to.deep.equal(noImpact);
+        expect(impact).to.deep.equal(expected);
       });
     });
 
@@ -204,7 +217,7 @@ describe('get drag impact', () => {
   // same tests as moving forward
   describe('moving backward', () => {
     describe('not moved far enough', () => {
-      it('should have no drag impact', () => {
+      it('should return the initial location', () => {
         // moving the last item backward - but not enough
         const newCenter: Position = {
           x: draggable3.center.x,
@@ -213,7 +226,17 @@ describe('get drag impact', () => {
 
         const impact: DragImpact = getDragImpact(newCenter, draggable3.id, draggables, droppables);
 
-        expect(impact).to.deep.equal(noImpact);
+        expect(impact).to.deep.equal({
+          movement: {
+            amount: 0,
+            draggables: [],
+            isMovingForward: false,
+          },
+          destination: {
+            droppableId: droppable.id,
+            index: 2,
+          },
+        });
       });
     });
 

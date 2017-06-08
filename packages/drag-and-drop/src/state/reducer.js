@@ -11,9 +11,11 @@ import type { TypeId,
   Position,
   DragComplete,
 } from '../types';
-import getDragImpact, { noImpact } from './get-drag-impact';
-import getInitialLocation from './get-initial-location';
-import { moveForward, moveBackward } from './get-position-move';
+import getDragImpact from './get-drag-impact';
+import noImpact from './no-impact';
+import getCurrentLocation from './get-current-location';
+import { moveBackward } from './get-position-move';
+import { jumpForward } from './jump-to-next-index';
 
 const initialState: State = {
   draggableDimensions: {},
@@ -54,7 +56,6 @@ export default (state: State = initialState, action: Action): State => {
 
     const typeId: TypeId = action.payload;
 
-    console.log('about to request dimensions');
     return {
       ...state,
       requestDimensions: typeId,
@@ -68,11 +69,14 @@ export default (state: State = initialState, action: Action): State => {
 
     const { id, type, center, scroll, selection } = action.payload;
 
-    const source: ?DraggableLocation = getInitialLocation(
+    const impact: DragImpact = getDragImpact(
+      center,
       id,
       state.draggableDimensions,
       state.droppableDimensions,
     );
+
+    const source: ?DraggableLocation = impact.destination;
 
     if (!source) {
       console.error('lifting a draggable that is not inside a droppable');
@@ -99,7 +103,7 @@ export default (state: State = initialState, action: Action): State => {
       isProcessingLift: false,
       currentDrag: {
         dragging,
-        impact: noImpact,
+        impact,
       },
     };
   }
@@ -178,7 +182,58 @@ export default (state: State = initialState, action: Action): State => {
       return state;
     }
 
-    return moveForward(state);
+    const currentIndex: number = ((): number => {
+      // use the last known index
+      if (previous.impact.destination) {
+        return previous.impact.destination.index;
+      }
+      // if there is none: use the initial index
+      return previous.dragging.initial.source.index;
+    })();
+
+    const diff: ?Position = jumpForward(
+      currentIndex,
+      previous.dragging.id,
+      state.draggableDimensions,
+      state.droppableDimensions
+    );
+
+    if (!diff) {
+      return state;
+    }
+
+    const offset: Position = {
+      x: previous.dragging.offset.x + diff.x,
+      y: previous.dragging.offset.x + diff.y,
+    };
+
+    const center: Position = {
+      x: previous.dragging.center.x + offset.x,
+      y: previous.dragging.center.x + offset.y,
+    };
+
+    // $ExpectError - flow does not play well with spread
+    const dragging: Dragging = {
+      ...previous.dragging,
+      shouldAnimate: true,
+      center,
+      offset,
+    };
+
+    const impact: DragImpact = getDragImpact(
+      dragging.center,
+      dragging.id,
+      state.draggableDimensions,
+      state.droppableDimensions
+    );
+
+    return {
+      ...state,
+      currentDrag: {
+        dragging,
+        impact,
+      },
+    };
   }
 
   if (action.type === 'MOVE_BACKWARD') {

@@ -1,7 +1,7 @@
 // @flow
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import getInitialLocation from '../../../src/state/get-initial-location';
+import getCurrentLocation from '../../../src/state/get-current-location';
 import getDimension from '../get-dimension-util';
 import type { Dimension, DimensionMap, DraggableLocation } from '../../../src/types';
 
@@ -43,9 +43,9 @@ const draggables: DimensionMap = {
   [outside.id]: outside,
 };
 
-describe('get initial location', () => {
+describe('get current location', () => {
   it('return null if the draggable is not inside a droppable', () => {
-    const result: ?DraggableLocation = getInitialLocation(
+    const result: ?DraggableLocation = getCurrentLocation(
       outside.id,
       draggables,
       droppables,
@@ -60,7 +60,7 @@ describe('get initial location', () => {
       index: 1,
     };
 
-    const result: ?DraggableLocation = getInitialLocation(
+    const result: ?DraggableLocation = getCurrentLocation(
       inside2.id,
       draggables,
       droppables,

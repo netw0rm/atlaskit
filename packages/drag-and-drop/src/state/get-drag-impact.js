@@ -9,17 +9,7 @@ import type { DraggableId,
   Position } from '../types';
 import getDroppableOver from './get-droppable-over';
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
-
-const noMovement: DragMovement = {
-  draggables: [],
-  amount: 0,
-  isMovingForward: false,
-};
-
-export const noImpact: DragImpact = {
-  movement: noMovement,
-  destination: null,
-};
+import noImpact from './no-impact';
 
 // It is the responsiblity of this function to return
 // the impact of a drag
@@ -74,13 +64,12 @@ export default (
     })
     .map((dimension: Dimension): DroppableId => dimension.id);
 
-  // nothing has needed to move out of the way
-  if (!moved.length) {
-    return noImpact;
-  }
-
   const startIndex = insideDroppable.indexOf(draggingDimension);
   const index: number = (() => {
+    if (!moved.length) {
+      return startIndex;
+    }
+
     if (isMovingForward) {
       return startIndex + moved.length;
     }
@@ -88,7 +77,7 @@ export default (
     return startIndex - moved.length;
   })();
 
-  const amount = draggingDimension.height;
+  const amount = index !== startIndex ? draggingDimension.height : 0;
   const movement: DragMovement = {
     amount,
     draggables: moved,

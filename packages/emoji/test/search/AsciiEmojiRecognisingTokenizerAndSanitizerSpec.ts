@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import { SimpleTokenizer } from 'js-search';
-import { AsciiEmojiRecognisingTokenizer } from '../../src/search/AsciiEmojiRecognisingTokenizer';
+import { AsciiEmojiRecognisingTokenizerAndSanitizer, NoOpSanitizer } from '../../src/search/AsciiEmojiRecognisingTokenizerAndSanitizer';
 
 
-describe('AsciiEmojiRecognisingTokenizer', () => {
+describe('AsciiEmojiRecognisingTokenizerAndSanitizer', () => {
 
-  const tokenizer = new AsciiEmojiRecognisingTokenizer(new SimpleTokenizer());
+  const tokenizer = new AsciiEmojiRecognisingTokenizerAndSanitizer(
+    new SimpleTokenizer(),
+    new NoOpSanitizer());
 
   it('should not tokenize a string containing only an ascii emoji', () => {
     const smile = ':-)';

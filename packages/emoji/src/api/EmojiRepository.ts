@@ -1,11 +1,11 @@
-import { Search, SimpleTokenizer, UnorderedSearchIndex } from 'js-search';
+import { LowerCaseSanitizer, Search, SimpleTokenizer, UnorderedSearchIndex } from 'js-search';
 
 import { customCategory } from '../constants';
 import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 import CategorySelector from '../components/picker/CategorySelector';
-import { AsciiEmojiRecognisingTokenizer } from '../search/AsciiEmojiRecognisingTokenizer';
+import { AsciiEmojiRecognisingTokenizerAndSanitizer, NoOpSanitizer } from '../search/AsciiEmojiRecognisingTokenizerAndSanitizer';
 
 export interface EmojiSearchResult {
   emojis: EmojiDescription[];
@@ -96,7 +96,10 @@ export default class EmojiRepository {
     this.initMaps();
     this.fullSearch = new Search('id');
     this.fullSearch.searchIndex = new UnorderedSearchIndex();
-    this.fullSearch.tokenizer = new AsciiEmojiRecognisingTokenizer(new SimpleTokenizer());
+    this.fullSearch.tokenizer = new AsciiEmojiRecognisingTokenizerAndSanitizer(
+      new SimpleTokenizer(),
+      new LowerCaseSanitizer());
+    this.fullSearch.sanitizer = new NoOpSanitizer(); // the tokenizer does sanitizing as well
     this.fullSearch.addIndex('name');
     this.fullSearch.addIndex('shortName');
     this.fullSearch.addIndex('ascii');

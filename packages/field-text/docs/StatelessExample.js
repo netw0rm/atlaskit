@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { FieldText } from '@atlaskit/field-text';
+import { FieldTextStateless } from '@atlaskit/field-text';
 
 export default class Example extends PureComponent {
   state = {
@@ -10,7 +10,7 @@ export default class Example extends PureComponent {
 
   render() {
     return (
-      <FieldText
+      <FieldTextStateless
         label="Stateless Text Input Example"
         onChange={this.setValue}
         value={this.state.value}

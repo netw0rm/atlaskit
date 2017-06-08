@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Base, { Label } from '@atlaskit/field-base';
-import styles from './styles.less';
+import Input from '../styled/Input';
 
 export default class FieldText extends PureComponent {
   static propTypes = {
@@ -77,8 +77,7 @@ export default class FieldText extends PureComponent {
           invalidMessage={this.props.invalidMessage}
           isFitContainerWidthEnabled={this.props.shouldFitContainer}
         >
-          <input
-            className={styles.input}
+          <Input
             type={this.props.type}
             disabled={this.props.disabled}
             readOnly={this.props.isReadOnly}
@@ -91,7 +90,7 @@ export default class FieldText extends PureComponent {
             autoFocus={this.props.autoFocus}
             spellCheck={this.props.isSpellCheckEnabled}
             maxLength={this.props.maxLength}
-            ref={(input) => { this.input = input; }}
+            innerRef={(input) => { this.input = input; }}
           />
         </Base>
       </div>

@@ -133,6 +133,7 @@ export class MediaPluginState {
 
       this.notifyPluginStateSubscribers();
     }).catch(err => {
+      // tslint:disable-next-line:no-console
       console.error('Editor Media Provider promise was rejected. Media functionality will be disabled.', err);
       this.allowsPastingLinks = false;
       this.allowsUploads = false;

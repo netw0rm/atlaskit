@@ -205,6 +205,7 @@ storiesOf(name, module)
           editor.setFromHtml(textarea.value);
         } catch (e) {
           this.setState({ hasError: true });
+          // tslint:disable-next-line:no-console
           console.error('Error when setting from HTML', e);
         }
       }

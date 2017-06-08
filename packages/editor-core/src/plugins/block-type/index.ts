@@ -87,6 +87,7 @@ export class BlockTypeState {
     let context = this.findContext(name);
 
     if (!context) {
+      // tslint:disable-next-line:no-console
       console.warn(`Atlassian Editor: unknown editor context "${name}"`);
       context = this.availableContexts['default'];
     }

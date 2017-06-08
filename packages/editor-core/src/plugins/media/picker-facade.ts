@@ -212,6 +212,7 @@ export default class PickerFacade {
     const { file, error } = event;
 
     if (!file || !file.id) {
+      // tslint:disable-next-line:no-console
       console.error('Editor: Media: unknown upload-error received from Media Picker', error);
       return;
     }

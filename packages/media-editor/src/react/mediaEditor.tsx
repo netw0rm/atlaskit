@@ -168,6 +168,7 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
         const textDirection = ((window.getComputedStyle(this.outputArea).direction) as TextDirection) || defaultTextDirection;
 
         const config = {
+          // tslint:disable-next-line:no-console
           onCoreError: (message: string) => { console.error(message); },
           shapeParameters,
           initialTool,

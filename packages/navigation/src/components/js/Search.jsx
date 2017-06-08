@@ -5,7 +5,6 @@ import SearchBox from '../styled/SearchBox';
 import SearchFieldBaseInner from '../styled/SearchFieldBaseInner';
 import SearchInner from '../styled/SearchInner';
 import SearchInput from '../styled/SearchInput';
-import SearchResults from '../styled/SearchResults';
 
 export default class Search extends PureComponent {
   static propTypes = {
@@ -83,9 +82,7 @@ export default class Search extends PureComponent {
             </SearchFieldBaseInner>
           </FieldBase>
         </SearchBox>
-        <SearchResults>
-          {children}
-        </SearchResults>
+        {children}
       </SearchInner>
     );
   }

@@ -1,6 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import DefaultLogo, * as logos from '../src/';
+import DefaultLogo, * as logos from '../src';
 import { name } from '../package.json';
 
 describe(name, () => {

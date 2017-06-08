@@ -2,8 +2,14 @@ import React, { PureComponent } from 'react';
 import { mount, shallow } from 'enzyme';
 
 import { name } from '../package.json';
-import Icon, { size } from '../src/Icon';
-import styles from '../src/styles.less';
+import Icon, { size } from '../src';
+
+const sizeValues = {
+  small: '16px',
+  medium: '24px',
+  large: '32px',
+  xlarge: '48px',
+};
 
 describe(name, () => {
   describe('Icon', () => {
@@ -45,7 +51,8 @@ describe(name, () => {
       Object.values(size).forEach((s) => {
         it(`with value ${s}`, () => {
           const wrapper = shallow(<Icon glyph={empty} label="My icon" size={s} />);
-          expect((wrapper).hasClass((styles[s]))).to.equal(true);
+          expect(wrapper.props().style.height).to.equal(sizeValues[s]);
+          expect(wrapper.props().style.width).to.equal(sizeValues[s]);
         });
       });
     });
@@ -90,10 +97,10 @@ describe(name, () => {
       it('should set a click handler', () => {
         const handler = sinon.spy();
 
-        const wrapper = shallow(<Icon glyh={empty} label="My icon" onClick={handler} />);
+        const wrapper = shallow(<Icon glyph={empty} label="My icon" onClick={handler} />);
         expect(wrapper.prop('onClick')).to.equal(handler);
 
-        wrapper.find(`.${styles.iconBody}`).simulate('click');
+        wrapper.find('span').simulate('click');
         expect(handler.callCount).to.equal(1);
       });
     });

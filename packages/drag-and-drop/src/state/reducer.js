@@ -186,18 +186,14 @@ export default (state: State = reset(), action: Action): State => {
       return state;
     }
 
-    const currentIndex: number = ((): number => {
-      // use the last known index
-      if (previous.impact.destination) {
-        return previous.impact.destination.index;
-      }
-      // if there is none: use the initial index
-      return previous.initial.source.index;
-    })();
+    if (!previous.impact.destination) {
+      console.warn('cannot move forward when there is not previous location');
+      return state;
+    }
 
     const diff: ?Position = jumpForward(
-      currentIndex,
       previous.dragging.id,
+      previous.impact.destination,
       state.draggableDimensions,
       state.droppableDimensions
     );

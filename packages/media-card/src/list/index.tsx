@@ -212,50 +212,11 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     const {cardAppearance, cardDimensions} = this.props;
     const buildCard = this.createBuildCardMethod(cardActions, cardAppearance, cardDimensions);
-
-    const items = this.addFakeTimesToItems(collection && collection.items);
     if (shouldGroupByDate) {
-      const timeFrames = {
-        'today': 0,
-        'yesterday': 1,
-        '3 days ago': 3,
-        'one month ago': 30
-      };
-
-      const groups = Object.keys(timeFrames).reduce(
-        (acc, key) => {
-          acc[key] = [];
-          return acc;
-        }
-      , {});
-
-      const currentEpoch = Date.now();
-      const groupedItems = items.reduce((acc, item) => {
-        const itemAge = differenceInDays(currentEpoch, item.details.createdAt || currentEpoch);
-
-        Object.keys(timeFrames).some(timeFrame => {
-          if (timeFrames[timeFrame] >= itemAge) {
-            acc[timeFrame].push(item);
-            return true;
-          }
-
-          return false;
-        });
-
-        return acc;
-      }, groups);
-
-      const listGroups = Object.keys(groupedItems).map(title => {
-        const itemsInGroup = groupedItems[title];
-
-        return (
-          <ListGroup key={title} title={title} items={itemsInGroup} buildCard={buildCard} />
-        );
-      });
-
-      return listGroups;
+      return this.renderGroupedList(collection, buildCard);
     }
 
+    const items = this.addFakeTimesToItems(collection && collection.items);
     const cards = items.map(buildCard);
 
     return (
@@ -271,40 +232,57 @@ export class CardList extends Component<CardListProps, CardListState> {
     );
   }
 
+  private renderGroupedList(collection, buildCard) {
+    const items = this.addFakeTimesToItems(collection && collection.items);
+    const timeFrames = {
+      'today': 0,
+      'yesterday': 1,
+      '3 days ago': 3,
+      'one month ago': 30
+    };
+
+    const groups = Object.keys(timeFrames).reduce(
+      (acc, key) => {
+        acc[key] = [];
+        return acc;
+      }
+    , {});
+
+    const currentEpoch = Date.now();
+    const groupedItems = items.reduce((acc, item) => {
+      const itemAge = differenceInDays(currentEpoch, item.details.createdAt || currentEpoch);
+
+      Object.keys(timeFrames).some(timeFrame => {
+        if (timeFrames[timeFrame] >= itemAge) {
+          acc[timeFrame].push(item);
+          return true;
+        }
+
+        return false;
+      });
+
+      return acc;
+    }, groups);
+
+    const listGroups = Object.keys(groupedItems).map(title => {
+      const itemsInGroup = groupedItems[title];
+
+      return (
+        <ListGroup key={title} title={title} items={itemsInGroup} buildCard={buildCard} />
+      );
+    });
+
+    return <div>{listGroups}</div>;
+  }
+
   private createBuildCardMethod = (cardActions, cardAppearance, cardDimensions?: CardDimensions) => {
-    const isMediaCollectionLinkItem = (mediaItem: MediaCollectionItem): mediaItem is MediaCollectionLinkItem => {
-      return mediaItem.type === 'link';
-    };
-
-    const isVideoOrAudioLink = (mediaItem: MediaCollectionItem): boolean => {
-      if (isMediaCollectionLinkItem(mediaItem)) {
-        const {resources} = mediaItem.details;
-        return !!(mediaItem.type === 'link' && resources && resources.file && resources.file.type &&
-          (resources.file.type.indexOf('video') === 0 || resources.file.type.indexOf('audio') === 0));
-      }
-
-      return false;
-    };
-
-    const isVideoOrAudioFile = (mediaItem: MediaCollectionItem): boolean => {
-      if (!isMediaCollectionLinkItem(mediaItem)) {
-        const mediaType = mediaItem.details.mediaType;
-        return !!(mediaType === 'video' || mediaType === 'audio');
-      }
-
-      return false;
-    };
-
     const buildCard = (mediaItem: MediaCollectionItem, index: number) => {
       if (!mediaItem.details || !mediaItem.details.id) {
         return null;
       }
 
-      const appearance = cardAppearance === 'image' && (isVideoOrAudioFile(mediaItem) || isVideoOrAudioLink(mediaItem))
-        ? undefined
-        : cardAppearance;
-
-      const {onCardClick: consumersOnCardClick} = this.props;
+      const {onCardClick: consumersOnCardClick, context} = this.props;
+      const getFileBinary = mediaItem.type === 'file' ? context.getFileBinary : undefined;
 
       return (
         <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
@@ -312,7 +290,7 @@ export class CardList extends Component<CardListProps, CardListState> {
             provider={this.providersByMediaItemId[mediaItem.details.id]}
             dataURIService={this.dataURIService}
 
-            appearance={appearance}
+            appearance={cardAppearance}
             dimensions={{
               width: this.cardWidth,
               height: cardDimensions && cardDimensions.height
@@ -320,6 +298,8 @@ export class CardList extends Component<CardListProps, CardListState> {
 
             onClick={consumersOnCardClick && this.handleCardClick.bind(this, mediaItem)}
             actions={cardActions(mediaItem)}
+
+            getFileBinary={getFileBinary}
           />
         </CardListItemWrapper>
       );

@@ -5,8 +5,10 @@ import {CardAction, MediaType} from '@atlaskit/media-core';
 
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
 import {Menu, ErrorIcon, getCSSUnitValue} from '../../utils';
-import Widget from '../../utils/widget';
-import {AudioWidget} from '../../utils/cardAudioView/audioWidget';
+
+// Audio and video widget imports
+import {showAudioWidget, showVideoWidget} from '../../utils/widget';
+
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 export interface CardGenericViewSmallProps {
@@ -126,7 +128,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   }
 
   private getClickHandler = () => {
-    const {onClick, audioUrl} = this.props;
+    const {onClick, audioUrl, videoUrl} = this.props;
 
     if (onClick) {
       return onClick;
@@ -135,31 +137,33 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     if (audioUrl) {
       return this.makeAudioWidget;
     }
-  }
 
-  private makeAudioWidget = (evt): void => {
-    evt.preventDefault();
-    evt.stopPropagation();
-
-    const {title, audioUrl} = this.props;
-    const dimensions = {width: '200px', height: '150px'};
-
-    const options = {
-      dimensions,
-      enableResizing: false
-    };
-
-    if (audioUrl) {
-      audioUrl.then((audioSrc) => {
-        Widget.add(
-          <AudioWidget audioSrc={audioSrc} onClose={this.removeWidget} title={title} dimensions={dimensions} />,
-          options
-        );
-      });
+    if (videoUrl) {
+      return this.makeVideoWidget;
     }
   }
 
-  private removeWidget = (): void => {
-    Widget.remove();
+  private makeAudioWidget = (evt): void => {
+    const {title, audioUrl} = this.props;
+
+    if (!audioUrl) {
+      return;
+    }
+
+    evt.preventDefault();
+    evt.stopPropagation();
+    showAudioWidget({title, audioUrl});
+  }
+
+  private makeVideoWidget = (evt): void => {
+    const {title, videoUrl} = this.props;
+
+    if (!videoUrl) {
+      return;
+    }
+
+    evt.preventDefault();
+    evt.stopPropagation();
+    showVideoWidget({title, videoUrl});
   }
 }

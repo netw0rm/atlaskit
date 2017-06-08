@@ -179,7 +179,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private renderLinkCardImage(): JSX.Element {
     const { url, title, site } = this.urlPreview;
-    const { status, dimensions, actions, appearance, onClick, onMouseEnter } = this.props;
+    const { status, dimensions, actions, appearance, onClick, onMouseEnter, videoUrl, audioUrl } = this.props;
     const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return (
@@ -197,6 +197,9 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
         onClick={onClick}
         onMouseEnter={onMouseEnter}
+
+        audioUrl={audioUrl}
+        videoUrl={videoUrl}
       />
     );
   }

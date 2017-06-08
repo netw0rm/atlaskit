@@ -13,6 +13,9 @@ export interface FileCardViewSmallProps {
   loading?: boolean;
   error?: string;
 
+  videoUrl?: Promise<string>;
+  audioUrl?: Promise<string>;
+
   actions?: Array<CardAction>;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
@@ -25,7 +28,7 @@ export interface FileCardViewSmallState {
 
 export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCardViewSmallState> {
   render() {
-    const {error, mediaSize, mediaType, mediaName, dataURI, width, loading, actions, onClick, onMouseEnter, onRetry} = this.props;
+    const {error, mediaSize, mediaType, mediaName, dataURI, width, loading, actions, onClick, onMouseEnter, onRetry, videoUrl, audioUrl} = this.props;
     const subtitle = toHumanReadableMediaSize(mediaSize || 0);
 
     return <CardGenericViewSmall
@@ -36,6 +39,9 @@ export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCar
       thumbnailUrl={dataURI}
       width={width}
       loading={loading}
+
+      audioUrl={audioUrl}
+      videoUrl={videoUrl}
 
       actions={actions}
       onClick={onClick}

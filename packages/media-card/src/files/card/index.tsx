@@ -60,7 +60,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   private renderSmallView = (): JSX.Element => {
-    const {dimensions, dataURI, onClick} = this.props;
+    const {dimensions, dataURI, onClick, audioUrl, videoUrl} = this.props;
     const {name, mediaType, size} = this.details;
 
     return (
@@ -74,12 +74,15 @@ export class FileCard extends Component<FileCardProps, {}> {
         loading={this.isLoading}
         actions={this._getActions()}
         onClick={onClick}
+
+        audioUrl={audioUrl}
+        videoUrl={videoUrl}
       />
     );
   }
 
   private renderImageView = (): JSX.Element => {
-    const {dimensions, selectable, selected, dataURI, status, progress, onClick} = this.props;
+    const {dimensions, selectable, selected, dataURI, status, progress, onClick, audioUrl, videoUrl} = this.props;
     const {name, mediaType, size} = this.details;
 
     return (
@@ -96,6 +99,9 @@ export class FileCard extends Component<FileCardProps, {}> {
         onClick={onClick}
         status={status}
         progress={progress}
+
+        audioUrl={audioUrl}
+        videoUrl={videoUrl}
       />
     );
   }

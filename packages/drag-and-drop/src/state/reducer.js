@@ -204,12 +204,12 @@ export default (state: State = reset(), action: Action): State => {
 
     const offset: Position = {
       x: previous.dragging.offset.x + diff.x,
-      y: previous.dragging.offset.x + diff.y,
+      y: previous.dragging.offset.y + diff.y,
     };
 
     const center: Position = {
       x: previous.dragging.center.x + offset.x,
-      y: previous.dragging.center.x + offset.y,
+      y: previous.dragging.center.y + offset.y,
     };
 
     // $ExpectError - flow does not play well with spread

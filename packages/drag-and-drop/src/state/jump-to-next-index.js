@@ -36,16 +36,20 @@ const getDiff = (isMovingForward: boolean) => (
   const nextIndex = isMovingForward ? currentIndex + 1 : currentIndex - 1;
   const nextDimension: Dimension = insideDroppable[nextIndex];
 
-  // move 1/2 height of next dimension
-  const amount: number = (draggableDimension.height / 2) + (nextDimension.height / 2);
+  // Need to move into the slot that the next dimension previously took up.
+  // want to move to the next dimension's center position
 
-  // Currently not supporting horizontal movement
   const diff: Position = {
-    x: 0,
-    y: isMovingForward ? amount : -amount,
+    x: nextDimension.center.x - draggableDimension.center.x,
+    y: nextDimension.center.y - draggableDimension.center.y,
   };
 
-  return diff;
+  const directional: Position = {
+    x: isMovingForward ? diff.x : -diff.x,
+    y: isMovingForward ? diff.y : -diff.y,
+  };
+
+  return directional;
 };
 
 export const jumpForward = getDiff(true);

@@ -53,7 +53,7 @@ export default class DimensionPublisher extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.shouldPublish) {
+    if (!this.props.shouldPublish && nextProps.shouldPublish) {
       this.props.publish(this.getDimension());
     }
   }

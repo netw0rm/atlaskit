@@ -13,19 +13,8 @@ import type { TypeId,
   DragComplete,
 } from '../types';
 import getDragImpact from './get-drag-impact';
-import noImpact from './no-impact';
-import getCurrentLocation from './get-current-location';
 import { moveBackward } from './get-position-move';
 import { jumpForward } from './jump-to-next-index';
-
-const initialState: State = {
-  draggableDimensions: {},
-  droppableDimensions: {},
-  currentDrag: null,
-  complete: null,
-  requestDimensions: null,
-  isProcessingLift: false,
-};
 
 const shout = (message, ...rest) => {
   const key = `%c ${message}`;
@@ -33,9 +22,20 @@ const shout = (message, ...rest) => {
   console.log('payload:', ...rest);
 };
 
-const reset = () => initialState;
+const reset = (() => {
+  const initialState: State = {
+    draggableDimensions: {},
+    droppableDimensions: {},
+    currentDrag: null,
+    complete: null,
+    requestDimensions: null,
+    isProcessingLift: false,
+  };
 
-export default (state: State = initialState, action: Action): State => {
+  return (): State => initialState;
+})();
+
+export default (state: State = reset(), action: Action): State => {
   shout(`reducing ${action.type}`, action.payload ? action.payload : 'no payload');
 
   if (action.type === 'BEGIN_LIFT') {
@@ -45,7 +45,7 @@ export default (state: State = initialState, action: Action): State => {
     }
 
     return {
-      ...initialState,
+      ...reset(),
       isProcessingLift: true,
     };
   }
@@ -257,7 +257,12 @@ export default (state: State = initialState, action: Action): State => {
     }
 
     const { impact, dragging, initial } = state.currentDrag;
-    const last: CurrentDrag = state.currentDrag;
+    const last: ?CurrentDrag = state.currentDrag;
+
+    if (!last) {
+      console.error('finishing drag without having started a drag');
+      return reset();
+    }
 
     // TODO: need to consider movement between two lists
     // (could impact both x and y values)
@@ -275,22 +280,36 @@ export default (state: State = initialState, action: Action): State => {
       console.log('animation is not required');
     }
 
+    const destination: ?DraggableLocation = (() => {
+      // dropping outside of a list
+      if (!impact.destination) {
+        return null;
+      }
+
+      // if nothing has moved - return null as the destination
+      const hasNotMoved =
+        impact.destination.droppableId === initial.source.droppableId &&
+        impact.destination.index === initial.source.index;
+
+      return hasNotMoved ? null : impact.destination;
+    })();
+
     const result: DragResult = {
       draggableId: dragging.id,
       source: initial.source,
-      destination: impact.destination,
+      destination,
     };
 
     const complete: DragComplete = {
       result,
-      last: state.currentDrag,
+      last,
       newHomeOffset: offset,
       isWaitingForAnimation: isAnimationRequired,
     };
 
     // clear the state and add a drag result
     return {
-      ...initialState,
+      ...reset(),
       complete,
     };
   }

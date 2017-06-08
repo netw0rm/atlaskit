@@ -40,7 +40,6 @@ const getFireHooks = (hooks: Hooks) => (state: State, previous: State): void => 
     if (!state.complete) {
       return;
     }
-    // TODO: do not return the result of the index is the same as the starting index
 
     onDragEnd(state.complete.result);
     return;

@@ -55,13 +55,13 @@ export type Dragging = {|
   type: TypeId,
   offset: Position,
   center: Position,
-  initial: DraggingInitial,
   shouldAnimate: boolean,
 |}
 
 export type CurrentDrag = {|
   dragging: Dragging,
-  impact: DragImpact
+  impact: DragImpact,
+  initial: DraggingInitial,
 |}
 
 export type DragResult = {|

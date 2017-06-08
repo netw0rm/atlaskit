@@ -5,6 +5,7 @@ import type { TypeId,
   Dimension,
   DragImpact,
   Dragging,
+  DraggingInitial,
   DragResult,
   CurrentDrag,
   DraggableLocation,
@@ -83,19 +84,20 @@ export default (state: State = initialState, action: Action): State => {
       return reset();
     }
 
+    const initial: DraggingInitial = {
+      source,
+      center,
+      scroll,
+      selection,
+      dimension: state.draggableDimensions[id],
+    };
+
     const dragging: Dragging = {
       id,
       type,
       offset: { x: 0, y: 0 },
       center,
       shouldAnimate: false,
-      initial: {
-        source,
-        center,
-        scroll,
-        selection,
-        dimension: state.draggableDimensions[id],
-      },
     };
 
     return {
@@ -104,6 +106,7 @@ export default (state: State = initialState, action: Action): State => {
       currentDrag: {
         dragging,
         impact,
+        initial,
       },
     };
   }
@@ -172,6 +175,7 @@ export default (state: State = initialState, action: Action): State => {
       currentDrag: {
         dragging,
         impact,
+        initial: previous.initial,
       },
     };
   }
@@ -188,7 +192,7 @@ export default (state: State = initialState, action: Action): State => {
         return previous.impact.destination.index;
       }
       // if there is none: use the initial index
-      return previous.dragging.initial.source.index;
+      return previous.initial.source.index;
     })();
 
     const diff: ?Position = jumpForward(
@@ -232,6 +236,7 @@ export default (state: State = initialState, action: Action): State => {
       currentDrag: {
         dragging,
         impact,
+        initial: previous.initial,
       },
     };
   }
@@ -251,7 +256,7 @@ export default (state: State = initialState, action: Action): State => {
       return reset();
     }
 
-    const { impact, dragging } = state.currentDrag;
+    const { impact, dragging, initial } = state.currentDrag;
     const last: CurrentDrag = state.currentDrag;
 
     // TODO: need to consider movement between two lists
@@ -272,7 +277,7 @@ export default (state: State = initialState, action: Action): State => {
 
     const result: DragResult = {
       draggableId: dragging.id,
-      source: dragging.initial.source,
+      source: initial.source,
       destination: impact.destination,
     };
 

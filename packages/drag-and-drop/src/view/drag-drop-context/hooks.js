@@ -20,14 +20,20 @@ const getFireHooks = (hooks: Hooks) => (state: State, previous: State): void => 
   // 1. Now dragging
   // 2. was previously not dragging
   if (onDragStart && state.currentDrag && !previous.currentDrag) {
-    const dragging: Dragging = state.currentDrag.dragging;
-    onDragStart(dragging.id, dragging.initial.source);
+    const { dragging, initial } = state.currentDrag;
+    onDragStart(dragging.id, initial.source);
     return;
   }
 
   // Drag end
-  const isComplete: boolean = Boolean(state.complete && !state.complete.isWaitingForAnimation);
-  const wasComplete: boolean = Boolean(previous.complete && !previous.complete.isWaitingForAnimation);
+  const isComplete: boolean = Boolean(
+    state.complete &&
+    !state.complete.isWaitingForAnimation
+  );
+  const wasComplete: boolean = Boolean(
+    previous.complete &&
+    !previous.complete.isWaitingForAnimation
+  );
 
   if (onDragEnd && isComplete && !wasComplete) {
     // will never happen - but doing it for flow
@@ -47,7 +53,7 @@ const getFireHooks = (hooks: Hooks) => (state: State, previous: State): void => 
   if (onDragEnd && !state.currentDrag && !state.complete && previous.currentDrag) {
     const result: DragResult = {
       draggableId: previous.currentDrag.dragging.id,
-      source: previous.currentDrag.dragging.initial.source,
+      source: previous.currentDrag.initial.source,
       destination: null,
     };
     onDragEnd(result);

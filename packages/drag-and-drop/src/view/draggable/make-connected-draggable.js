@@ -91,7 +91,7 @@ const makeSelector = (provide: Provide) => {
             isDropAnimating: true,
             offset: complete.newHomeOffset,
             // TODO: is this needed?
-            initial: last.dragging.initial,
+            initial: last.initial,
           };
         }
 
@@ -124,7 +124,7 @@ const makeSelector = (provide: Provide) => {
       // item is dragging
       if (currentDrag.dragging.id === id) {
         const offset = currentDrag.dragging.offset;
-        const initial = currentDrag.dragging.initial;
+        const initial = currentDrag.initial;
         const canAnimate = currentDrag.dragging.shouldAnimate;
 
         invariant(isDragEnabled, 'drag cannot be disabled for the dragging item');

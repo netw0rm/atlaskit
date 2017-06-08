@@ -57,8 +57,8 @@ const positionMove = (isMovingFoward: boolean) => (state: State): State => {
     y: previous.dragging.offset.y + diff.y,
   };
   const center: Position = {
-    x: previous.dragging.initial.center.x + offset.x,
-    y: previous.dragging.initial.center.y + offset.y,
+    x: previous.initial.center.x + offset.x,
+    y: previous.initial.center.y + offset.y,
   };
 
   // $ExpectError - flow does not play well with spread

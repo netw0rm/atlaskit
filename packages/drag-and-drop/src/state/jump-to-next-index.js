@@ -14,7 +14,10 @@ const getDiff = (isMovingForward: boolean) => (
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap,
 ): ?Position => {
+  throw new Error('not yet implemented');
+
   const draggableDimension: Dimension = draggableDimensions[draggableId];
+  // TODO: fix line
   const droppableDimension: Dimension = droppableDimensions[location.droppableId];
 
   const insideDroppable: Dimension[] = getDraggablesInsideDroppable(

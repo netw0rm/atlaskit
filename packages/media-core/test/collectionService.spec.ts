@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { useFakeXMLHttpRequest, SinonFakeXMLHttpRequest } from 'sinon';
-import { MediaCollectionService, DEFAULT_COLLECTION_PAGE_SIZE } from '../src/services/collectionService';
+import { MediaCollectionService, RemoteCollectionItemsResponse, DEFAULT_COLLECTION_PAGE_SIZE } from '../src/services/collectionService';
 import { MediaApiConfig } from '../src/config';
+import {LRUCache} from 'lru-fast';
 
 const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';
@@ -12,6 +13,7 @@ const config = {
     serviceHost,
     tokenProvider: () => Promise.resolve(token)
 } as MediaApiConfig;
+
 
 describe('MediaCollectionService', () => {
     let xhr: SinonFakeXMLHttpRequest;
@@ -97,6 +99,41 @@ describe('MediaCollectionService', () => {
 
         return response;
     });
+
+    it('should cache the response if cache object is provided', () => {
+        const cache = new LRUCache<string, RemoteCollectionItemsResponse>(2);
+
+        const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId, cache);
+        const firstResponse = collectionService.getCollectionItems(collectionName)
+            .then( _ => {
+                expect(requests.length).to.equal(1);
+            });
+        respond(JSON.stringify(Mocks.collectionItemsResponse));
+
+        return firstResponse.then(() => {
+            const secondResponse = collectionService.getCollectionItems(collectionName).then(() => {
+                expect(requests.length).to.equal(1);
+            });
+            return secondResponse;
+        });
+    });
+
+    it('should not cache the response if no cache object is provided', () => {
+        const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId);
+        const firstResponse = collectionService.getCollectionItems(collectionName)
+            .then( _ => {
+                expect(requests.length).to.equal(1);
+            });
+        respond(JSON.stringify(Mocks.collectionItemsResponse));
+
+        return firstResponse.then(() => {
+            collectionService.getCollectionItems(collectionName).then(() => {
+                expect(requests.length).to.equal(2);
+            });
+            respond(JSON.stringify(Mocks.collectionItemsResponse), 200, undefined, 1);
+        });
+    });
+
 });
 
 class Mocks {

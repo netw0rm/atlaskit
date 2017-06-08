@@ -19,20 +19,16 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
         return undefined;
       }
 
-      const markType = schema.mark('mentionQuery');
+      const mark = schema.mark('mentionQuery');
       const { tr } = state;
 
       analyticsService.trackEvent('atlassian.editor.mention.autoformatting');
 
-      return tr.replaceWith(
-        end,
-        end,
-        schema.text(
-          '@',
-          [markType]
-        )
+      const mentionText = schema.text(
+        '@',
+        [mark]
       );
-
+      return tr.replaceSelectionWith(mentionText, false);
     });
 
     rules.push(mentionQueryRule);

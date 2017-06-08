@@ -42,7 +42,7 @@
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/emoji": "^16.0.0",
+    "@atlaskit/emoji": "^16.2.1",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-card": "^17.1.5",
@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^6.0.2",
-    "@atlaskit/util-data-test": "^4.0.0",
+    "@atlaskit/util-data-test": "^4.2.2",
     "ajv": "^4.11.3",
     "chai-as-promised": "^6.0.0",
     "highlight.js": "^9.6.0",

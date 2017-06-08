@@ -143,6 +143,20 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     const { dimensions, actions, onClick, onMouseEnter } = this.props;
     const errorMessage = this.isError ? 'Loading failed' : undefined;
 
+    const { file } = this.resources;
+    const { type } = file || {type: undefined};
+
+    let audioUrl;
+    let videoUrl;
+
+    if (type && file) {
+      if (type.indexOf('video') === 0) {
+        videoUrl = Promise.resolve(file.url);
+      } else if (type.indexOf('audio') === 0) {
+        audioUrl = Promise.resolve(file.url);
+      }
+    }
+
     return (
       <LinkCardViewSmall
         error={errorMessage}
@@ -153,6 +167,9 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         width={dimensions && dimensions.width}
         loading={this.isLoading}
         actions={actions}
+
+        audioUrl={audioUrl}
+        videoUrl={videoUrl}
 
         onClick={onClick}
         onMouseEnter={onMouseEnter}

@@ -15,6 +15,9 @@ export interface LinkCardViewSmallProps {
   error?: string;
   actions?: Array<CardAction>;
 
+  videoUrl?: Promise<string>;
+  audioUrl?: Promise<string>;
+
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
@@ -30,7 +33,7 @@ export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
   }
 
   private getCardGenericViewSmall(): JSX.Element {
-    const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onMouseEnter, onRetry, error} = this.props;
+    const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onMouseEnter, onRetry, error, audioUrl, videoUrl} = this.props;
 
     return (
       <CardGenericViewSmall
@@ -42,6 +45,9 @@ export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
         actions={actions}
         error={error}
         mediaType="image"
+
+        audioUrl={audioUrl}
+        videoUrl={videoUrl}
 
         onClick={onClick}
         onMouseEnter={onMouseEnter}

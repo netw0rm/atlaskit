@@ -5,6 +5,8 @@ import {CardAction, MediaType} from '@atlaskit/media-core';
 
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
 import {Menu, ErrorIcon, getCSSUnitValue} from '../../utils';
+import Widget from '../../utils/widget';
+import {AudioWidget} from '../../utils/cardAudioView/audioWidget';
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 export interface CardGenericViewSmallProps {
@@ -16,6 +18,9 @@ export interface CardGenericViewSmallProps {
   loading?: boolean;
   actions?: Array<CardAction>;
   error?: string;
+
+  videoUrl?: Promise<string>;
+  audioUrl?: Promise<string>;
 
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
@@ -55,7 +60,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     }
   }
 
-  renderCard() {
+  renderCard = () => {
     const {loading, mediaType, thumbnailUrl, title, subtitle} = this.props;
 
     return this.formatCard((
@@ -74,7 +79,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     ));
   }
 
-  renderError() {
+  renderError = () => {
     const {error, onRetry} = this.props;
     const retryMessage = (onRetry) ? (onRetry.label || 'Try again') : '';
     const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
@@ -101,14 +106,14 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     ));
   }
 
-  private formatCard(left: JSX.Element, right: JSX.Element) {
-    const {actions, loading, mediaType, thumbnailUrl, onClick, onMouseEnter} = this.props;
+  private formatCard = (left: JSX.Element, right: JSX.Element) => {
+    const {actions, loading, mediaType, thumbnailUrl, onMouseEnter} = this.props;
     const cardStyle = this.wrapperStyles;
     const cardClass = cx({loading: loading});
     const imgClass = cx('img-wrapper', {shadow: mediaType === 'image' && thumbnailUrl});
 
     return (
-      <SmallCard style={cardStyle} className={cardClass} onClick={onClick} onMouseEnter={onMouseEnter}>
+      <SmallCard style={cardStyle} className={cardClass} onClick={this.getClickHandler()} onMouseEnter={onMouseEnter}>
         <ImgWrapper className={imgClass}>
           {left}
         </ImgWrapper>
@@ -118,5 +123,43 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
         <Menu actions={actions} />
       </SmallCard>
     );
+  }
+
+  private getClickHandler = () => {
+    const {onClick, audioUrl} = this.props;
+
+    if (onClick) {
+      return onClick;
+    }
+
+    if (audioUrl) {
+      return this.makeAudioWidget;
+    }
+  }
+
+  private makeAudioWidget = (evt): void => {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    const {title, audioUrl} = this.props;
+    const dimensions = {width: '200px', height: '150px'};
+
+    const options = {
+      dimensions,
+      enableResizing: false
+    };
+
+    if (audioUrl) {
+      audioUrl.then((audioSrc) => {
+        Widget.add(
+          <AudioWidget audioSrc={audioSrc} onClose={this.removeWidget} title={title} dimensions={dimensions} />,
+          options
+        );
+      });
+    }
+  }
+
+  private removeWidget = (): void => {
+    Widget.remove();
   }
 }

@@ -7,7 +7,6 @@ import {
   MediaItem,
   MediaCollection,
   MediaCollectionItem,
-  MediaCollectionFileItem,
   MediaCollectionLinkItem,
   Context,
   CollectionAction,
@@ -305,6 +304,8 @@ export class CardList extends Component<CardListProps, CardListState> {
         ? undefined
         : cardAppearance;
 
+      const {onCardClick: consumersOnCardClick} = this.props;
+
       return (
         <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
           <MediaCard
@@ -317,7 +318,7 @@ export class CardList extends Component<CardListProps, CardListState> {
               height: cardDimensions && cardDimensions.height
             }}
 
-            onClick={this.handleCardClick.bind(this, mediaItem)}
+            onClick={consumersOnCardClick && this.handleCardClick.bind(this, mediaItem)}
             actions={cardActions(mediaItem)}
           />
         </CardListItemWrapper>

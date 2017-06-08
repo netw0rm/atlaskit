@@ -67,6 +67,7 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
   }
 
   private renderLink = () => {
+    const {onClick: consumersOnClick} = this.props;
     const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
 
     return (
@@ -75,13 +76,14 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
         status={status}
         details={metadata as LinkDetails | UrlPreview}
 
-        onClick={this.onClick}
+        onClick={consumersOnClick && this.onClick}
         onMouseEnter={this.onMouseEnter}
       />
     );
   }
 
   private renderFile = () => {
+    const {onClick: consumersOnClick} = this.props;
     const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
 
     return (
@@ -90,7 +92,7 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
         status={status}
         details={metadata}
 
-        onClick={this.onClick}
+        onClick={consumersOnClick && this.onClick}
         onMouseEnter={this.onMouseEnter}
       />
     );

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styles from '../styles.less';
 import typesMapping, { types } from './types';
+import IconWrapper from '../styled/IconForType';
 
 export default class SelectedIconForType extends PureComponent {
   static propTypes = {
@@ -13,16 +13,17 @@ export default class SelectedIconForType extends PureComponent {
       [this.props.type]: {
         icon: SelectedIcon,
         iconColor,
+        iconSize,
       },
     } = typesMapping;
 
     return (
-      <span
-        className={styles.iconWrapper}
-        style={{ color: iconColor }}
-      >
-        <SelectedIcon label="Inline message icon" />
-      </span>
+      <IconWrapper iconColor={iconColor}>
+        <SelectedIcon
+          label="Inline message icon"
+          size={iconSize}
+        />
+      </IconWrapper>
     );
   }
 }

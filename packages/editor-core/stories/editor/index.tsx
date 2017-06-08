@@ -6,7 +6,6 @@ import applyDevTools from 'prosemirror-dev-tools';
 
 import {
   Chrome,
-  ContextName
 } from '../../';
 import blockTypePlugins, {stateKey as blockTypeStateKey} from '../../src/plugins/block-type';
 import clearFormattingPlugins, {stateKey as clearFormattingStateKey} from '../../src/plugins/clear-formatting';
@@ -54,7 +53,6 @@ import {
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
-  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;

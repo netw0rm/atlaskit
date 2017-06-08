@@ -16,7 +16,7 @@ export interface Presence {
   status?: string;
 }
 
-export interface MentionData {
+export interface MentionDescription {
   id: string;
   avatarUrl?: string;
   name?: string;
@@ -36,5 +36,5 @@ export enum UserAccessLevel {
 }
 
 export interface OnMentionEvent {
-  (mention: MentionData, event?: SyntheticEvent<any>): void;
+  (mention: MentionDescription, event?: SyntheticEvent<any>): void;
 }

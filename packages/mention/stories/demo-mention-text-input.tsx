@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react';
 
 import MentionPicker, { Position } from '../src/components/MentionPicker';
-import { MentionData, OnMentionEvent } from '../src/types';
+import { MentionDescription, OnMentionEvent } from '../src/types';
 import { MentionProvider } from '../src/api/MentionResource';
 import { PresenceProvider } from '../src/api/PresenceResource';
 
@@ -46,7 +46,7 @@ export default class MentionTextInput extends Component<Props, State> {
     });
   }
 
-  private handleSelection = (mention: MentionData) => {
+  private handleSelection = (mention: MentionDescription) => {
     this.hideMentionPopup();
     if (this.props.onSelection) {
       this.props.onSelection(mention);

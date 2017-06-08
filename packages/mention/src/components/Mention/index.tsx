@@ -49,7 +49,7 @@ export default class Mention extends PureComponent<Props, {}> {
     const tooltip: boolean = !!(props.accessLevel && UserAccessLevel[props.accessLevel] !== UserAccessLevel.CONTAINER)
                              && !props.isHighlighted;
 
-    const mentionComponent =
+    const mentionComponent = (
          <MentionStyle
               highlighted={props.isHighlighted}
               accessLevel={props.accessLevel}
@@ -58,19 +58,20 @@ export default class Mention extends PureComponent<Props, {}> {
               onMouseLeave={handleOnMouseLeave}
          >
             {props.text}
-         </MentionStyle>;
+         </MentionStyle>
+         );
 
     return (
       <MentionContainer>
-      {tooltip ?
-        <Tooltip
-            description={`${props.text} won't be notified as they have no access`}
-            position="right"
-        >
+       { tooltip ?
+          <Tooltip
+              description={`${props.text} won't be notified as they have no access`}
+              position="right"
+          >
           {mentionComponent}
-        </Tooltip>
-        : {mentionComponent}
-      }
+          </Tooltip>
+          :
+          mentionComponent }
       </MentionContainer>
     );
   }

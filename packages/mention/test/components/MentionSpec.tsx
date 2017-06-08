@@ -8,7 +8,7 @@ import Mention from '../../src/components/Mention';
 import ResourcedMention from '../../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../_mock-mention-provider';
 
-describe('<MentionData />', () => {
+describe('<Mention />', () => {
   describe('Mention', () => {
     it('should render based on mention data', () => {
       const mention = shallow(<Mention {...mentionData} />);
@@ -23,7 +23,7 @@ describe('<MentionData />', () => {
     it('should dispatch onClick-event', () => {
       const spy = sinon.spy();
       const mention = mount(<Mention {...mentionData} onClick={spy} />);
-      mention.simulate('click');
+      mention.find(MentionStyle).simulate('click');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
     });
@@ -31,7 +31,7 @@ describe('<MentionData />', () => {
     it('should dispatch onMouseEnter-event', () => {
       const spy = sinon.spy();
       const mention = mount(<Mention {...mentionData} onMouseEnter={spy} />);
-      mention.simulate('mouseenter');
+      mention.find(MentionStyle).simulate('mouseenter');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
     });
@@ -39,7 +39,7 @@ describe('<MentionData />', () => {
     it('should dispatch onMouseLeave-event', () => {
       const spy = sinon.spy();
       const mention = mount(<Mention {...mentionData} onMouseLeave={spy} />);
-      mention.simulate('mouseleave');
+      mention.find(MentionStyle).simulate('mouseleave');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
     });
@@ -86,7 +86,7 @@ describe('<MentionData />', () => {
     it('should dispatch onClick-event', () => {
       const spy = sinon.spy();
       const mention = mount(<ResourcedMention {...mentionData} mentionProvider={mentionProvider} onClick={spy} />);
-      mention.simulate('click');
+      mention.find(MentionStyle).simulate('click');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
     });
@@ -94,7 +94,7 @@ describe('<MentionData />', () => {
     it('should dispatch onMouseEnter-event', () => {
       const spy = sinon.spy();
       const mention = mount(<ResourcedMention {...mentionData} mentionProvider={mentionProvider} onMouseEnter={spy} />);
-      mention.simulate('mouseenter');
+      mention.find(MentionStyle).simulate('mouseenter');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
     });
@@ -102,7 +102,7 @@ describe('<MentionData />', () => {
     it('should dispatch onMouseLeave-event', () => {
       const spy = sinon.spy();
       const mention = mount(<ResourcedMention {...mentionData} mentionProvider={mentionProvider} onMouseLeave={spy} />);
-      mention.simulate('mouseleave');
+      mention.find(MentionStyle).simulate('mouseleave');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
     });

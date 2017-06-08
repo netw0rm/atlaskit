@@ -1,10 +1,10 @@
-import { MentionData } from '../src/types';
+import { MentionDescription } from '../src/types';
 
 declare var require: {
     <T>(path: string): T;
 };
 
 // tslint:disable-next-line:no-var-requires
-export const resultCraig: MentionData[] = require('./_mention-search-result-craig.json') as MentionData[];
+export const resultCraig: MentionDescription[] = require('./_mention-search-result-craig.json') as MentionDescription[];
 // tslint:disable-next-line:no-var-requires
-export const resultC: MentionData[] = require('./_mention-search-result-c.json') as MentionData[];
+export const resultC: MentionDescription[] = require('./_mention-search-result-c.json') as MentionDescription[];

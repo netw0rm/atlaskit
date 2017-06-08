@@ -1,6 +1,6 @@
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 
-import { MentionData } from '../types';
+import { MentionDescription } from '../types';
 import debug from '../util/logger';
 
 export interface KeyValues {
@@ -40,7 +40,7 @@ export interface InfoCallback {
 }
 
 export interface MentionsResult {
-  mentions: MentionData[];
+  mentions: MentionDescription[];
 }
 
 export interface MentionResourceConfig {
@@ -50,7 +50,7 @@ export interface MentionResourceConfig {
   containerId?: string;
   productId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
-  shouldHighlightMention?: (mention: MentionData) => boolean;
+  shouldHighlightMention?: (mention: MentionDescription) => boolean;
 }
 
 export interface ResourceProvider<Result> {
@@ -58,10 +58,10 @@ export interface ResourceProvider<Result> {
   unsubscribe(key: string): void;
 }
 
-export interface MentionProvider extends ResourceProvider<MentionData[]> {
+export interface MentionProvider extends ResourceProvider<MentionDescription[]> {
   filter(query?: string): void;
-  recordMentionSelection(mention: MentionData): void;
-  shouldHighlightMention(mention: MentionData): boolean;
+  recordMentionSelection(mention: MentionDescription): void;
+  shouldHighlightMention(mention: MentionDescription): boolean;
 }
 
 const emptySecurityProvider = () => {
@@ -180,9 +180,9 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
   }
 }
 
-class AbstractMentionResource extends AbstractResource<MentionData[]> implements MentionProvider {
+class AbstractMentionResource extends AbstractResource<MentionDescription[]> implements MentionProvider {
 
-  shouldHighlightMention(mention: MentionData): boolean {
+  shouldHighlightMention(mention: MentionDescription): boolean {
     return false;
   }
 
@@ -192,7 +192,7 @@ class AbstractMentionResource extends AbstractResource<MentionData[]> implements
   }
 
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  recordMentionSelection(mention: MentionData): void {
+  recordMentionSelection(mention: MentionDescription): void {
     // Do nothing
   }
 
@@ -253,7 +253,7 @@ class MentionResource extends AbstractMentionResource {
     this.lastReturnedSearch = 0;
   }
 
-  shouldHighlightMention(mention: MentionData) {
+  shouldHighlightMention(mention: MentionDescription) {
     if (this.config.shouldHighlightMention) {
       return this.config.shouldHighlightMention(mention);
     }
@@ -280,7 +280,7 @@ class MentionResource extends AbstractMentionResource {
     }
   }
 
-  recordMentionSelection(mention: MentionData): Promise<void> {
+  recordMentionSelection(mention: MentionDescription): Promise<void> {
     return this.recordSelection(mention).then(() => {}, error => debug(`error recording mention selection: ${error}`, error));
   }
 
@@ -326,7 +326,7 @@ class MentionResource extends AbstractMentionResource {
     return requestService(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
   }
 
-  private recordSelection(mention: MentionData): Promise<void> {
+  private recordSelection(mention: MentionDescription): Promise<void> {
     const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {

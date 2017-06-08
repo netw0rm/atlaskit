@@ -7,7 +7,7 @@ import ResourcedMention from '../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../test/_mock-mention-provider';
 
 storiesOf(`${name}/Mention`, module)
-  .add('MentionData', () => (
+  .add('Mention', () => (
     <Mention
       {...mentionData}
       accessLevel={'CONTAINER'}

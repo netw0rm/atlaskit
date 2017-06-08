@@ -154,7 +154,7 @@
     "lint": "lerna exec --stream --scope '@atlaskit/!(eslint|css-reset|util)*' --since -- npm run lint",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "precommit": "npm run validate/lint-changed",
-    "postinstall": "node ./build/bin/link.eslint.configs.js && cd node_modules/lerna && npm run build",
+    "postinstall": "node ./build/bin/link.eslint.configs.js && lerna bootstrap --scope @atlaskit/util-cz-atlaskit-changelog && cd node_modules/lerna && npm run build",
     "release": "./build/bin/release.process.bash",
     "release/announce": "./build/bin/release.announce.js",
     "release/check/is-workspace-clean": "git diff --exit-code || (chalk --no-stdin -t \"{red \n^ Workspace is not clean!}\"; exit 1)",

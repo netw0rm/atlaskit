@@ -1,7 +1,7 @@
 // @flow
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { jumpBackward, jumpForward } from '../../../src/state/jump-to-next-index';
+import { getDiffToJumpBackward, getDiffToJumpForward } from '../../../src/state/jump-to-next-index';
 import getDimension from '../get-dimension-util';
 import type {
   Dimension,
@@ -56,7 +56,7 @@ describe('jump to next index', () => {
         droppableId: droppable.id,
       };
 
-      const point: ?Position = jumpForward(
+      const point: ?Position = getDiffToJumpForward(
         draggable3.center,
         location,
         draggables,
@@ -77,7 +77,7 @@ describe('jump to next index', () => {
           y: draggable2.center.y - draggable1.center.y,
         };
 
-        const result: ?Position = jumpForward(
+        const result: ?Position = getDiffToJumpForward(
           draggable1.center,
           location,
           draggables,
@@ -99,7 +99,7 @@ describe('jump to next index', () => {
           y: draggable3.center.y - draggable2.center.y,
         };
 
-        const result: ?Position = jumpForward(
+        const result: ?Position = getDiffToJumpForward(
           draggable2.center,
           location,
           draggables,
@@ -118,7 +118,7 @@ describe('jump to next index', () => {
         droppableId: droppable.id,
       };
 
-      const point: ?Position = jumpBackward(
+      const point: ?Position = getDiffToJumpBackward(
         draggable1.center,
         location,
         draggables,
@@ -140,7 +140,7 @@ describe('jump to next index', () => {
           y: -1 * (draggable2.center.y - draggable3.center.y),
         };
 
-        const result: ?Position = jumpBackward(
+        const result: ?Position = getDiffToJumpBackward(
           draggable3.center,
           location,
           draggables,
@@ -163,7 +163,7 @@ describe('jump to next index', () => {
           y: -1 * (draggable1.center.y - draggable2.center.y),
         };
 
-        const result: ?Position = jumpBackward(
+        const result: ?Position = getDiffToJumpBackward(
           draggable2.center,
           location,
           draggables,

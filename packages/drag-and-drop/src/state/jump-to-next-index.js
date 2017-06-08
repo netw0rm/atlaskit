@@ -50,6 +50,6 @@ const getDiff = (isMovingForward: boolean) => (
   return directional;
 };
 
-export const jumpForward = getDiff(true);
-export const jumpBackward = getDiff(false);
+export const getDiffToJumpForward = getDiff(true);
+export const getDiffToJumpBackward = getDiff(false);
 

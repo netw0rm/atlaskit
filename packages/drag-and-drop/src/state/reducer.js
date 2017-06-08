@@ -14,7 +14,7 @@ import type { TypeId,
 } from '../types';
 import getDragImpact from './get-drag-impact';
 import { moveBackward } from './get-position-move';
-import { jumpForward } from './jump-to-next-index';
+import { getDiffToJumpForward } from './jump-to-next-index';
 
 const shout = (message, ...rest) => {
   const key = `%c ${message}`;
@@ -190,7 +190,8 @@ export default (state: State = reset(), action: Action): State => {
       console.warn('cannot move forward when there is not previous location');
       return state;
     }
-    const diff: ?Position = jumpForward(
+
+    const diff: ?Position = getDiffToJumpForward(
       previous.dragging.center,
       previous.impact.destination,
       state.draggableDimensions,

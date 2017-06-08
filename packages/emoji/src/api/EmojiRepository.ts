@@ -83,6 +83,7 @@ export default class EmojiRepository {
   private fullSearch: Search;
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
+  private asciiMap: Map<string, EmojiDescription>;
   private categoryOrder: Map<string, number>;
   private static readonly defaultEmojiWeight: number = 1000000;
 
@@ -169,12 +170,17 @@ export default class EmojiRepository {
     this.addToMaps(emoji);
   }
 
+  getAsciiMap(): Map<string, EmojiDescription> {
+    return this.asciiMap;
+  }
+
   /**
    * Optimisation to initialise all map member variables in single loop over emojis
    */
   private initMaps(): void {
     this.shortNameMap  = new Map();
     this.idMap = new Map();
+    this.asciiMap = new Map();
 
     this.emojis.forEach(emoji => {
       this.addToMaps(emoji);
@@ -182,15 +188,18 @@ export default class EmojiRepository {
   }
 
   private addToMaps(emoji: EmojiDescription): void {
-      // Give default value and assign higher weight to Atlassian emojis for logical order when sorting
-      if (typeof emoji.order === 'undefined' || emoji.order === -1) {
-        emoji.order = EmojiRepository.defaultEmojiWeight;
-      }
-      if (typeof emoji.id === 'undefined') {
-        emoji.id = EmojiRepository.defaultEmojiWeight.toString();
-      }
-      addAllVariants(emoji, e => e.shortName, this.shortNameMap);
-      addAllVariants(emoji, e => e.id, this.idMap);
+    // Give default value and assign higher weight to Atlassian emojis for logical order when sorting
+    if (typeof emoji.order === 'undefined' || emoji.order === -1) {
+      emoji.order = EmojiRepository.defaultEmojiWeight;
+    }
+    if (typeof emoji.id === 'undefined') {
+      emoji.id = EmojiRepository.defaultEmojiWeight.toString();
+    }
+    addAllVariants(emoji, e => e.shortName, this.shortNameMap);
+    addAllVariants(emoji, e => e.id, this.idMap);
+    if (emoji.ascii) {
+      emoji.ascii.forEach(a => this.asciiMap.set(a, emoji));
+    }
   }
 
   /**

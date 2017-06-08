@@ -49,6 +49,8 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    */
   findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription>;
 
+  getAsciiMap(): Promise<Map<string, EmojiDescription>>;
+
   /**
    * Finds emojis belonging to specified category.
    *
@@ -309,6 +311,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       }
     }
     return this.retryIfLoading(() => this.findByEmojiId(emojiId), undefined);
+  }
+
+  getAsciiMap(): Promise<Map<string, EmojiDescription>> {
+    return Promise.resolve(this.emojiRepository.getAsciiMap());
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {

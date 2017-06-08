@@ -34,32 +34,42 @@ const cardsActions = [/*deleteAction, */anotherAction, annotateAction];
 const context = createStorybookContext();
 const wrongContext = createStorybookContext(wrongClientId);
 
+const createGroupedListExamples = (cardAppearance?) => {
+  return [
+    {
+      title: 'Standard',
+      content: <CardList
+        context={context}
+        collectionName={defaultCollectionName}
+        shouldGroupByDate={true}
+        pageSize={5}
+        cardAppearance={cardAppearance}
+      />
+    },
+    {
+      title: 'Infinite scroll',
+      content: <CardList
+        context={context}
+        collectionName={defaultCollectionName}
+        shouldGroupByDate={true}
+        pageSize={10}
+        height={500}
+        cardAppearance={cardAppearance}
+      />
+    }
+  ];
+};
+
 storiesOf('CardList', {})
   .add('Grouped list', () => {
-    const groupedLists = [
-      {
-        title: 'Standard',
-        content: <CardList
-          context={context}
-          collectionName={defaultCollectionName}
-          shouldGroupByDate={true}
-          pageSize={5}
-        />
-      },
-      {
-        title: 'Infinite scroll',
-        content: <CardList
-          context={context}
-          collectionName={defaultCollectionName}
-          shouldGroupByDate={true}
-          pageSize={10}
-          height={500}
-        />
-      }
-    ];
-
     return (
-      <StoryList>{groupedLists}</StoryList>
+      <div style={{margin: '40px'}}>
+        <h4>Image Appearance</h4>
+        <StoryList>{createGroupedListExamples('image')}</StoryList>
+
+        <h4>Small Appearance</h4>
+        <StoryList>{createGroupedListExamples('small')}</StoryList>
+      </div>
     );
   })
   .add('Normal cards', () => (

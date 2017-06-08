@@ -191,7 +191,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
   }
 
-  private renderList(): Array<JSX.Element> | JSX.Element {
+  private renderList() {
     const { shouldGroupByDate } = this.props;
     const { collection } = this.state;
 
@@ -359,7 +359,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
 
     if (cardAppearance === 'small') {
-      return '100%';
+      return '250px';
     }
 
     return undefined;

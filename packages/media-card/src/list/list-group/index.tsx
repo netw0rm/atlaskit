@@ -4,6 +4,7 @@ import { Component } from 'react';
 import { MediaCollectionItem } from '@atlaskit/media-core';
 
 import {
+  Wrapper,
   Title
 } from './styled';
 
@@ -23,10 +24,10 @@ export class ListGroup extends Component<ListGroupProps, {}> {
 
     const cards = items.map(buildCard);
     return (
-      <div>
+      <Wrapper>
         <Title>{title}</Title>
         {cards}
-      </div>
+      </Wrapper>
     );
   }
 }

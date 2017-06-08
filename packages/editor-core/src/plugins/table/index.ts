@@ -5,6 +5,7 @@ import {
   PluginKey,
   tableEditing,
   Transaction,
+  NodeViewDesc,
 } from '../../prosemirror';
 import * as tableCommands from '../../prosemirror/prosemirror-tables';
 import keymapHandler from './keymap';
@@ -16,9 +17,14 @@ export interface TablesCommand {
 }
 
 export class TableState {
+  keymapHandler;
+  element?: HTMLElement;
+  domEvent: boolean = false;
+  editorFocused: boolean = false;
+  tableNode?: Node;
+
   private state: EditorState<any>;
   private changeHandlers: TableStateSubscriber[] = [];
-  keymapHandler;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
@@ -34,19 +40,58 @@ export class TableState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(newEditorState: EditorState<any>) {
+  goToNextCell (direction: number): TablesCommand {
+    return tableCommands.goToNextCell(direction);
+  }
+
+  updateEditorFocused(editorFocused: boolean) {
+    this.editorFocused = editorFocused;
+    this.triggerOnChange();
+  }
+
+  update(newEditorState: EditorState<any>, docView: NodeViewDesc) {
     this.state = newEditorState;
-    let dirty = false;
 
-    // TODO: ED-1858, ED-1859
+    const tableNode = this.getTableNode();
+    if (tableNode) {
+      this.element = this.activeElement(docView);
+    }
 
-    if (dirty) {
+    if (tableNode !== this.tableNode) {
+      this.tableNode = tableNode;
       this.triggerOnChange();
     }
   }
 
-  goToNextCell (direction: number): TablesCommand {
-    return tableCommands.goToNextCell(direction);
+  private activeElement(docView: NodeViewDesc): HTMLElement {
+    const offset = this.nodeStartPos();
+    const { node } = docView.domFromPos(offset);
+    return node as HTMLElement;
+  }
+
+  private nodeStartPos(): number {
+    const { $from } = this.state.selection;
+    return $from.start($from.depth);
+  }
+
+  private getTableNode(): Node | undefined {
+    const { state } = this;
+    const { path } = state.selection.$from;
+    if (!Array.isArray(path) || !path.length) {
+      return;
+    }
+    let node;
+    let i = path.length;
+    while (i--) {
+      if (path[i] && path[i].type === state.schema.nodes.table) {
+        node = path[i];
+        break;
+      }
+    }
+
+    if (node) {
+      return node;
+    }
   }
 
   private triggerOnChange() {
@@ -64,7 +109,7 @@ const plugin = new Plugin({
     apply(tr, pluginState: TableState, oldState, newState) {
       const stored = tr.getMeta(stateKey);
       if (stored) {
-        pluginState.update(newState);
+        pluginState.update(newState, stored.docView);
       }
       return pluginState;
     }
@@ -72,20 +117,30 @@ const plugin = new Plugin({
   key: stateKey,
   view: (editorView: EditorView) => {
     const pluginState = stateKey.getState(editorView.state);
-
     pluginState.update(editorView.state, editorView.docView);
     pluginState.keymapHandler = keymapHandler(pluginState);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
-        pluginState.update(view.state, view.docView);
+        stateKey.getState(view.state).update(view.state, view.docView);
       }
     };
   },
   props: {
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
-    }
+    },
+    handleClick(view: EditorView, event) {
+      stateKey.getState(view.state).update(view.state, view.docView);
+      return false;
+    },
+    onFocus(view: EditorView, event) {
+      stateKey.getState(view.state).updateEditorFocused(true);
+    },
+    onBlur(view: EditorView, event) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.updateEditorFocused(false);
+    },
   }
 });
 

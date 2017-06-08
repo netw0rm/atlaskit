@@ -7,16 +7,15 @@ import AkButtonGroup from '@atlaskit/button-group';
 import styles from './styles.less';
 
 import AnimationDemo from './AnimationDemo';
+import components from '../docs/icons';
 import { name } from '../package.json';
+import { size } from '../src';
 import ToggleIcons from './ToggleIcons';
-import { getGlyphs } from '../test/_helpers';
-import { size } from '../src/Icon';
 
 const iconSizes = Object.values(size);
 const twoColorIcons = ['checkbox', 'radio'];
-const components = getGlyphs();
-const sampleIconName = 'atlassian';
-const AtlassianIcon = components[sampleIconName];
+const AtlassianIcon = components.atlassian.component;
+
 if (!AtlassianIcon) {
   throw new Error('Atlassian icon was removed, but is needed to display stories properly');
 }
@@ -24,7 +23,7 @@ if (!AtlassianIcon) {
 const toggleableIcons = Object
   .keys(components)
   .filter(key => twoColorIcons.indexOf(key) !== -1)
-  .map(key => [key, components[key]]);
+  .map(key => [key, components[key].component]);
 
 class AllIcons extends PureComponent {
   state = {}
@@ -32,18 +31,21 @@ class AllIcons extends PureComponent {
   setSize = s => this.setState({ size: s })
 
   render() {
-    const { props } = this;
+    const {
+      hasSizeSelect,
+      ...props
+    } = this.props;
     return (
       <div>
         <div>
-          {props.hasSizeSelect ?
+          {hasSizeSelect ?
             (
               <div>
                 <p>Select icon size:</p>
                 <AkButtonGroup>
                   <AkButton appearance="subtle" onClick={() => this.setSize(null)}>default</AkButton>
                   {Object.values(size).map(s => (
-                    <AkButton appearance="subtle" onClick={() => this.setSize(s)}>{s}</AkButton>
+                    <AkButton key={s} appearance="subtle" onClick={() => this.setSize(s)}>{s}</AkButton>
                   ))}
                 </AkButtonGroup>
               </div>
@@ -53,14 +55,15 @@ class AllIcons extends PureComponent {
         <div {...props} className={classnames(styles.container, props.className)}>
           {Object
             .entries(components)
-            .map(([key, Icon]) =>
-              <Icon
+            .map(([key, Icon]) => (
+              <Icon.component
+                key={key}
                 label={`${key} icon`}
                 title={`${key}.svg`}
-                key={key}
-                fillColor="inherit"
+                primaryColor="inherit"
                 size={this.state.size}
-              />)}
+              />
+            ))}
         </div>
       </div>
     );
@@ -80,19 +83,20 @@ const AllIconsSizeChecked = props => (
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
       .entries(components)
-      .map(([key, Icon]) =>
-        <div className={styles.compareIconContainer}>
-          <Icon
+      .map(([key, Icon]) => (
+        <div key={`${key}-wrapper`} className={styles.compareIconContainer}>
+          <Icon.component
             label={`${key} icon`}
             title={`${key}.svg`}
             key={`${key}-original`}
           />
-          <Icon
+          <Icon.component
             label={`${key} icon`}
             title={`${key}.svg`}
             key={`${key}-constrained`}
           />
-        </div>)}
+        </div>
+      ))}
   </div>
 );
 
@@ -115,17 +119,12 @@ storiesOf(name, module)
       <tbody>
         {Object
           .entries(components)
-          .map(([key, Icon]) => {
-            const importName = `${name}/glyph/${key}`;
-            const displayName = Icon.displayName.match(/Icon/) ? Icon.displayName : `${Icon.displayName}Icon`;
-            return (
-              <tr key={key}>
-                <td><Icon label={`${key} icon`} /></td>
-                <td><pre>import {displayName} from &#39;{importName}&#39;;</pre></td>
-              </tr>
-            );
-          })
-        }
+          .map(([key, Icon]) => (
+            <tr key={key}>
+              <td><Icon.component label={`${key} icon`} /></td>
+              <td><pre>import {Icon.componentName} from &#39;{Icon.package}&#39;;</pre></td>
+            </tr>
+          ))}
       </tbody>
     </table>
   ))
@@ -174,7 +173,7 @@ storiesOf(name, module)
       <tbody>
         {iconSizes.map(s => (
           <tr key={s}>
-            <td><pre>&lt;ak-icon-{sampleIconName} size=&quot;{s}&quot; /&gt;</pre></td>
+            <td><pre>&lt;AtlassianIcon size=&quot;{s}&quot; /&gt;</pre></td>
             <td><AtlassianIcon
               size={s}
               label={`Atlassian icon with size ${s}`}

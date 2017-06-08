@@ -20,7 +20,7 @@ class AnimationDemo extends React.PureComponent {
 
   randomIcon() {
     const Icon = sample(this.props.components);
-    return <Icon label="Random icon" />;
+    return <Icon.component label="Random icon" />;
   }
 
   startAnimating() {

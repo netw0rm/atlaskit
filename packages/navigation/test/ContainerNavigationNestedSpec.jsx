@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import { ArrowLeftIcon } from '@atlaskit/icon';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import styles from '../src/components/less/ContainerNavigationNested.less';
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
 import NavigationItem from '../src/components/js/NavigationItem';

@@ -136,8 +136,8 @@ describe('jump to next index', () => {
           droppableId: droppable.id,
         };
         const expected: Position = {
-          x: -1 * (draggable2.center.x - draggable3.center.x),
-          y: -1 * (draggable2.center.y - draggable3.center.y),
+          x: draggable2.center.x - draggable3.center.x,
+          y: draggable2.center.y - draggable3.center.y,
         };
 
         const result: ?Position = getDiffToJumpBackward(
@@ -159,8 +159,8 @@ describe('jump to next index', () => {
           droppableId: droppable.id,
         };
         const expected: Position = {
-          x: -1 * (draggable1.center.x - draggable2.center.x),
-          y: -1 * (draggable1.center.y - draggable2.center.y),
+          x: draggable1.center.x - draggable2.center.x,
+          y: draggable1.center.y - draggable2.center.y,
         };
 
         const result: ?Position = getDiffToJumpBackward(

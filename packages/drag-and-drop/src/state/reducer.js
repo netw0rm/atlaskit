@@ -14,7 +14,7 @@ import type { TypeId,
 } from '../types';
 import getDragImpact from './get-drag-impact';
 import { moveBackward } from './get-position-move';
-import { getDiffToJumpForward } from './jump-to-next-index';
+import { getDiffToJumpForward, getDiffToJumpBackward } from './jump-to-next-index';
 
 const shout = (message, ...rest) => {
   const key = `%c ${message}`;
@@ -243,7 +243,57 @@ export default (state: State = reset(), action: Action): State => {
       return state;
     }
 
-    return moveBackward(state);
+    if (!previous.impact.destination) {
+      console.warn('cannot move forward when there is not previous location');
+      return state;
+    }
+
+    const diff: ?Position = getDiffToJumpBackward(
+      previous.dragging.center,
+      previous.impact.destination,
+      state.draggableDimensions,
+      state.droppableDimensions
+    );
+
+    if (!diff) {
+      return state;
+    }
+
+    console.log('DIFFFFFFFF', diff);
+
+    const offset: Position = {
+      x: previous.dragging.offset.x + diff.x,
+      y: previous.dragging.offset.y + diff.y,
+    };
+
+    const center: Position = {
+      x: previous.dragging.center.x + diff.x,
+      y: previous.dragging.center.y + diff.y,
+    };
+
+    // $ExpectError - flow does not play well with spread
+    const dragging: Dragging = {
+      ...previous.dragging,
+      shouldAnimate: true,
+      center,
+      offset,
+    };
+
+    const impact: DragImpact = getDragImpact(
+      dragging.center,
+      dragging.id,
+      state.draggableDimensions,
+      state.droppableDimensions
+    );
+
+    return {
+      ...state,
+      currentDrag: {
+        dragging,
+        impact,
+        initial: previous.initial,
+      },
+    };
   }
 
   if (action.type === 'DROP') {

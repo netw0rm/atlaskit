@@ -42,12 +42,7 @@ const getDiff = (isMovingForward: boolean) => (
     y: nextDimension.center.y - center.y,
   };
 
-  const directional: Position = {
-    x: isMovingForward ? diff.x : -diff.x,
-    y: isMovingForward ? diff.y : -diff.y,
-  };
-
-  return directional;
+  return diff;
 };
 
 export const getDiffToJumpForward = getDiff(true);

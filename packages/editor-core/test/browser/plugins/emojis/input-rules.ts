@@ -72,4 +72,12 @@ describe('emojis - input rules', () => {
   it('should not replace ": when there is an unsupported stored mark', () => {
     assert(':', false, p(code('{<>}')));
   });
+
+  it('should replace non empty selection with emojiQuery mark', () => {
+    assert(':', true, p('{<text>}'));
+  });
+
+  it('should not replace non empty selection with emojiQuery mark if selection starts with an excluding mark', () => {
+    assert(':', false, p(code('{<text>}')));
+  });
 });

@@ -19,9 +19,10 @@ export default ({
     bottom: bottom + margin,
     left: left + margin,
     right: right + margin,
+    // not considering margin in center position
     center: {
-      x: width / 2,
-      y: height / 2,
+      x: (left + right) / 2,
+      y: (top + bottom) / 2,
     },
     height,
     width,

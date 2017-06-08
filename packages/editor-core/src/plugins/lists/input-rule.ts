@@ -9,8 +9,7 @@ export default function inputRulePlugin(schema: Schema<any, any>): Plugin | unde
   const rules: InputRule[] = [];
 
   if (schema.nodes.bulletList) {
-    // NOTE: we decided to restrict the creation of bullet lists to only "*"x
-    const rule = createInputRule(/^\s*(\*) $/, schema.nodes.bulletList);
+    const rule = createInputRule(/^\s*(\*|-) $/, schema.nodes.bulletList);
     rule.handler = trackAndInvoke('atlassian.editor.format.list.bullet.autoformatting', rule.handler);
     rules.push(rule);
   }

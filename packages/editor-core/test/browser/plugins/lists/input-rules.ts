@@ -48,6 +48,18 @@ describe('inputrules', () => {
       insertText(editorView, '* ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(h1('* ')));
     });
+
+    it('should convert "- " to a bullet list item', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '- ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(ul(li(p()))));
+    });
+
+    it('should convert "  - " to a bullet list item', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '  - ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(ul(li(p()))));
+    });
   });
 
   describe('ordered list rule', () => {

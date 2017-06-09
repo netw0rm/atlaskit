@@ -1,7 +1,5 @@
 import {
-  Mark,
   MarkdownParser as PMMarkdownParser,
-  Node,
 } from '@atlaskit/editor-core';
 import schema from '../schema/schema';
 import * as MarkdownIt from 'markdown-it';

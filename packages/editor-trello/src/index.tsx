@@ -3,6 +3,7 @@ import {
   analyticsService,
   baseKeymap,
   blockTypePlugins,
+  blockTypeStateKey,
   ChromeCollapsed,
   codeBlockPlugins,
   EditorState,
@@ -12,16 +13,22 @@ import {
   emojisStateKey,
   history,
   hyperlinkPlugins,
+  hyperlinkStateKey,
   keymap,
   listsPlugins,
+  listsStateKey,
   MentionPicker,
   mentionsPlugins,
   mentionsStateKey,
-  Node,
   ProviderFactory,
   rulePlugins,
   textFormattingPlugins,
+  textFormattingStateKey,
   TextSelection,
+  ToolbarBlockType,
+  ToolbarTextFormatting,
+  ToolbarLists,
+  ToolbarHyperlink,
   version as coreVersion,
 
   // nodeviews
@@ -59,6 +66,7 @@ export interface Props {
   errorReporter?: ErrorReportingHandler;
   placeholder?: string;
   defaultValue?: string;
+  showToolbar?: boolean;
 }
 
 export interface State {
@@ -71,12 +79,15 @@ export default class Editor extends PureComponent<Props, State> {
   version = `${version} (editor-core ${coreVersion})`;
 
   public static defaultProps: Props = {
-    reverseMentionPicker: false
+    reverseMentionPicker: false,
+    showToolbar: false
   };
 
   state: State;
 
   providerFactory: ProviderFactory;
+
+  private editorContainer: HTMLElement;
 
   constructor(props: Props) {
     super(props);
@@ -133,7 +144,7 @@ export default class Editor extends PureComponent<Props, State> {
   /**
    * Focus the content region of the editor.
    */
-  focus(): void {
+  focus = (): void => {
     const { editorView } = this.state;
 
     if (editorView && !editorView.hasFocus()) {
@@ -190,7 +201,52 @@ export default class Editor extends PureComponent<Props, State> {
     return <ChromeCollapsed text={this.props.placeholder} onFocus={this.expand} />;
   }
 
-  render() {
+  renderToolbar() {
+    if (!this.props.showToolbar) {
+      return null;
+    }
+
+    const { editorView } = this.state;
+    const editorState = editorView && editorView.state;
+
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+
+    return (
+      <div className="ak-editor-toolbar" ref={this.handleEditorContainerRef}>
+        {blockTypeState ?
+          <ToolbarBlockType
+            pluginState={blockTypeState}
+            editorView={editorView!}
+            focusEditor={this.focus}
+            softBlurEditor={this.softBlurEditor}
+          /> : null
+        }
+        {textFormattingState ?
+          <ToolbarTextFormatting
+            pluginState={textFormattingState}
+            editorView={editorView!}
+          /> : null
+        }
+        {listsState ?
+          <ToolbarLists
+            pluginState={listsState}
+            editorView={editorView!}
+          /> : null
+        }
+        {hyperlinkState ?
+          <ToolbarHyperlink
+            pluginState={hyperlinkState}
+            editorView={editorView!}
+          /> : null
+        }
+      </div>
+    );
+  }
+
+  renderContent() {
     const { props } = this;
     const { editorView, isExpanded } = this.state;
     const { emojiProvider, mentionProvider } = props;
@@ -199,29 +255,55 @@ export default class Editor extends PureComponent<Props, State> {
     const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);
     const mentionsState = editorState && mentionProvider && mentionsStateKey.getState(editorState);
 
+    if (!isExpanded) {
+      return this.renderPlaceHolder();
+    }
+
     return (
-      <div className="ak-editor-trello" id={this.props.id}>
-        { !isExpanded ? this.renderPlaceHolder() :
-          <div ref={this.handleRef}>
-            {!emojisState ? null :
-              <EmojiTypeAhead
-                pluginState={emojisState}
-                emojiProvider={emojiProvider!}
-                reversePosition={props.reverseMentionPicker}
-              />
-            }
-            {!mentionsState ? null :
-              <MentionPicker
-                resourceProvider={mentionProvider!}
-                presenceProvider={props.presenceProvider}
-                pluginState={mentionsState}
-                reversePosition={props.reverseMentionPicker}
-              />
-            }
-          </div>
-        }
+      <div>
+        {this.renderToolbar()}
+        <div ref={this.handleRef}>
+          {!emojisState ? null :
+            <EmojiTypeAhead
+              pluginState={emojisState}
+              emojiProvider={emojiProvider!}
+              reversePosition={props.reverseMentionPicker}
+            />
+          }
+          {!mentionsState ? null :
+            <MentionPicker
+              resourceProvider={mentionProvider!}
+              presenceProvider={props.presenceProvider}
+              pluginState={mentionsState}
+              reversePosition={props.reverseMentionPicker}
+            />
+          }
+        </div>
       </div>
     );
+  }
+
+  render() {
+    return (
+      <div className="ak-editor-trello" id={this.props.id}>
+        {this.renderContent()}
+      </div>
+    );
+  }
+
+  private handleEditorContainerRef = ref => {
+    this.editorContainer = ref;
+  }
+
+
+  /**
+   * Blurs editor but keeps focus on editor container,
+   * so components like inline-edit can check if focus is still inside them
+   */
+  softBlurEditor = () => {
+    if (this.editorContainer) {
+      this.editorContainer.focus();
+    }
   }
 
   private handleRef = (place: Element | null) => {
@@ -231,7 +313,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const editorState = EditorState.create({
       schema,
-      doc: this.props.defaultValue ? markdownDecode.parse(this.props.defaultValue) : '',
+      doc: this.props.defaultValue ? (markdownDecode as any).parse(this.props.defaultValue) : '',
       plugins: [
         ...mentionsPlugins(schema),
         ...emojisPlugins(schema),

@@ -3,6 +3,7 @@ import {
   analyticsService,
   baseKeymap,
   blockTypePlugins,
+  ChromeCollapsed,
   codeBlockPlugins,
   EditorState,
   EditorView,
@@ -56,18 +57,20 @@ export interface Props {
   reverseMentionPicker?: boolean;
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
+  placeholder?: string;
 }
 
 export interface State {
   editorView?: EditorView;
   schema: TrelloSchema;
+  isExpanded: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
   version = `${version} (editor-core ${coreVersion})`;
 
   public static defaultProps: Props = {
-    reverseMentionPicker: true
+    reverseMentionPicker: false
   };
 
   state: State;
@@ -76,7 +79,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { schema };
+    this.state = { schema, isExpanded: false };
 
     this.providerFactory = new ProviderFactory();
 
@@ -198,9 +201,19 @@ export default class Editor extends PureComponent<Props, State> {
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
   }
 
+  expand = () => {
+    this.setState({
+      isExpanded: true
+    });
+  }
+
+  renderPlaceHolder() {
+    return <ChromeCollapsed text={this.props.placeholder} onFocus={this.expand} />;
+  }
+
   render() {
     const { props } = this;
-    const { editorView } = this.state;
+    const { editorView, isExpanded } = this.state;
     const { emojiProvider, mentionProvider } = props;
 
     const editorState = editorView && editorView.state;
@@ -209,23 +222,25 @@ export default class Editor extends PureComponent<Props, State> {
 
     return (
       <div className="ak-editor-trello" id={this.props.id}>
-        <div ref={this.handleRef}>
-          {!emojisState ? null :
-            <EmojiTypeAhead
-              pluginState={emojisState}
-              emojiProvider={emojiProvider!}
-              reversePosition={props.reverseMentionPicker}
-            />
-          }
-          {!mentionsState ? null :
-            <MentionPicker
-              resourceProvider={mentionProvider!}
-              presenceProvider={props.presenceProvider}
-              pluginState={mentionsState}
-              reversePosition={props.reverseMentionPicker}
-            />
-          }
-        </div>
+        { !isExpanded ? this.renderPlaceHolder() :
+          <div ref={this.handleRef}>
+            {!emojisState ? null :
+              <EmojiTypeAhead
+                pluginState={emojisState}
+                emojiProvider={emojiProvider!}
+                reversePosition={props.reverseMentionPicker}
+              />
+            }
+            {!mentionsState ? null :
+              <MentionPicker
+                resourceProvider={mentionProvider!}
+                presenceProvider={props.presenceProvider}
+                pluginState={mentionsState}
+                reversePosition={props.reverseMentionPicker}
+              />
+            }
+          </div>
+        }
       </div>
     );
   }
@@ -290,19 +305,9 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     this.setState({ editorView });
-    this.focus();
+    editorView.focus();
 
     analyticsService.trackEvent('atlassian.editor.start');
-  }
-
-  private handleSubmit = () => {
-    const { onSubmit } = this.props;
-    const { editorView } = this.state;
-    if (onSubmit && editorView) {
-      onSubmit(this.value);
-    }
-
-    return true;
   }
 
   private handleChange = () => {

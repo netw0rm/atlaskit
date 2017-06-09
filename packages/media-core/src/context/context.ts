@@ -18,7 +18,7 @@ export interface Context {
   getDataUriService(collectionName?: string): DataUriService;
   addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string>;
   refreshCollection(collectionName: string, pageSize: number): void;
-  getFileBinary(id: string): Promise<string>;
+  getFileBinary(id: string, collectionName: string): Promise<string>;
   readonly config: ContextConfig;
 }
 
@@ -91,12 +91,12 @@ class ContextImpl implements Context {
     this.getMediaCollectionProvider(collectionName, pageSize).refresh();
   }
 
-  getFileBinary = (id: string): Promise<string> =>  {
+  getFileBinary = (id: string, collectionName: string): Promise<string> =>  {
     const {tokenProvider, serviceHost, clientId} = this.config;
 
     // TODO: Pass collection name
-    return tokenProvider('MediaServicesSample').then(token => {
-      return `${serviceHost}/file/${id}/binary?token=${token}&client=${clientId}`;
+    return tokenProvider(collectionName).then(token => {
+      return `${serviceHost}/file/${id}/binary?token=${token}&client=${clientId}&collection=${collectionName}`;
     });
   }
 

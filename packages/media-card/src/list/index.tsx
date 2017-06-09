@@ -281,8 +281,13 @@ export class CardList extends Component<CardListProps, CardListState> {
         return null;
       }
 
-      const {onCardClick: consumersOnCardClick, context} = this.props;
+      const {onCardClick: consumersOnCardClick, context, collectionName} = this.props;
       const getFileBinary = mediaItem.type === 'file' ? context.getFileBinary : undefined;
+      const closure = (context, collectionName) => {
+        return (id: string) => {
+          return context.getFileBinary(id, collectionName);
+        };
+      };
 
       return (
         <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
@@ -299,7 +304,7 @@ export class CardList extends Component<CardListProps, CardListState> {
             onClick={consumersOnCardClick && this.handleCardClick.bind(this, mediaItem)}
             actions={cardActions(mediaItem)}
 
-            getFileBinary={getFileBinary}
+            getFileBinary={closure(context, collectionName)}
           />
         </CardListItemWrapper>
       );

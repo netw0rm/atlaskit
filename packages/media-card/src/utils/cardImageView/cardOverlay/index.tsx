@@ -5,7 +5,10 @@ import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
 import Icon from '@atlaskit/icon/lib/Icon';
 
-import {FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
+import {FileIcon} from '../../fileIcon';
+import {ErrorIcon} from '../../errorIcon';
+import {Ellipsify} from '../../ellipsify';
+import {Menu} from '../../menu';
 
 import {
   TickBox,

@@ -10,6 +10,7 @@ import {CardAction, MediaItemDetails, MediaCollectionItem} from '@atlaskit/media
 export * from './card';
 export * from './cardView';
 export * from './list';
+export {createWidget} from './utils/widget';
 
 export type CardStatus = 'uploading' | 'loading' | 'processing' | 'complete' | 'error';
 

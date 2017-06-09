@@ -5,7 +5,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Rnd from 'react-rnd';
+import {Context, MediaItemDetails} from '@atlaskit/media-core';
 
+import {isLinkDetails} from '../../utils/isLinkDetails';
 import {AudioWidget} from '../../utils/cardAudioView/audioWidget';
 import {Wrapper as VideoWidgetWrapper, Video} from '../../utils/cardVideoView/styled';
 import {VideoCardOverlay} from '../../utils/cardVideoView/videoOverlay';
@@ -104,7 +106,54 @@ const removeWidget = () => {
   Widget.remove();
 };
 
-export const showAudioWidget = (spec): void => {
+export type CreateAudioWidgetSpec = {
+  audioUrl: Promise<string>;
+  title?: string;
+};
+
+export type CreateVideoWidgetSpec = {
+  videoUrl: Promise<string>;
+  title?: string;
+};
+
+export const createWidget = (context: Context, mediaItemDetails: MediaItemDetails, collectionName: string): void => {
+  if (isLinkDetails(mediaItemDetails)) {
+    const linkItemDetails = mediaItemDetails;
+    const {resources, title} = linkItemDetails;
+    const {file} = resources || {file: undefined};
+
+    if (!file || !file.type) {
+      return;
+    }
+
+    if (file.type.indexOf('audio') === 0) {
+      showAudioWidget({title, audioUrl: Promise.resolve(file.url)});
+    }
+
+    if (file.type.indexOf('video') === 0) {
+      showVideoWidget({title, videoUrl: Promise.resolve(file.url)});
+    }
+
+    return;
+  }
+
+  const fileItemDetails = mediaItemDetails;
+  const {id: fileId, mediaType, name} = fileItemDetails;
+  if (!fileId) {
+    return;
+  }
+
+  const binaryUrl = context.getFileBinary(fileId, collectionName);
+  if (mediaType === 'audio') {
+    showAudioWidget({audioUrl: binaryUrl, title: name});
+  }
+
+  if (mediaType === 'video') {
+    showVideoWidget({videoUrl: binaryUrl, title: name});
+  }
+};
+
+export const showAudioWidget = (spec: CreateAudioWidgetSpec): void => {
   const dimensions = {width: '200px', height: '150px'};
 
   const options = {
@@ -125,7 +174,7 @@ export const showAudioWidget = (spec): void => {
   });
 };
 
-export const showVideoWidget = (spec): void => {
+export const showVideoWidget = (spec: CreateVideoWidgetSpec): void => {
   // TODO remove hardcoded dimensions
   const dimensions = {width: '300px', height: '300px'};
 

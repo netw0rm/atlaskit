@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, defaultCollectionName} from '@atlaskit/media-test-helpers';
-import { CardList, CardListEvent } from '../src';
+import { CardList, CardListEvent, createWidget } from '../src';
 
 const wrongCollection = 'adfasdf';
 const wrongClientId = 'wrong-client-id';
@@ -36,6 +36,13 @@ const wrongContext = createStorybookContext(wrongClientId);
 
 const createGroupedListExamples = (cardAppearance?) => {
   const minWidth = cardAppearance === 'small' ? '250px' : null;
+  const cardClickHandler = (result) => {
+    if (result.event.shiftKey) {
+      createWidget(context, result.mediaCollectionItem.details);
+    }
+
+    // TODO open the media viewer by default
+  };
 
   return [
     {
@@ -48,6 +55,7 @@ const createGroupedListExamples = (cardAppearance?) => {
             shouldGroupByDate={true}
             pageSize={5}
             cardAppearance={cardAppearance}
+            onCardClick={cardClickHandler}
           />
         </div>
       )
@@ -63,6 +71,7 @@ const createGroupedListExamples = (cardAppearance?) => {
             pageSize={10}
             height={500}
             cardAppearance={cardAppearance}
+            onCardClick={cardClickHandler}
           />
         </div>
       )

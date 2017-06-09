@@ -21,7 +21,6 @@ import {
   listsStateKey,
   textFormattingStateKey,
   clearFormattingStateKey,
-  ContextName,
   EditorView,
   EditorState,
   Node,
@@ -58,7 +57,6 @@ export { version };
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -283,7 +281,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, emojiProvider, mentionSource, imageUploadHandler } = this.props;
+      const { emojiProvider, mentionSource, imageUploadHandler } = this.props;
       const bitbucketKeymap = {
         'Mod-Enter': this.handleSave,
         'Esc'() { } // Disable Esc handler
@@ -313,11 +311,6 @@ export default class Editor extends PureComponent<Props, State> {
           ]
         }
       );
-
-      if (context) {
-        const blockTypeState = blockTypeStateKey.getState(editorState);
-        blockTypeState.changeContext(context);
-      }
 
       if (imageUploadHandler) {
         const imageUploadState = imageUploadStateKey.getState(editorState);

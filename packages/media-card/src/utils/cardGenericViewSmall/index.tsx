@@ -145,7 +145,6 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
 
   private makeAudioWidget = (evt): void => {
     const {title, audioUrl} = this.props;
-    console.log('make audio widget');
 
     if (!audioUrl) {
       return;

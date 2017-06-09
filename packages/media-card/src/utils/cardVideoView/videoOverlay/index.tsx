@@ -20,24 +20,17 @@ export class VideoCardOverlay extends Component<VideoCardOverlayProps, {}> {
   };
 
   render() {
-    const {videoName} = this.props;
+    const {videoName, onClose} = this.props;
 
     return (
       <Overlay>
         <Header>
           {videoName}
-          <Button appearance="subtle-link" onClick={this.handleClose}>
+          <Button appearance="subtle-link" onClick={onClose}>
             <CrossIcon label="close widget" />
           </Button>
         </Header>
       </Overlay>
     );
-  }
-
-  private handleClose = (): void => {
-    const {onClose} = this.props;
-    if (onClose) {
-      onClose();
-    }
   }
 }

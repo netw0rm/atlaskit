@@ -1,12 +1,13 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import {Component} from 'react';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 
 import {CardDimensions} from '../../../index';
 import {AudioControls} from './audioControls';
 import {AudioBars} from './audioBars';
 import {Audio, Wrapper} from '../styled';
-import {Title, Marquee} from './styled';
+import {Title, Marquee, ButtonWrapper} from './styled';
 
 export interface AudioWidgetProps {
   audioSrc: string;
@@ -33,7 +34,7 @@ export class AudioWidget extends Component<AudioWidgetProps, AudioWidgetState> {
   }
 
   render() {
-    const {title, audioSrc, dimensions} = this.props;
+    const {title, audioSrc, dimensions, onClose} = this.props;
     const {audioElement, isPlaying} = this.state;
 
     const audioBars = audioElement
@@ -47,6 +48,9 @@ export class AudioWidget extends Component<AudioWidgetProps, AudioWidgetState> {
 
     return (
       <Wrapper style={{width: '100%', height: '100%'}}>
+        <ButtonWrapper appearance="subtle-link" onClick={onClose}>
+          <CrossIcon label="close widget" />
+        </ButtonWrapper>
         <Title>
           <Marquee className={marqueClassName}>{title} -</Marquee>
           <Marquee className={marqueClassName}>{title}</Marquee>

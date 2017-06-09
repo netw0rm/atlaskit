@@ -9,7 +9,8 @@ export const PlayButtonWrapper = styled.div`
   cursor: pointer;
   transition: all .5s ${easeOutCubic};
   opacity: .8;
-
+  display: flex;
+  align-items: center;
   // TODO set a legit value here
   z-index: 99999;
 

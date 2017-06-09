@@ -1,5 +1,6 @@
 import { EditorState, Transaction, Plugin, PluginKey, inputRules, Schema, Node } from '../../prosemirror';
 import { createInputRule } from '../utils';
+import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
 import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 
 let matcher: AsciiEmojiMatcher;
@@ -23,6 +24,9 @@ function initMatcher(emojiProvider: Promise<EmojiProvider>) {
 }
 
 function inputRuleHandler(state: EditorState<Schema<any, any>>, matchParts: [string], start: number, end: number): Transaction | undefined {
+  if (!isEnabled(state)) { return undefined }
+  if (!matcher) { return undefined }
+
   const match = matcher.match(matchParts);
   if (match) {
     const transactionCreator = new AsciiEmojiTransactionCreator(state, match, start, end);
@@ -31,16 +35,21 @@ function inputRuleHandler(state: EditorState<Schema<any, any>>, matchParts: [str
   return undefined;
 }
 
+function isEnabled(state: EditorState<Schema<any, any>>) {
+  return isMarkTypeAllowedAtCurrentPosition(state.schema.marks.emojiQuery, state);
+}
+
 interface AsciiEmojiMatch {
   emoji: EmojiDescription;
-  hasWhitespacePrefix: boolean;
+  startsWithWhitespace: boolean;
+  endsWithWhitespace: boolean;
 }
 
 class AsciiEmojiMatcher {
-  static REGEX = /(^|\s)(\S+)\s$/;
-  private static WHITESPACE_PREFIX_REGEX = /^\s$/;
+  static REGEX = /(^| )([^: ]+\S{1,3}|:\S{1,3} )$/;
 
   private static REGEX_FULL_CAPTURE_INDEX = 0;
+  private static REGEX_PREFIX_CAPTURE_INDEX = 1;
   private static REGEX_WORD_CAPTURE_INDEX = 2;
 
   private asciiToEmojiMap: Map<string, EmojiDescription>;
@@ -54,13 +63,14 @@ class AsciiEmojiMatcher {
     if (emoji) {
       return {
         emoji: emoji,
-        hasWhitespacePrefix: AsciiEmojiMatcher.startsWithWhitespace(matchParts),
+        startsWithWhitespace: AsciiEmojiMatcher.startsWithWhitespace(matchParts),
+        endsWithWhitespace: AsciiEmojiMatcher.endsWithWhitespace(matchParts),
       };
     }
   }
 
   private getEmoji(match: string[]): EmojiDescription | undefined {
-    let ascii = match[AsciiEmojiMatcher.REGEX_WORD_CAPTURE_INDEX];
+    let ascii = match[AsciiEmojiMatcher.REGEX_WORD_CAPTURE_INDEX].trim();
     if (ascii) {
       return this.asciiToEmojiMap.get(ascii);
     }
@@ -68,8 +78,12 @@ class AsciiEmojiMatcher {
   }
 
   private static startsWithWhitespace(match: string[]): boolean {
-    const prefix = match[AsciiEmojiMatcher.REGEX_FULL_CAPTURE_INDEX].substring(0, 1);
-    return AsciiEmojiMatcher.WHITESPACE_PREFIX_REGEX.test(prefix);
+    return match[AsciiEmojiMatcher.REGEX_PREFIX_CAPTURE_INDEX] === ' ';
+  }
+
+  private static endsWithWhitespace(match: string[]): boolean {
+    const lastCharPos = match[AsciiEmojiMatcher.REGEX_FULL_CAPTURE_INDEX].length - 1;
+    return match[AsciiEmojiMatcher.REGEX_FULL_CAPTURE_INDEX].charAt(lastCharPos) === ' ';
   }
 }
 
@@ -97,15 +111,19 @@ class AsciiEmojiTransactionCreator {
   }
 
   private get from(): number {
-    return this.match.hasWhitespacePrefix ? this.start + 1 : this.start;
+    return this.match.startsWithWhitespace ? this.start + 1 : this.start;
   }
 
   private get to(): number {
     return this.end;
   }
 
-  private createNodes(): [Node] {
-    return [this.createEmojiNode(), this.createSpaceTextNode()];
+  private createNodes(): Node[] {
+    const nodes = [this.createEmojiNode()];
+    if (this.match.endsWithWhitespace) {
+      nodes.push(this.createSpaceTextNode());
+    }
+    return nodes;
   }
 
   private createEmojiNode(): Node {

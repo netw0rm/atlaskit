@@ -115,19 +115,17 @@ export class CardList extends Component<CardListProps, CardListState> {
         });
 
         this.setState({
-          ...this.state,
           collection,
           loading: false
         });
       },
       error: (error: AxiosError): void => {
-        this.setState({ ...this.state, error, loading: false });
+        this.setState({ collection: undefined, error, loading: false });
       }
     });
 
     this.setState({
       loadNextPage: () => provider.loadNextPage(),
-      collection: undefined,
       error: undefined,
       subscription
     });

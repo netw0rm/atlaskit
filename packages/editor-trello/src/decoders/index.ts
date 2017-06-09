@@ -1,1 +1,1 @@
-export { default as hipchatDecoder } from './hipchat';
+export { default as markdown } from './markdown';

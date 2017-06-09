@@ -40,8 +40,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { TrelloSchema, default as schema } from './schema/schema';
 import { version } from './version';
-import { markdown } from './encoders';
-// import { hipchatDecoder } from './decoders';
+import { markdown as markdownEncode } from './encoders';
+import { markdown as markdownDecode } from './decoders';
 
 let debounced: number | null = null;
 
@@ -111,7 +111,7 @@ export default class Editor extends PureComponent<Props, State> {
       return '';
     }
 
-    return markdown.serialize(doc);
+    return markdownEncode.serialize(doc);
   }
 
   /**
@@ -159,6 +159,18 @@ export default class Editor extends PureComponent<Props, State> {
           .scrollIntoView();
         editorView.dispatch(tr);
       }
+    }
+  }
+
+  setFromMarkdown(value: any): void {
+    const { editorView } = this.state;
+    if (editorView) {
+      const { state } = editorView;
+      let doc = markdownDecode.parse(value);
+        const tr = state.tr
+          .replaceWith(0, state.doc.nodeSize - 2, doc.content)
+          .scrollIntoView();
+        editorView.dispatch(tr);
     }
   }
 

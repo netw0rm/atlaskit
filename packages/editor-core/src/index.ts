@@ -21,6 +21,7 @@ export {
   MarkSpec,
   DOMSerializer,
   DOMParser,
+  MarkdownParser,
   MarkdownSerializer,
   MarkdownSerializerState,
   Fragment,

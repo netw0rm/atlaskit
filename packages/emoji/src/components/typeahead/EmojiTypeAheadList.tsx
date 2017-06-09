@@ -69,9 +69,10 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
   componentWillReceiveProps(nextProps: Props) {
     // adjust selection
     const { emojis } = nextProps;
+
     const { selectedKey } = this.state;
     if (!selectedKey) {
-      this.selectIndexNewEmoji(0, emojis);
+      // go with default of selecting first item
       return;
     }
     for (let i = 0; i < emojis.length; i++) {
@@ -179,8 +180,13 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
 
       return (
         <div>
-          {emojis.map((emoji) => {
-            const selected = selectedKey === emoji.id;
+          {emojis.map((emoji, idx) => {
+            let selected;
+            if (selectedKey) {
+              selected = selectedKey === emoji.id;
+            } else {
+              selected = idx === 0;
+            }
             const key = getKey(emoji);
             const item = (
               <EmojiItem

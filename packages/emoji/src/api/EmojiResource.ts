@@ -57,6 +57,12 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   findInCategory(categoryId: string): Promise<EmojiDescription[]>;
 
   /**
+   * Return the promise which will resolve to a map of plain text representations of emoji (such as :D) to their
+   * equivalent EmojiDescription.
+   */
+  getAsciiMap(): Promise<Map<string, EmojiDescription>>;
+
+  /**
    * Records an emoji selection, for example for using in tracking recent emoji.
    *
    * Optional.
@@ -309,6 +315,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       }
     }
     return this.retryIfLoading(() => this.findByEmojiId(emojiId), undefined);
+  }
+
+  getAsciiMap(): Promise<Map<string, EmojiDescription>> {
+    return Promise.resolve(this.emojiRepository.getAsciiMap());
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {

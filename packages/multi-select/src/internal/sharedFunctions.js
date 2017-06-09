@@ -35,8 +35,14 @@ const getPrevFocusable = (indexItem, length) => {
   return currentItem;
 };
 
+const groupItems = (items) => {
+  const firstItem = items[0] || {};
+  return Array.isArray(firstItem.items) ? items : [{ items }];
+};
+
 export {
   filterItems,
   getNextFocusable,
   getPrevFocusable,
+  groupItems,
 };

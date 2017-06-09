@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 
-import MultiSelecct, { MultiSelectStateless } from '../../src';
+import MultiSelect, { MultiSelectStateless } from '../../src';
 import { name } from '../../package.json';
 
 describe(`${name} - smart`, () => {
@@ -17,7 +17,7 @@ describe(`${name} - smart`, () => {
 
   describe('render', () => {
     it('should render stateless multi select', () => {
-      expect(mount(<MultiSelecct />).find(MultiSelectStateless).length).to.equal(1);
+      expect(mount(<MultiSelect />).find(MultiSelectStateless).length).to.equal(1);
     });
 
     it('should pass all the relevant props to the stateless component', () => {
@@ -30,7 +30,7 @@ describe(`${name} - smart`, () => {
           ],
         },
       ];
-      const wrapper = mount(<MultiSelecct
+      const wrapper = mount(<MultiSelect
         appearance="subtle"
         defaultSelected={[items[0].items[0]]}
         id="id"
@@ -81,7 +81,7 @@ describe(`${name} - smart`, () => {
     ];
 
     beforeEach(() => {
-      wrapper = mount(<MultiSelecct
+      wrapper = mount(<MultiSelect
         defaultSelected={[items[0].items[0]]}
         items={items}
         onFilterChange={onFilterChangeSpy}

@@ -10,7 +10,7 @@ import { PureComponent } from 'react';
   propTypes readme component
 **************************************************************************************************/
 
-export default class DummyGroup extends PureComponent {
+export default class TagShape extends PureComponent {
   static propTypes = {
     appearance: PropTypes.string,
     elemBefore: PropTypes.node,

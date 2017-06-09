@@ -7,9 +7,9 @@ import Tag from '@atlaskit/tag';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import { Content, Expand, Input, TriggerDiv } from '../styled/Trigger';
 import { mapAppearanceToFieldBase } from '../internal/appearances';
-import DummyItem from '../internal/DummyItem';
+import ItemShape from '../internal/ItemShape';
 
-const itemShape = DummyItem.propTypes;
+const itemShape = ItemShape.propTypes;
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.

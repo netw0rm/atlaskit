@@ -5,17 +5,17 @@ import ReactDOM from 'react-dom';
 import Droplist from '@atlaskit/droplist';
 import { Label } from '@atlaskit/field-base';
 
-import DummyItem from '../internal/DummyItem';
-import DummyGroup from '../internal/DummyGroup';
+import ItemShape from '../internal/ItemShape';
+import GroupShape from '../internal/GroupShape';
 import { SelectWrapper } from '../styled/Stateless';
 import Trigger from './Trigger';
 import Footer from './Footer';
-import { filterItems, getNextFocusable, getPrevFocusable } from '../internal/sharedFunctions';
+import { filterItems, getNextFocusable, getPrevFocusable, groupItems } from '../internal/sharedFunctions';
 import renderGroups from './Groups';
 import renderOptGroups from './Options';
 
-const groupShape = DummyGroup.propTypes;
-const itemShape = DummyItem.propTypes;
+const groupShape = GroupShape.propTypes;
+const itemShape = ItemShape.propTypes;
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
@@ -69,7 +69,10 @@ export default class StatelessMultiSelect extends PureComponent {
     /** An array of objects, each one of which must have an array of items, and
     may have a heading. All items should have content and value properties, with
     content being the displayed text. */
-    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    items: PropTypes.oneOfType([
+      PropTypes.shape(groupShape),
+      PropTypes.arrayOf(PropTypes.shape(itemShape)),
+    ]),
     /** Label to be displayed above select. */
     label: PropTypes.string,
     /** Mesage to display in any group in items if there are no items in it,
@@ -125,11 +128,18 @@ export default class StatelessMultiSelect extends PureComponent {
   state = {
     isFocused: this.props.isOpen || this.props.shouldFocus,
     focusedItemIndex: null,
+    groupedItems: groupItems(this.props.items),
   }
 
   componentDidMount = () => {
     if (this.state.isFocused && this.inputNode) {
       this.inputNode.focus();
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.items !== nextProps.items) {
+      this.setState({ groupedItems: groupItems(nextProps.items) });
     }
   }
 
@@ -326,7 +336,6 @@ export default class StatelessMultiSelect extends PureComponent {
       isInvalid,
       isOpen,
       isRequired,
-      items,
       label,
       name,
       noMatchesFound,
@@ -335,6 +344,8 @@ export default class StatelessMultiSelect extends PureComponent {
       shouldAllowCreateItem,
       shouldFitContainer,
     } = this.props;
+
+    const { groupedItems, isFocused, focusedItemIndex } = this.state;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -352,7 +363,7 @@ export default class StatelessMultiSelect extends PureComponent {
           style={{ display: 'none' }}
           value={getAllValues(selectedItems)}
         >
-          {renderOptGroups(items)}
+          {renderOptGroups(groupedItems)}
         </select>
         {label ? <Label
           htmlFor={id}
@@ -378,7 +389,7 @@ export default class StatelessMultiSelect extends PureComponent {
               inputNode={this.inputNode}
               inputRefFunction={ref => (this.inputNode = ref)}
               isDisabled={isDisabled}
-              isFocused={isOpen || this.state.isFocused}
+              isFocused={isOpen || isFocused}
               isInvalid={isInvalid}
               isRequired={isRequired}
               onBlur={this.onBlur}
@@ -391,11 +402,11 @@ export default class StatelessMultiSelect extends PureComponent {
           }
         >
           {renderGroups({
-            groups: items,
+            groups: groupedItems,
             filterValue,
             selectedItems,
             noMatchesFound,
-            focusedItemIndex: this.state.focusedItemIndex,
+            focusedItemIndex,
             handleItemSelect: this.handleItemSelect,
             shouldAllowCreateItem,
           })}
@@ -403,7 +414,7 @@ export default class StatelessMultiSelect extends PureComponent {
             filterValue={filterValue}
             newLabel={createNewItemLabel}
             shouldAllowCreateItem={shouldAllowCreateItem}
-            shouldHideSeparator={!this.getAllVisibleItems(items).length}
+            shouldHideSeparator={!this.getAllVisibleItems(groupedItems).length}
           />
         </Droplist>
       </SelectWrapper>

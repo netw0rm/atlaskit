@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import uid from 'uid';
 
-import DummyItem from '../internal/DummyItem';
-import DummyGroup from '../internal/DummyGroup';
+import ItemShape from '../internal/ItemShape';
+import GroupShape from '../internal/GroupShape';
 import MultiSelectStateless from './Stateless';
 
-const itemShape = DummyItem.propTypes;
-const groupShape = DummyGroup.propTypes;
+const itemShape = ItemShape.propTypes;
+const groupShape = GroupShape.propTypes;
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
@@ -51,8 +51,10 @@ export default class MultiSelect extends PureComponent {
     /** An array of objects, each one of which must have an array of items, and
     may have a heading. All items should have content and value properties, with
     content being the displayed text. */
-    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
-    /** Label to be displayed above select. */
+    items: PropTypes.oneOfType([
+      PropTypes.shape(groupShape),
+      PropTypes.arrayOf(PropTypes.shape(itemShape)),
+    ]),    /** Label to be displayed above select. */
     label: PropTypes.string,
     /** name property to be passed to the html select element. */
     name: PropTypes.string,

@@ -40,8 +40,32 @@ const getFireHooks = (hooks: Hooks) => (state: State, previous: State): void => 
     if (!state.complete) {
       return;
     }
+    const result: DragResult = state.complete.result;
 
-    onDragEnd(state.complete.result);
+    if (!result.destination) {
+      onDragEnd(result);
+      return;
+    }
+
+    // Clearing out destination if it is not needed.
+    // Public api states that the destination will be
+    // null if the item did not move anywhere.
+
+    const didMove = result.source.index !== result.destination.index ||
+                    result.source.droppableId !== result.destination.droppableId;
+
+    if (didMove) {
+      onDragEnd(state.complete.result);
+      return;
+    }
+
+    const modified: DragResult = {
+      draggableId: result.draggableId,
+      source: result.source,
+      destination: null,
+    };
+
+    onDragEnd(modified);
     return;
   }
 

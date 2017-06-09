@@ -65,7 +65,11 @@ const make = (() => {
       };
       return currentDrag;
     };
-    const complete = (newHomeOffset: Position, impact?: DragImpact = noImpact, shouldAnimate?: boolean = true) => {
+    const complete = (
+      newHomeOffset: Position,
+      impact?: DragImpact = noImpact,
+      shouldAnimate?: boolean = true
+    ): DragComplete => {
       const result: DragResult = {
         draggableId: id,
         source: initial.source,
@@ -101,7 +105,7 @@ const getDefaultMapProps = (id: DraggableId): MapProps => ({
   initial: null,
 });
 
-describe.only('Draggable - unconnected', () => {
+describe('Draggable - unconnected', () => {
   it('should log an error and return default props if the selector receives both a current drag and a drag completion', () => {
     sinon.stub(console, 'error');
     const { id, complete, drag, selector, provided } = make();

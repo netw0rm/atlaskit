@@ -211,4 +211,10 @@ describe('EmojiRepository', () => {
       }
     });
   });
+
+  describe('#findByAsciiRepresentation', () => {
+    it('', () => {
+      expect(false, 'Implement the tests').to.be.true;
+    });
+  });
 });

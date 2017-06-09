@@ -1,12 +1,10 @@
-import { LowerCaseSanitizer, Search, SimpleTokenizer, UnorderedSearchIndex } from 'js-search';
+import { Search, UnorderedSearchIndex } from 'js-search';
 
 import { customCategory } from '../constants';
 import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 import CategorySelector from '../components/picker/CategorySelector';
-import { AsciiEmojiRecognisingTokenizerAndSanitizer, NoOpSanitizer } from '../search/AsciiEmojiRecognisingTokenizerAndSanitizer';
-import { AsciiEmojiAwareSearcher } from '../search/AsciiEmojiAwareSearcher';
 
 export interface EmojiSearchResult {
   emojis: EmojiDescription[];
@@ -82,7 +80,6 @@ export const getEmojiVariation = (emoji: EmojiDescription, options?: SearchOptio
 export default class EmojiRepository {
   private emojis: EmojiDescription[];
   private fullSearch: Search;
-  private asciiEmojiAwareSearcher: AsciiEmojiAwareSearcher;
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
   private asciiMap: Map<string, EmojiDescription>;
@@ -97,19 +94,11 @@ export default class EmojiRepository {
     });
 
     this.initMaps();
-    const tokenizer = new AsciiEmojiRecognisingTokenizerAndSanitizer(
-      new SimpleTokenizer(),
-      new LowerCaseSanitizer());
     this.fullSearch = new Search('id');
     this.fullSearch.searchIndex = new UnorderedSearchIndex();
-    this.fullSearch.tokenizer = tokenizer;
-    this.fullSearch.sanitizer = new NoOpSanitizer(); // the tokenizer does sanitizing as well
     this.fullSearch.addIndex('name');
     this.fullSearch.addIndex('shortName');
-    this.fullSearch.addIndex('ascii');
     this.fullSearch.addDocuments(emojis);
-
-    this.asciiEmojiAwareSearcher = new AsciiEmojiAwareSearcher(tokenizer, this.fullSearch);
   }
 
   /**
@@ -125,14 +114,20 @@ export default class EmojiRepository {
    * Returns an array of all emoji is query is empty or null, otherwise an matching emoji.
    */
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
-    let filteredEmoji: EmojiDescription[];
+    let filteredEmoji: EmojiDescription[] = [];
     if (query) {
-      console.log('PAC: searching for query = ' + query);
-      filteredEmoji = this.asciiEmojiAwareSearcher.search(query);
-      console.log('PAC: found ' + filteredEmoji.length + ' matching results.');
+      const asciiEmoji = this.findByAsciiRepresentation(query);
+
+      filteredEmoji = this.fullSearch.search(query);
+      this.sortFiltered(filteredEmoji, query);
+
+      if (asciiEmoji) {
+        filteredEmoji = [asciiEmoji, ...filteredEmoji];
+      }
     } else {
       filteredEmoji = this.emojis;
     }
+
     filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
       emojis: filteredEmoji,
@@ -140,6 +135,8 @@ export default class EmojiRepository {
       query,
     };
   }
+
+
 
   /**
    * Returns the first matching emoji matching the shortName, or null if none found.
@@ -154,6 +151,10 @@ export default class EmojiRepository {
   findById(id: string): OptionalEmojiDescription {
     debug('findById', id, this.idMap);
     return findByKey(this.idMap, id);
+  }
+
+  findByAsciiRepresentation(asciiEmoj: string): OptionalEmojiDescription {
+    return this.asciiMap.get(asciiEmoj);
   }
 
   findInCategory(categoryId: string): EmojiDescription[] {
@@ -204,5 +205,72 @@ export default class EmojiRepository {
     if (emoji.ascii) {
       emoji.ascii.forEach(a => this.asciiMap.set(a, emoji));
     }
+  }
+
+   /**
+   * Sort emojis return by js-search in to a logical order
+   */
+  private sortFiltered(filteredEmoji: EmojiDescription[], query: string) {
+    query = query.replace(/:/g, '').toLowerCase().trim();
+    const colonQuery = `:${query}:`;
+
+    // Comparator is an internal function within sorter to access the query
+    const emojiComparator = (e1: EmojiDescription, e2: EmojiDescription): number => {
+      // Handle exact matches between query and shortName
+      if (e1.shortName === colonQuery && e2.shortName === colonQuery) {
+        return this.typeToOrder(e1.type) - this.typeToOrder(e2.type);
+      } else if (e1.shortName === colonQuery) {
+        return -1;
+      } else if (e2.shortName === colonQuery) {
+        return 1;
+      }
+
+      // shortName matches should take precedence over full name
+      const short1 = e1.shortName.indexOf(query);
+      const short2 = e2.shortName.indexOf(query);
+
+      // Order used for matching on same index and shorter queries with default value assigned on initialisation
+      if (query.length < 3 || short1 !== -1 && short1 === short2) {
+        return e1.order! - e2.order!;
+      } else if (short1 !== -1 && short2 !== -1) {
+        return short1 - short2;
+      } else if (short1 !== -1) {
+        return -1;
+      } else if (short2 !== -1) {
+        return 1;
+      }
+
+      // Query matches earliest in the full name
+      if (e1.name && e2.name) {
+        const index1 = e1.name.indexOf(query);
+        const index2 = e2.name.indexOf(query);
+        if (index1 !== index2) {
+          return index1 - index2;
+        }
+      }
+
+      // Use order if full name matches on same index
+      if (e1.order !== e2.order) {
+        return e1.order! - e2.order!;
+      }
+
+      // Default to alphabetical order
+      return e1.shortName.slice(0, -1).localeCompare(e2.shortName.slice(0, -1));
+    };
+
+    filteredEmoji.sort(emojiComparator);
+  }
+
+  // Give precedence when conflicting shortNames occur as defined in Emoji Storage Spec
+  private typeToOrder(type: string): number {
+    if (type === 'SITE') {
+      return 0;
+    } else if (type === 'ATLASSIAN') {
+      return 1;
+    } else if (type === 'STANDARD') {
+      return 2;
+    }
+    // Push unknown type to bottom of list
+    return 3;
   }
 }

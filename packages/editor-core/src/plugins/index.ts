@@ -2,6 +2,7 @@ export { default as blockTypePlugins, stateKey as blockTypeStateKey } from './bl
 export { default as clearFormattingPlugins, stateKey as clearFormattingStateKey } from './clear-formatting';
 export { default as codeBlockPlugins, stateKey as codeBlockStateKey } from './code-block';
 export { default as emojisPlugins, stateKey as emojisStateKey } from './emojis';
+export { default as asciiEmojiPlugins, stateKey as asciiEmojiStateKey } from './emojis/ascii-input-rules';
 export { default as hyperlinkPlugins, stateKey as hyperlinkStateKey } from './hyperlink';
 export { default as imageUploadPlugins, stateKey as imageUploadStateKey } from './image-upload';
 export { default as listsPlugins, stateKey as listsStateKey } from './lists';

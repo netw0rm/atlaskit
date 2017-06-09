@@ -58,6 +58,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
   placeholder?: string;
+  defaultValue?: string;
 }
 
 export interface State {
@@ -79,7 +80,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { schema, isExpanded: false };
+    this.state = { schema, isExpanded: this.props.defaultValue ? true : false };
 
     this.providerFactory = new ProviderFactory();
 
@@ -137,40 +138,6 @@ export default class Editor extends PureComponent<Props, State> {
 
     if (editorView && !editorView.hasFocus()) {
       editorView.focus();
-    }
-  }
-
-  /**
-   * Set document from JSON
-   */
-  setFromJson(value: any): void {
-    const { editorView } = this.state;
-    if (editorView) {
-      const { state } = editorView;
-
-      let content: Node[] = [];
-      (value.content || []).forEach(child => {
-        content.push(schema.nodeFromJSON(child));
-      });
-
-      if (content && content.length > 0) {
-        const tr = state.tr
-          .replaceWith(0, state.doc.nodeSize - 2, content)
-          .scrollIntoView();
-        editorView.dispatch(tr);
-      }
-    }
-  }
-
-  setFromMarkdown(value: any): void {
-    const { editorView } = this.state;
-    if (editorView) {
-      const { state } = editorView;
-      let doc = markdownDecode.parse(value);
-        const tr = state.tr
-          .replaceWith(0, state.doc.nodeSize - 2, doc.content)
-          .scrollIntoView();
-        editorView.dispatch(tr);
     }
   }
 
@@ -264,7 +231,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const editorState = EditorState.create({
       schema,
-      doc: '',
+      doc: this.props.defaultValue ? markdownDecode.parse(this.props.defaultValue) : '',
       plugins: [
         ...mentionsPlugins(schema),
         ...emojisPlugins(schema),

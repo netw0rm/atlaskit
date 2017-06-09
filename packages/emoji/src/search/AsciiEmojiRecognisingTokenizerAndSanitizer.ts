@@ -32,7 +32,7 @@ export class AsciiEmojiRecognisingTokenizerAndSanitizer implements ITokenizer  {
   tokenize(text: string): Array<string> {
     const parts = text.split(',');
     for (let index = 0; index < parts.length; index++) {
-      if (!isAsciiEmoji(parts[0])) {
+      if (!isAsciiEmoji(parts[index])) {
         // if any part is not an emoji then delegate
         return this.tokenizeNonEmojiText(text);
       }

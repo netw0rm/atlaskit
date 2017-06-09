@@ -20,7 +20,6 @@ import {
   textFormattingStateKey,
   textColorStateKey,
   listsStateKey,
-  ContextName,
   EditorState,
   EditorView,
   Schema,
@@ -67,7 +66,6 @@ import { version, name } from './version';
 export { version };
 
 export interface Props {
-  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -313,7 +311,6 @@ export default class Editor extends PureComponent<Props, State> {
     const { schema } = this.state;
 
     if (place) {
-      const { context } = this.props;
       const jiraKeymap = {
         'Mod-Enter': this.handleSave,
       };
@@ -341,11 +338,6 @@ export default class Editor extends PureComponent<Props, State> {
           keymap(baseKeymap), // should be last :(
         ]
       });
-
-      if (context) {
-        const blockTypeState = blockTypeStateKey.getState(editorState);
-        blockTypeState.changeContext(context);
-      }
 
       const editorView = new EditorView(place, {
         state: editorState,

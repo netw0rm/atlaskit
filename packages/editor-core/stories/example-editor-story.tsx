@@ -1,6 +1,8 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
+import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
+import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
+import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
@@ -13,6 +15,13 @@ import imageUploadHandler from '../stories/imageUpload/handler';
 import { resourceProvider, resourceProvider2 } from './mentions/story-data';
 import { toJSON } from '../src/utils';
 import { storyMediaProviderFactory } from '../src/test-helper';
+
+const mediaTestHelpers = {
+  defaultClientId,
+  defaultServiceHost,
+  defaultCollectionName,
+  StoryBookTokenProvider,
+};
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();

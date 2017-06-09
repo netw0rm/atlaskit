@@ -18,7 +18,6 @@ describe('CardList', () => {
   it('should create a MediaItemProvider for each MediaItem in the collection', () => {
     const collectionName = 'MyMedia';
 
-    const expectedMediaItemProvider = 'the media item provider';
     const expectedMediaItems = [
       {
         type: 'link',
@@ -45,11 +44,16 @@ describe('CardList', () => {
           });
         }
       },
-      getMediaItemProvider: expectedMediaItemProvider
+      getMediaItemProvider: {
+        observable() {
+          return Observable.of(expectedMediaItems[0]);
+        }
+      }
     }) as any;
 
     mount(<CardList context={context} collectionName={collectionName}/>);
 
+    expect(context.getMediaCollectionProvider.callCount).to.be.equal(1);
     expect(context.getMediaItemProvider.callCount).to.be.equal(expectedMediaItems.length);
     expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[0].details.id, expectedMediaItems[0].type, collectionName, expectedMediaItems[0])).to.be.true;
     expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[1].details.id, expectedMediaItems[1].type, collectionName, expectedMediaItems[1])).to.be.true;
@@ -58,7 +62,6 @@ describe('CardList', () => {
   it('should pass a provider to MediaCard', () => {
     const collectionName = 'MyMedia';
 
-    const expectedMediaItemProvider = 'the media item provider';
     const expectedMediaItems = [
       {
         type: 'link',
@@ -75,6 +78,12 @@ describe('CardList', () => {
         }
       }
     ];
+
+    const expectedMediaItemProvider = {
+      observable() {
+        return Observable.of(expectedMediaItems[0]);
+      }
+    };
 
     const context = fakeContext({
       getMediaCollectionProvider: {

@@ -1,7 +1,9 @@
 import { action, storiesOf } from '@kadira/storybook';
 import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import InlineEdit from '@atlaskit/inline-edit';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
+import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
+import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
+import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { name, version } from '../package.json';
@@ -9,6 +11,13 @@ import Editor from '../src';
 import MentionResource from './mentions/mention-resource';
 import { pd } from 'pretty-data';
 import Spinner from '@atlaskit/spinner';
+
+const mediaTestHelpers = {
+  defaultClientId,
+  defaultServiceHost,
+  defaultCollectionName,
+  StoryBookTokenProvider,
+};
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();

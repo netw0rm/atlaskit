@@ -1,6 +1,5 @@
 // @flow
 import type {
-  Dragging,
   DraggableId,
   DraggableLocation,
   DragResult,
@@ -83,7 +82,7 @@ const getFireHooks = (hooks: Hooks) => (state: State, previous: State): void => 
   }
 };
 
-export default (hooks: Hooks, store: Store) => {
+export default (hooks: Hooks, store: Store): Function => {
   let previous: ?State = null;
 
   const fireHooks = getFireHooks(hooks);

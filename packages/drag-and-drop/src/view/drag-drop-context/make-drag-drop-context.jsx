@@ -14,7 +14,6 @@ type Context = {|
 
 export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) => {
   const store: Store = createStore();
-
   initialise(hooks, store);
 
   return class DragDropContext extends PureComponent {

@@ -63,6 +63,7 @@ export class FileCard extends Component<FileCardProps, {}> {
     const {dimensions, dataURI, onClick, audioUrl, videoUrl} = this.props;
     const {name, mediaType, size} = this.details;
 
+    // console.log(audioUrl, videoUrl);
     return (
       <FileCardViewSmall
         error={this.errorMessage}

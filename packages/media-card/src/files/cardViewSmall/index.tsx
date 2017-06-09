@@ -31,6 +31,7 @@ export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCar
     const {error, mediaSize, mediaType, mediaName, dataURI, width, loading, actions, onClick, onMouseEnter, onRetry, videoUrl, audioUrl} = this.props;
     const subtitle = toHumanReadableMediaSize(mediaSize || 0);
 
+    // console.log(audioUrl, videoUrl);
     return <CardGenericViewSmall
       error={error}
       mediaType={mediaType}

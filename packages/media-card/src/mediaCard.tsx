@@ -133,7 +133,6 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     const {mediaItemType, provider, dataURIService, onLoadingChange, getFileBinary, ...otherProps} = this.props;
     const {metadata, status} = this.state;
     const {id, mediaType: actualMediaType} = this.isFileDetails(metadata) ? metadata : {id: undefined, mediaType: undefined};
-
     const videoUrl = this.getBinaryUrlPromise({actualMediaType, binaryMediaType: 'video', id});
     const audioUrl = this.getBinaryUrlPromise({actualMediaType, binaryMediaType: 'audio', id});
 

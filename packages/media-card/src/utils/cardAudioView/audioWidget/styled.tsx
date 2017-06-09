@@ -1,6 +1,7 @@
 /* tslint:disable:variable-name */
-import {marquee} from '../../../styles';
 import styled from 'styled-components';
+import Button from '@atlaskit/button';
+import {marquee, size} from '../../../styles';
 
 export const Title = styled.div`
   position: absolute;
@@ -9,6 +10,9 @@ export const Title = styled.div`
   color: black;
   padding: 5px;
   display: flex;
+  bottom: 0;
+  color: white;
+  text-shadow: 1px 1px black;
 `;
 
 export const Marquee = styled.div`
@@ -18,4 +22,13 @@ export const Marquee = styled.div`
   &.playing {
     animation-play-state: running;
   }
+`;
+
+export const ButtonWrapper = styled(Button)`
+  ${size('20px')}
+  z-index: 1;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  padding: 0;
 `;

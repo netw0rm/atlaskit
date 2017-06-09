@@ -755,7 +755,7 @@ describe('Draggable', () => {
       });
     });
 
-    it('should give a placeholder the same height and width of the element being moved', () => {
+    it('should give a placeholder the same dimension of the element being moved', () => {
       expect(draggingWrapper.find(Placeholder).props().style)
           .to.deep.equal({
             width: mockInitial.dimension.width,

@@ -25,6 +25,8 @@ type MovementStyle = {|
   zIndex: ZIndex,
   width: number,
   height: number,
+  top: number,
+  left: number,
 |}
 
 type PlacementInfo = {|
@@ -236,6 +238,8 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
             // its standard positioning logic
             width: initial.dimension.width,
             height: initial.dimension.height,
+            top: initial.dimension.top,
+            left: initial.dimension.left,
           };
         };
 

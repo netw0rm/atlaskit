@@ -13,8 +13,9 @@ import type { TypeId,
   DragComplete,
 } from '../types';
 import getDragImpact from './get-drag-impact';
-import { moveBackward } from './get-position-move';
 import { getDiffToJumpForward, getDiffToJumpBackward } from './jump-to-next-index';
+import getNewHomeOffset from './get-new-home-offset';
+import isPositionEqual from './is-position-equal';
 
 const shout = (message, ...rest) => {
   const key = `%c ${message}`;
@@ -259,8 +260,6 @@ export default (state: State = reset(), action: Action): State => {
       return state;
     }
 
-    console.log('DIFFFFFFFF', diff);
-
     const offset: Position = {
       x: previous.dragging.offset.x + diff.x,
       y: previous.dragging.offset.y + diff.y,
@@ -297,59 +296,28 @@ export default (state: State = reset(), action: Action): State => {
   }
 
   if (action.type === 'DROP') {
-    if (state.currentDrag == null) {
-      console.error('not dropping as there is nothing dragging in the state');
-      return reset();
-    }
-
-    const { impact, dragging, initial } = state.currentDrag;
-    const last: ?CurrentDrag = state.currentDrag;
-
-    if (!last) {
+    if (!state.currentDrag) {
       console.error('finishing drag without having started a drag');
       return reset();
     }
 
-    // TODO: need to consider movement between two lists
-    // (could impact both x and y values)
-    const amount = last.impact.movement.isMovingForward ?
-      last.impact.movement.amount : -last.impact.movement.amount;
+    const { impact, initial, dragging } = state.currentDrag;
 
-    const offset: Position = {
-      x: 0,
-      y: (amount * last.impact.movement.draggables.length),
-    };
+    const newHomeOffset: Position = getNewHomeOffset(impact.movement);
 
-    const isAnimationRequired = dragging.offset.x !== offset.x || dragging.offset.y !== offset.y;
-
-    if (!isAnimationRequired) {
-      console.log('animation is not required');
-    }
-
-    const destination: ?DraggableLocation = (() => {
-      // dropping outside of a list
-      if (!impact.destination) {
-        return null;
-      }
-
-      // if nothing has moved - return null as the destination
-      const hasNotMoved =
-        impact.destination.droppableId === initial.source.droppableId &&
-        impact.destination.index === initial.source.index;
-
-      return hasNotMoved ? null : impact.destination;
-    })();
+    const isAnimationRequired = dragging.shouldAnimate &&
+      !isPositionEqual(dragging.offset, newHomeOffset);
 
     const result: DragResult = {
       draggableId: dragging.id,
       source: initial.source,
-      destination,
+      destination: impact.destination,
     };
 
     const complete: DragComplete = {
       result,
-      last,
-      newHomeOffset: offset,
+      last: state.currentDrag,
+      newHomeOffset,
       isWaitingForAnimation: isAnimationRequired,
     };
 

@@ -25,8 +25,6 @@ type MovementStyle = {|
   zIndex: ZIndex,
   width: number,
   height: number,
-  top: number,
-  left: number,
 |}
 
 type PlacementInfo = {|
@@ -233,10 +231,11 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
           return {
             zIndex,
             position: 'absolute',
+            // when we use position absolute we need to
+            // force the height and width because it looses
+            // its standard positioning logic
             width: initial.dimension.width,
             height: initial.dimension.height,
-            top: initial.dimension.top,
-            left: initial.dimension.left,
           };
         };
 

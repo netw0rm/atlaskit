@@ -22,22 +22,23 @@ import type {
   Position,
   DraggableId,
   DragComplete,
+  DragMovement,
   CurrentDrag,
 } from '../../types';
 import type {
   Provide,
-    MapProps,
-    OwnProps,
-    DispatchProps,
-    Props,
-    MapStateToProps,
-    NeedsProviding,
+  MapProps,
+  OwnProps,
+  DispatchProps,
+  Props,
+  MapStateToProps,
+  NeedsProviding,
 } from './draggable-types';
 
 const empty = {};
 const origin = { x: 0, y: 0 };
 
-const makeSelector = (provide: Provide) => {
+export const makeSelector = (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
   const getProvided = (state: State, ownProps: OwnProps) => memoizedProvide(ownProps);
   const memoizedOffset = memoizeOne(
@@ -57,17 +58,39 @@ const makeSelector = (provide: Provide) => {
       isDragging: false,
       canAnimate: true,
       offset: origin,
+      initial: null,
     }));
 
-  const cutOffAnimation = memoizeOne(
-    (id: DraggableId, isDragEnabled: boolean): MapProps => ({
+  const getWithMovement = memoizeOne(
+    (id: DraggableId, offset: Position, isDragEnabled: boolean): MapProps => ({
       id,
       isDragEnabled,
       isDropAnimating: false,
       isDragging: false,
-      canAnimate: false,
-      offset: origin,
-    }));
+      canAnimate: true,
+      offset,
+      initial: null,
+    })
+  );
+
+  const getNotDraggingProps = memoizeOne(
+    (id: DraggableId, movement: DragMovement, isDragEnabled: boolean): MapProps => {
+      const needsToMove = movement.draggables.indexOf(id) !== -1;
+
+      if (!needsToMove) {
+        return getDefaultProps(id, isDragEnabled);
+      }
+
+      const amount = movement.isMovingForward ? -movement.amount : movement.amount;
+
+      return getWithMovement(
+        id,
+        // currently not handling horizontal movement
+        memoizedOffset(0, amount),
+        isDragEnabled,
+      );
+    }
+  );
 
   return createSelector(
     [currentDragSelector, dragCompleteSelector, getProvided],
@@ -76,59 +99,33 @@ const makeSelector = (provide: Provide) => {
       provided: NeedsProviding): MapProps => {
       const { id, isDragEnabled = true } = provided;
 
-      if (complete) {
-        const last: CurrentDrag = complete.last;
-
-        if (last.dragging.id === provided.id) {
-          if (!complete.isWaitingForAnimation) {
-            return cutOffAnimation(id, isDragEnabled);
-          }
-
-          // waiting for animation to finish
-          // $ExpectError - flow does not play well with spread
-          return {
-            ...getDefaultProps(id, isDragEnabled),
-            isDropAnimating: true,
-            offset: complete.newHomeOffset,
-            // TODO: is this needed?
-            initial: last.initial,
-          };
-        }
-
-        const { impact: { movement } } = last;
-
-        if (movement.draggables.includes(provided.id)) {
-          // quickly cut off animation
-          // is this needed?
-          if (complete.isWaitingForAnimation) {
-            return cutOffAnimation(id, isDragEnabled);
-          }
-
-          const amount = movement.isMovingForward ?
-            -movement.amount : movement.amount;
-
-          // $ExpectError - flow does not play well with spread
-          return {
-            ...getDefaultProps(id, isDragEnabled),
-            offset: memoizedOffset(0, amount),
-          };
-        }
-
+      // TODO: write test
+      if (currentDrag && complete) {
+        console.error('cannot be dragging and have a complete drag');
         return getDefaultProps(id, isDragEnabled);
       }
 
-      if (!currentDrag || !currentDrag.dragging) {
-        return getDefaultProps(id, isDragEnabled);
-      }
+      if (!complete) {
+        // Scenario: nothing is happening
+        if (!currentDrag || !currentDrag.dragging) {
+          return getDefaultProps(id, isDragEnabled);
+        }
 
-      // item is dragging
-      if (currentDrag.dragging.id === id) {
+        // Scenario: this item is not dragging
+        if (currentDrag.dragging.id !== id) {
+          return getNotDraggingProps(
+            id,
+            currentDrag.impact.movement,
+            isDragEnabled,
+          );
+        }
+
+        // Scenario: this item is dragging
         const offset = currentDrag.dragging.offset;
         const initial = currentDrag.initial;
         const canAnimate = currentDrag.dragging.shouldAnimate;
 
-        invariant(isDragEnabled, 'drag cannot be disabled for the dragging item');
-
+        // not memoizing result as it should not move without an update
         return {
           id,
           isDragEnabled: true,
@@ -140,20 +137,26 @@ const makeSelector = (provide: Provide) => {
         };
       }
 
-      const { impact: { movement } } = currentDrag;
-
-      if (movement.draggables.includes(id)) {
-        const amount = movement.isMovingForward ?
-          -movement.amount : movement.amount;
-
-        // $ExpectError - flow does not play well with spread
-        return {
-          ...getDefaultProps(id, isDragEnabled),
-          offset: memoizedOffset(0, amount),
-        };
+      // Scenario 5: there was a drag, but it was not this item
+      if (complete.last.dragging.id !== id) {
+        return getNotDraggingProps(
+          id,
+          complete.last.impact.movement,
+          isDragEnabled,
+        );
       }
 
-      return getDefaultProps(id, isDragEnabled);
+      // Scenario: just dropped this item
+      const isDropAnimating = complete.isWaitingForAnimation;
+      return {
+        id,
+        isDragEnabled,
+        isDragging: false,
+        isDropAnimating,
+        canAnimate: isDropAnimating,
+        offset: complete.newHomeOffset,
+        initial: complete.last.initial,
+      };
     }
   );
 };

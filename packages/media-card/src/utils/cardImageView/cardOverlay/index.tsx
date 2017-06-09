@@ -3,8 +3,10 @@ import {MouseEvent, Component} from 'react';
 import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
-
-import {FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
+import {FileIcon} from '../../fileIcon';
+import {ErrorIcon} from '../../errorIcon';
+import {Ellipsify} from '../../ellipsify';
+import {Menu} from '../../menu';
 
 import {
   TickBox,

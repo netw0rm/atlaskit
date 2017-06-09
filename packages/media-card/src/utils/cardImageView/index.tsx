@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
-
-import {getCSSUnitValue} from '../index';
+import {getCSSUnitValue} from '../getCSSUnitValue';
 import {CardDimensions, CardStatus} from '../../index';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';

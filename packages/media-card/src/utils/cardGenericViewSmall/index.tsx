@@ -2,9 +2,9 @@ import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import * as cx from 'classnames';
 import {CardAction, MediaType} from '@atlaskit/media-core';
-
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
-import {Menu, ErrorIcon, getCSSUnitValue} from '../../utils';
+import {Menu, ErrorIcon} from '../../utils';
+import {getCSSUnitValue} from '../getCSSUnitValue';
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 export interface CardGenericViewSmallProps {

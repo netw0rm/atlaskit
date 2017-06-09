@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled, {keyframes, css} from 'styled-components';
-import {getCSSUnitValue} from '../utils';
+import {getCSSUnitValue} from '../utils/getCSSUnitValue';
 
 export const Spinner = styled.div`
   background: data-uri("./icons/spinner.svg") no-repeat center;

@@ -35,6 +35,7 @@ import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
+import ToolbarTable from '../ToolbarTable';
 import {
   Container,
   Content,
@@ -106,6 +107,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       pluginStatePanel,
       pluginStateTextColor,
       pluginStateTextFormatting,
+      pluginStateTable,
       saveDisabled
     } = this.props;
     const iconAfter = saveDisabled
@@ -175,6 +177,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {this.props.children}
           {pluginStateHyperlink && !disabled ? <HyperlinkEdit pluginState={pluginStateHyperlink} editorView={editorView} /> : null}
           {pluginStateCodeBlock && !disabled ? <LanguagePicker pluginState={pluginStateCodeBlock} editorView={editorView} /> : null}
+          {pluginStateTable && !disabled ? <ToolbarTable pluginState={pluginStateTable} /> : null}
           {pluginStateMentions && mentionProvider && !disabled ? <MentionPicker pluginState={pluginStateMentions} resourceProvider={mentionProvider} /> : null}
           {pluginStateEmojis && emojiProvider && !disabled ? <EmojiTypeAhead pluginState={pluginStateEmojis} emojiProvider={emojiProvider} /> : null}
           {pluginStatePanel && !disabled ? <PanelEdit pluginState={pluginStatePanel} editorView={editorView} /> : null}

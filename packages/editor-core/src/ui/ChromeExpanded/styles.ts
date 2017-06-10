@@ -1,6 +1,12 @@
-import { akEditorSubtleAccent, akEditorMentionSelected } from '../../styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import {
+  akEditorSubtleAccent,
+  akEditorMentionSelected,
+  akEditorTableCellSelected,
+  akEditorTableBorder,
+  akEditorTableBorderSelected,
+} from '../../styles';
 
 export const createNestedListStyles = (): any => {
   const styles = {};
@@ -114,6 +120,50 @@ export const Content = styled.div`
     bottom: -2px;
     border: 2px solid #8cf;
     pointer-events: none;
+  }
+
+  .ProseMirror table {
+    border-collapse: collapse;
+    margin: 20px 0;
+    width: auto;
+    border: 1px solid ${akEditorTableBorder};
+
+    & {
+      tbody {
+        border-bottom: none;
+      }
+      th, td {
+        min-width: 1em;
+        vertical-align: top;
+        border: 1px solid ${akEditorTableBorder};
+        border-right-width: 0;
+        border-bottom-width: 0;
+        padding: 6px 10px;
+
+        & p {
+          margin: 0;
+        }
+      }
+      th {
+        font-weight: bold;
+        text-align: left;
+      }
+      .selectedCell {
+        position: relative;
+        border-color: ${akEditorTableBorderSelected};
+        border-width: 1px;
+      }
+      /* Give selected cells a blue overlay */
+      .selectedCell:after {
+        z-index: 2;
+        position: absolute;
+        content: "";
+        left: 0; right: 0; top: 0; bottom: 0;
+        background: ${akEditorTableCellSelected};
+        opacity: 0.2;
+        pointer-events: none;
+      }
+    }
   }
 `;
 

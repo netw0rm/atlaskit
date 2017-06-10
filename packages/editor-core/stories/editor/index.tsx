@@ -37,7 +37,6 @@ import {
   ReactEmojiNode,
   ReactMentionNode,
   panelNodeView,
-  tableNodeView,
 } from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
@@ -303,7 +302,6 @@ export default class Editor extends PureComponent<Props, State> {
           }, true),
           mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
           panel: panelNodeView,
-          table: tableNodeView,
         },
       });
       mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);

@@ -19,7 +19,7 @@ export interface TablesCommand {
 export class TableState {
   keymapHandler;
   element?: HTMLElement;
-  domEvent: boolean = false;
+  tableElement?: HTMLElement;
   editorFocused: boolean = false;
   tableNode?: Node;
 
@@ -46,51 +46,59 @@ export class TableState {
 
   updateEditorFocused(editorFocused: boolean) {
     this.editorFocused = editorFocused;
-    this.triggerOnChange();
   }
 
   update(newEditorState: EditorState<any>, docView: NodeViewDesc) {
     this.state = newEditorState;
+    let dirty = false;
 
+    // const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
+    const tableElement = this.getTableElement(docView);
     const tableNode = this.getTableNode();
-    if (tableNode) {
-      this.element = this.activeElement(docView);
+
+    if (tableElement !== this.tableElement) {
+      this.tableElement = tableElement;
+      dirty = true;
     }
 
     if (tableNode !== this.tableNode) {
       this.tableNode = tableNode;
+      dirty = true;
+    }
+
+    if (dirty) {
       this.triggerOnChange();
     }
   }
 
-  private activeElement(docView: NodeViewDesc): HTMLElement {
-    const offset = this.nodeStartPos();
-    const { node } = docView.domFromPos(offset);
-    return node as HTMLElement;
+  private getTableElement(docView: NodeViewDesc): HTMLElement | undefined {
+    const offset = this.tableStartPos();
+    if (offset) {
+      const { node } = docView.domFromPos(offset);
+      if (node) {
+        return node.parentNode as HTMLElement;
+      }
+    }
   }
 
-  private nodeStartPos(): number {
+  private tableStartPos(): number | undefined {
     const { $from } = this.state.selection;
-    return $from.start($from.depth);
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === this.state.schema.nodes.table) {
+        return $from.start(i);
+      }
+    }
   }
 
   private getTableNode(): Node | undefined {
     const { state } = this;
     const { path } = state.selection.$from;
-    if (!Array.isArray(path) || !path.length) {
-      return;
-    }
-    let node;
     let i = path.length;
     while (i--) {
       if (path[i] && path[i].type === state.schema.nodes.table) {
-        node = path[i];
-        break;
+        return path[i];
       }
-    }
-
-    if (node) {
-      return node;
     }
   }
 
@@ -140,6 +148,7 @@ const plugin = new Plugin({
     onBlur(view: EditorView, event) {
       const pluginState = stateKey.getState(view.state);
       pluginState.updateEditorFocused(false);
+      pluginState.update(view.state, view.docView);
     },
   }
 });
@@ -149,3 +158,7 @@ const plugins = () => {
 };
 
 export default plugins;
+
+// https://github.com/ProseMirror/prosemirror/issues/432
+document.execCommand('enableObjectResizing', false, false);
+document.execCommand('enableInlineTableEditing', false, false);

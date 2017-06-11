@@ -6,6 +6,7 @@ import {
   tableEditing,
   Transaction,
   NodeViewDesc,
+  CellSelection,
 } from '../../prosemirror';
 import * as tableCommands from '../../prosemirror/prosemirror-tables';
 import keymapHandler from './keymap';
@@ -22,6 +23,7 @@ export class TableState {
   tableElement?: HTMLElement;
   editorFocused: boolean = false;
   tableNode?: Node;
+  selection?: CellSelection;
 
   private state: EditorState<any>;
   private changeHandlers: TableStateSubscriber[] = [];
@@ -55,6 +57,17 @@ export class TableState {
     // const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
     const tableElement = this.getTableElement(docView);
     const tableNode = this.getTableNode();
+    const { selection } = this.state;
+
+    if (selection instanceof CellSelection) {
+      if (selection !== this.selection) {
+        this.selection = selection;
+        dirty = true;
+      }
+    } else if (this.selection) {
+      this.selection = undefined;
+      dirty = true;
+    }
 
     if (tableElement !== this.tableElement) {
       this.tableElement = tableElement;
@@ -160,5 +173,7 @@ const plugins = () => {
 export default plugins;
 
 // https://github.com/ProseMirror/prosemirror/issues/432
-document.execCommand('enableObjectResizing', false, false);
-document.execCommand('enableInlineTableEditing', false, false);
+setTimeout(() => {
+  document.execCommand('enableObjectResizing', false, 'false');
+  document.execCommand('enableInlineTableEditing', false, 'false');
+});

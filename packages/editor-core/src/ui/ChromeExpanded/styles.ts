@@ -129,6 +129,10 @@ export const Content = styled.div`
     border: 1px solid ${akEditorTableBorder};
 
     & {
+      * {
+        box-sizing: border-box;
+      }
+
       tbody {
         border-bottom: none;
       }

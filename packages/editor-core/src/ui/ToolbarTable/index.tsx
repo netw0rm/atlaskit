@@ -3,6 +3,7 @@ import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
 import Popper, { IPopper } from './../../popper';
 import { akEditorFloatingPanelZIndex } from '../../styles';
+import { CellSelection } from '../../prosemirror';
 import {
   TableHeader,
   TableHeaderButton,
@@ -25,6 +26,7 @@ export interface State {
   tableNode?: Node;
   position?: string;
   transform?: string;
+  selection?: CellSelection;
 }
 
 export default class ToolbarTable extends PureComponent<Props, State> {
@@ -62,7 +64,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
     if (tableElement) {
       return (
         <div ref={this.handleRef} style={style}>
-          <TableHeader>
+          <TableHeader className={this.isTableSelected() ? 'active' : ''}>
             <TableHeaderButton />
           </TableHeader>
           <ColHeaderWrap>
@@ -83,14 +85,25 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private renderColHeaders () {
-    const { tableElement } = this.state;
+    const { tableElement, selection } = this.state;
     const firstRow = tableElement!.querySelector('tr');
     const cols = firstRow!.querySelectorAll('td,th');
     const result: any = [];
 
     for (let i = 0, len = cols.length; i < len; i++) {
+      const rows = tableElement!.querySelectorAll('tr');
+      const active = (
+        !!selection &&
+        isCellSelected( rows[0].querySelectorAll('td,th')[i] ) &&
+        isCellSelected( rows[ rows.length - 1 ].querySelectorAll('td,th')[i] )
+      );
+
       result.push(
-        <ColHeader key={i} style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}>
+        <ColHeader
+          key={i}
+          style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
+          className={active ? 'active' : ''}
+        >
           <ColHeaderButton />
         </ColHeader>
       );
@@ -99,13 +112,24 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private renderRowHeaders () {
-    const { tableElement } = this.state;
+    const { tableElement, selection } = this.state;
     const rows = tableElement!.querySelectorAll('tr');
     const result: any = [];
 
     for (let i = 0, len = rows.length; i < len; i++) {
+      const cols = rows[i]!.querySelectorAll('td,th');
+      const active = (
+        !!selection &&
+        isCellSelected( cols[0] ) &&
+        isCellSelected( cols[ cols.length - 1 ] )
+      );
+
       result.push(
-        <RowHeader key={i} style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}>
+        <RowHeader
+          key={i}
+          style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
+          className={active ? 'active' : ''}
+        >
           <RowHeaderButton />
         </RowHeader>
       );
@@ -126,12 +150,8 @@ export default class ToolbarTable extends PureComponent<Props, State> {
         onUpdate: this.extractStyles,
         placement: 'top-start',
         modifiers: {
-          applyStyle: {
-            enabled: false,
-          },
-          hide: {
-            enabled: false
-          },
+          applyStyle: { enabled: false },
+          hide: { enabled: false },
           preventOverflow: {
             enabled: false,
             escapeWithReference: false,
@@ -147,7 +167,25 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: TableState) => {
-    const { tableElement, tableNode } = pluginState;
-    this.setState({ tableElement, tableNode }, this.applyPopper);
+    const { tableElement, tableNode, selection } = pluginState;
+    this.setState({ tableElement, tableNode, selection }, this.applyPopper);
   }
+
+  private isTableSelected () {
+    if (!this.state.selection) {
+      return false;
+    }
+    const rows = this.state.tableElement!.querySelectorAll('tr');
+    const lastRow = rows[ rows.length - 1 ];
+    const lastRowColsCount = lastRow.querySelectorAll('td,th').length;
+
+    return (
+      isCellSelected( rows[0].querySelectorAll('td,th')[0] ) &&
+      isCellSelected( lastRow.querySelectorAll('td,th')[ lastRowColsCount - 1] )
+    );
+  }
+}
+
+export function isCellSelected (cell: Element) {
+  return (cell.className || '').indexOf('selectedCell') > -1;
 }

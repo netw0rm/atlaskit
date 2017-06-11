@@ -12,6 +12,8 @@ import {
 export const Container = styled.div`
   position: relative;
 `;
+
+/* --- Table header (corner of the toolbar) --- */
 // tslint:disable-next-line:variable-name
 export const TableHeader = styled.div`
     position: absolute;
@@ -19,8 +21,6 @@ export const TableHeader = styled.div`
     left: -${akEditorTableToolbarSize}px;
     width: ${akEditorTableToolbarSize}px;
     height: ${akEditorTableToolbarSize}px;
-    margin-right: -1px;
-    margin-bottom: -1px;
 `;
 // tslint:disable-next-line:variable-name
 export const TableHeaderButton = styled.button`
@@ -36,15 +36,42 @@ export const TableHeaderButton = styled.button`
     cursor: pointer;
     padding: 0;
 
-    &:hover {
+    &:hover, .active > & {
       background-image: linear-gradient(to bottom right, #fff 0, #fff 49%, ${akEditorTableToolbarSelected} 50%, ${akEditorTableToolbarSelected} 100%);
       border-color: ${akEditorTableBorderSelected};
-      z-index: 10;
+      z-index: 1;
     }
     &:focus {
       outline: none;
     }
 `;
+
+/* --- Shared styles --- */
+// tslint:disable-next-line:variable-name
+export const Header = styled.div`
+    position: relative;
+    &:hover, &.active {
+      z-index: 1;
+    }
+`;
+// tslint:disable-next-line:variable-name
+export const HeaderButton = styled.button`
+    background: ${akEditorTableToolbar};
+    border-top: 1px solid ${akEditorTableBorder};
+    border-left: 1px solid ${akEditorTableBorder};
+    display: block;
+    padding: 0;
+    cursor: pointer;
+    &:hover, .active > & {
+      background-color: ${akEditorTableToolbarSelected};
+      border-color: ${akEditorTableBorderSelected};
+    }
+    &:focus {
+      outline: none;
+    }
+`;
+
+/* --- Columns --- */
 // tslint:disable-next-line:variable-name
 export const ColHeaderWrap = styled.div`
     position: absolute;
@@ -61,37 +88,23 @@ export const ColHeaderWrapInner = styled.div`
     }
 `;
 // tslint:disable-next-line:variable-name
-export const ColHeader = styled.div`
-    position: relative;
+export const ColHeader = styled(Header)`
     margin-right: -1px;
-    &:hover {
-      z-index: 1;
-    }
 `;
 // tslint:disable-next-line:variable-name
-export const ColHeaderButton = styled.button`
-    background: ${akEditorTableToolbar};
+export const ColHeaderButton = styled(HeaderButton)`
     border-right: 1px solid ${akEditorTableBorder};
-    border-top: 1px solid ${akEditorTableBorder};
-    border-left: 1px solid ${akEditorTableBorder};
     border-bottom: none;
-    display: block;
     height: ${akEditorTableToolbarSize - 1}px;
     width: 100%;
-    cursor: pointer;
-    padding: 0;
 
-    &:hover {
-      background-color: ${akEditorTableToolbarSelected};
-      border-color: ${akEditorTableBorderSelected};
+    &:hover, .active > & {
       border-bottom: 1px solid ${akEditorTableBorderSelected};
       height: ${akEditorTableToolbarSize}px;
     }
-    &:focus {
-      outline: none;
-    }
 `;
 
+/* --- Rows --- */
 // tslint:disable-next-line:variable-name
 export const RowHeaderWrap = styled.div`
     position: absolute;
@@ -109,33 +122,18 @@ export const RowHeaderWrapInner = styled.div`
     }
 `;
 // tslint:disable-next-line:variable-name
-export const RowHeader = styled.div`
-    position: relative;
+export const RowHeader = styled(Header)`
     margin-top: -1px;
-    &:hover {
-      z-index: 1;
-    }
 `;
 // tslint:disable-next-line:variable-name
-export const RowHeaderButton = styled.button`
-    background: ${akEditorTableToolbar};
+export const RowHeaderButton = styled(HeaderButton)`
     border-right: none;
-    border-top: 1px solid ${akEditorTableBorder};
-    border-left: 1px solid ${akEditorTableBorder};
     border-bottom: 1px solid ${akEditorTableBorder};
-    display: block;
     height: 100%;
     width: ${akEditorTableToolbarSize - 1}px;
-    cursor: pointer;
-    padding: 0;
 
-    &:hover, &.active {
-      background-color: ${akEditorTableToolbarSelected};
-      border-color: ${akEditorTableBorderSelected};
+    &:hover, .active > & {
       border-right: 1px solid ${akEditorTableBorderSelected};
       width: ${akEditorTableToolbarSize}px;
-    }
-    &:focus {
-      outline: none;
     }
 `;

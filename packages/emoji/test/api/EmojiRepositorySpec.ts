@@ -6,7 +6,7 @@ import { EmojiDescription } from '../../src/types';
 import { containsEmojiId, toEmojiId } from '../../src/type-helpers';
 import EmojiRepository from '../../src/api/EmojiRepository';
 
-import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji } from '../TestData';
+import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji } from '../TestData';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -207,6 +207,23 @@ describe('EmojiRepository', () => {
       } catch (e) {
         expect(true, 'Exception should be thrown').to.equal(true);
       }
+    });
+  });
+
+  describe('#findByAsciiRepresentation', () => {
+    it('returns the correct emoji for a matching ascii representation', () => {
+      const emoji = emojiRepository.findByAsciiRepresentation(':D');
+      expect(emoji).to.be.deep.equal(smileyEmoji);
+    });
+
+    it('returns the correct emoji for alternative ascii representation', () => {
+      const emoji = emojiRepository.findByAsciiRepresentation('=D');
+      expect(emoji).to.be.deep.equal(smileyEmoji);
+    });
+
+    it('returns undefined when there is no matching ascii representation', () => {
+      const emoji = emojiRepository.findByAsciiRepresentation('not-ascii');
+      expect(emoji).to.equal(undefined);
     });
   });
 });

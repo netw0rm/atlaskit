@@ -1270,6 +1270,7 @@ describe('UploadingEmojiResource', () => {
 
 describe('helpers', () => {
   class TestEmojiProvider implements EmojiProvider {
+    getAsciiMap = () => Promise.resolve(new Map([[grinEmoji.ascii![0], grinEmoji]]));
     findByShortName = shortName => Promise.resolve(evilburnsEmoji);
     findByEmojiId = emojiId => Promise.resolve(evilburnsEmoji);
     findInCategory = categoryId => Promise.resolve([]);

@@ -50,6 +50,11 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription>;
 
   /**
+   * Returns a map matching ascii representations to their corresponding EmojiDescription.
+   */
+  getAsciiMap(): Promise<Map<string, EmojiDescription>>;
+
+  /**
    * Finds emojis belonging to specified category.
    *
    * Does not automatically load Media API images.
@@ -309,6 +314,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       }
     }
     return this.retryIfLoading(() => this.findByEmojiId(emojiId), undefined);
+  }
+
+  getAsciiMap(): Promise<Map<string, EmojiDescription>> {
+    return Promise.resolve(this.emojiRepository.getAsciiMap());
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {

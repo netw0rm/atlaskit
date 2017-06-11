@@ -117,8 +117,8 @@ describe('EmojiRepository', () => {
         cowboy,
         ...allEmojis.slice(10), // rest...
       ];
-      const service = new EmojiRepository(expectedEmojis);
-      const emojis = service.all().emojis;
+      const repository = new EmojiRepository(expectedEmojis);
+      const emojis = repository.all().emojis;
       checkOrder(expectedEmojis, emojis);
     });
 
@@ -156,8 +156,8 @@ describe('EmojiRepository', () => {
         siteTest,
         ...allEmojis.slice(10), // rest...
       ];
-      const service = new EmojiRepository(splitCategoryEmojis);
-      const emojis = service.search(':test').emojis;
+      const repository = new EmojiRepository(splitCategoryEmojis);
+      const emojis = repository.search(':test').emojis;
       const expectedEmoji = [
         siteTest,
         atlassianTest,
@@ -176,14 +176,12 @@ describe('EmojiRepository', () => {
     });
 
     it('options - limit ignored if missing', () => {
-      const service = new EmojiRepository(allEmojis);
-      const emojis = service.search('').emojis;
+      const emojis = emojiRepository.search('').emojis;
       checkOrder(allEmojis, emojis);
     });
 
     it('options - limit results', () => {
-      const service = new EmojiRepository(allEmojis);
-      const emojis = service.search('', { limit: 10 }).emojis;
+      const emojis = emojiRepository.search('', { limit: 10 }).emojis;
       checkOrder(allEmojis.slice(0, 10), emojis);
     });
   });
@@ -191,20 +189,20 @@ describe('EmojiRepository', () => {
   describe('#addCustomEmoji', () => {
     it('add custom emoji', () => {
       const siteEmojiId = toEmojiId(siteTest);
-      const service = new EmojiRepository(allEmojis);
-      service.addCustomEmoji(siteTest);
-      const searchEmojis = service.search('').emojis;
+      const repository = new EmojiRepository(allEmojis);
+      repository.addCustomEmoji(siteTest);
+      const searchEmojis = repository.search('').emojis;
       expect(searchEmojis.length, 'Extra emoji in results').to.equal(allEmojis.length + 1);
       expect(containsEmojiId(searchEmojis, siteEmojiId), 'Contains site emoji').to.equal(true);
 
-      expect(service.findById(siteEmojiId.id as string)).to.be.deep.equal(siteTest);
-      expect(service.findByShortName(siteEmojiId.shortName)).to.be.deep.equal(siteTest);
+      expect(repository.findById(siteEmojiId.id as string)).to.be.deep.equal(siteTest);
+      expect(repository.findByShortName(siteEmojiId.shortName)).to.be.deep.equal(siteTest);
     });
 
     it('add non-custom emoji rejected', () => {
       try {
-        const service = new EmojiRepository(allEmojis);
-        service.addCustomEmoji(standardTest);
+        const repository = new EmojiRepository(allEmojis);
+        repository.addCustomEmoji(standardTest);
         expect(false, 'Should throw exception').to.equal(true);
       } catch (e) {
         expect(true, 'Exception should be thrown').to.equal(true);

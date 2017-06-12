@@ -3,7 +3,6 @@ import {
   analyticsService,
   baseKeymap,
   Chrome,
-  ContextName,
   EditorState,
   EditorView,
   history,
@@ -60,7 +59,6 @@ import ReactUnsupportedInlineNode from './nodeviews/ui/unsupportedInline';
 export { version };
 
 export interface Props {
-  context?: ContextName;
   disabled?: boolean;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
@@ -282,7 +280,6 @@ export default class Editor extends PureComponent<Props, State> {
     const { mediaPlugins } = this;
 
     if (place) {
-      const { context } = this.props;
       const doc = parse(this.props.defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
@@ -314,11 +311,6 @@ export default class Editor extends PureComponent<Props, State> {
 
       const codeBlockState = codeBlockStateKey.getState(editorState);
       codeBlockState.setLanguages(supportedLanguages);
-
-      if (context) {
-        const blockTypeState = blockTypeStateKey.getState(editorState);
-        blockTypeState.changeContext(context);
-      }
 
       const editorView = new EditorView(place, {
         state: editorState,

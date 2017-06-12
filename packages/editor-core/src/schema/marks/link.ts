@@ -1,7 +1,9 @@
 import { MarkSpec } from '../../prosemirror';
+import { LINK } from '../groups';
 
 export const link: MarkSpec = {
   excludes: 'textColor',
+  group: LINK,
   attrs: {
     href: {}
   },

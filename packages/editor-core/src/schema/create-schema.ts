@@ -37,6 +37,8 @@ import {
   textColor,
 } from '../schema';
 
+const EXCLUDE_MARKS_DELIMITER = ' ';
+
 const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'doc', spec: doc },
   { name: 'paragraph', spec: paragraph },
@@ -85,6 +87,18 @@ function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpe
   const items = builtInItems.reduce((items, { name, spec }) => {
     if (config.indexOf(name) !== -1) {
       items[name] = customSpecs[name] || spec;
+
+      // sanitize "excludes" section for marks
+      if (items[name].excludes) {
+        const excludeMarks = items[name].excludes.split(EXCLUDE_MARKS_DELIMITER).filter(excludeMark => {
+          return config.indexOf(excludeMark) !== -1;
+        });
+
+        items[name] = {
+          ...items[name],
+          excludes: excludeMarks.join(EXCLUDE_MARKS_DELIMITER)
+        };
+      }
     }
 
     return items;
@@ -111,6 +125,7 @@ export function createSchema(config: SchemaConfig): Schema<any, any> {
   const { nodes, customNodeSpecs, marks, customMarkSpecs } = config;
   const nodesConfig = Object.keys(customNodeSpecs || {}).concat(nodes);
   const marksConfig = Object.keys(customMarkSpecs || {}).concat(marks || []);
+
   return new Schema({
     nodes: addItems(nodesInOrder, nodesConfig, customNodeSpecs),
     marks: addItems(marksInOrder, marksConfig, customMarkSpecs),

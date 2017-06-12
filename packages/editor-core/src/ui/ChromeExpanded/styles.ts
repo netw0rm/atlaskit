@@ -143,6 +143,8 @@ export const Content = styled.div`
         border-right-width: 0;
         border-bottom-width: 0;
         padding: 6px 10px;
+        /* https://stackoverflow.com/questions/7517127/borders-not-shown-in-firefox-with-border-collapse-on-table-position-relative-o */
+        background-clip: padding-box;
 
         & p {
           margin: 0;

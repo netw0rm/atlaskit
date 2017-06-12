@@ -136,8 +136,6 @@ export default class EmojiRepository {
     };
   }
 
-
-
   /**
    * Returns the first matching emoji matching the shortName, or null if none found.
    */
@@ -207,7 +205,7 @@ export default class EmojiRepository {
     }
   }
 
-   /**
+  /**
    * Sort emojis return by js-search in to a logical order
    */
   private sortFiltered(filteredEmoji: EmojiDescription[], query: string) {

@@ -9,6 +9,7 @@ export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transact
     const { listItem, panel, blockquote, codeBlock, paragraph } = state.schema.nodes;
     const node = selection.$from.node(selection.$from.depth);
     const wrapper = selection.$from.node(selection.$from.depth - 1);
+    const secondWrapper = selection.$from.node(selection.$from.depth - 2);
     const parent = selection.$from.node(selection.$from.depth - 3);
     if (node && wrapper && parent) {
       const { textContent } = node;
@@ -18,6 +19,7 @@ export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transact
         return commands.outdentList()(state, dispatch);
       }
       if (textContent.length === 0 &&
+        (secondWrapper.type === listItem) &&
         ((panel && wrapperType === panel) ||
         (blockquote && wrapperType === blockquote))
       ) {
@@ -58,7 +60,7 @@ export const toggleList = (
   listType: 'bulletList' | 'orderedList'
 ): boolean => {
   const { selection } = state;
-  const { bulletList, orderedList } = state.schema.nodes;
+  const { bulletList, orderedList, listItem } = state.schema.nodes;
   const fromNode = selection.$from.node(selection.$from.depth - 2);
   const endNode = selection.$to.node(selection.$to.depth - 2);
   if ((!fromNode || fromNode.type.name !== listType) ||
@@ -66,10 +68,13 @@ export const toggleList = (
     return commands.toggleList(listType)(state, dispatch, view);
   } else {
     let rootListDepth;
-    for (let i = selection.$from.depth; i > 0; i--) {
-      const node = selection.$from.node(i);
+    for (let i = selection.$to.depth - 1; i > 0; i--) {
+      const node = selection.$to.node(i);
       if (node.type === bulletList || node.type === orderedList) {
         rootListDepth = i;
+      }
+      if (node.type !== bulletList && node.type !== orderedList && node.type !== listItem) {
+        break;
       }
     }
     let tr = liftFollowingList(
@@ -79,20 +84,20 @@ export const toggleList = (
       rootListDepth,
       state.tr
     );
-    tr = liftSelectionList(state, rootListDepth, tr);
+    tr = liftSelectionList(state, tr);
     dispatch(tr);
     return true;
   }
 };
+
 /**
  * The function will list paragraphs in selection out to level 1 below root list.
  */
-function liftSelectionList(state: EditorState<any>, rootListDepth: number, tr: Transaction): Transaction {
-  const { paragraph } = state.schema.nodes;
+function liftSelectionList(state: EditorState<any>, tr: Transaction): Transaction {
   const { from, to } = state.selection;
   const listCol: any[] = [];
   tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (node.type === paragraph) {
+    if (node.isTextblock) {
       listCol.push({ node, pos });
     }
   });
@@ -118,11 +123,14 @@ function liftSelectionList(state: EditorState<any>, rootListDepth: number, tr: T
  */
 function listLiftTarget(schema: Schema<any, any>, resPos: ResolvedPos): number {
   let target = resPos.depth;
-  const { bulletList, orderedList } = schema.nodes;
+  const { bulletList, orderedList, listItem } = schema.nodes;
   for (let i = resPos.depth; i > 0; i--) {
     const node = resPos.node(i);
     if (node.type === bulletList || node.type === orderedList) {
       target = i;
+    }
+    if (node.type !== bulletList && node.type !== orderedList && node.type !== listItem) {
+      break;
     }
   }
   return target - 1;

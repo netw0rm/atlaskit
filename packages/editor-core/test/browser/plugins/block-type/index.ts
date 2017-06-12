@@ -929,17 +929,13 @@ describe('block-type', () => {
         pluginState.toggleBlockType('heading1', editorView);
         expect(editorView.state.doc).to.deep.equal(doc(ul(li(h1('t{<}ex{>}t')))));
       });
-    });
 
-    context('when parent item is a list', () => {
       it('wraps paragraph in block-quote', () => {
         const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
         pluginState.toggleBlockType('blockquote', editorView);
         expect(editorView.state.doc).to.deep.equal(doc(ul(li(blockquote(p('t{<}ex{>}t'))))));
       });
-    });
 
-    context('when parent item is a list', () => {
       it('wraps paragraph in panel', () => {
         const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
         pluginState.toggleBlockType('panel', editorView);

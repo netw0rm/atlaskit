@@ -89,13 +89,6 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(blockquote(p()))));
     });
 
-    it('should convert "> " to a blockquote when inside a list', () => {
-      const { editorView, sel } = editor(doc(ul(li(p('{<>}')))));
-
-      insertText(editorView, '> ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(ul(li(blockquote(p())))));
-    });
-
     it('should not convert "> " to a blockquote when inside a code_block', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
 

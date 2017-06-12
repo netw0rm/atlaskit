@@ -20,16 +20,19 @@ export function clearFormatting(markTypes: Array<string>): Command {
 
 function liftAllNodes(state: EditorState<any>, tr: Transaction): Transaction {
   const { paragraph } = state.schema.nodes;
-  const { $from, from, to } = state.selection;
+  const { $to, from, to } = state.selection;
   const paragraphs: Array<any> = [];
-  if (listPresentAtPos(state.schema, $from)) {
+  if (listPresentAtPos(state.schema, $to)) {
     const selection = state.selection;
-    const { bulletList, orderedList } = state.schema.nodes;
+    const { bulletList, orderedList, listItem } = state.schema.nodes;
     let rootListDepth;
-    for (let i = selection.$from.depth; i > 0; i--) {
-      const node = selection.$from.node(i);
+    for (let i = selection.$to.depth - 1; i > 0; i--) {
+      const node = selection.$to.node(i);
       if (node.type === bulletList || node.type === orderedList) {
         rootListDepth = i;
+      }
+      if (node.type !== bulletList && node.type !== orderedList && node.type !== listItem) {
+        break;
       }
     }
     tr = liftFollowingList(

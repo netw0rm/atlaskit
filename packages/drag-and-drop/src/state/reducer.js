@@ -296,17 +296,21 @@ export default (state: State = reset(), action: Action): State => {
   }
 
   if (action.type === 'DROP') {
-    if (!state.currentDrag) {
+    const current: ?CurrentDrag = state.currentDrag;
+
+    if (!current) {
       console.error('finishing drag without having started a drag');
       return reset();
     }
 
-    const { impact, initial, dragging } = state.currentDrag;
+    const { impact, initial, dragging } = current;
 
-    const newHomeOffset: Position = getNewHomeOffset(impact.movement);
+    const newHomeOffset: Position = getNewHomeOffset(impact.movement, dragging.offset);
 
-    const isAnimationRequired = dragging.shouldAnimate &&
-      !isPositionEqual(dragging.offset, newHomeOffset);
+    // Do not animate if you do not need to.
+    // This will be the case if either you are dragging with a
+    // keyboard or if you manage to nail it just with a mouse.
+    const isAnimationRequired = !isPositionEqual(dragging.offset, newHomeOffset);
 
     const result: DragResult = {
       draggableId: dragging.id,
@@ -316,7 +320,7 @@ export default (state: State = reset(), action: Action): State => {
 
     const complete: DragComplete = {
       result,
-      last: state.currentDrag,
+      last: current,
       newHomeOffset,
       isWaitingForAnimation: isAnimationRequired,
     };

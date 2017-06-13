@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable react/no-multi-comp */
 import React, { PureComponent, PropTypes } from 'react';
 import { mount } from 'enzyme';
 import { beforeEach, afterEach, describe, it } from 'mocha';
@@ -9,7 +10,7 @@ import { dragDropContext, draggable, droppable } from '../../../src/';
 import DragHandle from '../../../src/view/drag-handle/drag-handle';
 import storeKey from '../../../src/state/get-store-key';
 import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from './util';
-import type { DraggableLocation, DraggableId, DroppableId, DragResult, Position } from '../../../src/types';
+import type { DraggableLocation, DraggableId, DroppableId, DropResult, Position } from '../../../src/types';
 import type { Hooks } from '../../../src/view/drag-drop-context/hooks';
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
@@ -53,6 +54,10 @@ describe('DragDropContext', () => {
     const wrapper = mount(<Connected superhero="batman" />);
 
     expect(wrapper.find(App).props().superhero).to.equal('batman');
+  });
+
+  it('should stop listening to updates when unmounted', () => {
+    expect.fail();
   });
 
   describe('hooks', () => {
@@ -213,13 +218,13 @@ describe('DragDropContext', () => {
       // Unless we do some more hardcore stubbing
       // both completed and cancelled look the same.
       // Ideally we would move one item below another
-      const completed: DragResult = {
+      const completed: DropResult = {
         draggableId,
         source: start,
         destination: null,
       };
 
-      const cancelled: DragResult = {
+      const cancelled: DropResult = {
         draggableId,
         source: start,
         destination: null,

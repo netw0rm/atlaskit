@@ -35,9 +35,30 @@ const getFireHooks = (hooks: Hooks) => memoizeOne((state: State, previous: State
       console.error('cannot fire onDragEnd hook without drag state', { state, previous });
       return;
     }
-    // TODO: null result if no movement
-    onDragEnd(state.drop.result);
-    return;
+
+    const { source, destination, draggableId } = state.drop.result;
+
+    if (!destination) {
+      onDragEnd(state.drop.result);
+      return;
+    }
+
+    // Do not publish a result where nothing moved
+    const didMove: boolean = source.droppableId !== destination.droppableId ||
+                              source.index !== destination.index;
+
+    if (didMove) {
+      onDragEnd(state.drop.result);
+      return;
+    }
+
+    const muted: DropResult = {
+      draggableId,
+      source,
+      destination: null,
+    };
+
+    onDragEnd(muted);
   }
 
   // Drag cancelled

@@ -170,6 +170,20 @@ export const makeSelector = (provide: Provide) => {
         };
       }
 
+      if (phase === 'DROP_COMPLETE') {
+        // Cut off all animation as the item is already reordered
+        // If it is not everyone is going to have a bad time
+        return {
+          id,
+          isDragEnabled,
+          offset: origin,
+          isDropAnimating: false,
+          isDragging: false,
+          canAnimate: false,
+          initial: null,
+        };
+      }
+
       // All unhandled phases
       return getDefaultProps(id, isDragEnabled);
     }

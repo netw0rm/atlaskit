@@ -12,12 +12,8 @@ type Context = {|
   [storeKey]: Store
 |}
 
-export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) => {
-  // TODO: do onWillMount and unsubscribe on unmount
-  const store: Store = createStore();
-  initialise(hooks, store);
-
-  return class DragDropContext extends PureComponent {
+export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) =>
+  class DragDropContext extends PureComponent {
     static displayName = `DragDropContext(${getDisplayName(Component)})`
 
     // [need to declare childContextTypes without flow](https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22)
@@ -29,9 +25,21 @@ export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) => {
       }).isRequired,
     }
 
+    unsubscribe: Function
+    store: Store
+
+    componentWillMount() {
+      this.store = createStore();
+      this.unsubscribe = initialise(hooks, this.store);
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe();
+    }
+
     getChildContext(): Context {
       return {
-        [storeKey]: store,
+        [storeKey]: this.store,
       };
     }
 
@@ -41,4 +49,3 @@ export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) => {
       );
     }
   };
-};

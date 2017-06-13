@@ -371,31 +371,6 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     };
   }
 
-  // TODO: drop animation finished
-  // if (action.type === 'DROP_ANIMATION_FINISHED') {
-  //   if (!state.complete) {
-  //     console.warn('not finishing drop as there is no longer a drop in the state');
-  //     return state;
-  //   }
-
-  //   if (!state.complete.isWaitingForAnimation) {
-  //     console.warn('not finishing drop as there is it is not waiting for an animation to finish');
-  //     return state;
-  //   }
-
-  //   const complete: DragComplete = {
-  //     result: state.complete.result,
-  //     last: state.complete.last,
-  //     newHomeOffset: state.complete.newHomeOffset,
-  //     isWaitingForAnimation: false,
-  //   };
-
-  //   return {
-  //     ...state,
-  //     complete,
-  //   };
-  // }
-
   if (action.type === 'CANCEL') {
     return clean();
   }

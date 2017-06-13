@@ -110,7 +110,7 @@ const DroppableList = (() => {
       items: ItemData[],
       isDraggingOver: boolean,
       withOverflow: boolean,
-      height: number,
+      height: string,
       innerRef: Function,
     |}
 

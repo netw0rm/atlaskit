@@ -1,4 +1,5 @@
 // @flow
+import memoizeOne from 'memoize-one';
 import type {
   DraggableId,
   DraggableLocation,
@@ -12,7 +13,7 @@ export type Hooks = {
   onDragEnd?: (result: DropResult) => void,
 }
 
-const getFireHooks = (hooks: Hooks) => (state: State, previous: State): void => {
+const getFireHooks = (hooks: Hooks) => memoizeOne((state: State, previous: State): void => {
   const { onDragStart, onDragEnd } = hooks;
 
   const currentPhase = state.phase;
@@ -55,7 +56,7 @@ const getFireHooks = (hooks: Hooks) => (state: State, previous: State): void => 
     };
     onDragEnd(result);
   }
-};
+});
 
 export default (hooks: Hooks, store: Store): Function => {
   let previous: ?State = null;

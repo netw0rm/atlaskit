@@ -1,16 +1,24 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  ${({inline}: {inline?: boolean}) => inline && 'display: inline;' || ''}
+`;
 
 export interface EllipsifyProps {
-  text: string;
+  text?: string;
   lines: number;
   endLength?: number;
+  inline?: boolean;
 }
 
 export const Ellipsify = (props: EllipsifyProps) : JSX.Element => {
-  return <div className="ellipsed-text" ref={setEllipsis(props)} aria-label={props.text}>
-           {props.text}
-         </div>;
+  return (
+    <Wrapper className="ellipsed-text" innerRef={setEllipsis(props)} aria-label={props.text} inline={props.inline}>
+       {props.text}
+    </Wrapper>
+  );
 };
 
 const setEllipsis = (props: EllipsifyProps) => (element: HTMLElement) => {

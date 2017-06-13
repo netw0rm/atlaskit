@@ -64,6 +64,6 @@ pipelines:
             indexifier@2.0.0
             @atlassian/prebake-distributor-runner@1.0.2
           - yarn
-          - npm run install
+          - lerna exec --since -- yarn --cache-folder .yarn-cache
           - npm run lint
           - npm run test

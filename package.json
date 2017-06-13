@@ -151,7 +151,6 @@
     "create-ts": "./build/bin/create.new.ts.component.sh",
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",
     "health-check": "./build/bin/health-check-scripts/health.check.js",
-    "install": "lerna exec --since -- yarn --cache-folder .yarn-cache",
     "lint": "lerna exec --stream --scope '@atlaskit/!(eslint|css-reset|util)*' --since -- npm run lint",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "precommit": "npm run validate/lint-changed",

@@ -268,7 +268,6 @@ describe('EmojiTypeAhead', () => {
       component.setProps({ query: 'flag' });
 
       return waitUntil(() => itemsVisible(component)).then(() => {
-        item = getEmojiTypeAheadItemById(component, blackFlagId.id);
         expect(isEmojiTypeAheadItemSelected(component, blackFlagId.id)).to.equal(true);
       });
     });
@@ -286,15 +285,10 @@ describe('EmojiTypeAhead', () => {
     };
 
     return waitUntil(() => doneLoading(component)).then(() => {
-      let item = getEmojiTypeAheadItemById(component, congoId.id);
       expect(isEmojiTypeAheadItemSelected(component, congoId.id), 'Congo flag should appear selected by default').to.equal(true);
 
-      component.setProps({ query: ':-)' });
-
-      return waitUntil(() => itemsVisible(component)).then(() => {
-        item = getEmojiTypeAheadItemById(component, smileyId.id);
-        expect(isEmojiTypeAheadItemSelected(component, smileyId.id), 'smiley is best match and should appear selected by default').to.equal(true);
-      });
+      component.setProps({ query: ':-D' });
+      return waitUntil(() => isEmojiTypeAheadItemSelected(component, smileyId.id));
     });
   });
 });

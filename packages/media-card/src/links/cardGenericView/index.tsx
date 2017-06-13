@@ -3,7 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../index';
-// We are being verbose requiring utilities "utils" to avoid circular dependencies when linked with web-core
+// We are being verbose requiring utilities "utils" to avoid circular dependencies
 import {ErrorIcon} from '../../utils/errorIcon';
 import {Ellipsify} from '../../utils/ellipsify';
 import {Menu} from '../../utils/menu';

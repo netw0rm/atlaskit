@@ -4,7 +4,7 @@ import { atlassianEmojis, emojiRepository, grinEmoji, evilburnsEmoji, standardEm
 
 describe('#test data', () => {
   it('expected standard emojis', () => {
-    expect(standardEmojis.length, '82 Standard Emoji').to.equal(82);
+    expect(standardEmojis.length, '80 Standard Emoji').to.equal(80);
   });
 
   it('expected atlassian emojis', () => {

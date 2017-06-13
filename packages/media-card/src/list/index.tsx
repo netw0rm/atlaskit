@@ -46,7 +46,7 @@ export interface CardListProps {
 export interface CardListState {
   loading: boolean;
   shouldAnimate: boolean;
-  collectionItemsLength: number;
+  firstItemId?: string;
   subscription?: Subscription;
   loadNextPage?: () => void;
   collection?: MediaCollection;
@@ -75,8 +75,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   state: CardListState = {
     loading: true,
-    shouldAnimate: false,
-    collectionItemsLength: 0
+    shouldAnimate: false
   };
 
   providersByMediaItemId: {[id: string]: Provider} = {};
@@ -96,9 +95,10 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     const subscription = provider.observable().subscribe({
       next: (collection: MediaCollection): void => {
-        const {collectionItemsLength} = this.state;
-        const newCollectionItemsLength = collection.items.length;
-        const shouldAnimate = !!collectionItemsLength && newCollectionItemsLength !== collectionItemsLength;
+        const {firstItemId} = this.state;
+        const newFirstItemId = collection.items[0] && collection.items[0].details.id;
+        const shouldAnimate = !!firstItemId && firstItemId !== newFirstItemId;
+
         this.providersByMediaItemId = {};
         collection.items.forEach(mediaItem => {
           if (!mediaItem.details || !mediaItem.details.id) { return; }
@@ -115,7 +115,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           collection,
           shouldAnimate,
           loading: false,
-          collectionItemsLength: newCollectionItemsLength
+          firstItemId: newFirstItemId
         });
       },
       error: (error: AxiosError): void => {
@@ -146,7 +146,7 @@ export class CardList extends Component<CardListProps, CardListState> {
       loadNextPage: () => provider.loadNextPage(),
       error: undefined,
       collection: undefined,
-      collectionItemsLength: 0
+      firstItemId: undefined
     }, () => this.subscribe(nextProps));
   }
 

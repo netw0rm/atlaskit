@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
+import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 
 import type {
   RecentContainers,
@@ -96,7 +96,7 @@ export default class AppSwitcher extends Component {
 
     return (
       <AppSwitcherContainer>
-        <StatelessDropdownMenu
+        <DropdownMenuStateless
           items={dropdownItems}
           isLoading={isLoading}
           isOpen={this.state.isDropdownOpen}
@@ -108,7 +108,7 @@ export default class AppSwitcher extends Component {
           {...dropdownOptions}
         >
           {trigger(this.state.isDropdownOpen)}
-        </StatelessDropdownMenu>
+        </DropdownMenuStateless>
       </AppSwitcherContainer>
     );
   }

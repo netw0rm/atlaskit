@@ -46,7 +46,7 @@
     "@atlaskit/media-card": "^17.1.5",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-filmstrip": "4.1.2",
-    "@atlaskit/mention": "^5.0.1",
+    "@atlaskit/mention": "^5.1.0",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.2.0",

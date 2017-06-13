@@ -149,6 +149,8 @@ export class Engine {
     this.module.bitmapExporter = this.bitmapExporter;
 
     this.module.handleScrollChanged = () => {};
+    this.module.handleUndoRedoStateChanged = () => {};
+    this.module.handleDeleteShapeStateChanged = () => {};
   }
 
   private createVeEngine(): void {

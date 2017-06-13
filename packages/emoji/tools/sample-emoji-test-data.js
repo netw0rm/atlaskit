@@ -12,7 +12,7 @@ const reservedEmojis = new Map([
   // :smiley: used to test ascii representations
   // :thumbsup: has skin variations need for testing
   // :thumbsdown: used to verify order against :thumbsup:
-  ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:']],
+  ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:', ':open_mouth:']],
   ['FLAGS', [':flag_black:', ':flag_cg:']],
   // :boom: is used for testing duplicate shortName between standard and atlassian
   ['NATURE', [':boom:']],

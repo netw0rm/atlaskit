@@ -116,14 +116,9 @@ export default class EmojiRepository {
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
     if (query) {
-      const asciiEmoji = this.findByAsciiRepresentation(query);
-
       filteredEmoji = this.fullSearch.search(query);
       this.sortFiltered(filteredEmoji, query);
-
-      if (asciiEmoji) {
-        filteredEmoji = [asciiEmoji, ...filteredEmoji];
-      }
+      filteredEmoji = this.withAsciiMatch(query, filteredEmoji);
     } else {
       filteredEmoji = this.emojis;
     }
@@ -151,8 +146,8 @@ export default class EmojiRepository {
     return findByKey(this.idMap, id);
   }
 
-  findByAsciiRepresentation(asciiEmoj: string): OptionalEmojiDescription {
-    return this.asciiMap.get(asciiEmoj);
+  findByAsciiRepresentation(asciiEmoji: string): OptionalEmojiDescription {
+    return this.asciiMap.get(asciiEmoji);
   }
 
   findInCategory(categoryId: string): EmojiDescription[] {
@@ -175,6 +170,18 @@ export default class EmojiRepository {
 
   getAsciiMap(): Map<string, EmojiDescription> {
     return this.asciiMap;
+  }
+
+  private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {
+    let result = emojis;
+    const asciiEmoji = this.findByAsciiRepresentation(ascii);
+    if (asciiEmoji) {
+      // Ensures that the same emoji isn't already in the list
+      // If it is, we give precedence to the ascii match
+      result = emojis.filter(e => e.id !== asciiEmoji.id);
+      result.unshift(asciiEmoji);
+    }
+    return result;
   }
 
   /**
@@ -216,7 +223,7 @@ export default class EmojiRepository {
     const emojiComparator = (e1: EmojiDescription, e2: EmojiDescription): number => {
       // Handle exact matches between query and shortName
       if (e1.shortName === colonQuery && e2.shortName === colonQuery) {
-        return this.typeToOrder(e1.type) - this.typeToOrder(e2.type);
+        return EmojiRepository.typeToOrder(e1.type) - EmojiRepository.typeToOrder(e2.type);
       } else if (e1.shortName === colonQuery) {
         return -1;
       } else if (e2.shortName === colonQuery) {
@@ -260,7 +267,7 @@ export default class EmojiRepository {
   }
 
   // Give precedence when conflicting shortNames occur as defined in Emoji Storage Spec
-  private typeToOrder(type: string): number {
+  private static typeToOrder(type: string): number {
     if (type === 'SITE') {
       return 0;
     } else if (type === 'ATLASSIAN') {

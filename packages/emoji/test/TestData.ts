@@ -160,6 +160,7 @@ export const emojis: EmojiDescription[] = [ ...standardEmojis, ...atlassianEmoji
 export const emojiRepository = new EmojiRepository(emojis);
 
 export const smileyEmoji = emojiRepository.findByShortName(':smiley:') as EmojiDescriptionWithVariations;
+export const openMouthEmoji = emojiRepository.findByShortName(':open_mouth:') as EmojiDescriptionWithVariations;
 export const grinEmoji = emojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
 export const evilburnsEmoji = emojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
 export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;

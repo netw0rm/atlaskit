@@ -6,7 +6,7 @@ import { EmojiDescription } from '../../src/types';
 import { containsEmojiId, toEmojiId } from '../../src/type-helpers';
 import EmojiRepository from '../../src/api/EmojiRepository';
 
-import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji } from '../TestData';
+import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../TestData';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -183,6 +183,17 @@ describe('EmojiRepository', () => {
     it('options - limit results', () => {
       const emojis = emojiRepository.search('', { limit: 10 }).emojis;
       checkOrder(allEmojis.slice(0, 10), emojis);
+    });
+
+    it('includes ascii match at the top', () => {
+      const emojis = emojiRepository.search(':O').emojis;
+      expect(emojis[0]).to.equal(openMouthEmoji);
+    });
+
+    it('de-dupes ascii match from other matches', () => {
+      const emojis = emojiRepository.search(':O').emojis;
+      const openMouthEmojiCount = emojis.filter(e => e.id === openMouthEmoji.id).length;
+      expect(openMouthEmojiCount, 'emoji matching ascii representation is only returned once in the search results').to.equal(1);
     });
   });
 

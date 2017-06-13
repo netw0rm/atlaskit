@@ -53,7 +53,7 @@ describe('CardList', () => {
 
     mount(<CardList context={context} collectionName={collectionName}/>);
 
-    expect(context.getMediaCollectionProvider.callCount).to.be.equal(1);
+    expect(context.getMediaCollectionProvider.callCount).to.be.equal(expectedMediaItems.length);
     expect(context.getMediaItemProvider.callCount).to.be.equal(expectedMediaItems.length);
     expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[0].details.id, expectedMediaItems[0].type, collectionName, expectedMediaItems[0])).to.be.true;
     expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[1].details.id, expectedMediaItems[1].type, collectionName, expectedMediaItems[1])).to.be.true;

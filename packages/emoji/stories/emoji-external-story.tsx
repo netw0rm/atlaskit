@@ -32,7 +32,6 @@ storiesOf(`${name}/external-emoji`, module)
     const picker = (
       <EmojiPickerTextInput
         onSelection={action('emoji selected')}
-        position="below"
         emojiProvider={defaultEmojiProvider}
       />
     );

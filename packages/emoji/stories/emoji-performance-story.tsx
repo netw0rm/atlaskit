@@ -2,9 +2,8 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent, ReactNode } from 'react';
 import * as Perf from 'react-addons-perf';
-
+import Layer from '@atlaskit/layer';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
-
 import { name } from '../package.json';
 import { getEmojiResource, lorem } from './story-data';
 
@@ -44,21 +43,25 @@ class PerformanceWrapper extends PureComponent<PerformanceWrapperProps, {}> {
 storiesOf(`${name}/Emoji React Performance`, module)
   .add('picker popup', () => (
     <div style={{ padding: '10px' }} >
-      <PerformanceWrapper>
-        <input
-          id="picker-input"
-          style={{
-            height: '20px',
-            margin: '10px',
-          }}
-        />
-        <p style={{ width: '400px' }}>{lorem}</p>
-        <EmojiPicker
-          emojiProvider={getEmojiResource()}
-          onSelection={action('emoji selected')}
-          target="#picker-input"
-          position="below"
-        />
-      </PerformanceWrapper>
+        <PerformanceWrapper>
+          <Layer
+            content={
+              <EmojiPicker
+                emojiProvider={getEmojiResource()}
+                onSelection={action('emoji selected')}
+              />
+            }
+            position="bottom left"
+          >
+          <input
+            id="picker-input"
+            style={{
+              height: '20px',
+              margin: '10px',
+            }}
+          />
+          </Layer>
+          <p style={{ width: '400px' }}>{lorem}</p>
+        </PerformanceWrapper>
     </div>
   ));

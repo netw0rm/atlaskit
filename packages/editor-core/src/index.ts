@@ -1,8 +1,20 @@
 export {
+  EmojiProvider,
+  EmojiResource,
+} from '@atlaskit/emoji';
+
+export {
   DefaultMediaStateManager,
   MediaProvider,
   MediaState,
 } from '@atlaskit/media-core';
+
+export {
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/mentions';
 
 import ProviderFactory from './providerFactory';
 export { version, name } from './version';

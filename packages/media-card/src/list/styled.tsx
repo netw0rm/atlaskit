@@ -36,6 +36,7 @@ const cardEntryAnimation = keyframes`
 export interface CardListItemWrapperProps {
   readonly key?: string;
   readonly cardWidth?: string | number;
+  shouldAnimate: boolean;
 }
 
 export const CardListItemWrapper = styled.div`
@@ -52,8 +53,9 @@ export const CardListItemWrapper = styled.div`
     padding-top: 0;
   }
 
-  &.card-list-item-enter.card-list-item-enter-active {
-    animation: ${cardEntryAnimation} 0.75s forwards;
-  }
-
+  ${({shouldAnimate}) => shouldAnimate && `
+    &.card-list-item-enter.card-list-item-enter-active {
+      animation: ${cardEntryAnimation} 0.75s forwards;
+    }
+  ` || ''}
 `;

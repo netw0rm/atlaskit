@@ -13,39 +13,54 @@ describe('get draggables inside a droppable', () => {
     bottom: 100,
   });
 
-  const inside: Dimension[] = [
-    getDimension({
-      top: 20,
-      left: 20,
-      right: 80,
-      bottom: 80,
-    }),
-    getDimension({
-      top: 30,
-      left: 30,
-      right: 70,
-      bottom: 70,
-    }),
-  ];
-  const outside: Dimension[] = [
-    getDimension({
-      top: 200,
-      left: 200,
-      right: 300,
-      bottom: 400,
-    }),
-  ];
+  const inside1: Dimension = getDimension({
+    top: 20,
+    left: 20,
+    right: 80,
+    bottom: 30,
+  });
 
-  const draggables: DimensionMap = inside
-    .concat(outside)
-    .reduce((previous: DimensionMap, current: Dimension): DimensionMap => {
+  const inside2: Dimension = getDimension({
+    top: 31,
+    left: 30,
+    right: 70,
+    bottom: 40,
+  });
+
+  const inside3: Dimension = getDimension({
+    top: 41,
+    left: 30,
+    right: 70,
+    bottom: 50,
+  });
+
+  const outside: Dimension = getDimension({
+    top: 200,
+    left: 200,
+    right: 300,
+    bottom: 400,
+  });
+
+  const getDimensionMap = (dimensions: Dimension[]): DimensionMap =>
+    dimensions.reduce((previous: DimensionMap, current: Dimension): DimensionMap => {
       previous[current.id] = current;
       return previous;
     }, {});
 
   it('should only return dimensions that are inside a droppable', () => {
-    const result: Dimension[] = getDraggablesInsideDroppable(droppable, draggables);
-    expect(result).to.deep.equal(inside);
+    const all: Dimension[] = [inside1, inside2, inside3, outside];
+
+    const result: Dimension[] = getDraggablesInsideDroppable(droppable, getDimensionMap(all));
+
+    expect(result).to.deep.equal([inside1, inside2, inside3]);
+  });
+
+  it('should order the dimensions in their vertical order', () => {
+    const unordered: Dimension[] = [inside2, inside3, inside1];
+
+    const result: Dimension[] = getDraggablesInsideDroppable(droppable, getDimensionMap(unordered));
+
+    expect(result).to.deep.equal([inside1, inside2, inside3]);
   });
 
   // other edge cases tested in get-inside-dimension

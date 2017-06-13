@@ -419,14 +419,14 @@ describe('EmojiResource', () => {
       const onChange = new MockOnProviderChange();
       const filteredPromise = onChange.waitForResult().then(result => {
         const emojis = result.emojis;
-        expect(emojis.length, 'Number of emoji').to.equal(80);
+        expect(emojis.length, 'Number of emoji').to.equal(82);
         expect(emojis.filter(customEmoji).length, 'No custom emoji').to.equal(0);
         const secondResult = onChange.waitForResult();
         imageResolver(blobResponse(new Blob()));
         return secondResult;
       }).then(result => {
         const emojis = result.emojis;
-        expect(emojis.length, 'Number of emoji').to.equal(81);
+        expect(emojis.length, 'Number of emoji').to.equal(83);
         const customEmojis = emojis.filter(customEmoji);
         expect(customEmojis.filter(customEmoji).length, 'No custom emoji').to.equal(1);
         const representation = customEmojis[0].representation as ImageRepresentation;

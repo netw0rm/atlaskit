@@ -172,8 +172,6 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
   }
 
   private renderItems(emojis: EmojiDescription[]) {
-    const { selectedKey } = this.state;
-
     if (emojis && emojis.length) {
       this.items = {};
 

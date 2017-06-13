@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji } from '../../TestData';
+import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, smileyEmoji, congoFlagEmoji } from '../../TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAhead';
@@ -249,6 +249,52 @@ describe('EmojiTypeAhead', () => {
       const props = placeholders.get(0).props;
       expect(props.name, 'name').to.equals(mediaEmoji.name);
       expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
+    });
+  });
+
+  it('should retain selected match across search refinement', () => {
+    const component = setupPicker({
+      query: 'fla',
+    } as Props);
+    const blackFlagId: EmojiId = {
+      ...blackFlagEmoji
+    };
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      let item = getEmojiTypeAheadItemById(component, blackFlagId.id);
+      item.prop('onMouseMove')(blackFlagId, blackFlagEmoji, item.simulate('mouseover'));
+      expect(isEmojiTypeAheadItemSelected(component, blackFlagId.id)).to.equal(true);
+
+      component.setProps({ query: 'flag' });
+
+      return waitUntil(() => itemsVisible(component)).then(() => {
+        item = getEmojiTypeAheadItemById(component, blackFlagId.id);
+        expect(isEmojiTypeAheadItemSelected(component, blackFlagId.id)).to.equal(true);
+      });
+    });
+  });
+
+  it('should default to first selection in the list even when a whole new result appears in list', () => {
+    const component = setupPicker({
+      query: ':-',
+    } as Props);
+    const smileyId: EmojiId = {
+      ...smileyEmoji
+    };
+    const congoId: EmojiId = {
+      ...congoFlagEmoji
+    };
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      let item = getEmojiTypeAheadItemById(component, congoId.id);
+      expect(isEmojiTypeAheadItemSelected(component, congoId.id), 'Congo flag should appear selected by default').to.equal(true);
+
+      component.setProps({ query: ':-)' });
+
+      return waitUntil(() => itemsVisible(component)).then(() => {
+        item = getEmojiTypeAheadItemById(component, smileyId.id);
+        expect(isEmojiTypeAheadItemSelected(component, smileyId.id), 'smiley is best match and should appear selected by default').to.equal(true);
+      });
     });
   });
 });

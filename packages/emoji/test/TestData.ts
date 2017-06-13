@@ -166,6 +166,8 @@ export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as Em
 export const thumbsdownEmoji = emojiRepository.findByShortName(':thumbsdown:') as EmojiDescriptionWithVariations;
 export const standardBoomEmoji = emojiRepository.findById('1f4a5') as EmojiDescriptionWithVariations;
 export const atlassianBoomEmoji = emojiRepository.findById('atlassian-boom') as EmojiDescriptionWithVariations;
+export const blackFlagEmoji = emojiRepository.findByShortName(':flag_black:') as EmojiDescriptionWithVariations;
+export const congoFlagEmoji = emojiRepository.findByShortName(':flag_cg:') as EmojiDescriptionWithVariations;
 
 export const getNonUploadingEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockNonUploadingEmojiResourceFactory(emojiRepository, config);
 

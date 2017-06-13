@@ -40,7 +40,7 @@ const getUserStyle = (props: MentionStyleProps): HighlightStyle => {
   if (props.highlighted) {
     return highlightStyle['CURRENT'];
   }
-  if (props.accessLevel !== 'CONTAINER') {
+  if (props.accessLevel && props.accessLevel !== 'CONTAINER') {
     return highlightStyle['UNPERMITTED'];
   }
   return highlightStyle['OTHER'];
@@ -60,4 +60,5 @@ export const MentionStyle = styled.span`
 
 export const MentionContainer = styled.span`
   display: inline-block;
+  white-space: nowrap;
 `;

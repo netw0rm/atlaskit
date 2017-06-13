@@ -1,16 +1,12 @@
 import * as React from 'react';
 import {DataUriService, MediaItemDetails} from '@atlaskit/media-core';
-import {CardAppearance, CardDimensions} from '.';
-import {isRetina} from './utils/isRetina';
-import {isLinkDetails} from './utils/isLinkDetails';
+import {CardAppearance, CardDimensions} from '..';
+import {isRetina} from '../utils/isRetina';
+import {isLinkDetails} from '../utils/isLinkDetails';
+import {defaultImageCardDimensions} from '../utils';
 
 const SMALL_CARD_IMAGE_WIDTH = 32;
 const SMALL_CARD_IMAGE_HEIGHT = 32;
-
-const DEFAULT_CARD_DIMENSIONS = {
-  WIDTH: 156,
-  HEIGHT: 104
-};
 
 export interface WithDataURIProps {
   dataURIService?: DataUriService;
@@ -62,7 +58,7 @@ export const withDataURI = (Component): any => { // tslint:disable-line:variable
         return SMALL_CARD_IMAGE_WIDTH * retinaFactor;
       }
 
-      return (typeof width === 'number' ? width : DEFAULT_CARD_DIMENSIONS.WIDTH) * retinaFactor;
+      return (typeof width === 'number' ? width : defaultImageCardDimensions.width) * retinaFactor;
     }
 
     private dataURIHeight(retinaFactor): number {
@@ -72,7 +68,7 @@ export const withDataURI = (Component): any => { // tslint:disable-line:variable
         return SMALL_CARD_IMAGE_HEIGHT * retinaFactor;
       }
 
-      return (typeof height === 'number' ? height : DEFAULT_CARD_DIMENSIONS.HEIGHT) * retinaFactor;
+      return (typeof height === 'number' ? height : defaultImageCardDimensions.height) * retinaFactor;
     }
 
     updateDataURI(props: WithDataURIProps): void {

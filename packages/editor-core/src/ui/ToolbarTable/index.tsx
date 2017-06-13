@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
 import Popper, { IPopper } from './../../popper';
 import { akEditorFloatingPanelZIndex } from '../../styles';
-import { CellSelection } from '../../prosemirror';
+import { CellSelection, Node } from '../../prosemirror';
 import {
   TableHeader,
   TableHeaderButton,
@@ -11,11 +11,12 @@ import {
   ColHeaderWrapInner,
   RowHeaderWrapInner,
   ColHeader,
-  ColHeaderButton,
   RowHeaderWrap,
   RowHeader,
-  RowHeaderButton
 } from './styles';
+import { isCellSelected } from './utils';
+import { ColHeaderButtonWrap } from './ColHeaderButtonWrap';
+import { RowHeaderButtonWrap } from './RowHeaderButtonWrap';
 
 export interface Props {
   pluginState: TableState;
@@ -57,6 +58,10 @@ export default class ToolbarTable extends PureComponent<Props, State> {
     }
   }
 
+  selectTable = () => {
+    this.props.pluginState.selectTable(this.state.tableNode);
+  }
+
   render() {
     const { tableElement, position, transform } = this.state;
     const style = { top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex };
@@ -65,7 +70,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
       return (
         <div ref={this.handleRef} style={style}>
           <TableHeader className={this.isTableSelected() ? 'active' : ''}>
-            <TableHeaderButton />
+            <TableHeaderButton onClick={this.selectTable} />
           </TableHeader>
           <ColHeaderWrap>
             <ColHeaderWrapInner>
@@ -85,7 +90,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private renderColHeaders () {
-    const { tableElement, selection } = this.state;
+    const { tableElement, selection, tableNode } = this.state;
     const firstRow = tableElement!.querySelector('tr');
     const cols = firstRow!.querySelectorAll('td,th');
     const result: any = [];
@@ -104,7 +109,11 @@ export default class ToolbarTable extends PureComponent<Props, State> {
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
           className={active ? 'active' : ''}
         >
-          <ColHeaderButton />
+          <ColHeaderButtonWrap
+            col={i}
+            tableNode={tableNode}
+            onClick={this.props.pluginState.selectCol}
+          />
         </ColHeader>
       );
     }
@@ -112,7 +121,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private renderRowHeaders () {
-    const { tableElement, selection } = this.state;
+    const { tableElement, selection, tableNode } = this.state;
     const rows = tableElement!.querySelectorAll('tr');
     const result: any = [];
 
@@ -130,7 +139,11 @@ export default class ToolbarTable extends PureComponent<Props, State> {
           style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
           className={active ? 'active' : ''}
         >
-          <RowHeaderButton />
+          <RowHeaderButtonWrap
+            row={i}
+            tableNode={tableNode}
+            onClick={this.props.pluginState.selectRow}
+          />
         </RowHeader>
       );
     }
@@ -184,8 +197,4 @@ export default class ToolbarTable extends PureComponent<Props, State> {
       isCellSelected( lastRow.querySelectorAll('td,th')[ lastRowColsCount - 1] )
     );
   }
-}
-
-export function isCellSelected (cell: Element) {
-  return (cell.className || '').indexOf('selectedCell') > -1;
 }

@@ -7,6 +7,8 @@ export interface CellSelectionJSON {
 }
 
 export class CellSelection {
+  constructor($anchorCell: ResolvedPos, $headCell?: ResolvedPos);
+
   map(doc: Node, mapping: any): any;
   content(): Slice;
   replace(tr: Transaction, content: Slice): void;

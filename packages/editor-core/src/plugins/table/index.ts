@@ -7,6 +7,8 @@ import {
   Transaction,
   NodeViewDesc,
   CellSelection,
+  TableMap,
+  Node,
 } from '../../prosemirror';
 import * as tableCommands from '../../prosemirror/prosemirror-tables';
 import keymapHandler from './keymap';
@@ -25,6 +27,7 @@ export class TableState {
   tableNode?: Node;
   selection?: CellSelection;
 
+  private view: EditorView;
   private state: EditorState<any>;
   private changeHandlers: TableStateSubscriber[] = [];
 
@@ -42,12 +45,45 @@ export class TableState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  goToNextCell (direction: number): TablesCommand {
+  goToNextCell(direction: number): TablesCommand {
     return tableCommands.goToNextCell(direction);
   }
 
   updateEditorFocused(editorFocused: boolean) {
     this.editorFocused = editorFocused;
+  }
+
+  selectCol = (col: number, tableNode?: Node) => {
+    if (!tableNode) {
+      return;
+    }
+    const { state } = this.view;
+    const map = TableMap.get(tableNode);
+    const $anchor = state.doc.resolve(map.positionAt(0, col, tableNode) + 1);
+    const $head = state.doc.resolve(map.positionAt(map.height - 1, col, tableNode) + 1);
+    this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
+  }
+
+  selectRow = (row: number, tableNode?: Node) => {
+    if (!tableNode) {
+      return;
+    }
+    const { state } = this.view;
+    const map = TableMap.get(tableNode);
+    const $anchor = state.doc.resolve(map.positionAt(row, 0, tableNode) + 1);
+    const $head = state.doc.resolve(map.positionAt(row, map.width - 1, tableNode) + 1);
+    this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
+  }
+
+  selectTable = (tableNode?: Node) => {
+    if (!tableNode) {
+      return;
+    }
+    const { state } = this.view;
+    const map = TableMap.get(tableNode);
+    const $anchor = state.doc.resolve(map.positionAt(0, 0, tableNode) + 1);
+    const $head = state.doc.resolve(map.positionAt(map.height - 1, map.width - 1, tableNode) + 1);
+    this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
   }
 
   update(newEditorState: EditorState<any>, docView: NodeViewDesc) {
@@ -84,6 +120,10 @@ export class TableState {
     }
   }
 
+  setView(view: EditorView) {
+    this.view = view;
+  }
+
   private getTableElement(docView: NodeViewDesc): HTMLElement | undefined {
     const offset = this.tableStartPos();
     if (offset) {
@@ -105,12 +145,11 @@ export class TableState {
   }
 
   private getTableNode(): Node | undefined {
-    const { state } = this;
-    const { path } = state.selection.$from;
-    let i = path.length;
-    while (i--) {
-      if (path[i] && path[i].type === state.schema.nodes.table) {
-        return path[i];
+    const { $from } = this.state.selection;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === this.state.schema.nodes.table) {
+        return node;
       }
     }
   }
@@ -140,6 +179,7 @@ const plugin = new Plugin({
     const pluginState = stateKey.getState(editorView.state);
     pluginState.update(editorView.state, editorView.docView);
     pluginState.keymapHandler = keymapHandler(pluginState);
+    pluginState.setView(editorView);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {

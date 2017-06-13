@@ -31,7 +31,8 @@ const leftClick = {
 };
 
 const findEmojiItems = (component) => component.find(EmojiTypeAheadItem);
-const itemsVisible = (component) => findEmojiItems(component).length > 0;
+const itemsVisibleCount = (component) => findEmojiItems(component).length;
+const itemsVisible = (component) => itemsVisibleCount(component) > 0;
 const doneLoading = (component: ReactWrapper<TypeAheadProps, TypeAheadState>) => !component.state('loading');
 
 describe('EmojiTypeAhead', () => {
@@ -265,9 +266,10 @@ describe('EmojiTypeAhead', () => {
       item.prop('onMouseMove')(blackFlagId, blackFlagEmoji, item.simulate('mouseover'));
       expect(isEmojiTypeAheadItemSelected(component, blackFlagId.id)).to.equal(true);
 
-      component.setProps({ query: 'flag' });
+      const itemCount = itemsVisibleCount(component);
+      component.setProps({ query: 'flag_b' });
 
-      return waitUntil(() => itemsVisible(component)).then(() => {
+      return waitUntil(() => itemsVisibleCount(component) < itemCount).then(() => {
         expect(isEmojiTypeAheadItemSelected(component, blackFlagId.id)).to.equal(true);
       });
     });

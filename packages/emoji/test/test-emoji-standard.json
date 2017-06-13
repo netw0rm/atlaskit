@@ -1639,24 +1639,6 @@
       "shortName": ":flag_dz:"
     },
     {
-      "id": "1f1e6-1f1f8",
-      "name": "American Samoa",
-      "fallback": "🇦🇸",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 2124,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
-        "x": 306,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 9,
-        "yIndex": 0
-      },
-      "shortName": ":flag_as:"
-    },
-    {
       "id": "1f1e8-1f1ec",
       "name": "Congo - Brazzaville",
       "fallback": "🇨🇬",
@@ -1673,24 +1655,6 @@
         "yIndex": 3
       },
       "shortName": ":flag_cg:"
-    },
-    {
-      "id": "1f1e8-1f1e9",
-      "name": "Congo - Kinshasa",
-      "fallback": "🇨🇩",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 2172,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
-        "x": 204,
-        "y": 102,
-        "height": 32,
-        "width": 32,
-        "xIndex" :6,
-        "yIndex": 3
-      },
-      "shortName": ":flag_cd:"
     }
   ],
   "meta": {

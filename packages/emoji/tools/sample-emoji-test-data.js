@@ -13,6 +13,7 @@ const reservedEmojis = new Map([
   // :thumbsup: has skin variations need for testing
   // :thumbsdown: used to verify order against :thumbsup:
   ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:']],
+  ['FLAGS', [':flag_black:', ':flag_cg:']],
   // :boom: is used for testing duplicate shortName between standard and atlassian
   ['NATURE', [':boom:']],
   ['ATLASSIAN', [':boom:', ':evilburns:']],

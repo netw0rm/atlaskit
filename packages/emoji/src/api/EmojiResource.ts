@@ -50,6 +50,12 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription>;
 
   /**
+   * Return the emoji that matches the supplied id or undefined. As with findByEmojiId, this call should load
+   * the media api images before returning.
+   */
+  findById(id: string): Promise<OptionalEmojiDescription>;
+
+  /**
    * Finds emojis belonging to specified category.
    *
    * Does not automatically load Media API images.
@@ -309,6 +315,21 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       }
     }
     return this.retryIfLoading(() => this.findByEmojiId(emojiId), undefined);
+  }
+
+  findById(id: string): Promise<OptionalEmojiDescription> {
+    if (this.emojiRepository) {
+      const emoji = this.emojiRepository.findById(id);
+      if (emoji) {
+        return this.loadIfMediaEmoji(emoji);
+      }
+
+      if (this.isLoaded()) {
+        return Promise.resolve(undefined); // no emoji with that id
+      }
+    }
+
+    return this.retryIfLoading(() => this.findById(id), undefined);
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {

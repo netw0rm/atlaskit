@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { AkBreadcrumbs, AkBreadcrumbsItem } from '@atlaskit/breadcrumbs';
+import { BreadcrumbsStateless, BreadcrumbsItem } from '@atlaskit/breadcrumbs';
 
 export default class AKBreadcrumbsExpand extends PureComponent {
   state = {
@@ -13,27 +13,27 @@ export default class AKBreadcrumbsExpand extends PureComponent {
 
   render() {
     return (
-      <AkBreadcrumbs
+      <BreadcrumbsStateless
         maxItems={2}
         isExpanded={this.state.isExpanded}
         onExpand={e => this.expand(e)}
       >
-        <AkBreadcrumbsItem
+        <BreadcrumbsItem
           href="/pages"
           text="Pages"
           key="Pages"
         />
-        <AkBreadcrumbsItem
+        <BreadcrumbsItem
           href="/hidden"
           text="hidden bread crumb"
           key="hidden bread crumb"
         />
-        <AkBreadcrumbsItem
+        <BreadcrumbsItem
           href="/pages/home"
           text="Home"
           key="Home"
         />
-      </AkBreadcrumbs>
+      </BreadcrumbsStateless>
     );
   }
 }

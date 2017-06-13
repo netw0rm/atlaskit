@@ -14,7 +14,7 @@ export {
   MentionResource,
   PresenceProvider,
   PresenceResource,
-} from '@atlaskit/mentions';
+} from '@atlaskit/mention';
 
 import ProviderFactory from './providerFactory';
 export { version, name } from './version';

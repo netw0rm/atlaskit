@@ -1,16 +1,15 @@
 // @flow
+import memoizeOne from 'memoize-one';
 import type { TypeId,
   Action,
   State,
   Dimension,
   DragImpact,
-  Dragging,
-  DraggingInitial,
-  DragResult,
   CurrentDrag,
+  InitialDrag,
+  Phases,
   DraggableLocation,
   Position,
-  DragComplete,
 } from '../types';
 import getDragImpact from './get-drag-impact';
 import { getDiffToJumpForward, getDiffToJumpBackward } from './jump-to-next-index';
@@ -23,49 +22,107 @@ const shout = (message, ...rest) => {
   console.log('payload:', ...rest);
 };
 
-const reset = (() => {
-  const initialState: State = {
-    draggableDimensions: {},
-    droppableDimensions: {},
-    currentDrag: null,
-    complete: null,
-    requestDimensions: null,
-    isProcessingLift: false,
+const clean = (phase: ?Phases = 'IDLE'): State => {
+  const state: State = {
+    phase,
+    dimension: {
+      request: null,
+      draggable: {},
+      droppable: {},
+    },
+    drag: null,
+    drop: null,
   };
 
-  return (): State => initialState;
-})();
+  return state;
+};
 
-export default (state: State = reset(), action: Action): State => {
+export default (state: State = clean('IDLE'), action: Action): State => {
   shout(`reducing ${action.type}`, action.payload ? action.payload : 'no payload');
 
   if (action.type === 'BEGIN_LIFT') {
-    if (state.isProcessingLift) {
-      console.warn('trying to start another lift while processing the first');
+    if (state.phase !== 'IDLE') {
+      console.error('trying to start a lift while another is occurring');
       return state;
     }
-
-    return {
-      ...reset(),
-      isProcessingLift: true,
-    };
+    return clean('COLLECTING_DIMENSIONS');
   }
 
   if (action.type === 'REQUEST_DIMENSIONS') {
-    if (!state.isProcessingLift) {
+    if (state.phase !== 'COLLECTING_DIMENSIONS') {
+      console.error('trying to collect dimensions at the wrong time');
       return state;
     }
 
     const typeId: TypeId = action.payload;
 
     return {
+      phase: 'COLLECTING_DIMENSIONS',
+      drag: null,
+      drop: null,
+      dimension: {
+        request: typeId,
+        draggable: {},
+        droppable: {},
+      },
+    };
+  }
+
+  if (action.type === 'PUBLISH_DRAGGABLE_DIMENSION') {
+    const dimension: Dimension = action.payload;
+
+    if (state.phase !== 'COLLECTING_DIMENSIONS') {
+      console.info('dimension rejected as no longer requesting dimensions', dimension);
+      return state;
+    }
+
+    if (state.dimension.draggable[dimension.id]) {
+      console.error(`dimension already exists for ${dimension.id}`);
+      return state;
+    }
+
+    return {
       ...state,
-      requestDimensions: typeId,
+      dimension: {
+        request: state.dimension.request,
+        droppable: state.dimension.droppable,
+        draggable: {
+          ...state.dimension.draggable,
+          [dimension.id]: dimension,
+        },
+      },
+    };
+  }
+
+  if (action.type === 'PUBLISH_DROPPABLE_DIMENSION') {
+    const dimension: Dimension = action.payload;
+
+    if (state.phase !== 'COLLECTING_DIMENSIONS') {
+      console.info('dimension rejected as no longer requesting dimensions', dimension);
+      return state;
+    }
+
+    if (state.dimension.droppable[dimension.id]) {
+      console.error(`dimension already exists for ${dimension.id}`);
+      return state;
+    }
+
+    return {
+      ...state,
+      dimension: {
+        request: state.dimension.request,
+        draggable: state.dimension.draggable,
+        droppable: {
+          ...state.dimension.droppable,
+          [dimension.id]: dimension,
+        },
+      },
     };
   }
 
   if (action.type === 'COMPLETE_LIFT') {
-    if (!state.isProcessingLift) {
+    if (state.phase !== 'COLLECTING_DIMENSIONS') {
+      console.error('trying complete lift without collecting dimensions');
       return state;
     }
 
@@ -74,26 +131,26 @@ export default (state: State = reset(), action: Action): State => {
     const impact: DragImpact = getDragImpact(
       center,
       id,
-      state.draggableDimensions,
-      state.droppableDimensions,
+      state.dimension.draggable,
+      state.dimension.droppable,
     );
 
     const source: ?DraggableLocation = impact.destination;
 
     if (!source) {
       console.error('lifting a draggable that is not inside a droppable');
-      return reset();
+      return clean();
     }
 
-    const initial: DraggingInitial = {
+    const initial: InitialDrag = {
       source,
       center,
       scroll,
       selection,
-      dimension: state.draggableDimensions[id],
+      dimension: state.dimension.draggable[id],
     };
 
-    const dragging: Dragging = {
+    const current: CurrentDrag = {
       id,
       type,
       offset: { x: 0, y: 0 },
@@ -103,80 +160,50 @@ export default (state: State = reset(), action: Action): State => {
 
     return {
       ...state,
-      isProcessingLift: false,
-      currentDrag: {
-        dragging,
-        impact,
+      phase: 'DRAGGING',
+      drag: {
         initial,
-      },
-    };
-  }
-
-  if (action.type === 'PUBLISH_DRAGGABLE_DIMENSION') {
-    const dimension: Dimension = action.payload;
-
-    if (!state.isProcessingLift) {
-      console.info('dimension rejected as no longer requesting dimensions', dimension);
-      return state;
-    }
-
-    if (state.draggableDimensions[dimension.id]) {
-      console.error(`dimension already exists for ${dimension.id}`);
-      return state;
-    }
-
-    return {
-      ...state,
-      draggableDimensions: {
-        ...state.draggableDimensions,
-        [dimension.id]: dimension,
-      },
-    };
-  }
-
-  if (action.type === 'PUBLISH_DROPPABLE_DIMENSION') {
-    const dimension: Dimension = action.payload;
-
-    if (state.droppableDimensions[dimension.id]) {
-      console.error(`dimension already exists for ${dimension.id}`);
-      return state;
-    }
-
-    return {
-      ...state,
-      droppableDimensions: {
-        ...state.droppableDimensions,
-        [dimension.id]: dimension,
+        current,
+        impact,
       },
     };
   }
 
   if (action.type === 'MOVE') {
-    const { offset, center } = action.payload;
-    const previous: ?CurrentDrag = state.currentDrag;
-    if (previous == null) {
+    if (state.phase !== 'DRAGGING') {
+      console.error('cannot move while not dragging', action);
       return state;
     }
 
-    const dragging = {
-      ...previous.dragging,
+    if (!state.drag) {
+      console.error('cannot move if there is no drag information');
+      return clean();
+    }
+
+    const { offset, center } = action.payload;
+    const previous = state.drag.current;
+
+    const current: CurrentDrag = {
+      id: previous.id,
+      type: previous.type,
+      shouldAnimate: previous.shouldAnimate,
       center,
       offset,
     };
 
     const impact: DragImpact = getDragImpact(
-      dragging.center,
-      dragging.id,
-      state.draggableDimensions,
-      state.droppableDimensions
+      current.center,
+      current.id,
+      state.dimension.draggable,
+      state.dimension.droppable,
     );
 
     return {
       ...state,
-      currentDrag: {
-        dragging,
+      drag: {
+        initial: state.drag.initial,
         impact,
-        initial: previous.initial,
+        current,
       },
     };
   }
@@ -300,7 +327,7 @@ export default (state: State = reset(), action: Action): State => {
 
     if (!current) {
       console.error('finishing drag without having started a drag');
-      return reset();
+      return clean();
     }
 
     const { impact, initial, dragging } = current;
@@ -327,7 +354,7 @@ export default (state: State = reset(), action: Action): State => {
 
     // clear the state and add a drag result
     return {
-      ...reset(),
+      ...clean(),
       complete,
     };
   }
@@ -358,7 +385,7 @@ export default (state: State = reset(), action: Action): State => {
   }
 
   if (action.type === 'CANCEL') {
-    return reset();
+    return clean();
   }
 
   return state;

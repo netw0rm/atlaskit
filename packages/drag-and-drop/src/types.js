@@ -42,7 +42,7 @@ export type DragImpact = {|
   destination: ?DraggableLocation
 |}
 
-export type DraggingInitial = {|
+export type InitialDrag = {|
   source: DraggableLocation,
   center: Position,
   scroll: Position,
@@ -50,7 +50,7 @@ export type DraggingInitial = {|
   dimension: Dimension,
 |}
 
-export type Dragging = {|
+export type CurrentDrag = {|
   id: DraggableId,
   type: TypeId,
   offset: Position,
@@ -58,13 +58,7 @@ export type Dragging = {|
   shouldAnimate: boolean,
 |}
 
-export type CurrentDrag = {|
-  dragging: Dragging,
-  impact: DragImpact,
-  initial: DraggingInitial,
-|}
-
-export type DragResult = {|
+export type DropResult = {|
   draggableId: DraggableId,
   source: DraggableLocation,
   // may not have any destination (drag to nowhere)
@@ -72,21 +66,45 @@ export type DragResult = {|
 |}
 
 export type DragComplete = {|
-  result: DragResult,
-  last: CurrentDrag,
+  result: DropResult,
+  // last: CurrentDrag,
   newHomeOffset: Position,
   isWaitingForAnimation: boolean,
 |}
 
+export type PendingDrop = {|
+  newHomeOffset: Position,
+  last: CurrentDrag,
+  result: DropResult,
+|}
+
 export type Direction = 'vertical'; // | horiztonal - currently not supported
 
+export type Phases = 'IDLE' | 'COLLECTING_DIMENSIONS' | 'DRAGGING' | 'DROP_ANIMATING' | 'DROP_COMPLETE';
+
+type DimensionState = {|
+  request: ?TypeId,
+  draggable: DimensionMap,
+  droppable: DimensionMap,
+|};
+
+type DragState = {|
+  initial: InitialDrag,
+  current: CurrentDrag,
+  impact: DragImpact,
+|}
+
+type DropState = {|
+  pending: ?PendingDrop,
+  complete: DropResult,
+|}
+
 export type State = {
-  draggableDimensions: DimensionMap,
-  droppableDimensions: DimensionMap,
-  isProcessingLift: boolean,
-  currentDrag: ?CurrentDrag,
-  complete: ?DragComplete,
-  requestDimensions: ?TypeId,
+  phase: Phases,
+  dimension: DimensionState,
+  // null if not dragging
+  drag: ?DragState,
+  drop: ?DropState,
 };
 
 export type Action = ActionCreators;

@@ -2,9 +2,14 @@
 import memoizeOne from 'memoize-one';
 import isShallowEqual from 'shallowequal';
 import { connect } from 'react-redux';
-import invariant from 'invariant';
 import { createSelector } from 'reselect';
-import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
+import {
+  currentDragSelector,
+  initialDragSelector,
+  dragImpactSelector,
+  pendingDropSelector,
+  phaseSelector,
+} from '../../state/selectors';
 import makeDraggable from './make-draggable';
 import storeKey from '../../state/get-store-key';
 import {
@@ -21,9 +26,12 @@ import type {
   State,
   Position,
   DraggableId,
-  DragComplete,
-  DragMovement,
+  InitialDrag,
   CurrentDrag,
+  PendingDrop,
+  Phases,
+  DragMovement,
+  DragImpact,
 } from '../../types';
 import type {
   Provide,
@@ -93,37 +101,46 @@ export const makeSelector = (provide: Provide) => {
   );
 
   return createSelector(
-    [currentDragSelector, dragCompleteSelector, getProvided],
-    (currentDrag: ?CurrentDrag,
-      complete: ?DragComplete,
+    [phaseSelector,
+      currentDragSelector,
+      initialDragSelector,
+      dragImpactSelector,
+      pendingDropSelector,
+      getProvided],
+    (phase: Phases,
+      current: ?CurrentDrag,
+      initial: ?InitialDrag,
+      impact: ?DragImpact,
+      pendingDrop: ?PendingDrop,
       provided: NeedsProviding): MapProps => {
       const { id, isDragEnabled = true } = provided;
 
-      // TODO: write test
-      if (currentDrag && complete) {
-        console.error('cannot be dragging and have a complete drag');
+      // // TODO: write test
+      // if (currentDrag && complete) {
+      //   console.error('cannot be dragging and have a complete drag');
+      //   return getDefaultProps(id, isDragEnabled);
+      // }
+      if (phase === 'IDLE' || phase === 'COLLECTING_DIMENSIONS') {
         return getDefaultProps(id, isDragEnabled);
       }
 
-      if (!complete) {
-        // Scenario: nothing is happening
-        if (!currentDrag || !currentDrag.dragging) {
+      if (phase === 'DRAGGING') {
+        if (!current || !initial || !impact) {
+          console.error('invalid dragging state');
           return getDefaultProps(id, isDragEnabled);
         }
 
-        // Scenario: this item is not dragging
-        if (currentDrag.dragging.id !== id) {
+        if (current.id !== id) {
           return getNotDraggingProps(
             id,
-            currentDrag.impact.movement,
+            impact.movement,
             isDragEnabled,
           );
         }
 
         // Scenario: this item is dragging
-        const offset = currentDrag.dragging.offset;
-        const initial = currentDrag.initial;
-        const canAnimate = currentDrag.dragging.shouldAnimate;
+        const offset = current.offset;
+        const canAnimate = current.shouldAnimate;
 
         // not memoizing result as it should not move without an update
         return {
@@ -137,26 +154,28 @@ export const makeSelector = (provide: Provide) => {
         };
       }
 
-      // Scenario 5: there was a drag, but it was not this item
-      if (complete.last.dragging.id !== id) {
-        return getNotDraggingProps(
-          id,
-          complete.last.impact.movement,
-          isDragEnabled,
-        );
-      }
+      return getDefaultProps(id, isDragEnabled);
 
-      // Scenario: just dropped this item
-      const isDropAnimating = complete.isWaitingForAnimation;
-      return {
-        id,
-        isDragEnabled,
-        isDragging: false,
-        isDropAnimating,
-        canAnimate: isDropAnimating,
-        offset: complete.newHomeOffset,
-        initial: complete.last.initial,
-      };
+      // Scenario 5: there was a drag, but it was not this item
+      // if (complete.last.dragging.id !== id) {
+      //   return getNotDraggingProps(
+      //     id,
+      //     complete.last.impact.movement,
+      //     isDragEnabled,
+      //   );
+      // }
+
+      // // Scenario: just dropped this item
+      // const isDropAnimating = complete.isWaitingForAnimation;
+      // return {
+      //   id,
+      //   isDragEnabled,
+      //   isDragging: false,
+      //   isDropAnimating,
+      //   canAnimate: isDropAnimating,
+      //   offset: complete.newHomeOffset,
+      //   initial: complete.last.initial,
+      // };
     }
   );
 };

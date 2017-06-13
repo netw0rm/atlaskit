@@ -7,7 +7,7 @@ import storeKey from '../../state/get-store-key';
 import DimensionPublisher from './dimension-publisher';
 
 const requestDimensionSelector =
-  (state: State): ?TypeId => state.requestDimensions;
+  (state: State): ?TypeId => state.dimension.request;
 
 const getOwnType = (state: State, props: ConnectedProps): TypeId => props.type;
 

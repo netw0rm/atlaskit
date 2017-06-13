@@ -6,7 +6,7 @@ import FieldTextOverviewExampleRaw from '!raw!./examples/FieldTextOverview'; // 
 import FieldTextOverviewExample from './examples/FieldTextOverview'; // eslint-disable-line import/no-duplicates
 
 import { name, description } from '../package.json';
-import { FieldText } from '../src';
+import { FieldTextStateless } from '../src';
 
 const fieldTextPropDescriptions = {
   compact: 'Whether to use compact sizing for the field.',
@@ -38,7 +38,7 @@ storiesOf(name, module)
         <Code code={FieldTextOverviewExampleRaw}>
           {FieldTextOverviewExample}
         </Code>
-        <Props component={FieldText} descriptions={fieldTextPropDescriptions} />
+        <Props component={FieldTextStateless} descriptions={fieldTextPropDescriptions} />
       </Readme>
     </div>
   ));

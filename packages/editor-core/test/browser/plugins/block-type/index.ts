@@ -943,13 +943,4 @@ describe('block-type', () => {
       });
     });
   });
-
-  describe('changeContext', () => {
-    it('reverts to "default" in case the context is not defined', () => {
-      const { pluginState } = editor(doc(p('text')));
-      expect(pluginState.context).to.eq('default');
-      pluginState.changeContext('!!!%%%UNDEFINED CONTEXT%%%!!!');
-      expect(pluginState.context).to.eq('default');
-    });
-  });
 });

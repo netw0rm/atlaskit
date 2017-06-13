@@ -1,7 +1,8 @@
 import { MarkSpec } from '../../prosemirror';
+import { FONT_STYLE, LINK, SEARCH_QUERY } from '../groups';
 
 export const code: MarkSpec = {
-  excludes: 'em strike strong underline emojiQuery mentionQuery textColor',
+  excludes: `${FONT_STYLE} ${LINK} ${SEARCH_QUERY}`,
   inclusive: true,
   parseDOM: [
     { tag: 'code', preserveWhitespace: true },

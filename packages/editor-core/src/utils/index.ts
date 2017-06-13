@@ -27,7 +27,7 @@ function validateNode(node: Node): boolean {
 }
 
 function isMarkTypeExcludedFromMark(markType: MarkType, mark: Mark): boolean {
-  return !!mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1;
+  return mark.type.excludes(markType);
 }
 
 function isMarkTypeAllowedInNode(markType: MarkType, state: EditorState<any>): boolean {

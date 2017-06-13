@@ -1,6 +1,6 @@
 import { Component, ReactElement } from 'react';
 
-interface Props {
+export interface Props {
   appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link';
   type?: 'button' | 'submit';
   href?: string;

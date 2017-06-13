@@ -11,10 +11,11 @@ import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZone
 import {uploadPlaceholder} from './images';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
-
+export type ScaleState = {scale: number, imagePos: {x: number, y: number}};
 export interface Props {
   imageSource?: string;
   onLoad?: OnLoadHandler;
+  onScaleChange?: (result: ScaleState) => void;
 }
 
 export interface Position {
@@ -94,25 +95,31 @@ export class ImageNavigator extends Component<Props, State> {
    * @param scale New scale in 0-100 format.
    */
   onScaleChange = (scale) => {
+    const {scale: oldScale, imagePos} = this.state;
+    const {onScaleChange} = this.props;
     const newScale = scale / 100;
-    const oldScale = this.state.scale;
     const scaleRelation = newScale / oldScale;
     const oldCenterPixel: Position = {
-      x: CONTAINER_SIZE / 2 - this.state.imagePos.x,
-      y: CONTAINER_SIZE / 2 - this.state.imagePos.y,
+      x: CONTAINER_SIZE / 2 - imagePos.x,
+      y: CONTAINER_SIZE / 2 - imagePos.y,
     };
     const newCenterPixel: Position = {
       x: scaleRelation * oldCenterPixel.x,
       y: scaleRelation * oldCenterPixel.y,
     };
-
-    this.setState({
+    const newState = {
       scale: newScale,
       imagePos: {
         x: CONTAINER_SIZE / 2 - newCenterPixel.x,
         y: CONTAINER_SIZE / 2 - newCenterPixel.y,
       }
-    });
+    };
+
+    this.setState(newState);
+
+    if (onScaleChange) {
+      onScaleChange(newState);
+    }
   }
 
   onImageSize = (width, height) => {

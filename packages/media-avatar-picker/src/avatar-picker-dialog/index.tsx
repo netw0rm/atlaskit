@@ -5,7 +5,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
 import {Avatar} from '../avatar-list';
-import {ImageNavigator} from '../image-navigator';
+import {ImageNavigator, ScaleState} from '../image-navigator';
 import {PredefinedAvatarList} from '../predefined-avatar-list';
 
 import {AvatarPickerViewWrapper} from './styled';
@@ -13,6 +13,7 @@ import {PredefinedAvatarView} from '../predefined-avatar-view';
 
 export interface AvatarPickerDialogProps {
   imageSource?: string;
+  onScaleChange?: (result: ScaleState) => void;
   avatars: Array<Avatar>;
 }
 
@@ -57,7 +58,7 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
   }
 
   renderContent() {
-    const {imageSource, avatars} = this.props;
+    const {imageSource, avatars, onScaleChange} = this.props;
     const {mode} = this.state;
 
     switch (mode) {
@@ -65,7 +66,7 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
         return (
           <div className="cropping-wrapper">
             <div className="cropper">
-              <ImageNavigator imageSource={imageSource} />
+              <ImageNavigator imageSource={imageSource} onScaleChange={onScaleChange} />
             </div>
             <div className="predefined-avatars">
               <PredefinedAvatarList

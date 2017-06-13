@@ -64,6 +64,10 @@ pipelines:
             indexifier@2.0.0
             @atlassian/prebake-distributor-runner@1.0.2
           - yarn
-          - lerna bootstrap | cat
+          # Bypass bootstrapping so we don't link. We set a separate cache
+          # folder to get around any conflicts in Yarn's main cache dirrectory.
+          # We limit this to the changed packages because we only test changed
+          # packages.
+          - npm run install
           - npm run lint
           - npm run test

@@ -17,6 +17,7 @@ import rulePlugins from '../../src/plugins/rule';
 import listsPlugins, {stateKey as listsStateKey} from '../../src/plugins/lists';
 import mentionsPlugins, {stateKey as mentionsStateKey} from '../../src/plugins/mentions';
 import emojiPlugins, {stateKey as emojiStateKey} from '../../src/plugins/emojis';
+import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, {stateKey as tableStateKey} from '../../src/plugins/table';
 import { reactNodeViewPlugins } from '../../src/plugins';
 
@@ -265,6 +266,7 @@ export default class Editor extends PureComponent<Props, State> {
           plugins: [
             ...mentionsPlugins(schema), // mentions and emoji needs to be first
             ...emojiPlugins(schema),
+            ...asciiEmojiPlugins(schema, this.state.emojiProvider),
             ...listsPlugins(schema),
             ...clearFormattingPlugins(schema),
             ...codeBlockPlugins(schema),

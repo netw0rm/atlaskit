@@ -1,11 +1,7 @@
-import { tableNodes } from '../../prosemirror';
+import { tableNodes, NodeSpec } from '../../prosemirror';
 
-const {
-  table,
-  table_cell,
-  table_header,
-  table_row
-} = tableNodes({
+// TS doesn't generate type if we destructure here
+const nodes = tableNodes({
   tableGroup: 'block',
   cellContent: 'block+',
   cellAttributes: {
@@ -22,6 +18,11 @@ const {
     }
   }
 });
+
+const table: NodeSpec = nodes.table;
+const table_cell: NodeSpec = nodes.table_cell;
+const table_header: NodeSpec = nodes.table_header;
+const table_row: NodeSpec = nodes.table_row;
 
 export {
   table,

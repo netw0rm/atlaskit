@@ -65,16 +65,15 @@ export type DropResult = {|
   destination: ?DraggableLocation
 |}
 
-export type DragComplete = {|
-  result: DropResult,
-  // last: CurrentDrag,
-  newHomeOffset: Position,
-  isWaitingForAnimation: boolean,
+type DragState = {|
+  initial: InitialDrag,
+  current: CurrentDrag,
+  impact: DragImpact,
 |}
 
 export type PendingDrop = {|
   newHomeOffset: Position,
-  last: CurrentDrag,
+  last: DragState,
   result: DropResult,
 |}
 
@@ -88,15 +87,9 @@ type DimensionState = {|
   droppable: DimensionMap,
 |};
 
-type DragState = {|
-  initial: InitialDrag,
-  current: CurrentDrag,
-  impact: DragImpact,
-|}
-
 type DropState = {|
   pending: ?PendingDrop,
-  complete: DropResult,
+  result: ?DropResult,
 |}
 
 export type State = {

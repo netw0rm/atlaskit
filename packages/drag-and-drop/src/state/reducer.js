@@ -5,16 +5,16 @@ import type { TypeId,
   State,
   Dimension,
   DragImpact,
+  DropResult,
   CurrentDrag,
   InitialDrag,
+  PendingDrop,
   Phases,
   DraggableLocation,
   Position,
 } from '../types';
 import getDragImpact from './get-drag-impact';
 import { getDiffToJumpForward, getDiffToJumpBackward } from './jump-to-next-index';
-import getNewHomeOffset from './get-new-home-offset';
-import isPositionEqual from './is-position-equal';
 
 const shout = (message, ...rest) => {
   const key = `%c ${message}`;
@@ -22,20 +22,21 @@ const shout = (message, ...rest) => {
   console.log('payload:', ...rest);
 };
 
-const clean = (phase: ?Phases = 'IDLE'): State => {
+const clean = memoizeOne((phase: ?Phases): State => {
   const state: State = {
-    phase,
+    // flow was not good with having a default arg on an optional type
+    phase: phase || 'IDLE',
+    drag: null,
+    drop: null,
     dimension: {
       request: null,
       draggable: {},
       droppable: {},
     },
-    drag: null,
-    drop: null,
   };
 
   return state;
-};
+});
 
 export default (state: State = clean('IDLE'), action: Action): State => {
   shout(`reducing ${action.type}`, action.payload ? action.payload : 'no payload');
@@ -322,67 +323,78 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     };
   }
 
-  if (action.type === 'DROP') {
-    const current: ?CurrentDrag = state.currentDrag;
+  if (action.type === 'DROP_ANIMATE') {
+    const { newHomeOffset, result } = action.payload;
 
-    if (!current) {
-      console.error('finishing drag without having started a drag');
+    if (state.phase !== 'DRAGGING') {
+      console.error('cannot animate drop while not dragging', action);
+      return state;
+    }
+
+    if (!state.drag) {
+      console.error('cannot animate drop - invalid drag state');
       return clean();
     }
 
-    const { impact, initial, dragging } = current;
-
-    const newHomeOffset: Position = getNewHomeOffset(impact.movement, dragging.offset);
-
-    // Do not animate if you do not need to.
-    // This will be the case if either you are dragging with a
-    // keyboard or if you manage to nail it just with a mouse.
-    const isAnimationRequired = !isPositionEqual(dragging.offset, newHomeOffset);
-
-    const result: DragResult = {
-      draggableId: dragging.id,
-      source: initial.source,
-      destination: impact.destination,
-    };
-
-    const complete: DragComplete = {
-      result,
-      last: current,
+    const pending: PendingDrop = {
       newHomeOffset,
-      isWaitingForAnimation: isAnimationRequired,
+      result,
+      last: state.drag,
     };
 
-    // clear the state and add a drag result
     return {
-      ...clean(),
-      complete,
+      phase: 'DROP_ANIMATING',
+      drag: null,
+      drop: {
+        pending,
+        result: null,
+      },
+      dimension: state.dimension,
+    };
+  }
+
+  if (action.type === 'DROP_COMPLETE') {
+    const result: DropResult = action.payload;
+
+    return {
+      phase: 'DROP_COMPLETE',
+      drag: null,
+      drop: {
+        pending: null,
+        result,
+      },
+      dimension: {
+        request: null,
+        draggable: {},
+        droppable: {},
+      },
     };
   }
 
   // TODO: drop animation finished
-  if (action.type === 'DROP_ANIMATION_FINISHED') {
-    if (!state.complete) {
-      console.warn('not finishing drop as there is no longer a drop in the state');
-      return state;
-    }
+  // if (action.type === 'DROP_ANIMATION_FINISHED') {
+  //   if (!state.complete) {
+  //     console.warn('not finishing drop as there is no longer a drop in the state');
+  //     return state;
+  //   }
 
-    if (!state.complete.isWaitingForAnimation) {
-      console.warn('not finishing drop as there is it is not waiting for an animation to finish');
-      return state;
-    }
+  //   if (!state.complete.isWaitingForAnimation) {
+  //     console.warn('not finishing drop as there is it is not waiting for an animation to finish');
+  //     return state;
+  //   }
 
-    const complete: DragComplete = {
-      result: state.complete.result,
-      last: state.complete.last,
-      newHomeOffset: state.complete.newHomeOffset,
-      isWaitingForAnimation: false,
-    };
+  //   const complete: DragComplete = {
+  //     result: state.complete.result,
+  //     last: state.complete.last,
+  //     newHomeOffset: state.complete.newHomeOffset,
+  //     isWaitingForAnimation: false,
+  //   };
 
-    return {
-      ...state,
-      complete,
-    };
-  }
+  //   return {
+  //     ...state,
+  //     complete,
+  //   };
+  // }
 
   if (action.type === 'CANCEL') {
     return clean();

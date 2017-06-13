@@ -13,6 +13,7 @@ type Context = {|
 |}
 
 export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) => {
+  // TODO: do onWillMount and unsubscribe on unmount
   const store: Store = createStore();
   initialise(hooks, store);
 

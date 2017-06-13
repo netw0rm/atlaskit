@@ -179,7 +179,7 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
         const {
           mapProps: { id },
           dispatchProps: { moveBackward },
-         } = this.props;
+        } = this.props;
 
         moveBackward(id);
       }
@@ -201,7 +201,7 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
         const {
           mapProps: { id },
           dispatchProps: { cancel },
-         } = this.props;
+        } = this.props;
 
         cancel(id);
       }

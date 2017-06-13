@@ -1,12 +1,15 @@
 // @flow
 import type {
   DraggableId,
+  DropResult,
   TypeId,
   Dimension,
   Position,
   Dispatch,
   State,
 } from '../types';
+import getNewHomeOffset from './get-new-home-offset';
+import isPositionEqual from './is-position-equal';
 
 export type RequestDimensionsAction = {|
   type: 'REQUEST_DIMENSIONS',
@@ -122,25 +125,88 @@ export const cancel = (id: DraggableId): CancelAction => ({
   payload: id,
 });
 
-export type DropAction = {
-  type: 'DROP',
-  payload: DraggableId
+export type DropAnimateAction = {
+  type: 'DROP_ANIMATE',
+  payload: {|
+    newHomeOffset: Position,
+    result: DropResult,
+  |}
 }
 
-export const drop = (id: DraggableId): DropAction => ({
-  type: 'DROP',
-  payload: id,
+const animateDrop = (newHomeOffset: Position, result: DropResult): DropAnimateAction => ({
+  type: 'DROP_ANIMATE',
+  payload: {
+    newHomeOffset,
+    result,
+  },
 });
 
-export type DropAnimationFinishedAction = {
-  type: 'DROP_ANIMATION_FINISHED',
-  payload: DraggableId
+export type DropCompleteAction = {
+  type: 'DROP_COMPLETE',
+  payload: DropResult,
 }
 
-export const dropAnimationFinished = (id: DraggableId): DropAnimationFinishedAction => ({
-  type: 'DROP_ANIMATION_FINISHED',
-  payload: id,
+export const completeDrop = (result: DropResult): DropCompleteAction => ({
+  type: 'DROP_COMPLETE',
+  payload: result,
 });
+
+export const drop = (id: DraggableId) =>
+  (dispatch: Dispatch, getState: () => State): void => {
+    const state: State = getState();
+    if (state.phase !== 'DRAGGING') {
+      console.error('cannot drop if not dragging', state);
+      dispatch(cancel(id));
+      return;
+    }
+
+    if (!state.drag) {
+      console.error('invalid drag state', state);
+      dispatch(cancel(id));
+      return;
+    }
+
+    const { impact, initial, current } = state.drag;
+
+    const result: DropResult = {
+      draggableId: current.id,
+      source: initial.source,
+      destination: impact.destination,
+    };
+
+    const newHomeOffset: Position = getNewHomeOffset(impact.movement, current.offset);
+
+    // Do not animate if you do not need to.
+    // This will be the case if either you are dragging with a
+    // keyboard or if you manage to nail it just with a mouse.
+    const isAnimationRequired = !isPositionEqual(current.offset, newHomeOffset);
+
+    if (isAnimationRequired) {
+      dispatch(animateDrop(newHomeOffset, result));
+      return;
+    }
+    dispatch(completeDrop(result));
+  };
+
+export const dropAnimationFinished = (id: DraggableId) =>
+  (dispatch: Dispatch, getState: () => State): void => {
+    console.info('drop animation finished called');
+    const state: State = getState();
+
+    if (state.phase !== 'DROP_ANIMATING') {
+      console.error('cannot end drop that is no longer animating', state);
+      dispatch(cancel(id));
+      return;
+    }
+
+    if (!state.drop || !state.drop.pending) {
+      console.error('cannot end drop that has no pending state', state);
+      dispatch(cancel(id));
+      return;
+    }
+
+    dispatch(completeDrop(state.drop.pending.result));
+  };
 
 export type LiftAction = {|
   type: 'LIFT',
@@ -160,14 +226,28 @@ export const lift = (id: DraggableId,
   scroll: Position,
   selection: Position,
 ) => (dispatch: Dispatch, getState: Function) => {
-  const state: State = getState();
+  (() => {
+    const state: State = getState();
   // quickly finish any current animations
-  if (state.complete && state.complete.isWaitingForAnimation) {
-    dispatch(dropAnimationFinished(id));
-  }
+    if (state.phase === 'DROP_ANIMATING') {
+      if (!state.drop || !state.drop.pending) {
+        console.error('cannot ');
+      } else {
+        dispatch(completeDrop(state.drop.pending.result));
+      }
+    }
+  })();
+
   // https://github.com/chenglou/react-motion/issues/437
   // need to allow a flush of react-motion
   setTimeout(() => {
+    const state: State = getState();
+
+    if (state.phase !== 'IDLE') {
+      // TODO: cancel does not need an id
+      dispatch(cancel('some-fake-id'));
+    }
+
     dispatch(beginLift());
     dispatch(requestDimensions(type));
 
@@ -189,6 +269,6 @@ export type Action = BeginLiftAction |
   MoveAction |
   MoveBackwardAction |
   MoveForwardAction |
-  DropAction |
-  DropAnimationFinishedAction |
+  DropAnimateAction |
+  DropCompleteAction |
   CancelAction;

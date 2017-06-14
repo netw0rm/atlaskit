@@ -10,6 +10,7 @@ export {
 } from '@atlaskit/media-core';
 
 export {
+  AbstractMentionResource,
   MentionProvider,
   MentionResource,
   PresenceProvider,

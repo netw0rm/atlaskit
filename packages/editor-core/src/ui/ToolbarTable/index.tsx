@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
 import Popper, { IPopper } from './../../popper';
 import { akEditorFloatingPanelZIndex } from '../../styles';
-import { CellSelection, Node } from '../../prosemirror';
+import { CellSelection, Node, EditorView } from '../../prosemirror';
 import {
   TableHeader,
   TableHeaderButton,
@@ -20,6 +20,7 @@ import { RowHeaderButtonWrap } from './RowHeaderButtonWrap';
 
 export interface Props {
   pluginState: TableState;
+  editorView: EditorView;
 }
 
 export interface State {
@@ -58,19 +59,32 @@ export default class ToolbarTable extends PureComponent<Props, State> {
     }
   }
 
-  selectTable = () => {
-    this.props.pluginState.selectTable(this.state.tableNode);
+  handleMouseDown = () => {
+    this.props.pluginState.updateToolbarFocused(true);
+  }
+
+  handleBlur = () => {
+    // hide toolbar if it's currently in focus and editor looses focus
+    if (!this.props.pluginState.toolbarFocused) {
+      this.props.pluginState.updateEditorFocused(false);
+      this.props.pluginState.update(this.props.editorView.state, this.props.editorView.docView);
+    }
+    this.props.pluginState.updateToolbarFocused(false);
   }
 
   render() {
     const { tableElement, position, transform } = this.state;
-    const style = { top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex };
 
     if (tableElement) {
       return (
-        <div ref={this.handleRef} style={style}>
+        <div
+          ref={this.handleRef}
+          style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
+          onMouseDown={this.handleMouseDown}
+          onBlur={this.handleBlur}
+        >
           <TableHeader className={this.isTableSelected() ? 'active' : ''}>
-            <TableHeaderButton onClick={this.selectTable} />
+            <TableHeaderButton onClick={this.props.pluginState.selectTable} />
           </TableHeader>
           <ColHeaderWrap>
             <ColHeaderWrapInner>
@@ -90,7 +104,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private renderColHeaders () {
-    const { tableElement, selection, tableNode } = this.state;
+    const { tableElement, selection } = this.state;
     const firstRow = tableElement!.querySelector('tr');
     const cols = firstRow!.querySelectorAll('td,th');
     const result: any = [];
@@ -109,11 +123,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
           className={active ? 'active' : ''}
         >
-          <ColHeaderButtonWrap
-            col={i}
-            tableNode={tableNode}
-            onClick={this.props.pluginState.selectCol}
-          />
+          <ColHeaderButtonWrap col={i} onClick={this.props.pluginState.selectCol} />
         </ColHeader>
       );
     }
@@ -121,7 +131,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private renderRowHeaders () {
-    const { tableElement, selection, tableNode } = this.state;
+    const { tableElement, selection } = this.state;
     const rows = tableElement!.querySelectorAll('tr');
     const result: any = [];
 
@@ -139,11 +149,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
           style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
           className={active ? 'active' : ''}
         >
-          <RowHeaderButtonWrap
-            row={i}
-            tableNode={tableNode}
-            onClick={this.props.pluginState.selectRow}
-          />
+          <RowHeaderButtonWrap row={i} onClick={this.props.pluginState.selectRow} />
         </RowHeader>
       );
     }

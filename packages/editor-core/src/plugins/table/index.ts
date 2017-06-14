@@ -7,6 +7,7 @@ import {
   Transaction,
   NodeViewDesc,
   CellSelection,
+  TextSelection,
   TableMap,
   Node,
 } from '../../prosemirror';
@@ -26,6 +27,7 @@ export class TableState {
   editorFocused: boolean = false;
   tableNode?: Node;
   selection?: CellSelection;
+  toolbarFocused: boolean = false;
 
   private view: EditorView;
   private state: EditorState<any>;
@@ -53,36 +55,43 @@ export class TableState {
     this.editorFocused = editorFocused;
   }
 
-  selectCol = (col: number, tableNode?: Node) => {
-    if (!tableNode) {
+  updateToolbarFocused(toolbarFocused: boolean) {
+    this.toolbarFocused = toolbarFocused;
+  }
+
+  selectCol = (col: number) => {
+    if (!this.tableNode) {
       return;
     }
     const { state } = this.view;
-    const map = TableMap.get(tableNode);
-    const $anchor = state.doc.resolve(map.positionAt(0, col, tableNode) + 1);
-    const $head = state.doc.resolve(map.positionAt(map.height - 1, col, tableNode) + 1);
+    const map = TableMap.get(this.tableNode);
+    const offset = this.tableStartPos() || 1;
+    const $anchor = state.doc.resolve(map.positionAt(0, col, this.tableNode) + offset);
+    const $head = state.doc.resolve(map.positionAt(map.height - 1, col, this.tableNode) + offset);
     this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
   }
 
-  selectRow = (row: number, tableNode?: Node) => {
-    if (!tableNode) {
+  selectRow = (row: number) => {
+    if (!this.tableNode) {
       return;
     }
     const { state } = this.view;
-    const map = TableMap.get(tableNode);
-    const $anchor = state.doc.resolve(map.positionAt(row, 0, tableNode) + 1);
-    const $head = state.doc.resolve(map.positionAt(row, map.width - 1, tableNode) + 1);
+    const map = TableMap.get(this.tableNode);
+    const offset = this.tableStartPos() || 1;
+    const $anchor = state.doc.resolve(map.positionAt(row, 0, this.tableNode) + offset);
+    const $head = state.doc.resolve(map.positionAt(row, map.width - 1, this.tableNode) + offset);
     this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
   }
 
-  selectTable = (tableNode?: Node) => {
-    if (!tableNode) {
+  selectTable = () => {
+    if (!this.tableNode) {
       return;
     }
     const { state } = this.view;
-    const map = TableMap.get(tableNode);
-    const $anchor = state.doc.resolve(map.positionAt(0, 0, tableNode) + 1);
-    const $head = state.doc.resolve(map.positionAt(map.height - 1, map.width - 1, tableNode) + 1);
+    const map = TableMap.get(this.tableNode);
+    const offset = this.tableStartPos() || 1;
+    const $anchor = state.doc.resolve(map.positionAt(0, 0, this.tableNode) + offset);
+    const $head = state.doc.resolve(map.positionAt(map.height - 1, map.width - 1, this.tableNode) + offset);
     this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
   }
 
@@ -90,8 +99,7 @@ export class TableState {
     this.state = newEditorState;
     let dirty = false;
 
-    // const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
-    const tableElement = this.getTableElement(docView);
+    const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
     const tableNode = this.getTableNode();
     const { selection } = this.state;
 
@@ -99,6 +107,13 @@ export class TableState {
       if (selection !== this.selection) {
         this.selection = selection;
         dirty = true;
+      }
+
+      // remove selection if editor looses focus
+      if (!this.editorFocused) {
+        const { state } = this.view;
+        const { $from } = this.state.selection;
+        this.view.dispatch(state.tr.setSelection(new TextSelection($from, $from)));
       }
     } else if (this.selection) {
       this.selection = undefined;
@@ -200,8 +215,12 @@ const plugin = new Plugin({
     },
     onBlur(view: EditorView, event) {
       const pluginState = stateKey.getState(view.state);
-      pluginState.updateEditorFocused(false);
-      pluginState.update(view.state, view.docView);
+      if (pluginState.toolbarFocused) {
+        pluginState.updateToolbarFocused(false);
+      } else {
+        pluginState.updateEditorFocused(false);
+        pluginState.update(view.state, view.docView);
+      }
     },
   }
 });

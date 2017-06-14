@@ -1,22 +1,21 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import Droplist, { Item, Group } from '@atlaskit/droplist';
-import { Label, FieldBaseStateless } from '@atlaskit/field-base';
-import TagGroup from '@atlaskit/tag-group';
-import Tag from '@atlaskit/tag';
-import classNames from 'classnames';
 
-import styles from './styles.less';
-import DummyItem from './internal/DummyItem';
-import DummyGroup from './internal/DummyGroup';
-import Trigger from './internal/Trigger';
-import NothingWasFound from './internal/NothingWasFound';
-import Footer from './internal/Footer';
-import { mapAppearanceToFieldBase } from './internal/appearances';
+import Droplist from '@atlaskit/droplist';
+import { Label } from '@atlaskit/field-base';
 
-const groupShape = DummyGroup.propTypes;
-const itemShape = DummyItem.propTypes;
+import ItemShape from '../internal/ItemShape';
+import GroupShape from '../internal/GroupShape';
+import { SelectWrapper } from '../styled/Stateless';
+import Trigger from './Trigger';
+import Footer from './Footer';
+import { filterItems, getNextFocusable, getPrevFocusable, groupItems } from '../internal/sharedFunctions';
+import renderGroups from './Groups';
+import renderOptGroups from './Options';
+
+const groupShape = GroupShape.propTypes;
+const itemShape = ItemShape.propTypes;
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
@@ -31,6 +30,16 @@ const appearances = {
   ],
   default: 'default',
 };
+
+const getAllValues = selectedItems => selectedItems.map(item => item.value);
+
+/*
+
+==============================+
+COMPONENT CODE BEGINS HERE
+==============================+
+
+*/
 
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
@@ -60,7 +69,10 @@ export default class StatelessMultiSelect extends PureComponent {
     /** An array of objects, each one of which must have an array of items, and
     may have a heading. All items should have content and value properties, with
     content being the displayed text. */
-    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    items: PropTypes.oneOfType([
+      PropTypes.shape(groupShape),
+      PropTypes.arrayOf(PropTypes.shape(itemShape)),
+    ]),
     /** Label to be displayed above select. */
     label: PropTypes.string,
     /** Mesage to display in any group in items if there are no items in it,
@@ -78,6 +90,8 @@ export default class StatelessMultiSelect extends PureComponent {
     onOpenChange: PropTypes.func,
     /** Handler called when a selection is made, with the item chosen. */
     onSelected: PropTypes.func,
+    /** Function to be called by the tags representing a selected item. Passed to
+    the `onAfterRemoveAction` on the Tag. */
     onRemoved: PropTypes.func,
     /** Text to be shown within the select when no item is selected. */
     placeholder: PropTypes.string,
@@ -114,11 +128,18 @@ export default class StatelessMultiSelect extends PureComponent {
   state = {
     isFocused: this.props.isOpen || this.props.shouldFocus,
     focusedItemIndex: null,
+    groupedItems: groupItems(this.props.items),
   }
 
   componentDidMount = () => {
     if (this.state.isFocused && this.inputNode) {
       this.inputNode.focus();
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.items !== nextProps.items) {
+      this.setState({ groupedItems: groupItems(nextProps.items) });
     }
   }
 
@@ -170,49 +191,25 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
-  getAllValues = () => this.props.selectedItems.map(item => item.value)
-
   getPlaceholder = () => {
-    if (!this.props.isOpen && this.props.selectedItems.length === 0) {
-      return this.props.placeholder;
+    const { isOpen, selectedItems, placeholder } = this.props;
+
+    if (!isOpen && selectedItems.length === 0) {
+      return placeholder;
     }
 
     return null;
   }
 
-  getNextFocusable = (indexItem, length) => {
-    let currentItem = indexItem;
-
-    if (currentItem === null) {
-      currentItem = 0;
-    } else if (currentItem < length) {
-      currentItem++;
-    } else {
-      currentItem = 0;
-    }
-
-    return currentItem;
-  }
-
-  getPrevFocusable = (indexItem, length) => {
-    let currentItem = indexItem;
-
-    if (currentItem > 0) {
-      currentItem--;
-    } else {
-      currentItem = length;
-    }
-
-    return currentItem;
-  }
-
   getAllVisibleItems = (groups) => {
+    const { filterValue, selectedItems } = this.props;
     let allFilteredItems = [];
     groups.forEach((val) => {
-      allFilteredItems = allFilteredItems.concat(this.filterItems(val.items));
+      const filteredItems = filterItems(val.items, filterValue, selectedItems);
+      allFilteredItems = allFilteredItems.concat(filteredItems);
     });
     return allFilteredItems;
-  }
+  };
 
   handleItemCreate = (event) => {
     const { filterValue: value, items } = this.props;
@@ -274,7 +271,7 @@ export default class StatelessMultiSelect extends PureComponent {
     const filteredItems = this.getAllVisibleItems(this.props.items);
     const length = filteredItems.length - 1;
     this.setState({
-      focusedItemIndex: this.getNextFocusable(this.state.focusedItemIndex, length),
+      focusedItemIndex: getNextFocusable(this.state.focusedItemIndex, length),
     });
   }
 
@@ -282,12 +279,15 @@ export default class StatelessMultiSelect extends PureComponent {
     const filteredItems = this.getAllVisibleItems(this.props.items);
     const length = filteredItems.length - 1;
     this.setState({
-      focusedItemIndex: this.getPrevFocusable(this.state.focusedItemIndex, length),
+      focusedItemIndex: getPrevFocusable(this.state.focusedItemIndex, length),
     });
   }
 
   handleKeyboardInteractions = (event) => {
-    const isSelectOpen = this.props.isOpen;
+    const { isOpen, items, filterValue } = this.props;
+    const { focusedItemIndex } = this.state;
+
+    const isSelectOpen = isOpen;
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
@@ -305,9 +305,9 @@ export default class StatelessMultiSelect extends PureComponent {
       case 'Enter':
         if (isSelectOpen) {
           event.preventDefault();
-          if (this.state.focusedItemIndex !== null) {
+          if (focusedItemIndex !== null) {
             this.handleItemSelect(
-              this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
+              this.getAllVisibleItems(items)[focusedItemIndex], { event }
             );
           } else if (this.props.shouldAllowCreateItem) {
             this.handleItemCreate();
@@ -315,7 +315,7 @@ export default class StatelessMultiSelect extends PureComponent {
         }
         break;
       case 'Backspace':
-        if (!this.props.filterValue) {
+        if (!filterValue) {
           this.removeLatestItem();
           this.onOpenChange({ event, isOpen: true });
         }
@@ -325,164 +325,99 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
-  filterItems = (items) => {
-    const value = this.props.filterValue;
-    const trimmedValue = value && value.toLowerCase().trim();
-    const selectedValues = this.props.selectedItems.map(item => item.value);
-    const unselectedItems = items.filter(item => selectedValues.indexOf(item.value) === -1);
-
-    return trimmedValue ?
-      unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
-      unselectedItems;
-  }
-
-  renderItems = items => items.map((item, itemIndex) => (
-    <Item
-      {...item}
-      elemBefore={item.elemBefore}
-      isFocused={itemIndex === this.state.focusedItemIndex}
-      key={itemIndex}
-      onActivate={(attrs) => {
-        this.handleItemSelect(item, attrs);
-      }}
-      type="option"
-    >
-      {item.content}
-    </Item>)
-  )
-
-  renderNoItemsMessage = () => <NothingWasFound noMatchesFound={this.props.noMatchesFound} />
-
-  renderGroups = (groups) => {
-    const renderedGroups = groups.map((group, groupIndex) => {
-      const filteredItems = this.filterItems(group.items);
-      return filteredItems.length > 0 ?
-        <Group
-          heading={group.heading}
-          key={groupIndex}
-        >
-          {this.renderItems(filteredItems)}
-        </Group>
-        : null;
-    }).filter(group => !!group);
-
-    // don't show the 'noItems' message when the new item functinality is enabled
-    return (renderedGroups.length > 0 || this.props.shouldAllowCreateItem)
-      ? renderedGroups : this.renderNoItemsMessage();
-  }
-
-  renderFooter = () => {
-    const { filterValue: newValue, shouldAllowCreateItem } = this.props;
-    return shouldAllowCreateItem && newValue ?
-      <Footer
-        newLabel={this.props.createNewItemLabel}
-        shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
-      >
-        { newValue }
-      </Footer> :
-      null;
-  }
-
-  renderOptions = items => items.map((item, itemIndex) => (<option
-    disabled={item.isDisabled}
-    key={itemIndex}
-    value={item.value}
-  >{item.content}</option>))
-
-  renderOptGroups = groups => groups.map((group, groupIndex) =>
-    <optgroup
-      label={group.heading}
-      key={groupIndex}
-    >
-      {this.renderOptions(group.items)}
-    </optgroup>
-  )
-
-  renderSelect = () => (<select
-    disabled={this.props.isDisabled}
-    id={this.props.id}
-    multiple
-    name={this.props.name}
-    readOnly
-    required={this.props.isRequired}
-    style={{ display: 'none' }}
-    value={this.getAllValues(this.props.selectedItems)}
-  >
-    {this.renderOptGroups(this.props.items)}
-  </select>)
-
   render() {
-    const classes = classNames([styles.selectWrapper, {
-      [styles.fitContainer]: this.props.shouldFitContainer,
-    }]);
+    const {
+      appearance,
+      createNewItemLabel,
+      filterValue,
+      id,
+      isDisabled,
+      isFirstChild,
+      isInvalid,
+      isOpen,
+      isRequired,
+      label,
+      name,
+      noMatchesFound,
+      position,
+      selectedItems,
+      shouldAllowCreateItem,
+      shouldFitContainer,
+    } = this.props;
+
+    const { groupedItems, isFocused, focusedItemIndex } = this.state;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div
-        className={classes}
+      <SelectWrapper
+        shouldFitContainer={shouldFitContainer}
         onKeyDown={this.handleKeyboardInteractions}
       >
-        {this.renderSelect()}
-        {this.props.label ? <Label
-          htmlFor={this.props.id}
-          isFirstChild={this.props.isFirstChild}
-          isRequired={this.props.isRequired}
-          label={this.props.label}
+        <select
+          disabled={isDisabled}
+          id={id}
+          multiple
+          name={name}
+          readOnly
+          required={isRequired}
+          style={{ display: 'none' }}
+          value={getAllValues(selectedItems)}
+        >
+          {renderOptGroups(groupedItems)}
+        </select>
+        {label ? <Label
+          htmlFor={id}
+          isFirstChild={isFirstChild}
+          isRequired={isRequired}
+          label={label}
         /> : null}
         <Droplist
           isKeyboardInteractionDisabled
-          isOpen={this.props.isOpen}
+          isOpen={isOpen}
           isTriggerDisabled
           isTriggerNotTabbable
           onOpenChange={this.onOpenChange}
-          position={this.props.position}
+          position={position}
           shouldFitContainer
           trigger={
-            <FieldBaseStateless
-              appearance={mapAppearanceToFieldBase(this.props.appearance)}
-              isDisabled={this.props.isDisabled}
-              isFitContainerWidthEnabled
-              isFocused={this.props.isOpen || this.state.isFocused}
-              isInvalid={this.props.isInvalid}
-              isPaddingDisabled
-              isRequired={this.props.isRequired}
+            <Trigger
+              appearance={appearance}
+              filterValue={filterValue}
+              handleItemRemove={this.handleItemRemove}
+              handleOnChange={this.handleOnChange}
+              handleTriggerClick={this.handleTriggerClick}
+              inputNode={this.inputNode}
+              inputRefFunction={ref => (this.inputNode = ref)}
+              isDisabled={isDisabled}
+              isFocused={isOpen || isFocused}
+              isInvalid={isInvalid}
+              isRequired={isRequired}
               onBlur={this.onBlur}
               onFocus={this.onFocus}
-            >
-              <Trigger
-                isDisabled={this.props.isDisabled}
-                onClick={this.handleTriggerClick}
-              >
-                <TagGroup ref={ref => (this.tagGroup = ref)}>
-                  {this.props.selectedItems.map(item =>
-                    <Tag
-                      appearance={item.tag ? item.tag.appearance : undefined}
-                      elemBefore={item.tag ? item.tag.elemBefore : undefined}
-                      key={item.value}
-                      onAfterRemoveAction={() => {
-                        this.handleItemRemove(item);
-                      }}
-                      removeButtonText={this.props.isDisabled ? null : `${item.content}, remove`}
-                      text={item.content}
-                    />)}
-                  {this.props.isDisabled ? null : <input
-                    className={styles.input}
-                    disabled={this.props.isDisabled}
-                    onChange={this.handleOnChange}
-                    placeholder={this.getPlaceholder()}
-                    ref={ref => (this.inputNode = ref)}
-                    type="text"
-                    value={this.props.filterValue}
-                  />}
-                </TagGroup>
-              </Trigger>
-            </FieldBaseStateless>
+              placeholder={this.getPlaceholder()}
+              selectedItems={selectedItems}
+              tagGroup={this.tagGroup}
+              tagGroupRefFunction={ref => (this.tagGroup = ref)}
+            />
           }
         >
-          {this.renderGroups(this.props.items)}
-          {this.renderFooter()}
+          {renderGroups({
+            groups: groupedItems,
+            filterValue,
+            selectedItems,
+            noMatchesFound,
+            focusedItemIndex,
+            handleItemSelect: this.handleItemSelect,
+            shouldAllowCreateItem,
+          })}
+          <Footer
+            filterValue={filterValue}
+            newLabel={createNewItemLabel}
+            shouldAllowCreateItem={shouldAllowCreateItem}
+            shouldHideSeparator={!this.getAllVisibleItems(groupedItems).length}
+          />
         </Droplist>
-      </div>
+      </SelectWrapper>
     );
   }
 }

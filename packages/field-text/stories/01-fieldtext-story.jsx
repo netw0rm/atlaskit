@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import Button from '@atlaskit/button';
 import React from 'react';
 
-import AkFieldText from '../src';
+import FieldText from '../src';
 import { name } from '../package.json';
 
 const formTestUrl = '//httpbin.org/get';
@@ -12,7 +12,7 @@ const fieldRefs = {};
 function generateInput(opts) {
   const props = { label: 'Example label', ...opts };
   return (
-    <AkFieldText {...props} />
+    <FieldText {...props} />
   );
 }
 
@@ -173,7 +173,7 @@ storiesOf(name, module)
         )}
     </form>
   ))
-  .add('field-text with buttons that choose foucs', () => (
+  .add('field-text with buttons that choose focus', () => (
     <form
       action={formTestUrl}
       method="get"
@@ -183,9 +183,9 @@ storiesOf(name, module)
       }}
     >
       <h2>Focus Test</h2>
-      <AkFieldText label="First Field" name="1" ref={(field1Ref) => { fieldRefs.input1 = field1Ref; }} />
-      <AkFieldText label="Second Field" name="2" ref={(field2Ref) => { fieldRefs.input2 = field2Ref; }} />
-      <AkFieldText label="Third Field" name="3" ref={(field3Ref) => { fieldRefs.input3 = field3Ref; }} />
+      <FieldText label="First Field" name="1" ref={(field1Ref) => { fieldRefs.input1 = field1Ref; }} />
+      <FieldText label="Second Field" name="2" ref={(field2Ref) => { fieldRefs.input2 = field2Ref; }} />
+      <FieldText label="Third Field" name="3" ref={(field3Ref) => { fieldRefs.input3 = field3Ref; }} />
       <p>
         <Button appearance="primary" onClick={focus1}>Focus First Field</Button>
       </p>

@@ -44,8 +44,8 @@ describe('hyperlink regex', () => {
     it('should not match special characters', () => {
       const match = (url: string) => (url.match(URL_REGEX) as any)[1];
       expect(match('[www.atlassian.com?hello=there]')).to.equal('www.atlassian.com?hello=there');
-      expect(match('(www.atlassian.com#hello)')).to.equal('www.atlassian.com#hello');
-      expect(match('(www.atlassian.com/hello)')).to.equal('www.atlassian.com/hello');
+      expect(match('(www.atlassian.com#hello>')).to.equal('www.atlassian.com#hello');
+      expect(match('(www.atlassian.com/hello<')).to.equal('www.atlassian.com/hello');
       expect(match('(www.atlassian.com/hello?foo=bar^)')).to.equal('www.atlassian.com/hello?foo=bar');
     });
   });

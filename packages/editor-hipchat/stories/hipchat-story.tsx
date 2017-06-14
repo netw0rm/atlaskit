@@ -1,11 +1,21 @@
 import Button from '@atlaskit/button';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
+
+import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
+import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
+import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { action, storiesOf } from '@kadira/storybook';
 import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as React from 'react';
 import Editor from '../src';
 import { emojiProvider, mentionProvider, testImageUrl, testImageName } from './story-data';
 import { name, version } from '../package.json';
+
+const mediaTestHelpers = {
+  defaultClientId,
+  defaultServiceHost,
+  defaultCollectionName,
+  StoryBookTokenProvider,
+};
 
 storiesOf(name, module)
   .addDecorator(function (story: Function, context: { kind: string, story: string }) {

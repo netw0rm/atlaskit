@@ -41,41 +41,35 @@ export default class NavigationItem extends PureComponent {
   }
 
   render() {
-    const Icon = () => (this.props.icon ?
-      <NavigationItemIcon>
-        {this.props.icon}
-      </NavigationItemIcon>
-    : null);
+    const icon = this.props.icon
+      ? <NavigationItemIcon>{this.props.icon}</NavigationItemIcon>
+      : null;
 
-    const DropIcon = () => (this.props.dropIcon && this.props.isDropdownTrigger ?
+    const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
       <NavigationItemIcon
         isDropdownTrigger
         hasNoPadding={this.props.isDropdownTrigger}
       >
         {this.props.dropIcon}
       </NavigationItemIcon>
-    : null);
+    ) : null;
 
-    const TextAfter = () => (this.props.textAfter ?
-      <NavigationItemTextAfter>
-        {this.props.textAfter}
-      </NavigationItemTextAfter>
-    : null);
+    const textAfter = this.props.textAfter
+      ? <NavigationItemTextAfter>{this.props.textAfter}</NavigationItemTextAfter>
+      : null;
 
-    const Action = () => (this.props.action ?
-      <NavigationItemAction>
-        {this.props.action}
-      </NavigationItemAction>
-    : null);
+    const action = this.props.action
+      ? <NavigationItemAction>{this.props.action}</NavigationItemAction>
+      : null;
 
-    const After = ({ children }) => (this.props.textAfter ?
+    const after = this.props.textAfter ? (
       <NavigationItemAfter
         shouldTakeSpace={this.props.action || this.props.textAfter}
         isDropdownTrigger={this.props.isDropdownTrigger}
       >
-        {children}
+        {textAfter}
       </NavigationItemAfter>
-    : null);
+    ) : null;
 
     const wrappedCaption = this.props.caption
       ? <NavigationItemCaption>{this.props.caption}</NavigationItemCaption>
@@ -100,7 +94,7 @@ export default class NavigationItem extends PureComponent {
           {...interactiveWrapperProps}
         >
           <NavigationItemInner>
-            <Icon />
+            {icon}
             <NavigationItemText>
               <NavigationItemMainText>
                 {this.props.text}
@@ -110,13 +104,11 @@ export default class NavigationItem extends PureComponent {
                 {this.props.subText}
               </NavigationItemSubText>
             </NavigationItemText>
-            <After>
-              <TextAfter />
-            </After>
-            <DropIcon />
+            {after}
+            {dropIcon}
           </NavigationItemInner>
         </InteractiveWrapper>
-        <Action />
+        {action}
       </NavigationItemOuter>
     );
   }

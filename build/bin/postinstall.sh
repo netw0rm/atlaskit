@@ -25,13 +25,13 @@ if [[ "$BITBUCKET_COMMIT" != "" ]]; then
   test ${PIPESTATUS[0]} -eq 0
 else
   # Need to bootstrap @atlaskit/util-cz-atlaskit-changelog so that we can run commitizen (hide the output as it's pretty noisy)
-  $CHALK --no-stdin -t "{blue Bootstrapping @ataskit/util-cz-lerna-changelog for commitizen}"
+  $CHALK --no-stdin -t "{blue Bootstrapping @atlaskit/util-cz-lerna-changelog for commitizen}"
   yarn run bootstrap/single @atlaskit/util-cz-atlaskit-changelog > /dev/null
 
   # Also need to bootstrap icons because bootstrap/single/with-deps wont pick it up
   $CHALK --no-stdin -t "{blue Bootstrapping @atlaskit/icon...}"
+  # $LERNA_LOC bootstrap --scope=@atlaskit/icon > /dev/null
   yarn run bootstrap/single @atlaskit/icon > /dev/null
-  $LERNA_LOC run gen-js --scope=@atlaskit/icon > /dev/null
 
 
   $CHALK --no-stdin -t "{green ~~~~~~~~~~~~~~~~~~~~~~~~~~~~}"

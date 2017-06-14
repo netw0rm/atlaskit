@@ -3,7 +3,6 @@ import {MouseEvent, Component} from 'react';
 import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
-import Icon from '@atlaskit/icon/lib/Icon';
 
 import {FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
 
@@ -102,7 +101,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
 
   tickBox() {
     const {selected, selectable} = this.props;
-    const tick = <Icon glyph={TickIcon} label="tick" />;
+    const tick = <TickIcon label="tick" />;
     const className = cx('tickbox', {selected});
 
     return selectable && (<TickBox className={className}> {tick} </TickBox>);

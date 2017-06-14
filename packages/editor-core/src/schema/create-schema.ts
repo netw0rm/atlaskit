@@ -1,5 +1,5 @@
 import { NodeSpec, MarkSpec, Schema } from '../prosemirror';
-
+import { COLOR, FONT_STYLE, SEARCH_QUERY, LINK } from './groups';
 import {
   // Nodes
   doc,
@@ -37,6 +37,62 @@ import {
   textColor,
 } from '../schema';
 
+function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}) {
+  if (!config) {
+    return {};
+  }
+
+  /**
+   * Add built-in Node / Mark specs
+   */
+  const items = builtInItems.reduce((items, { name, spec }) => {
+    if (config.indexOf(name) !== -1) {
+      items[name] = customSpecs[name] || spec;
+    }
+
+    return items;
+  }, {});
+
+  /**
+   * Add Custom Node / Mark specs
+   */
+  return Object.keys(customSpecs).reduce((items, name) => {
+    if (items[name]) {
+      return items;
+    }
+
+    items[name] = customSpecs[name];
+
+    return items;
+  }, items);
+}
+
+// We use groups to allow schemas to be constructed in different shapes without changing node/mark
+// specs, but this means nodes/marks are defined with groups that might never be used in the schema.
+// In this scenario ProseMirror will complain and prevent the schema from being constructed.
+//
+// To avoid the problem, we include items that serve to "declare" the groups in the schema. This
+// approach unfortunately leaves unused items in the schema, but has the benefit of avoiding the
+// need to manipulate `exclude` or content expression values for potentially every schema item.
+function groupDeclaration(name: string) {
+  return {
+    name: `__${name}GroupDeclaration`,
+    spec: {
+      group: name,
+    }
+  };
+}
+
+const markGroupDeclarations = [
+  groupDeclaration(COLOR),
+  groupDeclaration(FONT_STYLE),
+  groupDeclaration(SEARCH_QUERY),
+  groupDeclaration(LINK),
+];
+
+const markGroupDeclarationsNames = markGroupDeclarations.map(groupMark => groupMark.name);
+
+
 const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'doc', spec: doc },
   { name: 'paragraph', spec: paragraph },
@@ -72,51 +128,8 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
   { name: 'textColor', spec: textColor },
+  ...markGroupDeclarations,
 ];
-
-function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}) {
-  if (!config) {
-    return {};
-  }
-
-  /**
-   * Add built-in Node / Mark specs
-   */
-  const items = builtInItems.reduce((items, { name, spec }) => {
-    if (config.indexOf(name) !== -1) {
-      items[name] = customSpecs[name] || spec;
-    }
-
-    return items;
-  }, {});
-
-  /**
-   * Add Custom Node / Mark specs
-   */
-  return Object.keys(customSpecs).reduce((items, name) => {
-    if (items[name]) {
-      return items;
-    }
-
-    items[name] = customSpecs[name];
-
-    return items;
-  }, items);
-}
-
-function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]: MarkSpec } {
-  const markKeys = Object.keys(marks);
-  markKeys.map(markKey => {
-    const mark = marks[markKey];
-    if (mark.excludes) {
-      mark.excludes = mark.excludes
-        .split(' ')
-        .filter(exMarkKey => markKeys.indexOf(exMarkKey) > -1)
-        .join(' ');
-    }
-  });
-  return marks;
-}
 
 /**
  * Creates a schema preserving order of marks and nodes.
@@ -124,10 +137,10 @@ function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]: MarkS
 export function createSchema(config: SchemaConfig): Schema<any, any> {
   const { nodes, customNodeSpecs, marks, customMarkSpecs } = config;
   const nodesConfig = Object.keys(customNodeSpecs || {}).concat(nodes);
-  const marksConfig = Object.keys(customMarkSpecs || {}).concat(marks || []);
+  const marksConfig = Object.keys(customMarkSpecs || {}).concat(marks || []).concat(markGroupDeclarationsNames);
   return new Schema({
     nodes: addItems(nodesInOrder, nodesConfig, customNodeSpecs),
-    marks: fixExcludes(addItems(marksInOrder, marksConfig, customMarkSpecs))
+    marks: addItems(marksInOrder, marksConfig, customMarkSpecs),
   });
 }
 

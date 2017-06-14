@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 
-import { StatelessMultiSelect } from '../../src';
+import { MultiSelectStateless } from '../../src';
 import { name } from '../../package.json';
 
 describe(`${name} - stateless`, () => {
@@ -35,7 +35,7 @@ describe(`${name} - stateless`, () => {
     const selectedItems = [selectItems[0].items[1]];
 
     beforeEach(() => {
-      wrapper = mount(<StatelessMultiSelect
+      wrapper = mount(<MultiSelectStateless
         isOpen
         items={selectItems}
         onFilterChange={onFilterChangeSpy}
@@ -231,55 +231,6 @@ describe(`${name} - stateless`, () => {
       });
     });
 
-    describe('filterItems', () => {
-      it('should return items intact if nothing is selected and filter is empty', () => {
-        const items = [
-          { value: 1, content: 'Test1' },
-          { value: 2, content: 'Test 2' },
-          { value: 3, content: 'Third test' },
-        ];
-        wrapper.setProps({ filterValue: '' });
-        wrapper.setProps({ selectedItems: [] });
-        expect(instance.filterItems(items)).to.deep.equal(items);
-      });
-
-      it('should filter out selected items when the filter is empty', () => {
-        const items = [
-          { value: 1, content: 'Test1' },
-          { value: 2, content: 'Test 2' },
-          { value: 3, content: 'Third test' },
-        ];
-        wrapper.setProps({ filterValue: '' });
-        wrapper.setProps({ selectedItems: [items[0]] });
-        expect(instance.filterItems(items)).to.deep.equal([items[1], items[2]]);
-      });
-
-      it('should return filtered items when nothing is selected', () => {
-        const items = [
-          { value: 1, content: 'Test1' },
-          { value: 2, content: 'Test 2' },
-          { value: 3, content: 'Third test' },
-        ];
-        wrapper.setProps({ filterValue: 'Test1' });
-        wrapper.setProps({ selectedItems: [] });
-        expect(instance.filterItems(items)).to.deep.equal([items[0]]);
-        wrapper.setProps({ filterValue: 'test' });
-        expect(instance.filterItems(items)).to.deep.equal(items);
-      });
-
-      it('should filter out selected items and return filtered items', () => {
-        const items = [
-          { value: 1, content: 'Test one' },
-          { value: 2, content: 'Test two' },
-          { value: 3, content: 'Test three' },
-          { value: 4, content: 'This should stay behind' },
-        ];
-        wrapper.setProps({ filterValue: 'Test' });
-        wrapper.setProps({ selectedItems: [items[0]] });
-        expect(instance.filterItems(items)).to.deep.equal([items[1], items[2]]);
-      });
-    });
-
     describe('onFocus', () => {
       it('default behavior', () => {
         wrapper.setState({ isFocused: false });
@@ -386,30 +337,6 @@ describe(`${name} - stateless`, () => {
         expect(spyCreate.called).to.equal(false);
         expect(spySelect.calledOnce).to.equal(true);
         expect(spySelect.calledWith({ value: 1, content: 'Test1' }, { event: {} })).to.equal(true);
-      });
-    });
-
-    describe('getNextFocusable', () => {
-      it('should return 0 if null is passed as a current focus', () => {
-        expect(instance.getNextFocusable(null, 2)).to.equal(0);
-      });
-
-      it('should return next item', () => {
-        expect(instance.getNextFocusable(0, 2)).to.equal(1);
-      });
-
-      it('should return 0 if focus is on the last item', () => {
-        expect(instance.getNextFocusable(2, 2)).to.equal(0);
-      });
-    });
-
-    describe('getPrevFocusable', () => {
-      it('should return previous item', () => {
-        expect(instance.getPrevFocusable(1, 2)).to.equal(0);
-      });
-
-      it('should return length if focus is on the first item', () => {
-        expect(instance.getPrevFocusable(0, 2)).to.equal(2);
       });
     });
 

@@ -9,7 +9,7 @@ import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
 import { AkContainerNavigation, AkGlobalNavigation, AkGlobalItem, AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, presetThemes } from '../src/';
 import { containerOpenWidth, containerClosedWidth, gridSize } from '../src/shared-variables';
-import BasicNavigation from './components/BasicNavigation';
+import PresetPicker from './components/PresetPicker';
 import ThemePreview from './components/ThemePreview';
 import nucleusLogo from './nucleus.png';
 
@@ -253,67 +253,6 @@ const GlobalNavigationExplorer = () => (
   </Container>
 );
 
-const presetOptions = [
-  {
-    heading: 'Theme',
-    items: Object.keys(presetThemes).map(key => ({
-      content: key,
-      type: 'radio',
-    })),
-  },
-];
-
-class PresetPicker extends PureComponent {
-  state = {
-    containerThemeName: 'container',
-    globalThemeName: 'global',
-  }
-
-  changeContainerTheme = (e) => {
-    this.setState({
-      containerThemeName: e.item.content,
-    });
-  };
-
-  changeGlobalTheme = (e) => {
-    this.setState({
-      globalThemeName: e.item.content,
-    });
-  };
-
-  render() {
-    const { globalThemeName, containerThemeName } = this.state;
-
-    return (
-      <div>
-        <BasicNavigation
-          globalTheme={presetThemes[globalThemeName]}
-          containerTheme={presetThemes[containerThemeName]}
-        />
-        <Container>
-          <h3 style={{ marginBottom: gridSize }}>Container theme</h3>
-          <AkDropdownMenu
-            triggerType="button"
-            items={presetOptions}
-            onItemActivated={this.changeContainerTheme}
-          >
-            {containerThemeName}
-          </AkDropdownMenu>
-
-          <h3 style={{ marginBottom: gridSize }}>Global theme</h3>
-          <AkDropdownMenu
-            triggerType="button"
-            items={presetOptions}
-            onItemActivated={this.changeGlobalTheme}
-          >
-            {globalThemeName}
-          </AkDropdownMenu>
-        </Container>
-      </div>
-    );
-  }
-}
-
 storiesOf(`${name} - theming`, module)
   .add('presets for container navigation', () => (
     <ContainerNavigationExplorer />
@@ -328,5 +267,5 @@ storiesOf(`${name} - theming`, module)
     <ThemePreview />
   ))
   .add('theme playground with global only', () => (
-    <ThemePreview isGlobal />
+    <ThemePreview isGlobalOnly />
   ));

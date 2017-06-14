@@ -4,9 +4,10 @@ import {CardAction} from '@atlaskit/media-core';
 
 import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
 import {Href} from '../../utils/href';
+import {CardDimensions} from '../..';
 
 export interface LinkCardViewSmallProps {
-  width?: number | string;
+  dimensions?: CardDimensions;
   linkUrl: string;
   title: string;
   site?: string;
@@ -30,14 +31,14 @@ export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
   }
 
   private getCardGenericViewSmall(): JSX.Element {
-    const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onMouseEnter, onRetry, error} = this.props;
+    const {title, linkUrl, site, thumbnailUrl, dimensions, loading, actions, onClick, onMouseEnter, onRetry, error} = this.props;
 
     return (
       <CardGenericViewSmall
         title={title}
         subtitle={site || linkUrl}
         thumbnailUrl={thumbnailUrl}
-        width={width}
+        dimensions={dimensions}
         loading={loading}
         actions={actions}
         error={error}

@@ -18,9 +18,6 @@ const nodes = [
   'hardBreak',
   'panel',
   'rule',
-  'image',
-  'mention',
-  'emoji'
 ];
 
 const marks = [
@@ -28,8 +25,6 @@ const marks = [
   'strong',
   'strike',
   'link',
-  'mentionQuery',
-  'emojiQuery',
   'code',
 ];
 

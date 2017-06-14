@@ -1,2 +1,2 @@
-export { default as codeMirrorNodeViewFactory } from './nodeviews/code-mirror';
-export { default as codeMirrorKeymapsPlugin } from './plugins/code-mirror-keymaps';
+export { default as codeMirrorNodeViewFactory } from './nodeview/code-mirror';
+export { default as codeMirrorPlugins } from './plugin';

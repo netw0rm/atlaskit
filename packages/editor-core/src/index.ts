@@ -58,6 +58,7 @@ export {
   Selection,
   undo,
   redo,
+  PluginKey,
 } from './prosemirror';
 export {
   ErrorReporter,

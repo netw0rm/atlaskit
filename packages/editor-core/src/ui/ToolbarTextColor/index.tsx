@@ -14,6 +14,8 @@ import Dropdown from '../Dropdown';
 export interface Props {
   editorView: EditorView;
   pluginState: TextColorState;
+  softBlurEditor: () => void;
+  focusEditor: () => void;
   disabled?: boolean;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
@@ -100,9 +102,9 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
 
   private handleOpenChange = ({isOpen}) => {
    if (!isOpen) {
-      this.props.editorView.dom.style.cursor = 'none';
+     this.props.softBlurEditor();
     } else {
-      this.props.editorView.dom.style.cursor = 'default';
+      this.props.focusEditor();
     }
 
     this.setState({ isOpen });

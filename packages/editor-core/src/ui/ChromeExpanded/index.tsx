@@ -249,6 +249,20 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
     );
   }
 
+  /**
+   * Blurs editor but keeps focus on editor container,
+   * so components like inline-edit can check if focus is still inside them
+   */
+  softBlurEditor = () => {
+    if (this.editorContainer) {
+      this.editorContainer.focus();
+    }
+  }
+
+  focusEditor = () => {
+    this.props.editorView.focus();
+  }
+
   private handleEditorContainerRef = ref => {
     this.editorContainer = ref;
   }

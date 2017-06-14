@@ -25,7 +25,6 @@ export class CodeBlockState {
 
   private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
-  private focusHandler: any;
   private activeCodeBlock?: Node;
   private editorFocused: boolean = false;
 
@@ -39,32 +38,18 @@ export class CodeBlockState {
     cb(this);
   }
 
-  subscribeFocusHandler(handler) {
-    this.focusHandler = handler;
-  }
-
   unsubscribe(cb: CodeBlockStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  unsubscribeFocusHandler() {
-    this.focusHandler = undefined;
-  }
-
   updateLanguage(language: string | undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
-      this.activeCodeBlock.attrs['language'] = language;
-      if (this.focusHandler) {
-        this.focusHandler(this);
-      } else {
-        view.focus();
-      }
+      commands.setBlockType(view.state.schema.nodes.codeBlock, { language, uniqueId: this.uniqueId })(view.state, view.dispatch);
     }
   }
 
   removeCodeBlock(view: EditorView): void {
     commands.setBlockType(view.state.schema.nodes.paragraph)(view.state, view.dispatch);
-    view.focus();
   }
 
 
@@ -79,7 +64,6 @@ export class CodeBlockState {
   update(state: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
     this.state = state;
     const codeBlockNode = this.activeCodeBlockNode();
-
     if (domEvent && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
       this.domEvent = domEvent;
       const newElement = codeBlockNode && this.activeCodeBlockElement(docView);

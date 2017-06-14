@@ -50,9 +50,9 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   private onOpenChange = (attrs: any) => {
     // Hack for IE needed to prevent caret blinking above the opened dropdown.
     if (attrs.isOpen) {
-      this.props.editorView.dom.style.cursor = 'none';
+      this.props.softBlurEditor();
     } else {
-      this.props.editorView.dom.style.cursor = 'default';
+      this.props.focusEditor();
     }
 
     this.setState({
@@ -133,6 +133,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   private handleSelectBlockType = ({ item }) => {
+    this.props.focusEditor();
     const blockType = item.value;
     const { availableBlockTypes } = this.state;
     this.props.pluginState.toggleBlockType(blockType.name, this.props.editorView);

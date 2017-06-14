@@ -179,7 +179,7 @@ export default class EmojiRepository {
       // Ensures that the same emoji isn't already in the list
       // If it is, we give precedence to the ascii match
       result = emojis.filter(e => e.id !== asciiEmoji.id);
-      result.unshift(asciiEmoji);
+      result = [asciiEmoji, ...result];
     }
     return result;
   }

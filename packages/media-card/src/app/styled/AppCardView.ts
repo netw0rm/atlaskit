@@ -1,7 +1,9 @@
 /* tslint:disable:variable-name */
 import styled, {css} from 'styled-components';
-import {akFontFamily, akColorN0, akColorN20, akColorN800, akColorN900} from '@atlaskit/util-shared-styles';
+import {akGridSizeUnitless, akFontFamily, akColorN0, akColorN20, akColorN800, akColorN900} from '@atlaskit/util-shared-styles';
 import {colorWithAlpha} from '../../utils/colorWithAlpha';
+
+const previewWidth = 116;
 
 export interface CardProps {
   background?: string;
@@ -68,7 +70,7 @@ export const Card = styled.div`
 `;
 
 export const Preview = styled.div`
-  width: 116px; /* fixed px the design asks for */
+  width: ${previewWidth}px; /* fixed px the design asks for */
   background-image: url(${({image}: {image: string}) => image});
   background-size: cover;
   flex-shrink: 0;
@@ -80,7 +82,7 @@ export interface CardContentProps {
 
 export const CardContent = styled.div`
   flex-grow: 1;
-  max-width: ${({hasPreview}: CardContentProps) => hasPreview && 'calc(100% - 116px)' || '100%'};
+  max-width: ${({hasPreview}: CardContentProps) => hasPreview && css`calc(100% - ${previewWidth}px)` || '100%'};
 `;
 
 export interface ExpandableWrapperProps {
@@ -90,13 +92,13 @@ export interface ExpandableWrapperProps {
 export const Collapsible = styled.div`
   overflow: hidden;
   transition: max-height 0.75s;
-  ${({collapsed}: ExpandableWrapperProps) => collapsed && css`max-height: 0;` || 'max-height: 300px;'}
+  ${({collapsed}: ExpandableWrapperProps) => collapsed && 'max-height: 0;' || 'max-height: 300px;'}
 `;
 
 export const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  height: 24px;
-  margin: 0 8px 12px 16px;
+  height: ${akGridSizeUnitless * 3}px;
+  margin: 0 ${akGridSizeUnitless}px 12px ${akGridSizeUnitless * 2}px;
 `;

@@ -1,7 +1,10 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {akColorN0, akColorN300} from '@atlaskit/util-shared-styles';
-import {center, ellipsis} from '../../styles';
+import {akGridSizeUnitless, akColorN0, akColorN300} from '@atlaskit/util-shared-styles';
+import {center, ellipsis, size} from '../../styles';
+
+const iconSize = akGridSizeUnitless * 2;
+const marginSize = akGridSizeUnitless * 2;
 
 export interface WrapperProps {
   contentMaxWidth: number;
@@ -19,13 +22,13 @@ export const Wrapper = styled.div`
 export const Widget = styled.div`
   ${center}
   height: 18px;
-  max-width: calc(100% - 2*16px);
-  margin-right: 16px;
-  margin-bottom: 16px;
+  max-width: calc(100% - (2 * ${marginSize}px));
+  margin-right: ${marginSize}px;
+  margin-bottom: ${marginSize}px;
 
   /* space the widget items */
   & > * + * {
-    margin-left: 4px;
+    margin-left: ${akGridSizeUnitless / 2}px;
   }
 
 `;
@@ -43,6 +46,5 @@ export const Text = styled.div`
 `;
 
 export const IconImage = styled.img`
-  width: 16px;
-  height: 16px;
+  ${size(iconSize)}
 `;

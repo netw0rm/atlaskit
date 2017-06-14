@@ -102,7 +102,7 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
     return (
       <div>
         {this.renderDescription()}
-        {meta && this.renderMeta()}
+        {this.renderMeta()}
         {context || actions ? (
           <Footer>
             {this.renderContext()}

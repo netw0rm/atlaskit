@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {akColorN0, akColorN900} from '@atlaskit/util-shared-styles';
+import {akGridSizeUnitless, akColorN0, akColorN900} from '@atlaskit/util-shared-styles';
 import {center} from '../../styles';
 
 export interface WrapperProps {
@@ -12,12 +12,12 @@ export const Wrapper = styled.div`
   align-items: center;
   max-width: ${({contentMaxWidth}: WrapperProps) => contentMaxWidth}px;
   height: 18px;
-  padding: 16px;
+  padding: ${akGridSizeUnitless * 2}px;
 `;
 
 export const User = styled.div`
   display: flex;
-  margin-right: 8px;
+  margin-right: ${akGridSizeUnitless / 2}px;
 `;
 
 export interface TitleProps {

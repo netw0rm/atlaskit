@@ -28,7 +28,7 @@ export class MetaView extends React.Component<MetaViewProps, {}> {
 
     if (users) {
       attrs.push(
-        <AvatarStack key="avatar-group" size="small" max={4} avatars={users.map(user => ({src: user.src, label: user.label}))}/>
+        <AvatarStack key="avatar-group" size="small" max={4} avatars={users.map(({src, label}) => ({src, label}))}/>
       );
     }
 

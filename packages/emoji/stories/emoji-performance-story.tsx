@@ -5,7 +5,7 @@ import * as Perf from 'react-addons-perf';
 import Layer from '@atlaskit/layer';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 import { name } from '../package.json';
-import { getEmojiResource, lorem } from './story-data';
+import { getEmojiResource } from './story-data';
 
 export interface PerformanceWrapperProps {
   children?: ReactNode;
@@ -61,7 +61,6 @@ storiesOf(`${name}/Emoji React Performance`, module)
             }}
           />
           </Layer>
-          <p style={{ width: '400px' }}>{lorem}</p>
         </PerformanceWrapper>
     </div>
   ));

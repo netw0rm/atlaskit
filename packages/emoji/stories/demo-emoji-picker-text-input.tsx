@@ -4,7 +4,6 @@ import Layer from '@atlaskit/layer';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 import { OnEmojiEvent } from '../src/types';
-import { lorem } from './story-data';
 
 export interface Props {
   onSelection?: OnEmojiEvent;
@@ -38,7 +37,6 @@ export default class EmojiPickerTextInput extends PureComponent<Props, undefined
           }}
         />
         </Layer>
-        <p style={{ width: '400px' }}>{lorem}</p>
       </div>
     );
   }

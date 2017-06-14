@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { ResourcedEmoji } from '@atlaskit/emoji';
-import ProviderFactory, { ProviderHandler, WithProviders } from '../../providerFactory';
+import ProviderFactory, { WithProviders } from '../../providerFactory';
 import {
   EditorView,
   Node as PMNode,
@@ -36,8 +36,23 @@ export default class EmojiNode extends PureComponent<Props, {}> {
       return;
     }
 
+    const emojiId = this.props.node.attrs.id;
     const emojiProviderName = 'emojiProvider';
-    const emojiResolvingHandler = this.createEmojiResolvingHandler(node.attrs.id, emojiProviderName);
+    const emojiResolvingHandler = (name: string, providerPromise?: Promise<any>) => {
+      if (providerPromise) {
+        providerPromise.then(emojiProvider => {
+          emojiProvider.findById(emojiId).then((loadedEmoji) => {
+            if (loadedEmoji) {
+              node.attrs.shortName = loadedEmoji.shortName;
+              node.attrs.text = loadedEmoji.fallback;
+              this.setState({ node: node }); // cause a re-render of the component.
+            }
+          }, unsubscribeHandler);
+        }, unsubscribeHandler);
+      }
+    };
+
+    const unsubscribeHandler = () => providerFactory.unsubscribe(emojiProviderName, emojiResolvingHandler);
 
     // kick off the emoji resolution
     providerFactory.subscribe(emojiProviderName, emojiResolvingHandler);
@@ -81,35 +96,5 @@ export default class EmojiNode extends PureComponent<Props, {}> {
     }
 
     return (<span className="native-emoji">{text}</span>); // render the native emoji as plain text
-  }
-
-  /**
-   * Returns a ProviderHandler that will look up emoji's by the supplied emojiId
-   * and will force this Component to render when fulfilled.
-   * @param emojiId the id of the emoji to be found
-   * @param emojiProviderName the name of the ProviderHandler created
-   * @return a ProviderHandler function
-   */
-  private createEmojiResolvingHandler(emojiId: string, emojiProviderName: string): ProviderHandler {
-    const emojiResolvingHandler = function(name: string, providerPromise?: Promise<any>) {
-      if (providerPromise) {
-        providerPromise.then(emojiProvider => {
-          emojiProvider.findById(emojiId).then((loadedEmoji) => {
-            if (loadedEmoji) {
-              const node = this.component.props.node;
-              node.attrs.shortName = loadedEmoji.shortName;
-              node.attrs.text = loadedEmoji.fallback;
-              this.forceUpdate();
-            }
-          }, unsubscribeHandler);
-        }, unsubscribeHandler);
-      }
-    };
-
-    const unsubscribeHandler = function() {
-      this.props.providerFactory.unsubscribe(emojiProviderName, emojiResolvingHandler);
-    };
-
-    return emojiResolvingHandler;
   }
 }

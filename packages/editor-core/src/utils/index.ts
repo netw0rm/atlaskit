@@ -426,3 +426,14 @@ export function visitAndReplace(node: Node, replacer: VisitReplacer): Node[] {
   let frag = Fragment.fromArray(children);
   return [node.copy(frag)];
 }
+
+/**
+ * Change the 'selection' in the Editor such that the cursor is set to the indicated position.
+ *
+ * @param state the current EditorView
+ * @param pos a position within the current Editor state
+ */
+export function moveCursor(view: EditorView, pos: number): void {
+  const state = view.state;
+  view.dispatch(state.tr.setSelection(new TextSelection(state.doc.resolve(pos))));
+}

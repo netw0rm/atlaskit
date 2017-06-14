@@ -9,9 +9,8 @@ import {
   Plugin,
   PluginKey,
   Slice,
-  TextSelection,
 } from '../../prosemirror';
-import { isMarkTypeAllowedAtCurrentPosition, visitAndReplaceFragment, VisitReplacer } from '../../utils';
+import { isMarkTypeAllowedAtCurrentPosition, moveCursor, visitAndReplaceFragment, VisitReplacer } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
@@ -228,7 +227,7 @@ const plugin = new Plugin({
     handleTextInput: (view: EditorView, from: number, to: number, text: string): boolean => {
       let emojiId = getIdForUnicodeEmoji(text);
       if (emojiId) {
-        analyticsService.trackEvent('atlassian.editor.emoji.native.insert');
+        analyticsService.trackEvent('atlassian.emoji.editor.native.insert');
         const state = view.state;
         const emojiNode = state.schema.nodes.emoji.create({ id: emojiId, text: text });
 
@@ -236,8 +235,7 @@ const plugin = new Plugin({
 
         const newState = view.state;
         if (newState.selection) {
-          // cancel any existing text selection and move the cursor to immediately following the inserted emoji
-          view.dispatch(newState.tr.setSelection(new TextSelection(newState.doc.resolve(from + 1))));
+          moveCursor(view, from + 1); // cancel any existing text selection and move the cursor to after the inserted emoji
         }
 
         return true;
@@ -280,7 +278,7 @@ export class TextToEmojiReplacer implements VisitReplacer {
 
     return emojiOrText.map((eot, index, arr) => {
       if (analyticsService && eot.isEmoji) {
-        analyticsService.trackEvent('atlassian.editor.emoji.native.paste');
+        analyticsService.trackEvent('atlassian.emoji.editor.native.paste');
       }
       return eot.createNode(this.schema, node.marks);
     });

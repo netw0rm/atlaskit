@@ -16,6 +16,22 @@ describe('unicodeEmojis', () => {
     it('should return undefined when text has more than just an emoji', () => {
       expect(getIdForUnicodeEmoji('😘z')).to.equal(undefined);
     });
+
+    it('should return id for keycap emoji', () => {
+      expect(getIdForUnicodeEmoji('8️⃣')).to.equal('38-20e3');
+    });
+
+    it('should return id for flag emoji', () => {
+      expect(getIdForUnicodeEmoji('🇦🇺')).to.equal('1f1e6-1f1fa');
+    });
+
+    it('should return id for emoji with skintone modifier', () => {
+      expect(getIdForUnicodeEmoji('👶🏻')).to.equal('1f476-1f3fb');
+    });
+
+  it('should return id for family group emoji', () => {
+      expect(getIdForUnicodeEmoji('👨‍👨‍👧‍👧')).to.equal('1f468-200d-1f468-200d-1f467-200d-1f467');
+    });
   });
 
   describe('splitToEmojiAndText', () => {

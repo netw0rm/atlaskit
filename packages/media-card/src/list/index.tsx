@@ -88,36 +88,41 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
   }
 
+  handleNextItems(nextProps: CardListProps) {
+    const {collectionName, context} = nextProps;
+
+    return (collection: MediaCollection) => {
+      const {firstItemKey} = this.state;
+      const newFirstItemKey = collection.items[0] ? this.getItemKey(collection.items[0]) : undefined;
+      const shouldAnimate = firstItemKey !== newFirstItemKey;
+      this.providersByMediaItemId = {};
+      collection.items.forEach(mediaItem => {
+        if (!mediaItem.details || !mediaItem.details.id) { return; }
+
+        this.providersByMediaItemId[mediaItem.details.id] = context.getMediaItemProvider(
+          mediaItem.details.id,
+          mediaItem.type,
+          collectionName,
+          mediaItem
+        );
+      });
+
+      this.setState({
+        collection,
+        shouldAnimate,
+        loading: false,
+        firstItemKey: newFirstItemKey
+      });
+    };
+  }
+
   private subscribe(nextProps: CardListProps) {
     const {collectionName, context} = nextProps;
     const pageSize = this.props.pageSize || CardList.defaultPageSize;
     const provider = context.getMediaCollectionProvider(collectionName, pageSize);
 
     const subscription = provider.observable().subscribe({
-      next: (collection: MediaCollection): void => {
-        const {firstItemKey} = this.state;
-        const newFirstItemKey = collection.items[0] ? this.getItemKey(collection.items[0]) : undefined;
-        const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
-
-        this.providersByMediaItemId = {};
-        collection.items.forEach(mediaItem => {
-          if (!mediaItem.details || !mediaItem.details.id) { return; }
-
-          this.providersByMediaItemId[mediaItem.details.id] = context.getMediaItemProvider(
-            mediaItem.details.id,
-            mediaItem.type,
-            collectionName,
-            mediaItem
-          );
-        });
-
-        this.setState({
-          collection,
-          shouldAnimate,
-          loading: false,
-          firstItemKey: newFirstItemKey
-        });
-      },
+      next: this.handleNextItems(nextProps),
       error: (error: AxiosError): void => {
         this.setState({ collection: undefined, error, loading: false });
       }

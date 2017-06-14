@@ -132,6 +132,86 @@ describe('CardList', () => {
     expect(card.state().loading).to.be.false;
   });
 
+  it('should not animate items the first time', () => {
+    const item: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: 'some-file/link-id',
+        occurrenceKey: 'some-occurrence-key',
+        processingStatus: 'pending'
+      }
+    };
+    const context = fakeContext();
+    const collectionName = 'MyMedia';
+    const collection = {items: [item]};
+    const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+    list.setState({loading: false, error: undefined, collection});
+    expect(list.state('shouldAnimate')).to.be.false;
+  });
+
+  it('should animate items when they are new', () => {
+    const oldItem: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: '1',
+        occurrenceKey: 'a',
+        processingStatus: 'pending'
+      }
+    };
+    const newItem: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: '2',
+        occurrenceKey: 'a',
+        processingStatus: 'pending'
+      }
+    };
+    const collection = {items: [oldItem]};
+    const context = fakeContext();
+    const collectionName = 'MyMedia';
+    const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+    const instance = list.instance();
+
+    list.setState({loading: false, error: undefined, collection});
+    instance.handleNextItems({context, collectionName})(collection);
+    expect(list.state('firstItemKey')).to.be.equal(`${oldItem.details.id}-${oldItem.details.occurrenceKey}`);
+    collection.items.unshift(newItem);
+    list.setState({collection});
+    instance.handleNextItems({context, collectionName})(collection);
+    expect(list.state('firstItemKey')).to.be.equal(`${newItem.details.id}-${newItem.details.occurrenceKey}`);
+    expect(list.state('shouldAnimate')).to.be.true;
+  });
+
+  it('should reset previous state when props change', () => {
+    const item: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: '1',
+        occurrenceKey: 'a',
+        processingStatus: 'pending'
+      }
+    };
+    const collection = {items: [item]};
+    const context = fakeContext({
+      getMediaCollectionProvider: {
+        observable() {
+          return Observable.create(observer => {
+            observer.next(collection);
+          });
+        }
+      }
+    });
+    const collectionName = 'MyMedia';
+    const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+    const spy = sinon.spy();
+
+    list.instance().setState = spy;
+    list.setProps({context, collectionName: 'otherCollection'});
+
+    expect(spy.firstCall.args[0].collection).to.be.undefined;
+    expect(spy.firstCall.args[0].firstItemKey).to.be.undefined;
+  });
+
   it('should fire onCardClick handler with updated MediaItemDetails when a Card in the list is clicked', () => {
     const oldItem: MediaCollectionFileItem = {
       type: 'file',

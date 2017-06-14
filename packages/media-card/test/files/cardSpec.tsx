@@ -45,8 +45,6 @@ describe('FileCard', () => {
     };
 
     const expectedProps = {
-      width: undefined,
-
       mediaName: details.name,
       mediaType: details.mediaType,
       mediaSize: details.size,

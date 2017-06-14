@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {Observable, Subscription} from 'rxjs';
 import {MediaItemType, MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardStatus} from '.';
+import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardStatus} from '..';
 import {Provider} from './card';
 import {CardView} from './cardView';
 import {withDataURI} from './withDataURI';

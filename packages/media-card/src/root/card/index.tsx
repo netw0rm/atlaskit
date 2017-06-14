@@ -3,8 +3,9 @@ import {Component} from 'react';
 import * as deepEqual from 'deep-equal';
 import {Context, MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriService} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardEventProps} from '.';
-import {MediaCard} from './mediaCard';
+import {SharedCardProps, CardEventProps} from '../..';
+import {MediaCard} from '../mediaCard';
+import {LazyLoadCard} from './styled';
 
 export type Identifier = UrlPreviewIdentifier | MediaIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -23,11 +24,13 @@ export interface UrlPreviewIdentifier {
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
   readonly identifier: Identifier;
+  isLazy?: boolean;
 }
 
 export class Card extends Component<CardProps, {}> {
   static defaultProps = {
-    appearance: 'auto'
+    appearance: 'auto',
+    isLazy: true
   };
 
   private provider: Provider;
@@ -74,15 +77,22 @@ export class Card extends Component<CardProps, {}> {
   }
 
   render() {
-    const {context, identifier, ...otherProps} = this.props;
+    const {context, identifier, isLazy, appearance, ...otherProps} = this.props;
     const {mediaItemType} = identifier;
+    const card = (
+      <MediaCard
+        {...otherProps}
+        mediaItemType={mediaItemType}
+        provider={this.provider}
+        dataURIService={this.dataURIService}
+      />
+    );
 
-    return <MediaCard
-      {...otherProps}
-      mediaItemType={mediaItemType}
-      provider={this.provider}
-      dataURIService={this.dataURIService}
-    />;
+    return isLazy ? (
+      <LazyLoadCard appearance={appearance}>
+        {card}
+      </LazyLoadCard>
+    ) : card;
   }
 }
 

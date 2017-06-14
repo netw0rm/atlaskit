@@ -10,7 +10,7 @@ const origin: Position = {
   y: 0,
 };
 
-describe.only('get new home offset', () => {
+describe('get new home offset', () => {
   it('should return to the start position (origin) if nothing has moved', () => {
     const result: Position = getNewHomeOffset(noImpact.movement, { x: 100, y: 200 });
 

@@ -56,10 +56,6 @@ describe('DragDropContext', () => {
     expect(wrapper.find(App).props().superhero).to.equal('batman');
   });
 
-  it('should stop listening to updates when unmounted', () => {
-    expect.fail();
-  });
-
   describe('hooks', () => {
     let clock;
     let hooks: Hooks = {};

@@ -5,46 +5,82 @@ import memoizeOne from 'memoize-one';
 import isShallowEqual from 'shallowequal';
 import makeDroppable from './make-droppable';
 import storeKey from '../../state/get-store-key';
-import { dragSelector } from '../../state/selectors';
-import type { Direction, DragImpact, DragState, TypeId, State, DraggableLocation } from '../../types';
-import type { NeedsProviding, Provide, MapStateToProps, Props, OwnProps, MapProps } from './droppable-types';
+import { dragSelector, pendingDropSelector, phaseSelector } from '../../state/selectors';
+import type {
+  Phases,
+  Direction,
+  PendingDrop,
+  DragState,
+  TypeId,
+  State,
+  DroppableId,
+  DraggableLocation,
+} from '../../types';
+import type {
+  NeedsProviding,
+  Provide,
+  MapStateToProps,
+  Props,
+  OwnProps,
+  MapProps,
+} from './droppable-types';
 
-const makeSelector = (provide: Provide) => {
+export const makeSelector = (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
   const getProvided = (state: State, ownProps: OwnProps) => memoizedProvide(ownProps);
 
+  const getIsDraggingOver = memoizeOne(
+    (id: DroppableId, destination: ?DraggableLocation): boolean => {
+      if (!destination) {
+        return false;
+      }
+      return destination.droppableId === id;
+    }
+  );
+
+  const getMapProps = memoizeOne((id: DroppableId, isDraggingOver: boolean): MapProps => ({
+    id,
+    isDraggingOver,
+  }));
+
   return createSelector(
-    [dragSelector, getProvided],
-    (drag: ?DragState, provided: NeedsProviding): MapProps => {
+    [phaseSelector,
+      dragSelector,
+      pendingDropSelector,
+      getProvided,
+    ],
+    (phase: Phases,
+      drag: ?DragState,
+      pending: ?PendingDrop,
+      provided: NeedsProviding
+    ): MapProps => {
       const { id, isDropEnabled = true } = provided;
 
-      if (!drag || !isDropEnabled) {
-        return {
-          id,
-          isDraggingOver: false,
-        };
+      if (!isDropEnabled) {
+        return getMapProps(id, false);
       }
 
-      const impact: DragImpact = drag.impact;
+      if (phase === 'DRAGGING') {
+        if (!drag) {
+          console.error('cannot determine dragging over as there is not drag');
+          return getMapProps(id, false);
+        }
 
-      if (!impact) {
-        console.error('cannot be dragging without an impact');
-        return {
-          id,
-          isDraggingOver: false,
-        };
+        const isDraggingOver = getIsDraggingOver(provided.id, drag.impact.destination);
+        return getMapProps(id, isDraggingOver);
       }
 
-      const destination: ?DraggableLocation = impact.destination;
-      const isDraggingOver = Boolean(
-        destination &&
-        destination.droppableId === provided.id
-      );
+      if (phase === 'DROP_ANIMATING') {
+        if (!pending) {
+          console.error('cannot determine dragging over as there is no pending result');
+          return getMapProps(id, false);
+        }
 
-      return {
-        id,
-        isDraggingOver,
-      };
+        const isDraggingOver = getIsDraggingOver(provided.id, pending.last.impact.destination);
+        return getMapProps(id, isDraggingOver);
+      }
+
+      return getMapProps(id, false);
     }
   );
 };

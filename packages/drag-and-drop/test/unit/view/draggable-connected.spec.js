@@ -11,6 +11,7 @@ import type {
   DragState,
   DropResult,
   PendingDrop,
+  Dimension,
   DragImpact,
   DraggableId,
   InitialDrag,
@@ -33,10 +34,10 @@ const make = (() => {
       id,
       isDragEnabled: true,
     });
-    const dimension = getDimension({
+    const dimension: Dimension = getDimension({
       top: 100 * callCount,
       left: 0,
-      right: 0,
+      right: 100,
       bottom: (100 * callCount) + 20,
     });
     const initial: InitialDrag = {
@@ -124,7 +125,7 @@ const execute = (selector: Function) =>
       provided
     );
 
-describe.only('Draggable - connected', () => {
+describe('Draggable - connected', () => {
   beforeEach(() => {
     sinon.stub(console, 'error');
   });
@@ -441,6 +442,24 @@ describe.only('Draggable - connected', () => {
         });
 
         expect(props).to.deep.equal(expected);
+      });
+    });
+  });
+
+  describe('other phases', () => {
+    it('should return the default props', () => {
+      const phases: Phases[] = ['IDLE', 'COLLECTING_DIMENSIONS'];
+      const { id, selector, provided } = make();
+
+      phases.forEach((phase: Phases): void => {
+        const props: MapProps = execute(selector)({
+          phase,
+          drag: null,
+          pending: null,
+          provided,
+        });
+
+        expect(props).to.deep.equal(getDefaultMapProps(id));
       });
     });
   });

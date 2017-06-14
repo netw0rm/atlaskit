@@ -2,7 +2,6 @@ import { ContentMatch, Fragment, Mark, MarkType, Node, NodeType, Schema, Slice }
 
 export class ResolvedPos {
   pos: number;
-  path: any[];
   depth: number;
   parentOffset: number;
   parent: Node;

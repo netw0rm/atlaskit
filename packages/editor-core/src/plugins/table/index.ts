@@ -21,12 +21,12 @@ export interface TablesCommand {
 }
 
 export class TableState {
-  keymapHandler;
+  keymapHandler: Function;
   element?: HTMLElement;
   tableElement?: HTMLElement;
   editorFocused: boolean = false;
   tableNode?: Node;
-  selection?: CellSelection;
+  cellSelection?: CellSelection;
   toolbarFocused: boolean = false;
 
   private view: EditorView;
@@ -60,65 +60,38 @@ export class TableState {
   }
 
   selectCol = (col: number) => {
-    if (!this.tableNode) {
-      return;
+    if (this.tableNode) {
+      const map = TableMap.get(this.tableNode);
+      const from = map.positionAt(0, col, this.tableNode);
+      const to = map.positionAt(map.height - 1, col, this.tableNode);
+      this.createCellSelection(from, to);
     }
-    const { state } = this.view;
-    const map = TableMap.get(this.tableNode);
-    const offset = this.tableStartPos() || 1;
-    const $anchor = state.doc.resolve(map.positionAt(0, col, this.tableNode) + offset);
-    const $head = state.doc.resolve(map.positionAt(map.height - 1, col, this.tableNode) + offset);
-    this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
   }
 
   selectRow = (row: number) => {
-    if (!this.tableNode) {
-      return;
+    if (this.tableNode) {
+      const map = TableMap.get(this.tableNode);
+      const from = map.positionAt(row, 0, this.tableNode);
+      const to = map.positionAt(row, map.width - 1, this.tableNode);
+      this.createCellSelection(from, to);
     }
-    const { state } = this.view;
-    const map = TableMap.get(this.tableNode);
-    const offset = this.tableStartPos() || 1;
-    const $anchor = state.doc.resolve(map.positionAt(row, 0, this.tableNode) + offset);
-    const $head = state.doc.resolve(map.positionAt(row, map.width - 1, this.tableNode) + offset);
-    this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
   }
 
   selectTable = () => {
-    if (!this.tableNode) {
-      return;
+    if (this.tableNode) {
+      const map = TableMap.get(this.tableNode);
+      const from = map.positionAt(0, 0, this.tableNode);
+      const to = map.positionAt(map.height - 1, map.width - 1, this.tableNode);
+      this.createCellSelection(from, to);
     }
-    const { state } = this.view;
-    const map = TableMap.get(this.tableNode);
-    const offset = this.tableStartPos() || 1;
-    const $anchor = state.doc.resolve(map.positionAt(0, 0, this.tableNode) + offset);
-    const $head = state.doc.resolve(map.positionAt(map.height - 1, map.width - 1, this.tableNode) + offset);
-    this.view.dispatch(this.view.state.tr.setSelection( new CellSelection( $anchor, $head ) ));
   }
 
   update(newEditorState: EditorState<any>, docView: NodeViewDesc) {
     this.state = newEditorState;
-    let dirty = false;
+    let dirty = this.updateSelection();
 
     const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
     const tableNode = this.getTableNode();
-    const { selection } = this.state;
-
-    if (selection instanceof CellSelection) {
-      if (selection !== this.selection) {
-        this.selection = selection;
-        dirty = true;
-      }
-
-      // remove selection if editor looses focus
-      if (!this.editorFocused) {
-        const { state } = this.view;
-        const { $from } = this.state.selection;
-        this.view.dispatch(state.tr.setSelection(new TextSelection($from, $from)));
-      }
-    } else if (this.selection) {
-      this.selection = undefined;
-      dirty = true;
-    }
 
     if (tableElement !== this.tableElement) {
       this.tableElement = tableElement;
@@ -171,6 +144,41 @@ export class TableState {
 
   private triggerOnChange() {
     this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  private createCellSelection (from, to) {
+    const { state } = this.view;
+    // here "from" and "to" params are table-relative positions, therefore we add table offset
+    const offset = this.tableStartPos() || 1;
+    const $anchor = state.doc.resolve(from + offset);
+    const $head = state.doc.resolve(to + offset);
+    this.view.dispatch(state.tr.setSelection(new CellSelection($anchor, $head)));
+  }
+
+  // we keep track of selection changes because
+  // 1) we want to mark toolbar buttons as active when the whole row/col is selected
+  // 2) we want drop selection if editor looses focus
+  private updateSelection () {
+    const { selection } = this.state;
+    let dirty = false;
+
+    if (selection instanceof CellSelection) {
+      if (selection !== this.cellSelection) {
+        this.cellSelection = selection;
+        dirty = true;
+      }
+
+      // drop selection if editor looses focus
+      if (!this.editorFocused) {
+        const { state } = this.view;
+        const { $from } = this.state.selection;
+        this.view.dispatch(state.tr.setSelection(new TextSelection($from, $from)));
+      }
+    } else if (this.cellSelection) {
+      this.cellSelection = undefined;
+      dirty = true;
+    }
+    return dirty;
   }
 }
 

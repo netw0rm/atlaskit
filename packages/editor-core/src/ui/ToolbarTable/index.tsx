@@ -28,7 +28,7 @@ export interface State {
   tableNode?: Node;
   position?: string;
   transform?: string;
-  selection?: CellSelection;
+  cellSelection?: CellSelection;
 }
 
 export default class ToolbarTable extends PureComponent<Props, State> {
@@ -104,20 +104,20 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private renderColHeaders () {
-    const { tableElement, selection } = this.state;
+    const { tableElement, cellSelection } = this.state;
     const firstRow = tableElement!.querySelector('tr');
     const cols = firstRow!.querySelectorAll('td,th');
-    const result: any = [];
+    const headers: any = [];
 
     for (let i = 0, len = cols.length; i < len; i++) {
       const rows = tableElement!.querySelectorAll('tr');
       const active = (
-        !!selection &&
+        !!cellSelection &&
         isCellSelected( rows[0].querySelectorAll('td,th')[i] ) &&
         isCellSelected( rows[ rows.length - 1 ].querySelectorAll('td,th')[i] )
       );
 
-      result.push(
+      headers.push(
         <ColHeader
           key={i}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
@@ -127,23 +127,23 @@ export default class ToolbarTable extends PureComponent<Props, State> {
         </ColHeader>
       );
     }
-    return result;
+    return headers;
   }
 
   private renderRowHeaders () {
-    const { tableElement, selection } = this.state;
+    const { tableElement, cellSelection } = this.state;
     const rows = tableElement!.querySelectorAll('tr');
-    const result: any = [];
+    const headers: any = [];
 
     for (let i = 0, len = rows.length; i < len; i++) {
       const cols = rows[i]!.querySelectorAll('td,th');
       const active = (
-        !!selection &&
+        !!cellSelection &&
         isCellSelected( cols[0] ) &&
         isCellSelected( cols[ cols.length - 1 ] )
       );
 
-      result.push(
+      headers.push(
         <RowHeader
           key={i}
           style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
@@ -153,7 +153,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
         </RowHeader>
       );
     }
-    return result;
+    return headers;
   }
 
   private applyPopper(): void {
@@ -186,12 +186,12 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: TableState) => {
-    const { tableElement, tableNode, selection } = pluginState;
-    this.setState({ tableElement, tableNode, selection }, this.applyPopper);
+    const { tableElement, tableNode, cellSelection } = pluginState;
+    this.setState({ tableElement, tableNode, cellSelection }, this.applyPopper);
   }
 
   private isTableSelected () {
-    if (!this.state.selection) {
+    if (!this.state.cellSelection) {
       return false;
     }
     const rows = this.state.tableElement!.querySelectorAll('tr');

@@ -5,7 +5,8 @@ import {Context, MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriSe
 
 import {SharedCardProps, CardEventProps} from '../..';
 import {MediaCard} from '../mediaCard';
-import {LazyLoadCard} from './styled';
+import {CardView} from '../cardView';
+import {LazyContent} from '../../utils';
 
 export type Identifier = UrlPreviewIdentifier | MediaIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -87,11 +88,12 @@ export class Card extends Component<CardProps, {}> {
         dataURIService={this.dataURIService}
       />
     );
+    const placeholder = <CardView status="loading" appearance={appearance} />;
 
     return isLazy ? (
-      <LazyLoadCard appearance={appearance}>
+      <LazyContent placeholder={placeholder} appearance={appearance}>
         {card}
-      </LazyLoadCard>
+      </LazyContent>
     ) : card;
   }
 }

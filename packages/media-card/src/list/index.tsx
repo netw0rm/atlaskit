@@ -15,10 +15,10 @@ import { CSSTransitionGroup } from 'react-transition-group';
 
 import { defaultImageCardDimensions, defaultSmallCardDimensions } from '../utils';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
-import { Provider, MediaCard } from '../root';
+import { Provider, MediaCard, CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
-import { LazyLoadCard } from '../root/card/styled';
+import { LazyContent } from '../utils';
 
 export interface CardListProps {
   context: Context;
@@ -210,6 +210,7 @@ export class CardList extends Component<CardListProps, CardListState> {
         };
       })
     ;
+    const placeholder = <CardView status="loading" appearance={cardAppearance} />;
 
     const cards = collection ? collection.items
       .map((mediaItem: MediaCollectionItem) => {
@@ -234,9 +235,9 @@ export class CardList extends Component<CardListProps, CardListState> {
         );
 
         return shouldLazyLoadCards ? (
-          <LazyLoadCard key={key} appearance={cardAppearance}>
+          <LazyContent placeholder={placeholder} key={key} appearance={cardAppearance}>
             {cardListItem}
-          </LazyLoadCard>
+          </LazyContent>
         ) : cardListItem;
       }) : null
     ;

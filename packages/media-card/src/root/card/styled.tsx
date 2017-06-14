@@ -5,11 +5,12 @@ import {getCardMinHeight} from '../../utils';
 import {CardAppearance} from '../..';
 
 export interface LazyLoadCardProps {
+  onContentVisible: Function;
   appearance?: CardAppearance;
 }
 
 export const LazyLoadCard = styled(LazyLoad)`
   ${({appearance}: LazyLoadCardProps) => `
-    min-height: ${getCardMinHeight(appearance)}px;
+
   `}
 `;

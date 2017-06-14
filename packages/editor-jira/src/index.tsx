@@ -225,7 +225,9 @@ export default class Editor extends PureComponent<Props, State> {
     const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
 
     return (async () => {
-      await mediaPluginState.waitForPendingTasks();
+      if (mediaPluginState) {
+        await mediaPluginState.waitForPendingTasks();
+      }
 
       return editorView && editorView.state.doc
         ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })

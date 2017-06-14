@@ -7,7 +7,7 @@ import getDimension from '../get-dimension-util';
 import noImpact from '../../../src/state/no-impact';
 import type {
   CurrentDrag,
-  Phases,
+  Phase,
   DragState,
   DropResult,
   PendingDrop,
@@ -110,7 +110,7 @@ const getDefaultMapProps = (id: DraggableId): MapProps => ({
 });
 
 type SelectorArgs = {|
-  phase: Phases,
+  phase: Phase,
   drag: ?DragState,
   pending: ?PendingDrop,
   provided: NeedsProviding
@@ -448,10 +448,10 @@ describe('Draggable - connected', () => {
 
   describe('other phases', () => {
     it('should return the default props', () => {
-      const phases: Phases[] = ['IDLE', 'COLLECTING_DIMENSIONS'];
+      const phases: Phase[] = ['IDLE', 'COLLECTING_DIMENSIONS'];
       const { id, selector, provided } = make();
 
-      phases.forEach((phase: Phases): void => {
+      phases.forEach((phase: Phase): void => {
         const props: MapProps = execute(selector)({
           phase,
           drag: null,

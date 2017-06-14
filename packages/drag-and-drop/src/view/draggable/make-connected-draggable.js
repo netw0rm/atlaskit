@@ -26,7 +26,7 @@ import type {
   DraggableId,
   DragState,
   PendingDrop,
-  Phases,
+  Phase,
   DragMovement,
 } from '../../types';
 import type {
@@ -101,7 +101,7 @@ export const makeSelector = (provide: Provide) => {
       dragSelector,
       pendingDropSelector,
       getProvided],
-    (phase: Phases,
+    (phase: Phase,
       drag: ?DragState,
       pending: ?PendingDrop,
       provided: NeedsProviding): MapProps => {

@@ -7,7 +7,7 @@ import makeDroppable from './make-droppable';
 import storeKey from '../../state/get-store-key';
 import { dragSelector, pendingDropSelector, phaseSelector } from '../../state/selectors';
 import type {
-  Phases,
+  Phase,
   Direction,
   PendingDrop,
   DragState,
@@ -49,7 +49,7 @@ export const makeSelector = (provide: Provide) => {
       pendingDropSelector,
       getProvided,
     ],
-    (phase: Phases,
+    (phase: Phase,
       drag: ?DragState,
       pending: ?PendingDrop,
       provided: NeedsProviding

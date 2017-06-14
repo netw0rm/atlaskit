@@ -2,11 +2,11 @@
 import type {
   PendingDrop,
   DragState,
-  Phases,
+  Phase,
   State,
 } from '../types';
 
-export const phaseSelector = (state: State): Phases => state.phase;
+export const phaseSelector = (state: State): Phase => state.phase;
 
 export const pendingDropSelector = (state: State): ?PendingDrop => {
   if (!state.drop || !state.drop.pending) {

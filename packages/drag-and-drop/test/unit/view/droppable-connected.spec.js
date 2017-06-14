@@ -6,7 +6,7 @@ import { makeSelector } from '../../../src/view/droppable/make-connected-droppab
 import noImpact from '../../../src/state/no-impact';
 import getDimension from '../get-dimension-util';
 import type {
-  Phases,
+  Phase,
   DragState,
   PendingDrop,
   Position,
@@ -31,7 +31,7 @@ const defaultProvided: NeedsProviding = provide({
 });
 
 type SelectorArgs = {|
-  phase: Phases,
+  phase: Phase,
   drag: ?DragState,
   pending: ?PendingDrop,
   provided: NeedsProviding,
@@ -137,13 +137,57 @@ const perform = (() => {
   return { drag, drop };
 })();
 
-describe.only('Droppable - connected', () => {
+describe('Droppable - connected', () => {
   beforeEach(() => {
     sinon.stub(console, 'error');
   });
 
   afterEach(() => {
     console.error.restore();
+  });
+
+  describe('dropping is disabled', () => {
+    const phases: Phase[] = ['IDLE', 'COLLECTING_DIMENSIONS', 'DRAGGING', 'DROP_ANIMATING', 'DROP_COMPLETE'];
+
+    it('should always return the default props', () => {
+      const expected: MapProps = {
+        id: droppableId,
+        isDraggingOver: false,
+      };
+
+      phases.forEach((phase: Phase) => {
+        const props: MapProps = execute(makeSelector(provide))({
+          phase,
+          drag: null,
+          pending: null,
+          provided: defaultProvided,
+        });
+
+        expect(props).to.deep.equal(expected);
+      });
+    });
+
+    it('should not break memoization on multiple calls', () => {
+      phases.forEach((phase: Phase) => {
+        const selector = makeSelector(provide);
+
+        const first: MapProps = execute(selector)({
+          phase,
+          drag: null,
+          pending: null,
+          provided: defaultProvided,
+        });
+        const second: MapProps = execute(selector)({
+          phase,
+          drag: null,
+          pending: null,
+          provided: defaultProvided,
+        });
+
+        // checking object equality
+        expect(first).to.equal(second);
+      });
+    });
   });
 
   describe('while dragging', () => {
@@ -351,12 +395,12 @@ describe.only('Droppable - connected', () => {
   });
 
   describe('other phases', () => {
-    const other: Phases[] = ['IDLE', 'COLLECTING_DIMENSIONS', 'DROP_COMPLETE'];
+    const other: Phase[] = ['IDLE', 'COLLECTING_DIMENSIONS', 'DROP_COMPLETE'];
 
     it('should return the default props', () => {
       const selector = makeSelector(provide);
 
-      other.forEach((phase: Phases): void => {
+      other.forEach((phase: Phase): void => {
         const props: MapProps = execute(selector)({
           phase,
           drag: null,
@@ -369,15 +413,27 @@ describe.only('Droppable - connected', () => {
     });
 
     it('should not break memoization on multiple calls', () => {
-      other.forEach((phase: Phases): void => {
-        [1, 2, 3].forEach(() => {
+      const selector = makeSelector(provide);
 
+      other.forEach((phase: Phase): void => {
+        const first: MapProps = execute(selector)({
+          phase,
+          drag: null,
+          pending: null,
+          provided: defaultProvided,
         });
+        const second: MapProps = execute(selector)({
+          phase,
+          drag: null,
+          pending: null,
+          provided: defaultProvided,
+        });
+
+        expect(first).to.deep.equal(getDefaultMapProps(defaultProvided.id));
+        expect(second).to.deep.equal(getDefaultMapProps(defaultProvided.id));
+        // checking object equality
+        expect(first).to.equal(second);
       });
     });
-  });
-
-  it('should return the default props regardless of phase', () => {
-
   });
 });

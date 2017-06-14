@@ -9,7 +9,7 @@ import type { TypeId,
   CurrentDrag,
   InitialDrag,
   PendingDrop,
-  Phases,
+  Phase,
   DraggableLocation,
   Position,
 } from '../types';
@@ -22,7 +22,7 @@ const shout = (message, ...rest) => {
   console.log('payload:', ...rest);
 };
 
-const clean = memoizeOne((phase: ?Phases): State => {
+const clean = memoizeOne((phase: ?Phase): State => {
   const state: State = {
     // flow was not good with having a default arg on an optional type
     phase: phase || 'IDLE',

@@ -79,7 +79,7 @@ export type PendingDrop = {|
 
 export type Direction = 'vertical'; // | horiztonal - currently not supported
 
-export type Phases = 'IDLE' | 'COLLECTING_DIMENSIONS' | 'DRAGGING' | 'DROP_ANIMATING' | 'DROP_COMPLETE';
+export type Phase = 'IDLE' | 'COLLECTING_DIMENSIONS' | 'DRAGGING' | 'DROP_ANIMATING' | 'DROP_COMPLETE';
 
 export type DimensionState = {|
   request: ?TypeId,
@@ -93,7 +93,7 @@ export type DropState = {|
 |}
 
 export type State = {
-  phase: Phases,
+  phase: Phase,
   dimension: DimensionState,
   // null if not dragging
   drag: ?DragState,

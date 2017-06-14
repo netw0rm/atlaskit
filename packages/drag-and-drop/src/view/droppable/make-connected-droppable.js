@@ -5,8 +5,8 @@ import memoizeOne from 'memoize-one';
 import isShallowEqual from 'shallowequal';
 import makeDroppable from './make-droppable';
 import storeKey from '../../state/get-store-key';
-import { currentDragSelector, dragImpactSelector } from '../../state/selectors';
-import type { Direction, DragImpact, TypeId, State, CurrentDrag, DraggableLocation } from '../../types';
+import { dragSelector } from '../../state/selectors';
+import type { Direction, DragImpact, DragState, TypeId, State, DraggableLocation } from '../../types';
 import type { NeedsProviding, Provide, MapStateToProps, Props, OwnProps, MapProps } from './droppable-types';
 
 const makeSelector = (provide: Provide) => {
@@ -14,19 +14,18 @@ const makeSelector = (provide: Provide) => {
   const getProvided = (state: State, ownProps: OwnProps) => memoizedProvide(ownProps);
 
   return createSelector(
-    [currentDragSelector, dragImpactSelector, getProvided],
-    (current: ?CurrentDrag,
-      impact: ?DragImpact,
-      provided: NeedsProviding
-    ): MapProps => {
+    [dragSelector, getProvided],
+    (drag: ?DragState, provided: NeedsProviding): MapProps => {
       const { id, isDropEnabled = true } = provided;
 
-      if (!current || !isDropEnabled) {
+      if (!drag || !isDropEnabled) {
         return {
           id,
           isDraggingOver: false,
         };
       }
+
+      const impact: DragImpact = drag.impact;
 
       if (!impact) {
         console.error('cannot be dragging without an impact');

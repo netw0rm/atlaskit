@@ -1,5 +1,5 @@
 // @flow
-import { describe, it } from 'mocha';
+import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { makeSelector } from '../../../src/view/draggable/make-connected-draggable';
@@ -7,11 +7,13 @@ import getDimension from '../get-dimension-util';
 import noImpact from '../../../src/state/no-impact';
 import type {
   CurrentDrag,
-  DragResult,
-  DragComplete,
+  Phases,
+  DragState,
+  DropResult,
+  PendingDrop,
   DragImpact,
   DraggableId,
-  DraggingInitial,
+  InitialDrag,
   Position,
 } from '../../../src/types';
 import type { OwnProps, MapProps, NeedsProviding } from '../../../src/view/draggable/draggable-types';
@@ -37,7 +39,7 @@ const make = (() => {
       right: 0,
       bottom: (100 * callCount) + 20,
     });
-    const initial: DraggingInitial = {
+    const initial: InitialDrag = {
       source: {
         index: 0,
         droppableId: 'drop-1',
@@ -47,30 +49,31 @@ const make = (() => {
       selection: dimension.center,
       dimension,
     };
-    const drag = (offset: Position, impact?: DragImpact = noImpact): CurrentDrag => {
+    const drag = (offset: Position, impact?: DragImpact = noImpact): DragState => {
       const center: Position = {
         x: initial.center.x + offset.x,
         y: initial.center.y + offset.y,
       };
-      const currentDrag: CurrentDrag = {
-        dragging: {
-          id,
-          type: 'TYPE',
-          offset,
-          center,
-          shouldAnimate: true,
-        },
+      const current: CurrentDrag = {
+        id,
+        type: 'TYPE',
+        offset,
+        center,
+        shouldAnimate: true,
+      };
+
+      const state: DragState = {
+        current,
         impact,
         initial,
       };
-      return currentDrag;
+      return state;
     };
-    const complete = (
+    const drop = (
       newHomeOffset: Position,
       impact?: DragImpact = noImpact,
-      shouldAnimate?: boolean = true
-    ): DragComplete => {
-      const result: DragResult = {
+    ): PendingDrop => {
+      const result: DropResult = {
         draggableId: id,
         source: initial.source,
         destination: {
@@ -78,16 +81,16 @@ const make = (() => {
           droppableId: initial.source.droppableId,
         },
       };
-      const output: DragComplete = {
+
+      const pending: PendingDrop = {
+        newHomeOffset,
         result,
         last: drag(newHomeOffset, impact),
-        newHomeOffset,
-        isWaitingForAnimation: shouldAnimate,
       };
-      return output;
+      return pending;
     };
 
-    return { id, selector, provided, initial, dimension, drag, complete };
+    return { id, selector, provided, initial, dimension, drag, drop };
   };
 })();
 
@@ -105,226 +108,148 @@ const getDefaultMapProps = (id: DraggableId): MapProps => ({
   initial: null,
 });
 
-describe('Draggable - unconnected', () => {
-  it('should log an error and return default props if the selector receives both a current drag and a drag completion', () => {
-    sinon.stub(console, 'error');
-    const { id, complete, drag, selector, provided } = make();
+type SelectorArgs = {|
+  phase: Phases,
+  drag: ?DragState,
+  pending: ?PendingDrop,
+  provided: NeedsProviding
+|}
 
-    const result: MapProps = selector.resultFunc(
-      drag({ x: 10, y: 20 }),
-      complete({ x: 10, y: 20 }),
-      provided,
+const execute = (selector: Function) =>
+  ({ phase, drag, pending, provided }: SelectorArgs): MapProps =>
+    selector.resultFunc(
+      phase,
+      drag,
+      pending,
+      provided
     );
 
-    expect(console.error.called).to.equal(true);
-    expect(result).to.deep.equal(getDefaultMapProps(id));
+describe.only('Draggable - connected', () => {
+  beforeEach(() => {
+    sinon.stub(console, 'error');
+  });
+
+  afterEach(() => {
     console.error.restore();
   });
 
-  describe('item is not dragging', () => {
-    const { id, selector, provided } = make();
-    it('should return the default props', () => {
-      const result: MapProps = selector.resultFunc(
-        null,
-        null,
+  describe('dragging', () => {
+    it('should log an error and return default props if there is invalid drag state', () => {
+      const { id, selector, provided } = make();
+
+      const result = execute(selector)({
+        phase: 'DRAGGING',
+        drag: null,
+        pending: null,
         provided,
-      );
+      });
 
       expect(result).to.deep.equal(getDefaultMapProps(id));
+      expect(console.error.calledOnce).to.equal(true);
     });
 
-    it('should not break memoization on multiple calls', () => {
-      const first: MapProps = selector.resultFunc(
-        null,
-        null,
-        provided,
-      );
-      const second: MapProps = selector.resultFunc(
-        null,
-        null,
-        provided,
-      );
+    describe('item is dragging', () => {
+      it('should return the current position of the item', () => {
+        const { id, initial, selector, provided, drag } = make();
+        const offset: Position = {
+          x: 100,
+          y: 200,
+        };
+        const expected: MapProps = {
+          id,
+          isDragEnabled: true,
+          isDropAnimating: false,
+          isDragging: true,
+          canAnimate: true,
+          offset,
+          initial,
+        };
 
-      // checking that we got the same object back
-      expect(first).to.equal(second);
-    });
-  });
+        const result: MapProps = execute(selector)({
+          phase: 'DRAGGING',
+          drag: drag(offset),
+          pending: null,
+          provided,
+        });
 
-  describe('item is dragging', () => {
-    it('should return the current position of the item', () => {
-      const { id, initial, selector, provided, drag } = make();
-      const offset: Position = {
-        x: 100,
-        y: 200,
-      };
-      const expected: MapProps = {
-        id,
-        isDragEnabled: true,
-        isDropAnimating: false,
-        isDragging: true,
-        canAnimate: true,
-        offset,
-        initial,
-      };
+        expect(result).to.deep.equal(expected);
+      });
 
-      const result: MapProps = selector.resultFunc(
-        drag(offset),
-        null,
-        provided,
-      );
+      it('should break memoization on every call', () => {
+        const { selector, provided, drag } = make();
+        const state: DragState = drag({ x: 100, y: 200 });
 
-      expect(result).to.deep.equal(expected);
-    });
-
-    it('should break memoization on every call', () => {
-      const { selector, provided, drag } = make();
-      const currentDrag: CurrentDrag = drag({ x: 100, y: 200 });
-
-      const first: MapProps = selector.resultFunc(
-        currentDrag,
-        null,
-        provided,
-      );
-      const second: MapProps = selector.resultFunc(
-        currentDrag,
-        null,
-        provided,
-      );
+        const first: MapProps = execute(selector)({
+          phase: 'DRAGGING',
+          drag: state,
+          pending: null,
+          provided,
+        });
+        const second: MapProps = execute(selector)({
+          phase: 'DRAGGING',
+          drag: state,
+          pending: null,
+          provided,
+        });
 
       // checking we did not get the same reference back
-      expect(first).to.not.equal(second);
+        expect(first).to.not.equal(second);
+        expect(first).to.deep.equal(second);
+      });
     });
-  });
 
-  describe('another item is dragging', () => {
-    const notDragging = make();
-    const dragging = make();
-
-    describe('item does not need to move out of the way', () => {
+    describe('item is not dragging', () => {
+      const dragging = make();
+      const notDragging = make();
       it('should return the default props', () => {
-        const props: MapProps = notDragging.selector.resultFunc(
-          dragging.drag({ x: 10, y: 20 }),
-          null,
-          notDragging.provided,
-        );
+        const result: MapProps = execute(notDragging.selector)({
+          phase: 'DRAGGING',
+          drag: dragging.drag({ x: 100, y: 200 }),
+          pending: null,
+          provided: notDragging.provided,
+        });
 
-        expect(props).to.deep.equal(getDefaultMapProps(notDragging.id));
+        expect(result).to.deep.equal(getDefaultMapProps(notDragging.id));
       });
 
       it('should not break memoization on multiple calls', () => {
-        const result1: MapProps = notDragging.selector.resultFunc(
-          dragging.drag({ x: 10, y: 20 }),
-          null,
-          notDragging.provided,
-        );
-        const result2: MapProps = notDragging.selector.resultFunc(
-          dragging.drag({ x: 130, y: 220 }),
-          null,
-          notDragging.provided,
-        );
+        const first: MapProps = execute(notDragging.selector)({
+          phase: 'DRAGGING',
+          drag: dragging.drag({ x: 100, y: 200 }),
+          pending: null,
+          provided: notDragging.provided,
+        });
+        const second: MapProps = execute(notDragging.selector)({
+          phase: 'DRAGGING',
+          drag: dragging.drag({ x: 100, y: 200 }),
+          pending: null,
+          provided: notDragging.provided,
+        });
 
-        // checking we got the same object back
-        expect(result1).to.equal(result2);
-      });
-    });
-
-    describe('item needs to move out of the way', () => {
-      it('should move backward to get out of the way when the dragging item is moving forward', () => {
-        const impact: DragImpact = {
-          movement: {
-            draggables: [notDragging.id],
-            amount: dragging.dimension.height,
-            isMovingForward: true,
-          },
-          destination: {
-            index: dragging.initial.source.index + 1,
-            droppableId: dragging.initial.source.droppableId,
-          },
-        };
-        const expected: MapProps = {
-          id: notDragging.id,
-          isDragEnabled: true,
-          isDropAnimating: false,
-          isDragging: false,
-          canAnimate: true,
-          offset: { x: 0, y: -impact.movement.amount },
-          initial: null,
-        };
-
-        const props: MapProps = notDragging.selector.resultFunc(
-          dragging.drag({ x: 10, y: 20 }, impact),
-          null,
-          notDragging.provided
-        );
-
-        expect(props).to.deep.equal(expected);
-      });
-
-      it('should move forward to get out of the way when the dragging item is moving backward', () => {
-        const impact: DragImpact = {
-          movement: {
-            draggables: [notDragging.id],
-            amount: dragging.dimension.height,
-            isMovingForward: false,
-          },
-          destination: {
-            index: dragging.initial.source.index + 1,
-            droppableId: dragging.initial.source.droppableId,
-          },
-        };
-        const expected: MapProps = {
-          id: notDragging.id,
-          isDragEnabled: true,
-          isDropAnimating: false,
-          isDragging: false,
-          canAnimate: true,
-          offset: { x: 0, y: impact.movement.amount },
-          initial: null,
-        };
-
-        const props: MapProps = notDragging.selector.resultFunc(
-          dragging.drag({ x: 10, y: 20 }, impact),
-          null,
-          notDragging.provided
-        );
-
-        expect(props).to.deep.equal(expected);
-      });
-
-      it('should not break memoization on mulitiple calls', () => {
-        const impact: DragImpact = {
-          movement: {
-            draggables: [notDragging.id],
-            amount: dragging.dimension.height,
-            isMovingForward: false,
-          },
-          destination: {
-            index: dragging.initial.source.index + 1,
-            droppableId: dragging.initial.source.droppableId,
-          },
-        };
-
-        const result1: MapProps = notDragging.selector.resultFunc(
-          dragging.drag({ x: 560, y: 20 }, impact),
-          null,
-          notDragging.provided
-        );
-        const result2: MapProps = notDragging.selector.resultFunc(
-          dragging.drag({ x: 10, y: 250 }, impact),
-          null,
-          notDragging.provided
-        );
-
-        // it should return the same object
-        expect(result1).to.equal(result2);
+        // checking that we got the same object back
+        expect(first).to.equal(second);
       });
     });
   });
 
-  describe('dragging is complete', () => {
+  describe('drop animating', () => {
+    it('should log an error and return default props if there is no pending drop', () => {
+      const { id, selector, provided } = make();
+
+      const props: MapProps = execute(selector)({
+        phase: 'DROP_ANIMATING',
+        drag: null,
+        pending: null,
+        provided,
+      });
+
+      expect(props).to.deep.equal(getDefaultMapProps(id));
+      expect(console.error.calledOnce).to.equal(true);
+    });
+
     describe('item was dragging', () => {
       it('should move to the new home offset', () => {
-        const { id, initial, selector, provided, complete } = make();
+        const { id, initial, selector, provided, drop } = make();
         const newHomeOffset: Position = {
           x: 100,
           y: 10,
@@ -338,37 +263,14 @@ describe('Draggable - unconnected', () => {
           offset: newHomeOffset,
           initial,
         };
+        const pending: PendingDrop = drop(newHomeOffset);
 
-        const props: MapProps = selector.resultFunc(
-          null,
-          complete(newHomeOffset),
-          provided
-        );
-
-        expect(props).to.deep.equal(expected);
-      });
-
-      it('should not animate if request not to do so', () => {
-        const { id, initial, selector, provided, complete } = make();
-        const newHomeOffset: Position = {
-          x: 100,
-          y: 10,
-        };
-        const expected: MapProps = {
-          id,
-          isDragEnabled: true,
-          isDragging: false,
-          isDropAnimating: false,
-          canAnimate: false,
-          offset: newHomeOffset,
-          initial,
-        };
-
-        const props: MapProps = selector.resultFunc(
-          null,
-          complete(newHomeOffset, undefined, false),
-          provided
-        );
+        const props: MapProps = execute(selector)({
+          phase: 'DROP_ANIMATING',
+          drag: null,
+          pending,
+          provided,
+        });
 
         expect(props).to.deep.equal(expected);
       });
@@ -380,30 +282,33 @@ describe('Draggable - unconnected', () => {
         const notDragging = make();
         const expected: MapProps = getDefaultMapProps(notDragging.id);
 
-        const props: MapProps = notDragging.selector.resultFunc(
-          null,
-          dragging.complete({ x: 100, y: 200 }, noImpact),
-          notDragging.provided,
-        );
+        const props: MapProps = execute(notDragging.selector)({
+          phase: 'DROP_ANIMATING',
+          drag: null,
+          pending: dragging.drop({ x: 100, y: 200 }),
+          provided: notDragging.provided,
+        });
 
         expect(props).to.deep.equal(expected);
       });
 
-      it('should not break memoization from while the drag was occuring', () => {
+      it('should not break memoization from while the drag was occurring', () => {
         const dragging = make();
         const notDragging = make();
         const defaultProps: MapProps = getDefaultMapProps(notDragging.id);
 
-        const duringDrag: MapProps = notDragging.selector.resultFunc(
-          dragging.drag({ x: 100, y: 200 }),
-          null,
-          notDragging.provided,
-        );
-        const postDrag: MapProps = notDragging.selector.resultFunc(
-          null,
-          dragging.complete({ x: 100, y: 200 }, noImpact),
-          notDragging.provided,
-        );
+        const duringDrag: MapProps = execute(notDragging.selector)({
+          phase: 'DRAGGING',
+          drag: dragging.drag({ x: 100, y: 200 }),
+          pending: null,
+          provided: notDragging.provided,
+        });
+        const postDrag: MapProps = execute(notDragging.selector)({
+          phase: 'DROP_ANIMATING',
+          drag: null,
+          pending: dragging.drop({ x: 200, y: 200 }),
+          provided: notDragging.provided,
+        });
 
         expect(duringDrag).to.deep.equal(defaultProps);
         expect(postDrag).to.deep.equal(defaultProps);
@@ -442,11 +347,12 @@ describe('Draggable - unconnected', () => {
           initial: null,
         };
 
-        const props: MapProps = notDragging.selector.resultFunc(
-          null,
-          dragging.complete({ x: 100, y: 100 }, impact),
-          notDragging.provided,
-        );
+        const props: MapProps = execute(notDragging.selector)({
+          phase: 'DROP_ANIMATING',
+          drag: null,
+          pending: dragging.drop({ x: 100, y: 100 }, impact),
+          provided: notDragging.provided,
+        });
 
         expect(props).to.deep.equal(expected);
       });
@@ -469,19 +375,72 @@ describe('Draggable - unconnected', () => {
           },
         };
 
-        const duringDrag: MapProps = notDragging.selector.resultFunc(
-          dragging.drag(offset, impact),
-          null,
-          notDragging.provided,
-        );
-        const afterDrag: MapProps = notDragging.selector.resultFunc(
-          null,
-          dragging.complete({ x: 1, y: 10 }, impact),
-          notDragging.provided,
-        );
+        const duringDrag: MapProps = execute(notDragging.selector)({
+          phase: 'DRAGGING',
+          drag: dragging.drag(offset, impact),
+          pending: null,
+          provided: notDragging.provided,
+        });
+        const afterDrag: MapProps = execute(notDragging.selector)({
+          phase: 'DROP_ANIMATING',
+          drag: null,
+          pending: dragging.drop({ x: 1, y: 10 }, impact),
+          provided: notDragging.provided,
+        });
 
         // checking that the result objects have the same reference
         expect(duringDrag).to.equal(afterDrag);
+      });
+    });
+  });
+
+  describe('drop complete', () => {
+    const dragging = make();
+    const notDragging = make();
+
+    describe('item was dragging', () => {
+      it('should move to the origin with no animation', () => {
+        const expected: MapProps = {
+          id: dragging.id,
+          isDragEnabled: true,
+          offset: { x: 0, y: 0 },
+          isDropAnimating: false,
+          isDragging: false,
+          canAnimate: false,
+          initial: null,
+        };
+
+        const props: MapProps = execute(dragging.selector)({
+          phase: 'DROP_COMPLETE',
+          drag: null,
+          pending: null,
+          provided: dragging.provided,
+        });
+
+        expect(props).to.deep.equal(expected);
+      });
+    });
+
+    describe('item was not dragging', () => {
+      it('should move to the origin with no animation', () => {
+        const expected: MapProps = {
+          id: notDragging.id,
+          isDragEnabled: true,
+          offset: { x: 0, y: 0 },
+          isDropAnimating: false,
+          isDragging: false,
+          canAnimate: false,
+          initial: null,
+        };
+
+        const props: MapProps = execute(notDragging.selector)({
+          phase: 'DROP_COMPLETE',
+          drag: null,
+          pending: null,
+          provided: notDragging.provided,
+        });
+
+        expect(props).to.deep.equal(expected);
       });
     });
   });

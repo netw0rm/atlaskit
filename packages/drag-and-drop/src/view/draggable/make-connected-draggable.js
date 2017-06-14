@@ -4,9 +4,7 @@ import isShallowEqual from 'shallowequal';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import {
-  currentDragSelector,
-  initialDragSelector,
-  dragImpactSelector,
+  dragSelector,
   pendingDropSelector,
   phaseSelector,
 } from '../../state/selectors';
@@ -26,12 +24,10 @@ import type {
   State,
   Position,
   DraggableId,
-  InitialDrag,
-  CurrentDrag,
+  DragState,
   PendingDrop,
   Phases,
   DragMovement,
-  DragImpact,
 } from '../../types';
 import type {
   Provide,
@@ -102,24 +98,22 @@ export const makeSelector = (provide: Provide) => {
 
   return createSelector(
     [phaseSelector,
-      currentDragSelector,
-      initialDragSelector,
-      dragImpactSelector,
+      dragSelector,
       pendingDropSelector,
       getProvided],
     (phase: Phases,
-      current: ?CurrentDrag,
-      initial: ?InitialDrag,
-      impact: ?DragImpact,
+      drag: ?DragState,
       pending: ?PendingDrop,
       provided: NeedsProviding): MapProps => {
       const { id, isDragEnabled = true } = provided;
 
       if (phase === 'DRAGGING') {
-        if (!current || !initial || !impact) {
+        if (!drag) {
           console.error('invalid dragging state');
           return getDefaultProps(id, isDragEnabled);
         }
+
+        const { current, initial, impact } = drag;
 
         if (current.id !== id) {
           return getNotDraggingProps(
@@ -129,7 +123,7 @@ export const makeSelector = (provide: Provide) => {
           );
         }
 
-        // Scenario: this item is dragging
+        // this item is dragging
         const offset = current.offset;
         const canAnimate = current.shouldAnimate;
 

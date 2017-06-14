@@ -65,7 +65,7 @@ export type DropResult = {|
   destination: ?DraggableLocation
 |}
 
-type DragState = {|
+export type DragState = {|
   initial: InitialDrag,
   current: CurrentDrag,
   impact: DragImpact,
@@ -81,13 +81,13 @@ export type Direction = 'vertical'; // | horiztonal - currently not supported
 
 export type Phases = 'IDLE' | 'COLLECTING_DIMENSIONS' | 'DRAGGING' | 'DROP_ANIMATING' | 'DROP_COMPLETE';
 
-type DimensionState = {|
+export type DimensionState = {|
   request: ?TypeId,
   draggable: DimensionMap,
   droppable: DimensionMap,
 |};
 
-type DropState = {|
+export type DropState = {|
   pending: ?PendingDrop,
   result: ?DropResult,
 |}

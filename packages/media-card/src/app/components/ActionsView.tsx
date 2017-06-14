@@ -1,9 +1,10 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
+import Button from '@atlaskit/button';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import MeatballIcon from '@atlaskit/icon/glyph/more';
 import {Action} from '../model';
-import {Actions, ActionButton, ActionsMenuButton, ActionsMenu} from '../styled/ActionsView';
+import {Actions, ActionsMenu} from '../styled/ActionsView';
 
 export interface ActionsViewProps {
   actions: Action[];
@@ -23,7 +24,7 @@ export const ActionsView = (props: ActionsViewProps) => {
   return (
     <Actions>
       {primary
-        ? <ActionButton onClick={primary.handler} inverse={inverse}>{primary.title}</ActionButton>
+        ? <Button onClick={primary.handler} theme={inverse && 'dark' || 'default'}>{primary.title}</Button>
         : null
       }
       {secondary.length
@@ -39,7 +40,7 @@ export const ActionsView = (props: ActionsViewProps) => {
               }]}
               onItemActivated={handleDropDownAction}
             >
-              <ActionsMenuButton appearance="subtle" iconBefore={<MeatballIcon label="actions" size="medium"/>} inverse={inverse}/>
+              <Button appearance="subtle" iconBefore={<MeatballIcon label="actions" size="medium"/>} theme={inverse && 'dark' || 'default'}/>
             </DropdownMenu>
           </ActionsMenu>
         )

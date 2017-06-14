@@ -8,7 +8,6 @@ describe('@atlaskit/editor-core/schema panel node', () => {
   it('should have data-panel-type when serializing to DOM', () => {
     const html = toHTML(schema.nodes.panel.create({ panelType: 'info' }), schema);
     expect(html).to.have.string('data-panel-type="info"');
-    expect(html).to.have.string('class=');
   });
 
   it('should info panel type by default', () => {

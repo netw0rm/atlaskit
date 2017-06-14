@@ -21,7 +21,6 @@ import {
   listsStateKey,
   textFormattingStateKey,
   clearFormattingStateKey,
-  ContextName,
   EditorView,
   EditorState,
   Node,
@@ -58,7 +57,6 @@ export { version };
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -283,7 +281,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, emojiProvider, mentionSource, imageUploadHandler } = this.props;
+      const { emojiProvider, mentionSource, imageUploadHandler } = this.props;
       const bitbucketKeymap = {
         'Mod-Enter': this.handleSave,
         'Esc'() { } // Disable Esc handler
@@ -296,13 +294,16 @@ export default class Editor extends PureComponent<Props, State> {
             ...mentionsPlugins(schema), // mentions and emoji needs to be first
             ...emojisPlugins(schema),
             ...listsPlugins(schema),
-            ...blockTypePlugins(schema),
             ...clearFormattingPlugins(schema),
             ...codeBlockPlugins(schema),
             ...textFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
+            // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+            // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+            // if converting is possible
+            ...blockTypePlugins(schema),
             ...reactNodeViewPlugins(schema),
             history(),
             keymap(bitbucketKeymap),
@@ -310,11 +311,6 @@ export default class Editor extends PureComponent<Props, State> {
           ]
         }
       );
-
-      if (context) {
-        const blockTypeState = blockTypeStateKey.getState(editorState);
-        blockTypeState.changeContext(context);
-      }
 
       if (imageUploadHandler) {
         const imageUploadState = imageUploadStateKey.getState(editorState);

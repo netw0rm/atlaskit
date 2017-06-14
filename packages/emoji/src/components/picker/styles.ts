@@ -12,70 +12,65 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 import {
+  akEmojiSelectedBackgroundColor,
   emojiFooterBoxShadow,
   emojiPickerBorderColor,
   emojiPickerBoxShadow,
-  emojiPickerHeight,
-  emojiPickerListHeight,
-  emojiPickerWidth,
 } from '../../shared-styles';
 
-export const pickerEmoji = style({
-  padding: '4px',
-  width: '32px',
-  height: '32px',
-  display: 'inline-block',
-
-  $nest: {
-    '&>span': {
-      cursor: 'pointer',
-      padding: '4px',
-      borderRadius: '5px',
-      width: '24px',
-      height: '24px',
-
-      $nest: {
-        // Fit non-square emoji to square
-        '&>img': {
-          position: 'relative',
-          left: '50%',
-          top: '50%',
-          transform: 'translateX(-50%) translateY(-50%)',
-          maxHeight: '24px',
-          maxWidth: '24px',
-          display: 'block',
-        },
-      }
-    }
-  },
-});
-
-export const emojiPickerFooter = style({
-  borderTop: `2px solid ${akColorN30A}`,
-  boxShadow: emojiFooterBoxShadow,
-});
-
-export const emojiPickerRow = style({
-  boxSizing: 'border-box',
-  padding: '0 8px',
-});
-
-export const emojiPickerCategoryTitle = style({
-  boxSizing: 'border-box',
-  color: akColorN900,
-  fontSize: '14px',
-  padding: '5px 8px',
-  textTransform: 'lowercase',
-
-  $nest: {
-    ['&:first-letter']: {
-      textTransform: 'uppercase',
-    },
-  },
-});
+import {
+  emojiPickerHeight,
+  emojiPickerWidth,
+} from '../../constants';
 
 export const active = 'active';
 export const disable = 'disable';
+
+// Level 1 - picker
+
+export const emojiPicker = style({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  background: 'white',
+  border: `${emojiPickerBorderColor} 1px solid`,
+  borderRadius: akBorderRadius,
+  boxShadow: emojiPickerBoxShadow,
+  height: `${emojiPickerHeight}px`,
+  width: `${emojiPickerWidth}px`,
+});
+
+// Level 2
+
+/// Category Selector
+
+export const addButton = 'add-button';
+
+export const categorySelector = style({
+  flex: '0 0 auto',
+  backgroundColor: akColorN30,
+
+  $nest: {
+    ul: {
+      listStyle: 'none',
+      margin: '0 3px',
+      padding: '3px 0',
+    },
+
+    li: {
+      display: 'inline-block',
+      margin: 0,
+      padding: 0,
+      verticalAlign: 'middle',
+    },
+
+    [`.${addButton}`]: {
+      color: akColorN200,
+      margin: '0 0 0 5px',
+      verticalAlign: 'middle',
+    },
+  },
+});
 
 export const category = style({
   backgroundColor: 'transparent',
@@ -124,32 +119,15 @@ export const category = style({
   },
 });
 
-export const addButton = 'add-button';
+/// EmojiPickerList
 
-export const categorySelector = style({
-  backgroundColor: akColorN30,
-
-  $nest: {
-    ul: {
-      listStyle: 'none',
-      margin: '0 3px',
-      padding: '3px 0',
-    },
-
-    li: {
-      display: 'inline-block',
-      margin: 0,
-      padding: 0,
-      verticalAlign: 'middle',
-    },
-
-    [`.${addButton}`]: {
-      color: akColorN200,
-      margin: '0 0 0 5px',
-      verticalAlign: 'middle',
-    },
-  },
+export const emojiPickerList = style({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto',
 });
+
+//// Search
 
 export const searchIcon = 'search-icon';
 export const input = 'input';
@@ -157,6 +135,7 @@ export const input = 'input';
 export const pickerSearch = style({
   boxSizing: 'border-box',
   padding: '10px 25px 10px 8px',
+  flex: '0 0 auto',
 
   $nest: {
     [`.${searchIcon}`]: {
@@ -188,37 +167,22 @@ export const pickerSearch = style({
   },
 });
 
-export const emojiPickerList = style({
-  height: `${emojiPickerListHeight}px`,
-});
-
-export const emojiPicker = style({
-  background: 'white',
-  border: `${emojiPickerBorderColor} 1px solid`,
-  borderRadius: akBorderRadius,
-  boxShadow: emojiPickerBoxShadow,
-  height: `${emojiPickerHeight}px`,
-  width: `${emojiPickerWidth}px`,
-});
-
-const spinnerSize = 30;
-
-export const listSizes = {
-  emoji: 40,
-  search: 50,
-  category: 25,
-  default: 20,
-};
-
-export const emojiPickerSpinnerContainer = style({
-  position: 'relative',
-  zIndex: 1,
-});
+//// Loading/Spinner
 
 export const emojiPickerSpinner = style({
-  position: 'absolute',
-  left: `${((emojiPickerWidth - spinnerSize) / 2).toFixed()}px`,
-  top: `${((emojiPickerListHeight - spinnerSize + listSizes.search) / 2).toFixed()}px`,
+  alignSelf: 'center',
+});
+
+//// Category/Result
+
+export const emojiPickerSection = style({
+  flex: '1 0 auto',
+});
+
+export const emojiPickerRow = style({
+  boxSizing: 'border-box',
+  padding: '0 8px',
+  flex: '1 1 auto',
 });
 
 export const emojiCategoryTitle = style({
@@ -233,4 +197,69 @@ export const emojiCategoryTitle = style({
       textTransform: 'uppercase'
     }
   }
+});
+
+export const emojiItem = style({
+  padding: '4px',
+  width: '32px',
+  height: '32px',
+  display: 'inline-block',
+
+  $nest: {
+    '&>span': {
+      cursor: 'pointer',
+      padding: '4px',
+      borderRadius: '5px',
+      width: '24px',
+      height: '24px',
+
+      $nest: {
+        // Fit non-square emoji to square
+        '&>img': {
+          position: 'relative',
+          left: '50%',
+          top: '50%',
+          transform: 'translateX(-50%) translateY(-50%)',
+          maxHeight: '24px',
+          maxWidth: '24px',
+          display: 'block',
+        },
+      }
+    }
+  },
+});
+
+export const addEmoji = style({
+  border: '2px dashed #ccc',
+  borderRadius: akBorderRadius,
+  backgroundColor: 'transparent',
+  width: '32px',
+  height: '32px',
+  padding: 0,
+  margin: '4px',
+  verticalAlign: 'middle',
+
+  $nest: {
+    '&:hover': {
+      backgroundColor: akEmojiSelectedBackgroundColor,
+    },
+
+    '&:focus': {
+      outline: '0',
+    },
+
+    span: {
+      backgroundColor: 'inherit',
+    }
+  }
+});
+
+/// Footer
+export const emojiPickerFooter = style({
+  flex: '0 0 auto',
+});
+
+export const emojiPickerFooterWithTopShadow = style({
+  borderTop: `2px solid ${akColorN30A}`,
+  boxShadow: emojiFooterBoxShadow,
 });

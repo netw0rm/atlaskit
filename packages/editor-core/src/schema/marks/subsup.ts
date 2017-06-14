@@ -1,4 +1,5 @@
 import { MarkSpec, Mark } from '../../prosemirror';
+import { FONT_STYLE } from '../groups';
 
 export interface SubSupMark extends Mark {
   attrs: {
@@ -8,6 +9,7 @@ export interface SubSupMark extends Mark {
 
 export const subsup: MarkSpec = {
   inclusive: true,
+  group: FONT_STYLE,
   attrs: { type: { default: 'sub' } },
   parseDOM: [
     { tag: 'sub', attrs: { type: 'sub' } },

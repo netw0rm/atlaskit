@@ -34,11 +34,11 @@ export const createGlobalTheme = (text: Text, background: Background): Provided 
   const customisedGlobal: Provided = {
     background: {
       primary: background,
-      secondary: globalTheme.background.secondary,
+      secondary: background,
       tertiary: globalTheme.background.tertiary,
     },
     text,
-    subText: globalTheme.subText,
+    subText: chromatism.brightness(20, text).hex,
     keyline: globalTheme.keyline,
     item,
     dropdown: globalTheme.dropdown,

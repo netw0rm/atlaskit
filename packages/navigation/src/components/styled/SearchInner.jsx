@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { gridSize } from '../../shared-variables';
+import { search } from '../../shared-variables';
 
+const searchPadding = search.layout.padding;
 const SearchInner = styled.div`
-  padding: ${gridSize * 0.5}px 0 0 ${gridSize * 3}px;
+  padding: ${searchPadding.top}px ${searchPadding.side}px 0;
 `;
 
 SearchInner.displayName = 'SearchInner';

@@ -271,6 +271,10 @@ describe('theme', () => {
         expect(generatedTheme.text).to.equal(textColor);
       });
 
+      it('subText color', () => {
+        expect(generatedTheme.subText).to.equal(chromatism.brightness(20, textColor).hex);
+      });
+
       it('global item focus outline color', () => {
         expect(generatedTheme.item.focus.outline).to.equal(textColor);
       });
@@ -286,6 +290,7 @@ describe('theme', () => {
 
       it('background primary color', () => {
         expect(generatedTheme.background.primary).to.equal(backgroundColor);
+        expect(generatedTheme.background.secondary).to.equal(backgroundColor);
       });
 
       describe('global item', () => {

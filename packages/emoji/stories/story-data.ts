@@ -1,4 +1,4 @@
-import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
+import { denormaliseEmojiServiceResponse } from '../src/api/EmojiUtils';
 import EmojiRepository from '../src/api/EmojiRepository';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from '../test/MockEmojiResource';
 import { EmojiDescription, EmojiServiceResponse } from '../src/types';

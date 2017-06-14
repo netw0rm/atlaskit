@@ -6,7 +6,7 @@ import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import {FileDetails, LinkDetails} from '@atlaskit/media-core';
 
-import {CardView} from '../src/cardView';
+import {CardView} from '../src/root/cardView';
 import {LinkCard} from '../src/links';
 import {FileCard} from '../src/files';
 

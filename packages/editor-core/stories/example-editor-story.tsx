@@ -1,5 +1,8 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
+import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
+import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
+import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
@@ -11,6 +14,14 @@ import * as v1schema from '../src/json-schema/v1.json';
 import imageUploadHandler from '../stories/imageUpload/handler';
 import { resourceProvider, resourceProvider2 } from './mentions/story-data';
 import { toJSON } from '../src/utils';
+import { storyMediaProviderFactory } from '../src/test-helper';
+
+const mediaTestHelpers = {
+  defaultClientId,
+  defaultServiceHost,
+  defaultCollectionName,
+  StoryBookTokenProvider,
+};
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
@@ -80,12 +91,16 @@ class DemoEditor extends React.PureComponent<Props, State> {
     const { mentionProvider, emojiProvider, jsonDocument } = this.state;
     return (
       <Content>
+        <div style={{ padding: '5px 0'}}>
+          ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
+        </div>
         <Editor
           imageUploadHandler={imageUploadHandler}
           analyticsHandler={analyticsHandler}
           onCancel={CANCEL_ACTION}
           onSave={SAVE_ACTION}
           onChange={this.props.onChange}
+          mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           isExpandedByDefault={true}

@@ -2,7 +2,7 @@ import { EditorState, Transaction } from '../';
 
 export function deleteTable(state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 
-export function goToNextCell(direction: string): (state: EditorState<any>, dispatch?: (tr: Transaction) => void) => boolean;
+export function goToNextCell(direction: number): (state: EditorState<any>, dispatch?: (tr: Transaction) => void) => boolean;
 
 export function toggleHeaderCell(state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 

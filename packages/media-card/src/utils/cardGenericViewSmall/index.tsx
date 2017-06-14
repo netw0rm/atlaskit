@@ -4,11 +4,12 @@ import * as cx from 'classnames';
 import {CardAction, MediaType} from '@atlaskit/media-core';
 
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
-import {Menu, ErrorIcon, getCSSUnitValue} from '../../utils';
+import {Menu, ErrorIcon, getCSSUnitValue, defaultSmallCardDimensions} from '../../utils';
+import {CardDimensions, CardDimensionValue} from '../..';
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 export interface CardGenericViewSmallProps {
-  width?: number | string;
+  dimensions?: CardDimensions;
   title?: string;
   subtitle?: string;
   mediaType?: MediaType;
@@ -27,14 +28,31 @@ export interface CardGenericViewSmallState {
 }
 
 export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, CardGenericViewSmallState> {
-  private get wrapperStyles(): {width?: string} {
-    const width = this.props.width;
+  private get width(): CardDimensionValue {
+    const {width} = this.props.dimensions || {width: undefined};
 
     if (!width) {
-      return {width: '200px'};
+      return defaultSmallCardDimensions.width;
     }
 
-    return {width: getCSSUnitValue(width)};
+    return getCSSUnitValue(width);
+  }
+
+  private get height(): CardDimensionValue {
+    const {height} = this.props.dimensions || {height: undefined};
+
+    if (!height) {
+      return defaultSmallCardDimensions.height;
+    }
+
+    return getCSSUnitValue(height);
+  }
+
+  private get wrapperStyles(): CardDimensions {
+    return {
+      width: getCSSUnitValue(this.width),
+      height: getCSSUnitValue(this.height)
+    };
   }
 
   constructor(props: CardGenericViewSmallProps) {

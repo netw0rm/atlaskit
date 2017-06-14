@@ -3,7 +3,6 @@ import {
   analyticsService,
   baseKeymap,
   Chrome,
-  ContextName,
   EditorState,
   EditorView,
   history,
@@ -60,7 +59,6 @@ import ReactUnsupportedInlineNode from './nodeviews/ui/unsupportedInline';
 export { version };
 
 export interface Props {
-  context?: ContextName;
   disabled?: boolean;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
@@ -282,7 +280,6 @@ export default class Editor extends PureComponent<Props, State> {
     const { mediaPlugins } = this;
 
     if (place) {
-      const { context } = this.props;
       const doc = parse(this.props.defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
@@ -293,7 +290,6 @@ export default class Editor extends PureComponent<Props, State> {
         doc,
         plugins: [
           ...mentionsPlugins(schema),
-          ...blockTypePlugins(schema),
           ...clearFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
           ...hyperlinkPlugins(schema),
@@ -302,6 +298,10 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...mediaPlugins,
           ...panelPlugins(schema),
+          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+          // if converting is possible
+          ...blockTypePlugins(schema),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),
@@ -311,11 +311,6 @@ export default class Editor extends PureComponent<Props, State> {
 
       const codeBlockState = codeBlockStateKey.getState(editorState);
       codeBlockState.setLanguages(supportedLanguages);
-
-      if (context) {
-        const blockTypeState = blockTypeStateKey.getState(editorState);
-        blockTypeState.changeContext(context);
-      }
 
       const editorView = new EditorView(place, {
         state: editorState,

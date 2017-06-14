@@ -5,13 +5,15 @@ import {
   NodeSpec,
 } from '../../src';
 
+const filterGroupDecMark = marks => marks.filter(mark => mark[0] !== '_' || mark[1] !== '_');
+
 describe('createSchema helper', () => {
   it('should add only defined marks and nodes to the schema', () => {
     const nodesConfig = ['doc', 'paragraph', 'text'];
     const marksConfig = ['em', 'strong', 'strike'];
     const schema = createSchema({ nodes: nodesConfig, marks: marksConfig });
     const nodes = Object.keys(schema.nodes);
-    const marks = Object.keys(schema.marks);
+    const marks = filterGroupDecMark(Object.keys(schema.marks));
     expect(nodes).to.be.deep.equal(['doc', 'paragraph', 'text']);
     expect(marks).to.be.deep.equal(['em', 'strong', 'strike']);
   });
@@ -21,7 +23,7 @@ describe('createSchema helper', () => {
     const marksConfig = ['strong', 'strike', 'em'];
     const schema = createSchema({ nodes: nodesConfig, marks: marksConfig });
     const nodes = Object.keys(schema.nodes);
-    const marks = Object.keys(schema.marks);
+    const marks = filterGroupDecMark(Object.keys(schema.marks));
     expect(nodes).to.be.deep.equal(['doc', 'paragraph', 'text']);
     expect(marks).to.be.deep.equal(['em', 'strong', 'strike']);
   });
@@ -54,7 +56,7 @@ describe('createSchema helper', () => {
     const nodesConfig = ['doc', 'paragraph', 'text'];
     const marksConfig = ['em'];
     const schema = createSchema({ nodes: nodesConfig, marks: marksConfig, customMarkSpecs: { code } });
-    const marks = Object.keys(schema.marks);
+    const marks = filterGroupDecMark(Object.keys(schema.marks));
     expect(marks).to.be.deep.equal(['em', 'code']);
     expect(schema.marks.code.spec).to.be.equal(code);
   });
@@ -64,7 +66,7 @@ describe('createSchema helper', () => {
     const nodesConfig = ['doc', 'paragraph', 'text'];
     const marksConfig = ['em'];
     const schema = createSchema({ nodes: nodesConfig, marks: marksConfig, customMarkSpecs: { monospace } });
-    const marks = Object.keys(schema.marks);
+    const marks = filterGroupDecMark(Object.keys(schema.marks));
     expect(marks).to.be.deep.equal(['em', 'monospace']);
     expect(schema.marks.monospace.spec).to.be.equal(monospace);
   });

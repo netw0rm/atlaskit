@@ -25,7 +25,7 @@ export const description = (
       all actions.
     </p>
     <pre style={preStyles}>
-      {'import DropdownMenu, { StatelessDropdownMenu} from @atlaskit/dropdown-menu'}
+      {'import DropdownMenu, { DropdownMenuStateless } from @atlaskit/dropdown-menu'}
     </pre>
     <p>
       The stateful component handles selection for you, while

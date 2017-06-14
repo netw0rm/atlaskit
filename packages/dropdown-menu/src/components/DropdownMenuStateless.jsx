@@ -7,7 +7,7 @@ import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
-export default class StatelessDropdownMenu extends PureComponent {
+export default class DropdownMenuStateless extends PureComponent {
   static propTypes = {
     /**
       * Controls the appearance of the menu.

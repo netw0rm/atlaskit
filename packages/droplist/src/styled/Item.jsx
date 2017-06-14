@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { akColorN0 } from '@atlaskit/util-shared-styles';
+import { akColorN0, akColorB400 } from '@atlaskit/util-shared-styles';
 import {
   backgroundActiveColor,
   backgroundHoverColor,
@@ -28,6 +28,10 @@ const activeStyles = css`
   }
 `;
 
+const primaryStyles = css`
+  color: ${akColorB400};
+`;
+
 const sharedStyles = props => css`
   align-items: center;
   box-sizing: border-box;
@@ -44,15 +48,20 @@ const sharedStyles = props => css`
     background-color: ${props.isDisabled ? backgroundMainColor : backgroundHoverColor};
     color: ${props.isDisabled ? fontDisabledColor : fontMainColor};
     text-decoration: none;
+
+    ${props.isPrimary && primaryStyles}
   }
   &:active {
     background-color: ${props.isDisabled ? '' : backgroundActiveColor};
     color: ${props.isDisabled ? '' : fontActiveColor};
+
+    ${props.isPrimary && primaryStyles}
   }
   &:focus { ${focusedStyles} }
 
   ${props.isFocused && focusedStyles}
   ${props.isActive && activeStyles}
+  ${props.isPrimary && primaryStyles}
 `;
 
 export const Anchor = styled.a`

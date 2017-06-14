@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import {akGridSizeUnitless, akColorN0, akColorN900} from '@atlaskit/util-shared-styles';
-import {center} from '../../styles';
+import {center, ellipsis} from '../../styles';
 
 export interface WrapperProps {
   contentMaxWidth: number;
@@ -29,11 +29,7 @@ export const Title = styled.div` /* FIXME: should we use a more semantic and bet
   color: ${({inverse}: TitleProps) => inverse ? akColorN0 : akColorN900};
   font-size: 14px;
   font-weight: 500;
-
-  /* ellipsis */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  ${ellipsis()}
 `;
 
 export interface CollapseToggleProps {

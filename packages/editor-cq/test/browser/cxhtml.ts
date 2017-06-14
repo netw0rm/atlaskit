@@ -408,6 +408,14 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
     });
 
     describe('panel', () => {
+      context('when panel does not have any content', () => {
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(p())));
+        });
+      });
+
       context('when panel does not have title', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(`${panelType} panel`,

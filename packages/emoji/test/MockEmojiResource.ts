@@ -79,6 +79,12 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     return this.promiseBuilder(emoji);
   }
 
+  findById(id: string): Promise<OptionalEmojiDescription> {
+    const emoji = this.emojiRepository.findById(id);
+    debug('MockEmojiResource.findById', id, emoji);
+    return this.promiseBuilder(emoji);
+  }
+
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {
     const emojis = this.emojiRepository.findInCategory(categoryId);
     return this.promiseBuilder(emojis);

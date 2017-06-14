@@ -19,7 +19,7 @@ shift || true
 
 # clean the package(s) first
 $CHALK --no-stdin -t "{blue Cleaning package(s) for bootstraping}"
-$LERNA_LOC exec --scope "$PKG" $@ -- git clean -Xdf .
+$LERNA_LOC exec --scope "$PKG" -- git clean -Xdf .
 
 # then bootstrap it (passing on extra args for things like --include-filtered-dependencies)
 $CHALK --no-stdin -t "{blue bootstraping package(s)}"

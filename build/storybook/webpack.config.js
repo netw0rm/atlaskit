@@ -26,6 +26,8 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
     });
   }
 
+  console.log(storybookBaseConfig);
+
   // Return the altered config
   return storybookBaseConfig;
 };

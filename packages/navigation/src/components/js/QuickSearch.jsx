@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { AkSearch, AkSearchResults } from '../../../src';
 
+const noOp = () => {};
+
 export default class QuickSearch extends PureComponent {
   static propTypes = {
     /* Search pass-through props */
@@ -14,6 +16,14 @@ export default class QuickSearch extends PureComponent {
 
     /* SearchResults pass-through props */
     results: AkSearchResults.propTypes.results,
+  }
+
+  defaultProps = {
+    isLoading: false,
+    onSearchClear: noOp,
+    placeholder: 'Search',
+    results: [],
+    value: '',
   }
 
   render() {

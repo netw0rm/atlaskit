@@ -5,13 +5,12 @@ import * as classNames from 'classnames';
 import * as styles from './styles';
 
 import { customCategory } from '../../constants';
-import { AvailableCategories, EmojiDescription, EmojiId, EmojiUpload, OnEmojiEvent, RelativePosition } from '../../types';
+import { AvailableCategories, EmojiDescription, EmojiId, EmojiUpload, OnEmojiEvent } from '../../types';
 import { containsEmojiId, isEmojiIdEqual, isEmojiLoaded } from '../../type-helpers';
 import debug from '../../util/logger';
 import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
-import Popup from '../common/Popup';
 import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange, supportsUploadFeature } from '../../api/EmojiResource';
 
@@ -23,11 +22,6 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
-  target?: string | HTMLElement;
-  position?: RelativePosition;
-  zIndex?: string | number;
-  offsetX?: number;
-  offsetY?: number;
 }
 
 export interface State {
@@ -280,14 +274,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const {
-      offsetX,
-      offsetY,
-      onSelection,
-      position,
-      target,
-      zIndex,
-    } = this.props;
+    const { onSelection } = this.props;
     const {
       activeCategory,
       availableCategories,
@@ -338,29 +325,6 @@ export default class EmojiPicker extends PureComponent<Props, State> {
       </div>
     );
 
-    let content;
-
-    if (position) {
-      debug('target, position', target, position);
-      if (target) {
-        content = (
-          <Popup
-            target={target}
-            relativePosition={position}
-            zIndex={zIndex}
-            offsetX={offsetX}
-            offsetY={offsetY}
-            children={picker}
-          />
-        );
-      } else {
-        // don't show if we have a position, but no target yet
-        content = null;
-      }
-    } else {
-      content = picker;
-    }
-
-    return content;
+    return picker;
   }
 }

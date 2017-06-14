@@ -1,7 +1,11 @@
-import { PureComponent } from 'react';
+export { EmojiProvider, EmojiResource } from '@atlaskit/emoji';
+export { MediaProvider } from '@atlaskit/media-core';
+export { MentionProvider, MentionResource } from '@atlaskit/mention';
+
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MediaProvider } from '@atlaskit/media-core';
 import { MentionProvider } from '@atlaskit/mention';
+import { PureComponent } from 'react';
 import { renderNode } from './nodes';
 import { ServicesConfig, EventHandlers } from './config';
 

@@ -41,6 +41,13 @@ storiesOf('CardList', {})
       collectionName={defaultCollectionName}
     />
   ))
+  .add('No lazy loading', () => (
+    <CardList
+      context={context}
+      collectionName={defaultCollectionName}
+      shouldLazyLoadCards={false}
+    />
+  ))
   .add('Loaded list toggling', () => {
     interface CardSwitcherProps {
       delay?: number;
@@ -284,6 +291,16 @@ storiesOf('CardList', {})
       height={500}
     />;
   })
+  .add('With infinite scroll and no lazy loading', () => (
+    <CardList
+      context={context}
+      collectionName={defaultCollectionName}
+      actions={cardsActions}
+      pageSize={10}
+      height={500}
+      shouldLazyLoadCards={false}
+    />
+  ))
   .add('Refresh cards', () => {
 
     const sampleURLs = [

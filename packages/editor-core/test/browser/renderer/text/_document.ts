@@ -295,7 +295,7 @@ export default {
         {
           type: 'mention',
           attrs: {
-            text: '@mention',
+            text: 'mention',
             id: 'mention'
           }
         }

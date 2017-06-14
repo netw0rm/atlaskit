@@ -7,17 +7,19 @@ import {MouseEvent} from 'react';
 import {CardAction, MediaItemDetails, MediaCollectionItem} from '@atlaskit/media-core';
 
 // the only components we expose to consumers is Card, CardView and CardList
-export * from './card';
-export * from './cardView';
+export * from './root/card';
+export * from './root/cardView';
 export * from './list';
 
 export type CardStatus = 'uploading' | 'loading' | 'processing' | 'complete' | 'error';
 
 export type CardAppearance = 'auto' | 'small' | 'image' | 'square' | 'horizontal';
 
+export type CardDimensionValue = number | string;
+
 export interface CardDimensions {
-  width?: number | string;
-  height?: number | string;
+  width?: CardDimensionValue;
+  height?: CardDimensionValue;
 }
 
 export interface CardEvent {

@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
-import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
+import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 import AppSwitcher from '../src';
 import { name } from '../package.json';
 
@@ -58,7 +58,7 @@ describe(name, () => {
       <AppSwitcher {...data} dropdownOptions={{ test: 'test' }} />
     );
 
-    expect(wrapper.find(StatelessDropdownMenu).prop('test')).to.equal('test');
+    expect(wrapper.find(DropdownMenuStateless).prop('test')).to.equal('test');
   });
 
   it('should pass isLoading to StatelessDropdown', () => {
@@ -66,14 +66,14 @@ describe(name, () => {
       <AppSwitcher
         {...data}
         isLoading
-      />).find(StatelessDropdownMenu).prop('isLoading')
+      />).find(DropdownMenuStateless).prop('isLoading')
     ).to.equal(true);
 
     expect(shallow(
       <AppSwitcher
         {...data}
         isLoading={false}
-      />).find(StatelessDropdownMenu).prop('isLoading')
+      />).find(DropdownMenuStateless).prop('isLoading')
     ).to.equal(false);
   });
 

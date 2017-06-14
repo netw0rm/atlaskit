@@ -50,9 +50,10 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription>;
 
   /**
-   * Returns a map matching ascii representations to their corresponding EmojiDescription.
+   * Return the emoji that matches the supplied id or undefined. As with findByEmojiId, this call should load
+   * the media api images before returning.
    */
-  getAsciiMap(): Promise<Map<string, EmojiDescription>>;
+  findById(id: string): Promise<OptionalEmojiDescription>;
 
   /**
    * Finds emojis belonging to specified category.
@@ -60,6 +61,11 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    * Does not automatically load Media API images.
    */
   findInCategory(categoryId: string): Promise<EmojiDescription[]>;
+
+  /**
+   * Returns a map matching ascii representations to their corresponding EmojiDescription.
+   */
+  getAsciiMap(): Promise<Map<string, EmojiDescription>>;
 
   /**
    * Records an emoji selection, for example for using in tracking recent emoji.
@@ -316,8 +322,15 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     return this.retryIfLoading(() => this.findByEmojiId(emojiId), undefined);
   }
 
-  getAsciiMap(): Promise<Map<string, EmojiDescription>> {
-    return Promise.resolve(this.emojiRepository.getAsciiMap());
+  findById(id: string): Promise<OptionalEmojiDescription> {
+    if (this.emojiRepository) {
+      const emoji = this.emojiRepository.findById(id);
+      if (emoji) {
+        return this.loadIfMediaEmoji(emoji);
+      }
+    }
+
+    return this.retryIfLoading(() => this.findById(id), undefined);
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {
@@ -325,6 +338,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       return Promise.resolve(this.emojiRepository.findInCategory(categoryId));
     }
     return this.retryIfLoading(() => this.findInCategory(categoryId), []);
+  }
+
+  getAsciiMap(): Promise<Map<string, EmojiDescription>> {
+    return Promise.resolve(this.emojiRepository.getAsciiMap());
   }
 
   recordSelection(id: EmojiId): Promise<any> {

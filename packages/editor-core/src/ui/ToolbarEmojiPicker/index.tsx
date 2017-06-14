@@ -1,4 +1,4 @@
-import * as React from 'react';
+/*import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ToolbarButton, offsetY, marginRight } from './styles';
 import { PureComponent } from 'react';
@@ -140,4 +140,4 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       this.button = undefined;
     }
   }
-}
+}*/

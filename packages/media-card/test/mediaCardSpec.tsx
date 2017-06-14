@@ -11,7 +11,7 @@ import {waitUntil} from '@atlaskit/media-test-helpers';
 import {FileDetails, UrlPreview} from '@atlaskit/media-core';
 
 import {CardEvent} from '../src';
-import {MediaCard, MediaCardProps, MediaCardState} from '../src/mediaCard';
+import {MediaCard, MediaCardProps, MediaCardState} from '../src/root/mediaCard';
 
 const createNoopProvider = () => ({
   observable: () => Observable.create(() => {/*do nothing*/})

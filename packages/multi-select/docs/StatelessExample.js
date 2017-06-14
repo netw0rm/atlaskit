@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StatelessMultiSelect } from '@atlaskit/multi-select';
+import { MultiSelectStateless } from '@atlaskit/multi-select';
 
 const selectItems = [
   {
@@ -45,7 +45,7 @@ export default class StatelessExample extends PureComponent {
   render() {
     return (
       <div>
-        <StatelessMultiSelect
+        <MultiSelectStateless
           items={selectItems}
           placeholder="Choose a City"
           isOpen={this.state.isOpen}

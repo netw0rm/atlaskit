@@ -14,6 +14,7 @@ const template = require('./data.template');
 
 const parseProps = (src) => {
   const fileContents = fs.readFileSync(src).toString();
+
   const transformed = babel.transform(fileContents, {
     filename: src,
     babelrc: false,
@@ -44,6 +45,9 @@ const components = fs.readdirSync('..').map((key) => {
   // We use the custom "ak:component" key in package.json to describe public
   // AtlastKit components. If it's not present, ignore this package.
   if (!pkg['ak:component']) return false;
+  // The name of the component may be in the "ak:component" section; we default
+  // to the directory name if it isn't present
+  const pkgName = pkg['ak:component'].name || key;
   // Some components have docs, so we test for the presence of a directory and
   // pass `true` if it exists. This writes a literal require() into the template
   let docs;
@@ -54,22 +58,26 @@ const components = fs.readdirSync('..').map((key) => {
     docs = fs.statSync(docsFile).isFile();
     props = require(sourcesFile).map(({ name, src }) => ({ name, props: parseProps(src) }));
   } catch (e) {
-    if (e.code !== 'ENOENT') {
-      e.message += ` (in ${pkg.name})`;
-      throw e;
-    } else {
-      return null;
+    // If there is no docs/index.js, we assume the documentatino has not been
+    // written yet, and do not halt the build. For all other errors, we should
+    // throw.
+    if (e.code === 'ENOENT' && e.path === path.resolve(__dirname, '../../', key, 'docs', 'index.js')) {
+      console.error(`WARNING: No documentation found for ${pkg.name}.`);
+      return {
+        key,
+        pkg,
+        name: pkgName,
+      };
     }
+    e.message += ` (in ${pkg.name})`;
+    throw e;
   }
-  // The name of the component may be in the "ak:component" section; we default
-  // to the directory name if it isn't present
-  const name = pkg['ak:component'].name || key;
   // Return the component data
   return {
     docs,
     props,
     key,
-    name,
+    name: pkgName,
     pkg,
   };
 }).filter(i => i).sort((a, b) => a.name > b.name ? 1 : -1);

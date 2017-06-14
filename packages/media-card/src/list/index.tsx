@@ -13,12 +13,12 @@ import {
 } from '@atlaskit/media-core';
 import { CSSTransitionGroup } from 'react-transition-group';
 
-import { DEFAULT_CARD_DIMENSIONS } from '../files';
-import { CardDimensions, CardListEvent, CardEvent } from '../index';
-import { Provider } from '../card';
-import { MediaCard } from '../mediaCard';
+import { defaultImageCardDimensions, defaultSmallCardDimensions } from '../utils';
+import { CardDimensions, CardListEvent, CardEvent } from '..';
+import { Provider, MediaCard } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
+import { LazyLoadCard } from '../root/card/styled';
 
 export interface CardListProps {
   context: Context;
@@ -37,7 +37,7 @@ export interface CardListProps {
    * Infinite scrolling is only enabled when height has also been specified.
    */
   useInfiniteScroll?: boolean;
-
+  shouldLazyLoadCards?: boolean;
   errorComponent?: JSX.Element;
   loadingComponent?: JSX.Element;
   emptyComponent?: JSX.Element;
@@ -63,9 +63,8 @@ export class CardList extends Component<CardListProps, CardListState> {
     cardAppearance: 'image',
     pageSize: CardList.defaultPageSize,
     actions: [],
-    cardHeight: DEFAULT_CARD_DIMENSIONS.HEIGHT,
     useInfiniteScroll: true,
-
+    shouldLazyLoadCards: true,
     errorComponent: ErrorComponent,
     loadingComponent: LoadingComponent,
     emptyComponent: EmptyComponent
@@ -190,9 +189,14 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderList(): JSX.Element {
+    const {cardWidth, cardHeight, providersByMediaItemId, dataURIService, handleCardClick} = this;
     const { collection } = this.state;
-
+    const {cardAppearance, shouldLazyLoadCards} = this.props;
     const actions = this.props.actions || [];
+    const dimensions = {
+      width: cardWidth,
+      height: cardHeight
+    };
     const cardActions = (collectionItem: MediaCollectionItem) => actions
       .map(action => {
         return {
@@ -208,30 +212,32 @@ export class CardList extends Component<CardListProps, CardListState> {
     ;
 
     const cards = collection ? collection.items
-      .map((mediaItem: MediaCollectionItem, index: number) => {
-        const {cardAppearance, cardDimensions} = this.props;
-
+      .map((mediaItem: MediaCollectionItem) => {
         if (!mediaItem.details || !mediaItem.details.id) {
           return null;
         }
-
-        return (
-          <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
+        const {id, occurrenceKey} = mediaItem.details;
+        const key = `${id}-${occurrenceKey}`;
+        const cardListItem = (
+          <CardListItemWrapper key={key} cardWidth={cardWidth}>
             <MediaCard
-              provider={this.providersByMediaItemId[mediaItem.details.id]}
-              dataURIService={this.dataURIService}
+              provider={providersByMediaItemId[mediaItem.details.id]}
+              dataURIService={dataURIService}
 
               appearance={cardAppearance}
-              dimensions={{
-                width: this.cardWidth,
-                height: cardDimensions && cardDimensions.height
-              }}
+              dimensions={dimensions}
 
-              onClick={this.handleCardClick.bind(this, mediaItem)}
+              onClick={handleCardClick.bind(this, mediaItem)}
               actions={cardActions(mediaItem)}
             />
           </CardListItemWrapper>
         );
+
+        return shouldLazyLoadCards ? (
+          <LazyLoadCard key={key} appearance={cardAppearance}>
+            {cardListItem}
+          </LazyLoadCard>
+        ) : cardListItem;
       }) : null
     ;
 
@@ -287,7 +293,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
 
     if (cardAppearance === 'image') {
-      return DEFAULT_CARD_DIMENSIONS.WIDTH;
+      return defaultImageCardDimensions.width;
     }
 
     if (cardAppearance === 'small') {
@@ -295,6 +301,14 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
 
     return undefined;
+  }
+
+  private get cardHeight(): string | number | undefined {
+    const {cardDimensions, cardAppearance} = this.props;
+
+    if (cardDimensions && cardDimensions.height) { return cardDimensions.height; }
+    if (cardAppearance === 'image') { return defaultImageCardDimensions.height; }
+    if (cardAppearance === 'small') { return defaultSmallCardDimensions.height; }
   }
 
   private get useInfiniteScroll(): boolean {

@@ -5,33 +5,33 @@ import Readme from '@atlaskit/util-readme';
 import { name, description } from '../package.json';
 
 /* eslint-disable import/no-duplicates, import/first */
-import commentComponent from '../src';
-import commentComponentSource from '!raw!../src';
+import comment from '../src/components/Comment';
+import commentSource from '!raw!../src/components/Comment';
 import commentOverview from './examples/CommentExample';
 import commentOverviewSource from '!raw!./examples/CommentExample';
 
-import commentActionComponent from '../src/CommentAction';
-import commentActionComponentSource from '!raw!../src/CommentAction';
+import commentAction from '../src/components/ActionItem';
+import commentActionSource from '!raw!../src/components/ActionItem';
 import commentActionOverview from './examples/CommentActionExample';
 import commentActionOverviewSource from '!raw!./examples/CommentActionExample';
 
-import commentAuthorComponent from '../src/CommentAuthor';
-import commentAuthorComponentSource from '!raw!../src/CommentAuthor';
+import commentAuthor from '../src/components/Author';
+import commentAuthorSource from '!raw!../src/components/Author';
 import commentAuthorOverview from './examples/CommentAuthorExample';
 import commentAuthorOverviewSource from '!raw!./examples/CommentAuthorExample';
 
-import commentTimeComponent from '../src/CommentTime';
-import commentTimeComponentSource from '!raw!../src/CommentTime';
+import commentTime from '../src/components/Time';
+import commentTimeSource from '!raw!../src/components/Time';
 import commentTimeOverview from './examples/CommentTimeExample';
 import commentTimeOverviewSource from '!raw!./examples/CommentTimeExample';
 
-import commentLayoutComponent from '../src/layout/CommentLayout';
-import commentLayoutComponentSource from '!raw!../src/layout/CommentLayout';
+import commentLayout from '../src/components/Layout';
+import commentLayoutSource from '!raw!../src/components/Layout';
 import commentLayoutOverview from './examples/CommentLayoutExample';
 import commentLayoutOverviewSource from '!raw!./examples/CommentLayoutExample';
 
-import commentEditedComponent from '../src/CommentEdited';
-import commentEditedComponentSource from '!raw!../src/CommentEdited';
+import commentEdited from '../src/components/Edited';
+import commentEditedSource from '!raw!../src/components/Edited';
 import commentEditedOverview from './examples/CommentEditedExample';
 import commentEditedOverviewSource from '!raw!./examples/CommentEditedExample';
 
@@ -41,8 +41,8 @@ storiesOf(name, module)
   .add('📖 Comment readme', () => (
     <Readme
       name={name}
-      component={commentComponent}
-      componentSource={commentComponentSource}
+      component={comment}
+      componentSource={commentSource}
       example={commentOverview}
       exampleSource={commentOverviewSource}
       description={description}
@@ -51,8 +51,8 @@ storiesOf(name, module)
   .add('📖 CommentAction readme', () => (
     <Readme
       name={name}
-      component={commentActionComponent}
-      componentSource={commentActionComponentSource}
+      component={commentAction}
+      componentSource={commentActionSource}
       example={commentActionOverview}
       exampleSource={commentActionOverviewSource}
       description={description}
@@ -61,8 +61,8 @@ storiesOf(name, module)
   .add('📖 CommentAuthor readme', () => (
     <Readme
       name={name}
-      component={commentAuthorComponent}
-      componentSource={commentAuthorComponentSource}
+      component={commentAuthor}
+      componentSource={commentAuthorSource}
       example={commentAuthorOverview}
       exampleSource={commentAuthorOverviewSource}
       description={description}
@@ -71,8 +71,8 @@ storiesOf(name, module)
   .add('📖 CommentTime readme', () => (
     <Readme
       name={name}
-      component={commentTimeComponent}
-      componentSource={commentTimeComponentSource}
+      component={commentTime}
+      componentSource={commentTimeSource}
       example={commentTimeOverview}
       exampleSource={commentTimeOverviewSource}
       description={description}
@@ -81,8 +81,8 @@ storiesOf(name, module)
   .add('📖 CommentLayout readme', () => (
     <Readme
       name={name}
-      component={commentLayoutComponent}
-      componentSource={commentLayoutComponentSource}
+      component={commentLayout}
+      componentSource={commentLayoutSource}
       example={commentLayoutOverview}
       exampleSource={commentLayoutOverviewSource}
       description={description}
@@ -91,8 +91,8 @@ storiesOf(name, module)
   .add('📖 CommentEdited readme', () => (
     <Readme
       name={name}
-      component={commentEditedComponent}
-      componentSource={commentEditedComponentSource}
+      component={commentEdited}
+      componentSource={commentEditedSource}
       example={commentEditedOverview}
       exampleSource={commentEditedOverviewSource}
       description={description}

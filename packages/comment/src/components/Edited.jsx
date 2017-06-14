@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import CommentAction from './CommentAction';
+import PropTypes from 'prop-types';
+import ActionItem from './ActionItem';
 
-export default class CommentEdited extends PureComponent {
+export default class Edited extends PureComponent {
   static propTypes = {
     /** Content to render indicating that the comment has been edited. */
     children: PropTypes.node,
@@ -15,14 +15,15 @@ export default class CommentEdited extends PureComponent {
   };
 
   render() {
+    const { children, onClick, onFocus, onMouseOver } = this.props;
     return (
-      <CommentAction
-        onClick={this.props.onClick}
-        onFocus={this.props.onFocus}
-        onMouseOver={this.props.onMouseOver}
+      <ActionItem
+        onClick={onClick}
+        onFocus={onFocus}
+        onMouseOver={onMouseOver}
       >
-        { this.props.children }
-      </CommentAction>
+        {children}
+      </ActionItem>
     );
   }
 }

@@ -50,6 +50,16 @@ import { version } from './version';
 import { hipchatEncoder } from './encoders';
 import { hipchatDecoder } from './decoders';
 
+export {
+  AbstractMentionResource,
+  EmojiProvider,
+  EmojiResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/editor-core';
+
 let debounced: number | null = null;
 
 export type Doc = {

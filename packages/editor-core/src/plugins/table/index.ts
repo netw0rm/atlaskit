@@ -157,7 +157,7 @@ export class TableState {
 
   // we keep track of selection changes because
   // 1) we want to mark toolbar buttons as active when the whole row/col is selected
-  // 2) we want drop selection if editor looses focus
+  // 2) we want to drop selection if editor looses focus
   private updateSelection () {
     const { selection } = this.state;
     let dirty = false;

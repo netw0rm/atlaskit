@@ -13,6 +13,7 @@ export type Hooks = {
   onDragEnd?: (result: DropResult) => void,
 }
 
+// TODO: middleware
 const getFireHooks = (hooks: Hooks) => memoizeOne((state: State, previous: State): void => {
   const { onDragStart, onDragEnd } = hooks;
 

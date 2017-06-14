@@ -351,12 +351,29 @@ describe.only('Droppable - connected', () => {
   });
 
   describe('other phases', () => {
-    it('should return the default props', () => {
+    const other: Phases[] = ['IDLE', 'COLLECTING_DIMENSIONS', 'DROP_COMPLETE'];
 
+    it('should return the default props', () => {
+      const selector = makeSelector(provide);
+
+      other.forEach((phase: Phases): void => {
+        const props: MapProps = execute(selector)({
+          phase,
+          drag: null,
+          pending: null,
+          provided: defaultProvided,
+        });
+
+        expect(props).to.deep.equal(getDefaultMapProps(defaultProvided.id));
+      });
     });
 
     it('should not break memoization on multiple calls', () => {
+      other.forEach((phase: Phases): void => {
+        [1, 2, 3].forEach(() => {
 
+        });
+      });
     });
   });
 

@@ -63,6 +63,11 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   findInCategory(categoryId: string): Promise<EmojiDescription[]>;
 
   /**
+   * Returns a map matching ascii representations to their corresponding EmojiDescription.
+   */
+  getAsciiMap(): Promise<Map<string, EmojiDescription>>;
+
+  /**
    * Records an emoji selection, for example for using in tracking recent emoji.
    *
    * Optional.
@@ -333,6 +338,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       return Promise.resolve(this.emojiRepository.findInCategory(categoryId));
     }
     return this.retryIfLoading(() => this.findInCategory(categoryId), []);
+  }
+
+  getAsciiMap(): Promise<Map<string, EmojiDescription>> {
+    return Promise.resolve(this.emojiRepository.getAsciiMap());
   }
 
   recordSelection(id: EmojiId): Promise<any> {

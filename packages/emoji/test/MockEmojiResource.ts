@@ -90,6 +90,10 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     return this.promiseBuilder(emojis);
   }
 
+  getAsciiMap(): Promise<Map<string, EmojiDescription>> {
+    return this.promiseBuilder(this.emojiRepository.getAsciiMap());
+  }
+
   recordSelection?(id: EmojiId): Promise<any> {
     this.recordedSelections.push(id);
     return this.promiseBuilder(undefined);

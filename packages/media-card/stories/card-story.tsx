@@ -333,6 +333,17 @@ storiesOf('Card', {})
       }
     ];
 
+    // lazy load
+    const lazyLoadCards = [
+      {
+        title: 'Lazy',
+        content: <Card isLazy={true} identifier={successIdentifier} context={context} appearance="image" />
+      }, {
+        title: 'No lazy',
+        content: <Card isLazy={false} identifier={successIdentifier} context={context} appearance="image" />
+      }
+    ];
+
     return (
       <div>
         <h1 style={{margin: '10px 20px'}}>File cards</h1>
@@ -351,6 +362,9 @@ storiesOf('Card', {})
 
           <h3>Thumbnail not available</h3>
           <StoryList>{noThumbnailCards}</StoryList>
+
+          <h3>Lazy load</h3>
+          <StoryList>{lazyLoadCards}</StoryList>
         </div>
       </div>
     );

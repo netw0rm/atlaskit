@@ -323,10 +323,6 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       if (emoji) {
         return this.loadIfMediaEmoji(emoji);
       }
-
-      if (this.isLoaded()) {
-        return Promise.resolve(undefined); // no emoji with that id
-      }
     }
 
     return this.retryIfLoading(() => this.findById(id), undefined);

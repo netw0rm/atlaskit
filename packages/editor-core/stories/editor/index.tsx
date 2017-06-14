@@ -6,7 +6,6 @@ import applyDevTools from 'prosemirror-dev-tools';
 
 import {
   Chrome,
-  ContextName
 } from '../../';
 import blockTypePlugins, {stateKey as blockTypeStateKey} from '../../src/plugins/block-type';
 import clearFormattingPlugins, {stateKey as clearFormattingStateKey} from '../../src/plugins/clear-formatting';
@@ -15,7 +14,6 @@ import panelPlugins, {stateKey as panelStateKey} from '../../src/plugins/panel';
 import textFormattingPlugins, {stateKey as textFormattingStateKey} from '../../src/plugins/text-formatting';
 import hyperlinkPlugins, {stateKey as hyperlinkStateKey} from '../../src/plugins/hyperlink';
 import rulePlugins from '../../src/plugins/rule';
-import imageUploadPlugins, {stateKey as imageUploadStateKey} from '../../src/plugins/image-upload';
 import listsPlugins, {stateKey as listsStateKey} from '../../src/plugins/lists';
 import mentionsPlugins, {stateKey as mentionsStateKey} from '../../src/plugins/mentions';
 import emojiPlugins, {stateKey as emojiStateKey} from '../../src/plugins/emojis';
@@ -43,9 +41,18 @@ import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
+import {
+  mediaPluginFactory,
+  mediaStateKey,
+  MediaProvider,
+  MediaState,
+  Plugin,
+  ReactMediaGroupNode,
+  ReactMediaNode,
+} from '../../src';
+
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
-  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -55,7 +62,9 @@ export interface Props {
   imageUploadHandler?: ImageUploadHandler;
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
+  mediaProvider?: Promise<MediaProvider>;
   analyticsHandler?: AnalyticsHandler;
+  uploadErrorHandler?: (state: MediaState) => void;
 }
 
 export interface State {
@@ -66,9 +75,9 @@ export interface State {
 }
 
 export default class Editor extends PureComponent<Props, State> {
+  private mediaPlugins: Plugin[];
 
   state: State;
-
   providerFactory: ProviderFactory;
 
   constructor(props: Props) {
@@ -83,6 +92,17 @@ export default class Editor extends PureComponent<Props, State> {
     this.handleProviders(this.props);
   }
 
+  componentWillUnmount() {
+    const { editorView } = this.state;
+    if (editorView) {
+      if (editorView.state) {
+        mediaStateKey.getState(editorView.state).destroy();
+      }
+
+      editorView.destroy();
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
     if (props.mentionProvider !== nextProps.mentionProvider) {
@@ -91,9 +111,19 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mentionProvider } = props;
+    const { emojiProvider, mediaProvider, mentionProvider, uploadErrorHandler } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
+
+    if (mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
+
+    this.mediaPlugins = mediaPluginFactory(schema, {
+      uploadErrorHandler,
+      providerFactory: this.providerFactory,
+    });
+
     this.setState({
       emojiProvider,
       mentionProvider
@@ -170,7 +200,7 @@ export default class Editor extends PureComponent<Props, State> {
     const panelState = getStateFromKey(panelStateKey);
     const textFormattingState = getStateFromKey(textFormattingStateKey);
     const hyperlinkState = getStateFromKey(hyperlinkStateKey);
-    const imageUploadState = getStateFromKey(imageUploadStateKey);
+    const mediaState = this.mediaPlugins && this.props.mediaProvider && getStateFromKey(mediaStateKey);
     const mentionsState = getStateFromKey(mentionsStateKey);
     const emojiState = getStateFromKey(emojiStateKey);
     const textColorState = getStateFromKey(textColorStateKey);
@@ -193,7 +223,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
         pluginStateHyperlink={hyperlinkState}
-        pluginStateImageUpload={imageUploadState}
+        pluginStateMedia={mediaState}
         pluginStateMentions={mentionsState}
         pluginStateEmojis={emojiState}
         pluginStateTextColor={textColorState}
@@ -226,6 +256,8 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
+    const { mediaPlugins } = this;
+
     if (place) {
       const editorState = EditorState.create(
         {
@@ -240,12 +272,12 @@ export default class Editor extends PureComponent<Props, State> {
             ...textFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
-            ...imageUploadPlugins(schema),
             ...textColorPlugins(schema),
             // block type plugin needs to be after hyperlink plugin until we implement keymap priority
             // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
             // if converting is possible
             ...blockTypePlugins(schema),
+            ...mediaPlugins,
             ...tablePlugins(),
             ...reactNodeViewPlugins(schema),
             history(),
@@ -262,11 +294,14 @@ export default class Editor extends PureComponent<Props, State> {
         },
         nodeViews: {
           emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
+          mediaGroup: nodeViewFactory(this.providerFactory, {
+            mediaGroup: ReactMediaGroupNode,
+            media: ReactMediaNode,
+          }, true),
           mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
           panel: panelNodeView,
         },
       });
-      imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
       mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 

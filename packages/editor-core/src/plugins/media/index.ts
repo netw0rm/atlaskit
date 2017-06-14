@@ -440,6 +440,11 @@ export class MediaPluginState {
     const { view } = this;
 
     view.dispatch(transaction);
+
+    if (!view.hasFocus()) {
+      view.focus();
+    }
+
     this.selectInsertedMediaNode(node);
   }
 

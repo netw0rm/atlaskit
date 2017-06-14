@@ -236,7 +236,7 @@ storiesOf(name, module)
 
           <Heading type="3">dropdownOptions</Heading>
           <p>
-            The dropdownOptions is a map which is passed into StatelessDropdownMenu to allow
+            The dropdownOptions is a map which is passed into DropdownMenuStateless to allow
             configuring the dropdown. It has the following format:
           </p>
           {propDescriptionList(dropdownOptionsPropDescriptions)}

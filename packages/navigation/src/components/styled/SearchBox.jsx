@@ -7,6 +7,7 @@ const SearchBox = styled.div`
   color: ${({ theme }) => getProvided(theme).text};
   display: flex;
   height: ${search.layout.height}px;
+  margin-bottom: ${search.layout.margin.bottom}px;
 `;
 
 SearchBox.displayName = 'SearchBox';

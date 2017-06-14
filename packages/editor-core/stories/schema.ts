@@ -17,6 +17,8 @@ export default createSchema({
     'mention',
     'hardBreak',
     'emoji',
+    'mediaGroup',
+    'media',
     'table',
     'table_cell',
     'table_header',

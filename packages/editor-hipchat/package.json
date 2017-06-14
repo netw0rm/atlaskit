@@ -28,13 +28,13 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^27.1.0",
+    "@atlaskit/editor-core": "^30.0.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {
-    "@atlaskit/emoji": "^14.0.0",
-    "@atlaskit/mention": "^4.2.0",
+    "@atlaskit/emoji": "^16.0.0",
+    "@atlaskit/mention": "^5.0.1",
     "react": "^15.3.2"
   },
   "devDependencies": {

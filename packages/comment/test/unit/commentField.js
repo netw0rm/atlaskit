@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
-import CommentField from '../../src/internal/CommentField';
-import styles from '../../src/styles.less';
+import CommentField from '../../src/components/Field';
 import { name } from '../../package.json';
+import { Anchor, Span } from '../../src/styled/FieldStyles';
 
 describe(name, () => {
   describe('CommentField', () => {
@@ -25,17 +25,16 @@ describe(name, () => {
         it('should render a link', () => {
           const children = <span>children</span>;
           const href = '/test-href';
-          const wrapper = shallow(<CommentField href={href}>{children}</CommentField>);
+          const wrapper = mount(<CommentField href={href}>{children}</CommentField>);
 
-          expect(wrapper.find(`.${styles.topButtonLink}`).length).to.equal(1);
-          expect(wrapper.find(`.${styles.topButtonLink}`).contains(children)).to.equal(true);
-          expect(wrapper.find(`.${styles.topButtonLink}`).prop('href')).to.equal(href);
+          expect(wrapper.find(Anchor).length).to.equal(1);
+          expect(wrapper.find(Anchor).contains(children)).to.equal(true);
+          expect(wrapper.find(Anchor).prop('href')).to.equal(href);
         });
 
-        it('should render link with extraClasses', () => {
-          const extraClass = 'extra-class';
-          const wrapper = shallow(<CommentField href="#" extraClasses={extraClass} />);
-          expect((wrapper.find(`.${styles.topButtonLink}`)).hasClass((extraClass))).to.equal(true);
+        it('should render link with extra styles', () => {
+          const wrapper = mount(<CommentField href="#" hasAuthor />);
+          expect(wrapper.find(Anchor).prop('hasAuthor')).to.equal(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the link element', () => {
@@ -46,7 +45,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField href="#" {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(`.${styles.topButtonLink}`).prop(propName)).to.equal(props[propName]);
+            expect(wrapper.find(Anchor).prop(propName)).to.equal(props[propName]);
           });
         });
       });
@@ -54,16 +53,15 @@ describe(name, () => {
       describe('if href not provided', () => {
         it('should render a span', () => {
           const children = <span>children</span>;
-          const wrapper = shallow(<CommentField>{children}</CommentField>);
+          const wrapper = mount(<CommentField>{children}</CommentField>);
 
-          expect(wrapper.find(`.${styles.topButtonText}`).length).to.equal(1);
-          expect(wrapper.find(`.${styles.topButtonText}`).contains(children)).to.equal(true);
+          expect(wrapper.find(Span).length).to.equal(1);
+          expect(wrapper.find(Span).contains(children)).to.equal(true);
         });
 
-        it('should render span with extraClasses', () => {
-          const extraClass = 'extra-class';
-          const wrapper = shallow(<CommentField extraClasses={extraClass} />);
-          expect((wrapper.find(`.${styles.topButtonText}`)).hasClass((extraClass))).to.equal(true);
+        it('should render span with author styles', () => {
+          const wrapper = mount(<CommentField hasAuthor />);
+          expect((wrapper.find(Span)).prop('hasAuthor')).to.equal(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the span', () => {
@@ -74,7 +72,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(`.${styles.topButtonText}`).prop(propName)).to.equal(props[propName]);
+            expect(wrapper.find(Span).prop(propName)).to.equal(props[propName]);
           });
         });
       });

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import iconNameToComponentName from '../bin/iconNameToComponentName';
 import { name } from '../package.json';
-import pathToDashed from '../bin/pathToDashed';
 import * as bundle from '../src';
-import { size } from '../src/Icon';
-import { getGlyphs } from './_helpers';
+import { size } from '../src/components/Icon';
 
-const components = getGlyphs();
+import components from '../docs/icons';
 
 describe(name, () => {
   describe('exports', () => {
@@ -361,41 +358,26 @@ describe(name, () => {
     describe('bundle', () => {
       it('has size export', () => bundle.size.should.be.deep.equal(size));
 
-      it('exports the React component', () => {
-        const { AtlassianIcon } = bundle;
-        expect(new AtlassianIcon({ label: 'My icon' })).to.be.instanceOf(Component);
-      });
-
-      it('icons are properly defined in bundle', () => {
-        const bundleKeys = Object
-          .keys(bundle)
-          .filter(key => key !== 'size' && key !== 'default');
-
-        bundleKeys.should.be.deep.equal(Object
-              .keys(components)
-              .map(pathToDashed)
-              .map(x => iconNameToComponentName(x))
-        );
-
-        bundleKeys.forEach((key) => {
-          expect(typeof bundle[key]).to.equal('function');
-        });
+      it('exports the Icon component', () => {
+        const { default: Icon } = bundle;
+        expect(new Icon({ label: 'My icon' })).to.be.instanceOf(Component);
       });
     });
   });
 
   describe('component structure', () => {
     it('should have role="img"', () => {
-      const { AtlassianIcon } = bundle;
+      const AtlassianIcon = components.atlassian.component;
       const wrapper = mount(<AtlassianIcon label="My label" />);
       expect(wrapper.find('svg').is('[role="img"]')).to.equal(true);
     });
 
     it('should be possible to create the components', () => {
-      Object.values(components).forEach((Icon) => {
+      Object.values(components).forEach((iconData) => {
+        const Icon = iconData.component;
         const wrapper = shallow(<Icon label="My icon" />);
         expect(wrapper).not.to.equal(undefined);
-        expect(wrapper.instance()).to.be.instanceOf(Component);
+        expect(Icon).to.be.a('function');
       });
     });
   });
@@ -403,7 +385,7 @@ describe(name, () => {
   describe('props', () => {
     describe('label property', () => {
       it('should accept a label', () => {
-        const { AtlassianIcon } = bundle;
+        const AtlassianIcon = components.atlassian.component;
         const label = 'my label';
         const wrapper = mount(<AtlassianIcon label={label} />);
         const svgWrapper = wrapper.find('svg').first();

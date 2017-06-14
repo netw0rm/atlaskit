@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
+import { DropdownMenuStateless as Dropdown } from '@atlaskit/dropdown-menu';
 
 const dropdownItems = [
   { content: 'Sydney', type: 'radio' },
@@ -13,7 +13,7 @@ const StatelessMenuExample = class extends PureComponent {
 
   render() {
     return (
-      <StatelessDropdownMenu
+      <Dropdown
         isOpen={this.state.isDropdownOpen}
         items={[{ heading: 'Cities', items: this.state.items }]}
         onOpenChange={(attrs) => {
@@ -29,7 +29,7 @@ const StatelessMenuExample = class extends PureComponent {
         triggerType="button"
       >
         Choose
-      </StatelessDropdownMenu>
+      </Dropdown>
     );
   }
 };

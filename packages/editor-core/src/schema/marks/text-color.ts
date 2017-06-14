@@ -3,6 +3,7 @@ import {
   akColorN80, akColorB500, akColorB200, akColorG500, akColorG200,
   akColorY500, akColorY100, akColorR500, akColorR100, akColorP500, akColorP200,
 } from '@atlaskit/util-shared-styles';
+import { COLOR } from '../groups';
 
 export interface TextColorMark extends Mark {
   attrs: {
@@ -39,6 +40,7 @@ export const colorPalette = new Map<string, string>();
 export const textColor: MarkSpec = {
   attrs: { color: { } },
   inclusive: true,
+  group: COLOR,
   parseDOM: [
     {
       style: 'color',

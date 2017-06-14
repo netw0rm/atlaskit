@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import Page, { Grid, GridColumn } from '@atlaskit/page';
 import Button from '@atlaskit/button';
 import debounce from 'lodash.debounce';
-import { AtlassianIcon } from '@atlaskit/icon';
+import PropTypes from 'prop-types';
+import { AtlassianIcon, DashboardIcon, SettingsIcon, ListIcon, ExpandIcon } from '@atlaskit/icon';
+import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { AkNavigationItem } from '../../src';
 import { createGlobalTheme } from '../../src/theme/create-provided-theme';
 import BasicNavigation from './BasicNavigation';
 import * as presets from '../../src/theme/presets';
@@ -37,9 +41,166 @@ const famousThemes = [
   },
 ];
 
+const simpleDropdownItems = [
+  {
+    heading: 'Cities',
+    items: [
+      { content: 'Sydney', type: 'radio' },
+      { content: 'Canberra', type: 'radio' },
+      { content: 'Melbourne', type: 'radio' },
+      { content: 'Perth', type: 'radio' },
+    ],
+  },
+];
+
+// eslint-disable-next-line react/prop-types
+const ThemeSwatches = ({ theme }) => (
+  <SwatchContainer>
+    <Swatch theme={theme}>
+      <Item href="#" theme={theme}>
+        <AtlassianIcon label="Atlassian" size="medium" />
+      </Item>
+    </Swatch>
+    <p>Actual createGlobalTheme(textColor, backgroundColor) output value:</p>
+    <pre>{ JSON.stringify(theme, null, 2) }</pre>
+  </SwatchContainer>
+);
+
+export default class ThemePreview extends PureComponent {
+  static propTypes = {
+    isGlobalOnly: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    isGlobalOnly: false,
+  }
+
+  state = {
+    backgroundColor: famousThemes[0].background,
+    textColor: famousThemes[0].text,
+  }
+
+  handleBackgroundColorChange = (e) => {
+    e.persist();
+    this.updateBackgroundColor(e);
+  }
+
+  updateBackgroundColor = debounce((e) => {
+    this.setState({ backgroundColor: e.target.value });
+  }, debounceDuration)
+
+  handleTextColorChange = (e) => {
+    e.persist();
+    this.updateTextColor(e);
+  }
+
+  updateTextColor = debounce((e) => {
+    this.setState({ textColor: e.target.value });
+  }, debounceDuration)
+
+  showBrand = (text, background) => (
+    () => {
+      this.setState({
+        textColor: text,
+        backgroundColor: background,
+      });
+    }
+  )
+
+  render() {
+    const { isGlobalOnly } = this.props;
+    const { textColor, backgroundColor } = this.state;
+    const myTheme = createGlobalTheme(textColor, backgroundColor);
+
+    const globalTheme = myTheme;
+    const containerTheme = isGlobalOnly ? presets.container : myTheme;
+
+    return (
+      <Page
+        navigation={
+          <BasicNavigation
+            globalTheme={globalTheme}
+            containerTheme={containerTheme}
+          >
+            <DropdownWrapper>
+              <AkDropdownMenu
+                items={simpleDropdownItems}
+                shouldFitContainer
+                position="bottom left"
+              >
+                <AkNavigationItem
+                  isDropdownTrigger
+                  icon={<ListIcon label="List" />}
+                  dropIcon={<ExpandIcon label="Chevron" />}
+                  text="Dropdown"
+                />
+              </AkDropdownMenu>
+            </DropdownWrapper>
+            <AkNavigationItem
+              icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
+              text="Item A"
+            />
+            <AkNavigationItem
+              icon={<SettingsIcon label="Settings" secondaryColor="inherit" />}
+              isSelected
+              text="Selected item"
+            />
+          </BasicNavigation>
+        }
+      >
+        <Grid>
+          <GridColumn>
+            <h3>Theme playground</h3>
+            <p>Pick from one of the examples below:</p>
+            <p>
+              {
+                famousThemes.map(({ name, text, background }) => (
+                  <Button
+                    onClick={this.showBrand(text, background)}
+                    key={name}
+                  >
+                    {name}
+                  </Button>
+                ))
+              }
+            </p>
+            <p>Or choose your own custom colors:</p>
+            <p>
+              <ColorPickerParent>
+                Background:
+                <input
+                  type="color"
+                  onChange={this.handleBackgroundColorChange}
+                />
+              </ColorPickerParent>
+              <ColorPickerParent>
+                Text:
+                <input
+                  type="color"
+                  onChange={this.handleTextColorChange}
+                />
+              </ColorPickerParent>
+            </p>
+            <pre>
+              {`import { createGlobalTheme } from '@atlaskit/navigation';
+  const myTheme = createGlobalTheme('${textColor}', '${backgroundColor}');
+  <Navigation globalTheme={myTheme} />
+  // or
+  <GlobalNavigation theme={myTheme} />`}
+            </pre>
+            <ThemeSwatches theme={myTheme} />
+          </GridColumn>
+        </Grid>
+      </Page>
+    );
+  }
+}
+
 const SwatchContainer = styled.div`
   margin: ${akGridSizeUnitless * 2}px auto;
 `;
+
+const DropdownWrapper = styled.div`padding-bottom: ${akGridSizeUnitless / 2}px`;
 
 const Item = styled.a`
   border-radius: ${akGridSizeUnitless * 2.5}px;
@@ -74,113 +235,6 @@ const Swatch = styled.div`
   text-align: center;
   display: flex;
   justify-content: center;
-`;
-
-// eslint-disable-next-line react/prop-types
-const ThemeSwatches = ({ theme }) => (
-  <SwatchContainer>
-    <Swatch theme={theme}>
-      <Item href="#" theme={theme}>
-        <AtlassianIcon label="Atlassian" size="medium" />
-      </Item>
-    </Swatch>
-    <p>Actual createGlobalTheme(textColor, backgroundColor) output value:</p>
-    <pre>{ JSON.stringify(theme, null, 2) }</pre>
-  </SwatchContainer>
-);
-
-export default class ThemePreview extends PureComponent {
-  state = {
-    backgroundColor: famousThemes[0].background,
-    textColor: famousThemes[0].text,
-  }
-
-  handleBackgroundColorChange = (e) => {
-    e.persist();
-    this.updateBackgroundColor(e);
-  }
-
-  updateBackgroundColor = debounce((e) => {
-    this.setState({ backgroundColor: e.target.value });
-  }, debounceDuration)
-
-  handleTextColorChange = (e) => {
-    e.persist();
-    this.updateTextColor(e);
-  }
-
-  updateTextColor = debounce((e) => {
-    this.setState({ textColor: e.target.value });
-  }, debounceDuration)
-
-  showBrand = (text, background) => (
-    () => {
-      this.setState({
-        textColor: text,
-        backgroundColor: background,
-      });
-    }
-  )
-
-  render() {
-    const { textColor, backgroundColor } = this.state;
-    const myTheme = createGlobalTheme(textColor, backgroundColor);
-    return (
-      <div>
-        <BasicNavigation
-          globalTheme={myTheme}
-          containerTheme={presets.container}
-        />
-        <Container>
-          <h3>Theme playground</h3>
-          <p>Pick from one of the examples below:</p>
-          <p>
-            {
-              famousThemes.map(({ name, text, background }) => (
-                <Button
-                  onClick={this.showBrand(text, background)}
-                  key={name}
-                >
-                  {name}
-                </Button>
-              ))
-            }
-          </p>
-          <p>Or choose your own custom colors:</p>
-          <p>
-            <ColorPickerParent>
-              Background:
-              <input
-                type="color"
-                onChange={this.handleBackgroundColorChange}
-              />
-            </ColorPickerParent>
-            <ColorPickerParent>
-              Text:
-              <input
-                type="color"
-                onChange={this.handleTextColorChange}
-              />
-            </ColorPickerParent>
-          </p>
-          <pre>
-            {`import { createGlobalTheme } from '@atlaskit/navigation';
-const myTheme = createGlobalTheme('${textColor}', '${backgroundColor}');
-<Navigation globalTheme={myTheme} />
-// or
-<GlobalNavigation theme={myTheme} />`}
-          </pre>
-          <ThemeSwatches theme={myTheme} />
-        </Container>
-      </div>
-    );
-  }
-}
-
-const Container = styled.div`
-  margin: 0 auto;
-  padding: ${akGridSizeUnitless * 3}px 0;
-  width: 50vw;
 `;
 
 const ColorPickerParent = styled.span`

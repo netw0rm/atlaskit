@@ -35,7 +35,7 @@ export class FileCard extends Component<FileCardProps, {}> {
       (
         <FileCardViewSmall
           error={errorMessage}
-          width={dimensions && dimensions.width}
+          dimensions={dimensions}
           dataURI={dataURI}
           mediaName={name}
           mediaType={mediaType}

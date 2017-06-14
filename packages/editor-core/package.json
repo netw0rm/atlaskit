@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "28.1.0",
+  "version": "30.2.0",
   "config": {
     "access": "public"
   },
@@ -40,14 +40,14 @@
     "@atlaskit/button": "^1.0.10",
     "@atlaskit/button-group": "^1.0.7",
     "@atlaskit/dropdown-menu": "^1.7.0",
-    "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/emoji": "^16.0.0",
+    "@atlaskit/emoji": "^16.2.0",
     "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-card": "^17.1.5",
+    "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-filmstrip": "4.1.2",
-    "@atlaskit/mention": "^5.0.1",
+    "@atlaskit/mention": "^5.1.0",
+    "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-shared-styles": "^2.1.0",
@@ -63,10 +63,10 @@
     "prosemirror-schema-basic": "^0.21.0",
     "prosemirror-schema-list": "^0.21.0",
     "prosemirror-state": "^0.21.0",
-    "table-prototype": "git://github.com/eshvedai/prosemirror-tables#07f800b4d78bd4c1da6089e496777e1ea8d18e6f",
     "prosemirror-transform": "^0.21.1",
     "prosemirror-view": "^0.21.1",
     "styled-components": "^1.4.6",
+    "table-prototype": "git://github.com/eshvedai/prosemirror-tables#07f800b4d78bd4c1da6089e496777e1ea8d18e6f",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {

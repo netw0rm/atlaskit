@@ -3,9 +3,10 @@ import {Component, MouseEvent} from 'react';
 import {CardAction, MediaType} from '@atlaskit/media-core';
 import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
 import {toHumanReadableMediaSize} from '../../utils';
+import {CardDimensions} from '../..';
 
 export interface FileCardViewSmallProps {
-  width?: number | string;
+  dimensions?: CardDimensions;
   mediaName?: string;
   mediaType?: MediaType;
   mediaSize?: number;
@@ -25,7 +26,7 @@ export interface FileCardViewSmallState {
 
 export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCardViewSmallState> {
   render() {
-    const {error, mediaSize, mediaType, mediaName, dataURI, width, loading, actions, onClick, onMouseEnter, onRetry} = this.props;
+    const {error, mediaSize, mediaType, mediaName, dataURI, dimensions, loading, actions, onClick, onMouseEnter, onRetry} = this.props;
     const subtitle = toHumanReadableMediaSize(mediaSize || 0);
 
     return <CardGenericViewSmall
@@ -34,7 +35,7 @@ export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCar
       title={mediaName}
       subtitle={subtitle}
       thumbnailUrl={dataURI}
-      width={width}
+      dimensions={dimensions}
       loading={loading}
 
       actions={actions}

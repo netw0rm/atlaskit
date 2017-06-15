@@ -1,7 +1,7 @@
 // @flow
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { getDiffToJumpBackward, getDiffToJumpForward } from '../../../src/state/jump-to-next-index';
+import getDiffToJumpToNextIndex from '../../../src/state/get-diff-to-jump-to-next-index';
 import getDimension from '../get-dimension-util';
 import type {
   Dimension,
@@ -50,6 +50,8 @@ const draggables: DimensionMap = {
 
 describe('jump to next index', () => {
   describe('jump forward', () => {
+    const getDiffToJumpForward = getDiffToJumpToNextIndex.bind(null, true);
+
     it('should return null if cannot move forward', () => {
       const location: DraggableLocation = {
         index: 2,
@@ -112,6 +114,8 @@ describe('jump to next index', () => {
   });
 
   describe('jump backward', () => {
+    const getDiffToJumpBackward = getDiffToJumpToNextIndex.bind(null, false);
+
     it('should return null if cannot move backward', () => {
       const location: DraggableLocation = {
         index: 0,

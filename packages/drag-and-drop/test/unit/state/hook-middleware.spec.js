@@ -136,7 +136,7 @@ const state = (() => {
   return { idle, collecting, dragging, dropAnimating, complete };
 })();
 
-describe.only('Hook middleware', () => {
+describe('Hook middleware', () => {
   let hooks: Hooks;
 
   beforeEach(() => {

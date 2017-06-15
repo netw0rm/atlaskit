@@ -2,17 +2,22 @@ import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { ConfluenceLogo } from '@atlaskit/logo';
+import styled from 'styled-components';
 
-const css = `
-  .megatron-start-trial-footer {
-    text-align: right;
-    margin-bottom: 8px;
-    margin-right: 8px;
-  }
-  .megatron-start-trial-dialog {
-    margin-left: 8px;
-  }
+export const MegatronStartTrialFooter = styled.div`
+  text-align: right;
+  margin-bottom: 8px;
+  margin-right: 8px;
 `;
+
+export const MegatronStartTrialDialog = styled.div`
+  margin-left: 8px;
+`;
+
+export const MegatronStartTrialHeader = styled.span`
+  margin-top: 0px;
+`;
+
 export default class StartTrial extends Component {
 
   handleButtonClick = (buttonType) => {
@@ -28,20 +33,19 @@ export default class StartTrial extends Component {
           <span><ConfluenceLogo /></span>
         }
         footer={
-          <div className="megatron-start-trial-footer">
+          <MegatronStartTrialFooter>
             <Button onClick={() => this.handleButtonClick('confirm')} appearance="primary">Confirm</Button><Button onClick={() => this.handleButtonClick('cancel')} appearance="subtle-link" >Cancel</Button>
-          </div>
+          </MegatronStartTrialFooter>
         }
       >
-        <div className="megatron-start-trial-dialog">
-          <style>{css}</style>
-          <h3 style={{ marginTop: 0 }}>Start your 30 day trial</h3>
+        <MegatronStartTrialDialog>
+          <MegatronStartTrialHeader><h3>Start your 30 day trial</h3></MegatronStartTrialHeader>
           <p>Once your trial finishes, billing will start.
             <br />
             Easily cancel at anytime in <b>Manage Application</b>.
             <br />
             We will email your billing contact 3 days in advance.</p>
-        </div>
+        </MegatronStartTrialDialog>
       </ModalDialog>
     );
   }

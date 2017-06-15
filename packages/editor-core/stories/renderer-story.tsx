@@ -1,4 +1,4 @@
-import { /*action,*/ storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { name } from '../package.json';
 import schema from './schema';
@@ -24,14 +24,40 @@ import {
   HardBreak,
   OrderedList,
   ListItem,
+  Mention,
   Panel,
   Paragraph,
 } from '../src/renderer/react/nodes';
 
+import ProviderFactory from '../src/providerFactory';
 import { document } from './story-data';
+
+const mentionProvider = Promise.resolve({
+  shouldHighlightMention(mention) {
+    return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
+  }
+});
 
 storiesOf(name, module)
   .add('renderer', () => {
+    const providerFactory = new ProviderFactory();
+    providerFactory.setProvider('mentionProvider', mentionProvider);
+
+    const eventHandlers = {
+      mention: {
+        onClick: action('onClick'),
+        onMouseEnter: action('onMouseEnter'),
+        onMouseLeave: action('onMouseLeave'),
+      },
+    };
+
+    return (
+      <div>
+        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema, providerFactory, eventHandlers), schema)}
+      </div>
+    );
+  })
+  .add('renderer without providers', () => {
     return (
       <div>
         {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema), schema)}
@@ -64,6 +90,9 @@ storiesOf(name, module)
   ))
   .add('nodes/hardBreak', () => (
     <div>Some text with that<HardBreak />breaks on multiple lines</div>
+  ))
+  .add('nodes/mention', () => (
+    <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
   ))
   .add('nodes/paragraph', () => (
     <Paragraph>This is a paragraph</Paragraph>

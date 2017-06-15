@@ -379,7 +379,92 @@ export default ('PERSON', provide, mapStateToProps)(Person);
 
 ## Usage with react-redux
 
-Redux has a nice seperation because connected (smart) and unconnected (dumb) components. In order to make a unconnected component connected to a redux store you use the `connect` function. Depending on your use case you are welcome to wrap a `connec
+Redux has a nice seperation because connected (smart) and unconnected (dumb) components. In order to make a unconnected component connected to a redux store you use the `connect` function. Depending on your use case you are welcome to wrap a *connected* component with a *droppable* or *draggable* or you can wrap a *droppable* or *draggable* with a *connected* component. Usually you will want to wrap your *droppable* or *draggable* within your *connected* component so that you have access to its full props.
+
+### Example: advised wrapping strategy
+
+This example wraps a *unconnected* component with a *droppable* and then wraps the *droppable* with a *connected* component. Doing this allows your `provide` and `mapStateToProps` functions to have access to all the props hydrated by your `connect` function.
+
+```js
+const Person extends Component {
+  static propTypes = {
+    // provided by props
+    personId: PropTypes.string.isRequired,
+    // provided by your redux store
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    // provided by this library
+    isDragging: PropTypes.bool.isRequired,
+  }
+
+  render() {
+    const { name, personId, email } = this.props;
+    const style = {
+      backgroundColor: isDragging ? 'yellow' : 'grey';
+    };
+
+    return (
+      <div style={style}>
+        <h2>{name} (id: {personId})</h2>
+        <Avatar email={email} />
+      </div>
+    );
+  }
+}
+
+const provide = (ownProps) => ({
+  id: ownProps.itemId,
+  // Because we have wrapped the draggable within the connected component, we have access to the connected components hydrated props in this function.
+  isDragEnabled: ownProps.name !== 'admin',
+});
+
+const mapStateToProps = (state, ownProps) => ({
+  // this will put the isDragging prop on the component
+  isDragging: state.isDragging,
+});
+
+const DraggablePerson = ('PERSON', provide, mapStateToProps)(Person);
+
+const reduxMapStateToProps = (state, ownProps) => {
+  const person = state.users[ownProps.personId];
+
+  return {
+    name: person.name,
+    email: person.email,
+  };
+}
+
+const ConnectedDraggablePerson = connect(reduxMapStateToProps)(DraggablePerson);
+
+ConnectedDraggablePerson.propTypes = {
+  personId: PropTypes.string.isRequired,
+};
+
+export default ConnectedDraggablePerson;
+```
+
+**Wrapping your *draggable* or *droppable* with a *connected* component:**
+
+```js
+<ConnectedDraggablePerson>
+  <DraggablePerson>
+    <Person />
+  </DraggablePerson>
+</ConnectedDraggablePerson>
+```
+
+If you wrap your *draggable* or *droppable* with a *connected* component then `ownProps` within your `provide` and `mapStateToProps` functions would have `personId`, `name` and `email`.
+
+**Wrapping your *connected* component with a *draggable* or *droppable*:**
+
+```js
+<DraggablePerson>
+  <ConnectedPerson>
+    <Person />
+  </ConnectedPerson>
+</DraggablePerson>
+```
+If you wrap your *connected* component with a *draggable* or *droppable* then `ownProps` within your `provide` and `mapStateToProps` functions would only have access to `personId`.
 
 ## Engineering health
 

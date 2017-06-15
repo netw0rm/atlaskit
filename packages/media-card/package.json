@@ -14,7 +14,8 @@
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
-    "validate/typescript": "../../build/bin/validate.typescript.sh"
+    "validate/typescript": "../../build/bin/validate.typescript.sh",
+    "jest": "jest"
   },
   "files": [
     "dist",
@@ -69,7 +70,9 @@
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-test-helpers": "^6.0.0",
     "akutil-common-test": "*",
-    "deepcopy": "0.6.3"
+    "deepcopy": "0.6.3",
+    "jest": "^20.0.4",
+    "ts-jest": "^20.0.6"
   },
   "keywords": [
     "media",

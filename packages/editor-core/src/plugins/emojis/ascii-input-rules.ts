@@ -78,10 +78,6 @@ class AsciiEmojiMatcher {
 
   private asciiToEmojiMap: Map<string, EmojiDescription>;
 
-  /**
-   *
-   * @param asciiToEmojiMap
-   */
   constructor(asciiToEmojiMap: Map<string, EmojiDescription>) {
     this.asciiToEmojiMap = asciiToEmojiMap;
   }

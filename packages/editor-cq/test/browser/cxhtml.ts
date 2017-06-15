@@ -56,7 +56,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         doc(p('')));
 
       check('two adjacent paragraphs',
-      '<p>Text here.</p>\n<p>And more here.</p>',
+        '<p>Text here.</p>\n<p>And more here.</p>',
         doc(
           p('Text here.'),
           p('And more here.'),
@@ -354,8 +354,8 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
 
       context('when language is not set', () => {
         check(`has language attribute as null`,
-            `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
-            doc(codeblock({ language: null })('some code')));
+          `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
+          doc(codeblock({ language: null })('some code')));
       });
 
       context('when language is set', () => {
@@ -408,6 +408,14 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
     });
 
     describe('panel', () => {
+      context('when panels are nested', () => {
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><ac:structured-macro ac:name="info" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(panel('info')(p()))));
+        });
+      });
+
       context('when panel does not have any content', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(`${panelType} panel`,
@@ -695,181 +703,181 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
   });
 
 
-// Color text span
-// ```````````````````````````````` xample
-// <span style="color: rgb(23,43,77);">Background</span>
-// .
-// {"type":"doc","content":[
-// 		{"type":"text","text":"Background",
-// 			"marks":[{"type":"color", "attrs": { "color": "rgb(23,43,77)"}}]
-// 		}
-// ]}
-// ````````````````````````````````
+  // Color text span
+  // ```````````````````````````````` xample
+  // <span style="color: rgb(23,43,77);">Background</span>
+  // .
+  // {"type":"doc","content":[
+  // 		{"type":"text","text":"Background",
+  // 			"marks":[{"type":"color", "attrs": { "color": "rgb(23,43,77)"}}]
+  // 		}
+  // ]}
+  // ````````````````````````````````
 
-// Alignment span - @todo can these appear on anything other than a p? is this the right markup?
-// ```````````````````````````````` xample
-// <p style="text-align: right;">Right wing</p>
-// .
-// {"type":"doc","content":[ {"type":"paragraph",
-// 	"attrs": {"align":"right"},
-// 	"content": [{"type":"text","text":"Right wing"}]
-// }]}
-// ````````````````````````````````
-
-
-// All the less used formatting types
-// ```````````````````````````````` xample
-// <s>struck</s> <del>struck</del> <u>under</u> <ins>ins</ins> <sup>high</sup> <sub>low</sub> <small>tiny</small> <big>huge</big>
-// .
-// {"type":"doc","content":[
-// 	{"type":"text","text":"struck","marks":[{"type":"strikethrough"}]},
-// 	{"type":"text","text":" "},
-// 	{"type":"text","text":"struck","marks":[{"type":"strikethrough"}]},
-// 	{"type":"text","text":" "},
-// 	{"type":"text","text":"under","marks":[{"type":"underline"}]},
-// 	{"type":"text","text":" "},
-// 	{"type":"text","text":"ins","marks":[{"type":"underline"}]},
-// 	{"type":"text","text":" "},
-// 	{"type":"text","text":"high","marks":[{"type":"superscript"}]},
-// 	{"type":"text","text":" "},
-// 	{"type":"text","text":"low","marks":[{"type":"subscript"}]},
-// 	{"type":"text","text":" "},
-// 	{"type":"text","text":"tiny","marks":[{"type":"small"}]},
-// 	{"type":"text","text":" "},
-// 	{"type":"text","text":"huge","marks":[{"type":"big"}]}
-// ]}
-// ````````````````````````````````
+  // Alignment span - @todo can these appear on anything other than a p? is this the right markup?
+  // ```````````````````````````````` xample
+  // <p style="text-align: right;">Right wing</p>
+  // .
+  // {"type":"doc","content":[ {"type":"paragraph",
+  // 	"attrs": {"align":"right"},
+  // 	"content": [{"type":"text","text":"Right wing"}]
+  // }]}
+  // ````````````````````````````````
 
 
-// ## Other Blocks
+  // All the less used formatting types
+  // ```````````````````````````````` xample
+  // <s>struck</s> <del>struck</del> <u>under</u> <ins>ins</ins> <sup>high</sup> <sub>low</sub> <small>tiny</small> <big>huge</big>
+  // .
+  // {"type":"doc","content":[
+  // 	{"type":"text","text":"struck","marks":[{"type":"strikethrough"}]},
+  // 	{"type":"text","text":" "},
+  // 	{"type":"text","text":"struck","marks":[{"type":"strikethrough"}]},
+  // 	{"type":"text","text":" "},
+  // 	{"type":"text","text":"under","marks":[{"type":"underline"}]},
+  // 	{"type":"text","text":" "},
+  // 	{"type":"text","text":"ins","marks":[{"type":"underline"}]},
+  // 	{"type":"text","text":" "},
+  // 	{"type":"text","text":"high","marks":[{"type":"superscript"}]},
+  // 	{"type":"text","text":" "},
+  // 	{"type":"text","text":"low","marks":[{"type":"subscript"}]},
+  // 	{"type":"text","text":" "},
+  // 	{"type":"text","text":"tiny","marks":[{"type":"small"}]},
+  // 	{"type":"text","text":" "},
+  // 	{"type":"text","text":"huge","marks":[{"type":"big"}]}
+  // ]}
+  // ````````````````````````````````
 
-// ````````````````````````````````
-// Pre
-// ```````````````````````````````` xample
-// <pre>Elementary my dear Watson</pre>
-// .
-// {"type":"doc","content":[
-// 	{"type":"pre", "content":[
-// 			{"type":"text","text":"Elementary my dear Watson"}
-// 	]}
-// ]}
-// ````````````````````````````````
 
-// Time tags
-// ```````````````````````````````` xample
-// <time datetime="2016-09-08" />
-// .
-// {"type":"doc","content":
-// 	[ {"type":"time", "attrs": { "datetime": "2016-09-08"}} ]
-// }
-// ````````````````````````````````
+  // ## Other Blocks
 
-// ## Task Lists
+  // ````````````````````````````````
+  // Pre
+  // ```````````````````````````````` xample
+  // <pre>Elementary my dear Watson</pre>
+  // .
+  // {"type":"doc","content":[
+  // 	{"type":"pre", "content":[
+  // 			{"type":"text","text":"Elementary my dear Watson"}
+  // 	]}
+  // ]}
+  // ````````````````````````````````
 
-// A simple, single task:
+  // Time tags
+  // ```````````````````````````````` xample
+  // <time datetime="2016-09-08" />
+  // .
+  // {"type":"doc","content":
+  // 	[ {"type":"time", "attrs": { "datetime": "2016-09-08"}} ]
+  // }
+  // ````````````````````````````````
 
-// ```````````````````````````````` xample
-// <ac:task-list> <ac:task> <ac:task-id>12</ac:task-id> <ac:task-status>incomplete</ac:task-status> <ac:task-body>Bar</ac:task-body> </ac:task> </ac:task-list>
-// .
-// {"type":"doc","content":
-// 	[{"type":"task-list",
-// 		"content":[
-// 			{"type":"task",
-// 				"attrs": { "id": "12", "status": "incomplete" },
-// 				"content":[{"type":"text", "text":"Bar"}]
-// 			}
-// 		]
-// 	}]
-// }
-// ````````````````````````````````
+  // ## Task Lists
 
-// A more complex, real world xample with multiple tasks, completion, assignees and dates.
-// ```````````````````````````````` xample
-// <p>What if I put:</p>
-// <ac:task-list>
-// <ac:task>
-// 	<ac:task-id>9</ac:task-id>
-// 	<ac:task-status>incomplete</ac:task-status>
-// 	<ac:task-body>
-// 		<span>and a task for<ac:link><ri:user ri:userkey="ff808081560b912f01560c66bad90078" /></ac:link> with a date of <time datetime="2016-09-08" /></span>
-// 	</ac:task-body>
-// </ac:task>
-// <ac:task>
-// 	<ac:task-id>10</ac:task-id>
-// 	<ac:task-status>complete</ac:task-status>
-// 	<ac:task-body><span>another task</span></ac:task-body>
-// </ac:task>
-// </ac:task-list>
-// <p><span><br /></span></p>
-// .
-// {"type":"doc","content":[
-// 	{"type":"paragraph","content":[
-// 		{"type":"text","text":"What if I put:"}
-// 	]},
-//   {"type":"task-list","content":[
-// 		{"type":"task",
-// 			"attrs": { "id": "9", "status": "incomplete" },
-// 			"content":[
-// 				{"type":"text", "text":"and a task for"},
-// 				{"type":"mention","userkey":"ff808081560b912f01560c66bad90078"},
-// 				{"type":"text", "text":"with a date of"},
-// 				{"type":"time", "attrs": {"datetime": "2016-09-08"}}
-// 		]
-// 		},
-// 		{"type":"task",
-// 			"attrs": { "id": "10", "status": "complete" },
-// 			"content":[{"type":"text", "text":"another task"}]
-// 		}
-// 	]},
-// 	{
-// 		 "content": [
-// 			 {
-// 				 "type": "hard_break"
-// 			 }
-// 		 ],
-// 		 "type": "paragraph"
-// 	 }
-// ]}
-// ````````````````````````````````
+  // A simple, single task:
 
-// ## Inline Comments
-// ```````````````````````````````` xample
-// <p><ac:inline-comment-marker ac:ref="fcb5d260">The underlying</ac:inline-comment-marker> <strong><ac:inline-comment-marker ac:ref="qrf4d320">feature set</ac:inline-comment-marker></strong></p>
-// .
-// {"type":"doc","content":[
-// 	{"type":"paragraph", "content":[
-// 		{"type":"text", "text":"The underlying",
-// 			"marks":[{ "type": "inlinecomment", "attrs": { "ref": "fcb5d260"}}]
-// 		},
-// 		{"type":"text", "text":" "},
-// 		{"type":"text", "text":"feature set",
-// 			"marks":[{ "type": "inlinecomment", "attrs": { "ref": "qrf4d320"}},
-// 				{"type": "strong" }]
-// 		}
-// 	]}
-// ]}
-// ````````````````````````````````
+  // ```````````````````````````````` xample
+  // <ac:task-list> <ac:task> <ac:task-id>12</ac:task-id> <ac:task-status>incomplete</ac:task-status> <ac:task-body>Bar</ac:task-body> </ac:task> </ac:task-list>
+  // .
+  // {"type":"doc","content":
+  // 	[{"type":"task-list",
+  // 		"content":[
+  // 			{"type":"task",
+  // 				"attrs": { "id": "12", "status": "incomplete" },
+  // 				"content":[{"type":"text", "text":"Bar"}]
+  // 			}
+  // 		]
+  // 	}]
+  // }
+  // ````````````````````````````````
 
-// ## Placeholders
-// ```````````````````````````````` xample
-// <ac:placeholder>The <b>bold</b> placeholders.</ac:placeholder>
-// .
-// {"type":"doc","content":[
-// 	{"type":"placeholder", "content":[
-// 		{"type":"text", "text":"The "},
-// 		{"type":"text", "text":"bold", "marks":[{ "type": "strong"}]},
-// 		{"type":"text", "text":" placeholders."}
-// 	]}
-// ]}
-// ````````````````````````````````
-// A mention type
-// ```````````````````````````````` xample
-// <ac:placeholder ac:type="mention">A person</ac:placeholder>
-// .
-// {"type":"doc","content":[
-// 	{"type":"placeholder", "placeholder-type": "mention", "content":[
-// 		{"type":"text", "text":"A person"}
-// 	]}
-// ]}
-// ````````````````````````````````
+  // A more complex, real world xample with multiple tasks, completion, assignees and dates.
+  // ```````````````````````````````` xample
+  // <p>What if I put:</p>
+  // <ac:task-list>
+  // <ac:task>
+  // 	<ac:task-id>9</ac:task-id>
+  // 	<ac:task-status>incomplete</ac:task-status>
+  // 	<ac:task-body>
+  // 		<span>and a task for<ac:link><ri:user ri:userkey="ff808081560b912f01560c66bad90078" /></ac:link> with a date of <time datetime="2016-09-08" /></span>
+  // 	</ac:task-body>
+  // </ac:task>
+  // <ac:task>
+  // 	<ac:task-id>10</ac:task-id>
+  // 	<ac:task-status>complete</ac:task-status>
+  // 	<ac:task-body><span>another task</span></ac:task-body>
+  // </ac:task>
+  // </ac:task-list>
+  // <p><span><br /></span></p>
+  // .
+  // {"type":"doc","content":[
+  // 	{"type":"paragraph","content":[
+  // 		{"type":"text","text":"What if I put:"}
+  // 	]},
+  //   {"type":"task-list","content":[
+  // 		{"type":"task",
+  // 			"attrs": { "id": "9", "status": "incomplete" },
+  // 			"content":[
+  // 				{"type":"text", "text":"and a task for"},
+  // 				{"type":"mention","userkey":"ff808081560b912f01560c66bad90078"},
+  // 				{"type":"text", "text":"with a date of"},
+  // 				{"type":"time", "attrs": {"datetime": "2016-09-08"}}
+  // 		]
+  // 		},
+  // 		{"type":"task",
+  // 			"attrs": { "id": "10", "status": "complete" },
+  // 			"content":[{"type":"text", "text":"another task"}]
+  // 		}
+  // 	]},
+  // 	{
+  // 		 "content": [
+  // 			 {
+  // 				 "type": "hard_break"
+  // 			 }
+  // 		 ],
+  // 		 "type": "paragraph"
+  // 	 }
+  // ]}
+  // ````````````````````````````````
+
+  // ## Inline Comments
+  // ```````````````````````````````` xample
+  // <p><ac:inline-comment-marker ac:ref="fcb5d260">The underlying</ac:inline-comment-marker> <strong><ac:inline-comment-marker ac:ref="qrf4d320">feature set</ac:inline-comment-marker></strong></p>
+  // .
+  // {"type":"doc","content":[
+  // 	{"type":"paragraph", "content":[
+  // 		{"type":"text", "text":"The underlying",
+  // 			"marks":[{ "type": "inlinecomment", "attrs": { "ref": "fcb5d260"}}]
+  // 		},
+  // 		{"type":"text", "text":" "},
+  // 		{"type":"text", "text":"feature set",
+  // 			"marks":[{ "type": "inlinecomment", "attrs": { "ref": "qrf4d320"}},
+  // 				{"type": "strong" }]
+  // 		}
+  // 	]}
+  // ]}
+  // ````````````````````````````````
+
+  // ## Placeholders
+  // ```````````````````````````````` xample
+  // <ac:placeholder>The <b>bold</b> placeholders.</ac:placeholder>
+  // .
+  // {"type":"doc","content":[
+  // 	{"type":"placeholder", "content":[
+  // 		{"type":"text", "text":"The "},
+  // 		{"type":"text", "text":"bold", "marks":[{ "type": "strong"}]},
+  // 		{"type":"text", "text":" placeholders."}
+  // 	]}
+  // ]}
+  // ````````````````````````````````
+  // A mention type
+  // ```````````````````````````````` xample
+  // <ac:placeholder ac:type="mention">A person</ac:placeholder>
+  // .
+  // {"type":"doc","content":[
+  // 	{"type":"placeholder", "placeholder-type": "mention", "content":[
+  // 		{"type":"text", "text":"A person"}
+  // 	]}
+  // ]}
+  // ````````````````````````````````
 });

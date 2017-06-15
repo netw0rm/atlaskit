@@ -1,7 +1,7 @@
 // @flow
 import type {
   DraggableId,
-  DraggingInitial,
+  InitialDrag,
   Position,
 } from '../../types';
 import {
@@ -40,7 +40,7 @@ export type MapProps = {|
   isDropAnimating: boolean,
   canAnimate: boolean,
   offset: Position,
-  initial: ?DraggingInitial,
+  initial: ?InitialDrag,
 |}
 
 export type Props = {

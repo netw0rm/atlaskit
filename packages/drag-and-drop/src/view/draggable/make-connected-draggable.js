@@ -28,6 +28,8 @@ import type {
   PendingDrop,
   Phase,
   DragMovement,
+  HOC,
+  ReactClass,
 } from '../../types';
 import type {
   Provide,
@@ -209,8 +211,8 @@ const mergeProps = (mapProps: MapProps,
 
 export default (type: TypeId,
   provide: Provide,
-  mapStateToProps?: MapStateToProps = () => empty) =>
-  (Component: any) => {
+  mapStateToProps?: MapStateToProps = () => empty): HOC =>
+  (Component: ReactClass): ReactClass => {
     const Draggable = makeDraggable(type, mapStateToProps)(Component);
     return connect(
       makeMapStateToProps(provide),

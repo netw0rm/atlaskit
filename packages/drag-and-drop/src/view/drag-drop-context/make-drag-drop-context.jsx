@@ -10,7 +10,7 @@ type Context = {|
   [storeKey]: Store
 |}
 
-export default (hooks: Hooks) => (Component: ReactClass<any>) =>
+export default (hooks: Hooks) => (Component: ReactClass<any>): ReactClass<any> =>
   class DragDropContext extends PureComponent {
     static displayName = `DragDropContext(${getDisplayName(Component)})`
 

@@ -15,6 +15,8 @@ import type {
   State,
   DroppableId,
   DraggableLocation,
+  ReactClass,
+  HOC,
 } from '../../types';
 import type {
   NeedsProviding,
@@ -98,11 +100,13 @@ const makeMapStateToProps = (provide: Provide) => {
     selector(state, props);
 };
 
+const empty = {};
+
 export default (type: TypeId,
   direction: Direction,
   provide: Provide,
-  mapStateToProps?: MapStateToProps = () => ({})): Function =>
-  (Component: ReactClass<any>): ReactClass<any> => {
+  mapStateToProps?: MapStateToProps = () => empty): HOC =>
+  (Component: ReactClass): ReactClass => {
     const Droppable = makeDroppable(type, mapStateToProps)(Component);
     return connect(
       makeMapStateToProps(provide),

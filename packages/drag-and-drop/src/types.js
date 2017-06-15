@@ -108,3 +108,8 @@ export type Hooks = {
   onDragStart?: (id: DraggableId, location: DraggableLocation) => void,
   onDragEnd: (result: DropResult) => void,
 }
+
+// TODO: try to use React's one
+export type ReactClass = any;
+
+export type HOC = (Component: ReactClass) => ReactClass;

@@ -86,16 +86,11 @@ export function findTraversalPath(roots: Node[]) {
 function childrenOfNode(node: Element): NodeList | null {
   const tag = getNodeName(node);
   if (tag === 'AC:STRUCTURED-MACRO') {
-    return childrenOfMacro(node);
+    return getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
   }
 
   return node.childNodes;
 }
-
-function childrenOfMacro(node: Element): NodeList | null {
-  return getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
-}
-
 /**
  * Return an array containing the child nodes in a fragment.
  *

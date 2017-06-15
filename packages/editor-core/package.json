@@ -53,7 +53,6 @@
     "@atlaskit/util-shared-styles": "^2.1.0",
     "mediapicker": "^5.0.4",
     "orderedmap": "^1.0.0",
-    "popper.js": "1.0.8",
     "prosemirror-commands": "^0.21.0",
     "prosemirror-history": "^0.21.0",
     "prosemirror-inputrules": "^0.21.0",

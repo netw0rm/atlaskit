@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import DragHandle, { getCursor } from '../../../src/view/drag-handle/drag-handle';
 import type { Callbacks } from '../../../src/view/drag-handle';
 import createDragHandle from '../../../src/view/drag-handle/';
-import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from './util';
+import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from '../user-input-util';
 
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;

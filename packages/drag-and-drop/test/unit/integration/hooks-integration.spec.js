@@ -7,7 +7,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { dragDropContext, draggable, droppable } from '../../../src/';
 import DragHandle from '../../../src/view/drag-handle/drag-handle';
-import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from '../view/util';
+import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from '../user-input-util';
 import type {
   Hooks,
   DraggableLocation,
@@ -115,7 +115,7 @@ describe('hooks integration', () => {
   afterEach(() => {
     clock.restore();
 
-      // clean up any loose events
+    // clean up any loose events
     wrapper.unmount();
 
       // clean up any stubs
@@ -135,13 +135,13 @@ describe('hooks integration', () => {
 
     const start = () => {
       liftWithMouse(
-          wrapper.find(DragHandle),
-          point.x,
-          point.y,
-        );
-        // Need to wait for the nested async lift action to complete
-        // this takes two async actions. However, this caller should not
-        // know that - so ticking '10ms' to indicate that this is a nested async
+        wrapper.find(DragHandle),
+        point.x,
+        point.y,
+      );
+      // Need to wait for the nested async lift action to complete
+      // this takes two async actions. However, this caller should not
+      // know that - so ticking '10ms' to indicate that this is a nested async
       clock.tick(10);
     };
 

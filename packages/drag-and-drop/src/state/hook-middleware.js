@@ -2,33 +2,39 @@
 import memoizeOne from 'memoize-one';
 import type { Action, Store, State, Hooks, DropResult } from '../types';
 
-const getFireHooks = (hooks: Hooks) => memoizeOne((state: State, previous: State): void => {
+const getFireHooks = (hooks: Hooks) => memoizeOne((current: State, previous: State): void => {
   const { onDragStart, onDragEnd } = hooks;
 
-  const currentPhase = state.phase;
+  const currentPhase = current.phase;
   const previousPhase = previous.phase;
 
   // Drag start
-  if (currentPhase === 'DRAGGING' && previousPhase !== 'DRAGGING' && onDragStart) {
-    if (!state.drag) {
-      console.error('cannot fire onDragStart hook without drag state', { state, previous });
+  if (currentPhase === 'DRAGGING' && previousPhase !== 'DRAGGING') {
+    // onDragStart is optional
+    if (!onDragStart) {
       return;
     }
-    onDragStart(state.drag.current.id, state.drag.initial.source);
+
+    if (!current.drag) {
+      console.error('cannot fire onDragStart hook without drag state', { current, previous });
+      return;
+    }
+
+    onDragStart(current.drag.current.id, current.drag.initial.source);
     return;
   }
 
   // Drag end
-  if (currentPhase === 'DROP_COMPLETE' && previousPhase !== 'DROP_COMPLETE' && onDragEnd) {
-    if (!state.drop || !state.drop.result) {
-      console.error('cannot fire onDragEnd hook without drag state', { state, previous });
+  if (currentPhase === 'DROP_COMPLETE' && previousPhase !== 'DROP_COMPLETE') {
+    if (!current.drop || !current.drop.result) {
+      console.error('cannot fire onDragEnd hook without drag state', { current, previous });
       return;
     }
 
-    const { source, destination, draggableId } = state.drop.result;
+    const { source, destination, draggableId } = current.drop.result;
 
     if (!destination) {
-      onDragEnd(state.drop.result);
+      onDragEnd(current.drop.result);
       return;
     }
 
@@ -37,7 +43,7 @@ const getFireHooks = (hooks: Hooks) => memoizeOne((state: State, previous: State
                               source.index !== destination.index;
 
     if (didMove) {
-      onDragEnd(state.drop.result);
+      onDragEnd(current.drop.result);
       return;
     }
 
@@ -50,22 +56,36 @@ const getFireHooks = (hooks: Hooks) => memoizeOne((state: State, previous: State
     onDragEnd(muted);
   }
 
-  // Drag cancelled
-  if (currentPhase === 'IDLE' &&
-    (previousPhase === 'DRAGGING' || previousPhase === 'DROP_ANIMATING') &&
-    onDragEnd) {
+  // Drag cancelled while dragging
+  if (currentPhase === 'IDLE' && previousPhase === 'DRAGGING') {
     if (!previous.drag) {
       console.error('cannot fire onDragEnd for cancel because cannot find previous drag');
       return;
     }
-
     const result: DropResult = {
       draggableId: previous.drag.current.id,
       source: previous.drag.initial.source,
       destination: null,
     };
     onDragEnd(result);
+    
   }
+
+  // Drag cancelled during a drop animation. Not super sure how this can even happen.
+  // This is being really safe
+  // if (currentPhase === 'IDLE' && previousPhase === 'DROP_ANIMATING') {
+  //   if (!previous.drop || !previous.drop.pending) {
+  //     console.error('cannot fire onDragEnd for cancel because cannot find previous pending drop');
+  //     return;
+  //   }
+
+  //   const result: DropResult = {
+  //     draggableId: previous.drop.pending.result.draggableId,
+  //     source: previous.drop.pending,
+  //     destination: null,
+  //   };
+  //   onDragEnd(result);
+  // }
 });
 
 export default (hooks: Hooks) => {

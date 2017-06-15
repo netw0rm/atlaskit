@@ -349,7 +349,11 @@ export default (state: State = clean('IDLE'), action: Action): State => {
         pending,
         result: null,
       },
-      dimension: state.dimension,
+      dimension: {
+        request: null,
+        draggable: {},
+        droppable: {},
+      },
     };
   }
 

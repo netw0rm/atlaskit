@@ -88,16 +88,17 @@ storiesOf(name, module)
     return <Demo />;
   })
   .addDecorator(storyDecorator(version))
-  .add('Editor', () => <Editor />)
-  .add('Editor (allowLists)', () => <Editor allowLists={true} />)
-  .add('Editor (allowLinks)', () => <Editor allowLinks={true} />)
-  .add('Editor (allowAdvancedTextFormatting)', () => <Editor allowAdvancedTextFormatting={true} />)
-  .add('Editor (allowSubSup)', () => <Editor allowSubSup={true} />)
-  .add('Editor (allowTextColor)', () => <Editor allowTextColor={true} />)
-  .add('Editor (allowCodeBlock)', () => <Editor allowCodeBlock={true} />)
-  .add('Editor (allowBlockQuote)', () => <Editor allowBlockQuote={true} />)
+  .add('Editor', () => <Editor onChange={handleChange} />)
+  .add('Editor (allowLists)', () => <Editor onChange={handleChange} allowLists={true} />)
+  .add('Editor (allowLinks)', () => <Editor onChange={handleChange} allowLinks={true} />)
+  .add('Editor (allowAdvancedTextFormatting)', () => <Editor onChange={handleChange} allowAdvancedTextFormatting={true} />)
+  .add('Editor (allowSubSup)', () => <Editor onChange={handleChange}  allowSubSup={true} />)
+  .add('Editor (allowTextColor)', () => <Editor onChange={handleChange} allowTextColor={true} />)
+  .add('Editor (allowCodeBlock)', () => <Editor onChange={handleChange} allowCodeBlock={true} />)
+  .add('Editor (allowBlockQuote)', () => <Editor onChange={handleChange} allowBlockQuote={true} />)
   .add('Editor (Mentions)', () =>
     <Editor
+      onChange={handleChange}
       mentionProvider={Promise.resolve(new MentionResource())}
       mentionEncoder={mentionEncoder}
     />
@@ -105,6 +106,7 @@ storiesOf(name, module)
   .add('Editor with InlineEdit', () => {
     const fabricEditor = (
       <Editor
+        onChange={handleChange}
         isExpandedByDefault={true}
         allowLists={true}
         allowLinks={true}
@@ -134,6 +136,7 @@ storiesOf(name, module)
         ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
       </div>
       <Editor
+        onChange={handleChange}
         mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
         onCancel={CANCEL_ACTION}
         onSave={SAVE_ACTION}
@@ -142,6 +145,7 @@ storiesOf(name, module)
   )
   .add('Editor (All flags)', () =>
     <Editor
+      onChange={handleChange}
       allowLists={true}
       allowLinks={true}
       allowCodeBlock={true}
@@ -155,60 +159,59 @@ storiesOf(name, module)
     />
   )
   .add('Editor with HTML Input', () => {
-  type Props = {};
-  type State = { input: string, output: string, key: number };
-  class Demo extends PureComponent<Props, State> {
-    state = { input: '', output: '', key: 1 };
-    refs: {
-      input: HTMLTextAreaElement;
-    };
+    type Props = {};
+    type State = { input: string, output: string, key: number };
+    class Demo extends PureComponent<Props, State> {
+      state = { input: '', output: '', key: 1 };
+      refs: {
+        input: HTMLTextAreaElement;
+      };
 
-    render() {
-      return (
-        <div ref="root">
-          <fieldset style={{ marginTop: 20, marginBottom: 20 }}>
-            <legend>Input</legend>
-            <textarea
-              style={{
-                boxSizing: 'border-box',
-                border: '1px solid lightgray',
-                fontFamily: 'monospace',
-                padding: 10,
-                width: '100%',
-                height: 100
-              }}
-              ref="input"
+      render() {
+        return (
+          <div ref="root">
+            <fieldset style={{ marginTop: 20, marginBottom: 20 }}>
+              <legend>Input</legend>
+              <textarea
+                style={{
+                  boxSizing: 'border-box',
+                  border: '1px solid lightgray',
+                  fontFamily: 'monospace',
+                  padding: 10,
+                  width: '100%',
+                  height: 100
+                }}
+                ref="input"
+              />
+              <button onClick={this.handleImportClick}>Import</button>
+            </fieldset>
+            <Editor
+              isExpandedByDefault={true}
+              onCancel={CANCEL_ACTION}
+              onChange={handleChange}
+              onSave={SAVE_ACTION}
+              defaultValue={this.state.input}
+              key={this.state.key}
+              allowLists={true}
+              allowLinks={true}
+              allowCodeBlock={true}
+              allowAdvancedTextFormatting={true}
+              allowSubSup={true}
+              allowTextColor={true}
+              allowBlockQuote={true}
+              mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+              mentionProvider={Promise.resolve(new MentionResource())}
+              mentionEncoder={mentionEncoder}
             />
-            <button onClick={this.handleImportClick}>Import</button>
-          </fieldset>
-          <Editor
-            isExpandedByDefault={true}
-            onCancel={CANCEL_ACTION}
-            onChange={handleChange}
-            onSave={SAVE_ACTION}
-            defaultValue={this.state.input}
-            key={this.state.key}
-            allowLists={true}
-            allowLinks={true}
-            allowCodeBlock={true}
-            allowAdvancedTextFormatting={true}
-            allowSubSup={true}
-            allowTextColor={true}
-            allowBlockQuote={true}
-            mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
-            mentionProvider={Promise.resolve(new MentionResource())}
-            mentionEncoder={mentionEncoder}
-          />
-        </div>
-      );
+          </div>
+        );
+      }
+
+      private handleImportClick = () => this.setState({
+        input: this.refs.input.value,
+        key: this.state.key + 1
+      })
     }
 
-    private handleImportClick = () => this.setState({
-      input: this.refs.input.value,
-      key: this.state.key + 1
-    })
-  }
-
-  return <Demo />;
-})
-;
+    return <Demo />;
+  });

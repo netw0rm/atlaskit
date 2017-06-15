@@ -6,10 +6,10 @@ import {
   // dataURIs for file cards
   tallImage,
   wideImage,
-  wideTransparentImage,
   smallImage,
-  smallTransparentImage
 } from '@atlaskit/media-test-helpers';
+import {smallTransparentImage} from './smallTransparentImage';
+import {wideTransparentImage} from './wideTransparentImage';
 
 import {CardView, CardAppearance} from '../../../src';
 

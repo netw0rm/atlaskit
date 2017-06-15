@@ -286,22 +286,67 @@ describe.only('Hook middleware', () => {
   });
 
   describe('drag cancelled', () => {
-    // it only possible to cancel from these two phases
-    const preCancelStates: State[] = [state.dragging, state.dropAnimating];
+    describe('cancelled while dragging', () => {
+      it('should return a result with a null destination', () => {
+        execute(hooks, state.idle, state.dragging);
 
-    // preCancelStates.forEach((previous: State) => {
-    //   it('should return a result with a null destination', () => {
-    //     execute(hooks, idle, previous);
+        if (!state.dragging.drag) {
+          expect.fail();
+          return;
+        }
 
-    //     expect(hooks.onDragEnd.calledWith({
-    //       draggableId,
-    //       source: previous,
-    //     }));
-    //   });
+        expect(hooks.onDragEnd.calledWith({
+          draggableId,
+          source: state.dragging.drag.initial.source,
+          destination: null,
+        })).to.equal(true);
+      });
 
-    //   it('should log an error and do nothing if it cannot find a previous drag to publish', () => {
+      it('should log an error and do nothing if it cannot find a previous drag to publish', () => {
+        const invalid: State = {
+          phase: 'DRAGGING',
+          drag: null,
+          drop: null,
+          dimension: noDimensions,
+        };
 
-    //   });
-    // });
+        execute(hooks, state.idle, invalid);
+
+        expect(hooks.onDragEnd.called).to.equal(false);
+        expect(console.error.called).to.equal(true);
+      });
+    });
+
+    // this should never really happen - but just being safe
+    describe('cancelled while drop animating', () => {
+      it('should return a result with a null destination', () => {
+        execute(hooks, state.idle, state.dropAnimating);
+
+        if (!state.dropAnimating.drop || !state.dropAnimating.drop.pending) {
+          expect.fail();
+          return;
+        }
+
+        expect(hooks.onDragEnd.calledWith({
+          draggableId,
+          source: state.dropAnimating.drop.pending.result.source,
+          destination: null,
+        })).to.equal(true);
+      });
+
+      it('should log an error and do nothing if it cannot find a previous drag to publish', () => {
+        const invalid: State = {
+          phase: 'DROP_ANIMATING',
+          drag: null,
+          drop: null,
+          dimension: noDimensions,
+        };
+
+        execute(hooks, state.idle, invalid);
+
+        expect(hooks.onDragEnd.called).to.equal(false);
+        expect(console.error.called).to.equal(true);
+      });
+    });
   });
 });

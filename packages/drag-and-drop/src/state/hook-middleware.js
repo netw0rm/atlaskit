@@ -68,24 +68,23 @@ const getFireHooks = (hooks: Hooks) => memoizeOne((current: State, previous: Sta
       destination: null,
     };
     onDragEnd(result);
-    
   }
 
   // Drag cancelled during a drop animation. Not super sure how this can even happen.
   // This is being really safe
-  // if (currentPhase === 'IDLE' && previousPhase === 'DROP_ANIMATING') {
-  //   if (!previous.drop || !previous.drop.pending) {
-  //     console.error('cannot fire onDragEnd for cancel because cannot find previous pending drop');
-  //     return;
-  //   }
+  if (currentPhase === 'IDLE' && previousPhase === 'DROP_ANIMATING') {
+    if (!previous.drop || !previous.drop.pending) {
+      console.error('cannot fire onDragEnd for cancel because cannot find previous pending drop');
+      return;
+    }
 
-  //   const result: DropResult = {
-  //     draggableId: previous.drop.pending.result.draggableId,
-  //     source: previous.drop.pending,
-  //     destination: null,
-  //   };
-  //   onDragEnd(result);
-  // }
+    const result: DropResult = {
+      draggableId: previous.drop.pending.result.draggableId,
+      source: previous.drop.pending.result.source,
+      destination: null,
+    };
+    onDragEnd(result);
+  }
 });
 
 export default (hooks: Hooks) => {

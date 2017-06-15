@@ -103,3 +103,8 @@ export type State = {
 export type Action = ActionCreators;
 export type Store = ReduxStore<State, Action>;
 export type Dispatch = ReduxDispatch<Action>;
+
+export type Hooks = {
+  onDragStart?: (id: DraggableId, location: DraggableLocation) => void,
+  onDragEnd: (result: DropResult) => void,
+}

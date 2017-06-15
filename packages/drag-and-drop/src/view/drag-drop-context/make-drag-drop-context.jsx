@@ -1,18 +1,16 @@
 // @flow
 import React, { PureComponent, PropTypes } from 'react';
 import getDisplayName from '../get-display-name';
-import initialise from './hooks';
 import createStore from '../../state/create-store';
 // eslint-disable-next-line no-duplicate-imports
-import type { Hooks } from './hooks';
-import type { Store } from '../../types';
+import type { Store, Hooks } from '../../types';
 import storeKey from '../../state/get-store-key';
 
 type Context = {|
   [storeKey]: Store
 |}
 
-export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) =>
+export default (hooks: Hooks) => (Component: ReactClass<any>) =>
   class DragDropContext extends PureComponent {
     static displayName = `DragDropContext(${getDisplayName(Component)})`
 
@@ -29,12 +27,7 @@ export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) =>
     store: Store
 
     componentWillMount() {
-      this.store = createStore();
-      this.unsubscribe = initialise(hooks, this.store);
-    }
-
-    componentWillUnmount() {
-      this.unsubscribe();
+      this.store = createStore(hooks);
     }
 
     getChildContext(): Context {

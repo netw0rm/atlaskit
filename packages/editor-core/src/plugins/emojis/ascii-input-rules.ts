@@ -46,6 +46,30 @@ type AsciiEmojiMatch = {
 };
 
 class AsciiEmojiMatcher {
+  /**
+   * This regex matches 2 scenarios:
+   * 1. an emoticon starting with a colon character (e.g. :D => 😃)
+   * 2. an emoticon not starting with a colon character (e.g. 8-D => 😎)
+   *
+   * The following describes the different parts of the regex from left to right:
+   *   (^| )
+   *     must be preceded by a space or the start of a line, regardless of scenario #1 or #2
+   *
+   *   ([^: ]\S{1,3}|:\S{1,3} )
+   *     alternation between scenario #1 and #2
+   *       #1 - `[^: ]\S{1,3}`
+   *         must not start with a colon and any additional space is ignored (space is already matched by previous capture)
+   *         following characters must be non-whitespace
+   *         only matches emoticons that are between 2 and 4 characters long
+   *       #2 - :\S{1,3}
+   *         must start with a colon character
+   *         following characters must be non-whitespace
+   *         only matches emoticons that are between 2 and 4 characters long
+   *         must be trailed by a space character
+   *
+   *    $
+   *      anchors the end of the match to the cursor position
+   */
   static REGEX = /(^| )([^: ]\S{1,3}|:\S{1,3} )$/;
 
   private static REGEX_FULL_CAPTURE_INDEX = 0;
@@ -54,6 +78,10 @@ class AsciiEmojiMatcher {
 
   private asciiToEmojiMap: Map<string, EmojiDescription>;
 
+  /**
+   *
+   * @param asciiToEmojiMap
+   */
   constructor(asciiToEmojiMap: Map<string, EmojiDescription>) {
     this.asciiToEmojiMap = asciiToEmojiMap;
   }

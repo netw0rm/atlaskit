@@ -6,7 +6,7 @@ import {colorWithAlpha} from '../../utils/colorWithAlpha';
 const previewWidth = 116;
 
 export interface CardProps {
-  background?: string;
+  background: string | undefined;
 }
 
 const cardColors = ({background}: CardProps) => {
@@ -47,6 +47,9 @@ const cardOverlay = ({background}: CardProps) => {
 
 export const Card = styled.div`
 
+  ${cardColors}
+  ${cardOverlay}
+
   display: inline-flex; /* make the card fit to its contents */
   flex-direction: row; /* make the preview and content side-by-side */
 
@@ -61,8 +64,6 @@ export const Card = styled.div`
 
   /* TODO: reuse existing card wrapper */
   border-radius: 3px;
-  ${cardColors}
-  ${cardOverlay}
 
   /* TODO: reuse */
   box-shadow: 0 2px 4px 0 ${colorWithAlpha(akColorN900, 0.5)};

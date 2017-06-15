@@ -82,7 +82,7 @@ const metaBadge: Badge = {
   max: 99,
   appearance: 'important'
 };
-const detailsWithMetaBadge: Metadata = {
+const detailsWithMetaBadge: Details = {
   ...minimalDetails,
   meta: [{badge: metaBadge}]
 };

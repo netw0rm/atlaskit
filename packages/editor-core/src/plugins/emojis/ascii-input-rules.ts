@@ -43,10 +43,10 @@ type AsciiEmojiMatch = {
   emoji: EmojiDescription;
   startsWithWhitespace: boolean;
   endsWithWhitespace: boolean;
-}
+};
 
 class AsciiEmojiMatcher {
-  static REGEX = /(^| )([^: ]+\S{1,3}|:\S{1,3} )$/;
+  static REGEX = /(^| )([^: ]\S{1,3}|:\S{1,3} )$/;
 
   private static REGEX_FULL_CAPTURE_INDEX = 0;
   private static REGEX_PREFIX_CAPTURE_INDEX = 1;

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
-import { MentionStyle, MentionContainer } from './styles';
+import { MentionStyle, UnpermittedMentionStyle, MentionContainer } from './styles';
 import Tooltip from '@atlaskit/tooltip';
-import { UserAccessLevel } from '../../types';
+import { isRestricted } from '../../types';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -46,32 +46,42 @@ export default class Mention extends PureComponent<Props, {}> {
       handleOnMouseLeave,
       props,
     } = this;
-    const tooltip: boolean = !!(props.accessLevel && UserAccessLevel[props.accessLevel] !== UserAccessLevel.CONTAINER)
-                             && !props.isHighlighted;
+    const { accessLevel, isHighlighted, text } = props;
+    const restricted: boolean = isRestricted(accessLevel);
 
-    const mentionComponent = (
-         <MentionStyle
-              highlighted={props.isHighlighted}
-              accessLevel={props.accessLevel}
-              onClick={handleOnClick}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-         >
-            {props.text}
-         </MentionStyle>
-         );
+    let mentionComponent;
+    if (restricted) {
+      mentionComponent = (
+        <Tooltip
+          description={`${text} won't be notified as they have no access`}
+          position="right"
+        >
+          <UnpermittedMentionStyle
+            highlighted={isHighlighted}
+            onClick={handleOnClick}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          >
+            {text}
+          </UnpermittedMentionStyle>
+        </Tooltip>
+      );
+    } else {
+      mentionComponent = (
+        <MentionStyle
+          highlighted={isHighlighted}
+          onClick={handleOnClick}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
+        >
+          {text}
+        </MentionStyle>
+      );
+    }
 
     return (
       <MentionContainer>
-       { tooltip ?
-          <Tooltip
-              description={`${props.text} won't be notified as they have no access`}
-              position="right"
-          >
-          {mentionComponent}
-          </Tooltip>
-          :
-          mentionComponent }
+        {mentionComponent}
       </MentionContainer>
     );
   }

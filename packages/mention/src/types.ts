@@ -28,13 +28,20 @@ export interface MentionDescription {
   accessLevel?: string;
 }
 
-export enum UserAccessLevel {
+export interface OnMentionEvent {
+  (mention: MentionDescription, event?: SyntheticEvent<any>): void;
+}
+
+enum UserAccessLevel {
     NONE,
     SITE,
     APPLICATION,
     CONTAINER,
 }
 
-export interface OnMentionEvent {
-  (mention: MentionDescription, event?: SyntheticEvent<any>): void;
+export function isRestricted(accessLevel) {
+  if (accessLevel && accessLevel !== UserAccessLevel[UserAccessLevel.CONTAINER]) {
+    return true;
+  }
+  return false;
 }

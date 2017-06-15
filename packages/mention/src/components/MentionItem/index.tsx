@@ -20,7 +20,7 @@ import {
 
 type ReactComponentConstructor = new() => React.Component<any, any>;
 
-import { HighlightDetail, MentionDescription, OnMentionEvent, Presence, UserAccessLevel } from '../../types';
+import { HighlightDetail, MentionDescription, OnMentionEvent, Presence, isRestricted } from '../../types';
 import { leftClick } from '../../util/mouse';
 
 interface Part {
@@ -123,7 +123,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
     const { mention, selected } = this.props;
     const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge, accessLevel } = mention;
     const { status, time } = presence || {} as Presence;
-    const restricted = !!(accessLevel && UserAccessLevel[accessLevel] !== UserAccessLevel.CONTAINER);
+    const restricted = isRestricted(accessLevel);
 
     const nameHighlights = highlight && highlight.name;
     const nicknameHighlights = highlight && highlight.nickname;
@@ -151,7 +151,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
           {restricted ?
             <Tooltip
                 description={`${name} won't be notified as they have no access`}
-                position="right"
+                position="left"
             >
               <AccessSectionStyle>
                 <LockCircleIcon label="No access"/>

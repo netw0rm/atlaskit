@@ -7,7 +7,8 @@ import type {
 } from '../types';
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 
-const getDiff = (isMovingForward: boolean) => (
+export default (
+  isMovingForward: boolean,
   center: Position,
   location: DraggableLocation,
   draggableDimensions: DimensionMap,
@@ -44,7 +45,4 @@ const getDiff = (isMovingForward: boolean) => (
 
   return diff;
 };
-
-export const getDiffToJumpForward = getDiff(true);
-export const getDiffToJumpBackward = getDiff(false);
 

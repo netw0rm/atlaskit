@@ -5,6 +5,7 @@ import type { TypeId,
   State,
   Dimension,
   DragImpact,
+  DragState,
   DropResult,
   CurrentDrag,
   InitialDrag,
@@ -14,7 +15,7 @@ import type { TypeId,
   Position,
 } from '../types';
 import getDragImpact from './get-drag-impact';
-import { getDiffToJumpForward, getDiffToJumpBackward } from './jump-to-next-index';
+import getDiffToJumpToNextIndex from './get-diff-to-jump-to-next-index';
 
 const shout = (message, ...rest) => {
   const key = `%c ${message}`;
@@ -173,7 +174,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
   if (action.type === 'MOVE') {
     if (state.phase !== 'DRAGGING') {
       console.error('cannot move while not dragging', action);
-      return state;
+      return clean();
     }
 
     if (!state.drag) {
@@ -209,116 +210,70 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     };
   }
 
-  if (action.type === 'MOVE_FORWARD') {
-    const previous: ?CurrentDrag = state.currentDrag;
-    if (previous == null) {
-      return state;
+  if (action.type === 'MOVE_FORWARD' || action.type === 'MOVE_BACKWARD') {
+    if (state.phase !== 'DRAGGING') {
+      console.error('cannot move while not dragging', action);
+      return clean();
     }
 
-    if (!previous.impact.destination) {
+    if (!state.drag) {
+      console.error('cannot move if there is no drag information');
+      return clean();
+    }
+
+    const existing: DragState = state.drag;
+
+    if (!existing.impact.destination) {
       console.warn('cannot move forward when there is not previous location');
       return state;
     }
 
-    const diff: ?Position = getDiffToJumpForward(
-      previous.dragging.center,
-      previous.impact.destination,
-      state.draggableDimensions,
-      state.droppableDimensions
+    const isMovingForward: boolean = action.type === 'MOVE_FORWARD';
+
+    const diff: ?Position = getDiffToJumpToNextIndex(
+      isMovingForward,
+      existing.current.center,
+      existing.impact.destination,
+      state.dimension.draggable,
+      state.dimension.droppable,
     );
 
+    // cannot move anyway (at the beginning or end of a list)
     if (!diff) {
       return state;
     }
 
     const offset: Position = {
-      x: previous.dragging.offset.x + diff.x,
-      y: previous.dragging.offset.y + diff.y,
+      x: existing.current.offset.x + diff.x,
+      y: existing.current.offset.y + diff.y,
     };
 
     const center: Position = {
-      x: previous.dragging.center.x + diff.x,
-      y: previous.dragging.center.y + diff.y,
+      x: existing.current.center.x + diff.x,
+      y: existing.current.center.y + diff.y,
     };
 
-    // $ExpectError - flow does not play well with spread
-    const dragging: Dragging = {
-      ...previous.dragging,
-      shouldAnimate: true,
-      center,
+    const current: CurrentDrag = {
+      id: existing.current.id,
+      type: existing.current.type,
       offset,
+      center,
+      shouldAnimate: true,
     };
 
     const impact: DragImpact = getDragImpact(
-      dragging.center,
-      dragging.id,
-      state.draggableDimensions,
-      state.droppableDimensions
+      current.center,
+      current.id,
+      state.dimension.draggable,
+      state.dimension.droppable
     );
 
     return {
       ...state,
-      currentDrag: {
-        dragging,
+      drag: {
+        initial: existing.initial,
+        current,
         impact,
-        initial: previous.initial,
-      },
-    };
-  }
-
-  if (action.type === 'MOVE_BACKWARD') {
-    const previous: ?CurrentDrag = state.currentDrag;
-    if (previous == null) {
-      return state;
-    }
-
-    if (!previous.impact.destination) {
-      console.warn('cannot move forward when there is not previous location');
-      return state;
-    }
-
-    const diff: ?Position = getDiffToJumpBackward(
-      previous.dragging.center,
-      previous.impact.destination,
-      state.draggableDimensions,
-      state.droppableDimensions
-    );
-
-    if (!diff) {
-      return state;
-    }
-
-    const offset: Position = {
-      x: previous.dragging.offset.x + diff.x,
-      y: previous.dragging.offset.y + diff.y,
-    };
-
-    const center: Position = {
-      x: previous.dragging.center.x + diff.x,
-      y: previous.dragging.center.y + diff.y,
-    };
-
-    // $ExpectError - flow does not play well with spread
-    const dragging: Dragging = {
-      ...previous.dragging,
-      shouldAnimate: true,
-      center,
-      offset,
-    };
-
-    const impact: DragImpact = getDragImpact(
-      dragging.center,
-      dragging.id,
-      state.draggableDimensions,
-      state.droppableDimensions
-    );
-
-    return {
-      ...state,
-      currentDrag: {
-        dragging,
-        impact,
-        initial: previous.initial,
       },
     };
   }

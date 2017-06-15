@@ -88,8 +88,6 @@ class AsciiEmojiMatcher {
 }
 
 class AsciiEmojiTransactionCreator {
-  private static SPACE = ' ';
-
   private state: EditorState<Schema<any, any>>;
   private match: AsciiEmojiMatch;
   private start: number;
@@ -141,7 +139,7 @@ class AsciiEmojiTransactionCreator {
   }
 
   private createSpaceTextNode(): Node {
-    return this.state.schema.text(AsciiEmojiTransactionCreator.SPACE);
+    return this.state.schema.text(' ');
   }
 }
 

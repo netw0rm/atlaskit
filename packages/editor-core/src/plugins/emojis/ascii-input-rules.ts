@@ -39,7 +39,7 @@ function isEnabled(state: EditorState<Schema<any, any>>) {
   return isMarkTypeAllowedAtCurrentPosition(state.schema.marks.emojiQuery, state);
 }
 
-interface AsciiEmojiMatch {
+type AsciiEmojiMatch = {
   emoji: EmojiDescription;
   startsWithWhitespace: boolean;
   endsWithWhitespace: boolean;

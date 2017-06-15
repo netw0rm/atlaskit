@@ -8,25 +8,44 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 export interface MentionStyleProps {
-  highlighted?: boolean;
+  highlightStyle: HighlightStyle;
 }
 
-// tslint:disable:next-line variable-name
-export const MentionStyle = styled.span`
-  background: ${(props: MentionStyleProps) => props.highlighted ? akColorB400 : akColorN30};
+export enum HighlightStyle {
+  CURRENT,
+  OTHER,
+  UNPERMITTED
+}
+
+const userStyle = {};
+userStyle[HighlightStyle.CURRENT] = {
+  background: akColorB400,
+  border: akColorB400,
+  text: akColorN20,
+};
+userStyle[HighlightStyle.OTHER] = {
+  background: akColorN30,
+  border: akColorN30,
+  text: akColorN500,
+};
+userStyle[HighlightStyle.UNPERMITTED] = {
+  background: akColorN0,
+  border: akColorN500,
+  text: akColorN500,
+};
+
+// tslint:disable-next-line:variable-name
+export const MentionStyle = styled.span`${(props: MentionStyleProps) => `
+  background: ${userStyle[props.highlightStyle].background};
+  border: 1px solid ${userStyle[props.highlightStyle].border};
   border-radius: 20px;
-  color: ${(props: MentionStyleProps) => props.highlighted ? akColorN20 : akColorN500};
+  color: ${userStyle[props.highlightStyle].text};
   cursor: pointer;
   padding: 0 4px 2px 3px;
   white-space: nowrap;
-`;
+`}`;
 
-export const UnpermittedMentionStyle = MentionStyle.extend`
-  background: ${akColorN0};
-  border: 1px solid ${akColorN500};
-  color: ${akColorN500};
-`;
-
+// tslint:disable-next-line:variable-name
 export const MentionContainer = styled.span`
   display: inline-block;
   white-space: nowrap;

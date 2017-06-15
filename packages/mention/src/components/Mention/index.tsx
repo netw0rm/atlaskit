@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
-import { MentionStyle, UnpermittedMentionStyle, MentionContainer } from './styles';
+import { MentionStyle, MentionContainer, HighlightStyle } from './styles';
 import Tooltip from '@atlaskit/tooltip';
 import { isRestricted } from '../../types';
 
@@ -39,6 +39,17 @@ export default class Mention extends PureComponent<Props, {}> {
     }
   }
 
+  private getHighlightStyle = (): HighlightStyle => {
+    const { accessLevel, isHighlighted } = this.props;
+    if (isHighlighted) {
+      return HighlightStyle.CURRENT;
+    }
+    if (isRestricted(accessLevel)) {
+      return HighlightStyle.UNPERMITTED;
+    }
+    return HighlightStyle.OTHER;
+  }
+
   render() {
     const {
       handleOnClick,
@@ -46,42 +57,31 @@ export default class Mention extends PureComponent<Props, {}> {
       handleOnMouseLeave,
       props,
     } = this;
-    const { accessLevel, isHighlighted, text } = props;
-    const restricted: boolean = isRestricted(accessLevel);
+    const { text } = props;
+    const highlightStyle: HighlightStyle = this.getHighlightStyle();
 
-    let mentionComponent;
-    if (restricted) {
-      mentionComponent = (
-        <Tooltip
-          description={`${text} won't be notified as they have no access`}
-          position="right"
-        >
-          <UnpermittedMentionStyle
-            highlighted={isHighlighted}
-            onClick={handleOnClick}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          >
-            {text}
-          </UnpermittedMentionStyle>
-        </Tooltip>
-      );
-    } else {
-      mentionComponent = (
-        <MentionStyle
-          highlighted={isHighlighted}
-          onClick={handleOnClick}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
-        >
-          {text}
-        </MentionStyle>
-      );
-    }
+    const mentionComponent = (
+      <MentionStyle
+        highlightStyle={highlightStyle}
+        onClick={handleOnClick}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+      >
+        {text}
+      </MentionStyle>
+    );
 
     return (
       <MentionContainer>
-        {mentionComponent}
+        { highlightStyle === HighlightStyle.UNPERMITTED ?
+          <Tooltip
+              description={`${props.text} won't be notified as they have no access`}
+              position="right"
+          >
+          {mentionComponent}
+          </Tooltip>
+          :
+          mentionComponent }
       </MentionContainer>
     );
   }

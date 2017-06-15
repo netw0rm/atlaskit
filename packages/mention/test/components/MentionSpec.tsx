@@ -3,7 +3,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import Tooltip from '@atlaskit/tooltip';
-import { MentionStyle } from '../../src/components/Mention/styles';
+import { MentionStyle, HighlightStyle } from '../../src/components/Mention/styles';
 import Mention from '../../src/components/Mention';
 import ResourcedMention from '../../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../_mock-mention-provider';
@@ -17,7 +17,7 @@ describe('<Mention />', () => {
 
     it('should add a highlight class if `isHighlighted` is set to true', () => {
       const mention = shallow(<Mention {...mentionData} isHighlighted={true} />);
-      expect(mention.find(MentionStyle).prop('highlighted')).to.equal(true);
+      expect(mention.find(MentionStyle).prop('highlightStyle')).to.equal(HighlightStyle.CURRENT);
     });
 
     it('should dispatch onClick-event', () => {
@@ -75,12 +75,12 @@ describe('<Mention />', () => {
       const mention = mount(<ResourcedMention id="oscar" text="@Oscar Wallhult" mentionProvider={mentionProvider} />);
 
       await mentionProvider;
-      expect(mention.find(Mention).first().find(MentionStyle).prop('highlighted')).to.equal(true);
+      expect(mention.find(Mention).first().find(MentionStyle).prop('highlightStyle')).to.equal(HighlightStyle.CURRENT);
     });
 
     it('should not render highlighted mention component if there is no mentionProvider', () => {
       const mention = mount(<ResourcedMention id="oscar" text="@Oscar Wallhult" />);
-      expect(mention.find(Mention).first().find(MentionStyle).prop('highlighted')).to.equal(false);
+      expect(mention.find(Mention).first().find(MentionStyle).prop('highlightStyle')).to.equal(HighlightStyle.OTHER);
     });
 
     it('should dispatch onClick-event', () => {

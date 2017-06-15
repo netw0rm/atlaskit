@@ -69,6 +69,7 @@ export interface EmojiDescription extends EmojiId {
   order?: number;
   type: string;
   category: string;
+  ascii?: string[];
   representation: EmojiRepresentation;
 }
 
@@ -87,6 +88,7 @@ export interface EmojiServiceDescription {
   name?: string;
   order?: number;
   fallback?: string;
+  ascii?: string[];
   type: string;
   category: string;
   representation: EmojiServiceRepresentation;

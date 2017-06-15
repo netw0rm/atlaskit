@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import Tag from '@atlaskit/tag';
 import sinon from 'sinon';
 
-import { StatelessMultiSelect } from '../../src';
+import { MultiSelectStateless } from '../../src';
 
 import { name } from '../../package.json';
 
@@ -30,7 +30,7 @@ describe(`${name} - stateless`, () => {
 
     it('should call onRemoved when an item is removed', () => {
       const spy = sinon.spy();
-      const select = mount(<StatelessMultiSelect
+      const select = mount(<MultiSelectStateless
         items={selectItems}
         isOpen onRemoved={spy}
         selectedItems={[selectItems[0].items[0]]}

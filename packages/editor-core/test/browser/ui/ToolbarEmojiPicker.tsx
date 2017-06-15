@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+/*import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import emojiPlugins from '../../../src/plugins/emojis';
@@ -82,4 +82,4 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
   });
 
-});
+});*/

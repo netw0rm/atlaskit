@@ -16,3 +16,6 @@ export const SEARCH_QUERY = 'searchQuery';
 
 // Marks group for links.
 export const LINK = 'link';
+
+// Marks group for colors (text-color, background-color, etc).
+export const COLOR = 'color';

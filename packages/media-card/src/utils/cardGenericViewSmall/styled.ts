@@ -12,7 +12,6 @@ export const SmallCard = styled(Root)`
   ${borderRadius}
   cursor: pointer;
   box-sizing: border-box;
-  height: 42px;
   padding: 5px;
   display: flex;
   align-items: center;

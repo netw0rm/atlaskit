@@ -189,14 +189,10 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderList(): JSX.Element {
-    const {cardWidth, cardHeight, providersByMediaItemId, dataURIService, handleCardClick} = this;
+    const {cardWidth, dimensions, providersByMediaItemId, dataURIService, handleCardClick, placeholder} = this;
     const { collection } = this.state;
     const {cardAppearance, shouldLazyLoadCards} = this.props;
     const actions = this.props.actions || [];
-    const dimensions = {
-      width: cardWidth,
-      height: cardHeight
-    };
     const cardActions = (collectionItem: MediaCollectionItem) => actions
       .map(action => {
         return {
@@ -210,7 +206,6 @@ export class CardList extends Component<CardListProps, CardListState> {
         };
       })
     ;
-    const placeholder = <CardView status="loading" appearance={cardAppearance} />;
 
     const cards = collection ? collection.items
       .map((mediaItem: MediaCollectionItem) => {
@@ -318,6 +313,25 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   private isNullOrUndefined(value: any): boolean {
     return (value === null) || (value === undefined);
+  }
+
+  private get dimensions() {
+    const {cardWidth, cardHeight} = this;
+    return {
+      width: cardWidth,
+      height: cardHeight
+    };
+  }
+
+  private get placeholder(): JSX.Element {
+    const {cardWidth, dimensions} = this;
+    const {cardAppearance} = this.props;
+
+    return (
+      <CardListItemWrapper cardWidth={cardWidth}>
+        <CardView dimensions={dimensions} status="loading" appearance={cardAppearance} />
+      </CardListItemWrapper>
+    );
   }
 
   loadNextPage = (): void => this.state.loadNextPage && this.state.loadNextPage();

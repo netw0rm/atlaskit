@@ -82,6 +82,7 @@ export class Card extends Component<CardProps, {}> {
     const card = (
       <MediaCard
         {...otherProps}
+        appearance={appearance}
         mediaItemType={mediaItemType}
         provider={this.provider}
         dataURIService={this.dataURIService}

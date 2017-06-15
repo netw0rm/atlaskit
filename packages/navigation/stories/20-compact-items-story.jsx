@@ -1,7 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { EmojiCustomIcon, DashboardIcon, CrossIcon } from '@atlaskit/icon';
+import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
@@ -18,7 +20,7 @@ const RandomAvatar = props => <AkAvatar
 
 const CompactItem = ({ children }) => (
   <AkNavigationItem
-    action={<CrossIcon label="close" secondaryColor="inherit" />}
+    action={<CrossIcon label="close" secondaryColor="inherit" size="small" />}
     icon={<RandomAvatar />}
     text={children}
     textAfter={<RandomBadge />}

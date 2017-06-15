@@ -1,7 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import { DashboardIcon } from '@atlaskit/icon';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import { name } from '../package.json';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';

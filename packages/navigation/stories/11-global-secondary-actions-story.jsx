@@ -1,7 +1,9 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import AkAvatar from '@atlaskit/avatar';
-import { SettingsIcon, QuestionCircleIcon, ListIcon } from '@atlaskit/icon';
+import SettingsIcon from '@atlaskit/icon/glyph/settings';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
+import ListIcon from '@atlaskit/icon/glyph/list';
 import { name } from '../package.json';
 import { AkGlobalItem } from '../src/';
 import HtmlPage from './components/HtmlPage';

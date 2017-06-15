@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon, ArrowLeftIcon, IssuesIcon, QuestionCircleIcon } from '@atlaskit/icon';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import IssuesIcon from '@atlaskit/icon/glyph/issues';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import AkButton from '@atlaskit/button';
 import { AkSearchDrawer, AkCreateDrawer, AkCustomDrawer, AkNavigationItem, AkGlobalItem } from '../../src/index';
 import BasicNavigation from './BasicNavigation';

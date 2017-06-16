@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Lorem from 'react-lorem-component';
-import { ArrowLeftIcon, ArrowRightIcon } from '@atlaskit/icon';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { AkContainerNavigationNested, AkNavigationItem } from '../../../src/index';
 
 const pageStyle = {

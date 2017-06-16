@@ -21,9 +21,11 @@ export class CodeBlockState {
   supportedLanguages: string[];
   toolbarVisible: boolean = false;
   domEvent: boolean = false;
+  uniqueId: string | undefined = undefined;
 
   private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
+  private focusHandler: any;
   private activeCodeBlock?: Node;
   private editorFocused: boolean = false;
 
@@ -37,18 +39,32 @@ export class CodeBlockState {
     cb(this);
   }
 
+  subscribeFocusHandler(handler) {
+    this.focusHandler = handler;
+  }
+
   unsubscribe(cb: CodeBlockStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
+  unsubscribeFocusHandler() {
+    this.focusHandler = undefined;
+  }
+
   updateLanguage(language: string | undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
-      commands.setBlockType(view.state.schema.nodes.codeBlock, { language })(view.state, view.dispatch);
+      this.activeCodeBlock.attrs['language'] = language;
+      if (this.focusHandler) {
+        this.focusHandler(this);
+      } else {
+        view.focus();
+      }
     }
   }
 
   removeCodeBlock(view: EditorView): void {
     commands.setBlockType(view.state.schema.nodes.paragraph)(view.state, view.dispatch);
+    view.focus();
   }
 
 
@@ -72,6 +88,7 @@ export class CodeBlockState {
       this.activeCodeBlock = codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
       this.element = newElement;
+      this.uniqueId = codeBlockNode && codeBlockNode!.attrs['uniqueId'];
       this.triggerOnChange();
     }
   }

@@ -7,8 +7,6 @@ import AkButton from '@atlaskit/button';
 import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
-const noop = () => {};
-
 describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     const fixture = fixtures();
     const blockTypePluginsSet = blockTypePlugins(defaultSchema);
@@ -24,8 +22,6 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
             <ToolbarBlockType
               pluginState={blockTypePluginsSet[0].getState(editorView.state)}
               editorView={editorView}
-              focusEditor={noop}
-              softBlurEditor={noop}
               isDisabled={true}
             />
         );

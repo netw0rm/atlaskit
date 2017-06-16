@@ -55,6 +55,9 @@ export {
   tableNodes,
   CellSelection,
   tableEditing,
+  Selection,
+  undo,
+  redo,
 } from './prosemirror';
 export {
   ErrorReporter,

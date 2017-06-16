@@ -7,8 +7,6 @@ import ToolbarTextColor from '../../../src/ui/ToolbarTextColor';
 import { doc, code_block, p, makeEditor, fixtures } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
-const noop = () => {};
-
 describe('ToolbarTextColor', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
@@ -25,8 +23,6 @@ describe('ToolbarTextColor', () => {
         <ToolbarTextColor
           pluginState={pluginState}
           editorView={editorView}
-          focusEditor={noop}
-          softBlurEditor={noop}
         />
       );
 
@@ -41,8 +37,6 @@ describe('ToolbarTextColor', () => {
         <ToolbarTextColor
           pluginState={pluginState}
           editorView={editorView}
-          focusEditor={noop}
-          softBlurEditor={noop}
         />
       );
 
@@ -56,8 +50,6 @@ describe('ToolbarTextColor', () => {
       <ToolbarTextColor
         pluginState={pluginState}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
 
@@ -72,8 +64,6 @@ describe('ToolbarTextColor', () => {
       <ToolbarTextColor
         pluginState={pluginState}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
 
@@ -90,8 +80,6 @@ describe('ToolbarTextColor', () => {
         disabled={true}
         pluginState={pluginState}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
 

@@ -136,7 +136,6 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
   private handleLanguageChange = (language: any) => {
     this.props.pluginState.updateLanguage(language.item.value, this.props.editorView);
-    this.props.editorView.focus();
     this.setState({
       toolbarVisible: true,
     });
@@ -144,7 +143,6 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
   private handleRemoveCodeBlock = () => {
     this.props.pluginState.removeCodeBlock(this.props.editorView);
-    this.props.editorView.focus();
   }
 
   private optionToLanguage(languageOption: string): string | undefined {

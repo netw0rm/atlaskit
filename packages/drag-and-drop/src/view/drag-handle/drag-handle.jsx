@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { cloneElement, PureComponent } from 'react';
 import invariant from 'invariant';
 import styled from 'styled-components';
 import type { Position } from '../../types';
@@ -19,9 +19,7 @@ const noop = (): void => {};
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
 const primaryButton = 0;
 
-const allowDragProps = {
-  tabIndex: '0',
-};
+export const sloppyClickThreshold: number = 5;
 
 type DragTypes = 'KEYBOARD' | 'MOUSE';
 
@@ -114,7 +112,7 @@ export default class Handle extends PureComponent {
     }
 
     // not yet dragging
-    const shouldStartDrag = Math.abs(pending.x - point.x) > 5 || Math.abs(pending.y - point.y) > 5;
+    const shouldStartDrag = Math.abs(pending.x - point.x) > sloppyClickThreshold || Math.abs(pending.y - point.y) > sloppyClickThreshold;
 
     console.log('should start drag?', shouldStartDrag);
 
@@ -202,11 +200,6 @@ export default class Handle extends PureComponent {
       return;
     }
 
-    // nothing is happening - release the event
-    if (!isMouseDragPending || !this.state.draggingWith) {
-      return;
-    }
-
     if (isMouseDragPending) {
       event.preventDefault();
 
@@ -216,6 +209,16 @@ export default class Handle extends PureComponent {
 
       return;
     }
+
+    if (!this.state.draggingWith) {
+      if (event.key === ' ') {
+        event.preventDefault();
+        this.startKeyboardDragging(() => this.props.onKeyLift());
+      }
+      return;
+    }
+
+    // Dragging with either a keyboard or mouse
 
     // Preventing tabbing
     if (event.key === 'Tab') {
@@ -229,7 +232,7 @@ export default class Handle extends PureComponent {
       return;
     }
 
-    if (event.key === ' ') {
+    if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
       this.stopDragging(() => this.props.onDrop());
       return;
@@ -346,21 +349,45 @@ export default class Handle extends PureComponent {
     window.addEventListener('mousedown', this.onWindowMouseDown);
   }
 
-  render() {
-    const { isEnabled } = this.props;
-    const extraProps = isEnabled ? allowDragProps : {};
+  dragEnabledProps = {
+    onMouseDown: this.onMouseDown,
+    onKeyDown: this.onKeyDown,
+    draggable: false,
+    tabIndex: 0,
+  }
 
-    return (
-      <Container
-        isDragging={Boolean(this.state.draggingWith)}
-        isEnabled={isEnabled}
-        onMouseDown={this.onMouseDown}
-        onKeyDown={this.onKeyDown}
-        draggable="false"
-        {...extraProps}
-      >
-        {this.props.children}
-      </Container>
-    );
+  render() {
+    const { children, isEnabled } = this.props;
+
+    return cloneElement(children, isEnabled ? this.dragEnabledProps : null);
+
+    // return cloneElement(children, isEnabled ? props : {});
+
+    // const clone = React.Children.map(this.props.children, child =>
+    //   React.cloneElement(child, {
+    //     onMouseDown: this.onMouseDown,
+    //     onKeyDown: this.onKeyDown,
+    //     draggable: false,
+    //   })
+    // );
+
+    // return cloneElement(Container, {
+    //   onMouseDown: this.onMouseDown,
+    //   onKeyDown: this.onKeyDown,
+    //   draggable: false,
+    // }, this.props.children);
+
+    // return (
+    //   <Container
+    //     isDragging={Boolean(this.state.draggingWith)}
+    //     isEnabled={isEnabled}
+    //     onMouseDown={this.onMouseDown}
+    //     onKeyDown={this.onKeyDown}
+    //     draggable="false"
+    //     {...extraProps}
+    //   >
+    //     {this.props.children}
+    //   </Container>
+    // );
   }
 }

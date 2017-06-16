@@ -1,5 +1,6 @@
 /* eslint-disable  mocha/no-skipped-tests */
 import React from 'react';
+import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
 import Avatar, { SIZE, PRESENCE_TYPE } from '../../src/components/Avatar';
@@ -85,9 +86,9 @@ describe('Avatar', () => {
         expect(wrapper.find(Image).find('img').is(`[src="${oneByOnePixel}"]`)).to.equal(true);
       });
 
-      it('should render an img tag when src is set', () =>
-        expect(wrapper.find(Image).find('img').length).to.be.above(0)
-      );
+      it('should render an img tag when src is set', () => {
+        expect(wrapper.find(Image).find('img').length).to.be.above(0);
+      });
 
       it('should set isLoading=false when a same src is provided as the src already loaded', () => {
         expect((wrapper).state('isLoading')).to.equal(true);

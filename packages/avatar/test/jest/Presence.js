@@ -1,5 +1,6 @@
 /* eslint-disable  mocha/no-skipped-tests */
 import React from 'react';
+import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
 // import from index; ensures we're exposing Presence as a named export
@@ -12,9 +13,9 @@ describe('Avatar', () => {
   describe('Presence', () => {
     PRESENCE_TYPE.values.forEach(presence =>
       describe(`when presence is ${presence}`, () =>
-        it('should render content', () =>
-          expect(shallow(<Presence presence={presence} />).type(getPresenceSVG(presence)))
-        )
+        it('should render content', () => {
+          expect(shallow(<Presence presence={presence} />).type(getPresenceSVG(presence)));
+        })
       )
     );
 

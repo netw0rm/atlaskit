@@ -38,6 +38,7 @@ describe(`${name} - smart`, () => {
         isDisabled
         shouldFocus
         isInvalid
+        invalidMessage="invalid message"
         isRequired
         items={items}
         label="label"
@@ -51,6 +52,7 @@ describe(`${name} - smart`, () => {
       expect(statelessProps.id, 'id').to.equal('id');
       expect(statelessProps.isDisabled, 'isDisabled').to.equal(true);
       expect(statelessProps.isInvalid, 'isInvalid').to.equal(true);
+      expect(statelessProps.invalidMessage, 'invalidMessage').to.equal('invalid message');
       expect(statelessProps.isOpen, 'isOpen').to.equal(true);
       expect(statelessProps.isRequired, 'isRequired').to.equal(true);
       expect(statelessProps.items, 'items').to.equal(items);

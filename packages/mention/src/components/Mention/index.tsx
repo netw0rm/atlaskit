@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
-import { MentionStyle, MentionContainer, HighlightStyle } from './styles';
+import { MentionStyle, MentionContainer } from './styles';
 import Tooltip from '@atlaskit/tooltip';
-import { isRestricted } from '../../types';
+import { isRestricted, MentionType } from '../../types';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -39,15 +39,15 @@ export default class Mention extends PureComponent<Props, {}> {
     }
   }
 
-  private getHighlightStyle = (): HighlightStyle => {
+  private getMentionType = (): MentionType => {
     const { accessLevel, isHighlighted } = this.props;
     if (isHighlighted) {
-      return HighlightStyle.CURRENT;
+      return MentionType.SELF;
     }
     if (isRestricted(accessLevel)) {
-      return HighlightStyle.UNPERMITTED;
+      return MentionType.RESTRICTED;
     }
-    return HighlightStyle.OTHER;
+    return MentionType.DEFAULT;
   }
 
   render() {
@@ -58,11 +58,11 @@ export default class Mention extends PureComponent<Props, {}> {
       props,
     } = this;
     const { text } = props;
-    const highlightStyle: HighlightStyle = this.getHighlightStyle();
+    const mentionType: MentionType = this.getMentionType();
 
     const mentionComponent = (
       <MentionStyle
-        highlightStyle={highlightStyle}
+        mentionType={mentionType}
         onClick={handleOnClick}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
@@ -73,7 +73,7 @@ export default class Mention extends PureComponent<Props, {}> {
 
     return (
       <MentionContainer>
-        { highlightStyle === HighlightStyle.UNPERMITTED ?
+        { mentionType === MentionType.RESTRICTED ?
           <Tooltip
               description={`${props.text} won't be notified as they have no access`}
               position="right"

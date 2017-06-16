@@ -32,6 +32,12 @@ export interface OnMentionEvent {
   (mention: MentionDescription, event?: SyntheticEvent<any>): void;
 }
 
+export enum MentionType {
+  SELF,
+  RESTRICTED,
+  DEFAULT
+}
+
 enum UserAccessLevel {
     NONE,
     SITE,
@@ -40,8 +46,5 @@ enum UserAccessLevel {
 }
 
 export function isRestricted(accessLevel) {
-  if (accessLevel && accessLevel !== UserAccessLevel[UserAccessLevel.CONTAINER]) {
-    return true;
-  }
-  return false;
+  return accessLevel && accessLevel !== UserAccessLevel[UserAccessLevel.CONTAINER];
 }

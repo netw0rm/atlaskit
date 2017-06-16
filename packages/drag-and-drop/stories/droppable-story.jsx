@@ -52,6 +52,7 @@ const lists: ListDataMap = {
 
 const DraggableItem = (() => {
   const ItemContainer = styled.div`
+    display: block;
     height: 80px;
     padding: 8px;
     margin-bottom: 8px;
@@ -72,9 +73,9 @@ const DraggableItem = (() => {
     render() {
       const { isDragging } = this.props;
       return (
-        <ItemContainer isDragging={isDragging} innerRef={ref => this.props.innerRef(ref)}>
+        <ItemContainer isDragging={isDragging} innerRef={ref => this.props.innerRef(ref)} href="chrome://cache/" draggable="false">
           <h4>Draggable {isDragging ? '(is dragging)' : '' }</h4>
-          Id: {this.props.itemId}
+          Id: <a href={this.props.itemId} draggable="false">{this.props.itemId}</a>
         </ItemContainer>
       );
     }

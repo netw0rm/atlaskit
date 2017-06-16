@@ -13,7 +13,7 @@ import ConfluenceOptOutOverviewExampleRaw from '!raw!./examples/ConfluenceOptOut
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
-import { RequestTrial } from '../src';
+import { RequestTrial, StartTrial, OptOut } from '../src';
 
 storiesOf(name, module)
   .add('📖 ConfluenceRequestTrial readme', () => (
@@ -35,10 +35,10 @@ storiesOf(name, module)
         component={name}
         description={description}
       >
-        <Code code={ConfluenceOptOutOverviewExampleRaw}>
-          {ConfluenceOptOutOverviewExample}
+        <Code code={ConfluenceStartTrialOverviewExampleRaw}>
+          {ConfluenceStartTrialOverviewExample}
         </Code>
-        <Props component={RequestTrial} />
+        <Props component={StartTrial} />
       </Readme>
     </div>
   ))
@@ -48,10 +48,10 @@ storiesOf(name, module)
         component={name}
         description={description}
       >
-        <Code code={ConfluenceStartTrialOverviewExampleRaw}>
-          {ConfluenceStartTrialOverviewExample}
+        <Code code={ConfluenceOptOutOverviewExampleRaw}>
+          {ConfluenceOptOutOverviewExample}
         </Code>
-        <Props component={RequestTrial} />
+        <Props component={OptOut} />
       </Readme>
     </div>
   ));

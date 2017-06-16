@@ -1,4 +1,4 @@
-import { MentionProvider } from '@atlaskit/mention';
+import { MentionProvider, MentionDescription } from '@atlaskit/mention';
 import {
   EditorState,
   EditorView,
@@ -150,14 +150,14 @@ export class MentionsState {
     return { start, end };
   }
 
-  insertMention(mentionData?: Mention) {
+  insertMention(mentionData?: MentionDescription) {
     const { state, view } = this;
     const { mention } = state.schema.nodes;
 
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
-      const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id })];
+      const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id, accessLevel: mentionData.accessLevel })];
       if (!this.isNextCharacterSpace()) {
         nodes.push(state.schema.text(' '));
       }
@@ -237,13 +237,6 @@ const plugin = new Plugin({
     };
   }
 });
-
-export interface Mention {
-  name: string;
-  mentionName: string;
-  nickname?: string;
-  id: string;
-}
 
 const plugins = (schema: Schema<any, any>) => {
   return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];

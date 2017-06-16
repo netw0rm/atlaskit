@@ -17,7 +17,7 @@ export interface Props {
 export default class MentionNode extends PureComponent<Props, {}> {
   render() {
     const { node, providerFactory } = this.props;
-    const { id, text } = node.attrs;
+    const { id, text, accessLevel } = node.attrs;
 
     return (
       <WithProviders
@@ -28,6 +28,7 @@ export default class MentionNode extends PureComponent<Props, {}> {
           <ResourcedMention
             id={id}
             text={text}
+            accessLevel={accessLevel}
             mentionProvider={providers['mentionProvider']}
           />
         }

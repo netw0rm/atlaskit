@@ -59,11 +59,11 @@ export class TableState {
     this.toolbarFocused = toolbarFocused;
   }
 
-  selectCol = (col: number) => {
+  selectColumn = (column: number) => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
-      const from = map.positionAt(0, col, this.tableNode);
-      const to = map.positionAt(map.height - 1, col, this.tableNode);
+      const from = map.positionAt(0, column, this.tableNode);
+      const to = map.positionAt(map.height - 1, column, this.tableNode);
       this.createCellSelection(from, to);
     }
   }
@@ -84,6 +84,39 @@ export class TableState {
       const to = map.positionAt(map.height - 1, map.width - 1, this.tableNode);
       this.createCellSelection(from, to);
     }
+  }
+
+  isColumnSelected = (column: number) => {
+    if (this.tableNode && this.cellSelection) {
+      const map = TableMap.get(this.tableNode);
+      const start = this.cellSelection.$anchorCell.start(-1);
+      const anchor = map.colCount(this.cellSelection.$anchorCell.pos - start);
+      const head = map.colCount(this.cellSelection.$headCell.pos - start);
+      return (
+        this.cellSelection.isRowSelection() &&
+        (column <= Math.max(anchor, head) && column >= Math.min(anchor, head))
+      );
+    }
+    return false;
+  }
+
+  isRowSelected = (row: number) => {
+    if (this.cellSelection) {
+      const anchor = this.cellSelection.$anchorCell.index(-1);
+      const head = this.cellSelection.$headCell.index(-1);
+      return (
+        this.cellSelection.isColSelection() &&
+        (row <= Math.max(anchor, head) && row >= Math.min(anchor, head))
+      );
+    }
+    return false;
+  }
+
+  isTableSelected = () => {
+    if (this.cellSelection) {
+      return this.cellSelection.isColSelection() && this.cellSelection.isRowSelection();
+    }
+    return false;
   }
 
   update(newEditorState: EditorState<any>, docView: NodeViewDesc) {
@@ -146,13 +179,15 @@ export class TableState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  private createCellSelection (from, to) {
+  private createCellSelection (from, to): void {
     const { state } = this.view;
     // here "from" and "to" params are table-relative positions, therefore we add table offset
     const offset = this.tableStartPos() || 1;
     const $anchor = state.doc.resolve(from + offset);
     const $head = state.doc.resolve(to + offset);
-    this.view.dispatch(state.tr.setSelection(new CellSelection($anchor, $head)));
+    this.view.dispatch(
+      this.view.state.tr.setSelection( new CellSelection($anchor, $head))
+    );
   }
 
   // we keep track of selection changes because

@@ -4,7 +4,7 @@ import { TableState } from '../../plugins/table';
 import Popper, { IPopper } from './../../popper';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 import { CellSelection, Node, EditorView } from '../../prosemirror';
-import CornerHeader from './CornerHeader';
+import { CornerButton, CornerHeader } from './styles';
 import ColumnHeader from './ColumnHeader';
 import RowHeader from './RowHeader';
 
@@ -63,7 +63,8 @@ export default class TableHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tableElement, position, transform, cellSelection } = this.state;
+    const { tableElement, position, transform } = this.state;
+    const { pluginState } = this.props;
 
     if (tableElement) {
       return (
@@ -73,20 +74,18 @@ export default class TableHeader extends PureComponent<Props, State> {
           onMouseDown={this.handleMouseDown}
           onBlur={this.handleBlur}
         >
-          <CornerHeader
-            tableElement={tableElement}
-            cellSelection={cellSelection}
-            onClick={this.props.pluginState.selectTable}
-          />
+          <CornerHeader className={pluginState.isTableSelected() ? 'active' : ''}>
+            <CornerButton onClick={pluginState.selectTable} />
+          </CornerHeader>
           <ColumnHeader
             tableElement={tableElement}
-            cellSelection={cellSelection}
-            onClick={this.props.pluginState.selectCol}
+            isSelected={pluginState.isColumnSelected}
+            onClick={pluginState.selectColumn}
           />
           <RowHeader
             tableElement={tableElement}
-            cellSelection={cellSelection}
-            onClick={this.props.pluginState.selectRow}
+            isSelected={pluginState.isRowSelected}
+            onClick={pluginState.selectRow}
           />
         </div>
       );

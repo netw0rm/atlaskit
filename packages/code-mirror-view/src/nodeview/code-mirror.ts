@@ -12,6 +12,7 @@ import {
   Fragment,
   NodeView,
   CodeBlockState,
+  codeBlockStateKey,
 } from '@atlaskit/editor-core';
 
 import { stateKey as codeMirrorStateKey, CodeMirrorState } from '../plugin';
@@ -33,7 +34,7 @@ class CodeBlock {
   private pluginState: CodeBlockState;
   private codeMirrorState: CodeMirrorState;
 
-  constructor(node, view, getPos, schema, codeBlockStateKey) {
+  constructor(node, view, getPos, schema) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
@@ -263,9 +264,9 @@ function computeChange(oldVal: string, newVal: string): any {
   return { from: start, to: oldEnd, text: newVal.slice(start, newEnd) };
 }
 
-export default (schema: Schema<any, any>, codeBlockStateKey: string): Function => {
+export default (schema: Schema<any, any>): Function => {
   return (node: any, view: any, getPos: () => number): NodeView => {
-    return new CodeBlock(node, view, getPos, schema, codeBlockStateKey);
+    return new CodeBlock(node, view, getPos, schema);
   };
 };
 

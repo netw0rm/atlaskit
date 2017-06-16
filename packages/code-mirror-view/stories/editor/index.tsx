@@ -124,7 +124,7 @@ export default class Editor extends PureComponent<Props, State> {
         },
         nodeViews: {
           panel: panelNodeView,
-          codeBlock: codeMirrorNodeViewFactory(schema, codeBlockStateKey),
+          codeBlock: codeMirrorNodeViewFactory(schema),
         },
       });
 

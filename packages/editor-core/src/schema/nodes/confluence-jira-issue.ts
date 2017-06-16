@@ -2,7 +2,7 @@ import { NodeSpec } from '../../';
 
 const name = 'confluenceJiraIssue';
 
-export default {
+export const confluenceJiraIssue = {
   group: 'inline',
   inline: true,
   atom: true,

@@ -315,7 +315,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     return (value === null) || (value === undefined);
   }
 
-  private get dimensions() {
+  private get dimensions(): CardDimensions {
     const {cardWidth, cardHeight} = this;
     return {
       width: cardWidth,

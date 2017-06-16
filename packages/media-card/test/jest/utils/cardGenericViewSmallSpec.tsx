@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
+import { CardGenericViewSmall } from '../../../src/utils/cardGenericViewSmall';
 
 describe('CardGenericViewSmall', () => {
   it('should fire onClick when component is clicked', () => {

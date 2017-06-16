@@ -2,9 +2,9 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
-import { TitleWrapper, Metadata, ErrorMessage } from '../../src/utils/cardImageView/cardOverlay/styled';
-import { Ellipsify, Menu } from '../../src/utils/';
+import { CardOverlay } from '../../../src/utils/cardImageView/cardOverlay';
+import { TitleWrapper, Metadata, ErrorMessage } from '../../../src/utils/cardImageView/cardOverlay/styled';
+import { Ellipsify, Menu } from '../../../src/utils/';
 
 describe('CardOverlay', () => {
   it('should not render the title or subtitle when the card has errored', function() {

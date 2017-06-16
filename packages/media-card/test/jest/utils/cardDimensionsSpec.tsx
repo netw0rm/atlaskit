@@ -5,7 +5,7 @@ import {
   minImageCardDimensions,
   defaultHorizontalCardDimensions,
   defaultSquareCardDimensions
-} from '../../src/utils';
+} from '../../../src/utils';
 
 describe('cardDimensions.ts', () => {
   describe('getCardMinHeight', () => {

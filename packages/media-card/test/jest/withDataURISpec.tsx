@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import {expect} from 'chai';
 import {shallow, ShallowWrapper} from 'enzyme';
 import {waitUntil} from '@atlaskit/media-test-helpers';
-import {withDataURI, WithDataURI, WithDataURIProps, WithDataURIState} from '../src/root/withDataURI';
+import {withDataURI, WithDataURI, WithDataURIProps, WithDataURIState} from '../../src/root/withDataURI';
 
 const DemoComponent = () => null; // tslint:disable-line:variable-name
 const DemoComponentWithDataURI = withDataURI(DemoComponent); // tslint:disable-line:variable-name

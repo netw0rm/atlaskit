@@ -4,10 +4,10 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import { CardImageView } from '../../src/utils/cardImageView';
-import { FileIcon } from '../../src/utils';
-import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
-import { UploadingView } from '../../src/utils/uploadingView';
+import { CardImageView } from '../../../src/utils/cardImageView';
+import { FileIcon } from '../../../src/utils';
+import { CardOverlay } from '../../../src/utils/cardImageView/cardOverlay';
+import { UploadingView } from '../../../src/utils/uploadingView';
 
 describe('CardImageView', () => {
   it('should render default icon according to mediaType', () => {

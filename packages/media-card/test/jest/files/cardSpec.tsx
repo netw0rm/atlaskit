@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { FileDetails } from '@atlaskit/media-core';
 
-import { FileCard, FileCardImageView, FileCardViewSmall } from '../../src/files';
+import { FileCard, FileCardImageView, FileCardViewSmall } from '../../../src/files';
 
 describe('FileCard', () => {
   it('should render cardFileView with details passed through to props', function() {

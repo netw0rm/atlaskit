@@ -6,8 +6,8 @@ import { shallow, mount } from 'enzyme';
 import LazyLoad from 'react-lazy-load';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 
-import { Card, UrlPreviewIdentifier, MediaIdentifier, CardEvent } from '../src';
-import { MediaCard } from '../src/root/mediaCard';
+import { Card, UrlPreviewIdentifier, MediaIdentifier, CardEvent } from '../../src';
+import { MediaCard } from '../../src/root/mediaCard';
 
 describe('Card', () => {
   const linkIdentifier: MediaIdentifier = {

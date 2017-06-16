@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import FileIcon from '@atlaskit/icon/glyph/file';
 import LinkIcon from '@atlaskit/icon/glyph/link';
 
-import { CardLoading } from '../../src/utils';
+import { CardLoading } from '../../../src/utils';
 
 describe.skip('CardLoading', () => {
   it('should render the right icon based on the itemType', () => {

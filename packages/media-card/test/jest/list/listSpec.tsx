@@ -10,9 +10,9 @@ import 'rxjs/add/observable/of';
 import {fakeContext} from '@atlaskit/media-test-helpers';
 import {MediaCollectionFileItem, FileDetails} from '@atlaskit/media-core';
 
-import {CardList, CardListProps, CardListState} from '../../src/list';
-import {MediaCard} from '../../src/root/mediaCard';
-import {InfiniteScroll} from '../../src/list/infiniteScroll';
+import {CardList, CardListProps, CardListState} from '../../../src/list';
+import {MediaCard} from '../../../src/root/mediaCard';
+import {InfiniteScroll} from '../../../src/list/infiniteScroll';
 
 describe('CardList', () => {
   const collectionName = 'MyMedia';

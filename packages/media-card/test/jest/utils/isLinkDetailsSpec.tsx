@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {UrlPreview, LinkDetails, FileDetails} from '@atlaskit/media-core';
-import {isLinkDetails} from '../../src/utils/isLinkDetails';
+import {isLinkDetails} from '../../../src/utils/isLinkDetails';
 
 describe('isLinkDetails()', () => {
 

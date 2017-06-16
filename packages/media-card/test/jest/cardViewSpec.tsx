@@ -6,9 +6,9 @@ import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import {FileDetails, LinkDetails} from '@atlaskit/media-core';
 
-import {CardView} from '../src/root/cardView';
-import {LinkCard} from '../src/links';
-import {FileCard} from '../src/files';
+import {CardView} from '../../src/root/cardView';
+import {LinkCard} from '../../src/links';
+import {FileCard} from '../../src/files';
 
 describe('CardView', () => {
   it('should render FileCard when no metadata is passed', () => {

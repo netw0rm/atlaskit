@@ -2,8 +2,8 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import { LinkCardImageView } from '../../src/links/cardImageView';
-import { Href } from '../../src/utils/href';
+import { LinkCardImageView } from '../../../src/links/cardImageView';
+import { Href } from '../../../src/utils/href';
 
 describe('LinkCardImageView', () => {
   const title = 'Hello world';

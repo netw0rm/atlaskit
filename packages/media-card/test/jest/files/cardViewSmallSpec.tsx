@@ -2,8 +2,8 @@ import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
-import { FileCardViewSmall, FileCardViewSmallProps } from '../../src/files';
-import { FileIcon, ErrorIcon } from '../../src/utils/index';
+import { FileCardViewSmall, FileCardViewSmallProps } from '../../../src/files';
+import { FileIcon, ErrorIcon } from '../../../src/utils/index';
 
 describe('FileCardViewSmall', () => {
   it('should display a file icon when loading', () => {

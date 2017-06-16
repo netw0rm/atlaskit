@@ -2,8 +2,8 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import { CardContentSmall } from '../../src/utils/cardGenericViewSmall/cardContentSmall/cardContentSmall';
-import { MediaImage } from '../../src/utils/mediaImage';
+import { CardContentSmall } from '../../../src/utils/cardGenericViewSmall/cardContentSmall/cardContentSmall';
+import { MediaImage } from '../../../src/utils/mediaImage';
 
 describe('CardOverlay', () => {
   it('should render the image preview when mediaType is "video"', function() {

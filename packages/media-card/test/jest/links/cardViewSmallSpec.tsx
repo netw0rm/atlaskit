@@ -2,10 +2,10 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import { LinkCardViewSmall } from '../../src/links';
-import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
-import { Href } from '../../src/utils/href';
-import { Title, Size, LoadingWrapper } from '../../src/utils/cardGenericViewSmall/styled';
+import { LinkCardViewSmall } from '../../../src/links';
+import { CardGenericViewSmall } from '../../../src/utils/cardGenericViewSmall';
+import { Href } from '../../../src/utils/href';
+import { Title, Size, LoadingWrapper } from '../../../src/utils/cardGenericViewSmall/styled';
 
 describe('LinkCardViewSmall', () => {
   const title = 'Hello world';

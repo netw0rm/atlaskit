@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 
-import { LinkCard, LinkCardPlayer, LinkCardViewSmall, LinkCardGenericView, LinkCardTrelloBoardView } from '../../src/links';
-import { LinkCardImageView } from '../../src/links/cardImageView';
+import { LinkCard, LinkCardPlayer, LinkCardViewSmall, LinkCardGenericView, LinkCardTrelloBoardView } from '../../../src/links';
+import { LinkCardImageView } from '../../../src/links/cardImageView';
 
 describe('LinkCard', () => {
   const imageLink: UrlPreview = {

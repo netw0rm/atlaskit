@@ -2,8 +2,8 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import { FileCardImageView } from '../../src/files';
-import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
+import { FileCardImageView } from '../../../src/files';
+import { CardOverlay } from '../../../src/utils/cardImageView/cardOverlay';
 
 describe('FileCardView', () => {
   it('should render card with non-persisting overlay when supplied mediaType is "image" and dataUri string is supplied', function() {

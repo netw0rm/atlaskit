@@ -9,7 +9,7 @@ import { encode, parse, LANGUAGE_MAP } from '../../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
-  unsupportedInline, unsupportedBlock, jiraIssue, mediaGroup, media
+  confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media
 } from './_schema-builder';
 chai.use(chaiPlugin);
 
@@ -441,7 +441,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
         doc(
           p(
-            jiraIssue({
+            confluenceJiraIssue({
               issueKey: 'ED-1068',
               macroId: 'a1a887df-a2dd-492b-8b5c-415d8eab22cf',
               schemaVersion: '1',
@@ -457,54 +457,54 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
   describe('unsupported content', () => {
     check('inline ac:structured-macro in p',
       '<p><ac:structured-macro name="foo"/></p>',
-      doc(p(unsupportedInline('<ac:structured-macro name="foo"/>'))));
+      doc(p(confluenceUnsupportedInline('<ac:structured-macro name="foo"/>'))));
 
     check('inline ac:structured-macro with unknown ac:name key',
       '<p><ac:structured-macro ac:name="blabla"/></p>',
-      doc(p(unsupportedInline('<ac:structured-macro ac:name="blabla"/>'))));
+      doc(p(confluenceUnsupportedInline('<ac:structured-macro ac:name="blabla"/>'))));
 
     check('inline ac:structured-macro with JIRA issues list',
       '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro></p>',
-      doc(p(unsupportedInline('<ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro>'))));
+      doc(p(confluenceUnsupportedInline('<ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro>'))));
 
     check('inline ac:structured-macro in p (multiple)',
       '<p><ac:structured-macro name="foo"/><ac:structured-macro name="bar"/></p>',
       doc(p(
-        unsupportedInline('<ac:structured-macro name="foo"/>'),
-        unsupportedInline('<ac:structured-macro name="bar"/>'),
+        confluenceUnsupportedInline('<ac:structured-macro name="foo"/>'),
+        confluenceUnsupportedInline('<ac:structured-macro name="bar"/>'),
       )));
 
     check('inline ac:structured-macro in p with text',
       '<p>foo <ac:structured-macro name="foo"/></p>',
-      doc(p('foo', unsupportedInline('<ac:structured-macro name="foo"/>'))));
+      doc(p('foo', confluenceUnsupportedInline('<ac:structured-macro name="foo"/>'))));
 
     check('inline ac:structured-macro>ac:property in p',
       '<p><ac:structured-macro name="foo"><ac:property/></ac:structured-macro></p>',
-      doc(p(unsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'))));
+      doc(p(confluenceUnsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'))));
 
     check('inline ac:structured-macro>ac:property in p (multiple)',
       '<p><ac:structured-macro name="foo"><ac:property/></ac:structured-macro><ac:structured-macro name="foo"><ac:property/></ac:structured-macro></p>',
       doc(p(
-        unsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'),
-        unsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'),
+        confluenceUnsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'),
+        confluenceUnsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'),
       )));
 
     check('block ac:structured-macro',
       '<ac:structured-macro name="foo"/>',
-      doc(unsupportedBlock('<ac:structured-macro name="foo"/>')));
+      doc(confluenceUnsupportedBlock('<ac:structured-macro name="foo"/>')));
 
     check('block ac:structured-macro (multiple)',
       '<ac:structured-macro name="foo"/><ac:structured-macro name="bar"/>',
       doc(
-        unsupportedBlock('<ac:structured-macro name="foo"/>'),
-        unsupportedBlock('<ac:structured-macro name="bar"/>'),
+        confluenceUnsupportedBlock('<ac:structured-macro name="foo"/>'),
+        confluenceUnsupportedBlock('<ac:structured-macro name="bar"/>'),
       ));
 
     check('block h2, ac:structured-macro',
       '<h2>foo</h2><ac:structured-macro name="foo"/>',
       doc(
         h2('foo'),
-        unsupportedBlock('<ac:structured-macro name="foo"/>'),
+        confluenceUnsupportedBlock('<ac:structured-macro name="foo"/>'),
       ));
 
     describe('noformat', () => {
@@ -548,7 +548,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
       '<h1>Code block</h1><ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
       doc(
         h1('Code block'),
-        unsupportedBlock('<ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
+        confluenceUnsupportedBlock('<ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
       ));
 
     describe('ac:link', () => {
@@ -557,7 +557,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         '<p><ac:link><ri:page ri:content-title="Questions test page"/></ac:link></p>',
         doc(
           p(
-            unsupportedInline('<ac:link><ri:page ri:content-title="Questions test page"/></ac:link>')
+            confluenceUnsupportedInline('<ac:link><ri:page ri:content-title="Questions test page"/></ac:link>')
           )
         )
       );
@@ -567,7 +567,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         '<p><ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link></p>',
         doc(
           p(
-            unsupportedInline('<ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link>')
+            confluenceUnsupportedInline('<ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link>')
           )
         )
       );
@@ -577,7 +577,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         '<p><ac:link><ri:space ri:space-key="ZAA"/></ac:link></p>',
         doc(
           p(
-            unsupportedInline('<ac:link><ri:space ri:space-key="ZAA"/></ac:link>')
+            confluenceUnsupportedInline('<ac:link><ri:space ri:space-key="ZAA"/></ac:link>')
           )
         )
       );

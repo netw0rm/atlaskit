@@ -196,15 +196,15 @@ export function ensureBlocks(fragment: Fragment): Fragment {
     const node = nodes[i];
     if (node.isBlock) {
       blocks.push(node);
-    } else if (node.type === schema.nodes.unsupportedInline) {
-      blocks.push(schema.nodes.unsupportedBlock.create(node.attrs));
+    } else if (node.type === schema.nodes.confluenceUnsupportedInline) {
+      blocks.push(schema.nodes.confluenceUnsupportedBlock.create(node.attrs));
     } else {
       // An inline node is found. Now step through until we find the last inline
       // node, then throw everything in a paragraph.
       let j;
       for (j = i + 1; j < nodes.length; j++) {
         const node = nodes[j];
-        if (node.isBlock || node.type === schema.nodes.unsupportedInline) {
+        if (node.isBlock || node.type === schema.nodes.confluenceUnsupportedInline) {
           break;
         }
       }

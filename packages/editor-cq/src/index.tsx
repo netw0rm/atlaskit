@@ -52,7 +52,7 @@ import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
-import { CQSchema, default as schema } from './schema';
+import { default as schema } from './schema';
 import ReactJIRAIssueNode from './nodeviews/ui/jiraIssue';
 import ReactUnsupportedBlockNode from './nodeviews/ui/unsupportedBlock';
 import ReactUnsupportedInlineNode from './nodeviews/ui/unsupportedInline';
@@ -79,7 +79,7 @@ export interface State {
   editorView?: EditorView;
   isExpanded?: boolean;
   isMediaReady: boolean;
-  schema: CQSchema;
+  schema: typeof schema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -404,11 +404,11 @@ export default class Editor extends PureComponent<Props, State> {
     traverseNode(doc);
 
     for (let i = 0; i < blockNodesOccurance; i++) {
-      analyticsService.trackEvent('atlassian.editor.unsupported.block');
+      analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.block');
     }
 
     for (let i = 0; i < inlineNodesOccurance; i++) {
-      analyticsService.trackEvent('atlassian.editor.unsupported.inline');
+      analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.inline');
     }
 
     function traverseNode(node: PMNode) {

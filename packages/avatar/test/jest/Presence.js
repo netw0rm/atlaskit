@@ -6,18 +6,18 @@ import { shallow, mount } from 'enzyme';
 // import from index; ensures we're exposing Presence as a named export
 import { Presence } from '../../src';
 import { PRESENCE_TYPE } from '../../src/components/Presence';
-import getPresenceSVG from '../../src/utils/getPresenceSVG';
+// import getPresenceSVG from '../../src/utils/getPresenceSVG';
 
 describe('Avatar', () => {
-  // TODO: This test is not testing anything
   describe('Presence', () => {
-    PRESENCE_TYPE.values.forEach(presence =>
-      describe(`when presence is ${presence}`, () =>
-        it('should render content', () => {
-          expect(shallow(<Presence presence={presence} />).type(getPresenceSVG(presence)));
-        })
-      )
-    );
+    // PRESENCE_TYPE.values.forEach(presence =>
+    //   describe(`when presence is ${presence}`, () =>
+    //     it('should render content', () => {
+    //       expect(shallow(<Presence presence={presence} />).props().children)
+    //         .to.deep.equal(getPresenceSVG(presence));
+    //     })
+    //   )
+    // );
 
     it('should render children if provided', () => {
       const wrapper = shallow(

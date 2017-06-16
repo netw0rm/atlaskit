@@ -47,6 +47,8 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   onCollapsedChromeFocus: () => void;
   saveDisabled?: boolean;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export default class Chrome extends PureComponent<Props, {}> {
@@ -79,6 +81,8 @@ export default class Chrome extends PureComponent<Props, {}> {
         editorView={props.editorView}
         packageVersion={props.packageVersion}
         packageName={props.packageName}
+        popupsBoundariesElement={props.popupsBoundariesElement}
+        popupsMountPoint={props.popupsMountPoint}
       >
         {props.children}
       </ChromeExpanded>

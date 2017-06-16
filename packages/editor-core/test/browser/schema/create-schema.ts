@@ -3,7 +3,7 @@ import {
   code as codeBase,
   createSchema,
   NodeSpec,
-} from '../../src';
+} from '../../../src';
 
 const filterGroupDecMark = marks => marks.filter(mark => mark[0] !== '_' || mark[1] !== '_');
 

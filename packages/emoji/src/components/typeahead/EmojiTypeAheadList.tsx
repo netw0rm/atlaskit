@@ -71,7 +71,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
     const { emojis } = nextProps;
     const { selectedKey } = this.state;
     if (!selectedKey) {
-      this.selectIndexNewEmoji(0, emojis);
+      // go with default of selecting first item
       return;
     }
     for (let i = 0; i < emojis.length; i++) {
@@ -172,21 +172,18 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
   }
 
   private renderItems(emojis: EmojiDescription[]) {
-    const { selectedKey } = this.state;
-
     if (emojis && emojis.length) {
       this.items = {};
 
       return (
         <div>
-          {emojis.map((emoji) => {
-            const selected = selectedKey === emoji.id;
+          {emojis.map((emoji, idx) => {
             const key = getKey(emoji);
             const item = (
               <EmojiItem
                 emoji={emoji}
                 key={key}
-                selected={selected}
+                selected={this.isSelectedEmoji(emoji, idx)}
                 onMouseMove={this.selectIndexOnHover}
                 onSelection={this.itemSelected}
                 // tslint:disable-next-line:jsx-no-lambda
@@ -205,6 +202,11 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
       );
     }
     return null;
+  }
+
+  private isSelectedEmoji(emoji: EmojiDescription, index: number): boolean {
+    const { selectedKey } = this.state;
+    return selectedKey ? selectedKey === emoji.id : index === 0;
   }
 
   render() {

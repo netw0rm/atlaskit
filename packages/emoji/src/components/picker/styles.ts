@@ -38,6 +38,7 @@ export const emojiPicker = style({
   boxShadow: emojiPickerBoxShadow,
   height: `${emojiPickerHeight}px`,
   width: `${emojiPickerWidth}px`,
+  marginBottom: '8px',
 });
 
 // Level 2

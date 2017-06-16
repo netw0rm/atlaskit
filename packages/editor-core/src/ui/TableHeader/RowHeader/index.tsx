@@ -14,6 +14,16 @@ export interface Props {
 }
 
 export default class RowHeader extends Component<Props, {}> {
+  render () {
+    return (
+      <Header>
+        <RowContainer>
+          {this.renderHeaders()}
+        </RowContainer>
+      </Header>
+    );
+  }
+
   private renderHeaders () {
     const rows = this.props.tableElement!.querySelectorAll('tr');
     const nodes: any = [];
@@ -30,16 +40,7 @@ export default class RowHeader extends Component<Props, {}> {
         </ButtonWrap>
       );
     }
-    return nodes;
-  }
 
-  render () {
-    return (
-      <Header>
-        <RowContainer>
-          {this.renderHeaders()}
-        </RowContainer>
-      </Header>
-    );
+    return nodes;
   }
 }

@@ -4,6 +4,8 @@ import { name } from '../package.json';
 
 import PersonResult from '../src/components/js/results/PersonResult';
 import RoomResult from '../src/components/js/results/RoomResult';
+import BasicNavigation from './components/BasicNavigation';
+import BasicQuickSearch from './components/BasicQuickSearch';
 import { AkNavigationItemGroup, AkSearchResults } from '../src';
 import { WithRootTheme } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
@@ -17,7 +19,19 @@ const withRootTheme = children => (
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
 
-storiesOf(`${name}/SearchResults`, module)
+storiesOf(`${name}/QuickSearch`, module)
+  .add('Quick search', () => withRootTheme(
+    <BasicNavigation
+      openDrawer="search"
+      searchDrawerContent={<BasicQuickSearch />}
+    />
+  ))
+  .add('Quick search w/ 500ms latency', () => withRootTheme(
+    <BasicNavigation
+      openDrawer="search"
+      searchDrawerContent={<BasicQuickSearch fakeNetworkLatency={500} />}
+    />
+  ))
   .add('Person Result', () => withRootTheme(
     <div>
       <PersonResult

@@ -3,7 +3,7 @@ import { MouseEvent } from '@types/react';
 import { PureComponent } from 'react';
 
 import { MentionListStyle } from './styles';
-import Error from '../MentionListError';
+import MentionListError from '../MentionListError';
 import MentionItem from '../MentionItem';
 import Scrollable from '../Scrollable';
 import { Mention, OnMentionEvent } from '../../types';
@@ -40,6 +40,7 @@ function getIndex(key: string, mentions?: Mention[]): number | undefined {
 export interface Props {
   mentions: Mention[];
   showError?: boolean;
+  resourceError?: Error;
   onSelection?: OnMentionEvent;
 }
 
@@ -218,7 +219,7 @@ export default class MentionList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { mentions, showError } = this.props;
+    const { mentions, resourceError, showError } = this.props;
     const hasMentions = mentions && mentions.length;
 
     // If we get an error, but existing mentions are displayed, lets
@@ -228,7 +229,7 @@ export default class MentionList extends PureComponent<Props, State> {
     let errorSection: JSX.Element | undefined;
     let resultSection: JSX.Element | undefined;
     if (mustShowError) {
-      errorSection = (<Error />);
+      errorSection = (<MentionListError error={resourceError} />);
     } else if (hasMentions) {
       resultSection = (
         <Scrollable ref={this.handleScrollableRef}>

@@ -142,10 +142,8 @@ const requestService = (baseUrl: string, path: string | undefined, data: KeyValu
           requestService(baseUrl, path, data, opts, newSecOptions)
         ));
       }
-      return Promise.reject({
-        code: response.status,
-        reason: response.statusText,
-      });
+
+      return Promise.reject(new HttpError(response.status, response.statusText));
     });
 };
 
@@ -341,6 +339,18 @@ class MentionResource extends AbstractMentionResource {
     }
 
     return requestService(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
+  }
+}
+
+export class HttpError implements Error {
+  name: string;
+  message: string;
+  statusCode: number;
+
+  constructor(statusCode: number, statusMessage: string) {
+    this.statusCode = statusCode;
+    this.message = statusMessage;
+    this.name = 'HttpError';
   }
 }
 

@@ -4,6 +4,7 @@ import { storiesOf, action } from '@kadira/storybook';
 
 import { name } from '../package.json';
 import { Mention } from '../src/types';
+import { HttpError } from '../src/api/MentionResource';
 import MentionList from '../src/components/MentionList';
 import { mentions } from './story-data';
 
@@ -74,8 +75,19 @@ class RefreshableMentionList extends Component<Props, State> {
 
 storiesOf(`${name}/MentionList`, module)
   .add('simple mention list', () => <RefreshableMentionList />)
-  .add('error mention list', () => (
+  .add('generic error mention list', () => (
     <div style={{ padding: '10px' }} >
       <MentionList showError={true} mentions={[]} />
     </div>
+  ))
+  .add('error mention list for 401', () => (
+    <div style={{ padding: '10px' }} >
+      <MentionList showError={true} resourceError={new HttpError(401, 'not used')} mentions={[]} />
+    </div>
+  ))
+  .add('error mention list for 403', () => (
+    <div style={{ padding: '10px' }} >
+      <MentionList showError={true} resourceError={new HttpError(403, 'not used')} mentions={[]} />
+    </div>
   ));
+

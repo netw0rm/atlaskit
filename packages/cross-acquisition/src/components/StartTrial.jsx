@@ -4,24 +4,23 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import styled from 'styled-components';
 
-export const MegatronStartTrialFooter = styled.div`
-  text-align: right;
+export const StartTrialFooter = styled.div`
   margin-bottom: 8px;
   margin-right: 8px;
+  text-align: right;
 `;
 
-export const MegatronStartTrialDialog = styled.div`
+export const StartTrialDialog = styled.div`
   margin-left: 8px;
 `;
 
-export const MegatronStartTrialHeader = styled.span`
+export const StartTrialHeader = styled.h3`
   margin-top: 0px;
 `;
 
 export default class StartTrial extends Component {
-
-  handleButtonClick = (buttonType) => {
-    console.log(`The ${buttonType} button got clicked!`);
+  handleButtonClick = (evt) => {
+    console.log(`The ${`${evt.target.textContent}`.toLowerCase()} button got clicked!`);
   }
 
   render() {
@@ -33,19 +32,19 @@ export default class StartTrial extends Component {
           <span><ConfluenceLogo /></span>
         }
         footer={
-          <MegatronStartTrialFooter>
-            <Button onClick={() => this.handleButtonClick('confirm')} appearance="primary">Confirm</Button><Button onClick={() => this.handleButtonClick('cancel')} appearance="subtle-link" >Cancel</Button>
-          </MegatronStartTrialFooter>
+          <StartTrialFooter>
+            <Button onClick={this.handleButtonClick} appearance="primary">Confirm</Button><Button onClick={this.handleButtonClick} appearance="subtle-link" >Cancel</Button>
+          </StartTrialFooter>
         }
       >
-        <MegatronStartTrialDialog>
-          <MegatronStartTrialHeader><h3>Start your 30 day trial</h3></MegatronStartTrialHeader>
+        <StartTrialDialog>
+          <StartTrialHeader>Start your 30 day trial</StartTrialHeader>
           <p>Once your trial finishes, billing will start.
             <br />
             Easily cancel at anytime in <b>Manage Application</b>.
             <br />
             We will email your billing contact 3 days in advance.</p>
-        </MegatronStartTrialDialog>
+        </StartTrialDialog>
       </ModalDialog>
     );
   }

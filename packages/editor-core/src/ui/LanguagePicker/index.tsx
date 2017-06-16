@@ -18,6 +18,8 @@ import {
 export interface Props {
   editorView: EditorView;
   pluginState: CodeBlockState;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
 }
 
 export interface State {
@@ -32,7 +34,6 @@ export interface State {
 
 export default class LanguagePicker extends PureComponent<Props, State> {
   items: object[];
-  selectRef: HTMLElement;
 
   constructor (props) {
     super(props);
@@ -57,12 +58,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  setSelelectRef = (ref) => {
-    this.selectRef = ref;
-  }
-
   onLanguageSelectMouseDown = (event) => {
-    this.selectRef.getElementsByTagName('input')[0].focus();
     event.preventDefault();
     this.setState({
       languageSelectFocused: true,
@@ -83,18 +79,26 @@ export default class LanguagePicker extends PureComponent<Props, State> {
       languageSelectFocused
     } = this.state;
 
+    const { popupsMountPoint, popupsBoundariesElement } = this.props;
+
     if (toolbarVisible || languageSelectFocused) {
       return (
-        <FloatingToolbar target={element} align="left" autoPosition={true}>
+        <FloatingToolbar
+          target={element}
+          offset={[0, 3]}
+          popupsMountPoint={popupsMountPoint}
+          popupsBoundariesElement={popupsBoundariesElement}
+          fitHeight={40}
+        >
           <div
             tabIndex={0}
-            ref={this.setSelelectRef}
             onMouseDown={this.onLanguageSelectMouseDown}
             onBlur={this.resetLanguageSelectFocused}
           >
             <Select
               id="test"
               hasAutocomplete={true}
+              shouldFocus={languageSelectFocused}
               items={this.items}
               onSelected={this.handleLanguageChange}
               defaultSelected={{ content: language, value: language }}

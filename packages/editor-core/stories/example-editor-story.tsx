@@ -105,6 +105,7 @@ class DemoEditor extends React.PureComponent<Props, State> {
           emojiProvider={emojiProvider}
           isExpandedByDefault={true}
           ref={this.handleEditorRef}
+          devTools={true}
         />
         <div>
           <br />

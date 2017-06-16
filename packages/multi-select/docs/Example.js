@@ -56,9 +56,10 @@ const PaginationExample = () => (
     />
     <MultiSelect
       items={selectItems}
-      label="Disabled Select"
+      label="Invalid State"
       placeholder="Choose a City"
       isInvalid
+      invalidMessage="City is unavailable"
     />
   </Vert>
 );

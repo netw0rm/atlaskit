@@ -16,6 +16,7 @@ export { default as AkGlobalNavigation } from './components/js/GlobalNavigation'
 export { default as AkGlobalItem } from './components/js/GlobalItem';
 export { default as AkSearch } from './components/js/Search';
 export { default as AkSearchResults } from './components/js/SearchResults';
+export { default as AkQuickSearch } from './components/js/QuickSearch';
 export { createGlobalTheme } from './theme/create-provided-theme';
 
 export { presets as presetThemes };

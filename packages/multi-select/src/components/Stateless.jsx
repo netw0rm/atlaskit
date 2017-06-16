@@ -52,6 +52,8 @@ export default class StatelessMultiSelect extends PureComponent {
     filterValue: PropTypes.string,
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
+    /** message to show on the dialog when isInvalid is true */
+    invalidMessage: PropTypes.node,
     /** Sets whether the select is selectable. Changes hover state. */
     isDisabled: PropTypes.bool,
     /** controls the top margin of the label component rendered. */
@@ -334,6 +336,7 @@ export default class StatelessMultiSelect extends PureComponent {
       isDisabled,
       isFirstChild,
       isInvalid,
+      invalidMessage,
       isOpen,
       isRequired,
       label,
@@ -391,6 +394,7 @@ export default class StatelessMultiSelect extends PureComponent {
               isDisabled={isDisabled}
               isFocused={isOpen || isFocused}
               isInvalid={isInvalid}
+              invalidMessage={invalidMessage}
               isRequired={isRequired}
               onBlur={this.onBlur}
               onFocus={this.onFocus}

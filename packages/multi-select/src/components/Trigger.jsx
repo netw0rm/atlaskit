@@ -36,6 +36,7 @@ export default class Trigger extends PureComponent {
     isDisabled: PropTypes.bool,
     isFocused: PropTypes.bool,
     isInvalid: PropTypes.bool,
+    invalidMessage: PropTypes.node,
     isRequired: PropTypes.bool,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
@@ -62,6 +63,7 @@ export default class Trigger extends PureComponent {
       isDisabled,
       isFocused,
       isInvalid,
+      invalidMessage,
       isRequired,
       onBlur,
       onFocus,
@@ -75,8 +77,10 @@ export default class Trigger extends PureComponent {
         appearance={mapAppearanceToFieldBase(appearance)}
         isDisabled={isDisabled}
         isFitContainerWidthEnabled
+        isDialogOpen={isFocused}
         isFocused={isFocused}
         isInvalid={isInvalid}
+        invalidMessage={invalidMessage}
         isPaddingDisabled
         isRequired={isRequired}
         onBlur={onBlur}

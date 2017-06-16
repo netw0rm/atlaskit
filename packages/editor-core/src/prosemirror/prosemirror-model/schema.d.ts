@@ -1,4 +1,4 @@
-import { OrderedMap } from '../orderedmap';
+import OrderedMap = require('orderedmap');
 import { Fragment, Mark, Node, ParseRule } from './';
 import { DOMOutputSpec } from './to_dom';
 

@@ -14,15 +14,15 @@ const availableResultTypes = {
 /**
  * From the perspective of SearchResults, result items consist only of a unique id and result type
  */
-const resultPropType = PropTypes.shape({
+const resultPropType = {
   id: PropTypes.string,
   type: PropTypes.oneOf(Object.keys(availableResultTypes)),
-});
+};
 
-const resultGroupPropType = PropTypes.shape({
+const resultGroupPropType = {
   items: PropTypes.arrayOf(PropTypes.shape(resultPropType)),
   title: PropTypes.string.isRequired,
-});
+};
 
 export default class SearchResults extends PureComponent {
   static propTypes = {

@@ -6,3 +6,4 @@ export { default as ReactMentionNode } from './ui/mention';
 export { panelNodeView } from './ui/panel';
 
 export { ProsemirrorGetPosHandler } from './ui';
+export { default as codeMirrorNodeViewFactory } from './ui/code-mirror';

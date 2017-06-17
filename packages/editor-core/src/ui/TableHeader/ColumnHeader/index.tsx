@@ -25,8 +25,7 @@ export default class ColumnHeader extends Component<Props, {}> {
   }
 
   private renderHeaders () {
-    const firstRow = this.props.tableElement!.querySelector('tr');
-    const cols = firstRow!.querySelectorAll('td,th');
+    const cols = this.props.tableElement!.querySelector('tr')!.children;
     const nodes: any = [];
 
     for (let i = 0, len = cols.length; i < len; i++) {

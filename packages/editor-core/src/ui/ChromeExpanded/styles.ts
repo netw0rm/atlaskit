@@ -6,6 +6,7 @@ import {
   akEditorTableCellSelected,
   akEditorTableBorder,
   akEditorTableBorderSelected,
+  akEditorTableHeader,
 } from '../../styles';
 
 export const createNestedListStyles = (): any => {
@@ -122,6 +123,10 @@ export const Content = styled.div`
     pointer-events: none;
   }
 
+  .ProseMirror blockquote table,
+  .ProseMirror blockquote table:last-child {
+    display: inline-table;
+  }
   .ProseMirror table {
     border-collapse: collapse;
     margin: 20px 0;
@@ -136,8 +141,12 @@ export const Content = styled.div`
       tbody {
         border-bottom: none;
       }
+      th td {
+        background-color: white;
+        font-weight: normal;
+      }
       th, td {
-        min-width: 1em;
+        min-width: 2em;
         vertical-align: top;
         border: 1px solid ${akEditorTableBorder};
         border-right-width: 0;
@@ -151,6 +160,7 @@ export const Content = styled.div`
         }
       }
       th {
+        background-color: ${akEditorTableHeader};
         font-weight: bold;
         text-align: left;
       }

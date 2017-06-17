@@ -4,19 +4,22 @@ import {
   Plugin,
   PluginKey,
   tableEditing,
-  Transaction,
   NodeViewDesc,
   CellSelection,
   TextSelection,
+  Selection,
   TableMap,
   Node,
+  Transaction,
+  Slice,
+  Fragment,
 } from '../../prosemirror';
-import * as tableCommands from '../../prosemirror/prosemirror-tables';
 import keymapHandler from './keymap';
+import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 
 export type TableStateSubscriber = (state: TableState) => any;
 
-export interface TablesCommand {
+export interface Command {
   (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 }
 
@@ -28,6 +31,9 @@ export class TableState {
   tableNode?: Node;
   cellSelection?: CellSelection;
   toolbarFocused: boolean = false;
+  tableHidden: boolean = false;
+  tableDisabled: boolean = false;
+  tableActive: boolean = false;
 
   private view: EditorView;
   private state: EditorState<any>;
@@ -36,6 +42,30 @@ export class TableState {
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
     this.state = state;
+
+    const { table, table_cell, table_row, table_header } = state.schema.nodes;
+    this.tableHidden = !table || !table_cell || !table_row || !table_header;
+  }
+
+  goToNextCell(direction: number): Command {
+    return tableBaseCommands.goToNextCell(direction);
+  }
+
+  createTable (): Command {
+    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+      if (this.tableDisabled) {
+        return false;
+      }
+      const table = this.createStaticTable(3, 3);
+      const tr = state.tr.replaceSelectionWith(table);
+      tr.setSelection(Selection.near(tr.doc.resolve(state.selection.from)));
+      dispatch(tr.scrollIntoView());
+
+      if (!this.view.hasFocus()) {
+        this.view.focus();
+      }
+      return true;
+    };
   }
 
   subscribe(cb: TableStateSubscriber) {
@@ -45,10 +75,6 @@ export class TableState {
 
   unsubscribe(cb: TableStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
-  }
-
-  goToNextCell(direction: number): TablesCommand {
-    return tableCommands.goToNextCell(direction);
   }
 
   updateEditorFocused(editorFocused: boolean) {
@@ -136,6 +162,18 @@ export class TableState {
       dirty = true;
     }
 
+    const tableActive = !!tableElement;
+    if (tableActive !== this.tableActive) {
+      this.tableActive = tableActive;
+      dirty = true;
+    }
+
+    const tableDisabled = !this.canInsertTable();
+    if (tableDisabled !== this.tableDisabled) {
+      this.tableDisabled = tableDisabled;
+      dirty = true;
+    }
+
     if (dirty) {
       this.triggerOnChange();
     }
@@ -214,6 +252,36 @@ export class TableState {
       dirty = true;
     }
     return dirty;
+  }
+
+  private createStaticTable (rows: number, columns: number) {
+    const { state } = this.view;
+    const { table, table_row, table_cell, table_header } = state.schema.nodes;
+    const rowNodes: Node[] = [];
+
+    for (let i = 0; i < rows; i ++) {
+      const cell = i === 0 ? table_header : table_cell;
+      const cellNodes: Node[] = [];
+      for (let j = 0; j < columns; j ++) {
+        // cell needs to be filled with paragraph, otherwise cursor is broken
+        cellNodes.push(cell.createAndFill());
+      }
+      rowNodes.push( table_row.create(null, Fragment.from(cellNodes)) );
+    }
+    return table.create(null, Fragment.from(rowNodes));
+  }
+
+  private canInsertTable (): boolean {
+    const { $from, to } = this.state.selection;
+    const { code } = this.state.schema.marks;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      // inline code and codeBlock are excluded
+      if(node.type === this.state.schema.nodes.codeBlock || this.state.doc.rangeHasMark($from.pos, to, code)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

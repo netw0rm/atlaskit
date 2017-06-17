@@ -36,6 +36,7 @@ import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
 import TableHeader from '../TableHeader';
+import ToolbarTable from '../ToolbarTable';
 import {
   Container,
   Content,
@@ -167,6 +168,13 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             <ToolbarHyperlink
               disabled={disabled}
               pluginState={pluginStateHyperlink}
+              editorView={editorView}
+            /> : null
+          }
+          {pluginStateTable ?
+            <ToolbarTable
+              disabled={disabled}
+              pluginState={pluginStateTable}
               editorView={editorView}
             /> : null
           }

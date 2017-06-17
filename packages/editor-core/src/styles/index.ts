@@ -34,6 +34,7 @@ export const akEditorMentionSelected = akColorN100;
 export const akEditorTableToolbarSize = 12;
 export const akEditorTableBorder = akColorN50;
 export const akEditorTableToolbar = akColorN20;
+export const akEditorTableHeader = akColorN20;
 export const akEditorTableCellSelected = akColorB75;
 export const akEditorTableToolbarSelected = akColorB100;
 export const akEditorTableBorderSelected = akColorB300;

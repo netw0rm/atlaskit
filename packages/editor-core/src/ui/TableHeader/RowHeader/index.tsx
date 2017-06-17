@@ -25,7 +25,7 @@ export default class RowHeader extends Component<Props, {}> {
   }
 
   private renderHeaders () {
-    const rows = this.props.tableElement!.querySelectorAll('tr');
+    const rows = this.props.tableElement!.querySelector('tbody')!.children;
     const nodes: any = [];
 
     for (let i = 0, len = rows.length; i < len; i++) {

@@ -21,6 +21,7 @@ export class CodeBlockState {
   supportedLanguages: string[];
   toolbarVisible: boolean = false;
   domEvent: boolean = false;
+  uniqueId: string | undefined = undefined;
 
   private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
@@ -43,7 +44,7 @@ export class CodeBlockState {
 
   updateLanguage(language: string | undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
-      commands.setBlockType(view.state.schema.nodes.codeBlock, { language })(view.state, view.dispatch);
+      commands.setBlockType(view.state.schema.nodes.codeBlock, { language, uniqueId: this.uniqueId })(view.state, view.dispatch);
     }
   }
 
@@ -63,7 +64,6 @@ export class CodeBlockState {
   update(state: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
     this.state = state;
     const codeBlockNode = this.activeCodeBlockNode();
-
     if (domEvent && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
       this.domEvent = domEvent;
       const newElement = codeBlockNode && this.activeCodeBlockElement(docView);
@@ -72,6 +72,7 @@ export class CodeBlockState {
       this.activeCodeBlock = codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
       this.element = newElement;
+      this.uniqueId = codeBlockNode && codeBlockNode!.attrs['uniqueId'];
       this.triggerOnChange();
     }
   }

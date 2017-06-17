@@ -11,7 +11,6 @@ import {
   TableMap,
   Node,
   Transaction,
-  Slice,
   Fragment,
 } from '../../prosemirror';
 import keymapHandler from './keymap';

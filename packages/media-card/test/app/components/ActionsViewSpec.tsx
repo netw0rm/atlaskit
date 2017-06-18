@@ -30,9 +30,13 @@ describe('ActionsView', () => {
       {title: 'Reply', handler: () => {/* do nothing */}}
     ];
     const element = shallow(<ActionsView actions={actions} inverse={false}/>);
-    expect(element.find(Button)).to.have.length(1);
+    expect(element.find(Button)).to.have.length(2);
     expect(element.find(DropdownMenu)).to.have.length(1);
-    expect(element.find(ActionsMenu).prop('items')).to.have.length(2);
+    const groups: Array<any> = element.find(DropdownMenu).prop('items');
+    expect(groups).to.be.an('array').to.have.length(1);
+    expect(groups[0].items).to.be.an('array').to.have.length(2);
+    expect(groups[0].items[0]).to.have.property('content', 'View');
+    expect(groups[0].items[1]).to.have.property('content', 'Reply');
   });
 
 });

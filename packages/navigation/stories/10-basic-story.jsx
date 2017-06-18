@@ -1,6 +1,9 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
+import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import SettingsIcon from '@atlaskit/icon/glyph/settings';
+import TrayIcon from '@atlaskit/icon/glyph/tray';
 import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
 import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle, presetThemes } from '../src/index';

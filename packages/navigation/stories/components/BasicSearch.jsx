@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon, CrossIcon, DashboardIcon } from '@atlaskit/icon';
+import PropTypes from 'prop-types';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import { AkSearch, AkNavigationItem } from '../../src/index';
 
 const data = [
@@ -95,7 +98,11 @@ function searchData(query) {
 const store = {};
 
 export default class BasicSearch extends PureComponent {
-  static defaultProp = {
+  static propTypes = {
+    fakeNetworkLatency: PropTypes.number,
+  }
+
+  static defaultProps = {
     fakeNetworkLatency: 0,
   }
 

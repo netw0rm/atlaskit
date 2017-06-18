@@ -6,6 +6,7 @@ import * as sinon from 'sinon';
 
 import { Mention } from '../../src/types';
 import mentionData, { mentionDataSize } from '../_mention-data';
+import { HttpError } from '../../src/api/MentionResource';
 import MentionResource from '../_mock-ak-mention-resource';
 import MentionPicker, { OnClose, OnOpen, Props, State } from '../../src/components/MentionPicker';
 import MentionList from '../../src/components/MentionList';
@@ -90,6 +91,9 @@ describe('MentionPicker', () => {
         component.setProps({ query: '401' });
         return waitUntil(createMentionErrorShownTest(component)).then(() => {
           let errorMention = component.find(MentionListError);
+          let err = errorMention.prop('error') as HttpError;
+          expect(err).to.not.be.undefined;
+          expect(err.statusCode).to.equal(401);
           expect(errorMention.text()).to.contain('logging in');
         });
       });

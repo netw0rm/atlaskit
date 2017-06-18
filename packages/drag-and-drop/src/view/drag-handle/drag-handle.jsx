@@ -14,7 +14,9 @@ export type Callbacks = {
   onCancel: () => void,
 }
 
-const noop = (): void => {};
+const noop = (): void => { };
+const empty: Object = {};
+const getFalse: () => boolean = () => false;
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
 const primaryButton = 0;
@@ -58,6 +60,8 @@ export default class Handle extends PureComponent {
     draggingWith: null,
     pending: null,
   };
+
+  preventClick: boolean
   /* eslint-enable react/sort-comp */
 
   componentWillUnmount() {
@@ -112,7 +116,8 @@ export default class Handle extends PureComponent {
     }
 
     // not yet dragging
-    const shouldStartDrag = Math.abs(pending.x - point.x) > sloppyClickThreshold || Math.abs(pending.y - point.y) > sloppyClickThreshold;
+    const shouldStartDrag = Math.abs(pending.x - point.x) > sloppyClickThreshold ||
+                            Math.abs(pending.y - point.y) > sloppyClickThreshold;
 
     console.log('should start drag?', shouldStartDrag);
 
@@ -121,7 +126,8 @@ export default class Handle extends PureComponent {
     }
   };
 
-  onWindowMouseClick = () => {
+  onWindowMouseUp = (event: MouseEvent) => {
+    console.info('WINDOW MOUSE CLICK');
     // Did not move far enough for it to actually be a drag
     if (this.state.pending) {
       // not blocking the default event - letting it pass through
@@ -138,13 +144,7 @@ export default class Handle extends PureComponent {
     // Allowing any event.button type to drop. Otherwise you
     // might not get a corresponding mouseup with a mousedown.
     // We could do a`cancel` if the button is not the primary.
-
-    // Because we where previously dragging we need to block any mouse events.
-    // If we are wrapping an anchor we do not want to fire release the redirect
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.stopDragging(() => this.props.onDrop());
+    this.stopMouseDragging(() => this.props.onDrop());
   };
 
   onWindowMouseDown = () => {
@@ -193,7 +193,7 @@ export default class Handle extends PureComponent {
     this.startPendingMouseDrag(point);
   };
 
-  onKeyDown = (event: KeyboardEvent) => {
+  onKeyDown = (event: KeyboardEvent): void => {
     const isMouseDragPending: boolean = Boolean(this.state.pending);
 
     if (!this.props.isEnabled) {
@@ -201,9 +201,8 @@ export default class Handle extends PureComponent {
     }
 
     if (isMouseDragPending) {
-      event.preventDefault();
-
       if (event.key === 'Escape') {
+        event.preventDefault();
         this.stopPendingMouseDrag();
       }
 
@@ -220,8 +219,8 @@ export default class Handle extends PureComponent {
 
     // Dragging with either a keyboard or mouse
 
-    // Preventing tabbing
-    if (event.key === 'Tab') {
+    // Preventing tabbing or submitting
+    if (event.key === 'Tab' || event.key === 'Enter') {
       event.preventDefault();
       return;
     }
@@ -232,7 +231,7 @@ export default class Handle extends PureComponent {
       return;
     }
 
-    if (event.key === ' ' || event.key === 'Enter') {
+    if (event.key === ' ') {
       event.preventDefault();
       this.stopDragging(() => this.props.onDrop());
       return;
@@ -255,6 +254,14 @@ export default class Handle extends PureComponent {
     }
   }
 
+  onClick = (event: MouseEvent): void => {
+    if (!this.preventClick) {
+      return;
+    }
+    this.preventClick = false;
+    event.preventDefault();
+  }
+
   startPendingMouseDrag = (point: Position) => {
     if (this.state.draggingWith) {
       console.error('cannot start a pending mouse drag when already dragging');
@@ -274,6 +281,7 @@ export default class Handle extends PureComponent {
       pending: point,
     };
 
+    this.preventClick = false;
     this.setState(state);
   }
 
@@ -322,6 +330,20 @@ export default class Handle extends PureComponent {
     }, done);
   }
 
+  stopMouseDragging = (done?: () => void = noop) => {
+    if (this.state.draggingWith !== 'MOUSE') {
+      console.error('trying to end a mouse drag when not dragging with a mouse');
+      return;
+    }
+
+    this.unbindWindowEvents();
+    this.preventClick = true;
+    this.setState({
+      draggingWith: null,
+      pending: null,
+    }, done);
+  }
+
   stopDragging = (done?: () => void = noop) => {
     invariant(this.state.draggingWith, 'cannot stop dragging when not dragging');
 
@@ -334,32 +356,34 @@ export default class Handle extends PureComponent {
 
   unbindWindowEvents = () => {
     window.removeEventListener('mousemove', this.onWindowMouseMove);
-
-    // Using click rather that onmouseup because onmouseup is fired after click.
-    // If we are wrapping an anchor - we want to be able to control whether we
-    // let a click through or not.
-    // https://docs.microsoft.com/en-us/dotnet/framework/winforms/mouse-events-in-windows-forms
-    window.removeEventListener('click', this.onWindowMouseClick);
+    window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
   }
 
   bindWindowEvents = () => {
     window.addEventListener('mousemove', this.onWindowMouseMove);
-    window.addEventListener('click', this.onWindowMouseClick);
+    window.addEventListener('mouseup', this.onWindowMouseUp);
     window.addEventListener('mousedown', this.onWindowMouseDown);
-  }
-
-  dragEnabledProps = {
-    onMouseDown: this.onMouseDown,
-    onKeyDown: this.onKeyDown,
-    draggable: false,
-    tabIndex: 0,
   }
 
   render() {
     const { children, isEnabled } = this.props;
 
-    return cloneElement(children, isEnabled ? this.dragEnabledProps : null);
+    const props: Object = isEnabled ? {
+      onMouseDown: this.onMouseDown,
+      onKeyDown: this.onKeyDown,
+
+      // Allow tabbing to this element
+      tabIndex: 0,
+
+      // Stop html5 drag a drop
+      draggable: false,
+      onDragStart: getFalse,
+      onDrop: getFalse,
+      onClick: this.onClick,
+    } : empty;
+
+    return cloneElement(children, props);
 
     // return cloneElement(children, isEnabled ? props : {});
 

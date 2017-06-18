@@ -50,7 +50,11 @@ export interface ButtonProps {
   selectRow: (row: number) => void;
 }
 
-class RowHeaderButton extends Component<ButtonProps, {}> {
+export interface ButtonState {
+  hovered: boolean;
+}
+
+class RowHeaderButton extends Component<ButtonProps, ButtonState> {
   state = {
     hovered: false
   };

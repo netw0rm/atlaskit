@@ -4,7 +4,7 @@ import { TableState } from '../../plugins/table';
 import Popper, { IPopper } from './../../popper';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 import { CellSelection, Node, EditorView } from '../../prosemirror';
-import { CornerButton, CornerHeader } from './styles';
+import CornerHeader from './CornerHeader';
 import ColumnHeader from './ColumnHeader';
 import RowHeader from './RowHeader';
 
@@ -74,9 +74,10 @@ export default class TableHeader extends PureComponent<Props, State> {
           onMouseDown={this.handleMouseDown}
           onBlur={this.handleBlur}
         >
-          <CornerHeader className={pluginState.isTableSelected() ? 'active' : ''}>
-            <CornerButton onClick={pluginState.selectTable} />
-          </CornerHeader>
+          <CornerHeader
+            isSelected={pluginState.isTableSelected}
+            selectTable={pluginState.selectTable}
+          />
           <ColumnHeader
             tableElement={tableElement}
             isSelected={pluginState.isColumnSelected}

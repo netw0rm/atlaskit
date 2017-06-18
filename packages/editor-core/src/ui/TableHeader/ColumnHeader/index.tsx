@@ -50,7 +50,11 @@ export interface ButtonProps {
   selectColumn: (column: number) => void;
 }
 
-class ColumnHeaderButton extends Component<ButtonProps, {}> {
+export interface ButtonState {
+  hovered: boolean;
+}
+
+class ColumnHeaderButton extends Component<ButtonProps, ButtonState> {
   state = {
     hovered: false
   };

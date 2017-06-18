@@ -34,6 +34,8 @@ export default (
 
   const isMovingForward: boolean = newCenter.y - draggingDimension.center.y > 0;
 
+  // TODO: if not in the same home dimensions then can only move forward
+
   // get all draggables inside the draggable
   const insideDroppable: Dimension[] = getDraggablesInsideDroppable(droppableDimension, draggableDimensions);
 

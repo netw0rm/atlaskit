@@ -262,6 +262,13 @@ const DraggableItem = draggable(type, provide, mapStateToProps?)(Item);
 - `provide`: A function that is used to collect information about the *draggable* at run time. The function is provided with the components current props and needs to provide a `id: DraggableId`, and can optionally also provide whether dragging is currently enabled `isDragEnabled?: boolean`. This function allows you to conditionally allow dragging. If you set `isDragEnabled` to `false` while an item is dragging, the drag will be cancelled.
 - `mapStateToProps?` (optional) `(state, ownProps, getDragHandle)` this function allows you to two things. Firstly, it provides you with a relevant small state snapshot and your own props which you can use to create new props for your component. A common use case for this is to add a `isDragging` prop to your component. Secondly, it provides you with a `getDragHandle` function. This function will return a function which you can then wrap a part of your component tree in. The part of your tree that is wrapped in a `DragHandle` will be used to control the dragging of the whole item. If you do not call `getDragHandle` your entire component will be the drag handle. If you request a drag handle, be sure to use it. If you do not put it in the tree somewhere then it will not be possible to drag the item (and might possibly error). Please do not use this as a mechanism for conditional dragging. That is what the `provide` function is for.
 
+### Props
+
+
+
+### Sloppy clicks
+
+
 ### Type information
 
 ```js
@@ -309,13 +316,13 @@ const Person extends Component {
   }
 
   render() {
-    const { itemId, isDragging, name } = this.props;
+    const { itemId, isDragging, name, innerRef } = this.props;
     const style = {
       backgroundColor: isDragging ? 'yellow' : 'grey';
     }
 
     return (
-      <div style={style}>
+      <div style={style} ref={innerRef} {...this.props}>
         <h2>{name}</h2>
         <Avatar personId={personId}/>
       </div>

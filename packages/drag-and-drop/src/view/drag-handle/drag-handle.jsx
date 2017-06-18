@@ -32,22 +32,8 @@ type Props = {
 
 type State = {
   draggingWith: ?DragTypes,
-  pending: ?Position
+  pending: ?Position,
 };
-
-const logError = (...args: Array<mixed>) => console.error(...args);
-
-// exporting for testing
-export const getCursor = (isEnabled: boolean, isDragging: boolean) => {
-  if (!isEnabled) {
-    return 'auto';
-  }
-  return isDragging ? 'grabbing' : 'grab';
-};
-
-const Container = styled.div`
-  cursor: ${props => getCursor(props.isEnabled, props.isDragging)};
-`;
 
 // need a component so that we can kill events on unmount
 export default class Handle extends PureComponent {
@@ -122,12 +108,11 @@ export default class Handle extends PureComponent {
     console.log('should start drag?', shouldStartDrag);
 
     if (shouldStartDrag) {
-      this.startMouseDragging(() => this.props.onLift(point));
+      this.startDragging('MOUSE', () => this.props.onLift(point));
     }
   };
 
-  onWindowMouseUp = (event: MouseEvent) => {
-    console.info('WINDOW MOUSE CLICK');
+  onWindowMouseUp = () => {
     // Did not move far enough for it to actually be a drag
     if (this.state.pending) {
       // not blocking the default event - letting it pass through
@@ -135,7 +120,10 @@ export default class Handle extends PureComponent {
       return;
     }
 
-    invariant(this.state.draggingWith, 'should not be listening to mouse up events when nothing is dragging');
+    if (!this.state.draggingWith) {
+      console.error('should not be listening to mouse up events when nothing is dragging');
+      return;
+    }
 
     if (this.state.draggingWith !== 'MOUSE') {
       return;
@@ -144,18 +132,15 @@ export default class Handle extends PureComponent {
     // Allowing any event.button type to drop. Otherwise you
     // might not get a corresponding mouseup with a mousedown.
     // We could do a`cancel` if the button is not the primary.
-    this.stopMouseDragging(() => this.props.onDrop());
+    this.stopDragging(() => this.props.onDrop());
   };
 
   onWindowMouseDown = () => {
     if (this.state.draggingWith === 'MOUSE') {
-      this.stopDragging(() => this.props.onCancel());
-      logError(`Should not be able to trigger a mousedown while a MOUSE drag is occurring.
-                Expecting a mouseup first.`);
-      return;
+      console.error(`Should not be able to trigger a mousedown while a MOUSE drag
+                    is occurring. Expecting a mouseup first.`);
     }
 
-    // if dragging with a keyboard - cancel the drag
     this.stopDragging(() => this.props.onCancel());
   }
 
@@ -168,18 +153,19 @@ export default class Handle extends PureComponent {
 
     if (this.state.draggingWith) {
       this.stopDragging(() => this.props.onCancel());
-      logError('mouse down will not start a drag as it is already dragging');
+      console.error('mouse down will not start a drag as it is already dragging');
       return;
     }
 
     if (this.state.pending) {
       this.stopPendingMouseDrag();
-      logError('pending mouse down already found - cannot start a new drag');
+      console.error('pending mouse down already found - cannot start a new drag');
       return;
     }
 
     const { button, clientX, clientY } = event;
     event.stopPropagation();
+    event.preventDefault();
 
     if (button !== primaryButton) {
       return;
@@ -212,7 +198,7 @@ export default class Handle extends PureComponent {
     if (!this.state.draggingWith) {
       if (event.key === ' ') {
         event.preventDefault();
-        this.startKeyboardDragging(() => this.props.onKeyLift());
+        this.startDragging('KEYBOARD', () => this.props.onKeyLift());
       }
       return;
     }
@@ -285,38 +271,28 @@ export default class Handle extends PureComponent {
     this.setState(state);
   }
 
-  startMouseDragging = (done?: () => void = noop) => {
+  startDragging = (type: DragTypes, done?: () => void = noop) => {
     if (this.state.draggingWith) {
       console.error('cannot start dragging when already dragging');
       return;
     }
 
-    if (!this.state.pending) {
+    if (type === 'MOUSE' && !this.state.pending) {
       console.error('cannot start mouse drag when there is not a pending position');
       return;
     }
 
-    // events are already bound from starting the pending mouse drag
+    // keyboard events already bound for mouse dragging
+    if (type === 'KEYBOARD') {
+      this.bindWindowEvents();
+    }
+
+    this.preventClick = true;
 
     const state: State = {
-      draggingWith: 'MOUSE',
+      draggingWith: type,
       pending: null,
     };
-
-    this.setState(state, done);
-  }
-
-  startKeyboardDragging = (done?: () => void = noop) => {
-    invariant(!this.state.draggingWith, 'cannot start dragging when already dragging');
-
-    // need to bind the window events
-    this.bindWindowEvents();
-
-    const state: State = {
-      draggingWith: 'KEYBOARD',
-      pending: null,
-    };
-
     this.setState(state, done);
   }
 
@@ -330,28 +306,20 @@ export default class Handle extends PureComponent {
     }, done);
   }
 
-  stopMouseDragging = (done?: () => void = noop) => {
-    if (this.state.draggingWith !== 'MOUSE') {
-      console.error('trying to end a mouse drag when not dragging with a mouse');
+  stopDragging = (done?: () => void = noop) => {
+    if (!this.state.draggingWith) {
+      console.error('cannot stop dragging when not dragging');
       return;
     }
 
     this.unbindWindowEvents();
     this.preventClick = true;
-    this.setState({
+
+    const state: State = {
       draggingWith: null,
       pending: null,
-    }, done);
-  }
-
-  stopDragging = (done?: () => void = noop) => {
-    invariant(this.state.draggingWith, 'cannot stop dragging when not dragging');
-
-    this.unbindWindowEvents();
-    this.setState({
-      draggingWith: null,
-      pending: null,
-    }, done);
+    };
+    this.setState(state, done);
   }
 
   unbindWindowEvents = () => {
@@ -369,6 +337,7 @@ export default class Handle extends PureComponent {
   render() {
     const { children, isEnabled } = this.props;
 
+    // todo: namespace props
     const props: Object = isEnabled ? {
       onMouseDown: this.onMouseDown,
       onKeyDown: this.onKeyDown,

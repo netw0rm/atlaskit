@@ -86,6 +86,8 @@ export interface Props {
   mediaProvider?: Promise<MediaProvider>;
   uploadErrorHandler?: (state: MediaState) => void;
   errorReporter?: ErrorReportingHandler;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export interface State {
@@ -237,7 +239,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   render() {
     const { editorView, isExpanded, isMediaReady } = this.state;
-    const { mentionProvider, mediaProvider } = this.props;
+    const { mentionProvider, mediaProvider, popupsBoundariesElement, popupsMountPoint } = this.props;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
@@ -274,6 +276,8 @@ export default class Editor extends PureComponent<Props, State> {
         packageVersion={version}
         packageName={name}
         saveDisabled={!isMediaReady}
+        popupsBoundariesElement={popupsBoundariesElement}
+        popupsMountPoint={popupsMountPoint}
       />
     );
   }

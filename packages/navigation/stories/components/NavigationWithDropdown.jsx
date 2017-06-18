@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import styled from 'styled-components';
-import { ExpandIcon, ListIcon } from '@atlaskit/icon';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ListIcon from '@atlaskit/icon/glyph/list';
 import BasicNavigation from './BasicNavigation';
 import { AkNavigationItem } from '../../src/index';
 

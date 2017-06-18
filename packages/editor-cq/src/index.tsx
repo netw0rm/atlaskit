@@ -73,6 +73,8 @@ export interface Props {
   errorReporter?: ErrorReportingHandler;
   mediaProvider?: Promise<MediaProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export interface State {
@@ -222,7 +224,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { disabled = false } = this.props;
+    const { disabled = false, popupsBoundariesElement, popupsMountPoint } = this.props;
     const { editorView, isExpanded, isMediaReady } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
@@ -262,6 +264,8 @@ export default class Editor extends PureComponent<Props, State> {
         mentionProvider={this.mentionProvider}
         pluginStateMentions={mentionsState}
         saveDisabled={!isMediaReady}
+        popupsBoundariesElement={popupsBoundariesElement}
+        popupsMountPoint={popupsMountPoint}
       />
     );
   }

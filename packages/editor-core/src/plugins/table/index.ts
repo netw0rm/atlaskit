@@ -67,6 +67,38 @@ export class TableState {
     };
   }
 
+  insertColumn = (column: number) => {
+    if (this.tableNode) {
+      const map = TableMap.get(this.tableNode);
+      const isLast = column === map.width;
+      const offset = this.tableStartPos() || 1;
+      const from = map.positionAt(0, isLast ? column - 1: column, this.tableNode);
+      const $from = this.state.doc.resolve(from + offset + 2); // 2 = paragraph + td
+      this.view.dispatch(this.state.tr.setSelection(new TextSelection($from, $from)));
+      if (isLast) {
+        tableBaseCommands.addColumnAfter(this.view.state, this.view.dispatch);
+      } else {
+        tableBaseCommands.addColumnBefore(this.view.state, this.view.dispatch);
+      }
+    }
+  }
+
+  insertRow = (row: number) => {
+    if (this.tableNode) {
+      const map = TableMap.get(this.tableNode);
+      const isLast = row === map.height;
+      const offset = this.tableStartPos() || 1;
+      const from = map.positionAt(isLast ? row - 1: row, 0, this.tableNode);
+      const $from = this.state.doc.resolve(from + offset + 2); // 2 = paragraph + td
+      this.view.dispatch(this.state.tr.setSelection(new TextSelection($from, $from)));
+      if (isLast) {
+        tableBaseCommands.addRowAfter(this.view.state, this.view.dispatch);
+      } else {
+        tableBaseCommands.addRowBefore(this.view.state, this.view.dispatch);
+      }
+    }
+  }
+
   subscribe(cb: TableStateSubscriber) {
     this.changeHandlers.push(cb);
     cb(this);
@@ -262,7 +294,6 @@ export class TableState {
       const cell = i === 0 ? table_header : table_cell;
       const cellNodes: Node[] = [];
       for (let j = 0; j < columns; j ++) {
-        // cell needs to be filled with paragraph, otherwise cursor is broken
         cellNodes.push(cell.createAndFill());
       }
       rowNodes.push( table_row.create(null, Fragment.from(cellNodes)) );

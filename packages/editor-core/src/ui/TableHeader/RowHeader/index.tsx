@@ -7,15 +7,16 @@ import {
   RowContainer,
   RowHeaderButtonWrap,
   HeaderButton,
-  RowInsertButtonWrap,
-  RowInsertMarker,
-  RowInsertButton,
+  InsertRowButtonWrap,
+  InsertRowMarker,
+  InsertRowButtonInner,
 } from './styles';
 
 export interface Props {
   tableElement: HTMLElement;
   isSelected: (row: number) => boolean;
   selectRow: (row: number) => void;
+  insertRow: (row: number) => void;
 }
 
 export default class RowHeader extends Component<Props, {}> {
@@ -25,13 +26,18 @@ export default class RowHeader extends Component<Props, {}> {
 
     for (let i = 0, len = rows.length; i < len; i++) {
       nodes.push(
-        <RowHeaderButton
+        <RowHeaderButtonWrap
           key={i}
-          height={(rows[i] as HTMLElement).offsetHeight + 1}
-          active={this.props.isSelected(i)}
-          index={i}
-          selectRow={this.props.selectRow}
-        />
+          className={this.props.isSelected(i) ? 'active' : ''}
+          style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
+        >
+          {/* tslint:disable-next-line:jsx-no-lambda */}
+          <HeaderButton onClick={() => this.props.selectRow(i)} />
+          <InsertRowButton
+            insertRow={this.props.insertRow}
+            index={i + 1}
+          />
+        </RowHeaderButtonWrap>
       );
     }
 
@@ -44,55 +50,41 @@ export default class RowHeader extends Component<Props, {}> {
 }
 
 export interface ButtonProps {
-  height: number;
-  active: boolean;
   index: number;
-  selectRow: (row: number) => void;
+  style?: object;
+  insertRow: (row: number) => void;
 }
 
 export interface ButtonState {
   hovered: boolean;
 }
 
-class RowHeaderButton extends Component<ButtonProps, ButtonState> {
+export class InsertRowButton extends Component<ButtonProps, ButtonState> {
   state = {
     hovered: false
   };
 
-  handleClick = () => {
-    this.props.selectRow(this.props.index);
-  }
-  handleMouseOver = () => {
-    this.setState({ hovered: true });
-  }
-  handleMouseLeave = () => {
-    this.setState({ hovered: false });
-  }
-  handleInsert = () => {
-    // console.log('INSERT!', this.props.index);
-  }
+  handleMouseOver = () => this.setState({ hovered: true });
+  handleMouseLeave = () => this.setState({ hovered: false });
+  handleInsert = () => this.props.insertRow(this.props.index);
 
   render () {
-    const { height, active } = this.props;
-
     return (
-      <RowHeaderButtonWrap style={{ height }} className={active ? 'active' : ''}>
-        <HeaderButton onClick={this.handleClick} />
-        <RowInsertButtonWrap
-          onMouseOver={this.handleMouseOver}
-          onMouseLeave={this.handleMouseLeave}
-        >
-          {this.state.hovered && (
-              <RowInsertButton>
-                <ToolbarButton
-                  onClick={this.handleInsert}
-                  iconBefore={<AddIcon label="Add column" />}
-                />
-              </RowInsertButton>
-          )}
-          <RowInsertMarker />
-        </RowInsertButtonWrap>
-      </RowHeaderButtonWrap>
+      <InsertRowButtonWrap
+        onMouseOver={this.handleMouseOver}
+        onMouseLeave={this.handleMouseLeave}
+        style={this.props.style}
+      >
+        {this.state.hovered && (
+          <InsertRowButtonInner>
+            <ToolbarButton
+              onClick={this.handleInsert}
+              iconBefore={<AddIcon label="Add row" />}
+            />
+          </InsertRowButtonInner>
+        )}
+        <InsertRowMarker />
+      </InsertRowButtonWrap>
     );
   }
 }

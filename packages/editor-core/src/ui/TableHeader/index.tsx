@@ -77,16 +77,20 @@ export default class TableHeader extends PureComponent<Props, State> {
           <CornerHeader
             isSelected={pluginState.isTableSelected}
             selectTable={pluginState.selectTable}
+            insertColumn={pluginState.insertColumn}
+            insertRow={pluginState.insertRow}
           />
           <ColumnHeader
             tableElement={tableElement}
             isSelected={pluginState.isColumnSelected}
             selectColumn={pluginState.selectColumn}
+            insertColumn={pluginState.insertColumn}
           />
           <RowHeader
             tableElement={tableElement}
             isSelected={pluginState.isRowSelected}
             selectRow={pluginState.selectRow}
+            insertRow={pluginState.insertRow}
           />
         </div>
       );

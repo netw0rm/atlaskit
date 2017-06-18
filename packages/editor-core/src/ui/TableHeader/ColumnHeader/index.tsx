@@ -7,15 +7,16 @@ import {
   ColumnInner,
   ColumnHeaderButtonWrap,
   HeaderButton,
-  ColumnInsertButtonWrap,
-  ColumnInsertMarker,
-  ColumnInsertButton,
+  InsertColumnButtonWrap,
+  InsertColumnMarker,
+  InsertColumnButtonInner,
 } from './styles';
 
 export interface Props {
   tableElement: HTMLElement;
   isSelected: (column: number) => boolean;
   selectColumn: (column: number) => void;
+  insertColumn: (column: number) => void;
 }
 
 export default class ColumnHeader extends Component<Props, {}> {
@@ -25,13 +26,18 @@ export default class ColumnHeader extends Component<Props, {}> {
 
     for (let i = 0, len = cols.length; i < len; i++) {
       nodes.push(
-        <ColumnHeaderButton
+        <ColumnHeaderButtonWrap
           key={i}
-          width={(cols[i] as HTMLElement).offsetWidth + 1}
-          active={this.props.isSelected(i)}
-          index={i}
-          selectColumn={this.props.selectColumn}
-        />
+          className={this.props.isSelected(i) ? 'active' : ''}
+          style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
+        >
+          {/* tslint:disable-next-line:jsx-no-lambda */}
+          <HeaderButton onClick={() => this.props.selectColumn(i)} />
+          <InsertColumnButton
+            insertColumn={this.props.insertColumn}
+            index={i + 1}
+          />
+        </ColumnHeaderButtonWrap>
       );
     }
 
@@ -44,55 +50,41 @@ export default class ColumnHeader extends Component<Props, {}> {
 }
 
 export interface ButtonProps {
-  width: number;
-  active: boolean;
   index: number;
-  selectColumn: (column: number) => void;
+  style?: object;
+  insertColumn: (column: number) => void;
 }
 
 export interface ButtonState {
   hovered: boolean;
 }
 
-class ColumnHeaderButton extends Component<ButtonProps, ButtonState> {
+export class InsertColumnButton extends Component<ButtonProps, ButtonState> {
   state = {
     hovered: false
   };
 
-  handleClick = () => {
-    this.props.selectColumn(this.props.index);
-  }
-  handleMouseOver = () => {
-    this.setState({ hovered: true });
-  }
-  handleMouseLeave = () => {
-    this.setState({ hovered: false });
-  }
-  handleInsert = () => {
-    // console.log('INSERT!', this.props.index);
-  }
+  handleMouseOver = () => this.setState({ hovered: true });
+  handleMouseLeave = () => this.setState({ hovered: false });
+  handleInsert = () => this.props.insertColumn(this.props.index);
 
   render () {
-    const { width, active } = this.props;
-
     return (
-      <ColumnHeaderButtonWrap style={{ width }} className={active ? 'active' : ''}>
-        <HeaderButton onClick={this.handleClick} />
-        <ColumnInsertButtonWrap
-          onMouseOver={this.handleMouseOver}
-          onMouseLeave={this.handleMouseLeave}
-        >
-          {this.state.hovered && (
-              <ColumnInsertButton>
-                <ToolbarButton
-                  onClick={this.handleInsert}
-                  iconBefore={<AddIcon label="Add column" />}
-                />
-              </ColumnInsertButton>
-          )}
-          <ColumnInsertMarker />
-        </ColumnInsertButtonWrap>
-      </ColumnHeaderButtonWrap>
+      <InsertColumnButtonWrap
+        onMouseOver={this.handleMouseOver}
+        onMouseLeave={this.handleMouseLeave}
+        style={this.props.style}
+      >
+        {this.state.hovered && (
+          <InsertColumnButtonInner>
+            <ToolbarButton
+              onClick={this.handleInsert}
+              iconBefore={<AddIcon label="Add column" />}
+            />
+          </InsertColumnButtonInner>
+        )}
+        <InsertColumnMarker />
+      </InsertColumnButtonWrap>
     );
   }
 }

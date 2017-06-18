@@ -43,7 +43,7 @@ export const HeaderButton = styled(HeaderButtonDefault)`
   }
 `;
 // tslint:disable-next-line:variable-name
-export const ColumnInsertButtonWrap = styled.div`
+export const InsertColumnButtonWrap = styled.div`
   position: absolute;
   top: -25px;
   right: -12px;
@@ -53,12 +53,12 @@ export const ColumnInsertButtonWrap = styled.div`
   cursor: pointer;
 `;
 // tslint:disable-next-line:variable-name
-export const ColumnInsertMarker = styled(InsertMarkerDefault)`
+export const InsertColumnMarker = styled(InsertMarkerDefault)`
   bottom: 3px;
   left: 10px;
 `;
 // tslint:disable-next-line:variable-name
-export const ColumnInsertButton = styled(InsertButtonDefault)`
+export const InsertColumnButtonInner = styled(InsertButtonDefault)`
   top: -20px;
   left: -5px;
 `;

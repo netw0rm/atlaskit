@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
 
 const NavigationItemAction = styled.div`
+  align-items: center;
   display: flex;
   height: 100%;
   justify-content: center;

@@ -1,4 +1,3 @@
-import DropdownMenu from '@atlaskit/dropdown-menu';
 import AkButton from '@atlaskit/button';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -8,6 +7,7 @@ import { BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { EditorView } from '../../prosemirror';
+import DropdownMenu from '../DropdownMenu';
 
 import { ButtonContent } from './styles';
 
@@ -17,6 +17,8 @@ export interface Props {
   pluginState: BlockTypeState;
   softBlurEditor: () => void;
   focusEditor: () => void;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
 }
 
 export interface State {
@@ -60,6 +62,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
 
   render() {
     const { active, currentBlockType } = this.state;
+    const { popupsMountPoint, popupsBoundariesElement } = this.props;
 
     if (this.props.isDisabled) {
       return (
@@ -78,20 +81,28 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     return (
       <DropdownMenu
         items={items}
-        appearance="tall"
-        position="top left"
         onOpenChange={this.onOpenChange}
         onItemActivated={this.handleSelectBlockType}
+        isOpen={active}
+        mountTo={popupsMountPoint}
+        boundariesElement={popupsBoundariesElement}
+        fitHeight={360}
+        fitWidth={106}
       >
         <AkButton
           isSelected={active}
           appearance="subtle"
           spacing="compact"
+          onClick={this.handleTriggerClick}
         >
           <ButtonContent>{currentBlockType.title}</ButtonContent>
         </AkButton>
       </DropdownMenu>
     );
+  }
+
+  private handleTriggerClick = () => {
+    this.onOpenChange({ isOpen: !this.state.active });
   }
 
   private createItems = () => {

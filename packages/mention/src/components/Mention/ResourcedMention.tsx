@@ -25,7 +25,7 @@ export default class ResourcedMention extends PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.handleMentionProvider(this.props);
   }
 

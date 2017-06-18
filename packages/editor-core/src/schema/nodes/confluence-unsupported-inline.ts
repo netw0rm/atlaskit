@@ -2,7 +2,7 @@ import { NodeSpec } from '../../';
 
 const name = 'confluenceUnsupportedInline';
 
-export default {
+export const confluenceUnsupportedInline = {
   group: 'inline',
   inline: true,
   atom: true,

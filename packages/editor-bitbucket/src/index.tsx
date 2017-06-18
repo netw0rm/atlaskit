@@ -69,6 +69,8 @@ export interface Props {
   errorReporter?: ErrorReportingHandler;
   mentionSource?: MentionSource;
   emojiProvider?: Promise<EmojiProvider>;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export interface State {
@@ -254,6 +256,8 @@ export default class Editor extends PureComponent<Props, State> {
         emojiProvider={emojiProvider}
         packageVersion={version}
         packageName={name}
+        popupsBoundariesElement={this.props.popupsBoundariesElement}
+        popupsMountPoint={this.props.popupsMountPoint}
       />
     );
   }

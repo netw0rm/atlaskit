@@ -80,12 +80,12 @@ export default class TableHeader extends PureComponent<Props, State> {
           <ColumnHeader
             tableElement={tableElement}
             isSelected={pluginState.isColumnSelected}
-            onClick={pluginState.selectColumn}
+            selectColumn={pluginState.selectColumn}
           />
           <RowHeader
             tableElement={tableElement}
             isSelected={pluginState.isRowSelected}
-            onClick={pluginState.selectRow}
+            selectRow={pluginState.selectRow}
           />
         </div>
       );

@@ -146,7 +146,7 @@ export const Content = styled.div`
         font-weight: normal;
       }
       th, td {
-        min-width: 2em;
+        min-width: 3em;
         vertical-align: top;
         border: 1px solid ${akEditorTableBorder};
         border-right-width: 0;
@@ -176,7 +176,7 @@ export const Content = styled.div`
         content: "";
         left: 0; right: 0; top: 0; bottom: 0;
         background: ${akEditorTableCellSelected};
-        opacity: 0.2;
+        opacity: 0.3;
         pointer-events: none;
       }
     }

@@ -4,6 +4,19 @@ import invariant from 'invariant';
 import styled from 'styled-components';
 import type { Position } from '../../types';
 
+const noop = (): void => { };
+const empty: Object = {};
+const getFalse: () => boolean = () => false;
+
+// https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+const primaryButton = 0;
+
+// The amount of pixels that need to move before we consider the movement
+// a drag rather than a click.
+export const sloppyClickThreshold: number = 5;
+
+type DragTypes = 'KEYBOARD' | 'MOUSE';
+
 export type Callbacks = {
   onLift: (point: Position) => void,
   onKeyLift: () => void,
@@ -13,17 +26,6 @@ export type Callbacks = {
   onDrop: () => void,
   onCancel: () => void,
 }
-
-const noop = (): void => { };
-const empty: Object = {};
-const getFalse: () => boolean = () => false;
-
-// https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
-const primaryButton = 0;
-
-export const sloppyClickThreshold: number = 5;
-
-type DragTypes = 'KEYBOARD' | 'MOUSE';
 
 type Props = {
   children?: any,
@@ -342,6 +344,9 @@ export default class Handle extends PureComponent {
       onMouseDown: this.onMouseDown,
       onKeyDown: this.onKeyDown,
 
+      // Conditionally block clicks
+      onClick: this.onClick,
+
       // Allow tabbing to this element
       tabIndex: 0,
 
@@ -349,7 +354,6 @@ export default class Handle extends PureComponent {
       draggable: false,
       onDragStart: getFalse,
       onDrop: getFalse,
-      onClick: this.onClick,
     } : empty;
 
     return cloneElement(children, props);

@@ -24,7 +24,7 @@ type ListData = {|
 
 type ListDataMap = { [key: string ]: ListData }
 
-const itemKeys: string[] = Array.from({ length: 6 }, (k, v) => `item${v}`);
+const itemKeys: string[] = Array.from({ length: 400 }, (k, v) => `item${v}`);
 const items: ItemDataMap = itemKeys
     .reduce((acc: ItemDataMap, key: string) => {
       console.log('key', key);
@@ -42,12 +42,12 @@ const lists: ListDataMap = {
     height: '800px',
     withOverflow: false,
   },
-  // bar: {
-  //   id: 'bar',
-  //   itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
-  //   height: '500px',
-  //   withOverflow: true,
-  // },
+  bar: {
+    id: 'bar',
+    itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
+    height: '500px',
+    withOverflow: true,
+  },
 };
 
 const DraggableItem = (() => {

@@ -154,6 +154,17 @@ export const completeDrop = (result: DropResult): DropCompleteAction => ({
 export const drop = (id: DraggableId) =>
   (dispatch: Dispatch, getState: () => State): void => {
     const state: State = getState();
+
+    // This can occur if the user ends a drag before
+    // the collecting phase is finished.
+    // This will not trigger a hook as the hook waits
+    // for a DRAGGING phase before firing a onDragStart
+    if (state.phase === 'COLLECTING_DIMENSIONS') {
+      console.log('canceling drag while collecting');
+      dispatch(cancel(id));
+      return;
+    }
+
     if (state.phase !== 'DRAGGING') {
       console.error('cannot drop if not dragging', state);
       dispatch(cancel(id));
@@ -231,10 +242,11 @@ export const lift = (id: DraggableId,
   // quickly finish any current animations
     if (state.phase === 'DROP_ANIMATING') {
       if (!state.drop || !state.drop.pending) {
-        console.error('cannot ');
-      } else {
-        dispatch(completeDrop(state.drop.pending.result));
+        console.error('cannot flush drop animation if there is no pending');
+        dispatch(cancel('super cool id'));
+        return;
       }
+      dispatch(completeDrop(state.drop.pending.result));
     }
   })();
 
@@ -243,7 +255,7 @@ export const lift = (id: DraggableId,
   setTimeout(() => {
     const state: State = getState();
 
-    if (state.phase !== 'IDLE') {
+    if (state.phase !== 'IDLE' || state.phase !== 'DRAG_COMPLETE') {
       // TODO: cancel does not need an id
       dispatch(cancel('some-fake-id'));
     }
@@ -256,6 +268,12 @@ export const lift = (id: DraggableId,
     // Could improve this by explicitly waiting until all dimensions are published.
     // Could also allow a lift to occur before all the dimensions are published
     setTimeout(() => {
+      const newState: State = getState();
+
+      // drag was already cancelled before dimensions all collected
+      if (newState.phase !== 'COLLECTING_DIMENSIONS') {
+        return;
+      }
       dispatch(completeLift(id, type, center, scroll, selection));
     });
   });

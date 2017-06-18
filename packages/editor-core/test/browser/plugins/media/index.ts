@@ -88,6 +88,10 @@ describe('Media plugin', () => {
     return mediaNodeWithPos!.getPos();
   };
 
+  after(() => {
+    providerFactory.destroy();
+  });
+
   it('allows change handler to be registered', () => {
     const pluginState = editor(doc(p(''))).pluginState as MediaPluginState;
     pluginState.subscribe(sinon.spy());

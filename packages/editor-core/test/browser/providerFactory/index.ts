@@ -18,6 +18,10 @@ describe('ProviderFactory', () => {
       providerFactory = new ProviderFactory();
     });
 
+    afterEach(() => {
+      providerFactory.destroy();
+    });
+
     it('should update map with new provider', () => {
       const spy = sinon.spy((providerFactory as any).providers, 'set');
       providerFactory.setProvider(providerName1, provider);
@@ -160,6 +164,18 @@ describe('ProviderFactory', () => {
       expect(handler3.called).to.equal(false);
       expect(handler1.calledWith(providerName1, provider)).to.equal(true);
       expect(handler2.calledWith(providerName1, provider)).to.equal(true);
+    });
+  });
+
+  describe('destroy', () => {
+    it('should clear all handlers and providers', () => {
+      const providerFactory = new ProviderFactory();
+      providerFactory.setProvider(providerName1, provider);
+      providerFactory.subscribe(providerName1, handler1);
+
+      expect(providerFactory.isEmpty()).to.equal(false);
+      providerFactory.destroy();
+      expect(providerFactory.isEmpty()).to.equal(true);
     });
   });
 

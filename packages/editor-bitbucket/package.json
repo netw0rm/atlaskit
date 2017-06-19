@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^31.0.1",
+    "@atlaskit/editor-core": "^31.1.0",
     "@atlaskit/emoji": "^14.1.0",
     "@atlaskit/mention": "^4.0.4",
     "tslib": "^1.2.0"

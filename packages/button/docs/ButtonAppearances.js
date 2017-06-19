@@ -1,8 +1,8 @@
 import React from 'react';
-import Button from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 
 const ButtonAppearance = () => (
-  <div>
+  <ButtonGroup>
     <Button>
       Default
     </Button>
@@ -18,7 +18,7 @@ const ButtonAppearance = () => (
     <Button appearance="subtle-link" >
       Subtle link
     </Button>
-  </div>
+  </ButtonGroup>
 );
 
 export default ButtonAppearance;

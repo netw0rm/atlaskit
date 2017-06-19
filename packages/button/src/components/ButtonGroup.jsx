@@ -11,11 +11,11 @@ export default class ButtonGroup extends PureComponent {
   render() {
     return (
       <ButtonGroupDiv>
-        {this.props.children.map(child => (
+        {this.props.children ? this.props.children.map(child => (
           <ButtonWrapper>
             {child}
           </ButtonWrapper>
-        ))}
+        )) : null}
       </ButtonGroupDiv>
     );
   }

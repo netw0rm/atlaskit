@@ -3,7 +3,7 @@ import React from 'react';
 
 import { name } from '../../package.json';
 import { ButtonGroup } from '../../src';
-import ButtonGroupDiv from '../../src/styled/ButtonGroup';
+import { ButtonGroupDiv } from '../../src/styled/ButtonGroup';
 
 describe(`${name} - button group`, () => {
   describe('basic behavior', () => {

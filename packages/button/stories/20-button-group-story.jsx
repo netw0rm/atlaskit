@@ -22,8 +22,7 @@ const items = [
 
 const imports = [
   ['React', 'react'],
-  ['ButtonGroup', '@atlaskit/button-group'],
-  ['Button', '@atlaskit/button'],
+  ['Button, { ButtonGroup }', '@atlaskit/button'],
 ];
 
 storiesOf(name, module)

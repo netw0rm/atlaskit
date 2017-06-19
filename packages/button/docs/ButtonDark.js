@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import styled from 'styled-components';
 
 const Background = styled.div`
@@ -9,21 +9,23 @@ const Background = styled.div`
 
 const ButtonDark = () => (
   <Background>
-    <Button theme="dark">
-      Default
-    </Button>
-    <Button appearance="primary" theme="dark">
-      Primary
-    </Button>
-    <Button appearance="link" theme="dark">
-      Link
-    </Button>
-    <Button appearance="subtle" theme="dark">
-      Subtle
-    </Button>
-    <Button appearance="subtle-link" theme="dark">
-      Subtle link
-    </Button>
+    <ButtonGroup>
+      <Button theme="dark">
+        Default
+      </Button>
+      <Button appearance="primary" theme="dark">
+        Primary
+      </Button>
+      <Button appearance="link" theme="dark">
+        Link
+      </Button>
+      <Button appearance="subtle" theme="dark">
+        Subtle
+      </Button>
+      <Button appearance="subtle-link" theme="dark">
+        Subtle link
+      </Button>
+    </ButtonGroup>
   </Background>
 );
 

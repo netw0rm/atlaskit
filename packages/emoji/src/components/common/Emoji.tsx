@@ -1,6 +1,7 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent } from 'react';
+import Tooltip from '@atlaskit/tooltip';
 
 import * as styles from './styles';
 import { isSpriteRepresentation, toEmojiId } from '../../type-helpers';
@@ -61,11 +62,15 @@ const renderAsSprite = (props: Props) => {
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
     >
-      <span
-        className={styles.emojiSprite}
-        title={emoji.shortName}
-        style={style}
-      />
+      <Tooltip
+        description={emoji.shortName}
+        position="bottom"
+      >
+        <span
+          className={styles.emojiSprite}
+          style={style}
+        />
+      </Tooltip>
     </span>
   );
 };
@@ -88,17 +93,20 @@ const renderAsImage = (props: Props) => {
   return (
     <span
       className={classNames(classes)}
-      title={emoji.shortName}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
     >
-      <img
-        src={representation.imagePath}
-        alt={emoji.shortName}
-        title={emoji.shortName}
-      />
+      <Tooltip
+        description={emoji.shortName}
+        position="bottom"
+      >
+        <img
+          src={representation.imagePath}
+          alt={emoji.shortName}
+        />
+      </Tooltip>
     </span>
   );
 };

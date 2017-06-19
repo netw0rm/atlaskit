@@ -293,6 +293,13 @@ describe('text-formatting', () => {
         sendKeyToPm(editorView, 'Backspace');
         expect(pluginState.codeActive).to.equal(true);
       });
+
+      it('should be able to exit code mark with ArrowRight', () => {
+        const { editorView, pluginState } = editor(doc(p(code('hello{<>}'))));
+        expect(pluginState.codeActive).to.equal(true);
+        sendKeyToPm(editorView, 'ArrowRight');
+        expect(pluginState.codeActive).to.equal(false);
+      });
     });
 
     it('should be able to remove mark when its the first node of the paragraph', () => {

@@ -2,6 +2,9 @@ import { NodeSpec, MarkSpec, Schema } from '../prosemirror';
 import { COLOR, FONT_STYLE, SEARCH_QUERY, LINK } from './groups';
 import {
   // Nodes
+  confluenceJiraIssue,
+  confluenceUnsupportedBlock,
+  confluenceUnsupportedInline,
   doc,
   paragraph,
   text,
@@ -115,6 +118,9 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'table_cell', spec: table_cell },
   { name: 'table_row', spec: table_row },
   { name: 'table_header', spec: table_header },
+  { name: 'confluenceJiraIssue', spec: confluenceJiraIssue },
+  { name: 'confluenceUnsupportedInline', spec: confluenceUnsupportedInline },
+  { name: 'confluenceUnsupportedBlock', spec: confluenceUnsupportedBlock },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [

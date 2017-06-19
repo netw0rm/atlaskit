@@ -10,6 +10,7 @@ storiesOf(`${name}/Mention`, module)
   .add('Mention', () => (
     <Mention
       {...mentionData}
+      accessLevel={'CONTAINER'}
       onClick={action('onClick')}
       onMouseEnter={action('onMouseEnter')}
       onMouseLeave={action('onMouseLeave')}
@@ -27,6 +28,7 @@ storiesOf(`${name}/Mention`, module)
   .add('Resourced mention', () => (
     <ResourcedMention
       {...mentionData}
+      accessLevel={'CONTAINER'}
       mentionProvider={mentionProvider}
       onClick={action('onClick')}
       onMouseEnter={action('onMouseEnter')}
@@ -43,4 +45,12 @@ storiesOf(`${name}/Mention`, module)
       onMouseLeave={action('onMouseLeave')}
     />
   ))
-;
+  .add('Mention with no container permission', () => (
+    <Mention
+      {...mentionData}
+      accessLevel={'NONE'}
+      onClick={action('onClick')}
+      onMouseEnter={action('onMouseEnter')}
+      onMouseLeave={action('onMouseLeave')}
+    />
+  ));

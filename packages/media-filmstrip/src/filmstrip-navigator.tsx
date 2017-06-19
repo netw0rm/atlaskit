@@ -5,7 +5,6 @@ import {Component, DragEvent as ReactDragEvent, DragEventHandler, WheelEvent} fr
 import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
-import LazyLoad from 'react-lazy-load';
 
 export interface FilmstripNavigatorProps {
   children?: any;
@@ -112,17 +111,17 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       </li>
     )) : null;
 
-    return <LazyLoad height={100} >
-             <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}>
-               {showLeft ? leftArrow : undefined}
-               <FilmStripListWrapper>
-                 <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
-                   {items}
-                 </FilmStripList>
-               </FilmStripListWrapper>
-               {showRight ? rightArrow : undefined}
-             </FilmStripViewWrapper>
-           </LazyLoad>;
+    return (
+      <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}>
+        {showLeft ? leftArrow : undefined}
+        <FilmStripListWrapper>
+          <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
+            {items}
+          </FilmStripList>
+        </FilmStripListWrapper>
+        {showRight ? rightArrow : undefined}
+      </FilmStripViewWrapper>
+    );
   }
 
   componentDidUpdate() {

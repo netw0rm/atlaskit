@@ -22,7 +22,7 @@ import nucleusLogo from './nucleus.png';
 const ExampleContainerNavigation = ({ theme, themeName, isCollapsed = false }) => (
   <AkContainerNavigation
     theme={theme}
-    showGlobalPrimaryActions={isCollapsed}
+    showGlobalActions={isCollapsed}
     isCollapsed={isCollapsed}
     globalCreateIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
     globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" secondaryColor="inherit" />}

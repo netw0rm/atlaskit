@@ -188,14 +188,13 @@ export class MediaPluginState {
     }
 
     let transaction = state.tr;
+    const { $from } = state.selection;
+
+    if (!canMoveDown(state)) {
+      transaction.insert($from.pos + 1, state.schema.nodes.paragraph.create());
+    }
 
     if (this.isInsideEmptyParagraph()) {
-      const { $from } = state.selection;
-
-      if (!canMoveDown(state)) {
-        transaction.insert($from.pos + 1, state.schema.nodes.paragraph.create());
-      }
-
       // replace this empty paragraph with media group
       transaction.replaceWith(
         $from.start($from.depth) - 1,

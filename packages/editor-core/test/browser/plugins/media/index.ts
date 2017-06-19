@@ -305,6 +305,7 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
+        p(),
         p()
       )
     );
@@ -425,6 +426,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({ id: publicFileId, type: 'file', collection: testCollectionName }),
         ),
+        p(),
       )
     );
 

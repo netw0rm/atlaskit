@@ -4,7 +4,7 @@ import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
+import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection, canMoveDown, canMoveUp } from '../utils';
 import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
@@ -362,28 +362,6 @@ export function createNewParagraphBelow(view: EditorView): Command {
 
     return false;
   };
-}
-
-function canMoveUp(state: EditorState<any>): boolean {
-  const { selection } = state;
-  if (selection instanceof TextSelection) {
-    if (!selection.empty) {
-      return true;
-    }
-  }
-
-  return selection.$from.pos !== selection.$from.depth;
-}
-
-function canMoveDown(state: EditorState<any>): boolean {
-  const { selection, doc } = state;
-  if (selection instanceof TextSelection) {
-    if (!selection.empty) {
-      return true;
-    }
-  }
-
-  return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
 }
 
 function canCreateParagraphNear(state: EditorState<any>): boolean {

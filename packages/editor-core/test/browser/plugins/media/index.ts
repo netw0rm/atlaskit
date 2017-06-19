@@ -97,17 +97,29 @@ describe('Media plugin', () => {
     pluginState.subscribe(sinon.spy());
   });
 
-  it(`should insert media node into the document after current paragraph node`, () => {
-    const { editorView, pluginState } = editor(doc(p('text{<>}')));
+  context('when cursor is at the end of current text block', () => {
+    context('when current text block is a paragraph', () => {
+      it('inserts media node into the document after current paragraph node', () => {
+        const { editorView, pluginState } = editor(doc(p('text{<>}')));
 
-    insertFile(editorView, pluginState);
+        insertFile(editorView, pluginState);
 
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        p('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
+        expect(editorView.state.doc).to.deep.equal(
+          doc(
+            p('text'),
+            mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+            p('')
+          ));
+      });
+
+      it('puts cursor to the next paragraph after inserting media node', () => {
+        const { editorView, pluginState, sel } = editor(doc(p('text{<>}')));
+
+        insertFile(editorView, pluginState);
+
+        expect(editorView.state.selection.from).to.eq(sel + 2);
+      });
+    });
   });
 
   it(`should insert media node into the document after current heading node`, () => {
@@ -119,8 +131,8 @@ describe('Media plugin', () => {
       doc(
         h1('text'),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
+        )
+      ));
   });
 
   it(`should insert media node into the document after current blockquote node`, () => {
@@ -145,8 +157,8 @@ describe('Media plugin', () => {
       doc(
         code_block()('text'),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
+        )
+      ));
   });
 
   it('should prepend media node to existing media group', () => {
@@ -203,6 +215,7 @@ describe('Media plugin', () => {
       doc(
         p(),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+        p()
       )
     );
   });
@@ -281,6 +294,7 @@ describe('Media plugin', () => {
       doc(
         p(),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+        p(),
       )
     );
 
@@ -389,6 +403,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({ id: tempFileId, type: 'file', collection: testCollectionName }),
         ),
+        p(),
       )
     );
 
@@ -517,8 +532,8 @@ describe('Media plugin', () => {
       expect(editorView.state.doc).to.deep.equal(
         doc(
           mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
-        )
-      ));
+          )
+        ));
     });
   });
 

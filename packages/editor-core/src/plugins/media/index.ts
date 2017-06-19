@@ -23,7 +23,7 @@ import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
-import { ErrorReporter } from '../../utils';
+import { ErrorReporter, canMoveDown } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
@@ -162,7 +162,7 @@ export class MediaPluginState {
     );
   }
 
-  insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
+  insertFile = (mediaState: MediaState, collection: string): [PMNode, Transaction] => {
     const { view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
@@ -187,28 +187,26 @@ export class MediaPluginState {
       node.fileMimeType = fileMimeType;
     }
 
-    let transaction;
+    let transaction = state.tr;
 
     if (this.isInsideEmptyParagraph()) {
       const { $from } = state.selection;
 
-      // empty paragraph always exists inside the document
-      if (state.doc.childCount === 1) {
-        // add media group before this empty paragraph
-        transaction = state.tr.insert($from.start($from.depth) - 1, node);
-      } else {
-        // replace this empty paragraph with media group
-        transaction = state.tr.replaceWith(
-          $from.start($from.depth) - 1,
-          $from.end($from.depth) + 1,
-          node
-        );
+      if (!canMoveDown(state)) {
+        transaction.insert($from.pos + 1, state.schema.nodes.paragraph.create());
       }
+
+      // replace this empty paragraph with media group
+      transaction.replaceWith(
+        $from.start($from.depth) - 1,
+        $from.end($from.depth) + 1,
+        node
+      );
     } else {
       transaction = state.tr.insert(this.findInsertPosition(), node);
     }
 
-    return [ node, transaction ];
+    return [node, transaction];
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -436,7 +434,7 @@ export class MediaPluginState {
       return;
     }
 
-    const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
+    const [node, transaction] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
     const { view } = this;
 
     view.dispatch(transaction);

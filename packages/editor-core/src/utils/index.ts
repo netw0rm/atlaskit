@@ -34,6 +34,28 @@ function isMarkTypeAllowedInNode(markType: MarkType, state: EditorState<any>): b
   return commands.toggleMark(markType)(state);
 }
 
+export function canMoveUp(state: EditorState<any>): boolean {
+  const { selection } = state;
+  if (selection instanceof TextSelection) {
+    if (!selection.empty) {
+      return true;
+    }
+  }
+
+  return selection.$from.pos !== selection.$from.depth;
+}
+
+export function canMoveDown(state: EditorState<any>): boolean {
+  const { selection, doc } = state;
+  if (selection instanceof TextSelection) {
+    if (!selection.empty) {
+      return true;
+    }
+  }
+
+  return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
+}
+
 /**
  * Check if a mark is allowed at the current position based on a given state.
  * This method looks both at the currently active marks as well as the node and marks

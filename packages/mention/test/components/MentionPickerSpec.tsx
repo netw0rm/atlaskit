@@ -92,7 +92,6 @@ describe('MentionPicker', () => {
         return waitUntil(createMentionErrorShownTest(component)).then(() => {
           let errorMention = component.find(MentionListError);
           let err = errorMention.prop('error') as HttpError;
-          expect(err).to.not.be.undefined;
           expect(err.statusCode).to.equal(401);
           expect(errorMention.text()).to.contain('logging in');
         });

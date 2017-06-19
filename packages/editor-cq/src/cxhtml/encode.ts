@@ -237,6 +237,8 @@ export default function encode(node: PMNode) {
           }
         }
       }
+
+      return false;
     });
 
     body.appendChild(fragment);

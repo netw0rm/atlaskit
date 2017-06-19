@@ -249,7 +249,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
 
         for (let i = 0, len = nodes.length; i < len; i += 1) {
           const domNode: any = nodes[i];
-          const content = Fragment.from([ schema.text(domNode.innerText) ]);
+          const content = getContent(domNode);
           const pmNode = converter(content, domNode);
           if (pmNode) {
             panelBody.push(pmNode);

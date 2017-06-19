@@ -1,6 +1,6 @@
 import { Search } from 'js-search';
 
-import { Mention } from '../src/types';
+import { MentionDescription } from '../src/types';
 import debug from '../src/util/logger';
 import { AbstractMentionResource } from '../src/api/MentionResource';
 import mentionData from './_mention-data';
@@ -67,7 +67,7 @@ export default class MockMentionResource extends AbstractMentionResource {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  recordMentionSelection(mention: Mention): void {
+  recordMentionSelection(mention: MentionDescription): void {
     debug(`Record mention selection ${mention.id}`);
   }
 }

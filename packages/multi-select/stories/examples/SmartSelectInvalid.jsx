@@ -14,8 +14,8 @@ const selectItems = [
 export default (
   <Select
     isInvalid
+    invalidMessage="There is a problem with an input"
     items={selectItems}
     label="Choose your favourite"
-    shouldFitContainer
   />
 );

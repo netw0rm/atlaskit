@@ -1,9 +1,8 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import * as rgba from 'polished/lib/color/rgba';
-import * as parseToRgb from 'polished/lib/color/parseToRgb';
 import {akColorN0, akColorN900} from '@atlaskit/util-shared-styles';
 import {absolute, size} from '../../styles';
+import {colorWithAlpha} from '../../utils/colorWithAlpha';
 
 const bodyHeight = 26;
 
@@ -17,7 +16,7 @@ export const Overlay = styled.div`
   ${absolute()}
   ${size()}
   border-radius: inherit;
-  background-color: ${rgba({...parseToRgb(akColorN900), alpha: 0.5})};
+  background-color: ${colorWithAlpha(akColorN900, 0.5)};
 `;
 
 export const Title = styled.div`

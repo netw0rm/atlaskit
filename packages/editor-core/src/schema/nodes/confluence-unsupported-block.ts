@@ -2,7 +2,7 @@ import { NodeSpec } from '../../';
 
 const name = 'confluenceUnsupportedBlock';
 
-export default {
+export const confluenceUnsupportedBlock = {
   group: 'block',
   attrs: { cxhtml: { default: null } },
   toDOM(node): [string, any, string] {

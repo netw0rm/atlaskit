@@ -12,4 +12,3 @@ export * from './prosemirror-markdown';
 export * from './prosemirror-tables';
 import * as dom from './dom';
 export { dom };
-export { OrderedMap } from './orderedmap';

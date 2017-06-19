@@ -71,25 +71,26 @@ export function findTraversalPath(roots: Node[]) {
   let elem;
   while (elem = inqueue.shift()) {
     outqueue.push(elem);
-    if (isNodeSupportedContent(elem)) {
+    let children;
+    if (isNodeSupportedContent(elem) && (children = childrenOfNode(elem))) {
       let childIndex;
-      for (childIndex = 0; childIndex < elem.childNodes.length; childIndex++) {
-        const child = elem.childNodes[childIndex];
-        switch (child.nodeType) {
-          case Node.ELEMENT_NODE:
-          case Node.TEXT_NODE:
-          case Node.CDATA_SECTION_NODE:
-            inqueue.push(child);
-            break;
-          default:
-            console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
-        }
+      for (childIndex = 0; childIndex < children.length; childIndex++) {
+        const child = children[childIndex];
+        inqueue.push(child);
       }
     }
   }
   return outqueue;
 }
 
+function childrenOfNode(node: Element): NodeList | null {
+  const tag = getNodeName(node);
+  if (tag === 'AC:STRUCTURED-MACRO') {
+    return getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
+  }
+
+  return node.childNodes;
+}
 /**
  * Return an array containing the child nodes in a fragment.
  *
@@ -112,12 +113,12 @@ export function children(fragment: Fragment): PMNode[] {
  *
  * @param node
  */
-export function isNodeSupportedContent(node: Node): boolean {
+function isNodeSupportedContent(node: Node): boolean {
   if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
     return true;
   }
 
-  if (node instanceof HTMLElement) {
+  if (node instanceof HTMLElement || node.nodeType === Node.ELEMENT_NODE) {
     const tag = getNodeName(node);
     switch (tag) {
       case 'DEL':
@@ -147,6 +148,7 @@ export function isNodeSupportedContent(node: Node): boolean {
       case 'A':
       case 'FAB:MENTION':
       case 'FAB:MEDIA':
+      case 'AC:STRUCTURED-MACRO':
         return true;
     }
   }
@@ -274,7 +276,7 @@ export function getMacroParameters(node: Element): any {
   return params;
 }
 
-export function createCodeFragment (codeContent: string, language?: string | null, title?: string | null): Fragment {
+export function createCodeFragment(codeContent: string, language?: string | null, title?: string | null): Fragment {
   const content: PMNode[] = [];
   let nodeSize = 0;
 
@@ -292,7 +294,7 @@ export function createCodeFragment (codeContent: string, language?: string | nul
   return Fragment.from(content);
 }
 
-export function hasClass (node: Element, className: string): boolean {
+export function hasClass(node: Element, className: string): boolean {
   if (node && node.className) {
     return node.className.indexOf(className) > -1;
   }

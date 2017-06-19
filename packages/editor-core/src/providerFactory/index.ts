@@ -20,6 +20,15 @@ export default class ProviderFactory {
   private providers: Map<string, Promise<any>> = new Map();
   private subscribers: Map<string, ProviderHandler[]> = new Map();
 
+  destroy() {
+    this.providers.clear();
+    this.subscribers.clear();
+  }
+
+  isEmpty(): boolean {
+    return !this.providers.size && !this.subscribers.size;
+  }
+
   setProvider(name: string, provider?: Promise<any>) {
     if (provider) {
       this.providers.set(name, provider);

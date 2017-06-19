@@ -6,6 +6,7 @@ import BulletList from './bulletList';
 import Doc from './doc';
 import HardBreak from './hardBreak';
 import ListItem from './listItem';
+import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
@@ -16,6 +17,7 @@ export const nodeToReact = {
   'doc': Doc,
   'hardBreak': HardBreak,
   'listItem': ListItem,
+  'mention': Mention,
   'orderedList': OrderedList,
   'panel': Panel,
   'paragraph': Paragraph,
@@ -118,6 +120,7 @@ export {
   Doc,
   HardBreak,
   ListItem,
+  Mention,
   OrderedList,
   Panel,
   Paragraph,

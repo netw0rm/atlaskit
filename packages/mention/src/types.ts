@@ -16,7 +16,7 @@ export interface Presence {
   status?: string;
 }
 
-export interface Mention {
+export interface MentionDescription {
   id: string;
   avatarUrl?: string;
   name?: string;
@@ -28,13 +28,23 @@ export interface Mention {
   accessLevel?: string;
 }
 
-export enum UserAccessLevel {
+export interface OnMentionEvent {
+  (mention: MentionDescription, event?: SyntheticEvent<any>): void;
+}
+
+export enum MentionType {
+  SELF,
+  RESTRICTED,
+  DEFAULT
+}
+
+enum UserAccessLevel {
     NONE,
     SITE,
     APPLICATION,
     CONTAINER,
 }
 
-export interface OnMentionEvent {
-  (mention: Mention, event?: SyntheticEvent<any>): void;
+export function isRestricted(accessLevel) {
+  return accessLevel && accessLevel !== UserAccessLevel[UserAccessLevel.CONTAINER];
 }

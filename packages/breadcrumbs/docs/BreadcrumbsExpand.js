@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { BreadcrumbsStateless, BreadcrumbsItem } from '@atlaskit/breadcrumbs';
 
-export default class AKBreadcrumbsExpand extends PureComponent {
+export default class BreadcrumbsExpand extends PureComponent {
   state = {
     isExpanded: false,
   }

@@ -15,10 +15,10 @@ import { CSSTransitionGroup } from 'react-transition-group';
 
 import { defaultImageCardDimensions, defaultSmallCardDimensions } from '../utils';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
-import { Provider, MediaCard } from '../root';
+import { Provider, MediaCard, CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
-import { LazyLoadCard } from '../root/card/styled';
+import { LazyContent } from '../utils';
 
 export interface CardListProps {
   context: Context;
@@ -189,14 +189,10 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderList(): JSX.Element {
-    const {cardWidth, cardHeight, providersByMediaItemId, dataURIService, handleCardClick} = this;
+    const {cardWidth, dimensions, providersByMediaItemId, dataURIService, handleCardClick, placeholder} = this;
     const { collection } = this.state;
     const {cardAppearance, shouldLazyLoadCards} = this.props;
     const actions = this.props.actions || [];
-    const dimensions = {
-      width: cardWidth,
-      height: cardHeight
-    };
     const cardActions = (collectionItem: MediaCollectionItem) => actions
       .map(action => {
         return {
@@ -234,9 +230,9 @@ export class CardList extends Component<CardListProps, CardListState> {
         );
 
         return shouldLazyLoadCards ? (
-          <LazyLoadCard key={key} appearance={cardAppearance}>
+          <LazyContent placeholder={placeholder} key={key} appearance={cardAppearance}>
             {cardListItem}
-          </LazyLoadCard>
+          </LazyContent>
         ) : cardListItem;
       }) : null
     ;
@@ -317,6 +313,25 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   private isNullOrUndefined(value: any): boolean {
     return (value === null) || (value === undefined);
+  }
+
+  private get dimensions(): CardDimensions {
+    const {cardWidth, cardHeight} = this;
+    return {
+      width: cardWidth,
+      height: cardHeight
+    };
+  }
+
+  private get placeholder(): JSX.Element {
+    const {cardWidth, dimensions} = this;
+    const {cardAppearance} = this.props;
+
+    return (
+      <CardListItemWrapper cardWidth={cardWidth}>
+        <CardView dimensions={dimensions} status="loading" appearance={cardAppearance} />
+      </CardListItemWrapper>
+    );
   }
 
   loadNextPage = (): void => this.state.loadNextPage && this.state.loadNextPage();

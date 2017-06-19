@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
+import { whenCollapsed } from '../../theme/util';
 
 const NavigationItemAction = styled.div`
   align-items: center;
@@ -10,9 +11,9 @@ const NavigationItemAction = styled.div`
   right: ${gridSize}px;
   top: 0;
 
-  [data-__ak-navigation-container-closed="true"] & {
+  ${whenCollapsed`
     opacity: 0;
-  }
+  `}
 `;
 
 NavigationItemAction.displayName = 'NavigationItemAction';

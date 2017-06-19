@@ -46,7 +46,7 @@ export default class NavigationWithDropdown extends PureComponent {
               icon={<ListIcon label="List" />}
               dropIcon={<ExpandIcon label="Chevron" />}
               {...this.props.navigationItemProps}
-              text={this.state.isNavigationOpen ? dropdownTriggerText : ''}
+              text={dropdownTriggerText}
             />
           </AkDropdownMenu>
         </DropdownWrapper>

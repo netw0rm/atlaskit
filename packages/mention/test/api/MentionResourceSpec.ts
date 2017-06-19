@@ -4,7 +4,7 @@ import * as fetchMock from 'fetch-mock';
 import { assert, expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { Mention } from '../../src/types';
+import { MentionDescription } from '../../src/types';
 import MentionResource, { HttpError, MentionResourceConfig, SecurityOptions } from '../../src/api/MentionResource';
 import { resultC, resultCraig } from '../_mention-search-results';
 
@@ -123,7 +123,7 @@ describe('MentionResource', () => {
   describe('#filter', () => {
     it('in order responses', (done) => {
       const resource = new MentionResource(apiConfig);
-      const results: Mention[][] = [];
+      const results: MentionDescription[][] = [];
       const expected = [resultC, resultCraig];
       resource.subscribe('test1', (mentions) => {
         results.push(mentions);
@@ -141,7 +141,7 @@ describe('MentionResource', () => {
     // Temporarily disabled due to failing on Mobile Safari 9.0.0.
     it.skip('out of order responses', (done) => { // eslint-disable-line
       const resource = new MentionResource(apiConfig);
-      const results: Mention[][] = [];
+      const results: MentionDescription[][] = [];
       const expected = [resultCraig];
       resource.subscribe('test1', (mentions) => {
         results.push(mentions);

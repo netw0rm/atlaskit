@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
+import { whenCollapsed } from '../../theme/util';
 
 const NavigationItemGroupAction = styled.div`
   margin-right: ${gridSize}px;
 
-  [data-__ak-navigation-container-closed="true"] & {
+  ${whenCollapsed`
     visibility: hidden;
-  }
+  `}
 `;
 
 NavigationItemGroupAction.displayName = 'NavigationItemGroupAction';

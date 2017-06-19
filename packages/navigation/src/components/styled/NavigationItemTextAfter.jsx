@@ -1,12 +1,13 @@
 import styled from 'styled-components';
+import { whenCollapsed } from '../../theme/util';
 
 const NavigationItemTextAfter = styled.div`
   position: relative;
   z-index: 1;
 
-  [data-__ak-navigation-container-closed="true"] & {
+  ${whenCollapsed`
     opacity: 0;
-  }
+  `}
 `;
 
 NavigationItemTextAfter.displayName = 'NavigationItemTextAfter';

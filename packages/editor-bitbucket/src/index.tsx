@@ -97,6 +97,10 @@ export default class Editor extends PureComponent<Props, State> {
     this.handleProviders(this.props);
   }
 
+  componentWillUnmount() {
+    this.providerFactory.destroy();
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
     if (props.mentionSource !== nextProps.mentionSource || props.emojiProvider !== nextProps.emojiProvider) {

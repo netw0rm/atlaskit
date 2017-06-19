@@ -157,6 +157,10 @@ export default class Editor extends PureComponent<Props, State> {
     analyticsService.handler = analyticsHandler || ((name) => { });
   }
 
+  componentWillUnmount() {
+    this.providerFactory.destroy();
+  }
+
   /**
    * Focus the content region of the editor.
    */

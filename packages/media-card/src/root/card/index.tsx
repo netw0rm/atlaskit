@@ -77,6 +77,13 @@ export class Card extends Component<CardProps, {}> {
     }
   }
 
+  get placeholder(): JSX.Element {
+    const {appearance, dimensions} = this.props;
+    return (
+      <CardView status="loading" appearance={appearance} dimensions={dimensions}/>
+    );
+  }
+
   render() {
     const {context, identifier, isLazy, appearance, ...otherProps} = this.props;
     const {mediaItemType} = identifier;
@@ -89,10 +96,9 @@ export class Card extends Component<CardProps, {}> {
         dataURIService={this.dataURIService}
       />
     );
-    const placeholder = <CardView status="loading" appearance={appearance} />;
 
     return isLazy ? (
-      <LazyContent placeholder={placeholder} appearance={appearance}>
+      <LazyContent placeholder={this.placeholder} appearance={appearance}>
         {card}
       </LazyContent>
     ) : card;

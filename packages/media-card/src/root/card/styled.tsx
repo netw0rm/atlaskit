@@ -6,6 +6,7 @@ import {CardAppearance} from '../..';
 export interface LazyLoadCardProps {
   onContentVisible: Function;
   appearance?: CardAppearance;
+  throttle: number;
 }
 
 export const LazyLoadCard = styled(LazyLoad)`

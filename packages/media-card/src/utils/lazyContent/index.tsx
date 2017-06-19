@@ -37,6 +37,7 @@ export class LazyContent extends Component<LazyContentProps, LazyContentState> {
       <div>
         <LazyLoadCard
           {...otherProps}
+          throttle={150}
           onContentVisible={this.onContentVisible}
         >
           {children}

@@ -19,7 +19,17 @@ export const dispatchWindowMouseEvent = (
   window.dispatchEvent(event);
 };
 
-export const liftWithMouse = (wrapper: ReactWrapper<any>,
+export const mouseEvent = (
+  eventName: string,
+  wrapper: ReactWrapper<any>,
+  clientX?: number = 0,
+  clientY?: number = 0,
+  button?: number = primaryButton,
+  options?: Object = {},
+): void => wrapper.simulate(eventName, { button, clientX, clientY, ...options });
+
+export const liftWithMouse = (
+  wrapper: ReactWrapper<any>,
   clientX?: number = 0,
   clientY?: number = 0,
   button?: number = primaryButton,

@@ -37,7 +37,7 @@ type State = {
 };
 
 // need a component so that we can kill events on unmount
-export default class Handle extends PureComponent {
+export default class DragHandle extends PureComponent {
 
   /* eslint-disable react/sort-comp */
   props: Props
@@ -55,6 +55,7 @@ export default class Handle extends PureComponent {
     if (!this.state.draggingWith) {
       return;
     }
+    this.preventClick = false;
     this.unbindWindowEvents();
     this.props.onCancel();
   }
@@ -103,10 +104,8 @@ export default class Handle extends PureComponent {
     }
 
     // not yet dragging
-    const shouldStartDrag = Math.abs(pending.x - point.x) > sloppyClickThreshold ||
-                            Math.abs(pending.y - point.y) > sloppyClickThreshold;
-
-    console.log('should start drag?', shouldStartDrag);
+    const shouldStartDrag = Math.abs(pending.x - point.x) >= sloppyClickThreshold ||
+                            Math.abs(pending.y - point.y) >= sloppyClickThreshold;
 
     if (shouldStartDrag) {
       this.startDragging('MOUSE', () => this.props.onLift(point));
@@ -152,18 +151,6 @@ export default class Handle extends PureComponent {
       return;
     }
 
-    if (this.state.draggingWith) {
-      this.stopDragging(() => this.props.onCancel());
-      console.error('mouse down will not start a drag as it is already dragging');
-      return;
-    }
-
-    if (this.state.pending) {
-      this.stopPendingMouseDrag();
-      console.error('pending mouse down already found - cannot start a new drag');
-      return;
-    }
-
     const { button, clientX, clientY } = event;
     event.stopPropagation();
     event.preventDefault();
@@ -192,7 +179,6 @@ export default class Handle extends PureComponent {
         event.preventDefault();
         this.stopPendingMouseDrag();
       }
-
       return;
     }
 
@@ -206,8 +192,14 @@ export default class Handle extends PureComponent {
 
     // Dragging with either a keyboard or mouse
 
+    // Blocking standard submission action
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      return;
+    }
+
     // Preventing tabbing or submitting
-    if (event.key === 'Tab' || event.key === 'Enter') {
+    if (event.key === 'Tab') {
       event.preventDefault();
       return;
     }
@@ -218,13 +210,19 @@ export default class Handle extends PureComponent {
       return;
     }
 
-    if (event.key === ' ') {
-      event.preventDefault();
-      this.stopDragging(() => this.props.onDrop());
+    if (this.state.draggingWith === 'MOUSE') {
+      // Want to block scrolling the page with the space bar
+      if (event.key === ' ') {
+        event.preventDefault();
+      }
       return;
     }
 
-    if (this.state.draggingWith !== 'KEYBOARD') {
+    // Only keyboard dragging
+
+    if (event.key === ' ') {
+      event.preventDefault();
+      this.stopDragging(() => this.props.onDrop());
       return;
     }
 
@@ -242,6 +240,7 @@ export default class Handle extends PureComponent {
   }
 
   onClick = (event: MouseEvent): void => {
+    console.log('onClick called', { preventClick: this.preventClick });
     if (!this.preventClick) {
       return;
     }
@@ -268,7 +267,6 @@ export default class Handle extends PureComponent {
       pending: point,
     };
 
-    this.preventClick = false;
     this.setState(state);
   }
 
@@ -288,8 +286,6 @@ export default class Handle extends PureComponent {
       this.bindWindowEvents();
     }
 
-    this.preventClick = true;
-
     const state: State = {
       draggingWith: type,
       pending: null,
@@ -299,6 +295,9 @@ export default class Handle extends PureComponent {
 
   stopPendingMouseDrag = (done?: () => void = noop) => {
     invariant(this.state.pending, 'cannot stop pending drag when there is none');
+
+    // we need to allow the click event to get through
+    this.preventClick = false;
 
     this.unbindWindowEvents();
     this.setState({
@@ -314,6 +313,8 @@ export default class Handle extends PureComponent {
     }
 
     this.unbindWindowEvents();
+
+    // Need to block any click actions
     this.preventClick = true;
 
     const state: State = {
@@ -337,6 +338,7 @@ export default class Handle extends PureComponent {
 
   render() {
     const { children, isEnabled } = this.props;
+    const { draggingWith } = this.state;
 
     // todo: namespace props
     const props: Object = isEnabled ? {
@@ -349,41 +351,15 @@ export default class Handle extends PureComponent {
       // Allow tabbing to this element
       tabIndex: 0,
 
+      // Aria
+      'aria-grabbed': Boolean(draggingWith),
+
       // Stop html5 drag a drop
       draggable: false,
       onDragStart: getFalse,
       onDrop: getFalse,
     } : empty;
 
-    return cloneElement(children, props);
-
-    // return cloneElement(children, isEnabled ? props : {});
-
-    // const clone = React.Children.map(this.props.children, child =>
-    //   React.cloneElement(child, {
-    //     onMouseDown: this.onMouseDown,
-    //     onKeyDown: this.onKeyDown,
-    //     draggable: false,
-    //   })
-    // );
-
-    // return cloneElement(Container, {
-    //   onMouseDown: this.onMouseDown,
-    //   onKeyDown: this.onKeyDown,
-    //   draggable: false,
-    // }, this.props.children);
-
-    // return (
-    //   <Container
-    //     isDragging={Boolean(this.state.draggingWith)}
-    //     isEnabled={isEnabled}
-    //     onMouseDown={this.onMouseDown}
-    //     onKeyDown={this.onKeyDown}
-    //     draggable="false"
-    //     {...extraProps}
-    //   >
-    //     {this.props.children}
-    //   </Container>
-    // );
+    return cloneElement(children, { handleProps: props });
   }
 }

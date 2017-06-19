@@ -64,6 +64,7 @@ const DraggableItem = (() => {
       itemId: string,
       isDragging: boolean,
       innerRef: Function,
+      handleProps: Object,
     |}
 
     componentWillUnmount() {
@@ -73,7 +74,12 @@ const DraggableItem = (() => {
     render() {
       const { isDragging } = this.props;
       return (
-        <ItemContainer isDragging={isDragging} innerRef={ref => this.props.innerRef(ref)} href={this.props.itemId} {...this.props}>
+        <ItemContainer
+          isDragging={isDragging}
+          innerRef={ref => this.props.innerRef(ref)}
+          href={this.props.itemId}
+          {...this.props.handleProps}
+        >
           <h4>Draggable {isDragging ? '(is dragging)' : '' }</h4>
           Id: <b href={this.props.itemId} draggable="false">{this.props.itemId}</b>
         </ItemContainer>

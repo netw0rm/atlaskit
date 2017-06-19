@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
-import styled from 'styled-components';
 import * as physics from '../physics';
 import type { Position } from '../../types';
 
@@ -45,10 +44,6 @@ const getMovement = (point: Position): ?Object => {
     transform: `translate(${point.x}px, ${point.y}px)`,
   };
 };
-
-const Canvas = styled.div`
-  ${props => (props.extraCSS ? props.extraCSS : '')}
-`;
 
 export default class Movable extends PureComponent {
   /* eslint-disable react/sort-comp */
@@ -111,13 +106,12 @@ export default class Movable extends PureComponent {
             ...this.props.style,
           };
           return (
-            <Canvas
+            <div
               style={style}
-              innerRef={this.props.innerRef}
-              extraCSS={this.props.extraCSS}
+              ref={this.props.innerRef}
             >
               {this.props.children}
-            </Canvas>
+            </div>
           );
         }}
       </Motion>

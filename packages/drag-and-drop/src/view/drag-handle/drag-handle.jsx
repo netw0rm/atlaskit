@@ -1,7 +1,6 @@
 // @flow
 import React, { cloneElement, PureComponent } from 'react';
 import invariant from 'invariant';
-import styled from 'styled-components';
 import type { Position } from '../../types';
 
 const noop = (): void => { };

@@ -1,21 +1,15 @@
 // @flow
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import type { MapStateToProps, Props, StateSnapshot } from './droppable-types';
 import type { TypeId } from '../../types';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
-
-const Container = styled.div`
-  user-select: none;
-`;
 
 type ComponentState = {|
   ref: ?Element,
 |}
 
 export default (type: TypeId, map: MapStateToProps): Function =>
-  // Component must be a styled-component
   (Component: ReactClass<any>): ReactClass<any> =>
     class Droppable extends PureComponent {
       static displayName = `Droppable(${getDisplayName(Component)})`
@@ -51,15 +45,13 @@ export default (type: TypeId, map: MapStateToProps): Function =>
         };
 
         return (
-          <Container isDraggingOver={mapProps.isDraggingOver} >
-            <DroppableDimensionPublisher
-              itemId={mapProps.id}
-              type={type}
-              targetRef={this.state.ref}
-            >
-              <Component {...enhancedProps} innerRef={this.setRef} />
-            </DroppableDimensionPublisher>
-          </Container>
+          <DroppableDimensionPublisher
+            itemId={mapProps.id}
+            type={type}
+            targetRef={this.state.ref}
+          >
+            <Component {...enhancedProps} innerRef={this.setRef} />
+          </DroppableDimensionPublisher>
         );
       }
   };

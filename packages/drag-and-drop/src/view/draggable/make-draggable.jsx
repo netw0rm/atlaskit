@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
 import invariant from 'invariant';
-import styled from 'styled-components';
 import type { TypeId, Position, ZIndex } from '../../types';
 import type { Props, MapStateToProps, StateSnapshot } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
@@ -34,8 +33,6 @@ type PlacementInfo = {|
   speed: Speed,
   style ?: MovementStyle
 |}
-
-export const Placeholder = styled.div``;
 
 export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
   (Component: ReactClass<any>): ReactClass<any> =>
@@ -221,7 +218,7 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
         };
 
         return (
-          <Placeholder style={style} />
+          <div style={style} />
         );
       }
 

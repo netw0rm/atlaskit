@@ -183,7 +183,7 @@ export class TableState {
     const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
     const tableNode = this.getTableNode();
 
-    if (tableElement && tableElement !== this.tableElement) {
+    if (tableElement !== this.tableElement) {
       this.tableElement = tableElement;
       dirty = true;
     }

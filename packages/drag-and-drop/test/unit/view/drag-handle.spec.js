@@ -1,20 +1,20 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { describe, it, afterEach, beforeEach } from 'mocha';
+import { expect } from 'chai';
 import { mount } from 'enzyme';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
-import { describe, it, beforeEach, afterEach } from 'mocha';
-import { expect } from 'chai';
 import sinon from 'sinon';
-import DragHandle, { getCursor } from '../../../src/view/drag-handle/drag-handle';
-import type { Callbacks } from '../../../src/view/drag-handle';
+import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
+// eslint-disable-next-line no-duplicate-imports
+import type { Callbacks } from '../../../src/view/drag-handle/drag-handle';
 import createDragHandle from '../../../src/view/drag-handle/';
-import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from '../user-input-util';
+import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
+import type { Position } from '../../../src/types';
 
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
-
-const Child = () => <div>hello world!</div>;
 
 const getStubCallbacks = (): Callbacks => ({
   onLift: sinon.stub(),
@@ -26,793 +26,707 @@ const getStubCallbacks = (): Callbacks => ({
   onCancel: sinon.stub(),
 });
 
-const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
-const windowMouseDown = dispatchWindowMouseEvent.bind(null, 'mousedown');
+type CallBacksCalledFn = {|
+  onLift?: number,
+  onKeyLift?: number,
+  onMove?: number,
+  onMoveForward?: number,
+  onMoveBackward?: number,
+  onDrop?: number,
+  onCancel?: number,
+|}
+
+const callbacksCalled = (callbacks: Callbacks) => ({
+  onLift = 0,
+  onKeyLift = 0,
+  onMove = 0,
+  onMoveForward = 0,
+  onMoveBackward = 0,
+  onDrop = 0,
+  onCancel = 0,
+}: CallBacksCalledFn = {}) => callbacks.onLift.callCount === onLift &&
+  callbacks.onKeyLift.callCount === onKeyLift &&
+  callbacks.onMove.callCount === onMove &&
+  callbacks.onMoveForward.callCount === onMoveForward &&
+  callbacks.onMoveBackward.callCount === onMoveBackward &&
+  callbacks.onDrop.callCount === onDrop &&
+  callbacks.onCancel.callCount === onCancel;
+
+const whereAnyCallbacksCalled = (callbacks: Callbacks) =>
+  !callbacksCalled(callbacks)();
+
+class Child extends PureComponent {
+  props: {
+    handleProps?: Object,
+  }
+  render() {
+    return (
+      <div {...this.props.handleProps}>
+        Drag me!
+      </div>
+    );
+  }
+}
+
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
+const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
+const mouseDown = mouseEvent.bind(null, 'mousedown');
+const click = mouseEvent.bind(null, 'click');
+const pressEscape = withKeyboard('Escape');
+const pressSpacebar = withKeyboard(' ');
+const pressArrowUp = withKeyboard('ArrowUp');
+const pressArrowDown = withKeyboard('ArrowDown');
+const pressTab = withKeyboard('Tab');
+const pressEnter = withKeyboard('Enter');
 
-const liftWithKeyboard = withKeyboard(' ');
-const dropWithKeyboard = withKeyboard(' ');
-const cancelWithKeyboard = withKeyboard('Escape');
-const tabWithKeyboard = withKeyboard('Tab');
-const moveBackwardWithKeyboard = withKeyboard('ArrowUp');
-const moveForwardWithKeyboard = withKeyboard('ArrowDown');
+describe('drag handle', () => {
+  let callbacks;
+  let wrapper;
 
-const wereAnyCallbacksCalled = (callbacks: Callbacks): boolean =>
-  Object.keys(callbacks).some(key =>
-    callbacks[key].called
-  );
-
-const areWindowEventsBound = (wrapper: ReactWrapper<any>, callbacks: Callbacks): boolean => {
-  const eventsThatShouldDoNothing: Function[] = [
-    windowMouseUp,
-    windowMouseMove,
-    windowMouseDown,
-  ];
-
-  const getCallbackCallCount = (): number =>
-    Object.keys(callbacks).sort()
-      .map((key: string): number => callbacks[key].callCount)
-      .reduce((previous, current) => previous + current, 0);
-
-  const beforeCount = getCallbackCallCount();
-  eventsThatShouldDoNothing.forEach((fn: Function) => fn(wrapper));
-  const afterCount = getCallbackCallCount();
-
-  return beforeCount !== afterCount;
-};
-
-// Reaching into internal state which is sad. But isolating it to this function
-const isDragging = (wrapper: ReactWrapper<any>) =>
-  wrapper.state().draggingWith !== null;
-
-const wasDragCancelled = (wrapper: ReactWrapper<any>, callbacks: Callbacks): boolean =>
-  !areWindowEventsBound(wrapper, callbacks) &&
-  callbacks.onCancel.called;
-
-const wasDragCancelledByError = (wrapper: ReactWrapper<any>, callbacks: Callbacks): boolean =>
-  wasDragCancelled(wrapper, callbacks) &&
-  console.error.called;
-
-describe('Drag handle', () => {
   beforeEach(() => {
-    sinon.stub(console, 'error');
+    callbacks = getStubCallbacks();
+    wrapper = mount(
+      <DragHandle
+        {...callbacks}
+        isEnabled
+      >
+        <Child />
+      </DragHandle>
+    );
   });
 
   afterEach(() => {
-    console.error.restore();
+    wrapper.unmount();
   });
 
-  describe('navigation (tabbing)', () => {
-    it('should be selectable when dragging is enabled', () => {
-      const wrapper = mount(
-        <DragHandle
-          {...getStubCallbacks()}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
+  describe.only('mouse dragging', () => {
+    describe('initiation', () => {
+      it('should start a drag if there was sufficent mouse movement in any direction', () => {
+        const valid: Position[] = [
+          { x: 0, y: sloppyClickThreshold },
+          { x: 0, y: -sloppyClickThreshold },
+          { x: sloppyClickThreshold, y: 0 },
+          { x: -sloppyClickThreshold, y: 0 },
+        ];
 
-      expect(wrapper.find('div').first().props().tabIndex).to.equal('0');
-    });
+        valid.forEach((point: Position): void => {
+          const customCallbacks = getStubCallbacks();
+          const customWrapper = mount(
+            <DragHandle
+              {...customCallbacks}
+              isEnabled
+            >
+              <Child />
+            </DragHandle>
+          );
 
-    it('should not be selectable when dragging is not enabled', () => {
-      const wrapper = mount(
-        <DragHandle
-          {...getStubCallbacks()}
-          isEnabled={false}
-        >
-          <Child />
-        </DragHandle>
-      );
+          mouseDown(customWrapper, 0, 0);
+          windowMouseMove(point.x, point.y);
 
-      expect(wrapper.find('div').first().props()).to.not.have.property('tabIndex');
-    });
+          expect(customCallbacks.onLift.calledWith(point)).to.equal(true);
 
-    it('should allow tabbing to another draggable while not dragging', () => {
-      const stub = sinon.stub();
-      const wrapper = mount(
-        <DragHandle
-          {...getStubCallbacks()}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
-
-      tabWithKeyboard(wrapper, { preventDefault: stub });
-
-      expect(stub.called).to.equal(false);
-    });
-
-    it('should not allow tabbing to another draggable while dragging', () => {
-      const stub = sinon.stub();
-      const wrapper = mount(
-        <DragHandle
-          {...getStubCallbacks()}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
-
-      liftWithMouse(wrapper);
-
-      // try to tab away
-      tabWithKeyboard(wrapper, { preventDefault: stub });
-
-      expect(stub.called).to.equal(true);
-    });
-  });
-
-  describe('cursor', () => {
-    it('should use standard cursor when dragging is not enabled', () => {
-      expect(getCursor(false, false)).to.equal('auto');
-    });
-
-    it('should use a grab cursor when dragging is enabled and the user is not dragging', () => {
-      expect(getCursor(true, false)).to.equal('grab');
-    });
-
-    it('should use a grabbing cursor when dragging is enabled and the user is dragging', () => {
-      expect(getCursor(true, true)).to.equal('grabbing');
-    });
-  });
-
-  describe('mouse dragging', () => {
-    describe('lift', () => {
-      it('should call `lift` with the current mouse down position when lifted', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
-
-        liftWithMouse(wrapper, 50, 100);
-
-        expect(callbacks.onLift.calledWithExactly({ x: 50, y: 100 })).to.equal(true);
+          customWrapper.unmount();
+        });
       });
 
-      it('should cancel a current keyboard drag', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should not start a drag if there was no mouse movement while mouse was pressed', () => {
+        mouseDown(wrapper);
+        windowMouseUp();
 
-        liftWithKeyboard(wrapper);
-
-        liftWithMouse(wrapper);
-
-        expect(wasDragCancelled(wrapper, callbacks)).to.equal(true);
+        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
       });
 
-      it('should not cancel a keyboard drag if there is no current one', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should not start a drag if there was too little mouse movement while mouse was pressed', () => {
+        mouseDown(wrapper, 0, 0);
+        windowMouseMove(0, sloppyClickThreshold - 1);
+        windowMouseUp(0, sloppyClickThreshold - 1);
 
-        liftWithMouse(wrapper);
-
-        expect(callbacks.onCancel.called).to.equal(false);
+        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
       });
 
-      it('should cancel the current drag and log an error if there is already dragging with a mouse', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should not start a drag if not using the primary mouse button', () => {
+        mouseDown(wrapper, 0, 0, auxiliaryButton);
+        windowMouseMove(0, sloppyClickThreshold);
 
-        liftWithMouse(wrapper);
-        liftWithMouse(wrapper);
-
-        expect(wasDragCancelledByError(wrapper, callbacks)).to.equal(true);
+        expect(callbacksCalled(callbacks)({
+          onLift: 0,
+        })).to.equal(true);
       });
 
-      it('should not do anything if dragging is not enabled', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled={false}
-          >
-            <Child />
-          </DragHandle>
-        );
+      describe('cancelled before moved enough', () => {
+        beforeEach(() => {
+          mouseDown(wrapper, 0, 0, auxiliaryButton);
+          // not moved enough yet
+          windowMouseMove(0, sloppyClickThreshold - 1);
+          pressEscape(wrapper);
 
-        liftWithMouse(wrapper);
+          // should normally start a drag
+          windowMouseMove(0, sloppyClickThreshold);
 
-        expect(wereAnyCallbacksCalled(callbacks)).to.equal(false);
-      });
+          // should normally end a drag
+          windowMouseUp();
+        });
 
-      it('should not do anything if not using the primary mouse button', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+        it('should end any pending drag if the user presses Escape without calling onCancel', () => {
+          expect(callbacksCalled(callbacks)({
+            onLift: 0,
+            onCancel: 0,
+            onDrop: 0,
+          })).to.equal(true);
+        });
 
-        liftWithMouse(wrapper, 0, 0, auxiliaryButton);
+        it('should not prevent subsequent click actions if a pending drag is cancelled', () => {
+          const stub = sinon.stub();
 
-        expect(wereAnyCallbacksCalled(callbacks)).to.equal(false);
-      });
+          click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
 
-      it('should prevent the event from propagating', () => {
-        const stopPropagation = sinon.stub();
-        const wrapper = mount(
-          <DragHandle
-            {...getStubCallbacks()}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
-
-        liftWithMouse(wrapper, 0, 0, primaryButton, { stopPropagation });
-
-        expect(stopPropagation.called).to.equal(true);
-      });
-
-      it('should not prevent the event from propagating if not lifting', () => {
-        const stopPropagation = sinon.stub();
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...getStubCallbacks()}
-            isEnabled={false}
-          >
-            <Child />
-          </DragHandle>
-        );
-
-        liftWithMouse(wrapper, 0, 0, primaryButton, { stopPropagation });
-
-        expect(stopPropagation.called).to.equal(false);
-
-        // Being super paranoid and checking that no other side effects occurred
-        expect(wereAnyCallbacksCalled(callbacks)).to.equal(false);
+          expect(stub.called).to.equal(false);
+        });
       });
     });
 
-    describe('move', () => {
-      let wrapper;
-      let callbacks;
+    describe('progress', () => {
+      it('should fire the onMove callback when there is drag movement', () => {
+        const expected: Position = {
+          x: 0,
+          y: sloppyClickThreshold + 1,
+        };
+
+        mouseDown(wrapper);
+        // will start the drag
+        windowMouseMove(0, sloppyClickThreshold);
+        // will fire the first move
+        windowMouseMove(expected.x, expected.y);
+
+        expect(callbacks.onMove.calledWith(expected)).to.equal(true);
+      });
+
+      it('should prevent keyboard submission', () => {
+        const stub = sinon.stub();
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        pressEnter(wrapper, { preventDefault: stub });
+
+        expect(stub.called).to.equal(true);
+      });
+
+      it('should prevent tabbing', () => {
+        const stub = sinon.stub();
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        pressTab(wrapper, { preventDefault: stub });
+
+        expect(stub.called).to.equal(true);
+      });
+
+      it('should not drop on spacebar', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        pressSpacebar(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onDrop: 0,
+        })).to.equal(true);
+      });
+
+      it('should prevent scrolling on spacebar', () => {
+        const stub = sinon.stub();
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        pressSpacebar(wrapper, { preventDefault: stub });
+
+        expect(stub.called).to.equal(true);
+      });
+
+      it('should not attempt to move forward or backward with arrow keys', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        pressArrowDown(wrapper);
+        pressArrowUp(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMoveForward: 0,
+          onMoveBackward: 0,
+        })).to.equal(true);
+      });
+    });
+
+    describe('finish', () => {
+      it('should fire an onDrop when the drag finishes', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        windowMouseUp();
+
+        expect(callbacks.onDrop.called).to.equal(true);
+      });
+
+      it('should stop listening to window mouse events after a drop', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        windowMouseMove(0, sloppyClickThreshold);
+        windowMouseUp();
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onDrop: 1,
+        })).to.equal(true);
+
+        // this should have no impact
+        windowMouseMove(0, sloppyClickThreshold);
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        windowMouseUp();
+        windowMouseUp();
+        windowMouseMove(0, sloppyClickThreshold + 2);
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onDrop: 1,
+        })).to.equal(true);
+      });
+
+      it('should fire an onDrop even when not dropping with the primary mouse button', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        windowMouseUp(0, 0, auxiliaryButton);
+
+        expect(callbacks.onDrop.called).to.equal(true);
+      });
+    });
+
+    describe('cancel', () => {
+      it('should cancel an existing drag by pressing Escape', () => {
+        // start dragging
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 0,
+        })).to.equal(true);
+
+        pressEscape(wrapper);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+
+      it('should stop listening to mouse events after a cancel', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        // move
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        // cancel
+        pressEscape(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+
+        // these should not do anything
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        pressEscape(wrapper);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+
+      it('should not do anything if there is nothing dragging', () => {
+        pressEscape(wrapper);
+        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
+      });
+    });
+
+    describe('post drag click prevention', () => {
+      it('should prevent clicks after a successful drag', () => {
+        const stub = sinon.stub();
+
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        windowMouseUp(0, sloppyClickThreshold);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onDrop: 1,
+        })).to.equal(true);
+
+        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+        expect(stub.called).to.equal(true);
+      });
+
+      it('should prevent clicks after a drag was cancelled', () => {
+        const stub = sinon.stub();
+
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        pressEscape(wrapper);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+
+        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+        expect(stub.called).to.equal(true);
+      });
+
+      it('should not prevent a click if the sloppy click threshold was not exceeded', () => {
+        const stub = sinon.stub();
+
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold - 1);
+        windowMouseUp(0, sloppyClickThreshold - 1);
+        expect(callbacksCalled(callbacks)({
+          onLift: 0,
+          onCancel: 0,
+          onDrop: 0,
+        })).to.equal(true);
+
+        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+        expect(stub.called).to.equal(false);
+      });
+
+      describe('subsequent interactions', () => {
+        it('should allow subsequent clicks through after blocking one after a drag', () => {
+          mouseDown(wrapper);
+          windowMouseMove(0, sloppyClickThreshold);
+          windowMouseUp(0, sloppyClickThreshold);
+          expect(callbacksCalled(callbacks)({
+            onLift: 1,
+            onDrop: 1,
+          })).to.equal(true);
+
+          const stub1 = sinon.stub();
+          click(wrapper, 0, 0, primaryButton, { preventDefault: stub1 });
+          expect(stub1.called).to.equal(true);
+
+          const stub2 = sinon.stub();
+          click(wrapper, 0, 0, primaryButton, { preventDefault: stub2 });
+          expect(stub2.called).to.equal(false);
+        });
+      });
+    });
+
+    describe('disabled mid drag', () => {
+      it('should cancel an existing drag', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        // move
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 0,
+        })).to.equal(true);
+
+        wrapper.setProps({ isEnabled: false });
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+
+      it('should stop listening to mouse events', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        windowMouseMove(0, sloppyClickThreshold + 1);
+
+        wrapper.setProps({ isEnabled: false });
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+
+        // should have no impact
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        windowMouseMove(0, sloppyClickThreshold + 2);
+        windowMouseUp();
+        windowMouseMove(0, sloppyClickThreshold + 2);
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+    });
+
+    describe('unmounted mid drag', () => {
       beforeEach(() => {
-        callbacks = getStubCallbacks();
-        wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
-      });
-
-      afterEach(() => {
-        // clear up any lingering handlers
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
         wrapper.unmount();
       });
 
-      it('should publish `move` with the current mouse position', () => {
-        liftWithMouse(wrapper);
-
-        windowMouseMove(10, 20);
-
-        expect(callbacks.onMove.calledWithExactly({ x: 10, y: 20 })).to.equal(true);
+      it('should call the onCancel prop', () => {
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
       });
 
-      it('should not do anything if not using the primary mouse button', () => {
-        liftWithMouse(wrapper);
+      it('should unbind any window events', () => {
+        windowMouseMove(0, sloppyClickThreshold + 1);
 
-        windowMouseMove(10, 20, auxiliaryButton);
-
-        expect(callbacks.onMove.called).to.equal(false);
-      });
-
-      it('should publish `move` even when the mouse event is outside the dragging element', () => {
-        // This test is sort of redundant given that the mousemove
-        // event is not attached to the element, but rather to the window.
-        // While the functionality is executed elsewhere, it is worth
-        // calling out here as an explicit requirement of DragHandle.
-        liftWithMouse(wrapper);
-
-        windowMouseMove(20000, 10000);
-
-        expect(callbacks.onMove.calledWithExactly({ x: 20000, y: 10000 })).to.equal(true);
-      });
-
-      it('should cancel a drag and log an error mouse down event occurs on the window before a mouse up', () => {
-        liftWithMouse(wrapper);
-
-        windowMouseDown();
-
-        expect(wasDragCancelledByError(wrapper, callbacks)).to.equal(true);
-      });
-
-      it('should cancel a drag when the escape key is pressed', () => {
-        liftWithMouse(wrapper);
-
-        cancelWithKeyboard(wrapper);
-
-        expect(wasDragCancelled(wrapper, callbacks)).to.equal(true);
-      });
-
-      it('should not move if attempting to move backward with the keyboard', () => {
-        liftWithMouse(wrapper);
-
-        moveBackwardWithKeyboard(wrapper);
-
-        expect(callbacks.onMove.called).to.equal(false);
-        expect(callbacks.onMoveBackward.called).to.equal(false);
-      });
-
-      it('should not move if attempting to move forward with the keyboard', () => {
-        liftWithMouse(wrapper);
-
-        moveForwardWithKeyboard(wrapper);
-
-        expect(callbacks.onMove.called).to.equal(false);
-        expect(callbacks.onMoveForward.called).to.equal(false);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
       });
     });
 
-    describe('drop', () => {
-      const wasDropped = (wrapper: ReactWrapper<any>, callbacks: Callbacks) =>
-        callbacks.onDrop.called &&
-        !areWindowEventsBound(wrapper, callbacks) &&
-        !isDragging(wrapper);
+    describe('subsequent drags', () => {
+      it('should be possible to do another drag after one finishes', () => {
+        Array.from({ length: 10 }, (v, k) => k).forEach((val: number) => {
+          // lift
+          mouseDown(wrapper);
+          windowMouseMove(0, sloppyClickThreshold);
+          // move
+          windowMouseMove(0, sloppyClickThreshold);
+          // drop
+          windowMouseUp(0, sloppyClickThreshold);
 
-      it('should drop when you release the primary button', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
-
-        liftWithMouse(wrapper);
-        windowMouseUp(wrapper);
-
-        expect(wasDropped(wrapper, callbacks)).to.equal(true);
+          expect(callbacksCalled(callbacks)({
+            onLift: val + 1,
+            onMove: val + 1,
+            onDrop: val + 1,
+          })).to.equal(true);
+        });
       });
 
-      it('should drop when you release any button', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should allow drags after a cancel', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        pressEscape(wrapper);
 
-        liftWithMouse(wrapper);
-        windowMouseUp(wrapper, 0, 0, auxiliaryButton);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
 
-        expect(wasDropped(wrapper, callbacks)).to.equal(true);
-      });
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        windowMouseUp(wrapper, 0, sloppyClickThreshold);
 
-      it('should drop when you press spacebar', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
-
-        liftWithMouse(wrapper);
-        dropWithKeyboard(wrapper);
-
-        expect(wasDropped(wrapper, callbacks)).to.equal(true);
+        expect(callbacksCalled(callbacks)({
+          onCancel: 1,
+          onLift: 2,
+          onDrop: 1,
+        })).to.equal(true);
       });
     });
   });
 
   describe('keyboard dragging', () => {
-    describe('lift', () => {
-      it('should not lift if dragging is disabled', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled={false}
-          >
-            <Child />
-          </DragHandle>
-        );
+    describe('initiation', () => {
+      it('should lift when a user presses the space bar', () => {
+        pressSpacebar(wrapper);
 
-        liftWithKeyboard(wrapper);
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+        })).to.equal(true);
+      });
+    });
 
-        expect(callbacks.onLift.called).to.equal(false);
-        expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
-        expect(isDragging(wrapper)).to.equal(false);
+    describe('progress', () => {
+      it('should move backward when the user presses ArrowUp', () => {
+        pressSpacebar(wrapper);
+        pressArrowUp(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onMoveBackward: 1,
+        })).to.equal(true);
       });
 
-      it('should lift on a spacebar press', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should move forward when the user presses ArrowDown', () => {
+        pressSpacebar(wrapper);
+        pressArrowDown(wrapper);
 
-        liftWithKeyboard(wrapper);
-
-        expect(callbacks.onKeyLift.called).to.equal(true);
-        expect(isDragging(wrapper)).to.equal(true);
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onMoveForward: 1,
+        })).to.equal(true);
       });
 
-      it('should not scroll the page when pressing spacebar', () => {
+      it('should prevent tabbing away from the element while dragging', () => {
         const stub = sinon.stub();
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+        pressSpacebar(wrapper);
 
-        liftWithKeyboard(wrapper, { preventDefault: stub });
+        pressTab(wrapper, { preventDefault: stub });
 
         expect(stub.called).to.equal(true);
       });
-    });
 
-    describe('move', () => {
-      it('should do nothing if not lifted', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should prevent submitting the dragging item', () => {
+        const stub = sinon.stub();
 
-        moveForwardWithKeyboard(wrapper);
+        pressSpacebar(wrapper);
+        pressEnter(wrapper, { preventDefault: stub });
 
-        expect(isDragging(wrapper)).to.equal(false);
-        expect(callbacks.onMoveBackward.called).to.equal(false);
+        expect(stub.called).to.equal(true);
       });
 
-      describe('moving backward', () => {
-        let wrapper;
-        let callbacks;
-        let preventDefault;
+      it('should not take into account any mouse movements', () => {
+        pressSpacebar(wrapper);
 
-        beforeEach(() => {
-          preventDefault = sinon.stub();
-          callbacks = getStubCallbacks();
-          wrapper = mount(
-            <DragHandle
-              {...callbacks}
-              isEnabled
-            >
-              <Child />
-            </DragHandle>
-          );
+        windowMouseMove();
 
-          liftWithKeyboard(wrapper);
-          moveBackwardWithKeyboard(wrapper, { preventDefault });
-        });
-
-        afterEach(() => {
-          wrapper.unmount();
-        });
-
-        it('should move backward', () => {
-          expect(callbacks.onMoveBackward.called).to.equal(true);
-        });
-
-        it('should prevent scrolling', () => {
-          expect(preventDefault.called).to.equal(true);
-        });
-      });
-
-      describe('moving forward', () => {
-        let wrapper;
-        let callbacks;
-        let preventDefault;
-
-        beforeEach(() => {
-          preventDefault = sinon.stub();
-          callbacks = getStubCallbacks();
-          wrapper = mount(
-            <DragHandle
-              {...callbacks}
-              isEnabled
-            >
-              <Child />
-            </DragHandle>
-          );
-
-          liftWithKeyboard(wrapper);
-          moveForwardWithKeyboard(wrapper, { preventDefault });
-        });
-
-        afterEach(() => {
-          wrapper.unmount();
-        });
-
-        it('should move forward', () => {
-          expect(callbacks.onMoveForward.called).to.equal(true);
-        });
-
-        it('should prevent scrolling', () => {
-          expect(preventDefault.called).to.equal(true);
-        });
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onMove: 0,
+          onMoveForward: 0,
+          onMoveBackward: 0,
+        })).to.equal(true);
       });
     });
 
-    describe('drop', () => {
-      it('should lift if the item is not dragging when pressing spacebar', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+    describe('finish', () => {
+      it('should drop when the user presses spacebar', () => {
+        pressSpacebar(wrapper);
+        pressSpacebar(wrapper);
 
-        liftWithKeyboard(wrapper);
-
-        expect(callbacks.onKeyLift.called).to.equal(true);
-        expect(isDragging(wrapper)).to.equal(true);
-      });
-
-      it('should drop on a spacebar press after a lift', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
-
-        liftWithKeyboard(wrapper);
-        dropWithKeyboard(wrapper);
-
-        expect(callbacks.onDrop.called).to.equal(true);
-        expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
-      });
-
-      it('should not drop on a mouse up event', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
-
-        liftWithKeyboard(wrapper);
-        windowMouseUp(wrapper);
-
-        expect(isDragging(wrapper)).to.equal(true);
-        expect(callbacks.onDrop.called).to.equal(false);
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onDrop: 1,
+        })).to.equal(true);
       });
     });
 
     describe('cancel', () => {
-      it('should not do anything if not dragging', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should cancel the drag when the user presses escape', () => {
+        pressSpacebar(wrapper);
+        pressEscape(wrapper);
 
-        cancelWithKeyboard(wrapper);
-
-        expect(wereAnyCallbacksCalled(wrapper)).to.equal(false);
-        expect(isDragging(wrapper)).to.equal(false);
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
       });
 
-      it('should cancel when the user presses escape', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should cancel when the user pushes any mouse button', () => {
+        const mouseButtons: number[] = [primaryButton, auxiliaryButton];
 
-        liftWithKeyboard(wrapper);
-        cancelWithKeyboard(wrapper);
+        mouseButtons.forEach((button: number, index: number): void => {
+          pressSpacebar(wrapper);
+          mouseDown(wrapper, 0, 0, button);
+          // should now do nothing
+          pressArrowUp(wrapper);
 
-        expect(callbacks.onCancel.called).to.equal(true);
-        expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
+          expect(callbacksCalled(callbacks)({
+            onKeyLift: index + 1,
+            onCancel: index + 1,
+          })).to.equal(true);
+        });
       });
 
-      it('should cancel if the user clicks while dragging', () => {
-        const callbacks = getStubCallbacks();
-        const wrapper = mount(
-          <DragHandle
-            {...callbacks}
-            isEnabled
-          >
-            <Child />
-          </DragHandle>
-        );
+      it('should not do anything if there is nothing dragging', () => {
+        pressEscape(wrapper);
+        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
+      });
+    });
 
-        liftWithKeyboard(wrapper);
-        windowMouseDown(wrapper);
+    describe('post drag click', () => {
+      it('should not prevent any clicks after a drag', () => {
+        const stub = sinon.stub();
+        pressSpacebar(wrapper);
+        pressArrowDown(wrapper);
+        pressSpacebar(wrapper);
 
-        expect(callbacks.onCancel.called).to.equal(true);
-        expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
+        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+
+        expect(stub.called).to.equal(false);
+      });
+    });
+
+    describe('disabled mid drag', () => {
+      it('should cancel the current drag', () => {
+        pressSpacebar(wrapper);
+
+        wrapper.setProps({
+          isEnabled: false,
+        });
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+    });
+
+    describe('unmounted mid drag', () => {
+      beforeEach(() => {
+        pressSpacebar(wrapper);
+        wrapper.unmount();
+      });
+
+      it('should call the onCancel prop', () => {
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+    });
+
+    describe('subsequent drags', () => {
+      it('should be possible to do another drag after one finishes', () => {
+        Array.from({ length: 10 }, (v, k) => k).forEach((val: number) => {
+          pressSpacebar(wrapper);
+          pressArrowDown(wrapper);
+          pressSpacebar(wrapper);
+
+          expect(callbacksCalled(callbacks)({
+            onKeyLift: val + 1,
+            onMoveForward: val + 1,
+            onDrop: val + 1,
+          })).to.equal(true);
+        });
+      });
+
+      it('should allow drags after a cancel', () => {
+        pressSpacebar(wrapper);
+        pressEscape(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+
+        pressSpacebar(wrapper);
+        pressSpacebar(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onCancel: 1,
+          onKeyLift: 2,
+          onDrop: 1,
+        })).to.equal(true);
       });
     });
   });
 
-  describe('mid drag disabling', () => {
-    it('should not cancel drags if there is nothing dragging', () => {
-      const callbacks = getStubCallbacks();
-      const wrapper = mount(
-        <DragHandle
-          {...callbacks}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
+  describe('drag disabled', () => {
+    it('should not pass any handleProps to the child', () => {
+      wrapper.setProps({
+        isEnabled: false,
+      });
 
-      wrapper.setProps({ isEnabled: false });
+      const props: Object = wrapper.find(Child).props();
 
-      expect(callbacks.onCancel.called).to.equal(false);
-      expect(wereAnyCallbacksCalled(wrapper)).to.equal(false);
-    });
-
-    it('should cancel a current mouse drag', () => {
-      const callbacks = getStubCallbacks();
-      const wrapper = mount(
-        <DragHandle
-          {...callbacks}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
-
-      liftWithMouse(wrapper);
-      wrapper.setProps({ isEnabled: false });
-
-      expect(callbacks.onCancel.called).to.equal(true);
-      expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
-    });
-
-    it('should cancel a current keyboard drag', () => {
-      const callbacks = getStubCallbacks();
-      const wrapper = mount(
-        <DragHandle
-          {...callbacks}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
-
-      liftWithKeyboard(wrapper);
-      wrapper.setProps({ isEnabled: false });
-
-      expect(callbacks.onCancel.called).to.equal(true);
-      expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
-    });
-  });
-
-  describe('subsequent drags', () => {
-    it('should be possible to do another drag after one finishes', () => {
-      const callbacks = getStubCallbacks();
-      const wrapper = mount(
-        <DragHandle
-          {...callbacks}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
-      const dragAndDrop = () => {
-        liftWithMouse(wrapper);
-        windowMouseMove(wrapper);
-        windowMouseUp(wrapper);
-      };
-
-      dragAndDrop();
-
-      expect(callbacks.onLift.callCount).to.equal(1);
-      expect(callbacks.onMove.callCount).to.equal(1);
-      expect(callbacks.onDrop.callCount).to.equal(1);
-      expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
-
-      dragAndDrop();
-
-      expect(callbacks.onLift.callCount).to.equal(2);
-      expect(callbacks.onMove.callCount).to.equal(2);
-      expect(callbacks.onDrop.callCount).to.equal(2);
-      expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
-    });
-  });
-
-  describe('unmounting', () => {
-    it('should not do anything if nothing is dragging', () => {
-      const callbacks = getStubCallbacks();
-      const wrapper = mount(
-        <DragHandle
-          {...callbacks}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
-
-      wrapper.unmount();
-
-      expect(wereAnyCallbacksCalled(wrapper)).to.equal(false);
-    });
-
-    it('should cancel the current drag and clean up event handlers if there is a current drag', () => {
-      const callbacks = getStubCallbacks();
-      const wrapper = mount(
-        <DragHandle
-          {...callbacks}
-          isEnabled
-        >
-          <Child />
-        </DragHandle>
-      );
-
-      liftWithKeyboard(wrapper);
-      wrapper.unmount();
-
-      expect(callbacks.onCancel.called).to.equal(true);
-      expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
+      expect(props.handleProps).to.deep.equal({});
     });
   });
 });
@@ -835,14 +749,6 @@ describe('create drag handle', () => {
     Object.keys(callbacks).forEach((key: string) => {
       expect(props[key]).to.equal(callbacks[key]);
     });
-  });
-
-  it('should wrap the passed child in a drag handle', () => {
-    const callbacks = getStubCallbacks();
-    const isEnabled = true;
-    const wrapper = mount(createDragHandle(callbacks)(isEnabled)(<Child />));
-
-    expect(wrapper.find(DragHandle).children().find(Child).length).to.equal(1);
   });
 
   it('should allow conditional enabling of the drag handle', () => {

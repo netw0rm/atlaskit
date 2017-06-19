@@ -14,6 +14,7 @@ import {
   ReactSerializer,
   renderDocument,
 } from '../../renderer';
+import { defaultSchema } from '../../schema';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 export type CardEventClickHandler = (result: CardEvent) => void;
@@ -37,7 +38,7 @@ export interface Props {
   eventHandlers?: EventHandlers;
   mediaProvider?: Promise<MediaProvider>;
   mentionProvider?: Promise<MentionProvider>;
-  schema: Schema<any, any>;
+  schema?: Schema<any, any>;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -57,6 +58,6 @@ export default class Renderer extends PureComponent<Props, {}> {
     providers.setProvider('mentionProvider', mentionProvider);
 
     const serializer = new ReactSerializer(providers, eventHandlers);
-    return renderDocument(document, serializer, schema);
+    return renderDocument(document, serializer, schema || defaultSchema);
   }
 }

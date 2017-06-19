@@ -30,6 +30,8 @@ export { text } from './nodes/text';
 export { media, MediaType } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
 export { table, table_cell, table_header, table_row } from './nodes/tableNodes';
+
 export { createSchema } from './create-schema';
 export { bitbucketSchema } from './bitbucket-schema';
 export { confluenceSchema } from './confluence-schema';
+export { defaultSchema } from './default-schema';

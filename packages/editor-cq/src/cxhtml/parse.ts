@@ -77,7 +77,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting
   // `unsupportedInline` to `unsupportedBlock` where appropriate is handled when
   // the content is inserted into a parent.
-  const unsupportedInline = schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+  const unsupportedInline = schema.nodes.confluenceUnsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 
   // marks and nodes
   if (node instanceof Element) {
@@ -271,10 +271,10 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       // if this is an issue list, render it as unsupported node
       // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
       if (!issueKey) {
-        return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+        return schema.nodes.confluenceUnsupportedInline.create({ cxhtml: encodeCxhtml(node) });
       }
 
-      return schema.nodes.jiraIssue.create({
+      return schema.nodes.confluenceJiraIssue.create({
         issueKey,
         macroId,
         schemaVersion,

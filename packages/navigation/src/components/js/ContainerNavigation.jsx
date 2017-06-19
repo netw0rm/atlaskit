@@ -127,7 +127,6 @@ export default class ContainerNavigation extends PureComponent {
         {/* This div is needed for legacy reasons.
         All children should use isCollapsed on the theme */}
         <ContainerNavigationInner
-          data-__ak-navigation-container-closed={isCollapsed}
           innerRef={this.onRefChange}
         >
           <Reveal

@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import NavigationItemIcon from '../styled/NavigationItemIcon';
+import { whenCollapsed } from '../../theme/util';
 
 const NavigationDropItemIcon = styled(NavigationItemIcon)`
   padding-right: 0px;
 
-  [data-__ak-navigation-container-closed="true"] & {
+  ${whenCollapsed`
     display: none;
-  }
+  `}
 `;
 
 NavigationDropItemIcon.displayName = 'NavigationDropItemIcon';

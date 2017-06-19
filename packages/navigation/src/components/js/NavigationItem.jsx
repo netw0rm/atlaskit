@@ -95,7 +95,7 @@ export default class NavigationItem extends PureComponent {
         >
           <NavigationItemInner>
             {icon}
-            <NavigationItemText>
+            <NavigationItemText isDropdown={this.props.isDropdownTrigger}>
               <NavigationItemMainText>
                 {this.props.text}
                 {wrappedCaption}

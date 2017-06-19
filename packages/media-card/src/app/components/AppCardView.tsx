@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Details, Action} from '../model';
+import {AppCardModel, AppCardAction} from '../model';
 import {HeaderView} from './HeaderView';
 import {DescriptionView} from './DescriptionView';
 import {MetaView} from './MetaView';
@@ -11,11 +11,11 @@ const maxCardWidth = 744;
 const previewWidth = 116;
 
 export interface AppCardViewProps {
-  details: Details;
+  model: AppCardModel;
   collapsed?: boolean;
   onCollapseToggled?: () => void;
-  onPrimaryAction?: (action: Action) => void;
-  onSecondaryAction?: (action: Action) => void;
+  onPrimaryAction?: (action: AppCardAction) => void;
+  onSecondaryAction?: (action: AppCardAction) => void;
 }
 
 export class AppCardView extends React.Component<AppCardViewProps, {}> {
@@ -25,28 +25,28 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   };
 
   get isDarkAppearance() {
-    const {details: {background}} = this.props;
+    const {model: {background}} = this.props;
     return Boolean(background);
   }
 
   get contentMaxWidth() {
-    const {details: {preview}} = this.props;
+    const {model: {preview}} = this.props;
     return preview ? maxCardWidth - previewWidth : maxCardWidth;
   }
 
   renderPreview() {
-    const {details: {preview}} = this.props;
+    const {model: {preview}} = this.props;
     if (!preview) {
       return null;
     }
-    return <Preview image={preview}/>;
+    return <Preview image={preview.url}/>;
   }
 
   renderHeader() {
-    const {details: {title, user, background, collapsible}, collapsed, onCollapseToggled} = this.props;
+    const {model: {title: {text, user}, background, collapsible}, collapsed, onCollapseToggled} = this.props;
     return (
       <HeaderView
-        title={title}
+        title={text}
         user={user}
         inverse={Boolean(background)}
         collapsible={collapsible}
@@ -58,7 +58,7 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderDescription() {
-    const {details: {description}} = this.props;
+    const {model: {description}} = this.props;
     if (!description) {
       return null;
     }
@@ -66,24 +66,24 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderMeta() {
-    const {details: {meta}} = this.props;
-    if (!meta) {
+    const {model: {details}} = this.props;
+    if (!details) {
       return null;
     }
-    return <MetaView meta={meta} inverse={this.isDarkAppearance} contentMaxWidth={this.contentMaxWidth}/>;
+    return <MetaView meta={details} inverse={this.isDarkAppearance} contentMaxWidth={this.contentMaxWidth}/>;
   }
 
   renderContext() {
-    const {details: {context, background}} = this.props;
+    const {model: {context, background}} = this.props;
     if (!context) {
       return null;
     }
-    const {icon, text, href} = context;
-    return <ContextView icon={icon} text={text} href={href} inverse={Boolean(background)}/>;
+    const {icon, text, link} = context;
+    return <ContextView icon={icon} text={text} href={link && link.url} inverse={Boolean(background)}/>;
   }
 
   renderActions() {
-    const {details: {actions, background}} = this.props;
+    const {model: {actions, background}} = this.props;
 
     if (!actions) {
       return null;
@@ -93,9 +93,9 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderBody() {
-    const {details: {description, meta, context, actions}} = this.props;
+    const {model: {description, details, context, actions}} = this.props;
 
-    if (!description && !meta && !context && !actions) {
+    if (!description && !details && !context && !actions) {
       return null;
     }
 
@@ -114,7 +114,7 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderCollapsibleBody() {
-    const {details: {collapsible}, collapsed} = this.props;
+    const {model: {collapsible}, collapsed} = this.props;
 
     if (collapsible) {
       return (
@@ -128,9 +128,9 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   render(): JSX.Element {
-    const {details: {background, preview}} = this.props;
+    const {model: {background, preview}} = this.props;
     return (
-      <Card background={background}>
+      <Card background={background && background.url}>
         {this.renderPreview()}
         <CardContent hasPreview={Boolean(preview)}>
           {this.renderHeader()}

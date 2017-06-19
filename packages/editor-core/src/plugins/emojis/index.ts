@@ -73,7 +73,7 @@ export class EmojiState {
       }
 
       const { nodeBefore, /*nodeAfter*/ } = selection.$from;
-      const newQuery = (nodeBefore && nodeBefore.textContent || '').substr(1); // + (nodeAfter && nodeAfter.textContent || '');
+      const newQuery = (nodeBefore && nodeBefore.textContent || '');
 
       if (this.query !== newQuery) {
         dirty = true;

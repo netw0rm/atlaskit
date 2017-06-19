@@ -3,10 +3,12 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import createStub from 'raf-stub';
+import styled from 'styled-components';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import ContainerHeader from '../src/components/js/ContainerHeader';
 import Spacer from '../src/components/js/Spacer';
 import { layout } from '../src/shared-variables';
+import { isCollapsed } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
 
 describe('<ContainerNavigation />', () => {
@@ -17,12 +19,39 @@ describe('<ContainerNavigation />', () => {
   });
 
   describe('behaviour', () => {
-    it('renders [data-__ak-navigation-container-closed="true"] if it is collapsed', () => {
-      expect(mount(<ContainerNavigation isCollapsed />).getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(true);
-    });
+    describe('putting isCollapsed on the theme', () => {
+      it('should set isCollapsed to false when not collapsed', () => {
+        const stub = sinon.stub().returns('');
+        const Item = styled.div`
+          property: ${({ theme }) => stub(isCollapsed(theme))}
+        `
 
-    it('renders [data-__ak-navigation-container-closed="false"] if it is not collapsed', () => {
-      expect(mount(<ContainerNavigation isCollapsed={false} />).getDOMNode().matches('[data-__ak-navigation-container-closed="false"]')).to.equal(true);
+        mount(
+          <ContainerNavigation
+            isCollapsed={false}
+          >
+            <Item />
+          </ContainerNavigation>
+        );
+
+        expect(stub.calledWith(false)).to.equal(true);
+      });
+
+      it('should set isCollapsed to true when it is collapsed', () => {
+        const stub = sinon.stub().returns('');
+        const Item = styled.div`
+          property: ${({ theme }) => stub(isCollapsed(theme))}
+        `
+
+        mount(
+          <ContainerNavigation
+            isCollapsed
+          >
+            <Item />
+          </ContainerNavigation>
+        );
+        expect(stub.calledWith(true)).to.equal(true);
+      });
     });
 
     it('collapses the container header when closed', () => {

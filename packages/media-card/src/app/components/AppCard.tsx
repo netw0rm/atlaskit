@@ -25,7 +25,7 @@ export class AppCard extends React.Component<AppCardProps, AppCardState> {
       <AppCardView
         model={details}
         collapsed={collapsed}
-        onCollapseToggled={this.handleCollapseToggled}
+        onCollapseClick={this.handleCollapseToggled}
       />
     );
   }

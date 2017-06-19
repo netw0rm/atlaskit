@@ -35,6 +35,11 @@ const userSaschaReuter: AppCardUser = {icon: {
   label: 'Sascha Reuter'
 }};
 
+const modelWithLink: AppCardModel = {
+  title: {text: shortTitle},
+  link: {url: 'https://www.atlassian.com/'}
+};
+
 const modelWithShortTitle: AppCardModel = {
   title: {text: shortTitle}
 };
@@ -61,7 +66,6 @@ const modelWithPreview: AppCardModel = {
   ...modelWithShortTitle,
   preview
 };
-
 
 const modelWithTitleAndTextInDetails: AppCardModel = {
   ...modelWithShortTitle,
@@ -168,8 +172,7 @@ const modelWithLinkInContext: AppCardModel = {
 };
 
 const primaryAction: AppCardAction = {
-  title: 'View',
-  handler: () => action('View!')()
+  title: 'View'
 };
 const detailsWithPrimaryAction: AppCardModel = {
   ...modelWithShortTitle,
@@ -178,18 +181,9 @@ const detailsWithPrimaryAction: AppCardModel = {
 
 const metaActions: AppCardAction[] = [
   primaryAction,
-  {
-    title: 'Open',
-    handler: () => action('Open!')()
-  },
-  {
-    title: 'Join',
-    handler: () => action('Join!')()
-  },
-  {
-    title: 'Reply',
-    handler: () => action('Reply!')()
-  }
+  {title: 'Open'},
+  {title: 'Join'},
+  {title: 'Reply'}
 ];
 const detailsWithSecondaryActions: AppCardModel = {
   ...modelWithShortTitle,
@@ -241,8 +235,8 @@ const confluenceActivityModel: AppCardModel = {
     text: 'Design Home / … / Media Cards Design'
   },
   actions: [
-    {title: 'Reply', handler: () => action('Reply')()},
-    {title: 'Other', handler: () => action('Other')()}
+    {title: 'Reply'},
+    {title: 'Other'}
   ]
 };
 
@@ -257,8 +251,8 @@ const jiraIssueModel: AppCardModel = {
     text: 'DPM - 560'
   },
   actions: [
-    {title: 'View', handler: () => action('View')()},
-    {title: 'Other', handler: () => action('Other')()}
+    {title: 'View'},
+    {title: 'Other'}
   ]
 };
 
@@ -273,8 +267,8 @@ const dropboxFileModel: AppCardModel = {
     text: 'Dropbox'
   },
   actions: [
-    {title: 'Download', handler: () => action('Download')()},
-    {title: 'Other', handler: () => action('Other')()}
+    {title: 'Download'},
+    {title: 'Other'}
   ]
 };
 
@@ -293,8 +287,8 @@ const trelloBoardModel: AppCardModel = {
     link: {url: 'http://www.trello.com'}
   },
   actions: [
-    {title: 'Join', handler: () => action('Join')()},
-    {title: 'Other', handler: () => action('Other')()}
+    {title: 'Join'},
+    {title: 'Other'}
   ]
 };
 
@@ -320,10 +314,15 @@ const trelloCardModel: AppCardModel = {
     link: {url: 'http://www.trello.com'}
   },
   actions: [
-    {title: 'Open', handler: () => action('Open')()},
-    {title: 'Other', handler: () => action('Other')()}
+    {title: 'Open'},
+    {title: 'Other'}
   ]
 };
+
+const handleClick = () => action('clicked on the card')();
+const handleActionClick = (a: AppCardAction) => action('clicked on the action')(a.title, a);
+const handleContextClick = () => action('clicked on the context')();
+const handleCollapseClick = () => action('clicked on the collapse toggle')();
 
 const FixedWidthContainer = styled.div`
   width: 450px
@@ -358,7 +357,11 @@ storiesOf('AppCardView', {})
     <div>
 
       <Section>
-        <AppCardView model={modelWithShortTitle} collapsed={false}/>
+        <AppCardView model={modelWithShortTitle}/>
+      </Section>
+
+      <Section title="With link">
+        <AppCardView model={modelWithLink}/>
       </Section>
 
       <Section title="With header">
@@ -404,12 +407,30 @@ storiesOf('AppCardView', {})
         <AppCardView model={modelWithMostOfTheThingsAndWithBackground} collapsed={false}/>
       </Section>
 
+      <Section title="With event handlers">
+          <AppCardView
+            model={modelWithShortTitle}
+            onClick={handleClick}
+            onActionClick={handleActionClick}
+            onContextClick={handleContextClick}
+            onCollapseClick={handleCollapseClick}
+          />
+          <AppCardView
+            collapsed={false}
+            model={modelWithMostOfTheThings}
+            onClick={handleClick}
+            onActionClick={handleActionClick}
+            onContextClick={handleContextClick}
+            onCollapseClick={handleCollapseClick}
+          />
+      </Section>
+
       <FixedWidthContainer>
         <Section title="In a container">
 
           <AppCardView model={{title: {text: 'Short title'}}}/>
-          <AppCardView model={{title:  {text: 'Just long enough to wrap inside the container: blah blah blah'}}}/>
-          <AppCardView model={{title:  {text: `Super long title, longer than the card max-width: ${loremIpsum}`}}}/>
+          <AppCardView model={{title: {text: 'Just long enough to wrap inside the container: blah blah blah'}}}/>
+          <AppCardView model={{title: {text: `Super long title, longer than the card max-width: ${loremIpsum}`}}}/>
 
           <AppCardView model={{title: {text: 'Short description'}, description: {text: 'hi'}}}/>
           <AppCardView

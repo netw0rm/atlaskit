@@ -6,46 +6,86 @@ import MeatballIcon from '@atlaskit/icon/glyph/more';
 import {AppCardAction} from '../model';
 import {Actions, ActionsMenu} from '../styled/ActionsView';
 
+const UntypedButton = Button as any; // hack to get around lack of event in typings for
+
 export interface ActionsViewProps {
   actions: AppCardAction[];
   inverse: boolean;
+  onActionClick?: (action: AppCardAction) => void;
 }
 
-function handleDropDownAction({item}) {
-  item.handler();
+export class ActionsView extends React.Component<ActionsViewProps, {}> {
+
+  get primaryAction(): AppCardAction | undefined {
+    const {actions} = this.props;
+    return actions && actions[0];
+  }
+
+  get secondaryActions(): AppCardAction[] {
+    const {actions} = this.props;
+    return actions && actions.slice(1) || [];
+  }
+
+  handlePrimaryAction = (event: any) => {
+    const {onActionClick} = this.props;
+    const primaryAction = this.primaryAction;
+
+    // allow the user to click the button but prevent the event bubling up and being handled by the
+    // card onClick event
+    event.stopPropagation();
+
+    if (onActionClick && primaryAction) {
+      onActionClick(primaryAction);
+    }
+
+  }
+
+  handleSecondaryAction = ({item}) => {
+    const {onActionClick} = this.props;
+    const secondaryAction = item.action;
+    if (onActionClick && secondaryAction) {
+      onActionClick(secondaryAction);
+    }
+  }
+
+  handleMeatballsClick(event) {
+    event.stopPropagation();
+  }
+
+  render(): JSX.Element {
+    const {inverse} = this.props;
+
+    const primary = this.primaryAction;
+    const secondary = this.secondaryActions;
+
+    return (
+      <Actions>
+        {primary
+          ? <UntypedButton onClick={this.handlePrimaryAction} theme={inverse && 'dark' || 'default'}>{primary.title}</UntypedButton>
+          : null
+        }
+        {secondary.length
+          ? (
+            <ActionsMenu onClick={this.handleMeatballsClick}>
+              {/* FIXME: dropdown trigger is 1px larger cause display: flex-inline on the trigger and wrapped in divs from popper - need to change something upstream */}
+              <DropdownMenu
+                items={[{
+                  items: secondary.map(action => ({
+                    content: action.title,
+                    foo: 'bar',
+                    action
+                  }))
+                }]}
+                onItemActivated={this.handleSecondaryAction}
+              >
+                <Button appearance="subtle" iconBefore={<MeatballIcon label="actions" size="medium"/>} theme={inverse && 'dark' || 'default'}/>
+              </DropdownMenu>
+            </ActionsMenu>
+          )
+          : null
+        }
+      </Actions>
+    );
+  }
+
 }
-
-export const ActionsView = (props: ActionsViewProps) => {
-  const {actions, inverse} = props;
-
-  const primary = actions && actions[0];
-  const secondary = actions && actions.slice(1) || [];
-
-  return (
-    <Actions>
-      {primary
-        ? <Button onClick={primary.handler} theme={inverse && 'dark' || 'default'}>{primary.title}</Button>
-        : null
-      }
-      {secondary.length
-        ? (
-          <ActionsMenu>
-            {/* FIXME: dropdown trigger is 1px larger cause display: flex-inline on the trigger and wrapped in divs from popper - need to change something upstream */}
-            <DropdownMenu
-              items={[{
-                items: secondary.map(action => ({
-                  content: action.title,
-                  handler: action.handler
-                }))
-              }]}
-              onItemActivated={handleDropDownAction}
-            >
-              <Button appearance="subtle" iconBefore={<MeatballIcon label="actions" size="medium"/>} theme={inverse && 'dark' || 'default'}/>
-            </DropdownMenu>
-          </ActionsMenu>
-        )
-        : null
-      }
-    </Actions>
-  );
-};

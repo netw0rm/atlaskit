@@ -5,6 +5,12 @@ import {colorWithAlpha} from '../../utils/colorWithAlpha';
 
 const previewWidth = 116;
 
+export const Link = styled.a`
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
 export interface CardProps {
   background: string | undefined;
 }

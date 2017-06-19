@@ -11,10 +11,23 @@ export interface HeaderProps {
   contentMaxWidth: number;
   collapsible?: boolean;
   collapsed?: boolean;
-  onToggleCollapse?: () => void;
+  onCollapseClick?: () => void;
 }
 
 export class HeaderView extends React.Component<HeaderProps, {}> {
+
+  handleCollapseClick = event => {
+    const {onCollapseClick} = this.props;
+
+    // allow the user to click the icon but prevent the event bubling up and being handled by the
+    // card onClick event
+    event.stopPropagation();
+
+    if (onCollapseClick) {
+      onCollapseClick();
+    }
+
+  }
 
   renderUser() {
     const {user} = this.props;
@@ -29,12 +42,12 @@ export class HeaderView extends React.Component<HeaderProps, {}> {
   }
 
   renderCollapseToggle() {
-    const {collapsible, collapsed, onToggleCollapse} = this.props;
+    const {collapsible, collapsed} = this.props;
     if (!collapsible) {
       return null;
     }
     return (
-      <CollapseButton onClick={onToggleCollapse} collapsed={collapsed}>
+      <CollapseButton onClick={this.handleCollapseClick} collapsed={collapsed}>
         <CollapseIcon label="Expand/collapse" size="large"/>
       </CollapseButton>
     );

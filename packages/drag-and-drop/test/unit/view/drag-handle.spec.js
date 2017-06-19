@@ -80,8 +80,8 @@ const pressTab = withKeyboard('Tab');
 const pressEnter = withKeyboard('Enter');
 
 describe('drag handle', () => {
-  let callbacks;
-  let wrapper;
+  let callbacks: Callbacks;
+  let wrapper: ReactWrapper;
 
   beforeEach(() => {
     callbacks = getStubCallbacks();
@@ -99,9 +99,9 @@ describe('drag handle', () => {
     wrapper.unmount();
   });
 
-  describe.only('mouse dragging', () => {
+  describe('mouse dragging', () => {
     describe('initiation', () => {
-      it('should start a drag if there was sufficent mouse movement in any direction', () => {
+      it('should start a drag if there was sufficient mouse movement in any direction', () => {
         const valid: Position[] = [
           { x: 0, y: sloppyClickThreshold },
           { x: 0, y: -sloppyClickThreshold },

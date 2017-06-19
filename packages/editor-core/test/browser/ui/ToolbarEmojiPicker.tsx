@@ -1,4 +1,4 @@
-/*import { expect } from 'chai';
+import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import emojiPlugins from '../../../src/plugins/emojis';
@@ -17,8 +17,7 @@ const grinEmojiId = {
   fallback: grinEmoji.fallback,
 };
 
-// Tara, enable it when you can :)
-describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
+describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
@@ -61,16 +60,18 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginState={pluginState} emojiProvider={emojiProvider} editorView={editorView} />);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     const onSelection = toolbarEmojiPicker.find(AkEmojiPicker).prop('onSelection');
-    onSelection(grinEmojiId, grinEmoji);
+    if (onSelection) {
+      onSelection(grinEmojiId, grinEmoji);
 
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        p(
-          emoji(grinEmojiId),
-          ' '
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            emoji(grinEmojiId),
+            ' '
+          )
         )
-      )
-    );
+      );
+    }
   });
 
   it('should close the picker if an external node is clicked', () => {
@@ -82,4 +83,4 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
   });
 
-});*/
+});

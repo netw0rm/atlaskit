@@ -1,7 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
-import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowLeftIcon } from '@atlaskit/icon';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
+import AddIcon from '@atlaskit/icon/glyph/add';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import SettingsIcon from '@atlaskit/icon/glyph/settings';
+import IssuesIcon from '@atlaskit/icon/glyph/issues';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
@@ -169,7 +176,7 @@ export default class BasicNavigation extends PureComponent {
 
   render() {
     const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
-    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
+    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="large" />;
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation

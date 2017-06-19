@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "17.0.0",
+  "version": "17.0.1",
   "config": {
     "access": "public"
   },
@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^30.0.0",
+    "@atlaskit/editor-core": "^31.0.1",
     "@atlaskit/mention": "^4.0.4",
     "collapse-whitespace": "^1.1.4",
     "css-color-names": "0.0.4",

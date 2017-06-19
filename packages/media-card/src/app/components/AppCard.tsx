@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {Details} from '../model';
+import {AppCardModel} from '../model';
 import {AppCardView} from './AppCardView';
 
 export interface AppCardProps {
-  details: Details;
+  details: AppCardModel;
 }
 
 export interface AppCardState {
@@ -23,7 +23,7 @@ export class AppCard extends React.Component<AppCardProps, AppCardState> {
     const {collapsed} = this.state;
     return (
       <AppCardView
-        details={details}
+        model={details}
         collapsed={collapsed}
         onCollapseToggled={this.handleCollapseToggled}
       />

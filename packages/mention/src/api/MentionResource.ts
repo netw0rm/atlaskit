@@ -4,6 +4,9 @@ import { MentionDescription } from '../types';
 import debug from '../util/logger';
 import {SearchIndex} from '../util/searchIndex';
 
+const MAX_QUERY_ITEMS = 100;
+const MAX_NOTIFIED_ITEMS = 20;
+
 export interface KeyValues {
   [index: string]: any;
 }
@@ -204,7 +207,7 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
 
     this.changeListeners.forEach((listener, key) => {
       try {
-        listener(mentionsResult.mentions.slice(0, 20));
+        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS));
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -234,8 +237,6 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
     });
   }
 }
-
-const MAX_QUERY_ITEMS = 100;
 
 /**
  * Provides a Javascript API
@@ -314,6 +315,7 @@ class MentionResource extends AbstractMentionResource {
 
     return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider)
       .then((result) => {
+        this.searchIndex.reset();
         this.searchIndex.indexResults(result.mentions);
         return result;
       });
@@ -322,7 +324,7 @@ class MentionResource extends AbstractMentionResource {
   private search(query: string): Promise<MentionsResult> {
     if (this.searchIndex.hasDocuments()) {
       return this.searchIndex.search(query).then((result) => {
-        const searchTime = Date.now();
+        const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
         this.remoteSearch(query).then((result) => {
           this.notify(searchTime, result, query);
           this.searchIndex.indexResults(result.mentions);

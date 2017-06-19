@@ -8,10 +8,10 @@ const unorderedSearchIndex = new UnorderedSearchIndex();
 const tokenizerRegex = XRegExp.cache('\\p{Han}|\\p{L}+[\\p{Mn}|\']*\\p{L}*', 'gi');
 const nonSpacingMarkRegex = XRegExp.cache('\\p{Mn}', 'gi');
 
-interface Token {
+export type Token = {
   token: string;
   start: number;
-}
+};
 
 export class Tokenizer {
   public static tokenize(text): string[] {
@@ -113,6 +113,10 @@ export class SearchIndex {
     return this.index;
   }
 
+  public reset() {
+    this.index = null;
+  }
+
   public indexResults(mentions: MentionDescription[]) {
     if (!this.index) {
       this.index = new Search('id');
@@ -126,7 +130,7 @@ export class SearchIndex {
     }
 
     this.index.addDocuments(mentions.map((mention, index) => {
-      if (!mention.weight) {
+      if (mention.weight !== undefined) {
         return mention;
       }
 

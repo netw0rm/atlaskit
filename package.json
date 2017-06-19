@@ -122,8 +122,7 @@
     "wait-on": "^2.0.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2",
-    "whatwg-fetch": "^2.0.3",
-    "xregexp": "^3.2.0"
+    "whatwg-fetch": "^2.0.3"
   },
   "engines": {
     "npm": ">=3.8",

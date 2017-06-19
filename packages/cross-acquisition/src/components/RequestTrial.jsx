@@ -14,22 +14,37 @@ export default class RequestTrial extends Component {
     productLogo: PropTypes.element,
     header: PropTypes.string.isRequired,
     children: PropTypes.node,
+    onRequestAccessClick: PropTypes.func,
+    onCancelClick: PropTypes.func,
   }
 
   static defaultProps = {
     productLogo: <AtlassianLogo />,
+    onRequestAccessClick: () => {},
+    onCancelClick: () => {},
+  }
+
+  state = {
+    isOpen: true,
+  }
+
+  handleCancelClick = () => {
+    this.props.onCancelClick();
+    this.setState({
+      isOpen: false,
+    });
   }
 
   render() {
     return (
       <div>
         <ModalDialog
-          isOpen
+          isOpen={this.state.isOpen}
           header={this.props.productLogo}
           footer={
             <p>
-              <Button appearance="primary">Request access</Button>
-              <Button appearance="subtle-link">Cancel</Button>
+              <Button appearance="primary" onClick={this.props.onRequestAccessClick}>Request access</Button>
+              <Button appearance="subtle-link" onClick={this.handleCancelClick}>Cancel</Button>
             </p>
           }
         >

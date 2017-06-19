@@ -40,7 +40,7 @@ export class MediaDataUriService implements DataUriService {
       `/file/${mediaItem.details.id}/image`, {
         width,
         height,
-        mode: 'crop',
+        mode: 'full-fit',
         'max-age': 3600,
         collection: this.collectionName
       });

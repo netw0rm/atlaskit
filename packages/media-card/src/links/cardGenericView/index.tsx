@@ -3,7 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../index';
-import {Ellipsify, Menu, MediaImage, CardLoading, ErrorIcon, getCSSUnitValue} from '../../utils';
+import {Ellipsify, Menu, CardLoading, ErrorIcon, getCSSUnitValue} from '../../utils';
 import {Href} from '../../utils/href';
 import {Details, Wrapper} from '../styled';
 import {
@@ -12,7 +12,8 @@ import {
   Footer,
   Link,
   ErrorContainer,
-  ErrorHeader
+  ErrorHeader,
+  LinkMediaImage
 } from './styled';
 
 export interface LinkCardGenericViewProps {
@@ -115,7 +116,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       return null;
     }
 
-    return <MediaImage key="thumbnail" dataURI={thumbnailUrl || ''} onError={this.thumbnailError} />;
+    return <LinkMediaImage key="thumbnail" dataURI={thumbnailUrl || ''} onError={this.thumbnailError} />;
   }
 
   private getIcon = (): JSX.Element | null => {

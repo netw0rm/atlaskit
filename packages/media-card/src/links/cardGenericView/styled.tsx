@@ -1,7 +1,8 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akColorN20, akColorN70, akColorN300 } from '@atlaskit/util-shared-styles';
+import { akColorN20, akColorN70, akColorN300, akColorN900 } from '@atlaskit/util-shared-styles';
 import { size, ellipsis, antialiased } from '../../styles';
+import { MediaImage } from '../../utils';
 
 export const Title = styled.div`
   ${ellipsis('100%')}
@@ -65,4 +66,9 @@ export const ErrorHeader = styled.div`
   line-height: 15px;
 
   ${ellipsis('calc(100% - 24px)')}
+`;
+
+// TODO: Add opacity to the bg-color --> 0.4
+export const LinkMediaImage = styled(MediaImage)`
+  background-color: ${akColorN900};
 `;

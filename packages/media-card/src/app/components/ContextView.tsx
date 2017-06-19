@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
-import {Icon as IconModel} from '../model';
+import {AppCardIcon as IconModel} from '../model';
 import {Wrapper, IconImage, Text, LinkText} from '../styled/ContextView';
 
 export interface ContextViewProps {
@@ -17,7 +17,7 @@ export class ContextView extends React.Component<ContextViewProps, {}> {
     if (!icon) {
       return null;
     }
-    return <IconImage src={icon.src} alt={icon.label}/>;
+    return <IconImage src={icon.url} alt={icon.label}/>;
   }
 
   renderText() {

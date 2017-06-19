@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 import CollapseIcon from '@atlaskit/icon/glyph/editor/expand';
-import {Icon} from '../model';
+import {AppCardUser} from '../model';
 import {Wrapper, User, Title, CollapseButton} from '../styled/HeaderView';
 
 export interface HeaderProps {
   title: string;
-  user?: Icon;
+  user?: AppCardUser;
   inverse?: boolean;
   contentMaxWidth: number;
   collapsible?: boolean;
@@ -23,7 +23,7 @@ export class HeaderView extends React.Component<HeaderProps, {}> {
     }
     return (
       <User>
-        <Avatar src={user.src} size="small" label={user.label}/>
+        <Avatar src={user.icon.url} size="small" label={user.icon.label}/>
       </User>
     );
   }

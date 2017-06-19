@@ -1,56 +1,65 @@
 
-export interface Details {
-  background?: string; // an image URL
-  preview?: string; // an image URL
-  user?: Icon;
-  title: string;
-  description?: Description;
-  meta?: Metadata[];
-  context?: Context;
-  actions?: Action[];
+export interface AppCardModel {
+  title: AppCardTitle;
+  description?: AppCardDescription;
+  details?: AppCardDetails[];
+  context?: AppCardContext;
+  actions?: AppCardAction[];
+  link?: {url: string};
+  preview?: {url: string}; // an image URL
+  background?: {url: string}; // an image URL
   collapsible?: boolean;
 }
 
-export interface Description {
+export interface AppCardTitle {
+  text: string;
+  user?: AppCardUser;
+  lozenge?: AppCardLozenge;
+}
+
+export interface AppCardDescription {
   title?: string; // the bolded bit
   text: string;
 }
 
-export interface Icon {
-  src: string;   // an image URL
+export interface AppCardIcon {
+  url: string;    // an image URL
   label: string;  // accessibility text e.g. tooltip or voiceover
 }
 
-export interface Badge {
+export interface AppCardUser {
+  icon: AppCardIcon;
+}
+
+export interface AppCardBadge {
   value: number;
   max?: number;
   theme?: 'default' | 'dark';
   appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed';
 }
 
-export interface Lozenge {
+export interface AppCardLozenge {
   text: string;
   bold?: boolean;
   appearance?: 'default' | 'success' | 'removed' | 'inprogress' | 'new' | 'moved';
 }
 
-export interface Metadata {
+export interface AppCardDetails {
   title?: string;
-  icon?: Icon;
-  badge?: Badge;
-  lozenge?: Lozenge;
-  users?: Icon[];
+  icon?: AppCardIcon;
+  badge?: AppCardBadge;
+  lozenge?: AppCardLozenge;
+  users?: AppCardUser[];
   text?: string;
 }
 
-export interface Context {
+export interface AppCardContext {
   text: string;
-  icon?: Icon;
-  href?: string;  // a page URL
+  icon?: AppCardIcon;
+  link?: {url: string};
 }
 
-export interface Action {
+export interface AppCardAction {
   title: string;
-  description?: string;
   handler: () => void;
 }

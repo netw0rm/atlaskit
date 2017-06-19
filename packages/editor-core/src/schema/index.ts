@@ -27,7 +27,10 @@ export { mention } from './nodes/mention';
 export { listItem } from './nodes/list-item';
 export { panel } from './nodes/panel';
 export { text } from './nodes/text';
-export { media, MediaType } from './nodes/media';
+export {
+  media, MediaType,
+  Attributes as MediaAttributes, DisplayType as MediaDisplayType
+} from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
 export { table, table_cell, table_header, table_row } from './nodes/tableNodes';
 export { createSchema } from './create-schema';

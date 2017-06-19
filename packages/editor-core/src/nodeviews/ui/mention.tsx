@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { ResourcedMention } from '@atlaskit/mention';
-import ProviderFactory, { WithProviders } from '../../providerFactory';
+import Mention from '../../ui/Mention';
+import ProviderFactory from '../../providerFactory';
 import {
   EditorView,
   Node as PMNode,
@@ -20,18 +20,11 @@ export default class MentionNode extends PureComponent<Props, {}> {
     const { id, text, accessLevel } = node.attrs;
 
     return (
-      <WithProviders
-        providers={['mentionProvider']}
-        providerFactory={providerFactory}
-        // tslint:disable-next-line:jsx-no-lambda
-        renderNode={providers =>
-          <ResourcedMention
-            id={id}
-            text={text}
-            accessLevel={accessLevel}
-            mentionProvider={providers['mentionProvider']}
-          />
-        }
+      <Mention
+        id={id}
+        text={text}
+        accessLevel={accessLevel}
+        providers={providerFactory}
       />
     );
   }

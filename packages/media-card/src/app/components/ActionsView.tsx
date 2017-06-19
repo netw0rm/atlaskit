@@ -3,11 +3,11 @@ import * as React from 'react';
 import Button from '@atlaskit/button';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import MeatballIcon from '@atlaskit/icon/glyph/more';
-import {Action} from '../model';
+import {AppCardAction} from '../model';
 import {Actions, ActionsMenu} from '../styled/ActionsView';
 
 export interface ActionsViewProps {
-  actions: Action[];
+  actions: AppCardAction[];
   inverse: boolean;
 }
 

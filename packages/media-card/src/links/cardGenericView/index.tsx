@@ -3,8 +3,13 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../index';
-import {Ellipsify, Menu, MediaImage, CardLoading, ErrorIcon, getCSSUnitValue} from '../../utils';
+import {ErrorIcon} from '../../utils';
+import {Ellipsify} from '../../utils/ellipsify';
+import {Menu} from '../../utils/menu';
+import {MediaImage} from '../../utils/mediaImage';
+import {CardLoading} from '../../utils/cardLoading';
 import {Href} from '../../utils/href';
+import {getCSSUnitValue} from '../../utils/getCSSUnitValue';
 import {Details, Wrapper} from '../styled';
 import {
   Title,

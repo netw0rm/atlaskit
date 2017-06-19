@@ -52,7 +52,7 @@ export class TableState {
 
   createTable (): Command {
     return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-      if (this.tableDisabled) {
+      if (this.tableDisabled || this.tableElement) {
         return false;
       }
       const table = this.createStaticTable(3, 3);

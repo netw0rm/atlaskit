@@ -6,16 +6,18 @@ import ConfluenceRequestTrialOverviewExample from './examples/ConfluenceRequestT
 import ConfluenceStartTrialOverviewExample from './examples/ConfluenceStartTrialOverview'; // eslint-disable-line import/no-duplicates
 import ConfluenceStartTrialProgressOverviewExample from './examples/ConfluenceStartTrialProgressOverview'; // eslint-disable-line import/no-duplicates
 import ConfluenceOptOutOverviewExample from './examples/ConfluenceOptOutOverview'; // eslint-disable-line import/no-duplicates
+import ConfluenceOptOutSoloAdminOverviewExample from './examples/ConfluenceOptOutSoloAdminOverview'; // eslint-disable-line import/no-duplicates
 
 /* eslint-disable import/first, import/no-duplicates */
 import ConfluenceRequestTrialOverviewExampleRaw from '!raw!./examples/ConfluenceRequestTrialOverview';
 import ConfluenceStartTrialOverviewExampleRaw from '!raw!./examples/ConfluenceStartTrialOverview';
 import ConfluenceStartTrialProgressOverviewExampleRaw from '!raw!./examples/ConfluenceStartTrialProgressOverview';
 import ConfluenceOptOutOverviewExampleRaw from '!raw!./examples/ConfluenceOptOutOverview';
+import ConfluenceOptOutSoloAdminOverviewExampleRaw from '!raw!./examples/ConfluenceOptOutSoloAdminOverview';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
-import { RequestTrial, StartTrial, StartTrialProgress, OptOut } from '../src';
+import { RequestTrial, StartTrial, StartTrialProgress, OptOut, OptOutSoloAdmin } from '../src';
 
 storiesOf(name, module)
   .add('📖 ConfluenceRequestTrial readme', () => (
@@ -67,6 +69,19 @@ storiesOf(name, module)
           {ConfluenceStartTrialProgressOverviewExample}
         </Code>
         <Props component={StartTrialProgress} />
+      </Readme>
+    </div>
+  ))
+  .add('📖 ConfluenceOptOutSoloAdmin readme', () => (
+    <div>
+      <Readme
+        component={name}
+        description={description}
+      >
+        <Code code={ConfluenceOptOutSoloAdminOverviewExampleRaw}>
+          {ConfluenceOptOutSoloAdminOverviewExample}
+        </Code>
+        <Props component={OptOutSoloAdmin} />
       </Readme>
     </div>
   ));

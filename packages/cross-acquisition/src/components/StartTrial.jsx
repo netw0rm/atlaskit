@@ -21,20 +21,30 @@ export default class StartTrial extends Component {
     productLogo: <AtlassianLogo />,
   }
 
+  state = {
+    isOpen: true,
+  }
+
   handleButtonClick = (evt) => {
     console.log(`The ${`${evt.target.textContent}`.toLowerCase()} button got clicked!`);
+  }
+
+  handleCancelClick = () => {
+    this.setState({
+      isOpen: false,
+    });
   }
 
   render() {
     return (
       <ModalDialog
-        isOpen
+        isOpen={this.state.isOpen}
         width="small"
         header={this.props.productLogo}
         footer={
           <StartTrialFooter>
             <Button onClick={this.handleButtonClick} appearance="primary">Confirm</Button>
-            <Button onClick={this.handleButtonClick} appearance="subtle-link" >Cancel</Button>
+            <Button onClick={this.handleCancelClick} appearance="subtle-link" >Cancel</Button>
           </StartTrialFooter>
         }
       >

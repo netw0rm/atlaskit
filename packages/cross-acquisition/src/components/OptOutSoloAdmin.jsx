@@ -48,8 +48,8 @@ export default class OptOut extends Component {
         }
         footer={
           <OptOutFooter>
-            <Button onClick={this.handleButtonClick} appearance="primary">Continue</Button>
-            <Button onClick={this.handleCancelClick} appearance="subtle-link" >Cancel</Button>
+            <Button onClick={this.handleButtonClick} appearance="primary">Yes, prevent request</Button>
+            <Button onClick={this.handleCancelClick} appearance="subtle-link" >No, let them be</Button>
           </OptOutFooter>
         }
       >

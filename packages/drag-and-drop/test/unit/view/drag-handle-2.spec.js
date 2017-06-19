@@ -7,8 +7,10 @@ import { mount } from 'enzyme';
 import type { ReactWrapper } from 'enzyme';
 import sinon from 'sinon';
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
-import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
+// eslint-disable-next-line no-duplicate-imports
 import type { Callbacks } from '../../../src/view/drag-handle/drag-handle';
+import createDragHandle from '../../../src/view/drag-handle/';
+import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
 import type { Position } from '../../../src/types';
 
 const primaryButton: number = 0;
@@ -77,7 +79,7 @@ const pressArrowDown = withKeyboard('ArrowDown');
 const pressTab = withKeyboard('Tab');
 const pressEnter = withKeyboard('Enter');
 
-describe.only('Drag handle round two', () => {
+describe('drag handle', () => {
   let callbacks;
   let wrapper;
 
@@ -97,7 +99,7 @@ describe.only('Drag handle round two', () => {
     wrapper.unmount();
   });
 
-  describe('mouse dragging', () => {
+  describe.only('mouse dragging', () => {
     describe('initiation', () => {
       it('should start a drag if there was sufficent mouse movement in any direction', () => {
         const valid: Position[] = [
@@ -341,52 +343,10 @@ describe.only('Drag handle round two', () => {
           onCancel: 1,
         })).to.equal(true);
       });
-    });
 
-    describe('disabled mid drag', () => {
-      it('should cancel an existing drag', () => {
-        // lift
-        mouseDown(wrapper);
-        windowMouseMove(0, sloppyClickThreshold);
-        // move
-        windowMouseMove(0, sloppyClickThreshold + 1);
-        expect(callbacksCalled(callbacks)({
-          onLift: 1,
-          onMove: 1,
-          onCancel: 0,
-        })).to.equal(true);
-
-        wrapper.setProps({ isEnabled: false });
-        expect(callbacksCalled(callbacks)({
-          onLift: 1,
-          onMove: 1,
-          onCancel: 1,
-        })).to.equal(true);
-      });
-
-      it('should stop listening to mouse events', () => {
-        mouseDown(wrapper);
-        windowMouseMove(0, sloppyClickThreshold + 1);
-        windowMouseMove(0, sloppyClickThreshold + 1);
-
-        wrapper.setProps({ isEnabled: false });
-        expect(callbacksCalled(callbacks)({
-          onLift: 1,
-          onMove: 1,
-          onCancel: 1,
-        })).to.equal(true);
-
-        // should have no impact
-        windowMouseMove(0, sloppyClickThreshold + 1);
-        windowMouseMove(0, sloppyClickThreshold + 2);
-        windowMouseUp();
-        windowMouseMove(0, sloppyClickThreshold + 2);
-
-        expect(callbacksCalled(callbacks)({
-          onLift: 1,
-          onMove: 1,
-          onCancel: 1,
-        })).to.equal(true);
+      it('should not do anything if there is nothing dragging', () => {
+        pressEscape(wrapper);
+        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
       });
     });
 
@@ -457,6 +417,118 @@ describe.only('Drag handle round two', () => {
         });
       });
     });
+
+    describe('disabled mid drag', () => {
+      it('should cancel an existing drag', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        // move
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 0,
+        })).to.equal(true);
+
+        wrapper.setProps({ isEnabled: false });
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+
+      it('should stop listening to mouse events', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        windowMouseMove(0, sloppyClickThreshold + 1);
+
+        wrapper.setProps({ isEnabled: false });
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+
+        // should have no impact
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        windowMouseMove(0, sloppyClickThreshold + 2);
+        windowMouseUp();
+        windowMouseMove(0, sloppyClickThreshold + 2);
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+    });
+
+    describe('unmounted mid drag', () => {
+      beforeEach(() => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        wrapper.unmount();
+      });
+
+      it('should call the onCancel prop', () => {
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+
+      it('should unbind any window events', () => {
+        windowMouseMove(0, sloppyClickThreshold + 1);
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+    });
+
+    describe('subsequent drags', () => {
+      it('should be possible to do another drag after one finishes', () => {
+        Array.from({ length: 10 }, (v, k) => k).forEach((val: number) => {
+          // lift
+          mouseDown(wrapper);
+          windowMouseMove(0, sloppyClickThreshold);
+          // move
+          windowMouseMove(0, sloppyClickThreshold);
+          // drop
+          windowMouseUp(0, sloppyClickThreshold);
+
+          expect(callbacksCalled(callbacks)({
+            onLift: val + 1,
+            onMove: val + 1,
+            onDrop: val + 1,
+          })).to.equal(true);
+        });
+      });
+
+      it('should allow drags after a cancel', () => {
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        pressEscape(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        windowMouseUp(wrapper, 0, sloppyClickThreshold);
+
+        expect(callbacksCalled(callbacks)({
+          onCancel: 1,
+          onLift: 2,
+          onDrop: 1,
+        })).to.equal(true);
+      });
+    });
   });
 
   describe('keyboard dragging', () => {
@@ -493,8 +565,8 @@ describe.only('Drag handle round two', () => {
 
       it('should prevent tabbing away from the element while dragging', () => {
         const stub = sinon.stub();
-
         pressSpacebar(wrapper);
+
         pressTab(wrapper, { preventDefault: stub });
 
         expect(stub.called).to.equal(true);
@@ -508,10 +580,31 @@ describe.only('Drag handle round two', () => {
 
         expect(stub.called).to.equal(true);
       });
+
+      it('should not take into account any mouse movements', () => {
+        pressSpacebar(wrapper);
+
+        windowMouseMove();
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onMove: 0,
+          onMoveForward: 0,
+          onMoveBackward: 0,
+        })).to.equal(true);
+      });
     });
 
     describe('finish', () => {
+      it('should drop when the user presses spacebar', () => {
+        pressSpacebar(wrapper);
+        pressSpacebar(wrapper);
 
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onDrop: 1,
+        })).to.equal(true);
+      });
     });
 
     describe('cancel', () => {
@@ -524,32 +617,147 @@ describe.only('Drag handle round two', () => {
           onCancel: 1,
         })).to.equal(true);
       });
+
+      it('should cancel when the user pushes any mouse button', () => {
+        const mouseButtons: number[] = [primaryButton, auxiliaryButton];
+
+        mouseButtons.forEach((button: number, index: number): void => {
+          pressSpacebar(wrapper);
+          mouseDown(wrapper, 0, 0, button);
+          // should now do nothing
+          pressArrowUp(wrapper);
+
+          expect(callbacksCalled(callbacks)({
+            onKeyLift: index + 1,
+            onCancel: index + 1,
+          })).to.equal(true);
+        });
+      });
+
+      it('should not do anything if there is nothing dragging', () => {
+        pressEscape(wrapper);
+        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
+      });
+    });
+
+    describe('post drag click', () => {
+      it('should not prevent any clicks after a drag', () => {
+        const stub = sinon.stub();
+        pressSpacebar(wrapper);
+        pressArrowDown(wrapper);
+        pressSpacebar(wrapper);
+
+        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+
+        expect(stub.called).to.equal(false);
+      });
     });
 
     describe('disabled mid drag', () => {
+      it('should cancel the current drag', () => {
+        pressSpacebar(wrapper);
 
+        wrapper.setProps({
+          isEnabled: false,
+        });
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+    });
+
+    describe('unmounted mid drag', () => {
+      beforeEach(() => {
+        pressSpacebar(wrapper);
+        wrapper.unmount();
+      });
+
+      it('should call the onCancel prop', () => {
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+    });
+
+    describe('subsequent drags', () => {
+      it('should be possible to do another drag after one finishes', () => {
+        Array.from({ length: 10 }, (v, k) => k).forEach((val: number) => {
+          pressSpacebar(wrapper);
+          pressArrowDown(wrapper);
+          pressSpacebar(wrapper);
+
+          expect(callbacksCalled(callbacks)({
+            onKeyLift: val + 1,
+            onMoveForward: val + 1,
+            onDrop: val + 1,
+          })).to.equal(true);
+        });
+      });
+
+      it('should allow drags after a cancel', () => {
+        pressSpacebar(wrapper);
+        pressEscape(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
+
+        pressSpacebar(wrapper);
+        pressSpacebar(wrapper);
+
+        expect(callbacksCalled(callbacks)({
+          onCancel: 1,
+          onKeyLift: 2,
+          onDrop: 1,
+        })).to.equal(true);
+      });
     });
   });
 
   describe('drag disabled', () => {
     it('should not pass any handleProps to the child', () => {
+      wrapper.setProps({
+        isEnabled: false,
+      });
 
+      const props: Object = wrapper.find(Child).props();
+
+      expect(props.handleProps).to.deep.equal({});
+    });
+  });
+});
+
+describe('create drag handle', () => {
+  it('should return a drag handle', () => {
+    const callbacks = getStubCallbacks();
+    const isEnabled = true;
+    const wrapper = mount(createDragHandle(callbacks)(isEnabled)(<Child />));
+
+    expect(wrapper.find(DragHandle).length).to.equal(1);
+  });
+
+  it('should apply the passed callbacks to the drag handle', () => {
+    const callbacks = getStubCallbacks();
+    const isEnabled = true;
+    const wrapper = mount(createDragHandle(callbacks)(isEnabled)(<Child />));
+
+    const props = wrapper.find(DragHandle).props();
+    Object.keys(callbacks).forEach((key: string) => {
+      expect(props[key]).to.equal(callbacks[key]);
     });
   });
 
-  describe('unmounting', () => {
-    describe('unmounting while dragging', () => {
-      it('should unbind any window events', () => {
+  it('should allow conditional enabling of the drag handle', () => {
+    const callbacks = getStubCallbacks();
 
-      });
+    const wrapper1 = mount(createDragHandle(callbacks)(true)(<Child />));
+    expect(wrapper1.props().isEnabled).to.equal(true);
 
-      it('should call the onCancel prop', () => {
-
-      });
-    });
-
-    it('should do nothing if unmounted while not dragging', () => {
-
-    });
+    const wrapper2 = mount(createDragHandle(callbacks)(false)(<Child />));
+    expect(wrapper2.props().isEnabled).to.equal(false);
   });
 });

@@ -65,7 +65,7 @@ export default class DragHandle extends PureComponent {
       return;
     }
 
-    // dragging is not enabled
+    // dragging is *not* enabled
 
     // if a drag is pending - clear it
     if (this.state.pending) {
@@ -314,8 +314,10 @@ export default class DragHandle extends PureComponent {
 
     this.unbindWindowEvents();
 
+    if (this.state.draggingWith === 'MOUSE') {
     // Need to block any click actions
-    this.preventClick = true;
+      this.preventClick = true;
+    }
 
     const state: State = {
       draggingWith: null,

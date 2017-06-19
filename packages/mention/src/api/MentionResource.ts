@@ -2,6 +2,7 @@ import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chro
 
 import { MentionDescription } from '../types';
 import debug from '../util/logger';
+import {SearchIndex} from '../util/searchIndex';
 
 export interface KeyValues {
   [index: string]: any;
@@ -203,7 +204,7 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
 
     this.changeListeners.forEach((listener, key) => {
       try {
-        listener(mentionsResult.mentions);
+        listener(mentionsResult.mentions.slice(0, 20));
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -234,6 +235,8 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
   }
 }
 
+const MAX_QUERY_ITEMS = 100;
+
 /**
  * Provides a Javascript API
  */
@@ -241,6 +244,7 @@ class MentionResource extends AbstractMentionResource {
 
   private config: MentionResourceConfig;
   private lastReturnedSearch: number;
+  private searchIndex: SearchIndex;
 
   constructor(config: MentionResourceConfig) {
     super();
@@ -251,6 +255,7 @@ class MentionResource extends AbstractMentionResource {
 
     this.config = config;
     this.lastReturnedSearch = 0;
+    this.searchIndex = new SearchIndex();
   }
 
   shouldHighlightMention(mention: MentionDescription) {
@@ -261,27 +266,29 @@ class MentionResource extends AbstractMentionResource {
     return false;
   }
 
+  notify(searchTime: number, mentionResult: MentionsResult, query?: string) {
+    if (searchTime > this.lastReturnedSearch) {
+      this.lastReturnedSearch = searchTime;
+      this._notifyListeners(mentionResult);
+    } else {
+      const date = new Date(searchTime).toISOString().substr(17, 6);
+      debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
+    }
+  }
+
   filter(query?: string): void {
     const searchTime = Date.now();
-    const notify = (mentionResult: MentionsResult) => {
-      if (searchTime > this.lastReturnedSearch) {
-        this.lastReturnedSearch = searchTime;
-        this._notifyListeners(mentionResult);
-      } else {
-        const date = new Date(searchTime).toISOString().substr(17, 6);
-        debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
-      }
-    };
 
     if (!query) {
-      this.initialState().then(notify, error => this._notifyErrorListeners(error));
+      this.initialState().then((results) => this.notify(searchTime, results, query), error => this._notifyErrorListeners(error));
     } else {
-      this.search(query).then(notify, error => this._notifyErrorListeners(error));
+      this.search(query).then((results) => this.notify(searchTime, results, query), error => this._notifyErrorListeners(error));
     }
   }
 
   recordMentionSelection(mention: MentionDescription): Promise<void> {
-    return this.recordSelection(mention).then(() => {}, error => debug(`error recording mention selection: ${error}`, error));
+    return this.recordSelection(mention).then(() => {
+    }, error => debug(`error recording mention selection: ${error}`, error));
   }
 
   /**
@@ -305,14 +312,39 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider)
+      .then((result) => {
+        this.searchIndex.indexResults(result.mentions);
+        return result;
+      });
   }
 
   private search(query: string): Promise<MentionsResult> {
+    if (this.searchIndex.hasDocuments()) {
+      return this.searchIndex.search(query).then((result) => {
+        const searchTime = Date.now();
+        this.remoteSearch(query).then((result) => {
+          this.notify(searchTime, result, query);
+          this.searchIndex.indexResults(result.mentions);
+        });
+
+        return result;
+      });
+    }
+
+    return this.remoteSearch(query).then(result => {
+      this.searchIndex.indexResults(result.mentions);
+
+      return result;
+    });
+  }
+
+  private remoteSearch(query: string): Promise<MentionsResult> {
     const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
       query,
+      limit: MAX_QUERY_ITEMS
     };
     const options = {};
     if (this.config.containerId) {

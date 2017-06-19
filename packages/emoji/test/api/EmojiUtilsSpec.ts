@@ -130,14 +130,14 @@ describe('EmojiUtils', () => {
 
     it('maps out the ascii field when present', () => {
       const emoji = {
-        id: "1f603",
-        name: "smiling face with open mouth",
-        fallback: "😃",
-        type: "STANDARD",
-        category: "PEOPLE",
+        id: '1f603',
+        name: 'smiling face with open mouth',
+        fallback: '😃',
+        type: 'STANDARD',
+        category: 'PEOPLE',
         order: 2,
         representation: {
-          spriteRef: "http:/example.com/sprite.png",
+          spriteRef: 'http:/example.com/sprite.png',
           x: 34,
           y: 0,
           height: 32,
@@ -146,16 +146,16 @@ describe('EmojiUtils', () => {
           yIndex: 0
         },
         ascii: [
-          ":D",
-          ":-D",
-          "=D"
+          ':D',
+          ':-D',
+          '=D'
         ],
-        shortName: ":smiley:"
+        shortName: ':smiley:'
       };
       const emojiResponse = denormaliseEmojiServiceResponse({
         emojis: [emoji],
       });
-      expect(emojiResponse.emojis[0].ascii).to.deep.equal([":D", ":-D", "=D"]);
+      expect(emojiResponse.emojis[0].ascii).to.deep.equal([':D', ':-D', '=D']);
     });
   });
 

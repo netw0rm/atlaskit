@@ -7,7 +7,7 @@ import { browser } from '../../../src';
 import {
   isBody, findOverflowScrollParent,
   getVerticalPlacement, getHorizontalPlacement,
-  calculatePosition, calculatePlacement
+  calculatePosition,
 } from '../../../src/ui/Popup/utils';
 
 import Popup from '../../../src/ui/Popup';

@@ -190,6 +190,8 @@ export class MentionsState {
     return provider
       .then(mentionProvider => {
         this.mentionProvider = mentionProvider;
+
+        // Improve first mentions performance by establishing a connection and populating local search
         this.mentionProvider.filter('');
 
         return mentionProvider;

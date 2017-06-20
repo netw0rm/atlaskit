@@ -76,6 +76,30 @@ export const globalPrimaryActions = (() => {
   };
 })();
 
+export const globalSecondaryActions = (() => {
+  const itemSizes = {
+    medium: 1 + (gridSize * 5),
+  };
+
+  const margin = {
+    bottom: gridSize * 3,
+  };
+
+  const height = (actionCount) => {
+    const innerHeight = itemSizes.medium * actionCount;
+    return {
+      inner: innerHeight,
+      outer: margin.bottom + innerHeight,
+    };
+  };
+
+  return {
+    height,
+    margin,
+    itemSizes,
+  };
+})();
+
 export const item = {
   borderRadius: 3,
   width: {

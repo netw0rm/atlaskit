@@ -32,12 +32,12 @@ export const Content = styled.div`
       }
     }
 
-    & pre {
-      font-family: ${akEditorCodeFontFamily};
-      background: ${akEditorCodeBackground};
-      padding: ${akEditorCodeBlockPadding};
-      border-radius: ${akBorderRadius};
-    }
+    // & pre {
+    //   font-family: ${akEditorCodeFontFamily};
+    //   background: ${akEditorCodeBackground};
+    //   padding: ${akEditorCodeBlockPadding};
+    //   border-radius: ${akBorderRadius};
+    // }
   }
 
   & div.toolsDrawer {

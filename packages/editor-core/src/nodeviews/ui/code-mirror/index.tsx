@@ -1,4 +1,6 @@
-import CodeMirror, { Editor } from '../../codemirror';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import CodeMirror from '../../../codemirror';
 import {
   browser,
   Selection,
@@ -10,14 +12,15 @@ import {
   NodeView,
   EditorView,
   Fragment,
-} from '../../prosemirror';
+} from '../../../prosemirror';
 import {
   CodeBlockState,
   codeBlockStateKey,
   codeMirrorStateKey,
   CodeMirrorState,
-} from '../../plugins';
-import { DEFAULT_LANGUAGES } from '../../ui/LanguagePicker/languageList';
+} from '../../../plugins';
+import { DEFAULT_LANGUAGES } from '../../../ui/LanguagePicker/languageList';
+import CodeMirrorTextArea from './styles';
 
 const MOD = browser.mac ? 'Cmd' : 'Ctrl';
 
@@ -28,7 +31,8 @@ class CodeBlock {
   private getPos: Function;
   private value: string;
   private selection: Selection | undefined;
-  private cm: Editor;
+  private cm: any;
+  private domRef: HTMLDivElement;
   private uniqueId: string;
   private updating: boolean = false;
   private schema: Schema<any, any>;
@@ -44,13 +48,26 @@ class CodeBlock {
     this.selection = undefined;
     this.pluginState = codeBlockStateKey.getState(this.view.state);
     this.codeMirrorState = codeMirrorStateKey.getState(this.view.state);
-    this.cm = new CodeMirror(null, {
+    this.renderReactComponent();
+  }
+
+  private renderReactComponent = () => {
+    this.domRef = document.createElement('div');
+    ReactDOM.render(
+      <CodeMirrorTextArea ref={this.handleRef}/>,
+      this.domRef
+    );
+  }
+
+  private handleRef = (ref) => {
+    console.log('ref', ref)
+    this.cm = CodeMirror.fromTextArea(ref, {
       value: this.value,
       mode: undefined,
       lineNumbers: true,
       lineWrapping: true,
       tabSize: 2,
-      foldGutter: true,
+      // foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
       extraKeys: this.prepareExtraKeyMap(),
     });
@@ -58,7 +75,7 @@ class CodeBlock {
     // This line of code is inspired from Marijn's code example here:
     // https://github.com/ProseMirror/website/blob/master/pages/examples/codemirror/example.js#L43
     setTimeout(() => this.cm.refresh(), 20);
-    this.setMode(node.attrs['language']);
+    this.setMode(this.node.attrs['language']);
     this.dom = this.cm.getWrapperElement();
 
     this.updating = false;
@@ -70,7 +87,7 @@ class CodeBlock {
       }
     });
 
-    this.cm.on('focus', (cm, event) => {
+    this.cm.on('focus', (cm: CodeMirror.Editor) => {
       if (!this.updating) {
         this.forwardSelection();
       }
@@ -88,14 +105,14 @@ class CodeBlock {
       this.pluginState.update(this.view.state, this.view.docView, true);
     });
 
-    this.uniqueId = node.attrs['uniqueId'] || generateId();
-    node.attrs['uniqueId'] = this.uniqueId;
+    this.uniqueId = this.node.attrs['uniqueId'] || generateId();
+    this.node.attrs['uniqueId'] = this.uniqueId;
 
     this.pluginState.subscribe(this.updateLanguage);
     this.codeMirrorState.subscribe(this.focusCodeEditor);
   }
 
-  updateLanguage = (state: CodeBlockState) => {
+  private updateLanguage = (state: CodeBlockState) => {
     const { language, uniqueId } = state;
     if (language && this.cm.getMode().name !== language && uniqueId === this.uniqueId) {
       this.setMode(language);

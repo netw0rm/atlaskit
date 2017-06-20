@@ -190,11 +190,11 @@ export class MediaPluginState {
     let transaction = state.tr;
     const { $from } = state.selection;
 
-    if (!canMoveDown(state)) {
-      transaction.insert($from.pos + 1, state.schema.nodes.paragraph.create());
-    }
-
     if (this.isInsideEmptyParagraph()) {
+
+      if (!canMoveDown(state)) {
+        transaction.insert($from.pos + 1, state.schema.nodes.paragraph.create());
+      }
       // replace this empty paragraph with media group
       transaction.replaceWith(
         $from.start($from.depth) - 1,
@@ -564,7 +564,7 @@ export class MediaPluginState {
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
-  private selectInsertedMediaNode = (node: PMNode) => {
+  selectInsertedMediaNode = (node: PMNode) => {
     // by this time node has already been mounted
     const mediaNodeWithPos = this.findMediaNode(node.attrs.id);
     if (!mediaNodeWithPos) {

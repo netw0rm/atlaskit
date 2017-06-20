@@ -77,6 +77,7 @@ describe('Media plugin', () => {
   const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
     const [node, transaction] = pluginState.insertFile({ id, status: 'uploading' }, testCollectionName);
     editorView.dispatch(transaction);
+    pluginState.selectInsertedMediaNode(node);
 
     return node;
   };
@@ -107,8 +108,7 @@ describe('Media plugin', () => {
         expect(editorView.state.doc).to.deep.equal(
           doc(
             p('text'),
-            mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
-            p('')
+            mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName }))
           ));
       });
 
@@ -335,6 +335,7 @@ describe('Media plugin', () => {
           media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
+        p(),
       )
     );
 
@@ -370,6 +371,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
+        p(),
       )
     );
 

@@ -1,4 +1,4 @@
-import { Fragment, MarkType, Node, NodeType, Schema, Slice } from '../';
+import { Fragment, MarkType, Node, NodeType, Schema, Slice, MediaAttributes } from '../';
 import { NodeSpec, MarkSpec } from '../prosemirror';
 import matches from './matches';
 import sampleSchema from './schema';
@@ -259,14 +259,7 @@ export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
-export const media = (attrs: {
-  id: string;
-  type: 'file' | 'link';
-  collection: string;
-  fileName?: string;
-  fileSize?: number;
-  fileMimeType?: string;
-}) => sampleSchema.nodes.media.create(attrs);
+export const media = (attrs: MediaAttributes) => sampleSchema.nodes.media.create(attrs);
 export const textColor = (attrs: { color: string }) => markFactory(sampleSchema.marks.textColor, attrs);
 export const table = nodeFactory(sampleSchema.nodes.table, {});
 export const tr = nodeFactory(sampleSchema.nodes.table_row, {});

@@ -191,7 +191,9 @@ export class MediaPluginState {
     const { $from } = state.selection;
 
     if (!canMoveDown(state)) {
-      transaction.insert($from.pos + 1, state.schema.nodes.paragraph.create());
+      const grandParent = $from.node(-1);
+      const defaultContentType = grandParent.defaultContentType(0);
+      transaction.insert($from.pos + 1, defaultContentType.create());
     }
 
     if (this.isInsideEmptyParagraph()) {

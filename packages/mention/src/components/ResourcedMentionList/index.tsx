@@ -40,10 +40,11 @@ export interface Props {
   presenceProvider?: PresenceProvider;
   query?: string;
   onSelection?: OnMentionEvent;
+  resourceError?: Error;
 }
 
 export interface State {
-  showError: boolean;
+  resourceError?: Error;
   mentions: MentionDescription[];
 }
 
@@ -56,7 +57,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     super(props);
     this.subscriberKey = uniqueId('ak-resourced-mention-list');
     this.state = {
-      showError: false,
+      resourceError: undefined,
       mentions: [],
     };
 
@@ -184,7 +185,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     // Retain known presence
     const currentPresences = extractPresences(this.state.mentions);
     this.setState({
-      showError: false,
+      resourceError: undefined,
       mentions: applyPresence(mentions, currentPresences),
     });
     this.refreshPresences(mentions);
@@ -193,7 +194,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
   private filterError = (error: Error) => {
     debug('ak-resourced-mentions-list._filterError', error);
     this.setState({
-      showError: true,
+      resourceError: error,
     } as State);
   }
 
@@ -215,12 +216,12 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { mentions, showError } = this.state;
+    const { mentions, resourceError } = this.state;
 
     return (
       <MentionList
         mentions={mentions}
-        showError={showError}
+        resourceError={resourceError}
         onSelection={this.notifySelection}
         ref={this.handleMentionListRef}
       />

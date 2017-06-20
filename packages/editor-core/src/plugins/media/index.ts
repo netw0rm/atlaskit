@@ -170,8 +170,8 @@ export class MediaPluginState {
     });
 
     ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
-      if (node.attrs[`__$key}`]) {
-        mediaState[key] = node.attrs[`__$key}`];
+      if (mediaState[key]) {
+        node.attrs[`__${key}`] = mediaState[key];
       }
     });
 

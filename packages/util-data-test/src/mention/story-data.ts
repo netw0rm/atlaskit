@@ -1,4 +1,4 @@
-import MentionResource from './_mock-ak-mention-resource';
+import MentionResource from './mock-mention-resource';
 
 export const resourceProvider = new MentionResource({
   minWait: 10,

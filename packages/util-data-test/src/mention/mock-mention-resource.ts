@@ -1,10 +1,11 @@
 import { AbstractMentionResource } from '@atlaskit/mention';
 import { Search } from 'js-search';
-import mentionData from './_mention-data';
+import mentionData from './mention-data';
 
 const search = new Search('id');
 search.addIndex('name');
 search.addIndex('mentionName');
+search.addIndex('nickname');
 
 search.addDocuments(mentionData.mentions);
 

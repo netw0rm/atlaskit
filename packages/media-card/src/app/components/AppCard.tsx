@@ -7,25 +7,25 @@ export interface AppCardProps {
 }
 
 export interface AppCardState {
-  collapsed: boolean;
+  isCollapsed: boolean;
 }
 
 export class AppCard extends React.Component<AppCardProps, AppCardState> {
 
   state = {
-    collapsed: false
+    isCollapsed: false
   };
 
-  handleCollapseToggled = () => this.setState(state => ({collapsed: !state.collapsed}));
+  handleCollapseToggled = () => this.setState(state => ({isCollapsed: !state.isCollapsed}));
 
   render() {
     const {details} = this.props;
-    const {collapsed} = this.state;
+    const {isCollapsed} = this.state;
     return (
       <AppCardView
         model={details}
-        collapsed={collapsed}
-        onCollapseToggled={this.handleCollapseToggled}
+        isCollapsed={isCollapsed}
+        onCollapseClick={this.handleCollapseToggled}
       />
     );
   }

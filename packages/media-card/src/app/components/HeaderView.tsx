@@ -7,14 +7,27 @@ import {Wrapper, User, Title, CollapseButton} from '../styled/HeaderView';
 export interface HeaderProps {
   title: string;
   user?: AppCardUser;
-  inverse?: boolean;
+  isInversed?: boolean;
   contentMaxWidth: number;
   collapsible?: boolean;
-  collapsed?: boolean;
-  onToggleCollapse?: () => void;
+  isCollapsed?: boolean;
+  onCollapseClick?: () => void;
 }
 
 export class HeaderView extends React.Component<HeaderProps, {}> {
+
+  handleCollapseClick = event => {
+    const {onCollapseClick} = this.props;
+
+    // allow the user to click the icon but prevent the event bubling up and being handled by the
+    // card onClick event
+    event.stopPropagation();
+
+    if (onCollapseClick) {
+      onCollapseClick();
+    }
+
+  }
 
   renderUser() {
     const {user} = this.props;
@@ -29,23 +42,23 @@ export class HeaderView extends React.Component<HeaderProps, {}> {
   }
 
   renderCollapseToggle() {
-    const {collapsible, collapsed, onToggleCollapse} = this.props;
+    const {collapsible, isCollapsed} = this.props;
     if (!collapsible) {
       return null;
     }
     return (
-      <CollapseButton onClick={onToggleCollapse} collapsed={collapsed}>
+      <CollapseButton onClick={this.handleCollapseClick} isCollapsed={isCollapsed}>
         <CollapseIcon label="Expand/collapse" size="large"/>
       </CollapseButton>
     );
   }
 
   render() {
-    const {title, inverse, contentMaxWidth} = this.props;
+    const {title, isInversed, contentMaxWidth} = this.props;
     return (
       <Wrapper contentMaxWidth={contentMaxWidth}>
         {this.renderUser()}
-        <Title inverse={inverse}>{title}</Title>
+        <Title isInversed={isInversed}>{title}</Title>
         {this.renderCollapseToggle()}
       </Wrapper>
     );

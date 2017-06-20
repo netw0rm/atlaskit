@@ -61,5 +61,4 @@ export interface AppCardContext {
 
 export interface AppCardAction {
   title: string;
-  handler: () => void;
 }

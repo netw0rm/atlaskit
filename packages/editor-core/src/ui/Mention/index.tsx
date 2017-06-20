@@ -12,6 +12,7 @@ export interface MentionProps {
   providers?: ProviderFactory;
   eventHandlers?: MentionEventHandlers;
   text: string;
+  accessLevel?: string;
 }
 
 const noop = () => {};
@@ -33,7 +34,7 @@ export default class Mention extends PureComponent<MentionProps, {}> {
   }
 
   private renderWithProvider = (providers) => {
-    const { eventHandlers, id, text } = this.props;
+    const { eventHandlers, id, text, accessLevel } = this.props;
     const actionHandlers = {};
 
     if (eventHandlers) {
@@ -46,6 +47,7 @@ export default class Mention extends PureComponent<MentionProps, {}> {
       <ResourcedMention
         id={id}
         text={text}
+        accessLevel={accessLevel}
         mentionProvider={providers.mentionProvider}
         {...actionHandlers}
       />

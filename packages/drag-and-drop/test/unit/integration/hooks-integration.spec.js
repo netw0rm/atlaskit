@@ -6,8 +6,8 @@ import { beforeEach, afterEach, describe, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { dragDropContext, draggable, droppable } from '../../../src/';
-import DragHandle from '../../../src/view/drag-handle/drag-handle';
-import { dispatchWindowMouseEvent, liftWithMouse, withKeyboard } from '../user-input-util';
+import { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
+import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
 import type {
   Hooks,
   DraggableLocation,
@@ -19,6 +19,7 @@ import type {
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
+const mouseDown = mouseEvent.bind(null, 'mousedown');
 const cancelWithKeyboard = withKeyboard('Escape');
 
 describe('hooks integration', () => {
@@ -29,7 +30,7 @@ describe('hooks integration', () => {
   const draggableId: DraggableId = 'drag-1';
   const droppableId: DroppableId = 'drop-1';
 
-    // both our list and item have the same dimenions for now
+  // both our list and item have the same dimenions for now
   const fakeBox = {
     top: 0,
     right: 100,
@@ -43,16 +44,17 @@ describe('hooks integration', () => {
     const Item = (() => {
       class ItemUnconnected extends PureComponent {
         props: {|
-            innerRef: Function,
-          |}
+        innerRef: Function,
+        handleProps: Object,
+      |}
         render() {
           return (
-            <div ref={this.props.innerRef}>
-                Hello world
-              </div>
+            <div ref={this.props.innerRef} {...this.props.handleProps}>
+            Hello world
+          </div>
           );
         }
-        }
+    }
       const provide = () => ({
         id: draggableId,
       });
@@ -72,7 +74,7 @@ describe('hooks integration', () => {
             </div>
           );
         }
-        }
+      }
       const provide = () => ({
         id: droppableId,
       });
@@ -128,24 +130,36 @@ describe('hooks integration', () => {
   });
 
   const drag = (() => {
-    const point: Position = {
+    const initial: Position = {
       x: fakeBox.left + 1,
-      y: fakeBox.top - 1,
+      y: fakeBox.bottom + 1,
+    };
+    const dragStart: Position = {
+      x: initial.x,
+      y: initial.y + sloppyClickThreshold,
+    };
+    const dragMove: Position = {
+      x: dragStart.x,
+      y: dragStart.y + 1,
     };
 
     const start = () => {
-      liftWithMouse(
-        wrapper.find(DragHandle),
-        point.x,
-        point.y,
+      mouseDown(
+        wrapper.find('ItemUnconnected'),
+        initial.x,
+        initial.y,
       );
+
+      // Drag does not start until mouse has moved past a certain threshold
+      windowMouseMove(dragStart.x, dragStart.y);
+
       // Need to wait for the nested async lift action to complete
       // this takes two async actions. However, this caller should not
       // know that - so ticking '10ms' to indicate that this is a nested async
       clock.tick(10);
     };
 
-    const move = () => windowMouseMove(point.x, point.y - 1);
+    const move = () => windowMouseMove(dragMove.x, dragMove.y + sloppyClickThreshold + 1);
 
     const stop = () => {
       windowMouseUp();
@@ -158,7 +172,7 @@ describe('hooks integration', () => {
     };
 
     const cancel = () => {
-      cancelWithKeyboard(wrapper.find(DragHandle));
+      cancelWithKeyboard(wrapper.find('ItemUnconnected'));
     };
 
     const perform = () => {

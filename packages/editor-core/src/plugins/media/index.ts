@@ -387,22 +387,33 @@ export class MediaPluginState {
       return $from.start($from.depth);
     }
 
-    // Resolve node adjacent to parent
-    const adjacentPos = $from.end($from.depth) + 1;
-    const adjacentNode = state.doc.nodeAt(adjacentPos);
+    if (this.view.endOfTextblock('forward')) {
+      // Resolve node adjacent after parent
+      const adjacentPos = $from.end($from.depth) + 1;
+      const adjacentNode = state.doc.nodeAt(adjacentPos);
 
-    // There's nothing below, so insert a new media item wrapped in a group there.
-    if (!adjacentNode) {
+      // The adjacent node is a media group, so let's preappend there...
+      if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
+        return adjacentPos + 1;
+      }
       return adjacentPos;
     }
 
-    // The adjacent node is a media group, so let's append there...
-    if (adjacentNode.type === state.schema.nodes.mediaGroup) {
-      return adjacentPos + 1;
+    if (this.view.endOfTextblock('backward')) {
+      // Resolve node adjacent before parent
+      const adjacentPos = $from.start($from.depth) - 1;
+      const adjacentResolvePos = state.doc.resolve(adjacentPos);
+      const adjacentNode = adjacentResolvePos.nodeBefore;
+
+      // The adjacent node is a media group, so let's preappend there...
+      if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
+        return adjacentPos - adjacentNode.nodeSize + 1;
+      }
+      return adjacentPos;
     }
 
     // Prepend the item, wrapped in a new group, adjacent to parent
-    return adjacentPos;
+    return $from.pos;
   }
 
   private initPickers(uploadParams: UploadParams, context: ContextConfig) {

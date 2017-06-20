@@ -55,30 +55,28 @@ export class ActionsView extends React.Component<ActionsViewProps, {}> {
 
   render(): JSX.Element {
     const {isInversed} = this.props;
-
-    const primary = this.primaryAction;
-    const secondary = this.secondaryActions;
-
+    const {primaryAction, secondaryActions} = this;
+    const theme = isInversed && 'dark' || 'default';
     return (
       <Actions>
-        {primary
-          ? <UntypedButton onClick={this.handlePrimaryAction} theme={isInversed && 'dark' || 'default'}>{primary.title}</UntypedButton>
+        {primaryAction
+          ? <UntypedButton onClick={this.handlePrimaryAction} theme={theme}>{primaryAction.title}</UntypedButton>
           : null
         }
-        {secondary.length
+        {secondaryActions.length
           ? (
             <ActionsMenu onClick={this.handleMeatballsClick}>
               {/* FIXME: dropdown trigger is 1px larger cause display: flex-inline on the trigger and wrapped in divs from popper - need to change something upstream */}
               <DropdownMenu
                 items={[{
-                  items: secondary.map(action => ({
+                  items: secondaryActions.map(action => ({
                     content: action.title,
                     action
                   }))
                 }]}
                 onItemActivated={this.handleSecondaryAction}
               >
-                <Button appearance="subtle" iconBefore={<MeatballIcon label="actions" size="medium"/>} theme={isInversed && 'dark' || 'default'}/>
+                <Button appearance="subtle" iconBefore={<MeatballIcon label="actions" size="medium"/>} theme={theme}/>
               </DropdownMenu>
             </ActionsMenu>
           )

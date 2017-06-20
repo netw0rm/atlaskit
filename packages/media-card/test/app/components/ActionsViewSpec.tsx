@@ -11,14 +11,14 @@ describe('ActionsView', () => {
 
   it('should render no button and no menu items when there are zero actions', () => {
     const actions: AppCardAction[] = [];
-    const element = shallow(<ActionsView actions={actions} inverse={false}/>);
+    const element = shallow(<ActionsView actions={actions} isInversed={false}/>);
     expect(element.find(Button)).to.have.length(0);
     expect(element.find(ActionsMenu)).to.have.length(0);
   });
 
   it('should render a button and zero menu items when there is one action', () => {
     const actions: AppCardAction[] = [{title: 'Open'}];
-    const element = shallow(<ActionsView actions={actions} inverse={false}/>);
+    const element = shallow(<ActionsView actions={actions} isInversed={false}/>);
     expect(element.find(Button)).to.have.length(1);
     expect(element.find(ActionsMenu)).to.have.length(0);
   });
@@ -29,7 +29,7 @@ describe('ActionsView', () => {
       {title: 'View'},
       {title: 'Reply'}
     ];
-    const element = shallow(<ActionsView actions={actions} inverse={false}/>);
+    const element = shallow(<ActionsView actions={actions} isInversed={false}/>);
     expect(element.find(Button)).to.have.length(2);
     expect(element.find(DropdownMenu)).to.have.length(1);
     const groups: Array<any> = element.find(DropdownMenu).prop('items');

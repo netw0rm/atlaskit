@@ -6,11 +6,12 @@ import MeatballIcon from '@atlaskit/icon/glyph/more';
 import {AppCardAction} from '../model';
 import {Actions, ActionsMenu} from '../styled/ActionsView';
 
-const UntypedButton = Button as any; // hack to get around lack of event in typings for
+// hack to get around lack of event in typings for @atlaskit/button
+const UntypedButton = Button as any;
 
 export interface ActionsViewProps {
   actions: AppCardAction[];
-  inverse: boolean;
+  isInversed: boolean;
   onActionClick?: (action: AppCardAction) => void;
 }
 
@@ -53,7 +54,7 @@ export class ActionsView extends React.Component<ActionsViewProps, {}> {
   }
 
   render(): JSX.Element {
-    const {inverse} = this.props;
+    const {isInversed} = this.props;
 
     const primary = this.primaryAction;
     const secondary = this.secondaryActions;
@@ -61,7 +62,7 @@ export class ActionsView extends React.Component<ActionsViewProps, {}> {
     return (
       <Actions>
         {primary
-          ? <UntypedButton onClick={this.handlePrimaryAction} theme={inverse && 'dark' || 'default'}>{primary.title}</UntypedButton>
+          ? <UntypedButton onClick={this.handlePrimaryAction} theme={isInversed && 'dark' || 'default'}>{primary.title}</UntypedButton>
           : null
         }
         {secondary.length
@@ -72,13 +73,12 @@ export class ActionsView extends React.Component<ActionsViewProps, {}> {
                 items={[{
                   items: secondary.map(action => ({
                     content: action.title,
-                    foo: 'bar',
                     action
                   }))
                 }]}
                 onItemActivated={this.handleSecondaryAction}
               >
-                <Button appearance="subtle" iconBefore={<MeatballIcon label="actions" size="medium"/>} theme={inverse && 'dark' || 'default'}/>
+                <Button appearance="subtle" iconBefore={<MeatballIcon label="actions" size="medium"/>} theme={isInversed && 'dark' || 'default'}/>
               </DropdownMenu>
             </ActionsMenu>
           )

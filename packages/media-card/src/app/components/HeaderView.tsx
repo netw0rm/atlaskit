@@ -7,10 +7,10 @@ import {Wrapper, User, Title, CollapseButton} from '../styled/HeaderView';
 export interface HeaderProps {
   title: string;
   user?: AppCardUser;
-  inverse?: boolean;
+  isInversed?: boolean;
   contentMaxWidth: number;
   collapsible?: boolean;
-  collapse?: boolean;
+  isCollapsed?: boolean;
   onCollapseClick?: () => void;
 }
 
@@ -42,23 +42,23 @@ export class HeaderView extends React.Component<HeaderProps, {}> {
   }
 
   renderCollapseToggle() {
-    const {collapsible, collapse} = this.props;
+    const {collapsible, isCollapsed} = this.props;
     if (!collapsible) {
       return null;
     }
     return (
-      <CollapseButton onClick={this.handleCollapseClick} collapse={collapse}>
+      <CollapseButton onClick={this.handleCollapseClick} isCollapsed={isCollapsed}>
         <CollapseIcon label="Expand/collapse" size="large"/>
       </CollapseButton>
     );
   }
 
   render() {
-    const {title, inverse, contentMaxWidth} = this.props;
+    const {title, isInversed, contentMaxWidth} = this.props;
     return (
       <Wrapper contentMaxWidth={contentMaxWidth}>
         {this.renderUser()}
-        <Title inverse={inverse}>{title}</Title>
+        <Title isInversed={isInversed}>{title}</Title>
         {this.renderCollapseToggle()}
       </Wrapper>
     );

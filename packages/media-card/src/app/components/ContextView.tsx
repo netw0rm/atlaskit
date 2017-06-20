@@ -7,7 +7,7 @@ export interface ContextViewProps {
   text: string;
   icon?: IconModel;
   link?: string;
-  inverse?: boolean;
+  isInversed?: boolean;
   onContextClick?: () => void;
 }
 
@@ -39,11 +39,11 @@ export class ContextView extends React.Component<ContextViewProps, {}> {
   }
 
   renderText() {
-    const {text, link, inverse} = this.props;
+    const {text, link, isInversed} = this.props;
     if (!link) {
-      return <Text inverse={inverse} onClick={this.handleLinkClick}>{text}</Text>;
+      return <Text isInversed={isInversed} onClick={this.handleLinkClick}>{text}</Text>;
     }
-    return <LinkText href={link} inverse={inverse} onClick={this.handleLinkClick}>{text}</LinkText>;
+    return <LinkText href={link} isInversed={isInversed} onClick={this.handleLinkClick}>{text}</LinkText>;
   }
 
   render(): JSX.Element {

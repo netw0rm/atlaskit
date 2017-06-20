@@ -21,24 +21,24 @@ export const User = styled.div`
 `;
 
 export interface TitleProps {
-  inverse?: boolean;
+  isInversed?: boolean;
 }
 
 export const Title = styled.div` /* FIXME: should we use a more semantic and better accessible element type */
   flex: 1;
-  color: ${({inverse}: TitleProps) => inverse ? akColorN0 : akColorN900};
+  color: ${({isInversed}: TitleProps) => isInversed ? akColorN0 : akColorN900};
   font-size: 14px;
   font-weight: 500;
   ${ellipsis()}
 `;
 
 export interface CollapseToggleProps {
-  collapse?: boolean;
+  isCollapsed?: boolean;
 }
 
 export const CollapseButton = styled.div`
   ${center}
   cursor: pointer;
   transition: transform 0.5s;
-  ${({collapse}: CollapseToggleProps) => (collapse ? '' : 'transform: rotate(180deg);')}
+  ${({isCollapsed}: CollapseToggleProps) => (isCollapsed ? '' : 'transform: rotate(180deg);')}
 `;

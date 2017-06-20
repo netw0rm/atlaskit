@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { ThemeProvider } from 'styled-components';
+import { css, ThemeProvider } from 'styled-components';
 import hasOwnProperty from '../utils/has-own-property';
 import type { Provided, RootTheme, GroupTheme } from '../theme/types';
 
@@ -17,6 +17,10 @@ export const isInCompactGroup = (map: Object): bool => {
   }
   return map[groupKey].isCompact;
 };
+
+export const whenCollapsed = (...args: Array<mixed>) => css`
+  ${({ theme }) => (isCollapsed(theme) ? css(...args) : '')}
+`;
 
 export class WithRootTheme extends PureComponent {
   static defaultProps = {

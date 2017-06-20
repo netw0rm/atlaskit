@@ -1,4 +1,4 @@
-import { AbstractMentionResource } from '@atlaskit/mention';
+import { AbstractMentionResource } from '@atlaskit/editor-core';
 import { Search } from 'js-search';
 import mentionData from './_mention-data';
 

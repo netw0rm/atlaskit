@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   akTypographyMixins,
 } from '@atlaskit/util-shared-styles';
-import { getProvided } from '../../theme/util';
+import { getProvided, whenCollapsed } from '../../theme/util';
 import { truncate } from '../../utils/mixins';
 
 const NavigationItemGroupTitle = styled.div`
@@ -17,9 +17,9 @@ const NavigationItemGroupTitle = styled.div`
   text-transform: uppercase;
   ${truncate()}
 
-  [data-__ak-navigation-container-closed="true"] & {
+  ${whenCollapsed`
     visibility: hidden;
-  }
+  `}
 `;
 
 NavigationItemGroupTitle.displayName = 'NavigationItemGroupTitle';

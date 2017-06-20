@@ -88,6 +88,10 @@ describe('Media plugin', () => {
     return mediaNodeWithPos!.getPos();
   };
 
+  after(() => {
+    providerFactory.destroy();
+  });
+
   it('allows change handler to be registered', () => {
     const pluginState = editor(doc(p(''))).pluginState as MediaPluginState;
     pluginState.subscribe(sinon.spy());
@@ -535,5 +539,18 @@ describe('Media plugin', () => {
         p(),
       ),
     );
+  });
+
+  it(`should copy optional attributes from MediaState to Node attrs`, () => {
+    const { editorView, pluginState } = editor(doc(p('{<>}')));
+
+    const [node, transaction] = pluginState.insertFile({
+      id: testFileId, status: 'uploading', fileName: 'foo.png', fileSize: 1234, fileMimeType: 'image/png'
+    }, testCollectionName);
+    editorView.dispatch(transaction);
+
+    expect(node.attrs.__fileName).to.equal('foo.png');
+    expect(node.attrs.__fileSize).to.equal(1234);
+    expect(node.attrs.__fileMimeType).to.equal('image/png');
   });
 });

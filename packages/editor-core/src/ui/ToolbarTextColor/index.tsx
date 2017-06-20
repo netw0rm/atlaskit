@@ -3,13 +3,13 @@ import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { EditorView, PluginKey } from '../../prosemirror';
 import { TextColorState } from '../../plugins/text-color';
-import DropdownList from '@atlaskit/droplist';
 import ToolbarButton from '../ToolbarButton';
-import Icon from '@atlaskit/icon';
+import Icon from '@atlaskit/icon/lib/Icon';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import TextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
 import ColorPalette from './ColorPalette';
 import { ExpandIconWrap, TriggerWrapper } from './styles';
+import Dropdown from '../Dropdown';
 
 export interface Props {
   editorView: EditorView;
@@ -17,6 +17,8 @@ export interface Props {
   softBlurEditor: () => void;
   focusEditor: () => void;
   disabled?: boolean;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
 }
 
 export interface State {
@@ -42,13 +44,16 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
 
   render() {
     const { disabled, isOpen, color } = this.state;
+    const { popupsMountPoint, popupsBoundariesElement } = this.props;
 
     return (
-      <DropdownList
+      <Dropdown
+        mountTo={popupsMountPoint}
+        boundariesElement={popupsBoundariesElement}
         isOpen={isOpen && !disabled && !this.props.disabled}
         onOpenChange={this.handleOpenChange}
-        appearance="tall"
-        position="top left"
+        fitWidth={210}
+        fitHeight={80}
         trigger={
           <ToolbarButton
             disabled={disabled || this.props.disabled}
@@ -74,7 +79,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
           onClick={this.toggleTextColor}
           selectedColor={color}
         />
-      </DropdownList>
+      </Dropdown>
     );
   }
 

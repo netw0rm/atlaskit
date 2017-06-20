@@ -15,7 +15,7 @@ function isSlice(thing: any): thing is Slice {
 }
 
 export default (chai: any) => {
-  const { Assertion, util } = chai;
+  const { Assertion, AssertionError, util } = chai;
 
   // Node and Fragment
   Assertion.overwriteMethod('equal', (equalSuper: Function) => {
@@ -23,11 +23,13 @@ export default (chai: any) => {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
-        this.assert((left as any).eq(right),
-          'expected #{exp} to equal #{act}',
-          'expected #{exp} to not equal #{act}',
-          left.toString(),
-          right.toString());
+        if (!(left as any).eq(right)) {
+          throw new AssertionError(`expected "${left.toString()}" to equal "${right.toString()}"`, {
+            actual: right.toJSON(),
+            expected: left.toJSON(),
+            showDiff: true
+          });
+        }
       } else {
         equalSuper.apply(this, arguments);
       }
@@ -90,7 +92,7 @@ export default (chai: any) => {
     return new Assertion(matched).to.be.true;
   });
 
-  Assertion.addMethod('nodeSpec', function(nodeSpec: NodeSpec) {
+  Assertion.addMethod('nodeSpec', function (nodeSpec: NodeSpec) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 

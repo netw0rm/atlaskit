@@ -11,6 +11,7 @@ import {DefaultMouseInput} from '../engine/components/mouseInput';
 import {DefaultToolbar} from '../engine/components/toolbar';
 import {DefaultKeyboardInput} from '../engine/components/keyboardInput';
 import {DefaultImageReceiver} from '../engine/components/imageReceiver';
+import {DefaultShapeDeleter} from '../engine/components/shapeDeleter';
 
 export type ImageGetter = (format?: string) => ExportedImage;
 
@@ -162,6 +163,7 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
         this.toolbar = new DefaultToolbar(params => this.props.onShapeParametersChanged(params));
         const keyboardInput = new DefaultKeyboardInput(this.hiddenTextArea, this.supplementaryCanvas, this.hiddenTextHelperDiv);
         const imageReceiver = new DefaultImageReceiver(this.supplementaryCanvas);
+        const shapeDeleter = new DefaultShapeDeleter(this.hiddenTextArea);
 
         // Creating the engine
         const {shapeParameters, tool: initialTool} = this.props;
@@ -177,7 +179,8 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
           mouseInput,
           toolbar: this.toolbar,
           keyboardInput,
-          imageReceiver
+          imageReceiver,
+          shapeDeleter
         };
 
         this.engine = new Engine(config);

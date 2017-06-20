@@ -23,7 +23,7 @@ export default function encode(node: PMNode) {
       return encodeBulletList(node);
     } else if (node.type === schema.nodes.heading) {
       return encodeHeading(node);
-    } else if (node.type === schema.nodes.jiraIssue) {
+    } else if (node.type === schema.nodes.confluenceJiraIssue) {
       return encodeJiraIssue(node);
     } else if (node.type === schema.nodes.rule) {
       return encodeHorizontalRule();
@@ -41,7 +41,7 @@ export default function encode(node: PMNode) {
       return encodePanel(node);
     } else if (node.type === schema.nodes.mention) {
       return encodeMention(node);
-    } else if (node.type === schema.nodes.unsupportedBlock || node.type === schema.nodes.unsupportedInline) {
+    } else if (node.type === schema.nodes.confluenceUnsupportedBlock || node.type === schema.nodes.confluenceUnsupportedInline) {
       return encodeUnsupported(node);
     } else if (node.type === schema.nodes.mediaGroup) {
       return encodeMediaGroup(node);
@@ -237,6 +237,8 @@ export default function encode(node: PMNode) {
           }
         }
       }
+
+      return false;
     });
 
     body.appendChild(fragment);

@@ -31,7 +31,7 @@ const cardEntryAnimation = keyframes`
 export interface CardListItemWrapperProps {
   readonly key?: string;
   readonly cardWidth?: string | number;
-  shouldAnimate: boolean;
+  shouldAnimate?: boolean;
 }
 
 export const Spinner = styled.div`

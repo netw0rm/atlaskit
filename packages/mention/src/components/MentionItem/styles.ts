@@ -60,7 +60,7 @@ export const FullNameStyle = styled.span`
 `;
 
 // tslint:disable:next-line variable-name
-export const MentionNameStyle = styled.span`
+export const NicknameStyle = styled.span`
   color: ${akColorN100};
   font-size: 12px;
 

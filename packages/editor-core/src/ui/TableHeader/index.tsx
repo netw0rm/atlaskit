@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
 import Popup from '../Popup';
-import { akEditorFloatingPanelZIndex } from '../../styles';
 import { CellSelection, Node, EditorView } from '../../prosemirror';
 import CornerHeader from './CornerHeader';
 import ColumnHeader from './ColumnHeader';

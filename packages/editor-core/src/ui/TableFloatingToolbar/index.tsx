@@ -4,7 +4,7 @@ import { TableState } from '../../plugins/table';
 import { EditorView } from '../../prosemirror';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import { FloatingToolbar } from './styles';
+import Popup from '../Popup';
 
 export interface Props {
   editorView: EditorView;
@@ -33,22 +33,21 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
 
   render() {
     const { cellElement } = this.state;
-
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
 
     if (cellElement) {
       return (
-        <FloatingToolbar
+        <Popup
           target={cellElement}
           offset={[0, 3]}
-          popupsMountPoint={popupsMountPoint}
-          popupsBoundariesElement={popupsBoundariesElement}
+          mountTo={popupsMountPoint}
+          boundariesElement={popupsBoundariesElement}
         >
           <ToolbarButton
             onClick={this.handleRemove}
             iconBefore={<RemoveIcon label="Remove selected cells" />}
           />
-        </FloatingToolbar>
+        </Popup>
       );
     }
 
@@ -57,7 +56,6 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: TableState) => {
     const { cellElement } = pluginState;
-
     this.setState({ cellElement });
   }
 

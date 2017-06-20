@@ -252,9 +252,10 @@ export class TableState {
 
   private tableCellStartPos(): number | undefined {
     const { $from } = this.state.selection;
+    const { table_cell, table_header } = this.state.schema.nodes;
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
-      if(node.type === this.state.schema.nodes.table_cell) {
+      if(node.type === table_cell || node.type === table_header) {
         return $from.start(i);
       }
     }

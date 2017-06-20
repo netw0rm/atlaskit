@@ -7,19 +7,19 @@ import {Wrapper, Widget, Title, Text, IconImage} from '../styled/MetaView';
 
 export interface MetaViewProps {
   meta: AppCardDetails[];
-  inverse?: boolean;
+  isInversed?: boolean;
   contentMaxWidth: number;
 }
 
 export class MetaView extends React.Component<MetaViewProps, {}> {
 
   renderWidget(data: AppCardDetails) {
-    const {inverse} = this.props;
+    const {isInversed} = this.props;
     const {title, text, icon, badge, lozenge, users} = data;
     const attrs: JSX.Element[] = [];
 
     if (title) {
-      attrs.push(<Title key="title" inverse={inverse}>{title}:</Title>);
+      attrs.push(<Title key="title" inverse={isInversed}>{title}:</Title>);
     }
 
     if (icon) {

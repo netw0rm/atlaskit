@@ -5,6 +5,12 @@ import {colorWithAlpha} from '../../utils/colorWithAlpha';
 
 const previewWidth = 116;
 
+export const Link = styled.a`
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
 export interface CardProps {
   background: string | undefined;
 }
@@ -87,13 +93,13 @@ export const CardContent = styled.div`
 `;
 
 export interface ExpandableWrapperProps {
-  collapsed?: boolean;
+  isCollapsed?: boolean;
 }
 
 export const Collapsible = styled.div`
   overflow: hidden;
   transition: max-height 0.75s;
-  ${({collapsed}: ExpandableWrapperProps) => collapsed && 'max-height: 0;' || 'max-height: 300px;'}
+  ${({isCollapsed}: ExpandableWrapperProps) => isCollapsed && 'max-height: 0;' || 'max-height: 300px;'}
 `;
 
 export const Footer = styled.div`

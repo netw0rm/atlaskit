@@ -1,7 +1,4 @@
-import '!style!css!less!codemirror/lib/codemirror.css';
 import 'codemirror/mode/meta';
-import * as CodeMirror from 'codemirror';
-
 import 'codemirror/mode/php/php.js';
 import 'codemirror/mode/clike/clike.js';
 import 'codemirror/mode/python/python.js';
@@ -47,5 +44,6 @@ import 'codemirror/mode/mathematica/mathematica.js';
 import 'codemirror/mode/smalltalk/smalltalk.js';
 import 'codemirror/mode/livescript/livescript.js';
 import 'codemirror/mode/xquery/xquery.js';
+import * as CodeMirror from 'codemirror';
 
 export default CodeMirror;

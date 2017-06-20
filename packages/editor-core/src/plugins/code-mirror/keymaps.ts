@@ -1,4 +1,4 @@
-import { Selection, keymap, TextSelection, Plugin } from '../../prosemirror';;
+import { Selection, keymap, TextSelection, Plugin } from '../../prosemirror';
 
 export default function codeMirrorKeymapsPlugin(): Plugin {
   return keymap({

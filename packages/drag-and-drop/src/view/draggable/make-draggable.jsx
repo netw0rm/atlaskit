@@ -5,6 +5,7 @@ import type { TypeId, Position, ZIndex } from '../../types';
 import type { Props, MapStateToProps, StateSnapshot } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
+import Placeholder from './placeholder';
 import type { Speed } from '../moveable';
 import createDragHandle from '../drag-handle';
 import getCenterPosition from '../get-center-position';
@@ -212,13 +213,12 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
       getPlaceholder() {
         invariant(this.props.mapProps.initial, 'cannot get a drag placeholder when not dragging');
         const dimension = this.props.mapProps.initial.dimension;
-        const style = {
-          width: dimension.width,
-          height: dimension.height,
-        };
 
         return (
-          <div style={style} />
+          <Placeholder
+            height={dimension.height}
+            width={dimension.width}
+          />
         );
       }
 

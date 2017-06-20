@@ -7,11 +7,12 @@ import type { ReactWrapper } from 'enzyme';
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import makeDraggable, { Placeholder } from '../../../src/view/draggable/make-draggable';
+import makeDraggable from '../../../src/view/draggable/make-draggable';
+import Placeholder from '../../../src/view/draggable/placeholder';
 import DragHandle from '../../../src/view/drag-handle/drag-handle';
 import Moveable from '../../../src/view/moveable';
 import { dragDropContext } from '../../../src/';
-import type { DraggingInitial, Position } from '../../../src/types';
+import type { Position } from '../../../src/types';
 import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapStateToProps } from '../../../src/view/draggable/draggable-types';
 
 class Child extends PureComponent {
@@ -99,6 +100,7 @@ const notDraggingMapProps: MapProps = {
   isDragging: false,
   canAnimate: true,
   offset: origin,
+  initial: null,
 };
 
 const returningHomeMapProps: MapProps = {
@@ -756,11 +758,9 @@ describe('Draggable', () => {
     });
 
     it('should give a placeholder the same dimension of the element being moved', () => {
-      expect(draggingWrapper.find(Placeholder).props().style)
-          .to.deep.equal({
-            width: mockInitial.dimension.width,
-            height: mockInitial.dimension.height,
-          });
+      const props = draggingWrapper.find(Placeholder).props();
+      expect(props.height).to.equal(mockInitial.dimension.height);
+      expect(props.width).to.equal(mockInitial.dimension.width);
     });
 
     describe('is not dragging', () => {

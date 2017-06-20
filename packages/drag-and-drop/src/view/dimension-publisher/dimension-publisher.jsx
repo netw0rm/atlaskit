@@ -38,6 +38,7 @@ export default class DimensionPublisher extends PureComponent {
     return dimension;
   }
 
+  // TODO: componentDidUpdate?
   componentWillReceiveProps(nextProps: Props) {
     // Because the dimension publisher wraps children - it might render even when its props do
     // not change. We need to ensure that it does not publish when it should not.

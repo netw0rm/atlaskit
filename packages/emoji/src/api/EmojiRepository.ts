@@ -52,6 +52,26 @@ const findByKey = (map: EmojiByKey, key: any): OptionalEmojiDescription => {
   return undefined;
 };
 
+type SplitQuery = {
+  nameQuery: string;
+  asciiQuery: string;
+};
+
+const splitQuery = (query = ''): SplitQuery => {
+  const isColonQuery = query.indexOf(':') === 0;
+  if (isColonQuery) {
+    return {
+      nameQuery: query.slice(1),
+      asciiQuery: query,
+    };
+  }
+
+  return {
+    nameQuery: query,
+    asciiQuery: '',
+  };
+};
+
 const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
   if (options) {
     if (options.limit && options.limit > 0) {
@@ -115,10 +135,13 @@ export default class EmojiRepository {
    */
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
-    if (query) {
-      filteredEmoji = this.fullSearch.search(query);
-      this.sortFiltered(filteredEmoji, query);
-      filteredEmoji = this.withAsciiMatch(query, filteredEmoji);
+    const { nameQuery, asciiQuery } = splitQuery(query);
+    if (nameQuery) {
+      filteredEmoji = this.fullSearch.search(nameQuery);
+      this.sortFiltered(filteredEmoji, nameQuery);
+      if (asciiQuery) {
+        filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
+      }
     } else {
       filteredEmoji = this.emojis;
     }

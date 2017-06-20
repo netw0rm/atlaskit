@@ -124,10 +124,14 @@ describe('MentionResource', () => {
     it('in order responses', (done) => {
       const resource = new MentionResource(apiConfig);
       const results: MentionDescription[][] = [];
-      const expected = [resultC, resultCraig];
+      const expected = [resultC, [], resultCraig];
       resource.subscribe('test1', (mentions) => {
         results.push(mentions);
-        if (results.length === 2) {
+        // 1st: remote search for 'c'
+        // 2nd: local index for 'craig'  => no results
+        // 3rd: remote search for 'craig'
+
+        if (results.length === 3) {
           checkOrder(expected, results);
           done();
         }

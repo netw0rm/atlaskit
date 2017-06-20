@@ -29,7 +29,7 @@ export interface OnSelectChangeFuncResult extends CardEvent {
 }
 
 export interface OnSelectChangeFunc {
-  (result: OnSelectChangeFuncResult):  void;
+  (result: OnSelectChangeFuncResult): void;
 }
 
 export interface OnLoadingChangeState {
@@ -38,7 +38,7 @@ export interface OnLoadingChangeState {
 }
 
 export interface OnLoadingChangeFunc {
-  (state: OnLoadingChangeState):  void;
+  (state: OnLoadingChangeState): void;
 }
 
 export interface SharedCardProps {

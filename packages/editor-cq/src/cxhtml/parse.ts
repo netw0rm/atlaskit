@@ -63,6 +63,7 @@ function findTraversalPath(roots: Node[]) {
             inqueue.push(child);
             break;
           default:
+            // tslint:disable-next-line:no-console
             console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
         }
       }

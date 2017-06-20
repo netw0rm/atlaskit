@@ -16,7 +16,7 @@ export class MediaFileAttributesFactory {
     const binary = `/file/${details.id}/binary`;
     const artifactFormat = ArtifactFormat.fromFileDetails(details);
 
-    const imageUrl = (details: FileDetails) : string | undefined => {
+    const imageUrl = (details: FileDetails): string | undefined => {
       if (details.mimeType === 'image/jpeg') {
         return `/file/${details.id}/image`;
       }

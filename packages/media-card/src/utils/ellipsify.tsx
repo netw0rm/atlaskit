@@ -7,7 +7,7 @@ export interface EllipsifyProps {
   endLength?: number;
 }
 
-export const Ellipsify = (props: EllipsifyProps) : JSX.Element => {
+export const Ellipsify = (props: EllipsifyProps): JSX.Element => {
   return <div className="ellipsed-text" ref={setEllipsis(props)} aria-label={props.text}>
            {props.text}
          </div>;

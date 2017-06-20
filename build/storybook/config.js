@@ -1,17 +1,11 @@
+/* eslint import/no-dynamic-require: 0 */
+/* eslint global-require: 0 */
+
 import { configure, setAddon } from '@kadira/storybook';
-import 'babel-polyfill';
-import React from 'react';
-import 'storybook-addon-i18n-tools';
-import 'style-loader!css-loader!ak-css-reset/dist/bundle.css';
-import 'style-loader!css-loader!highlight.js/styles/github.css';
+import '!style-loader!css-loader!ak-css-reset/dist/bundle.css';
+import '!style-loader!css-loader!highlight.js/styles/github.css';
 
 import './styles.less';
-
-import MonitoredStory from './MonitoredStory';
-import BaselineAlignmentStory from './BaselineAlignmentStory';
-import CodeExampleStory from './CodeExampleStory';
-import ExampleWithCode from './ExampleWithCode';
-import StencilStory from './StencilStory';
 
 function loadStories() {
   // Use a webpack loader to dynamically require stories.
@@ -23,51 +17,24 @@ function loadStories() {
   require('./requireStories!./empty'); // eslint-disable-line global-require
 }
 
+// We add all these addons here so that we don't have to modify any of the existing storybook files
+// and still have them work (they will just add the story normally)
+
 setAddon({
-  addMonitored(storyName, storyFn, rafFn) {
-    this.add(storyName, context => (
-      <MonitoredStory rafFn={rafFn}>
-        {storyFn(context)}
-      </MonitoredStory>
-    ));
+  addMonitored(storyName, storyFn) {
+    this.add(storyName, storyFn);
   },
-
   addBaselineAligned(storyName, storyFn) {
-    this.add(storyName, context => (
-      <BaselineAlignmentStory>
-        {storyFn(context)}
-      </BaselineAlignmentStory>
-    ));
+    this.add(storyName, storyFn);
   },
-
-  addStencilStory(storyName, storyFn, options = {}) {
-    this.add(`✏️️ ${storyName}`, context => (
-      <StencilStory {...options}>
-        {storyFn(context)}
-      </StencilStory>
-    ));
+  addStencilStory(storyName, storyFn) {
+    this.add(storyName, storyFn);
   },
-
-  addCodeExampleStory(storyName, storyFn, options = {}) {
-    this.add(`${storyName} (Code Examples)`, context => (
-      <CodeExampleStory
-        scripts={options.scripts}
-        imports={options.imports}
-        overrides={options.overrides}
-      >
-        {storyFn(context)}
-      </CodeExampleStory>
-    ));
+  addCodeExampleStory(storyName, storyFn) {
+    this.add(storyName, storyFn);
   },
-
-  addExampleWithCodeStory(storyName, storyFn, options = {}) {
-    this.add(`${storyName} (with code)`, context => (
-      <ExampleWithCode
-        scripts={options.scripts}
-      >
-        {storyFn(context)}
-      </ExampleWithCode>
-    ));
+  addExampleWithCodeStory(storyName, storyFn) {
+    this.add(storyName, storyFn);
   },
 });
 

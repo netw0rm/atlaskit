@@ -90,7 +90,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
     return imageWidth ? imageWidth * (scale || defaultScale) : 0;
   }
 
-  export = () : string => {
+  export = (): string => {
     let imageData = '';
     const containerPadding = 20;
     const canvas = document.createElement('canvas');

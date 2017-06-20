@@ -31,3 +31,4 @@ es/
 lib/
 types/
 umd/
+.yarn-cache

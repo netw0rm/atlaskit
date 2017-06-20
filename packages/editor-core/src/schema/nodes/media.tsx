@@ -120,6 +120,7 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
 
     destroy() {
       if (!div) {
+        // tslint:disable-next-line:no-console
         console.warn('Editor: Media node view is being destroyed twice');
         return;
       }

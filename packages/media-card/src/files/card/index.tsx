@@ -22,7 +22,7 @@ export class FileCard extends Component<FileCardProps, {}> {
     return this.renderFile();
   }
 
-  onClick = (event: Event) : void => { // TODO: select handlers seem to be broken now. fix.
+  onClick = (event: Event): void => { // TODO: select handlers seem to be broken now. fix.
     const {details} = this.props;
     const onClick = this._getFirstAction(CardActionType.click);
 

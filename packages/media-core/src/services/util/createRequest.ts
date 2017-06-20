@@ -55,7 +55,7 @@ const responseTypeToAxios = (responseType?: ResponseType): string => {
   return responseTypeMap[responseType];
 };
 
-export default (requesterOptions: RequesterOptions) => (requestOptions: RequestOptions) : any => {
+export default (requesterOptions: RequesterOptions) => (requestOptions: RequestOptions): any => {
   return requesterOptions.config.tokenProvider(requesterOptions.collectionName).then(token => {
     return buildHeaders(requesterOptions, requestOptions, token).then(headers => {
       const responseType = responseTypeToAxios(requestOptions.responseType);

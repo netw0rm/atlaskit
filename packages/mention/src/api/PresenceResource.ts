@@ -276,6 +276,7 @@ export class DefaultPresenceParser implements PresenceParser {
         if (user.userId && user.state) {
           presences[user.userId] = { status: this.mapState(user.state) };
         } else if (!user.hasOwnProperty('userId') || !user.hasOwnProperty('state')) {
+          // tslint:disable-next-line:no-console
           console.error('Unexpected response from presence service contains keys: ' + Object.keys(user));
         }
       }

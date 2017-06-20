@@ -5,7 +5,7 @@
  */
 let isSupported;
 
-export const checkWebpSupport = () : Promise<boolean> => {
+export const checkWebpSupport = (): Promise<boolean> => {
   if (isSupported !== undefined) { return Promise.resolve(isSupported); }
 
   return new Promise((resolve) => {

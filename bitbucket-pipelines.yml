@@ -1,36 +1,44 @@
-# make sure not to use && as a continuation in any of these steps unless you pair it with || exit 1
-# pipelines concats each of these commands into one script and runs that
-# if your command in the script list has && joining it, and any of the steps fail, the pipeline will still continue
+# Make sure not to use && as a continuation in any of these steps unless you
+# pair it with || exit 1 pipelines concats each of these commands into one
+# script and runs that if your command in the script list has && joining it,
+# and any of the steps fail, the pipeline will still continue.
 #
-# please either put those commands in a script in ./build/bin
-# or just place them in different items in the list i.e. change
-#           - foo && bar && baz
-# to
-#           - foo
-#           - bar
-#           - baz
-# or
-#           - foo && bar && baz || exit 1
-# or
-#           - ./build/bin/foo-bar-baz.bash
+# Please either put those commands in a script in ./build/bin or just place
+# them in different items in the list.
+#
+# i.e. change:
+#
+#   - foo && bar && baz
+#
+# to:
+#
+#   - foo
+#   - bar
+#   - baz
 image: node:7.9.0
 pipelines:
   branches:
     master:
       - step:
           script:
-            - export FORCE_COLOR=1
-            - ./build/bin/setup.sh
-            - ./build/bin/prep_for_release.sh
+            - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.2
+            - export PATH=$HOME/.yarn/bin:$PATH
+            - yarn global add cloudfront-invalidate-cli@1.2.0
+              marky-markdown@8.1.0
+              bitbucket-build-status@1.0.2
+              npm-run-all@3.1.1
+              lerna@2.0.0-rc.4
+              semantic-release@6.3.6
+              lerna-semantic-release@9.0.7
+              indexifier@2.0.0
+              @atlassian/prebake-distributor-runner@1.0.2
             - yarn
             - ./build/bin/release.stop.pipeline.if.other.master.running.js
-            - run-p -ln "validate/package.json" "validate/typescript"
-            - run-p -ln "validate/tslint" "validate/eslint"
-            - yarn run test/unit
-            - run-p -ln "test" "test/base"
-            - yarn run browserstack/tunnel/start
-            - yarn run test/browserstack
-            - yarn run browserstack/tunnel/stop
+            - lerna bootstrap | cat
+            - lerna run lint --stream
+            - lerna run test --concurrency=1 --stream
+
+            # Specific to master
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
@@ -44,15 +52,9 @@ pipelines:
   default:
     - step:
         script:
-          # - export FORCE_COLOR=1
-          # - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
-          # Install Yarn
-          - time curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.2
-          - time export PATH=$HOME/.yarn/bin:$PATH
-          # lerna-semantic-release depends on semantic-release@^6.3.1, but the "latest" dist-tag
-          # is 6.3.2, which *doesn't* include https://github.com/semantic-release/semantic-release/pull/332
-          # However the version 6.3.6 exists which *does* include it, so we depend on that explicitly.
-          - time yarn global add cloudfront-invalidate-cli@1.2.0
+          - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.2
+          - export PATH=$HOME/.yarn/bin:$PATH
+          - yarn global add cloudfront-invalidate-cli@1.2.0
             marky-markdown@8.1.0
             bitbucket-build-status@1.0.2
             npm-run-all@3.1.1
@@ -61,18 +63,7 @@ pipelines:
             lerna-semantic-release@9.0.7
             indexifier@2.0.0
             @atlassian/prebake-distributor-runner@1.0.2
-          # - ./build/bin/setup.sh
-          # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
-          # - ./build/bin/prep_for_release.sh
-          - time yarn
-          # we have to run this after `yarn` to have access to child-process-promise
-          # - ./build/bin/generate.changed.packages.file.pr.sh
-          # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
-          # - run-p -ln "validate/package.json" "validate/typescript"
-          - time lerna run lint --stream
-          - time lerna run test --concurrency=1 --stream
-          # - run-p -ln "test" "test/base"
-          # - yarn run browserstack/tunnel/start
-          # - yarn run test/wc/browserstack
-          # - yarn run browserstack/tunnel/stop
-          # - yarn run "pr/storybook"
+          - yarn
+          - lerna bootstrap | cat
+          - lerna run lint --stream
+          - lerna run test --concurrency=1 --stream

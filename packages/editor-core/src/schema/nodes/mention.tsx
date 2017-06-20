@@ -13,15 +13,16 @@ export const mention: NodeSpec = {
     getAttrs: (dom: Element) => ({
       id: dom.getAttribute('mention-id')!,
       text: dom.textContent!,
-      accessLevel: dom.getAttribute('access-level')!
+      accessLevel: dom.getAttribute('data-access-level')!
     })
   }],
   toDOM(node: any): [string, any, string] {
+    const { id, accessLevel, text } = node.attrs;
     const attrs = {
-      'mention-id': node.attrs.id,
-      'access-level': node.attrs.accessLevel,
+      'mention-id': id,
+      'data-access-level': accessLevel,
       'contenteditable': 'false',
     };
-    return ['span', attrs, node.attrs.text];
+    return ['span', attrs, text];
   }
 };

@@ -24,7 +24,7 @@ export interface Command {
 
 export class TableState {
   keymapHandler: Function;
-  element?: HTMLElement;
+  cellElement?: HTMLElement;
   tableElement?: HTMLElement;
   editorFocused: boolean = false;
   tableNode?: Node;
@@ -181,10 +181,16 @@ export class TableState {
     let dirty = this.updateSelection();
 
     const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
+    const cellElement = this.cellSelection ? this.getTableCellElement(docView) : undefined;
     const tableNode = this.getTableNode();
 
-    if (tableElement && tableElement !== this.tableElement) {
+    if (tableElement !== this.tableElement) {
       this.tableElement = tableElement;
+      dirty = true;
+    }
+
+    if (cellElement !== this.cellElement) {
+      this.cellElement = cellElement;
       dirty = true;
     }
 
@@ -224,11 +230,31 @@ export class TableState {
     }
   }
 
+  private getTableCellElement(docView: NodeViewDesc): HTMLElement | undefined {
+    const offset = this.tableCellStartPos();
+    if (offset) {
+      const { node } = docView.domFromPos(offset);
+      if (node) {
+        return node as HTMLElement;
+      }
+    }
+  }
+
   private tableStartPos(): number | undefined {
     const { $from } = this.state.selection;
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
       if(node.type === this.state.schema.nodes.table) {
+        return $from.start(i);
+      }
+    }
+  }
+
+  private tableCellStartPos(): number | undefined {
+    const { $from } = this.state.selection;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === this.state.schema.nodes.table_cell) {
         return $from.start(i);
       }
     }

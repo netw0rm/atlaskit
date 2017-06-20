@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
-import Popper, { IPopper } from './../../popper';
+import Popup from '../Popup';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 import { CellSelection, Node, EditorView } from '../../prosemirror';
 import CornerHeader from './CornerHeader';
@@ -11,6 +11,8 @@ import RowHeader from './RowHeader';
 export interface Props {
   pluginState: TableState;
   editorView: EditorView;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export interface State {
@@ -24,7 +26,6 @@ export interface State {
 export default class TableHeader extends PureComponent<Props, State> {
   state: State = {};
   content?: HTMLElement;
-  popper?: IPopper;
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -32,9 +33,6 @@ export default class TableHeader extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
-    if (this.popper) {
-      this.popper.destroy();
-    }
   }
 
   extractStyles = (state: any) => {
@@ -63,17 +61,20 @@ export default class TableHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tableElement, position, transform } = this.state;
-    const { pluginState } = this.props;
+    const { tableElement } = this.state;
+    const { pluginState, popupsBoundariesElement, popupsMountPoint } = this.props;
 
-    if (tableElement) {
-      return (
-        <div
-          ref={this.handleRef}
-          style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
-          onMouseDown={this.handleMouseDown}
-          onBlur={this.handleBlur}
-        >
+    if (!tableElement) {
+      return null;
+    }
+
+    return (
+      <Popup
+        target={tableElement}
+        boundariesElement={popupsBoundariesElement}
+        mountTo={popupsMountPoint}
+      >
+        <div onMouseDown={this.handleMouseDown} onBlur={this.handleBlur}>
           <CornerHeader
             isSelected={pluginState.isTableSelected}
             selectTable={pluginState.selectTable}
@@ -93,43 +94,12 @@ export default class TableHeader extends PureComponent<Props, State> {
             insertRow={pluginState.insertRow}
           />
         </div>
-      );
-    }
-
-    return null;
-  }
-
-  private applyPopper(): void {
-    const target = this.state.tableElement;
-
-    if (this.popper) {
-      this.popper.destroy();
-    }
-
-    if (target && this.content instanceof HTMLElement) {
-      this.popper = new Popper(target, this.content, {
-        onCreate: this.extractStyles,
-        onUpdate: this.extractStyles,
-        placement: 'top-start',
-        modifiers: {
-          applyStyle: { enabled: false },
-          hide: { enabled: false },
-          preventOverflow: {
-            enabled: false,
-            escapeWithReference: false,
-            boundariesElement: target
-          },
-        },
-      });
-    }
-  }
-
-  private handleRef = (ref: HTMLElement) => {
-    this.content = ref;
+      </Popup>
+    );
   }
 
   private handlePluginStateChange = (pluginState: TableState) => {
     const { tableElement, tableNode, cellSelection } = pluginState;
-    this.setState({ tableElement, tableNode, cellSelection }, this.applyPopper);
+    this.setState({ tableElement, tableNode, cellSelection });
   }
 }

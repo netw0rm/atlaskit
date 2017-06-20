@@ -37,6 +37,7 @@ import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
 import TableHeader from '../TableHeader';
 import ToolbarTable from '../ToolbarTable';
+import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
   Content,
@@ -214,6 +215,14 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             <TableHeader
               pluginState={pluginStateTable}
               editorView={editorView}
+            /> }
+
+          {pluginStateTable && !disabled &&
+            <TableFloatingToolbar
+              pluginState={pluginStateTable}
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
             /> }
 
           {pluginStateMentions && mentionProvider && !disabled ?

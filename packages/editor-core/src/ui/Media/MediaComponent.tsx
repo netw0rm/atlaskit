@@ -21,10 +21,10 @@ import {
 } from '@atlaskit/media-core';
 import { MediaPluginState } from '../../plugins/media';
 
-import { Attributes } from '../../schema/nodes/media';
+import { MediaAttributes } from '../../schema';
 import { EditorView, mediaStateKey } from '../../index';
 
-export interface Props extends Attributes {
+export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
   onDelete?: CardEventHandler;

@@ -39,8 +39,7 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
   findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
     const { id, shortName } = emojiId;
     if (id) {
-      const emoji = this.emojiRepository.findById(id);
-      return this.promiseBuilder(emoji);
+      return this.findById(id);
     }
     const emoji = this.emojiRepository.findByShortName(shortName);
     return this.promiseBuilder(emoji);

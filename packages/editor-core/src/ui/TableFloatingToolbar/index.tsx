@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
-import { EditorView } from '../../prosemirror';
+import { EditorView, CellSelection } from '../../prosemirror';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Popup from '../Popup';
+import { Toolbar } from './styles';
 
 export interface Props {
   editorView: EditorView;
@@ -15,13 +16,11 @@ export interface Props {
 
 export interface State {
   cellElement?: HTMLElement;
-  toolbarVisible?: boolean;
+  cellSelection?: CellSelection;
 }
 
 export default class TableFloatingToolbar extends PureComponent<Props, State> {
-  state: State = {
-    toolbarVisible: false,
-  };
+  state: State = {};
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -43,10 +42,12 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
           mountTo={popupsMountPoint}
           boundariesElement={popupsBoundariesElement}
         >
-          <ToolbarButton
-            onClick={this.handleRemove}
-            iconBefore={<RemoveIcon label="Remove selected cells" />}
-          />
+          <Toolbar>
+            <ToolbarButton
+              onClick={this.handleRemove}
+              iconBefore={<RemoveIcon label="Remove selected cells" />}
+            />
+          </Toolbar>
         </Popup>
       );
     }
@@ -55,11 +56,11 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: TableState) => {
-    const { cellElement } = pluginState;
-    this.setState({ cellElement });
+    const { cellElement, cellSelection } = pluginState;
+    this.setState({ cellElement, cellSelection });
   }
 
   private handleRemove = () => {
-    // console.log('remove!');
+    this.props.pluginState.handleRemove();
   }
 }

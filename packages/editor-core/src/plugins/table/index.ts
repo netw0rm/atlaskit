@@ -12,6 +12,7 @@ import {
   Node,
   Transaction,
   Fragment,
+  Slice,
 } from '../../prosemirror';
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
@@ -96,6 +97,24 @@ export class TableState {
       } else {
         tableBaseCommands.addRowBefore(this.view.state, this.view.dispatch);
       }
+    }
+  }
+
+  handleRemove = () => {
+    if (!this.cellSelection) {
+      return;
+    }
+
+    if (this.cellSelection.isRowSelection()) {
+      const removed = tableBaseCommands.deleteColumn(this.view.state, this.view.dispatch);
+      // it's not going to be removed only if it attemps to remove the last cells in the table
+      if (!removed) {
+        tableBaseCommands.deleteTable(this.view.state, this.view.dispatch);
+      }
+    } else if (this.cellSelection.isColSelection()) {
+      tableBaseCommands.deleteRow(this.view.state, this.view.dispatch);
+    } else {
+      this.emptySelectedCells();
     }
   }
 
@@ -251,8 +270,10 @@ export class TableState {
   }
 
   private tableCellStartPos(): number | undefined {
-    const { $from } = this.state.selection;
+    const { $headCell, $anchorCell } = this.state.selection as CellSelection;
     const { table_cell, table_header } = this.state.schema.nodes;
+    const cell = $headCell.pos < $anchorCell.pos ? $headCell : $anchorCell;
+    const $from = this.state.doc.resolve(cell.pos + 1);
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
       if(node.type === table_cell || node.type === table_header) {
@@ -339,6 +360,24 @@ export class TableState {
       }
     }
     return true;
+  }
+
+  private emptySelectedCells (): void {
+    if (!this.cellSelection) {
+      return;
+    }
+
+    const { tr, schema } = this.state;
+    const content = schema.nodes.table_cell.createAndFill().content;
+    this.cellSelection.forEachCell((cell, pos) => {
+      if (!cell.content.eq(content)) {
+        const slice = new Slice(content, 0, 0);
+        tr.replace(tr.mapping.map(pos + 1), tr.mapping.map(pos + cell.nodeSize - 1), slice);
+      }
+    });
+    if (tr.docChanged) {
+      this.view.dispatch(tr);
+    }
   }
 }
 

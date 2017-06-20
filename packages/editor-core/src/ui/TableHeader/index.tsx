@@ -34,18 +34,6 @@ export default class TableHeader extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  extractStyles = (state: any) => {
-    if (state) {
-      const left = Math.round(state.offsets.popper.left);
-      const top = Math.round(state.offsets.popper.top);
-
-      this.setState({
-        position: state.offsets.popper.position,
-        transform: `translate3d(${left}px, ${top}px, 0px)`,
-      });
-    }
-  }
-
   handleMouseDown = () => {
     this.props.pluginState.updateToolbarFocused(true);
   }

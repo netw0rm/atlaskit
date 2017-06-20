@@ -42,8 +42,8 @@ export class Highlighter {
       const queryTokens = Tokenizer.tokenizeAsTokens(query.toLowerCase());
       queryTokens.sort((a, b) => -1*a.token.localeCompare(b.token));
 
-      const lowercaseFiled = field.toLowerCase();
-      const fieldTokens: Token[] = Tokenizer.tokenizeAsTokens(lowercaseFiled);
+      const lowercaseField = field.toLowerCase();
+      const fieldTokens: Token[] = Tokenizer.tokenizeAsTokens(lowercaseField);
       for (let fieldToken of fieldTokens) {
         for (let queryToken of queryTokens) {
           if (fieldToken.token.indexOf(queryToken.token) === 0) {
@@ -110,7 +110,7 @@ export class SearchIndex {
   }
 
   public hasDocuments() {
-    return this.index;
+    return !!this.index;
   }
 
   public reset() {

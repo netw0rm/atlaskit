@@ -187,14 +187,13 @@ export class MentionsState {
   }
 
   setMentionProvider(provider: Promise<MentionProvider>): Promise<MentionProvider> {
-    return new Promise<MentionProvider>((resolve, reject) => {
-      provider
-        .then(mentionProvider => {
-          this.mentionProvider = mentionProvider;
-          resolve(mentionProvider);
-        })
-        .catch(reject);
-    });
+    return provider
+      .then(mentionProvider => {
+        this.mentionProvider = mentionProvider;
+        this.mentionProvider.filter('');
+
+        return mentionProvider;
+      });
   }
 
   setView(view: EditorView) {

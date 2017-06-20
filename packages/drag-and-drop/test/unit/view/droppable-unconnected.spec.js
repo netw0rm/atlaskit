@@ -4,9 +4,10 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
+// eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
 import makeDroppable from '../../../src/view/droppable/make-droppable';
-import { dragDropContext } from '../../../src/';
+import { DragDropContext } from '../../../src/';
 import type { TypeId } from '../../../src/types';
 import type { MapProps, OwnProps, MapStateToProps, StateSnapshot } from '../../../src/view/droppable/droppable-types';
 
@@ -24,12 +25,12 @@ const isDraggingOverMapProps: MapProps = {
 };
 
 type MountArgs = {|
-      type?: TypeId,
-      Component?: ReactClass<any>,
-      mapProps?: MapProps,
-      ownProps?: OwnProps,
-      mapStateToProps?: Function,
-    |}
+  type?: TypeId,
+  Component?: ReactClass<any>,
+  mapProps?: MapProps,
+  ownProps?: OwnProps,
+  mapStateToProps?: Function,
+|}
 
 const shallowDroppable = ({
       type = 'TYPE',
@@ -44,7 +45,7 @@ const shallowDroppable = ({
       mapProps={mapProps}
       ownProps={ownProps}
     />
-    );
+  );
 };
 
 const mountDroppable = ({
@@ -54,18 +55,18 @@ const mountDroppable = ({
       ownProps = {},
       mapStateToProps = () => {},
     }: MountArgs = {}): ReactWrapper => {
-  const App = ({ children }) => children;
-  const ConnectedApp = dragDropContext()(App);
   const Droppable = makeDroppable(type, mapStateToProps)(Component);
 
   return mount(
-    <ConnectedApp>
+    <DragDropContext
+      onDragEnd={() => { }}
+    >
       <Droppable
         mapProps={mapProps}
         ownProps={ownProps}
       />
-    </ConnectedApp>
-    );
+    </DragDropContext>
+  );
 };
 
 describe('Droppable - unconnected', () => {

@@ -6,7 +6,7 @@ import { storiesOf, action as storybookAction } from '@kadira/storybook';
 import { createStore } from 'redux';
 import draggable from '../src/view/draggable';
 import droppable from '../src/view/droppable/';
-import { dragDropContext } from '../src/';
+import { DragDropContext } from '../src/';
 import type { DragResult } from '../src/types';
 
 type ItemData = {|
@@ -22,7 +22,7 @@ type ListData = {|
   withOverflow: boolean,
 |}
 
-type ListDataMap = { [key: string ]: ListData }
+type ListDataMap = { [key: string]: ListData }
 
 const itemKeys: string[] = Array.from({ length: 20 }, (k, v) => `item${v}`);
 const items: ItemDataMap = itemKeys
@@ -72,15 +72,14 @@ const DraggableItem = (() => {
     }
 
     render() {
-      const { isDragging } = this.props;
       return (
         <ItemContainer
-          isDragging={isDragging}
+          isDragging={this.props.isDragging}
           innerRef={ref => this.props.innerRef(ref)}
           href={this.props.itemId}
           {...this.props.handleProps}
         >
-          <h4>Draggable {isDragging ? '(is dragging)' : '' }</h4>
+          <h4>Draggable {this.props.isDragging ? '(is dragging)' : '' }</h4>
           Id: <b href={this.props.itemId} draggable="false">{this.props.itemId}</b>
         </ItemContainer>
       );
@@ -89,7 +88,6 @@ const DraggableItem = (() => {
 
   const provide = ownProps => ({
     id: ownProps.itemId,
-    droppableId: ownProps.listId,
   });
 
   const mapStateToProps = state => ({
@@ -153,24 +151,62 @@ const DroppableList = (() => {
   return droppable('ITEM', 'vertical', provide, mapStateToProps)(List);
 })();
 
-const ConnectedApp: ReactClass<any> = (() => {
-  const AppContainer = styled.div`
-    display: flex;
-    background-color: lightgrey;
-    padding-bottom: 100px;
-  `;
+const AppContainer = styled.div`
+  display: flex;
+  background-color: lightgrey;
+  padding-bottom: 100px;
+`;
 
-  class App extends PureComponent {
-    props: {|
-      lists: ListDataMap
+class App extends PureComponent {
+  state: {|
+      lists: ListDataMap,
     |}
 
-    render() {
-      return (
+  state = {
+    lists,
+  };
+
+  onDragEnd = (result: DragResult) => {
+    if (result.destination == null) {
+        // nothing to do here!
+      return;
+    }
+
+    const newItemIds = [...this.state.lists[result.source.droppableId].itemIds];
+
+    // remove it from original position
+    newItemIds.splice(result.source.index, 1);
+    newItemIds.splice(result.destination.index, 0, result.draggableId);
+
+    const sourceList = {
+      ...this.state.lists[result.source.droppableId],
+      itemIds: newItemIds,
+    };
+
+    const newLists = {
+      ...this.state.lists,
+      [result.source.droppableId]: sourceList,
+    };
+
+    console.log({
+      oldItemIds: this.state.lists[result.source.droppableId].itemIds,
+      newItemIds,
+      newLists,
+    });
+
+    this.setState({
+      lists: newLists,
+    });
+  }
+
+  render() {
+    return (
+      <DragDropContext
+        onDragEnd={this.onDragEnd}
+      >
         <AppContainer>
-          {Object.keys(this.props.lists).map((key) => {
-            const list: ListData = this.props.lists[key];
-            console.log('list itemIds', list.itemIds);
+          {Object.keys(this.state.lists).map((key) => {
+            const list: ListData = this.state.lists[key];
             const itemsInList = list.itemIds.map((id: string): ItemData => items[id]);
 
             return (
@@ -184,115 +220,115 @@ const ConnectedApp: ReactClass<any> = (() => {
             );
           })}
         </AppContainer>
-      );
-    }
+      </DragDropContext>
+    );
   }
+}
 
-  type State = {|
-    lists: ListDataMap,
-  |};
+  // type State = {|
+  //   lists: ListDataMap,
+  // |};
 
-  const initialState = {
-    lists,
-  };
+  // const initialState = {
+  //   lists,
+  // };
 
-  const updateLists = (newLists: ListDataMap) => ({
-    type: 'UPDATE_LISTS',
-    payload: newLists,
-  });
+  // const updateLists = (newLists: ListDataMap) => ({
+  //   type: 'UPDATE_LISTS',
+  //   payload: newLists,
+  // });
 
-  const reducer = (state: State = initialState, action): State => {
-    if (action.type === 'UPDATE_LISTS') {
-      return {
-        lists: action.payload,
-      };
-    }
-    return state;
-  };
+  // const reducer = (state: State = initialState, action): State => {
+  //   if (action.type === 'UPDATE_LISTS') {
+  //     return {
+  //       lists: action.payload,
+  //     };
+  //   }
+  //   return state;
+  // };
 
-  const store = createStore(reducer);
+  // const store = createStore(reducer);
 
-  class AppState extends PureComponent {
-    // eslint-disable-next-line react/sort-comp
-    state: State
+  // class AppState extends PureComponent {
+  //   // eslint-disable-next-line react/sort-comp
+  //   state: State
 
-    constructor(...rest) {
-      super(...rest);
+  //   constructor(...rest) {
+  //     super(...rest);
 
-      this.state = store.getState();
-    }
+  //     this.state = store.getState();
+  //   }
 
-    state: State
+  //   state: State
 
-    componentDidMount() {
-      store.subscribe(() => {
-        console.log('store updating');
-        this.setState(store.getState());
-      });
-    }
+  //   componentDidMount() {
+  //     store.subscribe(() => {
+  //       console.log('store updating');
+  //       this.setState(store.getState());
+  //     });
+  //   }
 
-    render() {
-      return (
-        <App lists={this.state.lists} />
-      );
-    }
-  }
+  //   render() {
+  //     return (
+  //       <App lists={this.state.lists} />
+  //     );
+  //   }
+  // }
 
-  const endAction = storybookAction('hook: drag finished');
+  // const endAction = storybookAction('hook: drag finished');
 
-  const hooks = {
-    onDragStart: storybookAction('hook: drag started'),
-    onDragEnd: (result: DragResult) => {
-      endAction(result);
-      if (result.destination == null) {
-        // nothing to do here!
-        return;
-      }
+  // const hooks = {
+  //   onDragStart: storybookAction('hook: drag started'),
+  //   onDragEnd: (result: DragResult) => {
+  //     endAction(result);
+  //     if (result.destination == null) {
+  //       // nothing to do here!
+  //       return;
+  //     }
 
-    // moved nowhere
-    // TODO: should this be null?
-      if (result.source.droppableId === result.destination.droppableId &&
-        result.source.index === result.destination.index) {
-        console.log('no movement');
-        return;
-      }
+  //   // moved nowhere
+  //   // TODO: should this be null?
+  //     if (result.source.droppableId === result.destination.droppableId &&
+  //       result.source.index === result.destination.index) {
+  //       console.log('no movement');
+  //       return;
+  //     }
 
-      // assuming single list
-      console.info('calculating new list');
+  //     // assuming single list
+  //     console.info('calculating new list');
 
-      // need to move an item from one place ot another
-      const state = store.getState();
+  //     // need to move an item from one place ot another
+  //     const state = store.getState();
 
-      const newItemIds = [...state.lists[result.source.droppableId].itemIds];
+  //     const newItemIds = [...state.lists[result.source.droppableId].itemIds];
 
-      // remove it from original position
-      newItemIds.splice(result.source.index, 1);
-      newItemIds.splice(result.destination.index, 0, result.draggableId);
+  //     // remove it from original position
+  //     newItemIds.splice(result.source.index, 1);
+  //     newItemIds.splice(result.destination.index, 0, result.draggableId);
 
-      const sourceList = {
-        ...state.lists[result.source.droppableId],
-        itemIds: newItemIds,
-      };
+  //     const sourceList = {
+  //       ...state.lists[result.source.droppableId],
+  //       itemIds: newItemIds,
+  //     };
 
-      const newLists = {
-        ...state.lists,
-        [result.source.droppableId]: sourceList,
-      };
+  //     const newLists = {
+  //       ...state.lists,
+  //       [result.source.droppableId]: sourceList,
+  //     };
 
-      console.log({
-        oldItemIds: state.lists[result.source.droppableId].itemIds,
-        newItemIds,
-        newLists,
-      });
+  //     console.log({
+  //       oldItemIds: state.lists[result.source.droppableId].itemIds,
+  //       newItemIds,
+  //       newLists,
+  //     });
 
-      store.dispatch(updateLists(newLists));
-    },
-  };
+  //     store.dispatch(updateLists(newLists));
+  //   },
+  // };
 
-  return dragDropContext(hooks)(AppState);
-})();
+  // return dragDropContext(hooks)(AppState);
 
 storiesOf('droppable', module)
   .add('basic', () => (
-    <ConnectedApp />
+    <App />
   ));

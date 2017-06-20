@@ -30,49 +30,43 @@ The goal of this library is to create a beautiful drag and drop experience for l
 - Mutli-drag
 - And lots more!
 
-## `dragDropContext`
+## `DragDropContext`
 
 In order to use drag and drop, you need to have the part of your react tree that you want to be able to use drag and drop in wrapped in a **drag drop context**. It is advised to just wrap your entire application in a **drag drop context**. Having nested **drag drop context**'s is not supported. You will be able to achieve your desired conditional dragging and dropping using the `type` and `provide` functions of `droppable` and `draggable`. You can think of this function as having a similar purpose to the [react-redux Provider component](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)
 
 This function will return a higher order component which wraps the component that you provide. It will spread whatever props you pass it onto your original component.
 
-### Type information
+### Prop type information
 
 ```js
-dragDropContext(hooks?: Hooks)(Component: ReactClass<any>): ReactClass<any>
-
 type Hooks = {
   onDragStart?: (id: DraggableId, location: DraggableLocation) => void,
   onDragEnd: (result: DropResult) => void,
 }
+
+type Props = Hooks & {|
+  children?: any,
+|}
 ```
 
 ### Basic usage
 
 ```js
-const App extends React.Component {
-  static propTypes = {
-    title: React.PropTypes.string.isRequired,
-  }
+class App extends React.Component {
+  onDragStart = () => {...}
+  onDragEnd = () => {...}
 
   render() {
     return (
-      <div>
-        <h1>{this.props.title}</h1>
-        {/* The rest of the application which
-            can include draggables and droppables */}
-      </div>
+      <DragDropContext
+        onDragStart={this.onDragStart}
+        onDragEnd={this.onDragEnd}
+      >
+        <div>Hello world</div>
+      </DragDropContext>
     )
   }
 }
-
-// for details on hooks see `hook`s
-const ConnectedApp = dragDropContext({
-  onDragStart: () => {...},
-  onDragEnd: () => {...}
-})(App);
-
-ReactDOM.render(<ConnectedApp title="This is awesome" />);
 ```
 
 ### `Hook`s
@@ -316,7 +310,7 @@ Your *drag handle* (which unless you are using `getDragHandle` will be the same 
 const Person extends Component {
   static propTypes = {
     // ...
-    handleProps: PropTypes.object,,
+    handleProps: PropTypes.object,
   }
 
   render() {

@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 import { beforeEach, afterEach, describe, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { dragDropContext, draggable, droppable } from '../../../src/';
+import { DragDropContext, draggable, droppable } from '../../../src/';
 import { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
 import type {
@@ -80,10 +80,6 @@ describe('hooks integration', () => {
       });
       return droppable('ITEM', 'vertical', provide)(ListUnconnected);
     })();
-    const Root = (() => {
-      const RootUnconnected = ({ children }) => children;
-      return dragDropContext(hooks)(RootUnconnected);
-    })();
 
       // Both list and item will have the same dimensions
     sinon.stub(Element.prototype, 'getBoundingClientRect').returns(fakeBox);
@@ -97,12 +93,15 @@ describe('hooks integration', () => {
     });
 
     return mount(
-      <Root>
+      <DragDropContext
+        onDragStart={hooks.onDragStart}
+        onDragEnd={hooks.onDragEnd}
+      >
         <List>
           <Item />
         </List>
-      </Root>
-      );
+      </DragDropContext>
+    );
   };
 
   beforeEach(() => {

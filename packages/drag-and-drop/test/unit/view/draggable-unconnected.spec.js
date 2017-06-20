@@ -11,7 +11,7 @@ import makeDraggable from '../../../src/view/draggable/make-draggable';
 import Placeholder from '../../../src/view/draggable/placeholder';
 import DragHandle from '../../../src/view/drag-handle/drag-handle';
 import Moveable from '../../../src/view/moveable';
-import { dragDropContext } from '../../../src/';
+import { DragDropContext } from '../../../src/';
 import type { Position } from '../../../src/types';
 import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapStateToProps } from '../../../src/view/draggable/draggable-types';
 
@@ -153,19 +153,17 @@ const mountDraggable = ({
   dispatchProps = getDispatchPropsStub(),
   ownProps = empty,
 }: MountConnected = {}): ReactWrapper => {
-  const App = ({ children }) => children;
-
-  const ConnectedApp = dragDropContext()(App);
-
   const Draggable = makeDraggable(type, mapStateToProps)(Component);
   return mount(
-    <ConnectedApp>
+    <DragDropContext
+      onDragEnd={() => { }}
+    >
       <Draggable
         mapProps={mapProps}
         dispatchProps={dispatchProps}
         ownProps={ownProps}
       />
-    </ConnectedApp>
+    </DragDropContext>
   );
 };
 

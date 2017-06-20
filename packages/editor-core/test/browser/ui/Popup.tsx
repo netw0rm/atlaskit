@@ -7,7 +7,7 @@ import { browser } from '../../../src';
 import {
   isBody, findOverflowScrollParent,
   getVerticalPlacement, getHorizontalPlacement,
-  calculatePosition
+  calculatePosition, calculatePlacement
 } from '../../../src/ui/Popup/utils';
 
 import Popup from '../../../src/ui/Popup';
@@ -55,6 +55,14 @@ describe('Popup', () => {
     describe('#getVerticalPlacement', () => {
       it('should return default value without fitHeight param', () => {
         expect(getVerticalPlacement(document.body, document.body, 0)).to.eq('bottom');
+      });
+
+      describe('with alignY', () => {
+        it('should return "top" if "alignY" equals "top"', () => {
+          const boundary: any = {};
+          const target: any = {};
+          expect(getVerticalPlacement(target, boundary, undefined, 'top')).to.eq('top');
+        });
       });
 
       describe('with fitHeight param', () => {
@@ -114,6 +122,14 @@ describe('Popup', () => {
     describe('#getHorizontalPlacement', () => {
       it('should return default value without fitWidth param', () => {
         expect(getHorizontalPlacement(document.body, document.body, 0)).to.eq('left');
+      });
+
+      describe('with alignX', () => {
+        it('should return "left" if "alignX" equals "left"', () => {
+          const boundary: any = {};
+          const target: any = {};
+          expect(getHorizontalPlacement(target, boundary, undefined, 'left')).to.eq('left');
+        });
       });
 
       describe('with fitWidth param', () => {

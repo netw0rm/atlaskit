@@ -190,11 +190,11 @@ export class MediaPluginState {
     let transaction = state.tr;
     const { $from } = state.selection;
 
-    if (this.isInsideEmptyParagraph()) {
+    if (!canMoveDown(state)) {
+      transaction.insert($from.pos + 1, state.schema.nodes.paragraph.create());
+    }
 
-      if (!canMoveDown(state)) {
-        transaction.insert($from.pos + 1, state.schema.nodes.paragraph.create());
-      }
+    if (this.isInsideEmptyParagraph()) {
       // replace this empty paragraph with media group
       transaction.replaceWith(
         $from.start($from.depth) - 1,
@@ -202,7 +202,7 @@ export class MediaPluginState {
         node
       );
     } else {
-      transaction = state.tr.insert(this.findInsertPosition(), node);
+      transaction = transaction.insert(this.findInsertPosition(), node);
     }
 
     return [node, transaction];

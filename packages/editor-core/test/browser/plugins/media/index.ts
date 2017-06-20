@@ -100,7 +100,8 @@ describe('Media plugin', () => {
         expect(editorView.state.doc).to.deep.equal(
           doc(
             p('text'),
-            mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName }))
+            mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+            p(),
           ));
       });
 
@@ -123,7 +124,8 @@ describe('Media plugin', () => {
       doc(
         h1('text'),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-        )
+        ),
+        p(),
       ));
   });
 
@@ -135,7 +137,8 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(blockquote(
         p('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName }))
+        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+        p(),
       ))
     );
   });
@@ -149,7 +152,8 @@ describe('Media plugin', () => {
       doc(
         code_block()('text'),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-        )
+        ),
+        p(),
       ));
   });
 

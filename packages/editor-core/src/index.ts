@@ -64,3 +64,5 @@ export {
   toJSON,
 } from './utils';
 export { colorPalette } from './schema/marks/text-color';
+
+export { default as Editor } from './editor';

@@ -8,6 +8,7 @@ import { doc, p, makeEditor, fixtures, emoji } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
+import ProviderFactory from '../../../src/providerFactory';
 
 const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiData.emojiTestData.grinEmoji;
@@ -21,7 +22,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: emojiPlugins(defaultSchema),
+    plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()
   });
 

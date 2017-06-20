@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import emojiPlugins from '../../../../src/plugins/emojis';
+import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
   fixtures,
@@ -19,18 +20,21 @@ const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
 chai.use(chaiPlugin);
 
 describe('emojis - input rules', () => {
+  const providerFactory = new ProviderFactory();
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: emojiPlugins(defaultSchema),
+    plugins: emojiPlugins(defaultSchema, providerFactory),
     place: fixture()
   });
 
+  providerFactory.setProvider('emojiProvider', emojiProvider);
+
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel } = editor(doc(docContents || p('{<>}')));
-    return pluginState
-      .setEmojiProvider(emojiProvider)
-      .then(() => {
+
+    return new Promise(resolve => {
+      const providerChangeHandler = () => {
         insertText(editorView, what, sel);
 
         const { state } = editorView;
@@ -42,7 +46,13 @@ describe('emojis - input rules', () => {
         } else {
           expect(emojiQuery.isInSet(cursorFocus.marks)).to.equal(undefined);
         }
-      });
+
+        pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
+        resolve();
+      };
+
+      pluginState.subscribeToProviderUpdates(providerChangeHandler);
+    });
   };
 
   it('should replace a standalone ":" with emoji-query-mark', () => {

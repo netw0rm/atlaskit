@@ -781,7 +781,7 @@ describe('Draggable', () => {
       });
 
       it('should instantly move out of the way if animation is disabled', () => {
-          // $FlowFixMe
+        // $FlowFixMe
         const mapProps: MapProps = {
           ...notDraggingMapProps,
           canAnimate: false,

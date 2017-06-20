@@ -4,12 +4,31 @@
 
 The goal of this library is to create a beautiful drag and drop experience for lists.
 
-### Core features
+## Feature set
 
-- natural physics based movement
+### Supported
+
+- Reordering within a single vertical list
 - keyboard first dragging
-- simple and powerful api
-- conditional dragging and drop target support
+
+### Short term backlog
+
+- Correct scroll handling while dragging with keyboard or mouse
+- Moving items between vertical lists (until this lands conditional dropping will not be available)
+
+### Medium term backlog
+
+- Dragging within a horizontal list
+- Moving items between horizontal lists
+- Moving a *draggable* from a vertical list to a *horizontal* list
+- Nesting
+
+### Long term backlog
+
+- Automatically disabling physics for a drag when the frame rate drops below a threshold. This can be because of low system resources, or when the are 100's of impacted items during a drag
+- A mechanism to programtically perform dragging
+- Mutli-drag
+- And lots more!
 
 ## `dragDropContext`
 
@@ -171,6 +190,8 @@ const DroppableList = droppable(type, direction, provide, mapStateToProps?)(List
 -  `mapStateToProps?`: This **optional** function allows you to get provided with a small snapshot of drag state that is relevant to your *droppable*. Whatever you return from this function will be added to the props of your component. The main usecase of this is to add a `isDraggingOver` prop onto your component.
 
 ### Conditionally dropping
+
+> Keep in mind that this is not supported at this time. In this current initial version we only support reordering within a single list.
 
 - *droppables* can only be dropped on by *draggables* who share the same `type`. This is a simple way of allowing conditional dropping.
 - Using the `provide` function you can conditionally allow dropping based on your `ownProps`. This allows you to do arbitrarily complex conditional transitions.

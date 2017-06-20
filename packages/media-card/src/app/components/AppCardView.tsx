@@ -12,17 +12,17 @@ const previewWidth = 116;
 
 export interface AppCardViewProps {
   model: AppCardModel;
-  collapsed?: boolean;
+  collapse?: boolean;
   onClick?: () => void;
+  onCollapseClick?: () => void;
   onContextClick?: () => void;
   onActionClick?: (action: AppCardAction) => void;
-  onCollapseClick?: () => void;
 }
 
 export class AppCardView extends React.Component<AppCardViewProps, {}> {
 
   static defaultProps = {
-    collapsed: true
+    collapse: true
   };
 
   get isDarkAppearance() {
@@ -44,14 +44,14 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderHeader() {
-    const {model: {title: {text, user}, background, collapsible}, collapsed, onCollapseClick} = this.props;
+    const {model: {title: {text, user}, background, collapsible}, collapse, onCollapseClick} = this.props;
     return (
       <HeaderView
         title={text}
         user={user}
         inverse={Boolean(background)}
         collapsible={collapsible}
-        collapsed={collapsed}
+        collapse={collapse}
         contentMaxWidth={this.contentMaxWidth}
         onCollapseClick={onCollapseClick}
       />
@@ -123,11 +123,11 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderCollapsibleBody() {
-    const {model: {collapsible}, collapsed} = this.props;
+    const {model: {collapsible}, collapse} = this.props;
 
     if (collapsible) {
       return (
-        <Collapsible collapsed={collapsed}>
+        <Collapsible collapse={collapse}>
           {this.renderBody()}
         </Collapsible>
       );

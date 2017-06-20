@@ -373,7 +373,7 @@ storiesOf('AppCardView', {})
 
       <Section title="With preview">
         <AppCardView model={modelWithPreview}/>
-        <AppCardView model={mostOfTheThingsWithPreview} collapsed={false}/>
+        <AppCardView model={mostOfTheThingsWithPreview} collapse={false}/>
       </Section>
 
       <Section title="With description">
@@ -404,7 +404,7 @@ storiesOf('AppCardView', {})
 
       <Section title="With background">
         <AppCardView model={modelWithBackground}/>
-        <AppCardView model={modelWithMostOfTheThingsAndWithBackground} collapsed={false}/>
+        <AppCardView model={modelWithMostOfTheThingsAndWithBackground} collapse={false}/>
       </Section>
 
       <Section title="With event handlers">
@@ -416,7 +416,7 @@ storiesOf('AppCardView', {})
             onCollapseClick={handleCollapseClick}
           />
           <AppCardView
-            collapsed={false}
+            collapse={false}
             model={modelWithMostOfTheThings}
             onClick={handleClick}
             onActionClick={handleActionClick}
@@ -446,7 +446,7 @@ storiesOf('AppCardView', {})
           <AppCardView model={{title: {text: `Super long description`}, description: {text: loremIpsum}}}/>
 
           <AppCardView model={modelWithLotsOfDetails}/>
-          <AppCardView model={{preview, ...modelWithLotsOfDetails}} collapsed={false}/>
+          <AppCardView model={{preview, ...modelWithLotsOfDetails}} collapse={false}/>
 
         </Section>
       </FixedWidthContainer>
@@ -458,7 +458,7 @@ storiesOf('AppCardView', {})
 
       <Section title="Confluence">
         <AppCardView model={confluenceActivityModel}/>
-        <AppCardView model={confluenceActivityModel} collapsed={false}/>
+        <AppCardView model={confluenceActivityModel} collapse={false}/>
       </Section>
 
 

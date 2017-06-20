@@ -93,13 +93,13 @@ export const CardContent = styled.div`
 `;
 
 export interface ExpandableWrapperProps {
-  collapsed?: boolean;
+  collapse?: boolean;
 }
 
 export const Collapsible = styled.div`
   overflow: hidden;
   transition: max-height 0.75s;
-  ${({collapsed}: ExpandableWrapperProps) => collapsed && 'max-height: 0;' || 'max-height: 300px;'}
+  ${({collapse}: ExpandableWrapperProps) => collapse && 'max-height: 0;' || 'max-height: 300px;'}
 `;
 
 export const Footer = styled.div`

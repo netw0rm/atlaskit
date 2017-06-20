@@ -33,12 +33,12 @@ export const Title = styled.div` /* FIXME: should we use a more semantic and bet
 `;
 
 export interface CollapseToggleProps {
-  collapsed?: boolean;
+  collapse?: boolean;
 }
 
 export const CollapseButton = styled.div`
   ${center}
   cursor: pointer;
   transition: transform 0.5s;
-  ${({collapsed}: CollapseToggleProps) => (collapsed ? '' : 'transform: rotate(180deg);')}
+  ${({collapse}: CollapseToggleProps) => (collapse ? '' : 'transform: rotate(180deg);')}
 `;

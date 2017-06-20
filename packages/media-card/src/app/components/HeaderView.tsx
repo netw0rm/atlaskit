@@ -10,7 +10,7 @@ export interface HeaderProps {
   inverse?: boolean;
   contentMaxWidth: number;
   collapsible?: boolean;
-  collapsed?: boolean;
+  collapse?: boolean;
   onCollapseClick?: () => void;
 }
 
@@ -42,12 +42,12 @@ export class HeaderView extends React.Component<HeaderProps, {}> {
   }
 
   renderCollapseToggle() {
-    const {collapsible, collapsed} = this.props;
+    const {collapsible, collapse} = this.props;
     if (!collapsible) {
       return null;
     }
     return (
-      <CollapseButton onClick={this.handleCollapseClick} collapsed={collapsed}>
+      <CollapseButton onClick={this.handleCollapseClick} collapse={collapse}>
         <CollapseIcon label="Expand/collapse" size="large"/>
       </CollapseButton>
     );

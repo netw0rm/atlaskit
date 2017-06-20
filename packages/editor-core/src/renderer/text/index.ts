@@ -3,7 +3,7 @@ import {
   Schema,
 } from '../../prosemirror';
 
-import { Serializer } from '../';
+import { Serializer } from '../serializer';
 
 const STOP_SYMBOLS = /^(\.|,|;)/;
 

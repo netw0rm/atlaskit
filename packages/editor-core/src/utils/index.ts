@@ -42,18 +42,46 @@ export function canMoveUp(state: EditorState<any>): boolean {
     }
   }
 
-  return selection.$from.pos !== selection.$from.depth;
+  return !atTheBeginningOfDoc(state);
 }
 
 export function canMoveDown(state: EditorState<any>): boolean {
-  const { selection, doc } = state;
+  const { selection } = state;
   if (selection instanceof TextSelection) {
     if (!selection.empty) {
       return true;
     }
   }
 
-  return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
+  return !atTheEndOfDoc(state);
+}
+
+export function atTheEndOfDoc(state: EditorState<any>): boolean {
+  const { selection, doc } = state;
+  return doc.nodeSize - selection.$to.pos - 2 === selection.$to.depth;
+}
+
+export function atTheBeginningOfDoc(state: EditorState<any>): boolean {
+  const { selection } = state;
+  return selection.$from.pos === selection.$from.depth;
+}
+
+export function atTheEndOfBlock(state: EditorState<any>): boolean {
+  const { $to } = state.selection;
+  return endPositionOfParent($to) === $to.pos + 1;
+}
+
+export function atTheBeginningOfBlock(state: EditorState<any>): boolean {
+  const { $from } = state.selection;
+  return startPositionOfParent($from) === $from.pos;
+}
+
+export function startPositionOfParent(resolvedPos: ResolvedPos): number {
+  return resolvedPos.start(resolvedPos.depth);
+}
+
+export function endPositionOfParent(resolvedPos: ResolvedPos): number {
+  return resolvedPos.end(resolvedPos.depth) + 1;
 }
 
 /**
@@ -344,7 +372,7 @@ function splitCodeBlockAtSelectionStart(state: EditorState<any>) {
         fromPos = 0;
       }
     }
-    if ( fromPos > 0) {
+    if (fromPos > 0) {
       tr.split($from.start($from.depth) + fromPos, $from.depth);
       if (node.textContent[fromPos - 1] === '\n') {
         tr.delete($from.start($from.depth) + fromPos - 1, $from.start($from.depth) + fromPos);

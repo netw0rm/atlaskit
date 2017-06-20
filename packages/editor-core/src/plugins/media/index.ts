@@ -23,7 +23,10 @@ import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
-import { ErrorReporter, canMoveDown } from '../../utils';
+import {
+  ErrorReporter, atTheEndOfDoc, atTheEndOfBlock, atTheBeginningOfBlock,
+  endPositionOfParent, startPositionOfParent
+} from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
@@ -157,7 +160,7 @@ export class MediaPluginState {
     const state = this.view.state;
 
     return state.tr.insert(
-      this.findInsertPosition(),
+      this.findReplaceRange().start,
       state.schema.nodes.media.create({ url, type: 'link' })
     );
   }
@@ -188,23 +191,25 @@ export class MediaPluginState {
     }
 
     let transaction = state.tr;
-    const { $from } = state.selection;
+    const { $from, $to } = state.selection;
+    const grandParent = $from.node(-1);
+    const defaultContentType = grandParent.defaultContentType(0);
 
-    if (!canMoveDown(state)) {
-      const grandParent = $from.node(-1);
-      const defaultContentType = grandParent.defaultContentType(0);
-      transaction.insert($from.pos + 1, defaultContentType.create());
+    if (atTheEndOfDoc(state)) {
+      transaction = transaction.insert($to.pos + 1, defaultContentType.create());
     }
 
     if (this.isInsideEmptyParagraph()) {
+
       // replace this empty paragraph with media group
       transaction.replaceWith(
-        $from.start($from.depth) - 1,
-        $from.end($from.depth) + 1,
+        startPositionOfParent($from) - 1,
+        endPositionOfParent($from),
         node
       );
     } else {
-      transaction = transaction.insert(this.findInsertPosition(), node);
+      const range = this.findReplaceRange();
+      transaction = transaction.replaceWith(range.start, range.end, node);
     }
 
     return [node, transaction];
@@ -378,42 +383,46 @@ export class MediaPluginState {
   /**
    * Determine best PM document position to insert a new media item at.
    */
-  private findInsertPosition = () => {
+  private findReplaceRange = () => {
     const state = this.view.state;
-    const $from = state.selection.$from;
+    const { $from, $to } = state.selection;
 
     // Check if we're already in a media group and prepend the element inside the group
     if ($from.parent.type === state.schema.nodes.mediaGroup) {
-      return $from.start($from.depth);
+      return this.replaceRange(startPositionOfParent($from));
     }
 
-    if (this.view.endOfTextblock('forward')) {
+    if (atTheEndOfBlock(state)) {
       // Resolve node adjacent after parent
-      const adjacentPos = $from.end($from.depth) + 1;
+      const adjacentPos = endPositionOfParent($to);
       const adjacentNode = state.doc.nodeAt(adjacentPos);
 
       // The adjacent node is a media group, so let's preappend there...
       if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-        return adjacentPos + 1;
+        return this.replaceRange(adjacentPos + 1);
       }
-      return adjacentPos;
+      return this.replaceRange($from.pos, adjacentPos);
     }
 
-    if (this.view.endOfTextblock('backward')) {
+    if (atTheBeginningOfBlock(state)) {
       // Resolve node adjacent before parent
-      const adjacentPos = $from.start($from.depth) - 1;
+      const adjacentPos = startPositionOfParent($from) - 1;
       const adjacentResolvePos = state.doc.resolve(adjacentPos);
       const adjacentNode = adjacentResolvePos.nodeBefore;
 
       // The adjacent node is a media group, so let's preappend there...
       if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-        return adjacentPos - adjacentNode.nodeSize + 1;
+        return this.replaceRange(adjacentPos - adjacentNode.nodeSize + 1);
       }
-      return adjacentPos;
+      return this.replaceRange(adjacentPos, $to.pos);
     }
 
     // Prepend the item, wrapped in a new group, adjacent to parent
-    return $from.pos;
+    return this.replaceRange($from.pos, $to.pos);
+  }
+
+  private replaceRange(start: number, end: number = start) {
+    return { start, end };
   }
 
   private initPickers(uploadParams: UploadParams, context: ContextConfig) {

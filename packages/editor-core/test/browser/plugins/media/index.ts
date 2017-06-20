@@ -188,6 +188,56 @@ describe('Media plugin', () => {
     });
   });
 
+  context('when selection is not empty', () => {
+    context('when selection is a text', () => {
+      context('when selection is in the middle of the text block', () => {
+        it('replaces selection with a media node', () => {
+          const { editorView, pluginState } = editor(doc(p('te{<}x{>}t')));
+
+          pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('te'),
+              mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+              p('t'),
+            )
+          );
+        });
+      });
+
+      context('when selection is at the end of the text block', () => {
+        it('replaces selection with a media node', () => {
+          const { editorView, pluginState } = editor(doc(p('te{<}xt{>}')));
+
+          pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('te'),
+              mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+              p(),
+            )
+          );
+        });
+      });
+
+      context('when selection is at the beginning of the text block', () => {
+        it('replaces selection with a media node', () => {
+          const { editorView, pluginState } = editor(doc(p('{<}te{>}xt')));
+
+          pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+              p('xt'),
+            )
+          );
+        });
+      });
+    });
+  });
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView, pluginState } = editor(doc(h1('text{<>}')));
 

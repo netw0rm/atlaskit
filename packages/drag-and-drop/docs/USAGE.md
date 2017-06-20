@@ -154,8 +154,6 @@ type DraggableLocation = {|
 
 **Block updates during a drag**
 
-> For more background information see 'Application lifecycle'
-
 It is **highly** recommended that while a user is dragging that you block any state updates that might impact the amount of *draggables* and *droppables*, or their dimensions. Please listen to `onDragStart` and block updates to the *draggables* and *droppables* until you receive at `onDragEnd`.
 
 When the user starts dragging we take a snapshot of all of the dimensions of the applicable *draggable* and *droppable* nodes. If these change during a drag we will not know about it.
@@ -273,6 +271,8 @@ export default droppable('TYPE', 'vertical', provide, mapStateToMaps)(List);
 
 *Draggable* components can be dragged around and dropped onto *droppables*. A *draggable* must always be contained within a *droppable*. It is **possible** to reorder a *draggable* within its home *droppable* or move to another *droppable*. It is **possible** because a *droppable* is free to control what it allows to be dropped on it.
 
+Each *draggable* has a *drag handle*. The *drag handle* is the thing that the user can interact with to drag the whole *draggable*. By default, your *draggable* is also your *drag handle*. You can opt of of this by requesting your own *drag handle* function.
+
 ```js
 const DraggableItem = draggable(type, provide, mapStateToProps?)(Item);
 ```
@@ -283,12 +283,55 @@ const DraggableItem = draggable(type, provide, mapStateToProps?)(Item);
 - `provide`: A function that is used to collect information about the *draggable* at run time. The function is provided with the components current props and needs to provide a `id: DraggableId`, and can optionally also provide whether dragging is currently enabled `isDragEnabled?: boolean`. This function allows you to conditionally allow dragging. If you set `isDragEnabled` to `false` while an item is dragging, the drag will be cancelled.
 - `mapStateToProps?` (optional) `(state, ownProps, getDragHandle)` this function allows you to two things. Firstly, it provides you with a relevant small state snapshot and your own props which you can use to create new props for your component. A common use case for this is to add a `isDragging` prop to your component. Secondly, it provides you with a `getDragHandle` function. This function will return a function which you can then wrap a part of your component tree in. The part of your tree that is wrapped in a `DragHandle` will be used to control the dragging of the whole item. If you do not call `getDragHandle` your entire component will be the drag handle. If you request a drag handle, be sure to use it. If you do not put it in the tree somewhere then it will not be possible to drag the item (and might possibly error). Please do not use this as a mechanism for conditional dragging. That is what the `provide` function is for.
 
-### Props
+### *Draggable* injected prop: `innerRef`
 
+> This is one of the weaker parts of the api - and might be iterated on
 
+`innerRef`: `(ref) => void` A component that is wrapped in a *draggable* will be passed a prop `innerRef` which is a function. You will need bind that function to a component that will return a `DOM` ref. We might change this in the future by using `ReactDOM.findDOMNode()`. However, using the `innerRef` function avoids needing to add that dependency for now. Please advise if this does not work for your specific use case. Using your `DOM` node avoids us needing to create another wrapper node which can impact on styling.
+
+```js
+const Person extends Component {
+  static propTypes = {
+    // ...
+    innerRef: PropTypes.function.isRequired,
+  }
+
+  render() {
+    return (
+      <div ref={innerRef}>
+        {/* ... */}
+      </div>
+    );
+  }
+}
+```
+
+### *DragHandle* injected prop: `handleProps`
+
+> This is one of the weaker parts of the api - and might be iterated on
+
+Your *drag handle* (which unless you are using `getDragHandle` will be the same as your *draggable*) will be injected with the prop `handleProps` which is an `Object`. This includes a lot of different properties such as event handlers, aria attributes, tab index and so on. We could hide these props and put them on a component that wraps your *draggable*. However, if we did this then it would be a problem if your component being wrapped was already able to be interacted with - such as a button or an anchor. It would create a **double tab** situation where you can focus on both the item being wrapped (eg a button) and the draggable itself. To avoid this we pass on the *handleProps* to the Component. These will need to be spread onto a component that maps to a DOM node.
+
+```js
+const Person extends Component {
+  static propTypes = {
+    // ...
+    handleProps: PropTypes.object,,
+  }
+
+  render() {
+    return (
+      <div {...handleProps}>
+        {/* ... */}
+      </div>
+    );
+  }
+}
+```
 
 ### Sloppy clicks
 
+A drag will not start until a user has dragged their mouse past a small threshold. If this threshold is not exceeded then the library will not impact the mouse click and will release the event to the browser.
 
 ### Type information
 
@@ -331,9 +374,15 @@ import Avatar from './avatar';
 
 const Person extends Component {
   static propTypes = {
+    // own props
     personId: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    // injected by draggable
     isDragging: PropTypes.boolean.isRequired,
+    innerRef: PropTypes.function.isRequired,
+    // injected into the drag handle,
+    // which is the draggable by default
+    handleProps: PropTypes.object,
   }
 
   render() {
@@ -343,7 +392,7 @@ const Person extends Component {
     }
 
     return (
-      <div style={style} ref={innerRef} {...this.props}>
+      <div style={style} ref={innerRef} {...this.props.handleProps}>
         <h2>{name}</h2>
         <Avatar personId={personId}/>
       </div>

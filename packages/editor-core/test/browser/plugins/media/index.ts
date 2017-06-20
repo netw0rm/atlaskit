@@ -74,14 +74,6 @@ describe('Media plugin', () => {
     });
   };
 
-  const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
-    const [node, transaction] = pluginState.insertFile({ id, status: 'uploading' }, testCollectionName);
-    editorView.dispatch(transaction);
-    pluginState.selectInsertedMediaNode(node);
-
-    return node;
-  };
-
   const getNodePos = (pluginState: MediaPluginState, id: string) => {
     const mediaNodeWithPos = pluginState.findMediaNode(id);
     assert(mediaNodeWithPos, `Media node with id "${id}" has not been mounted yet`);
@@ -103,7 +95,7 @@ describe('Media plugin', () => {
       it('inserts media node into the document after current paragraph node', () => {
         const { editorView, pluginState } = editor(doc(p('text{<>}')));
 
-        insertFile(editorView, pluginState);
+        pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -115,7 +107,7 @@ describe('Media plugin', () => {
       it('puts cursor to the next paragraph after inserting media node', () => {
         const { editorView, pluginState, sel } = editor(doc(p('text{<>}')));
 
-        insertFile(editorView, pluginState);
+        pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
         expect(editorView.state.selection.from).to.eq(sel + 2);
       });
@@ -125,7 +117,7 @@ describe('Media plugin', () => {
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView, pluginState } = editor(doc(h1('text{<>}')));
 
-    insertFile(editorView, pluginState);
+    pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -138,7 +130,7 @@ describe('Media plugin', () => {
   it(`should insert media node into the document after current blockquote node`, () => {
     const { editorView, pluginState } = editor(doc(blockquote(p('text{<>}'))));
 
-    insertFile(editorView, pluginState);
+    pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(blockquote(
@@ -151,7 +143,7 @@ describe('Media plugin', () => {
   it(`should insert media node into the document after current codeblock node`, () => {
     const { editorView, pluginState } = editor(doc(code_block()('text{<>}')));
 
-    insertFile(editorView, pluginState);
+    pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -167,7 +159,7 @@ describe('Media plugin', () => {
       mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
     ));
 
-    insertFile(editorView, pluginState, 'mock2');
+    pluginState.handleNewMediaPicked({ id: 'mock2', status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -183,7 +175,7 @@ describe('Media plugin', () => {
   it('should prepend media group to empty paragraph in an empty document', () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
 
-    insertFile(editorView, pluginState);
+    pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -196,7 +188,7 @@ describe('Media plugin', () => {
   it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
     const { editorView, pluginState } = editor(doc(p('{<>}'), p()));
 
-    insertFile(editorView, pluginState);
+    pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -209,7 +201,7 @@ describe('Media plugin', () => {
   it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
 
-    insertFile(editorView, pluginState);
+    pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -255,11 +247,11 @@ describe('Media plugin', () => {
 
   it('should call uploadErrorHandler on upload error', async () => {
     const handler = sinon.spy();
-    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
+    const { pluginState } = editor(doc(p(), p('{<>}')), handler);
 
     await resolvedProvider;
 
-    insertFile(editorView, pluginState);
+    pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
     stateManager.updateState(testFileId, {
       id: testFileId,
@@ -288,7 +280,7 @@ describe('Media plugin', () => {
     const provider = await resolvedProvider;
     await provider.uploadContext;
 
-    insertFile(editorView, pluginState);
+    pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -323,9 +315,9 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    insertFile(editorView, pluginState, firstTemporaryFileId);
-    insertFile(editorView, pluginState, secondTemporaryFileId);
-    insertFile(editorView, pluginState, thirdTemporaryFileId);
+    pluginState.handleNewMediaPicked({ id: firstTemporaryFileId, status: 'uploading' }, testCollectionName);
+    pluginState.handleNewMediaPicked({ id: secondTemporaryFileId, status: 'uploading' }, testCollectionName);
+    pluginState.handleNewMediaPicked({ id: thirdTemporaryFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -398,7 +390,7 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    insertFile(editorView, pluginState, tempFileId);
+    pluginState.handleNewMediaPicked({ id: tempFileId, status: 'uploading' }, testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(

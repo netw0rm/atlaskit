@@ -162,7 +162,7 @@ export class MediaPluginState {
     );
   }
 
-  insertFile = (mediaState: MediaState, collection: string): [PMNode, Transaction] => {
+  private insertFile = (mediaState: MediaState, collection: string): [PMNode, Transaction] => {
     const { view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
@@ -428,12 +428,16 @@ export class MediaPluginState {
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
   }
 
-  private handleNewMediaPicked = (state: MediaState) => {
-    if (!this.mediaProvider.uploadParams) {
+  private mediaDataFromProvider(): string | undefined {
+    return this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
+  }
+
+  handleNewMediaPicked = (state: MediaState, fileData = this.mediaDataFromProvider()) => {
+    if (!fileData) {
       return;
     }
 
-    const [node, transaction] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
+    const [node, transaction] = this.insertFile(state, fileData);
     const { view } = this;
 
     view.dispatch(transaction);

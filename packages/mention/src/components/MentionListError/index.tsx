@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import { MentionListErrorStyle } from './styles';
 import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import { HttpError } from '../../api/MentionResource';
@@ -10,7 +10,7 @@ export interface Props {
 
 const defaultErrorMessage = 'Something went wrong';
 
-export default class MentionListError extends Component<Props, {}> {
+export default class MentionListError extends PureComponent<Props, {}> {
 
   /**
    * Translate the supplied Error into a message suitable for display in the MentionList.

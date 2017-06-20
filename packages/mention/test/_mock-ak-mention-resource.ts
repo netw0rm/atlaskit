@@ -2,7 +2,7 @@ import { Search } from 'js-search';
 
 import { MentionDescription } from '../src/types';
 import debug from '../src/util/logger';
-import { AbstractMentionResource } from '../src/api/MentionResource';
+import { AbstractMentionResource, HttpError } from '../src/api/MentionResource';
 import mentionData from './_mention-data';
 
 const search = new Search('id');
@@ -53,6 +53,8 @@ export default class MockMentionResource extends AbstractMentionResource {
       if (query === 'error') {
         notifyErrors('mock-error');
         return;
+      } else if (query === '401' || query === '403' ) {
+        notifyErrors(new HttpError(parseInt(query, 10), 'get off my lawn'));
       } else if (query) {
         debug('_doing search', query);
         mentions = search.search(query);

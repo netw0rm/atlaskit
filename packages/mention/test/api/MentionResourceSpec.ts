@@ -5,7 +5,7 @@ import { assert, expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { MentionDescription } from '../../src/types';
-import MentionResource, { MentionResourceConfig, SecurityOptions } from '../../src/api/MentionResource';
+import MentionResource, { HttpError, MentionResourceConfig, SecurityOptions } from '../../src/api/MentionResource';
 import { resultC, resultCraig } from '../_mention-search-results';
 
 const baseUrl = 'https://bogus/mentions';
@@ -124,10 +124,14 @@ describe('MentionResource', () => {
     it('in order responses', (done) => {
       const resource = new MentionResource(apiConfig);
       const results: MentionDescription[][] = [];
-      const expected = [resultC, resultCraig];
+      const expected = [resultC, [], resultCraig];
       resource.subscribe('test1', (mentions) => {
         results.push(mentions);
-        if (results.length === 2) {
+        // 1st: remote search for 'c'
+        // 2nd: local index for 'craig'  => no results
+        // 3rd: remote search for 'craig'
+
+        if (results.length === 3) {
           checkOrder(expected, results);
           done();
         }
@@ -235,10 +239,11 @@ describe('MentionResource', () => {
       const resource = new MentionResource(retryConfig);
       resource.subscribe('test1', () => {
         assert.fail('listener called', 'listener not called');
-      }, (err: any) => {
+      }, (err: Error) => {
         try {
           expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
-          expect(err.code, 'response code').to.be.equal(401);
+          expect(err).to.be.instanceof(HttpError);
+          expect((<HttpError>err).statusCode, 'response code').to.be.equal(401);
           const calls = fetchMock.calls(matcher.name);
           expect(calls.length, 'number of calls to fetch').to.equal(2);
           expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);

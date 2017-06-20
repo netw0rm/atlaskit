@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "33.0.2",
+  "version": "33.1.0",
   "config": {
     "access": "public"
   },
@@ -46,7 +46,7 @@
     "@atlaskit/media-card": "^17.1.5",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-filmstrip": "4.1.2",
-    "@atlaskit/mention": "^5.1.0",
+    "@atlaskit/mention": "^5.2.0",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.2.0",
@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^6.0.2",
-    "@atlaskit/util-data-test": "^4.0.0",
+    "@atlaskit/util-data-test": "^4.6.1",
     "ajv": "^4.11.3",
     "chai-as-promised": "^6.0.0",
     "highlight.js": "^9.6.0",

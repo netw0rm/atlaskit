@@ -17,6 +17,7 @@ export interface HCSchemaNodes {
   mediaGroup: NodeSpec;
   mention: NodeSpec;
   emoji: NodeSpec;
+  blockqoute: NodeSpec;
 }
 
 export interface HCSchemaMarks {
@@ -59,6 +60,9 @@ const nodes = [
 
   // code
   'codeBlock',
+
+  // blockquote
+  'blockquote',
 ];
 
 const customNodeSpecs = {

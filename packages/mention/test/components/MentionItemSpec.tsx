@@ -3,7 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { expect } from 'chai';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 
-import { Mention } from '../../src/types';
+import { MentionDescription } from '../../src/types';
 import { Props, State } from '../../src/components/MentionList';
 import MentionItem from '../../src/components/MentionItem';
 
@@ -22,7 +22,7 @@ const mentionWithoutNickname =  {
     avatarUrl: ''
 };
 
-function setupMentionItem(mention: Mention, props?: Props): ShallowWrapper<Props, State> {
+function setupMentionItem(mention: MentionDescription, props?: Props): ShallowWrapper<Props, State> {
   return shallow(
     <MentionItem
       mention={mention}
@@ -37,9 +37,9 @@ describe('MentionItem', () => {
     expect(component.html()).contains(`@${mentionWithNickname.nickname}`);
   });
 
-  it('should display @-name if nickname is not present', () => {
+  it('should not display @-name if nickname is not present', () => {
     const component = setupMentionItem(mentionWithoutNickname);
-    expect(component.html()).contains(`@${mentionWithoutNickname.name}`);
+    expect(component.html()).to.not.contains('@');
   });
 
   it('should display access restriction if accessLevel is not CONTAINER', () => {

@@ -26,6 +26,7 @@ export const spriteEmoji: EmojiDescription = {
     height: 72,
     width: 72,
   },
+  ascii: undefined,
 };
 
 export const imageEmoji: EmojiDescription = {
@@ -40,6 +41,7 @@ export const imageEmoji: EmojiDescription = {
     width: 24,
     height: 24,
   },
+  ascii: undefined,
 };
 
 export const siteUrl = 'https://emoji.example.com/emoji/site/blah';
@@ -60,6 +62,7 @@ export const mediaServiceEmoji: EmojiServiceDescription = {
     width: 24,
     height: 24,
   },
+  ascii: undefined,
 };
 
 export const mediaEmoji: EmojiDescriptionWithVariations = {
@@ -76,6 +79,7 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
     height: 24,
   },
   skinVariations: [],
+  ascii: undefined,
 };
 
 export const loadedMediaEmoji = {
@@ -155,12 +159,16 @@ export const emojis: EmojiDescription[] = [ ...standardEmojis, ...atlassianEmoji
 
 export const emojiRepository = new EmojiRepository(emojis);
 
+export const smileyEmoji = emojiRepository.findByShortName(':smiley:') as EmojiDescriptionWithVariations;
+export const openMouthEmoji = emojiRepository.findByShortName(':open_mouth:') as EmojiDescriptionWithVariations;
 export const grinEmoji = emojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
 export const evilburnsEmoji = emojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
 export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
 export const thumbsdownEmoji = emojiRepository.findByShortName(':thumbsdown:') as EmojiDescriptionWithVariations;
 export const standardBoomEmoji = emojiRepository.findById('1f4a5') as EmojiDescriptionWithVariations;
 export const atlassianBoomEmoji = emojiRepository.findById('atlassian-boom') as EmojiDescriptionWithVariations;
+export const blackFlagEmoji = emojiRepository.findByShortName(':flag_black:') as EmojiDescriptionWithVariations;
+export const congoFlagEmoji = emojiRepository.findByShortName(':flag_cg:') as EmojiDescriptionWithVariations;
 
 export const getNonUploadingEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockNonUploadingEmojiResourceFactory(emojiRepository, config);
 

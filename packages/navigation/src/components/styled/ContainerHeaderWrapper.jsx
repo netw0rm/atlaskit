@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { layout, resizeAnimationTime, gridSize } from '../../shared-variables';
-import { getProvided } from '../../theme/util';
+import { getProvided, whenCollapsed } from '../../theme/util';
 
 const keylineHeight = 2;
 const paddingOpen = (() => {
@@ -38,7 +38,7 @@ const ContainerHeaderWrapper = styled.div`
     }
   }
 
-  [data-__ak-navigation-container-closed="true"] & {
+  ${whenCollapsed`
     padding: 0;
     /* centering the icon */
     display: flex;
@@ -53,7 +53,7 @@ const ContainerHeaderWrapper = styled.div`
         display: none;
       }
     }
-  }
+  `}
 `;
 
 ContainerHeaderWrapper.displayName = 'ContainerHeaderWrapper';

@@ -79,6 +79,58 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'My name is '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+            text: '@Oscar Wallhult'
+          }
+        },
+        {
+          type: 'text',
+          text: ' :D',
+          marks: [
+            {
+              type: 'unkown mark'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is a '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            text: '@mention',
+            id: 'mention'
+          }
+        },
+        {
+          type: 'text',
+          text: '. And this is a broken '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            textxtx: '@mention',
+            id: 'mention'
+          }
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'italic',
           marks: [
             {

@@ -34,6 +34,8 @@ export default class MultiSelect extends PureComponent {
     defaultSelected: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
+    /** message to show on the dialog when isInvalid is true */
+    invalidMessage: PropTypes.node,
     /** Sets whether the select is selectable. Changes hover state. */
     isDisabled: PropTypes.bool,
     /** controls the top margin of the label component rendered. */
@@ -164,6 +166,7 @@ export default class MultiSelect extends PureComponent {
       isDisabled,
       isFirstChild,
       isInvalid,
+      invalidMessage,
       isRequired,
       label,
       name,
@@ -185,6 +188,7 @@ export default class MultiSelect extends PureComponent {
         isDisabled={isDisabled}
         isFirstChild={isFirstChild}
         isInvalid={isInvalid}
+        invalidMessage={invalidMessage}
         isOpen={isOpen}
         isRequired={isRequired}
         items={items}

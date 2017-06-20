@@ -9,7 +9,7 @@ import { fakeContext } from '@atlaskit/media-test-helpers';
 import { Card, UrlPreviewIdentifier, MediaIdentifier, CardEvent } from '../src';
 import { MediaCard } from '../src/root/mediaCard';
 
-describe('Card', function() {
+describe('Card', () => {
   const linkIdentifier: MediaIdentifier = {
     id: 'some-random-id',
     mediaItemType: 'link',
@@ -21,7 +21,7 @@ describe('Card', function() {
     collectionName: 'some-collection-name'
   };
 
-  it('should render media card with UrlPreviewProvider when passed a UrlPreviewIdentifier', function() {
+  it('should render media card with UrlPreviewProvider when passed a UrlPreviewIdentifier', () => {
     const dummyUrl = 'http://some.url.com';
     const mediaItemType = 'link';
 
@@ -46,7 +46,7 @@ describe('Card', function() {
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 
-  it('should render media card with MediaItemProvider when passed a MediaIdentifier with mediaItemType "link"', function() {
+  it('should render media card with MediaItemProvider when passed a MediaIdentifier with mediaItemType "link"', () => {
     const {id, mediaItemType, collectionName} = linkIdentifier;
 
     const dummyProvider = {observable: 'dummy provider ftw!'};
@@ -65,7 +65,7 @@ describe('Card', function() {
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 
-  it('should render media card with MediaItemProvider when passed a MediaIdentifier with mediaItemType "file"', function() {
+  it('should render media card with MediaItemProvider when passed a MediaIdentifier with mediaItemType "file"', () => {
     const {id, mediaItemType, collectionName} = fileIdentifier;
 
     const dummyProvider = {observable: 'dummy provider ftw!'};
@@ -84,7 +84,7 @@ describe('Card', function() {
     expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 
-  it('should render media card with a new MediaItemProvider when the context changes', function() {
+  it('should render media card with a new MediaItemProvider when the context changes', () => {
     const dummyProvider = 'second provider';
 
     const firstContext = fakeContext({
@@ -107,7 +107,7 @@ describe('Card', function() {
     expect(mediaCard.props().provider).to.equal(dummyProvider);
   });
 
-  it('should render media card with a new MediaItemProvider when the identifier changes', function() {
+  it('should render media card with a new MediaItemProvider when the identifier changes', () => {
     const firstIdentifier: MediaIdentifier = fileIdentifier;
     const secondIdentifier: MediaIdentifier = linkIdentifier;
 
@@ -129,7 +129,7 @@ describe('Card', function() {
     expect(mediaCard.props().provider).to.equal(dummyProvider);
   });
 
-  it('should fire onClick when passed in as a prop and MediaCard fires onClick', function() {
+  it('should fire onClick when passed in as a prop and MediaCard fires onClick', () => {
     const context = fakeContext() as any;
     const clickHandler = sinon.spy();
 
@@ -146,7 +146,7 @@ describe('Card', function() {
     expect(clickHandler.calledOnce).to.be.true;
   });
 
-  it('should pass onMouseEnter to MediaCard', function() {
+  it('should pass onMouseEnter to MediaCard', () => {
     const context = fakeContext() as any;
     const hoverHandler = (result: CardEvent) => {};
     const card = shallow(<Card context={context} identifier={fileIdentifier} onMouseEnter={hoverHandler} />);
@@ -154,7 +154,7 @@ describe('Card', function() {
     expect(card.find(MediaCard).props().onMouseEnter).to.deep.equal(hoverHandler);
   });
 
-  it('should use lazy load by default', function() {
+  it('should use lazy load by default', () => {
     const context = fakeContext() as any;
     const hoverHandler = (result: CardEvent) => {};
     const card = mount(<Card context={context} identifier={fileIdentifier} onMouseEnter={hoverHandler} />);
@@ -162,11 +162,29 @@ describe('Card', function() {
     expect(card.find(LazyLoad)).to.have.length(1);
   });
 
-  it('should not use lazy load when "isLazy" is false', function() {
+  it('should not use lazy load when "isLazy" is false', () => {
     const context = fakeContext() as any;
     const hoverHandler = (result: CardEvent) => {};
     const card = mount(<Card isLazy={false} context={context} identifier={fileIdentifier} onMouseEnter={hoverHandler} />);
 
     expect(card.find(LazyLoad)).to.have.length(0);
+  });
+
+  it('should pass properties down to MediaCard', () => {
+    const context = fakeContext() as any;
+    const card = shallow(<Card context={context} identifier={fileIdentifier} appearance="small" dimensions={{width: 100, height: 50}}/>);
+
+    expect(card.find(MediaCard).props().appearance).to.equal('small');
+    expect(card.find(MediaCard).props().dimensions).to.deep.equal({width: 100, height: 50});
+  });
+
+  it('should create a card placeholder with the right props', () => {
+    const context = fakeContext() as any;
+    const card = shallow(<Card context={context} identifier={fileIdentifier} appearance="small" dimensions={{width: 100, height: 50}}/>);
+    const placeholder = (card.instance() as Card).placeholder;
+
+    expect(placeholder.props.status).to.equal('loading');
+    expect(placeholder.props.appearance).to.equal('small');
+    expect(placeholder.props.dimensions).to.deep.equal({width: 100, height: 50});
   });
 });

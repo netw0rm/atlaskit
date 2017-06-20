@@ -75,7 +75,7 @@ interface ChooseEmojiFileProps {
 
 class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
   render() {
-    const { name, onChooseFile, onNameChange } = this.props;
+    const { name = '', onChooseFile, onNameChange } = this.props;
     const disableChooser = !name;
 
     return (

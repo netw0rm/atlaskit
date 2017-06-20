@@ -39,7 +39,6 @@ function getIndex(key: string, mentions?: MentionDescription[]): number | undefi
 
 export interface Props {
   mentions: MentionDescription[];
-  showError?: boolean;
   resourceError?: Error;
   onSelection?: OnMentionEvent;
 }
@@ -219,12 +218,12 @@ export default class MentionList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { mentions, resourceError, showError } = this.props;
+    const { mentions, resourceError } = this.props;
     const hasMentions = mentions && mentions.length;
 
     // If we get an error, but existing mentions are displayed, lets
     // just continue to show the existing mentions we have
-    const mustShowError = showError && !hasMentions;
+    const mustShowError = resourceError && !hasMentions;
 
     let errorSection: JSX.Element | undefined;
     let resultSection: JSX.Element | undefined;
@@ -239,7 +238,7 @@ export default class MentionList extends PureComponent<Props, State> {
     }
 
     return (
-      <MentionListStyle empty={!hasMentions && !showError}>
+      <MentionListStyle empty={!hasMentions && !resourceError}>
         {errorSection}
         {resultSection}
       </MentionListStyle>

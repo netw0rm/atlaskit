@@ -19,7 +19,7 @@ export default class MentionListError extends Component<Props, {}> {
    */
   private static prepareError(error: Error | undefined): string {
     if (error instanceof HttpError) {
-      let httpError = error as HttpError;
+      const httpError = error as HttpError;
 
       if (httpError.statusCode === 401) {
         return 'Try logging in again.';

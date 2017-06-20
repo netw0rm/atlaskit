@@ -103,7 +103,7 @@ describe('MentionPicker', () => {
     const defaultMentionItemsShowTest = createDefaultMentionItemsShowTest(component);
     const mentionErrorProcessed = () => {
       const mentionList = component.find(MentionList);
-      return mentionList.prop('showError');
+      return mentionList.prop('resourceError');
     };
 
     return waitUntil(defaultMentionItemsShowTest)

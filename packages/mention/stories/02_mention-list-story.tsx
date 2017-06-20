@@ -77,17 +77,17 @@ storiesOf(`${name}/MentionList`, module)
   .add('simple mention list', () => <RefreshableMentionList />)
   .add('generic error mention list', () => (
     <div style={{ padding: '10px' }} >
-      <MentionList showError={true} mentions={[]} />
+      <MentionList resourceError={new Error('monkey trousers')} mentions={[]} />
     </div>
   ))
   .add('error mention list for 401', () => (
     <div style={{ padding: '10px' }} >
-      <MentionList showError={true} resourceError={new HttpError(401, 'not used')} mentions={[]} />
+      <MentionList resourceError={new HttpError(401, 'not used')} mentions={[]} />
     </div>
   ))
   .add('error mention list for 403', () => (
     <div style={{ padding: '10px' }} >
-      <MentionList showError={true} resourceError={new HttpError(403, 'not used')} mentions={[]} />
+      <MentionList resourceError={new HttpError(403, 'not used')} mentions={[]} />
     </div>
   ));
 

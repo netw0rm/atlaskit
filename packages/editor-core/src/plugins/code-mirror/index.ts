@@ -36,13 +36,13 @@ const plugin = new Plugin({
     init(config, state: EditorState<any>) {
       return new CodeMirrorState(state);
     },
-    apply(tr, pluginState: CodeMirrorState, oldState, newState) {
+    apply(tr, pluginState: CodeMirrorState) {
       return pluginState;
     }
   },
   key: stateKey,
   props: {
-    onFocus:(view: EditorView, event: any) => {
+    onFocus:(view: EditorView) => {
       const pluginState = stateKey.getState(view.state);
       const node = view.state.selection.$from.node(view.state.selection.$from.depth);
       if (node.type.name === 'codeBlock') {

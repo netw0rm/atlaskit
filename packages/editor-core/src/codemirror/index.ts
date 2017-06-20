@@ -1,6 +1,6 @@
 import '!style!css!less!codemirror/lib/codemirror.css';
 import 'codemirror/mode/meta';
-import * as CodeMirror from 'codemirror/lib/codemirror';
+import * as CodeMirror from 'codemirror';
 
 import 'codemirror/mode/php/php.js';
 import 'codemirror/mode/clike/clike.js';

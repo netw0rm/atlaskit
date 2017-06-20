@@ -1,4 +1,4 @@
-import CodeMirror from '../../codemirror';
+import CodeMirror, { Editor } from '../../codemirror';
 import {
   browser,
   Selection,
@@ -17,7 +17,7 @@ import {
   codeMirrorStateKey,
   CodeMirrorState,
 } from '../../plugins';
-import { DEFAULT_LANGUAGES } from '../../ui/LanguagePicker/LanguageList';
+import { DEFAULT_LANGUAGES } from '../../ui/LanguagePicker/languageList';
 
 const MOD = browser.mac ? 'Cmd' : 'Ctrl';
 
@@ -28,7 +28,7 @@ class CodeBlock {
   private getPos: Function;
   private value: string;
   private selection: Selection | undefined;
-  private cm: CodeMirror;
+  private cm: Editor;
   private uniqueId: string;
   private updating: boolean = false;
   private schema: Schema<any, any>;
@@ -144,11 +144,11 @@ class CodeBlock {
   }
 
   valueChanged(): void {
-    let value = this.cm.getValue();
+    const value = this.cm.getValue();
     if (value !== this.value) {
-      let change = computeChange(this.value, value);
+      const change = computeChange(this.value, value);
       this.value = value;
-      let start = this.getPos() + 1;
+      const start = this.getPos() + 1;
       const content = change.text ? this.schema.text(change.text) : Fragment.empty;
       const tr = this.view.state.tr.replaceWith(start + change.from, start + change.to, content);
       if (this.cm.hasFocus()) {
@@ -184,7 +184,7 @@ class CodeBlock {
   }
 
   maybeEscape(unit: string, dir: number): void {
-    let pos = this.cm.getCursor();
+    const pos = this.cm.getCursor();
     if (this.cm.somethingSelected() || pos.line !== (dir < 0 ? this.cm.firstLine() : this.cm.lastLine()) ||
       (unit === 'char' && pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length))) {
       return CodeMirror.Pass;

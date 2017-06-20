@@ -122,6 +122,17 @@ describe('EmojiRepository', () => {
       checkOrder(expectedEmojis, emojis);
     });
 
+    it('search all - colon style', () => {
+      const expectedEmojis = [
+        ...allEmojis.slice(0, 10), // upto flag,
+        cowboy,
+        ...allEmojis.slice(10), // rest...
+      ];
+      const repository = new EmojiRepository(expectedEmojis);
+      const emojis = repository.search(':').emojis;
+      checkOrder(expectedEmojis, emojis);
+    });
+
     it('no categories repeat', () => {
       const emojis = emojiRepository.all().emojis;
       const foundCategories = new Set<string>();

@@ -321,7 +321,7 @@ const Person extends Component {
 
   render() {
     return (
-      <div {...handleProps}>
+      <div {...this.props.handleProps}>
         {/* ... */}
       </div>
     );

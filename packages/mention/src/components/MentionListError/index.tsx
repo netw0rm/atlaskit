@@ -12,10 +12,6 @@ const defaultErrorMessage = 'Something went wrong';
 
 export default class MentionListError extends Component<Props, {}> {
 
-  constructor(props) {
-    super(props);
-  }
-
   /**
    * Translate the supplied Error into a message suitable for display in the MentionList.
    *

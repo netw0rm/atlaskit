@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
-import { MentionStyle } from './styles';
+import { MentionStyle, MentionContainer } from './styles';
+import Tooltip from '@atlaskit/tooltip';
+import { isRestricted, MentionType } from '../../types';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -8,6 +10,7 @@ export interface Props {
   id: string;
   text: string;
   isHighlighted?: boolean;
+  accessLevel?: string;
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
   onMouseLeave?: MentionEventHandler;
@@ -36,6 +39,17 @@ export default class Mention extends PureComponent<Props, {}> {
     }
   }
 
+  private getMentionType = (): MentionType => {
+    const { accessLevel, isHighlighted } = this.props;
+    if (isHighlighted) {
+      return MentionType.SELF;
+    }
+    if (isRestricted(accessLevel)) {
+      return MentionType.RESTRICTED;
+    }
+    return MentionType.DEFAULT;
+  }
+
   render() {
     const {
       handleOnClick,
@@ -43,16 +57,32 @@ export default class Mention extends PureComponent<Props, {}> {
       handleOnMouseLeave,
       props,
     } = this;
+    const { text } = props;
+    const mentionType: MentionType = this.getMentionType();
 
-    return (
+    const mentionComponent = (
       <MentionStyle
-        highlighted={props.isHighlighted}
+        mentionType={mentionType}
         onClick={handleOnClick}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
-        {props.text}
+        {text}
       </MentionStyle>
+    );
+
+    return (
+      <MentionContainer>
+        { mentionType === MentionType.RESTRICTED ?
+          <Tooltip
+              description={`${props.text} won't be notified as they have no access`}
+              position="right"
+          >
+          {mentionComponent}
+          </Tooltip>
+          :
+          mentionComponent }
+      </MentionContainer>
     );
   }
 }

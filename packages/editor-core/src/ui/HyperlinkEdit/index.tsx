@@ -10,13 +10,18 @@ import { Seperator, Container } from './styles';
 import { EditorView } from '../../prosemirror';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
 
+const TEXT_NODE = 3;
+
 export interface Props {
   pluginState: HyperlinkState;
   editorView: EditorView;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
 }
 
 export interface State {
   target?: HTMLElement;
+  activeElement?: HTMLElement;
   // URL of the hyperlink. The presence of this attribute causes an "open"
   // hyperlink to be rendered in the popup.
   href?: string;
@@ -66,20 +71,72 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     });
   }
 
-  updatePosition = () => {
+  private getOffsetParent() {
+    const popupTarget = this.getPopupTarget();
+    return this.props.popupsMountPoint
+      ? this.props.popupsMountPoint.offsetParent
+      : popupTarget && popupTarget.offsetParent;
+  }
+
+  private getPopupTarget(): HTMLElement | undefined {
+    const { target, activeElement } = this.state;
+    let popupTarget = target;
+
+    if (!popupTarget && activeElement) {
+      popupTarget = activeElement.nodeType === TEXT_NODE
+        ? activeElement.parentElement as HTMLElement
+        : activeElement;
+    }
+
+    return popupTarget;
+  }
+
+  /**
+   * Dynamic offsets for hyperlink editing popup
+   * because we need to show it next to cursor even without clear target for popup.
+   */
+  private adjustPosition = (position) => {
     const { pluginState } = this.props;
     if (!pluginState.active) {
-      return pluginState.getCoordniates(this.props.editorView);
+
+      const offsetParent = this.getOffsetParent();
+
+      if (!offsetParent) {
+        return position;
+      }
+
+      const coordinates = pluginState.getCoordinates(this.props.editorView, offsetParent);
+
+      if (position.left) {
+        position.left = coordinates.left;
+      }
+
+      if (position.top) {
+        position.top = coordinates.top;
+      }
+
+      if (position.bottom) {
+        position.bottom = coordinates.bottom;
+      }
+
+      if (position.right) {
+        position.right = coordinates.right;
+      }
     }
+    return position;
   }
 
   render() {
-    const {
-      href, oldHref, text, oldText, target, unlinkable, active,
+    const { href, oldHref, text, oldText, unlinkable, active,
       editorFocused, inputActive, showToolbarPanel
     } = this.state;
-
     const normalizedOldText = oldText && normalizeUrl(oldText);
+
+    const popupTarget = this.getPopupTarget();
+
+    if (!popupTarget) {
+      return null;
+    }
 
     if ((active || showToolbarPanel) && (editorFocused || inputActive)) {
       const showOpenButton = !!oldHref;
@@ -87,10 +144,12 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
 
       return (
         <FloatingToolbar
-          target={target}
-          align="left"
-          onExtractStyle={this.updatePosition}
-          autoPosition={true}
+          target={popupTarget}
+          offset={[0, 3]}
+          fitWidth={230}
+          onPositionCalculated={this.adjustPosition}
+          popupsMountPoint={this.props.popupsMountPoint}
+          popupsBoundariesElement={this.props.popupsBoundariesElement}
         >
           <Container>
             {!showOpenButton ? null :
@@ -118,24 +177,24 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
             {!showUnlinkButton ? null :
               <Seperator />
             }
-            { normalizedOldText && href === normalizedOldText ?
-            <PanelTextInput
-              placeholder="Text to display"
-              defaultValue={!text && href === normalizedOldText ? '' : text}
-              onSubmit={this.updateLinkText}
-              onChange={this.updateText}
-              onMouseDown={this.setInputActive}
-              onBlur={this.handleOnBlur}
-            /> :
-            <PanelTextInput
-              placeholder="Paste link"
-              autoFocus={!href || href.length === 0}
-              defaultValue={href}
-              onSubmit={this.updateLinkHref}
-              onChange={this.updateHref}
-              onMouseDown={this.setInputActive}
-              onBlur={this.handleOnBlur}
-            />}
+            {normalizedOldText && href === normalizedOldText ?
+              <PanelTextInput
+                placeholder="Text to display"
+                defaultValue={!text && href === normalizedOldText ? '' : text}
+                onSubmit={this.updateLinkText}
+                onChange={this.updateText}
+                onMouseDown={this.setInputActive}
+                onBlur={this.handleOnBlur}
+              /> :
+              <PanelTextInput
+                placeholder="Paste link"
+                autoFocus={!href || href.length === 0}
+                defaultValue={href}
+                onSubmit={this.updateLinkHref}
+                onChange={this.updateHref}
+                onMouseDown={this.setInputActive}
+                onBlur={this.handleOnBlur}
+              />}
           </Container>
         </FloatingToolbar>
       );
@@ -169,6 +228,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.setState({
       active: pluginState.active,
       target: pluginState.element,
+      activeElement: pluginState.activeElement,
       href: pluginState.href,
       oldText: pluginState.text,
       oldHref: pluginState.href,

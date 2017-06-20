@@ -82,6 +82,7 @@ export default class EmojiRepository {
   private fullSearch: Search;
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
+  private asciiMap: Map<string, EmojiDescription>;
   private categoryOrder: Map<string, number>;
   private static readonly defaultEmojiWeight: number = 1000000;
 
@@ -113,13 +114,15 @@ export default class EmojiRepository {
    * Returns an array of all emoji is query is empty or null, otherwise an matching emoji.
    */
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
-    let filteredEmoji: EmojiDescription[];
+    let filteredEmoji: EmojiDescription[] = [];
     if (query) {
       filteredEmoji = this.fullSearch.search(query);
       this.sortFiltered(filteredEmoji, query);
+      filteredEmoji = this.withAsciiMatch(query, filteredEmoji);
     } else {
       filteredEmoji = this.emojis;
     }
+
     filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
       emojis: filteredEmoji,
@@ -143,6 +146,10 @@ export default class EmojiRepository {
     return findByKey(this.idMap, id);
   }
 
+  findByAsciiRepresentation(asciiEmoji: string): OptionalEmojiDescription {
+    return this.asciiMap.get(asciiEmoji);
+  }
+
   findInCategory(categoryId: string): EmojiDescription[] {
     return this.all().emojis.filter(
       emoji => emoji.category === categoryId
@@ -161,12 +168,29 @@ export default class EmojiRepository {
     this.addToMaps(emoji);
   }
 
+  getAsciiMap(): Map<string, EmojiDescription> {
+    return this.asciiMap;
+  }
+
+  private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {
+    let result = emojis;
+    const asciiEmoji = this.findByAsciiRepresentation(ascii);
+    if (asciiEmoji) {
+      // Ensures that the same emoji isn't already in the list
+      // If it is, we give precedence to the ascii match
+      result = emojis.filter(e => e.id !== asciiEmoji.id);
+      result = [asciiEmoji, ...result];
+    }
+    return result;
+  }
+
   /**
    * Optimisation to initialise all map member variables in single loop over emojis
    */
   private initMaps(): void {
     this.shortNameMap  = new Map();
     this.idMap = new Map();
+    this.asciiMap = new Map();
 
     this.emojis.forEach(emoji => {
       this.addToMaps(emoji);
@@ -174,15 +198,18 @@ export default class EmojiRepository {
   }
 
   private addToMaps(emoji: EmojiDescription): void {
-      // Give default value and assign higher weight to Atlassian emojis for logical order when sorting
-      if (typeof emoji.order === 'undefined' || emoji.order === -1) {
-        emoji.order = EmojiRepository.defaultEmojiWeight;
-      }
-      if (typeof emoji.id === 'undefined') {
-        emoji.id = EmojiRepository.defaultEmojiWeight.toString();
-      }
-      addAllVariants(emoji, e => e.shortName, this.shortNameMap);
-      addAllVariants(emoji, e => e.id, this.idMap);
+    // Give default value and assign higher weight to Atlassian emojis for logical order when sorting
+    if (typeof emoji.order === 'undefined' || emoji.order === -1) {
+      emoji.order = EmojiRepository.defaultEmojiWeight;
+    }
+    if (typeof emoji.id === 'undefined') {
+      emoji.id = EmojiRepository.defaultEmojiWeight.toString();
+    }
+    addAllVariants(emoji, e => e.shortName, this.shortNameMap);
+    addAllVariants(emoji, e => e.id, this.idMap);
+    if (emoji.ascii) {
+      emoji.ascii.forEach(a => this.asciiMap.set(a, emoji));
+    }
   }
 
   /**
@@ -196,7 +223,7 @@ export default class EmojiRepository {
     const emojiComparator = (e1: EmojiDescription, e2: EmojiDescription): number => {
       // Handle exact matches between query and shortName
       if (e1.shortName === colonQuery && e2.shortName === colonQuery) {
-        return this.typeToOrder(e1.type) - this.typeToOrder(e2.type);
+        return EmojiRepository.typeToOrder(e1.type) - EmojiRepository.typeToOrder(e2.type);
       } else if (e1.shortName === colonQuery) {
         return -1;
       } else if (e2.shortName === colonQuery) {
@@ -240,7 +267,7 @@ export default class EmojiRepository {
   }
 
   // Give precedence when conflicting shortNames occur as defined in Emoji Storage Spec
-  private typeToOrder(type: string): number {
+  private static typeToOrder(type: string): number {
     if (type === 'SITE') {
       return 0;
     } else if (type === 'ATLASSIAN') {
@@ -251,5 +278,4 @@ export default class EmojiRepository {
     // Push unknown type to bottom of list
     return 3;
   }
-
 }

@@ -140,7 +140,7 @@ describe('<EmojiPicker />', () => {
           const emojis = preview.find(Emoji);
           expect(emojis.length, 'Emoji visible').to.equal(1);
           const emoji = emojis.get(0);
-          expect(emoji.props.emoji.shortName, 'First flag emoji').to.equal(':flag_ac:');
+          expect(emoji.props.emoji.shortName, 'First flag emoji').to.equal(':flag_white:');
         });
       });
     });

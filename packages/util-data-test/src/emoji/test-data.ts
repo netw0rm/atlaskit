@@ -55,6 +55,7 @@ export const emojis: EmojiDescription[] = [ ...standardEmojis, ...atlassianEmoji
 export const emojiRepository = new EmojiRepository(emojis);
 
 export const grinEmoji = emojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
+export const watchEmoji = emojiRepository.findByShortName(':watch:') as EmojiDescriptionWithVariations;
 export const evilburnsEmoji = emojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
 export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
 

@@ -8,7 +8,7 @@
       "category": "PEOPLE",
       "order": 1,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
         "x": 0,
         "y": 0,
         "height": 32,
@@ -19,14 +19,14 @@
       "shortName": ":grinning:"
     },
     {
-      "id": "1f62c",
-      "name": "grimacing face",
-      "fallback": "😬",
+      "id": "1f603",
+      "name": "smiling face with open mouth",
+      "fallback": "😃",
       "type": "STANDARD",
       "category": "PEOPLE",
       "order": 2,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
         "x": 34,
         "y": 0,
         "height": 32,
@@ -34,17 +34,22 @@
         "xIndex": 1,
         "yIndex": 0
       },
-      "shortName": ":grimacing:"
+      "ascii": [
+        ":D",
+        ":-D",
+        "=D"
+      ],
+      "shortName": ":smiley:"
     },
     {
-      "id": "1f601",
-      "name": "grinning face with smiling eyes",
-      "fallback": "😁",
+      "id": "1f604",
+      "name": "smiling face with open mouth & smiling eyes",
+      "fallback": "😄",
       "type": "STANDARD",
       "category": "PEOPLE",
       "order": 3,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
         "x": 68,
         "y": 0,
         "height": 32,
@@ -52,17 +57,17 @@
         "xIndex": 2,
         "yIndex": 0
       },
-      "shortName": ":grin:"
+      "shortName": ":smile:"
     },
     {
-      "id": "1f602",
-      "name": "face with tears of joy",
-      "fallback": "😂",
+      "id": "1f601",
+      "name": "grinning face with smiling eyes",
+      "fallback": "😁",
       "type": "STANDARD",
       "category": "PEOPLE",
       "order": 4,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
         "x": 102,
         "y": 0,
         "height": 32,
@@ -70,17 +75,17 @@
         "xIndex": 3,
         "yIndex": 0
       },
-      "shortName": ":joy:"
+      "shortName": ":grin:"
     },
     {
-      "id": "1f603",
-      "name": "smiling face with open mouth",
-      "fallback": "😃",
+      "id": "1f606",
+      "name": "smiling face with open mouth & closed eyes",
+      "fallback": "😆",
       "type": "STANDARD",
       "category": "PEOPLE",
       "order": 5,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
         "x": 136,
         "y": 0,
         "height": 32,
@@ -88,17 +93,23 @@
         "xIndex": 4,
         "yIndex": 0
       },
-      "shortName": ":smiley:"
+      "ascii": [
+        ">:)",
+        ">;)",
+        ">:-)",
+        ">=)"
+      ],
+      "shortName": ":laughing:"
     },
     {
-      "id": "1f604",
-      "name": "smiling face with open mouth and smiling eyes",
-      "fallback": "😄",
+      "id": "1f605",
+      "name": "smiling face with open mouth & cold sweat",
+      "fallback": "😅",
       "type": "STANDARD",
       "category": "PEOPLE",
       "order": 6,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
         "x": 170,
         "y": 0,
         "height": 32,
@@ -106,17 +117,25 @@
         "xIndex": 5,
         "yIndex": 0
       },
-      "shortName": ":smile:"
+      "ascii": [
+        "':)",
+        "':-)",
+        "'=)",
+        "':D",
+        "':-D",
+        "'=D"
+      ],
+      "shortName": ":sweat_smile:"
     },
     {
-      "id": "1f605",
-      "name": "smiling face with open mouth and cold sweat",
-      "fallback": "😅",
+      "id": "1f602",
+      "name": "face with tears of joy",
+      "fallback": "😂",
       "type": "STANDARD",
       "category": "PEOPLE",
       "order": 7,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
         "x": 204,
         "y": 0,
         "height": 32,
@@ -124,35 +143,21 @@
         "xIndex": 6,
         "yIndex": 0
       },
-      "shortName": ":sweat_smile:"
+      "ascii": [
+        ":')",
+        ":'-)"
+      ],
+      "shortName": ":joy:"
     },
     {
-      "id": "1f606",
-      "name": "smiling face with open mouth and tightly-closed eyes",
-      "fallback": "😆",
+      "id": "1f62e",
+      "name": "face with open mouth",
+      "fallback": "😮",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 8,
+      "order": 52,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-        "x": 238,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 7,
-        "yIndex": 0
-      },
-      "shortName": ":laughing:"
-    },
-    {
-      "id": "2639",
-      "name": "white frowning face",
-      "fallback": "☹️",
-      "type": "STANDARD",
-      "category": "PEOPLE",
-      "order": 44,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
         "x": 612,
         "y": 34,
         "height": 32,
@@ -160,117 +165,236 @@
         "xIndex": 18,
         "yIndex": 1
       },
-      "shortName": ":frowning2:"
+      "ascii": [
+        ":-O",
+        ":O",
+        "O_O",
+        ">:O"
+      ],
+      "shortName": ":open_mouth:"
     },
     {
       "id": "1f44d",
-      "name": "thumbs up sign",
+      "name": "thumbs up",
       "fallback": "👍",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 91,
+      "order": 122,
       "skinVariations": [
         {
           "id": "1f44d-1f3fb",
-          "name": "thumbs up sign tone 2",
+          "name": "thumbs up: light skin tone",
           "fallback": "👍🏻",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 1310,
+          "order": 123,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-            "x": 646,
-            "y": 272,
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 782,
+            "y": 102,
             "height": 32,
             "width": 32,
-            "xIndex": 19,
-            "yIndex": 8
+            "xIndex": 23,
+            "yIndex": 3
           },
           "shortName": ":thumbsup::skin-tone-2:"
         },
         {
           "id": "1f44d-1f3fc",
-          "name": "thumbs up sign tone 3",
+          "name": "thumbs up: medium-light skin tone",
           "fallback": "👍🏼",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 1311,
+          "order": 124,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-            "x": 680,
-            "y": 272,
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 816,
+            "y": 102,
             "height": 32,
             "width": 32,
-            "xIndex": 20,
-            "yIndex": 8
+            "xIndex": 24,
+            "yIndex": 3
           },
           "shortName": ":thumbsup::skin-tone-3:"
         },
         {
           "id": "1f44d-1f3fd",
-          "name": "thumbs up sign tone 4",
+          "name": "thumbs up: medium skin tone",
           "fallback": "👍🏽",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 1312,
+          "order": 125,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-            "x": 714,
-            "y": 272,
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 850,
+            "y": 102,
             "height": 32,
             "width": 32,
-            "xIndex": 21,
-            "yIndex": 8
+            "xIndex": 25,
+            "yIndex": 3
           },
           "shortName": ":thumbsup::skin-tone-4:"
         },
         {
           "id": "1f44d-1f3fe",
-          "name": "thumbs up sign tone 5",
+          "name": "thumbs up: medium-dark skin tone",
           "fallback": "👍🏾",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 1313,
+          "order": 126,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-            "x": 748,
-            "y": 272,
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 884,
+            "y": 102,
             "height": 32,
             "width": 32,
-            "xIndex": 22,
-            "yIndex": 8
+            "xIndex": 26,
+            "yIndex": 3
           },
           "shortName": ":thumbsup::skin-tone-5:"
         },
         {
           "id": "1f44d-1f3ff",
-          "name": "thumbs up sign tone 6",
+          "name": "thumbs up: dark skin tone",
           "fallback": "👍🏿",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 1314,
+          "order": 127,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-            "x": 782,
-            "y": 272,
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 918,
+            "y": 102,
             "height": 32,
             "width": 32,
-            "xIndex": 23,
-            "yIndex": 8
+            "xIndex": 27,
+            "yIndex": 3
           },
           "shortName": ":thumbsup::skin-tone-6:"
         }
       ],
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-        "x": 510,
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+        "x": 748,
         "y": 102,
         "height": 32,
         "width": 32,
-        "xIndex": 15,
+        "xIndex": 22,
         "yIndex": 3
       },
+      "ascii": [
+        "(y)"
+      ],
       "shortName": ":thumbsup:"
+    },
+    {
+      "id": "1f44e",
+      "name": "thumbs down",
+      "fallback": "👎",
+      "type": "STANDARD",
+      "category": "PEOPLE",
+      "order": 128,
+      "skinVariations": [
+        {
+          "id": "1f44e-1f3fb",
+          "name": "thumbs down: light skin tone",
+          "fallback": "👎🏻",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 129,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 986,
+            "y": 102,
+            "height": 32,
+            "width": 32,
+            "xIndex": 29,
+            "yIndex": 3
+          },
+          "shortName": ":thumbsdown::skin-tone-2:"
+        },
+        {
+          "id": "1f44e-1f3fc",
+          "name": "thumbs down: medium-light skin tone",
+          "fallback": "👎🏼",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 130,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 1020,
+            "y": 102,
+            "height": 32,
+            "width": 32,
+            "xIndex": 30,
+            "yIndex": 3
+          },
+          "shortName": ":thumbsdown::skin-tone-3:"
+        },
+        {
+          "id": "1f44e-1f3fd",
+          "name": "thumbs down: medium skin tone",
+          "fallback": "👎🏽",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 131,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 1054,
+            "y": 102,
+            "height": 32,
+            "width": 32,
+            "xIndex": 31,
+            "yIndex": 3
+          },
+          "shortName": ":thumbsdown::skin-tone-4:"
+        },
+        {
+          "id": "1f44e-1f3fe",
+          "name": "thumbs down: medium-dark skin tone",
+          "fallback": "👎🏾",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 132,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 1088,
+            "y": 102,
+            "height": 32,
+            "width": 32,
+            "xIndex": 32,
+            "yIndex": 3
+          },
+          "shortName": ":thumbsdown::skin-tone-5:"
+        },
+        {
+          "id": "1f44e-1f3ff",
+          "name": "thumbs down: dark skin tone",
+          "fallback": "👎🏿",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 133,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 0,
+            "y": 136,
+            "height": 32,
+            "width": 32,
+            "xIndex": 0,
+            "yIndex": 4
+          },
+          "shortName": ":thumbsdown::skin-tone-6:"
+        }
+      ],
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+        "x": 952,
+        "y": 102,
+        "height": 32,
+        "width": 32,
+        "xIndex": 28,
+        "yIndex": 3
+      },
+      "shortName": ":thumbsdown:"
     },
     {
       "id": "1f436",
@@ -278,9 +402,9 @@
       "fallback": "🐶",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 205,
+      "order": 1012,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
         "x": 0,
         "y": 0,
         "height": 32,
@@ -296,9 +420,9 @@
       "fallback": "🐱",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 206,
+      "order": 1013,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
         "x": 34,
         "y": 0,
         "height": 32,
@@ -314,9 +438,9 @@
       "fallback": "🐭",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 207,
+      "order": 1014,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
         "x": 68,
         "y": 0,
         "height": 32,
@@ -332,9 +456,9 @@
       "fallback": "🐹",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 208,
+      "order": 1015,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
         "x": 102,
         "y": 0,
         "height": 32,
@@ -350,9 +474,9 @@
       "fallback": "🐰",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 209,
+      "order": 1016,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
         "x": 136,
         "y": 0,
         "height": 32,
@@ -363,19 +487,37 @@
       "shortName": ":rabbit:"
     },
     {
-      "id": "1f43b",
-      "name": "bear face",
-      "fallback": "🐻",
+      "id": "1f98a",
+      "name": "fox face",
+      "fallback": "🦊",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 210,
+      "order": 1017,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
         "x": 170,
         "y": 0,
         "height": 32,
         "width": 32,
         "xIndex": 5,
+        "yIndex": 0
+      },
+      "shortName": ":fox:"
+    },
+    {
+      "id": "1f43b",
+      "name": "bear face",
+      "fallback": "🐻",
+      "type": "STANDARD",
+      "category": "NATURE",
+      "order": 1018,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
+        "x": 204,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 6,
         "yIndex": 0
       },
       "shortName": ":bear:"
@@ -386,14 +528,14 @@
       "fallback": "🐼",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 211,
+      "order": 1019,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
-        "x": 204,
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
+        "x": 238,
         "y": 0,
         "height": 32,
         "width": 32,
-        "xIndex": 6,
+        "xIndex": 7,
         "yIndex": 0
       },
       "shortName": ":panda_face:"
@@ -404,27 +546,9 @@
       "fallback": "🐨",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 212,
+      "order": 1020,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
-        "x": 238,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 7,
-        "yIndex": 0
-      },
-      "shortName": ":koala:"
-    },
-    {
-      "id": "1f42f",
-      "name": "tiger face",
-      "fallback": "🐯",
-      "type": "STANDARD",
-      "category": "NATURE",
-      "order": 213,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
         "x": 272,
         "y": 0,
         "height": 32,
@@ -432,22 +556,22 @@
         "xIndex": 8,
         "yIndex": 0
       },
-      "shortName": ":tiger:"
+      "shortName": ":koala:"
     },
     {
       "id": "1f4a5",
-      "name": "collision symbol",
-      "fallback": "\uD83D\uDCA5",
+      "name": "collision",
+      "fallback": "💥",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 338,
+      "order": 1147,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
-        "x": 238,
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
+        "x": 306,
         "y": 306,
         "height": 32,
         "width": 32,
-        "xIndex": 7,
+        "xIndex": 9,
         "yIndex": 9
       },
       "shortName": ":boom:"
@@ -458,9 +582,9 @@
       "fallback": "🍏",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 352,
+      "order": 1171,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 0,
         "y": 0,
         "height": 32,
@@ -476,9 +600,9 @@
       "fallback": "🍎",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 353,
+      "order": 1172,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 34,
         "y": 0,
         "height": 32,
@@ -494,9 +618,9 @@
       "fallback": "🍐",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 354,
+      "order": 1173,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 68,
         "y": 0,
         "height": 32,
@@ -512,9 +636,9 @@
       "fallback": "🍊",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 355,
+      "order": 1174,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 102,
         "y": 0,
         "height": 32,
@@ -530,9 +654,9 @@
       "fallback": "🍋",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 356,
+      "order": 1175,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 136,
         "y": 0,
         "height": 32,
@@ -548,9 +672,9 @@
       "fallback": "🍌",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 357,
+      "order": 1176,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 170,
         "y": 0,
         "height": 32,
@@ -566,9 +690,9 @@
       "fallback": "🍉",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 358,
+      "order": 1177,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 204,
         "y": 0,
         "height": 32,
@@ -584,9 +708,9 @@
       "fallback": "🍇",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 359,
+      "order": 1178,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 238,
         "y": 0,
         "height": 32,
@@ -602,9 +726,9 @@
       "fallback": "🍓",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 360,
+      "order": 1179,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 272,
         "y": 0,
         "height": 32,
@@ -620,9 +744,9 @@
       "fallback": "🍈",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 361,
+      "order": 1180,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "x": 306,
         "y": 0,
         "height": 32,
@@ -635,12 +759,12 @@
     {
       "id": "26bd",
       "name": "soccer ball",
-      "fallback": "⚽️",
+      "fallback": "⚽",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 419,
+      "order": 1257,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 0,
         "y": 0,
         "height": 32,
@@ -652,13 +776,13 @@
     },
     {
       "id": "1f3c0",
-      "name": "basketball and hoop",
+      "name": "basketball",
       "fallback": "🏀",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 420,
+      "order": 1258,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 34,
         "y": 0,
         "height": 32,
@@ -674,9 +798,9 @@
       "fallback": "🏈",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 421,
+      "order": 1259,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 68,
         "y": 0,
         "height": 32,
@@ -689,12 +813,12 @@
     {
       "id": "26be",
       "name": "baseball",
-      "fallback": "⚾️",
+      "fallback": "⚾",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 422,
+      "order": 1260,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 102,
         "y": 0,
         "height": 32,
@@ -706,13 +830,13 @@
     },
     {
       "id": "1f3be",
-      "name": "tennis racquet and ball",
+      "name": "tennis",
       "fallback": "🎾",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 423,
+      "order": 1261,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 136,
         "y": 0,
         "height": 32,
@@ -728,9 +852,9 @@
       "fallback": "🏐",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 424,
+      "order": 1262,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 170,
         "y": 0,
         "height": 32,
@@ -746,9 +870,9 @@
       "fallback": "🏉",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 425,
+      "order": 1263,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 204,
         "y": 0,
         "height": 32,
@@ -760,13 +884,13 @@
     },
     {
       "id": "1f3b1",
-      "name": "billiards",
+      "name": "pool 8 ball",
       "fallback": "🎱",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 426,
+      "order": 1264,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 238,
         "y": 0,
         "height": 32,
@@ -777,14 +901,14 @@
       "shortName": ":8ball:"
     },
     {
-      "id": "26f3",
-      "name": "flag in hole",
-      "fallback": "⛳️",
+      "id": "1f3d3",
+      "name": "ping pong",
+      "fallback": "🏓",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 427,
+      "order": 1265,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 272,
         "y": 0,
         "height": 32,
@@ -792,17 +916,17 @@
         "xIndex": 8,
         "yIndex": 0
       },
-      "shortName": ":golf:"
+      "shortName": ":ping_pong:"
     },
     {
-      "id": "1f3cc",
-      "name": "golfer",
-      "fallback": "🏌️",
+      "id": "1f3f8",
+      "name": "badminton",
+      "fallback": "🏸",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 428,
+      "order": 1266,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
         "x": 306,
         "y": 0,
         "height": 32,
@@ -810,7 +934,7 @@
         "xIndex": 9,
         "yIndex": 0
       },
-      "shortName": ":golfer:"
+      "shortName": ":badminton:"
     },
     {
       "id": "1f697",
@@ -818,9 +942,9 @@
       "fallback": "🚗",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 476,
+      "order": 1540,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 0,
         "y": 0,
         "height": 32,
@@ -836,9 +960,9 @@
       "fallback": "🚕",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 477,
+      "order": 1541,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 34,
         "y": 0,
         "height": 32,
@@ -850,13 +974,13 @@
     },
     {
       "id": "1f699",
-      "name": "recreational vehicle",
+      "name": "sport utility vehicle",
       "fallback": "🚙",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 478,
+      "order": 1542,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 68,
         "y": 0,
         "height": 32,
@@ -872,9 +996,9 @@
       "fallback": "🚌",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 479,
+      "order": 1543,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 102,
         "y": 0,
         "height": 32,
@@ -890,9 +1014,9 @@
       "fallback": "🚎",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 480,
+      "order": 1544,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 136,
         "y": 0,
         "height": 32,
@@ -905,12 +1029,12 @@
     {
       "id": "1f3ce",
       "name": "racing car",
-      "fallback": "🏎️",
+      "fallback": "🏎",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 481,
+      "order": 1545,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 170,
         "y": 0,
         "height": 32,
@@ -926,9 +1050,9 @@
       "fallback": "🚓",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 482,
+      "order": 1546,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 204,
         "y": 0,
         "height": 32,
@@ -944,9 +1068,9 @@
       "fallback": "🚑",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 483,
+      "order": 1547,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 238,
         "y": 0,
         "height": 32,
@@ -962,9 +1086,9 @@
       "fallback": "🚒",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 484,
+      "order": 1548,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 272,
         "y": 0,
         "height": 32,
@@ -980,9 +1104,9 @@
       "fallback": "🚐",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 485,
+      "order": 1549,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
         "x": 306,
         "y": 0,
         "height": 32,
@@ -995,12 +1119,12 @@
     {
       "id": "231a",
       "name": "watch",
-      "fallback": "⌚️",
+      "fallback": "⌚",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 591,
+      "order": 1659,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 0,
         "y": 0,
         "height": 32,
@@ -1016,9 +1140,9 @@
       "fallback": "📱",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 592,
+      "order": 1660,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 34,
         "y": 0,
         "height": 32,
@@ -1030,13 +1154,13 @@
     },
     {
       "id": "1f4f2",
-      "name": "mobile phone with rightwards arrow at left",
+      "name": "mobile phone with arrow",
       "fallback": "📲",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 593,
+      "order": 1661,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 68,
         "y": 0,
         "height": 32,
@@ -1048,13 +1172,13 @@
     },
     {
       "id": "1f4bb",
-      "name": "personal computer",
+      "name": "laptop computer",
       "fallback": "💻",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 594,
+      "order": 1662,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 102,
         "y": 0,
         "height": 32,
@@ -1067,12 +1191,12 @@
     {
       "id": "2328",
       "name": "keyboard",
-      "fallback": "⌨️",
+      "fallback": "⌨",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 595,
+      "order": 1663,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 136,
         "y": 0,
         "height": 32,
@@ -1085,12 +1209,12 @@
     {
       "id": "1f5a5",
       "name": "desktop computer",
-      "fallback": "🖥️",
+      "fallback": "🖥",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 596,
+      "order": 1664,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 170,
         "y": 0,
         "height": 32,
@@ -1103,12 +1227,12 @@
     {
       "id": "1f5a8",
       "name": "printer",
-      "fallback": "🖨️",
+      "fallback": "🖨",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 597,
+      "order": 1665,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 204,
         "y": 0,
         "height": 32,
@@ -1120,13 +1244,13 @@
     },
     {
       "id": "1f5b1",
-      "name": "three button mouse",
-      "fallback": "🖱️",
+      "name": "computer mouse",
+      "fallback": "🖱",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 598,
+      "order": 1666,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 238,
         "y": 0,
         "height": 32,
@@ -1139,12 +1263,12 @@
     {
       "id": "1f5b2",
       "name": "trackball",
-      "fallback": "🖲️",
+      "fallback": "🖲",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 599,
+      "order": 1667,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 272,
         "y": 0,
         "height": 32,
@@ -1157,12 +1281,12 @@
     {
       "id": "1f579",
       "name": "joystick",
-      "fallback": "🕹️",
+      "fallback": "🕹",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 600,
+      "order": 1668,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
         "x": 306,
         "y": 0,
         "height": 32,
@@ -1174,13 +1298,13 @@
     },
     {
       "id": "2764",
-      "name": "heavy black heart",
-      "fallback": "❤️",
+      "name": "red heart",
+      "fallback": "❤",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 769,
+      "order": 1842,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
         "x": 0,
         "y": 0,
         "height": 32,
@@ -1188,6 +1312,9 @@
         "xIndex": 0,
         "yIndex": 0
       },
+      "ascii": [
+        "<3"
+      ],
       "shortName": ":heart:"
     },
     {
@@ -1196,9 +1323,9 @@
       "fallback": "💛",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 770,
+      "order": 1843,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
         "x": 34,
         "y": 0,
         "height": 32,
@@ -1214,9 +1341,9 @@
       "fallback": "💚",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 771,
+      "order": 1844,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
         "x": 68,
         "y": 0,
         "height": 32,
@@ -1232,9 +1359,9 @@
       "fallback": "💙",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 772,
+      "order": 1845,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
         "x": 102,
         "y": 0,
         "height": 32,
@@ -1250,9 +1377,9 @@
       "fallback": "💜",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 773,
+      "order": 1846,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
         "x": 136,
         "y": 0,
         "height": 32,
@@ -1263,14 +1390,14 @@
       "shortName": ":purple_heart:"
     },
     {
-      "id": "1f494",
-      "name": "broken heart",
-      "fallback": "💔",
+      "id": "1f5a4",
+      "name": "black heart",
+      "fallback": "🖤",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 774,
+      "order": 1847,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
         "x": 170,
         "y": 0,
         "height": 32,
@@ -1278,22 +1405,43 @@
         "xIndex": 5,
         "yIndex": 0
       },
-      "shortName": ":broken_heart:"
+      "shortName": ":black_heart:"
     },
     {
-      "id": "2763",
-      "name": "heavy heart exclamation mark ornament",
-      "fallback": "❣️",
+      "id": "1f494",
+      "name": "broken heart",
+      "fallback": "💔",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 775,
+      "order": 1848,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
         "x": 204,
         "y": 0,
         "height": 32,
         "width": 32,
         "xIndex": 6,
+        "yIndex": 0
+      },
+      "ascii": [
+        "</3"
+      ],
+      "shortName": ":broken_heart:"
+    },
+    {
+      "id": "2763",
+      "name": "heavy heart exclamation",
+      "fallback": "❣",
+      "type": "STANDARD",
+      "category": "SYMBOLS",
+      "order": 1849,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
+        "x": 238,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 7,
         "yIndex": 0
       },
       "shortName": ":heart_exclamation:"
@@ -1304,14 +1452,14 @@
       "fallback": "💕",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 776,
+      "order": 1850,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
-        "x": 238,
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
+        "x": 272,
         "y": 0,
         "height": 32,
         "width": 32,
-        "xIndex": 7,
+        "xIndex": 8,
         "yIndex": 0
       },
       "shortName": ":two_hearts:"
@@ -1322,207 +1470,9 @@
       "fallback": "💞",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 777,
+      "order": 1851,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
-        "x": 272,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 8,
-        "yIndex": 0
-      },
-      "shortName": ":revolving_hearts:"
-    },
-    {
-      "id": "2754",
-      "name": "white question mark ornament",
-      "fallback": "❔",
-      "type": "STANDARD",
-      "category": "SYMBOLS",
-      "order": 853,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
-        "x": 408,
-        "y": 136,
-        "height": 32,
-        "width": 32,
-        "xIndex": 12,
-        "yIndex": 4
-      },
-      "shortName": ":grey_question:"
-    },
-    {
-      "id": "1f1e6-1f1e8",
-      "name": "ascension",
-      "fallback": "🇦🇨",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1038,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 0,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 0,
-        "yIndex": 0
-      },
-      "shortName": ":flag_ac:"
-    },
-    {
-      "id": "1f1e6-1f1eb",
-      "name": "afghanistan",
-      "fallback": "🇦🇫",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1039,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 34,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 1,
-        "yIndex": 0
-      },
-      "shortName": ":flag_af:"
-    },
-    {
-      "id": "1f1e6-1f1f1",
-      "name": "albania",
-      "fallback": "🇦🇱",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1040,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 68,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 2,
-        "yIndex": 0
-      },
-      "shortName": ":flag_al:"
-    },
-    {
-      "id": "1f1e9-1f1ff",
-      "name": "algeria",
-      "fallback": "🇩🇿",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1041,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 102,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 3,
-        "yIndex": 0
-      },
-      "shortName": ":flag_dz:"
-    },
-    {
-      "id": "1f1e6-1f1e9",
-      "name": "andorra",
-      "fallback": "🇦🇩",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1042,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 136,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 4,
-        "yIndex": 0
-      },
-      "shortName": ":flag_ad:"
-    },
-    {
-      "id": "1f1e6-1f1f4",
-      "name": "angola",
-      "fallback": "🇦🇴",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1043,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 170,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 5,
-        "yIndex": 0
-      },
-      "shortName": ":flag_ao:"
-    },
-    {
-      "id": "1f1e6-1f1ee",
-      "name": "anguilla",
-      "fallback": "🇦🇮",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1044,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 204,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 6,
-        "yIndex": 0
-      },
-      "shortName": ":flag_ai:"
-    },
-    {
-      "id": "1f1e6-1f1ec",
-      "name": "antigua and barbuda",
-      "fallback": "🇦🇬",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1045,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 238,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 7,
-        "yIndex": 0
-      },
-      "shortName": ":flag_ag:"
-    },
-    {
-      "id": "1f1e6-1f1f7",
-      "name": "argentina",
-      "fallback": "🇦🇷",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1046,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
-        "x": 272,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 8,
-        "yIndex": 0
-      },
-      "shortName": ":flag_ar:"
-    },
-    {
-      "id": "1f1e6-1f1f2",
-      "name": "armenia",
-      "fallback": "🇦🇲",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 1047,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
         "x": 306,
         "y": 0,
         "height": 32,
@@ -1530,66 +1480,246 @@
         "xIndex": 9,
         "yIndex": 0
       },
-      "shortName": ":flag_am:"
+      "shortName": ":revolving_hearts:"
+    },
+    {
+      "id": "1f3f3",
+      "name": "white flag",
+      "fallback": "🏳",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2115,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 0,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 0,
+        "yIndex": 0
+      },
+      "shortName": ":flag_white:"
+    },
+    {
+      "id": "1f3f4",
+      "name": "black flag",
+      "fallback": "🏴",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2116,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 34,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 1,
+        "yIndex": 0
+      },
+      "shortName": ":flag_black:"
+    },
+    {
+      "id": "1f3c1",
+      "name": "chequered flag",
+      "fallback": "🏁",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2117,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 68,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 2,
+        "yIndex": 0
+      },
+      "shortName": ":checkered_flag:"
+    },
+    {
+      "id": "1f6a9",
+      "name": "triangular flag",
+      "fallback": "🚩",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2118,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 102,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 3,
+        "yIndex": 0
+      },
+      "shortName": ":triangular_flag_on_post:"
+    },
+    {
+      "id": "1f3f3-fe0f-200d-1f308",
+      "name": "rainbow flag",
+      "fallback": "🏳️‍🌈",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2119,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 136,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 4,
+        "yIndex": 0
+      },
+      "shortName": ":rainbow_flag:"
+    },
+    {
+      "id": "1f1e6-1f1eb",
+      "name": "Afghanistan",
+      "fallback": "🇦🇫",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2120,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 170,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 5,
+        "yIndex": 0
+      },
+      "shortName": ":flag_af:"
+    },
+    {
+      "id": "1f1e6-1f1fd",
+      "name": "Åland Islands",
+      "fallback": "🇦🇽",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2121,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 204,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 6,
+        "yIndex": 0
+      },
+      "shortName": ":flag_ax:"
+    },
+    {
+      "id": "1f1e6-1f1f1",
+      "name": "Albania",
+      "fallback": "🇦🇱",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2122,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 238,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 7,
+        "yIndex": 0
+      },
+      "shortName": ":flag_al:"
+    },
+    {
+      "id": "1f1e9-1f1ff",
+      "name": "Algeria",
+      "fallback": "🇩🇿",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2123,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 272,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 8,
+        "yIndex": 0
+      },
+      "shortName": ":flag_dz:"
+    },
+    {
+      "id": "1f1e8-1f1ec",
+      "name": "Congo - Brazzaville",
+      "fallback": "🇨🇬",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 2171,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
+        "x": 170,
+        "y": 102,
+        "height": 32,
+        "width": 32,
+        "xIndex": 5,
+        "yIndex": 3
+      },
+      "shortName": ":flag_cg:"
     }
   ],
   "meta": {
     "spriteSheets": {
-      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png": {
-        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/objects.png",
-        "row": 13,
-        "column": 14,
-        "height": 442,
-        "width": 476
+      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png": {
+        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+        "row": 31,
+        "column": 33,
+        "height": 1054,
+        "width": 1122
       },
-      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png": {
-        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
-        "row": 17,
-        "column": 18,
-        "height": 578,
-        "width": 612
-      },
-      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png": {
-        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/nature.png",
-        "row": 12,
-        "column": 14,
-        "height": 408,
-        "width": 476
-      },
-      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png": {
-        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "row": 10,
-        "column": 12,
-        "height": 340,
-        "width": 408
-      },
-      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png": {
-        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/flags.png",
+      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png": {
+        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/flags.png",
         "row": 16,
         "column": 17,
         "height": 544,
         "width": 578
       },
-      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png": {
-        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/activity.png",
-        "row": 11,
-        "column": 13,
-        "height": 374,
-        "width": 442
+      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png": {
+        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/objects.png",
+        "row": 13,
+        "column": 15,
+        "height": 442,
+        "width": 510
       },
-      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png": {
-        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/foods.png",
+      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png": {
+        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
         "row": 9,
         "column": 10,
         "height": 306,
         "width": 340
       },
-      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png": {
-        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-        "row": 23,
-        "column": 25,
-        "height": 782,
-        "width": 850
+      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png": {
+        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/activity.png",
+        "row": 16,
+        "column": 18,
+        "height": 544,
+        "width": 612
+      },
+      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png": {
+        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png",
+        "row": 12,
+        "column": 14,
+        "height": 408,
+        "width": 476
+      },
+      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png": {
+        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/symbols.png",
+        "row": 17,
+        "column": 18,
+        "height": 578,
+        "width": 612
+      },
+      "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png": {
+        "url": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/places.png",
+        "row": 10,
+        "column": 12,
+        "height": 340,
+        "width": 408
       }
     }
   }

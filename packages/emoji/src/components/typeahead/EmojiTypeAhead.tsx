@@ -61,7 +61,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.emojiProvider) {
       this.props.emojiProvider.then(provider => {
         provider.subscribe(this.onProviderChange);

@@ -80,4 +80,8 @@ describe('emojis - input rules', () => {
   it('should not replace non empty selection with emojiQuery mark if selection starts with an excluding mark', () => {
     assert(':', false, p(code('{<text>}')));
   });
+
+  it('should not replace a ":" preceded by a special character', () => {
+    assert('>:', false);
+  });
 });

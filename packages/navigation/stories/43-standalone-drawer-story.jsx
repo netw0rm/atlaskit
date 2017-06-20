@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { ArrowLeftIcon, AtlassianIcon } from '@atlaskit/icon';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import { AkCreateDrawer } from '../src/index';
 import { name } from '../package.json';
 

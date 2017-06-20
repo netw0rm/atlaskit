@@ -93,29 +93,21 @@ export default class ModalDialog extends PureComponent {
     const hasHeader = !!header;
     const hasFooter = !!footer;
 
-    const OptionalHeader = () => (
-      hasHeader ? (
-        <HeaderFooterWrapper headerOrFooter="header">{header}</HeaderFooterWrapper>
-      ) : null
-    );
+    const optionalHeader = hasHeader ? (
+      <HeaderFooterWrapper headerOrFooter="header">{header}</HeaderFooterWrapper>
+    ) : null;
 
-    const OptionalFooter = () => (
-      hasFooter ? (
-        <HeaderFooterWrapper headerOrFooter="footer">{footer}</HeaderFooterWrapper>
-      ) : null
-    );
+    const optionalFooter = hasFooter ? (
+      <HeaderFooterWrapper headerOrFooter="footer">{footer}</HeaderFooterWrapper>
+    ) : null;
 
-    const HeaderKeylineMask = () => (
-      hasHeader ? (
-        <KeylineMask headerOrFooter="header" />
-      ) : null
-    );
+    const headerKeylineMask = hasHeader ? (
+      <KeylineMask headerOrFooter="header" />
+    ) : null;
 
-    const FooterKeylineMask = () => (
-      hasFooter ? (
-        <KeylineMask headerOrFooter="footer" />
-      ) : null
-    );
+    const footerKeylineMask = hasFooter ? (
+      <KeylineMask headerOrFooter="footer" />
+    ) : null;
 
     return (
       <ModalWrapper isOpen={isOpen}>
@@ -131,13 +123,13 @@ export default class ModalDialog extends PureComponent {
               onClick={this.handlePositionerDirectClick}
             >
               <ModalContainer>
-                <OptionalHeader />
+                {optionalHeader}
                 <ContentContainer hasHeader={hasHeader} hasFooter={hasFooter}>
-                  <HeaderKeylineMask />
+                  {headerKeylineMask}
                   {children}
-                  <FooterKeylineMask />
+                  {footerKeylineMask}
                 </ContentContainer>
-                <OptionalFooter />
+                {optionalFooter}
               </ModalContainer>
             </ModalPositioner>
           ) : null

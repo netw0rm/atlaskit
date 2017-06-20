@@ -47,7 +47,7 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.ready = true;
     if (!this.state.emoji) {
       this.refreshEmoji(this.props.emojiProvider, this.props.emojiId);

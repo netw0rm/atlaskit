@@ -4,7 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { Mention } from '../../src/types';
+import { MentionDescription } from '../../src/types';
 import mentionData, { mentionDataSize } from '../_mention-data';
 import MentionResource from '../_mock-ak-mention-resource';
 import MentionPicker, { OnClose, OnOpen, Props, State } from '../../src/components/MentionPicker';
@@ -139,7 +139,7 @@ describe('MentionPicker', () => {
   });
 
   it('should choose current selection when chooseCurrentSelection called', () => {
-    let chosenMention: Mention;
+    let chosenMention: MentionDescription;
 
     const component = setupPicker({
       onSelection: (mention) => { chosenMention = mention; },
@@ -162,7 +162,7 @@ describe('MentionPicker', () => {
   });
 
   it('should choose clicked selection when item clicked', () => {
-    let chosenMention: Mention;
+    let chosenMention: MentionDescription;
 
     const component = setupPicker({
       onSelection: (mention) => {

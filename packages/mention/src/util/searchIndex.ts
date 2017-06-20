@@ -1,10 +1,17 @@
-import {Search, UnorderedSearchIndex} from 'js-search';
+import {Search, UnorderedSearchIndex, ITokenizer} from 'js-search';
 import {MentionsResult} from '../api/MentionResource';
 import {HighlightDetail, MentionDescription} from '../types';
-import * as XRegExp from 'xregexp';
+import * as XRegExp from 'xregexp/src/xregexp'; // Not using 'xregexp' directly to only include what we use
+import * as XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
+import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
+import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
-const unorderedSearchIndex = new UnorderedSearchIndex();
+XRegExpUnicodeBase(XRegExp);
+XRegExpUnicodeScripts(XRegExp);
+XRegExpUnicodeCategories(XRegExp);
 
+// \p{Han} => each chinese character is a separate token
+// \p{L}+[\p{Mn}|']*\p{L} => consecutive letters, including non spacing mark and apostrophe are a single token
 const tokenizerRegex = XRegExp.cache('\\p{Han}|\\p{L}+[\\p{Mn}|\']*\\p{L}*', 'gi');
 const nonSpacingMarkRegex = XRegExp.cache('\\p{Mn}', 'gi');
 
@@ -13,7 +20,7 @@ export type Token = {
   start: number;
 };
 
-export class Tokenizer {
+export class Tokenizer implements ITokenizer {
   public static tokenize(text): string[] {
     return this.tokenizeAsTokens(text).map(token => token.token);
   }
@@ -53,6 +60,7 @@ export class Highlighter {
             let i = end + 1;
             let combiningCharacters = 0;
 
+            // Includes non spacing mark in highlights (e.g. ញុំ  when searching ញ)
             while (i < fieldToken.token.length && nonSpacingMarkRegex.test(fieldToken.token[i])) {
               ++combiningCharacters;
               ++i;
@@ -91,17 +99,7 @@ export class SearchIndex {
         }};
       });
 
-      localResults.sort((a, b) => {
-        if (a.weight < b.weight) {
-          return -1;
-        }
-
-        if (a.weight > b.weight) {
-          return 1;
-        }
-
-        return 0;
-      });
+      localResults.sort((a, b) => a.weight - b.weight || 0);
 
       resolve({
         mentions: localResults
@@ -121,7 +119,7 @@ export class SearchIndex {
     if (!this.index) {
       this.index = new Search('id');
 
-      this.index.searchIndex = unorderedSearchIndex;
+      this.index.searchIndex = new UnorderedSearchIndex();
       this.index.tokenizer = Tokenizer;
 
       this.index.addIndex('name');

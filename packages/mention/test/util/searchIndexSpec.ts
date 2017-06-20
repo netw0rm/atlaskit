@@ -5,7 +5,7 @@ describe('SearchIndex', () => {
 
   let searchIndex: SearchIndex;
 
-  before(() => {
+  beforeEach(() => {
     searchIndex = new SearchIndex();
   });
 

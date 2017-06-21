@@ -195,12 +195,21 @@ export class MediaPluginState {
     const grandParent = $from.node(-1);
     const defaultContentType = grandParent.defaultContentType(0);
 
-    if (atTheEndOfDoc(state) && !this.mediaGroupExistAsAjacentNodeInTheFront(state)) {
+    if (atTheEndOfDoc(state) && !this.posOfMediaGroupExistsAsAnAjacentNodeBefore(state)) {
       transaction = transaction.insert($to.pos + 1, defaultContentType.create());
     }
 
-    const range = this.findReplaceRange();
-    transaction = transaction.replaceWith(range.start, range.end, node);
+    const insertPos = this.findMediaInsertPos();
+    // delete the selection or empty paragraph
+    const deleteRange = this.findDeleteRange();
+
+    if (!deleteRange) {
+      transaction = transaction.insert(insertPos, node);
+    } else if (insertPos <= deleteRange.start) {
+      transaction = transaction.deleteRange(deleteRange.start, deleteRange.end).insert(insertPos, node);
+    } else {
+      transaction = transaction.insert(insertPos, node).deleteRange(deleteRange.start, deleteRange.end);
+    }
 
     return [node, transaction];
   }
@@ -218,12 +227,6 @@ export class MediaPluginState {
     }
 
     this.popupPicker.show();
-  }
-
-  private mediaGroupExistAsAjacentNodeInTheFront(state: EditorState<any>): boolean {
-    const { $from } = state.selection;
-    const nearByMediaGroupPos = this.findMediaGroupNearBy(state);
-    return atTheBeginningOfBlock(state) && nearByMediaGroupPos && nearByMediaGroupPos < startPositionOfParent($from) || false;
   }
 
   /**
@@ -361,44 +364,88 @@ export class MediaPluginState {
 
   /**
    * Determine whether the cursor is inside empty paragraph
+   * or the selection is the entire paragraph
    */
-  private isInsideEmptyParagraph = () => {
+  private isInsidePotentialEmptyParagraph = () => {
     const { state } = this.view;
-    const { $from, empty } = state.selection;
+    const { $from } = state.selection;
 
-    if (!empty) {
-      return false;
-    }
-
-    return (
-      $from.parent.type === state.schema.nodes.paragraph &&
-      !$from.parent.content.childCount
-    );
+    return $from.parent.type === state.schema.nodes.paragraph && atTheBeginningOfBlock(state) && atTheEndOfBlock(state);
   }
 
-  private findMediaGroupNearBy(state: EditorState<any>): number | undefined {
-    const { $from, $to } = state.selection;
-
-    // Check parent
-    if ($from.parent.type === state.schema.nodes.mediaGroup) {
-      return startPositionOfParent($from);
+  private posOfMediaGroupExistsAsAnAjacentNodeBefore(state: EditorState<any>): number | undefined {
+    if (!atTheBeginningOfBlock(state)) {
+      return;
     }
-
-
-    // Check adjacent after parent
-    let adjacentPos = endPositionOfParent($to);
-    let adjacentNode: PMNode | undefined | null = state.doc.nodeAt(adjacentPos);
-    if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-      return adjacentPos + 1;
-    }
-
-    // Check adjacent before parent
-    adjacentPos = startPositionOfParent($from) - 1;
+    const { $from } = state.selection;
+    const adjacentPos = startPositionOfParent($from) - 1;
     const adjacentResolvePos = state.doc.resolve(adjacentPos);
-    adjacentNode = adjacentResolvePos.nodeBefore;
+    const adjacentNode = adjacentResolvePos.nodeBefore;
     if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
       return adjacentPos - adjacentNode.nodeSize + 1;
     }
+  }
+
+  private posOfMediaGroupExisitsAsAnAjacentNodeAfter(state: EditorState<any>): number | undefined {
+    if (!atTheEndOfBlock(state)) {
+      return;
+    }
+    const { $to } = state.selection;
+    const adjacentPos = endPositionOfParent($to);
+    const adjacentNode: PMNode | undefined | null = state.doc.nodeAt(adjacentPos);
+    if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
+      return adjacentPos + 1;
+    }
+  }
+
+  private posOfMediaGroupExistsAsAParentNode(state: EditorState<any>): number | undefined {
+    const { $from } = state.selection;
+
+    if ($from.parent.type === state.schema.nodes.mediaGroup) {
+      return startPositionOfParent($from);
+    }
+  }
+
+  private posOfMediaGroupNearBy(state: EditorState<any>): number | undefined {
+    return this.posOfMediaGroupExistsAsAParentNode(state)
+      || this.posOfMediaGroupExisitsAsAnAjacentNodeAfter(state)
+      || this.posOfMediaGroupExistsAsAnAjacentNodeBefore(state);
+  }
+
+  private findMediaInsertPos = (): number => {
+    const state = this.view.state;
+    const { $from, $to } = state.selection;
+
+    const nearByMediaGroupPos = this.posOfMediaGroupNearBy(state);
+
+    if (nearByMediaGroupPos) {
+      return nearByMediaGroupPos;
+    }
+
+    if (atTheEndOfBlock(state)) {
+      return $to.pos + 1;
+    }
+
+    if (atTheBeginningOfBlock(state)) {
+      return $from.pos - 1;
+    }
+
+    return $to.pos;
+  }
+
+  private findDeleteRange = (): { start: number, end: number } | undefined => {
+    const { state } = this.view;
+    const { $from, $to } = state.selection;
+
+    if (this.posOfMediaGroupExistsAsAParentNode(state)) {
+      return;
+    }
+
+    if (!this.isInsidePotentialEmptyParagraph() || this.posOfMediaGroupNearBy(state)) {
+      return this.replaceRange($from.pos, $to.pos);
+    }
+
+    return this.replaceRange(startPositionOfParent($from) - 1, endPositionOfParent($to));
   }
 
   /**
@@ -408,36 +455,25 @@ export class MediaPluginState {
     const state = this.view.state;
     const { $from, $to } = state.selection;
 
-    const nearByMediaGroupPos = this.findMediaGroupNearBy(state);
+    const nearByMediaGroupPos = this.posOfMediaGroupNearBy(state);
 
-    if (nearByMediaGroupPos && $from.sameParent(state.doc.resolve(nearByMediaGroupPos))) {
+    if (nearByMediaGroupPos) {
       return this.replaceRange(nearByMediaGroupPos);
     }
 
     if (atTheEndOfBlock(state)) {
-      const adjacentPos = endPositionOfParent($to);
-      if (nearByMediaGroupPos && nearByMediaGroupPos > adjacentPos) {
-        return this.replaceRange(nearByMediaGroupPos);
-      }
-
-      if (!this.isInsideEmptyParagraph()) {
-        return this.replaceRange($from.pos, adjacentPos);
+      if (!this.isInsidePotentialEmptyParagraph()) {
+        return this.replaceRange($from.pos, endPositionOfParent($to));
       }
     }
 
     if (atTheBeginningOfBlock(state)) {
-      const adjacentPos = startPositionOfParent($from) - 1;
-
-      if (nearByMediaGroupPos && nearByMediaGroupPos < adjacentPos) {
-        return this.replaceRange(nearByMediaGroupPos);
-      }
-
-      if (!this.isInsideEmptyParagraph()) {
-        return this.replaceRange(adjacentPos, $to.pos);
+      if (!this.isInsidePotentialEmptyParagraph()) {
+        return this.replaceRange(startPositionOfParent($from) - 1, $to.pos);
       }
     }
 
-    if (this.isInsideEmptyParagraph()) {
+    if (this.isInsidePotentialEmptyParagraph()) {
       return this.replaceRange(startPositionOfParent($from) - 1, endPositionOfParent($from));
     }
 

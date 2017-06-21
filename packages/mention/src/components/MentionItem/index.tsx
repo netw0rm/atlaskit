@@ -5,6 +5,7 @@ import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Tooltip from '@atlaskit/tooltip';
+import NumericAvatar from '../NumericAvatar';
 
 import {
   AvatarStyle,
@@ -22,6 +23,9 @@ type ReactComponentConstructor = new() => React.Component<any, any>;
 
 import { HighlightDetail, MentionDescription, OnMentionEvent, Presence, isRestricted } from '../../types';
 import { leftClick } from '../../util/mouse';
+
+/** Match URL schemes of the form 'numvatar:38' */
+const numvatarRegex = /^numvatar:(\d+)$/;
 
 interface Part {
   value: string;
@@ -105,6 +109,7 @@ export interface Props {
 }
 
 export default class MentionItem extends PureComponent<Props, undefined> {
+
   // internal, used for callbacks
   private onMentionSelected = (event: MouseEvent<any>) => {
     if (leftClick(event) && this.props.onSelection) {
@@ -119,14 +124,38 @@ export default class MentionItem extends PureComponent<Props, undefined> {
     }
   }
 
+  /**
+   * Check the URL for the avatar. If it matches the 'numvatarRegex' then we are going to display a
+   * NumericAvatar component instead of a usual image or default avatar.
+   */
+  private static getAvatar = (url: string | undefined, presence: Presence | undefined, restricted: boolean) => {
+    const status = presence ? presence.status : undefined;
+
+    let avatar: JSX.Element;
+
+    const match = url ? numvatarRegex.exec(url) : null;
+    if (match) {
+      const num = parseInt(match[1],10);
+      avatar = (<NumericAvatar num={num} />);
+    } else {
+      avatar = (<Avatar src={url} size="medium" presence={status} />)
+    }
+
+    return (
+      <AvatarStyle restricted={restricted}>{avatar}</AvatarStyle>
+    );
+  }
+
   render() {
     const { mention, selected } = this.props;
     const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge, accessLevel } = mention;
-    const { status, time } = presence || {} as Presence;
+    const { time } = presence || {} as Presence;
     const restricted = isRestricted(accessLevel);
 
     const nameHighlights = highlight && highlight.name;
     const nicknameHighlights = highlight && highlight.nickname;
+
+    const avatarSection = MentionItem.getAvatar(avatarUrl, presence, restricted);
 
     return (
       <MentionItemStyle
@@ -137,9 +166,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
         data-mention-name={mentionName}
       >
         <RowStyle>
-          <AvatarStyle restricted={restricted}>
-            <Avatar src={avatarUrl} size="medium" presence={status} />
-          </AvatarStyle>
+          {avatarSection}
           <NameSectionStyle restricted={restricted}>
             {renderHighlight(FullNameStyle, name, nameHighlights)}
             {renderHighlight(NicknameStyle, nickname, nicknameHighlights, '@')}

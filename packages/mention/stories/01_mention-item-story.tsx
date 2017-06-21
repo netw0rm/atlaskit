@@ -169,4 +169,28 @@ storiesOf(`${name}/MentionItem`, module)
           <MentionItem mention={mention} selected={mention.selected} onSelection={action('onSelection')} />
       );
   })
+  .add('mention with custom numeric avatar URL', () => {
+    const mention = {
+      id: '123',
+      name: 'Available room members',
+      mentionName: 'here',
+      avatarUrl: 'numvatar:3'
+    };
+
+    return renderSingleMention(
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
+    );
+  })
+  .add('mention with custom numeric avatar URL with number larger than 99', () => {
+    const mention = {
+      id: '123',
+      name: 'All room members',
+      mentionName: 'all',
+      avatarUrl: 'numvatar:104'
+    };
+
+    return renderSingleMention(
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
+    );
+  })
 ;

@@ -3,10 +3,15 @@ import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
 import { name } from '../package.json';
+import styled from 'styled-components';
 import { MentionDescription } from '../src/types';
 import { HttpError } from '../src/api/MentionResource';
 import MentionList from '../src/components/MentionList';
 import { mentions } from './story-data';
+
+const StoryStyle = styled.div`
+  padding: 10px;
+`;
 
 function randomMentions() {
   return mentions.filter(() => Math.random() < 0.7);
@@ -73,21 +78,62 @@ class RefreshableMentionList extends Component<Props, State> {
   }
 }
 
+function createSpecialMentions() {
+  return [
+    {
+      id: '123',
+      avatarUrl: 'numvatar:23',
+      name: 'All room members',
+      mentionName: 'all'
+    },
+    {
+      id: '321',
+      avatarUrl: 'numvatar:2',
+      name: 'Available room members',
+      mentionName: 'here'
+    }
+  ];
+}
+
+class SpecialMentionList extends Component<Props, State> {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      mentions: createSpecialMentions()
+    };
+  }
+
+  render() {
+    return (
+      <MentionList
+        mentions={this.state.mentions}
+      />
+    );
+  };
+}
+
 storiesOf(`${name}/MentionList`, module)
   .add('simple mention list', () => <RefreshableMentionList />)
+  .add('mention list with numeric avatar items', () => (
+    <StoryStyle>
+      <SpecialMentionList />
+    </StoryStyle>
+  ))
   .add('generic error mention list', () => (
-    <div style={{ padding: '10px' }} >
+    <StoryStyle>
       <MentionList resourceError={new Error('monkey trousers')} mentions={[]} />
-    </div>
+    </StoryStyle>
   ))
   .add('error mention list for 401', () => (
-    <div style={{ padding: '10px' }} >
+    <StoryStyle>
       <MentionList resourceError={new HttpError(401, 'not used')} mentions={[]} />
-    </div>
+    </StoryStyle>
   ))
   .add('error mention list for 403', () => (
-    <div style={{ padding: '10px' }} >
+    <StoryStyle>
       <MentionList resourceError={new HttpError(403, 'not used')} mentions={[]} />
-    </div>
+    </StoryStyle>
   ));
 

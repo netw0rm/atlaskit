@@ -131,6 +131,15 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'italic',
           marks: [
             {

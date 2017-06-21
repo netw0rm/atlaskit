@@ -4,6 +4,7 @@ import { ReactComponentConstructor } from '../';
 import Blockquote from './blockquote';
 import BulletList from './bulletList';
 import Doc from './doc';
+import Emoji from './emoji';
 import HardBreak from './hardBreak';
 import ListItem from './listItem';
 import Mention from './mention';
@@ -15,6 +16,7 @@ export const nodeToReact = {
   'blockquote': Blockquote,
   'bulletList': BulletList,
   'doc': Doc,
+  'emoji': Emoji,
   'hardBreak': HardBreak,
   'listItem': ListItem,
   'mention': Mention,
@@ -118,6 +120,7 @@ export {
   Blockquote,
   BulletList,
   Doc,
+  Emoji,
   HardBreak,
   ListItem,
   Mention,

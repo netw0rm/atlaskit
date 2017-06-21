@@ -75,6 +75,8 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^6.0.2",
+    "@atlaskit/button": "^3.0.0",
+    "@atlaskit/button-group": "^1.1.0",
     "@atlaskit/util-data-test": "^4.0.0",
     "ajv": "^4.11.3",
     "chai-as-promised": "^6.0.0",

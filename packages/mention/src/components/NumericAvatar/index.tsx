@@ -17,7 +17,7 @@ export default class NumericAvatar extends PureComponent<Props, {}> {
       return '99+';
     }
 
-    return "" + Math.round(num);
+    return '' + Math.round(num);
   }
 
   render() {

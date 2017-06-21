@@ -25,7 +25,7 @@ import { HighlightDetail, MentionDescription, OnMentionEvent, Presence, isRestri
 import { leftClick } from '../../util/mouse';
 
 /** Match URL schemes of the form 'numvatar:38' */
-const numvatarRegex = /^numvatar:(\d+)$/;
+const numvatarRegex = /^ak-numvatar:(\d+)$/;
 
 interface Part {
   value: string;
@@ -138,7 +138,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
       const num = parseInt(match[1],10);
       avatar = (<NumericAvatar num={num} />);
     } else {
-      avatar = (<Avatar src={url} size="medium" presence={status} />)
+      avatar = (<Avatar src={url} size="medium" presence={status} />);
     }
 
     return (

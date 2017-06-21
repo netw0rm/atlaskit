@@ -9,6 +9,7 @@ import { HttpError } from '../src/api/MentionResource';
 import MentionList from '../src/components/MentionList';
 import { mentions } from './story-data';
 
+// tslint:disable:next-line variable-name
 const StoryStyle = styled.div`
   padding: 10px;
 `;
@@ -82,13 +83,13 @@ function createSpecialMentions() {
   return [
     {
       id: '123',
-      avatarUrl: 'numvatar:23',
+      avatarUrl: 'ak-numvatar:23',
       name: 'All room members',
       mentionName: 'all'
     },
     {
       id: '321',
-      avatarUrl: 'numvatar:2',
+      avatarUrl: 'ak-numvatar:2',
       name: 'Available room members',
       mentionName: 'here'
     }
@@ -111,7 +112,7 @@ class SpecialMentionList extends Component<Props, State> {
         mentions={this.state.mentions}
       />
     );
-  };
+  }
 }
 
 storiesOf(`${name}/MentionList`, module)

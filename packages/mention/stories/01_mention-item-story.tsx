@@ -174,7 +174,7 @@ storiesOf(`${name}/MentionItem`, module)
       id: '123',
       name: 'Available room members',
       mentionName: 'here',
-      avatarUrl: 'numvatar:3'
+      avatarUrl: 'ak-numvatar:3'
     };
 
     return renderSingleMention(
@@ -186,7 +186,7 @@ storiesOf(`${name}/MentionItem`, module)
       id: '123',
       name: 'All room members',
       mentionName: 'all',
-      avatarUrl: 'numvatar:104'
+      avatarUrl: 'ak-numvatar:104'
     };
 
     return renderSingleMention(

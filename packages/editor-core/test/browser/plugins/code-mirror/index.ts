@@ -18,7 +18,7 @@ describe('@atlaskit/code-mirror-view/plugin', () => {
     place: fixture()
   });
 
-  it('should call focus subscribers when triggerFocus is called', () => {
+  it.skip('should call focus subscribers when triggerFocus is called', () => {
     const { pluginState } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
     const func = sinon.spy();
     pluginState.subscribe(func);

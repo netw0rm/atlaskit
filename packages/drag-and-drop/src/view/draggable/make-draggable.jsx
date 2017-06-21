@@ -22,6 +22,7 @@ type ComponentState = {|
 
 type MovementStyle = {|
   position: 'absolute',
+  boxSizing: 'border-box',
   zIndex: ZIndex,
   width: number,
   height: number,
@@ -230,13 +231,14 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
           return {
             zIndex,
             position: 'absolute',
+            boxSizing: 'border-box',
             // when we use position absolute we need to
             // force the height and width because it looses
             // its standard positioning logic
-            width: initial.dimension.width,
-            height: initial.dimension.height,
-            top: initial.dimension.top,
-            left: initial.dimension.left,
+            width: initial.dimension.withoutMargin.width,
+            height: initial.dimension.withoutMargin.height,
+            top: initial.dimension.withoutMargin.top,
+            left: initial.dimension.withoutMargin.left,
           };
         };
 
@@ -300,20 +302,31 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
           <div>
             <Moveable
               speed={info.speed}
-              style={info.style ? info.style : empty}
-              extraCSS="user-select: none;"
               destination={mapProps.offset}
               onMoveEnd={this.onMoveEnd}
             >
-              <DraggableDimensionPublisher
-                itemId={mapProps.id}
-                type={type}
-                targetRef={this.state.childRef}
-              >
-                {wrap(
-                  <Component {...enhancedOwnProps} innerRef={this.setChildRef} />
+              {(style) => {
+                const composedStyle = {
+                  ...info.style,
+                  ...style,
+                };
+                return (
+                  <DraggableDimensionPublisher
+                    itemId={mapProps.id}
+                    type={type}
+                    targetRef={this.state.childRef}
+                  >
+                    {wrap(
+                      <Component
+                        {...enhancedOwnProps}
+                        innerRef={this.setChildRef}
+                        style={composedStyle}
+                      />
                 )}
-              </DraggableDimensionPublisher>
+                  </DraggableDimensionPublisher>
+                );
+              }}
+
             </Moveable>
             {/* ideally this will use the new portal solution */}
             {info.showPlaceholder ? this.getPlaceholder() : null}

@@ -20,13 +20,10 @@ const isAtOrigin = (point: PositionLike): boolean =>
   point.x === origin.x && point.y === origin.y;
 
 type Props = {|
-  children?: any,
+  children: (Object) => mixed,
   speed: Speed,
   destination?: Position,
   onMoveEnd?: () => void,
-  innerRef?: (Element) => void,
-  style?: Object,
-  extraCSS?: String,
 |}
 
 type DefaultProps = {|
@@ -103,16 +100,15 @@ export default class Movable extends PureComponent {
         {(current: Position) => {
           const style = {
             ...(isNotMoving ? {} : getMovement(current)),
-            ...this.props.style,
           };
-          return (
-            <div
-              style={style}
-              ref={this.props.innerRef}
-            >
-              {this.props.children}
-            </div>
-          );
+          return this.props.children(style);
+          //   <div
+          //     style={style}
+          //     ref={this.props.innerRef}
+          //   >
+          //     {this.props.children}
+          //   </div>
+          // );
         }}
       </Motion>
     );

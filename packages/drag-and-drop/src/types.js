@@ -13,6 +13,16 @@ export type Position = {|
   y: number,
 |};
 
+type DimensionFragment = {|
+  top: number,
+  right: number,
+  bottom: number,
+  left: number,
+  width: number,
+  height: number,
+  center: Position,
+|}
+
 export type Dimension = {|
   id: Id,
   top: number,
@@ -22,6 +32,7 @@ export type Dimension = {|
   width: number,
   height: number,
   center: Position,
+  withoutMargin: DimensionFragment,
 |}
 
 export type DraggableLocation = {|

@@ -33,6 +33,14 @@ export default class DimensionPublisher extends PureComponent {
         x: (left + right) / 2,
         y: (top + bottom) / 2,
       },
+      withoutMargin: {
+        top,
+        right,
+        bottom,
+        left,
+        width,
+        height,
+      },
     };
 
     return dimension;

@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { draggable } from '../../src/';
-import type { PersonType } from '../types';
+import type { TaskType } from '../types';
 import type { StateSnapshot } from '../../src/view/draggable/draggable-types';
 
 const Container = styled.a`
@@ -16,16 +16,8 @@ const Container = styled.a`
   user-select: none;
 `;
 
-const avatarWidth: number = 40;
-
-const Avatar = styled.img`
-  border-radius: 50%;
-  height: ${avatarWidth}px;
-  width: ${avatarWidth}px;
-`;
-
 type OwnProps = {|
-  data: PersonType
+  task: TaskType
 |}
 
 type InjectedProps = {|
@@ -35,11 +27,11 @@ type InjectedProps = {|
   style: Object,
 |}
 
-class Person extends PureComponent {
+class Task extends PureComponent {
   props: OwnProps & InjectedProps
 
   render() {
-    const { data, handleProps, innerRef, isDragging, style } = this.props;
+    const { task, handleProps, innerRef, isDragging, style } = this.props;
     return (
       <Container
         innerRef={ref => innerRef(ref)}
@@ -47,19 +39,18 @@ class Person extends PureComponent {
         {...handleProps}
         style={style}
       >
-        {data.name}
-        <Avatar src={`https://api.adorable.io/avatars/${avatarWidth}/${data.id}@adorable.png`} />
+        ({task.id}): {task.description}
       </Container>
     );
   }
 }
 
 const provide = (ownProps: OwnProps) => ({
-  id: ownProps.data.id,
+  id: ownProps.task.id,
 });
 
 const mapStateToProps = (state: StateSnapshot) => ({
   isDragging: state.isDragging,
 });
 
-export default draggable('PERSON', provide, mapStateToProps)(Person);
+export default draggable('TASK', provide, mapStateToProps)(Task);

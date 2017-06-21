@@ -37,7 +37,10 @@ export default (
   // TODO: if not in the same home dimensions then can only move forward
 
   // get all draggables inside the draggable
-  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(droppableDimension, draggableDimensions);
+  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(
+    droppableDimension,
+    draggableDimensions
+  );
 
   const moved: DraggableId[] = insideDroppable
     .filter((dimension: Dimension): boolean => {

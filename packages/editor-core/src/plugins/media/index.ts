@@ -159,9 +159,11 @@ export class MediaPluginState {
   private insertMedia = (node: PMNode): void => {
     const { view } = this;
     const { state } = view;
-    let transaction = state.tr;
     const { $to } = state.selection;
+    let transaction = state.tr;
 
+    // insert a paragraph after if reach the end of doc
+    // and there is no media group in the front or selection is a non media block node
     if (atTheEndOfDoc(state) && (!this.posOfMediaGroupExistsAsAnAjacentNodeBefore(state) || this.isSelectionNonMediaBlockNode())) {
       const paragraphInsertPos = this.isSelectionNonMediaBlockNode() ? $to.pos : $to.pos + 1;
       transaction = transaction.insert(paragraphInsertPos, state.schema.nodes.paragraph.create());
@@ -181,6 +183,8 @@ export class MediaPluginState {
     }
 
     view.dispatch(transaction);
+
+    this.setSelectionAfterMediaInsertion(node);
   }
 
   private createMediaFileNode = (mediaState: MediaState, collection: string): PMNode => {
@@ -209,28 +213,20 @@ export class MediaPluginState {
     return node;
   }
 
-  private insertFile = (mediaState: MediaState, collection: string): PMNode => {
-    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-    const node = this.createMediaFileNode(mediaState, collection);
-
-    this.insertMedia(node);
-
-    return node;
-  }
-
-  handleNewMediaPicked = (state: MediaState, fileData = this.mediaDataFromProvider()) => {
+  insertFile = (mediaState: MediaState, fileData = this.mediaDataFromProvider()): void => {
     if (!fileData) {
       return;
     }
 
-    const node = this.insertFile(state, fileData);
-    const { view } = this;
+    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+    const node = this.createMediaFileNode(mediaState, fileData);
 
+    this.insertMedia(node);
+
+    const { view } = this;
     if (!view.hasFocus()) {
       view.focus();
     }
-
-    this.setSelectionAfterMediaInsertion(node);
   }
 
   insertLinkFromUrl = (url: string) => {
@@ -522,7 +518,7 @@ export class MediaPluginState {
       pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
       pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
-      pickers.forEach(picker => picker.onNewMedia(this.handleNewMediaPicked));
+      pickers.forEach(picker => picker.onNewMedia(this.insertFile));
     }
 
     // set new upload params for the pickers

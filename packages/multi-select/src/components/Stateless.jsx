@@ -261,7 +261,9 @@ export default class StatelessMultiSelect extends PureComponent {
 
   hasVisibleFooter = () => {
     const { footer, shouldAllowCreateItem, filterValue } = this.props;
-    return footer.content || (shouldAllowCreateItem && !!filterValue);
+    // This logic is interesting because we explicitly check !multiSelectContainer with footer
+    // because if you have both turned on but you havent typed anything, there will be no footer
+    return (footer.content && !shouldAllowCreateItem) || (shouldAllowCreateItem && !!filterValue);
   }
 
   isFooterFocused = () => {

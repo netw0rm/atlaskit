@@ -1,5 +1,3 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import CodeMirror from '../../../codemirror';
 import {
   browser,
@@ -20,18 +18,16 @@ import {
   CodeMirrorState,
 } from '../../../plugins';
 import { DEFAULT_LANGUAGES } from '../../../ui/LanguagePicker/languageList';
-import { CodeMirrorDiv } from './styles';
 
 const MOD = browser.mac ? 'Cmd' : 'Ctrl';
 
-class CodeBlock {
-  private node: Node;
+class CodeBlock implements NodeView  {
+  private node: Node| undefined;
   private view: EditorView;
   private getPos: Function;
   private value: string;
   private selection: Selection | undefined;
   private cm: any;
-  private containerRef: HTMLDivElement | undefined;
   private domRef: HTMLDivElement | undefined;
   private uniqueId: string;
   private updating: boolean = false;
@@ -48,29 +44,16 @@ class CodeBlock {
     this.selection = undefined;
     this.pluginState = codeBlockStateKey.getState(this.view.state);
     this.codeMirrorState = codeMirrorStateKey.getState(this.view.state);
-    this.renderReactComponent();
-  }
-
-  private renderReactComponent = () => {
-    this.containerRef = document.createElement('div');
-    ReactDOM.render(
-      <CodeMirrorDiv innerRef={this.setDomRef}>
-        <textarea ref={this.handleRef} />
-      </CodeMirrorDiv>,
-      this.containerRef
-    );
-  }
-
-  setDomRef = (ref) => {
-    this.domRef = ref;
+    this.addCodeMirrorInstance();
   }
 
   get dom() {
     return this.domRef;
   }
 
-  private handleRef = (ref) => {
-    this.cm = CodeMirror.fromTextArea(ref, {
+  private addCodeMirrorInstance = () => {
+    const textarea = document.createElement('textarea');
+    this.cm = CodeMirror(textarea, {
       value: this.value,
       mode: undefined,
       lineNumbers: true,
@@ -83,7 +66,7 @@ class CodeBlock {
     // This line of code is inspired from Marijn's code example here:
     // https://github.com/ProseMirror/website/blob/master/pages/examples/codemirror/example.js#L43
     setTimeout(() => this.cm.refresh(), 20);
-    this.setMode(this.node.attrs['language']);
+    this.setMode(this.node!.attrs['language']);
     this.updating = false;
     this.cm.on('changes', () => {
       if (!this.updating) {
@@ -103,13 +86,15 @@ class CodeBlock {
       this.pluginState.update(this.view.state, this.view.docView, true);
     });
     this.cm.on('blur', () => {
+      this.removeSelection();
       this.pluginState.updateEditorFocused(false);
       this.pluginState.update(this.view.state, this.view.docView, true);
     });
-    this.uniqueId = this.node.attrs['uniqueId'] || generateId();
-    this.node.attrs['uniqueId'] = this.uniqueId;
+    this.uniqueId = this.node!.attrs['uniqueId'] || generateId();
+    this.node!.attrs['uniqueId'] = this.uniqueId;
     this.pluginState.subscribe(this.updateLanguage);
     this.codeMirrorState.subscribe(this.focusCodeEditor);
+    this.domRef = this.cm.getWrapperElement();
   }
 
   private prepareExtraKeyMap(): any {
@@ -118,6 +103,7 @@ class CodeBlock {
       Left: () => this.maybeEscape('char', -1),
       Down: () => this.maybeEscape('line', 1),
       Right: () => this.maybeEscape('char', 1),
+      [`${MOD}-A`]: this.selectAllEditorContent,
       [`${MOD}-Z`]: () => undo(this.view.state, this.view.dispatch),
       'Enter': this.handleEnter,
     };
@@ -127,6 +113,10 @@ class CodeBlock {
       keymap[`${MOD}-Y`] = () => redo(this.view.state, this.view.dispatch);
     }
     return CodeMirror['normalizeKeyMap'](keymap);
+  }
+
+  private selectAllEditorContent = (): void => {
+    this.cm.execCommand('selectAll');
   }
 
   private handleEnter = (): void => {
@@ -248,7 +238,7 @@ class CodeBlock {
   }
 
   update(node: Node): boolean {
-    if (node.type !== this.node.type) {
+    if (!this.node || node.type !== this.node.type) {
       return false;
     }
     this.node = node;
@@ -257,7 +247,7 @@ class CodeBlock {
       const change = computeChange(this.value, value);
       this.value = value;
       this.updating = true;
-      this.cm.replaceRange(
+      this.cm && this.cm.replaceRange(
         change.text,
         this.cm.posFromIndex(change.from),
         this.cm.posFromIndex(change.to),
@@ -266,6 +256,15 @@ class CodeBlock {
       this.updating = false;
     }
     return true;
+  }
+
+  removeSelection(): void {
+    if (this.cm) {
+      this.cm.setSelection(
+        this.cm.posFromIndex(0),
+        this.cm.posFromIndex(0)
+      );
+    }
   }
 
   setSelection(anchor: number, head: number): void {
@@ -287,10 +286,9 @@ class CodeBlock {
   }
 
   destroy() {
-    this.node.attrs['uniqueId'] = undefined;
-    ReactDOM.unmountComponentAtNode(this.containerRef!);
-    this.containerRef = undefined;
     this.domRef = undefined;
+    this.cm = undefined;
+    this.node = undefined;
     this.pluginState.unsubscribe(this.updateLanguage);
     this.codeMirrorState.unsubscribe(this.focusCodeEditor);
   }

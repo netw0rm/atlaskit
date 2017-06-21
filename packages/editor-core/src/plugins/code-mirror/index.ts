@@ -25,7 +25,7 @@ export class CodeMirrorState {
   }
 
   triggerFocus(uniqueId) {
-    this.focusHandlers.forEach(cb => cb(uniqueId));
+    // this.focusHandlers.forEach(cb => cb(uniqueId));
   }
 }
 

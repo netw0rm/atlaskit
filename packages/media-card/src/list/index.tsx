@@ -249,8 +249,10 @@ export class CardList extends Component<CardListProps, CardListState> {
             />
           </CardListItemWrapper>
         );
+        // We don't want to wrap new items into LazyContent aka lazy load new items
+        const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
 
-        return shouldLazyLoadCards ? (
+        return useLazyContent ? (
           <LazyContent placeholder={placeholder} key={key} appearance={cardAppearance}>
             {cardListItem}
           </LazyContent>

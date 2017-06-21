@@ -186,14 +186,22 @@ export class MentionsState {
     }
   }
 
-  setMentionProvider(provider: Promise<MentionProvider>): Promise<MentionProvider> {
+  setMentionProvider(provider?: Promise<MentionProvider>): Promise<MentionProvider> {
     return new Promise<MentionProvider>((resolve, reject) => {
-      provider
-        .then(mentionProvider => {
-          this.mentionProvider = mentionProvider;
-          resolve(mentionProvider);
-        })
-        .catch(reject);
+      if (provider && provider.then) {
+        provider
+          .then(mentionProvider => {
+            this.mentionProvider = mentionProvider;
+            this.enabled = true;
+            resolve(mentionProvider);
+          })
+          .catch((e) => {
+            this.enabled = false;
+          });
+      } else {
+        this.mentionProvider = undefined;
+        resolve();
+      }
     });
   }
 

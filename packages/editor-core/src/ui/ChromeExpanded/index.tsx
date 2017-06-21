@@ -240,7 +240,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             </AkButtonGroup>
           </FooterActions>
           <SecondaryToolbar>
-            {pluginStateMentions && !disabled ? <ToolbarMention pluginState={pluginStateMentions} editorView={editorView} /> : null}
+            {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginState={pluginStateMentions} editorView={editorView} /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
             {pluginStateMedia && !disabled ? <ToolbarMedia pluginState={pluginStateMedia} /> : null}
           </SecondaryToolbar>

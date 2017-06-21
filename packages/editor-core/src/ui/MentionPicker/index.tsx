@@ -31,6 +31,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (providerPromise) {
       providerPromise.then(mentionsProvider => {
         this.setState({ mentionsProvider });
+      }).catch(e => {
+        this.setState({ mentionsProvider: undefined });
       });
     } else {
       this.setState({ mentionsProvider: undefined });

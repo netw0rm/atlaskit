@@ -60,6 +60,7 @@ export default class TableHeader extends PureComponent<Props, State> {
         target={tableElement}
         boundariesElement={popupsBoundariesElement}
         mountTo={popupsMountPoint}
+        alignY="top"
       >
         <div onMouseDown={this.handleMouseDown} onBlur={this.handleBlur}>
           <CornerHeader

@@ -41,6 +41,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
           offset={[0, 3]}
           mountTo={popupsMountPoint}
           boundariesElement={popupsBoundariesElement}
+          alignY="top"
         >
           <Toolbar>
             <ToolbarButton

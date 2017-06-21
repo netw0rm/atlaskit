@@ -17,7 +17,7 @@ describe('NumericAvatar', () => {
 
   it('should round floating point numbers', () => {
     const numvatar = setupNumericAvatar(12.3);
-    expect(numvatar.text()).contains('13');
+    expect(numvatar.text()).contains('12');
   });
 
   it('should not display numbers less than 0', () => {

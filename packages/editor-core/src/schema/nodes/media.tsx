@@ -77,3 +77,12 @@ export const copyOptionalAttrs = (from: Object, to: Object, map?: (string) => st
     }
   });
 };
+
+export const toJSON = (node: PMNode) => ({
+  attrs: Object.keys(node.attrs)
+    .filter(key => !(key[0] === '_' && key[1] === '_'))
+    .reduce((obj, key) => {
+      obj[key] = node.attrs[key];
+      return obj;
+    }, {})
+});

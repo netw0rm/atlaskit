@@ -1,7 +1,8 @@
 import React from 'react';
 import { Item, Group } from '@atlaskit/droplist';
 
-import NoMatches from '../styled/Group';
+import NoMatches from '../styled/NoMatch';
+import GroupsContainer from '../styled/GroupsContainer';
 import { filterItems } from '../internal/sharedFunctions';
 
 const renderItems = ({ items, focusedItemIndex, handleItemSelect }) => (
@@ -25,10 +26,11 @@ const renderNoItemsMessage = noMatchesFound => (
     {noMatchesFound}
   </NoMatches>
 );
-
+/* eslint-disable react/prop-types*/
 const renderGroups = ({
   filterValue,
   focusedItemIndex,
+  hasFooter,
   groups,
   handleItemSelect,
   noMatchesFound,
@@ -53,7 +55,9 @@ const renderGroups = ({
 
   // don't show the 'noItems' message when the new item functinality is enabled
   return (renderedGroups.length > 0 || shouldAllowCreateItem)
-    ? renderedGroups : renderNoItemsMessage(noMatchesFound);
+    ? <GroupsContainer hasFooter={hasFooter}>{renderedGroups}</GroupsContainer>
+    : renderNoItemsMessage(noMatchesFound);
 };
+/* eslint-enable prop-types */
 
 export default renderGroups;

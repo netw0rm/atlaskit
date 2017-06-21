@@ -5,13 +5,12 @@ import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/col
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-test';
 
 import Editor from './editor';
 import { Content } from './styles';
 import { name, version } from '../package.json';
 import * as v1schema from '../src/json-schema/v1.json';
-import { resourceProvider, resourceProvider2 } from './mentions/story-data';
 import { toJSON } from '../src/utils';
 import { storyDecorator, storyMediaProviderFactory } from '../src/test-helper';
 
@@ -31,8 +30,8 @@ const analyticsHandler = (actionName, props) => action(actionName)(props);
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
 const providers = {
   mentionProvider: {
-    resolved: Promise.resolve(resourceProvider),
-    'resolved 2': Promise.resolve(resourceProvider2),
+    resolved: Promise.resolve(mentionData.mentionStoryData.resourceProvider),
+    'resolved 2': Promise.resolve(mentionData.mentionStoryData.resourceProvider2),
     rejected: rejectedPromise,
     'undefined' : undefined,
   },

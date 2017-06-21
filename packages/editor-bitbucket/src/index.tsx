@@ -1,6 +1,7 @@
 import {
   AnalyticsHandler,
   analyticsService,
+  asciiEmojiPlugins,
   Chrome,
   codeBlockPlugins,
   blockTypePlugins,
@@ -41,8 +42,8 @@ import {
   // ErrorReporter,
   ErrorReportingHandler,
 } from '@atlaskit/editor-core';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MentionProvider } from '@atlaskit/mention';
+import { EmojiProvider } from '@atlaskit/editor-core';
+import { MentionProvider } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
@@ -51,6 +52,16 @@ import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
 import { version, name } from './version';
 import schema from './schema';
+
+export {
+  AbstractMentionResource,
+  EmojiProvider,
+  EmojiResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/editor-core';
 
 export { version };
 
@@ -301,6 +312,7 @@ export default class Editor extends PureComponent<Props, State> {
           plugins: [
             ...mentionsPlugins(schema), // mentions and emoji needs to be first
             ...emojisPlugins(schema),
+            ...asciiEmojiPlugins(schema, this.props.emojiProvider),
             ...listsPlugins(schema),
             ...clearFormattingPlugins(schema),
             ...codeBlockPlugins(schema),

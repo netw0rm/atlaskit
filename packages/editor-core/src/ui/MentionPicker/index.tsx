@@ -1,4 +1,4 @@
-import { MentionPicker as AkMentionPicker, MentionProvider } from '@atlaskit/mention';
+import { MentionPicker as AkMentionPicker, MentionProvider, MentionDescription } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionsState } from '../../plugins/mentions';
@@ -105,7 +105,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     this.picker = ref;
   }
 
-  private handleSelectedMention = (mention: any) => {
+  private handleSelectedMention = (mention: MentionDescription) => {
     this.props.pluginState.insertMention(mention);
   }
 

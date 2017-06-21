@@ -13,6 +13,8 @@ const ContainerNavigationInner = styled.div`
   }};
   box-sizing: border-box;
   color: ${({ theme }) => getProvided(theme).text};
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
   padding-top: ${({ theme }) => (isCollapsed(theme) ? layout.padding.top : 0)}px;

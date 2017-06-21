@@ -1,4 +1,4 @@
-export default `Hello, World! Look I can do italic, strong and underlined text! My favourite emoji are 😁 :evilburns: :not-an-emoji:. What are yours? My name is @Oscar Wallhult :D italic link monospace strike-through strong sub sup underline some inline code: const foo = bar(); This is a line with a hardbreak in it. This is a paragraph with a text node that contains a new line This is a mention This is  a   text    with	multiple		spaces 			and				tabs. [attachment] [attachment] [attachment] [attachment] [attachment] Click me! www.atlassian.com // Create a map.
+export default `Hello, World! Look I can do italic, strong and underlined text! My favourite emoji are 😁 :evilburns: :not-an-emoji:. What are yours? My name is @Oscar Wallhult :D italic link monospace strike-through strong sub sup underline some inline code: const foo = bar(); This is a line with a hardbreak in it. This is a paragraph with a text node that contains a new line This is a mention This is  a   text    with	multiple		spaces 			and				tabs. Click me! www.atlassian.com // Create a map.
 final IntIntOpenHashMap map = new IntIntOpenHashMap();
 map.put(1, 2);
 map.put(2, 5);

@@ -1,10 +1,9 @@
 // @flow
 // Icons
 
-/* eslint-disable no-duplicate-imports */
 import type { ___Icon } from '@atlaskit/icon';
-import { WarningIcon, CheckCircleIcon } from '@atlaskit/icon';
-/* eslint-enable no-duplicate-imports */
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 
 // Colours
 import { akColorB400, akColorG300, akColorP300, akColorR300, akColorY300 } from '@atlaskit/util-shared-styles';

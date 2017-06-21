@@ -5,6 +5,8 @@ import Portal from '../Portal';
 import { calculatePosition, calculatePlacement, findOverflowScrollParent, Position } from './utils';
 
 export interface Props {
+  alignX?: 'left' | 'right';
+  alignY?: 'top' | 'bottom';
   target?: HTMLElement;
   fitHeight?: number;
   fitWidth?: number;
@@ -42,13 +44,13 @@ export default class Popup extends PureComponent<Props, State> {
    * Calculates new popup position
    */
   private updatePosition(props: Props, popup?: HTMLElement) {
-    const { target, fitHeight, fitWidth, boundariesElement, offset, onPositionCalculated, onPlacementChanged } = props;
+    const { target, fitHeight, fitWidth, boundariesElement, offset, onPositionCalculated, onPlacementChanged, alignX, alignY } = props;
 
     if (!target || !popup) {
       return;
     }
 
-    const placement = calculatePlacement(target, boundariesElement!, fitWidth, fitHeight);
+    const placement = calculatePlacement(target, boundariesElement!, fitWidth, fitHeight, alignX, alignY);
     if (onPlacementChanged && this.placement.join('') !== placement.join('')) {
       onPlacementChanged(placement);
       this.placement = placement;

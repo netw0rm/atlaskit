@@ -15,7 +15,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/icon": "^7.0.0",
     "@atlaskit/layer": "^2.0.1",
     "@atlaskit/spinner": "^2.2.3",
     "@atlaskit/tooltip": "^1.1.2",

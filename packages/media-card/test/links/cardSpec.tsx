@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 
-import { LinkCard, LinkCardPlayer, LinkCardViewSmall, LinkCardGenericView, LinkCardTrelloBoardView } from '../../src/links';
+import { LinkCard, LinkCardPlayer, LinkCardViewSmall, LinkCardGenericView } from '../../src/links';
 import { LinkCardImageView } from '../../src/links/cardImageView';
 
 describe('LinkCard', () => {
@@ -47,34 +47,6 @@ describe('LinkCard', () => {
 
     const linkCard = shallow(<LinkCard details={details} status="complete" />);
     expect(linkCard.find(LinkCardPlayer)).to.have.length(1);
-  });
-
-  it('should render a TrelloBoard preview when link contains a trello board url', () => {
-    const details: UrlPreview = {
-      type: 'media',
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      title: 'Atlassian',
-      resources: {
-        app: {
-          type: 'trello_board',
-          name: 'Public Trello boards list',
-          background: 'some-background',
-          shortUrl: 'short-url',
-          url: 'some url',
-          lists: [{
-            name: 'todo',
-            count: 20
-          }],
-          member: [{
-            avatarUrl: 'https://robohash.org/hectorzarco.png?set=set2&size=80x80',
-            username: 'hector'
-          }]
-        }
-      }
-    };
-
-    const linkCard = shallow(<LinkCard details={details} status="complete" />);
-    expect(linkCard.find(LinkCardTrelloBoardView)).to.have.length(1);
   });
 
   it('should render right image preview for links images', () => {

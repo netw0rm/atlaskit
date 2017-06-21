@@ -5,12 +5,14 @@ import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview} from '@atlaski
 import {SharedCardProps, CardStatus, CardEvent, OnSelectChangeFuncResult} from '..';
 import {LinkCard} from '../links';
 import {FileCard} from '../files';
+import {AppCardView, AppCardModel} from '../app';
 import {isLinkDetails} from '../utils/isLinkDetails';
+import {isAppCardModel} from '../utils/isAppCardModel';
 
 export interface CardViewProps extends SharedCardProps {
   readonly status: CardStatus;
-  readonly mediaItemType?: MediaItemType;
-  readonly metadata?: MediaItemDetails;
+  readonly mediaItemType?: MediaItemType | 'app';
+  readonly metadata?: MediaItemDetails | AppCardModel;
 
   readonly onClick?: (result: CardEvent) => void;
   readonly onMouseEnter?: (result: CardEvent) => void;
@@ -45,10 +47,17 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
   render() {
     const {mediaItemType} = this.props;
 
-    if (mediaItemType === 'link') {
-      return this.renderLink();
-    } else if (mediaItemType === 'file') {
-      return this.renderFile();
+    switch (mediaItemType) {
+
+      case 'link':
+        return this.renderLink();
+
+      case 'file':
+        return this.renderFile();
+
+      case 'app':
+        return this.renderApp();
+
     }
 
     return this.renderCardFromDetails();
@@ -61,10 +70,14 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
       return this.renderLink();
     }
 
+    if (isAppCardModel(metadata)) {
+      return this.renderApp();
+    }
+
     return this.renderFile();
   }
 
-  private renderLink = () => {
+  private renderLink(): JSX.Element {
     const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
 
     return (
@@ -72,14 +85,13 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
         {...otherProps}
         status={status}
         details={metadata as LinkDetails | UrlPreview}
-
         onClick={this.onClick}
         onMouseEnter={this.onMouseEnter}
       />
     );
   }
 
-  private renderFile = () => {
+  private renderFile(): JSX.Element {
     const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
 
     return (
@@ -87,7 +99,18 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
         {...otherProps}
         status={status}
         details={metadata}
+        onClick={this.onClick}
+        onMouseEnter={this.onMouseEnter}
+      />
+    );
+  }
 
+  private renderApp(): JSX.Element {
+    const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, appearance, dimensions, actions, selectable, selected, ...otherProps} = this.props;
+    return (
+      <AppCardView
+        {...otherProps}
+        model={metadata as AppCardModel}
         onClick={this.onClick}
         onMouseEnter={this.onMouseEnter}
       />

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { Component, MouseEvent } from 'react';
-import { TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
+import { UrlPreview } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus } from '../..';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
-import { LinkCardTrelloBoardView } from '../apps/trello';
 import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
 
@@ -36,34 +35,11 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     }
 
     if (resources) {
-      if (resources.app) { return this.renderApplicationLink(); }
       if (resources.player) { return this.renderPlayerLink(); }
       if (resources.image) { return this.renderLinkCardImage(); }
     }
 
     return this.renderGenericLink();
-  }
-
-  private renderApplicationLink(): JSX.Element {
-    const {app, icon} = this.resources;
-
-    switch (app && app.type) {
-      case 'trello_board':
-        return this.renderTrelloBoard(app as TrelloBoardLinkApp, icon && icon.url);
-      default:
-        return this.renderGenericLink();
-    }
-  }
-
-  private renderTrelloBoard(app: TrelloBoardLinkApp, iconUrl?: string): JSX.Element {
-    return <LinkCardTrelloBoardView
-      linkUrl={app.url}
-      title={app.name}
-      thumbnailUrl={app.background}
-      iconUrl={iconUrl}
-      lists={app.lists}
-      members={app.member}
-    />;
   }
 
   private renderPlayerLink(): JSX.Element {

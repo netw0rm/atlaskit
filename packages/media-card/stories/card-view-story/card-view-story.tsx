@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {storiesOf} from '@kadira/storybook';
+import {storiesOf, action} from '@kadira/storybook';
 import {CardActionType} from '@atlaskit/media-core';
 import {
   StoryList,
@@ -148,18 +148,66 @@ const generateStoriesForLinksWithAppearance = (appearance: CardAppearance) => {
   );
 };
 
+const generateStoriesForAppsWithAppearance = (appearance: CardAppearance) => {
+
+  if (appearance !== 'auto') {
+    return null;
+  }
+
+  const onClick = () => action('onClick')();
+  const onMouseEnter = () => action('onMouseEnter')();
+
+  const card = [
+    {
+      title: `App card "${appearance}"`,
+      content: <CardView
+        status="complete"
+        mediaItemType="app"
+        metadata={{
+          title: {text: 'Sascha Reuter commented on a file: Desktop sidebar states.png'},
+          description: {text: 'Looks sweet!'}
+        }}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+      />
+    }
+  ];
+
+  // // loading and error
+  // const loadingAndErrorCards = createErrorAndLoadingCards(appearance, 'app');
+
+  // // api methods
+  // const apiCards = createApiCards(appearance, genericLinkDetails);
+
+  return (
+    <div>
+      <h3>App</h3>
+      <StoryList>{card}</StoryList>
+
+      {/*<h4>Loading and error states</h4>
+      <StoryList>{loadingAndErrorCards}</StoryList>
+
+      <h4>API methods</h4>
+      <StoryList>{apiCards}</StoryList>*/}
+
+    </div>
+  );
+};
+
 const generateStoriesForAppearance = (appearance: CardAppearance) => {
   const fileCardStories =  appearance !== 'square' && appearance !== 'horizontal'
     ? generateStoriesForFilesWithAppearance(appearance)
     : null;
 
   const linkCardStories = generateStoriesForLinksWithAppearance(appearance);
+  const appCardStories = generateStoriesForAppsWithAppearance(appearance);
 
   return () => (
     <div>
       <div style={{margin: '20px 40px'}}>
         {fileCardStories}
         {linkCardStories}
+        {appCardStories}
       </div>
     </div>
   );

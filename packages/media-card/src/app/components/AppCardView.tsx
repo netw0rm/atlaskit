@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {MouseEvent} from 'react';
 import {AppCardModel, AppCardAction} from '../model';
 import {HeaderView} from './HeaderView';
 import {DescriptionView} from './DescriptionView';
@@ -13,7 +14,8 @@ const previewWidth = 116;
 export interface AppCardViewProps {
   model: AppCardModel;
   isCollapsed?: boolean;
-  onClick?: () => void;
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onCollapseClick?: () => void;
   onContextClick?: () => void;
   onActionClick?: (action: AppCardAction) => void;
@@ -91,6 +93,7 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
     );
   }
 
+  // QUESTION: should actions come from the model? actions on other cards don't.
   renderActions() {
     const {model: {actions}, onActionClick} = this.props;
 
@@ -137,9 +140,9 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderCard(): JSX.Element {
-    const {model: {background, preview}, onClick} = this.props;
+    const {model: {background, preview}, onClick, onMouseEnter} = this.props;
     return (
-      <Card background={background && background.url} onClick={onClick}>
+      <Card background={background && background.url} onClick={onClick} onMouseEnter={onMouseEnter}>
         {this.renderPreview()}
         <CardContent hasPreview={Boolean(preview)}>
           {this.renderHeader()}

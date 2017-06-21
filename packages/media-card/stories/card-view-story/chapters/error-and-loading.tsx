@@ -3,7 +3,7 @@ import {MediaItemType} from '@atlaskit/media-core';
 
 import {CardView, CardAppearance} from '../../../src';
 
-export const createErrorAndLoadingCards = (appearance: CardAppearance, mediaItemType: MediaItemType) => {
+export const createErrorAndLoadingCards = (appearance: CardAppearance, mediaItemType: MediaItemType | 'app') => {
   return [
     {
       title: 'Loading',

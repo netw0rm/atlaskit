@@ -17,8 +17,6 @@ import {
   youTubeUrlPreviewId,
   spotifyUrlPreviewId,
   soundcloudUrlPreviewId,
-  publicTrelloBoardUrlPreviewId,
-  privateTrelloBoardUrlPreviewId,
   errorLinkId,
   videoFileId,
   audioFileId,
@@ -419,15 +417,6 @@ storiesOf('Card', {})
       }
     ];
 
-    const trelloCards = [
-      {
-        title: 'Public board',
-        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} />
-      }, {
-        title: 'Private board',
-        content: <Card identifier={privateTrelloBoardUrlPreviewId} context={context} />
-      }
-    ];
 
     return (
       <div>
@@ -445,8 +434,6 @@ storiesOf('Card', {})
           <h3>Player cards</h3>
           <StoryList>{playerCards}</StoryList>
 
-          <h3>Trello cards</h3>
-          <StoryList>{trelloCards}</StoryList>
         </div>
       </div>
     );

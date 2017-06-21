@@ -325,7 +325,7 @@ describe('Draggable - connected', () => {
         const impact: DragImpact = {
           movement: {
             draggables: [notDragging.id],
-            amount: dragging.dimension.height,
+            amount: dragging.dimension.withMargin.height,
             isMovingForward: true,
           },
           destination: {
@@ -343,7 +343,7 @@ describe('Draggable - connected', () => {
           // be moving backwards to get out of the way.
           offset: {
             x: 0,
-            y: -dragging.dimension.height,
+            y: -dragging.dimension.withMargin.height,
           },
           initial: null,
         };
@@ -367,7 +367,7 @@ describe('Draggable - connected', () => {
         const impact: DragImpact = {
           movement: {
             draggables: [notDragging.id],
-            amount: dragging.dimension.height,
+            amount: dragging.dimension.withMargin.height,
             isMovingForward: true,
           },
           destination: {

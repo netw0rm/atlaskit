@@ -9,14 +9,14 @@ import type { Position } from '../../../src/types';
 // eslint-disable-next-line no-duplicate-imports
 import type { Speed } from '../../../src/view/moveable/';
 
-const Child = () => <div>hi there</div>;
-
 describe('Moveable', () => {
   let clock;
   let wrapper;
+  let childFn;
 
   before(() => {
     requestAnimationFrame.reset();
+    childFn = sinon.stub().returns(<div>hi there</div>);
   });
 
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe('Moveable', () => {
       <Moveable
         speed="STANDARD"
       >
-        <Child />
+        {childFn}
       </Moveable>
     );
   });
@@ -50,8 +50,9 @@ describe('Moveable', () => {
   };
 
   const hasMoved = (point: Position) =>
-    wrapper.find('div').first().props().style.transform ===
-    `translate(${point.x}px, ${point.y}px)`;
+    childFn.calledWith({
+      transform: `translate(${point.x}px, ${point.y}px)`,
+    });
 
   it('should move to the provided destination', () => {
     const destination: Position = {
@@ -114,23 +115,5 @@ describe('Moveable', () => {
       moveTo(position);
       expect(hasMoved(position)).to.equal(true);
     });
-  });
-
-  it('should allow you to provide extra styles to the component', () => {
-    const style = {
-      color: 'red',
-    };
-
-    const customWrapper = mount(
-      <Moveable
-        speed="STANDARD"
-        style={style}
-      >
-        <Child />
-      </Moveable>
-    );
-
-    expect(customWrapper.find('div').first().props().style.color)
-      .to.equal('red');
   });
 });

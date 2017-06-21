@@ -73,12 +73,12 @@ describe('DimensionPublisher', () => {
     const dimension: Dimension = getDimension({ id: itemId });
 
     sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
-      top: dimension.top,
-      bottom: dimension.bottom,
-      left: dimension.left,
-      right: dimension.right,
-      height: dimension.height,
-      width: dimension.width,
+      top: dimension.withoutMargin.top,
+      bottom: dimension.withoutMargin.bottom,
+      left: dimension.withoutMargin.left,
+      right: dimension.withoutMargin.right,
+      height: dimension.withoutMargin.height,
+      width: dimension.withoutMargin.width,
     });
     sinon.stub(window, 'getComputedStyle').returns({
       marginTop: '0',

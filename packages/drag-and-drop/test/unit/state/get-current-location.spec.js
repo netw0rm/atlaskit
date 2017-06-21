@@ -27,10 +27,10 @@ const inside2: Dimension = getDimension({
 });
 
 const outside: Dimension = getDimension({
-  top: droppable.bottom + 1,
+  top: droppable.withMargin.bottom + 1,
   left: 0,
   right: 100,
-  bottom: droppable.bottom + 10,
+  bottom: droppable.withMargin.bottom + 10,
 });
 
 const droppables: DimensionMap = {

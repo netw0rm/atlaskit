@@ -103,7 +103,7 @@ describe('get drag impact', () => {
       // moving forward past the top of the next item
       const newCenter: Position = {
         x: draggable1.center.x,
-        y: draggable2.top + 1,
+        y: draggable2.withMargin.top + 1,
       };
 
       const impact: DragImpact = getDragImpact(newCenter, draggable1.id, draggables, droppables);
@@ -129,7 +129,7 @@ describe('get drag impact', () => {
       });
 
       it('should indicate that the item being moved should move the height of the item being dragged', () => {
-        expect(impact.movement.amount).to.equal(draggable1.height);
+        expect(impact.movement.amount).to.equal(draggable1.withMargin.height);
       });
 
       it('should return the items that need to be moved', () => {
@@ -141,7 +141,7 @@ describe('get drag impact', () => {
       // moving forward past the top of the third item
       const newCenter: Position = {
         x: draggable1.center.x,
-        y: draggable3.top + 1,
+        y: draggable3.withMargin.top + 1,
       };
 
       const impact: DragImpact = getDragImpact(newCenter, draggable1.id, draggables, droppables);
@@ -167,7 +167,7 @@ describe('get drag impact', () => {
       });
 
       it('should indicate that the item being moved should move the height of the item being dragged', () => {
-        expect(impact.movement.amount).to.equal(draggable1.height);
+        expect(impact.movement.amount).to.equal(draggable1.withMargin.height);
       });
 
       it('should return the items that need to be moved', () => {
@@ -179,7 +179,7 @@ describe('get drag impact', () => {
       // moving the second item forward past the top of the third item
       const newCenter: Position = {
         x: draggable2.center.x,
-        y: draggable3.top + 1,
+        y: draggable3.withMargin.top + 1,
       };
 
       const impact: DragImpact = getDragImpact(newCenter, draggable2.id, draggables, droppables);
@@ -205,7 +205,7 @@ describe('get drag impact', () => {
       });
 
       it('should indicate that the item being moved should move the height of the item being dragged', () => {
-        expect(impact.movement.amount).to.equal(draggable2.height);
+        expect(impact.movement.amount).to.equal(draggable2.withMargin.height);
       });
 
       it('should return the items that need to be moved', () => {
@@ -244,7 +244,7 @@ describe('get drag impact', () => {
       // moving backward past the bottom of the previous item
       const newCenter: Position = {
         x: draggable3.center.x,
-        y: draggable2.bottom - 1,
+        y: draggable2.withMargin.bottom - 1,
       };
 
       const impact: DragImpact = getDragImpact(newCenter, draggable3.id, draggables, droppables);
@@ -270,7 +270,7 @@ describe('get drag impact', () => {
       });
 
       it('should indicate that the item being moved should move the height of the item being dragged', () => {
-        expect(impact.movement.amount).to.equal(draggable3.height);
+        expect(impact.movement.amount).to.equal(draggable3.withMargin.height);
       });
 
       it('should return the items that need to be moved', () => {
@@ -282,7 +282,7 @@ describe('get drag impact', () => {
       // moving the last item backward past the bottom of the first item
       const newCenter: Position = {
         x: draggable3.center.x,
-        y: draggable1.bottom - 1,
+        y: draggable1.withMargin.bottom - 1,
       };
 
       const impact: DragImpact = getDragImpact(newCenter, draggable3.id, draggables, droppables);
@@ -308,7 +308,7 @@ describe('get drag impact', () => {
       });
 
       it('should indicate that the items being moved should move the height of the item being dragged', () => {
-        expect(impact.movement.amount).to.equal(draggable3.height);
+        expect(impact.movement.amount).to.equal(draggable3.withMargin.height);
       });
 
       it('should return the items that need to be moved', () => {
@@ -320,7 +320,7 @@ describe('get drag impact', () => {
       // moving the second item backward past the bottom of the first item
       const newCenter: Position = {
         x: draggable2.center.x,
-        y: draggable1.bottom - 1,
+        y: draggable1.withMargin.bottom - 1,
       };
 
       const impact: DragImpact = getDragImpact(newCenter, draggable2.id, draggables, droppables);
@@ -346,7 +346,7 @@ describe('get drag impact', () => {
       });
 
       it('should indicate that the items being moved should move the height of the item being dragged', () => {
-        expect(impact.movement.amount).to.equal(draggable2.height);
+        expect(impact.movement.amount).to.equal(draggable2.withMargin.height);
       });
 
       it('should return the items that need to be moved', () => {

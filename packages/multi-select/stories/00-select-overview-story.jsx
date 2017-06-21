@@ -160,13 +160,8 @@ storiesOf(name, module)
         If <code>footer</code> and <code>shouldAllowCreateItem</code> are set,
         <code>shouldAllowCreateItem</code> will take precedence (the footer will not be displayed).
       </p>
-
-      <p>Example footer array:</p>
-      <CodeWrapper>
-        <Code language="js" showLineNumbers={false} text={ItemsExample} />
-      </CodeWrapper>
       <p>
-        There are other options that can be included in an item, but are not required:
+        Below is the shape of the <code>footer</code> prop
       </p>
       <table>
         <thead>

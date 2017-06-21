@@ -232,6 +232,8 @@ export default class StatelessMultiSelect extends PureComponent {
 
   handleItemSelect = (item, attrs) => {
     if (!this.isFooterFocused()) {
+      // we short circuit above because when focusing on footer we don't have `item`.
+      // We could look at adding item.disabled in the future though if required.
       if (!item.isDisabled) {
         this.props.onOpenChange({ isOpen: false, event: attrs.event });
         this.props.onSelected(item);
@@ -419,7 +421,6 @@ export default class StatelessMultiSelect extends PureComponent {
       <SelectWrapper
         shouldFitContainer={shouldFitContainer}
         onKeyDown={this.handleKeyboardInteractions}
-        innerRef={ref => (this.multiSelectContainer = ref)}
       >
         <select
           disabled={isDisabled}

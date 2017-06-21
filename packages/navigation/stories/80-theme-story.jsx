@@ -4,12 +4,17 @@ import styled from 'styled-components';
 import { storiesOf } from '@kadira/storybook';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
-import { AddIcon, AtlassianIcon, SearchIcon, ExpandIcon, ListIcon, QuestionCircleIcon } from '@atlaskit/icon';
+import AddIcon from '@atlaskit/icon/glyph/add';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ListIcon from '@atlaskit/icon/glyph/list';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
 import { AkContainerNavigation, AkGlobalNavigation, AkGlobalItem, AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, presetThemes } from '../src/';
 import { containerOpenWidth, containerClosedWidth, gridSize } from '../src/shared-variables';
-import BasicNavigation from './components/BasicNavigation';
+import PresetPicker from './components/PresetPicker';
 import ThemePreview from './components/ThemePreview';
 import nucleusLogo from './nucleus.png';
 
@@ -17,7 +22,7 @@ import nucleusLogo from './nucleus.png';
 const ExampleContainerNavigation = ({ theme, themeName, isCollapsed = false }) => (
   <AkContainerNavigation
     theme={theme}
-    showGlobalPrimaryActions={isCollapsed}
+    showGlobalActions={isCollapsed}
     isCollapsed={isCollapsed}
     globalCreateIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
     globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" secondaryColor="inherit" />}
@@ -253,67 +258,6 @@ const GlobalNavigationExplorer = () => (
   </Container>
 );
 
-const presetOptions = [
-  {
-    heading: 'Theme',
-    items: Object.keys(presetThemes).map(key => ({
-      content: key,
-      type: 'radio',
-    })),
-  },
-];
-
-class PresetPicker extends PureComponent {
-  state = {
-    containerThemeName: 'container',
-    globalThemeName: 'global',
-  }
-
-  changeContainerTheme = (e) => {
-    this.setState({
-      containerThemeName: e.item.content,
-    });
-  };
-
-  changeGlobalTheme = (e) => {
-    this.setState({
-      globalThemeName: e.item.content,
-    });
-  };
-
-  render() {
-    const { globalThemeName, containerThemeName } = this.state;
-
-    return (
-      <div>
-        <BasicNavigation
-          globalTheme={presetThemes[globalThemeName]}
-          containerTheme={presetThemes[containerThemeName]}
-        />
-        <Container>
-          <h3 style={{ marginBottom: gridSize }}>Container theme</h3>
-          <AkDropdownMenu
-            triggerType="button"
-            items={presetOptions}
-            onItemActivated={this.changeContainerTheme}
-          >
-            {containerThemeName}
-          </AkDropdownMenu>
-
-          <h3 style={{ marginBottom: gridSize }}>Global theme</h3>
-          <AkDropdownMenu
-            triggerType="button"
-            items={presetOptions}
-            onItemActivated={this.changeGlobalTheme}
-          >
-            {globalThemeName}
-          </AkDropdownMenu>
-        </Container>
-      </div>
-    );
-  }
-}
-
 storiesOf(`${name} - theming`, module)
   .add('presets for container navigation', () => (
     <ContainerNavigationExplorer />
@@ -326,4 +270,7 @@ storiesOf(`${name} - theming`, module)
   ))
   .add('theme playground', () => (
     <ThemePreview />
+  ))
+  .add('theme playground with global only', () => (
+    <ThemePreview isGlobalOnly />
   ));

@@ -1,4 +1,4 @@
-import { MentionProvider } from '@atlaskit/mention';
+import { MentionProvider, MentionDescription } from '@atlaskit/mention';
 import {
   EditorState,
   EditorView,
@@ -9,7 +9,7 @@ import {
   Fragment
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
-import { isMarkAllowedAtPosition } from '../../utils';
+import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -20,6 +20,7 @@ export class MentionsState {
   // public state
   query?: string;
   queryActive = false;
+  enabled = true;
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
 
@@ -58,6 +59,12 @@ export class MentionsState {
     const { from, to } = selection;
 
     let dirty = false;
+
+    const newEnabled = this.isEnabled();
+    if (newEnabled !== this.enabled) {
+      this.enabled = newEnabled;
+      dirty = true;
+    }
 
     if (doc.rangeHasMark(from - 1, to, mentionQuery)) {
       if (!this.queryActive) {
@@ -110,10 +117,10 @@ export class MentionsState {
     return true;
   }
 
-  mentionDisabled() {
-    const { schema, selection } = this.state;
+  isEnabled() {
+    const { schema } = this.state;
     const { mentionQuery } = schema.marks;
-    return isMarkAllowedAtPosition(mentionQuery, selection);
+    return isMarkTypeAllowedAtCurrentPosition(mentionQuery, this.state);
   }
 
   private findMentionQueryMark() {
@@ -143,15 +150,15 @@ export class MentionsState {
     return { start, end };
   }
 
-  insertMention(mentionData?: Mention) {
+  insertMention(mentionData?: MentionDescription) {
     const { state, view } = this;
     const { mention } = state.schema.nodes;
 
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
-      const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id })];
-      if (!this.isNextCharacterSpace(end)) {
+      const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id, accessLevel: mentionData.accessLevel })];
+      if (!this.isNextCharacterSpace()) {
         nodes.push(state.schema.text(' '));
       }
       view.dispatch(
@@ -162,7 +169,7 @@ export class MentionsState {
     }
   }
 
-  isNextCharacterSpace(end) {
+  isNextCharacterSpace() {
     const { $from } = this.state.selection;
     return $from.nodeAfter && $from.nodeAfter.textContent.indexOf(' ') === 0;
   }
@@ -180,14 +187,15 @@ export class MentionsState {
   }
 
   setMentionProvider(provider: Promise<MentionProvider>): Promise<MentionProvider> {
-    return new Promise<MentionProvider>((resolve, reject) => {
-      provider
-        .then(mentionProvider => {
-          this.mentionProvider = mentionProvider;
-          resolve(mentionProvider);
-        })
-        .catch(reject);
-    });
+    return provider
+      .then(mentionProvider => {
+        this.mentionProvider = mentionProvider;
+
+        // Improve first mentions performance by establishing a connection and populating local search
+        this.mentionProvider.filter('');
+
+        return mentionProvider;
+      });
   }
 
   setView(view: EditorView) {
@@ -230,13 +238,6 @@ const plugin = new Plugin({
     };
   }
 });
-
-export interface Mention {
-  name: string;
-  mentionName: string;
-  nickname?: string;
-  id: string;
-}
 
 const plugins = (schema: Schema<any, any>) => {
   return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];

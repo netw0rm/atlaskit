@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {CardAction, CardActionType, CardEventHandler} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
-import Icon from '@atlaskit/icon/lib/Icon';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 
@@ -47,7 +46,7 @@ export class Menu extends Component<MenuProps, {}> {
 
     return (
       <DeleteBtn onClick={this.deleteBtnClick(action.handler)} style={{color: triggerColor}} >
-        <Icon glyph={CrossIcon} size="small" label="delete" />
+        <CrossIcon size="small" label="delete" />
       </DeleteBtn>
     );
   }
@@ -78,7 +77,7 @@ export class Menu extends Component<MenuProps, {}> {
 
     return (
       <MeatBallsWrapper style={{color: triggerColor}} >
-        <Icon glyph={MoreIcon} label="more" />
+        <MoreIcon label="more" />
       </MeatBallsWrapper>
     );
   }

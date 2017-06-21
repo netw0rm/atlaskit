@@ -69,6 +69,7 @@ export interface EmojiDescription extends EmojiId {
   order?: number;
   type: string;
   category: string;
+  ascii?: string[];
   representation: EmojiRepresentation;
 }
 
@@ -87,6 +88,7 @@ export interface EmojiServiceDescription {
   name?: string;
   order?: number;
   fallback?: string;
+  ascii?: string[];
   type: string;
   category: string;
   representation: EmojiServiceRepresentation;
@@ -157,4 +159,13 @@ export interface OnCategory {
 export interface SearchOptions {
   skinTone?: number; // skin tone offset starting at 1
   limit?: number;
+}
+
+export interface EmojiUpload {
+  name: string;
+  shortName: string;
+  filename: string;
+  dataURL: string;
+  width: number;
+  height: number;
 }

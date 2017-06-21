@@ -1,7 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Tooltip from '@atlaskit/tooltip';
-import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import SettingsIcon from '@atlaskit/icon/glyph/settings';
+import TrayIcon from '@atlaskit/icon/glyph/tray';
 
 import { AkNavigationItem } from '../src/index';
 import BasicNavigation from './components/BasicNavigation';

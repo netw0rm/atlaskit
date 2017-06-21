@@ -2,6 +2,7 @@ import * as React from 'react';
 import {mount} from 'enzyme';
 import {expect} from 'chai';
 import {CONTAINER_SIZE, ImageNavigator} from '../../src/image-navigator';
+import {ImageUploader} from '../../src/image-navigator/styled';
 import {ImageCropper} from '../../src/image-cropper';
 import {Slider} from '../../src/slider';
 import {createMouseEvent, smallImage} from '@atlaskit/media-test-helpers';
@@ -110,5 +111,12 @@ describe('Image navigator', () => {
       expect(component.state().imageInitPos).to.deep.equal({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
     });
 
+  });
+  describe('when imageSource is not present', () => {
+    it('should render ImageUploader to allow users to pick an image', () => {
+      const component = mount(<ImageNavigator />);
+
+      expect(component.find(ImageUploader)).to.have.length(1);
+    });
   });
 });

@@ -1,6 +1,7 @@
 import {
   AnalyticsHandler,
   analyticsService,
+  asciiEmojiPlugins,
   baseKeymap,
   blockTypePlugins,
   EditorState,
@@ -40,8 +41,8 @@ import {
   ErrorReporter,
   ErrorReportingHandler,
 } from '@atlaskit/editor-core';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MentionProvider } from '@atlaskit/mention';
+import { EmojiProvider } from '@atlaskit/editor-core';
+import { MentionProvider } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -49,6 +50,16 @@ import { HCSchema, default as schema } from './schema/schema';
 import { version } from './version';
 import { hipchatEncoder } from './encoders';
 import { hipchatDecoder } from './decoders';
+
+export {
+  AbstractMentionResource,
+  EmojiProvider,
+  EmojiResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/editor-core';
 
 let debounced: number | null = null;
 
@@ -224,7 +235,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  insertFileFromDataUrl (url: string, fileName: string) {
+  insertFileFromDataUrl(url: string, fileName: string) {
     const { editorView } = this.state;
     if (editorView) {
       const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
@@ -238,6 +249,8 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.providerFactory.destroy();
+
     const { editorView } = this.state;
     if (editorView) {
       if (editorView.state) {
@@ -320,18 +333,22 @@ export default class Editor extends PureComponent<Props, State> {
         ...mentionsPlugins(schema),
         ...mediaPlugins,
         ...emojisPlugins(schema),
-        ...blockTypePlugins(schema),
+        ...asciiEmojiPlugins(schema, this.props.emojiProvider),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         ...reactNodeViewPlugins(schema),
         ...codeBlockPlugins(schema),
+        // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+        // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+        // if converting is possible
+        ...blockTypePlugins(schema),
         history(),
         keymap(hcKeymap),
         keymap(baseKeymap) // should be last
       ]
     });
 
-    const { maxContentSize }  = this.props;
+    const { maxContentSize } = this.props;
 
     const editorView = new EditorView(place, {
       state: editorState,

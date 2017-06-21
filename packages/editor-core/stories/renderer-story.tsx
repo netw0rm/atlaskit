@@ -1,4 +1,5 @@
-import { /*action,*/ storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
 import * as React from 'react';
 import { name } from '../package.json';
 import schema from './schema';
@@ -21,17 +22,46 @@ import {
 import {
   BulletList,
   Blockquote,
+  Emoji,
   HardBreak,
+  Heading,
   OrderedList,
   ListItem,
+  Mention,
   Panel,
   Paragraph,
 } from '../src/renderer/react/nodes';
 
+import { EmojiProps } from '../src/renderer/react/nodes/emoji';
+import ProviderFactory from '../src/providerFactory';
 import { document } from './story-data';
+
+const mentionProvider = Promise.resolve({
+  shouldHighlightMention(mention) {
+    return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
+  }
+});
 
 storiesOf(name, module)
   .add('renderer', () => {
+    const providerFactory = new ProviderFactory();
+    providerFactory.setProvider('mentionProvider', mentionProvider);
+
+    const eventHandlers = {
+      mention: {
+        onClick: action('onClick'),
+        onMouseEnter: action('onMouseEnter'),
+        onMouseLeave: action('onMouseLeave'),
+      },
+    };
+
+    return (
+      <div>
+        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema, providerFactory, eventHandlers), schema)}
+      </div>
+    );
+  })
+  .add('renderer without providers', () => {
     return (
       <div>
         {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema), schema)}
@@ -65,6 +95,103 @@ storiesOf(name, module)
   .add('nodes/hardBreak', () => (
     <div>Some text with that<HardBreak />breaks on multiple lines</div>
   ))
+  .add('nodes/heading', () => (
+    <div>
+      <Heading level={1}>Heading 1</Heading>
+      <Heading level={2}>Heading 2</Heading>
+      <Heading level={3}>Heading 3</Heading>
+      <Heading level={4}>Heading 4</Heading>
+      <Heading level={5}>Heading 5</Heading>
+      <Heading level={6}>Heading 6</Heading>
+    </div>
+  ))
+  .add('nodes/mention', () => (
+    <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
+  ))
+  .add('nodes/emoji', () => {
+    const { emojiStoryData, emojiTestData } = emojiData;
+    const loadingEmojiProvider = new Promise(() => {});
+    const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+    const lorem = emojiStoryData.lorem;
+
+    // tslint:disable-next-line:variable-name
+    const Sample = (props: any) => {
+      const providerFactory = new ProviderFactory();
+      providerFactory.setProvider('emojiProvider', props.emojiProvider);
+
+      const evilBurnsEmojiProps: EmojiProps = { ...emojiTestData.evilburnsEmoji, providers: providerFactory };
+      const grinEmojiProps: EmojiProps = { ...emojiTestData.grinEmoji, providers: providerFactory };
+
+      const nopeEmojiProps: EmojiProps = { shortName: ':nope:' };
+      if (props.emojiProvider) {
+        const providerFactory = new ProviderFactory();
+        providerFactory.setProvider('emojiProvider', loadingEmojiProvider);
+
+        nopeEmojiProps.providers = providerFactory;
+      }
+
+      return (
+        <span>
+          Example emoji:&nbsp;
+          <Emoji {...evilBurnsEmojiProps} />
+          <Emoji {...grinEmojiProps} />
+          <Emoji {...nopeEmojiProps} />
+        </span>
+      );
+    };
+
+    const sampleStyle = {
+      display: 'inline-block',
+      verticalAlign: 'top',
+      paddingRight: '10px',
+      width: '45%',
+    };
+    return (
+      <div>
+        <p>
+          This story shows emoji in various contexts, the line height between the left and
+          right columns should be consistent if the emoji do not impact the line height.
+        </p>
+        <hr/>
+        <div style={sampleStyle}>
+          <Paragraph><Sample emojiProvider={emojiProvider} /></Paragraph>
+          <hr/>
+          <Paragraph>{lorem} <Sample emojiProvider={emojiProvider} /> {lorem}</Paragraph>
+          <hr/>
+          <h1><Sample emojiProvider={emojiProvider} /></h1>
+          <hr/>
+          <h2><Sample emojiProvider={emojiProvider} /></h2>
+          <hr/>
+          <h3><Sample emojiProvider={emojiProvider} /></h3>
+          <hr/>
+          <h4><Sample emojiProvider={emojiProvider} /></h4>
+          <hr/>
+          <h5><Sample emojiProvider={emojiProvider} /></h5>
+          <hr/>
+          <h6><Sample emojiProvider={emojiProvider} /></h6>
+          <hr/>
+        </div>
+        <div style={sampleStyle}>
+          <Paragraph><Sample/></Paragraph>
+          <hr/>
+          <Paragraph>{lorem} <Sample/> {lorem}</Paragraph>
+          <hr/>
+          <h1><Sample/></h1>
+          <hr/>
+          <h2><Sample/></h2>
+          <hr/>
+          <h3><Sample/></h3>
+          <hr/>
+          <h4><Sample/></h4>
+          <hr/>
+          <h5><Sample/></h5>
+          <hr/>
+          <h6><Sample/></h6>
+          <hr/>
+        </div>
+      </div>
+    );
+  })
   .add('nodes/paragraph', () => (
     <Paragraph>This is a paragraph</Paragraph>
   ))

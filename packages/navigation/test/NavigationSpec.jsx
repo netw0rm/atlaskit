@@ -323,7 +323,7 @@ describe('<Navigation />', () => {
     });
 
     it('should tell the container not to render the global primary items', () => {
-      expect(wrapper.find('ContainerNavigation').props().showGlobalPrimaryActions)
+      expect(wrapper.find('ContainerNavigation').props().showGlobalActions)
         .to.equal(false);
     });
 
@@ -352,6 +352,22 @@ describe('<Navigation />', () => {
       });
 
       expect(warnStub.callCount).to.equal(1);
+    });
+  });
+
+  describe('collapsing', () => {
+    it('should allow collapsing if isCollapsible is set to false and navigation width is expanded', () => {
+      const wrapper = shallow(<Navigation isOpen isCollapsible={false} />);
+      wrapper.find('Resizer')
+        .simulate('resize', 1);
+
+      expect(wrapper.find('Resizer').props().showResizeButton).to.equal(true);
+    });
+
+    it('should not allow collapsing if isCollapsible is set to false and navigation width is not expanded', () => {
+      const wrapper = shallow(<Navigation isOpen isCollapsible={false} />);
+
+      expect(wrapper.find('Resizer').props().showResizeButton).to.equal(false);
     });
   });
 });

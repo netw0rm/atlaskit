@@ -10,6 +10,7 @@ import {
   mentionsPlugins,
   rulePlugins,
   textFormattingPlugins,
+  textColorPlugins,
   listsPlugins,
   blockTypeStateKey,
   clearFormattingStateKey,
@@ -17,8 +18,8 @@ import {
   hyperlinkStateKey,
   mentionsStateKey,
   textFormattingStateKey,
+  textColorStateKey,
   listsStateKey,
-  ContextName,
   EditorState,
   EditorView,
   Schema,
@@ -57,6 +58,7 @@ import {
   isSchemaWithLinks,
   isSchemaWithMentions,
   isSchemaWithMedia,
+  isSchemaWithTextColor,
   makeSchema,
 } from './schema';
 import { version, name } from './version';
@@ -64,7 +66,6 @@ import { version, name } from './version';
 export { version };
 
 export interface Props {
-  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -79,11 +80,14 @@ export interface Props {
   allowAdvancedTextFormatting?: boolean;
   allowBlockQuote?: boolean;
   allowSubSup?: boolean;
+  allowTextColor?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
-  mediaProvider ?: Promise<MediaProvider>;
-  uploadErrorHandler ?: (state: MediaState) => void;
+  mediaProvider?: Promise<MediaProvider>;
+  uploadErrorHandler?: (state: MediaState) => void;
   errorReporter?: ErrorReportingHandler;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export interface State {
@@ -105,7 +109,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const {
       allowLists, allowLinks, allowAdvancedTextFormatting,
-      allowCodeBlock, allowBlockQuote, allowSubSup,
+      allowCodeBlock, allowBlockQuote, allowSubSup, allowTextColor,
 
       analyticsHandler,
 
@@ -123,6 +127,7 @@ export default class Editor extends PureComponent<Props, State> {
       allowCodeBlock: !!allowCodeBlock,
       allowBlockQuote: !!allowBlockQuote,
       allowSubSup: !!allowSubSup,
+      allowTextColor: !!allowTextColor,
       allowMedia: !!mediaProvider,
     });
 
@@ -150,6 +155,10 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     analyticsService.handler = analyticsHandler || ((name) => { });
+  }
+
+  componentWillUnmount() {
+    this.providerFactory.destroy();
   }
 
   /**
@@ -217,17 +226,24 @@ export default class Editor extends PureComponent<Props, State> {
   /**
    * The current value of the editor, encoded as HTML.
    */
-  get value(): string | undefined {
+  get value(): Promise<string | undefined> {
     const { editorView, schema } = this.state;
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
 
-    return editorView && editorView.state.doc
-      ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
-      : this.props.defaultValue;
+    return (async () => {
+      if (mediaPluginState) {
+        await mediaPluginState.waitForPendingTasks();
+      }
+
+      return editorView && editorView.state.doc
+        ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
+        : this.props.defaultValue;
+    })();
   }
 
   render() {
     const { editorView, isExpanded, isMediaReady } = this.state;
-    const { mentionProvider, mediaProvider } = this.props;
+    const { mentionProvider, mediaProvider, popupsBoundariesElement, popupsMountPoint } = this.props;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
@@ -237,6 +253,7 @@ export default class Editor extends PureComponent<Props, State> {
     const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
     const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const textColorState = editorState && textColorStateKey.getState(editorState);
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
     const mediaState = editorState && mediaProvider && this.mediaPlugins && mediaStateKey.getState(editorState);
@@ -255,6 +272,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateCodeBlock={codeBlockState}
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
+        pluginStateTextColor={textColorState}
         pluginStateClearFormatting={clearFormattingState}
         pluginStateMentions={mentionsState}
         pluginStateHyperlink={hyperlinkState}
@@ -262,6 +280,8 @@ export default class Editor extends PureComponent<Props, State> {
         packageVersion={version}
         packageName={name}
         saveDisabled={!isMediaReady}
+        popupsBoundariesElement={popupsBoundariesElement}
+        popupsMountPoint={popupsMountPoint}
       />
     );
   }
@@ -301,7 +321,6 @@ export default class Editor extends PureComponent<Props, State> {
     const { schema } = this.state;
 
     if (place) {
-      const { context } = this.props;
       const jiraKeymap = {
         'Mod-Enter': this.handleSave,
       };
@@ -312,24 +331,23 @@ export default class Editor extends PureComponent<Props, State> {
         plugins: [
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
           ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
-          ...blockTypePlugins(schema as Schema<any, any>),
           ...clearFormattingPlugins(schema as Schema<any, any>),
           ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
           ...listsPlugins(schema as Schema<any, any>),
           ...rulePlugins(schema as Schema<any, any>),
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
           ...textFormattingPlugins(schema as Schema<any, any>),
+          ...(isSchemaWithTextColor(schema) ? textColorPlugins(schema as Schema<any, any>) : []),
+          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+          // if converting is possible
+          ...blockTypePlugins(schema as Schema<any, any>),
           ...reactNodeViewPlugins(schema as Schema<any, any>),
           history(),
           keymap(jiraKeymap),
           keymap(baseKeymap), // should be last :(
         ]
       });
-
-      if (context) {
-        const blockTypeState = blockTypeStateKey.getState(editorState);
-        blockTypeState.changeContext(context);
-      }
 
       const editorView = new EditorView(place, {
         state: editorState,

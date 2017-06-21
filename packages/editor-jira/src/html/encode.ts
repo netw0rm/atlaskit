@@ -1,8 +1,4 @@
-import {
-  Fragment,
-  Node as PMNode,
-} from '@atlaskit/editor-core';
-
+import { Fragment, Node as PMNode } from '@atlaskit/editor-core';
 import {
   JIRASchema,
   isSchemaWithBlockQuotes,
@@ -84,11 +80,10 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
     }
 
     if (isSchemaWithMedia(schema)) {
-      // TODO: Replace with encoding in ED-1726
-      if (node.type === media) {
-        return encodeText(node);
-      } else if (node.type === mediaGroup) {
-        return encodeText(node);
+      if (node.type === mediaGroup) {
+        return encodeMediaGroup(node);
+      } else if (node.type === media) {
+        return encodeMedia(node);
       }
     }
 
@@ -144,6 +139,7 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
         strong,
         subsup,
         underline,
+        textColor,
       } = schema.marks;
 
       for (const mark of node.marks) {
@@ -184,6 +180,11 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
             }
 
             elem = elem.appendChild(linkElem);
+            break;
+          case textColor:
+            const fontElem = doc.createElement('font');
+            fontElem.setAttribute('color', mark.attrs['color']);
+            elem = elem.appendChild(fontElem);
             break;
           case mentionQuery:
             break;
@@ -289,6 +290,51 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
   function encodeBlockQuote(node: PMNode) {
     const elem = doc.createElement('blockquote');
     elem.appendChild(encodeFragment(node.content));
+    return elem;
+  }
+
+  function encodeMediaGroup(node: PMNode) {
+    const elem = doc.createElement('p');
+    elem.setAttribute('class', 'mediaGroup');
+    elem.appendChild(encodeFragment(node.content));
+    return elem;
+  }
+
+  function addDataToNode(domNode: HTMLElement, mediaNode: PMNode) {
+    const { id, type, __fileName, __displayType } = mediaNode.attrs;
+    // Order of dataset matters in IE Edge, please keep the current order
+    domNode.dataset.attachmentType = __displayType || 'thumbnail';
+    if (__fileName) {
+      domNode.dataset.attachmentName = __fileName;
+    }
+    domNode.dataset.mediaServicesType = type;
+    domNode.dataset.mediaServicesId = id;
+  }
+
+  function encodeMedia(node: PMNode) {
+    // span.image-wrap > a > jira-attachment-thumbnail > img[data-media-*] > content
+    // span.no-br > a[data-media] > content
+    const elem = doc.createElement('span');
+    const a = doc.createElement('a');
+
+    if (node.attrs.__displayType === 'file') {
+      elem.setAttribute('class', 'nobr');
+      addDataToNode(a, node);
+      a.textContent = node.attrs.__fileName || '';
+    } else {
+      elem.setAttribute('class', 'image-wrap');
+
+      const img = doc.createElement('img');
+      img.setAttribute('alt', node.attrs.__fileName);
+      addDataToNode(img, node);
+
+      const jiraThumb = doc.createElement('jira-attachment-thumbnail');
+      jiraThumb.appendChild(img);
+
+      a.appendChild(jiraThumb);
+    }
+
+    elem.appendChild(a);
     return elem;
   }
 }

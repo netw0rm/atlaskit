@@ -1,6 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { CrossIcon, DashboardIcon, EmojiTravelIcon, EmojiNatureIcon } from '@atlaskit/icon';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
+import EmojiNatureIcon from '@atlaskit/icon/glyph/emoji/nature';
 import { name } from '../package.json';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -42,14 +45,14 @@ storiesOf(name, module)
         />
         <AkNavigationItemGroup title="With things at the end">
           <AkNavigationItem
-            action={<CrossIcon label="close" />}
+            action={<CrossIcon label="close" size="small" />}
             icon={<DashboardIcon label="Dashboard" />}
             subText="And two lines"
             text="With an action"
             textAfter={<RandomBadge />}
           />
           <AkNavigationItem
-            action={<CrossIcon label="close" />}
+            action={<CrossIcon label="close" size="small" />}
             icon={<EmojiNatureIcon label="Nature" />}
             subText="And a very long second line of text"
             text="A very long first line of text"
@@ -58,7 +61,7 @@ storiesOf(name, module)
         </AkNavigationItemGroup>
         <AkNavigationItemGroup title="With compact items">
           <AkNavigationItem
-            action={<CrossIcon label="close" />}
+            action={<CrossIcon label="close" size="small" />}
             isCompact
             subText="Text with y, q, etc."
             text="Should have even smaller subText"

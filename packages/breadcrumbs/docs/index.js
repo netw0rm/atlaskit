@@ -23,19 +23,19 @@ export const description = (
       of the collapse view, and passes other props on to the stateless export.
     </p>
     <Usage>
-      {"import { AkBreadcrumbs, AkBreadcrumbsItem } from '@atlaskit/breadcrumbs';"}
+      {"import { BreadcrumbsStateless, BreadcrumbsItem } from '@atlaskit/breadcrumbs';"}
     </Usage>
     <p>or:</p>
     <Usage>
-      {"import Breadcrumbs, { AkBreadcrumbsItem } from '@atlaskit/breadcrumbs';"}
+      {"import Breadcrumbs, { BreadcrumbsItem } from '@atlaskit/breadcrumbs';"}
     </Usage>
     <p>
-      <code>Breadcrumbs</code> or <code>AkBreadcrumbs</code> are used as the wrapper
+      <code>Breadcrumbs</code> or <code>BreadcrumbsStateless</code> are used as the wrapper
       component. <code>BreadcrumbsItem</code> is the rendering componet for each
       individual item in the list.
     </p>
     <p>
-      An <code>AkBreadcrumbs</code> component with no items will not be rendered.
+      An <code>BreadcrumbsStateless</code> component with no items will not be rendered.
     </p>
   </div>
 );

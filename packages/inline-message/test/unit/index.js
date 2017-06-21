@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Button from '@atlaskit/button';
-import WarningIcon from 'ak-icon/glyph/warning';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import {
   akColorB400,
   akColorG300,
@@ -9,11 +10,11 @@ import {
   akColorR300,
   akColorY300,
 } from '@atlaskit/util-shared-styles';
-import SuccessIcon from 'ak-icon/glyph/success';
 import InlineDialog from '@atlaskit/inline-dialog';
-import styles from '../../src/styles.less';
-import InlineMessage from '../../src';
-import IconForType from '../../src/internal/IconForType';
+import InlineMessage from '../../src/';
+import IconForType from '../../src/components/IconForType';
+import IconWrapper from '../../src/styled/IconForType';
+import { Text } from '../../src/styled/InlineMessage';
 
 import { name } from '../../package.json';
 
@@ -36,12 +37,12 @@ describe(name, () => {
   describe('props', () => {
     describe('title', () => {
       it('supplied title should be rendered', () => {
-        expect(shallow(<InlineMessage title="Title goes here" />).find(`.${styles.titleText}`).text()).to.equal('Title goes here');
+        expect(mount(<InlineMessage title="Title goes here" />).find(Text).text()).to.equal('Title goes here');
       });
     });
     describe('secondaryText', () => {
       it('supplied secondary text should be rendered', () => {
-        expect(shallow(<InlineMessage secondaryText="Secondary goes here" />).find(`.${styles.secondaryText}`).text()).to.equal('Secondary goes here');
+        expect(mount(<InlineMessage secondaryText="Secondary goes here" />).find(Text).text()).to.equal('Secondary goes here');
       });
     });
     describe('type', () => {
@@ -70,27 +71,27 @@ describe(name, () => {
         it('connectivity type produces connectivity icon', () => {
           const wrapper = shallow(<IconForType type="connectivity" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorB400);
+          expect(wrapper.find(IconWrapper).prop('iconColor')).to.equal(akColorB400);
         });
         it('confirmation type produces confirmation icon', () => {
           const wrapper = shallow(<IconForType type="confirmation" />);
-          expect(wrapper.find(SuccessIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorG300);
+          expect(wrapper.find(CheckCircleIcon).length).to.be.above(0);
+          expect(wrapper.find(IconWrapper).prop('iconColor')).to.equal(akColorG300);
         });
         it('info type produces info icon', () => {
           const wrapper = shallow(<IconForType type="info" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorP300);
+          expect(wrapper.find(IconWrapper).prop('iconColor')).to.equal(akColorP300);
         });
         it('warning type produces warning icon', () => {
           const wrapper = shallow(<IconForType type="warning" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorY300);
+          expect(wrapper.find(IconWrapper).prop('iconColor')).to.equal(akColorY300);
         });
         it('error type produces error icon', () => {
           const wrapper = shallow(<IconForType type="error" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorR300);
+          expect(wrapper.find(IconWrapper).prop('iconColor')).to.equal(akColorR300);
         });
       });
     });

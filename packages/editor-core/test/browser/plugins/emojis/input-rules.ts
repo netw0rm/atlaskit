@@ -8,6 +8,8 @@ import {
   makeEditor,
   doc,
   p,
+  code,
+  code_block,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
@@ -24,8 +26,8 @@ describe('emojis - input rules', () => {
     place: fixture()
   });
 
-  const assert = (what: string, expected: boolean) => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+  const assert = (what: string, expected: boolean, docContents?: any) => {
+    const { editorView, pluginState, sel } = editor(doc(docContents || p('{<>}')));
     return pluginState
       .setEmojiProvider(emojiProvider)
       .then(() => {
@@ -59,7 +61,27 @@ describe('emojis - input rules', () => {
     assert(':', true);
   });
 
-  it('should replace ":" if there are multiple spaces infront of it', () => {
+  it('should replace ":" if there are multiple spaces in front of it', () => {
     assert('  :', true);
+  });
+
+  it('should not replace ":" when in an unsupported node', () => {
+    assert(':', false, code_block()('{<>}'));
+  });
+
+  it('should not replace ": when there is an unsupported stored mark', () => {
+    assert(':', false, p(code('{<>}')));
+  });
+
+  it('should replace non empty selection with emojiQuery mark', () => {
+    assert(':', true, p('{<text>}'));
+  });
+
+  it('should not replace non empty selection with emojiQuery mark if selection starts with an excluding mark', () => {
+    assert(':', false, p(code('{<text>}')));
+  });
+
+  it('should not replace a ":" preceded by a special character', () => {
+    assert('>:', false);
   });
 });

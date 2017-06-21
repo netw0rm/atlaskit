@@ -608,6 +608,17 @@ describe('hyperlink', () => {
       });
     });
 
+    context('url link has brackets', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { plain: 'http://www.(atlassian).com test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.(atlassian).com' })('http://www.(atlassian).com'), ' test')));
+      });
+    });
+
     context('url link is at end of html text', () => {
       it('should add link mark', function() {
         const { editorView } = editor(doc(paragraph('{<>}')));

@@ -13,7 +13,7 @@
 [options]
 
 # Automatically map @atlaskit/* imports to local packages
-module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/\1/src/index'
+# module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/\1/src/index'
 
 # Provides a way to suppress flow errors in the following line.
 # Example: // $FlowFixMe: This following line is borked because of reasons.

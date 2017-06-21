@@ -19,6 +19,7 @@ import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import { MediaPluginState } from '../../plugins/media';
 import { TextColorState } from '../../plugins/text-color';
+import { TableState } from '../../plugins/table';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
@@ -64,12 +65,15 @@ export interface Props {
   pluginStateMedia?: MediaPluginState;
   pluginStateEmojis?: EmojiState;
   pluginStateTextColor?: TextColorState;
+  pluginStateTable?: TableState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
@@ -104,7 +108,9 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       pluginStatePanel,
       pluginStateTextColor,
       pluginStateTextFormatting,
-      saveDisabled
+      saveDisabled,
+      popupsMountPoint,
+      popupsBoundariesElement
     } = this.props;
     const iconAfter = saveDisabled
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
@@ -124,6 +130,8 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               editorView={editorView}
               softBlurEditor={this.softBlurEditor}
               focusEditor={this.focusEditor}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
           {pluginStateTextFormatting ?
@@ -140,6 +148,8 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               editorView={editorView}
               softBlurEditor={this.softBlurEditor}
               focusEditor={this.focusEditor}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
           {pluginStateTextFormatting || pluginStateClearFormatting ?
@@ -150,6 +160,8 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               editorView={editorView}
               softBlurEditor={this.softBlurEditor}
               focusEditor={this.focusEditor}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
           {pluginStateLists ?
@@ -171,11 +183,40 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         </Toolbar>
         <Content>
           {this.props.children}
-          {pluginStateHyperlink && !disabled ? <HyperlinkEdit pluginState={pluginStateHyperlink} editorView={editorView} /> : null}
-          {pluginStateCodeBlock && !disabled ? <LanguagePicker pluginState={pluginStateCodeBlock} editorView={editorView} /> : null}
-          {pluginStateMentions && mentionProvider && !disabled ? <MentionPicker pluginState={pluginStateMentions} resourceProvider={mentionProvider} /> : null}
-          {pluginStateEmojis && emojiProvider && !disabled ? <EmojiTypeAhead pluginState={pluginStateEmojis} emojiProvider={emojiProvider} /> : null}
-          {pluginStatePanel && !disabled ? <PanelEdit pluginState={pluginStatePanel} editorView={editorView} /> : null}
+
+          {pluginStateHyperlink && !disabled ?
+            <HyperlinkEdit
+              pluginState={pluginStateHyperlink}
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            /> : null}
+
+          {pluginStateCodeBlock && !disabled ?
+            <LanguagePicker
+              pluginState={pluginStateCodeBlock}
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            /> : null}
+
+          {pluginStateMentions && mentionProvider && !disabled ?
+            <MentionPicker
+              pluginState={pluginStateMentions}
+              resourceProvider={mentionProvider}
+              popupsBoundariesElement={popupsBoundariesElement}
+              popupsMountPoint={popupsMountPoint}
+            /> : null}
+
+          {pluginStateEmojis && emojiProvider && !disabled ?
+            <EmojiTypeAhead
+              pluginState={pluginStateEmojis}
+              emojiProvider={emojiProvider}
+              popupsBoundariesElement={popupsBoundariesElement}
+              popupsMountPoint={popupsMountPoint}
+            /> : null}
+
+          {pluginStatePanel ? <PanelEdit pluginState={pluginStatePanel} editorView={editorView} /> : null}
         </Content>
         <Footer>
           <FooterActions>

@@ -4,15 +4,15 @@ import * as classNames from 'classnames';
 
 import * as styles from './styles';
 
+import { customCategory } from '../../constants';
+import { AvailableCategories, EmojiDescription, EmojiId, EmojiUpload, OnEmojiEvent } from '../../types';
+import { containsEmojiId, isEmojiIdEqual, isEmojiLoaded } from '../../type-helpers';
 import debug from '../../util/logger';
 import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
-import Popup from '../common/Popup';
 import { EmojiSearchResult } from '../../api/EmojiRepository';
-import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
-import { AvailableCategories, EmojiDescription, EmojiId, OnEmojiEvent, RelativePosition } from '../../types';
-import { isEmojiIdEqual, isEmojiLoaded, toEmojiId } from '../../type-helpers';
+import { EmojiProvider, OnEmojiProviderChange, supportsUploadFeature } from '../../api/EmojiResource';
 
 export interface PickerRefHandler {
   (ref: any): any;
@@ -22,11 +22,6 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
-  target?: string | HTMLElement;
-  position?: RelativePosition;
-  zIndex?: string | number;
-  offsetX?: number;
-  offsetY?: number;
 }
 
 export interface State {
@@ -37,6 +32,9 @@ export interface State {
   selectedTone?: number;
   availableCategories?: AvailableCategories;
   query: string;
+  uploadErrorMessage?: string;
+  uploadSupported: boolean;
+  uploading: boolean;
   // the picker is considered loaded when at least 1 set of emojis have loaded
   loading: boolean;
 }
@@ -54,15 +52,20 @@ export default class EmojiPicker extends PureComponent<Props, State> {
       filteredEmojis: [],
       query: '',
       loading: true,
+      uploadSupported: false,
+      uploading: false,
     };
 
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.emojiProvider) {
       this.props.emojiProvider.then(provider => {
         provider.subscribe(this.onProviderChange);
         this.onSearch(this.state.query);
+        if (supportsUploadFeature(provider)) {
+          provider.isUploadSupported().then(this.onUploadSupported);
+        }
       });
     }
   }
@@ -88,8 +91,18 @@ export default class EmojiPicker extends PureComponent<Props, State> {
         nextEmojiProvider.then(provider => {
           provider.subscribe(this.onProviderChange);
           this.onSearch(this.state.query);
+          if (supportsUploadFeature(provider)) {
+            provider.isUploadSupported().then(this.onUploadSupported);
+          }
         });
       }
+    }
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (this.state.uploading && this.state.uploading !== prevState.uploading) {
+      // Showing upload panel, ensure custom category in view due to increased height
+      this.scrollToEndOfList();
     }
   }
 
@@ -112,7 +125,8 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   onCategorySelected = (categoryId: string) => {
     this.props.emojiProvider.then(provider => {
       provider.findInCategory(categoryId).then(emojisInCategory => {
-        if (emojisInCategory && emojisInCategory.length) {
+        const { availableCategories } = this.state;
+        if (availableCategories && availableCategories[categoryId]) {
           const selectedEmoji = emojisInCategory[0];
           this.setState({
             activeCategory: categoryId,
@@ -120,19 +134,32 @@ export default class EmojiPicker extends PureComponent<Props, State> {
             selectedEmoji,
           } as State);
 
-          if (!isEmojiLoaded(selectedEmoji)) {
-            provider.findByEmojiId(toEmojiId(selectedEmoji)).then((loadedEmoji) => {
-              const lastestSelectedEmoji = this.state.selectedEmoji;
-              if (loadedEmoji && lastestSelectedEmoji && isEmojiIdEqual(toEmojiId(lastestSelectedEmoji), toEmojiId(loadedEmoji))) {
-                // Emoji is still selected, update
-                this.setState({
-                  selectedEmoji: loadedEmoji,
-                });
-              }
-            });
-          }
+          this.loadEmoji(provider, selectedEmoji);
         }
       });
+    });
+  }
+
+  /**
+   * If a media emoji, loads it and updates the selectedEmoji
+   */
+  private loadEmoji = (provider: EmojiProvider, selectedEmoji?: EmojiDescription) => {
+      if (selectedEmoji && !isEmojiLoaded(selectedEmoji)) {
+        provider.findByEmojiId(selectedEmoji).then(loadedEmoji => {
+          const latestSelectedEmoji = this.state.selectedEmoji;
+          if (loadedEmoji && (!latestSelectedEmoji ||isEmojiIdEqual(latestSelectedEmoji, loadedEmoji))) {
+            // Emoji is still selected, update
+            this.setState({
+              selectedEmoji: loadedEmoji,
+            });
+          }
+        });
+      }
+  }
+
+  private onUploadSupported = (supported: boolean) => {
+    this.setState({
+      uploadSupported: supported,
     });
   }
 
@@ -146,17 +173,20 @@ export default class EmojiPicker extends PureComponent<Props, State> {
 
   private onSearchResult = (searchResults: EmojiSearchResult): void => {
     const filteredEmojis = searchResults.emojis;
-    const firstResult = filteredEmojis[0];
     // Only enable categories for full emoji list (non-search)
     const availableCategories = searchResults.query ? [] : searchResults.categories;
     const query = searchResults.query;
 
     let selectedEmoji;
     let activeCategory;
-    if (firstResult) {
-      selectedEmoji = firstResult;
+    if (containsEmojiId(filteredEmojis, this.state.selectedEmoji)) {
+      // Keep existing emoji selected if still in results
+      selectedEmoji = this.state.selectedEmoji;
+      activeCategory = this.state.activeCategory;
+    } else {
+      selectedEmoji = undefined;
       // Only enable categories for full emoji list (non-search)
-      activeCategory = searchResults.query ? undefined : firstResult.category;
+      activeCategory = undefined;
     }
 
     this.setState({
@@ -179,6 +209,64 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     } as State);
   }
 
+  private onOpenUpload = () => {
+    // Prime upload token so it's ready when the user adds
+    const { emojiProvider } = this.props;
+    emojiProvider.then(provider => {
+      if (supportsUploadFeature(provider)) {
+        provider.prepareForUpload();
+      }
+    });
+
+    this.setState({
+      uploadErrorMessage: undefined,
+      uploading: true,
+    });
+  }
+
+  private onUploadEmoji = (upload: EmojiUpload) => {
+    const { emojiProvider } = this.props;
+    this.setState({
+      uploadErrorMessage: undefined, // clear previous errors
+    });
+    emojiProvider.then(provider => {
+      if (provider && supportsUploadFeature(provider)) {
+        provider.uploadCustomEmoji(upload).then(emojiDescription => {
+          this.setState({
+            activeCategory: customCategory,
+            selectedCategory: customCategory,
+            selectedEmoji: emojiDescription,
+            uploading: false,
+          });
+          this.loadEmoji(provider, emojiDescription);
+          this.scrollToEndOfList();
+        }).catch(error => {
+          this.setState({
+            uploadErrorMessage: 'Unable to upload',
+          });
+          debug('Unable to upload emoji', error);
+        });
+      }
+    });
+  }
+
+  private scrollToEndOfList = () => {
+    const emojiPickerList = this.refs.emojiPickerList as EmojiPickerList;
+    if (emojiPickerList) {
+      // Wait a tick to ensure repaint and updated height for picker list
+      setTimeout(() => {
+        emojiPickerList.scrollToBottom();
+      }, 0);
+    }
+  }
+
+  private onUploadCancelled = () => {
+    this.setState({
+      uploading: false,
+      uploadErrorMessage: undefined,
+    });
+  }
+
   private handlePickerRef = (ref: any) => {
     if (this.props.onPickerRef) {
       this.props.onPickerRef(ref);
@@ -186,8 +274,20 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { target, position, zIndex, offsetX, offsetY, onSelection } = this.props;
-    const { activeCategory, availableCategories, filteredEmojis, loading, query, selectedCategory, selectedEmoji, selectedTone } = this.state;
+    const { onSelection } = this.props;
+    const {
+      activeCategory,
+      availableCategories,
+      filteredEmojis,
+      loading,
+      query,
+      selectedCategory,
+      selectedEmoji,
+      selectedTone,
+      uploading,
+      uploadErrorMessage,
+      uploadSupported,
+    } = this.state;
     const classes = [styles.emojiPicker];
 
     const picker = (
@@ -203,42 +303,28 @@ export default class EmojiPicker extends PureComponent<Props, State> {
           onEmojiSelected={onSelection}
           onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
+          onOpenUpload={this.onOpenUpload}
           onSearch={this.onSearch}
           query={query}
           selectedTone={selectedTone}
           loading={loading}
+          showCustomCategory={uploadSupported}
+          showUploadOption={uploadSupported && !uploading}
+          ref="emojiPickerList"
         />
         <EmojiPickerFooter
+          initialUploadName={query}
           selectedEmoji={selectedEmoji}
           selectedTone={selectedTone}
           onToneSelected={this.onToneSelected}
+          uploading={uploading}
+          uploadErrorMessage={uploadErrorMessage}
+          onUploadEmoji={this.onUploadEmoji}
+          onUploadCancelled={this.onUploadCancelled}
         />
       </div>
     );
 
-    let content;
-
-    if (position) {
-      debug('target, position', target, position);
-      if (target) {
-        content = (
-          <Popup
-            target={target}
-            relativePosition={position}
-            zIndex={zIndex}
-            offsetX={offsetX}
-            offsetY={offsetY}
-            children={picker}
-          />
-        );
-      } else {
-        // don't show if we have a position, but no target yet
-        content = null;
-      }
-    } else {
-      content = picker;
-    }
-
-    return content;
+    return picker;
   }
 }

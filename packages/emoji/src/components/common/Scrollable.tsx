@@ -1,7 +1,7 @@
 // FIXME - FAB-1732 looking at making a shared component for this
 
 import * as React from 'react';
-import { PureComponent, ReactNode, UIEvent } from 'react';
+import { MouseEventHandler, PureComponent, ReactNode, UIEvent } from 'react';
 import * as classNames from 'classnames';
 import { findDOMNode } from 'react-dom';
 
@@ -12,9 +12,11 @@ export interface OnScroll {
 }
 
 export interface Props {
-  maxHeight: string;
+  className?: string;
+  maxHeight?: string;
   children?: ReactNode;
   onScroll?: OnScroll;
+  onMouseLeave?: MouseEventHandler<any>;
 }
 
 export default class Scrollable extends PureComponent<Props, undefined> {
@@ -34,6 +36,11 @@ export default class Scrollable extends PureComponent<Props, undefined> {
         this.scrollableDiv.scrollTop += (elementRect.bottom - scrollableRect.bottom);
       }
     }
+  }
+
+  scrollToBottom = (): void => {
+    const { scrollableDiv } = this;
+    scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
   }
 
   private handleScroll = (event) => {
@@ -56,19 +63,28 @@ export default class Scrollable extends PureComponent<Props, undefined> {
   }
 
   render() {
-    const scrollableClasses = classNames([
+    const { children, className, maxHeight, onMouseLeave } = this.props;
+
+    const scrollableClasses = [
       'emoji-scrollable',
       styles.emojiScrollable,
-    ]);
+    ];
+
+    if (className) {
+      scrollableClasses.push(className);
+    }
+
+    const style = maxHeight ? { maxHeight } : {};
 
     return (
       <div
-        className={scrollableClasses}
-        ref={this.handleRef}
-        style={{ maxHeight: this.props.maxHeight }}
+        className={classNames(scrollableClasses)}
+        onMouseLeave={onMouseLeave}
         onScroll={this.handleScroll}
+        ref={this.handleRef}
+        style={style}
       >
-        {this.props.children}
+        {children}
       </div>
     );
   }

@@ -2,13 +2,15 @@ import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
+import Popup from '../Popup';
 import { EmojiState } from '../../plugins/emojis';
-import { akEditorFloatingPanelZIndex } from '../../styles';
 
 export interface Props {
   pluginState: EmojiState;
   emojiProvider: Promise<EmojiProvider>;
   reversePosition?: boolean;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export interface State {
@@ -47,37 +49,28 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
 
   render() {
     const { anchorElement, query, queryActive } = this.state;
+    const { popupsBoundariesElement, popupsMountPoint, emojiProvider } = this.props;
 
-    let style: any = {
-      display: 'none'
-    };
-
-    if (anchorElement && queryActive) {
-      const rect = anchorElement.getBoundingClientRect();
-      const parentRect = anchorElement.offsetParent.getBoundingClientRect();
-      style = {
-        display: 'block',
-        position: 'absolute',
-        left: (rect.left - parentRect.left),
-        top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
-        bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null,
-        zIndex: akEditorFloatingPanelZIndex
-      };
+    if (!anchorElement || !queryActive) {
+      return null;
     }
 
-    const typeAhead = (
-      <AkEmojiTypeAhead
-        emojiProvider={this.props.emojiProvider}
-        onSelection={this.handleSelectedEmoji}
-        query={query}
-        ref={this.handleEmojiTypeAheadRef}
-      />
-    );
-
     return (
-      <div style={style}>
-        {typeAhead}
-      </div>
+      <Popup
+        target={anchorElement}
+        fitHeight={350}
+        fitWidth={350}
+        boundariesElement={popupsBoundariesElement}
+        mountTo={popupsMountPoint}
+        offset={[0, 3]}
+      >
+        <AkEmojiTypeAhead
+          emojiProvider={emojiProvider}
+          onSelection={this.handleSelectedEmoji}
+          query={query}
+          ref={this.handleEmojiTypeAheadRef}
+        />
+      </Popup>
     );
   }
 

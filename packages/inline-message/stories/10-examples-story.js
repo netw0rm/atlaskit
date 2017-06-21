@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { Chrome } from '@atlaskit/util-readme';
 
-import InlineMessage from '../src';
+import InlineMessage from '@atlaskit/inline-message';
 import { name } from '../package.json';
 import DualExample from './examples/DualExample';
 

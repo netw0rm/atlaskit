@@ -4,6 +4,7 @@ import Layer from '@atlaskit/layer';
 import Navigation from '@atlaskit/navigation';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import InlineDialog from '@atlaskit/inline-dialog';
+import Page from '@atlaskit/page';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { name } from '../package.json';
@@ -111,60 +112,47 @@ storiesOf(name, module)
   ))
   .add('z-index test', () => (
     <div>
-      <style>{'body { margin: 0 }'}</style>
-      <div
-        style={{
-          display: 'flex',
-          height: '100vh',
-          overflowY: 'scroll',
-          padding: 32,
-          boxSizing: 'border-box',
-        }}
-      >
-        <Navigation />
-        <div style={{ flexGrow: 1 }}>
-          <Layer
-            content={
-              <span>I am the popup content</span>
-            }
-          >
-            <p style={{ border: '1px solid yellow' }}>
-              There should be a popup attached to this
-            </p>
-          </Layer>
-        </div>
-      </div>
-      <div>
-        <ModalDialog
-          footer={
-            <Button appearance="primary">Create issue</Button>
+      <Page navigation={<Navigation />}>
+        <Layer
+          content={
+            <span>I am the popup content</span>
           }
-          header={<span>New issue</span>}
-          isOpen
-          width="medium"
+          position="right middle"
         >
-          <p>
-            <DropdownMenu
-              appearance="default"
-              items={[
-                {
-                  heading: 'Cities',
-                  items: [
-                    { content: 'Sydney', type: 'radio' },
-                    { content: 'Canberra', type: 'radio' },
-                    { content: 'Melbourne', type: 'radio' },
-                    { content: 'Perth', type: 'radio' },
-                  ],
-                },
-              ]}
-              position="right middle"
-              triggerType="button"
-            >
-              Choose
-            </DropdownMenu>
-          </p>
-        </ModalDialog>
-      </div>
+          <span style={{ border: '1px solid yellow' }}>
+            There should be a layer of text to the right of this:
+          </span>
+        </Layer>
+      </Page>
+      <ModalDialog
+        footer={
+          <Button appearance="primary">Create issue</Button>
+        }
+        header={<span>New issue</span>}
+        isOpen
+        width="medium"
+      >
+        <p>
+          <DropdownMenu
+            appearance="default"
+            items={[
+              {
+                heading: 'Cities',
+                items: [
+                  { content: 'Sydney', type: 'radio' },
+                  { content: 'Canberra', type: 'radio' },
+                  { content: 'Melbourne', type: 'radio' },
+                  { content: 'Perth', type: 'radio' },
+                ],
+              },
+            ]}
+            position="right middle"
+            triggerType="button"
+          >
+            Choose
+          </DropdownMenu>
+        </p>
+      </ModalDialog>
     </div>
   ))
   .add('with inline-dialog child', () => (

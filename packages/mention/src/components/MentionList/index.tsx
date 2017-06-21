@@ -3,14 +3,14 @@ import { MouseEvent } from '@types/react';
 import { PureComponent } from 'react';
 
 import { MentionListStyle } from './styles';
-import Error from '../MentionListError';
+import MentionListError from '../MentionListError';
 import MentionItem from '../MentionItem';
 import Scrollable from '../Scrollable';
-import { Mention, OnMentionEvent } from '../../types';
+import { MentionDescription, OnMentionEvent } from '../../types';
 import debug from '../../util/logger';
 import { mouseLocation, actualMouseMove, Position } from '../../util/mouse';
 
-function wrapIndex(mentions: Mention[], index: number): number {
+function wrapIndex(mentions: MentionDescription[], index: number): number {
   const len = mentions.length;
   let newIndex = index;
   while (newIndex < 0 && len > 0) {
@@ -19,11 +19,11 @@ function wrapIndex(mentions: Mention[], index: number): number {
   return newIndex % len;
 }
 
-function getKey(index: number, mentions?: Mention[]): string | undefined {
+function getKey(index: number, mentions?: MentionDescription[]): string | undefined {
   return mentions && mentions[index] && mentions[index].id;
 }
 
-function getIndex(key: string, mentions?: Mention[]): number | undefined {
+function getIndex(key: string, mentions?: MentionDescription[]): number | undefined {
   let index: number | undefined;
   if (mentions) {
     index = 0;
@@ -38,8 +38,8 @@ function getIndex(key: string, mentions?: Mention[]): number | undefined {
 }
 
 export interface Props {
-  mentions: Mention[];
-  showError?: boolean;
+  mentions: MentionDescription[];
+  resourceError?: Error;
   onSelection?: OnMentionEvent;
 }
 
@@ -152,14 +152,14 @@ export default class MentionList extends PureComponent<Props, State> {
     }
   }
 
-  private selectIndexNewMentions(index: number, mentions: Mention[]): void {
+  private selectIndexNewMentions(index: number, mentions: MentionDescription[]): void {
     this.setState({
       selectedIndex: index,
       selectedKey: getKey(index, mentions),
     });
   }
 
-  private selectIndexOnHover = (mention: Mention, event: MouseEvent<any>) => {
+  private selectIndexOnHover = (mention: MentionDescription, event: MouseEvent<any>) => {
     const mousePosition = mouseLocation(event);
     if (actualMouseMove(this.lastMousePosition, mousePosition)) {
       this.selectId(mention.id);
@@ -167,7 +167,7 @@ export default class MentionList extends PureComponent<Props, State> {
     this.lastMousePosition = mousePosition;
   }
 
-  private itemSelected = (mention: Mention) => {
+  private itemSelected = (mention: MentionDescription) => {
     this.selectId(mention.id, () => {
       this.chooseCurrentSelection();
     });
@@ -218,17 +218,17 @@ export default class MentionList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { mentions, showError } = this.props;
+    const { mentions, resourceError } = this.props;
     const hasMentions = mentions && mentions.length;
 
     // If we get an error, but existing mentions are displayed, lets
     // just continue to show the existing mentions we have
-    const mustShowError = showError && !hasMentions;
+    const mustShowError = resourceError && !hasMentions;
 
     let errorSection: JSX.Element | undefined;
     let resultSection: JSX.Element | undefined;
     if (mustShowError) {
-      errorSection = (<Error />);
+      errorSection = (<MentionListError error={resourceError} />);
     } else if (hasMentions) {
       resultSection = (
         <Scrollable ref={this.handleScrollableRef}>
@@ -238,7 +238,7 @@ export default class MentionList extends PureComponent<Props, State> {
     }
 
     return (
-      <MentionListStyle empty={!hasMentions && !showError}>
+      <MentionListStyle empty={!hasMentions && !resourceError}>
         {errorSection}
         {resultSection}
       </MentionListStyle>

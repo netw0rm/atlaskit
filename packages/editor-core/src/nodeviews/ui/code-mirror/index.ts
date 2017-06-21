@@ -247,7 +247,7 @@ class CodeBlock implements NodeView  {
       const change = computeChange(this.value, value);
       this.value = value;
       this.updating = true;
-      this.cm && this.cm.replaceRange(
+      this.cm.replaceRange(
         change.text,
         this.cm.posFromIndex(change.from),
         this.cm.posFromIndex(change.to),

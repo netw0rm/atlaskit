@@ -93,7 +93,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     return (collection: MediaCollection) => {
       const {firstItemKey} = this.state;
       const newFirstItemKey = collection.items[0] ? this.getItemKey(collection.items[0]) : undefined;
-      const shouldAnimate = firstItemKey !== newFirstItemKey;
+      const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
       this.providersByMediaItemId = {};
       collection.items.forEach(mediaItem => {
         if (!mediaItem.details || !mediaItem.details.id) { return; }

@@ -190,6 +190,9 @@ const DroppableList = droppable(type, direction, provide, mapStateToProps?)(List
 - You can disable dropping on a *droppable* altogether by always returning `isDraggingOver: false` in your `provide` function. You might always want a list to not be able to be dropped on.
 - Technically you do not need to use `type` and could just set it to something generic such as `ITEM` and do all of your conditional drop logic with the `provide` function. The `type` parameter is a convenient shortcut for a common use case.
 
+### Extra DOM nodes?
+Droppable will create **no extra wrapping DOM nodes**! Boya!!
+
 ### Type information
 
 ```js
@@ -300,6 +303,29 @@ const Person extends Component {
 }
 ```
 
+### *Draggable* injected prop: `style`
+
+> This is one of the weaker parts of the api - and might be iterated on
+
+`style: Object`. A component wrapped in a *draggable* will be injected with a prop `style`. You will need to add this to your root DOM node using `style={style}`. This `style` controls the movement and positioning of the *draggable*. We pass this to you to put on your own element to avoid needing to create a wrapping element to apply these styles to (which can have styling implications - especially with flexbox).
+
+```js
+const Person extends Component {
+  static propTypes = {
+    // ...
+    style: PropTypes.object,
+  }
+
+  render() {
+    return (
+      <div style={style}>
+        {/* ... */}
+      </div>
+    );
+  }
+}
+```
+
 ### *DragHandle* injected prop: `handleProps`
 
 > This is one of the weaker parts of the api - and might be iterated on
@@ -326,6 +352,27 @@ const Person extends Component {
 ### Sloppy clicks
 
 A drag will not start until a user has dragged their mouse past a small threshold. If this threshold is not exceeded then the library will not impact the mouse click and will release the event to the browser.
+
+### Extra DOM nodes?
+Sadly, *draggable* will create **one** extra wrapping div. This is required due to react requiring a wrapping component rather than accepting an array of components - which will be coming in React 16. If this is a problem for you we can create an api to allow passing through a `style` prop to that node.
+
+```js
+const DraggableItem = draggable(...)(Item);
+
+ReactDOM.render(
+  {/* ... */}
+  <DraggableItem />
+  {/* ... */}
+);
+```
+
+```html
+<!-- ... -->
+<div>
+  <DraggableItem>
+  <Placeholder /> <!-- rendered during a drag -->
+</div>
+```
 
 ### Type information
 
@@ -371,22 +418,25 @@ const Person extends Component {
     // own props
     personId: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    // injected by draggable
+    // injected by your mapStateToProps
     isDragging: PropTypes.boolean.isRequired,
+    // injected by draggable
     innerRef: PropTypes.function.isRequired,
+    style: PropTypes.object,
     // injected into the drag handle,
     // which is the draggable by default
     handleProps: PropTypes.object,
   }
 
   render() {
-    const { itemId, isDragging, name, innerRef } = this.props;
-    const style = {
-      backgroundColor: isDragging ? 'yellow' : 'grey';
+    const { itemId, isDragging, name, innerRef, style } = this.props;
+    const myStyle = {
+      backgroundColor: isDragging ? 'yellow' : 'grey',
+      ...style,
     }
 
     return (
-      <div style={style} ref={innerRef} {...this.props.handleProps}>
+      <div style={myStyle} ref={innerRef} {...this.props.handleProps}>
         <h2>{name}</h2>
         <Avatar personId={personId}/>
       </div>

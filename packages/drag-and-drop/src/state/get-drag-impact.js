@@ -1,5 +1,4 @@
 // @flow
-import memoizeOne from 'memoize-one';
 import type { DraggableId,
   DroppableId,
   DragMovement,

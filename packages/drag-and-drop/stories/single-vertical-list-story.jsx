@@ -1,11 +1,11 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { droppable, draggable, DragDropContext } from '../src/';
+import { DragDropContext } from '../src/';
 import { storiesOf } from '@kadira/storybook';
 import Person from './components/person';
 import List from './components/list';
 import type { PersonType } from './types';
-import { DragResult, DragLocation } from '../src/types';
+import type { DropResult, DraggableLocation } from '../src/types';
 
 class Standard extends PureComponent {
   state: {|
@@ -28,9 +28,9 @@ class Standard extends PureComponent {
   onDragStart = () => {
   }
 
-  onDragEnd = (result: DragResult) => {
-    const source: DragLocation = result.source;
-    const destination: ?DragLocation = result.destination;
+  onDragEnd = (result: DropResult) => {
+    const source: DraggableLocation = result.source;
+    const destination: ?DraggableLocation = result.destination;
 
     // nothing to do here!
     if (destination == null) {

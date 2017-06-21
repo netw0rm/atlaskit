@@ -102,13 +102,6 @@ export default class Movable extends PureComponent {
             ...(isNotMoving ? {} : getMovement(current)),
           };
           return this.props.children(style);
-          //   <div
-          //     style={style}
-          //     ref={this.props.innerRef}
-          //   >
-          //     {this.props.children}
-          //   </div>
-          // );
         }}
       </Motion>
     );

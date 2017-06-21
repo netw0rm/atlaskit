@@ -1,5 +1,5 @@
 // @flow
-import type { Dimension } from '../../src/types';
+import type { Dimension, DimensionFragment } from '../../src/types';
 
 let count = 0;
 
@@ -11,22 +11,31 @@ export default ({
   right = 100,
   margin = 0,
 }: Object = {}): Dimension => {
-  const height = (top + margin) + (bottom + margin);
-  const width = (left + margin) + (right + margin);
-  const dimension: Dimension = {
-    id,
+  const withoutMargin: DimensionFragment = {
+    top,
+    left,
+    bottom,
+    right,
+    height: bottom - top,
+    width: right - left,
+  };
+  const withMargin: DimensionFragment = {
     top: top + margin,
-    bottom: bottom + margin,
     left: left + margin,
+    bottom: bottom + margin,
     right: right + margin,
+    height: (bottom + margin) - (top + margin),
+    width: (right + margin) - (left + margin),
+  };
+
+  return {
+    id,
+    withoutMargin,
+    withMargin,
     // not considering margin in center position
     center: {
       x: (left + right) / 2,
       y: (top + bottom) / 2,
     },
-    height,
-    width,
   };
-
-  return dimension;
 };

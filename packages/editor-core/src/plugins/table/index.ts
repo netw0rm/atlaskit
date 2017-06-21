@@ -206,21 +206,20 @@ export class TableState {
     let dirty = this.updateSelection();
 
     const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
-    const cellElement = this.cellSelection ? this.getTableCellElement(docView) : undefined;
-    const tableNode = this.getTableNode();
-
     if (tableElement !== this.tableElement) {
       this.tableElement = tableElement;
       dirty = true;
     }
 
-    if (cellElement !== this.cellElement) {
-      this.cellElement = cellElement;
+    const tableNode = this.getTableNode();
+    if (tableNode !== this.tableNode) {
+      this.tableNode = tableNode;
       dirty = true;
     }
 
-    if (tableNode !== this.tableNode) {
-      this.tableNode = tableNode;
+    const cellElement = this.cellSelection ? this.getTableCellElement(docView) : undefined;
+    if (cellElement !== this.cellElement) {
+      this.cellElement = cellElement;
       dirty = true;
     }
 
@@ -276,10 +275,16 @@ export class TableState {
   }
 
   private tableCellStartPos(): number | undefined {
-    const { $headCell, $anchorCell } = this.state.selection as CellSelection;
+    if (!this.tableNode) {
+      return;
+    }
+    const { $anchorCell, $headCell } = this.state.selection as CellSelection;
     const { table_cell, table_header } = this.state.schema.nodes;
-    const cell = $headCell.pos < $anchorCell.pos ? $headCell : $anchorCell;
-    const $from = this.state.doc.resolve(cell.pos + 1);
+    const map = TableMap.get(this.tableNode);
+    const start =  $anchorCell.start(-1);
+    const cells = map.cellsInRect(map.rectBetween($anchorCell.pos - start, $headCell.pos - start));
+    const firstCellPos = cells[0] + 2;
+    const $from = this.state.doc.resolve(firstCellPos);
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
       if(node.type === table_cell || node.type === table_header) {

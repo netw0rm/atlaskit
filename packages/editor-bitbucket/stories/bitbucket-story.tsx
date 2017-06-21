@@ -4,7 +4,7 @@ import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
-import { EmojiProvider } from '@atlaskit/emoji';
+import { EmojiProvider } from '@atlaskit/editor-core';
 
 import { default as Editor, version as editorVersion } from '../src';
 import { MockMentionSource } from './_mock-mentionsource';

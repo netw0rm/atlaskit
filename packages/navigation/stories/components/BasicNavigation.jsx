@@ -111,12 +111,15 @@ export default class BasicNavigation extends PureComponent {
         position="right bottom"
       >
         <AkGlobalItem>
-          <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
+          <QuestionCircleIcon
+            label="Help icon"
+            secondaryColor="inherit"
+            size="medium"
+          />
         </AkGlobalItem>
       </AkDropdownMenu>,
       <AkDropdownMenu
         appearance="tall"
-
         items={[
           {
             heading: 'Luke Skywalker',
@@ -184,10 +187,17 @@ export default class BasicNavigation extends PureComponent {
         globalTheme={this.props.globalTheme}
         backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
-        globalCreateIcon={<Tooltip position="right" description="Create"><AddIcon label="Create icon" secondaryColor="inherit" /></Tooltip>}
+        globalCreateIcon={
+          <Tooltip position="right" description="Create">
+            <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
+          </Tooltip>
+        }
         globalPrimaryIcon={globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
-        globalSearchIcon={<Tooltip position="right" description="Search"><SearchIcon label="Search icon" secondaryColor="inherit" /></Tooltip>}
+        globalSearchIcon={
+          <Tooltip position="right" description="Search">
+            <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
+          </Tooltip>}
         globalSecondaryActions={this.props.globalSecondaryActions}
         drawers={[
           (<AkSearchDrawer

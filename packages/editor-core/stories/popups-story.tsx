@@ -1,12 +1,11 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-test';
 
 import Editor from './editor';
 import { Content } from './styles';
 import { name } from '../package.json';
 import imageUploadHandler from '../stories/imageUpload/handler';
-import { resourceProvider } from './mentions/story-data';
 import {
   CustomBoundryExample,
   PortalExample, PortalWithCustomBoundaryExample, PortalInScrollContainerExample
@@ -16,7 +15,7 @@ const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 
 const analyticsHandler = (actionName, props) => action(actionName)(props);
-const mentionProvider = new Promise<any>(resolve => resolve(resourceProvider));
+const mentionProvider = new Promise<any>(resolve => resolve(mentionData.mentionStoryData.resourceProvider));
 const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
 
 storiesOf(name, module)

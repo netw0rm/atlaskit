@@ -19,11 +19,11 @@ export const IconImage = styled.img`
 `;
 
 export interface TextProps {
-  inverse?: boolean;
+  isInversed?: boolean;
 }
 
 const textStyles = css`
-  color: ${({inverse}: TextProps) => inverse ? akColorN0 : akColorN300};
+  color: ${({isInversed}: TextProps) => isInversed ? akColorN0 : akColorN300};
 `;
 
 export const Text = styled.span`

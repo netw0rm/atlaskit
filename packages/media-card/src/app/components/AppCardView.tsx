@@ -5,23 +5,24 @@ import {DescriptionView} from './DescriptionView';
 import {MetaView} from './MetaView';
 import {ContextView} from './ContextView';
 import {ActionsView} from './ActionsView';
-import {Card, Preview, CardContent, Collapsible, Footer} from '../styled/AppCardView';
+import {Link, Card, Preview, CardContent, Collapsible, Footer} from '../styled/AppCardView';
 
 const maxCardWidth = 744;
 const previewWidth = 116;
 
 export interface AppCardViewProps {
   model: AppCardModel;
-  collapsed?: boolean;
-  onCollapseToggled?: () => void;
-  onPrimaryAction?: (action: AppCardAction) => void;
-  onSecondaryAction?: (action: AppCardAction) => void;
+  isCollapsed?: boolean;
+  onClick?: () => void;
+  onCollapseClick?: () => void;
+  onContextClick?: () => void;
+  onActionClick?: (action: AppCardAction) => void;
 }
 
 export class AppCardView extends React.Component<AppCardViewProps, {}> {
 
   static defaultProps = {
-    collapsed: true
+    isCollapsed: true
   };
 
   get isDarkAppearance() {
@@ -43,16 +44,16 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderHeader() {
-    const {model: {title: {text, user}, background, collapsible}, collapsed, onCollapseToggled} = this.props;
+    const {model: {title: {text, user}, background, collapsible}, isCollapsed, onCollapseClick} = this.props;
     return (
       <HeaderView
         title={text}
         user={user}
-        inverse={Boolean(background)}
+        isInversed={Boolean(background)}
         collapsible={collapsible}
-        collapsed={collapsed}
+        isCollapsed={isCollapsed}
+        onCollapseClick={onCollapseClick}
         contentMaxWidth={this.contentMaxWidth}
-        onToggleCollapse={onCollapseToggled}
       />
     );
   }
@@ -70,26 +71,34 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
     if (!details) {
       return null;
     }
-    return <MetaView meta={details} inverse={this.isDarkAppearance} contentMaxWidth={this.contentMaxWidth}/>;
+    return <MetaView meta={details} isInversed={this.isDarkAppearance} contentMaxWidth={this.contentMaxWidth}/>;
   }
 
   renderContext() {
-    const {model: {context, background}} = this.props;
+    const {model: {context}, onContextClick} = this.props;
     if (!context) {
       return null;
     }
     const {icon, text, link} = context;
-    return <ContextView icon={icon} text={text} href={link && link.url} inverse={Boolean(background)}/>;
+    return (
+      <ContextView
+        icon={icon}
+        text={text}
+        link={link && link.url}
+        isInversed={this.isDarkAppearance}
+        onContextClick={onContextClick}
+      />
+    );
   }
 
   renderActions() {
-    const {model: {actions, background}} = this.props;
+    const {model: {actions}, onActionClick} = this.props;
 
     if (!actions) {
       return null;
     }
 
-    return <ActionsView actions={actions} inverse={Boolean(background)}/>;
+    return <ActionsView actions={actions} isInversed={this.isDarkAppearance} onActionClick={onActionClick}/>;
   }
 
   renderBody() {
@@ -114,11 +123,11 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderCollapsibleBody() {
-    const {model: {collapsible}, collapsed} = this.props;
+    const {model: {collapsible}, isCollapsed} = this.props;
 
     if (collapsible) {
       return (
-        <Collapsible collapsed={collapsed}>
+        <Collapsible isCollapsed={isCollapsed}>
           {this.renderBody()}
         </Collapsible>
       );
@@ -127,10 +136,10 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
     return this.renderBody();
   }
 
-  render(): JSX.Element {
-    const {model: {background, preview}} = this.props;
+  renderCard(): JSX.Element {
+    const {model: {background, preview}, onClick} = this.props;
     return (
-      <Card background={background && background.url}>
+      <Card background={background && background.url} onClick={onClick}>
         {this.renderPreview()}
         <CardContent hasPreview={Boolean(preview)}>
           {this.renderHeader()}
@@ -138,6 +147,20 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
         </CardContent>
       </Card>
     );
+  }
+
+  render(): JSX.Element {
+    const {model: {link}} = this.props;
+
+    if (link) {
+      return (
+        <Link href={link.url}>
+          {this.renderCard()}
+        </Link>
+      );
+    }
+
+    return this.renderCard();
   }
 
 }

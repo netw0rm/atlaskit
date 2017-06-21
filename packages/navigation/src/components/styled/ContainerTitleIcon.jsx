@@ -7,6 +7,9 @@ const borderRadius = 4;
 const ContainerTitleIcon = styled.div`
   width: ${size}px;
   height: ${size}px;
+  
+  /* fix a flexbox issue in IE11 */
+  min-width: ${size}px;
 
   /* We need to ensure that any image passed in as a child (<img/>, <svg/>
   etc.) receives the correct width, height and border radius. We don't

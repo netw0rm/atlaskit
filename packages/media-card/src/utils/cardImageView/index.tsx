@@ -8,7 +8,7 @@ import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 import {UploadingView} from '../../utils/uploadingView';
-import {defaultImageCardDimensions} from '../../utils';
+import {defaultImageCardDimensions} from '../../utils/cardDimensions';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;

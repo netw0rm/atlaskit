@@ -5,7 +5,7 @@ export { strong } from './marks/strong';
 export { underline } from './marks/underline';
 export { link } from './marks/link';
 export { emojiQuery } from './marks/emoji-query';
-export { mentionQuery } from './marks/mention-query';
+export { mentionQuery, mentionQueryInactive } from './marks/mention-query';
 export { subsup } from './marks/subsup';
 export { textColor } from './marks/text-color';
 

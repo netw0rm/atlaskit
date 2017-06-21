@@ -44,7 +44,8 @@ class MentionResource extends AbstractMentionResource {
 
     const minWait = this.config.minWait || 0;
     const randomTime = (this.config.maxWait || 0) - minWait;
-    const waitTime = (Math.random() * randomTime) + minWait;
+    // const waitTime = (Math.random() * randomTime) + minWait;
+    const waitTime = 5000;
     setTimeout(() => {
       let mentions;
       if (query === 'error') {

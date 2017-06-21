@@ -31,8 +31,6 @@ const serializeFragment = (fragment: Fragment): string => {
   fragment.forEach(node => {
     if (node.childCount) {
       text.push(serializeFragment(node.content));
-    } else if (node.type.name === 'media') {
-      text.push('[attachment]');
     } else if (node.attrs.text || node.attrs.shortName) {
       text.push(node.attrs.text || node.attrs.shortName);
     } else if (node.text) {

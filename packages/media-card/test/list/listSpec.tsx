@@ -13,6 +13,7 @@ import {MediaCollectionFileItem, FileDetails} from '@atlaskit/media-core';
 import {CardList, CardListProps, CardListState} from '../../src/list';
 import {MediaCard} from '../../src/root/mediaCard';
 import {InfiniteScroll} from '../../src/list/infiniteScroll';
+import {LazyContent} from '../../src/utils';
 
 describe('CardList', () => {
   const collectionName = 'MyMedia';
@@ -146,9 +147,10 @@ describe('CardList', () => {
     list.setState({loading: false, error: undefined, collection});
     instance.handleNextItems({context, collectionName})(collection);
     expect(list.state('firstItemKey')).to.be.equal(`${oldItem.details.id}-${oldItem.details.occurrenceKey}`);
-    collection.items.unshift(newItem);
-    list.setState({collection});
-    instance.handleNextItems({context, collectionName})(collection);
+
+    const newCollection = {items: [newItem, ...collection.items]};
+    list.setState({collection: newCollection});
+    instance.handleNextItems({context, collectionName})(newCollection);
     expect(list.state('firstItemKey')).to.be.equal(`${newItem.details.id}-${newItem.details.occurrenceKey}`);
     expect(list.state('shouldAnimate')).to.be.true;
   });
@@ -287,6 +289,14 @@ describe('CardList', () => {
       list.setState({loading: false, error: undefined, collection});
 
       expect(list.find(LazyLoad)).to.have.length(0);
+    });
+
+    it('should not wrap existing items into LazyContent', () => {
+      const context = contextWithDefaultCollection;
+      const list = mount(<CardList useInfiniteScroll={false} context={context} collectionName={collectionName}/>) as any;
+
+      list.setState({loading: false, error: undefined, shouldAnimate: true, collection});
+      expect(list.find(LazyContent)).to.have.length(0);
     });
   });
 });

@@ -156,40 +156,9 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   }
 
-  insertLinkFromUrl = (url: string) => {
-    const state = this.view.state;
-
-    return state.tr.insert(
-      this.findReplaceRange().start,
-      state.schema.nodes.media.create({ url, type: 'link' })
-    );
-  }
-
-  private insertFile = (mediaState: MediaState, collection: string): PMNode => {
+  private insertMedia = (node: PMNode): void => {
     const { view } = this;
     const { state } = view;
-    const { id, fileName, fileSize, fileMimeType } = mediaState;
-
-    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-
-    const node = state.schema.nodes.media!.create({
-      id,
-      type: 'file',
-      collection
-    }) as MediaNode;
-
-    if (fileName) {
-      node.fileName = fileName;
-    }
-
-    if (fileSize) {
-      node.fileSize = fileSize;
-    }
-
-    if (fileMimeType) {
-      node.fileMimeType = fileMimeType;
-    }
-
     let transaction = state.tr;
     const { $to } = state.selection;
 
@@ -212,8 +181,60 @@ export class MediaPluginState {
     }
 
     view.dispatch(transaction);
+  }
+
+  private createMediaFileNode = (mediaState: MediaState, collection: string): PMNode => {
+    const { view } = this;
+    const { state } = view;
+    const { id, fileName, fileSize, fileMimeType } = mediaState;
+
+    const node = state.schema.nodes.media!.create({
+      id,
+      type: 'file',
+      collection
+    }) as MediaNode;
+
+    if (fileName) {
+      node.fileName = fileName;
+    }
+
+    if (fileSize) {
+      node.fileSize = fileSize;
+    }
+
+    if (fileMimeType) {
+      node.fileMimeType = fileMimeType;
+    }
 
     return node;
+  }
+
+  private insertFile = (mediaState: MediaState, collection: string): PMNode => {
+    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+    const node = this.createMediaFileNode(mediaState, collection);
+
+    this.insertMedia(node);
+
+    return node;
+  }
+
+  handleNewMediaPicked = (state: MediaState, fileData = this.mediaDataFromProvider()) => {
+    if (!fileData) {
+      return;
+    }
+
+    const node = this.insertFile(state, fileData);
+    const { view } = this;
+
+    if (!view.hasFocus()) {
+      view.focus();
+    }
+
+    this.setSelectionAfterMediaInsertion(node);
+  }
+
+  insertLinkFromUrl = (url: string) => {
+    this.insertMedia(this.view.state.schema.nodes.media.create({ url, type: 'link' }));
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -479,39 +500,6 @@ export class MediaPluginState {
     return this.replaceRange(startPositionOfParent($from) - 1, endPositionOfParent($to));
   }
 
-  /**
-   * Determine best PM document position to insert a new media item at.
-   */
-  private findReplaceRange = () => {
-    const state = this.view.state;
-    const { $from, $to } = state.selection;
-
-    const nearByMediaGroupPos = this.posOfMediaGroupNearBy(state);
-
-    if (nearByMediaGroupPos) {
-      return this.replaceRange(nearByMediaGroupPos);
-    }
-
-    if (atTheEndOfBlock(state)) {
-      if (!this.isInsidePotentialEmptyParagraph()) {
-        return this.replaceRange($from.pos, endPositionOfParent($to));
-      }
-    }
-
-    if (atTheBeginningOfBlock(state)) {
-      if (!this.isInsidePotentialEmptyParagraph()) {
-        return this.replaceRange(startPositionOfParent($from) - 1, $to.pos);
-      }
-    }
-
-    if (this.isInsidePotentialEmptyParagraph()) {
-      return this.replaceRange(startPositionOfParent($from) - 1, endPositionOfParent($from));
-    }
-
-    // Prepend the item, wrapped in a new group, adjacent to parent
-    return this.replaceRange($from.pos, $to.pos);
-  }
-
   private replaceRange(start: number, end: number = start) {
     return { start, end };
   }
@@ -543,21 +531,6 @@ export class MediaPluginState {
 
   private mediaDataFromProvider(): string | undefined {
     return this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
-  }
-
-  handleNewMediaPicked = (state: MediaState, fileData = this.mediaDataFromProvider()) => {
-    if (!fileData) {
-      return;
-    }
-
-    const node = this.insertFile(state, fileData);
-    const { view } = this;
-
-    if (!view.hasFocus()) {
-      view.focus();
-    }
-
-    this.setSelectionAfterMediaInsertion(node);
   }
 
   private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
@@ -757,7 +730,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
             return false;
           }
 
-          view.state.apply(pluginState.insertLinkFromUrl(url));
+          pluginState.insertLinkFromUrl(url);
           analyticsService.trackEvent('atlassian.editor.media.link.paste');
 
           // The URL is inserted as a Media Link item, however we do not return true

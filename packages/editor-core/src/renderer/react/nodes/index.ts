@@ -12,6 +12,7 @@ import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
+import Rule from './rule';
 
 export const nodeToReact = {
   'blockquote': Blockquote,
@@ -25,6 +26,7 @@ export const nodeToReact = {
   'orderedList': OrderedList,
   'panel': Panel,
   'paragraph': Paragraph,
+  'rule': Rule,
 };
 
 export const toReact = (node: Node): ReactComponentConstructor => {
@@ -130,4 +132,5 @@ export {
   OrderedList,
   Panel,
   Paragraph,
+  Rule,
 };

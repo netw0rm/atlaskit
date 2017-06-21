@@ -30,6 +30,7 @@ import {
   Mention,
   Panel,
   Paragraph,
+  Rule,
 } from '../src/renderer/react/nodes';
 
 import { EmojiProps } from '../src/renderer/react/nodes/emoji';
@@ -305,5 +306,8 @@ storiesOf(name, module)
       <Panel panelType="tip">This is a tip panel</Panel>
       <Panel panelType="warning">This is a warning panel</Panel>
     </div>
+  ))
+  .add('nodes/rule', () => (
+    <Rule />
   ))
 ;

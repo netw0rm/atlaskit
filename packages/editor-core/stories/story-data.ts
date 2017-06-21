@@ -568,5 +568,8 @@ export const document = {
         },
       ]
     },
+    {
+      type: 'rule'
+    },
   ]
 };

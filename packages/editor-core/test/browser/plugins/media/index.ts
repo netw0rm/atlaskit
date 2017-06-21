@@ -109,11 +109,13 @@ describe('Media plugin', () => {
     });
 
     it('puts cursor to the next paragraph after inserting media node', () => {
-      const { editorView, pluginState, sel } = editor(doc(p('text{<>}')));
+      const { editorView, pluginState } = editor(doc(p('text{<>}')));
 
       pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
+      const paragraphNodeSize = p('text').nodeSize;
+      const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
 
-      expect(editorView.state.selection.from).to.eq(sel + 2);
+      expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
     });
 
     it('should prepend media node to existing media group after it', () => {
@@ -171,6 +173,16 @@ describe('Media plugin', () => {
             p('xt'),
           )
         );
+      });
+
+      it('moves cursor to the front of later part of the text', () => {
+        const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
+
+        pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
+        const paragraphNodeSize = p('te').nodeSize;
+        const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
+
+        expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
       });
     });
 
@@ -321,6 +333,44 @@ describe('Media plugin', () => {
         });
       });
 
+      context('when selection is a media node', () => {
+        it('prepends to the existsing media group', () => {
+          const { editorView, pluginState } = editor(doc(
+            mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+            p('text'),
+          ));
+          setNodeSelection(editorView, 1);
+
+          pluginState.handleNewMediaPicked({ id: 'new one', status: 'uploading' }, testCollectionName);
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              mediaGroup(
+                media({ id: 'new one', type: 'file', collection: testCollectionName }),
+                media({ id: testFileId, type: 'file', collection: testCollectionName })
+              ),
+              p('text'),
+            )
+          );
+        });
+
+        it('sets cursor to the paragraph after', () => {
+          const { editorView, pluginState } = editor(doc(
+            mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+            p('text'),
+          ));
+          setNodeSelection(editorView, 0);
+
+          pluginState.handleNewMediaPicked({ id: 'new one', status: 'uploading' }, testCollectionName);
+          const mediaGroupNodeSize = mediaGroup(
+            media({ id: 'new one', type: 'file', collection: testCollectionName }),
+            media({ id: testFileId, type: 'file', collection: testCollectionName })
+          ).nodeSize;
+
+          expect(editorView.state.selection.from).to.deep.equal(mediaGroupNodeSize);
+        });
+      });
+
       context('when selection is a non media block node', () => {
         context('when no exisiting media group', () => {
           it('replaces selection with a media node', () => {
@@ -368,7 +418,6 @@ describe('Media plugin', () => {
                 hr,
                 mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
               ));
-              const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
               setNodeSelection(editorView, 0);
 
               pluginState.handleNewMediaPicked({ id: 'new one', status: 'uploading' }, testCollectionName);

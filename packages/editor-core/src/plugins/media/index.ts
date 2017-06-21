@@ -16,8 +16,8 @@ import {
   PluginKey,
   Node as PMNode,
   NodeSelection,
+  TextSelection,
   Schema,
-  Transaction,
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
@@ -165,7 +165,7 @@ export class MediaPluginState {
     );
   }
 
-  private insertFile = (mediaState: MediaState, collection: string): [PMNode, Transaction] => {
+  private insertFile = (mediaState: MediaState, collection: string): PMNode => {
     const { view } = this;
     const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
@@ -211,7 +211,9 @@ export class MediaPluginState {
       transaction = transaction.insert(mediaInsertPos, node).deleteRange(deleteRange.start, deleteRange.end);
     }
 
-    return [node, transaction];
+    view.dispatch(transaction);
+
+    return node;
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -548,16 +550,14 @@ export class MediaPluginState {
       return;
     }
 
-    const [node, transaction] = this.insertFile(state, fileData);
+    const node = this.insertFile(state, fileData);
     const { view } = this;
-
-    view.dispatch(transaction);
 
     if (!view.hasFocus()) {
       view.focus();
     }
 
-    this.selectInsertedMediaNode(node);
+    this.setSelectionAfterMediaInsertion(node);
   }
 
   private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
@@ -679,7 +679,7 @@ export class MediaPluginState {
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
-  selectInsertedMediaNode = (node: PMNode) => {
+  private setSelectionAfterMediaInsertion = (node: PMNode) => {
     // by this time node has already been mounted
     const mediaNodeWithPos = this.findMediaNode(node.attrs.id);
     if (!mediaNodeWithPos) {
@@ -689,8 +689,16 @@ export class MediaPluginState {
     const { view } = this;
     const { doc, tr } = view.state;
     const { getPos } = mediaNodeWithPos;
-    const pos = doc.resolve(getPos());
-    const selection = new NodeSelection(pos);
+    const resolvedPos = doc.resolve(getPos());
+    const endOfMediaGroup = endPositionOfParent(resolvedPos);
+    let selection;
+
+    if (endOfMediaGroup + 1 >= doc.nodeSize - 1) {
+      // if nothing after the media group, fallback to select the newest uploaded media item
+      selection = new NodeSelection(resolvedPos);
+    } else {
+      selection = TextSelection.create(doc, endOfMediaGroup + 1);
+    }
 
     view.dispatch(tr.setSelection(selection));
   }

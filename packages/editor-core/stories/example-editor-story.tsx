@@ -99,7 +99,6 @@ class DemoEditor extends React.PureComponent<Props, State> {
   }
 
   render() {
-    // setTimeout(this.setState.bind(this, { editorEnabled: true }), 500);
     const { mentionProvider, emojiProvider, mediaProvider, jsonDocument, editorEnabled } = this.state;
     return (
       <Content>

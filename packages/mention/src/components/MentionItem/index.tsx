@@ -24,7 +24,7 @@ type ReactComponentConstructor = new() => React.Component<any, any>;
 import { HighlightDetail, MentionDescription, OnMentionEvent, Presence, isRestricted } from '../../types';
 import { leftClick } from '../../util/mouse';
 
-/** Match URL schemes of the form 'numvatar:38' */
+/* Match URL schemes of the form 'ak-numvatar:38' */
 const numvatarRegex = /^ak-numvatar:(\d+)$/;
 
 interface Part {

@@ -6,6 +6,7 @@ import BulletList from './bulletList';
 import Doc from './doc';
 import Emoji from './emoji';
 import HardBreak from './hardBreak';
+import Heading from './heading';
 import ListItem from './listItem';
 import Mention from './mention';
 import OrderedList from './orderedList';
@@ -18,6 +19,7 @@ export const nodeToReact = {
   'doc': Doc,
   'emoji': Emoji,
   'hardBreak': HardBreak,
+  'heading': Heading,
   'listItem': ListItem,
   'mention': Mention,
   'orderedList': OrderedList,
@@ -122,6 +124,7 @@ export {
   Doc,
   Emoji,
   HardBreak,
+  Heading,
   ListItem,
   Mention,
   OrderedList,

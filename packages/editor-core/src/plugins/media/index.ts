@@ -195,22 +195,12 @@ export class MediaPluginState {
     const grandParent = $from.node(-1);
     const defaultContentType = grandParent.defaultContentType(0);
 
-    if (atTheEndOfDoc(state)) {
+    if (atTheEndOfDoc(state) && !this.mediaGroupExistAsAjacentNodeInTheFront(state)) {
       transaction = transaction.insert($to.pos + 1, defaultContentType.create());
     }
 
-    if (this.isInsideEmptyParagraph()) {
-
-      // replace this empty paragraph with media group
-      transaction.replaceWith(
-        startPositionOfParent($from) - 1,
-        endPositionOfParent($from),
-        node
-      );
-    } else {
-      const range = this.findReplaceRange();
-      transaction = transaction.replaceWith(range.start, range.end, node);
-    }
+    const range = this.findReplaceRange();
+    transaction = transaction.replaceWith(range.start, range.end, node);
 
     return [node, transaction];
   }
@@ -228,6 +218,12 @@ export class MediaPluginState {
     }
 
     this.popupPicker.show();
+  }
+
+  private mediaGroupExistAsAjacentNodeInTheFront(state: EditorState<any>): boolean {
+    const { $from } = state.selection;
+    const nearByMediaGroupPos = this.findMediaGroupNearBy(state);
+    return atTheBeginningOfBlock(state) && nearByMediaGroupPos && nearByMediaGroupPos < startPositionOfParent($from) || false;
   }
 
   /**
@@ -380,6 +376,31 @@ export class MediaPluginState {
     );
   }
 
+  private findMediaGroupNearBy(state: EditorState<any>): number | undefined {
+    const { $from, $to } = state.selection;
+
+    // Check parent
+    if ($from.parent.type === state.schema.nodes.mediaGroup) {
+      return startPositionOfParent($from);
+    }
+
+
+    // Check adjacent after parent
+    let adjacentPos = endPositionOfParent($to);
+    let adjacentNode: PMNode | undefined | null = state.doc.nodeAt(adjacentPos);
+    if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
+      return adjacentPos + 1;
+    }
+
+    // Check adjacent before parent
+    adjacentPos = startPositionOfParent($from) - 1;
+    const adjacentResolvePos = state.doc.resolve(adjacentPos);
+    adjacentNode = adjacentResolvePos.nodeBefore;
+    if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
+      return adjacentPos - adjacentNode.nodeSize + 1;
+    }
+  }
+
   /**
    * Determine best PM document position to insert a new media item at.
    */
@@ -387,34 +408,37 @@ export class MediaPluginState {
     const state = this.view.state;
     const { $from, $to } = state.selection;
 
-    // Check if we're already in a media group and prepend the element inside the group
-    if ($from.parent.type === state.schema.nodes.mediaGroup) {
-      return this.replaceRange(startPositionOfParent($from));
+    const nearByMediaGroupPos = this.findMediaGroupNearBy(state);
+
+    if (nearByMediaGroupPos && $from.sameParent(state.doc.resolve(nearByMediaGroupPos))) {
+      return this.replaceRange(nearByMediaGroupPos);
     }
 
     if (atTheEndOfBlock(state)) {
-      // Resolve node adjacent after parent
       const adjacentPos = endPositionOfParent($to);
-      const adjacentNode = state.doc.nodeAt(adjacentPos);
-
-      // The adjacent node is a media group, so let's preappend there...
-      if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-        return this.replaceRange(adjacentPos + 1);
+      if (nearByMediaGroupPos && nearByMediaGroupPos > adjacentPos) {
+        return this.replaceRange(nearByMediaGroupPos);
       }
-      return this.replaceRange($from.pos, adjacentPos);
+
+      if (!this.isInsideEmptyParagraph()) {
+        return this.replaceRange($from.pos, adjacentPos);
+      }
     }
 
     if (atTheBeginningOfBlock(state)) {
-      // Resolve node adjacent before parent
       const adjacentPos = startPositionOfParent($from) - 1;
-      const adjacentResolvePos = state.doc.resolve(adjacentPos);
-      const adjacentNode = adjacentResolvePos.nodeBefore;
 
-      // The adjacent node is a media group, so let's preappend there...
-      if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-        return this.replaceRange(adjacentPos - adjacentNode.nodeSize + 1);
+      if (nearByMediaGroupPos && nearByMediaGroupPos < adjacentPos) {
+        return this.replaceRange(nearByMediaGroupPos);
       }
-      return this.replaceRange(adjacentPos, $to.pos);
+
+      if (!this.isInsideEmptyParagraph()) {
+        return this.replaceRange(adjacentPos, $to.pos);
+      }
+    }
+
+    if (this.isInsideEmptyParagraph()) {
+      return this.replaceRange(startPositionOfParent($from) - 1, endPositionOfParent($from));
     }
 
     // Prepend the item, wrapped in a new group, adjacent to parent

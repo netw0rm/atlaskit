@@ -71,15 +71,17 @@ export class TableState {
   insertColumn = (column: number) => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
-      const isLast = column === map.width;
-      const offset = this.tableStartPos() || 1;
-      const from = map.positionAt(0, isLast ? column - 1: column, this.tableNode);
-      const $from = this.state.doc.resolve(from + offset + 2); // 2 = paragraph + td
-      this.view.dispatch(this.state.tr.setSelection(new TextSelection($from, $from)));
-      if (isLast) {
+      if (column === map.width) {
+        const prevColPos = map.positionAt(0, column - 1, this.tableNode);
+        this.moveCursorTo(prevColPos);
         tableBaseCommands.addColumnAfter(this.view.state, this.view.dispatch);
+        const nextPos = TableMap.get(this.tableNode).positionAt(0, column, this.tableNode);
+        this.moveCursorTo(nextPos);
       } else {
+        const pos = map.positionAt(0, column, this.tableNode);
+        this.moveCursorTo(pos);
         tableBaseCommands.addColumnBefore(this.view.state, this.view.dispatch);
+        this.moveCursorTo(pos);
       }
     }
   }
@@ -87,15 +89,17 @@ export class TableState {
   insertRow = (row: number) => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
-      const isLast = row === map.height;
-      const offset = this.tableStartPos() || 1;
-      const from = map.positionAt(isLast ? row - 1: row, 0, this.tableNode);
-      const $from = this.state.doc.resolve(from + offset + 2); // 2 = paragraph + td
-      this.view.dispatch(this.state.tr.setSelection(new TextSelection($from, $from)));
-      if (isLast) {
+      if (row === map.height) {
+        const prevRowPos =  map.positionAt(row - 1, 0, this.tableNode);
+        this.moveCursorTo(prevRowPos);
         tableBaseCommands.addRowAfter(this.view.state, this.view.dispatch);
+        const nextPos = TableMap.get(this.tableNode).positionAt(row, 0, this.tableNode);
+        this.moveCursorTo(nextPos);
       } else {
+        const pos = map.positionAt(row, 0, this.tableNode);
+        this.moveCursorTo(pos);
         tableBaseCommands.addRowBefore(this.view.state, this.view.dispatch);
+        this.moveCursorTo(pos);
       }
     }
   }
@@ -116,6 +120,8 @@ export class TableState {
     } else {
       this.emptySelectedCells();
     }
+
+    this.moveCursorTo(this.state.selection.from);
   }
 
   subscribe(cb: TableStateSubscriber) {
@@ -378,6 +384,12 @@ export class TableState {
     if (tr.docChanged) {
       this.view.dispatch(tr);
     }
+  }
+
+  private moveCursorTo (pos: number) {
+      const { tr } = this.state;
+      tr.setSelection(Selection.near(tr.doc.resolve(pos)));
+      this.view.dispatch(tr.scrollIntoView());
   }
 }
 

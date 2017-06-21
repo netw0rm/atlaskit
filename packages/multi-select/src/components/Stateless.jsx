@@ -257,7 +257,10 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
-  hasFooter = () => this.props.footer.content || this.props.shouldAllowCreateItem
+  hasVisibleFooter = () => {
+    const { footer, shouldAllowCreateItem, filterValue } = this.props;
+    return footer.content || (shouldAllowCreateItem && !!filterValue);
+  }
 
   isFooterFocused = () => {
     const { focusedItemIndex, groupedItems } = this.state;
@@ -298,7 +301,7 @@ export default class StatelessMultiSelect extends PureComponent {
 
   focusNextItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
-    const footerIsFocusable = this.hasFooter();
+    const footerIsFocusable = this.hasVisibleFooter();
     const { focusedItemIndex } = this.state;
     this.setState({
       focusedItemIndex: getNextFocusable(focusedItemIndex, filteredItems.length, footerIsFocusable),
@@ -307,7 +310,7 @@ export default class StatelessMultiSelect extends PureComponent {
 
   focusPreviousItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
-    const footerIsFocusable = this.hasFooter();
+    const footerIsFocusable = this.hasVisibleFooter();
     const { focusedItemIndex } = this.state;
     this.setState({
       focusedItemIndex: getPrevFocusable(focusedItemIndex, filteredItems.length, footerIsFocusable),
@@ -437,7 +440,7 @@ export default class StatelessMultiSelect extends PureComponent {
           label={label}
         /> : null}
         <Droplist
-          appearance={this.hasFooter() ? 'tall' : 'default'}
+          appearance={this.hasVisibleFooter() ? 'tall' : 'default'}
           isKeyboardInteractionDisabled
           isOpen={isOpen}
           isTriggerDisabled
@@ -469,7 +472,7 @@ export default class StatelessMultiSelect extends PureComponent {
         >
           {renderGroups({
             groups: groupedItems,
-            hasFooter: this.hasFooter(),
+            hasFooter: this.hasVisibleFooter(),
             filterValue,
             selectedItems,
             noMatchesFound,

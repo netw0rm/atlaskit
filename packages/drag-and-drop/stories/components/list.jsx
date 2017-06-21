@@ -1,8 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { droppable } from '../../src/';
-import type { OwnProps, StateSnapshot } from '../../src/view/droppable/droppable-types';
+import Droppable from '../../src/view/droppable/connected-droppable';
+import type { Provided } from '../../src/view/droppable/droppable-types';
 
 const Container = styled.div`
   background-color: ${({ isDraggingOver }) => (isDraggingOver ? 'lightyellow' : 'lightblue')};
@@ -14,32 +14,28 @@ const Container = styled.div`
   width: 250px;
 `;
 
-class List extends PureComponent {
+export default class List extends PureComponent {
   props: {|
     listId: string,
     children?: any,
-    innerRef: (Element) => void,
-    isDraggingOver: boolean,
   |}
 
   render() {
     return (
-      <Container
-        isDraggingOver={this.props.isDraggingOver}
-        innerRef={this.props.innerRef}
+      <Droppable
+        droppableId={this.props.listId}
+        isDropEnabled
+        type="PERSON"
       >
-        {this.props.children}
-      </Container>
+        {(provided: Provided) => (
+          <Container
+            isDraggingOver={provided.isDraggingOver}
+            innerRef={provided.innerRef}
+          >
+            {this.props.children}
+          </Container>
+        )}
+      </Droppable>
     );
   }
 }
-
-const provide = (ownProps: OwnProps) => ({
-  id: ownProps.listId,
-});
-
-const mapStateToProps = (state: StateSnapshot) => ({
-  isDraggingOver: state.isDraggingOver,
-});
-
-export default droppable('PERSON', 'vertical', provide, mapStateToProps)(List);

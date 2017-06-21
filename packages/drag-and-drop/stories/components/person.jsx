@@ -1,9 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { draggable } from '../../src/';
+import Draggable from '../../src/view/draggable/connected-draggable';
 import type { PersonType } from '../types';
-import type { StateSnapshot } from '../../src/view/draggable/draggable-types';
+import type { Provided } from '../../src/view/draggable/draggable-types';
 
 const Container = styled.a`
   border-radius: 2px;
@@ -16,50 +16,36 @@ const Container = styled.a`
   user-select: none;
 `;
 
-const avatarWidth: number = 40;
-
-const Avatar = styled.img`
-  border-radius: 50%;
-  height: ${avatarWidth}px;
-  width: ${avatarWidth}px;
-`;
-
-type OwnProps = {|
+type Props = {|
   data: PersonType
 |}
 
-type InjectedProps = {|
-  handleProps: Object,
-  innerRef: (Element) => void,
-  isDragging: boolean,
-  style: Object,
-|}
-
-class Person extends PureComponent {
-  props: OwnProps & InjectedProps
+export default class Person extends PureComponent {
+  props: Props
 
   render() {
-    const { data, handleProps, innerRef, isDragging, style } = this.props;
+    const { data } = this.props;
     return (
-      <Container
-        innerRef={ref => innerRef(ref)}
-        isDragging={isDragging}
-        {...handleProps}
-        style={style}
+      <Draggable
+        draggableId={data.id}
+        type="PERSON"
+        isDragEnabled
       >
-        {data.name}
-        <Avatar src={`https://api.adorable.io/avatars/${avatarWidth}/${data.id}@adorable.png`} />
-      </Container>
+        {(provided: Provided) => (
+          <div>
+            <Container
+              innerRef={ref => provided.innerRef(ref)}
+              href={data.name}
+              isDragging={provided.isDragging}
+              style={provided.containerStyle}
+              {...provided.dragHandleProps}
+            >
+              {data.name}
+            </Container>
+            {provided.placeholder}
+          </div>
+        )}
+      </Draggable>
     );
   }
 }
-
-const provide = (ownProps: OwnProps) => ({
-  id: ownProps.data.id,
-});
-
-const mapStateToProps = (state: StateSnapshot) => ({
-  isDragging: state.isDragging,
-});
-
-export default draggable('PERSON', provide, mapStateToProps)(Person);

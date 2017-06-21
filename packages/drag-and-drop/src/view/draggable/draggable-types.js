@@ -3,7 +3,9 @@ import type {
   DraggableId,
   InitialDrag,
   Position,
+  TypeId,
 } from '../../types';
+import type { DragHandleProvided } from '../drag-handle/';
 import {
   lift,
   move,
@@ -14,14 +16,15 @@ import {
   dropAnimationFinished,
 } from '../../state/action-creators';
 
-export type NeedsProviding = {|
-  id: DraggableId,
-  isDragEnabled?: boolean,
+type ReactElement = mixed;
+
+export type Provided = {|
+  innerRef: (Element) => void,
+  isDragging: boolean,
+  containerStyle: Object,
+  placeholder: ReactElement,
+  dragHandleProps: ?DragHandleProvided,
 |}
-
-export type OwnProps = Object;
-
-export type Provide = (ownProps: OwnProps) => NeedsProviding;
 
 export type DispatchProps = {
   lift: typeof lift,
@@ -34,7 +37,6 @@ export type DispatchProps = {
 }
 
 export type MapProps = {|
-  id: DraggableId,
   isDragEnabled: boolean,
   isDragging: boolean,
   isDropAnimating: boolean,
@@ -43,15 +45,11 @@ export type MapProps = {|
   initial: ?InitialDrag,
 |}
 
-export type Props = {
-  mapProps: MapProps,
-  dispatchProps: DispatchProps,
-  ownProps: OwnProps,
-}
-
-export type StateSnapshot = {|
-  isDragging: boolean
+export type OwnProps = {|
+  draggableId: DraggableId,
+  isDragEnabled: boolean,
+  type: TypeId,
+  children: (Provided) => mixed,
 |}
 
-export type MapStateToProps =
-  (state: StateSnapshot, ownProps: OwnProps, getDragHandle: () => mixed) => Object;
+export type Props = MapProps & DispatchProps & OwnProps;

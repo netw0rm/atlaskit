@@ -15,12 +15,20 @@ class Standard extends PureComponent {
   state = {
     people: [
       {
-        name: 'Alex',
         id: 'alex',
+        name: 'Alex',
       },
       {
-        name: 'Ben',
         id: 'ben',
+        name: 'Ben',
+      },
+      {
+        id: 'sam',
+        name: 'sam',
+      },
+      {
+        id: 'obie',
+        name: 'Obie',
       },
     ],
   }

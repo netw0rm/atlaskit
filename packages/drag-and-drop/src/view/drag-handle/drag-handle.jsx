@@ -2,6 +2,7 @@
 import React, { cloneElement, PureComponent } from 'react';
 import invariant from 'invariant';
 import type { Position } from '../../types';
+import memoizeOne from 'memoize-one';
 
 const noop = (): void => { };
 const empty: Object = {};
@@ -16,7 +17,7 @@ export const sloppyClickThreshold: number = 5;
 
 type DragTypes = 'KEYBOARD' | 'MOUSE';
 
-export type Callbacks = {
+export type DragHandleCallbacks = {
   onLift: (point: Position) => void,
   onKeyLift: () => void,
   onMove: (point: Position) => void,
@@ -26,10 +27,13 @@ export type Callbacks = {
   onCancel: () => void,
 }
 
-type Props = {
-  children?: any,
+export type DragHandleProvided = Object;
+
+type Props = {|
+  children: (?DragHandleProvided) => mixed,
   isEnabled: boolean,
-} & Callbacks
+  callbacks: DragHandleCallbacks,
+|}
 
 type State = {
   draggingWith: ?DragTypes,
@@ -57,7 +61,7 @@ export default class DragHandle extends PureComponent {
     }
     this.preventClick = false;
     this.unbindWindowEvents();
-    this.props.onCancel();
+    this.props.callbacks.onCancel();
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -75,7 +79,7 @@ export default class DragHandle extends PureComponent {
 
     // need to cancel a current drag
     if (this.state.draggingWith) {
-      this.stopDragging(() => this.props.onCancel());
+      this.stopDragging(() => this.props.callbacks.onCancel());
     }
   }
 
@@ -99,7 +103,7 @@ export default class DragHandle extends PureComponent {
     };
 
     if (!pending) {
-      this.props.onMove(point);
+      this.props.callbacks.onMove(point);
       return;
     }
 
@@ -108,7 +112,7 @@ export default class DragHandle extends PureComponent {
                             Math.abs(pending.y - point.y) >= sloppyClickThreshold;
 
     if (shouldStartDrag) {
-      this.startDragging('MOUSE', () => this.props.onLift(point));
+      this.startDragging('MOUSE', () => this.props.callbacks.onLift(point));
     }
   };
 
@@ -132,7 +136,7 @@ export default class DragHandle extends PureComponent {
     // Allowing any event.button type to drop. Otherwise you
     // might not get a corresponding mouseup with a mousedown.
     // We could do a`cancel` if the button is not the primary.
-    this.stopDragging(() => this.props.onDrop());
+    this.stopDragging(() => this.props.callbacks.onDrop());
   };
 
   onWindowMouseDown = () => {
@@ -141,13 +145,13 @@ export default class DragHandle extends PureComponent {
                     is occurring. Expecting a mouseup first.`);
     }
 
-    this.stopDragging(() => this.props.onCancel());
+    this.stopDragging(() => this.props.callbacks.onCancel());
   }
 
   onMouseDown = (event: MouseEvent) => {
     if (this.state.draggingWith === 'KEYBOARD') {
       // allowing any type of mouse down to cancel
-      this.stopDragging(() => this.props.onCancel());
+      this.stopDragging(() => this.props.callbacks.onCancel());
       return;
     }
 
@@ -185,7 +189,7 @@ export default class DragHandle extends PureComponent {
     if (!this.state.draggingWith) {
       if (event.key === ' ') {
         event.preventDefault();
-        this.startDragging('KEYBOARD', () => this.props.onKeyLift());
+        this.startDragging('KEYBOARD', () => this.props.callbacks.onKeyLift());
       }
       return;
     }
@@ -206,7 +210,7 @@ export default class DragHandle extends PureComponent {
 
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.stopDragging(() => this.props.onCancel());
+      this.stopDragging(() => this.props.callbacks.onCancel());
       return;
     }
 
@@ -222,20 +226,20 @@ export default class DragHandle extends PureComponent {
 
     if (event.key === ' ') {
       event.preventDefault();
-      this.stopDragging(() => this.props.onDrop());
+      this.stopDragging(() => this.props.callbacks.onDrop());
       return;
     }
 
     // keyboard dragging only
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      this.props.onMoveForward();
+      this.props.callbacks.onMoveForward();
       return;
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      this.props.onMoveBackward();
+      this.props.callbacks.onMoveBackward();
     }
   }
 
@@ -338,12 +342,12 @@ export default class DragHandle extends PureComponent {
     window.addEventListener('mousedown', this.onWindowMouseDown);
   }
 
-  render() {
-    const { children, isEnabled } = this.props;
-    const { draggingWith } = this.state;
+  getProvided = memoizeOne((isEnabled: boolean, isDragging: boolean): ?DragHandleProvided => {
+    if (!isEnabled) {
+      return null;
+    }
 
-    // todo: namespace props
-    const props: Object = isEnabled ? {
+    return {
       onMouseDown: this.onMouseDown,
       onKeyDown: this.onKeyDown,
 
@@ -354,14 +358,20 @@ export default class DragHandle extends PureComponent {
       tabIndex: 0,
 
       // Aria
-      'aria-grabbed': Boolean(draggingWith),
+      'aria-grabbed': isDragging,
 
       // Stop html5 drag a drop
       draggable: false,
       onDragStart: getFalse,
       onDrop: getFalse,
-    } : empty;
+    };
+  })
 
-    return cloneElement(children, { handleProps: props });
+  render() {
+    const { children, isEnabled } = this.props;
+    const { draggingWith } = this.state;
+    const isDragging: boolean = Boolean(draggingWith);
+
+    return children(this.getProvided(isEnabled, isDragging));
   }
 }

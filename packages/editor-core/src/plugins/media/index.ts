@@ -191,24 +191,24 @@ export class MediaPluginState {
     }
 
     let transaction = state.tr;
-    const { $from, $to } = state.selection;
-    const grandParent = $from.node(-1);
-    const defaultContentType = grandParent.defaultContentType(0);
+    const { $to } = state.selection;
 
-    if (atTheEndOfDoc(state) && !this.posOfMediaGroupExistsAsAnAjacentNodeBefore(state)) {
-      transaction = transaction.insert($to.pos + 1, defaultContentType.create());
+    if (atTheEndOfDoc(state) && (!this.posOfMediaGroupExistsAsAnAjacentNodeBefore(state) || this.isSelectionNonMediaBlockNode())) {
+      const paragraphInsertPos = this.isSelectionNonMediaBlockNode() ? $to.pos : $to.pos + 1;
+      transaction = transaction.insert(paragraphInsertPos, state.schema.nodes.paragraph.create());
     }
 
-    const insertPos = this.findMediaInsertPos();
+    const mediaInsertPos = this.findMediaInsertPos();
+
     // delete the selection or empty paragraph
     const deleteRange = this.findDeleteRange();
 
     if (!deleteRange) {
-      transaction = transaction.insert(insertPos, node);
-    } else if (insertPos <= deleteRange.start) {
-      transaction = transaction.deleteRange(deleteRange.start, deleteRange.end).insert(insertPos, node);
+      transaction = transaction.insert(mediaInsertPos, node);
+    } else if (mediaInsertPos <= deleteRange.start) {
+      transaction = transaction.deleteRange(deleteRange.start, deleteRange.end).insert(mediaInsertPos, node);
     } else {
-      transaction = transaction.insert(insertPos, node).deleteRange(deleteRange.start, deleteRange.end);
+      transaction = transaction.insert(mediaInsertPos, node).deleteRange(deleteRange.start, deleteRange.end);
     }
 
     return [node, transaction];
@@ -362,11 +362,18 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
   }
 
+  private isSelectionNonMediaBlockNode = (): boolean => {
+    const { state } = this.view;
+    const { node } = state.selection as NodeSelection;
+
+    return node && node.type !== state.schema.nodes.media && node.isBlock;
+  }
+
   /**
    * Determine whether the cursor is inside empty paragraph
    * or the selection is the entire paragraph
    */
-  private isInsidePotentialEmptyParagraph = () => {
+  private isInsidePotentialEmptyParagraph = (): boolean => {
     const { state } = this.view;
     const { $from } = state.selection;
 
@@ -377,10 +384,19 @@ export class MediaPluginState {
     if (!atTheBeginningOfBlock(state)) {
       return;
     }
+
     const { $from } = state.selection;
-    const adjacentPos = startPositionOfParent($from) - 1;
-    const adjacentResolvePos = state.doc.resolve(adjacentPos);
-    const adjacentNode = adjacentResolvePos.nodeBefore;
+    let adjacentPos;
+    let adjacentNode;
+
+    if (this.isSelectionNonMediaBlockNode()) {
+      adjacentPos = $from.pos;
+      adjacentNode = $from.nodeBefore;
+    } else {
+      adjacentPos = startPositionOfParent($from) - 1;
+      adjacentNode = state.doc.resolve(adjacentPos).nodeBefore;
+    }
+
     if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
       return adjacentPos - adjacentNode.nodeSize + 1;
     }
@@ -391,8 +407,17 @@ export class MediaPluginState {
       return;
     }
     const { $to } = state.selection;
-    const adjacentPos = endPositionOfParent($to);
-    const adjacentNode: PMNode | undefined | null = state.doc.nodeAt(adjacentPos);
+    let adjacentPos;
+    let adjacentNode;
+
+    if (this.isSelectionNonMediaBlockNode()) {
+      adjacentPos = $to.pos;
+      adjacentNode = $to.nodeAfter;
+    } else {
+      adjacentPos = endPositionOfParent($to);
+      adjacentNode = state.doc.nodeAt(adjacentPos);
+    }
+
     if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
       return adjacentPos + 1;
     }
@@ -420,6 +445,10 @@ export class MediaPluginState {
 
     if (nearByMediaGroupPos) {
       return nearByMediaGroupPos;
+    }
+
+    if (this.isSelectionNonMediaBlockNode()) {
+      return $to.pos;
     }
 
     if (atTheEndOfBlock(state)) {

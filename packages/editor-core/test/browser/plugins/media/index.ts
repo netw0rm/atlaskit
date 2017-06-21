@@ -25,6 +25,8 @@ import {
   code_block,
   doc,
   h1,
+  hr,
+  mention,
   makeEditor,
   mediaGroup,
   media,
@@ -33,6 +35,7 @@ import {
   storyMediaProviderFactory,
   randomId,
   sleep,
+  setNodeSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -296,6 +299,114 @@ describe('Media plugin', () => {
               )
             )
           );
+        });
+      });
+    });
+
+    context('when selection is a node', () => {
+      context('when selection is an inline node', () => {
+        it('replaces selection with a media node', () => {
+          const { editorView, pluginState, sel } = editor(doc(p('text{<>}', mention({ id: 'foo1', text: '@bar1' }))));
+          setNodeSelection(editorView, sel);
+
+          pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('text'),
+              mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+              p(),
+            )
+          );
+        });
+      });
+
+      context('when selection is a non media block node', () => {
+        context('when no exisiting media group', () => {
+          it('replaces selection with a media node', () => {
+            const { editorView, pluginState } = editor(doc(hr));
+            setNodeSelection(editorView, 0);
+
+            pluginState.handleNewMediaPicked({ id: testFileId, status: 'uploading' }, testCollectionName);
+
+            expect(editorView.state.doc).to.deep.equal(
+              doc(
+                mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+                p(),
+              )
+            );
+          });
+        });
+
+        context('when there are exisiting media group', () => {
+          context('when media group is in the front', () => {
+            it('prepend media to the exisiting media group before', () => {
+              const { editorView, pluginState } = editor(doc(
+                mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+                hr,
+              ));
+              const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
+              setNodeSelection(editorView, mediaGroupNodeSize);
+
+              pluginState.handleNewMediaPicked({ id: 'new one', status: 'uploading' }, testCollectionName);
+
+              expect(editorView.state.doc).to.deep.equal(
+                doc(
+                  mediaGroup(
+                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
+                    media({ id: testFileId, type: 'file', collection: testCollectionName }),
+                  ),
+                  p(),
+                )
+              );
+            });
+          });
+
+          context('when media group is at the end', () => {
+            it('prepend media to the exisiting media group after', () => {
+              const { editorView, pluginState } = editor(doc(
+                hr,
+                mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+              ));
+              const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
+              setNodeSelection(editorView, 0);
+
+              pluginState.handleNewMediaPicked({ id: 'new one', status: 'uploading' }, testCollectionName);
+
+              expect(editorView.state.doc).to.deep.equal(
+                doc(
+                  mediaGroup(
+                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
+                    media({ id: testFileId, type: 'file', collection: testCollectionName }),
+                  )
+                )
+              );
+            });
+          });
+
+          context('when both sides have media groups', () => {
+            it('prepend media to the exisiting media group after', () => {
+              const { editorView, pluginState } = editor(doc(
+                mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+                hr,
+                mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+              ));
+              const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
+              setNodeSelection(editorView, mediaGroupNodeSize);
+
+              pluginState.handleNewMediaPicked({ id: 'new one', status: 'uploading' }, testCollectionName);
+
+              expect(editorView.state.doc).to.deep.equal(
+                doc(
+                  mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+                  mediaGroup(
+                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
+                    media({ id: testFileId, type: 'file', collection: testCollectionName }),
+                  ),
+                )
+              );
+            });
+          });
         });
       });
     });

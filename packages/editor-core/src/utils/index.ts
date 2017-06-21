@@ -67,12 +67,20 @@ export function atTheBeginningOfDoc(state: EditorState<any>): boolean {
 }
 
 export function atTheEndOfBlock(state: EditorState<any>): boolean {
-  const { $to } = state.selection;
+  const { selection } = state;
+  const { $to } = selection;
+  if (selection instanceof NodeSelection && selection.node.isBlock) {
+    return true;
+  }
   return endPositionOfParent($to) === $to.pos + 1;
 }
 
 export function atTheBeginningOfBlock(state: EditorState<any>): boolean {
-  const { $from } = state.selection;
+  const { selection } = state;
+  const { $from } = selection;
+  if (selection instanceof NodeSelection && selection.node.isBlock) {
+    return true;
+  }
   return startPositionOfParent($from) === $from.pos;
 }
 

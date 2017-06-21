@@ -9,7 +9,7 @@ import {
 
 import {
   Serializer,
-} from '../';
+} from '../serializer';
 
 import {
   Doc,

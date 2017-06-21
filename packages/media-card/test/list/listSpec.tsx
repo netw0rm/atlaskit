@@ -77,15 +77,8 @@ describe('CardList', () => {
   });
 
   it('should pass a provider to MediaCard', () => {
-    const expectedMediaItemProvider = {
-      observable() {
-        return Observable.of(expectedMediaItems[0]);
-      }
-    };
-
     const collection = {items: expectedMediaItems};
     const context = contextWithInclusiveStartKey;
-
     const card = mount(<CardList context={context} collectionName={collectionName} shouldLazyLoadCards={false}/>);
 
     card.setState({loading: false, error: undefined, collection});

@@ -7,6 +7,7 @@ import { Label } from '@atlaskit/field-base';
 
 import ItemShape from '../internal/ItemShape';
 import GroupShape from '../internal/GroupShape';
+import FooterShape from '../internal/FooterShape';
 import { SelectWrapper } from '../styled/Stateless';
 import Trigger from './Trigger';
 import Footer from './Footer';
@@ -16,6 +17,7 @@ import renderOptGroups from './Options';
 
 const groupShape = GroupShape.propTypes;
 const itemShape = ItemShape.propTypes;
+const footerShape = FooterShape.propTypes;
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
@@ -50,6 +52,8 @@ export default class StatelessMultiSelect extends PureComponent {
     createNewItemLabel: PropTypes.string,
     /** Value to be used when filtering the items. Compared against 'content'. */
     filterValue: PropTypes.string,
+    /** Element to show after the list of item. Accepts an object of the specific shape */
+    footer: PropTypes.shape(footerShape),
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
     /** Sets whether the select is selectable. Changes hover state. */
@@ -102,7 +106,8 @@ export default class StatelessMultiSelect extends PureComponent {
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
     /** Sets whether a new item could be created and added to the list by pressing Enter
-     * inside the autocomplete field */
+     * inside the autocomplete field. If set to true then no additional footer from the 'footer'
+     * property would be rendered.*/
     shouldAllowCreateItem: PropTypes.bool,
   }
 
@@ -110,6 +115,7 @@ export default class StatelessMultiSelect extends PureComponent {
     appearance: appearances.default,
     createNewItemLabel: 'New item',
     filterValue: '',
+    footer: {},
     shouldFocus: false,
     isOpen: false,
     items: [],
@@ -124,7 +130,7 @@ export default class StatelessMultiSelect extends PureComponent {
     shouldAllowCreateItem: false,
   }
 
-  // This is used only to show the focus ring around , it's okay to have state in this case.
+  // This is used only to manipulate focus , it's okay to have state in this case.
   state = {
     isFocused: this.props.isOpen || this.props.shouldFocus,
     focusedItemIndex: null,
@@ -225,11 +231,18 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   handleItemSelect = (item, attrs) => {
-    if (!item.isDisabled) {
-      this.props.onOpenChange({ isOpen: false, event: attrs.event });
-      this.props.onSelected(item);
-      this.props.onFilterChange('');
-      this.setState({ focusedItemIndex: null });
+    if (!this.isFooterFocused()) {
+      if (!item.isDisabled) {
+        this.props.onOpenChange({ isOpen: false, event: attrs.event });
+        this.props.onSelected(item);
+        this.props.onFilterChange('');
+        this.setState({ focusedItemIndex: null });
+      }
+    } else if (this.props.shouldAllowCreateItem) {
+      this.handleItemCreate(attrs.event);
+    } else {
+      // footer is focused and we dont have shouldAllowCreateItem so call the footer's onActivate
+      this.handleFooterActivate(attrs.event);
     }
   }
 
@@ -242,6 +255,15 @@ export default class StatelessMultiSelect extends PureComponent {
       const selectedItems = this.props.selectedItems;
       this.handleItemRemove(selectedItems[selectedItems.length - 1]);
     }
+  }
+
+  hasFooter = () => this.props.footer.content || this.props.shouldAllowCreateItem
+
+  isFooterFocused = () => {
+    const { focusedItemIndex, groupedItems } = this.state;
+    const selectableItems = this.getAllVisibleItems(groupedItems);
+    // if our selected index is outside of our array bounds, the footer should be selected
+    return focusedItemIndex === selectableItems.length;
   }
 
   handleOnChange = (event) => {
@@ -267,19 +289,28 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
+  handleFooterActivate = (event) => {
+    const { footer } = this.props;
+    if (footer.onActivate) {
+      footer.onActivate(event);
+    }
+  }
+
   focusNextItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
-    const length = filteredItems.length - 1;
+    const footerIsFocusable = this.hasFooter();
+    const { focusedItemIndex } = this.state;
     this.setState({
-      focusedItemIndex: getNextFocusable(this.state.focusedItemIndex, length),
+      focusedItemIndex: getNextFocusable(focusedItemIndex, filteredItems.length, footerIsFocusable),
     });
   }
 
   focusPreviousItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
-    const length = filteredItems.length - 1;
+    const footerIsFocusable = this.hasFooter();
+    const { focusedItemIndex } = this.state;
     this.setState({
-      focusedItemIndex: getPrevFocusable(this.state.focusedItemIndex, length),
+      focusedItemIndex: getPrevFocusable(focusedItemIndex, filteredItems.length, footerIsFocusable),
     });
   }
 
@@ -320,15 +351,48 @@ export default class StatelessMultiSelect extends PureComponent {
           this.onOpenChange({ event, isOpen: true });
         }
         break;
+      case 'Tab':
+        // tabbing from within the multi select should move focus to the next form element
+        // hence, we close the dropdown and clear the focusedItemIndex
+        this.onOpenChange({ event, isOpen: false });
+        this.setState({ focusedItemIndex: null });
+        break;
       default:
         break;
     }
   }
 
+  renderFooter = () => {
+    const { filterValue: newValue, shouldAllowCreateItem, footer, createNewItemLabel } = this.props;
+    if (shouldAllowCreateItem) {
+      if (newValue) {
+        return (<Footer
+          appearance={footer.appearance}
+          isFocused={this.isFooterFocused()}
+          newLabel={this.props.createNewItemLabel}
+          onClick={this.handleItemCreate}
+          shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
+        >
+          { newValue }
+          {' '}
+          ({ createNewItemLabel })
+        </Footer>);
+      }
+    } else if (footer.content) {
+      return (<Footer
+        appearance={footer.appearance}
+        elemBefore={footer.elemBefore}
+        isFocused={this.isFooterFocused()}
+        onClick={this.handleFooterActivate}
+        shouldHideSeparator={!this.getAllVisibleItems(this.props.items).length}
+      >{ footer.content }</Footer>);
+    }
+    return null;
+  }
+
   render() {
     const {
       appearance,
-      createNewItemLabel,
       filterValue,
       id,
       isDisabled,
@@ -352,6 +416,7 @@ export default class StatelessMultiSelect extends PureComponent {
       <SelectWrapper
         shouldFitContainer={shouldFitContainer}
         onKeyDown={this.handleKeyboardInteractions}
+        innerRef={ref => (this.multiSelectContainer = ref)}
       >
         <select
           disabled={isDisabled}
@@ -372,6 +437,7 @@ export default class StatelessMultiSelect extends PureComponent {
           label={label}
         /> : null}
         <Droplist
+          appearance={this.hasFooter() ? 'tall' : 'default'}
           isKeyboardInteractionDisabled
           isOpen={isOpen}
           isTriggerDisabled
@@ -403,6 +469,7 @@ export default class StatelessMultiSelect extends PureComponent {
         >
           {renderGroups({
             groups: groupedItems,
+            hasFooter: this.hasFooter(),
             filterValue,
             selectedItems,
             noMatchesFound,
@@ -410,12 +477,7 @@ export default class StatelessMultiSelect extends PureComponent {
             handleItemSelect: this.handleItemSelect,
             shouldAllowCreateItem,
           })}
-          <Footer
-            filterValue={filterValue}
-            newLabel={createNewItemLabel}
-            shouldAllowCreateItem={shouldAllowCreateItem}
-            shouldHideSeparator={!this.getAllVisibleItems(groupedItems).length}
-          />
+          {this.renderFooter()}
         </Droplist>
       </SelectWrapper>
     );

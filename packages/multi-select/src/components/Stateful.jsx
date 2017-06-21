@@ -4,10 +4,12 @@ import uid from 'uid';
 
 import ItemShape from '../internal/ItemShape';
 import GroupShape from '../internal/GroupShape';
+import FooterShape from '../internal/FooterShape';
 import MultiSelectStateless from './Stateless';
 
 const itemShape = ItemShape.propTypes;
 const groupShape = GroupShape.propTypes;
+const footerShape = FooterShape.propTypes;
 
 // =============================================================
 // NOTE: Duplicated in ./internal/appearances until docgen can follow imports.
@@ -32,6 +34,8 @@ export default class MultiSelect extends PureComponent {
     createNewItemLabel: PropTypes.string,
     /** An array of items that will be selected on component mount. */
     defaultSelected: PropTypes.arrayOf(PropTypes.shape(itemShape)),
+    /** Element to show after the list of item. Accepts an object of a specific shape */
+    footer: PropTypes.shape(footerShape),
     /** id property to be passed down to the html select component. */
     id: PropTypes.string,
     /** Sets whether the select is selectable. Changes hover state. */
@@ -160,6 +164,7 @@ export default class MultiSelect extends PureComponent {
     const {
       appearance,
       createNewItemLabel,
+      footer,
       id,
       isDisabled,
       isFirstChild,
@@ -181,6 +186,7 @@ export default class MultiSelect extends PureComponent {
         appearance={appearance}
         createNewItemLabel={createNewItemLabel}
         filterValue={filterValue}
+        footer={footer}
         id={id}
         isDisabled={isDisabled}
         isFirstChild={isFirstChild}

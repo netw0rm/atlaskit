@@ -217,8 +217,8 @@ export default (type: TypeId, mapStateToProps: MapStateToProps): Function =>
 
         return (
           <Placeholder
-            height={dimension.height}
-            width={dimension.width}
+            height={dimension.withMargin.height}
+            width={dimension.withMargin.width}
           />
         );
       }

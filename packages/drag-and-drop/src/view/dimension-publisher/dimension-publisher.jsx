@@ -1,7 +1,7 @@
 // @flow
 import { PureComponent } from 'react';
 import invariant from 'invariant';
-import type { Dimension } from '../../types';
+import type { Dimension, DimensionFragment } from '../../types';
 import type { Props } from './dimension-publisher-types';
 
 export default class DimensionPublisher extends PureComponent {
@@ -20,26 +20,31 @@ export default class DimensionPublisher extends PureComponent {
     const marginBottom = parseInt(style.marginBottom, 10);
     const marginLeft = parseInt(style.marginLeft, 10);
 
-    const dimension: Dimension = {
-      id: itemId,
+    const withoutMargin: DimensionFragment = {
+      top,
+      right,
+      left,
+      bottom,
+      width,
+      height,
+    };
+    const withMargin: DimensionFragment = {
       top: (top + marginTop),
       right: (right + marginRight),
       left: (left + marginLeft),
       bottom: (bottom + marginBottom),
       width: width + marginLeft + marginRight,
       height: height + marginBottom + marginTop,
+    };
+
+    const dimension: Dimension = {
+      id: itemId,
+      withoutMargin,
+      withMargin,
       // Not considering margins when calculating the center position
       center: {
         x: (left + right) / 2,
         y: (top + bottom) / 2,
-      },
-      withoutMargin: {
-        top,
-        right,
-        bottom,
-        left,
-        width,
-        height,
       },
     };
 

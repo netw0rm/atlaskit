@@ -56,7 +56,7 @@ export default (
           return false;
         }
 
-        return newCenter.y > dimension.top;
+        return newCenter.y > dimension.withMargin.top;
       }
       // moving backwards
       // 1. item needs to start behind the moving item
@@ -65,7 +65,7 @@ export default (
         return false;
       }
 
-      return newCenter.y < dimension.bottom;
+      return newCenter.y < dimension.withMargin.bottom;
     })
     .map((dimension: Dimension): DroppableId => dimension.id);
 
@@ -82,7 +82,7 @@ export default (
     return startIndex - moved.length;
   })();
 
-  const amount = index !== startIndex ? draggingDimension.height : 0;
+  const amount = index !== startIndex ? draggingDimension.withMargin.height : 0;
   const movement: DragMovement = {
     amount,
     draggables: moved,

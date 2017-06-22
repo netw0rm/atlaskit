@@ -16,7 +16,6 @@ import listsPlugins, { stateKey as listsStateKey } from '../../src/plugins/lists
 import mentionsPlugins, { stateKey as mentionsStateKey } from '../../src/plugins/mentions';
 import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emojis';
 import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
-import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
 import { reactNodeViewPlugins } from '../../src/plugins';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
@@ -202,7 +201,6 @@ export default class Editor extends PureComponent<Props, State> {
     const mentionsState = getStateFromKey(mentionsStateKey);
     const emojiState = getStateFromKey(emojiStateKey);
     const textColorState = getStateFromKey(textColorStateKey);
-    const tableState = getStateFromKey(tableStateKey);
 
     return (
       <Chrome
@@ -225,7 +223,6 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateMentions={mentionsState}
         pluginStateEmojis={emojiState}
         pluginStateTextColor={textColorState}
-        pluginStateTable={tableState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
         popupsMountPoint={this.props.popupsMountPoint}
@@ -278,7 +275,6 @@ export default class Editor extends PureComponent<Props, State> {
           // if converting is possible
           ...blockTypePlugins(schema),
           ...mediaPlugins,
-          ...tablePlugins(),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(baseKeymap) // should be last :(

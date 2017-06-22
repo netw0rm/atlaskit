@@ -19,7 +19,6 @@ import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import { MediaPluginState } from '../../plugins/media';
 import { TextColorState } from '../../plugins/text-color';
-import { TableState } from '../../plugins/table';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
@@ -66,7 +65,6 @@ export interface Props {
   pluginStateMedia?: MediaPluginState;
   pluginStateEmojis?: EmojiState;
   pluginStateTextColor?: TextColorState;
-  pluginStateTable?: TableState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;

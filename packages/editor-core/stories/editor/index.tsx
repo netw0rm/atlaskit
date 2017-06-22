@@ -16,7 +16,6 @@ import listsPlugins, { stateKey as listsStateKey } from '../../src/plugins/lists
 import mentionsPlugins, { stateKey as mentionsStateKey } from '../../src/plugins/mentions';
 import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emojis';
 import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
-import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
 import { reactNodeViewPlugins } from '../../src/plugins';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
@@ -30,12 +29,6 @@ import {
   TextSelection,
   PluginKey,
 } from '../../src/prosemirror';
-import {
-  nodeViewFactory,
-  ReactEmojiNode,
-  ReactMentionNode,
-  panelNodeView
-} from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
@@ -46,8 +39,6 @@ import {
   MediaProvider,
   MediaState,
   Plugin,
-  ReactMediaGroupNode,
-  ReactMediaNode,
   ErrorReporter,
   ErrorReportingHandler,
 } from '../../src';
@@ -214,7 +205,6 @@ export default class Editor extends PureComponent<Props, State> {
     const mentionsState = getStateFromKey(mentionsStateKey);
     const emojiState = getStateFromKey(emojiStateKey);
     const textColorState = getStateFromKey(textColorStateKey);
-    const tableState = getStateFromKey(tableStateKey);
 
     return (
       <Chrome
@@ -237,7 +227,6 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateMentions={mentionsState}
         pluginStateEmojis={emojiState}
         pluginStateTextColor={textColorState}
-        pluginStateTable={tableState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
         popupsMountPoint={this.props.popupsMountPoint}
@@ -283,8 +272,8 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
-          ...mentionsPlugins(schema), // mentions and emoji needs to be first
-          ...emojiPlugins(schema),
+          ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
+          ...emojiPlugins(schema, this.providerFactory),
           ...asciiEmojiPlugins(schema, this.state.emojiProvider),
           ...listsPlugins(schema),
           ...clearFormattingPlugins(schema),
@@ -299,7 +288,6 @@ export default class Editor extends PureComponent<Props, State> {
           // if converting is possible
           ...blockTypePlugins(schema),
           ...mediaPlugins,
-          ...tablePlugins(),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(baseKeymap) // should be last :(
@@ -311,23 +299,8 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
-        },
-        nodeViews: {
-          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
-          mediaGroup: nodeViewFactory(
-            this.providerFactory,
-            {
-              mediaGroup: ReactMediaGroupNode,
-              media: ReactMediaNode
-            },
-            true
-          ),
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
-          panel: panelNodeView
         }
       });
-      mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
       if (this.props.devTools) {
         applyDevTools(editorView);

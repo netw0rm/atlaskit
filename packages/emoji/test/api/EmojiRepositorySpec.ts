@@ -206,6 +206,14 @@ describe('EmojiRepository', () => {
       const openMouthEmojiCount = emojis.filter(e => e.id === openMouthEmoji.id).length;
       expect(openMouthEmojiCount, 'emoji matching ascii representation is only returned once in the search results').to.equal(1);
     });
+
+    it('minus not indexed', () => {
+      const emojis = emojiRepository.search(':congo').emojis;
+      expect(emojis.length, 'One emoji').to.equal(1);
+      expect(emojis[0].name).to.equal('Congo - Brazzaville');
+      const noEmojis = emojiRepository.search(':-').emojis;
+      expect(noEmojis.length, 'No emoji').to.equal(0);
+    });
   });
 
   describe('#addCustomEmoji', () => {

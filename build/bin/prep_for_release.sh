@@ -4,7 +4,7 @@ set -e
 # DEBUG=echo
 $DEBUG rm -rf .git
 $DEBUG git init
-$DEBUG git clean -dfx
+$DEBUG git clean -dfx --exclude=node_modules
 $DEBUG git config credential.helper store
 $DEBUG echo "https://$BITBUCKET_USER:$BITBUCKET_PASSWORD@bitbucket.org" > ~/.git-credentials
 $DEBUG git remote add origin "https://bitbucket.org/atlassian/atlaskit.git"

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import tablePlugin from '../../../../src/plugins/table';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, cEmpty, cCursor
+  chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, tdEmpty, tdCursor
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -21,9 +21,9 @@ describe('table keymap', () => {
       it('it should select next cell of the current row', () => {
         const { editorView } = editor(
           doc(table(
-            tr( /*4*/ cCursor, /*8*/  cEmpty, /*12*/ cEmpty ),
-            tr(/*18*/ cEmpty, /*22*/ cEmpty, /*26*/ cEmpty ),
-            tr(/*32*/ cEmpty, /*36*/ cEmpty, /*40*/ cEmpty )
+            tr( /*4*/ tdCursor, /*8*/  tdEmpty, /*12*/ tdEmpty ),
+            tr(/*18*/ tdEmpty, /*22*/ tdEmpty, /*26*/ tdEmpty ),
+            tr(/*32*/ tdEmpty, /*36*/ tdEmpty, /*40*/ tdEmpty )
           ))
         );
         expect(editorView.state.selection.$from.pos).to.equal(4);
@@ -36,9 +36,9 @@ describe('table keymap', () => {
       it('it should select first cell of the next row', () => {
         const { editorView } = editor(
           doc(table(
-            tr( /*4*/ cEmpty, /*8*/  cEmpty, /*12*/ cCursor ),
-            tr(/*18*/ cEmpty, /*22*/ cEmpty, /*26*/ cEmpty ),
-            tr(/*32*/ cEmpty, /*36*/ cEmpty, /*40*/ cEmpty )
+            tr( /*4*/ tdEmpty, /*8*/  tdEmpty, /*12*/ tdCursor ),
+            tr(/*18*/ tdEmpty, /*22*/ tdEmpty, /*26*/ tdEmpty ),
+            tr(/*32*/ tdEmpty, /*36*/ tdEmpty, /*40*/ tdEmpty )
           ))
         );
         expect(editorView.state.selection.$from.pos).to.equal(12);
@@ -53,9 +53,9 @@ describe('table keymap', () => {
       it('it should select previous cell of the current row', () => {
         const { editorView } = editor(
           doc(table(
-            tr( /*4*/ cEmpty, /*8*/  cEmpty, /*12*/ cCursor ),
-            tr(/*18*/ cEmpty, /*22*/ cEmpty, /*26*/ cEmpty ),
-            tr(/*32*/ cEmpty, /*36*/ cEmpty, /*40*/ cEmpty )
+            tr( /*4*/ tdEmpty, /*8*/  tdEmpty, /*12*/ tdCursor ),
+            tr(/*18*/ tdEmpty, /*22*/ tdEmpty, /*26*/ tdEmpty ),
+            tr(/*32*/ tdEmpty, /*36*/ tdEmpty, /*40*/ tdEmpty )
           ))
         );
         expect(editorView.state.selection.$from.pos).to.equal(12);
@@ -69,9 +69,9 @@ describe('table keymap', () => {
       it('it should select the last cell of the first row', () => {
         const { editorView } = editor(
           doc(table(
-            tr( /*4*/ cEmpty, /*8*/  cEmpty, /*12*/ cEmpty ),
-            tr(/*18*/ cCursor, /*22*/ cEmpty, /*26*/ cEmpty ),
-            tr(/*32*/ cEmpty, /*36*/ cEmpty, /*40*/ cEmpty )
+            tr( /*4*/ tdEmpty, /*8*/  tdEmpty, /*12*/ tdEmpty ),
+            tr(/*18*/ tdCursor, /*22*/ tdEmpty, /*26*/ tdEmpty ),
+            tr(/*32*/ tdEmpty, /*36*/ tdEmpty, /*40*/ tdEmpty )
           ))
         );
         expect(editorView.state.selection.$from.pos).to.equal(18);

@@ -32,6 +32,7 @@ export {
   Attributes as MediaAttributes, DisplayType as MediaDisplayType
 } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
+export { table, table_cell, table_header, table_row } from './nodes/tableNodes';
 
 export { createSchema } from './create-schema';
 export { bitbucketSchema } from './bitbucket-schema';

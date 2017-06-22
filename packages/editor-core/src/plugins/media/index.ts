@@ -28,6 +28,8 @@ import { ErrorReporter } from '../../utils';
 import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
+import { nodeViewFactory } from '../../nodeviews';
+import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
@@ -594,6 +596,12 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       return {};
     },
     props: {
+      nodeViews: {
+        mediaGroup: nodeViewFactory(options.providerFactory, {
+          mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+      },
       handleDOMEvents: {
         paste(view: EditorView, event: ClipboardEvent) {
           const pluginState: MediaPluginState = stateKey.getState(view.state);

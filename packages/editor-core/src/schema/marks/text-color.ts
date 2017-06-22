@@ -24,16 +24,16 @@ const rgbToHex = (value: string): string | undefined => {
 export const colorPalette = new Map<string, string>();
 [
   // [akColorN80, default],
-  [akColorN80, 'Light grey'],
   [akColorB500, 'Blue'],
-  [akColorB200, 'Light blue'],
   [akColorG500, 'Green'],
-  [akColorG200, 'Light green'],
   [akColorY500, 'Orange'],
-  [akColorY100, 'Yellow'],
   [akColorR500, 'Red'],
-  [akColorR100, 'Pink'],
   [akColorP500, 'Purple'],
+  [akColorN80, 'Light grey'],
+  [akColorB200, 'Light blue'],
+  [akColorG200, 'Light green'],
+  [akColorY100, 'Yellow'],
+  [akColorR100, 'Pink'],
   [akColorP200, 'Light purple'],
 ].forEach(([color, label]) => colorPalette.set(color.toLowerCase(), label));
 

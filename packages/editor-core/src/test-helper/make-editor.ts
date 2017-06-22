@@ -9,6 +9,7 @@ import {
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
 import { setTextSelection } from './transactions';
+import { reactNodeViewPlugins } from '../../src/plugins';
 
 /**
  * Build a ProseMirror instance.
@@ -20,6 +21,7 @@ import { setTextSelection } from './transactions';
  */
 export default (options: Options): EditorInstance => {
   const plugins: Plugin[] = [];
+  const schema = options.schema || defaultSchema;
 
   if (options.plugin) {
     plugins.push(options.plugin);
@@ -30,13 +32,14 @@ export default (options: Options): EditorInstance => {
   }
 
   plugins.push(
+    ...reactNodeViewPlugins(schema),
     keymap(baseKeymap)
   );
 
   const editorState = EditorState.create({
     plugins,
     doc: options.doc,
-    schema: options.schema || defaultSchema,
+    schema: schema,
   }) as ProseMirrorWithRefs;
 
   const editorView = new EditorView(options.place || document.body, {

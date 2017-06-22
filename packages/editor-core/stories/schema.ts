@@ -19,10 +19,6 @@ export default createSchema({
     'emoji',
     'mediaGroup',
     'media',
-    'table',
-    'table_cell',
-    'table_header',
-    'table_row',
   ],
   marks: [
     'em',

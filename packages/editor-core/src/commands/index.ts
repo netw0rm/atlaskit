@@ -5,7 +5,7 @@ export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
-import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
+import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
@@ -107,7 +107,6 @@ export function adjustSelectionInList(doc, selection: TextSelection): TextSelect
 
   return new TextSelection(doc.resolve(startPos), doc.resolve(endPos));
 }
-
 
 export function preventDefault(): Command {
   return function (state, dispatch) {

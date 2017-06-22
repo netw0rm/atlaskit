@@ -35,11 +35,6 @@ const userSaschaReuter: AppCardUser = {icon: {
   label: 'Sascha Reuter'
 }};
 
-const modelWithLink: AppCardModel = {
-  title: {text: shortTitle},
-  link: {url: 'https://www.atlassian.com/'}
-};
-
 const modelWithShortTitle: AppCardModel = {
   title: {text: shortTitle}
 };
@@ -221,7 +216,6 @@ const modelWithMostOfTheThingsAndWithBackground: AppCardModel = {
 };
 
 const confluenceActivityModel: AppCardModel = {
-  collapsible: true,
   title: {
     text: 'Sascha Reuter commented on a file: Desktop sidebar states.png',
     user: userSaschaReuter
@@ -283,8 +277,7 @@ const trelloBoardModel: AppCardModel = {
   ],
   context: {
     icon: {url: 'https://dl.dropbox.com/s/yrdlsc6usuwegym/icon.png', label: 'Trello'},
-    text: 'Trello - Board',
-    link: {url: 'http://www.trello.com'}
+    text: 'Trello - Board'
   },
   actions: [
     {title: 'Join'},
@@ -310,8 +303,7 @@ const trelloCardModel: AppCardModel = {
   ],
   context: {
     icon: {url: 'https://dl.dropbox.com/s/yrdlsc6usuwegym/icon.png', label: 'Trello'},
-    text: 'Trello - Card in list Concepts',
-    link: {url: 'http://www.trello.com'}
+    text: 'Trello - Card in list Concepts'
   },
   actions: [
     {title: 'Open'},
@@ -321,8 +313,6 @@ const trelloCardModel: AppCardModel = {
 
 const handleClick = () => action('clicked on the card')();
 const handleActionClick = (a: AppCardAction) => action('clicked on the action')(a.title, a);
-const handleContextClick = () => action('clicked on the context')();
-const handleCollapseClick = () => action('clicked on the collapse toggle')();
 
 const FixedWidthContainer = styled.div`
   width: 450px
@@ -360,10 +350,6 @@ storiesOf('AppCardView', {})
         <AppCardView model={modelWithShortTitle}/>
       </Section>
 
-      <Section title="With link">
-        <AppCardView model={modelWithLink}/>
-      </Section>
-
       <Section title="With header">
         <AppCardView model={modelWithShortTitle}/>
         <AppCardView model={modelWithLoooongTitle}/>
@@ -373,7 +359,7 @@ storiesOf('AppCardView', {})
 
       <Section title="With preview">
         <AppCardView model={modelWithPreview}/>
-        <AppCardView model={mostOfTheThingsWithPreview} isCollapsed={false}/>
+        <AppCardView model={mostOfTheThingsWithPreview}/>
       </Section>
 
       <Section title="With description">
@@ -404,7 +390,7 @@ storiesOf('AppCardView', {})
 
       <Section title="With background">
         <AppCardView model={modelWithBackground}/>
-        <AppCardView model={modelWithMostOfTheThingsAndWithBackground} isCollapsed={false}/>
+        <AppCardView model={modelWithMostOfTheThingsAndWithBackground}/>
       </Section>
 
       <Section title="With event handlers">
@@ -412,16 +398,11 @@ storiesOf('AppCardView', {})
             model={modelWithShortTitle}
             onClick={handleClick}
             onActionClick={handleActionClick}
-            onContextClick={handleContextClick}
-            onCollapseClick={handleCollapseClick}
           />
           <AppCardView
-            isCollapsed={false}
             model={modelWithMostOfTheThings}
             onClick={handleClick}
             onActionClick={handleActionClick}
-            onContextClick={handleContextClick}
-            onCollapseClick={handleCollapseClick}
           />
       </Section>
 
@@ -446,7 +427,7 @@ storiesOf('AppCardView', {})
           <AppCardView model={{title: {text: `Super long description`}, description: {text: loremIpsum}}}/>
 
           <AppCardView model={modelWithLotsOfDetails}/>
-          <AppCardView model={{preview, ...modelWithLotsOfDetails}} isCollapsed={false}/>
+          <AppCardView model={{preview, ...modelWithLotsOfDetails}}/>
 
         </Section>
       </FixedWidthContainer>
@@ -458,7 +439,7 @@ storiesOf('AppCardView', {})
 
       <Section title="Confluence">
         <AppCardView model={confluenceActivityModel}/>
-        <AppCardView model={confluenceActivityModel} isCollapsed={false}/>
+        <AppCardView model={confluenceActivityModel}/>
       </Section>
 
 

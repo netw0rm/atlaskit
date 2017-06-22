@@ -135,7 +135,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
 
     const match = url ? numvatarRegex.exec(url) : null;
     if (match) {
-      const num = parseInt(match[1],10);
+      const num = parseInt(match[1], 10);
       avatar = (<NumericAvatar num={num} />);
     } else {
       avatar = (<Avatar src={url} size="medium" presence={status} />);

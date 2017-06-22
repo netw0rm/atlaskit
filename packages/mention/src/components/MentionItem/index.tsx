@@ -71,9 +71,9 @@ function renderHighlight(ReactComponent: ReactComponentConstructor, value?: stri
   return (
     <ReactComponent>
       {prefixText}
-      {parts.map((part) => {
+      {parts.map((part, index) => {
         if (part.matches) {
-          return <b>{part.value}</b>;
+          return <b key={index}>{part.value}</b>;
         }
         return part.value;
       })}

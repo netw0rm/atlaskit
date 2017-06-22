@@ -163,10 +163,9 @@ export function liftListItems(): Command {
   return function (state, dispatch) {
     const { tr } = state;
     const { $from, $to } = state.selection;
-    const { paragraph } = state.schema.nodes;
 
     tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      if (node.type === paragraph) {
+      if (node.isTextblock || node.type.name === 'blockquote' || node.type.name === 'panel') {
         const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
         const range = sel.$from.blockRange(sel.$to);
 

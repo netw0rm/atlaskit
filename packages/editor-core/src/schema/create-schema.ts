@@ -22,6 +22,10 @@ import {
   mediaGroup,
   hardBreak,
   emoji,
+  table,
+  table_cell,
+  table_header,
+  table_row,
 
   // Marks
   link,
@@ -110,6 +114,10 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
+  { name: 'table', spec: table },
+  { name: 'table_cell', spec: table_cell },
+  { name: 'table_row', spec: table_row },
+  { name: 'table_header', spec: table_header },
   { name: 'confluenceJiraIssue', spec: confluenceJiraIssue },
   { name: 'confluenceUnsupportedInline', spec: confluenceUnsupportedInline },
   { name: 'confluenceUnsupportedBlock', spec: confluenceUnsupportedBlock },

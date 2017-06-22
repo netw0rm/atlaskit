@@ -35,7 +35,7 @@ const mentionProvider2 = new Promise<any>(resolve => {
   resolve(mentionData.mentionStoryData.resourceProvider2);
 });
 
-const emojiProvider1 = emojiData.emojiStoryData.getEmojiResource();
+const emojiProvider1 = emojiData.emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
 
 interface Props {
   onChange: any;

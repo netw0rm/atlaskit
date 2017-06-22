@@ -6,7 +6,7 @@ import {
   Node as PMNode,
   NodeView,
 } from '../prosemirror';
-import { ReactPMNode } from './ui';
+import ReactPMNode from './ui/prosemirror-node';
 
 type getPosHandler = () => number;
 

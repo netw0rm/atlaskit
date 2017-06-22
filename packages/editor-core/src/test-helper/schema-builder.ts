@@ -264,8 +264,9 @@ export const textColor = (attrs: { color: string }) => markFactory(sampleSchema.
 export const table = nodeFactory(sampleSchema.nodes.table, {});
 export const tr = nodeFactory(sampleSchema.nodes.table_row, {});
 export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_cell, attrs);
-export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_cell, attrs);
+export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_header, attrs);
 export const cEmpty = td({})(p(''));
+export const cHeaderEmpty = th({})(p(''));
 export const cCursor = td({})(p('{<>}'));
 export const c11 = createCell(1, 1);
 export const h11 = createHeaderCell(1, 1);

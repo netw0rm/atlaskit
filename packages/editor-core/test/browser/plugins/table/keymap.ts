@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import tablePlugin from '../../../../src/plugins/table';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, cEmpty, cCursor
+  chaiPlugin, doc, p, fixtures, makeEditor, sendKeyToPm, table, tr, cEmpty, cCursor, cHeaderEmpty
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -76,6 +76,19 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(18);
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(editorView.state.selection.$from.pos).to.equal(12);
+      });
+    });
+
+    context('Cmd-Ctrl-t keypress', () => {
+      it('it should insert 3x3 table', () => {
+        const tableNode = table(
+          tr(cHeaderEmpty, cHeaderEmpty, cHeaderEmpty ),
+          tr(cEmpty, cEmpty, cEmpty ),
+          tr(cEmpty, cEmpty, cEmpty )
+        );
+        const { editorView } = editor(doc(p('{<>}')));
+        sendKeyToPm(editorView, 'Mod-Ctrl-t');
+        expect(editorView.state.doc).to.deep.equal(doc(tableNode));
       });
     });
   });

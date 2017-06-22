@@ -451,7 +451,7 @@ const plugin = new Plugin({
 });
 
 const plugins = () => {
-  return [tableEditing(), plugin].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, tableEditing()].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

@@ -243,11 +243,12 @@ export default class Navigation extends PureComponent {
             >
               <ContainerNavigation
                 theme={containerTheme}
-                showGlobalPrimaryActions={!showGlobalNavigation}
+                showGlobalActions={!showGlobalNavigation}
                 globalCreateIcon={globalCreateIcon}
                 globalPrimaryIcon={globalPrimaryIcon}
                 globalPrimaryItemHref={globalPrimaryItemHref}
                 globalSearchIcon={globalSearchIcon}
+                globalSecondaryActions={globalSecondaryActions}
                 headerComponent={containerHeaderComponent}
                 linkComponent={linkComponent}
                 onGlobalCreateActivate={onCreateDrawerOpen}

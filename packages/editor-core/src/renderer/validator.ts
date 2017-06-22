@@ -194,6 +194,11 @@ export const getValidNode = (node: Node): Node => {
         }
         break;
       }
+      case 'rule': {
+        return {
+          type,
+        };
+      }
       case 'text': {
         let { marks } = node;
         if (text) {

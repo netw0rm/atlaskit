@@ -9,7 +9,7 @@ import {
 
 import {
   Serializer,
-} from '../';
+} from '../serializer';
 
 import {
   Doc,
@@ -70,7 +70,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   // tslint:disable-next-line:variable-name
-  private renderNode(Node: ReactComponentConstructor, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)[]): JSX.Element {
+  private renderNode(Node: ReactComponentConstructor, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)): JSX.Element {
     return (
       <Node key={key} {...props}>
         {content}

@@ -131,6 +131,15 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'italic',
           marks: [
             {
@@ -216,6 +225,74 @@ export const document = {
          {
            type: 'text',
            text: 'a hardbreak in it.'
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 1'
+        },
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 2 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 2',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'www.atlassian.com'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 3 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 3',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 4 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 4',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 5 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 5',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 6 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 6',
         }
       ]
     },
@@ -499,6 +576,9 @@ export const document = {
           ]
         },
       ]
+    },
+    {
+      type: 'rule'
     },
   ]
 };

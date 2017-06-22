@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Button from '@atlaskit/button';
-import { WarningIcon, CheckCircleIcon } from '@atlaskit/icon';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import {
   akColorB400,
   akColorG300,

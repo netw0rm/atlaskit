@@ -53,7 +53,7 @@ const codeContainerStyle = {
   left: '16px', // 2x akGridSize
   position: 'relative',
   paddingRight: '16px', // 2x akGridSize
-  display: 'inline-block'
+  display: 'inline-block',
 };
 
 const lineNumberContainerStyle = (theme: Theme) => ({
@@ -79,7 +79,8 @@ const codeBlockStyle = (theme: Theme) => ({
     display: 'block',
     overflowX: 'auto',
     whiteSpace: 'pre',
-    paddingRight: '16px'
+    paddingRight: '16px',
+    transform: 'translate3d(0,0,0)',
   },
   'hljs-subst': {
     color: theme.substringColor
@@ -197,7 +198,8 @@ const inlineCodeStyle = (theme: Theme) => ({
     borderRadius: akBorderRadius,
     display: 'inline',
     overflowX: 'auto',
-    padding: '2px 4px'
+    padding: '2px 4px',
+    transform: 'translate3d(0,0,0)',
   }
 });
 

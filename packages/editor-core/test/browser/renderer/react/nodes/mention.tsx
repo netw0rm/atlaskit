@@ -9,4 +9,9 @@ describe('Renderer - React/Nodes/Mention', () => {
     const mention = mount(<MentionNode id="abcd-abcd-abcd" text="@Oscar Wallhult"/>);
     expect(mention.find(Mention)).to.have.length(1);
   });
+
+  it('should render with access level if prop exists', () => {
+    const mention = mount(<MentionNode id="abcd-abcd-abcd" text="@Oscar Wallhult" accessLevel="CONTAINER"/>);
+    expect(mention.find(Mention).prop('accessLevel')).to.equal('CONTAINER');
+  });
 });

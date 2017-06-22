@@ -36,11 +36,13 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
+    "@atlaskit/button-group": "^1.0.0",
     "@atlaskit/button": "^3.0.0",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/field-text": "^3.0.0",
     "@atlaskit/inline-dialog": "^3.2.0",
     "@atlaskit/layer": "^2.1.4",
+    "@atlaskit/modal-dialog": "*",
     "@atlaskit/navigation": "^13.3.0",
     "@atlaskit/page": "^4.0.1",
     "react-lorem-component": "0.11.0"

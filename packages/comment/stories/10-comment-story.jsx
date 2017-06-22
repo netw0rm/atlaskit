@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import AkToolTip from '@atlaskit/tooltip';

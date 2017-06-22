@@ -1,5 +1,5 @@
 import Editor from '@atlaskit/editor-jira';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import * as React from 'react';
 
 export default (

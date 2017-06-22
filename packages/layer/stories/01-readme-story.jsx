@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 import Readme, { Code, Description, Heading, Props } from '@atlaskit/util-readme';
 import readmeStyles from './_readme/readme-styles.less';

@@ -1,5 +1,5 @@
 import avatarImage from 'file!./data/2.jpg';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import uid from 'uid';
 
 const handleActionClick = title => action(`${title} button clicked`);

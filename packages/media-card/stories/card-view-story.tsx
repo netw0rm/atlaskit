@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {storiesOf, action} from '@kadira/storybook';
+import {storiesOf, action} from '@storybook/react';
 import * as deepcopy from 'deepcopy';
 import {MediaItemType, MediaItemDetails, FileDetails, UrlPreview, CardActionType} from '@atlaskit/media-core';
 import {

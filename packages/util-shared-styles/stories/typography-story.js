@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import { akTypographyMixins } from '@atlaskit/util-shared-styles';
 import { Chrome, Code, Description } from '@atlaskit/util-readme';
 import storyStyles from './typography/typography-story.less';

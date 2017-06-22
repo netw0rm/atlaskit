@@ -1,5 +1,5 @@
 import React from 'react';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import { AkProfilecard } from '@atlaskit/profilecard';
 
 import avatar from 'file!../data/1.jpg';

@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import AkButton from '@atlaskit/button';

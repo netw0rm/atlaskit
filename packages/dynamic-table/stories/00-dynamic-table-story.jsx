@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 import { name } from '../package.json';
 import AkDynamicTable, { DynamicTable } from '../src/';

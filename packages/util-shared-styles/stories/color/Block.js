@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from '@atlaskit/tooltip';
 import Clipboard from 'clipboard';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 
 import styles from './styles.less';
 

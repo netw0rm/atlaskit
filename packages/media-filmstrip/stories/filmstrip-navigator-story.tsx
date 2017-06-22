@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {storiesOf} from '@kadira/storybook';
+import {storiesOf} from '@storybook/react';
 import {Card, CardView} from '@atlaskit/media-card';
 import {createStorybookContext, genericUrlPreviewId, genericLinkId, genericFileId} from '@atlaskit/media-test-helpers';
 import {FilmStripNavigator} from '../src';

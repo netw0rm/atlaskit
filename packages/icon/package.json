@@ -13,7 +13,7 @@
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "npm run gen-js && ../../node_modules/.bin/nwb build && mkdir lib && cp tmp/Icon.js lib/",
     "pretest": "npm run gen-js",
-    "storybook": "PACKAGE=icon ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "storybook": "PACKAGE=icon ../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },

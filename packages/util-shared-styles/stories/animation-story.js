@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import storyStyles from './animation/animation-story.less';
 import { name } from '../package.json';

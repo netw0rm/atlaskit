@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import AkDynamicTable from '@atlaskit/dynamic-table';
 import { caption, head, rows } from './sample-data';
 

@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 import Question from '@atlaskit/icon/glyph/question';
 import Arrow from '@atlaskit/icon/glyph/arrow-right-long';

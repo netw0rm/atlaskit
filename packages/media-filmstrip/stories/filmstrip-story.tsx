@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import { MediaItem, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
 import { createStorybookContext, defaultCollectionName, StoryList,
          spotifyLinkId, genericLinkId, youtubeLinkId, trelloLinkId, playerLinkId, twitterLinkId,

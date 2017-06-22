@@ -1,5 +1,5 @@
 import Readme, { Code, Heading } from '@atlaskit/util-readme';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import * as React from 'react';
 import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
 import OverviewExample from './examples/overview';

@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import Blanket from '../src';
 
 export default class BlanketDemo extends PureComponent {

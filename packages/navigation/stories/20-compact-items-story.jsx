@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React, { PropTypes } from 'react';
 import { EmojiCustomIcon, DashboardIcon, CrossIcon } from '@atlaskit/icon';
 import AkAvatar from '@atlaskit/avatar';

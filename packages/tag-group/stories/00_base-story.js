@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import Tag from '@atlaskit/tag';
 import React from 'react';
 

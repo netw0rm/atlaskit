@@ -1,4 +1,4 @@
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import Editor from '@atlaskit/editor-hipchat';
 import * as React from 'react';
 

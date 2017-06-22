@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import Button from '@atlaskit/button';
 import Dropdown from '@atlaskit/dropdown-menu';
 import CharlieIcon from '@atlaskit/icon/glyph/atlassian';

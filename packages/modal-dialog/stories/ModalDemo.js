@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Button from '@atlaskit/button';
 import Lorem from 'react-lorem-component';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import ModalDialog from '../src';
 
 function doSomethingOnDismiss() {

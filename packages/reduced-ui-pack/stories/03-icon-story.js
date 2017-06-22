@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 import AkFieldText from '@atlaskit/field-text';
 import Readme, { Code } from '@atlaskit/util-readme';

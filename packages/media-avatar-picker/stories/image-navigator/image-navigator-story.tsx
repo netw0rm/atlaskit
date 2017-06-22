@@ -1,5 +1,5 @@
 /* tslint:disable:variable-name */
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import * as React from 'react';
 import {tallImage, remoteImage} from '@atlaskit/media-test-helpers';
 import {ImageNavigator} from '../../src';

@@ -1,4 +1,4 @@
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
 import Select from '@atlaskit/single-select';

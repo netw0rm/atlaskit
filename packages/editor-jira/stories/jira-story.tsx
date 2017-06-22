@@ -1,4 +1,4 @@
-import { action, storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@storybook/react';
 import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
 import InlineEdit from '@atlaskit/inline-edit';
 import * as React from 'react';

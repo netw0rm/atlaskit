@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import * as React from 'react';
 import {FilmStripView, FilmStripViewItem} from '../src';
 import {ListActionCreator, CardActionType, ListEventHandler} from '@atlaskit/media-core';

@@ -1,5 +1,5 @@
 import '!style!css!less!./cq-styles.less';
-import { action, storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@storybook/react';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Editor from '../src';

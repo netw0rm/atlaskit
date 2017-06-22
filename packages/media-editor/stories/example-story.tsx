@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {storiesOf, action} from '@kadira/storybook';
+import {storiesOf, action} from '@storybook/react';
 import {tallImage as imageDataUri} from '@atlaskit/media-test-helpers';
 
 import {MediaEditor, LoadParameters} from '../src';

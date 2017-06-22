@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 import Button from '@atlaskit/button';
 import { akColorG300 } from '@atlaskit/util-shared-styles';

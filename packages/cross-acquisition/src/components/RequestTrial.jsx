@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import { AtlassianLogo } from '@atlaskit/logo';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
-import styled from 'styled-components';
-
-export const RequestTrialHeader = styled.h3`
-  margin-top: 0px;
-`;
+import { RequestTrialHeader } from '../styled/RequestTrial';
 
 export default class RequestTrial extends Component {
   static propTypes = {

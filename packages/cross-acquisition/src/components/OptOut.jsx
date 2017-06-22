@@ -2,17 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
-import styled from 'styled-components';
-
-const OptOutFooter = styled.div`
-  margin-bottom: 8px;
-  margin-right: 8px;
-  text-align: right;
-`;
-
-const OptOutHeader = styled.h3`
-  padding: 8px 0px 0px 8px;
-`;
+import { OptOutFooter, OptOutHeader } from '../styled/OptOut';
 
 export default class OptOut extends Component {
   static propTypes = {

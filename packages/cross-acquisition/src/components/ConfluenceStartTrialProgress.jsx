@@ -1,28 +1,14 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import StartTrialProgress from './StartTrialProgress';
-
-const StartTrialDialog = styled.div`
-  margin-left: 8px;
-`;
-
-const StartTrialHeader = styled.h3`
-  margin-top: 0px;
-`;
-
-const StartTrialProgressDiv = styled.div`
-  margin-top: 12px;
-`;
-
-const InputLabel = styled.label`
-  margin-left: 4px;
-`;
-
-const ChangeButton = styled.span`
-  margin-left: 16px;
-`;
+import {
+  StartTrialDialog,
+  StartTrialHeader,
+  StartTrialProgressDiv,
+  InputLabel,
+  ChangeButton,
+} from '../styled/StartTrial';
 
 // TODO: Determine whether to use composition of inheritance.
 export default class ConfluenceStartTrialProgress extends Component {

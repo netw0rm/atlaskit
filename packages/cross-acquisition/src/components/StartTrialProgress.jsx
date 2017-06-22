@@ -3,13 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AtlassianLogo } from '@atlaskit/logo';
-import styled from 'styled-components';
-
-const StartTrialFooter = styled.div`
-  margin-bottom: 8px;
-  margin-right: 8px;
-  text-align: right;
-`;
+import { StartTrialFooter } from '../styled/StartTrial';
 
 export default class StartTrialProgress extends Component {
   static propTypes = {

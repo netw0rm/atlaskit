@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import StartTrial from './StartTrial';
-
-const StartTrialDialog = styled.div`
-  margin-left: 8px;
-`;
-
-const StartTrialHeader = styled.h3`
-  margin-top: 0px;
-`;
+import { StartTrialDialog, StartTrialHeader } from '../styled/StartTrial';
 
 // TODO: Determine whether to use composition of inheritance.
 export default class ConfluenceStartTrial extends Component {

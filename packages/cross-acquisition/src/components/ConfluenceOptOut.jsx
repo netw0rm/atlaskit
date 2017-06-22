@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
-import styled from 'styled-components';
 import OptOut from './OptOut';
-
-const OptOutInfoText = styled.p`
-  color: #6c798f;
-  margin-bottom: 12px;
-  margin-left: 30px;
-  font-size: 12px;
-`;
+import { OptOutInfoText } from '../styled/OptOut';
 
 // TODO: Determine whether to use composition of inheritance.
 export default class ConfluenceOptOut extends Component {

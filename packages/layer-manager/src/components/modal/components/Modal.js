@@ -127,12 +127,11 @@ export default class Modal extends Component {
     });
   }
   handleKeyDown = (event) => {
-    if (this.props.shouldCloseOnEscapePress && event.key === 'Escape') {
-      this.props.onRequestClose();
-      return;
-    }
+    if (!this._isMounted) return;
 
-    if (event.key === 'Tab') {
+    if (event.key === 'Escape' && this.props.shouldCloseOnEscapePress) {
+      this.props.onRequestClose();
+    } else if (event.key === 'Tab') {
       const tabDirection = event.shiftKey ? 'prev' : 'next';
 
       if (this._isMounted && (tabDirection !== this.state.tabDirection)) {

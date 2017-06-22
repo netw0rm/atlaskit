@@ -40,12 +40,13 @@ export default class AnimationContainer extends PureComponent {
     document.addEventListener('keydown', this.handleKeyDown);
   }
   componentWillLeave(done) {
-    document.removeEventListener('keydown', this.handleKeyDown);
-
     this.setState({
       animationEndCallback: done,
       animationName: 'leave',
     });
+  }
+  componentDidLeave() {
+    document.removeEventListener('keydown', this.handleKeyDown);
   }
 
   handleAnimationEnd = () => {

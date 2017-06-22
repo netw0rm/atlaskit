@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, smileyEmoji, congoFlagEmoji } from '../../TestData';
+import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAhead';
@@ -275,22 +275,14 @@ describe('EmojiTypeAhead', () => {
     });
   });
 
-  it('should default to first selection in the list even when a whole new result appears in list', () => {
+  it('should default to exact ascii selection first', () => {
     const component = setupPicker({
-      query: ':-',
+      query: ':O',
     } as Props);
-    const smileyId: EmojiId = {
-      ...smileyEmoji
-    };
-    const congoId: EmojiId = {
-      ...congoFlagEmoji
-    };
 
     return waitUntil(() => doneLoading(component)).then(() => {
-      expect(isEmojiTypeAheadItemSelected(component, congoId.id), 'Congo flag should appear selected by default').to.equal(true);
-
-      component.setProps({ query: ':-D' });
-      return waitUntil(() => isEmojiTypeAheadItemSelected(component, smileyId.id));
+      expect(itemsVisibleCount(component) > 1, 'Items visible').to.equal(true);
+      expect(isEmojiTypeAheadItemSelected(component, openMouthEmoji.id), 'Open mouth emoji should be selected').to.equal(true);
     });
   });
 });

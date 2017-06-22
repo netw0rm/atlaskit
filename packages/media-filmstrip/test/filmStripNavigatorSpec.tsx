@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import * as sinon from 'sinon';
 
 import { FilmStripNavigator } from '../src';
 import { FilmStripViewWrapper } from '../src/styled';
@@ -51,5 +52,24 @@ describe('FilmStripNavigator', () => {
     );
 
     expect(filmstripNavigator.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: `${width}px`});
+  });
+
+  it('Fires a real "scroll" event when users navigate through the list', (done) => {
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator width={10}>
+        {[1, 2]}
+      </FilmStripNavigator>
+    );
+    const instance = filmstripNavigator.instance() as FilmStripNavigator;
+    const scrollSpy = sinon.spy();
+
+    instance.triggerScrollEvent = scrollSpy;
+    instance.navigate('right')();
+
+    // Needed because filmstrip waits for the animation to finish to update stuff
+    setTimeout(() => {
+      expect(scrollSpy.called).to.equal(true);
+      done();
+    }, 10);
   });
 });

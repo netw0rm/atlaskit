@@ -233,9 +233,21 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     const arrowVisibilityDelay = showTransition ? transitionDuration * 1000 : 0;
 
     // Delaying arrow state in order to not modify it visibility until the transition has finished
-    setTimeout(() => this.updateState({showLeft, showRight}), arrowVisibilityDelay);
+    setTimeout(() => {
+      this.triggerScrollEvent();
+      this.updateState({showLeft, showRight});
+    }, arrowVisibilityDelay);
 
     this.updateState({position, transitionDuration});
+  }
+
+  // Triggers a real scroll event in the Wrapper in order to let child components about the position update.
+  // We need to do this this way since we are moving the list using "translateX"
+  // instead of the normal scroll events
+  triggerScrollEvent() {
+    if (!this.listElement || !this.listElement.parentElement) { return; }
+
+    this.listElement.parentElement.dispatchEvent(new Event('scroll'));
   }
 
   private getClosest(position: number, start: number, accumulator: number, stop: number): number {
@@ -285,7 +297,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     this.setNewPosition(adjustedRight - this.wrapperWidth, showTransition);
   }
 
-  private navigate(direction: NavigationDirection): () => void {
+  navigate(direction: NavigationDirection): () => void {
     const component = this;
 
     return () => {

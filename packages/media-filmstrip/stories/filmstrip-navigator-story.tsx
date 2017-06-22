@@ -30,6 +30,23 @@ const getDefaultNavigator = (overflow: boolean, key?) => {
 
 storiesOf('FilmStripNavigator', {})
   .add('With a Card and CardView', () => getDefaultNavigator(false))
+  .add('Only with Cards', () => (
+    <FilmStripNavigator>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
+      <Card onClick={clickAction} context={context} identifier={genericFileId}/>
+      <Card onClick={clickAction} context={context} identifier={genericFileId}/>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
+      <Card onClick={clickAction} context={context} identifier={genericFileId}/>
+      <Card onClick={clickAction} context={context} identifier={genericFileId}/>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+      <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
+    </FilmStripNavigator>
+  ))
   .add('Lazy loading - No Overflow', () => {
     return (
       <div style={{margin: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

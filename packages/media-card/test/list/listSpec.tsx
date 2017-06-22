@@ -13,6 +13,7 @@ import {MediaCollectionFileItem, FileDetails} from '@atlaskit/media-core';
 import {CardList, CardListProps, CardListState} from '../../src/list';
 import {MediaCard} from '../../src/root/mediaCard';
 import {InfiniteScroll} from '../../src/list/infiniteScroll';
+import {LazyContent} from '../../src/utils';
 
 describe('CardList', () => {
   const collectionName = 'MyMedia';
@@ -66,11 +67,11 @@ describe('CardList', () => {
       }
     }
   });
-
   it('should create a MediaItemProvider for each MediaItem in the collection', () => {
     const context = contextWithInclusiveStartKey;
     mount(<CardList context={context} collectionName={collectionName}/>);
 
+    expect(context.getMediaCollectionProvider.callCount).to.be.equal(expectedMediaItems.length);
     expect(context.getMediaItemProvider.callCount).to.be.equal(expectedMediaItems.length);
     expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[0].details.id, expectedMediaItems[0].type, collectionName, expectedMediaItems[0])).to.be.true;
     expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[1].details.id, expectedMediaItems[1].type, collectionName, expectedMediaItems[1])).to.be.true;
@@ -79,7 +80,6 @@ describe('CardList', () => {
   it('should pass a provider to MediaCard', () => {
     const collection = {items: expectedMediaItems};
     const context = contextWithInclusiveStartKey;
-
     const card = mount(<CardList context={context} collectionName={collectionName} shouldLazyLoadCards={false}/>);
 
     card.setState({loading: false, error: undefined, collection});
@@ -102,6 +102,87 @@ describe('CardList', () => {
     card.setState({loading: false, loadNextPage: sinon.spy()});
     card.instance().loadNextPage();
     expect(card.state().loading).to.be.false;
+  });
+
+  it('should not animate items the first time', () => {
+    const item: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: 'some-file/link-id',
+        occurrenceKey: 'some-occurrence-key',
+        processingStatus: 'pending'
+      }
+    };
+    const context = fakeContext();
+    const collectionName = 'MyMedia';
+    const collection = {items: [item]};
+    const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+    list.setState({loading: false, error: undefined, collection});
+    expect(list.state('shouldAnimate')).to.be.false;
+  });
+
+  it('should animate items when they are new', () => {
+    const oldItem: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: '1',
+        occurrenceKey: 'a',
+        processingStatus: 'pending'
+      }
+    };
+    const newItem: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: '2',
+        occurrenceKey: 'a',
+        processingStatus: 'pending'
+      }
+    };
+    const collection = {items: [oldItem]};
+    const context = fakeContext();
+    const collectionName = 'MyMedia';
+    const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+    const instance = list.instance();
+
+    list.setState({loading: false, error: undefined, collection});
+    instance.handleNextItems({context, collectionName})(collection);
+    expect(list.state('firstItemKey')).to.be.equal(`${oldItem.details.id}-${oldItem.details.occurrenceKey}`);
+
+    const newCollection = {items: [newItem, ...collection.items]};
+    list.setState({collection: newCollection});
+    instance.handleNextItems({context, collectionName})(newCollection);
+    expect(list.state('firstItemKey')).to.be.equal(`${newItem.details.id}-${newItem.details.occurrenceKey}`);
+    expect(list.state('shouldAnimate')).to.be.true;
+  });
+
+  it('should reset previous state when props change', () => {
+    const item: MediaCollectionFileItem = {
+      type: 'file',
+      details: {
+        id: '1',
+        occurrenceKey: 'a',
+        processingStatus: 'pending'
+      }
+    };
+    const collection = {items: [item]};
+    const context = fakeContext({
+      getMediaCollectionProvider: {
+        observable() {
+          return Observable.create(observer => {
+            observer.next(collection);
+          });
+        }
+      }
+    });
+    const collectionName = 'MyMedia';
+    const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
+    const spy = sinon.spy();
+
+    list.instance().setState = spy;
+    list.setProps({context, collectionName: 'otherCollection'});
+
+    expect(spy.firstCall.args[0].collection).to.be.undefined;
+    expect(spy.firstCall.args[0].firstItemKey).to.be.undefined;
   });
 
   it('should fire onCardClick handler with updated MediaItemDetails when a Card in the list is clicked', () => {
@@ -208,6 +289,14 @@ describe('CardList', () => {
       list.setState({loading: false, error: undefined, collection});
 
       expect(list.find(LazyLoad)).to.have.length(0);
+    });
+
+    it('should not wrap existing items into LazyContent', () => {
+      const context = contextWithDefaultCollection;
+      const list = mount(<CardList useInfiniteScroll={false} context={context} collectionName={collectionName}/>) as any;
+
+      list.setState({loading: false, error: undefined, shouldAnimate: true, collection});
+      expect(list.find(LazyContent)).to.have.length(0);
     });
   });
 });

@@ -4,21 +4,26 @@ import {
   EditorView,
   Schema,
   Plugin,
-  PluginKey,
 } from '../../prosemirror';
 import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
+import emojiNodeView from './../../nodeviews/ui/emoji';
+import nodeViewFactory from '../../nodeviews/factory';
+
+import stateKey from './plugin-key';
+export { stateKey };
 
 export type StateChangeHandler = (state: EmojiState) => any;
+export type ProviderChangeHandler = (provider?: EmojiProvider) => any;
 
 export interface Options {
   emojiProvider: Promise<EmojiProvider>;
 }
 
 export class EmojiState {
-  emojiProvider: Promise<EmojiProvider>;
+  emojiProvider?: EmojiProvider;
   query?: string;
   enabled = true;
   queryActive = false;
@@ -33,9 +38,28 @@ export class EmojiState {
   private state: EditorState<any>;
   private view: EditorView;
 
-  constructor(state: EditorState<any>) {
+  private providerChangeHandlers: ProviderChangeHandler[] = [];
+
+  constructor(state: EditorState<any>, providerFactory: ProviderFactory) {
     this.changeHandlers = [];
     this.state = state;
+    providerFactory.subscribe('emojiProvider', this.handleProvider);
+  }
+
+  subscribeToProviderUpdates(cb: ProviderChangeHandler) {
+    this.providerChangeHandlers.push(cb);
+
+    if (this.emojiProvider) {
+      cb(this.emojiProvider);
+    }
+  }
+
+  unsubscribeFromProviderUpdates(cb: ProviderChangeHandler) {
+    this.providerChangeHandlers = this.providerChangeHandlers.filter(ch => ch !== cb);
+  }
+
+  private notifyProviderSubscribers() {
+    this.providerChangeHandlers.forEach(cb => cb(this.emojiProvider));
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -173,21 +197,18 @@ export class EmojiState {
     }
   }
 
-  subscribeToFactory(providerFactory: ProviderFactory) {
-    providerFactory.subscribe('emojiProvider', this.handleProvider);
-  }
-
   handleProvider = (name: string, provider: Promise<any>): void => {
     switch (name) {
       case 'emojiProvider':
-        this.setEmojiProvider(provider);
+        provider.then((emojiProvider: EmojiProvider) => {
+          this.emojiProvider = emojiProvider;
+          this.notifyProviderSubscribers();
+        }).catch(() => {
+          this.emojiProvider = undefined;
+          this.notifyProviderSubscribers();
+        });
         break;
     }
-  }
-
-  setEmojiProvider(emojiProvider: Promise<EmojiProvider>) {
-    this.emojiProvider = emojiProvider;
-    return emojiProvider;
   }
 
   setView(view: EditorView) {
@@ -195,33 +216,41 @@ export class EmojiState {
   }
 }
 
-export const stateKey = new PluginKey('emojiPlugin');
-
-const plugin = new Plugin({
-  state: {
-    init(config, state) {
-      return new EmojiState(state);
-    },
-    apply(tr, pluginState, oldState, newState) {
-      // NOTE: Don't call pluginState.update here.
-      return pluginState;
-    }
-  },
-  key: stateKey,
-  view: (view: EditorView) => {
-    const pluginState = stateKey.getState(view.state);
-    pluginState.setView(view);
-
-    return {
-      update(view: EditorView, prevState: EditorState<any>) {
-        pluginState.update(view.state, view);
+export function createPlugin(providerFactory: ProviderFactory) {
+  return new Plugin({
+    state: {
+      init(config, state) {
+        return new EmojiState(state, providerFactory);
+      },
+      apply(tr, pluginState, oldState, newState) {
+        // NOTE: Don't call pluginState.update here.
+        return pluginState;
       }
-    };
-  }
-});
+    },
+    props: {
+      nodeViews: {
+        emoji: nodeViewFactory(providerFactory, { emoji: emojiNodeView })
+      }
+    },
+    key: stateKey,
+    view: (view: EditorView) => {
+      const pluginState: EmojiState = stateKey.getState(view.state);
+      pluginState.setView(view);
 
-const plugins = (schema: Schema<any, any>) => {
-  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+      return {
+        update(view: EditorView, prevState: EditorState<any>) {
+          pluginState.update(view.state);
+        },
+        destroy() {
+          providerFactory.unsubscribe('emojiProvider', pluginState.handleProvider);
+        }
+      };
+    }
+  });
+}
+
+const plugins = (schema: Schema<any, any>, providerFactory) => {
+  return [createPlugin(providerFactory), inputRulePlugin(schema), keymapPlugin(schema)].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

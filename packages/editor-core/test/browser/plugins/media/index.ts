@@ -16,7 +16,6 @@ import {
   nodeViewFactory,
   ReactMediaGroupNode,
   ReactMediaNode,
-  reactNodeViewPlugins,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
@@ -56,7 +55,6 @@ describe('Media plugin', () => {
   const editor = (doc: any, uploadErrorHandler?: () => void) => {
     const plugins = [
       ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
-      ...reactNodeViewPlugins(defaultSchema),
       history(),
     ];
 

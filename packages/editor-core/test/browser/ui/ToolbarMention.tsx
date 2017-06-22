@@ -6,19 +6,21 @@ import ToolbarMention from '../../../src/ui/ToolbarMention';
 import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
+import ProviderFactory from '../../../src/providerFactory';
+import pluginKey from '../../../src/plugins/mentions/plugin-key';
 
 describe('ToolbarMention', () => {
 
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: mentionsPlugins(defaultSchema),
+    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()
   });
 
   it('should create a mentionQuery by clicking on the ToolbarMention icon', () => {
-    const { pluginState, editorView } = editor(doc(p('{<>}')));
-    const toolbarMention = mount(<ToolbarMention pluginState={pluginState} editorView={editorView} />);
+    const { editorView } = editor(doc(p('{<>}')));
+    const toolbarMention = mount(<ToolbarMention pluginKey={pluginKey} editorView={editorView} />);
     toolbarMention.find(MentionIcon).simulate('click');
     const { state } = editorView;
     expect(state.doc.rangeHasMark(0, 2, state.schema.marks.mentionQuery)).to.equal(true);

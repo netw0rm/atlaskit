@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled, {keyframes, css} from 'styled-components';
-import {getCSSUnitValue} from '../utils';
+import {getCSSUnitValue} from '../utils/getCSSUnitValue';
 import {size} from '../styles';
 
 const cardEntryAnimation = keyframes`
@@ -31,6 +31,7 @@ const cardEntryAnimation = keyframes`
 export interface CardListItemWrapperProps {
   readonly key?: string;
   readonly cardWidth?: string | number;
+  shouldAnimate?: boolean;
 }
 
 export const Spinner = styled.div`
@@ -48,7 +49,9 @@ export const CardListItemWrapper = styled.div`
 
   margin-top: 5px;
 
-  &.card-list-item-enter.card-list-item-enter-active {
-    animation: ${cardEntryAnimation} 0.75s forwards;
-  }
+  ${({shouldAnimate}) => shouldAnimate && `
+    &.card-list-item-enter.card-list-item-enter-active {
+      animation: ${cardEntryAnimation} 0.75s forwards;
+    }
+  ` || ''}
 `;

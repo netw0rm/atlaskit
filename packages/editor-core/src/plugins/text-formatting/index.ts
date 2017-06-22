@@ -395,9 +395,9 @@ export class TextFormattingState {
   }
 }
 
-export const stateKey = new PluginKey('hypelinkPlugin');
+export const stateKey = new PluginKey('textFormatting');
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       return new TextFormattingState(state);

@@ -11,10 +11,6 @@ export function toHumanReadableMediaSize(size: number): string {
   return bytes.format(size, {unitSeparator: ' ', decimalPlaces}).toUpperCase();
 }
 
-export function getCSSUnitValue(value: number | string): string {
-  return typeof value === 'string' ? value : `${value}px`;
-}
-
 export * from './errorIcon';
 export * from './fileIcon';
 export * from './menu';

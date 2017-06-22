@@ -58,12 +58,14 @@ pipelines:
             marky-markdown@8.1.0
             bitbucket-build-status@1.0.2
             npm-run-all@3.1.1
-            lerna@2.0.0-rc.4
             semantic-release@6.3.6
             lerna-semantic-release@9.0.7
             indexifier@2.0.0
             @atlassian/prebake-distributor-runner@1.0.2
           - yarn
-          - lerna bootstrap | cat
-          - lerna run lint --stream
-          - lerna run test --concurrency=1 --stream
+          - node ./build/bin/link.eslint.configs.js
+          - cd node_modules/lerna && npm run build && cd ../..
+          - lerna bootstrap --scope @atlaskit/util-cz-atlaskit-changelog",
+          - npm run bootstrap
+          - npm run lint
+          - npm run test -- --concurrency=1

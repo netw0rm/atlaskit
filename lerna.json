@@ -1,6 +1,11 @@
 {
-  "lerna": "2.0.0-rc.4",
+  "lerna": "2.0.0-rc.5",
   "npmClient": "yarn",
   "version": "independent",
-  "stream": true
+  "hoist": true,
+  "commands": {
+    "bootstrap": {
+      "includeFilteredDependencies": true
+    }
+  }
 }

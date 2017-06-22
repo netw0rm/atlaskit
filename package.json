@@ -143,25 +143,26 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "scripts": {
-    "branch": "git branch | grep \\* | cut -d ' ' -f2",
     "bootstrap": "lerna exec -- git clean -Xdf . && lerna bootstrap",
+    "branch": "git branch | grep \\* | cut -d ' ' -f2",
     "clean": "lerna exec -- git clean -Xdf . && rm -rf node_modules",
     "commit": "./build/bin/commit.sh",
     "create": "./build/bin/create.new.component.sh",
     "create-ts": "./build/bin/create.new.ts.component.sh",
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",
     "health-check": "./build/bin/health-check-scripts/health.check.js",
-    "lint": "lerna exec --stream --scope '@atlaskit/!(eslint|css-reset|util)*' --since -- npm run lint",
+    "lint": "lerna run lint --stream",
+    "postinstall": "node ./build/bin/link.eslint.configs.js && cd node_modules/lerna && npm run build && cd ../.. && lerna bootstrap --scope @atlaskit/util-cz-atlaskit-changelog",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "precommit": "npm run validate/lint-changed",
-    "postinstall": "node ./build/bin/link.eslint.configs.js && cd node_modules/lerna && npm run build && cd ../.. && lerna bootstrap --scope @atlaskit/util-cz-atlaskit-changelog",
     "release": "./build/bin/release.process.bash",
     "release/announce": "./build/bin/release.announce.js",
-    "release/check/is-workspace-clean": "git diff --exit-code || (chalk --no-stdin -t \"{red \n^ Workspace is not clean!}\"; exit 1)",
     "release/check/can-ff": "git pull --ff-only --no-edit origin || (chalk --no-stdin -t \"{blue We are not the leading build - nothing to do here!}\"; exit 1)",
+    "release/check/is-workspace-clean": "git diff --exit-code || (chalk --no-stdin -t \"{red \n^ Workspace is not clean!}\"; exit 1)",
     "release/registry": "./build/bin/release.registry.sh || (chalk --no-stdin -t \"{red Registry generation failed!}\"; exit 1)",
     "release/storybooks": "./build/bin/release.storybooks.sh || (chalk --no-stdin -t \"{red Storybook generation failed!}\"; exit 1)",
-    "test": "lerna exec --stream --since -- npm run test",
+    "storybook": "lerna run storybook --stream",
+    "test": "lerna run test --stream",
     "validate/lint-changed": "lerna exec --stream --scope '@atlaskit/!(eslint|css-reset|util)*' --since $(npm run branch -s) -- npm run lint"
   }
 }

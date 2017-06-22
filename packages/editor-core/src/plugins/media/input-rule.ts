@@ -17,7 +17,8 @@ export default function inputRulePlugin(schema: Schema<any, any>): Plugin | unde
       }
       const url = match[3] ? match[1] : `http://${match[1]}`;
 
-      return mediaState.insertLinkFromUrl(url);
+      mediaState.insertLinkFromUrl(url);
+      return state.tr;
     });
 
     rules.push(mentionQueryRule);

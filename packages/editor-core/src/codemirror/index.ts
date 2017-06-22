@@ -1,4 +1,5 @@
 import 'codemirror/mode/meta';
+
 import 'codemirror/mode/php/php.js';
 import 'codemirror/mode/clike/clike.js';
 import 'codemirror/mode/python/python.js';

@@ -1,9 +1,10 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import CodeMirror from '../../../codemirror';
 import {
   browser,
   Selection,
   TextSelection,
-  Schema,
   undo,
   redo,
   Node,
@@ -11,39 +12,33 @@ import {
   EditorView,
   Fragment,
 } from '../../../prosemirror';
-import {
-  CodeBlockState,
-  codeBlockStateKey,
-  codeMirrorStateKey,
-  CodeMirrorState,
-} from '../../../plugins';
+import { CodeBlockState, codeBlockStateKey } from '../../../plugins';
 import { DEFAULT_LANGUAGES } from '../../../ui/LanguagePicker/languageList';
+import { CodeMirrorDiv } from './styles';
 
 const MOD = browser.mac ? 'Cmd' : 'Ctrl';
+interface CMSelection { head: number; anchor: number; }
 
 class CodeBlock implements NodeView  {
-  private node: Node| undefined;
+  private node: Node;
   private view: EditorView;
   private getPos: Function;
   private value: string;
-  private selection: Selection | undefined;
+  private selection: CMSelection | undefined;
   private cm: any;
   private domRef: HTMLDivElement | undefined;
+  private containerRef: HTMLElement;
   private uniqueId: string;
   private updating: boolean = false;
-  private schema: Schema<any, any>;
   private pluginState: CodeBlockState;
-  private codeMirrorState: CodeMirrorState;
 
-  constructor(node: Node, view: EditorView, getPos: () => number, schema: Schema<any, any>) {
+  constructor(node: Node, view: EditorView, getPos: () => number) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
-    this.schema = schema;
     this.value = node.textContent;
     this.selection = undefined;
     this.pluginState = codeBlockStateKey.getState(this.view.state);
-    this.codeMirrorState = codeMirrorStateKey.getState(this.view.state);
     this.addCodeMirrorInstance();
   }
 
@@ -52,10 +47,9 @@ class CodeBlock implements NodeView  {
   }
 
   private addCodeMirrorInstance = () => {
-    const textarea = document.createElement('textarea');
-    this.cm = CodeMirror(textarea, {
+    const div = document.createElement('div');
+    this.cm = CodeMirror(div, {
       value: this.value,
-      mode: undefined,
       lineNumbers: true,
       lineWrapping: true,
       tabSize: 2,
@@ -66,7 +60,7 @@ class CodeBlock implements NodeView  {
     // This line of code is inspired from Marijn's code example here:
     // https://github.com/ProseMirror/website/blob/master/pages/examples/codemirror/example.js#L43
     setTimeout(() => this.cm.refresh(), 20);
-    this.setMode(this.node!.attrs['language']);
+    this.setMode(this.node.attrs['language']);
     this.updating = false;
     this.cm.on('changes', () => {
       if (!this.updating) {
@@ -74,27 +68,48 @@ class CodeBlock implements NodeView  {
         this.pluginState.update(this.view.state, this.view.docView, false);
       }
     });
-    this.cm.on('focus', (cm: CodeMirror.Editor) => {
-      if (!this.updating) {
-        this.forwardSelection();
-      }
-      this.pluginState.updateEditorFocused(true);
-      this.pluginState.update(this.view.state, this.view.docView, true);
-    });
-    this.cm.on('mousedown', () => {
-      this.forwardSelection();
-      this.pluginState.update(this.view.state, this.view.docView, true);
-    });
-    this.cm.on('blur', () => {
-      this.removeSelection();
-      this.pluginState.updateEditorFocused(false);
-      this.pluginState.update(this.view.state, this.view.docView, true);
-    });
-    this.uniqueId = this.node!.attrs['uniqueId'] || generateId();
-    this.node!.attrs['uniqueId'] = this.uniqueId;
+    this.cm.on('focus', this.cmFocused);
+    this.cm.on('mousedown', this.cmMousedown);
+    this.cm.on('blur', this.cmBlur);
+    this.uniqueId = this.node.attrs['uniqueId'] || generateId();
+    this.node.attrs['uniqueId'] = this.uniqueId;
+    this.node.attrs['isCodeMirror'] = true;
     this.pluginState.subscribe(this.updateLanguage);
-    this.codeMirrorState.subscribe(this.focusCodeEditor);
-    this.domRef = this.cm.getWrapperElement();
+    this.pluginState.subscribeFocusHandlers(this.focusCodeEditor);
+    this.domRef = div;
+    this.addCodeMirrorStyles(div);
+  }
+
+  private addCodeMirrorStyles(domRef) {
+    this.containerRef = document.createElement('div');
+    const handleRef = (ref) => {
+      if (ref) {
+        domRef.className = `${domRef.className} ${ref.className}`;
+      }
+    };
+    ReactDOM.render(
+      <CodeMirrorDiv innerRef={handleRef} />,
+      this.containerRef
+    );
+  }
+
+  private cmFocused = (cm: CodeMirror.Editor) => {
+    if (!this.updating) {
+      this.forwardSelection();
+    }
+    this.pluginState.updateEditorFocused(true);
+    this.pluginState.update(this.view.state, this.view.docView, true);
+  }
+
+  private cmMousedown = () => {
+    this.forwardSelection();
+    this.pluginState.update(this.view.state, this.view.docView, true);
+  }
+
+  private cmBlur = () => {
+    this.removeSelection();
+    this.pluginState.updateEditorFocused(false);
+    this.pluginState.update(this.view.state, this.view.docView, true);
   }
 
   private prepareExtraKeyMap(): any {
@@ -116,10 +131,14 @@ class CodeBlock implements NodeView  {
   }
 
   private selectAllEditorContent = (): void => {
-    this.cm.execCommand('selectAll');
+    this.view.focus();
+    const { dispatch, state } = this.view;
+    dispatch(state.tr.setSelection(
+      new TextSelection(state.doc.resolve(0), state.doc.resolve(state.doc.content['size']))
+    ));
   }
 
-  private handleEnter = (): void => {
+  private handleEnter = (): any => {
     const { state, dispatch } = this.view;
     const { selection, tr, schema: { nodes } } = state;
     const { $from, $head } = selection;
@@ -138,7 +157,7 @@ class CodeBlock implements NodeView  {
     }
   }
 
-  private maybeEscape(unit: string, dir: number): void {
+  private maybeEscape(unit: string, dir: number): any {
     const pos = this.cm.getCursor();
     if (this.cm.somethingSelected() ||
       pos.line !== (dir < 0 ? this.cm.firstLine() : this.cm.lastLine()) ||
@@ -180,7 +199,7 @@ class CodeBlock implements NodeView  {
     }
   }
 
-  private selectionChanged(selection: Selection): boolean {
+  private selectionChanged(selection: CMSelection): boolean {
     return !this.selection ||
       selection.head !== this.selection.head ||
       selection.anchor !== this.selection.anchor;
@@ -192,7 +211,8 @@ class CodeBlock implements NodeView  {
       const change = computeChange(this.value, value);
       this.value = value;
       const start = this.getPos() + 1;
-      const content = change.text ? this.schema.text(change.text) : Fragment.empty;
+      const { schema } = this.view.state;
+      const content = change.text ? schema.text(change.text) : Fragment.empty;
       const tr = this.view.state.tr.replaceWith(start + change.from, start + change.to, content);
       if (this.cm.hasFocus()) {
         const selection = this.findSelection();
@@ -230,7 +250,7 @@ class CodeBlock implements NodeView  {
     );
   }
 
-  private findSelection(): any {
+  private findSelection(): CMSelection {
     return {
       head: this.cm.indexFromPos(this.cm.getCursor('head')),
       anchor: this.cm.indexFromPos(this.cm.getCursor('anchor'))
@@ -287,17 +307,21 @@ class CodeBlock implements NodeView  {
 
   destroy() {
     this.domRef = undefined;
-    this.cm = undefined;
-    this.node = undefined;
+    this.cm.off('focus', this.cmFocused);
+    this.cm.off('mousedown', this.cmMousedown);
+    this.cm.off('blur', this.cmBlur);
+    this.node.attrs['uniqueId'] = undefined;
+    this.node.attrs['isCodeMirror'] = undefined;
+    ReactDOM.unmountComponentAtNode(this.containerRef);
     this.pluginState.unsubscribe(this.updateLanguage);
-    this.codeMirrorState.unsubscribe(this.focusCodeEditor);
+    this.pluginState.unsubscribeFocusHandlers(this.focusCodeEditor);
   }
 }
 
 function computeChange(oldVal: string, newVal: string): any {
-  let start = 0;
-  let oldEnd = oldVal.length;
-  let newEnd = newVal.length;
+  let start: number = 0;
+  let oldEnd: number = oldVal.length;
+  let newEnd: number = newVal.length;
   while (start < oldEnd && oldVal.charCodeAt(start) === newVal.charCodeAt(start)) {
     ++start;
   }
@@ -311,10 +335,8 @@ function computeChange(oldVal: string, newVal: string): any {
   return { from: start, to: oldEnd, text: newVal.slice(start, newEnd) };
 }
 
-export default (schema: Schema<any, any>): any => {
-  return (node: any, view: any, getPos: () => number): NodeView => {
-    return new CodeBlock(node, view, getPos, schema);
-  };
+export default (node: any, view: any, getPos: () => number): NodeView => {
+  return new CodeBlock(node, view, getPos);
 };
 
 function generateId(): string {

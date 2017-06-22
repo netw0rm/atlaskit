@@ -181,7 +181,7 @@ export const getValidNode = (node: Node): Node => {
             type,
             attrs: {
               id: mentionId,
-              text: mentionText,
+              text: mentionText
             }
           };
           if (mentionAccess) {

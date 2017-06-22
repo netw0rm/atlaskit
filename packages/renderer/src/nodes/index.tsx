@@ -145,7 +145,7 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
             type,
             attrs: {
               id: mentionId,
-              text: mentionText,
+              text: mentionText
             }
           };
           if (mentionAccess) {

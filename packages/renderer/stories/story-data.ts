@@ -206,6 +206,23 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'Mention with restricted access'
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'ABCDE-ABCDE-ABCDE-FGHI',
+            accessLevel: 'APPLICATION'
+          },
+          text: '@oscar'
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
         },
       ]

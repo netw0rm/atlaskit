@@ -104,6 +104,18 @@ describe(`${name} - item`, () => {
     });
   });
 
+  describe('appearance prop', () => {
+    it('should be "default" by default', () => {
+      expect(mount(<Item />).prop('appearance')).to.equal('default');
+    });
+
+    it('should correctly pass "isPrimary" to Element component', () => {
+      // appearance="primary" will be passed as an isPrimary prop
+      expect(mount(<Item />).find(Element).prop('isPrimary')).to.equal(false);
+      expect(mount(<Item appearance="primary" />).find(Element).prop('isPrimary')).to.equal(true);
+    });
+  });
+
   describe('events', () => {
     let onActivate;
 

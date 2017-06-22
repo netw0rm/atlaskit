@@ -3,6 +3,7 @@ import { layout } from '../../shared-variables';
 import { isCollapsed } from '../../theme/util';
 
 const ContainerNavigationChildren = styled.div`
+  flex-grow: 1;
   padding: 0 ${({ theme }) => (isCollapsed(theme) ? 0 : layout.padding.side)}px;
 `;
 

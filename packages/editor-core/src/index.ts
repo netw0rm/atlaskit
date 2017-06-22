@@ -52,9 +52,6 @@ export {
   history,
   baseKeymap,
   keymap,
-  tableNodes,
-  CellSelection,
-  tableEditing,
   Selection,
   undo,
   redo,
@@ -63,6 +60,7 @@ export {
 export {
   ErrorReporter,
   ErrorReportingHandler,
+  JSONDocNode,
   toJSON,
 } from './utils';
 export { colorPalette } from './schema/marks/text-color';

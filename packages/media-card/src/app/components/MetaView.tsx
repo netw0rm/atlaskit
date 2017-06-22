@@ -1,34 +1,34 @@
 import * as React from 'react';
 import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';
-import {Metadata} from '../model';
+import {AppCardDetails} from '../model';
 import {AvatarStack} from './AvatarStack';
 import {Wrapper, Widget, Title, Text, IconImage} from '../styled/MetaView';
 
 export interface MetaViewProps {
-  meta: Metadata[];
-  inverse?: boolean;
+  meta: AppCardDetails[];
+  isInversed?: boolean;
   contentMaxWidth: number;
 }
 
 export class MetaView extends React.Component<MetaViewProps, {}> {
 
-  renderWidget(data: Metadata) {
-    const {inverse} = this.props;
+  renderWidget(data: AppCardDetails) {
+    const {isInversed} = this.props;
     const {title, text, icon, badge, lozenge, users} = data;
     const attrs: JSX.Element[] = [];
 
     if (title) {
-      attrs.push(<Title key="title" inverse={inverse}>{title}:</Title>);
+      attrs.push(<Title key="title" inverse={isInversed}>{title}:</Title>);
     }
 
     if (icon) {
-      attrs.push(<IconImage key="icon" src={icon.src} alt={icon.label}/>);
+      attrs.push(<IconImage key="icon" src={icon.url} alt={icon.label}/>);
     }
 
     if (users) {
       attrs.push(
-        <AvatarStack key="avatar-group" size="small" max={4} avatars={users.map(({src, label}) => ({src, label}))}/>
+        <AvatarStack key="avatar-group" size="small" max={4} avatars={users.map(({icon: {url, label}}) => ({src: url, label}))}/>
       );
     }
 

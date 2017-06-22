@@ -4,6 +4,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList, CardListEvent } from '../src';
+import { CardSwitcherWrapper, CardSwitcherRow, CardSwitcherBtn, CardSwitcherTitle } from './styled';
 
 const wrongCollection = 'adfasdf';
 const wrongClientId = 'wrong-client-id';
@@ -65,16 +66,37 @@ storiesOf('CardList', {})
       }
 
       render() {
-        return <div style={{width: '300px', height: '400px', overflow: 'hidden', border: '1px solid'}}>
-          <button style={{margin: '10px auto', display: 'block'}} onClick={this.toggle}>Toggle collection</button>
-          <div style={{borderBottom: '1px solid', textAlign: 'center'}}>{this.state.collectionName}</div>
-          <CardList
-            context={context}
-            collectionName={this.state.collectionName}
-            pageSize={30}
-            cardAppearance={'small'}
-          />
-        </div>;
+        const {toggle} = this;
+        const {collectionName} = this.state;
+
+        return (
+          <CardSwitcherWrapper>
+            <CardSwitcherRow>
+              <div>NO infinite scroll</div>
+              <CardSwitcherBtn onClick={toggle}>Toggle collection</CardSwitcherBtn>
+              <CardSwitcherTitle>{collectionName}</CardSwitcherTitle>
+              <CardList
+                context={context}
+                collectionName={collectionName}
+                pageSize={30}
+                cardAppearance={'small'}
+              />
+            </CardSwitcherRow>
+            <CardSwitcherRow>
+              <div>With infinite scroll</div>
+              <CardSwitcherBtn onClick={toggle}>Toggle collection</CardSwitcherBtn>
+              <CardSwitcherTitle>{collectionName}</CardSwitcherTitle>
+              <CardList
+                context={context}
+                collectionName={collectionName}
+                pageSize={20}
+                height={320}
+                useInfiniteScroll={true}
+                cardAppearance={'small'}
+              />
+            </CardSwitcherRow>
+          </CardSwitcherWrapper>
+        );
       }
 
       private get collections() {

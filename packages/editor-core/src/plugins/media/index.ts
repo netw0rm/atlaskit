@@ -8,7 +8,7 @@ import {
   UploadParams,
 } from '@atlaskit/media-core';
 
-import { MediaType } from './../../schema/nodes/media';
+import { copyOptionalAttrs, MediaType } from './../../schema/nodes/media';
 import {
   EditorState,
   EditorView,
@@ -37,14 +37,8 @@ const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
-export interface MediaNode extends PMNode {
-  fileName?: string;
-  fileSize?: number;
-  fileMimeType?: string;
-}
-
 export interface MediaNodeWithPosHandler {
-  node: MediaNode;
+  node: PMNode;
   getPos: ProsemirrorGetPosHandler;
 }
 
@@ -190,25 +184,19 @@ export class MediaPluginState {
   private createMediaFileNode = (mediaState: MediaState, collection: string): PMNode => {
     const { view } = this;
     const { state } = view;
-    const { id, fileName, fileSize, fileMimeType } = mediaState;
+    const { id } = mediaState;
 
     const node = state.schema.nodes.media!.create({
       id,
       type: 'file',
       collection
-    }) as MediaNode;
+    });
 
-    if (fileName) {
-      node.fileName = fileName;
-    }
-
-    if (fileSize) {
-      node.fileSize = fileSize;
-    }
-
-    if (fileMimeType) {
-      node.fileMimeType = fileMimeType;
-    }
+    ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
+      if (mediaState[key]) {
+        node.attrs[`__${key}`] = mediaState[key];
+      }
+    });
 
     return node;
   }
@@ -599,25 +587,13 @@ export class MediaPluginState {
       node: mediaNode,
     } = mediaNodeWithPos;
 
-    const newNode: MediaNode = view.state.schema.nodes.media!.create({
+    const newNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
       id: publicId,
     });
 
-    // copy file-* attributes from old node
-    const { fileSize, fileName, fileMimeType } = mediaNode;
-
-    if (fileName) {
-      newNode.fileName = fileName;
-    }
-
-    if (fileSize) {
-      newNode.fileSize = fileSize;
-    }
-
-    if (fileMimeType) {
-      newNode.fileMimeType = fileMimeType;
-    }
+    // Copy all optional attributes from old node
+    copyOptionalAttrs(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();

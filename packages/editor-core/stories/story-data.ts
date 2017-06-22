@@ -79,6 +79,67 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'My name is '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+            text: '@Oscar Wallhult'
+          }
+        },
+        {
+          type: 'text',
+          text: ' :D',
+          marks: [
+            {
+              type: 'unkown mark'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is a '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            text: '@mention',
+            id: 'mention'
+          }
+        },
+        {
+          type: 'text',
+          text: '. And this is a broken '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            textxtx: '@mention',
+            id: 'mention'
+          }
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'italic',
           marks: [
             {
@@ -164,6 +225,74 @@ export const document = {
          {
            type: 'text',
            text: 'a hardbreak in it.'
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 1'
+        },
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 2 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 2',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'www.atlassian.com'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 3 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 3',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 4 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 4',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 5 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 5',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 6 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 6',
         }
       ]
     },
@@ -447,6 +576,9 @@ export const document = {
           ]
         },
       ]
+    },
+    {
+      type: 'rule'
     },
   ]
 };

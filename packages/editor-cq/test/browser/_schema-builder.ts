@@ -19,16 +19,16 @@ export const li = nodeFactory(schema.nodes.listItem);
 export const ol = nodeFactory(schema.nodes.orderedList);
 export const codeblock = (attrs: {} = {}) => nodeFactory(schema.nodes.codeBlock, attrs);
 export const panel = (attrs: {} = {}) => nodeFactory(schema.nodes.panel, attrs);
-export const unsupportedBlock = (cxhtml: string) => nodeFactory(schema.nodes.unsupportedBlock, { cxhtml })();
-export const unsupportedInline = (cxhtml: string) => nodeFactory(schema.nodes.unsupportedInline, { cxhtml })();
+export const confluenceUnsupportedBlock = (cxhtml: string) => nodeFactory(schema.nodes.confluenceUnsupportedBlock, { cxhtml })();
+export const confluenceUnsupportedInline = (cxhtml: string) => nodeFactory(schema.nodes.confluenceUnsupportedInline, { cxhtml })();
 export const mention = (attrs: { id: string, text?: string }) => schema.nodes.mention.createChecked(attrs);
-export const jiraIssue = (attrs: {
+export const confluenceJiraIssue = (attrs: {
   issueKey?: string;
   macroId?: string;
   schemaVersion?: string;
   server?: string;
   serverId?: string;
-}) => schema.nodes.jiraIssue.create(attrs);
+}) => schema.nodes.confluenceJiraIssue.create(attrs);
 export const mediaGroup = nodeFactory(schema.nodes.mediaGroup);
 export const media = (attrs: {
   id: string;

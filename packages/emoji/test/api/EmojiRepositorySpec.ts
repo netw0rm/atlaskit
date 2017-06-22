@@ -122,6 +122,17 @@ describe('EmojiRepository', () => {
       checkOrder(expectedEmojis, emojis);
     });
 
+    it('search all - colon style', () => {
+      const expectedEmojis = [
+        ...allEmojis.slice(0, 10), // upto flag,
+        cowboy,
+        ...allEmojis.slice(10), // rest...
+      ];
+      const repository = new EmojiRepository(expectedEmojis);
+      const emojis = repository.search(':').emojis;
+      checkOrder(expectedEmojis, emojis);
+    });
+
     it('no categories repeat', () => {
       const emojis = emojiRepository.all().emojis;
       const foundCategories = new Set<string>();
@@ -194,6 +205,14 @@ describe('EmojiRepository', () => {
       const emojis = emojiRepository.search(':O').emojis;
       const openMouthEmojiCount = emojis.filter(e => e.id === openMouthEmoji.id).length;
       expect(openMouthEmojiCount, 'emoji matching ascii representation is only returned once in the search results').to.equal(1);
+    });
+
+    it('minus not indexed', () => {
+      const emojis = emojiRepository.search(':congo').emojis;
+      expect(emojis.length, 'One emoji').to.equal(1);
+      expect(emojis[0].name).to.equal('Congo - Brazzaville');
+      const noEmojis = emojiRepository.search(':-').emojis;
+      expect(noEmojis.length, 'No emoji').to.equal(0);
     });
   });
 

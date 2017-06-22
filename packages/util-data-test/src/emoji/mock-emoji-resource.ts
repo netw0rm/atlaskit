@@ -39,16 +39,24 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
   findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
     const { id, shortName } = emojiId;
     if (id) {
-      const emoji = this.emojiRepository.findById(id);
-      return this.promiseBuilder(emoji);
+      return this.findById(id);
     }
     const emoji = this.emojiRepository.findByShortName(shortName);
+    return this.promiseBuilder(emoji);
+  }
+
+  findById(id: string): Promise<OptionalEmojiDescription> {
+    const emoji = this.emojiRepository.findById(id);
     return this.promiseBuilder(emoji);
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {
     const emojis = this.emojiRepository.findInCategory(categoryId);
     return this.promiseBuilder(emojis);
+  }
+
+  getAsciiMap(): Promise<Map<string, EmojiDescription>> {
+    return this.promiseBuilder(this.emojiRepository.getAsciiMap());
   }
 
   recordSelection?(id: EmojiId): Promise<any> {

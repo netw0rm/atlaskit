@@ -214,9 +214,6 @@ export function markFactory(type: MarkType, attrs = {}) {
   };
 }
 
-export const createCell = (colspan, rowspan) => td({colspan, rowspan})(p('x'));
-export const createHeaderCell = (colspan, rowspan) => th({colspan, rowspan})(p('x'));
-
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
 export const blockquote = nodeFactory(sampleSchema.nodes.blockquote, {});

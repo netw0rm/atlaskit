@@ -281,9 +281,10 @@ export class TableState {
     const { $anchorCell, $headCell } = this.state.selection as CellSelection;
     const { table_cell, table_header } = this.state.schema.nodes;
     const map = TableMap.get(this.tableNode);
+    const offset = this.tableStartPos() || 1;
     const start =  $anchorCell.start(-1);
     const cells = map.cellsInRect(map.rectBetween($anchorCell.pos - start, $headCell.pos - start));
-    const firstCellPos = cells[0] + 2;
+    const firstCellPos = cells[0] + offset + 1;
     const $from = this.state.doc.resolve(firstCellPos);
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);

@@ -42,7 +42,7 @@ interface FilmStripNavigatorPartialState {
   transitionDuration?: number;
 }
 
-type NavigationDirection = 'left' | 'right';
+export type NavigationDirection = 'left' | 'right';
 
 const minDuration = 0.5;
 const baseAnimationDuration = 0.5;

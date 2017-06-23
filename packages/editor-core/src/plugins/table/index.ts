@@ -56,14 +56,11 @@ export class TableState {
       if (this.tableDisabled || this.tableElement) {
         return false;
       }
+      this.focusEditor();
       const table = this.createStaticTable(3, 3);
       const tr = state.tr.replaceSelectionWith(table);
       tr.setSelection(Selection.near(tr.doc.resolve(state.selection.from)));
       dispatch(tr.scrollIntoView());
-
-      if (!this.view.hasFocus()) {
-        this.view.focus();
-      }
       return true;
     };
   }
@@ -71,10 +68,13 @@ export class TableState {
   insertColumn = (column: number) => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
+      // last column
       if (column === map.width) {
+        // to remove a cell we need to move the cursor to an appropriate cell first
         const prevColPos = map.positionAt(0, column - 1, this.tableNode);
         this.moveCursorTo(prevColPos);
         tableBaseCommands.addColumnAfter(this.view.state, this.view.dispatch);
+        // then we move the cursor to the newly created cell
         const nextPos = TableMap.get(this.tableNode).positionAt(0, column, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
@@ -89,6 +89,7 @@ export class TableState {
   insertRow = (row: number) => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
+      // last row
       if (row === map.height) {
         const prevRowPos =  map.positionAt(row - 1, 0, this.tableNode);
         this.moveCursorTo(prevRowPos);
@@ -104,24 +105,27 @@ export class TableState {
     }
   }
 
-  handleRemove = () => {
+  remove = () => {
     if (!this.cellSelection) {
       return;
     }
-
     if (this.cellSelection.isRowSelection()) {
       const removed = tableBaseCommands.deleteColumn(this.view.state, this.view.dispatch);
       // it's not going to be removed only if it attemps to remove the last cells in the table
-      if (!removed) {
+      if (removed) {
+        this.moveCursorToFirstCell();
+      } else {
         tableBaseCommands.deleteTable(this.view.state, this.view.dispatch);
+        this.focusEditor();
       }
     } else if (this.cellSelection.isColSelection()) {
       tableBaseCommands.deleteRow(this.view.state, this.view.dispatch);
+      this.moveCursorToFirstCell();
     } else {
+      // replace selected cells with empty cells
       this.emptySelectedCells();
+      this.moveCursorTo(this.state.selection.from);
     }
-
-    this.moveCursorTo(this.state.selection.from);
   }
 
   subscribe(cb: TableStateSubscriber) {
@@ -217,7 +221,7 @@ export class TableState {
       dirty = true;
     }
 
-    const cellElement = this.cellSelection ? this.getTableCellElement(docView) : undefined;
+    const cellElement = this.cellSelection ? this.getFirstSelectedCellElement(docView) : undefined;
     if (cellElement !== this.cellElement) {
       this.cellElement = cellElement;
       dirty = true;
@@ -254,8 +258,8 @@ export class TableState {
     }
   }
 
-  private getTableCellElement(docView: NodeViewDesc): HTMLElement | undefined {
-    const offset = this.tableCellStartPos();
+  private getFirstSelectedCellElement(docView: NodeViewDesc): HTMLElement | undefined {
+    const offset = this.firstSelectedCellStartPos();
     if (offset) {
       const { node } = docView.domFromPos(offset);
       if (node) {
@@ -274,7 +278,7 @@ export class TableState {
     }
   }
 
-  private tableCellStartPos(): number | undefined {
+  private firstSelectedCellStartPos(): number | undefined {
     if (!this.tableNode) {
       return;
     }
@@ -283,7 +287,9 @@ export class TableState {
     const map = TableMap.get(this.tableNode);
     const offset = this.tableStartPos() || 1;
     const start =  $anchorCell.start(-1);
+    // array of selected cells positions
     const cells = map.cellsInRect(map.rectBetween($anchorCell.pos - start, $headCell.pos - start));
+    // first selected cell position
     const firstCellPos = cells[0] + offset + 1;
     const $from = this.state.doc.resolve(firstCellPos);
     for (let i = $from.depth; i > 0; i--) {
@@ -380,10 +386,10 @@ export class TableState {
     }
 
     const { tr, schema } = this.state;
-    const content = schema.nodes.table_cell.createAndFill().content;
+    const emptyCell = schema.nodes.table_cell.createAndFill().content;
     this.cellSelection.forEachCell((cell, pos) => {
-      if (!cell.content.eq(content)) {
-        const slice = new Slice(content, 0, 0);
+      if (!cell.content.eq(emptyCell)) {
+        const slice = new Slice(emptyCell, 0, 0);
         tr.replace(tr.mapping.map(pos + 1), tr.mapping.map(pos + cell.nodeSize - 1), slice);
       }
     });
@@ -392,10 +398,26 @@ export class TableState {
     }
   }
 
-  private moveCursorTo (pos: number) {
-      const { tr } = this.state;
-      tr.setSelection(Selection.near(tr.doc.resolve(pos)));
-      this.view.dispatch(tr.scrollIntoView());
+  private focusEditor (): void {
+    if (!this.view.hasFocus()) {
+      this.view.focus();
+    }
+  }
+
+  private moveCursorTo (pos: number): void {
+    this.focusEditor();
+    const offset = this.tableStartPos() || 1;
+    const { tr } = this.state;
+    tr.setSelection(Selection.near(tr.doc.resolve(pos + offset)));
+    this.view.dispatch(tr.scrollIntoView());
+  }
+
+  private moveCursorToFirstCell (): void {
+    if (this.tableNode) {
+      const map = TableMap.get(this.tableNode);
+      const pos =  map.positionAt(0, 0, this.tableNode);
+      this.moveCursorTo(pos);
+    }
   }
 }
 

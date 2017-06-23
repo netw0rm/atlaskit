@@ -62,6 +62,6 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
   }
 
   private handleRemove = () => {
-    this.props.pluginState.handleRemove();
+    this.props.pluginState.remove();
   }
 }

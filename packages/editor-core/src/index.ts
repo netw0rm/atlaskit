@@ -56,6 +56,9 @@ export {
   undo,
   redo,
   PluginKey,
+  tableNodes,
+  CellSelection,
+  tableEditing,
 } from './prosemirror';
 export {
   ErrorReporter,

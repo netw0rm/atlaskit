@@ -43,10 +43,11 @@
   },
   "i18n": {
     "home": "Home",
+    "site-admin": "Site administration",
     "apps": "Apps",
     "recent": "Recent",
     "configure": "Configure",
-    "try.other.apps": "Try Other Atlassian Apps",
+    "try.other.apps": "Try other Atlassian apps",
     "don't.show.this.again": "Don’t show this again",
     "container.confluence-space": "Space",
     "container.jira-project": "Project",

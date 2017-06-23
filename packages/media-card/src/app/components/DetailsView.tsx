@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';
+import {akColorN20} from '@atlaskit/util-shared-styles';
 import {AppCardDetails} from '../model';
 import {AvatarStack} from './AvatarStack';
-import {Wrapper, Widget, Title, Text, IconImage} from '../styled/MetaView';
+import {Wrapper, Widget, Title, Text, IconImage} from '../styled/DetailsView';
 
 export interface MetaViewProps {
   meta: AppCardDetails[];
@@ -11,7 +12,7 @@ export interface MetaViewProps {
   contentMaxWidth: number;
 }
 
-export class MetaView extends React.Component<MetaViewProps, {}> {
+export class DetailsView extends React.Component<MetaViewProps, {}> {
 
   renderWidget(data: AppCardDetails) {
     const {isInversed} = this.props;
@@ -28,7 +29,13 @@ export class MetaView extends React.Component<MetaViewProps, {}> {
 
     if (users) {
       attrs.push(
-        <AvatarStack key="avatar-group" size="small" max={4} avatars={users.map(({icon: {url, label}}) => ({src: url, label}))}/>
+        <AvatarStack
+          key="avatar-group"
+          size="small"
+          borderColor={akColorN20}
+          max={4}
+          avatars={users.map(({icon: {url, label}}) => ({src: url, label}))}
+        />
       );
     }
 

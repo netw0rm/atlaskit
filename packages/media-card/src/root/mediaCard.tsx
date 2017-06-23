@@ -5,7 +5,6 @@ import {MediaItemType, MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview
 
 import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardStatus} from '..';
 import {isLinkDetails} from '../utils/isLinkDetails';
-import {AppCardModel} from '../app';
 import {Provider} from './card';
 import {CardView} from './cardView';
 import {withDataURI} from './withDataURI';

@@ -214,6 +214,9 @@ export function markFactory(type: MarkType, attrs = {}) {
   };
 }
 
+export const createCell = (colspan, rowspan) => td({colspan, rowspan})(p('x'));
+export const createHeaderCell = (colspan, rowspan) => th({colspan, rowspan})(p('x'));
+
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
 export const blockquote = nodeFactory(sampleSchema.nodes.blockquote, {});
@@ -258,3 +261,11 @@ export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
 export const media = (attrs: MediaAttributes) => sampleSchema.nodes.media.create(attrs);
 export const textColor = (attrs: { color: string }) => markFactory(sampleSchema.marks.textColor, attrs);
+export const table = nodeFactory(sampleSchema.nodes.table, {});
+export const tr = nodeFactory(sampleSchema.nodes.table_row, {});
+export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_cell, attrs);
+export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_header, attrs);
+export const tdEmpty = td({})(p(''));
+export const tdCursor = td({})(p('{<>}'));
+export const td11 = createCell(1, 1);
+export const th11 = createHeaderCell(1, 1);

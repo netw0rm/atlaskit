@@ -15,7 +15,6 @@ export const Wrapper = styled.div`
   box-sizing: border-box;
   max-width: ${({contentMaxWidth}: WrapperProps) => contentMaxWidth}px;
   flex-wrap: wrap;
-  padding-top: 6px; /* allow space to avoid avatars getting clipped */
   padding-left: 16px;
 `;
 

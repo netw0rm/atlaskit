@@ -164,10 +164,12 @@ export const getValidNode = (node: Node): Node => {
       case 'mention': {
         let mentionText = '';
         let mentionId;
+        let mentionAccess;
         if (attrs) {
-          const { text, displayName, id } = attrs;
+          const { text, displayName, id, accessLevel } = attrs;
           mentionText = text || displayName;
           mentionId = id;
+          mentionAccess = accessLevel;
         }
 
         if (!mentionText) {
@@ -175,13 +177,18 @@ export const getValidNode = (node: Node): Node => {
         }
 
         if (mentionText && mentionId) {
-          return {
+          const mentionNode = {
             type,
             attrs: {
               id: mentionId,
               text: mentionText
             }
           };
+          if (mentionAccess) {
+            mentionNode.attrs['accessLevel'] = mentionAccess;
+          }
+
+          return mentionNode;
         }
         break;
       }

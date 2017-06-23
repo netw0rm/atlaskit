@@ -28,20 +28,24 @@ const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
+const pendingPromise = new Promise<any>(() => {});
 const providers = {
   mentionProvider: {
     resolved: Promise.resolve(mentionData.mentionStoryData.resourceProvider),
     'resolved 2': Promise.resolve(mentionData.mentionStoryData.resourceProvider2),
+    pending: pendingPromise,
     rejected: rejectedPromise,
     'undefined' : undefined,
   },
   emojiProvider: {
     resolved: emojiData.emojiStoryData.getEmojiResource(),
+    pending: pendingPromise,
     rejected: rejectedPromise,
     'undefined' : undefined,
   },
   mediaProvider: {
     resolved: storyMediaProviderFactory(mediaTestHelpers),
+    pending: pendingPromise,
     rejected: rejectedPromise,
     'view only': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, false),
     'undefined' : undefined,

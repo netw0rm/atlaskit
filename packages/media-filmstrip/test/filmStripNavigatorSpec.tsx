@@ -7,6 +7,16 @@ import { FilmStripNavigator } from '../src';
 import { FilmStripViewWrapper } from '../src/styled';
 
 describe('FilmStripNavigator', () => {
+  let clock;
+
+  beforeEach(function () {
+    clock = sinon.useFakeTimers();
+  });
+
+  afterEach(function () {
+    clock.restore();
+  });
+
   it('Wrap children into LI elements', () => {
     const children = [1, 2, 3];
     const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
@@ -54,7 +64,7 @@ describe('FilmStripNavigator', () => {
     expect(filmstripNavigator.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: `${width}px`});
   });
 
-  it('Fires a real "scroll" event when users navigate through the list', (done) => {
+  it('Fires a real "scroll" event when users navigate through the list', () => {
     const filmstripNavigator = shallow(
       <FilmStripNavigator width={10}>
         {[1, 2]}
@@ -66,10 +76,7 @@ describe('FilmStripNavigator', () => {
     instance.triggerScrollEvent = scrollSpy;
     instance.navigate('right')();
 
-    // Needed because filmstrip waits for the animation to finish to update stuff
-    setTimeout(() => {
-      expect(scrollSpy.called).to.equal(true);
-      done();
-    }, 10);
+    clock.tick(10);
+    expect(scrollSpy.called).to.equal(true);
   });
 });

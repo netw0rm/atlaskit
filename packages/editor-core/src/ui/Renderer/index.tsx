@@ -1,12 +1,5 @@
-export { EmojiProvider, EmojiResource } from '@atlaskit/emoji';
-export { MediaProvider } from '@atlaskit/media-core';
-export { MentionProvider, MentionResource } from '@atlaskit/mention';
-
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MediaProvider, CardEventHandler } from '@atlaskit/media-core';
-import { MentionProvider } from '@atlaskit/mention';
+import { CardEventHandler } from '@atlaskit/media-core';
 import { PureComponent, SyntheticEvent } from 'react';
-
 import { Schema } from '../../prosemirror';
 import ProviderFactory from '../../providerFactory';
 import {
@@ -31,11 +24,9 @@ export interface EventHandlers {
 }
 
 export interface Props {
-  document?: any;
-  emojiProvider?: Promise<EmojiProvider>;
+  document: any;
+  dataProviders?: ProviderFactory;
   eventHandlers?: EventHandlers;
-  mediaProvider?: Promise<MediaProvider>;
-  mentionProvider?: Promise<MentionProvider>;
   schema?: Schema<any, any>;
 }
 
@@ -44,17 +35,7 @@ export default class Renderer extends PureComponent<Props, {}> {
 
   constructor(props: Props) {
     super(props);
-
-    const {
-      emojiProvider,
-      mediaProvider,
-      mentionProvider,
-    } = props;
-
-    this.providerFactory = new ProviderFactory();
-    this.providerFactory.setProvider('emojiProvider', emojiProvider);
-    this.providerFactory.setProvider('mediaProvider', mediaProvider);
-    this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.providerFactory = props.dataProviders || new ProviderFactory();
   }
 
   render() {
@@ -69,6 +50,10 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   componentWillUnmount() {
-    this.providerFactory.destroy();
+    const { dataProviders } = this.props;
+
+    if (dataProviders) {
+      dataProviders.destroy();
+    }
   }
 }

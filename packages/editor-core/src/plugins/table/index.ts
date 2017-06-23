@@ -34,6 +34,7 @@ export class TableState {
   tableHidden: boolean = false;
   tableDisabled: boolean = false;
   tableActive: boolean = false;
+  domEvent: boolean = false;
 
   private view: EditorView;
   private state: EditorState<any>;
@@ -205,13 +206,14 @@ export class TableState {
     return false;
   }
 
-  update(newEditorState: EditorState<any>, docView: NodeViewDesc) {
+  update(newEditorState: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
     this.state = newEditorState;
     let dirty = this.updateSelection();
 
     const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
-    if (tableElement !== this.tableElement) {
+    if (domEvent && tableElement || tableElement !== this.tableElement) {
       this.tableElement = tableElement;
+      this.domEvent = domEvent;
       dirty = true;
     }
 
@@ -435,7 +437,7 @@ const plugin = new Plugin({
     apply(tr, pluginState: TableState, oldState, newState) {
       const stored = tr.getMeta(stateKey);
       if (stored) {
-        pluginState.update(newState, stored.docView);
+        pluginState.update(newState, stored.docView, stored.domEvent);
       }
       return pluginState;
     }
@@ -449,7 +451,7 @@ const plugin = new Plugin({
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
-        stateKey.getState(view.state).update(view.state, view.docView);
+        pluginState.update(view.state, view.docView);
       }
     };
   },
@@ -457,12 +459,13 @@ const plugin = new Plugin({
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
     },
-    handleClick(view: EditorView, event) {
-      stateKey.getState(view.state).update(view.state, view.docView);
+    handleClick(view: EditorView, pos: number, event) {
+      stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;
     },
     onFocus(view: EditorView, event) {
       stateKey.getState(view.state).updateEditorFocused(true);
+      stateKey.getState(view.state).update(view.state, view.docView, true);
     },
     onBlur(view: EditorView, event) {
       const pluginState = stateKey.getState(view.state);
@@ -470,7 +473,7 @@ const plugin = new Plugin({
         pluginState.updateToolbarFocused(false);
       } else {
         pluginState.updateEditorFocused(false);
-        pluginState.update(view.state, view.docView);
+        pluginState.update(view.state, view.docView, true);
       }
     },
   }

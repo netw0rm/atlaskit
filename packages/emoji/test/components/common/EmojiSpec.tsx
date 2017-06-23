@@ -44,6 +44,23 @@ describe('<Emoji />', () => {
 
       expect((wrapper.find(`.${styles.emojiContainer}`)).hasClass((styles.selected))).to.equal(true);
     });
+
+    it('should not render a tooltip on hover if there is no showTooltip prop', () => {
+      const wrapper = shallow(<Emoji
+        emoji={spriteEmoji}
+      />);
+      wrapper.simulate('mouseenter');
+      expect(wrapper.find('AKTooltip')).to.have.length(0);
+    });
+
+    it('should render a tooltip on hover if showTooltip is set to true', () => {
+      const wrapper = shallow(<Emoji
+        emoji={spriteEmoji}
+        showTooltip={true}
+      />);
+      wrapper.simulate('mouseenter');
+      expect(wrapper.find('AKTooltip')).to.have.length(1);
+    });
   });
 
   describe('as image', () => {
@@ -64,6 +81,23 @@ describe('<Emoji />', () => {
 
       const image = wrapper.find(`.${styles.emoji}`);
       expect((image).hasClass((styles.selected))).to.equal(true);
+    });
+
+    it('should not render a tooltip on hover if there is no showTooltip prop', () => {
+      const wrapper = shallow(<Emoji
+        emoji={imageEmoji}
+      />);
+      wrapper.simulate('mouseenter');
+      expect(wrapper.find('AKTooltip')).to.have.length(0);
+    });
+
+    it('should render a tooltip on hover if showTooltip is set to true', () => {
+      const wrapper = shallow(<Emoji
+        emoji={imageEmoji}
+        showTooltip={true}
+      />);
+      wrapper.simulate('mouseenter');
+      expect(wrapper.find('AKTooltip')).to.have.length(1);
     });
   });
 });

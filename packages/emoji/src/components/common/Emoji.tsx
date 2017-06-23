@@ -64,7 +64,7 @@ const renderAsSprite = (props: Props) => {
     >
       <Tooltip
         description={emoji.shortName}
-        position="bottom"
+        position="top"
       >
         <span
           className={styles.emojiSprite}
@@ -100,7 +100,7 @@ const renderAsImage = (props: Props) => {
     >
       <Tooltip
         description={emoji.shortName}
-        position="bottom"
+        position="top"
       >
         <img
           src={representation.imagePath}

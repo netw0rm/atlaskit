@@ -28,7 +28,7 @@ export const emoji = style({
     [`&.${selected}`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
-    '&>img': {
+    'img': {
       maxHeight: '24px',
       display: 'block',
     }

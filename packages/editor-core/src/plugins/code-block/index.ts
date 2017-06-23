@@ -49,7 +49,10 @@ export class CodeBlockState {
   }
 
   removeCodeBlock(view: EditorView): void {
-    commands.setBlockType(view.state.schema.nodes.paragraph)(view.state, view.dispatch);
+    const { state, dispatch } = view;
+    const { $from, $to } = state.selection;
+    const range = $from.blockRange($to);
+    dispatch(state.tr.deleteRange(range!.start, range!.end));
   }
 
 

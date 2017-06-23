@@ -63,11 +63,11 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     expect(panelEditOptions.state('toolbarVisible')).to.equal(true);
   });
 
-  it('should set toolbarVisible to false when panelType is removed', () => {
+  it('should set toolbarVisible to false when panel is removed', () => {
     const { plugin, editorView, pluginState } = editor(doc(panel(p('text'))));
     const panelEditOptions = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
     plugin.props.onFocus!(editorView, event);
-    pluginState.removePanelType(editorView);
+    pluginState.removePanel(editorView);
     expect(panelEditOptions.state('toolbarVisible')).to.equal(false);
   });
 });

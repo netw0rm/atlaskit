@@ -60,14 +60,14 @@ export class PanelState {
     dispatch(tr);
   }
 
-  removePanelType(view: EditorView) {
+  removePanel(view: EditorView) {
     const { dispatch, state } = view;
     const { tr } = state;
     const { $from, $to } = state.selection;
     const newFrom = tr.doc.resolve($from.start($from.depth - 1));
     const newTo = tr.doc.resolve($to.end($to.depth - 1));
     const range = newFrom.blockRange(newTo)!;
-    dispatch(tr.lift(range, $from.depth - 2));
+    dispatch(state.tr.deleteRange(range!.start, range!.end));
   }
 
   subscribe(cb: PanelStateSubscriber) {

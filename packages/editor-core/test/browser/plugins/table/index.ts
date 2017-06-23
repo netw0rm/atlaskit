@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import tablePlugin from '../../../../src/plugins/table';
 
 import {
-  setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, table, tr, td, cEmpty, cCursor
+  setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, table, tr, td, tdEmpty, tdCursor
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -27,7 +27,7 @@ describe('table plugin', () => {
 
     context('when leaving table', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(p('{pPos}'), table(tr(cCursor, cEmpty, cEmpty ))));
+        const { refs, pluginState, editorView } = editor(doc(p('{pPos}'), table(tr(tdCursor, tdEmpty, tdEmpty ))));
         const spy = sinon.spy();
         const { pPos } = refs;
 
@@ -40,7 +40,7 @@ describe('table plugin', () => {
 
     context('when entering table', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(p('{<>}'), table(tr(td({})(p('{tPos}')), cEmpty, cEmpty ))));
+        const { refs, pluginState, editorView } = editor(doc(p('{<>}'), table(tr(td({})(p('{tPos}')), tdEmpty, tdEmpty ))));
         const spy = sinon.spy();
         const { tPos } = refs;
 
@@ -53,7 +53,7 @@ describe('table plugin', () => {
 
     context('when moving cursor to a different table', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(table(tr(cCursor, cEmpty, cEmpty )), table(tr(td({})(p('{tPos}')), cEmpty, cEmpty ))));
+        const { refs, pluginState, editorView } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty )), table(tr(td({})(p('{tPos}')), tdEmpty, tdEmpty ))));
         const spy = sinon.spy();
         const { tPos } = refs;
 
@@ -66,7 +66,7 @@ describe('table plugin', () => {
 
     context('when moving within the same table', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(table(tr(cCursor, cEmpty, td({})(p('{tPos}')) ))));
+        const { refs, pluginState, editorView } = editor(doc(table(tr(tdCursor, tdEmpty, td({})(p('{tPos}')) ))));
         const spy = sinon.spy();
         const { tPos } = refs;
 
@@ -79,7 +79,7 @@ describe('table plugin', () => {
 
     context('when unsubscribe', () => {
       it('does not notify the subscriber', () => {
-        const { pluginState } = editor(doc(table(tr(cCursor, cEmpty, cEmpty ))));
+        const { pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty ))));
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 

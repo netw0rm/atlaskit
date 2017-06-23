@@ -124,7 +124,7 @@ export class TableState {
     } else {
       // replace selected cells with empty cells
       this.emptySelectedCells();
-      this.moveCursorTo(this.state.selection.from);
+      this.moveCursorInsideTableTo(this.state.selection.from);
     }
   }
 
@@ -404,12 +404,16 @@ export class TableState {
     }
   }
 
-  private moveCursorTo (pos: number): void {
+  private moveCursorInsideTableTo (pos: number): void {
     this.focusEditor();
-    const offset = this.tableStartPos() || 1;
     const { tr } = this.state;
-    tr.setSelection(Selection.near(tr.doc.resolve(pos + offset)));
+    tr.setSelection(Selection.near(tr.doc.resolve(pos)));
     this.view.dispatch(tr.scrollIntoView());
+  }
+
+  private moveCursorTo (pos: number): void {
+    const offset = this.tableStartPos() || 1;
+    this.moveCursorInsideTableTo(pos + offset);
   }
 
   private moveCursorToFirstCell (): void {

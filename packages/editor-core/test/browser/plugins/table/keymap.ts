@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import tablePlugin from '../../../../src/plugins/table';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, tdEmpty, tdCursor, thEmpty
+  chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, tdEmpty, tdCursor, thEmpty, p
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);

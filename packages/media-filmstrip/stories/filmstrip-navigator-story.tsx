@@ -14,11 +14,14 @@ const context = createStorybookContext();
 const clickAction = (event: CardEvent) => {
   action('click')(event.mediaItemDetails);
 };
+const menuActions = [
+  {label: 'Open', handler: () => { action('open')(); }}
+];
 
 const getDefaultNavigator = (overflow: boolean, key?) => {
   return (
     <FilmStripNavigator key={key}>
-      <CardView onClick={clickAction} status="loading"/>
+      <CardView onClick={clickAction} status="complete" actions={menuActions}/>
       <CardView onClick={clickAction} status="complete" metadata={{mediaType: 'doc', name: 'foobar.docx', size: 1000}}/>
       <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
       <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
@@ -26,7 +29,6 @@ const getDefaultNavigator = (overflow: boolean, key?) => {
     </FilmStripNavigator>
   );
 };
-
 
 storiesOf('FilmStripNavigator', {})
   .add('With a Card and CardView', () => getDefaultNavigator(false))

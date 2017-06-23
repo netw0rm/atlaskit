@@ -28,6 +28,18 @@ describe('<NavigationItem />', () => {
       navigation.find('button').simulate('click');
       expect(spy.calledOnce).toBe(true);
     });
+    it('with an onMouseEnter should call the onMouseEnter', () => {
+      const spy = sinon.spy();
+      const navigation = mountWithRootTheme(<NavigationItem onMouseEnter={spy} />);
+      navigation.find('button').simulate('mouseenter');
+      expect(spy.calledOnce).toBe(true);
+    });
+    it('with an onMouseLeave should call the onMouseLeave', () => {
+      const spy = sinon.spy();
+      const navigation = mountWithRootTheme(<NavigationItem onMouseLeave={spy} />);
+      navigation.find('button').simulate('mouseleave');
+      expect(spy.calledOnce).toBe(true);
+    });
     it('with an onClick and href should render the href on a link, and bind the onClick to it', () => {
       const spy = sinon.spy();
       const navigation = mountWithRootTheme(<NavigationItem href="foo" onClick={spy} />);

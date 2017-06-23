@@ -25,6 +25,9 @@ export default class InteractiveWrapper extends PureComponent {
     linkComponent: PropTypes.func,
     onClick: PropTypes.func,
     onMouseDown: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    tabIndex: PropTypes.number,
   }
   render() {
     const {
@@ -33,13 +36,19 @@ export default class InteractiveWrapper extends PureComponent {
       linkComponent: LinkComponent,
       onClick,
       onMouseDown,
+      onMouseEnter,
+      onMouseLeave,
+      tabIndex,
     } = this.props;
 
     return href ? (
       <LinkComponent
         onMouseDown={onMouseDown}
         onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         href={href}
+        tabIndex={tabIndex}
       >
         {children}
       </LinkComponent>
@@ -47,6 +56,9 @@ export default class InteractiveWrapper extends PureComponent {
       <InvisibleButton
         onClick={onClick}
         onMouseDown={onMouseDown}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        tabIndex={tabIndex}
       >
         {children}
       </InvisibleButton>

@@ -9,6 +9,7 @@ import EmojiProvider from '../../api/EmojiResource';
 export interface Props {
   emojiId: EmojiId;
   emojiProvider: Promise<EmojiProvider>;
+  showTooltip?: boolean;
 }
 
 export interface State {
@@ -67,7 +68,7 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
   render() {
     const { emoji, loaded } = this.state;
     if (emoji) {
-      return (<Emoji emoji={emoji} />);
+      return (<Emoji emoji={emoji} showTooltip={this.props.showTooltip} />);
     } else if (loaded) {
       // loaded but not found - render fallback
       const { shortName, fallback } = this.props.emojiId;

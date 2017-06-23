@@ -59,7 +59,6 @@ export interface Props {
   uploadErrorHandler?: (state: MediaState) => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
-  maxHeight?: number;
 }
 
 export interface State {
@@ -223,6 +222,7 @@ export default class Editor extends PureComponent<Props, State> {
         emojiProvider={emojiProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
+        maxHeight={200}
       />
     );
   }

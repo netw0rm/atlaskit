@@ -94,7 +94,6 @@ class DemoEditor extends React.PureComponent<Props, State> {
           ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
         </div>
         <Editor
-          maxHeight={200}
           imageUploadHandler={imageUploadHandler}
           analyticsHandler={analyticsHandler}
           onCancel={CANCEL_ACTION}

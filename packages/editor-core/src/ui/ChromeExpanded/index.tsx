@@ -6,6 +6,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
+import { akColorN40 } from '@atlaskit/util-shared-styles';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
@@ -75,16 +76,59 @@ export interface Props {
   pluginStatePanel?: PanelState;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  maxHeight?: number | undefined;
 }
 
-export default class ChromeExpanded extends PureComponent<Props, {}> {
+export interface State {
+  maxHeightStyle?: any;
+}
+
+export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
+  private editorContent: HTMLElement;
+  state: State = {};
 
   static defaultProps = {
     saveDisabled: false,
   };
 
+  componentWillMount() {
+    const { maxHeight } = this.props;
+    if (maxHeight) {
+      this.setState({
+        maxHeightStyle: {
+          maxHeight: `${maxHeight}px`,
+          overflow: 'auto',
+        }
+      });
+    }
+  }
+
+  componentDidMount() {
+    const { maxHeight } = this.props;
+    if (maxHeight) {
+      this.addBorderBottom();
+    }
+  }
+
+  setEditorContent = (ref) => {
+    this.editorContent = ref;
+  }
+
   private handleSpinnerComplete() {}
+
+  private addBorderBottom = () => {
+    const { maxHeight } = this.props;
+    if (maxHeight) {
+      let { maxHeightStyle } = this.state;
+      if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}` };
+      } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: null };
+      }
+      this.setState({ maxHeightStyle });
+    }
+  }
 
   render() {
     const {
@@ -111,8 +155,9 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       pluginStateTextFormatting,
       saveDisabled,
       popupsMountPoint,
-      popupsBoundariesElement
+      popupsBoundariesElement,
     } = this.props;
+    const { maxHeightStyle } = this.state;
     const iconAfter = saveDisabled
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
@@ -182,7 +227,12 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           <span style={{ flexGrow: 1 }} />
           {feedbackFormUrl ? <ToolbarFeedback packageVersion={packageVersion} packageName={packageName} /> : null}
         </Toolbar>
-        <Content>
+        <Content
+          innerRef={this.setEditorContent}
+          style={maxHeightStyle}
+          onPaste={this.addBorderBottom}
+          onKeyDown={this.addBorderBottom}
+        >
           {this.props.children}
 
           {pluginStateHyperlink && !disabled ?

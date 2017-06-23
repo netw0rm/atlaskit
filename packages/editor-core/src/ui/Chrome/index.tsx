@@ -49,6 +49,7 @@ export interface Props {
   saveDisabled?: boolean;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  maxHeight: number | undefined;
 }
 
 export default class Chrome extends PureComponent<Props, {}> {
@@ -83,6 +84,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         packageName={props.packageName}
         popupsBoundariesElement={props.popupsBoundariesElement}
         popupsMountPoint={props.popupsMountPoint}
+        maxHeight={props.maxHeight}
       >
         {props.children}
       </ChromeExpanded>

@@ -284,7 +284,10 @@ export default class Editor extends PureComponent<Props, State> {
         }
       });
 
-      applyDevTools(editorView);
+      if (this.props.devTools) {
+        applyDevTools(editorView);
+      }
+
       editorView.focus();
 
       this.setState({ editorView });

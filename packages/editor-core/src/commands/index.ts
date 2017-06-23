@@ -120,10 +120,14 @@ export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
     state = view.state;
 
     const { $from, $to } = state.selection;
-    const grandgrandParent = $from.node(-2);
+    const parent = $from.node(-2);
+    const grandgrandParent = $from.node(-3);
     const isRangeOfSingleType = isRangeOfType(state.doc, $from, $to, state.schema.nodes[listType]);
 
-    if (grandgrandParent && grandgrandParent.type === state.schema.nodes[listType] && isRangeOfSingleType) {
+    if ((parent && parent.type === state.schema.nodes[listType] ||
+      grandgrandParent && grandgrandParent.type === state.schema.nodes[listType]) &&
+      isRangeOfSingleType
+    ) {
       // Untoggles list
       return liftListItems()(state, dispatch);
     } else {
@@ -164,6 +168,8 @@ export function liftListItems(): Command {
     const { $from, $to } = state.selection;
 
     tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
+      // Following condition will ensure that block types paragraph, heading, codeBlock, blockquote, panel are lifted.
+      // isTextblock is true for paragraph, heading, codeBlock.
       if (node.isTextblock || node.type.name === 'blockquote' || node.type.name === 'panel') {
         const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
         const range = sel.$from.blockRange(sel.$to);

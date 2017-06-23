@@ -2,27 +2,23 @@ import * as React from 'react';
 import {AppCardModel, AppCardAction} from '../model';
 import {HeaderView} from './HeaderView';
 import {DescriptionView} from './DescriptionView';
-import {MetaView} from './MetaView';
+import {DetailsView} from './DetailsView';
 import {ContextView} from './ContextView';
 import {ActionsView} from './ActionsView';
-import {Link, Card, Preview, CardContent, Collapsible, Footer} from '../styled/AppCardView';
+import {Card, Preview, CardContent, Footer} from '../styled/AppCardView';
 
 const maxCardWidth = 744;
 const previewWidth = 116;
 
 export interface AppCardViewProps {
   model: AppCardModel;
-  isCollapsed?: boolean;
   onClick?: () => void;
-  onCollapseClick?: () => void;
-  onContextClick?: () => void;
   onActionClick?: (action: AppCardAction) => void;
 }
 
 export class AppCardView extends React.Component<AppCardViewProps, {}> {
 
   static defaultProps = {
-    isCollapsed: true
   };
 
   get isDarkAppearance() {
@@ -44,16 +40,14 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderHeader() {
-    const {model: {title: {text, user}, background, collapsible}, isCollapsed, onCollapseClick} = this.props;
+    const {model: {title: {text, user}, background, description, details, context, actions}} = this.props;
     return (
       <HeaderView
         title={text}
         user={user}
         isInversed={Boolean(background)}
-        collapsible={collapsible}
-        isCollapsed={isCollapsed}
-        onCollapseClick={onCollapseClick}
         contentMaxWidth={this.contentMaxWidth}
+        hasSiblings={Boolean(description || details || context || actions)}
       />
     );
   }
@@ -66,27 +60,25 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
     return <DescriptionView title={description.title} text={description.text} contentMaxWidth={this.contentMaxWidth}/>;
   }
 
-  renderMeta() {
+  renderDetails() {
     const {model: {details}} = this.props;
     if (!details) {
       return null;
     }
-    return <MetaView meta={details} isInversed={this.isDarkAppearance} contentMaxWidth={this.contentMaxWidth}/>;
+    return <DetailsView meta={details} isInversed={this.isDarkAppearance} contentMaxWidth={this.contentMaxWidth}/>;
   }
 
   renderContext() {
-    const {model: {context}, onContextClick} = this.props;
+    const {model: {context}} = this.props;
     if (!context) {
       return null;
     }
-    const {icon, text, link} = context;
+    const {icon, text} = context;
     return (
       <ContextView
         icon={icon}
         text={text}
-        link={link && link.url}
         isInversed={this.isDarkAppearance}
-        onContextClick={onContextClick}
       />
     );
   }
@@ -111,7 +103,7 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
     return (
       <div>
         {this.renderDescription()}
-        {this.renderMeta()}
+        {this.renderDetails()}
         {context || actions ? (
           <Footer>
             {this.renderContext()}
@@ -122,45 +114,17 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
     );
   }
 
-  renderCollapsibleBody() {
-    const {model: {collapsible}, isCollapsed} = this.props;
-
-    if (collapsible) {
-      return (
-        <Collapsible isCollapsed={isCollapsed}>
-          {this.renderBody()}
-        </Collapsible>
-      );
-    }
-
-    return this.renderBody();
-  }
-
-  renderCard(): JSX.Element {
+  render(): JSX.Element {
     const {model: {background, preview}, onClick} = this.props;
     return (
       <Card background={background && background.url} onClick={onClick}>
         {this.renderPreview()}
         <CardContent hasPreview={Boolean(preview)}>
           {this.renderHeader()}
-          {this.renderCollapsibleBody()}
+          {this.renderBody()}
         </CardContent>
       </Card>
     );
-  }
-
-  render(): JSX.Element {
-    const {model: {link}} = this.props;
-
-    if (link) {
-      return (
-        <Link href={link.url}>
-          {this.renderCard()}
-        </Link>
-      );
-    }
-
-    return this.renderCard();
   }
 
 }

@@ -30,12 +30,6 @@ import {
   TextSelection,
   PluginKey
 } from '../../src/prosemirror';
-import {
-  nodeViewFactory,
-  ReactEmojiNode,
-  ReactMentionNode,
-  panelNodeView
-} from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
@@ -46,8 +40,6 @@ import {
   MediaProvider,
   MediaState,
   Plugin,
-  ReactMediaGroupNode,
-  ReactMediaNode
 } from '../../src';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
@@ -262,8 +254,8 @@ export default class Editor extends PureComponent<Props, State> {
       const editorState = EditorState.create({
         schema,
         plugins: [
-          ...mentionsPlugins(schema), // mentions and emoji needs to be first
-          ...emojiPlugins(schema),
+          ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
+          ...emojiPlugins(schema, this.providerFactory),
           ...asciiEmojiPlugins(schema, this.state.emojiProvider),
           ...listsPlugins(schema),
           ...clearFormattingPlugins(schema),
@@ -290,23 +282,8 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
-        },
-        nodeViews: {
-          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
-          mediaGroup: nodeViewFactory(
-            this.providerFactory,
-            {
-              mediaGroup: ReactMediaGroupNode,
-              media: ReactMediaNode
-            },
-            true
-          ),
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
-          panel: panelNodeView
         }
       });
-      mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
       if (this.props.devTools) {
         applyDevTools(editorView);

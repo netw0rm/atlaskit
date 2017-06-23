@@ -52,6 +52,14 @@ describe(`${name} - shared functions`, () => {
     });
 
     it('should return 0 if focus is on the last item', () => {
+      expect(getNextFocusable(1, 2)).to.equal(0);
+    });
+
+    it('should return the footer index if on last item and footer is focusable', () => {
+      expect(getNextFocusable(1, 2, true)).to.equal(2);
+    });
+
+    it('should return 0 if focus is on the footer', () => {
       expect(getNextFocusable(2, 2)).to.equal(0);
     });
   });
@@ -61,8 +69,12 @@ describe(`${name} - shared functions`, () => {
       expect(getPrevFocusable(1, 2)).to.equal(0);
     });
 
-    it('should return length if focus is on the first item', () => {
-      expect(getPrevFocusable(0, 2)).to.equal(2);
+    it('should return length - 1 if focus is on the first item (and footer is not focusable)', () => {
+      expect(getPrevFocusable(0, 2)).to.equal(1);
+    });
+
+    it('should return footer index if on first item (and footer is focusable)', () => {
+      expect(getPrevFocusable(0, 2, true)).to.equal(2);
     });
   });
 });

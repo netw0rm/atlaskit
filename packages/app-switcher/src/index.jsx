@@ -11,7 +11,7 @@ import type {
   DropdownItem,
 } from './internal/types';
 
-import getHomeLink from './items/home-link';
+import getTopLinks from './items/top-links';
 import getRecentContainers from './items/recent-containers';
 import getLinkedApplications from './items/linked-applications';
 import getSuggestedApplication from './items/suggested-application';
@@ -24,6 +24,7 @@ export default class AppSwitcher extends Component {
     linkedApplications: LinkedApplications,
     isAnonymousUser: boolean,
     isHomeLinkEnabled: boolean,
+    isSiteAdminLinkEnabled?: boolean,
     suggestedApplication: SuggestedApplication,
     i18n: Translations,
     trigger: Function,
@@ -39,6 +40,7 @@ export default class AppSwitcher extends Component {
     isDropdownOpenInitially: true,
     dropdownOptions: {},
     isHomeLinkEnabled: true,
+    isSiteAdminLinkEnabled: false,
     isLoading: false,
     onAppSwitcherOpen: () => {},
   };
@@ -78,6 +80,7 @@ export default class AppSwitcher extends Component {
       i18n,
       isAnonymousUser,
       isHomeLinkEnabled,
+      isSiteAdminLinkEnabled,
       isLoading,
       recentContainers,
       linkedApplications,
@@ -87,7 +90,7 @@ export default class AppSwitcher extends Component {
     } = this.props;
 
     const dropdownItems = [
-      getHomeLink(i18n, isAnonymousUser, isHomeLinkEnabled),
+      getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
       getLinkedApplications(i18n, isAnonymousUser, linkedApplications),
       getSuggestedApplication(i18n, isAnonymousUser, suggestedApplication,

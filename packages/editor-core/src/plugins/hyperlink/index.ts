@@ -5,7 +5,6 @@ import {
   Mark,
   Node,
   Plugin,
-  PluginKey,
   NodeViewDesc,
   TextSelection,
   Slice,
@@ -15,13 +14,16 @@ import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { normalizeUrl, linkify } from './utils';
 
+import stateKey from './plugin-key';
+export { stateKey };
+
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
 export interface HyperlinkOptions {
   href: string;
   text?: string;
 }
-export type Coordniates = { left: number, right: number, top: number, bottom: number };
+export type Coordniates = { left: number; right: number; top: number; bottom: number };
 interface NodeInfo {
   node: Node;
   startPos: number;
@@ -268,7 +270,6 @@ export class HyperlinkState {
     return !!link && commands.toggleMark(link)(this.state);
   }
 }
-export const stateKey = new PluginKey('hypelinkPlugin');
 
 const plugin = new Plugin({
   props: {

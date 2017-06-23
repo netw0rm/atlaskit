@@ -9,11 +9,11 @@ import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
-import { EmojiState } from '../../plugins/emojis';
+import { EmojiState, stateKey as emojiPluginKey } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
-import { MentionsState } from '../../plugins/mentions';
+import { MentionsState, stateKey as mentionPluginKey } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
@@ -26,6 +26,7 @@ import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
+import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHyperlink from '../ToolbarHyperlink';
@@ -227,16 +228,16 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
 
           {pluginStateMentions && mentionProvider && !disabled ?
             <MentionPicker
-              pluginState={pluginStateMentions}
-              resourceProvider={mentionProvider}
+              editorView={editorView}
+              pluginKey={mentionPluginKey}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsMountPoint={popupsMountPoint}
             /> : null}
 
           {pluginStateEmojis && emojiProvider && !disabled ?
             <EmojiTypeAhead
-              pluginState={pluginStateEmojis}
-              emojiProvider={emojiProvider}
+              pluginKey={emojiPluginKey}
+              editorView={editorView}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsMountPoint={popupsMountPoint}
             /> : null}
@@ -265,7 +266,8 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             </AkButtonGroup>
           </FooterActions>
           <SecondaryToolbar>
-            {pluginStateMentions && !disabled ? <ToolbarMention pluginState={pluginStateMentions} editorView={editorView} /> : null}
+            {pluginStateMentions && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
+            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginState={pluginStateEmojis} editorView={editorView} emojiProvider={emojiProvider} /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
             {pluginStateMedia && !disabled ? <ToolbarMedia pluginState={pluginStateMedia} /> : null}
           </SecondaryToolbar>

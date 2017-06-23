@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import {getCSSUnitValue, toHumanReadableMediaSize} from '../../src/utils';
+import {toHumanReadableMediaSize} from '../../src/utils';
+import {getCSSUnitValue} from '../../src/utils/getCSSUnitValue';
 
 describe('index', () => {
   describe('getCSSUnitValue', () => {

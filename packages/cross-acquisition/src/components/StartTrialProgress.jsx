@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AtlassianLogo } from '@atlaskit/logo';
-import { StartTrialFooter } from '../styled/StartTrial';
+import { StartTrialFooter, ProgressBar } from '../styled/StartTrial';
 
 export default class StartTrialProgress extends Component {
   static propTypes = {
@@ -24,7 +24,12 @@ export default class StartTrialProgress extends Component {
       <ModalDialog
         isOpen
         width="small"
-        header={this.props.productLogo}
+        header={
+          <div>
+            {this.props.productLogo}
+            <ProgressBar>- P R O G R E S S B A R -</ProgressBar>
+          </div>
+        }
         footer={
           <StartTrialFooter>
             <Button onClick={this.handleButtonClick} appearance="primary">Continue</Button>

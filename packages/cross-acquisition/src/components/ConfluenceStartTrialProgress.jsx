@@ -20,16 +20,15 @@ export default class ConfluenceStartTrialProgress extends Component {
     return (
       <StartTrialProgress productLogo={<ConfluenceLogo />}>
         <StartTrialDialog>
-
-          <StartTrialHeader>Who has access</StartTrialHeader>
-          <p><b>All your active users</b> will have access
+          <StartTrialHeader>Who should have access?</StartTrialHeader>
+          <p><b>Everyone in JIRA Software</b> will have
           <ChangeButton>
             <Button onClick={this.handleButtonClick} appearance="link">Change...</Button>
           </ChangeButton>
-            to Confluence</p>
+            access to Confluence.</p>
           <StartTrialProgressDiv>
             <input type="checkbox" id="notifyUsers" name="notify" value="Notify the users" />
-            <InputLabel htmlFor="notifyUsers">Notfiy the users</InputLabel>
+            <InputLabel htmlFor="notifyUsers">Notify these users</InputLabel>
           </StartTrialProgressDiv>
         </StartTrialDialog>
       </StartTrialProgress>

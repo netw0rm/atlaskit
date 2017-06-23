@@ -5,7 +5,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 
 import {CardView, CardAppearance} from '../../../src';
-import {actions} from './utils';
+import {actions} from '@atlaskit/media-test-helpers';
 
 export const createSelectableCards = (appearance: CardAppearance, metadata: MediaItemDetails, mediaItemType: MediaItemType) => {
   const dataURI = mediaItemType === 'file' ? gifDataUri : undefined;

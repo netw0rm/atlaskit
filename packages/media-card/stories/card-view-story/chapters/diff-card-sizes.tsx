@@ -2,7 +2,7 @@ import * as React from 'react';
 import {MediaItemDetails} from '@atlaskit/media-core';
 
 import {CardView, CardAppearance, CardDimensions} from '../../../src';
-import {actions} from './utils';
+import {actions} from '@atlaskit/media-test-helpers';
 
 const dimensions: Array<CardDimensions> = [
   {

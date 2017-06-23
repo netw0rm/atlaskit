@@ -2,19 +2,14 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
-import { CardActionType } from '@atlaskit/media-core';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import { Item } from '@atlaskit/droplist';
+import { menuActions, deleteAction } from '@atlaskit/media-test-helpers';
 
 import { Menu } from '../../src/utils/menu/index';
 import { MeatBallsWrapper, DeleteBtn } from '../../src/utils/menu/styled';
 
 describe('Menu', () => {
-  const menuActions = [
-    {label: 'Open', handler: () => {}},
-    {label: 'Close', handler: () => {}},
-  ];
-  const deleteAction = {type: CardActionType.delete, label: 'Delete', handler: () => {}};
   const animStub = window.cancelAnimationFrame;
   // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
   beforeEach(() => {

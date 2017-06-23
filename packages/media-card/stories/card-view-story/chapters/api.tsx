@@ -6,7 +6,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 
 import {CardView, CardAppearance, CardEvent} from '../../../src';
-import {actions} from './utils';
+import {actions} from '@atlaskit/media-test-helpers';
 
 const clickHandler = (result: CardEvent) => {
   result.event.preventDefault();

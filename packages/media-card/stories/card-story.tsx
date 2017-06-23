@@ -25,7 +25,8 @@ import {
   imageFileId,
   docFileId,
   unknownFileId,
-  errorFileId
+  errorFileId,
+  menuActions
 } from '@atlaskit/media-test-helpers';
 
 import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent, OnSelectChangeFuncResult } from '../src';
@@ -304,11 +305,6 @@ storiesOf('Card', {})
       }
     ];
 
-    // menu
-    const menuActions = [
-      {label: 'Open', handler: () => { action('open')(); }},
-      {label: 'Close', handler: () => { action('close')(); }}
-    ];
     const menuCards = [
       {
         title: 'Small',

@@ -9,6 +9,7 @@ export interface MentionProps {
   providers?: ProviderFactory;
   eventHandlers?: EventHandlers;
   text: string;
+  accessLevel?: string;
 }
 
 export default class MentionItem extends PureComponent<MentionProps, {}> {
@@ -18,12 +19,14 @@ export default class MentionItem extends PureComponent<MentionProps, {}> {
       id,
       providers,
       text,
+      accessLevel,
     } = this.props;
 
     return (
       <Mention
         id={id}
         text={text}
+        accessLevel={accessLevel}
         providers={providers}
         eventHandlers={eventHandlers && eventHandlers.mention}
       />

@@ -24,13 +24,14 @@ export interface State {
 
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   private pickerRef: any;
+  private buttonRef: any;
 
   state: State = {
     isOpen: false,
   };
 
   componentDidMount() {
-    this.state.button = ReactDOM.findDOMNode(this.refs.button) as HTMLElement;
+    this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
     this.props.pluginState.subscribe(this.handlePluginStateChange);
   }
 
@@ -50,6 +51,14 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     this.setState({
       disabled: !pluginState.enabled
     });
+  }
+
+  private handleButtonRef = (ref): void => {
+    if (ref) {
+      this.buttonRef = ref;
+    } else {
+      this.buttonRef = null;
+    }
   }
 
   private onPickerRef = (ref: any) => {
@@ -119,7 +128,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
           disabled={disabled}
           onClick={this.toggleOpen}
           iconBefore={<EmojiIcon label="Emoji" />}
-          ref="button"
+          ref={this.handleButtonRef}
           title="Emoji"
         />
       </Layer>

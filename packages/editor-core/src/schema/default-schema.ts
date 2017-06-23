@@ -20,6 +20,10 @@ export const defaultSchema: Schema<any, any> = createSchema({
     'mediaGroup',
     'hardBreak',
     'emoji',
+    'table',
+    'table_cell',
+    'table_header',
+    'table_row',
   ],
   marks: [
     'link',

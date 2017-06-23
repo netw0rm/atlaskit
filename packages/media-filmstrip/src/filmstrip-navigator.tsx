@@ -114,7 +114,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     return (
       <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}>
         {showLeft ? leftArrow : undefined}
-        <FilmStripListWrapper>
+        <FilmStripListWrapper className="filmtrip-list-wrapper">
           <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
             {items}
           </FilmStripList>

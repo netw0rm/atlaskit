@@ -39,6 +39,7 @@ export class LazyContent extends Component<LazyContentProps, LazyContentState> {
           {...otherProps}
           throttle={150}
           onContentVisible={this.onContentVisible}
+          wrapperClassName="filmtrip-list-wrapper"
         >
           {children}
         </LazyLoadCard>

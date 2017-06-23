@@ -16,11 +16,13 @@ import {
   findWrapping
 } from '../prosemirror';
 import * as commands from '../commands';
+import JSONSerializer, { JSONDocNode } from '../renderer/json';
 
 export {
   default as ErrorReporter,
   ErrorReportingHandler,
 } from './error-reporter';
+export { JSONDocNode };
 
 function validateNode(node: Node): boolean {
   return false;
@@ -289,11 +291,8 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
   return tr;
 }
 
-export function toJSON(node: Node) {
-  return {
-    version: 1,
-    ...node.toJSON()
-  };
+export function toJSON(node: Node): JSONDocNode {
+  return new JSONSerializer().serializeFragment(node.content);
 }
 
 export function splitCodeBlockAtSelection(state: EditorState<any>) {
@@ -322,7 +321,7 @@ function splitCodeBlockAtSelectionStart(state: EditorState<any>) {
         fromPos = 0;
       }
     }
-    if ( fromPos > 0) {
+    if (fromPos > 0) {
       tr.split($from.start($from.depth) + fromPos, $from.depth);
       if (node.textContent[fromPos - 1] === '\n') {
         tr.delete($from.start($from.depth) + fromPos - 1, $from.start($from.depth) + fromPos);

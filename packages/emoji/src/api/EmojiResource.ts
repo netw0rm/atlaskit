@@ -341,7 +341,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   }
 
   getAsciiMap(): Promise<Map<string, EmojiDescription>> {
-    return Promise.resolve(this.emojiRepository.getAsciiMap());
+    if (this.isLoaded()) {
+      return Promise.resolve(this.emojiRepository.getAsciiMap());
+    }
+    return this.retryIfLoading(() => this.getAsciiMap(), new Map());
   }
 
   recordSelection(id: EmojiId): Promise<any> {

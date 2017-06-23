@@ -8,7 +8,7 @@ import TagGroup from '@atlaskit/tag-group';
 
 import { MultiSelectStateless } from '../../src';
 import { SelectWrapper } from '../../src/styled/Stateless';
-import NoMatches from '../../src/styled/Group';
+import NoMatches from '../../src/styled/NoMatch';
 import { TriggerDiv } from '../../src/styled/Trigger';
 import Footer from '../../src/components/Footer';
 import FooterDiv from '../../src/styled/Footer';
@@ -58,12 +58,27 @@ describe(`${name} - stateless`, () => {
       expect(mount(<MultiSelectStateless filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).to.equal(1);
     });
 
-    it('should NOT render Footer if shouldAllowCreateItem is false', () => {
+    it('should NOT render Footer if shouldAllowCreateItem is false and footer is not passed', () => {
       expect(mount(<MultiSelectStateless filterValue="test" isOpen />).find(FooterDiv).length).to.equal(0);
     });
 
     it('should render search text and label in the footer when shouldAllowCreateItem is true', () => {
       const wrapper = mount(<MultiSelectStateless createNewItemLabel="new" filterValue="test" isOpen shouldAllowCreateItem />);
+      expect(wrapper.find(Footer).text()).to.equal('test (new)');
+    });
+
+    it('should render Footer if footer`s content prop is passed', () => {
+      const footer = {
+        content: 'footer',
+      };
+      const wrapper = mount(<MultiSelectStateless footer={footer} isOpen />);
+      expect(wrapper.find(Footer).length).to.equal(1);
+      expect(wrapper.find(Footer).text()).to.equal('footer');
+    });
+
+    it('if shouldAllowCreateItem and footer are passed at the same time, "new item" footer has the priority and general footer shouldnt be rendered', () => {
+      const footer = <div>footer</div>;
+      const wrapper = mount(<MultiSelectStateless createNewItemLabel="new" filterValue="test" footer={footer} isOpen shouldAllowCreateItem />);
       expect(wrapper.find(Footer).text()).to.equal('test (new)');
     });
 

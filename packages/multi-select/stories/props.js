@@ -26,11 +26,27 @@ const tagPropDescriptions = {
   elemBefore: 'Used to render content before the text of the Tag (usually used for Avatars or Icons)',
 };
 
+const footerPropDescriptions = {
+  content: 'Text to show in the footer',
+  elemBefore: 'An element (usualy an icon) to show before the text',
+  onActivate: 'Handler to be called when footer is clicked or Enter is pressed',
+  appearance: 'Appearance of the footer. Can be either "default" or "primary".',
+};
+
+const footerPropTypes = {
+  content: 'string',
+  elemBefore: 'node',
+  onActivate: 'func',
+  appearance: 'string',
+};
+
 /* eslint-disable import/prefer-default-export */
 export {
   itemPropDescriptions,
   itemPropTypes,
   itemPropDefault,
   tagPropDescriptions,
+  footerPropDescriptions,
+  footerPropTypes,
 };
 /* eslint-enable import/prefer-default-export */

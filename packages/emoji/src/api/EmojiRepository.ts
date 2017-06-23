@@ -1,10 +1,52 @@
-import { Search, UnorderedSearchIndex } from 'js-search';
+import { ITokenizer, Search, UnorderedSearchIndex } from 'js-search';
+
+import * as XRegExp from 'xregexp/src/xregexp'; // Not using 'xregexp' directly to only include what we use
+import * as XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
+import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
+import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
 import { customCategory } from '../constants';
 import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 import CategorySelector from '../components/picker/CategorySelector';
+
+XRegExpUnicodeBase(XRegExp);
+XRegExpUnicodeScripts(XRegExp);
+XRegExpUnicodeCategories(XRegExp);
+
+// \p{Han} => each chinese character is a separate token
+// \p{L}+[\p{Mn}|']*\p{L} => consecutive letters, including non spacing mark and apostrophe are a single token
+const tokenizerRegex = XRegExp.cache('\\p{Han}|\\p{L}+[\\p{Mn}|\']*\\p{L}*', 'gi');
+
+type Token = {
+  token: string;
+  start: number;
+};
+
+// FS-1097 - duplicated in mentions - extract at some point into a shared library
+class Tokenizer implements ITokenizer {
+  public static tokenize(text): string[] {
+    return this.tokenizeAsTokens(text).map(token => token.token);
+  }
+
+  public static tokenizeAsTokens(text): Token[] {
+    let match;
+    let tokens: Token[] = [];
+    tokenizerRegex.lastIndex = 0;
+    while ((match = tokenizerRegex.exec(text)) !== null) {
+      if (match[0]) {
+        tokens.push({
+          token: match[0],
+          start: match.index
+        });
+      }
+    }
+
+    return tokens;
+  }
+}
+
 
 export interface EmojiSearchResult {
   emojis: EmojiDescription[];
@@ -52,6 +94,26 @@ const findByKey = (map: EmojiByKey, key: any): OptionalEmojiDescription => {
   return undefined;
 };
 
+type SplitQuery = {
+  nameQuery: string;
+  asciiQuery: string;
+};
+
+const splitQuery = (query = ''): SplitQuery => {
+  const isColonQuery = query.indexOf(':') === 0;
+  if (isColonQuery) {
+    return {
+      nameQuery: query.slice(1),
+      asciiQuery: query,
+    };
+  }
+
+  return {
+    nameQuery: query,
+    asciiQuery: '',
+  };
+};
+
 const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
   if (options) {
     if (options.limit && options.limit > 0) {
@@ -95,6 +157,7 @@ export default class EmojiRepository {
 
     this.initMaps();
     this.fullSearch = new Search('id');
+    this.fullSearch.tokenizer = Tokenizer;
     this.fullSearch.searchIndex = new UnorderedSearchIndex();
     this.fullSearch.addIndex('name');
     this.fullSearch.addIndex('shortName');
@@ -115,10 +178,13 @@ export default class EmojiRepository {
    */
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
-    if (query) {
-      filteredEmoji = this.fullSearch.search(query);
-      this.sortFiltered(filteredEmoji, query);
-      filteredEmoji = this.withAsciiMatch(query, filteredEmoji);
+    const { nameQuery, asciiQuery } = splitQuery(query);
+    if (nameQuery) {
+      filteredEmoji = this.fullSearch.search(nameQuery);
+      this.sortFiltered(filteredEmoji, nameQuery);
+      if (asciiQuery) {
+        filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
+      }
     } else {
       filteredEmoji = this.emojis;
     }

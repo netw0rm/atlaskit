@@ -1,4 +1,5 @@
 import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
+import fixDoc from './fix-doc';
 import {
   isSchemaWithLists,
   isSchemaWithMentions,
@@ -16,7 +17,7 @@ import * as namedColors from 'css-color-names';
 const convertedNodes = new WeakMap();
 
 export default function parse(html: string, schema: JIRASchema) {
-  const dom = parseHtml(html).querySelector('body')!;
+  const dom = fixDoc(parseHtml(html)).querySelector('body')!;
   const nodes = bfsOrder(dom);
 
   // JIRA encodes empty content as a single nbsp
@@ -154,6 +155,23 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           return null;
         } else if (node.className.match('code-')) { // Removing spans with syntax highlighting from JIRA
           return null;
+        } else if (isMedia(node)) {
+          const dataNode = node.querySelector('[data-media-services-id]');
+          if (dataNode && dataNode instanceof HTMLElement) {
+            const {
+              mediaServicesId: id,
+              mediaServicesType: type,
+              mediaServicesCollection: collection = '',
+              attachmentName, attachmentType,
+              fileName, displayType
+            } = dataNode.dataset;
+
+            return schema.nodes.media.create({
+              id, type, collection,
+              __fileName: attachmentName || fileName,
+              __displayType: attachmentType || displayType || 'thumbnail',
+            });
+          }
         }
         break;
 
@@ -175,6 +193,24 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
       case 'HR':
         return schema.nodes.rule.createChecked();
       case 'P':
+        if (node.firstChild && (isMedia(node.firstChild))) {
+          // Filter out whitespace text nodes
+          const mediaContent: Array<PMNode> = [];
+          let hasNonMediaChildren = false;
+          content.forEach(child => {
+            if (child.type === schema.nodes.media) {
+              mediaContent.push(child);
+            }
+            else if (!(child.isText && /^\s*$/.test(child.text || ''))){
+              hasNonMediaChildren = true;
+            }
+          });
+          if (hasNonMediaChildren) {
+            return schema.nodes.paragraph.createChecked({}, content);
+          }
+          return schema.nodes.mediaGroup.createChecked({}, Fragment.fromArray(mediaContent));
+        }
+
         return schema.nodes.paragraph.createChecked({}, content);
     }
 
@@ -317,4 +353,22 @@ function getValidColor(color: string | null): string | null {
   }
 
   return color;
+}
+
+function getNodeName(node: Node): string {
+  return node.nodeName.toUpperCase();
+}
+
+function isMedia(node: Node): boolean {
+  if (node && node instanceof HTMLElement) {
+    if (node.parentNode && getNodeName(node.parentNode) === 'P') {
+      if (getNodeName(node) === 'SPAN') {
+        return !!node.querySelector(
+          'a > jira-attachment-thumbnail > img[data-attachment-type="thumbnail"], ' +
+          'a[data-attachment-type="file"]'
+        );
+      }
+    }
+  }
+  return false;
 }

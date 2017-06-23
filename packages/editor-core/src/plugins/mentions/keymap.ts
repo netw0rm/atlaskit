@@ -1,12 +1,13 @@
 import { Schema, keymap, Plugin } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
-import { MentionsState, stateKey } from './';
+import { MentionsState } from './';
+import pluginKey from './plugin-key';
 
 export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
 
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, (state: any, dispatch) => {
-    const mentionsPlugin = stateKey.getState(state) as MentionsState;
+    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
       return false;
     }
@@ -15,7 +16,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
   }, list);
 
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, (state: any, dispatch) => {
-    const mentionsPlugin = stateKey.getState(state) as MentionsState;
+    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
       return false;
     }
@@ -24,7 +25,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
   }, list);
 
   keymaps.bindKeymapWithCommand(keymaps.enter.common!, (state: any, dispatch) => {
-    const mentionsPlugin = stateKey.getState(state) as MentionsState;
+    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
       return false;
     }
@@ -33,7 +34,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
   }, list);
 
   keymaps.bindKeymapWithCommand(keymaps.tab.common!, (state: any, dispatch) => {
-    const mentionsPlugin = stateKey.getState(state) as MentionsState;
+    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
       return false;
     }
@@ -42,7 +43,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
   }, list);
 
   keymaps.bindKeymapWithCommand(keymaps.escape.common!, (state: any, dispatch) => {
-    const mentionsPlugin = stateKey.getState(state) as MentionsState;
+    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
       return false;
     }
@@ -51,7 +52,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
   }, list);
 
   keymaps.bindKeymapWithCommand(keymaps.space.common!, (state: any, dispatch) => {
-    const mentionsPlugin = stateKey.getState(state) as MentionsState;
+    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
       return false;
     }

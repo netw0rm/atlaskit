@@ -26,6 +26,7 @@ export interface MentionDescription {
   lozenge?: string;
   presence?: Presence;
   accessLevel?: string;
+  weight?: number;
 }
 
 export interface OnMentionEvent {

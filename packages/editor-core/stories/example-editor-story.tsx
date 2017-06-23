@@ -5,14 +5,13 @@ import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/col
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-test';
 
 import Editor from './editor';
 import { Content } from './styles';
 import { name } from '../package.json';
 import * as v1schema from '../src/json-schema/v1.json';
 import imageUploadHandler from '../stories/imageUpload/handler';
-import { resourceProvider, resourceProvider2 } from './mentions/story-data';
 import { toJSON } from '../src/utils';
 import { storyMediaProviderFactory } from '../src/test-helper';
 
@@ -29,14 +28,14 @@ const SAVE_ACTION = () => action('Save')();
 const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 const mentionProvider1 = new Promise<any>(resolve => {
-  resolve(resourceProvider);
+  resolve(mentionData.mentionStoryData.resourceProvider);
 });
 
 const mentionProvider2 = new Promise<any>(resolve => {
-  resolve(resourceProvider2);
+  resolve(mentionData.mentionStoryData.resourceProvider2);
 });
 
-const emojiProvider1 = emojiData.emojiStoryData.getEmojiResource();
+const emojiProvider1 = emojiData.emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
 
 interface Props {
   onChange: any;

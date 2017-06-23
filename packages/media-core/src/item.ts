@@ -1,6 +1,4 @@
 import { MediaType } from './mediaTypes';
-import { TrelloBoardLinkApp } from './trello';
-
 export type MediaItemType = 'file' | 'link';
 
 export type MediaItem = FileItem | LinkItem;
@@ -56,7 +54,7 @@ export interface Resources {
   image?: Resource;
   file?: Resource;
   player?: Resource;
-  app?: LinkApp;
+  app?: any; // FIXME
 }
 
 export interface Resource {
@@ -68,4 +66,3 @@ export interface Resource {
   html?: string;
 }
 
-export type LinkApp = TrelloBoardLinkApp;

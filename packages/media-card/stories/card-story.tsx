@@ -3,6 +3,10 @@ import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import Button from '@atlaskit/button';
 import FieldText from '@atlaskit/field-text';
+import * as sinon from 'sinon';
+import {Observable} from 'rxjs';
+import 'rxjs/add/observable/of';
+
 import {
   StoryList,
   Matrix,
@@ -23,11 +27,13 @@ import {
   imageFileId,
   docFileId,
   unknownFileId,
-  errorFileId
+  errorFileId,
+  fakeContext
 } from '@atlaskit/media-test-helpers';
 
 import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent, OnSelectChangeFuncResult } from '../src';
 import { SelectableCard } from './utils/selectableCard';
+import smartCardJson from './smart-card';
 
 const context = createStorybookContext();
 
@@ -437,4 +443,39 @@ storiesOf('Card', {})
         </div>
       </div>
     );
-  });
+  })
+  .add('Smart', () => {
+
+    // mock the context to return data for a smart-card
+    const mockContext = fakeContext({
+      getMediaItemProvider: {observable: sinon.stub().returns(Observable.of(smartCardJson))}
+    });
+    const provider = mockContext.getMediaItemProvider('abcd', 'link', 'foobar');
+    provider.observable().subscribe(() => {/* noop */});
+
+    const identifier: MediaIdentifier = {
+      mediaItemType: 'link',
+      id: 'abcd',
+      collectionName: 'foobar'
+    };
+
+    return (
+      <div>
+        <h1 style={{margin: '10px 20px'}}>Link cards</h1>
+        <div style={{margin: '20px 40px'}}>
+          <h3>Standard</h3>
+          <StoryList>
+          {[
+            {
+              title: 'Public Trello',
+              content: <Card identifier={identifier} context={mockContext} />
+            }
+          ]}
+          </StoryList>
+
+
+        </div>
+      </div>
+    );
+  })
+  ;

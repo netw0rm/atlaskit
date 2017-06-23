@@ -4,6 +4,8 @@ import {Observable, Subscription} from 'rxjs';
 import {MediaItemType, MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardStatus} from '..';
+import {isLinkDetails} from '../utils/isLinkDetails';
+import {AppCardModel} from '../app';
 import {Provider} from './card';
 import {CardView} from './cardView';
 import {withDataURI} from './withDataURI';
@@ -55,11 +57,11 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   observable = (props: MediaCardProps): Observable<FileDetails | LinkDetails | UrlPreview> => {
     const {provider} = props;
     return provider.observable()
-      .map((result: MediaItem | UrlPreview) => {
-        if (this.isMediaItem(result)) {
-          return result.details;
+      .map((response: MediaItem | UrlPreview) => {
+        if (this.isMediaItem(response)) {
+          return response.details;
         } else {
-          return result;
+          return response;
         }
       })
     ;
@@ -124,6 +126,18 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   render() {
     const {mediaItemType, provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
     const {metadata, status} = this.state;
+
+    if (isLinkDetails(metadata) && metadata && metadata.resources && metadata.resources.app) {
+      return (
+        <CardViewWithDataURI
+          {...otherProps}
+          dataURIService={dataURIService}
+          status={status}
+          metadata={metadata.resources.app}
+          mediaItemType={'app'}
+        />
+      );
+    }
 
     return (
       <CardViewWithDataURI

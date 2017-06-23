@@ -3,12 +3,6 @@ import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
 import * as React from 'react';
 import { name } from '../package.json';
-import schema from './schema';
-
-import {
-  renderDocument,
-  ReactSerializer,
-} from '../src/renderer';
 
 import {
   Code,
@@ -36,6 +30,7 @@ import {
 
 import { EmojiProps } from '../src/renderer/react/nodes/emoji';
 import ProviderFactory from '../src/providerFactory';
+import Renderer from '../src/ui/Renderer';
 import { document } from './story-data';
 
 const mentionProvider = Promise.resolve({
@@ -71,14 +66,18 @@ storiesOf(name, module)
 
     return (
       <div>
-        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema, providerFactory, eventHandlers), schema)}
+        <Renderer
+          document={document}
+          eventHandlers={eventHandlers}
+          dataProviders={providerFactory}
+        />
       </div>
     );
   })
   .add('renderer without providers', () => {
     return (
       <div>
-        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema), schema)}
+        <Renderer document={document}/>
       </div>
     );
   })

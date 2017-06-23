@@ -40,22 +40,35 @@ export interface Props {
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
+  private providerFactory: ProviderFactory;
+
+  constructor(props: Props) {
+    super(props);
+
+    const {
+      emojiProvider,
+      mediaProvider,
+      mentionProvider,
+    } = props;
+
+    this.providerFactory = new ProviderFactory();
+    this.providerFactory.setProvider('emojiProvider', emojiProvider);
+    this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider('mentionProvider', mentionProvider);
+  }
+
   render() {
     const {
       document,
-      emojiProvider,
       eventHandlers,
-      mediaProvider,
-      mentionProvider,
       schema,
     } = this.props;
 
-    const providers = new ProviderFactory();
-    providers.setProvider('emojiProvider', emojiProvider);
-    providers.setProvider('mediaProvider', mediaProvider);
-    providers.setProvider('mentionProvider', mentionProvider);
-
-    const serializer = new ReactSerializer(providers, eventHandlers);
+    const serializer = new ReactSerializer(this.providerFactory, eventHandlers);
     return renderDocument(document, serializer, schema || defaultSchema);
+  }
+
+  componentWillUnmount() {
+    this.providerFactory.destroy();
   }
 }

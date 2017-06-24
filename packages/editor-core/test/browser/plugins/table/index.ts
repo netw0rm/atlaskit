@@ -3,7 +3,8 @@ import * as sinon from 'sinon';
 import tablePlugin from '../../../../src/plugins/table';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
-  createEvent, setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, thEmpty, table, tr, td, tdEmpty, tdCursor
+  createEvent, setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, thEmpty, table, tr, td,
+  tdEmpty, tdCursor, code_block, code
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -118,6 +119,24 @@ describe('table plugin', () => {
         plugin.props.onFocus!(editorView, event);
         expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
         expect(editorView.state.doc).to.deep.equal(doc(tableNode));
+      });
+    });
+
+    context('when the cursor is inside a codeblock', () => {
+      it('it should not create a new table and return false', () => {
+        const node = code_block()('{<>}');
+        const { pluginState, editorView } = editor(doc(node));
+        expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
+        expect(editorView.state.doc).to.deep.equal(doc(node));
+      });
+    });
+
+    context('when the cursor is inside inline code', () => {
+      it('it should not create a new table and return false', () => {
+        const node = p(code('te{<>}xt'));
+        const { pluginState, editorView } = editor(doc(node));
+        expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
+        expect(editorView.state.doc).to.deep.equal(doc(node));
       });
     });
 

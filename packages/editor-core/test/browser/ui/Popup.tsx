@@ -182,18 +182,34 @@ describe('Popup', () => {
         scrollTop: 0,
         scrollLeft: 0
       };
+
       const popup: any = {
         offsetParent: body
       };
 
+      function insertCss(code) {
+        const style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = code;
+        document.getElementsByTagName('head')[0].appendChild( style );
+        return style;
+      }
+
       let scrollParent;
       let oldMargin;
+      let style;
       beforeEach(() => {
         scrollParent = document.createElement('div');
+        scrollParent.className = 'no-scrollbars';
         scrollParent.style.overflow = 'scroll';
         scrollParent.style.position = 'relative';
         scrollParent.style.height = '300px';
         scrollParent.style.width = '500px';
+        style = insertCss(`
+          .no-scrollbars::-webkit-scrollbar {
+            display: none;
+          }
+        `);
 
         oldMargin = document.body.style.margin;
         document.body.style.margin = '0';
@@ -202,6 +218,7 @@ describe('Popup', () => {
 
       afterEach(() => {
         scrollParent.parentElement.removeChild(scrollParent);
+        style.parentElement.removeChild(style);
         document.body.style.margin = oldMargin;
       });
 

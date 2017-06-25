@@ -1,10 +1,9 @@
 export { EmojiProvider, EmojiResource } from '@atlaskit/emoji';
 export { MediaProvider } from '@atlaskit/media-core';
-import { CardEvent } from '@atlaskit/media-card';
 export { MentionProvider, MentionResource } from '@atlaskit/mention';
 
 import { EmojiProvider } from '@atlaskit/emoji';
-import { MediaProvider } from '@atlaskit/media-core';
+import { MediaProvider, CardEventHandler } from '@atlaskit/media-core';
 import { MentionProvider } from '@atlaskit/mention';
 import { PureComponent, SyntheticEvent } from 'react';
 
@@ -17,7 +16,6 @@ import {
 import { defaultSchema } from '../../schema';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
-export type CardEventClickHandler = (result: CardEvent) => void;
 
 export interface MentionEventHandlers {
   onClick?: MentionEventHandler;
@@ -28,7 +26,7 @@ export interface MentionEventHandlers {
 export interface EventHandlers {
   mention?: MentionEventHandlers;
   media?: {
-    onClick?: CardEventClickHandler;
+    onClick?: CardEventHandler;
   };
 }
 

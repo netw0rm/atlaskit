@@ -4,6 +4,7 @@ import {
   CardEvent,
   CardStatus,
   CardView,
+  CardDimensions,
   MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
@@ -13,20 +14,22 @@ import {
   ContextFactory,
   Context,
   CardDelete,
+  CardClick,
   CardEventHandler,
   FileDetails,
   MediaProvider,
   MediaState,
   UrlPreview
 } from '@atlaskit/media-core';
-import { MediaPluginState } from '../../plugins/media';
 
 import { MediaAttributes } from '../../schema';
-import { EditorView, mediaStateKey } from '../../index';
+import { EditorView } from '../../index';
 
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
+  cardDimensions?: CardDimensions;
+  onClick?: CardEventHandler;
   onDelete?: CardEventHandler;
 }
 
@@ -71,7 +74,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
+  }
 
+  componentWillMount() {
     const { mediaProvider } = this.props;
 
     if (mediaProvider) {
@@ -90,19 +95,15 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   public componentWillUnmount() {
     this.destroyed = true;
 
-    const { editorView, id } = this.props;
+    const { id } = this.props;
+    const { mediaProvider } = this.state;
 
-    if (!editorView) {
-      return;
+    if (mediaProvider) {
+      const { stateManager } = mediaProvider;
+      if (stateManager) {
+        stateManager.unsubscribe(id, this.handleMediaStateChange);
+      }
     }
-
-    const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
-
-    if (!pluginState) {
-      return;
-    }
-
-    pluginState.stateManager.unsubscribe(id, this.handleMediaStateChange);
   }
 
   render() {
@@ -124,7 +125,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderLink() {
     const { mediaProvider, viewContext } = this.state;
-    const { id, collection, onDelete } = this.props;
+    const { id, collection, cardDimensions, onDelete } = this.props;
     const url = this.getLinkUrlFromId(id);
 
     if ( !mediaProvider || !viewContext ) {
@@ -139,6 +140,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         status="loading"
         mediaItemType="link"
         metadata={previewDetails}
+        dimensions={cardDimensions}
 
         // SharedCardProps
         onClick={this.handleLinkCardViewClick}
@@ -159,6 +161,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     return (
       <Card
         context={viewContext}
+        dimensions={cardDimensions}
         identifier={id ? mediaIdentifier : urlPreviewIdentifier}
         actions={[ CardDelete(onDelete!) ]}
       />
@@ -167,12 +170,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderFile() {
     const { mediaProvider, viewContext } = this.state;
-    const { id } = this.props;
+    const { id, cardDimensions } = this.props;
 
     if ( !mediaProvider || !viewContext ) {
       return <CardView
         status="loading"
         mediaItemType="file"
+        dimensions={cardDimensions}
       />;
     }
 
@@ -185,17 +189,18 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderPublicFile() {
     const { viewContext } = this.state;
-    const { collection, id, onDelete } = this.props;
+    const { cardDimensions, collection, id, onDelete, onClick } = this.props;
 
     return (
       <Card
         context={viewContext!}
+        dimensions={cardDimensions}
         identifier={{
           id,
           mediaItemType: 'file',
           collectionName: collection
         }}
-        actions={[ CardDelete(onDelete!) ]}
+        actions={[ CardDelete(onDelete!), CardClick(onClick!) ]}
         selectable={false}
       />
     );
@@ -258,43 +263,33 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     this.setState(newState);
   }
 
-  private handleMediaProvider = (mediaProvider: MediaProvider) => {
-    const { editorView, id } = this.props;
+  private handleMediaProvider = async (mediaProvider: MediaProvider) => {
+    const { id } = this.props;
 
-    if (!editorView) {
+    if (this.destroyed) {
       return;
+    }
+
+    this.setState({ mediaProvider: mediaProvider });
+
+    const { stateManager } = mediaProvider;
+    if (stateManager) {
+      const mediaState = stateManager.getState(id);
+
+      stateManager.subscribe(id, this.handleMediaStateChange);
+      this.setState({ mediaProvider, ...mediaState });
+    }
+
+    let context = await mediaProvider.viewContext;
+    if ('clientId' in (context as ContextConfig)) {
+      context = ContextFactory.create(context as ContextConfig);
     }
 
     if (this.destroyed) {
       return;
     }
 
-    const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
-
-    if (!pluginState) {
-      return;
-    }
-
-    const { stateManager } = pluginState;
-    const mediaState = stateManager.getState(id);
-
-    stateManager.subscribe(id, this.handleMediaStateChange);
-    this.setState({ mediaProvider, ...mediaState });
-
-    mediaProvider.viewContext.then((context: ContextConfig | Context) => {
-      if (this.destroyed) {
-        return;
-      }
-
-      if ('clientId' in (context as ContextConfig)) {
-        context = ContextFactory.create(context as ContextConfig);
-      }
-
-      this.setState({
-        ...this.state,
-        viewContext: context as Context
-      });
-    });
+    this.setState({ viewContext: context as Context });
   }
 
   private getLinkUrlFromId(id: string) {

@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
+import memoizeOne from 'memoize-one';
 import * as physics from '../physics';
 import type { Position } from '../../types';
 
@@ -20,7 +21,7 @@ const isAtOrigin = (point: PositionLike): boolean =>
   point.x === origin.x && point.y === origin.y;
 
 type Props = {|
-  children: (Object) => mixed,
+  children: (Object) => ?Object,
   speed: Speed,
   destination?: Position,
   onMoveEnd?: () => void,
@@ -32,7 +33,12 @@ type DefaultProps = {|
   style: Object,
 |}
 
-const getMovement = (point: Position): ?Object => {
+const getStyle = (isNotMoving: boolean, x: number, y: number): ?Object => {
+  if (isNotMoving) {
+    return null;
+  }
+
+  const point: Position = { x, y };
   // not applying any transforms when not moving
   if (isAtOrigin(point)) {
     return null;
@@ -97,12 +103,12 @@ export default class Movable extends PureComponent {
       // https://github.com/chenglou/react-motion/issues/375
       // $ExpectError - React motion! *fist shake*
       <Motion defaultStyle={origin} style={final} onRest={this.onRest}>
-        {(current: Position) => {
-          const style = {
-            ...(isNotMoving ? {} : getMovement(current)),
-          };
-          return this.props.children(style);
-        }}
+        {(current: Position) =>
+          this.props.children(getStyle(
+            isNotMoving,
+            current.x,
+            current.y
+          ))}
       </Motion>
     );
   }

@@ -13,7 +13,7 @@ import DragHandle from '../../../src/view/drag-handle/drag-handle';
 import Moveable from '../../../src/view/moveable';
 import { DragDropContext } from '../../../src/';
 import type { Position } from '../../../src/types';
-import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapStateToProps } from '../../../src/view/draggable/draggable-types';
+import type { DispatchProps, MapProps, OwnProps } from '../../../src/view/draggable/draggable-types';
 
 class Child extends PureComponent {
   render() {
@@ -224,7 +224,7 @@ const lift = (fn: 'onLift' | 'onKeyLift') => (wrapper: ReactWrapper<any>) => ({
 const mouseLift = lift('onLift');
 const keyLift = lift('onKeyLift');
 
-describe('Draggable', () => {
+describe.only('Draggable', () => {
   let draggingWrapper;
   let notDraggingWrapper;
   let returningHomeWrapper;

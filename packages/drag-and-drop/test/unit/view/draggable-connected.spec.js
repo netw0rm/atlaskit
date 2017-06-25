@@ -125,7 +125,7 @@ const execute = (selector: Function) =>
       provided
     );
 
-describe('Draggable - connected', () => {
+describe.only('Draggable - connected', () => {
   beforeEach(() => {
     sinon.stub(console, 'error');
   });

@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import { getProvided } from '../../theme/util';
+import { entireSizeStyle } from './SearchLabel';
 
 const SearchInput = styled.input`
-  background-color: ${({ theme }) => getProvided(theme).background.tertiary};
-  border: 0;
   color: ${({ theme }) => getProvided(theme).text};
-  flex-grow: 1;
-  font-size: 1.4em;
+  border: 0;
+  border-radius: 0;
   outline: 0;
+  background-color: transparent;
+  font: inherit;
+  ${entireSizeStyle};
 `;
 
 SearchInput.displayName = 'SearchInput';

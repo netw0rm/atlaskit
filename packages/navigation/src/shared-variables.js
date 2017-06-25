@@ -109,6 +109,17 @@ export const item = {
 };
 
 export const search = {
+  placeholder: {
+    color: '#757575',
+  },
+  input: {
+    /**
+     * initially was 1.4em, but that results in a decimal number and causes rendering of subpixels
+     * in chrome. Picked 27 as a value as it will cause search to be exactly on the same spot as
+     * with the value 1.4em in Chrome
+     */
+    height: 27,
+  },
   layout: {
     padding: {
       top: gridSize * 0.5,

@@ -5,6 +5,8 @@ import SearchBox from '../styled/SearchBox';
 import SearchFieldBaseInner from '../styled/SearchFieldBaseInner';
 import SearchInner from '../styled/SearchInner';
 import SearchInput from '../styled/SearchInput';
+import SearchLabel from '../styled/SearchLabel';
+import SearchPlaceholder from '../styled/SearchPlaceholder';
 
 export default class Search extends PureComponent {
   static propTypes = {
@@ -69,16 +71,20 @@ export default class Search extends PureComponent {
             isLoading={this.props.isLoading}
           >
             <SearchFieldBaseInner>
-              <SearchInput
-                autoFocus
-                innerRef={this.setInputRef}
-                onChange={onChange}
-                placeholder={placeholder}
-                spellCheck={false}
-                type="text"
-                value={value}
-                onKeyDown={this.onInputKeyDown}
-              />
+              <SearchLabel>
+                <SearchPlaceholder style={{ opacity: !value ? 1 : 0 }}>
+                  {placeholder}
+                </SearchPlaceholder>
+                <SearchInput
+                  autoFocus
+                  innerRef={this.setInputRef}
+                  onInput={onChange}
+                  spellCheck={false}
+                  type="text"
+                  value={value}
+                  onKeyDown={this.onInputKeyDown}
+                />
+              </SearchLabel>
             </SearchFieldBaseInner>
           </FieldBase>
         </SearchBox>

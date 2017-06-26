@@ -322,16 +322,14 @@ describe('lists', () => {
         const { editorView, pluginState } = editor(doc(ol(li(p('One')), li(p('Two')), li(p('Three'))), p('{<}Four'), p('Five{>}'), p('Six')));
 
         pluginState.toggleBulletList(editorView);
-        expect(editorView.state.doc).not.to.deep.equal(expectedOutputForPreviousList);
-        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two')), li(p('Three'))), ul(li(p('{<}Four')), li(p('Five'))), p('Six')));
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two')), li(p('Three'))), ul(li(p('Four')), li(p('Five'))), p('Six')));
       });
 
       it('should not join with previous list if it\'s not of the same type and selection starts at the end of previous line', () => {
         const { editorView, pluginState } = editor(doc(ol(li(p('One')), li(p('Two')), li(p('Three{<}'))), p('Four'), p('Five{>}'), p('Six'))); // When selection starts on previous (empty) node
 
         pluginState.toggleBulletList(editorView);
-        expect(editorView.state.doc).not.to.deep.equal(expectedOutputForPreviousList);
-        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two')), li(p('Three'))), ul(li(p('{<}Four')), li(p('Five'))), p('Six')));
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two')), li(p('Three'))), ul(li(p('Four')), li(p('Five'))), p('Six')));
       });
 
       it('should join with next list if it\'s of the same type', () => {
@@ -352,7 +350,6 @@ describe('lists', () => {
         const { editorView, pluginState } = editor(doc(p('One'), p('{<}Two'), p('Three{>}'), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
 
         pluginState.toggleBulletList(editorView);
-        expect(editorView.state.doc).not.to.deep.equal(expectedOutputForNextList);
         expect(editorView.state.doc).to.deep.equal(doc(p('One'), ul(li(p('Two')), li(p('Three'))), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
       });
 
@@ -360,7 +357,6 @@ describe('lists', () => {
         const { editorView, pluginState } = editor(doc(p('One{<}'), p('Two'), p('Three{>}'), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
 
         pluginState.toggleBulletList(editorView);
-        expect(editorView.state.doc).not.to.deep.equal(expectedOutputForNextList);
         expect(editorView.state.doc).to.deep.equal(doc(p('One'), ul(li(p('Two')), li(p('Three'))), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
       });
 
@@ -382,7 +378,6 @@ describe('lists', () => {
         const { editorView, pluginState } = editor(doc(ol(li(p('One')), li(p('Two'))), p('{<}Three'), p('Four{>}'), ol(li(p('Five')), li(p('Six')))));
 
         pluginState.toggleBulletList(editorView);
-        expect(editorView.state.doc).not.to.deep.equal(expectedOutputForPreviousAndNextList);
         expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))));
       });
 
@@ -390,7 +385,6 @@ describe('lists', () => {
         const { editorView, pluginState } = editor(doc(ol(li(p('One')), li(p('Two{<}'))), p('Three'), p('Four{>}'), ol(li(p('Five')), li(p('Six')))));
 
         pluginState.toggleBulletList(editorView);
-        expect(editorView.state.doc).not.to.deep.equal(expectedOutputForPreviousAndNextList);
         expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))));
       });
     });

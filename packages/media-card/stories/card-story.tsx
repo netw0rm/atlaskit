@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import Button from '@atlaskit/button';
 import FieldText from '@atlaskit/field-text';
 import {

@@ -1,6 +1,6 @@
 import '!style!css!less!./bitbucket-styles.less';
 import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
-import { action, storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@storybook/react';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { emoji as emojiData } from '@atlaskit/util-data-test';

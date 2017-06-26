@@ -1,4 +1,4 @@
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import * as React from 'react';
 import { Component } from 'react';
 

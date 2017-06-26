@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 import Page from './components/HtmlPage';
 import CustomDrawerNavigation from './components/CustomDrawerNavigation';

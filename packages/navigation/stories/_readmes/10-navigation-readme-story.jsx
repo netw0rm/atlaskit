@@ -1,6 +1,6 @@
 import React from 'react';
 import Readme, { Props, Description, Code } from '@atlaskit/util-readme';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import Navigation from '../../src/index';
 

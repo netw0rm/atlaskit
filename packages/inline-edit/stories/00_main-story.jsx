@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import React from 'react';
 import ModalDialog from '@atlaskit/modal-dialog';
 import MentionInlineEdit from './MentionInlineEdit';

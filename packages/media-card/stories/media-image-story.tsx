@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import styled from 'styled-components';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import {StoryList} from '@atlaskit/media-test-helpers';
 
 import { MediaImage } from '../src/utils/mediaImage';

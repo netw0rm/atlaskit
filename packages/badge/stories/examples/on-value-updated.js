@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 
 import Badge from '@atlaskit/badge';
 

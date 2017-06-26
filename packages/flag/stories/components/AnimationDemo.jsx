@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { action } from '@kadira/storybook';
+import { action } from '@storybook/react';
 import Button from '@atlaskit/button';
 import Flag, { FlagGroup } from '../../src';
 import ExampleNavigation from './ExampleNavigation';

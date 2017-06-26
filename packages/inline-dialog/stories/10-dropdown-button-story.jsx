@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import ButtonActivatedDialog from './examples/ButtonActivatedDialog'; // eslint-disable-line import/no-duplicates

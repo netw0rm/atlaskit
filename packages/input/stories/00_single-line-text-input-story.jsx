@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import React from 'react';
 import SmartFieldBase from 'ak-field-base';
 import SingleLineTextInput from '../src';

@@ -9,9 +9,10 @@
   "scripts": {
     "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "../../node_modules/.bin/nwb build",
-    "storybook": "PACKAGE=multi-select ../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "storybook": "PACKAGE=multi-select ../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
     "test": "mocha --timeout=20000 --colors --require ../../test-setup './test/unit/**/*.js'",
-    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'"
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "umd"

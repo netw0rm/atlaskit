@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 import { Chrome } from '@atlaskit/util-readme';
 import Button from '@atlaskit/button';

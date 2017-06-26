@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import Button from '@atlaskit/button';
 import Layer from '@atlaskit/layer';
 import Navigation from '@atlaskit/navigation';

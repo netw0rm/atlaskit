@@ -1,4 +1,4 @@
-import {storiesOf} from '@kadira/storybook';
+import {storiesOf} from '@storybook/react';
 import * as React from 'react';
 
 import {Avatar, AvatarPickerDialog} from '../../src';

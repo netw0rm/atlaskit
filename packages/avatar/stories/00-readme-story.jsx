@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 import Readme, { Code, Props } from '@atlaskit/util-readme';
 
@@ -31,7 +31,7 @@ storiesOf(name, module)
     <div>
       <Readme
         component={name}
-        description="A component used to convey the online status of a user."
+        description="A component used to convey the online status of a user"
       >
         <Code code={PresenceOverviewExampleRaw}>
           {PresenceOverviewExample}

@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import * as React from 'react';
 import { PureComponent, ReactNode } from 'react';
 import * as Perf from 'react-addons-perf';

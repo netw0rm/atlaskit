@@ -1,5 +1,5 @@
 /* tslint:disable:variable-name */
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import * as React from 'react';
 import styled from 'styled-components';
 import {Slider} from '../../src';

@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import React, { PureComponent } from 'react';
 
 import { name } from '../package.json';

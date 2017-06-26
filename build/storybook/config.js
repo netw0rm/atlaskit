@@ -1,7 +1,7 @@
 /* eslint import/no-dynamic-require: 0 */
 /* eslint global-require: 0 */
 
-import { configure, setAddon } from '@kadira/storybook';
+import { configure, setAddon } from '@storybook/react';
 import '!style-loader!css-loader!ak-css-reset/dist/bundle.css';
 import '!style-loader!css-loader!highlight.js/styles/github.css';
 

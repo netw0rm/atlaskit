@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import { SearchIcon } from '@atlaskit/icon';
 import React, { PureComponent } from 'react';
 import { name } from '../package.json';

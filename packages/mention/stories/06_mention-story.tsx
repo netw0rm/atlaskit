@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { action, storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@storybook/react';
 
 import { name } from '../package.json';
 import Mention from '../src/components/Mention';

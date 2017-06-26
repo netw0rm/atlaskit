@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 import { ArrowleftIcon, AtlassianIcon } from '@atlaskit/icon';
 import { AkCreateDrawer } from '../src/index';

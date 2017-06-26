@@ -1,4 +1,4 @@
-import { action, storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@storybook/react';
 import { Mention } from '@atlaskit/mention';
 import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
 import { emoji as emojiData } from '@atlaskit/util-data-test';

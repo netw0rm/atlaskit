@@ -1,5 +1,5 @@
 import Button from '@atlaskit/button';
-import { action, storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@storybook/react';
 import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as React from 'react';
 import Editor from '../src';

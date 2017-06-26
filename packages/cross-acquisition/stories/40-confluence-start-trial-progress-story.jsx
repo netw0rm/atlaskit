@@ -5,6 +5,6 @@ import { name } from '../package.json';
 import { ConfluenceStartTrialProgress } from '@atlaskit/cross-acquisition';
 
 storiesOf(name, module)
-  .add('ConfluenceStartTrialProgress with...', () => (
+  .add('StartTrialProgress with Confluence provider', () => (
     <ConfluenceStartTrialProgress />
   ));

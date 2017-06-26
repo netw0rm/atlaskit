@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import { AtlassianLogo } from '@atlaskit/logo';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
+import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
+
 import { RequestTrialHeader } from '../styled/RequestTrial';
 
 export default class RequestTrialAccess extends Component {
   static propTypes = {
+    banner: PropTypes.string.isRequired,
     productLogo: PropTypes.element,
     heading: PropTypes.string.isRequired,
-    message: PropTypes.string.isRequired,
+    message: PropTypes.node.isRequired,
 
     onRequestAccessClick: PropTypes.func,
     onCancelClick: PropTypes.func,
@@ -36,7 +39,15 @@ export default class RequestTrialAccess extends Component {
     return (
       <ModalDialog
         isOpen={this.state.isOpen}
-        header={this.props.productLogo}
+        header={
+          <div>
+            <img src={this.props.banner} alt="" />
+            <span><LockFilledIcon
+              label=""
+              size="small"
+            /> Inactive on your site</span>
+          </div>
+        }
         footer={
           <p>
             <Button appearance="primary" onClick={this.props.onRequestAccessClick}>Request access</Button>
@@ -45,8 +56,12 @@ export default class RequestTrialAccess extends Component {
         }
       >
         <div>
+          {this.props.productLogo}
           <RequestTrialHeader>{this.props.heading}</RequestTrialHeader>
-          <p>{this.props.message}</p>
+          {React.isValidElement(this.props.message)
+            ? this.props.message
+            : <p>{this.props.message}</p>
+          }
         </div>
       </ModalDialog>
     );

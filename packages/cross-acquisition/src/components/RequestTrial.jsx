@@ -26,17 +26,42 @@ export default class RequestTrial extends Component {
     onCancelClick: () => {},
   }
 
+  static contextTypes = {
+    crossAcquisition: PropTypes.object,
+  }
+
   state = {
   }
 
   render() {
+    let productLogo = null;
+    let banner = null;
+    let heading = null;
+    let message = null;
+    let prompt = null;
+    let placeholder = null;
+
+    if (this.context.crossAcquisition) {
+      productLogo = this.context.crossAcquisition.productLogo;
+
+      if (this.context.crossAcquisition.requestTrial) {
+        banner = this.context.crossAcquisition.requestTrial.accessBanner;
+        heading = this.context.crossAcquisition.requestTrial.accessHeading;
+        message = this.context.crossAcquisition.requestTrial.accessMessage;
+        prompt = this.context.crossAcquisition.requestTrial.notePrompt;
+        placeholder = this.context.crossAcquisition.requestTrial.notePlaceholder;
+      }
+    }
+
     return (
       <MultiStep start={0}>
         <Step
           render={nextStep => (
             <RequestTrialAccess
-              heading={this.props.productLogo}
-              message="Send a request for your admin to activate confluence"
+              productLogo={productLogo}
+              banner={banner}
+              heading={heading}
+              message={message}
               onRequestAccessClick={nextStep}
               onCancelClick={() => {}}
             />
@@ -45,8 +70,8 @@ export default class RequestTrial extends Component {
         <Step
           render={() => (
             <RequestTrialNote
-              prompt="Help your site administrator understand why you would like to use Confluence:"
-              placeholder="I would like to try Confluence because…"
+              prompt={prompt}
+              placeholder={placeholder}
             />
           )}
         />

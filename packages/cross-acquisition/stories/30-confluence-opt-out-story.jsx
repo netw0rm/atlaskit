@@ -5,6 +5,6 @@ import { name } from '../package.json';
 import { ConfluenceOptOut } from '@atlaskit/cross-acquisition';
 
 storiesOf(name, module)
-  .add('ConfluenceOptOut with...', () => (
+  .add('OptOut with Confluence provider', () => (
     <ConfluenceOptOut />
   ));

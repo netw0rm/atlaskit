@@ -2,13 +2,13 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme, { Code, Props } from '@atlaskit/util-readme';
 
-import ConfluenceRequestTrialOverviewExample from './examples/ConfluenceRequestTrialOverview'; // eslint-disable-line import/no-duplicates
+import RequestTrialOverviewExample from './examples/RequestTrialOverview'; // eslint-disable-line import/no-duplicates
 import ConfluenceStartTrialOverviewExample from './examples/ConfluenceStartTrialOverview'; // eslint-disable-line import/no-duplicates
 import ConfluenceStartTrialProgressOverviewExample from './examples/ConfluenceStartTrialProgressOverview'; // eslint-disable-line import/no-duplicates
 import ConfluenceOptOutOverviewExample from './examples/ConfluenceOptOutOverview'; // eslint-disable-line import/no-duplicates
 
 /* eslint-disable import/first, import/no-duplicates */
-import ConfluenceRequestTrialOverviewExampleRaw from '!raw!./examples/ConfluenceRequestTrialOverview';
+import RequestTrialOverviewExampleRaw from '!raw!./examples/RequestTrialOverview';
 import ConfluenceStartTrialOverviewExampleRaw from '!raw!./examples/ConfluenceStartTrialOverview';
 import ConfluenceStartTrialProgressOverviewExampleRaw from '!raw!./examples/ConfluenceStartTrialProgressOverview';
 import ConfluenceOptOutOverviewExampleRaw from '!raw!./examples/ConfluenceOptOutOverview';
@@ -18,20 +18,20 @@ import { name, description } from '../package.json';
 import { RequestTrial, StartTrial, StartTrialProgress, OptOut } from '../src';
 
 storiesOf(name, module)
-  .add('📖 ConfluenceRequestTrial readme', () => (
+  .add('📖 RequestTrial readme', () => (
     <div>
       <Readme
         component={name}
         description={description}
       >
-        <Code code={ConfluenceRequestTrialOverviewExampleRaw}>
-          {ConfluenceRequestTrialOverviewExample}
+        <Code code={RequestTrialOverviewExampleRaw}>
+          {RequestTrialOverviewExample}
         </Code>
         <Props component={RequestTrial} />
       </Readme>
     </div>
   ))
-  .add('📖 ConfluenceStartTrial readme', () => (
+  .add('📖 StartTrial readme', () => (
     <div>
       <Readme
         component={name}
@@ -44,7 +44,7 @@ storiesOf(name, module)
       </Readme>
     </div>
   ))
-  .add('📖 ConfluenceOptOut readme', () => (
+  .add('📖 OptOut readme', () => (
     <div>
       <Readme
         component={name}
@@ -57,7 +57,7 @@ storiesOf(name, module)
       </Readme>
     </div>
   ))
-  .add('📖 ConfluenceStartTrialProgress readme', () => (
+  .add('📖 StartTrialProgress readme', () => (
     <div>
       <Readme
         component={name}

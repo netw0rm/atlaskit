@@ -40,7 +40,10 @@ export default class RequestTrialNote extends Component {
         }
       >
         <div>
-          <p>{this.props.prompt}</p>
+          {React.isValidElement(this.props.prompt)
+            ? this.props.prompt
+            : <p>{this.props.prompt}</p>
+          }
           <NoteText placeholder={this.props.placeholder} />
         </div>
       </ModalDialog>

@@ -68,6 +68,7 @@ const renderAsSprite = (props: Props) => {
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
+      aria-label={emoji.shortName}
     >
       { showTooltip ?
         <TooltipWrapper description={emoji.shortName} children={emojiNode} />
@@ -104,6 +105,7 @@ const renderAsImage = (props: Props) => {
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
+      aria-label={emoji.shortName}
     >
     { showTooltip ?
       <TooltipWrapper description={emoji.shortName} children={emojiNode} />

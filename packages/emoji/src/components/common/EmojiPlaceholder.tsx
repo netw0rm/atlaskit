@@ -21,7 +21,7 @@ const EmojiPlaceholder = (props: Props) => {
   };
   const placeholderNode = (
     <svg className={placeholderEmoji} style={style} viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg" >
-      <circle cx={center} cy={center} r={radius} />
+      <circle cx={center} cy={center} r={radius} aria-label={shortName} />
     </svg>
   );
   return (

@@ -186,16 +186,17 @@ export function findAncestorPosition(doc: Node, pos: any): any {
   }
 
   let node: Node | undefined = pos.node(pos.depth);
+  let newPos = pos;
   while (pos.depth >= 1) {
     pos = doc.resolve(pos.before(pos.depth));
     node = pos.node(pos.depth);
 
     if (node && nestableBlocks.indexOf(node.type.name) !== -1) {
-      break;
+      newPos = pos;
     }
   }
 
-  return pos;
+  return newPos;
 }
 
 /**

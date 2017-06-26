@@ -332,16 +332,19 @@ export default class Editor extends PureComponent<Props, State> {
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
           ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
           ...clearFormattingPlugins(schema as Schema<any, any>),
-          ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
-          ...listsPlugins(schema as Schema<any, any>),
           ...rulePlugins(schema as Schema<any, any>),
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
-          ...textFormattingPlugins(schema as Schema<any, any>),
           ...(isSchemaWithTextColor(schema) ? textColorPlugins(schema as Schema<any, any>) : []),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
           ...blockTypePlugins(schema as Schema<any, any>),
+          // The following order of plugins blockTypePlugins -> listBlock
+          // this is needed to ensure that all block types are supported inside lists
+          // this is needed until we implement keymap proirity :(
+          ...listsPlugins(schema as Schema<any, any>),
+          ...textFormattingPlugins(schema as Schema<any, any>),
+          ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
           ...reactNodeViewPlugins(schema as Schema<any, any>),
           history(),
           keymap(jiraKeymap),

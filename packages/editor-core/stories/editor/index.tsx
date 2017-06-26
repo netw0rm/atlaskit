@@ -257,10 +257,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
           ...emojiPlugins(schema, this.providerFactory),
           ...asciiEmojiPlugins(schema, this.state.emojiProvider),
-          ...listsPlugins(schema),
           ...clearFormattingPlugins(schema),
-          ...codeBlockPlugins(schema),
-          ...panelPlugins(schema),
           ...textFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
@@ -269,6 +266,12 @@ export default class Editor extends PureComponent<Props, State> {
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
           ...blockTypePlugins(schema),
+          // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins -> panelPlugins
+          // this is needed to ensure that all block types are supported inside lists
+          // this is needed until we implement keymap proirity :(
+          ...listsPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...panelPlugins(schema),
           ...mediaPlugins,
           ...tablePlugins(),
           ...reactNodeViewPlugins(schema),

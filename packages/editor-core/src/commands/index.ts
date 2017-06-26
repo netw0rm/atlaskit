@@ -9,8 +9,10 @@ import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
+  const { $from } = view.state.selection;
 
-  if (name !== blockTypes.BLOCK_QUOTE.name && name !== blockTypes.PANEL.name) {
+  if (name !== blockTypes.BLOCK_QUOTE.name && name !== blockTypes.PANEL.name &&
+    $from.node($from.depth - 1).type.name !== 'listItem') {
     if (view.state.selection.$from.depth > 1) {
       view.dispatch(liftSelection(view.state.tr, view.state.doc, view.state.selection.$from, view.state.selection.$to).tr);
     }
@@ -118,10 +120,14 @@ export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
     state = view.state;
 
     const { $from, $to } = state.selection;
-    const grandgrandParent = $from.node(-2);
+    const parent = $from.node(-2);
+    const grandgrandParent = $from.node(-3);
     const isRangeOfSingleType = isRangeOfType(state.doc, $from, $to, state.schema.nodes[listType]);
 
-    if (grandgrandParent && grandgrandParent.type === state.schema.nodes[listType] && isRangeOfSingleType) {
+    if ((parent && parent.type === state.schema.nodes[listType] ||
+      grandgrandParent && grandgrandParent.type === state.schema.nodes[listType]) &&
+      isRangeOfSingleType
+    ) {
       // Untoggles list
       return liftListItems()(state, dispatch);
     } else {
@@ -160,10 +166,11 @@ export function liftListItems(): Command {
   return function (state, dispatch) {
     const { tr } = state;
     const { $from, $to } = state.selection;
-    const { paragraph } = state.schema.nodes;
 
     tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      if (node.type === paragraph) {
+      // Following condition will ensure that block types paragraph, heading, codeBlock, blockquote, panel are lifted.
+      // isTextblock is true for paragraph, heading, codeBlock.
+      if (node.isTextblock || node.type.name === 'blockquote' || node.type.name === 'panel') {
         const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
         const range = sel.$from.blockRange(sel.$to);
 
@@ -477,7 +484,7 @@ function toggleNodeType(nodeType: NodeType): Command {
     if (potentialNodePresent.type !== nodeType) {
       let { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
-      if ($from.depth > 1) {
+      if ($from.depth > 1 && $from.node($from.depth - 1).type.name !== 'listItem') {
         const result = liftSelection(tr, state.doc, $from, $to);
         tr = result.tr;
         $from = result.$from;

@@ -3,10 +3,9 @@ import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import Button from '@atlaskit/button';
 import FieldText from '@atlaskit/field-text';
-import * as sinon from 'sinon';
-import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
 
+import {ContextFactory} from '@atlaskit/media-core';
 import {
   StoryList,
   Matrix,
@@ -28,12 +27,11 @@ import {
   docFileId,
   unknownFileId,
   errorFileId,
-  fakeContext
+  StoryBookTokenProvider
 } from '@atlaskit/media-test-helpers';
 
 import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent, OnSelectChangeFuncResult } from '../src';
 import { SelectableCard } from './utils/selectableCard';
-import smartCardJson from './smart-card';
 
 const context = createStorybookContext();
 
@@ -446,17 +444,21 @@ storiesOf('Card', {})
   })
   .add('Smart', () => {
 
-    // mock the context to return data for a smart-card
-    const mockContext = fakeContext({
-      getMediaItemProvider: {observable: sinon.stub().returns(Observable.of(smartCardJson))}
+    // mock the context to hit ddev
+    const mockContext = ContextFactory.create({
+      clientId: '9bad7f21-801f-4a63-b3a2-57e52090868f',
+      serviceHost: 'https://dt-api-filestore.internal.domain.dev.atlassian.io/',
+      tokenProvider: StoryBookTokenProvider.withAccess({}, 'https://media-playground.ap-southeast-2.dev.atl-paas.net')
     });
-    const provider = mockContext.getMediaItemProvider('abcd', 'link', 'foobar');
-    provider.observable().subscribe(() => {/* noop */});
 
-    const identifier: MediaIdentifier = {
+    const identifier1: UrlPreviewIdentifier = {
       mediaItemType: 'link',
-      id: 'abcd',
-      collectionName: 'foobar'
+      url: 'https://trello.com/b/8B5zyiSn/test-smart-card-board'
+    };
+
+    const identifier2: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://trello.com/b/7Y1a2RqM/public-test'
     };
 
     return (
@@ -467,8 +469,12 @@ storiesOf('Card', {})
           <StoryList>
           {[
             {
-              title: 'Public Trello',
-              content: <Card identifier={identifier} context={mockContext} />
+              title: 'Public Trello #1',
+              content: <Card identifier={identifier1} context={mockContext} />
+            },
+            {
+              title: 'Public Trello #2',
+              content: <Card identifier={identifier2} context={mockContext} />
             }
           ]}
           </StoryList>
@@ -477,5 +483,5 @@ storiesOf('Card', {})
         </div>
       </div>
     );
-  })
-  ;
+  });
+

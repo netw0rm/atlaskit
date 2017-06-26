@@ -3,10 +3,10 @@ import { defaultCollectionName } from './collectionNames';
 import { JwtToken, JwtTokenProvider } from '@atlaskit/media-core';
 
 const cachedTokens = {};
-const baseURL = 'https://media-playground.internal.app.dev.atlassian.io';
+const defaultBaseURL = 'https://media-playground.internal.app.dev.atlassian.io';
 
 export class StoryBookTokenProvider {
-  static tokenProvider(collectionName: string): Promise<JwtToken> {
+  static tokenProvider(collectionName: string, baseURL: string = defaultBaseURL): Promise<JwtToken> {
     const params = { collection: collectionName || defaultCollectionName };
     if (cachedTokens[collectionName]) {
       return cachedTokens[collectionName];
@@ -23,7 +23,7 @@ export class StoryBookTokenProvider {
     return tokenRequest;
   }
 
-  static withAccess(access: { [resourceUrn: string]: string[] }): JwtTokenProvider {
+  static withAccess(access: { [resourceUrn: string]: string[] }, baseURL: string = defaultBaseURL): JwtTokenProvider {
     return (collection?: string) => {
       const config = { baseURL };
       const cacheKey = JSON.stringify(access);

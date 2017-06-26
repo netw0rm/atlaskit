@@ -967,13 +967,24 @@ describe('Media plugin', () => {
   it(`should copy optional attributes from MediaState to Node attrs`, () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
 
-    const [node, transaction] = pluginState.insertFile({
+    pluginState.insertFile({
       id: testFileId, status: 'uploading', fileName: 'foo.png', fileSize: 1234, fileMimeType: 'image/png'
     }, testCollectionName);
-    editorView.dispatch(transaction);
 
-    expect(node.attrs.__fileName).to.equal('foo.png');
-    expect(node.attrs.__fileSize).to.equal(1234);
-    expect(node.attrs.__fileMimeType).to.equal('image/png');
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        mediaGroup(
+          media({
+            id: testFileId,
+            type: 'file',
+            collection: testCollectionName,
+            __fileName: 'foo.png',
+            __fileSize: 1234,
+            __fileMimeType: 'image/png'
+          }),
+        ),
+        p(),
+      ),
+    );
   });
 });

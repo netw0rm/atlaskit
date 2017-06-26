@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
@@ -46,7 +46,7 @@ describe('<Emoji />', () => {
     });
 
     it('should not render a tooltip on hover if there is no showTooltip prop', () => {
-      const wrapper = shallow(<Emoji
+      const wrapper = mount(<Emoji
         emoji={spriteEmoji}
       />);
       wrapper.simulate('mouseenter');
@@ -54,7 +54,7 @@ describe('<Emoji />', () => {
     });
 
     it('should render a tooltip on hover if showTooltip is set to true', () => {
-      const wrapper = shallow(<Emoji
+      const wrapper = mount(<Emoji
         emoji={spriteEmoji}
         showTooltip={true}
       />);
@@ -84,7 +84,7 @@ describe('<Emoji />', () => {
     });
 
     it('should not render a tooltip on hover if there is no showTooltip prop', () => {
-      const wrapper = shallow(<Emoji
+      const wrapper = mount(<Emoji
         emoji={imageEmoji}
       />);
       wrapper.simulate('mouseenter');
@@ -92,7 +92,7 @@ describe('<Emoji />', () => {
     });
 
     it('should render a tooltip on hover if showTooltip is set to true', () => {
-      const wrapper = shallow(<Emoji
+      const wrapper = mount(<Emoji
         emoji={imageEmoji}
         showTooltip={true}
       />);

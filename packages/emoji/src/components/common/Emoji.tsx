@@ -1,7 +1,7 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent } from 'react';
-import Tooltip from '@atlaskit/tooltip';
+import TooltipWrapper from './TooltipWrapper';
 
 import * as styles from './styles';
 import { isSpriteRepresentation, toEmojiId } from '../../type-helpers';
@@ -54,13 +54,12 @@ const renderAsSprite = (props: Props) => {
     backgroundPosition: `${xPositionInPercent}% ${yPositionInPercent}%`,
     backgroundSize: `${sprite.column * 100}% ${sprite.row * 100}%`,
   };
-  const node = (
+  const emojiNode = (
     <span
       className={styles.emojiSprite}
       style={style}
     />
   );
-  const emojiNode = tooltipWrapper(node, emoji.shortName, showTooltip);
 
   return (
     <span
@@ -70,7 +69,10 @@ const renderAsSprite = (props: Props) => {
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
     >
-      {emojiNode}
+      { showTooltip ?
+        <TooltipWrapper description={emoji.shortName} children={emojiNode} />
+        : emojiNode
+      }
     </span>
   );
 };
@@ -89,13 +91,12 @@ const renderAsImage = (props: Props) => {
   }
 
   const representation = emoji.representation as ImageRepresentation;
-  const node = (
+  const emojiNode = (
     <img
       src={representation.imagePath}
       alt={emoji.shortName}
     />
   );
-  const emojiNode = tooltipWrapper(node, emoji.shortName, showTooltip);
   return (
     <span
       className={classNames(classes)}
@@ -104,23 +105,12 @@ const renderAsImage = (props: Props) => {
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
     >
-      {emojiNode}
+    { showTooltip ?
+      <TooltipWrapper description={emoji.shortName} children={emojiNode} />
+      : emojiNode
+    }
     </span>
   );
-};
-
-const tooltipWrapper = (emojiNode: JSX.Element, shortName: string, showTooltip?: boolean): JSX.Element => {
-  if (showTooltip) {
-    return (
-      <Tooltip
-        description={shortName}
-        position="top"
-      >
-        {emojiNode}
-      </Tooltip>
-    );
-  }
-  return emojiNode;
 };
 
 // tslint:disable-next-line:variable-name

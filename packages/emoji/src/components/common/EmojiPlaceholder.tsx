@@ -1,19 +1,18 @@
 import * as React from 'react';
-import Tooltip from '@atlaskit/Tooltip';
+import TooltipWrapper from './TooltipWrapper';
 import { placeholderEmoji, placeholderContainer } from './styles';
 
 export const defaultSize = 24;
 
 export interface Props {
   shortName: string;
-  name?: string;
   size?: number;
   showTooltip?: boolean;
 }
 
 // tslint:disable-next-line:variable-name
 const EmojiPlaceholder = (props: Props) => {
-  const { shortName, name = 'Unknown Emoji', size = defaultSize, showTooltip } = props;
+  const { shortName, size = defaultSize, showTooltip } = props;
   const center = Math.floor(size / 2);
   const radius = center - 1;
   const style = {
@@ -27,11 +26,7 @@ const EmojiPlaceholder = (props: Props) => {
   );
   return (
     showTooltip ?
-      <div className={placeholderContainer}>
-        <Tooltip description={`${name} (${shortName})`} position="top">
-          {placeholderNode}
-        </Tooltip>
-      </div>
+      <TooltipWrapper description={shortName} children={placeholderNode} className={placeholderContainer}/>
       : placeholderNode
     );
 };

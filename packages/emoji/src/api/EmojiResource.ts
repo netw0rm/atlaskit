@@ -1,6 +1,5 @@
 import { customCategory } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../types';
-import { isMediaApiRepresentation } from '../type-helpers';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
 import { requestService, ServiceConfig } from './SharedResourceUtils';
@@ -73,6 +72,13 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    * Optional.
    */
   recordSelection?(id: EmojiId): Promise<any>;
+
+  /**
+   * Load custom emoji that may require authentication to download
+   *
+   * @return an EmojiDescription, may be the same as the input, or updated with a new url.
+   */
+  loadCustomEmoji(emoji: EmojiDescription): Promise<EmojiDescription>;
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -115,7 +121,7 @@ export interface LastQuery {
 }
 
 // Batch size === 1 row in the emoji picker
-const mediaEmojiBatchSize = 8;
+// const mediaEmojiBatchSize = 8;
 
 export const addCustomCategoryToResult = (includeCustom: boolean, searchResult: EmojiSearchResult): EmojiSearchResult => {
   if (searchResult.categories[customCategory] || !includeCustom) {
@@ -220,46 +226,53 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected notifyResult(result: EmojiSearchResult): void {
     if (result.query === this.lastQuery.query) {
       super.notifyResult(result);
-      this.loadMediaEmoji(result);
+      // this.loadMediaEmoji(result);
     }
   }
 
-  private loadMediaEmoji(result: EmojiSearchResult) {
-    const { emojis, ...other } = result;
-    const mediaEmojis = emojis.filter(emoji => isMediaApiRepresentation(emoji.representation));
-    // only load a batch of media emoji at a time (next notifyResult will load the next batch)
-    const mediaEmojiResource = this.mediaEmojiResource;
-    if (mediaEmojiResource && mediaEmojis.length) {
-      const activeLoadersAtStart = this.activeLoaders;
-      const mediaImageLoaders: Promise<EmojiDescription>[] =
-        mediaEmojis.slice(0, mediaEmojiBatchSize).map(mediaEmoji =>
-          mediaEmojiResource.getMediaEmojiAsImageEmoji(mediaEmoji)
-        );
-      Promise.all(mediaImageLoaders).then(loadedEmojis => {
-        if (result.query === this.lastQuery.query && activeLoadersAtStart === this.activeLoaders) {
-          // these loaded emojis are still relevant...
-          const newEmojis: EmojiDescription[] = [];
-          emojis.forEach(emoji => {
-            if (loadedEmojis.length && isMediaApiRepresentation(emoji.representation)) {
-              const loadedEmoji = loadedEmojis.shift() as EmojiDescription;
-              const representation = loadedEmoji.representation;
-              if (!isMediaApiRepresentation(representation)) {
-                // loaded, keep, if not loaded, drop as it's not going to load
-                newEmojis.push(loadedEmoji);
-              }
-            } else {
-              newEmojis.push(emoji);
-            }
-          });
-
-          this.notifyResult({
-            ...other,
-            emojis: newEmojis,
-          });
-        }
-      });
+  loadCustomEmoji(emoji: EmojiDescription): Promise<EmojiDescription> {
+    if (!this.mediaEmojiResource) {
+      return Promise.resolve(emoji);
     }
+    return this.mediaEmojiResource.loadMediaEmoji(emoji);
   }
+
+  // private loadMediaEmoji(result: EmojiSearchResult) {
+  //   const { emojis, ...other } = result;
+  //   const mediaEmojis = emojis.filter(emoji => isMediaApiRepresentation(emoji.representation));
+  //   // only load a batch of media emoji at a time (next notifyResult will load the next batch)
+  //   const mediaEmojiResource = this.mediaEmojiResource;
+  //   if (mediaEmojiResource && mediaEmojis.length) {
+  //     const activeLoadersAtStart = this.activeLoaders;
+  //     const mediaImageLoaders: Promise<EmojiDescription>[] =
+  //       mediaEmojis.slice(0, mediaEmojiBatchSize).map(mediaEmoji =>
+  //         mediaEmojiResource.getMediaEmojiAsImageEmoji(mediaEmoji)
+  //       );
+  //     Promise.all(mediaImageLoaders).then(loadedEmojis => {
+  //       if (result.query === this.lastQuery.query && activeLoadersAtStart === this.activeLoaders) {
+  //         // these loaded emojis are still relevant...
+  //         const newEmojis: EmojiDescription[] = [];
+  //         emojis.forEach(emoji => {
+  //           if (loadedEmojis.length && isMediaApiRepresentation(emoji.representation)) {
+  //             const loadedEmoji = loadedEmojis.shift() as EmojiDescription;
+  //             const representation = loadedEmoji.representation;
+  //             if (!isMediaApiRepresentation(representation)) {
+  //               // loaded, keep, if not loaded, drop as it's not going to load
+  //               newEmojis.push(loadedEmoji);
+  //             }
+  //           } else {
+  //             newEmojis.push(emoji);
+  //           }
+  //         });
+
+  //         this.notifyResult({
+  //           ...other,
+  //           emojis: newEmojis,
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
 
   filter(query?: string, options?: SearchOptions): void {
     this.lastQuery = {
@@ -279,10 +292,11 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     if (this.isLoaded()) {
       // Wait for all emoji to load before looking by shortName (to ensure correct priority)
       const emoji = this.emojiRepository.findByShortName(shortName);
-      if (!emoji) {
-        return Promise.resolve(emoji);
-      }
-      return this.loadIfMediaEmoji(emoji);
+      // if (!emoji) {
+      //   return Promise.resolve(emoji);
+      // }
+      // return this.loadIfMediaEmoji(emoji);
+      return Promise.resolve(emoji);
     }
     return this.retryIfLoading(() => this.findByShortName(shortName), undefined);
   }
@@ -293,7 +307,8 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       if (id) {
         const emoji = this.emojiRepository.findById(id);
         if (emoji) {
-          return this.loadIfMediaEmoji(emoji);
+          // return this.loadIfMediaEmoji(emoji);
+          return Promise.resolve(emoji);
         }
         if (this.isLoaded()) {
           // all loaded but not found by id, try server to see if
@@ -306,7 +321,8 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
                 return this.findByShortName(shortName);
               }
               this.addCustomEmoji(emoji);
-              return this.loadIfMediaEmoji(emoji);
+              // return this.loadIfMediaEmoji(emoji);
+              return Promise.resolve(emoji);
             });
           }
 
@@ -325,9 +341,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   findById(id: string): Promise<OptionalEmojiDescription> {
     if (this.emojiRepository) {
       const emoji = this.emojiRepository.findById(id);
-      if (emoji) {
-        return this.loadIfMediaEmoji(emoji);
-      }
+      // if (emoji) {
+      //   return this.loadIfMediaEmoji(emoji);
+      // }
+      return Promise.resolve(emoji);
     }
 
     return this.retryIfLoading(() => this.findById(id), undefined);
@@ -376,12 +393,12 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
    *
    * Optional if not using Atlassian media api for custom emoji storage.
    */
-  private loadIfMediaEmoji(emoji: EmojiDescription): Promise<EmojiDescription> {
-    if (!this.mediaEmojiResource) {
-      return Promise.resolve(emoji);
-    }
-    return this.mediaEmojiResource.getMediaEmojiAsImageEmoji(emoji);
-  }
+  // private loadIfMediaEmoji(emoji: EmojiDescription): Promise<EmojiDescription> {
+  //   if (!this.mediaEmojiResource) {
+  //     return Promise.resolve(emoji);
+  //   }
+  //   return this.mediaEmojiResource.getMediaEmojiAsImageEmoji(emoji);
+  // }
 }
 
 export default class UploadingEmojiResource extends EmojiResource implements UploadingEmojiProvider {

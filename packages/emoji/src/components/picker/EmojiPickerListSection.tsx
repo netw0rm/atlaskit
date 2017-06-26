@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import * as classnames from 'classnames';
 import AkButton from '@atlaskit/button';
-
 import { akColorB300 } from '@atlaskit/util-shared-styles';
+import * as classnames from 'classnames';
 
 import * as styles from './styles';
 import { EmojiDescription, EmojiId, OnEmojiEvent } from '../../types';
-import { isEmojiLoaded } from '../../type-helpers';
 import Emoji from '../common/Emoji';
 import EmojiPlaceholder from '../common/EmojiPlaceholder';
+import { PickerContext } from './PickerTypes';
 
 export interface Props {
   id?: string;
@@ -23,9 +22,69 @@ export interface Props {
   onOpenUpload?: () => void;
 }
 
+export interface State {
+  loadingCount: number;
+}
+
 export const addEmojiClassName = 'emoji-picker-add-emoji';
 
-export default class EmojiPickerListSection extends PureComponent<Props, {}> {
+/**
+ * Immutable class, that returns a new class on add/remove
+ */
+// export class InvalidEmojiId {
+//   private emojiIds: Set<string>;
+
+//   constructor(emojiIds?: Set<string>) {
+//     this.emojiIds = new Set<string>(emojiIds || []);
+//   }
+
+//   add(emojiId: EmojiId): InvalidEmojiId {
+//     const { id } = emojiId;
+//     if (!id) {
+//       return this;
+//     }
+//     const newSet = new Set(this.emojiIds);
+//     newSet.add(id);
+//     return new InvalidEmojiId(newSet);
+//   }
+
+//   remove(emojiId: EmojiId): InvalidEmojiId {
+//     const { id } = emojiId;
+//     if (!id) {
+//       return this;
+//     }
+//     const newSet = new Set(this.emojiIds);
+//     newSet.delete(id);
+//     return new InvalidEmojiId(newSet);
+//   }
+
+//   has(emojiId: EmojiId): boolean {
+//     const { id } = emojiId;
+//     if (!id) {
+//       return false;
+//     }
+//     return this.emojiIds.has(id);
+//   }
+// }
+
+export default class EmojiPickerListSection extends PureComponent<Props, State> {
+  static contextTypes = {
+      emojiPicker: React.PropTypes.object
+  }
+
+  context: PickerContext;
+
+  // private loadingEmoji: Map<string, Promise<EmojiDescription>> = new Map();
+  private loadedEmoji: Map<string, EmojiDescription> = new Map();
+  private invalidEmoji: Set<string> = new Set();
+
+  constructor(props: Props, context: PickerContext) {
+    super(props, context);
+
+    this.state = {
+      loadingCount: 0,
+    };
+  }
 
   renderUploadPrompt() {
     const { emojis, onOpenUpload, showUploadPrompt } = this.props;
@@ -63,6 +122,50 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
     );
   }
 
+  private onEmojiLoadError = (emojiId: EmojiId, emoji: EmojiDescription) => {
+    console.log('Error loading emoji, trying to load from media', emoji, this.context);
+    const { emojiProvider } = this.context.emojiPicker;
+    const { id } = emojiId;
+
+    if (!id || !emojiProvider) {
+      // Can only load emoji supporting the id field
+      return;
+    }
+
+
+    // if (this.loadingEmoji.has(id)) {
+    //   // already loading
+    //   return;
+    // }
+
+    // if (this.invalidEmoji.has(id)) {
+    //   // was invalid last time we tried, let's not retry...
+    //   return;
+    // }
+
+    this.invalidEmoji.add(id);
+    this.setState({
+      loadingCount: this.state.loadingCount + 1
+    });
+
+    emojiProvider.then(provider => provider.loadCustomEmoji(emoji))
+    .then(emoji => {
+      console.log('loaded custom emoji', emoji);
+      this.loadedEmoji.set(id, emoji);
+      this.invalidEmoji.delete(id);
+      this.setState({
+        loadingCount: this.state.loadingCount - 1
+      });
+    }).catch(() => {
+      console.log('error loading custom emoji', emoji);
+      this.invalidEmoji.add(id);
+      this.setState({
+        loadingCount: this.state.loadingCount - 1
+      });
+    });
+
+  }
+
   render() {
     const { className, emojis, id, onMouseMove, onSelected, selectedEmoji, title } = this.props;
     const sectionClassNames = [
@@ -82,17 +185,27 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
         <div>
           {emojis.map((emoji) => {
             const selected = selectedEmoji && selectedEmoji.id === emoji.id;
-            const { shortName, category, id, name } = emoji;
+            const { shortName, category, id /*, name*/ } = emoji;
             const key = id || `${shortName}-${category}`;
             let emojiComponent;
+            let emojiDescription: EmojiDescription | undefined = emoji;
+            if (id) {
+              if (this.invalidEmoji.has(id)) {
+                console.log('rendering as invalid');
+                emojiDescription = undefined;
+              } else if (this.loadedEmoji.has(id)) {
+                emojiDescription = this.loadedEmoji.get(id);
+              }
+            }
 
-            if (isEmojiLoaded(emoji)) {
+            if (emojiDescription) {
               emojiComponent = (
                 <Emoji
-                  emoji={emoji}
+                  emoji={emojiDescription}
                   selected={selected}
                   onSelected={onSelected}
                   onMouseMove={onMouseMove}
+                  onLoadError={this.onEmojiLoadError}
                 />
               );
             } else {

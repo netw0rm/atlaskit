@@ -66,13 +66,13 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
     }
   } else if (isImageRepresentation(representation)) {
     const { height, width, imagePath } = representation as ImageRepresentation;
-    if (isMediaApiUrl(imagePath, meta)) {
-      return {
-        height,
-        width,
-        mediaPath: imagePath,
-      };
-    }
+    // if (isMediaApiUrl(imagePath, meta)) {
+    //   return {
+    //     height,
+    //     width,
+    //     mediaPath: imagePath,
+    //   };
+    // }
     return {
       height,
       width,

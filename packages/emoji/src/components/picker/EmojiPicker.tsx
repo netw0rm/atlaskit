@@ -3,6 +3,7 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
+import { PickerContext } from './PickerTypes';
 
 import { customCategory } from '../../constants';
 import { AvailableCategories, EmojiDescription, EmojiId, EmojiUpload, OnEmojiEvent } from '../../types';
@@ -40,6 +41,9 @@ export interface State {
 }
 
 export default class EmojiPicker extends PureComponent<Props, State> {
+  static childContextTypes = {
+      emojiPicker: React.PropTypes.object
+  }
 
   static defaultProps = {
     onSelection: () => {},
@@ -56,6 +60,14 @@ export default class EmojiPicker extends PureComponent<Props, State> {
       uploading: false,
     };
 
+  }
+
+  getChildContext(): PickerContext {
+    return {
+      emojiPicker: {
+        emojiProvider: this.props.emojiProvider
+      }
+    };
   }
 
   componentDidMount() {

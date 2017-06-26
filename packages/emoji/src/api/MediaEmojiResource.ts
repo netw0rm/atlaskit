@@ -6,21 +6,18 @@ import {
   EmojiServiceDescription,
   EmojiUpload,
   ImageRepresentation,
-  MediaApiRepresentation,
+  // MediaApiRepresentation,
   MediaApiToken,
   OptionalEmojiDescription,
 } from '../types';
 import { MediaApiData, MediaUploadEnd, MediaUploadError, MediaUploadStatusUpdate } from '../media-types';
-import { isMediaApiRepresentation } from '../type-helpers';
+// import { isMediaApiRepresentation } from '../type-helpers';
 import { denormaliseEmojiServiceResponse, emojiRequest } from './EmojiUtils';
+import MediaImageLoader from './MediaImageLoader';
 import { requestService, ServiceConfig } from './SharedResourceUtils';
+import TokenManager from './TokenManager';
 import debug from '../util/logger';
-import { imageAcceptHeader } from '../util/image';
-
-// expire 30 seconds early to factor in latency, slow services, etc
-export const expireAdjustment = 30;
-
-export type DataURL = string;
+// import { imageAcceptHeader, areSecureImagesCached } from '../util/image';
 
 export interface EmojiUploadResponse {
   emojis: EmojiServiceDescription[];
@@ -37,86 +34,40 @@ export interface EmojiProgessCallback {
 // Assume media is 95% of total upload time.
 export const mediaProportionOfProgress = 95/100;
 
-interface TokenDetail {
-  mediaApiToken?: MediaApiToken;
-  activeTokenRefresh?: Promise<MediaApiToken>;
-}
-
-export type TokenType = 'read' | 'upload';
-
-export class TokenManager {
-  private siteServiceConfig: ServiceConfig;
-  private tokens: Map<TokenType, TokenDetail>;
-
-  constructor(siteServiceConfig: ServiceConfig) {
-    this.siteServiceConfig = siteServiceConfig;
-    this.tokens = new Map<TokenType, TokenDetail>();
-  }
-
-  addToken(type: TokenType, mediaApiToken: MediaApiToken): void {
-    this.tokens.set(type, {
-      mediaApiToken,
-    });
-  }
-
-  getToken(type: TokenType, forceRefresh?: boolean): Promise<MediaApiToken> {
-    let tokenDetail: TokenDetail = this.tokens.get(type) as TokenDetail;
-    if (!tokenDetail) {
-      tokenDetail = {};
-      this.tokens.set(type, tokenDetail);
-    }
-    const { mediaApiToken, activeTokenRefresh } = tokenDetail;
-    if (mediaApiToken) {
-      const nowInSeconds = Date.now() / 1000;
-      const expiresAt = mediaApiToken.expiresAt - expireAdjustment;
-      if (nowInSeconds < expiresAt && !forceRefresh) {
-        // still valid
-        return Promise.resolve(mediaApiToken);
-      }
-      if (activeTokenRefresh) {
-        // refresh already active, return that
-        return activeTokenRefresh;
-      }
-      // clear expired token
-      tokenDetail.mediaApiToken = undefined;
-    }
-
-    const path = `token/${type}`;
-
-    // request a new token and track the promise for future requests until completed
-    tokenDetail.activeTokenRefresh = requestService<MediaApiToken>(this.siteServiceConfig, { path }).then(mediaApiToken => {
-      tokenDetail.activeTokenRefresh = undefined;
-      tokenDetail.mediaApiToken = mediaApiToken;
-      return mediaApiToken;
-    });
-
-    return tokenDetail.activeTokenRefresh;
-  }
-}
-
 export default class MediaEmojiResource {
   private siteServiceConfig: ServiceConfig;
+  private mediaImageLoader: MediaImageLoader;
   protected tokenManager: TokenManager;
 
   constructor(siteServiceConfig: ServiceConfig, mediaApiToken: MediaApiToken) {
     this.siteServiceConfig = siteServiceConfig;
     this.tokenManager = new TokenManager(siteServiceConfig);
     this.tokenManager.addToken('read', mediaApiToken);
+    this.mediaImageLoader = new MediaImageLoader(this.tokenManager);
   }
 
-  getMediaEmojiAsImageEmoji(emoji: EmojiDescription): Promise<EmojiDescription> {
-    const { representation } = emoji;
+  /**
+   * Will load media emoji, returning a new EmojiDescription if, for example,
+   * the URL has changed.
+   */
+  loadMediaEmoji(emoji: EmojiDescription): Promise<EmojiDescription> {
+    return this.mediaImageLoader.loadMediaEmoji(emoji);
+    // console.log('loadMediaEmoji1', emoji);
 
-    if (!isMediaApiRepresentation(representation)) {
-      return Promise.resolve(emoji);
-    }
+    // // const { representation } = emoji;
 
-    return this.tokenManager.getToken('read', false)
-      .then(token => this.loadMediaEmoji(emoji, token, true))
-      .catch(error => {
-        // Failed to load, just resolve to original emoji
-        return emoji;
-      });
+    // // if (!isMediaApiRepresentation(representation)) {
+    // //   return Promise.resolve(emoji);
+    // // }
+
+    // console.log('loadMediaEmoji2');
+
+    // return this.tokenManager.getToken('read', false)
+    //   .then(token => this.requestMediaEmoji(emoji, token, true))
+    //   .catch(error => {
+    //     // Failed to load, just resolve to original emoji
+    //     return emoji;
+    //   });
   }
 
   uploadEmoji(upload: EmojiUpload, progressCallback?: EmojiProgessCallback): Promise<EmojiDescription> {
@@ -220,54 +171,70 @@ export default class MediaEmojiResource {
     });
   }
 
-  private loadMediaEmoji(emoji: EmojiDescription, token: MediaApiToken, retryOnAuthError: boolean): Promise<EmojiDescription> {
-    const { representation, ...other } = emoji;
-    const { mediaPath, ...otherRep } = representation as MediaApiRepresentation;
+  // private requestMediaEmoji(emoji: EmojiDescription, token: MediaApiToken, retryOnAuthError: boolean): Promise<EmojiDescription> {
+  //   // const { representation, ...other } = emoji;
+  //   // const { mediaPath, ...otherRep } = representation as MediaApiRepresentation;
 
-    return imageAcceptHeader().then(acceptHeader => {
+  //   console.log('requestMediaEmoji1');
 
-      // Media REST API: https://media-api-internal.atlassian.io/api.html#file__fileId__image_get
-      const options = {
-        headers: {
-          Authorization: `Bearer ${token.jwt}`,
-          'X-Client-Id': token.clientId,
-          Accept: acceptHeader,
-        },
-      };
+  //   const { representation, ...other } = emoji;
+  //   // const { mediaPath } = representation as MediaApiRepresentation;
+  //   const { imagePath, ...otherRep } = representation as ImageRepresentation;
 
-      return fetch(new Request(mediaPath, options)).then(response => {
-        if (response.status === 403 && retryOnAuthError) {
-          // retry once if 403
-          return this.tokenManager.getToken('read', true).then(newToken => {
-            return this.loadMediaEmoji(emoji, newToken, false);
-          });
-        } else if (response.ok) {
-          return response.blob().then((blob) => {
-            return this.readBlob(blob).then(imagePath => {
-              const imageEmoji = {
-                ...other,
-                representation: {
-                  ...otherRep,
-                  imagePath,
-                },
-              };
-              return imageEmoji;
-            });
-          });
-        }
-        return emoji;
-      });
-    });
-  }
+  //   return imageAcceptHeader().then(acceptHeader => {
 
-  private readBlob(blob: Blob): Promise<DataURL> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+  //     // Media REST API: https://media-api-internal.atlassian.io/api.html#file__fileId__image_get
+  //     const options = {
+  //       headers: {
+  //         Authorization: `Bearer ${token.jwt}`,
+  //         'X-Client-Id': token.clientId,
+  //         Accept: acceptHeader,
+  //       },
+  //     };
 
-      reader.addEventListener('load', () => resolve(reader.result));
-      reader.addEventListener('error', () => reject(reader.error));
+  //     return fetch(new Request(imagePath, options)).then(response => {
+  //       if (response.status === 403 && retryOnAuthError) {
+  //         // retry once if 403
+  //         return this.tokenManager.getToken('read', true).then(newToken => {
+  //           return this.requestMediaEmoji(emoji, newToken, false);
+  //         });
+  //       } else if (response.ok) {
+  //         return areSecureImagesCached(imagePath).then((cached): EmojiDescription | Promise<EmojiDescription> => {
+  //           // Most browsers (known exception is Firefox) will use the cached image in a src attribute, even it previously needed credentials.
+  //           if (cached) {
+  //             // Image will be cached now, can use url as is for get requests.
+  //             return emoji;
+  //           }
 
-      reader.readAsDataURL(blob);
-    });
-  }
+  //           console.log('requestMediaEmoji2 - images are not cached');
+
+  //           return response.blob().then((blob) => {
+  //             return this.readBlob(blob).then(imagePath => {
+  //               const imageEmoji = {
+  //                 ...other,
+  //                 representation: {
+  //                   ...otherRep,
+  //                   imagePath,
+  //                 },
+  //               };
+  //               return imageEmoji;
+  //             });
+  //           });
+  //         });
+  //       }
+  //       return emoji;
+  //     });
+  //   });
+  // }
+
+  // private readBlob(blob: Blob): Promise<DataURL> {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+
+  //     reader.addEventListener('load', () => resolve(reader.result));
+  //     reader.addEventListener('error', () => reject(reader.error));
+
+  //     reader.readAsDataURL(blob);
+  //   });
+  // }
 }

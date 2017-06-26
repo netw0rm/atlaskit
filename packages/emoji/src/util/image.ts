@@ -48,3 +48,34 @@ export const imageAcceptHeader = (): Promise<string> => (
     return isWebpSupported ? webpAcceptHeader : noWebpAcceptHeader;
   })
 );
+
+
+let secureImagesCached;
+
+/**
+ * Checks if the browser supports image caching for previously loaded secure images,
+ * without auth headers.
+ *
+ * @param url must a url to an image that requires auth to access,
+ *    and must already have been recently loaded to work as expected.
+ *    Ignored after first request.
+ */
+export const areSecureImagesCached = (url: string): Promise<boolean> => {
+  if (secureImagesCached !== undefined) {
+    return Promise.resolve(secureImagesCached);
+  }
+
+  return new Promise((resolve) => {
+    const img = new Image();
+
+    const isCached = (cached) => {
+      console.log('is cached?', cached);
+      secureImagesCached = cached;
+      resolve(cached);
+    }
+
+    img.addEventListener('load', () => isCached(true));
+    img.addEventListener('error', () => isCached(false));
+    img.src = url;
+  });
+}

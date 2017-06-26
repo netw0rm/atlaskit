@@ -1,6 +1,6 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { MouseEvent } from 'react';
+import { MouseEvent, SyntheticEvent } from 'react';
 
 import * as styles from './styles';
 import { isSpriteRepresentation, toEmojiId } from '../../type-helpers';
@@ -12,6 +12,7 @@ export interface Props {
   selected?: boolean;
   onSelected?: OnEmojiEvent;
   onMouseMove?: OnEmojiEvent;
+  onLoadError?: OnEmojiEvent<HTMLImageElement>;
   className?: string;
 }
 
@@ -29,6 +30,21 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
     onMouseMove(toEmojiId(emoji), emoji, event);
   }
 };
+
+const handleImageLoaded = (event: SyntheticEvent<HTMLImageElement>) => {
+  // reveal image once load is successful to avoid error flicker when waiting
+  // error handler to deal with error
+  const target = event.target as HTMLElement;
+  target.style.visibility = 'visible';
+}
+
+const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>) => {
+  const { emoji, onLoadError } = props;
+
+  if (onLoadError) {
+    onLoadError(toEmojiId(emoji), emoji, event);
+  }
+}
 
 // Pure functional components are used in favour of class based components, due to the performance!
 // When rendering 1500+ emoji using class based components had a significant impact.
@@ -98,6 +114,9 @@ const renderAsImage = (props: Props) => {
         src={representation.imagePath}
         alt={emoji.shortName}
         title={emoji.shortName}
+        style={{ visibility: 'hidden' }}
+        onLoad={handleImageLoaded}
+        onError={(event) => { handleImageError(props, event); }}
       />
     </span>
   );

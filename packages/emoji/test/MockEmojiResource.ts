@@ -2,7 +2,7 @@ import * as uid from 'uid';
 
 import { customCategory, customType } from '../src/constants';
 import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../src/types';
-import { addCustomCategoryToResult, UploadingEmojiProvider } from '../src/api/EmojiResource';
+import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../src/api/EmojiResource';
 import EmojiRepository, { EmojiSearchResult } from '../src/api/EmojiRepository';
 import { AbstractResource } from '../src/api/SharedResources';
 import debug from '../src/util/logger';
@@ -35,7 +35,7 @@ export const emojiFromUpload = (upload: EmojiUpload) => {
   };
 };
 
-export class MockNonUploadingEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> {
+export class MockNonUploadingEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider  {
   protected emojiRepository: EmojiRepository;
   protected promiseBuilder: PromiseBuilder<any>;
   protected lastQuery: string = '';
@@ -52,6 +52,8 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
       }
     }
   }
+
+  loadCustomEmoji = emoji => emoji;
 
   filter(query: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);

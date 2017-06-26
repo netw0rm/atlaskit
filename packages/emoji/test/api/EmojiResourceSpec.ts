@@ -1320,6 +1320,7 @@ describe('helpers', () => {
     filter = (query, options) => {};
     subscribe = onChange => {};
     unsubscribe = onChange => {};
+    loadCustomEmoji = (emoji) => emoji;
   }
 
   class TestUploadingEmojiProvider extends TestEmojiProvider implements UploadingEmojiProvider {

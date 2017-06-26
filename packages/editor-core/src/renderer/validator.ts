@@ -45,6 +45,35 @@ const whitelistedURLPatterns = [
   /^ftps?:\/\//im,
   /^\/\//im,
   /^mailto:/im,
+  /^skype:/im,
+  /^callto:/im,
+  /^facetime:/im,
+  /^git:/im,
+  /^irc6?:/im,
+  /^news:/im,
+  /^nntp:/im,
+  /^feed:/im,
+  /^cvs:/im,
+  /^svn:/im,
+  /^mvn:/im,
+  /^ssh:/im,
+  /^scp:\/\//im,
+  /^sftp:\/\//im,
+  /^itms:/im,
+  /^notes:/im,
+  /^smb:/im,
+  /^hipchat:\/\//im,
+  /^sourcetree:/im,
+  /^urn:/im,
+  /^tel:/im,
+  /^xmpp:/im,
+  /^telnet:/im,
+  /^vnc:/im,
+  /^rdp:/im,
+  /^whatsapp:/im,
+  /^slack:/im,
+  /^sips?:/im,
+  /^magnet:/im,
 ];
 
 export const isSafeUrl = (url: string): boolean => {
@@ -164,10 +193,12 @@ export const getValidNode = (node: Node): Node => {
       case 'mention': {
         let mentionText = '';
         let mentionId;
+        let mentionAccess;
         if (attrs) {
-          const { text, displayName, id } = attrs;
+          const { text, displayName, id, accessLevel } = attrs;
           mentionText = text || displayName;
           mentionId = id;
+          mentionAccess = accessLevel;
         }
 
         if (!mentionText) {
@@ -175,13 +206,18 @@ export const getValidNode = (node: Node): Node => {
         }
 
         if (mentionText && mentionId) {
-          return {
+          const mentionNode = {
             type,
             attrs: {
               id: mentionId,
               text: mentionText
             }
           };
+          if (mentionAccess) {
+            mentionNode.attrs['accessLevel'] = mentionAccess;
+          }
+
+          return mentionNode;
         }
         break;
       }

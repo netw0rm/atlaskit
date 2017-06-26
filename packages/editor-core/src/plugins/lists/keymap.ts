@@ -7,7 +7,6 @@ import { enterKeyCommand } from './commands';
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(keymaps.splitListItem.common!, commands.splitListItem(), list);
   keymaps.bindKeymapWithCommand(keymaps.toggleOrderedList.common!, trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', commands.toggleOrderedList()), list);
   keymaps.bindKeymapWithCommand(keymaps.toggleBulletList.common!, trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', commands.toggleBulletList()), list);
   keymaps.bindKeymapWithCommand(keymaps.indentList.common!!, trackAndInvoke('atlassian.editor.format.list.indent.keyboard', commands.indentList()), list);

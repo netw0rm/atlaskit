@@ -128,7 +128,15 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
-    it('should remove nested ordered list item even if sleection is on partial list', () => {
+    it('should remove nested ordered list item of type panel', () => {
+      const { editorView, pluginState } = editor(doc(ol(li(panel(p('text'))))));
+      expect(pluginState.formattingIsPresent).to.equal(true);
+
+      pluginState.clearFormatting(editorView);
+      expect(pluginState.formattingIsPresent).not.to.equal(true);
+    });
+
+    it('should remove nested ordered list item even if selection is on partial list', () => {
       const { editorView, pluginState } = editor(doc(ol(li(p('text'), ol(li(p('te{<>}xt')), li(p('text')))), li(p('text')))));
       expect(pluginState.formattingIsPresent).to.equal(true);
 

@@ -227,7 +227,7 @@ describe('Bitbucket markdown serializer: ', () => {
         li(p('foo')),
         li(p('bar')),
         li(p('baz')),
-      )))).to.eq('* foo\n* bar\n* baz');
+      )))).to.eq('* foo\n* bar\n* baz\n\n');
     });
 
     it('surrounded with other block elements keeps empty line between', () => {
@@ -241,6 +241,23 @@ describe('Bitbucket markdown serializer: ', () => {
       ))).to.eq('para\n\n* foo\n* bar\n\nbaz');
     });
 
+    it('with code block as first list item generate correct markdown', () => {
+      expect(markdownSerializer.serialize(doc(
+        ul(
+          li(
+            pre('code\nblock'),
+          )
+        )
+      ))).to.eq(
+        '* \n' +
+        '        code\n' +
+        '        block\n' +
+        '\n' +
+        '\n' +
+        '\n'
+      );
+    });
+
     it('with code block preserves indentation', () => {
       expect(markdownSerializer.serialize(doc(
         ul(
@@ -249,11 +266,19 @@ describe('Bitbucket markdown serializer: ', () => {
             pre('code\nblock'),
           )
         )
-      ))).to.eq('* item\n\n        code\n        block\n\n    \n');
+      ))).to.eq(
+        '* item\n' +
+        '\n' +
+        '        code\n' +
+        '        block\n' +
+        '\n' +
+        '\n' +
+        '\n'
+      );
     });
 
     it('with one empty element is preserved', () => {
-      expect(markdownSerializer.serialize(doc(ul(li())))).to.eq('* ');
+      expect(markdownSerializer.serialize(doc(ul(li(p('')))))).to.eq('* \n\n');
     });
 
     it('with nesting should serialize', () => {
@@ -278,12 +303,17 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '* foo 1\n' +
+        '\n' +
         '    * bar 1\n' +
+        '    \n' +
         '        * baz 1\n' +
-        '        * baz 2\n\n' +
-        '    * bar 2\n\n' +
-        '* foo 2'
-        );
+        '        * baz 2\n' +
+        '        \n' +
+        '    * bar 2\n' +
+        '    \n' +
+        '* foo 2\n' +
+        '\n'
+      );
     });
 
     it('with newline', () => {
@@ -295,7 +325,16 @@ describe('Bitbucket markdown serializer: ', () => {
           ),
           li(p('item 2'))
         )
-      ))).to.eq('* item 1\n\n    \n    \n\n    \n* item 2');
+      ))).to.eq(
+        '* item 1\n' +
+        '\n' +
+        '    \n' +
+        '    \n' +
+        '\n' +
+        '\n' +
+        '* item 2\n' +
+        '\n'
+      );
     });
 
     it('with list item containing two lines', () => {
@@ -307,7 +346,15 @@ describe('Bitbucket markdown serializer: ', () => {
           ),
           li(p('item 2'))
         )
-      ))).to.eq('* item 1\n\n    item 1 desc\n\n    \n* item 2');
+      ))).to.eq(
+        '* item 1\n' +
+        '\n' +
+        '    item 1 desc\n' +
+        '\n' +
+        '\n' +
+        '* item 2\n' +
+        '\n'
+      );
     });
   });
 
@@ -317,7 +364,7 @@ describe('Bitbucket markdown serializer: ', () => {
         li(p('foo')),
         li(p('bar')),
         li(p('baz')),
-      )))).to.eq('1. foo\n2. bar\n3. baz');
+      )))).to.eq('1. foo\n2. bar\n3. baz\n\n');
     });
 
     it('surrounded with other block elements keeps empty line between', () => {
@@ -343,7 +390,7 @@ describe('Bitbucket markdown serializer: ', () => {
         li(p('item')),
         li(p('item')),
         li(p('item')),
-      )))).to.eq(' 1. item\n 2. item\n 3. item\n 4. item\n 5. item\n 6. item\n 7. item\n 8. item\n 9. item\n10. item');
+      )))).to.eq('1. item\n2. item\n3. item\n4. item\n5. item\n6. item\n7. item\n8. item\n9. item\n10. item\n\n');
     });
 
     it('with code block preserves indentation', () => {
@@ -354,11 +401,19 @@ describe('Bitbucket markdown serializer: ', () => {
             pre('code\nblock'),
           )
         )
-      ))).to.eq('1. item\n\n        code\n        block\n\n    \n');
+      ))).to.eq(
+       '1. item\n' +
+       '\n' +
+       '        code\n' +
+       '        block\n' +
+       '\n' +
+       '\n' +
+       '\n'
+     );
     });
 
     it('with one empty element is preserved', () => {
-      expect(markdownSerializer.serialize(doc(ol(li())))).to.eq('1. ');
+      expect(markdownSerializer.serialize(doc(ol(li(p('')))))).to.eq('1. \n\n');
     });
 
     it('with nesting should serialize', () => {
@@ -383,12 +438,32 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
+        '\n' +
         '    1. bar 1\n' +
+        '    \n' +
         '        1. baz 1\n' +
-        '        2. baz 2\n\n' +
-        '    2. bar 2\n\n' +
-        '2. foo 2'
-        );
+        '        2. baz 2\n' +
+        '        \n' +
+        '    2. bar 2\n' +
+        '    \n' +
+        '2. foo 2\n' +
+        '\n'
+      );
+    });
+
+    it('should generate correct markdown for blockquote as first block', () => {
+      expect(markdownSerializer.serialize(doc(ol(
+        li(blockquote(p('foo'), p('bar'), p('baz'))),
+      )))).to.eq(
+      '\n' +
+      '1. > foo\n' +
+      '  >\n' +
+      '  > bar\n' +
+      '  >\n' +
+      '  > baz\n' +
+      '\n' +
+      '\n' +
+      '\n');
     });
   });
 
@@ -420,12 +495,19 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
+        '\n' +
         '    * bar 1\n' +
+        '    \n' +
         '        1. baz 1\n' +
         '        2. baz 2\n' +
-        '            * banana\n\n\n' +
-        '    * bar 2\n\n' +
-        '2. foo 2'
+        '        \n' +
+        '            * banana\n' +
+        '            \n' +
+        '        \n' +
+        '    * bar 2\n' +
+        '    \n' +
+        '2. foo 2\n' +
+        '\n'
         );
     });
 
@@ -451,7 +533,8 @@ describe('Bitbucket markdown serializer: ', () => {
         '* bar 2\n' +
         '\n' +
         '1. baz 1\n' +
-        '2. baz 2'
+        '2. baz 2\n' +
+        '\n'
         );
     });
   });

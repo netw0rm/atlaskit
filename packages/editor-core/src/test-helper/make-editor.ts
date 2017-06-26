@@ -9,7 +9,7 @@ import {
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
 import { setTextSelection } from './transactions';
-import { reactNodeViewPlugins } from '../../src/plugins';
+import { reactNodeViewPlugins } from '../plugins';
 
 /**
  * Build a ProseMirror instance.

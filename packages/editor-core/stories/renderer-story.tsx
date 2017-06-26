@@ -1,5 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
 import * as React from 'react';
 import { name } from '../package.json';
 import schema from './schema';
@@ -43,16 +44,28 @@ const mentionProvider = Promise.resolve({
   }
 });
 
+const mediaProvider = Promise.resolve({
+  viewContext: Promise.resolve({
+    clientId: defaultClientId,
+    serviceHost: defaultServiceHost,
+    tokenProvider: StoryBookTokenProvider.tokenProvider,
+  })
+});
+
 storiesOf(name, module)
   .add('renderer', () => {
     const providerFactory = new ProviderFactory();
     providerFactory.setProvider('mentionProvider', mentionProvider);
+    providerFactory.setProvider('mediaProvider', mediaProvider);
 
     const eventHandlers = {
       mention: {
         onClick: action('onClick'),
         onMouseEnter: action('onMouseEnter'),
         onMouseLeave: action('onMouseLeave'),
+      },
+      media: {
+        onClick: action('onClick'),
       },
     };
 
@@ -105,6 +118,9 @@ storiesOf(name, module)
       <Heading level={5}>Heading 5</Heading>
       <Heading level={6}>Heading 6</Heading>
     </div>
+  ))
+  .add('nodes/media', () => (
+    <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
   ))
   .add('nodes/mention', () => (
     <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>

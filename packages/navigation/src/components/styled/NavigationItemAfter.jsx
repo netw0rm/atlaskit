@@ -1,11 +1,17 @@
 import styled from 'styled-components';
+import { isCollapsed } from '../../theme/util';
+
+const getDisplay = ({ theme, isDropdownTrigger }) => {
+  if (isDropdownTrigger && isCollapsed(theme)) {
+    return 'none';
+  }
+
+  return 'block';
+};
 
 const NavigationItemAfter = styled.div`
-  display: block;
+  display: ${getDisplay};
   min-width: ${({ shouldTakeSpace }) => (shouldTakeSpace ? '24px' : 0)};
-  [data-__ak-navigation-container-closed="true"] & {
-      ${({ isDropdownTrigger }) => (isDropdownTrigger ? 'display: none' : '')}
-  }
 `;
 
 NavigationItemAfter.displayName = 'NavigationItemAfter';

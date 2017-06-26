@@ -11,6 +11,10 @@ import {
   toDOM,
 } from '@atlaskit/editor-core/dist/es5/test-helper';
 import {
+  confluenceUnsupportedBlock,
+  confluenceUnsupportedInline
+} from '@atlaskit/editor-core';
+import {
   blockquote,
   doc,
   h1,
@@ -18,8 +22,6 @@ import {
 } from './_schema-builder';
 import Editor from '../../src';
 import schema from '../../src/schema';
-import unsupportedBlock from '../../src/schema/nodes/unsupportedBlock';
-import unsupportedInline from '../../src/schema/nodes/unsupportedInline';
 
 chai.use(chaiPlugin);
 
@@ -37,6 +39,19 @@ describe('@atlaskit/editor-cq', () => {
 
     it('should render expanded chrome if only expanded is set', () => {
       expect(mount(<Editor expanded={true} />).find('ChromeExpanded')).to.have.length.above(0);
+    });
+
+    it('should render disabled chrome if disabled=true', () => {
+      const chrome = mount(<Editor isExpandedByDefault={true} disabled={true} />).find('ChromeExpanded');
+      expect(chrome.prop('disabled')).to.equal(true);
+    });
+
+    it('should disable chrome when disabled is changed', () => {
+      const chrome = mount(<Editor isExpandedByDefault={true} />);
+      expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(false);
+
+      chrome.setProps({ disabled: true });
+      expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(true);
     });
 
     it('should have higher priority for expanded over isExpandedByDefault', () => {
@@ -96,38 +111,38 @@ describe('@atlaskit/editor-cq', () => {
   describe('@atlaskit/editor-cq/schema unsupported nodes', () => {
     describe('parse HTML', () => {
       it('should work for unsupported block nodes', () => {
-        const doc = fromHTML('<div data-node-type="unsupportedBlock" data-unsupported="block" data-unsupported-block-cxhtml="foobar"/>', schema);
+        const doc = fromHTML('<div data-node-type="confluenceUnsupportedBlock" data-confluence-unsupported="block" data-confluence-unsupported-block-cxhtml="foobar"/>', schema);
         const unsupportedBlockNode = doc.firstChild!;
 
-        expect(unsupportedBlockNode.type.spec).to.equal(unsupportedBlock);
+        expect(unsupportedBlockNode.type.spec).to.equal(confluenceUnsupportedBlock);
         expect(unsupportedBlockNode.attrs.cxhtml).to.be.equal('foobar');
       });
 
       it('should work for unsupported inline nodes', () => {
-        const doc = fromHTML('<div data-node-type="unsupportedInline" data-unsupported="inline" data-unsupported-inline-cxhtml="foobar"/>', schema);
+        const doc = fromHTML('<div data-node-type="confluenceUnsupportedInline" data-confluence-unsupported="inline" data-confluence-unsupported-inline-cxhtml="foobar"/>', schema);
         const paragraph = doc.firstChild!;
         const unsupportedInlineNode = paragraph.firstChild!;
 
-        expect(unsupportedInlineNode.type.spec).to.equal(unsupportedInline);
+        expect(unsupportedInlineNode.type.spec).to.equal(confluenceUnsupportedInline);
         expect(unsupportedInlineNode.attrs.cxhtml).to.be.equal('foobar');
       });
     });
 
     describe('encode to html', () => {
       it('should work for unsupported block nodes', () => {
-        const unsupportedBlockNode = schema.nodes.unsupportedBlock.create({ cxhtml: 'foobar' });
+        const unsupportedBlockNode = schema.nodes.confluenceUnsupportedBlock.create({ cxhtml: 'foobar' });
         const domNode = toDOM(unsupportedBlockNode, schema).firstChild as HTMLElement;
 
-        expect(domNode.dataset.unsupported).to.be.equal('block');
-        expect(domNode.dataset.unsupportedBlockCxhtml).to.be.equal('foobar');
+        expect(domNode.dataset.confluenceUnsupported).to.be.equal('block');
+        expect(domNode.dataset.confluenceUnsupportedBlockCxhtml).to.be.equal('foobar');
       });
 
       it('should work for unsupported inline nodes', () => {
-        const unsupportedInlineNode = schema.nodes.unsupportedInline.create({ cxhtml: 'foobar' });
+        const unsupportedInlineNode = schema.nodes.confluenceUnsupportedInline.create({ cxhtml: 'foobar' });
         const domNode = toDOM(unsupportedInlineNode, schema).firstChild as HTMLElement;
 
-        expect(domNode.dataset.unsupported).to.be.equal('inline');
-        expect(domNode.dataset.unsupportedInlineCxhtml).to.be.equal('foobar');
+        expect(domNode.dataset.confluenceUnsupported).to.be.equal('inline');
+        expect(domNode.dataset.confluenceUnsupportedInlineCxhtml).to.be.equal('foobar');
       });
     });
   });

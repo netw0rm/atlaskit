@@ -56,6 +56,12 @@ class Page extends Component {
 }
 ```
 
+Don't forget to add these polyfills to your product build if you're using emoji or mentions in the editor and you want to target older browsers:
+
+ * Promise ([polyfill](https://www.npmjs.com/package/es6-promise), [browser support](http://caniuse.com/#feat=promises))
+ * Fetch API ([polyfill](https://www.npmjs.com/package/whatwg-fetch), [browser support](http://caniuse.com/#feat=fetch))
+ * URLSearchParams API ([polyfill](https://www.npmjs.com/package/url-search-params), [browser support](http://caniuse.com/#feat=urlsearchparams))
+ * Element.closest ([polyfill](https://www.npmjs.com/package/element-closest), [browser support](http://caniuse.com/#feat=element-closest))
 
 ## `Editor` API
 
@@ -67,12 +73,12 @@ import Editor from '@NAME@';
 
 #### `mentionProvider?: Promise<MentionProvider>`
 
-A resource required for enabling Fabric mentions support. Please refer to the 
+A resource required for enabling Fabric mentions support. Please refer to the
 [source of MentionProvider interface](https://bitbucket.org/atlassian/atlaskit/src/master/packages/mention/src/api/MentionResource.ts?at=master&fileviewer=file-view-default) for more details.
 
 #### `mediaProvider?: Promise<MediaProvider>`
 
-A resource required for enabling Fabric mentions support. Please refer to the 
+A resource required for enabling Fabric mentions support. Please refer to the
 [source of MediaProvider interface](https://bitbucket.org/atlassian/atlaskit/src/master/packages/editor-core/src/media/index.ts?at=master&fileviewer=file-view-default) for more details.
 
 #### `isExpandedByDefault?: boolean`
@@ -83,7 +89,7 @@ mode.
 
 #### `expanded?: boolean`
 
-A run-time way for controlling Editor expansion. Setting this to "true" will expand the editor, 
+A run-time way for controlling Editor expansion. Setting this to "true" will expand the editor,
 if it was collapsed; setting this to "false" will collapse the Editor if it was expanded. Note that
 properties are write-only so this can not be used to check if the Editor is currently expanded.
 
@@ -127,3 +133,36 @@ Returns true if the editor content is empty.
 
 Returns the value of the editor in Confluence Storage format. This getter computes the value
 on request, as such only access this getter when the value is actually required.
+
+
+#### `errorReporter?: ErrorReportingHandler`
+
+If you're using some error reporting service/tool in your product you can help Atlassian Editor track and store its own errors inside your error reporting service. Provide "errorReporter" property to the Editor component and describe "captureMessage" and "captureException" methods for this.
+
+```typescript
+// if you're using Sentry
+import * as Raven from 'raven';
+
+// this is optional, use it only for TS support
+import { ErrorReportingHandler, ErrorReporterTags } from '@atlaskit/editor-core';
+
+Raven
+  .config(DSN_URI, { release: RELEASE_VERSION })
+  .install();
+
+class ErrorReporter implements ErrorReportingHandler {
+  captureMessage(msg: string, tags?: ErrorReporterTags) {
+    Raven.captureMessage(msg, { ...tags, module: 'editor' });
+  }
+
+  captureException(err: Error, tags?: ErrorReporterTags) {
+    Raven.captureException(err, { ...tags, module: 'editor' });
+  }
+}
+
+const errorReporter = new ErrorReporter();
+
+export default (
+  <Editor errorReporter={errorReporter}/>
+);
+```

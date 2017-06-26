@@ -24,6 +24,7 @@ export type LinkedApplications = {
 
 export type Translations = {
   home: ReactNode,
+  'site-admin'?: ReactNode,
   apps: ReactNode,
   configure: ReactNode,
   recent: ReactNode,
@@ -38,9 +39,9 @@ export type Translations = {
 
 export type SuggestedApplication = {
   show: boolean,
-  application: 'jira' | 'confluence',
+  application?: 'jira' | 'confluence',
   url?: string,
-  onDontShowAgainClick: Function,
+  onDontShowAgainClick?: Function,
 };
 
 export type DropdownOptions = {

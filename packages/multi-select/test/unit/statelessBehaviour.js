@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { StatelessMultiSelect } from '../../src';
+import { MultiSelectStateless } from '../../src';
 
 import { name } from '../../package.json';
 
@@ -18,7 +18,7 @@ describe(`${name} - stateless`, () => {
   describe('behavior', () => {
     let select;
     beforeEach(() => {
-      select = mount(<StatelessMultiSelect />);
+      select = mount(<MultiSelectStateless />);
     });
 
     describe('focus', () => {

@@ -1,6 +1,7 @@
 import {
   AnalyticsHandler,
   analyticsService,
+  asciiEmojiPlugins,
   Chrome,
   codeBlockPlugins,
   blockTypePlugins,
@@ -21,7 +22,6 @@ import {
   listsStateKey,
   textFormattingStateKey,
   clearFormattingStateKey,
-  ContextName,
   EditorView,
   EditorState,
   Node,
@@ -37,9 +37,13 @@ import {
   ReactEmojiNode,
   ReactMentionNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  // ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MentionProvider } from '@atlaskit/mention';
+import { EmojiProvider } from '@atlaskit/editor-core';
+import { MentionProvider } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
@@ -49,12 +53,21 @@ import { parseHtml, transformHtml } from './parse-html';
 import { version, name } from './version';
 import schema from './schema';
 
+export {
+  AbstractMentionResource,
+  EmojiProvider,
+  EmojiResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/editor-core';
+
 export { version };
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -64,8 +77,11 @@ export interface Props {
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
+  errorReporter?: ErrorReportingHandler;
   mentionSource?: MentionSource;
   emojiProvider?: Promise<EmojiProvider>;
+  popupsBoundariesElement?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
 }
 
 export interface State {
@@ -90,6 +106,10 @@ export default class Editor extends PureComponent<Props, State> {
 
   componentWillMount() {
     this.handleProviders(this.props);
+  }
+
+  componentWillUnmount() {
+    this.providerFactory.destroy();
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -251,6 +271,8 @@ export default class Editor extends PureComponent<Props, State> {
         emojiProvider={emojiProvider}
         packageVersion={version}
         packageName={name}
+        popupsBoundariesElement={this.props.popupsBoundariesElement}
+        popupsMountPoint={this.props.popupsMountPoint}
       />
     );
   }
@@ -278,7 +300,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, emojiProvider, mentionSource, imageUploadHandler } = this.props;
+      const { emojiProvider, mentionSource, imageUploadHandler } = this.props;
       const bitbucketKeymap = {
         'Mod-Enter': this.handleSave,
         'Esc'() { } // Disable Esc handler
@@ -290,14 +312,21 @@ export default class Editor extends PureComponent<Props, State> {
           plugins: [
             ...mentionsPlugins(schema), // mentions and emoji needs to be first
             ...emojisPlugins(schema),
-            ...listsPlugins(schema),
-            ...blockTypePlugins(schema),
+            ...asciiEmojiPlugins(schema, this.props.emojiProvider),
             ...clearFormattingPlugins(schema),
-            ...codeBlockPlugins(schema),
-            ...textFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
+            // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+            // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+            // if converting is possible
+            ...blockTypePlugins(schema),
+            // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
+            // this is needed to ensure that all block types are supported inside lists
+            // this is needed until we implement keymap proirity :(
+            ...listsPlugins(schema),
+            ...textFormattingPlugins(schema),
+            ...codeBlockPlugins(schema),
             ...reactNodeViewPlugins(schema),
             history(),
             keymap(bitbucketKeymap),
@@ -305,11 +334,6 @@ export default class Editor extends PureComponent<Props, State> {
           ]
         }
       );
-
-      if (context) {
-        const blockTypeState = blockTypeStateKey.getState(editorState);
-        blockTypeState.changeContext(context);
-      }
 
       if (imageUploadHandler) {
         const imageUploadState = imageUploadStateKey.getState(editorState);

@@ -15,7 +15,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 
 import {CardAppearance} from '../../src';
-import {CardView} from '../../src/cardView';
+import {CardView} from '../../src/root/cardView';
 
 import {createFileCardsWithDifferentDataURIs} from './chapters/diff-images';
 import {createCardsOfDifferentSize} from './chapters/diff-card-sizes';

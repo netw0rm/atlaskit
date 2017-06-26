@@ -4,21 +4,33 @@ import { ReactComponentConstructor } from '../';
 import Blockquote from './blockquote';
 import BulletList from './bulletList';
 import Doc from './doc';
+import Emoji from './emoji';
 import HardBreak from './hardBreak';
+import Heading from './heading';
 import ListItem from './listItem';
+import Media from './media';
+import MediaGroup from './mediaGroup';
+import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
+import Rule from './rule';
 
 export const nodeToReact = {
   'blockquote': Blockquote,
   'bulletList': BulletList,
   'doc': Doc,
+  'emoji': Emoji,
   'hardBreak': HardBreak,
+  'heading': Heading,
   'listItem': ListItem,
+  'media': Media,
+  'mediaGroup': MediaGroup,
+  'mention': Mention,
   'orderedList': OrderedList,
   'panel': Panel,
   'paragraph': Paragraph,
+  'rule': Rule,
 };
 
 export const toReact = (node: Node): ReactComponentConstructor => {
@@ -116,9 +128,15 @@ export {
   Blockquote,
   BulletList,
   Doc,
+  Emoji,
   HardBreak,
+  Heading,
   ListItem,
+  Media,
+  MediaGroup,
+  Mention,
   OrderedList,
   Panel,
   Paragraph,
+  Rule,
 };

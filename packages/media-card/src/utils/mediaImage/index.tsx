@@ -19,8 +19,8 @@ export interface MediaImageProps {
 }
 
 export interface MediaImageState {
-  maxWidth: string;
-  maxHeight: string;
+  imgWidth: number;
+  imgHeight: number;
   parentWidth: number;
   parentHeight: number;
 }
@@ -38,8 +38,8 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     super(props);
 
     this.state = {
-      maxWidth: '100%',
-      maxHeight: '100%',
+      imgWidth: 0,
+      imgHeight: 0,
       parentWidth: Infinity,
       parentHeight: Infinity
     };
@@ -76,14 +76,14 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   onImageLoad(component) {
     return function () {
       component.setState({
-        maxWidth: `${this.width}px`,
-        maxHeight: `${this.height}px`
+        imgWidth: this.width,
+        imgHeight: this.height
       });
     };
   }
 
   render() {
-    const {transparentFallback, crop, dataURI} = this.props;
+    const {transparentFallback, crop, dataURI, fadeIn} = this.props;
     const {implicitNoCrop, backgroundSize} = this;
     const transparentBg = transparentFallback ? `, ${transparentFallbackBackground}` : '';
     const style = {
@@ -91,25 +91,28 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
       backgroundImage: `url(${dataURI})${transparentBg}`
     };
     const className = cx('media-card', {
-      'fade-in': this.props.fadeIn,
+      'fade-in': fadeIn,
       crop: crop && !implicitNoCrop
     });
 
     return <ImageViewWrapper className={className} style={style} />;
   }
 
-  private get isSmall() {
-    return parseInt(this.state.maxWidth, 0) < this.state.parentWidth || parseInt(this.state.maxHeight, 0) < this.state.parentHeight;
+  private get isSmallerThanWrapper() {
+    const {imgWidth, parentWidth, imgHeight, parentHeight} = this.state;
+
+    return imgWidth < parentWidth && imgHeight < parentHeight;
   }
 
+  // If users specifies a custom dimensions, we take that as a no-crop and prioritize it over the 'crop' property
   private get implicitNoCrop() {
     return this.props.width !== '100%' || this.props.height !== '100%';
   }
 
   private get backgroundSize() {
     const {width, height} = this.props;
-    const {maxWidth, maxHeight} = this.state;
+    const {imgWidth, imgHeight} = this.state;
 
-    return this.implicitNoCrop ? `${width} ${height}, auto` : (this.isSmall ? `${maxWidth} ${maxHeight}, auto` : null);
+    return this.implicitNoCrop ? `${width} ${height}, auto` : (this.isSmallerThanWrapper ? `${imgWidth}px ${imgHeight}px, auto` : null);
   }
 }

@@ -6,12 +6,13 @@ import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
 
-import {getCSSUnitValue} from '../index';
-import {CardDimensions, CardStatus} from '../../index';
+import {getCSSUnitValue} from '../getCSSUnitValue';
+import {CardDimensions, CardDimensionValue, CardStatus} from '../../index';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 import {UploadingView} from '../../utils/uploadingView';
+import {defaultImageCardDimensions} from '../../utils/cardDimensions';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;
@@ -37,27 +38,22 @@ export interface CardImageViewProps {
   onRetry?: CardAction;
 }
 
-export const DEFAULT_CARD_DIMENSIONS = {
-  WIDTH: '156px',
-  HEIGHT: '104px'
-};
-
 export class CardImageView extends Component<CardImageViewProps, {}> {
-  private get width(): string {
+  private get width(): CardDimensionValue {
     const {width} = this.props.dimensions || {width: undefined};
 
     if (!width) {
-      return DEFAULT_CARD_DIMENSIONS.WIDTH;
+      return defaultImageCardDimensions.width;
     }
 
     return getCSSUnitValue(width);
   }
 
-  private get height(): string {
+  private get height(): CardDimensionValue {
     const {height} = this.props.dimensions || {height: undefined};
 
     if (!height) {
-      return DEFAULT_CARD_DIMENSIONS.HEIGHT ;
+      return defaultImageCardDimensions.height;
     }
 
     return getCSSUnitValue(height);

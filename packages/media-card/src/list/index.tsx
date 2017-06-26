@@ -13,12 +13,12 @@ import {
 } from '@atlaskit/media-core';
 import { CSSTransitionGroup } from 'react-transition-group';
 
-import { DEFAULT_CARD_DIMENSIONS } from '../files';
-import { CardDimensions, CardListEvent, CardEvent } from '../index';
-import { Provider } from '../card';
-import { MediaCard } from '../mediaCard';
+import { defaultImageCardDimensions, defaultSmallCardDimensions } from '../utils';
+import { CardDimensions, CardListEvent, CardEvent } from '..';
+import { Provider, MediaCard, CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
+import { LazyContent } from '../utils';
 
 export interface CardListProps {
   context: Context;
@@ -37,7 +37,7 @@ export interface CardListProps {
    * Infinite scrolling is only enabled when height has also been specified.
    */
   useInfiniteScroll?: boolean;
-
+  shouldLazyLoadCards?: boolean;
   errorComponent?: JSX.Element;
   loadingComponent?: JSX.Element;
   emptyComponent?: JSX.Element;
@@ -45,6 +45,8 @@ export interface CardListProps {
 
 export interface CardListState {
   loading: boolean;
+  shouldAnimate: boolean;
+  firstItemKey?: string;
   subscription?: Subscription;
   loadNextPage?: () => void;
   collection?: MediaCollection;
@@ -63,16 +65,16 @@ export class CardList extends Component<CardListProps, CardListState> {
     cardAppearance: 'image',
     pageSize: CardList.defaultPageSize,
     actions: [],
-    cardHeight: DEFAULT_CARD_DIMENSIONS.HEIGHT,
     useInfiniteScroll: true,
-
+    shouldLazyLoadCards: true,
     errorComponent: ErrorComponent,
     loadingComponent: LoadingComponent,
     emptyComponent: EmptyComponent
   };
 
   state: CardListState = {
-    loading: true
+    loading: true,
+    shouldAnimate: false
   };
 
   providersByMediaItemId: {[id: string]: Provider} = {};
@@ -83,6 +85,49 @@ export class CardList extends Component<CardListProps, CardListState> {
     if (subscription) {
       subscription.unsubscribe();
     }
+  }
+
+  handleNextItems(nextProps: CardListProps) {
+    const {collectionName, context} = nextProps;
+
+    return (collection: MediaCollection) => {
+      const {firstItemKey} = this.state;
+      const newFirstItemKey = collection.items[0] ? this.getItemKey(collection.items[0]) : undefined;
+      const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
+      this.providersByMediaItemId = {};
+      collection.items.forEach(mediaItem => {
+        if (!mediaItem.details || !mediaItem.details.id) { return; }
+
+        this.providersByMediaItemId[mediaItem.details.id] = context.getMediaItemProvider(
+          mediaItem.details.id,
+          mediaItem.type,
+          collectionName,
+          mediaItem
+        );
+      });
+
+      this.setState({
+        collection,
+        shouldAnimate,
+        loading: false,
+        firstItemKey: newFirstItemKey
+      });
+    };
+  }
+
+  private subscribe(nextProps: CardListProps) {
+    const {collectionName, context} = nextProps;
+    const pageSize = this.props.pageSize || CardList.defaultPageSize;
+    const provider = context.getMediaCollectionProvider(collectionName, pageSize);
+
+    const subscription = provider.observable().subscribe({
+      next: this.handleNextItems(nextProps),
+      error: (error: AxiosError): void => {
+        this.setState({ collection: undefined, error, loading: false });
+      }
+    });
+
+    this.setState({subscription});
   }
 
   private shouldUpdateState(nextProps: CardListProps): boolean {
@@ -100,37 +145,13 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     this.dataURIService = context.getDataUriService(collectionName);
 
-    const subscription = provider.observable().subscribe({
-      next: (collection: MediaCollection): void => {
-        this.providersByMediaItemId = {};
-        collection.items.forEach(mediaItem => {
-          if (!mediaItem.details || !mediaItem.details.id) { return; }
-
-          this.providersByMediaItemId[mediaItem.details.id] = context.getMediaItemProvider(
-            mediaItem.details.id,
-            mediaItem.type,
-            collectionName,
-            mediaItem
-          );
-        });
-
-        this.setState({
-          ...this.state,
-          collection,
-          loading: false
-        });
-      },
-      error: (error: AxiosError): void => {
-        this.setState({ ...this.state, error, loading: false });
-      }
-    });
-
+    // Setting the subscription after the state has been applied
     this.setState({
       loadNextPage: () => provider.loadNextPage(),
-      collection: undefined,
       error: undefined,
-      subscription
-    });
+      collection: undefined,
+      firstItemKey: undefined
+    }, () => this.subscribe(nextProps));
   }
 
   componentDidMount() {
@@ -190,8 +211,9 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderList(): JSX.Element {
-    const { collection } = this.state;
-
+    const { collection, shouldAnimate } = this.state;
+    const {cardWidth, dimensions, providersByMediaItemId, dataURIService, handleCardClick, placeholder} = this;
+    const {cardAppearance, shouldLazyLoadCards} = this.props;
     const actions = this.props.actions || [];
     const cardActions = (collectionItem: MediaCollectionItem) => actions
       .map(action => {
@@ -208,30 +230,33 @@ export class CardList extends Component<CardListProps, CardListState> {
     ;
 
     const cards = collection ? collection.items
-      .map((mediaItem: MediaCollectionItem, index: number) => {
-        const {cardAppearance, cardDimensions} = this.props;
-
+      .map((mediaItem: MediaCollectionItem) => {
         if (!mediaItem.details || !mediaItem.details.id) {
           return null;
         }
-
-        return (
-          <CardListItemWrapper key={`${mediaItem.details.id}-${mediaItem.details.occurrenceKey}`} cardWidth={this.cardWidth}>
+        const key = this.getItemKey(mediaItem);
+        const cardListItem = (
+          <CardListItemWrapper key={key} shouldAnimate={shouldAnimate} cardWidth={cardWidth}>
             <MediaCard
-              provider={this.providersByMediaItemId[mediaItem.details.id]}
-              dataURIService={this.dataURIService}
+              provider={providersByMediaItemId[mediaItem.details.id]}
+              dataURIService={dataURIService}
 
               appearance={cardAppearance}
-              dimensions={{
-                width: this.cardWidth,
-                height: cardDimensions && cardDimensions.height
-              }}
+              dimensions={dimensions}
 
-              onClick={this.handleCardClick.bind(this, mediaItem)}
+              onClick={handleCardClick.bind(this, mediaItem)}
               actions={cardActions(mediaItem)}
             />
           </CardListItemWrapper>
         );
+        // We don't want to wrap new items into LazyContent aka lazy load new items
+        const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
+
+        return useLazyContent ? (
+          <LazyContent placeholder={placeholder} key={key} appearance={cardAppearance}>
+            {cardListItem}
+          </LazyContent>
+        ) : cardListItem;
       }) : null
     ;
 
@@ -287,7 +312,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
 
     if (cardAppearance === 'image') {
-      return DEFAULT_CARD_DIMENSIONS.WIDTH;
+      return defaultImageCardDimensions.width;
     }
 
     if (cardAppearance === 'small') {
@@ -295,6 +320,14 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
 
     return undefined;
+  }
+
+  private get cardHeight(): string | number | undefined {
+    const {cardDimensions, cardAppearance} = this.props;
+
+    if (cardDimensions && cardDimensions.height) { return cardDimensions.height; }
+    if (cardAppearance === 'image') { return defaultImageCardDimensions.height; }
+    if (cardAppearance === 'small') { return defaultSmallCardDimensions.height; }
   }
 
   private get useInfiniteScroll(): boolean {
@@ -305,6 +338,28 @@ export class CardList extends Component<CardListProps, CardListState> {
     return (value === null) || (value === undefined);
   }
 
+  private getItemKey(item: MediaCollectionItem): string {
+    return `${item.details.id}-${item.details.occurrenceKey}`;
+  }
+
+  private get dimensions(): CardDimensions {
+    const {cardWidth, cardHeight} = this;
+    return {
+      width: cardWidth,
+      height: cardHeight
+    };
+  }
+
+  private get placeholder(): JSX.Element {
+    const {cardWidth, dimensions} = this;
+    const {cardAppearance} = this.props;
+
+    return (
+      <CardListItemWrapper cardWidth={cardWidth}>
+        <CardView dimensions={dimensions} status="loading" appearance={cardAppearance} />
+      </CardListItemWrapper>
+    );
+  }
+
   loadNextPage = (): void => this.state.loadNextPage && this.state.loadNextPage();
 }
-

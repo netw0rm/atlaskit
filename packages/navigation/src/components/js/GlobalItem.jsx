@@ -11,7 +11,6 @@ export default class GlobalItem extends PureComponent {
     linkComponent: PropTypes.func,
   };
   static defaultProps = {
-    appearance: 'global',
     size: 'small',
     linkComponent: DefaultLinkComponent,
   };

@@ -15,7 +15,8 @@ export class MediaLinkService implements LinkService {
     const request = createRequest({
       config: this.config,
       clientId: clientId,
-      collectionName: collectionName
+      collectionName: collectionName,
+      preventPreflight: true
     });
 
     return request({url: `/link/${linkId}`})

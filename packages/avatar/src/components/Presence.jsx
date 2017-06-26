@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import Div from '../styled/Presence';
 import getPresenceSVG from '../utils/getPresenceSVG';
-import { PresenceType, Size } from '../types';
+import type { PresenceType, Size } from '../types';
 
 // TODO: This probably shouldn't be part of the public API; it can probably
 // safely be removed but we should check because it's technically a breaking change

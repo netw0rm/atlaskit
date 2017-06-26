@@ -1,22 +1,27 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import memoizeOne from 'memoize-one';
-import * as presets from '../../theme/presets';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
 import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
+import GlobalSecondaryActions from './GlobalSecondaryActions';
 import Reveal from './Reveal';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
+import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
 import subscribe from '../../watch-scroll-top';
-import { globalPrimaryActions } from '../../shared-variables';
+import {
+  globalPrimaryActions,
+  globalSecondaryActions as globalSecondaryActionsSizes,
+} from '../../shared-variables';
+import { container } from '../../theme/presets';
 
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
-    showGlobalPrimaryActions: PropTypes.bool,
+    showGlobalActions: PropTypes.bool,
+    globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     children: PropTypes.node,
     headerComponent: PropTypes.func,
     isCollapsed: PropTypes.bool,
@@ -27,13 +32,15 @@ export default class ContainerNavigation extends PureComponent {
     globalCreateIcon: PropTypes.node,
     onGlobalCreateActivate: PropTypes.func,
     onGlobalSearchActivate: PropTypes.func,
+    theme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
-    appearance: 'container',
-    showGlobalPrimaryActions: false,
+    showGlobalActions: false,
+    globalSecondaryActions: [],
     isCollapsed: false,
     linkComponent: DefaultLinkComponent,
+    theme: container,
   }
 
   constructor(props, context) {
@@ -84,7 +91,9 @@ export default class ContainerNavigation extends PureComponent {
       this.unsubscribe();
     }
 
-    if (!el) {
+    // If headerComponent doesn't exist we don't need to track scroll position,
+    // because it's only used by ContainerHeader component
+    if (!el || !this.props.headerComponent) {
       return;
     }
 
@@ -93,8 +102,8 @@ export default class ContainerNavigation extends PureComponent {
 
   render() {
     const {
-      appearance,
-      showGlobalPrimaryActions,
+      showGlobalActions,
+      globalSecondaryActions,
       children,
       globalCreateIcon,
       globalPrimaryIcon,
@@ -105,11 +114,11 @@ export default class ContainerNavigation extends PureComponent {
       onGlobalCreateActivate,
       onGlobalSearchActivate,
       isCollapsed,
+      theme,
     } = this.props;
 
-    // Only animating the revealing of GlobalPrimaryActions
-    // after the first render. Before that it is rendered
-    // without animation.
+    // Only animating the revealing of GlobalPrimaryActions and GlobalSecondaryActions
+    // after the first render. Before that it is rendered without animation.
     const { isInitiallyRendered } = this.state;
 
     const header = headerComponent ? (
@@ -121,22 +130,20 @@ export default class ContainerNavigation extends PureComponent {
 
     return (
       <WithRootTheme
-        provided={presets[appearance]}
+        provided={theme}
         isCollapsed={isCollapsed}
       >
         {/* This div is needed for legacy reasons.
         All children should use isCollapsed on the theme */}
         <ContainerNavigationInner
-          data-__ak-navigation-container-closed={isCollapsed}
           innerRef={this.onRefChange}
         >
           <Reveal
             shouldAnimate={isInitiallyRendered}
-            isOpen={showGlobalPrimaryActions}
+            isOpen={showGlobalActions}
             openHeight={globalPrimaryActions.height.outer}
           >
             <GlobalPrimaryActions
-              appearance={appearance}
               createIcon={globalCreateIcon}
               linkComponent={linkComponent}
               onCreateActivate={onGlobalCreateActivate}
@@ -150,6 +157,21 @@ export default class ContainerNavigation extends PureComponent {
           <ContainerNavigationChildren>
             {children}
           </ContainerNavigationChildren>
+          <GlobalNavigationSecondaryContainer>
+            <Reveal
+              shouldAnimate={isInitiallyRendered}
+              isOpen={showGlobalActions}
+              openHeight={
+                globalSecondaryActionsSizes.height(
+                  React.Children.count(globalSecondaryActions)
+                ).outer
+              }
+            >
+              {showGlobalActions && globalSecondaryActions.length ? (
+                <GlobalSecondaryActions actions={globalSecondaryActions} />
+              ) : null}
+            </Reveal>
+          </GlobalNavigationSecondaryContainer>
         </ContainerNavigationInner>
       </WithRootTheme>
     );

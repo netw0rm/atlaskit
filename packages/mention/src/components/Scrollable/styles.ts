@@ -8,12 +8,11 @@ export const ScrollableStyle = styled.div`
   overflowX: hidden;
   overflowY: auto;
 
-  padding: 0;
+  padding: 4px 0;
   margin: 0;
 
   background: white;
   maxHeight: ${scrollableMaxHeight};
 
-  border: 1px solid #fff;
   borderRadius: ${akBorderRadius};
 `;

@@ -1,0 +1,56 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { PersonResult, RoomResult } from './results';
+import { AkNavigationItemGroup } from '../../../src';
+
+/**
+ * Enumerate the result types available to SearchResults
+ */
+const availableResultTypes = {
+  person: PersonResult,
+  room: RoomResult,
+};
+
+/**
+ * From the perspective of SearchResults, result items consist only of a unique id and result type
+ */
+const resultPropType = {
+  id: PropTypes.string,
+  type: PropTypes.oneOf(Object.keys(availableResultTypes)),
+};
+
+const resultGroupPropType = {
+  items: PropTypes.arrayOf(PropTypes.shape(resultPropType)),
+  title: PropTypes.string.isRequired,
+};
+
+export default class SearchResults extends PureComponent {
+  static propTypes = {
+    results: PropTypes.arrayOf(PropTypes.shape(resultGroupPropType)),
+  }
+
+  static defaultProps = {
+    results: [],
+  }
+
+  renderResultItem = ({ type, id, ...props }) => {
+    const Result = availableResultTypes[type];
+    return Result ? <Result key={id} {...props} /> : null;
+  }
+
+  renderResultGroup = group => (
+    group.items && group.items.length > 0 ? (
+      <AkNavigationItemGroup key={group.title} title={group.title}>
+        {group.items.map(this.renderResultItem)}
+      </AkNavigationItemGroup>
+    ) : null
+  );
+
+  render() {
+    return (
+      <div>
+        {this.props.results.map(this.renderResultGroup)}
+      </div>
+    );
+  }
+}

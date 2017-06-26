@@ -3,7 +3,6 @@ import { shallow, mount } from 'enzyme';
 import FieldBase, { Label } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/arrow-up';
-import { Tooltip } from '@atlaskit/tooltip';
 import sinon from 'sinon';
 
 import { StatelessSelect } from '../../src';
@@ -69,21 +68,6 @@ describe(name, () => {
       expect(select.find(Item).length).to.equal(2);
       expect(select.find(Group).find(Item).length).to.equal(2);
     });
-
-    it('should render tooltips inside Droplist', () => {
-      const selectItems = [
-        {
-          heading: 'test',
-          items: [
-            { value: 1, content: '1', tooltipDescription: 'first' },
-            { value: 2, content: '2', tooltipDescription: 'second' },
-            { value: 3, content: '3' },
-          ],
-        },
-      ];
-      const select = mount(<StatelessSelect items={selectItems} isOpen />);
-      expect(select.find(Tooltip).length).to.equal(2);
-    });
   });
 
   describe('props managements', () => {
@@ -134,6 +118,7 @@ describe(name, () => {
               isDisabled: true,
               elemBefore: '1',
               elemAfter: '2',
+              tooltipDescription: 'first',
             },
           ],
         },
@@ -149,6 +134,7 @@ describe(name, () => {
       expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
       expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
       expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
+      expect(itemProps.tooltipDescription, 'tooltipDescription').to.equal('first');
     });
   });
 

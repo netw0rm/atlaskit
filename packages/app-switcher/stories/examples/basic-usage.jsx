@@ -46,6 +46,7 @@ const data = {
     'container.jira-project': 'Project',
     'suggested.application.description.confluence': 'Collaboration and content sharing',
     'suggested.application.description.jira': 'Issue & project tracking software',
+    'applinks.error': 'Unable to load linked applications.',
   },
   isDropdownOpenInitially: false,
   trigger: isSelected => (<Button isSelected={isSelected}>...</Button>),

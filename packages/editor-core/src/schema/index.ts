@@ -9,6 +9,9 @@ export { mentionQuery } from './marks/mention-query';
 export { subsup } from './marks/subsup';
 export { textColor } from './marks/text-color';
 
+export { confluenceJiraIssue } from './nodes/confluence-jira-issue';
+export { confluenceUnsupportedBlock } from './nodes/confluence-unsupported-block';
+export { confluenceUnsupportedInline } from './nodes/confluence-unsupported-inline';
 export { doc } from './nodes/doc';
 export { blockquote } from './nodes/blockquote';
 export { bulletList } from './nodes/bullet-list';
@@ -24,7 +27,15 @@ export { mention } from './nodes/mention';
 export { listItem } from './nodes/list-item';
 export { panel } from './nodes/panel';
 export { text } from './nodes/text';
-export { media, MediaType } from './nodes/media';
+export {
+  media, MediaType,
+  Attributes as MediaAttributes, DisplayType as MediaDisplayType
+} from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
-export { createSchema } from './create-schema';
+export { table, table_cell, table_header, table_row } from './nodes/tableNodes';
+export { applicationCard } from './nodes/applicationCard';
 
+export { createSchema } from './create-schema';
+export { bitbucketSchema } from './bitbucket-schema';
+export { confluenceSchema } from './confluence-schema';
+export { defaultSchema } from './default-schema';

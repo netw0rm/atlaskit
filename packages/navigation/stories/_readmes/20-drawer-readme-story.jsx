@@ -35,6 +35,8 @@ storiesOf(name, module)
 
         You can specify custom drawers with the CustomDrawer component - see the
         <em>custom drawer</em> story for more details.
+
+        Drawers are not themeable using either preset navigation themes or custom themes.
       </Description>
       <h1>SearchDrawer</h1>
       <Props component={AkSearchDrawer} descriptions={drawerComponentPropDescriptions} />

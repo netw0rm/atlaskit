@@ -6,6 +6,8 @@ import Example from './Example';
 import exampleSrc from '!raw-loader!./Example';
 import StatelessExample from './StatelessExample';
 import statelessExampleSrc from '!raw-loader!./StatelessExample';
+import GrouplessExample from './GrouplessExample';
+import grouplessExampleSrc from '!raw-loader!./GrouplessExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
@@ -23,7 +25,7 @@ export const description = (
       selected items, and a stateless component if you want to handle updates manually.
     </p>
     <Usage>
-      {"import MultiSelect, { StatelessMultiSelect } from '@atlaskit/multi-select'"}
+      {"import MultiSelect, { MultiSelectStateless } from '@atlaskit/multi-select'"}
     </Usage>
   </div>
 );
@@ -38,5 +40,10 @@ export const examples = [
     title: 'Stateless Usage',
     Component: StatelessExample,
     src: statelessExampleSrc,
+  },
+  {
+    title: 'Groupless Usage',
+    Component: GrouplessExample,
+    src: grouplessExampleSrc,
   },
 ];

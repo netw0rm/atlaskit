@@ -354,3 +354,21 @@ function splitCodeBlockAtSelectionEnd(state: EditorState<any>, tr: Transaction) 
   }
   return tr;
 }
+
+/**
+ * Repeating string for multiple times
+ */
+export function stringRepeat(text: string, length: number): string {
+  let result = '';
+  for (let x = 0; x < length; x++) {
+    result += text;
+  }
+  return result;
+}
+
+/**
+ * A replacement for `Array.from` until it becomes widely implemented.
+ */
+export function arrayFrom(obj: any): any[] {
+  return Array.prototype.slice.call(obj);
+}

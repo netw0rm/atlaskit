@@ -30,7 +30,7 @@ export type DragHandleCallbacks = {
 export type DragHandleProvided = Object;
 
 type Props = {|
-  children: (?DragHandleProvided) => mixed,
+  children: (?DragHandleProvided) => void,
   isEnabled: boolean,
   callbacks: DragHandleCallbacks,
 |}
@@ -347,7 +347,7 @@ export default class DragHandle extends PureComponent {
       return null;
     }
 
-    return {
+    const provided: DragHandleProvided = {
       onMouseDown: this.onMouseDown,
       onKeyDown: this.onKeyDown,
 
@@ -365,6 +365,8 @@ export default class DragHandle extends PureComponent {
       onDragStart: getFalse,
       onDrop: getFalse,
     };
+
+    return provided;
   })
 
   render() {

@@ -21,7 +21,7 @@ const isAtOrigin = (point: PositionLike): boolean =>
   point.x === origin.x && point.y === origin.y;
 
 type Props = {|
-  children: (Object) => ?Object,
+  children: (?Object) => void,
   speed: Speed,
   destination?: Position,
   onMoveEnd?: () => void,

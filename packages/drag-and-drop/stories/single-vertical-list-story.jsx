@@ -7,30 +7,20 @@ import List from './components/list';
 import type { PersonType } from './types';
 import type { DropResult, DraggableLocation } from '../src/types';
 
+const getPeople = (count: number): Person[] =>
+  Array.from({ length: count }, (v, k) => k)
+    .map((val: number): Person => ({
+      id: `${val}`,
+      name: `Mr ${val}`,
+    }));
+
 class Standard extends PureComponent {
   state: {|
     people: PersonType[]
   |}
 
   state = {
-    people: [
-      {
-        id: 'alex',
-        name: 'Alex',
-      },
-      {
-        id: 'ben',
-        name: 'Ben',
-      },
-      {
-        id: 'sam',
-        name: 'sam',
-      },
-      {
-        id: 'obie',
-        name: 'Obie',
-      },
-    ],
+    people: getPeople(300),
   }
 
   onDragStart = () => {

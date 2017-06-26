@@ -31,24 +31,20 @@ export default class Person extends PureComponent {
         type="PERSON"
         isDragEnabled
       >
-        {(provided: Provided) => {
-          console.log(`PERSON ${data.id} rendered`, this.previous === provided);
-          this.previous = provided;
-          return (
-            <div>
-              <Container
-                innerRef={ref => provided.innerRef(ref)}
-                href={data.name}
-                isDragging={provided.isDragging}
-                style={provided.containerStyle}
-                {...provided.dragHandleProps}
-              >
-                {data.name}
-              </Container>
-              {provided.placeholder}
-            </div>
-          );
-        }}
+        {(provided: Provided) => (
+          <div>
+            <Container
+              innerRef={ref => provided.innerRef(ref)}
+              href={data.name}
+              isDragging={provided.isDragging}
+              style={provided.containerStyle}
+              {...provided.dragHandleProps}
+            >
+              {data.name}
+            </Container>
+            {provided.placeholder}
+          </div>
+        )}
       </Draggable>
     );
   }

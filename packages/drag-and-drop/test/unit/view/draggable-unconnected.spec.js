@@ -224,7 +224,7 @@ const lift = (fn: 'onLift' | 'onKeyLift') => (wrapper: ReactWrapper<any>) => ({
 const mouseLift = lift('onLift');
 const keyLift = lift('onKeyLift');
 
-describe.only('Draggable', () => {
+describe('Draggable', () => {
   let draggingWrapper;
   let notDraggingWrapper;
   let returningHomeWrapper;

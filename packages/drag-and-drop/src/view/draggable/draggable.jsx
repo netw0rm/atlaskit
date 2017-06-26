@@ -13,7 +13,7 @@ import type { DragHandleCallbacks, DragHandleProvided } from '../drag-handle/dra
 import type { Props, Provided } from './draggable-types';
 import type { Speed } from '../moveable';
 
-type MovementStyle = {|
+type PlacementStyle = {|
   position: 'absolute',
   boxSizing: 'border-box',
   zIndex: ZIndex,
@@ -26,7 +26,7 @@ type MovementStyle = {|
 type PlacementInfo = {|
   showPlaceholder: boolean,
   speed: Speed,
-  style ?: MovementStyle
+  style?: PlacementStyle
 |}
 
 type State = {|
@@ -171,7 +171,7 @@ export default class Draggable extends PureComponent {
     );
   }
 
-  getMovingStyle = memoizeOne((initial: ?InitialDrag, zIndex: ZIndex): MovementStyle => {
+  getMovingStyle = memoizeOne((initial: ?InitialDrag, zIndex: ZIndex): PlacementStyle => {
     invariant(initial, 'initial dimension required to drag');
     return {
       zIndex,
@@ -221,22 +221,24 @@ export default class Draggable extends PureComponent {
     };
   }
 
-  getProvidedProps = (
+  getProvided = memoizeOne((
     isDragging: boolean,
     showPlaceholder: boolean,
     dragHandleProps: DragHandleProvided,
-    translateStyle: Object,
-    movementStyle: MovementStyle,
+    movementStyle: Object,
+    placementStyle: ?PlacementStyle,
   ): Provided => ({
     innerRef: this.setChildRef,
-    isDragging,
     placeholder: showPlaceholder ? this.getPlaceholder() : null,
+    isDragging,
     dragHandleProps,
     containerStyle: {
+      ...placementStyle,
       ...movementStyle,
-      ...translateStyle,
     },
-  })
+  }))
+
+  memoizedChildrenFn = memoizeOne((provided: Provided) => this.props.children(provided));
 
   render() {
     const info: PlacementInfo = this.getPlacementInfo();
@@ -252,27 +254,19 @@ export default class Draggable extends PureComponent {
           destination={this.props.offset}
           onMoveEnd={this.onMoveEnd}
         >
-          {translateStyle => (
+          {movementStyle => (
             <DragHandle
               isEnabled={this.props.isDragEnabled}
               callbacks={this.callbacks}
             >
-              {(dragHandleProps: DragHandleProvided) => {
-                const containerStyle: Object = {
-                  ...info.style,
-                  ...translateStyle,
-                };
-
-                const provided: Provided = {
-                  innerRef: this.setChildRef,
-                  isDragging: this.props.isDragging,
-                  placeholder: info.showPlaceholder ? this.getPlaceholder() : null,
-                  containerStyle,
+              {(dragHandleProps: DragHandleProvided) =>
+                this.memoizedChildrenFn(this.getProvided(
+                  this.props.isDragging,
+                  info.showPlaceholder,
                   dragHandleProps,
-                };
-
-                return this.props.children(provided);
-              }}
+                  movementStyle,
+                  info.style,
+                ))}
             </DragHandle>
         )}
         </Moveable>

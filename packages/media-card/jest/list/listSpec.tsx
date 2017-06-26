@@ -3,7 +3,7 @@ import * as React from 'react';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {shallow, mount} from 'enzyme';
-import LazyLoad from 'react-lazy-load';
+import LazyLoad from 'react-lazy-load-zz';
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
 

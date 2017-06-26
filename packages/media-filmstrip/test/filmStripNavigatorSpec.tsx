@@ -1,11 +1,22 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import * as sinon from 'sinon';
 
 import { FilmStripNavigator } from '../src';
 import { FilmStripViewWrapper } from '../src/styled';
 
 describe('FilmStripNavigator', () => {
+  let clock;
+
+  beforeEach(function () {
+    clock = sinon.useFakeTimers();
+  });
+
+  afterEach(function () {
+    clock.restore();
+  });
+
   it('Wrap children into LI elements', () => {
     const children = [1, 2, 3];
     const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
@@ -51,5 +62,21 @@ describe('FilmStripNavigator', () => {
     );
 
     expect(filmstripNavigator.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: `${width}px`});
+  });
+
+  it('Fires a real "scroll" event when users navigate through the list', () => {
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator width={10}>
+        {[1, 2]}
+      </FilmStripNavigator>
+    );
+    const instance = filmstripNavigator.instance() as FilmStripNavigator;
+    const scrollSpy = sinon.spy();
+
+    instance.triggerScrollEvent = scrollSpy;
+    instance.navigate('right')();
+
+    clock.tick(10);
+    expect(scrollSpy.called).to.equal(true);
   });
 });

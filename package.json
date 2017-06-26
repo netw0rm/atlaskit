@@ -211,5 +211,8 @@
     "validate/package.json": "pjv -q && lerna exec -- pjv -q",
     "validate/typescript": "lerna run validate/typescript",
     "validate/flow": "flow check"
+  },
+  "devDependencies": {
+    "identity-obj-proxy": "^3.0.0"
   }
 }

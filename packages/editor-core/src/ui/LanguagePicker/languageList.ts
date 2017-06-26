@@ -1,6 +1,3 @@
-// This is the option when no language specified
-export const NO_LANGUAGE = 'Language';
-
 export const DEFAULT_LANGUAGES = [
   { name: 'PHP', alias: ['php', 'php3', 'php4', 'php5'] },
   { name: 'Java', alias: ['java'] },
@@ -73,11 +70,12 @@ export const DEFAULT_LANGUAGES = [
   { name: 'Vala', alias: ['vala', 'vapi'] },
   { name: 'ABAP', alias: ['abap'] },
   { name: 'LiveScript', alias: ['livescript', 'live-script'] },
-  { name: 'XQuery', alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'] }];
+  { name: 'XQuery', alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'] }
+];
 
-export function findMatchedLanguage(supportedLanguages: any[], language?: string): string {
+export function findMatchedLanguage(supportedLanguages: any[], language?: string): string | undefined {
   if (!language) {
-    return NO_LANGUAGE;
+    return undefined;
   }
 
   const matches = supportedLanguages.filter((supportedLanguage) => {
@@ -88,7 +86,7 @@ export function findMatchedLanguage(supportedLanguages: any[], language?: string
     return matches[0].name;
   }
 
-  return NO_LANGUAGE;
+  return undefined;
 }
 
 export function filterSupportedLanguages (supportedLanguages) {
@@ -108,5 +106,5 @@ export function filterSupportedLanguages (supportedLanguages) {
 }
 
 export function createLanguageList (supportedLanguages) {
-  return [NO_LANGUAGE, ...(supportedLanguages.map((language) => language.name).sort())];
+  return supportedLanguages.map((language) => language.name).sort();
 }

@@ -247,7 +247,10 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   triggerScrollEvent() {
     if (!this.listElement || !this.listElement.parentElement) { return; }
 
-    this.listElement.parentElement.dispatchEvent(new Event('scroll'));
+    const event = document.createEvent('MouseEvents');
+    event.initEvent('scroll', true, true);
+
+    this.listElement.parentElement.dispatchEvent(event);
   }
 
   private getClosest(position: number, start: number, accumulator: number, stop: number): number {

@@ -47,9 +47,9 @@ export type MapProps = {|
 
 export type OwnProps = {|
   draggableId: DraggableId,
-  isDragEnabled: boolean,
+  children: (Provided) => void,
   type: TypeId,
-  children: (Provided) => mixed,
+  isDragEnabled: boolean,
 |}
 
 export type Props = MapProps & DispatchProps & OwnProps;

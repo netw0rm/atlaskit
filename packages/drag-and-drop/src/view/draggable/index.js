@@ -1,1 +1,1 @@
-export default from './make-connected-draggable';
+export default from './connected-draggable';

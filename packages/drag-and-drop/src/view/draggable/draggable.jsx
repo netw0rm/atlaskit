@@ -42,6 +42,11 @@ export default class Draggable extends PureComponent {
     childRef: null,
   }
 
+  static defaultProps = {
+    isDragEnabled: true,
+    type: 'DEFAULT',
+  }
+
   constructor(props: Props, context: mixed) {
     super(props, context);
 
@@ -238,7 +243,9 @@ export default class Draggable extends PureComponent {
     },
   }))
 
-  memoizedChildrenFn = memoizeOne((provided: Provided) => this.props.children(provided));
+  memoizedChildrenFn = memoizeOne(
+    (provided: Provided) => this.props.children(provided)
+  );
 
   render() {
     const info: PlacementInfo = this.getPlacementInfo();

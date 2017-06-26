@@ -149,6 +149,7 @@ export default class DragHandle extends PureComponent {
   }
 
   onMouseDown = (event: MouseEvent) => {
+    console.log('on mouse down!');
     if (this.state.draggingWith === 'KEYBOARD') {
       // allowing any type of mouse down to cancel
       this.stopDragging(() => this.props.callbacks.onCancel());

@@ -10,7 +10,7 @@ import DrawerSide from '../styled/DrawerSide';
 import DrawerInner from '../styled/DrawerInner';
 import DrawerPrimaryIcon from '../styled/DrawerPrimaryIcon';
 import DrawerMain from '../styled/DrawerMain';
-import DrawerContent from '../styled/DrawerContent';
+import DrawerContent, { ContentArea } from '../styled/DrawerContent';
 import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
 import { WithRootTheme } from '../../theme/util';
 import { container } from '../../theme/presets';
@@ -18,16 +18,17 @@ import { container } from '../../theme/presets';
 export default class Drawer extends PureComponent {
   static propTypes = {
     backIcon: PropTypes.node,
-    backIconOffset: PropTypes.number,
     children: PropTypes.node,
     header: PropTypes.node,
     isOpen: PropTypes.bool,
+    iconOffset: PropTypes.number,
+    isFullWidth: PropTypes.bool,
     onBackButton: PropTypes.func,
     primaryIcon: PropTypes.node,
     width: PropTypes.oneOf(['narrow', 'wide', 'full']),
   }
   static defaultProps = {
-    backIconOffset: 0,
+    iconOffset: 0,
     onBackButton: () => { },
     primaryIcon: null,
     width: 'narrow',
@@ -37,16 +38,17 @@ export default class Drawer extends PureComponent {
   render() {
     const {
       backIcon,
-      backIconOffset,
       header,
       isOpen,
       onBackButton,
       primaryIcon,
       width,
+      iconOffset,
+      isFullWidth,
     } = this.props;
 
     const backIconWrapperStyle = {
-      top: `${backIconOffset}px`,
+      top: `${iconOffset}px`,
     };
 
     const sidebar = isOpen ? (
@@ -70,7 +72,9 @@ export default class Drawer extends PureComponent {
           <ContainerHeader>{header}</ContainerHeader>
         : null}
         <DrawerContent>
-          {this.props.children}
+          <ContentArea iconOffset={iconOffset} isFullWidth={isFullWidth} >
+            {this.props.children}
+          </ContentArea>
         </DrawerContent>
       </DrawerMain>
     ) : null;

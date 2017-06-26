@@ -81,7 +81,7 @@ describe('<Drawer />', () => {
 
       it('should updated the backIconOffset based on where the backIcon is rendered', () => {
         expect(mount(
-          <Drawer isOpen backIconOffset={123} />
+          <Drawer isOpen iconOffset={123} />
         ).find('DrawerBackIconWrapper').props().style.top).to.equal('123px');
       });
 
@@ -126,4 +126,3 @@ describe('<Drawer />', () => {
     });
   });
 });
-

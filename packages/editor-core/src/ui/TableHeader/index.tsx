@@ -17,8 +17,6 @@ export interface Props {
 export interface State {
   tableElement?: HTMLElement;
   tableNode?: Node;
-  position?: string;
-  transform?: string;
   cellSelection?: CellSelection;
 }
 

@@ -12,7 +12,6 @@ import {
   createLanguageList,
   filterSupportedLanguages,
   findMatchedLanguage,
-  NO_LANGUAGE
 } from './languageList';
 
 export interface Props {
@@ -39,7 +38,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      language: NO_LANGUAGE,
+      language: undefined,
       toolbarVisible: false,
       supportedLanguages: filterSupportedLanguages(props.pluginState.supportedLanguages)
     } as State;
@@ -120,11 +119,10 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const { element, language, toolbarVisible } = pluginState;
     const { supportedLanguages } = this.state;
 
-    const matchedLanguage = findMatchedLanguage(supportedLanguages!, language);
-    const updatedLanguage = this.optionToLanguage(matchedLanguage);
+    const updatedLanguage = findMatchedLanguage(supportedLanguages!, language);
 
     this.setState({
-      language: matchedLanguage,
+      language: updatedLanguage,
       element,
       toolbarVisible,
     });
@@ -145,9 +143,5 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   private handleRemoveCodeBlock = () => {
     this.props.pluginState.removeCodeBlock(this.props.editorView);
     this.props.editorView.focus();
-  }
-
-  private optionToLanguage(languageOption: string): string | undefined {
-    return languageOption.toLowerCase() === NO_LANGUAGE.toLowerCase() ? undefined : languageOption;
   }
 }

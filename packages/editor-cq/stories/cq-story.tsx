@@ -146,6 +146,36 @@ storiesOf(name, module)
 
     return <Demo />;
   })
+  .add('Expanded prop', () => {
+    type Props = {};
+    type State = { expanded: boolean };
+
+    class Demo extends PureComponent<Props, State> {
+      state = { expanded: false };
+
+      render() {
+        return (
+          <div>
+            <Editor
+              expanded={this.state.expanded}
+              isExpandedByDefault={false}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              onChange={handleChange}
+            />
+
+            <fieldset style={{ marginTop: 20 }}>
+              <button onClick={this.toggleExpanded}>Toggle expanded state</button>
+            </fieldset>
+          </div>
+        );
+      }
+
+      private toggleExpanded = () => this.setState({ expanded: !this.state.expanded });
+    }
+
+    return <Demo />;
+  })
   .add('CXHTML input', () => {
     type Props = {};
     type State = { input: string, output: string };

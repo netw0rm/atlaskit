@@ -20,6 +20,7 @@ export default class ConfluenceOptOut extends Component {
             key: 'disableRequests',
             label: ['Don\'t receive Confluence request',
               <OptOutInfoText>other admins of your site will still be notified</OptOutInfoText>],
+            defaultSelected: true,
           },
           { name: 'option', value: 'siteAdmins', key: 'siteAdmins', label: 'Prevent users from requesting Confluence' }]}
           label="Which one?"

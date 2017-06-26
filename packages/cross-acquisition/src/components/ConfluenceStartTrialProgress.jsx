@@ -27,7 +27,7 @@ export default class ConfluenceStartTrialProgress extends Component {
           </ChangeButton>
             access to Confluence.</p>
           <StartTrialProgressDiv>
-            <input type="checkbox" id="notifyUsers" name="notify" value="Notify the users" />
+            <input type="checkbox" id="notifyUsers" name="notify" value="Notify the users" defaultChecked />
             <InputLabel htmlFor="notifyUsers">Notify these users</InputLabel>
           </StartTrialProgressDiv>
         </StartTrialDialog>

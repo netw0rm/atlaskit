@@ -23,7 +23,7 @@ export const FilmStripViewWrapper = styled.div`
 
 export const FilmStripListWrapper = styled.div`
   width: inherit;
-  overflow: hidden;
+  overflow: auto;
   line-height: 0;
   padding: 2px 0;
 `;

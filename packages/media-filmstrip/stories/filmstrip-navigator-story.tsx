@@ -6,7 +6,8 @@ import {createStorybookContext, genericUrlPreviewId, genericLinkId, genericFileI
 import {FilmStripNavigator} from '../src';
 import {
   OverflowContainer,
-  Spacer
+  Spacer,
+  LazyWrapper
 } from './styled';
 
 const context = createStorybookContext();
@@ -14,11 +15,14 @@ const context = createStorybookContext();
 const clickAction = (event: CardEvent) => {
   action('click')(event.mediaItemDetails);
 };
+const menuActions = [
+  {label: 'Open', handler: () => { action('open')(); }}
+];
 
 const getDefaultNavigator = (overflow: boolean, key?) => {
   return (
     <FilmStripNavigator key={key}>
-      <CardView onClick={clickAction} status="loading"/>
+      <CardView onClick={clickAction} status="complete" actions={menuActions}/>
       <CardView onClick={clickAction} status="complete" metadata={{mediaType: 'doc', name: 'foobar.docx', size: 1000}}/>
       <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
       <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
@@ -27,20 +31,38 @@ const getDefaultNavigator = (overflow: boolean, key?) => {
   );
 };
 
+const onlyCards = (key?) => (
+  <FilmStripNavigator key={key}>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
+    <Card onClick={clickAction} context={context} identifier={genericFileId}/>
+    <Card onClick={clickAction} context={context} identifier={genericFileId}/>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
+    <Card onClick={clickAction} context={context} identifier={genericFileId}/>
+    <Card onClick={clickAction} context={context} identifier={genericFileId}/>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericUrlPreviewId}/>
+    <Card onClick={clickAction} appearance="image" context={context} identifier={genericLinkId}/>
+  </FilmStripNavigator>
+);
 
 storiesOf('FilmStripNavigator', {})
   .add('With a Card and CardView', () => getDefaultNavigator(false))
+  .add('Only with Cards', () => onlyCards())
   .add('Lazy loading - No Overflow', () => {
     return (
-      <div style={{margin: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <LazyWrapper>
         <h2>Scroll down to test lazyload</h2>
         {
           [1, 1, 1, 1, 1].map((_, i) => [
             <Spacer key={i}><h2>Keep scrolling!</h2></Spacer>,
-            getDefaultNavigator(false, i + 100)
+            onlyCards(i + 100)
           ])
         }
-      </div>
+      </LazyWrapper>
     );
   })
   .add('Lazy loading - Overflow', () => {
@@ -51,7 +73,7 @@ storiesOf('FilmStripNavigator', {})
           {
             [1, 1, 1, 1, 1].map((_, i) => [
               <Spacer key={i}><h2>Keep scrolling!</h2></Spacer>,
-              getDefaultNavigator(true, i + 100)
+              onlyCards(i + 100)
             ])
           }
         </OverflowContainer>

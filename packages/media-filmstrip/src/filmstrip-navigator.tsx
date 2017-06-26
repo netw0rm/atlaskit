@@ -1,7 +1,16 @@
 /* tslint:disable:variable-name */
+
+/**
+ * TODO:
+ *   - Remove custom handling of whell
+ *   - Remove preventDefault
+ *   - Check behavior on Chat message view
+ *   - Remove not used CSS
+ *   - Remove "showTransition"
+ */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Component, DragEvent as ReactDragEvent, DragEventHandler, WheelEvent} from 'react';
+import {Component, DragEvent as ReactDragEvent, DragEventHandler} from 'react';
 import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
@@ -56,7 +65,9 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   private numOfCards: number;
   private cardWidth: number;
   private listElement: HTMLElement;
+  private scrollWrapper: HTMLElement;
   private unmounted: boolean;
+  private scrollAnimationFrameId?: number;
 
   constructor(props) {
     super(props);
@@ -89,22 +100,13 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     } = this.props;
 
     const {
-      position,
-      showTransition,
-      transitionDuration: stateTransistionDuration,
       showLeft,
       showRight
     } = this.state;
 
     const width = propWidth ? `${propWidth}px`: undefined;
-
-    const transform = `translateX(${-position}px)`;
     const leftArrow = this.arrowFor('left');
     const rightArrow = this.arrowFor('right');
-
-    const transitionProperty = showTransition ? 'transform' : 'none';
-    const transitionDuration = `${stateTransistionDuration}s`;
-
     const items = children ? children.map((item, k) => (
       <li key={k}>
         {item}
@@ -112,10 +114,10 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     )) : null;
 
     return (
-      <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}>
+      <FilmStripViewWrapper style={{width}} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}>
         {showLeft ? leftArrow : undefined}
-        <FilmStripListWrapper>
-          <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
+        <FilmStripListWrapper innerRef={this.saveScrollWrapper}>
+          <FilmStripList innerRef={this.getDimensions}>
             {items}
           </FilmStripList>
         </FilmStripListWrapper>
@@ -125,6 +127,8 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   componentDidUpdate() {
+    this.updateScrollPosition();
+
     if (!this.listElement) { return; }
 
     const newListWidth = this.listElement.getBoundingClientRect().width;
@@ -133,6 +137,48 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     if (newListWidth !== this.listWidth) {
       this.getDimensions();
     }
+  }
+
+  private updateScrollPosition(): void {
+    if (this.scrollAnimationFrameId) { return; }
+
+    const {
+      position,
+      transitionDuration
+    } = this.state;
+
+    const currentPosition = this.scrollWrapper.scrollLeft;
+    const newPosition = Math.abs(position - currentPosition);
+    const direction = position > currentPosition ? 'right' : 'left';
+    const increment = newPosition / (transitionDuration * 100);
+
+    this.animateScrollPosition(newPosition, direction, increment);
+  }
+
+  private animateScrollPosition(position: number, direction: NavigationDirection, increment: number) {
+    if (position <= 0) {
+      if (this.scrollAnimationFrameId) {
+        window.cancelAnimationFrame(this.scrollAnimationFrameId);
+        this.scrollAnimationFrameId = undefined;
+      }
+
+      return;
+    }
+
+    this.scrollAnimationFrameId = window.requestAnimationFrame(() => {
+      const currentPosition = this.scrollWrapper.scrollLeft;
+      const positionIncrement = direction === 'right' ? increment : -increment;
+
+      this.scrollWrapper.scrollLeft = currentPosition + positionIncrement;
+
+      this.animateScrollPosition(position - increment, direction, increment);
+    });
+  }
+
+  private saveScrollWrapper = (el?: HTMLElement) =>{
+    if (!el) { return; }
+
+    this.scrollWrapper = el;
   }
 
   private arrowFor(direction: NavigationDirection): JSX.Element {
@@ -188,16 +234,6 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     if (!this.unmounted) {
       this.setNewPosition(0, this.state.showTransition);
     }
-  }
-
-  private onScroll = (e: WheelEvent<HTMLDivElement>) => {
-    const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    if (!this.allowNavigation || !isHorizontalScroll) { return; }
-
-    e.preventDefault();
-    const showTransition = false;
-    this.updateState({showTransition});
-    this.setNewPosition(this.state.position + e.deltaX, showTransition);
   }
 
   private updateState(newState: FilmStripNavigatorPartialState) {

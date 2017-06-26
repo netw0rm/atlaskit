@@ -1219,9 +1219,11 @@ describe('UploadingEmojiResource', () => {
   class TestUploadingEmojiResource extends EmojiResource {
     private mockMediaEmojiResource?: MediaEmojiResource;
 
-    constructor(mockMediaEmojiResource?: MediaEmojiResource) {
+    constructor(mockMediaEmojiResource?: MediaEmojiResource, config?: EmojiResourceConfig) {
       super({
         providers: [provider1],
+        allowUpload: true,
+        ...config,
       });
       this.mockMediaEmojiResource = mockMediaEmojiResource;
     }
@@ -1241,6 +1243,13 @@ describe('UploadingEmojiResource', () => {
 
     it('resource has no media support', () => {
       const emojiResource = new TestUploadingEmojiResource();
+      return emojiResource.isUploadSupported().then(supported => {
+        expect(supported, 'Upload is not supported').to.equal(false);
+      });
+    });
+
+    it('allowUpload is false', () => {
+      const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(MediaEmojiResource) as any, { allowUpload: false } as EmojiResourceConfig);
       return emojiResource.isUploadSupported().then(supported => {
         expect(supported, 'Upload is not supported').to.equal(false);
       });

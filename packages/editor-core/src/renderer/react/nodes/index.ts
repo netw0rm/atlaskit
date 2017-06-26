@@ -8,6 +8,8 @@ import Emoji from './emoji';
 import HardBreak from './hardBreak';
 import Heading from './heading';
 import ListItem from './listItem';
+import Media from './media';
+import MediaGroup from './mediaGroup';
 import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
@@ -22,6 +24,8 @@ export const nodeToReact = {
   'hardBreak': HardBreak,
   'heading': Heading,
   'listItem': ListItem,
+  'media': Media,
+  'mediaGroup': MediaGroup,
   'mention': Mention,
   'orderedList': OrderedList,
   'panel': Panel,
@@ -128,6 +132,8 @@ export {
   HardBreak,
   Heading,
   ListItem,
+  Media,
+  MediaGroup,
   Mention,
   OrderedList,
   Panel,

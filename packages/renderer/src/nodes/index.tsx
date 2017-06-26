@@ -15,6 +15,7 @@ import ListItem from './listItem';
 import Blockquote from './blockquote';
 import Panel, { PanelType } from './panel';
 import Rule from './rule';
+import ApplicationCard from './applicationCard';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -51,6 +52,7 @@ enum NodeType {
   blockquote,
   panel,
   rule,
+  applicationCard,
   unknown
 }
 
@@ -256,6 +258,9 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
       case NodeType.rule: {
         return { type };
       }
+      case NodeType.applicationCard: {
+        return { type, attrs };
+      }
     }
   }
 
@@ -367,6 +372,15 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       return <Panel key={key} type={panelType}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Panel>;
     case NodeType.rule:
       return <Rule />;
+    case NodeType.applicationCard:
+      const { applicationCard } = eventHandlers || { applicationCard: {} };
+      const { onClick: onCardClick, onActionClick } = applicationCard || { onClick: () => {}, onActionClick: () => {} };
+
+      return <ApplicationCard
+        onClick={onCardClick}
+        onActionClick={onActionClick}
+        model={validNode.attrs as any}
+      />;
     default: {
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {

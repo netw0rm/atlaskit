@@ -5,10 +5,8 @@ export interface AppCardModel {
   details?: AppCardDetails[];
   context?: AppCardContext;
   actions?: AppCardAction[];
-  link?: {url: string};
   preview?: {url: string}; // an image URL
   background?: {url: string}; // an image URL
-  collapsible?: boolean;
 }
 
 export interface AppCardTitle {
@@ -56,7 +54,6 @@ export interface AppCardDetails {
 export interface AppCardContext {
   text: string;
   icon?: AppCardIcon;
-  link?: {url: string};
 }
 
 export interface AppCardAction {

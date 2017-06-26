@@ -66,7 +66,7 @@ export class TableState {
     };
   }
 
-  insertColumn = (column: number) => {
+  insertColumn = (column: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
       // last column
@@ -87,7 +87,7 @@ export class TableState {
     }
   }
 
-  insertRow = (row: number) => {
+  insertRow = (row: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
       // last row
@@ -106,7 +106,7 @@ export class TableState {
     }
   }
 
-  remove = () => {
+  remove = (): void => {
     if (!this.cellSelection) {
       return;
     }
@@ -129,24 +129,24 @@ export class TableState {
     }
   }
 
-  subscribe(cb: TableStateSubscriber) {
+  subscribe(cb: TableStateSubscriber): void {
     this.changeHandlers.push(cb);
     cb(this);
   }
 
-  unsubscribe(cb: TableStateSubscriber) {
+  unsubscribe(cb: TableStateSubscriber): void {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  updateEditorFocused(editorFocused: boolean) {
+  updateEditorFocused(editorFocused: boolean): void {
     this.editorFocused = editorFocused;
   }
 
-  updateToolbarFocused(toolbarFocused: boolean) {
+  updateToolbarFocused(toolbarFocused: boolean): void {
     this.toolbarFocused = toolbarFocused;
   }
 
-  selectColumn = (column: number) => {
+  selectColumn = (column: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
       const from = map.positionAt(0, column, this.tableNode);
@@ -155,7 +155,7 @@ export class TableState {
     }
   }
 
-  selectRow = (row: number) => {
+  selectRow = (row: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
       const from = map.positionAt(row, 0, this.tableNode);
@@ -164,7 +164,7 @@ export class TableState {
     }
   }
 
-  selectTable = () => {
+  selectTable = (): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
       const from = map.positionAt(0, 0, this.tableNode);
@@ -173,7 +173,7 @@ export class TableState {
     }
   }
 
-  isColumnSelected = (column: number) => {
+  isColumnSelected = (column: number): boolean => {
     if (this.tableNode && this.cellSelection) {
       const map = TableMap.get(this.tableNode);
       const start = this.cellSelection.$anchorCell.start(-1);
@@ -187,7 +187,7 @@ export class TableState {
     return false;
   }
 
-  isRowSelected = (row: number) => {
+  isRowSelected = (row: number): boolean => {
     if (this.cellSelection) {
       const anchor = this.cellSelection.$anchorCell.index(-1);
       const head = this.cellSelection.$headCell.index(-1);
@@ -199,7 +199,7 @@ export class TableState {
     return false;
   }
 
-  isTableSelected = () => {
+  isTableSelected = (): boolean => {
     if (this.cellSelection) {
       return this.cellSelection.isColSelection() && this.cellSelection.isRowSelection();
     }
@@ -246,7 +246,7 @@ export class TableState {
     }
   }
 
-  setView(view: EditorView) {
+  setView(view: EditorView): void {
     this.view = view;
   }
 
@@ -312,11 +312,11 @@ export class TableState {
     }
   }
 
-  private triggerOnChange() {
+  private triggerOnChange(): void {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  private createCellSelection (from, to): void {
+  private createCellSelection (from: number, to: number): void {
     const { state } = this.view;
     // here "from" and "to" params are table-relative positions, therefore we add table offset
     const offset = this.tableStartPos() || 1;
@@ -330,7 +330,7 @@ export class TableState {
   // we keep track of selection changes because
   // 1) we want to mark toolbar buttons as active when the whole row/col is selected
   // 2) we want to drop selection if editor looses focus
-  private updateSelection () {
+  private updateSelection (): boolean {
     const { selection } = this.state;
     let dirty = false;
 
@@ -353,7 +353,7 @@ export class TableState {
     return dirty;
   }
 
-  private createStaticTable (rows: number, columns: number) {
+  private createStaticTable (rows: number, columns: number): Node {
     const { state } = this.view;
     const { table, table_row, table_cell, table_header } = state.schema.nodes;
     const rowNodes: Node[] = [];

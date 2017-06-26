@@ -19,7 +19,7 @@ export interface Props {
   insertRow: (row: number) => void;
 }
 
-export default class RowHeader extends Component<Props, {}> {
+export default class RowHeader extends Component<Props, any> {
   render () {
     const rows = this.props.tableElement!.querySelector('tbody')!.children;
     const nodes: any = [];

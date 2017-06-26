@@ -19,7 +19,7 @@ export interface Props {
   insertColumn: (column: number) => void;
 }
 
-export default class ColumnHeader extends Component<Props, {}> {
+export default class ColumnHeader extends Component<Props, any> {
   render () {
     const cols = this.props.tableElement!.querySelector('tr')!.children;
     const nodes: any = [];

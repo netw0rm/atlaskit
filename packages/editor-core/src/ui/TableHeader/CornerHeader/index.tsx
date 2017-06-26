@@ -14,7 +14,7 @@ export interface Props {
   insertRow: (row: number) => void;
 }
 
-export default class CornerHeader extends Component<Props, {}> {
+export default class CornerHeader extends Component<Props, any> {
   render () {
     return (
       <CornerContainer className={this.props.isSelected() ? 'active' : ''}>

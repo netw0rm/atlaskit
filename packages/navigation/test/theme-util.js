@@ -2,7 +2,7 @@ import { PropTypes } from 'react';
 import { mount, shallow } from 'enzyme';
 import { prefix } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
-import type { Provided } from '../src/theme/types';
+import type { RootTheme, Provided } from '../src/theme/types';
 
 export const getRootTheme = (provided: Provided, isCollapsed?: boolean = false) => ({
   [prefix('root')]: {
@@ -17,20 +17,17 @@ export const getGroupTheme = (isCompact?: boolean = false) => ({
   },
 });
 
-const theme = getRootTheme(presets.container);
-const themeContextTypes = Object.keys(theme).reduce((prev, current) => {
-  prev[current] = PropTypes.any;
-  return prev;
-}, {});
+const defaultTheme = getRootTheme(presets.container);
 
-export const shallowWithTheme = children => shallow(children, {
-  context: theme,
-});
+export const shallowWithTheme = (children, theme?: RootTheme = defaultTheme) =>
+  shallow(children, {
+    context: theme,
+  });
 
 // Taken from https://github.com/styled-components/styled-components/issues/624#issuecomment-289944633
 // Ideally this would not be needed and we would use WithTheme,
 // but some tests rely on wrapper.setProps and this can only be done on the root.
-export const mountWithRootTheme = (() => {
+export const mountWithRootTheme = (children, theme?: RootTheme = defaultTheme) => {
   const createBroadcast = (initialValue) => {
     let listeners = [];
     let currentValue = initialValue;
@@ -53,7 +50,12 @@ export const mountWithRootTheme = (() => {
   const CHANNEL = '__styled-components__';
   const broadcast = createBroadcast(theme);
 
-  return children => mount(children, {
+  const themeContextTypes = Object.keys(theme).reduce((prev, current) => {
+    prev[current] = PropTypes.any;
+    return prev;
+  }, {});
+
+  return mount(children, {
     context: {
       [CHANNEL]: broadcast.subscribe,
       ...theme,
@@ -64,5 +66,5 @@ export const mountWithRootTheme = (() => {
     },
   }
   );
-})();
+};
 

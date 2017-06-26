@@ -1,5 +1,6 @@
 import {
   akColorB200,
+  akColorPrimary3,
   akGridSizeUnitless,
   akZIndexBlanket,
   akZIndexNavigation,
@@ -49,6 +50,7 @@ export const zIndex = {
 // these are colors that are currently not controllable via theming
 export const unthemedColors = {
   resizer: akColorB200,
+  presenceIconBg: akColorPrimary3,
 };
 
 export const globalPrimaryActions = (() => {
@@ -74,10 +76,54 @@ export const globalPrimaryActions = (() => {
   };
 })();
 
+export const globalSecondaryActions = (() => {
+  const itemSizes = {
+    medium: 1 + (gridSize * 5),
+  };
+
+  const margin = {
+    bottom: gridSize * 3,
+  };
+
+  const height = (actionCount) => {
+    const innerHeight = itemSizes.medium * actionCount;
+    return {
+      inner: innerHeight,
+      outer: margin.bottom + innerHeight,
+    };
+  };
+
+  return {
+    height,
+    margin,
+    itemSizes,
+  };
+})();
+
 export const item = {
   borderRadius: 3,
   width: {
     compact: gridSize * 4.5,
     standard: gridSize * 5,
+  },
+};
+
+export const search = {
+  layout: {
+    padding: {
+      top: gridSize * 0.5,
+      bottom: 0,
+      side: gridSize * 3,
+    },
+    margin: {
+      top: 0,
+      bottom: gridSize * 3,
+      side: 0,
+    },
+    /**
+     * Restore the height setting that was lost due to the ClearButton no longer being there to
+     * stretch the box. (this height aligns it nicely with the back button in drawers)
+     */
+    height: gridSize * 4,
   },
 };

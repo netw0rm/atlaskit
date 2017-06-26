@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
-import { getProvided } from '../../theme/util';
+import { getProvided, whenCollapsed } from '../../theme/util';
 
 const NavigationItemGroupHeader = styled.div`
   display: flex;
@@ -8,11 +8,11 @@ const NavigationItemGroupHeader = styled.div`
   margin-left: ${gridSize * 1.5}px;
   margin-top: ${gridSize * 2}px;
 
-  [data-__ak-navigation-container-closed="true"] & {
+  ${whenCollapsed`
     margin-left: ${gridSize * 0.5}px;
     margin-right: ${gridSize * 0.5}px;
     border-top: 1px solid ${({ theme }) => getProvided(theme).keyline};
-  }
+  `}
 `;
 
 NavigationItemGroupHeader.displayName = 'NavigationItemGroupHeader';

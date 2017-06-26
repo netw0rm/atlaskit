@@ -1,13 +1,14 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { ArrowleftIcon, AtlassianIcon } from '@atlaskit/icon';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import { AkCreateDrawer } from '../src/index';
 import { name } from '../package.json';
 
 storiesOf(name, module)
   .add('with a standalone drawer', () => (
     <AkCreateDrawer
-      backIcon={<ArrowleftIcon label="Back" />}
+      backIcon={<ArrowLeftIcon label="Back" />}
       isOpen
       isFullWidth
       primaryIcon={<AtlassianIcon size="medium" label="Logo" />}

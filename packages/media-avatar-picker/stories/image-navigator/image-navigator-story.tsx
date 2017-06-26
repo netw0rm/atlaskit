@@ -34,4 +34,11 @@ storiesOf('Image navigator', {})
             <button onClick={exportImage}>Export</button>
             <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
            </div>;
+  })
+  .add('Uploader', () => {
+    return <div>
+            <ImageNavigator onLoad={onLoad} />
+            <button onClick={exportImage}>Export</button>
+            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
+           </div>;
   });

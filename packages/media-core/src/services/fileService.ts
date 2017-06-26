@@ -16,7 +16,8 @@ export class MediaFileService implements FileService {
     const request = createRequest({
       config: this.config,
       clientId: clientId,
-      collectionName: collectionName
+      collectionName: collectionName,
+      preventPreflight: true
     });
 
     const cacheKey = [fileId, 'file'].join('-');

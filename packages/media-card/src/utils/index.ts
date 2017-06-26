@@ -11,23 +11,6 @@ export function toHumanReadableMediaSize(size: number): string {
   return bytes.format(size, {unitSeparator: ' ', decimalPlaces}).toUpperCase();
 }
 
-export function getCSSUnitValue(value: number | string): string {
-  return typeof value === 'string' ? value : `${value}px`;
-}
-
-export const breakpointClassName = (rules, value: number | string) :string => {
-  value = parseInt(`${value}`, 0); // Normalize value
-  let currentRule;
-
-  Object.keys(rules).forEach(name => {
-    if (value < rules[name] && !currentRule) {
-      currentRule = name;
-    }
-  });
-
-  return `${currentRule}-breakpoint`;
-};
-
 export * from './errorIcon';
 export * from './fileIcon';
 export * from './menu';
@@ -37,3 +20,7 @@ export * from './ellipsify';
 export * from './mediaImage';
 export * from './cardImageView';
 export * from './cardLoading';
+export * from './cardDimensions';
+export * from './lazyContent';
+export * from './getCSSUnitValue';
+export * from './breakpointClassName';

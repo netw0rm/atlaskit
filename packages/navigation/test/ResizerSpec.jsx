@@ -36,6 +36,10 @@ describe('<Resizer />', () => {
   });
 
   describe('resizer button', () => {
+    it('should not be visible if showResizeButton is false', () => {
+      expect(mount(<Resizer showResizeButton={false} />).find('ResizerButton').length).to.equal(0);
+    });
+
     it('by default, <ResizerButton /> points left', () => {
       expect(mount(<Resizer />).find('ResizerButton').props().isPointingRight).equal(false);
     });
@@ -52,40 +56,46 @@ describe('<Resizer />', () => {
       expect(mount(<Resizer navigationWidth={standardOpenWidth + 100} />).find('ResizerButton').props().isPointingRight).equal(false);
     });
     it(`when navigationWidth=${standardOpenWidth - 1}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
-      mount(<Resizer
-        navigationWidth={standardOpenWidth - 1}
-        onResizeButton={(resizeState) => {
-          expect(resizeState).to.deep.equal({
-            isOpen: true,
-            width: standardOpenWidth,
-          });
-          done();
-        }}
-      />).find('ResizerButton').simulate('click');
+      mount(
+        <Resizer
+          navigationWidth={standardOpenWidth - 1}
+          onResizeButton={(resizeState) => {
+            expect(resizeState).to.deep.equal({
+              isOpen: true,
+              width: standardOpenWidth,
+            });
+            done();
+          }}
+        />
+      ).find('ResizerButton').simulate('click');
     });
     it(`when navigationWidth=${standardOpenWidth}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
-      mount(<Resizer
-        navigationWidth={standardOpenWidth}
-        onResizeButton={(resizeState) => {
-          expect(resizeState).to.deep.equal({
-            isOpen: false,
-            width: globalOpenWidth,
-          });
-          done();
-        }}
-      />).find('ResizerButton').simulate('click');
+      mount(
+        <Resizer
+          navigationWidth={standardOpenWidth}
+          onResizeButton={(resizeState) => {
+            expect(resizeState).to.deep.equal({
+              isOpen: false,
+              width: globalOpenWidth,
+            });
+            done();
+          }}
+        />
+      ).find('ResizerButton').simulate('click');
     });
     it(`when navigationWidth=${standardOpenWidth + 100}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
-      mount(<Resizer
-        navigationWidth={standardOpenWidth + 100}
-        onResizeButton={(resizeState) => {
-          expect(resizeState).to.deep.equal({
-            isOpen: true,
-            width: standardOpenWidth,
-          });
-          done();
-        }}
-      />).find('ResizerButton').simulate('click');
+      mount(
+        <Resizer
+          navigationWidth={standardOpenWidth + 100}
+          onResizeButton={(resizeState) => {
+            expect(resizeState).to.deep.equal({
+              isOpen: true,
+              width: standardOpenWidth,
+            });
+            done();
+          }}
+        />
+      ).find('ResizerButton').simulate('click');
     });
   });
 });

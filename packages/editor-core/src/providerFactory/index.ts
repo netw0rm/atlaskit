@@ -16,16 +16,30 @@ const findIndex = (array: any[], predicate: (item: any) => boolean): number => {
 export type ProviderHandler = (name: string, provider?: Promise<any>) => void;
 
 export default class ProviderFactory {
-
   private providers: Map<string, Promise<any>> = new Map();
   private subscribers: Map<string, ProviderHandler[]> = new Map();
 
+  destroy() {
+    this.providers.clear();
+    this.subscribers.clear();
+  }
+
+  isEmpty(): boolean {
+    return !this.providers.size && !this.subscribers.size;
+  }
+
   setProvider(name: string, provider?: Promise<any>) {
+    // Do not trigger notifyUpdate if provider is the same.
+    if (provider && this.providers.get(name) === provider) {
+      return;
+    }
+
     if (provider) {
       this.providers.set(name, provider);
     } else {
       this.providers.delete(name);
     }
+
     this.notifyUpdated(name, provider);
   }
 

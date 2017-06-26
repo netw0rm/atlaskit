@@ -29,11 +29,6 @@ export interface FileCardImageViewProps {
   onRetry?: CardAction;
 }
 
-export const DEFAULT_CARD_DIMENSIONS = {
-  WIDTH: '156px',
-  HEIGHT: '104px'
-};
-
 export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   render() {
     const {error, mediaSize, mediaType, mediaName, dataURI, progress, status, dimensions,

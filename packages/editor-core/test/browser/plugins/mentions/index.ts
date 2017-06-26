@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mention as mentionNode } from '../../../../src';
 import mentionsPlugins from '../../../../src/plugins/mentions';
+import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
   fixtures,
@@ -16,12 +17,13 @@ import {
   li,
   p,
   ul,
+  code,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { resourceProvider } from '../../../../stories/mentions/story-data';
+import { mention as mentionData } from '@atlaskit/util-data-test';
 
 const mentionProvider = new Promise<any>(resolve => {
-  resolve(resourceProvider);
+  resolve(mentionData.mentionStoryData.resourceProvider);
 });
 
 chai.use(chaiPlugin);
@@ -30,7 +32,7 @@ describe('mentions', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: mentionsPlugins(defaultSchema),
+    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()
   });
 
@@ -430,6 +432,18 @@ describe('mentions', () => {
 
       expect(editorView.state.doc.nodeAt(8)).to.be.of.nodeSpec(mentionNode);
       expect(editorView.state.doc.nodeAt(10)).to.equal(null);
+    });
+  });
+
+  describe('isEnabled', () => {
+    it('returns true when the mention mark can be applied', () => {
+      const { pluginState } = editor(doc(p('te{<>}xt')));
+      expect(pluginState.isEnabled()).to.equal(true);
+    });
+
+    it('returns false when the mention mark cannot be applied', () => {
+      const { pluginState } = editor(doc(p(code('te{<>}xt'))));
+      expect(pluginState.isEnabled()).to.equal(false);
     });
   });
 });

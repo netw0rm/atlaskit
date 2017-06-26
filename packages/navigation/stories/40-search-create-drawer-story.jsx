@@ -1,10 +1,18 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { BitbucketBranchesIcon, PageIcon, FeedbackIcon, IssuesIcon, EmojiObjectsIcon, EmojiNatureIcon, EmojiTravelIcon, ExpandIcon } from '@atlaskit/icon';
+import BitbucketBranchesIcon from '@atlaskit/icon/glyph/bitbucket/branches';
+import PageIcon from '@atlaskit/icon/glyph/page';
+import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
+import IssuesIcon from '@atlaskit/icon/glyph/issues';
+import EmojiObjectsIcon from '@atlaskit/icon/glyph/emoji/objects';
+import EmojiNatureIcon from '@atlaskit/icon/glyph/emoji/nature';
+import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import searchStencil from 'url-loader!./stencils/search.svg';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
+import BasicSearch from './components/BasicSearch';
 import nucleus from './nucleus.png';
 import { name } from '../package.json';
 
@@ -133,6 +141,16 @@ storiesOf(name, module)
           <div>{manyNavigationItems()}</div>
         )}
         openDrawer="create"
+      />
+    </HtmlPage>
+  ))
+  .add('with search delay', () => (
+    <HtmlPage>
+      <BasicNavigation
+        searchDrawerContent={(
+          <BasicSearch fakeNetworkLatency={800} />
+        )}
+        openDrawer="search"
       />
     </HtmlPage>
   ))

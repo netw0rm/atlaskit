@@ -1,14 +1,20 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { ThemeProvider } from 'styled-components';
+import { css, ThemeProvider } from 'styled-components';
 import hasOwnProperty from '../utils/has-own-property';
 import type { Provided, RootTheme, GroupTheme } from '../theme/types';
+import { container } from './presets';
 
 export const prefix = (key: string): string => `@atlaskit-private-theme-do-not-use/navigation:${key}`;
 const rootKey = prefix('root');
 const groupKey = prefix('group');
 
-export const getProvided = (map: Object): Provided => map[rootKey].provided;
+export const getProvided = (map?: Object): Provided => {
+  if (map !== undefined && hasOwnProperty(map, rootKey)) {
+    return map[rootKey].provided;
+  }
+  return container;
+};
 export const isCollapsed = (map: Object): bool => map[rootKey].isCollapsed;
 
 export const isInCompactGroup = (map: Object): bool => {
@@ -17,6 +23,10 @@ export const isInCompactGroup = (map: Object): bool => {
   }
   return map[groupKey].isCompact;
 };
+
+export const whenCollapsed = (...args: Array<mixed>) => css`
+  ${({ theme }) => (isCollapsed(theme) ? css(...args) : '')}
+`;
 
 export class WithRootTheme extends PureComponent {
   static defaultProps = {
@@ -86,4 +96,3 @@ export class WithGroupTheme extends PureComponent {
     );
   }
 }
-

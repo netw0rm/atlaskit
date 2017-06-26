@@ -115,6 +115,37 @@ storiesOf(name, module)
       />
     </div>
   )
+  .add('Disabled', () => {
+    type Props = {};
+    type State = { disabled: boolean };
+
+    class Demo extends PureComponent<Props, State> {
+      state = { disabled: true };
+
+      render() {
+        return (
+          <div>
+            <Editor
+              disabled={this.state.disabled}
+              isExpandedByDefault={true}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              onChange={handleChange}
+              mentionProvider={mentionProvider}
+            />
+
+            <fieldset style={{ marginTop: 20 }}>
+              <button onClick={this.toggleDisabled}>Toggle disabled state</button>
+            </fieldset>
+          </div>
+        );
+      }
+
+      private toggleDisabled = () => this.setState({ disabled: !this.state.disabled });
+    }
+
+    return <Demo />;
+  })
   .add('CXHTML input', () => {
     type Props = {};
     type State = { input: string, output: string };

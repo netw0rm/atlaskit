@@ -9,7 +9,7 @@ import {
   EditorView,
 } from '../../prosemirror';
 import ProviderFactory from '../../providerFactory';
-import { reactNodeViewStateKey } from '../../plugins';
+import { stateKey as reactNodeViewStateKey } from '../../plugins/react-nodeview';
 
 export interface ReactProsemirrorNodeProps {
   getPos: () => number;

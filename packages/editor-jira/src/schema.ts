@@ -31,6 +31,7 @@ export interface JIRASchemaMarks {
   strong: MarkSpec;
   subsup?: MarkSpec;
   underline: MarkSpec;
+  textColor?: MarkSpec;
 }
 
 export interface JIRASchema extends Schema<JIRASchemaNodes, JIRASchemaMarks> {}
@@ -44,6 +45,7 @@ export interface JIRASchemaConfig {
   allowBlockQuote?: boolean;
   allowSubSup?: boolean;
   allowMedia?: boolean;
+  allowTextColor?: boolean;
 }
 
 export function isSchemaWithLists(schema: JIRASchema): boolean {
@@ -76,6 +78,10 @@ export function isSchemaWithBlockQuotes(schema: JIRASchema): boolean {
 
 export function isSchemaWithMedia(schema: JIRASchema): boolean {
   return !!schema.nodes.mediaGroup && !!schema.nodes.media;
+}
+
+export function isSchemaWithTextColor(schema: JIRASchema): boolean {
+  return !!schema.marks.textColor;
 }
 
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
@@ -113,6 +119,10 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
 
   if (config.allowMedia) {
     nodes.push('mediaGroup', 'media');
+  }
+
+  if (config.allowTextColor) {
+    marks.push('textColor');
   }
 
   return createSchema({ nodes, marks });

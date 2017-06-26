@@ -1,5 +1,5 @@
 import { EditorState, NodeSpec, NodeType, Transaction } from '../';
-import { OrderedMap } from '../orderedmap';
+import OrderedMap = require('orderedmap');
 
 export const orderedList: NodeSpec;
 

@@ -1,9 +1,13 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { FilmStripNavigator } from '@atlaskit/media-filmstrip';
 import { CardDimensions } from '@atlaskit/media-card';
 import styled from 'styled-components';
 import { MediaProps } from './media';
+
+export interface MediaGroupProps {
+  children?: any; /* @see https://github.com/Microsoft/TypeScript/issues/6471 */
+}
 
 export enum LargeCard {
   height = 180,
@@ -11,40 +15,24 @@ export enum LargeCard {
 }
 
 // tslint:disable-next-line
-export const CardWrapper = styled.div`
-  padding: 5px 10px;
-`;
-
-// tslint:disable-next-line
 export const FilmStripWrapper = styled.div`
   padding: 5px 0;
 `;
 
-export interface Props {
-  numOfCards: number;
-}
+export default function MediaGroup(props: MediaGroupProps) {
+  const numChildren = React.Children.count(props.children);
 
-export default class MediaGroup extends PureComponent<Props, {}> {
-
-  render() {
-    return this.props.numOfCards > 1
-      ? (
-        <FilmStripWrapper>
-          <FilmStripNavigator>
-            {this.props.children}
-          </FilmStripNavigator>
-        </FilmStripWrapper>
-      )
-      : (
-        <CardWrapper>
-        {
-          React.Children.map(this.props.children,
-            (child: ReactElement<MediaProps>) => React.cloneElement(child, {
-              cardDimensions: LargeCard as CardDimensions
-            } as MediaProps)
-          )
-        }
-        </CardWrapper>
-      );
-  }
+  return (
+    <FilmStripWrapper>
+      <FilmStripNavigator>
+      {
+        React.Children.map(props.children, (child: ReactElement<MediaProps>) => {
+          return numChildren === 1
+            ? React.cloneElement(child, { cardDimensions: LargeCard as CardDimensions } as MediaProps)
+            : child;
+        })
+      }
+      </FilmStripNavigator>
+    </FilmStripWrapper>
+  );
 }

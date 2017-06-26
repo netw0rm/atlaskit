@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { layout, resizeAnimationTime, gridSize } from '../../shared-variables';
-import { getProvided } from '../../theme/util';
+import { getProvided, whenCollapsed } from '../../theme/util';
 
 const keylineHeight = 2;
 const paddingOpen = (() => {
@@ -26,7 +26,7 @@ const ContainerHeaderWrapper = styled.div`
 
     /* keyline */
     &::after {
-      background-color: ${({ isContentScrolled, theme }) => (isContentScrolled ? getProvided(theme).keyline : 'none')}
+      background-color: ${({ isContentScrolled, theme }) => (isContentScrolled ? getProvided(theme).keyline : 'none')};
       bottom: -${keylineHeight}px;
       border-radius: 1px;
       content: "";
@@ -34,11 +34,11 @@ const ContainerHeaderWrapper = styled.div`
       left: ${gridSize}px;
       position: absolute;
       right: ${gridSize}px;
-      transition: background-color ${resizeAnimationTime}
+      transition: background-color ${resizeAnimationTime};
     }
   }
 
-  [data-__ak-navigation-container-closed="true"] & {
+  ${whenCollapsed`
     padding: 0;
     /* centering the icon */
     display: flex;
@@ -53,7 +53,7 @@ const ContainerHeaderWrapper = styled.div`
         display: none;
       }
     }
-  }
+  `}
 `;
 
 ContainerHeaderWrapper.displayName = 'ContainerHeaderWrapper';

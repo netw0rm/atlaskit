@@ -1,4 +1,4 @@
-import { OrderedMap } from '../orderedmap';
+import OrderedMap = require('orderedmap');
 import { Fragment, Mark, Node, ParseRule } from './';
 import { DOMOutputSpec } from './to_dom';
 
@@ -28,6 +28,7 @@ export interface NodeSpec {
   defining?: boolean;
   toDOM?: (_0: Node) => {};
   parseDOM?: ParseRule[];
+  tableRole?: string;
 }
 
 export class NodeType {

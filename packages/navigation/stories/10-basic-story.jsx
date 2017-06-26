@@ -1,9 +1,12 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
+import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import SettingsIcon from '@atlaskit/icon/glyph/settings';
+import TrayIcon from '@atlaskit/icon/glyph/tray';
 import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
-import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle } from '../src/index';
+import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle, presetThemes } from '../src/index';
 import NavigationWithDropdown from './components/NavigationWithDropdown';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -83,15 +86,15 @@ storiesOf(name, module)
       >
         <AkNavigationItem
           text="Test page 1"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
         />
         <AkNavigationItem
           text="Test page 3"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
         />
         <AkNavigationItem
           text="Test page 4"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
         />
       </NavigationWithDropdown>
     </HtmlPage>
@@ -104,17 +107,17 @@ storiesOf(name, module)
       >
         <AkNavigationItem
           text="Test page 1"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
           textAfter="text"
         />
         <AkNavigationItem
           text="Test page 3"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
           textAfter="text"
         />
         <AkNavigationItem
           text="Test page 4"
-          icon={<DashboardIcon label="Dashboard" />}
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
           textAfter="text"
         />
       </NavigationWithDropdown>
@@ -139,13 +142,12 @@ storiesOf(name, module)
   .add('with multiple groups', () => (
     <HtmlPage>
       <BasicNavigation
-        containerAppearance="global"
+        containerTheme={presetThemes.global}
         containerHeaderComponent={AtlassianLogo}
       >
         <AkNavigationItemGroup>
           <AkNavigationItem
-            appearance="global"
-            icon={<DashboardIcon label="Dashboard" />}
+            icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
             isSelected
             text="Selected"
             textAfter={<RandomBadge theme="dark" />}
@@ -153,24 +155,21 @@ storiesOf(name, module)
         </AkNavigationItemGroup>
         <AkNavigationItemGroup>
           <AkNavigationItem
-            appearance="global"
-            icon={<SettingsIcon label="Settings" />}
+            icon={<SettingsIcon label="Settings" secondaryColor="inherit" />}
             text="Item B"
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkNavigationItemGroup>
         <AkNavigationItemGroup title="one section">
           <AkNavigationItem
-            appearance="global"
-            icon={<TrayIcon label="Tray" />}
+            icon={<TrayIcon label="Tray" secondaryColor="inherit" />}
             text="Item C"
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkNavigationItemGroup>
-        <AkNavigationItemGroup hasSeparator appearance="global">
+        <AkNavigationItemGroup hasSeparator>
           <AkNavigationItem
-            appearance="global"
-            icon={<CalendarIcon label="Calendar" />}
+            icon={<CalendarIcon label="Calendar" secondaryColor="inherit" />}
             subText="And a very long second line of text"
             text="A very long first line of text"
             textAfter={<RandomBadge />}
@@ -243,5 +242,27 @@ storiesOf(name, module)
           />
         )}
       />
+    </HtmlPage>
+    ))
+  .add('with horizontal scrollable container', () => (
+    <HtmlPage>
+      <BasicNavigation
+        containerHeaderComponent={() => (
+          <div>Header Component</div>
+        )}
+      >
+        <div style={{ overflowX: 'auto', width: 'auto', display: 'flex', flexGrow: 1, flexDirection: 'column' }}>
+          <h6 style={{ whiteSpace: 'nowrap' }}>this is something super long that would cause the scroll to appear</h6>
+          <ul>
+            <li style={{ whiteSpace: 'nowrap' }}>The matrix</li>
+            <li style={{ whiteSpace: 'nowrap' }}>The Beatles – Sgt. Peppers Lonely Hearts Club Band</li>
+            <li style={{ whiteSpace: 'nowrap' }}>Tame Impala – Lonerism</li>
+            <li style={{ whiteSpace: 'nowrap' }}>The Beatles – Sgt. Peppers Lonely Hearts Club Band</li>
+            <li style={{ whiteSpace: 'nowrap' }}>Tame Impala – Lonerism</li>
+            <li style={{ whiteSpace: 'nowrap' }}>The Beatles – Sgt. Peppers Lonely Hearts Club Band</li>
+            <li style={{ whiteSpace: 'nowrap' }}>Tame Impala – Lonerism</li>
+          </ul>
+        </div>
+      </BasicNavigation>
     </HtmlPage>
   ));

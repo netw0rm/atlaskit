@@ -12,6 +12,7 @@ import {
   chaiPlugin
 } from '../../../../src/test-helper';
 import PickerFacade from '../../../../src/plugins/media/picker-facade';
+import { ErrorReportingHandler } from '../../../../src/utils';
 import MockMediaPicker from './mock-media-picker';
 
 chai.use(chaiPlugin);
@@ -46,6 +47,10 @@ describe('Media PickerFacade', () => {
   const testFileProgress = {
     portion: Math.random()
   };
+  const errorReporter: ErrorReportingHandler = {
+    captureException: (err: any) => {},
+    captureMessage: (msg: any) => {},
+  };
 
   beforeEach(() => {
     mockPicker = new MockMediaPicker();
@@ -56,7 +61,7 @@ describe('Media PickerFacade', () => {
 
       return mockPicker;
     };
-    facade = new PickerFacade('mock', uploadParams, contextConfig, stateManager, mockPickerFactory);
+    facade = new PickerFacade('mock', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
   });
 
   afterEach(() => {

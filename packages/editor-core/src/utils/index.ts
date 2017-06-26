@@ -1,5 +1,6 @@
 import {
   liftTarget,
+  Mark,
   MarkType,
   Node,
   NodeSelection,
@@ -14,21 +15,45 @@ import {
   Fragment,
   findWrapping
 } from '../prosemirror';
-
-function validateNode(node: Node): boolean {
-  return false;
-}
+import * as commands from '../commands';
+import JSONSerializer, { JSONDocNode } from '../renderer/json';
 
 export {
   default as ErrorReporter,
   ErrorReportingHandler,
 } from './error-reporter';
+export { JSONDocNode };
+
+function validateNode(node: Node): boolean {
+  return false;
+}
+
+function isMarkTypeExcludedFromMark(markType: MarkType, mark: Mark): boolean {
+  return mark.type.excludes(markType);
+}
+
+function isMarkTypeAllowedInNode(markType: MarkType, state: EditorState<any>): boolean {
+  return commands.toggleMark(markType)(state);
+}
 
 /**
- * Check if a mark is allowed at a given position
+ * Check if a mark is allowed at the current position based on a given state.
+ * This method looks both at the currently active marks as well as the node and marks
+ * at the current position to determine if the given mark type is allowed.
+ * If there's a non-empty selection, the current position corresponds to the start
+ * of the selection.
  */
-export function isMarkAllowedAtPosition(markType: MarkType, selection: Selection) {
-  return selection.$from.marks().filter(mark => mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1).length > 0;
+export function isMarkTypeAllowedAtCurrentPosition(markType: MarkType, state: EditorState<any>) {
+  if (!isMarkTypeAllowedInNode(markType, state)) { return false; }
+
+  let allowedInActiveMarks = true;
+  let excludesMarkType = mark => isMarkTypeExcludedFromMark(markType, mark);
+  if (state.tr.storedMarks) {
+    allowedInActiveMarks = !state.tr.storedMarks.some(excludesMarkType);
+  } else {
+    allowedInActiveMarks = !state.selection.$from.marks().some(excludesMarkType);
+  }
+  return allowedInActiveMarks;
 }
 
 /**
@@ -161,16 +186,17 @@ export function findAncestorPosition(doc: Node, pos: any): any {
   }
 
   let node: Node | undefined = pos.node(pos.depth);
+  let newPos = pos;
   while (pos.depth >= 1) {
     pos = doc.resolve(pos.before(pos.depth));
     node = pos.node(pos.depth);
 
     if (node && nestableBlocks.indexOf(node.type.name) !== -1) {
-      break;
+      newPos = pos;
     }
   }
 
-  return pos;
+  return newPos;
 }
 
 /**
@@ -266,11 +292,8 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
   return tr;
 }
 
-export function toJSON(node: Node) {
-  return {
-    version: 1,
-    ...node.toJSON()
-  };
+export function toJSON(node: Node): JSONDocNode {
+  return new JSONSerializer().serializeFragment(node.content);
 }
 
 export function splitCodeBlockAtSelection(state: EditorState<any>) {
@@ -299,7 +322,7 @@ function splitCodeBlockAtSelectionStart(state: EditorState<any>) {
         fromPos = 0;
       }
     }
-    if ( fromPos > 0) {
+    if (fromPos > 0) {
       tr.split($from.start($from.depth) + fromPos, $from.depth);
       if (node.textContent[fromPos - 1] === '\n') {
         tr.delete($from.start($from.depth) + fromPos - 1, $from.start($from.depth) + fromPos);
@@ -331,4 +354,22 @@ function splitCodeBlockAtSelectionEnd(state: EditorState<any>, tr: Transaction) 
     }
   }
   return tr;
+}
+
+/**
+ * Repeating string for multiple times
+ */
+export function stringRepeat(text: string, length: number): string {
+  let result = '';
+  for (let x = 0; x < length; x++) {
+    result += text;
+  }
+  return result;
+}
+
+/**
+ * A replacement for `Array.from` until it becomes widely implemented.
+ */
+export function arrayFrom(obj: any): any[] {
+  return Array.prototype.slice.call(obj);
 }

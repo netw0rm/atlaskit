@@ -1,6 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { SearchIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, EmojiCustomIcon } from '@atlaskit/icon';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import AddIcon from '@atlaskit/icon/glyph/add';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import SettingsIcon from '@atlaskit/icon/glyph/settings';
+import IssuesIcon from '@atlaskit/icon/glyph/issues';
+import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
 import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
 import HtmlPage from './components/HtmlPage';
@@ -20,7 +25,7 @@ storiesOf(name, module)
           action={
             <AkButton
               appearance="subtle"
-              iconBefore={<EmojiCustomIcon label="add" size="small" />}
+              iconBefore={<EmojiCustomIcon label="add" />}
               spacing="none"
             />
           }

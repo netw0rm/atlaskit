@@ -6,7 +6,7 @@ import InlineMessageExample from './examples/InlineMessageExample'; // eslint-di
 import InlineMessageExampleRaw from '!raw!./examples/InlineMessageExample'; // eslint-disable-line import/first, import/no-duplicates
 
 import { name, description } from '../package.json';
-import InlineMessage from '../src';
+import InlineMessage from '@atlaskit/inline-message';
 
 const inlineMessagePropDescriptions = {
   children: 'Content to display inside the dialog that is shown when the user clicks the inline message',

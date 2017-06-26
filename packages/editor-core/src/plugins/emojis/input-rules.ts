@@ -6,29 +6,25 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.emoji && schema.marks.emojiQuery) {
-    const emojiQueryRule = createInputRule(/(^|[^\w\`]):$/, (state, match, start, end): Transaction | undefined => {
+    const emojiQueryRule = createInputRule(/(^|\s):$/, (state, match, start, end): Transaction | undefined => {
       const emojisState = stateKey.getState(state) as EmojiState;
 
       if (!emojisState.emojiProvider) {
         return undefined;
       }
 
-      if (emojisState.emojiDisabled()) {
+      if (!emojisState.isEnabled()) {
         return undefined;
       }
 
-      const markType = schema.mark('emojiQuery');
+      const mark = schema.mark('emojiQuery');
       const { tr } = state;
 
-      return tr.replaceWith(
-        end,
-        end,
-        schema.text(
-          ':',
-          [markType]
-        )
+      const emojiText = schema.text(
+        ':',
+        [mark]
       );
-
+      return tr.replaceSelectionWith(emojiText, false);
     });
 
     rules.push(emojiQueryRule);

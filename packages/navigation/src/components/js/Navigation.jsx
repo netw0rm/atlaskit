@@ -15,6 +15,7 @@ import {
   resizeClosedBreakpoint,
   standardOpenWidth,
 } from '../../shared-variables';
+import * as presets from '../../theme/presets';
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   if (!isCollapsible && !isOpen) {
@@ -53,10 +54,10 @@ const getSnappedWidth = (width) => {
 export default class Navigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    containerAppearance: PropTypes.string,
+    containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerHeaderComponent: PropTypes.func,
     drawers: PropTypes.arrayOf(PropTypes.node),
-    globalAppearance: PropTypes.string,
+    globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     globalCreateIcon: PropTypes.node,
     globalPrimaryIcon: PropTypes.node,
     globalPrimaryItemHref: PropTypes.string,
@@ -74,9 +75,9 @@ export default class Navigation extends PureComponent {
   };
 
   static defaultProps = {
-    containerAppearance: 'container',
+    containerTheme: presets.container,
     drawers: [],
-    globalAppearance: 'global',
+    globalTheme: presets.global,
     globalSecondaryActions: [],
     isCollapsible: true,
     isCreateDrawerOpen: false,
@@ -151,10 +152,10 @@ export default class Navigation extends PureComponent {
   render() {
     const {
       children,
-      containerAppearance,
+      containerTheme,
       containerHeaderComponent,
       drawers,
-      globalAppearance,
+      globalTheme,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
@@ -197,10 +198,14 @@ export default class Navigation extends PureComponent {
     const isContainerCollapsed = !showGlobalNavigation || containerWidth === containerClosedWidth;
     const shouldAnimateContainer = isTogglingIsOpen && !isResizing;
 
+    // When the navigation is not collapsible, and the width is expanded.
+    // Users should be able to click the collapse button to go back to the original width
+    const canCollapse = isCollapsible || containerWidth > containerOpenWidth;
+
     const globalNavigation = showGlobalNavigation ? (
       <NavigationGlobalNavigationWrapper>
         <GlobalNavigation
-          appearance={globalAppearance}
+          theme={globalTheme}
           createIcon={globalCreateIcon}
           linkComponent={linkComponent}
           onCreateActivate={onCreateDrawerOpen}
@@ -220,6 +225,7 @@ export default class Navigation extends PureComponent {
         onResizeButton={this.triggerResizeButtonHandler}
         onResizeStart={onResizeStart}
         onResizeEnd={this.onResizeEnd}
+        showResizeButton={canCollapse}
       />
     ) : null;
 
@@ -236,12 +242,13 @@ export default class Navigation extends PureComponent {
               horizontalOffset={containerOffsetX}
             >
               <ContainerNavigation
-                appearance={containerAppearance}
-                showGlobalPrimaryActions={!showGlobalNavigation}
+                theme={containerTheme}
+                showGlobalActions={!showGlobalNavigation}
                 globalCreateIcon={globalCreateIcon}
                 globalPrimaryIcon={globalPrimaryIcon}
                 globalPrimaryItemHref={globalPrimaryItemHref}
                 globalSearchIcon={globalSearchIcon}
+                globalSecondaryActions={globalSecondaryActions}
                 headerComponent={containerHeaderComponent}
                 linkComponent={linkComponent}
                 onGlobalCreateActivate={onCreateDrawerOpen}

@@ -112,7 +112,7 @@ describe('LanguagePicker', () => {
       const { editorView, pluginState } = editor(doc(code_block()('text')));
       const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
-      expect(languagePicker.state('language')).to.equal('Language');
+      expect(languagePicker.state('language')).to.equal(undefined);
     });
   });
 

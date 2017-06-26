@@ -3,7 +3,8 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import tablePlugins from '../../../src/plugins/table';
 import ToolbarTable from '../../../src/ui/ToolbarTable';
-import AkButton from '@atlaskit/button';
+import ToolbarButton from '../../../src/ui/ToolbarButton';
+import TableIcon from '@atlaskit/icon/glyph/editor/table';
 import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
 
 describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
@@ -14,7 +15,7 @@ describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
     place: fixture()
   });
 
-  it('should render disabled ToolbarButton if isDisabled property is true', () => {
+  it('should render disabled ToolbarButton if disabled property is true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
     const toolbarTable = mount(
       <ToolbarTable
@@ -23,6 +24,54 @@ describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
         disabled={true}
       />
     );
-    expect(toolbarTable.find(AkButton).prop('isDisabled')).to.equal(true);
+    expect(toolbarTable.find(ToolbarButton).prop('disabled')).to.equal(true);
+  });
+
+  it('should render disabled ToolbarButton if pluginState.tableDisabled is true', () => {
+    const { editorView, pluginState } = editor(doc(p('text')));
+    const toolbarTable = mount(
+      <ToolbarTable
+        pluginState={pluginState}
+        editorView={editorView}
+      />
+    );
+    toolbarTable.setState({ tableDisabled: true });
+    expect(toolbarTable.find(ToolbarButton).prop('disabled')).to.equal(true);
+  });
+
+  it('should not render ToolbarButton if pluginState.tableHidden is true', () => {
+    const { editorView, pluginState } = editor(doc(p('text')));
+    const toolbarTable = mount(
+      <ToolbarTable
+        pluginState={pluginState}
+        editorView={editorView}
+        disabled={true}
+      />
+    );
+    toolbarTable.setState({ tableHidden: true });
+    expect(toolbarTable.find(ToolbarButton)).to.have.length(0);
+  });
+
+  it('should render selected ToolbarButton if pluginState.tableActive is true', () => {
+    const { editorView, pluginState } = editor(doc(p('text')));
+    const toolbarTable = mount(
+      <ToolbarTable
+        pluginState={pluginState}
+        editorView={editorView}
+      />
+    );
+    toolbarTable.setState({ tableActive: true });
+    expect(toolbarTable.find(ToolbarButton).prop('selected')).to.equal(true);
+  });
+
+  it('should render TableIcon inside ToolbarButton', () => {
+    const { editorView, pluginState } = editor(doc(p('text')));
+    const toolbarTable = mount(
+      <ToolbarTable
+        pluginState={pluginState}
+        editorView={editorView}
+      />
+    );
+    expect(toolbarTable.find(TableIcon)).to.have.length(1);
   });
 });

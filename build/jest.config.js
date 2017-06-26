@@ -12,6 +12,10 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest/preprocessor',
   },
 
+  moduleNameMapper: {
+    '\\.(css|less)$': 'identity-obj-proxy',
+  },
+
   // let Jest transform Typescript files inside ./node_modules/@atlaskit/* since our packages are
   // only built on CI (if we changed this this it would dramatically increase the speed of our test
   // runs)

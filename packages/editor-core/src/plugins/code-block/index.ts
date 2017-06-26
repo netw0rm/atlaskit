@@ -52,7 +52,7 @@ export class CodeBlockState {
     const { state, dispatch } = view;
     const { $from, $to } = state.selection;
     const range = $from.blockRange($to);
-    dispatch(state.tr.deleteRange(range!.start, range!.end));
+    dispatch(state.tr.delete(range!.start, range!.end));
   }
 
 

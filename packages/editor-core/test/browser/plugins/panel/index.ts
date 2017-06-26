@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import panelPlugins from '../../../../src/plugins/panel';
-import { doc, panel, panelNote, p, makeEditor, fixtures, createEvent, sendKeyToPm } from '../../../../src/test-helper';
+import { doc, panel, panelNote, p, makeEditor, fixtures, createEvent, sendKeyToPm, blockquote } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
@@ -109,6 +109,13 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(pluginState.activePanelType).to.equal('info');
       pluginState.removePanel(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p()));
+    });
+
+    it('should not remove enclosing block while removing panel', () => {
+      const { pluginState, editorView } = editor(doc(blockquote(panel(p('te{<>}xt'), p('text')))));
+      expect(pluginState.activePanelType).to.equal('info');
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
     });
 
     it('should call handlers for change in panel type', () => {

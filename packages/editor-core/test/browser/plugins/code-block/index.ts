@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import codeBlockPlugins from '../../../../src/plugins/code-block';
-import { setTextSelection, fixtures, chaiPlugin, code_block, doc, makeEditor, p, createEvent } from '../../../../src/test-helper';
+import { setTextSelection, fixtures, chaiPlugin, code_block, doc, makeEditor, p, createEvent, blockquote } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -285,6 +285,12 @@ describe('code-block', () => {
       const { pluginState, editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
       pluginState.removeCodeBlock(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('')));
+    });
+
+    it('should not remove parent block when removing code_block', () => {
+      const { pluginState, editorView } = editor(doc(blockquote(code_block({ language: 'java' })('codeBlock{<>}'))));
+      pluginState.removeCodeBlock(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
     });
   });
 

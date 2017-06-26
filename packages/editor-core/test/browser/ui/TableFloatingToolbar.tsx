@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
+import * as sinon from 'sinon';
 import * as React from 'react';
 import tablePlugins from '../../../src/plugins/table';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
@@ -81,7 +82,7 @@ describe('TableFloatingToolbar', () => {
   });
 
   describe('TrashIcon', () => {
-    it('should be rendered in table floating toolbar', () => {
+    it('should be rendered in the toolbar', () => {
       const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
       const floatingToolbar = mount(
         <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
@@ -90,6 +91,18 @@ describe('TableFloatingToolbar', () => {
       const button = floatingToolbar.find(ToolbarButton);
       expect(button).to.have.length(1);
       expect(button.find(RemoveIcon)).to.have.length(1);
+    });
+
+    it('should call pluginState.remove() on click', () => {
+      const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+      const floatingToolbar = shallow(
+        <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
+      );
+      pluginState.remove = sinon.spy();
+      floatingToolbar.setState({ cellElement: document.createElement('td') });
+      const button = floatingToolbar.find(ToolbarButton);
+      button.simulate('click');
+      expect(pluginState.remove.callCount).to.equal(1);
     });
   });
 });

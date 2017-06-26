@@ -15,7 +15,7 @@
 #   - foo
 #   - bar
 #   - baz
-image: node:7.9.0
+image: node:7.9.0 # Uses debian 8.7
 pipelines:
   branches:
     master:
@@ -51,9 +51,20 @@ pipelines:
             - ./build/bin/cloudfront_invalidate.sh
   default:
     - step:
+        caches:
+          - nwb-branch
         script:
+          - cat /etc/debian_version
           - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.2
           - export PATH=$HOME/.yarn/bin:$PATH
+
+          # required for uploading to cdn, can remove once script is rewritten
+          # from https://www.linkedin.com/pulse/installing-openjdk-8-tomcat-debian-jessie-iga-made-muliarsa
+          - echo "deb http://ftp.de.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
+          - apt-get update
+          - apt-get -y install -t jessie-backports openjdk-8-jdk
+          - apt-get -y install zip
+
           - yarn global add cloudfront-invalidate-cli@1.2.0
             marky-markdown@8.1.0
             bitbucket-build-status@1.0.2
@@ -69,3 +80,6 @@ pipelines:
           # - lerna run test --concurrency=1 --stream
           - lerna run storybook:static --scope="{@atlaskit/avatar,@atlaskit/button}" # --since $(npm run branch -s)
           - ./build/bin/pr/upload-storybooks.js
+definitions:
+  caches:
+    nwb-branch: node_modules

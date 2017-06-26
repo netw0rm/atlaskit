@@ -8,7 +8,7 @@ const generateIndexFile = require('./_generate-storybooks-index');
 const uploadDirectory = require('../cdn/uploadDirectory');
 
 const packagesDir = path.join(process.cwd(), 'packages');
-const bbCommit = process.env.BB_COMMIT || 'BB_COMMIT';
+const bbCommit = process.env.BITBUCKET_COMMIT || 'BB_COMMIT';
 const currentTime = `${Math.floor(new Date() / 1000)}`;
 const uploadPath = `pr/${bbCommit}/${currentTime}/storybook`;
 

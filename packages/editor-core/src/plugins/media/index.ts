@@ -18,6 +18,11 @@ import {
   NodeSelection,
   TextSelection,
   Schema,
+  AddMarkStep,
+  ReplaceStep,
+  Transaction,
+  MarkType,
+  Fragment,
 } from '../../prosemirror';
 import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
@@ -29,7 +34,6 @@ import {
 } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
-import inputRulePlugin from './input-rule';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
@@ -42,6 +46,15 @@ export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 export interface MediaNodeWithPosHandler {
   node: PMNode;
   getPos: ProsemirrorGetPosHandler;
+}
+
+export interface Range {
+  start: number;
+  end: number;
+}
+
+export interface RangeWithUrl extends Range {
+  url: string;
 }
 
 export class MediaPluginState {
@@ -471,7 +484,7 @@ export class MediaPluginState {
     return $to.pos;
   }
 
-  private findDeleteRange = (): { start: number, end: number } | undefined => {
+  private findDeleteRange = (): Range | undefined => {
     const { state } = this.view;
     const { $from, $to } = state.selection;
 
@@ -480,13 +493,13 @@ export class MediaPluginState {
     }
 
     if (!this.isInsidePotentialEmptyParagraph() || this.posOfMediaGroupNearBy(state)) {
-      return this.replaceRange($from.pos, $to.pos);
+      return this.range($from.pos, $to.pos);
     }
 
-    return this.replaceRange(startPositionOfParent($from) - 1, endPositionOfParent($to));
+    return this.range(startPositionOfParent($from) - 1, endPositionOfParent($to));
   }
 
-  private replaceRange(start: number, end: number = start) {
+  private range(start: number, end: number = start) {
     return { start, end };
   }
 
@@ -660,6 +673,56 @@ export class MediaPluginState {
 
     return (state && state.status) || 'ready';
   }
+
+  detectLinkRangesInSteps = (tr: Transaction): Range[] => {
+    const { link } = this.view.state.schema.marks;
+    let ranges: Range[] = [];
+    if (!link) {
+      return ranges;
+    }
+
+    ranges = tr.steps.reduce((ranges: Range[], step) => {
+      if (step instanceof AddMarkStep) {
+        return ranges.concat(this.detectLinkRangesInAddMarkStep(step as AddMarkStep));
+      } else if (step instanceof ReplaceStep) {
+        return ranges.concat(this.detectLinkRangesInReplaceStep(step as ReplaceStep));
+      }
+      return ranges;
+    }, ranges);
+
+    return ranges;
+  }
+
+  private detectLinkRangesInAddMarkStep = (step: AddMarkStep): RangeWithUrl[] => {
+    const range: RangeWithUrl[] = [];
+    const { link } = this.view.state.schema.marks;
+    if (step.mark.type === link) {
+      range.push({ start: step.from, end: step.to, url: step.mark.attrs.href });
+    }
+    return range;
+  }
+
+  private detectLinkRangesInReplaceStep(step: ReplaceStep): RangeWithUrl[] {
+    const range: RangeWithUrl[] = [];
+    const { link } = this.view.state.schema.marks;
+    const urls: string[] = [];
+    this.findLinksInContent(urls, step.slice.content, link);
+    urls.forEach((url) => {
+      range.push({ start: step.from, end: step.to, url: url });
+    });
+    return range;
+  }
+
+  private findLinksInContent(urls: string[], content: Fragment, link: MarkType) {
+    content.forEach((child) => {
+      if (link.isInSet(child.marks)) {
+        urls.push(child.textContent);
+      }
+      this.findLinksInContent(urls, child.content, link);
+    });
+
+    return urls;
+  }
 }
 
 export const stateKey = new PluginKey('mediaPlugin');
@@ -670,7 +733,8 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       init(config, state) {
         return new MediaPluginState(state, options);
       },
-      apply(tr, pluginState, oldState, newState) {
+      apply(tr, pluginState: MediaPluginState, oldState, newState) {
+        pluginState.detectLinkRangesInSteps(tr);
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
         //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch()
         //       transformations from within the plugin state (i.e. when adding a new file).
@@ -724,7 +788,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
 
 const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
   const plugin = mediaPluginFactory(options);
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

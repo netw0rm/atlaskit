@@ -39,9 +39,11 @@ export default class SearchResults extends PureComponent {
   }
 
   renderResultGroup = group => (
-    <AkNavigationItemGroup key={group.title} title={group.title}>
-      {group.items.map(this.renderResultItem)}
-    </AkNavigationItemGroup>
+    group.items && group.items.length > 0 ? (
+      <AkNavigationItemGroup key={group.title} title={group.title}>
+        {group.items.map(this.renderResultItem)}
+      </AkNavigationItemGroup>
+    ) : null
   );
 
   render() {

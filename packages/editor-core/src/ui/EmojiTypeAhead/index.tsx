@@ -4,10 +4,11 @@ import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import Popup from '../Popup';
 import { EmojiState } from '../../plugins/emojis';
+import { EditorView, PluginKey } from '../../prosemirror';
 
 export interface Props {
-  pluginState: EmojiState;
-  emojiProvider: Promise<EmojiProvider>;
+  editorView?: EditorView;
+  pluginKey: PluginKey;
   reversePosition?: boolean;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
@@ -17,16 +18,34 @@ export interface State {
   query?: string;
   anchorElement?: HTMLElement;
   queryActive?: boolean;
+  emojiProvider?: EmojiProvider;
 }
 
-const isEmojiTypeAhead = (typeAhead): typeAhead is AkEmojiTypeAhead => !!(typeAhead.count);
-
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
+  private pluginState?: any;
+
   state: State = {};
   typeAhead?: AkEmojiTypeAhead;
 
+  constructor(props: Props) {
+    super(props);
+    this.pluginState = props.editorView && props.pluginKey.getState(props.editorView.state);
+  }
+
+  private refreshProvider = (emojiProvider: EmojiProvider) => {
+    if (emojiProvider) {
+      this.setState({ emojiProvider });
+    } else {
+      this.setState({ emojiProvider: undefined });
+    }
+  }
+
+  componentWillMount() {
+    this.pluginState.subscribeToProviderUpdates(this.refreshProvider);
+  }
+
   componentDidMount() {
-    const { pluginState } = this.props;
+    const pluginState = this.pluginState;
     pluginState.subscribe(this.handlePluginStateChange);
     pluginState.onSelectPrevious = this.handleSelectPrevious;
     pluginState.onSelectNext = this.handleSelectNext;
@@ -35,7 +54,8 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   componentWillUmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+    this.pluginState.unsubscribe(this.handlePluginStateChange);
+    this.pluginState.unsubscribeFromProviderUpdates(this.refreshProvider);
   }
 
   private handlePluginStateChange = (state: EmojiState) => {
@@ -48,10 +68,10 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   render() {
-    const { anchorElement, query, queryActive } = this.state;
-    const { popupsBoundariesElement, popupsMountPoint, emojiProvider } = this.props;
+    const { emojiProvider, anchorElement, query, queryActive } = this.state;
+    const { popupsBoundariesElement, popupsMountPoint } = this.props;
 
-    if (!anchorElement || !queryActive) {
+    if (!anchorElement || !queryActive || !emojiProvider) {
       return null;
     }
 
@@ -65,7 +85,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         offset={[0, 3]}
       >
         <AkEmojiTypeAhead
-          emojiProvider={emojiProvider}
+          emojiProvider={Promise.resolve(this.state.emojiProvider)}
           onSelection={this.handleSelectedEmoji}
           query={query}
           ref={this.handleEmojiTypeAheadRef}
@@ -75,7 +95,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   private handleSelectedEmoji = (emojiId: any, emoji: any) => {
-    this.props.pluginState.insertEmoji(emojiId);
+    this.pluginState.insertEmoji(emojiId);
   }
 
   private handleSelectPrevious = (): boolean => {
@@ -98,7 +118,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     if (this.getEmojisCount() > 0) {
       (this.typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
     } else {
-      this.props.pluginState.dismiss();
+      this.pluginState.dismiss();
     }
 
     return true;
@@ -111,13 +131,13 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
       (this.typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
       return true;
     } else if (emojisCount === 0 || !query) {
-      this.props.pluginState.dismiss();
+      this.pluginState.dismiss();
     }
 
     return false;
   }
 
   private getEmojisCount(): number {
-    return isEmojiTypeAhead(this.typeAhead) && this.typeAhead.count() || 0;
+    return (this.typeAhead && this.typeAhead.count()) || 0;
   }
 }

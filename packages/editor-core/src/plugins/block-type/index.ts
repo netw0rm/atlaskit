@@ -155,7 +155,7 @@ export class BlockTypeState {
 
 export const stateKey = new PluginKey('blockTypePlugin');
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       return new BlockTypeState(state);

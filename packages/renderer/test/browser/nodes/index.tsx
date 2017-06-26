@@ -105,6 +105,17 @@ describe('Nodes', () => {
         });
       });
 
+       it('should use attrs.accessLevel if present', () => {
+        expect(getValidNode({ type: 'mention', text: '@Oscar', attrs: { id: 'abcd-abcd-abcd', accessLevel: 'APPLICATION' } })).to.deep.equal({
+          type: 'mention',
+          attrs: {
+            text: '@Oscar',
+            id: 'abcd-abcd-abcd',
+            accessLevel: 'APPLICATION'
+          }
+        });
+      });
+
       it('should use .text if present and attrs.text and attrs.displayName is missing', () => {
         expect(getValidNode({ type: 'mention', text: '@Oscar', attrs: { id: 'abcd-abcd-abcd' } })).to.deep.equal({
           type: 'mention',

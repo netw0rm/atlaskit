@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mention as mentionNode } from '../../../../src';
 import mentionsPlugins from '../../../../src/plugins/mentions';
+import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
   fixtures,
@@ -31,7 +32,7 @@ describe('mentions', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: mentionsPlugins(defaultSchema),
+    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()
   });
 

@@ -1,49 +1,32 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import {AppCardIcon as IconModel} from '../model';
-import {Wrapper, IconImage, Text, LinkText} from '../styled/ContextView';
+import Avatar from '@atlaskit/avatar';
+import {Wrapper, Text, IconWrapper} from '../styled/ContextView';
 
 export interface ContextViewProps {
   text: string;
   icon?: IconModel;
-  link?: string;
   isInversed?: boolean;
-  onContextClick?: () => void;
 }
 
 export class ContextView extends React.Component<ContextViewProps, {}> {
-
-  handleLinkClick = (event) => {
-    const {onContextClick} = this.props;
-
-    // allow the user to click the link but prevent the event bubling up and being handled by the
-    // card onClick event
-    event.stopPropagation();
-
-    if (onContextClick) {
-
-      // let onClick handle the event instead of navigating to the link
-      event.preventDefault();
-
-      onContextClick();
-    }
-
-  }
 
   renderIcon() {
     const {icon} = this.props;
     if (!icon) {
       return null;
     }
-    return <IconImage src={icon.url} alt={icon.label}/>;
+    return (
+      <IconWrapper>
+        <Avatar appearance="square" size="small" src={icon.url} alt={icon.label}/>
+      </IconWrapper>
+    );
   }
 
   renderText() {
-    const {text, link, isInversed} = this.props;
-    if (!link) {
-      return <Text isInversed={isInversed} onClick={this.handleLinkClick}>{text}</Text>;
-    }
-    return <LinkText href={link} isInversed={isInversed} onClick={this.handleLinkClick}>{text}</LinkText>;
+    const {text, isInversed} = this.props;
+    return <Text isInversed={isInversed}>{text}</Text>;
   }
 
   render(): JSX.Element {

@@ -128,10 +128,12 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         const { attrs, text } = node;
         let mentionText = '';
         let mentionId;
+        let mentionAccess;
         if (attrs) {
-          const { text, displayName, id } = attrs;
+          const { text, displayName, id, accessLevel } = attrs;
           mentionText = text || displayName;
           mentionId = id;
+          mentionAccess = accessLevel;
         }
 
         if (!mentionText) {
@@ -139,13 +141,18 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         }
 
         if (mentionText && mentionId) {
-          return {
+          const mentionNode = {
             type,
             attrs: {
               id: mentionId,
               text: mentionText
             }
           };
+          if (mentionAccess) {
+            mentionNode.attrs['accessLevel'] = mentionAccess;
+          }
+
+          return mentionNode;
         }
         break;
       }
@@ -305,7 +312,7 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
         />);
     case NodeType.mention: {
       const { attrs } = validNode;
-      const { id, text } = attrs as { id: string, text: string };
+      const { id, text, accessLevel } = attrs as { id: string, text: string, accessLevel?: string };
       const { mention } = eventHandlers || { mention: {} };
       const { onClick, onMouseEnter, onMouseLeave } = mention || { onClick: () => {}, onMouseEnter: () => {}, onMouseLeave: () => {}};
 
@@ -315,6 +322,7 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
             key={key}
             id={id}
             text={text}
+            accessLevel={accessLevel}
             mentionProvider={servicesConfig.getMentionProvider()}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
@@ -327,6 +335,7 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
           key={key}
           id={id}
           text={text}
+          accessLevel={accessLevel}
           onClick={onClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}

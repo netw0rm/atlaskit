@@ -6,7 +6,7 @@ import SearchFieldBaseInner from '../styled/SearchFieldBaseInner';
 import SearchInner from '../styled/SearchInner';
 import SearchInput from '../styled/SearchInput';
 
-const controlKeys = ['ArrowUp', 'ArrowDown', 'Enter', 'Escape'];
+const controlKeys = ['ArrowUp', 'ArrowDown', 'Enter'];
 
 export default class Search extends PureComponent {
   static propTypes = {
@@ -14,7 +14,6 @@ export default class Search extends PureComponent {
     isLoading: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onKeyDown: PropTypes.func,
-    onSearchClear: PropTypes.func,
     placeholder: PropTypes.string,
     value: PropTypes.string,
   }
@@ -24,37 +23,18 @@ export default class Search extends PureComponent {
     placeholder: 'Search',
   }
 
-  // clear the input when the user hits Escape
   onInputKeyDown = (event) => {
     if (controlKeys.indexOf(event.key) === -1) {
       return;
     }
-
-    if (event.key === 'Escape') {
-      this.clear();
-    } else if (this.props.onKeyDown) {
+    if (this.props.onKeyDown) {
       this.props.onKeyDown(event);
     }
-
     event.stopPropagation();
   }
 
   setInputRef = (ref) => {
     this.inputRef = ref;
-  }
-
-  clear() {
-    const { value, onSearchClear } = this.props;
-
-    // only executing callback if there is something to clear
-    if (value) {
-      onSearchClear();
-    }
-
-    // always give focus to search input
-    if (this.inputRef && this.inputRef !== document.activeElement) {
-      this.inputRef.focus();
-    }
   }
 
   render() {

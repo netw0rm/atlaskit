@@ -35,6 +35,21 @@ export default class Drawer extends PureComponent {
     isOpen: false,
   }
 
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      event.stopPropagation(); // Don't propagate lest one esc keystroke causes many views to close
+      this.props.onBackButton(event);
+    }
+  }
+
   render() {
     const {
       backIcon,

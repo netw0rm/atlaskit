@@ -146,6 +146,7 @@ const mountDraggable = ({
       }).isRequired,
     },
   };
+
   return mount(
     // $ExpectError - using spread for props
     <Draggable
@@ -154,9 +155,7 @@ const mountDraggable = ({
       {...dispatchProps}
     >
       {(provided: Provided) => (
-        <Component
-          provided={provided}
-        />
+        <Component provided={provided} />
       )}
     </Draggable>
     , options);
@@ -232,7 +231,7 @@ const getStubber = stub =>
     }
 };
 
-describe('Draggable - unconnected #2', () => {
+describe('Draggable - unconnected', () => {
   afterEach(() => {
     setScroll(originalScroll);
     if (Element.prototype.getBoundingClientRect.restore) {
@@ -800,7 +799,6 @@ describe('Draggable - unconnected #2', () => {
 
         // movement will be instant
         wrapper.setProps({
-          ...defaultOwnProps,
           ...mapProps,
         });
         // flush any movement required

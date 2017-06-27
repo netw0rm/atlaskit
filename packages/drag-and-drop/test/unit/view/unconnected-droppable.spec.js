@@ -1,138 +1,98 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import sinon from 'sinon';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
-import makeDroppable from '../../../src/view/droppable/make-droppable';
-import { DragDropContext } from '../../../src/';
-import type { TypeId } from '../../../src/types';
-import type { MapProps, OwnProps, MapStateToProps, StateSnapshot } from '../../../src/view/droppable/droppable-types';
+import Droppable from '../../../src/view/droppable/droppable';
+import storeKey from '../../../src/state/get-store-key';
+import createStore from '../../../src/state/create-store';
+import type { DroppableId } from '../../../src/types';
+import type { MapProps, OwnProps, Provided } from '../../../src/view/droppable/droppable-types';
 
-const empty = {};
-
-const Child = () => <div>Hello world</div>;
-const defaultId = '1';
+const getStubber = (stub?: Function = sinon.stub()) =>
+  class Stubber extends PureComponent {
+    props: {|
+      provided: Provided
+    |}
+    render() {
+      stub(this.props.provided);
+      return (
+        <div>Hey there</div>
+      );
+    }
+};
+const defaultDroppableId: DroppableId = 'droppable-1';
 const notDraggingOverMapProps: MapProps = {
-  id: defaultId,
   isDraggingOver: false,
 };
 const isDraggingOverMapProps: MapProps = {
-  id: defaultId,
   isDraggingOver: true,
 };
 
-type MountArgs = {|
-  type?: TypeId,
-  Component?: ReactClass<any>,
-  mapProps?: MapProps,
-  ownProps?: OwnProps,
-  mapStateToProps?: Function,
-|}
-
-const shallowDroppable = ({
-      type = 'TYPE',
-      Component = Child,
-      mapProps = notDraggingOverMapProps,
-      ownProps = {},
-      mapStateToProps = () => {},
-    }: MountArgs = {}): ReactWrapper => {
-  const Droppable = makeDroppable(type, mapStateToProps)(Component);
-  return shallow(
-    <Droppable
-      mapProps={mapProps}
-      ownProps={ownProps}
-    />
-  );
+// $ExpectError - not providing children
+const defaultOwnProps: OwnProps = {
+  droppableId: defaultDroppableId,
+  isDropEnabled: true,
 };
 
+type MountArgs = {|
+  Component: any,
+  ownProps?: OwnProps,
+  mapProps?: MapProps,
+|}
+
 const mountDroppable = ({
-      type = 'TYPE',
-      Component = Child,
-      mapProps = notDraggingOverMapProps,
-      ownProps = {},
-      mapStateToProps = () => {},
-    }: MountArgs = {}): ReactWrapper => {
-  const Droppable = makeDroppable(type, mapStateToProps)(Component);
+  Component,
+  ownProps = defaultOwnProps,
+  mapProps = notDraggingOverMapProps,
+}: MountArgs = {}): ReactWrapper => {
+  // Not using this store - just putting it on the context
+  // for any connected components that need it (eg DimensionPublisher)
+  const store = createStore({ onDragEnd: () => { } });
+  const options = {
+    context: {
+      [storeKey]: store,
+    },
+    childContextTypes: {
+      [storeKey]: React.PropTypes.shape({
+        dispatch: React.PropTypes.func.isRequired,
+        subscribe: React.PropTypes.func.isRequired,
+        getState: React.PropTypes.func.isRequired,
+      }).isRequired,
+    },
+  };
 
   return mount(
-    <DragDropContext
-      onDragEnd={() => { }}
+    <Droppable
+      {...ownProps}
+      {...mapProps}
     >
-      <Droppable
-        mapProps={mapProps}
-        ownProps={ownProps}
-      />
-    </DragDropContext>
-  );
+      {(provided: Provided) => (
+        <Component provided={provided} />
+      )}
+    </Droppable>
+    , options);
 };
 
 describe('Droppable - unconnected', () => {
-  it('should set the display name to reflect the component being wrapped', () => {
-    const wrapper = mountDroppable({
-      Component: Child,
-    });
+  it('should provide the props to its children', () => {
+    const props: MapProps[] = [
+      notDraggingOverMapProps, isDraggingOverMapProps,
+    ];
 
-    expect(wrapper.find('Droppable').name()).to.equal('Droppable(Child)');
-  });
+    props.forEach((mapProps: MapProps) => {
+      const stub = sinon.stub();
 
-  describe('providing a state snapshot to the provided mapStateToProps function', () => {
-    it('should provide the mapStateToProps function with a snapshot of the current droppable state', () => {
-      const mapStateToProps: MapStateToProps = sinon.stub().returns({});
-      const expected: StateSnapshot = {
-        isDraggingOver: true,
-      };
-
-      shallowDroppable({
-        mapStateToProps,
-        mapProps: isDraggingOverMapProps,
+      mountDroppable({
+        mapProps,
+        Component: getStubber(stub),
       });
 
-      expect(mapStateToProps.calledWith(expected)).to.equal(true);
-    });
-
-    it('should provide the mapStateToProps function with the children\'s own props', () => {
-      const mapStateToProps: MapStateToProps = sinon.stub().returns(empty);
-      const ownProps = {
-        foo: 'bar',
-        bar: {
-          count: 10,
-        },
-      };
-
-      shallowDroppable({
-        ownProps,
-        mapStateToProps,
-      });
-
-      expect(mapStateToProps.args[0][1]).to.equal(ownProps);
-    });
-
-    it('should enhance the child\'s props with the result of the mapStateToProps function', () => {
-      const mapStateToProps: MapStateToProps = sinon.spy(
-        (snapshot: StateSnapshot, ownProps: Object) => ({
-          isDraggingOver: snapshot.isDraggingOver,
-          name: ownProps.name,
-          foo: 'bar',
-        })
-      );
-      const myOwnProps = {
-        name: 'Alex',
-      };
-
-      const wrapper = shallowDroppable({
-        mapStateToProps,
-        Component: Child,
-        mapProps: isDraggingOverMapProps,
-        ownProps: myOwnProps,
-      });
-
-      const { isDraggingOver, name, foo } = wrapper.find(Child).props();
-      expect(isDraggingOver).to.equal(isDraggingOverMapProps.isDraggingOver);
-      expect(name).to.equal('Alex');
-      expect(foo).to.equal('bar');
+      const provided: Provided = stub.args[0][0];
+      expect(provided.isDraggingOver).to.equal(mapProps.isDraggingOver);
     });
   });
 });

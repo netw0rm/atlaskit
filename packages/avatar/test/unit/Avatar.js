@@ -131,6 +131,13 @@ describe('Avatar', () => {
         wrapper.find(Image).find('img').simulate('load');
         expect((wrapper).state('isLoading')).to.equal(false);
       });
+
+      it('should not load if new src is empty', () => {
+        const wrapper = mount(<Avatar />);
+        expect((wrapper).state('isLoading')).to.equal(false);
+        wrapper.setProps({ src: null });
+        expect((wrapper).state('isLoading')).to.equal(false);
+      });
     });
   });
 

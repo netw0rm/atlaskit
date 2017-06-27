@@ -29,6 +29,31 @@ describe('<ResourcedEmoji />', () => {
     });
   });
 
+  it('should not render a tooltip on hover if there is no showTooltip prop', () => {
+    const component = mount(<ResourcedEmoji
+      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+      emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
+    />);
+
+    return waitUntil(() => emojiVisible(component)).then(() => {
+      component.simulate('mouseenter');
+      expect(component.find('AKTooltip')).to.have.length(0);
+    });
+  });
+
+  it('should render a tooltip on hover if showTooltip is set to true', () => {
+    const component = mount(<ResourcedEmoji
+      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+      emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
+      showTooltip={true}
+    />);
+
+    return waitUntil(() => emojiVisible(component)).then(() => {
+      component.simulate('mouseenter');
+      expect(component.find('AKTooltip')).to.have.length(1);
+    });
+  });
+
   it('should fallback to shortName if no id', () => {
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
@@ -101,6 +126,30 @@ describe('<ResourcedEmoji />', () => {
         return waitUntil(() => emojiVisible(component)).then(() => {
           expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
         });
+      });
+    });
+  });
+
+  it('placeholder should render a tooltip on hover if showTooltip is set to true', () => {
+    let resolver;
+    let resolverResult;
+    const config: MockEmojiResourceConfig = {
+      promiseBuilder: (result: EmojiDescription) => {
+        resolverResult = result;
+        return new Promise(resolve => { resolver = resolve; });
+      },
+    };
+    const component = mount(<ResourcedEmoji
+      emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
+      emojiId={{ shortName: 'doesnotexist', id: 'doesnotexist' }}
+      showTooltip={true}
+    />);
+
+    return waitUntil(() => !!resolver).then(() => {
+      resolver();
+      return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
+        component.simulate('mouseenter');
+        expect(component.find('AKTooltip')).to.have.length(1);
       });
     });
   });

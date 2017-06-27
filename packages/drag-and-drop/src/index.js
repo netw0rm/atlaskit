@@ -1,3 +1,3 @@
 export DragDropContext from './view/drag-drop-context/';
-export draggable from './view/draggable/';
-export droppable from './view/droppable/';
+export Draggable from './view/draggable/';
+export Droppable from './view/droppable/';

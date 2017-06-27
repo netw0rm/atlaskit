@@ -1,11 +1,11 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { beforeEach, afterEach, describe, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { DragDropContext, draggable, droppable } from '../../../src/';
+import { DragDropContext, Draggable, Droppable } from '../../../src/';
 import { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
 import type {
@@ -16,13 +16,15 @@ import type {
   DropResult,
   Position,
 } from '../../../src/types';
+import type { Provided as DraggableProvided } from '../../../src/view/draggable/draggable-types';
+import type { Provided as DroppableProvided } from '../../../src/view/droppable/droppable-types';
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const mouseDown = mouseEvent.bind(null, 'mousedown');
 const cancelWithKeyboard = withKeyboard('Escape');
 
-describe('hooks integration', () => {
+describe.only('hooks integration', () => {
   let clock;
   let hooks: Hooks;
   let wrapper;
@@ -41,46 +43,6 @@ describe('hooks integration', () => {
   };
 
   const getMountedApp = () => {
-    const Item = (() => {
-      class ItemUnconnected extends PureComponent {
-        props: {|
-        innerRef: Function,
-        handleProps: Object,
-      |}
-        render() {
-          return (
-            <div ref={this.props.innerRef} {...this.props.handleProps}>
-            Hello world
-          </div>
-          );
-        }
-    }
-      const provide = () => ({
-        id: draggableId,
-      });
-
-      return draggable('ITEM', provide)(ItemUnconnected);
-    })();
-    const List = (() => {
-      class ListUnconnected extends PureComponent {
-        props: {|
-            innerRef: Function,
-            children?: any,
-          |}
-        render() {
-          return (
-            <div ref={this.props.innerRef}>
-              {this.props.children}
-            </div>
-          );
-        }
-      }
-      const provide = () => ({
-        id: droppableId,
-      });
-      return droppable('ITEM', 'vertical', provide)(ListUnconnected);
-    })();
-
       // Both list and item will have the same dimensions
     sinon.stub(Element.prototype, 'getBoundingClientRect').returns(fakeBox);
 
@@ -97,9 +59,35 @@ describe('hooks integration', () => {
         onDragStart={hooks.onDragStart}
         onDragEnd={hooks.onDragEnd}
       >
-        <List>
-          <Item />
-        </List>
+        <Droppable
+          droppableId={droppableId}
+          isDropEnabled
+          type="ITEM"
+        >
+          {(droppableProvided: DroppableProvided) => (
+            <div
+              ref={droppableProvided.innerRef}
+            >
+              <h2>Droppable</h2>
+              <Draggable
+                draggableId={draggableId}
+                isDragEnabled
+                type="ITEM"
+              >
+                {(draggableProvided: DraggableProvided) => (
+                  <div
+                    className="drag-handle"
+                    ref={draggableProvided.innerRef}
+                    style={draggableProvided.draggableStyle}
+                    {...draggableProvided.dragHandleProps}
+                  >
+                    <h4>Draggable</h4>
+                  </div>
+                )}
+              </Draggable>
+            </div>
+          )}
+        </Droppable>
       </DragDropContext>
     );
   };
@@ -144,7 +132,7 @@ describe('hooks integration', () => {
 
     const start = () => {
       mouseDown(
-        wrapper.find('ItemUnconnected'),
+        wrapper.find('.drag-handle'),
         initial.x,
         initial.y,
       );
@@ -171,7 +159,7 @@ describe('hooks integration', () => {
     };
 
     const cancel = () => {
-      cancelWithKeyboard(wrapper.find('ItemUnconnected'));
+      cancelWithKeyboard(wrapper.find('.drag-handle'));
     };
 
     const perform = () => {
@@ -229,7 +217,6 @@ describe('hooks integration', () => {
     it('should call the onDragStart hook when a drag starts', () => {
       drag.start();
 
-      const args = hooks.onDragStart.args[0];
       wasDragStarted();
     });
 

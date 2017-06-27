@@ -1,11 +1,10 @@
 // @flow
-import React, { cloneElement, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import invariant from 'invariant';
 import type { Position } from '../../types';
 import memoizeOne from 'memoize-one';
 
 const noop = (): void => { };
-const empty: Object = {};
 const getFalse: () => boolean = () => false;
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button

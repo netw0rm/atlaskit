@@ -2,7 +2,7 @@
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { makeSelector } from '../../../src/view/droppable/make-connected-droppable';
+import { makeSelector } from '../../../src/view/droppable/connected-droppable';
 import noImpact from '../../../src/state/no-impact';
 import getDimension from '../get-dimension-util';
 import type {

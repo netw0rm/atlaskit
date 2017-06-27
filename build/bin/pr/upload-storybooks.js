@@ -45,7 +45,7 @@ try {
 
   uploadDirectory(tmpStorybooksPath, uploadPath);
 
-  storybookBuildStatus('SUCCESS');
+  storybookBuildStatus('SUCCESSFUL');
 } catch (err) {
   storybookBuildStatus('FAILED');
   console.error(err);

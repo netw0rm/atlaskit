@@ -12,6 +12,7 @@ import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 import {UploadingView} from '../../utils/uploadingView';
+import {breakpointSize, BreakpointSizeValue} from '../../utils/breakpointSize';
 import {defaultImageCardDimensions} from '../../utils/cardDimensions';
 
 export interface CardImageViewProps {
@@ -37,6 +38,13 @@ export interface CardImageViewProps {
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
 }
+
+const breakpointSizes = {
+  small: 173,
+  medium: 225,
+  large: 300,
+  xlarge: Infinity
+};
 
 export class CardImageView extends Component<CardImageViewProps, {}> {
   private get width(): CardDimensionValue {
@@ -68,22 +76,8 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return {height: this.height, width: this.width};
   }
 
-  private get cardSize(): 'small' | 'medium' | 'large' | 'xlarge' {
-    const value = parseInt(`${this.width}`, 0); // Normalize value
-    const sizes = {
-      small: 173,
-      medium: 225,
-      large: 300,
-      xlarge: Infinity
-    };
-
-    let currentValue = null;
-    Object.keys(sizes).forEach(label => {
-      if (value < sizes[label] && !currentValue) {
-        currentValue = sizes[label];
-      }
-    });
-    return currentValue || 'small';
+  private get cardSize(): BreakpointSizeValue {
+    return breakpointSize(this.width, breakpointSizes);
   }
 
   render() {

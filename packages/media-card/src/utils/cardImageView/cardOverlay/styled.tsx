@@ -260,4 +260,6 @@ export const Subtitle = styled.div`
 `;
 
 export const Metadata = styled.div`
+  display: flex;
+  align-items: center;
 `;

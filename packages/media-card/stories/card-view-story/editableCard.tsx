@@ -17,7 +17,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import {MediaItemDetails} from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
-import {CardView} from '../../src/cardView';
+import {CardView} from '../../src/root/cardView';
 import {CardAppearance, CardStatus, CardDimensions} from '../../src';
 import {actions} from './chapters/utils';
 import {EditableCardOptions, EditableCardContent, SliderWrapper, OptionsWrapper, CardDimensionsWrapper} from './styled';

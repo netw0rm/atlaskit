@@ -2,14 +2,14 @@
 import styled from 'styled-components';
 import { akColorN20 } from '@atlaskit/util-shared-styles';
 import { Root, cardShadow, centerSelf, borderRadius, size } from '../../styles';
+import {BreakpointSizeValue} from '../../utils/breakpointSize';
 
-export interface SizeProps {
-  cardSize: 'small' | 'medium' | 'large' | 'xlarge';
+export interface CardProps {
+  cardSize: BreakpointSizeValue;
 }
 
-const cardSize = ({cardSize}: SizeProps) => {
+const cardSize = ({cardSize}: CardProps) => {
   switch (cardSize) {
-
     case 'small':
       return `
         .title {
@@ -77,7 +77,7 @@ const cardSize = ({cardSize}: SizeProps) => {
 export const Card = styled(Root)`
   ${cardShadow}
   ${cardSize}
-
+  ${borderRadius}
   background: #fff;
   display: table;
   cursor: pointer;

@@ -166,9 +166,9 @@ const generateStoriesForAppearance = (appearance: CardAppearance) => {
 };
 
 storiesOf('CardView', {})
+  .add('Make it your way 🍽', generateStoriesForEditableCards)
   .add('Auto cards', generateStoriesForAppearance('auto'))
   .add('Small cards', generateStoriesForAppearance('small'))
   .add('Image cards', generateStoriesForAppearance('image'))
   .add('Horizontal cards', generateStoriesForAppearance('horizontal'))
-  .add('Square cards', generateStoriesForAppearance('square'))
-  .add('Make it your way 🍽', generateStoriesForEditableCards);
+  .add('Square cards', generateStoriesForAppearance('square'));

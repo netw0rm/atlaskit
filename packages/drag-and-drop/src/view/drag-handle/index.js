@@ -1,1 +1,1 @@
-export default from './create-drag-handle';
+export default from './drag-handle';

@@ -1,1 +1,1 @@
-export default from './make-connected-droppable';
+export default from './connected-droppable';

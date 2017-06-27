@@ -8,7 +8,7 @@ import type { ReactWrapper } from 'enzyme';
 import sinon from 'sinon';
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 // eslint-disable-next-line no-duplicate-imports
-import type { Callbacks } from '../../../src/view/drag-handle/drag-handle';
+import type { DragHandleCallbacks, DragHandleProvided } from '../../../src/view/drag-handle/drag-handle';
 import createDragHandle from '../../../src/view/drag-handle/';
 import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
 import type { Position } from '../../../src/types';
@@ -16,7 +16,7 @@ import type { Position } from '../../../src/types';
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
 
-const getStubCallbacks = (): Callbacks => ({
+const getStubCallbacks = (): DragHandleCallbacks => ({
   onLift: sinon.stub(),
   onKeyLift: sinon.stub(),
   onMove: sinon.stub(),
@@ -36,7 +36,7 @@ type CallBacksCalledFn = {|
   onCancel?: number,
 |}
 
-const callbacksCalled = (callbacks: Callbacks) => ({
+const callbacksCalled = (callbacks: DragHandleCallbacks) => ({
   onLift = 0,
   onKeyLift = 0,
   onMove = 0,
@@ -52,16 +52,16 @@ const callbacksCalled = (callbacks: Callbacks) => ({
   callbacks.onDrop.callCount === onDrop &&
   callbacks.onCancel.callCount === onCancel;
 
-const whereAnyCallbacksCalled = (callbacks: Callbacks) =>
+const whereAnyCallbacksCalled = (callbacks: DragHandleCallbacks) =>
   !callbacksCalled(callbacks)();
 
 class Child extends PureComponent {
   props: {
-    handleProps?: Object,
+    dragHandleProps?: DragHandleProvided,
   }
   render() {
     return (
-      <div {...this.props.handleProps}>
+      <div {...this.props.dragHandleProps}>
         Drag me!
       </div>
     );
@@ -79,18 +79,20 @@ const pressArrowDown = withKeyboard('ArrowDown');
 const pressTab = withKeyboard('Tab');
 const pressEnter = withKeyboard('Enter');
 
-describe('drag handle', () => {
-  let callbacks: Callbacks;
+describe.only('drag handle', () => {
+  let callbacks: DragHandleCallbacks;
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
     callbacks = getStubCallbacks();
     wrapper = mount(
       <DragHandle
-        {...callbacks}
+        callbacks={callbacks}
         isEnabled
       >
-        <Child />
+        {(dragHandleProps: DragHandleProvided) => (
+          <Child dragHandleProps={dragHandleProps} />
+        )}
       </DragHandle>
     );
   });
@@ -113,10 +115,12 @@ describe('drag handle', () => {
           const customCallbacks = getStubCallbacks();
           const customWrapper = mount(
             <DragHandle
-              {...customCallbacks}
+              callbacks={customCallbacks}
               isEnabled
             >
-              <Child />
+              {(dragHandleProps: DragHandleProvided) => (
+                <Child dragHandleProps={dragHandleProps} />
+              )}
             </DragHandle>
           );
 

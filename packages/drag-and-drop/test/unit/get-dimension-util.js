@@ -24,8 +24,8 @@ export default ({
     left: left + margin,
     bottom: bottom + margin,
     right: right + margin,
-    height: (bottom + margin) - (top + margin),
-    width: (right + margin) - (left + margin),
+    height: (bottom - top) + (2 * margin),
+    width: (right - left) + (2 * margin),
   };
 
   return {

@@ -102,12 +102,12 @@ describe('DimensionPublisher', () => {
     const base: Dimension = getDimension({ id: itemId });
     const expected: Dimension = getDimension({ id: itemId, margin });
     sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
-      top: base.top,
-      bottom: base.bottom,
-      left: base.left,
-      right: base.right,
-      height: base.height,
-      width: base.width,
+      top: base.withoutMargin.top,
+      bottom: base.withoutMargin.bottom,
+      left: base.withoutMargin.left,
+      right: base.withoutMargin.right,
+      height: base.withoutMargin.height,
+      width: base.withoutMargin.width,
     });
     sinon.stub(window, 'getComputedStyle').returns({
       marginTop: `${margin}`,
@@ -122,19 +122,22 @@ describe('DimensionPublisher', () => {
       shouldPublish: true,
     });
 
-    expect(publish.calledWith(expected)).to.equal(true);
+    console.log('publish', publish.args[0][0]);
+    console.log('expected', expected);
+
+    expect(publish.args[0][0]).to.deep.equal(expected);
   });
 
   it('should not publish unless it is freshly required to do', () => {
     const publish = sinon.stub();
     const dimension: Dimension = getDimension({ id: itemId });
     sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
-      top: dimension.top,
-      bottom: dimension.bottom,
-      left: dimension.left,
-      right: dimension.right,
-      height: dimension.height,
-      width: dimension.width,
+      top: dimension.withMargin.top,
+      bottom: dimension.withMargin.bottom,
+      left: dimension.withMargin.left,
+      right: dimension.withMargin.right,
+      height: dimension.withMargin.height,
+      width: dimension.withMargin.width,
     });
 
     // initial publish

@@ -5,12 +5,12 @@ import invariant from 'invariant';
 import type { Position, ZIndex, InitialDrag } from '../../types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
-import DragHandle from '../drag-handle/drag-handle';
+import DragHandle from '../drag-handle';
 // eslint-disable-next-line no-duplicate-imports
 import type {
   Callbacks as DragHandleCallbacks,
   Provided as DragHandleProvided,
-} from '../drag-handle/drag-handle';
+} from '../drag-handle/drag-handle-types';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import Placeholder from './placeholder';

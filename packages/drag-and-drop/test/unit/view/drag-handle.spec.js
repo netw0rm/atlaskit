@@ -8,8 +8,7 @@ import type { ReactWrapper } from 'enzyme';
 import sinon from 'sinon';
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 // eslint-disable-next-line no-duplicate-imports
-import type { Callbacks, Provided } from '../../../src/view/drag-handle/drag-handle';
-import createDragHandle from '../../../src/view/drag-handle/';
+import type { Callbacks, Provided } from '../../../src/view/drag-handle/drag-handle-types';
 import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
 import type { Position } from '../../../src/types';
 

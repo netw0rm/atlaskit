@@ -24,7 +24,7 @@ const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const mouseDown = mouseEvent.bind(null, 'mousedown');
 const cancelWithKeyboard = withKeyboard('Escape');
 
-describe.only('hooks integration', () => {
+describe('hooks integration', () => {
   let clock;
   let hooks: Hooks;
   let wrapper;

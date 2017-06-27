@@ -19,8 +19,10 @@ import type {
 } from './droppable-types';
 
 export const makeSelector = () => {
-  const idSelector = (state: State, ownProps: OwnProps) => ownProps.droppableId;
-  const isDropEnabledSelector = (state: State, ownProps: OwnProps) => ownProps.isDropEnabled || true;
+  const idSelector = (state: State, ownProps: OwnProps) =>
+    ownProps.droppableId;
+  const isDropEnabledSelector = (state: State, ownProps: OwnProps) =>
+    ownProps.isDropEnabled || true;
 
   const getIsDraggingOver = memoizeOne(
     (id: DroppableId, destination: ?DraggableLocation): boolean => {

@@ -116,5 +116,6 @@ export type Hooks = {
 
 // TODO: try to use React's one
 export type ReactClass = any;
+export type ReactElement = any;
 
 export type HOC = (Component: ReactClass) => ReactClass;

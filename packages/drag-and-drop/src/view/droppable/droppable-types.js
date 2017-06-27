@@ -1,5 +1,5 @@
 // @flow
-import type { DroppableId } from '../../types';
+import type { DroppableId, ReactElement } from '../../types';
 
 export type Provided = {|
   isDraggingOver: boolean,
@@ -13,7 +13,7 @@ export type MapProps = {|
 export type OwnProps = {
   droppableId: DroppableId,
   isDropEnabled: boolean,
-  children: (Provided) => mixed
+  children: (Provided) => ReactElement
 };
 
 export type Props = OwnProps & MapProps;

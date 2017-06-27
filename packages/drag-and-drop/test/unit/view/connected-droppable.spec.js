@@ -18,35 +18,25 @@ import type {
   CurrentDrag,
   Dimension,
 } from '../../../src/types';
-import type { OwnProps, NeedsProviding, MapProps } from '../../../src/view/droppable/droppable-types';
-
-const provide = (ownProps: OwnProps): NeedsProviding => ({
-  id: ownProps.id,
-  isDropEnabled: ownProps.isDropEnabled,
-});
-
-const defaultProvided: NeedsProviding = provide({
-  id: 'drop-1',
-  isDropEnabled: true,
-});
+import type { MapProps } from '../../../src/view/droppable/droppable-types';
 
 type SelectorArgs = {|
   phase: Phase,
   drag: ?DragState,
   pending: ?PendingDrop,
-  provided: NeedsProviding,
+  id: DroppableId,
+  isDropEnabled?: boolean
 |}
 
 const execute = (selector: Function) =>
-  ({ phase, drag, pending, provided }: SelectorArgs) =>
+  ({ phase, drag, pending, id, isDropEnabled = true }: SelectorArgs) =>
     selector.resultFunc(
-      phase, drag, pending, provided
+      phase, drag, pending, id, isDropEnabled,
     );
 
-const getDefaultMapProps = (id): MapProps => ({
-  id,
+const defaultMapProps: MapProps = {
   isDraggingOver: false,
-});
+};
 
 const droppableId: DroppableId = 'drop-1';
 const draggableId: DraggableId = 'drag-1';
@@ -150,38 +140,33 @@ describe('Droppable - connected', () => {
     const phases: Phase[] = ['IDLE', 'COLLECTING_DIMENSIONS', 'DRAGGING', 'DROP_ANIMATING', 'DROP_COMPLETE'];
 
     it('should always return the default props', () => {
-      const expected: MapProps = {
-        id: droppableId,
-        isDraggingOver: false,
-      };
-
       phases.forEach((phase: Phase) => {
-        const props: MapProps = execute(makeSelector(provide))({
+        const props: MapProps = execute(makeSelector())({
           phase,
           drag: null,
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
 
-        expect(props).to.deep.equal(expected);
+        expect(props).to.deep.equal(defaultMapProps);
       });
     });
 
     it('should not break memoization on multiple calls', () => {
       phases.forEach((phase: Phase) => {
-        const selector = makeSelector(provide);
+        const selector = makeSelector();
 
         const first: MapProps = execute(selector)({
           phase,
           drag: null,
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
         const second: MapProps = execute(selector)({
           phase,
           drag: null,
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         // checking object equality
@@ -192,38 +177,36 @@ describe('Droppable - connected', () => {
 
   describe('while dragging', () => {
     it('should log an error an return the default props if no drag is available', () => {
-      const props: MapProps = execute(makeSelector(provide))({
+      const props: MapProps = execute(makeSelector())({
         phase: 'DRAGGING',
         drag: null,
         pending: null,
-        provided: defaultProvided,
+        id: droppableId,
       });
 
-      expect(props).to.deep.equal(getDefaultMapProps(defaultProvided.id));
+      expect(props).to.deep.equal(defaultMapProps);
       expect(console.error.called).to.equal(true);
     });
 
     describe('dragging over', () => {
       it('should return that it is dragging over', () => {
         const expected: MapProps = {
-          id: droppableId,
           isDraggingOver: true,
         };
 
-        const props: MapProps = execute(makeSelector(provide))({
+        const props: MapProps = execute(makeSelector())({
           phase: 'DRAGGING',
           drag: perform.drag({ isDraggingOver: true }),
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         expect(props).to.deep.equal(expected);
       });
 
       it('should not break memoization on multiple drags', () => {
-        const selector = makeSelector(provide);
+        const selector = makeSelector();
         const expected: MapProps = {
-          id: droppableId,
           isDraggingOver: true,
         };
 
@@ -231,13 +214,13 @@ describe('Droppable - connected', () => {
           phase: 'DRAGGING',
           drag: perform.drag({ isDraggingOver: true }),
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
         const props2: MapProps = execute(selector)({
           phase: 'DRAGGING',
           drag: perform.drag({ isDraggingOver: true }),
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         // checking object equality
@@ -250,24 +233,22 @@ describe('Droppable - connected', () => {
     describe('not dragging over', () => {
       it('should return that it is not dragging over', () => {
         const expected: MapProps = {
-          id: droppableId,
           isDraggingOver: false,
         };
 
-        const props: MapProps = execute(makeSelector(provide))({
+        const props: MapProps = execute(makeSelector())({
           phase: 'DRAGGING',
           drag: perform.drag({ isDraggingOver: false }),
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         expect(props).to.deep.equal(expected);
       });
 
       it('should not break memoization on multiple drags', () => {
-        const selector = makeSelector(provide);
+        const selector = makeSelector();
         const expected: MapProps = {
-          id: droppableId,
           isDraggingOver: false,
         };
 
@@ -275,13 +256,13 @@ describe('Droppable - connected', () => {
           phase: 'DRAGGING',
           drag: perform.drag({ isDraggingOver: false }),
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
         const props2: MapProps = execute(selector)({
           phase: 'DRAGGING',
           drag: perform.drag({ isDraggingOver: false }),
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         // checking object equality
@@ -294,38 +275,36 @@ describe('Droppable - connected', () => {
 
   describe('while drop animating', () => {
     it('should log an error an return the default props if no pending drop is available', () => {
-      const props: MapProps = execute(makeSelector(provide))({
+      const props: MapProps = execute(makeSelector())({
         phase: 'DROP_ANIMATING',
         drag: null,
         pending: null,
-        provided: defaultProvided,
+        id: droppableId,
       });
 
-      expect(props).to.deep.equal(getDefaultMapProps(defaultProvided.id));
+      expect(props).to.deep.equal(defaultMapProps);
       expect(console.error.called).to.equal(true);
     });
 
     describe('dragging over', () => {
       it('should return that it is dragging over', () => {
         const expected: MapProps = {
-          id: droppableId,
           isDraggingOver: true,
         };
 
-        const props: MapProps = execute(makeSelector(provide))({
+        const props: MapProps = execute(makeSelector())({
           phase: 'DROP_ANIMATING',
           drag: null,
           pending: perform.drop({ isDraggingOver: true }),
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         expect(props).to.deep.equal(expected);
       });
 
       it('should not break memoization from a previous DRAGGING phase', () => {
-        const selector = makeSelector(provide);
+        const selector = makeSelector();
         const expected: MapProps = {
-          id: droppableId,
           isDraggingOver: true,
         };
 
@@ -333,13 +312,13 @@ describe('Droppable - connected', () => {
           phase: 'DRAGGING',
           drag: perform.drag({ isDraggingOver: true }),
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
         const dropAnimating: MapProps = execute(selector)({
           phase: 'DROP_ANIMATING',
           drag: null,
           pending: perform.drop({ isDraggingOver: true }),
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         expect(dragging).to.deep.equal(expected);
@@ -352,24 +331,22 @@ describe('Droppable - connected', () => {
     describe('not dragging over', () => {
       it('should return that it is not dragging over', () => {
         const expected: MapProps = {
-          id: droppableId,
           isDraggingOver: false,
         };
 
-        const props: MapProps = execute(makeSelector(provide))({
+        const props: MapProps = execute(makeSelector())({
           phase: 'DROP_ANIMATING',
           drag: null,
           pending: perform.drop({ isDraggingOver: false }),
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         expect(props).to.deep.equal(expected);
       });
 
       it('should not break memoization from a previous DRAGGING phase', () => {
-        const selector = makeSelector(provide);
+        const selector = makeSelector();
         const expected: MapProps = {
-          id: droppableId,
           isDraggingOver: false,
         };
 
@@ -377,13 +354,13 @@ describe('Droppable - connected', () => {
           phase: 'DRAGGING',
           drag: perform.drag({ isDraggingOver: false }),
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
         const dropAnimating: MapProps = execute(selector)({
           phase: 'DROP_ANIMATING',
           drag: null,
           pending: perform.drop({ isDraggingOver: false }),
-          provided: defaultProvided,
+          id: droppableId,
         });
 
         expect(dragging).to.deep.equal(expected);
@@ -398,39 +375,39 @@ describe('Droppable - connected', () => {
     const other: Phase[] = ['IDLE', 'COLLECTING_DIMENSIONS', 'DROP_COMPLETE'];
 
     it('should return the default props', () => {
-      const selector = makeSelector(provide);
+      const selector = makeSelector();
 
       other.forEach((phase: Phase): void => {
         const props: MapProps = execute(selector)({
           phase,
           drag: null,
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
 
-        expect(props).to.deep.equal(getDefaultMapProps(defaultProvided.id));
+        expect(props).to.deep.equal(defaultMapProps);
       });
     });
 
     it('should not break memoization on multiple calls', () => {
-      const selector = makeSelector(provide);
+      const selector = makeSelector();
 
       other.forEach((phase: Phase): void => {
         const first: MapProps = execute(selector)({
           phase,
           drag: null,
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
         const second: MapProps = execute(selector)({
           phase,
           drag: null,
           pending: null,
-          provided: defaultProvided,
+          id: droppableId,
         });
 
-        expect(first).to.deep.equal(getDefaultMapProps(defaultProvided.id));
-        expect(second).to.deep.equal(getDefaultMapProps(defaultProvided.id));
+        expect(first).to.deep.equal(defaultMapProps);
+        expect(second).to.deep.equal(defaultMapProps);
         // checking object equality
         expect(first).to.equal(second);
       });

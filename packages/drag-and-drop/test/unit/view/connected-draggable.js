@@ -88,7 +88,6 @@ const make = (() => {
 })();
 
 const defaultMapProps = {
-  isDragEnabled: true,
   isDropAnimating: false,
   isDragging: false,
   canAnimate: true,
@@ -105,17 +104,15 @@ type SelectorArgs = {|
   drag: ?DragState,
   pending: ?PendingDrop,
   id: DraggableId,
-  isDragEnabled?: boolean,
 |}
 
 const execute = (selector: Function) =>
-  ({ phase, drag, pending, id, isDragEnabled = true }: SelectorArgs): MapProps =>
+  ({ phase, drag, pending, id }: SelectorArgs): MapProps =>
     selector.resultFunc(
       phase,
       drag,
       pending,
       id,
-      isDragEnabled
     );
 
 describe('Draggable - connected', () => {
@@ -136,7 +133,6 @@ describe('Draggable - connected', () => {
         drag: null,
         pending: null,
         id,
-        isDragEnabled: true,
       });
 
       expect(result).to.deep.equal(defaultMapProps);
@@ -152,7 +148,6 @@ describe('Draggable - connected', () => {
           y: 200,
         };
         const expected: MapProps = {
-          isDragEnabled: true,
           isDropAnimating: false,
           isDragging: true,
           canAnimate: true,
@@ -165,7 +160,6 @@ describe('Draggable - connected', () => {
           drag: drag(offset),
           pending: null,
           id,
-          isDragEnabled: true,
         });
 
         expect(result).to.deep.equal(expected);
@@ -180,14 +174,12 @@ describe('Draggable - connected', () => {
           drag: state,
           pending: null,
           id,
-          isDragEnabled: true,
         });
         const second: MapProps = execute(selector)({
           phase: 'DRAGGING',
           drag: state,
           pending: null,
           id,
-          isDragEnabled: true,
         });
 
       // checking we did not get the same reference back
@@ -205,7 +197,6 @@ describe('Draggable - connected', () => {
           drag: dragging.drag({ x: 100, y: 200 }),
           pending: null,
           id: notDragging.id,
-          isDragEnabled: true,
         });
 
         expect(result).to.deep.equal(defaultMapProps);
@@ -217,14 +208,12 @@ describe('Draggable - connected', () => {
           drag: dragging.drag({ x: 100, y: 200 }),
           pending: null,
           id: notDragging.id,
-          isDragEnabled: true,
         });
         const second: MapProps = execute(notDragging.selector)({
           phase: 'DRAGGING',
           drag: dragging.drag({ x: 100, y: 200 }),
           pending: null,
           id: notDragging.id,
-          isDragEnabled: true,
         });
 
         // checking that we got the same object back
@@ -242,7 +231,6 @@ describe('Draggable - connected', () => {
         drag: null,
         pending: null,
         id,
-        isDragEnabled: true,
       });
 
       expect(props).to.deep.equal(defaultMapProps);
@@ -257,7 +245,6 @@ describe('Draggable - connected', () => {
           y: 10,
         };
         const expected: MapProps = {
-          isDragEnabled: true,
           isDragging: false,
           isDropAnimating: true,
           canAnimate: true,
@@ -271,7 +258,6 @@ describe('Draggable - connected', () => {
           drag: null,
           pending,
           id,
-          isDragEnabled: true,
         });
 
         expect(props).to.deep.equal(expected);
@@ -333,7 +319,6 @@ describe('Draggable - connected', () => {
           },
         };
         const expected: MapProps = {
-          isDragEnabled: true,
           isDropAnimating: false,
           isDragging: false,
           canAnimate: true,
@@ -400,7 +385,6 @@ describe('Draggable - connected', () => {
     describe('item was dragging', () => {
       it('should move to the origin with no animation', () => {
         const expected: MapProps = {
-          isDragEnabled: true,
           offset: { x: 0, y: 0 },
           isDropAnimating: false,
           isDragging: false,
@@ -422,7 +406,6 @@ describe('Draggable - connected', () => {
     describe('item was not dragging', () => {
       it('should move to the origin with no animation', () => {
         const expected: MapProps = {
-          isDragEnabled: true,
           offset: { x: 0, y: 0 },
           isDropAnimating: false,
           isDragging: false,

@@ -34,10 +34,16 @@ import type {
 } from './draggable-types';
 
 const origin = { x: 0, y: 0 };
+const defaultMapProps: MapProps = {
+  isDropAnimating: false,
+  isDragging: false,
+  canAnimate: true,
+  offset: origin,
+  initial: null,
+};
 
 export const makeSelector = () => {
   const idSelector = (state: State, ownProps: OwnProps) => ownProps.draggableId;
-  const isDragEnabledSelector = (state: State, ownProps) => ownProps.isDragEnabled || true;
 
   const memoizedOffset = memoizeOne(
     (x: number, y: number): Position => ({
@@ -45,22 +51,8 @@ export const makeSelector = () => {
     })
   );
 
-  // Technically memoization is not needed for `getDefaultProps`
-  // or `cutOffAnimation` : but it will make any shallow equality
-  // checks faster as it can just compare the root
-  const getDefaultProps = memoizeOne(
-    (isDragEnabled: boolean): MapProps => ({
-      isDragEnabled,
-      isDropAnimating: false,
-      isDragging: false,
-      canAnimate: true,
-      offset: origin,
-      initial: null,
-    }));
-
   const getWithMovement = memoizeOne(
-    (offset: Position, isDragEnabled: boolean): MapProps => ({
-      isDragEnabled,
+    (offset: Position): MapProps => ({
       isDropAnimating: false,
       isDragging: false,
       canAnimate: true,
@@ -70,11 +62,11 @@ export const makeSelector = () => {
   );
 
   const getNotDraggingProps = memoizeOne(
-    (draggableId: DraggableId, movement: DragMovement, isDragEnabled: boolean): MapProps => {
+    (draggableId: DraggableId, movement: DragMovement): MapProps => {
       const needsToMove = movement.draggables.indexOf(draggableId) !== -1;
 
       if (!needsToMove) {
-        return getDefaultProps(isDragEnabled);
+        return defaultMapProps;
       }
 
       const amount = movement.isMovingForward ? -movement.amount : movement.amount;
@@ -82,7 +74,6 @@ export const makeSelector = () => {
       return getWithMovement(
         // currently not handling horizontal movement
         memoizedOffset(0, amount),
-        isDragEnabled,
       );
     }
   );
@@ -93,18 +84,16 @@ export const makeSelector = () => {
       dragSelector,
       pendingDropSelector,
       idSelector,
-      isDragEnabledSelector,
     ],
     (phase: Phase,
       drag: ?DragState,
       pending: ?PendingDrop,
       id: DraggableId,
-      isDragEnabled: boolean,
     ): MapProps => {
       if (phase === 'DRAGGING') {
         if (!drag) {
           console.error('invalid dragging state');
-          return getDefaultProps(isDragEnabled);
+          return defaultMapProps;
         }
 
         const { current, initial, impact } = drag;
@@ -113,7 +102,6 @@ export const makeSelector = () => {
           return getNotDraggingProps(
             id,
             impact.movement,
-            isDragEnabled,
           );
         }
 
@@ -123,7 +111,6 @@ export const makeSelector = () => {
 
         // not memoizing result as it should not move without an update
         return {
-          isDragEnabled: true,
           isDragging: true,
           isDropAnimating: false,
           canAnimate,
@@ -135,19 +122,17 @@ export const makeSelector = () => {
       if (phase === 'DROP_ANIMATING') {
         if (!pending) {
           console.error('cannot animate drop without a pending drop');
-          return getDefaultProps(isDragEnabled);
+          return defaultMapProps;
         }
 
         if (pending.last.current.id !== id) {
           return getNotDraggingProps(
             id,
             pending.last.impact.movement,
-            isDragEnabled,
           );
         }
 
         return {
-          isDragEnabled,
           isDragging: false,
           isDropAnimating: true,
           canAnimate: true,
@@ -160,7 +145,6 @@ export const makeSelector = () => {
         // Cut off all animation as the item is already reordered
         // If it is not everyone is going to have a bad time
         return {
-          isDragEnabled,
           offset: origin,
           isDropAnimating: false,
           isDragging: false,
@@ -170,7 +154,7 @@ export const makeSelector = () => {
       }
 
       // All unhandled phases
-      return getDefaultProps(isDragEnabled);
+      return defaultMapProps;
     }
   );
 };

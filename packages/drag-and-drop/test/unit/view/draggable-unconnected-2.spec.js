@@ -206,8 +206,8 @@ const executeOnKeyLift = (wrapper: ReactWrapper) => ({
 };
 
 const getFromLift = (dispatchProps) => {
-  const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg] =
-                dispatchProps.lift.args[0];
+  // $ExpectError - type of callback
+  const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg] = dispatchProps.lift.args[0];
 
   return {
     draggableId: draggableIdArg,
@@ -232,7 +232,7 @@ const getStubber = stub =>
     }
 };
 
-describe.only('Draggable - unconnected #2', () => {
+describe('Draggable - unconnected #2', () => {
   afterEach(() => {
     setScroll(originalScroll);
     if (Element.prototype.getBoundingClientRect.restore) {
@@ -271,6 +271,7 @@ describe.only('Draggable - unconnected #2', () => {
 
       startDragWithHandle(wrapper.find(Item))();
 
+      // $ExpectError - type of callback
       expect(dispatchProps.lift.called).to.equal(true);
     });
 
@@ -308,6 +309,7 @@ describe.only('Draggable - unconnected #2', () => {
 
         startDragWithHandle(wrapper.find(WithNestedHandle).find('.can-drag'))();
 
+        // $ExpectError - type of callback
         expect(dispatchProps.lift.called).to.equal(true);
       });
 
@@ -322,6 +324,7 @@ describe.only('Draggable - unconnected #2', () => {
 
         startDragWithHandle(wrapper.find(WithNestedHandle))();
 
+        // $ExpectError - type of callback
         expect(dispatchProps.lift.called).to.equal(false);
       });
 
@@ -336,6 +339,7 @@ describe.only('Draggable - unconnected #2', () => {
 
         startDragWithHandle(wrapper.find(WithNestedHandle).find('.cannot-drag'))();
 
+        // $ExpectError - type of callback
         expect(dispatchProps.lift.called).to.equal(false);
       });
     });
@@ -456,6 +460,7 @@ describe.only('Draggable - unconnected #2', () => {
           // should not do anything yet as mapProps has not yet updated
           wrapper.find(DragHandle).props().callbacks.onMove({ x: 100, y: 200 });
 
+          // $ExpectError - type of callback
           expect(dispatchProps.move.called).to.equal(false);
         });
 
@@ -480,6 +485,7 @@ describe.only('Draggable - unconnected #2', () => {
           });
 
           wrapper.find(DragHandle).props().callbacks.onMove(mouse);
+          // $ExpectError - type of callback
           const [, offset, center] = dispatchProps.move.args[0];
 
           expect(offset).to.deep.equal(mouseDiff);
@@ -507,8 +513,9 @@ describe.only('Draggable - unconnected #2', () => {
             dispatchProps,
           });
 
-              // no mouse movement
+          // no mouse movement
           wrapper.find(DragHandle).props().callbacks.onMove(mockInitial.selection);
+          // $ExpectError - type of callback
           const [, offset, center] = dispatchProps.move.args[0];
 
           expect(offset).to.deep.equal(scrollDiff);
@@ -550,6 +557,7 @@ describe.only('Draggable - unconnected #2', () => {
 
           wrapper.find(DragHandle).props().callbacks.onDrop();
 
+          // $ExpectError - type of callback
           expect(dispatchProps.drop.calledWith(defaultDraggableId)).to.equal(true);
         });
       });
@@ -658,6 +666,7 @@ describe.only('Draggable - unconnected #2', () => {
 
           wrapper.find(DragHandle).props().callbacks.onMoveBackward(defaultDraggableId);
 
+          // $ExpectError - type of callback
           expect(dispatchProps.moveBackward.calledWith(defaultDraggableId)).to.equal(true);
         });
       });
@@ -697,6 +706,7 @@ describe.only('Draggable - unconnected #2', () => {
 
           wrapper.find(DragHandle).props().callbacks.onMoveForward(defaultDraggableId);
 
+          // $ExpectError - type of callback
           expect(dispatchProps.moveForward.calledWith(defaultDraggableId)).to.equal(true);
         });
       });
@@ -711,6 +721,7 @@ describe.only('Draggable - unconnected #2', () => {
 
           wrapper.find(DragHandle).props().callbacks.onCancel(defaultDraggableId);
 
+          // $ExpectError - type of callback
           expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
         });
 
@@ -724,6 +735,7 @@ describe.only('Draggable - unconnected #2', () => {
 
           wrapper.find(DragHandle).props().callbacks.onCancel(defaultDraggableId);
 
+          // $ExpectError - type of callback
           expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
         });
 
@@ -736,6 +748,7 @@ describe.only('Draggable - unconnected #2', () => {
 
           wrapper.find(DragHandle).props().callbacks.onCancel(defaultDraggableId);
 
+          // $ExpectError - type of callback
           expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
         });
       });
@@ -810,7 +823,9 @@ describe.only('Draggable - unconnected #2', () => {
       requestAnimationFrame.flush();
 
       const provided: Provided = stub.lastCall.args[0];
+      // $ExpectError - because we do not have the correct React type for placeholder
       expect(provided.placeholder.props.height).to.equal(mockInitial.dimension.withMargin.height);
+      // $ExpectError - because we do not have the correct React type for placeholder
       expect(provided.placeholder.props.width).to.equal(mockInitial.dimension.withMargin.width);
     });
 
@@ -869,6 +884,7 @@ describe.only('Draggable - unconnected #2', () => {
         });
 
         const provided: Provided = stub.lastCall.args[0];
+        // $ExpectError - because we do not have the correct React type for placeholder
         expect(provided.placeholder.type).to.equal(Placeholder);
       });
 
@@ -962,6 +978,8 @@ describe.only('Draggable - unconnected #2', () => {
         });
 
         const provided: Provided = stub.lastCall.args[0];
+
+        // $ExpectError - because we do not have the correct React type for placeholder
         expect(provided.placeholder.type).to.equal(Placeholder);
       });
 

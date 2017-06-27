@@ -71,7 +71,7 @@ export class TableState {
       const map = TableMap.get(this.tableNode);
       // last column
       if (column === map.width) {
-        // to remove a cell we need to move the cursor to an appropriate cell first
+        // to add a column we need to move the cursor to an appropriate cell first
         const prevColPos = map.positionAt(0, column - 1, this.tableNode);
         this.moveCursorTo(prevColPos);
         tableBaseCommands.addColumnAfter(this.view.state, this.view.dispatch);

@@ -166,6 +166,7 @@
     "create-ts": "./build/bin/create.new.ts.component.sh",
     "help": "readme-help",
     "health-check": "./build/bin/health-check-scripts/health.check.js",
+    "identity-obj-proxy": "^3.0.0",
     "lint": "yarn run validate/lint",
     "postinstall": "./build/bin/postinstall.sh",
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",

@@ -400,4 +400,14 @@ describe('theme', () => {
       expect(stub.calledWith(presets.settings)).to.equal(true);
     });
   });
+
+  describe('getProvided() should fall back to container theme', () => {
+    it('when no theme provided', () => {
+      expect(getProvided()).to.equal(presets.container);
+    });
+
+    it('when theme provided that does not contain private root theme key', () => {
+      expect(getProvided({})).to.equal(presets.container);
+    });
+  });
 });

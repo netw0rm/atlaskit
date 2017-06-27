@@ -91,7 +91,9 @@ export default class ContainerNavigation extends PureComponent {
       this.unsubscribe();
     }
 
-    if (!el) {
+    // If headerComponent doesn't exist we don't need to track scroll position,
+    // because it's only used by ContainerHeader component
+    if (!el || !this.props.headerComponent) {
       return;
     }
 

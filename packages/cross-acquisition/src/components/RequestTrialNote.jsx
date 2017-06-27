@@ -24,9 +24,6 @@ export default class RequestTrialNote extends Component {
     isOpen: true,
   }
 
-  // Help your site administrator understand why you would like to use Confluence:
-  // I would like to try Confluence because…
-
   render() {
     return (
       <ModalDialog

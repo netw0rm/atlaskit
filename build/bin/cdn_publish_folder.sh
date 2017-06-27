@@ -24,4 +24,5 @@ prebake-distributor-runner \
   "$TEMP_ZIP"
 
 $CHALK --no-stdin -t "{blue Upload of '$SOURCE_FOLDER' to CDN complete.}"
+$CHALK --no-stdin -t "{blue See here: '$CDN_URL_BASE/$CDN_URL_SCOPE/$TARGET_PATH'}"
 

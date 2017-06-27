@@ -84,6 +84,7 @@
     "less-loader": "^2.2.3",
     "minilog": "^3.0.1",
     "mocha": "^3.2.0",
+    "npm-run": "^4.1.2",
     "npm-run-all": "^4.0.1",
     "package-json-validator": "^0.6.1",
     "pascal-case": "^2.0.0",

@@ -39,7 +39,7 @@ export default class Person extends React.Component {
                 innerRef={ref => provided.innerRef(ref)}
                 href={data.name}
                 isDragging={provided.isDragging}
-                style={provided.containerStyle}
+                style={provided.draggableStyle}
                 {...provided.dragHandleProps}
               >
                 {data.name}

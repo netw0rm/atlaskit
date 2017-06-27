@@ -21,7 +21,7 @@ type ReactElement = mixed;
 export type Provided = {|
   innerRef: (Element) => void,
   isDragging: boolean,
-  containerStyle: Object,
+  draggableStyle: Object,
   placeholder: ReactElement,
   dragHandleProps: ?DragHandleProvided,
 |}

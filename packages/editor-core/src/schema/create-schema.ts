@@ -26,6 +26,7 @@ import {
   table_cell,
   table_header,
   table_row,
+  applicationCard,
 
   // Marks
   link,
@@ -121,6 +122,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'confluenceJiraIssue', spec: confluenceJiraIssue },
   { name: 'confluenceUnsupportedInline', spec: confluenceUnsupportedInline },
   { name: 'confluenceUnsupportedBlock', spec: confluenceUnsupportedBlock },
+  { name: 'applicationCard', spec: applicationCard },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [

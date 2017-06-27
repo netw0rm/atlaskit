@@ -1,6 +1,7 @@
 import {
   AnalyticsHandler,
   analyticsService,
+  asciiEmojiPlugins,
   Chrome,
   codeBlockPlugins,
   blockTypePlugins,
@@ -41,8 +42,8 @@ import {
   // ErrorReporter,
   ErrorReportingHandler,
 } from '@atlaskit/editor-core';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MentionProvider } from '@atlaskit/mention';
+import { EmojiProvider } from '@atlaskit/editor-core';
+import { MentionProvider } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
@@ -51,6 +52,16 @@ import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
 import { version, name } from './version';
 import schema from './schema';
+
+export {
+  AbstractMentionResource,
+  EmojiProvider,
+  EmojiResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/editor-core';
 
 export { version };
 
@@ -301,10 +312,8 @@ export default class Editor extends PureComponent<Props, State> {
           plugins: [
             ...mentionsPlugins(schema), // mentions and emoji needs to be first
             ...emojisPlugins(schema),
-            ...listsPlugins(schema),
+            ...asciiEmojiPlugins(schema, this.props.emojiProvider),
             ...clearFormattingPlugins(schema),
-            ...codeBlockPlugins(schema),
-            ...textFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
@@ -312,6 +321,12 @@ export default class Editor extends PureComponent<Props, State> {
             // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
             // if converting is possible
             ...blockTypePlugins(schema),
+            // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
+            // this is needed to ensure that all block types are supported inside lists
+            // this is needed until we implement keymap proirity :(
+            ...listsPlugins(schema),
+            ...textFormattingPlugins(schema),
+            ...codeBlockPlugins(schema),
             ...reactNodeViewPlugins(schema),
             history(),
             keymap(bitbucketKeymap),

@@ -4,8 +4,10 @@ import AkAvatar from '@atlaskit/avatar';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import ListIcon from '@atlaskit/icon/glyph/list';
+import SignInIcon from '@atlaskit/icon/glyph/sign-in';
+import Tooltip from '@atlaskit/tooltip';
 import { name } from '../package.json';
-import { AkGlobalItem } from '../src/';
+import { AkGlobalItem, presetThemes } from '../src/';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import emmaAvatar from './emma.png';
@@ -34,6 +36,20 @@ storiesOf(name, module)
           <AkGlobalItem>
             <AkAvatar size="small" src={emmaAvatar} />
           </AkGlobalItem>,
+        ]}
+      />
+    </HtmlPage>
+  ))
+  .add('with log in button', () => (
+    <HtmlPage>
+      <BasicNavigation
+        containerTheme={presetThemes.global}
+        globalSecondaryActions={[
+          <Tooltip position="right" description="Sign in">
+            <AkGlobalItem>
+              <SignInIcon label="Sign in" size="medium" />
+            </AkGlobalItem>
+          </Tooltip>,
         ]}
       />
     </HtmlPage>

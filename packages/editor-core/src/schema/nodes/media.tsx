@@ -1,4 +1,4 @@
-import { NodeSpec, Node as PMNOde } from '../../prosemirror';
+import { NodeSpec, Node as PMNode } from '../../prosemirror';
 
 export type MediaType = 'file' | 'link';
 export type DisplayType = 'file' | 'thumbnail';
@@ -8,12 +8,12 @@ export interface Attributes {
   type: MediaType;
   collection: string;
   // For both CQ and JIRA
-  __fileName: string | null;
+  __fileName?: string | null;
   // For CQ
-  __fileSize: number | null;
-  __fileMimeType: string | null;
+  __fileSize?: number | null;
+  __fileMimeType?: string | null;
   // For JIRA
-  __displayType: DisplayType | null;
+  __displayType?: DisplayType | null;
 }
 
 const defaultAttrs = {
@@ -47,7 +47,7 @@ export const media: NodeSpec = {
       return attrs;
     }
   }],
-  toDOM(node: PMNOde) {
+  toDOM(node: PMNode) {
     const attrs = {
       'data-id': node.attrs.id,
       'data-node-type': 'media',
@@ -77,3 +77,12 @@ export const copyOptionalAttrs = (from: Object, to: Object, map?: (string) => st
     }
   });
 };
+
+export const toJSON = (node: PMNode) => ({
+  attrs: Object.keys(node.attrs)
+    .filter(key => !(key[0] === '_' && key[1] === '_'))
+    .reduce((obj, key) => {
+      obj[key] = node.attrs[key];
+      return obj;
+    }, {})
+});

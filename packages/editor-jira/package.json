@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "18.0.0",
+  "version": "18.1.2",
   "config": {
     "access": "public"
   },
@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^31.0.1",
+    "@atlaskit/editor-core": "^33.1.0",
     "@atlaskit/mention": "^4.0.4",
     "collapse-whitespace": "^1.1.4",
     "css-color-names": "0.0.4",
@@ -40,6 +40,7 @@
   "devDependencies": {
     "@atlaskit/editor-jira": "*",
     "@atlaskit/inline-edit": "^2.2.0",
+    "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-test-helpers": "^6.0.2",
     "@atlaskit/spinner": "^2.2.3",
     "@atlaskit/util-readme": "^3.2.1",

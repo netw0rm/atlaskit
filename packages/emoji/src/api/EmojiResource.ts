@@ -19,6 +19,16 @@ export interface EmojiResourceConfig {
    * providers when performing shortName based look up.
    */
   providers: ServiceConfig[];
+
+  /**
+   * Must be set to true to enable upload support in the mention components.
+   *
+   * Can be used for the restriction of the upload UI based on permissions, or feature flags.
+   *
+   * Note this also requires that other conditions are met (for example, one of the providers
+   * must support upload for the UploadingEmojiResource implementation of UploadingEmojiProvider).
+   */
+  allowUpload?: boolean;
 }
 
 export interface OnEmojiProviderChange extends OnProviderChange<EmojiSearchResult, any, void> {}
@@ -341,7 +351,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   }
 
   getAsciiMap(): Promise<Map<string, EmojiDescription>> {
-    return Promise.resolve(this.emojiRepository.getAsciiMap());
+    if (this.isLoaded()) {
+      return Promise.resolve(this.emojiRepository.getAsciiMap());
+    }
+    return this.retryIfLoading(() => this.getAsciiMap(), new Map());
   }
 
   recordSelection(id: EmojiId): Promise<any> {
@@ -382,7 +395,17 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 }
 
 export default class UploadingEmojiResource extends EmojiResource implements UploadingEmojiProvider {
+  protected allowUpload: boolean;
+
+  constructor(config: EmojiResourceConfig) {
+    super(config);
+    this.allowUpload = !!config.allowUpload;
+  }
+
   isUploadSupported(): Promise<boolean> {
+    if (!this.allowUpload) {
+      return Promise.resolve(false);
+    }
     if (this.mediaEmojiResource) {
       return Promise.resolve(true);
     }

@@ -28,7 +28,7 @@ export const emoji = style({
     [`&.${selected}`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
-    '&>img': {
+    'img': {
       maxHeight: '24px',
       display: 'block',
     }
@@ -55,10 +55,15 @@ export const emojiContainer = style({
   },
 });
 
+export const placeholderContainer = style({
+  display: 'inline-block',
+});
+
 export const placeholderEmoji = style({
   display: 'inline-block',
   fill: '#f7f7f7',
   verticalAlign: 'middle',
+  whiteSpace: 'nowrap',
 });
 
 export const emojiButton = style({

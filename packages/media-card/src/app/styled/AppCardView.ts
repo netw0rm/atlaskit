@@ -86,16 +86,6 @@ export const CardContent = styled.div`
   max-width: ${({hasPreview}: CardContentProps) => hasPreview && css`calc(100% - ${previewWidth}px)` || '100%'};
 `;
 
-export interface ExpandableWrapperProps {
-  collapsed?: boolean;
-}
-
-export const Collapsible = styled.div`
-  overflow: hidden;
-  transition: max-height 0.75s;
-  ${({collapsed}: ExpandableWrapperProps) => collapsed && 'max-height: 0;' || 'max-height: 300px;'}
-`;
-
 export const Footer = styled.div`
   display: flex;
   align-items: center;

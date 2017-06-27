@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { BreadcrumbsStateless, BreadcrumbsItem } from '@atlaskit/breadcrumbs';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
-export default class AKBreadcrumbsExpand extends PureComponent {
+export default class BreadcrumbsExpand extends PureComponent {
   state = {
     isExpanded: false,
   }

@@ -21,6 +21,7 @@ const inputTypes = { checkbox: Checkbox, radio: Radio };
 /* eslint-disable react/no-unused-prop-types */
 export default class Item extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.oneOf(['default', 'primary']),
     children: PropTypes.node,
     description: PropTypes.string,
     elemAfter: PropTypes.node,
@@ -40,6 +41,7 @@ export default class Item extends PureComponent {
     type: PropTypes.oneOf(['link', 'radio', 'checkbox', 'option']),
   }
   static defaultProps = {
+    appearance: 'default',
     children: null,
     description: '',
     elemAfter: null,
@@ -104,6 +106,7 @@ export default class Item extends PureComponent {
       isHovered,
       isPressed,
       isSelected: props.type === 'option' && props.isSelected,
+      isPrimary: props.appearance === 'primary',
     };
 
     const element = (

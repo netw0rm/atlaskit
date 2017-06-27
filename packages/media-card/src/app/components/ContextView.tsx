@@ -1,13 +1,13 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
-import {Icon as IconModel} from '../model';
-import {Wrapper, IconImage, Text, LinkText} from '../styled/ContextView';
+import {AppCardIcon as IconModel} from '../model';
+import Avatar from '@atlaskit/avatar';
+import {Wrapper, Text, IconWrapper} from '../styled/ContextView';
 
 export interface ContextViewProps {
   text: string;
   icon?: IconModel;
-  href?: string;
-  inverse?: boolean;
+  isInversed?: boolean;
 }
 
 export class ContextView extends React.Component<ContextViewProps, {}> {
@@ -17,15 +17,16 @@ export class ContextView extends React.Component<ContextViewProps, {}> {
     if (!icon) {
       return null;
     }
-    return <IconImage src={icon.src} alt={icon.label}/>;
+    return (
+      <IconWrapper>
+        <Avatar appearance="square" size="small" src={icon.url} alt={icon.label}/>
+      </IconWrapper>
+    );
   }
 
   renderText() {
-    const {text, href, inverse} = this.props;
-    if (!href) {
-      return <Text inverse={inverse}>{text}</Text>;
-    }
-    return <LinkText href={href} inverse={inverse}>{text}</LinkText>;
+    const {text, isInversed} = this.props;
+    return <Text isInversed={isInversed}>{text}</Text>;
   }
 
   render(): JSX.Element {

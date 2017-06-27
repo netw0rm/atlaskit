@@ -38,7 +38,7 @@ export class TableState {
     this.state = newEditorState;
     let dirty = false;
 
-    // TODO: ED-1858, ED-1859
+    // TODO: ED1858, ED1859
 
     if (dirty) {
       this.triggerOnChange();

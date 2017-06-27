@@ -16,11 +16,13 @@ import {
   findWrapping
 } from '../prosemirror';
 import * as commands from '../commands';
+import JSONSerializer, { JSONDocNode } from '../renderer/json';
 
 export {
   default as ErrorReporter,
   ErrorReportingHandler,
 } from './error-reporter';
+export { JSONDocNode };
 
 function validateNode(node: Node): boolean {
   return false;
@@ -184,16 +186,17 @@ export function findAncestorPosition(doc: Node, pos: any): any {
   }
 
   let node: Node | undefined = pos.node(pos.depth);
+  let newPos = pos;
   while (pos.depth >= 1) {
     pos = doc.resolve(pos.before(pos.depth));
     node = pos.node(pos.depth);
 
     if (node && nestableBlocks.indexOf(node.type.name) !== -1) {
-      break;
+      newPos = pos;
     }
   }
 
-  return pos;
+  return newPos;
 }
 
 /**
@@ -289,11 +292,8 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
   return tr;
 }
 
-export function toJSON(node: Node) {
-  return {
-    version: 1,
-    ...node.toJSON()
-  };
+export function toJSON(node: Node): JSONDocNode {
+  return new JSONSerializer().serializeFragment(node.content);
 }
 
 export function splitCodeBlockAtSelection(state: EditorState<any>) {
@@ -322,7 +322,7 @@ function splitCodeBlockAtSelectionStart(state: EditorState<any>) {
         fromPos = 0;
       }
     }
-    if ( fromPos > 0) {
+    if (fromPos > 0) {
       tr.split($from.start($from.depth) + fromPos, $from.depth);
       if (node.textContent[fromPos - 1] === '\n') {
         tr.delete($from.start($from.depth) + fromPos - 1, $from.start($from.depth) + fromPos);
@@ -354,4 +354,22 @@ function splitCodeBlockAtSelectionEnd(state: EditorState<any>, tr: Transaction) 
     }
   }
   return tr;
+}
+
+/**
+ * Repeating string for multiple times
+ */
+export function stringRepeat(text: string, length: number): string {
+  let result = '';
+  for (let x = 0; x < length; x++) {
+    result += text;
+  }
+  return result;
+}
+
+/**
+ * A replacement for `Array.from` until it becomes widely implemented.
+ */
+export function arrayFrom(obj: any): any[] {
+  return Array.prototype.slice.call(obj);
 }

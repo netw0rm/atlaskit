@@ -52,7 +52,7 @@ import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
-import { CQSchema, default as schema } from './schema';
+import { default as schema } from './schema';
 import ReactJIRAIssueNode from './nodeviews/ui/jiraIssue';
 import ReactUnsupportedBlockNode from './nodeviews/ui/unsupportedBlock';
 import ReactUnsupportedInlineNode from './nodeviews/ui/unsupportedInline';
@@ -81,7 +81,7 @@ export interface State {
   editorView?: EditorView;
   isExpanded?: boolean;
   isMediaReady: boolean;
-  schema: CQSchema;
+  schema: typeof schema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -297,17 +297,20 @@ export default class Editor extends PureComponent<Props, State> {
         plugins: [
           ...mentionsPlugins(schema),
           ...clearFormattingPlugins(schema),
-          ...codeBlockPlugins(schema),
           ...hyperlinkPlugins(schema),
-          ...listsPlugins(schema),
           ...rulePlugins(schema),
-          ...textFormattingPlugins(schema),
           ...mediaPlugins,
           ...panelPlugins(schema),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
           ...blockTypePlugins(schema),
+          // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
+          // this is needed to ensure that all block types are supported inside lists
+          // this is needed until we implement keymap proirity :(
+          ...listsPlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...codeBlockPlugins(schema),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),
@@ -410,11 +413,11 @@ export default class Editor extends PureComponent<Props, State> {
     traverseNode(doc);
 
     for (let i = 0; i < blockNodesOccurance; i++) {
-      analyticsService.trackEvent('atlassian.editor.unsupported.block');
+      analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.block');
     }
 
     for (let i = 0; i < inlineNodesOccurance; i++) {
-      analyticsService.trackEvent('atlassian.editor.unsupported.inline');
+      analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.inline');
     }
 
     function traverseNode(node: PMNode) {

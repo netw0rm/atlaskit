@@ -24,6 +24,7 @@ export type LinkedApplications = {
 
 export type Translations = {
   home: ReactNode,
+  'site-admin'?: ReactNode,
   apps: ReactNode,
   configure: ReactNode,
   recent: ReactNode,

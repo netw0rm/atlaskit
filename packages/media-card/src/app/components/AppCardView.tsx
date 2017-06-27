@@ -1,108 +1,109 @@
 import * as React from 'react';
-import {Details, Action} from '../model';
+import {AppCardModel, AppCardAction} from '../model';
 import {HeaderView} from './HeaderView';
 import {DescriptionView} from './DescriptionView';
-import {MetaView} from './MetaView';
+import {DetailsView} from './DetailsView';
 import {ContextView} from './ContextView';
 import {ActionsView} from './ActionsView';
-import {Card, Preview, CardContent, Collapsible, Footer} from '../styled/AppCardView';
+import {Card, Preview, CardContent, Footer} from '../styled/AppCardView';
 
 const maxCardWidth = 744;
 const previewWidth = 116;
 
 export interface AppCardViewProps {
-  details: Details;
-  collapsed?: boolean;
-  onCollapseToggled?: () => void;
-  onPrimaryAction?: (action: Action) => void;
-  onSecondaryAction?: (action: Action) => void;
+  model: AppCardModel;
+  onClick?: () => void;
+  onActionClick?: (action: AppCardAction) => void;
 }
 
 export class AppCardView extends React.Component<AppCardViewProps, {}> {
 
   static defaultProps = {
-    collapsed: true
   };
 
   get isDarkAppearance() {
-    const {details: {background}} = this.props;
+    const {model: {background}} = this.props;
     return Boolean(background);
   }
 
   get contentMaxWidth() {
-    const {details: {preview}} = this.props;
+    const {model: {preview}} = this.props;
     return preview ? maxCardWidth - previewWidth : maxCardWidth;
   }
 
   renderPreview() {
-    const {details: {preview}} = this.props;
+    const {model: {preview}} = this.props;
     if (!preview) {
       return null;
     }
-    return <Preview image={preview}/>;
+    return <Preview image={preview.url}/>;
   }
 
   renderHeader() {
-    const {details: {title, user, background, collapsible}, collapsed, onCollapseToggled} = this.props;
+    const {model: {title: {text, user}, background, description, details, context, actions}} = this.props;
     return (
       <HeaderView
-        title={title}
+        title={text}
         user={user}
-        inverse={Boolean(background)}
-        collapsible={collapsible}
-        collapsed={collapsed}
+        isInversed={Boolean(background)}
         contentMaxWidth={this.contentMaxWidth}
-        onToggleCollapse={onCollapseToggled}
+        hasSiblings={Boolean(description || details || context || actions)}
       />
     );
   }
 
   renderDescription() {
-    const {details: {description}} = this.props;
+    const {model: {description}} = this.props;
     if (!description) {
       return null;
     }
     return <DescriptionView title={description.title} text={description.text} contentMaxWidth={this.contentMaxWidth}/>;
   }
 
-  renderMeta() {
-    const {details: {meta}} = this.props;
-    if (!meta) {
+  renderDetails() {
+    const {model: {details}} = this.props;
+    if (!details) {
       return null;
     }
-    return <MetaView meta={meta} inverse={this.isDarkAppearance} contentMaxWidth={this.contentMaxWidth}/>;
+    return <DetailsView meta={details} isInversed={this.isDarkAppearance} contentMaxWidth={this.contentMaxWidth}/>;
   }
 
   renderContext() {
-    const {details: {context, background}} = this.props;
+    const {model: {context}} = this.props;
     if (!context) {
       return null;
     }
-    const {icon, text, href} = context;
-    return <ContextView icon={icon} text={text} href={href} inverse={Boolean(background)}/>;
+    const {icon, text} = context;
+    return (
+      <ContextView
+        icon={icon}
+        text={text}
+        isInversed={this.isDarkAppearance}
+      />
+    );
   }
 
   renderActions() {
-    const {details: {actions, background}} = this.props;
+    const {model: {actions}, onActionClick} = this.props;
 
     if (!actions) {
       return null;
     }
 
-    return <ActionsView actions={actions} inverse={Boolean(background)}/>;
+    return <ActionsView actions={actions} isInversed={this.isDarkAppearance} onActionClick={onActionClick}/>;
   }
 
   renderBody() {
-    const {details: {description, meta, context, actions}} = this.props;
+    const {model: {description, details, context, actions}} = this.props;
 
-    if (!description && !meta && !context && !actions) {
+    if (!description && !details && !context && !actions) {
       return null;
     }
 
     return (
       <div>
         {this.renderDescription()}
-        {this.renderMeta()}
+        {this.renderDetails()}
         {context || actions ? (
           <Footer>
             {this.renderContext()}
@@ -113,28 +114,14 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
     );
   }
 
-  renderCollapsibleBody() {
-    const {details: {collapsible}, collapsed} = this.props;
-
-    if (collapsible) {
-      return (
-        <Collapsible collapsed={collapsed}>
-          {this.renderBody()}
-        </Collapsible>
-      );
-    }
-
-    return this.renderBody();
-  }
-
   render(): JSX.Element {
-    const {details: {background, preview}} = this.props;
+    const {model: {background, preview}, onClick} = this.props;
     return (
-      <Card background={background}>
+      <Card background={background && background.url} onClick={onClick}>
         {this.renderPreview()}
         <CardContent hasPreview={Boolean(preview)}>
           {this.renderHeader()}
-          {this.renderCollapsibleBody()}
+          {this.renderBody()}
         </CardContent>
       </Card>
     );

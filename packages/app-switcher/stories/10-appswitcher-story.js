@@ -98,6 +98,17 @@ storiesOf(name, module)
     </Chrome>
   ))
 
+  .add('with Site Admin link', () => (
+    <Chrome>
+      <AppSwitcher
+        {...{
+          ...data,
+          isSiteAdminLinkEnabled: true,
+        }}
+      />
+    </Chrome>
+  ))
+
   .add('with applinks error', () => (
     <Chrome>
       <AppSwitcher

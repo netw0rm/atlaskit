@@ -68,6 +68,13 @@ const testDataTwoGroups =
           type: 'room',
           name: 'Room B',
         },
+        {
+          title: 'Group C',
+          items: [],
+        },
+        {
+          title: 'Group D',
+        },
       ],
     },
   ];
@@ -83,5 +90,13 @@ describe('Search Results', () => {
   it('should render each group separately', () => {
     expect(mountWithRootTheme(<AkSearchResults results={testDataTwoGroups} />)
       .find(AkNavigationItemGroup)).to.have.length(2);
+  });
+
+  it('should not render groups with no items', () => {
+    const wrapper = mountWithRootTheme(<AkSearchResults results={testDataTwoGroups} />);
+    expect(wrapper.text()).to.contain('Group A');
+    expect(wrapper.text()).to.contain('Group B');
+    expect(wrapper.text()).to.not.contain('Group C');
+    expect(wrapper.text()).to.not.contain('Group D');
   });
 });

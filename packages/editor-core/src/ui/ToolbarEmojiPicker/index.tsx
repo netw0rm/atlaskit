@@ -1,15 +1,14 @@
-/*import * as React from 'react';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ToolbarButton, offsetY, marginRight } from './styles';
+import * as styles from './styles';
 import { PureComponent } from 'react';
-import { akZIndexModal } from '@atlaskit/util-shared-styles';
 import { analyticsDecorator as analytics } from '../../analytics';
-import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth, emojiPickerHeight } from '@atlaskit/emoji';
 import { EmojiState } from '../../plugins/emojis';
 import { EditorView } from '../../prosemirror';
-
-type Position = 'above' | 'below';
+import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
+import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth } from '@atlaskit/emoji';
+import Layer from '@atlaskit/layer';
+import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
   pluginState: EmojiState;
@@ -25,16 +24,15 @@ export interface State {
 
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   private pickerRef: any;
-  private button?: any;
+  private buttonRef: any;
 
   state: State = {
     isOpen: false,
   };
 
   componentDidMount() {
-    this.state.button = ReactDOM.findDOMNode(this.button) as HTMLElement;
+    this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
     this.props.pluginState.subscribe(this.handlePluginStateChange);
-
   }
 
   componentWillUnmount() {
@@ -42,37 +40,10 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { button, disabled, isOpen } = this.state;
-    let position: Position = 'above';
-    let offsetX: number = 0;
-    if (button) {
-      const buttonRect = button.getBoundingClientRect();
-      position = this.getPosition(buttonRect);
-      offsetX = this.getOffsetX(buttonRect);
-    }
-
     return (
-      <span>
-        <ToolbarButton
-          selected={isOpen}
-          disabled={disabled}
-          onClick={this.toggleOpen}
-          iconBefore={<EmojiIcon label="Emoji" />}
-          innerRef={this.handleButtonRef}
-        />
-        {!isOpen ? null :
-          <AkEmojiPicker
-            emojiProvider={this.props.emojiProvider}
-            onSelection={this.handleSelectedEmoji}
-            target={button}
-            position={position}
-            offsetX={offsetX}
-            offsetY={offsetY}
-            zIndex={akZIndexModal}
-            onPickerRef={this.onPickerRef}
-          />
-        }
-      </span>
+      <div>
+        {this.renderTrigger(this.renderPopup())}
+      </div>
     );
   }
 
@@ -80,6 +51,14 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     this.setState({
       disabled: !pluginState.enabled
     });
+  }
+
+  private handleButtonRef = (ref): void => {
+    if (ref) {
+      this.buttonRef = ref;
+    } else {
+      this.buttonRef = null;
+    }
   }
 
   private onPickerRef = (ref: any) => {
@@ -111,18 +90,54 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     }
   }
 
-  private getPosition = (buttonRect: ClientRect): Position => {
-    const bodyRect = document.body.getBoundingClientRect();
-    const yPos: number = buttonRect.top - bodyRect.top;
-    if (yPos - emojiPickerHeight < 0) {
-      return 'below';
+  private renderPopup() {
+    const { disabled, isOpen } = this.state;
+    if (disabled || !isOpen) {
+      return null;
     }
-    return 'above';
+
+    return (
+      <div>
+        <AkEmojiPicker
+          emojiProvider={this.props.emojiProvider}
+          onSelection={this.handleSelectedEmoji}
+          onPickerRef={this.onPickerRef}
+        />
+      </div>
+    );
+  }
+
+  private renderTrigger(content) {
+    const { isOpen, disabled, button } = this.state;
+    let offset = '0 0';
+    if (button) {
+      const buttonRect = button.getBoundingClientRect();
+      offset = `${this.getOffsetX(buttonRect)} 0`;
+   }
+
+    return (
+      <Layer
+        content={content}
+        position="top left"
+        offset={offset}
+        autoFlip={['top', 'bottom']}
+        boundariesElement="scrollParent"
+      >
+        <ToolbarButton
+          selected={isOpen}
+          disabled={disabled}
+          onClick={this.toggleOpen}
+          iconBefore={<EmojiIcon label="Emoji" />}
+          ref={this.handleButtonRef}
+          title="Emoji"
+        />
+      </Layer>
+    );
   }
 
   private getOffsetX = (buttonRect: ClientRect): number => {
     const editorRect = this.props.editorView.dom.getBoundingClientRect();
-    return -(buttonRect.left + emojiPickerWidth - editorRect.right) - marginRight;
+    return -(buttonRect.left + emojiPickerWidth - editorRect.right) - styles.marginRight;
   }
 
   @analytics('atlassian.editor.emoji.button')
@@ -132,12 +147,4 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       this.close();
     }
   }
-
-  private handleButtonRef = (button: HTMLButtonElement | null) => {
-    if (button instanceof HTMLButtonElement) {
-      this.button = button;
-    } else {
-      this.button = undefined;
-    }
-  }
-}*/
+}

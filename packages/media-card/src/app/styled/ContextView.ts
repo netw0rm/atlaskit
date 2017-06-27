@@ -1,7 +1,6 @@
 /* tslint:disable:variable-name */
 import styled, {css} from 'styled-components';
 import {akGridSizeUnitless, akColorN0, akColorN300} from '@atlaskit/util-shared-styles';
-import {size} from '../../styles';
 
 export const Wrapper = styled.div`
 
@@ -13,23 +12,19 @@ export const Wrapper = styled.div`
 
 `;
 
-export const IconImage = styled.img`
+export const IconWrapper = styled.div`
+  display: flex;
   margin-right: ${akGridSizeUnitless}px;
-  ${size(akGridSizeUnitless * 3)};
 `;
 
 export interface TextProps {
-  inverse?: boolean;
+  isInversed?: boolean;
 }
 
 const textStyles = css`
-  color: ${({inverse}: TextProps) => inverse ? akColorN0 : akColorN300};
+  color: ${({isInversed}: TextProps) => isInversed ? akColorN0 : akColorN300};
 `;
 
 export const Text = styled.span`
-  ${textStyles}
-`;
-
-export const LinkText = styled.a`
   ${textStyles}
 `;

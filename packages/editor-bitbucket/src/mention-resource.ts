@@ -1,4 +1,4 @@
-import { AbstractMentionResource } from '@atlaskit/mention';
+import { AbstractMentionResource } from '@atlaskit/editor-core';
 
 export interface MentionSource {
   query(query: string): void;

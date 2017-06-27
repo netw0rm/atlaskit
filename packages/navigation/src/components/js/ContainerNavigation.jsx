@@ -6,16 +6,22 @@ import ContainerHeader from './ContainerHeader';
 import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
+import GlobalSecondaryActions from './GlobalSecondaryActions';
 import Reveal from './Reveal';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
+import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
 import subscribe from '../../watch-scroll-top';
-import { globalPrimaryActions } from '../../shared-variables';
+import {
+  globalPrimaryActions,
+  globalSecondaryActions as globalSecondaryActionsSizes,
+} from '../../shared-variables';
 import { container } from '../../theme/presets';
 
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
-    showGlobalPrimaryActions: PropTypes.bool,
+    showGlobalActions: PropTypes.bool,
+    globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     children: PropTypes.node,
     headerComponent: PropTypes.func,
     isCollapsed: PropTypes.bool,
@@ -30,7 +36,8 @@ export default class ContainerNavigation extends PureComponent {
   }
 
   static defaultProps = {
-    showGlobalPrimaryActions: false,
+    showGlobalActions: false,
+    globalSecondaryActions: [],
     isCollapsed: false,
     linkComponent: DefaultLinkComponent,
     theme: container,
@@ -84,7 +91,9 @@ export default class ContainerNavigation extends PureComponent {
       this.unsubscribe();
     }
 
-    if (!el) {
+    // If headerComponent doesn't exist we don't need to track scroll position,
+    // because it's only used by ContainerHeader component
+    if (!el || !this.props.headerComponent) {
       return;
     }
 
@@ -93,7 +102,8 @@ export default class ContainerNavigation extends PureComponent {
 
   render() {
     const {
-      showGlobalPrimaryActions,
+      showGlobalActions,
+      globalSecondaryActions,
       children,
       globalCreateIcon,
       globalPrimaryIcon,
@@ -107,9 +117,8 @@ export default class ContainerNavigation extends PureComponent {
       theme,
     } = this.props;
 
-    // Only animating the revealing of GlobalPrimaryActions
-    // after the first render. Before that it is rendered
-    // without animation.
+    // Only animating the revealing of GlobalPrimaryActions and GlobalSecondaryActions
+    // after the first render. Before that it is rendered without animation.
     const { isInitiallyRendered } = this.state;
 
     const header = headerComponent ? (
@@ -131,7 +140,7 @@ export default class ContainerNavigation extends PureComponent {
         >
           <Reveal
             shouldAnimate={isInitiallyRendered}
-            isOpen={showGlobalPrimaryActions}
+            isOpen={showGlobalActions}
             openHeight={globalPrimaryActions.height.outer}
           >
             <GlobalPrimaryActions
@@ -148,6 +157,21 @@ export default class ContainerNavigation extends PureComponent {
           <ContainerNavigationChildren>
             {children}
           </ContainerNavigationChildren>
+          <GlobalNavigationSecondaryContainer>
+            <Reveal
+              shouldAnimate={isInitiallyRendered}
+              isOpen={showGlobalActions}
+              openHeight={
+                globalSecondaryActionsSizes.height(
+                  React.Children.count(globalSecondaryActions)
+                ).outer
+              }
+            >
+              {showGlobalActions && globalSecondaryActions.length ? (
+                <GlobalSecondaryActions actions={globalSecondaryActions} />
+              ) : null}
+            </Reveal>
+          </GlobalNavigationSecondaryContainer>
         </ContainerNavigationInner>
       </WithRootTheme>
     );

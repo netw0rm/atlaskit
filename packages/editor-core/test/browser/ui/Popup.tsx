@@ -7,7 +7,7 @@ import { browser } from '../../../src';
 import {
   isBody, findOverflowScrollParent,
   getVerticalPlacement, getHorizontalPlacement,
-  calculatePosition
+  calculatePosition,
 } from '../../../src/ui/Popup/utils';
 
 import Popup from '../../../src/ui/Popup';
@@ -55,6 +55,14 @@ describe('Popup', () => {
     describe('#getVerticalPlacement', () => {
       it('should return default value without fitHeight param', () => {
         expect(getVerticalPlacement(document.body, document.body, 0)).to.eq('bottom');
+      });
+
+      describe('with alignY', () => {
+        it('should return "top" if "alignY" equals "top"', () => {
+          const boundary: any = {};
+          const target: any = {};
+          expect(getVerticalPlacement(target, boundary, undefined, 'top')).to.eq('top');
+        });
       });
 
       describe('with fitHeight param', () => {
@@ -116,6 +124,14 @@ describe('Popup', () => {
         expect(getHorizontalPlacement(document.body, document.body, 0)).to.eq('left');
       });
 
+      describe('with alignX', () => {
+        it('should return "left" if "alignX" equals "left"', () => {
+          const boundary: any = {};
+          const target: any = {};
+          expect(getHorizontalPlacement(target, boundary, undefined, 'left')).to.eq('left');
+        });
+      });
+
       describe('with fitWidth param', () => {
         const boundary: any = {
           getBoundingClientRect: () => ({ left: 0, width: 300 }),
@@ -166,18 +182,34 @@ describe('Popup', () => {
         scrollTop: 0,
         scrollLeft: 0
       };
+
       const popup: any = {
         offsetParent: body
       };
 
+      function insertCss(code) {
+        const style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = code;
+        document.getElementsByTagName('head')[0].appendChild( style );
+        return style;
+      }
+
       let scrollParent;
       let oldMargin;
+      let style;
       beforeEach(() => {
         scrollParent = document.createElement('div');
+        scrollParent.className = 'no-scrollbars';
         scrollParent.style.overflow = 'scroll';
         scrollParent.style.position = 'relative';
         scrollParent.style.height = '300px';
         scrollParent.style.width = '500px';
+        style = insertCss(`
+          .no-scrollbars::-webkit-scrollbar {
+            display: none;
+          }
+        `);
 
         oldMargin = document.body.style.margin;
         document.body.style.margin = '0';
@@ -186,6 +218,7 @@ describe('Popup', () => {
 
       afterEach(() => {
         scrollParent.parentElement.removeChild(scrollParent);
+        style.parentElement.removeChild(style);
         document.body.style.margin = oldMargin;
       });
 

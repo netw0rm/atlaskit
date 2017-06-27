@@ -254,6 +254,7 @@ describe('@atlaskit/editor-hipchat', () => {
                 {
                   type: 'mention',
                   attrs: {
+                    accessLevel: '',
                     text: '@World',
                     id: '1234'
                   }
@@ -352,6 +353,7 @@ describe('@atlaskit/editor-hipchat', () => {
             {
               type: 'mention',
               attrs: {
+                accessLevel: '',
                 text: '@World',
                 id: '1234'
               },

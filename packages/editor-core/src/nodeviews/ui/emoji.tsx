@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import { ResourcedEmoji } from '@atlaskit/emoji';
-import ProviderFactory, { WithProviders } from '../../providerFactory';
+import ProviderFactory from '../../providerFactory';
+import Emoji from '../../ui/Emoji';
 import {
   EditorView,
   Node as PMNode,
@@ -23,20 +23,15 @@ export interface Props {
 export default class EmojiNode extends PureComponent<Props, {}> {
   render() {
     const { node, providerFactory } = this.props;
-    const { shortName, id, text: fallback } = node.attrs;
+    const { shortName, id, text } = node.attrs;
 
     return (
       <Wrapper>
-        <WithProviders
-          providers={['emojiProvider']}
-          providerFactory={providerFactory}
-          // tslint:disable-next-line:jsx-no-lambda
-          renderNode={providers =>
-            <ResourcedEmoji
-              emojiId={{ shortName, id, fallback }}
-              emojiProvider={providers['emojiProvider']}
-            />
-          }
+        <Emoji
+          providers={providerFactory}
+          id={id}
+          shortName={shortName}
+          fallback={text}
         />
       </Wrapper>
     );

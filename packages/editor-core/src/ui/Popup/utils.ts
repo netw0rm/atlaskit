@@ -19,7 +19,10 @@ export function isBody(elem: HTMLElement | Element): boolean {
 /**
  * Decides if given fitHeight fits below or above the target taking boundaries into account.
  */
-export function getVerticalPlacement(target: HTMLElement, boundariesElement: HTMLElement, fitHeight?: number): string {
+export function getVerticalPlacement(target: HTMLElement, boundariesElement: HTMLElement, fitHeight?: number, alignY?: string): string {
+  if (alignY) {
+    return alignY;
+  }
   if (!fitHeight) {
     return 'bottom';
   }
@@ -42,7 +45,10 @@ export function getVerticalPlacement(target: HTMLElement, boundariesElement: HTM
 /**
  * Decides if given fitWidth fits to the left or to the right of the target taking boundaries into account.
  */
-export function getHorizontalPlacement(target: HTMLElement, boundariesElement: HTMLElement, fitWidth?: number): string {
+export function getHorizontalPlacement(target: HTMLElement, boundariesElement: HTMLElement, fitWidth?: number, alignX?: string): string {
+  if (alignX) {
+    return alignX;
+  }
   if (!fitWidth) {
     return 'left';
   }
@@ -59,10 +65,10 @@ export function getHorizontalPlacement(target: HTMLElement, boundariesElement: H
   return 'right';
 }
 
-export function calculatePlacement(target: HTMLElement, boundariesElement: HTMLElement, fitWidth?: number, fitHeight?: number): [string, string] {
+export function calculatePlacement(target: HTMLElement, boundariesElement: HTMLElement, fitWidth?: number, fitHeight?: number, alignX?: string, alignY?: string): [string, string] {
   return [
-    getVerticalPlacement(target, boundariesElement, fitHeight),
-    getHorizontalPlacement(target, boundariesElement, fitWidth),
+    getVerticalPlacement(target, boundariesElement, fitHeight, alignY),
+    getHorizontalPlacement(target, boundariesElement, fitWidth, alignX),
   ];
 }
 

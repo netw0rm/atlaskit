@@ -42,6 +42,23 @@ storiesOf(`${name}/external-emoji`, module)
       />
     );
   })
+  .add('resourced picker - allow uploads', () => {
+    const picker = (
+      <EmojiPickerTextInput
+        onSelection={action('emoji selected')}
+        emojiProvider={defaultEmojiProvider}
+      />
+    );
+    return (
+      <ResourcedEmojiControl
+        emojiConfig={{
+          ...emojiConfig,
+          allowUpload: true,
+        }}
+        children={picker}
+      />
+    );
+  })
   .add('resourced typeahead', () => {
     const typeAhead = (
       <EmojiTypeAheadTextInput

@@ -3,6 +3,7 @@ import { MentionProvider } from '@atlaskit/mention';
 import { CardEvent } from '@atlaskit/media-card';
 import { MediaProvider } from '@atlaskit/media-core';
 import { SyntheticEvent } from 'react';
+import { AppCardAction } from '../nodes/applicationCard';
 
 export type CardEventClickHandler = (result: CardEvent) => void;
 
@@ -22,5 +23,9 @@ export interface EventHandlers {
   };
   media?: {
     onClick?: CardEventClickHandler;
+  };
+  applicationCard?: {
+    onClick?: (url?: string) => void;
+    onActionClick?: (action: AppCardAction) => void;
   };
 }

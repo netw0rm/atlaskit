@@ -9,6 +9,7 @@ import {
   Plugin,
   Node,
 } from '../../prosemirror';
+import { panelNodeView } from '../../nodeviews';
 import inputRulePlugin from './input-rules';
 
 export interface PanelType {
@@ -96,7 +97,7 @@ export class PanelState {
     if (state.selection instanceof TextSelection) {
       const { $from } = state.selection;
       const node = $from.node($from.depth - 1);
-      if (node.type === state.schema.nodes.panel) {
+      if (node && node.type === state.schema.nodes.panel) {
         return node;
       }
     }
@@ -144,6 +145,9 @@ const plugin = new Plugin({
     };
   },
   props: {
+    nodeViews: {
+      panel: panelNodeView,
+    },
     handleClick(view: EditorView, event) {
       stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;

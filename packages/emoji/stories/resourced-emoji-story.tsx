@@ -22,34 +22,42 @@ const SampleEmojis = (props: SampleEmojiProps) => (
     <ResourcedEmoji
       emojiId={{ shortName: ':grimacing:', id: '1f62c' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+      showTooltip={true}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':awthanks:', id: 'atlassian-awthanks' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+      showTooltip={true}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':shrug:', id: 'atlassian-shrug' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+      showTooltip={true}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':disappear:', id: 'atlassian-disappear' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+      showTooltip={true}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':badpokerface:', id: 'atlassian-badpokerface' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+      showTooltip={true}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':freddie:', id: 'atlassian-freddie' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+      showTooltip={true}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':not-an-emoji:', id: 'not-an-emoji' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+      showTooltip={true}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':loading:', id: 'loading' }}
       emojiProvider={new Promise(() => {})}
+      showTooltip={true}
     />
   </span>
 );
@@ -67,30 +75,37 @@ storiesOf(`${name}/ResourcedEmoji`, module)
         <ResourcedEmoji
           emojiId={{ shortName: ':thumbsup:', id: '1f44d' }}
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
         />
         <ResourcedEmoji
           emojiId={{ shortName: ':thumbsup::skin-tone-2:', id: '1f44d-1f3fb' }}
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
         />
         <ResourcedEmoji
           emojiId={{ shortName: ':thumbsup::skin-tone-3:', id: '1f44d-1f3fc' }}
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
         />
         <ResourcedEmoji
           emojiId={{ shortName: ':thumbsup::skin-tone-4:', id: '1f44d-1f3fd' }}
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
         />
         <ResourcedEmoji
           emojiId={{ shortName: ':thumbsup::skin-tone-5:', id: '1f44d-1f3fe' }}
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
         />
         <ResourcedEmoji
           emojiId={{ shortName: ':thumbsup::skin-tone-6:', id: '1f44d-1f3ff' }}
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
         />
         <ResourcedEmoji
           emojiId={{ shortName: ':thumbsup::skin-tone-7:', id: '1f44d-1f3fg', /* invalid - will fallback to text render */ }}
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
         />
       </span>
     </p>

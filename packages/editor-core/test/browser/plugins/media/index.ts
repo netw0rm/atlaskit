@@ -31,6 +31,7 @@ import {
   media,
   fixtures,
   p,
+  a,
   storyMediaProviderFactory,
   randomId,
   sleep,
@@ -986,5 +987,120 @@ describe('Media plugin', () => {
         p(),
       ),
     );
+  });
+
+  describe('detectLinkRangesInSteps', () => {
+    context('when includes replace step with links', () => {
+      it('returns ranges with links', () => {
+        const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+        const { state } = editorView;
+        const link1 = a({ href: 'www.google.com' })('google');
+        const link2 = a({ href: 'www.baidu.com' })('baidu');
+        const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+
+        (pluginState as MediaPluginState).allowsLinks = true;
+
+        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+
+        expect(linksRanges).to.deep.equal([
+          { start: sel, end: sel, urls: ['www.google.com', 'www.baidu.com'] }
+        ]);
+      });
+
+      it('detects links inside nested content', () => {
+        const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+        const { state } = editorView;
+        const link1 = a({ href: 'www.google.com' })('google');
+        const link2 = a({ href: 'www.baidu.com' })('baidu');
+        const blockQuote = blockquote(p(link1, link2));
+        const tr = state.tr.replaceWith(sel - 1, sel + 1, blockQuote);
+
+        (pluginState as MediaPluginState).allowsLinks = true;
+
+        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+
+        expect(linksRanges).to.deep.equal([
+          { start: sel - 1, end: sel + 1, urls: ['www.google.com', 'www.baidu.com'] }
+        ]);
+      });
+    });
+
+    context('when includes add mark step with links', () => {
+      it('returns ranges with links', () => {
+        const text = 'hello';
+        const { editorView, pluginState, sel } = editor(doc(p(`${text}{<>}`)));
+        const { state } = editorView;
+        const linkMark = state.schema.marks.link.create({ href: 'www.atlassian.com' });
+        const tr = state.tr.addMark(sel - text.length, sel, linkMark);
+
+        (pluginState as MediaPluginState).allowsLinks = true;
+
+        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+
+        expect(linksRanges).to.deep.equal([
+          { start: sel - text.length, end: sel, urls: ['www.atlassian.com'] },
+        ]);
+      });
+    });
+
+    context('when both replace step and add mark step have links', () => {
+      it('returns ranges with links', () => {
+        const text = 'hello';
+        const { editorView, pluginState, sel } = editor(doc(p(`${text}{<>}`)));
+        const { state } = editorView;
+        const link1 = a({ href: 'www.google.com' })('google');
+        const link2 = a({ href: 'www.baidu.com' })('baidu');
+        const linkMark = state.schema.marks.link.create({ href: 'www.atlassian.com' });
+        const tr = state.tr
+          .replaceWith(sel, sel, link1.concat(link2))
+          .addMark(sel - text.length, sel, linkMark);
+
+        (pluginState as MediaPluginState).allowsLinks = true;
+
+        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+
+        expect(linksRanges).to.deep.equal([
+          { start: sel, end: sel, urls: ['www.google.com', 'www.baidu.com'] },
+          { start: sel - text.length, end: sel, urls: ['www.atlassian.com'] },
+        ]);
+      });
+    });
+
+    context('when remove step with links', () => {
+      it('returns empty ranges', () => {
+        const text = 'hello';
+        const href = 'www.google.com';
+        const link = a({ href })(`${text}{<>}`);
+        const { editorView, pluginState, sel } = editor(doc(p(link)));
+        const { state } = editorView;
+        const tr = state.tr
+          .removeMark(sel - text.length, sel, state.schema.marks.link.create({ href }));
+
+        (pluginState as MediaPluginState).allowsLinks = true;
+
+        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+
+        expect(linksRanges).to.deep.equal([]);
+      });
+    });
+
+    context('when neither replace step nor add mark step have links', () => {
+      it('returns empty ranges', () => {
+        const text = 'hello';
+        const { editorView, pluginState, sel } = editor(doc(p(`${text}{<>}`)));
+        const { state } = editorView;
+        const newText = state.schema.text('yay');
+        const strongMark = state.schema.marks.strong.create();
+        const tr = state.tr
+          .replaceWith(sel, sel, newText)
+          .addMark(sel - text.length, sel, strongMark);
+
+        (pluginState as MediaPluginState).allowsLinks = true;
+
+        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+
+        expect(linksRanges).to.deep.equal([]);
+      });
+    });
   });
 });

@@ -734,9 +734,14 @@ export class MediaPluginState {
 
   private findLinksInNodeContent(urls: string[], content: Fragment, link: MarkType) {
     content.forEach((child) => {
-      if (link.isInSet(child.marks)) {
-        urls.push(child.textContent);
+      const linkMarks = child.marks.filter((mark) => {
+        return mark.type === link;
+      });
+
+      if (linkMarks.length > 0) {
+        urls.push(linkMarks[0].attrs.href);
       }
+
       this.findLinksInNodeContent(urls, child.content, link);
     });
 

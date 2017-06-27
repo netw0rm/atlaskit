@@ -1,38 +1,20 @@
-import React, { Component, Children } from 'react';
+import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { AtlassianLogo } from '@atlaskit/logo';
+
+import crossAcquisitionContextTypes from './prop-types/cross-acquisition-context-types';
 
 export default class CrossAquisitionProvider extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    productLogo: PropTypes.element,
-    requestTrial: PropTypes.shape({
-      accessBanner: PropTypes.string,
-      accessHeading: PropTypes.string,
-      accessMessage: PropTypes.node,
-      notePrompt: PropTypes.node,
-      notePlaceholder: PropTypes.string,
-    }),
+    ...crossAcquisitionContextTypes.crossAcquisition,
   };
 
-  static childContextTypes = {
-    crossAcquisition: PropTypes.shape({
-      productLogo: PropTypes.element,
-      requestTrial: PropTypes.shape({
-        accessBanner: PropTypes.string,
-        accessHeading: PropTypes.string,
-        accessMessage: PropTypes.node,
-        notePrompt: PropTypes.node,
-        notePlaceholder: PropTypes.string,
-      }),
-    }),
-  }
+  static childContextTypes = crossAcquisitionContextTypes;
 
   getChildContext() {
     return {
       crossAcquisition: {
-        productLogo: this.props.productLogo || <AtlassianLogo />,
-        requestTrial: this.props.requestTrial || null,
+        ...this.props,
       },
     };
   }

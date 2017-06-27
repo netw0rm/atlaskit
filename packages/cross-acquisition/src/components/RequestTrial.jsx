@@ -1,37 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { AtlassianLogo } from '@atlaskit/logo';
 
+import crossAcquisitionContextTypes from './prop-types/cross-acquisition-context-types';
 import RequestTrialAccess from './RequestTrialAccess';
 import RequestTrialNote from './RequestTrialNote';
 
 import { MultiStep, Step } from './multi-step';
 
 export default class RequestTrial extends Component {
-  static propTypes = {
-    productLogo: PropTypes.element,
-    // header: PropTypes.string.isRequired,
-    // children: PropTypes.node,
-    // onRequestAccessClick: PropTypes.func,
-    // onCancelClick: PropTypes.func,
-    // onSendRequestClick: PropTypes.func,
-    // onSendWithoutNoteClick: PropTypes.func,
-  }
-
-  static defaultProps = {
-    productLogo: <AtlassianLogo />,
-    onRequestAccessClick: () => {},
-    onSendRequestClick: () => {},
-    onSendWithoutNoteClick: () => {},
-    onCancelClick: () => {},
-  }
-
-  static contextTypes = {
-    crossAcquisition: PropTypes.object,
-  }
-
-  state = {
-  }
+  static contextTypes = crossAcquisitionContextTypes;
 
   render() {
     let productLogo = null;

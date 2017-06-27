@@ -27,6 +27,10 @@ import {
   ul,
   li,
   hardBreak,
+  table,
+  tr,
+  tdEmpty,
+  tdCursor,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { createSchema } from '../../../../src/schema';
@@ -695,6 +699,15 @@ describe('block-type', () => {
                 });
               });
 
+              context('when cursor is in the first cell of the table', () => {
+                it('creates a new paragraph above the table', () => {
+                  const { editorView } = editor(doc( table(tr(tdCursor, tdEmpty, tdEmpty)) ));
+
+                  sendKeyToPm(editorView, 'ArrowUp');
+
+                  expect(editorView.state.doc).to.deep.equal(doc(p(''), table(tr(tdEmpty, tdEmpty, tdEmpty))));
+                });
+              });
             });
           });
 
@@ -828,6 +841,16 @@ describe('block-type', () => {
 
                   expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text'))), p('')));
                 });
+              });
+            });
+
+            context('when cursor is in the last cell of the table', () => {
+              it('creates a new paragraph below the table', () => {
+                const { editorView } = editor(doc( table(tr(tdEmpty, tdEmpty, tdCursor)) ));
+
+                sendKeyToPm(editorView, 'ArrowDown');
+
+                expect(editorView.state.doc).to.deep.equal(doc(table(tr(tdEmpty, tdEmpty, tdEmpty)), p('')));
               });
             });
           });

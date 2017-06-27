@@ -71,7 +71,7 @@ const renderAsSprite = (props: Props) => {
       aria-label={emoji.shortName}
     >
       { showTooltip ?
-        <TooltipWrapper description={emoji.shortName} children={emojiNode} />
+        <TooltipWrapper description={emoji.shortName}>{emojiNode}</TooltipWrapper>
         : emojiNode
       }
     </span>
@@ -108,7 +108,7 @@ const renderAsImage = (props: Props) => {
       aria-label={emoji.shortName}
     >
     { showTooltip ?
-      <TooltipWrapper description={emoji.shortName} children={emojiNode} />
+      <TooltipWrapper description={emoji.shortName}>{emojiNode}</TooltipWrapper>
       : emojiNode
     }
     </span>

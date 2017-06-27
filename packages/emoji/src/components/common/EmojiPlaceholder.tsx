@@ -26,7 +26,7 @@ const EmojiPlaceholder = (props: Props) => {
   );
   return (
     showTooltip ?
-      <TooltipWrapper description={shortName} children={placeholderNode} className={placeholderContainer}/>
+      <TooltipWrapper description={shortName} className={placeholderContainer}>{placeholderNode}</TooltipWrapper>
       : placeholderNode
     );
 };

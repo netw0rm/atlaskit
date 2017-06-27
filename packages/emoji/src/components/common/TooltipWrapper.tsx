@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { PureComponent, ReactNode } from 'react';
+import { PureComponent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 
 export interface Props {
   description: string;
-  children: ReactNode;
   className?: string;
 }
 export default class TooltipWrapper extends PureComponent<Props, undefined> {

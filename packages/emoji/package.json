@@ -26,6 +26,7 @@
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/layer": "^2.1.4",
     "@atlaskit/spinner": "^2.0.0",
+    "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^2.0.0",
     "babel-runtime": "^6.11.6",

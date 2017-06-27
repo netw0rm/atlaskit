@@ -463,7 +463,7 @@ storiesOf('Card', {})
 
     return (
       <div>
-        <h1 style={{margin: '10px 20px'}}>Link cards</h1>
+        <h1 style={{margin: '10px 20px'}}>Smart cards</h1>
         <div style={{margin: '20px 40px'}}>
           <h3>Standard</h3>
           <StoryList>

@@ -126,7 +126,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     const {mediaItemType, provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
     const {metadata, status} = this.state;
 
-    if (isLinkDetails(metadata) && metadata && metadata.resources && metadata.resources.app) {
+    if (isLinkDetails(metadata) && metadata && metadata.resources && metadata.resources.smartCard) {
       return (
         <CardViewWithDataURI
           {...otherProps}

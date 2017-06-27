@@ -54,7 +54,7 @@ export interface Resources {
   image?: Resource;
   file?: Resource;
   player?: Resource;
-  app?: App;
+  smartCard?: App;
 }
 
 export interface Resource {

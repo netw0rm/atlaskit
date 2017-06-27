@@ -8,7 +8,7 @@ import {
  * Add "import * as mediaTestHelpers from '@atlaskit/media-test-helpers'"
  * at the beginning of your file and pass "mediaTestHelpers" into this function
  */
-export function storyMediaProviderFactory (mediaTestHelpers, collection?: string, stateManager?: MediaStateManager) {
+export function storyMediaProviderFactory(mediaTestHelpers, collection?: string, stateManager?: MediaStateManager) {
   const {
     defaultClientId,
     defaultServiceHost,
@@ -32,32 +32,44 @@ export function storyMediaProviderFactory (mediaTestHelpers, collection?: string
       clientId: defaultClientId,
       serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
       tokenProvider: StoryBookTokenProvider.withAccess({
-        [`urn:filestore:collection:${collectionName}`] : [
+        [`urn:filestore:collection:${collectionName}`]: [
           'read', 'insert'
         ],
-        'urn:filestore:chunk:*' : ['create', 'read'],
-        'urn:filestore:upload' : ['create'],
-        'urn:filestore:upload:*' : ['read', 'update']
+        'urn:filestore:chunk:*': ['create', 'read'],
+        'urn:filestore:upload': ['create'],
+        'urn:filestore:upload:*': ['read', 'update']
       })
-    })
+    }),
+    linkCreateContext: Promise.resolve<MediaContextConfig>({
+      clientId: defaultClientId,
+      serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
+      tokenProvider: StoryBookTokenProvider.withAccess({
+        [`urn:filestore:collection:${collectionName}`]: [
+          'read', 'insert'
+        ],
+        'urn:filestore:chunk:*': ['create', 'read'],
+        'urn:filestore:upload': ['create'],
+        'urn:filestore:upload:*': ['read', 'update']
+      })
+    }),
   });
 }
 
 
 export type promisedString = Promise<string>;
 export type resolveFn = (...any) => any;
-export type thumbnailStore = { [id: string]: promisedString | resolveFn  };
+export type thumbnailStore = { [id: string]: promisedString | resolveFn };
 
 export function fileToBase64(blob) {
   return new Promise((resolve, reject) => {
     const reader = new (window as any).FileReader();
-    reader.onloadend = function() {
+    reader.onloadend = function () {
       resolve(reader.result);
     };
-    reader.onabort = function() {
+    reader.onabort = function () {
       reject('abort');
     };
-    reader.onerror = function(err) {
+    reader.onerror = function (err) {
       reject(err);
     };
     reader.readAsDataURL(blob);

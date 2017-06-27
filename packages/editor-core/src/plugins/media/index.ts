@@ -24,10 +24,8 @@ import {
   MarkType,
   Fragment,
 } from '../../prosemirror';
-import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
-import { analyticsService } from '../../analytics';
 import {
   ErrorReporter, atTheEndOfDoc, atTheEndOfBlock, atTheBeginningOfBlock,
   endPositionOfParent, startPositionOfParent
@@ -39,7 +37,6 @@ import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
-const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -53,14 +50,14 @@ export interface Range {
   end: number;
 }
 
-export interface RangeWithUrl extends Range {
-  url: string;
+export interface RangeWithUrls extends Range {
+  urls: string[];
 }
 
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
-  public allowsPastingLinks: boolean = false;
+  public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
@@ -74,6 +71,7 @@ export class MediaPluginState {
   private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
   private binaryPicker?: PickerFacade;
+  private linkRanges: RangeWithUrls[];
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
@@ -105,7 +103,7 @@ export class MediaPluginState {
     if (!mediaProvider) {
       this.destroyPickers();
 
-      this.allowsPastingLinks = false;
+      this.allowsLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
@@ -125,7 +123,7 @@ export class MediaPluginState {
 
       this.destroyPickers();
 
-      this.allowsPastingLinks = false;
+      this.allowsLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
@@ -147,7 +145,7 @@ export class MediaPluginState {
       this.stateManager = stateManager;
     }
 
-    this.allowsPastingLinks = !!resolvedMediaProvider.linkCreateContext;
+    this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
 
     if (this.allowsUploads) {
@@ -235,6 +233,28 @@ export class MediaPluginState {
   insertLinkFromUrl = (url: string) => {
     this.insertMedia(this.view.state.schema.nodes.media.create({ url, type: 'link' }));
   }
+
+  // insertLinks = (): void => {
+  //   const { state } = this.view;
+  //   const { tr } = state;
+  //   const { linkRanges } = this;
+  //   if (linkRanges.length <= 0) {
+  //     return;
+  //   }
+
+  //   let linksInfo = { latestPos: 0, urls: [] as String[] };
+
+  //   linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
+  //     linksInfo.urls = linksInfo.urls.concat(rangeWithUrl.urls);
+  //     if (rangeWithUrl.end > linksInfo.latestPos) {
+  //       linksInfo.latestPos = rangeWithUrl.end;
+  //     }
+  //     return linksInfo;
+  //   }, linksInfo);
+
+  //   const insertPos = endPositionOfParent(tr.doc.resolve(linksInfo.latestPos));
+  //   this.view.dispatch(tr.replaceWith(insertPos, insertPos, state.schema.text(('hello'))));
+  // }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
     const { binaryPicker } = this;
@@ -674,51 +694,50 @@ export class MediaPluginState {
     return (state && state.status) || 'ready';
   }
 
-  detectLinkRangesInSteps = (tr: Transaction): Range[] => {
+  detectLinkRangesInSteps = (tr: Transaction): RangeWithUrls[] => {
     const { link } = this.view.state.schema.marks;
-    let ranges: Range[] = [];
-    if (!link) {
-      return ranges;
+    this.linkRanges = [];
+    if (!link || !this.allowsLinks) {
+      return this.linkRanges;
     }
 
-    ranges = tr.steps.reduce((ranges: Range[], step) => {
+    tr.steps.forEach((step) => {
+      let rangeWithUrls;
       if (step instanceof AddMarkStep) {
-        return ranges.concat(this.detectLinkRangesInAddMarkStep(step as AddMarkStep));
+        rangeWithUrls = this.findRangesWithUrlsInAddMarkStep(step as AddMarkStep);
       } else if (step instanceof ReplaceStep) {
-        return ranges.concat(this.detectLinkRangesInReplaceStep(step as ReplaceStep));
+        rangeWithUrls = this.findRangesWithUrlsInReplaceStep(step as ReplaceStep);
       }
-      return ranges;
-    }, ranges);
 
-    return ranges;
+      if (rangeWithUrls) {
+        this.linkRanges.push(rangeWithUrls);
+      }
+    });
+
+    return this.linkRanges;
   }
 
-  private detectLinkRangesInAddMarkStep = (step: AddMarkStep): RangeWithUrl[] => {
-    const range: RangeWithUrl[] = [];
+  private findRangesWithUrlsInAddMarkStep = (step: AddMarkStep): RangeWithUrls | undefined => {
     const { link } = this.view.state.schema.marks;
     if (step.mark.type === link) {
-      range.push({ start: step.from, end: step.to, url: step.mark.attrs.href });
+      return { start: step.from, end: step.to, urls: [step.mark.attrs.href] };
     }
-    return range;
   }
 
-  private detectLinkRangesInReplaceStep(step: ReplaceStep): RangeWithUrl[] {
-    const range: RangeWithUrl[] = [];
+  private findRangesWithUrlsInReplaceStep(step: ReplaceStep): RangeWithUrls | undefined {
     const { link } = this.view.state.schema.marks;
-    const urls: string[] = [];
-    this.findLinksInContent(urls, step.slice.content, link);
-    urls.forEach((url) => {
-      range.push({ start: step.from, end: step.to, url: url });
-    });
-    return range;
+    const urls: string[] = this.findLinksInNodeContent([], step.slice.content, link);
+    if (urls.length > 0) {
+      return { start: step.from, end: step.to, urls: urls };
+    }
   }
 
-  private findLinksInContent(urls: string[], content: Fragment, link: MarkType) {
+  private findLinksInNodeContent(urls: string[], content: Fragment, link: MarkType) {
     content.forEach((child) => {
       if (link.isInSet(child.marks)) {
         urls.push(child.textContent);
       }
-      this.findLinksInContent(urls, child.content, link);
+      this.findLinksInNodeContent(urls, child.content, link);
     });
 
     return urls;
@@ -735,6 +754,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr);
+
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
         //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch()
         //       transformations from within the plugin state (i.e. when adding a new file).
@@ -746,7 +766,11 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       const pluginState = stateKey.getState(view.state);
       pluginState.setView(view);
 
-      return {};
+      return {
+        update: (view: EditorView, prevState: EditorState<any>) => {
+          // pluginState.insertLinks();
+        }
+      };
     },
     props: {
       nodeViews: {
@@ -754,33 +778,6 @@ function mediaPluginFactory(options: MediaPluginOptions) {
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
-      },
-      handleDOMEvents: {
-        paste(view: EditorView, event: ClipboardEvent) {
-          const pluginState: MediaPluginState = stateKey.getState(view.state);
-
-          if (!pluginState.allowsPastingLinks) {
-            return false;
-          }
-
-          const text = event.clipboardData.getData('text/plain');
-
-          if (!text) {
-            return false;
-          }
-
-          const url = extractFirstURLFromString(text);
-          if (!url) {
-            return false;
-          }
-
-          pluginState.insertLinkFromUrl(url);
-          analyticsService.trackEvent('atlassian.editor.media.link.paste');
-
-          // The URL is inserted as a Media Link item, however we do not return true
-          // so we're not preventing a text link (mark) to be added as well.
-          return false;
-        }
       }
     }
   });
@@ -796,13 +793,4 @@ export default plugins;
 export interface MediaData {
   id: string;
   type?: MediaType;
-}
-
-function extractFirstURLFromString(string: string) {
-  const search = urlRegex.exec(string);
-  if (!search) {
-    return;
-  }
-
-  return search ? search[0] : null;
 }

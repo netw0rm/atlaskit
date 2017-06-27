@@ -5,7 +5,6 @@ import Button from '@atlaskit/button';
 import FieldText from '@atlaskit/field-text';
 import 'rxjs/add/observable/of';
 
-import {ContextFactory} from '@atlaskit/media-core';
 import {
   StoryList,
   Matrix,
@@ -26,8 +25,7 @@ import {
   imageFileId,
   docFileId,
   unknownFileId,
-  errorFileId,
-  StoryBookTokenProvider
+  errorFileId
 } from '@atlaskit/media-test-helpers';
 
 import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent, OnSelectChangeFuncResult } from '../src';
@@ -444,13 +442,6 @@ storiesOf('Card', {})
   })
   .add('Smart', () => {
 
-    // mock the context to hit ddev
-    const mockContext = ContextFactory.create({
-      clientId: '9bad7f21-801f-4a63-b3a2-57e52090868f',
-      serviceHost: 'https://dt-api-filestore.internal.domain.dev.atlassian.io/',
-      tokenProvider: StoryBookTokenProvider.withAccess({}, 'https://media-playground.ap-southeast-2.dev.atl-paas.net')
-    });
-
     const identifier1: UrlPreviewIdentifier = {
       mediaItemType: 'link',
       url: 'https://trello.com/b/8B5zyiSn/test-smart-card-board'
@@ -470,11 +461,11 @@ storiesOf('Card', {})
           {[
             {
               title: 'Public Trello #1',
-              content: <Card identifier={identifier1} context={mockContext} />
+              content: <Card identifier={identifier1} context={context} />
             },
             {
               title: 'Public Trello #2',
-              content: <Card identifier={identifier2} context={mockContext} />
+              content: <Card identifier={identifier2} context={context} />
             }
           ]}
           </StoryList>

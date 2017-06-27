@@ -132,7 +132,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
           {...otherProps}
           dataURIService={dataURIService}
           status={status}
-          metadata={metadata.resources.app}
+          metadata={metadata.resources.smartCard}
           mediaItemType={'app'}
         />
       );

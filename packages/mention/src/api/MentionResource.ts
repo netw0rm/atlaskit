@@ -329,7 +329,7 @@ class MentionResource extends AbstractMentionResource {
             this.searchIndex.indexResults(result.mentions);
           },
           err => {
-            this._notifyErrorListeners(err)
+            this._notifyErrorListeners(err);
           }
         );
 
@@ -384,7 +384,7 @@ export class HttpError implements Error {
   name: string;
   message: string;
   statusCode: number;
-  stack?: string
+  stack?: string;
 
   constructor(statusCode: number, statusMessage: string) {
     this.statusCode = statusCode;

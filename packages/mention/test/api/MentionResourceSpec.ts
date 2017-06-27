@@ -270,7 +270,7 @@ describe('MentionResource', () => {
           // the second call is from a search against the local index for 'cz' and should return no matches
           expect(mentions.length).to.equal(0);
         } else if (count > 2) {
-          done(new Error('Result callback was called more than expected. Error callback was expected.'))
+          done(new Error('Result callback was called more than expected. Error callback was expected.'));
         }
       },
       (err) => {

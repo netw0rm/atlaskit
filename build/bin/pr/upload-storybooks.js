@@ -19,7 +19,7 @@ function getCurrentTimeString() {
 }
 
 function storybookBuildStatus(state) {
-  const cdnBaseUrl = process.env.CDN_BASE_URL;
+  const cdnBaseUrl = process.env.CDN_URL_BASE;
   const cdnUrlScope = process.env.CDN_URL_SCOPE;
   const uploadPath = `pr/${bbCommit}/${getCurrentTimeString()}/storybook`;
   const fullStorybookUrl = `${cdnBaseUrl}/${cdnUrlScope}/${uploadPath}`;

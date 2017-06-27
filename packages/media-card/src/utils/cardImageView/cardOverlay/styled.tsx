@@ -94,7 +94,7 @@ export const Overlay = styled.div`
     .bottom-row {
       opacity: 0;
       transition: transform .2s, opacity .5s;
-      transform: translateY(35px);
+      transform: translateY(35px); // This is the height of the overlay footer, needs to be present now since the parent uses flex and 100% doesn't look right anymore
 
       .file-type-icon {
         display: none;

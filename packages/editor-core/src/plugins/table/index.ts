@@ -6,7 +6,6 @@ import {
   tableEditing,
   NodeViewDesc,
   CellSelection,
-  TextSelection,
   Selection,
   TableMap,
   Node,
@@ -286,21 +285,23 @@ export class TableState {
     if (!this.tableNode) {
       return;
     }
-    const { state } = this.view;
-    const { $anchorCell, $headCell } = state.selection as CellSelection;
-    const { table_cell, table_header } = state.schema.nodes;
-    const map = TableMap.get(this.tableNode);
-    const offset = this.tableStartPos() || 1;
-    const start =  $anchorCell.start(-1);
-    // array of selected cells positions
-    const cells = map.cellsInRect(map.rectBetween($anchorCell.pos - start, $headCell.pos - start));
-    // first selected cell position
-    const firstCellPos = cells[0] + offset + 1;
-    const $from = state.doc.resolve(firstCellPos);
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if(node.type === table_cell || node.type === table_header) {
-        return $from.start(i);
+    const offset = this.tableStartPos();
+    if (offset) {
+      const { state } = this.view;
+      const { $anchorCell, $headCell } = state.selection as CellSelection;
+      const { table_cell, table_header } = state.schema.nodes;
+      const map = TableMap.get(this.tableNode);
+      const start =  $anchorCell.start(-1);
+      // array of selected cells positions
+      const cells = map.cellsInRect(map.rectBetween($anchorCell.pos - start, $headCell.pos - start));
+      // first selected cell position
+      const firstCellPos = cells[0] + offset + 1;
+      const $from = state.doc.resolve(firstCellPos);
+      for (let i = $from.depth; i > 0; i--) {
+        const node = $from.node(i);
+        if(node.type === table_cell || node.type === table_header) {
+          return $from.start(i);
+        }
       }
     }
   }
@@ -322,12 +323,14 @@ export class TableState {
   private createCellSelection (from: number, to: number): void {
     const { state } = this.view;
     // here "from" and "to" params are table-relative positions, therefore we add table offset
-    const offset = this.tableStartPos() || 1;
-    const $anchor = state.doc.resolve(from + offset);
-    const $head = state.doc.resolve(to + offset);
-    this.view.dispatch(
-      this.view.state.tr.setSelection( new CellSelection($anchor, $head))
-    );
+    const offset = this.tableStartPos();
+    if (offset) {
+      const $anchor = state.doc.resolve(from + offset);
+      const $head = state.doc.resolve(to + offset);
+      this.view.dispatch(
+        this.view.state.tr.setSelection(new CellSelection($anchor, $head))
+      );
+    }
   }
 
   // we keep track of selection changes because
@@ -346,8 +349,7 @@ export class TableState {
       // drop selection if editor looses focus
       if (!this.editorFocused) {
         const { state } = this.view;
-        const { $from } = this.view.state.selection;
-        this.view.dispatch(state.tr.setSelection(new TextSelection($from, $from)));
+        this.view.dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
       }
     } else if (this.cellSelection) {
       this.cellSelection = undefined;
@@ -418,8 +420,10 @@ export class TableState {
   }
 
   private moveCursorTo (pos: number): void {
-    const offset = this.tableStartPos() || 1;
-    this.moveCursorInsideTableTo(pos + offset);
+    const offset = this.tableStartPos();
+    if (offset) {
+      this.moveCursorInsideTableTo(pos + offset);
+    }
   }
 
   private moveCursorToFirstCell (): void {

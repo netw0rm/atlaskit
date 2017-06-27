@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { doc, code_block } from '../../../src/test-helper/schema-builder';
-import { makeEditor, chaiPlugin, fixtures } from '../../../src/test-helper';
+import { makeEditor, chaiPlugin, fixtures, sendKeyToPm } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { codeBlockPlugins } from '../../../src/plugins';
 
@@ -56,4 +56,12 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     expect(func.callCount).to.be.greaterThan(0);
   });
 
+  it('should exit code block when Enter is pressed three times', () => {
+    const { editorView } = editor(doc(code_block()('codeBlock{<>}')));
+    sendKeyToPm(editorView, 'Enter');
+    sendKeyToPm(editorView, 'Enter');
+    sendKeyToPm(editorView, 'Enter');
+    const { $from } = editorView.state.selection;
+    expect($from.node($from.depth).type.name).to.equal('paragraph');
+  });
 });

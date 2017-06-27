@@ -1,5 +1,3 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import CodeMirror from '../../../codemirror';
 import {
   browser,
@@ -14,7 +12,7 @@ import {
 } from '../../../prosemirror';
 import { CodeBlockState, codeBlockStateKey } from '../../../plugins';
 import { DEFAULT_LANGUAGES } from '../../../ui/LanguagePicker/languageList';
-import { CodeMirrorDiv } from './styles';
+import './styles';
 
 const MOD = browser.mac ? 'Cmd' : 'Ctrl';
 interface CMSelection { head: number; anchor: number; }
@@ -27,7 +25,6 @@ class CodeBlock implements NodeView  {
   private selection: CMSelection | undefined;
   private cm: any;
   private domRef: HTMLDivElement | undefined;
-  private containerRef: HTMLElement;
   private uniqueId: string;
   private updating: boolean = false;
   private pluginState: CodeBlockState;
@@ -37,7 +34,6 @@ class CodeBlock implements NodeView  {
     this.view = view;
     this.getPos = getPos;
     this.value = node.textContent;
-    this.selection = undefined;
     this.pluginState = codeBlockStateKey.getState(this.view.state);
     this.addCodeMirrorInstance();
   }
@@ -77,20 +73,6 @@ class CodeBlock implements NodeView  {
     this.pluginState.subscribe(this.updateLanguage);
     this.pluginState.subscribeFocusHandlers(this.focusCodeEditor);
     this.domRef = div;
-    this.addCodeMirrorStyles(div);
-  }
-
-  private addCodeMirrorStyles(domRef) {
-    this.containerRef = document.createElement('div');
-    const handleRef = (ref) => {
-      if (ref) {
-        domRef.className = `${domRef.className} ${ref.className}`;
-      }
-    };
-    ReactDOM.render(
-      <CodeMirrorDiv innerRef={handleRef} />,
-      this.containerRef
-    );
   }
 
   private cmFocused = (cm: CodeMirror.Editor) => {
@@ -312,7 +294,6 @@ class CodeBlock implements NodeView  {
     this.cm.off('blur', this.cmBlur);
     this.node.attrs['uniqueId'] = undefined;
     this.node.attrs['isCodeMirror'] = undefined;
-    ReactDOM.unmountComponentAtNode(this.containerRef);
     this.pluginState.unsubscribe(this.updateLanguage);
     this.pluginState.unsubscribeFocusHandlers(this.focusCodeEditor);
   }

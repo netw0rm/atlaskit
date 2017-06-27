@@ -1,3 +1,5 @@
+// @flow
+
 import {
   akColorB200,
   akColorPrimary3,
@@ -35,12 +37,12 @@ export const containerOpenWidth = 240;
 export const standardOpenWidth = globalOpenWidth + containerOpenWidth;
 export const resizeClosedBreakpoint = globalOpenWidth + (containerOpenWidth / 2);
 export const collapseBreakpoint = globalOpenWidth + containerClosedWidth;
-export const containerNavigationNestedPageSpacing = 8;
 export const searchIconOffset = 80;
 export const createIconOffset = 120;
 export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;
+export const nestedNavigationAnimationTime: number = 500;
 export const zIndex = {
   base: akZIndexNavigation,
   // needs to sit on top of navigation and the drawer

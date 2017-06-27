@@ -32,6 +32,7 @@ describe('Moveable', () => {
 
   afterEach(() => {
     clock.restore();
+    requestAnimationFrame.reset();
   });
 
   const moveTo = (point: Position, speed?: Speed = 'STANDARD', onMoveEnd?: () => void) => {

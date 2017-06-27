@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { PureComponent } from 'react';
-import { describe, it, beforeEach, afterEach } from 'mocha';
+import { describe, it, beforeEach, afterEach, before, after } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
@@ -232,8 +232,17 @@ const getStubber = stub =>
 };
 
 describe('Draggable - unconnected', () => {
-  afterEach(() => {
+  before(() => {
+    setScroll(origin);
+    requestAnimationFrame.reset();
+  });
+
+  after(() => {
     setScroll(originalScroll);
+  });
+
+  afterEach(() => {
+    setScroll(origin);
     if (Element.prototype.getBoundingClientRect.restore) {
       Element.prototype.getBoundingClientRect.restore();
     }

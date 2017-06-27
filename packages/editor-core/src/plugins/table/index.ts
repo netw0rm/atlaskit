@@ -37,12 +37,10 @@ export class TableState {
   domEvent: boolean = false;
 
   private view: EditorView;
-  private state: EditorState<any>;
   private changeHandlers: TableStateSubscriber[] = [];
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
-    this.state = state;
 
     const { table, table_cell, table_row, table_header } = state.schema.nodes;
     this.tableHidden = !table || !table_cell || !table_row || !table_header;
@@ -69,19 +67,21 @@ export class TableState {
   insertColumn = (column: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
+      const { state, dispatch } = this.view;
+
       // last column
       if (column === map.width) {
         // to add a column we need to move the cursor to an appropriate cell first
         const prevColPos = map.positionAt(0, column - 1, this.tableNode);
         this.moveCursorTo(prevColPos);
-        tableBaseCommands.addColumnAfter(this.view.state, this.view.dispatch);
+        tableBaseCommands.addColumnAfter(state, dispatch);
         // then we move the cursor to the newly created cell
         const nextPos = TableMap.get(this.tableNode).positionAt(0, column, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
         const pos = map.positionAt(0, column, this.tableNode);
         this.moveCursorTo(pos);
-        tableBaseCommands.addColumnBefore(this.view.state, this.view.dispatch);
+        tableBaseCommands.addColumnBefore(state, dispatch);
         this.moveCursorTo(pos);
       }
     }
@@ -90,17 +90,19 @@ export class TableState {
   insertRow = (row: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
+      const { state, dispatch } = this.view;
+
       // last row
       if (row === map.height) {
         const prevRowPos =  map.positionAt(row - 1, 0, this.tableNode);
         this.moveCursorTo(prevRowPos);
-        tableBaseCommands.addRowAfter(this.view.state, this.view.dispatch);
+        tableBaseCommands.addRowAfter(state, dispatch);
         const nextPos = TableMap.get(this.tableNode).positionAt(row, 0, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
         const pos = map.positionAt(row, 0, this.tableNode);
         this.moveCursorTo(pos);
-        tableBaseCommands.addRowBefore(this.view.state, this.view.dispatch);
+        tableBaseCommands.addRowBefore(state, dispatch);
         this.moveCursorTo(pos);
       }
     }
@@ -110,22 +112,23 @@ export class TableState {
     if (!this.cellSelection) {
       return;
     }
+    const { state, dispatch } = this.view;
     if (this.cellSelection.isRowSelection()) {
-      const removed = tableBaseCommands.deleteColumn(this.view.state, this.view.dispatch);
+      const removed = tableBaseCommands.deleteColumn(state, dispatch);
       // it's not going to be removed only if it attemps to remove the last cells in the table
       if (removed) {
         this.moveCursorToFirstCell();
       } else {
-        tableBaseCommands.deleteTable(this.view.state, this.view.dispatch);
+        tableBaseCommands.deleteTable(state, dispatch);
         this.focusEditor();
       }
     } else if (this.cellSelection.isColSelection()) {
-      tableBaseCommands.deleteRow(this.view.state, this.view.dispatch);
+      tableBaseCommands.deleteRow(state, dispatch);
       this.moveCursorToFirstCell();
     } else {
       // replace selected cells with empty cells
       this.emptySelectedCells();
-      this.moveCursorInsideTableTo(this.state.selection.from);
+      this.moveCursorInsideTableTo(state.selection.from);
     }
   }
 
@@ -206,8 +209,7 @@ export class TableState {
     return false;
   }
 
-  update(newEditorState: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
-    this.state = newEditorState;
+  update(docView: NodeViewDesc, domEvent: boolean = false) {
     let dirty = this.updateSelection();
 
     const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
@@ -271,10 +273,10 @@ export class TableState {
   }
 
   private tableStartPos(): number | undefined {
-    const { $from } = this.state.selection;
+    const { $from } = this.view.state.selection;
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
-      if(node.type === this.state.schema.nodes.table) {
+      if(node.type === this.view.state.schema.nodes.table) {
         return $from.start(i);
       }
     }
@@ -284,8 +286,9 @@ export class TableState {
     if (!this.tableNode) {
       return;
     }
-    const { $anchorCell, $headCell } = this.state.selection as CellSelection;
-    const { table_cell, table_header } = this.state.schema.nodes;
+    const { state } = this.view;
+    const { $anchorCell, $headCell } = state.selection as CellSelection;
+    const { table_cell, table_header } = state.schema.nodes;
     const map = TableMap.get(this.tableNode);
     const offset = this.tableStartPos() || 1;
     const start =  $anchorCell.start(-1);
@@ -293,7 +296,7 @@ export class TableState {
     const cells = map.cellsInRect(map.rectBetween($anchorCell.pos - start, $headCell.pos - start));
     // first selected cell position
     const firstCellPos = cells[0] + offset + 1;
-    const $from = this.state.doc.resolve(firstCellPos);
+    const $from = state.doc.resolve(firstCellPos);
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
       if(node.type === table_cell || node.type === table_header) {
@@ -303,10 +306,10 @@ export class TableState {
   }
 
   private getTableNode(): Node | undefined {
-    const { $from } = this.state.selection;
+    const { $from } = this.view.state.selection;
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
-      if(node.type === this.state.schema.nodes.table) {
+      if(node.type === this.view.state.schema.nodes.table) {
         return node;
       }
     }
@@ -331,7 +334,7 @@ export class TableState {
   // 1) we want to mark toolbar buttons as active when the whole row/col is selected
   // 2) we want to drop selection if editor looses focus
   private updateSelection (): boolean {
-    const { selection } = this.state;
+    const { selection } = this.view.state;
     let dirty = false;
 
     if (selection instanceof CellSelection) {
@@ -343,7 +346,7 @@ export class TableState {
       // drop selection if editor looses focus
       if (!this.editorFocused) {
         const { state } = this.view;
-        const { $from } = this.state.selection;
+        const { $from } = this.view.state.selection;
         this.view.dispatch(state.tr.setSelection(new TextSelection($from, $from)));
       }
     } else if (this.cellSelection) {
@@ -370,12 +373,13 @@ export class TableState {
   }
 
   private canInsertTable (): boolean {
-    const { $from, to } = this.state.selection;
-    const { code } = this.state.schema.marks;
+    const { state } = this.view;
+    const { $from, to } = state.selection;
+    const { code } = state.schema.marks;
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
       // inline code and codeBlock are excluded
-      if(node.type === this.state.schema.nodes.codeBlock || this.state.doc.rangeHasMark($from.pos, to, code)) {
+      if(node.type === state.schema.nodes.codeBlock || state.doc.rangeHasMark($from.pos, to, code)) {
         return false;
       }
     }
@@ -387,7 +391,7 @@ export class TableState {
       return;
     }
 
-    const { tr, schema } = this.state;
+    const { tr, schema } = this.view.state;
     const emptyCell = schema.nodes.table_cell.createAndFill().content;
     this.cellSelection.forEachCell((cell, pos) => {
       if (!cell.content.eq(emptyCell)) {
@@ -408,7 +412,7 @@ export class TableState {
 
   private moveCursorInsideTableTo (pos: number): void {
     this.focusEditor();
-    const { tr } = this.state;
+    const { tr } = this.view.state;
     tr.setSelection(Selection.near(tr.doc.resolve(pos)));
     this.view.dispatch(tr.scrollIntoView());
   }
@@ -437,7 +441,7 @@ const plugin = new Plugin({
     apply(tr, pluginState: TableState, oldState, newState) {
       const stored = tr.getMeta(stateKey);
       if (stored) {
-        pluginState.update(newState, stored.docView, stored.domEvent);
+        pluginState.update(stored.docView, stored.domEvent);
       }
       return pluginState;
     }
@@ -445,13 +449,13 @@ const plugin = new Plugin({
   key: stateKey,
   view: (editorView: EditorView) => {
     const pluginState = stateKey.getState(editorView.state);
-    pluginState.update(editorView.state, editorView.docView);
-    pluginState.keymapHandler = keymapHandler(pluginState);
     pluginState.setView(editorView);
+    pluginState.update(editorView.docView);
+    pluginState.keymapHandler = keymapHandler(pluginState);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
-        pluginState.update(view.state, view.docView);
+        pluginState.update(view.docView);
       }
     };
   },
@@ -460,12 +464,12 @@ const plugin = new Plugin({
       return stateKey.getState(view.state).keymapHandler(view, event);
     },
     handleClick(view: EditorView, pos: number, event) {
-      stateKey.getState(view.state).update(view.state, view.docView, true);
+      stateKey.getState(view.state).update(view.docView, true);
       return false;
     },
     onFocus(view: EditorView, event) {
       stateKey.getState(view.state).updateEditorFocused(true);
-      stateKey.getState(view.state).update(view.state, view.docView, true);
+      stateKey.getState(view.state).update(view.docView, true);
     },
     onBlur(view: EditorView, event) {
       const pluginState = stateKey.getState(view.state);
@@ -473,7 +477,7 @@ const plugin = new Plugin({
         pluginState.updateToolbarFocused(false);
       } else {
         pluginState.updateEditorFocused(false);
-        pluginState.update(view.state, view.docView, true);
+        pluginState.update(view.docView, true);
       }
     },
   }

@@ -40,7 +40,7 @@ export default class TableHeader extends PureComponent<Props, State> {
     // hide toolbar if it's currently in focus and editor looses focus
     if (!this.props.pluginState.toolbarFocused) {
       this.props.pluginState.updateEditorFocused(false);
-      this.props.pluginState.update(this.props.editorView.state, this.props.editorView.docView, true);
+      this.props.pluginState.update(this.props.editorView.docView, true);
     }
     this.props.pluginState.updateToolbarFocused(false);
   }

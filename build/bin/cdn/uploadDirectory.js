@@ -7,7 +7,8 @@ const path = require('path');
 function uploadToCdn(srcFolder, targetPath) {
   const scriptToRun = path.join(__dirname, '..', 'cdn_publish_folder.sh');
 
-  childProcess.spawn(scriptToRun, [srcFolder, targetPath], { stdio: 'inherit' });
+  childProcess.spawn(scriptToRun, [srcFolder, targetPath], { stdio: 'inherit' })
+    .on('error', process.exit);
 }
 
 module.exports = uploadToCdn;

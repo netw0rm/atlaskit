@@ -108,9 +108,9 @@ export default class EmojiPreview extends PureComponent<Props, State> {
         <Emoji emoji={emoji} />
       );
     } else {
-      const { shortName, name } = emoji;
+      const { shortName } = emoji;
       emojiComponent = (
-        <EmojiPlaceholder shortName={shortName} name={name} size={32} />
+        <EmojiPlaceholder shortName={shortName} size={32} />
       );
     }
 

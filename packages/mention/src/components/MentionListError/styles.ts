@@ -10,10 +10,9 @@ export const MentionListErrorStyle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: white;
   color: ${akColorN900};
-
   border: 1px solid #fff;
   border-radius: ${akBorderRadius};
-
   height: 264px;
 `;

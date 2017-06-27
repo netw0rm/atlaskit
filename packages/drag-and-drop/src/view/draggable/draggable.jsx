@@ -61,16 +61,14 @@ export default class Draggable extends PureComponent {
     };
   }
 
-      // This should already be handled gracefully in DragHandle.
-      // Just being extra clear here
+  // This should already be handled gracefully in DragHandle.
+  // Just being extra clear here
   throwIfCannotDrag() {
     invariant(this.state.childRef,
       'Draggable: cannot drag if not attached child node'
     );
-
     invariant(this.props.isDragEnabled,
-      `Draggable: cannot perform drag action if drag is not enabled.
-        This should be handled by DragHandle.`
+      'Draggable: cannot drag dragging is not enabled'
     );
   }
 
@@ -99,7 +97,7 @@ export default class Draggable extends PureComponent {
     const scroll: Position = getScrollPosition();
     const center: Position = getCenterPosition(this.state.childRef);
 
-        // using center position as selection
+    // using center position as selection
     lift(draggableId, type, center, scroll, center);
   }
 
@@ -108,14 +106,16 @@ export default class Draggable extends PureComponent {
 
     const { draggableId, initial, move } = this.props;
 
-  // dimensions not provided yet
+    console.log('on move', initial);
+
+    // dimensions not provided yet
     if (!initial) {
       return;
     }
 
     const scroll: Position = getScrollPosition();
 
-        // diffs
+    // diffs
     const mouseDiff: Position = {
       x: point.x - initial.selection.x,
       y: point.y - initial.selection.y,
@@ -182,9 +182,9 @@ export default class Draggable extends PureComponent {
       zIndex,
       position: 'absolute',
       boxSizing: 'border-box',
-          // when we use position absolute we need to
-          // force the height and width because it looses
-          // its standard positioning logic
+      // when we use position absolute we need to
+      // force the height and width because it looses
+      // its standard positioning logic
       width: initial.dimension.withoutMargin.width,
       height: initial.dimension.withoutMargin.height,
       top: initial.dimension.withoutMargin.top,
@@ -218,8 +218,8 @@ export default class Draggable extends PureComponent {
       };
     }
 
-        // Default: can move quickly.
-        // Can move out of the way when other draggables are dragging
+    // Default: can move quickly.
+    // Can move out of the way when other draggables are dragging
     return {
       showPlaceholder: false,
       speed: 'FAST',

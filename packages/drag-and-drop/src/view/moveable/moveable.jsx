@@ -17,9 +17,6 @@ const origin: Position = {
   y: 0,
 };
 
-const isAtOrigin = (point: PositionLike): boolean =>
-  point.x === origin.x && point.y === origin.y;
-
 type Props = {|
   children: (?Object) => void,
   speed: Speed,
@@ -33,29 +30,51 @@ type DefaultProps = {|
   style: Object,
 |}
 
-const getStyle = (isNotMoving: boolean, x: number, y: number): ?Object => {
-  if (isNotMoving) {
-    return null;
-  }
-
-  const point: Position = { x, y };
-  // not applying any transforms when not moving
-  if (isAtOrigin(point)) {
-    return null;
-  }
-  return {
-    transform: `translate(${point.x}px, ${point.y}px)`,
-  };
-};
+type State = {|
+  initial: Position,
+|};
 
 export default class Movable extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
+  state: State
 
   static defaultProps: DefaultProps = {
     innerRef: () => {},
     destination: origin,
     style: {},
+  }
+
+  state: State = {
+    initial: this.props.destination,
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.state.initial !== origin) {
+      this.setState({
+        initial: origin,
+      });
+    }
+  }
+
+  getStyle = (isNotMoving: boolean, x: number, y: number): ?Object => {
+    if (isNotMoving) {
+      return null;
+    }
+
+    const point: Position = { x, y };
+  // not applying any transforms when not moving
+    if (this.isAtInitial(point)) {
+      return null;
+    }
+    return {
+      transform: `translate(${point.x}px, ${point.y}px)`,
+    };
+  };
+
+  isAtInitial = (point: PositionLike): boolean => {
+    const { initial } = this.state;
+    return point.x === initial.x && point.y === initial.y;
   }
   /* eslint-enable */
 
@@ -97,18 +116,16 @@ export default class Movable extends PureComponent {
     // bug with react-motion: https://github.com/chenglou/react-motion/issues/437
     // even if both defaultStyle and style are {x: 0, y: 0 } if there was
     // a previous animation it uses the last value rather than the final value
-    const isNotMoving: boolean = isAtOrigin(final);
+    const isNotMoving: boolean = this.isAtInitial(final);
 
     return (
       // https://github.com/chenglou/react-motion/issues/375
       // $ExpectError - React motion! *fist shake*
-      <Motion defaultStyle={origin} style={final} onRest={this.onRest}>
+      <Motion defaultStyle={this.state.initial} style={final} onRest={this.onRest}>
         {(current: Position) =>
-          this.props.children(getStyle(
-            isNotMoving,
-            current.x,
-            current.y
-          ))}
+          this.props.children(
+            this.getStyle(isNotMoving, current.x, current.y)
+          )}
       </Motion>
     );
   }

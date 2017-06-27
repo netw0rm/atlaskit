@@ -20,7 +20,7 @@ type Props = {|
   data: PersonType
 |}
 
-export default class Person extends PureComponent {
+export default class Person extends React.Component {
   props: Props
 
   render() {
@@ -31,20 +31,24 @@ export default class Person extends PureComponent {
         type="PERSON"
         isDragEnabled
       >
-        {(provided: Provided) => (
-          <div>
-            <Container
-              innerRef={ref => provided.innerRef(ref)}
-              href={data.name}
-              isDragging={provided.isDragging}
-              style={provided.containerStyle}
-              {...provided.dragHandleProps}
-            >
-              {data.name}
-            </Container>
-            {provided.placeholder}
-          </div>
-        )}
+        {(provided: Provided) => {
+          console.log('rendering person', data.name);
+          return (
+            <div>
+              <Container
+                innerRef={ref => provided.innerRef(ref)}
+                href={data.name}
+                isDragging={provided.isDragging}
+                style={provided.containerStyle}
+                {...provided.dragHandleProps}
+              >
+                {data.name}
+              </Container>
+              {provided.placeholder}
+            </div>
+          );
+        }
+      }
       </Draggable>
     );
   }

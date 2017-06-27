@@ -20,7 +20,7 @@ class Standard extends PureComponent {
   |}
 
   state = {
-    people: getPeople(300),
+    people: getPeople(5),
   }
 
   onDragStart = () => {

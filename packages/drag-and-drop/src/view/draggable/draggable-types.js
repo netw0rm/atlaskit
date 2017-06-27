@@ -37,7 +37,6 @@ export type DispatchProps = {
 }
 
 export type MapProps = {|
-  isDragEnabled: boolean,
   isDragging: boolean,
   isDropAnimating: boolean,
   canAnimate: boolean,

@@ -36,3 +36,12 @@ export const StartTrialInfoText = styled.p`
   font-size: 12px;
   margin-bottom: 12px;
 `;
+
+export const UserSelectDiv = styled.div`
+  margin-left: 32px;
+`;
+
+export const AffectMyBillText = styled.p`
+  font-size: 12px;
+  color: #5e6c84;
+`;

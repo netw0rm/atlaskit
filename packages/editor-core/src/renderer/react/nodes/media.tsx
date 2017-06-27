@@ -27,6 +27,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
       cardDimensions,
     } = this.props;
 
+
     return (
       <UIMedia
         id={id}

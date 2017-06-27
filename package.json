@@ -180,7 +180,7 @@
     "release/storybooks": "./build/bin/release.storybooks.sh || (chalk --no-stdin -t \"{red Storybook generation failed!}\"; exit 1)",
     "storybook": "./build/bin/storybook.single.sh",
     "storybook/single": "chalk -t '{yellow `yarn run storybook/single` is deprecated, use `yarn run storybook` instead}' && ./build/bin/storybook.single.sh",
-    "storybook/static": "build-storybook -c ./build/storybook",
+    "storybook/static": "node --max_old_space_size=4096 ./node_modules/.bin/build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",
     "test/base": "mocha --colors",
     "test/wc": "./build/bin/test.sh",

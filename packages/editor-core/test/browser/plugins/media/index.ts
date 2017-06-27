@@ -6,7 +6,12 @@ import {
   DefaultMediaStateManager,
   MediaStateStatus,
 } from '@atlaskit/media-core';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
+import {
+  defaultClientId,
+  defaultServiceHost,
+  defaultCollectionName,
+  StoryBookTokenProvider,
+} from '@atlaskit/media-test-helpers';
 import {
   mediaPluginFactory,
   MediaPluginState,
@@ -41,7 +46,7 @@ const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
 const getFreshResolvedProvider = () => {
-  return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+  return storyMediaProviderFactory({ defaultClientId, defaultServiceHost, defaultCollectionName, StoryBookTokenProvider }, testCollectionName, stateManager);
 };
 
 describe('Media plugin', () => {

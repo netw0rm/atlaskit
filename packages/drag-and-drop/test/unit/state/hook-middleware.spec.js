@@ -186,6 +186,7 @@ describe('Hook middleware', () => {
     it('should not call if only collecting dimensions (not dragging yet)', () => {
       execute(hooks, state.idle, state.collecting);
 
+      // $ExpectError - type of hook
       expect(hooks.onDragStart.called).to.equal(false);
     });
   });

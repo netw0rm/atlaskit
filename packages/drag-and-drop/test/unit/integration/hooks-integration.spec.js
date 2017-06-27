@@ -196,7 +196,9 @@ describe('hooks integration', () => {
   })();
 
   const wasDragStarted = (amountOfDrags?: number = 1) => {
+    // $ExpectError - type of hook function
     expect(hooks.onDragStart.callCount).to.equal(amountOfDrags);
+    // $ExpectError - type of hook function
     expect(hooks.onDragStart.args[amountOfDrags - 1])
             .to.deep.equal([draggableId, expected.completed.source]);
   };
@@ -226,7 +228,8 @@ describe('hooks integration', () => {
 
       drag.move();
 
-        // should not have called on drag start again
+      // should not have called on drag start again
+      // $ExpectError - type of hook function
       expect(hooks.onDragStart.calledOnce).to.equal(true);
     });
   });

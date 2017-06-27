@@ -177,13 +177,14 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return clean();
     }
 
-    if (!state.drag) {
+    if (state.drag == null) {
       console.error('cannot move if there is no drag information');
       return clean();
     }
 
     const { offset, center } = action.payload;
-    const previous = state.drag.current;
+    const previous: CurrentDrag = state.drag.current;
+    const initial: InitialDrag = state.drag.initial;
 
     const current: CurrentDrag = {
       id: previous.id,
@@ -200,13 +201,13 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       state.dimension.droppable,
     );
 
+    const drag: DragState = {
+      initial, impact, current,
+    };
+
     return {
       ...state,
-      drag: {
-        initial: state.drag.initial,
-        impact,
-        current,
-      },
+      drag,
     };
   }
 

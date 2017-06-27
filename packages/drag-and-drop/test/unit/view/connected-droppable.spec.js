@@ -81,7 +81,7 @@ const perform = (() => {
   const dragOverImpact: DragImpact = {
     movement: {
       draggables: [draggableId],
-      amount: dragDimension.height,
+      amount: dragDimension.withMargin.height,
       isMovingForward: true,
     },
     destination: {

@@ -16,9 +16,9 @@ const primaryButton = 0;
 export const sloppyClickThreshold: number = 5;
 
 type Props = {|
-  children: (?Provided) => void,
   isEnabled: boolean,
   callbacks: Callbacks,
+  children: (?Provided) => void,
 |}
 
 type State = {

@@ -122,9 +122,6 @@ describe('DimensionPublisher', () => {
       shouldPublish: true,
     });
 
-    console.log('publish', publish.args[0][0]);
-    console.log('expected', expected);
-
     expect(publish.args[0][0]).to.deep.equal(expected);
   });
 

@@ -74,7 +74,7 @@ export class ResourcedFilteredEmojiList extends PureComponent<FilteredProps, Fil
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.emojiProvider) {
       this.props.emojiProvider.then(provider => {
         provider.subscribe(this.onProviderChange);

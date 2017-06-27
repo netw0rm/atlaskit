@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/app-switcher",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "config": {
     "access": "public"
   },
@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/dropdown-menu": "^1.1.12",
+    "@atlaskit/dropdown-menu": "^3.0.0",
     "@atlaskit/droplist": "^3.3.2",
     "@atlaskit/logo": "^3.0.0",
     "@atlaskit/spinner": "^2.1.0",

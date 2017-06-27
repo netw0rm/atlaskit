@@ -4,7 +4,12 @@ import styled from 'styled-components';
 import { storiesOf } from '@kadira/storybook';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
-import { AddIcon, AtlassianIcon, SearchIcon, ExpandIcon, ListIcon, QuestionCircleIcon } from '@atlaskit/icon';
+import AddIcon from '@atlaskit/icon/glyph/add';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ListIcon from '@atlaskit/icon/glyph/list';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
 import { AkContainerNavigation, AkGlobalNavigation, AkGlobalItem, AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, presetThemes } from '../src/';
@@ -17,7 +22,7 @@ import nucleusLogo from './nucleus.png';
 const ExampleContainerNavigation = ({ theme, themeName, isCollapsed = false }) => (
   <AkContainerNavigation
     theme={theme}
-    showGlobalPrimaryActions={isCollapsed}
+    showGlobalActions={isCollapsed}
     isCollapsed={isCollapsed}
     globalCreateIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
     globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" secondaryColor="inherit" />}

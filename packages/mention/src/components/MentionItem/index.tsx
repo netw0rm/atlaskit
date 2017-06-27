@@ -11,7 +11,7 @@ import {
   FullNameStyle,
   InfoSectionStyle,
   MentionItemStyle,
-  MentionNameStyle,
+  NicknameStyle,
   NameSectionStyle,
   AccessSectionStyle,
   RowStyle,
@@ -20,7 +20,7 @@ import {
 
 type ReactComponentConstructor = new() => React.Component<any, any>;
 
-import { HighlightDetail, Mention, OnMentionEvent, Presence, UserAccessLevel } from '../../types';
+import { HighlightDetail, MentionDescription, OnMentionEvent, Presence, isRestricted } from '../../types';
 import { leftClick } from '../../util/mouse';
 
 interface Part {
@@ -71,9 +71,9 @@ function renderHighlight(ReactComponent: ReactComponentConstructor, value?: stri
   return (
     <ReactComponent>
       {prefixText}
-      {parts.map((part) => {
+      {parts.map((part, index) => {
         if (part.matches) {
-          return <b>{part.value}</b>;
+          return <b key={index}>{part.value}</b>;
         }
         return part.value;
       })}
@@ -98,7 +98,7 @@ function renderTime(time) {
 }
 
 export interface Props {
-  mention: Mention;
+  mention: MentionDescription;
   selected?: boolean;
   onMouseMove?: OnMentionEvent;
   onSelection?: OnMentionEvent;
@@ -123,13 +123,10 @@ export default class MentionItem extends PureComponent<Props, undefined> {
     const { mention, selected } = this.props;
     const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge, accessLevel } = mention;
     const { status, time } = presence || {} as Presence;
-    const restricted = !!(accessLevel && UserAccessLevel[accessLevel] !== UserAccessLevel.CONTAINER);
+    const restricted = isRestricted(accessLevel);
 
     const nameHighlights = highlight && highlight.name;
     const nicknameHighlights = highlight && highlight.nickname;
-
-    const renderName = nickname ? nickname : name;
-    const renderHighlights = nickname ? nicknameHighlights : nameHighlights;
 
     return (
       <MentionItemStyle
@@ -145,7 +142,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
           </AvatarStyle>
           <NameSectionStyle restricted={restricted}>
             {renderHighlight(FullNameStyle, name, nameHighlights)}
-            {renderHighlight(MentionNameStyle, renderName, renderHighlights, '@')}
+            {renderHighlight(NicknameStyle, nickname, nicknameHighlights, '@')}
           </NameSectionStyle>
           <InfoSectionStyle restricted={restricted}>
             {renderLozenge(lozenge)}

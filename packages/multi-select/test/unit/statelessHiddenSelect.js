@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { StatelessMultiSelect } from '../../src';
+import { MultiSelectStateless } from '../../src';
 
 import { name } from '../../package.json';
 
@@ -30,7 +30,7 @@ describe(`${name} - stateless`, () => {
     const selectedItems = [selectItems[0].items[1]];
 
     beforeEach(() => {
-      wrapper = mount(<StatelessMultiSelect
+      wrapper = mount(<MultiSelectStateless
         isOpen
         id="testId"
         name="testName"

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
 import DropdownMenu from '@atlaskit/dropdown-menu';
@@ -48,7 +48,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
 
     it('should return only 4 items if only pluginStateTextFormatting is defined', () => {
         const { editorView } = editor(doc(p('text')));
-        const toolbarOption = shallow(
+        const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
@@ -62,7 +62,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
 
     it('should return only 1 items if only pluginStateClearFormatting is defined', () => {
         const { editorView } = editor(doc(p('text')));
-        const toolbarOption = shallow(
+        const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
@@ -70,6 +70,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 softBlurEditor={noop}
             />
         );
+        toolbarOption.find(ToolbarButton).simulate('click');
         expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(1);
     });
 

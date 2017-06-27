@@ -8,6 +8,7 @@ import { doc, p, makeEditor, fixtures, emoji } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
+import ProviderFactory from '../../../src/providerFactory';
 
 const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiData.emojiTestData.grinEmoji;
@@ -17,12 +18,11 @@ const grinEmojiId = {
   fallback: grinEmoji.fallback,
 };
 
-// Tara, enable it when you can :)
-describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
+describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: emojiPlugins(defaultSchema),
+    plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()
   });
 
@@ -61,7 +61,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginState={pluginState} emojiProvider={emojiProvider} editorView={editorView} />);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     const onSelection = toolbarEmojiPicker.find(AkEmojiPicker).prop('onSelection');
-    onSelection(grinEmojiId, grinEmoji);
+    onSelection!(grinEmojiId, grinEmoji);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(

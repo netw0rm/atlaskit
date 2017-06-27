@@ -5,12 +5,14 @@ export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
-import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
+import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
+  const { $from } = view.state.selection;
 
-  if (name !== blockTypes.BLOCK_QUOTE.name && name !== blockTypes.PANEL.name) {
+  if (name !== blockTypes.BLOCK_QUOTE.name && name !== blockTypes.PANEL.name &&
+    $from.node($from.depth - 1).type.name !== 'listItem') {
     if (view.state.selection.$from.depth > 1) {
       view.dispatch(liftSelection(view.state.tr, view.state.doc, view.state.selection.$from, view.state.selection.$to).tr);
     }
@@ -106,31 +108,35 @@ export function adjustSelectionInList(doc, selection: TextSelection): TextSelect
   return new TextSelection(doc.resolve(startPos), doc.resolve(endPos));
 }
 
-
 export function preventDefault(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
+  return function (state, dispatch) {
     return true;
   };
 }
 
 export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
-    view.dispatch(view.state.tr.setSelection(adjustSelectionInList(state.doc, state.selection as TextSelection)));
+    dispatch(state.tr.setSelection(adjustSelectionInList(state.doc, state.selection as TextSelection)));
     state = view.state;
 
     const { $from, $to } = state.selection;
-    const grandgrandParent = $from.node(-2);
+    const parent = $from.node(-2);
+    const grandgrandParent = $from.node(-3);
     const isRangeOfSingleType = isRangeOfType(state.doc, $from, $to, state.schema.nodes[listType]);
 
-    if (grandgrandParent && grandgrandParent.type === state.schema.nodes[listType] && isRangeOfSingleType) {
+    if ((parent && parent.type === state.schema.nodes[listType] ||
+      grandgrandParent && grandgrandParent.type === state.schema.nodes[listType]) &&
+      isRangeOfSingleType
+    ) {
       // Untoggles list
       return liftListItems()(state, dispatch);
     } else {
       // Wraps selection in list and converts list type e.g. bullet_list -> ordered_list if needed
       if (!isRangeOfSingleType) {
-        liftListItems()(view.state, view.dispatch);
+        liftListItems()(state, dispatch);
+        state = view.state;
       }
-      return wrapInList(state.schema.nodes[listType])(view.state, view.dispatch, view);
+      return wrapInList(state.schema.nodes[listType])(state, dispatch);
     }
   };
 }
@@ -144,28 +150,27 @@ export function toggleOrderedList(): Command {
 }
 
 export function wrapInList(nodeType): Command {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean => {
-    return baseCommand.autoJoin(
-      baseListCommand.wrapInList(nodeType) as any,
-      (before, after) => before.type === after.type && before.type === nodeType
-    )(view.state, view.dispatch);
-  };
+  return baseCommand.autoJoin(
+    baseListCommand.wrapInList(nodeType),
+    (before, after) => before.type === after.type && before.type === nodeType
+  );
 }
 
 export function splitListItem(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     return baseListCommand.splitListItem(state.schema.nodes.listItem)(state, dispatch);
   };
 }
 
 export function liftListItems(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { tr } = state;
     const { $from, $to } = state.selection;
-    const { paragraph } = state.schema.nodes;
 
     tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      if (node.type === paragraph) {
+      // Following condition will ensure that block types paragraph, heading, codeBlock, blockquote, panel are lifted.
+      // isTextblock is true for paragraph, heading, codeBlock.
+      if (node.isTextblock || node.type.name === 'blockquote' || node.type.name === 'panel') {
         const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
         const range = sel.$from.blockRange(sel.$to);
 
@@ -190,7 +195,7 @@ export function liftListItems(): Command {
 }
 
 export function toggleCodeBlock(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { $from, $to } = state.selection;
     const currentBlock = $from.parent;
 
@@ -207,7 +212,7 @@ export function toggleCodeBlock(): Command {
 }
 
 export function setNormalText(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { $from: initialFrom } = state.selection;
     const currentBlock = initialFrom.parent;
 
@@ -222,7 +227,7 @@ export function setNormalText(): Command {
 }
 
 export function toggleHeading(level: number): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { $from: initialFrom } = state.selection;
     const currentBlock = initialFrom.parent;
     const { tr, $from, $to } = splitCodeBlockAtSelection(state);
@@ -238,7 +243,7 @@ export function toggleHeading(level: number): Command {
 }
 
 export function createCodeBlockFromFenceFormat(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { codeBlock } = state.schema.nodes;
     const { $from } = state.selection;
     const parentBlock = $from.parent;
@@ -277,15 +282,15 @@ export function createCodeBlockFromFenceFormat(): Command {
 }
 
 export function showLinkPanel(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
-    const pluginState = hyperlinkPluginStateKey.getState(view.state);
+  return function (state, dispatch, view) {
+    const pluginState = hyperlinkPluginStateKey.getState(state);
     pluginState.showLinkPanel(view);
     return true;
   };
 }
 
 export function insertNewLine(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { $from } = state.selection;
     const node = $from.parent;
     const { hardBreak } = state.schema.nodes;
@@ -305,7 +310,7 @@ export function insertNewLine(): Command {
 }
 
 export function insertRule(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { to } = state.selection;
     const { rule } = state.schema.nodes;
     if (rule) {
@@ -318,7 +323,7 @@ export function insertRule(): Command {
 }
 
 export function indentList(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { listItem } = state.schema.nodes;
     const { $from } = state.selection;
     if ($from.node(-1).type === listItem) {
@@ -329,7 +334,7 @@ export function indentList(): Command {
 }
 
 export function outdentList(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const { listItem } = state.schema.nodes;
     const { $from } = state.selection;
     if ($from.node(-1).type === listItem) {
@@ -340,7 +345,7 @@ export function outdentList(): Command {
 }
 
 export function createNewParagraphAbove(view: EditorView): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const append = false;
 
     if (!canMoveUp(state) && canCreateParagraphNear(state)) {
@@ -353,7 +358,7 @@ export function createNewParagraphAbove(view: EditorView): Command {
 }
 
 export function createNewParagraphBelow(view: EditorView): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     const append = true;
 
     if (!canMoveDown(state) && canCreateParagraphNear(state)) {
@@ -471,7 +476,7 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 }
 
 function toggleNodeType(nodeType: NodeType): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  return function (state, dispatch) {
     let { $from: selFrom } = state.selection;
     const potentialNodePresent = selFrom.node(selFrom.depth - 1);
 
@@ -479,7 +484,7 @@ function toggleNodeType(nodeType: NodeType): Command {
     if (potentialNodePresent.type !== nodeType) {
       let { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
-      if ($from.depth > 1) {
+      if ($from.depth > 1 && $from.node($from.depth - 1).type.name !== 'listItem') {
         const result = liftSelection(tr, state.doc, $from, $to);
         tr = result.tr;
         $from = result.$from;
@@ -496,5 +501,5 @@ function toggleNodeType(nodeType: NodeType): Command {
 }
 
 export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean;
+  (state: EditorState<any>, dispatch: (tr: Transaction) => void, view?: EditorView): boolean;
 }

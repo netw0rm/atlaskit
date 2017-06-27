@@ -5,12 +5,13 @@ import Avatar from '@atlaskit/avatar';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
-import NothingWasFound from '../../src/internal/NothingWasFound';
 
-import styles from '../../src/styles.less';
-import { StatelessMultiSelect } from '../../src';
-import Trigger from '../../src/internal/Trigger';
-import Footer from '../../src/internal/Footer';
+import { MultiSelectStateless } from '../../src';
+import { SelectWrapper } from '../../src/styled/Stateless';
+import NoMatches from '../../src/styled/NoMatch';
+import { TriggerDiv } from '../../src/styled/Trigger';
+import Footer from '../../src/components/Footer';
+import FooterDiv from '../../src/styled/Footer';
 
 import { name } from '../../package.json';
 
@@ -26,42 +27,58 @@ describe(`${name} - stateless`, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<StatelessMultiSelect />).isEmpty()).to.equal(false);
+      expect(shallow(<MultiSelectStateless />).isEmpty()).to.equal(false);
     });
 
     it('should render with correct CSS class name', () => {
-      expect(mount(<StatelessMultiSelect />).find(`.${styles.selectWrapper}`).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(SelectWrapper).length).to.equal(1);
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<StatelessMultiSelect />).find(Label).length).to.equal(0);
-      expect(mount(<StatelessMultiSelect label="test" />).find(Label).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(Label).length).to.equal(0);
+      expect(mount(<MultiSelectStateless label="test" />).find(Label).length).to.equal(1);
     });
 
     it('should render Droplist', () => {
-      expect(mount(<StatelessMultiSelect />).find(Droplist).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(Droplist).length).to.equal(1);
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessMultiSelect />).find(FieldBase).length).to.equal(1);
-      expect(mount(<StatelessMultiSelect />).find(Droplist).find(FieldBase).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(FieldBase).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(Droplist).find(FieldBase).length).to.equal(1);
     });
 
     it('should render Trigger inside Fieldbase', () => {
-      expect(mount(<StatelessMultiSelect />).find(Trigger).length).to.equal(1);
-      expect(mount(<StatelessMultiSelect />).find(FieldBase).find(Trigger).length).to.equal(1);
+      const wrapper = mount(<MultiSelectStateless />);
+      expect(wrapper.find(TriggerDiv).length).to.equal(1);
+      expect(wrapper.find(FieldBase).find(TriggerDiv).length).to.equal(1);
     });
 
     it('should render Footer if shouldAllowCreateItem is true and the search value is not empty', () => {
-      expect(mount(<StatelessMultiSelect filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).to.equal(1);
+      expect(mount(<MultiSelectStateless filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).to.equal(1);
     });
 
-    it('should NOT render Footer if shouldAllowCreateItem is false', () => {
-      expect(mount(<StatelessMultiSelect filterValue="test" isOpen />).find(Footer).length).to.equal(0);
+    it('should NOT render Footer if shouldAllowCreateItem is false and footer is not passed', () => {
+      expect(mount(<MultiSelectStateless filterValue="test" isOpen />).find(FooterDiv).length).to.equal(0);
     });
 
     it('should render search text and label in the footer when shouldAllowCreateItem is true', () => {
-      const wrapper = mount(<StatelessMultiSelect createNewItemLabel="new" filterValue="test" isOpen shouldAllowCreateItem />);
+      const wrapper = mount(<MultiSelectStateless createNewItemLabel="new" filterValue="test" isOpen shouldAllowCreateItem />);
+      expect(wrapper.find(Footer).text()).to.equal('test (new)');
+    });
+
+    it('should render Footer if footer`s content prop is passed', () => {
+      const footer = {
+        content: 'footer',
+      };
+      const wrapper = mount(<MultiSelectStateless footer={footer} isOpen />);
+      expect(wrapper.find(Footer).length).to.equal(1);
+      expect(wrapper.find(Footer).text()).to.equal('footer');
+    });
+
+    it('if shouldAllowCreateItem and footer are passed at the same time, "new item" footer has the priority and general footer shouldnt be rendered', () => {
+      const footer = <div>footer</div>;
+      const wrapper = mount(<MultiSelectStateless createNewItemLabel="new" filterValue="test" footer={footer} isOpen shouldAllowCreateItem />);
       expect(wrapper.find(Footer).text()).to.equal('test (new)');
     });
 
@@ -101,7 +118,7 @@ describe(`${name} - stateless`, () => {
       ];
 
       it('should render groups and items inside Droplist (when open)', () => {
-        const select = mount(<StatelessMultiSelect items={items} isOpen />);
+        const select = mount(<MultiSelectStateless items={items} isOpen />);
         expect(select.find(Group).length).to.equal(1);
         expect(select.find(Item).length).to.equal(2);
         expect(select.find(Group).find(Item).length).to.equal(2);
@@ -109,7 +126,7 @@ describe(`${name} - stateless`, () => {
 
       it('should not render a group if all items in that group are selected', () => {
         const selectedItems = [items[0].items[0], items[0].items[1]];
-        const select = mount(<StatelessMultiSelect
+        const select = mount(<MultiSelectStateless
           items={items}
           selectedItems={selectedItems}
           isOpen
@@ -119,7 +136,7 @@ describe(`${name} - stateless`, () => {
 
       it('should render 3 groups with all non-selected items', () => {
         const selectedItems = [itemsIn3Groups[0].items[0], itemsIn3Groups[1].items[1]];
-        const select = mount(<StatelessMultiSelect
+        const select = mount(<MultiSelectStateless
           items={itemsIn3Groups}
           selectedItems={selectedItems}
           isOpen
@@ -133,7 +150,7 @@ describe(`${name} - stateless`, () => {
 
       it('should not render a group if all items in the group are selected', () => {
         const selectedItems = [itemsIn3Groups[1].items[0], itemsIn3Groups[1].items[1]];
-        const select = mount(<StatelessMultiSelect
+        const select = mount(<MultiSelectStateless
           items={itemsIn3Groups}
           selectedItems={selectedItems}
           isOpen
@@ -147,13 +164,13 @@ describe(`${name} - stateless`, () => {
       });
 
       it('should render a no matches found if there is no item at all', () => {
-        const select = mount(<StatelessMultiSelect
+        const select = mount(<MultiSelectStateless
           items={[]}
           selectedItems={[]}
           isOpen
         />);
 
-        expect(select.find(NothingWasFound).length).to.equal(1);
+        expect(select.find(NoMatches).length).to.equal(1);
       });
 
       it('should render a no matches found if all items are selected', () => {
@@ -162,13 +179,13 @@ describe(`${name} - stateless`, () => {
           .map(group => group.items)
           .reduceRight((prev, curr) => prev.concat(curr));
 
-        const select = mount(<StatelessMultiSelect
+        const select = mount(<MultiSelectStateless
           items={itemsIn3Groups}
           selectedItems={selectedItems}
           isOpen
         />);
 
-        expect(select.find(NothingWasFound).length).to.equal(1);
+        expect(select.find(NoMatches).length).to.equal(1);
       });
 
       it('should not render a no matches found message if at least an item is available in dropdown', () => {
@@ -180,17 +197,17 @@ describe(`${name} - stateless`, () => {
           itemsIn3Groups[2].items[0],
         ];
 
-        const select = mount(<StatelessMultiSelect
+        const select = mount(<MultiSelectStateless
           items={itemsIn3Groups}
           selectedItems={selectedItems}
           isOpen
         />);
 
-        expect(select.find(NothingWasFound).length).to.equal(0);
+        expect(select.find(NoMatches).length).to.equal(0);
       });
 
       it('should filter selected items by their values not reference', () => {
-        const select = mount(<StatelessMultiSelect
+        const select = mount(<MultiSelectStateless
           items={items}
           selectedItems={[{ content: 'new', value: 2 }]}
           isOpen
@@ -212,7 +229,7 @@ describe(`${name} - stateless`, () => {
           ],
         },
       ];
-      const select = mount(<StatelessMultiSelect items={items} isOpen />);
+      const select = mount(<MultiSelectStateless items={items} isOpen />);
 
       expect(select.find(Avatar).length).to.equal(2);
     });
@@ -233,7 +250,7 @@ describe(`${name} - stateless`, () => {
           ],
         },
       ];
-      const select = mount(<StatelessMultiSelect
+      const select = mount(<MultiSelectStateless
         isOpen
         id="testId"
         name="testName"
@@ -261,20 +278,20 @@ describe(`${name} - stateless`, () => {
     const selectedItems = [items[0].items[0], items[0].items[1]];
 
     it('should render selectedTags', () => {
-      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const wrapper = mount(<MultiSelectStateless items={items} selectedItems={selectedItems} />);
       const tagGroup = wrapper.find(TagGroup);
       expect(tagGroup.find(Tag).length).to.equal(2);
     });
 
     it('should pass on tag.elemBefore prop to selected tags', () => {
-      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const wrapper = mount(<MultiSelectStateless items={items} selectedItems={selectedItems} />);
       const tagGroup = wrapper.find(TagGroup);
       expect(tagGroup.find(Tag).length).to.equal(2);
       expect(tagGroup.find(Avatar).length).to.equal(1);
     });
 
     it('should pass on tag.appearance prop to selected tags', () => {
-      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const wrapper = mount(<MultiSelectStateless items={items} selectedItems={selectedItems} />);
       const tagGroup = wrapper.find(TagGroup);
       expect(tagGroup.find(Tag).length).to.equal(2);
       expect(tagGroup.find(Tag).at(0).prop('appearance')).to.equal('rounded');

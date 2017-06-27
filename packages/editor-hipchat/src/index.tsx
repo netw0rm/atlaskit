@@ -1,6 +1,7 @@
 import {
   AnalyticsHandler,
   analyticsService,
+  asciiEmojiPlugins,
   baseKeymap,
   blockTypePlugins,
   EditorState,
@@ -40,8 +41,8 @@ import {
   ErrorReporter,
   ErrorReportingHandler,
 } from '@atlaskit/editor-core';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MentionProvider } from '@atlaskit/mention';
+import { EmojiProvider } from '@atlaskit/editor-core';
+import { MentionProvider } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -49,6 +50,16 @@ import { HCSchema, default as schema } from './schema/schema';
 import { version } from './version';
 import { hipchatEncoder } from './encoders';
 import { hipchatDecoder } from './decoders';
+
+export {
+  AbstractMentionResource,
+  EmojiProvider,
+  EmojiResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/editor-core';
 
 let debounced: number | null = null;
 
@@ -238,6 +249,8 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.providerFactory.destroy();
+
     const { editorView } = this.state;
     if (editorView) {
       if (editorView.state) {
@@ -320,6 +333,7 @@ export default class Editor extends PureComponent<Props, State> {
         ...mentionsPlugins(schema),
         ...mediaPlugins,
         ...emojisPlugins(schema),
+        ...asciiEmojiPlugins(schema, this.props.emojiProvider),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         ...reactNodeViewPlugins(schema),

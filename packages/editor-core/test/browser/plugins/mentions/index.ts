@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mention as mentionNode } from '../../../../src';
 import mentionsPlugins from '../../../../src/plugins/mentions';
+import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
   fixtures,
@@ -19,10 +20,10 @@ import {
   code,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { resourceProvider } from '../../../../stories/mentions/story-data';
+import { mention as mentionData } from '@atlaskit/util-data-test';
 
 const mentionProvider = new Promise<any>(resolve => {
-  resolve(resourceProvider);
+  resolve(mentionData.mentionStoryData.resourceProvider);
 });
 
 chai.use(chaiPlugin);
@@ -31,7 +32,7 @@ describe('mentions', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: mentionsPlugins(defaultSchema),
+    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()
   });
 

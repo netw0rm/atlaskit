@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji } from '../../TestData';
+import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAhead';
@@ -31,7 +31,8 @@ const leftClick = {
 };
 
 const findEmojiItems = (component) => component.find(EmojiTypeAheadItem);
-const itemsVisible = (component) => findEmojiItems(component).length > 0;
+const itemsVisibleCount = (component) => findEmojiItems(component).length;
+const itemsVisible = (component) => itemsVisibleCount(component) > 0;
 const doneLoading = (component: ReactWrapper<TypeAheadProps, TypeAheadState>) => !component.state('loading');
 
 describe('EmojiTypeAhead', () => {
@@ -247,8 +248,40 @@ describe('EmojiTypeAhead', () => {
       const placeholders = emojiItems.find(EmojiPlaceholder);
       expect(placeholders.length).to.equal(1);
       const props = placeholders.get(0).props;
-      expect(props.name, 'name').to.equals(mediaEmoji.name);
       expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
+    });
+  });
+
+  it('should retain selected match across search refinement', () => {
+    const component = setupPicker({
+      query: 'fla',
+    } as Props);
+    const blackFlagId: EmojiId = {
+      ...blackFlagEmoji
+    };
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      let item = getEmojiTypeAheadItemById(component, blackFlagId.id);
+      item.prop('onMouseMove')(blackFlagId, blackFlagEmoji, item.simulate('mouseover'));
+      expect(isEmojiTypeAheadItemSelected(component, blackFlagId.id)).to.equal(true);
+
+      const itemCount = itemsVisibleCount(component);
+      component.setProps({ query: 'flag_b' });
+
+      return waitUntil(() => itemsVisibleCount(component) < itemCount).then(() => {
+        expect(isEmojiTypeAheadItemSelected(component, blackFlagId.id)).to.equal(true);
+      });
+    });
+  });
+
+  it('should default to exact ascii selection first', () => {
+    const component = setupPicker({
+      query: ':O',
+    } as Props);
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(itemsVisibleCount(component) > 1, 'Items visible').to.equal(true);
+      expect(isEmojiTypeAheadItemSelected(component, openMouthEmoji.id), 'Open mouth emoji should be selected').to.equal(true);
     });
   });
 });

@@ -8,6 +8,7 @@ import {MouseInput} from './components/mouseInput';
 import {Toolbar} from './components/toolbar';
 import {InputCommand, KeyboardInput} from './components/keyboardInput';
 import {ImageReceiver} from './components/imageReceiver';
+import {ShapeDeleter} from './components/shapeDeleter';
 
 import {BitmapExporter} from './core/bitmapExporter';
 import {BitmapProvider} from './core/bitmaps/bitmapProvider';
@@ -28,6 +29,7 @@ export interface EngineConfig {
   toolbar: Toolbar;
   keyboardInput: KeyboardInput;
   imageReceiver: ImageReceiver;
+  shapeDeleter: ShapeDeleter;
 }
 
 const defaultFormat = 'image/png';
@@ -70,13 +72,13 @@ export class Engine {
 
   private addComponentsToResourceManager(): void {
     const {drawingArea: di, imageProvider: ip, mouseInput: mi, toolbar: tb,
-           keyboardInput: ki, imageReceiver: ir} = this.config;
+           keyboardInput: ki, imageReceiver: ir, shapeDeleter: sd} = this.config;
 
-    [di, ip, mi, tb, ki, ir].forEach(component => this.resourceManager.add(component));
+    [di, ip, mi, tb, ki, ir, sd].forEach(component => this.resourceManager.add(component));
   }
 
   private subscribeToComponentsSignals(): void {
-    const {drawingArea, mouseInput, toolbar, keyboardInput} = this.config;
+    const {drawingArea, mouseInput, toolbar, keyboardInput, shapeDeleter} = this.config;
 
     drawingArea.resize.listen((size) => {
       this.veCall('resize', ve => ve.resize(size));
@@ -101,6 +103,8 @@ export class Engine {
       const textCommand = this.toTextCommand(command);
       return ve.textCommand(textCommand);
     }));
+
+    shapeDeleter.deleteShape.listen(() => this.veCall('delete shape', ve => ve.deleteShape()));
   }
 
   private createNativeCore(): void {
@@ -110,7 +114,7 @@ export class Engine {
   }
 
   private initModule(): void {
-    const {drawingArea, toolbar, keyboardInput, imageReceiver} = this.config;
+    const {drawingArea, toolbar, keyboardInput, imageReceiver, shapeDeleter} = this.config;
 
     const contextHolder = new ContextHolder(drawingArea);
     this.resourceManager.add(contextHolder);
@@ -149,6 +153,15 @@ export class Engine {
     this.module.bitmapExporter = this.bitmapExporter;
 
     this.module.handleScrollChanged = () => {};
+    this.module.handleUndoRedoStateChanged = () => {};
+
+    this.module.handleDeleteShapeStateChanged = (canDelete: boolean) => {
+      if (canDelete) {
+        shapeDeleter.deleteEnabled();
+      } else {
+        shapeDeleter.deleteDisabled();
+      }
+    };
   }
 
   private createVeEngine(): void {

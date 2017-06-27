@@ -8,7 +8,7 @@ import {
   UploadParams,
 } from '@atlaskit/media-core';
 
-import { MediaType } from './../../schema/nodes/media';
+import { copyOptionalAttrs, MediaType } from './../../schema/nodes/media';
 import {
   EditorState,
   EditorView,
@@ -28,20 +28,16 @@ import { ErrorReporter } from '../../utils';
 import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
+import { nodeViewFactory } from '../../nodeviews';
+import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
-export interface MediaNode extends PMNode {
-  fileName?: string;
-  fileSize?: number;
-  fileMimeType?: string;
-}
-
 export interface MediaNodeWithPosHandler {
-  node: MediaNode;
+  node: PMNode;
   getPos: ProsemirrorGetPosHandler;
 }
 
@@ -165,7 +161,7 @@ export class MediaPluginState {
   insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
     const { view } = this;
     const { state } = view;
-    const { id, fileName, fileSize, fileMimeType } = mediaState;
+    const { id } = mediaState;
 
     this.stateManager.subscribe(mediaState.id, this.handleMediaState);
 
@@ -173,19 +169,13 @@ export class MediaPluginState {
       id,
       type: 'file',
       collection
-    }) as MediaNode;
+    });
 
-    if (fileName) {
-      node.fileName = fileName;
-    }
-
-    if (fileSize) {
-      node.fileSize = fileSize;
-    }
-
-    if (fileMimeType) {
-      node.fileMimeType = fileMimeType;
-    }
+    ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
+      if (mediaState[key]) {
+        node.attrs[`__${key}`] = mediaState[key];
+      }
+    });
 
     let transaction;
 
@@ -518,25 +508,13 @@ export class MediaPluginState {
       node: mediaNode,
     } = mediaNodeWithPos;
 
-    const newNode: MediaNode = view.state.schema.nodes.media!.create({
+    const newNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
       id: publicId,
     });
 
-    // copy file-* attributes from old node
-    const { fileSize, fileName, fileMimeType } = mediaNode;
-
-    if (fileName) {
-      newNode.fileName = fileName;
-    }
-
-    if (fileSize) {
-      newNode.fileSize = fileSize;
-    }
-
-    if (fileMimeType) {
-      newNode.fileMimeType = fileMimeType;
-    }
+    // Copy all optional attributes from old node
+    copyOptionalAttrs(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -618,6 +596,12 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       return {};
     },
     props: {
+      nodeViews: {
+        mediaGroup: nodeViewFactory(options.providerFactory, {
+          mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+      },
       handleDOMEvents: {
         paste(view: EditorView, event: ClipboardEvent) {
           const pluginState: MediaPluginState = stateKey.getState(view.state);

@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import mentionsPlugins from '../../../../src/plugins/mentions';
+import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
   fixtures,
@@ -11,7 +12,7 @@ import {
   code_block,
   code,
 } from '../../../../src/test-helper';
-import { resourceProvider } from '../../../../stories/mentions/story-data';
+import { mention as mentionData } from '@atlaskit/util-data-test';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -20,14 +21,14 @@ describe('mentions - input rules', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: mentionsPlugins(defaultSchema),
+    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()
   });
 
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel } = editor(doc(docContents || p('{<>}')));
     return pluginState
-      .setMentionProvider(Promise.resolve(resourceProvider))
+      .setMentionProvider(Promise.resolve(mentionData.mentionStoryData.resourceProvider))
       .then(() => {
         insertText(editorView, what, sel);
 

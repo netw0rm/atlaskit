@@ -40,22 +40,9 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
 
 const isListNode = (node: Node) => node.type.name === 'bulletList' || node.type.name === 'orderedList';
 
-const closeListItemChild = (state: MarkdownSerializerState, node: Node, parent: Node, index: number) => {
-  if (parent.type.name === 'listItem' &&
-    (parent.childCount > (index + 1) || isListNode(node)) &&
-    !(node.type.name === 'paragraph' && index === 0)
-  ) {
-    state.closeBlock(node);
-    state.flushClose(2);
-    return true;
-  }
-  return false;
-};
-
 const nodes = {
   blockquote(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
-    closeListItemChild(state, node, parent, index);
   },
   codeBlock(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     if (!node.attrs.language) {
@@ -67,54 +54,56 @@ const nodes = {
       state.ensureNewLine();
       state.write(backticks);
     }
-    if (!closeListItemChild(state, node, parent, index)) {
-      state.closeBlock(node);
-    }
+    state.closeBlock(node);
   },
   heading(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.write(state.repeat('#', node.attrs.level) + ' ');
     state.renderInline(node);
-    if (!closeListItemChild(state, node, parent, index)) {
-      state.closeBlock(node);
-    }
+    state.closeBlock(node);
   },
   rule(state: MarkdownSerializerState, node: Node) {
     state.write(node.attrs.markup || '---');
     state.closeBlock(node);
   },
   bulletList(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
-    node.attrs.tight = true;
-    state.renderList(node, '    ', () => (node.attrs.bullet || '*') + ' ');
-    closeListItemChild(state, node, parent, index);
+    for (let i = 0; i < node.childCount; i++) {
+      const child = node.child(i);
+      state.render(child, node, i);
+    }
   },
   orderedList(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
-    node.attrs['tight'] = true;
-    const start = node.attrs['order'] || 1;
-    const maxW = String(start + node.childCount - 1).length;
-    // The reason that this is 3 is because maxW is always max list number's length.
-    // For example, if max list number is 8, then the space for the next list item should be '8'.length + 3, which is 4 spaces.
-    // It is consistent with bullet list that has 4 spaces in front of list item.
-    // If the max nubmer is 10, then the space for the next list item should be '10'.length + 3, which is 5 spaces.
-    // So that they are well aligned.
-    const space = state.repeat(' ', maxW + 3);
-    state.renderList(node, space, (i: number) => {
-      const nStr = String(start + i);
-      return state.repeat(' ', maxW - nStr.length) + nStr + '. ';
-    });
-    closeListItemChild(state, node, parent, index);
+    for (let i = 0; i < node.childCount; i++) {
+      const child = node.child(i);
+      state.render(child, node, i);
+    }
   },
-  listItem(state: MarkdownSerializerState, node: Node) {
-    state.renderContent(node);
-    // When there's more than one item in a list item if they are not a nested list (ol/ul) insert a blank line
-    if (node.childCount > 1 && node.lastChild && !isListNode(node.lastChild)) {
+  listItem(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
+    const delimiter = parent.type.name === 'bulletList' ? '* ' : `${index + 1}. `;
+    for (let i = 0; i < node.childCount; i++) {
+      const child = node.child(i);
+      if (child.type.name === 'codeBlock' && i === 0) {
+        state.write(delimiter);
+      }
+      if (!(child.type.name === 'paragraph' && i === 0)) {
+        state.write('\n');
+      }
+      if (!isListNode(child) && i === 0 && child.type.name !== 'codeBlock') {
+        state.wrapBlock('  ', delimiter, node, () => state.render(child, parent, i));
+      } else {
+        state.wrapBlock('    ', null, node, () => state.render(child, parent, i));
+      }
+      if (!(child.type.name === 'paragraph' && i === 0) && !isListNode(child)) {
+        state.write('\n');
+      }
+      state.flushClose(1);
+    }
+    if (index === parent.childCount - 1) {
       state.write('\n');
     }
   },
   paragraph(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.renderInline(node);
-    if (!closeListItemChild(state, node, parent, index)) {
-      state.closeBlock(node);
-    }
+    state.closeBlock(node);
   },
   image(state: MarkdownSerializerState, node: Node) {
     // Note: the 'title' is not escaped in this flavor of markdown.

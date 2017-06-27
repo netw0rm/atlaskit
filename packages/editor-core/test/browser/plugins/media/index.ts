@@ -16,7 +16,6 @@ import {
   nodeViewFactory,
   ReactMediaGroupNode,
   ReactMediaNode,
-  reactNodeViewPlugins,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
@@ -56,7 +55,6 @@ describe('Media plugin', () => {
   const editor = (doc: any, uploadErrorHandler?: () => void) => {
     const plugins = [
       ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
-      ...reactNodeViewPlugins(defaultSchema),
       history(),
     ];
 
@@ -87,6 +85,10 @@ describe('Media plugin', () => {
 
     return mediaNodeWithPos!.getPos();
   };
+
+  after(() => {
+    providerFactory.destroy();
+  });
 
   it('allows change handler to be registered', () => {
     const pluginState = editor(doc(p(''))).pluginState as MediaPluginState;
@@ -535,5 +537,18 @@ describe('Media plugin', () => {
         p(),
       ),
     );
+  });
+
+  it(`should copy optional attributes from MediaState to Node attrs`, () => {
+    const { editorView, pluginState } = editor(doc(p('{<>}')));
+
+    const [node, transaction] = pluginState.insertFile({
+      id: testFileId, status: 'uploading', fileName: 'foo.png', fileSize: 1234, fileMimeType: 'image/png'
+    }, testCollectionName);
+    editorView.dispatch(transaction);
+
+    expect(node.attrs.__fileName).to.equal('foo.png');
+    expect(node.attrs.__fileSize).to.equal(1234);
+    expect(node.attrs.__fileMimeType).to.equal('image/png');
   });
 });

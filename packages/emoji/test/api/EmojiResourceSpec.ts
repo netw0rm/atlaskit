@@ -854,6 +854,48 @@ describe('EmojiResource', () => {
     });
   });
 
+  describe('#findById', () => {
+    it('unknown id', () => {
+      let resolveProvider1;
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: new Promise(resolve => {
+          resolveProvider1 = resolve;
+        }),
+      });
+
+      const resource = new EmojiResource(defaultApiConfig);
+
+      const emojiPromise = resource.findById('unknownid');
+      const done = emojiPromise.then(emoji => {
+        expect(emoji).to.equal(undefined);
+      });
+      resolveProvider1(providerServiceData1);
+      return done;
+    });
+
+    it('valid emoji id', () => {
+      let resolveProvider1;
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: new Promise(resolve => {
+          resolveProvider1 = resolve;
+        }),
+      });
+
+      const resource = new EmojiResource(defaultApiConfig);
+
+      const emojiPromise = resource.findById('1f601');
+      const done = emojiPromise.then(emoji => {
+        checkEmoji(grinEmoji, emoji);
+      });
+      resolveProvider1(providerServiceData1);
+      return done;
+    });
+  });
+
   describe('#findByShortName', () => {
     it('Before loaded, promise eventually resolved; one provider', () => {
       let resolveProvider1;
@@ -1177,9 +1219,11 @@ describe('UploadingEmojiResource', () => {
   class TestUploadingEmojiResource extends EmojiResource {
     private mockMediaEmojiResource?: MediaEmojiResource;
 
-    constructor(mockMediaEmojiResource?: MediaEmojiResource) {
+    constructor(mockMediaEmojiResource?: MediaEmojiResource, config?: EmojiResourceConfig) {
       super({
         providers: [provider1],
+        allowUpload: true,
+        ...config,
       });
       this.mockMediaEmojiResource = mockMediaEmojiResource;
     }
@@ -1199,6 +1243,13 @@ describe('UploadingEmojiResource', () => {
 
     it('resource has no media support', () => {
       const emojiResource = new TestUploadingEmojiResource();
+      return emojiResource.isUploadSupported().then(supported => {
+        expect(supported, 'Upload is not supported').to.equal(false);
+      });
+    });
+
+    it('allowUpload is false', () => {
+      const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(MediaEmojiResource) as any, { allowUpload: false } as EmojiResourceConfig);
       return emojiResource.isUploadSupported().then(supported => {
         expect(supported, 'Upload is not supported').to.equal(false);
       });
@@ -1270,8 +1321,10 @@ describe('UploadingEmojiResource', () => {
 
 describe('helpers', () => {
   class TestEmojiProvider implements EmojiProvider {
+    getAsciiMap = () => Promise.resolve(new Map([[grinEmoji.ascii![0], grinEmoji]]));
     findByShortName = shortName => Promise.resolve(evilburnsEmoji);
     findByEmojiId = emojiId => Promise.resolve(evilburnsEmoji);
+    findById = emojiIdStr => Promise.resolve(evilburnsEmoji);
     findInCategory = categoryId => Promise.resolve([]);
     filter = (query, options) => {};
     subscribe = onChange => {};

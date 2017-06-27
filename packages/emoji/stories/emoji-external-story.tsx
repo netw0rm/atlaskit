@@ -32,13 +32,29 @@ storiesOf(`${name}/external-emoji`, module)
     const picker = (
       <EmojiPickerTextInput
         onSelection={action('emoji selected')}
-        position="below"
         emojiProvider={defaultEmojiProvider}
       />
     );
     return (
       <ResourcedEmojiControl
         emojiConfig={emojiConfig}
+        children={picker}
+      />
+    );
+  })
+  .add('resourced picker - allow uploads', () => {
+    const picker = (
+      <EmojiPickerTextInput
+        onSelection={action('emoji selected')}
+        emojiProvider={defaultEmojiProvider}
+      />
+    );
+    return (
+      <ResourcedEmojiControl
+        emojiConfig={{
+          ...emojiConfig,
+          allowUpload: true,
+        }}
         children={picker}
       />
     );

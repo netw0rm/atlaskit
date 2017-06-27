@@ -3,7 +3,7 @@ import {
   akColorN80, akColorB500, akColorB200, akColorG500, akColorG200,
   akColorY500, akColorY100, akColorR500, akColorR100, akColorP500, akColorP200,
 } from '@atlaskit/util-shared-styles';
-import { FONT_STYLE } from '../groups';
+import { COLOR } from '../groups';
 
 export interface TextColorMark extends Mark {
   attrs: {
@@ -24,23 +24,23 @@ const rgbToHex = (value: string): string | undefined => {
 export const colorPalette = new Map<string, string>();
 [
   // [akColorN80, default],
-  [akColorN80, 'Light grey'],
   [akColorB500, 'Blue'],
-  [akColorB200, 'Light blue'],
   [akColorG500, 'Green'],
-  [akColorG200, 'Light green'],
   [akColorY500, 'Orange'],
-  [akColorY100, 'Yellow'],
   [akColorR500, 'Red'],
-  [akColorR100, 'Pink'],
   [akColorP500, 'Purple'],
+  [akColorN80, 'Light grey'],
+  [akColorB200, 'Light blue'],
+  [akColorG200, 'Light green'],
+  [akColorY100, 'Yellow'],
+  [akColorR100, 'Pink'],
   [akColorP200, 'Light purple'],
 ].forEach(([color, label]) => colorPalette.set(color.toLowerCase(), label));
 
 export const textColor: MarkSpec = {
   attrs: { color: { } },
   inclusive: true,
-  group: FONT_STYLE,
+  group: COLOR,
   parseDOM: [
     {
       style: 'color',

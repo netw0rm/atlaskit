@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { FieldBaseStateless as FieldBase } from '@atlaskit/field-base';
-import { StatelessMultiSelect } from '../../src';
-import Trigger from '../../src/internal/Trigger';
+import { FieldBaseStateless } from '@atlaskit/field-base';
+import { MultiSelectStateless } from '../../src';
+import Trigger from '../../src/components/Trigger';
 
 import { name } from '../../package.json';
 
@@ -31,7 +31,7 @@ describe(`${name} - stateless`, () => {
     const selectedItems = [selectItems[0].items[1]];
 
     beforeEach(() => {
-      wrapper = mount(<StatelessMultiSelect
+      wrapper = mount(<MultiSelectStateless
         appearance="subtle"
         isDisabled
         items={selectItems}
@@ -44,11 +44,11 @@ describe(`${name} - stateless`, () => {
     });
 
     it('should pass appearance property to field base', () => {
-      expect(wrapper.find(FieldBase).prop('appearance')).to.equal('subtle');
+      expect(wrapper.find(FieldBaseStateless).prop('appearance')).to.equal('subtle');
     });
 
     it('should pass isDisabled property to field base', () => {
-      expect(wrapper.find(FieldBase).prop('isDisabled')).to.equal(true);
+      expect(wrapper.find(FieldBaseStateless).prop('isDisabled')).to.equal(true);
     });
 
     it('should pass isDisabled property to Trigger sub-component', () => {

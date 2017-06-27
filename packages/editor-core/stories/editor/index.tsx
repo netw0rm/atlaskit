@@ -4,20 +4,19 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import applyDevTools from 'prosemirror-dev-tools';
 
-import {
-  Chrome,
-} from '../../';
-import blockTypePlugins, {stateKey as blockTypeStateKey} from '../../src/plugins/block-type';
-import clearFormattingPlugins, {stateKey as clearFormattingStateKey} from '../../src/plugins/clear-formatting';
-import codeBlockPlugins, {stateKey as codeBlockStateKey} from '../../src/plugins/code-block';
-import panelPlugins, {stateKey as panelStateKey} from '../../src/plugins/panel';
-import textFormattingPlugins, {stateKey as textFormattingStateKey} from '../../src/plugins/text-formatting';
-import hyperlinkPlugins, {stateKey as hyperlinkStateKey} from '../../src/plugins/hyperlink';
+import { Chrome } from '../../';
+import blockTypePlugins, { stateKey as blockTypeStateKey } from '../../src/plugins/block-type';
+import clearFormattingPlugins, { stateKey as clearFormattingStateKey } from '../../src/plugins/clear-formatting';
+import codeBlockPlugins, { stateKey as codeBlockStateKey } from '../../src/plugins/code-block';
+import panelPlugins, { stateKey as panelStateKey } from '../../src/plugins/panel';
+import textFormattingPlugins, { stateKey as textFormattingStateKey } from '../../src/plugins/text-formatting';
+import hyperlinkPlugins, { stateKey as hyperlinkStateKey } from '../../src/plugins/hyperlink';
 import rulePlugins from '../../src/plugins/rule';
-import listsPlugins, {stateKey as listsStateKey} from '../../src/plugins/lists';
-import mentionsPlugins, {stateKey as mentionsStateKey} from '../../src/plugins/mentions';
-import emojiPlugins, {stateKey as emojiStateKey} from '../../src/plugins/emojis';
-import tablePlugins, {stateKey as tableStateKey} from '../../src/plugins/table';
+import listsPlugins, { stateKey as listsStateKey } from '../../src/plugins/lists';
+import mentionsPlugins, { stateKey as mentionsStateKey } from '../../src/plugins/mentions';
+import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emojis';
+import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
+import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
 import { reactNodeViewPlugins } from '../../src/plugins';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
@@ -31,12 +30,6 @@ import {
   TextSelection,
   PluginKey
 } from '../../src/prosemirror';
-import {
-  nodeViewFactory,
-  ReactEmojiNode,
-  ReactMentionNode,
-  panelNodeView,
-} from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
@@ -47,12 +40,11 @@ import {
   MediaProvider,
   MediaState,
   Plugin,
-  ReactMediaGroupNode,
-  ReactMediaNode,
 } from '../../src';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
+  devTools?: boolean;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -65,6 +57,8 @@ export interface Props {
   mediaProvider?: Promise<MediaProvider>;
   analyticsHandler?: AnalyticsHandler;
   uploadErrorHandler?: (state: MediaState) => void;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
 }
 
 export interface State {
@@ -84,7 +78,7 @@ export default class Editor extends PureComponent<Props, State> {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
 
-    analyticsService.handler = props.analyticsHandler || ((name) => {});
+    analyticsService.handler = props.analyticsHandler || (name => { });
     this.providerFactory = new ProviderFactory();
   }
 
@@ -93,6 +87,8 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.providerFactory.destroy();
+
     const { editorView } = this.state;
     if (editorView) {
       if (editorView.state) {
@@ -121,7 +117,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
-      providerFactory: this.providerFactory,
+      providerFactory: this.providerFactory
     });
 
     this.setState({
@@ -144,11 +140,9 @@ export default class Editor extends PureComponent<Props, State> {
     this.setState({ isExpanded: true });
   }
 
-
   collapse = () => {
     this.setState({ isExpanded: false });
   }
-
 
   clear(): void {
     const { editorView } = this.state;
@@ -163,9 +157,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   isEmpty(): boolean {
     const { editorView } = this.state;
-    return editorView && editorView.state.doc
-      ? !!editorView.state.doc.textContent
-      : false;
+    return editorView && editorView.state.doc ? !!editorView.state.doc.textContent : false;
   }
 
   get value(): string | undefined {
@@ -174,17 +166,14 @@ export default class Editor extends PureComponent<Props, State> {
 
   get doc(): Node | undefined {
     const { editorView } = this.state;
-    return editorView
-      ? editorView.state.doc
-      : undefined;
+    return editorView ? editorView.state.doc : undefined;
   }
 
   render() {
     const { mentionProvider, emojiProvider } = this.state;
 
-    const getState =
-      (editorState: EditorState<any> | undefined) =>
-      (stateKey: PluginKey) => editorState && stateKey.getState(editorState);
+    const getState = (editorState: EditorState<any> | undefined) => (stateKey: PluginKey) =>
+      editorState && stateKey.getState(editorState);
 
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
@@ -200,7 +189,8 @@ export default class Editor extends PureComponent<Props, State> {
     const panelState = getStateFromKey(panelStateKey);
     const textFormattingState = getStateFromKey(textFormattingStateKey);
     const hyperlinkState = getStateFromKey(hyperlinkStateKey);
-    const mediaState = this.mediaPlugins && this.props.mediaProvider && getStateFromKey(mediaStateKey);
+    const mediaState =
+      this.mediaPlugins && this.props.mediaProvider && getStateFromKey(mediaStateKey);
     const mentionsState = getStateFromKey(mentionsStateKey);
     const emojiState = getStateFromKey(emojiStateKey);
     const textColorState = getStateFromKey(textColorStateKey);
@@ -230,6 +220,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTable={tableState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
+        popupsMountPoint={this.props.popupsMountPoint}
+        popupsBoundariesElement={this.props.popupsBoundariesElement}
       />
     );
   }
@@ -259,53 +251,46 @@ export default class Editor extends PureComponent<Props, State> {
     const { mediaPlugins } = this;
 
     if (place) {
-      const editorState = EditorState.create(
-        {
-          schema,
-          plugins: [
-            ...mentionsPlugins(schema), // mentions and emoji needs to be first
-            ...emojiPlugins(schema),
-            ...listsPlugins(schema),
-            ...clearFormattingPlugins(schema),
-            ...codeBlockPlugins(schema),
-            ...panelPlugins(schema),
-            ...textFormattingPlugins(schema),
-            ...hyperlinkPlugins(schema),
-            ...rulePlugins(schema),
-            ...textColorPlugins(schema),
-            // block type plugin needs to be after hyperlink plugin until we implement keymap priority
-            // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
-            // if converting is possible
-            ...blockTypePlugins(schema),
-            ...mediaPlugins,
-            ...tablePlugins(),
-            ...reactNodeViewPlugins(schema),
-            history(),
-            keymap(baseKeymap) // should be last :(
-          ]
-        }
-      );
+      const editorState = EditorState.create({
+        schema,
+        plugins: [
+          ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
+          ...emojiPlugins(schema, this.providerFactory),
+          ...asciiEmojiPlugins(schema, this.state.emojiProvider),
+          ...clearFormattingPlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...hyperlinkPlugins(schema),
+          ...rulePlugins(schema),
+          ...textColorPlugins(schema),
+          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+          // if converting is possible
+          ...blockTypePlugins(schema),
+          // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins -> panelPlugins
+          // this is needed to ensure that all block types are supported inside lists
+          // this is needed until we implement keymap proirity :(
+          ...listsPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...panelPlugins(schema),
+          ...mediaPlugins,
+          ...tablePlugins(),
+          ...reactNodeViewPlugins(schema),
+          history(),
+          keymap(baseKeymap) // should be last :(
+        ]
+      });
       const editorView = new EditorView(place, {
         state: editorState,
-        dispatchTransaction: (tr) => {
+        dispatchTransaction: tr => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
-        },
-        nodeViews: {
-          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
-          mediaGroup: nodeViewFactory(this.providerFactory, {
-            mediaGroup: ReactMediaGroupNode,
-            media: ReactMediaNode,
-          }, true),
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
-          panel: panelNodeView,
-        },
+        }
       });
-      mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
-      applyDevTools(editorView);
+      if (this.props.devTools) {
+        applyDevTools(editorView);
+      }
 
       editorView.focus();
 

@@ -21,6 +21,7 @@ const propDescriptions = {
   i18n: 'Mapping of i18n keys to translations.',
   isAnonymousUser: 'If set to true, the home icon, recent containers and suggested application will not display.',
   isHomeLinkEnabled: 'If set to true, the link to Atlassian Home will be rendered at the top of the app switcher',
+  isSiteAdminLinkEnabled: 'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
   trigger: 'This function is called to render the trigger for the dropdown. It is called with one parameter - the ' +
            'dropdown\'s current state (open or closed).',
   analytics: 'This function is called when the user performs certain actions in the app switcher. ' +
@@ -115,6 +116,10 @@ const i18nPropDescriptions = [
   {
     name: 'home',
     description: 'Home',
+  },
+  {
+    name: 'site-admin',
+    description: 'Site Administration',
   },
   {
     name: 'apps',
@@ -236,7 +241,7 @@ storiesOf(name, module)
 
           <Heading type="3">dropdownOptions</Heading>
           <p>
-            The dropdownOptions is a map which is passed into StatelessDropdownMenu to allow
+            The dropdownOptions is a map which is passed into DropdownMenuStateless to allow
             configuring the dropdown. It has the following format:
           </p>
           {propDescriptionList(dropdownOptionsPropDescriptions)}

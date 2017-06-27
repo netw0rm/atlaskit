@@ -14,15 +14,15 @@ const availableResultTypes = {
 /**
  * From the perspective of SearchResults, result items consist only of a unique id and result type
  */
-const resultPropType = PropTypes.shape({
+const resultPropType = {
   id: PropTypes.string,
   type: PropTypes.oneOf(Object.keys(availableResultTypes)),
-});
+};
 
-const resultGroupPropType = PropTypes.shape({
+const resultGroupPropType = {
   items: PropTypes.arrayOf(PropTypes.shape(resultPropType)),
   title: PropTypes.string.isRequired,
-});
+};
 
 export default class SearchResults extends PureComponent {
   static propTypes = {
@@ -39,9 +39,11 @@ export default class SearchResults extends PureComponent {
   }
 
   renderResultGroup = group => (
-    <AkNavigationItemGroup key={group.title} title={group.title}>
-      {group.items.map(this.renderResultItem)}
-    </AkNavigationItemGroup>
+    group.items && group.items.length > 0 ? (
+      <AkNavigationItemGroup key={group.title} title={group.title}>
+        {group.items.map(this.renderResultItem)}
+      </AkNavigationItemGroup>
+    ) : null
   );
 
   render() {

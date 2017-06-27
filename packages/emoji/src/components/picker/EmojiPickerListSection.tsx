@@ -82,7 +82,7 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
         <div>
           {emojis.map((emoji) => {
             const selected = selectedEmoji && selectedEmoji.id === emoji.id;
-            const { shortName, category, id, name } = emoji;
+            const { shortName, category, id } = emoji;
             const key = id || `${shortName}-${category}`;
             let emojiComponent;
 
@@ -97,7 +97,7 @@ export default class EmojiPickerListSection extends PureComponent<Props, {}> {
               );
             } else {
               emojiComponent = (
-                <EmojiPlaceholder shortName={shortName} name={name} />
+                <EmojiPlaceholder shortName={shortName} />
               );
             }
 

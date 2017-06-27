@@ -7,7 +7,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import chromatism from 'chromatism';
 import * as presets from '../../src/theme/presets';
-import { prefix, WithGroupTheme, WithRootTheme } from '../../src/theme/util';
+import { prefix, getProvided, WithGroupTheme, WithRootTheme, whenCollapsed } from '../../src/theme/util';
 import { createGlobalTheme } from '../../src/theme/create-provided-theme';
 import { getRootTheme, getGroupTheme } from '../theme-util';
 
@@ -44,7 +44,7 @@ describe('theme', () => {
         >
           <Item />
         </WithRootTheme>
-    );
+      );
       wrapper.setProps({
         provided: presets.settings,
       });
@@ -75,7 +75,7 @@ describe('theme', () => {
             <Item />
           </WithRootTheme>
         </ThemeProvider>
-    );
+      );
 
       const arg = stub.args[0][0];
 
@@ -105,7 +105,7 @@ describe('theme', () => {
             <Item />
           </WithRootTheme>
         </ThemeProvider>
-    );
+      );
 
       expect(stub.calledWithExactly({
         theme: getRootTheme(presets.container),
@@ -151,7 +151,7 @@ describe('theme', () => {
         >
           <Item />
         </WithGroupTheme>
-    );
+      );
       wrapper.setProps({
         isCompact: false,
       });
@@ -183,7 +183,7 @@ describe('theme', () => {
             <Item />
           </WithGroupTheme>
         </ThemeProvider>
-    );
+      );
 
       const arg = stub.args[0][0];
 
@@ -214,7 +214,7 @@ describe('theme', () => {
             <Item />
           </WithGroupTheme>
         </ThemeProvider>
-    );
+      );
 
       expect(stub.calledWithExactly({
         theme: getGroupTheme(isCompact),
@@ -316,6 +316,98 @@ describe('theme', () => {
           expect(generatedTheme.item.default.background).to.equal('transparent');
         });
       });
+    });
+  });
+
+  describe('whenCollapsed', () => {
+    it('should return the provided rules when collapsed', () => {
+      const stub = sinon.stub();
+      const Item = styled.div`
+        ${whenCollapsed`
+          my-rule: ${stub}
+        `}
+      `;
+
+      mount(
+        <WithRootTheme
+          provided={presets.container}
+          isCollapsed
+        >
+          <Item />
+        </WithRootTheme>
+      );
+
+      expect(stub.called).to.equal(true);
+    });
+
+    it('should not return the provided rules when not collapsed', () => {
+      const stub = sinon.stub();
+      const Item = styled.div`
+        ${whenCollapsed`
+          my-rule: ${stub}
+        `}
+      `;
+
+      mount(
+        <WithRootTheme
+          provided={presets.container}
+          isCollapsed={false}
+        >
+          <Item />
+        </WithRootTheme>
+      );
+
+      expect(stub.called).to.equal(false);
+    });
+
+    it('should allow access to props within the rules', () => {
+      const stub = sinon.stub();
+      const Item = styled.div`
+        ${whenCollapsed`
+          my-rule: ${props => stub(props.name)}
+        `}
+      `;
+
+      mount(
+        <WithRootTheme
+          provided={presets.container}
+          isCollapsed
+        >
+          <Item name="Alex" />
+        </WithRootTheme>
+      );
+
+      expect(stub.calledWith('Alex')).to.equal(true);
+    });
+
+    it('should allow access to the theme within the rules', () => {
+      const stub = sinon.stub();
+      const Item = styled.div`
+        ${whenCollapsed`
+          my-rule: ${props => stub(getProvided(props.theme))}
+        `}
+      `;
+
+      mount(
+        <WithRootTheme
+          provided={presets.settings}
+          isCollapsed
+        >
+          <Item />
+        </WithRootTheme>
+      );
+
+      expect(stub.calledWith(presets.settings)).to.equal(true);
+    });
+  });
+
+  describe('getProvided() should fall back to container theme', () => {
+    it('when no theme provided', () => {
+      expect(getProvided()).to.equal(presets.container);
+    });
+
+    it('when theme provided that does not contain private root theme key', () => {
+      expect(getProvided({})).to.equal(presets.container);
     });
   });
 });

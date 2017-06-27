@@ -1,8 +1,21 @@
 export {
+  EmojiProvider,
+  EmojiResource,
+} from '@atlaskit/emoji';
+
+export {
   DefaultMediaStateManager,
   MediaProvider,
   MediaState,
 } from '@atlaskit/media-core';
+
+export {
+  AbstractMentionResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/mention';
 
 import ProviderFactory from './providerFactory';
 export { version, name } from './version';
@@ -39,6 +52,10 @@ export {
   history,
   baseKeymap,
   keymap,
+  Selection,
+  undo,
+  redo,
+  PluginKey,
   tableNodes,
   CellSelection,
   tableEditing,
@@ -46,6 +63,9 @@ export {
 export {
   ErrorReporter,
   ErrorReportingHandler,
+  JSONDocNode,
   toJSON,
 } from './utils';
 export { colorPalette } from './schema/marks/text-color';
+
+export { default as Editor } from './editor';

@@ -11,4 +11,6 @@ export default styled.p`
   font-size: ${akFontSizeDefault};
   font-weight: 400;
   line-height: 24px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 `;

@@ -1,6 +1,9 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
+import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import SettingsIcon from '@atlaskit/icon/glyph/settings';
+import TrayIcon from '@atlaskit/icon/glyph/tray';
 import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
 import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle, presetThemes } from '../src/index';
@@ -239,5 +242,27 @@ storiesOf(name, module)
           />
         )}
       />
+    </HtmlPage>
+    ))
+  .add('with horizontal scrollable container', () => (
+    <HtmlPage>
+      <BasicNavigation
+        containerHeaderComponent={() => (
+          <div>Header Component</div>
+        )}
+      >
+        <div style={{ overflowX: 'auto', width: 'auto', display: 'flex', flexGrow: 1, flexDirection: 'column' }}>
+          <h6 style={{ whiteSpace: 'nowrap' }}>this is something super long that would cause the scroll to appear</h6>
+          <ul>
+            <li style={{ whiteSpace: 'nowrap' }}>The matrix</li>
+            <li style={{ whiteSpace: 'nowrap' }}>The Beatles – Sgt. Peppers Lonely Hearts Club Band</li>
+            <li style={{ whiteSpace: 'nowrap' }}>Tame Impala – Lonerism</li>
+            <li style={{ whiteSpace: 'nowrap' }}>The Beatles – Sgt. Peppers Lonely Hearts Club Band</li>
+            <li style={{ whiteSpace: 'nowrap' }}>Tame Impala – Lonerism</li>
+            <li style={{ whiteSpace: 'nowrap' }}>The Beatles – Sgt. Peppers Lonely Hearts Club Band</li>
+            <li style={{ whiteSpace: 'nowrap' }}>Tame Impala – Lonerism</li>
+          </ul>
+        </div>
+      </BasicNavigation>
     </HtmlPage>
   ));

@@ -1,8 +1,9 @@
 // @flow
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import invariant from 'invariant';
-import type { Position } from '../../types';
 import memoizeOne from 'memoize-one';
+import type { Position } from '../../types';
+import type { Callbacks, DragTypes, Provided } from './drag-handle-types';
 
 const noop = (): void => { };
 const getFalse: () => boolean = () => false;
@@ -14,24 +15,10 @@ const primaryButton = 0;
 // a drag rather than a click.
 export const sloppyClickThreshold: number = 5;
 
-type DragTypes = 'KEYBOARD' | 'MOUSE';
-
-export type DragHandleCallbacks = {
-  onLift: (point: Position) => void,
-  onKeyLift: () => void,
-  onMove: (point: Position) => void,
-  onMoveForward: () => void,
-  onMoveBackward: () => void,
-  onDrop: () => void,
-  onCancel: () => void,
-}
-
-export type DragHandleProvided = Object;
-
 type Props = {|
-  children: (?DragHandleProvided) => void,
+  children: (?Provided) => void,
   isEnabled: boolean,
-  callbacks: DragHandleCallbacks,
+  callbacks: Callbacks,
 |}
 
 type State = {
@@ -342,12 +329,12 @@ export default class DragHandle extends PureComponent {
     window.addEventListener('mousedown', this.onWindowMouseDown);
   }
 
-  getProvided = memoizeOne((isEnabled: boolean, isDragging: boolean): ?DragHandleProvided => {
+  getProvided = memoizeOne((isEnabled: boolean, isDragging: boolean): ?Provided => {
     if (!isEnabled) {
       return null;
     }
 
-    const provided: DragHandleProvided = {
+    const provided: Provided = {
       onMouseDown: this.onMouseDown,
       onKeyDown: this.onKeyDown,
 

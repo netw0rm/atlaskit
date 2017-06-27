@@ -5,7 +5,7 @@ import type {
   Position,
   TypeId,
 } from '../../types';
-import type { DragHandleProvided } from '../drag-handle/';
+import type { Provided as DragHandleProvided } from '../drag-handle/';
 import {
   lift,
   move,

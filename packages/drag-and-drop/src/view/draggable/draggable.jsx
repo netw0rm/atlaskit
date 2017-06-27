@@ -7,7 +7,10 @@ import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import DragHandle from '../drag-handle/drag-handle';
 // eslint-disable-next-line no-duplicate-imports
-import type { DragHandleCallbacks, DragHandleProvided } from '../drag-handle/drag-handle';
+import type {
+  Callbacks as DragHandleCallbacks,
+  Provided as DragHandleProvided,
+} from '../drag-handle/drag-handle';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import Placeholder from './placeholder';

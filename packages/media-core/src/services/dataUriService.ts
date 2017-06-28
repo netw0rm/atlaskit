@@ -2,10 +2,11 @@ import createRequest, {CreateRequestFunc} from './util/createRequest';
 import { MediaItem, JwtTokenProvider } from '../';
 
 export type DataUri = string;
+export type imageMode = 'crop' | 'fit';
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number): Promise<DataUri>;
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: imageMode): Promise<DataUri>;
 }
 
 export class MediaDataUriService implements DataUriService {
@@ -23,7 +24,8 @@ export class MediaDataUriService implements DataUriService {
           tokenProvider: this.tokenProvider
         },
         clientId: this.clientId,
-        collectionName: this.collectionName
+        collectionName: this.collectionName,
+        preventPreflight: true
       });
   }
 
@@ -35,7 +37,7 @@ export class MediaDataUriService implements DataUriService {
       });
   }
 
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number): Promise<DataUri> {
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: imageMode): Promise<DataUri> {
     return this.fetchSomeDataUri(
       `/file/${mediaItem.details.id}/image`, {
         width,
@@ -50,19 +52,8 @@ export class MediaDataUriService implements DataUriService {
     return this.request({
       url,
       params,
-      responseType: 'image'
-    })
-      .then(this.readBlob);
-  }
-
-  private readBlob(blob: Blob): Promise<DataUri> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.addEventListener('load', () => resolve(reader.result));
-      reader.addEventListener('error', () => reject(reader.error));
-
-      reader.readAsDataURL(blob);
+      responseType: 'image',
+      returnRawUrl: true
     });
   }
 }

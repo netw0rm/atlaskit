@@ -21,6 +21,7 @@ export interface RequestOptions {
   headers?: Object;
   data?: Object;
   responseType?: ResponseType;
+  returnRawUrl?: boolean;
 }
 
 const buildHeaders = (requesterOptions: RequesterOptions, requestOptions: RequestOptions, token: string) => {
@@ -82,8 +83,18 @@ export default (requesterOptions: RequesterOptions) => (requestOptions: RequestO
     return buildHeaders(requesterOptions, requestOptions, token).then(headers => {
       const responseType = responseTypeToAxios(requestOptions.responseType);
       const params = buildParams(requesterOptions, requestOptions, token);
-      const {method, url, data} = requestOptions;
+      const {method, url, data, returnRawUrl} = requestOptions;
       const {config} = requesterOptions;
+
+      if (returnRawUrl) {
+        const endpoint = `${config.serviceHost}${url}`;
+        // TODO: Move this serialization into 'buildParams' and make it optional
+        const serializedParams = Object.keys(params).reduce((prev, current) => {
+          return `${prev}&${current}=${params[current]}`;
+        }, '');
+
+        return Promise.resolve(`${endpoint}?${serializedParams}`);
+      }
 
       return axios({
         method: method || 'get',

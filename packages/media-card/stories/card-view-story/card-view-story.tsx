@@ -27,7 +27,6 @@ import {createErrorAndLoadingCards} from './chapters/error-and-loading';
 import {createSelectableCards, createSelectableCardsWithMenu} from './chapters/selectable';
 import {actions} from './chapters/utils';
 
-
 const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
   const fileCards = createFileCardsWithDifferentDataURIs(appearance);
 

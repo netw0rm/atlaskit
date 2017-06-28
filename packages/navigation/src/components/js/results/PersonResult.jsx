@@ -18,6 +18,7 @@ export default class PersonResult extends PureComponent {
   }
 
   static defaultProps = {
+    isSelected: false,
     onClick: () => {},
     mentionPrefix: '@',
     presenceState: 'none',

@@ -25,6 +25,7 @@ export default class RoomResult extends PureComponent {
   }
 
   static defaultProps = {
+    isSelected: false,
     onClick: () => {},
     privacy: 'none',
   }

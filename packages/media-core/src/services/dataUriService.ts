@@ -2,11 +2,11 @@ import createRequest, {CreateRequestFunc} from './util/createRequest';
 import { MediaItem, JwtTokenProvider } from '../';
 
 export type DataUri = string;
-export type imageResizeMode = 'crop' | 'fit';
+export type ImageResizeMode = 'crop' | 'fit';
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: imageResizeMode): Promise<DataUri>;
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: ImageResizeMode): Promise<DataUri>;
 }
 
 export class MediaDataUriService implements DataUriService {
@@ -36,7 +36,7 @@ export class MediaDataUriService implements DataUriService {
       });
   }
 
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: imageResizeMode): Promise<DataUri> {
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: ImageResizeMode): Promise<DataUri> {
     const apiModeName = {
       crop: 'crop',
       fit: 'full-fit'

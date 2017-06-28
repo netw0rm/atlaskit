@@ -141,6 +141,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         mediaItemType="link"
         metadata={previewDetails}
         dimensions={cardDimensions}
+        isLazy={false}
 
         // SharedCardProps
         onClick={this.handleLinkCardViewClick}
@@ -202,6 +203,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         }}
         actions={[ CardDelete(onDelete!), CardClick(onClick!) ]}
         selectable={false}
+        isLazy={false}
       />
     );
   }
@@ -248,6 +250,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
       // SharedCardProps
       actions={[ CardDelete(onDelete!) ]}
+      isLazy={false}
     />;
   }
 

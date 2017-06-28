@@ -1,12 +1,5 @@
-export { EmojiProvider, EmojiResource } from '@atlaskit/emoji';
-export { MediaProvider } from '@atlaskit/media-core';
-export { MentionProvider, MentionResource } from '@atlaskit/mention';
-
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MediaProvider, CardEventHandler } from '@atlaskit/media-core';
-import { MentionProvider } from '@atlaskit/mention';
+import { CardEventHandler } from '@atlaskit/media-core';
 import { PureComponent, SyntheticEvent } from 'react';
-
 import { Schema } from '../../prosemirror';
 import ProviderFactory from '../../providerFactory';
 import {
@@ -31,31 +24,36 @@ export interface EventHandlers {
 }
 
 export interface Props {
-  document?: any;
-  emojiProvider?: Promise<EmojiProvider>;
+  document: any;
+  dataProviders?: ProviderFactory;
   eventHandlers?: EventHandlers;
-  mediaProvider?: Promise<MediaProvider>;
-  mentionProvider?: Promise<MentionProvider>;
   schema?: Schema<any, any>;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
+  private providerFactory: ProviderFactory;
+
+  constructor(props: Props) {
+    super(props);
+    this.providerFactory = props.dataProviders || new ProviderFactory();
+  }
+
   render() {
     const {
       document,
-      emojiProvider,
       eventHandlers,
-      mediaProvider,
-      mentionProvider,
       schema,
     } = this.props;
 
-    const providers = new ProviderFactory();
-    providers.setProvider('emojiProvider', emojiProvider);
-    providers.setProvider('mediaProvider', mediaProvider);
-    providers.setProvider('mentionProvider', mentionProvider);
-
-    const serializer = new ReactSerializer(providers, eventHandlers);
+    const serializer = new ReactSerializer(this.providerFactory, eventHandlers);
     return renderDocument(document, serializer, schema || defaultSchema);
+  }
+
+  componentWillUnmount() {
+    const { dataProviders } = this.props;
+
+    if (dataProviders) {
+      dataProviders.destroy();
+    }
   }
 }

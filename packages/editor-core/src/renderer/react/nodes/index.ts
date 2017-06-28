@@ -15,6 +15,7 @@ import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
 import Rule from './rule';
+import UnknownBlock from './unknownBlock';
 
 export const nodeToReact = {
   'blockquote': Blockquote,
@@ -31,6 +32,7 @@ export const nodeToReact = {
   'panel': Panel,
   'paragraph': Paragraph,
   'rule': Rule,
+  'unknownBlock': UnknownBlock,
 };
 
 export const toReact = (node: Node): ReactComponentConstructor => {
@@ -49,6 +51,7 @@ export interface NodeSimple {
     name: string;
   };
   attrs?: any;
+  text?: string;
 }
 
 /*
@@ -139,4 +142,5 @@ export {
   Panel,
   Paragraph,
   Rule,
+  UnknownBlock,
 };

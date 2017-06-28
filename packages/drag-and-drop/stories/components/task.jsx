@@ -41,13 +41,13 @@ export default class Task extends Component {
         {(provided: Provided, snapshot: StateSnapshot) => (
           <div>
             <Container
-              innerRef={ref => provided.innerRef(ref)}
               href={task.id}
+              innerRef={ref => provided.innerRef(ref)}
               isDragging={snapshot.isDragging}
               style={provided.draggableStyle}
               {...provided.dragHandleProps}
             >
-              {task.description}
+              ({task.id}){task.description}
               <Avatar src={task.avatarUrl} alt={task.id} />
             </Container>
             {provided.placeholder}

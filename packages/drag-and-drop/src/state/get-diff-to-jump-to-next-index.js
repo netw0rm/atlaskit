@@ -32,17 +32,24 @@ export default (
     return null;
   }
 
+  const currentDimension: Dimension = insideDroppable[currentIndex];
   const nextIndex = isMovingForward ? currentIndex + 1 : currentIndex - 1;
   const nextDimension: Dimension = insideDroppable[nextIndex];
 
   // Need to move into the slot that the next dimension previously took up.
   // want to move to the next dimension's center position
 
-  const diff: Position = {
-    x: nextDimension.center.x - center.x,
-    y: nextDimension.center.y - center.y,
+  // const diff: Position = {
+  //   x: nextDimension.center.x - center.x,
+  //   y: nextDimension.center.y - center.y,
+  // };
+  const move: Position = {
+    x: 0,
+    y: isMovingForward ?
+      nextDimension.withMargin.height :
+      -currentDimension.withMargin.height,
   };
 
-  return diff;
+  return move;
 };
 

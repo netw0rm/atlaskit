@@ -8,10 +8,13 @@ import List from './components/list';
 import type { TaskType } from './types';
 import type { DropResult, DraggableLocation } from '../src/types';
 
+// array.find
+import './polyfill';
+
 const getTasks = (count: number): TaskType[] =>
   Array.from({ length: count }, (v, k) => k)
     .map((val: number): TaskType => ({
-      id: `${val}`,
+      id: `task-${val}`,
       title: faker.lorem.words(),
       description: faker.lorem.words(faker.random.number({
         min: 3, max: 15,
@@ -45,12 +48,16 @@ class Standard extends PureComponent {
       return;
     }
 
-    // simple reorder - assuming can only move in the same list
     const tasks: TaskType[] = [...this.state.tasks];
+    const target: TaskType = tasks.find(
+      (task: TaskType): boolean => task.id === result.draggableId
+    );
 
-    const temp: TaskType = tasks[source.index];
-    tasks[source.index] = tasks[destination.index];
-    tasks[destination.index] = temp;
+    // remove target from the array
+    tasks.splice(source.index, 1);
+
+    // put into correct spot
+    tasks.splice(destination.index, 0, target);
 
     this.setState({
       tasks,

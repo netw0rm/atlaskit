@@ -32,3 +32,12 @@ export const Spacer = styled.div`
   background-color: ${akColorB50};
   border-radius: 3px;
 `;
+
+export const LazyWrapper = styled.div`
+  width: 1000px;
+  overflow: hidden;
+  margin: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;

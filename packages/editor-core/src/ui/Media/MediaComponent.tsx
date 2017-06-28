@@ -18,12 +18,14 @@ import {
   CardEventHandler,
   FileDetails,
   MediaProvider,
+  MediaStateManager,
   MediaState,
   UrlPreview
 } from '@atlaskit/media-core';
 
 import { MediaAttributes } from '../../schema';
-import { EditorView } from '../../index';
+import { EditorView, mediaStateKey } from '../../index';
+import { MediaPluginState } from '../../plugins/media';
 
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
@@ -62,7 +64,6 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
   }
 }
 
-
 export default class MediaComponent extends React.PureComponent<Props, State> {
   private thumbnailWm = new WeakMap();
   private destroyed = false;
@@ -95,11 +96,18 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   public componentWillUnmount() {
     this.destroyed = true;
 
-    const { id } = this.props;
+    const { editorView, id } = this.props;
     const { mediaProvider } = this.state;
 
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
+      if (stateManager) {
+        stateManager.unsubscribe(id, this.handleMediaStateChange);
+      }
+    }
+
+    if (editorView) {
+      const stateManager = this.getStateManagerFromEditorPlugin(editorView);
       if (stateManager) {
         stateManager.unsubscribe(id, this.handleMediaStateChange);
       }
@@ -264,20 +272,24 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {
-    const { id } = this.props;
+    const { editorView, id } = this.props;
 
     if (this.destroyed) {
       return;
     }
 
-    this.setState({ mediaProvider: mediaProvider });
+    /**
+     * Try to get stateManager from Editor Plugin first, if not, try MediaProvider
+     */
+    const stateManager = this.getStateManagerFromEditorPlugin(editorView) || mediaProvider.stateManager;
 
-    const { stateManager } = mediaProvider;
+    this.setState({ mediaProvider });
+
     if (stateManager) {
       const mediaState = stateManager.getState(id);
 
       stateManager.subscribe(id, this.handleMediaStateChange);
-      this.setState({ mediaProvider, ...mediaState });
+      this.setState({ ...mediaState });
     }
 
     let context = await mediaProvider.viewContext;
@@ -290,6 +302,21 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     this.setState({ viewContext: context as Context });
+  }
+
+  getStateManagerFromEditorPlugin(editorView): MediaStateManager | undefined {
+
+    if (!editorView) {
+      return;
+    }
+
+    const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
+
+    if (!pluginState) {
+      return;
+    }
+
+    return pluginState.stateManager;
   }
 
   private getLinkUrlFromId(id: string) {

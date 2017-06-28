@@ -102,7 +102,8 @@ export class SearchIndex {
       localResults.sort((a, b) => a.weight - b.weight || 0);
 
       resolve({
-        mentions: localResults
+        mentions: localResults,
+        query
       });
     });
   }

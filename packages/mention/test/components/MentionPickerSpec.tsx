@@ -242,6 +242,23 @@ describe('MentionPicker', () => {
       });
   });
 
+  it('should fire onOpen when error to display', () => {
+    const onOpen = sinon.spy();
+    const onClose = sinon.spy();
+
+    const component = setupPicker({
+      query: 'error',
+      onOpen: onOpen as OnOpen,
+      onClose: onClose as OnClose,
+    } as Props);
+
+    return waitUntil(createMentionErrorShownTest(component))
+      .then(() => {
+        expect(onOpen.callCount, 'opened').to.equal(1);
+        expect(onClose.callCount, 'closed').to.equal(0);
+      });
+  });
+
   it('mentionsCount returns the number of mentions in the list', () => {
     const component = setupPicker();
 

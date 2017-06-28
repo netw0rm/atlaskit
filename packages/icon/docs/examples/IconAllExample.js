@@ -52,7 +52,7 @@ class IconAllExample extends PureComponent {
         {icons.map(icon => <IconExplorerCell {...icon} key={icon.componentName} />)}
       </IconExplorerGrid>
     ) : (
-      <NoIcons>{`Sorry, we couldn't find any icons matching "${this.query}".`}</NoIcons>
+      <NoIcons>{`Sorry, we couldn't find any icons matching "${this.state.query}".`}</NoIcons>
     );
   };
 

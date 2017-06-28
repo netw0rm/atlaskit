@@ -132,7 +132,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (mentionsCount === 1 && this.picker) {
       (this.picker as AkMentionPicker).chooseCurrentSelection();
       return true;
-    } else if (mentionsCount === 0 || !query) {
+    } else if (mentionsCount === 0) {
+      this.props.pluginState.disableActiveQuery();
+    } else if (!query) {
       this.pluginState.dismiss();
     }
 

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
-import { MentionProvider } from '@atlaskit/mention';
+import { MentionProvider, MentionResource } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-test';
 
@@ -32,7 +32,11 @@ const mentionProvider1 = new Promise<any>(resolve => {
 });
 
 const mentionProvider2 = new Promise<any>(resolve => {
-  resolve(mentionData.mentionStoryData.resourceProvider2);
+  resolve(new MentionResource({
+    url: 'https://pf-mentions-service.staging.atlassian.io/mentions/f7ebe2c0-0309-4687-b913-41d422f2110b',
+    containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
+    productId: 'hipchat'
+  }));
 });
 
 const emojiProvider1 = emojiData.emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;

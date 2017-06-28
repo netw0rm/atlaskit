@@ -40,9 +40,7 @@ class Icon extends PureComponent {
     } = this.props;
 
     const wrapperStyles = {
-      alignItems: 'center',
-      display: 'inline-flex',
-      justifyContent: 'center',
+      display: 'inline-block',
       lineHeight: 1,
       width: sizes[size],
       height: sizes[size],

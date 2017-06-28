@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
-import LockIcon from '@atlaskit/icon/glyph/lock';
+import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
 import Lozenge from '@atlaskit/lozenge';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 
@@ -112,13 +112,13 @@ describe(name, () => {
       describe('restrictedTo prop', () => {
         it('should render a Lock icon and restrictedTo name when supplied', () => {
           const wrapper = mount(<Comment restrictedTo="atlassian-staff" />);
-          expect(wrapper.find(LockIcon).length).to.equal(1);
+          expect(wrapper.find(LockFilledIcon).length).to.equal(1);
           expect(wrapper.text()).to.contain('atlassian-staff');
         });
 
         it('should not render a Lock icon if restrictedTo prop is not set', () => {
           const wrapper = mount(<Comment />);
-          expect(wrapper.find(LockIcon).length).to.equal(0);
+          expect(wrapper.find(LockFilledIcon).length).to.equal(0);
         });
       });
 

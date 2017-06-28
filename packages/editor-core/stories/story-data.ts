@@ -93,7 +93,7 @@ export const document = {
           text: ' :D',
           marks: [
             {
-              type: 'unkown mark'
+              type: 'unknown mark'
             }
           ]
         }
@@ -211,6 +211,94 @@ export const document = {
           ]
         },
       ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'unknown type',
+          attrs: {
+            text: 'fallback text in node.attrs.text'
+          }
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'unknown type 2',
+          text: 'fallback text in node.text',
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'very unknown'
+        }
+      ]
+    },
+    {
+      type: 'some block unknown type',
+      content: [
+        {
+          type: 'text',
+          text: 'This is text content inside unknown block'
+        }
+      ]
+    },
+    {
+      type: 'some block unknown type with content and text',
+      content: [
+        {
+          type: 'text',
+          text: 'This is also a piece of text inside unknown block'
+        }
+      ],
+      text: 'ERROR: This text should be ignored!'
+    },
+    {
+      type: 'unknown_table',
+      content: [
+        {
+          type: 'unknown_row2',
+          content: [
+            {
+              type: 'unknown_cell',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Madness?',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'unknown_row2',
+          content: [
+            {
+              type: 'unknown_cell3',
+              content: [
+                {
+                  type: 'text',
+                  text: 'This is',
+                },
+              ],
+            },
+            {
+              type: 'unknown_cell4',
+              content: [
+                {
+                  type: 'sparta-node',
+                  attrs: {
+                    textUrl: 'https://en.wikipedia.org/wiki/Sparta',
+                  },
+                  text: 'Sparta!',
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'paragraph',

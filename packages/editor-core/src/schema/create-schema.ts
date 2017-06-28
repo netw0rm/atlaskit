@@ -36,7 +36,6 @@ import {
   underline,
   code,
   mentionQuery,
-  mentionQueryInactive,
   emojiQuery,
   textColor,
 } from '../schema';
@@ -133,7 +132,6 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'underline', spec: underline },
   { name: 'code', spec: code },
   { name: 'mentionQuery', spec: mentionQuery },
-  { name: 'mentionQueryInactive', spec: mentionQueryInactive },
   { name: 'emojiQuery', spec: emojiQuery },
   { name: 'textColor', spec: textColor },
   ...markGroupDeclarations,

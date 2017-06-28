@@ -32,7 +32,6 @@ export default createSchema({
     'underline',
     'link',
     'mentionQuery',
-    'mentionQueryInactive',
     'emojiQuery',
     'textColor',
     'subsup',

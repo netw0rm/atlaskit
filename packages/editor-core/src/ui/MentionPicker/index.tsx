@@ -31,25 +31,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (providerPromise) {
       providerPromise.then(mentionsProvider => {
         this.setState({ mentionsProvider });
-        mentionsProvider.subscribe('editor-mentionpicker', this.handleTheThing);
       });
     } else {
       this.setState({ mentionsProvider: undefined });
-    }
-  }
-
-  handleTheThing = (result: any) => {
-    const { query, anchorElement } = this.state;
-
-    if (result.length !== 1 || query) {
-      return;
-    }
-
-    const mention = result[0];
-    const inactiveQuery = document.querySelector('[data-mention-query]')!.textContent!.substr(1).split(' ')[0];
-
-    if (inactiveQuery === mention.nickname) {
-      this.props.pluginState.insertMention(mention, true);
     }
   }
 
@@ -157,7 +141,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       (this.picker as AkMentionPicker).chooseCurrentSelection();
       return true;
     } else if (mentionsCount === 0 || !query) {
-      this.props.pluginState.dismiss(false);
+      this.props.pluginState.dismiss();
     }
 
     return false;

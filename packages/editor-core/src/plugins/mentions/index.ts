@@ -96,7 +96,7 @@ export class MentionsState {
     }
   }
 
-  dismiss(shouldRemove: boolean = true): boolean {
+  dismiss(): boolean {
     this.queryActive = false;
     this.query = undefined;
 
@@ -107,24 +107,11 @@ export class MentionsState {
       const { tr } = state;
       const markType = schema.mark('mentionQuery');
 
-      if (shouldRemove) {
-        view.dispatch(
-          tr
-            .removeMark(0, state.doc.nodeSize - 2, markType)
-            .removeStoredMark(markType)
-        );
-      } else {
-
-        const { start, end } = this.findMentionQueryMark(false, true);
-
-        view.dispatch(
-          tr
-            .addMark(start, end, schema.mark('mentionQueryInactive'))
-            .removeMark(0, state.doc.nodeSize - 2, markType)
-            .removeStoredMark(markType)
-        );
-      }
-
+      view.dispatch(
+        tr
+          .removeMark(0, state.doc.nodeSize - 2, markType)
+          .removeStoredMark(markType)
+      );
     }
 
     return true;
@@ -136,23 +123,23 @@ export class MentionsState {
     return isMarkTypeAllowedAtCurrentPosition(mentionQuery, this.state);
   }
 
-  private findMentionQueryMark(replaceInactiveQuery: boolean = false) {
+  private findMentionQueryMark() {
     const { state } = this;
     const { doc, schema, selection } = state;
     const { from } = selection;
-    const queryMark = replaceInactiveQuery ? schema.marks.mentionQueryInactive : schema.marks.mentionQuery;
+    const { mentionQuery } = schema.marks;
 
     let start = from;
     let node = doc.nodeAt(start);
 
-    while (start > 0 && (!node || !queryMark.isInSet(node.marks))) {
+    while (start > 0 && (!node || !mentionQuery.isInSet(node.marks))) {
       start--;
       node = doc.nodeAt(start);
     }
 
     let end = start;
 
-    if (node && queryMark.isInSet(node.marks)) {
+    if (node && mentionQuery.isInSet(node.marks)) {
       const resolvedPos = doc.resolve(start);
       // -1 is to include @ in replacement
       // resolvedPos.depth + 1 to make mentions work inside other blocks e.g. "list item" or "blockquote"
@@ -163,12 +150,12 @@ export class MentionsState {
     return { start, end };
   }
 
-  insertMention(mentionData?: MentionDescription, replaceInactiveQuery: boolean = false) {
+  insertMention(mentionData?: MentionDescription) {
     const { state, view } = this;
     const { mention } = state.schema.nodes;
 
     if (mention && mentionData) {
-      const { start, end } = this.findMentionQueryMark(replaceInactiveQuery);
+      const { start, end } = this.findMentionQueryMark();
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
       const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id, accessLevel: mentionData.accessLevel })];
       if (!this.isNextCharacterSpace()) {

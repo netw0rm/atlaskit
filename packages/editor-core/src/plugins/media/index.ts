@@ -214,13 +214,13 @@ export class MediaPluginState {
     return node;
   }
 
-  insertFile = (mediaState: MediaState, fileData = this.mediaDataFromProvider()): void => {
-    if (!fileData) {
+  insertFile = (mediaState: MediaState, collection = this.collectionFromProvider()): void => {
+    if (!collection) {
       return;
     }
 
     this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-    const node = this.createMediaFileNode(mediaState, fileData);
+    const node = this.createMediaFileNode(mediaState, collection);
 
     this.insertMedia(node);
 
@@ -230,31 +230,33 @@ export class MediaPluginState {
     }
   }
 
-  insertLinkFromUrl = (url: string) => {
-    this.insertMedia(this.view.state.schema.nodes.media.create({ url, type: 'link' }));
+  insertLinks = (linkRanges: RangeWithUrls[] = this.linkRanges): void => {
+    const { state, dispatch } = this.view;
+    const { tr } = state;
+    if (linkRanges.length <= 0) {
+      return;
+    }
+
+    const linkNode = state.schema.nodes.media.create({ url: 'www.google.com', type: 'link' });
+
+    const linksInfo = this.reducelinksInfo(linkRanges);
+    const insertPos = endPositionOfParent(tr.doc.resolve(linksInfo.latestPos));
+    dispatch(tr.replaceWith(insertPos, insertPos, linkNode));
   }
 
-  // insertLinks = (): void => {
-  //   const { state } = this.view;
-  //   const { tr } = state;
-  //   const { linkRanges } = this;
-  //   if (linkRanges.length <= 0) {
-  //     return;
-  //   }
+  private reducelinksInfo(linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } {
+    let linksInfo = { latestPos: 0, urls: [] as string[] };
 
-  //   let linksInfo = { latestPos: 0, urls: [] as String[] };
+    linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
+      linksInfo.urls = linksInfo.urls.concat(rangeWithUrl.urls);
+      if (rangeWithUrl.end > linksInfo.latestPos) {
+        linksInfo.latestPos = rangeWithUrl.end;
+      }
+      return linksInfo;
+    }, linksInfo);
 
-  //   linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
-  //     linksInfo.urls = linksInfo.urls.concat(rangeWithUrl.urls);
-  //     if (rangeWithUrl.end > linksInfo.latestPos) {
-  //       linksInfo.latestPos = rangeWithUrl.end;
-  //     }
-  //     return linksInfo;
-  //   }, linksInfo);
-
-  //   const insertPos = endPositionOfParent(tr.doc.resolve(linksInfo.latestPos));
-  //   this.view.dispatch(tr.replaceWith(insertPos, insertPos, state.schema.text(('hello'))));
-  // }
+    return linksInfo;
+  }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
     const { binaryPicker } = this;
@@ -548,7 +550,7 @@ export class MediaPluginState {
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
   }
 
-  private mediaDataFromProvider(): string | undefined {
+  private collectionFromProvider(): string | undefined {
     return this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
   }
 

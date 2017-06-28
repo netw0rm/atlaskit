@@ -10,7 +10,7 @@ import {
   CardViewProps,
 } from '@atlaskit/media-card';
 
-describe('@atlaskit/editor-core/ui/Media', () => {
+describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
   const file = {
     type: 'media',

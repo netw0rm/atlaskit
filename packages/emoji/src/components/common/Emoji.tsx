@@ -9,11 +9,42 @@ import { EmojiDescription, ImageRepresentation, OnEmojiEvent, SpriteRepresentati
 import { leftClick } from '../../util/mouse';
 
 export interface Props {
+  /**
+   * The emoji to render
+   */
   emoji: EmojiDescription;
+
+  /**
+   * Show the emoji as selected
+   */
   selected?: boolean;
+
+  /**
+   * Automatically show the emoji as selected based on mouse hover.
+   *
+   * CSS, fast, does not require a re-render, but selected state not
+   * externally controlled via props.
+   */
+  selectOnHover?: boolean;
+
+  /**
+   * Called when an emoji is selected
+   */
   onSelected?: OnEmojiEvent;
+
+  /**
+   * Could when the mouse moved over the emoji.
+   */
   onMouseMove?: OnEmojiEvent;
+
+  /**
+   * Additional css classes, if required.
+   */
   className?: string;
+
+  /**
+   * Show a tooltip on mouse hover.
+   */
   showTooltip?: boolean;
 }
 
@@ -35,12 +66,13 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
 // Pure functional components are used in favour of class based components, due to the performance!
 // When rendering 1500+ emoji using class based components had a significant impact.
 const renderAsSprite = (props: Props) => {
-  const { emoji, selected, className, showTooltip } = props;
+  const { emoji, selected, selectOnHover, className, showTooltip } = props;
   const representation = emoji.representation as SpriteRepresentation;
   const sprite = representation.sprite;
   const classes = {
     [styles.emojiContainer]: true,
     [styles.selected]: selected,
+    [styles.selectOnHover]: selectOnHover,
   };
 
   if (className) {
@@ -80,11 +112,12 @@ const renderAsSprite = (props: Props) => {
 
 // Keep as pure functional component, see renderAsSprite.
 const renderAsImage = (props: Props) => {
-  const { emoji, selected, className, showTooltip } = props;
+  const { emoji, selected, selectOnHover, className, showTooltip } = props;
 
   const classes = {
     [styles.emoji]: true,
     [styles.selected]: selected,
+    [styles.selectOnHover]: selectOnHover,
   };
 
   if (className) {

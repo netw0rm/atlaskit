@@ -71,9 +71,16 @@ interface ChooseEmojiFileProps {
   name?: string;
   onChooseFile: ChangeEventHandler<any>;
   onNameChange: ChangeEventHandler<any>;
+  onUploadCancelled: () => void;
 }
 
 class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
+  private onKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      this.props.onUploadCancelled();
+    }
+  }
+
   render() {
     const { name = '', onChooseFile, onNameChange } = this.props;
     const disableChooser = !name;
@@ -94,6 +101,7 @@ class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
                 placeholder="Emoji name"
                 maxLength={maxNameLength}
                 onChange={onNameChange}
+                onKeyDown={this.onKeyDown}
                 value={name}
                 ref="name"
                 autoFocus={true}
@@ -284,6 +292,7 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
         name={name}
         onChooseFile={this.onChooseFile}
         onNameChange={this.onNameChange}
+        onUploadCancelled={onUploadCancelled}
       />
     );
   }

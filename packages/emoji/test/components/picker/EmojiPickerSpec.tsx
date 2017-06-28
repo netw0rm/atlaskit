@@ -4,11 +4,10 @@ import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 import AkButton from '@atlaskit/button';
 
-import { createPngFile, emojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, mediaEmoji, pngDataURL, pngFileUploadData } from '../../TestData';
+import { createPngFile, newEmojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, mediaEmoji, pngDataURL, pngFileUploadData } from '../../TestData';
 
 import { customCategory } from '../../../src/constants';
 import * as commonStyles from '../../../src/components/common/styles';
-// import * as styles from '../../../src/components/picker/styles';
 
 import Emoji from '../../../src/components/common/Emoji';
 import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
@@ -20,7 +19,11 @@ import EmojiPicker, { Props } from '../../../src/components/picker/EmojiPicker';
 import EmojiPickerFooter from '../../../src/components/picker/EmojiPickerFooter';
 import EmojiPickerList from '../../../src/components/picker/EmojiPickerList';
 import EmojiPickerListSearch from '../../../src/components/picker/EmojiPickerListSearch';
-import EmojiPickerListSection, { addEmojiClassName } from '../../../src/components/picker/EmojiPickerListSection';
+import { addEmojiClassName } from '../../../src/components/picker/EmojiPickerUploadPrompts';
+import EmojiPickerCategoryHeading from '../../../src/components/picker/EmojiPickerCategoryHeading';
+import EmojiPickerEmojiRow from '../../../src/components/picker/EmojiPickerEmojiRow';
+import { UploadPromptMessage } from '../../../src/components/picker/EmojiPickerUploadPrompts';
+
 
 import { OptionalEmojiDescription } from '../../../src/types';
 
@@ -44,10 +47,78 @@ const leftClick = {
   button: 0,
 };
 
-const allEmojis = emojiRepository.all().emojis;
+const allEmojis = newEmojiRepository().all().emojis;
 
 const findEmoji = list => list.find(Emoji);
 const emojisVisible = (list) => findEmoji(list).length > 0;
+
+const nodeIsCategory = (category: string, n) =>
+  n.is(EmojiPickerCategoryHeading) && n.prop('title').toLocaleLowerCase() === category.toLocaleLowerCase();
+
+const findCategoryHeading = (category: string, component) =>
+  component.find(EmojiPickerCategoryHeading).filterWhere(n => nodeIsCategory(category, n));
+
+const findAllVirtualRows = (component) =>
+  component.findWhere(n =>
+    n.is(EmojiPickerListSearch) ||
+    n.is(EmojiPickerCategoryHeading) ||
+    n.is(EmojiPickerEmojiRow) ||
+    n.is(UploadPromptMessage)
+    // ignore spinner
+  );
+
+const emojiRowsVisibleInCategory = (category: string, component) => {
+  const rows = findAllVirtualRows(component);
+  let foundStart = false;
+  let foundEnd = false;
+  return rows.filterWhere(n => {
+    if (foundEnd) {
+      return false;
+    }
+
+    if (foundStart) {
+      if (!n.is(EmojiPickerEmojiRow)) {
+        foundEnd = true;
+        return false;
+      }
+      return true;
+    }
+
+    if (nodeIsCategory(category, n)) {
+      foundStart = true;
+    }
+
+    return false;
+  });
+};
+
+const getCategoryButton = (category: string, picker) => {
+  const categorySelector = picker.find(CategorySelector);
+  return categorySelector.findWhere(n => (
+    n.name() === 'button' && n.prop('title').toLocaleLowerCase() === category.toLocaleLowerCase()
+  ));
+};
+
+const categoryVisible = (category: string, component) => {
+  const categoryHeadings = component.find(EmojiPickerCategoryHeading);
+  const matchingHeading = categoryHeadings.filterWhere(n => nodeIsCategory(category, n));
+  return matchingHeading.length > 0;
+};
+
+const showCategory = (category: string, component): Promise<any> => {
+  const categoryButton = getCategoryButton(category, component);
+  expect(categoryButton.length, `Category "${category}" button`).to.equal(1);
+
+  const list = component.find(EmojiPickerList);
+
+  return waitUntil(() => emojisVisible(list)).then(() => {
+    categoryButton.simulate('click', leftClick);
+    return waitUntil(() => categoryVisible(category, list));
+  });
+};
+
+const findSearchInput = (component) => component.find(EmojiPickerListSearch).findWhere(component => component.name() === 'input');
+const searchInputVisible = (component) => findSearchInput(component).length > 0;
 
 describe('<EmojiPicker />', () => {
   describe('display', () => {
@@ -87,12 +158,15 @@ describe('<EmojiPicker />', () => {
 
     it('media emoji should render placeholder while loading', () => {
       const component = setupPicker();
-      const list = component.find(EmojiPickerList);
 
-      return waitUntil(() => emojisVisible(list)).then(() => {
-        const customSection = component.find(EmojiPickerListSection).last();
-        expect(customSection.get(0).props.title, 'Custom category title').to.equal(customCategory);
-        const placeholders = customSection.find(EmojiPlaceholder);
+      showCategory(customCategory, component).then(() => {
+        const list = component.find(EmojiPickerList);
+
+        const customHeading = findCategoryHeading(customCategory, list);
+        expect(customHeading.length, 'Custom category heading found').to.equal(1);
+        expect(customHeading.prop('title'), 'Custom category title').to.equal(customCategory);
+        const customEmojiRows = emojiRowsVisibleInCategory(customCategory, component);
+        const placeholders = customEmojiRows.find(EmojiPlaceholder);
         expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
         const props = placeholders.get(0).props;
         expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
@@ -121,50 +195,32 @@ describe('<EmojiPicker />', () => {
   describe('category', () => {
     it('selecting category should show that category', () => {
       const component = setupPicker();
-      const categorySelector = component.find(CategorySelector);
-
       const list = component.find(EmojiPickerList);
       expect(list.prop('selectedCategory'), 'Flags category not yet selected').to.not.equal('FLAGS');
 
-      const flagCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Flags');
-      expect(flagCategoryButton.length, 'Flag category button').to.equal(1);
-
       return waitUntil(() => emojisVisible(list)).then(() => {
-        flagCategoryButton.simulate('click', leftClick);
-        return waitUntil(() => list.prop('selectedCategory') === 'FLAGS').then(() => {
+        expect(categoryVisible('flags', component), 'Flag category not rendered as not in view').to.equal(false);
+
+        return showCategory('flags', component);
+      }).then(() => {
+        return waitUntil(() => list.prop('selectedCategory') === 'FLAGS' && categoryVisible('flags', component)).then(() => {
           expect(list.prop('selectedCategory'), 'Flags category selected').to.equal('FLAGS');
-          const previews = component.find(EmojiPreview);
-          expect(previews.length, 'Preview visible').to.equal(1);
-          const preview = previews.first();
-          const emojis = preview.find(Emoji);
-          expect(emojis.length, 'Emoji visible').to.equal(1);
-          const emoji = emojis.get(0);
-          expect(emoji.props.emoji.shortName, 'First flag emoji').to.equal(':flag_white:');
         });
       });
     });
 
     it('selecting custom category - should show preview with media first emoji loading', () => {
       const component = setupPicker();
-      const categorySelector = component.find(CategorySelector);
-
       const list = component.find(EmojiPickerList);
       expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
 
-      const customCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Custom');
-      expect(customCategoryButton.length, 'Custom category button').to.equal(1);
-
       return waitUntil(() => emojisVisible(list)).then(() => {
-        customCategoryButton.simulate('click', leftClick);
-        return waitUntil(() => list.prop('selectedCategory') === customCategory).then(() => {
+        expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
+
+        return showCategory(customCategory, component);
+      }).then(() => {
+        return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
           expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
-          const previews = component.find(EmojiPreview);
-          expect(previews.length, 'Preview visible').to.equal(1);
-          const preview = previews.first();
-          const placeholders = preview.find(EmojiPlaceholder);
-          expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
-          const props = placeholders.get(0).props;
-          expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
         });
       });
     });
@@ -191,40 +247,68 @@ describe('<EmojiPicker />', () => {
     });
   });
 
-  // it('searching for aus should match emoji via description', () => {
-  //   const component = setupPicker();
-  //   const search = component.find(EmojiPickerListSearch);
-  //   const searchInput = search.find('input');
-  //   // const searchInput: ReactHTMLElement<HTMLInputElement> = searchInputWrapper.get(0) as ReactHTMLElement<HTMLInputElement>;
-  //   console.log('input', searchInput, searchInput.props());
-  //   searchInput.value = 'aus';
-  //   searchInput.first().simulate('change');
-  //   const list = component.find(EmojiPickerList);
-  //   const emojis = list.find(Emoji);
-  //   expect(emojis.length, 'Two matching emoji').to.equal(2);
-  //   expect(emojis.at(0).prop('id'), 'Australia emoji displayed').to.equal('flag_au');
-  //   expect(emojis.at(1).prop('id'), 'Austria emoji displayed').to.equal('flag_at');
-  // });
+  describe('search', () => {
+    it('searching for al should match emoji via description', () => {
+      const component = setupPicker();
 
-  // it('searching for aus should match emoji via shortName', () => {
-  //   const component = setupPicker();
-  //   const search = component.find(EmojiPickerListSearch);
-  //   const searchInput = search.find('input');
-  //   searchInput.get(0).value = 'ok_wo';
-  //   searchInput.first().simulate('change');
-  //   const list = component.find(EmojiPickerList);
-  //   const emojis = list.find(Emoji);
-  //   expect(emojis.length, '1 matching emoji').to.equal(1);
-  //   expect(emojis.at(0).prop('id'), 'ok_woman emoji displayed').to.equal('ok_woman');
-  // });
+      return waitUntil(() => searchInputVisible(component))
+      .then(() => {
+        // click search
+        const searchInput = findSearchInput(component);
+        searchInput.simulate('focus');
+        // type "al"
+        searchInput.simulate('change', {
+          target: {
+            value: 'al',
+          }
+        });
+
+        const list = component.find(EmojiPickerList);
+        return waitUntil(() => findEmoji(list).length === 2);
+      }).then(() => {
+        const list = component.find(EmojiPickerList);
+        const emojis = list.find(Emoji);
+        expect(emojis.length, 'Two matching emoji').to.equal(2);
+        expect(emojis.at(0).prop('emoji').shortName, 'Albania emoji displayed').to.equal(':flag_al:');
+        expect(emojis.at(1).prop('emoji').shortName, 'Algeria emoji displayed').to.equal(':flag_dz:');
+      });
+    });
+
+    it('searching for red car should match emoji via shortName', () => {
+      const component = setupPicker();
+
+      return waitUntil(() => searchInputVisible(component))
+      .then(() => {
+        // click search
+        const searchInput = findSearchInput(component);
+        searchInput.simulate('focus');
+        // type "red car"
+        searchInput.simulate('change', {
+          target: {
+            value: 'red car',
+          }
+        });
+
+        const list = component.find(EmojiPickerList);
+        return waitUntil(() => findEmoji(list).length === 1);
+      }).then(() => {
+        const list = component.find(EmojiPickerList);
+        const emojis = list.find(Emoji);
+        expect(emojis.length, 'One matching emoji').to.equal(1);
+        const emojiDescription = emojis.at(0).prop('emoji');
+        expect(emojiDescription.name, 'Automobile emoji displayed').to.equal('automobile');
+        expect(emojiDescription.shortName, 'Automobile emoji displayed').to.equal(':red_car:');
+      });
+    });
+  });
 
   describe('upload', () => {
     const findCustomSection = (component => component.findWhere(wrapper => (
-      wrapper.type() === EmojiPickerListSection && wrapper.prop('title') === customCategory
+      wrapper.type() === EmojiPickerCategoryHeading && wrapper.prop('title') === customCategory
     )));
     const customSectionVisible = (component): boolean => component.findWhere(findCustomSection).length > 0;
 
-    const findStartEmojiUpload = (component) => component.findWhere(wrapper => wrapper.hasClass(addEmojiClassName));
+    const findStartEmojiUpload = (component) => component.find(`.${addEmojiClassName}`);
     const startEmojiUploadVisible = (component): boolean => findStartEmojiUpload(component).length > 0;
 
     const findEmojiNameInput = (component) => component.find(`.${commonStyles.uploadChooseFileEmojiName} input`);
@@ -243,9 +327,6 @@ describe('<EmojiPicker />', () => {
 
     const findPreview = (component) => component.find(EmojiPreview);
     const previewVisible = (component) => findPreview(component).length > 0;
-
-    const findSearchInput = (component) => component.find(EmojiPickerListSearch).findWhere(component => component.name() === 'input');
-    const searchInputVisible = (component) => findSearchInput(component).length > 0;
 
     const findUploadError = (component) => component.find(`.${commonStyles.uploadError}`);
     const uploadErrorVisible = (component) => findUploadError(component).length > 0;
@@ -270,9 +351,11 @@ describe('<EmojiPicker />', () => {
     it('UploadingEmojiResource - "with media token" - upload UI', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
       const component = setupPicker({ emojiProvider });
-      return waitUntil(() => startEmojiUploadVisible(component)).then(() => {
+      return showCategory(customCategory, component).then(() =>
+        waitUntil(() => startEmojiUploadVisible(component))
+      ).then(() => {
         const addEmoji = findStartEmojiUpload(component);
-        expect(addEmoji.length, 'Emoji option').to.equal(1);
+        expect(addEmoji.length, 'Emoji upload option').to.equal(1);
       });
     });
 
@@ -280,7 +363,9 @@ describe('<EmojiPicker />', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
       const component = setupPicker({ emojiProvider });
       return emojiProvider.then(provider => {
-        return waitUntil(() => startEmojiUploadVisible(component)).then(() => {
+        return showCategory(customCategory, component)
+        .then(() => waitUntil(() => startEmojiUploadVisible(component))
+        ).then(() => {
           // click add
           const addEmoji = findStartEmojiUpload(component);
           addEmoji.simulate('click');
@@ -373,7 +458,8 @@ describe('<EmojiPicker />', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
       const component = setupPicker({ emojiProvider });
       return emojiProvider.then(provider => {
-        return waitUntil(() => searchInputVisible(component)).then(() => {
+        return waitUntil(() => searchInputVisible(component))
+        .then(() => {
           // click search
           const searchInput = findSearchInput(component);
           searchInput.simulate('focus');
@@ -474,7 +560,9 @@ describe('<EmojiPicker />', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
       const component = setupPicker({ emojiProvider });
       return emojiProvider.then(provider => {
-        return waitUntil(() => startEmojiUploadVisible(component)).then(() => {
+        return showCategory(customCategory, component)
+        .then(() => waitUntil(() => startEmojiUploadVisible(component)))
+        .then(() => {
           // click add
           const addEmoji = findStartEmojiUpload(component);
           addEmoji.simulate('click');
@@ -539,7 +627,9 @@ describe('<EmojiPicker />', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true, uploadError: 'bad times' });
       const component = setupPicker({ emojiProvider });
       return emojiProvider.then(provider => {
-        return waitUntil(() => startEmojiUploadVisible(component)).then(() => {
+        return showCategory(customCategory, component)
+        .then(() => waitUntil(() => startEmojiUploadVisible(component)))
+        .then(() => {
           // click add
           const addEmoji = findStartEmojiUpload(component);
           addEmoji.simulate('click');

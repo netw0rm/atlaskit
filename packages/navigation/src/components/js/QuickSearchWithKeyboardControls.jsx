@@ -10,6 +10,29 @@ const flattenResults = results => (
 );
 
 /**
+ * Get the ID of an item by its index in the flatResults array
+ * Returns null for a failed index or if id is empty|undefined
+ */
+const getItemIdByIndex = (array, index) => (array && array[index] && array[index].id) || null;
+
+/**
+ * Find an item in the flatResults array by its ID
+ * Returns the item object or null
+ */
+const getItemById = (array, id) => (array && array.find(item => item.id === id)) || null;
+
+/**
+ * Get an item's index in the flatResults array by its ID
+ * Returns a numberic index or null
+ */
+const getItemIndexById = (array, id) => {
+  if (!array) { return null; }
+  const item = getItemById(array, id);
+  const index = array.indexOf(item);
+  return index >= 0 ? index : null;
+};
+
+/**
  * The value, null, is used to represent 'no selection'.  Please remember to
  * appropriately check for null when using the selectedItemId state
  */
@@ -27,76 +50,46 @@ export const withKeyboardControls = QuickSearchComp => (
 
     flatResults = flattenResults(this.props.results);
 
-    /**
-     * Get the ID of an item by its index in the flatResults array
-     * Returns null for a failed index or if id is empty|undefined
-     */
-    getItemIdByIndex = index => (this.flatResults[index] && this.flatResults[index].id) || null;
-
-    /**
-     * Get an item's index in the flatResults array by its ID
-     * Returns a numberic index or null
-     */
-    getItemIndexById = (id) => {
-      const item = this.getItemById(id);
-      const index = this.flatResults.indexOf(item);
-      return index >= 0 ? index : null;
-    }
-
-    /**
-     * Find an item in the flatResults array by its ID
-     * Returns the item object or null
-     */
-    getItemById = id => this.flatResults.find(item => item.id === id) || null;
-
     state = {
-      selectedItemId: this.getItemIdByIndex(0),
+      selectedItemId: getItemIdByIndex(this.flatResults, 0),
     }
 
     componentWillReceiveProps(nextProps) {
       if (nextProps.results) {
         this.flatResults = flattenResults(nextProps.results);
         this.setState({
-          selectedItemId: this.getItemIdByIndex(0),
+          selectedItemId: getItemIdByIndex(this.flatResults, 0),
         });
       }
     }
 
-    selectNext = () => {
-      // Don't bother if results is empty
-      if (this.props.results.length === 0) return;
-
-      let newIdx;
-      const currentIdx = this.getItemIndexById(this.state.selectedItemId);
-      // If nothing is selected, select the first element
-      // Otherwise, select the next element, wrapping around to the top if necessary
-      if (this.state.selectedItemId === null || currentIdx === null) {
-        newIdx = 0;
-      } else {
-        newIdx = (currentIdx + 1 < this.flatResults.length) ? currentIdx + 1 : 0;
+    adjustSelectItemIdByIndex = (adjustment) => {
+      const flatResultsLength = this.flatResults.length;
+      if (flatResultsLength === 0) {
+        return;
       }
+      if (adjustment === 0) {
+        return;
+      }
+      const currentIndex = getItemIndexById(this.flatResults, this.state.selectedItemId);
+      const newIndex = (() => {
+        // If nothing is selected, select the element on the end
+        if (currentIndex === null) {
+          return adjustment > 0 ? 0 : flatResultsLength - 1;
+        }
+        // Adjust current index, wrapping around if necessary
+        const adjustedIndex = (currentIndex + adjustment) % flatResultsLength;
+        // Correct for negative indices
+        return adjustedIndex >= 0 ? adjustedIndex : adjustedIndex + flatResultsLength;
+      })();
       this.setState({
-        selectedItemId: this.getItemIdByIndex(newIdx),
+        selectedItemId: getItemIdByIndex(this.flatResults, newIndex),
       });
     };
 
-    selectPrevious = () => {
-      // Don't bother if results is empty
-      if (this.props.results.length === 0) return;
+    selectNext = () => { this.adjustSelectItemIdByIndex(+1); };
 
-      let newIdx;
-      const currentIdx = this.getItemIndexById(this.state.selectedItemId);
-      // If nothing is selected, select the last element
-      // Otherwise, select the previous element, wrapping around to the bottom if necessary
-      if (this.state.selectedItemId === null || currentIdx === null) {
-        newIdx = this.flatResults.length - 1;
-      } else {
-        newIdx = (currentIdx > 0) ? currentIdx - 1 : this.flatResults.length - 1;
-      }
-      this.setState({
-        selectedItemId: this.getItemIdByIndex(newIdx),
-      });
-    };
+    selectPrevious = () => { this.adjustSelectItemIdByIndex(-1); };
 
     handleSearchKeyDown = (event) => {
       if (event.key === 'ArrowUp') {
@@ -107,7 +100,7 @@ export const withKeyboardControls = QuickSearchComp => (
         this.selectNext();
       } else if (event.key === 'Enter' && this.state.selectedItemId) {
         event.preventDefault(); // Don't fire submit event from input
-        this.props.onResultClick(this.getItemById(this.state.selectedItemId));
+        this.props.onResultClick(getItemById(this.flatResults, this.state.selectedItemId));
       }
     };
 

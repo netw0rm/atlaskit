@@ -25,7 +25,7 @@ export default class List extends PureComponent {
       <Droppable
         droppableId={this.props.listId}
         isDropEnabled
-        type="PERSON"
+        type="TASK"
       >
         {(provided: Provided) => (
           <Container

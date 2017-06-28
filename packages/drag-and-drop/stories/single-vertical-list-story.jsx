@@ -2,25 +2,25 @@
 import React, { PureComponent } from 'react';
 import { DragDropContext } from '../src/';
 import { storiesOf } from '@kadira/storybook';
-import Person from './components/person';
+import Task from './components/task';
 import List from './components/list';
-import type { PersonType } from './types';
+import type { TaskType } from './types';
 import type { DropResult, DraggableLocation } from '../src/types';
 
-const getPeople = (count: number): Person[] =>
+const getTasks = (count: number): TaskType[] =>
   Array.from({ length: count }, (v, k) => k)
-    .map((val: number): Person => ({
+    .map((val: number): TaskType => ({
       id: `${val}`,
-      name: `Mr ${val}`,
+      title: `Task ${val}`,
     }));
 
 class Standard extends PureComponent {
   state: {|
-    people: PersonType[]
+    tasks: TaskType[]
   |}
 
   state = {
-    people: getPeople(5),
+    tasks: getTasks(5),
   }
 
   onDragStart = () => {
@@ -41,29 +41,29 @@ class Standard extends PureComponent {
     }
 
     // simple reorder - assuming can only move in the same list
-    const people: Person[] = [...this.state.people];
+    const tasks: TaskType[] = [...this.state.tasks];
 
-    const temp: Person = people[source.index];
-    people[source.index] = people[destination.index];
-    people[destination.index] = temp;
+    const temp: TaskType = tasks[source.index];
+    tasks[source.index] = tasks[destination.index];
+    tasks[destination.index] = temp;
 
     this.setState({
-      people,
+      tasks,
     });
   }
 
   render() {
-    const { people } = this.state;
+    const { tasks } = this.state;
     return (
       <DragDropContext
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
       >
         <List listId="list">
-          {people.map((person: PersonType) => (
-            <Person
-              data={person}
-              key={person.id}
+          {tasks.map((task: TaskType) => (
+            <Task
+              task={task}
+              key={task.id}
             />
           ))}
         </List>

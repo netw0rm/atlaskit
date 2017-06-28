@@ -1,4 +1,5 @@
-export type PersonType = {|
+export type TaskType = {|
   id: string,
-  name: string,
+  title: string,
+  description?: string,
 |}

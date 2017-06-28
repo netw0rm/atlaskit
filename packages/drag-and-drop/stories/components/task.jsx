@@ -1,48 +1,49 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import Draggable from '../../src/view/draggable/connected-draggable';
-import type { PersonType } from '../types';
+import type { TaskType } from '../types';
 import type { Provided } from '../../src/view/draggable/draggable-types';
 
 const Container = styled.a`
   border-radius: 2px;
+  border: 1px solid grey;
   background-color: ${({ isDragging }) => (isDragging ? '#2684FF' : 'white')};
   cursor: ${({ isDragging }) => (isDragging ? 'grabbing' : 'grab')};
   padding: 8px;
   display: block;
-  height: 80px;
+  height: 60px;
   margin-bottom: 8px;
   user-select: none;
 `;
 
 type Props = {|
-  data: PersonType
+  task: TaskType
 |}
 
-export default class Person extends React.Component {
+export default class Task extends Component {
   props: Props
 
   render() {
-    const { data } = this.props;
+    const { task } = this.props;
     return (
       <Draggable
-        draggableId={data.id}
-        type="PERSON"
+        draggableId={task.id}
+        type="TASK"
         isDragEnabled
       >
         {(provided: Provided) => {
-          console.log('rendering person', data.name);
+          console.log('rendering task');
           return (
             <div>
               <Container
                 innerRef={ref => provided.innerRef(ref)}
-                href={data.name}
+                href={task.id}
                 isDragging={provided.isDragging}
                 style={provided.draggableStyle}
                 {...provided.dragHandleProps}
               >
-                {data.name}
+                {task.title}
               </Container>
               {provided.placeholder}
             </div>

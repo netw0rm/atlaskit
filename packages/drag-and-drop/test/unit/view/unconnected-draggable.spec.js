@@ -16,6 +16,7 @@ import type {
   MapProps,
   DispatchProps,
   Provided,
+  StateSnapshot,
 } from '../../../src/view/draggable/draggable-types';
 import type {
   Position,
@@ -154,8 +155,8 @@ const mountDraggable = ({
       {...mapProps}
       {...dispatchProps}
     >
-      {(provided: Provided) => (
-        <Component provided={provided} />
+      {(provided: Provided, snapshot: StateSnapshot) => (
+        <Component provided={provided} snapshot={snapshot} />
       )}
     </Draggable>
     , options);
@@ -220,11 +221,13 @@ const getFromLift = (dispatchProps) => {
 const getStubber = stub =>
   class Stubber extends PureComponent {
     props: {|
-      provided: Provided
+      provided: Provided,
+      snapshot: StateSnapshot,
     |}
     render() {
       const provided: Provided = this.props.provided;
-      stub(provided);
+      const snapshot: StateSnapshot = this.props.snapshot;
+      stub({ provided, snapshot });
       return (
         <div ref={provided.innerRef} />
       );
@@ -777,7 +780,7 @@ describe('Draggable - unconnected', () => {
       requestAnimationFrame.flush();
 
       // first call is for the setRef
-      const provided: Provided = stub.lastCall.args[0];
+      const provided: Provided = stub.lastCall.args[0].provided;
       expect(provided.draggableStyle.transform).to.equal(expected);
     });
 
@@ -813,7 +816,7 @@ describe('Draggable - unconnected', () => {
         // flush any movement required
         requestAnimationFrame.step();
 
-        const provided: Provided = stub.lastCall.args[0];
+        const provided: Provided = stub.lastCall.args[0].provided;
         expect(provided.draggableStyle.transform).to.equal(expected);
       });
     });
@@ -829,7 +832,7 @@ describe('Draggable - unconnected', () => {
       // finish moving to the initial position
       requestAnimationFrame.flush();
 
-      const provided: Provided = stub.lastCall.args[0];
+      const provided: Provided = stub.lastCall.args[0].provided;
       // $ExpectError - because we do not have the correct React type for placeholder
       expect(provided.placeholder.props.height).to.equal(mockInitial.dimension.withMargin.height);
       // $ExpectError - because we do not have the correct React type for placeholder
@@ -839,6 +842,7 @@ describe('Draggable - unconnected', () => {
     describe('is not dragging', () => {
       let wrapper: ReactWrapper;
       let provided: Provided;
+      let snapshot: StateSnapshot;
 
       beforeEach(() => {
         const stub = sinon.stub();
@@ -846,7 +850,8 @@ describe('Draggable - unconnected', () => {
           mapProps: notDraggingMapProps,
           Component: getStubber(stub),
         });
-        provided = stub.lastCall.args[0];
+        provided = stub.lastCall.args[0].provided;
+        snapshot = stub.lastCall.args[0].snapshot;
       });
 
       it('should not render a placeholder', () => {
@@ -879,6 +884,10 @@ describe('Draggable - unconnected', () => {
 
         expect(customWrapper.find(Moveable).props().speed).to.equal('INSTANT');
       });
+
+      it('should let consumers know that the item is not dragging', () => {
+        expect(snapshot.isDragging).to.equal(false);
+      });
     });
 
     describe('is dragging', () => {
@@ -890,7 +899,7 @@ describe('Draggable - unconnected', () => {
           Component: getStubber(stub),
         });
 
-        const provided: Provided = stub.lastCall.args[0];
+        const provided: Provided = stub.lastCall.args[0].provided;
         // $ExpectError - because we do not have the correct React type for placeholder
         expect(provided.placeholder.type).to.equal(Placeholder);
       });
@@ -901,13 +910,13 @@ describe('Draggable - unconnected', () => {
           mapProps: draggingMapProps,
           Component: getStubber(draggingStub),
         });
-        const draggingProvided: Provided = draggingStub.lastCall.args[0];
+        const draggingProvided: Provided = draggingStub.lastCall.args[0].provided;
         const notDraggingStub = sinon.stub();
         mountDraggable({
           mapProps: notDraggingMapProps,
           Component: getStubber(notDraggingStub),
         });
-        const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0];
+        const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0].provided;
 
         expect(draggingProvided.draggableStyle.zIndex).to.be.a('number');
         expect(notDraggingProvided.draggableStyle).to.not.have.property('zIndex');
@@ -919,13 +928,13 @@ describe('Draggable - unconnected', () => {
           mapProps: draggingMapProps,
           Component: getStubber(draggingStub),
         });
-        const draggingProvided: Provided = draggingStub.lastCall.args[0];
+        const draggingProvided: Provided = draggingStub.lastCall.args[0].provided;
         const returningHomeStub = sinon.stub();
         mountDraggable({
           mapProps: returningHomeMapProps,
           Component: getStubber(returningHomeStub),
         });
-        const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0];
+        const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
 
         expect(draggingProvided.draggableStyle.zIndex)
           .to.be.above(returningHomeProvided.draggableStyle.zIndex);
@@ -942,7 +951,7 @@ describe('Draggable - unconnected', () => {
           throw new Error('invalid data');
         }
         const dimension = draggingMapProps.initial.dimension;
-        const provided: Provided = stub.lastCall.args[0];
+        const provided: Provided = stub.lastCall.args[0].provided;
 
         expect(provided.draggableStyle.position).to.equal('absolute');
         expect(provided.draggableStyle.zIndex).to.be.a('number');
@@ -973,6 +982,18 @@ describe('Draggable - unconnected', () => {
 
         expect(wrapper.find(Moveable).props().speed).to.equal('INSTANT');
       });
+
+      it('should let consumers know that the item is dragging', () => {
+        const stub = sinon.stub();
+
+        mountDraggable({
+          mapProps: draggingMapProps,
+          Component: getStubber(stub),
+        });
+
+        const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
+        expect(snapshot.isDragging).to.equal(true);
+      });
     });
 
     describe('returning to home after drop', () => {
@@ -984,7 +1005,7 @@ describe('Draggable - unconnected', () => {
           Component: getStubber(stub),
         });
 
-        const provided: Provided = stub.lastCall.args[0];
+        const provided: Provided = stub.lastCall.args[0].provided;
 
         // $ExpectError - because we do not have the correct React type for placeholder
         expect(provided.placeholder.type).to.equal(Placeholder);
@@ -1007,13 +1028,13 @@ describe('Draggable - unconnected', () => {
           mapProps: notDraggingMapProps,
           Component: getStubber(notDraggingStub),
         });
-        const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0];
+        const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0].provided;
         const returningHomeStub = sinon.stub();
         mountDraggable({
           mapProps: returningHomeMapProps,
           Component: getStubber(returningHomeStub),
         });
-        const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0];
+        const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
 
         expect(returningHomeProvided.draggableStyle.zIndex).to.be.a('number');
         expect(notDraggingProvided.draggableStyle).to.not.have.property('zIndex');
@@ -1029,13 +1050,25 @@ describe('Draggable - unconnected', () => {
           Component: getStubber(stub),
         });
 
-        const provided: Provided = stub.lastCall.args[0];
+        const provided: Provided = stub.lastCall.args[0].provided;
         expect(provided.draggableStyle.position).to.equal('absolute');
         expect(provided.draggableStyle.zIndex).to.be.a('number');
         expect(provided.draggableStyle.width).to.equal(dimension.withMargin.width);
         expect(provided.draggableStyle.height).to.equal(dimension.withMargin.height);
         expect(provided.draggableStyle.top).to.equal(dimension.withMargin.top);
         expect(provided.draggableStyle.left).to.equal(dimension.withMargin.left);
+      });
+
+      it('should let consumers know that the item is no longer dragging', () => {
+        const stub = sinon.stub();
+
+        mountDraggable({
+          mapProps: returningHomeMapProps,
+          Component: getStubber(stub),
+        });
+
+        const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
+        expect(snapshot.isDragging).to.equal(false);
       });
     });
 
@@ -1050,7 +1083,8 @@ describe('Draggable - unconnected', () => {
         mapProps,
         Component: getStubber(stub),
       });
-      const provided: Provided = stub.lastCall.args[0];
+      const provided: Provided = stub.lastCall.args[0].provided;
+      const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
 
       it('should not return a placeholder', () => {
         expect(provided.placeholder).to.equal(null);
@@ -1058,6 +1092,10 @@ describe('Draggable - unconnected', () => {
 
       it('should not be moved from its original position', () => {
         expect(provided.draggableStyle).to.not.have.property('position');
+      });
+
+      it('should let consumers know that the item is not dragging', () => {
+        expect(snapshot.isDragging).to.equal(false);
       });
     });
 
@@ -1073,7 +1111,8 @@ describe('Draggable - unconnected', () => {
         mapProps,
         Component: getStubber(stub),
       });
-      const provided: Provided = stub.lastCall.args[0];
+      const provided: Provided = stub.lastCall.args[0].provided;
+      const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
 
       it('should not render a placeholder', () => {
         expect(provided.placeholder).to.equal(null);
@@ -1081,6 +1120,10 @@ describe('Draggable - unconnected', () => {
 
       it('should not be moved from its original position', () => {
         expect(provided.draggableStyle).to.not.have.property('position');
+      });
+
+      it('should let consumers know that the item is not dragging', () => {
+        expect(snapshot.isDragging).to.equal(false);
       });
     });
   });

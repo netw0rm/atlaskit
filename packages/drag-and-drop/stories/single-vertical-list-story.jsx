@@ -1,7 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { DragDropContext } from '../src/';
 import { storiesOf } from '@kadira/storybook';
+import faker from 'faker';
+import { DragDropContext } from '../src/';
 import Task from './components/task';
 import List from './components/list';
 import type { TaskType } from './types';
@@ -11,7 +12,10 @@ const getTasks = (count: number): TaskType[] =>
   Array.from({ length: count }, (v, k) => k)
     .map((val: number): TaskType => ({
       id: `${val}`,
-      title: `Task ${val}`,
+      title: faker.lorem.words(),
+      description: faker.lorem.words(faker.random.number({
+        min: 3, max: 15,
+      })),
     }));
 
 class Standard extends PureComponent {

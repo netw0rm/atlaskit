@@ -2,8 +2,11 @@
 import type { DroppableId, TypeId, ReactElement } from '../../types';
 
 export type Provided = {|
-  isDraggingOver: boolean,
   innerRef: (Element) => mixed,
+|}
+
+export type StateSnapshot = {|
+  isDraggingOver: boolean,
 |}
 
 export type MapProps = {|

@@ -14,7 +14,7 @@ import type {
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import Placeholder from './placeholder';
-import type { Props, Provided } from './draggable-types';
+import type { Props, Provided, StateSnapshot } from './draggable-types';
 import type { Speed } from '../moveable';
 
 type PlacementStyle = {|
@@ -230,25 +230,29 @@ export default class Draggable extends PureComponent {
     };
   }
 
-  getProvided = memoizeOne((
-    isDragging: boolean,
-    showPlaceholder: boolean,
-    dragHandleProps: DragHandleProvided,
-    movementStyle: Object,
-    placementStyle: ?PlacementStyle,
-  ): Provided => ({
-    innerRef: this.setChildRef,
-    placeholder: showPlaceholder ? this.getPlaceholder() : null,
+  getProvided = memoizeOne(
+    (showPlaceholder: boolean,
+      dragHandleProps: DragHandleProvided,
+      movementStyle: Object,
+      placementStyle: ?PlacementStyle,
+    ): Provided => ({
+      innerRef: this.setChildRef,
+      placeholder: showPlaceholder ? this.getPlaceholder() : null,
+      dragHandleProps,
+      draggableStyle: {
+        ...placementStyle,
+        ...movementStyle,
+      },
+    })
+  )
+
+  getSnapshot = memoizeOne((isDragging: boolean): StateSnapshot => ({
     isDragging,
-    dragHandleProps,
-    draggableStyle: {
-      ...placementStyle,
-      ...movementStyle,
-    },
   }))
 
   memoizedChildrenFn = memoizeOne(
-    (provided: Provided) => this.props.children(provided)
+    (provided: Provided, snapshot: StateSnapshot) =>
+      this.props.children(provided, snapshot)
   );
 
   render() {
@@ -271,13 +275,16 @@ export default class Draggable extends PureComponent {
               callbacks={this.callbacks}
             >
               {(dragHandleProps: DragHandleProvided) =>
-                this.memoizedChildrenFn(this.getProvided(
-                  this.props.isDragging,
-                  info.showPlaceholder,
-                  dragHandleProps,
-                  movementStyle,
-                  info.style,
-                ))}
+                this.memoizedChildrenFn(
+                  this.getProvided(
+                    info.showPlaceholder,
+                    dragHandleProps,
+                    movementStyle,
+                    info.style,
+                  ),
+                  this.getSnapshot(this.props.isDragging)
+                )
+              }
             </DragHandle>
         )}
         </Moveable>

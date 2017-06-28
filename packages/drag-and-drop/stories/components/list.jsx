@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Droppable from '../../src/view/droppable/connected-droppable';
-import type { Provided } from '../../src/view/droppable/droppable-types';
+import type { Provided, StateSnapshot } from '../../src/view/droppable/droppable-types';
 
 const Container = styled.div`
   background-color: ${({ isDraggingOver }) => (isDraggingOver ? 'lightyellow' : 'lightblue')};
@@ -27,9 +27,9 @@ export default class List extends PureComponent {
         isDropEnabled
         type="TASK"
       >
-        {(provided: Provided) => (
+        {(provided: Provided, snapshot: StateSnapshot) => (
           <Container
-            isDraggingOver={provided.isDraggingOver}
+            isDraggingOver={snapshot.isDraggingOver}
             innerRef={provided.innerRef}
           >
             {this.props.children}

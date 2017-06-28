@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import type { Props, Provided } from './droppable-types';
+import type { Props, Provided, StateSnapshot } from './droppable-types';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 
 type State = {|
@@ -25,16 +25,19 @@ export default class Droppable extends PureComponent {
 
   render() {
     const provided: Provided = {
-      isDraggingOver: this.props.isDraggingOver,
       innerRef: this.setRef,
     };
+    const snapshot: StateSnapshot = {
+      isDraggingOver: this.props.isDraggingOver,
+    };
+
     return (
       <DroppableDimensionPublisher
         itemId={this.props.droppableId}
         type={this.props.type}
         targetRef={this.state.ref}
       >
-        {this.props.children(provided)}
+        {this.props.children(provided, snapshot)}
       </DroppableDimensionPublisher>
     );
   }

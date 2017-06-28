@@ -10,15 +10,19 @@ import Droppable from '../../../src/view/droppable/droppable';
 import storeKey from '../../../src/state/get-store-key';
 import createStore from '../../../src/state/create-store';
 import type { DroppableId } from '../../../src/types';
-import type { MapProps, OwnProps, Provided } from '../../../src/view/droppable/droppable-types';
+import type { MapProps, OwnProps, Provided, StateSnapshot } from '../../../src/view/droppable/droppable-types';
 
 const getStubber = (stub?: Function = sinon.stub()) =>
   class Stubber extends PureComponent {
     props: {|
-      provided: Provided
+      provided: Provided,
+      snapshot: StateSnapshot,
     |}
     render() {
-      stub(this.props.provided);
+      stub({
+        provided: this.props.provided,
+        snapshot: this.props.snapshot,
+      });
       return (
         <div>Hey there</div>
       );
@@ -70,8 +74,8 @@ const mountDroppable = ({
       {...ownProps}
       {...mapProps}
     >
-      {(provided: Provided) => (
-        <Component provided={provided} />
+      {(provided: Provided, snapshot: StateSnapshot) => (
+        <Component provided={provided} snapshot={snapshot} />
       )}
     </Droppable>
     , options);
@@ -91,8 +95,10 @@ describe('Droppable - unconnected', () => {
         Component: getStubber(stub),
       });
 
-      const provided: Provided = stub.args[0][0];
-      expect(provided.isDraggingOver).to.equal(mapProps.isDraggingOver);
+      const provided: Provided = stub.args[0][0].provided;
+      const snapshot: StateSnapshot = stub.args[0][0].snapshot;
+      expect(provided.innerRef).to.be.a('function');
+      expect(snapshot.isDraggingOver).to.equal(mapProps.isDraggingOver);
     });
   });
 });

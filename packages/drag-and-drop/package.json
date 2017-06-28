@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@atlaskit/util-readme": "3.2.1",
+    "faker": "4.1.0",
     "styled-components": "2.1.0"
   },
   "peerDependencies": {},

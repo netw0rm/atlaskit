@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Draggable from '../../src/view/draggable/connected-draggable';
 import type { TaskType } from '../types';
-import type { Provided } from '../../src/view/draggable/draggable-types';
+import type { Provided, StateSnapshot } from '../../src/view/draggable/draggable-types';
 
 const Container = styled.a`
   border-radius: 2px;
@@ -12,7 +12,7 @@ const Container = styled.a`
   cursor: ${({ isDragging }) => (isDragging ? 'grabbing' : 'grab')};
   padding: 8px;
   display: block;
-  height: 60px;
+  min-height: 40px;
   margin-bottom: 8px;
   user-select: none;
 `;
@@ -32,23 +32,20 @@ export default class Task extends Component {
         type="TASK"
         isDragEnabled
       >
-        {(provided: Provided) => {
-          console.log('rendering task');
-          return (
-            <div>
-              <Container
-                innerRef={ref => provided.innerRef(ref)}
-                href={task.id}
-                isDragging={provided.isDragging}
-                style={provided.draggableStyle}
-                {...provided.dragHandleProps}
-              >
-                {task.title}
-              </Container>
-              {provided.placeholder}
-            </div>
-          );
-        }
+        {(provided: Provided, snapshot: StateSnapshot) => (
+          <div>
+            <Container
+              innerRef={ref => provided.innerRef(ref)}
+              href={task.id}
+              isDragging={snapshot.isDragging}
+              style={provided.draggableStyle}
+              {...provided.dragHandleProps}
+            >
+              {task.description}
+            </Container>
+            {provided.placeholder}
+          </div>
+        )
       }
       </Draggable>
     );

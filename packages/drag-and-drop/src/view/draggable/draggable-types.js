@@ -22,10 +22,13 @@ type ReactElement = mixed;
 
 export type Provided = {|
   innerRef: (Element) => void,
-  isDragging: boolean,
   draggableStyle: Object,
   placeholder: ReactElement,
   dragHandleProps: ?DragHandleProvided,
+|}
+
+export type StateSnapshot = {|
+  isDragging: boolean,
 |}
 
 export type DispatchProps = {

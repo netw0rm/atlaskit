@@ -95,7 +95,6 @@ describe('<EmojiPicker />', () => {
         const placeholders = customSection.find(EmojiPlaceholder);
         expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
         const props = placeholders.get(0).props;
-        expect(props.name, 'name').to.equals(mediaEmoji.name);
         expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
       });
     });
@@ -165,7 +164,6 @@ describe('<EmojiPicker />', () => {
           const placeholders = preview.find(EmojiPlaceholder);
           expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
           const props = placeholders.get(0).props;
-          expect(props.name, 'name').to.equals(mediaEmoji.name);
           expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
         });
       });

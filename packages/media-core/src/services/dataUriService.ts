@@ -6,7 +6,7 @@ export type ImageResizeMode = 'crop' | 'fit' | 'full-fit';
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode: ImageResizeMode): Promise<DataUri>;
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: ImageResizeMode): Promise<DataUri>;
 }
 
 export class MediaDataUriService implements DataUriService {

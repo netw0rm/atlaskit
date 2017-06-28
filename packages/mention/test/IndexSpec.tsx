@@ -22,6 +22,7 @@ describe(name, () => {
         'Mention',
         'ResourcedMention',
         'isSpecialMention',
+        'SearchIndex',
         'default',
       ]);
 

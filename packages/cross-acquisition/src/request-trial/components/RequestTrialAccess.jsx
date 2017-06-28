@@ -5,7 +5,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
 
-import { RequestTrialHeader } from '../styled/RequestTrial';
+import RequestTrialHeader from '../styled/RequestTrialHeader';
 
 export default class RequestTrialAccess extends Component {
   static propTypes = {

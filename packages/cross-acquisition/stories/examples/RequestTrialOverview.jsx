@@ -1,9 +1,9 @@
 import React from 'react';
-import { RequestTrial, CrossAcquisitionProvider } from '@atlaskit/cross-acquisition';
-import AtlassianLogo from '@atlaskit/logo';
+import { RequestTrial, CrossSellProvider } from '@atlaskit/cross-acquisition';
+import { AtlassianLogo } from '@atlaskit/logo';
 
 export default (
-  <CrossAcquisitionProvider
+  <CrossSellProvider
     productLogo={<AtlassianLogo />}
     requestTrial={{
       accessBanner: 'https://placehold.it/352x214',
@@ -14,5 +14,5 @@ export default (
     }}
   >
     <RequestTrial />
-  </CrossAcquisitionProvider>
+  </CrossSellProvider>
 );

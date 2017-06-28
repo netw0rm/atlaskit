@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-import crossAcquisitionContextTypes from './prop-types/cross-acquisition-context-types';
+import { crossSellShape } from '../../common/components/CrossSellProvider';
 import RequestTrialAccess from './RequestTrialAccess';
 import RequestTrialNote from './RequestTrialNote';
 
-import { MultiStep, Step } from './multi-step';
+import { MultiStep, Step } from '../../multi-step';
 
 export default class RequestTrial extends Component {
-  static contextTypes = crossAcquisitionContextTypes;
+  static contextTypes = crossSellShape;
 
   render() {
     let productLogo = null;
@@ -17,15 +17,15 @@ export default class RequestTrial extends Component {
     let prompt = null;
     let placeholder = null;
 
-    if (this.context.crossAcquisition) {
-      productLogo = this.context.crossAcquisition.productLogo;
+    if (this.context.crossSell) {
+      productLogo = this.context.crossSell.productLogo;
 
-      if (this.context.crossAcquisition.requestTrial) {
-        banner = this.context.crossAcquisition.requestTrial.accessBanner;
-        heading = this.context.crossAcquisition.requestTrial.accessHeading;
-        message = this.context.crossAcquisition.requestTrial.accessMessage;
-        prompt = this.context.crossAcquisition.requestTrial.notePrompt;
-        placeholder = this.context.crossAcquisition.requestTrial.notePlaceholder;
+      if (this.context.crossSell.requestTrial) {
+        banner = this.context.crossSell.requestTrial.accessBanner;
+        heading = this.context.crossSell.requestTrial.accessHeading;
+        message = this.context.crossSell.requestTrial.accessMessage;
+        prompt = this.context.crossSell.requestTrial.notePrompt;
+        placeholder = this.context.crossSell.requestTrial.notePlaceholder;
       }
     }
 

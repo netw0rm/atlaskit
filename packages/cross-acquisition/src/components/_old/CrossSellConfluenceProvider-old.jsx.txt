@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
-import CrossAquisitionProvider from './CrossAquisitionProvider';
+import CrossSellProvider from './CrossSellProvider';
 
-export default class CrossAquisitionConfluenceProvider extends Component {
+export default class CrossSellConfluenceProvider extends Component {
   render() {
     const defaultProps = {
       productLogo: <ConfluenceLogo />,
@@ -21,7 +21,7 @@ export default class CrossAquisitionConfluenceProvider extends Component {
     };
 
     return (
-      <CrossAquisitionProvider {...props} />
+      <CrossSellProvider {...props} />
     );
   }
 }

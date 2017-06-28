@@ -22,9 +22,10 @@
     "@atlaskit/icon": "^7.0.0",
     "@atlaskit/logo": "^3.1.0",
     "@atlaskit/modal-dialog": "^2.1.1",
-    "@atlaskit/util-shared-styles": "^2.1.1",
     "@atlaskit/multi-select": "^6.2.0",
+    "@atlaskit/util-shared-styles": "^2.1.1",
     "prop-types": "^15.5.10",
+    "react-intl": "^2.3.0",
     "styled-components": "^2.1.0",
     "tslib": "^1.2.0"
   },

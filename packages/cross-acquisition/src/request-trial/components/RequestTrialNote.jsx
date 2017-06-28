@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
-import { RequestTrialHeader, NoteText } from '../styled/RequestTrial';
+import RequestTrialHeader from '../styled/RequestTrialHeader';
+import NoteText from '../styled/NoteText';
 
 export default class RequestTrialNote extends Component {
   static propTypes = {

@@ -6,7 +6,7 @@ import ResourcedMentionList from './components/ResourcedMentionList';
 import MentionPicker from './components/MentionPicker';
 import Mention from './components/Mention';
 import ResourcedMention from './components/Mention/ResourcedMention';
-import { MentionDescription } from './types';
+import { MentionDescription, isSpecialMention } from './types';
 
 export {
   MentionResource,
@@ -22,6 +22,7 @@ export {
   Mention,
   ResourcedMention,
   MentionDescription,
+  isSpecialMention
 };
 
 export default MentionPicker;

@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import Readme, { Code, Heading } from '@atlaskit/util-readme';
 import * as React from 'react';
 
-import * as SchemaRaw from '!raw!../src/schema/schema.ts';
 import * as exampleMediaServicesFileJson from '!raw!./examples/mediaservices-file.json';
 import * as exampleMessageJson from '!raw!./examples/message.json';
 import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
@@ -116,22 +115,6 @@ storiesOf(name, module)
         </ul>
         <Heading type="3">Example message</Heading>
         <Code language="js">{exampleMessageJson}</Code>
-        <Heading type="3">ProseMirror Schema (internal)</Heading>
-        <p>This schema is used internally to constrain the content model during edits. In some cases
-        it includes content that <strong>won't</strong> be present in an encoded documents (e.g.
-        <code>mention_query</code>) but these should be documented as such.</p>
-        <p>Node and mark attributes are described here, and require manual investigation of the
-        source code in ak-editor-core.</p>
-        <SchemaDoc schemaSourceFile={SchemaRaw} />
       </Readme>
     </div>
   ));
-
-function SchemaDoc(props: { schemaSourceFile: string }) {
-  const regexp = new RegExp('new Schema\\(([^]+)\\) as \\w+Schema;', 'gm');
-  const match = regexp.exec(props.schemaSourceFile);
-  const schema = match && match[1];
-  return schema
-    ? <Code language="js">{schema}</Code>
-    : <p>Unable to show the schema.</p>;
-}

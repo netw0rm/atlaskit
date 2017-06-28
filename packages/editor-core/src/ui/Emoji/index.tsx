@@ -43,6 +43,7 @@ export default class EmojiNode extends PureComponent<EmojiProps, {}> {
       <ResourcedEmoji
         emojiId={{ id, fallback, shortName }}
         emojiProvider={providers.emojiProvider}
+        showTooltip={true}
       />
     );
   }

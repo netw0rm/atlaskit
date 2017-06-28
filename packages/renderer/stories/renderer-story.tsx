@@ -137,9 +137,9 @@ storiesOf(name, module)
     const Sample = (props: any) => (
       <span>
         Example emoji:&nbsp;
-        <Emoji emojiId={evilburnsEmojiId} emojiProvider={props.emojiProvider} />
-        <Emoji emojiId={grinEmojiId} emojiProvider={props.emojiProvider} />
-        <Emoji emojiId={{ shortName: ':nope:' }} emojiProvider={props.emojiProvider ? loadingEmojiProvider : undefined} />
+        <Emoji emojiId={evilburnsEmojiId} emojiProvider={props.emojiProvider} showTooltip={true}/>
+        <Emoji emojiId={grinEmojiId} emojiProvider={props.emojiProvider} showTooltip={true}/>
+        <Emoji emojiId={{ shortName: ':nope:' }} emojiProvider={props.emojiProvider ? loadingEmojiProvider : undefined} showTooltip={true}/>
       </span>
     );
     const sampleStyle = {

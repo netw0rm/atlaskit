@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@atlaskit/code": "^2.1.2",
-    "@atlaskit/emoji": "^16.2.0",
+    "@atlaskit/emoji": "^18.2.0",
     "@atlaskit/icon": "^6.5.4",
     "@atlaskit/media-card": "^17.5.0",
     "@atlaskit/media-core": "^8.1.0",

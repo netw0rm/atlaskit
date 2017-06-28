@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "17.5.2",
+  "version": "17.6.0",
   "config": {
     "access": "public"
   },
@@ -69,6 +69,9 @@
     "@atlaskit/droplist": "^3.6.0",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-test-helpers": "^6.0.0",
+    "@atlaskit/field-radio-group": "^1.2.1",
+    "@atlaskit/media-avatar-picker": "^2.0.2",
+    "@atlaskit/toggle": "^2.0.4",
     "akutil-common-test": "*",
     "deepcopy": "0.6.3"
   },

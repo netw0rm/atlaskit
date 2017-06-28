@@ -116,6 +116,76 @@ export const getValidContent = (content: Node[]): Node[] => {
   return content.map(node => getValidNode(node));
 };
 
+const flattenUnknownBlockTree = (node: Node): Node[] => {
+  const output: Node[] = [];
+  let isPrevLeafNode = false;
+
+  for (let i = 0; i < node.content!.length; i++) {
+    const childNode = node.content![i];
+    const isLeafNode = !(childNode.content && childNode.content.length);
+
+    if (i > 0) {
+      if (isPrevLeafNode) {
+        output.push({ type: 'text', text: ' ' } as Node);
+      } else {
+        output.push({ type: 'hardBreak' } as Node);
+      }
+    }
+
+    if (isLeafNode) {
+      output.push(getValidNode(childNode));
+    } else {
+      output.push(...flattenUnknownBlockTree(childNode));
+    }
+
+    isPrevLeafNode = isLeafNode;
+  }
+
+  return output;
+};
+
+/**
+ * Sanitize unknown node tree
+ *
+ * @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-ImplementationdetailsforHCNGwebrenderer
+ */
+export const getValidUnknownNode = (node: Node): Node => {
+  const {
+    attrs = {},
+    content,
+    text,
+    type,
+  } = node;
+
+  if (!content || !content.length) {
+    const unknownInlineNode: Node = {
+      type: 'text',
+      text: text || attrs.text || `[${type}]`,
+    };
+
+    if (attrs.textUrl) {
+      unknownInlineNode.marks = [{
+        type: 'link',
+        attrs: {
+          href: attrs.textUrl,
+        },
+      } as Mark];
+    }
+
+    return unknownInlineNode;
+  }
+
+  /*
+   * Find leaf nodes and join them. If leaf nodes' parent node is the same node
+   * join with a blank space, otherwise they are children of different branches, i.e.
+   * we need to join them with a hardBreak node
+   */
+  return {
+    type: 'unknownBlock',
+    content: flattenUnknownBlockTree(node),
+  };
+};
+
 /*
  * This method will validate a Node according to the spec defined here
  * https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Nodes
@@ -324,12 +394,7 @@ export const getValidNode = (node: Node): Node => {
     }
   }
 
-  return {
-    type: 'unknown',
-    text: text || undefined,
-    attrs: attrs || undefined,
-    content: content || undefined
-  };
+  return getValidUnknownNode(node);
 };
 
 /*

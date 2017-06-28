@@ -79,7 +79,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.26",
     "karma-webpack": "^2.0.3",
-    "lerna": "treshugart/lerna#cc429c89a58024ee34cafe9a474a2e79808c7cbe",
+    "lerna": "treshugart/lerna#762af6fbe54b76fb3b32b1e618b75d032aab20c1",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "minilog": "^3.0.1",

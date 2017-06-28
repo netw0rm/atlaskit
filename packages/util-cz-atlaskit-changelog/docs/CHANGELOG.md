@@ -3,6 +3,8 @@
 ## Unreleased
 
 * feature; feat(component): write static changelog on npm commit command
+Generate this static file on commit, allowing us to modify and expand on changes in an easier format.
+
 ## 1.1.7 (2017-04-27)
 
 * fix; bug-fix(docs): update legal copy to be more clear. Not all modules include ADG license.

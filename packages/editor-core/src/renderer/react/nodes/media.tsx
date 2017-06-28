@@ -6,7 +6,6 @@ import { default as UIMedia } from '../../../ui/Media';
 import { MediaType } from '../../../schema';
 import { CardDimensions } from '@atlaskit/media-card';
 
-
 export interface MediaProps {
   id: string;
   providers?: ProviderFactory;

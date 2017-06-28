@@ -1,15 +1,14 @@
-import AkButton from '@atlaskit/button';
 import * as React from 'react';
 import { PureComponent } from 'react';
-
+import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
+import ToolbarButton from '../ToolbarButton';
 import { analyticsService as analytics } from '../../analytics';
 import { BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { EditorView } from '../../prosemirror';
 import DropdownMenu from '../DropdownMenu';
-
-import { ButtonContent } from './styles';
+import { ButtonContent, ExpandIconWrapper } from './styles';
 
 export interface Props {
   isDisabled?: boolean;
@@ -64,41 +63,43 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     const { active, currentBlockType } = this.state;
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
 
-    if (this.props.isDisabled) {
+    const toolbarButtonFactory = (disabled: boolean) => (
+      <ToolbarButton
+        selected={active}
+        disabled={disabled}
+        onClick={this.handleTriggerClick}
+        iconAfter={
+          <ExpandIconWrapper>
+            <ExpandIcon label="..asfasdf" />
+          </ExpandIconWrapper>
+        }
+      >
+        <ButtonContent>{currentBlockType.title}</ButtonContent>
+      </ToolbarButton>
+    );
+
+    if (!this.props.isDisabled) {
+      const items = this.createItems();
       return (
-        <AkButton
-          isSelected={active}
-          appearance="subtle"
-          isDisabled={true}
-          spacing="compact"
+        <DropdownMenu
+          items={items}
+          onOpenChange={this.onOpenChange}
+          onItemActivated={this.handleSelectBlockType}
+          isOpen={active}
+          mountTo={popupsMountPoint}
+          boundariesElement={popupsBoundariesElement}
+          fitHeight={360}
+          fitWidth={106}
         >
-          <ButtonContent>{currentBlockType.title}</ButtonContent>
-        </AkButton>
+          {toolbarButtonFactory(false)}
+        </DropdownMenu>
       );
     }
 
-    const items = this.createItems();
     return (
-      <DropdownMenu
-        items={items}
-        onOpenChange={this.onOpenChange}
-        onItemActivated={this.handleSelectBlockType}
-        isOpen={active}
-        mountTo={popupsMountPoint}
-        boundariesElement={popupsBoundariesElement}
-        fitHeight={360}
-        fitWidth={106}
-      >
-        <AkButton
-          isSelected={active}
-          appearance="subtle"
-          spacing="compact"
-          onClick={this.handleTriggerClick}
-        >
-          <ButtonContent>{currentBlockType.title}</ButtonContent>
-        </AkButton>
-      </DropdownMenu>
+      <span>{toolbarButtonFactory(true)}</span>
     );
+
   }
 
   private handleTriggerClick = () => {

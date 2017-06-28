@@ -12,6 +12,7 @@ export interface Props {
   theme?: 'dark';
   className?: string;
   iconBefore?: ReactElement<any>;
+  iconAfter?: ReactElement<any>;
   spacing?: 'default' | 'compact' | 'none';
   onClick?: () => void;
 }
@@ -43,6 +44,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         target={this.props.target}
         theme={this.props.theme}
         iconBefore={this.props.iconBefore}
+        iconAfter={this.props.iconAfter}
       >
         {this.props.children}
       </AkButton>

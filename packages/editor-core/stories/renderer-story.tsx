@@ -17,6 +17,7 @@ import {
 import {
   BulletList,
   Blockquote,
+  CodeBlock,
   Emoji,
   HardBreak,
   Heading,
@@ -105,6 +106,27 @@ storiesOf(name, module)
   ))
   .add('renderer/marks/code', () => (
     <Code>This is code</Code>
+  ))
+  .add('nodes/codeBlock', () => (
+    <CodeBlock language="javascript">
+    {`if (type) {
+      switch (NodeType[type]) {
+        case NodeType.codeBlock:
+          const { text } = node;
+          if (text) {
+            const { attrs } = node;
+            return {
+              text,
+              type,
+              attrs
+            }
+          }
+          break;
+        default:
+          return {};
+      }
+    }`}
+    </CodeBlock>
   ))
   .add('nodes/hardBreak', () => (
     <div>Some text with that<HardBreak />breaks on multiple lines</div>

@@ -25,7 +25,7 @@ describe('MediaDataUriService', () => {
       const fetchSomeDataUriSpy = spy();
       service.fetchSomeDataUri = fetchSomeDataUriSpy;
 
-      service.fetchImageDataUri({type: 'file', details: {}}, 100, 100, 'fit');
+      service.fetchImageDataUri({type: 'file', details: {}}, 100, 100, 'full-fit');
 
       expect(fetchSomeDataUriSpy.args[0][1].mode).to.equal('full-fit');
     });

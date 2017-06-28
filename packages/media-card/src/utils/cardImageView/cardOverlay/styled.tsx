@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {rgba, centerX, easeOutCubic, borderRadius, size, transition, ellipsis} from '../../../styles';
+import {rgba, centerX, easeOutCubic, borderRadius, size, transition, ellipsis, absolute, antialiased} from '../../../styles';
 import { akColorN70, akColorB200, akColorN0, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
 
 export const TickBox = styled.div`
@@ -28,17 +28,16 @@ export const TickBox = styled.div`
 `;
 
 export const Overlay = styled.div`
-  width: 100%;
-  height: 100%;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
+  ${size()}
+  ${absolute()}
+  ${borderRadius}
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   background: transparent;
   border: 2px solid transparent;
-  ${borderRadius}
   transition: .3s background ${easeOutCubic}, .3s border-color;
+  padding: 16px;
 
   &:hover, &.active {
     .top-row {
@@ -88,7 +87,6 @@ export const Overlay = styled.div`
         transition: opacity .3s;
         opacity: 0;
         color: white;
-        font-size: 12px;
         visibility: hidden;
       }
     }
@@ -96,7 +94,7 @@ export const Overlay = styled.div`
     .bottom-row {
       opacity: 0;
       transition: transform .2s, opacity .5s;
-      transform: translateY(100%);
+      transform: translateY(35px); // This is the height of the overlay footer, needs to be present now since the parent uses flex and 100% doesn't look right anymore
 
       .file-type-icon {
         display: none;
@@ -198,28 +196,17 @@ export const LeftColumn = styled.div`
   position: relative;
   box-sizing: border-box;
   vertical-align: middle;
-  padding: 0 5px 0 5px;
 `;
 
 export const TopRow = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 8px 8px 0 8px;
+
 `;
 
 export const BottomRow = styled.div`
   display: flex;
   align-items: center;
-  position: absolute;
   z-index: 1;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 28px;
-  padding: 0 2px 0 2px;
+  height: 16px;
 `;
 
 export const RightColumn = styled.div`
@@ -229,10 +216,9 @@ export const RightColumn = styled.div`
 `;
 
 export const ErrorMessage = styled.div`
+  ${antialiased}
   display: inline-block;
   vertical-align: middle;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
   color: ${akColorN70};
   font-size: 12px;
@@ -244,13 +230,12 @@ export const ErrorMessage = styled.div`
 `;
 
 export const Retry = styled.div`
+  ${antialiased}
   position: absolute;
   box-sizing: border-box;
   padding: 0 7px 7px 0;
   bottom: 0;
   width: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
   color: ${akColorB400};
   font-size: 12px;
@@ -275,4 +260,6 @@ export const Subtitle = styled.div`
 `;
 
 export const Metadata = styled.div`
+  display: flex;
+  align-items: center;
 `;

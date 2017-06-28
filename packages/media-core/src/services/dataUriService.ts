@@ -2,6 +2,7 @@ import createRequest, {CreateRequestFunc} from './util/createRequest';
 import { MediaItem, JwtTokenProvider } from '../';
 
 export type DataUri = string;
+export type imageResizeMode = 'crop' | 'fit';
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
@@ -35,12 +36,18 @@ export class MediaDataUriService implements DataUriService {
       });
   }
 
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number): Promise<DataUri> {
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: imageResizeMode): Promise<DataUri> {
+    mode = mode || 'crop';
+    const apiModeName = {
+      crop: 'crop',
+      fit: 'full-fit'
+    };
+
     return this.fetchSomeDataUri(
       `/file/${mediaItem.details.id}/image`, {
         width,
         height,
-        mode: 'full-fit',
+        mode: apiModeName,
         'max-age': 3600,
         collection: this.collectionName
       });

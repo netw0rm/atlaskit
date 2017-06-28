@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-import LazyLoad from 'react-lazy-load';
+import LazyLoad from 'react-lazy-load-zz';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 
 import { Card, UrlPreviewIdentifier, MediaIdentifier, CardEvent } from '../src';

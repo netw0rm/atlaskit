@@ -32,6 +32,26 @@ const getItemIndexById = (array, id) => {
   return index >= 0 ? index : null;
 };
 
+const adjustIndex = (arrayLength, currentIndex, adjustment) => {
+  if (arrayLength === 0) {
+    return null;
+  }
+  if (adjustment === 0) {
+    return currentIndex;
+  }
+
+  // const currentIndex = getItemIndexById(this.flatResults, this.state.selectedItemId);
+
+  // If nothing is selected, select the element on the end
+  if (currentIndex === null) {
+    return adjustment > 0 ? 0 : arrayLength - 1;
+  }
+  // Adjust current index, wrapping around if necessary
+  const adjustedIndex = (currentIndex + adjustment) % arrayLength;
+  // Correct for negative indices
+  return adjustedIndex >= 0 ? adjustedIndex : adjustedIndex + arrayLength;
+};
+
 /**
  * The value, null, is used to represent 'no selection'.  Please remember to
  * appropriately check for null when using the selectedItemId state
@@ -63,33 +83,17 @@ export const withKeyboardControls = QuickSearchComp => (
       }
     }
 
-    adjustSelectItemIdByIndex = (adjustment) => {
-      const flatResultsLength = this.flatResults.length;
-      if (flatResultsLength === 0) {
-        return;
-      }
-      if (adjustment === 0) {
-        return;
-      }
+    adjustSelectItemIndex = (adjustment) => {
       const currentIndex = getItemIndexById(this.flatResults, this.state.selectedItemId);
-      const newIndex = (() => {
-        // If nothing is selected, select the element on the end
-        if (currentIndex === null) {
-          return adjustment > 0 ? 0 : flatResultsLength - 1;
-        }
-        // Adjust current index, wrapping around if necessary
-        const adjustedIndex = (currentIndex + adjustment) % flatResultsLength;
-        // Correct for negative indices
-        return adjustedIndex >= 0 ? adjustedIndex : adjustedIndex + flatResultsLength;
-      })();
+      const newIndex = adjustIndex(this.flatResults.length, currentIndex, adjustment);
       this.setState({
         selectedItemId: getItemIdByIndex(this.flatResults, newIndex),
       });
-    };
+    }
 
-    selectNext = () => { this.adjustSelectItemIdByIndex(+1); };
+    selectNext = () => { this.adjustSelectItemIndex(+1); };
 
-    selectPrevious = () => { this.adjustSelectItemIdByIndex(-1); };
+    selectPrevious = () => { this.adjustSelectItemIndex(-1); };
 
     handleSearchKeyDown = (event) => {
       if (event.key === 'ArrowUp') {

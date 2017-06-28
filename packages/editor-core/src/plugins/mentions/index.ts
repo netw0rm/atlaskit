@@ -84,7 +84,7 @@ export class MentionsState {
 
     this.dirty = false;
 
-    const newEnabled = this.isEnabled();
+    const newEnabled = this.isEnabled(state);
     if (newEnabled !== this.enabled) {
       this.enabled = newEnabled;
       this.dirty = true;
@@ -217,10 +217,10 @@ export class MentionsState {
     return currentTransaction;
   }
 
-  isEnabled() {
-    const { schema } = this.state;
-    const { mentionQuery } = schema.marks;
-    return isMarkTypeAllowedAtCurrentPosition(mentionQuery, this.state);
+  isEnabled(state?: EditorState<any>) {
+    const currentState = state ? state : this.state;
+    const { mentionQuery } = currentState.schema.marks;
+    return isMarkTypeAllowedAtCurrentPosition(mentionQuery, currentState);
   }
 
   private findMentionQueryMarks(active: boolean = true) {
@@ -276,8 +276,9 @@ export class MentionsState {
       if (!this.isNextCharacterSpace(end, currentTransaction.doc)) {
         nodes.push(state.schema.text(' '));
       }
+      this.queryActive = false;
+      this.query = undefined;
       return currentTransaction.replaceWith(start, end, nodes);
-
     } else {
       return this.generateDismissTransaction(currentTransaction);
     }

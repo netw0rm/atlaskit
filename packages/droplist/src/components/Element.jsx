@@ -31,6 +31,7 @@ export default class Element extends PureComponent {
     isDisabled: PropTypes.bool,
     isFocused: PropTypes.bool,
     isHidden: PropTypes.bool,
+    isPrimary: PropTypes.bool,
     isSelected: PropTypes.bool,
     target: PropTypes.string,
     title: PropTypes.string,
@@ -46,9 +47,18 @@ export default class Element extends PureComponent {
 
   render() {
     const { props } = this;
-    const { isActive, isChecked, isDisabled, isFocused, isHidden, isSelected } = props;
+    const { isActive, isChecked, isDisabled, isFocused, isHidden, isSelected, isPrimary } = props;
 
-    const appearanceProps = { isActive, isChecked, isDisabled, isFocused, isHidden, isSelected };
+    const appearanceProps = {
+      isActive,
+      isChecked,
+      isDisabled,
+      isFocused,
+      isHidden,
+      isSelected,
+      isPrimary,
+    };
+
     const ariaProps = {
       'aria-checked': !!isChecked,
       'aria-disabled': !!isDisabled,

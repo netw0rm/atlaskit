@@ -4,6 +4,8 @@ import {
   akColorB400,
   akColorN90,
   akColorN100,
+  akColorN200,
+  akGridSize,
 } from '@atlaskit/util-shared-styles';
 
 const ellipsis = `
@@ -12,8 +14,25 @@ const ellipsis = `
   white-space: nowrap;
 `;
 
+const imageDimensions = `
+  height: 32px;
+  width: 32px;
+`;
+
+const primaryLinkTitleLineHeight = `
+  line-height: 1.2;
+`;
+
 export const HomeIconContainer = styled.div`
   color: ${akColorB400};
+
+  ${imageDimensions}
+`;
+
+export const SiteAdminIconContainer = styled.div`
+  color: ${akColorN200};
+
+  ${imageDimensions}
 `;
 
 export const Item = styled.div`
@@ -41,8 +60,10 @@ export const LogoContainer = styled.div`
   color: ${akColorB400};
 `;
 
-export const HomeLinkContainer = styled(ItemWithIcon)`
-  padding: 8px 0;
+export const TopLinkContainer = styled(ItemWithIcon)`
+  ${primaryLinkTitleLineHeight}
+
+  padding: ${akGridSize} 0;
 `;
 
 export const RecentContainerType = styled.div`
@@ -52,7 +73,7 @@ export const RecentContainerType = styled.div`
 `;
 
 export const RecentContainerName = styled.div`
-  line-height: 1.2;
+  ${primaryLinkTitleLineHeight}
 
   ${ellipsis}
 `;

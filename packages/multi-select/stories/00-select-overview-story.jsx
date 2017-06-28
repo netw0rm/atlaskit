@@ -6,7 +6,7 @@ import { AkCodeBlock as Code } from '@atlaskit/code';
 import styled from 'styled-components';
 
 import { ItemsExample, GroupsExample } from './examples/ItemsAndGroupsExamples';
-import { itemPropDescriptions, itemPropTypes, itemPropDefault } from './props';
+import { itemPropDescriptions, itemPropTypes, itemPropDefault, footerPropDescriptions, footerPropTypes } from './props';
 
 /* eslint-disable import/first, import/no-duplicates */
 import MultiSelect from '../src/components/Stateful';
@@ -39,6 +39,8 @@ import SmartSelectWithDescriptions from './examples/SmartSelectWithDescriptions'
 import SmartSelectWithDescriptionsRaw from '!raw!./examples/SmartSelectWithDescriptions';
 import SmartSelectWithCreateNewItem from './examples/SmartSelectWithCreateNewItem';
 import SmartSelectWithCreateNewItemRaw from '!raw!./examples/SmartSelectWithCreateNewItem';
+import SmartSelectWithFooter from './examples/SmartSelectWithFooter';
+import SmartSelectWithFooterRaw from '!raw!./examples/SmartSelectWithFooter';
 /* eslint-enable import/first, import/no-duplicates */
 
 const Spaced = styled.div`
@@ -146,6 +148,38 @@ storiesOf(name, module)
       </CodeWrapper>
     </Spaced>
   ))
+  .add('📖 Multi select Footer - readme', () => (
+    <Spaced>
+      <h2>Footer</h2>
+      <p>
+        Footer&#39;s allow you to place a &#34;sticky&#34; item at the bottom a mutliselect that a
+        user can click or select via keyboard. This could be used for something like opening a page
+        in a new tab for example.
+      </p>
+      <p>
+        If <code>footer</code> and <code>shouldAllowCreateItem</code> are set,
+        <code>shouldAllowCreateItem</code> will take precedence (the footer will not be displayed).
+      </p>
+      <p>
+        Below is the shape of the <code>footer</code> prop
+      </p>
+      <table>
+        <thead>
+          <th>Name (* is required)</th>
+          <th>Type</th>
+          <th>Default value</th>
+          <th>Description</th>
+        </thead>
+        <tbody>
+          {Object.keys(footerPropDescriptions).map(propName => PropDef({
+            propName,
+            definition: footerPropDescriptions[propName],
+            type: footerPropTypes[propName],
+          }))}
+        </tbody>
+      </table>
+    </Spaced>
+  ))
   .add('Multi select is submittable', () => (
     <Spaced>
       {SelectInForm}
@@ -244,4 +278,15 @@ storiesOf(name, module)
         <Code language="js" showLineNumbers={false} text={SmartSelectWithCreateNewItemRaw} />
       </CodeWrapper>
     </Spaced>
-  ));
+  ))
+  .add('Multi select with footer', () => (
+    <Spaced title="Multi select with footer">
+      <div style={{ width: '300px' }}>
+        {SmartSelectWithFooter}
+      </div>
+      <CodeWrapper>
+        <Code language="js" showLineNumbers={false} text={SmartSelectWithFooterRaw} />
+      </CodeWrapper>
+    </Spaced>
+  ))
+  ;

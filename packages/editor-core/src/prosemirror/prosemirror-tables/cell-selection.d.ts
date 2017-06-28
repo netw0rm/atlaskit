@@ -1,4 +1,4 @@
-import { Node, Slice, Transaction, ResolvedPos } from '../';
+import { Node, Slice, Transaction, ResolvedPos, SelectionRange } from '../';
 
 export interface CellSelectionJSON {
   type: string;
@@ -7,6 +7,21 @@ export interface CellSelectionJSON {
 }
 
 export class CellSelection {
+  constructor($anchorCell: ResolvedPos, $headCell?: ResolvedPos);
+
+  from: number;
+  to: number;
+  $from: ResolvedPos;
+  $to: ResolvedPos;
+  anchor: number;
+  head: number;
+  $anchor: ResolvedPos;
+  $head: ResolvedPos;
+  $anchorCell: ResolvedPos;
+  $headCell: ResolvedPos;
+  empty: boolean;
+  ranges: Array<SelectionRange>;
+
   map(doc: Node, mapping: any): any;
   content(): Slice;
   replace(tr: Transaction, content: Slice): void;

@@ -1,5 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
 import * as React from 'react';
 import { name } from '../package.json';
 import schema from './schema';
@@ -24,11 +25,13 @@ import {
   Blockquote,
   Emoji,
   HardBreak,
+  Heading,
   OrderedList,
   ListItem,
   Mention,
   Panel,
   Paragraph,
+  Rule,
 } from '../src/renderer/react/nodes';
 
 import { EmojiProps } from '../src/renderer/react/nodes/emoji';
@@ -41,16 +44,28 @@ const mentionProvider = Promise.resolve({
   }
 });
 
+const mediaProvider = Promise.resolve({
+  viewContext: Promise.resolve({
+    clientId: defaultClientId,
+    serviceHost: defaultServiceHost,
+    tokenProvider: StoryBookTokenProvider.tokenProvider,
+  })
+});
+
 storiesOf(name, module)
   .add('renderer', () => {
     const providerFactory = new ProviderFactory();
     providerFactory.setProvider('mentionProvider', mentionProvider);
+    providerFactory.setProvider('mediaProvider', mediaProvider);
 
     const eventHandlers = {
       mention: {
         onClick: action('onClick'),
         onMouseEnter: action('onMouseEnter'),
         onMouseLeave: action('onMouseLeave'),
+      },
+      media: {
+        onClick: action('onClick'),
       },
     };
 
@@ -93,6 +108,19 @@ storiesOf(name, module)
   ))
   .add('nodes/hardBreak', () => (
     <div>Some text with that<HardBreak />breaks on multiple lines</div>
+  ))
+  .add('nodes/heading', () => (
+    <div>
+      <Heading level={1}>Heading 1</Heading>
+      <Heading level={2}>Heading 2</Heading>
+      <Heading level={3}>Heading 3</Heading>
+      <Heading level={4}>Heading 4</Heading>
+      <Heading level={5}>Heading 5</Heading>
+      <Heading level={6}>Heading 6</Heading>
+    </div>
+  ))
+  .add('nodes/media', () => (
+    <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
   ))
   .add('nodes/mention', () => (
     <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
@@ -294,5 +322,8 @@ storiesOf(name, module)
       <Panel panelType="tip">This is a tip panel</Panel>
       <Panel panelType="warning">This is a warning panel</Panel>
     </div>
+  ))
+  .add('nodes/rule', () => (
+    <Rule />
   ))
 ;

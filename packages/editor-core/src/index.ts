@@ -52,13 +52,13 @@ export {
   history,
   baseKeymap,
   keymap,
-  tableNodes,
-  CellSelection,
-  tableEditing,
   Selection,
   undo,
   redo,
   PluginKey,
+  tableNodes,
+  CellSelection,
+  tableEditing,
 } from './prosemirror';
 export {
   ErrorReporter,
@@ -67,3 +67,5 @@ export {
   toJSON,
 } from './utils';
 export { colorPalette } from './schema/marks/text-color';
+
+export { default as Editor } from './editor';

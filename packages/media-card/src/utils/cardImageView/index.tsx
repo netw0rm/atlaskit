@@ -2,13 +2,13 @@ import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
 
-import {getCSSUnitValue} from '../index';
+import {getCSSUnitValue} from '../getCSSUnitValue';
 import {CardDimensions, CardDimensionValue, CardStatus} from '../../index';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 import {UploadingView} from '../../utils/uploadingView';
-import {defaultImageCardDimensions} from '../../utils';
+import {defaultImageCardDimensions} from '../../utils/cardDimensions';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;

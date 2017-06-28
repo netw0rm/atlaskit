@@ -131,6 +131,15 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'italic',
           marks: [
             {
@@ -220,6 +229,74 @@ export const document = {
       ]
     },
     {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 1'
+        },
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 2 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 2',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'www.atlassian.com'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 3 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 3',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 4 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 4',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 5 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 5',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 6 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 6',
+        }
+      ]
+    },
+    {
       type: 'paragraph',
       content: [
         {
@@ -262,6 +339,61 @@ export const document = {
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        }
+      ]
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
+            collection: 'MediaServicesSample'
+          }
+        }
+      ]
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
+            collection: 'MediaServicesSample'
+          }
         }
       ]
     },
@@ -499,6 +631,9 @@ export const document = {
           ]
         },
       ]
+    },
+    {
+      type: 'rule'
     },
   ]
 };

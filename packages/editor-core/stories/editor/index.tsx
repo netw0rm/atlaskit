@@ -30,12 +30,6 @@ import {
   TextSelection,
   PluginKey
 } from '../../src/prosemirror';
-import {
-  nodeViewFactory,
-  ReactEmojiNode,
-  ReactMentionNode,
-  panelNodeView
-} from '../../src/nodeviews';
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
@@ -46,8 +40,6 @@ import {
   MediaProvider,
   MediaState,
   Plugin,
-  ReactMediaGroupNode,
-  ReactMediaNode
 } from '../../src';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
@@ -262,13 +254,10 @@ export default class Editor extends PureComponent<Props, State> {
       const editorState = EditorState.create({
         schema,
         plugins: [
-          ...mentionsPlugins(schema), // mentions and emoji needs to be first
-          ...emojiPlugins(schema),
+          ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
+          ...emojiPlugins(schema, this.providerFactory),
           ...asciiEmojiPlugins(schema, this.state.emojiProvider),
-          ...listsPlugins(schema),
           ...clearFormattingPlugins(schema),
-          ...codeBlockPlugins(schema),
-          ...panelPlugins(schema),
           ...textFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
@@ -277,6 +266,12 @@ export default class Editor extends PureComponent<Props, State> {
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
           ...blockTypePlugins(schema),
+          // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins -> panelPlugins
+          // this is needed to ensure that all block types are supported inside lists
+          // this is needed until we implement keymap proirity :(
+          ...listsPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...panelPlugins(schema),
           ...mediaPlugins,
           ...tablePlugins(),
           ...reactNodeViewPlugins(schema),
@@ -290,23 +285,8 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
-        },
-        nodeViews: {
-          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
-          mediaGroup: nodeViewFactory(
-            this.providerFactory,
-            {
-              mediaGroup: ReactMediaGroupNode,
-              media: ReactMediaNode
-            },
-            true
-          ),
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
-          panel: panelNodeView
         }
       });
-      mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
       if (this.props.devTools) {
         applyDevTools(editorView);

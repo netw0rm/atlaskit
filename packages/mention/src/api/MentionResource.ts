@@ -341,14 +341,15 @@ class MentionResource extends AbstractMentionResource {
 
   private search(query: string): Promise<MentionsResult> {
     if (this.searchIndex.hasDocuments()) {
-      return this.searchIndex.search(query).then((result) => {
+      return this.searchIndex.search(query).then(result => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-        this.remoteSearch(query).then((result) => {
+        this.remoteSearch(query).then(result => {
           this.notify(searchTime, result, query);
           this.searchIndex.indexResults(result.mentions);
-
-          this.activeSearches.delete(query);
-        });
+this.activeSearches.delete(query);        },
+          err => {
+            this._notifyErrorListeners(err);
+          });
 
         return result;
       });
@@ -356,7 +357,6 @@ class MentionResource extends AbstractMentionResource {
 
     return this.remoteSearch(query).then(result => {
       this.searchIndex.indexResults(result.mentions);
-
       return result;
     });
   }
@@ -402,11 +402,13 @@ export class HttpError implements Error {
   name: string;
   message: string;
   statusCode: number;
+  stack?: string;
 
   constructor(statusCode: number, statusMessage: string) {
     this.statusCode = statusCode;
     this.message = statusMessage;
     this.name = 'HttpError';
+    this.stack = (new Error()).stack;
   }
 }
 

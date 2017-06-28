@@ -1,5 +1,4 @@
 import {
-  liftTarget,
   Mark,
   MarkType,
   Node,
@@ -13,7 +12,8 @@ import {
   EditorState,
   Slice,
   Fragment,
-  findWrapping
+  findWrapping,
+  NodeRange
 } from '../prosemirror';
 import * as commands from '../commands';
 import JSONSerializer, { JSONDocNode } from '../renderer/json';
@@ -372,4 +372,32 @@ export function stringRepeat(text: string, length: number): string {
  */
 export function arrayFrom(obj: any): any[] {
   return Array.prototype.slice.call(obj);
+}
+
+// :: (NodeRange) → ?number
+// Try to find a target depth to which the content in the given range
+// can be lifted. Will not go across
+// [isolating](#model.NodeSpec.isolating) parent nodes.
+export function liftTarget(range: NodeRange): number | undefined {
+  const parent = range.parent;
+  const content = parent.content.cutByIndex(range.startIndex, range.endIndex);
+  for (let depth = range.depth;; --depth) {
+    const node = range.$from.node(depth);
+    if (node.type.spec.isolating) {
+      return depth;
+    }
+    const index = range.$from.index(depth);
+    const endIndex = range.$to.indexAfter(depth);
+    if (depth < range.depth && node.canReplace(index, endIndex, content)) {
+      return depth;
+    }
+    if (depth === 0 || !canCut(node, index, endIndex)) {
+      break;
+    }
+  }
+}
+
+function canCut(node: Node, start: number, end: number): boolean {
+  return (start === 0 || node.canReplace(start, node.childCount)) &&
+    (end === node.childCount || node.canReplace(0, end));
 }

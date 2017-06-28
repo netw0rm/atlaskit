@@ -1,10 +1,10 @@
-import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
+import { canSplit, EditorState, EditorView, Fragment, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
+import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection, liftTarget } from '../utils';
 import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
@@ -367,6 +367,36 @@ export function createNewParagraphBelow(view: EditorView): Command {
     }
 
     return false;
+  };
+}
+
+export function liftEmptyBlock(): Command {
+  return function (state, dispatch) {
+    const { $cursor } = state.selection as any;
+    if (!$cursor || $cursor.parent.content.size) {
+      return false;
+    }
+    if ($cursor.node(-1).type.spec.isolating) {
+      return false;
+    }
+    if ($cursor.depth > 1 && $cursor.after() !== $cursor.end(-1)) {
+      const before = $cursor.before();
+      if (canSplit(state.doc, before)) {
+        if (dispatch) {
+          dispatch(state.tr.split(before).scrollIntoView());
+        }
+        return true;
+      }
+    }
+    const range = $cursor.blockRange();
+    const target = range && liftTarget(range);
+    if (typeof target !== 'number') {
+      return false;
+    }
+    if (dispatch) {
+      dispatch(state.tr.lift(range, target).scrollIntoView());
+    }
+    return true;
   };
 }
 

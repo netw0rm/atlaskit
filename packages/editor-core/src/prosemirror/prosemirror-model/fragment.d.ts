@@ -20,6 +20,7 @@ export class Fragment {
   findIndex(pos: number, round?: number): { index: number, offset: number };
   toString(): string;
   toJSON(): { [key: string]: any } | null;
+  cutByIndex(from: number, to: number): Fragment;
 
   static fromJSON(schema: Schema<any, any>, value?: { [key: string]: any }): Fragment;
   static fromArray(array: Node[]): Fragment;

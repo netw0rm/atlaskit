@@ -32,11 +32,11 @@ export interface RefreshSecurityProvider {
 }
 
 export interface ResultCallback<T> {
-  (result: T): void;
+  (result: T, query?: string): void;
 }
 
 export interface ErrorCallback {
-  (error: Error): void;
+  (error: Error, query?: string): void;
 }
 
 export interface InfoCallback {
@@ -45,6 +45,7 @@ export interface InfoCallback {
 
 export interface MentionsResult {
   mentions: MentionDescription[];
+  query: string;
 }
 
 export interface MentionResourceConfig {
@@ -66,6 +67,7 @@ export interface MentionProvider extends ResourceProvider<MentionDescription[]> 
   filter(query?: string): void;
   recordMentionSelection(mention: MentionDescription): void;
   shouldHighlightMention(mention: MentionDescription): boolean;
+  isFiltering(query: string): boolean;
 }
 
 const emptySecurityProvider = () => {
@@ -198,6 +200,10 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
     // Do nothing
   }
 
+  isFiltering(query: string): boolean {
+    return false;
+  }
+
   protected _notifyListeners(mentionsResult: MentionsResult): void {
     debug('ak-mention-resource._notifyListeners',
       mentionsResult && mentionsResult.mentions && mentionsResult.mentions.length,
@@ -205,7 +211,7 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
 
     this.changeListeners.forEach((listener, key) => {
       try {
-        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS));
+        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), mentionsResult.query);
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -213,10 +219,10 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
     });
   }
 
-  protected _notifyErrorListeners(error: Error): void {
+  protected _notifyErrorListeners(error: Error, query?: string): void {
     this.errListeners.forEach((listener, key) => {
       try {
-        listener(error);
+        listener(error, query);
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -244,6 +250,7 @@ class MentionResource extends AbstractMentionResource {
   private config: MentionResourceConfig;
   private lastReturnedSearch: number;
   private searchIndex: SearchIndex;
+  private activeSearches: Set<string>;
 
   constructor(config: MentionResourceConfig) {
     super();
@@ -255,6 +262,7 @@ class MentionResource extends AbstractMentionResource {
     this.config = config;
     this.lastReturnedSearch = 0;
     this.searchIndex = new SearchIndex();
+    this.activeSearches = new Set();
   }
 
   shouldHighlightMention(mention: MentionDescription) {
@@ -275,19 +283,31 @@ class MentionResource extends AbstractMentionResource {
     }
   }
 
+  notifyError(error: Error, query?: string) {
+    this._notifyErrorListeners(error, query);
+    if (query) {
+      this.activeSearches.delete(query);
+    }
+  }
+
   filter(query?: string): void {
     const searchTime = Date.now();
 
     if (!query) {
-      this.initialState().then((results) => this.notify(searchTime, results, query), error => this._notifyErrorListeners(error));
+      this.initialState().then((results) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
     } else {
-      this.search(query).then((results) => this.notify(searchTime, results, query), error => this._notifyErrorListeners(error));
+      this.activeSearches.add(query);
+      this.search(query).then((results) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
     }
   }
 
   recordMentionSelection(mention: MentionDescription): Promise<void> {
     return this.recordSelection(mention).then(() => {
     }, error => debug(`error recording mention selection: ${error}`, error));
+  }
+
+  isFiltering(query: string): boolean {
+    return this.activeSearches.has(query);
   }
 
   /**
@@ -323,15 +343,14 @@ class MentionResource extends AbstractMentionResource {
     if (this.searchIndex.hasDocuments()) {
       return this.searchIndex.search(query).then(result => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-        this.remoteSearch(query).then(
-          result => {
-            this.notify(searchTime, result, query);
-            this.searchIndex.indexResults(result.mentions);
-          },
-          err => {
-            this._notifyErrorListeners(err);
-          }
-        );
+        this.remoteSearch(query).then(result => {
+          this.notify(searchTime, result, query);
+          this.searchIndex.indexResults(result.mentions);
+          this.activeSearches.delete(query);
+        },
+        err => {
+          this._notifyErrorListeners(err);
+        });
 
         return result;
       });

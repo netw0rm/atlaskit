@@ -27,6 +27,7 @@ export interface MentionDescription {
   presence?: Presence;
   accessLevel?: string;
   weight?: number;
+  userType?: string;
 }
 
 export interface OnMentionEvent {
@@ -40,12 +41,21 @@ export enum MentionType {
 }
 
 enum UserAccessLevel {
-    NONE,
-    SITE,
-    APPLICATION,
-    CONTAINER,
+  NONE,
+  SITE,
+  APPLICATION,
+  CONTAINER,
+}
+
+enum UserType {
+  DEFAULT,
+  SPECIAL
 }
 
 export function isRestricted(accessLevel) {
   return accessLevel && accessLevel !== UserAccessLevel[UserAccessLevel.CONTAINER];
+}
+
+export function isSpecialMention(mention: MentionDescription) {
+  return mention.userType && mention.userType === UserType[UserType.SPECIAL];
 }

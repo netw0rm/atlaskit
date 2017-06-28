@@ -3,7 +3,23 @@ import { NodeSpec, Node as PMNode } from '../../prosemirror';
 export type MediaType = 'file' | 'link';
 export type DisplayType = 'file' | 'thumbnail';
 
+/**
+ * @name media_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'media';
+  /**
+   * @minItems 1
+   * @additionalProperties false
+   */
+  attrs: Attributes;
+}
+
 export interface Attributes {
+  /**
+   * @minLength 1
+   */
   id: string;
   type: MediaType;
   collection: string;

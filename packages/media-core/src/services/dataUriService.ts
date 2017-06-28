@@ -6,7 +6,7 @@ export type imageResizeMode = 'crop' | 'fit';
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number): Promise<DataUri>;
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: imageResizeMode): Promise<DataUri>;
 }
 
 export class MediaDataUriService implements DataUriService {
@@ -37,11 +37,10 @@ export class MediaDataUriService implements DataUriService {
   }
 
   fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: imageResizeMode): Promise<DataUri> {
-    mode = mode || 'crop';
     const apiModeName = {
       crop: 'crop',
       fit: 'full-fit'
-    };
+    }[mode || 'crop'];
 
     return this.fetchSomeDataUri(
       `/file/${mediaItem.details.id}/image`, {
@@ -53,7 +52,7 @@ export class MediaDataUriService implements DataUriService {
       });
   }
 
-  private fetchSomeDataUri(url: string, params: Object): Promise<DataUri> {
+  fetchSomeDataUri(url: string, params: Object): Promise<DataUri> {
     return this.request({
       url,
       params,

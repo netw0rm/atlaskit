@@ -185,7 +185,9 @@ export const drop = (id: DraggableId) =>
       destination: impact.destination,
     };
 
-    const newHomeOffset: Position = getNewHomeOffset(impact.movement, current.offset);
+    const newHomeOffset: Position = getNewHomeOffset(
+      impact.movement, current.offset, state.dimension.draggable
+    );
 
     // Do not animate if you do not need to.
     // This will be the case if either you are dragging with a

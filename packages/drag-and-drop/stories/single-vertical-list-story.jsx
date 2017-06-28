@@ -16,6 +16,7 @@ const getTasks = (count: number): TaskType[] =>
       description: faker.lorem.words(faker.random.number({
         min: 3, max: 15,
       })),
+      avatarUrl: faker.image.avatar(),
     }));
 
 class Standard extends PureComponent {

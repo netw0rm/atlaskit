@@ -17,6 +17,12 @@ const Container = styled.a`
   user-select: none;
 `;
 
+const Avatar = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+`;
+
 type Props = {|
   task: TaskType
 |}
@@ -42,6 +48,7 @@ export default class Task extends Component {
               {...provided.dragHandleProps}
             >
               {task.description}
+              <Avatar src={task.avatarUrl} alt={task.id} />
             </Container>
             {provided.placeholder}
           </div>

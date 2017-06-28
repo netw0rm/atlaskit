@@ -1,5 +1,11 @@
 // @flow
-import type { DragMovement, Position } from '../types';
+import type {
+  DragMovement,
+  Position,
+  Dimension,
+  DimensionMap,
+  DraggableId,
+} from '../types';
 
 const origin: Position = {
   x: 0,
@@ -11,21 +17,25 @@ const origin: Position = {
 export default (
   movement: DragMovement,
   currentOffset: Position,
+  draggableDimensions: DimensionMap,
 ): Position => {
   // Just animate back to where it started
   if (!movement.draggables.length) {
     return origin;
   }
 
-  const amount: number = movement.isMovingForward ?
-    movement.amount : -movement.amount;
+  const distance: number = movement.draggables.reduce(
+    (previous: number, draggableId: DraggableId): number => {
+      const dimension: Dimension = draggableDimensions[draggableId];
+      return previous + dimension.withMargin.height;
+    }, 0);
 
-  const itemsMoved: number = movement.draggables.length;
+  const amount: number = movement.isMovingForward ? distance : -distance;
 
   // Currently not considering horizontal movement
   const verticalChange: Position = {
     x: 0,
-    y: amount * itemsMoved,
+    y: amount,
   };
 
   // Difference between the pure vertical change

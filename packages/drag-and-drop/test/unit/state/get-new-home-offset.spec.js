@@ -3,76 +3,97 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import getNewHomeOffset from '../../../src/state/get-new-home-offset';
 import noImpact from '../../../src/state/no-impact';
-import type { DragMovement, Position } from '../../../src/types';
+import getDimension from '../get-dimension-util';
+import type { DragMovement, Position, Dimension, DimensionMap } from '../../../src/types';
 
 const origin: Position = {
   x: 0,
   y: 0,
 };
 
-describe('get new home offset', () => {
+const draggable1: Dimension = getDimension({
+  id: 'drag-1',
+  top: 0,
+  left: 0,
+  bottom: 100,
+  right: 100,
+});
+
+// huge height: 199
+const draggable2: Dimension = getDimension({
+  id: 'drag-2',
+  top: 101,
+  left: 0,
+  bottom: 300,
+  right: 100,
+});
+
+// height: 299
+const draggable3: Dimension = getDimension({
+  id: 'drag-3',
+  top: 301,
+  left: 0,
+  bottom: 600,
+  right: 100,
+});
+
+const dimensions: DimensionMap = [draggable1, draggable2, draggable3]
+  .reduce((map: DimensionMap, dimension: Dimension) => {
+    map[dimension.id] = dimension;
+    return map;
+  }, {});
+
+describe.only('get new home offset', () => {
   it('should return to the start position (origin) if nothing has moved', () => {
-    const result: Position = getNewHomeOffset(noImpact.movement, { x: 100, y: 200 });
+    const result: Position = getNewHomeOffset(
+      noImpact.movement, { x: 100, y: 200 }, dimensions
+    );
 
     expect(result).to.deep.equal(origin);
   });
 
   it('should return new position required to move to', () => {
-    // 'drag-1' is moving forward two places and a bit to the left
-    /*
-                      ----------------       ----------------
-    center: (50,50)   |--- item-1 ---|   ->  |--- item-2 ---|     center: (50,50)
-    offset: (0,0)     ----------------       ----------------     offset: (0,-100)
-                      ----------------       ----------------
-    center: (50,150)  |--- item-2 ---|       |--- item-3 ---|     center: (50,150)
-    offset: (0,0)     ----------------       ----------------     offset: (0,-100)
-                      ----------------
-    center: (50,250)  |--- item-3 ---|            /   Need to get to:
-    offset: (0,0)     ----------------           /    center: (50,250)
-                                                /     offset: ( 0,200)
-                                    ----------------
-                center: ( 25,300)   |--- item-1 ---|
-                offset: (-25,250)   ----------------
-    */
-    // Moving down past two items, and a bit too far vertically and to the left
+    // Moving down past two items, and a bit too far vertically and to the right
     const finishOffset: Position = {
-      x: -25,
-      y: 250,
+      x: draggable3.withMargin.right + 20,
+      y: draggable3.withMargin.bottom + 50,
     };
-    // Need to move a bit less forward to be in effectively [center: (0,300)]
     const goal: Position = {
       x: 0,
-      y: 200,
+      y: draggable2.withMargin.height + draggable3.withMargin.height,
     };
     const movement: DragMovement = {
-      draggables: ['drag-2', 'drag-3'],
-      amount: 100,
+      draggables: [draggable2.id, draggable3.id],
+      amount: draggable1.withMargin.height,
       isMovingForward: true,
     };
 
-    const result: Position = getNewHomeOffset(movement, finishOffset);
+    const result: Position = getNewHomeOffset(
+      movement, finishOffset, dimensions
+    );
 
     expect(result).to.deep.equal(goal);
   });
 
   it('should return a negative value when the draggable is moving backwards', () => {
-    // Same example as above, but moving item-3 to far up and to the right
+    // Moving draggable3 back past draggable2 and draggable1, and a little to the left
     const finishOffset: Position = {
-      x: 25,
-      y: -250,
+      x: draggable1.withMargin.top - 50,
+      y: draggable1.withMargin.left - 20,
     };
-    // Need to move a bit less forward to be in effectively [center: (0,300)]
     const goal: Position = {
       x: 0,
-      y: -200,
+      y: -1 * (draggable2.withMargin.height + draggable1.withMargin.height),
     };
     const movement: DragMovement = {
-      draggables: ['drag-2', 'drag-3'],
-      amount: 100,
+      draggables: [draggable2.id, draggable1.id],
+      amount: draggable3.withMargin.height,
       isMovingForward: false,
     };
 
-    const result: Position = getNewHomeOffset(movement, finishOffset);
+    const result: Position = getNewHomeOffset(
+      movement, finishOffset, dimensions
+    );
 
     expect(result).to.deep.equal(goal);
   });

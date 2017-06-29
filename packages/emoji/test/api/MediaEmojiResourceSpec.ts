@@ -107,6 +107,7 @@ describe('MediaEmojiResource', () => {
       fetchMock.mock({
         matcher: `begin:${getMediaPath(mediaEmoji)}`,
         response: blobResponse(blob),
+        name: 'media-emoji'
       });
       return mediaEmojiResource.getMediaEmojiAsImageEmoji(mediaEmoji).then(emoji => {
         const { width, height } = mediaEmoji.representation as MediaApiRepresentation;
@@ -122,6 +123,15 @@ describe('MediaEmojiResource', () => {
         };
         expect(imagePath.indexOf('data:')).to.equal(0);
         expect(emoji).to.deep.equal(expectedEmoji);
+
+        // Confirm headers
+        const token = defaultMediaApiToken();
+        const calls = fetchMock.calls('media-emoji');
+        expect(calls.length, 'One call').to.equal(1);
+        const headers = calls[0][0].headers;
+        expect(headers.get('Authorization'), 'Authorization header').to.equal(`Bearer ${token.jwt}`);
+        expect(headers.get('X-Client-Id'), 'X-Client-Id header').to.equal(token.clientId);
+        expect(headers.get('Accept').indexOf('image/'), 'Accept header to start with image/').to.equal(0);
       });
     });
 

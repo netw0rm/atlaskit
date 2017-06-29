@@ -87,6 +87,8 @@ export default class StatelessSelect extends PureComponent {
     selectedItem: PropTypes.shape(itemShape),
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
+    /** Sets whether the droplist should flip its position when there is not enough space. */
+    shouldFlip: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -106,6 +108,7 @@ export default class StatelessSelect extends PureComponent {
     position: 'bottom left',
     shouldFocus: false,
     selectedItem: {},
+    shouldFlip: true,
   }
 
   state = { }
@@ -443,6 +446,7 @@ export default class StatelessSelect extends PureComponent {
       position,
       selectedItem,
       shouldFitContainer,
+      shouldFlip,
     } = this.props;
 
     // disabled because all of the accessibility is handled manually
@@ -470,6 +474,7 @@ export default class StatelessSelect extends PureComponent {
           onOpenChange={this.onOpenChange}
           position={position}
           shouldFitContainer={droplistShouldFitContainer}
+          shouldFlip={shouldFlip}
           trigger={
             <FieldBase
               appearance={mapAppearanceToFieldBase([appearance])}

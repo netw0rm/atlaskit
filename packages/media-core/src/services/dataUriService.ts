@@ -2,10 +2,11 @@ import createRequest, {CreateRequestFunc} from './util/createRequest';
 import { MediaItem, JwtTokenProvider } from '../';
 
 export type DataUri = string;
+export type ImageResizeMode = 'crop' | 'fit' | 'full-fit';
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number): Promise<DataUri>;
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode?: ImageResizeMode): Promise<DataUri>;
 }
 
 export class MediaDataUriService implements DataUriService {
@@ -35,18 +36,18 @@ export class MediaDataUriService implements DataUriService {
       });
   }
 
-  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number): Promise<DataUri> {
+  fetchImageDataUri(mediaItem: MediaItem, width: number, height: number, mode: ImageResizeMode = 'crop'): Promise<DataUri> {
     return this.fetchSomeDataUri(
       `/file/${mediaItem.details.id}/image`, {
         width,
         height,
-        mode: 'crop',
+        mode,
         'max-age': 3600,
         collection: this.collectionName
       });
   }
 
-  private fetchSomeDataUri(url: string, params: Object): Promise<DataUri> {
+  fetchSomeDataUri(url: string, params: Object): Promise<DataUri> {
     return this.request({
       url,
       params,

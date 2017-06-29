@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "config": {
     "access": "public"
   },
@@ -34,7 +34,6 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/single-select": "*",
-    "@atlaskit/tooltip": "*",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",

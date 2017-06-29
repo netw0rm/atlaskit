@@ -12,6 +12,7 @@ import {
   chaiPlugin
 } from '../../../../src/test-helper';
 import PickerFacade from '../../../../src/plugins/media/picker-facade';
+import { ErrorReportingHandler } from '../../../../src/utils';
 import MockMediaPicker from './mock-media-picker';
 
 chai.use(chaiPlugin);
@@ -46,6 +47,10 @@ describe('Media PickerFacade', () => {
   const testFileProgress = {
     portion: Math.random()
   };
+  const errorReporter: ErrorReportingHandler = {
+    captureException: (err: any) => {},
+    captureMessage: (msg: any) => {},
+  };
 
   beforeEach(() => {
     mockPicker = new MockMediaPicker();
@@ -56,7 +61,7 @@ describe('Media PickerFacade', () => {
 
       return mockPicker;
     };
-    facade = new PickerFacade('mock', uploadParams, contextConfig, stateManager, mockPickerFactory);
+    facade = new PickerFacade('mock', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
   });
 
   afterEach(() => {
@@ -273,4 +278,56 @@ describe('Media PickerFacade', () => {
       })).to.eq(true);
     });
   });
+
+  it('After upload has transitioned from "uploading", subsequent "status update" events must not downgrade status (ED-2062)', () => {
+    const finalizeCb = () => {};
+    stateManager!.updateState(testTemporaryFileId, {
+      id: testTemporaryFileId,
+      status: 'uploading'
+    });
+
+    mockPicker.__triggerEvent('upload-finalize-ready', {
+      file: { ...testFileData, publicId: testFilePublicId },
+      finalize: finalizeCb
+    });
+
+    mockPicker.__triggerEvent('upload-status-update', {
+      file: testFileData,
+      progress: testFileProgress,
+    });
+
+    expect(stateManager!.getState(testTemporaryFileId)).to.deep.eq({
+      id: testTemporaryFileId,
+      publicId: testFilePublicId,
+      status: 'unfinalized',
+      progress: testFileProgress.portion,
+      fileName: testFileData.name,
+      fileSize: testFileData.size,
+      fileMimeType: testFileData.type,
+      finalizeCb: finalizeCb
+    });
+
+    mockPicker.__triggerEvent('upload-processing', {
+      file: { ...testFileData, publicId: testFilePublicId },
+    });
+
+    mockPicker.__triggerEvent('upload-status-update', {
+      file: testFileData,
+      progress: testFileProgress,
+    });
+
+    expect(stateManager!.getState(testTemporaryFileId)!.status).to.eq('processing');
+
+    mockPicker.__triggerEvent('upload-end', {
+      file: { ...testFileData, publicId: testFilePublicId },
+    });
+
+    mockPicker.__triggerEvent('upload-status-update', {
+      file: testFileData,
+      progress: testFileProgress,
+    });
+
+    expect(stateManager!.getState(testTemporaryFileId)!.status).to.eq('ready');
+  });
+
 });

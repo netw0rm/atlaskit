@@ -79,6 +79,67 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'My name is '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+            text: '@Oscar Wallhult'
+          }
+        },
+        {
+          type: 'text',
+          text: ' :D',
+          marks: [
+            {
+              type: 'unknown mark'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is a '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            text: '@mention',
+            id: 'mention'
+          }
+        },
+        {
+          type: 'text',
+          text: '. And this is a broken '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            textxtx: '@mention',
+            id: 'mention'
+          }
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+        },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'italic',
           marks: [
             {
@@ -155,6 +216,94 @@ export const document = {
       type: 'paragraph',
       content: [
         {
+          type: 'unknown type',
+          attrs: {
+            text: 'fallback text in node.attrs.text'
+          }
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'unknown type 2',
+          text: 'fallback text in node.text',
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'very unknown'
+        }
+      ]
+    },
+    {
+      type: 'some block unknown type',
+      content: [
+        {
+          type: 'text',
+          text: 'This is text content inside unknown block'
+        }
+      ]
+    },
+    {
+      type: 'some block unknown type with content and text',
+      content: [
+        {
+          type: 'text',
+          text: 'This is also a piece of text inside unknown block'
+        }
+      ],
+      text: 'ERROR: This text should be ignored!'
+    },
+    {
+      type: 'unknown_table',
+      content: [
+        {
+          type: 'unknown_row2',
+          content: [
+            {
+              type: 'unknown_cell',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Madness?',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'unknown_row2',
+          content: [
+            {
+              type: 'unknown_cell3',
+              content: [
+                {
+                  type: 'text',
+                  text: 'This is',
+                },
+              ],
+            },
+            {
+              type: 'unknown_cell4',
+              content: [
+                {
+                  type: 'sparta-node',
+                  attrs: {
+                    textUrl: 'https://en.wikipedia.org/wiki/Sparta',
+                  },
+                  text: 'Sparta!',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
           type: 'text',
           text: 'This is a line with '
          },
@@ -164,6 +313,74 @@ export const document = {
          {
            type: 'text',
            text: 'a hardbreak in it.'
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 1'
+        },
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 2 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 2',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'www.atlassian.com'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 3 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 3',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 4 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 4',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 5 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 5',
+        }
+      ]
+    },
+    {
+      type: 'heading',
+      attrs: { level: 6 },
+      content: [
+        {
+          type: 'text',
+          text: 'Heading 6',
         }
       ]
     },
@@ -210,6 +427,90 @@ export const document = {
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      type: 'codeBlock',
+      content: [
+        {
+          type: 'text',
+          text: `// Create a map.
+final IntIntOpenHashMap map = new IntIntOpenHashMap();
+map.put(1, 2);
+map.put(2, 5);
+map.put(3, 10);`
+        },
+        {
+          type: 'text',
+          text: `
+int count = map.forEach(new IntIntProcedure()
+{
+   int count;
+   public void apply(int key, int value)
+   {
+       if (value >= 5) count++;
+   }
+}).count;
+System.out.println("There are " + count + " values >= 5");`
+        }
+      ],
+      attrs: {
+        language: 'javascript'
+      }
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        }
+      ]
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
+            collection: 'MediaServicesSample'
+          }
+        }
+      ]
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
+            collection: 'MediaServicesSample'
+          }
         }
       ]
     },
@@ -447,6 +748,9 @@ export const document = {
           ]
         },
       ]
+    },
+    {
+      type: 'rule'
     },
   ]
 };

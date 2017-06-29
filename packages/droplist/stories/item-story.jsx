@@ -17,6 +17,8 @@ const Icon = () => <Question label="test question" />;
 /* eslint-disable import/first, import/no-duplicates */
 import ItemWithDescriptions from './examples/item/ItemWithDescriptions';
 import ItemWithDescriptionsRaw from '!raw!./examples/item/ItemWithDescriptions';
+import ItemWithPrimaryAppearance from './examples/item/ItemWithPrimaryAppearance';
+import ItemWithPrimaryAppearanceRaw from '!raw!./examples/item/ItemWithPrimaryAppearance';
 /* eslint-enable import/first, import/no-duplicates */
 
 const imports = [['React', 'react'], ['Item', '@atlaskit/droplist-item']];
@@ -41,6 +43,18 @@ storiesOf(`${name} - item`, module)
       </Description>
       <Code>
         {ItemWithDescriptionsRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Item with primary appearance', () => (
+    <Chrome title="Item with primary appearance">
+      <Description>
+        <p>That shows items Items with Primary appearance.</p>
+        <p>This is to be used for Footer actions (see multi-select Footers for an example)</p>
+        {ItemWithPrimaryAppearance}
+      </Description>
+      <Code>
+        {ItemWithPrimaryAppearanceRaw}
       </Code>
     </Chrome>
   ))

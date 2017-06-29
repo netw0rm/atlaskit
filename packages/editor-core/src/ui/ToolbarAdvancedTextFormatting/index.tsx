@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import DropdownMenu from '@atlaskit/dropdown-menu';
 import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import { analyticsService } from '../../analytics';
@@ -10,6 +9,7 @@ import ToolbarButton from '../ToolbarButton';
 import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
 import { TriggerWrapper, ExpandIconWrapper } from './styles';
 import { EditorView } from '../../prosemirror';
+import DropdownMenu from '../DropdownMenu';
 
 export interface Props {
   isDisabled?: boolean;
@@ -18,6 +18,8 @@ export interface Props {
   focusEditor: () => void;
   pluginStateTextFormatting?: TextFormattingState | undefined;
   pluginStateClearFormatting?: ClearFormattingState | undefined;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
 }
 
 export interface State {
@@ -75,6 +77,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     });
   }
 
+  private handleTriggerClick = () => {
+    this.onOpenChange({ isOpen: !this.state.isOpen });
+  }
+
   render() {
     const {
       isOpen,
@@ -84,12 +90,13 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       strikethroughDisabled,
       clearFormattingDisabled,
     } = this.state;
-
+    const { popupsMountPoint, popupsBoundariesElement } = this.props;
     const items = this.createItems();
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
         selected={isOpen || codeActive || strikethroughActive}
         disabled={disabled}
+        onClick={this.handleTriggerClick}
         iconBefore={
           <TriggerWrapper>
             <AdvancedIcon label="Open or close advance text formatting dropdown"/>
@@ -108,6 +115,11 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           items={items}
           onItemActivated={this.onItemActivated}
           onOpenChange={this.onOpenChange}
+          mountTo={popupsMountPoint}
+          boundariesElement={popupsBoundariesElement}
+          isOpen={isOpen}
+          fitHeight={188}
+          fitWidth={136}
         >
           {toolbarButtonFactory(false)}
         </DropdownMenu>

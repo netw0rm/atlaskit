@@ -1,7 +1,10 @@
 import { NodeSpec, MarkSpec, Schema } from '../prosemirror';
-
+import { COLOR, FONT_STYLE, SEARCH_QUERY, LINK } from './groups';
 import {
   // Nodes
+  confluenceJiraIssue,
+  confluenceUnsupportedBlock,
+  confluenceUnsupportedInline,
   doc,
   paragraph,
   text,
@@ -19,6 +22,12 @@ import {
   mediaGroup,
   hardBreak,
   emoji,
+  table,
+  table_cell,
+  table_header,
+  table_row,
+  applicationCard,
+  unknownBlock,
 
   // Marks
   link,
@@ -32,39 +41,6 @@ import {
   emojiQuery,
   textColor,
 } from '../schema';
-
-const nodesInOrder: SchemaBuiltInItem[] = [
-  { name: 'doc', spec: doc },
-  { name: 'paragraph', spec: paragraph },
-  { name: 'text', spec: text },
-  { name: 'bulletList', spec: bulletList },
-  { name: 'orderedList', spec: orderedList },
-  { name: 'listItem', spec: listItem },
-  { name: 'heading', spec: heading },
-  { name: 'blockquote', spec: blockquote },
-  { name: 'codeBlock', spec: codeBlock },
-  { name: 'panel', spec: panel },
-  { name: 'rule', spec: rule },
-  { name: 'image', spec: image },
-  { name: 'mention', spec: mention },
-  { name: 'media', spec: media },
-  { name: 'mediaGroup', spec: mediaGroup },
-  { name: 'hardBreak', spec: hardBreak },
-  { name: 'emoji', spec: emoji },
-];
-
-const marksInOrder: SchemaBuiltInItem[] = [
-  { name: 'link', spec: link },
-  { name: 'em', spec: em },
-  { name: 'strong', spec: strong },
-  { name: 'strike', spec: strike },
-  { name: 'subsup', spec: subsup },
-  { name: 'underline', spec: underline },
-  { name: 'code', spec: code },
-  { name: 'mentionQuery', spec: mentionQuery },
-  { name: 'emojiQuery', spec: emojiQuery },
-  { name: 'textColor', spec: textColor },
-];
 
 function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}) {
   if (!config) {
@@ -96,19 +72,74 @@ function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpe
   }, items);
 }
 
-function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]: MarkSpec } {
-  const markKeys = Object.keys(marks);
-  markKeys.map(markKey => {
-    const mark = marks[markKey];
-    if (mark.excludes) {
-      mark.excludes = mark.excludes
-        .split(' ')
-        .filter(exMarkKey => markKeys.indexOf(exMarkKey) > -1)
-        .join(' ');
+// We use groups to allow schemas to be constructed in different shapes without changing node/mark
+// specs, but this means nodes/marks are defined with groups that might never be used in the schema.
+// In this scenario ProseMirror will complain and prevent the schema from being constructed.
+//
+// To avoid the problem, we include items that serve to "declare" the groups in the schema. This
+// approach unfortunately leaves unused items in the schema, but has the benefit of avoiding the
+// need to manipulate `exclude` or content expression values for potentially every schema item.
+function groupDeclaration(name: string) {
+  return {
+    name: `__${name}GroupDeclaration`,
+    spec: {
+      group: name,
     }
-  });
-  return marks;
+  };
 }
+
+const markGroupDeclarations = [
+  groupDeclaration(COLOR),
+  groupDeclaration(FONT_STYLE),
+  groupDeclaration(SEARCH_QUERY),
+  groupDeclaration(LINK),
+];
+
+const markGroupDeclarationsNames = markGroupDeclarations.map(groupMark => groupMark.name);
+
+
+const nodesInOrder: SchemaBuiltInItem[] = [
+  { name: 'doc', spec: doc },
+  { name: 'paragraph', spec: paragraph },
+  { name: 'text', spec: text },
+  { name: 'bulletList', spec: bulletList },
+  { name: 'orderedList', spec: orderedList },
+  { name: 'listItem', spec: listItem },
+  { name: 'heading', spec: heading },
+  { name: 'blockquote', spec: blockquote },
+  { name: 'codeBlock', spec: codeBlock },
+  { name: 'panel', spec: panel },
+  { name: 'rule', spec: rule },
+  { name: 'image', spec: image },
+  { name: 'mention', spec: mention },
+  { name: 'media', spec: media },
+  { name: 'mediaGroup', spec: mediaGroup },
+  { name: 'hardBreak', spec: hardBreak },
+  { name: 'emoji', spec: emoji },
+  { name: 'table', spec: table },
+  { name: 'table_cell', spec: table_cell },
+  { name: 'table_row', spec: table_row },
+  { name: 'table_header', spec: table_header },
+  { name: 'confluenceJiraIssue', spec: confluenceJiraIssue },
+  { name: 'confluenceUnsupportedInline', spec: confluenceUnsupportedInline },
+  { name: 'confluenceUnsupportedBlock', spec: confluenceUnsupportedBlock },
+  { name: 'applicationCard', spec: applicationCard },
+  { name: 'unknownBlock', spec: unknownBlock },
+];
+
+const marksInOrder: SchemaBuiltInItem[] = [
+  { name: 'link', spec: link },
+  { name: 'em', spec: em },
+  { name: 'strong', spec: strong },
+  { name: 'strike', spec: strike },
+  { name: 'subsup', spec: subsup },
+  { name: 'underline', spec: underline },
+  { name: 'code', spec: code },
+  { name: 'mentionQuery', spec: mentionQuery },
+  { name: 'emojiQuery', spec: emojiQuery },
+  { name: 'textColor', spec: textColor },
+  ...markGroupDeclarations,
+];
 
 /**
  * Creates a schema preserving order of marks and nodes.
@@ -116,10 +147,10 @@ function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]: MarkS
 export function createSchema(config: SchemaConfig): Schema<any, any> {
   const { nodes, customNodeSpecs, marks, customMarkSpecs } = config;
   const nodesConfig = Object.keys(customNodeSpecs || {}).concat(nodes);
-  const marksConfig = Object.keys(customMarkSpecs || {}).concat(marks || []);
+  const marksConfig = Object.keys(customMarkSpecs || {}).concat(marks || []).concat(markGroupDeclarationsNames);
   return new Schema({
     nodes: addItems(nodesInOrder, nodesConfig, customNodeSpecs),
-    marks: fixExcludes(addItems(marksInOrder, marksConfig, customMarkSpecs))
+    marks: addItems(marksInOrder, marksConfig, customMarkSpecs),
   });
 }
 

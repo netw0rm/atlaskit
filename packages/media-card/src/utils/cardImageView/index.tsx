@@ -1,13 +1,19 @@
+/**
+ * This is actually the Class that contains the View logic.
+ * Overlay, Content, dimensions logic lives here.
+ */
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
 
-import {getCSSUnitValue} from '../index';
-import {CardDimensions, CardStatus} from '../../index';
+import {getCSSUnitValue} from '../getCSSUnitValue';
+import {CardDimensions, CardDimensionValue, CardStatus} from '../../index';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 import {UploadingView} from '../../utils/uploadingView';
+import {breakpointSize, BreakpointSizeValue} from '../../utils/breakpointSize';
+import {defaultImageCardDimensions} from '../../utils/cardDimensions';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;
@@ -33,27 +39,29 @@ export interface CardImageViewProps {
   onRetry?: CardAction;
 }
 
-export const DEFAULT_CARD_DIMENSIONS = {
-  WIDTH: '156px',
-  HEIGHT: '104px'
+const breakpointSizes = {
+  small: 173,
+  medium: 225,
+  large: 300,
+  xlarge: Infinity
 };
 
 export class CardImageView extends Component<CardImageViewProps, {}> {
-  private get width(): string {
+  private get width(): CardDimensionValue {
     const {width} = this.props.dimensions || {width: undefined};
 
     if (!width) {
-      return DEFAULT_CARD_DIMENSIONS.WIDTH;
+      return defaultImageCardDimensions.width;
     }
 
     return getCSSUnitValue(width);
   }
 
-  private get height(): string {
+  private get height(): CardDimensionValue {
     const {height} = this.props.dimensions || {height: undefined};
 
     if (!height) {
-      return DEFAULT_CARD_DIMENSIONS.HEIGHT ;
+      return defaultImageCardDimensions.height;
     }
 
     return getCSSUnitValue(height);
@@ -68,12 +76,17 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return {height: this.height, width: this.width};
   }
 
+  private get cardSize(): BreakpointSizeValue {
+    return breakpointSize(this.width, breakpointSizes);
+  }
+
   render() {
     const {onClick, onMouseEnter} = this.props;
     const cardStyle = this.cardStyle;
+    const cardSize = this.cardSize;
 
     return (
-      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter}>
+      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter} cardSize={cardSize}>
         {this.getCardContents()}
       </Wrapper>
     );

@@ -1,9 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
-import { SearchIcon } from '@atlaskit/icon';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { name } from '../package.json';
 import Reveal from '../src/components/js/Reveal';
-import styled from 'styled-components';
 
 const itemHeight = 50;
 

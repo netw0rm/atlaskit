@@ -7,6 +7,7 @@ const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';
 const token = 'some-token';
 const serviceHost = 'some-service-host';
+const authParams = `token=${token}&client=${clientId}`;
 const config = {
     serviceHost,
     tokenProvider: () => Promise.resolve(token)
@@ -42,7 +43,7 @@ describe('MediaCollectionService', () => {
         const response = collectionService.getCollectionItems(collectionName)
             .then(response => {
                 const request = requests[0];
-                expect(request.url).to.equal(`${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${DEFAULT_COLLECTION_PAGE_SIZE}`);
+                expect(request.url).to.equal(`${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${DEFAULT_COLLECTION_PAGE_SIZE}&${authParams}`);
             });
 
         respond(JSON.stringify(Mocks.collectionItemsResponse));
@@ -63,21 +64,7 @@ describe('MediaCollectionService', () => {
 
                 expect(request.url).to.equal(
                     `${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${limit}&` +
-                    `inclusiveStartKey=${inclusiveStartKey}&sortDirection=${sortDirection}&details=${details}`);
-            });
-
-        respond(JSON.stringify(Mocks.collectionItemsResponse));
-
-        return response;
-    });
-
-    it('should have correct request headers', () => {
-        const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId);
-        const response = collectionService.getCollectionItems(collectionName)
-            .then(response => {
-                const requestHeaders = requests[0].requestHeaders;
-                expect(requestHeaders['X-Client-Id']).to.equal(clientId);
-                expect(requestHeaders['Authorization']).to.equal(`Bearer ${token}`);
+                    `inclusiveStartKey=${inclusiveStartKey}&sortDirection=${sortDirection}&details=${details}&${authParams}`);
             });
 
         respond(JSON.stringify(Mocks.collectionItemsResponse));

@@ -19,15 +19,18 @@ const getPadding = ({ theme, hasNoPadding }) => {
   return isInCompactGroup(theme) ? compactPadding : openPadding;
 };
 
-const NavigationItemIcon = styled.div`
-  transition: padding 200ms;
-  padding: ${getPadding};
-  display: flex;
-  flex-shrink: 0;
-
-  [data-__ak-navigation-container-closed="true"] & {
-    ${({ isDropdownTrigger }) => (isDropdownTrigger ? 'display: none' : '')}
+const getDisplay = ({ theme, isDropdownTrigger }) => {
+  if (isDropdownTrigger && isCollapsed(theme)) {
+    return 'none';
   }
+  return 'flex';
+};
+
+const NavigationItemIcon = styled.div`
+  display: ${getDisplay};
+  padding: ${getPadding};
+  flex-shrink: 0;
+  transition: padding 200ms;
 
   /* We need to ensure that any image passed in as a child (<img/>, <svg/>
   etc.) receives the correct width, height and border radius. We don't

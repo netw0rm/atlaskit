@@ -5,7 +5,6 @@ import {
   Mark,
   Node,
   Plugin,
-  PluginKey,
   NodeViewDesc,
   TextSelection,
   Slice,
@@ -15,13 +14,16 @@ import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { normalizeUrl, linkify } from './utils';
 
+import stateKey from './plugin-key';
+export { stateKey };
+
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
 export interface HyperlinkOptions {
   href: string;
   text?: string;
 }
-export type Coordniates = { left: number, right: number, top: number, bottom: number };
+export type Coordniates = { left: number; right: number; top: number; bottom: number };
 interface NodeInfo {
   node: Node;
   startPos: number;
@@ -35,6 +37,7 @@ export class HyperlinkState {
   linkable = false;
   editorFocused = false;
   element?: HTMLElement;
+  activeElement?: HTMLElement;
   showToolbarPanel = false;
 
   private changeHandlers: StateChangeHandler[] = [];
@@ -125,6 +128,7 @@ export class HyperlinkState {
       dirty = true;
     }
     this.element = this.getDomElement(docView);
+    this.activeElement = this.getActiveDomElement(state.selection, docView);
 
     if (dirty) {
       this.triggerOnChange();
@@ -163,12 +167,12 @@ export class HyperlinkState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  getCoordniates(editorView: EditorView): Coordniates {
+  getCoordinates(editorView: EditorView, offsetParent: Element): Coordniates {
     if (editorView.hasFocus()) {
       editorView.focus();
     }
     const { pos } = this.state.selection.$from;
-    const { left, top } = editorView.dom.getBoundingClientRect();
+    const { left, top, height } = offsetParent.getBoundingClientRect();
     const { node } = editorView.docView.domFromPos(pos);
 
     const cursorNode = (node.nodeType === 3) ? // Node.TEXT_NODE = 3
@@ -179,16 +183,18 @@ export class HyperlinkState {
      * relative to `window`. And, also need to adjust the cursor container height.
      * (0, 0)
      * +--------------------- [window] ---------------------+
-     * |   (left, top) +-------- [Editor Chrome] --------+  |
+     * |   (left, top) +-------- [Offset Parent] --------+  |
      * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
      * |               | [FloatingToolbar]               |  |
      */
-    const translateCoordinates = (coords: Coordniates, dx: number, dy: number) => ({
-      left: coords.left - dx,
-      right: coords.right - dx,
-      top: coords.top - dy,
-      bottom: coords.bottom - dy,
-    });
+    const translateCoordinates = (coords: Coordniates, dx: number, dy: number) => {
+      return {
+        left: coords.left - dx,
+        right: coords.right - dx,
+        top: (coords.top - dy) + (offsetParent === document.body ? 0 : offsetParent.scrollTop),
+        bottom: height - (coords.top - dy) - (offsetParent === document.body ? 0 : offsetParent.scrollTop),
+      };
+    };
     return translateCoordinates(editorView.coordsAtPos(pos), left, top - cursorHeight);
   }
 
@@ -245,12 +251,25 @@ export class HyperlinkState {
     }
   }
 
+  /**
+   * Returns active dom element for current selection.
+   * Used by Hyperlink edit popup to position relative to cursor.
+   */
+  private getActiveDomElement(selection, docView: NodeViewDesc): HTMLElement | undefined {
+    if (selection.$from.pos !== selection.$to.pos) {
+      return;
+    }
+
+    const { node } = docView.domFromPos(selection.$from.pos);
+
+    return node as HTMLElement;
+  }
+
   private isActiveNodeLinkable(): boolean {
     const { link } = this.state.schema.marks;
     return !!link && commands.toggleMark(link)(this.state);
   }
 }
-export const stateKey = new PluginKey('hypelinkPlugin');
 
 const plugin = new Plugin({
   props: {
@@ -295,7 +314,7 @@ const plugin = new Plugin({
       }
       const contentSlices = linkify(view.state.schema, text);
       if (contentSlices) {
-        const { dispatch, state: { tr }} = view;
+        const { dispatch, state: { tr } } = view;
         dispatch(tr.replaceSelection(contentSlices));
         return true;
       }

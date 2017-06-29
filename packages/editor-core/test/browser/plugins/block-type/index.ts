@@ -635,6 +635,16 @@ describe('block-type', () => {
 
         context('when selection is empty', () => {
           context('on a non nested structure', () => {
+            context('inside a paragraph', () => {
+              it('doesn not create a new paragraph above', () => {
+                const { editorView } = editor(doc(p('{<>}text')));
+
+                sendKeyToPm(editorView, 'ArrowUp');
+
+                expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+              });
+            });
+
             context('when cursor is in the middle of the first block node', () => {
               it('does not create a new paragraph above', () => {
                 const { editorView } = editor(doc(code_block()('te{<>}xt')));
@@ -671,7 +681,7 @@ describe('block-type', () => {
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
-                  expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', text: '@bar1' }))));
+                  expect(editorView.state.doc).to.deep.equal(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
                 });
               });
 
@@ -913,6 +923,26 @@ describe('block-type', () => {
       });
     });
 
+    context('when parent item is a list', () => {
+      it('wraps paragraph to heading', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('heading1', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(h1('t{<}ex{>}t')))));
+      });
+
+      it('wraps paragraph in block-quote', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('blockquote', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(blockquote(p('t{<}ex{>}t'))))));
+      });
+
+      it('wraps paragraph in panel', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('panel', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(panel(p('t{<}ex{>}t'))))));
+      });
+    });
+
     context('when origin block type is the same as target block type', () => {
       context('when it is a quote', () => {
         it('lifts content out of the quote', () => {
@@ -931,15 +961,6 @@ describe('block-type', () => {
           expect(editorView.state.doc).to.deep.equal(doc(p('text')));
         });
       });
-    });
-  });
-
-  describe('changeContext', () => {
-    it('reverts to "default" in case the context is not defined', () => {
-      const { pluginState } = editor(doc(p('text')));
-      expect(pluginState.context).to.eq('default');
-      pluginState.changeContext('!!!%%%UNDEFINED CONTEXT%%%!!!');
-      expect(pluginState.context).to.eq('default');
     });
   });
 });

@@ -119,7 +119,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         title={title}
         site={site}
         thumbnailUrl={this.iconUrl || this.thumbnailUrl}
-        width={dimensions && dimensions.width}
+        dimensions={dimensions}
         loading={this.isLoading}
         actions={actions}
 

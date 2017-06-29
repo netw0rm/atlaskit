@@ -6,6 +6,7 @@ import Mention, { MentionEventHandler } from './';
 export interface Props {
   id: string;
   text: string;
+  accessLevel?: string;
   mentionProvider?: Promise<MentionProvider>;
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
@@ -25,7 +26,7 @@ export default class ResourcedMention extends PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.handleMentionProvider(this.props);
   }
 
@@ -43,6 +44,10 @@ export default class ResourcedMention extends PureComponent<Props, State> {
         this.setState({
           isHighlighted: provider.shouldHighlightMention({ id })
         });
+      }).catch(e => {
+        this.setState({
+          isHighlighted: false
+        });
       });
     } else {
       this.setState({
@@ -59,6 +64,7 @@ export default class ResourcedMention extends PureComponent<Props, State> {
         id={props.id}
         text={props.text}
         isHighlighted={state.isHighlighted}
+        accessLevel={props.accessLevel}
         onClick={props.onClick}
         onMouseEnter={props.onMouseEnter}
         onMouseLeave={props.onMouseLeave}

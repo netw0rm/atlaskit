@@ -1,7 +1,11 @@
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 
-import { Mention } from '../types';
+import { MentionDescription } from '../types';
 import debug from '../util/logger';
+import {SearchIndex} from '../util/searchIndex';
+
+const MAX_QUERY_ITEMS = 100;
+const MAX_NOTIFIED_ITEMS = 20;
 
 export interface KeyValues {
   [index: string]: any;
@@ -28,11 +32,11 @@ export interface RefreshSecurityProvider {
 }
 
 export interface ResultCallback<T> {
-  (result: T): void;
+  (result: T, query?: string): void;
 }
 
 export interface ErrorCallback {
-  (error: Error): void;
+  (error: Error, query?: string): void;
 }
 
 export interface InfoCallback {
@@ -40,7 +44,8 @@ export interface InfoCallback {
 }
 
 export interface MentionsResult {
-  mentions: Mention[];
+  mentions: MentionDescription[];
+  query: string;
 }
 
 export interface MentionResourceConfig {
@@ -50,7 +55,7 @@ export interface MentionResourceConfig {
   containerId?: string;
   productId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
-  shouldHighlightMention?: (mention: Mention) => boolean;
+  shouldHighlightMention?: (mention: MentionDescription) => boolean;
 }
 
 export interface ResourceProvider<Result> {
@@ -58,10 +63,11 @@ export interface ResourceProvider<Result> {
   unsubscribe(key: string): void;
 }
 
-export interface MentionProvider extends ResourceProvider<Mention[]> {
+export interface MentionProvider extends ResourceProvider<MentionDescription[]> {
   filter(query?: string): void;
-  recordMentionSelection(mention: Mention): void;
-  shouldHighlightMention(mention: Mention): boolean;
+  recordMentionSelection(mention: MentionDescription): void;
+  shouldHighlightMention(mention: MentionDescription): boolean;
+  isFiltering(query: string): boolean;
 }
 
 const emptySecurityProvider = () => {
@@ -142,10 +148,8 @@ const requestService = (baseUrl: string, path: string | undefined, data: KeyValu
           requestService(baseUrl, path, data, opts, newSecOptions)
         ));
       }
-      return Promise.reject({
-        code: response.status,
-        reason: response.statusText,
-      });
+
+      return Promise.reject(new HttpError(response.status, response.statusText));
     });
 };
 
@@ -180,9 +184,9 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
   }
 }
 
-class AbstractMentionResource extends AbstractResource<Mention[]> implements MentionProvider {
+class AbstractMentionResource extends AbstractResource<MentionDescription[]> implements MentionProvider {
 
-  shouldHighlightMention(mention: Mention): boolean {
+  shouldHighlightMention(mention: MentionDescription): boolean {
     return false;
   }
 
@@ -192,8 +196,12 @@ class AbstractMentionResource extends AbstractResource<Mention[]> implements Men
   }
 
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  recordMentionSelection(mention: Mention): void {
+  recordMentionSelection(mention: MentionDescription): void {
     // Do nothing
+  }
+
+  isFiltering(query: string): boolean {
+    return false;
   }
 
   protected _notifyListeners(mentionsResult: MentionsResult): void {
@@ -203,7 +211,7 @@ class AbstractMentionResource extends AbstractResource<Mention[]> implements Men
 
     this.changeListeners.forEach((listener, key) => {
       try {
-        listener(mentionsResult.mentions);
+        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), mentionsResult.query);
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -211,10 +219,10 @@ class AbstractMentionResource extends AbstractResource<Mention[]> implements Men
     });
   }
 
-  protected _notifyErrorListeners(error: Error): void {
+  protected _notifyErrorListeners(error: Error, query?: string): void {
     this.errListeners.forEach((listener, key) => {
       try {
-        listener(error);
+        listener(error, query);
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -241,6 +249,8 @@ class MentionResource extends AbstractMentionResource {
 
   private config: MentionResourceConfig;
   private lastReturnedSearch: number;
+  private searchIndex: SearchIndex;
+  private activeSearches: Set<string>;
 
   constructor(config: MentionResourceConfig) {
     super();
@@ -251,9 +261,11 @@ class MentionResource extends AbstractMentionResource {
 
     this.config = config;
     this.lastReturnedSearch = 0;
+    this.searchIndex = new SearchIndex();
+    this.activeSearches = new Set();
   }
 
-  shouldHighlightMention(mention: Mention) {
+  shouldHighlightMention(mention: MentionDescription) {
     if (this.config.shouldHighlightMention) {
       return this.config.shouldHighlightMention(mention);
     }
@@ -261,27 +273,41 @@ class MentionResource extends AbstractMentionResource {
     return false;
   }
 
-  filter(query?: string): void {
-    const searchTime = Date.now();
-    const notify = (mentionResult: MentionsResult) => {
-      if (searchTime > this.lastReturnedSearch) {
-        this.lastReturnedSearch = searchTime;
-        this._notifyListeners(mentionResult);
-      } else {
-        const date = new Date(searchTime).toISOString().substr(17, 6);
-        debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
-      }
-    };
-
-    if (!query) {
-      this.initialState().then(notify, error => this._notifyErrorListeners(error));
+  notify(searchTime: number, mentionResult: MentionsResult, query?: string) {
+    if (searchTime > this.lastReturnedSearch) {
+      this.lastReturnedSearch = searchTime;
+      this._notifyListeners(mentionResult);
     } else {
-      this.search(query).then(notify, error => this._notifyErrorListeners(error));
+      const date = new Date(searchTime).toISOString().substr(17, 6);
+      debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
     }
   }
 
-  recordMentionSelection(mention: Mention): Promise<void> {
-    return this.recordSelection(mention).then(() => {}, error => debug(`error recording mention selection: ${error}`, error));
+  notifyError(error: Error, query?: string) {
+    this._notifyErrorListeners(error, query);
+    if (query) {
+      this.activeSearches.delete(query);
+    }
+  }
+
+  filter(query?: string): void {
+    const searchTime = Date.now();
+
+    if (!query) {
+      this.initialState().then((results) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
+    } else {
+      this.activeSearches.add(query);
+      this.search(query).then((results) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
+    }
+  }
+
+  recordMentionSelection(mention: MentionDescription): Promise<void> {
+    return this.recordSelection(mention).then(() => {
+    }, error => debug(`error recording mention selection: ${error}`, error));
+  }
+
+  isFiltering(query: string): boolean {
+    return this.activeSearches.has(query);
   }
 
   /**
@@ -305,14 +331,43 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider)
+      .then((result) => {
+        this.searchIndex.reset();
+        this.searchIndex.indexResults(result.mentions);
+        return result;
+      });
   }
 
   private search(query: string): Promise<MentionsResult> {
+    if (this.searchIndex.hasDocuments()) {
+      return this.searchIndex.search(query).then(result => {
+        const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
+        this.remoteSearch(query).then(result => {
+          this.notify(searchTime, result, query);
+          this.searchIndex.indexResults(result.mentions);
+          this.activeSearches.delete(query);
+        },
+        err => {
+          this._notifyErrorListeners(err);
+        });
+
+        return result;
+      });
+    }
+
+    return this.remoteSearch(query).then(result => {
+      this.searchIndex.indexResults(result.mentions);
+      return result;
+    });
+  }
+
+  private remoteSearch(query: string): Promise<MentionsResult> {
     const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
       query,
+      limit: MAX_QUERY_ITEMS
     };
     const options = {};
     if (this.config.containerId) {
@@ -326,7 +381,7 @@ class MentionResource extends AbstractMentionResource {
     return requestService(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
   }
 
-  private recordSelection(mention: Mention): Promise<void> {
+  private recordSelection(mention: MentionDescription): Promise<void> {
     const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
@@ -341,6 +396,20 @@ class MentionResource extends AbstractMentionResource {
     }
 
     return requestService(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
+  }
+}
+
+export class HttpError implements Error {
+  name: string;
+  message: string;
+  statusCode: number;
+  stack?: string;
+
+  constructor(statusCode: number, statusMessage: string) {
+    this.statusCode = statusCode;
+    this.message = statusMessage;
+    this.name = 'HttpError';
+    this.stack = (new Error()).stack;
   }
 }
 

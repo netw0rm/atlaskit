@@ -15,7 +15,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 
 import {CardAppearance} from '../../src';
-import {CardView} from '../../src/cardView';
+import {CardView} from '../../src/root/cardView';
 
 import {createFileCardsWithDifferentDataURIs} from './chapters/diff-images';
 import {createCardsOfDifferentSize} from './chapters/diff-card-sizes';
@@ -26,7 +26,7 @@ import {createMenuActionCards} from './chapters/menu';
 import {createErrorAndLoadingCards} from './chapters/error-and-loading';
 import {createSelectableCards, createSelectableCardsWithMenu} from './chapters/selectable';
 import {actions} from './chapters/utils';
-
+import {generateStoriesForEditableCards} from './editableCard';
 
 const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
   const fileCards = createFileCardsWithDifferentDataURIs(appearance);
@@ -63,7 +63,7 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
       <h3>Files</h3>
       <StoryList>{fileCards}</StoryList>
 
-      <h3>Sizes</h3>
+      <h3>Sizes (Breakpoints check)</h3>
       <StoryList>{createCardsOfDifferentSize(appearance, genericFileDetails, gifDataUri)}</StoryList>
 
       <h4>Media Types - no placeholders</h4>
@@ -166,6 +166,7 @@ const generateStoriesForAppearance = (appearance: CardAppearance) => {
 };
 
 storiesOf('CardView', {})
+  .add('Make it your way 🍽', generateStoriesForEditableCards)
   .add('Auto cards', generateStoriesForAppearance('auto'))
   .add('Small cards', generateStoriesForAppearance('small'))
   .add('Image cards', generateStoriesForAppearance('image'))

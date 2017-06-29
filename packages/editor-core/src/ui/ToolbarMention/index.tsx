@@ -2,13 +2,13 @@ import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { EditorView } from '../../prosemirror';
+import { EditorView, PluginKey } from '../../prosemirror';
 import { MentionsState } from '../../plugins/mentions';
 import { ToolbarButton } from './styles';
 
 export interface Props {
-  editorView: EditorView;
-  pluginState: MentionsState;
+  editorView?: EditorView;
+  pluginKey: PluginKey;
 }
 
 export interface State {
@@ -17,13 +17,24 @@ export interface State {
 
 export default class ToolbarMention extends PureComponent<Props, State> {
   state: State = { disabled: false };
+  private pluginState?: any;
+
+  componentWillMount() {
+    const { editorView, pluginKey } = this.props;
+
+    if (!editorView) {
+      return;
+    }
+
+    this.pluginState = pluginKey.getState(editorView.state);
+  }
 
   componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
+    this.pluginState.subscribe(this.handlePluginStateChange);
   }
 
   componentWillUmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+    this.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
   render() {
@@ -41,12 +52,12 @@ export default class ToolbarMention extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: MentionsState) => {
     this.setState({
-      disabled: pluginState.mentionDisabled()
+      disabled: !pluginState.enabled,
     });
   }
 
   @analytics('atlassian.editor.mention.button')
   private handleInsertMention = () => {
-    this.props.pluginState.insertMentionQuery();
+    this.pluginState.insertMentionQuery();
   }
 }

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { getProvided } from '../../theme/util';
 
 const SearchInput = styled.input`
-  background-color: ${({ theme }) => getProvided(theme).background.tertiary}
+  background-color: ${({ theme }) => getProvided(theme).background.tertiary};
   border: 0;
   color: ${({ theme }) => getProvided(theme).text};
   flex-grow: 1;

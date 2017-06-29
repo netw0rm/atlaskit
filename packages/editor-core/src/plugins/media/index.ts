@@ -8,7 +8,7 @@ import {
   UploadParams,
 } from '@atlaskit/media-core';
 
-import { MediaType } from './../../schema/nodes/media';
+import { copyOptionalAttrs, MediaType } from './../../schema/nodes/media';
 import {
   EditorState,
   EditorView,
@@ -28,20 +28,16 @@ import { ErrorReporter } from '../../utils';
 import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
+import { nodeViewFactory } from '../../nodeviews';
+import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
-export interface MediaNode extends PMNode {
-  fileName?: string;
-  fileSize?: number;
-  fileMimeType?: string;
-}
-
 export interface MediaNodeWithPosHandler {
-  node: MediaNode;
+  node: PMNode;
   getPos: ProsemirrorGetPosHandler;
 }
 
@@ -59,13 +55,6 @@ export class MediaPluginState {
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
 
-  /*
-    MediaPluginState.setMediaProvider(providerPromise) is async method which is setting pickers.
-    When it's called pickers are destroyed. New pickers are set when providerPromise is resolved.
-    The problem is that setMediaProvider can be called at any moment, even when providerPromise hasn't been resolved yet.
-    To prevent this MediaPluginState stores reference to last media provider set
-  */
-  private lastMediaProvider: Promise<MediaProvider> | undefined;
   private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
   private binaryPicker?: PickerFacade;
@@ -97,14 +86,9 @@ export class MediaPluginState {
   }
 
   setMediaProvider = async (mediaProvider?: Promise<MediaProvider>) => {
-    if (this.lastMediaProvider === mediaProvider) {
-      return;
-    }
-
-    this.destroyPickers();
-    this.lastMediaProvider = mediaProvider;
-
     if (!mediaProvider) {
+      this.destroyPickers();
+
       this.allowsPastingLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
@@ -113,13 +97,22 @@ export class MediaPluginState {
       return;
     }
 
+    // TODO disable (not destroy!) pickers until mediaProvider is resolved
+
     let resolvedMediaProvider: MediaProvider;
 
     try {
       resolvedMediaProvider = await mediaProvider;
+
+      assert(
+        resolvedMediaProvider && resolvedMediaProvider.viewContext,
+        `MediaProvider promise did not resolve to a valid instance of MediaProvider - ${resolvedMediaProvider}`
+      );
     } catch (err) {
       const wrappedError = new Error(`Media functionality disabled due to rejected provider: ${err.message}`);
       this.errorReporter.captureException(wrappedError);
+
+      this.destroyPickers();
 
       this.allowsPastingLinks = false;
       this.allowsUploads = false;
@@ -150,15 +143,12 @@ export class MediaPluginState {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (resolvedMediaProvider.uploadParams && uploadContext) {
-        if (this.popupPicker) {
-          this.popupPicker.setUploadParams(resolvedMediaProvider.uploadParams);
-        }
-
-        // race condition fix
-        if (this.lastMediaProvider === mediaProvider) {
-          this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
-        }
+        this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+      } else {
+        this.destroyPickers();
       }
+    } else {
+      this.destroyPickers();
     }
 
     this.notifyPluginStateSubscribers();
@@ -176,7 +166,7 @@ export class MediaPluginState {
   insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
     const { view } = this;
     const { state } = view;
-    const { id, fileName, fileSize, fileMimeType } = mediaState;
+    const { id } = mediaState;
 
     this.stateManager.subscribe(mediaState.id, this.handleMediaState);
 
@@ -184,19 +174,13 @@ export class MediaPluginState {
       id,
       type: 'file',
       collection
-    }) as MediaNode;
+    });
 
-    if (fileName) {
-      node.fileName = fileName;
-    }
-
-    if (fileSize) {
-      node.fileSize = fileSize;
-    }
-
-    if (fileMimeType) {
-      node.fileMimeType = fileMimeType;
-    }
+    ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
+      if (mediaState[key]) {
+        node.attrs[`__${key}`] = mediaState[key];
+      }
+    });
 
     let transaction;
 
@@ -422,14 +406,24 @@ export class MediaPluginState {
       return;
     }
 
-    const { stateManager, pickers } = this;
+    const {
+      errorReporter,
+      pickers,
+      stateManager,
+    } = this;
 
-    pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager));
-    pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager));
-    pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager));
-    pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager));
+    // create pickers if they don't exist, re-use otherwise
+    if (!pickers.length) {
+      pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager, errorReporter));
+      pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager, errorReporter));
+      pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
+      pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
-    pickers.forEach(picker => picker.onNewMedia(this.handleNewMediaPicked));
+      pickers.forEach(picker => picker.onNewMedia(this.handleNewMediaPicked));
+    }
+
+    // set new upload params for the pickers
+    pickers.forEach(picker => picker.setUploadParams(uploadParams));
   }
 
   private handleNewMediaPicked = (state: MediaState) => {
@@ -441,6 +435,11 @@ export class MediaPluginState {
     const { view } = this;
 
     view.dispatch(transaction);
+
+    if (!view.hasFocus()) {
+      view.focus();
+    }
+
     this.selectInsertedMediaNode(node);
   }
 
@@ -514,25 +513,13 @@ export class MediaPluginState {
       node: mediaNode,
     } = mediaNodeWithPos;
 
-    const newNode: MediaNode = view.state.schema.nodes.media!.create({
+    const newNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
       id: publicId,
     });
 
-    // copy file-* attributes from old node
-    const { fileSize, fileName, fileMimeType } = mediaNode;
-
-    if (fileName) {
-      newNode.fileName = fileName;
-    }
-
-    if (fileSize) {
-      newNode.fileSize = fileSize;
-    }
-
-    if (fileMimeType) {
-      newNode.fileMimeType = fileMimeType;
-    }
+    // Copy all optional attributes from old node
+    copyOptionalAttrs(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -614,6 +601,12 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       return {};
     },
     props: {
+      nodeViews: {
+        mediaGroup: nodeViewFactory(options.providerFactory, {
+          mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+      },
       handleDOMEvents: {
         paste(view: EditorView, event: ClipboardEvent) {
           const pluginState: MediaPluginState = stateKey.getState(view.state);

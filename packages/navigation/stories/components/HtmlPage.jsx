@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 /**
  * Navigation needs to be able to work in a plain old HTML page,
@@ -8,7 +8,7 @@ import Lorem from 'react-lorem-component';
  * This is a Page component is a proof of concept
  * to ensure that Navigation still works without @atlaskit/page
  */
-export default class HtmlPage extends PureComponent {
+export default class HtmlPage extends Component {
   static propTypes = {
     content: PropTypes.node,
     children: PropTypes.node,
@@ -37,9 +37,8 @@ export default class HtmlPage extends PureComponent {
         {this.props.children}
         <div
           style={{
+            boxSizing: 'border-box',
             padding: '32px',
-            height: '100vh',
-            overflowY: 'scroll',
           }}
         >
           {this.props.content}

@@ -1,20 +1,17 @@
 import {
   AnalyticsHandler,
   analyticsService,
+  asciiEmojiPlugins,
   baseKeymap,
   blockTypePlugins,
   EditorState,
   EditorView,
   EmojiTypeAhead,
-  LanguagePicker,
   emojisPlugins,
   emojisStateKey,
   history,
-  HyperlinkEdit,
   hyperlinkPlugins,
-  hyperlinkStateKey,
   codeBlockPlugins,
-  codeBlockStateKey,
   keymap,
   mediaPluginFactory,
   mediaStateKey,
@@ -39,16 +36,32 @@ import {
   ReactMediaNode,
   ReactMentionNode,
   reactNodeViewPlugins,
+
+  // error-reporting
+  ErrorReporter,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-core';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MentionProvider } from '@atlaskit/mention';
+import {
+  EmojiProvider,
+  hipchatSchema as schema,
+} from '@atlaskit/editor-core';
+import { MentionProvider } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { HCSchema, default as schema } from './schema/schema';
 import { version } from './version';
 import { hipchatEncoder } from './encoders';
 import { hipchatDecoder } from './decoders';
+
+export {
+  AbstractMentionResource,
+  EmojiProvider,
+  EmojiResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+} from '@atlaskit/editor-core';
 
 let debounced: number | null = null;
 
@@ -73,11 +86,11 @@ export interface Props {
   uploadErrorHandler?: (state: MediaState) => void;
   useLegacyFormat?: boolean;
   analyticsHandler?: AnalyticsHandler;
+  errorReporter?: ErrorReportingHandler;
 }
 
 export interface State {
   editorView?: EditorView;
-  schema: HCSchema;
   maxLengthReached?: boolean;
   flashToggle?: boolean;
 }
@@ -97,7 +110,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { schema };
+    this.state = {};
 
     this.providerFactory = new ProviderFactory();
 
@@ -107,8 +120,14 @@ export default class Editor extends PureComponent<Props, State> {
       this.providerFactory.setProvider('mediaProvider', mediaProvider);
     }
 
+    const errorReporter = new ErrorReporter();
+    if (props.errorReporter) {
+      errorReporter.handler = props.errorReporter;
+    }
+
     this.mediaPlugins = mediaPluginFactory(schema, {
       uploadErrorHandler,
+      errorReporter,
       providerFactory: this.providerFactory,
     });
 
@@ -217,7 +236,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  insertFileFromDataUrl (url: string, fileName: string) {
+  insertFileFromDataUrl(url: string, fileName: string) {
     const { editorView } = this.state;
     if (editorView) {
       const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
@@ -231,6 +250,8 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.providerFactory.destroy();
+
     const { editorView } = this.state;
     if (editorView) {
       if (editorView.state) {
@@ -268,8 +289,6 @@ export default class Editor extends PureComponent<Props, State> {
     const editorState = editorView && editorView.state;
     const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);
     const mentionsState = editorState && mentionProvider && mentionsStateKey.getState(editorState);
-    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
-    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
       'flash-toggle': this.state.flashToggle
@@ -278,28 +297,19 @@ export default class Editor extends PureComponent<Props, State> {
     return (
       <div className={classNames} id={this.props.id}>
         <div ref={this.handleRef}>
-          {!hyperlinkState ? null :
-            <HyperlinkEdit pluginState={hyperlinkState} editorView={editorView!} />
-          }
           {!emojisState ? null :
             <EmojiTypeAhead
-              pluginState={emojisState}
-              emojiProvider={emojiProvider!}
+              pluginKey={emojisStateKey}
+              editorView={editorView}
               reversePosition={props.reverseMentionPicker}
             />
           }
           {!mentionsState ? null :
             <MentionPicker
-              resourceProvider={mentionProvider!}
+              editorView={editorView}
+              pluginKey={mentionsStateKey}
               presenceProvider={props.presenceProvider}
-              pluginState={mentionsState}
               reversePosition={props.reverseMentionPicker}
-            />
-          }
-          {!codeBlockState ? null :
-            <LanguagePicker
-              pluginState={codeBlockState}
-              editorView={editorView!}
             />
           }
         </div>
@@ -321,21 +331,25 @@ export default class Editor extends PureComponent<Props, State> {
       schema,
       doc: '',
       plugins: [
-        ...mentionsPlugins(schema),
+        ...mentionsPlugins(schema, this.providerFactory),
         ...mediaPlugins,
-        ...emojisPlugins(schema),
-        ...blockTypePlugins(schema),
+        ...emojisPlugins(schema, this.providerFactory),
+        ...asciiEmojiPlugins(schema, this.props.emojiProvider),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         ...reactNodeViewPlugins(schema),
         ...codeBlockPlugins(schema),
+        // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+        // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+        // if converting is possible
+        ...blockTypePlugins(schema),
         history(),
         keymap(hcKeymap),
         keymap(baseKeymap) // should be last
       ]
     });
 
-    const { maxContentSize }  = this.props;
+    const { maxContentSize } = this.props;
 
     const editorView = new EditorView(place, {
       state: editorState,
@@ -377,9 +391,6 @@ export default class Editor extends PureComponent<Props, State> {
         return html.replace(/<br\s*[\/]?>/gi, '\n');
       },
     });
-
-    emojisStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-    mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
     if (place instanceof HTMLElement) {
       const content = place.querySelector('[contenteditable]');

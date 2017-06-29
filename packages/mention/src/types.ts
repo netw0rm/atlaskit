@@ -16,7 +16,7 @@ export interface Presence {
   status?: string;
 }
 
-export interface Mention {
+export interface MentionDescription {
   id: string;
   avatarUrl?: string;
   name?: string;
@@ -25,8 +25,37 @@ export interface Mention {
   highlight?: Highlight;
   lozenge?: string;
   presence?: Presence;
+  accessLevel?: string;
+  weight?: number;
+  userType?: string;
 }
 
 export interface OnMentionEvent {
-  (mention: Mention, event?: SyntheticEvent<any>): void;
+  (mention: MentionDescription, event?: SyntheticEvent<any>): void;
+}
+
+export enum MentionType {
+  SELF,
+  RESTRICTED,
+  DEFAULT
+}
+
+enum UserAccessLevel {
+  NONE,
+  SITE,
+  APPLICATION,
+  CONTAINER,
+}
+
+enum UserType {
+  DEFAULT,
+  SPECIAL
+}
+
+export function isRestricted(accessLevel) {
+  return accessLevel && accessLevel !== UserAccessLevel[UserAccessLevel.CONTAINER];
+}
+
+export function isSpecialMention(mention: MentionDescription) {
+  return mention.userType && mention.userType === UserType[UserType.SPECIAL];
 }

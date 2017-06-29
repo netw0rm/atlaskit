@@ -3,12 +3,13 @@ import EmojiPlaceholder from './components/common/EmojiPlaceholder';
 import ResourcedEmoji from './components/common/ResourcedEmoji';
 import EmojiPicker from './components/picker/EmojiPicker';
 import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
-import EmojiResource, { EmojiProvider } from './api/EmojiResource';
+import EmojiResource, { EmojiProvider, UploadingEmojiProvider } from './api/EmojiResource';
 import { AbstractResource } from './api/SharedResources';
 import EmojiRepository, { EmojiSearchResult } from './api/EmojiRepository';
-import EmojiLoader, { denormaliseEmojiServiceResponse } from './api/EmojiLoader';
+import EmojiLoader from './api/EmojiLoader';
+import { denormaliseEmojiServiceResponse } from './api/EmojiUtils';
 import { toEmojiId, toOptionalEmojiId } from './type-helpers';
-import { defaultEmojiHeight, emojiPickerWidth, emojiPickerHeight } from './shared-styles';
+import { customCategory, defaultEmojiHeight, emojiPickerWidth, emojiPickerHeight } from './constants';
 
 export {
   // Classes
@@ -27,10 +28,13 @@ export {
   toOptionalEmojiId,
   // interfaces
   EmojiProvider,
+  UploadingEmojiProvider,
   EmojiSearchResult,
+  // Constants
   emojiPickerWidth,
   emojiPickerHeight,
   defaultEmojiHeight,
+  customCategory,
 };
 
 export * from './types';

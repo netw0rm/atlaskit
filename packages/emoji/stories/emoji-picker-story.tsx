@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
-
+import Layer from '@atlaskit/layer';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 
 import { name } from '../package.json';
@@ -10,6 +10,15 @@ import TriggeredEmojiResource from './TriggeredEmojiResource';
 storiesOf(`${name}/EmojiPicker`, module)
   .add('picker popup', () => (
     <div style={{ padding: '10px' }} >
+      <Layer
+        content={
+          <EmojiPicker
+            emojiProvider={getEmojiResource()}
+            onSelection={action('emoji selected')}
+          />
+        }
+        position="bottom left"
+      >
       <input
         id="picker-input"
         style={{
@@ -17,13 +26,8 @@ storiesOf(`${name}/EmojiPicker`, module)
           margin: '10px',
         }}
       />
+      </Layer>
       <p style={{ width: '400px' }}>{lorem}</p>
-      <EmojiPicker
-        emojiProvider={getEmojiResource()}
-        onSelection={action('emoji selected')}
-        target="#picker-input"
-        position="below"
-      />
     </div>
   ))
   .add('picker inline', () => (
@@ -70,4 +74,26 @@ storiesOf(`${name}/EmojiPicker`, module)
         />
       </div>
     );
-  });
+  })
+  .add('picker popup with upload support', () => (
+    <div style={{ padding: '10px' }} >
+      <Layer
+        content={
+          <EmojiPicker
+            emojiProvider={getEmojiResource({ uploadSupported: true })}
+            onSelection={action('emoji selected')}
+          />
+        }
+        position="bottom left"
+      >
+      <input
+        id="picker-input"
+        style={{
+          height: '20px',
+          margin: '10px',
+        }}
+      />
+      </Layer>
+    </div>
+  ));
+

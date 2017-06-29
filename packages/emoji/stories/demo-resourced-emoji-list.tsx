@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { EmojiDescription } from '../src/types';
+import { EmojiDescription, EmojiId } from '../src/types';
 import { toEmojiId } from '../src/type-helpers';
 import { EmojiSearchResult } from '../src/api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../src/api/EmojiResource';
@@ -12,16 +12,39 @@ export interface EmojiFilter {
 }
 
 export interface Props {
+  emojiIds: EmojiId[];
+  emojiProvider: Promise<EmojiProvider>;
+}
+
+export class ResourcedEmojiList extends PureComponent<Props, {}> {
+  render() {
+    const { emojiIds, emojiProvider } = this.props;
+
+    return (
+      <p style={{ padding: '10px', lineHeight: '24px' }} >
+        {emojiIds.map(emojiId => (
+          <ResourcedEmoji
+            key={emojiId.id}
+            emojiProvider={emojiProvider}
+            emojiId={emojiId}
+          />
+        ))}
+      </p>
+    );
+  }
+}
+
+export interface FilteredProps {
   emojiProvider: Promise<EmojiProvider>;
   filter: EmojiFilter;
 }
 
-export interface State {
+export interface FilteredState {
   unfilteredEmojis: EmojiDescription[];
   emojis: EmojiDescription[];
 }
 
-export default class ResourcedEmojiList extends PureComponent<Props, State> {
+export class ResourcedFilteredEmojiList extends PureComponent<FilteredProps, FilteredState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +74,7 @@ export default class ResourcedEmojiList extends PureComponent<Props, State> {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.emojiProvider) {
       this.props.emojiProvider.then(provider => {
         provider.subscribe(this.onProviderChange);

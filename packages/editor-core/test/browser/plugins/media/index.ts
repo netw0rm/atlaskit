@@ -16,7 +16,6 @@ import {
   nodeViewFactory,
   ReactMediaGroupNode,
   ReactMediaNode,
-  reactNodeViewPlugins,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
@@ -56,7 +55,6 @@ describe('Media plugin', () => {
   const editor = (doc: any, uploadErrorHandler?: () => void) => {
     const plugins = [
       ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
-      ...reactNodeViewPlugins(defaultSchema),
       history(),
     ];
 
@@ -87,6 +85,10 @@ describe('Media plugin', () => {
 
     return mediaNodeWithPos!.getPos();
   };
+
+  after(() => {
+    providerFactory.destroy();
+  });
 
   it('allows change handler to be registered', () => {
     const pluginState = editor(doc(p(''))).pluginState as MediaPluginState;
@@ -438,19 +440,50 @@ describe('Media plugin', () => {
     expect(pluginState.pickers).to.have.length(4);
   });
 
-  it('should remove old pickers exactly when new media provider is set', async () => {
+  it('should re-use old pickers when new media provider is set', async () => {
     const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
 
     const mediaProvider1 = getFreshResolvedProvider();
     (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
-
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
+    const pickersAfterMediaProvider1 = pluginState.pickers;
+    expect(pickersAfterMediaProvider1).to.have.length(4);
 
     const mediaProvider2 = getFreshResolvedProvider();
     (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider2.uploadContext;
+    const pickersAfterMediaProvider2 = pluginState.pickers;
+
+    expect(pickersAfterMediaProvider1).to.have.length(pickersAfterMediaProvider2.length);
+    for (let i = 0; i < pickersAfterMediaProvider1.length; i++) {
+      expect(pickersAfterMediaProvider1[i]).to.equal(pickersAfterMediaProvider2[i]);
+    }
+  });
+
+  it('should set new upload params for existing pickers when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
+
+    const mediaProvider1 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    const resolvedMediaProvider1 = await mediaProvider1;
+    await resolvedMediaProvider1.uploadContext;
+
+    pluginState.pickers.forEach(picker => {
+      picker.setUploadParams = sinon.spy();
+    });
+
+    const mediaProvider2 = getFreshResolvedProvider();
+    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider2.uploadContext;
+
+    pluginState.pickers.forEach(picker => {
+      expect(picker.setUploadParams.calledOnce).to.equal(true);
+    });
   });
 
   [
@@ -485,5 +518,37 @@ describe('Media plugin', () => {
         )
       ));
     });
+  });
+
+  it('should focus the editor after files are added to the document', async () => {
+    const { editorView, pluginState } = editor(doc(p('')));
+    await resolvedProvider;
+
+    pluginState.handleNewMediaPicked({ id: 'foo' });
+    expect(editorView.hasFocus()).to.be.equal(true);
+
+    pluginState.handleNewMediaPicked({ id: 'bar' });
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        mediaGroup(
+          media({ id: 'bar', type: 'file', collection: testCollectionName }),
+          media({ id: 'foo', type: 'file', collection: testCollectionName }),
+        ),
+        p(),
+      ),
+    );
+  });
+
+  it(`should copy optional attributes from MediaState to Node attrs`, () => {
+    const { editorView, pluginState } = editor(doc(p('{<>}')));
+
+    const [node, transaction] = pluginState.insertFile({
+      id: testFileId, status: 'uploading', fileName: 'foo.png', fileSize: 1234, fileMimeType: 'image/png'
+    }, testCollectionName);
+    editorView.dispatch(transaction);
+
+    expect(node.attrs.__fileName).to.equal('foo.png');
+    expect(node.attrs.__fileSize).to.equal(1234);
+    expect(node.attrs.__fileMimeType).to.equal('image/png');
   });
 });

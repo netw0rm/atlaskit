@@ -2,6 +2,7 @@ import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
 import Navigation from '../src/components/js/Navigation';
 import Drawer from '../src/components/js/Drawer';
+import * as presets from '../src/theme/presets';
 import {
   containerClosedWidth,
   globalOpenWidth,
@@ -230,9 +231,14 @@ describe('<Navigation />', () => {
       expect(mount(<Navigation globalCreateIcon={icon} />).find('GlobalNavigation').props().createIcon).to.equal(icon);
     });
 
-    it('should pass globalAppearance onto <GlobalNavigation />', () => {
-      const appearance = 'settings';
-      expect(mount(<Navigation globalAppearance={appearance} />).find('GlobalNavigation').props().appearance).to.equal(appearance);
+    it('should pass globalTheme onto <GlobalNavigation />', () => {
+      const theme = presets.settings;
+      expect(mount(<Navigation globalTheme={theme} />).find('GlobalNavigation').props().theme).to.equal(theme);
+    });
+
+    it('should pass containerTheme onto <ContainerNavigation />', () => {
+      const theme = presets.settings;
+      expect(mount(<Navigation containerTheme={theme} />).find('ContainerNavigation').props().theme).to.equal(theme);
     });
 
     it('should pass globalSearchIcon onto <ContainerNavigation />', () => {
@@ -317,7 +323,7 @@ describe('<Navigation />', () => {
     });
 
     it('should tell the container not to render the global primary items', () => {
-      expect(wrapper.find('ContainerNavigation').props().showGlobalPrimaryActions)
+      expect(wrapper.find('ContainerNavigation').props().showGlobalActions)
         .to.equal(false);
     });
 
@@ -346,6 +352,22 @@ describe('<Navigation />', () => {
       });
 
       expect(warnStub.callCount).to.equal(1);
+    });
+  });
+
+  describe('collapsing', () => {
+    it('should allow collapsing if isCollapsible is set to false and navigation width is expanded', () => {
+      const wrapper = shallow(<Navigation isOpen isCollapsible={false} />);
+      wrapper.find('Resizer')
+        .simulate('resize', 1);
+
+      expect(wrapper.find('Resizer').props().showResizeButton).to.equal(true);
+    });
+
+    it('should not allow collapsing if isCollapsible is set to false and navigation width is not expanded', () => {
+      const wrapper = shallow(<Navigation isOpen isCollapsible={false} />);
+
+      expect(wrapper.find('Resizer').props().showResizeButton).to.equal(false);
     });
   });
 });

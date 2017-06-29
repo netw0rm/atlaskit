@@ -13,15 +13,25 @@ import { WIDTH_ENUM } from '../shared-variables';
 
 export default class ModalDialog extends PureComponent {
   static propTypes = {
+    /** Determines whether the modal should be shown or not. */
     isOpen: PropTypes.bool,
+    /** Elements to render in the header of the modal. */
     header: PropTypes.node,
+    /** Elements to render in the main body of the modal. */
     children: PropTypes.node,
+    /** Elements to render in the footer of the moda.l */
     footer: PropTypes.node,
+    /** Width of the modal. This can be provided in three different ways.
+    If a number is provided, the width is set to that number in pixels.
+    A string including pixels, or a percentage, will be directly applied as a style.
+    Several size options are also recognised. */
     width: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
       PropTypes.oneOf(WIDTH_ENUM.values),
     ]),
+    /** Function to be called when esc key is pressed, or a click occurs outside
+    the modal. */
     onDialogDismissed: PropTypes.func,
   };
 
@@ -93,29 +103,21 @@ export default class ModalDialog extends PureComponent {
     const hasHeader = !!header;
     const hasFooter = !!footer;
 
-    const OptionalHeader = () => (
-      hasHeader ? (
-        <HeaderFooterWrapper headerOrFooter="header">{header}</HeaderFooterWrapper>
-      ) : null
-    );
+    const optionalHeader = hasHeader ? (
+      <HeaderFooterWrapper headerOrFooter="header">{header}</HeaderFooterWrapper>
+    ) : null;
 
-    const OptionalFooter = () => (
-      hasFooter ? (
-        <HeaderFooterWrapper headerOrFooter="footer">{footer}</HeaderFooterWrapper>
-      ) : null
-    );
+    const optionalFooter = hasFooter ? (
+      <HeaderFooterWrapper headerOrFooter="footer">{footer}</HeaderFooterWrapper>
+    ) : null;
 
-    const HeaderKeylineMask = () => (
-      hasHeader ? (
-        <KeylineMask headerOrFooter="header" />
-      ) : null
-    );
+    const headerKeylineMask = hasHeader ? (
+      <KeylineMask headerOrFooter="header" />
+    ) : null;
 
-    const FooterKeylineMask = () => (
-      hasFooter ? (
-        <KeylineMask headerOrFooter="footer" />
-      ) : null
-    );
+    const footerKeylineMask = hasFooter ? (
+      <KeylineMask headerOrFooter="footer" />
+    ) : null;
 
     return (
       <ModalWrapper isOpen={isOpen}>
@@ -131,13 +133,13 @@ export default class ModalDialog extends PureComponent {
               onClick={this.handlePositionerDirectClick}
             >
               <ModalContainer>
-                <OptionalHeader />
+                {optionalHeader}
                 <ContentContainer hasHeader={hasHeader} hasFooter={hasFooter}>
-                  <HeaderKeylineMask />
+                  {headerKeylineMask}
                   {children}
-                  <FooterKeylineMask />
+                  {footerKeylineMask}
                 </ContentContainer>
-                <OptionalFooter />
+                {optionalFooter}
               </ModalContainer>
             </ModalPositioner>
           ) : null

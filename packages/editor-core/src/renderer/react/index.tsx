@@ -9,7 +9,7 @@ import {
 
 import {
   Serializer,
-} from '../';
+} from '../serializer';
 
 import {
   Doc,
@@ -28,9 +28,19 @@ import {
   isSameMark,
 } from '../validator';
 
+import ProviderFactory from '../../providerFactory';
+import { EventHandlers } from '../../ui/Renderer';
+
 export type ReactComponentConstructor = new () => React.Component<any, any>;
 
 export default class ReactSerializer implements Serializer<JSX.Element> {
+  private providers?: ProviderFactory;
+  private eventHandlers?: EventHandlers;
+
+  constructor(providers?: ProviderFactory, eventHandlers?: EventHandlers) {
+    this.providers = providers;
+    this.eventHandlers = eventHandlers;
+  }
 
   serializeFragment(fragment: Fragment, props: any = {}, target: ReactComponentConstructor = Doc, key: string = 'root-0'): JSX.Element | null {
     const content = ReactSerializer.getChildNodes(fragment).map((node, index) => {
@@ -60,7 +70,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   // tslint:disable-next-line:variable-name
-  private renderNode(Node: ReactComponentConstructor, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)[]): JSX.Element {
+  private renderNode(Node: ReactComponentConstructor, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)): JSX.Element {
     return (
       <Node key={key} {...props}>
         {content}
@@ -80,6 +90,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private getProps(node: Node) {
     return {
       text: node.text,
+      providers: this.providers,
+      eventHandlers: this.eventHandlers,
       ...node.attrs,
     };
   }
@@ -141,8 +153,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     }, [] as Mark[]);
   }
 
-  static fromSchema(schema: Schema<any, any>): ReactSerializer {
+  static fromSchema(schema: Schema<any, any>, providers?: ProviderFactory, eventHandlers?: EventHandlers): ReactSerializer {
     // TODO: Do we actually need the schema here?
-    return new ReactSerializer();
+    return new ReactSerializer(providers, eventHandlers);
   }
 }

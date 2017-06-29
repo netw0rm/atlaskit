@@ -31,7 +31,7 @@ const spriterConfig = {
   shape: {
     id: {
       generator: (name, file) => {
-        const iconName = file.path.replace('../icon/src/icons/', '').replace('.svg', '');
+        const iconName = file.path.replace('../icon/icons/src/', '').replace('.svg', '');
         return `ak-icon-${iconName}`;
       },
     },
@@ -52,7 +52,7 @@ const spriterConfig = {
 const spriter = new SVGSpriter(spriterConfig);
 
 // Add SVG source files from 'ak-icon'
-glob.sync('../icon/src/icons/**/*.svg', {}).forEach((svgFile) => {
+glob.sync('../icon/icons/src/**/*.svg', {}).forEach((svgFile) => {
   spriter.add(svgFile, path.basename(svgFile), fs.readFileSync(svgFile, { encoding: 'utf-8' }));
 });
 

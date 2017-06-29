@@ -9,8 +9,8 @@ function isNodeOrFragment(thing: any): thing is Node | Fragment {
 }
 
 function isSlice(thing: any): thing is Slice {
-  return typeof thing.openLeft === 'number' &&
-    typeof thing.openRight === 'number' &&
+  return typeof thing.openStart === 'number' &&
+    typeof thing.openEnd === 'number' &&
     isNodeOrFragment(thing.content);
 }
 
@@ -24,10 +24,12 @@ export default (chai: any) => {
       const deep = util.flag(this, 'deep');
       if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
         this.assert((left as any).eq(right),
-          'expected #{exp} to equal #{act}',
-          'expected #{exp} to not equal #{act}',
-          left.toString(),
-          right.toString());
+          `expected ${left.toString()} to equal ${right.toString()}`,
+          `expected ${left.toString()} to not equal ${right.toString()}`,
+          left.toJSON(),
+          right.toJSON(),
+          /*showDiff*/ true
+        );
       } else {
         equalSuper.apply(this, arguments);
       }
@@ -45,16 +47,16 @@ export default (chai: any) => {
           'expected left\'s fragment #{exp} to not equal right\'s fragment #{act}',
           left.content.toString(),
           right.content.toString());
-        this.assert(left.openLeft === right.openLeft,
-          'expected left\'s openLeft #{exp} to equal right\'s openLeft #{act}',
-          'expected left\'s openLeft #{exp} to not equal right\'s openLeft #{act}',
-          left.openLeft,
-          right.openLeft);
-        this.assert(left.openRight === right.openRight,
-          'expected left\'s openRight #{exp} to equal right\'s openRight #{act}',
-          'expected left\'s openRight #{exp} to not equal right\'s openRight #{act}',
-          left.openRight,
-          right.openRight);
+        this.assert(left.openStart === right.openStart,
+          'expected left\'s openStart #{exp} to equal right\'s openStart #{act}',
+          'expected left\'s openStart #{exp} to not equal right\'s openStart #{act}',
+          left.openStart,
+          right.openStart);
+        this.assert(left.openEnd === right.openEnd,
+          'expected left\'s openEnd #{exp} to equal right\'s openEnd #{act}',
+          'expected left\'s openEnd #{exp} to not equal right\'s openEnd #{act}',
+          left.openEnd,
+          right.openEnd);
       } else {
         equalSuper.apply(this, arguments);
       }
@@ -90,7 +92,7 @@ export default (chai: any) => {
     return new Assertion(matched).to.be.true;
   });
 
-  Assertion.addMethod('nodeSpec', function(nodeSpec: NodeSpec) {
+  Assertion.addMethod('nodeSpec', function (nodeSpec: NodeSpec) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 

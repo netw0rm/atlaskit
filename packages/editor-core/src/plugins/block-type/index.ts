@@ -6,7 +6,6 @@ import {
   Plugin,
   PluginKey,
 } from '../../prosemirror';
-import { ContextName } from '../../';
 
 import {
   NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5,
@@ -21,11 +20,6 @@ export type StateChangeHandler = (state: BlockTypeState) => any;
 export type GroupedBlockTypes = BlockType[][];
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
 
-interface Context {
-  name: ContextName;
-  groupedBlockTypes: GroupedBlockTypes;
-}
-
 /**
  *
  * Plugin State
@@ -33,25 +27,25 @@ interface Context {
  */
 export class BlockTypeState {
   private changeHandlers: StateChangeHandler[] = [];
-  private availableContexts: Context[] = [];
   private state: EditorState<any>;
 
   // public state
   currentBlockType: BlockType = NORMAL_TEXT;
   availableBlockTypes: GroupedBlockTypes = [];
-  context?: ContextName;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
     this.state = state;
 
-    this.addAvailableContext('default', [
+    const groupedBlockTypes = [
       [NORMAL_TEXT],
       [HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5],
       [BLOCK_QUOTE, CODE_BLOCK, PANEL]
-    ]);
+    ];
 
-    this.changeContext('default');
+    this.availableBlockTypes = groupedBlockTypes.map(
+      blockTypesInGroup => blockTypesInGroup.filter(this.isBlockTypeSchemaSupported)
+    );
 
     this.update(state);
   }
@@ -80,22 +74,6 @@ export class BlockTypeState {
 
     if (dirty) {
       this.triggerOnChange();
-    }
-  }
-
-  changeContext(name: ContextName): void {
-    let context = this.findContext(name);
-
-    if (!context) {
-      console.warn(`Atlassian Editor: unknown editor context "${name}"`);
-      context = this.availableContexts['default'];
-    }
-
-    if (name !== this.context && context) {
-      this.context = context.name;
-      this.availableBlockTypes = context.groupedBlockTypes;
-
-      this.update(this.state, true);
     }
   }
 
@@ -154,34 +132,6 @@ export class BlockTypeState {
     return OTHER;
   }
 
-  private addAvailableContext(name: ContextName, groupedBlockTypes: GroupedBlockTypes): void {
-    const context = this.makeContext(
-      name,
-      groupedBlockTypes.map(
-        blockTypesInGroup => blockTypesInGroup.filter(this.isBlockTypeSchemaSupported)
-      )
-    );
-
-    this.availableContexts.push(context);
-  }
-
-  private makeContext(name: ContextName, groupedBlockTypes: GroupedBlockTypes): Context {
-    return {
-      name: name,
-      groupedBlockTypes:
-      groupedBlockTypes,
-    };
-  }
-
-  private findContext(name: ContextName): Context | undefined {
-    for (let i = 0; i < this.availableContexts.length; i++) {
-      const context = this.availableContexts[i];
-      if (context.name === name) {
-        return context;
-      }
-    }
-  }
-
   private isBlockTypeSchemaSupported = (blockType: BlockType) => {
     const { state } = this;
     switch (blockType) {
@@ -205,7 +155,7 @@ export class BlockTypeState {
 
 export const stateKey = new PluginKey('blockTypePlugin');
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       return new BlockTypeState(state);

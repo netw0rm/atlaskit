@@ -76,19 +76,19 @@ export const spotifyLinkId = {
 };
 
 export const youtubeLinkId = {
-  id: '5c024c78-8dee-4a6c-9967-6276abd80286',
+  id: '3095fca9-9b76-4669-8905-bc874eebd3db',
   mediaItemType: linkType,
   collectionName
 };
 
 export const trelloLinkId = {
-  id: '70997118-3b5a-49f0-8608-43f6e0b9796e',
+  id: '9a2e988d-406c-489c-aa91-f2b03857d4d5',
   mediaItemType: linkType,
   collectionName
 };
 
 export const twitterLinkId = {
-  id: 'c3e22950-99b2-4f6e-9696-26117310741f',
+  id: 'b1c15338-a600-4104-be95-aeb878ff768c',
   mediaItemType: linkType
 };
 
@@ -132,6 +132,23 @@ export const videoFileId = {
 
 export const imageFileId = {
   id: '5556346b-b081-482b-bc4a-4faca8ecd2de', // jpg image
+  mediaItemType: fileType,
+  collectionName
+};
+export const smallImageFileId = {
+  id: 'f251bd05-4b2d-485d-a088-57d112ca7945',
+  mediaItemType: fileType,
+  collectionName
+};
+
+export const wideImageFileId = {
+  id: '3b6621a2-5b72-400e-ad95-447610dbb770',
+  mediaItemType: fileType,
+  collectionName
+};
+
+export const largeImageFileId = {
+  id: '0607a6a8-b2ec-49a7-b6d3-d767cb49e844',
   mediaItemType: fileType,
   collectionName
 };

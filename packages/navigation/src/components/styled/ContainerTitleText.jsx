@@ -5,7 +5,7 @@ import { truncate } from '../../utils/mixins';
 const ContainerTitleText = styled.div`
   color: ${({ theme }) => getProvided(theme).text};
   font-weight: 500;
-  ${truncate}
+  ${truncate()}
 `;
 
 ContainerTitleText.displayName = 'ContainerTitleText';

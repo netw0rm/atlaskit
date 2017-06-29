@@ -8,7 +8,6 @@ const baseURL = 'https://media-playground.internal.app.dev.atlassian.io';
 export class StoryBookTokenProvider {
   static tokenProvider(collectionName: string): Promise<JwtToken> {
     const params = { collection: collectionName || defaultCollectionName };
-
     if (cachedTokens[collectionName]) {
       return cachedTokens[collectionName];
     }
@@ -27,13 +26,22 @@ export class StoryBookTokenProvider {
   static withAccess(access: { [resourceUrn: string]: string[] }): JwtTokenProvider {
     return (collection?: string) => {
       const config = { baseURL };
+      const cacheKey = JSON.stringify(access);
 
       if (collection) {
         config['params'] = { collection };
       }
 
-      return axios.post('/token', { access }, config)
+      if (cachedTokens[cacheKey]) {
+        return cachedTokens[cacheKey];
+      }
+
+      const tokenRequest = axios.post('/token', { access }, config)
         .then(response => response.data.token) as Promise<JwtToken>;
+
+      cachedTokens[cacheKey] = tokenRequest;
+
+      return tokenRequest;
     };
   }
 }

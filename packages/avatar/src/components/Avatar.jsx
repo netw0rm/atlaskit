@@ -5,7 +5,7 @@ import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import Container, { ImageWrapper, PresenceWrapper } from '../styled/Avatar';
 import Presence from './Presence';
 import Image from './Image';
-import { PresenceType, Size } from '../types';
+import type { PresenceType, Size } from '../types';
 
 type Element = Object;
 
@@ -71,7 +71,7 @@ export default class Avatar extends PureComponent {
 
   // We set isLoading conditionally here in the event that the src prop is updated after mount.
   componentWillReceiveProps(nextProps: Props) {
-    if (this.props.src !== nextProps.src) {
+    if (nextProps.src && this.props.src !== nextProps.src) {
       this.setState({ isLoading: true });
     }
   }

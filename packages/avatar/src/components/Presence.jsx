@@ -1,13 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
-import Div from '../styled/Presence';
-import getPresenceSVG from '../utils/getPresenceSVG';
+import { Inner, Outer } from '../styled/Presence';
+import { DEFAULT_BORDER_COLOR } from '../styled/constants';
+import getPresenceSVG from '../helpers/getPresenceSVG';
 import type { PresenceType, Size } from '../types';
-
-// TODO: This probably shouldn't be part of the public API; it can probably
-// safely be removed but we should check because it's technically a breaking change
-export { getPresenceSVG };
 
 // =============================================================
 // NOTE: Duplicated in Avatar until docgen can follow imports.
@@ -16,12 +12,12 @@ export { getPresenceSVG };
 // =============================================================
 
 export const SIZE = {
-  values: ['xsmall', 'small', 'medium', 'large', 'xlarge'],
+  values: ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
   defaultValue: 'medium',
 };
+
 export const PRESENCE_TYPE = {
-  values: ['none', 'online', 'busy', 'offline'],
-  defaultValue: 'none',
+  values: ['busy', 'offline', 'online'],
 };
 
 type Element = Object;
@@ -42,18 +38,18 @@ export default class Presence extends PureComponent {
   };
 
   static defaultProps = {
-    borderColor: akColorPrimary3, // white
-    presence: PRESENCE_TYPE.defaultValue,
+    borderColor: DEFAULT_BORDER_COLOR,
   }
 
   render() {
     const { borderColor, children, presence, size } = this.props;
-    const style = { borderColor };
 
     return (
-      <Div size={size} style={style}>
-        {children || (presence && getPresenceSVG(presence))}
-      </Div>
+      <Outer size={size} bgColor={borderColor}>
+        <Inner>
+          {children || (presence && getPresenceSVG(presence))}
+        </Inner>
+      </Outer>
     );
   }
 }

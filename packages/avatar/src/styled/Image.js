@@ -7,6 +7,6 @@ const getDisplay = ({ isLoading }) => (isLoading ? 'none' : 'inline-block');
 
 export default styled.img`
   display: ${getDisplay};
-  height: 100%;
-  width: 100%;
+  height: auto;
+  max-width: 100%;
 `;

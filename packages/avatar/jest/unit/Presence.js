@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme';
 // import from index; ensures we're exposing Presence as a named export
 import { Presence } from '../../src';
 import { PRESENCE_TYPE } from '../../src/components/Presence';
-import getPresenceSVG from '../../src/utils/getPresenceSVG';
+import getPresenceSVG from '../../src/helpers/getPresenceSVG';
 
 describe('Avatar', () => {
   // TODO: This test is not testing anything

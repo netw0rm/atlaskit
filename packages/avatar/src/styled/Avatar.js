@@ -1,47 +1,149 @@
 // @flow
-import styled from 'styled-components';
-import { akColorN40 } from '@atlaskit/util-shared-styles';
-import { AVATAR_SIZES, PRESENCE_OFFSET, PRESENCE_BORDER_WIDTH, PRESENCE_SIZES } from './constants';
+import styled, { css } from 'styled-components';
+import { akColorN40, akColorN70A, akColorN200A, akColorB200 } from '@atlaskit/util-shared-styles';
+import {
+  AVATAR_RADIUS,
+  PRESENCE_BORDER_WIDTH,
+  PRESENCE_OFFSET,
+  PRESENCE_SIZES,
+} from './constants';
+import { getAvatarDimensions } from './utils';
 
-type Sizes = $Keys<typeof AVATAR_SIZES>; // eslint-disable-line no-undef
+// "square" avatars are explicit
+const getBorderRadius = ({ size, appearance }) => (appearance === 'circle'
+  ? '50%'
+  : `${AVATAR_RADIUS[size]}px`
+);
+
+// =================================
+
+// translateZ used to invoke the GPU -- otherwise overflow is ignored when animating
+export function getStyles(props) {
+  const isInteractive = props.href || props.onClick;
+  const transitionDuration = '150ms';
+  const boxSizing = 'content-box'; // fix for <buttons/>
+
+  /**
+   * Variable styles
+   */
+  let backgroundColor = 'transparent';
+  let overlayShade = 'transparent';
+  let overlayOpacity = 0;
+  let borderColor = props.borderColor || 'transparent';
+  let cursor = 'default';
+  let outline = 'none';
+  let pointerEvents = 'auto';
+  let position = 'static';
+  let transform = 'translateZ(0)';
+
+  // Interaction: Hover
+  if (isInteractive && (props.isActive || props.isHover)) {
+    overlayShade = akColorN70A;
+    overlayOpacity = 1;
+  }
+
+  // Interaction: Active
+  if (isInteractive && props.isActive) {
+    transform = 'scale(0.85)';
+  }
+
+  // Interaction: Focus
+  if (isInteractive && props.isFocus && !props.isActive) {
+    outline = 'none';
+    borderColor = akColorB200;
+  }
+
+  // Disabled
+  if (props.isDisabled) {
+    cursor = 'not-allowed';
+    overlayShade = 'rgba(255, 255, 255, 0.7)';
+    overlayOpacity = 1;
+    pointerEvents = 'none';
+  }
+
+  // Interactive
+  if (isInteractive) {
+    cursor = 'pointer';
+  }
+
+  // Loading
+  if (props.isLoading) {
+    backgroundColor = akColorN40;
+  }
+
+  // Loading
+  if (props.isSelected) {
+    overlayShade = akColorN200A;
+    overlayOpacity = 1;
+  }
+
+  // Stack
+  if (props.stackIndex) {
+    position = 'relative';
+  }
+
+  return css`
+    align-items: center;
+    background-color: ${backgroundColor};
+    border-color: ${borderColor}
+    border-radius: ${getBorderRadius};
+    border-style: solid;
+    border-width: ${PRESENCE_BORDER_WIDTH[props.size]}px;
+    box-sizing: ${boxSizing};
+    cursor: ${cursor}
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    outline: ${outline};
+    overflow: hidden;
+    padding: 0;
+    pointer-events: ${pointerEvents};
+    position: ${position}
+    transform: ${transform};
+    transition: border-color ${transitionDuration};
+    width: 100%;
+
+    &::after {
+      background-color: ${overlayShade};
+      bottom: 0;
+      content: " ";
+      left: 0;
+      opacity: ${overlayOpacity}
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: opacity ${transitionDuration};
+    }
+
+    &::-moz-focus-inner {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+  `;
+}
+
+// =================================
 
 // MAIN CONTAINER
-export const getSize = ({ size }: { size: Sizes }) => AVATAR_SIZES[size]; // for testing
-const getAvatarDimensions = ({ size }) => `
-  height: ${AVATAR_SIZES[size]}px;
-  width: ${AVATAR_SIZES[size]}px;
-`;
 export default styled.div`
   ${getAvatarDimensions}
   display: inline-block;
   position: relative;
+  outline: 0;
+  ${p => p.stackIndex && `z-index: ${p.stackIndex};`}
 `;
 
-// For square avatars, border radius is 10% (rounded down) of avatar width/height
-const getBorderRadius = ({ size, appearance }) => {
-  if (appearance === 'circle') {
-    return '100%';
-  }
-  return `${Math.floor(AVATAR_SIZES[size] / 10)}px`;
-};
-
 // IMAGE WRAPPER
-// translateZ used to invoke the GPU -- otherwise overflow is ignored when animating
 export const ImageWrapper = styled.div`
-  align-content: center;
-  align-items: center;
-  background-color: ${({ isLoading }) => (isLoading ? akColorN40 : 'transparent')};
-  border-radius: ${getBorderRadius};
-  display: flex;
-  height: 100%;
-  overflow: hidden;
-  transform: translateZ(0);
-  width: 100%;
+  ${getStyles}
 `;
 
 // PRESENCE WRAPPER
 const getPresenceLayout = ({ appearance, size }) => {
-  const presencePosition = appearance === 'square' ? -(PRESENCE_BORDER_WIDTH[size] * 2) : PRESENCE_OFFSET[size];
+  const presencePosition = appearance === 'square'
+    ? -(PRESENCE_BORDER_WIDTH[size] * 2)
+    : PRESENCE_OFFSET[size];
   const presenceSize = PRESENCE_SIZES[size];
 
   return `
@@ -53,5 +155,24 @@ const getPresenceLayout = ({ appearance, size }) => {
 };
 export const PresenceWrapper = styled.div`
   ${getPresenceLayout}
+  position: absolute;
+`;
+
+// STATUS WRAPPER
+const getStatusLayout = ({ appearance, size }) => {
+  const statusPosition = appearance === 'square'
+    ? -(PRESENCE_BORDER_WIDTH[size] * 2)
+    : PRESENCE_OFFSET[size];
+  const statusSize = PRESENCE_SIZES[size];
+
+  return `
+    height: ${statusSize}px;
+    right: ${statusPosition}px;
+    top: ${statusPosition}px;
+    width: ${statusSize}px;
+  `;
+};
+export const StatusWrapper = styled.div`
+  ${getStatusLayout}
   position: absolute;
 `;

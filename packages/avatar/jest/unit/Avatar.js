@@ -66,9 +66,9 @@ describe('Avatar', () => {
     });
   });
 
-  describe('presenceBorderColor property', () => {
+  describe('borderColor property', () => {
     it('should be relfected in the Presence component', () => {
-      const wrapper = shallow(<Avatar presence="online" presenceBorderColor="#ff0000" />);
+      const wrapper = shallow(<Avatar presence="online" borderColor="#ff0000" />);
       const presence = wrapper.find(Presence);
       expect(presence.length).toBeGreaterThan(0);
       expect(presence.prop('borderColor')).toBe('#ff0000');

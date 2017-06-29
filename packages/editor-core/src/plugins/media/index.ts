@@ -203,7 +203,8 @@ export class MediaPluginState {
     return node;
   }
 
-  insertFile = (mediaState: MediaState, fileData = this.mediaDataFromProvider()): void => {
+  insertFile = (mediaState: MediaState): void => {
+    const fileData = this.mediaDataFromProvider();
     if (!fileData) {
       return;
     }

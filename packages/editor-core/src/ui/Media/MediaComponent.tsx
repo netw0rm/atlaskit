@@ -1,11 +1,9 @@
 import * as React from 'react';
 import {
   Card,
-  CardEvent,
   CardStatus,
   CardView,
   CardDimensions,
-  MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
 
@@ -19,7 +17,6 @@ import {
   FileDetails,
   MediaProvider,
   MediaState,
-  UrlPreview
 } from '@atlaskit/media-core';
 
 import { MediaAttributes } from '../../schema';
@@ -120,60 +117,39 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleLinkCardViewClick(result: CardEvent) {
-    result.event.preventDefault();
-  }
-
   private renderLink() {
     const { mediaProvider, linkCreateContext } = this.state;
     const { id, collection, cardDimensions, onDelete } = this.props;
-    const url = this.getLinkUrlFromId(id);
+    const url = id;
+    if (!mediaProvider || !linkCreateContext) {
+      return null;
+    }
 
-    // if ( !mediaProvider || !linkCreateContext ) {
-      const previewDetails = {
-        type: '',
-        url: '',
-        title: ' ... loading'
-      } as UrlPreview;
+    linkCreateContext.getUrlPreviewProvider(url).observable().subscribe(
+      metadata => linkCreateContext.addLinkItem(url, collection, metadata)
+    );
 
-      return <CardView
-        // CardViewProps
-        status="loading"
-        mediaItemType="link"
-        metadata={previewDetails}
+    const identifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url
+    };
+
+    return (
+      <Card
+        context={linkCreateContext}
         dimensions={cardDimensions}
-
-        // SharedCardProps
-        onClick={this.handleLinkCardViewClick}
-      />;
-    // }
-
-    // const mediaIdentifier = {
-    //   mediaItemType: 'link',
-    //   id: id || '',
-    //   collectionName: collection || ''
-    // } as MediaIdentifier;
-
-    // const urlPreviewIdentifier = {
-    //   mediaItemType: 'link',
-    //   url: url!
-    // } as UrlPreviewIdentifier;
-
-    // return (
-    //   <Card
-    //     context={viewContext}
-    //     dimensions={cardDimensions}
-    //     identifier={id ? mediaIdentifier : urlPreviewIdentifier}
-    //     actions={[ CardDelete(onDelete!) ]}
-    //   />
-    // );
+        identifier={identifier}
+        appearance="image"
+        actions={[CardDelete(onDelete!)]}
+      />
+    );
   }
 
   private renderFile() {
     const { mediaProvider, viewContext } = this.state;
     const { id, cardDimensions } = this.props;
 
-    if ( !mediaProvider || !viewContext ) {
+    if (!mediaProvider || !viewContext) {
       return <CardView
         status="loading"
         mediaItemType="file"
@@ -201,7 +177,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
           mediaItemType: 'file',
           collectionName: collection
         }}
-        actions={[ CardDelete(onDelete!), CardClick(onClick!) ]}
+        actions={[CardDelete(onDelete!), CardClick(onClick!)]}
         selectable={false}
       />
     );
@@ -248,7 +224,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       progress={progress}
 
       // SharedCardProps
-      actions={[ CardDelete(onDelete!) ]}
+      actions={[CardDelete(onDelete!)]}
     />;
   }
 
@@ -302,9 +278,5 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     this.setState({ linkCreateContext: linkCreateContext as Context });
-  }
-
-  private getLinkUrlFromId(id: string) {
-    return id.split(/^temporary:(.*?)/)[2];
   }
 }

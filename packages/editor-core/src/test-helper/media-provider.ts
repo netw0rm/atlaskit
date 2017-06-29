@@ -42,11 +42,13 @@ export function storyMediaProviderFactory(mediaTestHelpers, collection?: string,
     }),
     linkCreateContext: Promise.resolve<MediaContextConfig>({
       clientId: defaultClientId,
-      serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
+      serviceHost: 'https://dt-api-filestore.internal.app.dev.atlassian.io',
       tokenProvider: StoryBookTokenProvider.withAccess({
         [`urn:filestore:collection:${collectionName}`]: [
-          'read', 'insert'
+          'read', 'update'
         ],
+        'urn:filestore:file:*': ['read'],
+        'urn:filestore:chunk:*': ['read']
       })
     }),
   });

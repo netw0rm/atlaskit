@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { MediaProvider } from '@atlaskit/media-core';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
+import {
+  Context,
+  MediaProvider,
+  DefaultMediaStateManager,
+} from '@atlaskit/media-core';
 import MediaComponent from '../../../src/ui/Media/MediaComponent';
 import { MediaType } from '../../../src/schema';
 import {
@@ -9,6 +14,10 @@ import {
   CardView,
   CardViewProps,
 } from '@atlaskit/media-card';
+import {
+  storyMediaProviderFactory,
+  randomId,
+} from '../../../src/test-helper';
 
 describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
@@ -39,9 +48,12 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     }
   };
 
-  const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-    viewContext: Promise.resolve({})
-  });
+  const stateManager = new DefaultMediaStateManager();
+  const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+
+  const getFreshResolvedProvider = () => {
+    return Promise.resolve(storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager)) as Promise<MediaProvider>;
+  };
 
   it('should render a CardView component if the media type is file without provider', () => {
     const mediaComponent = shallow(
@@ -57,6 +69,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   });
 
   it('should render a Card component if the media is a public file with provider', async () => {
+    const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
       <MediaComponent
         id={file.attrs.id}
@@ -72,6 +85,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   });
 
   it('should render a CardView component if the media is a temporary file with provider', async () => {
+    const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
       <MediaComponent
         id={tempFile.attrs.id}
@@ -87,7 +101,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   });
 
 
-  it('should render a CardView component if media type is link without provider', () => {
+  it('should render nothing if media type is link without provider', async () => {
+    const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
       <MediaComponent
         id={link.attrs.id}
@@ -95,10 +110,15 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         collection={link.attrs.collection}
       />);
 
-    expect(mediaComponent.find(CardView).length).to.equal(1);
+    const resolvedMediaProvider = await mediaProvider;
+    const resolvedLinkCreateContext = await resolvedMediaProvider.linkCreateContext;
+    await (resolvedLinkCreateContext as Context).addLinkItem;
+
+    expect(mediaComponent.find(Card).length).to.equal(0);
   });
 
-  it('should render a Card component if media type is link with provider', () => {
+  it('should render a Card component if media type is link with provider', async () => {
+    const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
       <MediaComponent
         id={link.attrs.id}
@@ -107,6 +127,10 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         mediaProvider={mediaProvider}
       />);
 
-    expect(mediaComponent.find(CardView).length).to.equal(1);
+    const resolvedMediaProvider = await mediaProvider;
+    const resolvedLinkCreateContext = await resolvedMediaProvider.linkCreateContext;
+    await (resolvedLinkCreateContext as Context).addLinkItem;
+
+    expect(mediaComponent.find(Card).length).to.equal(1);
   });
 });

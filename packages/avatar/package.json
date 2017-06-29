@@ -5,17 +5,17 @@
     "access": "public"
   },
   "description": "A React component that represents a user in an application",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
-  "ak:component": {
-    "name": "Avatar"
-  },
+  "main": "umd/@atlaskit/avatar.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/avatar; } || ../../node_modules/.bin/not-in-publish"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "storybook": "../../build/bin/storybook/run-storybook.js",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
-    "dist"
+    "umd"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [

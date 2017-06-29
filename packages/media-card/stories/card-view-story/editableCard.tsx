@@ -15,7 +15,7 @@ import {
   wideImage,
   wideTransparentImage
 } from '@atlaskit/media-test-helpers';
-import {MediaItemDetails} from '@atlaskit/media-core';
+import {MediaItemDetails, ImageResizeMode} from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
 import {CardView} from '../../src/root/cardView';
 import {CardAppearance, CardStatus, CardDimensions} from '../../src';
@@ -54,6 +54,11 @@ const statusOptions = [
   {value: 'processing', label: 'processing'},
   {value: 'error', label: 'error'}
 ];
+const resizeModeOptions = [
+  {value: 'crop', label: 'crop', defaultSelected: true},
+  {value: 'fit', label: 'fit'},
+  {value: 'full-fit', label: 'full-fit'}
+];
 
 export const generateStoriesForEditableCards = () => {
   interface EditableCardProps {
@@ -70,6 +75,7 @@ export const generateStoriesForEditableCards = () => {
     menuActions: any;
     selectable: boolean;
     selected: boolean;
+    resizeMode: ImageResizeMode;
   }
 
   class EditableCard extends Component<EditableCardProps, EditableCardState> {
@@ -90,12 +96,13 @@ export const generateStoriesForEditableCards = () => {
         progress: 0,
         menuActions: actions,
         selectable: false,
-        selected: false
+        selected: false,
+        resizeMode: 'crop'
       };
     }
 
     render() {
-      const {appearance, status, dataURI, dimensions, metadata, menuActions, progress, selectable, selected} = this.state;
+      const {appearance, status, dataURI, dimensions, metadata, menuActions, progress, selectable, selected, resizeMode} = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
 
@@ -163,6 +170,11 @@ export const generateStoriesForEditableCards = () => {
                 items={statusOptions}
                 onRadioChange={this.onStatusChange}
               />
+              <FieldRadioGroup
+                label="Resize mode"
+                items={resizeModeOptions}
+                onRadioChange={this.onResizeModeChange}
+              />
             </OptionsWrapper>
           </EditableCardOptions>
           <EditableCardContent>
@@ -179,6 +191,7 @@ export const generateStoriesForEditableCards = () => {
               progress={progress}
               selectable={selectable}
               selected={selected}
+              resizeMode={resizeMode}
             />
           </EditableCardContent>
         </div>
@@ -238,6 +251,12 @@ export const generateStoriesForEditableCards = () => {
       const status = e.target.value;
 
       this.setState({status});
+    }
+
+    onResizeModeChange = (e) => {
+      const resizeMode = e.target.value;
+
+      this.setState({resizeMode});
     }
 
     onWidthChange = (e) => {

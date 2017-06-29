@@ -14,11 +14,7 @@ export interface ButtonProps {
   insertColumn: (column: number) => void;
 }
 
-export interface ButtonState {
-  hovered: boolean;
-}
-
-export default class InsertColumnButton extends Component<ButtonProps, ButtonState> {
+export default class InsertColumnButton extends Component<ButtonProps, any> {
   handleInsert = () => this.props.insertColumn(this.props.index);
 
   render () {

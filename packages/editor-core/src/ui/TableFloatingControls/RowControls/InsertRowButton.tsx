@@ -14,11 +14,7 @@ export interface ButtonProps {
   insertRow: (row: number) => void;
 }
 
-export interface ButtonState {
-  hovered: boolean;
-}
-
-export default class InsertRowButton extends Component<ButtonProps, ButtonState> {
+export default class InsertRowButton extends Component<ButtonProps, any> {
   handleInsert = () => this.props.insertRow(this.props.index);
 
   render () {

@@ -5,6 +5,7 @@
     "access": "public"
   },
   "description": "Renderer component",
+  "description": "Renderer component",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
@@ -24,7 +25,7 @@
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/emoji": "^16.2.0",
     "@atlaskit/icon": "^6.5.4",
-    "@atlaskit/media-card": "^17.6.0",
+    "@atlaskit/media-card": "^17.7.0",
     "@atlaskit/media-core": "^8.2.0",
     "@atlaskit/media-filmstrip": "^4.1.4",
     "@atlaskit/mention": "^5.3.2",

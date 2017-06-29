@@ -216,13 +216,8 @@ export default class Media extends PureComponent<MediaProps, State> {
         context={viewContext}
         dimensions={cardDimensions}
         identifier={id ? mediaIdentifier : urlPreviewIdentifier}
-<<<<<<< HEAD
-        onClick={onClick || noop}
-        resizeMode="full-fit"
-=======
         onClick={onClick}
         resizeMode={this.resizeMode}
->>>>>>> 594874f6f... feat(component): ensure to pass right resizeMode to single and multiple Cards on MediaGroup
       />
     );
   }
@@ -262,13 +257,8 @@ export default class Media extends PureComponent<MediaProps, State> {
           collectionName: collection
         }}
         selectable={false}
-<<<<<<< HEAD
-        onClick={onClick || noop}
-        resizeMode="full-fit"
-=======
         onClick={onClick}
         resizeMode={this.resizeMode}
->>>>>>> 594874f6f... feat(component): ensure to pass right resizeMode to single and multiple Cards on MediaGroup
       />
     );
   }

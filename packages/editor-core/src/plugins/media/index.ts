@@ -59,6 +59,8 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
+  public pickers: PickerFacade[] = [];
+  public binaryPicker?: PickerFacade;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -68,9 +70,7 @@ export class MediaPluginState {
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
 
-  private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
-  private binaryPicker?: PickerFacade;
   private linkRanges: RangeWithUrls[];
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {

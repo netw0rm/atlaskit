@@ -62,7 +62,7 @@ describe('Media plugin', () => {
       history(),
     ];
 
-    return makeEditor({
+    return makeEditor<MediaPluginState>({
       doc,
       plugins,
       schema: defaultSchema,
@@ -88,7 +88,7 @@ describe('Media plugin', () => {
   });
 
   it('allows change handler to be registered', () => {
-    const pluginState = editor(doc(p(''))).pluginState as MediaPluginState;
+    const pluginState = editor(doc(p(''))).pluginState;
     pluginState.subscribe(sinon.spy());
   });
 
@@ -654,7 +654,7 @@ describe('Media plugin', () => {
         'test.gif'
       );
 
-      expect(pluginState.binaryPicker!.upload.calledOnce).to.equal(true);
+      expect((pluginState.binaryPicker!.upload as any).calledOnce).to.equal(true);
     });
 
     it('should call uploadErrorHandler on upload error', async () => {
@@ -854,9 +854,9 @@ describe('Media plugin', () => {
     expect(pluginState.pickers).to.have.length(0);
 
     const mediaProvider1 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    pluginState.setMediaProvider(mediaProvider1);
     const mediaProvider2 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    pluginState.setMediaProvider(mediaProvider2);
 
     const resolvedMediaProvider1 = await mediaProvider1;
     const resolvedMediaProvider2 = await mediaProvider2;
@@ -871,14 +871,14 @@ describe('Media plugin', () => {
     expect(pluginState.pickers).to.have.length(0);
 
     const mediaProvider1 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
     const pickersAfterMediaProvider1 = pluginState.pickers;
     expect(pickersAfterMediaProvider1).to.have.length(4);
 
     const mediaProvider2 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
     const pickersAfterMediaProvider2 = pluginState.pickers;
@@ -894,7 +894,7 @@ describe('Media plugin', () => {
     expect(pluginState.pickers).to.have.length(0);
 
     const mediaProvider1 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
@@ -903,12 +903,12 @@ describe('Media plugin', () => {
     });
 
     const mediaProvider2 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
 
     pluginState.pickers.forEach(picker => {
-      expect(picker.setUploadParams.calledOnce).to.equal(true);
+      expect((picker.setUploadParams as any).calledOnce).to.equal(true);
     });
   });
 
@@ -936,7 +936,7 @@ describe('Media plugin', () => {
       });
 
       const pos = getNodePos(pluginState, 'foo');
-      (pluginState as MediaPluginState).handleMediaNodeRemove(mediaNode, () => pos);
+      pluginState.handleMediaNodeRemove(mediaNode, () => pos);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -998,9 +998,9 @@ describe('Media plugin', () => {
         const link2 = a({ href: 'www.baidu.com' })('baidu');
         const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
 
-        (pluginState as MediaPluginState).allowsLinks = true;
+        pluginState.allowsLinks = true;
 
-        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
 
         expect(linksRanges).to.deep.equal([
           { start: sel, end: sel, urls: ['www.google.com', 'www.baidu.com'] }
@@ -1015,9 +1015,9 @@ describe('Media plugin', () => {
         const blockQuote = blockquote(p(link1, link2));
         const tr = state.tr.replaceWith(sel - 1, sel + 1, blockQuote);
 
-        (pluginState as MediaPluginState).allowsLinks = true;
+        pluginState.allowsLinks = true;
 
-        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
 
         expect(linksRanges).to.deep.equal([
           { start: sel - 1, end: sel + 1, urls: ['www.google.com', 'www.baidu.com'] }
@@ -1033,9 +1033,9 @@ describe('Media plugin', () => {
         const linkMark = state.schema.marks.link.create({ href: 'www.atlassian.com' });
         const tr = state.tr.addMark(sel - text.length, sel, linkMark);
 
-        (pluginState as MediaPluginState).allowsLinks = true;
+        pluginState.allowsLinks = true;
 
-        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
 
         expect(linksRanges).to.deep.equal([
           { start: sel - text.length, end: sel, urls: ['www.atlassian.com'] },
@@ -1055,9 +1055,9 @@ describe('Media plugin', () => {
           .replaceWith(sel, sel, link1.concat(link2))
           .addMark(sel - text.length, sel, linkMark);
 
-        (pluginState as MediaPluginState).allowsLinks = true;
+        pluginState.allowsLinks = true;
 
-        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
 
         expect(linksRanges).to.deep.equal([
           { start: sel, end: sel, urls: ['www.google.com', 'www.baidu.com'] },
@@ -1076,9 +1076,9 @@ describe('Media plugin', () => {
         const tr = state.tr
           .removeMark(sel - text.length, sel, state.schema.marks.link.create({ href }));
 
-        (pluginState as MediaPluginState).allowsLinks = true;
+        pluginState.allowsLinks = true;
 
-        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
 
         expect(linksRanges).to.deep.equal([]);
       });

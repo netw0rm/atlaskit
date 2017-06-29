@@ -19,7 +19,7 @@ import { reactNodeViewPlugins } from '../plugins';
  * - `<>` -- a collapsed text selection
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
-export default (options: Options): EditorInstance => {
+export default <T> (options: Options): EditorInstance<T> => {
   const plugins: Plugin[] = [];
   const schema = options.schema || defaultSchema;
 
@@ -71,7 +71,7 @@ export default (options: Options): EditorInstance => {
     pluginStates: pluginStates,
     refs,
     plugin: plugins[0],
-    pluginState: plugins[0].getState(editorState),
+    pluginState: plugins[0].getState(editorState) as T,
     sel: refs['<>']
   };
 };
@@ -89,9 +89,9 @@ export interface Options {
   schema?: Schema<any, any>;
 }
 
-export interface EditorInstance {
+export interface EditorInstance<T> {
   editorView: EditorView;
-  pluginState: any;
+  pluginState: T;
   pluginStates: any[];
   plugin: Plugin;
   plugins: Plugin[];

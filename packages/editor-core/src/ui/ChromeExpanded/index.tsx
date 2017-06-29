@@ -34,6 +34,7 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
+import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
@@ -210,17 +211,24 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
-          {pluginStateLists ?
-            <ToolbarLists
+          {pluginStateTextFormatting ?
+            <ToolbarInlineCode
               disabled={disabled}
-              pluginState={pluginStateLists}
               editorView={editorView}
+              pluginState={pluginStateTextFormatting}
             /> : null
           }
           {pluginStateHyperlink ?
             <ToolbarHyperlink
               disabled={disabled}
               pluginState={pluginStateHyperlink}
+              editorView={editorView}
+            /> : null
+          }
+          {pluginStateLists ?
+            <ToolbarLists
+              disabled={disabled}
+              pluginState={pluginStateLists}
               editorView={editorView}
             /> : null
           }

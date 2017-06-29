@@ -1,6 +1,10 @@
-import { akEditorSubtleAccent, akEditorMentionSelected } from '../../styles';
-import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
+import {
+  akBorderRadius,
+  akGridSize,
+  akGridSizeUnitless,
+} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { akEditorSubtleAccent, akEditorMentionSelected } from '../../styles';
 
 export const createNestedListStyles = (): any => {
   const styles = {};
@@ -177,28 +181,28 @@ export const IconButton = styled.div`
 
 // tslint:disable-next-line:variable-name
 export const Toolbar = styled.div`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   height: 40px;
-  padding-left: ${akGridSize};
-  padding-right: ${akGridSize};
+  padding: ${akGridSize} ${akGridSize} 0;
   position: relative;
 
   & > * {
     align-items: center;
     display: flex;
-    margin-left: 10px;
+    margin-left: ${akGridSizeUnitless/2}px;
     /* Firefox|IE toolbar icons fix: https://product-fabric.atlassian.net/browse/ED-1787 */
     min-width: 0;
 
     &:first-child {
       margin-left: 0;
+      margin-right: ${akGridSize};
     }
   }
 `;
 
 // tslint:disable-next-line:variable-name
 export const SecondaryToolbar = styled.div`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
 `;

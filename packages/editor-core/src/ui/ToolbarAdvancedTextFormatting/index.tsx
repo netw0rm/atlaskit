@@ -6,7 +6,7 @@ import { analyticsService } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import ToolbarButton from '../ToolbarButton';
-import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
+import { toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
 import { TriggerWrapper, ExpandIconWrapper } from './styles';
 import { EditorView } from '../../prosemirror';
 import DropdownMenu from '../DropdownMenu';
@@ -24,9 +24,6 @@ export interface Props {
 
 export interface State {
   isOpen?: boolean;
-  codeActive?: boolean;
-  codeDisabled?: boolean;
-  codeHidden?: boolean;
   strikethroughActive?: boolean;
   strikethroughDisabled?: boolean;
   strikeHidden?: boolean;
@@ -84,8 +81,6 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   render() {
     const {
       isOpen,
-      codeActive,
-      codeDisabled,
       strikethroughActive,
       strikethroughDisabled,
       clearFormattingDisabled,
@@ -94,7 +89,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     const items = this.createItems();
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        selected={isOpen || codeActive || strikethroughActive}
+        selected={isOpen || strikethroughActive}
         disabled={disabled}
         onClick={this.handleTriggerClick}
         iconBefore={
@@ -108,7 +103,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     );
 
     if (!this.props.isDisabled &&
-      !(codeDisabled && strikethroughDisabled && clearFormattingDisabled) &&
+      !(strikethroughDisabled && clearFormattingDisabled) &&
       items[0].items.length > 0) {
       return (
         <DropdownMenu
@@ -139,10 +134,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     let items: any[] = [];
 
     if (pluginStateTextFormatting) {
-      const { codeHidden, strikeHidden, subscriptHidden, superscriptHidden } = this.state;
-      if (!codeHidden) {
-        this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode));
-      }
+      const { strikeHidden, subscriptHidden, superscriptHidden } = this.state;
       if (!strikeHidden) {
         this.addRecordToItems(items, 'Strikethrough', 'strikethrough', tooltip(toggleStrikethrough));
       }
@@ -174,10 +166,6 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   private handlePluginStateTextFormattingChange = (pluginState: TextFormattingState) => {
     this.setState({
-      codeActive: pluginState.codeActive,
-      codeDisabled: pluginState.codeDisabled,
-      codeHidden: pluginState.codeHidden,
-
       strikethroughActive: pluginState.strikeActive,
       strikethroughDisabled: pluginState.strikeDisabled,
       strikeHidden: pluginState.strikeHidden,
@@ -202,9 +190,6 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     analyticsService.trackEvent(`atlassian.editor.format.${item.value}.button`);
     const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
     switch(item.value) {
-      case 'code':
-        pluginStateTextFormatting!.toggleCode(this.props.editorView);
-        break;
       case 'strikethrough':
         pluginStateTextFormatting!.toggleStrike(this.props.editorView);
         break;

@@ -17,6 +17,14 @@ export default class MockConfluenceCrossSellProvider extends Component {
         notePrompt: 'Help your site administrator understand why you would like to use Confluence:',
         notePlaceholder: 'I would like to try Confluence because…',
       },
+      startTrial: {
+        confirmHeader: 'Start your 30 day trial',
+        confirmMessage: (
+          <p>Once your trial finishes, billing will start.<br />
+            Easily cancel at anytime in <strong>Manage Application</strong>.<br />
+            We will email your billing contact 3 days in advance.</p>
+        ),
+      },
       canCurrentUserAddProduct: notImplemented,
       isProductInstalledOrActivating: notImplemented,
       canCurrentUserGrantAccessToProducts: notImplemented,

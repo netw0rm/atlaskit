@@ -86,6 +86,7 @@ describe(name, () => {
         isOpen
         onOpenChange={func}
         droplistShouldFitContainer={false}
+        shouldFlip={false}
       />);
       const droplistProps = select.find(Droplist).props();
       expect(droplistProps.position, 'position').to.equal('top right');
@@ -94,6 +95,7 @@ describe(name, () => {
       expect(droplistProps.shouldFitContainer, 'shouldFitContainer').to.equal(false);
       expect(droplistProps.isKeyboardInteractionDisabled, 'isKeyboardInteractionDisabled').to.equal(true);
       expect(droplistProps.isTriggerDisabled, 'isTriggerDisabled').to.equal(true);
+      expect(droplistProps.shouldFlip, 'shouldFlip').to.equal(false);
     });
 
     it('should pass props to fieldBase', () => {

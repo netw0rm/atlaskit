@@ -75,6 +75,8 @@ export default class AkSingleSelect extends PureComponent {
     shouldFitContainer: PropTypes.bool,
     /** Sets whether the field will become focused. */
     shouldFocus: PropTypes.bool,
+    /** Sets whether the droplist should flip its position when there is not enough space. */
+    shouldFlip: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -89,6 +91,7 @@ export default class AkSingleSelect extends PureComponent {
     placeholder: '',
     position: 'bottom left',
     shouldFocus: false,
+    shouldFlip: true,
   }
 
   state = {
@@ -138,6 +141,7 @@ export default class AkSingleSelect extends PureComponent {
         selectedItem={this.state.selectedItem}
         shouldFitContainer={this.props.shouldFitContainer}
         shouldFocus={this.props.shouldFocus}
+        shouldFlip={this.props.shouldFlip}
       />
     );
   }

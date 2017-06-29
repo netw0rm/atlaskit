@@ -184,10 +184,12 @@ export default class PickerFacade {
   private handleUploadStatusUpdate = (event: PickerEvent) => {
     const { file, progress } = event;
     const tempId = `temporary:${file.id}`;
+    const currentState = this.stateManager.getState(tempId);
+    const currentStatus = currentState && currentState.status ? currentState.status : 'unknown';
 
     this.stateManager.updateState(tempId, {
       id: tempId,
-      status: 'uploading',
+      status: currentStatus === 'unknown' ? 'uploading' : currentStatus,
       progress: progress ? progress.portion : undefined,
       fileName: file.name as string,
       fileSize: file.size as number,

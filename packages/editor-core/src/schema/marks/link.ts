@@ -1,5 +1,6 @@
 import { MarkSpec } from '../../prosemirror';
 import { LINK, COLOR } from '../groups';
+import { isSafeUrl } from '../../renderer/validator';
 
 export const link: MarkSpec = {
   excludes: COLOR,
@@ -11,7 +12,11 @@ export const link: MarkSpec = {
   parseDOM: [
     {
       tag: 'a[href]', getAttrs: (dom: Element) => {
-        return { href: dom.getAttribute('href') };
+        const href = dom.getAttribute('href') || '';
+
+        return isSafeUrl(href)
+          ? { href }
+          : false;
       }
     }
   ],

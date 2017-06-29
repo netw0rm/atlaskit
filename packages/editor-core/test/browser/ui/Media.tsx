@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { MediaProvider } from '@atlaskit/media-core';
+import { MediaProvider, MediaStateManager } from '@atlaskit/media-core';
 import MediaComponent from '../../../src/ui/Media/MediaComponent';
 import { MediaType } from '../../../src/schema';
 import {
@@ -39,9 +39,6 @@ describe('@atlaskit/editor-core/ui/Media', () => {
     }
   };
 
-  const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-    viewContext: Promise.resolve({})
-  });
 
   it('should render a CardView component if the media type is file without provider', () => {
     const mediaComponent = shallow(
@@ -57,6 +54,9 @@ describe('@atlaskit/editor-core/ui/Media', () => {
   });
 
   it('should render a Card component if the media is a public file with provider', async () => {
+    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
+      viewContext: Promise.resolve({})
+    });
     const mediaComponent = shallow(
       <MediaComponent
         id={file.attrs.id}
@@ -72,6 +72,9 @@ describe('@atlaskit/editor-core/ui/Media', () => {
   });
 
   it('should render a CardView component if the media is a temporary file with provider', async () => {
+    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
+      viewContext: Promise.resolve({})
+    });
     const mediaComponent = shallow(
       <MediaComponent
         id={tempFile.attrs.id}
@@ -99,6 +102,9 @@ describe('@atlaskit/editor-core/ui/Media', () => {
   });
 
   it('should render a Card component if media type is link with provider', () => {
+    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
+      viewContext: Promise.resolve({})
+    });
     const mediaComponent = shallow(
       <MediaComponent
         id={link.attrs.id}
@@ -108,5 +114,38 @@ describe('@atlaskit/editor-core/ui/Media', () => {
       />);
 
     expect(mediaComponent.find(CardView).length).to.equal(1);
+  });
+
+  it('should use stateManager from Plugin state in Editor mode', async () => {
+    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
+      viewContext: Promise.resolve({})
+    });
+    let subscribeCalled = false;
+
+    // tslint:disable-next-line
+    MediaComponent.prototype.getStateManagerFromEditorPlugin = () => {
+      return {
+        getState: () => undefined,
+        updateState: () => {},
+        subscribe: () => {
+          subscribeCalled = true;
+        },
+        unsubscribe: () => {}
+      } as MediaStateManager;
+    };
+
+    shallow(
+      <MediaComponent
+        id={link.attrs.id}
+        type={link.attrs.type as MediaType}
+        collection={link.attrs.collection}
+        mediaProvider={mediaProvider}
+      />
+    );
+
+    const resolvedMediaProvider = await mediaProvider;
+    await resolvedMediaProvider.viewContext;
+
+    expect(subscribeCalled).to.equal(true);
   });
 });

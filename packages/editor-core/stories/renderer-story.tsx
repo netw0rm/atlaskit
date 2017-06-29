@@ -3,12 +3,6 @@ import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
 import * as React from 'react';
 import { name } from '../package.json';
-import schema from './schema';
-
-import {
-  renderDocument,
-  ReactSerializer,
-} from '../src/renderer';
 
 import {
   Code,
@@ -28,6 +22,7 @@ import {
   Heading,
   OrderedList,
   ListItem,
+  Media,
   Mention,
   Panel,
   Paragraph,
@@ -36,6 +31,7 @@ import {
 
 import { EmojiProps } from '../src/renderer/react/nodes/emoji';
 import ProviderFactory from '../src/providerFactory';
+import Renderer from '../src/ui/Renderer';
 import { document } from './story-data';
 
 const mentionProvider = Promise.resolve({
@@ -71,14 +67,18 @@ storiesOf(name, module)
 
     return (
       <div>
-        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema, providerFactory, eventHandlers), schema)}
+        <Renderer
+          document={document}
+          eventHandlers={eventHandlers}
+          dataProviders={providerFactory}
+        />
       </div>
     );
   })
   .add('renderer without providers', () => {
     return (
       <div>
-        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema), schema)}
+        <Renderer document={document}/>
       </div>
     );
   })
@@ -119,9 +119,19 @@ storiesOf(name, module)
       <Heading level={6}>Heading 6</Heading>
     </div>
   ))
-  .add('nodes/media', () => (
-    <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
-  ))
+  .add('nodes/media', () => {
+    const providerFactory = new ProviderFactory();
+    providerFactory.setProvider('mediaProvider', mediaProvider);
+
+    return (
+      <Media
+        id={'5556346b-b081-482b-bc4a-4faca8ecd2de'}
+        type={'file'}
+        collection={'MediaServicesSample'}
+        providers={providerFactory}
+      />
+    );
+  })
   .add('nodes/mention', () => (
     <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
   ))

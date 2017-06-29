@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^6.0.2",
-    "@atlaskit/util-data-test": "^4.0.0",
+    "@atlaskit/util-data-test": "^4.7.0",
     "akutil-common-test": "*"
   },
   "keywords": [

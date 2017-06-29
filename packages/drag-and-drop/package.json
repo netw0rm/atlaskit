@@ -21,11 +21,9 @@
     "react-redux": "5.0.2",
     "redux": "^3.6.0",
     "redux-thunk": "2.2.0",
-    "reselect": "2.5.4",
-    "shallowequal": "0.2.2"
+    "reselect": "2.5.4"
   },
   "devDependencies": {
-    "@atlaskit/util-readme": "3.2.1",
     "faker": "4.1.0",
     "styled-components": "2.1.0"
   },

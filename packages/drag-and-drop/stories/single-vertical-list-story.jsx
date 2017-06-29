@@ -8,9 +8,6 @@ import List from './components/list';
 import type { TaskType } from './types';
 import type { DropResult, DraggableLocation } from '../src/types';
 
-// array.find
-import './polyfill';
-
 const getTasks = (count: number): TaskType[] =>
   Array.from({ length: count }, (v, k) => k)
     .map((val: number): TaskType => ({

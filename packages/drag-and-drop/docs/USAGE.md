@@ -171,7 +171,7 @@ Your *hook* functions will only be captured *once at start up*. Please do not ch
   type="PERSON"
   isDropEnabled
 >
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div
       ref={provided.innerRef}
       style={{backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey'}}
@@ -194,7 +194,7 @@ The React children of a `Droppable` must be a function that returns a `ReactElem
 
 ```js
 <Droppable droppableId="droppable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     // ...
   )}
 </Droppable>
@@ -214,7 +214,7 @@ In order for the droppable to function correctly, **you must** bind the `provide
 
 ```js
 <Droppable droppableId="droppable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div ref={provided.innerRef}>
       Good to go
     </div>
@@ -234,7 +234,7 @@ The `children` function is also provided with a small about of state relating to
 
 ```js
 <Droppable droppableId="droppable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div
       ref={provided.innerRef}
       style={{backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey'}}
@@ -266,7 +266,7 @@ The `children` function is also provided with a small about of state relating to
   type="PERSON"
   isDragEnabled
 >
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div
       ref={draggableProvided.innerRef}
       style={draggableProvided.draggableStyle}
@@ -290,7 +290,7 @@ The React children of a `Draggable` must be a function that returns a `ReactElem
 
 ```js
 <Draggable draggableId="draggable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div>
       <div
         ref={provided.innerRef}
@@ -324,7 +324,7 @@ Everything within the *provided* object must be applied for the `Draggable` to f
 
 ```js
 <Draggable draggableId="draggable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div ref={provided.innerRef}>
       Drag me!
     </div>
@@ -342,7 +342,7 @@ innerRef: (Element) => void
 
 ```js
 <Draggable draggableId="draggable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div>
       <div
         ref={provided.innerRef}
@@ -359,7 +359,7 @@ innerRef: (Element) => void
 
 ```js
 <Draggable draggable="draggable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => {
+  {(provided, snapshot) => {
     const style = {
       ...provided.draggableStyle,
       backgroundColor: snapshot.isDragging : 'blue' : 'white',
@@ -403,7 +403,7 @@ type MovementStyle = {|
 
 ```js
 <Draggable draggableId="draggable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div>
       <div
         ref={provided.innerRef}
@@ -439,7 +439,7 @@ type DragHandleProps = {
 
 ```js
 <Draggable draggableId="draggable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div>
       <div
         ref={provided.innerRef}
@@ -458,7 +458,7 @@ type DragHandleProps = {
 
 ```js
 <Draggable draggableId="draggable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => (
+  {(provided, snapshot) => (
     <div>
       <div
         ref={provided.innerRef}
@@ -480,10 +480,10 @@ type DragHandleProps = {
 > If you want to also use one of the props in `DragHandleProps`
 
 ```js
-const myOnClick = (event: MouseEvent) => console.log('clicked on', event.target);
+const myOnClick = (event) => console.log('clicked on', event.target);
 
 <Draggable draggableId="draggable-1">
-  {(provided: Provided, snapshot: StateSnapshot) => {
+  {(provided, snapshot) => {
     const onClick = (() => {
       // dragHandleProps might be null
       if(!provided.dragHandleProps) {
@@ -492,7 +492,7 @@ const myOnClick = (event: MouseEvent) => console.log('clicked on', event.target)
 
       // creating a new onClick function that calls my onClick
       // event as well as the provided one.
-      return (event: MouseEvent) => {
+      return (event) => {
         myOnClick(event);
         provided.dragHandleProps.onClick(event);
       }

@@ -5,14 +5,17 @@
     "access": "public"
   },
   "description": "akapp-switcher React component",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
+  "main": "umd/@atlaskit/app-switcher.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/app-switcher; } || ../../node_modules/.bin/not-in-publish"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
-    "dist"
+    "umd"
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",

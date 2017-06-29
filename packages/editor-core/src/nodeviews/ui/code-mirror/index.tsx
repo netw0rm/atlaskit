@@ -121,22 +121,26 @@ class CodeBlock implements NodeView  {
   }
 
   private handleEnter = (): any => {
-    const { state, dispatch } = this.view;
-    const { selection, tr, schema: { nodes } } = state;
-    const { $from, $head } = selection;
-    const node = $from.node($from.depth);
-    if (node && node.type === nodes.codeBlock) {
-      if (node.textContent.slice(node.textContent.length - 2) === '\n\n') {
-        const pos = $head.after();
-        tr.replaceWith(pos, pos, state.schema.nodes.paragraph.createAndFill());
-        tr.setSelection(Selection.near(tr.doc.resolve(pos), 1));
-        tr.delete($from.pos - 2, $from.pos);
-        dispatch(tr.scrollIntoView());
-        this.view.focus();
-      } else {
-        return CodeMirror.Pass;
+    const pos = this.cm.getCursor();
+    if (pos && pos.line === this.cm.lastLine() && pos.ch === 0) {
+      const { state, dispatch } = this.view;
+      const { selection, tr, schema: { nodes } } = state;
+      const { $from, $head } = selection;
+      const node = $from.node($from.depth);
+      const nodeEnd = $from.start($from.depth) + node.textContent.length;
+      if (node && node.type === nodes.codeBlock) {
+        if (node.textContent.slice(node.textContent.length - 2) === '\n\n') {
+          const pos = $head.after();
+          tr.replaceWith(pos, pos, state.schema.nodes.paragraph.createAndFill());
+          tr.setSelection(Selection.near(tr.doc.resolve(pos), 1));
+          tr.delete(nodeEnd - 2, nodeEnd);
+          dispatch(tr.scrollIntoView());
+          this.view.focus();
+          return;
+        }
       }
     }
+    return CodeMirror.Pass;
   }
 
   private maybeEscape(unit: string, dir: number): any {

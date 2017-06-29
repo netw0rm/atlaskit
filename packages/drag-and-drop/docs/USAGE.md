@@ -4,25 +4,6 @@
 
 The goal of this library is to create a beautiful drag and drop experience for lists. It provides highly performant physics based mouse and keyboard dragging without creating any wrapping DOM nodes.
 
-### Short term backlog
-
-- Correct scroll handling while dragging with keyboard or mouse
-- Moving items between vertical lists (until this lands conditional dropping will not be available)
-
-### Medium term backlog
-
-- Dragging within a horizontal list
-- Moving items between horizontal lists
-- Moving a `Draggable` from a vertical list to a horizontal list
-- Nesting
-
-### Long term backlog
-
-- Automatically disabling physics for a drag when the frame rate drops below a threshold. This can be because of low system resources, or when the are 100's of impacted items during a drag
-- A mechanism to perform dragging without user input
-- Dragging multiple items at a time
-- And lots more!
-
 ## `DragDropContext`
 
 In order to use drag and drop, you need to have the part of your react tree that you want to be able to use drag and drop in wrapped in a `DragDropContext`. It is advised to just wrap your entire application in a `DragDropContext`. Having nested `DragDropContext`'s is *not* supported. You will be able to achieve your desired conditional dragging and dropping using the props of `Droppable` and `Draggable`. You can think of `DragDropContext` as having a similar purpose to the [react-redux Provider component](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)
@@ -553,13 +534,19 @@ The `children` function is also provided with a small about of state relating to
 
 A drag will not start until a user has dragged their mouse past a small threshold. If this threshold is not exceeded then the library will not impact the mouse click and will release the event to the browser.
 
+### Focus management and click blocking
+
+[TODO]
+
 ## Usage with react-redux
 
 [TODO] Provide useful example
 
 ## Engineering health
 
-[TODO]
+### Typed
+
+This codebase is typed with flowtype to promote greater internal consistency and more resilient code.
 
 ### Tested
 
@@ -569,6 +556,23 @@ A drag will not start until a user has dragged their mouse past a small threshol
 
 [TODO]
 
-### Typed
 
-[TODO]
+
+### Short term backlog
+
+- Correct scroll handling while dragging with keyboard or mouse
+- Moving items between vertical lists (until this lands conditional dropping will not be available)
+
+### Medium term backlog
+
+- Dragging within a horizontal list
+- Moving items between horizontal lists
+- Moving a `Draggable` from a vertical list to a horizontal list
+- Nesting
+
+### Long term backlog
+
+- Automatically disabling physics for a drag when the frame rate drops below a threshold. This can be because of low system resources, or when the are 100's of impacted items during a drag
+- A mechanism to perform dragging without user input
+- Dragging multiple items at a time
+- And lots more!

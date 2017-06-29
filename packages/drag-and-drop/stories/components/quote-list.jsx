@@ -5,7 +5,8 @@ import Droppable from '../../src/view/droppable/connected-droppable';
 import type { Provided, StateSnapshot } from '../../src/view/droppable/droppable-types';
 
 const Container = styled.div`
-  background-color: ${({ isDraggingOver }) => (isDraggingOver ? 'lightyellow' : 'lightblue')};
+  background-color: ${({ isDraggingOver }) => (isDraggingOver ? '#d9fcff' : 'lightblue')};
+  border-radius: 2px;
   display: flex;
   flex-direction: column;
   padding: 8px;

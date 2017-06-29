@@ -12,9 +12,6 @@
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
-  "files": [
-    "dist"
-  ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
   "license": "Apache-2.0",
@@ -35,5 +32,8 @@
     "atlaskit",
     "ui",
     "internal"
+  ],
+  "files": [
+    "umd"
   ]
 }

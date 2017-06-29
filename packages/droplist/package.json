@@ -14,9 +14,6 @@
     "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "@atlaskit/icon": "^7.0.0",
     "@atlaskit/layer": "^2.0.1",
@@ -55,5 +52,8 @@
     "atlaskit",
     "ui",
     "internal"
+  ],
+  "files": [
+    "umd"
   ]
 }

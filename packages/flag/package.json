@@ -14,9 +14,6 @@
     "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "dist"
-  ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
@@ -50,5 +47,8 @@
   "keywords": [
     "atlaskit",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

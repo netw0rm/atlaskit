@@ -13,10 +13,6 @@
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
   "dependencies": {
     "@types/jquery": "^2.0.41",
     "query-string": "^4.3.2",
@@ -52,5 +48,8 @@
     "media",
     "ui",
     "private"
+  ],
+  "files": [
+    "umd"
   ]
 }

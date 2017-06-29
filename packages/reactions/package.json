@@ -15,10 +15,6 @@
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
   "dependencies": {
     "@atlaskit/button": "^1.1.2",
     "@atlaskit/emoji": "^15.0.0",
@@ -59,5 +55,8 @@
   "keywords": [
     "fabric",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

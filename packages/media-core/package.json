@@ -13,10 +13,6 @@
     "test": "../../node_modules/.bin/nwb test",
     "test:watch": "../../node_modules/.bin/nwb test --server"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
     {
@@ -52,5 +48,8 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^1.0.0"
-  }
+  },
+  "files": [
+    "umd"
+  ]
 }

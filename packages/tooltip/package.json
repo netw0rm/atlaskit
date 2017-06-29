@@ -15,9 +15,6 @@
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "types": "umd/types/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "devDependencies": {
     "@atlaskit/tooltip": "*",
     "@atlaskit/button": "^1.0.0",
@@ -50,5 +47,8 @@
   "keywords": [
     "atlaskit",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

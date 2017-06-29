@@ -14,11 +14,6 @@
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "dist",
-    "src",
-    "index.d.ts"
-  ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
   "license": "SEE LICENSE IN LICENSE",
@@ -48,5 +43,9 @@
     "atlaskit",
     "ui",
     "internal"
+  ],
+  "files": [
+    "umd",
+    "index.d.ts"
   ]
 }

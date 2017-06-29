@@ -14,9 +14,6 @@
     "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "dist"
-  ],
   "peerDependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
@@ -56,5 +53,8 @@
   "keywords": [
     "atlaskit",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

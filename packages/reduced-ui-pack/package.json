@@ -15,9 +15,6 @@
     "test:watch": "../../node_modules/.bin/nwb test --server",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.1.1"
   },
@@ -49,5 +46,8 @@
   "keywords": [
     "atlaskit",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

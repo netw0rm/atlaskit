@@ -14,9 +14,6 @@
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
@@ -27,7 +24,8 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/logo": "*",
     "@atlaskit/util-readme": "^3.1.0",
-    "@atlaskit/util-shared-styles": "^1.0.1"
+    "@atlaskit/util-shared-styles": "^1.0.1",
+    "svg-to-jsx-loader": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"
@@ -46,5 +44,8 @@
   "keywords": [
     "atlaskit",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

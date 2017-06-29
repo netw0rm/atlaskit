@@ -15,10 +15,6 @@
     "test:watch": "../../node_modules/.bin/nwb test --server",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
   "dependencies": {
     "@atlaskit/icon": "^5.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
@@ -48,5 +44,8 @@
   "keywords": [
     "media",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

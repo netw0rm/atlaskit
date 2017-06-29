@@ -14,9 +14,6 @@
     "storybook": "../../build/bin/storybook/run-storybook.js",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
@@ -44,5 +41,8 @@
   "keywords": [
     "atlaskit",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

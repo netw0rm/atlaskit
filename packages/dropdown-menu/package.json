@@ -5,14 +5,14 @@
     "access": "public"
   },
   "description": "Creates a dropdown menu, with optional groups, headings, icons, checkbox items, radio group items and disabled items.",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
-  "ak:component": {
-    "name": "Dropdown Menu"
-  },
+  "main": "umd/@atlaskit/dropdown-menu.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/dropdown-menu; } || ../../node_modules/.bin/not-in-publish"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "storybook": "PACKAGE=dropdown-menu ../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "dist"

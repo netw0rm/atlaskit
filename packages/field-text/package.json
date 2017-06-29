@@ -5,15 +5,15 @@
     "access": "public"
   },
   "description": "Field Text Component",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
-  "ak:component": {
-    "name": "Text Field"
-  },
-  "types": "src/index.d.ts",
+  "main": "umd/@atlaskit/field-text.js",
+  "types": "umd/types/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/field-text; } || ../../node_modules/.bin/not-in-publish"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "storybook": "PACKAGE=field-text ../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js'",
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "dist",

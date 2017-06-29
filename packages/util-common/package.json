@@ -5,11 +5,12 @@
     "access": "public"
   },
   "description": "Utilities shared by AtlasKit components",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "main": "umd/@atlaskit/util-common.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-common; } || ../../node_modules/.bin/not-in-publish"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000"
   },
   "files": [
     "dist"

@@ -5,11 +5,14 @@
     "access": "public"
   },
   "description": "A suite of components for building readme-style docs into your stories.",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
+  "main": "umd/@atlaskit/util-readme.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-readme; } || ../../node_modules/.bin/not-in-publish"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "dist"

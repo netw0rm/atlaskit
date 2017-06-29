@@ -5,16 +5,15 @@
     "access": "public"
   },
   "description": "Renderer component",
-  "main": "dist/es5/index.js",
-  "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
+  "main": "umd/@atlaskit/renderer.js",
+  "types": "umd/types/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es5 && npm run build/es2015",
-    "build/es5": "../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
-    "validate/typescript": "../../build/bin/validate.typescript.sh"
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "dist",

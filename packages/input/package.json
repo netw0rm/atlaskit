@@ -5,11 +5,14 @@
     "access": "public"
   },
   "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
+  "main": "umd/@atlaskit/input.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "echo 'Error: no test specified'",
+    "test:watch": "echo 'Error: no test specified'",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "dist"

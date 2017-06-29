@@ -5,14 +5,14 @@
     "access": "public"
   },
   "description": "React component that displays a prominent banner message and icon",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
-  "ak:component": {
-    "name": "Banner"
-  },
+  "main": "umd/@atlaskit/banner.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/banner; } || ../../node_modules/.bin/not-in-publish"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "dist"
@@ -39,7 +39,6 @@
     "@atlaskit/util-readme": "^3.0.0",
     "ak-icon": "^12.2.0",
     "@atlaskit/icon": "^1.0.0"
-
   },
   "repository": {
     "type": "git",

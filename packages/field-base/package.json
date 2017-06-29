@@ -5,12 +5,15 @@
     "access": "public"
   },
   "description": "A React presentational component that wraps fields and provides styles for focus/hover states",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
-  "types": "src/index.d.ts",
+  "main": "umd/@atlaskit/field-base.js",
+  "types": "umd/types/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/field-base; } || ../../node_modules/.bin/not-in-publish"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "storybook": "PACKAGE=field-base ../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js'",
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "dist"

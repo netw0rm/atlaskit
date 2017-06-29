@@ -5,16 +5,16 @@
     "access": "public"
   },
   "description": "A React component that displays a spinning icon to show a loading state",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
-  "ak:component": {
-    "name": "Spinner"
-  },
+  "main": "umd/@atlaskit/spinner.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/spinner"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "types": "src/index.d.ts",
+  "types": "umd/types/index.d.ts",
   "files": [
     "dist"
   ],

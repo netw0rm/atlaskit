@@ -5,17 +5,16 @@
     "access": "public"
   },
   "description": "A React package that contains icons",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
-  "ak:component": {
-    "name": "Icon"
-  },
+  "main": "umd/@atlaskit/icon.js",
   "scripts": {
     "build": "node ./build/index.js",
     "prepublish": "CLI=1 npm run build && cd ../.. && npm run prepublish/single @atlaskit/icon",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
-    "validate/typescript": "../../build/bin/validate.typescript.sh"
+    "pretest": "npm run gen-js",
+    "storybook": "PACKAGE=icon ../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server",
+    "storybook:static": "../../build/bin/storybook/build-static.js"
   },
   "files": [
     "dist",

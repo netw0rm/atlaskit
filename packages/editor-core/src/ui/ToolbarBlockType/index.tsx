@@ -70,7 +70,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         onClick={this.handleTriggerClick}
         iconAfter={
           <ExpandIconWrapper>
-            <ExpandIcon label="..asfasdf" />
+            <ExpandIcon label="Change formatting" />
           </ExpandIconWrapper>
         }
       >

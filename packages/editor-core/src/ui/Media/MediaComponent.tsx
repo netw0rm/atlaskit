@@ -257,7 +257,12 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       this.setState({ mediaProvider, ...mediaState });
     }
 
-    let context = await mediaProvider.viewContext;
+    await this.setContext('viewContext', mediaProvider);
+    await this.setContext('linkCreateContext', mediaProvider);
+  }
+
+  private setContext = async (contextName: string, mediaProvider: MediaProvider) =>  {
+    let context = await mediaProvider[contextName];
     if ('clientId' in (context as ContextConfig)) {
       context = ContextFactory.create(context as ContextConfig);
     }
@@ -266,17 +271,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return;
     }
 
-    this.setState({ viewContext: context as Context });
-
-    let linkCreateContext = await mediaProvider.linkCreateContext;
-    if ('clientId' in (linkCreateContext as ContextConfig)) {
-      linkCreateContext = ContextFactory.create(linkCreateContext as ContextConfig);
-    }
-
-    if (this.destroyed) {
-      return;
-    }
-
-    this.setState({ linkCreateContext: linkCreateContext as Context });
+    this.setState({ [contextName as any]: context as Context });
   }
 }

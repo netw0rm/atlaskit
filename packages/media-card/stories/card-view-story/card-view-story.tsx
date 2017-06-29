@@ -19,6 +19,7 @@ import {CardView} from '../../src/root/cardView';
 
 import {createFileCardsWithDifferentDataURIs} from './chapters/diff-images';
 import {createCardsOfDifferentSize} from './chapters/diff-card-sizes';
+import {createCardsOfDifferentResizeModes} from './chapters/diff-card-resize-modes';
 import {createFileCardsWithDifferentMediaTypes} from './chapters/diff-file-types';
 import {createMissingMetadataFileCards, createMissingMetadataLinkCards} from './chapters/missing-metadata';
 import {createApiCards} from './chapters/api';
@@ -62,6 +63,9 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
     <div>
       <h3>Files</h3>
       <StoryList>{fileCards}</StoryList>
+
+      <h3>Resize modes</h3>
+      <StoryList>{createCardsOfDifferentResizeModes()}</StoryList>
 
       <h3>Sizes (Breakpoints check)</h3>
       <StoryList>{createCardsOfDifferentSize(appearance, genericFileDetails, gifDataUri)}</StoryList>

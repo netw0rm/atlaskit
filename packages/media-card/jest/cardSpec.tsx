@@ -187,4 +187,34 @@ describe('Card', () => {
     expect(placeholder.props.appearance).to.equal('small');
     expect(placeholder.props.dimensions).to.deep.equal({width: 100, height: 50});
   });
+
+  it('should use "crop" as default resizeMode', () => {
+    const fetchImageDataUriSpy = sinon.spy(() => Promise.resolve());
+    const context = fakeContext({
+      getDataUriService: {
+        fetchImageDataUri: fetchImageDataUriSpy
+      }
+    });
+    const card = mount(<Card context={context} identifier={fileIdentifier} isLazy={false}/>);
+    const mediaCard = card.find(MediaCard);
+    
+    expect(mediaCard.prop('resizeMode')).to.be.equal('crop');
+    expect(card.find('CardView').prop('resizeMode')).to.be.equal('crop');
+    expect(fetchImageDataUriSpy.args[0][3]).to.be.equal('crop');
+  });
+
+  it('should pass right resizeMode down', () => {
+    const fetchImageDataUriSpy = sinon.spy(() => Promise.resolve());
+    const context = fakeContext({
+      getDataUriService: {
+        fetchImageDataUri: fetchImageDataUriSpy
+      }
+    });
+    const card = mount(<Card context={context} identifier={fileIdentifier} isLazy={false} resizeMode="full-fit"/>);
+    const mediaCard = card.find(MediaCard);
+    
+    expect(mediaCard.prop('resizeMode')).to.be.equal('full-fit');
+    expect(card.find('CardView').prop('resizeMode')).to.be.equal('full-fit');
+    expect(fetchImageDataUriSpy.args[0][3]).to.be.equal('full-fit');
+  });
 });

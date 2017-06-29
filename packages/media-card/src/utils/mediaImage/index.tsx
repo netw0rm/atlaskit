@@ -29,7 +29,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   static defaultProps = {
     fadeIn: true,
     crop: true,
-    transparentFallback: true,
+    transparentFallback: false,
     width: '100%',
     height: '100%'
   };

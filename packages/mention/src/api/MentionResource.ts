@@ -346,10 +346,11 @@ class MentionResource extends AbstractMentionResource {
         this.remoteSearch(query).then(result => {
           this.notify(searchTime, result, query);
           this.searchIndex.indexResults(result.mentions);
-this.activeSearches.delete(query);        },
-          err => {
-            this._notifyErrorListeners(err);
-          });
+          this.activeSearches.delete(query);
+        },
+        err => {
+          this._notifyErrorListeners(err);
+        });
 
         return result;
       });

@@ -23,7 +23,7 @@ export interface State {
 
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
-
+  content?: HTMLElement;
   private pluginState?: any;
   private picker?: AkMentionPicker;
 

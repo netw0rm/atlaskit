@@ -301,26 +301,33 @@ export class MentionsState {
     }
   }
 
-  setMentionProvider(provider: Promise<MentionProvider>): Promise<MentionProvider> {
-    return provider
+  setMentionProvider(provider?: Promise<MentionProvider>): Promise<MentionProvider> {
+    return new Promise<MentionProvider>((resolve, reject) => {
+      if (provider && provider.then) {provider
       .then(mentionProvider => {
-        if (this.mentionProvider) {
-          this.mentionProvider.unsubscribe('editor-mentionpicker');
+        if (this.mentionProvider ) {
+          this. mentionProvider.unsubscribe('editor-mentionpicker');
           this.queryResult = undefined;
         }
 
         this.mentionProvider = mentionProvider;
         this.mentionProvider.subscribe('editor-mentionpicker', this.onMentionResult, this.onMentionError);
 
-        // Improve first mentions performance by establishing a connection and populating local search
-        this.mentionProvider.filter('');
+            // Improve first mentions performance by establishing a connection and populating local search
+            this.mentionProvider.filter('');
 
-        this.notifyProviderSubscribers();
-        return mentionProvider;
-      }).catch(() => {
+            this.notifyProviderSubscribers();
+            resolve(mentionProvider);
+          })
+          .catch((e) => {
+            this.mentionProvider = undefined;
+            this.notifyProviderSubscribers();
+          });
+      } else {
         this.mentionProvider = undefined;
         this.notifyProviderSubscribers();
-      });
+      }
+    });
   }
 
   trySelectCurrent() {

@@ -22,3 +22,4 @@ export * from './cardImageView';
 export * from './cardLoading';
 export * from './cardDimensions';
 export * from './lazyContent';
+export * from './breakpointSize';

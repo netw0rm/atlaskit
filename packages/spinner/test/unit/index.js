@@ -142,4 +142,23 @@ describe('Spinner', () => {
       expect(getStrokeColor({ invertColor: true })).to.equal(akColorN0);
     });
   });
+
+  describe('svg', () => {
+    let circle;
+
+    beforeEach(() => {
+      circle = mount(<Spinner />).find('circle');
+    });
+
+    it('should have expected svg stroke keys', () => {
+      const styleKeys = Object.keys(circle.prop('style'));
+
+      expect(styleKeys.indexOf('strokeDashoffset') >= 0).to.equal(true);
+      expect(styleKeys.indexOf('strokeDasharray') >= 0).to.equal(true);
+    });
+
+    it('should have strokeDashoffset in px with no space before', () => {
+      expect(circle.prop('style').strokeDashoffset.match(/[0-9]px/)).to.not.equal(null);
+    });
+  });
 });

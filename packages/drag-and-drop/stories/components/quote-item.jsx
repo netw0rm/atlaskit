@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Draggable from '../../src/view/draggable/connected-draggable';
 import colors from './colors';
 import type { Quote } from './types';
@@ -12,7 +12,7 @@ const Container = styled.a`
   background: ${({ isDragging }) => (isDragging ? 'rgb(185, 244, 188)' : 'white')};
 
   cursor: ${({ isDragging }) => (isDragging ? 'grabbing' : 'grab')};
-  box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px ${colors.black}` : 'none')};
+  box-shadow: ${({ isDragging }) => (isDragging ? '2px 2px 1px lightgrey' : 'none')};
   padding: 8px;
   min-height: 40px;
   margin-bottom: 8px;

@@ -12,6 +12,10 @@ import type { DropResult, DraggableLocation } from '../../src/types';
 const Root = styled.div`
   background-color: ${colors.blue};
   min-height: 100vh;
+
+  /* flexbox */
+  display: flex;
+  justify-content: center;
 `;
 
 export default class QuoteApp extends Component {

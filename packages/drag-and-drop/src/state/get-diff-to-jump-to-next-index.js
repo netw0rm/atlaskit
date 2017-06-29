@@ -44,58 +44,19 @@ export default (
   const nextIndex = isMovingForward ? currentIndex + 1 : currentIndex - 1;
   const nextDimension: Dimension = insideDroppable[nextIndex];
 
-  // Need to move into the slot that the next dimension previously took up.
-  // want to move to the next dimension's center position
+  const isMovingTowardStart = (isMovingForward && nextIndex <= startIndex) ||
+    (!isMovingForward && nextIndex >= startIndex);
 
-  // const diff: Position = {
-  //   x: nextDimension.center.x - center.x,
-  //   y: nextDimension.center.y - center.y,
-  // };
-  // if (nextIndex === startIndex) {
-  //   return origin;
-  // }
-  const isBeyondStartIndex = nextIndex >= startIndex;
-
-  if (isBeyondStartIndex) {
-    const diff: Position = {
-      x: 0,
-      y: isMovingForward ?
-          currentDimension.withMargin.height :
-          -nextDimension.withMargin.height,
-    };
-    return diff;
-  }
+  const amount: number = isMovingTowardStart ?
+    currentDimension.withMargin.height :
+    nextDimension.withMargin.height;
 
   const diff: Position = {
+    // not worrying about horizontal for now
     x: 0,
-    y: isMovingForward ?
-        nextDimension.withMargin.height :
-        -currentDimension.withMargin.height,
+    y: isMovingForward ? amount : -amount,
   };
+
   return diff;
-
-  const move: Position = {
-    x: 0,
-    y: isMovingForward ?
-      currentDimension.withMargin.height :
-      -nextDimension.withMargin.height,
-  };
-
-  return move;
-
-  console.log('is moving past start', nextIndex > startIndex);
-
-  if (nextIndex > startIndex) {
-    const move: Position = {
-      x: 0,
-      y: isMovingForward ?
-        nextDimension.withMargin.height :
-        -currentDimension.withMargin.height,
-    };
-
-    return move;
-  }
-
-  return origin;
 };
 

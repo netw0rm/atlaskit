@@ -28,7 +28,7 @@ export const FileTypeIcon = styled.div`
     color: #3dc7dc;
   }
 
-  span, img {
+  img {
     ${size('12px !important')}
   }
 `;

@@ -27,6 +27,7 @@ export { mention } from './nodes/mention';
 export { listItem } from './nodes/list-item';
 export { panel } from './nodes/panel';
 export { text } from './nodes/text';
+export { default as unknownBlock } from './nodes/unknown-block';
 export {
   media, MediaType,
   Attributes as MediaAttributes, DisplayType as MediaDisplayType
@@ -39,3 +40,4 @@ export { createSchema } from './create-schema';
 export { bitbucketSchema } from './bitbucket-schema';
 export { confluenceSchema } from './confluence-schema';
 export { defaultSchema } from './default-schema';
+export { hipchatSchema } from './hipchat-schema';

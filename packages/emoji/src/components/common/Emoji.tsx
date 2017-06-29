@@ -1,6 +1,7 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent } from 'react';
+import TooltipWrapper from './TooltipWrapper';
 
 import * as styles from './styles';
 import { isSpriteRepresentation, toEmojiId } from '../../type-helpers';
@@ -13,6 +14,7 @@ export interface Props {
   onSelected?: OnEmojiEvent;
   onMouseMove?: OnEmojiEvent;
   className?: string;
+  showTooltip?: boolean;
 }
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
@@ -33,7 +35,7 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
 // Pure functional components are used in favour of class based components, due to the performance!
 // When rendering 1500+ emoji using class based components had a significant impact.
 const renderAsSprite = (props: Props) => {
-  const { emoji, selected, className } = props;
+  const { emoji, selected, className, showTooltip } = props;
   const representation = emoji.representation as SpriteRepresentation;
   const sprite = representation.sprite;
   const classes = {
@@ -52,6 +54,12 @@ const renderAsSprite = (props: Props) => {
     backgroundPosition: `${xPositionInPercent}% ${yPositionInPercent}%`,
     backgroundSize: `${sprite.column * 100}% ${sprite.row * 100}%`,
   };
+  const emojiNode = (
+    <span
+      className={styles.emojiSprite}
+      style={style}
+    />
+  );
 
   return (
     <span
@@ -60,19 +68,19 @@ const renderAsSprite = (props: Props) => {
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
+      aria-label={emoji.shortName}
     >
-      <span
-        className={styles.emojiSprite}
-        title={emoji.shortName}
-        style={style}
-      />
+      { showTooltip ?
+        <TooltipWrapper description={emoji.shortName}>{emojiNode}</TooltipWrapper>
+        : emojiNode
+      }
     </span>
   );
 };
 
 // Keep as pure functional component, see renderAsSprite.
 const renderAsImage = (props: Props) => {
-  const { emoji, selected, className } = props;
+  const { emoji, selected, className, showTooltip } = props;
 
   const classes = {
     [styles.emoji]: true,
@@ -84,21 +92,25 @@ const renderAsImage = (props: Props) => {
   }
 
   const representation = emoji.representation as ImageRepresentation;
-
+  const emojiNode = (
+    <img
+      src={representation.imagePath}
+      alt={emoji.shortName}
+    />
+  );
   return (
     <span
       className={classNames(classes)}
-      title={emoji.shortName}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
+      aria-label={emoji.shortName}
     >
-      <img
-        src={representation.imagePath}
-        alt={emoji.shortName}
-        title={emoji.shortName}
-      />
+    { showTooltip ?
+      <TooltipWrapper description={emoji.shortName}>{emojiNode}</TooltipWrapper>
+      : emojiNode
+    }
     </span>
   );
 };

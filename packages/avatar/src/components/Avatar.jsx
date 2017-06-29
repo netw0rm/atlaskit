@@ -71,7 +71,7 @@ export default class Avatar extends PureComponent {
 
   // We set isLoading conditionally here in the event that the src prop is updated after mount.
   componentWillReceiveProps(nextProps: Props) {
-    if (this.props.src !== nextProps.src) {
+    if (nextProps.src && this.props.src !== nextProps.src) {
       this.setState({ isLoading: true });
     }
   }

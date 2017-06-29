@@ -1,13 +1,8 @@
 import { action, storiesOf } from '@kadira/storybook';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
 import * as React from 'react';
 import { name } from '../package.json';
-import schema from './schema';
-
-import {
-  renderDocument,
-  ReactSerializer,
-} from '../src/renderer';
 
 import {
   Code,
@@ -22,11 +17,13 @@ import {
 import {
   BulletList,
   Blockquote,
+  CodeBlock,
   Emoji,
   HardBreak,
   Heading,
   OrderedList,
   ListItem,
+  Media,
   Mention,
   Panel,
   Paragraph,
@@ -35,6 +32,7 @@ import {
 
 import { EmojiProps } from '../src/renderer/react/nodes/emoji';
 import ProviderFactory from '../src/providerFactory';
+import Renderer from '../src/ui/Renderer';
 import { document } from './story-data';
 
 const mentionProvider = Promise.resolve({
@@ -43,10 +41,19 @@ const mentionProvider = Promise.resolve({
   }
 });
 
+const mediaProvider = Promise.resolve({
+  viewContext: Promise.resolve({
+    clientId: defaultClientId,
+    serviceHost: defaultServiceHost,
+    tokenProvider: StoryBookTokenProvider.tokenProvider,
+  })
+});
+
 storiesOf(name, module)
   .add('renderer', () => {
     const providerFactory = new ProviderFactory();
     providerFactory.setProvider('mentionProvider', mentionProvider);
+    providerFactory.setProvider('mediaProvider', mediaProvider);
 
     const eventHandlers = {
       mention: {
@@ -54,18 +61,25 @@ storiesOf(name, module)
         onMouseEnter: action('onMouseEnter'),
         onMouseLeave: action('onMouseLeave'),
       },
+      media: {
+        onClick: action('onClick'),
+      },
     };
 
     return (
       <div>
-        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema, providerFactory, eventHandlers), schema)}
+        <Renderer
+          document={document}
+          eventHandlers={eventHandlers}
+          dataProviders={providerFactory}
+        />
       </div>
     );
   })
   .add('renderer without providers', () => {
     return (
       <div>
-        {renderDocument<JSX.Element>(document, ReactSerializer.fromSchema(schema), schema)}
+        <Renderer document={document}/>
       </div>
     );
   })
@@ -93,6 +107,27 @@ storiesOf(name, module)
   .add('renderer/marks/code', () => (
     <Code>This is code</Code>
   ))
+  .add('nodes/codeBlock', () => (
+    <CodeBlock language="javascript">
+    {`if (type) {
+      switch (NodeType[type]) {
+        case NodeType.codeBlock:
+          const { text } = node;
+          if (text) {
+            const { attrs } = node;
+            return {
+              text,
+              type,
+              attrs
+            }
+          }
+          break;
+        default:
+          return {};
+      }
+    }`}
+    </CodeBlock>
+  ))
   .add('nodes/hardBreak', () => (
     <div>Some text with that<HardBreak />breaks on multiple lines</div>
   ))
@@ -106,6 +141,19 @@ storiesOf(name, module)
       <Heading level={6}>Heading 6</Heading>
     </div>
   ))
+  .add('nodes/media', () => {
+    const providerFactory = new ProviderFactory();
+    providerFactory.setProvider('mediaProvider', mediaProvider);
+
+    return (
+      <Media
+        id={'5556346b-b081-482b-bc4a-4faca8ecd2de'}
+        type={'file'}
+        collection={'MediaServicesSample'}
+        providers={providerFactory}
+      />
+    );
+  })
   .add('nodes/mention', () => (
     <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
   ))

@@ -1,1 +1,1 @@
-export {DataUriService, DataUri} from './dataUriService';
+export {DataUriService, DataUri, ImageResizeMode} from './dataUriService';

@@ -22,7 +22,7 @@ export interface Attributes {
      */
     url: string
   };
-  title?: {
+  title: {
     text: string
   };
   description?: {
@@ -50,7 +50,7 @@ export interface Detail {
 
 export interface User {
   id?: string;
-  icon?: Icon;
+  icon: Icon;
 }
 
 export interface Icon {
@@ -61,7 +61,6 @@ export interface Icon {
   label: string;
 }
 
-
 const defaultAttrs = {
   text: { default: '' },
   textUrl: { default: null },
@@ -69,7 +68,7 @@ const defaultAttrs = {
   background: { default: null },
   collapsible: { default: null },
   preview: { default: null },
-  title: { default: null },
+  title: { default: { text: '' } },
   description: { default: null },
   details: { default: null },
 };
@@ -81,7 +80,7 @@ export const applicationCard: NodeSpec = {
   parseDOM: [{
     tag: 'div[data-node-type="media"]',
     getAttrs: (dom: HTMLElement) => {
-      const attrs: Attributes = { text: '' };
+      const attrs: Attributes = { text: '', title: { text: '' } };
 
       Object.keys(defaultAttrs).forEach(key => {
         attrs[key] = dom.dataset[key];

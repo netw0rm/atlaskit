@@ -923,6 +923,26 @@ describe('block-type', () => {
       });
     });
 
+    context('when parent item is a list', () => {
+      it('wraps paragraph to heading', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('heading1', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(h1('t{<}ex{>}t')))));
+      });
+
+      it('wraps paragraph in block-quote', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('blockquote', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(blockquote(p('t{<}ex{>}t'))))));
+      });
+
+      it('wraps paragraph in panel', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('panel', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(panel(p('t{<}ex{>}t'))))));
+      });
+    });
+
     context('when origin block type is the same as target block type', () => {
       context('when it is a quote', () => {
         it('lifts content out of the quote', () => {

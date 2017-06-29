@@ -101,10 +101,10 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
   }
 
   private handleOpenChange = ({isOpen}) => {
-   if (!isOpen) {
-     this.props.softBlurEditor();
-    } else {
+    if (!isOpen) {
       this.props.focusEditor();
+    } else {
+      this.props.softBlurEditor();
     }
 
     this.setState({ isOpen });

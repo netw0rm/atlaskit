@@ -1,5 +1,5 @@
 import { nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import schema from '../../src/schema/schema';
+import { hipchatSchema as schema } from '@atlaskit/editor-core';
 
 export const doc = nodeFactory(schema.nodes.doc);
 export const p = nodeFactory(schema.nodes.paragraph);

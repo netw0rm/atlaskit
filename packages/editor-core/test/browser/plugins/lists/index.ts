@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { browser } from '../../../../src';
 import { TextSelection } from '../../../../src/prosemirror';
 import listsPlugins from '../../../../src/plugins/lists';
-import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, panel, blockquote } from '../../../../src/test-helper';
+import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, panel, blockquote, code_block } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -183,14 +183,14 @@ describe('lists', () => {
       expect(pluginState).to.have.property('bulletListHidden', false);
     });
 
-    it('should be disabled when selecting h1', () => {
+    it('should be enabled when selecting h1', () => {
       const { pluginState } = editor(doc(h1('te{<>}xt')));
 
       expect(pluginState).to.have.property('orderedListActive', false);
-      expect(pluginState).to.have.property('orderedListDisabled', true);
+      expect(pluginState).to.have.property('orderedListDisabled', false);
       expect(pluginState).to.have.property('orderedListHidden', false);
       expect(pluginState).to.have.property('bulletListActive', false);
-      expect(pluginState).to.have.property('bulletListDisabled', true);
+      expect(pluginState).to.have.property('bulletListDisabled', false);
       expect(pluginState).to.have.property('bulletListHidden', false);
     });
 
@@ -436,6 +436,25 @@ describe('lists', () => {
         sendKeyToPm(editorView, 'Enter');
 
         expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))));
+      });
+
+      it('should create new list item when Enter key is pressed twice in panel in list', () => {
+        const { editorView } = editor(doc(ol(li(panel(p('text{<>}'))))));
+
+        sendKeyToPm(editorView, 'Enter');
+        sendKeyToPm(editorView, 'Enter');
+
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(panel(p('text{<>}'))), li(p('')))));
+      });
+
+      it('should create new list item when Enter key is pressed three times in code block in list', () => {
+        const { editorView } = editor(doc(ol(li(code_block({ language: 'java' })('codeBlock{<>}')))));
+
+        sendKeyToPm(editorView, 'Enter');
+        sendKeyToPm(editorView, 'Enter');
+        sendKeyToPm(editorView, 'Enter');
+
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(code_block({ language: 'java' })('codeBlock')), li(p('')))));
       });
     });
 

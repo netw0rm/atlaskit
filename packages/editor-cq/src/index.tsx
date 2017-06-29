@@ -297,17 +297,20 @@ export default class Editor extends PureComponent<Props, State> {
         plugins: [
           ...mentionsPlugins(schema),
           ...clearFormattingPlugins(schema),
-          ...codeBlockPlugins(schema),
           ...hyperlinkPlugins(schema),
-          ...listsPlugins(schema),
           ...rulePlugins(schema),
-          ...textFormattingPlugins(schema),
           ...mediaPlugins,
           ...panelPlugins(schema),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
           ...blockTypePlugins(schema),
+          // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
+          // this is needed to ensure that all block types are supported inside lists
+          // this is needed until we implement keymap proirity :(
+          ...listsPlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...codeBlockPlugins(schema),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(cqKeymap),

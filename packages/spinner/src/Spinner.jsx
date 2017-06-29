@@ -102,7 +102,9 @@ export default class Spinner extends PureComponent {
     const circumference = Math.PI * strokeRadius * 2;
     const dimensions = { height: size, width: size };
     const dashStyles = {
-      strokeDashoffset: isCompleting ? circumference : 0.8 * circumference,
+      // need to set as px, otherwise Edge doesn't trigger the transition end
+      // see https://stackoverflow.com/questions/24918529/animate-path-in-internet-explorer/24918639#24918639
+      strokeDashoffset: `${(isCompleting ? circumference : 0.8 * circumference)}px`,
       strokeDasharray: circumference,
     };
     // "active" means that the spinner is actually spinning (this happens after the delay of setting

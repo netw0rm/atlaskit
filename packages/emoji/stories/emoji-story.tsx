@@ -25,14 +25,14 @@ const emoji = {
 storiesOf(`${name}/Emoji`, module)
   .add('simple emoji', () => {
     const awthanks = emojiService.findByShortName(':awthanks:');
-    const awthanksEmoji = awthanks ? <Emoji emoji={awthanks} /> : <span>[awthanks emoji not found]</span>;
+    const awthanksEmoji = awthanks ? <Emoji emoji={awthanks} showTooltip={true} /> : <span>[awthanks emoji not found]</span>;
     const grimacing = emojiService.findByShortName(':grimacing:');
-    const grimacingEmoji = grimacing ? <Emoji emoji={grimacing} /> : <span>[grimacing emoji not found]</span>;
+    const grimacingEmoji = grimacing ? <Emoji emoji={grimacing} showTooltip={true} /> : <span>[grimacing emoji not found]</span>;
     return (
       <div style={{ lineHeight: '24px' }}>
-        <Emoji emoji={emoji} />
+        <Emoji emoji={emoji} showTooltip={true} />
         {awthanksEmoji}
         {grimacingEmoji}
       </div>
     );
-  }).add('simple emoji selected', () => (<Emoji emoji={emoji} selected={true} />));
+  }).add('simple emoji selected', () => (<Emoji emoji={emoji} selected={true} showTooltip={true} />));

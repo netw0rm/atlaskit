@@ -3,6 +3,7 @@ import { ReactComponentConstructor } from '../';
 
 import Blockquote from './blockquote';
 import BulletList from './bulletList';
+import CodeBlock from './codeBlock';
 import Doc from './doc';
 import Emoji from './emoji';
 import HardBreak from './hardBreak';
@@ -20,6 +21,7 @@ import UnknownBlock from './unknownBlock';
 export const nodeToReact = {
   'blockquote': Blockquote,
   'bulletList': BulletList,
+  'codeBlock': CodeBlock,
   'doc': Doc,
   'emoji': Emoji,
   'hardBreak': HardBreak,
@@ -130,6 +132,7 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
 export {
   Blockquote,
   BulletList,
+  CodeBlock,
   Doc,
   Emoji,
   HardBreak,

@@ -10,6 +10,11 @@ const Restricted = styled.div`
   display: flex;
 `;
 
+const RestrictedIconWrapper = styled.span`
+  margin-right: ${akGridSizeUnitless / 2}px;
+`;
+RestrictedIconWrapper.displayName = 'RestrictedIconWrapper';
+
 const TopItem = styled.div`
   display: inline-block;
   &:first-child {
@@ -30,4 +35,4 @@ const TopItemsContainer = styled.div`
   display: flex;
 `;
 
-export { BulletSpacer, Restricted, TopItem, TopItemsContainer };
+export { BulletSpacer, Restricted, RestrictedIconWrapper, TopItem, TopItemsContainer };

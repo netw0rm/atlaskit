@@ -1,5 +1,17 @@
 import { NodeSpec, Node as PMNode } from '../../prosemirror';
 
+/**
+ * @name applicationCard_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'applicationCard';
+  /**
+   * @additionalProperties false
+   */
+  attrs: Attributes;
+}
+
 export interface Attributes {
   text: string;
   textUrl?: string;
@@ -7,26 +19,26 @@ export interface Attributes {
     /**
      * @pattern "/^https:\/\/|^data:image\//"
      */
-    url: string
+    url: string;
   };
   background?: {
     /**
      * @pattern "/^https:\/\/|^data:image\//"
      */
-    url: string
+    url: string;
   };
   collapsible?: boolean;
   preview?: {
     /**
      * @pattern "/^https:\/\/|^data:image\//"
      */
-    url: string
+    url: string;
   };
   title: {
-    text: string
+    text: string;
   };
   description?: {
-    text: string
+    text: string;
   };
   details?: Array<Detail>;
 }
@@ -38,7 +50,7 @@ export interface Detail {
   badge?: {
     value: number;
     max?: number;
-    appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed'
+    appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed';
   };
   lozenge?: {
     text: string,

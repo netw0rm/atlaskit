@@ -4,7 +4,7 @@
  */
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
+import {MediaType, MediaItemType, CardAction, CardActionType, ImageResizeMode} from '@atlaskit/media-core';
 
 import {getCSSUnitValue} from '../getCSSUnitValue';
 import {CardDimensions, CardDimensionValue, CardStatus} from '../../index';
@@ -37,6 +37,7 @@ export interface CardImageViewProps {
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
+  resizeMode?: ImageResizeMode;
 }
 
 const breakpointSizes = {
@@ -47,6 +48,10 @@ const breakpointSizes = {
 };
 
 export class CardImageView extends Component<CardImageViewProps, {}> {
+  static defaultProps = {
+    resizeMode: 'crop'
+  };
+
   private get width(): CardDimensionValue {
     const {width} = this.props.dimensions || {width: undefined};
 
@@ -182,6 +187,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
             mediaItemType={mediaItemType}
             mediaType={mediaType}
             dataURI={dataURI}
+            crop={this.isCropped}
           />
         </div>
         {overlay}
@@ -205,6 +211,12 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
         icon={icon}
       />
     );
+  }
+
+  get isCropped() {
+    const {resizeMode} = this.props;
+
+    return resizeMode === 'crop';
   }
 }
 

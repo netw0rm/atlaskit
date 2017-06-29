@@ -1,4 +1,17 @@
 import { NodeSpec } from '../../prosemirror';
+import { Definition as Media } from './media';
+
+/**
+ * @name mediaGroup_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'mediaGroup';
+  /**
+   * @minItems 1
+   */
+  content: Array<Media>;
+}
 
 export const mediaGroup: NodeSpec = {
   inline: false,

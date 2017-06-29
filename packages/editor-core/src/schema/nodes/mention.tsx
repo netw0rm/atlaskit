@@ -1,5 +1,20 @@
 import { NodeSpec } from '../../prosemirror';
 
+/**
+ * @name mention_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'mention';
+  /**
+   * @additionalProperties false
+   */
+  attrs: {
+    id: string;
+    text: string;
+  };
+}
+
 export const mention: NodeSpec = {
   inline: true,
   group: 'inline',

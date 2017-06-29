@@ -1,5 +1,21 @@
 import { Node, NodeSpec } from '../../prosemirror';
 
+/**
+ * @name emoji_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'emoji';
+  /**
+   * @additionalProperties false
+   */
+  attrs: {
+    id?: string; // Optional to support legacy formats
+    shortName: string;
+    fallback?: string;
+  };
+}
+
 export const emoji: NodeSpec = {
   inline: true,
   group: 'inline',

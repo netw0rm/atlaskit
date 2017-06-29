@@ -1,4 +1,36 @@
 import { NodeSpec, browser } from '../../prosemirror';
+import { Definition as Text } from './text';
+
+export type NoMark = {
+  /**
+   * @maxItems 0
+   */
+  marks?: Array<any>
+};
+
+/**
+ * @name codeBlock_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'codeBlock';
+  content?: Array<Text & NoMark>;
+  /**
+   * @additionalProperties false
+   */
+  attrs?: {
+    language: 'abap' | 'actionscript' | 'ada' | 'arduino' | 'autoit' | 'c' | 'c++' | 'clojure'
+    | 'coffeescript' | 'csharp' | 'css' | 'cuda' | 'd' | 'dart' | 'delphi' | 'elixir'
+    | 'erlang' | 'fortran' | 'foxpro' | 'go' | 'groovy' | 'haskell' | 'haxe' | 'html'
+    | 'java' | 'javascript' | 'julia' | 'kotlin' | 'latex' | 'livescript' | 'lua'
+    | 'mathematica' | 'matlab' | 'objective-c' | 'objective-j' | 'objectpascal'
+    | 'ocaml' | 'octave' | 'perl' | 'php' | 'powershell' | 'prolog' | 'puppet'
+    | 'python' | 'qml' | 'r' | 'racket' | 'restructuredtext' | 'ruby' | 'rust'
+    | 'sass' | 'scala' | 'scheme' | 'shell' | 'smalltalk' | 'sql' | 'standardml'
+    | 'swift' | 'tcl' | 'tex' | 'typescript' | 'vala' | 'vbnet' | 'verilog'
+    | 'vhdl' | 'xml' | 'xquery';
+  };
+}
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
   return dom.dataset['language'];

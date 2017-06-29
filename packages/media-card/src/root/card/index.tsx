@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import * as deepEqual from 'deep-equal';
-import {Context, MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriService} from '@atlaskit/media-core';
+import {Context, MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriService, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardEventProps} from '../..';
 import {MediaCard} from '../mediaCard';
@@ -26,12 +26,14 @@ export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
   readonly identifier: Identifier;
   isLazy?: boolean;
+  resizeMode?: ImageResizeMode;
 }
 
 export class Card extends Component<CardProps, {}> {
   static defaultProps = {
     appearance: 'auto',
-    isLazy: true
+    isLazy: true,
+    resizeMode: 'crop'
   };
 
   private provider: Provider;
@@ -85,11 +87,13 @@ export class Card extends Component<CardProps, {}> {
   }
 
   render() {
-    const {context, identifier, isLazy, appearance, ...otherProps} = this.props;
+    const {context, identifier, isLazy, appearance, resizeMode, ...otherProps} = this.props;
     const {mediaItemType} = identifier;
     const card = (
       <MediaCard
         {...otherProps}
+
+        resizeMode={resizeMode}
         appearance={appearance}
         mediaItemType={mediaItemType}
         provider={this.provider}

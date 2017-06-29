@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Lozenge from '@atlaskit/lozenge';
-import LockIcon from '@atlaskit/icon/glyph/lock';
-import { BulletSpacer, Restricted, TopItem, TopItemsContainer } from '../styled/HeaderStyles';
+import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
+import { BulletSpacer, Restricted, RestrictedIconWrapper, TopItem, TopItemsContainer } from '../styled/HeaderStyles';
 
 const HeaderItems = ({
   author, edited, isError, isSaving, restrictedTo, savingText, time, type,
@@ -10,7 +10,7 @@ const HeaderItems = ({
   const restrictedElement = restrictedTo ? (
     <Restricted>
       <BulletSpacer>&bull;</BulletSpacer>
-      <LockIcon label="restricted" size="small" />Restricted to {restrictedTo}
+      <RestrictedIconWrapper><LockFilledIcon label="restricted" size="small" /></RestrictedIconWrapper> Restricted to {restrictedTo}
     </Restricted>
   ) : null;
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {CardAction} from '@atlaskit/media-core';
+import {CardAction, ImageResizeMode} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance, CardStatus} from '../../index';
 import {CardImageView} from '../../utils/cardImageView';
@@ -15,6 +15,7 @@ export interface LinkCardImageViewProps {
   iconUrl?: string;
   appearance?: CardAppearance;
   dimensions?: CardDimensions;
+  resizeMode?: ImageResizeMode;
   status: CardStatus;
   actions?: Array<CardAction>;
   error?: string;
@@ -38,7 +39,7 @@ export class LinkCardImageView extends Component<LinkCardImageViewProps, {}> {
   }
 
   private getCardImageView(): JSX.Element {
-    const {title, site, thumbnailUrl, status, dimensions, actions, onClick, onMouseEnter, error, iconUrl, linkUrl} = this.props;
+    const {title, site, thumbnailUrl, status, dimensions, actions, onClick, onMouseEnter, error, iconUrl, linkUrl, resizeMode} = this.props;
 
     return (
       <CardImageView
@@ -52,6 +53,7 @@ export class LinkCardImageView extends Component<LinkCardImageViewProps, {}> {
         actions={actions}
         error={error}
         icon={iconUrl}
+        resizeMode={resizeMode}
 
         onClick={onClick}
         onMouseEnter={onMouseEnter}

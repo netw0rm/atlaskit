@@ -15,6 +15,7 @@ import { isMediaApiRepresentation } from '../type-helpers';
 import { denormaliseEmojiServiceResponse, emojiRequest } from './EmojiUtils';
 import { requestService, ServiceConfig } from './SharedResourceUtils';
 import debug from '../util/logger';
+import { imageAcceptHeader } from '../util/image';
 
 // expire 30 seconds early to factor in latency, slow services, etc
 export const expireAdjustment = 30;
@@ -223,38 +224,41 @@ export default class MediaEmojiResource {
     const { representation, ...other } = emoji;
     const { mediaPath, ...otherRep } = representation as MediaApiRepresentation;
 
-    // Media REST API: https://media-api-internal.atlassian.io/api.html#file__fileId__image_get
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token.jwt}`,
-        'X-Client-Id': token.clientId,
-      },
-    };
+    return imageAcceptHeader().then(acceptHeader => {
 
-    return fetch(new Request(mediaPath, options)).then(response => {
-      if (response.status === 403 && retryOnAuthError) {
-        // retry once if 403
-        return this.tokenManager.getToken('read', true).then(newToken => {
-          return this.loadMediaEmoji(emoji, newToken, false);
-        });
-      } else if (response.ok) {
-        return response.blob().then((blob) => {
-          return this.readBlob(blob).then(imagePath => {
-            const imageEmoji = {
-              ...other,
-              representation: {
-                ...otherRep,
-                imagePath,
-              },
-            };
-            return imageEmoji;
+      // Media REST API: https://media-api-internal.atlassian.io/api.html#file__fileId__image_get
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token.jwt}`,
+          'X-Client-Id': token.clientId,
+          Accept: acceptHeader,
+        },
+      };
+
+      return fetch(new Request(mediaPath, options)).then(response => {
+        if (response.status === 403 && retryOnAuthError) {
+          // retry once if 403
+          return this.tokenManager.getToken('read', true).then(newToken => {
+            return this.loadMediaEmoji(emoji, newToken, false);
           });
-        });
-      }
-      return emoji;
+        } else if (response.ok) {
+          return response.blob().then((blob) => {
+            return this.readBlob(blob).then(imagePath => {
+              const imageEmoji = {
+                ...other,
+                representation: {
+                  ...otherRep,
+                  imagePath,
+                },
+              };
+              return imageEmoji;
+            });
+          });
+        }
+        return emoji;
+      });
     });
   }
-
 
   private readBlob(blob: Blob): Promise<DataURL> {
     return new Promise((resolve, reject) => {

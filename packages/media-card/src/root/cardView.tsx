@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {MouseEvent} from 'react';
-import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview} from '@atlaskit/media-core';
+import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardStatus, CardEvent, OnSelectChangeFuncResult} from '..';
 import {LinkCard} from '../links';
@@ -11,6 +11,7 @@ export interface CardViewProps extends SharedCardProps {
   readonly status: CardStatus;
   readonly mediaItemType?: MediaItemType;
   readonly metadata?: MediaItemDetails;
+  readonly resizeMode?: ImageResizeMode;
 
   readonly onClick?: (result: CardEvent) => void;
   readonly onMouseEnter?: (result: CardEvent) => void;

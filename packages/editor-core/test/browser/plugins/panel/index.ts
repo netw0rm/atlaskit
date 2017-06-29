@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import panelPlugins from '../../../../src/plugins/panel';
-import { doc, panel, panelNote, p, makeEditor, fixtures, createEvent, sendKeyToPm } from '../../../../src/test-helper';
+import { doc, panel, panelNote, p, makeEditor, fixtures, createEvent, sendKeyToPm, blockquote } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
@@ -97,18 +97,25 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(editorView.state.doc).to.deep.equal(doc(panelNote(p('text'), p('text'))));
     });
 
-    it('should be able to remove panel type using function removePanelType', () => {
+    it('should be able to remove panel type using function removePanel', () => {
       const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'))));
       expect(pluginState.activePanelType).to.equal('info');
-      pluginState.removePanelType(editorView);
+      pluginState.removePanel(editorView);
       expect(pluginState.element).to.equal(undefined);
     });
 
-    it('should be able to remove panel type for panel of multiple blocks using function removePanelType', () => {
+    it('should be able to remove panel for panel of multiple blocks using function removePanel', () => {
       const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'), p('text'))));
       expect(pluginState.activePanelType).to.equal('info');
-      pluginState.removePanelType(editorView);
-      expect(editorView.state.doc).to.deep.equal(doc(p('te{<>}xt'), p('text')));
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p()));
+    });
+
+    it('should not remove enclosing block while removing panel', () => {
+      const { pluginState, editorView } = editor(doc(blockquote(panel(p('te{<>}xt'), p('text')))));
+      expect(pluginState.activePanelType).to.equal('info');
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
     });
 
     it('should call handlers for change in panel type', () => {
@@ -122,13 +129,13 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(spy.callCount).to.equal(2);
     });
 
-    it('shoul call handlers when panel type is removed', () => {
+    it('shoul call handlers when panel is removed', () => {
       const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'))));
       const spy = sinon.spy();
       pluginState.subscribe(spy);
       expect(spy.callCount).to.equal(1);
       expect(pluginState.activePanelType).to.equal('info');
-      pluginState.removePanelType(editorView);
+      pluginState.removePanel(editorView);
       expect(spy.callCount).to.equal(2);
     });
 

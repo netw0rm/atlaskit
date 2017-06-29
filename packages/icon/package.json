@@ -5,7 +5,8 @@
     "access": "public"
   },
   "description": "A React package that contains icons",
-  "main": "umd/@atlaskit/icon.js",
+  "main": "dist/bundle.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "build": "node ./build/index.js",
     "prepublish": "CLI=1 npm run build && cd ../.. && npm run prepublish/single @atlaskit/icon",

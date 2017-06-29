@@ -127,7 +127,7 @@
     "url-search-params": "^0.6.1",
     "validate-commit-message": "^3.0.1",
     "wait-on": "^2.0.0",
-    "webpack": "~2.2.0",
+    "webpack": "1.13.2",
     "webpack-dev-server": "^1.16.2",
     "webpack-node-externals": "^1.6.0",
     "whatwg-fetch": "^2.0.3"

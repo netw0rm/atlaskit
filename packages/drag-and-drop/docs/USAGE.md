@@ -521,14 +521,20 @@ A drag will not start until a user has dragged their mouse past a small threshol
 
 ## Usage with react-redux
 
-[TODO]
+[TODO] Provide useful example
 
 ## Engineering health
 
+[TODO]
+
 ### Tested
+
+[TODO]
 
 ### Performance
 
+[TODO]
+
 ### Typed
 
-Using flowtype
+[TODO]

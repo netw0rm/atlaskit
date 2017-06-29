@@ -41,12 +41,14 @@ import {
   ErrorReporter,
   ErrorReportingHandler,
 } from '@atlaskit/editor-core';
-import { EmojiProvider } from '@atlaskit/editor-core';
+import {
+  EmojiProvider,
+  hipchatSchema as schema,
+} from '@atlaskit/editor-core';
 import { MentionProvider } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { HCSchema, default as schema } from './schema/schema';
 import { version } from './version';
 import { hipchatEncoder } from './encoders';
 import { hipchatDecoder } from './decoders';
@@ -89,7 +91,6 @@ export interface Props {
 
 export interface State {
   editorView?: EditorView;
-  schema: HCSchema;
   maxLengthReached?: boolean;
   flashToggle?: boolean;
 }
@@ -109,7 +110,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { schema };
+    this.state = {};
 
     this.providerFactory = new ProviderFactory();
 
@@ -298,16 +299,16 @@ export default class Editor extends PureComponent<Props, State> {
         <div ref={this.handleRef}>
           {!emojisState ? null :
             <EmojiTypeAhead
-              pluginState={emojisState}
-              emojiProvider={emojiProvider!}
+              pluginKey={emojisStateKey}
+              editorView={editorView}
               reversePosition={props.reverseMentionPicker}
             />
           }
           {!mentionsState ? null :
             <MentionPicker
-              resourceProvider={mentionProvider!}
+              editorView={editorView}
+              pluginKey={mentionsStateKey}
               presenceProvider={props.presenceProvider}
-              pluginState={mentionsState}
               reversePosition={props.reverseMentionPicker}
             />
           }
@@ -330,9 +331,9 @@ export default class Editor extends PureComponent<Props, State> {
       schema,
       doc: '',
       plugins: [
-        ...mentionsPlugins(schema),
+        ...mentionsPlugins(schema, this.providerFactory),
         ...mediaPlugins,
-        ...emojisPlugins(schema),
+        ...emojisPlugins(schema, this.providerFactory),
         ...asciiEmojiPlugins(schema, this.props.emojiProvider),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
@@ -390,9 +391,6 @@ export default class Editor extends PureComponent<Props, State> {
         return html.replace(/<br\s*[\/]?>/gi, '\n');
       },
     });
-
-    emojisStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-    mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
     if (place instanceof HTMLElement) {
       const content = place.querySelector('[contenteditable]');

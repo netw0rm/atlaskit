@@ -134,7 +134,9 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
 
     if (editorView && !editorView.hasFocus()) {
-      editorView.focus();
+      try {
+        editorView.focus();
+      } catch (ex) {}
     }
   }
 
@@ -365,8 +367,9 @@ export default class Editor extends PureComponent<Props, State> {
 
       analyticsService.trackEvent('atlassian.editor.start');
 
-      this.setState({ editorView });
-      this.focus();
+      this.setState({ editorView }, () => {
+        this.focus();
+      });
 
       this.sendUnsupportedNodeUsage(doc);
     } else {

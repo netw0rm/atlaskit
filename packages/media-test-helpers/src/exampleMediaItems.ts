@@ -135,6 +135,23 @@ export const imageFileId = {
   mediaItemType: fileType,
   collectionName
 };
+export const smallImageFileId = {
+  id: 'f251bd05-4b2d-485d-a088-57d112ca7945',
+  mediaItemType: fileType,
+  collectionName
+};
+
+export const wideImageFileId = {
+  id: '3b6621a2-5b72-400e-ad95-447610dbb770',
+  mediaItemType: fileType,
+  collectionName
+};
+
+export const largeImageFileId = {
+  id: '0607a6a8-b2ec-49a7-b6d3-d767cb49e844',
+  mediaItemType: fileType,
+  collectionName
+};
 
 export const docFileId = {
   id: '71cd7e7d-4e86-4b89-a0b4-7f6ffe013c94',

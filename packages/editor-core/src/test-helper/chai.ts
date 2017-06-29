@@ -15,7 +15,7 @@ function isSlice(thing: any): thing is Slice {
 }
 
 export default (chai: any) => {
-  const { Assertion, AssertionError, util } = chai;
+  const { Assertion, util } = chai;
 
   // Node and Fragment
   Assertion.overwriteMethod('equal', (equalSuper: Function) => {
@@ -23,13 +23,13 @@ export default (chai: any) => {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
-        if (!(left as any).eq(right)) {
-          throw new AssertionError(`expected "${left.toString()}" to equal "${right.toString()}"`, {
-            actual: right.toJSON(),
-            expected: left.toJSON(),
-            showDiff: true
-          });
-        }
+        this.assert((left as any).eq(right),
+          `expected ${left.toString()} to equal ${right.toString()}`,
+          `expected ${left.toString()} to not equal ${right.toString()}`,
+          left.toJSON(),
+          right.toJSON(),
+          /*showDiff*/ true
+        );
       } else {
         equalSuper.apply(this, arguments);
       }

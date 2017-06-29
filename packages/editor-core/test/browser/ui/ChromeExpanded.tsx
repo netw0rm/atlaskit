@@ -13,6 +13,7 @@ import ToolbarMention from '../../../src/ui/ToolbarMention';
 import ToolbarImage from '../../../src/ui/ToolbarImage';
 import ToolbarMedia from '../../../src/ui/ToolbarMedia';
 import { createNestedListStyles } from '../../../src/ui/ChromeExpanded/styles';
+import { Content } from '../../../src/ui/ChromeExpanded/styles';
 
 const noop = () => {};
 
@@ -39,6 +40,17 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
       const button = chrome.find(AkButton);
       expect(button.prop('isDisabled')).to.equal(false);
+    });
+
+    it('should add maxHeight to content section if it\'s passed', () => {
+      const { editorView } = editor(doc(p()));
+      const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} maxHeight={75} />);
+
+      const content = chrome.find(Content);
+      expect(!!content).to.equal(true);
+      const props = content.props();
+      expect(!!props['style']).to.equal(true);
+      expect(props['style']!.maxHeight).to.equal('75px');
     });
 
     it('should render disabled save button if saveDisabled=true', () => {

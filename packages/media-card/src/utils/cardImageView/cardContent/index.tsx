@@ -9,18 +9,19 @@ export interface CardContentProps {
   mediaType?: MediaType;
   dataURI?: string;
   loading?: boolean;
+  crop?: boolean;
 }
 
 export class CardContent extends Component<CardContentProps, {}> {
   render() {
-    const {loading, mediaType, mediaItemType, dataURI} = this.props;
+    const {loading, mediaType, mediaItemType, dataURI, crop} = this.props;
 
     if (loading) {
       return <CardLoading mediaItemType={mediaItemType} />;
     }
 
     if (this.shouldDisplayImageThumbnail(dataURI, mediaType)) {
-      return <MediaImage dataURI={dataURI} fadeIn={loading} />;
+      return <MediaImage dataURI={dataURI} fadeIn={loading} crop={crop}/>;
     } else {
       return null;
     }

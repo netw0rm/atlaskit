@@ -204,20 +204,28 @@ export class MentionsState {
     }
   }
 
-  setMentionProvider(provider: Promise<MentionProvider>): Promise<MentionProvider> {
-    return provider
-      .then(mentionProvider => {
-        this.mentionProvider = mentionProvider;
+  setMentionProvider(provider?: Promise<MentionProvider>): Promise<MentionProvider> {
+    return new Promise<MentionProvider>((resolve, reject) => {
+      if (provider && provider.then) {
+        provider
+          .then(mentionProvider => {
+            this.mentionProvider = mentionProvider;
 
-        // Improve first mentions performance by establishing a connection and populating local search
-        this.mentionProvider.filter('');
+            // Improve first mentions performance by establishing a connection and populating local search
+            this.mentionProvider.filter('');
 
-        this.notifyProviderSubscribers();
-        return mentionProvider;
-      }).catch(() => {
+            this.notifyProviderSubscribers();
+            resolve(mentionProvider);
+          })
+          .catch((e) => {
+            this.mentionProvider = undefined;
+            this.notifyProviderSubscribers();
+          });
+      } else {
         this.mentionProvider = undefined;
         this.notifyProviderSubscribers();
-      });
+      }
+    });
   }
 
   setView(view: EditorView) {

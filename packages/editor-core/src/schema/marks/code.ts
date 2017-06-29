@@ -1,6 +1,14 @@
 import { MarkSpec } from '../../prosemirror';
 import { COLOR, FONT_STYLE, LINK, SEARCH_QUERY } from '../groups';
 
+/**
+ * @name code_mark
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'code';
+}
+
 export const code: MarkSpec = {
   excludes: `${FONT_STYLE} ${LINK} ${SEARCH_QUERY} ${COLOR}`,
   inclusive: true,

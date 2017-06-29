@@ -81,6 +81,26 @@ describe('@atlaskit/editor-cq', () => {
       node.setProps({ expanded: true });
       expect(spy.callCount).to.equal(1);
     });
+
+    it('should focus the editor only when editorView exists', (done) => {
+      const spy = sinon.spy();
+      const editor = mount(<Editor isExpandedByDefault={false}/>);
+
+      (editor as any).node.focus = () => {
+        expect(editor.state().editorView).to.not.equal(undefined);
+        spy();
+      };
+
+      editor.setProps({ expanded: true });
+
+      // setting `expanded` prop calls render() again
+      // render() calls handleRef() which in turn sets `editorView` state
+      // setState() is async so we need to wait for it
+      editor.setState({}, () => {
+        expect(spy.callCount).to.equal(1);
+        done();
+      });
+    });
   });
 
   describe('ED-1410', () => {

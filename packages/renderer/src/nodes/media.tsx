@@ -217,6 +217,7 @@ export default class Media extends PureComponent<MediaProps, State> {
         dimensions={cardDimensions}
         identifier={id ? mediaIdentifier : urlPreviewIdentifier}
         onClick={onClick || noop}
+        resizeMode="full-fit"
       />
     );
   }
@@ -257,6 +258,7 @@ export default class Media extends PureComponent<MediaProps, State> {
         }}
         selectable={false}
         onClick={onClick || noop}
+        resizeMode="full-fit"
       />
     );
   }

@@ -89,7 +89,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { mediaProvider } = nextProps;
 
     if (this.props.mediaProvider !== mediaProvider) {
-      mediaProvider.then(this.handleMediaProvider);
+      if (mediaProvider) {
+        mediaProvider.then(this.handleMediaProvider);
+      } else {
+        this.setState({ mediaProvider });
+      }
     }
   }
 

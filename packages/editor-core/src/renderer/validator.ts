@@ -215,6 +215,16 @@ export const getValidNode = (node: Node): Node => {
         }
         break;
       }
+      case 'codeBlock': {
+        if (attrs && attrs.language) {
+          return {
+            type,
+            attrs,
+            content
+          };
+        }
+        break;
+      }
       case 'emoji': {
         if (attrs && attrs.shortName) {
           return {

@@ -32,6 +32,5 @@ pipelines:
             indexifier@2.0.0
             @atlassian/prebake-distributor-runner@1.0.2
           - yarn
-          - lerna bootstrap | cat
           - lerna run lint --stream
           - lerna run test --concurrency=1 --stream

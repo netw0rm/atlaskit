@@ -234,7 +234,6 @@ export default class Editor extends PureComponent<Props, State> {
         emojiProvider={emojiProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
-        maxHeight={200}
       />
     );
   }

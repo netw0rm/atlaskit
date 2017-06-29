@@ -14,9 +14,6 @@
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "peerDependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
@@ -45,5 +42,8 @@
     "atlaskit",
     "ui",
     "internal"
+  ],
+  "files": [
+    "umd"
   ]
 }

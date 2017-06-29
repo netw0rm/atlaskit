@@ -14,9 +14,6 @@
     "test:watch": "../../node_modules/.bin/nwb test --server",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "dependencies": {
     "@atlaskit/avatar": "^2.1.0",
     "@atlaskit/button": "^1.0.0",
@@ -60,5 +57,8 @@
       "name": "Thorsten B"
     }
   ],
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "files": [
+    "umd"
+  ]
 }

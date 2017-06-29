@@ -6,8 +6,7 @@
   },
   "description": "A React component used to display user profiles in a list for 'Mention' functionality",
   "main": "umd/@atlaskit/mention.js",
-  "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
+  "types": "umd/types/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -16,9 +15,6 @@
     "test:watch": "../../node_modules/.bin/nwb test --server",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "dependencies": {
     "@atlaskit/avatar": "^4.0.0",
     "@atlaskit/lozenge": "^3.0.2",
@@ -60,5 +56,8 @@
     "ui",
     "mention",
     "fabric"
+  ],
+  "files": [
+    "umd"
   ]
 }

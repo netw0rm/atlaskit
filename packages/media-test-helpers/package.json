@@ -13,9 +13,6 @@
     "test": "echo 'Error: no test specified'",
     "test:watch": "echo 'Error: no test specified'"
   },
-  "files": [
-    "umd"
-  ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
     "akutil-common-test": "*",
@@ -51,5 +48,8 @@
     "media",
     "ui",
     "private"
+  ],
+  "files": [
+    "umd"
   ]
 }

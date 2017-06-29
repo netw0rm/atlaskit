@@ -6,7 +6,7 @@
   },
   "description": "ak-droplist React component",
   "main": "umd/@atlaskit/droplist.js",
-  "types": "src/index.d.ts",
+  "types": "umd/types/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -15,9 +15,6 @@
     "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
     "@atlaskit/layer": "^2.0.1",
@@ -53,5 +50,8 @@
     "atlaskit",
     "ui",
     "internal"
+  ],
+  "files": [
+    "umd"
   ]
 }

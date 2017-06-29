@@ -6,8 +6,7 @@
   },
   "description": "Includes components that show media cards as a filmstrip",
   "main": "umd/@atlaskit/media-filmstrip.js",
-  "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
+  "types": "umd/types/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -16,9 +15,6 @@
     "test:watch": "../../node_modules/.bin/nwb test --server",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "dependencies": {
     "@atlaskit/media-card": "^12.0.0",
     "@atlaskit/icon": "^2.4.0",
@@ -59,5 +55,8 @@
   "keywords": [
     "media",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

@@ -6,7 +6,7 @@
   },
   "description": "A React presentational component that wraps fields and provides styles for focus/hover states",
   "main": "umd/@atlaskit/field-base.js",
-  "types": "src/index.d.ts",
+  "types": "umd/types/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -15,9 +15,6 @@
     "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js'",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "peerDependencies": {
     "react": "^15.3.2"
   },
@@ -55,5 +52,8 @@
     "atlaskit",
     "ui",
     "internal"
+  ],
+  "files": [
+    "umd"
   ]
 }

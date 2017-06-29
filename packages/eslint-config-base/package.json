@@ -31,5 +31,8 @@
   "keywords": [
     "atlaskit",
     "internal"
+  ],
+  "files": [
+    "umd"
   ]
 }

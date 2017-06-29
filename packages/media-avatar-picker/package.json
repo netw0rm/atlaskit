@@ -6,8 +6,7 @@
   },
   "description": "Component that allow users to pick, resize and drag his own and default avatars",
   "main": "umd/@atlaskit/media-avatar-picker.js",
-  "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
+  "types": "umd/types/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -16,9 +15,6 @@
     "test:watch": "../../node_modules/.bin/nwb test --server",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
     "@atlaskit/media-card": "^8.0.0",
@@ -61,5 +57,8 @@
   "keywords": [
     "media",
     "ui"
+  ],
+  "files": [
+    "umd"
   ]
 }

@@ -15,9 +15,6 @@
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
     "tslib": "^1.2.0",
@@ -40,5 +37,8 @@
     "fabric",
     "ui",
     "private"
+  ],
+  "files": [
+    "umd"
   ]
 }

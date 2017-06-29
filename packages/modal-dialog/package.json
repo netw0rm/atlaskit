@@ -6,7 +6,7 @@
   },
   "description": "A React component that displays content in a layer blocking the interaction with the page.",
   "main": "umd/@atlaskit/modal-dialog.js",
-  "types": "src/index.d.ts",
+  "types": "umd/types/index.d.ts",
   "scripts": {
     "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ test/",
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -15,9 +15,6 @@
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook -p 9001",
     "storybook:static": "../../build/bin/storybook/build-static.js"
   },
-  "files": [
-    "umd"
-  ],
   "dependencies": {
     "@atlaskit/blanket": "^2.0.4",
     "@atlaskit/util-shared-styles": "^2.0.1",
@@ -50,5 +47,8 @@
   "keywords": [
     "ui",
     "atlaskit"
+  ],
+  "files": [
+    "umd"
   ]
 }

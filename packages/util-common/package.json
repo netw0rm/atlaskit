@@ -12,9 +12,6 @@
     "test": "mocha --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000",
     "test:watch": "mocha --watch --colors --require ../../test-setup './test/unit/**/*.js' --timeout 10000"
   },
-  "files": [
-    "umd"
-  ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
   "license": "Apache-2.0",
@@ -35,5 +32,8 @@
     "atlaskit",
     "ui",
     "internal"
+  ],
+  "files": [
+    "umd"
   ]
 }

@@ -205,6 +205,16 @@ export const getValidNode = (node: Node): Node => {
 
   if (type) {
     switch (type) {
+      case 'applicationCard': {
+        if (attrs) {
+          return {
+            type,
+            text,
+            attrs
+          };
+        }
+        break;
+      }
       case 'doc': {
         const { version } = node as Doc;
         if (version && content && content.length) {

@@ -2,6 +2,7 @@ import { createSchema } from '../src/schema';
 
 export default createSchema({
   nodes: [
+    'applicationCard',
     'doc',
     'paragraph',
     'text',

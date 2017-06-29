@@ -175,7 +175,7 @@ describe('mentions', () => {
     describe('Space', () => {
       it('should be ignored if there is no mentionProvider', () => {
         const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
-        const spy = sandbox.spy(pluginState, 'onTrySelectCurrent');
+        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Space');
@@ -184,7 +184,7 @@ describe('mentions', () => {
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'onTrySelectCurrent');
+        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
 
         return pluginState
           .setMentionProvider(mentionProvider)

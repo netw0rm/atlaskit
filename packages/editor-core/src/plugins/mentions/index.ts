@@ -36,7 +36,6 @@ export class MentionsState {
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
   onSelectCurrent = (): boolean => false;
-  onTrySelectCurrent = (): boolean => false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;

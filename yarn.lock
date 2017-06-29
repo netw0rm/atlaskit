@@ -6846,9 +6846,9 @@ karma-webpack@2.0.1:
     source-map "^0.1.41"
     webpack-dev-middleware "^1.0.11"
 
-karma-webpack@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/karma-webpack/-/karma-webpack-1.8.0.tgz#340c7999eb3745b47becab47d0d304dac2c55257"
+karma-webpack@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/karma-webpack/-/karma-webpack-2.0.3.tgz#39cebf5ca2580139b27f9ae69b78816b9c82fae6"
   dependencies:
     async "~0.9.0"
     loader-utils "^0.2.5"
@@ -10570,9 +10570,9 @@ ts-jest@^20.0.6:
     tsconfig "^6.0.0"
     yargs "^8.0.1"
 
-ts-loader@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-2.0.3.tgz#89b8c87598f048df065766e07e1538f0eaeb1165"
+ts-loader@^2.0.3:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-2.2.1.tgz#2ed6d2e1296335259562e3cb190a53832f7ec5a3"
   dependencies:
     colors "^1.0.3"
     enhanced-resolve "^3.0.0"
@@ -11042,7 +11042,7 @@ webpack-sources@^0.1.0, webpack-sources@^0.1.4:
     source-list-map "~0.1.7"
     source-map "~0.5.3"
 
-webpack@2.2.0:
+webpack@2.2.0, webpack@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.2.0.tgz#09246336b5581c9002353f75bcadb598a648f977"
   dependencies:
@@ -11067,7 +11067,7 @@ webpack@2.2.0:
     webpack-sources "^0.1.4"
     yargs "^6.0.0"
 
-webpack@^1.13.1, webpack@^1.13.2:
+webpack@^1.13.1:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-1.14.0.tgz#54f1ffb92051a328a5b2057d6ae33c289462c823"
   dependencies:

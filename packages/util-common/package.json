@@ -22,7 +22,8 @@
   },
   "devDependencies": {
     "@atlaskit/util-common-test": "*",
-    "custom-event-polyfill": "^0.3.0"
+    "custom-event-polyfill": "^0.3.0",
+    "sinon": "^2.3.6"
   },
   "repository": {
     "type": "git",

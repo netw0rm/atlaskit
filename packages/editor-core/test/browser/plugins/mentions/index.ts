@@ -84,7 +84,6 @@ describe('mentions', () => {
           .setMentionProvider(mentionProvider)
           .then(() => {
             forceUpdate(pluginState, editorView); // Force update to ensure active query.
-            // pluginState.apply(null, editorView.state);
 
             sendKeyToPm(editorView, 'ArrowUp');
             expect(spy.called).to.equal(true);

@@ -466,26 +466,26 @@ export class MentionsState {
 
 export function createPlugin(providerFactory: ProviderFactory){
 
-return new Plugin({
-  state: {
-    init(config, state) {
-      return new MentionsState(state, providerFactory);
+  return new Plugin({
+    state: {
+      init(config, state) {
+        return new MentionsState(state, providerFactory);
+      },
+      apply(tr, prevPluginState, oldState, newState) {
+        // NOTE: Don't replace the pluginState here.
+        prevPluginState.apply(tr, newState);
+        return prevPluginState;
+      }
     },
-    apply(tr, prevPluginState, oldState, newState) {
-      // NOTE: Don't replace the pluginState here.
-      prevPluginState.apply(tr, newState);
-      return prevPluginState;
-    }
-  },
-  props: {
+    props: {
       nodeViews: {
         mention: nodeViewFactory(providerFactory, { mention: mentionNodeView }),
       }
     },
-  key: pluginKey,
-  view: (view: EditorView) => {
-    const pluginState: MentionsState = pluginKey.getState(view.state);
-    pluginState.setView(view);
+    key: pluginKey,
+    view: (view: EditorView) => {
+      const pluginState: MentionsState = pluginKey.getState(view.state);
+      pluginState.setView(view);
 
       return {
         update(view: EditorView, prevState: EditorState<any>) {

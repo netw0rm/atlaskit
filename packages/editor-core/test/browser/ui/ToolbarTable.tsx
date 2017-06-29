@@ -25,6 +25,7 @@ describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
       />
     );
     expect(toolbarTable.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarTable.unmount();
   });
 
   it('should render disabled ToolbarButton if pluginState.tableDisabled is true', () => {
@@ -37,6 +38,7 @@ describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
     );
     toolbarTable.setState({ tableDisabled: true });
     expect(toolbarTable.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarTable.unmount();
   });
 
   it('should not render ToolbarButton if pluginState.tableHidden is true', () => {
@@ -50,6 +52,7 @@ describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
     );
     toolbarTable.setState({ tableHidden: true });
     expect(toolbarTable.find(ToolbarButton)).to.have.length(0);
+    toolbarTable.unmount();
   });
 
   it('should render selected ToolbarButton if pluginState.tableActive is true', () => {
@@ -62,6 +65,7 @@ describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
     );
     toolbarTable.setState({ tableActive: true });
     expect(toolbarTable.find(ToolbarButton).prop('selected')).to.equal(true);
+    toolbarTable.unmount();
   });
 
   it('should render TableIcon inside ToolbarButton', () => {
@@ -73,5 +77,6 @@ describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
       />
     );
     expect(toolbarTable.find(TableIcon)).to.have.length(1);
+    toolbarTable.unmount();
   });
 });

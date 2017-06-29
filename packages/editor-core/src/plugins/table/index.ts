@@ -55,7 +55,7 @@ export class TableState {
         return false;
       }
       this.focusEditor();
-      const table = this.createStaticTable(3, 3);
+      const table = this.createTableNode(3, 3);
       const tr = state.tr.replaceSelectionWith(table);
       tr.setSelection(Selection.near(tr.doc.resolve(state.selection.from)));
       dispatch(tr.scrollIntoView());
@@ -112,16 +112,17 @@ export class TableState {
       return;
     }
     const { state, dispatch } = this.view;
-    if (this.cellSelection.isRowSelection()) {
-      const removed = tableBaseCommands.deleteColumn(state, dispatch);
-      // it's not going to be removed only if it attemps to remove the last cells in the table
-      if (removed) {
-        this.moveCursorToFirstCell();
-      } else {
-        tableBaseCommands.deleteTable(state, dispatch);
-        this.focusEditor();
-      }
-    } else if (this.cellSelection.isColSelection()) {
+    const isRowSelected = this.cellSelection.isColSelection();
+    const isColumnSelected = this.cellSelection.isRowSelection();
+
+    // the whole table
+    if (isRowSelected && isColumnSelected) {
+      tableBaseCommands.deleteTable(state, dispatch);
+      this.focusEditor();
+    } else if (isColumnSelected) {
+      tableBaseCommands.deleteColumn(state, dispatch);
+      this.moveCursorToFirstCell();
+    } else if (isRowSelected) {
       tableBaseCommands.deleteRow(state, dispatch);
       this.moveCursorToFirstCell();
     } else {
@@ -358,7 +359,7 @@ export class TableState {
     return dirty;
   }
 
-  private createStaticTable (rows: number, columns: number): Node {
+  private createTableNode (rows: number, columns: number): Node {
     const { state } = this.view;
     const { table, table_row, table_cell, table_header } = state.schema.nodes;
     const rowNodes: Node[] = [];
@@ -369,7 +370,7 @@ export class TableState {
       for (let j = 0; j < columns; j ++) {
         cellNodes.push(cell.createAndFill());
       }
-      rowNodes.push( table_row.create(null, Fragment.from(cellNodes)) );
+      rowNodes.push(table_row.create(null, Fragment.from(cellNodes)));
     }
     return table.create(null, Fragment.from(rowNodes));
   }
@@ -381,7 +382,7 @@ export class TableState {
     for (let i = $from.depth; i > 0; i--) {
       const node = $from.node(i);
       // inline code and codeBlock are excluded
-      if(node.type === state.schema.nodes.codeBlock || state.doc.rangeHasMark($from.pos, to, code)) {
+      if(node.type === state.schema.nodes.codeBlock || (code && state.doc.rangeHasMark($from.pos, to, code))) {
         return false;
       }
     }
@@ -472,8 +473,9 @@ const plugin = new Plugin({
       return false;
     },
     onFocus(view: EditorView, event) {
-      stateKey.getState(view.state).updateEditorFocused(true);
-      stateKey.getState(view.state).update(view.docView, true);
+      const pluginState = stateKey.getState(view.state);
+      pluginState.updateEditorFocused(true);
+      pluginState.update(view.docView, true);
     },
     onBlur(view: EditorView, event) {
       const pluginState = stateKey.getState(view.state);
@@ -493,6 +495,7 @@ const plugins = () => {
 
 export default plugins;
 
+// Disable inline table editing and resizing controls in Firefox
 // https://github.com/ProseMirror/prosemirror/issues/432
 setTimeout(() => {
   document.execCommand('enableObjectResizing', false, 'false');

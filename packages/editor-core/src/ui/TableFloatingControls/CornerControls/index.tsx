@@ -4,8 +4,8 @@ import {
   CornerContainer,
   CornerButton,
 } from './styles';
-import { InsertColumnButton } from '../ColumnHeader';
-import { InsertRowButton } from '../RowHeader';
+import InsertColumnButton from '../ColumnControls/InsertColumnButton';
+import InsertRowButton from '../RowControls/InsertRowButton';
 
 export interface Props {
   isSelected: () => boolean;
@@ -14,7 +14,7 @@ export interface Props {
   insertRow: (row: number) => void;
 }
 
-export default class CornerHeader extends Component<Props, any> {
+export default class CornerControls extends Component<Props, any> {
   render () {
     return (
       <CornerContainer className={this.props.isSelected() ? 'active' : ''}>

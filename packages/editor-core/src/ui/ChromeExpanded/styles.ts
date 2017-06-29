@@ -6,7 +6,7 @@ import {
   akEditorTableCellSelected,
   akEditorTableBorder,
   akEditorTableBorderSelected,
-  akEditorTableHeader,
+  akEditorTableFloatingControls,
 } from '../../styles';
 
 export const createNestedListStyles = (): any => {
@@ -160,7 +160,7 @@ export const Content = styled.div`
         }
       }
       th {
-        background-color: ${akEditorTableHeader};
+        background-color: ${akEditorTableFloatingControls};
         font-weight: bold;
         text-align: left;
       }

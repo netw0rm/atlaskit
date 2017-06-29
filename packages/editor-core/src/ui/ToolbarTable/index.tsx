@@ -34,18 +34,18 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   }
 
   render() {
+    if (this.state.tableHidden) {
+      return null;
+    }
+
     return (
-      <span>
-        {this.state.tableHidden ? null :
-          <ToolbarButton
-            onClick={this.handleClick}
-            selected={this.state.tableActive}
-            disabled={this.state.tableDisabled || this.props.disabled}
-            title={tooltip(toggleTable)}
-            iconBefore={<TableIcon label="Table" />}
-          />
-        }
-      </span>
+      <ToolbarButton
+        onClick={this.handleClick}
+        selected={this.state.tableActive}
+        disabled={this.state.tableDisabled || this.props.disabled}
+        title={tooltip(toggleTable)}
+        iconBefore={<TableIcon label="Table" />}
+      />
     );
   }
 

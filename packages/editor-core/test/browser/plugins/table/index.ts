@@ -102,7 +102,7 @@ describe('table plugin', () => {
       });
     });
 
-    context('when editor is blur', () => {
+    context('when editor is not focused', () => {
       it('it is false', () => {
         const { plugin, editorView, pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty ))));
         plugin.props.onBlur!(editorView, event);
@@ -145,9 +145,9 @@ describe('table plugin', () => {
         const { pluginState, editorView } = editor(doc(p('{<>}')));
         expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(true);
         const tableNode = table(
-          tr(thEmpty, thEmpty, thEmpty ),
-          tr(tdEmpty, tdEmpty, tdEmpty ),
-          tr(tdEmpty, tdEmpty, tdEmpty )
+          tr(thEmpty, thEmpty, thEmpty),
+          tr(tdEmpty, tdEmpty, tdEmpty),
+          tr(tdEmpty, tdEmpty, tdEmpty)
         );
         expect(editorView.state.doc).to.deep.equal(doc(tableNode));
       });

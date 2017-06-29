@@ -3,9 +3,9 @@ import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
 import Popup from '../Popup';
 import { CellSelection, Node, EditorView } from '../../prosemirror';
-import CornerHeader from './CornerHeader';
-import ColumnHeader from './ColumnHeader';
-import RowHeader from './RowHeader';
+import CornerControls from './CornerControls';
+import ColumnControls from './ColumnControls';
+import RowControls from './RowControls';
 
 export interface Props {
   pluginState: TableState;
@@ -20,7 +20,7 @@ export interface State {
   cellSelection?: CellSelection;
 }
 
-export default class TableHeader extends PureComponent<Props, State> {
+export default class TableFloatingControls extends PureComponent<Props, State> {
   state: State = {};
   content?: HTMLElement;
 
@@ -61,19 +61,19 @@ export default class TableHeader extends PureComponent<Props, State> {
         alignY="top"
       >
         <div onMouseDown={this.handleMouseDown} onBlur={this.handleBlur}>
-          <CornerHeader
+          <CornerControls
             isSelected={pluginState.isTableSelected}
             selectTable={pluginState.selectTable}
             insertColumn={pluginState.insertColumn}
             insertRow={pluginState.insertRow}
           />
-          <ColumnHeader
+          <ColumnControls
             tableElement={tableElement}
             isSelected={pluginState.isColumnSelected}
             selectColumn={pluginState.selectColumn}
             insertColumn={pluginState.insertColumn}
           />
-          <RowHeader
+          <RowControls
             tableElement={tableElement}
             isSelected={pluginState.isRowSelected}
             selectRow={pluginState.selectRow}

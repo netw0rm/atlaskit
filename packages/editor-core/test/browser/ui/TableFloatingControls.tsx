@@ -3,27 +3,27 @@ import { shallow, mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
 import tablePlugins from '../../../src/plugins/table';
-import TableHeader from '../../../src/ui/TableHeader';
-import CornerHeader from '../../../src/ui/TableHeader/CornerHeader';
-import ColumnHeader from '../../../src/ui/TableHeader/ColumnHeader';
-import RowHeader from '../../../src/ui/TableHeader/RowHeader';
-import { InsertColumnButton } from '../../../src/ui/TableHeader/ColumnHeader';
-import { InsertRowButton } from '../../../src/ui/TableHeader/RowHeader';
+import TableFloatingControls from '../../../src/ui/TableFloatingControls';
+import CornerControls from '../../../src/ui/TableFloatingControls/CornerControls';
+import ColumnControls from '../../../src/ui/TableFloatingControls/ColumnControls';
+import RowControls from '../../../src/ui/TableFloatingControls/RowControls';
+import InsertColumnButton from '../../../src/ui/TableFloatingControls/ColumnControls/InsertColumnButton';
+import InsertRowButton from '../../../src/ui/TableFloatingControls/RowControls/InsertRowButton';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import {
-  ColumnHeaderButtonWrap,
-  HeaderButton as ColumnHeaderButton
-} from '../../../src/ui/TableHeader/ColumnHeader/styles';
+  ColumnControlsButtonWrap,
+  HeaderButton as ColumnControlsButton
+} from '../../../src/ui/TableFloatingControls/ColumnControls/styles';
 import {
-  RowHeaderButtonWrap,
-  HeaderButton as RowHeaderButton
-} from '../../../src/ui/TableHeader/RowHeader/styles';
+  RowControlsButtonWrap,
+  HeaderButton as RowControlsButton
+} from '../../../src/ui/TableFloatingControls/RowControls/styles';
 
 import {
   createEvent, doc, p, fixtures, makeEditor, table, tr, tdEmpty, tdCursor
 } from '../../../src/test-helper';
 
-describe('TableHeader', () => {
+describe('TableFloatingControls', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
@@ -36,80 +36,85 @@ describe('TableHeader', () => {
   context('when pluginState.tableElement is undefined', () => {
     it('should not render table header', () => {
       const { editorView, pluginState } = editor(doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))));
-      const tableHeader = mount(
-        <TableHeader pluginState={pluginState} editorView={editorView} />
+      const floatingControls = mount(
+        <TableFloatingControls pluginState={pluginState} editorView={editorView} />
       );
-      expect(tableHeader.html()).to.equal(null);
+      expect(floatingControls.html()).to.equal(null);
+      floatingControls.unmount();
     });
   });
 
   context('when pluginState.tableElement is defined', () => {
-    it('should render CornerHeader, ColumnHeader and RowHeader', () => {
+    it('should render CornerControls, ColumnControls and RowControls', () => {
       const { editorView, pluginState } = editor(doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))));
-      const tableHeader = shallow(
-        <TableHeader pluginState={pluginState} editorView={editorView} />
+      const floatingControls = shallow(
+        <TableFloatingControls pluginState={pluginState} editorView={editorView} />
       );
-      tableHeader.setState({ tableElement: document.createElement('table') });
-      expect(tableHeader.find(CornerHeader)).to.have.length(1);
-      expect(tableHeader.find(ColumnHeader)).to.have.length(1);
-      expect(tableHeader.find(RowHeader)).to.have.length(1);
+      floatingControls.setState({ tableElement: document.createElement('table') });
+      expect(floatingControls.find(CornerControls)).to.have.length(1);
+      expect(floatingControls.find(ColumnControls)).to.have.length(1);
+      expect(floatingControls.find(RowControls)).to.have.length(1);
     });
   });
 
-  context('when editor is blur', () => {
+  context('when editor is not focused', () => {
     it('should not render table header', () => {
       const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-      const tableHeader = mount(
-        <TableHeader pluginState={pluginState} editorView={editorView} />
+      const floatingControls = mount(
+        <TableFloatingControls pluginState={pluginState} editorView={editorView} />
       );
       plugin.props.onFocus!(editorView, event);
-      expect(tableHeader.html()).to.not.equal(null);
+      expect(floatingControls.html()).to.not.equal(null);
       plugin.props.onBlur!(editorView, event);
-      expect(tableHeader.html()).to.equal(null);
+      expect(floatingControls.html()).to.equal(null);
+      floatingControls.unmount();
     });
   });
 
   context('when toolbar is clicked', () => {
     it('should call pluginState.updateToolbarFocused', () => {
       const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-      const tableHeader = mount(
-        <TableHeader pluginState={pluginState} editorView={editorView} />
+      const floatingControls = mount(
+        <TableFloatingControls pluginState={pluginState} editorView={editorView} />
       );
       plugin.props.onFocus!(editorView, event);
       pluginState.updateToolbarFocused = sinon.spy();
-      tableHeader.find(CornerHeader).parent().simulate('mousedown');
+      floatingControls.find(CornerControls).parent().simulate('mousedown');
       expect(pluginState.updateToolbarFocused.calledOnce).to.equal(true);
+      floatingControls.unmount();
     });
   });
 
-  context('when toolbar is blur', () => {
+  context('when toolbar is not focused', () => {
     it('should call pluginState.updateToolbarFocused', () => {
       const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-      const tableHeader = mount(
-        <TableHeader pluginState={pluginState} editorView={editorView} />
+      const floatingControls = mount(
+        <TableFloatingControls pluginState={pluginState} editorView={editorView} />
       );
       plugin.props.onFocus!(editorView, event);
       pluginState.updateToolbarFocused = sinon.spy();
-      tableHeader.find(CornerHeader).parent().simulate('blur');
+      floatingControls.find(CornerControls).parent().simulate('blur');
       expect(pluginState.updateToolbarFocused.calledOnce).to.equal(true);
+      floatingControls.unmount();
     });
   });
 
-  describe('CornerHeader', () => {
+  describe('CornerControls', () => {
     context('when pluginState.isTableSelected is true', () => {
       it('should render selected header', () => {
         const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-        const tableHeader = mount(
-          <TableHeader pluginState={pluginState} editorView={editorView} />
+        const floatingControls = mount(
+          <TableFloatingControls pluginState={pluginState} editorView={editorView} />
         );
         plugin.props.onFocus!(editorView, event);
         pluginState.selectTable();
-        expect(tableHeader.find(CornerHeader).prop('isSelected')()).to.equal(true);
+        expect(floatingControls.find(CornerControls).prop('isSelected')()).to.equal(true);
+        floatingControls.unmount();
       });
     });
   });
 
-  describe('ColumnHeader', () => {
+  describe('ColumnControls', () => {
     [1, 2, 3].forEach(column => {
       context(`when table has ${column} columns`, () => {
         it(`should render ${column} column header buttons`, () => {
@@ -118,11 +123,12 @@ describe('TableHeader', () => {
             nodes.push(tdEmpty);
           }
           const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(...nodes))));
-          const tableHeader = mount(
-            <TableHeader pluginState={pluginState} editorView={editorView} />
+          const floatingControls = mount(
+            <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
           plugin.props.onFocus!(editorView, event);
-          expect(tableHeader.find(ColumnHeaderButtonWrap)).to.have.length(column);
+          expect(floatingControls.find(ColumnControlsButtonWrap)).to.have.length(column);
+          floatingControls.unmount();
         });
       });
     });
@@ -132,20 +138,21 @@ describe('TableHeader', () => {
         it(`should call pluginState.selectColumn(${column})`, () => {
           const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
           pluginState.selectColumn = sinon.spy();
-          const tableHeader = mount(
-            <TableHeader pluginState={pluginState} editorView={editorView} />
+          const floatingControls = mount(
+            <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
           plugin.props.onFocus!(editorView, event);
-          tableHeader.find(ColumnHeaderButton).at(column).find('button').first().simulate('click');
+          floatingControls.find(ColumnControlsButton).at(column).find('button').first().simulate('click');
           expect(pluginState.selectColumn.calledOnce).to.equal(true);
           const { args } = pluginState.selectColumn.getCalls()[0];
           expect(args[0]).to.equal(column);
+          floatingControls.unmount();
         });
       });
     });
   });
 
-  describe('RowHeader', () => {
+  describe('RowControls', () => {
     [1, 2, 3].forEach(row => {
       context(`when table has ${row} rows`, () => {
         it(`should render ${row} row header buttons`, () => {
@@ -154,11 +161,12 @@ describe('TableHeader', () => {
             rows.push(tr(tdEmpty));
           }
           const { editorView, plugin, pluginState } = editor(doc(p('text'), table(...rows)));
-          const tableHeader = mount(
-            <TableHeader pluginState={pluginState} editorView={editorView} />
+          const floatingControls = mount(
+            <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
           plugin.props.onFocus!(editorView, event);
-          expect(tableHeader.find(RowHeaderButtonWrap)).to.have.length(row);
+          expect(floatingControls.find(RowControlsButtonWrap)).to.have.length(row);
+          floatingControls.unmount();
         });
       });
     });
@@ -168,14 +176,15 @@ describe('TableHeader', () => {
         it(`should call pluginState.selectRow(${row})`, () => {
           const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
           pluginState.selectRow = sinon.spy();
-          const tableHeader = mount(
-            <TableHeader pluginState={pluginState} editorView={editorView} />
+          const floatingControls = mount(
+            <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
           plugin.props.onFocus!(editorView, event);
-          tableHeader.find(RowHeaderButton).at(row).find('button').first().simulate('click');
+          floatingControls.find(RowControlsButton).at(row).find('button').first().simulate('click');
           expect(pluginState.selectRow.calledOnce).to.equal(true);
           const { args } = pluginState.selectRow.getCalls()[0];
           expect(args[0]).to.equal(row);
+          floatingControls.unmount();
         });
       });
     });
@@ -195,6 +204,7 @@ describe('TableHeader', () => {
           expect(pluginState.insertColumn.calledOnce).to.equal(true);
           const { args } = pluginState.insertColumn.getCalls()[0];
           expect(args[0]).to.equal(index);
+          wrapper.unmount();
         });
       });
     });
@@ -214,6 +224,7 @@ describe('TableHeader', () => {
           expect(pluginState.insertRow.calledOnce).to.equal(true);
           const { args } = pluginState.insertRow.getCalls()[0];
           expect(args[0]).to.equal(index);
+          wrapper.unmount();
         });
       });
     });

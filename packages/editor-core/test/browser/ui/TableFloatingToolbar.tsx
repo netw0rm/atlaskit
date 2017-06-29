@@ -52,6 +52,7 @@ describe('TableFloatingToolbar', () => {
         <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
       );
       expect(floatingToolbar.html()).to.not.equal(null);
+      floatingToolbar.unmount();
     });
   });
 
@@ -64,10 +65,11 @@ describe('TableFloatingToolbar', () => {
         <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
       );
       expect(floatingToolbar.html()).to.not.equal(null);
+      floatingToolbar.unmount();
     });
   });
 
-  context('when editor is blur', () => {
+  context('when editor is not focused', () => {
     it('should not render toolbar', () => {
       const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
       plugin.props.onFocus!(editorView, event);
@@ -91,6 +93,7 @@ describe('TableFloatingToolbar', () => {
       const button = floatingToolbar.find(ToolbarButton);
       expect(button).to.have.length(1);
       expect(button.find(RemoveIcon)).to.have.length(1);
+      floatingToolbar.unmount();
     });
 
     it('should call pluginState.remove() on click', () => {

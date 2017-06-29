@@ -337,17 +337,9 @@ export default class DragHandle extends PureComponent {
     const provided: Provided = {
       onMouseDown: this.onMouseDown,
       onKeyDown: this.onKeyDown,
-
-      // Conditionally block clicks
       onClick: this.onClick,
-
-      // Allow tabbing to this element
       tabIndex: 0,
-
-      // Aria
       'aria-grabbed': isDragging,
-
-      // Stop html5 drag a drop
       draggable: false,
       onDragStart: getFalse,
       onDrop: getFalse,

@@ -3,8 +3,7 @@ import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 import * as physics from '../physics';
 import type { Position } from '../../types';
-
-export type Speed = 'INSTANT' | 'STANDARD' | 'FAST';
+import type { Props, DefaultProps, Style } from './moveable-types';
 
 type PositionLike = {|
   x: any,
@@ -19,20 +18,7 @@ const origin: Position = {
 const isAtOrigin = (point: PositionLike): boolean =>
   point.x === origin.x && point.y === origin.y;
 
-type Props = {|
-  children: (?Object) => void,
-  speed: Speed,
-  destination?: Position,
-  onMoveEnd?: () => void,
-|}
-
-type DefaultProps = {|
-  innerRef: (Element) => void,
-  destination: Position,
-  style: Object,
-|}
-
-const getStyle = (isNotMoving: boolean, x: number, y: number): ?Object => {
+const getStyle = (isNotMoving: boolean, x: number, y: number): ?Style => {
   if (isNotMoving) {
     return null;
   }
@@ -42,9 +28,10 @@ const getStyle = (isNotMoving: boolean, x: number, y: number): ?Object => {
   if (isAtOrigin(point)) {
     return null;
   }
-  return {
+  const style: Style = {
     transform: `translate(${point.x}px, ${point.y}px)`,
   };
+  return style;
 };
 
 export default class Movable extends PureComponent {
@@ -54,7 +41,6 @@ export default class Movable extends PureComponent {
   static defaultProps: DefaultProps = {
     innerRef: () => {},
     destination: origin,
-    style: {},
   }
   /* eslint-enable */
 
@@ -92,7 +78,6 @@ export default class Movable extends PureComponent {
 
   render() {
     const final = this.getFinal();
-    console.log('render called with destination', this.props.destination);
 
     // bug with react-motion: https://github.com/chenglou/react-motion/issues/437
     // even if both defaultStyle and style are {x: 0, y: 0 } if there was

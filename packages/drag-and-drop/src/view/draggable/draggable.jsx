@@ -14,18 +14,15 @@ import type {
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import Placeholder from './placeholder';
-import type { Props, Provided, StateSnapshot } from './draggable-types';
-import type { Speed } from '../moveable';
-
-type PlacementStyle = {|
-  position: 'absolute',
-  boxSizing: 'border-box',
-  zIndex: ZIndex,
-  width: number,
-  height: number,
-  top: number,
-  left: number,
-|}
+import type {
+  Props,
+  Provided,
+  StateSnapshot,
+  DefaultProps,
+  PlacementStyle,
+  DraggableStyle,
+} from './draggable-types';
+import type { Speed, Style as MovementStyle } from '../moveable/moveable-types';
 
 type PlacementInfo = {|
   showPlaceholder: boolean,
@@ -46,7 +43,7 @@ export default class Draggable extends PureComponent {
     childRef: null,
   }
 
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     isDragEnabled: true,
     type: 'DEFAULT',
   }
@@ -232,18 +229,32 @@ export default class Draggable extends PureComponent {
 
   getProvided = memoizeOne(
     (showPlaceholder: boolean,
-      dragHandleProps: DragHandleProvided,
-      movementStyle: Object,
+      dragHandleProps: ?DragHandleProvided,
+      movementStyle: ?MovementStyle,
       placementStyle: ?PlacementStyle,
-    ): Provided => ({
-      innerRef: this.setChildRef,
-      placeholder: showPlaceholder ? this.getPlaceholder() : null,
-      dragHandleProps,
-      draggableStyle: {
-        ...placementStyle,
-        ...movementStyle,
-      },
-    })
+    ): Provided => {
+      const draggableStyle: ?DraggableStyle = ((): ?DraggableStyle => {
+        if (!placementStyle && !movementStyle) {
+          return null;
+        }
+
+        // $ExpectError - does not like spread
+        const style: ?DraggableStyle = {
+          ...placementStyle,
+          ...movementStyle,
+        };
+
+        return style;
+      })();
+
+      const provided: Provided = {
+        innerRef: this.setChildRef,
+        placeholder: showPlaceholder ? this.getPlaceholder() : null,
+        dragHandleProps,
+        draggableStyle,
+      };
+      return provided;
+    }
   )
 
   getSnapshot = memoizeOne((isDragging: boolean): StateSnapshot => ({
@@ -269,12 +280,12 @@ export default class Draggable extends PureComponent {
           destination={this.props.offset}
           onMoveEnd={this.onMoveEnd}
         >
-          {movementStyle => (
+          {(movementStyle: ?MovementStyle) => (
             <DragHandle
               isEnabled={this.props.isDragEnabled}
               callbacks={this.callbacks}
             >
-              {(dragHandleProps: DragHandleProvided) =>
+              {(dragHandleProps: ?DragHandleProvided) =>
                 this.memoizedChildrenFn(
                   this.getProvided(
                     info.showPlaceholder,

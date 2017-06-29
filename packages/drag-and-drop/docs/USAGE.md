@@ -2,14 +2,7 @@
 
 [TODO: gif]
 
-The goal of this library is to create a beautiful drag and drop experience for lists.
-
-## Feature set
-
-### Supported
-
-- Reordering within a single vertical list
-- keyboard first dragging
+The goal of this library is to create a beautiful drag and drop experience for lists. It provides highly performant physics based mouse and keyboard dragging without creating any wrapping DOM nodes.
 
 ### Short term backlog
 
@@ -20,21 +13,19 @@ The goal of this library is to create a beautiful drag and drop experience for l
 
 - Dragging within a horizontal list
 - Moving items between horizontal lists
-- Moving a *draggable* from a vertical list to a *horizontal* list
+- Moving a `Draggable` from a vertical list to a horizontal list
 - Nesting
 
 ### Long term backlog
 
 - Automatically disabling physics for a drag when the frame rate drops below a threshold. This can be because of low system resources, or when the are 100's of impacted items during a drag
-- A mechanism to programtically perform dragging
-- Mutli-drag
+- A mechanism to perform dragging without user input
+- Dragging multiple items at a time
 - And lots more!
 
 ## `DragDropContext`
 
-In order to use drag and drop, you need to have the part of your react tree that you want to be able to use drag and drop in wrapped in a **drag drop context**. It is advised to just wrap your entire application in a **drag drop context**. Having nested **drag drop context**'s is not supported. You will be able to achieve your desired conditional dragging and dropping using the `type` and `provide` functions of `droppable` and `draggable`. You can think of this function as having a similar purpose to the [react-redux Provider component](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)
-
-This function will return a higher order component which wraps the component that you provide. It will spread whatever props you pass it onto your original component.
+In order to use drag and drop, you need to have the part of your react tree that you want to be able to use drag and drop in wrapped in a `DragDropContext`. It is advised to just wrap your entire application in a `DragDropContext`. Having nested `DragDropContext`'s is *not* supported. You will be able to achieve your desired conditional dragging and dropping using the props of `Droppable` and `Draggable`. You can think of `DragDropContext` as having a similar purpose to the [react-redux Provider component](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)
 
 ### Prop type information
 
@@ -45,7 +36,7 @@ type Hooks = {
 }
 
 type Props = Hooks & {|
-  children?: any,
+  children?: ReactElement,
 |}
 ```
 
@@ -73,14 +64,15 @@ class App extends React.Component {
 
 These are top level application events that you can use to perform your own state updates.
 
+
 ### `onDragStart` (optional)
 
 This function will get notified when a drag starts. You are provided with the following details:
 
-- `id`: the id of the *draggable* that is now dragging
-- `location`: the location (`droppableId` and `index`) of where the dragging item has started within a *droppable*.
+- `id`: the id of the `Draggable` that is now dragging
+- `location`: the location (`droppableId` and `index`) of where the dragging item has started within a `Droppable`.
 
-This function is *optional* and therefore does not need to be provided. It is **highly recommended** that you use this function to block updates to all *draggable* and *droppable* components during a drag. (See *Best `hooks` practices*)
+This function is *optional* and therefore does not need to be provided. It is **highly recommended** that you use this function to block updates to all `Draggable` and `Droppable` components during a drag. (See *Best `hooks` practices*)
 
 **Type information**
 
@@ -100,15 +92,15 @@ type DraggableLocation = {|
 
 ### `onDragEnd` (required)
 
-This function is *extremely* important and has an important role to play in the application lifecycle. **This function must result in the *synchronous* reordering of a list of draggables**
+This function is *extremely* important and has an important role to play in the application lifecycle. **This function must result in the *synchronous* reordering of a list of `Draggables`**
 
 It is provided with all the information about a drag:
 
 ### `result: DragResult`
 
-- `result.draggableId`: the id of the *draggable* was dragging.
-- `result.source`: the location that the *draggable* started in.
-- `result.destination`: the location that the *draggable* finished in. The `destination` will be `null` if the user dropped into no position (such as outside any list) *or* if they dropped the *draggable* back into the same position that it started in.
+- `result.draggableId`: the id of the `Draggable` was dragging.
+- `result.source`: the location that the `Draggable` started in.
+- `result.destination`: the location that the `Draggable` finished in. The `destination` will be `null` if the user dropped into no position (such as outside any list) *or* if they dropped the `Draggable` back into the same position that it started in.
 
 ### Synchronous reordering
 
@@ -116,8 +108,8 @@ Because this library does not control your state, it is up to you to *synchronou
 
 *Here is what you need to do:*
 - if the `destination` is `null`: all done!
-- if `source.droppableId` equals `destination.droppableId` you need to [reorder](https://stackoverflow.com/a/2440720/1374236) the *draggables* in the *droppable*
-- if `source.droppableId` does not equal `destination.droppable` you need to [remove](https://stackoverflow.com/a/20690490/1374236) the *draggable* from the `source.droppableId` list and [add it](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) into the correct position of the `destination.droppableId` list.
+- if `source.droppableId` equals `destination.droppableId` you need to remove the item from your list and insert it at the correct position.
+- if `source.droppableId` does not equal `destination.droppable` you need to the `Draggable` from the `source.droppableId` list and [add it](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) into the correct position of the `destination.droppableId` list.
 
 (links assume you store your ids in arrays)
 
@@ -148,9 +140,9 @@ type DraggableLocation = {|
 
 **Block updates during a drag**
 
-It is **highly** recommended that while a user is dragging that you block any state updates that might impact the amount of *draggables* and *droppables*, or their dimensions. Please listen to `onDragStart` and block updates to the *draggables* and *droppables* until you receive at `onDragEnd`.
+It is **highly** recommended that while a user is dragging that you block any state updates that might impact the amount of `Draggable`s and `Droppable`s, or their dimensions. Please listen to `onDragStart` and block updates to the `Draggable`s and `Droppable`s until you receive at `onDragEnd`.
 
-When the user starts dragging we take a snapshot of all of the dimensions of the applicable *draggable* and *droppable* nodes. If these change during a drag we will not know about it.
+When the user starts dragging we take a snapshot of all of the dimensions of the applicable `Draggable` and `Droppable` nodes. If these change during a drag we will not know about it.
 
 Here are a few poor user experiences that can occur if you change things *during a drag*:
 
@@ -165,427 +157,371 @@ Here are a few poor user experiences that can occur if you change things *during
 
 We try very hard to ensure that each `onDragStart` event is paired with a single `onDragEnd` event. However, there maybe a rouge situation where this is not the case. If that occurs - it is a bug. Currently there is no mechanism to tell the library to cancel a current drag externally.
 
+**Dynamic hooks**
+Your *hook* functions will only be captured *once at start up*. Please do not change the function after that. If there is a valid use case for this then dynamic hooks could be supported. However, at this time it is not.
 
-## `droppable`
 
-*Droppable* components can be **dropped on by a *draggable***. They also **contain** *draggables*. A *draggable* must be contained within a *droppable*.
+## `Droppable`
+
+`Droppable` components can be **dropped on by a `Draggable`**. They also **contain** `Draggable`s. A `Draggable` must be contained within a `Droppable`.
 
 ```js
-const DroppableList = droppable(type, direction, provide, mapStateToProps?)(List);
+<Droppable
+  droppableId="droppable-1"
+  type="PERSON"
+  isDropEnabled
+>
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div
+      ref={provided.innerRef}
+      style={{backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey'}}
+    >
+      I am a droppable!
+    </div>
+  )}
+</Droppable>
 ```
 
-### api
+### Props
 
-- `type`: A static `TypeId(string)` that can be used to simply accept a class of *draggable*. For example, if you use the type `PERSON` then it will only allow *draggables* of type `PERSON` to be dropped on itself. *draggables* of type `TASK` would not be able to be dropped on a *droppable* with type `PERSON`. Currently the `type` of the *draggables* within a *droppable* **must be** the same. This restriction might be loosened in the future if there is a valid use case.
-- `direction`: whether this *droppable* supports vertical or horizontal movement. *Currently only vertical reordering is supported* so the `direction` will always need to be `vertical`.
-- `provide`: A function that provides you with your own props, and expects you to return a `DroppableId(string)` and whether or not dropping on this *droppable* is currently permitted (see conditional dropping). This function is used by the library to know critical information about your component at runtime. You are more than welcome to change `isDropEnabled` at any point - even during a drag. **Do not change the id of a droppable during a drag** or things will go badly. At this point the library might just raise an exception. We could add some extra safeguards, but for now just do not do this.
--  `mapStateToProps?`: This **optional** function allows you to get provided with a small snapshot of drag state that is relevant to your *droppable*. Whatever you return from this function will be added to the props of your component. The main usecase of this is to add a `isDraggingOver` prop onto your component.
+- `droppableId`: A *required* `DroppableId(string)` that uniquely identifies the droppable for the application. Please do not change this prop - especially during a drag.
+- `type`: An *optional* `TypeId(string)` that can be used to simply accept a class of `Draggable`. For example, if you use the type `PERSON` then it will only allow `Draggable`s of type `PERSON` to be dropped on itself. `Draggable`s of type `TASK` would not be able to be dropped on a `Droppable` with type `PERSON`. If no `type` is provided, it will be set to `'DEFAULT'`. Currently the `type` of the `Draggable`s within a `Droppable` **must be** the same. This restriction might be loosened in the future if there is a valid use case.
+- `isDropEnabled`: An *optional* flag to control whether or not dropping is currently allowed on the `Droppable`. You can use this to implement your own conditional dropping logic. It will default to `true`.
+
+### Children function
+
+The React children of a `Droppable` must be a function that returns a `ReactElement`.
+
+```js
+<Droppable droppableId="droppable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    // ...
+  )}
+</Droppable>
+```
+
+The function is provided with two arguments:
+
+**1. provided: (Provided)**
+
+```js
+type Provided = {|
+  innerRef: (Element) => mixed,
+|}
+```
+
+In order for the droppable to function correctly, **you must** bind the `provided.innerRef` to the highest possible DOM node in the `ReactElement`. We do this in order to avoid needing to use `ReactDOM` to look up your DOM node.
+
+```js
+<Droppable droppableId="droppable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div ref={provided.innerRef}>
+      Good to go
+    </div>
+  )}
+</Droppable>
+```
+
+**2. snapshot: (StateSnapshot)**
+
+```js
+export type StateSnapshot = {|
+  isDraggingOver: boolean,
+|}
+```
+
+The `children` function is also provided with a small about of state relating to the current drag state. This can be optionally used to enhance your component. A common use case is changing the appearance of a `Droppable` while it is being dragged over.
+
+```js
+<Droppable droppableId="droppable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div
+      ref={provided.innerRef}
+      style={{backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey'}}
+    >
+      I am a droppable!
+    </div>
+  )}
+</Droppable>
+```
 
 ### Conditionally dropping
 
 > Keep in mind that this is not supported at this time. In this current initial version we only support reordering within a single list.
 
-- *droppables* can only be dropped on by *draggables* who share the same `type`. This is a simple way of allowing conditional dropping.
-- Using the `provide` function you can conditionally allow dropping based on your `ownProps`. This allows you to do arbitrarily complex conditional transitions.
-- You can disable dropping on a *droppable* altogether by always returning `isDraggingOver: false` in your `provide` function. You might always want a list to not be able to be dropped on.
-- Technically you do not need to use `type` and could just set it to something generic such as `ITEM` and do all of your conditional drop logic with the `provide` function. The `type` parameter is a convenient shortcut for a common use case.
+- `Droppable`s can only be dropped on by `Draggable`s who share the same `type`. This is a simple way of allowing conditional dropping. If you do not provide a `type` for the `Droppable` then it will only accept `Draggable`s which also have the default type. `Draggable`s and `Droppable`s both will have their `types` set to `'DEFAULT'` when none is provided. There is currently no way to set multiple `types`, or a `type` wildcard that will accept `Draggable`s of multiple any types. This could be added if there is a valid use case.
+- Using the `isDropEnabled` prop you can conditionally allow dropping. This allows you to do arbitrarily complex conditional transitions. This will only be considered if the `type` of the `Droppable` matches the `type` of the currently dragging `Draggable`.
+- You can disable dropping on a `Droppable` altogether by always setting `isDropEnabled` to false. You can do this to create a list that is never able to be dropped on, but contains `Draggable`s.
+- Technically you do not need to use `type` and do all of your conditional drop logic with the `isDropEnabled` function. The `type` parameter is a convenient shortcut for a common use case.
 
-### Extra DOM nodes?
-Droppable will create **no extra wrapping DOM nodes**! Boya!!
+## `Draggable`
 
-### Type information
+`Draggable` components can be dragged around and dropped onto `Droppable`s. A `Draggable` must always be contained within a `Droppable`. It is **possible** to reorder a `Draggable` within its home `Droppable` or move to another `Droppable`. It is **possible** because a `Droppable` is free to control what it allows to be dropped on it.
+
+> Note: moving between `Droppable` is currently not supported in the initial version.
 
 ```js
-droppable(
-  type: TypeId,
-  direction: Direction,
-  provide: Provide,
-  mapStateToProps?: MapStateToProps
-) => (Component: ReactClass) => ReactClass
+<Draggable
+  draggableId="draggable-1"
+  type="PERSON"
+  isDragEnabled
+>
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div
+      ref={draggableProvided.innerRef}
+      style={draggableProvided.draggableStyle}
+      {...draggableProvided.dragHandleProps}
+    >
+      <h4>My draggable</h4>
+    </div>
+  )}
+</Draggable>
+```
 
-// supporting types
-type Id = string;
-type TypeId = Id;
-// Currently only supporting vertical movement
-type Direction = 'vertical';
+### Props
 
-type OwnProps = Object;
+- `draggableId`: A *required* `DraggableId(string)` that uniquely identifies the `Draggable` for the application. Please do not change this prop - especially during a drag.
+- `type`: An *optional* type (`TypeId(string)`) of the `Draggable`. This is used to control what `Droppable`s the `Draggable` is permitted to drop on. `Draggable`s can only drop on `Droppable`s that share the same `type`. If no `type` is provided, it will be set to `'DEFAULT'`. Currently the `type` of a `Draggable` **must be** the same as its container `Droppable`. This restriction might be loosened in the future if there is a valid use case.
+- `isDragEnabled`: An *optional* flag to control whether or not dropping is currently allowed on the `Droppable`. You can use this to implement your own conditional dropping logic. It will default to `true`.
 
-// Provide
-type Provide = (ownProps: OwnProps) => NeedsProviding;
-type NeedsProviding = {|
-  id: DroppableId,
-  isDropEnabled?: boolean
-|}
+### Children function
 
-// MapStateToProps
-type MapStateToProps = (state: StateSnapshot, ownProps: OwnProps) => Object;
-type StateSnapshot = {|
-  isDraggingOver: boolean
+The React children of a `Draggable` must be a function that returns a `ReactElement`.
+
+```js
+<Draggable draggableId="draggable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div>
+      <div
+        ref={provided.innerRef}
+        style={provided.draggableStyle}
+        {...provided.dragHandleProps}
+      >
+        Drag me!
+      </div>
+      {provided.placeholder}
+    </div>
+  )}
+</Draggable>
+```
+
+The function is provided with two arguments:
+
+**1. provided: (Provided)**
+
+```js
+type Provided = {|
+  innerRef: (Element) => void,
+  draggableStyle: ?DraggableStyle,
+  dragHandleProps: ?DragHandleProvided,
+  placeholder: ?ReactElement,
 |}
 ```
 
-### Basic usage
+Everything within the *provided* object must be applied for the `Draggable` to function correctly.
+
+- `provided.innerRef (innerRef: (Element) => void)`: In order for the `Droppable` to function correctly, **you must** bind the `innerRef` function to the `ReactElement` that you want to be considered the `Draggable` node. We do this in order to avoid needing to use `ReactDOM` to look up your DOM node.
 
 ```js
-import React, { Component, PropTypes } from 'react';
+<Draggable draggableId="draggable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div ref={provided.innerRef}>
+      Drag me!
+    </div>
+  )}
+</Draggable>
+```
 
-const List extends Component {
-  static propTypes = {
-    listId: PropTypes.string.isRequired,
-    // provided by mapStateToProps
-    isDraggingOver: PropTypes.bool.isRequired,
-    children: PropTypes.node,
-  }
+**Type information**
 
-  render() {
-    const { children, isDraggingOver, listId } = this.props;
+```js
+innerRef: (Element) => void
+```
+
+- `provided.draggableStyle (?DraggableStyle)`: This is an object that contains an a number of styles that needs to be applied to the `Draggable`. This needs to be applied to the same node that you apply `provided.innerRef` to. The controls the movement of the draggable when it is dragging and not dragging. You are welcome to add your own styles to this object - but please do not remove or replace any of the properties.
+
+```js
+<Draggable draggableId="draggable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div>
+      <div
+        ref={provided.innerRef}
+        style={provided.draggableStyle}
+      >
+        Drag me!
+      </div>
+    </div>
+  )}
+</Draggable>
+```
+
+**Extending with your own styles**
+
+```js
+<Draggable draggable="draggable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => {
     const style = {
-      backgroundColor: isDraggingOver ? 'lightblue' : 'lightgreen'
-    };
-
+      ...provided.draggableStyle,
+      backgroundColor: snapshot.isDragging : 'blue' : 'white',
+      fontSize: 18,
+    }
     return (
-      <div style={style}>
-        <h3>List id: {listId}</h3>
-        {children}
+      <div>
+        <div
+          ref={provided.innerRef}
+          style={style}
+        >
+          Drag me!
+        </div>
       </div>
     );
-  }
-}
-
-const provide = (ownProps) => ({
-  id: ownProps.listId,
-});
-
-const mapStateToProps = (state) => ({
-  isDraggingOver: state.isDraggingOver,
-});
-
-export default droppable('TYPE', 'vertical', provide, mapStateToMaps)(List);
+  }}
+</Draggable>
 ```
 
-## `draggable`
-
-*Draggable* components can be dragged around and dropped onto *droppables*. A *draggable* must always be contained within a *droppable*. It is **possible** to reorder a *draggable* within its home *droppable* or move to another *droppable*. It is **possible** because a *droppable* is free to control what it allows to be dropped on it.
-
-Each *draggable* has a *drag handle*. The *drag handle* is the thing that the user can interact with to drag the whole *draggable*. By default, your *draggable* is also your *drag handle*. You can opt of of this by requesting your own *drag handle* function.
+**Type information**
 
 ```js
-const DraggableItem = draggable(type, provide, mapStateToProps?)(Item);
+type DraggableStyle = ?PlacementStyle & ?MovementStyle;
+
+type PlacementStyle = {|
+  position: 'absolute',
+  boxSizing: 'border-box',
+  zIndex: ZIndex,
+  width: number,
+  height: number,
+  top: number,
+  left: number,
+|}
+
+type MovementStyle = {|
+  transform: string,
+|}
 ```
 
-### api
-
-- `type`: The type (`TypeId(string)`) of the *draggable*. This is used to control what *droppables* the *draggable* is permitted to drop on. *draggables* can only drop on *droppables* that share the same `type`. Currently the `type` of a *draggable* **must be** the same as its container *droppable*. This restriction might be loosened in the future if there is a valid use case.
-- `provide`: A function that is used to collect information about the *draggable* at run time. The function is provided with the components current props and needs to provide a `id: DraggableId`, and can optionally also provide whether dragging is currently enabled `isDragEnabled?: boolean`. This function allows you to conditionally allow dragging. If you set `isDragEnabled` to `false` while an item is dragging, the drag will be cancelled.
-- `mapStateToProps?` (optional) `(state, ownProps, getDragHandle)` this function allows you to two things. Firstly, it provides you with a relevant small state snapshot and your own props which you can use to create new props for your component. A common use case for this is to add a `isDragging` prop to your component. Secondly, it provides you with a `getDragHandle` function. This function will return a function which you can then wrap a part of your component tree in. The part of your tree that is wrapped in a `DragHandle` will be used to control the dragging of the whole item. If you do not call `getDragHandle` your entire component will be the drag handle. If you request a drag handle, be sure to use it. If you do not put it in the tree somewhere then it will not be possible to drag the item (and might possibly error). Please do not use this as a mechanism for conditional dragging. That is what the `provide` function is for.
-
-### *Draggable* injected prop: `innerRef`
-
-> This is one of the weaker parts of the api - and might be iterated on
-
-`innerRef`: `(ref) => void` A component that is wrapped in a *draggable* will be passed a prop `innerRef` which is a function. You will need bind that function to a component that will return a `DOM` ref. We might change this in the future by using `ReactDOM.findDOMNode()`. However, using the `innerRef` function avoids needing to add that dependency for now. Please advise if this does not work for your specific use case. Using your `DOM` node avoids us needing to create another wrapper node which can impact on styling.
+- `provided.placeholder (?ReactElement)` The `Draggable` element has `position:absolute` applied to it while it is dragging. The role of the `placeholder` is to sit in the place that the `Draggable` was during a drag. It is needed to stop the `Droppable` list from collapsing when you drag. It is advised to render it as a sibling to the `Draggable` node.
 
 ```js
-const Person extends Component {
-  static propTypes = {
-    // ...
-    innerRef: PropTypes.function.isRequired,
-  }
-
-  render() {
-    return (
-      <div ref={innerRef}>
-        {/* ... */}
+<Draggable draggableId="draggable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div>
+      <div
+        ref={provided.innerRef}
+        style={provided.draggableStyle}
+      >
+        Drag me!
       </div>
-    );
-  }
-}
+      {/* Always render me - I will be null if not required */}
+      {provided.placeholder}
+    </div>
+  )}
+</Draggable>
 ```
 
-### *Draggable* injected prop: `style`
+- `provided.dragHandleProps (?DragHandleProps)` every `Draggable` has a *drag handle*. This is what is used to drag the whole `Draggable`. Often this will be the same as the node as the `Draggable`, but sometimes it can be a child of the `Draggable`. `DragHandleProps` need to be applied to the node that you want to be the drag handle. This is a number of props that need to be applied to the `Draggable` node. The simpliest approach is to spread the props onto the draggable node (`{...provided.dragHandleProps}`). However, you are also welcome to [monkey patch](https://davidwalsh.name/monkey-patching) these props if you also need to respond to them. DragHandleProps will be `null` when `isDragEnabled` is set to false.
 
-> This is one of the weaker parts of the api - and might be iterated on
-
-`style: Object`. A component wrapped in a *draggable* will be injected with a prop `style`. You will need to add this to your root DOM node using `style={style}`. This `style` controls the movement and positioning of the *draggable*. We pass this to you to put on your own element to avoid needing to create a wrapping element to apply these styles to (which can have styling implications - especially with flexbox).
+**Type information**
 
 ```js
-const Person extends Component {
-  static propTypes = {
-    // ...
-    style: PropTypes.object,
-  }
-
-  render() {
-    return (
-      <div style={style}>
-        {/* ... */}
-      </div>
-    );
-  }
+type DragHandleProps = {
+  onMouseDown: (event: MouseEvent) => void,
+  onKeyDown: (event: KeyboardEvent) => void,
+  onClick: (event: MouseEvent) => void,
+  tabIndex: number,
+  'aria-grabbed': 'true' | 'false',
+  draggable: boolean,
+  onDragStart: () => void,
+  onDrop: () => void
 }
 ```
 
-### *DragHandle* injected prop: `handleProps`
-
-> This is one of the weaker parts of the api - and might be iterated on
-
-Your *drag handle* (which unless you are using `getDragHandle` will be the same as your *draggable*) will be injected with the prop `handleProps` which is an `Object`. This includes a lot of different properties such as event handlers, aria attributes, tab index and so on. We could hide these props and put them on a component that wraps your *draggable*. However, if we did this then it would be a problem if your component being wrapped was already able to be interacted with - such as a button or an anchor. It would create a **double tab** situation where you can focus on both the item being wrapped (eg a button) and the draggable itself. To avoid this we pass on the *handleProps* to the Component. These will need to be spread onto a component that maps to a DOM node.
+**Standard example**
 
 ```js
-const Person extends Component {
-  static propTypes = {
-    // ...
-    handleProps: PropTypes.object,
-  }
+<Draggable draggableId="draggable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div>
+      <div
+        ref={provided.innerRef}
+        style={provided.draggableStyle}
+        {...provided.dragHandleProps}
+      >
+        Drag me!
+      </div>
+      {provided.placeholder}
+    </div>
+  )}
+</Draggable>
+```
 
-  render() {
+**Custom drag handle**
+
+```js
+<Draggable draggableId="draggable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => (
+    <div>
+      <div
+        ref={provided.innerRef}
+        style={provided.draggableStyle}
+      >
+        <h2>Hello there</h2>
+        <div {...provided.dragHandleProps}>
+          Drag handle
+        </div>
+      </div>
+      {provided.placeholder}
+    </div>
+  )}
+</Draggable>
+```
+
+**Monkey patching**
+
+> If you want to also use one of the props in `DragHandleProps`
+
+```js
+const myOnClick = (event: MouseEvent) => console.log('clicked on', event.target);
+
+<Draggable draggableId="draggable-1">
+  {(provided: Provided, snapshot: StateSnapshot) => {
+    const onClick = (() => {
+      // dragHandleProps might be null
+      if(!provided.dragHandleProps) {
+        return myOnClick;
+      }
+
+      // creating a new onClick function that calls my onClick
+      // event as well as the provided one.
+      return (event: MouseEvent) => {
+        myOnClick(event);
+        provided.dragHandleProps.onClick(event);
+      }
+    })();
+
     return (
-      <div {...this.props.handleProps}>
-        {/* ... */}
+      <div>
+        <div
+          ref={provided.innerRef}
+          style={provided.draggableStyle}
+          {...provided.dragHandleProps}
+          onClick={onClick}
+        >
+          Drag me!
+        </div>
+        {provided.placeholder}
       </div>
     );
-  }
-}
+  }}
+</Draggable>
 ```
 
 ### Sloppy clicks
 
 A drag will not start until a user has dragged their mouse past a small threshold. If this threshold is not exceeded then the library will not impact the mouse click and will release the event to the browser.
 
-### Extra DOM nodes?
-Sadly, *draggable* will create **one** extra wrapping div. This is required due to react requiring a wrapping component rather than accepting an array of components - which will be coming in React 16. If this is a problem for you we can create an api to allow passing through a `style` prop to that node.
-
-```js
-const DraggableItem = draggable(...)(Item);
-
-ReactDOM.render(
-  {/* ... */}
-  <DraggableItem />
-  {/* ... */}
-);
-```
-
-```html
-<!-- ... -->
-<div>
-  <DraggableItem>
-  <Placeholder /> <!-- rendered during a drag -->
-</div>
-```
-
-### Type information
-
-```js
-draggable(
-  type: TypeId,
-  provide: Provide,
-  mapStateToProps?: MapStateToProps
-) => (Component: ReactClass) => ReactClass
-
-// supporting types
-type Id = string;
-type DraggableId = Id;
-type DroppableId = Id;
-type TypeId = Id;
-
-type OwnProps = Object;
-
-// Provide
-type Provide = (ownProps: OwnProps) => NeedsProviding;
-type NeedsProviding = {|
-  id: DroppableId,
-  isDropEnabled?: boolean
-|}
-
-// MapStateToProps
-type MapStateToProps =
-  (state: StateSnapshot, ownProps: OwnProps, getDragHandle: () => mixed) => Object;
-type StateSnapshot = {|
-  isDragging: boolean
-|}
-```
-
-### Basic usage
-
-```js
-import React, { Component, PropTypes } from 'react';
-// some custom Avatar component
-import Avatar from './avatar';
-
-const Person extends Component {
-  static propTypes = {
-    // own props
-    personId: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    // injected by your mapStateToProps
-    isDragging: PropTypes.boolean.isRequired,
-    // injected by draggable
-    innerRef: PropTypes.function.isRequired,
-    style: PropTypes.object,
-    // injected into the drag handle,
-    // which is the draggable by default
-    handleProps: PropTypes.object,
-  }
-
-  render() {
-    const { itemId, isDragging, name, innerRef, style } = this.props;
-    const myStyle = {
-      backgroundColor: isDragging ? 'yellow' : 'grey',
-      ...style,
-    }
-
-    return (
-      <div style={myStyle} ref={innerRef} {...this.props.handleProps}>
-        <h2>{name}</h2>
-        <Avatar personId={personId}/>
-      </div>
-    );
-  }
-}
-
-const provide = (ownProps) => ({
-  id: ownProps.itemId,
-});
-
-const mapStateToProps = (state, ownProps) => ({
-  isDragging: state.isDragging,
-});
-
-export default ('PERSON', provide, mapStateToProps)(Person);
-```
-
-### Custom drag handle usage
-
-```js
-import React, { Component, PropTypes } from 'react';
-// some custom Avatar component
-import Avatar from './avatar';
-
-const Person extends Component {
-  static propTypes = {
-    personId: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    isDragging: PropTypes.boolean.isRequired,
-    dragHandle: PropTypes.function.isRequired,
-  }
-
-  render() {
-    const { itemId, isDragging, name } = this.props;
-    const style = {
-      backgroundColor: isDragging ? 'yellow' : 'grey';
-    }
-
-    return (
-      <div style={style}>
-        <h2>{name}</h2>
-        {/* this component will now be dragged by the Avatar */}
-        {dragHandle(<Avatar personId={personId}/>)}
-      </div>
-    );
-  }
-}
-
-const provide = (ownProps) => ({
-  id: ownProps.itemId,
-});
-
-const mapStateToProps = (state, ownProps, getDragHandle) => ({
-  isDragging: state.isDragging,
-  dragHandle: getDragHandle(),
-});
-
-export default ('PERSON', provide, mapStateToProps)(Person);
-```
-
 ## Usage with react-redux
 
-Redux has a nice seperation because connected (smart) and unconnected (dumb) components. In order to make a unconnected component connected to a redux store you use the `connect` function. Depending on your use case you are welcome to wrap a *connected* component with a *droppable* or *draggable* or you can wrap a *droppable* or *draggable* with a *connected* component. Usually you will want to wrap your *droppable* or *draggable* within your *connected* component so that you have access to its full props.
-
-### Example: advised wrapping strategy
-
-This example wraps a *unconnected* component with a *droppable* and then wraps the *droppable* with a *connected* component. Doing this allows your `provide` and `mapStateToProps` functions to have access to all the props hydrated by your `connect` function.
-
-```js
-const Person extends Component {
-  static propTypes = {
-    // provided by props
-    personId: PropTypes.string.isRequired,
-    // provided by your redux store
-    name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    // provided by this library
-    isDragging: PropTypes.bool.isRequired,
-  }
-
-  render() {
-    const { name, personId, email } = this.props;
-    const style = {
-      backgroundColor: isDragging ? 'yellow' : 'grey';
-    };
-
-    return (
-      <div style={style}>
-        <h2>{name} (id: {personId})</h2>
-        <Avatar email={email} />
-      </div>
-    );
-  }
-}
-
-const provide = (ownProps) => ({
-  id: ownProps.itemId,
-  // Because we have wrapped the draggable within the connected component, we have access to the connected components hydrated props in this function.
-  isDragEnabled: ownProps.name !== 'admin',
-});
-
-const mapStateToProps = (state, ownProps) => ({
-  // this will put the isDragging prop on the component
-  isDragging: state.isDragging,
-});
-
-const DraggablePerson = ('PERSON', provide, mapStateToProps)(Person);
-
-const reduxMapStateToProps = (state, ownProps) => {
-  const person = state.users[ownProps.personId];
-
-  return {
-    name: person.name,
-    email: person.email,
-  };
-}
-
-const ConnectedDraggablePerson = connect(reduxMapStateToProps)(DraggablePerson);
-
-ConnectedDraggablePerson.propTypes = {
-  personId: PropTypes.string.isRequired,
-};
-
-export default ConnectedDraggablePerson;
-```
-
-**Wrapping your *draggable* or *droppable* with a *connected* component:**
-
-```js
-<ConnectedDraggablePerson>
-  <DraggablePerson>
-    <Person />
-  </DraggablePerson>
-</ConnectedDraggablePerson>
-```
-
-If you wrap your *draggable* or *droppable* with a *connected* component then `ownProps` within your `provide` and `mapStateToProps` functions would have `personId`, `name` and `email`.
-
-**Wrapping your *connected* component with a *draggable* or *droppable*:**
-
-```js
-<DraggablePerson>
-  <ConnectedPerson>
-    <Person />
-  </ConnectedPerson>
-</DraggablePerson>
-```
-If you wrap your *connected* component with a *draggable* or *droppable* then `ownProps` within your `provide` and `mapStateToProps` functions would only have access to `personId`.
+[TODO]
 
 ## Engineering health
 

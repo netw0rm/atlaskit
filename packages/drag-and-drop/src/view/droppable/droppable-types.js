@@ -2,7 +2,7 @@
 import type { DroppableId, TypeId, ReactElement } from '../../types';
 
 export type Provided = {|
-  innerRef: (Element) => mixed,
+  innerRef: (Element) => void,
 |}
 
 export type StateSnapshot = {|
@@ -13,11 +13,16 @@ export type MapProps = {|
   isDraggingOver: boolean,
 |}
 
-export type OwnProps = {
+export type OwnProps = {|
   droppableId: DroppableId,
   isDropEnabled: boolean,
   type: TypeId,
-  children: (Provided) => ReactElement
-};
+  children: (Provided, StateSnapshot) => ReactElement
+|};
+
+export type DefaultProps = {|
+  isDropEnabled: boolean,
+  type: TypeId
+|}
 
 export type Props = OwnProps & MapProps;

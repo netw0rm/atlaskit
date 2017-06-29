@@ -33,11 +33,7 @@ export default class Task extends Component {
   render() {
     const { task } = this.props;
     return (
-      <Draggable
-        draggableId={task.id}
-        type="TASK"
-        isDragEnabled
-      >
+      <Draggable draggableId={task.id}>
         {(provided: Provided, snapshot: StateSnapshot) => (
           <div>
             <Container

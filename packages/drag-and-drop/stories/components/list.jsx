@@ -22,11 +22,7 @@ export default class List extends PureComponent {
 
   render() {
     return (
-      <Droppable
-        droppableId={this.props.listId}
-        isDropEnabled
-        type="TASK"
-      >
+      <Droppable droppableId={this.props.listId}>
         {(provided: Provided, snapshot: StateSnapshot) => (
           <Container
             isDraggingOver={snapshot.isDraggingOver}

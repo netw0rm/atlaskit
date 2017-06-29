@@ -4,10 +4,14 @@ import type {
   InitialDrag,
   Position,
   TypeId,
+  ZIndex,
 } from '../../types';
 import type {
   Provided as DragHandleProvided,
 } from '../drag-handle/drag-handle-types';
+import type {
+  Style as MovementStyle,
+} from '../moveable/moveable-types';
 import {
   lift,
   move,
@@ -20,11 +24,23 @@ import {
 
 type ReactElement = mixed;
 
+export type PlacementStyle = {|
+  position: 'absolute',
+  boxSizing: 'border-box',
+  zIndex: ZIndex,
+  width: number,
+  height: number,
+  top: number,
+  left: number,
+|}
+
+export type DraggableStyle = ?PlacementStyle & ?MovementStyle;
+
 export type Provided = {|
   innerRef: (Element) => void,
-  draggableStyle: Object,
-  placeholder: ReactElement,
+  draggableStyle: ?DraggableStyle,
   dragHandleProps: ?DragHandleProvided,
+  placeholder: ?ReactElement,
 |}
 
 export type StateSnapshot = {|
@@ -51,7 +67,12 @@ export type MapProps = {|
 
 export type OwnProps = {|
   draggableId: DraggableId,
-  children: (Provided) => void,
+  children: (Provided, StateSnapshot) => void,
+  type: TypeId,
+  isDragEnabled: boolean,
+|}
+
+export type DefaultProps = {|
   type: TypeId,
   isDragEnabled: boolean,
 |}

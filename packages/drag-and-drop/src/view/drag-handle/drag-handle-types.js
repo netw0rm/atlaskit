@@ -15,9 +15,17 @@ export type Callbacks = {
 export type Provided = {
   onMouseDown: (event: MouseEvent) => void,
   onKeyDown: (event: KeyboardEvent) => void,
+
+  // Conditionally block clicks
   onClick: (event: MouseEvent) => void,
+
+  // Allow tabbing to this element
   tabIndex: number,
+
+  // Aria
   'aria-grabbed': 'true' | 'false',
+
+  // Stop html5 drag and drop
   draggable: boolean,
   onDragStart: () => void,
   onDrop: () => void

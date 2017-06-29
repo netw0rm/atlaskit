@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import type { Props, Provided, StateSnapshot } from './droppable-types';
+import type { Props, Provided, StateSnapshot, DefaultProps } from './droppable-types';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 
 type State = {|
@@ -13,6 +13,11 @@ export default class Droppable extends PureComponent {
 
   state: State = {
     ref: null,
+  }
+
+  static defaultProps: DefaultProps = {
+    type: 'DEFAULT',
+    isDragEnabled: true,
   }
   /* eslint-enable */
 

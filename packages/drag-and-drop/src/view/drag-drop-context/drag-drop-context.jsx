@@ -2,11 +2,11 @@
 import React, { PureComponent, PropTypes } from 'react';
 import createStore from '../../state/create-store';
 // eslint-disable-next-line no-duplicate-imports
-import type { Store, Hooks } from '../../types';
+import type { Store, Hooks, ReactElement } from '../../types';
 import storeKey from '../../state/get-store-key';
 
 type Props = Hooks & {|
-  children?: any,
+  children?: ReactElement,
 |}
 
 type Context = {|

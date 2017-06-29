@@ -59,21 +59,13 @@ describe('hooks integration', () => {
         onDragStart={hooks.onDragStart}
         onDragEnd={hooks.onDragEnd}
       >
-        <Droppable
-          droppableId={droppableId}
-          isDropEnabled
-          type="ITEM"
-        >
+        <Droppable droppableId={droppableId}>
           {(droppableProvided: DroppableProvided) => (
             <div
               ref={droppableProvided.innerRef}
             >
               <h2>Droppable</h2>
-              <Draggable
-                draggableId={draggableId}
-                isDragEnabled
-                type="ITEM"
-              >
+              <Draggable draggableId={draggableId}>
                 {(draggableProvided: DraggableProvided) => (
                   <div
                     className="drag-handle"

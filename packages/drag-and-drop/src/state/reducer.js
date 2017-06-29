@@ -233,6 +233,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const diff: ?Position = getDiffToJumpToNextIndex(
       isMovingForward,
+      existing.current.id,
       existing.current.center,
       existing.impact.destination,
       state.dimension.draggable,

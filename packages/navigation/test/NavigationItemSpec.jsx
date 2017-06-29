@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 import React from 'react';
 import NavigationItem from '../src/components/js/NavigationItem';
 import NavigationItemIcon from '../src/components/styled/NavigationItemIcon';

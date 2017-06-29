@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 import { mount } from 'enzyme';
 import React from 'react';
 import Drawer from '../src/components/js/Drawer';

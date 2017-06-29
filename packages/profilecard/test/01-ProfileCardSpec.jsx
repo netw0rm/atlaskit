@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';

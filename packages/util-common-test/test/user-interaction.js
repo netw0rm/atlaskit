@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 import keyCode from 'keycode';
 
 import { keydown, keyup, keypress } from '../src';

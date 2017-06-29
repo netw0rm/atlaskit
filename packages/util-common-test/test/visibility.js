@@ -1,4 +1,3 @@
-
 import { checkVisibility, checkInvisibility } from '../src';
 
 // skipping these tests for now until I move them to browserstack

@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 import React from 'react';
 import GlobalPrimaryActions from '../src/components/js/GlobalPrimaryActions';
 import { mountWithRootTheme, shallowWithTheme } from './theme-util';

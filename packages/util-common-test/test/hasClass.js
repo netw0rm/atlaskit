@@ -1,4 +1,3 @@
-
 import { hasClass } from '../src';
 
 // eslint-disable-next-line mocha/no-skipped-tests

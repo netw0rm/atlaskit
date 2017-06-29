@@ -1,4 +1,4 @@
-
+import sinon from 'sinon';
 import { afterMutations } from '../src';
 
 // eslint-disable-next-line mocha/no-skipped-tests

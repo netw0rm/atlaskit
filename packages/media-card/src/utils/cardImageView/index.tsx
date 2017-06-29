@@ -187,7 +187,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
             mediaItemType={mediaItemType}
             mediaType={mediaType}
             dataURI={dataURI}
-            crop={this.crop}
+            crop={this.isCrop}
           />
         </div>
         {overlay}
@@ -213,7 +213,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     );
   }
 
-  get crop() {
+  get isCrop() {
     const {resizeMode} = this.props;
 
     return resizeMode === 'crop';

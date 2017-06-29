@@ -169,12 +169,12 @@ describe('CardView', () => {
   it('should render a cropped image by default', () => {
     const card = mount(<CardView status="complete" dataURI="a" metadata={file}/>);
 
-    expect(card.find('MediaImage').prop('crop')).to.be.true
+    expect(card.find('MediaImage').prop('crop')).to.be.true;
   });
 
   it('should render not render a cropped image if we specify a different resizeMode', () => {
     const card = mount(<CardView status="complete" dataURI="a" metadata={file} resizeMode="full-fit"/>);
 
-    expect(card.find('MediaImage').prop('crop')).to.be.false
+    expect(card.find('MediaImage').prop('crop')).to.be.false;
   });
 });

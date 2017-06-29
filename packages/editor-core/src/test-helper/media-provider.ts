@@ -47,9 +47,6 @@ export function storyMediaProviderFactory(mediaTestHelpers, collection?: string,
         [`urn:filestore:collection:${collectionName}`]: [
           'read', 'insert'
         ],
-        'urn:filestore:chunk:*': ['create', 'read'],
-        'urn:filestore:upload': ['create'],
-        'urn:filestore:upload:*': ['read', 'update']
       })
     }),
   });

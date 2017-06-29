@@ -36,6 +36,7 @@ export interface Props extends MediaAttributes {
 export interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
+  linkCreateContext?: Context;
 }
 
 /**
@@ -124,11 +125,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderLink() {
-    const { mediaProvider, viewContext } = this.state;
+    const { mediaProvider, linkCreateContext } = this.state;
     const { id, collection, cardDimensions, onDelete } = this.props;
     const url = this.getLinkUrlFromId(id);
 
-    if ( !mediaProvider || !viewContext ) {
+    // if ( !mediaProvider || !linkCreateContext ) {
       const previewDetails = {
         type: '',
         url: '',
@@ -145,27 +146,27 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         // SharedCardProps
         onClick={this.handleLinkCardViewClick}
       />;
-    }
+    // }
 
-    const mediaIdentifier = {
-      mediaItemType: 'link',
-      id: id || '',
-      collectionName: collection || ''
-    } as MediaIdentifier;
+    // const mediaIdentifier = {
+    //   mediaItemType: 'link',
+    //   id: id || '',
+    //   collectionName: collection || ''
+    // } as MediaIdentifier;
 
-    const urlPreviewIdentifier = {
-      mediaItemType: 'link',
-      url: url!
-    } as UrlPreviewIdentifier;
+    // const urlPreviewIdentifier = {
+    //   mediaItemType: 'link',
+    //   url: url!
+    // } as UrlPreviewIdentifier;
 
-    return (
-      <Card
-        context={viewContext}
-        dimensions={cardDimensions}
-        identifier={id ? mediaIdentifier : urlPreviewIdentifier}
-        actions={[ CardDelete(onDelete!) ]}
-      />
-    );
+    // return (
+    //   <Card
+    //     context={viewContext}
+    //     dimensions={cardDimensions}
+    //     identifier={id ? mediaIdentifier : urlPreviewIdentifier}
+    //     actions={[ CardDelete(onDelete!) ]}
+    //   />
+    // );
   }
 
   private renderFile() {
@@ -290,6 +291,17 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     this.setState({ viewContext: context as Context });
+
+    let linkCreateContext = await mediaProvider.linkCreateContext;
+    if ('clientId' in (linkCreateContext as ContextConfig)) {
+      linkCreateContext = ContextFactory.create(linkCreateContext as ContextConfig);
+    }
+
+    if (this.destroyed) {
+      return;
+    }
+
+    this.setState({ linkCreateContext: linkCreateContext as Context });
   }
 
   private getLinkUrlFromId(id: string) {

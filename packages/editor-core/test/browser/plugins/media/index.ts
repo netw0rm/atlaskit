@@ -1095,11 +1095,124 @@ describe('Media plugin', () => {
           .replaceWith(sel, sel, newText)
           .addMark(sel - text.length, sel, strongMark);
 
-        (pluginState as MediaPluginState).allowsLinks = true;
+        pluginState.allowsLinks = true;
 
-        const linksRanges = (pluginState as MediaPluginState).detectLinkRangesInSteps(tr);
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
 
         expect(linksRanges).to.deep.equal([]);
+      });
+    });
+  });
+
+  describe('insertLinks', () => {
+    context('when no links are stored in link ranges', () => {
+      it('does nothing', () => {
+        const text = 'www.google.com';
+        const { editorView, pluginState } = editor(doc(p(`${text} {<>}`)));
+
+        pluginState.insertLinks([]);
+
+        expect(editorView.state.doc).to.deep.equal(doc(p(`${text} `)));
+      });
+    });
+
+    context('when there is a link stored in link ranges', () => {
+      context('there is no existing media group below', () => {
+        it('creates a link card below where is the link created', () => {
+          const link = 'www.google.com';
+          const { editorView, pluginState, sel } = editor(doc(p(`${link} {<>}`)));
+
+          // -1 for space, simulate the scenario of autoformatting link
+          pluginState.insertLinks([
+            { start: sel - link.length - 1, end: sel, urls: [link] }
+          ], testCollectionName);
+
+          expect(editorView.state.doc).to.deep.equal(doc(
+            p(`${link} `),
+            mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
+            p(),
+          ));
+        });
+
+        context('not at the end of the doc', () => {
+          it('does not create a new p at the end of doc', () => {
+            const link = 'www.google.com';
+            const { editorView, pluginState, sel } = editor(doc(
+              p(`${link} {<>}`),
+              p('hello'),
+            ));
+
+            // -1 for space, simulate the scenario of autoformatting link
+            pluginState.insertLinks([
+              { start: sel - link.length - 1, end: sel, urls: [link] }
+            ], testCollectionName);
+
+            expect(editorView.state.doc).to.deep.equal(doc(
+              p(`${link} `),
+              mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
+              p('hello'),
+            ));
+          });
+        });
+      });
+
+      context('there is an existing media group below', () => {
+        it('creates a link card to join the existing media group below', () => {
+          const link1 = 'www.google.com';
+          const link2 = 'www.baidu.com';
+          const { editorView, pluginState, sel } = editor(doc(
+            p(`${link1} ${link2} {<>}`),
+            mediaGroup(media({ id: link1, type: 'link', collection: testCollectionName })),
+          ));
+
+          // -1 for space, simulate the scenario of autoformatting link
+          pluginState.insertLinks([
+            { start: sel - link2.length - 1, end: sel, urls: [link2] }
+          ], testCollectionName);
+
+          expect(editorView.state.doc).to.deep.equal(doc(
+            p(`${link1} ${link2} `),
+            mediaGroup(
+              media({ id: link1, type: 'link', collection: testCollectionName }),
+              media({ id: link2, type: 'link', collection: testCollectionName }),
+            )
+          ));
+        });
+      });
+    });
+
+    context('when there are multiple links in link ranges', () => {
+      it('creates the same number of link cards below where the link created', () => {
+        const link1 = 'www.google.com';
+        const link2 = 'www.baidu.com';
+        const link3 = 'www.atlassian.com';
+        const { editorView, pluginState } = editor(doc(
+          p(`${link1}`),
+          p(`${link2} ${link3}`),
+          p('hello')
+        ));
+
+        const startOfLink1 = 1;
+        const endOfLink1 = startOfLink1 + link1.length;
+        const startOfLink2 = endOfLink1 + 2;
+        const endOfLink2 = startOfLink2 + link2.length;
+
+        // -1 for space, simulate the scenario of autoformatting link
+        pluginState.insertLinks([
+          { start: startOfLink1, end: endOfLink1, urls: [link1] },
+          { start: startOfLink2, end: endOfLink2, urls: [link2, link3] },
+        ], testCollectionName);
+
+        expect(editorView.state.doc).to.deep.equal(doc(
+          p(`${link1}`),
+          p(`${link2} ${link3}`),
+          mediaGroup(
+            media({ id: link1, type: 'link', collection: testCollectionName }),
+            media({ id: link2, type: 'link', collection: testCollectionName }),
+            media({ id: link3, type: 'link', collection: testCollectionName }),
+          ),
+          p('hello'),
+        ));
       });
     });
   });

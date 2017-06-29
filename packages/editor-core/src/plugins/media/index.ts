@@ -23,6 +23,7 @@ import {
   Transaction,
   MarkType,
   Fragment,
+  ResolvedPos,
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
@@ -230,18 +231,30 @@ export class MediaPluginState {
     }
   }
 
-  insertLinks = (linkRanges: RangeWithUrls[] = this.linkRanges): void => {
+  insertLinks = (linkRanges: RangeWithUrls[] = this.linkRanges, collection = this.collectionFromProvider()): void => {
     const { state, dispatch } = this.view;
     const { tr } = state;
     if (linkRanges.length <= 0) {
       return;
     }
 
-    const linkNode = state.schema.nodes.media.create({ url: 'www.google.com', type: 'link' });
-
     const linksInfo = this.reducelinksInfo(linkRanges);
-    const insertPos = endPositionOfParent(tr.doc.resolve(linksInfo.latestPos));
-    dispatch(tr.replaceWith(insertPos, insertPos, linkNode));
+
+    const linkNodes = linksInfo.urls.map((url) => {
+      return state.schema.nodes.media.create({ id: url, type: 'link', collection: collection });
+    });
+
+    const $latestPos = tr.doc.resolve(linksInfo.latestPos);
+
+    const insertPos = this.posOfMediaGroupBelow($latestPos, false) || endPositionOfParent($latestPos);
+
+    // insert a paragraph after if reach the end of doc
+    if (atTheEndOfDoc(state)) {
+      tr.insert(insertPos, state.schema.nodes.paragraph.create());
+    }
+
+    tr.replaceWith(insertPos, insertPos, linkNodes);
+    dispatch(tr);
   }
 
   private reducelinksInfo(linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } {
@@ -429,15 +442,19 @@ export class MediaPluginState {
       return;
     }
 
-    const { $from } = state.selection;
+    return this.posOfMediaGroupAbove(state.selection.$from);
+  }
+
+  private posOfMediaGroupAbove($pos: ResolvedPos): number | undefined {
+    const { state } = this.view;
     let adjacentPos;
     let adjacentNode;
 
     if (this.isSelectionNonMediaBlockNode()) {
-      adjacentPos = $from.pos;
-      adjacentNode = $from.nodeBefore;
+      adjacentPos = $pos.pos;
+      adjacentNode = $pos.nodeBefore;
     } else {
-      adjacentPos = startPositionOfParent($from) - 1;
+      adjacentPos = startPositionOfParent($pos) - 1;
       adjacentNode = state.doc.resolve(adjacentPos).nodeBefore;
     }
 
@@ -450,20 +467,24 @@ export class MediaPluginState {
     if (!atTheEndOfBlock(state)) {
       return;
     }
-    const { $to } = state.selection;
+    return this.posOfMediaGroupBelow(state.selection.$to);
+  }
+
+  private posOfMediaGroupBelow($pos: ResolvedPos, prepend: boolean = true): number | undefined {
+    const { state } = this.view;
     let adjacentPos;
     let adjacentNode;
 
     if (this.isSelectionNonMediaBlockNode()) {
-      adjacentPos = $to.pos;
-      adjacentNode = $to.nodeAfter;
+      adjacentPos = $pos.pos;
+      adjacentNode = $pos.nodeAfter;
     } else {
-      adjacentPos = endPositionOfParent($to);
+      adjacentPos = endPositionOfParent($pos);
       adjacentNode = state.doc.nodeAt(adjacentPos);
     }
 
     if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-      return adjacentPos + 1;
+      return prepend ? adjacentPos + 1 : adjacentPos + adjacentNode.nodeSize - 1;
     }
   }
 
@@ -551,7 +572,7 @@ export class MediaPluginState {
   }
 
   private collectionFromProvider(): string | undefined {
-    return this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
+    return this.mediaProvider && this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
   }
 
   private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
@@ -770,12 +791,12 @@ function mediaPluginFactory(options: MediaPluginOptions) {
     },
     key: stateKey,
     view: (view: EditorView) => {
-      const pluginState = stateKey.getState(view.state);
+      const pluginState: MediaPluginState = stateKey.getState(view.state);
       pluginState.setView(view);
 
       return {
         update: (view: EditorView, prevState: EditorState<any>) => {
-          // pluginState.insertLinks();
+          pluginState.insertLinks();
         }
       };
     },

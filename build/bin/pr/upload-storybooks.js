@@ -7,7 +7,8 @@ const generateIndexFile = require('./_generate-storybooks-index');
 const updateBuildStatus = require('../utility/build_status');
 const uploadDirectory = require('../cdn/uploadDirectory');
 
-const bbCommit = process.env.BITBUCKET_COMMIT || 'BB_COMMIT';
+const bbCommit = process.env.BITBUCKET_COMMIT;
+const bbBranch = process.env.BITBUCKET_BRANCH;
 
 // get the date + time in the format YYYY-MM-DD_HH_MM_SS for use in url
 function getCurrentTimeString() {
@@ -18,10 +19,17 @@ function getCurrentTimeString() {
   return timeString;
 }
 
+function getUploadPath() {
+  if (bbBranch === 'master') {
+    return 'stories';
+  }
+  return `pr/${bbCommit}/${getCurrentTimeString()}/storybook`;
+}
+
 function storybookBuildStatus(state) {
   const cdnBaseUrl = process.env.CDN_URL_BASE;
   const cdnUrlScope = process.env.CDN_URL_SCOPE;
-  const uploadPath = `pr/${bbCommit}/${getCurrentTimeString()}/storybook`;
+  const uploadPath = getUploadPath();
   const fullStorybookUrl = `${cdnBaseUrl}/${cdnUrlScope}/${uploadPath}`;
   updateBuildStatus('STORYBOOK', 'Storybook', 'The storybook for this pull request', state, fullStorybookUrl);
 }
@@ -33,7 +41,7 @@ function getStaticStorybooks() {
 
 try {
   const tmpStorybooksPath = path.join(process.cwd(), 'storybook-static');
-  const uploadPath = `pr/${bbCommit}/${getCurrentTimeString()}/storybook`;
+  const uploadPath = getUploadPath();
 
   fs.ensureDirSync(tmpStorybooksPath);
 

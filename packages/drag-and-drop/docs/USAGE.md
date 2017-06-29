@@ -225,7 +225,7 @@ In order for the droppable to function correctly, **you must** bind the `provide
 **2. snapshot: (StateSnapshot)**
 
 ```js
-export type StateSnapshot = {|
+type StateSnapshot = {|
   isDraggingOver: boolean,
 |}
 ```
@@ -505,6 +505,40 @@ const myOnClick = (event) => console.log('clicked on', event.target);
           style={provided.draggableStyle}
           {...provided.dragHandleProps}
           onClick={onClick}
+        >
+          Drag me!
+        </div>
+        {provided.placeholder}
+      </div>
+    );
+  }}
+</Draggable>
+```
+
+**2. snapshot: (StateSnapshot)**
+
+```js
+type StateSnapshot = {|
+  isDragging: boolean,
+|}
+```
+
+The `children` function is also provided with a small about of state relating to the current drag state. This can be optionally used to enhance your component. A common use case is changing the appearance of a `Draggable` while it is being dragged.
+
+```js
+<Draggable draggableId="draggable-1">
+  {(provided, snapshot) => {
+    const style = {
+      ...provided.draggableStyle,
+      backgroundColor: snapshot.isDragging ? 'blue' : 'grey',
+    };
+
+    return (
+      <div>
+        <div
+          ref={provided.innerRef}
+          style={style}
+          {...provided.dragHandleProps}
         >
           Drag me!
         </div>

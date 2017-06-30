@@ -112,8 +112,8 @@ export class TableState {
       return;
     }
     const { state, dispatch } = this.view;
-    const isRowSelected = this.cellSelection.isColSelection();
-    const isColumnSelected = this.cellSelection.isRowSelection();
+    const isRowSelected = this.cellSelection.isRowSelection();
+    const isColumnSelected = this.cellSelection.isColSelection();
 
     // the whole table
     if (isRowSelected && isColumnSelected) {
@@ -183,7 +183,7 @@ export class TableState {
       const anchor = map.colCount(this.cellSelection.$anchorCell.pos - start);
       const head = map.colCount(this.cellSelection.$headCell.pos - start);
       return (
-        this.cellSelection.isRowSelection() &&
+        this.cellSelection.isColSelection() &&
         (column <= Math.max(anchor, head) && column >= Math.min(anchor, head))
       );
     }
@@ -195,7 +195,7 @@ export class TableState {
       const anchor = this.cellSelection.$anchorCell.index(-1);
       const head = this.cellSelection.$headCell.index(-1);
       return (
-        this.cellSelection.isColSelection() &&
+        this.cellSelection.isRowSelection() &&
         (row <= Math.max(anchor, head) && row >= Math.min(anchor, head))
       );
     }

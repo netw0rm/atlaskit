@@ -9,7 +9,7 @@ import ColumnControls from '../../../src/ui/TableFloatingControls/ColumnControls
 import RowControls from '../../../src/ui/TableFloatingControls/RowControls';
 import InsertColumnButton from '../../../src/ui/TableFloatingControls/ColumnControls/InsertColumnButton';
 import InsertRowButton from '../../../src/ui/TableFloatingControls/RowControls/InsertRowButton';
-import ToolbarButton from '../../../src/ui/ToolbarButton';
+import AkButton from '@atlaskit/button';
 import {
   ColumnControlsButtonWrap,
   HeaderButton as ColumnControlsButton
@@ -200,7 +200,7 @@ describe('TableFloatingControls', () => {
             <InsertColumnButton index={index} insertColumn={pluginState.insertColumn} />
           );
           wrapper.setState({ hovered: true });
-          wrapper.find(ToolbarButton).simulate('click');
+          wrapper.find(AkButton).simulate('click');
           expect(pluginState.insertColumn.calledOnce).to.equal(true);
           const { args } = pluginState.insertColumn.getCalls()[0];
           expect(args[0]).to.equal(index);
@@ -220,7 +220,7 @@ describe('TableFloatingControls', () => {
             <InsertRowButton index={index} insertRow={pluginState.insertRow} />
           );
           wrapper.setState({ hovered: true });
-          wrapper.find(ToolbarButton).simulate('click');
+          wrapper.find(AkButton).simulate('click');
           expect(pluginState.insertRow.calledOnce).to.equal(true);
           const { args } = pluginState.insertRow.getCalls()[0];
           expect(args[0]).to.equal(index);

@@ -28,19 +28,15 @@ export const HeaderButtonDefault = styled.button`
 `;
 // tslint:disable-next-line:variable-name
 export const InsertButtonDefault = styled.div`
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   position: absolute;
   z-index: 20;
-  width: 36px;
-  height: 30px;
   display: none;
+  width: 20px;
+  height: 20px;
   justify-content: center;
   & button {
     width: 100%;
-    display: flex;
-    justify-content: center;
+    flex-direction: column;
   }
 `;
 // tslint:disable-next-line:variable-name

@@ -46,11 +46,11 @@ export const HeaderButton = styled(HeaderButtonDefault)`
 // tslint:disable-next-line:variable-name
 export const InsertRowButtonWrap = styled.div`
   position: absolute;
-  bottom: -12px;
-  left: -25px;
-  height: 25px;
-  width: 25px;
-  z-index: 1;
+  bottom: -10px;
+  left: -20px;
+  height: 20px;
+  width: 20px;
+  z-index: 2;
   cursor: pointer;
   &:hover > div {
     display: flex;
@@ -58,11 +58,10 @@ export const InsertRowButtonWrap = styled.div`
 `;
 // tslint:disable-next-line:variable-name
 export const InsertRowMarker = styled(InsertMarkerDefault)`
-  top: 10px;
+  top: 7px;
   right: 3px;
 `;
 // tslint:disable-next-line:variable-name
 export const InsertRowButtonInner = styled(InsertButtonDefault)`
-  top: -3px;
-  left: -25px;
+  left: 5px;
 `;

@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
-import ToolbarButton from '../../ToolbarButton';
-import {
-  InsertRowButtonWrap,
-  InsertRowMarker,
-  InsertRowButtonInner,
-} from './styles';
+import AkButton from '@atlaskit/button';
+import { InsertRowButtonWrap, InsertRowMarker, InsertRowButtonInner } from './styles';
 
 export interface ButtonProps {
   index: number;
@@ -21,9 +17,11 @@ export default class InsertRowButton extends Component<ButtonProps, any> {
     return (
       <InsertRowButtonWrap style={this.props.style}>
         <InsertRowButtonInner>
-          <ToolbarButton
+          <AkButton
             onClick={this.handleInsert}
             iconBefore={<AddIcon label="Add row" />}
+            appearance="primary"
+            spacing="none"
           />
         </InsertRowButtonInner>
         <InsertRowMarker />

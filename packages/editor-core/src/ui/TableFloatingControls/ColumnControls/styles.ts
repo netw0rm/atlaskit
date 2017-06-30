@@ -45,11 +45,11 @@ export const HeaderButton = styled(HeaderButtonDefault)`
 // tslint:disable-next-line:variable-name
 export const InsertColumnButtonWrap = styled.div`
   position: absolute;
-  top: -25px;
-  right: -12px;
-  height: 25px;
-  width: 25px;
-  z-index: 1;
+  top: -20px;
+  right: -10px;
+  height: 20px;
+  width: 20px;
+  z-index: 2;
   cursor: pointer;
   &:hover > div {
     display: flex;
@@ -58,10 +58,9 @@ export const InsertColumnButtonWrap = styled.div`
 // tslint:disable-next-line:variable-name
 export const InsertColumnMarker = styled(InsertMarkerDefault)`
   bottom: 3px;
-  left: 10px;
+  left: 7px;
 `;
 // tslint:disable-next-line:variable-name
 export const InsertColumnButtonInner = styled(InsertButtonDefault)`
-  top: -20px;
-  left: -5px;
+  top: 5px;
 `;

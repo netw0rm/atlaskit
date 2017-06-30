@@ -19,6 +19,15 @@ export const FilmStripWrapper = styled.div`
   padding: 5px 0;
 `;
 
+const singleCardProps = {
+  cardDimensions: LargeCard as CardDimensions,
+  resizeMode: 'full-fit'
+};
+
+const multipleCardProps = {
+  resizeMode: 'crop'
+};
+
 export default function MediaGroup(props: MediaGroupProps) {
   const numChildren = React.Children.count(props.children);
 
@@ -27,9 +36,9 @@ export default function MediaGroup(props: MediaGroupProps) {
       <FilmStripNavigator>
       {
         React.Children.map(props.children, (child: ReactElement<MediaProps>) => {
-          return numChildren === 1
-            ? React.cloneElement(child, { cardDimensions: LargeCard as CardDimensions } as MediaProps)
-            : child;
+          const childProps = numChildren === 1 ? singleCardProps : multipleCardProps;
+
+          return React.cloneElement(child, childProps as MediaProps);
         })
       }
       </FilmStripNavigator>

@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import invariant from 'invariant';
 import memoizeOne from 'memoize-one';
 import type { Position } from '../../types';
-import type { Callbacks, DragTypes, Provided } from './drag-handle-types';
+import type { Props, DragTypes, Provided } from './drag-handle-types';
 
 const noop = (): void => { };
 const getFalse: () => boolean = () => false;
@@ -14,12 +14,6 @@ const primaryButton = 0;
 // The amount of pixels that need to move before we consider the movement
 // a drag rather than a click.
 export const sloppyClickThreshold: number = 5;
-
-type Props = {|
-  isEnabled: boolean,
-  callbacks: Callbacks,
-  children: (?Provided) => void,
-|}
 
 type State = {
   draggingWith: ?DragTypes,

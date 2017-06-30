@@ -30,3 +30,9 @@ export type Provided = {
   onDragStart: () => void,
   onDrop: () => void
 }
+
+export type Props = {|
+  isEnabled: boolean,
+  callbacks: Callbacks,
+  children: (?Provided) => void,
+|}

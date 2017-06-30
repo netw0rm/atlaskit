@@ -915,7 +915,7 @@ describe('Draggable - unconnected', () => {
           expect.fail();
           return;
         }
-        expect(draggingProvided.draggableStyle.zIndex).to.be.a('number');
+        expect(draggingProvided.draggableStyle.zIndex).to.equal(zIndexOptions.dragging);
         expect(notDraggingProvided.draggableStyle).to.equal(null);
       });
 
@@ -933,16 +933,9 @@ describe('Draggable - unconnected', () => {
         });
         const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
 
-        if (!draggingProvided.draggableStyle || !draggingProvided.draggableStyle.zIndex) {
-          expect.fail();
-          return;
-        }
-        if (!returningHomeProvided.draggableStyle || !returningHomeProvided.draggableStyle.zIndex) {
-          expect.fail();
-          return;
-        }
-
+        // $ExpectError - not type checking draggableStyle
         expect(draggingProvided.draggableStyle.zIndex)
+          // $ExpectError - not type checking draggableStyle
           .to.be.above(returningHomeProvided.draggableStyle.zIndex);
       });
 
@@ -1044,7 +1037,8 @@ describe('Draggable - unconnected', () => {
         });
         const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
 
-        expect(returningHomeProvided.draggableStyle.zIndex).to.be.a('number');
+        // $ExpectError - not checking draggableStyle
+        expect(returningHomeProvided.draggableStyle.zIndex).to.equal(zIndexOptions.dropAnimating);
         expect(notDraggingProvided.draggableStyle).to.equal(null);
       });
 
@@ -1060,17 +1054,15 @@ describe('Draggable - unconnected', () => {
 
         const provided: Provided = stub.lastCall.args[0].provided;
 
-        if (!provided.draggableStyle || !provided.draggableStyle.position) {
-          expect.fail();
-          return;
-        }
-
-        expect(provided.draggableStyle.position).to.equal('absolute');
-        expect(provided.draggableStyle.zIndex).to.be.a('number');
-        expect(provided.draggableStyle.width).to.equal(dimension.withMargin.width);
-        expect(provided.draggableStyle.height).to.equal(dimension.withMargin.height);
-        expect(provided.draggableStyle.top).to.equal(dimension.withMargin.top);
-        expect(provided.draggableStyle.left).to.equal(dimension.withMargin.left);
+        expect(provided.draggableStyle).to.deep.equal({
+          position: 'absolute',
+          boxSizing: 'border-box',
+          zIndex: zIndexOptions.dropAnimating,
+          width: dimension.withMargin.width,
+          height: dimension.withMargin.height,
+          top: dimension.withMargin.top,
+          left: dimension.withMargin.left,
+        });
       });
 
       it('should let consumers know that the item is no longer dragging', () => {

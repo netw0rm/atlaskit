@@ -109,10 +109,10 @@ export type Action = ActionCreators;
 export type Store = ReduxStore<State, Action>;
 export type Dispatch = ReduxDispatch<Action>;
 
-export type Hooks = {
+export type Hooks = {|
   onDragStart?: (id: DraggableId, location: DraggableLocation) => void,
   onDragEnd: (result: DropResult) => void,
-}
+|}
 
 // These types are 'fake'. They really just resolve to 'any'.
 // But it is useful for readability and intention

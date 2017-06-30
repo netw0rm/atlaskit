@@ -15,6 +15,7 @@ type Context = {|
 |}
 
 export default class DragDropContext extends PureComponent {
+  /* eslint-disable react/sort-comp */
   props: Props
   store: Store
 
@@ -26,6 +27,7 @@ export default class DragDropContext extends PureComponent {
       getState: PropTypes.func.isRequired,
     }).isRequired,
   }
+  /* eslint-enable */
 
   componentWillMount() {
     this.store = createStore(this.props);

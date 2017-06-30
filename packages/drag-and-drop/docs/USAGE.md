@@ -11,10 +11,10 @@ In order to use drag and drop, you need to have the part of your react tree that
 ### Prop type information
 
 ```js
-type Hooks = {
+type Hooks = {|
   onDragStart?: (id: DraggableId, location: DraggableLocation) => void,
   onDragEnd: (result: DropResult) => void,
-}
+|}
 
 type Props = Hooks & {|
   children?: ReactElement,

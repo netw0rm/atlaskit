@@ -18,14 +18,14 @@ const getMapProps = memoizeOne(
   })
 );
 
-const makeSelector = () => createSelector(
-  [requestDimensionSelector, getOwnType],
-  (type: ?TypeId, ownType: TypeId): MapProps => {
-    if (!type) {
+export const makeSelector = () => createSelector(
+  [getOwnType, requestDimensionSelector],
+  (ownType: TypeId, requested: ?TypeId): MapProps => {
+    if (!requested) {
       return getMapProps(false);
     }
 
-    return getMapProps(type === ownType);
+    return getMapProps(ownType === requested);
   }
 );
 

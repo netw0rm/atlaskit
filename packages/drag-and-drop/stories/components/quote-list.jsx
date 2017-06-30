@@ -12,6 +12,7 @@ const Container = styled.div`
   padding: 8px;
   padding-bottom: 0;
   user-select: none;
+  transition: background-color 0.1s ease;
   width: 250px;
 `;
 

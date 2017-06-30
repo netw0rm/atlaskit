@@ -9,7 +9,7 @@ import type { Provided, StateSnapshot } from '../../src/view/draggable/draggable
 const Container = styled.a`
   border-radius: 2px;
   border: 1px solid grey;
-  background: ${({ isDragging }) => (isDragging ? 'rgb(185, 244, 188)' : 'white')};
+  background-color: ${({ isDragging }) => (isDragging ? 'rgb(185, 244, 188)' : 'white')};
 
   cursor: ${({ isDragging }) => (isDragging ? 'grabbing' : 'grab')};
   box-shadow: ${({ isDragging }) => (isDragging ? '2px 2px 1px rgba(0,0,0,0.2)' : 'none')};
@@ -17,6 +17,7 @@ const Container = styled.a`
   min-height: 40px;
   margin-bottom: 8px;
   user-select: none;
+  transition: background-color 0.1s ease;
 
   /* anchor overrides */
   color: ${colors.black};

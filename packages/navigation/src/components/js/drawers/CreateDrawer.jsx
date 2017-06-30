@@ -1,55 +1,23 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import Drawer from '../Drawer';
 import { createIconOffset } from '../../../shared-variables';
+import type { DrawerProps } from '../../../types';
 
-const ContentArea = styled.div`
-  // Required for children elements be able to have bottom of a screen
-  bottom: 0;
-  position: absolute;
-  transition: top 220ms;
-  top: ${props => (props.isFullWidth ? 0 : createIconOffset)}px;
-  width: calc(100% - 16px);
-`;
-
+/*
+NOTE: All drawers mirror each other in design, with the only difference
+being the offset.
+*/
 export default class CreateDrawer extends PureComponent {
-  static propTypes = {
-    backIcon: PropTypes.node,
-    children: PropTypes.node,
-    header: PropTypes.node,
-    isOpen: PropTypes.bool,
-    isFullWidth: PropTypes.bool,
-    onBackButton: PropTypes.func,
-    primaryIcon: PropTypes.node,
-  }
+  props: DrawerProps
 
   render() {
-    const {
-      children,
-      backIcon,
-      header,
-      isFullWidth,
-      isOpen,
-      onBackButton,
-      primaryIcon,
-    } = this.props;
-
     return (
       <Drawer
-        backIcon={backIcon}
-        header={header}
-        isOpen={isOpen}
-        width={isFullWidth ? 'full' : 'narrow'}
-        onBackButton={onBackButton}
-        primaryIcon={primaryIcon}
+        iconOffset={createIconOffset}
         backIconOffset={createIconOffset}
-      >
-        <ContentArea isFullWidth={isFullWidth}>
-          {children}
-        </ContentArea>
-      </Drawer>
+        width={this.props.isFullWidth ? 'full' : 'narrow'}
+        {...this.props}
+      />
     );
   }
 }
-

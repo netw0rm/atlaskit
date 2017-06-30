@@ -35,19 +35,19 @@ function storybookBuildStatus(state) {
 }
 
 function getStaticStorybooks() {
-  const packagesDir = path.join(process.cwd(), 'packages');
-  return glob(path.join(packagesDir, '*', 'storybook-static', '*'));
 }
 
 try {
+  const packagesDir = path.join(process.cwd(), 'packages');
   const tmpStorybooksPath = path.join(process.cwd(), 'storybook-static');
   const uploadPath = getUploadPath();
 
   fs.ensureDirSync(tmpStorybooksPath);
 
-  getStaticStorybooks().forEach((storybook) => {
-    fs.copySync(storybook, tmpStorybooksPath);
-  });
+  glob(path.join(packagesDir, '*', 'storybook-static', '*'))
+    .forEach((storybook) => {
+      fs.copySync(storybook, tmpStorybooksPath);
+    });
 
   generateIndexFile(tmpStorybooksPath, `Storybooks for build ${bbCommit}`);
 

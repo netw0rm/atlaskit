@@ -25,7 +25,7 @@
     "@atlaskit/avatar": "^4.0.5",
     "@atlaskit/badge": "^4.0.3",
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/dropdown-menu": "1.10.0",
+    "@atlaskit/dropdown-menu": "^1.10.0",
     "@atlaskit/field-text": "^2.6.1",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/lozenge": "^3.0.2",

@@ -15,8 +15,10 @@ import HeadlessExample from './examples/headless';
 import HeadlessExampleRaw from '!raw!./examples/headless';
 import FixedSizeExample from './examples/fixed-size';
 import FixedSizeExampleRaw from '!raw!./examples/fixed-size';
-import EmptyViewExample from './examples/empty-view';
-import EmptyViewExampleRaw from '!raw!./examples/empty-view';
+import EmptyViewWithBodyExample from './examples/empty-view-with-body';
+import EmptyViewWithBodyExampleRaw from '!raw!./examples/empty-view-with-body';
+import EmptyViewWithoutBodyExample from './examples/empty-view-without-body';
+import EmptyViewWithoutBodyExampleRaw from '!raw!./examples/empty-view-without-body';
 /* eslint-enable import/no-duplicates, import/first */
 
 const propDescriptionsCommon = {
@@ -131,14 +133,25 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
-  .add('Empty view', () => (
-    <Chrome title="Empty view">
+  .add('Empty view without body', () => (
+    <Chrome title="Empty view without body">
       <Description>
         <p>Table component with  `emptyView` passed as a prop</p>
       </Description>
-      <EmptyViewExample />
+      <EmptyViewWithoutBodyExample />
       <Code>
-        {EmptyViewExampleRaw}
+        {EmptyViewWithoutBodyExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Empty view with body', () => (
+    <Chrome title="Empty view with body">
+      <Description>
+        <p>Table component without  `emptyView` passed as a prop</p>
+      </Description>
+      <EmptyViewWithBodyExample />
+      <Code>
+        {EmptyViewWithBodyExampleRaw}
       </Code>
     </Chrome>
   ));

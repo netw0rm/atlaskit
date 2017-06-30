@@ -1,6 +1,6 @@
 import {
   Schema, keymap, Plugin,
-  EditorState, Transaction, EditorView,
+  EditorState, Transaction
 } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import { MediaPluginState, stateKey } from './';

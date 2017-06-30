@@ -136,7 +136,7 @@ storiesOf(name, module)
   .add('Empty view without body', () => (
     <Chrome title="Empty view without body">
       <Description>
-        <p>Table component with  `emptyView` passed as a prop</p>
+        <p>Table component without `emptyView` prop passed in</p>
       </Description>
       <EmptyViewWithoutBodyExample />
       <Code>
@@ -147,7 +147,7 @@ storiesOf(name, module)
   .add('Empty view with body', () => (
     <Chrome title="Empty view with body">
       <Description>
-        <p>Table component without  `emptyView` passed as a prop</p>
+        <p>Table component with `emptyView` prop passed in</p>
       </Description>
       <EmptyViewWithBodyExample />
       <Code>

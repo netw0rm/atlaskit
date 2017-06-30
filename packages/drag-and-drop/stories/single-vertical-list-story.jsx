@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import QuoteApp from './components/quote-app';
 

@@ -37,8 +37,8 @@ class Item extends PureComponent {
         shouldPublish={this.props.shouldPublish}
         publish={this.props.publish}
         itemId={itemId}
+        type="TYPE"
         targetRef={this.state.ref}
-        typeId="TYPE"
       >
         <div ref={this.setRef}>hi</div>
       </DimensionPublisher>

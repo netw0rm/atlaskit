@@ -12,15 +12,6 @@ import type {
 import type {
   Style as MovementStyle,
 } from '../moveable/moveable-types';
-import {
-  lift,
-  move,
-  moveForward,
-  moveBackward,
-  drop,
-  cancel,
-  dropAnimationFinished,
-} from '../../state/action-creators';
 
 type ReactElement = mixed;
 
@@ -48,13 +39,14 @@ export type StateSnapshot = {|
 |}
 
 export type DispatchProps = {
-  lift: typeof lift,
-  move: typeof move,
-  moveForward: typeof moveForward,
-  moveBackward: typeof moveBackward,
-  drop: typeof drop,
-  cancel: typeof cancel,
-  dropAnimationFinished: typeof dropAnimationFinished,
+  // Cannot use the typeof right now due to limitation in "react-flow-props-to-prop-types"
+  lift: Function, // typeof lift,
+  move: Function, // typeof move,
+  moveForward: Function, // typeof moveForward,
+  moveBackward: Function, // typeof moveBackward,
+  drop: Function, // typeof drop,
+  cancel: Function, // typeof cancel,
+  dropAnimationFinished: Function, // typeof dropAnimationFinished,
 }
 
 export type MapProps = {|

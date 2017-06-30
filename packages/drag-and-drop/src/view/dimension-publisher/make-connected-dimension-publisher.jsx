@@ -2,15 +2,15 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import memoizeOne from 'memoize-one';
-import type { Action, State, TypeId } from '../../types';
-import type { DispatchProps, MapProps, ConnectedProps } from './dimension-publisher-types';
+import type { Dimension, State, TypeId, ReactClass } from '../../types';
+import type { DispatchProps, MapProps, OwnProps } from './dimension-publisher-types';
 import storeKey from '../../state/get-store-key';
 import DimensionPublisher from './dimension-publisher';
 
 const requestDimensionSelector =
   (state: State): ?TypeId => state.dimension.request;
 
-const getOwnType = (state: State, props: ConnectedProps): TypeId => props.type;
+const getOwnType = (state: State, props: OwnProps): TypeId => props.type;
 
 const getMapProps = memoizeOne(
   (shouldPublish: boolean): MapProps => ({
@@ -31,10 +31,10 @@ const makeSelector = () => createSelector(
 
 const makeMapStateToProps = () => {
   const selector = makeSelector();
-  return (state: State, props: ConnectedProps) => selector(state, props);
+  return (state: State, props: OwnProps) => selector(state, props);
 };
 
-export default (publish: Action): ReactClass<any> => {
+export default (publish: (dimension: Dimension) => void): ReactClass => {
   const mapDispatchToProps: DispatchProps = {
     publish,
   };

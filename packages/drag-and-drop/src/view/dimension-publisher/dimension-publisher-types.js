@@ -1,25 +1,25 @@
 // @flow
-import type { Dimension, Id, TypeId, Action } from '../../types';
+import type {
+  Dimension,
+  Id,
+  TypeId,
+  ReactElement,
+  HTMLElement,
+} from '../../types';
 
 export type MapProps = {|
   shouldPublish: boolean,
 |}
 
 export type DispatchProps = {|
-  publish: Action
+  publish: (dimension: Dimension) => void,
 |}
 
-export type ConnectedProps = {|
+export type OwnProps = {|
   itemId: Id,
   type: TypeId,
-  children?: any,
-  targetRef: ?Element
+  targetRef: ?HTMLElement,
+  children?: ReactElement,
 |}
 
-export type Props = {
-  itemId: Id,
-  targetRef: ?Element,
-  publish: (dimension: Dimension) => void,
-  shouldPublish: boolean,
-  children?: any,
-}
+export type Props = OwnProps & DispatchProps & MapProps;

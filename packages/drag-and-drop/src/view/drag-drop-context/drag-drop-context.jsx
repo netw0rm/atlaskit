@@ -1,5 +1,6 @@
 // @flow
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import createStore from '../../state/create-store';
 // eslint-disable-next-line no-duplicate-imports
 import type { Store, Hooks, ReactElement } from '../../types';

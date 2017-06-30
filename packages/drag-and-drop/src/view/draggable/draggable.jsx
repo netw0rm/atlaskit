@@ -35,6 +35,7 @@ type State = {|
 |}
 
 export default class Draggable extends PureComponent {
+  /* eslint-disable react/sort-comp */
   props: Props
   state: State
   callbacks: DragHandleCallbacks
@@ -47,6 +48,7 @@ export default class Draggable extends PureComponent {
     isDragEnabled: true,
     type: 'DEFAULT',
   }
+  /* eslint-enable */
 
   constructor(props: Props, context: mixed) {
     super(props, context);

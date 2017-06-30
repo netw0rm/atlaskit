@@ -1,6 +1,7 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { describe, it, beforeEach, afterEach, before, after } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
@@ -140,10 +141,10 @@ const mountDraggable = ({
       [storeKey]: store,
     },
     childContextTypes: {
-      [storeKey]: React.PropTypes.shape({
-        dispatch: React.PropTypes.func.isRequired,
-        subscribe: React.PropTypes.func.isRequired,
-        getState: React.PropTypes.func.isRequired,
+      [storeKey]: PropTypes.shape({
+        dispatch: PropTypes.func.isRequired,
+        subscribe: PropTypes.func.isRequired,
+        getState: PropTypes.func.isRequired,
       }).isRequired,
     },
   };

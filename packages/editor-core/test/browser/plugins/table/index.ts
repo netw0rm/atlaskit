@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import tablePlugin from '../../../../src/plugins/table';
+import tablePlugin, { TableState } from '../../../../src/plugins/table';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
   createEvent, setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, thEmpty, table, tr, td,
@@ -10,7 +10,7 @@ import {
 chai.use(chaiPlugin);
 const fixture = fixtures();
 
-const editor = (doc: any) => makeEditor({
+const editor = (doc: any) => makeEditor<TableState>({
   doc,
   plugins: tablePlugin(),
   place: fixture()
@@ -30,7 +30,7 @@ describe('table plugin', () => {
 
     context('when leaving table', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(p('{pPos}'), table(tr(tdCursor, tdEmpty, tdEmpty ))));
+        const { refs, pluginState, editorView } = editor(doc(p('{pPos}'), table(tr(tdCursor, tdEmpty, tdEmpty))));
         const spy = sinon.spy();
         const { pPos } = refs;
 
@@ -43,7 +43,7 @@ describe('table plugin', () => {
 
     context('when entering table', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(p('{<>}'), table(tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty ))));
+        const { refs, pluginState, editorView } = editor(doc(p('{<>}'), table(tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty))));
         const spy = sinon.spy();
         const { nextPos } = refs;
 
@@ -56,7 +56,7 @@ describe('table plugin', () => {
 
     context('when moving cursor to a different table', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty )), table(tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty ))));
+        const { refs, pluginState, editorView } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty)), table(tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty))));
         const spy = sinon.spy();
         const { nextPos } = refs;
 
@@ -69,7 +69,7 @@ describe('table plugin', () => {
 
     context('when moving within the same table', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(table(tr(tdCursor, tdEmpty, td({})(p('{nextPos}')) ))));
+        const { refs, pluginState, editorView } = editor(doc(table(tr(tdCursor, tdEmpty, td({})(p('{nextPos}'))))));
         const spy = sinon.spy();
         const { nextPos } = refs;
 
@@ -82,7 +82,7 @@ describe('table plugin', () => {
 
     context('when unsubscribe', () => {
       it('does not notify the subscriber', () => {
-        const { pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty ))));
+        const { pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty))));
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
@@ -96,7 +96,7 @@ describe('table plugin', () => {
   describe('editorFocued', () => {
     context('when editor is focused', () => {
       it('it is true', () => {
-        const { plugin, editorView, pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty ))));
+        const { plugin, editorView, pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty))));
         plugin.props.onFocus!(editorView, event);
         expect(pluginState.editorFocused).to.equal(true);
       });
@@ -104,7 +104,7 @@ describe('table plugin', () => {
 
     context('when editor is not focused', () => {
       it('it is false', () => {
-        const { plugin, editorView, pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty ))));
+        const { plugin, editorView, pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty))));
         plugin.props.onBlur!(editorView, event);
         expect(pluginState.editorFocused).to.equal(false);
       });
@@ -114,7 +114,7 @@ describe('table plugin', () => {
   describe('createTable()', () => {
     context('when the cursor is inside the table', () => {
       it('it should not create a new table and return false', () => {
-        const tableNode = table(tr( tdCursor ));
+        const tableNode = table(tr(tdCursor));
         const { plugin, pluginState, editorView } = editor(doc(tableNode));
         plugin.props.onFocus!(editorView, event);
         expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
@@ -161,7 +161,7 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(0);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr( tdCursor, tdEmpty ))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
         });
       });
 
@@ -170,7 +170,7 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr( tdEmpty, tdCursor ))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty, tdCursor))));
         });
       });
     });
@@ -181,7 +181,7 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr( tdEmpty, tdCursor, tdEmpty ))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty, tdCursor, tdEmpty))));
         });
       });
     });
@@ -229,7 +229,7 @@ describe('table plugin', () => {
             plugin.props.onFocus!(editorView, event);
             pluginState.selectColumn(column);
             const selection = editorView.state.selection as CellSelection;
-            const map = TableMap.get(pluginState.tableNode);
+            const map = TableMap.get(pluginState.tableNode!);
             const start = selection.$anchorCell.start(-1);
             const anchor = map.colCount(selection.$anchorCell.pos - start);
             const head = map.colCount(selection.$headCell.pos - start);

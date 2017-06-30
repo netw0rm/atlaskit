@@ -39,10 +39,10 @@ export class HyperlinkState {
   element?: HTMLElement;
   activeElement?: HTMLElement;
   showToolbarPanel = false;
+  activeLinkNode?: Node;
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;
-  private activeLinkNode?: Node;
   private activeLinkMark?: Mark;
   private activeLinkStartPos?: number;
 

@@ -88,11 +88,6 @@ describe('Media plugin', () => {
     providerFactory.destroy();
   });
 
-  it('allows change handler to be registered', () => {
-    const pluginState = editor(doc(p(''))).pluginState;
-    pluginState.subscribe(sinon.spy());
-  });
-
   context('when cursor is at the end of a text block', () => {
     it('inserts media node into the document after current paragraph node', () => {
       const { editorView, pluginState } = editor(doc(p('text{<>}')));

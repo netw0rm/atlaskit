@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import mentionsPlugins from '../../../../src/plugins/mentions';
+import mentionsPlugins, { MentionsState } from '../../../../src/plugins/mentions';
 import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
@@ -19,7 +19,7 @@ chai.use(chaiPlugin);
 
 describe('mentions - input rules', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<MentionsState>({
     doc,
     plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()

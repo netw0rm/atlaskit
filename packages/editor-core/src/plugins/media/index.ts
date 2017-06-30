@@ -177,14 +177,13 @@ export class MediaPluginState {
   }
 
   private insertMedia = (node: PMNode): void => {
-    const { view } = this;
-    const { state } = view;
+    const { state, dispatch } = this.view;
     const { $to } = state.selection;
     let transaction = state.tr;
 
     // insert a paragraph after if reach the end of doc
     // and there is no media group in the front or selection is a non media block node
-    if (atTheEndOfDoc(state) && (!this.posOfMediaGroupExistsAsAnAjacentNodeBefore(state) || this.isSelectionNonMediaBlockNode())) {
+    if (atTheEndOfDoc(state) && (!this.posOfPrecededMediaGroup(state) || this.isSelectionNonMediaBlockNode())) {
       const paragraphInsertPos = this.isSelectionNonMediaBlockNode() ? $to.pos : $to.pos + 1;
       transaction = transaction.insert(paragraphInsertPos, state.schema.nodes.paragraph.create());
     }
@@ -202,7 +201,7 @@ export class MediaPluginState {
       transaction = transaction.insert(mediaInsertPos, node).deleteRange(deleteRange.start, deleteRange.end);
     }
 
-    view.dispatch(transaction);
+    dispatch(transaction);
 
     this.setSelectionAfterMediaInsertion(node);
   }
@@ -262,7 +261,7 @@ export class MediaPluginState {
     const $latestPos = tr.doc.resolve(linksInfo.latestPos);
 
     const insertPos = this.posOfMediaGroupBelow($latestPos, false)
-      || this.posOfMediaGroupExistsAsAParentNode(state, $latestPos, false)
+      || this.posOfParentMediaGroup(state, $latestPos, false)
       || endPositionOfParent($latestPos);
 
     // insert a paragraph after if reach the end of doc
@@ -275,10 +274,9 @@ export class MediaPluginState {
   }
 
   private reducelinksInfo(linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } {
-    let linksInfo = { latestPos: 0, urls: [] as string[] };
     const posAtTheEndOfDoc = this.view.state.doc.nodeSize - 4;
 
-    linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
+    const linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
       linksInfo.urls = linksInfo.urls.concat(rangeWithUrl.urls);
       if (rangeWithUrl.end > linksInfo.latestPos) {
         linksInfo.latestPos = rangeWithUrl.end;
@@ -288,7 +286,7 @@ export class MediaPluginState {
         linksInfo.latestPos = posAtTheEndOfDoc;
       }
       return linksInfo;
-    }, linksInfo);
+    }, { latestPos: 0, urls: [] as string[] });
 
     return linksInfo;
   }
@@ -459,7 +457,7 @@ export class MediaPluginState {
     return $from.parent.type === state.schema.nodes.paragraph && atTheBeginningOfBlock(state) && atTheEndOfBlock(state);
   }
 
-  private posOfMediaGroupExistsAsAnAjacentNodeBefore(state: EditorState<any>): number | undefined {
+  private posOfPrecededMediaGroup(state: EditorState<any>): number | undefined {
     if (!atTheBeginningOfBlock(state)) {
       return;
     }
@@ -485,7 +483,7 @@ export class MediaPluginState {
     }
   }
 
-  private posOfMediaGroupExisitsAsAnAjacentNodeAfter(state: EditorState<any>): number | undefined {
+  private posOfFollowingMediaGroup(state: EditorState<any>): number | undefined {
     if (!atTheEndOfBlock(state)) {
       return;
     }
@@ -510,7 +508,7 @@ export class MediaPluginState {
     }
   }
 
-  private posOfMediaGroupExistsAsAParentNode(state: EditorState<any>, $pos?: ResolvedPos, prepend: boolean = true): number | undefined {
+  private posOfParentMediaGroup(state: EditorState<any>, $pos?: ResolvedPos, prepend: boolean = true): number | undefined {
     const { $from } = state.selection;
     $pos = $pos || $from;
 
@@ -520,9 +518,9 @@ export class MediaPluginState {
   }
 
   private posOfMediaGroupNearBy(state: EditorState<any>): number | undefined {
-    return this.posOfMediaGroupExistsAsAParentNode(state)
-      || this.posOfMediaGroupExisitsAsAnAjacentNodeAfter(state)
-      || this.posOfMediaGroupExistsAsAnAjacentNodeBefore(state);
+    return this.posOfParentMediaGroup(state)
+      || this.posOfFollowingMediaGroup(state)
+      || this.posOfPrecededMediaGroup(state);
   }
 
   private findMediaInsertPos = (): number => {
@@ -554,7 +552,7 @@ export class MediaPluginState {
     const { state } = this.view;
     const { $from, $to } = state.selection;
 
-    if (this.posOfMediaGroupExistsAsAParentNode(state)) {
+    if (this.posOfParentMediaGroup(state)) {
       return;
     }
 

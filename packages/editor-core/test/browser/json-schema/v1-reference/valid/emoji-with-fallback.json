@@ -9,7 +9,8 @@
           "type": "emoji",
           "attrs": {
             "id": "1f600",
-            "text": ":grinning:"
+            "shortName": ":grinning:",
+            "fallback": "😀"
           }
         }
       ]

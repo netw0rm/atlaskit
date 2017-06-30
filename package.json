@@ -87,6 +87,7 @@
     "karma-spec-reporter": "^0.0.26",
     "karma-webpack": "^1.8.0",
     "lerna": "^2.0.0-rc.5",
+    "lerna-semantic-release": "^9.1.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "minilog": "^3.0.1",

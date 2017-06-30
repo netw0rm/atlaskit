@@ -40,7 +40,7 @@ const clean = memoizeOne((phase: ?Phase): State => {
 });
 
 export default (state: State = clean('IDLE'), action: Action): State => {
-  shout(`reducing ${action.type}`, action.payload ? action.payload : 'no payload');
+  // shout(`reducing ${action.type}`, action.payload ? action.payload : 'no payload');
 
   if (action.type === 'BEGIN_LIFT') {
     if (state.phase !== 'IDLE') {
@@ -234,7 +234,6 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     const diff: ?Position = getDiffToJumpToNextIndex(
       isMovingForward,
       existing.current.id,
-      existing.current.center,
       existing.impact.destination,
       state.dimension.draggable,
       state.dimension.droppable,

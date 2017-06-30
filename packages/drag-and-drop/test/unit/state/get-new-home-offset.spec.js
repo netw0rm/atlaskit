@@ -43,7 +43,7 @@ const dimensions: DimensionMap = [draggable1, draggable2, draggable3]
     return map;
   }, {});
 
-describe.only('get new home offset', () => {
+describe('get new home offset', () => {
   it('should return to the start position (origin) if nothing has moved', () => {
     const result: Position = getNewHomeOffset(
       noImpact.movement, { x: 100, y: 200 }, dimensions

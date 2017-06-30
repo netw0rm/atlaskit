@@ -1,4 +1,5 @@
 // @flow
+import memoizeOne from 'memoize-one';
 import type {
   DraggableLocation,
   Dimension,
@@ -8,12 +9,15 @@ import type {
 } from '../types';
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 
-const origin: Position = { x: 0, y: 0 };
+const getIndex = memoizeOne(
+  (draggables: Dimension[],
+    target: Dimension
+  ): number => draggables.indexOf(target)
+);
 
 export default (
   isMovingForward: boolean,
   draggableId: DraggableId,
-  center: Position,
   location: DraggableLocation,
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap,
@@ -27,8 +31,12 @@ export default (
     draggableDimensions
   );
 
-  // TODO: memoize
-  const startIndex: number = insideDroppable.indexOf(draggableDimension);
+  const startIndex: number = getIndex(insideDroppable, draggableDimension);
+
+  if (startIndex === -1) {
+    console.error('could not find draggable inside current droppable');
+    return null;
+  }
 
   // cannot move beyond the last item
   if (isMovingForward && currentIndex === insideDroppable.length - 1) {
@@ -40,16 +48,16 @@ export default (
     return null;
   }
 
-  const currentDimension: Dimension = insideDroppable[currentIndex];
+  const atCurrentIndex: Dimension = insideDroppable[currentIndex];
   const nextIndex = isMovingForward ? currentIndex + 1 : currentIndex - 1;
-  const nextDimension: Dimension = insideDroppable[nextIndex];
+  const atNextIndex: Dimension = insideDroppable[nextIndex];
 
   const isMovingTowardStart = (isMovingForward && nextIndex <= startIndex) ||
     (!isMovingForward && nextIndex >= startIndex);
 
   const amount: number = isMovingTowardStart ?
-    currentDimension.withMargin.height :
-    nextDimension.withMargin.height;
+    atCurrentIndex.withMargin.height :
+    atNextIndex.withMargin.height;
 
   const diff: Position = {
     // not worrying about horizontal for now

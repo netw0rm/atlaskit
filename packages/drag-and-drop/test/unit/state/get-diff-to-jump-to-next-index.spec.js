@@ -13,28 +13,34 @@ import type {
 const droppable: Dimension = getDimension({
   top: 0,
   left: 0,
-  bottom: 100,
+  bottom: 1000,
   right: 100,
 });
 
+// height: 100
 const draggable1: Dimension = getDimension({
-  top: 10,
+  id: 'draggable1',
+  top: 0,
   left: 10,
-  bottom: 20,
+  bottom: 100,
   right: 90,
 });
 
+// height: 199
 const draggable2: Dimension = getDimension({
-  top: 21,
+  id: 'draggable2',
+  top: 101,
   left: 10,
-  bottom: 30,
+  bottom: 300,
   right: 90,
 });
 
+// height: 299
 const draggable3: Dimension = getDimension({
-  top: 31,
+  id: 'draggable3',
+  top: 301,
   left: 10,
-  bottom: 40,
+  bottom: 600,
   right: 90,
 });
 
@@ -59,7 +65,7 @@ describe('jump to next index', () => {
       };
 
       const point: ?Position = getDiffToJumpForward(
-        draggable3.center,
+        draggable3.id,
         location,
         draggables,
         droppables,
@@ -68,19 +74,22 @@ describe('jump to next index', () => {
       expect(point).to.equal(null);
     });
 
-    describe('moving an item forward one place', () => {
-      it('should return how far is needed to move', () => {
+    describe('is moving toward start position', () => {
+      it('should return the height of the dimension in the current index', () => {
+        // dragging the second item (draggable2), which has previously
+        // been moved backwards and is now in the first position
+        const currentIndex = 0;
         const location: DraggableLocation = {
-          index: 0,
+          index: currentIndex,
           droppableId: droppable.id,
         };
         const expected: Position = {
-          x: draggable2.center.x - draggable1.center.x,
-          y: draggable2.center.y - draggable1.center.y,
+          x: 0,
+          y: draggable1.withMargin.height,
         };
 
         const result: ?Position = getDiffToJumpForward(
-          draggable1.center,
+          draggable2.id,
           location,
           draggables,
           droppables,
@@ -90,25 +99,75 @@ describe('jump to next index', () => {
       });
     });
 
-    describe('moving an item forward that is not the first in the list', () => {
-      it('should return how far is needed to move', () => {
-        const location: DraggableLocation = {
-          index: 1,
-          droppableId: droppable.id,
-        };
-        const expected: Position = {
-          x: draggable3.center.x - draggable2.center.x,
-          y: draggable3.center.y - draggable2.center.y,
-        };
+    describe('is moving away from start position', () => {
+      describe('dragging first item forward one position', () => {
+        it('should return the height of the second dimension', () => {
+          // dragging the first item
+          const location: DraggableLocation = {
+            index: 0,
+            droppableId: droppable.id,
+          };
+          const expected: Position = {
+            x: 0,
+            y: draggable2.withMargin.height,
+          };
 
-        const result: ?Position = getDiffToJumpForward(
-          draggable2.center,
+          const result: ?Position = getDiffToJumpForward(
+          draggable1.id,
           location,
           draggables,
           droppables,
         );
 
-        expect(result).to.deep.equal(expected);
+          expect(result).to.deep.equal(expected);
+        });
+      });
+
+      describe('dragging second item forward one position', () => {
+        it('should return the height of the third dimension', () => {
+          // dragging the second item
+          const location: DraggableLocation = {
+            index: 1,
+            droppableId: droppable.id,
+          };
+          const expected: Position = {
+            x: 0,
+            y: draggable3.withMargin.height,
+          };
+
+          const result: ?Position = getDiffToJumpForward(
+          draggable2.id,
+          location,
+          draggables,
+          droppables,
+        );
+
+          expect(result).to.deep.equal(expected);
+        });
+      });
+
+      describe('dragging first item forward one position after already moving it forward once', () => {
+        it('should return the height of the third dimension', () => {
+          // draggable1 is now in position 2 (index 1) after a first drag
+          const location: DraggableLocation = {
+            index: 1,
+            droppableId: droppable.id,
+          };
+          // next dimension from the current index is draggable3
+          const expected: Position = {
+            x: 0,
+            y: draggable3.withMargin.height,
+          };
+
+          const result: ?Position = getDiffToJumpForward(
+            draggable1.id,
+            location,
+            draggables,
+            droppables,
+          );
+
+          expect(result).to.deep.equal(expected);
+        });
       });
     });
   });
@@ -123,7 +182,7 @@ describe('jump to next index', () => {
       };
 
       const point: ?Position = getDiffToJumpBackward(
-        draggable1.center,
+        draggable1.id,
         location,
         draggables,
         droppables,
@@ -132,49 +191,74 @@ describe('jump to next index', () => {
       expect(point).to.equal(null);
     });
 
-    describe('moving an item backward one place', () => {
-      it('should return how far is needed to move', () => {
-        // dragging the third item back one
+    describe('is moving toward start position', () => {
+      it('should return the height of the dimension in the current index', () => {
+        // dragged the second item (draggable2) forward once, and is now
+        // moving backwards towards the start again
         const location: DraggableLocation = {
+          // now in the third position
           index: 2,
           droppableId: droppable.id,
         };
         const expected: Position = {
-          x: draggable2.center.x - draggable3.center.x,
-          y: draggable2.center.y - draggable3.center.y,
+          x: 0,
+          y: -draggable3.withMargin.height,
         };
 
-        const result: ?Position = getDiffToJumpBackward(
-          draggable3.center,
-          location,
-          draggables,
-          droppables,
-        );
+        const point: ?Position = getDiffToJumpBackward(
+            draggable2.id,
+            location,
+            draggables,
+            droppables,
+          );
 
-        expect(result).to.deep.equal(expected);
+        expect(point).to.deep.equal(expected);
       });
     });
 
-    describe('moving an item backward that is not the last in the list', () => {
-      it('should return how far is needed to move', () => {
-        // dragging the second item back one
-        const location: DraggableLocation = {
-          index: 1,
-          droppableId: droppable.id,
-        };
-        const expected: Position = {
-          x: draggable1.center.x - draggable2.center.x,
-          y: draggable1.center.y - draggable2.center.y,
-        };
+    describe('is moving away from start position', () => {
+      describe('dragging the second item back to the first position', () => {
+        it('should return the negative of the height of the item in the first position', () => {
+          const location: DraggableLocation = {
+            index: 1,
+            droppableId: droppable.id,
+          };
+          const expected: Position = {
+            x: 0,
+            y: -draggable1.withMargin.height,
+          };
 
-        const result: ?Position = getDiffToJumpBackward(
-          draggable2.center,
-          location,
-          draggables,
-          droppables,
-        );
+          const point: ?Position = getDiffToJumpBackward(
+            draggable2.id,
+            location,
+            draggables,
+            droppables,
+          );
 
-        expect(result).to.deep.equal(expected);
+          expect(point).to.deep.equal(expected);
+        });
+      });
+
+      describe('dragging the third item back to the second position', () => {
+        it('should return the negative of the height of the item in the second position', () => {
+          const location: DraggableLocation = {
+            index: 2,
+            droppableId: droppable.id,
+          };
+          const expected: Position = {
+            x: 0,
+            y: -draggable2.withMargin.height,
+          };
+
+          const point: ?Position = getDiffToJumpBackward(
+            draggable3.id,
+            location,
+            draggables,
+            droppables,
+          );
+
+          expect(point).to.deep.equal(expected);
+        });
       });
     });
   });

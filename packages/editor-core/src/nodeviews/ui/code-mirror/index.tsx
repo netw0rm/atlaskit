@@ -128,16 +128,15 @@ class CodeBlock implements NodeView  {
       const { $from, $head } = selection;
       const node = $from.node($from.depth);
       const nodeEnd = $from.start($from.depth) + node.textContent.length;
-      if (node && node.type === nodes.codeBlock) {
-        if (node.textContent.slice(node.textContent.length - 2) === '\n\n') {
-          const pos = $head.after();
-          tr.replaceWith(pos, pos, state.schema.nodes.paragraph.createAndFill());
-          tr.setSelection(Selection.near(tr.doc.resolve(pos), 1));
-          tr.delete(nodeEnd - 2, nodeEnd);
-          dispatch(tr.scrollIntoView());
-          this.view.focus();
-          return;
-        }
+      if (node && node.type === nodes.codeBlock &&
+        node.textContent.slice(node.textContent.length - 2) === '\n\n') {
+        const pos = $head.after();
+        tr.replaceWith(pos, pos, state.schema.nodes.paragraph.createAndFill());
+        tr.setSelection(Selection.near(tr.doc.resolve(pos), 1));
+        tr.delete(nodeEnd - 2, nodeEnd);
+        dispatch(tr.scrollIntoView());
+        this.view.focus();
+        return;
       }
     }
     return CodeMirror.Pass;
@@ -203,18 +202,17 @@ class CodeBlock implements NodeView  {
       if (this.cm.hasFocus()) {
         const selection = this.findSelection();
         if (this.selectionChanged(selection)) {
-          this.view.dispatch(
-            tr.setSelection(
-              TextSelection.create(
-                tr.doc,
-                start + selection.anchor,
-                start + selection.head
-              )
-            ).scrollIntoView()
+          tr.setSelection(
+            TextSelection.create(
+              tr.doc,
+              start + selection.anchor,
+              start + selection.head
+            )
           );
           this.selection = selection;
         }
       }
+      this.view.dispatch(tr.scrollIntoView());
     }
   }
 

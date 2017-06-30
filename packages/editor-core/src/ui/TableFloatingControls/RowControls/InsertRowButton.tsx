@@ -8,6 +8,7 @@ export interface ButtonProps {
   index: number;
   style?: object;
   insertRow: (row: number) => void;
+  children?: any;
 }
 
 export default class InsertRowButton extends Component<ButtonProps, any> {
@@ -24,6 +25,7 @@ export default class InsertRowButton extends Component<ButtonProps, any> {
             spacing="none"
           />
         </InsertRowButtonInner>
+        {this.props.children}
         <InsertRowMarker />
       </InsertRowButtonWrap>
     );

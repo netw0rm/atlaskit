@@ -38,6 +38,10 @@ export const InsertButtonDefault = styled.div`
     width: 100%;
     flex-direction: column;
   }
+  & button * {
+    width: 100%;
+    height: 100%;
+  }
 `;
 // tslint:disable-next-line:variable-name
 export const InsertMarkerDefault = styled.div`
@@ -49,4 +53,11 @@ export const InsertMarkerDefault = styled.div`
   div:hover > & {
     background-color: ${akEditorTableBorderSelected}
   }
+`;
+// tslint:disable-next-line:variable-name
+export const LineMarkerDefault = styled.div`
+  background: ${akEditorTableBorderSelected};
+  display: none;
+  position: absolute;
+  z-index: 1;
 `;

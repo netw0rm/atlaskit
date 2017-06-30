@@ -5,6 +5,7 @@ import {
   ColumnInner,
   ColumnControlsButtonWrap,
   HeaderButton,
+  ColumnLineMarker
 } from './styles';
 import InsertColumnButton from './InsertColumnButton';
 
@@ -19,6 +20,7 @@ export default class ColumnControls extends Component<Props, any> {
   render () {
     const cols = this.props.tableElement.querySelector('tr')!.children;
     const nodes: any = [];
+    const lineMarkerHeight = this.props.tableElement.offsetHeight + 11;
 
     for (let i = 0, len = cols.length; i < len; i++) {
       nodes.push(
@@ -32,7 +34,9 @@ export default class ColumnControls extends Component<Props, any> {
           <InsertColumnButton
             insertColumn={this.props.insertColumn}
             index={i + 1}
-          />
+          >
+            <ColumnLineMarker style={{ height: lineMarkerHeight }} />
+          </InsertColumnButton>
         </ColumnControlsButtonWrap>
       );
     }

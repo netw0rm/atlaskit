@@ -5,7 +5,12 @@ import {
   akEditorTableBorderSelected,
   akEditorTableToolbarSize
 } from '../../../styles';
-import { HeaderButtonDefault, InsertMarkerDefault, InsertButtonDefault } from '../styles';
+import {
+  HeaderButtonDefault,
+  InsertMarkerDefault,
+  InsertButtonDefault,
+  LineMarkerDefault,
+} from '../styles';
 
 // tslint:disable-next-line:variable-name
 export const RowContainer = styled.div`
@@ -64,4 +69,10 @@ export const InsertRowMarker = styled(InsertMarkerDefault)`
 // tslint:disable-next-line:variable-name
 export const InsertRowButtonInner = styled(InsertButtonDefault)`
   left: 5px;
+`;
+// tslint:disable-next-line:variable-name
+export const RowLineMarker = styled(LineMarkerDefault)`
+  height: 2px;
+  top: 8px;
+  left: 20px;
 `;

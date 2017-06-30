@@ -62,6 +62,7 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
       >
         <div onMouseDown={this.handleMouseDown} onBlur={this.handleBlur}>
           <CornerControls
+            tableElement={tableElement}
             isSelected={pluginState.isTableSelected}
             selectTable={pluginState.selectTable}
             insertColumn={pluginState.insertColumn}

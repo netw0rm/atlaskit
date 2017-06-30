@@ -6,6 +6,7 @@ import {
   akEditorTableBorderSelected,
   akEditorTableToolbarSelected,
 } from '../../../styles';
+import { LineMarkerDefault } from '../styles';
 
 // tslint:disable-next-line:variable-name
 export const CornerContainer = styled.div`
@@ -38,4 +39,16 @@ export const CornerButton = styled.button`
   &:focus {
     outline: none;
   }
+`;
+// tslint:disable-next-line:variable-name
+export const ColumnLineMarker = styled(LineMarkerDefault)`
+  width: 2px;
+  left: 8px;
+  top: 20px;
+`;
+// tslint:disable-next-line:variable-name
+export const RowLineMarker = styled(LineMarkerDefault)`
+  height: 2px;
+  top: 8px;
+  left: 20px;
 `;

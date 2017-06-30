@@ -8,6 +8,7 @@ export interface ButtonProps {
   index: number;
   style?: object;
   insertColumn: (column: number) => void;
+  children?: any;
 }
 
 export default class InsertColumnButton extends Component<ButtonProps, any> {
@@ -24,6 +25,7 @@ export default class InsertColumnButton extends Component<ButtonProps, any> {
             spacing="none"
           />
         </InsertColumnButtonInner>
+        {this.props.children}
         <InsertColumnMarker />
       </InsertColumnButtonWrap>
     );

@@ -7,7 +7,7 @@ export { default as AkNavigationItemGroup } from './components/js/NavigationItem
 export { default as AkContainerLogo } from './components/js/ContainerLogo.jsx';
 export { default as AkContainerTitle } from './components/js/ContainerTitle';
 export { default as AkContainerNavigation } from './components/js/ContainerNavigation';
-export { default as AkContainerNavigationNested } from './components/js/ContainerNavigationNested.jsx';
+export { default as AkContainerNavigationNested } from './components/js/nested/ContainerNavigationNested.jsx';
 export { default as AkCreateDrawer } from './components/js/drawers/CreateDrawer.jsx';
 export { default as AkCustomDrawer } from './components/js/drawers/CustomDrawer.jsx';
 export { default as AkSearchDrawer } from './components/js/drawers/SearchDrawer.jsx';

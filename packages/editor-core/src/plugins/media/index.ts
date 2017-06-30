@@ -125,6 +125,11 @@ export class MediaPluginState {
 
     try {
       resolvedMediaProvider = await mediaProvider;
+
+      assert(
+        resolvedMediaProvider && resolvedMediaProvider.viewContext,
+        `MediaProvider promise did not resolve to a valid instance of MediaProvider - ${resolvedMediaProvider}`
+      );
     } catch (err) {
       const wrappedError = new Error(`Media functionality disabled due to rejected provider: ${err.message}`);
       this.errorReporter.captureException(wrappedError);

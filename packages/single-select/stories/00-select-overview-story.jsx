@@ -35,6 +35,8 @@ import ItemsOverview from './examples/ItemsOverview';
 import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
 import SelectOpenedByDefault from './examples/SelectOpenedByDefault';
 import SelectOpenedByDefaultRaw from '!raw!./examples/SelectOpenedByDefault';
+import SelectNoPositionFlip from './examples/SelectNoPositionFlip';
+import SelectNoPositionFlipRaw from '!raw!./examples/SelectNoPositionFlip';
 /* eslint-enable import/first, import/no-duplicates */
 
 // Dummy components exist so that we have a component to pass to <Props/>
@@ -64,6 +66,7 @@ const propDescriptions = {
   selectedItem: 'Selected item',
   shouldFitContainer: 'Specifies whether a select will take all available space',
   shouldFocus: 'Specifies whether the component will auto-focus itself',
+  shouldFlip: 'Specifies whether the droplist should flip its position when there is not enough space',
 };
 
 const propTypes = {
@@ -267,6 +270,21 @@ storiesOf(name, module)
       {SelectOpenedByDefault}
       <Code>
         {SelectOpenedByDefaultRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select does not flip when space limited', () => (
+    <Chrome title="Select is opened by default">
+      <Description>
+        <p style={{ marginBottom: '12px' }}>
+          Select does not flip to the top when no space below. When you change the
+          vertical height of the container the dropdown should not go above the trigger.
+        </p>
+      </Description>
+      {SelectNoPositionFlip}
+      <Code>
+        {SelectNoPositionFlipRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

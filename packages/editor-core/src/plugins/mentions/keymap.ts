@@ -57,7 +57,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
       return false;
     }
 
-    return mentionsPlugin.onTrySelectCurrent();
+    return mentionsPlugin.trySelectCurrent();
   }, list);
 
   return keymap(list);

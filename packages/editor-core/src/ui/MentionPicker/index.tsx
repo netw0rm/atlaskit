@@ -23,7 +23,7 @@ export interface State {
 
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
-
+  content?: HTMLElement;
   private pluginState?: any;
   private picker?: AkMentionPicker;
 
@@ -50,7 +50,6 @@ export default class MentionPicker extends PureComponent<Props, State> {
     pluginState.onSelectPrevious = this.handleSelectPrevious;
     pluginState.onSelectNext = this.handleSelectNext;
     pluginState.onSelectCurrent = this.handleSelectCurrent;
-    pluginState.onTrySelectCurrent = this.handleTrySelectCurrent;
   }
 
   componentWillUmount() {
@@ -123,20 +122,6 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
 
     return true;
-  }
-
-  private handleTrySelectCurrent = (): boolean => {
-    const mentionsCount = this.getMentionsCount();
-    const { query } = this.state;
-
-    if (mentionsCount === 1 && this.picker) {
-      (this.picker as AkMentionPicker).chooseCurrentSelection();
-      return true;
-    } else if (mentionsCount === 0 || !query) {
-      this.pluginState.dismiss();
-    }
-
-    return false;
   }
 
   private getMentionsCount(): number {

@@ -6,6 +6,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
+import { akColorN40 } from '@atlaskit/util-shared-styles';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
@@ -33,9 +34,13 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
+import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
+import TableFloatingControls from '../TableFloatingControls';
+import ToolbarTable from '../ToolbarTable';
+import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
   Content,
@@ -75,16 +80,59 @@ export interface Props {
   pluginStatePanel?: PanelState;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  maxHeight?: number | undefined;
 }
 
-export default class ChromeExpanded extends PureComponent<Props, {}> {
+export interface State {
+  maxHeightStyle?: any;
+}
+
+export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
+  private editorContent: HTMLElement;
+  state: State = {};
 
   static defaultProps = {
     saveDisabled: false,
   };
 
+  componentWillMount() {
+    const { maxHeight } = this.props;
+    if (maxHeight) {
+      this.setState({
+        maxHeightStyle: {
+          maxHeight: `${maxHeight}px`,
+          overflow: 'auto',
+        }
+      });
+    }
+  }
+
+  componentDidMount() {
+    const { maxHeight } = this.props;
+    if (maxHeight) {
+      this.addBorderBottom();
+    }
+  }
+
+  setEditorContent = (ref) => {
+    this.editorContent = ref;
+  }
+
   private handleSpinnerComplete() {}
+
+  private addBorderBottom = () => {
+    const { maxHeight } = this.props;
+    if (maxHeight) {
+      let { maxHeightStyle } = this.state;
+      if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}` };
+      } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: null };
+      }
+      this.setState({ maxHeightStyle });
+    }
+  }
 
   render() {
     const {
@@ -109,10 +157,12 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
       pluginStatePanel,
       pluginStateTextColor,
       pluginStateTextFormatting,
+      pluginStateTable,
       saveDisabled,
       popupsMountPoint,
-      popupsBoundariesElement
+      popupsBoundariesElement,
     } = this.props;
+    const { maxHeightStyle } = this.state;
     const iconAfter = saveDisabled
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
@@ -165,11 +215,11 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
-          {pluginStateLists ?
-            <ToolbarLists
+          {pluginStateTextFormatting ?
+            <ToolbarInlineCode
               disabled={disabled}
-              pluginState={pluginStateLists}
               editorView={editorView}
+              pluginState={pluginStateTextFormatting}
             /> : null
           }
           {pluginStateHyperlink ?
@@ -179,10 +229,29 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               editorView={editorView}
             /> : null
           }
+          {pluginStateTable ?
+            <ToolbarTable
+              disabled={disabled}
+              pluginState={pluginStateTable}
+              editorView={editorView}
+            /> : null
+          }
+          {pluginStateLists ?
+            <ToolbarLists
+              disabled={disabled}
+              pluginState={pluginStateLists}
+              editorView={editorView}
+            /> : null
+          }
           <span style={{ flexGrow: 1 }} />
           {feedbackFormUrl ? <ToolbarFeedback packageVersion={packageVersion} packageName={packageName} /> : null}
         </Toolbar>
-        <Content>
+        <Content
+          innerRef={this.setEditorContent}
+          style={maxHeightStyle}
+          onPaste={this.addBorderBottom}
+          onKeyDown={this.addBorderBottom}
+        >
           {this.props.children}
 
           {pluginStateHyperlink && !disabled ?
@@ -200,6 +269,20 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null}
+
+          {pluginStateTable && !disabled &&
+            <TableFloatingControls
+              pluginState={pluginStateTable}
+              editorView={editorView}
+            /> }
+
+          {pluginStateTable && !disabled &&
+            <TableFloatingToolbar
+              pluginState={pluginStateTable}
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            /> }
 
           {pluginStateMentions && mentionProvider && !disabled ?
             <MentionPicker
@@ -241,7 +324,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             </AkButtonGroup>
           </FooterActions>
           <SecondaryToolbar>
-            {pluginStateMentions && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
+            {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
             {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginState={pluginStateEmojis} editorView={editorView} emojiProvider={emojiProvider} /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
             {pluginStateMedia && !disabled ? <ToolbarMedia pluginState={pluginStateMedia} /> : null}

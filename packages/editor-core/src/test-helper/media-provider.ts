@@ -8,7 +8,12 @@ import {
  * Add "import * as mediaTestHelpers from '@atlaskit/media-test-helpers'"
  * at the beginning of your file and pass "mediaTestHelpers" into this function
  */
-export function storyMediaProviderFactory(mediaTestHelpers, collection?: string, stateManager?: MediaStateManager) {
+export function storyMediaProviderFactory (
+  mediaTestHelpers,
+  collection?: string,
+  stateManager?: MediaStateManager,
+  includeUploadContext = true,
+) {
   const {
     defaultClientId,
     defaultServiceHost,
@@ -28,7 +33,7 @@ export function storyMediaProviderFactory(mediaTestHelpers, collection?: string,
       serviceHost: defaultServiceHost,
       tokenProvider: StoryBookTokenProvider.tokenProvider
     }),
-    uploadContext: Promise.resolve<MediaContextConfig>({
+    uploadContext: !includeUploadContext ? undefined : Promise.resolve<MediaContextConfig>({
       clientId: defaultClientId,
       serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
       tokenProvider: StoryBookTokenProvider.withAccess({

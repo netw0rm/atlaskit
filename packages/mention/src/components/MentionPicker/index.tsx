@@ -145,16 +145,16 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
-  // internal, used for callbacks
-  private filterChange = (mentions) => {
-    debug('ak-mention-picker.filterChange', mentions.length);
-    const wasVisible = this.state.visible;
-    const visible = mentions.length > 0;
-    this.setState({
-      visible,
-    });
-    if (wasVisible !== visible) {
-      if (visible) {
+  /**
+   * Called after the 'visible' state is changed to decide whether the onOpen or onClose
+   * handlers should be called.
+   *
+   * It should be noted that the visible state of the component is not considered in
+   * this function. Instead the old state and new state should be passed as parameters.
+   */
+  private onFilterVisibilityChange = (oldVisibility, newVisibility) => {
+    if (oldVisibility !== newVisibility) {
+      if (newVisibility) {
         if (this.props.onOpen) {
           this.props.onOpen();
         }
@@ -166,12 +166,27 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
+  // internal, used for callbacks
+  private filterChange = (mentions) => {
+    debug('ak-mention-picker.filterChange', mentions.length);
+    const wasVisible = this.state.visible;
+    const visible = mentions.length > 0;
+    this.setState({
+      visible,
+    });
+
+    this.onFilterVisibilityChange(wasVisible, visible);
+  }
+
   private filterError = (error) => {
     debug('ak-mention-picker.filterError', error);
+    const wasVisible = this.state.visible;
     this.setState({
       visible: true,
       info: undefined,
     });
+
+    this.onFilterVisibilityChange(wasVisible, true);
   }
 
   private filterInfo = (info) => {

@@ -1,5 +1,17 @@
 import { NodeSpec, Node as PMNode } from '../../prosemirror';
 
+/**
+ * @name applicationCard_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'applicationCard';
+  /**
+   * @additionalProperties false
+   */
+  attrs: Attributes;
+}
+
 export interface Attributes {
   text: string;
   textUrl?: string;
@@ -7,26 +19,26 @@ export interface Attributes {
     /**
      * @pattern "/^https:\/\/|^data:image\//"
      */
-    url: string
+    url: string;
   };
   background?: {
     /**
      * @pattern "/^https:\/\/|^data:image\//"
      */
-    url: string
+    url: string;
   };
   collapsible?: boolean;
   preview?: {
     /**
      * @pattern "/^https:\/\/|^data:image\//"
      */
-    url: string
+    url: string;
   };
-  title?: {
-    text: string
+  title: {
+    text: string;
   };
   description?: {
-    text: string
+    text: string;
   };
   details?: Array<Detail>;
 }
@@ -38,7 +50,7 @@ export interface Detail {
   badge?: {
     value: number;
     max?: number;
-    appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed'
+    appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed';
   };
   lozenge?: {
     text: string,
@@ -50,7 +62,7 @@ export interface Detail {
 
 export interface User {
   id?: string;
-  icon?: Icon;
+  icon: Icon;
 }
 
 export interface Icon {
@@ -61,7 +73,6 @@ export interface Icon {
   label: string;
 }
 
-
 const defaultAttrs = {
   text: { default: '' },
   textUrl: { default: null },
@@ -69,7 +80,7 @@ const defaultAttrs = {
   background: { default: null },
   collapsible: { default: null },
   preview: { default: null },
-  title: { default: null },
+  title: { default: { text: '' } },
   description: { default: null },
   details: { default: null },
 };
@@ -81,7 +92,7 @@ export const applicationCard: NodeSpec = {
   parseDOM: [{
     tag: 'div[data-node-type="media"]',
     getAttrs: (dom: HTMLElement) => {
-      const attrs: Attributes = { text: '' };
+      const attrs: Attributes = { text: '', title: { text: '' } };
 
       Object.keys(defaultAttrs).forEach(key => {
         attrs[key] = dom.dataset[key];

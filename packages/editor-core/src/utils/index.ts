@@ -244,16 +244,17 @@ export function findAncestorPosition(doc: Node, pos: any): any {
   }
 
   let node: Node | undefined = pos.node(pos.depth);
+  let newPos = pos;
   while (pos.depth >= 1) {
     pos = doc.resolve(pos.before(pos.depth));
     node = pos.node(pos.depth);
 
     if (node && nestableBlocks.indexOf(node.type.name) !== -1) {
-      break;
+      newPos = pos;
     }
   }
 
-  return pos;
+  return newPos;
 }
 
 /**
@@ -411,4 +412,22 @@ function splitCodeBlockAtSelectionEnd(state: EditorState<any>, tr: Transaction) 
     }
   }
   return tr;
+}
+
+/**
+ * Repeating string for multiple times
+ */
+export function stringRepeat(text: string, length: number): string {
+  let result = '';
+  for (let x = 0; x < length; x++) {
+    result += text;
+  }
+  return result;
+}
+
+/**
+ * A replacement for `Array.from` until it becomes widely implemented.
+ */
+export function arrayFrom(obj: any): any[] {
+  return Array.prototype.slice.call(obj);
 }

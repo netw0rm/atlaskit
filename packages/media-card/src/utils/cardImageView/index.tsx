@@ -1,6 +1,10 @@
+/**
+ * This is actually the Class that contains the View logic.
+ * Overlay, Content, dimensions logic lives here.
+ */
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {MediaType, MediaItemType, CardAction, CardActionType} from '@atlaskit/media-core';
+import {MediaType, MediaItemType, CardAction, CardActionType, ImageResizeMode} from '@atlaskit/media-core';
 
 import {getCSSUnitValue} from '../getCSSUnitValue';
 import {CardDimensions, CardDimensionValue, CardStatus} from '../../index';
@@ -8,6 +12,7 @@ import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
 import {UploadingView} from '../../utils/uploadingView';
+import {breakpointSize, BreakpointSizeValue} from '../../utils/breakpointSize';
 import {defaultImageCardDimensions} from '../../utils/cardDimensions';
 
 export interface CardImageViewProps {
@@ -32,9 +37,21 @@ export interface CardImageViewProps {
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
+  resizeMode?: ImageResizeMode;
 }
 
+const breakpointSizes = {
+  small: 173,
+  medium: 225,
+  large: 300,
+  xlarge: Infinity
+};
+
 export class CardImageView extends Component<CardImageViewProps, {}> {
+  static defaultProps = {
+    resizeMode: 'crop'
+  };
+
   private get width(): CardDimensionValue {
     const {width} = this.props.dimensions || {width: undefined};
 
@@ -64,12 +81,17 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return {height: this.height, width: this.width};
   }
 
+  private get cardSize(): BreakpointSizeValue {
+    return breakpointSize(this.width, breakpointSizes);
+  }
+
   render() {
     const {onClick, onMouseEnter} = this.props;
     const cardStyle = this.cardStyle;
+    const cardSize = this.cardSize;
 
     return (
-      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter}>
+      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter} cardSize={cardSize}>
         {this.getCardContents()}
       </Wrapper>
     );
@@ -165,6 +187,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
             mediaItemType={mediaItemType}
             mediaType={mediaType}
             dataURI={dataURI}
+            crop={this.isCropped}
           />
         </div>
         {overlay}
@@ -188,6 +211,12 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
         icon={icon}
       />
     );
+  }
+
+  get isCropped() {
+    const {resizeMode} = this.props;
+
+    return resizeMode === 'crop';
   }
 }
 

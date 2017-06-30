@@ -27,6 +27,10 @@ import {
   ul,
   li,
   hardBreak,
+  table,
+  tr,
+  tdEmpty,
+  tdCursor,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { createSchema } from '../../../../src/schema';
@@ -695,6 +699,15 @@ describe('block-type', () => {
                 });
               });
 
+              context('when cursor is in the first cell of the table', () => {
+                it('creates a new paragraph above the table', () => {
+                  const { editorView } = editor(doc( table(tr(tdCursor, tdEmpty, tdEmpty)) ));
+
+                  sendKeyToPm(editorView, 'ArrowUp');
+
+                  expect(editorView.state.doc).to.deep.equal(doc(p(''), table(tr(tdEmpty, tdEmpty, tdEmpty))));
+                });
+              });
             });
           });
 
@@ -830,6 +843,16 @@ describe('block-type', () => {
                 });
               });
             });
+
+            context('when cursor is in the last cell of the table', () => {
+              it('creates a new paragraph below the table', () => {
+                const { editorView } = editor(doc( table(tr(tdEmpty, tdEmpty, tdCursor)) ));
+
+                sendKeyToPm(editorView, 'ArrowDown');
+
+                expect(editorView.state.doc).to.deep.equal(doc(table(tr(tdEmpty, tdEmpty, tdEmpty)), p('')));
+              });
+            });
           });
         });
 
@@ -920,6 +943,26 @@ describe('block-type', () => {
         pluginState.toggleBlockType('heading1', editorView);
 
         expect(toggleBlockType.calledWith('heading1', editorView)).to.equal(true);
+      });
+    });
+
+    context('when parent item is a list', () => {
+      it('wraps paragraph to heading', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('heading1', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(h1('t{<}ex{>}t')))));
+      });
+
+      it('wraps paragraph in block-quote', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('blockquote', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(blockquote(p('t{<}ex{>}t'))))));
+      });
+
+      it('wraps paragraph in panel', () => {
+        const { editorView, pluginState } = editor(doc(ul(li(p('t{<}ex{>}t')))));
+        pluginState.toggleBlockType('panel', editorView);
+        expect(editorView.state.doc).to.deep.equal(doc(ul(li(panel(p('t{<}ex{>}t'))))));
       });
     });
 

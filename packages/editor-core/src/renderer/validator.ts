@@ -45,6 +45,35 @@ const whitelistedURLPatterns = [
   /^ftps?:\/\//im,
   /^\/\//im,
   /^mailto:/im,
+  /^skype:/im,
+  /^callto:/im,
+  /^facetime:/im,
+  /^git:/im,
+  /^irc6?:/im,
+  /^news:/im,
+  /^nntp:/im,
+  /^feed:/im,
+  /^cvs:/im,
+  /^svn:/im,
+  /^mvn:/im,
+  /^ssh:/im,
+  /^scp:\/\//im,
+  /^sftp:\/\//im,
+  /^itms:/im,
+  /^notes:/im,
+  /^smb:/im,
+  /^hipchat:\/\//im,
+  /^sourcetree:/im,
+  /^urn:/im,
+  /^tel:/im,
+  /^xmpp:/im,
+  /^telnet:/im,
+  /^vnc:/im,
+  /^rdp:/im,
+  /^whatsapp:/im,
+  /^slack:/im,
+  /^sips?:/im,
+  /^magnet:/im,
 ];
 
 export const isSafeUrl = (url: string): boolean => {
@@ -87,6 +116,76 @@ export const getValidContent = (content: Node[]): Node[] => {
   return content.map(node => getValidNode(node));
 };
 
+const flattenUnknownBlockTree = (node: Node): Node[] => {
+  const output: Node[] = [];
+  let isPrevLeafNode = false;
+
+  for (let i = 0; i < node.content!.length; i++) {
+    const childNode = node.content![i];
+    const isLeafNode = !(childNode.content && childNode.content.length);
+
+    if (i > 0) {
+      if (isPrevLeafNode) {
+        output.push({ type: 'text', text: ' ' } as Node);
+      } else {
+        output.push({ type: 'hardBreak' } as Node);
+      }
+    }
+
+    if (isLeafNode) {
+      output.push(getValidNode(childNode));
+    } else {
+      output.push(...flattenUnknownBlockTree(childNode));
+    }
+
+    isPrevLeafNode = isLeafNode;
+  }
+
+  return output;
+};
+
+/**
+ * Sanitize unknown node tree
+ *
+ * @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-ImplementationdetailsforHCNGwebrenderer
+ */
+export const getValidUnknownNode = (node: Node): Node => {
+  const {
+    attrs = {},
+    content,
+    text,
+    type,
+  } = node;
+
+  if (!content || !content.length) {
+    const unknownInlineNode: Node = {
+      type: 'text',
+      text: text || attrs.text || `[${type}]`,
+    };
+
+    if (attrs.textUrl) {
+      unknownInlineNode.marks = [{
+        type: 'link',
+        attrs: {
+          href: attrs.textUrl,
+        },
+      } as Mark];
+    }
+
+    return unknownInlineNode;
+  }
+
+  /*
+   * Find leaf nodes and join them. If leaf nodes' parent node is the same node
+   * join with a blank space, otherwise they are children of different branches, i.e.
+   * we need to join them with a hardBreak node
+   */
+  return {
+    type: 'unknownBlock',
+    content: flattenUnknownBlockTree(node),
+  };
+};
+
 /*
  * This method will validate a Node according to the spec defined here
  * https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Nodes
@@ -111,6 +210,16 @@ export const getValidNode = (node: Node): Node => {
         if (version && content && content.length) {
           return {
             type,
+            content
+          };
+        }
+        break;
+      }
+      case 'codeBlock': {
+        if (attrs && attrs.language) {
+          return {
+            type,
+            attrs,
             content
           };
         }
@@ -295,12 +404,7 @@ export const getValidNode = (node: Node): Node => {
     }
   }
 
-  return {
-    type: 'unknown',
-    text: text || undefined,
-    attrs: attrs || undefined,
-    content: content || undefined
-  };
+  return getValidUnknownNode(node);
 };
 
 /*

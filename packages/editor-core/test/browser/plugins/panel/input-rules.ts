@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import panelPlugins from '../../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../../src/plugins/panel/input-rules';
 import {
-  insertText, doc, p, makeEditor, fixtures, panel, code_block
+  insertText, doc, p, makeEditor, fixtures, panel, code_block, ul, li
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -29,6 +29,15 @@ describe('panel input rules', () => {
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
 
     expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
+  });
+
+  it('should replace {info} input with panel node of type info inside list item', () => {
+    const { editorView } = editor(doc(ul(li(p('{info')))));
+
+    const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
+    inputRulePlugin!.props.handleTextInput!(editorView, 8, 8, '}');
+
+    expect(editorView.state.doc).to.deep.equal(doc(ul(li(panel(p())))));
   });
 
   it('should not convert {info} inside a code_block', () => {

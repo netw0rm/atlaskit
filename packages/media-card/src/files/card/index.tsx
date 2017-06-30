@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {CardAction, FileDetails} from '@atlaskit/media-core';
+import {CardAction, FileDetails, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardStatus} from '../..';
 import {FileCardImageView} from '../cardImageView';
@@ -11,6 +11,7 @@ export interface FileCardProps extends SharedCardProps {
   readonly details?: FileDetails;
   readonly dataURI?: string;
   readonly progress?: number;
+  readonly resizeMode?: ImageResizeMode;
 
   readonly onClick?: (result: MouseEvent<HTMLElement>) => void;
   readonly onMouseEnter?: (result: MouseEvent<HTMLElement>) => void;
@@ -26,7 +27,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {status, dimensions, selectable, selected, details, dataURI, progress, onClick, onMouseEnter} = this.props;
+    const {status, dimensions, selectable, selected, details, dataURI, progress, onClick, onMouseEnter, resizeMode} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
@@ -58,6 +59,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           mediaSize={size}
           status={status}
           progress={progress}
+          resizeMode={resizeMode}
 
           actions={this._getActions()}
           onClick={onClick}

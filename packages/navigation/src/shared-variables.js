@@ -1,7 +1,9 @@
+// @flow
+
 import {
   akColorB200,
   akColorPrimary3,
-  akGridSizeUnitless,
+  akGridSizeUnitless as gridSize,
   akZIndexBlanket,
   akZIndexNavigation,
 } from '@atlaskit/util-shared-styles';
@@ -9,8 +11,6 @@ import {
 /**
 * NOTE: changing the width of the Navigation is considered a breaking change
 */
-
-export const gridSize = akGridSizeUnitless;
 
 export const layout = {
   padding: {
@@ -24,23 +24,24 @@ export const layout = {
 };
 
 export const globalItemSizes = {
-  small: 4 * akGridSizeUnitless,
-  medium: 5 * akGridSizeUnitless,
-  large: 6 * akGridSizeUnitless,
+  small: gridSize * 4,
+  medium: gridSize * 5,
+  large: gridSize * 6,
 };
 
+export const drawerOffset = gridSize * 2;
 export const globalOpenWidth = layout.width.closed;
 export const containerClosedWidth = globalOpenWidth;
 export const containerOpenWidth = 240;
 export const standardOpenWidth = globalOpenWidth + containerOpenWidth;
 export const resizeClosedBreakpoint = globalOpenWidth + (containerOpenWidth / 2);
 export const collapseBreakpoint = globalOpenWidth + containerClosedWidth;
-export const containerNavigationNestedPageSpacing = 8;
 export const searchIconOffset = 80;
 export const createIconOffset = 120;
 export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;
+export const nestedNavigationAnimationTime: number = 500;
 export const zIndex = {
   base: akZIndexNavigation,
   // needs to sit on top of navigation and the drawer

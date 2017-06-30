@@ -44,6 +44,10 @@ export default class ResourcedMention extends PureComponent<Props, State> {
         this.setState({
           isHighlighted: provider.shouldHighlightMention({ id })
         });
+      }).catch(e => {
+        this.setState({
+          isHighlighted: false
+        });
       });
     } else {
       this.setState({

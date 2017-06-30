@@ -4,15 +4,13 @@ import { actionsPadding } from './constants';
 
 const ActionsItem = styled.div`
   display: flex;
-  &:not(:first-child) {
-    &::before {
-      color: ${akColorN500};
-      content: "·";
-      display: inline-block;
-      text-align: center;
-      vertical-align: middle;
-      width: ${actionsPadding}px;
-    }
+  &+&::before {
+    color: ${akColorN500};
+    content: "·";
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    width: ${actionsPadding}px;
   }
 `;
 

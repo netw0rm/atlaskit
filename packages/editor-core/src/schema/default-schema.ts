@@ -24,6 +24,7 @@ export const defaultSchema: Schema<any, any> = createSchema({
     'table_cell',
     'table_header',
     'table_row',
+    'unknownBlock',
   ],
   marks: [
     'link',

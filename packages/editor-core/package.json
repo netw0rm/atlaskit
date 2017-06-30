@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "34.2.1",
+  "version": "34.8.0",
   "config": {
     "access": "public"
   },
@@ -39,6 +39,7 @@
   "dependencies": {
     "@atlaskit/button": "^1.0.10",
     "@atlaskit/button-group": "^1.0.7",
+    "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
     "@atlaskit/emoji": "^18.0.0",
@@ -47,7 +48,7 @@
     "@atlaskit/media-card": "^17.1.5",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-filmstrip": "4.1.2",
-    "@atlaskit/mention": "^5.3.1",
+    "@atlaskit/mention": "^7.0.1",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.2.0",
@@ -75,8 +76,10 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
+    "@atlaskit/button": "^3.0.0",
+    "@atlaskit/button-group": "^1.1.0",
     "@atlaskit/media-test-helpers": "^6.0.2",
-    "@atlaskit/util-data-test": "^4.6.1",
+    "@atlaskit/util-data-test": "^4.7.0",
     "ajv": "^4.11.3",
     "chai-as-promised": "^6.0.0",
     "highlight.js": "^9.6.0",

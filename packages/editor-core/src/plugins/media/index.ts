@@ -246,7 +246,9 @@ export class MediaPluginState {
 
     const $latestPos = tr.doc.resolve(linksInfo.latestPos);
 
-    const insertPos = this.posOfMediaGroupBelow($latestPos, false) || endPositionOfParent($latestPos);
+    const insertPos = this.posOfMediaGroupBelow($latestPos, false)
+      || this.posOfMediaGroupExistsAsAParentNode(state, $latestPos, false)
+      || endPositionOfParent($latestPos);
 
     // insert a paragraph after if reach the end of doc
     if (atTheEndOfDoc(state)) {
@@ -259,11 +261,16 @@ export class MediaPluginState {
 
   private reducelinksInfo(linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } {
     let linksInfo = { latestPos: 0, urls: [] as string[] };
+    const posAtTheEndOfDoc = this.view.state.doc.nodeSize - 4;
 
     linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
       linksInfo.urls = linksInfo.urls.concat(rangeWithUrl.urls);
       if (rangeWithUrl.end > linksInfo.latestPos) {
         linksInfo.latestPos = rangeWithUrl.end;
+      }
+
+      if (posAtTheEndOfDoc < linksInfo.latestPos) {
+        linksInfo.latestPos = posAtTheEndOfDoc;
       }
       return linksInfo;
     }, linksInfo);
@@ -488,11 +495,12 @@ export class MediaPluginState {
     }
   }
 
-  private posOfMediaGroupExistsAsAParentNode(state: EditorState<any>): number | undefined {
+  private posOfMediaGroupExistsAsAParentNode(state: EditorState<any>, $pos?: ResolvedPos, prepend: boolean = true): number | undefined {
     const { $from } = state.selection;
+    $pos = $pos || $from;
 
-    if ($from.parent.type === state.schema.nodes.mediaGroup) {
-      return startPositionOfParent($from);
+    if ($pos.parent.type === state.schema.nodes.mediaGroup) {
+      return prepend ? startPositionOfParent($pos) : endPositionOfParent($pos) - 1;
     }
   }
 
@@ -749,9 +757,13 @@ export class MediaPluginState {
 
   private findRangesWithUrlsInReplaceStep(step: ReplaceStep): RangeWithUrls | undefined {
     const { link } = this.view.state.schema.marks;
-    const urls: string[] = this.findLinksInNodeContent([], step.slice.content, link);
+    const { slice } = step;
+    const urls: string[] = this.findLinksInNodeContent([], slice.content, link);
     if (urls.length > 0) {
-      return { start: step.from, end: step.to, urls: urls };
+      // The end position is step.from + slice.size || step.to is because
+      // it can be replaced by a smaller size content
+      // if simply use step.to, it might be out of range later.
+      return { start: step.from, end: Math.min(step.from + slice.size, step.to), urls: urls };
     }
   }
 

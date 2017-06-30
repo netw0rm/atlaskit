@@ -4,6 +4,8 @@ import { expect } from 'chai';
 import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   Context,
+  ContextConfig,
+  ContextFactory,
   MediaProvider,
   DefaultMediaStateManager,
 } from '@atlaskit/media-core';
@@ -20,7 +22,6 @@ import {
 } from '../../../src/test-helper';
 
 describe('@atlaskit/editor-core/ui/MediaComponent', () => {
-
   const file = {
     type: 'media',
     attrs: {
@@ -111,8 +112,24 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       />);
 
     const resolvedMediaProvider = await mediaProvider;
-    const resolvedLinkCreateContext = await resolvedMediaProvider.linkCreateContext;
-    await (resolvedLinkCreateContext as Context).addLinkItem;
+    const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
+    const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
+    mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+
+    expect(mediaComponent.find(Card).length).to.equal(0);
+  });
+
+  it('should render nothing if linkCreateContext not provided', async () => {
+    const mediaProvider = getFreshResolvedProvider();
+    const mediaComponent = shallow(
+      <MediaComponent
+        id={link.attrs.id}
+        type={link.attrs.type as MediaType}
+        collection={link.attrs.collection}
+        mediaProvider={mediaProvider}
+      />);
+
+    await mediaProvider;
 
     expect(mediaComponent.find(Card).length).to.equal(0);
   });
@@ -128,8 +145,9 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       />);
 
     const resolvedMediaProvider = await mediaProvider;
-    const resolvedLinkCreateContext = await resolvedMediaProvider.linkCreateContext;
-    await (resolvedLinkCreateContext as Context).addLinkItem;
+    const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
+    const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
+    mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
 
     expect(mediaComponent.find(Card).length).to.equal(1);
   });

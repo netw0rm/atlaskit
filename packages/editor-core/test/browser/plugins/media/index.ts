@@ -1134,6 +1134,24 @@ describe('Media plugin', () => {
           ));
         });
 
+        context('lastest pos in range is out of doc range', () => {
+          it('creates a link card at the end of doc', () => {
+            const link = 'www.google.com';
+            const { editorView, pluginState, sel } = editor(doc(p(`${link} {<>}`)));
+
+            // -1 for space, simulate the scenario of autoformatting link
+            pluginState.insertLinks([
+              { start: sel - link.length - 1, end: 1000, urls: [link] }
+            ], testCollectionName);
+
+            expect(editorView.state.doc).to.deep.equal(doc(
+              p(`${link} `),
+              mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
+              p(),
+            ));
+          });
+        });
+
         context('not at the end of the doc', () => {
           it('does not create a new p at the end of doc', () => {
             const link = 'www.google.com';
@@ -1177,6 +1195,30 @@ describe('Media plugin', () => {
               media({ id: link2, type: 'link', collection: testCollectionName }),
             )
           ));
+        });
+
+        context('lastest pos in range is out of doc range', () => {
+          it('creates a link card to join the existing media group below', () => {
+            const link1 = 'www.google.com';
+            const link2 = 'www.baidu.com';
+            const { editorView, pluginState, sel } = editor(doc(
+              p(`${link1} ${link2} {<>}`),
+              mediaGroup(media({ id: link1, type: 'link', collection: testCollectionName })),
+            ));
+
+            // -1 for space, simulate the scenario of autoformatting link
+            pluginState.insertLinks([
+              { start: sel - link2.length - 1, end: 1000, urls: [link2] }
+            ], testCollectionName);
+
+            expect(editorView.state.doc).to.deep.equal(doc(
+              p(`${link1} ${link2} `),
+              mediaGroup(
+                media({ id: link1, type: 'link', collection: testCollectionName }),
+                media({ id: link2, type: 'link', collection: testCollectionName }),
+              )
+            ));
+          });
         });
       });
     });

@@ -754,8 +754,9 @@ System.out.println("There are " + count + " values >= 5");`
     },
     {
       type: 'applicationCard',
-      text: '',
+      text: 'applicationCard',
       attrs: {
+        text: 'applicationCard',
         background: {
           url: 'http://atlassian.com'
         },

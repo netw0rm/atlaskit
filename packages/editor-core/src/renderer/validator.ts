@@ -206,14 +206,38 @@ export const getValidNode = (node: Node): Node => {
   if (type) {
     switch (type) {
       case 'applicationCard': {
-        if (attrs) {
-          return {
-            type,
-            text,
-            attrs
-          };
+        if (!attrs) { break; }
+        const { text, link, background, preview, title, description, details } = attrs;
+        if (!text || !title || !title.text) { break; }
+        if (
+          (link && !link.url) ||
+          (background && !background.url) ||
+          (preview && !preview.url) ||
+          (description && !description.text)) { break; }
+        if (details && !Array.isArray(details)) { break; }
+
+        let detailsCheckFail = false;
+        if (details) {
+          details.forEach(meta => {
+            const { badge, lozenge, users } = meta;
+            if (badge && !badge.value) { detailsCheckFail = true; return; }
+            if (lozenge && !lozenge.text) { detailsCheckFail = true; return; }
+            if (users && !Array.isArray(users)) { detailsCheckFail = true; return; }
+
+            if (users) {
+              users.forEach(user => {
+                if (!user.icon) { detailsCheckFail = true; }
+              });
+            }
+          });
         }
-        break;
+        if (detailsCheckFail) { break; }
+
+        return {
+          type,
+          text,
+          attrs
+        };
       }
       case 'doc': {
         const { version } = node as Doc;

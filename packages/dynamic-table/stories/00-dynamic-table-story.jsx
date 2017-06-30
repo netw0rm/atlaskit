@@ -135,8 +135,8 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
-  .add('Empty view without body', () => (
-    <Chrome title="Empty view without body">
+  .add('Empty view without body, but with header', () => (
+    <Chrome title="Empty view without body, but with header">
       <Description>
         <p>Table component without `emptyView` prop passed in</p>
       </Description>
@@ -146,8 +146,8 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
-  .add('Empty view with body', () => (
-    <Chrome title="Empty view with body">
+  .add('Empty view with body and header', () => (
+    <Chrome title="Empty view with body and header">
       <Description>
         <p>Table component with `emptyView` prop passed in</p>
       </Description>
@@ -157,8 +157,8 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
-  .add('Empty view with body, but no header', () => (
-    <Chrome title="Empty view with body, but no header">
+  .add('Empty view with body, but without header', () => (
+    <Chrome title="Empty view with body, but without header">
       <Description>
         <p>Table component with `emptyView` prop passed in, but no `head` prop</p>
       </Description>

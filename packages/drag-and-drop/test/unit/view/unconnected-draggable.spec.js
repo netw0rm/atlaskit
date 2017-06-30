@@ -781,6 +781,12 @@ describe('Draggable - unconnected', () => {
 
       // first call is for the setRef
       const provided: Provided = stub.lastCall.args[0].provided;
+
+      if (!(provided.draggableStyle && provided.draggableStyle.transform)) {
+        expect.fail();
+        return;
+      }
+
       expect(provided.draggableStyle.transform).to.equal(expected);
     });
 

@@ -34,7 +34,7 @@ export type PlacementStyle = {|
   left: number,
 |}
 
-export type DraggableStyle = ?PlacementStyle & ?MovementStyle;
+export type DraggableStyle = MovementStyle | (PlacementStyle & MovementStyle);
 
 export type Provided = {|
   innerRef: (Element) => void,

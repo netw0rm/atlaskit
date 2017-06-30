@@ -107,8 +107,6 @@ export default class Draggable extends PureComponent {
 
     const { draggableId, initial, move } = this.props;
 
-    console.log('on move', initial);
-
     // dimensions not provided yet
     if (!initial) {
       return;
@@ -233,13 +231,13 @@ export default class Draggable extends PureComponent {
       movementStyle: ?MovementStyle,
       placementStyle: ?PlacementStyle,
     ): Provided => {
-      const draggableStyle: ?DraggableStyle = ((): ?DraggableStyle => {
+      const draggableStyle: ?DraggableStyle = (() => {
         if (!placementStyle && !movementStyle) {
           return null;
         }
 
-        // $ExpectError - does not like spread
-        const style: ?DraggableStyle = {
+        // $ExpectError - using spread
+        const style: DraggableStyle = {
           ...placementStyle,
           ...movementStyle,
         };

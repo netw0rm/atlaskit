@@ -160,7 +160,7 @@ export const drop = (id: DraggableId) =>
     // This will not trigger a hook as the hook waits
     // for a DRAGGING phase before firing a onDragStart
     if (state.phase === 'COLLECTING_DIMENSIONS') {
-      console.log('canceling drag while collecting');
+      console.error('canceling drag while collecting');
       dispatch(cancel(id));
       return;
     }
@@ -203,7 +203,6 @@ export const drop = (id: DraggableId) =>
 
 export const dropAnimationFinished = (id: DraggableId) =>
   (dispatch: Dispatch, getState: () => State): void => {
-    console.info('drop animation finished called');
     const state: State = getState();
 
     if (state.phase !== 'DROP_ANIMATING') {

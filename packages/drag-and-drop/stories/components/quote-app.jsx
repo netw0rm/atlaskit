@@ -16,6 +16,7 @@ const Root = styled.div`
   /* flexbox */
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 `;
 
 export default class QuoteApp extends Component {

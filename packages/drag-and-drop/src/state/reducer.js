@@ -17,12 +17,6 @@ import type { TypeId,
 import getDragImpact from './get-drag-impact';
 import getDiffToJumpToNextIndex from './get-diff-to-jump-to-next-index';
 
-const shout = (message, ...rest) => {
-  const key = `%c ${message}`;
-  console.log(key, 'color: green; font-size: 1.5em');
-  console.log('payload:', ...rest);
-};
-
 const clean = memoizeOne((phase: ?Phase): State => {
   const state: State = {
     // flow was not good with having a default arg on an optional type
@@ -40,8 +34,6 @@ const clean = memoizeOne((phase: ?Phase): State => {
 });
 
 export default (state: State = clean('IDLE'), action: Action): State => {
-  // shout(`reducing ${action.type}`, action.payload ? action.payload : 'no payload');
-
   if (action.type === 'BEGIN_LIFT') {
     if (state.phase !== 'IDLE') {
       console.error('trying to start a lift while another is occurring');

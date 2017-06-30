@@ -2,6 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
 import { Pagination } from '@atlaskit/pagination';
+import TableHead from '../../src/components/TableHead';
+import EmptyBody from '../../src/components/EmptyBody';
 import DynamicTable, { DynamicTableStateless } from '../../src';
 
 import { name } from '../../package.json';
@@ -64,8 +66,8 @@ describe(name, () => {
           head={head}
         />
       );
-      const header = wrapper.find('TableHead');
-      const emptyView = wrapper.find('EmptyBody');
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
       expect(header.length).to.equal(1);
       expect(emptyView.length).to.equal(0);
     });
@@ -76,8 +78,8 @@ describe(name, () => {
           emptyView={<h2>No items present in table</h2>}
         />
       );
-      const header = wrapper.find('TableHead');
-      const emptyView = wrapper.find('EmptyBody');
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
       expect(header.length).to.equal(1);
       expect(emptyView.length).to.equal(1);
     });
@@ -87,8 +89,8 @@ describe(name, () => {
           emptyView={<h2>No items present in table</h2>}
         />
       );
-      const header = wrapper.find('TableHead');
-      const emptyView = wrapper.find('EmptyBody');
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
       expect(header.length).to.equal(0);
       expect(emptyView.length).to.equal(1);
     });

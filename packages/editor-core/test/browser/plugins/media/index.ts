@@ -96,8 +96,9 @@ describe('Media plugin', () => {
   context('when cursor is at the end of a text block', () => {
     it('inserts media node into the document after current paragraph node', () => {
       const { editorView, pluginState } = editor(doc(p('text{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -106,16 +107,19 @@ describe('Media plugin', () => {
           p(),
         )
       );
+      collectionFromProvider.restore();
     });
 
     it('puts cursor to the next paragraph after inserting media node', () => {
       const { editorView, pluginState } = editor(doc(p('text{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
       const paragraphNodeSize = p('text').nodeSize;
       const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
 
       expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
+      collectionFromProvider.restore();
     });
 
     it('should prepend media node to existing media group after it', () => {
@@ -123,8 +127,9 @@ describe('Media plugin', () => {
         p('text{<>}'),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
       ));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: 'mock2', status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: 'mock2', status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -135,6 +140,7 @@ describe('Media plugin', () => {
           )
         )
       );
+      collectionFromProvider.restore();
     });
   });
 
@@ -144,8 +150,9 @@ describe('Media plugin', () => {
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
         p('{<>}text'),
       ));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: 'mock2', status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: 'mock2', status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -156,6 +163,7 @@ describe('Media plugin', () => {
           p('text'),
         )
       );
+      collectionFromProvider.restore();
     });
   });
 
@@ -163,8 +171,9 @@ describe('Media plugin', () => {
     context('when inside a paragraph', () => {
       it('splits text', () => {
         const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
+        const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-        pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+        pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -173,24 +182,28 @@ describe('Media plugin', () => {
             p('xt'),
           )
         );
+        collectionFromProvider.restore();
       });
 
       it('moves cursor to the front of later part of the text', () => {
         const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
+        const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-        pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+        pluginState.insertFile({ id: testFileId, status: 'uploading' });
         const paragraphNodeSize = p('te').nodeSize;
         const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
 
         expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
+        collectionFromProvider.restore();
       });
     });
 
     context('when inside a heading', () => {
       it('preserves heading', () => {
         const { editorView, pluginState } = editor(doc(h1('te{<>}xt')));
+        const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-        pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+        pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -199,6 +212,7 @@ describe('Media plugin', () => {
             h1('xt'),
           )
         );
+        collectionFromProvider.restore();
       });
     });
   });
@@ -208,8 +222,9 @@ describe('Media plugin', () => {
       context('when selection is in the middle of the text block', () => {
         it('replaces selection with a media node', () => {
           const { editorView, pluginState } = editor(doc(p('te{<}x{>}t')));
+          const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-          pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+          pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -218,6 +233,7 @@ describe('Media plugin', () => {
               p('t'),
             )
           );
+          collectionFromProvider.restore();
         });
       });
 
@@ -226,8 +242,9 @@ describe('Media plugin', () => {
           context('when inside a paragraph', () => {
             it('replaces selection with a media node', () => {
               const { editorView, pluginState } = editor(doc(p('{<}text{>}')));
+              const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-              pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+              pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -235,14 +252,16 @@ describe('Media plugin', () => {
                   p(),
                 )
               );
+              collectionFromProvider.restore();
             });
           });
 
           context('when inside a heading', () => {
             it('replaces selection with a media node', () => {
               const { editorView, pluginState } = editor(doc(h1('{<}text{>}')));
+              const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-              pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+              pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -251,6 +270,7 @@ describe('Media plugin', () => {
                   p(),
                 )
               );
+              collectionFromProvider.restore();
             });
           });
         });
@@ -262,8 +282,9 @@ describe('Media plugin', () => {
               p('{<}text{>}'),
               mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
             ));
+            const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-            pluginState.insertFile({ id: 'new one', status: 'uploading' }, testCollectionName);
+            pluginState.insertFile({ id: 'new one', status: 'uploading' });
 
             expect(editorView.state.doc).to.deep.equal(
               doc(
@@ -275,6 +296,7 @@ describe('Media plugin', () => {
                 ),
               )
             );
+            collectionFromProvider.restore();
           });
         });
       });
@@ -282,8 +304,9 @@ describe('Media plugin', () => {
       context('when selection is at the end of the text block', () => {
         it('replaces selection with a media node', () => {
           const { editorView, pluginState } = editor(doc(p('te{<}xt{>}')));
+          const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-          pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+          pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -292,6 +315,7 @@ describe('Media plugin', () => {
               p(),
             )
           );
+          collectionFromProvider.restore();
         });
 
         it('prepends to exisiting media group after parent', () => {
@@ -299,8 +323,9 @@ describe('Media plugin', () => {
             p('te{<}xt{>}'),
             mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
           ));
+          const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-          pluginState.insertFile({ id: 'new one', status: 'uploading' }, testCollectionName);
+          pluginState.insertFile({ id: 'new one', status: 'uploading' });
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -311,6 +336,7 @@ describe('Media plugin', () => {
               )
             )
           );
+          collectionFromProvider.restore();
         });
       });
     });
@@ -320,8 +346,9 @@ describe('Media plugin', () => {
         it('replaces selection with a media node', () => {
           const { editorView, pluginState, sel } = editor(doc(p('text{<>}', mention({ id: 'foo1', text: '@bar1' }))));
           setNodeSelection(editorView, sel);
+          const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-          pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+          pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -330,6 +357,7 @@ describe('Media plugin', () => {
               p(),
             )
           );
+          collectionFromProvider.restore();
         });
       });
 
@@ -339,9 +367,10 @@ describe('Media plugin', () => {
             mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
             p('text'),
           ));
+          const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
           setNodeSelection(editorView, 1);
 
-          pluginState.insertFile({ id: 'new one', status: 'uploading' }, testCollectionName);
+          pluginState.insertFile({ id: 'new one', status: 'uploading' });
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -352,6 +381,7 @@ describe('Media plugin', () => {
               p('text'),
             )
           );
+          collectionFromProvider.restore();
         });
 
         it('sets cursor to the paragraph after', () => {
@@ -360,14 +390,16 @@ describe('Media plugin', () => {
             p('text'),
           ));
           setNodeSelection(editorView, 0);
+          const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-          pluginState.insertFile({ id: 'new one', status: 'uploading' }, testCollectionName);
+          pluginState.insertFile({ id: 'new one', status: 'uploading' });
           const mediaGroupNodeSize = mediaGroup(
             media({ id: 'new one', type: 'file', collection: testCollectionName }),
             media({ id: testFileId, type: 'file', collection: testCollectionName })
           ).nodeSize;
 
           expect(editorView.state.selection.from).to.deep.equal(mediaGroupNodeSize);
+          collectionFromProvider.restore();
         });
       });
 
@@ -376,8 +408,9 @@ describe('Media plugin', () => {
           it('replaces selection with a media node', () => {
             const { editorView, pluginState } = editor(doc(hr));
             setNodeSelection(editorView, 0);
+            const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-            pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+            pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
             expect(editorView.state.doc).to.deep.equal(
               doc(
@@ -385,6 +418,7 @@ describe('Media plugin', () => {
                 p(),
               )
             );
+            collectionFromProvider.restore();
           });
         });
 
@@ -397,8 +431,9 @@ describe('Media plugin', () => {
               ));
               const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
+              const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-              pluginState.insertFile({ id: 'new one', status: 'uploading' }, testCollectionName);
+              pluginState.insertFile({ id: 'new one', status: 'uploading' });
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -409,6 +444,7 @@ describe('Media plugin', () => {
                   p(),
                 )
               );
+              collectionFromProvider.restore();
             });
           });
 
@@ -419,8 +455,9 @@ describe('Media plugin', () => {
                 mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
               ));
               setNodeSelection(editorView, 0);
+              const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-              pluginState.insertFile({ id: 'new one', status: 'uploading' }, testCollectionName);
+              pluginState.insertFile({ id: 'new one', status: 'uploading' });
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -430,6 +467,7 @@ describe('Media plugin', () => {
                   )
                 )
               );
+              collectionFromProvider.restore();
             });
           });
 
@@ -442,8 +480,9 @@ describe('Media plugin', () => {
               ));
               const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
+              const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-              pluginState.insertFile({ id: 'new one', status: 'uploading' }, testCollectionName);
+              pluginState.insertFile({ id: 'new one', status: 'uploading' });
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -454,6 +493,7 @@ describe('Media plugin', () => {
                   ),
                 )
               );
+              collectionFromProvider.restore();
             });
           });
         });
@@ -463,8 +503,9 @@ describe('Media plugin', () => {
     context('when selection is at the beginning of the text block', () => {
       it('replaces selection with a media node', () => {
         const { editorView, pluginState } = editor(doc(p('{<}te{>}xt')));
+        const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-        pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+        pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -472,6 +513,7 @@ describe('Media plugin', () => {
             p('xt'),
           )
         );
+        collectionFromProvider.restore();
       });
 
       it('prepends to exisiting media group before parent', () => {
@@ -479,8 +521,9 @@ describe('Media plugin', () => {
           mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
           p('{<}te{>}xt'),
         ));
+        const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-        pluginState.insertFile({ id: 'new one', status: 'uploading' }, testCollectionName);
+        pluginState.insertFile({ id: 'new one', status: 'uploading' });
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -491,14 +534,16 @@ describe('Media plugin', () => {
             p('xt'),
           )
         );
+        collectionFromProvider.restore();
       });
     });
   });
 
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView, pluginState } = editor(doc(h1('text{<>}')));
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-    pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+    pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -507,12 +552,14 @@ describe('Media plugin', () => {
         ),
         p(),
       ));
+    collectionFromProvider.restore();
   });
 
   it(`should insert media node into the document after current blockquote node`, () => {
     const { editorView, pluginState } = editor(doc(blockquote(p('text{<>}'))));
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-    pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+    pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(blockquote(
@@ -521,12 +568,14 @@ describe('Media plugin', () => {
         p(),
       ))
     );
+    collectionFromProvider.restore();
   });
 
   it(`should insert media node into the document after current codeblock node`, () => {
     const { editorView, pluginState } = editor(doc(code_block()('text{<>}')));
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-    pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+    pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -535,13 +584,15 @@ describe('Media plugin', () => {
         ),
         p(),
       ));
+    collectionFromProvider.restore();
   });
 
   context('inside empty block', () => {
     it('replaces empty paragraph with the media grroup in an empty document', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -549,12 +600,14 @@ describe('Media plugin', () => {
           p(),
         )
       );
+      collectionFromProvider.restore();
     });
 
     it('apends media group to empty paragraph in an empty code block', () => {
       const { editorView, pluginState } = editor(doc(code_block()('{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -563,12 +616,14 @@ describe('Media plugin', () => {
           p(),
         )
       );
+      collectionFromProvider.restore();
     });
 
     it('apends media group to empty paragraph in an empty heading', () => {
       const { editorView, pluginState } = editor(doc(h1('{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -577,6 +632,7 @@ describe('Media plugin', () => {
           p(),
         )
       );
+      collectionFromProvider.restore();
     });
 
     it('prepends media to existing media group before the empty paragraph', () => {
@@ -584,8 +640,9 @@ describe('Media plugin', () => {
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
         p('{<>}'),
       ));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: 'another one', status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: 'another one', status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -596,12 +653,14 @@ describe('Media plugin', () => {
           p(),
         )
       );
+      collectionFromProvider.restore();
     });
 
     it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}'), p()));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -609,12 +668,14 @@ describe('Media plugin', () => {
           p()
         )
       );
+      collectionFromProvider.restore();
     });
 
     it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
       const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -623,10 +684,12 @@ describe('Media plugin', () => {
           p()
         )
       );
+      collectionFromProvider.restore();
     });
 
     it('should insert all media nodes on the same line', async () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
       await resolvedProvider;
       pluginState.insertFile({ id: 'mock2' });
@@ -639,10 +702,12 @@ describe('Media plugin', () => {
         ),
         p(),
       ));
+      collectionFromProvider.restore();
     });
 
     it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
       const { pluginState } = editor(doc(p('{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
       const provider = await resolvedProvider;
       await provider.uploadContext;
 
@@ -656,15 +721,17 @@ describe('Media plugin', () => {
       );
 
       expect((pluginState.binaryPicker!.upload as any).calledOnce).to.equal(true);
+      collectionFromProvider.restore();
     });
 
     it('should call uploadErrorHandler on upload error', async () => {
       const handler = sinon.spy();
       const { pluginState } = editor(doc(p(), p('{<>}')), handler);
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
       await resolvedProvider;
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
       stateManager.updateState(testFileId, {
         id: testFileId,
@@ -684,16 +751,18 @@ describe('Media plugin', () => {
           description: 'something went wrong'
         }
       })).to.eq(true, 'uploadErrorHandler should be called with MediaState containing \'error\' status');
+      collectionFromProvider.restore();
     });
 
     it('should remove failed uploads from the document', async () => {
       const handler = sinon.spy();
       const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
       const provider = await resolvedProvider;
       await provider.uploadContext;
 
-      pluginState.insertFile({ id: testFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: testFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -714,11 +783,13 @@ describe('Media plugin', () => {
           p()
         )
       );
+      collectionFromProvider.restore();
     });
 
     it('should cancel in-flight uploads after media item is removed from document', async () => {
       const spy = sinon.spy();
       const { editorView, pluginState } = editor(doc(p(), p('{<>}')), spy);
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
       const firstTemporaryFileId = `temporary:first`;
       const secondTemporaryFileId = `temporary:second`;
       const thirdTemporaryFileId = `temporary:third`;
@@ -728,9 +799,9 @@ describe('Media plugin', () => {
       // wait until mediaProvider's uploadContext has been set
       await provider.uploadContext;
 
-      pluginState.insertFile({ id: firstTemporaryFileId, status: 'uploading' }, testCollectionName);
-      pluginState.insertFile({ id: secondTemporaryFileId, status: 'uploading' }, testCollectionName);
-      pluginState.insertFile({ id: thirdTemporaryFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: firstTemporaryFileId, status: 'uploading' });
+      pluginState.insertFile({ id: secondTemporaryFileId, status: 'uploading' });
+      pluginState.insertFile({ id: thirdTemporaryFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -791,10 +862,12 @@ describe('Media plugin', () => {
         id: secondTemporaryFileId,
         status: 'cancelled'
       })).to.eq(true, 'State Manager should emit "cancelled" status');
+      collectionFromProvider.restore();
     });
 
     it('should not revert to temporary media nodes after upload finished and we undo', async () => {
       const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
+      const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
       const tempFileId = `temporary:${randomId()}`;
       const publicFileId = `${randomId()}`;
 
@@ -803,7 +876,7 @@ describe('Media plugin', () => {
       // wait until mediaProvider's uploadContext has been set
       await provider.uploadContext;
 
-      pluginState.insertFile({ id: tempFileId, status: 'uploading' }, testCollectionName);
+      pluginState.insertFile({ id: tempFileId, status: 'uploading' });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -847,6 +920,7 @@ describe('Media plugin', () => {
           p(),
         )
       );
+      collectionFromProvider.restore();
     });
   });
 
@@ -968,10 +1042,11 @@ describe('Media plugin', () => {
 
   it(`should copy optional attributes from MediaState to Node attrs`, () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
     pluginState.insertFile({
       id: testFileId, status: 'uploading', fileName: 'foo.png', fileSize: 1234, fileMimeType: 'image/png'
-    }, testCollectionName);
+    });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -988,6 +1063,7 @@ describe('Media plugin', () => {
         p(),
       ),
     );
+    collectionFromProvider.restore();
   });
 
   describe('detectLinkRangesInSteps', () => {
@@ -1127,10 +1203,12 @@ describe('Media plugin', () => {
       it('does nothing', () => {
         const text = 'www.google.com';
         const { editorView, pluginState } = editor(doc(p(`${text} {<>}`)));
+        const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
         pluginState.insertLinks([]);
 
         expect(editorView.state.doc).to.deep.equal(doc(p(`${text} `)));
+        collectionFromProvider.restore();
       });
     });
 
@@ -1139,34 +1217,38 @@ describe('Media plugin', () => {
         it('creates a link card below where is the link created', () => {
           const link = 'www.google.com';
           const { editorView, pluginState, sel } = editor(doc(p(`${link} {<>}`)));
+          const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
           // -1 for space, simulate the scenario of autoformatting link
           pluginState.insertLinks([
             { start: sel - link.length - 1, end: sel, urls: [link] }
-          ], testCollectionName);
+          ]);
 
           expect(editorView.state.doc).to.deep.equal(doc(
             p(`${link} `),
             mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
             p(),
           ));
+          collectionFromProvider.restore();
         });
 
         context('lastest pos in range is out of doc range', () => {
           it('creates a link card at the end of doc', () => {
             const link = 'www.google.com';
             const { editorView, pluginState, sel } = editor(doc(p(`${link} {<>}`)));
+            const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
             // -1 for space, simulate the scenario of autoformatting link
             pluginState.insertLinks([
               { start: sel - link.length - 1, end: 1000, urls: [link] }
-            ], testCollectionName);
+            ]);
 
             expect(editorView.state.doc).to.deep.equal(doc(
               p(`${link} `),
               mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
               p(),
             ));
+            collectionFromProvider.restore();
           });
         });
 
@@ -1177,17 +1259,19 @@ describe('Media plugin', () => {
               p(`${link} {<>}`),
               p('hello'),
             ));
+            const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
             // -1 for space, simulate the scenario of autoformatting link
             pluginState.insertLinks([
               { start: sel - link.length - 1, end: sel, urls: [link] }
-            ], testCollectionName);
+            ]);
 
             expect(editorView.state.doc).to.deep.equal(doc(
               p(`${link} `),
               mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
               p('hello'),
             ));
+            collectionFromProvider.restore();
           });
         });
       });
@@ -1200,11 +1284,12 @@ describe('Media plugin', () => {
             p(`${link1} ${link2} {<>}`),
             mediaGroup(media({ id: link1, type: 'link', collection: testCollectionName })),
           ));
+          const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
           // -1 for space, simulate the scenario of autoformatting link
           pluginState.insertLinks([
             { start: sel - link2.length - 1, end: sel, urls: [link2] }
-          ], testCollectionName);
+          ]);
 
           expect(editorView.state.doc).to.deep.equal(doc(
             p(`${link1} ${link2} `),
@@ -1213,6 +1298,7 @@ describe('Media plugin', () => {
               media({ id: link2, type: 'link', collection: testCollectionName }),
             )
           ));
+          collectionFromProvider.restore();
         });
 
         context('lastest pos in range is out of doc range', () => {
@@ -1223,11 +1309,12 @@ describe('Media plugin', () => {
               p(`${link1} ${link2} {<>}`),
               mediaGroup(media({ id: link1, type: 'link', collection: testCollectionName })),
             ));
+            const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
             // -1 for space, simulate the scenario of autoformatting link
             pluginState.insertLinks([
               { start: sel - link2.length - 1, end: 1000, urls: [link2] }
-            ], testCollectionName);
+            ]);
 
             expect(editorView.state.doc).to.deep.equal(doc(
               p(`${link1} ${link2} `),
@@ -1236,6 +1323,7 @@ describe('Media plugin', () => {
                 media({ id: link2, type: 'link', collection: testCollectionName }),
               )
             ));
+            collectionFromProvider.restore();
           });
         });
       });
@@ -1251,6 +1339,7 @@ describe('Media plugin', () => {
           p(`${link2} ${link3}`),
           p('hello')
         ));
+        const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
         const startOfLink1 = 1;
         const endOfLink1 = startOfLink1 + link1.length;
@@ -1261,7 +1350,7 @@ describe('Media plugin', () => {
         pluginState.insertLinks([
           { start: startOfLink1, end: endOfLink1, urls: [link1] },
           { start: startOfLink2, end: endOfLink2, urls: [link2, link3] },
-        ], testCollectionName);
+        ]);
 
         expect(editorView.state.doc).to.deep.equal(doc(
           p(`${link1}`),
@@ -1273,6 +1362,7 @@ describe('Media plugin', () => {
           ),
           p('hello'),
         ));
+        collectionFromProvider.restore();
       });
     });
   });

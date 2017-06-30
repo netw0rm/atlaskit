@@ -222,7 +222,8 @@ export class MediaPluginState {
     return node;
   }
 
-  insertFile = (mediaState: MediaState, collection = this.collectionFromProvider()): void => {
+  insertFile = (mediaState: MediaState): void => {
+    const collection = this.collectionFromProvider();
     if (!collection) {
       return;
     }
@@ -238,12 +239,14 @@ export class MediaPluginState {
     }
   }
 
-  insertLinks = (linkRanges: RangeWithUrls[] = this.linkRanges, collection = this.collectionFromProvider()): void => {
-    const { state, dispatch } = this.view;
-    const { tr } = state;
-    if (linkRanges.length <= 0) {
+  insertLinks = (linkRanges: RangeWithUrls[] = this.linkRanges): void => {
+    const collection = this.collectionFromProvider();
+    if (linkRanges.length <= 0 || !collection) {
       return;
     }
+
+    const { state, dispatch } = this.view;
+    const { tr } = state;
 
     const linksInfo = this.reducelinksInfo(linkRanges);
 

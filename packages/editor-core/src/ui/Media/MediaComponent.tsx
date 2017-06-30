@@ -125,7 +125,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return null;
     }
 
-
     linkCreateContext.getUrlPreviewProvider(url).observable().subscribe(
       metadata => linkCreateContext.addLinkItem(url, collection, metadata)
     );

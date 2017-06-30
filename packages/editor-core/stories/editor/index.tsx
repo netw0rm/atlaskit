@@ -265,11 +265,13 @@ export default class Editor extends PureComponent<Props, State> {
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
           ...textColorPlugins(schema),
+          ...mediaPlugins,
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
-          // if converting is possible
+          // if converting is possible.
+          // it also needs to be after media plugin because of mod + z
+          // because it needs to ignore links detection if transaction is triggered by mod + z
           ...blockTypePlugins(schema),
-          ...mediaPlugins,
           ...tablePlugins(),
           ...reactNodeViewPlugins(schema),
           history(),

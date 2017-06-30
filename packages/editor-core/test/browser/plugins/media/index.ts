@@ -36,6 +36,7 @@ import {
   randomId,
   sleep,
   setNodeSelection,
+  sendKeyToPm,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -1022,6 +1023,23 @@ describe('Media plugin', () => {
         expect(linksRanges).to.deep.equal([
           { start: sel - 1, end: sel + 1, urls: ['www.google.com', 'www.baidu.com'] }
         ]);
+      });
+
+      context('when step is triggered by undo', () => {
+        it('does not detect links', () => {
+          const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+          const { state } = editorView;
+          const link1 = a({ href: 'www.google.com' })('google');
+          const link2 = a({ href: 'www.baidu.com' })('baidu');
+          const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+
+          pluginState.allowsLinks = true;
+          sendKeyToPm(editorView, 'Mod-z');
+
+          const linksRanges = pluginState.detectLinkRangesInSteps(tr);
+
+          expect(linksRanges).to.deep.equal([]);
+        });
       });
     });
 

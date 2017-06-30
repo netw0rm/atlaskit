@@ -36,6 +36,7 @@ import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
+import keymapPlugin from './keymap';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -74,6 +75,8 @@ export class MediaPluginState {
   private popupPicker?: PickerFacade;
   private linkRanges: RangeWithUrls[];
 
+  private ignoreLinks: boolean = false;
+
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
 
@@ -98,6 +101,10 @@ export class MediaPluginState {
     if (pos > -1) {
       pluginStateChangeSubscribers.splice(pos, 1);
     }
+  }
+
+  ignoreLinksInSteps() {
+    this.ignoreLinks = true;
   }
 
   setMediaProvider = async (mediaProvider?: Promise<MediaProvider>) => {
@@ -728,6 +735,11 @@ export class MediaPluginState {
   detectLinkRangesInSteps = (tr: Transaction): RangeWithUrls[] => {
     const { link } = this.view.state.schema.marks;
     this.linkRanges = [];
+
+    if (this.ignoreLinks) {
+      this.ignoreLinks = false;
+      return this.linkRanges;
+    }
     if (!link || !this.allowsLinks) {
       return this.linkRanges;
     }
@@ -825,7 +837,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
 
 const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
   const plugin = mediaPluginFactory(options);
-  return [plugin].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

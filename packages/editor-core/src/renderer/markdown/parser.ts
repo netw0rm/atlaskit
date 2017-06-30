@@ -1,4 +1,4 @@
-import { Node, DOMParser } from '@atlaskit/editor-core';
+import { Node, DOMParser } from '../../prosemirror';
 import { bitbucketSchema as schema } from '../../schema';
 import { arrayFrom } from '../../utils';
 

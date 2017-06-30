@@ -17,7 +17,7 @@ export default class Droppable extends PureComponent {
 
   static defaultProps: DefaultProps = {
     type: 'DEFAULT',
-    isDragEnabled: true,
+    isDropDisabled: false,
   }
   /* eslint-enable */
 

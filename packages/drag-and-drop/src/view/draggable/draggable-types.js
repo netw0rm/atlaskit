@@ -1,4 +1,5 @@
 // @flow
+import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types';
 import type {
   DraggableId,
   InitialDrag,
@@ -6,6 +7,15 @@ import type {
   TypeId,
   ZIndex,
 } from '../../types';
+import {
+  lift,
+  move,
+  moveForward,
+  moveBackward,
+  drop,
+  cancel,
+  dropAnimationFinished,
+} from '../../state/action-creators';
 import type {
   Provided as DragHandleProvided,
 } from '../drag-handle/drag-handle-types';
@@ -25,6 +35,11 @@ export type PlacementStyle = {|
   left: number,
 |}
 
+export type ZIndexOptions = {|
+  dragging: number,
+  dropAnimating: number,
+|}
+
 export type DraggableStyle = MovementStyle | (PlacementStyle & MovementStyle);
 
 export type Provided = {|
@@ -38,15 +53,17 @@ export type StateSnapshot = {|
   isDragging: boolean,
 |}
 
+// Using PropType<*,*> to allow strict typing within code and looser typing
+// for React PropTypes
+// https://github.com/thejameskyle/babel-plugin-react-flow-props-to-prop-types#override-type-used-in-proptypes
 export type DispatchProps = {
-  // Cannot use the typeof right now due to limitation in "react-flow-props-to-prop-types"
-  lift: Function, // typeof lift,
-  move: Function, // typeof move,
-  moveForward: Function, // typeof moveForward,
-  moveBackward: Function, // typeof moveBackward,
-  drop: Function, // typeof drop,
-  cancel: Function, // typeof cancel,
-  dropAnimationFinished: Function, // typeof dropAnimationFinished,
+  lift: PropType<typeof lift, Function>,
+  move: PropType<typeof move, Function>,
+  moveForward: PropType<typeof moveForward, Function>,
+  moveBackward: PropType<typeof moveBackward, Function>,
+  drop: PropType<typeof drop, Function>,
+  cancel: PropType<typeof cancel, Function>,
+  dropAnimationFinished: PropType<typeof dropAnimationFinished, Function>,
 }
 
 export type MapProps = {|
@@ -61,12 +78,12 @@ export type OwnProps = {|
   draggableId: DraggableId,
   children: (Provided, StateSnapshot) => void,
   type: TypeId,
-  isDragEnabled: boolean,
+  isDragDisabled: boolean,
 |}
 
 export type DefaultProps = {|
   type: TypeId,
-  isDragEnabled: boolean,
+  isDragDisabled: boolean,
 |}
 
 export type Props = MapProps & DispatchProps & OwnProps;

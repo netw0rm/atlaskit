@@ -21,6 +21,7 @@ import type {
   DefaultProps,
   PlacementStyle,
   DraggableStyle,
+  ZIndexOptions,
 } from './draggable-types';
 import type { Speed, Style as MovementStyle } from '../moveable/moveable-types';
 
@@ -34,6 +35,11 @@ type State = {|
   childRef: ?Element,
 |}
 
+export const zIndexOptions: ZIndexOptions = {
+  dragging: 100,
+  dropAnimating: 50,
+};
+
 export default class Draggable extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
@@ -45,7 +51,7 @@ export default class Draggable extends PureComponent {
   }
 
   static defaultProps: DefaultProps = {
-    isDragEnabled: true,
+    isDragDisabled: false,
     type: 'DEFAULT',
   }
   /* eslint-enable */
@@ -70,8 +76,8 @@ export default class Draggable extends PureComponent {
     invariant(this.state.childRef,
       'Draggable: cannot drag if not attached child node'
     );
-    invariant(this.props.isDragEnabled,
-      'Draggable: cannot drag dragging is not enabled'
+    invariant(!this.props.isDragDisabled,
+      'Draggable: cannot drag as dragging is not enabled'
     );
   }
 
@@ -200,7 +206,7 @@ export default class Draggable extends PureComponent {
       return {
         showPlaceholder: true,
         speed: canAnimate ? 'FAST' : 'INSTANT',
-        style: this.getMovingStyle(initial, 100),
+        style: this.getMovingStyle(initial, zIndexOptions.dragging),
       };
     }
 
@@ -215,7 +221,7 @@ export default class Draggable extends PureComponent {
       return {
         showPlaceholder: true,
         speed: 'STANDARD',
-        style: this.getMovingStyle(initial, 50),
+        style: this.getMovingStyle(initial, zIndexOptions.dropAnimating),
       };
     }
 
@@ -282,7 +288,7 @@ export default class Draggable extends PureComponent {
         >
           {(movementStyle: ?MovementStyle) => (
             <DragHandle
-              isEnabled={this.props.isDragEnabled}
+              isEnabled={!this.props.isDragDisabled}
               callbacks={this.callbacks}
             >
               {(dragHandleProps: ?DragHandleProvided) =>

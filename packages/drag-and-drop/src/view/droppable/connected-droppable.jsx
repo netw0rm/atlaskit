@@ -21,8 +21,8 @@ import type {
 export const makeSelector = () => {
   const idSelector = (state: State, ownProps: OwnProps) =>
     ownProps.droppableId;
-  const isDropEnabledSelector = (state: State, ownProps: OwnProps) =>
-    ownProps.isDropEnabled || true;
+  const isDropDisabledSelector = (state: State, ownProps: OwnProps) =>
+    ownProps.isDropDisabled || false;
 
   const getIsDraggingOver = memoizeOne(
     (id: DroppableId, destination: ?DraggableLocation): boolean => {
@@ -42,15 +42,15 @@ export const makeSelector = () => {
       dragSelector,
       pendingDropSelector,
       idSelector,
-      isDropEnabledSelector,
+      isDropDisabledSelector,
     ],
     (phase: Phase,
       drag: ?DragState,
       pending: ?PendingDrop,
       id: DroppableId,
-      isDropEnabled: boolean,
+      isDropDisabled: boolean,
     ): MapProps => {
-      if (!isDropEnabled) {
+      if (isDropDisabled) {
         return getMapProps(false);
       }
 

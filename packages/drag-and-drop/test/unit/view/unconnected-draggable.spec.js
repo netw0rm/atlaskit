@@ -8,7 +8,7 @@ import { mount } from 'enzyme';
 import sinon from 'sinon';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
-import Draggable from '../../../src/view/draggable/draggable';
+import Draggable, { zIndexOptions } from '../../../src/view/draggable/draggable';
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 import Moveable from '../../../src/view/moveable/';
 import Placeholder from '../../../src/view/draggable/placeholder';
@@ -85,14 +85,14 @@ const getDispatchPropsStub = (): DispatchProps => ({
 // $ExpectError - not setting children function
 const defaultOwnProps: OwnProps = {
   draggableId: defaultDraggableId,
-  isDragEnabled: true,
+  isDragDisabled: false,
   type: defaultType,
 };
 
 // $ExpectError - not setting children function
 const disabledOwnProps: OwnProps = {
   draggableId: defaultDraggableId,
-  isDragEnabled: false,
+  isDragDisabled: true,
   type: defaultType,
 };
 
@@ -207,7 +207,6 @@ const executeOnKeyLift = (wrapper: ReactWrapper) => ({
 };
 
 const getFromLift = (dispatchProps) => {
-  // $ExpectError - type of callback
   const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg] = dispatchProps.lift.args[0];
 
   return {
@@ -283,7 +282,6 @@ describe('Draggable - unconnected', () => {
 
       startDragWithHandle(wrapper.find(Item))();
 
-      // $ExpectError - type of callback
       expect(dispatchProps.lift.called).to.equal(true);
     });
 
@@ -321,7 +319,6 @@ describe('Draggable - unconnected', () => {
 
         startDragWithHandle(wrapper.find(WithNestedHandle).find('.can-drag'))();
 
-        // $ExpectError - type of callback
         expect(dispatchProps.lift.called).to.equal(true);
       });
 
@@ -336,7 +333,6 @@ describe('Draggable - unconnected', () => {
 
         startDragWithHandle(wrapper.find(WithNestedHandle))();
 
-        // $ExpectError - type of callback
         expect(dispatchProps.lift.called).to.equal(false);
       });
 
@@ -351,7 +347,6 @@ describe('Draggable - unconnected', () => {
 
         startDragWithHandle(wrapper.find(WithNestedHandle).find('.cannot-drag'))();
 
-        // $ExpectError - type of callback
         expect(dispatchProps.lift.called).to.equal(false);
       });
     });
@@ -472,7 +467,6 @@ describe('Draggable - unconnected', () => {
           // should not do anything yet as mapProps has not yet updated
           wrapper.find(DragHandle).props().callbacks.onMove({ x: 100, y: 200 });
 
-          // $ExpectError - type of callback
           expect(dispatchProps.move.called).to.equal(false);
         });
 
@@ -497,7 +491,6 @@ describe('Draggable - unconnected', () => {
           });
 
           wrapper.find(DragHandle).props().callbacks.onMove(mouse);
-          // $ExpectError - type of callback
           const [, offset, center] = dispatchProps.move.args[0];
 
           expect(offset).to.deep.equal(mouseDiff);
@@ -527,7 +520,6 @@ describe('Draggable - unconnected', () => {
 
           // no mouse movement
           wrapper.find(DragHandle).props().callbacks.onMove(mockInitial.selection);
-          // $ExpectError - type of callback
           const [, offset, center] = dispatchProps.move.args[0];
 
           expect(offset).to.deep.equal(scrollDiff);
@@ -569,7 +561,6 @@ describe('Draggable - unconnected', () => {
 
           wrapper.find(DragHandle).props().callbacks.onDrop();
 
-          // $ExpectError - type of callback
           expect(dispatchProps.drop.calledWith(defaultDraggableId)).to.equal(true);
         });
       });
@@ -678,7 +669,6 @@ describe('Draggable - unconnected', () => {
 
           wrapper.find(DragHandle).props().callbacks.onMoveBackward(defaultDraggableId);
 
-          // $ExpectError - type of callback
           expect(dispatchProps.moveBackward.calledWith(defaultDraggableId)).to.equal(true);
         });
       });
@@ -718,7 +708,6 @@ describe('Draggable - unconnected', () => {
 
           wrapper.find(DragHandle).props().callbacks.onMoveForward(defaultDraggableId);
 
-          // $ExpectError - type of callback
           expect(dispatchProps.moveForward.calledWith(defaultDraggableId)).to.equal(true);
         });
       });
@@ -733,7 +722,6 @@ describe('Draggable - unconnected', () => {
 
           wrapper.find(DragHandle).props().callbacks.onCancel(defaultDraggableId);
 
-          // $ExpectError - type of callback
           expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
         });
 
@@ -747,7 +735,6 @@ describe('Draggable - unconnected', () => {
 
           wrapper.find(DragHandle).props().callbacks.onCancel(defaultDraggableId);
 
-          // $ExpectError - type of callback
           expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
         });
 
@@ -760,7 +747,6 @@ describe('Draggable - unconnected', () => {
 
           wrapper.find(DragHandle).props().callbacks.onCancel(defaultDraggableId);
 
-          // $ExpectError - type of callback
           expect(dispatchProps.cancel.calledWith(defaultDraggableId)).to.equal(true);
         });
       });
@@ -783,7 +769,7 @@ describe('Draggable - unconnected', () => {
       // first call is for the setRef
       const provided: Provided = stub.lastCall.args[0].provided;
 
-      if (!(provided.draggableStyle && provided.draggableStyle.transform)) {
+      if (!provided.draggableStyle || !provided.draggableStyle.transform) {
         expect.fail();
         return;
       }
@@ -824,6 +810,10 @@ describe('Draggable - unconnected', () => {
         requestAnimationFrame.step();
 
         const provided: Provided = stub.lastCall.args[0].provided;
+        if (!provided.draggableStyle || !provided.draggableStyle.transform) {
+          expect.fail();
+          return;
+        }
         expect(provided.draggableStyle.transform).to.equal(expected);
       });
     });
@@ -865,12 +855,8 @@ describe('Draggable - unconnected', () => {
         expect(provided.placeholder).to.equal(null);
       });
 
-      it('should have its initial z index', () => {
-        expect(provided.draggableStyle).to.not.have.property('zIndex');
-      });
-
-      it('should have its initial position', () => {
-        expect(provided.draggableStyle).to.not.have.property('position');
+      it('should return no draggable style', () => {
+        expect(provided.draggableStyle).to.equal(null);
       });
 
       it('should move quickly out of the way if needed', () => {
@@ -923,10 +909,14 @@ describe('Draggable - unconnected', () => {
           mapProps: notDraggingMapProps,
           Component: getStubber(notDraggingStub),
         });
-        const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0].provided;
 
+        const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0].provided;
+        if (!draggingProvided.draggableStyle || !draggingProvided.draggableStyle.zIndex) {
+          expect.fail();
+          return;
+        }
         expect(draggingProvided.draggableStyle.zIndex).to.be.a('number');
-        expect(notDraggingProvided.draggableStyle).to.not.have.property('zIndex');
+        expect(notDraggingProvided.draggableStyle).to.equal(null);
       });
 
       it('should be above Draggables returning to home', () => {
@@ -942,6 +932,15 @@ describe('Draggable - unconnected', () => {
           Component: getStubber(returningHomeStub),
         });
         const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
+
+        if (!draggingProvided.draggableStyle || !draggingProvided.draggableStyle.zIndex) {
+          expect.fail();
+          return;
+        }
+        if (!returningHomeProvided.draggableStyle || !returningHomeProvided.draggableStyle.zIndex) {
+          expect.fail();
+          return;
+        }
 
         expect(draggingProvided.draggableStyle.zIndex)
           .to.be.above(returningHomeProvided.draggableStyle.zIndex);
@@ -959,13 +958,15 @@ describe('Draggable - unconnected', () => {
         }
         const dimension = draggingMapProps.initial.dimension;
         const provided: Provided = stub.lastCall.args[0].provided;
-
-        expect(provided.draggableStyle.position).to.equal('absolute');
-        expect(provided.draggableStyle.zIndex).to.be.a('number');
-        expect(provided.draggableStyle.width).to.equal(dimension.withMargin.width);
-        expect(provided.draggableStyle.height).to.equal(dimension.withMargin.height);
-        expect(provided.draggableStyle.top).to.equal(dimension.withMargin.top);
-        expect(provided.draggableStyle.left).to.equal(dimension.withMargin.left);
+        expect(provided.draggableStyle).to.deep.equal({
+          position: 'absolute',
+          zIndex: zIndexOptions.dragging,
+          boxSizing: 'border-box',
+          width: dimension.withMargin.width,
+          height: dimension.withMargin.height,
+          top: dimension.withMargin.top,
+          left: dimension.withMargin.left,
+        });
       });
 
       it('should move quickly if it should animate', () => {
@@ -1044,7 +1045,7 @@ describe('Draggable - unconnected', () => {
         const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
 
         expect(returningHomeProvided.draggableStyle.zIndex).to.be.a('number');
-        expect(notDraggingProvided.draggableStyle).to.not.have.property('zIndex');
+        expect(notDraggingProvided.draggableStyle).to.equal(null);
       });
 
       it('should be positioned absolutely in the same spot as before', () => {
@@ -1058,6 +1059,12 @@ describe('Draggable - unconnected', () => {
         });
 
         const provided: Provided = stub.lastCall.args[0].provided;
+
+        if (!provided.draggableStyle || !provided.draggableStyle.position) {
+          expect.fail();
+          return;
+        }
+
         expect(provided.draggableStyle.position).to.equal('absolute');
         expect(provided.draggableStyle.zIndex).to.be.a('number');
         expect(provided.draggableStyle.width).to.equal(dimension.withMargin.width);
@@ -1098,7 +1105,7 @@ describe('Draggable - unconnected', () => {
       });
 
       it('should not be moved from its original position', () => {
-        expect(provided.draggableStyle).to.not.have.property('position');
+        expect(provided.draggableStyle).to.equal(null);
       });
 
       it('should let consumers know that the item is not dragging', () => {
@@ -1126,7 +1133,7 @@ describe('Draggable - unconnected', () => {
       });
 
       it('should not be moved from its original position', () => {
-        expect(provided.draggableStyle).to.not.have.property('position');
+        expect(provided.draggableStyle).to.equal(null);
       });
 
       it('should let consumers know that the item is not dragging', () => {

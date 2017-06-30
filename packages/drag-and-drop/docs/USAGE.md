@@ -1,6 +1,6 @@
 # Drag and Drop
 
-[TODO: gif]
+![example.gif](https://dl.dropboxusercontent.com/s/4oy05eutn1jmzrm/example.gif)
 
 The goal of this library is to create a beautiful drag and drop experience for lists. It provides highly performant physics based mouse and keyboard dragging without creating any wrapping DOM nodes.
 
@@ -150,7 +150,6 @@ Your *hook* functions will only be captured *once at start up*. Please do not ch
 <Droppable
   droppableId="droppable-1"
   type="PERSON"
-  isDropEnabled
 >
   {(provided, snapshot) => (
     <div
@@ -167,7 +166,7 @@ Your *hook* functions will only be captured *once at start up*. Please do not ch
 
 - `droppableId`: A *required* `DroppableId(string)` that uniquely identifies the droppable for the application. Please do not change this prop - especially during a drag.
 - `type`: An *optional* `TypeId(string)` that can be used to simply accept a class of `Draggable`. For example, if you use the type `PERSON` then it will only allow `Draggable`s of type `PERSON` to be dropped on itself. `Draggable`s of type `TASK` would not be able to be dropped on a `Droppable` with type `PERSON`. If no `type` is provided, it will be set to `'DEFAULT'`. Currently the `type` of the `Draggable`s within a `Droppable` **must be** the same. This restriction might be loosened in the future if there is a valid use case.
-- `isDropEnabled`: An *optional* flag to control whether or not dropping is currently allowed on the `Droppable`. You can use this to implement your own conditional dropping logic. It will default to `true`.
+- `isDropDisabled`: An *optional* flag to control whether or not dropping is currently allowed on the `Droppable`. You can use this to implement your own conditional dropping logic. It will default to `false`.
 
 ### Children function
 
@@ -231,9 +230,9 @@ The `children` function is also provided with a small about of state relating to
 > Keep in mind that this is not supported at this time. In this current initial version we only support reordering within a single list.
 
 - `Droppable`s can only be dropped on by `Draggable`s who share the same `type`. This is a simple way of allowing conditional dropping. If you do not provide a `type` for the `Droppable` then it will only accept `Draggable`s which also have the default type. `Draggable`s and `Droppable`s both will have their `types` set to `'DEFAULT'` when none is provided. There is currently no way to set multiple `types`, or a `type` wildcard that will accept `Draggable`s of multiple any types. This could be added if there is a valid use case.
-- Using the `isDropEnabled` prop you can conditionally allow dropping. This allows you to do arbitrarily complex conditional transitions. This will only be considered if the `type` of the `Droppable` matches the `type` of the currently dragging `Draggable`.
-- You can disable dropping on a `Droppable` altogether by always setting `isDropEnabled` to false. You can do this to create a list that is never able to be dropped on, but contains `Draggable`s.
-- Technically you do not need to use `type` and do all of your conditional drop logic with the `isDropEnabled` function. The `type` parameter is a convenient shortcut for a common use case.
+- Using the `isDropDisabled` prop you can conditionally allow dropping. This allows you to do arbitrarily complex conditional transitions. This will only be considered if the `type` of the `Droppable` matches the `type` of the currently dragging `Draggable`.
+- You can disable dropping on a `Droppable` altogether by always setting `isDropDisabled` to false. You can do this to create a list that is never able to be dropped on, but contains `Draggable`s.
+- Technically you do not need to use `type` and do all of your conditional drop logic with the `isDropDisabled` function. The `type` parameter is a convenient shortcut for a common use case.
 
 ## `Draggable`
 
@@ -245,7 +244,6 @@ The `children` function is also provided with a small about of state relating to
 <Draggable
   draggableId="draggable-1"
   type="PERSON"
-  isDragEnabled
 >
   {(provided, snapshot) => (
     <div
@@ -263,7 +261,7 @@ The `children` function is also provided with a small about of state relating to
 
 - `draggableId`: A *required* `DraggableId(string)` that uniquely identifies the `Draggable` for the application. Please do not change this prop - especially during a drag.
 - `type`: An *optional* type (`TypeId(string)`) of the `Draggable`. This is used to control what `Droppable`s the `Draggable` is permitted to drop on. `Draggable`s can only drop on `Droppable`s that share the same `type`. If no `type` is provided, it will be set to `'DEFAULT'`. Currently the `type` of a `Draggable` **must be** the same as its container `Droppable`. This restriction might be loosened in the future if there is a valid use case.
-- `isDragEnabled`: An *optional* flag to control whether or not dropping is currently allowed on the `Droppable`. You can use this to implement your own conditional dropping logic. It will default to `true`.
+- `isDragDisabled`: An *optional* flag to control whether or not dropping is currently allowed on the `Droppable`. You can use this to implement your own conditional dropping logic. It will default to `false`.
 
 ### Children function
 
@@ -319,7 +317,7 @@ Everything within the *provided* object must be applied for the `Draggable` to f
 innerRef: (Element) => void
 ```
 
-- `provided.draggableStyle (?DraggableStyle)`: This is an object that contains an a number of styles that needs to be applied to the `Draggable`. This needs to be applied to the same node that you apply `provided.innerRef` to. The controls the movement of the draggable when it is dragging and not dragging. You are welcome to add your own styles to this object - but please do not remove or replace any of the properties.
+- `provided.draggableStyle (?DraggableStyle)`: This is an `Object` or `null` that contains an a number of styles that needs to be applied to the `Draggable`. This needs to be applied to the same node that you apply `provided.innerRef` to. The controls the movement of the draggable when it is dragging and not dragging. You are welcome to add your own styles to this object - but please do not remove or replace any of the properties.
 
 ```js
 <Draggable draggableId="draggable-1">
@@ -363,7 +361,7 @@ innerRef: (Element) => void
 **Type information**
 
 ```js
-type DraggableStyle = ?PlacementStyle & ?MovementStyle;
+type DraggableStyle = MovementStyle | (PlacementStyle & MovementStyle);
 
 type PlacementStyle = {|
   position: 'absolute',
@@ -399,7 +397,7 @@ type MovementStyle = {|
 </Draggable>
 ```
 
-- `provided.dragHandleProps (?DragHandleProps)` every `Draggable` has a *drag handle*. This is what is used to drag the whole `Draggable`. Often this will be the same as the node as the `Draggable`, but sometimes it can be a child of the `Draggable`. `DragHandleProps` need to be applied to the node that you want to be the drag handle. This is a number of props that need to be applied to the `Draggable` node. The simpliest approach is to spread the props onto the draggable node (`{...provided.dragHandleProps}`). However, you are also welcome to [monkey patch](https://davidwalsh.name/monkey-patching) these props if you also need to respond to them. DragHandleProps will be `null` when `isDragEnabled` is set to false.
+- `provided.dragHandleProps (?DragHandleProps)` every `Draggable` has a *drag handle*. This is what is used to drag the whole `Draggable`. Often this will be the same as the node as the `Draggable`, but sometimes it can be a child of the `Draggable`. `DragHandleProps` need to be applied to the node that you want to be the drag handle. This is a number of props that need to be applied to the `Draggable` node. The simpliest approach is to spread the props onto the draggable node (`{...provided.dragHandleProps}`). However, you are also welcome to [monkey patch](https://davidwalsh.name/monkey-patching) these props if you also need to respond to them. DragHandleProps will be `null` when `isDragDisabled` is set to `true`.
 
 **Type information**
 

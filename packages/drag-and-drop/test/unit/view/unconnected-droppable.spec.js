@@ -40,7 +40,7 @@ const isDraggingOverMapProps: MapProps = {
 // $ExpectError - not providing children
 const defaultOwnProps: OwnProps = {
   droppableId: defaultDroppableId,
-  isDropEnabled: true,
+  isDropDisabled: false,
 };
 
 type MountArgs = {|

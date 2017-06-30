@@ -114,7 +114,8 @@ export type Hooks = {
   onDragEnd: (result: DropResult) => void,
 }
 
-// TODO: try to use React's one
+// These types are 'fake'. They really just resolve to 'any'.
+// But it is useful for readability and intention
 export type ReactClass = any;
 export type ReactElement = any;
 export type HTMLElement = any;

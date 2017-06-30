@@ -832,6 +832,12 @@ babel-explode-module@^1.4.0:
   dependencies:
     babel-types "^6.24.1"
 
+babel-explode-module@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/babel-explode-module/-/babel-explode-module-2.0.0.tgz#d635653b44b1bdf1d5ceafacafb891611876ce3b"
+  dependencies:
+    babel-types "^6.24.1"
+
 babel-file-loader@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/babel-file-loader/-/babel-file-loader-1.0.1.tgz#3bf60520c2fa52cafb4cbd37921eacf582345390"
@@ -1160,12 +1166,12 @@ babel-plugin-react-docgen@^1.4.1:
     lodash "4.x.x"
     react-docgen "^2.12.1"
 
-babel-plugin-react-flow-props-to-prop-types@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.8.1.tgz#978a82b709822225dddcd680fdbb2e295849a9c1"
+babel-plugin-react-flow-props-to-prop-types@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.10.0.tgz#d2ecb696c94d1b28026c17cb7dc0baa70563d7fd"
   dependencies:
     babel-errors "^1.1.0"
-    babel-explode-module "^1.4.0"
+    babel-explode-module "^2.0.0"
     babel-file-loader "^1.0.1"
     babel-flow-scope "^1.2.0"
     babel-helper-simplify-module "^2.2.0"

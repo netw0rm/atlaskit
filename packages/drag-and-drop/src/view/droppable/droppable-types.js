@@ -15,13 +15,13 @@ export type MapProps = {|
 
 export type OwnProps = {|
   droppableId: DroppableId,
-  isDropEnabled: boolean,
+  isDropDisabled: boolean,
   type: TypeId,
   children: (Provided, StateSnapshot) => ReactElement
 |};
 
 export type DefaultProps = {|
-  isDropEnabled: boolean,
+  isDropDisabled: boolean,
   type: TypeId
 |}
 

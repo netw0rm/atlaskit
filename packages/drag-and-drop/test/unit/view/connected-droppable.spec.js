@@ -21,17 +21,17 @@ import type {
 import type { MapProps } from '../../../src/view/droppable/droppable-types';
 
 type SelectorArgs = {|
+  id: DroppableId,
   phase: Phase,
   drag: ?DragState,
   pending: ?PendingDrop,
-  id: DroppableId,
-  isDropEnabled?: boolean
+  isDropDisabled?: boolean
 |}
 
 const execute = (selector: Function) =>
-  ({ phase, drag, pending, id, isDropEnabled = true }: SelectorArgs) =>
+  ({ phase, drag, pending, id, isDropDisabled = false }: SelectorArgs) =>
     selector.resultFunc(
-      phase, drag, pending, id, isDropEnabled,
+      phase, drag, pending, id, isDropDisabled,
     );
 
 const defaultMapProps: MapProps = {
@@ -146,6 +146,7 @@ describe('Droppable - connected', () => {
           drag: null,
           pending: null,
           id: droppableId,
+          isDropDisabled: true,
         });
 
         expect(props).to.deep.equal(defaultMapProps);

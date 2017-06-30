@@ -12,7 +12,7 @@ const Container = styled.a`
   background-color: ${({ isDragging }) => (isDragging ? 'rgb(185, 244, 188)' : 'white')};
 
   cursor: ${({ isDragging }) => (isDragging ? 'grabbing' : 'grab')};
-  box-shadow: ${({ isDragging }) => (isDragging ? '2px 2px 1px rgba(0,0,0,0.2)' : 'none')};
+  box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px ${colors.shadow}` : 'none')};
   padding: 8px;
   min-height: 40px;
   margin-bottom: 8px;

@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@atlaskit/code": "^2.1.2",
-    "@atlaskit/emoji": "^16.2.0",
+    "@atlaskit/emoji": "^18.2.1",
     "@atlaskit/icon": "^6.5.4",
     "@atlaskit/media-card": "^17.7.0",
     "@atlaskit/media-core": "^8.2.0",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^6.0.2",
-    "@atlaskit/util-data-test": "^4.0.0",
+    "@atlaskit/util-data-test": "^4.7.0",
     "akutil-common-test": "*"
   },
   "keywords": [

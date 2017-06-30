@@ -429,14 +429,18 @@ function createParagraphNear(view: EditorView, append: boolean = true): void {
 function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): void {
   const { $from, $to } = state.selection;
   let pos;
+  const nodeType = $to.node($to.depth - 1).type;
 
   if (!append) {
     pos = $from.start($from.depth) - 1;
     pos = $from.depth > 1 ? pos - 1 : pos;
 
     // Same theory as comment below.
-    if ($to.node($to.depth - 1).type === state.schema.nodes.listItem) {
+    if (nodeType === state.schema.nodes.listItem) {
       pos = pos - 1;
+    }
+    if (nodeType === state.schema.nodes.table_cell || nodeType === state.schema.nodes.table_header) {
+      pos = pos - 2;
     }
   } else {
     pos = $to.end($to.depth) + 1;
@@ -445,8 +449,12 @@ function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): vo
     // List is a special case. Because from user point of view, the whole list is a unit,
     // which has 3 level deep (ul, li, p), all the other block types has maxium two levels as a unit.
     // eg. block type (bq, p/other), code block (cb) and panel (panel, p/other).
-    if ($to.node($to.depth - 1).type === state.schema.nodes.listItem) {
+    if (nodeType === state.schema.nodes.listItem) {
       pos = pos + 1;
+    }
+    // table has 4 level depth
+    if (nodeType === state.schema.nodes.table_cell || nodeType === state.schema.nodes.table_header) {
+      pos = pos + 2;
     }
   }
 

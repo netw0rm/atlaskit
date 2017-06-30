@@ -38,6 +38,9 @@ import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
+import TableFloatingControls from '../TableFloatingControls';
+import ToolbarTable from '../ToolbarTable';
+import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
   Content,
@@ -154,6 +157,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       pluginStatePanel,
       pluginStateTextColor,
       pluginStateTextFormatting,
+      pluginStateTable,
       saveDisabled,
       popupsMountPoint,
       popupsBoundariesElement,
@@ -225,6 +229,13 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
+          {pluginStateTable ?
+            <ToolbarTable
+              disabled={disabled}
+              pluginState={pluginStateTable}
+              editorView={editorView}
+            /> : null
+          }
           {pluginStateLists ?
             <ToolbarLists
               disabled={disabled}
@@ -258,6 +269,20 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null}
+
+          {pluginStateTable && !disabled &&
+            <TableFloatingControls
+              pluginState={pluginStateTable}
+              editorView={editorView}
+            /> }
+
+          {pluginStateTable && !disabled &&
+            <TableFloatingToolbar
+              pluginState={pluginStateTable}
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            /> }
 
           {pluginStateMentions && mentionProvider && !disabled ?
             <MentionPicker

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import tablePlugin from '../../../../src/plugins/table';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, tdEmpty, tdCursor
+  chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -19,31 +19,26 @@ describe('table keymap', () => {
   describe('Tab keypress', () => {
     context('when the cursor is at the first cell of the first row', () => {
       it('it should select next cell of the current row', () => {
-        const { editorView } = editor(
-          doc(table(
-            tr( /*4*/ tdCursor, /*8*/  tdEmpty, /*12*/ tdEmpty ),
-            tr(/*18*/ tdEmpty, /*22*/ tdEmpty, /*26*/ tdEmpty ),
-            tr(/*32*/ tdEmpty, /*36*/ tdEmpty, /*40*/ tdEmpty )
-          ))
+        const { editorView, refs } = editor(
+          doc(table(tr(tdCursor, td({})(p('{nextPos}')), tdEmpty )))
         );
-        expect(editorView.state.selection.$from.pos).to.equal(4);
+        const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
-        expect(editorView.state.selection.$from.pos).to.equal(8);
+        expect(editorView.state.selection.$from.pos).to.equal(nextPos);
       });
     });
 
     context('when the cursor is at the last cell of the first row', () => {
       it('it should select first cell of the next row', () => {
-        const { editorView } = editor(
+        const { editorView, refs } = editor(
           doc(table(
-            tr( /*4*/ tdEmpty, /*8*/  tdEmpty, /*12*/ tdCursor ),
-            tr(/*18*/ tdEmpty, /*22*/ tdEmpty, /*26*/ tdEmpty ),
-            tr(/*32*/ tdEmpty, /*36*/ tdEmpty, /*40*/ tdEmpty )
+            tr(tdEmpty, tdEmpty, tdCursor ),
+            tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty )
           ))
         );
-        expect(editorView.state.selection.$from.pos).to.equal(12);
+        const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
-        expect(editorView.state.selection.$from.pos).to.equal(18);
+        expect(editorView.state.selection.$from.pos).to.equal(nextPos);
       });
     });
   });
@@ -51,32 +46,39 @@ describe('table keymap', () => {
  describe('Shift-Tab keypress', () => {
     context('when the cursor is at the last cell of the first row', () => {
       it('it should select previous cell of the current row', () => {
-        const { editorView } = editor(
-          doc(table(
-            tr( /*4*/ tdEmpty, /*8*/  tdEmpty, /*12*/ tdCursor ),
-            tr(/*18*/ tdEmpty, /*22*/ tdEmpty, /*26*/ tdEmpty ),
-            tr(/*32*/ tdEmpty, /*36*/ tdEmpty, /*40*/ tdEmpty )
-          ))
+        const { editorView, refs } = editor(
+          doc(table(tr(tdEmpty, td({})(p('{nextPos}')), tdCursor )))
         );
-        expect(editorView.state.selection.$from.pos).to.equal(12);
-
+        const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
-        expect(editorView.state.selection.$from.pos).to.equal(8);
+        expect(editorView.state.selection.$from.pos).to.equal(nextPos);
       });
     });
 
     context('when the cursor is at the first cell of the second row', () => {
       it('it should select the last cell of the first row', () => {
-        const { editorView } = editor(
+        const { editorView, refs } = editor(
           doc(table(
-            tr( /*4*/ tdEmpty, /*8*/  tdEmpty, /*12*/ tdEmpty ),
-            tr(/*18*/ tdCursor, /*22*/ tdEmpty, /*26*/ tdEmpty ),
-            tr(/*32*/ tdEmpty, /*36*/ tdEmpty, /*40*/ tdEmpty )
+            tr(tdEmpty, tdEmpty, td({})(p('{nextPos}'))),
+            tr(tdCursor, tdEmpty, tdEmpty )
           ))
         );
-        expect(editorView.state.selection.$from.pos).to.equal(18);
+        const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
-        expect(editorView.state.selection.$from.pos).to.equal(12);
+        expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+      });
+    });
+
+    context('Shift-Alt-t keypress', () => {
+      it('it should insert 3x3 table', () => {
+        const tableNode = table(
+          tr(thEmpty, thEmpty, thEmpty ),
+          tr(tdEmpty, tdEmpty, tdEmpty ),
+          tr(tdEmpty, tdEmpty, tdEmpty )
+        );
+        const { editorView } = editor(doc(p('{<>}')));
+        sendKeyToPm(editorView, 'Shift-Alt-t');
+        expect(editorView.state.doc).to.deep.equal(doc(tableNode));
       });
     });
   });

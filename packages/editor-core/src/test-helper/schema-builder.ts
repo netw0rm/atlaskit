@@ -266,6 +266,7 @@ export const tr = nodeFactory(sampleSchema.nodes.table_row, {});
 export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_cell, attrs);
 export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.table_header, attrs);
 export const tdEmpty = td({})(p(''));
+export const thEmpty = th({})(p(''));
 export const tdCursor = td({})(p('{<>}'));
 export const td11 = createCell(1, 1);
 export const th11 = createHeaderCell(1, 1);

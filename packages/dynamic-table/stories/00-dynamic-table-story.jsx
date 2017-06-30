@@ -158,9 +158,9 @@ storiesOf(name, module)
     </Chrome>
   ))
   .add('Empty view with body, but no header', () => (
-    <Chrome title="Empty view with body">
+    <Chrome title="Empty view with body, but no header">
       <Description>
-        <p>Table component with `emptyView` prop passed in</p>
+        <p>Table component with `emptyView` prop passed in, but no `head` prop</p>
       </Description>
       <EmptyViewWithBodyNoHeaderExample />
       <Code>

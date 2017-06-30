@@ -6,6 +6,7 @@ import { ASC, DESC } from '../internal/constants';
 import props from '../internal/props';
 import TableHead from './TableHead';
 import Body from './Body';
+import EmptyBody from './EmptyBody';
 
 import { Table, Caption } from '../styled/DynamicTable';
 
@@ -66,27 +67,35 @@ export default class DynamicTable extends Component {
     } = this.props;
     const totalPages = rows ? Math.ceil(rows.length / rowsPerPage) : 0;
     const bodyProps = { rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize };
-
-    return !(rows && rows.length) ? emptyView : (
+    const header = (<TableHead
+      head={head}
+      onSort={this.onSort}
+      sortKey={sortKey}
+      sortOrder={sortOrder}
+    />);
+    return !(rows && rows.length) ?
       <div>
         <Table isFixedSize={isFixedSize}>
-          {!!caption && <Caption>{caption}</Caption>}
-          <TableHead
-            head={head}
-            onSort={this.onSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
-          />
-          <Body {...bodyProps} />
+          {header}
         </Table>
-        {!totalPages ? null : (
-          <Pagination
-            current={page}
-            onSetPage={this.onSetPage}
-            total={totalPages}
-          />
-        )}
-      </div>
+        {emptyView && <EmptyBody>
+          {emptyView}
+        </EmptyBody>}
+      </div> : (
+        <div>
+          <Table isFixedSize={isFixedSize}>
+            {!!caption && <Caption>{caption}</Caption>}
+            {header}
+            <Body {...bodyProps} />
+          </Table>
+          {!totalPages ? null : (
+            <Pagination
+              current={page}
+              onSetPage={this.onSetPage}
+              total={totalPages}
+            />
+          )}
+        </div>
     );
   }
 }

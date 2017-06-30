@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { spy } from 'sinon';
 import { Pagination } from '@atlaskit/pagination';
 import DynamicTable, { DynamicTableStateless } from '../../src';
@@ -58,10 +58,28 @@ const rows = [
 
 describe(name, () => {
   describe('stateless', () => {
-    it('should display empty view when items length is 0', () => {
-      const EmptyView = <div>empty view</div>;
-      const wrapper = mount(<DynamicTableStateless emptyView={EmptyView} />);
-      expect(wrapper.html()).to.equal(mount(EmptyView).html());
+    it('should display header when items length is 0 and not emptyView if ommitted', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          head={head}
+        />
+      );
+      const header = wrapper.find('TableHead');
+      const emptyView = wrapper.find('EmptyBody');
+      expect(header.length).to.equal(1);
+      expect(emptyView.length).to.equal(0);
+    });
+    it('should display header when items length is 0 and emptyView if provided', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          head={head}
+          emptyView={<h2>No items present in table</h2>}
+        />
+      );
+      const header = wrapper.find('TableHead');
+      const emptyView = wrapper.find('EmptyBody');
+      expect(header.length).to.equal(1);
+      expect(emptyView.length).to.equal(1);
     });
 
     it('should display paginated data', () => {

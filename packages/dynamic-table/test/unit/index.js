@@ -58,7 +58,7 @@ const rows = [
 
 describe(name, () => {
   describe('stateless', () => {
-    it('should display header when items length is 0 and not emptyView if ommitted', () => {
+    it('should render TableHead when items length is 0 and not render EmptyBody if emptyView prop is ommitted', () => {
       const wrapper = mount(
         <DynamicTableStateless
           head={head}
@@ -69,7 +69,7 @@ describe(name, () => {
       expect(header.length).to.equal(1);
       expect(emptyView.length).to.equal(0);
     });
-    it('should display header when items length is 0 and emptyView if provided', () => {
+    it('should render TableHead when items length is 0 and render EmptyBody if emptyView prop is provided', () => {
       const wrapper = mount(
         <DynamicTableStateless
           head={head}
@@ -79,6 +79,17 @@ describe(name, () => {
       const header = wrapper.find('TableHead');
       const emptyView = wrapper.find('EmptyBody');
       expect(header.length).to.equal(1);
+      expect(emptyView.length).to.equal(1);
+    });
+    it('should not render TableHead if head prop is not provided and should render EmptyBody if emptyView prop is provided', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          emptyView={<h2>No items present in table</h2>}
+        />
+      );
+      const header = wrapper.find('TableHead');
+      const emptyView = wrapper.find('EmptyBody');
+      expect(header.length).to.equal(0);
       expect(emptyView.length).to.equal(1);
     });
 

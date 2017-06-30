@@ -67,20 +67,21 @@ export default class DynamicTable extends Component {
     } = this.props;
     const totalPages = rows ? Math.ceil(rows.length / rowsPerPage) : 0;
     const bodyProps = { rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize };
-    const header = (<TableHead
+    const header = (head && <TableHead
       head={head}
       onSort={this.onSort}
       sortKey={sortKey}
       sortOrder={sortOrder}
     />);
+    const emptyBody = (emptyView && <EmptyBody>
+      {emptyView}
+    </EmptyBody>);
     return !(rows && rows.length) ?
       <div>
         <Table isFixedSize={isFixedSize}>
           {header}
         </Table>
-        {emptyView && <EmptyBody>
-          {emptyView}
-        </EmptyBody>}
+        {emptyBody}
       </div> : (
         <div>
           <Table isFixedSize={isFixedSize}>

@@ -544,17 +544,17 @@ A drag will not start until a user has dragged their mouse past a small threshol
 
 ### Typed
 
-This codebase is typed with flowtype to promote greater internal consistency and more resilient code.
+This codebase is typed with [flowtype](flowtype.org) to promote greater internal consistency and more resilient code.
 
 ### Tested
 
-[TODO]
+This code base employs a number of different testing strategies including unit, performance and integration tests. Testing various aspects of the system helps to promote its quality and stability.
+
+While code coverage is [not a guarantee of code health](https://stackoverflow.com/a/90021/1374236), it is a good indicator. This code base currently sits at **~95% coverage**.
 
 ### Performance
 
-[TODO]
-
-
+This codebase is designed to be extremely performant. It builds on prior investigations into React performance that you can read about [here](https://medium.com/@alexandereardon/performance-optimisations-for-react-applications-b453c597b191) and [here](https://medium.com/@alexandereardon/performance-optimisations-for-react-applications-round-2-2042e5c9af97). It is designed to perform the minimum number of renders required for each task.
 
 ### Short term backlog
 

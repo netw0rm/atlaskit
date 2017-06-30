@@ -2,7 +2,7 @@ import type { Position } from '../../types';
 
 export type DragTypes = 'KEYBOARD' | 'MOUSE';
 
-export type Callbacks = {
+export type Callbacks = {|
   onLift: (point: Position) => void,
   onKeyLift: () => void,
   onMove: (point: Position) => void,
@@ -10,9 +10,9 @@ export type Callbacks = {
   onMoveBackward: () => void,
   onDrop: () => void,
   onCancel: () => void,
-}
+|}
 
-export type Provided = {
+export type Provided = {|
   onMouseDown: (event: MouseEvent) => void,
   onKeyDown: (event: KeyboardEvent) => void,
 
@@ -23,13 +23,13 @@ export type Provided = {
   tabIndex: number,
 
   // Aria
-  'aria-grabbed': 'true' | 'false',
+  'aria-grabbed': boolean,
 
   // Stop html5 drag and drop
   draggable: boolean,
   onDragStart: () => void,
   onDrop: () => void
-}
+|}
 
 export type Props = {|
   isEnabled: boolean,

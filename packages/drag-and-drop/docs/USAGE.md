@@ -402,16 +402,16 @@ type MovementStyle = {|
 **Type information**
 
 ```js
-type DragHandleProps = {
+type DragHandleProps = {|
   onMouseDown: (event: MouseEvent) => void,
   onKeyDown: (event: KeyboardEvent) => void,
   onClick: (event: MouseEvent) => void,
   tabIndex: number,
-  'aria-grabbed': 'true' | 'false',
+  'aria-grabbed': boolean,
   draggable: boolean,
   onDragStart: () => void,
   onDrop: () => void
-}
+|}
 ```
 
 **Standard example**

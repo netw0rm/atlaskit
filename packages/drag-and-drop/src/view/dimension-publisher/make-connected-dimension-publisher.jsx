@@ -12,22 +12,24 @@ const requestDimensionSelector =
 
 const getOwnType = (state: State, props: OwnProps): TypeId => props.type;
 
-const getMapProps = memoizeOne(
-  (shouldPublish: boolean): MapProps => ({
-    shouldPublish,
-  })
-);
+export const makeSelector = () => {
+  const getMapProps = memoizeOne(
+    (shouldPublish: boolean): MapProps => ({
+      shouldPublish,
+    })
+  );
 
-export const makeSelector = () => createSelector(
-  [getOwnType, requestDimensionSelector],
-  (ownType: TypeId, requested: ?TypeId): MapProps => {
-    if (!requested) {
-      return getMapProps(false);
+  return createSelector(
+    [getOwnType, requestDimensionSelector],
+    (ownType: TypeId, requested: ?TypeId): MapProps => {
+      if (!requested) {
+        return getMapProps(false);
+      }
+
+      return getMapProps(ownType === requested);
     }
-
-    return getMapProps(ownType === requested);
-  }
-);
+  );
+};
 
 const makeMapStateToProps = () => {
   const selector = makeSelector();

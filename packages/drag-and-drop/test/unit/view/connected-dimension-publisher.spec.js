@@ -2,7 +2,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { makeSelector } from '../../../src/view/dimension-publisher/make-connected-dimension-publisher';
-import { MapProps } from '../../../src/view/dimension-publisher/dimension-publisher-types';
+import type { MapProps } from '../../../src/view/dimension-publisher/dimension-publisher-types';
 
 const defaultMapProps: MapProps = {
   shouldPublish: false,
@@ -71,7 +71,33 @@ describe('Dimension publisher - connected', () => {
     // correct result returned?
     expect(result1).to.deep.equal(defaultMapProps);
     // checking object equality
-    expect(result1 === result2 === result3 === result4)
-      .to.equal(true);
+    expect(result1).to.equal(result2);
+    expect(result2).to.equal(result3);
+    expect(result3).to.equal(result4);
+  });
+
+  it('should not break memoization across multiple selectors', () => {
+    const shouldPublishSelector = makeSelector();
+    const noPublishSelector = makeSelector();
+
+    const shouldPublish1: MapProps = shouldPublishSelector.resultFunc(
+      'MY_TYPE',
+      'MY_TYPE',
+    );
+    const noPublish1: MapProps = noPublishSelector.resultFunc(
+      'MY_TYPE',
+      'NOT_MY_TYPE',
+    );
+    const shouldPublish2: MapProps = shouldPublishSelector.resultFunc(
+      'MY_TYPE',
+      'MY_TYPE',
+    );
+    const noPublish2: MapProps = noPublishSelector.resultFunc(
+      'MY_TYPE',
+      'NOT_MY_TYPE',
+    );
+
+    expect(shouldPublish1).to.equal(shouldPublish2);
+    expect(noPublish1).to.equal(noPublish2);
   });
 });

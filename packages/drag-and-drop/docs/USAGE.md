@@ -528,17 +528,15 @@ The `children` function is also provided with a small about of state relating to
 </Draggable>
 ```
 
-### Sloppy clicks
+### Sloppy clicks and click blocking
 
 A drag will not start until a user has dragged their mouse past a small threshold. If this threshold is not exceeded then the library will not impact the mouse click and will release the event to the browser.
 
-### Focus management and click blocking
+When a user presses the mouse down on an element, we cannot determine if the user was clicking or dragging. If the sloppy click threshold was not exceeded then the event will be treated as if it where a click and the click event will bubble up unmodified. If the user has started dragging by moving the mouse beyond the sloppy click threshold then the click event will be prevented. This behavior allows you to wrap an element that has click behavior such as an anchor and have it work just like a standard anchor while also allowing it to be dragged.
 
-[TODO]
+### Focus management
 
-## Usage with react-redux
-
-[TODO] Provide useful example
+This library does not create any wrapper elements. This means that it will not impact the usage tab flow of a document. For example, if you are wrapping an *anchor* tag then the user will tab to the anchor directly and not an element surrounding the *anchor*. Whatever element you wrap will be given a `tab-index` to ensure that users can tab to the element to perform keyboard dragging.
 
 ## Engineering health
 

@@ -36,7 +36,6 @@ export const InsertButtonDefault = styled.div`
   justify-content: center;
   & button {
     width: 100%;
-    flex-direction: column;
   }
   & button * {
     width: 100%;

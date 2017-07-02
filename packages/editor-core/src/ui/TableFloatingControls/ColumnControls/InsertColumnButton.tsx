@@ -2,13 +2,18 @@ import * as React from 'react';
 import { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import AkButton from '@atlaskit/button';
-import { InsertColumnButtonWrap, InsertColumnMarker, InsertColumnButtonInner } from './styles';
+import {
+  InsertColumnButtonWrap,
+  InsertColumnMarker,
+  InsertColumnButtonInner,
+  ColumnLineMarker,
+} from './styles';
 
 export interface ButtonProps {
   index: number;
   style?: object;
   insertColumn: (column: number) => void;
-  children?: any;
+  lineMarkerHeight: number;
 }
 
 export default class InsertColumnButton extends Component<ButtonProps, any> {
@@ -25,7 +30,7 @@ export default class InsertColumnButton extends Component<ButtonProps, any> {
             spacing="none"
           />
         </InsertColumnButtonInner>
-        {this.props.children}
+        <ColumnLineMarker style={{ height: this.props.lineMarkerHeight }} />
         <InsertColumnMarker />
       </InsertColumnButtonWrap>
     );

@@ -5,7 +5,7 @@ import {
   ColumnInner,
   ColumnControlsButtonWrap,
   HeaderButton,
-  ColumnLineMarker
+  ColumnSelection,
 } from './styles';
 import InsertColumnButton from './InsertColumnButton';
 
@@ -20,23 +20,24 @@ export default class ColumnControls extends Component<Props, any> {
   render () {
     const cols = this.props.tableElement.querySelector('tr')!.children;
     const nodes: any = [];
-    const lineMarkerHeight = this.props.tableElement.offsetHeight + 11;
+    const tableHeight = this.props.tableElement.offsetHeight;
 
     for (let i = 0, len = cols.length; i < len; i++) {
+      const colWidth = (cols[i] as HTMLElement).offsetWidth;
       nodes.push(
         <ColumnControlsButtonWrap
           key={i}
           className={this.props.isSelected(i) ? 'active' : ''}
-          style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
+          style={{ width: colWidth + 1 }}
         >
           {/* tslint:disable-next-line:jsx-no-lambda */}
           <HeaderButton onClick={() => this.props.selectColumn(i)} />
+          <ColumnSelection style={{ height: tableHeight - 4, width: colWidth - 3 }} />
           <InsertColumnButton
             insertColumn={this.props.insertColumn}
             index={i + 1}
-          >
-            <ColumnLineMarker style={{ height: lineMarkerHeight }} />
-          </InsertColumnButton>
+            lineMarkerHeight={tableHeight + 11}
+          />
         </ColumnControlsButtonWrap>
       );
     }

@@ -39,6 +39,9 @@ export const CornerButton = styled.button`
   &:focus {
     outline: none;
   }
+  &:hover ~ span {
+    display: block;
+  }
 `;
 // tslint:disable-next-line:variable-name
 export const ColumnLineMarker = styled(LineMarkerDefault)`
@@ -51,4 +54,13 @@ export const RowLineMarker = styled(LineMarkerDefault)`
   height: 2px;
   top: 8px;
   left: 20px;
+`;
+// tslint:disable-next-line:variable-name
+export const TableSelection = styled.span`
+  display: none;
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  border: 2px solid ${akEditorTableBorderSelected};
+  pointer-events: none;
 `;

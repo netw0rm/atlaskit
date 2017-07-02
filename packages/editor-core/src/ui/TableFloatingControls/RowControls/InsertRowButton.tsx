@@ -2,13 +2,18 @@ import * as React from 'react';
 import { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import AkButton from '@atlaskit/button';
-import { InsertRowButtonWrap, InsertRowMarker, InsertRowButtonInner } from './styles';
+import {
+  InsertRowButtonWrap,
+  InsertRowMarker,
+  InsertRowButtonInner,
+  RowLineMarker,
+} from './styles';
 
 export interface ButtonProps {
   index: number;
   style?: object;
   insertRow: (row: number) => void;
-  children?: any;
+  lineMarkerWidth: number;
 }
 
 export default class InsertRowButton extends Component<ButtonProps, any> {
@@ -25,7 +30,7 @@ export default class InsertRowButton extends Component<ButtonProps, any> {
             spacing="none"
           />
         </InsertRowButtonInner>
-        {this.props.children}
+        <RowLineMarker style={{ width: this.props.lineMarkerWidth }} />
         <InsertRowMarker />
       </InsertRowButtonWrap>
     );

@@ -32,12 +32,17 @@ const IndexTitle = styled.small`
   margin: 0;
 `;
 
+const Arrow = styled.span`
+  padding-left: ${grid}px;
+  padding-right: ${grid}px;
+`;
+
 export default ({ result, index }: Props) => (
   <Container>
-    {index != null ? <Index>{index}</Index> : null}
+    <Index>{index != null ? index : '*'}</Index>
     <Id>(id: {result.draggableId})</Id>
     <div>
-      <IndexTitle>index</IndexTitle> {result.source.index} → <IndexTitle>index</IndexTitle> {result.destination ? result.destination.index : '*'}
+      <IndexTitle>index</IndexTitle> {result.source.index} <Arrow>→</Arrow> <IndexTitle>index</IndexTitle> {result.destination ? result.destination.index : '*'}
     </div>
   </Container>
 );

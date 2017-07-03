@@ -7,6 +7,10 @@ import { borderRadius, grid } from './constants';
 const Container = styled.section`
 `;
 
+const TBody = styled.tbody`
+  border: none;
+`;
+
 export default class QuoteDescription extends PureComponent {
   render() {
     return (
@@ -35,7 +39,7 @@ export default class QuoteDescription extends PureComponent {
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
+          <TBody>
             <tr>
               <td><code>{'\' \''}</code></td>
               <td>Spacebar</td>
@@ -56,7 +60,7 @@ export default class QuoteDescription extends PureComponent {
               <td>Escape</td>
               <td>cancel an existing drag</td>
             </tr>
-          </tbody>
+          </TBody>
         </table>
       </Container>
     );

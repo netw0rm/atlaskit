@@ -235,7 +235,7 @@ describe('table plugin', () => {
             const head = map.colCount(selection.$headCell.pos - start);
             expect(anchor).to.equal(column);
             expect(head).to.equal(column);
-            expect(selection.isRowSelection()).to.equal(true);
+            expect(selection.isColSelection()).to.equal(true);
           });
         });
       });
@@ -255,7 +255,7 @@ describe('table plugin', () => {
             const head = selection.$headCell.index(-1);
             expect(anchor).to.equal(row);
             expect(head).to.equal(row);
-            expect(selection.isColSelection()).to.equal(true);
+            expect(selection.isRowSelection()).to.equal(true);
           });
         });
       });

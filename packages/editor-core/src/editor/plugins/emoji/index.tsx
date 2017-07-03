@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
-
+import { WithProviders } from '../../../providerFactory/withProviders';
 import { createPlugin } from '../../../plugins/emojis';
 import inputRulePlugin from '../../../plugins/emojis/input-rules';
 import keymap from '../../../plugins/emojis/keymap';
 import { emoji } from '../../../schema/nodes/emoji';
 import { emojiQuery } from '../../../schema/marks/emoji-query';
 import pluginKey from '../../../plugins/emojis/plugin-key';
-
 import EmojiTypeAhead from '../../../ui/EmojiTypeAhead';
 
 const emojiPlugin: EditorPlugin = {
@@ -27,8 +26,18 @@ const emojiPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent() {
-    return <EmojiTypeAhead pluginKey={pluginKey} />;
+  contentComponent(editorView, providerFactory) {
+    const renderNode = (providers) =>{
+      return <EmojiTypeAhead editorView={editorView} pluginKey={pluginKey} emojiProvider={providers.emojiProvider} />;
+    };
+
+    return (
+      <WithProviders
+        providerFactory={providerFactory}
+        providers={['emojiProvider']}
+        renderNode={renderNode}
+      />
+    );
   }
 };
 

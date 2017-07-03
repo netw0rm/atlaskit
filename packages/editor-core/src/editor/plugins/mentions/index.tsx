@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
-
+import { WithProviders } from '../../../providerFactory/withProviders';
 import { createPlugin } from '../../../plugins/mentions';
 import inputRulePlugin from '../../../plugins/mentions/input-rules';
 import keymap from '../../../plugins/mentions/keymap';
 import { mention } from '../../../schema/nodes/mention';
 import { mentionQuery } from '../../../schema/marks/mention-query';
 import pluginKey from '../../../plugins/mentions/plugin-key';
-
 import ToolbarMention from '../../../ui/ToolbarMention';
 import MentionPicker from '../../../ui/MentionPicker';
 
@@ -28,12 +27,22 @@ const mentionsPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent() {
-    return <MentionPicker pluginKey={pluginKey} />;
+  contentComponent(editorView, providerFactory) {
+    const renderNode = (providers) =>{
+      return <MentionPicker editorView={editorView} pluginKey={pluginKey} mentionProvider={providers.mentionProvider} />;
+    };
+
+    return (
+      <WithProviders
+        providerFactory={providerFactory}
+        providers={['mentionProvider']}
+        renderNode={renderNode}
+      />
+    );
   },
 
-  secondaryToolbarComponent() {
-    return <ToolbarMention pluginKey={pluginKey} />;
+  secondaryToolbarComponent(editorView) {
+    return <ToolbarMention editorView={editorView} pluginKey={pluginKey} />;
   }
 };
 

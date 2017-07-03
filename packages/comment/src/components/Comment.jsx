@@ -18,6 +18,8 @@ export default class Comment extends PureComponent {
     children: PropTypes.node,
     /** The main content of the Comment */
     content: PropTypes.node,
+    /** Whether this comment should appear highlighted */
+    highlighted: PropTypes.bool,
     /** The name of a group that a comment is restricted to. Will display in the top items */
     restrictedTo: PropTypes.string,
     /** Enable "optimistic saving" mode, remove actions and show `savingText` prop */
@@ -41,6 +43,7 @@ export default class Comment extends PureComponent {
   static defaultProps = {
     actions: [],
     restrictedTo: '',
+    highlighted: false,
     isSaving: false,
     savingText: 'Sending...',
     isError: false,
@@ -58,6 +61,7 @@ export default class Comment extends PureComponent {
       edited,
       errorActions,
       errorIconLabel,
+      highlighted,
       isError,
       isSaving,
       restrictedTo,
@@ -79,7 +83,11 @@ export default class Comment extends PureComponent {
     );
 
     return (
-      <CommentLayout avatar={avatar} content={layoutContent}>
+      <CommentLayout
+        avatar={avatar}
+        content={layoutContent}
+        highlighted={highlighted}
+      >
         {children}
       </CommentLayout>
     );

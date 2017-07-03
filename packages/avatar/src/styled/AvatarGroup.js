@@ -1,8 +1,10 @@
 // @flow
 import styled from 'styled-components';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { BORDER_WIDTH } from './constants';
 
-const gutter = `${akGridSizeUnitless / 2}px`;
+const gutterUnitless = akGridSizeUnitless / 2;
+const gutter = `${gutterUnitless}px`;
 
 export const Grid = styled.div`
   display: flex;
@@ -24,6 +26,6 @@ export const Stack = styled.div`
   line-height: 1;
 
   > * {
-    margin-right: -${gutter};
+    margin-right: -${props => (BORDER_WIDTH[props.size] * 2) + gutterUnitless}px;
   }
 `;

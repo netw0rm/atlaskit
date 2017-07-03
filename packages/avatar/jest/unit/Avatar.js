@@ -6,7 +6,7 @@ import Avatar, { SIZE, PRESENCE_TYPE } from '../../src/components/Avatar';
 import Image from '../../src/components/Image';
 import Presence from '../../src/components/Presence';
 
-import { ImageWrapper, getSize } from '../../src/styled/Avatar';
+import { Inner, getSize } from '../../src/styled/Avatar';
 import { AVATAR_SIZES } from '../../src/styled/constants';
 
 const [none, online, offline, busy] = PRESENCE_TYPE.values;
@@ -37,8 +37,8 @@ describe('Avatar', () => {
     let wrapper;
     beforeEach(() => (wrapper = mount(<Avatar label={label} />)));
 
-    it('should set an aria-label on the ImageWrapper', () => {
-      expect(wrapper.find(ImageWrapper).prop('aria-label')).toBe(label);
+    it('should set an aria-label on the Inner', () => {
+      expect(wrapper.find(Inner).prop('aria-label')).toBe(label);
     });
 
     it('should set the alt of the internal img', () => {
@@ -149,7 +149,7 @@ describe('Avatar', () => {
 
     it('should apply rounded corners for square avatar', () => {
       const wrapper = mount(<Avatar appearance="square" />);
-      expect(wrapper.find(ImageWrapper).prop('appearance')).toBe('square');
+      expect(wrapper.find(Inner).prop('appearance')).toBe('square');
     });
   });
 
@@ -171,16 +171,16 @@ describe('Avatar', () => {
   });
 
   describe('loading behaviour', () => {
-    it('should apply the isLoading prop to the ImageWrapper when matching state on parent', () => {
+    it('should apply the isLoading prop to the Inner when matching state on parent', () => {
       const wrapper = mount(<Avatar />);
       wrapper.setState({ isLoading: true });
-      expect(wrapper.find(ImageWrapper).prop('isLoading')).toBe(true);
+      expect(wrapper.find(Inner).prop('isLoading')).toBe(true);
     });
 
-    it('should NOT apply the isLoading prop to the ImageWrapper when matching state on parent', () => {
+    it('should NOT apply the isLoading prop to the Inner when matching state on parent', () => {
       const wrapper = mount(<Avatar />);
       wrapper.setState({ isLoading: false });
-      expect(wrapper.find(ImageWrapper).prop('isLoading')).toBe(false);
+      expect(wrapper.find(Inner).prop('isLoading')).toBe(false);
     });
   });
 });

@@ -1,40 +1,34 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { akColorN40, akColorN70A, akColorN200A, akColorB200 } from '@atlaskit/util-shared-styles';
+import { akColorB200, akColorN70A, akColorN200A } from '@atlaskit/util-shared-styles';
 import {
-  AVATAR_RADIUS,
-  PRESENCE_BORDER_WIDTH,
+  BORDER_WIDTH,
   PRESENCE_OFFSET,
   PRESENCE_SIZES,
+  TRANSITION_DURATION,
 } from './constants';
-import { getAvatarDimensions } from './utils';
-
-// "square" avatars are explicit
-const getBorderRadius = ({ size, appearance }) => (appearance === 'circle'
-  ? '50%'
-  : `${AVATAR_RADIUS[size]}px`
-);
+import { getAvatarDimensions, getBorderRadius } from './utils';
 
 // =================================
 
 // translateZ used to invoke the GPU -- otherwise overflow is ignored when animating
 export function getStyles(props) {
   const isInteractive = props.href || props.onClick;
-  const transitionDuration = '150ms';
   const boxSizing = 'content-box'; // fix for <buttons/>
+  const borderWidth = `${BORDER_WIDTH[props.size]}px`;
+  let backgroundColor = props.borderColor;
 
   /**
    * Variable styles
    */
-  let backgroundColor = 'transparent';
-  let overlayShade = 'transparent';
-  let overlayOpacity = 0;
-  let borderColor = props.borderColor || 'transparent';
   let cursor = 'default';
   let outline = 'none';
+  let overlayShade = 'transparent';
+  let overlayOpacity = 0;
   let pointerEvents = 'auto';
   let position = 'static';
   let transform = 'translateZ(0)';
+  let transitionDuration = '0s';
 
   // Interaction: Hover
   if (isInteractive && (props.isActive || props.isHover)) {
@@ -44,13 +38,14 @@ export function getStyles(props) {
 
   // Interaction: Active
   if (isInteractive && props.isActive) {
-    transform = 'scale(0.85)';
+    transform = 'scale(0.9)';
   }
 
   // Interaction: Focus
   if (isInteractive && props.isFocus && !props.isActive) {
     outline = 'none';
-    borderColor = akColorB200;
+    backgroundColor = akColorB200;
+    transitionDuration = TRANSITION_DURATION;
   }
 
   // Disabled
@@ -67,11 +62,6 @@ export function getStyles(props) {
   }
 
   // Loading
-  if (props.isLoading) {
-    backgroundColor = akColorN40;
-  }
-
-  // Loading
   if (props.isSelected) {
     overlayShade = akColorN200A;
     overlayOpacity = 1;
@@ -83,36 +73,39 @@ export function getStyles(props) {
   }
 
   return css`
-    align-items: center;
+    ${getAvatarDimensions};
+    align-items: stretch;
     background-color: ${backgroundColor};
-    border-color: ${borderColor}
-    border-radius: ${getBorderRadius};
-    border-style: solid;
-    border-width: ${PRESENCE_BORDER_WIDTH[props.size]}px;
+    border: 0;
+    border-radius: ${getBorderRadius(props, { includeBorderWidth: true })};
+    padding: ${borderWidth};
     box-sizing: ${boxSizing};
     cursor: ${cursor}
     display: flex;
-    height: 100%;
+    flex-direction: column;
     justify-content: center;
     outline: ${outline};
     overflow: hidden;
-    padding: 0;
     pointer-events: ${pointerEvents};
     position: ${position}
     transform: ${transform};
-    transition: border-color ${transitionDuration};
-    width: 100%;
+    transition: background-color ${transitionDuration} ease-out;
+
+    a &, button & {
+      cursor: pointer;
+    }
 
     &::after {
       background-color: ${overlayShade};
-      bottom: 0;
+      border-radius: ${getBorderRadius};
+      bottom: ${borderWidth};
       content: " ";
-      left: 0;
+      left: ${borderWidth};
       opacity: ${overlayOpacity}
       position: absolute;
-      right: 0;
-      top: 0;
-      transition: opacity ${transitionDuration};
+      right: ${borderWidth};
+      top: ${borderWidth};
+      transition: opacity ${TRANSITION_DURATION};
     }
 
     &::-moz-focus-inner {
@@ -127,7 +120,7 @@ export function getStyles(props) {
 
 // MAIN CONTAINER
 export default styled.div`
-  ${getAvatarDimensions}
+  ${props => getAvatarDimensions(props, { includeBorderWidth: true })}
   display: inline-block;
   position: relative;
   outline: 0;
@@ -135,14 +128,14 @@ export default styled.div`
 `;
 
 // IMAGE WRAPPER
-export const ImageWrapper = styled.div`
+export const Inner = styled.div`
   ${getStyles}
 `;
 
 // PRESENCE WRAPPER
 const getPresenceLayout = ({ appearance, size }) => {
   const presencePosition = appearance === 'square'
-    ? -(PRESENCE_BORDER_WIDTH[size] * 2)
+    ? -(BORDER_WIDTH[size] * 2)
     : PRESENCE_OFFSET[size];
   const presenceSize = PRESENCE_SIZES[size];
 
@@ -153,7 +146,7 @@ const getPresenceLayout = ({ appearance, size }) => {
     width: ${presenceSize}px;
   `;
 };
-export const PresenceWrapper = styled.div`
+export const PresenceWrapper = styled.span`
   ${getPresenceLayout}
   position: absolute;
 `;
@@ -161,7 +154,7 @@ export const PresenceWrapper = styled.div`
 // STATUS WRAPPER
 const getStatusLayout = ({ appearance, size }) => {
   const statusPosition = appearance === 'square'
-    ? -(PRESENCE_BORDER_WIDTH[size] * 2)
+    ? -(BORDER_WIDTH[size] * 2)
     : PRESENCE_OFFSET[size];
   const statusSize = PRESENCE_SIZES[size];
 
@@ -172,7 +165,7 @@ const getStatusLayout = ({ appearance, size }) => {
     width: ${statusSize}px;
   `;
 };
-export const StatusWrapper = styled.div`
+export const StatusWrapper = styled.span`
   ${getStatusLayout}
   position: absolute;
 `;

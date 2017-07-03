@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { akElevationMixins, akBorderRadius, akColorR50, akColorN100, akColorR400 } from '@atlaskit/util-shared-styles';
 
 export const AvatarRow = styled.div`
   align-items: baseline;
@@ -28,10 +29,12 @@ export const AvatarColLabel = styled.div`
 `;
 
 export const Example = styled.div`
-  border: 1px dotted blue;
+  ${akElevationMixins.e100}
+  background-color: white;
+  border-radius: ${akBorderRadius};
   display: inline-block;
-  margin: 10px;
-  padding: 10px;
+  margin-bottom: 1em;
+  padding: 1em;
   width: 500px;
 `;
 
@@ -39,16 +42,25 @@ export const Wrapper = styled.div`
   padding: 1em;
 `;
 
-export const Note = styled.p`
-  color: #7A869A;
-  font-size: 0.8rem;
+export const Note = styled.div`
+  color: ${akColorN100};
+  font-size: ${props => (props.size === 'large' ? '1.1em' : '0.8rem')};
   margin-top: 4px;
   margin-bottom: 6px;
+
+  code {
+    background-color: ${akColorR50};
+    border-radius: 0.2em;
+    color: ${akColorR400};
+    font-size: 0.85em;
+    line-height: 1.1;
+    padding: 0.1em 0.4em;
+  }
 `;
 
 export const DivPresence = styled.div`
   align-items: center;
-  background-color: green;
+  background-color: rebeccapurple;
   color: white;
   display: flex;
   font-size: 0.75em;

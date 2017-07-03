@@ -12,27 +12,6 @@ const groupComponent = {
   stack: Stack,
 };
 const stackMaxCount = 5;
-const DefaultAvatarComponent = (
-  { groupAppearance, index, name, size, src, stackIndex, ...rest }: {
-    groupAppearance: 'grid' | 'stack',
-    index: number,
-    name?: string,
-    size: string,
-    src: string,
-    stackIndex: number,
-  }
-) => (
-  <Avatar
-    groupAppearance={groupAppearance}
-    index={index}
-    stackIndex={stackIndex}
-    key={src || index}
-    name={name}
-    size={size}
-    src={src}
-    {...rest}
-  />
-);
 
 type AvatarsArray = [{
   name?: string;
@@ -70,7 +49,7 @@ export default class AvatarGroup extends Component {
   static defaultProps = {
     appearance: 'stack',
     maxCount: 11,
-    avatarComponent: DefaultAvatarComponent,
+    avatarComponent: Avatar,
     size: 'medium',
   }
   static childContextTypes = {
@@ -103,6 +82,7 @@ export default class AvatarGroup extends Component {
         count={total - max}
         isStack={appearance === 'stack'}
         size={size}
+        onClick={() => {}} // make "interactive"
         {...props}
       />
     );
@@ -117,7 +97,7 @@ export default class AvatarGroup extends Component {
     data.slice(max).forEach((avatar) => {
       items[0].items.push({
         content: avatar.name,
-        elemBefore: <Avatar {...avatar} size="small" />,
+        elemBefore: <Avatar {...avatar} size="small" borderColor="transparent" />,
         href: avatar.href,
         rel: avatar.target ? 'noopener noreferrer' : null,
         target: avatar.target,
@@ -151,13 +131,13 @@ export default class AvatarGroup extends Component {
         groupAppearance={appearance}
         index={idx}
         onClick={onClickAvatar || avatar.onClick}
-        stackIndex={max - idx}
+        stackIndex={isStack ? max - idx : null}
         size={size}
       />
     ));
 
     return (
-      <Group isStack={isStack}>
+      <Group isStack={isStack} size={size}>
         {items}
         {this.renderExcessDropdown(max, total)}
       </Group>

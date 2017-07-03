@@ -1,8 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import { Outer, Disc } from '../styled/ExcessIndicator';
+import { Outer, Inner } from '../styled/ExcessIndicator';
+import { withPseudoState } from '../hoc';
+import { getProps } from '../helpers';
 import type { Size } from '../types';
 
+/* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Used to override the default border color of the presence indicator.
   Accepts any color argument that the border-color CSS property accepts. */
@@ -16,20 +19,28 @@ type Props = {
   /** Defines the size of the indicator */
   size?: Size,
 };
+/* eslint-enable react/no-unused-prop-types */
 
 const MAX_DISPLAY_COUNT = 99;
 
-export default class ExcessIndicator extends Component {
+class ExcessIndicator extends Component {
   props: Props; // eslint-disable-line react/sort-comp
+  state = {}
   render() {
-    const { borderColor, count, isStack, onClick, size } = this.props;
+    const { count } = this.props;
+    const props = getProps(this);
 
+    // NOTE: wrapping div necessary for Grid to apply styles that don't interfere with Outer
     return (
-      <Outer size={size}>
-        <Disc borderColor={borderColor} isStack={isStack} size={size} onClick={onClick}>
-          +{count > MAX_DISPLAY_COUNT ? MAX_DISPLAY_COUNT : count}
-        </Disc>
-      </Outer>
+      <div>
+        <Outer {...props} appearance="circle">
+          <Inner {...props} appearance="circle">
+            +{count > MAX_DISPLAY_COUNT ? MAX_DISPLAY_COUNT : count}
+          </Inner>
+        </Outer>
+      </div>
     );
   }
 }
+
+export default withPseudoState(ExcessIndicator);

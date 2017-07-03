@@ -1,37 +1,84 @@
 // @flow
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import Img from '../styled/Image';
+import { Span, Svg } from '../styled/Image';
 
-export const DefaultImage = ({ title }) => (
-  <svg width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={title}>
-    <title>{title}</title>
-    <path fill="#1893E7" d="M50,0 C22.3833333,0 0,22.3888889 0,50 C0,77.6166667 22.3833333,100 50,100 C77.6111111,100 100,77.6166667 100,50 C100,22.3888889 77.6111111,0 50,0 L50,0 Z" />
-    <path fill="#80D8FF" d="M50,19 C58.8373333,19 66,26.168 66,35 C66,43.8373333 58.8373333,51 50,51 C41.1626667,51 34,43.8373333 34,35 C34,26.168 41.1626667,19 50,19 L50,19 Z" />
-    <mask fill="white">
-      <path d="M80.5246347,74.2768131 C73.3793503,83.2490744 62.3612755,89 50,89 C37.6385983,89 26.6204246,83.2489569 19.4751464,74.2765382 C23.8287068,66.9274259 31.8398972,62 41.0068806,62 L58.9931194,62 C68.1573006,62 76.1701334,66.9268153 80.5246347,74.2768131 Z" />
-    </mask>
-    <path fill="#80D8FF" d="M80.5246347,74.2768131 C73.3793503,83.2490744 62.3612755,89 50,89 C37.6385983,89 26.6204246,83.2489569 19.4751464,74.2765382 C23.8287068,66.9274259 31.8398972,62 41.0068806,62 L58.9931194,62 C68.1573006,62 76.1701334,66.9268153 80.5246347,74.2768131 Z" />
-  </svg>
-);
-DefaultImage.propTypes = { title: PropTypes.string };
+// <svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={title}>
 
-export default class Image extends PureComponent {
-  props: {
-    alt?: string,
-    hasError?: boolean,
-    isLoading?: boolean,
-    onError?: Function,
-    onLoad?: Function,
-    src?: string,
+export const DefaultImage = ({ appearance, size, title }:
+  { appearance: string, size: string, title: string }) => (
+    <Svg appearance={appearance} size={size} viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={title}>
+      <title>{title}</title>
+      {appearance === 'circle' ? (
+        <g>
+          <circle cx="64" cy="64" r="64" fill="#C1C7D0" />
+          <path d="M103,102.1388 C93.094,111.92 79.3504,118 64.1638,118 C48.8056,118 34.9294,111.768 25,101.7892 L25,95.2 C25,86.8096 31.981,80 40.6,80 L87.4,80 C96.019,80 103,86.8096 103,95.2 L103,102.1388 Z" fill="white" />
+          <path d="M63.9961647,24 C51.2938136,24 41,34.2938136 41,46.9961647 C41,59.7061864 51.2938136,70 63.9961647,70 C76.6985159,70 87,59.7061864 87,46.9961647 C87,34.2938136 76.6985159,24 63.9961647,24" fill="white" />
+        </g>
+      ) : (
+        <g>
+          <rect fill="#C1C7D0" x="0" y="0" width="128" height="128" />
+          <g transform="translate(19.000000, 32.000000)" fill="white">
+            <path d="M18.25,32.5 L54.5833333,32.5 L54.5833333,23.4166667 L18.25,23.4166667 L18.25,32.5 Z M9.16666667,18.8331166 C9.16666667,16.3479549 11.236581,14.3333333 13.7195662,14.3333333 L59.1137671,14.3333333 C61.6282641,14.3333333 63.6666667,16.3815123 63.6666667,18.8331166 L63.6666667,41.5833333 L9.16666667,41.5833333 L9.16666667,18.8331166 Z" />
+            <path d="M18.25,9.81383682 C18.25,4.7850061 22.3296003,0.708333333 27.3238554,0.708333333 L36.4261446,0.708333333 C41.4374965,0.708333333 45.5,4.76812825 45.5,9.81383682 L45.5,23.4166667 L18.25,23.4166667 L18.25,9.81383682 Z M36.4166667,9.81383682 C36.4166667,9.79803315 36.4184748,9.79303784 36.4207515,9.79166667 L27.3238554,9.79166667 C27.3447224,9.79166667 27.3333333,9.80308059 27.3333333,9.81383682 L27.3333333,14.3333333 L36.4166667,14.3333333 L36.4166667,9.81383682 Z" />
+            <path d="M11.4386532,55.2083333 L74.9953562,55.2083333 L79.5452242,41.5833333 L9.80449752,41.5833333 L11.4386532,55.2083333 Z M0.1048547,36.987541 C-0.192399775,34.5091405 1.5865717,32.5 4.09502839,32.5 L87.6264735,32.5 C90.1274401,32.5 91.5225656,34.393506 90.7231047,36.7875656 L82.9702846,60.004101 C82.1795402,62.3720582 79.5279445,64.2916667 76.9985338,64.2916667 L7.91963924,64.2916667 C5.41227673,64.2916667 3.14113571,62.3029555 2.84143097,59.8041257 L0.1048547,36.987541 Z" />
+          </g>
+        </g>
+      )}
+    </Svg>
+  );
+
+type Props = {
+  alt?: string,
+  src?: string,
+};
+
+export default class AvatarImage extends PureComponent {
+  props: Props; // eslint-disable-line react/sort-comp
+  state = {
+    hasError: false,
+    isLoading: !!this.props.src,
   };
 
-  render() {
-    const { hasError, isLoading, ...props } = this.props;
-    const showDefault = !isLoading && (!this.props.src || hasError);
+  componentDidMount() {
+    this._isMounted = true;
+    if (this.props.src) this.loadImage(this.props);
+  }
+  // handle case where `src` is modified after mount
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.src && this.props.src !== nextProps.src) this.loadImage(nextProps);
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-    return showDefault
-      ? <DefaultImage title={props.alt} />
-      : <Img isLoading={isLoading} {...props} />;
+  // manage loading/error state
+  loadImage = props => this._isMounted && this.setState({ isLoading: true }, () => {
+    const img = new Image();
+    img.src = props.src;
+    img.onerror = this.handleLoadError;
+    img.onload = this.handleLoadSuccess;
+  });
+  handleLoadSuccess = () => this._isMounted && this.setState({ hasError: false, isLoading: false })
+  handleLoadError = () => this._isMounted && this.setState({ hasError: true, isLoading: false })
+
+  render() {
+    const { src, ...props } = this.props;
+    const { hasError, isLoading } = this.state;
+    const showDefault = !isLoading && (!src || hasError);
+
+    return showDefault ? (
+      <DefaultImage
+        appearance={props.appearance}
+        size={props.size}
+        title={props.alt}
+      />
+    ) : (
+      <Span
+        isLoading={isLoading}
+        role="img"
+        style={{ backgroundImage: `url(${src})` }}
+        {...props}
+      />
+    );
   }
 }

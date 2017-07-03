@@ -3,26 +3,39 @@ import { provideDisplayName } from '../utils';
 
 export default function withPseudoState(WrappedComponent) {
   return class ComponentWithPseudoState extends Component {
+    constructor(props, context) {
+      super(props, context);
+
+      // handle keyboard events on anchors and buttons
+      /* eslint-disable react/prop-types */
+      if (props.href || props.onClick) {
+        this.actionKeys = props.onClick ? ['Enter', ' '] : ['Enter'];
+      }
+      /* eslint-enable react/prop-types */
+    }
     static displayName = provideDisplayName('withPseudoState', WrappedComponent);
-    actionKeys = ['Enter', ' ']
     state = {
       isActive: false,
       isFocus: false,
       isHover: false,
     }
-    handleBlur = () => this.setState({ isFocus: false });
+    handleBlur = () => this.setState({ isActive: false, isFocus: false });
     handleFocus = () => this.setState({ isFocus: true })
     handleMouseOut = () => this.setState({ isActive: false, isHover: false });
     handleMouseOver = () => this.setState({ isHover: true });
     handleMouseUp = () => this.setState({ isActive: false });
     handleMouseDown = () => this.setState({ isActive: true });
     handleKeyDown = (event) => {
-      if (this.actionKeys.includes(event.key)) {
+      if (!this.actionKeys) return;
+
+      if (this.actionKeys.includes(event.key) && !this.state.isActive) {
         this.setState({ isActive: true });
       }
     }
     handleKeyUp = (event) => {
-      if (this.actionKeys.includes(event.key)) {
+      if (!this.actionKeys) return;
+
+      if (this.actionKeys.includes(event.key) && this.state.isActive) {
         this.setState({ isActive: false });
       }
     }

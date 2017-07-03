@@ -1,4 +1,4 @@
-const getAppearanceProps = (context, props, state) => {
+const getAppearanceProps = (context, props) => {
   const {
     appearance,
     groupAppearance,
@@ -12,7 +12,6 @@ const getAppearanceProps = (context, props, state) => {
   } = props;
 
   const borderColor = context.borderColor || props.borderColor;
-  const { isLoading } = state;
 
   return {
     appearance,
@@ -22,30 +21,32 @@ const getAppearanceProps = (context, props, state) => {
     isDisabled,
     isFocus,
     isHover,
-    isLoading,
     isSelected,
     size,
     stackIndex,
   };
 };
 
-const getInteractionProps = (component) => {
+const getInteractionProps = (props) => {
   const {
     onBlur,
+    onClick,
     onFocus,
+    onKeyDown,
+    onKeyUp,
     onMouseDown,
     onMouseEnter,
     onMouseLeave,
     onMouseUp,
-  } = component;
-
-  const { href, onClick, tabIndex } = component.props;
+    tabIndex,
+  } = props;
 
   return {
-    href,
     onBlur,
     onClick,
     onFocus,
+    onKeyDown,
+    onKeyUp,
     onMouseDown,
     onMouseEnter,
     onMouseLeave,
@@ -57,7 +58,11 @@ const getInteractionProps = (component) => {
 const getLinkElementProps = (props) => {
   const { href, target } = props;
 
-  return { href, target };
+  // handle security issue with noopener
+  // https://mathiasbynens.github.io/rel-noopener
+  const rel = (target === '_blank') ? 'noopener noreferrer' : null;
+
+  return { href, rel, target };
 };
 
 const getButtonElementProps = (props) => {
@@ -67,11 +72,11 @@ const getButtonElementProps = (props) => {
 };
 
 export default function getProps(component) {
-  const { context, props, state } = component;
+  const { context, props } = component;
 
   const defaultProps = {
-    ...getAppearanceProps(context, props, state),
-    ...getInteractionProps(component),
+    ...getAppearanceProps(context, props),
+    ...getInteractionProps(props),
   };
 
   if (props.component) {

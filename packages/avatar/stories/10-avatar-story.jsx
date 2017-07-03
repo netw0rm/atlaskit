@@ -1,25 +1,28 @@
+import React, { Component } from 'react';
 import { storiesOf } from '@kadira/storybook';
-import React from 'react';
+
+import ArrowDown from '@atlaskit/icon/glyph/arrow-down';
+import ArrowUp from '@atlaskit/icon/glyph/arrow-up';
+import Button from '@atlaskit/button';
+import ButtonGroup from '@atlaskit/button-group';
+import Lozenge from '@atlaskit/lozenge';
+import { akColorPrimary1, akColorPrimary2, akColorPrimary3, akColorN20 } from '@atlaskit/util-shared-styles';
+
 import { name } from '../package.json';
 import Avatar, { AvatarGroup } from '../src';
+import { omit } from '../src/utils';
 import nucleusImage from './nucleus.png';
-import lockImage from './lock.png';
-import { AvatarCol, AvatarColLabel, AvatarRow, DivPresence, Example, Note, Wrapper } from './styled';
+import { AvatarCol, AvatarRow, DivPresence, Example, Note, Wrapper } from './styled';
+import { AVATAR_SIZES } from '../src/styled/constants';
 
-const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
+const avatarSource = 'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';
 const tickUrl = require('url-loader!./tick.svg');
-const tickWithBackgroundUrl = require('url-loader!./tick.png');
 
-const DefaultAvatar = props => (
-  <AvatarCol>
-    <Avatar {...props} />
-  </AvatarCol>
+const HR = () => (
+  <div style={{ border: 0, borderTop: '1px solid #ccc', marginBottom: '1em', marginTop: '1em' }} />
 );
-const SquareAvatar = props => (
-  <AvatarCol>
-    <Avatar appearance="square" src={nucleusImage} {...props} />
-  </AvatarCol>
-);
+const DefaultAvatar = props => <AvatarCol><Avatar {...props} /></AvatarCol>;
+const SquareAvatar = props => <DefaultAvatar appearance="square" {...props} />;
 const AvatarShowcase = ({ children, description, title }) => (
   <div style={{ alignItems: 'center', display: 'flex', marginBottom: '1em' }}>
     <div style={{ marginRight: '1em' }}>
@@ -31,212 +34,312 @@ const AvatarShowcase = ({ children, description, title }) => (
     </div>
   </div>
 );
-const LabelledAvatar = ({ label, ...props }) => (
-  <AvatarCol>
-    <Avatar {...props} />
-    <AvatarColLabel>{label}</AvatarColLabel>
-  </AvatarCol>
-);
-
-const AllAvatarSizes = props => (
-  <AvatarRow>
-    <DefaultAvatar size="xxlarge" {...props} />
-    <DefaultAvatar size="xlarge" {...props} />
-    <DefaultAvatar size="large" {...props} />
-    <DefaultAvatar size="medium" {...props} />
-    <DefaultAvatar size="small" {...props} />
-    <DefaultAvatar size="xsmall" {...props} />
-  </AvatarRow>
-);
-
-const CustomAvatar = props => (
-  <Avatar
-    key={props.src}
-    rel="noopener noreferrer"
-    size="large"
-    target="_blank"
-    {...props}
-  />
-);
+const AllAvatarSizes = (props) => {
+  const modifiedProps = omit(props, 'icon', 'presence', 'status');
+  return (
+    <AvatarRow>
+      <DefaultAvatar size="xxlarge" {...modifiedProps} />
+      <DefaultAvatar size="xlarge" {...props} />
+      <DefaultAvatar size="large" {...props} />
+      <DefaultAvatar size="medium" {...props} />
+      <DefaultAvatar size="small" {...props} />
+      <DefaultAvatar size="xsmall" {...modifiedProps} />
+    </AvatarRow>
+  );
+};
 
 storiesOf(name, module)
   .add('Circle Avatars', () => (
     <Wrapper>
       <h5>Default</h5>
       <Note>&quot;medium&quot; size &mdash; no &quot;presence&quot;, or &quot;status&quot;</Note>
+      <Avatar />
+
+      <h5>With Presence</h5>
+      <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
       <AvatarRow>
-        <DefaultAvatar />
+        <DefaultAvatar src={avatarSource} size="large" />
+        <DefaultAvatar src={avatarSource} size="large" presence="busy" />
+        <DefaultAvatar src={avatarSource} size="large" presence="offline" />
+        <DefaultAvatar src={avatarSource} size="large" presence="online" />
+      </AvatarRow>
+
+      <h5>All Sizes with Presence</h5>
+      <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence</Note>
+      <AllAvatarSizes src={avatarSource} presence="online" />
+
+      <h5>With Status</h5>
+      <Note>Supports &quot;approved&quot;, &quot;declined&quot;, and &quot;locked&quot;</Note>
+      <AvatarRow>
+        <DefaultAvatar src={avatarSource} size="large" />
+        <DefaultAvatar src={avatarSource} size="large" status="approved" />
+        <DefaultAvatar src={avatarSource} size="large" status="declined" />
+        <DefaultAvatar src={avatarSource} size="large" status="locked" />
+      </AvatarRow>
+
+      <h5>All Sizes with Status</h5>
+      <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Status</Note>
+      <AllAvatarSizes src={avatarSource} status="approved" />
+    </Wrapper>
+  ))
+  .add('Square Avatars', () => (
+    <Wrapper>
+      <h5>Default</h5>
+      <Note>&quot;medium&quot; size &mdash; no &quot;presence&quot;, or &quot;status&quot;</Note>
+      <AvatarRow>
+        <SquareAvatar />
       </AvatarRow>
 
       <h5>With Presence</h5>
       <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
       <AvatarRow>
-        <DefaultAvatar size="large" />
-        <DefaultAvatar size="large" presence="busy" />
-        <DefaultAvatar size="large" presence="offline" />
-        <DefaultAvatar size="large" presence="online" />
+        <SquareAvatar src={nucleusImage} size="large" />
+        <SquareAvatar src={nucleusImage} size="large" presence="busy" />
+        <SquareAvatar src={nucleusImage} size="large" presence="offline" />
+        <SquareAvatar src={nucleusImage} size="large" presence="online" />
       </AvatarRow>
 
       <h5>All Sizes with Presence</h5>
       <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence</Note>
-      <AllAvatarSizes presence="online" />
+      <AllAvatarSizes appearance="square" presence="online" src={nucleusImage} />
 
       <h5>With Status</h5>
       <Note>Supports &quot;approved&quot;, &quot;declined&quot;, and &quot;locked&quot;</Note>
       <AvatarRow>
-        <DefaultAvatar size="large" />
-        <DefaultAvatar size="large" status="approved" />
-        <DefaultAvatar size="large" status="declined" />
-        <DefaultAvatar size="large" status="locked" />
+        <SquareAvatar src={nucleusImage} size="large" />
+        <SquareAvatar src={nucleusImage} size="large" status="approved" />
+        <SquareAvatar src={nucleusImage} size="large" status="declined" />
+        <SquareAvatar src={nucleusImage} size="large" status="locked" />
       </AvatarRow>
 
       <h5>All Sizes with Status</h5>
       <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Status</Note>
-      <AllAvatarSizes status="approved" />
+      <AllAvatarSizes
+        appearance="square"
+        status="approved"
+        src={nucleusImage}
+      />
     </Wrapper>
-  ))
-  .add('Square Avatars', () => {
-    const icon = <img alt="Lock" src={lockImage} style={{ height: '100%', width: '100%' }} />;
-
+    ))
+  .add('Coloured Backgrounds', () => {
+    const colors = [akColorPrimary1, akColorPrimary2, akColorN20, akColorPrimary3];
+    const presences = [null, 'online', 'offline', 'busy'];
+    const statuses = [null, 'approved', 'locked', 'declined'];
+    const styles = {
+      column: {
+        alignItems: 'center',
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+      },
+      row: {
+        alignItems: 'stretch',
+        display: 'flex',
+        height: 192,
+        justifyContent: 'stretch',
+        marginTop: '1em',
+      },
+    };
+    const ColorColumn = props => (
+      <div style={{ ...styles.column, backgroundColor: props.borderColor }}>
+        <Avatar onClick={console.log} {...props} size="xlarge" />
+        <Avatar onClick={console.log} {...props} />
+      </div>
+    );
     return (
       <Wrapper>
-        <h5>Default</h5>
-        <Note>&quot;medium&quot; size &mdash; no &quot;presence&quot;, or &quot;status&quot;</Note>
-        <AvatarRow>
-          <SquareAvatar />
-        </AvatarRow>
-
-        <h5>With Presence</h5>
-        <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
-        <AvatarRow>
-          <SquareAvatar size="large" />
-          <SquareAvatar size="large" presence="busy" />
-          <SquareAvatar size="large" presence="offline" />
-          <SquareAvatar size="large" presence="online" />
-        </AvatarRow>
-
-        <h5>With Custom Presence Icon</h5>
-        <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence</Note>
-        <AllAvatarSizes
-          appearance="square"
-          icon={icon}
-          src={nucleusImage}
-        />
-
-        <h5>With Status</h5>
-        <Note>Supports &quot;approved&quot;, &quot;declined&quot;, and &quot;locked&quot;</Note>
-        <AvatarRow>
-          <SquareAvatar size="large" />
-          <SquareAvatar size="large" status="approved" />
-          <SquareAvatar size="large" status="declined" />
-          <SquareAvatar size="large" status="locked" />
-        </AvatarRow>
-
-        <h5>All Status Sizes</h5>
-        <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Status</Note>
-        <AllAvatarSizes
-          appearance="square"
-          status="approved"
-          src={nucleusImage}
-        />
+        <h4>Coloured Backgrounds</h4>
+        <Note>
+          Using the <code>borderColor</code> prop we can have avatars on any background color.
+          Try focusing the avatars to see how the focus ring interacts with the background color.
+        </Note>
+        <div style={styles.row}>
+          {colors.map((c, i) => (
+            <ColorColumn key={i} borderColor={c} src={avatarSource} presence={presences[i]} />
+          ))}
+        </div>
+        <div style={styles.row}>
+          {colors.map((c, i) => (
+            <ColorColumn key={i} borderColor={c} src={nucleusImage} appearance="square" status={statuses[i]} />
+          ))}
+        </div>
       </Wrapper>
     );
   })
-  .add('Avatar Groups', () => {
-    const gridMax = 14;
+  .add('Interactive Avatars', () => {
     const stackSourceURLs = [];
-    const avatarSize = 'medium';
+    const avatarSize = 'large';
 
     for (let i = 0; i < 20; i++) stackSourceURLs.push(i);
 
     return (
       <Wrapper>
-        <h5>Avatar Groups</h5>
-        <Note>{`Check sizes aren't being skewed - using "${avatarSize}".`}</Note>
-        <Avatar size={avatarSize} />
-        <h5>Grid</h5>
-        <Note>Total {stackSourceURLs.length} / Max {gridMax}</Note>
-        <AvatarGroup
-          appearance="grid"
-          data={stackSourceURLs.map(i => ({ src: `https://api.adorable.io/avatars/40/grid_${i}.png`, name: `Adorable Avatar ${i}` }))}
-          maxCount={gridMax}
-          size={avatarSize}
-        />
-        <h5>Stacked</h5>
-        <Note>Total {stackSourceURLs.length} / Max 5</Note>
-        <AvatarGroup
-          data={stackSourceURLs.map(i => ({ src: `https://api.adorable.io/avatars/40/stack_${i}.png`, name: `Adorable Avatar ${i}` }))}
-          onClickAvatar={console.info}
-          onClickDropdownItem={console.info}
-          size={avatarSize}
-        />
-        <h5>Custom Component for Avatar</h5>
-        <Note>These Avatars are each wrapped in an anchor</Note>
-        <AvatarGroup
-          avatarComponent={CustomAvatar}
-          data={stackSourceURLs.map(i => ({
-            href: 'http://atlaskit.atlassian.com',
-            name: `Adorable Avatar ${i}`,
-            src: `https://api.adorable.io/avatars/40/render_${i}.png`,
-            isSelected: i === 3,
-            isDisabled: i === 2,
-            target: '_blank',
-            presence: 'busy',
-          }))}
-          onClickAvatar={item => console.info(item)}
-          onClickDropdownItem={item => console.info(item)}
-          size={avatarSize}
-        />
+        <h2>Interactive Avatars <Lozenge appearance="success" isBold>New</Lozenge></h2>
+        <Note size="large">
+          For most instances you will no-longer need to wrap <code>{'<Avatar/>'}</code>.
+        </Note>
+        <AvatarShowcase title="Button" description={<span>Provide <code>onClick</code> to {'<Avatar/>'} or <code>onClickAvatar</code> to {'<AvatarGroup/>'}</span>}>
+          <Avatar src={avatarSource} onClick={console.info} size={avatarSize} />
+        </AvatarShowcase>
+
+        <AvatarShowcase title="Anchor" description={<span>Provide <code>href</code> to {'<Avatar/>'}</span>}>
+          <Avatar
+            href="http://atlaskit.atlassian.com"
+            src={avatarSource}
+            size={avatarSize}
+            target="_blank"
+          />
+        </AvatarShowcase>
+
+        <AvatarShowcase title="Tooltip" description={<span>Provide <code>name</code> to {'<Avatar/>'}</span>}>
+          <Avatar src={avatarSource} name="Bill Murray" size={avatarSize} />
+        </AvatarShowcase>
+
+        <HR />
+
+        <h5>Avatar States</h5>
+        <Note>All states handled internal and can be provided by props.</Note>
+        <AvatarShowcase title="Default" description="No state applied">
+          <Avatar src={avatarSource} size="large" onClick={() => {}} label="default" />
+        </AvatarShowcase>
+        <AvatarShowcase title="Hover" description="akColorN70A applied as an overlay">
+          <Avatar src={avatarSource} size="large" onClick={() => {}} isHover />
+        </AvatarShowcase>
+        <AvatarShowcase title="Active" description="akColorN70A applied as an overlay, and scaled down to 85%">
+          <Avatar src={avatarSource} size="large" onClick={() => {}} isActive />
+        </AvatarShowcase>
+        <AvatarShowcase title="Focus" description="akColorB200 focus ring applied, border-width relative to avatar size">
+          <Avatar src={avatarSource} size="large" onClick={() => {}} isFocus />
+        </AvatarShowcase>
+        <AvatarShowcase title="Selected" description="akColorN200A applied as an overlay">
+          <Avatar src={avatarSource} size="large" onClick={() => {}} isSelected />
+        </AvatarShowcase>
+        <AvatarShowcase title="Disabled" description="70% white applied as an overlay">
+          <Avatar src={avatarSource} size="large" onClick={() => {}} isDisabled />
+        </AvatarShowcase>
       </Wrapper>
     );
   })
-  .add('Avatar States', () => {
-    const src = 'https://www.fillmurray.com/85/85';
+  .addCodeExampleStory('Avatar Tooltips', () => (
+    <Wrapper>
+      <h2>Avatar Tooltips <Lozenge appearance="success" isBold>New</Lozenge></h2>
+      <Note size="large">
+        Image receives alt-text and an aria-label, which describes the image to screenreaders.
+      </Note>
+      <Avatar
+        href="//www.atlassian.com"
+        name="Tooltip & Alt text"
+        size="xlarge"
+        src={avatarSource}
+        target="_blank"
+      />
+    </Wrapper>
+  ))
+  .add('Avatar Groups', () => {
+    class AvatarGroupExample extends Component {
+      state = { gridWidth: 200, gridMax: 11, avatarCount: 20, sizeIndex: 2 }
+      sizes = ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge']
+      limit = {
+        gridMax: 30,
+      }
+      decrement = key => this.setState(state => ({ [key]: state[key] - 1 }))
+      increment = key => this.setState(state => ({ [key]: state[key] + 1 }))
+      render() {
+        const { avatarCount, sizeIndex, gridMax, gridWidth } = this.state;
+        const sizes = Object.keys(AVATAR_SIZES);
+        const avatarSize = sizes[sizeIndex];
+        const avatarPX = AVATAR_SIZES[avatarSize];
 
-    return (
-      <Wrapper>
-        <h5>Avatar States</h5>
-        <Note>Side by side comparison. All descriptions below.</Note>
-        <AvatarRow>
-          <LabelledAvatar src={src} size="large" onClick={() => {}} label="default" />
-          <LabelledAvatar src={src} size="large" onClick={() => {}} label="hover" isHover />
-          <LabelledAvatar src={src} size="large" onClick={() => {}} label="active" isActive />
-          <LabelledAvatar src={src} size="large" onClick={() => {}} label="focus" isFocus />
-          <LabelledAvatar src={src} size="large" onClick={() => {}} label="selected" isSelected />
-          <LabelledAvatar src={src} size="large" onClick={() => {}} label="disabled" isDisabled />
-        </AvatarRow>
-        <div style={{ border: 0, borderTop: '1px solid #ccc', marginBottom: '1em', marginTop: '1em' }} />
-        <AvatarShowcase title="Default" description="No state applied">
-          <Avatar src={src} size="large" onClick={() => {}} label="default" />
-        </AvatarShowcase>
-        <AvatarShowcase title="Hover" description="akColorN70A applied as an overlay">
-          <Avatar src={src} size="large" onClick={() => {}} isHover />
-        </AvatarShowcase>
-        <AvatarShowcase title="Active" description="akColorN70A applied as an overlay, and scaled down to 85%">
-          <Avatar src={src} size="large" onClick={() => {}} isActive />
-        </AvatarShowcase>
-        <AvatarShowcase title="Focus" description="akColorB200 focus ring applied, width depends relative to avatar size">
-          <Avatar src={src} size="large" onClick={() => {}} isFocus />
-        </AvatarShowcase>
-        <AvatarShowcase title="Selected" description="akColorN200A applied as an overlay">
-          <Avatar src={src} size="large" onClick={() => {}} isSelected />
-        </AvatarShowcase>
-        <AvatarShowcase title="Disabled" description="70% white applied as an overlay">
-          <Avatar src={src} size="large" onClick={() => {}} isDisabled />
-        </AvatarShowcase>
-      </Wrapper>
-    );
+        const stackSourceURLs = [];
+        for (let i = 0; i < avatarCount; i++) stackSourceURLs.push(i);
+
+        return (
+          <Wrapper>
+            <h2>Avatar Groups <Lozenge appearance="success" isBold>New</Lozenge></h2>
+            <Note size="large">Click the excess indicator to see the remaining avatars in a dropdown menu.</Note>
+            <div style={{ display: 'flex', marginTop: '1em' }}>
+              <div style={{ flex: 1 }}>
+                <h5 style={{ marginBottom: '0.5em' }}>Avatar Size: {avatarSize}</h5>
+                <ButtonGroup>
+                  <Button isDisabled={avatarSize === 'small'} onClick={() => this.decrement('sizeIndex')} iconBefore={<ArrowDown size="small" label="Smaller" />}>Smaller</Button>
+                  <Button isDisabled={avatarSize === 'xlarge'} onClick={() => this.increment('sizeIndex')} iconBefore={<ArrowUp size="small" label="Larger" />}>Larger</Button>
+                </ButtonGroup>
+              </div>
+              <div style={{ flex: 1 }}>
+                <h5 style={{ marginBottom: '0.5em' }}>Avatar Count: {avatarCount}</h5>
+                <ButtonGroup>
+                  <Button isDisabled={avatarCount <= 1} onClick={() => this.decrement('avatarCount')} iconBefore={<ArrowDown size="small" label="Less" />}>Less</Button>
+                  <Button isDisabled={avatarCount >= 30} onClick={() => this.increment('avatarCount')} iconBefore={<ArrowUp size="small" label="More" />}>More</Button>
+                </ButtonGroup>
+              </div>
+              <div style={{ flex: 1 }}>
+                <h5 style={{ marginBottom: '0.5em' }}>Grid Max: {gridMax}</h5>
+                <ButtonGroup>
+                  <Button isDisabled={gridMax <= 1} onClick={() => this.decrement('gridMax')} iconBefore={<ArrowDown size="small" label="Less" />}>Less</Button>
+                  <Button isDisabled={gridMax >= 30} onClick={() => this.increment('gridMax')} iconBefore={<ArrowUp size="small" label="More" />}>More</Button>
+                </ButtonGroup>
+              </div>
+            </div>
+            <h5>Grid</h5>
+            <Note>
+              Total {stackSourceURLs.length} / Max {gridMax}
+            </Note>
+            <input
+              min="200"
+              max="500"
+              onChange={e => this.setState({ gridWidth: e.target.value })}
+              step="10"
+              title="Grid Width"
+              type="range"
+            />
+            <div style={{ maxWidth: parseInt(gridWidth, 10), position: 'relative' }}>
+              <AvatarGroup
+                appearance="grid"
+                onClickAvatar={console.log}
+                onClickDropdownItem={console.log}
+                // onClickMore={() => console.log('Click more "grid".')}
+                data={stackSourceURLs.map(i => ({
+                  key: i,
+                  name: `Adorable Avatar ${i + 1}`,
+                  src: `https://api.adorable.io/avatars/${avatarPX}/grid_${i}.png`,
+                }))}
+                maxCount={gridMax}
+                size={avatarSize}
+              />
+              <span style={{ borderLeft: '1px solid #ccc', paddingLeft: '1em', fontSize: 11, position: 'absolute', right: 0, top: 0, color: '#999', transform: 'translateX(100%)' }}>{gridWidth}px</span>
+            </div>
+            <h5>Stack</h5>
+            <Note>Total {stackSourceURLs.length} / Max 5</Note>
+            <AvatarGroup
+              onClickAvatar={console.log}
+              onClickDropdownItem={console.log}
+              // onClickMore={() => console.log('Click more "stack".')}
+              data={stackSourceURLs.map(i => ({
+                key: i,
+                name: `Adorable Avatar ${i + 1}`,
+                src: `https://api.adorable.io/avatars/${avatarPX}/stack_${i}.png`,
+              }))}
+              size={avatarSize}
+            />
+          </Wrapper>
+        );
+      }
+    }
+    return <AvatarGroupExample />;
   })
   .add('Loading an Image', () => {
     function getInitialState() {
       return {
-        inputValue: 'https://docs.atlassian.com/aui/latest/docs/images/avatar-96.png',
+        inputValue: 'https://pbs.twimg.com/profile_images/568401563538841600/2eTVtXXO_400x400.jpeg',
         imageUrl: '',
       };
     }
 
-    const Button = props => <button type="button" style={{ marginLeft: 5 }} {...props} />;
+    const backgroundColor = akColorN20;
+    const Btn = props => <button type="button" style={{ marginLeft: 5 }} {...props} />;
 
+    // eslint-disable-next-line react/no-multi-comp
     class ExternalSrcAvatar extends React.PureComponent {
       state = getInitialState()
       changeUrl = event => this.setState({ inputValue: event.target.value })
@@ -246,6 +349,11 @@ storiesOf(name, module)
       }
       resetState = () => this.setState(getInitialState)
       render() {
+        const { inputValue, imageUrl } = this.state;
+        let avatarName = 'Default Avatar';
+        if (imageUrl === getInitialState().inputValue) avatarName = 'Mike Cannon-Brookes';
+        else if (imageUrl.length) avatarName = 'Custom Avatar';
+
         return (
           <form onSubmit={this.loadImage}>
             <div style={{ display: 'flex', marginBottom: '10px', marginTop: '10px' }}>
@@ -253,213 +361,57 @@ storiesOf(name, module)
                 onChange={this.changeUrl}
                 style={{ flex: 1 }}
                 type="text"
-                value={this.state.inputValue}
+                value={inputValue}
               />
-              <Button type="submit">Load Image</Button>
-              <Button onClick={this.resetState}>Reset</Button>
+              <Btn type="submit">Load Image</Btn>
+              <Btn onClick={this.resetState}>Reset</Btn>
             </div>
-            <DefaultAvatar size="xlarge" label="This is an avatar!" src={this.state.imageUrl} />
+            <Avatar
+              borderColor={backgroundColor}
+              name={avatarName}
+              size="xlarge"
+              src={imageUrl}
+            />
           </form>
         );
       }
     }
 
     return (
-      <Wrapper>
+      <Wrapper style={{ backgroundColor }}>
         <h5>Loading an Image</h5>
         <Note>Try pasting a URL to see the loading behaviour:</Note>
         <ExternalSrcAvatar />
       </Wrapper>
     );
   })
-  .add('With a Label', () => (
-    <Wrapper style={{ backgroundColor: '#F4F5F7' }}>
-      <h5>With a Label</h5>
-      <Note>
-        Image receives alt-text and an aria-label, which describes the image to screenreaders.
-      </Note>
-      <a href="//www.atlassian.com" target="_blank" rel="noopener noreferrer">
-        <Avatar
-          label="This is the avatar label"
-          size="xlarge"
-          src="https://pbs.twimg.com/profile_images/876950629507354624/ELcIuekN_400x400.jpg"
-        />
-      </a>
-    </Wrapper>
-  ))
-  .add('Avatars with custom presence', () => (
+  .add('Custom Presence', () => (
     <Wrapper>
-      <div>As well as the presence attribute, avatars can also display custom content on their badge
-        by composing them inside. <br />
-        No styling is applied to custom content by default and it is up the consumer to make the
-        content fit (height and width of 100% and a background color
-        are a good start)
-      </div>
+      <h5>Custom Presence</h5>
+      <Note>
+        Replace presence with the <code>icon</code> property
+      </Note>
       <Example>
-        <div>
-          These avatars have an image as their default content and have been styled
-          with &quot;height: 100%; width: 100%;&quot;
-        </div>
+        <h5>Image</h5>
+        <Note>Using an image as the icon</Note>
         <AllAvatarSizes
-          icon={
-            <img
-              src={tickWithBackgroundUrl}
-              role="presentation"
-              style={{ height: '100%', width: '100%' }}
-            />
-          }
+          icon={<img role="presentation" src={tickUrl} style={{ height: '100%', width: '100%' }} />}
         />
       </Example>
       <Example>
-        <div>
-          These avatars show the behaviour of transparent nested images.
-          Note there is no added background color
-        </div>
-        <AllAvatarSizes
-          icon={
-            <img
-              src={tickUrl}
-              role="presentation"
-              style={{ height: '100%', width: '100%', color: 'green' }}
-            />
-          }
-        />
-      </Example>
-      <Example>
-        <div>
-          These avatars have presence AND an image as a child. The expected behaviour is that the
-          images will take precedence.
-        </div>
-        <AllAvatarSizes
-          icon={
-            <img
-              src={tickWithBackgroundUrl}
-              role="presentation"
-              style={{ height: '100%', width: '100%' }}
-            />
-          }
-          presence="online"
-        />
-      </Example>
-      <Example>
-        <div>
-          This example shows using a styled div as a presence.
-        </div>
+        <h5>Div on Circle</h5>
+        <Note>This example shows using a styled div as a presence.</Note>
         <AllAvatarSizes
           icon={<DivPresence>1</DivPresence>}
-          presence="online"
         />
       </Example>
       <Example>
-        <div>
-          This example shows using a styled div as a presence on a square avatar.
-        </div>
+        <h5>Div on Square</h5>
+        <Note>This example shows using a styled div as a presence on a square avatar.</Note>
         <AllAvatarSizes
           appearance="square"
           icon={<DivPresence>1</DivPresence>}
-          presence="online"
-          src={nucleusImage}
-        />
-      </Example>
-      <Example>
-        <AllAvatarSizes presence="online">
-          <img
-            src={tickWithBackgroundUrl}
-            role="presentation"
-            style={{ height: '100%', width: '100%' }}
-          />
-        </AllAvatarSizes>
-      </Example>
-      <Example>
-        <div>
-          This example shows using a styled div as a presence.
-        </div>
-        <AllAvatarSizes presence="online">
-          <DivPresence>1</DivPresence>
-        </AllAvatarSizes>
-      </Example>
-      <Example>
-        <div>
-          Another example showing a styled div as the inserted content
-        </div>
-        <AllAvatarSizes
-          icon={
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                background: 'grey',
-                display: 'inline-block',
-              }}
-            >
-              <div
-                style={{
-                  width: '60%',
-                  height: '20%',
-                  background: 'red',
-                  position: 'relative',
-                  top: '45%',
-                  left: '20%',
-                  transform: 'rotate(50deg)',
-                }}
-              />
-            </div>
-          }
-          presence="online"
         />
       </Example>
     </Wrapper>
-  ))
-  .add('Avatars on colored background', () => {
-    const rainbowStyle = {
-      background: 'linear-gradient(red, orange, yellow, green, blue, indigo, violet)',
-      padding: '10px',
-      marginTop: '10px',
-    };
-    const cubeStyle = {
-      backgroundColor: '#556',
-      // eslint-disable-next-line max-len
-      backgroundImage: `linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
-      linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
-      linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
-      linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
-      linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a),
-      linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a)`,
-      backgroundSize: '80px 140px',
-      backgroundPosition: '0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px',
-      padding: '10px',
-      color: 'white',
-    };
-    const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; // eslint-disable-line  max-len
-    return (
-      <Wrapper>
-        <div>
-          Here we have a xlarge avatar, an avatar with partial transparency, and a completely
-          transparent image. No border is shown around them.
-        </div>
-        <div style={rainbowStyle}>
-          <DefaultAvatar size="xlarge" />
-          <DefaultAvatar size="xlarge" src={transparentAvatarUrl} />
-          <DefaultAvatar size="xlarge" src={transparentPixel} />
-        </div>
-        <div style={cubeStyle}>
-          <DefaultAvatar size="xlarge" />
-          <DefaultAvatar size="xlarge" src={transparentAvatarUrl} />
-          <DefaultAvatar size="xlarge" src={transparentPixel} />
-        </div>
-      </Wrapper>
-    );
-  })
-  .addCodeExampleStory('Avatar with a custom border', () => (
-    <div style={{ padding: '20px', backgroundColor: '#3a77d8' }}>
-      <DefaultAvatar size="xlarge" presence="online" borderColor="#3a77d8" />
-      <DefaultAvatar size="xlarge" presence="offline" borderColor="#3a77d8" />
-      <DefaultAvatar
-        src={nucleusImage}
-        appearance="square"
-        size="xlarge"
-        icon={<img src={lockImage} style={{ height: '100%', width: '100%' }} alt="Lock" />}
-        borderColor="#3a77d8"
-      />
-    </div>
   ));

@@ -26,7 +26,7 @@ const fadeOut = {
 };
 
 const Tooltip = styled.div`
-  animation: ${keyframes`${createBold([slideDown, fadeOut])}`} 1s;
+  animation: ${keyframes`${createBold([slideDown, fadeOut])}`} 1.1s 0.1s backwards;
   background-color: ${akColorN900};
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
@@ -34,13 +34,16 @@ const Tooltip = styled.div`
   font-size: ${fontSize}px;
   left: 50%;
   line-height: ${lineHeight};
+  margin-top: ${gutter}px;
   max-width: ${maxWidth}px;
-  margin: ${gutter * 2}px;
+  overflow: hidden;
   padding: ${gutter / 2}px ${gutter * 2}px;
   pointer-events: none;
   position: absolute;
+  text-overflow: ellipsis;
   transform: translateX(-50%);
   white-space: nowrap;
+  z-index: 601;
 `;
 
 export default Tooltip;

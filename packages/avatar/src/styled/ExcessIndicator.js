@@ -1,26 +1,25 @@
 // @flow
 import styled from 'styled-components';
-import { akColorN40, akColorN500 } from '@atlaskit/util-shared-styles';
-import { getAvatarDimensions } from './utils';
-import { getStyles } from '../styled/Avatar';
+import { akColorN40, akColorN500, akColorB200 } from '@atlaskit/util-shared-styles';
+import { getAvatarDimensions, getBorderRadius } from './utils';
+import { BORDER_WIDTH, EXCESS_INDICATOR_FONT_SIZE } from './constants';
+import { getStyles } from './Avatar';
 
 export const Outer = styled.button`
-  ${getAvatarDimensions}
+  ${getStyles}
   background: 0;
-  border: 0;
-  outline: 0;
-  padding: 0;
-  position: static;
 `;
 
-export const Disc = styled.div`
-  ${getStyles}
-  align-items: center;
+export const Inner = styled.span`
+  ${getAvatarDimensions}
   background-color: ${akColorN40};
-  border-radius: 50%;
+  border-radius: ${getBorderRadius}
+  align-items: center;
+  box-shadow: 0 0 0 ${props => ((props.isFocus && !props.isActive) ? `${BORDER_WIDTH[props.size]}px` : 0)} ${akColorB200};
   color: ${akColorN500};
   cursor: pointer;
   display: flex;
-  font-size: 11px;
+  font-size: ${props => EXCESS_INDICATOR_FONT_SIZE[props.size]}px;
   justify-content: center;
+  transition: box-shadow 200ms;
 `;

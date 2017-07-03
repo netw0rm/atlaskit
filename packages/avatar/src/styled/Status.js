@@ -1,6 +1,6 @@
 // @flow
 import styled from 'styled-components';
-import { PRESENCE_BORDER_WIDTH } from './constants';
+import { BORDER_WIDTH } from './constants';
 
 // set fallbacks for border color/width to protect consumers from invalid values
 export default styled.div`
@@ -12,6 +12,6 @@ export default styled.div`
   display: flex;
   height: 100%;
   overflow: hidden;
-  padding: ${({ size }) => PRESENCE_BORDER_WIDTH[size] || PRESENCE_BORDER_WIDTH.medium}px;
+  padding: ${({ size }) => BORDER_WIDTH[size] || BORDER_WIDTH.medium}px;
   width: 100%;
 `;

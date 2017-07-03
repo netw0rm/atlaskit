@@ -155,66 +155,65 @@ describe('table plugin', () => {
   });
 
   describe('insertColumn(number)', () => {
-    context('when table has 1 column', () => {
+    context('when table has 2 columns', () => {
       context('when it called with 0', () => {
         it('it should prepend a new column and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2{<>}'))))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(0);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr( tdCursor, tdEmpty ))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, td({})(p('c1')), td({})(p('c2'))))));
         });
       });
 
-      context('when it called with 1', () => {
-        it('it should append a new column and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
-          plugin.props.onFocus!(editorView, event);
-          pluginState.insertColumn(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr( tdEmpty, tdCursor ))));
-        });
-      });
-    });
-
-    context('when table has 2 columns', () => {
       context('when it called with 1', () => {
         it('it should insert a new column in the middle and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty))));
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr( tdEmpty, tdCursor, tdEmpty ))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('c1')), tdCursor, td({})(p('c2'))))));
+        });
+      });
+
+      context('when it called with 2', () => {
+        it('it should append a new column and move cursor inside it\'s first cell', () => {
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))));
+          plugin.props.onFocus!(editorView, event);
+          pluginState.insertColumn(2);
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2')), tdCursor))));
         });
       });
     });
+
   });
 
   describe('insertRow(number)', () => {
-    context('when table has 1 row', () => {
+    context('when table has 2 rows', () => {
       context('when it called with 0', () => {
         it('it should prepend a new row and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1'))), tr(td({})(p('row2{<>}'))))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertRow(0);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(td({})(p('row1'))), tr(td({})(p('row2'))))));
         });
       });
 
       context('when it called with 1', () => {
-        it('it should append a new row and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
+        it('it should insert a new row in the middle and move cursor inside it\'s first cell', () => {
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2'))))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertRow(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdCursor))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('row1'))), tr(tdCursor), tr(td({})(p('row2'))))));
         });
       });
     });
 
     context('when table has 2 row', () => {
-      context('when it called with 1', () => {
-        it('it should insert a new row in the middle and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+      context('when it called with 2', () => {
+        it('it should append a new row and move cursor inside it\'s first cell', () => {
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2'))))));
           plugin.props.onFocus!(editorView, event);
-          pluginState.insertRow(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdCursor), tr(tdEmpty))));
+          pluginState.insertRow(2);
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('row1'))), tr(td({})(p('row2'))), tr(tdCursor))));
         });
       });
     });

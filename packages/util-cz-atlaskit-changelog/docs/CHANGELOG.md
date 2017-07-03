@@ -1,21 +1,53 @@
-# @atlasikit/util-cz-atlaskit-changelog Changelog
+# @atlaskit/util-cz-atlaskit-changelog
 
 ## Unreleased
 
-* feature; feat(component): write static changelog on npm commit command
-Generate this static file on commit, allowing us to modify and expand on changes in an easier format.
+* feature; feat(package): add release script and generation script for new changelogs
+* **component:** write static changelog on npm commit command ([39e50a4](https://bitbucket.org/atlassian/atlaskit/commits/39e50a4))
 
 ## 1.1.7 (2017-04-27)
 
-* fix; bug-fix(docs): update legal copy to be more clear. Not all modules include ADG license.
-
-## 1.1.4 (2017-03-21)
-
-* fix; bug-fix(packages): maintainers for all the packages were added.
-
-## 1.1.2 (2017-03-01)
 
 ### Bug Fixes
 
-* fix; bug-fix(component) fix the commitizen prompt - see the announcement for details
-* fix; bug-fix(component) removes the release scope and replaces it with 'dummy'
+* **docs:** update legal copy to be more clear. Not all modules include ADG license. ([f3a945e](https://bitbucket.org/atlassian/atlaskit/commits/f3a945e))
+
+## 1.1.6 (2017-04-26)
+
+
+### Bug Fixes
+
+* **docs:** update legal copy and fix broken links for component README on npm. New contribution and ([0b3e454](https://bitbucket.org/atlassian/atlaskit/commits/0b3e454))
+
+## 1.1.4 (2017-03-21)
+
+## 1.1.4 (2017-03-21)
+
+
+### Bug Fixes
+
+* **package:** maintainers for all the packages were added ([261d00a](https://bitbucket.org/atlassian/atlaskit/commits/261d00a))
+
+## 1.1.3 (2017-03-01)
+
+## 1.1.2 (2017-03-01)
+
+
+### Bug Fixes
+
+* **component:** fix the commitizen prompt - see the announcement for details ([7cbfb39](https://bitbucket.org/atlassian/atlaskit/commits/7cbfb39))
+* **component:** removes the release scope and replaces it with 'dummy' ([6a3b168](https://bitbucket.org/atlassian/atlaskit/commits/6a3b168))
+
+## 1.1.1 (2017-02-27)
+
+
+### Bug Fixes
+
+* empty commit to make components release themselves ([5511fbe](https://bitbucket.org/atlassian/atlaskit/commits/5511fbe))
+
+# 1.1.0 (2017-02-27)
+
+
+### Features
+
+* **component:** update to new version of cz-lerna-changelog ([831fd31](https://bitbucket.org/atlassian/atlaskit/commits/831fd31))

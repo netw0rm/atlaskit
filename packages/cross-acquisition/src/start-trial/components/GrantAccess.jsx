@@ -115,7 +115,7 @@ export default class GrantAccess extends Component {
         }
       >
         <StartTrialDialog>
-          <StartTrialHeader>{this.context.crossSell.startTrial.grantHeading}</StartTrialHeader>
+          <StartTrialHeader>{this.context.crossSell.startTrial.grantHeader}</StartTrialHeader>
 
           {this.state.changeUsers ? (
             <div>

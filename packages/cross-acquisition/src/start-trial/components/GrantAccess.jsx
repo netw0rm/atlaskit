@@ -9,13 +9,14 @@ import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 
 import { crossSellShape } from '../../common/components/CrossSellProvider';
 
+import ProgressBar from './ProgressBar';
+
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
 import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
-import ProgressBar from '../styled/ProgressBar';
 import AffectMyBillText from '../styled/AffectMyBillText';
 import ChangeButton from '../styled/ChangeButton';
 

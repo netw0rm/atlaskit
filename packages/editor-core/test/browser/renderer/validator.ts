@@ -11,6 +11,7 @@ import {
 } from '../../../src/renderer/validator';
 
 import schema from '../../../stories/schema';
+import { createSchema } from '../../../src/schema';
 
 describe('Renderer - Validator', () => {
 
@@ -256,6 +257,60 @@ describe('Renderer - Validator', () => {
           }
         });
       });
+    });
+
+    it('should overwrite the default schema if it gets a docSchema parameter', () => {
+      // rule is taken out in following schema
+      const schema = createSchema({
+        nodes: [
+          'doc',
+          'paragraph',
+          'text',
+          'bulletList',
+          'orderedList',
+          'listItem',
+          'heading',
+          'blockquote',
+          'codeBlock',
+          'panel',
+          'image',
+          'mention',
+          'hardBreak',
+          'emoji',
+          'mediaGroup',
+          'media',
+          'table',
+          'table_cell',
+          'table_header',
+          'table_row',
+        ],
+        marks: [
+          'em',
+          'strong',
+          'code',
+          'strike',
+          'underline',
+          'link',
+          'mentionQuery',
+          'emojiQuery',
+          'textColor',
+          'subsup',
+        ]
+      });
+
+      const doc = {
+        type: 'doc' as 'doc',
+        version: 1 as 1,
+        content: [
+          {
+            type: 'rule',
+          }
+        ]
+      };
+      const result = getValidNode(doc, schema);
+
+      expect(result.content![0].type).to.equal('text');
+      expect(result.content![0].text).to.equal('[rule]');
     });
 
   });

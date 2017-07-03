@@ -46,9 +46,9 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       const { editorView } = editor(doc(p()));
       const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} maxHeight={75} />);
 
-      const content = chrome.find(Content);
-      expect(!!content).to.equal(true);
-      const props = content.props();
+      const wrapper = chrome.find(Content).find('div').at(1);
+      expect(!!wrapper).to.equal(true);
+      const props = wrapper.props();
       expect(!!props['style']).to.equal(true);
       expect(props['style']!.maxHeight).to.equal('75px');
     });

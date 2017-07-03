@@ -2,20 +2,20 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Draggable from '../../src/view/draggable/connected-draggable';
-import colors from './colors';
+import { borderRadius, colors, grid } from './constants';
 import type { Quote } from './types';
 import type { Provided, StateSnapshot } from '../../src/view/draggable/draggable-types';
 
 const Container = styled.a`
-  border-radius: 2px;
+  border-radius: ${borderRadius}px;
   border: 1px solid grey;
   background-color: ${({ isDragging }) => (isDragging ? 'rgb(185, 244, 188)' : 'white')};
 
   cursor: ${({ isDragging }) => (isDragging ? 'grabbing' : 'grab')};
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px ${colors.shadow}` : 'none')};
-  padding: 8px;
+  padding: ${grid}px;
   min-height: 40px;
-  margin-bottom: 8px;
+  margin-bottom: ${grid}px;
   user-select: none;
   transition: background-color 0.1s ease;
 
@@ -36,7 +36,7 @@ const Avatar = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 8px;
+  margin-right: ${grid}px;
   flex-shrink: 0;
   flex-grow: 0;
 `;
@@ -60,10 +60,21 @@ const BlockQuote = styled.div`
   }
 `;
 
+const Footer = styled.div`
+  display: flex;
+  margin-top: ${grid}px;
+`;
+
+const QuoteId = styled.small`
+  flex-grow: 0;
+  margin: 0;
+`;
+
 const Attribution = styled.small`
   margin: 0;
-  margin-left: 8px;
+  margin-left: ${grid}px;
   text-align: right;
+  flex-grow: 1;
 `;
 
 type Props = {|
@@ -81,7 +92,7 @@ export default class QuoteItem extends Component {
           <div>
             {/* This draggable also happens to be an anchor! */}
             <Container
-              href={`${quote.author.name}/${quote.id}`}
+              href={quote.author.url}
               innerRef={ref => provided.innerRef(ref)}
               isDragging={snapshot.isDragging}
               style={provided.draggableStyle}
@@ -90,7 +101,10 @@ export default class QuoteItem extends Component {
               <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
               <Content>
                 <BlockQuote>{quote.content}</BlockQuote>
-                <Attribution>{quote.author.name}</Attribution>
+                <Footer>
+                  <QuoteId>(id: {quote.id})</QuoteId>
+                  <Attribution>{quote.author.name}</Attribution>
+                </Footer>
               </Content>
             </Container>
             {provided.placeholder}

@@ -554,6 +554,16 @@ While code coverage is [not a guarantee of code health](https://stackoverflow.co
 
 This codebase is designed to be extremely performant. It builds on prior investigations into React performance that you can read about [here](https://medium.com/@alexandereardon/performance-optimisations-for-react-applications-b453c597b191) and [here](https://medium.com/@alexandereardon/performance-optimisations-for-react-applications-round-2-2042e5c9af97). It is designed to perform the minimum number of renders required for each task.
 
+## Keyboard handling
+
+Currently the keyboard handling is hard coded. This could be changed in the future to become a prop of `Draggable`. Here is the existing keyboard mapping:
+
+- **tab `↹`** - standard browser tabbing will navigate through the `Droppable`'s. The library does not do anything fancy with `tab` while users are selecting. Once a drag has started, `tab` is blocked for the duration of the drag.
+- **spacebar ` `** - lift a focused `Draggable`. Also, drop a dragging `Draggable` where the drag was started with a `spacebar`.
+- **Up arrow `↑`** - move a `Draggable` that is dragging up on a vertical list
+- **Down arrow `↓`** - move a `Draggable` that is dragging down on a vertical list
+- **Escape `esc`** - cancel an existing drag - regardless of whether the user is dragging with the keyboard or mouse.
+
 ### Short term backlog
 
 - Correct scroll handling while dragging with keyboard or mouse

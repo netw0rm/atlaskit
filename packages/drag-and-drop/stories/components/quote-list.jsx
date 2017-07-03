@@ -2,14 +2,15 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Droppable from '../../src/view/droppable/connected-droppable';
+import { borderRadius, grid } from './constants';
 import type { Provided, StateSnapshot } from '../../src/view/droppable/droppable-types';
 
 const Container = styled.div`
   background-color: ${({ isDraggingOver }) => (isDraggingOver ? '#d9fcff' : 'lightblue')};
-  border-radius: 2px;
+  border-radius: ${borderRadius}px;
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding: ${grid}px;
   padding-bottom: 0;
   user-select: none;
   transition: background-color 0.1s ease;

@@ -3,21 +3,25 @@ import type { Author, Quote } from './types';
 
 const jake: Author = {
   name: 'Jake',
+  url: 'http://adventuretime.wikia.com/wiki/Jake',
   avatarUrl: 'https://68.media.tumblr.com/avatar_1f7bdbbeb59c_128.png',
 };
 
 const BMO: Author = {
   name: 'BMO',
+  url: 'http://adventuretime.wikia.com/wiki/BMO',
   avatarUrl: 'https://68.media.tumblr.com/avatar_1a34fe6de498_128.png',
 };
 
 const finn: Author = {
   name: 'Finn',
+  url: 'http://adventuretime.wikia.com/wiki/Finn',
   avatarUrl: 'https://68.media.tumblr.com/avatar_09404f3287c6_128.png',
 };
 
 const princess: Author = {
   name: 'Princess bubblegum',
+  url: 'http://adventuretime.wikia.com/wiki/Princess_Bubblegum',
   avatarUrl: 'https://68.media.tumblr.com/avatar_ec98529441c4_128.png',
 };
 

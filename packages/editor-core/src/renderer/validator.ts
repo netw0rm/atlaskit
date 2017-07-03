@@ -216,22 +216,18 @@ export const getValidNode = (node: Node): Node => {
           (description && !description.text)) { break; }
         if (details && !Array.isArray(details)) { break; }
 
-        let detailsCheckFail = false;
-        if (details) {
-          details.forEach(meta => {
-            const { badge, lozenge, users } = meta;
-            if (badge && !badge.value) { detailsCheckFail = true; return; }
-            if (lozenge && !lozenge.text) { detailsCheckFail = true; return; }
-            if (users && !Array.isArray(users)) { detailsCheckFail = true; return; }
+        if (details && details.some(meta => {
+          const { badge, lozenge, users } = meta;
+          if (badge && !badge.value) { return true; }
+          if (lozenge && !lozenge.text) { return true; }
+          if (users && !Array.isArray(users)) { return true; }
 
-            if (users) {
-              users.forEach(user => {
-                if (!user.icon) { detailsCheckFail = true; }
-              });
+          if (users && users.some(user => {
+            if (!user.icon) {
+              return true;
             }
-          });
-        }
-        if (detailsCheckFail) { break; }
+          })) { return true; }
+        })) { break; }
 
         return {
           type,

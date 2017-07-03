@@ -248,12 +248,12 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         </Toolbar>
         <Content
           innerRef={this.setEditorContent}
-          style={maxHeightStyle}
           onPaste={this.addBorderBottom}
           onKeyDown={this.addBorderBottom}
         >
-          {this.props.children}
-
+          <div style={maxHeightStyle}>
+            {this.props.children}
+          </div>
           {pluginStateHyperlink && !disabled ?
             <HyperlinkEdit
               pluginState={pluginStateHyperlink}

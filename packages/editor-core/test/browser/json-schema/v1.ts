@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { name } from '../../../package.json';
-import * as v1schema from '../../../src/json-schema/v1.json';
+import * as v1schema from '../../../dist/json-schema/v1/full.json';
 import * as Ajv from 'ajv';
 
 const ajv = new Ajv();

@@ -10,5 +10,5 @@ storiesOf('ProgressBar')
   )).add('25% Full', () => setupStorybookAnalytics(
     <ProgressBar progress="25" />
   )).add('Complete', () => setupStorybookAnalytics(
-    <ProgressBar progress="100"/>
+    <ProgressBar progress="100" />
   ));

@@ -16,6 +16,7 @@ import {
   nodeViewFactory,
   ReactMediaGroupNode,
   ReactMediaNode,
+  NodeSelection,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
@@ -24,6 +25,7 @@ import {
   code_block,
   doc,
   h1,
+  hr,
   makeEditor,
   mediaGroup,
   media,
@@ -32,6 +34,7 @@ import {
   storyMediaProviderFactory,
   randomId,
   sleep,
+  setNodeSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -104,8 +107,8 @@ describe('Media plugin', () => {
       doc(
         p('text'),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
+        )
+      ));
   });
 
   it(`should insert media node into the document after current heading node`, () => {
@@ -117,8 +120,8 @@ describe('Media plugin', () => {
       doc(
         h1('text'),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
+        )
+      ));
   });
 
   it(`should insert media node into the document after current blockquote node`, () => {
@@ -143,8 +146,8 @@ describe('Media plugin', () => {
       doc(
         code_block()('text'),
         mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
+        )
+      ));
   });
 
   it('should prepend media node to existing media group', () => {
@@ -486,37 +489,178 @@ describe('Media plugin', () => {
     });
   });
 
-  [
-    'unfinalized',
-    'unknown',
-    'ready',
-    'error',
-    'cancelled',
-  ].forEach((status: MediaStateStatus) => {
-    it(`should remove ${status} media nodes`, async () => {
-      const mediaNode = media({ id: 'foo', type: 'file', collection: testCollectionName });
-      const { editorView, pluginState } = editor(
-        doc(
-          mediaGroup(mediaNode),
-          mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })),
-        ),
-      );
+  describe('handleMediaNodeRemove', () => {
+    [
+      'unfinalized',
+      'unknown',
+      'ready',
+      'error',
+      'cancelled',
+    ].forEach((status: MediaStateStatus) => {
+      it(`should remove ${status} media nodes`, () => {
+        const deletingMediaNodeId = 'foo';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(
+          doc(
+            mediaGroup(deletingMediaNode),
+            mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })),
+          ),
+        );
 
-      await resolvedProvider;
+        stateManager.updateState(deletingMediaNode.attrs.id, {
+          status,
+          id: deletingMediaNodeId,
+        });
 
-      stateManager.updateState('foo', {
-        status,
-        id: 'foo',
+        const pos = getNodePos(pluginState, deletingMediaNodeId);
+        (pluginState as MediaPluginState).handleMediaNodeRemove(deletingMediaNode, () => pos);
+
+        expect(editorView.state.doc).to.deep.equal(
+          doc(
+            mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
+            )
+          ));
       });
 
-      const pos = getNodePos(pluginState, 'foo');
-      (pluginState as MediaPluginState).handleMediaNodeRemove(mediaNode, () => pos);
+      context('when there is a media node before', () => {
+        it(`set selection to the previous media node after removing ${status} media node`, () => {
+          const deletingMediaNodeId = 'media2';
+          const deletingMediaNode = media({ id: 'media2', type: 'file', collection: testCollectionName });
+          const { editorView, pluginState } = editor(
+            doc(
+              p('hello'),
+              mediaGroup(
+                media({ id: 'media1', type: 'file', collection: testCollectionName }),
+                deletingMediaNode,
+                media({ id: 'media3', type: 'file', collection: testCollectionName }),
+              ),
+            ),
+          );
 
-      expect(editorView.state.doc).to.deep.equal(
-        doc(
-          mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
-        )
-      ));
+          stateManager.updateState(deletingMediaNodeId, {
+            status,
+            id: deletingMediaNodeId,
+          });
+
+          const pos = getNodePos(pluginState, deletingMediaNodeId);
+          (pluginState as MediaPluginState).handleMediaNodeRemove(deletingMediaNode, () => pos);
+
+          const selection = editorView.state.selection as NodeSelection;
+          expect(selection.node.attrs.id).to.equal('media1');
+        });
+      });
+
+      context.skip('when there is no media node before, but media node after', () => {
+        it(`set selection to the next media node after removing ${status} media node`, () => {
+          const deletingMediaNodeId = 'media2';
+          const deletingMediaNode = media({ id: 'media2', type: 'file', collection: testCollectionName });
+          const { editorView, pluginState } = editor(
+            doc(
+              p('hello'),
+              mediaGroup(
+                deletingMediaNode,
+                media({ id: 'media3', type: 'file', collection: testCollectionName }),
+              ),
+            ),
+          );
+
+          stateManager.updateState(deletingMediaNodeId, {
+            status,
+            id: deletingMediaNodeId,
+          });
+
+          const pos = getNodePos(pluginState, deletingMediaNodeId);
+          (pluginState as MediaPluginState).handleMediaNodeRemove(deletingMediaNode, () => pos);
+
+          const selection = editorView.state.selection as NodeSelection;
+          expect(selection.node.attrs.id).to.equal('media3');
+        });
+      });
+    });
+  });
+
+  describe('removeMediaNode', () => {
+    context('when selection is a media node', () => {
+      it('calls handleMediaNodeRemove', () => {
+        const deletingMediaNodeId = 'media';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        const setSelectionAfterRemovalSpy = sinon.spy(pluginState, 'handleMediaNodeRemove');
+
+        pluginState.removeMediaNode();
+
+        expect(setSelectionAfterRemovalSpy.calledOnce).to.equal(true);
+      });
+
+      it('removes node', () => {
+        const deletingMediaNodeId = 'media';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        const setSelectionAfterRemovalSpy = sinon.spy(pluginState, 'handleMediaNodeRemove');
+
+        pluginState.removeMediaNode();
+
+        expect(editorView.state.doc).to.deep.equal(doc(p()));
+      });
+
+      it('returns true', () => {
+        const deletingMediaNodeId = 'media2';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.removeMediaNode()).to.equal(true);
+      });
+    });
+
+    context('when selection is a non media node', () => {
+      it('does not remove media node', () => {
+        const deletingMediaNodeId = 'media2';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(hr, mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        const setSelectionAfterRemovalSpy = sinon.spy(pluginState, 'handleMediaNodeRemove');
+
+        pluginState.removeMediaNode();
+
+        expect(setSelectionAfterRemovalSpy.called).to.equal(false);
+      });
+
+      it('returns false', () => {
+        const deletingMediaNodeId = 'media2';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(hr, mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.removeMediaNode()).to.equal(false);
+      });
+    });
+
+    context('when selection is text', () => {
+      it('does not remove media node', () => {
+        const deletingMediaNodeId = 'media2';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+        const { pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
+
+        const setSelectionAfterRemovalSpy = sinon.spy(pluginState, 'handleMediaNodeRemove');
+
+        pluginState.removeMediaNode();
+
+        expect(setSelectionAfterRemovalSpy.called).to.equal(false);
+      });
+
+      it('returns false', () => {
+        const deletingMediaNodeId = 'media2';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+        const { pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
+
+        expect(pluginState.removeMediaNode()).to.equal(false);
+      });
     });
   });
 

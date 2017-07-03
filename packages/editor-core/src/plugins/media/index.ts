@@ -27,6 +27,7 @@ import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import inputRulePlugin from './input-rule';
+import keymapPlugin from './keymap';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
@@ -163,7 +164,7 @@ export class MediaPluginState {
     );
   }
 
-  insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
+  insertFile = (mediaState: MediaState, collection: string): [PMNode, Transaction] => {
     const { view } = this;
     const { state } = view;
     const { id } = mediaState;
@@ -203,7 +204,7 @@ export class MediaPluginState {
       transaction = state.tr.insert(this.findInsertPosition(), node);
     }
 
-    return [ node, transaction ];
+    return [node, transaction];
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -431,7 +432,7 @@ export class MediaPluginState {
       return;
     }
 
-    const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
+    const [node, transaction] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
     const { view } = this;
 
     view.dispatch(transaction);
@@ -446,6 +447,7 @@ export class MediaPluginState {
   private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
     const { id } = node.attrs;
     const status = this.getMediaNodeStateStatus(id);
+    const nodePos = getPos() || this.findMediaNode(id)!.getPos();
 
     switch (status) {
       case 'uploading':
@@ -456,7 +458,7 @@ export class MediaPluginState {
           return;
         }
 
-        this.removeMediaNode(id);
+        this.removeMediaNodeById(id);
         break;
 
       default:
@@ -465,11 +467,32 @@ export class MediaPluginState {
         }
 
         const { view } = this;
-        const nodePos = getPos();
         const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
 
         view.dispatch(tr);
         break;
+    }
+
+    this.setSelectionAfterRemoval(nodePos);
+  }
+
+  private setSelectionAfterRemoval(currentPos: number): void {
+    const { state, dispatch } = this.view;
+    const { doc, tr } = state;
+    const $currentPos = doc.resolve(currentPos);
+    const previousNode = $currentPos.nodeBefore;
+    const nextNode = $currentPos.nodeAfter;
+
+    if (previousNode) {
+      const mediaNodeWithPos = this.findMediaNode(previousNode.attrs.id) as MediaNodeWithPosHandler;
+      const $nextPos = doc.resolve(mediaNodeWithPos.getPos());
+      tr.setSelection(new NodeSelection($nextPos));
+      dispatch(tr);
+    } else if (nextNode) {
+      const mediaNodeWithPos = this.findMediaNode(nextNode.attrs.id) as MediaNodeWithPosHandler;
+      const $nextPos = doc.resolve(mediaNodeWithPos.getPos());
+      tr.setSelection(new NodeSelection($nextPos));
+      dispatch(tr);
     }
   }
 
@@ -477,7 +500,7 @@ export class MediaPluginState {
     switch (state.status) {
       case 'error':
         // TODO: we would like better error handling and retry support here.
-        this.removeMediaNode(state.id);
+        this.removeMediaNodeById(state.id);
 
         const { uploadErrorHandler } = this.options;
 
@@ -527,13 +550,27 @@ export class MediaPluginState {
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
+  removeMediaNode = (): boolean => {
+    const { $from, node } = this.view.state.selection as NodeSelection;
+    if (this.isMediaNodeSelection()) {
+      this.handleMediaNodeRemove(node, () => $from.pos);
+      return true;
+    }
+    return false;
+  }
+
+  private isMediaNodeSelection() {
+    const { selection, schema } = this.view.state;
+    return selection instanceof NodeSelection && selection.node.type === schema.nodes.media;
+  }
+
   /**
    * Called when:
    * 1) user wants to delete the node when is hasn't been finalized (not ready) from UI
    * 2) when upload process finished with "error" status
    * In both cases we just delete the PM node from the document
    */
-  private removeMediaNode = (id: string) => {
+  private removeMediaNodeById = (id: string) => {
     const { view } = this;
     if (!view) {
       return;
@@ -640,7 +677,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
 
 const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
   const plugin = mediaPluginFactory(options);
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

@@ -67,36 +67,32 @@ export default class DynamicTable extends Component {
     } = this.props;
     const totalPages = rows ? Math.ceil(rows.length / rowsPerPage) : 0;
     const bodyProps = { rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize };
-    const header = (head && <TableHead
-      head={head}
-      onSort={this.onSort}
-      sortKey={sortKey}
-      sortOrder={sortOrder}
-    />);
+    const rowsExist = (rows && rows.length);
     const emptyBody = (emptyView && <EmptyBody>
       {emptyView}
     </EmptyBody>);
-    return !(rows && rows.length) ?
+
+    return (
       <div>
         <Table isFixedSize={isFixedSize}>
-          {header}
+          {!!caption && <Caption>{caption}</Caption>}
+          {head && <TableHead
+            head={head}
+            onSort={this.onSort}
+            sortKey={sortKey}
+            sortOrder={sortOrder}
+          />}
+          {rowsExist && <Body {...bodyProps} />}
         </Table>
-        {emptyBody}
-      </div> : (
-        <div>
-          <Table isFixedSize={isFixedSize}>
-            {!!caption && <Caption>{caption}</Caption>}
-            {header}
-            <Body {...bodyProps} />
-          </Table>
-          {!totalPages ? null : (
-            <Pagination
-              current={page}
-              onSetPage={this.onSetPage}
-              total={totalPages}
-            />
-          )}
-        </div>
+        {!totalPages ? null : (
+          <Pagination
+            current={page}
+            onSetPage={this.onSetPage}
+            total={totalPages}
+          />
+        )}
+        {!rowsExist && emptyBody}
+      </div>
     );
   }
 }

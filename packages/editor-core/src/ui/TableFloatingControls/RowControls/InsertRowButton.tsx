@@ -13,7 +13,7 @@ export interface ButtonProps {
   index: number;
   style?: object;
   insertRow: (row: number) => void;
-  lineMarkerWidth: number;
+  lineMarkerWidth?: number;
 }
 
 export default class InsertRowButton extends Component<ButtonProps, any> {

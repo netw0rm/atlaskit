@@ -13,7 +13,7 @@ export interface ButtonProps {
   index: number;
   style?: object;
   insertColumn: (column: number) => void;
-  lineMarkerHeight: number;
+  lineMarkerHeight?: number;
 }
 
 export default class InsertColumnButton extends Component<ButtonProps, any> {

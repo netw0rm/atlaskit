@@ -39,7 +39,7 @@ const PaginationExample = () => (
     />
     <MultiSelect
       items={selectItems}
-      label="Disabled Select"
+      label="Invalid Select"
       placeholder="Choose a City"
       isInvalid
     />

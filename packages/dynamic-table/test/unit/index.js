@@ -2,6 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
 import { Pagination } from '@atlaskit/pagination';
+import TableHead from '../../src/components/TableHead';
+import EmptyBody from '../../src/components/EmptyBody';
+import Body from '../../src/components/Body';
+import { Caption } from '../../src/styled/DynamicTable';
 import DynamicTable, { DynamicTableStateless } from '../../src';
 
 import { name } from '../../package.json';
@@ -58,10 +62,63 @@ const rows = [
 
 describe(name, () => {
   describe('stateless', () => {
-    it('should display empty view when items length is 0', () => {
-      const EmptyView = <div>empty view</div>;
-      const wrapper = mount(<DynamicTableStateless emptyView={EmptyView} />);
-      expect(wrapper.html()).to.equal(mount(EmptyView).html());
+    it('should render TableHead when items length is 0 and not render EmptyBody if emptyView prop is ommitted', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          head={head}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
+      const body = wrapper.find(Body);
+      expect(header.length).to.equal(1);
+      expect(emptyView.length).to.equal(0);
+      expect(body.length).to.equal(0);
+    });
+    it('should render TableHead when items length is 0 and render EmptyBody if emptyView prop is provided', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          head={head}
+          emptyView={<h2>No items present in table</h2>}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
+      const body = wrapper.find(Body);
+      expect(header.length).to.equal(1);
+      expect(emptyView.length).to.equal(1);
+      expect(body.length).to.equal(0);
+    });
+    it('should not render TableHead if head prop is not provided and should render EmptyBody if emptyView prop is provided', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          emptyView={<h2>No items present in table</h2>}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
+      const body = wrapper.find(Body);
+      expect(header.length).to.equal(0);
+      expect(body.length).to.equal(0);
+      expect(emptyView.length).to.equal(1);
+    });
+
+    it('should render head, emptyView and caption if provided', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          head={head}
+          emptyView={<h2>No items present in table</h2>}
+          caption={<h2>This is a table caption</h2>}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
+      const caption = wrapper.find(Caption);
+      const body = wrapper.find(Body);
+      expect(header.length).to.equal(1);
+      expect(emptyView.length).to.equal(1);
+      expect(caption.length).to.equal(1);
+      expect(body.length).to.equal(0);
     });
 
     it('should display paginated data', () => {

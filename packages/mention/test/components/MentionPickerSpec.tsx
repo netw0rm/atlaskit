@@ -93,9 +93,28 @@ describe('MentionPicker', () => {
           let errorMention = component.find(MentionListError);
           let err = errorMention.prop('error') as HttpError;
           expect(err.statusCode).to.equal(401);
-          expect(errorMention.text()).to.contain('logging in');
+          expect(errorMention.text()).to.contain('logging out');
         });
       });
+  });
+
+  it('should display particular message for 403 HTTP response', () => {
+    const component = setupPicker();
+
+    return waitUntil(createDefaultMentionItemsShowTest(component))
+      .then(() => {
+        component.setProps({ query: 'nothing' });
+        return waitUntil(createNoMentionItemsShownTest(component));
+      })
+      .then(() => {
+        component.setProps({ query: '403' });
+        return waitUntil(createMentionErrorShownTest(component)).then(() => {
+          let errorMention = component.find(MentionListError);
+          let err = errorMention.prop('error') as HttpError;
+          expect(err.statusCode).to.equal(403);
+          expect(errorMention.text()).to.contain('different text');
+        })
+      })
   });
 
   it('should display previous mention if error straight after', () => {

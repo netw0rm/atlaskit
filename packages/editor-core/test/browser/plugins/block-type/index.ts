@@ -257,6 +257,19 @@ describe('block-type', () => {
     expect(pluginState.currentBlockType.name).to.equal('normal');
   });
 
+  it('should set isCodeBlock true for codeBlock', () => {
+    const { pluginState } = editor(doc(code_block()('te{<>}xt')));
+    expect(pluginState.isCodeBlock).to.equal(true);
+  });
+
+  it('should have all of the present blocks type panel, blockQuote, codeBlock in availableWrapperBlockTypes', () => {
+    const { pluginState } = editor(doc(panel(blockquote(code_block()('te{<>}xt')))));
+    expect(pluginState.availableWrapperBlockTypes.length).to.equal(3);
+    expect(pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'panel')).to.equal(true);
+    expect(pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'codeblock')).to.equal(true);
+    expect(pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'blockquote')).to.equal(true);
+  });
+
   it('should be able to identify normal even if there are multiple blocks', () => {
     const { pluginState } = editor(doc(p('te{<}xt'), p('text'), p('te{>}xt')));
     expect(pluginState.currentBlockType.name).to.equal('normal');
@@ -282,14 +295,9 @@ describe('block-type', () => {
     expect(pluginState.currentBlockType.name).to.equal('heading3');
   });
 
-  it('should be able to identify block quote', () => {
-    const { pluginState } = editor(doc(blockquote(p('te{<>}xt'))));
-    expect(pluginState.currentBlockType.name).to.equal('blockquote');
-  });
-
   it('should be able to identify code block', () => {
     const { pluginState } = editor(doc(code_block()('te{<>}xt')));
-    expect(pluginState.currentBlockType.name).to.equal('codeblock');
+    expect(pluginState.isCodeBlock).to.equal(true);
   });
 
   it('should be able to change to back to paragraph and then change to blockquote', () => {
@@ -325,6 +333,14 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('blockquote', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3'))));
+  });
+
+  it('should nest blocks when calling insertBlocktype multiple times', () => {
+    const { editorView, pluginState } = editor(doc(p('te{<>}st')));
+
+    pluginState.insertBlockType('blockquote', editorView);
+    pluginState.insertBlockType('blockquote', editorView);
+    expect(editorView.state.doc).to.deep.equal(doc(blockquote(blockquote(p('test')))));
   });
 
   it('should change state when selecting different block types', () => {

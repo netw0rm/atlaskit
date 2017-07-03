@@ -34,12 +34,12 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
+import ToolbarInsertBlock from '../ToolbarInsertBlock';
 import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
 import TableFloatingControls from '../TableFloatingControls';
-import ToolbarTable from '../ToolbarTable';
 import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
@@ -194,6 +194,13 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
+          {pluginStateTextFormatting ?
+            <ToolbarInlineCode
+              disabled={disabled}
+              editorView={editorView}
+              pluginState={pluginStateTextFormatting}
+            /> : null
+          }
           {pluginStateTextColor ?
             <ToolbarTextColor
               disabled={disabled}
@@ -217,24 +224,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
-          {pluginStateTextFormatting ?
-            <ToolbarInlineCode
-              disabled={disabled}
-              editorView={editorView}
-              pluginState={pluginStateTextFormatting}
-            /> : null
-          }
           {pluginStateHyperlink ?
             <ToolbarHyperlink
               disabled={disabled}
               pluginState={pluginStateHyperlink}
-              editorView={editorView}
-            /> : null
-          }
-          {pluginStateTable ?
-            <ToolbarTable
-              disabled={disabled}
-              pluginState={pluginStateTable}
               editorView={editorView}
             /> : null
           }
@@ -244,6 +237,19 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               pluginState={pluginStateLists}
               editorView={editorView}
             /> : null
+          }
+          {(pluginStateTable || pluginStateMedia || pluginStateBlockType) &&
+            <ToolbarInsertBlock
+              isDisabled={disabled}
+              pluginStateTable={pluginStateTable}
+              pluginStateMedia={pluginStateMedia}
+              pluginStateBlockType={pluginStateBlockType}
+              editorView={editorView}
+              softBlurEditor={this.softBlurEditor}
+              focusEditor={this.focusEditor}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            />
           }
           <span style={{ flexGrow: 1 }} />
           {feedbackFormUrl ? <ToolbarFeedback packageVersion={packageVersion} packageName={packageName} /> : null}

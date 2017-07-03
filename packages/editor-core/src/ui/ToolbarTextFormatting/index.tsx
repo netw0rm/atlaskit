@@ -1,11 +1,10 @@
 import BoldIcon from '@atlaskit/icon/glyph/editor/bold';
 import ItalicIcon from '@atlaskit/icon/glyph/editor/italic';
-import UnderlineIcon from '@atlaskit/icon/glyph/editor/underline';
 import { EditorView } from '../../prosemirror';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { toggleBold, toggleItalic, toggleUnderline, tooltip } from '../../keymaps';
+import { toggleBold, toggleItalic, tooltip } from '../../keymaps';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import ToolbarButton from '../ToolbarButton';
 import { ButtonGroup } from './styles';
@@ -23,9 +22,6 @@ export interface State {
   italicActive?: boolean;
   italicDisabled?: boolean;
   italicHidden?: boolean;
-  underlineActive?: boolean;
-  underlineDisabled?: boolean;
-  underlineHidden?: boolean;
 }
 
 export default class ToolbarTextFormatting extends PureComponent<Props, State> {
@@ -63,16 +59,6 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
             iconBefore={<ItalicIcon label="Italic" />}
           />
         }
-
-        {this.state.underlineHidden ? null :
-          <ToolbarButton
-            onClick={this.handleUnderlineClick}
-            selected={this.state.underlineActive}
-            disabled={disabled || this.state.underlineDisabled}
-            title={tooltip(toggleUnderline)}
-            iconBefore={<UnderlineIcon label="Underline" />}
-          />
-        }
       </ButtonGroup>
     );
   }
@@ -85,9 +71,6 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
       italicActive: pluginState.emActive,
       italicDisabled: pluginState.emDisabled,
       italicHidden: pluginState.emHidden,
-      underlineActive: pluginState.underlineActive,
-      underlineDisabled: pluginState.underlineDisabled,
-      underlineHidden: pluginState.underlineHidden,
     });
   }
 
@@ -103,14 +86,6 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
   private handleItalicClick = (): boolean => {
     if (!this.state.italicDisabled) {
       return this.props.pluginState.toggleEm(this.props.editorView);
-    }
-    return false;
-  }
-
-  @analytics('atlassian.editor.format.underline.button')
-  private handleUnderlineClick = (): boolean => {
-    if (!this.state.underlineDisabled) {
-      return this.props.pluginState.toggleUnderline(this.props.editorView);
     }
     return false;
   }

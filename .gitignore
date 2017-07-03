@@ -21,8 +21,7 @@ local.log
 /storybook-static
 browserstack-entry.js
 packages/**/**/README.md
-packages/**/**/CHANGELOG.md
-!packages/**/docs/CHANGELOG.md
+packages/*/CHANGELOG.md
 **/local-config.js
 packages/**/yarn.lock
 changed-packages

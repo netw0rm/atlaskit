@@ -11,4 +11,10 @@ storiesOf('ProgressBar')
     <ProgressBar progress="25" />
   )).add('Complete', () => setupStorybookAnalytics(
     <ProgressBar progress="100" />
+  )).add('Negative', () => setupStorybookAnalytics(
+    <ProgressBar progress="-100" />
+  )).add('Over 100', () => setupStorybookAnalytics(
+    <ProgressBar progress="200" />
+  )).add('Non-number', () => setupStorybookAnalytics(
+    <ProgressBar progress="dx3!!" />
   ));

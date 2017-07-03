@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import ApplicationCard from '../../../../../src/renderer/react/nodes/applicationCard';
 import { AppCardView } from '@atlaskit/media-card';
 
-describe('Renderer - React/Nodes/Blockquote', () => {
+describe('Renderer - React/Nodes/ApplicationCard', () => {
   const attrs = {
     text: 'applicationCard',
     title: {

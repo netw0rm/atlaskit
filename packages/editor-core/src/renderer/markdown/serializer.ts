@@ -4,6 +4,7 @@ import {
   MarkdownSerializerState as PMMarkdownSerializerState,
   Node,
   Fragment,
+  Schema,
 } from '../../prosemirror';
 import { stringRepeat } from '../../utils';
 import { bitbucketSchema as schema } from '../../schema';
@@ -191,12 +192,17 @@ export class MarkdownSerializer extends PMMarkdownSerializer implements Serializ
     state.renderContent(content);
     return state.out === '\u200c' ? '' : state.out; // Return empty string if editor only contains a zero-non-width character
   }
+
   serializeFragment(fragment: Fragment): void {
     const self = this;
 
     fragment.forEach(node => {
       self.serialize(node);
     });
+  }
+
+  static fromSchema(schema: Schema<any, any>): MarkdownSerializer {
+    return new MarkdownSerializer(nodes, marks);
   }
 }
 
@@ -307,4 +313,4 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
   }
 }
 
-export default new MarkdownSerializer(nodes, marks);
+export default MarkdownSerializer;

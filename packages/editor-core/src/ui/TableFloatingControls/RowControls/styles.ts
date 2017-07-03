@@ -43,12 +43,9 @@ export const HeaderButton = styled(HeaderButtonDefault)`
   height: 100%;
   width: ${akEditorTableToolbarSize - 1}px;
 
-  &:hover, .active > & {
+  &:hover, .active > &, .tableSelected & {
     border-right: 1px solid ${akEditorTableBorderSelected};
     width: ${akEditorTableToolbarSize}px;
-  }
-  &:hover ~ span {
-    display: block;
   }
 `;
 // tslint:disable-next-line:variable-name
@@ -78,13 +75,4 @@ export const RowLineMarker = styled(LineMarkerDefault)`
   height: 2px;
   top: 8px;
   left: 20px;
-`;
-// tslint:disable-next-line:variable-name
-export const RowSelection = styled.span`
-  display: none;
-  position: absolute;
-  left: 11px;
-  top: 0;
-  border: 2px solid ${akEditorTableBorderSelected};
-  pointer-events: none;
 `;

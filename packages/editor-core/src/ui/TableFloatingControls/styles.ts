@@ -6,6 +6,8 @@ import {
   akEditorTableToolbar,
 } from '../../styles';
 
+export const toolbarSize = 11;
+
 // tslint:disable-next-line:variable-name
 export const Container = styled.div`
   position: relative;
@@ -18,7 +20,7 @@ export const HeaderButtonDefault = styled.button`
   display: block;
   padding: 0;
   cursor: pointer;
-  &:hover, .active > & {
+  &:hover, .active > &, .tableSelected & {
     background-color: ${akEditorTableToolbarSelected};
     border-color: ${akEditorTableBorderSelected};
   }

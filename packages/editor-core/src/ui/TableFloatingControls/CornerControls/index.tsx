@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { toolbarSize } from '../styles';
 import {
   CornerContainer,
   CornerButton,
-  TableSelection,
 } from './styles';
 import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
@@ -14,6 +14,8 @@ export interface Props {
   selectTable: () => void;
   insertColumn: (column: number) => void;
   insertRow: (row: number) => void;
+  onMouseOver: () => void;
+  onMouseOut: () => void;
 }
 
 export default class CornerControls extends Component<Props, any> {
@@ -24,19 +26,22 @@ export default class CornerControls extends Component<Props, any> {
 
     return (
       <CornerContainer className={this.props.isSelected() ? 'active' : ''}>
-        <CornerButton onClick={this.props.selectTable} />
-        <TableSelection style={{ width: tableWidth - 4, height: tableHeight - 4 }} />
+        <CornerButton
+          onClick={this.props.selectTable}
+          onMouseOver={this.props.onMouseOver}
+          onMouseOut={this.props.onMouseOut}
+        />
         <InsertColumnButton
-          style={{right: '-11px', top: '-19px'}}
+          style={{right: - toolbarSize, top: - toolbarSize - 8}}
           index={0}
           insertColumn={this.props.insertColumn}
-          lineMarkerHeight={tableHeight + 11}
+          lineMarkerHeight={tableHeight + toolbarSize}
         />
         <InsertRowButton
-          style={{bottom: '-11px', left: '-19px'}}
+          style={{bottom: - toolbarSize, left: - toolbarSize - 8}}
           index={0}
           insertRow={this.props.insertRow}
-          lineMarkerWidth={tableWidth + 11}
+          lineMarkerWidth={tableWidth + toolbarSize}
         />
       </CornerContainer>
     );

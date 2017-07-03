@@ -31,16 +31,13 @@ export const CornerButton = styled.button`
   cursor: pointer;
   padding: 0;
 
-  &:hover, .active > & {
+  &:hover, .active > &, .tableSelected & {
     background-image: linear-gradient(to bottom right, #fff 0, #fff 49%, ${akEditorTableToolbarSelected} 50%, ${akEditorTableToolbarSelected} 100%);
     border-color: ${akEditorTableBorderSelected};
     z-index: 1;
   }
   &:focus {
     outline: none;
-  }
-  &:hover ~ span {
-    display: block;
   }
 `;
 // tslint:disable-next-line:variable-name
@@ -54,13 +51,4 @@ export const RowLineMarker = styled(LineMarkerDefault)`
   height: 2px;
   top: 8px;
   left: 20px;
-`;
-// tslint:disable-next-line:variable-name
-export const TableSelection = styled.span`
-  display: none;
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  border: 2px solid ${akEditorTableBorderSelected};
-  pointer-events: none;
 `;

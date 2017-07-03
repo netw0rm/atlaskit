@@ -18,10 +18,13 @@ export interface State {
   tableElement?: HTMLElement;
   tableNode?: Node;
   cellSelection?: CellSelection;
+  tableSelected: boolean;
 }
 
 export default class TableFloatingControls extends PureComponent<Props, State> {
-  state: State = {};
+  state: State = {
+    tableSelected: false
+  };
   content?: HTMLElement;
 
   componentDidMount() {
@@ -45,8 +48,16 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
     this.props.pluginState.updateToolbarFocused(false);
   }
 
+  handleCornerMouseOver = () => {
+    this.setState({ tableSelected: true });
+  }
+
+  handleCornerMouseOut = () => {
+    this.setState({ tableSelected: false });
+  }
+
   render() {
-    const { tableElement } = this.state;
+    const { tableElement, tableSelected } = this.state;
     const { pluginState, popupsBoundariesElement, popupsMountPoint } = this.props;
 
     if (!tableElement) {
@@ -60,13 +71,15 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
         mountTo={popupsMountPoint}
         alignY="top"
       >
-        <div onMouseDown={this.handleMouseDown} onBlur={this.handleBlur}>
+        <div onMouseDown={this.handleMouseDown} onBlur={this.handleBlur} className={tableSelected ? 'tableSelected' : ''}>
           <CornerControls
             tableElement={tableElement}
             isSelected={pluginState.isTableSelected}
             selectTable={pluginState.selectTable}
             insertColumn={pluginState.insertColumn}
             insertRow={pluginState.insertRow}
+            onMouseOver={this.handleCornerMouseOver}
+            onMouseOut={this.handleCornerMouseOut}
           />
           <ColumnControls
             tableElement={tableElement}

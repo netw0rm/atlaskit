@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { toolbarSize } from '../styles';
 import {
   RowInner,
   RowContainer,
   RowControlsButtonWrap,
   HeaderButton,
-  RowSelection,
 } from './styles';
 import InsertRowButton from './InsertRowButton';
 
@@ -23,21 +23,18 @@ export default class RowControls extends Component<Props, any> {
     const tableWidth = this.props.tableElement.offsetWidth;
 
     for (let i = 0, len = rows.length; i < len; i++) {
-      const rowHeight = (rows[i] as HTMLElement).offsetHeight;
-
       nodes.push(
         <RowControlsButtonWrap
           key={i}
           className={this.props.isSelected(i) ? 'active' : ''}
-          style={{ height: rowHeight + 1 }}
+          style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
         >
           {/* tslint:disable-next-line:jsx-no-lambda */}
           <HeaderButton onClick={() => this.props.selectRow(i)} />
-          <RowSelection style={{ width: tableWidth - 4, height: rowHeight - 3 }} />
           <InsertRowButton
             insertRow={this.props.insertRow}
             index={i + 1}
-            lineMarkerWidth={tableWidth + 11}
+            lineMarkerWidth={tableWidth + toolbarSize}
           />
         </RowControlsButtonWrap>
       );

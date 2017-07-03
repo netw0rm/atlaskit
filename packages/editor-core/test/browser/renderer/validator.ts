@@ -557,6 +557,15 @@ describe('Renderer - Validator', () => {
         });
       });
 
+      it('should add protocol to a url if it doesn`t exist', () => {
+        expect(getValidMark({ type: 'link', attrs: { href: 'www.atlassian.com' } })).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: 'http://www.atlassian.com'
+          },
+        });
+      });
+
       it('should use attrs.url if present and attrs.href is missing', () => {
         expect(getValidMark({ type: 'link', attrs: { url: 'https://www.atlassian.com' } })).to.deep.equal({
           type: 'link',

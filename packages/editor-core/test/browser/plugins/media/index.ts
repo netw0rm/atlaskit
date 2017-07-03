@@ -102,7 +102,7 @@ describe('Media plugin', () => {
           p(),
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('puts cursor to the next paragraph after inserting media node', () => {
@@ -114,7 +114,7 @@ describe('Media plugin', () => {
       const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
 
       expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('should prepend media node to existing media group after it', () => {
@@ -135,7 +135,7 @@ describe('Media plugin', () => {
           )
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
   });
 
@@ -158,7 +158,7 @@ describe('Media plugin', () => {
           p('text'),
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
   });
 
@@ -177,7 +177,7 @@ describe('Media plugin', () => {
             p('xt'),
           )
         );
-        collectionFromProvider.restore();
+        collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
       });
 
       it('moves cursor to the front of later part of the text', () => {
@@ -189,7 +189,7 @@ describe('Media plugin', () => {
         const mediaGroupNodeSize = mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })).nodeSize;
 
         expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
-        collectionFromProvider.restore();
+        collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
       });
     });
 
@@ -207,7 +207,7 @@ describe('Media plugin', () => {
             h1('xt'),
           )
         );
-        collectionFromProvider.restore();
+        collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
       });
     });
   });
@@ -228,7 +228,7 @@ describe('Media plugin', () => {
               p('t'),
             )
           );
-          collectionFromProvider.restore();
+          collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
         });
       });
 
@@ -247,7 +247,7 @@ describe('Media plugin', () => {
                   p(),
                 )
               );
-              collectionFromProvider.restore();
+              collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
             });
           });
 
@@ -265,7 +265,7 @@ describe('Media plugin', () => {
                   p(),
                 )
               );
-              collectionFromProvider.restore();
+              collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
             });
           });
         });
@@ -291,7 +291,7 @@ describe('Media plugin', () => {
                 ),
               )
             );
-            collectionFromProvider.restore();
+            collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
           });
         });
       });
@@ -310,7 +310,7 @@ describe('Media plugin', () => {
               p(),
             )
           );
-          collectionFromProvider.restore();
+          collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
         });
 
         it('prepends to exisiting media group after parent', () => {
@@ -331,7 +331,7 @@ describe('Media plugin', () => {
               )
             )
           );
-          collectionFromProvider.restore();
+          collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
         });
       });
     });
@@ -352,7 +352,7 @@ describe('Media plugin', () => {
               p(),
             )
           );
-          collectionFromProvider.restore();
+          collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
         });
       });
 
@@ -376,7 +376,7 @@ describe('Media plugin', () => {
               p('text'),
             )
           );
-          collectionFromProvider.restore();
+          collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
         });
 
         it('sets cursor to the paragraph after', () => {
@@ -394,7 +394,7 @@ describe('Media plugin', () => {
           ).nodeSize;
 
           expect(editorView.state.selection.from).to.deep.equal(mediaGroupNodeSize);
-          collectionFromProvider.restore();
+          collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
         });
       });
 
@@ -413,7 +413,7 @@ describe('Media plugin', () => {
                 p(),
               )
             );
-            collectionFromProvider.restore();
+            collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
           });
         });
 
@@ -439,7 +439,7 @@ describe('Media plugin', () => {
                   p(),
                 )
               );
-              collectionFromProvider.restore();
+              collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
             });
           });
 
@@ -462,7 +462,7 @@ describe('Media plugin', () => {
                   )
                 )
               );
-              collectionFromProvider.restore();
+              collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
             });
           });
 
@@ -488,7 +488,7 @@ describe('Media plugin', () => {
                   ),
                 )
               );
-              collectionFromProvider.restore();
+              collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
             });
           });
         });
@@ -508,7 +508,7 @@ describe('Media plugin', () => {
             p('xt'),
           )
         );
-        collectionFromProvider.restore();
+        collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
       });
 
       it('prepends to exisiting media group before parent', () => {
@@ -529,7 +529,7 @@ describe('Media plugin', () => {
             p('xt'),
           )
         );
-        collectionFromProvider.restore();
+        collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
       });
     });
   });
@@ -547,7 +547,7 @@ describe('Media plugin', () => {
         ),
         p(),
       ));
-    collectionFromProvider.restore();
+    collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
   });
 
   it(`should insert media node into the document after current blockquote node`, () => {
@@ -563,7 +563,7 @@ describe('Media plugin', () => {
         p(),
       ))
     );
-    collectionFromProvider.restore();
+    collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
   });
 
   it(`should insert media node into the document after current codeblock node`, () => {
@@ -579,7 +579,7 @@ describe('Media plugin', () => {
         ),
         p(),
       ));
-    collectionFromProvider.restore();
+    collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
   });
 
   context('inside empty block', () => {
@@ -595,7 +595,7 @@ describe('Media plugin', () => {
           p(),
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('apends media group to empty paragraph in an empty code block', () => {
@@ -611,7 +611,7 @@ describe('Media plugin', () => {
           p(),
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('apends media group to empty paragraph in an empty heading', () => {
@@ -627,7 +627,7 @@ describe('Media plugin', () => {
           p(),
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('prepends media to existing media group before the empty paragraph', () => {
@@ -648,7 +648,7 @@ describe('Media plugin', () => {
           p(),
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
@@ -663,7 +663,7 @@ describe('Media plugin', () => {
           p()
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
@@ -679,7 +679,7 @@ describe('Media plugin', () => {
           p()
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('should insert all media nodes on the same line', async () => {
@@ -697,7 +697,7 @@ describe('Media plugin', () => {
         ),
         p(),
       ));
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
@@ -716,7 +716,7 @@ describe('Media plugin', () => {
       );
 
       expect((pluginState.binaryPicker!.upload as any).calledOnce).to.equal(true);
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); pluginState.destroy();
     });
 
     it('should call uploadErrorHandler on upload error', async () => {
@@ -746,7 +746,7 @@ describe('Media plugin', () => {
           description: 'something went wrong'
         }
       })).to.eq(true, 'uploadErrorHandler should be called with MediaState containing \'error\' status');
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); pluginState.destroy();
     });
 
     it('should remove failed uploads from the document', async () => {
@@ -778,7 +778,7 @@ describe('Media plugin', () => {
           p()
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('should cancel in-flight uploads after media item is removed from document', async () => {
@@ -857,7 +857,7 @@ describe('Media plugin', () => {
         id: secondTemporaryFileId,
         status: 'cancelled'
       })).to.eq(true, 'State Manager should emit "cancelled" status');
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
 
     it('should not revert to temporary media nodes after upload finished and we undo', async () => {
@@ -915,7 +915,7 @@ describe('Media plugin', () => {
           p(),
         )
       );
-      collectionFromProvider.restore();
+      collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
     });
   });
 
@@ -1058,7 +1058,7 @@ describe('Media plugin', () => {
         p(),
       ),
     );
-    collectionFromProvider.restore();
+    collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
   });
 
   describe('detectLinkRangesInSteps', () => {
@@ -1203,7 +1203,7 @@ describe('Media plugin', () => {
         pluginState.insertLinks([]);
 
         expect(editorView.state.doc).to.deep.equal(doc(p(`${text} `)));
-        collectionFromProvider.restore();
+        collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
       });
     });
 
@@ -1224,7 +1224,7 @@ describe('Media plugin', () => {
             mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
             p(),
           ));
-          collectionFromProvider.restore();
+          collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
         });
 
         context('lastest pos in range is out of doc range', () => {
@@ -1243,7 +1243,7 @@ describe('Media plugin', () => {
               mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
               p(),
             ));
-            collectionFromProvider.restore();
+            collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
           });
         });
 
@@ -1266,7 +1266,7 @@ describe('Media plugin', () => {
               mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
               p('hello'),
             ));
-            collectionFromProvider.restore();
+            collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
           });
         });
       });
@@ -1293,7 +1293,7 @@ describe('Media plugin', () => {
               media({ id: link2, type: 'link', collection: testCollectionName }),
             )
           ));
-          collectionFromProvider.restore();
+          collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
         });
 
         context('lastest pos in range is out of doc range', () => {
@@ -1318,7 +1318,7 @@ describe('Media plugin', () => {
                 media({ id: link2, type: 'link', collection: testCollectionName }),
               )
             ));
-            collectionFromProvider.restore();
+            collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
           });
         });
       });
@@ -1357,7 +1357,7 @@ describe('Media plugin', () => {
           ),
           p('hello'),
         ));
-        collectionFromProvider.restore();
+        collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
       });
     });
   });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
-import { crossSellShape, CrossSellProvider } from '@atlaskit/cross-acquisition';
+import { CrossSellProvider, crossSellShape } from '@atlaskit/cross-acquisition';
 
 const notImplemented = () => { throw new Error('Not implemented.'); };
 
@@ -24,6 +24,26 @@ export default class MockConfluenceCrossSellProvider extends Component {
             Easily cancel at anytime in <strong>Manage Application</strong>.<br />
             We will email your billing contact 3 days in advance.</p>
         ),
+        grantHeader: 'Who should have access?',
+        grantDefaultAccess: (
+          <p><strong>Everyone in JIRA Software</strong> will have access to Confluence.</p>
+        ),
+        grantLearnMoreLinkText: 'Learn more',
+        grantNotifyUsers: 'Notify these users',
+        grantOptionItems: [{
+          value: 'everyone',
+          label: 'Everyone in JIRA Software',
+        }, {
+          value: 'siteAdmins',
+          label: 'Site admins only',
+        }, {
+          value: 'specificUsers',
+          label: 'Specific users',
+        }],
+        grantUserSelectPlaceholder: 'Start typing a username',
+        grantUsersOption: 'specificUsers',
+        grantChooseOption: 'Choose an option',
+        grantAffectBill: 'How will this affect my bill?',
       },
       canCurrentUserAddProduct: notImplemented,
       isProductInstalledOrActivating: notImplemented,

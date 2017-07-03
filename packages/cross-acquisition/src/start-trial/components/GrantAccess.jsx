@@ -17,6 +17,7 @@ import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import ProgressBar from '../styled/ProgressBar';
 import AffectMyBillText from '../styled/AffectMyBillText';
+import ChangeButton from '../styled/ChangeButton';
 
 export default class GrantAccess extends Component {
   static propTypes = {
@@ -25,13 +26,22 @@ export default class GrantAccess extends Component {
 
   static contextTypes = crossSellShape;
 
-  state = {
-    userSelectInFocus: false,
-    selectedRadio: 'everyone',
-  }
-
   // TODO: make multi-select invalid if specific users chosen with none picked
   // isInvalid={this.state.isInvalid} | this.setState({ isInvalid: true });
+  state = {
+    changeUsers: false,
+    selectedRadio: '',
+    userSelectInFocus: false,
+  }
+
+  componentWillMount() {
+    const selectedValue = this.context.crossSell.startTrial.grantOptionItems[0].value;
+
+    this.setState({
+      selectedRadio: selectedValue,
+      userSelectInFocus: selectedValue === this.context.crossSell.startTrial.grantUsersOption,
+    });
+  }
 
   handleContinueClick = () => {
     this.props.onComplete();
@@ -41,17 +51,24 @@ export default class GrantAccess extends Component {
     console.log('Learn more clicked');
   }
 
+  handleChangeClick = () => {
+    this.setState({
+      changeUsers: true,
+    });
+  }
+
   handleRadioChange = (evt) => {
-    console.log(`The ${`${evt.target.value}`} radio got selected!`);
-    this.setState({ selectedRadio: evt.target.value, userSelectInFocus: false });
-    if (evt.target.value === 'specificUsers') {
-      this.setState({ userSelectInFocus: true });
-    }
+    this.setState({
+      selectedRadio: evt.target.value,
+      userSelectInFocus: evt.target.value === this.context.crossSell.startTrial.grantUsersOption,
+    });
   }
 
   handleUserSelectOpen = (evt) => {
     if (evt.isOpen) {
-      this.setState({ selectedRadio: 'specificUsers' });
+      this.setState({
+        selectedRadio: this.context.crossSell.startTrial.grantUsersOption,
+      });
     }
   }
 
@@ -68,6 +85,7 @@ export default class GrantAccess extends Component {
   })
 
   render() {
+    // TODO: Populate with real users
     const selectItems = [
       {
         items: [
@@ -97,52 +115,53 @@ export default class GrantAccess extends Component {
         }
       >
         <StartTrialDialog>
-          <StartTrialHeader>Who should have access?</StartTrialHeader>
-          <AkFieldRadioGroup
-            ref={(radioGroup) => { this.radioGroup = radioGroup; }}
-            onRadioChange={this.handleRadioChange}
-            items={[{
-              name: 'access-option',
-              value: 'everyone',
-              key: 'everyone',
-              label: 'Everyone in JIRA Software',
-              isSelected: this.state.selectedRadio === 'everyone',
-            },
-            {
-              name: 'access-option',
-              value: 'siteAdmins',
-              key: 'siteAdmins',
-              label: 'Site admins only',
-              isSelected: this.state.selectedRadio === 'siteAdmins',
-            },
-            {
-              name: 'access-option',
-              value: 'specificUsers',
-              key: 'specificUsers',
-              label: ['Specific users'],
-              isSelected: this.state.selectedRadio === 'specificUsers',
-            }]}
-            label="Choose an option"
-          />
-          <UserSelectDiv>
-            <Select
-              ref={(userSelect) => { this.userSelect = userSelect; }}
-              id="userSelect"
-              items={selectItems}
-              placeholder="Start typing a username"
-              name="test"
-              onSelectedChange={item => console.log(item)}
-              onOpenChange={this.handleUserSelectOpen}
-              shouldFitContainer
-              shouldFocus={this.state.userSelectInFocus}
-            />
-          </UserSelectDiv>
-          <AffectMyBillText>How will this affect my bill?
-            <Button onClick={this.handleLearnMoreClick} appearance="link">Learn more</Button>
-          </AffectMyBillText>
+          <StartTrialHeader>{this.context.crossSell.startTrial.grantHeading}</StartTrialHeader>
+
+          {this.state.changeUsers ? (
+            <div>
+              <AkFieldRadioGroup
+                ref={(radioGroup) => { this.radioGroup = radioGroup; }}
+                onRadioChange={this.handleRadioChange}
+                items={this.context.crossSell.startTrial.grantOptionItems.map(item => ({
+                  ...item,
+                  name: 'access-option',
+                  key: item.value,
+                  isSelected: this.state.selectedRadio === item.value,
+                }))}
+                label={this.context.crossSell.startTrial.grantChooseOption}
+              />
+              <UserSelectDiv>
+                <Select
+                  ref={(userSelect) => { this.userSelect = userSelect; }}
+                  id="userSelect"
+                  items={selectItems}
+                  placeholder={this.context.crossSell.startTrial.grantUserSelectPlaceholder}
+                  name="test"
+                  onOpenChange={this.handleUserSelectOpen}
+                  shouldFitContainer
+                  shouldFocus={this.state.userSelectInFocus}
+                />
+              </UserSelectDiv>
+
+              <AffectMyBillText>
+                {this.context.crossSell.startTrial.grantAffectBill}
+                <Button onClick={this.handleLearnMoreClick} appearance="link">{this.context.crossSell.startTrial.grantLearnMoreLinkText}</Button>
+              </AffectMyBillText>
+            </div>
+          ) : (
+            <div>
+              {React.isValidElement(this.context.crossSell.startTrial.grantDefaultAccess)
+                ? this.context.crossSell.startTrial.grantDefaultAccess
+                : <p>{this.context.crossSell.startTrial.grantDefaultAccess}</p>
+              }
+              <ChangeButton>
+                <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>
+              </ChangeButton>
+            </div>
+          )}
           <StartTrialProgressDiv>
             <input type="checkbox" id="notifyUsers" name="notify" value="Notify the users" defaultChecked />
-            <InputLabel htmlFor="notifyUsers">Notify these users</InputLabel>
+            <InputLabel htmlFor="notifyUsers">{this.context.crossSell.startTrial.grantNotifyUsers}</InputLabel>
           </StartTrialProgressDiv>
         </StartTrialDialog>
       </ModalDialog>

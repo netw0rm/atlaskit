@@ -14,6 +14,8 @@ export interface Props {
   isSelected: (row: number) => boolean;
   selectRow: (row: number) => void;
   insertRow: (row: number) => void;
+  hoverRow: (row: number) => void;
+  resetHoverSelection: () => void;
 }
 
 export default class RowControls extends Component<Props, any> {
@@ -29,8 +31,13 @@ export default class RowControls extends Component<Props, any> {
           className={this.props.isSelected(i) ? 'active' : ''}
           style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
         >
-          {/* tslint:disable-next-line:jsx-no-lambda */}
-          <HeaderButton onClick={() => this.props.selectRow(i)} />
+          {/* tslint:disable:jsx-no-lambda */}
+          <HeaderButton
+            onClick={() => this.props.selectRow(i)}
+            onMouseOver={() => this.props.hoverRow(i)}
+            onMouseOut={this.props.resetHoverSelection}
+          />
+          {/* tslint:enable:jsx-no-lambda */}
           <InsertRowButton
             insertRow={this.props.insertRow}
             index={i + 1}

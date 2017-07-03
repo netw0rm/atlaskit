@@ -50,10 +50,12 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
 
   handleCornerMouseOver = () => {
     this.setState({ tableSelected: true });
+    this.props.pluginState.hoverTable();
   }
 
   handleCornerMouseOut = () => {
     this.setState({ tableSelected: false });
+    this.props.pluginState.resetHoverSelection();
   }
 
   render() {
@@ -86,12 +88,16 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
             isSelected={pluginState.isColumnSelected}
             selectColumn={pluginState.selectColumn}
             insertColumn={pluginState.insertColumn}
+            hoverColumn={pluginState.hoverColumn}
+            resetHoverSelection={pluginState.resetHoverSelection}
           />
           <RowControls
             tableElement={tableElement}
             isSelected={pluginState.isRowSelected}
             selectRow={pluginState.selectRow}
             insertRow={pluginState.insertRow}
+            hoverRow={pluginState.hoverRow}
+            resetHoverSelection={pluginState.resetHoverSelection}
           />
         </div>
       </Popup>

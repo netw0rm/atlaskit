@@ -14,6 +14,8 @@ export interface Props {
   isSelected: (column: number) => boolean;
   selectColumn: (column: number) => void;
   insertColumn: (column: number) => void;
+  hoverColumn: (column: number) => void;
+  resetHoverSelection: () => void;
 }
 
 export default class ColumnControls extends Component<Props, any> {
@@ -29,8 +31,13 @@ export default class ColumnControls extends Component<Props, any> {
           className={this.props.isSelected(i) ? 'active' : ''}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
         >
-          {/* tslint:disable-next-line:jsx-no-lambda */}
-          <HeaderButton onClick={() => this.props.selectColumn(i)} />
+          {/* tslint:disable:jsx-no-lambda */}
+          <HeaderButton
+            onClick={() => this.props.selectColumn(i)}
+            onMouseOver={() => this.props.hoverColumn(i)}
+            onMouseOut={this.props.resetHoverSelection}
+          />
+          {/* tslint:enable:jsx-no-lambda */}
           <InsertColumnButton
             insertColumn={this.props.insertColumn}
             index={i + 1}

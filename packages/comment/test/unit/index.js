@@ -18,7 +18,7 @@ import {
   TopItem,
   TopItemsContainer,
 } from '../../src/styled/HeaderStyles';
-import { MainSection } from '../../src/styled/LayoutStyles';
+import { Container, Highlight } from '../../src/styled/LayoutStyles';
 import { Content } from '../../src/styled/CommentStyles';
 
 describe(name, () => {
@@ -59,7 +59,7 @@ describe(name, () => {
         it('should render the author in the correct container', () => {
           const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
           const wrapper = mount(<Comment author={author} />);
-          expect(wrapper.find(MainSection).contains(author)).to.equal(true);
+          expect(wrapper.find(Container).contains(author)).to.equal(true);
         });
       });
 
@@ -89,7 +89,7 @@ describe(name, () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = mount(<Comment time={time} />);
-          expect(wrapper.find(MainSection).contains(time)).to.equal(true);
+          expect(wrapper.find(Container).contains(time)).to.equal(true);
         });
       });
 
@@ -97,7 +97,7 @@ describe(name, () => {
         it('should render edited correctly', () => {
           const edited = <CommentEdited>Edited</CommentEdited>;
           const wrapper = mount(<Comment edited={edited} />);
-          expect(wrapper.find(MainSection).contains(edited)).to.equal(true);
+          expect(wrapper.find(Container).contains(edited)).to.equal(true);
         });
       });
 
@@ -119,6 +119,13 @@ describe(name, () => {
         it('should not render a Lock icon if restrictedTo prop is not set', () => {
           const wrapper = mount(<Comment />);
           expect(wrapper.find(LockFilledIcon).length).to.equal(0);
+        });
+      });
+
+      describe('highlighted prop', () => {
+        it('should render a highlight underlay inside the container', () => {
+          const wrapper = mount(<Comment highlighted />);
+          expect(wrapper.find(Highlight).length).to.equal(1);
         });
       });
 

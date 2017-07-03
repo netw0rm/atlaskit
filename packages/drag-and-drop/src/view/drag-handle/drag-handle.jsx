@@ -151,12 +151,10 @@ export default class DragHandle extends PureComponent {
     this.startPendingMouseDrag(point);
   };
 
-  onKeyDown = (event: KeyboardEvent): void => {
+  // window keyboard events are bound during a keyboard drag
+  // or after the user presses the mouse down
+  onWindowKeydown = (event: KeyboardEvent): void => {
     const isMouseDragPending: boolean = Boolean(this.state.pending);
-
-    if (!this.props.isEnabled) {
-      return;
-    }
 
     if (isMouseDragPending) {
       if (event.key === 'Escape') {
@@ -167,11 +165,8 @@ export default class DragHandle extends PureComponent {
     }
 
     if (!this.state.draggingWith) {
-      if (event.key === ' ') {
-        event.preventDefault();
-        this.startDragging('KEYBOARD', () => this.props.callbacks.onKeyLift());
-      }
-      return;
+      console.error('should not be listening to window mouse up if nothing is dragging');
+      this.stopDragging(() => this.props.callbacks.onCancel());
     }
 
     // Dragging with either a keyboard or mouse
@@ -179,19 +174,16 @@ export default class DragHandle extends PureComponent {
     // Blocking standard submission action
     if (event.key === 'Enter') {
       event.preventDefault();
-      return;
     }
 
     // Preventing tabbing or submitting
     if (event.key === 'Tab') {
       event.preventDefault();
-      return;
     }
 
     if (event.key === 'Escape') {
       event.preventDefault();
       this.stopDragging(() => this.props.callbacks.onCancel());
-      return;
     }
 
     if (this.state.draggingWith === 'MOUSE') {
@@ -207,19 +199,31 @@ export default class DragHandle extends PureComponent {
     if (event.key === ' ') {
       event.preventDefault();
       this.stopDragging(() => this.props.callbacks.onDrop());
-      return;
     }
 
     // keyboard dragging only
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       this.props.callbacks.onMoveForward();
-      return;
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
       this.props.callbacks.onMoveBackward();
+    }
+  }
+
+  // the on element keydown is only for lifting - otherwise using the window keydown
+  onKeyDown = (event: KeyboardEvent): void => {
+    if (!this.props.isEnabled || this.state.pending || this.state.draggingWith) {
+      return;
+    }
+
+    if (event.key === ' ') {
+      event.preventDefault();
+      // stopping the event from bubbling up to the window event handler
+      event.stopPropagation();
+      this.startDragging('KEYBOARD', () => this.props.callbacks.onKeyLift());
     }
   }
 
@@ -313,12 +317,14 @@ export default class DragHandle extends PureComponent {
     window.removeEventListener('mousemove', this.onWindowMouseMove);
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
+    window.removeEventListener('keydown', this.onWindowKeydown);
   }
 
   bindWindowEvents = () => {
     window.addEventListener('mousemove', this.onWindowMouseMove);
     window.addEventListener('mouseup', this.onWindowMouseUp);
     window.addEventListener('mousedown', this.onWindowMouseDown);
+    window.addEventListener('keydown', this.onWindowKeydown);
   }
 
   getProvided = memoizeOne((isEnabled: boolean, isDragging: boolean): ?Provided => {

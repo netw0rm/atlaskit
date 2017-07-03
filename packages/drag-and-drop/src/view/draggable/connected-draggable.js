@@ -133,7 +133,10 @@ export const makeSelector = () => {
         }
 
         return {
-          isDragging: false,
+          // Tell the consumer that the drag is still
+          // occurring with props to keep the isDragging appearance
+          // while dropping.
+          isDragging: true,
           isDropAnimating: true,
           canAnimate: true,
           offset: pending.newHomeOffset,

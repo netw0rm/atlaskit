@@ -245,7 +245,8 @@ describe('Draggable - connected', () => {
           y: 10,
         };
         const expected: MapProps = {
-          isDragging: false,
+          // Still having isDragging: true to keep the isDraggingProp the same
+          isDragging: true,
           isDropAnimating: true,
           canAnimate: true,
           offset: newHomeOffset,

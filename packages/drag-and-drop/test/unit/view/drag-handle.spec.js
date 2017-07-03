@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 // eslint-disable-next-line no-duplicate-imports
 import type { Callbacks, Provided } from '../../../src/view/drag-handle/drag-handle-types';
-import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
+import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent, withKeyboard } from '../user-input-util';
 import type { Position } from '../../../src/types';
 
 const primaryButton: number = 0;
@@ -71,12 +71,13 @@ const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const mouseDown = mouseEvent.bind(null, 'mousedown');
 const click = mouseEvent.bind(null, 'click');
-const pressEscape = withKeyboard('Escape');
 const pressSpacebar = withKeyboard(' ');
-const pressArrowUp = withKeyboard('ArrowUp');
-const pressArrowDown = withKeyboard('ArrowDown');
-const pressTab = withKeyboard('Tab');
-const pressEnter = withKeyboard('Enter');
+const windowSpacebar = dispatchWindowKeyDownEvent.bind(null, ' ');
+const windowEscape = dispatchWindowKeyDownEvent.bind(null, 'Escape');
+const windowArrowUp = dispatchWindowKeyDownEvent.bind(null, 'ArrowUp');
+const windowArrowDown = dispatchWindowKeyDownEvent.bind(null, 'ArrowDown');
+const windowTab = dispatchWindowKeyDownEvent.bind(null, 'Tab');
+const windowEnter = dispatchWindowKeyDownEvent.bind(null, 'Enter');
 
 describe('drag handle', () => {
   let callbacks: Callbacks;
@@ -161,7 +162,7 @@ describe('drag handle', () => {
           mouseDown(wrapper, 0, 0, auxiliaryButton);
           // not moved enough yet
           windowMouseMove(0, sloppyClickThreshold - 1);
-          pressEscape(wrapper);
+          windowEscape();
 
           // should normally start a drag
           windowMouseMove(0, sloppyClickThreshold);
@@ -205,30 +206,28 @@ describe('drag handle', () => {
       });
 
       it('should prevent keyboard submission', () => {
-        const stub = sinon.stub();
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
 
-        pressEnter(wrapper, { preventDefault: stub });
+        const event: KeyboardEvent = windowEnter();
 
-        expect(stub.called).to.equal(true);
+        expect(event.defaultPrevented).to.equal(true);
       });
 
       it('should prevent tabbing', () => {
-        const stub = sinon.stub();
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
 
-        pressTab(wrapper, { preventDefault: stub });
+        const event: KeyboardEvent = windowTab();
 
-        expect(stub.called).to.equal(true);
+        expect(event.defaultPrevented).to.equal(true);
       });
 
       it('should not drop on spacebar', () => {
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
 
-        pressSpacebar(wrapper);
+        windowSpacebar(wrapper);
 
         expect(callbacksCalled(callbacks)({
           onLift: 1,
@@ -237,21 +236,20 @@ describe('drag handle', () => {
       });
 
       it('should prevent scrolling on spacebar', () => {
-        const stub = sinon.stub();
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
 
-        pressSpacebar(wrapper, { preventDefault: stub });
+        const event: KeyboardEvent = windowSpacebar();
 
-        expect(stub.called).to.equal(true);
+        expect(event.defaultPrevented).to.equal(true);
       });
 
       it('should not attempt to move forward or backward with arrow keys', () => {
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
 
-        pressArrowDown(wrapper);
-        pressArrowUp(wrapper);
+        windowArrowDown();
+        windowArrowUp();
 
         expect(callbacksCalled(callbacks)({
           onLift: 1,
@@ -315,7 +313,7 @@ describe('drag handle', () => {
           onCancel: 0,
         })).to.equal(true);
 
-        pressEscape(wrapper);
+        windowEscape();
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onCancel: 1,
@@ -329,7 +327,7 @@ describe('drag handle', () => {
         // move
         windowMouseMove(0, sloppyClickThreshold + 1);
         // cancel
-        pressEscape(wrapper);
+        windowEscape();
 
         expect(callbacksCalled(callbacks)({
           onLift: 1,
@@ -339,7 +337,7 @@ describe('drag handle', () => {
 
         // these should not do anything
         windowMouseMove(0, sloppyClickThreshold + 1);
-        pressEscape(wrapper);
+        windowEscape();
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onMove: 1,
@@ -348,7 +346,7 @@ describe('drag handle', () => {
       });
 
       it('should not do anything if there is nothing dragging', () => {
-        pressEscape(wrapper);
+        windowEscape();
         expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
       });
     });
@@ -374,7 +372,7 @@ describe('drag handle', () => {
 
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
-        pressEscape(wrapper);
+        windowEscape();
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onCancel: 1,
@@ -514,7 +512,7 @@ describe('drag handle', () => {
       it('should allow drags after a cancel', () => {
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
-        pressEscape(wrapper);
+        windowEscape();
 
         expect(callbacksCalled(callbacks)({
           onLift: 1,
@@ -543,12 +541,22 @@ describe('drag handle', () => {
           onKeyLift: 1,
         })).to.equal(true);
       });
+
+      it('should stop the event before it can be listened to', () => {
+        const preventDefault = sinon.stub();
+        const stopPropagation = sinon.stub();
+
+        pressSpacebar(wrapper, { preventDefault, stopPropagation });
+
+        expect(preventDefault.called).to.equal(true);
+        expect(stopPropagation.called).to.equal(true);
+      });
     });
 
     describe('progress', () => {
       it('should move backward when the user presses ArrowUp', () => {
         pressSpacebar(wrapper);
-        pressArrowUp(wrapper);
+        windowArrowUp();
 
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
@@ -558,7 +566,7 @@ describe('drag handle', () => {
 
       it('should move forward when the user presses ArrowDown', () => {
         pressSpacebar(wrapper);
-        pressArrowDown(wrapper);
+        windowArrowDown();
 
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
@@ -567,21 +575,18 @@ describe('drag handle', () => {
       });
 
       it('should prevent tabbing away from the element while dragging', () => {
-        const stub = sinon.stub();
         pressSpacebar(wrapper);
 
-        pressTab(wrapper, { preventDefault: stub });
+        const event: KeyboardEvent = windowTab();
 
-        expect(stub.called).to.equal(true);
+        expect(event.defaultPrevented).to.equal(true);
       });
 
       it('should prevent submitting the dragging item', () => {
-        const stub = sinon.stub();
-
         pressSpacebar(wrapper);
-        pressEnter(wrapper, { preventDefault: stub });
+        const event: KeyboardEvent = windowEnter();
 
-        expect(stub.called).to.equal(true);
+        expect(event.defaultPrevented).to.equal(true);
       });
 
       it('should not take into account any mouse movements', () => {
@@ -601,7 +606,7 @@ describe('drag handle', () => {
     describe('finish', () => {
       it('should drop when the user presses spacebar', () => {
         pressSpacebar(wrapper);
-        pressSpacebar(wrapper);
+        windowSpacebar();
 
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
@@ -613,7 +618,7 @@ describe('drag handle', () => {
     describe('cancel', () => {
       it('should cancel the drag when the user presses escape', () => {
         pressSpacebar(wrapper);
-        pressEscape(wrapper);
+        windowEscape();
 
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
@@ -628,7 +633,7 @@ describe('drag handle', () => {
           pressSpacebar(wrapper);
           mouseDown(wrapper, 0, 0, button);
           // should now do nothing
-          pressArrowUp(wrapper);
+          windowArrowUp(wrapper);
 
           expect(callbacksCalled(callbacks)({
             onKeyLift: index + 1,
@@ -638,7 +643,7 @@ describe('drag handle', () => {
       });
 
       it('should not do anything if there is nothing dragging', () => {
-        pressEscape(wrapper);
+        windowEscape();
         expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
       });
     });
@@ -647,8 +652,8 @@ describe('drag handle', () => {
       it('should not prevent any clicks after a drag', () => {
         const stub = sinon.stub();
         pressSpacebar(wrapper);
-        pressArrowDown(wrapper);
-        pressSpacebar(wrapper);
+        windowArrowDown(wrapper);
+        windowSpacebar();
 
         click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
 
@@ -689,8 +694,8 @@ describe('drag handle', () => {
       it('should be possible to do another drag after one finishes', () => {
         Array.from({ length: 10 }, (v, k) => k).forEach((val: number) => {
           pressSpacebar(wrapper);
-          pressArrowDown(wrapper);
-          pressSpacebar(wrapper);
+          windowArrowDown(wrapper);
+          windowSpacebar();
 
           expect(callbacksCalled(callbacks)({
             onKeyLift: val + 1,
@@ -701,16 +706,18 @@ describe('drag handle', () => {
       });
 
       it('should allow drags after a cancel', () => {
+        // cancelled drag
         pressSpacebar(wrapper);
-        pressEscape(wrapper);
+        windowEscape();
 
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onCancel: 1,
         })).to.equal(true);
 
+        // lift and drop
         pressSpacebar(wrapper);
-        pressSpacebar(wrapper);
+        windowSpacebar(wrapper);
 
         expect(callbacksCalled(callbacks)({
           onCancel: 1,

@@ -7,7 +7,7 @@ export const dispatchWindowMouseEvent = (
   clientX?: number = 0,
   clientY?: number = 0,
   button?: number = primaryButton,
-) => {
+): MouseEvent => {
   const event = new window.MouseEvent(eventName, {
     bubbles: true,
     cancelable: true,
@@ -17,6 +17,19 @@ export const dispatchWindowMouseEvent = (
     button,
   });
   window.dispatchEvent(event);
+  return event;
+};
+
+export const dispatchWindowKeyDownEvent = (
+  key: string,
+): KeyboardEvent => {
+  const event = new window.KeyboardEvent('keydown', {
+    bubbles: true,
+    cancelable: true,
+    key,
+  });
+  window.dispatchEvent(event);
+  return event;
 };
 
 export const mouseEvent = (

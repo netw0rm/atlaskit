@@ -202,6 +202,14 @@ export default class Draggable extends PureComponent {
   getPlacementInfo(): PlacementInfo {
     const { isDragging, canAnimate, initial, isDropAnimating } = this.props;
 
+    if (isDropAnimating) {
+      return {
+        showPlaceholder: true,
+        speed: 'STANDARD',
+        style: this.getMovingStyle(initial, zIndexOptions.dropAnimating),
+      };
+    }
+
     if (isDragging) {
       return {
         showPlaceholder: true,
@@ -214,14 +222,6 @@ export default class Draggable extends PureComponent {
       return {
         showPlaceholder: false,
         speed: 'INSTANT',
-      };
-    }
-
-    if (isDropAnimating) {
-      return {
-        showPlaceholder: true,
-        speed: 'STANDARD',
-        style: this.getMovingStyle(initial, zIndexOptions.dropAnimating),
       };
     }
 

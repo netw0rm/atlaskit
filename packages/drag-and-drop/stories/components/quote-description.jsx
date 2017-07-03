@@ -28,31 +28,35 @@ export default class QuoteDescription extends PureComponent {
 
         <h4>Controls</h4>
         <table>
-          <tr>
-            <th>Code</th>
-            <th>Key</th>
-            <th>Action</th>
-          </tr>
-          <tr>
-            <td><code>{'\' \''}</code></td>
-            <td>Spacebar</td>
-            <td>lift / drop</td>
-          </tr>
-          <tr>
-            <td><code>↑</code></td>
-            <td>Up arrow</td>
-            <td>move up an item that was lifted with a <code>spacebar</code></td>
-          </tr>
-          <tr>
-            <td><code>↓</code></td>
-            <td>Down arrow</td>
-            <td>move an item that was lifted with a <code>spacebar</code></td>
-          </tr>
-          <tr>
-            <td><code>esc</code></td>
-            <td>Escape</td>
-            <td>cancel an existing drag</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Key</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>{'\' \''}</code></td>
+              <td>Spacebar</td>
+              <td>lift / drop</td>
+            </tr>
+            <tr>
+              <td><code>↑</code></td>
+              <td>Up arrow</td>
+              <td>move up an item that was lifted with a <code>spacebar</code></td>
+            </tr>
+            <tr>
+              <td><code>↓</code></td>
+              <td>Down arrow</td>
+              <td>move an item that was lifted with a <code>spacebar</code></td>
+            </tr>
+            <tr>
+              <td><code>esc</code></td>
+              <td>Escape</td>
+              <td>cancel an existing drag</td>
+            </tr>
+          </tbody>
         </table>
       </Container>
     );

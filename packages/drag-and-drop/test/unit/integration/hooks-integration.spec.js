@@ -1,5 +1,4 @@
 // @flow
-/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import { mount } from 'enzyme';
 import { beforeEach, afterEach, describe, it } from 'mocha';
@@ -7,7 +6,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { DragDropContext, Draggable, Droppable } from '../../../src/';
 import { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
-import { dispatchWindowMouseEvent, mouseEvent, withKeyboard } from '../user-input-util';
+import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent } from '../user-input-util';
 import type {
   Hooks,
   DraggableLocation,
@@ -22,7 +21,7 @@ import type { Provided as DroppableProvided } from '../../../src/view/droppable/
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const mouseDown = mouseEvent.bind(null, 'mousedown');
-const cancelWithKeyboard = withKeyboard('Escape');
+const cancelWithKeyboard = dispatchWindowKeyDownEvent.bind(null, 'Escape');
 
 describe('hooks integration', () => {
   let clock;
@@ -32,7 +31,7 @@ describe('hooks integration', () => {
   const draggableId: DraggableId = 'drag-1';
   const droppableId: DroppableId = 'drop-1';
 
-  // both our list and item have the same dimenions for now
+  // both our list and item have the same dimension for now
   const fakeBox = {
     top: 0,
     right: 100,
@@ -61,9 +60,7 @@ describe('hooks integration', () => {
       >
         <Droppable droppableId={droppableId}>
           {(droppableProvided: DroppableProvided) => (
-            <div
-              ref={droppableProvided.innerRef}
-            >
+            <div ref={droppableProvided.innerRef} >
               <h2>Droppable</h2>
               <Draggable draggableId={draggableId}>
                 {(draggableProvided: DraggableProvided) => (
@@ -151,7 +148,7 @@ describe('hooks integration', () => {
     };
 
     const cancel = () => {
-      cancelWithKeyboard(wrapper.find('.drag-handle'));
+      cancelWithKeyboard();
     };
 
     const perform = () => {

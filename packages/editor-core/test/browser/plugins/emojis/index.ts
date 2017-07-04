@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { emoji as emojiNode } from '../../../../src';
-import emojiPlugins from '../../../../src/plugins/emojis';
+import emojiPlugins, { EmojiState } from '../../../../src/plugins/emojis';
 import {
   chaiPlugin,
   fixtures,
@@ -43,7 +43,7 @@ chai.use(chaiPlugin);
 describe('emojis', () => {
   const providerFactory = new ProviderFactory();
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, providerFactory),
     place: fixture()
@@ -293,8 +293,8 @@ describe('emojis', () => {
       const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin'))));
 
       pluginState.insertEmoji({
-        name: 'Oscar Wallhult',
-        emojiName: 'oscar',
+        fallback: 'Oscar Wallhult',
+        shortName: 'oscar',
         id: '1234'
       });
 
@@ -417,12 +417,12 @@ describe('emojis', () => {
 
   describe('isEnabled', () => {
     it('returns true when the emoji mark can be applied', () => {
-      const {pluginState} = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
       expect(pluginState.isEnabled()).to.equal(true);
     });
 
     it('returns false when the emoji mark cannot be applied', () => {
-      const {pluginState} = editor(doc(p(code('te{<>}xt'))));
+      const { pluginState } = editor(doc(p(code('te{<>}xt'))));
       expect(pluginState.isEnabled()).to.equal(false);
     });
   });

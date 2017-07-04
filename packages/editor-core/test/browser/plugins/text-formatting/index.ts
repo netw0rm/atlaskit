@@ -6,14 +6,14 @@ import {
   sendKeyToPm, insertText, fixtures, doc, strike, plain, strong, em, underline, code, p,
   subsup, chaiPlugin, makeEditor, mention
 } from '../../../../src/test-helper';
-import textFormattingPlugins from '../../../../src/plugins/text-formatting';
+import textFormattingPlugins, { TextFormattingState } from '../../../../src/plugins/text-formatting';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('text-formatting', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<TextFormattingState>({
     doc,
     plugins: textFormattingPlugins(defaultSchema),
     place: fixture()
@@ -289,7 +289,7 @@ describe('text-formatting', () => {
   describe('code', () => {
     context('when the cursor is right after the code mark', () => {
       it('should not be able to delete character with "Backspace" without entering into mark editing mode', () => {
-        const { editorView, pluginState } = editor(doc(p( code('hell{<}o{>}') )));
+        const { editorView, pluginState } = editor(doc(p(code('hell{<}o{>}'))));
         sendKeyToPm(editorView, 'Backspace');
         expect(pluginState.codeActive).to.equal(true);
       });

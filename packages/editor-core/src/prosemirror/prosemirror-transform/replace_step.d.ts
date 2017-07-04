@@ -2,6 +2,9 @@ import { Schema, Slice } from '../';
 import { Step } from './';
 
 export class ReplaceStep extends Step {
+  from: number;
+  to: number;
+  slice: Slice;
   constructor(from: number, to: number, slice: Slice, structure?: boolean);
 }
 

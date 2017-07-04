@@ -11,11 +11,20 @@ chai.use(chaiPlugin);
 
 describe('inputrules', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: codeBlockPlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: codeBlockPlugin(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
+
 
   describe('codeblock rule', () => {
     context('when node is not convertable to code block', () => {

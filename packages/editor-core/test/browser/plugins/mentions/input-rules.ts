@@ -19,11 +19,19 @@ chai.use(chaiPlugin);
 
 describe('mentions - input rules', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel } = editor(doc(docContents || p('{<>}')));

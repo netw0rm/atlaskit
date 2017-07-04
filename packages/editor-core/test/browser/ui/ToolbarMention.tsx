@@ -12,11 +12,19 @@ import pluginKey from '../../../src/plugins/mentions/plugin-key';
 describe('ToolbarMention', () => {
 
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   it('should create a mentionQuery by clicking on the ToolbarMention icon', () => {
     const { editorView } = editor(doc(p('{<>}')));

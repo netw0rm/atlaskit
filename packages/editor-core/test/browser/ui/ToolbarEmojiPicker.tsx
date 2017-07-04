@@ -20,11 +20,19 @@ const grinEmojiId = {
 
 describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   it('should have state variable isOpen set to true when toolbar emoji button is clicked', () => {
     const { editorView, pluginState } = editor(doc(p('')));

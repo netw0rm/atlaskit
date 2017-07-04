@@ -10,11 +10,19 @@ chai.use(chaiPlugin);
 
 describe('inputrules', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: blockTypePlugins(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: blockTypePlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('heading rule', () => {
     it('should convert "# " to heading 1', () => {

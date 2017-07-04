@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import tablePlugin from '../../../../src/plugins/table';
+import tablePlugins from '../../../../src/plugins/table';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
   createEvent, setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, thEmpty, table, tr, td,
@@ -8,17 +8,24 @@ import {
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
-const fixture = fixtures();
-
-const editor = (doc: any) => makeEditor({
-  doc,
-  plugins: tablePlugin(),
-  place: fixture()
-});
-
-const event = createEvent('event');
 
 describe('table plugin', () => {
+  const event = createEvent('event');
+  const fixture = fixtures();
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: tablePlugins(),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
+
   describe('subscribe', () => {
     it('calls subscriber with plugin', () => {
       const { pluginState } = editor(doc(p('paragraph')));

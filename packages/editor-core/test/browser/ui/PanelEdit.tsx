@@ -10,11 +10,19 @@ import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelEdit', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: panelPlugins(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: panelPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   const event = createEvent('event');
 

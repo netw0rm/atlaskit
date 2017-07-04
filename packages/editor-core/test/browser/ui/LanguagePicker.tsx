@@ -12,11 +12,19 @@ import defaultSchema from '../../../src/test-helper/schema';
 describe('LanguagePicker', () => {
 
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: codeBlockPlugins(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: codeBlockPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   const event = createEvent('event');
 

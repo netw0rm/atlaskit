@@ -21,10 +21,18 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
   describe('props', () => {
     const fixture = fixtures();
-    const editor = (doc: any) => makeEditor({
-      doc,
-      place: fixture()
-    });
+    const editor = (doc: any) => {
+      const ed = makeEditor({
+        doc,
+        place: fixture()
+      });
+
+      afterEach(() => {
+        ed.editorView.destroy();
+      });
+
+      return ed;
+    };
 
     it('should render enabled save button by default', () => {
       const { editorView } = editor(doc(p()));

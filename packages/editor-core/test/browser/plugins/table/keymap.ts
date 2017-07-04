@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import tablePlugin from '../../../../src/plugins/table';
+import tablePlugins from '../../../../src/plugins/table';
 
 import {
   chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
@@ -10,11 +10,19 @@ chai.use(chaiPlugin);
 const fixture = fixtures();
 
 describe('table keymap', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: tablePlugin(),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: tablePlugins(),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('Tab keypress', () => {
     context('when the cursor is at the first cell of the first row', () => {

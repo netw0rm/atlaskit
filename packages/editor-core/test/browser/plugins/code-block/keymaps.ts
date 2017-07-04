@@ -11,11 +11,19 @@ chai.use(chaiPlugin);
 
 describe('codeBlock - keymaps', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: codeBlockPlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: codeBlockPlugin(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('Enter keypress', () => {
     context('when enter key is pressed 2 times', () => {

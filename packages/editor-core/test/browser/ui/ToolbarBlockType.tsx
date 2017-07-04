@@ -12,11 +12,19 @@ const noop = () => {};
 describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     const fixture = fixtures();
     const blockTypePluginsSet = blockTypePlugins(defaultSchema);
-    const editor = (doc: any) => makeEditor({
+    const editor = (doc: any) => {
+      const ed = makeEditor({
         doc,
         plugins: [...blockTypePluginsSet],
         place: fixture()
-    });
+      });
+
+      afterEach(() => {
+        ed.editorView.destroy();
+      });
+
+      return ed;
+    };
 
     it('should render disabled ToolbarButton if isDisabled property is true', () => {
         const { editorView } = editor(doc(p('text')));

@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import HyperlinkPlugin from '../../../../src/plugins/hyperlink';
+import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
   chaiPlugin, fixtures, makeEditor, doc, p, a as link, sendKeyToPm, em,
 } from '../../../../src/test-helper';
@@ -10,11 +10,19 @@ chai.use(chaiPlugin);
 
 describe('hyperink - keymaps', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: HyperlinkPlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('Enter keypress', () => {
     context('when possible link text is at the end', () => {

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import listsPlugin from '../../../src/plugins/lists';
+import listsPlugins from '../../../src/plugins/lists';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import ToolbarLists from '../../../src/ui/ToolbarLists';
 import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
@@ -9,11 +9,19 @@ import defaultSchema from '../../../src/test-helper/schema';
 
 describe('ToolbarLists', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: listsPlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: listsPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   it('should render disabled ToolbarButtons if disabled property is true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));

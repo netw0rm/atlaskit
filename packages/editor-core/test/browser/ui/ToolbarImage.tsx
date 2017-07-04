@@ -9,12 +9,19 @@ import defaultSchema from '../../../src/test-helper/schema';
 describe('ToolbarImage', () => {
 
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: imageUploadPlugins(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: imageUploadPlugins(defaultSchema),
+      place: fixture()
+    });
 
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   context('when plugin is enabled', () => {
     it('sets disabled to false', () => {

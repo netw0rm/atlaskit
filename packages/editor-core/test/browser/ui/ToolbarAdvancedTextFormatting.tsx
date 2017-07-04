@@ -16,11 +16,19 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const fixture = fixtures();
     const textFormattingPluginSet = textFormattingPlugins(defaultSchema);
     const clearformattingPluginSet = clearFormattingPlugins(defaultSchema);
-    const editor = (doc: any) => makeEditor({
+    const editor = (doc: any) => {
+      const ed = makeEditor({
         doc,
         plugins: [...textFormattingPluginSet, ...clearformattingPluginSet],
         place: fixture()
-    });
+      });
+
+      afterEach(() => {
+        ed.editorView.destroy();
+      });
+
+      return ed;
+    };
 
     it('should render disabled ToolbarButton if both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
         const { editorView } = editor(doc(p('text')));

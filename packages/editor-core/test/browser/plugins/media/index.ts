@@ -58,7 +58,7 @@ describe('Media plugin', () => {
       history(),
     ];
 
-    return makeEditor({
+    const editor = makeEditor({
       doc,
       plugins,
       schema: defaultSchema,
@@ -70,6 +70,13 @@ describe('Media plugin', () => {
       },
       place: fixture(),
     });
+
+    afterEach(() => {
+      editor.pluginState.destroy();
+      editor.editorView.destroy();
+    });
+
+    return editor;
   };
 
   const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {

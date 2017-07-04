@@ -17,11 +17,19 @@ const toJSON = node => serializer.serializeFragment(node.content);
 
 describe('JSONSerializer', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    schema: defaultSchema,
-    doc,
-    place: fixture()
-  });
+  const editor = (doc: any, schema: any = defaultSchema) => {
+    const ed = makeEditor({
+      doc,
+      schema: defaultSchema,
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('serializeFragment', () => {
 

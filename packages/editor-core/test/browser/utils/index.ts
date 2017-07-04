@@ -9,11 +9,19 @@ import { isMarkTypeAllowedAtCurrentPosition } from '../../../src/utils';
 
 describe('@atlaskit/editore-core/utils', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    schema: defaultSchema,
-    doc,
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      schema: defaultSchema,
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('isMarkTypeAllowedAtCurrentPosition', () => {
     context('when the current node supports the given mark type', () => {

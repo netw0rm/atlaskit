@@ -5,18 +5,26 @@ import {
   sendKeyToPm, insertText, fixtures, doc, code, textColor, p,
   chaiPlugin, makeEditor, a, strong
 } from '../../../../src/test-helper';
-import textColorPlugin from '../../../../src/plugins/text-color';
+import textColorPlugins from '../../../../src/plugins/text-color';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('text-color', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: textColorPlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: textColorPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   const testColor1 = '#97a0af';
   const testColor2 = '#0747a6';

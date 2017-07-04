@@ -11,12 +11,19 @@ const noop = () => {};
 
 describe('ToolbarTextColor', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: textColorPlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: textColorPlugin(defaultSchema),
+      place: fixture()
+    });
 
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   context('when plugin is enabled', () => {
     it('sets disabled to false', () => {

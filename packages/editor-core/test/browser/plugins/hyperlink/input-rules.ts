@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import HyperlinkPlugin from '../../../../src/plugins/hyperlink';
+import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
   insertText, chaiPlugin, fixtures, makeEditor, doc, br, p, a as link,
   strong, code_block
@@ -11,11 +11,19 @@ chai.use(chaiPlugin);
 
 describe('hyperlink', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: HyperlinkPlugin(defaultSchema),
-    place: fixture(),
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('input rules', () => {
     it('should convert "www.atlassian.com" to hyperlink', () => {

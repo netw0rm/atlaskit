@@ -41,11 +41,19 @@ chai.use(chaiPlugin);
 
 describe('block-type', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: blockTypePlugins(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: blockTypePlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   it('should be able to change to normal', () => {
     const { editorView, pluginState } = editor(doc(h1('te{<>}xt')));

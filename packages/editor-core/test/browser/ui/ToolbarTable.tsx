@@ -9,11 +9,19 @@ import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
 
 describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: [...tablePlugins()],
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: [...tablePlugins()],
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   it('should render disabled ToolbarButton if disabled property is true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));

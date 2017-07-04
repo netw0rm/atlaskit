@@ -22,11 +22,19 @@ chai.use(chaiPlugin);
 
 describe('ascii emojis - input rules', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: plugins,
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins,
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   const assert = (what: string, docContents: any, expectation: (state) => void) => {
     return emojiProvider.then(() => {

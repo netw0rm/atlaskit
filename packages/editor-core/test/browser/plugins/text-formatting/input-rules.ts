@@ -12,11 +12,19 @@ chai.use(chaiPlugin);
 
 describe('text-formatting input rules', () => {
   const fixture = fixtures();
-  const editor = (doc: any, schema: any = defaultSchema) => makeEditor({
-    doc,
-    plugins: textFormattingPlugins(schema),
-    place: fixture()
-  });
+  const editor = (doc: any, schema: any = defaultSchema) => {
+    const ed = makeEditor({
+      doc,
+      plugins: textFormattingPlugins(schema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('strong rule', () => {
     it('should convert "**text**" to strong', () => {

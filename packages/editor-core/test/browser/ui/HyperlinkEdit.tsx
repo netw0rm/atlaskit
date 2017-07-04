@@ -12,11 +12,19 @@ import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: hyperlinkPlugins(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
   const blurEvent = createEvent('blur');
   const focusEvent = createEvent('focus');
 

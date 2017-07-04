@@ -9,11 +9,19 @@ import defaultSchema from '../../../src/test-helper/schema';
 
 describe('ToolbarTextFormatting', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: textFormattingPlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: textFormattingPlugin(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   it('should render disabled ToolbarButtons if disabled property is true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));

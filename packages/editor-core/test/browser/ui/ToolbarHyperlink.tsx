@@ -12,11 +12,19 @@ import defaultSchema from '../../../src/test-helper/schema';
 describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
 
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: hyperlinkPlugins(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   it('should trigger showLinkPanel of plugin when toolbar hyperlink button is clicked', () => {
     const { pluginState, editorView } = editor(doc(p('text')));

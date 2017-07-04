@@ -8,11 +8,19 @@ import defaultSchema from '../../../../src/test-helper/schema';
 
 const fixture = fixtures();
 
-const editor = (doc: any) => makeEditor({
-  doc,
-  plugins: panelPlugins(defaultSchema),
-  place: fixture()
-});
+const editor = (doc: any) => {
+  const ed = makeEditor({
+    doc,
+    plugins: panelPlugins(defaultSchema),
+    place: fixture()
+  });
+
+  afterEach(() => {
+    ed.editorView.destroy();
+  });
+
+  return ed;
+};
 
 describe('panel input rules', () => {
   it('should create plain ParagraphNodeType for a random text input', () => {

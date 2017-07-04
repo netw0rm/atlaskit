@@ -13,11 +13,19 @@ chai.use(chaiPlugin);
 
 describe('clear-formatting', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: clearFormattingPlugins(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: clearFormattingPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('formattingIsPresent', () => {
     it('should be true if some marks are present', () => {

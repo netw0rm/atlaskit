@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import ImageUploadPlugin from '../../../../src/plugins/image-upload';
+import imageUploadPlugins from '../../../../src/plugins/image-upload';
 import {
   chaiPlugin, doc, fixtures, insertText, makeEditor, p, img, code_block
 } from '../../../../src/test-helper';
@@ -10,11 +10,19 @@ chai.use(chaiPlugin);
 
 describe('inputrules', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: ImageUploadPlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: imageUploadPlugins(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('image rule', () => {
     it('should convert `![text](url)` to image', () => {

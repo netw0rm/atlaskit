@@ -31,11 +31,19 @@ chai.use(chaiPlugin);
 describe('mentions', () => {
   let sandbox;
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   const forceUpdate = (pluginState, editorView: any) => {
     pluginState.apply(null, editorView.state);

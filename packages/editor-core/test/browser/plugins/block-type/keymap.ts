@@ -11,11 +11,19 @@ chai.use(chaiPlugin);
 
 describe('codeBlock - keymaps', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: blockTypePlugin(defaultSchema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugins: blockTypePlugin(defaultSchema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('Cmd-z keypress', () => {
     it('should undo last autoformatting', () => {

@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import ListsInputRulesPlugin from '../../../../src/plugins/lists/input-rule';
+import listsInputRulesPlugin from '../../../../src/plugins/lists/input-rule';
 import {
   insertText,
   blockquote, chaiPlugin, code_block, doc, h1,
@@ -10,7 +10,18 @@ import schema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
-  const editor = (doc: any) => makeEditor({ doc, schema, plugin: ListsInputRulesPlugin(schema) });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      plugin: listsInputRulesPlugin(schema)
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('bullet list rule', () => {
     it('should convert "* " to a bullet list item', () => {

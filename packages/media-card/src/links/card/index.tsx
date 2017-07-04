@@ -190,7 +190,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   }
 
   private get isError(): boolean {
-    const {status, details} = this.props;
+    const {status} = this.props;
 
     return status === 'error';
   }

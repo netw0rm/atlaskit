@@ -630,10 +630,63 @@ describe('hyperlink', () => {
       });
     });
 
-    context('email link is at middle of plain text', () => {
+    context('url link without anchor tags in html', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'http://www.atlassian.com test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')));
+      });
+    });
+
+    context('url link without anchor tags in html in middle of other text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'testing http://www.atlassian.com test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('testing ', link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')));
+      });
+    });
+
+    context('url link without anchor tags in html without other text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'http://www.atlassian.com' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'))));
+      });
+    });
+
+    context('email link is at middle of other text', () => {
       it('should add link mark', function() {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { plain: 'test test@atlassian.com test' })) {
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('test ', link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));
+      });
+    });
+
+    context('email link without anchor tags in html', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'test@atlassian.com test' })) {
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));
+      });
+    });
+
+    context('email link without anchor tags in html in middle of other text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'test test@atlassian.com test' })) {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph('test ', link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));

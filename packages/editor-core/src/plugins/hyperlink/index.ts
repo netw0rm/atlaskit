@@ -12,7 +12,7 @@ import {
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { normalizeUrl, linkify } from './utils';
+import { normalizeUrl, linkifyText, linkifyContent } from './utils';
 
 import stateKey from './plugin-key';
 export { stateKey };
@@ -302,17 +302,22 @@ const plugin = new Plugin({
 
       return true;
     },
+    /**
+     * As we are adding linkifyContent, linkifyText can in fact be removed.
+     * But leaving it there so that later it can be enhanced to include markdown parsing.
+     */
     handlePaste(view: EditorView, event: any, slice: Slice) {
       const { clipboardData } = event;
       const html = clipboardData && clipboardData.getData('text/html');
+      let contentSlices;
       if (html) {
-        return false;
+        contentSlices = linkifyContent(slice);
+      } else {
+        const text = clipboardData && clipboardData.getData('text/plain');
+        if (text) {
+          contentSlices = linkifyText(view.state.schema, text);
+        }
       }
-      const text = clipboardData && clipboardData.getData('text/plain');
-      if (!text) {
-        return false;
-      }
-      const contentSlices = linkify(view.state.schema, text);
       if (contentSlices) {
         const { dispatch, state: { tr } } = view;
         dispatch(tr.replaceSelection(contentSlices));

@@ -1,17 +1,18 @@
+// @flow
 import * as React from 'react';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { Slider, SliderProps } from '../src';
+import FieldRange from '../..';
 
-describe('Slider', () => {
+describe('FieldRange', () => {
   describe('with default props', () => {
-    let slider;
+    let fieldRange;
     let input;
 
     beforeEach(() => {
-      slider = mount<SliderProps, {}>(<Slider value={20.12} />);
-      input = slider.find('input');
+      fieldRange = mount(<FieldRange value={20.12} />);
+      input = fieldRange.find('input');
     });
 
     it('should have input with type "range"', () => {
@@ -30,14 +31,14 @@ describe('Slider', () => {
   });
 
   describe('with defined props', () => {
-    let slider;
+    let fieldRange;
     let input;
     let onChangeSpy;
 
     beforeEach(() => {
       onChangeSpy = sinon.spy();
-      slider = mount<SliderProps, {}>(<Slider value={25} min={10} max={20} onChange={onChangeSpy} />);
-      input = slider.find('input');
+      fieldRange = mount(<FieldRange value={25} min={10} max={20} onChange={onChangeSpy} />);
+      input = fieldRange.find('input');
     });
 
     it('should have defined min and max values', () => {
@@ -57,7 +58,7 @@ describe('Slider', () => {
     });
 
     it('should change input value when prop is changed', () => {
-      slider.setProps({ value: 15 });
+      fieldRange.setProps({ value: 15 });
       expect(input.props().value).to.equal('15');
     });
   });

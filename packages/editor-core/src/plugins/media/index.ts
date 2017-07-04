@@ -16,7 +16,6 @@ import {
   PluginKey,
   Node as PMNode,
   NodeSelection,
-  TextSelection,
   Schema,
   Transaction,
 } from '../../prosemirror';
@@ -472,6 +471,8 @@ export class MediaPluginState {
     const $previousMediaNodePos = doc.resolve(currentPos - 1);
     const previousMediaNode = $previousMediaNodePos.nodeAfter;
 
+    // Only set selection to previous media node if there is one
+    // otherwise, let prosemirror handle with default behaviour.
     if (previousMediaNode) {
       const $nextPos = $previousMediaNodePos;
       tr.setSelection(new NodeSelection($nextPos));

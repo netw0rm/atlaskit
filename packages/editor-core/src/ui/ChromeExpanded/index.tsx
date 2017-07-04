@@ -85,12 +85,14 @@ export interface Props {
 
 export interface State {
   maxHeightStyle?: any;
+  scroll: number;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
   private editorContent: HTMLElement;
-  state: State = {};
+  private maxHeightContainer: HTMLElement;
+  state: State = { scroll: 0 };
 
   static defaultProps = {
     saveDisabled: false,
@@ -103,6 +105,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         maxHeightStyle: {
           maxHeight: `${maxHeight}px`,
           overflow: 'auto',
+          position: 'relative'
         }
       });
     }
@@ -117,6 +120,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
 
   setEditorContent = (ref) => {
     this.editorContent = ref;
+  }
+
+  handleMaxHeightContainer = (ref) => {
+    this.maxHeightContainer = ref;
+  }
+
+  handleScroll = (event) => {
+    this.setState({ scroll: event.target.scrollTop });
   }
 
   private handleSpinnerComplete() {}
@@ -251,7 +262,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           onPaste={this.addBorderBottom}
           onKeyDown={this.addBorderBottom}
         >
-          <div style={maxHeightStyle}>
+          <div style={maxHeightStyle} onScroll={this.handleScroll} ref={this.handleMaxHeightContainer}>
             {this.props.children}
           </div>
           {pluginStateHyperlink && !disabled ?
@@ -274,6 +285,8 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             <TableFloatingControls
               pluginState={pluginStateTable}
               editorView={editorView}
+              popupsMountPoint={this.maxHeightContainer}
+              popupsBoundariesElement={this.maxHeightContainer}
             /> }
 
           {pluginStateTable && !disabled &&

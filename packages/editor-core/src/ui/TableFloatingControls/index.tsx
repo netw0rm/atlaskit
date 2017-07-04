@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import { TableState } from '../../plugins/table';
 import Popup from '../Popup';
 import { CellSelection, Node, EditorView } from '../../prosemirror';
@@ -21,7 +21,7 @@ export interface State {
   tableSelected: boolean;
 }
 
-export default class TableFloatingControls extends PureComponent<Props, State> {
+export default class TableFloatingControls extends Component<Props, State> {
   state: State = {
     tableSelected: false
   };

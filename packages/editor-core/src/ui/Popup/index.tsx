@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 import Portal from '../Portal';
 import { calculatePosition, calculatePlacement, findOverflowScrollParent, Position } from './utils';
@@ -27,7 +27,7 @@ export interface State {
   overflowScrollParent: HTMLElement | false;
 }
 
-export default class Popup extends PureComponent<Props, State> {
+export default class Popup extends Component<Props, State> {
   static defaultProps = {
     offset: [0, 0],
     boundariesElement: document.body

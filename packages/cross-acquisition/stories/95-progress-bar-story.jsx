@@ -7,14 +7,19 @@ import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 storiesOf('ProgressBar')
   .add('Empty Progress Bar', () => setupStorybookAnalytics(
     <ProgressBar />
-  )).add('25% Full', () => setupStorybookAnalytics(
+  ))
+  .add('25% Full', () => setupStorybookAnalytics(
     <ProgressBar progress="25" />
-  )).add('Complete', () => setupStorybookAnalytics(
+  ))
+  .add('Complete', () => setupStorybookAnalytics(
     <ProgressBar progress="100" />
-  )).add('Negative', () => setupStorybookAnalytics(
+  ))
+  .add('Negative', () => setupStorybookAnalytics(
     <ProgressBar progress="-100" />
-  )).add('Over 100', () => setupStorybookAnalytics(
+  ))
+  .add('Over 100', () => setupStorybookAnalytics(
     <ProgressBar progress="200" />
-  )).add('Non-number', () => setupStorybookAnalytics(
+  ))
+  .add('Non-number', () => setupStorybookAnalytics(
     <ProgressBar progress="dx3!!" />
   ));

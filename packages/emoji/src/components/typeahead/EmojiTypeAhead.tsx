@@ -9,6 +9,7 @@ import { EmojiDescription, OnEmojiEvent, RelativePosition } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
 import Popup from '../common/Popup';
 import debug from '../../util/logger';
+import { toEmojiId } from '../../type-helpers';
 
 export const defaultListLimit = 50;
 
@@ -38,6 +39,8 @@ export interface State {
   emojis: EmojiDescription[];
   loading: boolean;
 }
+
+const isCompleteQuery = (query?: string) => query && query.length > 1 && query.charAt(0) === ':' && query.charAt(query.length-1) === ':';
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private emojiListRef: EmojiList;
@@ -132,9 +135,19 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
 
   private onSearchResult = (result: EmojiSearchResult): void => {
     const { emojis } = result;
+    const { query } = this.props;
     const wasVisible = this.state.visible;
     const visible = emojis.length > 0;
     debug('emoji-typeahead.applyPropChanges', emojis.length, wasVisible, visible);
+    // Query begins and ends with a colon
+    if (isCompleteQuery(query)) {
+      const matches = this.exactShortNameMatch(result, query);
+      if (matches.length === 1 && this.props.onSelection) {
+        this.props.onSelection(toEmojiId(result.emojis[matches[0]]), result.emojis[matches[0]]);
+      } else if (!matches.length && this.props.onClose) {
+        this.props.onClose();
+      }
+    }
 
     this.setState({
       emojis: emojis,
@@ -154,6 +167,26 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
       }
     }
   }
+
+  // List of indexes used to account for 3 different cases of shortname matches:
+  // 0: typeahead should be closed
+  // 1: insert match emoji using onSelection callback
+  // >1: do nothing - normal behaviour
+  private exactShortNameMatch(searchResult: EmojiSearchResult, query?: string): number[] {
+    const matchIndexes: number[] = [];
+    searchResult.emojis.forEach((emoji, index) => {
+      if (emoji.shortName === query) {
+        if (!matchIndexes.length) {
+          matchIndexes.push(index);
+        } else {
+          matchIndexes.push(index);
+          return matchIndexes;
+        }
+      }
+    });
+    return matchIndexes;
+  }
+
 
   private onProviderChange: OnEmojiProviderChange = {
     result: this.onSearchResult,

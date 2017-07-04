@@ -9,14 +9,15 @@ import {
 } from './validator';
 
 import { Serializer } from './serializer';
+import { defaultSchema } from '../schema';
 
 export { default as ReactSerializer } from './react';
 export { default as TextSerializer } from './text';
 export { default as JSONSerializer } from './json';
 export { MarkdownSerializer } from './markdown';
 
-export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: Schema<NodeSpec, MarkSpec>): T | null => {
-  const validDoc = getValidDocument(doc);
+export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): T | null => {
+  const validDoc = getValidDocument(doc, schema);
 
   if (!validDoc) {
     return null;

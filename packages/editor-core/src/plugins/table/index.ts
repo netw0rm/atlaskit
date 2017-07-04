@@ -66,21 +66,21 @@ export class TableState {
   insertColumn = (column: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
-      const { state, dispatch } = this.view;
+      const { dispatch } = this.view;
 
       // last column
       if (column === map.width) {
         // to add a column we need to move the cursor to an appropriate cell first
         const prevColPos = map.positionAt(0, column - 1, this.tableNode);
         this.moveCursorTo(prevColPos);
-        tableBaseCommands.addColumnAfter(state, dispatch);
+        tableBaseCommands.addColumnAfter(this.view.state, dispatch);
         // then we move the cursor to the newly created cell
         const nextPos = TableMap.get(this.tableNode).positionAt(0, column, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
         const pos = map.positionAt(0, column, this.tableNode);
         this.moveCursorTo(pos);
-        tableBaseCommands.addColumnBefore(state, dispatch);
+        tableBaseCommands.addColumnBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
     }
@@ -89,19 +89,19 @@ export class TableState {
   insertRow = (row: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
-      const { state, dispatch } = this.view;
+      const { dispatch } = this.view;
 
       // last row
       if (row === map.height) {
         const prevRowPos =  map.positionAt(row - 1, 0, this.tableNode);
         this.moveCursorTo(prevRowPos);
-        tableBaseCommands.addRowAfter(state, dispatch);
+        tableBaseCommands.addRowAfter(this.view.state, dispatch);
         const nextPos = TableMap.get(this.tableNode).positionAt(row, 0, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
         const pos = map.positionAt(row, 0, this.tableNode);
         this.moveCursorTo(pos);
-        tableBaseCommands.addRowBefore(state, dispatch);
+        tableBaseCommands.addRowBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
     }

@@ -19,7 +19,7 @@ export interface Definition {
    * @additionalProperties false
    */
   attrs?: {
-    language: 'abap' | 'actionscript' | 'ada' | 'arduino' | 'autoit' | 'c' | 'c++' | 'clojure'
+    language?: 'abap' | 'actionscript' | 'ada' | 'arduino' | 'autoit' | 'c' | 'c++' | 'clojure'
     | 'coffeescript' | 'csharp' | 'css' | 'cuda' | 'd' | 'dart' | 'delphi' | 'elixir'
     | 'erlang' | 'fortran' | 'foxpro' | 'go' | 'groovy' | 'haskell' | 'haxe' | 'html'
     | 'java' | 'javascript' | 'julia' | 'kotlin' | 'latex' | 'livescript' | 'lua'

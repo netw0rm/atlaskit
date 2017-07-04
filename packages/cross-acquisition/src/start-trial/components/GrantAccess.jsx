@@ -23,6 +23,7 @@ import ChangeButton from '../styled/ChangeButton';
 export default class GrantAccess extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
+    progress: PropTypes.number,
   };
 
   static contextTypes = crossSellShape;
@@ -134,7 +135,7 @@ export default class GrantAccess extends Component {
         header={
           <div>
             {this.context.crossSell.productLogo}
-            <ProgressBar />
+            <ProgressBar progress={this.props.progress}/>
           </div>
         }
         footer={

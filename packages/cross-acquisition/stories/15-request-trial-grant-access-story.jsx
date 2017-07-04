@@ -12,4 +12,14 @@ storiesOf('GrantAccess')
       <GrantAccess analyticsId="growth.happy" />
     </MockConfluenceCrossSell>
     )
+  ).add('Show Grant Access dialog with 25% progress', () => setupStorybookAnalytics(
+    <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
+      <GrantAccess analyticsId="growth.happy" progress={25} />
+    </MockConfluenceCrossSell>
+    )
+  ).add('Show Grant Access dialog with 100% progress', () => setupStorybookAnalytics(
+    <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
+      <GrantAccess analyticsId="growth.happy" progress={100} />
+    </MockConfluenceCrossSell>
+    )
   );

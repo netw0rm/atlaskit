@@ -27,51 +27,79 @@ export default class GrantAccess extends Component {
 
   static contextTypes = crossSellShape;
 
-  // TODO: make multi-select invalid if specific users chosen with none picked
-  // isInvalid={this.state.isInvalid} | this.setState({ isInvalid: true });
   state = {
     changeUsers: false,
     selectedRadio: '',
     userSelectInFocus: false,
-  }
+    userSelectIsInvalid: false,
+    userSelectNoMatchesMessage: 'No matches found',
+  };
 
   componentWillMount() {
-    const selectedValue = this.context.crossSell.startTrial.grantOptionItems[0].value;
+    const selectedValue = this.context.crossSell.startTrial.grantOptionItems[0]
+      .value;
 
     this.setState({
       selectedRadio: selectedValue,
-      userSelectInFocus: selectedValue === this.context.crossSell.startTrial.grantUsersOption,
+      userSelectInFocus:
+        selectedValue === this.context.crossSell.startTrial.grantUsersOption,
     });
   }
 
   handleContinueClick = () => {
+    if (
+      this.state.selectedRadio === 'specificUsers' &&
+      this.userSelect.state.selectedItems.length === 0
+    ) {
+      this.setState({
+        userSelectIsInvalid: true,
+      });
+      return;
+    }
     this.props.onComplete();
-  }
+  };
 
   handleLearnMoreClick = () => {
     console.log('Learn more clicked');
-  }
+  };
 
   handleChangeClick = () => {
     this.setState({
       changeUsers: true,
     });
-  }
+  };
 
   handleRadioChange = (evt) => {
     this.setState({
       selectedRadio: evt.target.value,
-      userSelectInFocus: evt.target.value === this.context.crossSell.startTrial.grantUsersOption,
+      userSelectInFocus:
+        evt.target.value === this.context.crossSell.startTrial.grantUsersOption,
+      userSelectIsInvalid: false,
     });
-  }
+  };
 
   handleUserSelectOpen = (evt) => {
     if (evt.isOpen) {
       this.setState({
         selectedRadio: this.context.crossSell.startTrial.grantUsersOption,
+        userSelectNoMatchesMessage: this.userSelect.state.items.length
+          ? 'No matches found'
+          : 'There was an issue retrieving your users',
       });
     }
-  }
+  };
+
+  handleUserSelectChange = (evt) => {
+    if (evt.items.length === 0) {
+      this.setState({
+        userSelectIsInvalid: true,
+      });
+    } else {
+      this.setState({
+        userSelectIsInvalid: false,
+      });
+    }
+  };
 
   createUserItem = (key, presence, disabled = false) => ({
     content: `Anonymous User ${key}`,
@@ -83,7 +111,7 @@ export default class GrantAccess extends Component {
       elemBefore: <Avatar size="xsmall" />,
       appearance: 'rounded',
     },
-  })
+  });
 
   render() {
     // TODO: Populate with real users
@@ -111,58 +139,87 @@ export default class GrantAccess extends Component {
         }
         footer={
           <StartTrialFooter>
-            <Button onClick={this.handleContinueClick} appearance="primary">Continue</Button>
+            <Button onClick={this.handleContinueClick} appearance="primary">
+              Continue
+            </Button>
           </StartTrialFooter>
         }
       >
         <StartTrialDialog>
-          <StartTrialHeader>{this.context.crossSell.startTrial.grantHeader}</StartTrialHeader>
+          <StartTrialHeader>
+            {this.context.crossSell.startTrial.grantHeader}
+          </StartTrialHeader>
 
-          {this.state.changeUsers ? (
-            <div>
+          {this.state.changeUsers
+            ? <div>
               <AkFieldRadioGroup
-                ref={(radioGroup) => { this.radioGroup = radioGroup; }}
+                ref={(radioGroup) => {
+                  this.radioGroup = radioGroup;
+                }}
                 onRadioChange={this.handleRadioChange}
-                items={this.context.crossSell.startTrial.grantOptionItems.map(item => ({
-                  ...item,
-                  name: 'access-option',
-                  key: item.value,
-                  isSelected: this.state.selectedRadio === item.value,
-                }))}
+                items={this.context.crossSell.startTrial.grantOptionItems.map(
+                    item => ({
+                      ...item,
+                      name: 'access-option',
+                      key: item.value,
+                      isSelected: this.state.selectedRadio === item.value,
+                    })
+                  )}
                 label={this.context.crossSell.startTrial.grantChooseOption}
               />
               <UserSelectDiv>
                 <Select
-                  ref={(userSelect) => { this.userSelect = userSelect; }}
+                  ref={(userSelect) => {
+                    this.userSelect = userSelect;
+                  }}
                   id="userSelect"
                   items={selectItems}
-                  placeholder={this.context.crossSell.startTrial.grantUserSelectPlaceholder}
+                  placeholder={
+                      this.context.crossSell.startTrial
+                        .grantUserSelectPlaceholder
+                    }
                   name="test"
                   onOpenChange={this.handleUserSelectOpen}
+                  onSelectedChange={this.handleUserSelectChange}
                   shouldFitContainer
                   shouldFocus={this.state.userSelectInFocus}
+                  isInvalid={this.state.userSelectIsInvalid}
+                  noMatchesFound={this.state.userSelectNoMatchesMessage}
                 />
               </UserSelectDiv>
 
               <AffectMyBillText>
                 {this.context.crossSell.startTrial.grantAffectBill}
-                <Button onClick={this.handleLearnMoreClick} appearance="link">{this.context.crossSell.startTrial.grantLearnMoreLinkText}</Button>
+                <Button onClick={this.handleLearnMoreClick} appearance="link">
+                  {this.context.crossSell.startTrial.grantLearnMoreLinkText}
+                </Button>
               </AffectMyBillText>
             </div>
-          ) : (
-            <div>
-              {React.isValidElement(this.context.crossSell.startTrial.grantDefaultAccess)
-                ? this.context.crossSell.startTrial.grantDefaultAccess
-                : <p>{this.context.crossSell.startTrial.grantDefaultAccess}</p>
-              }
+            : <div>
+              {React.isValidElement(
+                  this.context.crossSell.startTrial.grantDefaultAccess
+                )
+                  ? this.context.crossSell.startTrial.grantDefaultAccess
+                  : <p>
+                    {this.context.crossSell.startTrial.grantDefaultAccess}
+                  </p>}
               <ChangeButton>
-                <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>
+                <Button onClick={this.handleChangeClick} appearance="link">
+                    Change...
+                  </Button>
               </ChangeButton>
-            </div>
-          )}
+            </div>}
           <StartTrialProgressDiv>
-            <input type="checkbox" id="notifyUsers" name="notify" value="Notify the users" defaultChecked />
-            <InputLabel htmlFor="notifyUsers">{this.context.crossSell.startTrial.grantNotifyUsers}</InputLabel>
+            <input
+              type="checkbox"
+              id="notifyUsers"
+              name="notify"
+              value="Notify the users"
+              defaultChecked
+            />
+            <InputLabel htmlFor="notifyUsers">
+              {this.context.crossSell.startTrial.grantNotifyUsers}
+            </InputLabel>
           </StartTrialProgressDiv>
         </StartTrialDialog>
       </ModalDialog>

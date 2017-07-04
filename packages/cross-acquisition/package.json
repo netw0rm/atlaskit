@@ -23,6 +23,7 @@
     "@atlaskit/logo": "^3.1.0",
     "@atlaskit/modal-dialog": "^2.1.1",
     "@atlaskit/multi-select": "^6.2.0",
+    "@atlaskit/spinner": "^2.2.5",
     "@atlaskit/util-shared-styles": "^2.1.1",
     "prop-types": "^15.5.10",
     "react-intl": "^2.3.0",

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DataUriService, MediaItemDetails} from '@atlaskit/media-core';
+import {DataUriService, MediaItemDetails, ImageResizeMode} from '@atlaskit/media-core';
 import {CardAppearance, CardDimensions} from '..';
 import {isRetina} from '../utils/isRetina';
 import {isLinkDetails} from '../utils/isLinkDetails';
@@ -13,6 +13,7 @@ export interface WithDataURIProps {
   metadata?: MediaItemDetails;
   appearance?: CardAppearance;
   dimensions?: CardDimensions;
+  resizeMode?: ImageResizeMode;
 
   // allow extra props to be passed down to lower views e.g. status and error to CardView
   [propName: string]: any;
@@ -72,7 +73,7 @@ export const withDataURI = (Component): any => { // tslint:disable-line:variable
     }
 
     updateDataURI(props: WithDataURIProps): void {
-      const {dataURIService, metadata} = props;
+      const {dataURIService, metadata, resizeMode} = props;
 
       const setDataURI = dataURI => this.setState({dataURI});
       const clearDataURI = () => this.setState({dataURI: undefined});
@@ -98,7 +99,8 @@ export const withDataURI = (Component): any => { // tslint:disable-line:variable
       dataURIService.fetchImageDataUri(
         {type: 'file', details: metadata},
         width,
-        height
+        height,
+        resizeMode
       ).then(setDataURI, clearDataURI);
     }
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {Observable, Subscription} from 'rxjs';
-import {MediaItemType, MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
+import {MediaItemType, MediaItem, FileItem, FileDetails, LinkDetails, UrlPreview, DataUriService, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardEventProps, OnLoadingChangeState, CardStatus} from '..';
 import {Provider} from './card';
@@ -14,6 +14,7 @@ export interface MediaCardProps extends SharedCardProps, CardEventProps {
   readonly provider: Provider;
   readonly mediaItemType?: MediaItemType;
   readonly dataURIService?: DataUriService;
+  readonly resizeMode?: ImageResizeMode;
 }
 
 export interface MediaCardState {
@@ -122,13 +123,14 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   }
 
   render() {
-    const {mediaItemType, provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
+    const {mediaItemType, provider, dataURIService, onLoadingChange, resizeMode, ...otherProps} = this.props;
     const {metadata, status} = this.state;
 
     return (
       <CardViewWithDataURI
         {...otherProps}
 
+        resizeMode={resizeMode}
         dataURIService={dataURIService}
         status={status}
         metadata={metadata}

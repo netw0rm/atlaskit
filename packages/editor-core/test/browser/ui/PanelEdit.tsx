@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import panelPlugins from '../../../src/plugins/panel';
+import panelPlugins, { PanelState } from '../../../src/plugins/panel';
 import PanelEdit from '../../../src/ui/PanelEdit';
 import { ToolbarButton } from '../../../src/ui/PanelEdit/styles';
 
@@ -10,7 +10,7 @@ import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelEdit', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<PanelState>({
     doc,
     plugins: panelPlugins(defaultSchema),
     place: fixture()
@@ -63,11 +63,11 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     expect(panelEditOptions.state('toolbarVisible')).to.equal(true);
   });
 
-  it('should set toolbarVisible to false when panelType is removed', () => {
+  it('should set toolbarVisible to false when panel is removed', () => {
     const { plugin, editorView, pluginState } = editor(doc(panel(p('text'))));
     const panelEditOptions = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
     plugin.props.onFocus!(editorView, event);
-    pluginState.removePanelType(editorView);
+    pluginState.removePanel(editorView);
     expect(panelEditOptions.state('toolbarVisible')).to.equal(false);
   });
 });

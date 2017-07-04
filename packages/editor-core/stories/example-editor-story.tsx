@@ -5,12 +5,13 @@ import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/col
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
+import { MentionResource } from '@atlaskit/mention';
 import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-test';
 
 import Editor from './editor';
 import { Content } from './styles';
 import { name, version } from '../package.json';
-import * as v1schema from '../src/json-schema/v1.json';
+import * as v1schema from '../dist/json-schema/v1/full.json';
 import { toJSON } from '../src/utils';
 import { storyDecorator, storyMediaProviderFactory } from '../src/test-helper';
 
@@ -32,7 +33,11 @@ const pendingPromise = new Promise<any>(() => {});
 const providers = {
   mentionProvider: {
     resolved: Promise.resolve(mentionData.mentionStoryData.resourceProvider),
-    'resolved 2': Promise.resolve(mentionData.mentionStoryData.resourceProvider2),
+    'resolved 2': Promise.resolve(new MentionResource({
+      url: 'https://pf-mentions-service.staging.atlassian.io/mentions/f7ebe2c0-0309-4687-b913-41d422f2110b',
+      containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
+      productId: 'hipchat'
+    })),
     pending: pendingPromise,
     rejected: rejectedPromise,
     'undefined' : undefined,

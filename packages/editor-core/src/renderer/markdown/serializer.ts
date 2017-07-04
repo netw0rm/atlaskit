@@ -4,6 +4,7 @@ import {
   MarkdownSerializerState as PMMarkdownSerializerState,
   Node,
   Fragment,
+  Schema,
 } from '../../prosemirror';
 import { stringRepeat } from '../../utils';
 import { bitbucketSchema as schema } from '../../schema';
@@ -184,19 +185,27 @@ const marks = {
   emojiQuery: { open: '', close: '', mixable: false }
 };
 
-export class MarkdownSerializer extends PMMarkdownSerializer implements Serializer<void> {
+export class MarkdownSerializer extends PMMarkdownSerializer implements Serializer<string> {
   serialize(content: Node, options?: { [key: string]: any }): string {
     const state = new MarkdownSerializerState(this.nodes, this.marks, options);
 
     state.renderContent(content);
     return state.out === '\u200c' ? '' : state.out; // Return empty string if editor only contains a zero-non-width character
   }
-  serializeFragment(fragment: Fragment): void {
+
+  serializeFragment(fragment: Fragment): string {
     const self = this;
+    let output = '';
 
     fragment.forEach(node => {
-      self.serialize(node);
+      output += self.serialize(node);
     });
+
+    return output;
+  }
+
+  static fromSchema(schema: Schema<any, any>): MarkdownSerializer {
+    return new MarkdownSerializer(nodes, marks);
   }
 }
 
@@ -307,4 +316,4 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
   }
 }
 
-export default new MarkdownSerializer(nodes, marks);
+export default MarkdownSerializer;

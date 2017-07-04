@@ -51,7 +51,7 @@ import {
 import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { encode, parse } from './html';
+import { encode, parse, MediaContextInfo } from './html';
 import {
   JIRASchema,
   isSchemaWithCodeBlock,
@@ -228,15 +228,29 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get value(): Promise<string | undefined> {
     const { editorView, schema } = this.state;
-    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    const mediaPluginState = editorView && mediaStateKey.getState(editorView.state) as MediaPluginState;
 
     return (async () => {
       if (mediaPluginState) {
         await mediaPluginState.waitForPendingTasks();
       }
 
+      let mediaContextInfo: MediaContextInfo | undefined;
+      if (this.props.mediaProvider) {
+        const mediaProvider = await this.props.mediaProvider;
+        if (mediaProvider.uploadParams && mediaProvider.uploadParams.collection) {
+          const uploadContext = await mediaProvider.uploadContext;
+          if (uploadContext) {
+            const { clientId, serviceHost } = uploadContext;
+            const { collection } = mediaProvider.uploadParams;
+            const token  = await uploadContext.tokenProvider(collection);
+            mediaContextInfo = { clientId, serviceHost, token, collection };
+          }
+        }
+      }
+
       return editorView && editorView.state.doc
-        ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
+        ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder }, mediaContextInfo)
         : this.props.defaultValue;
     })();
   }

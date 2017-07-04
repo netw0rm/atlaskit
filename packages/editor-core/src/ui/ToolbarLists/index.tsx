@@ -8,6 +8,7 @@ import { ListsState } from '../../plugins/lists';
 import { ListsState as FutureListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror';
+import { ButtonGroup } from './styles';
 
 export interface Props {
   editorView: EditorView;
@@ -52,7 +53,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
 
   render() {
     return (
-      <span>
+      <ButtonGroup>
         {this.state.bulletListHidden ? null :
           <ToolbarButton
             onClick={this.handleBulletListClick}
@@ -72,7 +73,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             iconBefore={<NumberListIcon label="Ordered list" />}
           />
         }
-      </span>
+      </ButtonGroup>
     );
   }
 

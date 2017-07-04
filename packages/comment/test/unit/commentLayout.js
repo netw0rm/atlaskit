@@ -6,7 +6,7 @@ import { CommentLayout } from '../../src/';
 import { name } from '../../package.json';
 import {
   AvatarSectionDiv,
-  MainSection,
+  Container,
   NestedCommentsDiv,
 } from '../../src/styled/LayoutStyles';
 
@@ -52,7 +52,7 @@ describe(name, () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
           const wrapper = mount(<CommentLayout content={content} />);
-          expect(wrapper.find(MainSection).contains(content)).to.equal(true);
+          expect(wrapper.find(Container).contains(content)).to.equal(true);
         });
       });
     });

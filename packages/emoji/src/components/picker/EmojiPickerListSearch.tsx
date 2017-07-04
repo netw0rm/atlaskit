@@ -13,11 +13,7 @@ export interface Props {
   onChange: any;
 }
 
-export interface State {
-  query?: string;
-}
-
-export default class EmojiPickerListSearch extends PureComponent<Props, State> {
+export default class EmojiPickerListSearch extends PureComponent<Props, {}> {
 
   static defaultProps = {
     style: {},
@@ -41,8 +37,7 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
   }
 
   render() {
-    const { style } = this.props;
-    const { query } = this.state;
+    const { style, query } = this.props;
 
     return (
       <div className={styles.pickerSearch} style={style}>
@@ -64,7 +59,7 @@ export default class EmojiPickerListSearch extends PureComponent<Props, State> {
             placeholder="Search..."
             required={false}
             onChange={this.onChange}
-            value={query}
+            value={query || ''}
             ref={this.handleInputRef}
           />
         </AkFieldBase>

@@ -12,7 +12,7 @@ export type JSONNode = {
 
 export type JSONDocNode = {
   version: number,
-  type: string,
+  type: 'doc',
   content: Array<JSONNode>,
 };
 

@@ -22,11 +22,11 @@ export class CodeBlockState {
   toolbarVisible: boolean = false;
   domEvent: boolean = false;
   uniqueId: string | undefined = undefined;
+  activeCodeBlock?: Node;
+  editorFocused: boolean = false;
 
   private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
-  private activeCodeBlock?: Node;
-  private editorFocused: boolean = false;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
@@ -49,7 +49,10 @@ export class CodeBlockState {
   }
 
   removeCodeBlock(view: EditorView): void {
-    commands.setBlockType(view.state.schema.nodes.paragraph)(view.state, view.dispatch);
+    const { state, dispatch } = view;
+    const { $from, $to } = state.selection;
+    const range = $from.blockRange($to);
+    dispatch(state.tr.delete(range!.start, range!.end));
   }
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "34.3.5",
+  "version": "35.0.0",
   "config": {
     "access": "public"
   },
@@ -9,15 +9,18 @@
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5",
+    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish && npm run build/json-schema",
+    "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5 && npm run build/json-schema",
     "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --no-babelrc src && ../../node_modules/.bin/tsc -p build/es2015",
     "build/es5": "mkdir -p dist/es5 && cp -Rf src/prosemirror dist/es5/ && ../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5",
+    "build/json-schema": "mkdir -p dist/json-schema/v1 && ../../node_modules/.bin/tsc -p build/json-schema && node ./dist/json-schema-cli/index.js ./src/schema/nodes/doc.ts > ./dist/json-schema/v1/full.json",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh"
   },
   "files": [
-    "dist",
+    "dist/es5",
+    "dist/es2015",
+    "dist/json-schema",
     "src"
   ],
   "license": "Apache-2.0",
@@ -48,7 +51,7 @@
     "@atlaskit/media-card": "^17.1.5",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-filmstrip": "4.1.2",
-    "@atlaskit/mention": "^5.3.1",
+    "@atlaskit/mention": "^7.0.1",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.2.0",
@@ -76,10 +79,10 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^6.0.2",
     "@atlaskit/button": "^3.0.0",
     "@atlaskit/button-group": "^1.1.0",
-    "@atlaskit/util-data-test": "^4.6.1",
+    "@atlaskit/media-test-helpers": "^6.0.2",
+    "@atlaskit/util-data-test": "^4.7.0",
     "ajv": "^4.11.3",
     "chai-as-promised": "^6.0.0",
     "highlight.js": "^9.6.0",

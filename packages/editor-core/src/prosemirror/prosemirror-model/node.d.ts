@@ -42,6 +42,7 @@ export class Node {
   canReplace(from: number, to: number, replacement?: Fragment, start?: number, end?: number): boolean;
   canReplaceWith(from: number, to: number, type: NodeType, attrs?: Mark[]): boolean;
   canAppend(other: Node): boolean;
+  defaultContentType(at: number): NodeType;
   check(): void;
   toJSON(): { [key: string]: any };
 

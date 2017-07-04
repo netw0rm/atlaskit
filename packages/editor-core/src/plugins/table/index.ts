@@ -280,6 +280,16 @@ export class TableState {
     this.view = view;
   }
 
+  tableStartPos(): number | undefined {
+    const { $from } = this.view.state.selection;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === this.view.state.schema.nodes.table) {
+        return $from.start(i);
+      }
+    }
+  }
+
   private createHoverSelection (from: number, to: number): void {
     if (!this.tableNode) {
       return;
@@ -318,16 +328,6 @@ export class TableState {
       const { node } = docView.domFromPos(offset);
       if (node) {
         return node as HTMLElement;
-      }
-    }
-  }
-
-  private tableStartPos(): number | undefined {
-    const { $from } = this.view.state.selection;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if(node.type === this.view.state.schema.nodes.table) {
-        return $from.start(i);
       }
     }
   }

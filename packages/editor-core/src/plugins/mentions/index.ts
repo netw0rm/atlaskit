@@ -363,7 +363,7 @@ export class MentionsState {
     return false;
   }
 
-  private onMentionResult = (mentions: MentionDescription[], query: string) => {
+  onMentionResult = (mentions: MentionDescription[], query: string) => {
     this.updateQueryResult(mentions, query);
     this.resolveInactiveQuery(mentions, query);
   }

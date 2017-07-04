@@ -21,9 +21,9 @@ const mentionsPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 100, plugin: (schema, providerFactory) => createPlugin(providerFactory) },
-      { rank: 110, plugin: schema => inputRulePlugin(schema) },
-      { rank: 120, plugin: schema => keymap(schema) }
+      { rank: 300, plugin: (schema, props, providerFactory) => createPlugin(providerFactory) },
+      { rank: 310, plugin: schema => inputRulePlugin(schema) },
+      { rank: 320, plugin: schema => keymap(schema) }
     ];
   },
 

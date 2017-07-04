@@ -6,7 +6,9 @@ import {
   blockTypePlugin,
   textFormattingPlugin,
   mentionsPlugin,
-  emojiPlugin
+  emojiPlugin,
+  saveOnEnterPlugin,
+  onChangePlugin
 } from '../plugins';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
@@ -40,6 +42,14 @@ export function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.emojiProvider) {
     plugins.push(emojiPlugin);
+  }
+
+  if (props.saveOnEnter) {
+    plugins.push(saveOnEnterPlugin);
+  }
+
+  if (props.onChange) {
+    plugins.push(onChangePlugin);
   }
 
   return plugins;
@@ -104,11 +114,12 @@ export function createSchema(editorConfig: EditorConfig) {
 export function createPMPlugins(
   editorConfig: EditorConfig,
   schema: Schema<any, any>,
+  props: EditorProps,
   providerFactory: ProviderFactory
 ): Plugin[] {
   return editorConfig.pmPlugins
     .sort(sortByRank)
-    .map(plugin => plugin.plugin(schema, providerFactory))
+    .map(plugin => plugin.plugin(schema, props, providerFactory))
     .filter(plugin => !!plugin) as Plugin[];
 }
 
@@ -117,19 +128,9 @@ export default function createEditor(place: HTMLElement, props: EditorProps, pro
   const { contentComponents, primaryToolbarComponents, secondaryToolbarComponents } = editorConfig;
 
   const schema = createSchema(editorConfig);
-  const plugins = createPMPlugins(editorConfig, schema, providerFactory);
+  const plugins = createPMPlugins(editorConfig, schema, props, providerFactory);
   const state = EditorState.create({ schema, plugins });
-  const editorView = new EditorView(place, {
-    state,
-    dispatchTransaction: tr => {
-      const newState = editorView.state.apply(tr);
-      editorView.updateState(newState);
-
-      if (props.onChange) {
-        props.onChange(editorView);
-      }
-    }
-  });
+  const editorView = new EditorView(place, { state });
 
   return {
     editorView,

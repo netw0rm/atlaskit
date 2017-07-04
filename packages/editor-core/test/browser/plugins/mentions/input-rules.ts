@@ -38,12 +38,7 @@ describe('mentions - input rules', () => {
         const { state } = editorView;
         const { mentionQuery } = state.schema.marks;
         const cursorFocus = state.selection.$to.nodeBefore!;
-
-        if (expected) {
-          expect(mentionQuery.isInSet(cursorFocus.marks)).to.not.equal(undefined);
-        } else {
-          expect(mentionQuery.isInSet(cursorFocus.marks)).to.equal(undefined);
-        }
+        expect(!!mentionQuery.isInSet(cursorFocus.marks)).to.equal(expected);
       });
   };
 

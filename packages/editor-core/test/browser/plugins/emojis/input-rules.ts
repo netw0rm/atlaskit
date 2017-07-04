@@ -17,6 +17,7 @@ import {
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { EditorState } from '../../../../src/prosemirror';
 
 const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
 
@@ -44,14 +45,10 @@ describe('emojis - input rules', () => {
       };
 
       pluginState.subscribeToProviderUpdates(providerChangeHandler);
-    }).then((state: {schema: any, selection: any}) => {
+    }).then((state: EditorState<any>) => {
       const { emojiQuery } = state.schema.marks;
       const cursorFocus = state.selection.$to.nodeBefore!;
-      if (expected) {
-        expect(emojiQuery.isInSet(cursorFocus.marks)).to.not.equal(undefined);
-      } else {
-        expect(emojiQuery.isInSet(cursorFocus.marks)).to.equal(undefined);
-      }
+      expect(!!emojiQuery.isInSet(cursorFocus.marks)).to.equal(expected);
     });
   };
 

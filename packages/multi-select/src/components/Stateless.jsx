@@ -50,7 +50,7 @@ export default class StatelessMultiSelect extends PureComponent {
     /** Message to display in footer after the name of the new item. Only applicable if
      * shouldAllowCreateItem prop is set to true. Default: 'New item'*/
     createNewItemLabel: PropTypes.string,
-    /** Value to be used when filtering the items. Compared against 'content'. */
+    /** Value to be used when filtering the items. Compared against "item's filterValues". */
     filterValue: PropTypes.string,
     /** Element to show after the list of item. Accepts an object of the specific shape */
     footer: PropTypes.shape(footerShape),

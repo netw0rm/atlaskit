@@ -183,7 +183,7 @@ export class MediaPluginState {
 
     // insert a paragraph after if reach the end of doc
     // and there is no media group in the front or selection is a non media block node
-    if (atTheEndOfDoc(state) && (!this.posOfPrecededMediaGroup(state) || this.isSelectionNonMediaBlockNode())) {
+    if (atTheEndOfDoc(state) && (!this.posOfPreceedingMediaGroup(state) || this.isSelectionNonMediaBlockNode())) {
       const paragraphInsertPos = this.isSelectionNonMediaBlockNode() ? $to.pos : $to.pos + 1;
       transaction = transaction.insert(paragraphInsertPos, state.schema.nodes.paragraph.create());
     }
@@ -252,7 +252,7 @@ export class MediaPluginState {
     const { state, dispatch } = this.view;
     const { tr } = state;
 
-    const linksInfo = this.reducelinksInfo(linkRanges);
+    const linksInfo = this.reduceLinksInfo(linkRanges);
 
     const linkNodes = linksInfo.urls.map((url) => {
       return state.schema.nodes.media.create({ id: url, type: 'link', collection: collection });
@@ -273,7 +273,7 @@ export class MediaPluginState {
     dispatch(tr);
   }
 
-  private reducelinksInfo(linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } {
+  private reduceLinksInfo(linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } {
     const posAtTheEndOfDoc = this.view.state.doc.nodeSize - 4;
 
     const linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
@@ -457,7 +457,7 @@ export class MediaPluginState {
     return $from.parent.type === state.schema.nodes.paragraph && atTheBeginningOfBlock(state) && atTheEndOfBlock(state);
   }
 
-  private posOfPrecededMediaGroup(state: EditorState<any>): number | undefined {
+  private posOfPreceedingMediaGroup(state: EditorState<any>): number | undefined {
     if (!atTheBeginningOfBlock(state)) {
       return;
     }
@@ -517,20 +517,20 @@ export class MediaPluginState {
     }
   }
 
-  private posOfMediaGroupNearBy(state: EditorState<any>): number | undefined {
+  private posOfMediaGroupNearby(state: EditorState<any>): number | undefined {
     return this.posOfParentMediaGroup(state)
       || this.posOfFollowingMediaGroup(state)
-      || this.posOfPrecededMediaGroup(state);
+      || this.posOfPreceedingMediaGroup(state);
   }
 
   private findMediaInsertPos = (): number => {
     const state = this.view.state;
     const { $from, $to } = state.selection;
 
-    const nearByMediaGroupPos = this.posOfMediaGroupNearBy(state);
+    const nearbyMediaGroupPos = this.posOfMediaGroupNearby(state);
 
-    if (nearByMediaGroupPos) {
-      return nearByMediaGroupPos;
+    if (nearbyMediaGroupPos) {
+      return nearbyMediaGroupPos;
     }
 
     if (this.isSelectionNonMediaBlockNode()) {
@@ -556,7 +556,7 @@ export class MediaPluginState {
       return;
     }
 
-    if (!this.isInsidePotentialEmptyParagraph() || this.posOfMediaGroupNearBy(state)) {
+    if (!this.isInsidePotentialEmptyParagraph() || this.posOfMediaGroupNearby(state)) {
       return this.range($from.pos, $to.pos);
     }
 

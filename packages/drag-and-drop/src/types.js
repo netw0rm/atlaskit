@@ -50,7 +50,6 @@ export type DragImpact = {|
 export type InitialDrag = {|
   source: DraggableLocation,
   center: Position,
-  scroll: Position,
   selection: Position,
   dimension: Dimension,
 |}

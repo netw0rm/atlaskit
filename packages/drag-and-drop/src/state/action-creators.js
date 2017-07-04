@@ -35,7 +35,6 @@ export type CompleteLiftAction = {|
     id: DraggableId,
     type: TypeId,
     center: Position,
-    scroll: Position,
     selection: Position,
   |}
 |}
@@ -43,14 +42,12 @@ export type CompleteLiftAction = {|
 const completeLift = (id: DraggableId,
   type: TypeId,
   center: Position,
-  scroll: Position,
   selection: Position): CompleteLiftAction => ({
     type: 'COMPLETE_LIFT',
     payload: {
       id,
       type,
       center,
-      scroll,
       selection,
     },
   });
@@ -226,7 +223,6 @@ export type LiftAction = {|
     id: DraggableId,
     type: TypeId,
     center: Position,
-    scroll: Position,
     selection: Position,
   |}
 |}
@@ -235,7 +231,6 @@ export type LiftAction = {|
 export const lift = (id: DraggableId,
   type: TypeId,
   center: Position,
-  scroll: Position,
   selection: Position,
 ) => (dispatch: Dispatch, getState: Function) => {
   (() => {
@@ -275,7 +270,7 @@ export const lift = (id: DraggableId,
       if (newState.phase !== 'COLLECTING_DIMENSIONS') {
         return;
       }
-      dispatch(completeLift(id, type, center, scroll, selection));
+      dispatch(completeLift(id, type, center, selection));
     });
   });
 };

@@ -20,7 +20,6 @@ type State = {
   pending: ?Position,
 };
 
-// need a component so that we can kill events on unmount
 export default class DragHandle extends PureComponent {
 
   /* eslint-disable react/sort-comp */
@@ -71,15 +70,15 @@ export default class DragHandle extends PureComponent {
 
     // Mouse dragging
 
-    const { button, clientX, clientY } = event;
+    const { button, pageX, pageY } = event;
 
     if (button !== primaryButton) {
       return;
     }
 
     const point: Position = {
-      x: clientX,
-      y: clientY,
+      x: pageX,
+      y: pageY,
     };
 
     if (!pending) {
@@ -135,7 +134,7 @@ export default class DragHandle extends PureComponent {
       return;
     }
 
-    const { button, clientX, clientY } = event;
+    const { button, pageX, pageY } = event;
     event.stopPropagation();
     event.preventDefault();
 
@@ -144,8 +143,8 @@ export default class DragHandle extends PureComponent {
     }
 
     const point: Position = {
-      x: clientX,
-      y: clientY,
+      x: pageX,
+      y: pageY,
     };
 
     this.startPendingMouseDrag(point);

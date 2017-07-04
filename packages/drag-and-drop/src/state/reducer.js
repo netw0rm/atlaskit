@@ -120,7 +120,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return state;
     }
 
-    const { id, type, center, scroll, selection } = action.payload;
+    const { id, type, center, selection } = action.payload;
 
     const impact: DragImpact = getDragImpact(
       center,
@@ -139,7 +139,6 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     const initial: InitialDrag = {
       source,
       center,
-      scroll,
       selection,
       dimension: state.dimension.draggable[id],
     };

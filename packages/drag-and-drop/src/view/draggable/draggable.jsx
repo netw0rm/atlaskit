@@ -12,7 +12,6 @@ import type {
   Provided as DragHandleProvided,
 } from '../drag-handle/drag-handle-types';
 import getCenterPosition from '../get-center-position';
-import getScrollPosition from '../get-scroll-position';
 import Placeholder from './placeholder';
 import type {
   Props,
@@ -93,21 +92,19 @@ export default class Draggable extends PureComponent {
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
 
-    const scroll: Position = getScrollPosition();
     const center: Position = getCenterPosition(this.state.childRef);
 
-    lift(draggableId, type, center, scroll, selection);
+    lift(draggableId, type, center, selection);
   }
 
   onKeyLift = () => {
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
 
-    const scroll: Position = getScrollPosition();
     const center: Position = getCenterPosition(this.state.childRef);
 
     // using center position as selection
-    lift(draggableId, type, center, scroll, center);
+    lift(draggableId, type, center, center);
   }
 
   onMove = (point: Position) => {
@@ -120,21 +117,9 @@ export default class Draggable extends PureComponent {
       return;
     }
 
-    const scroll: Position = getScrollPosition();
-
-    // diffs
-    const mouseDiff: Position = {
+    const offset: Position = {
       x: point.x - initial.selection.x,
       y: point.y - initial.selection.y,
-    };
-    const scrollDiff: Position = {
-      x: scroll.x - initial.scroll.x,
-      y: scroll.y - initial.scroll.y,
-    };
-
-    const offset: Position = {
-      x: mouseDiff.x + scrollDiff.x,
-      y: mouseDiff.y + scrollDiff.y,
     };
     const center: Position = {
       x: initial.center.x + offset.x,

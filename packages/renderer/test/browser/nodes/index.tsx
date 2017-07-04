@@ -1,3 +1,4 @@
+import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import { getValidNode, renderNode } from '../../../src/nodes';
 
@@ -256,17 +257,49 @@ describe('Nodes', () => {
   });
 
   describe('renderNode', () => {
+
+    it('should gracefully handle nodes with unexpected content', () => {
+      const unexpectedContent = [
+        true,
+        false,
+        new Date(),
+        '',
+        1,
+        [],
+        {},
+        {
+          content: [
+            {}
+          ]
+        }
+      ];
+
+      unexpectedContent.forEach(content => {
+        const unknownNode = (renderNode as any)(content);
+        expect(unknownNode.type).to.equal('span');
+        expect(shallow(unknownNode).text()).to.equal('Unknown type: ""');
+      });
+    });
+
     it('should try and render unknown nodes as text', () => {
-      expect(renderNode({ type: 'unknown', text: 'Hello world' })).to.equal('Hello world');
-      expect(renderNode({ type: 'unknown', attrs: { text: 'Hello world' } })).to.equal('Hello world');
+      const unknownNode1 = renderNode({ type: 'unknown', text: 'Hello world' });
+      const unknownNode2 = renderNode({ type: 'unknown', attrs: { text: 'Hello world' } });
+      expect(unknownNode1.type).to.equal('span');
+      expect(unknownNode2.type).to.equal('span');
+      expect(shallow(unknownNode1).text()).to.equal('Hello world');
+      expect(shallow(unknownNode2).text()).to.equal('Hello world');
     });
 
     it('should return "Unknown type: {type}" if it cannot be rendered as text', () => {
-      expect(renderNode({ type: 'banana'})).to.equal('Unknown type: "banana"');
+      const unknownNode = renderNode({ type: 'banana'});
+      expect(unknownNode.type).to.equal('span');
+      expect(shallow(unknownNode).text()).to.equal('Unknown type: "banana"');
     });
 
     it('should return "Unknown format: {type}" if type is known but format is wrong', () => {
-      expect(renderNode({ type: 'mention', attrs: { 'name': 'Oscar', 'uuid': 'nah' } })).to.equal('Unknown format: "mention"');
+      const unknownNode = renderNode({ type: 'mention', attrs: { 'name': 'Oscar', 'uuid': 'nah' } });
+      expect(unknownNode.type).to.equal('span');
+      expect(shallow(unknownNode).text()).to.equal('Unknown format: "mention"');
     });
 
     it('should default to a span if it has a content array containing renderable nodes', () => {

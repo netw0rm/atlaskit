@@ -128,6 +128,15 @@ export const emojiPickerList = style({
   flex: '1 1 auto',
 });
 
+// react-virtualized enables focus style by default - turn it off
+export const virtualList = style({
+  $nest: {
+    '&:focus': {
+      outline: 'none',
+    }
+  }
+});
+
 //// Search
 
 export const searchIcon = 'search-icon';
@@ -171,7 +180,17 @@ export const pickerSearch = style({
 //// Loading/Spinner
 
 export const emojiPickerSpinner = style({
-  alignSelf: 'center',
+  display: 'flex',
+  width: '100%',
+  height: '150px',
+  justifyContent: 'center',
+  alignItems: 'center',
+
+  $nest: {
+    '>div': {
+      flex: '0 0 auto',
+    }
+  }
 });
 
 //// Category/Result
@@ -205,6 +224,7 @@ export const emojiItem = style({
   width: '32px',
   height: '32px',
   display: 'inline-block',
+  textAlign: 'center',
 
   $nest: {
     '&>span': {

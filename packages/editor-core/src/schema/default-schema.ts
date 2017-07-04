@@ -3,6 +3,7 @@ import { Schema } from '../prosemirror';
 
 export const defaultSchema: Schema<any, any> = createSchema({
   nodes: [
+    'applicationCard',
     'doc',
     'paragraph',
     'text',

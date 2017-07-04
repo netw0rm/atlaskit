@@ -168,7 +168,7 @@ export const Content = styled.div`
         font-weight: bold;
         text-align: left;
       }
-      .selectedCell {
+      .selectedCell, .hoveredCell {
         position: relative;
         border-color: ${akEditorTableBorderSelected};
         border-width: 1px;

@@ -27,7 +27,7 @@ describe('<CategorySelector />', () => {
     const categoryButtons = component.find('button');
     expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
     defaultCategories.forEach((category, i) => {
-      expect(categoryButtons.at(i).key(), `Button #${i}`).to.equal(category.name);
+      expect(categoryButtons.at(i).prop('title'), `Button #${i}`).to.equal(category.name);
     });
   });
 
@@ -41,7 +41,7 @@ describe('<CategorySelector />', () => {
     expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
     defaultCategories.forEach((category, i) => {
       const button = categoryButtons.at(i);
-      expect(button.key(), `Button #${i}`).to.equal(category.name);
+      expect(button.prop('title'), `Button #${i}`).to.equal(category.name);
       const shouldBeEnabled = i === 0 || i === 3;
       expect(button.hasClass(styles.disable), `Button #${i} enabled=${shouldBeEnabled}`).to.equal(!shouldBeEnabled);
     });
@@ -66,7 +66,7 @@ describe('<CategorySelector />', () => {
     expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
     defaultCategories.forEach((category, i) => {
       const button = categoryButtons.at(i);
-      expect(button.key(), `Button #${i}`).to.equal(category.name);
+      expect(button.prop('title'), `Button #${i}`).to.equal(category.name);
       const shouldBeActive = i === 3;
       expect(button.hasClass(styles.active), `Button #${i} active=${shouldBeActive}`).to.equal(shouldBeActive);
     });

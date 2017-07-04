@@ -6,6 +6,8 @@ import {
   akEditorTableToolbar,
 } from '../../styles';
 
+export const toolbarSize = 11;
+
 // tslint:disable-next-line:variable-name
 export const Container = styled.div`
   position: relative;
@@ -18,7 +20,7 @@ export const HeaderButtonDefault = styled.button`
   display: block;
   padding: 0;
   cursor: pointer;
-  &:hover, .active > & {
+  &:hover, .active > &, .tableSelected & {
     background-color: ${akEditorTableToolbarSelected};
     border-color: ${akEditorTableBorderSelected};
   }
@@ -28,19 +30,18 @@ export const HeaderButtonDefault = styled.button`
 `;
 // tslint:disable-next-line:variable-name
 export const InsertButtonDefault = styled.div`
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   position: absolute;
   z-index: 20;
-  width: 36px;
-  height: 30px;
   display: none;
+  width: 20px;
+  height: 20px;
   justify-content: center;
   & button {
     width: 100%;
-    display: flex;
-    justify-content: center;
+  }
+  & button * {
+    width: 100%;
+    height: 100%;
   }
 `;
 // tslint:disable-next-line:variable-name
@@ -53,4 +54,11 @@ export const InsertMarkerDefault = styled.div`
   div:hover > & {
     background-color: ${akEditorTableBorderSelected}
   }
+`;
+// tslint:disable-next-line:variable-name
+export const LineMarkerDefault = styled.div`
+  background: ${akEditorTableBorderSelected};
+  display: none;
+  position: absolute;
+  z-index: 1;
 `;

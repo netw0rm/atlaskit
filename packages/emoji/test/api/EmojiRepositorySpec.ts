@@ -6,7 +6,7 @@ import { EmojiDescription } from '../../src/types';
 import { containsEmojiId, toEmojiId } from '../../src/type-helpers';
 import EmojiRepository from '../../src/api/EmojiRepository';
 
-import { emojis as allEmojis, emojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../TestData';
+import { emojis as allEmojis, newEmojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../TestData';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -133,6 +133,8 @@ const allNumberTest: EmojiDescription = {
 
 
 describe('EmojiRepository', () => {
+  const emojiRepository = newEmojiRepository();
+
   describe('#search', () => {
     it('all', () => {
       const expectedEmojis = [

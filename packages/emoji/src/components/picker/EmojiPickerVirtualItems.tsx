@@ -100,7 +100,7 @@ export interface VirtualRenderContext {
                // This must be passed through to the rendered row element.
 }
 
-export const virtuaItemRenderer = (rows: VirtualItem<any>[], context: VirtualRenderContext) => {
+export const virtualItemRenderer = (rows: VirtualItem<any>[], context: VirtualRenderContext) => {
   const { index, key, style } = context;
   const row: VirtualItem<any> = rows[index];
 

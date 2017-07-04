@@ -13,7 +13,7 @@ import {
   LoadingItem,
   SearchItem,
   UploadPromptMessageItem,
-  virtuaItemRenderer,
+  virtualItemRenderer,
   VirtualItem,
 } from './EmojiPickerVirtualItems';
 import * as Items from './EmojiPickerVirtualItems';
@@ -358,7 +358,7 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
   }
 
   private rowSize = ({ index }) => this.virtualItems[index].height;
-  private renderRow = (context) => virtuaItemRenderer(this.virtualItems, context);
+  private renderRow = (context) => virtualItemRenderer(this.virtualItems, context);
 
   render() {
     const classes = [styles.emojiPickerList];

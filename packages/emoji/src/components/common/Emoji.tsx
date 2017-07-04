@@ -33,7 +33,7 @@ export interface Props {
   onSelected?: OnEmojiEvent;
 
   /**
-   * Could when the mouse moved over the emoji.
+   * Called when the mouse moved over the emoji.
    */
   onMouseMove?: OnEmojiEvent;
 

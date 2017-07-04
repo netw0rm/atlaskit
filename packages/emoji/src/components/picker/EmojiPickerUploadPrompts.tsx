@@ -32,7 +32,7 @@ export const UploadPromptButton = (props: Props) => {
 // tslint:disable-next-line:variable-name
 export const UploadPromptMessage = (props: Props) => (
   <AkButton
-    className={`${addEmojiClassName} cheese`}
+    className={addEmojiClassName}
     appearance="link"
     onClick={props.onOpenUpload}
   >

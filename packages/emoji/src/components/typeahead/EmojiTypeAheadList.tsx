@@ -49,6 +49,10 @@ interface ItemReferences {
 }
 
 export default class EmojiTypeAheadList extends PureComponent<Props, State> {
+  static childContextTypes = {
+    emoji: React.PropTypes.object
+  };
+
   private lastMousePosition: Position;
   private scrollable: Scrollable;
   private items: ItemReferences;

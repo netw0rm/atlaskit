@@ -1,11 +1,11 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { MouseEvent } from 'react';
+import { MouseEvent, SyntheticEvent } from 'react';
 import TooltipWrapper from './TooltipWrapper';
 
 import * as styles from './styles';
-import { isSpriteRepresentation, toEmojiId } from '../../type-helpers';
-import { EmojiDescription, ImageRepresentation, OnEmojiEvent, SpriteRepresentation } from '../../types';
+import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
+import { EmojiDescription, OnEmojiEvent, SpriteRepresentation } from '../../types';
 import { leftClick } from '../../util/mouse';
 
 export interface Props {
@@ -38,6 +38,11 @@ export interface Props {
   onMouseMove?: OnEmojiEvent;
 
   /**
+   * Callback for if an emoji image fails to load.
+   */
+  onLoadError?: OnEmojiEvent<HTMLImageElement>;
+
+  /**
    * Additional css classes, if required.
    */
   className?: string;
@@ -46,6 +51,11 @@ export interface Props {
    * Show a tooltip on mouse hover.
    */
   showTooltip?: boolean;
+
+  /**
+   * Fits emoji to height in pixels, keeping aspect ratio
+   */
+  fitToHeight?: number;
 }
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
@@ -63,10 +73,22 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
   }
 };
 
+const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>) => {
+  const { emoji, onLoadError } = props;
+
+  // Hide error state
+  const target = event.target as HTMLElement;
+  target.style.visibility = 'hidden';
+
+  if (onLoadError) {
+    onLoadError(toEmojiId(emoji), emoji, event);
+  }
+};
+
 // Pure functional components are used in favour of class based components, due to the performance!
 // When rendering 1500+ emoji using class based components had a significant impact.
 const renderAsSprite = (props: Props) => {
-  const { emoji, selected, selectOnHover, className, showTooltip } = props;
+  const { emoji, fitToHeight, selected, selectOnHover, className, showTooltip } = props;
   const representation = emoji.representation as SpriteRepresentation;
   const sprite = representation.sprite;
   const classes = {
@@ -79,12 +101,21 @@ const renderAsSprite = (props: Props) => {
     classes[className] = true;
   }
 
+  let sizing = {};
+  if (fitToHeight) {
+    sizing = {
+      width: `${fitToHeight}px`,
+      height: `${fitToHeight}px`,
+    };
+  }
+
   const xPositionInPercent = (100 / (sprite.column - 1)) * (representation.xIndex - 0);
   const yPositionInPercent = (100 / (sprite.row - 1)) * (representation.yIndex - 0);
   const style = {
     backgroundImage: `url(${sprite.url})`,
     backgroundPosition: `${xPositionInPercent}% ${yPositionInPercent}%`,
     backgroundSize: `${sprite.column * 100}% ${sprite.row * 100}%`,
+    ...sizing,
   };
   const emojiNode = (
     <span
@@ -112,7 +143,7 @@ const renderAsSprite = (props: Props) => {
 
 // Keep as pure functional component, see renderAsSprite.
 const renderAsImage = (props: Props) => {
-  const { emoji, selected, selectOnHover, className, showTooltip } = props;
+  const { emoji, fitToHeight, selected, selectOnHover, className, showTooltip } = props;
 
   const classes = {
     [styles.emoji]: true,
@@ -124,11 +155,41 @@ const renderAsImage = (props: Props) => {
     classes[className] = true;
   }
 
-  const representation = emoji.representation as ImageRepresentation;
+  let width;
+  let height;
+  let src;
+  const representation = emoji.representation;
+  if (isImageRepresentation(representation)) {
+    src = representation.imagePath;
+    width = representation.width;
+    height = representation.height;
+  } else if (isMediaRepresentation(representation)) {
+    src = representation.mediaPath;
+    width = representation.width;
+    height = representation.height;
+  }
+
+  let sizing = {};
+  if (fitToHeight && width && height) {
+    // Presize image, to prevent reflow due to size changes after loading
+    const scaledHeight = Math.min(fitToHeight, height);
+    sizing = {
+      width: width / height * scaledHeight,
+      height: scaledHeight,
+    };
+  }
+
+  const onError = (event) => {
+    handleImageError(props, event);
+  };
+
   const emojiNode = (
     <img
-      src={representation.imagePath}
+      src={src}
       alt={emoji.shortName}
+      style={{ visibility: 'visible' }}
+      onError={onError}
+      {...sizing}
     />
   );
   return (

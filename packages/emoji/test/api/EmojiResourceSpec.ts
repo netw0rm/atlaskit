@@ -11,7 +11,7 @@ import { customCategory } from '../../src/constants';
 import { EmojiDescription, EmojiServiceResponse, ImageRepresentation, MediaApiRepresentation } from '../../src/types';
 import { SecurityOptions, ServiceConfig } from '../../src/api/SharedResourceUtils';
 import { OnProviderChange } from '../../src/api/SharedResources';
-import MediaEmojiResource from '../../src/api/MediaEmojiResource';
+import MediaEmojiResource from '../../src/api/media/MediaEmojiResource';
 import EmojiResource, {
     EmojiProvider,
     EmojiResourceConfig,
@@ -40,6 +40,8 @@ import {
     standardServiceEmojis,
     thumbsupEmoji,
 } from '../TestData';
+
+import { alwaysPromise } from '../test-util';
 
 // patch URLSearchParams API for jsdom tests
 declare var global: any;
@@ -473,7 +475,7 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(defaultApiConfig);
 
-      const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' }); // grin
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' })); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -493,7 +495,7 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(defaultApiConfig);
 
-      const emojiPromise = resource.findByEmojiId({ shortName: ':grin:' });
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':grin:' }));
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -513,7 +515,7 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(defaultApiConfig);
 
-      const emojiPromise = resource.findByEmojiId({ shortName: ':grin:', id: 'unknownid' });
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':grin:', id: 'unknownid' }));
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -541,7 +543,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' }); // grin
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' })); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -570,7 +572,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' }); // grin
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' })); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(evilburnsEmoji, emoji);
       });
@@ -599,7 +601,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: 'bogus' }); // does not exist
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: 'bogus' })); // does not exist
       const done = emojiPromise.then(emoji => {
         expect(emoji).to.equal(undefined);
       });
@@ -621,7 +623,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' }); // grin
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' })); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(evilburnsEmoji, emoji);
       });
@@ -645,7 +647,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' }); // grin
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' })); // grin
       const done = emojiPromise.then(emoji => {
         expect(emoji, 'Emoji not found due to failed provider').to.equal(undefined);
       });
@@ -670,7 +672,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' }); // grin
+      const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' })); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(evilburnsEmoji, emoji);
       });
@@ -694,13 +696,14 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(config);
 
-      return resource.findByEmojiId({ id: 'media', shortName: ':media:' }).then(emoji => {
-        expect(emoji).to.not.equal(undefined);
-        if (emoji) {
-          const representation = emoji.representation as ImageRepresentation;
-          expect(representation.imagePath.indexOf('data:'), 'media emoji has image representation').to.equal(0);
-        }
-      });
+      return alwaysPromise(resource.findByEmojiId({ id: 'media', shortName: ':media:' }))
+        .then(emoji => {
+          expect(emoji).to.not.equal(undefined);
+          if (emoji) {
+            const representation = emoji.representation as ImageRepresentation;
+            expect(representation.imagePath.indexOf('data:'), 'media emoji has image representation').to.equal(0);
+          }
+        });
     });
 
     it('media emoji missing token - left as image representation', () => {
@@ -718,13 +721,14 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(config);
 
-      return resource.findByEmojiId({ id: 'media', shortName: ':media:' }).then(emoji => {
-        expect(emoji).to.not.equal(undefined);
-        if (emoji) {
-          const representation = emoji.representation as ImageRepresentation;
-          expect(representation.imagePath, 'media emoji left as image emoji with original url').to.equal(mediaEmojiImagePath);
-        }
-      });
+      return alwaysPromise(resource.findByEmojiId({ id: 'media', shortName: ':media:' }))
+        .then(emoji => {
+          expect(emoji).to.not.equal(undefined);
+          if (emoji) {
+            const representation = emoji.representation as ImageRepresentation;
+            expect(representation.imagePath, 'media emoji left as image emoji with original url').to.equal(mediaEmojiImagePath);
+          }
+        });
     });
 
     it('not found by id - found on server', () => {
@@ -757,11 +761,12 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(config);
 
-      return resource.findByEmojiId(missingMediaEmojiId).then(emoji => {
-        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-        expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
-        expect(emoji).to.deep.equal(loadedMissingMediaEmoji);
-      });
+      return alwaysPromise(resource.findByEmojiId(missingMediaEmojiId))
+        .then(emoji => {
+          const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+          expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
+          expect(emoji).to.deep.equal(loadedMissingMediaEmoji);
+        });
     });
 
     it('not found by id - not found on server - try by shortName', () => {
@@ -799,11 +804,12 @@ describe('EmojiResource', () => {
         shortName: ':media:', // fallback - match existing by shortName (but different id)
       };
 
-      return resource.findByEmojiId(emojiId).then(emoji => {
-        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-        expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
-        expect(emoji).to.deep.equal(loadedMediaEmoji);
-      });
+      return alwaysPromise(resource.findByEmojiId(emojiId))
+        .then(emoji => {
+          const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+          expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
+          expect(emoji).to.deep.equal(loadedMediaEmoji);
+        });
     });
 
     it('not found by id - no media resource - try by shortName', () => {
@@ -837,20 +843,21 @@ describe('EmojiResource', () => {
         shortName: ':media:', // fallback - match existing by shortName (but different id)
       };
 
-      return resource.findByEmojiId(emojiId).then(emoji => {
-        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-        expect (fetchSiteEmojiCalls.length, 'No call fetch site emoji on server').to.equal(0);
-        // media url not loaded - url pass through
-        const { width, height, mediaPath } = mediaEmoji.representation as MediaApiRepresentation;
-        expect(emoji).to.deep.equal({
-          ...mediaEmoji,
-          representation: {
-            imagePath: mediaPath,
-            width,
-            height,
-          }
+      return alwaysPromise(resource.findByEmojiId(emojiId))
+        .then(emoji => {
+          const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+          expect (fetchSiteEmojiCalls.length, 'No call fetch site emoji on server').to.equal(0);
+          // media url not loaded - url pass through
+          const { width, height, mediaPath } = mediaEmoji.representation as MediaApiRepresentation;
+          expect(emoji).to.deep.equal({
+            ...mediaEmoji,
+            representation: {
+              imagePath: mediaPath,
+              width,
+              height,
+            }
+          });
         });
-      });
     });
   });
 
@@ -867,7 +874,7 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(defaultApiConfig);
 
-      const emojiPromise = resource.findById('unknownid');
+      const emojiPromise = alwaysPromise(resource.findById('unknownid'));
       const done = emojiPromise.then(emoji => {
         expect(emoji).to.equal(undefined);
       });
@@ -887,7 +894,7 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(defaultApiConfig);
 
-      const emojiPromise = resource.findById('1f601');
+      const emojiPromise = alwaysPromise(resource.findById('1f601'));
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -908,7 +915,7 @@ describe('EmojiResource', () => {
       });
 
       const resource = new EmojiResource(defaultApiConfig);
-      const emojiPromise = resource.findByShortName(':grin:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':grin:'));
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -936,7 +943,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByShortName(':grin:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':grin:'));
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -965,7 +972,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByShortName(':evilburns:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':evilburns:'));
       const done = emojiPromise.then(emoji => {
         checkEmoji(evilburnsEmoji, emoji);
       });
@@ -998,7 +1005,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByShortName(':grin:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':grin:'));
       const done = emojiPromise.then(emoji => {
         checkEmoji(p2grin, emoji);
       });
@@ -1037,7 +1044,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByShortName(':grin:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':grin:'));
       const done = emojiPromise.then(emoji => {
         checkEmoji(p2grin, emoji);
       });
@@ -1072,7 +1079,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByShortName(':bogus:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':bogus:'));
       const done = emojiPromise.then(emoji => {
         expect(emoji).to.equal(undefined);
       });
@@ -1094,7 +1101,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByShortName(':evilburns:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':evilburns:'));
       const done = emojiPromise.then(emoji => {
         checkEmoji(evilburnsEmoji, emoji);
       });
@@ -1118,7 +1125,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByShortName(':grin:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':grin:'));
       const done = emojiPromise.then(emoji => {
         expect(emoji, 'Emoji not found due to failed provider').to.equal(undefined);
       });
@@ -1143,7 +1150,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findByShortName(':evilburns:');
+      const emojiPromise = alwaysPromise(resource.findByShortName(':evilburns:'));
       const done = emojiPromise.then(emoji => {
         checkEmoji(evilburnsEmoji, emoji);
       });
@@ -1167,13 +1174,14 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(config);
 
-      return resource.findByShortName(':media:').then(emoji => {
-        expect(emoji).to.not.equal(undefined);
-        if (emoji) {
-          const representation = emoji.representation as ImageRepresentation;
-          expect(representation.imagePath.indexOf('data:'), 'media emoji has image representation').to.equal(0);
-        }
-      });
+      return alwaysPromise(resource.findByShortName(':media:'))
+        .then(emoji => {
+          expect(emoji).to.not.equal(undefined);
+          if (emoji) {
+            const representation = emoji.representation as ImageRepresentation;
+            expect(representation.imagePath.indexOf('data:'), 'media emoji has image representation').to.equal(0);
+          }
+        });
     });
 
     it('media emoji missing token - left as image representation', () => {
@@ -1191,13 +1199,14 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(config);
 
-      return resource.findByShortName(':media:').then(emoji => {
-        expect(emoji).to.not.equal(undefined);
-        if (emoji) {
-          const representation = emoji.representation as ImageRepresentation;
-          expect(representation.imagePath, 'media emoji left as image emoji with original url').to.equal(mediaEmojiImagePath);
-        }
-      });
+      return alwaysPromise(resource.findByShortName(':media:'))
+        .then(emoji => {
+          expect(emoji).to.not.equal(undefined);
+          if (emoji) {
+            const representation = emoji.representation as ImageRepresentation;
+            expect(representation.imagePath, 'media emoji left as image emoji with original url').to.equal(mediaEmojiImagePath);
+          }
+        });
     });
   });
 
@@ -1228,8 +1237,9 @@ describe('UploadingEmojiResource', () => {
       this.mockMediaEmojiResource = mockMediaEmojiResource;
     }
 
-    protected initMediaEmojiResource(emojiResponse, provider): void {
+    protected initMediaEmojiResource(emojiResponse, provider) {
       this.mediaEmojiResource = this.mockMediaEmojiResource;
+      return Promise.resolve();
     }
   }
 
@@ -1329,6 +1339,8 @@ describe('helpers', () => {
     filter = (query, options) => {};
     subscribe = onChange => {};
     unsubscribe = onChange => {};
+    loadEmojiImageData = () => undefined;
+    optimisticEmojiRendering = () => false;
   }
 
   class TestUploadingEmojiProvider extends TestEmojiProvider implements UploadingEmojiProvider {

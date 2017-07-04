@@ -7,12 +7,14 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
 
-import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAhead';
+import EmojiTypeAhead, { defaultListLimit, Props } from '../../../src/components/typeahead/EmojiTypeAhead';
+import { OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAheadComponent';
 import EmojiTypeAheadItem from '../../../src/components/typeahead/EmojiTypeAheadItem';
 import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import { OptionalEmojiDescription, EmojiId } from '../../../src/types';
 import { EmojiProvider } from '../../../src/api/EmojiResource';
-import { Props as TypeAheadProps, State as TypeAheadState } from '../../../src/components/typeahead/EmojiTypeAhead';
+import { Props as TypeAheadProps } from '../../../src/components/typeahead/EmojiTypeAhead';
+import { State as TypeAheadState } from '../../../src/components/typeahead/EmojiTypeAheadComponent';
 
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   return mount(

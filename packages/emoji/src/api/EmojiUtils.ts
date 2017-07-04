@@ -9,7 +9,7 @@ import {
   EmojiServiceDescriptionWithVariations,
   EmojiServiceRepresentation,
   EmojiServiceResponse,
-  ImageRepresentation,
+  // ImageRepresentation,
   SpriteServiceRepresentation,
 } from '../types';
 import { isImageRepresentation, isSpriteServiceRepresentation } from '../type-helpers';
@@ -65,8 +65,9 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
       };
     }
   } else if (isImageRepresentation(representation)) {
-    const { height, width, imagePath } = representation as ImageRepresentation;
+    const { height, width, imagePath } = representation;
     if (isMediaApiUrl(imagePath, meta)) {
+      // Convert to MediaRepresentation
       return {
         height,
         width,

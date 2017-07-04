@@ -70,6 +70,7 @@ export default class Layer extends PureComponent {
 
   extractStyles = (state) => {
     if (state) {
+      console.log('popper offsets', state.offsets.popper);
       const left = Math.round(state.offsets.popper.left);
       const top = Math.round(state.offsets.popper.top);
 

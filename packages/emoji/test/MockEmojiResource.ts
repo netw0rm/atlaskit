@@ -2,7 +2,7 @@ import * as uid from 'uid';
 
 import { customCategory, customType } from '../src/constants';
 import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../src/types';
-import { addCustomCategoryToResult, UploadingEmojiProvider } from '../src/api/EmojiResource';
+import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../src/api/EmojiResource';
 import EmojiRepository, { EmojiSearchResult } from '../src/api/EmojiRepository';
 import { AbstractResource } from '../src/api/SharedResources';
 import debug from '../src/util/logger';
@@ -15,6 +15,7 @@ export interface MockEmojiResourceConfig {
   promiseBuilder?: PromiseBuilder<any>;
   uploadSupported?: boolean;
   uploadError?: string;
+  optimisticRendering?: boolean;
 }
 
 export const emojiFromUpload = (upload: EmojiUpload) => {
@@ -35,10 +36,11 @@ export const emojiFromUpload = (upload: EmojiUpload) => {
   };
 };
 
-export class MockNonUploadingEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> {
+export class MockNonUploadingEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider {
   protected emojiRepository: EmojiRepository;
   protected promiseBuilder: PromiseBuilder<any>;
   protected lastQuery: string = '';
+  protected optimisticRendering?: boolean;
 
   recordedSelections: EmojiId[] = [];
 
@@ -50,6 +52,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
       if (config.promiseBuilder) {
         this.promiseBuilder = config.promiseBuilder;
       }
+      this.optimisticRendering = config.optimisticRendering;
     }
   }
 
@@ -97,6 +100,19 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   recordSelection?(id: EmojiId): Promise<any> {
     this.recordedSelections.push(id);
     return this.promiseBuilder(undefined);
+  }
+
+  loadEmojiImageData(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
+    return emoji;
+  }
+
+  /**
+   * Returns true if a media emoji should be rendered optimistically,
+   * i.e. assume the url can be rendered directly from the URL, and
+   * only explicitly loaded via loadEmojiImageData if it fails to load.
+   */
+  optimisticEmojiRendering(emoji: EmojiDescription) {
+    return !!this.optimisticRendering;
   }
 }
 
@@ -156,6 +172,12 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
     super.notifyNotReady();
   }
 
+  loadEmojiImageData(emoji: EmojiDescription) {
+    if (this.promiseBuilder) {
+      return this.promiseBuilder(emoji);
+    }
+    return emoji;
+  }
 }
 
 export const mockNonUploadingEmojiResourceFactory = (emojiRepository: EmojiRepository, config?: MockEmojiResourceConfig, promiseBuilder?: PromiseBuilder<MockNonUploadingEmojiResource>) => {

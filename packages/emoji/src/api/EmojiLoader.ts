@@ -20,6 +20,16 @@ export default class EmojiLoader {
    */
   loadEmoji(): Promise<EmojiResponse> {
     const emojisPromise = emojiRequest(this.config);
-    return emojisPromise.then(emojiServiceResponse => denormaliseEmojiServiceResponse(emojiServiceResponse));
+    // return emojisPromise.then(emojiServiceResponse => denormaliseEmojiServiceResponse(emojiServiceResponse));
+    return emojisPromise.then(emojiServiceResponse => {
+      const newEmojiServiceResponse = {
+        ...emojiServiceResponse
+      };
+      if (emojiServiceResponse.meta && emojiServiceResponse.meta.mediaApiToken) {
+        // filter site emoji
+        newEmojiServiceResponse.emojis = emojiServiceResponse.emojis; // .slice(0, 20);
+      }
+      return denormaliseEmojiServiceResponse(newEmojiServiceResponse);
+    });
   }
 }

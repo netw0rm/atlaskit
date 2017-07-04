@@ -9,6 +9,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
 
   keymaps.bindKeymapWithCommand(keymaps.backspace.common!, selectPreviousMedia, list);
+  keymaps.bindKeymapWithCommand(keymaps.undo.common!, ignoreLinksInSteps, list);
 
   return keymap(list);
 }
@@ -16,6 +17,12 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
 function selectPreviousMedia(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
   const mediaPluginState = stateKey.getState(state) as MediaPluginState;
   return mediaPluginState.removeMediaNode();
+}
+
+function ignoreLinksInSteps(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  const mediaPluginState = stateKey.getState(state) as MediaPluginState;
+  mediaPluginState.ignoreLinksInSteps();
+  return false;
 }
 
 export default keymapPlugin;

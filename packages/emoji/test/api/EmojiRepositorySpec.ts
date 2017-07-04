@@ -88,7 +88,7 @@ const atlassianTest: EmojiDescription = {
 const standardTest: EmojiDescription = {
   id: '1f923',
   name: 'BOOM',
-  shortName: ':test:',
+  shortName: ':test1:',
   type: 'STANDARD',
   category: 'SYMBOL',
   representation: {
@@ -107,6 +107,30 @@ const standardTest: EmojiDescription = {
     yIndex: 21,
   },
 };
+
+const allNumberTest: EmojiDescription = {
+  id: '1f43c',
+  name: 'panda face',
+  shortName: ':420:',
+  type: 'STANDARD',
+  category: 'NATURE',
+  representation: {
+    sprite: {
+      url: 'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png',
+      row: 23,
+      column: 25,
+      height: 782,
+      width: 850
+    },
+    x: 238,
+    y: 0,
+    height: 32,
+    width: 32,
+    xIndex: 7,
+    yIndex: 0,
+  },
+};
+
 
 describe('EmojiRepository', () => {
   const emojiRepository = newEmojiRepository();
@@ -214,6 +238,29 @@ describe('EmojiRepository', () => {
       expect(emojis[0].name).to.equal('Congo - Brazzaville');
       const noEmojis = emojiRepository.search(':-').emojis;
       expect(noEmojis.length, 'No emoji').to.equal(0);
+    });
+
+    it('returns emojis whose shortName starts with a number', () => {
+      const expectedEmojis = [
+        ...allEmojis,
+        allNumberTest,
+      ];
+      const repository = new EmojiRepository(expectedEmojis);
+      const emojis = repository.search(':4').emojis;
+      expect(emojis.length, 'One emoji').to.equal(1);
+      expect(emojis[0].name).to.equal('panda face');
+    });
+
+    it('should include numbers as a part of the query', () => {
+      const expectedEmojis = [
+        ...allEmojis,
+        atlassianTest,
+        standardTest,
+      ];
+      const repository = new EmojiRepository(expectedEmojis);
+      const emojis = repository.search(':test1').emojis;
+      expect(emojis.length, 'One emoji').to.equal(1);
+      expect(emojis[0].name).to.equal('BOOM');
     });
   });
 

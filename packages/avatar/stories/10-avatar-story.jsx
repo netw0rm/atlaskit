@@ -12,12 +12,22 @@ import { name } from '../package.json';
 import Avatar, { AvatarGroup } from '../src';
 import { omit } from '../src/utils';
 import nucleusImage from './nucleus.png';
-import { AvatarCol, AvatarRow, DivPresence, Example, Note, Wrapper } from './styled';
+import { AvatarCol, AvatarRow, DivPresence, Note, Wrapper } from './styled';
 import { AVATAR_SIZES } from '../src/styled/constants';
 
 const avatarSource = 'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';
 const tickUrl = require('url-loader!./tick.svg');
 
+const New = () => (
+  <span style={{ position: 'relative', top: '-0.4em' }}>
+    <Lozenge appearance="new" isBold>New</Lozenge>
+  </span>
+);
+const Updated = () => (
+  <span style={{ position: 'relative', top: '-0.4em' }}>
+    <Lozenge appearance="moved">Updated</Lozenge>
+  </span>
+);
 const HR = () => (
   <div style={{ border: 0, borderTop: '1px solid #ccc', marginBottom: '1em', marginTop: '1em' }} />
 );
@@ -51,11 +61,14 @@ const AllAvatarSizes = (props) => {
 storiesOf(name, module)
   .add('Circle Avatars', () => (
     <Wrapper>
-      <h5>Default</h5>
+      <h5>Default <Updated /></h5>
       <Note>&quot;medium&quot; size &mdash; no &quot;presence&quot;, or &quot;status&quot;</Note>
       <Avatar />
 
-      <h5>With Presence</h5>
+      <HR />
+      <h2>Presence</h2>
+
+      <h5>Presence Types</h5>
       <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
       <AvatarRow>
         <DefaultAvatar src={avatarSource} size="large" />
@@ -68,7 +81,10 @@ storiesOf(name, module)
       <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence</Note>
       <AllAvatarSizes src={avatarSource} presence="online" />
 
-      <h5>With Status</h5>
+      <HR />
+      <h2>Status <New /></h2>
+
+      <h5>Status Types</h5>
       <Note>Supports &quot;approved&quot;, &quot;declined&quot;, and &quot;locked&quot;</Note>
       <AvatarRow>
         <DefaultAvatar src={avatarSource} size="large" />
@@ -84,13 +100,16 @@ storiesOf(name, module)
   ))
   .add('Square Avatars', () => (
     <Wrapper>
-      <h5>Default</h5>
+      <h5>Default <Updated /></h5>
       <Note>&quot;medium&quot; size &mdash; no &quot;presence&quot;, or &quot;status&quot;</Note>
       <AvatarRow>
         <SquareAvatar />
       </AvatarRow>
 
-      <h5>With Presence</h5>
+      <HR />
+      <h2>Presence</h2>
+
+      <h5>Presence Types</h5>
       <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
       <AvatarRow>
         <SquareAvatar src={nucleusImage} size="large" />
@@ -103,7 +122,10 @@ storiesOf(name, module)
       <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence</Note>
       <AllAvatarSizes appearance="square" presence="online" src={nucleusImage} />
 
-      <h5>With Status</h5>
+      <HR />
+      <h2>Status <New /></h2>
+
+      <h5>Status Types</h5>
       <Note>Supports &quot;approved&quot;, &quot;declined&quot;, and &quot;locked&quot;</Note>
       <AvatarRow>
         <SquareAvatar src={nucleusImage} size="large" />
@@ -149,10 +171,16 @@ storiesOf(name, module)
     );
     return (
       <Wrapper>
-        <h4>Coloured Backgrounds</h4>
+        <h2>Coloured Backgrounds <Updated /></h2>
         <Note>
-          Using the <code>borderColor</code> prop we can have avatars on any background color.
-          Try focusing the avatars to see how the focus ring interacts with the background color.
+          <p>
+            The <code>presenceBorderColor</code> property is now <code>borderColor</code>
+            which is consumed by {'<Avatar/>'} and passed on to {'<Presence/>'} and
+            {' <Status/>'}.
+          </p><p>
+            Try clicking/tabbing on the avatars to see how the focus ring interacts with the
+            background color.
+          </p>
         </Note>
         <div style={styles.row}>
           {colors.map((c, i) => (
@@ -175,7 +203,7 @@ storiesOf(name, module)
 
     return (
       <Wrapper>
-        <h2>Interactive Avatars <Lozenge appearance="success" isBold>New</Lozenge></h2>
+        <h2>Interactive Avatars <New /></h2>
         <Note size="large">
           For most instances you will no-longer need to wrap <code>{'<Avatar/>'}</code>.
         </Note>
@@ -183,7 +211,7 @@ storiesOf(name, module)
           <Avatar src={avatarSource} onClick={console.info} size={avatarSize} />
         </AvatarShowcase>
 
-        <AvatarShowcase title="Anchor" description={<span>Provide <code>href</code> to {'<Avatar/>'}</span>}>
+        <AvatarShowcase title="Anchor" description={<span>Provide <code>href</code> to {'<Avatar/>'}. Also, optionally accepts a <code>target</code> property.</span>}>
           <Avatar
             href="http://atlaskit.atlassian.com"
             src={avatarSource}
@@ -192,71 +220,51 @@ storiesOf(name, module)
           />
         </AvatarShowcase>
 
-        <AvatarShowcase title="Tooltip" description={<span>Provide <code>name</code> to {'<Avatar/>'}</span>}>
+        <AvatarShowcase title="Tooltip" description={<span>Provide <code>name</code> to {'<Avatar/>'}. Image receives alt-text and an aria-label, which describes the image to screenreaders.</span>}>
           <Avatar src={avatarSource} name="Bill Murray" size={avatarSize} />
         </AvatarShowcase>
 
         <HR />
 
         <h5>Avatar States</h5>
-        <Note>All states handled internal and can be provided by props.</Note>
+        <Note>All states handled internal, thought can also be provided as props.</Note>
         <AvatarShowcase title="Default" description="No state applied">
           <Avatar src={avatarSource} size="large" onClick={() => {}} label="default" />
         </AvatarShowcase>
-        <AvatarShowcase title="Hover" description="akColorN70A applied as an overlay">
+        <AvatarShowcase title="isHover" description="akColorN70A applied as an overlay">
           <Avatar src={avatarSource} size="large" onClick={() => {}} isHover />
         </AvatarShowcase>
-        <AvatarShowcase title="Active" description="akColorN70A applied as an overlay, and scaled down to 85%">
+        <AvatarShowcase title="isActive" description="akColorN70A applied as an overlay, and scaled down to 85%">
           <Avatar src={avatarSource} size="large" onClick={() => {}} isActive />
         </AvatarShowcase>
-        <AvatarShowcase title="Focus" description="akColorB200 focus ring applied, border-width relative to avatar size">
+        <AvatarShowcase title="isFocus" description="akColorB200 focus ring applied, border-width relative to avatar size">
           <Avatar src={avatarSource} size="large" onClick={() => {}} isFocus />
         </AvatarShowcase>
-        <AvatarShowcase title="Selected" description="akColorN200A applied as an overlay">
+        <AvatarShowcase title="isSelected" description="akColorN200A applied as an overlay">
           <Avatar src={avatarSource} size="large" onClick={() => {}} isSelected />
         </AvatarShowcase>
-        <AvatarShowcase title="Disabled" description="70% white applied as an overlay">
+        <AvatarShowcase title="isDisabled" description="70% white applied as an overlay">
           <Avatar src={avatarSource} size="large" onClick={() => {}} isDisabled />
         </AvatarShowcase>
       </Wrapper>
     );
   })
-  .addCodeExampleStory('Avatar Tooltips', () => (
-    <Wrapper>
-      <h2>Avatar Tooltips <Lozenge appearance="success" isBold>New</Lozenge></h2>
-      <Note size="large">
-        Image receives alt-text and an aria-label, which describes the image to screenreaders.
-      </Note>
-      <Avatar
-        href="//www.atlassian.com"
-        name="Tooltip & Alt text"
-        size="xlarge"
-        src={avatarSource}
-        target="_blank"
-      />
-    </Wrapper>
-  ))
   .add('Avatar Groups', () => {
     class AvatarGroupExample extends Component {
-      state = { gridWidth: 200, gridMax: 11, avatarCount: 20, sizeIndex: 2 }
-      sizes = ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge']
-      limit = {
-        gridMax: 30,
-      }
+      state = { gridWidth: 220, gridMax: 11, avatarCount: 20, sizeIndex: 3 }
       decrement = key => this.setState(state => ({ [key]: state[key] - 1 }))
       increment = key => this.setState(state => ({ [key]: state[key] + 1 }))
       render() {
         const { avatarCount, sizeIndex, gridMax, gridWidth } = this.state;
         const sizes = Object.keys(AVATAR_SIZES);
         const avatarSize = sizes[sizeIndex];
-        const avatarPX = AVATAR_SIZES[avatarSize];
 
         const stackSourceURLs = [];
         for (let i = 0; i < avatarCount; i++) stackSourceURLs.push(i);
 
         return (
           <Wrapper>
-            <h2>Avatar Groups <Lozenge appearance="success" isBold>New</Lozenge></h2>
+            <h2>Avatar Groups <New /></h2>
             <Note size="large">Click the excess indicator to see the remaining avatars in a dropdown menu.</Note>
             <div style={{ display: 'flex', marginTop: '1em' }}>
               <div style={{ flex: 1 }}>
@@ -292,33 +300,34 @@ storiesOf(name, module)
               step="10"
               title="Grid Width"
               type="range"
+              value={gridWidth}
             />
             <div style={{ maxWidth: parseInt(gridWidth, 10), position: 'relative' }}>
               <AvatarGroup
                 appearance="grid"
                 onClickAvatar={console.log}
                 onClickDropdownItem={console.log}
-                // onClickMore={() => console.log('Click more "grid".')}
                 data={stackSourceURLs.map(i => ({
                   key: i,
-                  name: `Adorable Avatar ${i + 1}`,
-                  src: `https://api.adorable.io/avatars/${avatarPX}/grid_${i}.png`,
+                  name: `Grid Avatar ${i + 1}`,
+                  src: avatarSource,
                 }))}
                 maxCount={gridMax}
                 size={avatarSize}
               />
-              <span style={{ borderLeft: '1px solid #ccc', paddingLeft: '1em', fontSize: 11, position: 'absolute', right: 0, top: 0, color: '#999', transform: 'translateX(100%)' }}>{gridWidth}px</span>
+              <span style={{ borderLeft: '1px solid #ccc', paddingLeft: '1em', fontSize: 11, position: 'absolute', right: 0, top: 0, color: '#999', transform: 'translateX(100%)' }}>
+                {gridWidth}px
+              </span>
             </div>
             <h5>Stack</h5>
             <Note>Total {stackSourceURLs.length} / Max 5</Note>
             <AvatarGroup
               onClickAvatar={console.log}
               onClickDropdownItem={console.log}
-              // onClickMore={() => console.log('Click more "stack".')}
               data={stackSourceURLs.map(i => ({
                 key: i,
-                name: `Adorable Avatar ${i + 1}`,
-                src: `https://api.adorable.io/avatars/${avatarPX}/stack_${i}.png`,
+                name: `Stack Avatar ${i + 1}`,
+                src: avatarSource,
               }))}
               size={avatarSize}
             />
@@ -335,8 +344,6 @@ storiesOf(name, module)
         imageUrl: '',
       };
     }
-
-    const backgroundColor = akColorN20;
     const Btn = props => <button type="button" style={{ marginLeft: 5 }} {...props} />;
 
     // eslint-disable-next-line react/no-multi-comp
@@ -367,7 +374,6 @@ storiesOf(name, module)
               <Btn onClick={this.resetState}>Reset</Btn>
             </div>
             <Avatar
-              borderColor={backgroundColor}
               name={avatarName}
               size="xlarge"
               src={imageUrl}
@@ -378,7 +384,7 @@ storiesOf(name, module)
     }
 
     return (
-      <Wrapper style={{ backgroundColor }}>
+      <Wrapper>
         <h5>Loading an Image</h5>
         <Note>Try pasting a URL to see the loading behaviour:</Note>
         <ExternalSrcAvatar />
@@ -387,31 +393,27 @@ storiesOf(name, module)
   })
   .add('Custom Presence', () => (
     <Wrapper>
-      <h5>Custom Presence</h5>
-      <Note>
+      <h2>Custom Presence</h2>
+      <Note size="large">
         Replace presence with the <code>icon</code> property
       </Note>
-      <Example>
-        <h5>Image</h5>
-        <Note>Using an image as the icon</Note>
-        <AllAvatarSizes
-          icon={<img role="presentation" src={tickUrl} style={{ height: '100%', width: '100%' }} />}
-        />
-      </Example>
-      <Example>
-        <h5>Div on Circle</h5>
-        <Note>This example shows using a styled div as a presence.</Note>
-        <AllAvatarSizes
-          icon={<DivPresence>1</DivPresence>}
-        />
-      </Example>
-      <Example>
-        <h5>Div on Square</h5>
-        <Note>This example shows using a styled div as a presence on a square avatar.</Note>
-        <AllAvatarSizes
-          appearance="square"
-          icon={<DivPresence>1</DivPresence>}
-        />
-      </Example>
+      <h5>Image</h5>
+      <Note>Using an image as the icon</Note>
+      <AllAvatarSizes
+        icon={<img role="presentation" src={tickUrl} style={{ height: '100%', width: '100%' }} />}
+      />
+      <HR />
+      <h5>Div on Circle</h5>
+      <Note>This example shows using a styled div as a presence.</Note>
+      <AllAvatarSizes
+        icon={<DivPresence>1</DivPresence>}
+      />
+      <HR />
+      <h5>Div on Square</h5>
+      <Note>This example shows using a styled div as a presence on a square avatar.</Note>
+      <AllAvatarSizes
+        appearance="square"
+        icon={<DivPresence>1</DivPresence>}
+      />
     </Wrapper>
   ));

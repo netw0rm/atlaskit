@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { akElevationMixins, akBorderRadius, akColorR50, akColorN100, akColorR400 } from '@atlaskit/util-shared-styles';
+import { akColorR50, akColorN100, akColorR400 } from '@atlaskit/util-shared-styles';
 
 export const AvatarRow = styled.div`
   align-items: baseline;
@@ -28,18 +28,8 @@ export const AvatarColLabel = styled.div`
   text-transform: uppercase;
 `;
 
-export const Example = styled.div`
-  ${akElevationMixins.e100}
-  background-color: white;
-  border-radius: ${akBorderRadius};
-  display: inline-block;
-  margin-bottom: 1em;
-  padding: 1em;
-  width: 500px;
-`;
-
 export const Wrapper = styled.div`
-  padding: 1em;
+  padding: 2em;
 `;
 
 export const Note = styled.div`

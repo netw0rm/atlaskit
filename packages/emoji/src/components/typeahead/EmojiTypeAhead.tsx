@@ -139,6 +139,13 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     const wasVisible = this.state.visible;
     const visible = emojis.length > 0;
     debug('emoji-typeahead.applyPropChanges', emojis.length, wasVisible, visible);
+
+    this.setState({
+      emojis: emojis,
+      visible,
+      loading: false,
+    });
+
     // Query begins and ends with a colon
     if (isCompleteQuery(query)) {
       const matches = this.exactShortNameMatch(result, query);
@@ -146,14 +153,9 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         this.props.onSelection(toEmojiId(result.emojis[matches[0]]), result.emojis[matches[0]]);
       } else if (!matches.length && this.props.onClose) {
         this.props.onClose();
+        return;
       }
     }
-
-    this.setState({
-      emojis: emojis,
-      visible,
-      loading: false,
-    });
 
     if (wasVisible !== visible) {
       if (visible) {

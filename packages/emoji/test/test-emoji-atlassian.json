@@ -29,18 +29,18 @@
       "shortName": ":boom:"
     },
     {
-      "id": "atlassian-chewie",
-      "name": "chewie",
-      "fallback": ":chewie:",
+      "id": "atlassian-coffee",
+      "name": "coffee",
+      "fallback": ":coffee:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/chewie@4x.png",
-        "height": 100,
-        "width": 96
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/coffee.png",
+        "height": 17,
+        "width": 23
       },
-      "shortName": ":chewie:"
+      "shortName": ":coffee:"
     },
     {
       "id": "atlassian-confluence",

@@ -28,7 +28,10 @@ pipelines:
             - ./build/bin/release.stop.pipeline.if.other.master.running.js
             - run-p -ln "validate/package.json" "validate/typescript"
             - run-p -ln "validate/tslint" "validate/eslint"
+            - ./node_modules/.bin/lerna run lint
             - yarn run test/unit
+            - yarn run test/jest
+            - ./node_modules/.bin/lerna run test
             - run-p -ln "test" "test/base"
             - yarn run browserstack/tunnel/start
             - yarn run test/browserstack
@@ -60,8 +63,10 @@ pipelines:
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
+          - ./node_modules/.bin/lerna run lint --stream
           - yarn run test/unit
           - yarn run test/jest
+          - ./node_modules/.bin/lerna run test --concurrency 1 --stream
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
           - yarn run test/browserstack

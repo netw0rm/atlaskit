@@ -7,3 +7,6 @@ packages/icon/glyph
 packages/icon/lib
 packages/icon/tmp
 flow-typed
+/nwbbuild/tslint/rules
+nwbbuild/storybook
+packages/*/umd

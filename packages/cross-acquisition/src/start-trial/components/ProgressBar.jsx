@@ -8,9 +8,8 @@ export default class ProgressBar extends Component {
   };
 
   render() {
-    let x = 0
     let width = 0;
-    if (this.props.progress && width > 0) {
+    if (this.props.progress && this.props.progress > 0) {
       if (this.props.progress > 100) {
         width = 100;
       } else {

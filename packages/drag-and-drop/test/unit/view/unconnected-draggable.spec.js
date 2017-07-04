@@ -170,16 +170,6 @@ type StartDrag = {|
   center?: Position,
 |}
 
-const originalScroll: Position = {
-  x: window.pageXOffset,
-  y: window.pageYOffset,
-};
-
-const setScroll = (point: Position) => {
-  window.pageXOffset = point.x;
-  window.pageYOffset = point.y;
-};
-
 const stubClientRect = (center?: Position = origin): void =>
   sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
     left: 0,
@@ -206,13 +196,12 @@ const executeOnKeyLift = (wrapper: ReactWrapper) => ({
 };
 
 const getFromLift = (dispatchProps) => {
-  const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg] = dispatchProps.lift.args[0];
+  const [draggableIdArg, typeArg, centerArg, selectionArg] = dispatchProps.lift.args[0];
 
   return {
     draggableId: draggableIdArg,
     type: typeArg,
     center: centerArg,
-    scroll: scrollArg,
     selection: selectionArg,
   };
 };
@@ -233,21 +222,16 @@ const getStubber = stub =>
     }
 };
 
-describe.only('Draggable - unconnected', () => {
+describe('Draggable - unconnected', () => {
   before(() => {
-    setScroll(origin);
     requestAnimationFrame.reset();
   });
 
-  after(() => {
-    setScroll(originalScroll);
-  });
-
   afterEach(() => {
-    setScroll(origin);
     if (Element.prototype.getBoundingClientRect.restore) {
       Element.prototype.getBoundingClientRect.restore();
     }
+    requestAnimationFrame.reset();
   });
 
   it('should not create any wrapping elements', () => {
@@ -270,7 +254,7 @@ describe.only('Draggable - unconnected', () => {
       windowMouseMove(selection.x, selection.y);
     };
 
-    it.only('should allow you to attach a drag handle', () => {
+    it('should allow you to attach a drag handle', () => {
       const dispatchProps: DispatchProps = getDispatchPropsStub();
       const wrapper = mountDraggable({
         ownProps: defaultOwnProps,
@@ -405,18 +389,6 @@ describe.only('Draggable - unconnected', () => {
           expect(getFromLift(dispatchProps).selection).to.deep.equal(selection);
         });
 
-        it('should lift with the scroll position', () => {
-          const scroll: Position = {
-            x: 100,
-            y: 200,
-          };
-          setScroll(scroll);
-
-          executeOnLift(wrapper)();
-
-          expect(getFromLift(dispatchProps).scroll).to.deep.equal(scroll);
-        });
-
         it('should lift with the center position', () => {
           const center: Position = {
             x: 50,
@@ -493,35 +465,6 @@ describe.only('Draggable - unconnected', () => {
           const [, offset, center] = dispatchProps.move.args[0];
 
           expect(offset).to.deep.equal(mouseDiff);
-          expect(center).to.deep.equal(expectedCenter);
-        });
-
-        it('should consider any change in scroll in offset and center', () => {
-          const original: Position = mockInitial.scroll;
-          const scroll: Position = {
-            x: 100,
-            y: 500,
-          };
-          const scrollDiff = {
-            x: scroll.x - original.x,
-            y: scroll.y - original.y,
-          };
-          const expectedCenter = {
-            x: mockInitial.center.x + scrollDiff.x,
-            y: mockInitial.center.y + scrollDiff.y,
-          };
-          setScroll(scroll);
-          const dispatchProps = getDispatchPropsStub();
-          const wrapper = mountDraggable({
-            mapProps: draggingMapProps,
-            dispatchProps,
-          });
-
-          // no mouse movement
-          wrapper.find(DragHandle).props().callbacks.onMove(mockInitial.selection);
-          const [, offset, center] = dispatchProps.move.args[0];
-
-          expect(offset).to.deep.equal(scrollDiff);
           expect(center).to.deep.equal(expectedCenter);
         });
       });
@@ -609,18 +552,6 @@ describe.only('Draggable - unconnected', () => {
           executeOnKeyLift(standardWrapper)({ center });
 
           expect(getFromLift(dispatchProps).center).to.deep.equal(center);
-        });
-
-        it('should lift with the current scroll position', () => {
-          const scroll: Position = {
-            x: 100,
-            y: 200,
-          };
-          setScroll(scroll);
-
-          executeOnKeyLift(standardWrapper)();
-
-          expect(getFromLift(dispatchProps).scroll).to.deep.equal(scroll);
         });
 
         it('should lift with the center point as the selected position', () => {

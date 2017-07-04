@@ -5,8 +5,9 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import DimensionPublisher from '../../../src/view/dimension-publisher/dimension-publisher';
-import type { Id, Dimension } from '../../../src/types';
 import getDimension from '../get-dimension-util';
+import type { Margin } from '../../../src/state/get-dimension';
+import type { Id, Dimension, HTMLElement } from '../../../src/types';
 
 const itemId: Id = 'item-1';
 
@@ -18,14 +19,14 @@ class Item extends PureComponent {
   }
 
   state: {|
-    ref: ?Element
+    ref: ?HTMLElement
   |}
 
   state = {
     ref: null,
   }
 
-  setRef = (ref: ?Element) => {
+  setRef = (ref: ?HTMLElement) => {
     this.setState({
       ref,
     });
@@ -97,7 +98,12 @@ describe('DimensionPublisher', () => {
   });
 
   it('should consider any margins when calculating dimensions', () => {
-    const margin: number = 10;
+    const margin: Margin = {
+      top: 10,
+      right: 30,
+      bottom: 40,
+      left: 50,
+    };
     const publish = sinon.stub();
     const base: Dimension = getDimension({ id: itemId });
     const expected: Dimension = getDimension({ id: itemId, margin });
@@ -110,10 +116,10 @@ describe('DimensionPublisher', () => {
       width: base.withoutMargin.width,
     });
     sinon.stub(window, 'getComputedStyle').returns({
-      marginTop: `${margin}`,
-      marginRight: `${margin}`,
-      marginBottom: `${margin}`,
-      marginLeft: `${margin}`,
+      marginTop: `${margin.top}`,
+      marginRight: `${margin.right}`,
+      marginBottom: `${margin.bottom}`,
+      marginLeft: `${margin.left}`,
     });
 
     const wrapper = mount(<Item publish={publish} />);
@@ -125,7 +131,7 @@ describe('DimensionPublisher', () => {
     expect(publish.args[0][0]).to.deep.equal(expected);
   });
 
-  it('should not publish unless it is freshly required to do', () => {
+  it('should not publish unless it is freshly required to do so', () => {
     const publish = sinon.stub();
     const dimension: Dimension = getDimension({ id: itemId });
     sinon.stub(Element.prototype, 'getBoundingClientRect').returns({

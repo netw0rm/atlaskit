@@ -2,6 +2,7 @@
 import { PureComponent } from 'react';
 import invariant from 'invariant';
 import memoizeOne from 'memoize-one';
+import getScrollPosition from '../get-scroll-position';
 import type { Position } from '../../types';
 import type { Props, DragTypes, Provided } from './drag-handle-types';
 
@@ -70,15 +71,16 @@ export default class DragHandle extends PureComponent {
 
     // Mouse dragging
 
-    const { button, pageX, pageY } = event;
-
+    const { button, clientX, clientY } = event;
     if (button !== primaryButton) {
       return;
     }
 
+    // Ideally would just use event.pageX - but playing it safe
+    const scroll: Position = getScrollPosition();
     const point: Position = {
-      x: pageX,
-      y: pageY,
+      x: clientX + scroll.x,
+      y: clientY + scroll.y,
     };
 
     if (!pending) {
@@ -134,17 +136,20 @@ export default class DragHandle extends PureComponent {
       return;
     }
 
-    const { button, pageX, pageY } = event;
-    event.stopPropagation();
-    event.preventDefault();
+    const { button, clientX, clientY } = event;
 
     if (button !== primaryButton) {
       return;
     }
 
+    event.stopPropagation();
+    event.preventDefault();
+
+    // Ideally would just use event.pageX - but playing it safe
+    const scroll: Position = getScrollPosition();
     const point: Position = {
-      x: pageX,
-      y: pageY,
+      x: clientX + scroll.x,
+      y: clientY + scroll.y,
     };
 
     this.startPendingMouseDrag(point);

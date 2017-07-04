@@ -4,16 +4,16 @@ const primaryButton: number = 0;
 
 export const dispatchWindowMouseEvent = (
   eventName: string,
-  pageX?: number = 0,
-  pageY?: number = 0,
+  clientX?: number = 0,
+  clientY?: number = 0,
   button?: number = primaryButton,
 ): MouseEvent => {
   const event = new window.MouseEvent(eventName, {
     bubbles: true,
     cancelable: true,
     view: window,
-    pageX,
-    pageY,
+    clientX,
+    clientY,
     button,
   });
   window.dispatchEvent(event);
@@ -35,23 +35,20 @@ export const dispatchWindowKeyDownEvent = (
 export const mouseEvent = (
   eventName: string,
   wrapper: ReactWrapper<any>,
-  pageX?: number = 0,
-  pageY?: number = 0,
+  clientX?: number = 0,
+  clientY?: number = 0,
   button?: number = primaryButton,
   options?: Object = {},
-): void => {
-  console.log('pageX', pageX, 'pageY', pageY);
-  return wrapper.simulate(eventName, { button, pageX, pageY, test: pageX, clientX: 10, clientY: 10, ...options });
-};
+): void => wrapper.simulate(eventName, { button, clientX, clientY, ...options });
 
 export const liftWithMouse = (
   wrapper: ReactWrapper<any>,
-  pageX?: number = 0,
-  pageY?: number = 0,
+  clientX?: number = 0,
+  clientY?: number = 0,
   button?: number = primaryButton,
   options?: Object = {},
 ): void =>
-  wrapper.simulate('mousedown', { button, pageX, pageY, ...options });
+  wrapper.simulate('mousedown', { button, clientX, clientY, ...options });
 
 export const withKeyboard = (key: string): Function =>
   (wrapper: ReactWrapper<any>, options?: Object = {}) =>

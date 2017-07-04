@@ -67,6 +67,16 @@ class Child extends PureComponent {
   }
 }
 
+const originalScroll: Position = {
+  x: window.pageXOffset,
+  y: window.pageYOffset,
+};
+
+const setScroll = (point: Position): void => {
+  window.pageXOffset = point.x;
+  window.pageYOffset = point.y;
+};
+
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const mouseDown = mouseEvent.bind(null, 'mousedown');
@@ -131,6 +141,33 @@ describe('drag handle', () => {
 
           customWrapper.unmount();
         });
+      });
+
+      it('should consider any scrolling of the document when publishing the initial position', () => {
+        const scroll: Position = {
+          x: 100,
+          y: 200,
+        };
+        const initial: Position = {
+          x: 50,
+          y: 50,
+        };
+        const movedTo: Position = {
+          x: initial.x,
+          y: initial.y + sloppyClickThreshold,
+        };
+        setScroll(scroll);
+
+        mouseDown(wrapper, initial.x, initial.y);
+        windowMouseMove(movedTo.x, movedTo.y);
+
+        expect(callbacks.onLift.calledWith({
+          x: movedTo.x + scroll.x,
+          y: movedTo.y + scroll.y,
+        })).to.equal(true);
+
+        // cleanup
+        setScroll(originalScroll);
       });
 
       it('should not start a drag if there was no mouse movement while mouse was pressed', () => {

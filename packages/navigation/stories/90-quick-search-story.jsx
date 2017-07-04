@@ -26,6 +26,12 @@ storiesOf(`${name}/QuickSearch`, module)
       searchDrawerContent={<BasicQuickSearch />}
     />
   ))
+  .add('Quick search w/ keyboard controls', () => withRootTheme(
+    <BasicNavigation
+      openDrawer="search"
+      searchDrawerContent={<BasicQuickSearch withKeyboardControls />}
+    />
+  ))
   .add('Quick search w/ 500ms latency', () => withRootTheme(
     <BasicNavigation
       openDrawer="search"

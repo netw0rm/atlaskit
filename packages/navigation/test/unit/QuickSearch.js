@@ -1,38 +1,108 @@
 import React from 'react';
-import { AkQuickSearch, AkSearch, AkSearchResults } from '../../src';
+import sinon from 'sinon';
+import {
+  AkQuickSearch,
+  AkQuickSearchWithKeyboardControls,
+  AkNavigationItem,
+  AkSearch,
+  AkSearchResults,
+} from '../../src';
 import { mountWithRootTheme } from '../theme-util';
 
-const noOp = () => {};
-
-const searchProps = {
-  isLoading: true,
-  onChange: noOp,
-  onSearchClear: noOp,
-  placeholder: 'Placeholder',
-  value: '13',
-};
-
-const resultsProps = {
-  results: [
-    {
-      title: 'group title',
-      items: [],
-    },
-    {
-      title: 'group title',
-      items: [],
-    },
-  ],
-};
-
 describe('Quick Search', () => {
-  it('should contain a Search component and pass through the appropriate props', () => {
-    const wrapper = mountWithRootTheme(<AkQuickSearch {...searchProps} />);
-    expect(wrapper.find(AkSearch).props()).to.deep.include(searchProps);
+  const isInputFocused = wrapper =>
+    wrapper.find('input').getDOMNode() === document.activeElement;
+
+  it('should contain a Search component', () => {
+    const wrapper = mountWithRootTheme(
+      <AkQuickSearch
+        onSearchChange={() => {}}
+        onResultClick={() => {}}
+      />);
+    expect(wrapper.find(AkSearch)).to.have.length(1);
   });
 
-  it('should contain a SearchResults component and pass through the appropriate props', () => {
-    const wrapper = mountWithRootTheme(<AkQuickSearch {...searchProps} {...resultsProps} />);
-    expect(wrapper.find(AkSearchResults).props()).to.deep.include(resultsProps);
+  it('should contain a SearchResults component', () => {
+    const wrapper = mountWithRootTheme(
+      <AkQuickSearch
+        onSearchChange={() => {}}
+        onResultClick={() => {}}
+      />);
+    expect(wrapper.find(AkSearchResults)).to.have.length(1);
+  });
+
+  describe('Keyboard controls', () => {
+    const kbTestResults = [{
+      title: 'test group',
+      items: [
+        { id: '1', type: 'person', name: 'one' },
+        { id: '2', type: 'person', name: 'two' },
+        { id: '3', type: 'person', name: 'three' },
+      ],
+    }];
+
+    const onClickSpy = sinon.spy();
+    const QsComponent = (
+      <AkQuickSearchWithKeyboardControls
+        onSearchChange={() => {}}
+        onResultClick={onClickSpy}
+        results={kbTestResults}
+      />);
+    let wrapper;
+    let searchInput;
+
+    beforeEach(() => {
+      wrapper = mountWithRootTheme(QsComponent);
+      searchInput = wrapper.find(AkSearch).find('input');
+    });
+
+    afterEach(() => {
+      onClickSpy.reset();
+    });
+
+    it('should select the first result by default', () => {
+      expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).to.equal('one');
+      expect(isInputFocused(searchInput)).to.equal(true);
+    });
+    it('should select the next result on DOWN keystroke', () => {
+      wrapper.find(AkSearch).find('input').simulate('keydown', { key: 'ArrowDown' });
+      expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).to.equal('two');
+      expect(isInputFocused(searchInput)).to.equal(true);
+    });
+    it('should select the previous result on UP keystroke', () => {
+      searchInput.simulate('keydown', { key: 'ArrowDown' });
+      searchInput.simulate('keydown', { key: 'ArrowUp' });
+      expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).to.equal('one');
+      expect(isInputFocused(searchInput)).to.equal(true);
+    });
+    it('should wrap around to the top when traversing forward past the last result', () => {
+      searchInput.simulate('keydown', { key: 'ArrowDown' });
+      searchInput.simulate('keydown', { key: 'ArrowDown' });
+      searchInput.simulate('keydown', { key: 'ArrowDown' });
+      expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).to.equal('one');
+      expect(isInputFocused(searchInput)).to.equal(true);
+    });
+    it('should wrap around to the end when traversing backward past the first result', () => {
+      wrapper.find(AkSearch).find('input').simulate('keydown', { key: 'ArrowUp' });
+      expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).to.equal('three');
+      expect(isInputFocused(searchInput)).to.equal(true);
+    });
+    it('should run the onClick callback with the result\'s data on ENTER keystroke', () => {
+      wrapper.find(AkSearch).find('input').simulate('keydown', { key: 'Enter' });
+      expect(onClickSpy.callCount).to.equal(1);
+      expect(isInputFocused(searchInput)).to.equal(true);
+    });
+    it('should select the first result when query changes', () => {
+      const newResults = [{
+        title: 'test group',
+        items: [
+          { id: '1', type: 'person', name: 'four' },
+          { id: '2', type: 'person', name: 'five' },
+        ],
+      }];
+      wrapper.setProps({ results: newResults });
+      expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).to.equal('four');
+      expect(isInputFocused(searchInput)).to.equal(true);
+    });
   });
 });

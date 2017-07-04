@@ -13,7 +13,7 @@ const gutter = akGridSizeUnitless / 2;
 const fontSize = 3 * gutter;
 const lineHeight = (4 * gutter) / fontSize;
 const maxWidth = 105 * gutter; // ~420px
-const animationDistance = 3 * gutter;
+const animationDistance = 2 * gutter;
 
 const slideDown = {
   property: 'transform',
@@ -26,7 +26,7 @@ const fadeOut = {
 };
 
 const Tooltip = styled.div`
-  animation: ${keyframes`${createBold([slideDown, fadeOut])}`} 1.1s 0.1s backwards;
+  animation: ${keyframes`${createBold([slideDown, fadeOut])}`} 0.6s 0.1s backwards;
   background-color: ${akColorN900};
   border-radius: ${akBorderRadius};
   box-sizing: border-box;

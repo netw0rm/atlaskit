@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Outer, Inner } from '../styled/ExcessIndicator';
+import { Outer, Inner } from '../styled/MoreIndicator';
 import { withPseudoState } from '../hoc';
 import { getProps } from '../helpers';
 import type { Size } from '../types';
@@ -23,9 +23,8 @@ type Props = {
 
 const MAX_DISPLAY_COUNT = 99;
 
-class ExcessIndicator extends Component {
+class MoreIndicator extends Component {
   props: Props; // eslint-disable-line react/sort-comp
-  state = {}
   render() {
     const { count } = this.props;
     const props = getProps(this);
@@ -41,4 +40,4 @@ class ExcessIndicator extends Component {
   }
 }
 
-export default withPseudoState(ExcessIndicator);
+export default withPseudoState(MoreIndicator);

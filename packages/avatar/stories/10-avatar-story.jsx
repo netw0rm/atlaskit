@@ -9,7 +9,7 @@ import Lozenge from '@atlaskit/lozenge';
 import { akColorPrimary1, akColorPrimary2, akColorPrimary3, akColorN20 } from '@atlaskit/util-shared-styles';
 
 import { name } from '../package.json';
-import Avatar, { AvatarGroup } from '../src';
+import Avatar, { AvatarGroup, AvatarItem } from '../src';
 import { omit } from '../src/utils';
 import nucleusImage from './nucleus.png';
 import { AvatarCol, AvatarRow, DivPresence, Note, Wrapper } from './styled';
@@ -17,6 +17,30 @@ import { AVATAR_SIZES } from '../src/styled/constants';
 
 const avatarSource = 'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';
 const tickUrl = require('url-loader!./tick.svg');
+
+const devs = [
+  { title: 'Alexander Reardon', subtitle: 'ace', src: 'https://avatar-cdn.atlassian.com/ceb2ee0a81dc0bb0b6f2892c66181b51?by=hash' },
+  { title: 'Ben Conolly', src: 'https://avatar-cdn.atlassian.com/361c9fe594d27796d579a5900d7a765c?by=hash' },
+  { title: 'Ben Gummer', subtitle: 'out until 5 July (US)', src: 'https://avatar-cdn.atlassian.com/65c42d1b35bbd5d3edd6e4628027275c?by=hash' },
+  { title: 'Jacob Bass', src: 'https://avatar-cdn.atlassian.com/23bf3965bcb00e15e48908687e90419e?by=hash' },
+  { title: 'James Kyle', src: 'https://avatar-cdn.atlassian.com/c2bcaff3dc41e72301368924196adad6?by=hash' },
+  { title: 'Jared Crowe', src: 'https://avatar-cdn.atlassian.com/9a003c3897c4b769c18abae437204507?by=hash' },
+  { title: 'Jed Watson', subtitle: 'Kitting out Atlas', src: 'https://avatar-cdn.atlassian.com/791dc88853c2dd7b2693d977de31b53a?by=hash' },
+  { title: 'Jony Cheung', src: 'https://avatar-cdn.atlassian.com/7c19f799bf78ea9f97c89aa0ec62ca0d?by=hash' },
+  { title: 'Joss Mackison', src: 'https://avatar-cdn.atlassian.com/849f17e34ace97d01d8184771e27efe7?by=hash' },
+  { title: 'Kayla Cannon', subtitle: 'http://bit.ly/2sYNS88', src: 'https://avatar-cdn.atlassian.com/7506e9142b25fad708a16cb585703ec7?by=hash' },
+  { title: 'Luke Batchelor', subtitle: '🚧 Under constuction 🚧', src: 'https://avatar-cdn.atlassian.com/5fefa7445084843da28a69c9c9d6185a?by=hash' },
+  { title: 'Sean Curtis', src: 'https://avatar-cdn.atlassian.com/9eb5608b37f10cf029376e8866c54906?by=hash' },
+  { title: 'Trey Shugart', src: 'https://avatar-cdn.atlassian.com/3275fbebf5306aba3b716c2b1abb1d29?by=hash' },
+];
+function getPresence() {
+  const chance = Math.random();
+  switch (true) {
+    case chance < 0.25: return 'busy';
+    case chance < 0.5: return 'online';
+    default: return 'offline';
+  }
+}
 
 const New = () => (
   <span style={{ position: 'relative', top: '-0.4em' }}>
@@ -59,6 +83,14 @@ const AllAvatarSizes = (props) => {
 };
 
 storiesOf(name, module)
+  // .add('Stress Test', () => {
+  //   const arr = [];
+  //   for (let i = 0; i < 1000; i++) {
+  //     arr.push(<Avatar key={i} src={`https://api.adorable.io/avatars/40/${i}@adorable.png`} />);
+  //   }
+  //
+  //   return <Wrapper>{arr}</Wrapper>;
+  // })
   .add('Circle Avatars', () => (
     <Wrapper>
       <h5>Default <Updated /></h5>
@@ -79,7 +111,7 @@ storiesOf(name, module)
 
       <h5>All Sizes with Presence</h5>
       <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence</Note>
-      <AllAvatarSizes name="test" displayTooltipOnHover={false} onClick={console.log} src={avatarSource} presence="online" />
+      <AllAvatarSizes src={avatarSource} presence="online" />
 
       <HR />
       <h2>Status <New /></h2>
@@ -207,7 +239,7 @@ storiesOf(name, module)
         <Note size="large">
           For most instances you will no-longer need to wrap <code>{'<Avatar/>'}</code>.
         </Note>
-        <AvatarShowcase title="Button" description={<span>Provide <code>onClick</code> to {'<Avatar/>'} or <code>onClickAvatar</code> to {'<AvatarGroup/>'}</span>}>
+        <AvatarShowcase title="Button" description={<span>Provide <code>onClick</code> to {'<Avatar/>'} or <code>onAvatarClick</code> to {'<AvatarGroup/>'}</span>}>
           <Avatar src={avatarSource} onClick={console.info} size={avatarSize} />
         </AvatarShowcase>
 
@@ -249,7 +281,7 @@ storiesOf(name, module)
       </Wrapper>
     );
   })
-  .add('Avatar Groups', () => {
+  .add('Avatar Group', () => {
     class AvatarGroupExample extends Component {
       state = { gridWidth: 220, gridMax: 11, avatarCount: 20, sizeIndex: 3 }
       decrement = key => this.setState(state => ({ [key]: state[key] - 1 }))
@@ -264,7 +296,7 @@ storiesOf(name, module)
 
         return (
           <Wrapper>
-            <h2>Avatar Groups <New /></h2>
+            <h2>Avatar Group <New /></h2>
             <Note size="large">Click the excess indicator to see the remaining avatars in a dropdown menu.</Note>
             <div style={{ display: 'flex', marginTop: '1em' }}>
               <div style={{ flex: 1 }}>
@@ -305,8 +337,7 @@ storiesOf(name, module)
             <div style={{ maxWidth: gridWidth, position: 'relative' }}>
               <AvatarGroup
                 appearance="grid"
-                onClickAvatar={console.log}
-                onClickDropdownItem={console.log}
+                onAvatarClick={console.log}
                 data={stackSourceURLs.map(i => ({
                   key: i,
                   name: `Grid Avatar ${i + 1}`,
@@ -322,8 +353,7 @@ storiesOf(name, module)
             <h5>Stack</h5>
             <Note>Total {stackSourceURLs.length} / Max 5</Note>
             <AvatarGroup
-              onClickAvatar={console.log}
-              onClickDropdownItem={console.log}
+              onAvatarClick={console.log}
               data={stackSourceURLs.map(i => ({
                 key: i,
                 name: `Stack Avatar ${i + 1}`,
@@ -337,6 +367,21 @@ storiesOf(name, module)
     }
     return <AvatarGroupExample />;
   })
+  .add('Avatar Item', () => (
+    <Wrapper>
+      <h2>Avatar Item <New /></h2>
+      <Note>&quot;medium&quot; size &mdash; no &quot;presence&quot;, or &quot;status&quot;</Note>
+      {devs.map((d, i) => (
+        <AvatarItem
+          avatar={<Avatar src={d.src} presence={getPresence()} />}
+          key={i}
+          onClick={console.log}
+          title={d.title}
+          subtitle={d.subtitle}
+        />
+      ))}
+    </Wrapper>
+  ))
   .add('Loading an Image', () => {
     function getInitialState() {
       return {

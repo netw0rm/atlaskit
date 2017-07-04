@@ -3,22 +3,28 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Avatar, { SIZE, ICON_TYPE } from '../../src/components/Avatar';
-import Image from '../../src/components/Image';
+import AvatarImage from '../../src/components/Image';
 import Presence from '../../src/components/Presence';
 
-import { Inner, getSize } from '../../src/styled/Avatar';
+import { getSize } from '../../src/styled/utils';
 import { AVATAR_SIZES } from '../../src/styled/constants';
 
-const [none, online, offline, busy] = ICON_TYPE.values;
+const [online, offline, busy] = ICON_TYPE.values;
 
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
-const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+const gimg = global.Image;
 
 describe('Avatar', () => {
+  beforeEach(() => {
+    global.Image = class Image {};
+  });
+  afterEach(() => {
+    global.Image = gimg;
+  });
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Avatar />);
     expect(wrapper).not.toBe(undefined);
-    expect(wrapper.find(Image).exists()).toBe(true);
+    expect(wrapper.find(AvatarImage).exists()).toBe(true);
   });
 
   describe('size property', () => {
@@ -32,25 +38,17 @@ describe('Avatar', () => {
     });
   });
 
-  describe('label property', () => {
-    const label = 'This is an avatar!';
-    let wrapper;
-    beforeEach(() => (wrapper = mount(<Avatar label={label} />)));
-
-    it('should set an aria-label on the Inner', () => {
-      expect(wrapper.find(Inner).prop('aria-label')).toBe(label);
-    });
-
-    it('should set the alt of the internal img', () => {
-      wrapper.setProps({ src: oneByOnePixel });
-      wrapper.setState({ isLoading: false });
-      expect(wrapper.find(Image).getDOMNode().alt).toBe(label);
+  describe('name property', () => {
+    it('should set the title of the internal span', () => {
+      const name = 'John Smith';
+      const wrapper = mount(<Avatar name={name} src={oneByOnePixel} />);
+      expect(wrapper.find(AvatarImage).getDOMNode().title).toBe(name);
     });
   });
 
   describe('presence property', () => {
-    it('should NOT be visible when set to "none"', () => {
-      const wrapper = mount(<Avatar presence={none} />);
+    it('should NOT be visible when omitted', () => {
+      const wrapper = mount(<Avatar />);
       expect(wrapper.find(Presence).find('svg').length).toBe(0);
     });
 
@@ -68,88 +66,23 @@ describe('Avatar', () => {
 
   describe('borderColor property', () => {
     it('should be relfected in the Presence component', () => {
-      const wrapper = shallow(<Avatar presence="online" borderColor="#ff0000" />);
+      const borderColor = '#ff0000';
+      const wrapper = mount(<Avatar presence="online" borderColor={borderColor} />);
       const presence = wrapper.find(Presence);
       expect(presence.length).toBeGreaterThan(0);
-      expect(presence.prop('borderColor')).toBe('#ff0000');
-    });
-  });
-
-  describe('src property', () => {
-    describe('set at mount time', () => {
-      let wrapper;
-      beforeEach(() => (wrapper = mount(<Avatar src={oneByOnePixel} />)));
-
-      it('should set the src property on the internal img', () => {
-        expect(wrapper.find(Image).prop('src')).toBe(oneByOnePixel);
-        expect(wrapper.find(Image).find('img').is(`[src="${oneByOnePixel}"]`)).toBe(true);
-      });
-
-      it('should render an img tag when src is set', () =>
-        expect(wrapper.find(Image).find('img').length).toBeGreaterThan(0)
-      );
-
-      it('should set isLoading=false when a same src is provided as the src already loaded', () => {
-        expect((wrapper).state('isLoading')).toBe(true);
-        wrapper.find(Image).find('img').simulate('load');
-        expect((wrapper).state('isLoading')).toBe(false);
-        wrapper.setProps({ src: oneByOnePixel });
-        expect((wrapper).state('isLoading')).toBe(false);
-        expect((wrapper).state('hasError')).toBe(false);
-      });
-
-      it('should set isLoading=true when a new src is provided', () => {
-        wrapper.setProps({ src: oneByOnePixelBlack });
-        expect((wrapper).state('isLoading')).toBe(true);
-        expect((wrapper).state('hasError')).toBe(false);
-      });
-
-      it('should set isLoading=false & hasError=false when src is loaded without errors', () => {
-        wrapper.find(Image).find('img').simulate('load');
-        expect((wrapper).state('isLoading')).toBe(false);
-        expect((wrapper).state('hasError')).toBe(false);
-      });
-
-      it('should set isLoading=false & hasError=true when a new invalid src is provided', () => {
-        wrapper.find(Image).find('img').simulate('error');
-        expect((wrapper).state('isLoading')).toBe(false);
-        expect((wrapper).state('hasError')).toBe(true);
-      });
-
-      it('should NOT render an img tag when src is NOT set', () => {
-        wrapper = mount(<Avatar />);
-        expect(wrapper.find(Image).find('img').length).toBe(0);
-      });
-    });
-
-    describe('set after mount time', () => {
-      it('should load image successfully when src set', () => {
-        const wrapper = mount(<Avatar />);
-        expect((wrapper).state('isLoading')).toBe(false);
-        wrapper.setProps({ src: oneByOnePixel });
-        expect((wrapper).state('isLoading')).toBe(true);
-        wrapper.find(Image).find('img').simulate('load');
-        expect((wrapper).state('isLoading')).toBe(false);
-      });
-
-      it('should not load if new src is empty', () => {
-        const wrapper = mount(<Avatar />);
-        expect((wrapper).state('isLoading')).toBe(false);
-        wrapper.setProps({ src: null });
-        expect((wrapper).state('isLoading')).toBe(false);
-      });
+      expect(presence.prop('borderColor')).toBe(borderColor);
     });
   });
 
   describe('appearance property', () => {
     it('should default to circle avatar', () => {
-      const wrapper = mount(<Avatar />);
+      const wrapper = shallow(<Avatar />);
       expect(wrapper.prop('appearance')).toBe('circle');
     });
 
     it('should apply rounded corners for square avatar', () => {
       const wrapper = mount(<Avatar appearance="square" />);
-      expect(wrapper.find(Inner).prop('appearance')).toBe('square');
+      expect(wrapper.find(AvatarImage).prop('appearance')).toBe('square');
     });
   });
 
@@ -160,27 +93,20 @@ describe('Avatar', () => {
       expect(wrapper.find('.my-icon')).toHaveLength(1);
     });
 
-    it('should pass icon and presence props to Presence', () => {
-      const MyIcon = <div className="my-icon" />;
-      const wrapper = mount(<Avatar presence={online} icon={MyIcon} />);
+    it('should pass presence to Presence', () => {
+      const wrapper = mount(<Avatar presence={online} />);
       const presence = wrapper.find(Presence);
-      expect(presence).toHaveLength(1);
+      expect(presence.exists()).toBe(true);
+      expect(presence.prop('presence')).toBe(online);
+    });
+
+    it('should pass icon props to Presence', () => {
+      const MyIcon = <div className="my-icon" />;
+      const wrapper = mount(<Avatar icon={MyIcon} />);
+      const presence = wrapper.find(Presence);
+
+      expect(presence.exists()).toBe(true);
       expect(presence.find('.my-icon')).toHaveLength(1);
-      expect(presence.props().presence).toBe(online);
-    });
-  });
-
-  describe('loading behaviour', () => {
-    it('should apply the isLoading prop to the Inner when matching state on parent', () => {
-      const wrapper = mount(<Avatar />);
-      wrapper.setState({ isLoading: true });
-      expect(wrapper.find(Inner).prop('isLoading')).toBe(true);
-    });
-
-    it('should NOT apply the isLoading prop to the Inner when matching state on parent', () => {
-      const wrapper = mount(<Avatar />);
-      wrapper.setState({ isLoading: false });
-      expect(wrapper.find(Inner).prop('isLoading')).toBe(false);
     });
   });
 });

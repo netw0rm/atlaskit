@@ -39,7 +39,6 @@ export default class Status extends PureComponent {
 
   static defaultProps = {
     borderColor: DEFAULT_BORDER_COLOR,
-    status: STATUS_TYPE.defaultValue,
   }
 
   render() {

@@ -69,7 +69,7 @@ export default class AvatarImage extends PureComponent {
   handleLoadError = () => this._isMounted && this.setState({ hasError: true, isLoading: false })
 
   render() {
-    const { src, ...props } = this.props;
+    const { alt, src, ...props } = this.props;
     const { hasError, isLoading } = this.state;
     const showDefault = !isLoading && (!src || hasError);
 
@@ -77,13 +77,15 @@ export default class AvatarImage extends PureComponent {
       <DefaultImage
         appearance={props.appearance}
         size={props.size}
-        title={props.alt}
+        title={alt}
       />
     ) : (
       <Span
+        aria-label={alt}
         isLoading={isLoading}
         role="img"
         style={{ backgroundImage: `url(${src})` }}
+        title={alt}
         {...props}
       />
     );

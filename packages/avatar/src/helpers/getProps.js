@@ -58,7 +58,7 @@ const getInteractionProps = (props) => {
 const getLinkElementProps = (props) => {
   const { href, target } = props;
 
-  // handle security issue with noopener
+  // handle security issue for consumer
   // https://mathiasbynens.github.io/rel-noopener
   const rel = (target === '_blank') ? 'noopener noreferrer' : null;
 
@@ -66,9 +66,9 @@ const getLinkElementProps = (props) => {
 };
 
 const getButtonElementProps = (props) => {
-  const { id, isDisabled, name } = props;
+  const { id, isDisabled } = props;
 
-  return { 'aria-label': name, id, type: 'button', disabled: isDisabled };
+  return { id, type: 'button', disabled: isDisabled };
 };
 
 export default function getProps(component) {

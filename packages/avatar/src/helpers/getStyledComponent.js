@@ -1,28 +1,27 @@
 import styled from 'styled-components';
 import CustomComponentProxy from '../components/CustomComponentProxy';
-import { getInnerStyles } from '../styled/utils';
 
 export default {
-  custom: () => {
+  custom: (styles) => {
     // Override pseudo-state specificity.
     // This is necessary because we don't know what DOM element the custom component will render.
-    const component = styled(CustomComponentProxy)`&,&:hover,&:active,&:focus{${getInnerStyles}}`;
+    const component = styled(CustomComponentProxy)`&,&:hover,&:active,&:focus{${styles}}`;
     component.displayName = 'StyledCustomComponent';
     return component;
   },
-  button: () => {
-    const component = styled.button`${getInnerStyles}`;
+  button: (styles) => {
+    const component = styled.button`${styles}`;
     component.displayName = 'StyledButton';
     return component;
   },
-  link: () => {
+  link: (styles) => {
     // Target the <a> here to override a:hover specificity.
-    const component = styled.a`a&{ ${getInnerStyles} }`;
+    const component = styled.a`a&{ ${styles} }`;
     component.displayName = 'StyledLink';
     return component;
   },
-  span: () => {
-    const component = styled.span`${getInnerStyles}`;
+  span: (styles) => {
+    const component = styled.span`${styles}`;
     component.displayName = 'StyledSpan';
     return component;
   },

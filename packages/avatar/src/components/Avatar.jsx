@@ -11,6 +11,7 @@ import { getProps, getStyledComponent } from '../helpers';
 import { withPseudoState } from '../hoc';
 import { DEFAULT_BORDER_COLOR } from '../styled/constants';
 import type { AvatarProps } from '../types';
+import { getInnerStyles } from '../styled/utils';
 
 // =============================================================
 // NOTE: Duplicated in Presence until docgen can follow imports.
@@ -42,7 +43,7 @@ class Avatar extends Component {
   static defaultProps = {
     appearance: APPEARANCE_TYPE.defaultValue,
     borderColor: DEFAULT_BORDER_COLOR,
-    displayTooltipOnHover: true,
+    displayTooltip: true,
     size: SIZE.defaultValue,
   }
 
@@ -61,7 +62,7 @@ class Avatar extends Component {
   }
   getCachedStyledComponent(type) {
     if (!this.styledComponents[type]) {
-      this.styledComponents[type] = getStyledComponent[type]();
+      this.styledComponents[type] = getStyledComponent[type](getInnerStyles);
     }
     return this.styledComponents[type];
   }
@@ -152,7 +153,7 @@ class Avatar extends Component {
 
   render() {
     const {
-      appearance, displayTooltipOnHover, isActive, isFocus, isHover, onClick,
+      appearance, displayTooltip, isActive, isFocus, isHover, onClick,
       name, size, src, stackIndex,
     } = this.props;
 
@@ -162,7 +163,7 @@ class Avatar extends Component {
     // provide element type based on props
     const Inner = this.getStyledComponent();
 
-    // augment onClick handler
+    // augment the onClick handler
     props.onClick = onClick && this.guardedClick;
 
     return (
@@ -177,7 +178,7 @@ class Avatar extends Component {
             src={src}
           />
         </Inner>
-        {(displayTooltipOnHover && isHover && name) ? (
+        {(displayTooltip && isHover && name) ? (
           <Tooltip>{name}</Tooltip>
         ) : null}
         {this.renderIndicator()}

@@ -88,10 +88,9 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   private renderGenericLink(): JSX.Element {
     const { url, title, site, description } = this.urlPreview;
     const { dimensions, actions, appearance, onClick, onMouseEnter } = this.props;
-    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return <LinkCardGenericView
-      error={errorMessage}
+      error={this.errorMessage}
       linkUrl={url}
       title={title}
       site={site}
@@ -111,11 +110,10 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   private renderSmallLink(): JSX.Element {
     const { url, title, site } = this.urlPreview;
     const { dimensions, actions, onClick, onMouseEnter } = this.props;
-    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return (
       <LinkCardViewSmall
-        error={errorMessage}
+        error={this.errorMessage}
         linkUrl={url}
         title={title}
         site={site}
@@ -133,11 +131,10 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   private renderLinkCardImage(): JSX.Element {
     const { url, title, site } = this.urlPreview;
     const { status, dimensions, actions, appearance, onClick, onMouseEnter, resizeMode } = this.props;
-    const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return (
       <LinkCardImageView
-        error={errorMessage}
+        error={this.errorMessage}
         linkUrl={url}
         title={title}
         site={site}
@@ -153,6 +150,10 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         onMouseEnter={onMouseEnter}
       />
     );
+  }
+
+  private get errorMessage(): string | undefined {
+    return this.isError ? 'Loading failed' : undefined;
   }
 
   private get resources() {
@@ -189,7 +190,8 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   }
 
   private get isError(): boolean {
-    const {status} = this.props;
+    const {status, details} = this.props;
+
     return status === 'error';
   }
 }

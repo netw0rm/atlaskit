@@ -98,8 +98,10 @@ export class FileCard extends Component<FileCardProps, {}> {
     return status === 'loading' || status === 'processing';
   }
 
-  private get isError(): boolean {
-    const {status} = this.props;
-    return status === 'error';
+  get isError(): boolean {
+    const {status, details} = this.props;
+    const hasId = details && details.id;
+
+    return status === 'error' || !hasId;
   }
 }

@@ -6,16 +6,19 @@ import { FileDetails } from '@atlaskit/media-core';
 import { FileCard, FileCardImageView, FileCardViewSmall } from '../../src/files';
 
 describe('FileCard', () => {
-  it('should render cardFileView with details passed through to props', function() {
-    const details: FileDetails = {
-      mediaType: 'image',
-      mimeType: 'image/jpeg',
-      name: 'some-image.jpg',
-      processingStatus: 'succeeded',
-      size: 123456,
-      artifacts: {}
-    };
+  const details: FileDetails = {
+    id: '1234',
+    mediaType: 'image',
+    mimeType: 'image/jpeg',
+    name: 'some-image.jpg',
+    processingStatus: 'succeeded',
+    size: 123456,
+    artifacts: {}
+  };
+  const fakeDataUri: string = 'l33tdatauri';
+  const handler = () => {};
 
+  it('should render cardFileView with details passed through to props', () => {
     const expectedProps = {
       status: 'complete',
       dimensions: undefined,
@@ -35,15 +38,6 @@ describe('FileCard', () => {
   });
 
   it('should render cardFileViewSmall with details passed through to props', () => {
-    const details: FileDetails = {
-      mediaType: 'image',
-      mimeType: 'image/jpeg',
-      name: 'some-image.jpg',
-      processingStatus: 'succeeded',
-      size: 123456,
-      artifacts: {}
-    };
-
     const expectedProps = {
       mediaName: details.name,
       mediaType: details.mediaType,
@@ -59,17 +53,6 @@ describe('FileCard', () => {
   });
 
   it('should render fileCardView with dataUri when passed', () => {
-    const fakeDataUri: string = 'l33tdatauri';
-
-    const details: FileDetails = {
-      mediaType: 'image',
-      mimeType: 'image/jpeg',
-      name: 'some-image.jpg',
-      processingStatus: 'succeeded',
-      size: 123456,
-      artifacts: {}
-    };
-
     const card = shallow(
       <FileCard status="complete" details={details} dataURI={fakeDataUri}/>
     );
@@ -79,17 +62,6 @@ describe('FileCard', () => {
   });
 
   it('should render fileCardViewSmall with dataUri when passed', () => {
-    const fakeDataUri: string = 'l33tdatauri';
-
-    const details: FileDetails = {
-      mediaType: 'image',
-      mimeType: 'image/jpeg',
-      name: 'some-image.jpg',
-      processingStatus: 'succeeded',
-      size: 123456,
-      artifacts: {}
-    };
-
     const card = shallow(
       <FileCard appearance="small" status="complete" details={details} dataURI={fakeDataUri}/>
     );
@@ -99,8 +71,6 @@ describe('FileCard', () => {
   });
 
   it('should pass onClick handlers through to root component for appearances "small" and "image"', () => {
-    const handler = () => {};
-
     const smallCard = shallow(<FileCard status="complete" appearance="small" onClick={handler} />);
     const imageCard = shallow(<FileCard status="complete" appearance="image" onClick={handler} />);
 
@@ -109,12 +79,19 @@ describe('FileCard', () => {
   });
 
   it('should pass onMouseEnter handlers through to root component for appearances "small" and "image"', () => {
-    const handler = () => {};
-
     const smallCard = shallow(<FileCard status="complete" appearance="small" onMouseEnter={handler} />);
     const imageCard = shallow(<FileCard status="complete" appearance="image" onMouseEnter={handler} />);
 
     expect(smallCard.find(FileCardViewSmall).props().onMouseEnter).to.deep.equal(handler);
     expect(imageCard.find(FileCardImageView).props().onMouseEnter).to.deep.equal(handler);
+  });
+
+  it('should render errored card if Card does not contain "id"', () => {
+    const details: FileDetails = {};
+    const cardWithoutDetails = shallow(<FileCard status="complete" />);
+    const cardWithoutId = shallow(<FileCard status="complete" details={details} />);
+
+    expect((cardWithoutDetails.instance() as FileCard).isError).to.be.equal(true);
+    expect((cardWithoutId.instance() as FileCard).isError).to.be.equal(true);
   });
 });

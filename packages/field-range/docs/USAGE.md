@@ -1,5 +1,5 @@
-# Slider
-> Component which renders a beautiful slider and allows to subscribe to value changes. Substitute of the native input["range"] element
+# FieldRange
+> Component which renders a beautiful FieldRange and allows to subscribe to value changes. Substitute of the native input["range"] element
 
 ## Installation
 
@@ -12,10 +12,9 @@ npm install @NAME@
 Use the component in your React app as follows:
 
 ```
-import {Slider} from '@NAME@';
+import FieldRange from '@NAME@';
 
 ReactDOM.render(
-  <Slider value={20} min={0} max={100} onChange={(currentValue) => console.log(currentValue
-  )} />,
+  <FieldRange value={20} min={0} max={100} onChange={(currentValue) => console.log(currentValue)} />,
 container);
 ```

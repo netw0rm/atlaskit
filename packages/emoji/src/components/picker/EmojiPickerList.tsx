@@ -1,26 +1,25 @@
 import * as React from 'react';
 import { MouseEvent, PureComponent } from 'react';
 import * as classNames from 'classnames';
-import Spinner from '@atlaskit/spinner';
 import * as uid from 'uid';
+import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
 import { customCategory } from '../../constants';
-import * as styles from './styles';
-import Scrollable from '../common/Scrollable';
-import EmojiPickerListSearch from './EmojiPickerListSearch';
-import EmojiPickerListSection from './EmojiPickerListSection';
-import { toOptionalEmojiId } from '../../type-helpers';
 import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent } from '../../types';
+import { sizes } from './EmojiPickerSizes';
+import {
+  CategoryHeadingItem,
+  EmojisRowItem,
+  LoadingItem,
+  SearchItem,
+  UploadPromptMessageItem,
+  virtualItemRenderer,
+  VirtualItem,
+} from './EmojiPickerVirtualItems';
+import * as Items from './EmojiPickerVirtualItems';
+import * as styles from './styles';
 
 const categoryClassname = 'emoji-category';
-
-const closestCategory = (element: HTMLElement): string | null => {
-  const categoryElement = element.closest(`.${categoryClassname}`);
-  if (categoryElement) {
-    return categoryElement.getAttribute('data-category-id');
-  }
-  return null;
-};
 
 export interface OnSearch {
   (query: string): void;
@@ -42,8 +41,7 @@ export interface Props {
 }
 
 export interface State {
-  selectedEmoji?: EmojiDescription;
-  initialListIndex?: number;
+  scrollToIndex?: number;
 }
 
 interface EmojiGroup {
@@ -52,11 +50,65 @@ interface EmojiGroup {
   category: string;
 }
 
-export default class EmojiPickerList extends PureComponent<Props, State> {
+const categoryDebounceWait = 100;
+
+/**
+ * Tracks which category is visible based on
+ * scrollTop, and virtual rows.
+ */
+class CategoryTracker {
+  private categoryToRow: Map<string, number>;
+  private rowToCategory: Map<number, string>;
+
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.categoryToRow = new Map();
+    this.rowToCategory = new Map();
+  }
+
+  add(category: string, row: number) {
+    this.categoryToRow.set(category, row);
+    this.rowToCategory.set(row, category);
+  }
+
+  getRow(category: string): number | undefined {
+    return this.categoryToRow.get(category);
+  }
+
+  findNearestCategoryAbove(scrollTop: number, list: VirtualList): string | undefined {
+    const rows = Array.from(this.rowToCategory.keys()).sort((a, b) => a - b);
+
+    const firstOffset = list.getOffsetForRow({ index: rows[0] });
+    if (firstOffset > scrollTop) {
+      return undefined;
+    }
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const offset = list.getOffsetForRow({ index: row });
+      if (offset > scrollTop) {
+        const prevRow = rows[i - 1];
+        return this.rowToCategory.get(prevRow); // gone past, so previous offset
+      }
+    }
+
+    const lastRow = rows[rows.length - 1];
+    return this.rowToCategory.get(lastRow);
+  }
+
+}
+
+export default class EmojiPickerVirtualList extends PureComponent<Props, State> {
   private idSuffix = uid();
   private allEmojiGroups: EmojiGroup[];
   private activeCategory: string | undefined | null;
-  private scrollable: Scrollable;
+  private virtualItems: VirtualItem<any>[] = [];
+  private categoryTracker: CategoryTracker = new CategoryTracker();
+  private categoryDebounce: number;
+  private lastScrollTop: number;
 
   static defaultProps = {
     onEmojiSelected: () => {},
@@ -77,51 +129,35 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
       }
     }
 
-    this.state = {
-      selectedEmoji,
-    };
+    this.state = {};
 
-    this.allEmojiGroups = this.buildGroups(props.emojis);
+    this.buildGroups(props.emojis);
+    this.buildVirtualItems(props, this.state);
   }
 
   componentWillReceiveProps = (nextProps: Props) => {
-    if (this.props.emojis !== nextProps.emojis) {
-      this.setState({
-        selectedEmoji: nextProps.emojis[0],
-      });
-    }
-
     if (nextProps.selectedCategory && nextProps.selectedCategory !== this.props.selectedCategory) {
       this.reveal(nextProps.selectedCategory);
     }
   }
 
-  componentWillUpdate = (nextProps) => {
+  componentWillUpdate = (nextProps: Props, nextState: State) => {
     if (this.props.emojis !== nextProps.emojis ||
       this.props.selectedTone !== nextProps.selectedTone ||
-      this.props.loading !== nextProps.loading) {
+      this.props.loading !== nextProps.loading ||
+      this.props.query !== nextProps.query) {
         if (!nextProps.query) {
           // Only refresh if no query
-          this.allEmojiGroups = this.buildGroups(nextProps.emojis);
+          this.buildGroups(nextProps.emojis);
         }
+        this.buildVirtualItems(nextProps, nextState);
     }
   }
 
   private onEmojiMouseEnter = (emojiId: EmojiId, emoji: EmojiDescription, event: MouseEvent<any>) => {
-    if (!this.state.selectedEmoji || this.state.selectedEmoji.id !== emoji.id) {
-      this.setState({
-        selectedEmoji: emoji,
-      });
-      if (this.props.onEmojiActive) {
-        this.props.onEmojiActive(emojiId, emoji, );
-      }
+    if (this.props.onEmojiActive) {
+      this.props.onEmojiActive(emojiId, emoji);
     }
-  }
-
-  private onMouseLeave = () => {
-    this.setState({
-      selectedEmoji: undefined,
-    });
   }
 
   private onSearch = (e) => {
@@ -133,19 +169,141 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
   /**
    * Scrolls to a category in the list view
    */
-  reveal(category: String) {
-    const idSelector = `#${this.categoryId(category)}`;
-    const categoryElement = document.querySelector(idSelector);
-    this.scrollable.reveal(categoryElement as HTMLElement, true);
+  reveal(category: string) {
+    const row = this.categoryTracker.getRow(category);
+    const list = this.refs.list as VirtualList;
+    list.scrollToRow(row);
   }
 
   scrollToBottom() {
-    this.scrollable.scrollToBottom();
+    const list = this.refs.list as VirtualList;
+    list.scrollToRow(this.virtualItems.length);
   }
 
   private categoryId = category => `category_${category}_${this.idSuffix}`;
 
-  private buildGroups = (emojis: EmojiDescription[]): EmojiGroup[] => {
+  private buildCategory = (group: EmojiGroup, showUploadPrompt: boolean): VirtualItem<any>[] => {
+    const { onEmojiSelected, onOpenUpload } = this.props;
+    const items: VirtualItem<any>[] = [];
+
+    items.push(new CategoryHeadingItem({
+      id: this.categoryId(group.category),
+      title: group.title,
+      className: categoryClassname,
+    }));
+
+    const showUploadButton = showUploadPrompt && group.emojis.length > 0;
+    let showUploadButtonNow = false;
+    let remainingEmojis = group.emojis;
+    while (remainingEmojis.length > 0) {
+      const rowEmojis = remainingEmojis.slice(0, sizes.emojiPerRow);
+      remainingEmojis = remainingEmojis.slice(sizes.emojiPerRow);
+      showUploadButtonNow = showUploadButton && rowEmojis.length < sizes.emojiPerRow;
+
+      items.push(new EmojisRowItem({
+        emojis: rowEmojis,
+        onSelected: onEmojiSelected,
+        onMouseMove: this.onEmojiMouseEnter,
+        showUploadButton: showUploadButtonNow,
+        onOpenUpload: onOpenUpload,
+      }));
+    }
+
+    if (showUploadButton && !showUploadButtonNow) {
+      // Upload button wasn't rendered (last row was full) add to new row
+      items.push(new EmojisRowItem({
+        emojis: [],
+        showUploadButton: true,
+        onOpenUpload: onOpenUpload,
+      }));
+    }
+
+    // No emoji, but we want to show the upload prompt, show upload action in this case
+    if (showUploadPrompt && !showUploadButton) {
+      items.push(new UploadPromptMessageItem({
+        onOpenUpload,
+      }));
+    }
+
+    return items;
+  }
+
+  private buildVirtualItems = (props: Props, state: State): void => {
+    const { emojis, loading, query, showCustomCategory, showUploadOption } = props;
+
+    let items: Items.VirtualItem<any>[] = [];
+
+    this.categoryTracker.reset();
+
+    items.push(new SearchItem({
+      onChange: this.onSearch,
+      query,
+    }));
+
+    if (loading) {
+      items.push(new LoadingItem());
+    } else {
+      if (query) {
+        // Only a single "result" category
+        items = [
+          ...items,
+          ...this.buildCategory({
+            category: 'Search',
+            title: 'Search results',
+            emojis,
+          }, !!showUploadOption),
+        ];
+
+      } else {
+        // Group by category
+        let customGroupRendered = false;
+        // Not searching show in categories.
+        this.allEmojiGroups.forEach((group) => {
+          // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
+          // by not passing it to irrelevant groups
+          let showUploadPrompt = false;
+          if (group.category === customCategory) {
+            customGroupRendered = true;
+            showUploadPrompt = !!showUploadOption;
+          }
+
+          this.categoryTracker.add(group.category, items.length);
+
+          items = [
+            ...items,
+            ...this.buildCategory(group, showUploadPrompt),
+          ];
+        });
+
+        if (!customGroupRendered && (showUploadOption || showCustomCategory)) {
+          // Custom group wasn't rendered, but upload is supports, so add
+          // group with lone upload action
+
+          items = [
+            ...items,
+            ...this.buildCategory({
+              category: customCategory,
+              title: customCategory,
+              emojis: [],
+            }, true),
+          ];
+        }
+      }
+    }
+
+    const rowCountChanged = this.virtualItems.length !== items.length;
+
+    this.virtualItems = items;
+
+    const list = this.refs.list as VirtualList;
+
+    if (!rowCountChanged && list) {
+      // Row count has not changed, so need to tell list to rerender.
+      list.forceUpdateGrid();
+    }
+  }
+
+  private buildGroups = (emojis: EmojiDescription[]): void => {
     const existingCategories = new Map();
 
     let currentGroup;
@@ -173,114 +331,53 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
       currentGroup.emojis.push(emoji);
     }
 
-    return list;
+    this.allEmojiGroups = list;
   }
 
-  private checkCategoryChange = (firstElement: HTMLElement) => {
-    const currentCategory = closestCategory(firstElement);
-    if (this.activeCategory !== currentCategory) {
-      this.activeCategory = currentCategory;
-      if (this.props.onCategoryActivated) {
-        this.props.onCategoryActivated(currentCategory);
-      }
+  private checkCategoryChange = ({ scrollTop }) => {
+    this.lastScrollTop = scrollTop;
+    // debounce
+    if (this.categoryDebounce) {
+      return;
     }
-  }
+    if (!this.props.query) {
+      // Calculate category in view - only relevant if categories shown, i.e. no query
+      this.categoryDebounce = setTimeout(() => {
+        this.categoryDebounce = 0;
+        const list = this.refs.list as VirtualList;
+        const currentCategory = this.categoryTracker.findNearestCategoryAbove(this.lastScrollTop, list);
 
-  private renderGroups = () => {
-    const { selectedEmoji } = this.state;
-    const { query, onEmojiSelected, onOpenUpload, showCustomCategory, showUploadOption } = this.props;
-    const selectedEmojiId = toOptionalEmojiId(selectedEmoji);
-    const selectedCategory = selectedEmoji && selectedEmoji.category;
-
-    if (!query) {
-      let customGroupRendered = false;
-      // Not searching show in categories.
-      const groups = this.allEmojiGroups.map((group) => {
-        // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
-        // by not passing it to irrelevant groups
-        const groupSelectedEmojiId = selectedCategory === group.category ? selectedEmojiId : undefined;
-        let showUploadPrompt = false;
-        if (group.category === customCategory) {
-          customGroupRendered = true;
-          showUploadPrompt = !!showUploadOption;
+        if (currentCategory && this.activeCategory !== currentCategory) {
+          this.activeCategory = currentCategory;
+          if (this.props.onCategoryActivated) {
+            this.props.onCategoryActivated(currentCategory);
+          }
         }
-
-        return (
-          <EmojiPickerListSection
-            id={this.categoryId(group.category)}
-            title={group.title}
-            emojis={group.emojis}
-            key={group.category}
-            selectedEmoji={groupSelectedEmojiId}
-            onMouseMove={this.onEmojiMouseEnter}
-            onOpenUpload={onOpenUpload}
-            onSelected={onEmojiSelected}
-            className={categoryClassname}
-            showUploadPrompt={showUploadPrompt}
-          />
-        );
-      });
-
-      if (!customGroupRendered && (showUploadOption || showCustomCategory)) {
-        groups.push(
-          <EmojiPickerListSection
-            id={this.categoryId(customCategory)}
-            title={customCategory}
-            emojis={[]}
-            key={customCategory}
-            className={categoryClassname}
-            showUploadPrompt={showUploadOption}
-            onOpenUpload={onOpenUpload}
-          />
-        );
-      }
-
-      return groups;
+      }, categoryDebounceWait);
     }
-
-    // Searching show as one search result section
-    return (
-      <EmojiPickerListSection
-        title="Search results"
-        emojis={this.props.emojis}
-        selectedEmoji={selectedEmojiId}
-        onMouseMove={this.onEmojiMouseEnter}
-        onSelected={this.props.onEmojiSelected}
-        className={categoryClassname}
-        showUploadPrompt={showUploadOption}
-        onOpenUpload={onOpenUpload}
-      />
-    );
   }
 
+  private rowSize = ({ index }) => this.virtualItems[index].height;
+  private renderRow = (context) => virtualItemRenderer(this.virtualItems, context);
 
   render() {
     const classes = [styles.emojiPickerList];
 
-    const loadingSpinner = !this.props.loading ? null : (
-      <div className={styles.emojiPickerSpinner}>
-        <Spinner size="medium" />
+    return (
+      <div className={classNames(classes)}>
+        <VirtualList
+          ref="list"
+          height={sizes.listHeight}
+          onScroll={this.checkCategoryChange}
+          overscanRowCount={5}
+          rowCount={this.virtualItems.length}
+          rowHeight={this.rowSize}
+          rowRenderer={this.renderRow}
+          scrollToAlignment="start"
+          width={sizes.listWidth}
+          className={styles.virtualList}
+        />
       </div>
     );
-
-    return (
-      <Scrollable
-        className={classNames(classes)}
-        ref={this.handleRef}
-        onScroll={this.checkCategoryChange}
-        onMouseLeave={this.onMouseLeave}
-      >
-        <EmojiPickerListSearch
-          onChange={this.onSearch}
-          query={this.props.query}
-        />
-        {loadingSpinner}
-        {this.renderGroups()}
-      </Scrollable>
-    );
-  }
-
-  private handleRef = (ref) => {
-    this.scrollable = ref;
   }
 }

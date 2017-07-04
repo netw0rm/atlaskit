@@ -73,13 +73,15 @@ describe(name, () => {
   describe('media', () => {
     checkParseEncodeRoundTrips('thumbnail type',
       schema,
-      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
+      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=COLLECTION&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
       doc(mediaGroup([
         media({
           id: '42', type: 'file', collection: '',
           __fileName: 'foo.png', __displayType: 'thumbnail'
         })
-      ]))
+      ])),
+      {},
+      { serviceHost: 'HOST', clientId: 'CLIENT_ID', token: 'TOKEN', collection: 'COLLECTION'}
     );
 
     checkParseEncodeRoundTrips('file type',

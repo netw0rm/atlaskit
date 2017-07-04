@@ -15,8 +15,12 @@ import HeadlessExample from './examples/headless';
 import HeadlessExampleRaw from '!raw!./examples/headless';
 import FixedSizeExample from './examples/fixed-size';
 import FixedSizeExampleRaw from '!raw!./examples/fixed-size';
-import EmptyViewExample from './examples/empty-view';
-import EmptyViewExampleRaw from '!raw!./examples/empty-view';
+import EmptyViewWithBodyExample from './examples/empty-view-with-body';
+import EmptyViewWithBodyExampleRaw from '!raw!./examples/empty-view-with-body';
+import EmptyViewWithoutBodyExample from './examples/empty-view-without-body';
+import EmptyViewWithoutBodyExampleRaw from '!raw!./examples/empty-view-without-body';
+import EmptyViewWithBodyNoHeaderExample from './examples/empty-view-with-body-and-no-header';
+import EmptyViewWithBodyNoHeaderExampleRaw from '!raw!./examples/empty-view-with-body-and-no-header';
 /* eslint-enable import/no-duplicates, import/first */
 
 const propDescriptionsCommon = {
@@ -131,14 +135,36 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
-  .add('Empty view', () => (
-    <Chrome title="Empty view">
+  .add('Empty view without body, but with header', () => (
+    <Chrome title="Empty view without body, but with header">
       <Description>
-        <p>Table component with  `emptyView` passed as a prop</p>
+        <p>Table component without `emptyView` prop passed in</p>
       </Description>
-      <EmptyViewExample />
+      <EmptyViewWithoutBodyExample />
       <Code>
-        {EmptyViewExampleRaw}
+        {EmptyViewWithoutBodyExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Empty view with body and header', () => (
+    <Chrome title="Empty view with body and header">
+      <Description>
+        <p>Table component with `emptyView` prop passed in</p>
+      </Description>
+      <EmptyViewWithBodyExample />
+      <Code>
+        {EmptyViewWithBodyExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Empty view with body, but without header', () => (
+    <Chrome title="Empty view with body, but without header">
+      <Description>
+        <p>Table component with `emptyView` prop passed in, but no `head` prop</p>
+      </Description>
+      <EmptyViewWithBodyNoHeaderExample />
+      <Code>
+        {EmptyViewWithBodyNoHeaderExampleRaw}
       </Code>
     </Chrome>
   ));

@@ -1,4 +1,9 @@
-import { Mark as PMMark } from '../prosemirror';
+import {
+  Mark as PMMark,
+  MarkSpec,
+  NodeSpec,
+  Schema
+} from '../prosemirror';
 
 export interface Doc {
   version: 1;
@@ -25,6 +30,8 @@ export interface MarkSimple {
   };
   attrs?: any;
 }
+
+import { defaultSchema } from '../schema';
 
 /*
  * It's important that this order follows the marks rank defined here:
@@ -102,8 +109,9 @@ export const isSameMark = (mark: PMMark | null, otherMark: PMMark | null) => {
   return mark.eq(otherMark);
 };
 
-export const getValidDocument = (doc: Doc): Doc | null => {
-  const node = getValidNode(doc as Node);
+export const getValidDocument = (doc: Doc, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Doc | null => {
+
+  const node = getValidNode(doc as Node, schema);
 
   if (node.type === 'doc') {
     return node as Doc;
@@ -112,11 +120,11 @@ export const getValidDocument = (doc: Doc): Doc | null => {
   return null;
 };
 
-export const getValidContent = (content: Node[]): Node[] => {
-  return content.map(node => getValidNode(node));
+export const getValidContent = (content: Node[], schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node[] => {
+  return content.map(node => getValidNode(node, schema));
 };
 
-const flattenUnknownBlockTree = (node: Node): Node[] => {
+const flattenUnknownBlockTree = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node[] => {
   const output: Node[] = [];
   let isPrevLeafNode = false;
 
@@ -133,9 +141,9 @@ const flattenUnknownBlockTree = (node: Node): Node[] => {
     }
 
     if (isLeafNode) {
-      output.push(getValidNode(childNode));
+      output.push(getValidNode(childNode, schema));
     } else {
-      output.push(...flattenUnknownBlockTree(childNode));
+      output.push(...flattenUnknownBlockTree(childNode, schema));
     }
 
     isPrevLeafNode = isLeafNode;
@@ -195,16 +203,51 @@ export const getValidUnknownNode = (node: Node): Node => {
  * If a node is not recognized or is missing required attributes, we should return 'unknown'
  *
  */
-export const getValidNode = (node: Node): Node => {
+export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
   const { attrs, text, type } = node;
   let { content } = node;
 
   if (content) {
-    content = getValidContent(content);
+    content = getValidContent(content, schema);
+  }
+
+  // If node type doesn't exist in schema, make it an unknow node
+  if (!schema.nodes[type]) {
+    return getValidUnknownNode(node);
   }
 
   if (type) {
     switch (type) {
+      case 'applicationCard': {
+        if (!attrs) { break; }
+        const { text, link, background, preview, title, description, details } = attrs;
+        if (!text || !title || !title.text) { break; }
+        if (
+          (link && !link.url) ||
+          (background && !background.url) ||
+          (preview && !preview.url) ||
+          (description && !description.text)) { break; }
+        if (details && !Array.isArray(details)) { break; }
+
+        if (details && details.some(meta => {
+          const { badge, lozenge, users } = meta;
+          if (badge && !badge.value) { return true; }
+          if (lozenge && !lozenge.text) { return true; }
+          if (users && !Array.isArray(users)) { return true; }
+
+          if (users && users.some(user => {
+            if (!user.icon) {
+              return true;
+            }
+          })) { return true; }
+        })) { break; }
+
+        return {
+          type,
+          text,
+          attrs
+        };
+      }
       case 'doc': {
         const { version } = node as Doc;
         if (version && content && content.length) {

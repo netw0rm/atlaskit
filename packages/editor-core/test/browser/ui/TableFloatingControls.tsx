@@ -9,7 +9,7 @@ import ColumnControls from '../../../src/ui/TableFloatingControls/ColumnControls
 import RowControls from '../../../src/ui/TableFloatingControls/RowControls';
 import InsertColumnButton from '../../../src/ui/TableFloatingControls/ColumnControls/InsertColumnButton';
 import InsertRowButton from '../../../src/ui/TableFloatingControls/RowControls/InsertRowButton';
-import ToolbarButton from '../../../src/ui/ToolbarButton';
+import AkButton from '@atlaskit/button';
 import {
   ColumnControlsButtonWrap,
   HeaderButton as ColumnControlsButton
@@ -195,14 +195,14 @@ describe('TableFloatingControls', () => {
       context(`when InsertColumnButton with index ${index} is clicked`, () => {
         it(`should call pluginState.insertColumn(${index})`, () => {
           const { pluginState } = editor(doc(p('text')));
-          pluginState.insertColumn = sinon.spy();
+          const insertColumnSpy = sinon.spy(pluginState, 'insertColumn');
           const wrapper = mount(
-            <InsertColumnButton index={index} insertColumn={pluginState.insertColumn} />
+            <InsertColumnButton index={index} insertColumn={insertColumnSpy} />
           );
           wrapper.setState({ hovered: true });
-          wrapper.find(ToolbarButton).simulate('click');
-          expect((pluginState.insertColumn as any).calledOnce).to.equal(true);
-          const { args } = (pluginState.insertColumn as any).getCalls()[0];
+          wrapper.find(AkButton).simulate('click');
+          expect(insertColumnSpy.calledOnce).to.equal(true);
+          const { args } = (insertColumnSpy as any).getCalls()[0];
           expect(args[0]).to.equal(index);
           wrapper.unmount();
         });
@@ -215,13 +215,13 @@ describe('TableFloatingControls', () => {
       context(`when InsertRowButton with index ${index} is clicked`, () => {
         it(`should call pluginState.insertRow(${index})`, () => {
           const { pluginState } = editor(doc(p('text')));
-          pluginState.insertRow = sinon.spy();
+          const insertRowSpy = sinon.spy(pluginState, 'insertRow');
           const wrapper = mount(
-            <InsertRowButton index={index} insertRow={pluginState.insertRow} />
+            <InsertRowButton index={index} insertRow={insertRowSpy} />
           );
           wrapper.setState({ hovered: true });
-          wrapper.find(ToolbarButton).simulate('click');
-          expect((pluginState.insertRow as any).calledOnce).to.equal(true);
+          wrapper.find(AkButton).simulate('click');
+          expect(insertRowSpy.calledOnce).to.equal(true);
           const { args } = (pluginState.insertRow as any).getCalls()[0];
           expect(args[0]).to.equal(index);
           wrapper.unmount();

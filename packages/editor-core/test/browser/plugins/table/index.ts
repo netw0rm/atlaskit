@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import tablePlugin, { TableState } from '../../../../src/plugins/table';
+import { getColumnPos, getRowPos, getTablePos } from '../../../../src/plugins/table/utils';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
   createEvent, setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, thEmpty, table, tr, td,
@@ -155,66 +156,65 @@ describe('table plugin', () => {
   });
 
   describe('insertColumn(number)', () => {
-    context('when table has 1 column', () => {
+    context('when table has 2 columns', () => {
       context('when it called with 0', () => {
         it('it should prepend a new column and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2{<>}'))))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(0);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, td({})(p('c1')), td({})(p('c2'))))));
         });
       });
 
-      context('when it called with 1', () => {
-        it('it should append a new column and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
-          plugin.props.onFocus!(editorView, event);
-          pluginState.insertColumn(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty, tdCursor))));
-        });
-      });
-    });
-
-    context('when table has 2 columns', () => {
       context('when it called with 1', () => {
         it('it should insert a new column in the middle and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty))));
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty, tdCursor, tdEmpty))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('c1')), tdCursor, td({})(p('c2'))))));
+        });
+      });
+
+      context('when it called with 2', () => {
+        it('it should append a new column and move cursor inside it\'s first cell', () => {
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))));
+          plugin.props.onFocus!(editorView, event);
+          pluginState.insertColumn(2);
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2')), tdCursor))));
         });
       });
     });
+
   });
 
   describe('insertRow(number)', () => {
-    context('when table has 1 row', () => {
+    context('when table has 2 rows', () => {
       context('when it called with 0', () => {
         it('it should prepend a new row and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1'))), tr(td({})(p('row2{<>}'))))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertRow(0);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(td({})(p('row1'))), tr(td({})(p('row2'))))));
         });
       });
 
       context('when it called with 1', () => {
-        it('it should append a new row and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor))));
+        it('it should insert a new row in the middle and move cursor inside it\'s first cell', () => {
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2'))))));
           plugin.props.onFocus!(editorView, event);
           pluginState.insertRow(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdCursor))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('row1'))), tr(tdCursor), tr(td({})(p('row2'))))));
         });
       });
     });
 
     context('when table has 2 row', () => {
-      context('when it called with 1', () => {
-        it('it should insert a new row in the middle and move cursor inside it\'s first cell', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+      context('when it called with 2', () => {
+        it('it should append a new row and move cursor inside it\'s first cell', () => {
+          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2'))))));
           plugin.props.onFocus!(editorView, event);
-          pluginState.insertRow(1);
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdCursor), tr(tdEmpty))));
+          pluginState.insertRow(2);
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('row1'))), tr(td({})(p('row2'))), tr(tdCursor))));
         });
       });
     });
@@ -370,6 +370,66 @@ describe('table plugin', () => {
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
         });
       });
+    });
+  });
+
+  describe('hoverColumn(number)', () => {
+    context('when table has 3 columns', () => {
+      [0, 1, 2].forEach(column => {
+        context(`when called with ${column}`, () => {
+          it(`it should create a hover selection of ${column} column`, () => {
+            const { pluginState } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+            pluginState.hoverColumn(column);
+            const { hoveredCells, tableNode } = pluginState;
+            const offset = pluginState.tableStartPos();
+            const {from, to} = getColumnPos(column, tableNode!);
+            expect(hoveredCells[0].pos).to.equal(from + offset!);
+            expect(hoveredCells[hoveredCells.length - 1].pos).to.equal(to + offset!);
+          });
+        });
+      });
+    });
+  });
+
+  describe('hoverRow(number)', () => {
+    context('when table has 3 rows', () => {
+      [0, 1, 2].forEach(row => {
+        context(`when called with ${row}`, () => {
+          it(`it should create a hover selection of ${row} row`, () => {
+            const { pluginState } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
+            pluginState.hoverRow(row);
+            const { hoveredCells, tableNode } = pluginState;
+            const offset = pluginState.tableStartPos();
+            const {from, to} = getRowPos(row, tableNode!);
+            expect(hoveredCells[0].pos).to.equal(from + offset!);
+            expect(hoveredCells[hoveredCells.length - 1].pos).to.equal(to + offset!);
+          });
+        });
+      });
+    });
+  });
+
+  describe('hoverTable()', () => {
+    context('when table has 3 rows', () => {
+      it(`it should create a hover selection of the whole table`, () => {
+        const { pluginState } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))));
+        pluginState.hoverTable();
+        const { hoveredCells, tableNode } = pluginState;
+        const offset = pluginState.tableStartPos();
+        const {from, to} = getTablePos(tableNode!);
+        expect(hoveredCells[0].pos).to.equal(from + offset!);
+        expect(hoveredCells[hoveredCells.length - 1].pos).to.equal(to + offset!);
+      });
+    });
+  });
+
+  describe('resetHoverSelection()', () => {
+    it('should reset hoveredCells to an empty array', () => {
+      const { pluginState } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty))));
+      pluginState.hoverTable();
+      expect(pluginState.hoveredCells.length).to.equal(2);
+      pluginState.resetHoverSelection();
+      expect(pluginState.hoveredCells).to.deep.equal([]);
     });
   });
 

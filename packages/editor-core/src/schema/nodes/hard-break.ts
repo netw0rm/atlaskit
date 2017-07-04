@@ -9,8 +9,8 @@ export interface Definition {
   /**
    * @additionalProperties false
    */
-  attrs: {
-    text: '\n';
+  attrs?: {
+    text?: '\n';
   };
 }
 

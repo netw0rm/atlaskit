@@ -5,6 +5,8 @@ import Select from '@atlaskit/multi-select';
 function createItem(key, presence, disabled = false) {
   return {
     content: `Anonymous User ${key}`,
+    filterValues: [`Anonymous User ${key}`, `user_${key}@example.com`],
+    description: `user_${key}@example.com`,
     elemBefore: <Avatar size="small" presence={presence} />,
     isDisabled: disabled,
     value: `user_${key}`,
@@ -31,7 +33,7 @@ export default (
   <Select
     items={selectItems}
     label="Select users to invite"
-    placeholder="Search for user..."
+    placeholder="Type username or email..."
     name="test"
     onSelectedChange={(item) => {
       console.log(item);

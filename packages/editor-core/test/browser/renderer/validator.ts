@@ -63,6 +63,165 @@ describe('Renderer - Validator', () => {
 
   describe('getValidNode', () => {
 
+    describe('applicationCard', () => {
+      it('should return "text" if attrs is missing', () => {
+        expect(getValidNode({ type: 'applicationCard' }).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {}
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard'
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.link.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            link: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.background.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            background: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.preview.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            preview: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.description.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            description: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details is not an array', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: { yes: 'no' }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details[].badge.value is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: [
+              {
+                badge: {}
+              }
+            ]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details[].lozenge.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: [
+              {
+                lozenge: {}
+              }
+            ]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details[].users is not an array', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: [
+              {
+                users: { yes: 'no'}
+              }
+            ]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details[].users[].icon is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: [
+              {
+                users: [ { id: 'id'} ]
+              }
+            ]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+    });
+
     describe('doc', () => {
       it('should return "text" if version-field is missing', () => {
         expect(getValidNode({ type: 'doc' }).type).to.equal('text');

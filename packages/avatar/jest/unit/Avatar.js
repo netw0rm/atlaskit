@@ -2,14 +2,14 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import Avatar, { SIZE, PRESENCE_TYPE } from '../../src/components/Avatar';
+import Avatar, { SIZE, ICON_TYPE } from '../../src/components/Avatar';
 import Image from '../../src/components/Image';
 import Presence from '../../src/components/Presence';
 
 import { Inner, getSize } from '../../src/styled/Avatar';
 import { AVATAR_SIZES } from '../../src/styled/constants';
 
-const [none, online, offline, busy] = PRESENCE_TYPE.values;
+const [none, online, offline, busy] = ICON_TYPE.values;
 
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';

@@ -32,13 +32,11 @@ class ExcessIndicator extends Component {
 
     // NOTE: wrapping div necessary for Grid to apply styles that don't interfere with Outer
     return (
-      <div>
-        <Outer {...props} appearance="circle">
-          <Inner {...props} appearance="circle">
-            +{count > MAX_DISPLAY_COUNT ? MAX_DISPLAY_COUNT : count}
-          </Inner>
-        </Outer>
-      </div>
+      <Outer {...props} appearance="circle">
+        <Inner {...props} appearance="circle">
+          +{count > MAX_DISPLAY_COUNT ? MAX_DISPLAY_COUNT : count}
+        </Inner>
+      </Outer>
     );
   }
 }

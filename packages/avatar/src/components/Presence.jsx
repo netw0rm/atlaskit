@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { Inner, Outer } from '../styled/Presence';
+import { Inner, Outer } from '../styled/Icon';
 import { DEFAULT_BORDER_COLOR } from '../styled/constants';
 import getPresenceSVG from '../helpers/getPresenceSVG';
 import type { PresenceType, Size } from '../types';
@@ -16,26 +16,26 @@ export const SIZE = {
   defaultValue: 'medium',
 };
 
-export const PRESENCE_TYPE = {
+export const ICON_TYPE = {
   values: ['busy', 'offline', 'online'],
 };
 
-type Element = Object;
+type Props = {
+  /** Used to override the default border color of the presence indicator.
+  Accepts any color argument that the border-color CSS property accepts. */
+  borderColor?: string,
+  /** Content to use as a custom presence indicator (usually not required if
+  consuming Presence separate to Avatar). */
+  children?: Object,
+  /** Content to use as a custom presence indicator (usually not required if
+  consuming Presence separate to Avatar). */
+  presence?: PresenceType,
+  /** Defines the size of the presence. */
+  size?: Size,
+};
 
 export default class Presence extends PureComponent {
-  props: { // eslint-disable-line react/sort-comp
-    /** Used to override the default border color of the presence indicator.
-    Accepts any color argument that the border-color CSS property accepts. */
-    borderColor?: string,
-    /** Content to use as a custom presence indicator (usually not required if
-    consuming Presence separate to Avatar). */
-    children?: Element,
-    /** Content to use as a custom presence indicator (usually not required if
-    consuming Presence separate to Avatar). */
-    presence?: PresenceType,
-    /** Defines the size of the presence. */
-    size?: Size,
-  };
+  props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     borderColor: DEFAULT_BORDER_COLOR,

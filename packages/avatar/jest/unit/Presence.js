@@ -4,13 +4,13 @@ import { shallow, mount } from 'enzyme';
 
 // import from index; ensures we're exposing Presence as a named export
 import { Presence } from '../../src';
-import { PRESENCE_TYPE } from '../../src/components/Presence';
+import { ICON_TYPE } from '../../src/components/Presence';
 import getPresenceSVG from '../../src/helpers/getPresenceSVG';
 
 describe('Avatar', () => {
   // TODO: This test is not testing anything
   describe('Presence', () => {
-    PRESENCE_TYPE.values.forEach(presence =>
+    ICON_TYPE.values.forEach(presence =>
       describe(`when presence is ${presence}`, () =>
         it('should render content', () => {
           // eslint-disable-next-line chai-expect/missing-assertion
@@ -21,7 +21,7 @@ describe('Avatar', () => {
 
     it('should render children if provided', () => {
       const wrapper = shallow(
-        <Presence presence={PRESENCE_TYPE.values[0]}>
+        <Presence presence={ICON_TYPE.values[0]}>
           <span className="child" />
         </Presence>
       );

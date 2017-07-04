@@ -13,7 +13,7 @@ export const AVATAR_SIZES = {
   xxlarge: akGridSizeUnitless * 16,
 };
 
-// for "square" avatars
+// border radius only applies to "square" avatars
 export const AVATAR_RADIUS = {
   xsmall: 2,
   small: 2,
@@ -21,15 +21,6 @@ export const AVATAR_RADIUS = {
   large: 3,
   xlarge: 6,
   xxlarge: 12,
-};
-
-// NOTE: sizes xsmall & xxlarge are NOT supported by groups
-
-export const EXCESS_INDICATOR_FONT_SIZE = {
-  small: 10,
-  medium: 11,
-  large: 12,
-  xlarge: 16,
 };
 
 export const BORDER_WIDTH = {
@@ -41,14 +32,26 @@ export const BORDER_WIDTH = {
   xxlarge: 3,
 };
 
-export const PRESENCE_SIZES = {
+// NOTE: sizes xsmall & xxlarge DO NOT support
+// - groups
+// - presence
+// - status
+
+export const EXCESS_INDICATOR_FONT_SIZE = {
+  small: 10,
+  medium: 11,
+  large: 12,
+  xlarge: 16,
+};
+
+export const ICON_SIZES = {
   small: 10,
   medium: 12,
   large: 15,
   xlarge: 18,
 };
 
-export const PRESENCE_OFFSET = {
+export const ICON_OFFSET = {
   small: 0,
   medium: 0,
   large: 1,

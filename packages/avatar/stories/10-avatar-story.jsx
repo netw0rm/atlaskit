@@ -79,7 +79,7 @@ storiesOf(name, module)
 
       <h5>All Sizes with Presence</h5>
       <Note>Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence</Note>
-      <AllAvatarSizes src={avatarSource} presence="online" />
+      <AllAvatarSizes name="test" displayTooltipOnHover={false} onClick={console.log} src={avatarSource} presence="online" />
 
       <HR />
       <h2>Status <New /></h2>
@@ -296,13 +296,13 @@ storiesOf(name, module)
             <input
               min="200"
               max="500"
-              onChange={e => this.setState({ gridWidth: e.target.value })}
+              onChange={e => this.setState({ gridWidth: parseInt(e.target.value, 10) })}
               step="10"
               title="Grid Width"
               type="range"
               value={gridWidth}
             />
-            <div style={{ maxWidth: parseInt(gridWidth, 10), position: 'relative' }}>
+            <div style={{ maxWidth: gridWidth, position: 'relative' }}>
               <AvatarGroup
                 appearance="grid"
                 onClickAvatar={console.log}

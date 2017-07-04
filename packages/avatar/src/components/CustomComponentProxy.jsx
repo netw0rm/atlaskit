@@ -19,7 +19,7 @@ export default function CustomComponentProxy({
   isFocus,
   isHover,
   isSelected,
-  ...proxiedProps
+  ...props
 }) {
-  return <ProxiedComponent {...proxiedProps} />;
+  return <ProxiedComponent {...props} />;
 }

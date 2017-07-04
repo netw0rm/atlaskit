@@ -1,7 +1,8 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
 
-import Container, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
+import { omit } from '../utils';
+import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
 import Presence from './Presence';
 import Image from './Image';
 import Status from './Status';
@@ -12,7 +13,7 @@ import { DEFAULT_BORDER_COLOR } from '../styled/constants';
 import type { AvatarProps } from '../types';
 
 // =============================================================
-// NOTE: Duplicated in Presence unitl docgen can follow imports.
+// NOTE: Duplicated in Presence until docgen can follow imports.
 // -------------------------------------------------------------
 // DO NOT update values here without updating the other.
 // =============================================================
@@ -27,7 +28,7 @@ export const APPEARANCE_TYPE = {
   defaultValue: 'circle',
 };
 
-export const PRESENCE_TYPE = {
+export const ICON_TYPE = {
   values: ['busy', 'offline', 'online'],
 };
 
@@ -75,22 +76,33 @@ class Avatar extends Component {
     return this.getCachedStyledComponent(node);
   }
 
-  // Expose blur/focus to consumers via inner ref
+  // expose blur/focus to consumers via inner ref
   blur = () => this.node.blur()
   focus = () => this.node.focus()
 
   // disallow click on disabled avatars
   guardedClick = (event) => {
-    const { href, isDisabled, onClick, name, presence, size, src, status, stackIndex } = this.props;
+    const { isDisabled, onClick } = this.props;
 
     if (isDisabled) return;
 
-    const item = { href, name, presence, size, src, status, stackIndex };
+    const item = omit(this.props,
+      'onBlur',
+      'onClick',
+      'onFocus',
+      'onKeyDown',
+      'onKeyUp',
+      'onMouseDown',
+      'onMouseEnter',
+      'onMouseLeave',
+      'onMouseUp',
+    );
 
     onClick({ item, event });
   }
 
   // enforce status / presence rules
+  /* eslint-disable no-console */
   renderIndicator = () => {
     const { appearance, icon, presence, size, status } = this.props;
     const showPresence = !!(presence || icon);
@@ -100,15 +112,15 @@ class Avatar extends Component {
 
     // add warnings for various invalid states
     if (invalidIndicatorSizes.includes(size) && (showPresence || showStatus)) {
-      console.warn(`Avatar size "${size}" does NOT support ${showPresence ? 'presence' : 'status'}`); // eslint-disable-line no-console
+      console.warn(`Avatar size "${size}" does NOT support ${showPresence ? 'presence' : 'status'}`);
       return null;
     }
     if (showPresence && showStatus) {
-      console.warn('Avatar does NOT support `status` AND `presence` on the same instance.'); // eslint-disable-line no-console
+      console.warn('Avatar does NOT support `status` AND `presence` on the same instance.');
       return null;
     }
     if (icon && presence) {
-      console.warn('Avatar does NOT support `icon` AND `presence` on the same instance.'); // eslint-disable-line no-console
+      console.warn('Avatar does NOT support `icon` AND `presence` on the same instance.');
       return null;
     }
 
@@ -136,27 +148,26 @@ class Avatar extends Component {
 
     return indicator;
   }
+  /* eslint-enable no-console */
+
   render() {
     const {
-      appearance,
-      displayTooltipOnHover,
-      isActive,
-      isFocus,
-      isHover,
-      onClick,
-      name,
-      size,
-      src,
-      stackIndex,
+      appearance, displayTooltipOnHover, isActive, isFocus, isHover, onClick,
+      name, size, src, stackIndex,
     } = this.props;
 
+    // distill props from context, props, and state
     const props = getProps(this);
+
+    // provide element type based on props
+    const Inner = this.getStyledComponent();
+
+    // augment onClick handler
     props.onClick = onClick && this.guardedClick;
-    const StyledComponent = this.getStyledComponent();
 
     return (
-      <Container size={size} stackIndex={stackIndex}>
-        <StyledComponent innerRef={r => (this.node = r)} {...props}>
+      <Outer size={size} stackIndex={stackIndex}>
+        <Inner innerRef={r => (this.node = r)} {...props}>
           <Image
             alt={name}
             appearance={appearance}
@@ -165,10 +176,12 @@ class Avatar extends Component {
             size={size}
             src={src}
           />
-        </StyledComponent>
-        {(isHover && name && displayTooltipOnHover) && <Tooltip>{name}</Tooltip>}
+        </Inner>
+        {(displayTooltipOnHover && isHover && name) ? (
+          <Tooltip>{name}</Tooltip>
+        ) : null}
         {this.renderIndicator()}
-      </Container>
+      </Outer>
     );
   }
 }

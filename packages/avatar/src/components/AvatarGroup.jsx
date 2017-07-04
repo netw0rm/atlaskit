@@ -14,9 +14,9 @@ const groupComponent = {
 const stackMaxCount = 5;
 
 type AvatarsArray = [{
+  href?: string;
   name?: string;
   src: string;
-  href?: string;
   target: '_blank' | '_self';
 }];
 type Props = {
@@ -25,11 +25,11 @@ type Props = {
   appearance: 'grid' | 'stack',
   /** Component used to render each avatar */
   avatarComponent?: () => mixed,
-  /** The array of avatar data used fed to the `avatar` component */
-  data: AvatarsArray,
   /** Used to override the default border color of the presence indicator.
   Accepts any color argument that the border-color CSS property accepts. */
   borderColor?: string,
+  /** The array of avatar data used fed to the `avatar` component */
+  data: AvatarsArray,
   /** The maximum number of avatars allowed in the grid */
   maxCount?: number,
   /** Take control of the click event on the excess indicator. This will circumvent
@@ -48,8 +48,8 @@ export default class AvatarGroup extends Component {
 
   static defaultProps = {
     appearance: 'stack',
-    maxCount: 11,
     avatarComponent: Avatar,
+    maxCount: 11,
     size: 'medium',
   }
   static childContextTypes = {
@@ -81,8 +81,8 @@ export default class AvatarGroup extends Component {
         borderColor={borderColor || DEFAULT_BORDER_COLOR}
         count={total - max}
         isStack={appearance === 'stack'}
+        onClick={() => {}} // force "interactive" styles
         size={size}
-        onClick={() => {}} // make "interactive"
         {...props}
       />
     );

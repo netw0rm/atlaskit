@@ -10,9 +10,9 @@ export const Outer = styled.span`
   border-radius: 50%;
   box-sizing: border-box;
   display: flex;
+  height: 100%;
   overflow: hidden;
   padding: ${({ size }) => BORDER_WIDTH[size] || BORDER_WIDTH.medium}px;
-  height: 100%;
   width: 100%;
 `;
 
@@ -20,7 +20,7 @@ export const Inner = styled.span`
   align-items: center;
   border-radius: 50%;
   display: flex;
-  overflow: hidden;
   height: 100%;
+  overflow: hidden;
   width: 100%;
 `;

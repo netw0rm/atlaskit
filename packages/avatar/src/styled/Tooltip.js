@@ -43,7 +43,6 @@ const Tooltip = styled.div`
   text-overflow: ellipsis;
   transform: translateX(-50%);
   white-space: nowrap;
-  z-index: 601;
 `;
 
 export default Tooltip;

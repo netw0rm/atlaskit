@@ -5,12 +5,6 @@ export function omit(obj, ...keysToOmit) {
   }, {});
 }
 
-export const events = {
-  start: ['touchstart', 'mousedown'],
-  move: ['touchmove', 'mousemove'],
-  end: ['touchend', 'touchcancel', 'mouseup'],
-};
-
 export function limit(min, max, value) {
   if (value < min) {
     return min;

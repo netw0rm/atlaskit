@@ -9,8 +9,8 @@ const gutter = `${gutterUnitless}px`;
 export const Grid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  line-height: 1;
   justify-content: flex-start;
+  line-height: 1;
   margin-left: -${gutter};
   margin-right: -${gutter};
 

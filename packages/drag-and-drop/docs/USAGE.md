@@ -66,7 +66,7 @@ type DroppableId: Id;
 type DraggableId: Id;
 type DraggableLocation = {|
   droppableId: DroppableId,
-  // the position of the droppable within a droppable
+  // the position of the draggable within a droppable
   index: number
 |};
 ```

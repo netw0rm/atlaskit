@@ -61,7 +61,6 @@ const mockInitial: InitialDrag = {
     index: 0,
   },
   center: { x: 50, y: 50 },
-  scroll: { x: 0, y: 0 },
   selection: { x: 20, y: 20 },
   dimension: getDimension({
     id: defaultDraggableId,
@@ -234,7 +233,7 @@ const getStubber = stub =>
     }
 };
 
-describe('Draggable - unconnected', () => {
+describe.only('Draggable - unconnected', () => {
   before(() => {
     setScroll(origin);
     requestAnimationFrame.reset();
@@ -271,7 +270,7 @@ describe('Draggable - unconnected', () => {
       windowMouseMove(selection.x, selection.y);
     };
 
-    it('should allow you to attach a drag handle', () => {
+    it.only('should allow you to attach a drag handle', () => {
       const dispatchProps: DispatchProps = getDispatchPropsStub();
       const wrapper = mountDraggable({
         ownProps: defaultOwnProps,

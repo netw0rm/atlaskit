@@ -1,5 +1,6 @@
 // @flow
-import type { Dimension, DimensionFragment } from '../../src/types';
+import getDimension from '../../src/state/get-dimension';
+import type { Dimension } from '../../src/types';
 
 let count = 0;
 
@@ -9,33 +10,18 @@ export default ({
   bottom = 100,
   left = 0,
   right = 100,
-  margin = 0,
-}: Object = {}): Dimension => {
-  const withoutMargin: DimensionFragment = {
-    top,
-    left,
-    bottom,
-    right,
-    height: bottom - top,
-    width: right - left,
-  };
-  const withMargin: DimensionFragment = {
-    top: top + margin,
-    left: left + margin,
-    bottom: bottom + margin,
-    right: right + margin,
-    height: (bottom - top) + (2 * margin),
-    width: (right - left) + (2 * margin),
-  };
-
-  return {
+  margin = { top: 0, right: 0, bottom: 0, left: 0 },
+  scroll = { x: 0, y: 0 },
+}: Object = {}): Dimension => getDimension(
     id,
-    withoutMargin,
-    withMargin,
-    // not considering margin in center position
-    center: {
-      x: (left + right) / 2,
-      y: (top + bottom) / 2,
-    },
-  };
-};
+  {
+    top,
+    right,
+    bottom,
+    left,
+    width: (right - left),
+    height: (bottom - top),
+  },
+    margin,
+    scroll,
+  );

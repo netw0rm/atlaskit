@@ -122,7 +122,6 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
                 key={category.name}
               >
                 <button
-                  key={category.name}
                   className={classNames(categoryClasses)}
                   onClick={onClick}
                   title={category.name}

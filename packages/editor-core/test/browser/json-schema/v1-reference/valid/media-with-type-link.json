@@ -8,8 +8,9 @@
         {
           "type": "media",
           "attrs": {
-            "type": "file",
-            "id": "1234"
+            "type": "link",
+            "id": "12345",
+            "collection": "SampleCollection"
           }
         }
       ]

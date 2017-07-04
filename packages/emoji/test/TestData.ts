@@ -157,22 +157,24 @@ export const atlassianEmojis: EmojiDescription[] = denormaliseEmojiServiceRespon
 export const siteEmojis: EmojiDescription[] = [ mediaEmoji ];
 export const emojis: EmojiDescription[] = [ ...standardEmojis, ...atlassianEmojis, ...siteEmojis ];
 
-export const emojiRepository = new EmojiRepository(emojis);
+export const newEmojiRepository = () => new EmojiRepository(emojis);
 
-export const smileyEmoji = emojiRepository.findByShortName(':smiley:') as EmojiDescriptionWithVariations;
-export const openMouthEmoji = emojiRepository.findByShortName(':open_mouth:') as EmojiDescriptionWithVariations;
-export const grinEmoji = emojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
-export const evilburnsEmoji = emojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
-export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
-export const thumbsdownEmoji = emojiRepository.findByShortName(':thumbsdown:') as EmojiDescriptionWithVariations;
-export const standardBoomEmoji = emojiRepository.findById('1f4a5') as EmojiDescriptionWithVariations;
-export const atlassianBoomEmoji = emojiRepository.findById('atlassian-boom') as EmojiDescriptionWithVariations;
-export const blackFlagEmoji = emojiRepository.findByShortName(':flag_black:') as EmojiDescriptionWithVariations;
-export const congoFlagEmoji = emojiRepository.findByShortName(':flag_cg:') as EmojiDescriptionWithVariations;
+const defaultEmojiRepository = newEmojiRepository();
 
-export const getNonUploadingEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockNonUploadingEmojiResourceFactory(emojiRepository, config);
+export const smileyEmoji = defaultEmojiRepository.findByShortName(':smiley:') as EmojiDescriptionWithVariations;
+export const openMouthEmoji = defaultEmojiRepository.findByShortName(':open_mouth:') as EmojiDescriptionWithVariations;
+export const grinEmoji = defaultEmojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
+export const evilburnsEmoji = defaultEmojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
+export const thumbsupEmoji = defaultEmojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
+export const thumbsdownEmoji = defaultEmojiRepository.findByShortName(':thumbsdown:') as EmojiDescriptionWithVariations;
+export const standardBoomEmoji = defaultEmojiRepository.findById('1f4a5') as EmojiDescriptionWithVariations;
+export const atlassianBoomEmoji = defaultEmojiRepository.findById('atlassian-boom') as EmojiDescriptionWithVariations;
+export const blackFlagEmoji = defaultEmojiRepository.findByShortName(':flag_black:') as EmojiDescriptionWithVariations;
+export const congoFlagEmoji = defaultEmojiRepository.findByShortName(':flag_cg:') as EmojiDescriptionWithVariations;
 
-export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiRepository, config);
+export const getNonUploadingEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockNonUploadingEmojiResourceFactory(newEmojiRepository(), config);
+
+export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(newEmojiRepository(), config);
 
 export const generateSkinVariation = (base: EmojiDescription, idx: number): EmojiDescription => {
   const { id, shortName, name } = base;

@@ -44,7 +44,7 @@ export interface MarksObject<T> {
  * @name formatted_text_inline_node
  */
 export type InlineFormattedText = Text & MarksObject<
-  Link | Em | Strong | Strike | Code | SubSup | Underline | TextColor
+  Link | Em | Strong | Strike | SubSup | Underline | TextColor
 >;
 
 /**

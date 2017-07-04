@@ -17,6 +17,7 @@ export default class Emoji extends PureComponent<Props, {}> {
         <ResourcedEmoji
           emojiId={emojiId}
           emojiProvider={emojiProvider}
+          showTooltip={true}
         />
       );
     }

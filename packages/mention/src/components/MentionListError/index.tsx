@@ -1,14 +1,21 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { MentionListErrorStyle } from './styles';
-import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import { MentionListErrorStyle, MentionListErrorHeadlineStyle, MentionListAdviceStyle } from './styles';
 import { HttpError } from '../../api/MentionResource';
+import { GenericErrorIllustration } from './GenericErrorIllustration';
 
 export interface Props {
   error?: Error;
 }
 
-const defaultErrorMessage = 'Something went wrong';
+const defaultHeadline = 'Something went wrong';
+const defaultSecondary = 'Try again in a few seconds';
+
+type ErrorMessage = {
+  headline: string,
+  advisedAction: string
+};
+
 
 export default class MentionListError extends PureComponent<Props, {}> {
 
@@ -17,28 +24,35 @@ export default class MentionListError extends PureComponent<Props, {}> {
    *
    * @param error the error to be displayed
    */
-  private static prepareError(error: Error | undefined): string {
+  private static prepareError(error: Error | undefined): ErrorMessage {
+    const errorMessage = {
+      headline: defaultHeadline,
+      advisedAction: defaultSecondary
+    };
+
     if (error instanceof HttpError) {
       const httpError = error as HttpError;
 
       if (httpError.statusCode === 401) {
-        return 'Try logging in again.';
+        errorMessage.advisedAction = 'Try logging out then in again';
       }
 
       if (httpError.statusCode === 403) {
-        return 'Not permitted.';
+        errorMessage.advisedAction = 'Try entering different text';
       }
     }
 
-    return defaultErrorMessage;
+    return errorMessage;
   }
 
   render() {
     const { error } = this.props;
+    const errorMessage = MentionListError.prepareError(error);
 
     return <MentionListErrorStyle>
-      <div><EditorWarningIcon label="whoops" size="xlarge"/></div>
-      <div>{MentionListError.prepareError(error)}</div>
+      <GenericErrorIllustration/>
+      <MentionListErrorHeadlineStyle>{errorMessage.headline}</MentionListErrorHeadlineStyle>
+      <MentionListAdviceStyle>{errorMessage.advisedAction}</MentionListAdviceStyle>
     </MentionListErrorStyle>;
   }
 }

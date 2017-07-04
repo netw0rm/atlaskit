@@ -293,8 +293,8 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             <TableFloatingToolbar
               pluginState={pluginStateTable}
               editorView={editorView}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
+              popupsMountPoint={this.maxHeightContainer}
+              popupsBoundariesElement={this.maxHeightContainer}
             /> }
 
           {pluginStateMentions && mentionProvider && !disabled ?

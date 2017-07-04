@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import { TableState } from '../../plugins/table';
 import { EditorView, CellSelection } from '../../prosemirror';
 import ToolbarButton from '../ToolbarButton';
@@ -19,7 +19,7 @@ export interface State {
   cellSelection?: CellSelection;
 }
 
-export default class TableFloatingToolbar extends PureComponent<Props, State> {
+export default class TableFloatingToolbar extends Component<Props, State> {
   state: State = {};
 
   componentDidMount() {

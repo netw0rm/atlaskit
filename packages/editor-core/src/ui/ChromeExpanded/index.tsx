@@ -122,10 +122,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     this.editorContent = ref;
   }
 
-  handleMaxHeightContainer = (ref) => {
-    this.maxHeightContainer = ref;
-  }
-
   handleScroll = (event) => {
     this.setState({ scroll: event.target.scrollTop });
   }
@@ -363,6 +359,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
 
   private handleEditorContainerRef = ref => {
     this.editorContainer = ref;
+  }
+
+  private handleMaxHeightContainer = (ref) => {
+    this.maxHeightContainer = ref;
   }
 
   @analytics('atlassian.editor.stop.cancel')

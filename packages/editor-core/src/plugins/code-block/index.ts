@@ -22,11 +22,11 @@ export class CodeBlockState {
   toolbarVisible: boolean = false;
   domEvent: boolean = false;
   uniqueId: string | undefined = undefined;
+  activeCodeBlock?: Node;
+  editorFocused: boolean = false;
 
   private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
-  private activeCodeBlock?: Node;
-  private editorFocused: boolean = false;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];

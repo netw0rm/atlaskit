@@ -453,25 +453,13 @@ export class MediaPluginState {
       case 'uploading':
       case 'processing':
         this.pickers.forEach(picker => picker.cancel(id));
-
-        if (!activeUserAction) {
-          return;
-        }
-
-        this.removeMediaNodeById(id);
-        break;
-
-      default:
-        if (!activeUserAction) {
-          return;
-        }
-
-        const { view } = this;
-        const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
-
-        view.dispatch(tr);
-        break;
     }
+
+    if (!activeUserAction) {
+      return;
+    }
+
+    this.removeMediaNodeById(id);
 
     this.setSelectionAfterRemoval(nodePos);
   }
@@ -584,7 +572,15 @@ export class MediaPluginState {
     const { node, getPos } = mediaNodeWithPos;
     const nodePos = getPos();
     const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
-    view.dispatch(tr.setMeta('addToHistory', false));
+
+    if (this.isTemporaryFile(id)) {
+      tr.setMeta('addToHistory', false);
+    }
+    view.dispatch(tr);
+  }
+
+  private isTemporaryFile = (id: string): boolean => {
+    return id.indexOf('temporary:') === 0;
   }
 
   private selectInsertedMediaNode = (node: PMNode) => {

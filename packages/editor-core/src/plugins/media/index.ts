@@ -16,6 +16,7 @@ import {
   PluginKey,
   Node as PMNode,
   NodeSelection,
+  TextSelection,
   Schema,
   Transaction,
 } from '../../prosemirror';
@@ -281,6 +282,7 @@ export class MediaPluginState {
    * inside of it
    */
   handleMediaNodeRemove = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+    this.selectInsertedMediaNode(node);
     this.handleMediaNodeRemoval(node, getPos, true);
   }
 
@@ -467,18 +469,11 @@ export class MediaPluginState {
   private setSelectionAfterRemoval(currentPos: number): void {
     const { state, dispatch } = this.view;
     const { doc, tr } = state;
-    const $currentPos = doc.resolve(currentPos);
-    const previousNode = $currentPos.nodeBefore;
-    const nextNode = $currentPos.nodeAfter;
+    const $previousMediaNodePos = doc.resolve(currentPos - 1);
+    const previousMediaNode = $previousMediaNodePos.nodeAfter;
 
-    if (previousNode) {
-      const mediaNodeWithPos = this.findMediaNode(previousNode.attrs.id) as MediaNodeWithPosHandler;
-      const $nextPos = doc.resolve(mediaNodeWithPos.getPos());
-      tr.setSelection(new NodeSelection($nextPos));
-      dispatch(tr);
-    } else if (nextNode) {
-      const mediaNodeWithPos = this.findMediaNode(nextNode.attrs.id) as MediaNodeWithPosHandler;
-      const $nextPos = doc.resolve(mediaNodeWithPos.getPos());
+    if (previousMediaNode) {
+      const $nextPos = $previousMediaNodePos;
       tr.setSelection(new NodeSelection($nextPos));
       dispatch(tr);
     }

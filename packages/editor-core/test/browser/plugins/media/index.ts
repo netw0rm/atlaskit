@@ -521,61 +521,6 @@ describe('Media plugin', () => {
             )
           ));
       });
-
-      context('when there is a media node before', () => {
-        it(`set selection to the previous media node after removing ${status} media node`, () => {
-          const deletingMediaNodeId = 'media2';
-          const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
-          const { editorView, pluginState } = editor(
-            doc(
-              p('hello'),
-              mediaGroup(
-                media({ id: 'media1', type: 'file', collection: testCollectionName }),
-                deletingMediaNode,
-                media({ id: 'media3', type: 'file', collection: testCollectionName }),
-              ),
-            ),
-          );
-
-          stateManager.updateState(deletingMediaNodeId, {
-            status,
-            id: deletingMediaNodeId,
-          });
-
-          const pos = getNodePos(pluginState, deletingMediaNodeId);
-          (pluginState as MediaPluginState).handleMediaNodeRemove(deletingMediaNode, () => pos);
-
-          const selection = editorView.state.selection as NodeSelection;
-          expect(selection.node.attrs.id).to.equal('media1');
-        });
-      });
-
-      context.skip('when there is no media node before, but media node after', () => {
-        it(`set selection to the next media node after removing ${status} media node`, () => {
-          const deletingMediaNodeId = 'media';
-          const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
-          const { editorView, pluginState } = editor(
-            doc(
-              p('hello'),
-              mediaGroup(
-                deletingMediaNode,
-                media({ id: 'media3', type: 'file', collection: testCollectionName }),
-              ),
-            ),
-          );
-
-          stateManager.updateState(deletingMediaNodeId, {
-            status,
-            id: deletingMediaNodeId,
-          });
-
-          const pos = getNodePos(pluginState, deletingMediaNodeId);
-          (pluginState as MediaPluginState).handleMediaNodeRemove(deletingMediaNode, () => pos);
-
-          const selection = editorView.state.selection as NodeSelection;
-          expect(selection.node.attrs.id).to.equal('media3');
-        });
-      });
     });
 
     context('when it is a temporary file', () => {

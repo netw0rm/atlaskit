@@ -113,8 +113,8 @@ describe('MentionPicker', () => {
           let err = errorMention.prop('error') as HttpError;
           expect(err.statusCode).to.equal(403);
           expect(errorMention.text()).to.contain('different text');
-        })
-      })
+        });
+      });
   });
 
   it('should display previous mention if error straight after', () => {

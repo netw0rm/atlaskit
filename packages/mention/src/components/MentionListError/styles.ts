@@ -24,12 +24,12 @@ export const GenericErrorVisualStyle = styled.div`
   width: 83px;
 `;
 
-export const MentionListErrorHeadline = styled.div`
+export const MentionListErrorHeadlineStyle = styled.div`
   ${akTypographyMixins.h400};
   margin-bottom: 8px;
 `;
 
-export const MentionListAdvice = styled.div`
+export const MentionListAdviceStyle = styled.div`
   margin-bottom: 48px;
 `;
 

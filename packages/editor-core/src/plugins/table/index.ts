@@ -201,7 +201,7 @@ export class TableState {
 
   resetHoverSelection = () => {
     this.hoveredCells = [];
-    this.view.dispatch(this.view.state.tr.scrollIntoView());
+    this.view.dispatch(this.view.state.tr);
   }
 
   isColumnSelected = (column: number): boolean => {
@@ -298,7 +298,7 @@ export class TableState {
         }
       });
       // trigger state change to be able to pick it up in the decorations handler
-      this.view.dispatch(state.tr.scrollIntoView());
+      this.view.dispatch(state.tr);
     }
   }
 
@@ -467,7 +467,7 @@ export class TableState {
     this.focusEditor();
     const { tr } = this.view.state;
     tr.setSelection(Selection.near(tr.doc.resolve(pos)));
-    this.view.dispatch(tr.scrollIntoView());
+    this.view.dispatch(tr);
   }
 
   private moveCursorTo (pos: number): void {

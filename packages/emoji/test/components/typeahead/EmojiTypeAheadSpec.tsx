@@ -303,7 +303,7 @@ describe('EmojiTypeAhead', () => {
 
     const component = setupPicker({
       onSelection: onSelection as OnEmojiEvent,
-      query: ':coffee:',
+      query: ':boom:',
     } as Props);
 
     return waitUntil(() => doneLoading(component)).then(() => {

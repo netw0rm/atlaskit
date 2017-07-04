@@ -739,22 +739,22 @@
       "shortName": ":strawberry:"
     },
     {
-      "id": "2615",
-      "name": "hot beverage",
-      "fallback": "☕",
+      "id": "1f348",
+      "name": "melon",
+      "fallback": "🍈",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1243,
+      "order": 1180,
       "representation": {
         "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/foods.png",
-        "x": 68,
-        "y": 238,
+        "x": 306,
+        "y": 0,
         "height": 32,
         "width": 32,
-        "xIndex": 2,
-        "yIndex": 7
+        "xIndex": 9,
+        "yIndex": 0
       },
-      "shortName": ":coffee:"
+      "shortName": ":melon:"
     },
     {
       "id": "26bd",

@@ -1,74 +1,116 @@
 {
   "emojis": [
     {
-      "id": "atlassian-areyoukiddingme",
-      "name": "areyoukiddingme",
-      "fallback": ":areyoukiddingme:",
+      "id": "atlassian-disapproval",
+      "name": "disapproval",
+      "fallback": ":disapproval:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/areyoukiddingme@4x.png",
-        "height": 100,
-        "width": 100
-      },
-      "shortName": ":areyoukiddingme:"
-    },
-    {
-      "id": "atlassian-boom",
-      "name": "boom",
-      "fallback": ":boom:",
-      "type": "ATLASSIAN",
-      "category": "ATLASSIAN",
-      "order": -1,
-      "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/boom.gif",
-        "height": 100,
-        "width": 100
-      },
-      "shortName": ":boom:"
-    },
-    {
-      "id": "atlassian-coffee",
-      "name": "coffee",
-      "fallback": ":coffee:",
-      "type": "ATLASSIAN",
-      "category": "ATLASSIAN",
-      "order": -1,
-      "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/coffee.png",
-        "height": 17,
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/disapproval.png",
+        "height": 18,
         "width": 23
       },
-      "shortName": ":coffee:"
+      "shortName": ":disapproval:"
     },
     {
-      "id": "atlassian-confluence",
-      "name": "confluence",
-      "fallback": ":confluence:",
+      "id": "atlassian-feelsgoodman",
+      "name": "feels good man",
+      "fallback": ":feelsgoodman:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/confluence@4x.png",
-        "height": 120,
-        "width": 120
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/feels_good_man.png",
+        "height": 24,
+        "width": 30
       },
-      "shortName": ":confluence:"
+      "shortName": ":feelsgoodman:"
     },
     {
-      "id": "atlassian-content",
-      "name": "content",
-      "fallback": ":content:",
+      "id": "atlassian-skyrim",
+      "name": "skyrim",
+      "fallback": ":skyrim:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/content@4x.png",
-        "height": 100,
-        "width": 100
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/skyrim.png",
+        "height": 30,
+        "width": 17
       },
-      "shortName": ":content:"
+      "shortName": ":skyrim:"
+    },
+    {
+      "id": "atlassian-branch",
+      "name": "branch",
+      "fallback": ":branch:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/branch.png",
+        "height": 16,
+        "width": 16
+      },
+      "shortName": ":branch:"
+    },
+    {
+      "id": "atlassian-upvote",
+      "name": "upvote",
+      "fallback": ":upvote:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/upvote.png",
+        "height": 30,
+        "width": 29
+      },
+      "shortName": ":upvote:"
+    },
+    {
+      "id": "atlassian-ban",
+      "name": "ban",
+      "fallback": ":ban:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/ban.jpg",
+        "height": 30,
+        "width": 30
+      },
+      "shortName": ":ban:"
+    },
+    {
+      "id": "atlassian-ftfy",
+      "name": "ftfy",
+      "fallback": ":ftfy:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/ftfy.png",
+        "height": 30,
+        "width": 30
+      },
+      "shortName": ":ftfy:"
+    },
+    {
+      "id": "atlassian-twss",
+      "name": "twss",
+      "fallback": ":twss:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/twss.png",
+        "height": 25,
+        "width": 20
+      },
+      "shortName": ":twss:"
     },
     {
       "id": "atlassian-evilburns",
@@ -78,67 +120,25 @@
       "category": "ATLASSIAN",
       "order": -1,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/evilburns@4x.png",
-        "height": 120,
-        "width": 96
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/evilburns.png",
+        "height": 30,
+        "width": 24
       },
       "shortName": ":evilburns:"
     },
     {
-      "id": "atlassian-failed",
-      "name": "failed",
-      "fallback": ":failed:",
+      "id": "atlassian-boom",
+      "name": "boom",
+      "fallback": ":boom:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/failed@4x.png",
-        "height": 64,
-        "width": 64
+        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/boom.gif",
+        "height": 30,
+        "width": 30
       },
-      "shortName": ":failed:"
-    },
-    {
-      "id": "atlassian-heart",
-      "name": "heart",
-      "fallback": ":heart:",
-      "type": "ATLASSIAN",
-      "category": "ATLASSIAN",
-      "order": -1,
-      "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/heart@4x.png",
-        "height": 56,
-        "width": 64
-      },
-      "shortName": ":heart:"
-    },
-    {
-      "id": "atlassian-huh",
-      "name": "huh",
-      "fallback": ":huh:",
-      "type": "ATLASSIAN",
-      "category": "ATLASSIAN",
-      "order": -1,
-      "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/huh@4x.png",
-        "height": 100,
-        "width": 100
-      },
-      "shortName": ":huh:"
-    },
-    {
-      "id": "atlassian-jake",
-      "name": "jake",
-      "fallback": ":jake:",
-      "type": "ATLASSIAN",
-      "category": "ATLASSIAN",
-      "order": -1,
-      "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/jake@4x.png",
-        "height": 120,
-        "width": 120
-      },
-      "shortName": ":jake:"
+      "shortName": ":boom:"
     }
   ],
   "meta": {

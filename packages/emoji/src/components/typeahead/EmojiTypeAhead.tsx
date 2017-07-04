@@ -40,7 +40,7 @@ export interface State {
   loading: boolean;
 }
 
-const isCompleteQuery = (query?: string) => query && query.length > 1 && query.charAt(0) === ':' && query.charAt(query.length-1) === ':';
+const isFullShortName = (query?: string) => query && query.length > 1 && query.charAt(0) === ':' && query.charAt(query.length-1) === ':';
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private emojiListRef: EmojiList;
@@ -146,9 +146,8 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
       loading: false,
     });
 
-    // Query begins and ends with a colon
-    if (isCompleteQuery(query)) {
-      const matches = this.exactShortNameMatch(result, query);
+    if (isFullShortName(query)) {
+      const matches = this.exactShortNameMatchIndexes(result, query);
       if (matches.length === 1 && this.props.onSelection) {
         this.props.onSelection(toEmojiId(result.emojis[matches[0]]), result.emojis[matches[0]]);
       } else if (!matches.length && this.props.onClose) {
@@ -170,11 +169,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     }
   }
 
-  // List of indexes used to account for 3 different cases of shortname matches:
-  // 0: typeahead should be closed
-  // 1: insert match emoji using onSelection callback
-  // >1: do nothing - normal behaviour
-  private exactShortNameMatch(searchResult: EmojiSearchResult, query?: string): number[] {
+  private exactShortNameMatchIndexes(searchResult: EmojiSearchResult, query?: string): number[] {
     const matchIndexes: number[] = [];
     searchResult.emojis.forEach((emoji, index) => {
       if (emoji.shortName === query) {

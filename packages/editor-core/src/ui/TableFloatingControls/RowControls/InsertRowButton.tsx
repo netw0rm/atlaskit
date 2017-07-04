@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
-import ToolbarButton from '../../ToolbarButton';
+import AkButton from '@atlaskit/button';
 import {
   InsertRowButtonWrap,
   InsertRowMarker,
   InsertRowButtonInner,
+  RowLineMarker,
 } from './styles';
 
 export interface ButtonProps {
   index: number;
   style?: object;
   insertRow: (row: number) => void;
+  lineMarkerWidth?: number;
 }
 
 export default class InsertRowButton extends Component<ButtonProps, any> {
@@ -21,11 +23,14 @@ export default class InsertRowButton extends Component<ButtonProps, any> {
     return (
       <InsertRowButtonWrap style={this.props.style}>
         <InsertRowButtonInner>
-          <ToolbarButton
+          <AkButton
             onClick={this.handleInsert}
             iconBefore={<AddIcon label="Add row" />}
+            appearance="primary"
+            spacing="none"
           />
         </InsertRowButtonInner>
+        <RowLineMarker style={{ width: this.props.lineMarkerWidth }} />
         <InsertRowMarker />
       </InsertRowButtonWrap>
     );

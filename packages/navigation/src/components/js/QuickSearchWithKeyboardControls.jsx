@@ -26,7 +26,9 @@ const getItemById = (array, id) => (array && array.find(item => item.id === id))
  * Returns a numberic index or null
  */
 const getItemIndexById = (array, id) => {
-  if (!array) { return null; }
+  if (!array) {
+    return null;
+  }
   const item = getItemById(array, id);
   const index = array.indexOf(item);
   return index >= 0 ? index : null;
@@ -39,8 +41,6 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
   if (adjustment === 0) {
     return currentIndex;
   }
-
-  // const currentIndex = getItemIndexById(this.flatResults, this.state.selectedItemId);
 
   // If nothing is selected, select the element on the end
   if (currentIndex === null) {
@@ -83,7 +83,16 @@ export const withKeyboardControls = QuickSearchComp => (
       }
     }
 
-    adjustSelectItemIndex = (adjustment) => {
+    /**
+     * Uses the virtual list, this.flatResults, to move the selection across grouped results as if
+     * results were in a single, circular list.
+     *
+     * Process:
+     * 1. Finds the index of the selected item in the flatResults array,
+     * 2. Increments or decrements this index by the supplied adjustment amount,
+     * 3. Sets the new selectedItemId based on the modifed index
+     */
+    adjustSelectedItemIndex = (adjustment) => {
       const currentIndex = getItemIndexById(this.flatResults, this.state.selectedItemId);
       const newIndex = adjustIndex(this.flatResults.length, currentIndex, adjustment);
       this.setState({
@@ -91,9 +100,9 @@ export const withKeyboardControls = QuickSearchComp => (
       });
     }
 
-    selectNext = () => { this.adjustSelectItemIndex(+1); };
+    selectNext = () => { this.adjustSelectedItemIndex(+1); };
 
-    selectPrevious = () => { this.adjustSelectItemIndex(-1); };
+    selectPrevious = () => { this.adjustSelectedItemIndex(-1); };
 
     handleSearchKeyDown = (event) => {
       if (event.key === 'ArrowUp') {

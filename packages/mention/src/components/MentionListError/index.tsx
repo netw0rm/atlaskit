@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { MentionListErrorStyle, MentionListErrorHeadline, MentionListAdvice } from './styles';
+import { MentionListErrorStyle, MentionListErrorHeadlineStyle, MentionListAdviceStyle } from './styles';
 import { HttpError } from '../../api/MentionResource';
 import { GenericErrorIllustration } from './GenericErrorIllustration';
 
@@ -51,8 +51,8 @@ export default class MentionListError extends PureComponent<Props, {}> {
 
     return <MentionListErrorStyle>
       <GenericErrorIllustration/>
-      <MentionListErrorHeadline>{errorMessage.headline}</MentionListErrorHeadline>
-      <MentionListAdvice>{errorMessage.advisedAction}</MentionListAdvice>
+      <MentionListErrorHeadlineStyle>{errorMessage.headline}</MentionListErrorHeadlineStyle>
+      <MentionListAdviceStyle>{errorMessage.advisedAction}</MentionListAdviceStyle>
     </MentionListErrorStyle>;
   }
 }

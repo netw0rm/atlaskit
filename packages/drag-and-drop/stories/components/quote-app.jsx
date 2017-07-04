@@ -37,14 +37,16 @@ const Divider = styled.hr`
   margin-bottom: ${grid * 2}px;
 `;
 
-export default class QuoteApp extends Component {
-  state: {|
-    dragging: ?DropResult,
-    quotes: Quote[],
-    history: DropResult[],
-  |}
+type State = {|
+  dragging: ?DropResult,
+  quotes: Quote[],
+  history: DropResult[],
+|}
 
-  state = {
+export default class QuoteApp extends Component {
+  state: State
+
+  state: State = {
     dragging: null,
     quotes: data,
     history: [],
@@ -56,6 +58,7 @@ export default class QuoteApp extends Component {
       source: location,
       destination: null,
     };
+
     this.setState({
       dragging,
     });

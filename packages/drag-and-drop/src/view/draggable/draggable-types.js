@@ -1,11 +1,12 @@
 // @flow
-import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types';
+import type { PropType, HasDefaultProp } from 'babel-plugin-react-flow-props-to-prop-types';
 import type {
   DraggableId,
   InitialDrag,
   Position,
   TypeId,
   ZIndex,
+  HTMLElement,
 } from '../../types';
 import {
   lift,
@@ -43,7 +44,7 @@ export type ZIndexOptions = {|
 export type DraggableStyle = MovementStyle | (PlacementStyle & MovementStyle);
 
 export type Provided = {|
-  innerRef: (Element) => void,
+  innerRef: (HTMLElement) => void,
   draggableStyle: ?DraggableStyle,
   dragHandleProps: ?DragHandleProvided,
   placeholder: ?ReactElement,
@@ -77,8 +78,8 @@ export type MapProps = {|
 export type OwnProps = {|
   draggableId: DraggableId,
   children: (Provided, StateSnapshot) => void,
-  type: TypeId,
-  isDragDisabled: boolean,
+  type: HasDefaultProp<TypeId>,
+  isDragDisabled: HasDefaultProp<boolean>,
 |}
 
 export type DefaultProps = {|

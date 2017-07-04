@@ -186,7 +186,7 @@ The function is provided with two arguments:
 
 ```js
 type Provided = {|
-  innerRef: (Element) => mixed,
+  innerRef: (HTMLElement) => mixed,
 |}
 ```
 
@@ -290,7 +290,7 @@ The function is provided with two arguments:
 
 ```js
 type Provided = {|
-  innerRef: (Element) => void,
+  innerRef: (HTMLElement) => void,
   draggableStyle: ?DraggableStyle,
   dragHandleProps: ?DragHandleProvided,
   placeholder: ?ReactElement,
@@ -299,7 +299,7 @@ type Provided = {|
 
 Everything within the *provided* object must be applied for the `Draggable` to function correctly.
 
-- `provided.innerRef (innerRef: (Element) => void)`: In order for the `Droppable` to function correctly, **you must** bind the `innerRef` function to the `ReactElement` that you want to be considered the `Draggable` node. We do this in order to avoid needing to use `ReactDOM` to look up your DOM node.
+- `provided.innerRef (innerRef: (HTMLElement) => void)`: In order for the `Droppable` to function correctly, **you must** bind the `innerRef` function to the `ReactElement` that you want to be considered the `Draggable` node. We do this in order to avoid needing to use `ReactDOM` to look up your DOM node.
 
 ```js
 <Draggable draggableId="draggable-1">
@@ -314,7 +314,7 @@ Everything within the *provided* object must be applied for the `Draggable` to f
 **Type information**
 
 ```js
-innerRef: (Element) => void
+innerRef: (HTMLElement) => void
 ```
 
 - `provided.draggableStyle (?DraggableStyle)`: This is an `Object` or `null` that contains an a number of styles that needs to be applied to the `Draggable`. This needs to be applied to the same node that you apply `provided.innerRef` to. The controls the movement of the draggable when it is dragging and not dragging. You are welcome to add your own styles to this object - but please do not remove or replace any of the properties.

@@ -39,7 +39,6 @@ export default class Movable extends PureComponent {
   props: Props
 
   static defaultProps: DefaultProps = {
-    innerRef: () => {},
     destination: origin,
   }
   /* eslint-enable */
@@ -60,7 +59,6 @@ export default class Movable extends PureComponent {
   }
 
   getFinal = (): PositionLike => {
-    // $ExpectError - flow does not play well with default props
     const destination: Position = this.props.destination;
     const speed = this.props.speed;
 
@@ -85,8 +83,6 @@ export default class Movable extends PureComponent {
     const isNotMoving: boolean = isAtOrigin(final);
 
     return (
-      // https://github.com/chenglou/react-motion/issues/375
-      // $ExpectError - React motion! *fist shake*
       <Motion defaultStyle={origin} style={final} onRest={this.onRest}>
         {(current: Position) =>
           this.props.children(

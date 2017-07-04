@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import type { Props, Provided, StateSnapshot, DefaultProps } from './droppable-types';
+import type { HTMLElement } from '../../types';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 
 type State = {|
-  ref: ?Element,
+  ref: ?HTMLElement,
 |}
 
 export default class Droppable extends PureComponent {
@@ -21,7 +22,7 @@ export default class Droppable extends PureComponent {
   }
   /* eslint-enable */
 
-  setRef = (ref: ?Element) => {
+  setRef = (ref: ?HTMLElement) => {
     // need to trigger a child render when ref changes
     this.setState({
       ref,

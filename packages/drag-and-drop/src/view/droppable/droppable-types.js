@@ -1,8 +1,9 @@
 // @flow
-import type { DroppableId, TypeId, ReactElement } from '../../types';
+import type { HasDefaultProp } from 'babel-plugin-react-flow-props-to-prop-types';
+import type { DroppableId, TypeId, ReactElement, HTMLElement } from '../../types';
 
 export type Provided = {|
-  innerRef: (Element) => void,
+  innerRef: (HTMLElement) => void,
 |}
 
 export type StateSnapshot = {|
@@ -15,8 +16,8 @@ export type MapProps = {|
 
 export type OwnProps = {|
   droppableId: DroppableId,
-  isDropDisabled: boolean,
-  type: TypeId,
+  isDropDisabled: HasDefaultProp<boolean>,
+  type: HasDefaultProp<TypeId>,
   children: (Provided, StateSnapshot) => ReactElement
 |};
 

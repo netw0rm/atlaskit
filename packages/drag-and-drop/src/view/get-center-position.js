@@ -1,8 +1,8 @@
 // @flow
 import getScrollPosition from './get-scroll-position';
-import type { Position } from '../types';
+import type { Position, HTMLElement } from '../types';
 
-export default (el: Element): Position => {
+export default (el: HTMLElement): Position => {
   const { top, right, bottom, left } = el.getBoundingClientRect();
   const scroll: Position = getScrollPosition();
   const centerX = ((left + scroll.x) + (right + scroll.x)) / 2;

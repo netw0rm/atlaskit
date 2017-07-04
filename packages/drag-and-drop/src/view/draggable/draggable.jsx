@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
-import type { Position, ZIndex, InitialDrag } from '../../types';
+import type { Position, ZIndex, InitialDrag, HTMLElement } from '../../types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import DragHandle from '../drag-handle';
@@ -31,7 +31,7 @@ type PlacementInfo = {|
 |}
 
 type State = {|
-  childRef: ?Element,
+  childRef: ?HTMLElement,
 |}
 
 export const zIndexOptions: ZIndexOptions = {
@@ -150,7 +150,7 @@ export default class Draggable extends PureComponent {
     this.props.cancel(this.props.draggableId);
   }
 
-  setChildRef = (el: ?Element) => {
+  setChildRef = (el: ?HTMLElement) => {
     this.setState({
       childRef: el,
     });

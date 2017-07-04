@@ -3,7 +3,7 @@
 import {
   akColorB200,
   akColorPrimary3,
-  akGridSizeUnitless as gridSize,
+  akGridSizeUnitless,
   akZIndexBlanket,
   akZIndexNavigation,
 } from '@atlaskit/util-shared-styles';
@@ -11,6 +11,7 @@ import {
 /**
 * NOTE: changing the width of the Navigation is considered a breaking change
 */
+export const gridSize = akGridSizeUnitless;
 
 export const layout = {
   padding: {

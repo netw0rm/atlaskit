@@ -16,23 +16,29 @@ import {
   PluginKey,
   Node as PMNode,
   NodeSelection,
+  TextSelection,
   Schema,
+  AddMarkStep,
+  ReplaceStep,
   Transaction,
+  MarkType,
+  Fragment,
+  ResolvedPos,
 } from '../../prosemirror';
-import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
-import { analyticsService } from '../../analytics';
-import { ErrorReporter } from '../../utils';
+import {
+  ErrorReporter, atTheEndOfDoc, atTheEndOfBlock, atTheBeginningOfBlock,
+  endPositionOfParent, startPositionOfParent
+} from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
-import inputRulePlugin from './input-rule';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
+import keymapPlugin from './keymap';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
-const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -41,11 +47,22 @@ export interface MediaNodeWithPosHandler {
   getPos: ProsemirrorGetPosHandler;
 }
 
+export interface Range {
+  start: number;
+  end: number;
+}
+
+export interface RangeWithUrls extends Range {
+  urls: string[];
+}
+
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
-  public allowsPastingLinks: boolean = false;
+  public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
+  public pickers: PickerFacade[] = [];
+  public binaryPicker?: PickerFacade;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -55,9 +72,10 @@ export class MediaPluginState {
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
 
-  private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
-  private binaryPicker?: PickerFacade;
+  private linkRanges: RangeWithUrls[];
+
+  private ignoreLinks: boolean = false;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
@@ -85,11 +103,15 @@ export class MediaPluginState {
     }
   }
 
+  ignoreLinksInSteps() {
+    this.ignoreLinks = true;
+  }
+
   setMediaProvider = async (mediaProvider?: Promise<MediaProvider>) => {
     if (!mediaProvider) {
       this.destroyPickers();
 
-      this.allowsPastingLinks = false;
+      this.allowsLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
@@ -114,7 +136,7 @@ export class MediaPluginState {
 
       this.destroyPickers();
 
-      this.allowsPastingLinks = false;
+      this.allowsLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
@@ -136,7 +158,7 @@ export class MediaPluginState {
       this.stateManager = stateManager;
     }
 
-    this.allowsPastingLinks = !!resolvedMediaProvider.linkCreateContext;
+    this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
 
     if (this.allowsUploads) {
@@ -154,21 +176,40 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   }
 
-  insertLinkFromUrl = (url: string) => {
-    const state = this.view.state;
+  private insertMedia = (node: PMNode): void => {
+    const { state, dispatch } = this.view;
+    const { $to } = state.selection;
+    let transaction = state.tr;
 
-    return state.tr.insert(
-      this.findInsertPosition(),
-      state.schema.nodes.media.create({ url, type: 'link' })
-    );
+    // insert a paragraph after if reach the end of doc
+    // and there is no media group in the front or selection is a non media block node
+    if (atTheEndOfDoc(state) && (!this.posOfPreceedingMediaGroup(state) || this.isSelectionNonMediaBlockNode())) {
+      const paragraphInsertPos = this.isSelectionNonMediaBlockNode() ? $to.pos : $to.pos + 1;
+      transaction = transaction.insert(paragraphInsertPos, state.schema.nodes.paragraph.create());
+    }
+
+    const mediaInsertPos = this.findMediaInsertPos();
+
+    // delete the selection or empty paragraph
+    const deleteRange = this.findDeleteRange();
+
+    if (!deleteRange) {
+      transaction = transaction.insert(mediaInsertPos, node);
+    } else if (mediaInsertPos <= deleteRange.start) {
+      transaction = transaction.deleteRange(deleteRange.start, deleteRange.end).insert(mediaInsertPos, node);
+    } else {
+      transaction = transaction.insert(mediaInsertPos, node).deleteRange(deleteRange.start, deleteRange.end);
+    }
+
+    dispatch(transaction);
+
+    this.setSelectionAfterMediaInsertion(node);
   }
 
-  insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
+  private createMediaFileNode = (mediaState: MediaState, collection: string): PMNode => {
     const { view } = this;
     const { state } = view;
     const { id } = mediaState;
-
-    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
 
     const node = state.schema.nodes.media!.create({
       id,
@@ -182,28 +223,72 @@ export class MediaPluginState {
       }
     });
 
-    let transaction;
+    return node;
+  }
 
-    if (this.isInsideEmptyParagraph()) {
-      const { $from } = state.selection;
-
-      // empty paragraph always exists inside the document
-      if (state.doc.childCount === 1) {
-        // add media group before this empty paragraph
-        transaction = state.tr.insert($from.start($from.depth) - 1, node);
-      } else {
-        // replace this empty paragraph with media group
-        transaction = state.tr.replaceWith(
-          $from.start($from.depth) - 1,
-          $from.end($from.depth) + 1,
-          node
-        );
-      }
-    } else {
-      transaction = state.tr.insert(this.findInsertPosition(), node);
+  insertFile = (mediaState: MediaState): void => {
+    const collection = this.collectionFromProvider();
+    if (!collection) {
+      return;
     }
 
-    return [ node, transaction ];
+    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+    const node = this.createMediaFileNode(mediaState, collection);
+
+    this.insertMedia(node);
+
+    const { view } = this;
+    if (!view.hasFocus()) {
+      view.focus();
+    }
+  }
+
+  insertLinks = (linkRanges: RangeWithUrls[] = this.linkRanges): void => {
+    const collection = this.collectionFromProvider();
+    if (linkRanges.length <= 0 || !collection) {
+      return;
+    }
+
+    const { state, dispatch } = this.view;
+    const { tr } = state;
+
+    const linksInfo = this.reduceLinksInfo(linkRanges);
+
+    const linkNodes = linksInfo.urls.map((url) => {
+      return state.schema.nodes.media.create({ id: url, type: 'link', collection: collection });
+    });
+
+    const $latestPos = tr.doc.resolve(linksInfo.latestPos);
+
+    const insertPos = this.posOfMediaGroupBelow($latestPos, false)
+      || this.posOfParentMediaGroup(state, $latestPos, false)
+      || endPositionOfParent($latestPos);
+
+    // insert a paragraph after if reach the end of doc
+    if (atTheEndOfDoc(state)) {
+      tr.insert(insertPos, state.schema.nodes.paragraph.create());
+    }
+
+    tr.replaceWith(insertPos, insertPos, linkNodes);
+    dispatch(tr);
+  }
+
+  private reduceLinksInfo(linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } {
+    const posAtTheEndOfDoc = this.view.state.doc.nodeSize - 4;
+
+    const linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
+      linksInfo.urls = linksInfo.urls.concat(rangeWithUrl.urls);
+      if (rangeWithUrl.end > linksInfo.latestPos) {
+        linksInfo.latestPos = rangeWithUrl.end;
+      }
+
+      if (posAtTheEndOfDoc < linksInfo.latestPos) {
+        linksInfo.latestPos = posAtTheEndOfDoc;
+      }
+      return linksInfo;
+    }, { latestPos: 0, urls: [] as string[] });
+
+    return linksInfo;
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -354,51 +439,132 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
   }
 
-  /**
-   * Determine whether the cursor is inside empty paragraph
-   */
-  private isInsideEmptyParagraph = () => {
+  private isSelectionNonMediaBlockNode = (): boolean => {
     const { state } = this.view;
-    const { $from, empty } = state.selection;
+    const { node } = state.selection as NodeSelection;
 
-    if (!empty) {
-      return false;
-    }
-
-    return (
-      $from.parent.type === state.schema.nodes.paragraph &&
-      !$from.parent.content.childCount
-    );
+    return node && node.type !== state.schema.nodes.media && node.isBlock;
   }
 
   /**
-   * Determine best PM document position to insert a new media item at.
+   * Determine whether the cursor is inside empty paragraph
+   * or the selection is the entire paragraph
    */
-  private findInsertPosition = () => {
+  private isInsidePotentialEmptyParagraph = (): boolean => {
+    const { state } = this.view;
+    const { $from } = state.selection;
+
+    return $from.parent.type === state.schema.nodes.paragraph && atTheBeginningOfBlock(state) && atTheEndOfBlock(state);
+  }
+
+  private posOfPreceedingMediaGroup(state: EditorState<any>): number | undefined {
+    if (!atTheBeginningOfBlock(state)) {
+      return;
+    }
+
+    return this.posOfMediaGroupAbove(state.selection.$from);
+  }
+
+  private posOfMediaGroupAbove($pos: ResolvedPos): number | undefined {
+    const { state } = this.view;
+    let adjacentPos;
+    let adjacentNode;
+
+    if (this.isSelectionNonMediaBlockNode()) {
+      adjacentPos = $pos.pos;
+      adjacentNode = $pos.nodeBefore;
+    } else {
+      adjacentPos = startPositionOfParent($pos) - 1;
+      adjacentNode = state.doc.resolve(adjacentPos).nodeBefore;
+    }
+
+    if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
+      return adjacentPos - adjacentNode.nodeSize + 1;
+    }
+  }
+
+  private posOfFollowingMediaGroup(state: EditorState<any>): number | undefined {
+    if (!atTheEndOfBlock(state)) {
+      return;
+    }
+    return this.posOfMediaGroupBelow(state.selection.$to);
+  }
+
+  private posOfMediaGroupBelow($pos: ResolvedPos, prepend: boolean = true): number | undefined {
+    const { state } = this.view;
+    let adjacentPos;
+    let adjacentNode;
+
+    if (this.isSelectionNonMediaBlockNode()) {
+      adjacentPos = $pos.pos;
+      adjacentNode = $pos.nodeAfter;
+    } else {
+      adjacentPos = endPositionOfParent($pos);
+      adjacentNode = state.doc.nodeAt(adjacentPos);
+    }
+
+    if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
+      return prepend ? adjacentPos + 1 : adjacentPos + adjacentNode.nodeSize - 1;
+    }
+  }
+
+  private posOfParentMediaGroup(state: EditorState<any>, $pos?: ResolvedPos, prepend: boolean = true): number | undefined {
+    const { $from } = state.selection;
+    $pos = $pos || $from;
+
+    if ($pos.parent.type === state.schema.nodes.mediaGroup) {
+      return prepend ? startPositionOfParent($pos) : endPositionOfParent($pos) - 1;
+    }
+  }
+
+  private posOfMediaGroupNearby(state: EditorState<any>): number | undefined {
+    return this.posOfParentMediaGroup(state)
+      || this.posOfFollowingMediaGroup(state)
+      || this.posOfPreceedingMediaGroup(state);
+  }
+
+  private findMediaInsertPos = (): number => {
     const state = this.view.state;
-    const $from = state.selection.$from;
+    const { $from, $to } = state.selection;
 
-    // Check if we're already in a media group and prepend the element inside the group
-    if ($from.parent.type === state.schema.nodes.mediaGroup) {
-      return $from.start($from.depth);
+    const nearbyMediaGroupPos = this.posOfMediaGroupNearby(state);
+
+    if (nearbyMediaGroupPos) {
+      return nearbyMediaGroupPos;
     }
 
-    // Resolve node adjacent to parent
-    const adjacentPos = $from.end($from.depth) + 1;
-    const adjacentNode = state.doc.nodeAt(adjacentPos);
-
-    // There's nothing below, so insert a new media item wrapped in a group there.
-    if (!adjacentNode) {
-      return adjacentPos;
+    if (this.isSelectionNonMediaBlockNode()) {
+      return $to.pos;
     }
 
-    // The adjacent node is a media group, so let's append there...
-    if (adjacentNode.type === state.schema.nodes.mediaGroup) {
-      return adjacentPos + 1;
+    if (atTheEndOfBlock(state)) {
+      return $to.pos + 1;
     }
 
-    // Prepend the item, wrapped in a new group, adjacent to parent
-    return adjacentPos;
+    if (atTheBeginningOfBlock(state)) {
+      return $from.pos - 1;
+    }
+
+    return $to.pos;
+  }
+
+  private findDeleteRange = (): Range | undefined => {
+    const { state } = this.view;
+    const { $from, $to } = state.selection;
+
+    if (this.posOfParentMediaGroup(state)) {
+      return;
+    }
+
+    if (!this.isInsidePotentialEmptyParagraph() || this.posOfMediaGroupNearby(state)) {
+      return this.range($from.pos, $to.pos);
+    }
+
+    return this.range(startPositionOfParent($from) - 1, endPositionOfParent($to));
+  }
+
+  private range(start: number, end: number = start) {
+    return { start, end };
   }
 
   private initPickers(uploadParams: UploadParams, context: ContextConfig) {
@@ -419,28 +585,15 @@ export class MediaPluginState {
       pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
       pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
-      pickers.forEach(picker => picker.onNewMedia(this.handleNewMediaPicked));
+      pickers.forEach(picker => picker.onNewMedia(this.insertFile));
     }
 
     // set new upload params for the pickers
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
   }
 
-  private handleNewMediaPicked = (state: MediaState) => {
-    if (!this.mediaProvider.uploadParams) {
-      return;
-    }
-
-    const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
-    const { view } = this;
-
-    view.dispatch(transaction);
-
-    if (!view.hasFocus()) {
-      view.focus();
-    }
-
-    this.selectInsertedMediaNode(node);
+  private collectionFromProvider(): string | undefined {
+    return this.mediaProvider && this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
   }
 
   private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
@@ -550,7 +703,7 @@ export class MediaPluginState {
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
-  private selectInsertedMediaNode = (node: PMNode) => {
+  private setSelectionAfterMediaInsertion = (node: PMNode) => {
     // by this time node has already been mounted
     const mediaNodeWithPos = this.findMediaNode(node.attrs.id);
     if (!mediaNodeWithPos) {
@@ -560,8 +713,16 @@ export class MediaPluginState {
     const { view } = this;
     const { doc, tr } = view.state;
     const { getPos } = mediaNodeWithPos;
-    const pos = doc.resolve(getPos());
-    const selection = new NodeSelection(pos);
+    const resolvedPos = doc.resolve(getPos());
+    const endOfMediaGroup = endPositionOfParent(resolvedPos);
+    let selection;
+
+    if (endOfMediaGroup + 1 >= doc.nodeSize - 1) {
+      // if nothing after the media group, fallback to select the newest uploaded media item
+      selection = new NodeSelection(resolvedPos);
+    } else {
+      selection = TextSelection.create(doc, endOfMediaGroup + 1);
+    }
 
     view.dispatch(tr.setSelection(selection));
   }
@@ -576,6 +737,69 @@ export class MediaPluginState {
 
     return (state && state.status) || 'ready';
   }
+
+  detectLinkRangesInSteps = (tr: Transaction): RangeWithUrls[] => {
+    const { link } = this.view.state.schema.marks;
+    this.linkRanges = [];
+
+    if (this.ignoreLinks) {
+      this.ignoreLinks = false;
+      return this.linkRanges;
+    }
+    if (!link || !this.allowsLinks) {
+      return this.linkRanges;
+    }
+
+    tr.steps.forEach((step) => {
+      let rangeWithUrls;
+      if (step instanceof AddMarkStep) {
+        rangeWithUrls = this.findRangesWithUrlsInAddMarkStep(step as AddMarkStep);
+      } else if (step instanceof ReplaceStep) {
+        rangeWithUrls = this.findRangesWithUrlsInReplaceStep(step as ReplaceStep);
+      }
+
+      if (rangeWithUrls) {
+        this.linkRanges.push(rangeWithUrls);
+      }
+    });
+
+    return this.linkRanges;
+  }
+
+  private findRangesWithUrlsInAddMarkStep = (step: AddMarkStep): RangeWithUrls | undefined => {
+    const { link } = this.view.state.schema.marks;
+    if (step.mark.type === link) {
+      return { start: step.from, end: step.to, urls: [step.mark.attrs.href] };
+    }
+  }
+
+  private findRangesWithUrlsInReplaceStep(step: ReplaceStep): RangeWithUrls | undefined {
+    const { link } = this.view.state.schema.marks;
+    const { slice } = step;
+    const urls: string[] = this.findLinksInNodeContent([], slice.content, link);
+    if (urls.length > 0) {
+      // The end position is step.from + slice.size || step.to is because
+      // it can be replaced by a smaller size content
+      // if simply use step.to, it might be out of range later.
+      return { start: step.from, end: Math.min(step.from + slice.size, step.to), urls: urls };
+    }
+  }
+
+  private findLinksInNodeContent(urls: string[], content: Fragment, link: MarkType) {
+    content.forEach((child) => {
+      const linkMarks = child.marks.filter((mark) => {
+        return mark.type === link;
+      });
+
+      if (linkMarks.length > 0) {
+        urls.push(linkMarks[0].attrs.href);
+      }
+
+      this.findLinksInNodeContent(urls, child.content, link);
+    });
+
+    return urls;
+  }
 }
 
 export const stateKey = new PluginKey('mediaPlugin');
@@ -586,7 +810,9 @@ const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
       init(config, state) {
         return new MediaPluginState(state, options);
       },
-      apply(tr, pluginState, oldState, newState) {
+      apply(tr, pluginState: MediaPluginState, oldState, newState) {
+        pluginState.detectLinkRangesInSteps(tr);
+
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
         //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch()
         //       transformations from within the plugin state (i.e. when adding a new file).
@@ -595,10 +821,14 @@ const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
     },
     key: stateKey,
     view: (view: EditorView) => {
-      const pluginState = stateKey.getState(view.state);
+      const pluginState: MediaPluginState = stateKey.getState(view.state);
       pluginState.setView(view);
 
-      return {};
+      return {
+        update: (view: EditorView, prevState: EditorState<any>) => {
+          pluginState.insertLinks();
+        }
+      };
     },
     props: {
       nodeViews: {
@@ -606,38 +836,11 @@ const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
-      },
-      handleDOMEvents: {
-        paste(view: EditorView, event: ClipboardEvent) {
-          const pluginState: MediaPluginState = stateKey.getState(view.state);
-
-          if (!pluginState.allowsPastingLinks) {
-            return false;
-          }
-
-          const text = event.clipboardData.getData('text/plain');
-
-          if (!text) {
-            return false;
-          }
-
-          const url = extractFirstURLFromString(text);
-          if (!url) {
-            return false;
-          }
-
-          view.state.apply(pluginState.insertLinkFromUrl(url));
-          analyticsService.trackEvent('atlassian.editor.media.link.paste');
-
-          // The URL is inserted as a Media Link item, however we do not return true
-          // so we're not preventing a text link (mark) to be added as well.
-          return false;
-        }
       }
     }
   });
 
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;
@@ -645,13 +848,4 @@ export default plugins;
 export interface MediaData {
   id: string;
   type?: MediaType;
-}
-
-function extractFirstURLFromString(string: string) {
-  const search = urlRegex.exec(string);
-  if (!search) {
-    return;
-  }
-
-  return search ? search[0] : null;
 }

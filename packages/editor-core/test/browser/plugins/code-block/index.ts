@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import codeBlockPlugins from '../../../../src/plugins/code-block';
+import codeBlockPlugins, { CodeBlockState } from '../../../../src/plugins/code-block';
 import { setTextSelection, fixtures, chaiPlugin, code_block, doc, makeEditor, p, createEvent, blockquote } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -10,7 +10,7 @@ chai.use(chaiPlugin);
 
 describe('code-block', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<CodeBlockState>({
     doc,
     plugins: codeBlockPlugins(defaultSchema),
     place: fixture()
@@ -249,7 +249,7 @@ describe('code-block', () => {
 
       const currentElement = pluginState.element;
 
-      expect(previousElement.textContent).to.eq(currentElement.textContent);
+      expect(previousElement!.textContent).to.eq(currentElement!.textContent);
     });
 
     it('can update language to be undefined', () => {

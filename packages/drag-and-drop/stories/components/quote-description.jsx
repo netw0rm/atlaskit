@@ -11,6 +11,10 @@ const TBody = styled.tbody`
   border: none;
 `;
 
+const THead = styled.tbody`
+  border: none;
+`;
+
 export default class QuoteDescription extends PureComponent {
   render() {
     return (
@@ -32,13 +36,13 @@ export default class QuoteDescription extends PureComponent {
 
         <h4>Controls</h4>
         <table>
-          <thead>
+          <THead>
             <tr>
               <th>Code</th>
               <th>Key</th>
               <th>Action</th>
             </tr>
-          </thead>
+          </THead>
           <TBody>
             <tr>
               <td><code>{'\' \''}</code></td>

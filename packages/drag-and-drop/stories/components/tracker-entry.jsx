@@ -14,7 +14,7 @@ const Container = styled.div`
   align-items: baseline;
 `;
 
-const Index = styled.small`
+const HistoryIndex = styled.small`
   color: ${colors.blue};
   padding-right: ${grid}px;
   margin: 0;
@@ -27,22 +27,28 @@ const Id = styled.small`
   width: 3em;
 `;
 
-const IndexTitle = styled.small`
+const LocationIndexTitle = styled.small`
   color: ${colors.blue};
   margin: 0;
 `;
 
 const Arrow = styled.span`
-  padding-left: ${grid}px;
   padding-right: ${grid}px;
+`;
+
+const LocationIndex = styled.div`
+  width: 2em;
+  text-align: center;
 `;
 
 export default ({ result, index }: Props) => (
   <Container>
-    <Index>{index != null ? index : '*'}</Index>
+    <HistoryIndex>{index != null ? index : '*'}</HistoryIndex>
     <Id>(id: {result.draggableId})</Id>
-    <div>
-      <IndexTitle>index</IndexTitle> {result.source.index} <Arrow>→</Arrow> <IndexTitle>index</IndexTitle> {result.destination ? result.destination.index : '*'}
-    </div>
+    <LocationIndexTitle>index</LocationIndexTitle>
+    <LocationIndex>{result.source.index}</LocationIndex>
+    <Arrow>→</Arrow>
+    <LocationIndexTitle>index</LocationIndexTitle>
+    <LocationIndex>{result.destination ? result.destination.index : '*'}</LocationIndex>
   </Container>
 );

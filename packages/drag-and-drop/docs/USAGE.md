@@ -582,3 +582,7 @@ Currently the keyboard handling is hard coded. This could be changed in the futu
 - A mechanism to perform dragging without user input
 - Dragging multiple items at a time
 - And lots more!
+
+## Author
+
+Alex Reardon - areardon@atlassian.com

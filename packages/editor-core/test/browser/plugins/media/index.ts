@@ -16,7 +16,6 @@ import {
   nodeViewFactory,
   ReactMediaGroupNode,
   ReactMediaNode,
-  NodeSelection,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {

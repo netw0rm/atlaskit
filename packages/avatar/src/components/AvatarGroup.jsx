@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
@@ -53,16 +53,6 @@ export default class AvatarGroup extends Component {
     maxCount: 0,
     size: 'medium',
   }
-  static childContextTypes = {
-    borderColor: PropTypes.string,
-    groupAppearance: PropTypes.oneOf(['grid', 'stack']),
-  }
-  getChildContext() {
-    return {
-      borderColor: this.props.borderColor,
-      groupAppearance: this.props.appearance,
-    };
-  }
 
   renderMoreDropdown(max, total) {
     const { appearance, data, borderColor, onMoreClick, onAvatarClick, size } = this.props;
@@ -104,7 +94,9 @@ export default class AvatarGroup extends Component {
   }
 
   render() {
-    const { avatar: Item, appearance, data, maxCount, onAvatarClick, size } = this.props;
+    const {
+      avatar: Item, appearance, borderColor, data, maxCount, onAvatarClick, size,
+    } = this.props;
 
     // NOTE: conditionally defaulting the `maxCount` prop based on `appearance`
     const max = (maxCount === 0) ? MAX_COUNT[appearance] : maxCount;
@@ -114,11 +106,12 @@ export default class AvatarGroup extends Component {
     const items = data.slice(0, max).map((avatar, idx) => (
       <Item
         {...avatar}
+        borderColor={borderColor}
         groupAppearance={appearance}
         index={idx}
         onClick={onAvatarClick || avatar.onClick}
-        stackIndex={max - idx}
         size={size}
+        stackIndex={max - idx}
       />
     ));
 

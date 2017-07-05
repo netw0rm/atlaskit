@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 import { omit } from '../utils';
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
@@ -45,11 +45,6 @@ class Avatar extends Component {
     borderColor: DEFAULT_BORDER_COLOR,
     displayTooltip: true,
     size: SIZE.defaultValue,
-  }
-
-  static contextTypes = {
-    borderColor: PropTypes.string,
-    groupAppearance: PropTypes.oneOf(['grid', 'stack']),
   }
 
   styledComponents = {}
@@ -105,11 +100,10 @@ class Avatar extends Component {
   // enforce status / presence rules
   /* eslint-disable no-console */
   renderIndicator = () => {
-    const { appearance, icon, presence, size, status } = this.props;
+    const { appearance, borderColor, icon, presence, size, status } = this.props;
     const showPresence = !!(presence || icon);
     const showStatus = !!status;
     const invalidIndicatorSizes = ['xsmall', 'xxlarge'];
-    const borderColor = this.context.borderColor || this.props.borderColor;
 
     // add warnings for various invalid states
     if (invalidIndicatorSizes.includes(size) && (showPresence || showStatus)) {

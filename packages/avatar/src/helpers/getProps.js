@@ -1,6 +1,7 @@
-const getAppearanceProps = (context, props) => {
+const getAppearanceProps = (props) => {
   const {
     appearance,
+    borderColor,
     groupAppearance,
     isActive,
     isDisabled,
@@ -10,8 +11,6 @@ const getAppearanceProps = (context, props) => {
     size,
     stackIndex,
   } = props;
-
-  const borderColor = context.borderColor || props.borderColor;
 
   return {
     appearance,
@@ -72,10 +71,10 @@ const getButtonElementProps = (props) => {
 };
 
 export default function getProps(component) {
-  const { context, props } = component;
+  const { props } = component;
 
   const defaultProps = {
-    ...getAppearanceProps(context, props),
+    ...getAppearanceProps(props),
     ...getInteractionProps(props),
   };
 

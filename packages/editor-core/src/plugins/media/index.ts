@@ -24,6 +24,7 @@ import {
   MarkType,
   Fragment,
   ResolvedPos,
+  Mark,
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
@@ -767,16 +768,20 @@ export class MediaPluginState {
   }
 
   private findRangesWithUrlsInAddMarkStep = (step: AddMarkStep): RangeWithUrls | undefined => {
-    const { link } = this.view.state.schema.marks;
-    if (step.mark.type === link) {
-      return { start: step.from, end: step.to, urls: [step.mark.attrs.href] };
+    const { mark } = step;
+    if (this.isValidLinkMark(mark)) {
+      return { start: step.from, end: step.to, urls: [mark.attrs.href] };
     }
   }
 
-  private findRangesWithUrlsInReplaceStep(step: ReplaceStep): RangeWithUrls | undefined {
+  private isValidLinkMark(mark: Mark): boolean {
     const { link } = this.view.state.schema.marks;
+    return mark.type === link && mark.attrs.href.length;
+  }
+
+  private findRangesWithUrlsInReplaceStep(step: ReplaceStep): RangeWithUrls | undefined {
     const { slice } = step;
-    const urls: string[] = this.findLinksInNodeContent([], slice.content, link);
+    const urls: string[] = this.findLinksInNodeContent([], slice.content);
     if (urls.length > 0) {
       // The end position is step.from + slice.size || step.to is because
       // it can be replaced by a smaller size content
@@ -785,17 +790,17 @@ export class MediaPluginState {
     }
   }
 
-  private findLinksInNodeContent(urls: string[], content: Fragment, link: MarkType) {
+  private findLinksInNodeContent(urls: string[], content: Fragment) {
     content.forEach((child) => {
       const linkMarks = child.marks.filter((mark) => {
-        return mark.type === link;
+        return this.isValidLinkMark(mark);
       });
 
       if (linkMarks.length > 0) {
         urls.push(linkMarks[0].attrs.href);
       }
 
-      this.findLinksInNodeContent(urls, child.content, link);
+      this.findLinksInNodeContent(urls, child.content);
     });
 
     return urls;

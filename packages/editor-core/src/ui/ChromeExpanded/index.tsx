@@ -90,6 +90,7 @@ export interface State {
 export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
   private editorContent: HTMLElement;
+  private maxHeightContainer: HTMLElement;
   state: State = {};
 
   static defaultProps = {
@@ -103,6 +104,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         maxHeightStyle: {
           maxHeight: `${maxHeight}px`,
           overflow: 'auto',
+          position: 'relative'
         }
       });
     }
@@ -251,7 +253,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           onPaste={this.addBorderBottom}
           onKeyDown={this.addBorderBottom}
         >
-          <div style={maxHeightStyle}>
+          <div style={maxHeightStyle} ref={this.handleMaxHeightContainer}>
             {this.props.children}
           </div>
           {pluginStateHyperlink && !disabled ?
@@ -274,14 +276,16 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             <TableFloatingControls
               pluginState={pluginStateTable}
               editorView={editorView}
+              popupsMountPoint={this.maxHeightContainer}
+              popupsBoundariesElement={this.maxHeightContainer}
             /> }
 
           {pluginStateTable && !disabled &&
             <TableFloatingToolbar
               pluginState={pluginStateTable}
               editorView={editorView}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
+              popupsMountPoint={this.maxHeightContainer}
+              popupsBoundariesElement={this.maxHeightContainer}
             /> }
 
           {pluginStateMentions && mentionProvider && !disabled ?
@@ -350,6 +354,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
 
   private handleEditorContainerRef = ref => {
     this.editorContainer = ref;
+  }
+
+  private handleMaxHeightContainer = (ref) => {
+    this.maxHeightContainer = ref;
   }
 
   @analytics('atlassian.editor.stop.cancel')

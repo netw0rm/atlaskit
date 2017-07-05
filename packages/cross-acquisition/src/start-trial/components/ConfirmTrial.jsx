@@ -8,12 +8,14 @@ import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialDialog from '../styled/StartTrialDialog';
 
-import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
+import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 
 export class ConfirmTrialBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
-    crossSell: crossSellShape,
+    productLogo: PropTypes.node.isRequired,
+    heading: PropTypes.string.isRequired,
+    message: PropTypes.node.isRequired,
   };
 
   handleConfirmClick = () => {
@@ -21,11 +23,13 @@ export class ConfirmTrialBase extends Component {
   };
 
   render() {
+    const { productLogo, heading, message } = this.props;
+
     return (
       <ModalDialog
         isOpen
         width="small"
-        header={this.props.crossSell.config.productLogo}
+        header={productLogo}
         footer={
           <StartTrialFooter>
             <Button onClick={this.handleConfirmClick} appearance="primary">Confirm</Button>
@@ -35,15 +39,20 @@ export class ConfirmTrialBase extends Component {
       >
         <StartTrialDialog>
           <StartTrialHeader>
-            {this.props.crossSell.config.startTrial.confirmHeader}
+            {heading}
           </StartTrialHeader>
-          {React.isValidElement(this.props.crossSell.config.startTrial.confirmMessage)
-            ? this.props.crossSell.config.startTrial.confirmMessage
-            : <p>{this.props.crossSell.config.startTrial.confirmMessage}</p>}
+          {React.isValidElement(message) ? message : <p>{message}</p>}
         </StartTrialDialog>
       </ModalDialog>
     );
   }
 }
 
-export default withCrossSellProvider(ConfirmTrialBase, context => context);
+export default withCrossSellProvider(
+  ConfirmTrialBase,
+  ({ crossSell: { config: { productLogo, startTrial } } }) => ({
+    productLogo,
+    heading: startTrial.confirmHeader,
+    message: startTrial.confirmMessage,
+  })
+);

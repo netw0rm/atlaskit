@@ -13,13 +13,6 @@ export class StartTrialBase extends Component {
     crossSell: crossSellShape,
   };
 
-  whenComponentDidMount() {
-    // const { getProgress } = this.props.crossSell;
-    this.context.getProgress(() => {
-      // TODO: Update the state here.
-    });
-  }
-
   render() {
     return (
       <MultiStep start={0}>
@@ -31,4 +24,4 @@ export class StartTrialBase extends Component {
   }
 }
 
-export default withCrossSellProvider(StartTrialBase, context => context);
+export default withCrossSellProvider(StartTrialBase, () => ({}));

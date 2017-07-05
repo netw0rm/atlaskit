@@ -135,7 +135,7 @@ export default class GrantAccess extends Component {
         header={
           <div>
             {this.context.crossSell.productLogo}
-            <ProgressBar progress={this.props.progress}/>
+            <ProgressBar progress={this.props.progress} />
           </div>
         }
         footer={

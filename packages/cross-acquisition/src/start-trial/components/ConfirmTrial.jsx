@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 
-import { withCrossSellProvider, crossSellShape } from '../../';
-
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialDialog from '../styled/StartTrialDialog';
+
+import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
 
 export class ConfirmTrialBase extends Component {
   static propTypes = {

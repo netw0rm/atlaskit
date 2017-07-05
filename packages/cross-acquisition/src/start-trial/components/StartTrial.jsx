@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { withCrossSellProvider, crossSellShape } from '../../';
+import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
 
 import { MultiStep, Step } from '../../multi-step';
 

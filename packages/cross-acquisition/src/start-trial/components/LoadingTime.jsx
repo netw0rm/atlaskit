@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withCrossSellProvider } from '../../';
+import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 
 export class LoadingTimeBase extends Component {
   static propTypes = {

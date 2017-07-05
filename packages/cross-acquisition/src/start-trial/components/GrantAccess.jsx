@@ -7,7 +7,7 @@ import Select from '@atlaskit/multi-select';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 
-import { withCrossSellProvider, crossSellShape } from '../../';
+import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
 
 import ProgressBar from './ProgressBar';
 

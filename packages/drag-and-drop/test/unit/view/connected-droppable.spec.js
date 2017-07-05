@@ -58,7 +58,6 @@ const perform = (() => {
       droppableId,
     },
     center: dragDimension.center,
-    scroll: { x: 0, y: 0 },
     selection: dragDimension.center,
     dimension: dragDimension,
   };

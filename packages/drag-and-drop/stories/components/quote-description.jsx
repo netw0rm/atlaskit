@@ -2,7 +2,6 @@
 // TODO: this file can be markdown
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { borderRadius, grid } from './constants';
 
 const Container = styled.section`
 `;

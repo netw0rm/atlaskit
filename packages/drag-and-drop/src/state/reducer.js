@@ -66,7 +66,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     const dimension: Dimension = action.payload;
 
     if (state.phase !== 'COLLECTING_DIMENSIONS') {
-      console.info('dimension rejected as no longer requesting dimensions', dimension);
+      console.warn('dimension rejected as no longer requesting dimensions', dimension);
       return state;
     }
 
@@ -92,7 +92,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     const dimension: Dimension = action.payload;
 
     if (state.phase !== 'COLLECTING_DIMENSIONS') {
-      console.info('dimension rejected as no longer requesting dimensions', dimension);
+      console.warn('dimension rejected as no longer requesting dimensions', dimension);
       return state;
     }
 

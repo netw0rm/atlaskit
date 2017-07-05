@@ -14,7 +14,7 @@ const itemId: Id = 'item-1';
 class Item extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: {
-    publish: Function,
+    publish: (dimension: Dimension) => void,
     shouldPublish?: boolean,
   }
 
@@ -35,7 +35,7 @@ class Item extends PureComponent {
   render() {
     return (
       <DimensionPublisher
-        shouldPublish={this.props.shouldPublish}
+        shouldPublish={Boolean(this.props.shouldPublish)}
         publish={this.props.publish}
         itemId={itemId}
         type="TYPE"

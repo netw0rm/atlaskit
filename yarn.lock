@@ -1166,9 +1166,9 @@ babel-plugin-react-docgen@^1.4.1:
     lodash "4.x.x"
     react-docgen "^2.12.1"
 
-babel-plugin-react-flow-props-to-prop-types@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.13.0.tgz#496b3443ffa21f3b17b2457025a398fb8bb872ce"
+babel-plugin-react-flow-props-to-prop-types@0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.13.1.tgz#c328782f582df625e488ce0fbfe62bf049eaa17a"
   dependencies:
     babel-errors "^1.1.0"
     babel-explode-module "^2.0.0"

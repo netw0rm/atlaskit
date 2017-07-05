@@ -2,7 +2,7 @@
 /* eslint-disable react/no-multi-comp */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { describe, it, beforeEach, afterEach, before, after } from 'mocha';
+import { describe, it, beforeEach, afterEach, before } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';

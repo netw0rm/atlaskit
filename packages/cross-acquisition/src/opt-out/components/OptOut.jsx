@@ -7,7 +7,9 @@ import AppBase from '../../common/components/AppBase';
 import AdminSettings from './AdminSettings';
 
 export default class OptOut extends Component {
-  static contextTypes = crossSellShape;
+  static contextTypes = {
+    crossSell: crossSellShape,
+  };
 
   static propTypes = {
     locale: PropTypes.string,

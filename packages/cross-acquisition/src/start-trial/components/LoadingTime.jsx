@@ -9,12 +9,12 @@ import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
 
-import { crossSellShape } from '../../common/components/CrossSellProvider';
+import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
 
-export default class LoadingTime extends Component {
+export class LoadingTimeBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
-    progress: PropTypes.number,
+    crossSell: crossSellShape,
   };
 
   static contextTypes = crossSellShape;
@@ -27,7 +27,7 @@ export default class LoadingTime extends Component {
         header={this.context.crossSell.productLogo}
         footer={
           <StartTrialFooter>
-            <Button isDisabled={this.props.progress === undefined || this.props.progress < 100} onClick={this.props.onComplete} appearance="primary">Go to Confluence</Button>
+            <Button isDisabled={this.props.crossSell.state.progress === undefined || this.props.crossSell.state.progress < 100} onClick={this.props.onComplete} appearance="primary">Go to Confluence</Button>
             <Button onClick={this.props.onComplete} appearance="subtle-link" >Close</Button>
           </StartTrialFooter>
         }
@@ -40,3 +40,5 @@ export default class LoadingTime extends Component {
     );
   }
 }
+
+export default withCrossSellProvider(LoadingTimeBase, context => context);

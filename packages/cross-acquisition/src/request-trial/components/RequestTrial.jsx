@@ -7,7 +7,9 @@ import RequestTrialNote from './RequestTrialNote';
 import { MultiStep, Step } from '../../multi-step';
 
 export default class RequestTrial extends Component {
-  static contextTypes = crossSellShape;
+  static contextTypes = {
+    crossSell: crossSellShape,
+  };
 
   render() {
     let productLogo = null;

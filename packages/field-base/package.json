@@ -10,7 +10,7 @@
   "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/field-base; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/field-base"
   },
   "files": [
     "dist"

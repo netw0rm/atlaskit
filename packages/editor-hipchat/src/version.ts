@@ -1,2 +1,2 @@
-export const version = '1-DEV';
+export const version = '4.13.1';
 export const name = '@atlaskit/editor-hipchat';

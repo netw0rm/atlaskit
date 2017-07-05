@@ -12,7 +12,7 @@
     "name": "Banner"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/banner; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/banner"
   },
   "files": [
     "dist"

@@ -12,7 +12,7 @@
     "name": "Tag Group"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tag-group; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/tag-group"
   },
   "files": [
     "dist"

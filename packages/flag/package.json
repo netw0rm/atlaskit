@@ -12,7 +12,7 @@
     "name": "Flag"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/flag; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/flag"
   },
   "files": [
     "dist"

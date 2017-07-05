@@ -12,7 +12,7 @@
     "name": "Dropdown Menu"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/dropdown-menu; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/dropdown-menu"
   },
   "files": [
     "dist"

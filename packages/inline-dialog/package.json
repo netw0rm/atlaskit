@@ -12,7 +12,7 @@
     "name": "Inline Dialog"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/inline-dialog; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/inline-dialog"
   },
   "files": [
     "dist"

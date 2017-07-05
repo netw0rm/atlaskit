@@ -12,7 +12,7 @@
     "name": "Select (Multi)"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/multi-select; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/multi-select"
   },
   "files": [
     "dist"

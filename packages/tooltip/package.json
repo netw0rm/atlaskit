@@ -12,7 +12,7 @@
     "name": "Tooltip"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tooltip; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/tooltip"
   },
   "types": "src/index.d.ts",
   "files": [

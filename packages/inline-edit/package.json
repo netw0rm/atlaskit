@@ -12,7 +12,7 @@
     "name": "Inline Edit"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/inline-edit; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/inline-edit"
   },
   "files": [
     "dist"

@@ -63,11 +63,7 @@ describe('Media plugin', () => {
       history(),
     ];
 
-<<<<<<< HEAD
-    const editor = makeEditor({
-=======
-    return makeEditor<MediaPluginState>({
->>>>>>> origin/master
+    const editor = makeEditor<MediaPluginState>({
       doc,
       plugins,
       schema: defaultSchema,

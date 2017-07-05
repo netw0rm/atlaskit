@@ -7,7 +7,10 @@ import Select from '@atlaskit/multi-select';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 
-import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
+import {
+  withCrossSellProvider,
+  crossSellShape,
+} from '../../common/components/CrossSellProvider';
 
 import ProgressBar from './ProgressBar';
 
@@ -24,8 +27,25 @@ export class GrantAccessBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number,
-    crossSell: crossSellShape,
     productLogo: PropTypes.node.isRequired,
+    userSelectInFocus: PropTypes.boolean,
+    userSelectIsInvalid: PropTypes.boolean,
+    changeUsers: PropTypes.boolean,
+    selectedRadio: PropTypes.string,
+    heading: PropTypes.string,
+    defaultAccess: PropTypes.node,
+    learnMoreLinkText: PropTypes.string,
+    notifyUsers: PropTypes.string,
+    optionItems: PropTypes.arrayOf(
+      PropTypes.shape({
+        value: PropTypes.string,
+        label: PropTypes.string,
+      })
+    ),
+    userSelectPlaceholder: PropTypes.string,
+    usersOption: PropTypes.string,
+    chooseOption: PropTypes.string,
+    affectBill: PropTypes.string,
   };
 
   static contextTypes = {
@@ -33,21 +53,12 @@ export class GrantAccessBase extends Component {
   };
 
   state = {
-    changeUsers: false,
-    selectedRadio: '',
-    userSelectInFocus: false,
-    userSelectIsInvalid: false,
+    changeUsers: this.props.changeUsers,
+    selectedRadio: this.props.selectedRadio,
+    userSelectInFocus: this.props.userSelectInFocus,
+    userSelectIsInvalid: this.props.userSelectIsInvalid,
     userSelectNoMatchesMessage: 'No matches found',
   };
-
-  componentWillMount() {
-    const selectedValue = this.props.crossSell.config.startTrial.grantOptionItems[0].value;
-
-    this.setState({
-      selectedRadio: selectedValue,
-      userSelectInFocus: selectedValue === this.props.crossSell.config.startTrial.grantUsersOption,
-    });
-  }
 
   handleContinueClick = () => {
     if (
@@ -73,18 +84,19 @@ export class GrantAccessBase extends Component {
   };
 
   handleRadioChange = (evt) => {
+    const { usersOption } = this.props;
     this.setState({
       selectedRadio: evt.target.value,
-      userSelectInFocus:
-        evt.target.value === this.props.crossSell.config.startTrial.grantUsersOption,
+      userSelectInFocus: evt.target.value === usersOption,
       userSelectIsInvalid: false,
     });
   };
 
   handleUserSelectOpen = (evt) => {
+    const { usersOption } = this.props;
     if (evt.isOpen) {
       this.setState({
-        selectedRadio: this.props.crossSell.config.startTrial.grantUsersOption,
+        selectedRadio: usersOption,
         userSelectNoMatchesMessage: this.userSelect.state.items.length
           ? 'No matches found'
           : 'There was an issue retrieving your users',
@@ -132,15 +144,14 @@ export class GrantAccessBase extends Component {
 
     const {
       productLogo,
-      //   heading,
-      //   defaultAccess,
-      //   learnMoreLinkText,
-      //   notifyUsers,
-      //   optionItems,
-      //   userSelectPlaceholder,
-      //   usersOption,
-      //   chooseOption,
-      //   affectBill,
+      heading,
+      defaultAccess,
+      learnMoreLinkText,
+      notifyUsers,
+      optionItems,
+      userSelectPlaceholder,
+      chooseOption,
+      affectBill,
     } = this.props;
 
     return (
@@ -150,7 +161,7 @@ export class GrantAccessBase extends Component {
         header={
           <div>
             {productLogo}
-            <ProgressBar progress={this.props.crossSell.state.progress} />
+            <ProgressBar progress={this.props.progress} />
           </div>
         }
         footer={
@@ -163,7 +174,7 @@ export class GrantAccessBase extends Component {
       >
         <StartTrialDialog>
           <StartTrialHeader>
-            {this.props.crossSell.config.startTrial.grantHeader}
+            {heading}
           </StartTrialHeader>
 
           {this.state.changeUsers
@@ -173,13 +184,17 @@ export class GrantAccessBase extends Component {
                   this.radioGroup = radioGroup;
                 }}
                 onRadioChange={this.handleRadioChange}
-                items={this.props.crossSell.config.startTrial.grantOptionItems.map(item => ({
-                  ...item,
-                  name: 'access-option',
-                  key: item.value,
-                  isSelected: this.state.selectedRadio === item.value,
-                }))}
-                label={this.props.crossSell.config.startTrial.grantChooseOption}
+                items={optionItems.map(
+                  item => ({
+                    ...item,
+                    name: 'access-option',
+                    key: item.value,
+                    isSelected: this.state.selectedRadio === item.value,
+                  })
+                )}
+                label={
+                  chooseOption
+                }
               />
               <UserSelectDiv>
                 <Select
@@ -188,7 +203,9 @@ export class GrantAccessBase extends Component {
                   }}
                   id="userSelect"
                   items={selectItems}
-                  placeholder={this.props.crossSell.config.startTrial.grantUserSelectPlaceholder}
+                  placeholder={
+                    userSelectPlaceholder
+                  }
                   name="test"
                   onOpenChange={this.handleUserSelectOpen}
                   onSelectedChange={this.handleUserSelectChange}
@@ -200,20 +217,28 @@ export class GrantAccessBase extends Component {
               </UserSelectDiv>
 
               <AffectMyBillText>
-                {this.props.crossSell.config.startTrial.grantAffectBill}
+                {affectBill}
                 <Button onClick={this.handleLearnMoreClick} appearance="link">
-                  {this.props.crossSell.config.startTrial.grantLearnMoreLinkText}
+                  {
+                    learnMoreLinkText
+                  }
                 </Button>
               </AffectMyBillText>
             </div>
             : <div>
-              {React.isValidElement(this.props.crossSell.config.startTrial.grantDefaultAccess)
-                  ? this.props.crossSell.config.startTrial.grantDefaultAccess
-                  : <p>{this.props.crossSell.config.startTrial.grantDefaultAccess}</p>}
+              {React.isValidElement(
+                defaultAccess
+              )
+                ? defaultAccess
+                : <p>
+                  {
+                    defaultAccess
+                  }
+                </p>}
 
               <ChangeButton>
                 <Button onClick={this.handleChangeClick} appearance="link">
-                    Change...
+                  Change...
                   </Button>
               </ChangeButton>
             </div>}
@@ -227,7 +252,7 @@ export class GrantAccessBase extends Component {
               defaultChecked
             />
             <InputLabel htmlFor="notifyUsers">
-              {this.props.crossSell.config.startTrial.grantNotifyUsers}
+              {notifyUsers}
             </InputLabel>
           </StartTrialProgressDiv>
         </StartTrialDialog>

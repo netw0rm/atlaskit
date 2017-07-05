@@ -21,7 +21,6 @@ import {
   AddMarkStep,
   ReplaceStep,
   Transaction,
-  MarkType,
   Fragment,
   ResolvedPos,
   Mark,

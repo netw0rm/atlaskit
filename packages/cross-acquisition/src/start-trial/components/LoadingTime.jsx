@@ -20,20 +20,21 @@ export class LoadingTimeBase extends Component {
   static contextTypes = crossSellShape;
 
   render() {
+    let isReady = this.props.progress === 100;
     return (
       <ModalDialog
         isOpen
         width="small"
-        header={this.context.crossSell.productLogo}
+        header={this.props.productLogo}
         footer={
           <StartTrialFooter>
-            <Button isDisabled={this.props.crossSell.state.progress === undefined || this.props.crossSell.state.progress < 100} onClick={this.props.onComplete} appearance="primary">Go to Confluence</Button>
+            <Button isDisabled={!isReady} onClick={this.props.onComplete} appearance="primary">Go to Confluence</Button>
             <Button onClick={this.props.onComplete} appearance="subtle-link" >Close</Button>
           </StartTrialFooter>
         }
       >
         <StartTrialDialog>
-          <StartTrialHeader>You are almost there...</StartTrialHeader>
+          <StartTrialHeader>{isReady? this.props.completeHeading : this.props.heading}</StartTrialHeader>
           <ProgressBar progress={this.props.progress} />
         </StartTrialDialog>
       </ModalDialog>

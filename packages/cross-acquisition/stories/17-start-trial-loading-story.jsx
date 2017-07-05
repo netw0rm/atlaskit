@@ -1,27 +1,29 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import LoadingTime from '../src/start-trial/components/LoadingTime';
+import LoadingTimeBase from '../src/start-trial/components/LoadingTime';
+
+import { ConfluenceLogo } from '@atlaskit/logo';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import MockConfluenceCrossSell from './providers/MockConfluenceCrossSellProvider';
 
+const defaultProps = {
+  productLogo: <ConfluenceLogo />,
+  heading: 'You are almost there...',
+  completeHeading: 'Confluence is ready my friend!',
+};
+
 storiesOf('StartTrialLoading')
   .add('Show Loading dialog', () => setupStorybookAnalytics(
-    <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
-      <LoadingTime analyticsId="growth.happy" onComplete={() => Promise.resolve(true)} />
-    </MockConfluenceCrossSell>
+    <LoadingTimeBase {...defaultProps} analyticsId="growth.happy" />
     )
   )
   .add('Show Loading dialog with 25% complete', () => setupStorybookAnalytics(
-    <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
-      <LoadingTime analyticsId="growth.happy" progress={25} onComplete={() => Promise.resolve(true)} />
-    </MockConfluenceCrossSell>
+    <LoadingTimeBase {...defaultProps} analyticsId="growth.happy" progress={25}/>
     )
   )
-  .add('Show Loading dialog with 100% complete', () => setupStorybookAnalytics(
-    <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
-      <LoadingTime analyticsId="growth.happy" progress={100} onComplete={() => Promise.resolve(true)} />
-    </MockConfluenceCrossSell>
+  .add('Show Loading dialog when complete', () => setupStorybookAnalytics(
+    <LoadingTimeBase {...defaultProps} analyticsId="growth.happy" progress={100} />
     )
   );

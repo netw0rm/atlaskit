@@ -5,7 +5,6 @@ import { MediaProvider } from '@atlaskit/media-core';
 import Media from '../../../../../src/renderer/react/nodes/media';
 import { MediaType } from '../../../../../src/schema';
 import ProviderFactory from '../../../../../src/providerFactory';
-import { MediaProps } from '../../../../../src/ui/Media';
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
   viewContext: Promise.resolve({})
@@ -33,10 +32,7 @@ describe('Media', () => {
         collection={mediaNode.attrs.collection}
       />);
 
-    const mediaProps: MediaProps = mediaComponent.props();
-    expect(mediaProps.id).to.equal('5556346b-b081-482b-bc4a-4faca8ecd2de');
-    expect(mediaProps.type).to.equal('file');
-    expect(mediaProps.collection).to.equal('MediaServicesSample');
+    expect(mediaComponent.find('WithProviders').length).to.equal(1);
   });
 
 });

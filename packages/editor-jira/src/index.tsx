@@ -228,7 +228,7 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get value(): Promise<string | undefined> {
     const { editorView, schema } = this.state;
-    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    const mediaPluginState = editorView && mediaStateKey.getState(editorView.state) as MediaPluginState;
 
     return (async () => {
       if (mediaPluginState) {

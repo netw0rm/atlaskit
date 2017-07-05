@@ -19,23 +19,35 @@ const resultPropType = {
   type: PropTypes.oneOf(Object.keys(availableResultTypes)),
 };
 
-const resultGroupPropType = {
+export const resultGroupPropType = {
   items: PropTypes.arrayOf(PropTypes.shape(resultPropType)),
   title: PropTypes.string.isRequired,
 };
 
 export default class SearchResults extends PureComponent {
   static propTypes = {
+    onClick: PropTypes.func,
     results: PropTypes.arrayOf(PropTypes.shape(resultGroupPropType)),
+    selectedItemId: PropTypes.string,
   }
 
   static defaultProps = {
+    onClick: () => {},
     results: [],
+    selectedItemId: null,
   }
 
-  renderResultItem = ({ type, id, ...props }) => {
-    const Result = availableResultTypes[type];
-    return Result ? <Result key={id} {...props} /> : null;
+  renderResultItem = (props) => {
+    const Result = availableResultTypes[props.type];
+    const isSelected = props.id === this.props.selectedItemId;
+    return Result ? (
+      <Result
+        {...props}
+        key={props.id}
+        isSelected={isSelected}
+        onClick={this.props.onClick}
+      />
+     ) : null;
   }
 
   renderResultGroup = group => (

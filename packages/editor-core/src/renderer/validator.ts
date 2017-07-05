@@ -50,7 +50,7 @@ export const markOrder = [
 const whitelistedURLPatterns = [
   /^https?:\/\//im,
   /^ftps?:\/\//im,
-  /^\/\//im,
+  /^\//im,
   /^mailto:/im,
   /^skype:/im,
   /^callto:/im,
@@ -218,6 +218,36 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
 
   if (type) {
     switch (type) {
+      case 'applicationCard': {
+        if (!attrs) { break; }
+        const { text, link, background, preview, title, description, details } = attrs;
+        if (!text || !title || !title.text) { break; }
+        if (
+          (link && !link.url) ||
+          (background && !background.url) ||
+          (preview && !preview.url) ||
+          (description && !description.text)) { break; }
+        if (details && !Array.isArray(details)) { break; }
+
+        if (details && details.some(meta => {
+          const { badge, lozenge, users } = meta;
+          if (badge && !badge.value) { return true; }
+          if (lozenge && !lozenge.text) { return true; }
+          if (users && !Array.isArray(users)) { return true; }
+
+          if (users && users.some(user => {
+            if (!user.icon) {
+              return true;
+            }
+          })) { return true; }
+        })) { break; }
+
+        return {
+          type,
+          text,
+          attrs
+        };
+      }
       case 'doc': {
         const { version } = node as Doc;
         if (version && content && content.length) {
@@ -450,7 +480,7 @@ export const getValidMark = (mark: Mark): Mark | null => {
           let linkHref = href || url;
 
           if (linkHref.indexOf(':') === -1) {
-            linkHref = `//${linkHref}`;
+            linkHref = `http://${linkHref}`;
           }
 
           if (linkHref && isSafeUrl(linkHref)) {

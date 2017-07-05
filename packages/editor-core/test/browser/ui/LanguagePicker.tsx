@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import codeBlockPlugins from '../../../src/plugins/code-block';
+import codeBlockPlugins, { CodeBlockState } from '../../../src/plugins/code-block';
 import { FloatingToolbar } from '../../../src/ui/LanguagePicker/styles';
 import Select from '@atlaskit/single-select';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
@@ -12,7 +12,7 @@ import defaultSchema from '../../../src/test-helper/schema';
 describe('LanguagePicker', () => {
 
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<CodeBlockState>({
     doc,
     plugins: codeBlockPlugins(defaultSchema),
     place: fixture()

@@ -1,6 +1,7 @@
 import { Node } from '../../../prosemirror';
 import { ReactComponentConstructor } from '../';
 
+import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
 import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
@@ -19,6 +20,7 @@ import Rule from './rule';
 import UnknownBlock from './unknownBlock';
 
 export const nodeToReact = {
+  'applicationCard': ApplicationCard,
   'blockquote': Blockquote,
   'bulletList': BulletList,
   'codeBlock': CodeBlock,
@@ -130,6 +132,8 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
 };
 
 export {
+  AppCardViewProps,
+  ApplicationCard,
   Blockquote,
   BulletList,
   CodeBlock,

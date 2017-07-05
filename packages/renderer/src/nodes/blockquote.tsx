@@ -1,19 +1,19 @@
 import {
-  akColorN800,
-  akFontSizeDefault,
+  akColorN40,
+  akColorN300,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
 export default styled.blockquote`
   margin: ${akGridSizeUnitless * 1.5}px 0 0 0;
-  color: ${akColorN800};
-  border: none;
-  padding-left: ${akGridSizeUnitless * 5}px;
+  color: ${akColorN300};
+  border-left: 2px solid ${akColorN40};
+  padding-left: ${akGridSizeUnitless * 2}px;
 
   [dir="rtl"] & {
     padding-left: 0;
-    padding-right: ${akGridSizeUnitless * 5}px;
+    padding-right: ${akGridSizeUnitless * 2}px;
   }
 
   &:first-child {
@@ -21,20 +21,11 @@ export default styled.blockquote`
   }
 
   &::before {
-    content: "\\201C";
-    float: left;
-    margin-left: -${akFontSizeDefault};
-    text-align: right;
-    width: ${akFontSizeDefault};
-    [dir="rtl"] & {
-      float: right;
-      margin-right: -${akFontSizeDefault};
-      text-align: left;
-    }
+    content: "";
   }
 
   &::after {
-    content: "\\201D";
+    content: "";
   }
 
   & > :last-child {

@@ -12,14 +12,21 @@ import {
   Transaction,
   Fragment,
   Slice,
+  Decoration,
+  DecorationSet,
 } from '../../prosemirror';
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
-
+import { getColumnPos, getRowPos, getTablePos } from './utils';
 export type TableStateSubscriber = (state: TableState) => any;
 
 export interface Command {
   (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
+}
+
+export interface SelectedCell {
+  pos: number;
+  node: Node;
 }
 
 export class TableState {
@@ -34,6 +41,7 @@ export class TableState {
   tableDisabled: boolean = false;
   tableActive: boolean = false;
   domEvent: boolean = false;
+  hoveredCells: SelectedCell[] = [];
 
   private view: EditorView;
   private changeHandlers: TableStateSubscriber[] = [];
@@ -66,21 +74,21 @@ export class TableState {
   insertColumn = (column: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
-      const { state, dispatch } = this.view;
+      const { dispatch } = this.view;
 
       // last column
       if (column === map.width) {
         // to add a column we need to move the cursor to an appropriate cell first
         const prevColPos = map.positionAt(0, column - 1, this.tableNode);
         this.moveCursorTo(prevColPos);
-        tableBaseCommands.addColumnAfter(state, dispatch);
+        tableBaseCommands.addColumnAfter(this.view.state, dispatch);
         // then we move the cursor to the newly created cell
         const nextPos = TableMap.get(this.tableNode).positionAt(0, column, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
         const pos = map.positionAt(0, column, this.tableNode);
         this.moveCursorTo(pos);
-        tableBaseCommands.addColumnBefore(state, dispatch);
+        tableBaseCommands.addColumnBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
     }
@@ -89,19 +97,19 @@ export class TableState {
   insertRow = (row: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
-      const { state, dispatch } = this.view;
+      const { dispatch } = this.view;
 
       // last row
       if (row === map.height) {
         const prevRowPos =  map.positionAt(row - 1, 0, this.tableNode);
         this.moveCursorTo(prevRowPos);
-        tableBaseCommands.addRowAfter(state, dispatch);
+        tableBaseCommands.addRowAfter(this.view.state, dispatch);
         const nextPos = TableMap.get(this.tableNode).positionAt(row, 0, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
         const pos = map.positionAt(row, 0, this.tableNode);
         this.moveCursorTo(pos);
-        tableBaseCommands.addRowBefore(state, dispatch);
+        tableBaseCommands.addRowBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
     }
@@ -151,29 +159,49 @@ export class TableState {
 
   selectColumn = (column: number): void => {
     if (this.tableNode) {
-      const map = TableMap.get(this.tableNode);
-      const from = map.positionAt(0, column, this.tableNode);
-      const to = map.positionAt(map.height - 1, column, this.tableNode);
+      const {from, to} = getColumnPos(column, this.tableNode);
       this.createCellSelection(from, to);
     }
   }
 
   selectRow = (row: number): void => {
     if (this.tableNode) {
-      const map = TableMap.get(this.tableNode);
-      const from = map.positionAt(row, 0, this.tableNode);
-      const to = map.positionAt(row, map.width - 1, this.tableNode);
+      const {from, to} = getRowPos(row, this.tableNode);
       this.createCellSelection(from, to);
     }
   }
 
   selectTable = (): void => {
     if (this.tableNode) {
-      const map = TableMap.get(this.tableNode);
-      const from = map.positionAt(0, 0, this.tableNode);
-      const to = map.positionAt(map.height - 1, map.width - 1, this.tableNode);
+      const {from, to} = getTablePos(this.tableNode);
       this.createCellSelection(from, to);
     }
+  }
+
+  hoverColumn = (column: number): void => {
+    if (this.tableNode) {
+      const {from, to} = getColumnPos(column, this.tableNode);
+      this.createHoverSelection(from, to);
+    }
+  }
+
+  hoverRow = (row: number): void => {
+    if (this.tableNode) {
+      const {from, to} = getRowPos(row, this.tableNode);
+      this.createHoverSelection(from, to);
+    }
+  }
+
+  hoverTable = () => {
+    if (this.tableNode) {
+      const {from, to} = getTablePos(this.tableNode);
+      this.createHoverSelection(from, to);
+    }
+  }
+
+  resetHoverSelection = () => {
+    this.hoveredCells = [];
+    this.view.dispatch(this.view.state.tr.scrollIntoView());
   }
 
   isColumnSelected = (column: number): boolean => {
@@ -252,6 +280,38 @@ export class TableState {
     this.view = view;
   }
 
+  tableStartPos(): number | undefined {
+    const { $from } = this.view.state.selection;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === this.view.state.schema.nodes.table) {
+        return $from.start(i);
+      }
+    }
+  }
+
+  private createHoverSelection (from: number, to: number): void {
+    if (!this.tableNode) {
+      return;
+    }
+    const offset = this.tableStartPos();
+    if (offset) {
+      const { state } = this.view;
+      const map = TableMap.get(this.tableNode);
+      const cells = map.cellsInRect(map.rectBetween(from, to));
+
+      cells.forEach(cellPos => {
+        const pos = cellPos + offset;
+        const node = state.doc.nodeAt(pos);
+        if (node) {
+          this.hoveredCells.push({node, pos});
+        }
+      });
+      // trigger state change to be able to pick it up in the decorations handler
+      this.view.dispatch(state.tr.scrollIntoView());
+    }
+  }
+
   private getTableElement(docView: NodeViewDesc): HTMLElement | undefined {
     const offset = this.tableStartPos();
     if (offset) {
@@ -268,16 +328,6 @@ export class TableState {
       const { node } = docView.domFromPos(offset);
       if (node) {
         return node as HTMLElement;
-      }
-    }
-  }
-
-  private tableStartPos(): number | undefined {
-    const { $from } = this.view.state.selection;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if(node.type === this.view.state.schema.nodes.table) {
-        return $from.start(i);
       }
     }
   }
@@ -465,6 +515,16 @@ const plugin = new Plugin({
     };
   },
   props: {
+    decorations: (state: EditorState<any>) => {
+      const pluginState = stateKey.getState(state);
+      if (!pluginState.hoveredCells.length) {
+        return;
+      }
+      const cells: Decoration[] = pluginState.hoveredCells.map(cell => {
+        return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, {class: 'hoveredCell'});
+      });
+      return DecorationSet.create(state.doc, cells);
+    },
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
     },

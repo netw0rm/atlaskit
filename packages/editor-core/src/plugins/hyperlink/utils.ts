@@ -1,5 +1,5 @@
 import { EMAIL_REGEX, URL_REGEX_G, EMAIL_REGEX_G } from './regex';
-import { Slice, Fragment } from '../../prosemirror';
+import { Slice, Fragment, Node } from '../../prosemirror';
 
 export function isEmail(url: string): boolean {
   return EMAIL_REGEX.test(url);
@@ -30,25 +30,8 @@ export function normalizeUrl(url: string) {
   return `http://${url}`;
 }
 
-export function linkify(schema, text: string): Slice|undefined {
-  let matches: any = [];
-  let match;
-  while(match = URL_REGEX_G.exec(text)) {
-    matches.push({
-      start: match.index,
-      end: match.index + match[0].length,
-      title: match[0],
-      href: match[0],
-    });
-  }
-  while(match = EMAIL_REGEX_G.exec(text)) {
-    matches.push({
-      start: match.index,
-      end: match.index + match[0].length,
-      title: match[0],
-      href: `mailto:${match[0]}`,
-    });
-  }
+export function linkifyText(schema, text: string): Slice|undefined {
+  const matches: any[] = findLinkMatches(text);
   if (matches.length === 0) {
     return undefined;
   }
@@ -67,4 +50,64 @@ export function linkify(schema, text: string): Slice|undefined {
   }
   const combinedFragment = Fragment.fromArray(fragments);
   return new Slice(combinedFragment, 0, 0);
+}
+
+export function linkifyContent(slice: Slice): Slice {
+  return new Slice(linkinfyFragment(slice.content), slice.openStart, slice.openEnd);
+}
+
+function linkinfyFragment(fragment: Fragment): Fragment {
+  const linkified: Node[] = [];
+  fragment.forEach((child: Node) => {
+    if (child.isText) {
+      const text = child.textContent as string;
+      const link = child.type.schema.marks['link'];
+      const matches: any[] = findLinkMatches(text);
+      let pos = 0;
+      matches.forEach(match => {
+        if (match.start > 0) {
+          linkified.push(child.cut(pos, match.start));
+        }
+        linkified.push(
+          child.cut(match.start, match.end).mark(link.create({href: match.href}).addToSet(child.marks))
+        );
+        pos = match.end;
+      });
+      if (pos < text.length) {
+        linkified.push(child.cut(pos));
+      }
+    } else {
+      linkified.push(child.copy(linkinfyFragment(child.content)));
+    }
+  });
+  return Fragment.fromArray(linkified);
+}
+
+interface Match {
+  start: number;
+  end: number;
+  title: string;
+  href: string;
+}
+
+function findLinkMatches(text: string): Match[] {
+  const matches: Match[] = [];
+  let match: RegExpExecArray | null;
+  while(match = URL_REGEX_G.exec(text)) {
+    matches.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      title: match[0],
+      href: match[0],
+    });
+  }
+  while(match = EMAIL_REGEX_G.exec(text)) {
+    matches.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      title: match[0],
+      href: `mailto:${match[0]}`,
+    });
+  }
+  return matches;
 }

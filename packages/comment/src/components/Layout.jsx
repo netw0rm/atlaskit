@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import {
   AvatarSectionDiv,
-  NestedCommentsDiv,
   Container,
-  MainSection,
+  ContentSectionDiv,
+  Highlight,
+  NestedCommentsDiv,
 } from '../styled/LayoutStyles';
 
 export default class Layout extends PureComponent {
@@ -16,28 +17,27 @@ export default class Layout extends PureComponent {
     children: PropTypes.node,
     /** The main content of the Comment */
     content: PropTypes.node,
+    /** Whether this comment should appear highlighted */
+    highlighted: PropTypes.bool,
   }
 
   render() {
-    const { avatar, children, content } = this.props;
+    const { avatar, children, content, highlighted } = this.props;
 
     const AvatarSection = () => (avatar ? (
-      <AvatarSectionDiv>
-        {avatar}
-      </AvatarSectionDiv>
-      ) : null);
+      <AvatarSectionDiv>{avatar}</AvatarSectionDiv>
+    ) : null);
 
-    const NestedComments = () => (children
-      ? <NestedCommentsDiv>{children}</NestedCommentsDiv>
-      : null);
+    const NestedComments = () => (children ? (
+      <NestedCommentsDiv>{children}</NestedCommentsDiv>
+    ) : null);
 
     return (
       <Container>
         <AvatarSection />
-        <MainSection>
-          {content}
-          <NestedComments />
-        </MainSection>
+        <ContentSectionDiv>{content}</ContentSectionDiv>
+        <NestedComments />
+        {highlighted && <Highlight />}
       </Container>
     );
   }

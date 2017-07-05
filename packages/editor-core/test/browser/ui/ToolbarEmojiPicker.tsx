@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import emojiPlugins from '../../../src/plugins/emojis';
+import emojiPlugins, { EmojiState } from '../../../src/plugins/emojis';
 import ToolbarEmojiPicker from '../../../src/ui/ToolbarEmojiPicker';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { doc, p, makeEditor, fixtures, emoji } from '../../../src/test-helper';
@@ -20,7 +20,7 @@ const grinEmojiId = {
 
 describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()

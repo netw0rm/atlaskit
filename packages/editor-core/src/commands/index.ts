@@ -156,12 +156,6 @@ export function wrapInList(nodeType): Command {
   );
 }
 
-export function splitListItem(): Command {
-  return function (state, dispatch) {
-    return baseListCommand.splitListItem(state.schema.nodes.listItem)(state, dispatch);
-  };
-}
-
 export function liftListItems(): Command {
   return function (state, dispatch) {
     const { tr } = state;

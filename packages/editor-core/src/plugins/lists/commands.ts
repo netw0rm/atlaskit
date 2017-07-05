@@ -1,6 +1,6 @@
 import { EditorState, Transaction, EditorView, ResolvedPos, Schema } from '../../prosemirror';
 import * as commands from '../../commands';
-import * as baseListCommand from '../../prosemirror/prosemirror-schema-list';
+import { splitListItem } from '../../utils';
 import { liftFollowingList } from '../../commands/lists';
 
 export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
@@ -46,7 +46,7 @@ export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transact
         return false;
       }
       if (wrapperType === listItem) {
-        return baseListCommand.splitListItem(state.schema.nodes.listItem)(state, dispatch);
+        return splitListItem(state.schema.nodes.listItem)(state, dispatch);
       }
     }
   }

@@ -373,3 +373,53 @@ export function stringRepeat(text: string, length: number): string {
 export function arrayFrom(obj: any): any[] {
   return Array.prototype.slice.call(obj);
 }
+
+export function canSplit(doc, pos, depth = 1, typesAfter) {
+  const $pos = doc.resolve(pos);
+  const base = $pos.depth - depth;
+  const innerType = (typesAfter && typesAfter[typesAfter.length - 1]) || $pos.parent;
+  if (base < 0 ||
+      !$pos.parent.canReplace($pos.index(), $pos.parent.childCount) ||
+      !innerType.type.validContent($pos.parent.content.cutByIndex($pos.index(), $pos.parent.childCount), innerType.attrs)) {
+        return false;
+      }
+  for (let d = $pos.depth - 1, i = depth - 2; d > base; d--, i--) {
+    let node = $pos.node(d);
+    let index = $pos.index(d);
+    let rest = node.content.cutByIndex(index, node.childCount);
+    let after = (typesAfter && typesAfter[i]) || node;
+    if (after !== node) {
+      rest = rest.replaceChild(0, after.type.create(after.attrs));
+    }
+    if (!node.canReplace(index + 1, node.childCount) || !after.type.validContent(rest, after.attrs)) {
+      return false;
+    }
+  }
+  let index = $pos.indexAfter(base);
+  let baseType = typesAfter && typesAfter[0];
+  return $pos.node(base).canReplaceWith(index, index, baseType ? baseType.type : $pos.node(base + 1).type,
+                                        baseType ? baseType.attrs : $pos.node(base + 1).attrs);
+}
+
+export function splitListItem(itemType) {
+  return function(state, dispatch) {
+    const {$from, $to, node} = state.selection;
+    if ((node && node.isBlock) || !$from.parent.content.size || $from.depth < 2 || !$from.sameParent($to)) {
+      return false;
+    }
+    const grandParent = $from.node(-1);
+    if (grandParent.type !== itemType) {
+      return false;
+    }
+    const nextType = $to.pos === $from.end() ? grandParent.defaultContentType(0) : null;
+    const tr = state.tr.delete($from.pos, $to.pos);
+    const types = nextType && [null, {type: nextType}];
+    if (!canSplit(tr.doc, $from.pos, 2, types)) {
+      return false;
+    }
+    if (dispatch) {
+      dispatch(tr.split($from.pos, 2, types).scrollIntoView());
+    }
+    return true;
+  };
+}

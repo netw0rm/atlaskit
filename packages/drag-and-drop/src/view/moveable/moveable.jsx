@@ -83,6 +83,7 @@ export default class Movable extends PureComponent {
     const isNotMoving: boolean = isAtOrigin(final);
 
     return (
+      // $ExpectError - react motion
       <Motion defaultStyle={origin} style={final} onRest={this.onRest}>
         {(current: Position) =>
           this.props.children(

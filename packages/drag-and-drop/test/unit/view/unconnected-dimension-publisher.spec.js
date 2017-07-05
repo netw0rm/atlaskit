@@ -34,12 +34,13 @@ class Item extends PureComponent {
 
   render() {
     return (
+      // $ExpectError - for an unknown reason flow is having a hard time with this
       <DimensionPublisher
-        shouldPublish={Boolean(this.props.shouldPublish)}
-        publish={this.props.publish}
         itemId={itemId}
         type="TYPE"
         targetRef={this.state.ref}
+        shouldPublish={Boolean(this.props.shouldPublish)}
+        publish={this.props.publish}
       >
         <div ref={this.setRef}>hi</div>
       </DimensionPublisher>

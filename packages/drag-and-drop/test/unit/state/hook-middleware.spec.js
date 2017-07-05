@@ -74,7 +74,6 @@ const state = (() => {
     initial: {
       source,
       center: { x: 50, y: 50 },
-      scroll: { x: 0, y: 0 },
       selection: { x: 10, y: 10 },
       dimension: draggableDimension,
     },

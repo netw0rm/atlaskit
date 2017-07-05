@@ -38,7 +38,6 @@ const make = (() => {
         droppableId: 'drop-1',
       },
       center: dimension.center,
-      scroll: { x: 0, y: 0 },
       selection: dimension.center,
       dimension,
     };

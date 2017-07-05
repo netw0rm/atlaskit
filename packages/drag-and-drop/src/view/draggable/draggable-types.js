@@ -1,5 +1,9 @@
 // @flow
+/* eslint-disable import/no-extraneous-dependencies*/
+// $ExpectError - not added to project deps
 import type { PropType, HasDefaultProp } from 'babel-plugin-react-flow-props-to-prop-types';
+/* eslint-enable */
+
 import type {
   DraggableId,
   InitialDrag,
@@ -7,6 +11,7 @@ import type {
   TypeId,
   ZIndex,
   HTMLElement,
+  ReactElement,
 } from '../../types';
 import {
   lift,
@@ -23,8 +28,6 @@ import type {
 import type {
   Style as MovementStyle,
 } from '../moveable/moveable-types';
-
-type ReactElement = mixed;
 
 export type PlacementStyle = {|
   position: 'absolute',

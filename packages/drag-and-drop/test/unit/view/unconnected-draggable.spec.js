@@ -409,7 +409,7 @@ describe('Draggable - unconnected', () => {
           });
 
           const move = () =>
-            wrapper.find(DragHandle).callbacks.onMove({ x: 100, y: 200 });
+            wrapper.find(DragHandle).props().callbacks.onMove({ x: 100, y: 200 });
 
           expect(move).to.throw();
         });

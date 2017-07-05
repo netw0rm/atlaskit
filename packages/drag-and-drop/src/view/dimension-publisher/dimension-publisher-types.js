@@ -22,4 +22,4 @@ export type OwnProps = {|
   children?: ReactElement,
 |}
 
-export type Props = OwnProps & DispatchProps & MapProps;
+export type Props = MapProps & DispatchProps & OwnProps;

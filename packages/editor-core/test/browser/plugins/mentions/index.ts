@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mention as mentionNode } from '../../../../src';
-import mentionsPlugins from '../../../../src/plugins/mentions';
+import mentionsPlugins, { MentionsState } from '../../../../src/plugins/mentions';
 import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
@@ -31,7 +31,7 @@ chai.use(chaiPlugin);
 describe('mentions', () => {
   let sandbox;
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<MentionsState>({
     doc,
     plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
     place: fixture()
@@ -444,16 +444,16 @@ describe('mentions', () => {
     });
 
     it('should insert mention at the position of the provided inactive mark', () => {
-      const { editorView, pluginState } = editor(doc(p('Hello ', mentionQuery({active: false})('@os{<>}'), ' text')));
+      const { editorView, pluginState } = editor(doc(p('Hello ', mentionQuery({ active: false })('@os{<>}'), ' text')));
 
       pluginState.insertMention({
         name: 'Oscar Wallhult',
         mentionName: 'oscar',
         id: '1234'
       }, {
-        start: 7,
-        end: 10
-      });
+          start: 7,
+          end: 10
+        });
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -472,7 +472,7 @@ describe('mentions', () => {
 
   describe('onMentionResult', () => {
     it('should replace all inactive marks with mention nodes on exact match', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: false})('@os{<>}'), ' ', mentionQuery({active: false})('@os{<>}'), ' ')));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: false })('@os{<>}'), ' ', mentionQuery({ active: false })('@os{<>}'), ' ')));
 
       pluginState.onMentionResult([
         {
@@ -501,7 +501,7 @@ describe('mentions', () => {
     });
 
     it('should remove inactive mark but keep text if no match', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: false})('@os{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: false })('@os{<>}'))));
 
       pluginState.onMentionResult([], 'os');
 
@@ -515,7 +515,7 @@ describe('mentions', () => {
     });
 
     it('should not replace active mark ', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@os{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
 
       pluginState.onMentionResult([
         {
@@ -528,14 +528,14 @@ describe('mentions', () => {
       expect(editorView.state.doc).to.deep.equal(
         doc(
           p(
-            mentionQuery({active: true})('@os{<>}')
+            mentionQuery({ active: true })('@os{<>}')
           )
         )
       );
     });
 
     it('should not modify current selection when resolving', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: false})('@os', ' abcd{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: false })('@os', ' abcd{<>}'))));
 
       pluginState.onMentionResult([
         {
@@ -552,14 +552,14 @@ describe('mentions', () => {
 
   describe('disableActiveQuery ', () => {
     it('should replace active mark with inactive one', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@os {<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os {<>}'))));
 
       pluginState.disableActiveQuery();
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           p(
-            mentionQuery({active: false})('@os{<>}'),
+            mentionQuery({ active: false })('@os{<>}'),
             ' ' // Space was move out of the mark
           )
         )
@@ -567,7 +567,7 @@ describe('mentions', () => {
     });
 
     it('should remove stored mentions mark', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@os{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
 
       pluginState.disableActiveQuery();
 
@@ -577,7 +577,7 @@ describe('mentions', () => {
 
   describe('dismiss', () => {
     it('should remove active mark and keep text', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@os{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
 
       pluginState.dismiss();
 
@@ -591,7 +591,7 @@ describe('mentions', () => {
     });
 
     it('should remove stored mentions  mark', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@os{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
 
       pluginState.dismiss();
 
@@ -613,7 +613,7 @@ describe('mentions', () => {
 
   describe('trySelectCurrent', () => {
     it('should select current if there is only one result', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@O w{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@O w{<>}'))));
       const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
       return pluginState.setMentionProvider(mentionProvider)
@@ -635,7 +635,7 @@ describe('mentions', () => {
     });
 
     it('should select exact match if unique', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@os{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
       const spy = sandbox.spy(pluginState, 'insertMention');
 
       return pluginState.setMentionProvider(mentionProvider)
@@ -643,16 +643,16 @@ describe('mentions', () => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           pluginState.onMentionResult([
-              {
-                name: 'Oscar Wallhult',
-                nickname: 'os',
-                id: '1234'
-              },
-              {
-                name: 'Oscar Wilde',
-                id: '456'
-              }
-            ], 'os');
+            {
+              name: 'Oscar Wallhult',
+              nickname: 'os',
+              id: '1234'
+            },
+            {
+              name: 'Oscar Wilde',
+              id: '456'
+            }
+          ], 'os');
 
           pluginState.trySelectCurrent();
 
@@ -661,7 +661,7 @@ describe('mentions', () => {
     });
 
     it('should not select exact match if non unique', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@os{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
       const spy = sandbox.spy(pluginState, 'insertMention');
 
       return pluginState.setMentionProvider(mentionProvider)
@@ -669,17 +669,17 @@ describe('mentions', () => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           pluginState.onMentionResult([
-              {
-                name: 'Oscar Wallhult',
-                nickname: 'os',
-                id: '1234'
-              },
-              {
-                name: 'Oscar Wallhult 2',
-                nickname: 'os',
-                id: '666'
-              },
-            ], 'os');
+            {
+              name: 'Oscar Wallhult',
+              nickname: 'os',
+              id: '1234'
+            },
+            {
+              name: 'Oscar Wallhult 2',
+              nickname: 'os',
+              id: '666'
+            },
+          ], 'os');
 
           pluginState.trySelectCurrent();
 
@@ -688,7 +688,7 @@ describe('mentions', () => {
     });
 
     it('should select special mention if exact match', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@all{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@all{<>}'))));
       const spy = sandbox.spy(pluginState, 'insertMention');
 
       return pluginState.setMentionProvider(mentionProvider)
@@ -716,7 +716,7 @@ describe('mentions', () => {
     });
 
     it('should do nothing if the user is still searching (no exact match)', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@oscar{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@oscar{<>}'))));
 
       return pluginState.setMentionProvider(mentionProvider)
         .then(() => {
@@ -732,14 +732,14 @@ describe('mentions', () => {
               name: 'Oscar Wilde',
               id: '456'
             }
-          ],'oscar');
+          ], 'oscar');
 
           expect(pluginState.trySelectCurrent()).to.equal(false);
         });
     });
 
     it('should deactivate current query mark if no results and query in flight ', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@o{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@o{<>}'))));
       const spy = sandbox.spy(pluginState, 'disableActiveQuery');
 
       return pluginState.setMentionProvider(mentionProvider)
@@ -756,7 +756,7 @@ describe('mentions', () => {
     });
 
     it('should dismiss if there is no result and none coming', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({active: true})('@xyz{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@xyz{<>}'))));
       const spy = sandbox.spy(pluginState, 'dismiss');
 
       return pluginState.setMentionProvider(mentionProvider)

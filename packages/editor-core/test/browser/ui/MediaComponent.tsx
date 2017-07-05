@@ -1,7 +1,15 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { MediaProvider, MediaStateManager } from '@atlaskit/media-core';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
+import {
+  Context,
+  ContextConfig,
+  ContextFactory,
+  MediaProvider,
+  MediaStateManager,
+  DefaultMediaStateManager,
+} from '@atlaskit/media-core';
 import MediaComponent from '../../../src/ui/Media/MediaComponent';
 import { MediaType } from '../../../src/schema';
 import {
@@ -9,9 +17,12 @@ import {
   CardView,
   CardViewProps,
 } from '@atlaskit/media-card';
+import {
+  storyMediaProviderFactory,
+  randomId,
+} from '../../../src/test-helper';
 
-describe('@atlaskit/editor-core/ui/Media', () => {
-
+describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   const file = {
     type: 'media',
     attrs: {
@@ -39,6 +50,12 @@ describe('@atlaskit/editor-core/ui/Media', () => {
     }
   };
 
+  const stateManager = new DefaultMediaStateManager();
+  const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+
+  const getFreshResolvedProvider = () => {
+    return Promise.resolve(storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager)) as Promise<MediaProvider>;
+  };
 
   it('should render a CardView component if the media type is file without provider', () => {
     const mediaComponent = shallow(
@@ -90,7 +107,8 @@ describe('@atlaskit/editor-core/ui/Media', () => {
   });
 
 
-  it('should render a CardView component if media type is link without provider', () => {
+  it('should render nothing if media type is link without provider', async () => {
+    const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
       <MediaComponent
         id={link.attrs.id}
@@ -98,13 +116,16 @@ describe('@atlaskit/editor-core/ui/Media', () => {
         collection={link.attrs.collection}
       />);
 
-    expect(mediaComponent.find(CardView).length).to.equal(1);
+    const resolvedMediaProvider = await mediaProvider;
+    const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
+    const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
+    mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+
+    expect(mediaComponent.find(Card).length).to.equal(0);
   });
 
-  it('should render a Card component if media type is link with provider', () => {
-    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-      viewContext: Promise.resolve({})
-    });
+  it('should render nothing if linkCreateContext not provided', async () => {
+    const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
       <MediaComponent
         id={link.attrs.id}
@@ -113,7 +134,27 @@ describe('@atlaskit/editor-core/ui/Media', () => {
         mediaProvider={mediaProvider}
       />);
 
-    expect(mediaComponent.find(CardView).length).to.equal(1);
+    await mediaProvider;
+
+    expect(mediaComponent.find(Card).length).to.equal(0);
+  });
+
+  it('should render a Card component if media type is link with provider', async () => {
+    const mediaProvider = getFreshResolvedProvider();
+    const mediaComponent = shallow(
+      <MediaComponent
+        id={link.attrs.id}
+        type={link.attrs.type as MediaType}
+        collection={link.attrs.collection}
+        mediaProvider={mediaProvider}
+      />);
+
+    const resolvedMediaProvider = await mediaProvider;
+    const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
+    const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
+    mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+
+    expect(mediaComponent.find(Card).length).to.equal(1);
   });
 
   it('should use stateManager from Plugin state in Editor mode', async () => {
@@ -126,11 +167,11 @@ describe('@atlaskit/editor-core/ui/Media', () => {
     MediaComponent.prototype.getStateManagerFromEditorPlugin = () => {
       return {
         getState: () => undefined,
-        updateState: () => {},
+        updateState: () => { },
         subscribe: () => {
           subscribeCalled = true;
         },
-        unsubscribe: () => {}
+        unsubscribe: () => { }
       } as MediaStateManager;
     };
 

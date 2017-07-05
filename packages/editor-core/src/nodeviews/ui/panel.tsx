@@ -8,14 +8,15 @@ import {
 } from '../../prosemirror';
 import {
   akBorderRadius,
+  akGridSizeUnitless,
   akColorG50,
   akColorP50,
-  akColorT50,
+  akColorB50,
   akColorY50,
-  akColorG500,
-  akColorP500,
-  akColorT500,
-  akColorY500
+  akColorG400,
+  akColorP400,
+  akColorB400,
+  akColorY400
 } from '@atlaskit/util-shared-styles';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
@@ -23,17 +24,17 @@ import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 
 const panelColor = {
-  info: akColorT50,
+  info: akColorB50,
   note: akColorP50,
   tip: akColorG50,
   warning: akColorY50
 };
 
 const iconColor = {
-  info: akColorT500,
-  note: akColorP500,
-  tip: akColorG500,
-  warning: akColorY500
+  info: akColorB400,
+  note: akColorP400,
+  tip: akColorG400,
+  warning: akColorY400
 };
 
 const panelIcons = {
@@ -46,13 +47,13 @@ const panelIcons = {
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
   border-radius: ${akBorderRadius};
-  margin: 4px 0 4px 0;
-  padding: 4px;
+  margin: ${akGridSizeUnitless / 2}px 0;
+  padding: ${akGridSizeUnitless}px;
 `;
 
 // tslint:disable-next-line:variable-name
 const ContentWrapper = styled.div`
-  margin: 1px 0 1px 30px;
+  margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
 `;
 
 // tslint:disable-next-line:variable-name

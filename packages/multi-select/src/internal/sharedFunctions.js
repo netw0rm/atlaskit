@@ -1,3 +1,15 @@
+/**
+ * Try to match with filterValues first. If it's not provided, then match with content.
+ */
+const isMatched = (item, matchingValue) => {
+  const filterValues = item.filterValues;
+  if (filterValues && filterValues.length > 0) {
+    return filterValues.some(value => value.toLowerCase().indexOf(matchingValue) > -1);
+  }
+
+  return item.content.toLowerCase().indexOf(matchingValue) > -1;
+};
+
 const filterItems = (items, filterValue, selectedItems) => {
   const value = filterValue;
   const trimmedValue = value && value.toLowerCase().trim();
@@ -5,7 +17,7 @@ const filterItems = (items, filterValue, selectedItems) => {
   const unselectedItems = items.filter(item => selectedValues.indexOf(item.value) === -1);
 
   return trimmedValue ?
-    unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
+    unselectedItems.filter(item => isMatched(item, trimmedValue)) :
     unselectedItems;
 };
 

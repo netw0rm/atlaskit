@@ -51,11 +51,14 @@ const mediaProvider = Promise.resolve({
   })
 });
 
+const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+
 storiesOf(name, module)
   .add('renderer', () => {
     const providerFactory = new ProviderFactory();
     providerFactory.setProvider('mentionProvider', mentionProvider);
     providerFactory.setProvider('mediaProvider', mediaProvider);
+    providerFactory.setProvider('emojiProvider', emojiProvider);
 
     const eventHandlers = {
       mention: {

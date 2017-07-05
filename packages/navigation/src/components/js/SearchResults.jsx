@@ -21,7 +21,7 @@ const resultPropType = {
 
 export const resultGroupPropType = {
   items: PropTypes.arrayOf(PropTypes.shape(resultPropType)),
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 export default class SearchResults extends PureComponent {
@@ -50,9 +50,9 @@ export default class SearchResults extends PureComponent {
      ) : null;
   }
 
-  renderResultGroup = group => (
+  renderResultGroup = (group, index) => (
     group.items && group.items.length > 0 ? (
-      <AkNavigationItemGroup key={group.title} title={group.title}>
+      <AkNavigationItemGroup key={group.title || index} title={group.title}>
         {group.items.map(this.renderResultItem)}
       </AkNavigationItemGroup>
     ) : null

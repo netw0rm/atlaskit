@@ -17,12 +17,6 @@ import {
   Node as PMNode,
   Schema,
   Transaction,
-<<<<<<< HEAD
-  MarkType,
-  Fragment,
-  ResolvedPos,
-=======
->>>>>>> fd5de3bd0... refactor(component): split media plugin into 3 files: media-files, media-links and utils and their t
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';

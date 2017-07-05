@@ -8,14 +8,18 @@ import { AkNavigationItem } from '../../../../src';
 export default class PersonResult extends PureComponent {
   static propTypes = {
     avatarUrl: PropTypes.string,
-    name: PropTypes.string.isRequired,
+    isSelected: PropTypes.bool,
     mentionName: PropTypes.string,
     mentionPrefix: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
     presenceMessage: PropTypes.string,
     presenceState: PropTypes.oneOf(['none', 'online', 'busy', 'offline']),
   }
 
   static defaultProps = {
+    isSelected: false,
+    onClick: () => {},
     mentionPrefix: '@',
     presenceState: 'none',
   }
@@ -36,9 +40,11 @@ export default class PersonResult extends PureComponent {
     return (
       <AkNavigationItem
         caption={this.getMention()}
+        icon={userAvatar}
+        isSelected={this.props.isSelected}
+        onClick={() => this.props.onClick(this.props)}
         subText={this.props.presenceMessage}
         text={this.props.name}
-        icon={userAvatar}
       />
     );
   }

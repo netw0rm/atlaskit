@@ -32,8 +32,12 @@ export class ConfirmTrialBase extends Component {
         header={productLogo}
         footer={
           <StartTrialFooter>
-            <Button onClick={this.handleConfirmClick} appearance="primary">Confirm</Button>
-            <Button onClick={this.handleCancelClick} appearance="subtle-link">Cancel</Button>
+            <Button onClick={this.handleConfirmClick} appearance="primary">
+              Confirm
+            </Button>
+            <Button onClick={this.handleCancelClick} appearance="subtle-link">
+              Cancel
+            </Button>
           </StartTrialFooter>
         }
       >

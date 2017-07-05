@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import { omit } from '../utils';
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
 import Presence from './Presence';
-import Image from './Image';
+import Image from './AvatarImage';
 import Status from './Status';
 import Tooltip from '../styled/Tooltip';
 import { getProps, getStyledComponent } from '../helpers';

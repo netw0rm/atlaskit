@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Avatar, { SIZE, ICON_TYPE } from '../../src/components/Avatar';
-import AvatarImage from '../../src/components/Image';
+import AvatarImage from '../../src/components/AvatarImage';
 import Presence from '../../src/components/Presence';
 
 import { getSize } from '../../src/styled/utils';
@@ -12,15 +12,8 @@ import { AVATAR_SIZES } from '../../src/styled/constants';
 const [online, offline, busy] = ICON_TYPE.values;
 
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
-const gimg = global.Image;
 
 describe('Avatar', () => {
-  beforeEach(() => {
-    global.Image = class Image {};
-  });
-  afterEach(() => {
-    global.Image = gimg;
-  });
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Avatar />);
     expect(wrapper).not.toBe(undefined);

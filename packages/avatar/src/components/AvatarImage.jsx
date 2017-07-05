@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { akColorN50, akColorPrimary3 } from '@atlaskit/util-shared-styles';
-import { Span, Svg } from '../styled/Image';
+import { HiddenImage, Span, Svg } from '../styled/AvatarImage';
 
 export function DefaultImage(
   { appearance, size, title }:
@@ -48,25 +48,23 @@ export default class AvatarImage extends PureComponent {
 
   componentDidMount() {
     this._isMounted = true;
-    if (this.props.src) this.loadImage(this.props);
   }
   // handle case where `src` is modified after mount
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.src && this.props.src !== nextProps.src) this.loadImage(nextProps);
+    if (nextProps.src && this.props.src !== nextProps.src) {
+      this.setState({ isLoading: true });
+    }
   }
   componentWillUnmount() {
     this._isMounted = false;
   }
-
-  // manage loading/error state
-  loadImage = props => this._isMounted && this.setState({ isLoading: true }, () => {
-    const img = new Image();
-    img.src = props.src;
-    img.onerror = this.handleLoadError;
-    img.onload = this.handleLoadSuccess;
-  });
-  handleLoadSuccess = () => this._isMounted && this.setState({ hasError: false, isLoading: false })
-  handleLoadError = () => this._isMounted && this.setState({ hasError: true, isLoading: false })
+  handleLoad = (hasError) => {
+    if (this._isMounted) {
+      this.setState({ hasError, isLoading: false });
+    }
+  }
+  handleLoadSuccess = () => this.handleLoad(false)
+  handleLoadError = () => this.handleLoad(true)
 
   render() {
     const { alt, src, ...props } = this.props;
@@ -87,7 +85,14 @@ export default class AvatarImage extends PureComponent {
         style={{ backgroundImage: `url(${src})` }}
         title={alt}
         {...props}
-      />
+      >
+        <HiddenImage
+          aria-hidden="true"
+          onLoad={this.handleLoadSuccess}
+          onError={this.handleLoadError}
+          src={src}
+        />
+      </Span>
     );
   }
 }

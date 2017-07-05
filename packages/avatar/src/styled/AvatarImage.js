@@ -25,3 +25,7 @@ export const Svg = styled.svg`
   height: 100%;
   width: 100%;
 `;
+
+export const HiddenImage = styled.img`
+  display: none;
+`;

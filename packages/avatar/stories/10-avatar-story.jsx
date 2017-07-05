@@ -283,11 +283,11 @@ storiesOf(name, module)
   })
   .add('Avatar Group', () => {
     class AvatarGroupExample extends Component {
-      state = { gridWidth: 220, gridMax: 11, avatarCount: 20, sizeIndex: 3 }
+      state = { avatarCount: 20, avatarCountMax: 11, gridWidth: 220, mode: 'stack', sizeIndex: 3 }
       decrement = key => this.setState(state => ({ [key]: state[key] - 1 }))
       increment = key => this.setState(state => ({ [key]: state[key] + 1 }))
       render() {
-        const { avatarCount, sizeIndex, gridMax, gridWidth } = this.state;
+        const { avatarCount, avatarCountMax, gridWidth, mode, sizeIndex } = this.state;
         const sizes = Object.keys(AVATAR_SIZES);
         const avatarSize = sizes[sizeIndex];
 
@@ -314,16 +314,16 @@ storiesOf(name, module)
                 </ButtonGroup>
               </div>
               <div style={{ flex: 1 }}>
-                <h5 style={{ marginBottom: '0.5em' }}>Grid Max: {gridMax}</h5>
+                <h5 style={{ marginBottom: '0.5em' }}>Grid Max: {avatarCountMax}</h5>
                 <ButtonGroup>
-                  <Button isDisabled={gridMax <= 1} onClick={() => this.decrement('gridMax')} iconBefore={<ArrowDown size="small" label="Less" />}>Less</Button>
-                  <Button isDisabled={gridMax >= 30} onClick={() => this.increment('gridMax')} iconBefore={<ArrowUp size="small" label="More" />}>More</Button>
+                  <Button isDisabled={avatarCountMax <= 1} onClick={() => this.decrement('avatarCountMax')} iconBefore={<ArrowDown size="small" label="Less" />}>Less</Button>
+                  <Button isDisabled={avatarCountMax >= 30} onClick={() => this.increment('avatarCountMax')} iconBefore={<ArrowUp size="small" label="More" />}>More</Button>
                 </ButtonGroup>
               </div>
             </div>
             <h5>Grid</h5>
             <Note>
-              Total {stackSourceURLs.length} / Max {gridMax}
+              Total {stackSourceURLs.length} / Max {avatarCountMax}
             </Note>
             <input
               min="200"
@@ -343,7 +343,7 @@ storiesOf(name, module)
                   name: `Grid Avatar ${i + 1}`,
                   src: avatarSource,
                 }))}
-                maxCount={gridMax}
+                maxCount={avatarCountMax}
                 size={avatarSize}
               />
               <span style={{ borderLeft: '1px solid #ccc', paddingLeft: '1em', fontSize: 11, position: 'absolute', right: 0, top: 0, color: '#999', transform: 'translateX(100%)' }}>
@@ -361,6 +361,28 @@ storiesOf(name, module)
               }))}
               size={avatarSize}
             />
+
+            <HR />
+            <h5>On {'"More"'} Click</h5>
+            <div style={{ maxWidth: 380 }}>
+              <Note>Circumvent the default dropdown menu behaviour by passing <code>onMoreClick</code> to <code>{'<AvatarGroup />'}</code> and handle the event however you want.</Note>
+              <AvatarGroup
+                onMoreClick={() => this.setState({ mode: 'grid' })}
+                appearance={mode}
+                maxCount={mode === 'grid' ? avatarCount : 0}
+                data={stackSourceURLs.map(i => ({
+                  key: i,
+                  name: `Stack Avatar ${i + 1}`,
+                  src: avatarSource,
+                }))}
+                size={avatarSize}
+              />
+              {mode === 'grid' ? (
+                <button onClick={() => this.setState({ mode: 'stack' })}>
+                  reset
+                </button>
+              ) : null}
+            </div>
           </Wrapper>
         );
       }

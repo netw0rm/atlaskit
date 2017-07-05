@@ -804,8 +804,8 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-function mediaPluginFactory(options: MediaPluginOptions) {
-  return new Plugin({
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  const plugin = new Plugin({
     state: {
       init(config, state) {
         return new MediaPluginState(state, options);
@@ -839,10 +839,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       }
     }
   });
-}
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  const plugin = mediaPluginFactory(options);
   return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

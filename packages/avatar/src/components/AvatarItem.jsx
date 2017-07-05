@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from 'react';
+import React, { cloneElement, Component } from 'react';
 
 import { omit } from '../utils';
-import { getStyles, Content, Subtitle, Title } from '../styled/AvatarItem';
+import { bgActiveColor, bgHoverColor, getStyles, Content, SecondaryText, PrimaryText } from '../styled/AvatarItem';
 import { getProps, getStyledComponent } from '../helpers';
 import { withPseudoState } from '../hoc';
 
@@ -25,22 +25,22 @@ type Props = {
   isSelected?: boolean,
   /** Handler to be called on click. */
   onClick?: ({ event: Object, info: Object }) => void,
-  /** Subtitle text */
-  subtitle?: string,
+  /** PrimaryText text */
+  primaryText?: string,
+  /** SecondaryText text */
+  secondaryText?: string,
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self',
-  /** Title text */
-  title?: string,
 };
 
 class AvatarItem extends Component {
   props: Props; // eslint-disable-line react/sort-comp
-  styledComponents = {}
-  getCachedStyledComponent(type) {
-    if (!this.styledComponents[type]) {
-      this.styledComponents[type] = getStyledComponent[type](getStyles);
+  cache = {}
+  getCachedComponent(type) {
+    if (!this.cache[type]) {
+      this.cache[type] = getStyledComponent[type](getStyles);
     }
-    return this.styledComponents[type];
+    return this.cache[type];
   }
   getStyledComponent() {
     const { component, href, onClick } = this.props;
@@ -50,7 +50,17 @@ class AvatarItem extends Component {
     else if (href) node = 'link';
     else if (onClick) node = 'button';
 
-    return this.getCachedStyledComponent(node);
+    return this.getCachedComponent(node);
+  }
+  getBorderColor = () => {
+    const { href, isActive, isHover, isSelected, onClick } = this.props;
+    const isInteractive = href || onClick;
+    let borderColor;
+
+    if (isInteractive && (isHover || isSelected)) borderColor = bgHoverColor;
+    if (isInteractive && isActive) borderColor = bgActiveColor;
+
+    return borderColor;
   }
 
   // expose blur/focus to consumers via inner ref
@@ -79,7 +89,10 @@ class AvatarItem extends Component {
   }
 
   render() {
-    const { avatar, onClick, subtitle, title } = this.props;
+    const { avatar, onClick, primaryText, secondaryText } = this.props;
+
+    // maintain the illusion of a mask around presence/status
+    const borderColor = this.getBorderColor();
 
     // distill props from context, props, and state
     const props = getProps(this);
@@ -92,10 +105,10 @@ class AvatarItem extends Component {
 
     return (
       <Item innerRef={r => (this.node = r)} {...props}>
-        {avatar}
+        {cloneElement(avatar, { borderColor })}
         <Content>
-          <Title>{title}</Title>
-          <Subtitle>{subtitle}</Subtitle>
+          <PrimaryText>{primaryText}</PrimaryText>
+          <SecondaryText>{secondaryText}</SecondaryText>
         </Content>
       </Item>
     );

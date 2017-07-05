@@ -1,8 +1,12 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { akBorderRadius, akColorB50, akColorB200, akColorN30A, akColorN100, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { akBorderRadius, akColorB50, akColorB200, akColorN30, akColorN100, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 const gutter = akGridSizeUnitless / 2;
+
+// passed to the Avatar as borderColor
+export const bgHoverColor = akColorN30;
+export const bgActiveColor = akColorB50;
 
 export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSelected, onClick }) {
   const isInteractive = href || onClick;
@@ -16,12 +20,12 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
-    backgroundColor = akColorN30A;
+    backgroundColor = bgHoverColor;
   }
 
   // Interaction: Active
   if (isInteractive && isActive) {
-    backgroundColor = akColorB50;
+    backgroundColor = bgActiveColor;
   }
 
   // Interaction: Focus
@@ -52,8 +56,11 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
     display: flex;
     font-size: inherit;
     font-style: normal;
+    font-weight: normal;
+    line-height: 1;
     opacity: ${opacity};
     outline: ${outline};
+    margin: 0;
     padding: ${gutter}px;
     pointer-events: ${pointerEvents};
     text-align: left;
@@ -62,12 +69,27 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
   `;
 }
 
+const truncateText = () => css`
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+const truncateTextFlexParent = () => css`
+  max-width: 100%;
+  min-width: 0;
+`;
+
 export const Content = styled.div`
+  ${truncateTextFlexParent}
   flex: 1;
+  line-height: 1.4;
   padding-left: ${gutter * 2}px;
 `;
-export const Title = styled.div``;
-export const Subtitle = styled.div`
+export const PrimaryText = styled.div`
+  ${truncateText}
+`;
+export const SecondaryText = styled.div`
+  ${truncateText}
   color: ${akColorN100};
   font-size: 0.85em;
 `;

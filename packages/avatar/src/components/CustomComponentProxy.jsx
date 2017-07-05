@@ -13,12 +13,20 @@ import React from 'react';
 /* eslint-disable react/prop-types, no-unused-vars */
 export default function CustomComponentProxy({
   appearance,
+  avatar,
+  borderColor,
   component: ProxiedComponent,
+  displayTooltip,
+  groupAppearance,
+  innerRef,
   isActive,
   isDisabled,
   isFocus,
   isHover,
   isSelected,
+  primaryText,
+  secondaryText,
+  stackIndex,
   ...props
 }) {
   return <ProxiedComponent {...props} />;

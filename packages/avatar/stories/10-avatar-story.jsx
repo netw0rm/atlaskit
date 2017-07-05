@@ -85,7 +85,7 @@ const AllAvatarSizes = (props) => {
 storiesOf(name, module)
   // .add('Stress Test', () => {
   //   const arr = [];
-  //   for (let i = 0; i < 1000; i++) {
+  //   for (let i = 0; i < 100; i++) {
   //     arr.push(<Avatar key={i} src={`https://api.adorable.io/avatars/40/${i}@adorable.png`} />);
   //   }
   //
@@ -370,14 +370,17 @@ storiesOf(name, module)
   .add('Avatar Item', () => (
     <Wrapper>
       <h2>Avatar Item <New /></h2>
-      <Note>&quot;medium&quot; size &mdash; no &quot;presence&quot;, or &quot;status&quot;</Note>
+      <Note>
+        <p>Preformatted item to fulfil a common pattern. Accepts an <code>{'<Avatar/>'}</code>, <code>primaryText</code> and <code>secondaryText</code>.</p>
+        <p>Handles mouse and keyboard events when passed <code>href</code> or <code>onClick</code> props to maintain pseudo-state.{''}</p>
+      </Note>
       {devs.map((d, i) => (
         <AvatarItem
           avatar={<Avatar src={d.src} presence={getPresence()} />}
           key={i}
           onClick={console.log}
-          title={d.title}
-          subtitle={d.subtitle}
+          primaryText={d.title}
+          secondaryText={d.subtitle}
         />
       ))}
     </Wrapper>

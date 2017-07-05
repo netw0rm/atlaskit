@@ -52,8 +52,10 @@ export default class Renderer extends PureComponent<Props, {}> {
   componentWillUnmount() {
     const { dataProviders } = this.props;
 
-    if (dataProviders) {
-      dataProviders.destroy();
+    // if this is the ProviderFactory which was created in constructor
+    // it's safe to destroy it on Renderer unmount
+    if (!dataProviders) {
+      this.providerFactory.destroy();
     }
   }
 }

@@ -4,6 +4,7 @@ import MediaComponent from './MediaComponent';
 import { EventHandlers } from '../Renderer';
 import { MediaType } from '../../schema';
 import { CardDimensions } from '@atlaskit/media-card';
+import { ImageResizeMode } from '@atlaskit/media-core';
 import {
   default as ProviderFactory,
   WithProviders
@@ -16,6 +17,7 @@ export interface MediaProps {
   type: MediaType;
   collection: string;
   cardDimensions?: CardDimensions;
+  resizeMode?: ImageResizeMode;
 }
 
 const noop = () => {};
@@ -37,7 +39,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
   }
 
   private renderWithProvider = (providers) => {
-    const { eventHandlers, id, type, collection, cardDimensions } = this.props;
+    const { eventHandlers, id, type, collection, cardDimensions, resizeMode } = this.props;
     const actionHandlers = {};
 
     if (eventHandlers) {
@@ -53,6 +55,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
         type={type}
         collection={collection}
         cardDimensions={cardDimensions}
+        resizeMode={resizeMode}
         onDelete={actionHandlers['onDelete']}
         onClick={actionHandlers['onClick']}
       />

@@ -9,6 +9,8 @@ import TagShape from './TagShape';
 
 export default class ItemShape extends PureComponent {
   static propTypes = {
+    /** Hold an array of strings to compare against multi-select's filterValue */
+    filterValues: PropTypes.arrayOf(PropTypes.string),
     /** The content to be displayed in the drop list and also in the tag when selected.  */
     content: PropTypes.string,
     /** Text to be displayed below the item in the drop list. */

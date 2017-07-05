@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
-import tablePlugins from '../../../src/plugins/table';
+import tablePlugins, { TableState } from '../../../src/plugins/table';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import TableFloatingToolbar from '../../../src/ui/TableFloatingToolbar';
 import { Toolbar } from '../../../src/ui/TableFloatingToolbar/styles';
@@ -15,7 +15,7 @@ import {
 describe('TableFloatingToolbar', () => {
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<TableState>({
       doc,
       plugins: tablePlugins(),
       place: fixture()
@@ -113,7 +113,7 @@ describe('TableFloatingToolbar', () => {
       floatingToolbar.setState({ cellElement: document.createElement('td') });
       const button = floatingToolbar.find(ToolbarButton);
       button.simulate('click');
-      expect(pluginState.remove.callCount).to.equal(1);
+      expect((pluginState.remove as any).callCount).to.equal(1);
     });
   });
 });

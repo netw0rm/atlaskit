@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import panelPlugins from '../../../../src/plugins/panel';
+import panelPlugins, { PanelState } from '../../../../src/plugins/panel';
 import { doc, panel, panelNote, p, makeEditor, fixtures, createEvent, sendKeyToPm, blockquote } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -8,7 +8,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<PanelState>({
       doc,
       plugins: panelPlugins(defaultSchema),
       place: fixture()
@@ -20,7 +20,6 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     return ed;
   };
-
   const event = createEvent('event');
 
   describe('API', () => {

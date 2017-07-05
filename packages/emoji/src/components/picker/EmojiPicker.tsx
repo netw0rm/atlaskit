@@ -164,6 +164,9 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   }
 
   private onSearch = (query) => {
+    this.setState({
+      query
+    });
     this.props.emojiProvider.then(provider => {
       provider.filter(query, {
         skinTone: this.state.selectedTone,
@@ -173,6 +176,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
 
   private onSearchResult = (searchResults: EmojiSearchResult): void => {
     const filteredEmojis = searchResults.emojis;
+
     // Only enable categories for full emoji list (non-search)
     const availableCategories = searchResults.query ? [] : searchResults.categories;
     const query = searchResults.query;

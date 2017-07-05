@@ -96,19 +96,19 @@ describe('hyperlink', () => {
     it('should not convert mention like string to a mailto link', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '@example ', sel, sel);
-      expect(editorView.state.doc).to.not.deep.equal(doc(p(link({ href: 'mailto:@example' })('@example'), ' ')));
+      expect(editorView.state.doc).to.deep.equal(doc(p('@example ')));
     });
 
     it('should not convert invalid emails like to a mailto link (no @ simbol)', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'Abc.example.com ', sel, sel);
-      expect(editorView.state.doc).to.not.deep.equal(doc(p(link({ href: 'mailto:Abc.example.com' })('Abc.example.com'), ' ')));
+      expect(editorView.state.doc).to.deep.equal(doc(p('Abc.example.com ')));
     });
 
     it('should not convert invalid emails like to a mailto link (double dot)', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'john.doe@example..com ', sel, sel);
-      expect(editorView.state.doc).to.not.deep.equal(doc(p(link({ href: 'mailto:john.doe@example..com' })('john.doe@example..com'), ' ')));
+      expect(editorView.state.doc).to.deep.equal(doc(p('john.doe@example..com ')));
     });
 
     it('should convert "[text](http://foo)" to hyperlink', () => {

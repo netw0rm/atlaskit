@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
+import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAhead';
@@ -24,7 +24,7 @@ function setupPicker(props?: Props): ReactWrapper<any, any> {
   );
 }
 
-const allEmojis = emojiRepository.all().emojis;
+const allEmojis = newEmojiRepository().all().emojis;
 
 const leftClick = {
   button: 0,

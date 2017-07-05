@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import imageUploadPlugins from '../../../../src/plugins/image-upload';
+import imageUploadPlugins, { ImageUploadState } from '../../../../src/plugins/image-upload';
 import {
   chaiPlugin, makeEditor, img, fixtures, doc, p, code_block,
   setNodeSelection, setTextSelection,
@@ -15,7 +15,7 @@ describe('image-upload', () => {
   const testImg = () => img({ src: testImgSrc });
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<ImageUploadState>({
       doc,
       plugins: imageUploadPlugins(defaultSchema),
       place: fixture()

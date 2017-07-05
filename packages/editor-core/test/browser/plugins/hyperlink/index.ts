@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
+import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
   chaiPlugin, createEvent, doc, fixtures, insert, insertText, a as link, code_block,
   makeEditor, p as paragraph, sendKeyToPm, setTextSelection, dispatchPasteEvent
@@ -13,7 +13,7 @@ chai.use(chaiPlugin);
 describe('hyperlink', () => {
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<HyperlinkState>({
       doc,
       plugins: hyperlinkPlugins(defaultSchema),
       place: fixture()
@@ -117,7 +117,7 @@ describe('hyperlink', () => {
 
         setTextSelection(editorView, pos1, pos2);
 
-        expect(pluginState.element.tagName).to.eq('A');
+        expect(pluginState.element!.tagName).to.eq('A');
       });
     });
 
@@ -128,7 +128,7 @@ describe('hyperlink', () => {
 
         setTextSelection(editorView, pos2, pos1);
 
-        expect(pluginState.element.tagName).to.eq('A');
+        expect(pluginState.element!.tagName).to.eq('A');
       });
     });
 
@@ -139,7 +139,7 @@ describe('hyperlink', () => {
 
         setTextSelection(editorView, pos2, pos1);
 
-        expect(pluginState.element.tagName).to.eq('A');
+        expect(pluginState.element!.tagName).to.eq('A');
       });
     });
 
@@ -150,7 +150,7 @@ describe('hyperlink', () => {
 
         setTextSelection(editorView, pos1, pos2);
 
-        expect(pluginState.element.tagName).to.eq('A');
+        expect(pluginState.element!.tagName).to.eq('A');
       });
     });
 
@@ -161,7 +161,7 @@ describe('hyperlink', () => {
 
         setTextSelection(editorView, pos1, pos2);
 
-        expect(pluginState.element.tagName).to.eq('A');
+        expect(pluginState.element!.tagName).to.eq('A');
       });
     });
 
@@ -169,7 +169,7 @@ describe('hyperlink', () => {
       it('returns undefined', () => {
         const { pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('tex{<>}t'), 'after')));
 
-        expect(pluginState.element.tagName).to.eq('A');
+        expect(pluginState.element!.tagName).to.eq('A');
       });
     });
 
@@ -483,20 +483,7 @@ describe('hyperlink', () => {
         paragraph(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin')))
       );
 
-      expect(pluginState.element.text).to.eq('dsorin');
-    });
-  });
-
-  describe('toolbarVisible', () => {
-    context('when editor is blur', () => {
-      it('it is false', () => {
-        const { editorView, plugin, pluginState } = editor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
-
-        plugin.props.onFocus!(editorView, event);
-        plugin.props.onBlur!(editorView, event);
-
-        expect(pluginState.toolbarVisible).to.equal(undefined);
-      });
+      expect(pluginState.element!.textContent).to.eq('dsorin');
     });
   });
 
@@ -606,7 +593,7 @@ describe('hyperlink', () => {
 
   describe.skip('paste', () => {
     context('url link is at beginning of plain text', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function () {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com test' })) {
           // This environment does not allow mocking paste events
@@ -617,7 +604,7 @@ describe('hyperlink', () => {
     });
 
     context('url link has brackets', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function () {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { plain: 'http://www.(atlassian).com test' })) {
           // This environment does not allow mocking paste events
@@ -628,7 +615,7 @@ describe('hyperlink', () => {
     });
 
     context('url link is at end of html text', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function () {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { html: '<a href="http://www.atlassian.com">Atlassian</a> test' })) {
           // This environment does not allow mocking paste events
@@ -638,8 +625,41 @@ describe('hyperlink', () => {
       });
     });
 
-    context('email link is at middle of plain text', () => {
+    context('url link without anchor tags in html', () => {
       it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'http://www.atlassian.com test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')));
+      });
+    });
+
+    context('url link without anchor tags in html in middle of other text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'testing http://www.atlassian.com test' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('testing ', link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')));
+      });
+    });
+
+    context('url link without anchor tags in html without other text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'http://www.atlassian.com' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'))));
+      });
+    });
+
+    context('email link is at middle of plain text', () => {
+      it('should add link mark', function () {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { plain: 'test test@atlassian.com test' })) {
           return this.skip();
@@ -648,8 +668,28 @@ describe('hyperlink', () => {
       });
     });
 
-    context('email link is at end of html', () => {
+    context('email link without anchor tags in html', () => {
       it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'test@atlassian.com test' })) {
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));
+      });
+    });
+
+    context('email link without anchor tags in html in middle of other text', () => {
+      it('should add link mark', function() {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { html: 'test test@atlassian.com test' })) {
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('test ', link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));
+      });
+    });
+
+    context('email link is at end of html', () => {
+      it('should add link mark', function () {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (!dispatchPasteEvent(editorView, { html: '<a href="mailto:test@atlassian.com">Atlassian</a> test' })) {
           // This environment does not allow mocking paste events

@@ -68,14 +68,14 @@ const testDataTwoGroups =
           type: 'room',
           name: 'Room B',
         },
-        {
-          title: 'Group C',
-          items: [],
-        },
-        {
-          title: 'Group D',
-        },
       ],
+    },
+    {
+      title: 'Group C',
+      items: [],
+    },
+    {
+      title: 'Group D',
     },
   ];
 

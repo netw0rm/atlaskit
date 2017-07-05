@@ -12,7 +12,17 @@ export interface JIRACustomEncoders {
   mention?: (userId: string) => string;
 }
 
-export default function encode(node: PMNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
+export interface MediaContextInfo {
+  clientId: string;
+  serviceHost: string;
+  token: string;
+  collection: string;
+}
+
+export default function encode(
+  node: PMNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {},
+  mediaContextInfo?: MediaContextInfo
+) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -27,7 +37,8 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
     .replace(/<br><\/br>/g, '<br />')
     .replace(/<br>/g, '<br />')
     .replace(/<hr><\/hr>/g, '<hr />')
-    .replace(/<hr>/g, '<hr />');
+    .replace(/<hr>/g, '<hr />')
+    .replace(/&amp;/g, '&');
 
   function encodeNode(node: PMNode): DocumentFragment | Text | HTMLElement {
     const {
@@ -326,6 +337,10 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
 
       const img = doc.createElement('img');
       img.setAttribute('alt', node.attrs.__fileName);
+      if (mediaContextInfo) {
+        const { clientId, serviceHost, token, collection } = mediaContextInfo;
+        img.setAttribute('src', `${serviceHost}/file/${node.attrs.id}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`);
+      }
       addDataToNode(img, node);
 
       const jiraThumb = doc.createElement('jira-attachment-thumbnail');

@@ -5,7 +5,7 @@ import {
   sendKeyToPm, insertText, fixtures, doc, code, textColor, p,
   chaiPlugin, makeEditor, a, strong
 } from '../../../../src/test-helper';
-import textColorPlugins from '../../../../src/plugins/text-color';
+import textColorPlugins, { TextColorState } from '../../../../src/plugins/text-color';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -13,7 +13,7 @@ chai.use(chaiPlugin);
 describe('text-color', () => {
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<TextColorState>({
       doc,
       plugins: textColorPlugins(defaultSchema),
       place: fixture()
@@ -114,7 +114,7 @@ describe('text-color', () => {
   });
 
   it('should expose default color when selection has other marks', () => {
-    const { pluginState } = editor(doc(p('{<}', strong('te'),'xt{>}')));
+    const { pluginState } = editor(doc(p('{<}', strong('te'), 'xt{>}')));
 
     expect(pluginState.color).to.equal(pluginState.defaultColor);
   });
@@ -146,7 +146,7 @@ describe('text-color', () => {
   it('should expose color when selection has other marks with textColor mark', () => {
     const { pluginState } = editor(doc(p(
       '{<}', createTextColor(testColor1)('hello ', strong('world'), '!'), '{>}'
-      )));
+    )));
 
     expect(pluginState.color).to.equal(testColor1);
   });

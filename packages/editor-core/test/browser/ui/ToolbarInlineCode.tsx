@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
-import textFormattingPlugins from '../../../src/plugins/text-formatting';
+import textFormattingPlugins, { TextFormattingState } from '../../../src/plugins/text-formatting';
 import ToolbarInlineCode from '../../../src/ui/ToolbarInlineCode';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
@@ -12,7 +12,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
 
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<TextFormattingState>({
       doc,
       plugins: textFormattingPlugins(defaultSchema),
       place: fixture()

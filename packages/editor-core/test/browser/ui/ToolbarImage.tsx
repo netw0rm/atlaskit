@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import imageUploadPlugins from '../../../src/plugins/image-upload';
+import imageUploadPlugins, { ImageUploadState } from '../../../src/plugins/image-upload';
 import ToolbarImage from '../../../src/ui/ToolbarImage';
 import { doc, code_block, p, makeEditor, fixtures } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
@@ -10,7 +10,7 @@ describe('ToolbarImage', () => {
 
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<ImageUploadState>({
       doc,
       plugins: imageUploadPlugins(defaultSchema),
       place: fixture()

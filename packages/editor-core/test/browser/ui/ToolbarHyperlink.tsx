@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
-import hyperlinkPlugins from '../../../src/plugins/hyperlink';
+import hyperlinkPlugins, { HyperlinkState } from '../../../src/plugins/hyperlink';
 import ToolbarHyperlink from '../../../src/ui/ToolbarHyperlink';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
@@ -13,7 +13,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
 
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<HyperlinkState>({
       doc,
       plugins: hyperlinkPlugins(defaultSchema),
       place: fixture()

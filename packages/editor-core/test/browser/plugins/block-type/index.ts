@@ -35,14 +35,14 @@ import {
 import defaultSchema from '../../../../src/test-helper/schema';
 import { createSchema } from '../../../../src/schema';
 
-import blockTypePlugins from '../../../../src/plugins/block-type';
+import blockTypePlugins, { BlockTypeState } from '../../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);
 
 describe('block-type', () => {
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<BlockTypeState>({
       doc,
       plugins: blockTypePlugins(defaultSchema),
       place: fixture()
@@ -709,7 +709,7 @@ describe('block-type', () => {
 
               context('when cursor is in the first cell of the table', () => {
                 it('creates a new paragraph above the table', () => {
-                  const { editorView } = editor(doc( table(tr(tdCursor, tdEmpty, tdEmpty)) ));
+                  const { editorView } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty))));
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
@@ -854,7 +854,7 @@ describe('block-type', () => {
 
             context('when cursor is in the last cell of the table', () => {
               it('creates a new paragraph below the table', () => {
-                const { editorView } = editor(doc( table(tr(tdEmpty, tdEmpty, tdCursor)) ));
+                const { editorView } = editor(doc(table(tr(tdEmpty, tdEmpty, tdCursor))));
 
                 sendKeyToPm(editorView, 'ArrowDown');
 

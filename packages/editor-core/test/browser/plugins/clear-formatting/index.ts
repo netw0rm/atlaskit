@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 
 import { browser } from '../../../../src/prosemirror';
-import clearFormattingPlugins from '../../../../src/plugins/clear-formatting';
+import clearFormattingPlugins, { ClearFormattingState } from '../../../../src/plugins/clear-formatting';
 import {
   a as link, blockquote, chaiPlugin, code_block, code, doc, em, fixtures, h1,
   li, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline
@@ -14,7 +14,7 @@ chai.use(chaiPlugin);
 describe('clear-formatting', () => {
   const fixture = fixtures();
   const editor = (doc: any) => {
-    const ed = makeEditor({
+    const ed = makeEditor<ClearFormattingState>({
       doc,
       plugins: clearFormattingPlugins(defaultSchema),
       place: fixture()

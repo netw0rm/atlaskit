@@ -5,17 +5,15 @@
     "access": "public"
   },
   "description": "A React component that represents a user in an application",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
-  "ak:component": {
-    "name": "Avatar"
-  },
+  "main": "umd/@atlaskit/avatar.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/avatar"
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" --ext .js --ext .jsx src/ stories/ jest/",
+    "prepublish": "../../node_modules/.bin/nwb build",
+    "test": "../../node_modules/.bin/jest -c ../../build/jest.config.js",
+    "test:watch": "npm run test -- --watch"
   },
   "files": [
-    "dist"
+    "umd"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [

@@ -3,8 +3,8 @@
 ## Unreleased
 
 
-* feature; write static changelog on npm commit command ([39e50a4](https://bitbucket.org/atlassian/atlaskit/commits/39e50a4))
-* feature; add release script and generation script for new changelogs ([0e43bfb](https://bitbucket.org/atlassian/atlaskit/commits/0e43bfb))
+* feature; write static changelog on npm commit command ([c296860](https://bitbucket.org/atlassian/atlaskit/commits/c296860))
+* feature; add release script and generation script for new changelogs ([1a2b7d7](https://bitbucket.org/atlassian/atlaskit/commits/1a2b7d7))
 
 ## 1.1.7 (2017-04-27)
 

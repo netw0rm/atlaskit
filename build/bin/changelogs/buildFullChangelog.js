@@ -75,15 +75,15 @@ function testPackageSetup(location) {
       // eslint-disable-next-line
       require(`${location}/package.json`);
     } catch (e) {
-      reject('Unable to find the specified package in atlaskit');
+      return reject('Unable to find the specified package in atlaskit');
     }
     try {
       fs.readFileSync(`${location}/docs/CHANGELOG.md`);
       reject('alreadyExists');
     } catch (e) {
-      if (e.message === 'alreadyExists') reject('A static changelog already exists for this package. If you want to replace it, delete the file first.');
+      return resolve();
     }
-    resolve();
+    return resolve();
   });
 }
 

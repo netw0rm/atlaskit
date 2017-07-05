@@ -282,6 +282,18 @@ describe('Popup', () => {
           })
         };
 
+        it('should calculate correct position if offsetParent has border-bottom', () => {
+          const borderBottomWidth = 3;
+          const style = {borderBottomWidth: `${borderBottomWidth}px`};
+          const popup: any = {offsetParent: {...body, style}};
+          expect(calculatePosition({
+            placement: ['top', 'right'],
+            target,
+            popup,
+            offset: [0, 0]
+          })).to.deep.eq({ right: 0, bottom: 30 - borderBottomWidth });
+        });
+
         it('should calculate correct position if boundry is body', () => {
           expect(calculatePosition({
             placement: ['top', 'right'],
@@ -332,6 +344,19 @@ describe('Popup', () => {
         const target: any = {
           getBoundingClientRect: () => ({ top: 0, left: 0, width: 30, height: 30 })
         };
+
+        it('should calculate correct position if offsetParent has border-bottom', () => {
+          const borderBottomWidth = 3;
+          const style = {borderBottomWidth: `${borderBottomWidth}px`};
+          const popup: any = {offsetParent: {...body, style}};
+          expect(calculatePosition({
+            placement: ['bottom', 'left'],
+            target,
+            popup,
+            offset: [0, 0]
+          })).to.deep.eq({ left: 0, top: 30 - borderBottomWidth });
+        });
+
         it('should calculate correct position if boundry is body', () => {
           expect(calculatePosition({
             placement: ['bottom', 'left'],

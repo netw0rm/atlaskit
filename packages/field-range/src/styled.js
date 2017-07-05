@@ -6,21 +6,20 @@ import {
     akColorN800,
     akColorB50,
     akColorB100,
-    akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
 const sliderThumbSize = 20;
 const sliderThumbBorderThickness = 2;
 const sliderLineThickness = 6;
-export const overallHeight = sliderThumbSize + akGridSizeUnitless;
+export const overallHeight = 40;
 
 const sliderThumbStyle = css`
+  background: ${akColorN0};
+  border-radius: ${sliderThumbSize / 2}px;
   box-shadow: 0 0 0 ${sliderThumbBorderThickness}px ${akColorN800};
+  cursor: pointer;
   height: ${sliderThumbSize}px;
   width: ${sliderThumbSize}px;
-  border-radius: ${sliderThumbSize / 2}px;
-  background: ${akColorN0};
-  cursor: pointer;
 `;
 
 const sliderThumbFocusedStyle = css`
@@ -28,12 +27,12 @@ const sliderThumbFocusedStyle = css`
 `;
 
 const sliderTrackStyle = css`
-  width: 100%;
-  height: ${sliderLineThickness}px;
-  cursor: pointer;
   background: ${akColorN20};
   border-radius: ${sliderLineThickness / 2}px;
   border: 0;
+  cursor: pointer;
+  height: ${sliderLineThickness}px;
+  width: 100%;
 `;
 
 const sliderTrackFocusedStyle = css`
@@ -91,24 +90,22 @@ const IERangeInputStyle = css`
     ${sliderThumbFocusedStyle}
   }
   &::-ms-track {
-    width: 100%;
-    height: ${sliderLineThickness}px;
-    cursor: pointer;
     background: transparent;
     border-color: transparent;
     color: transparent;
+    cursor: pointer;
+    height: ${sliderLineThickness}px;
+    width: 100%;
   }
   &::-ms-fill-lower {
     background: ${akColorN20};
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
-    box-shadow: 0 0 0 #000000, 0 0 0 #0d0d0d;
   }
   &::-ms-fill-upper {
     background: ${akColorN20};
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
-    box-shadow: 0 0 0 #000000, 0 0 0 #0d0d0d;
   }
 
   &:focus::-ms-fill-lower {
@@ -121,9 +118,9 @@ const IERangeInputStyle = css`
 
 export const rangeInputStyle = css`
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-  width: 100%; /* Specific width is required for Firefox. */
-  height: ${overallHeight}px; /* Otherwise thumb will collide with previous box element */
   background: transparent; /* Otherwise white in Chrome */
+  height: ${overallHeight}px; /* Otherwise thumb will collide with previous box element */
+  width: 100%; /* Specific width is required for Firefox. */
 
   &:focus {
     outline: none;

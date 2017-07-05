@@ -1,9 +1,18 @@
+/* eslint-disable no-undef, import/no-extraneous-dependencies */
 // @flow
 import * as React from 'react';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import FieldRange from '../..';
+
+// We need to simulate a real event on the DOM element due IE compatibility
+const simulateValueChange = (input, value) => {
+  const inputElement = input.find('input').node;
+
+  inputElement.value = value;
+  inputElement.dispatchEvent(new Event('input', { detail: { value } }));
+};
 
 describe('FieldRange', () => {
   describe('with default props', () => {
@@ -47,13 +56,15 @@ describe('FieldRange', () => {
     });
 
     it('should call spy when value is changed', () => {
-      input.simulate('change', { target: { value: '15' } });
+      simulateValueChange(input, 15);
+
       expect(onChangeSpy.calledOnce).to.equal(true);
       expect(onChangeSpy.calledWithExactly(15)).to.equal(true);
     });
 
     it('should change input value when value is changed', () => {
-      input.simulate('change', { target: { value: '15' } });
+      simulateValueChange(input, 15);
+
       expect(input.props().value).to.equal('15');
     });
 

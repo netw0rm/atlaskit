@@ -312,21 +312,31 @@ describe('EmojiTypeAhead', () => {
     });
   });
 
-  it('should fire onClose if a query ends in a colon and no emojis have an exact shortName match', () => {
+  it('should not fire onSelection if a query ends in a colon and no emojis have an exact shortName match', () => {
     const onSelection = sinon.spy();
-    const onClose = sinon.spy();
 
     const component = setupPicker({
       onSelection: onSelection as OnEmojiEvent,
-      onClose: onClose as OnLifecycle,
       query: ':blah:',
     } as Props);
 
     return waitUntil(() => doneLoading(component)).then(() => {
       const noEmojiShown = () => findEmojiItems(component).length === 0;
       expect(noEmojiShown()).to.equal(true);
-      expect(onClose.callCount, 'closed 1').to.equal(1);
       expect(onSelection.callCount, 'selected 0').to.equal(0);
+    });
+  });
+
+  it('should perform case insensitive exact shortName matching', () => {
+    const onSelection = sinon.spy();
+
+    const component = setupPicker({
+      onSelection: onSelection as OnEmojiEvent,
+      query: ':GRIN:',
+    } as Props);
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(onSelection.callCount, 'selected 1').to.equal(1);
     });
   });
 });

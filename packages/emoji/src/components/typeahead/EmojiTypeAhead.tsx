@@ -42,6 +42,21 @@ export interface State {
 
 const isFullShortName = (query?: string) => query && query.length > 1 && query.charAt(0) === ':' && query.charAt(query.length-1) === ':';
 
+const uniqueExactShortNameMatchIndex = (searchResult: EmojiSearchResult, query?: string): number | undefined => {
+  let matchIndex: number | undefined;
+  searchResult.emojis.forEach((emoji, index) => {
+    if (query && emoji.shortName.toLowerCase() === query.toLowerCase()) {
+      if (matchIndex === undefined) {
+        matchIndex = index;
+      } else {
+        matchIndex = undefined;
+        return;
+      }
+    }
+  });
+  return matchIndex;
+};
+
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private emojiListRef: EmojiList;
 
@@ -147,12 +162,9 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     });
 
     if (isFullShortName(query)) {
-      const matches = this.exactShortNameMatchIndexes(result, query);
-      if (matches.length === 1 && this.props.onSelection) {
-        this.props.onSelection(toEmojiId(result.emojis[matches[0]]), result.emojis[matches[0]]);
-      } else if (!matches.length && this.props.onClose) {
-        this.props.onClose();
-        return;
+      const matchIndex = uniqueExactShortNameMatchIndex(result, query);
+      if (matchIndex !== undefined && this.props.onSelection) {
+        this.props.onSelection(toEmojiId(result.emojis[matchIndex]), result.emojis[matchIndex]);
       }
     }
 
@@ -167,21 +179,6 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         }
       }
     }
-  }
-
-  private exactShortNameMatchIndexes(searchResult: EmojiSearchResult, query?: string): number[] {
-    const matchIndexes: number[] = [];
-    searchResult.emojis.forEach((emoji, index) => {
-      if (emoji.shortName === query) {
-        if (!matchIndexes.length) {
-          matchIndexes.push(index);
-        } else {
-          matchIndexes.push(index);
-          return matchIndexes;
-        }
-      }
-    });
-    return matchIndexes;
   }
 
 

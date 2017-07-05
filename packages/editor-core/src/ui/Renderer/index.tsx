@@ -1,4 +1,4 @@
-import { CardEventHandler } from '@atlaskit/media-core';
+import { CardEvent } from '@atlaskit/media-card';
 import { PureComponent, SyntheticEvent } from 'react';
 import { Schema } from '../../prosemirror';
 import ProviderFactory from '../../providerFactory';
@@ -9,6 +9,7 @@ import {
 import { defaultSchema } from '../../schema';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
+export type CardEventClickHandler = (result: CardEvent) => void;
 
 export interface MentionEventHandlers {
   onClick?: MentionEventHandler;
@@ -19,7 +20,7 @@ export interface MentionEventHandlers {
 export interface EventHandlers {
   mention?: MentionEventHandlers;
   media?: {
-    onClick?: CardEventHandler;
+    onClick?: CardEventClickHandler;
   };
 }
 

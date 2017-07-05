@@ -25,6 +25,7 @@ export class GrantAccessBase extends Component {
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number,
     crossSell: crossSellShape,
+    productLogo: PropTypes.node.isRequired,
   };
 
   static contextTypes = {
@@ -129,13 +130,26 @@ export class GrantAccessBase extends Component {
       },
     ];
 
+    const {
+      productLogo,
+      //   heading,
+      //   defaultAccess,
+      //   learnMoreLinkText,
+      //   notifyUsers,
+      //   optionItems,
+      //   userSelectPlaceholder,
+      //   usersOption,
+      //   chooseOption,
+      //   affectBill,
+    } = this.props;
+
     return (
       <ModalDialog
         isOpen
         width="small"
         header={
           <div>
-            {this.props.crossSell.config.productLogo}
+            {productLogo}
             <ProgressBar progress={this.props.crossSell.state.progress} />
           </div>
         }
@@ -222,4 +236,18 @@ export class GrantAccessBase extends Component {
   }
 }
 
-export default withCrossSellProvider(GrantAccessBase, context => context);
+export default withCrossSellProvider(
+  GrantAccessBase,
+  ({ crossSell: { config: { productLogo, startTrial } } }) => ({
+    productLogo,
+    heading: startTrial.grantHeader,
+    defaultAccess: startTrial.grantDefaultAccess,
+    learnMoreLinkText: startTrial.grantLearnMoreLinkText,
+    notifyUsers: startTrial.grantNotifyUsers,
+    optionItems: startTrial.grantOptionItems,
+    userSelectPlaceholder: startTrial.UserSelectPlaceholder,
+    usersOption: startTrial.UsersOption,
+    chooseOption: startTrial.ChooseOption,
+    affectBill: startTrial.AffectBill,
+  })
+);

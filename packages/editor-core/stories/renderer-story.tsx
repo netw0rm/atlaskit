@@ -318,19 +318,19 @@ storiesOf(name, module)
       <Heading level={6}>Heading 6</Heading>
     </div>
   ))
-  .add('nodes/media', () => {
-    const providerFactory = new ProviderFactory();
-    providerFactory.setProvider('mediaProvider', mediaProvider);
+  // .add('nodes/media', () => {
+  //   const providerFactory = new ProviderFactory();
+  //   providerFactory.setProvider('mediaProvider', mediaProvider);
 
-    return (
-      <Media
-        id={'5556346b-b081-482b-bc4a-4faca8ecd2de'}
-        type={'file'}
-        collection={'MediaServicesSample'}
-        providers={providerFactory}
-      />
-    );
-  })
+  //   return (
+  //     <Media
+  //       id={'5556346b-b081-482b-bc4a-4faca8ecd2de'}
+  //       type={'file'}
+  //       collection={'MediaServicesSample'}
+  //       providers={providerFactory}
+  //     />
+  //   );
+  // })
   .add('nodes/mention', () => (
     <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
   ))

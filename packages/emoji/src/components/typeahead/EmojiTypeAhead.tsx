@@ -43,9 +43,13 @@ export interface State {
 const isFullShortName = (query?: string) => query && query.length > 1 && query.charAt(0) === ':' && query.charAt(query.length-1) === ':';
 
 const uniqueExactShortNameMatchIndex = (searchResult: EmojiSearchResult, query?: string): number | undefined => {
+  if (!query) {
+    return undefined;
+  }
+  query = query.toLowerCase();
   let matchIndex: number | undefined;
   searchResult.emojis.forEach((emoji, index) => {
-    if (query && emoji.shortName.toLowerCase() === query.toLowerCase()) {
+    if (query && emoji.shortName.toLowerCase() === query) {
       if (matchIndex === undefined) {
         matchIndex = index;
       } else {

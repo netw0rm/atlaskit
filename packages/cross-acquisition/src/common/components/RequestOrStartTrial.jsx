@@ -17,7 +17,9 @@ const Screens = {
 };
 
 class RequestOrStartTrial extends Component {
-  static contextTypes = crossSellShape;
+  static contextTypes = {
+    crossSell: crossSellShape,
+  };
 
   static propTypes = {
     locale: PropTypes.string,
@@ -34,18 +36,19 @@ class RequestOrStartTrial extends Component {
   };
 
   componentDidMount() {
-    this.context.crossSell.canCurrentUserAddProduct()
-        .then((canAdd) => {
-          if (canAdd) {
-            this.setState({ screen: Screens.START_TRIAL });
-          } else {
-            this.setState({ screen: Screens.REQUEST_TRIAL });
-          }
-        })
-        .catch((e) => {
-          // TODO: Handle this appropriately.
-          console.error(e);
-        });
+    this.context.crossSell
+      .canCurrentUserAddProduct()
+      .then((canAdd) => {
+        if (canAdd) {
+          this.setState({ screen: Screens.START_TRIAL });
+        } else {
+          this.setState({ screen: Screens.REQUEST_TRIAL });
+        }
+      })
+      .catch((e) => {
+        // TODO: Handle this appropriately.
+        console.error(e);
+      });
   }
 
   render() {
@@ -66,8 +69,7 @@ class RequestOrStartTrial extends Component {
               return <InitializingScreen />;
             }
           }
-        })()
-        }
+        })()}
       </AppBase>
     );
   }

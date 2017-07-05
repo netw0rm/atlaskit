@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class LoadingTime extends Component {
+import { withCrossSellProvider } from '../../';
+
+export class LoadingTimeBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
+    // crossSell: crossSellShape,
   };
 
   render() {
-    return (<div>
-      <div>LOADING TIME</div>
-      <button onClick={this.props.onComplete}>Next</button>
-    </div>);
+    return (
+      <div>
+        <div>LOADING TIME</div>
+        <button onClick={this.props.onComplete}>Next</button>
+      </div>
+    );
   }
 }
+
+export default withCrossSellProvider(LoadingTimeBase, context => context);

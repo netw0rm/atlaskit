@@ -7,7 +7,7 @@ const fs = require('fs');
 // `affects:` for line telling you which package you need to add this to
 // It looks like extra lines are included here
 // `BREAKING CHANGE` line following will have the details
-// ISSUES   CLOSED: We could link the related issue but I'm voting now
+// ISSUES CLOSED: We could link the related issue but I'm voting now
 
 const gitAddChangelog = pathName => (
   new Promise((resolve, reject) => {
@@ -24,24 +24,33 @@ const gitAddChangelog = pathName => (
 
 const gitAddChangelogs = pathNames => Promise.all(pathNames.map(gitAddChangelog));
 
-const updateChangelog = (pathName, text) => {
-  const currentReadMe = fs.readFileSync(pathName).toString();
+const updateChangelog = (pathName, text, dirPath, packageName) => {
+  let currentChangelog;
+  try {
+    currentChangelog = fs.readFileSync(pathName).toString();
+  } catch (e) {
+    try {
+      fs.readdirSync(dirPath);
+    } catch (er) {
+      fs.mkdirSync(dirPath);
+    }
+    currentChangelog = `# ${packageName}\n\n## Unreleased\n\n`;
+  }
   // find whether it has an unreleased section
-  // Use better things, find Unreleased then split on the first * after it, if
-  // not split on Unreleased
-  let splitOn = '\n';
-  const addBack = '## Unreleased\n\n';
-  if (currentReadMe.indexOf('## Unreleased\n') > -1) {
+  let splitOn = '\n*';
+  let addBack = '\n## Unreleased\n\n';
+  let post = '*';
+  if (currentChangelog.indexOf('## Unreleased\n') > -1) {
     splitOn = '## Unreleased\n\n';
+    addBack = '## Unreleased\n\n';
+    post = '';
   }
 
-  const newText = `${addBack}${text}`;
-  const splitReadme = currentReadMe.split(splitOn);
-  if (splitReadme.length > 2) throw new Error('Readme file was incorrectly formatted, and would be split too often.');
-  const newReadme = splitReadme.length > 1 ? splitReadme.join(newText) : splitReadme[0] + newText;
+  const newText = `${addBack}${text}${post}`;
+  const splitReadme = currentChangelog.replace(splitOn, newText);
 
   return new Promise((resolve, reject) => {
-    fs.writeFile(pathName, newReadme, (err) => {
+    fs.writeFile(pathName, splitReadme, (err) => {
       if (err) return reject(err);
       return resolve();
     });
@@ -51,59 +60,63 @@ const updateChangelog = (pathName, text) => {
   // at the top of notes
 };
 
-const createPaths = packageName => packageName.split(', ')
+const getPackageNames = string => string.split(', ')
 .map(t => t.split('@atlaskit/').filter(a => (a && a !== 'affects: ')))
-.reduce((a, b) => a.concat(b), [])
+.reduce((a, b) => a.concat(b), []);
+
+const createPaths = packageName => getPackageNames(packageName)
 // We can assume that we are in the correct directory when running this script.
-.map(t => path.join(process.cwd(), `./packages/${t}/docs/CHANGELOG.md`));
+.map(t => path.join(process.cwd(), `./packages/${t}/docs/`));
 
 const getChangeType = (text) => {
   if (text.includes('BREAKING CHANGE:')) return 'breaking';
-  if (text.includes('fix(')) return 'bug fix';
   if (text.includes('feat(')) return 'feature';
+  if (text.includes('fix(')) return 'bug fix';
   return null;
 };
 // All the splitting text we are doing is busywork from setup
-const splitText = (someText) => {
+const splitText = (commitMessage) => {
   // Only changes that cause releases will be added to changelog
-  const changeType = getChangeType(someText);
+  const changeType = getChangeType(commitMessage);
   if (!changeType) return null;
 
-  const parts = someText.split(/\n/);
+  const parts = commitMessage.split(/\n/);
+  // We know that the array will need at least three items, so we escape if this
+  // expectation is not met. The third line is always the affected packages.
   if (!parts[2]) return null;
-  const breakingChangeIndex = parts.indexOf('BREAKING CHANGE:');
-  // const ici = parts.findIndex(e => e.includes('ISSUES CLOSED:'));
-  const info = {
-    summary: parts[0],
-    readmePaths: createPaths(parts[2]),
-  };
+  const breakingIndex = parts.indexOf('BREAKING CHANGE:');
 
-  // If there is an item here, additional context has been provided,
-  // we want to continue until we hit the index of breaking change or ISSUES CLOSED
-  // TODO: Come back to this.
-  // if (parts[4])
+  const issuesClosed = parts.find(e => e.includes('ISSUES CLOSED: '))
+    ? ` (${parts.find(e => e.includes('ISSUES CLOSED: ')).toLowerCase()})`
+    : '';
 
   // The information about a breaking change is provided on the next line
-  if (breakingChangeIndex >= 0) info.breakingChange = parts[breakingChangeIndex + 1];
-  info.text = `${info.breakingChange ? `* ${changeType}; ${info.breakingChange}\n` : ''}* ${changeType}; ${info.summary}\n`;
-  return info;
+  const breakingChange = breakingIndex >= 0 ? `* ${changeType}; ${parts[breakingIndex + 1]}${issuesClosed}\n` : '';
+  const change = `* ${changeType}; ${parts[0].split(/.*: /).join('')}${issuesClosed}\n`;
+  const dirPaths = createPaths(parts[2]);
+  return {
+    dirPaths,
+    packageNames: getPackageNames(parts[2]),
+    readmePaths: dirPaths.map(p => `${p}CHANGELOG.md`),
+    text: breakingChange + change,
+  };
 };
 
-const updateChangelogs = (someText, commit) => {
-  const readmeInfo = splitText(someText);
+const updateChangelogs = (commitMessage, commit) => {
+  const readmeInfo = splitText(commitMessage);
   if (!readmeInfo) {
     console.log('No Changelog was generated for this commit.');
-    return commit(someText);
+    return commit(commitMessage);
   }
-  const updatedFiles = readmeInfo.readmePaths.map(pathName => (
-    updateChangelog(pathName, readmeInfo.text)
+  const updatedFiles = readmeInfo.readmePaths.map((pathName, i) => (
+    updateChangelog(pathName, readmeInfo.text, readmeInfo.dirPaths[i], readmeInfo.packageNames[i])
   ));
   return Promise.all(updatedFiles)
     .then(() => gitAddChangelogs(readmeInfo.readmePaths))
-    .then(() => commit(someText))
+    .then(() => commit(commitMessage))
     .catch((e) => {
       console.log('failed to write changelog. Change description will need to be manually added.', e);
-      return commit(someText);
+      return commit(commitMessage);
     });
 };
 

@@ -35,12 +35,38 @@ function transformCommit(commit, name, cb) {
   return cb(null, newCommit);
 }
 
+function reconfigureReadme(readmeFileData) {
+  const lines = readmeFileData.split(/\n/);
+  let currentType;
+
+  const findType = (line) => {
+    if (line.includes('### Features')) return '* feature;';
+    if (line.includes('### Bug Fixes')) return '* fix;';
+    if (line.includes('### BREAKING CHANGES')) return '* breaking;';
+    return null;
+  };
+
+  return lines.reduce((acc, line, i, arr) => {
+    if (line.match(/^### /)) {
+      currentType = findType(line);
+      return acc;
+    }
+    // This removes false changelog for any current changes not yet released
+    if (line.match(/^## \[/)) return acc.concat('## Unreleased');
+    if (line === '' && arr[i + 1] === '') return acc;
+    if (line.match(/<a name=".*<\/a>/)) return acc;
+    if (line.match(/\* \*\*/)) {
+      const newLine = line.replace(/\* \*\*.*\*\*/, currentType);
+      return acc.concat(newLine);
+    }
+    return acc.concat(line);
+  }, []).join('\n');
+}
+
 function reformatDocs(changelogPath, pkgName, pkgPath) {
   const docs = fs.readFileSync(`${pkgPath}/docs/CHANGELOG.md`);
-  const newDocs = `# ${pkgName}\n\n## Unreleased\n\n\n${docs}`;
-  const mod1Docs = newDocs.split(/\n\n<a name=".*<\/a>\n/).join('');
-
-  fs.writeFileSync(`${pkgPath}/docs/CHANGELOG.md`, mod1Docs);
+  const newDocs = reconfigureReadme(`# ${pkgName}\n\n${docs}`);
+  fs.writeFileSync(`${pkgPath}/docs/CHANGELOG.md`, newDocs);
 }
 
 function writePackageChangelog(pkgName) {
@@ -70,4 +96,4 @@ function writePackageChangelog(pkgName) {
   writeStream.on('close', () => reformatDocs(changelogPath, pkg.name, pkgPath));
 }
 
-writePackageChangelog(process.argv[2]);
+module.exports = writePackageChangelog;

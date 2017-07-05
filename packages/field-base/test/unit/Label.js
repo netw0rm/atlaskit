@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 
-import { Label } from '@atlaskit/field-base';
+import { Label } from '../../src';
 import {
   RequiredIndicator,
   LabelInner,

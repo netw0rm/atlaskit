@@ -5,9 +5,10 @@ import { animationTime } from '../../shared-variables';
 const transition = `height ${animationTime}, opacity ${animationTime}`;
 
 const RevealInner = styled.div`
-  overflow: hidden;
+  flex-shrink: 0;
   height: ${props => (props.isOpen ? props.openHeight : 0)}px;
   opacity: ${props => (props.isOpen ? 1 : 0)};
+  overflow: hidden;
   transition: ${props => (props.shouldAnimate ? transition : 'none')};
 `;
 

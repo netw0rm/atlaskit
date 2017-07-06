@@ -24,7 +24,6 @@ const Wrapper = styled.div`
 `;
 
 export interface MediaNodeProps extends ReactNodeProps {
-  children?: React.ReactNode;
   getPos: ProsemirrorGetPosHandler;
   view: EditorView;
   node: PMNode;
@@ -45,20 +44,14 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
     this.handleNewNode(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { node } = this.props;
-
-    // if media node is prepended to existing one, existing React component
-    // will get new props instead of unmounting/creating a new one
-    if (nextProps.node.attrs.id !== node.attrs.id) {
-      this.pluginState.handleMediaNodeUnmount(node);
-      this.handleNewNode(nextProps);
-    }
-  }
-
   componentWillUnmount() {
     const { node } = this.props;
     this.pluginState.handleMediaNodeUnmount(node);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const getId = (props: MediaNodeProps) => props.node.attrs.id;
+    return getId(nextProps) !== getId(this.props) || nextProps.selected !== this.props.selected;
   }
 
   render() {

@@ -8,9 +8,7 @@ import MockConfluenceCrossSell from './providers/MockConfluenceCrossSellProvider
 storiesOf('RequestOrStartTrial')
   .add('if a user can add a product, show Start Trial', () =>
     setupStorybookAnalytics(
-      <MockConfluenceCrossSell
-        canCurrentUserAddProduct={() => Promise.resolve(true)}
-      >
+      <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
         <RequestOrStartTrial analyticsId="growth.happy" />
       </MockConfluenceCrossSell>
     )
@@ -19,6 +17,10 @@ storiesOf('RequestOrStartTrial')
     setupStorybookAnalytics(
       <MockConfluenceCrossSell
         canCurrentUserAddProduct={() => Promise.resolve(false)}
+        requestTrialAccess={() => Promise.resolve(true)}
+        requestTrialAccessWithNote={() => Promise.resolve(true)}
+        requestTrialAccessWithoutNote={() => Promise.resolve(true)}
+        cancelRequestTrialAccess={() => Promise.resolve(true)}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />
       </MockConfluenceCrossSell>
@@ -28,6 +30,7 @@ storiesOf('RequestOrStartTrial')
     setupStorybookAnalytics(
       <MockConfluenceCrossSell
         canCurrentUserAddProduct={() => Promise.reject(new Error('Misc'))}
+        requestTrialAccess={() => Promise.resolve(true)}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />
       </MockConfluenceCrossSell>

@@ -5,65 +5,83 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
 
+import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 
-export default class RequestTrialAccess extends Component {
+export class RequestTrialAccessBase extends Component {
   static propTypes = {
     banner: PropTypes.string.isRequired,
     productLogo: PropTypes.element,
     heading: PropTypes.string.isRequired,
     message: PropTypes.node.isRequired,
-
-    onRequestAccessClick: PropTypes.func,
-    onCancelClick: PropTypes.func,
-  }
+    onComplete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    requestTrialAccess: PropTypes.func,
+    cancelRequestTrialAccess: PropTypes.func,
+  };
 
   static defaultProps = {
     productLogo: <AtlassianLogo />,
-    onRequestAccessClick: () => {},
-    onCancelClick: () => {},
-  }
-
-  state = {
-    isOpen: true,
-  }
+    requestTrialAccess: () => Promise.resolve(),
+    cancelRequestTrialAccess: () => Promise.resolve(),
+  };
 
   handleCancelClick = () => {
-    this.props.onCancelClick();
-    this.setState({
-      isOpen: false,
-    });
-  }
+    const { cancelRequestTrialAccess, onCancel } = this.props;
+    return Promise.resolve(cancelRequestTrialAccess()).then(onCancel);
+  };
+
+  handleRequestAccessClick = () => {
+    const { requestTrialAccess, onComplete } = this.props;
+    return Promise.resolve(requestTrialAccess()).then(onComplete);
+  };
 
   render() {
+    const { productLogo, banner, heading, message } = this.props;
     return (
       <ModalDialog
-        isOpen={this.state.isOpen}
+        isOpen
         header={
           <div>
-            <img src={this.props.banner} alt="" />
-            <span><LockFilledIcon
-              label=""
-              size="small"
-            /> Inactive on your site</span>
+            <img src={banner} alt="" />
+            <span><LockFilledIcon label="" size="small" /> Inactive on your site</span>
           </div>
         }
         footer={
           <p>
-            <Button appearance="primary" onClick={this.props.onRequestAccessClick}>Request access</Button>
+            <Button appearance="primary" onClick={this.handleRequestAccessClick}>
+              Request access
+            </Button>
             <Button appearance="subtle-link" onClick={this.handleCancelClick}>Cancel</Button>
           </p>
         }
       >
         <div>
-          {this.props.productLogo}
-          <RequestTrialHeader>{this.props.heading}</RequestTrialHeader>
-          {React.isValidElement(this.props.message)
-            ? this.props.message
-            : <p>{this.props.message}</p>
-          }
+          {productLogo}
+          <RequestTrialHeader>{heading}</RequestTrialHeader>
+          {React.isValidElement(message) ? message : <p>{message}</p>}
         </div>
       </ModalDialog>
     );
   }
 }
+
+export default withCrossSellProvider(
+  RequestTrialAccessBase,
+  ({
+    crossSell: {
+      config: { productLogo, requestTrial },
+      requestTrialAccess,
+      cancelRequestTrialAccess,
+    },
+  }) => ({
+    productLogo,
+    banner: requestTrial.accessBanner,
+    heading: requestTrial.accessHeading,
+    message: requestTrial.accessMessage,
+    prompt: requestTrial.notePrompt,
+    placeholder: requestTrial.notePlaceholder,
+    requestTrialAccess,
+    cancelRequestTrialAccess,
+  })
+);

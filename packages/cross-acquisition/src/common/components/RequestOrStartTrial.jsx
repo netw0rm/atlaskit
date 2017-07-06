@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import AppBase from './AppBase';
-import { crossSellShape } from './CrossSellProvider';
+import { withCrossSellProvider } from './CrossSellProvider';
 import InitializingScreen from './InitializingScreen';
 import { withAnalytics } from './Analytics';
 import RequestTrial from '../../request-trial/components/RequestTrial';
@@ -18,12 +18,9 @@ const Screens = {
 };
 
 class RequestOrStartTrial extends Component {
-  static contextTypes = {
-    crossSell: crossSellShape,
-  };
-
   static propTypes = {
     locale: PropTypes.string,
+    canCurrentUserAddProduct: PropTypes.func.isRequired,
     //fireAnalyticsEvent: PropTypes.func.isRequired,
   };
 
@@ -37,7 +34,7 @@ class RequestOrStartTrial extends Component {
   };
 
   componentDidMount() {
-    this.context.crossSell
+    this.props
       .canCurrentUserAddProduct()
       .then((canAdd) => {
         if (canAdd) {
@@ -76,4 +73,9 @@ class RequestOrStartTrial extends Component {
   }
 }
 
-export default withAnalytics(RequestOrStartTrial);
+export default withCrossSellProvider(
+  withAnalytics(RequestOrStartTrial),
+  ({ crossSell: { canCurrentUserAddProduct } }) => ({
+    canCurrentUserAddProduct,
+  })
+);

@@ -60,6 +60,11 @@ export default class MockConfluenceCrossSellProvider extends Component {
       isProductInstalledOrActivating: notImplemented,
       canCurrentUserGrantAccessToProducts: notImplemented,
       hasProductBeenEvaluated: notImplemented,
+
+      requestTrialAccess: notImplemented,
+      requestTrialAccessWithNote: notImplemented,
+      requestTrialAccessWithoutNote: notImplemented,
+      cancelRequestTrialAccess: notImplemented,
     };
 
     const props = {

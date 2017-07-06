@@ -37,6 +37,11 @@ export const crossSellShape = PropTypes.shape({
   isProductInstalledOrActivating: PropTypes.func,
   canCurrentUserGrantAccessToProducts: PropTypes.func,
   hasProductBeenEvaluated: PropTypes.func,
+
+  requestTrialAccess: PropTypes.func,
+  requestTrialAccessWithNote: PropTypes.func,
+  requestTrialAccessWithoutNote: PropTypes.func,
+  cancelRequestTrialAccess: PropTypes.func,
 });
 
 export class CrossSellProvider extends Component {
@@ -66,7 +71,7 @@ export class CrossSellProvider extends Component {
   }
 }
 
-export const withCrossSellProvider = (WrappedComponent, mapContextToProps) =>
+export const withCrossSellProvider = (WrappedComponent, mapContextToProps = () => {}) =>
   class WithCrossSellProvider extends Component {
     static displayName = `WithCrossSellProvider(${Component.displayName || Component.name})`;
     static contextTypes = {
@@ -74,10 +79,7 @@ export const withCrossSellProvider = (WrappedComponent, mapContextToProps) =>
     };
     render() {
       const { props } = this;
-      const { crossSell } = this.context;
-      return (
-        <WrappedComponent {...mapContextToProps(this.context)} {...props} crossSell={crossSell} />
-      );
+      return <WrappedComponent {...mapContextToProps(this.context)} {...props} />;
     }
   };
 

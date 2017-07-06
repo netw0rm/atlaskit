@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
+import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 
 import { MultiStep, Step } from '../../multi-step';
 
@@ -9,9 +9,7 @@ import GrantAccess from './GrantAccess';
 import LoadingTime from './LoadingTime';
 
 export class StartTrialBase extends Component {
-  static propTypes = {
-    crossSell: crossSellShape,
-  };
+  static propTypes = {};
 
   render() {
     return (
@@ -24,4 +22,4 @@ export class StartTrialBase extends Component {
   }
 }
 
-export default withCrossSellProvider(StartTrialBase, () => ({}));
+export default withCrossSellProvider(StartTrialBase);

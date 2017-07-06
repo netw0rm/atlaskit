@@ -53,7 +53,7 @@ storiesOf('GrantAccess')
         {...defaultProps}
         analyticsId="growth.happy"
         changeUsers
-        selectedRadio="everyone"
+        defaultSelectedRadio="everyone"
       />
     )
   )
@@ -63,7 +63,7 @@ storiesOf('GrantAccess')
         {...defaultProps}
         analyticsId="growth.happy"
         changeUsers
-        selectedRadio="siteAdmins"
+        defaultSelectedRadio="siteAdmins"
       />
     )
   )
@@ -73,7 +73,7 @@ storiesOf('GrantAccess')
         {...defaultProps}
         analyticsId="growth.happy"
         changeUsers
-        selectedRadio="specificUsers"
+        defaultSelectedRadio="specificUsers"
         userSelectInFocus
         userSelectIsInvalid
       />

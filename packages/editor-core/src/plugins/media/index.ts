@@ -15,28 +15,20 @@ import {
   Plugin,
   PluginKey,
   Node as PMNode,
-  NodeSelection,
-  TextSelection,
   Schema,
-  AddMarkStep,
-  ReplaceStep,
   Transaction,
-  Fragment,
-  ResolvedPos,
-  Mark,
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
-import {
-  ErrorReporter, atTheEndOfDoc, atTheEndOfBlock, atTheBeginningOfBlock,
-  endPositionOfParent, startPositionOfParent
-} from '../../utils';
+import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 import keymapPlugin from './keymap';
+import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
+import { insertFile } from './media-files';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -47,15 +39,6 @@ export interface MediaNodeWithPosHandler {
   getPos: ProsemirrorGetPosHandler;
 }
 
-export interface Range {
-  start: number;
-  end: number;
-}
-
-export interface RangeWithUrls extends Range {
-  urls: string[];
-}
-
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
@@ -63,6 +46,7 @@ export class MediaPluginState {
   public stateManager: MediaStateManager;
   public pickers: PickerFacade[] = [];
   public binaryPicker?: PickerFacade;
+  public ignoreLinks: boolean = false;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -74,8 +58,6 @@ export class MediaPluginState {
 
   private popupPicker?: PickerFacade;
   private linkRanges: RangeWithUrls[];
-
-  private ignoreLinks: boolean = false;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
@@ -101,10 +83,6 @@ export class MediaPluginState {
     if (pos > -1) {
       pluginStateChangeSubscribers.splice(pos, 1);
     }
-  }
-
-  ignoreLinksInSteps() {
-    this.ignoreLinks = true;
   }
 
   setMediaProvider = async (mediaProvider?: Promise<MediaProvider>) => {
@@ -176,56 +154,6 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   }
 
-  private insertMedia = (node: PMNode): void => {
-    const { state, dispatch } = this.view;
-    const { $to } = state.selection;
-    let transaction = state.tr;
-
-    // insert a paragraph after if reach the end of doc
-    // and there is no media group in the front or selection is a non media block node
-    if (atTheEndOfDoc(state) && (!this.posOfPreceedingMediaGroup(state) || this.isSelectionNonMediaBlockNode())) {
-      const paragraphInsertPos = this.isSelectionNonMediaBlockNode() ? $to.pos : $to.pos + 1;
-      transaction = transaction.insert(paragraphInsertPos, state.schema.nodes.paragraph.create());
-    }
-
-    const mediaInsertPos = this.findMediaInsertPos();
-
-    // delete the selection or empty paragraph
-    const deleteRange = this.findDeleteRange();
-
-    if (!deleteRange) {
-      transaction = transaction.insert(mediaInsertPos, node);
-    } else if (mediaInsertPos <= deleteRange.start) {
-      transaction = transaction.deleteRange(deleteRange.start, deleteRange.end).insert(mediaInsertPos, node);
-    } else {
-      transaction = transaction.insert(mediaInsertPos, node).deleteRange(deleteRange.start, deleteRange.end);
-    }
-
-    dispatch(transaction);
-
-    this.setSelectionAfterMediaInsertion(node);
-  }
-
-  private createMediaFileNode = (mediaState: MediaState, collection: string): PMNode => {
-    const { view } = this;
-    const { state } = view;
-    const { id } = mediaState;
-
-    const node = state.schema.nodes.media!.create({
-      id,
-      type: 'file',
-      collection
-    });
-
-    ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
-      if (mediaState[key]) {
-        node.attrs[`__${key}`] = mediaState[key];
-      }
-    });
-
-    return node;
-  }
-
   insertFile = (mediaState: MediaState): void => {
     const collection = this.collectionFromProvider();
     if (!collection) {
@@ -233,9 +161,8 @@ export class MediaPluginState {
     }
 
     this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-    const node = this.createMediaFileNode(mediaState, collection);
 
-    this.insertMedia(node);
+    insertFile(this.view, mediaState, collection);
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -243,52 +170,8 @@ export class MediaPluginState {
     }
   }
 
-  insertLinks = (linkRanges: RangeWithUrls[] = this.linkRanges): void => {
-    const collection = this.collectionFromProvider();
-    if (linkRanges.length <= 0 || !collection) {
-      return;
-    }
-
-    const { state, dispatch } = this.view;
-    const { tr } = state;
-
-    const linksInfo = this.reduceLinksInfo(linkRanges);
-
-    const linkNodes = linksInfo.urls.map((url) => {
-      return state.schema.nodes.media.create({ id: url, type: 'link', collection: collection });
-    });
-
-    const $latestPos = tr.doc.resolve(linksInfo.latestPos);
-
-    const insertPos = this.posOfMediaGroupBelow($latestPos, false)
-      || this.posOfParentMediaGroup(state, $latestPos, false)
-      || endPositionOfParent($latestPos);
-
-    // insert a paragraph after if reach the end of doc
-    if (atTheEndOfDoc(state)) {
-      tr.insert(insertPos, state.schema.nodes.paragraph.create());
-    }
-
-    tr.replaceWith(insertPos, insertPos, linkNodes);
-    dispatch(tr);
-  }
-
-  private reduceLinksInfo(linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } {
-    const posAtTheEndOfDoc = this.view.state.doc.nodeSize - 4;
-
-    const linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
-      linksInfo.urls = linksInfo.urls.concat(rangeWithUrl.urls);
-      if (rangeWithUrl.end > linksInfo.latestPos) {
-        linksInfo.latestPos = rangeWithUrl.end;
-      }
-
-      if (posAtTheEndOfDoc < linksInfo.latestPos) {
-        linksInfo.latestPos = posAtTheEndOfDoc;
-      }
-      return linksInfo;
-    }, { latestPos: 0, urls: [] as string[] });
-
-    return linksInfo;
+  insertLinks = (): void => {
+    insertLinks(this.view, this.linkRanges, this.collectionFromProvider());
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -429,6 +312,21 @@ export class MediaPluginState {
     }, null);
   }
 
+  detectLinkRangesInSteps = (tr: Transaction) => {
+    const { link } = this.view.state.schema.marks;
+    this.linkRanges = [];
+
+    if (this.ignoreLinks) {
+      this.ignoreLinks = false;
+      return this.linkRanges;
+    }
+    if (!link || !this.allowsLinks) {
+      return this.linkRanges;
+    }
+
+    this.linkRanges = detectLinkRangesInSteps(tr, link);
+  }
+
   private destroyPickers = () => {
     const { pickers } = this;
 
@@ -437,134 +335,6 @@ export class MediaPluginState {
 
     this.popupPicker = undefined;
     this.binaryPicker = undefined;
-  }
-
-  private isSelectionNonMediaBlockNode = (): boolean => {
-    const { state } = this.view;
-    const { node } = state.selection as NodeSelection;
-
-    return node && node.type !== state.schema.nodes.media && node.isBlock;
-  }
-
-  /**
-   * Determine whether the cursor is inside empty paragraph
-   * or the selection is the entire paragraph
-   */
-  private isInsidePotentialEmptyParagraph = (): boolean => {
-    const { state } = this.view;
-    const { $from } = state.selection;
-
-    return $from.parent.type === state.schema.nodes.paragraph && atTheBeginningOfBlock(state) && atTheEndOfBlock(state);
-  }
-
-  private posOfPreceedingMediaGroup(state: EditorState<any>): number | undefined {
-    if (!atTheBeginningOfBlock(state)) {
-      return;
-    }
-
-    return this.posOfMediaGroupAbove(state.selection.$from);
-  }
-
-  private posOfMediaGroupAbove($pos: ResolvedPos): number | undefined {
-    const { state } = this.view;
-    let adjacentPos;
-    let adjacentNode;
-
-    if (this.isSelectionNonMediaBlockNode()) {
-      adjacentPos = $pos.pos;
-      adjacentNode = $pos.nodeBefore;
-    } else {
-      adjacentPos = startPositionOfParent($pos) - 1;
-      adjacentNode = state.doc.resolve(adjacentPos).nodeBefore;
-    }
-
-    if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-      return adjacentPos - adjacentNode.nodeSize + 1;
-    }
-  }
-
-  private posOfFollowingMediaGroup(state: EditorState<any>): number | undefined {
-    if (!atTheEndOfBlock(state)) {
-      return;
-    }
-    return this.posOfMediaGroupBelow(state.selection.$to);
-  }
-
-  private posOfMediaGroupBelow($pos: ResolvedPos, prepend: boolean = true): number | undefined {
-    const { state } = this.view;
-    let adjacentPos;
-    let adjacentNode;
-
-    if (this.isSelectionNonMediaBlockNode()) {
-      adjacentPos = $pos.pos;
-      adjacentNode = $pos.nodeAfter;
-    } else {
-      adjacentPos = endPositionOfParent($pos);
-      adjacentNode = state.doc.nodeAt(adjacentPos);
-    }
-
-    if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-      return prepend ? adjacentPos + 1 : adjacentPos + adjacentNode.nodeSize - 1;
-    }
-  }
-
-  private posOfParentMediaGroup(state: EditorState<any>, $pos?: ResolvedPos, prepend: boolean = true): number | undefined {
-    const { $from } = state.selection;
-    $pos = $pos || $from;
-
-    if ($pos.parent.type === state.schema.nodes.mediaGroup) {
-      return prepend ? startPositionOfParent($pos) : endPositionOfParent($pos) - 1;
-    }
-  }
-
-  private posOfMediaGroupNearby(state: EditorState<any>): number | undefined {
-    return this.posOfParentMediaGroup(state)
-      || this.posOfFollowingMediaGroup(state)
-      || this.posOfPreceedingMediaGroup(state);
-  }
-
-  private findMediaInsertPos = (): number => {
-    const state = this.view.state;
-    const { $from, $to } = state.selection;
-
-    const nearbyMediaGroupPos = this.posOfMediaGroupNearby(state);
-
-    if (nearbyMediaGroupPos) {
-      return nearbyMediaGroupPos;
-    }
-
-    if (this.isSelectionNonMediaBlockNode()) {
-      return $to.pos;
-    }
-
-    if (atTheEndOfBlock(state)) {
-      return $to.pos + 1;
-    }
-
-    if (atTheBeginningOfBlock(state)) {
-      return $from.pos - 1;
-    }
-
-    return $to.pos;
-  }
-
-  private findDeleteRange = (): Range | undefined => {
-    const { state } = this.view;
-    const { $from, $to } = state.selection;
-
-    if (this.posOfParentMediaGroup(state)) {
-      return;
-    }
-
-    if (!this.isInsidePotentialEmptyParagraph() || this.posOfMediaGroupNearby(state)) {
-      return this.range($from.pos, $to.pos);
-    }
-
-    return this.range(startPositionOfParent($from) - 1, endPositionOfParent($to));
-  }
-
-  private range(start: number, end: number = start) {
-    return { start, end };
   }
 
   private initPickers(uploadParams: UploadParams, context: ContextConfig) {
@@ -703,30 +473,6 @@ export class MediaPluginState {
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
-  private setSelectionAfterMediaInsertion = (node: PMNode) => {
-    // by this time node has already been mounted
-    const mediaNodeWithPos = this.findMediaNode(node.attrs.id);
-    if (!mediaNodeWithPos) {
-      return;
-    }
-
-    const { view } = this;
-    const { doc, tr } = view.state;
-    const { getPos } = mediaNodeWithPos;
-    const resolvedPos = doc.resolve(getPos());
-    const endOfMediaGroup = endPositionOfParent(resolvedPos);
-    let selection;
-
-    if (endOfMediaGroup + 1 >= doc.nodeSize - 1) {
-      // if nothing after the media group, fallback to select the newest uploaded media item
-      selection = new NodeSelection(resolvedPos);
-    } else {
-      selection = TextSelection.create(doc, endOfMediaGroup + 1);
-    }
-
-    view.dispatch(tr.setSelection(selection));
-  }
-
   /**
    * Since we replace nodes with public id when node is finalized
    * stateManager contains no information for public ids
@@ -736,73 +482,6 @@ export class MediaPluginState {
     const state = stateManager.getState(id);
 
     return (state && state.status) || 'ready';
-  }
-
-  detectLinkRangesInSteps = (tr: Transaction): RangeWithUrls[] => {
-    const { link } = this.view.state.schema.marks;
-    this.linkRanges = [];
-
-    if (this.ignoreLinks) {
-      this.ignoreLinks = false;
-      return this.linkRanges;
-    }
-    if (!link || !this.allowsLinks) {
-      return this.linkRanges;
-    }
-
-    tr.steps.forEach((step) => {
-      let rangeWithUrls;
-      if (step instanceof AddMarkStep) {
-        rangeWithUrls = this.findRangesWithUrlsInAddMarkStep(step as AddMarkStep);
-      } else if (step instanceof ReplaceStep) {
-        rangeWithUrls = this.findRangesWithUrlsInReplaceStep(step as ReplaceStep);
-      }
-
-      if (rangeWithUrls) {
-        this.linkRanges.push(rangeWithUrls);
-      }
-    });
-
-    return this.linkRanges;
-  }
-
-  private findRangesWithUrlsInAddMarkStep = (step: AddMarkStep): RangeWithUrls | undefined => {
-    const { mark } = step;
-    if (this.isValidLinkMark(mark)) {
-      return { start: step.from, end: step.to, urls: [mark.attrs.href] };
-    }
-  }
-
-  private isValidLinkMark(mark: Mark): boolean {
-    const { link } = this.view.state.schema.marks;
-    return mark.type === link && mark.attrs.href.length;
-  }
-
-  private findRangesWithUrlsInReplaceStep(step: ReplaceStep): RangeWithUrls | undefined {
-    const { slice } = step;
-    const urls: string[] = this.findLinksInNodeContent([], slice.content);
-    if (urls.length > 0) {
-      // The end position is step.from + slice.size || step.to is because
-      // it can be replaced by a smaller size content
-      // if simply use step.to, it might be out of range later.
-      return { start: step.from, end: Math.min(step.from + slice.size, step.to), urls: urls };
-    }
-  }
-
-  private findLinksInNodeContent(urls: string[], content: Fragment) {
-    content.forEach((child) => {
-      const linkMarks = child.marks.filter((mark) => {
-        return this.isValidLinkMark(mark);
-      });
-
-      if (linkMarks.length > 0) {
-        urls.push(linkMarks[0].attrs.href);
-      }
-
-      this.findLinksInNodeContent(urls, child.content);
-    });
-
-    return urls;
   }
 }
 

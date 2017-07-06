@@ -7,10 +7,7 @@ import Select from '@atlaskit/multi-select';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 
-import {
-  withCrossSellProvider,
-  crossSellShape,
-} from '../../common/components/CrossSellProvider';
+import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
 
 import ProgressBar from './ProgressBar';
 
@@ -28,9 +25,9 @@ export class GrantAccessBase extends Component {
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number,
     productLogo: PropTypes.node.isRequired,
-    userSelectInFocus: PropTypes.boolean,
-    userSelectIsInvalid: PropTypes.boolean,
-    changeUsers: PropTypes.boolean,
+    userSelectInFocus: PropTypes.bool,
+    userSelectIsInvalid: PropTypes.bool,
+    changeUsers: PropTypes.bool,
     selectedRadio: PropTypes.string,
     heading: PropTypes.string,
     defaultAccess: PropTypes.node,
@@ -184,17 +181,13 @@ export class GrantAccessBase extends Component {
                   this.radioGroup = radioGroup;
                 }}
                 onRadioChange={this.handleRadioChange}
-                items={optionItems.map(
-                  item => ({
-                    ...item,
-                    name: 'access-option',
-                    key: item.value,
-                    isSelected: this.state.selectedRadio === item.value,
-                  })
-                )}
-                label={
-                  chooseOption
-                }
+                items={optionItems.map(item => ({
+                  ...item,
+                  name: 'access-option',
+                  key: item.value,
+                  isSelected: this.state.selectedRadio === item.value,
+                }))}
+                label={chooseOption}
               />
               <UserSelectDiv>
                 <Select
@@ -203,9 +196,7 @@ export class GrantAccessBase extends Component {
                   }}
                   id="userSelect"
                   items={selectItems}
-                  placeholder={
-                    userSelectPlaceholder
-                  }
+                  placeholder={userSelectPlaceholder}
                   name="test"
                   onOpenChange={this.handleUserSelectOpen}
                   onSelectedChange={this.handleUserSelectChange}
@@ -219,27 +210,19 @@ export class GrantAccessBase extends Component {
               <AffectMyBillText>
                 {affectBill}
                 <Button onClick={this.handleLearnMoreClick} appearance="link">
-                  {
-                    learnMoreLinkText
-                  }
+                  {learnMoreLinkText}
                 </Button>
               </AffectMyBillText>
             </div>
             : <div>
-              {React.isValidElement(
-                defaultAccess
-              )
-                ? defaultAccess
-                : <p>
-                  {
-                    defaultAccess
-                  }
-                </p>}
+              {React.isValidElement(defaultAccess)
+                  ? defaultAccess
+                  : <p>
+                    {defaultAccess}
+                  </p>}
 
               <ChangeButton>
-                <Button onClick={this.handleChangeClick} appearance="link">
-                  Change...
-                  </Button>
+                <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>
               </ChangeButton>
             </div>}
 

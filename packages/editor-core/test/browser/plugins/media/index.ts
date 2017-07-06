@@ -1096,6 +1096,24 @@ describe('Media plugin', () => {
         ]);
       });
 
+      context('when included link has no href', () => {
+        it('ignore links without href', () => {
+          const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+          const { state } = editorView;
+          const link1 = a({ href: '' })('google');
+          const link2 = a({ href: 'www.baidu.com' })('baidu');
+          const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+
+          pluginState.allowsLinks = true;
+
+          const linksRanges = pluginState.detectLinkRangesInSteps(tr);
+
+          expect(linksRanges).to.deep.equal([
+            { start: sel, end: sel, urls: ['www.baidu.com'] }
+          ]);
+        });
+      });
+
       context('when step is triggered by undo', () => {
         it('does not detect links', () => {
           const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
@@ -1129,6 +1147,22 @@ describe('Media plugin', () => {
         expect(linksRanges).to.deep.equal([
           { start: sel - text.length, end: sel, urls: ['www.atlassian.com'] },
         ]);
+      });
+
+      context('when included link has no href', () => {
+        it('ignore links without href', () => {
+        const text = 'hello';
+        const { editorView, pluginState, sel } = editor(doc(p(`${text}{<>}`)));
+        const { state } = editorView;
+        const linkMark = state.schema.marks.link.create({ href: '' });
+        const tr = state.tr.addMark(sel - text.length, sel, linkMark);
+
+        pluginState.allowsLinks = true;
+
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
+
+        expect(linksRanges).to.deep.equal([]);
+        });
       });
     });
 

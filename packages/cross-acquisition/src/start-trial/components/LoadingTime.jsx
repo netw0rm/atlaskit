@@ -14,32 +14,49 @@ import { withCrossSellProvider, crossSellShape } from '../../common/components/C
 export class LoadingTimeBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
-    crossSell: crossSellShape,
+    progress: PropTypes.number,
+    productLogo: PropTypes.node,
+    heading: PropTypes.string,
+    completeHeading: PropTypes.string,
   };
 
   static contextTypes = crossSellShape;
 
   render() {
-    let isReady = this.props.progress === 100;
+    const { productLogo, progress, heading, completeHeading, onComplete } = this.props;
+
+    const isReady = progress === 100;
     return (
       <ModalDialog
         isOpen
         width="small"
-        header={this.props.productLogo}
+        header={productLogo}
         footer={
           <StartTrialFooter>
-            <Button isDisabled={!isReady} onClick={this.props.onComplete} appearance="primary">Go to Confluence</Button>
-            <Button onClick={this.props.onComplete} appearance="subtle-link" >Close</Button>
+            <Button isDisabled={!isReady} onClick={onComplete} appearance="primary">
+              Go to Confluence
+            </Button>
+            <Button onClick={onComplete} appearance="subtle-link">Close</Button>
           </StartTrialFooter>
         }
       >
         <StartTrialDialog>
-          <StartTrialHeader>{isReady? this.props.completeHeading : this.props.heading}</StartTrialHeader>
-          <ProgressBar progress={this.props.progress} />
+          <StartTrialHeader>
+            {isReady ? completeHeading : heading}
+          </StartTrialHeader>
+          <ProgressBar progress={progress} />
         </StartTrialDialog>
       </ModalDialog>
     );
   }
 }
 
-export default withCrossSellProvider(LoadingTimeBase, context => context);
+export default withCrossSellProvider(
+  LoadingTimeBase,
+  ({ crossSell: { config: { productLogo, startTrial }, state: { progress } } }) => ({
+    productLogo,
+    heading: startTrial.loadingHeading,
+    completeHeading: startTrial.loadingCompleteHeading,
+    progress,
+  })
+);

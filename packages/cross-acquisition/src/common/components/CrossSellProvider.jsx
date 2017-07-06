@@ -76,7 +76,7 @@ export const withCrossSellProvider = (WrappedComponent, mapContextToProps) =>
       const { props } = this;
       const { crossSell } = this.context;
       return (
-        <WrappedComponent {...props} crossSell={crossSell} {...mapContextToProps(this.context)} />
+        <WrappedComponent {...mapContextToProps(this.context)} {...props} crossSell={crossSell} />
       );
     }
   };

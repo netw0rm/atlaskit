@@ -11,5 +11,11 @@ storiesOf('StartTrialConfirm')
     <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
       <ConfirmTrial analyticsId="growth.happy" onComplete={() => Promise.resolve(true)} />
     </MockConfluenceCrossSell>
-    )
+  )
+  )
+  .add('Show Confirm Trial dialog with perma spinner', () => setupStorybookAnalytics(
+    <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
+      <ConfirmTrial analyticsId="growth.happy" onComplete={() => Promise.resolve(true)} spinnerActive confirmButtonDisabled />
+    </MockConfluenceCrossSell>
+  )
   );

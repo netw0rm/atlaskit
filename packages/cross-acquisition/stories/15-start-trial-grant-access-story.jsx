@@ -37,6 +37,8 @@ const defaultProps = {
   usersOption: 'specificUsers',
   chooseOption: 'Choose an option',
   affectBill: 'How will this affect my bill?',
+  spinnerActive: false,
+  continueButtonDisabled: false,
 };
 
 storiesOf('GrantAccess')
@@ -55,14 +57,14 @@ storiesOf('GrantAccess')
       />
     )
   )
-  .add('Show Grant Access dialog with 25% progress', () =>
+  .add('Show Grant Access dialog with site admins only selected', () =>
     setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={25} />
-    )
-  )
-  .add('Show Grant Access dialog with 100% progress', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={100} />
+      <GrantAccessBase
+        {...defaultProps}
+        analyticsId="growth.happy"
+        changeUsers
+        selectedRadio="siteAdmins"
+      />
     )
   )
   .add('Show Grant Access dialog error state no specific users selected', () =>
@@ -75,5 +77,25 @@ storiesOf('GrantAccess')
         userSelectInFocus
         userSelectIsInvalid
       />
+    )
+  )
+  .add('Show Grant Access dialog with perma spinner', () =>
+    setupStorybookAnalytics(
+      <GrantAccessBase
+        {...defaultProps}
+        analyticsId="growth.happy"
+        spinnerActive
+        continueButtonDisabled
+      />
+    )
+  )
+  .add('Show Grant Access dialog with 25% progress', () =>
+    setupStorybookAnalytics(
+      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={25} />
+    )
+  )
+  .add('Show Grant Access dialog with 100% progress', () =>
+    setupStorybookAnalytics(
+      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={100} />
     )
   );

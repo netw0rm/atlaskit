@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
+import Spinner from '@atlaskit/spinner';
 
+import SpinnerDiv from '../styled/SpinnerDiv';
+import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
-import StartTrialDialog from '../styled/StartTrialDialog';
-
 import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 
 export class ConfirmTrialBase extends Component {
@@ -16,10 +17,21 @@ export class ConfirmTrialBase extends Component {
     productLogo: PropTypes.node.isRequired,
     heading: PropTypes.string.isRequired,
     message: PropTypes.node.isRequired,
+    spinnerActive: PropTypes.bool,
+    confirmButtonDisabled: PropTypes.bool,
   };
 
+  state = {
+    spinnerActive: this.props.spinnerActive,
+    confirmButtonDisabled: this.props.confirmButtonDisabled,
+  }
+
   handleConfirmClick = () => {
-    this.props.onComplete();
+    this.setState({ spinnerActive: true, confirmButtonDisabled: true });
+    // Mock starting trial
+    setTimeout(() => {
+      this.props.onComplete();
+    }, 1500);
   };
 
   render() {
@@ -32,7 +44,10 @@ export class ConfirmTrialBase extends Component {
         header={productLogo}
         footer={
           <StartTrialFooter>
-            <Button onClick={this.handleConfirmClick} appearance="primary">
+            <SpinnerDiv>
+              <Spinner isCompleting={!this.state.spinnerActive} />
+            </SpinnerDiv>
+            <Button onClick={this.handleConfirmClick} appearance="primary" isDisabled={this.state.confirmButtonDisabled}>
               Confirm
             </Button>
             <Button onClick={this.handleCancelClick} appearance="subtle-link">

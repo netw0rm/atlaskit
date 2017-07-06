@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Avatar from '@atlaskit/avatar';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/multi-select';
+import Spinner from '@atlaskit/spinner';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 
@@ -19,6 +20,7 @@ import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import AffectMyBillText from '../styled/AffectMyBillText';
 import ChangeButton from '../styled/ChangeButton';
+import SpinnerDiv from '../styled/SpinnerDiv';
 
 export class GrantAccessBase extends Component {
   static propTypes = {
@@ -43,6 +45,8 @@ export class GrantAccessBase extends Component {
     usersOption: PropTypes.string,
     chooseOption: PropTypes.string,
     affectBill: PropTypes.string,
+    spinnerActive: PropTypes.bool,
+    continueButtonDisabled: PropTypes.bool,
   };
 
   static contextTypes = {
@@ -55,6 +59,8 @@ export class GrantAccessBase extends Component {
     userSelectInFocus: this.props.userSelectInFocus,
     userSelectIsInvalid: this.props.userSelectIsInvalid,
     userSelectNoMatchesMessage: 'No matches found',
+    spinnerActive: this.props.spinnerActive,
+    continueButtonDisabled: this.props.continueButtonDisabled,
   };
 
   handleContinueClick = () => {
@@ -67,7 +73,11 @@ export class GrantAccessBase extends Component {
       });
       return;
     }
-    this.props.onComplete();
+    this.setState({ spinnerActive: true, continueButtonDisabled: true });
+    // Mock granting access
+    setTimeout(() => {
+      this.props.onComplete();
+    }, 1500);
   };
 
   handleLearnMoreClick = () => {
@@ -163,9 +173,13 @@ export class GrantAccessBase extends Component {
         }
         footer={
           <StartTrialFooter>
-            <Button onClick={this.handleContinueClick} appearance="primary">
+            <SpinnerDiv>
+              <Spinner isCompleting={!this.state.spinnerActive} />
+            </SpinnerDiv>
+            <Button onClick={this.handleContinueClick} appearance="primary" isDisabled={this.state.continueButtonDisabled} >
               Continue
             </Button>
+
           </StartTrialFooter>
         }
       >
@@ -216,10 +230,10 @@ export class GrantAccessBase extends Component {
             </div>
             : <div>
               {React.isValidElement(defaultAccess)
-                  ? defaultAccess
-                  : <p>
-                    {defaultAccess}
-                  </p>}
+                ? defaultAccess
+                : <p>
+                  {defaultAccess}
+                </p>}
 
               <ChangeButton>
                 <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>

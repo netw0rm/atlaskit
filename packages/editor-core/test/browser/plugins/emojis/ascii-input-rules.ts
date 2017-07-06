@@ -12,6 +12,7 @@ import {
   code,
   code_block,
   hardBreak,
+  emojiQuery,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
@@ -163,6 +164,14 @@ describe('ascii emojis - input rules', () => {
     it('should not replace a matching emoticon not starting with a colon', () => {
       return assert('text(y)', p('{<>}'), (state) => {
         expect(state.doc.content.child(0)).to.deep.equal(p('text(y)'));
+      });
+    });
+  });
+
+  context('when there is already an emojiQuery mark', () => {
+    it('it should replace a matching emoticon starting with a colon', () => {
+      return assert(' ', p(emojiQuery(':D{<>}')), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(smileyEmoji, textNode(' ')));
       });
     });
   });

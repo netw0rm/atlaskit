@@ -36,7 +36,9 @@ function inputRuleHandler(state: EditorState<Schema<any, any>>, matchParts: [str
 }
 
 function isEnabled(state: EditorState<Schema<any, any>>) {
-  return isMarkTypeAllowedAtCurrentPosition(state.schema.marks.emojiQuery, state);
+  const emojiQuery = state.schema.marks.emojiQuery;
+  const isEmojiQueryActive = state.selection.$from.marks().some(mark => mark.type === emojiQuery);
+  return isEmojiQueryActive || isMarkTypeAllowedAtCurrentPosition(emojiQuery, state);
 }
 
 type AsciiEmojiMatch = {

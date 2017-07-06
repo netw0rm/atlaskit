@@ -25,7 +25,6 @@ import {
   Heading,
   OrderedList,
   ListItem,
-  Media,
   Mention,
   Panel,
   Paragraph,

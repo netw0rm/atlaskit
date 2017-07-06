@@ -16,6 +16,9 @@ import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
+import StartTrialHeaderDiv from '../styled/StartTrialHeaderDiv';
+import GrantAccessChangeUsersDiv from '../styled/GrantAccessChangeUsersDiv';
+import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
 import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import AffectMyBillText from '../styled/AffectMyBillText';
@@ -167,10 +170,10 @@ export class GrantAccessBase extends Component {
         isOpen
         width="small"
         header={
-          <div>
+          <StartTrialHeaderDiv>
             {productLogo}
             <ProgressBar progress={this.props.progress} />
-          </div>
+          </StartTrialHeaderDiv>
         }
         footer={
           <StartTrialFooter>
@@ -194,7 +197,7 @@ export class GrantAccessBase extends Component {
           </StartTrialHeader>
 
           {this.state.changeUsers
-            ? <div>
+            ? <GrantAccessChangeUsersDiv>
               <AkFieldRadioGroup
                 ref={(radioGroup) => {
                   this.radioGroup = radioGroup;
@@ -232,8 +235,8 @@ export class GrantAccessBase extends Component {
                   {learnMoreLinkText}
                 </Button>
               </AffectMyBillText>
-            </div>
-            : <div>
+            </GrantAccessChangeUsersDiv>
+            : <GrantAccessDefaultAccessDiv>
               {React.isValidElement(defaultAccess)
                 ? defaultAccess
                 : <p>
@@ -243,7 +246,7 @@ export class GrantAccessBase extends Component {
               <ChangeButton>
                 <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>
               </ChangeButton>
-            </div>}
+            </GrantAccessDefaultAccessDiv>}
 
           <StartTrialProgressDiv>
             <input

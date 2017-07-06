@@ -12,10 +12,10 @@ const defaultProps = {
   userSelectInFocus: false,
   userSelectIsInvalid: false,
   changeUsers: false,
-  selectedRadio: 'everyone',
+  defaultSelectedRadio: 'everyone',
   heading: 'Who should have access?',
   defaultAccess: (
-    <p><strong>Everyone in JIRA Software</strong> will have access to Confluence.</p>
+    <p><strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.</p>
   ),
   learnMoreLinkText: 'Learn more',
   notifyUsers: 'Notify these users',

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 const ChangeButton = styled.span`
-  margin-left: 16px;
+    position: relative;
+    right: -276px;
+    top: -46px;
 `;
 
 ChangeButton.displayName = 'ChangeButton';

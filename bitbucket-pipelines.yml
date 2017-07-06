@@ -30,9 +30,9 @@ pipelines:
             - run-p -ln "validate/tslint" "validate/eslint"
             - yarn run test/unit
             - run-p -ln "test" "test/base"
-            - yarn run browserstack/tunnel/start
-            - yarn run test/browserstack
-            - yarn run browserstack/tunnel/stop
+            # - yarn run browserstack/tunnel/start
+            # - yarn run test/browserstack
+            # - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
@@ -63,10 +63,10 @@ pipelines:
           - yarn run test/unit
           - yarn run test/jest
           - run-p -ln "test" "test/base"
-          - yarn run browserstack/tunnel/start
-          - yarn run test/browserstack
-          - yarn run browserstack/tunnel/stop
+          # - yarn run browserstack/tunnel/start
+          # - yarn run test/browserstack
+          # - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"
         caches:
           - node
-            
+

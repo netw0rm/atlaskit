@@ -26,6 +26,7 @@ export const crossSellShape = PropTypes.shape({
           label: PropTypes.string,
         })
       ),
+      grantDefaultSelectedRadio: PropTypes.string,
       grantUserSelectPlaceholder: PropTypes.string,
       grantUsersOption: PropTypes.string,
       grantChooseOption: PropTypes.string,
@@ -77,7 +78,7 @@ export class CrossSellProvider extends Component {
   }
 }
 
-export const withCrossSellProvider = (WrappedComponent, mapContextToProps = () => {}) =>
+export const withCrossSellProvider = (WrappedComponent, mapContextToProps = () => { }) =>
   class WithCrossSellProvider extends Component {
     static displayName = `WithCrossSellProvider(${Component.displayName || Component.name})`;
     static contextTypes = {

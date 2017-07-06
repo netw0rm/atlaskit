@@ -16,7 +16,7 @@ export default class MockConfluenceCrossSellProvider extends Component {
           accessHeading: 'Ask your admin for access',
           accessMessage: 'Send a request for your admin to activate confluence',
           notePrompt:
-            'Help your site administrator understand why you would like to use Confluence:',
+          'Help your site administrator understand why you would like to use Confluence:',
           notePlaceholder: 'I would like to try Confluence because…',
         },
         startTrial: {
@@ -48,6 +48,7 @@ export default class MockConfluenceCrossSellProvider extends Component {
               label: 'Specific users',
             },
           ],
+          grantDefaultSelectedRadio: 'everyone',
           grantUserSelectPlaceholder: 'Start typing a username',
           grantUsersOption: 'specificUsers',
           grantChooseOption: 'Choose an option',

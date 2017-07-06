@@ -29,7 +29,7 @@ export class GrantAccessBase extends Component {
     userSelectInFocus: PropTypes.bool,
     userSelectIsInvalid: PropTypes.bool,
     changeUsers: PropTypes.bool,
-    selectedRadio: PropTypes.string,
+    defaultSelectedRadio: PropTypes.string,
     heading: PropTypes.string,
     defaultAccess: PropTypes.node,
     learnMoreLinkText: PropTypes.string,
@@ -56,7 +56,7 @@ export class GrantAccessBase extends Component {
 
   state = {
     changeUsers: this.props.changeUsers,
-    selectedRadio: this.props.selectedRadio,
+    selectedRadio: this.props.defaultSelectedRadio,
     userSelectInFocus: this.props.userSelectInFocus,
     userSelectIsInvalid: this.props.userSelectIsInvalid,
     userSelectNoMatchesMessage: 'No matches found',
@@ -235,10 +235,10 @@ export class GrantAccessBase extends Component {
             </div>
             : <div>
               {React.isValidElement(defaultAccess)
-                  ? defaultAccess
-                  : <p>
-                    {defaultAccess}
-                  </p>}
+                ? defaultAccess
+                : <p>
+                  {defaultAccess}
+                </p>}
 
               <ChangeButton>
                 <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>
@@ -272,10 +272,11 @@ export default withCrossSellProvider(
     learnMoreLinkText: startTrial.grantLearnMoreLinkText,
     notifyUsers: startTrial.grantNotifyUsers,
     optionItems: startTrial.grantOptionItems,
-    userSelectPlaceholder: startTrial.UserSelectPlaceholder,
-    usersOption: startTrial.UsersOption,
-    chooseOption: startTrial.ChooseOption,
-    affectBill: startTrial.AffectBill,
+    userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,
+    usersOption: startTrial.grantUsersOption,
+    chooseOption: startTrial.grantChooseOption,
+    affectBill: startTrial.grantAffectBill,
+    defaultSelectedRadio: startTrial.grantDefaultSelectedRadio,
     grantAccessToUsers,
   })
 );

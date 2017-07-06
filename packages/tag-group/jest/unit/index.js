@@ -1,5 +1,7 @@
 import React from 'react';
+import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
+
 import Tag from '@atlaskit/tag';
 import TagGroup from '../../src';
 import Container from '../../src/styled/Container';

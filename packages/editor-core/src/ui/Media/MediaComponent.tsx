@@ -12,7 +12,6 @@ import {
   ContextFactory,
   Context,
   CardDelete,
-  CardClick,
   CardEventHandler,
   FileDetails,
   MediaProvider,
@@ -24,12 +23,13 @@ import {
 import { MediaAttributes } from '../../schema';
 import { EditorView, mediaStateKey } from '../../index';
 import { MediaPluginState } from '../../plugins/media';
+import { CardEventClickHandler } from '../Renderer';
 
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
   cardDimensions?: CardDimensions;
-  onClick?: CardEventHandler;
+  onClick?: CardEventClickHandler;
   onDelete?: CardEventHandler;
   resizeMode?: ImageResizeMode;
 }
@@ -135,6 +135,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { mediaProvider, linkCreateContext } = this.state;
     const { id, collection, cardDimensions, onDelete } = this.props;
     const url = id;
+    const otherProps: any = {};
+
     if (!mediaProvider || !linkCreateContext) {
       return null;
     }
@@ -148,14 +150,18 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       url
     };
 
+    if (onDelete) {
+      otherProps.actions = [ CardDelete(onDelete) ];
+    }
+
     return (
       <Card
         context={linkCreateContext}
         dimensions={cardDimensions}
         identifier={identifier}
         appearance="image"
-        actions={[CardDelete(onDelete!)]}
         resizeMode={this.resizeMode}
+        {...otherProps}
       />
     );
   }
@@ -182,6 +188,15 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   private renderPublicFile() {
     const { viewContext } = this.state;
     const { cardDimensions, collection, id, onDelete, onClick } = this.props;
+    const otherProps: any = {};
+
+    if (onDelete) {
+      otherProps.actions = [ CardDelete(onDelete) ];
+    }
+
+    if (onClick) {
+      otherProps.onClick = onClick;
+    }
 
     return (
       <Card
@@ -192,9 +207,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
           mediaItemType: 'file',
           collectionName: collection
         }}
-        actions={[CardDelete(onDelete!), CardClick(onClick!)]}
         selectable={false}
         resizeMode={this.resizeMode}
+        {...otherProps}
       />
     );
   }
@@ -229,6 +244,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       mediaType: (thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')
     } as FileDetails;
 
+    const otherProps: any = {};
+    if (onDelete) {
+      otherProps.actions = [ CardDelete(onDelete) ];
+    }
+
     return <CardView
       // CardViewProps
       status={mapMediaStatusIntoCardStatus(state)}
@@ -240,7 +260,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       progress={progress}
 
       // SharedCardProps
-      actions={[CardDelete(onDelete!)]}
+      {...otherProps}
     />;
   }
 

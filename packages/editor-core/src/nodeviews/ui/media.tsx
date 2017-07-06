@@ -5,8 +5,8 @@ import {
   ProsemirrorGetPosHandler,
   ReactNodeProps,
 } from './';
-import MediaComponent from '../../ui/Media/MediaComponent';
-import ProviderFactory, { WithProviders } from '../../providerFactory';
+import UIMedia from '../../ui/Media';
+import ProviderFactory from '../../providerFactory';
 import { mediaStateKey, MediaPluginState } from '../../plugins';
 import {
   EditorView,
@@ -67,23 +67,14 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
 
     return (
       <Wrapper selected={selected}>
-        <WithProviders
-          providers={['mediaProvider']}
-          providerFactory={providerFactory}
-          // tslint:disable-next-line:jsx-no-lambda
-          renderNode={providers => {
-            return (
-              <MediaComponent
-                key={`medianode-${id}`}
-                mediaProvider={providers['mediaProvider']}
-                editorView={view}
-                id={id!}
-                type={type!}
-                collection={collection!}
-                onDelete={this.handleRemove}
-              />
-            );
-          }}
+        <UIMedia
+          key={`medianode-${id}`}
+          editorView={view}
+          id={id!}
+          type={type!}
+          collection={collection!}
+          providers={providerFactory}
+          onDelete={this.handleRemove}
         />
       </Wrapper>
     );

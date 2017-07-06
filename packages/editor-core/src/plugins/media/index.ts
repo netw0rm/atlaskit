@@ -17,6 +17,12 @@ import {
   Node as PMNode,
   Schema,
   Transaction,
+<<<<<<< HEAD
+=======
+  Fragment,
+  ResolvedPos,
+  Mark,
+>>>>>>> master
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
@@ -487,8 +493,8 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-function mediaPluginFactory(options: MediaPluginOptions) {
-  return new Plugin({
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  const plugin = new Plugin({
     state: {
       init(config, state) {
         return new MediaPluginState(state, options);
@@ -522,10 +528,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       }
     }
   });
-}
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  const plugin = mediaPluginFactory(options);
   return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

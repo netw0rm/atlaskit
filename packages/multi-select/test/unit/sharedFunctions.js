@@ -5,27 +5,28 @@ describe(`${name} - shared functions`, () => {
   describe('filterItems', () => {
     it('should return items intact if nothing is selected and filter is empty', () => {
       const items = [
-        { value: 1, content: 'Test1' },
-        { value: 2, content: 'Test 2' },
-        { value: 3, content: 'Third test' },
+        { value: 1, filterValues: ['Test1'] },
+        { value: 2, filterValues: ['Test 2'] },
+        { value: 3, filterValues: ['Third test'] },
       ];
       expect(filterItems(items, '', [])).to.deep.equal(items);
     });
 
     it('should filter out selected items when the filter is empty', () => {
       const items = [
-        { value: 1, content: 'Test1' },
-        { value: 2, content: 'Test 2' },
-        { value: 3, content: 'Third test' },
+        { value: 1, filterValues: ['Test1'] },
+        { value: 2, filterValues: ['Test 2'] },
+        { value: 3, filterValues: ['Third test'] },
       ];
       expect(filterItems(items, '', [items[0]])).to.deep.equal([items[1], items[2]]);
     });
 
     it('should return filtered items when nothing is selected', () => {
       const items = [
-        { value: 1, content: 'Test1' },
-        { value: 2, content: 'Test 2' },
-        { value: 3, content: 'Third test' },
+        { value: 1, filterValues: ['Test1'] },
+        { value: 2, filterValues: ['Test 2'] },
+        { value: 3, filterValues: ['Third test'] },
+        { value: 4, filterValues: ['fourth', 'test'] },
       ];
       expect(filterItems(items, 'Test1', [])).to.deep.equal([items[0]]);
       expect(filterItems(items, 'test', [])).to.deep.equal(items);
@@ -33,12 +34,22 @@ describe(`${name} - shared functions`, () => {
 
     it('should filter out selected items and return filtered items', () => {
       const items = [
-        { value: 1, content: 'Test one' },
-        { value: 2, content: 'Test two' },
-        { value: 3, content: 'Test three' },
-        { value: 4, content: 'This should stay behind' },
+        { value: 1, filterValues: ['Test one'] },
+        { value: 2, filterValues: ['Test two'] },
+        { value: 3, filterValues: ['Test three'] },
+        { value: 4, filterValues: ['This should stay behind'] },
       ];
       expect(filterItems(items, 'Test', [items[0]])).to.deep.equal([items[1], items[2]]);
+    });
+
+    it('should filter by content if filterValues are not provided', () => {
+      const items = [
+        { value: 1, content: 'Test1' },
+        { value: 2, content: 'Test 2', filterValues: ['Test 2'] },
+        { value: 3, filterValues: ['Third', 'test'] },
+      ];
+      expect(filterItems(items, 'Test1 ', [])).to.deep.equal([items[0]]);
+      expect(filterItems(items, 'test', [])).to.deep.equal(items);
     });
   });
 

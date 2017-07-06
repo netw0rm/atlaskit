@@ -18,6 +18,7 @@ import {
   MediaProvider,
   MediaStateManager,
   MediaState,
+  ImageResizeMode
 } from '@atlaskit/media-core';
 
 import { MediaAttributes } from '../../schema';
@@ -30,6 +31,7 @@ export interface Props extends MediaAttributes {
   cardDimensions?: CardDimensions;
   onClick?: CardEventHandler;
   onDelete?: CardEventHandler;
+  resizeMode?: ImageResizeMode;
 }
 
 export interface State extends MediaState {
@@ -153,6 +155,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         identifier={identifier}
         appearance="image"
         actions={[CardDelete(onDelete!)]}
+        resizeMode={this.resizeMode}
       />
     );
   }
@@ -191,6 +194,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         }}
         actions={[CardDelete(onDelete!), CardClick(onClick!)]}
         selectable={false}
+        resizeMode={this.resizeMode}
       />
     );
   }
@@ -303,5 +307,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     return pluginState.stateManager;
+  }
+
+  private get resizeMode(): ImageResizeMode {
+    const {resizeMode} = this.props;
+
+    return resizeMode || 'full-fit';
   }
 }

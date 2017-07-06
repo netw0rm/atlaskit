@@ -265,7 +265,7 @@ export class GrantAccessBase extends Component {
 
 export default withCrossSellProvider(
   GrantAccessBase,
-  ({ crossSell: { config: { productLogo, startTrial } } }) => ({
+  ({ crossSell: { config: { productLogo, startTrial }, grantAccessToUsers } }) => ({
     productLogo,
     heading: startTrial.grantHeader,
     defaultAccess: startTrial.grantDefaultAccess,
@@ -276,5 +276,6 @@ export default withCrossSellProvider(
     usersOption: startTrial.UsersOption,
     chooseOption: startTrial.ChooseOption,
     affectBill: startTrial.AffectBill,
+    grantAccessToUsers,
   })
 );

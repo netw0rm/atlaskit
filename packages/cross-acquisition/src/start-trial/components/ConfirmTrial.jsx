@@ -87,9 +87,13 @@ export class ConfirmTrialBase extends Component {
 
 export default withCrossSellProvider(
   ConfirmTrialBase,
-  ({ crossSell: { config: { productLogo, startTrial } } }) => ({
+  ({
+    crossSell: { config: { productLogo, startTrial }, startProductTrial, cancelStartProductTrial },
+  }) => ({
     productLogo,
     heading: startTrial.confirmHeader,
     message: startTrial.confirmMessage,
+    startProductTrial,
+    cancelStartProductTrial,
   })
 );

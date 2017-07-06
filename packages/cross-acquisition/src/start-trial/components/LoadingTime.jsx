@@ -72,10 +72,19 @@ export class LoadingTimeBase extends Component {
 
 export default withCrossSellProvider(
   LoadingTimeBase,
-  ({ crossSell: { config: { productLogo, startTrial }, state: { progress } } }) => ({
+  ({
+    crossSell: {
+      config: { productLogo, startTrial },
+      state: { progress },
+      goToProduct,
+      closeLoadingDialog,
+    },
+  }) => ({
     productLogo,
     heading: startTrial.loadingHeading,
     completeHeading: startTrial.loadingCompleteHeading,
     progress,
+    goToProduct,
+    closeLoadingDialog,
   })
 );

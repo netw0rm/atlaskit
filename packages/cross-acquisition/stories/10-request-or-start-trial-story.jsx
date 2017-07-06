@@ -8,7 +8,14 @@ import MockConfluenceCrossSell from './providers/MockConfluenceCrossSellProvider
 storiesOf('RequestOrStartTrial')
   .add('if a user can add a product, show Start Trial', () =>
     setupStorybookAnalytics(
-      <MockConfluenceCrossSell canCurrentUserAddProduct={() => Promise.resolve(true)}>
+      <MockConfluenceCrossSell
+        canCurrentUserAddProduct={() => Promise.resolve(true)}
+        startProductTrial={() => new Promise(resolve => setTimeout(resolve, 1000))}
+        cancelStartProductTrial={() => Promise.resolve()}
+        grantAccessToUsers={() => new Promise(resolve => setTimeout(resolve, 1000))}
+        goToProduct={() => Promise.resolve()}
+        closeLoadingDialog={() => Promise.resolve()}
+      >
         <RequestOrStartTrial analyticsId="growth.happy" />
       </MockConfluenceCrossSell>
     )

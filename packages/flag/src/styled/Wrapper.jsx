@@ -17,7 +17,8 @@ const animationEnter = keyframes`
       transform: translate(0, 0);
     }
 `;
-const animationExit = keyframes`
+
+const animationLeave = keyframes`
   from {
     opacity: 1;
     transform: translate(0, 0);
@@ -28,16 +29,19 @@ const animationExit = keyframes`
   }
 `;
 
-const getAnimation = ({ isEntering, isExiting }) => {
-  let animation = 'initial';
+const getAnimation = ({ isEntering, isLeaving }) => {
+  if (isEntering) {
+    return `${animationEnter} ${flagAnimationDuration}`;
+  }
 
-  if (isEntering) animation = `${animationEnter} ${flagAnimationDuration}`;
-  else if (isExiting) animation = `${animationExit} ${flagAnimationDuration}`;
+  if (isLeaving) {
+    return `${animationLeave} ${flagAnimationDuration}`;
+  }
 
-  return animation;
+  return 'initial';
 };
 
-export default styled.div`
+const Wrapper = styled.div`
   bottom: 0;
   position: absolute;
   transition: transform ${flagAnimationDuration} ease-in-out;
@@ -53,15 +57,19 @@ export default styled.div`
 
   /* Layer the 'primary' flag above the 'secondary' flag */
   &:nth-child(1) { z-index: 5; }
-  &:nth-child(2) {
-    z-index: 4;
+  &:nth-child(2) { z-index: 4; }
 
-    /* The 2nd flag should be placed at 0,0 position when the 1st flag is animating out. */
-    ${({ isMovingToPrimary }) => (isMovingToPrimary && 'transform: translate(0, 0)')};
-  }
+  /* The 2nd flag should be placed at 0,0 position when the 1st flag is animating out. */
+  ${({ isLeaving }) => (isLeaving ? (`
+    && + * {
+      transform: translate(0, 0);
+    }
+  `) : null)}
 
   /* Only show primary flag + 2 secondary flags */
   &:nth-child(n+4) {
     display: none;
   }
 `;
+Wrapper.displayName = 'Wrapper';
+export default Wrapper;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { akColorN80 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const Toolbar: any = styled.div`
@@ -8,4 +9,19 @@ export const Toolbar: any = styled.div`
   padding: 3px 6px;
   display: flex;
   align-content: center;
+  & * {
+    display: flex;
+  }
+`;
+// tslint:disable-next-line:variable-name
+export const AdvanceMenuItemWrap: any = styled.span`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 110px;
+`;
+// tslint:disable-next-line:variable-name
+export const AdvanceMenuItemAfter: any = styled.span`
+  color: ${akColorN80};
+  font-size: 80%;
 `;

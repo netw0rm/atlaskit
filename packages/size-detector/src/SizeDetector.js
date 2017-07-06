@@ -1,22 +1,27 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Measurer from './Measurer';
 
 export default class SizeDetector extends React.Component {
-  state = {
-    width: 0
+  static propTypes = {
+    children: PropTypes.node,
   }
 
   static childContextTypes = {
     width: PropTypes.number,
   }
 
-  getChildContext() {``
+  state = {
+    width: 0,
+  }
+
+  getChildContext() {
     return {
-      width: this.state.width
+      width: this.state.width,
     };
   }
 
-  handleResize = (availableWidth) => { this.setState({ width: availableWidth })};
+  handleResize = availableWidth => this.setState({ width: availableWidth });
 
   render() {
     return (
@@ -27,5 +32,3 @@ export default class SizeDetector extends React.Component {
     );
   }
 }
-
-const Foo = ({ children }) => (<div>{children}</div>);

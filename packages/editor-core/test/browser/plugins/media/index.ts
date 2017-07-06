@@ -471,22 +471,6 @@ describe('Media plugin', () => {
 
         expect(pluginState.ignoreLinks).to.equal(false);
       });
-
-      context('when included link has no href', () => {
-        it('ignore links without href', () => {
-        const text = 'hello';
-        const { editorView, pluginState, sel } = editor(doc(p(`${text}{<>}`)));
-        const { state } = editorView;
-        const linkMark = state.schema.marks.link.create({ href: '' });
-        const tr = state.tr.addMark(sel - text.length, sel, linkMark);
-
-        pluginState.allowsLinks = true;
-
-        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
-
-        expect(linksRanges).to.deep.equal([]);
-        });
-      });
     });
 
     context('when ignore links flag is set to false', () => {

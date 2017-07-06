@@ -17,12 +17,6 @@ import {
   Node as PMNode,
   Schema,
   Transaction,
-<<<<<<< HEAD
-=======
-  Fragment,
-  ResolvedPos,
-  Mark,
->>>>>>> master
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';

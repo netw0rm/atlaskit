@@ -1,5 +1,5 @@
 import { EditorState, Transaction, Plugin, PluginKey, inputRules, Schema, Node } from '../../prosemirror';
-import { createInputRule } from '../utils';
+import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
 import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 
@@ -24,8 +24,8 @@ function initMatcher(emojiProvider: Promise<EmojiProvider>) {
 }
 
 function inputRuleHandler(state: EditorState<Schema<any, any>>, matchParts: [string], start: number, end: number): Transaction | undefined {
-  if (!isEnabled(state)) { return undefined; }
   if (!matcher) { return undefined; }
+  if (!isEnabled(state)) { return undefined; }
 
   const match = matcher.match(matchParts);
   if (match) {
@@ -41,8 +41,8 @@ function isEnabled(state: EditorState<Schema<any, any>>) {
 
 type AsciiEmojiMatch = {
   emoji: EmojiDescription;
-  startsWithWhitespace: boolean;
-  endsWithWhitespace: boolean;
+  leadingCharacter: string;
+  trailingCharacter: string;
 };
 
 class AsciiEmojiMatcher {
@@ -52,13 +52,13 @@ class AsciiEmojiMatcher {
    * 2. an emoticon not starting with a colon character (e.g. 8-D => 😎)
    *
    * The following describes the different parts of the regex from left to right:
-   *   (^| )
-   *     must be preceded by a space or the start of a line, regardless of scenario #1 or #2
+   *   (^|${leafNodeReplacementCharacter}| )
+   *     must be preceded by the start of a line, a whitespace or a leaf node, regardless of scenario #1 or #2
    *
    *   ([^: ]\S{1,3}|:\S{1,3} )
    *     alternation between scenario #1 and #2
    *       #1 - `[^: ]\S{1,3}`
-   *         must not start with a colon and any additional space is ignored (space is already matched by previous capture)
+   *         must not start with a colon and any additional whitespace or leaf node is ignored (as already matched by previous capture)
    *         following characters must be non-whitespace
    *         only matches emoticons that are between 2 and 4 characters long
    *       #2 - :\S{1,3}
@@ -70,11 +70,11 @@ class AsciiEmojiMatcher {
    *    $
    *      anchors the end of the match to the cursor position
    */
-  static REGEX = /(^| )([^: ]\S{1,3}|:\S{1,3} )$/;
+  static REGEX = new RegExp(`(^|[\\s${leafNodeReplacementCharacter}])([^:\\s${leafNodeReplacementCharacter}]\\S{1,3}|:\\S{1,3}( ))$`);
 
-  private static REGEX_FULL_CAPTURE_INDEX = 0;
-  private static REGEX_PREFIX_CAPTURE_INDEX = 1;
-  private static REGEX_WORD_CAPTURE_INDEX = 2;
+  private static REGEX_LEADING_CAPTURE_INDEX = 1;
+  private static REGEX_EMOJI_ASCII_CAPTURE_INDEX = 2;
+  private static REGEX_TRAILING_CAPTURE_INDEX = 3;
 
   private asciiToEmojiMap: Map<string, EmojiDescription>;
 
@@ -87,27 +87,26 @@ class AsciiEmojiMatcher {
     if (emoji) {
       return {
         emoji: emoji,
-        startsWithWhitespace: AsciiEmojiMatcher.startsWithWhitespace(matchParts),
-        endsWithWhitespace: AsciiEmojiMatcher.endsWithWhitespace(matchParts),
+        leadingCharacter: AsciiEmojiMatcher.getLeadingCharacter(matchParts),
+        trailingCharacter: AsciiEmojiMatcher.getTrailingCharacter(matchParts),
       };
     }
   }
 
   private getEmoji(match: string[]): EmojiDescription | undefined {
-    let ascii = match[AsciiEmojiMatcher.REGEX_WORD_CAPTURE_INDEX].trim();
+    let ascii = match[AsciiEmojiMatcher.REGEX_EMOJI_ASCII_CAPTURE_INDEX].trim();
     if (ascii) {
       return this.asciiToEmojiMap.get(ascii);
     }
     return undefined;
   }
 
-  private static startsWithWhitespace(match: string[]): boolean {
-    return match[AsciiEmojiMatcher.REGEX_PREFIX_CAPTURE_INDEX] === ' ';
+  private static getLeadingCharacter(match: string[]): string {
+    return match[AsciiEmojiMatcher.REGEX_LEADING_CAPTURE_INDEX];
   }
 
-  private static endsWithWhitespace(match: string[]): boolean {
-    const lastCharPos = match[AsciiEmojiMatcher.REGEX_FULL_CAPTURE_INDEX].length - 1;
-    return match[AsciiEmojiMatcher.REGEX_FULL_CAPTURE_INDEX].charAt(lastCharPos) === ' ';
+  private static getTrailingCharacter(match: string[]): string {
+    return match[AsciiEmojiMatcher.REGEX_TRAILING_CAPTURE_INDEX] || '';
   }
 }
 
@@ -133,7 +132,7 @@ class AsciiEmojiTransactionCreator {
   }
 
   private get from(): number {
-    return this.match.startsWithWhitespace ? this.start + 1 : this.start;
+    return this.start + this.match.leadingCharacter.length;
   }
 
   private get to(): number {
@@ -142,8 +141,8 @@ class AsciiEmojiTransactionCreator {
 
   private createNodes(): Node[] {
     const nodes = [this.createEmojiNode()];
-    if (this.match.endsWithWhitespace) {
-      nodes.push(this.createSpaceTextNode());
+    if (this.trailingTextNodeRequired()) {
+      nodes.push(this.createTrailingTextNode());
     }
     return nodes;
   }
@@ -162,8 +161,12 @@ class AsciiEmojiTransactionCreator {
     };
   }
 
-  private createSpaceTextNode(): Node {
-    return this.state.schema.text(' ');
+  private trailingTextNodeRequired(): boolean {
+    return this.match.trailingCharacter.length > 0;
+  }
+
+  private createTrailingTextNode(): Node {
+    return this.state.schema.text(this.match.trailingCharacter);
   }
 }
 

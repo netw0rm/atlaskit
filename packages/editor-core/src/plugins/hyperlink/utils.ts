@@ -94,20 +94,43 @@ function findLinkMatches(text: string): Match[] {
   const matches: Match[] = [];
   let match: RegExpExecArray | null;
   while(match = URL_REGEX_G.exec(text)) {
-    matches.push({
-      start: match.index,
-      end: match.index + match[0].length,
-      title: match[0],
-      href: match[0],
-    });
+    if (!isMatchOverlapping(matches, match)) {
+      matches.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        title: match[0],
+        href: match[0],
+      });
+    }
   }
   while(match = EMAIL_REGEX_G.exec(text)) {
-    matches.push({
-      start: match.index,
-      end: match.index + match[0].length,
-      title: match[0],
-      href: `mailto:${match[0]}`,
-    });
+    if (!isMatchOverlapping(matches, match)) {
+      matches.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        title: match[0],
+        href: `mailto:${match[0]}`,
+      });
+    }
   }
   return matches;
+}
+
+/**
+ * The function check that the regex match for url or email does not overlap an existing url or email.
+ * This is required as letter separator like / . are valid characters in url,
+ * and that can reasult in multiple marks being added for 1 link.
+ */
+function isMatchOverlapping(matches: Match[], match: RegExpExecArray | null): boolean {
+  let isOverlapping: boolean = false;
+  if(match) {
+    if (matches.some(m => match.index >= m.start && match.index <= m.end)) {
+      isOverlapping = true;
+    }
+    const matchEnd = match.index + match[0].length;
+    if (matches.some(m => matchEnd >= m.start && matchEnd <= m.end)) {
+      isOverlapping = true;
+    }
+  }
+  return isOverlapping;
 }

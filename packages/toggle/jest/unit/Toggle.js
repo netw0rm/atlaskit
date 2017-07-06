@@ -1,6 +1,7 @@
-import sinon from 'sinon';
-import React from 'react';
+import * as sinon from 'sinon';
+import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
+import React from 'react';
 import CloseIcon from 'ak-icon/glyph/cancel';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 
@@ -47,15 +48,15 @@ describe('Toggle', () => {
       expect(wrapper.find(Input).prop('disabled')).to.equal(false);
     });
 
-    it('name', () =>
-      expect(shallow(<Toggle name="test" />).find(Input).prop('name')).to.equal('test')
-    );
-    it('value', () =>
-      expect(shallow(<Toggle value="test" />).find(Input).prop('value')).to.equal('test')
-    );
-    it('size', () =>
-      expect(shallow(<Toggle size="large" />).find(Label).prop('size')).to.equal('large')
-    );
+    it('name', () => {
+      expect(shallow(<Toggle name="test" />).find(Input).prop('name')).to.equal('test');
+    });
+    it('value', () => {
+      expect(shallow(<Toggle value="test" />).find(Input).prop('value')).to.equal('test');
+    });
+    it('size', () => {
+      expect(shallow(<Toggle size="large" />).find(Label).prop('size')).to.equal('large');
+    });
 
     it('label', () => {
       expect(shallow(<Toggle isChecked label="test" />).find(ConfirmIcon).prop('label'))

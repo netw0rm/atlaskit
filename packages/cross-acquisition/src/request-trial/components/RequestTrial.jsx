@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
-import RequestTrialAccess from './RequestTrialAccess';
-import RequestTrialNote from './RequestTrialNote';
 
 import { MultiStep, Step } from '../../multi-step';
+
+import RequestTrialAccess from './RequestTrialAccess';
+import RequestTrialNote from './RequestTrialNote';
 
 export class RequestTrialBase extends Component {
   render() {

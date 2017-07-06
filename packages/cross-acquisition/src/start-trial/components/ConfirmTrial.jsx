@@ -13,25 +13,39 @@ import { withCrossSellProvider } from '../../common/components/CrossSellProvider
 
 export class ConfirmTrialBase extends Component {
   static propTypes = {
-    onComplete: PropTypes.func.isRequired,
     productLogo: PropTypes.node.isRequired,
     heading: PropTypes.string.isRequired,
     message: PropTypes.node.isRequired,
     spinnerActive: PropTypes.bool,
     confirmButtonDisabled: PropTypes.bool,
+    onComplete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    startProductTrial: PropTypes.func,
+    cancelStartProductTrial: PropTypes.func,
+  };
+
+  static defaultProps = {
+    startProductTrial: () => Promise.resolve(),
+    cancelStartProductTrial: () => Promise.resolve(),
   };
 
   state = {
     spinnerActive: this.props.spinnerActive,
     confirmButtonDisabled: this.props.confirmButtonDisabled,
-  }
+  };
 
   handleConfirmClick = () => {
-    this.setState({ spinnerActive: true, confirmButtonDisabled: true });
-    // Mock starting trial
-    setTimeout(() => {
-      this.props.onComplete();
-    }, 1500);
+    const { startProductTrial, onComplete } = this.props;
+    this.setState({
+      spinnerActive: true,
+      confirmButtonDisabled: true,
+    });
+    Promise.resolve(startProductTrial()).then(onComplete);
+  };
+
+  handleCancelClick = () => {
+    const { cancelStartProductTrial, onCancel } = this.props;
+    Promise.resolve(cancelStartProductTrial()).then(onCancel);
   };
 
   render() {
@@ -47,7 +61,11 @@ export class ConfirmTrialBase extends Component {
             <SpinnerDiv>
               <Spinner isCompleting={!this.state.spinnerActive} />
             </SpinnerDiv>
-            <Button onClick={this.handleConfirmClick} appearance="primary" isDisabled={this.state.confirmButtonDisabled}>
+            <Button
+              onClick={this.handleConfirmClick}
+              appearance="primary"
+              isDisabled={this.state.confirmButtonDisabled}
+            >
               Confirm
             </Button>
             <Button onClick={this.handleCancelClick} appearance="subtle-link">

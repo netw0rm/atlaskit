@@ -28,12 +28,12 @@ export class RequestTrialAccessBase extends Component {
 
   handleCancelClick = () => {
     const { cancelRequestTrialAccess, onCancel } = this.props;
-    return Promise.resolve(cancelRequestTrialAccess()).then(onCancel);
+    Promise.resolve(cancelRequestTrialAccess()).then(onCancel);
   };
 
   handleRequestAccessClick = () => {
     const { requestTrialAccess, onComplete } = this.props;
-    return Promise.resolve(requestTrialAccess()).then(onComplete);
+    Promise.resolve(requestTrialAccess()).then(onComplete);
   };
 
   render() {

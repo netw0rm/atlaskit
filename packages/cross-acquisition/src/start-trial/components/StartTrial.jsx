@@ -9,12 +9,12 @@ import GrantAccess from './GrantAccess';
 import LoadingTime from './LoadingTime';
 
 export class StartTrialBase extends Component {
-  static propTypes = {};
-
   render() {
     return (
       <MultiStep start={0}>
-        <Step render={nextStep => <ConfirmTrial onComplete={nextStep} />} />
+        <Step
+          render={(nextStep, cancel) => <ConfirmTrial onComplete={nextStep} onCancel={cancel} />}
+        />
         <Step render={nextStep => <GrantAccess onComplete={nextStep} />} />
         <Step render={nextStep => <LoadingTime onComplete={nextStep} />} />
       </MultiStep>

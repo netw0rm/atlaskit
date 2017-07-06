@@ -8,7 +8,7 @@ import Spinner from '@atlaskit/spinner';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 
-import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
+import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 
 import ProgressBar from './ProgressBar';
 
@@ -24,7 +24,6 @@ import SpinnerDiv from '../styled/SpinnerDiv';
 
 export class GrantAccessBase extends Component {
   static propTypes = {
-    onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number,
     productLogo: PropTypes.node.isRequired,
     userSelectInFocus: PropTypes.bool,
@@ -47,10 +46,12 @@ export class GrantAccessBase extends Component {
     affectBill: PropTypes.string,
     spinnerActive: PropTypes.bool,
     continueButtonDisabled: PropTypes.bool,
+    onComplete: PropTypes.func.isRequired,
+    grantAccessToUsers: PropTypes.func,
   };
 
-  static contextTypes = {
-    crossSell: crossSellShape,
+  static defaultProps = {
+    grantAccessToUsers: () => Promise.resolve(),
   };
 
   state = {
@@ -64,6 +65,7 @@ export class GrantAccessBase extends Component {
   };
 
   handleContinueClick = () => {
+    const { grantAccessToUsers, onComplete } = this.props;
     if (
       this.state.selectedRadio === 'specificUsers' &&
       this.userSelect.state.selectedItems.length === 0
@@ -74,10 +76,9 @@ export class GrantAccessBase extends Component {
       return;
     }
     this.setState({ spinnerActive: true, continueButtonDisabled: true });
-    // Mock granting access
-    setTimeout(() => {
-      this.props.onComplete();
-    }, 1500);
+
+    // TODO: Pass list of users from dropdown to grantAccessToUsers callback
+    Promise.resolve(grantAccessToUsers(this.state.selectedRadio)).then(onComplete);
   };
 
   handleLearnMoreClick = () => {
@@ -176,7 +177,11 @@ export class GrantAccessBase extends Component {
             <SpinnerDiv>
               <Spinner isCompleting={!this.state.spinnerActive} />
             </SpinnerDiv>
-            <Button onClick={this.handleContinueClick} appearance="primary" isDisabled={this.state.continueButtonDisabled} >
+            <Button
+              onClick={this.handleContinueClick}
+              appearance="primary"
+              isDisabled={this.state.continueButtonDisabled}
+            >
               Continue
             </Button>
 
@@ -230,10 +235,10 @@ export class GrantAccessBase extends Component {
             </div>
             : <div>
               {React.isValidElement(defaultAccess)
-                ? defaultAccess
-                : <p>
-                  {defaultAccess}
-                </p>}
+                  ? defaultAccess
+                  : <p>
+                    {defaultAccess}
+                  </p>}
 
               <ChangeButton>
                 <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>

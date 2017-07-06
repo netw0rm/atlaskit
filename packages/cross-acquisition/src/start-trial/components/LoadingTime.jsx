@@ -9,7 +9,7 @@ import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
 
-import { withCrossSellProvider, crossSellShape } from '../../common/components/CrossSellProvider';
+import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 
 export class LoadingTimeBase extends Component {
   static propTypes = {
@@ -18,12 +18,27 @@ export class LoadingTimeBase extends Component {
     productLogo: PropTypes.node,
     heading: PropTypes.string,
     completeHeading: PropTypes.string,
+    goToProduct: PropTypes.func,
+    closeLoadingDialog: PropTypes.func,
   };
 
-  static contextTypes = crossSellShape;
+  static defaultProps = {
+    goToProduct: () => Promise.resolve(),
+    closeLoadingDialog: () => Promise.resolve(),
+  };
+
+  handleGoToProductClick = () => {
+    const { goToProduct, onComplete } = this.props;
+    Promise.resolve(goToProduct()).then(onComplete);
+  };
+
+  handleCloseClick = () => {
+    const { closeLoadingDialog, onComplete } = this.props;
+    Promise.resolve(closeLoadingDialog()).then(onComplete);
+  };
 
   render() {
-    const { productLogo, progress, heading, completeHeading, onComplete } = this.props;
+    const { productLogo, progress, heading, completeHeading } = this.props;
 
     const isReady = progress === 100;
     return (
@@ -33,10 +48,14 @@ export class LoadingTimeBase extends Component {
         header={productLogo}
         footer={
           <StartTrialFooter>
-            <Button isDisabled={!isReady} onClick={onComplete} appearance="primary">
+            <Button
+              isDisabled={!isReady}
+              onClick={this.handleGoToProductClick}
+              appearance="primary"
+            >
               Go to Confluence
             </Button>
-            <Button onClick={onComplete} appearance="subtle-link">Close</Button>
+            <Button onClick={this.handleCloseClick} appearance="subtle-link">Close</Button>
           </StartTrialFooter>
         }
       >

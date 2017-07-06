@@ -24,9 +24,9 @@ storiesOf('RequestOrStartTrial')
     setupStorybookAnalytics(
       <MockConfluenceCrossSell
         canCurrentUserAddProduct={() => Promise.resolve(false)}
-        requestTrialAccess={() => Promise.resolve(true)}
-        requestTrialAccessWithNote={() => Promise.resolve(true)}
-        requestTrialAccessWithoutNote={() => Promise.resolve(true)}
+        requestTrialAccess={() => new Promise(resolve => setTimeout(resolve, 1000))}
+        requestTrialAccessWithNote={() => new Promise(resolve => setTimeout(resolve, 1000))}
+        requestTrialAccessWithoutNote={() => new Promise(resolve => setTimeout(resolve, 1000))}
         cancelRequestTrialAccess={() => Promise.resolve(true)}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />

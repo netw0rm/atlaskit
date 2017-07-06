@@ -7,6 +7,7 @@ import ToolbarButton from '../../../src/ui/ToolbarButton';
 import TableFloatingToolbar from '../../../src/ui/TableFloatingToolbar';
 import { Toolbar } from '../../../src/ui/TableFloatingToolbar/styles';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 
 import {
   createEvent, doc, p, fixtures, makeEditor, table, tr, tdEmpty, tdCursor
@@ -90,7 +91,7 @@ describe('TableFloatingToolbar', () => {
         <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
       );
       floatingToolbar.setState({ cellElement: document.createElement('td') });
-      const button = floatingToolbar.find(ToolbarButton);
+      const button = floatingToolbar.find(ToolbarButton).first();
       expect(button).to.have.length(1);
       expect(button.find(RemoveIcon)).to.have.length(1);
       floatingToolbar.unmount();
@@ -103,9 +104,68 @@ describe('TableFloatingToolbar', () => {
       );
       pluginState.remove = sinon.spy();
       floatingToolbar.setState({ cellElement: document.createElement('td') });
-      const button = floatingToolbar.find(ToolbarButton);
+      const button = floatingToolbar.find(ToolbarButton).first();
       button.simulate('click');
       expect((pluginState.remove as any).callCount).to.equal(1);
+      floatingToolbar.unmount();
     });
   });
+
+  describe('Advance menu', () => {
+    describe('icon', () => {
+      it('should be rendered in the toolbar', () => {
+        const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+        const floatingToolbar = mount(
+          <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
+        );
+        floatingToolbar.setState({ cellElement: document.createElement('td') });
+        const button = floatingToolbar.find(ToolbarButton).at(1);
+        expect(button.find(EditorMoreIcon)).to.have.length(1);
+        floatingToolbar.unmount();
+      });
+
+      it('should open DropdownMenu on click', () => {
+        const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+        const floatingToolbar = mount(
+          <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
+        );
+        floatingToolbar.setState({ cellElement: document.createElement('td') });
+        floatingToolbar.find(ToolbarButton).at(1).simulate('click');
+        expect(floatingToolbar.state('isOpen')).to.equal(true);
+        floatingToolbar.unmount();
+      });
+    });
+
+    describe('DropdownMenu', () => {
+      it('should make isOpen false when a menu item is clicked', () => {
+        const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+        const floatingToolbar = mount(
+          <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
+        );
+        floatingToolbar.setState({ cellElement: document.createElement('td') });
+        floatingToolbar.find(ToolbarButton).at(1).simulate('click');
+        expect(floatingToolbar.state('isOpen')).to.equal(true);
+        floatingToolbar.find('DropdownMenu span[role="menuitem"]').first().simulate('click');
+        expect(floatingToolbar.state('isOpen')).to.equal(false);
+        floatingToolbar.unmount();
+      });
+
+      ['cut', 'copy', 'paste'].forEach((command, i) => {
+        it(`should call "pluginState.${command}" when "${command}" item is clicked`, () => {
+          const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+          const floatingToolbar = mount(
+            <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
+          );
+          pluginState[command] = sinon.spy();
+          floatingToolbar.setState({ cellElement: document.createElement('td') });
+          floatingToolbar.find(ToolbarButton).at(1).simulate('click');
+          expect(floatingToolbar.state('isOpen')).to.equal(true);
+          floatingToolbar.find('DropdownMenu span[role="menuitem"]').at(i).simulate('click');
+          expect((pluginState[command] as any).callCount).to.equal(1);
+          floatingToolbar.unmount();
+        });
+      });
+    });
+  });
+
 });

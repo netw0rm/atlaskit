@@ -63,9 +63,9 @@ pipelines:
           - yarn run test/unit
           - yarn run test/jest
           - run-p -ln "test" "test/base"
-          # - yarn run browserstack/tunnel/start
-          # - yarn run test/browserstack
-          # - yarn run browserstack/tunnel/stop
+          - yarn run browserstack/tunnel/start
+          - yarn run test/browserstack
+          - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"
         caches:
           - node

@@ -79,16 +79,14 @@ const standardConfig = {
         // TYPESCRIPT
         // Create a separate compiler for each package, to allow independent "lib" compiler options.
         //
-        ...tsPackageNames.map(name => ({
-          test: new RegExp(`packages/${name}/.*\\.tsx?$`),
+        {
+          test: new RegExp(`packages/(${tsPackageNames.join('|')})/.*\\.tsx?$`),
           exclude: /node_modules/,
-          loader: loaderChain({
-            'ts-loader': {
-              logLevel: 'warn',
-              instance: name,
-            },
-          }),
-        })),
+          loader: 'ts-loader',
+          // options: {
+          //   transpileOnly: true
+          // }
+        },
         //
         // Images (for storybook)
         //

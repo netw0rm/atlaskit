@@ -26,7 +26,7 @@ import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
-import keymapPlugin from './keymap';
+import keymapHandler from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
 
@@ -47,6 +47,7 @@ export class MediaPluginState {
   public pickers: PickerFacade[] = [];
   public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
+  public keymapHandler: Function;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -506,6 +507,7 @@ const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
     view: (view: EditorView) => {
       const pluginState: MediaPluginState = stateKey.getState(view.state);
       pluginState.setView(view);
+      pluginState.keymapHandler = keymapHandler(view, pluginState);
 
       return {
         update: (view: EditorView, prevState: EditorState<any>) => {
@@ -519,11 +521,14 @@ const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
+      },
+      handleKeyDown(view, event) {
+        return stateKey.getState(view.state).keymapHandler(view, event);
       }
     }
   });
 
-  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

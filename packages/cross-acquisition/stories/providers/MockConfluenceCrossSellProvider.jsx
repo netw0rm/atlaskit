@@ -30,7 +30,7 @@ export default class MockConfluenceCrossSellProvider extends Component {
           ),
           grantHeader: 'Who should have access?',
           grantDefaultAccess: (
-            <p><strong>Everyone in JIRA Software</strong> will have access to Confluence.</p>
+            <p><strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.</p>
           ),
           grantLearnMoreLinkText: 'Learn more',
           grantNotifyUsers: 'Notify these users',

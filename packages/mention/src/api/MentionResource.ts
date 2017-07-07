@@ -59,7 +59,25 @@ export interface MentionResourceConfig {
 }
 
 export interface ResourceProvider<Result> {
-  subscribe(key: string, callback?: ResultCallback<Result>, errCallback?: ErrorCallback, infoCallback?: InfoCallback): void;
+  /**
+   * Subscribe to ResourceProvider results
+   *
+   * @param {string} key subscriber key used to unsubscribe
+   * @param {ResultCallback<Result>} callback This callback only receives latest results
+   * @param {ErrorCallback} errCallback This callback will errors
+   * @param {InfoCallback} infoCallback This callback will info
+   * @param {ResultCallback<Result>} allResultsCallback This callback will receive all results
+   */
+  subscribe(key: string,
+            callback?: ResultCallback<Result>,
+            errCallback?: ErrorCallback,
+            infoCallback?: InfoCallback,
+            allResultsCallback?: ResultCallback<Result>): void;
+
+  /**
+   * Unsubscribe to this resource provider results
+   * @param {string} key key used when subscribing
+   */
   unsubscribe(key: string): void;
 }
 
@@ -158,14 +176,20 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
   protected changeListeners: Map<string, ResultCallback<Result>>;
   protected errListeners: Map<string, ErrorCallback>;
   protected infoListeners: Map<string, InfoCallback>;
+  protected allResultsListeners: Map<string, ResultCallback<Result>>;
 
   constructor() {
     this.changeListeners = new Map<string, ResultCallback<Result>>();
+    this.allResultsListeners = new Map<string, ResultCallback<Result>>();
     this.errListeners = new Map<string, ErrorCallback>();
     this.infoListeners = new Map<string, InfoCallback>();
   }
 
-  subscribe(key: string, callback?: ResultCallback<Result>, errCallback?: ErrorCallback, infoCallback?: InfoCallback): void {
+  subscribe(key: string,
+            callback?: ResultCallback<Result>,
+            errCallback?: ErrorCallback,
+            infoCallback?: InfoCallback,
+            allResultsCallback?: ResultCallback<Result>): void {
     if (callback) {
       this.changeListeners.set(key, callback);
     }
@@ -175,12 +199,16 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
     if (infoCallback) {
       this.infoListeners.set(key, infoCallback);
     }
+    if (allResultsCallback) {
+      this.allResultsListeners.set(key, allResultsCallback);
+    }
   }
 
   unsubscribe(key: string): void {
     this.changeListeners.delete(key);
     this.errListeners.delete(key);
     this.infoListeners.delete(key);
+    this.allResultsListeners.delete(key);
   }
 }
 
@@ -210,6 +238,21 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
       this.changeListeners);
 
     this.changeListeners.forEach((listener, key) => {
+      try {
+        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), mentionsResult.query);
+      } catch (e) {
+        // ignore error from listener
+        debug(`error from listener '${key}', ignoring`, e);
+      }
+    });
+  }
+
+  protected _notifyAllResultsListeners(mentionsResult: MentionsResult): void {
+    debug('ak-mention-resource._notifyAllResultsListeners',
+      mentionsResult && mentionsResult.mentions && mentionsResult.mentions.length,
+      this.changeListeners);
+
+    this.allResultsListeners.forEach((listener, key) => {
       try {
         listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), mentionsResult.query);
       } catch (e) {
@@ -281,6 +324,8 @@ class MentionResource extends AbstractMentionResource {
       const date = new Date(searchTime).toISOString().substr(17, 6);
       debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
     }
+
+    this._notifyAllResultsListeners(mentionResult);
   }
 
   notifyError(error: Error, query?: string) {
@@ -344,9 +389,9 @@ class MentionResource extends AbstractMentionResource {
       return this.searchIndex.search(query).then(result => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
         this.remoteSearch(query).then(result => {
+          this.activeSearches.delete(query);
           this.notify(searchTime, result, query);
           this.searchIndex.indexResults(result.mentions);
-          this.activeSearches.delete(query);
         },
         err => {
           this._notifyErrorListeners(err);

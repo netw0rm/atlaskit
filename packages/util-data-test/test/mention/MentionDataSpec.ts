@@ -4,7 +4,7 @@ import mentionData, { mentionDataSize } from '../../src/mention/mention-data';
 
 describe('#mention data', () => {
   it('expected mention data', () => {
-    expect(mentionDataSize, '20 users').to.equal(20);
+    expect(mentionDataSize, '22 users').to.equal(22);
   });
 
   it('expected a user to have a nickname', () => {

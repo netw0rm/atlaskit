@@ -25,7 +25,10 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
       const shortcut = keymaps.findShortcutByDescription(blockType.title);
       if (shortcut) {
         const eventName = analyticsEventName(blockType.name, 'keyboard');
-        keymaps.bindKeymapWithCommand(shortcut, trackAndInvoke(eventName, () => pluginState.toggleBlockType(blockType.name, view)), list);
+        keymaps.bindKeymapWithCommand(
+          shortcut,
+          trackAndInvoke(eventName, () => pluginState.toggleBlockType(blockType.name, view)
+        ), list);
       }
     }
   });

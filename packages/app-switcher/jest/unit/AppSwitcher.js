@@ -2,8 +2,8 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
-import AppSwitcher from '../src';
-import { name } from '../package.json';
+import AppSwitcher from '../../src';
+import { name } from '../../package.json';
 
 const data = {
   recentContainers: [
@@ -39,6 +39,7 @@ const data = {
   i18n: {
     home: 'Home',
     apps: 'Apps',
+    'applinks.error': 'Applinks error',
     configure: 'Configure',
     recent: 'Recent',
     'try.other.apps': 'Try Other Atlassian Apps',
@@ -58,7 +59,7 @@ describe(name, () => {
       <AppSwitcher {...data} dropdownOptions={{ test: 'test' }} />
     );
 
-    expect(wrapper.find(DropdownMenuStateless).prop('test')).to.equal('test');
+    expect(wrapper.find(DropdownMenuStateless).prop('test')).toBe('test');
   });
 
   it('should pass isLoading to StatelessDropdown', () => {
@@ -67,14 +68,14 @@ describe(name, () => {
         {...data}
         isLoading
       />).find(DropdownMenuStateless).prop('isLoading')
-    ).to.equal(true);
+    ).toBe(true);
 
     expect(shallow(
       <AppSwitcher
         {...data}
         isLoading={false}
       />).find(DropdownMenuStateless).prop('isLoading')
-    ).to.equal(false);
+    ).toBe(false);
   });
 
   it('should invoke the open callback when it opens', () => {
@@ -82,11 +83,11 @@ describe(name, () => {
     const wrapper = shallow(
       <AppSwitcher {...data} onAppSwitcherOpen={spy} />
     );
-    expect(spy.callCount).to.equal(0);
+    expect(spy.callCount).toBe(0);
 
     wrapper.instance().onOpenChange({
       isOpen: true,
     });
-    expect(spy.callCount).to.equal(1);
+    expect(spy.callCount).toBe(1);
   });
 });

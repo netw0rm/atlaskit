@@ -89,6 +89,9 @@ export default class AppSwitcher extends Component {
       dropdownOptions,
     } = this.props;
 
+    // NOTE: dropdownItems here are passing content that are React elements and not strings
+    // This is not the intended behaviour of DropdownMenu and could result in major issues in the
+    // future. (Its what is throwing the warnings in tests too)
     const dropdownItems = [
       getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),

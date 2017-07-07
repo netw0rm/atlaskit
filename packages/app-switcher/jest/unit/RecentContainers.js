@@ -1,5 +1,5 @@
-import getRecentContainers from '../src/items/recent-containers';
-import { name } from '../package.json';
+import getRecentContainers from '../../src/items/recent-containers';
+import { name } from '../../package.json';
 
 const container = {
   name: 'Recent container',
@@ -12,12 +12,12 @@ describe(name, () => {
   it('should return null if there are no containers provided', () => {
     const items = getRecentContainers({}, false, []);
 
-    expect(items).to.equal(null);
+    expect(items).toBe(null);
   });
 
   it('should return null if there are no containers provided', () => {
     const items = getRecentContainers({}, true, [container]);
 
-    expect(items).to.equal(null);
+    expect(items).toBe(null);
   });
 });

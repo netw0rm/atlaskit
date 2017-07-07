@@ -3,8 +3,8 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
-import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../src/index';
-import {ArrowLeftWrapper, ArrowRightWrapper} from '../src/styled';
+import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../../src/index';
+import {ArrowLeftWrapper, ArrowRightWrapper} from '../../src/styled';
 import {CardView} from '@atlaskit/media-card';
 
 const mountFilmStrip = (container: HTMLDivElement, items: Array<FilmStripViewItem>, width: number, onCardClick?: (event: FilmStripCardClickEvent) => void) => {

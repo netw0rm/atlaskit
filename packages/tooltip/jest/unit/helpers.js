@@ -12,7 +12,7 @@ describe('Tooltip helpers', () => {
 
     testCases.forEach((test) => {
       it(`should correctly translate position=${test.position}`, () => {
-        expect(positionToPopperPosition(test.position)).to.equal(test.expected);
+        expect(positionToPopperPosition(test.position)).toBe(test.expected);
       });
     });
   });

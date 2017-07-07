@@ -7,7 +7,7 @@ import AKTooltip from '../../src';
 describe('Tooltip (smart)', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<AKTooltip><div>foo</div></AKTooltip>);
-    expect(wrapper).not.to.equal(undefined);
+    expect(wrapper).not.toBe(undefined);
   });
 
   describe('visible state', () => {
@@ -23,9 +23,9 @@ describe('Tooltip (smart)', () => {
     it('should set visible state to true when mouse enters', () => {
       const wrapper = mount(<AKTooltip><div>foo</div></AKTooltip>);
 
-      expect((wrapper).state('visible')).to.equal(false);
+      expect((wrapper).state('visible')).toBe(false);
       wrapper.simulate('mouseOver');
-      expect((wrapper).state('visible')).to.equal(true);
+      expect((wrapper).state('visible')).toBe(true);
     });
 
     it('should set visible state to false when mouse leaves', () => {
@@ -33,10 +33,10 @@ describe('Tooltip (smart)', () => {
 
       // set up the negative case first
       wrapper.simulate('mouseOver');
-      expect((wrapper).state('visible')).to.equal(true);
+      expect((wrapper).state('visible')).toBe(true);
 
       wrapper.simulate('mouseOut');
-      expect((wrapper).state('visible')).to.equal(false);
+      expect((wrapper).state('visible')).toBe(false);
     });
   });
 });

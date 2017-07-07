@@ -26,14 +26,11 @@ chai.use(chaiPlugin);
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
 describe('media-links', () => {
-  const editor = (doc: any, uploadErrorHandler?: () => void) => {
-    return makeEditor<MediaPluginState>({
-      doc,
-      schema: defaultSchema,
-    });
-  };
-
   const temporaryFileId = `temporary:${randomId()}`;
+  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
+    doc,
+    schema: defaultSchema,
+  });
 
   context('when cursor is at the end of a text block', () => {
     it('inserts media node into the document after current paragraph node', () => {

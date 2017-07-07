@@ -10,18 +10,15 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 
 import {
-  createEvent, doc, p, fixtures, makeEditor, table, tr, tdEmpty, tdCursor
+  createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
 } from '../../../src/test-helper';
 
 describe('TableFloatingToolbar', () => {
-  const fixture = fixtures();
+  const event = createEvent('event');
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
-    place: fixture()
   });
-
-  const event = createEvent('event');
 
   context('when cellElement is undefined', () => {
     it('should not render toolbar', () => {

@@ -6,7 +6,6 @@ import mentionsPlugins, { MentionsState } from '../../../../src/plugins/mentions
 import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
-  fixtures,
   makeEditor,
   sendKeyToPm,
   blockquote,
@@ -30,11 +29,9 @@ chai.use(chaiPlugin);
 
 describe('mentions', () => {
   let sandbox;
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<MentionsState>({
     doc,
     plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-    place: fixture()
   });
 
   const forceUpdate = (pluginState, editorView: any) => {

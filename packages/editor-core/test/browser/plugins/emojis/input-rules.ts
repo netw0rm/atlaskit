@@ -4,7 +4,6 @@ import emojiPlugins, { EmojiState } from '../../../../src/plugins/emojis';
 import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
-  fixtures,
   insertText,
   makeEditor,
   doc,
@@ -21,11 +20,9 @@ chai.use(chaiPlugin);
 
 describe('emojis - input rules', () => {
   const providerFactory = new ProviderFactory();
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, providerFactory),
-    place: fixture()
   });
 
   const assert = (what: string, expected: boolean, docContents?: any) => {

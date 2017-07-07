@@ -6,7 +6,6 @@ import { emoji as emojiNode } from '../../../../src';
 import emojiPlugins, { EmojiState } from '../../../../src/plugins/emojis';
 import {
   chaiPlugin,
-  fixtures,
   makeEditor,
   sendKeyToPm,
   blockquote,
@@ -42,11 +41,9 @@ chai.use(chaiPlugin);
 
 describe('emojis', () => {
   const providerFactory = new ProviderFactory();
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, providerFactory),
-    place: fixture()
   });
 
   providerFactory.setProvider('emojiProvider', emojiProvider);

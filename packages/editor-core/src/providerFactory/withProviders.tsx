@@ -5,7 +5,13 @@ export interface Providers {
   [key: string]: Promise<any>;
 }
 
-export class WithProviders extends PureComponent<{ providerFactory: ProviderFactory, providers: string[], renderNode: (providers: Providers) => JSX.Element }, { providers: any }> {
+export interface Props {
+  providerFactory: ProviderFactory;
+  providers: string[];
+  renderNode: (providers: Providers) => JSX.Element;
+}
+
+export class WithProviders extends PureComponent<Props, { providers: any }> {
 
   constructor(props) {
     super(props);

@@ -294,6 +294,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               pluginKey={mentionPluginKey}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsMountPoint={popupsMountPoint}
+              mentionProvider={mentionProvider}
             /> : null}
 
           {pluginStateEmojis && emojiProvider && !disabled ?
@@ -302,6 +303,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsMountPoint={popupsMountPoint}
+              emojiProvider={emojiProvider}
             /> : null}
 
           {pluginStatePanel ? <PanelEdit pluginState={pluginStatePanel} editorView={editorView} /> : null}

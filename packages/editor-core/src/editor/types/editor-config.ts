@@ -1,6 +1,5 @@
-import * as React from 'react';
 import { NodeSpec, MarkSpec, NodeView } from '../../prosemirror';
-import { PMPluginFactory } from './editor-plugin';
+import { PMPluginFactory, UIComponentFactory } from './editor-plugin';
 
 export interface NodeConfig {
   name: string;
@@ -23,7 +22,7 @@ export interface EditorConfig {
   nodes: NodeConfig[];
   marks: MarkConfig[];
   pmPlugins: { rank: number; plugin: PMPluginFactory; }[];
-  contentComponents: (() => React.ReactElement<any>)[];
-  primaryToolbarComponents: (() => React.ReactElement<any>)[];
-  secondaryToolbarComponents: (() => React.ReactElement<any>)[];
+  contentComponents: UIComponentFactory[];
+  primaryToolbarComponents: UIComponentFactory[];
+  secondaryToolbarComponents: UIComponentFactory[];
 }

@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@atlaskit/emoji": "^18.0.0",
-    "@atlaskit/mention": "^7.0.0",
+    "@atlaskit/mention": "^7.2.0",
     "akutil-common-test": "*"
   },
   "keywords": [

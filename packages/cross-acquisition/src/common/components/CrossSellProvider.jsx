@@ -14,7 +14,7 @@ export const crossSellShape = PropTypes.shape({
       notePlaceholder: PropTypes.string,
     }),
     startTrial: PropTypes.shape({
-      confirmHeader: PropTypes.string,
+      confirmHeading: PropTypes.string,
       confirmMessage: PropTypes.node,
       grantHeading: PropTypes.string,
       grantDefaultAccess: PropTypes.node,

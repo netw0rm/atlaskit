@@ -16,6 +16,8 @@ export class ConfirmTrialBase extends Component {
     productLogo: PropTypes.node.isRequired,
     heading: PropTypes.string.isRequired,
     message: PropTypes.node.isRequired,
+    confirmButtonText: PropTypes.string.isRequired,
+    cancelButtonText: PropTypes.string.isRequired,
     spinnerActive: PropTypes.bool,
     confirmButtonDisabled: PropTypes.bool,
     onComplete: PropTypes.func.isRequired,
@@ -49,7 +51,7 @@ export class ConfirmTrialBase extends Component {
   };
 
   render() {
-    const { productLogo, heading, message } = this.props;
+    const { productLogo, heading, message, confirmButtonText, cancelButtonText } = this.props;
 
     return (
       <ModalDialog
@@ -66,10 +68,10 @@ export class ConfirmTrialBase extends Component {
               appearance="primary"
               isDisabled={this.state.confirmButtonDisabled}
             >
-              Confirm
+              {confirmButtonText}
             </Button>
             <Button onClick={this.handleCancelClick} appearance="subtle-link">
-              Cancel
+              {cancelButtonText}
             </Button>
           </StartTrialFooter>
         }
@@ -91,8 +93,10 @@ export default withCrossSellProvider(
     crossSell: { config: { productLogo, startTrial }, startProductTrial, cancelStartProductTrial },
   }) => ({
     productLogo,
-    heading: startTrial.confirmHeader,
+    heading: startTrial.confirmHeading,
     message: startTrial.confirmMessage,
+    confirmButtonText: startTrial.confirmButtonText,
+    cancelButtonText: startTrial.confirmCancelButtonText,
     startProductTrial,
     cancelStartProductTrial,
   })

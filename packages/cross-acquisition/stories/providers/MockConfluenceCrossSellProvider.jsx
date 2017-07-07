@@ -20,7 +20,7 @@ export default class MockConfluenceCrossSellProvider extends Component {
           notePlaceholder: 'I would like to try Confluence because…',
         },
         startTrial: {
-          confirmHeader: 'Start your 30 day trial',
+          confirmHeading: 'Start your 30 day trial',
           confirmMessage: (
             <p>
               Once your trial finishes, billing will start.<br />
@@ -28,6 +28,8 @@ export default class MockConfluenceCrossSellProvider extends Component {
               We will email your billing contact 3 days in advance.
             </p>
           ),
+          confirmButtonText: 'Confirm',
+          confirmCancelButtonText: 'Cancel',
           grantHeader: 'Who should have access?',
           grantDefaultAccess: (
             <p><strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.</p>

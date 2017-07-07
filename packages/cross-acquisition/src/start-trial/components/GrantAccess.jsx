@@ -19,6 +19,7 @@ import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
 import StartTrialHeaderDiv from '../styled/StartTrialHeaderDiv';
 import GrantAccessChangeUsersDiv from '../styled/GrantAccessChangeUsersDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
+import GrantAccessTextDiv from '../styled/GrantAccessTextDiv';
 import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import AffectMyBillText from '../styled/AffectMyBillText';
@@ -237,12 +238,13 @@ export class GrantAccessBase extends Component {
               </AffectMyBillText>
             </GrantAccessChangeUsersDiv>
             : <GrantAccessDefaultAccessDiv>
-              {React.isValidElement(defaultAccess)
-                ? defaultAccess
-                : <p>
-                  {defaultAccess}
-                </p>}
-
+              <GrantAccessTextDiv>
+                {React.isValidElement(defaultAccess)
+                  ? defaultAccess
+                  : <p>
+                    {defaultAccess}
+                  </p>}
+              </GrantAccessTextDiv>
               <ChangeButton>
                 <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>
               </ChangeButton>

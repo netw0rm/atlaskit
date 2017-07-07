@@ -50,7 +50,7 @@ export const markOrder = [
 const whitelistedURLPatterns = [
   /^https?:\/\//im,
   /^ftps?:\/\//im,
-  /^\/\//im,
+  /^\//im,
   /^mailto:/im,
   /^skype:/im,
   /^callto:/im,
@@ -480,7 +480,7 @@ export const getValidMark = (mark: Mark): Mark | null => {
           let linkHref = href || url;
 
           if (linkHref.indexOf(':') === -1) {
-            linkHref = `//${linkHref}`;
+            linkHref = `http://${linkHref}`;
           }
 
           if (linkHref && isSafeUrl(linkHref)) {

@@ -142,6 +142,22 @@ describe('MentionResource', () => {
       }, 10);
     });
 
+    it('all results callback should receive all results', (done) => {
+      const resource = new MentionResource(apiConfig);
+      const results: MentionDescription[][] = [];
+      const expected = [resultCraig, resultC];
+      resource.subscribe('test1', undefined, undefined, undefined, (mentions) => {
+        results.push(mentions);
+
+        if (results.length === 2) {
+          checkOrder(expected, results);
+          done();
+        }
+      });
+      resource.filter('delay');
+      resource.filter('craig');
+    });
+
     // Temporarily disabled due to failing on Mobile Safari 9.0.0.
     it.skip('out of order responses', (done) => { // eslint-disable-line
       const resource = new MentionResource(apiConfig);

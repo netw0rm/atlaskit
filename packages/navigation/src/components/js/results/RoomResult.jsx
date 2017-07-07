@@ -17,12 +17,16 @@ const privacyIcons = {
 export default class RoomResult extends PureComponent {
   static propTypes = {
     avatarUrl: PropTypes.string,
+    isSelected: PropTypes.bool,
     name: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
     privacy: PropTypes.oneOf(['none', 'private', 'public']),
     topic: PropTypes.string,
   }
 
   static defaultProps = {
+    isSelected: false,
+    onClick: () => {},
     privacy: 'none',
   }
 
@@ -43,6 +47,8 @@ export default class RoomResult extends PureComponent {
     return (
       <AkNavigationItem
         icon={roomIcon}
+        isSelected={this.props.isSelected}
+        onClick={() => this.props.onClick(this.props)}
         subText={this.props.topic}
         text={this.props.name}
       />

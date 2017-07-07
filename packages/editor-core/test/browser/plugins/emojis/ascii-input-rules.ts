@@ -11,6 +11,8 @@ import {
   text,
   code,
   code_block,
+  hardBreak,
+  emojiQuery,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
@@ -28,6 +30,17 @@ describe('ascii emojis - input rules', () => {
     place: fixture()
   });
 
+  const smileyEmoji = emojiNode({
+    id: '1f603',
+    shortName: ':smiley:',
+    text: '😃'
+  });
+  const thumbsupEmoji = emojiNode({
+    id: '1f44d',
+    shortName: ':thumbsup:',
+    text: '👍'
+  });
+
   const assert = (what: string, docContents: any, expectation: (state) => void) => {
     return emojiProvider.then(() => {
       const { editorView, sel } = editor(doc(docContents));
@@ -38,16 +51,11 @@ describe('ascii emojis - input rules', () => {
     });
   };
 
-  context('when an emoticon is preceded by a whitespace character', () => {
+  context('when an emoticon is preceded by a space character', () => {
     context('and starting with a colon character', () => {
       it('should replace a matching emoticon when followed by a space', () => {
         return assert('text :D ', p('{<>}'), (state) => {
-          const emoji = emojiNode({
-            id: '1f603',
-            shortName: ':smiley:',
-            text: '😃'
-          });
-          expect(state.doc.content.child(0)).to.deep.equal(p(textNode('text '), emoji, textNode(' ')));
+          expect(state.doc.content.child(0)).to.deep.equal(p(textNode('text '), smileyEmoji, textNode(' ')));
         });
       });
 
@@ -61,12 +69,7 @@ describe('ascii emojis - input rules', () => {
     context('and not starting with a colon character', () => {
       it('should replace a matching emoticon', () => {
         return assert('text (y)', p('{<>}'), (state) => {
-          const emoji = emojiNode({
-            id: '1f44d',
-            shortName: ':thumbsup:',
-            text: '👍'
-          });
-          expect(state.doc.content.child(0)).to.deep.equal(p(textNode('text '), emoji));
+          expect(state.doc.content.child(0)).to.deep.equal(p(textNode('text '), thumbsupEmoji));
         });
       });
 
@@ -97,16 +100,19 @@ describe('ascii emojis - input rules', () => {
     });
   });
 
-  context('when starting at the beginning of a line',() =>  {
+  context('when preceded by a tab character', () => {
+    it('should replace a matching emoticon', () => {
+      return assert('\t(y)', p('{<>}'), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(textNode('\t'), thumbsupEmoji));
+      });
+    });
+  });
+
+  context('when starting at the beginning of a line', () =>  {
     context('and starting with a colon character', () => {
       it('should replace a matching emoticon if followed by a space', () => {
         return assert(':D ', p('{<>}'), (state) => {
-          const emoji = emojiNode({
-            id: '1f603',
-            shortName: ':smiley:',
-            text: '😃'
-          });
-          expect(state.doc.content.child(0)).to.deep.equal(p(emoji, textNode(' ')));
+          expect(state.doc.content.child(0)).to.deep.equal(p(smileyEmoji, textNode(' ')));
         });
       });
 
@@ -114,6 +120,36 @@ describe('ascii emojis - input rules', () => {
         return assert(':D', p('{<>}'), (state) => {
           expect(state.doc.content.child(0)).to.deep.equal(p(':D'));
         });
+      });
+    });
+
+    context('and not starting with a colon character', () => {
+      it('should replace a matching emoticon', () => {
+        return assert('(y)', p('{<>}'), (state) => {
+          expect(state.doc.content.child(0)).to.deep.equal(p(thumbsupEmoji));
+        });
+      });
+    });
+  });
+
+  context('when preceded by a hard break', () => {
+    it('should replace a matching emoticon', () => {
+      return assert('(y)', p(hardBreak(), '{<>}'), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(hardBreak(), thumbsupEmoji));
+      });
+    });
+  });
+
+  context('when preceded by another emoji', () => {
+    it('should replace a matching emoticon starting with a colon', () => {
+      return assert(':D ', p(thumbsupEmoji, '{<>}'), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(thumbsupEmoji, smileyEmoji, textNode(' ')));
+      });
+    });
+
+    it('should replace a matching emoticon not starting with a colon', () => {
+      return assert('(y)', p(smileyEmoji, '{<>}'), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(smileyEmoji, thumbsupEmoji));
       });
     });
   });
@@ -128,6 +164,14 @@ describe('ascii emojis - input rules', () => {
     it('should not replace a matching emoticon not starting with a colon', () => {
       return assert('text(y)', p('{<>}'), (state) => {
         expect(state.doc.content.child(0)).to.deep.equal(p('text(y)'));
+      });
+    });
+  });
+
+  context('when there is already an emojiQuery mark', () => {
+    it('it should replace a matching emoticon starting with a colon', () => {
+      return assert(' ', p(emojiQuery(':D{<>}')), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(smileyEmoji, textNode(' ')));
       });
     });
   });

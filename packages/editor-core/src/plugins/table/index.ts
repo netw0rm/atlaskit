@@ -54,7 +54,22 @@ export class TableState {
   }
 
   goToNextCell(direction: number): Command {
-    return tableBaseCommands.goToNextCell(direction);
+    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+      if (!this.tableNode) {
+        return false;
+      }
+      const offset = this.tableStartPos();
+      if (!offset) {
+        return false;
+      }
+      const map = TableMap.get(this.tableNode);
+      const lastCellPos =  map.positionAt(map.height - 1, map.width - 1, this.tableNode) + offset + 1;
+      if (lastCellPos ===  this.getCurrentCellStartPos() && direction === 1) {
+        this.insertRow(map.height);
+        return true;
+      }
+      return tableBaseCommands.goToNextCell(direction)(state, dispatch);
+    };
   }
 
   createTable (): Command {
@@ -120,8 +135,8 @@ export class TableState {
       return;
     }
     const { state, dispatch } = this.view;
-    const isRowSelected = this.cellSelection.isColSelection();
-    const isColumnSelected = this.cellSelection.isRowSelection();
+    const isRowSelected = this.cellSelection.isRowSelection();
+    const isColumnSelected = this.cellSelection.isColSelection();
 
     // the whole table
     if (isRowSelected && isColumnSelected) {
@@ -201,7 +216,7 @@ export class TableState {
 
   resetHoverSelection = () => {
     this.hoveredCells = [];
-    this.view.dispatch(this.view.state.tr.scrollIntoView());
+    this.view.dispatch(this.view.state.tr);
   }
 
   isColumnSelected = (column: number): boolean => {
@@ -211,7 +226,7 @@ export class TableState {
       const anchor = map.colCount(this.cellSelection.$anchorCell.pos - start);
       const head = map.colCount(this.cellSelection.$headCell.pos - start);
       return (
-        this.cellSelection.isRowSelection() &&
+        this.cellSelection.isColSelection() &&
         (column <= Math.max(anchor, head) && column >= Math.min(anchor, head))
       );
     }
@@ -223,7 +238,7 @@ export class TableState {
       const anchor = this.cellSelection.$anchorCell.index(-1);
       const head = this.cellSelection.$headCell.index(-1);
       return (
-        this.cellSelection.isColSelection() &&
+        this.cellSelection.isRowSelection() &&
         (row <= Math.max(anchor, head) && row >= Math.min(anchor, head))
       );
     }
@@ -308,7 +323,7 @@ export class TableState {
         }
       });
       // trigger state change to be able to pick it up in the decorations handler
-      this.view.dispatch(state.tr.scrollIntoView());
+      this.view.dispatch(state.tr);
     }
   }
 
@@ -353,6 +368,17 @@ export class TableState {
         if(node.type === table_cell || node.type === table_header) {
           return $from.start(i);
         }
+      }
+    }
+  }
+
+  private getCurrentCellStartPos(): number | undefined {
+    const { $from } = this.view.state.selection;
+    const { table_cell, table_header } = this.view.state.schema.nodes;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === table_cell || node.type === table_header) {
+        return $from.start(i);
       }
     }
   }
@@ -467,7 +493,7 @@ export class TableState {
     this.focusEditor();
     const { tr } = this.view.state;
     tr.setSelection(Selection.near(tr.doc.resolve(pos)));
-    this.view.dispatch(tr.scrollIntoView());
+    this.view.dispatch(tr);
   }
 
   private moveCursorTo (pos: number): void {

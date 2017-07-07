@@ -1,4 +1,5 @@
 const itemPropDescriptions = {
+  filterValues: 'An array of strings to compare against Multi-select\'s filterValue. An item displays only if one of its filterValues matches the multi-select\'s filterValue. If not provided, it falls back to content\'s value.',
   content: 'The text/content to display in the option and in the rendered tags (selected options).',
   description: 'The text/content to display underneath the content. Doesn`t show in the rendered tags',
   value: 'Value sent when option is selected in a form.',
@@ -9,6 +10,7 @@ const itemPropDescriptions = {
 };
 
 const itemPropTypes = {
+  filterValues: 'ArrayOf(string)',
   value: 'OneOf(string, number)',
   tag: 'TagOptions',
   isSelected: 'bool',

@@ -15,9 +15,12 @@ export function checkParse(description: string, schema, htmls: string[], node: N
   });
 }
 
-export function checkEncode(description: string, schema, node: Node, html: string) {
+export function checkEncode(
+  description: string, schema, node: Node, html: string,
+  customEncoders: JIRACustomEncoders = {}, mediaContextInfo?: MediaContextInfo
+) {
   it(`encodes HTML: ${description}`, () => {
-    const encoded = encode(node, schema);
+    const encoded = encode(node, schema, customEncoders, mediaContextInfo);
     expect(encoded).to.deep.equal(html);
   });
 }

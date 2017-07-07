@@ -1,4 +1,3 @@
-
 module.exports = {
   rootDir: process.cwd(),
 
@@ -11,7 +10,8 @@ module.exports = {
   },
 
   moduleNameMapper: {
-    '\\.(css|less)$': 'identity-obj-proxy',
+    '\\.(less|css)$': 'identity-obj-proxy',
+    '\\.svg$': `${process.cwd()}/../../test-setup/EmptyJsxMock.js`,
   },
 
   // let Jest transform Typescript files inside ./node_modules/@atlaskit/* since our packages are

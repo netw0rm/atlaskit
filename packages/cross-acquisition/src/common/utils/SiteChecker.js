@@ -3,14 +3,31 @@
  * has come up.
  */
 class SiteChecker {
-
-  SiteChecker() {
-    this.pollInterval = 500;
+  constructor() {
+    this.pollInterval = 1000;
   }
 
-  start() {
+  start(progressHandler) {
+    this.progress = 0;
     this.interval = setInterval(() => {
+      this.checkProgress();
+
+      if (progressHandler) {
+        progressHandler(this.progress);
+      }
     }, this.pollInterval);
+  }
+
+  stop() {
+    if (this.interval) {
+      clearTimeout(this.interval);
+    }
+  }
+
+  checkProgress() {
+    // TODO: poll site and update progresss
+    this.progress = (this.progress + 1) % 100;
+    console.log('polling', this.progress);
   }
 }
 

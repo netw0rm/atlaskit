@@ -203,6 +203,13 @@ storiesOf(name, module)
       </BasicNavigation>
     </HtmlPage>
   ))
+  .add('that starts closed with search/create, and lots of items', () => (
+    <HtmlPage>
+      <BasicNavigation isOpen={false}>
+        {manyNavigationItems()}
+      </BasicNavigation>
+    </HtmlPage>
+  ))
   .add('with controllable drawers', () => (
     <HtmlPage>
       <BasicNavigation

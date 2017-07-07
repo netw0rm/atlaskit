@@ -603,6 +603,36 @@ describe('hyperlink', () => {
       });
     });
 
+    context('a string which is valid email is present in url', () => {
+      it('should not create separate mail link for email', function () {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com/test@atlassian.com' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(
+          link({
+            href: 'http://www.atlassian.com/test@atlassian.com'
+          })('http://www.atlassian.com/test@atlassian.com'),
+        )));
+      });
+    });
+
+    context('a string which is valid url is present in another url', () => {
+      it('should not create separate mail link for email', function () {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com/www.temp.com' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(
+          link({
+            href: 'http://www.atlassian.com/www.temp.com'
+          })('http://www.atlassian.com/www.temp.com'),
+        )));
+      });
+    });
+
     context('url link has brackets', () => {
       it('should add link mark', function () {
         const { editorView } = editor(doc(paragraph('{<>}')));

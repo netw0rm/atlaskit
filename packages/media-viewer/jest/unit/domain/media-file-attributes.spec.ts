@@ -1,7 +1,7 @@
 import { FileItem } from '@atlaskit/media-core';
 import { expect } from 'chai';
 
-import { MediaFileAttributesFactory } from '../../src/domain/media-file-attributes';
+import { MediaFileAttributesFactory } from '../../../src/domain/media-file-attributes';
 
 describe('MediaFileAttributes', () => {
   describe('fromFileItem', () => {

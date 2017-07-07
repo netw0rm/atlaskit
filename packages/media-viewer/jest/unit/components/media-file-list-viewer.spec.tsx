@@ -8,8 +8,8 @@ import * as sinonChai from 'sinon-chai';
 import { shallow } from 'enzyme';
 import {
   MediaFileListViewer
-} from '../../src/components/media-file-list-viewer';
-import { Stubs } from '../stubs';
+} from '../../../src/components/media-file-list-viewer';
+import { Stubs } from '../_stubs';
 
 chai.use(sinonChai);
 

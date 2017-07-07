@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { FileItem, LinkItem } from '@atlaskit/media-core';
-import { ArtifactFormat } from '../../src/domain/artifact-format';
+import { ArtifactFormat } from '../../../src/domain/artifact-format';
 
 describe('ArtifactFormat', () => {
   describe('fromMediaItem', () => {

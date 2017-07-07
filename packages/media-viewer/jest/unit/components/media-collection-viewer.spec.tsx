@@ -11,9 +11,9 @@ import { Subject } from 'rxjs/Subject';
 import { MediaCollection, MediaCollectionFileItem } from '@atlaskit/media-core';
 import {
   MediaCollectionViewer, MediaCollectionViewerProps, MediaCollectionViewerState
-} from '../../src/components/media-collection-viewer';
-import { MediaFileAttributesFactory } from '../../src/domain/media-file-attributes';
-import { Stubs } from '../stubs';
+} from '../../../src/components/media-collection-viewer';
+import { MediaFileAttributesFactory } from '../../../src/domain/media-file-attributes';
+import { Stubs } from '../_stubs';
 
 chai.use(sinonChai);
 

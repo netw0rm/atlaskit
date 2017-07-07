@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { fetchToken } from '../../src/domain/fetch-token';
-import { MediaFile } from '../../src/mediaviewer';
+import { fetchToken } from '../../../src/domain/fetch-token';
+import { MediaFile } from '../../../src/mediaviewer';
 import { extract, parse } from 'query-string';
 
 const clientId = 'some-client';

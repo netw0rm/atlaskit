@@ -5,6 +5,7 @@ import {
   Node,
   Plugin,
   PluginKey,
+  browser,
 } from '../../prosemirror';
 
 import {
@@ -20,6 +21,17 @@ export type StateChangeHandler = (state: BlockTypeState) => any;
 export type GroupedBlockTypes = BlockType[][];
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
 
+const blockTypeShortcutKeyCodes = {
+  NORMAL: 48,
+  HEADING1: 49,
+  HEADING2: 50,
+  HEADING3: 51,
+  HEADING4: 52,
+  HEADING5: 53,
+  BLOCKQUOTE: 55,
+  CODEBLOCK: 56,
+  PANEL: 57,
+};
 /**
  *
  * Plugin State
@@ -173,6 +185,36 @@ export const plugin = new Plugin({
     return {};
   },
   props: {
+    handleDOMEvents: {
+      keydown(view: EditorView, event: KeyboardEvent) {
+        const { keyCode } = event;
+        if ((browser.mac && event.metaKey && event.altKey)) {
+          const pluginState = stateKey.getState(view.state);
+          switch(keyCode) {
+            case blockTypeShortcutKeyCodes.NORMAL:
+              pluginState.toggleBlockType('normal', view);
+              break;
+            case blockTypeShortcutKeyCodes.HEADING1:
+            case blockTypeShortcutKeyCodes.HEADING2:
+            case blockTypeShortcutKeyCodes.HEADING3:
+            case blockTypeShortcutKeyCodes.HEADING4:
+            case blockTypeShortcutKeyCodes.HEADING5:
+              pluginState.toggleBlockType(`heading${keyCode - 48}`, view);
+              break;
+            case blockTypeShortcutKeyCodes.BLOCKQUOTE:
+              pluginState.toggleBlockType('blockquote', view);
+              break;
+            case blockTypeShortcutKeyCodes.CODEBLOCK:
+              pluginState.toggleBlockType('codeblock', view);
+              break;
+            case blockTypeShortcutKeyCodes.PANEL:
+              pluginState.toggleBlockType('panel', view);
+              break;
+          }
+        }
+        return false;
+      },
+    },
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
     }

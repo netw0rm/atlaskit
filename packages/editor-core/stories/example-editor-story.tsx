@@ -6,6 +6,7 @@ import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import * as v1schema from '../dist/json-schema/v1/full.json';
 import { storyDecorator } from '../src/test-helper';
+import { browser } from '../src/prosemirror';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
@@ -41,7 +42,7 @@ class DemoEditor extends React.PureComponent<any, any> {
         emojiProvider={emojiProvider}
         isExpandedByDefault={true}
         ref={this.handleEditorRef}
-        devTools={true}
+        devTools={browser.mac}
       />
     );
   }

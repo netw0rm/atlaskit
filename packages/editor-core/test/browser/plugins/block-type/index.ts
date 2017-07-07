@@ -362,74 +362,82 @@ describe('block-type', () => {
   describe('keymap', () => {
     if (browser.mac) {
       context('when on a Mac', () => {
-        context('when hits Cmd-Alt-0', () => {
+        context('when hits Cmd-Alt-º', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(h1('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-0');
+            sendKeyToPm(editorView, 'Cmd-Alt-º', 48);
             expect(editorView.state.doc).to.deep.equal(doc(p('text')));
           });
         });
 
-        context('when hits Cmd-Alt-1', () => {
+        context('when hits Cmd-Alt-¡', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-1');
+            sendKeyToPm(editorView, 'Cmd-Alt-¡', 49);
             expect(editorView.state.doc).to.deep.equal(doc(h1('text')));
           });
         });
 
-        context('when hits Cmd-Alt-2', () => {
+        context('when hits Cmd-Alt-™', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-2');
+            sendKeyToPm(editorView, 'Cmd-Alt-™', 50);
             expect(editorView.state.doc).to.deep.equal(doc(h2('text')));
           });
         });
 
-        context('when hits Cmd-Alt-3', () => {
+        context('when hits Cmd-Alt-£', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-3');
+            sendKeyToPm(editorView, 'Cmd-Alt-£', 51);
             expect(editorView.state.doc).to.deep.equal(doc(h3('text')));
           });
         });
 
-        context('when hits Cmd-Alt-4', () => {
+        context('when hits Cmd-Alt-¢', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-4');
+            sendKeyToPm(editorView, 'Cmd-Alt-¢', 52);
             expect(editorView.state.doc).to.deep.equal(doc(h4('text')));
           });
         });
 
-        context('when hits Cmd-Alt-5', () => {
+        context('when hits Cmd-Alt-∞', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-5');
+            sendKeyToPm(editorView, 'Cmd-Alt-∞', 53);
             expect(editorView.state.doc).to.deep.equal(doc(h5('text')));
           });
         });
 
-        context('when hits Cmd-Alt-7', () => {
+        context('when hits Cmd-Alt-¶', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-7');
+            sendKeyToPm(editorView, 'Cmd-Alt-¶', 55);
 
             expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
           });
         });
 
-        context('when hits Cmd-Alt-8', () => {
+        context('when hits Cmd-Alt-•', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             const code = code_block({ language: null });
 
-            sendKeyToPm(editorView, 'Cmd-Alt-8');
+            sendKeyToPm(editorView, 'Cmd-Alt-•', 56);
             expect(editorView.state.doc).to.deep.equal(doc(code('text')));
           });
         });
 
-        context('when panel nodetype is not in schema', () => {
+        context('when hits Cmd-Alt-ª', () => {
+          it('toggles panel', () => {
+            const { editorView } = editor(doc(p('text')));
+            sendKeyToPm(editorView, 'Cmd-Alt-ª', 57);
+            expect(editorView.state.doc).to.deep.equal(doc(panel(p('text'))));
+          });
+        });
+
+       context('when panel nodetype is not in schema', () => {
           it('corresponding keymaps should not work', () => {
             const schema = createSchema({
               nodes: [
@@ -445,7 +453,7 @@ describe('block-type', () => {
               schema,
             });
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-9');
+            sendKeyToPm(editorView, 'Cmd-Alt-ª');
             expect(editorView.state.doc).to.deep.equal(doc(p('text')));
           });
         });
@@ -465,7 +473,7 @@ describe('block-type', () => {
               schema,
             });
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-7');
+            sendKeyToPm(editorView, 'Cmd-Alt-¶');
             expect(editorView.state.doc).to.deep.equal(doc(p('text')));
           });
         });
@@ -477,7 +485,6 @@ describe('block-type', () => {
             expect(editorView.state.doc).to.deep.equal(doc(h1('t', hardBreak(), 't')));
           });
         });
-
       });
     } else {
       context('when not on a Mac', () => {

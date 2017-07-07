@@ -6,7 +6,7 @@ import { TestingEditorView } from './types/prosemirror';
  * Sends a key to ProseMirror content area, simulating user key press.
  * Accepts key descriptions similar to Keymap, i.e. 'Shift-Ctrl-L'
  */
-export default function sendKeyToPm(editorView: EditorView, keys: string) {
+export default function sendKeyToPm(editorView: EditorView, keys: string, keyCode?: number) {
   const parts = keys.split(/-(?!'?$)/);
   const modKey = parts.indexOf('Mod') !== -1;
   const cmdKey = parts.indexOf('Cmd') !== -1;
@@ -17,7 +17,7 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
 
   // all of the browsers are using the same keyCode for alphabetical keys
   // and it's the uppercased character code in real world
-  const code = keyCodes[key] ? keyCodes[key] : (key.toUpperCase()).charCodeAt(0);
+  const code = keyCode || (keyCodes[key] ? keyCodes[key] : (key.toUpperCase()).charCodeAt(0));
 
   const event = new CustomEvent('keydown', {
     bubbles: true,

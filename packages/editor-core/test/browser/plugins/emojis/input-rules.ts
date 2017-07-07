@@ -15,10 +15,6 @@ import {
   code_block,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
-import { EditorState } from '../../../../src/prosemirror';
-
-const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
 
 chai.use(chaiPlugin);
 
@@ -29,24 +25,13 @@ describe('emojis - input rules', () => {
     plugins: emojiPlugins(defaultSchema, providerFactory),
   });
 
-  providerFactory.setProvider('emojiProvider', emojiProvider);
-
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel, refs } = editor(doc(docContents || p('{<>}')));
-
-    return new Promise(resolve => {
-      const providerChangeHandler = () => {
-        insertText(editorView, what, sel || refs['<']);
-        pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-        resolve(editorView.state);
-      };
-
-      pluginState.subscribeToProviderUpdates(providerChangeHandler);
-    }).then((state: EditorState<any>) => {
-      const { emojiQuery } = state.schema.marks;
-      const cursorFocus = state.selection.$to.nodeBefore!;
-      expect(!!emojiQuery.isInSet(cursorFocus.marks)).to.equal(expected);
-    });
+    (pluginState as any).emojiProvider = true;
+    insertText(editorView, what, sel || refs['<']);
+    const { emojiQuery } = editorView.state.schema.marks;
+    const cursorFocus = editorView.state.selection.$to.nodeBefore!;
+    expect(!!emojiQuery.isInSet(cursorFocus.marks)).to.equal(expected);
   };
 
   it('should replace a standalone ":" with emoji-query-mark', () => {
@@ -85,20 +70,16 @@ describe('emojis - input rules', () => {
     return assert(':', false, code_block()('{<>}'));
   });
 
-  it('should not replace ":" when there is an unsupported stored mark', () => {
-    return assert(':', false, p(code('var {<>}')));
+  it('should not replace ": when there is an unsupported stored mark', () => {
+    assert(':', false, p(code('{<>}some code')));
   });
 
   it('should replace non empty selection with emojiQuery mark', () => {
-    return assert(':', true, p('{<}text{>}'));
+    assert(':', true, p('{<}text{>}'));
   });
 
   it('should not replace non empty selection with emojiQuery mark if selection starts with an excluding mark', () => {
-    return assert(':', false, p(code('{<}var{>}')));
-  });
-
-  it('should replace selection in supported node', () => {
-    return assert(':', true, p('{<}text{>}'));
+    assert(':', false, p(code('{<}text{>}')));
   });
 
   it('should not replace a ":" preceded by a special character', () => {

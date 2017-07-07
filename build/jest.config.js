@@ -1,10 +1,8 @@
 
 module.exports = {
-
   rootDir: process.cwd(),
 
-  // testMatch: '**/jest/**/*.(js|jsx|ts|tsx)',
-  testRegex: '\\/jest\\/.*\\.(j|t)sx?$',
+  testRegex: '\\/jest\\/unit\\/[^_].*\\.(j|t)sx?$',
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
 
   transform: {
@@ -30,5 +28,4 @@ module.exports = {
 
     },
   },
-
 };

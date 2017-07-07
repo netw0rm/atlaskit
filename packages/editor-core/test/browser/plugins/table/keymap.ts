@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import tablePlugins from '../../../../src/plugins/table';
+import tablePlugins, { TableState } from '../../../../src/plugins/table';
+import { TableMap } from '../../../../src/prosemirror';
 
 import {
   chaiPlugin, doc, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
@@ -9,7 +10,7 @@ import {
 chai.use(chaiPlugin);
 
 describe('table keymap', () => {
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
   });
@@ -37,6 +38,21 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+      });
+    });
+
+    context('when the cursor is at the last cell of the last row', () => {
+      it('it should create a new row and select the first cell of the new row', () => {
+        const { editorView, pluginState } = editor(
+          doc(table(
+            tr(tdEmpty, tdEmpty, tdEmpty ),
+            tr(tdEmpty, tdEmpty, tdCursor )
+          ))
+        );
+        sendKeyToPm(editorView, 'Tab');
+        const map = TableMap.get(pluginState.tableNode!);
+        expect(map.height).to.equal(3);
+        expect(editorView.state.selection.$from.pos).to.equal(32);
       });
     });
   });

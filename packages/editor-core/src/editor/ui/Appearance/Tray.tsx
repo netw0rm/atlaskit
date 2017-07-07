@@ -53,15 +53,15 @@ export default class Editor extends PureComponent<EditorAppearanceComponentProps
   }
 
   render() {
-    const { editorView, contentComponents, secondaryToolbarComponents } = this.props;
+    const { editorView, contentComponents, secondaryToolbarComponents, providerFactory } = this.props;
 
     return (
       <TrayEditor>
         <ContentArea innerRef={this.handleRef}>
-          <PluginSlot editorView={editorView} items={contentComponents} />
+          <PluginSlot editorView={editorView} providerFactory={providerFactory} items={contentComponents} />
         </ContentArea>
         <SecondaryToolbarContainer>
-          <PluginSlot editorView={editorView} items={secondaryToolbarComponents} />
+          <PluginSlot editorView={editorView} providerFactory={providerFactory} items={secondaryToolbarComponents} />
         </SecondaryToolbarContainer>
       </TrayEditor>
     );

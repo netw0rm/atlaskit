@@ -31,6 +31,10 @@ export const crossSellShape = PropTypes.shape({
       grantUsersOption: PropTypes.string,
       grantChooseOption: PropTypes.string,
       grantAffectBill: PropTypes.string,
+
+      alreadyStartedHeading: PropTypes.string,
+      alreadyStartedMessage: PropTypes.node,
+      alreadyStartedGetStartedButtonText: PropTypes.string,
     }),
   }),
 
@@ -78,7 +82,7 @@ export class CrossSellProvider extends Component {
   }
 }
 
-export const withCrossSellProvider = (WrappedComponent, mapContextToProps = () => { }) =>
+export const withCrossSellProvider = (WrappedComponent, mapContextToProps = () => {}) =>
   class WithCrossSellProvider extends Component {
     static displayName = `WithCrossSellProvider(${Component.displayName || Component.name})`;
     static contextTypes = {

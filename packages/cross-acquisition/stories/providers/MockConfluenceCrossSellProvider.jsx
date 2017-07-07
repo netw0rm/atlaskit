@@ -16,7 +16,7 @@ export default class MockConfluenceCrossSellProvider extends Component {
           accessHeading: 'Ask your admin for access',
           accessMessage: 'Send a request for your admin to activate confluence',
           notePrompt:
-          'Help your site administrator understand why you would like to use Confluence:',
+            'Help your site administrator understand why you would like to use Confluence:',
           notePlaceholder: 'I would like to try Confluence because…',
         },
         startTrial: {
@@ -55,6 +55,14 @@ export default class MockConfluenceCrossSellProvider extends Component {
           grantAffectBill: 'How will this affect my bill?',
           loadingHeading: "You're almost there...",
           loadingCompleteHeading: 'Confluence is ready my friend!',
+          alreadyStartedHeading: 'You already have Confluence',
+          alreadyStartedMessage: (
+            <div>
+              <p>A site administrator already started a trial.</p>
+              <p>You’re all set to create vital project documentation with your team.</p>
+            </div>
+          ),
+          alreadyStartedGetStartedButtonText: 'Get started',
         },
       },
       canCurrentUserAddProduct: notImplemented,
@@ -66,6 +74,12 @@ export default class MockConfluenceCrossSellProvider extends Component {
       requestTrialAccessWithNote: notImplemented,
       requestTrialAccessWithoutNote: notImplemented,
       cancelRequestTrialAccess: notImplemented,
+
+      startProductTrial: notImplemented,
+      cancelStartProductTrial: notImplemented,
+      grantAccessToUsers: notImplemented,
+      goToProduct: notImplemented,
+      closeLoadingDialog: notImplemented,
     };
 
     const props = {

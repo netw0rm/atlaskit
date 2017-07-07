@@ -11,8 +11,8 @@ class Icon extends PureComponent {
   static propTypes = {
     /** Glyph to show by Icon component (not required when you import a glyph directly) */
     glyph: PropTypes.func.isRequired,
-    /** String to apply as the SVG title element */
-    label: PropTypes.string.isRequired,
+    /** Label to apply as the SVG title element */
+    label: PropTypes.node.isRequired,
     /** onClick handler for the icon element */
     onClick: PropTypes.func,
     /** For primary colour for icons */

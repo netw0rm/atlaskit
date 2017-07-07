@@ -13,7 +13,7 @@ export default class NavigationItemGroup extends PureComponent {
     children: PropTypes.node,
     isCompact: PropTypes.bool,
     hasSeparator: PropTypes.bool,
-    title: PropTypes.string,
+    title: PropTypes.node,
   }
 
   static defaultProps = {

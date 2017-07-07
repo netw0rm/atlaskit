@@ -1,4 +1,3 @@
-// @flow
 import styled from 'styled-components';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { BORDER_WIDTH } from './constants';

@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
+export { default as mapProps } from './mapProps';
 export { default as withPseudoState } from './withPseudoState';

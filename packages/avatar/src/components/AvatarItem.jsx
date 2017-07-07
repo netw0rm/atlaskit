@@ -31,11 +31,16 @@ type Props = {
   secondaryText?: string,
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self',
+  /** Whether or not overflowing primary and secondary text is truncated */
+  enableTextTruncate?: boolean,
 };
 
 class AvatarItem extends Component {
   props: Props; // eslint-disable-line react/sort-comp
   cache = {}
+
+  static defaultProps = { enableTextTruncate: true }
+
   getCachedComponent(type) {
     if (!this.cache[type]) {
       this.cache[type] = getStyledComponent[type](getStyles);
@@ -89,7 +94,7 @@ class AvatarItem extends Component {
   }
 
   render() {
-    const { avatar, onClick, primaryText, secondaryText } = this.props;
+    const { avatar, enableTextTruncate, onClick, primaryText, secondaryText } = this.props;
 
     // maintain the illusion of a mask around presence/status
     const borderColor = this.getBorderColor();
@@ -106,9 +111,9 @@ class AvatarItem extends Component {
     return (
       <Item innerRef={r => (this.node = r)} {...props}>
         {cloneElement(avatar, { borderColor })}
-        <Content>
-          <PrimaryText>{primaryText}</PrimaryText>
-          <SecondaryText>{secondaryText}</SecondaryText>
+        <Content truncate={enableTextTruncate}>
+          <PrimaryText truncate={enableTextTruncate}>{primaryText}</PrimaryText>
+          <SecondaryText truncate={enableTextTruncate}>{secondaryText}</SecondaryText>
         </Content>
       </Item>
     );

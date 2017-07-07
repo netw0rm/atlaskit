@@ -19,7 +19,7 @@ const avatarSource = 'https://pbs.twimg.com/profile_images/803832195970433027/aa
 const tickUrl = require('url-loader!./tick.svg');
 
 const devs = [
-  { title: 'Alexander Reardon', subtitle: 'ace', src: 'https://avatar-cdn.atlassian.com/ceb2ee0a81dc0bb0b6f2892c66181b51?by=hash' },
+  { title: 'Alexander Reardon', subtitle: 'ace ace ace ace ace ace ace ace ace ace ace', src: 'https://avatar-cdn.atlassian.com/ceb2ee0a81dc0bb0b6f2892c66181b51?by=hash' },
   { title: 'Ben Conolly', src: 'https://avatar-cdn.atlassian.com/361c9fe594d27796d579a5900d7a765c?by=hash' },
   { title: 'Ben Gummer', subtitle: 'out until 5 July (US)', src: 'https://avatar-cdn.atlassian.com/65c42d1b35bbd5d3edd6e4628027275c?by=hash' },
   { title: 'Jacob Bass', src: 'https://avatar-cdn.atlassian.com/23bf3965bcb00e15e48908687e90419e?by=hash' },
@@ -186,6 +186,7 @@ storiesOf(name, module)
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-around',
+        padding: '0.5em 1em',
       },
       row: {
         alignItems: 'stretch',
@@ -240,7 +241,11 @@ storiesOf(name, module)
           For most instances you will no-longer need to wrap <code>{'<Avatar/>'}</code>.
         </Note>
         <AvatarShowcase title="Button" description={<span>Provide <code>onClick</code> to {'<Avatar/>'} or <code>onAvatarClick</code> to {'<AvatarGroup/>'}</span>}>
-          <Avatar src={avatarSource} onClick={console.info} size={avatarSize} />
+          <Avatar
+            src={avatarSource}
+            onClick={console.info}
+            size={avatarSize}
+          />
         </AvatarShowcase>
 
         <AvatarShowcase title="Anchor" description={<span>Provide <code>href</code> to {'<Avatar/>'}. Also, optionally accepts a <code>target</code> property.</span>}>
@@ -266,7 +271,7 @@ storiesOf(name, module)
         <AvatarShowcase title="isHover" description="akColorN70A applied as an overlay">
           <Avatar src={avatarSource} size="large" onClick={() => {}} isHover />
         </AvatarShowcase>
-        <AvatarShowcase title="isActive" description="akColorN70A applied as an overlay, and scaled down to 85%">
+        <AvatarShowcase title="isActive" description="akColorN70A applied as an overlay, and scaled down to 90%">
           <Avatar src={avatarSource} size="large" onClick={() => {}} isActive />
         </AvatarShowcase>
         <AvatarShowcase title="isFocus" description="akColorB200 focus ring applied, border-width relative to avatar size">

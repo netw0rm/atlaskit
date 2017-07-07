@@ -1,4 +1,3 @@
-// @flow
 import styled from 'styled-components';
 import { BORDER_WIDTH, ICON_OFFSET, ICON_SIZES } from './constants';
 import { getAvatarDimensions, getInnerStyles } from './utils';
@@ -35,6 +34,7 @@ const getPresenceLayout = ({ appearance, size }) => {
 };
 export const PresenceWrapper = styled.span`
   ${getPresenceLayout}
+  pointer-events: none;
   position: absolute;
 `;
 

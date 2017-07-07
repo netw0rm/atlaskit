@@ -1,4 +1,3 @@
-// @flow
 import styled from 'styled-components';
 import { akColorN40 } from '@atlaskit/util-shared-styles';
 import { getBorderRadius } from './utils';

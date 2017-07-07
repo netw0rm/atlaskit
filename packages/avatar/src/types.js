@@ -11,7 +11,7 @@ export type AvatarProps = {
   /** A custom component to use instead of the default span. */
   component?: Function | string,
   /** Display a tooltip on hover */
-  displayTooltip?: boolean,
+  enableTooltip?: boolean,
   /** Provides a url for avatars being used as a link. */
   href?: string,
   /** Change the style to indicate the avatar is active. */

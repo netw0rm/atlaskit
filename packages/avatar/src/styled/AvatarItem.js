@@ -1,4 +1,3 @@
-// @flow
 import styled, { css } from 'styled-components';
 import { akBorderRadius, akColorB50, akColorB200, akColorN30, akColorN100, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
@@ -69,12 +68,12 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
   `;
 }
 
-const truncateText = () => css`
+const truncateText = p => p.truncate && css`
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
-const truncateTextFlexParent = () => css`
+const truncateTextFlexParent = p => p.truncate && css`
   max-width: 100%;
   min-width: 0;
 `;

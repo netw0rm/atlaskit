@@ -16,7 +16,7 @@ export default function CustomComponentProxy({
   avatar,
   borderColor,
   component: ProxiedComponent,
-  displayTooltip,
+  enableTooltip,
   groupAppearance,
   innerRef,
   isActive,

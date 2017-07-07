@@ -8,7 +8,7 @@ import Image from './AvatarImage';
 import Status from './Status';
 import Tooltip from '../styled/Tooltip';
 import { getProps, getStyledComponent } from '../helpers';
-import { withPseudoState } from '../hoc';
+import { mapProps, withPseudoState } from '../hoc';
 import { DEFAULT_BORDER_COLOR } from '../styled/constants';
 import type { AvatarProps } from '../types';
 import { getInnerStyles } from '../styled/utils';
@@ -37,17 +37,30 @@ export const STATUS_TYPE = {
   values: ['approved', 'declined', 'locked'],
 };
 
+const propsOmittedFromClickData = [
+  'onBlur',
+  'onClick',
+  'onFocus',
+  'onKeyDown',
+  'onKeyUp',
+  'onMouseDown',
+  'onMouseEnter',
+  'onMouseLeave',
+  'onMouseUp',
+];
+const invalidIndicatorSizes = ['xsmall', 'xxlarge'];
+
 class Avatar extends Component {
   props: AvatarProps; // eslint-disable-line react/sort-comp
+
+  cache = {}
 
   static defaultProps = {
     appearance: APPEARANCE_TYPE.defaultValue,
     borderColor: DEFAULT_BORDER_COLOR,
-    displayTooltip: true,
+    enableTooltip: true,
     size: SIZE.defaultValue,
   }
-
-  styledComponents = {}
 
   // We set isLoading conditionally here in the event that the src prop is updated after mount.
   componentWillReceiveProps(nextProps: AvatarProps) {
@@ -55,11 +68,11 @@ class Avatar extends Component {
       this.setState({ isLoading: true });
     }
   }
-  getCachedStyledComponent(type) {
-    if (!this.styledComponents[type]) {
-      this.styledComponents[type] = getStyledComponent[type](getInnerStyles);
+  getCachedComponent(type) {
+    if (!this.cache[type]) {
+      this.cache[type] = getStyledComponent[type](getInnerStyles);
     }
-    return this.styledComponents[type];
+    return this.cache[type];
   }
   getStyledComponent() {
     const { component, href, onClick } = this.props;
@@ -69,7 +82,7 @@ class Avatar extends Component {
     else if (href) node = 'link';
     else if (onClick) node = 'button';
 
-    return this.getCachedStyledComponent(node);
+    return this.getCachedComponent(node);
   }
 
   // expose blur/focus to consumers via inner ref
@@ -77,22 +90,13 @@ class Avatar extends Component {
   focus = () => this.node.focus()
 
   // disallow click on disabled avatars
+  // only return avatar data properties
   guardedClick = (event) => {
     const { isDisabled, onClick } = this.props;
 
     if (isDisabled) return;
 
-    const item = omit(this.props,
-      'onBlur',
-      'onClick',
-      'onFocus',
-      'onKeyDown',
-      'onKeyUp',
-      'onMouseDown',
-      'onMouseEnter',
-      'onMouseLeave',
-      'onMouseUp',
-    );
+    const item = omit(this.props, ...propsOmittedFromClickData);
 
     onClick({ item, event });
   }
@@ -103,7 +107,6 @@ class Avatar extends Component {
     const { appearance, borderColor, icon, presence, size, status } = this.props;
     const showPresence = !!(presence || icon);
     const showStatus = !!status;
-    const invalidIndicatorSizes = ['xsmall', 'xxlarge'];
 
     // add warnings for various invalid states
     if (invalidIndicatorSizes.includes(size) && (showPresence || showStatus)) {
@@ -111,11 +114,11 @@ class Avatar extends Component {
       return null;
     }
     if (showPresence && showStatus) {
-      console.warn('Avatar does NOT support `status` AND `presence` on the same instance.');
+      console.warn('Avatar supports `presence` OR `status` properties, not both.');
       return null;
     }
     if (icon && presence) {
-      console.warn('Avatar does NOT support `icon` AND `presence` on the same instance.');
+      console.warn('Avatar supports `icon` OR `presence` properties, not both.');
       return null;
     }
 
@@ -146,10 +149,7 @@ class Avatar extends Component {
   /* eslint-enable no-console */
 
   render() {
-    const {
-      appearance, displayTooltip, isActive, isFocus, isHover, onClick,
-      name, size, src, stackIndex,
-    } = this.props;
+    const { appearance, enableTooltip, isHover, onClick, name, size, src, stackIndex } = this.props;
 
     // distill props from context, props, and state
     const props = getProps(this);
@@ -166,13 +166,11 @@ class Avatar extends Component {
           <Image
             alt={name}
             appearance={appearance}
-            isActive={isActive}
-            isFocus={isFocus}
             size={size}
             src={src}
           />
         </Inner>
-        {(displayTooltip && isHover && name) ? (
+        {(enableTooltip && isHover && name) ? (
           <Tooltip>{name}</Tooltip>
         ) : null}
         {this.renderIndicator()}
@@ -181,4 +179,7 @@ class Avatar extends Component {
   }
 }
 
-export default withPseudoState(Avatar);
+export default mapProps({
+  appearance: props => props.appearance || Avatar.defaultProps.appearance, // fix for tests
+  isInteractive: props => props.enableTooltip || Avatar.defaultProps.enableTooltip,
+})(withPseudoState(Avatar));

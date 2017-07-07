@@ -15,7 +15,7 @@ export function limit(min, max, value) {
   return value;
 }
 
-export function provideDisplayName(prefix, Component) {
+export function getDisplayName(prefix, Component) {
   const componentName = Component.displayName || Component.name;
 
   return componentName ? `${prefix}(${componentName})` : prefix;

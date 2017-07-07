@@ -154,10 +154,17 @@ storiesOf(name, module)
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkNavigationItemGroup>
+        <AkNavigationItemGroup title={(<span>Inline text</span>)}>
+          <AkNavigationItem
+            icon={<SettingsIcon label="Inline Text Title Icon" secondaryColor="inherit" />}
+            text="Item C"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+        </AkNavigationItemGroup>
         <AkNavigationItemGroup title="one section">
           <AkNavigationItem
             icon={<TrayIcon label="Tray" secondaryColor="inherit" />}
-            text="Item C"
+            text="Item D"
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkNavigationItemGroup>

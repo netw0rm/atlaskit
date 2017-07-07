@@ -128,6 +128,18 @@ storiesOf(name, module)
       </tbody>
     </table>
   ))
+  .add('All icons (inline text for label)', () => (
+    <div>
+      {Object
+        .entries(components)
+        .map(([key, Icon]) => {
+          const label = (<span>{`${key} icon`}</span>);
+          return (
+            <Icon.component label={label} />
+          );
+        })}
+    </div>
+  ))
   .add('All icons (colored)', () => (
     <AllIcons className={styles.colored} />
   ))

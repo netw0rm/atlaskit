@@ -2,8 +2,8 @@ import * as React from 'react';
 import {mount} from 'enzyme';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import {ImageCropper, ImageCropperProp} from '../../src/image-cropper';
-import {Container, DragOverlay} from '../../src/image-cropper/styled';
+import {ImageCropper, ImageCropperProp} from '../../../src/image-cropper';
+import {Container, DragOverlay} from '../../../src/image-cropper/styled';
 import {smallImage} from '@atlaskit/media-test-helpers';
 
 const imageWidth = 600;

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
 import {expect} from 'chai';
-import {CONTAINER_SIZE, ImageNavigator} from '../../src/image-navigator';
-import {ImageUploader} from '../../src/image-navigator/styled';
-import {ImageCropper} from '../../src/image-cropper';
-import {Slider} from '../../src/slider';
+import {CONTAINER_SIZE, ImageNavigator} from '../../../src/image-navigator';
+import {ImageUploader} from '../../../src/image-navigator/styled';
+import {ImageCropper} from '../../../src/image-cropper';
+import {Slider} from '../../../src/slider';
 import {createMouseEvent, smallImage} from '@atlaskit/media-test-helpers';
 
 describe('Image navigator', () => {

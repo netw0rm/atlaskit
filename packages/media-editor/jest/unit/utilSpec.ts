@@ -1,4 +1,4 @@
-import {getUtf32Codes, getUtf32CodeUnits, adjustSize} from '../src/util';
+import {getUtf32Codes, getUtf32CodeUnits, adjustSize} from '../../src/util';
 import {expect} from 'chai';
 
 describe('MediaEditor Util', () => {

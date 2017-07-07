@@ -1,4 +1,4 @@
-import {ResourceManager} from '../../src/engine/resourceManager';
+import {ResourceManager} from '../../../src/engine/resourceManager';
 import {expect} from 'chai';
 
 class SomeResource {

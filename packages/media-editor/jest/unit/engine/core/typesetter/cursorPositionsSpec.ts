@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {stub} from 'sinon';
 import {isWhiteSpace, isClose, getDirection, getGroupStartIndices, createSpansForCharacters, createSpansForGroups,
-        calculateTotalLength, putInternalPositions} from '../../../../src/engine/core/typesetter/cursorPositions';
+        calculateTotalLength, putInternalPositions} from '../../../../../src/engine/core/typesetter/cursorPositions';
 
 describe('MediaEditor cursor positions', () => {
   const getBoundingClientRectMethod = 'getBoundingClientRect';

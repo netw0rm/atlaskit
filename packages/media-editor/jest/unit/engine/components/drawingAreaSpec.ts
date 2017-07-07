@@ -1,5 +1,5 @@
-import {ColorWithAlpha} from '../../../src/common';
-import {DefaultDrawingArea, OutputSize} from '../../../src/engine/components/drawingArea';
+import {ColorWithAlpha} from '../../../../src/common';
+import {DefaultDrawingArea, OutputSize} from '../../../../src/engine/components/drawingArea';
 import {expect} from 'chai';
 
 describe('MediaEditor DrawingArea', () => {

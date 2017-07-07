@@ -1,4 +1,4 @@
-import {Signal} from '../../src/engine/signal';
+import {Signal} from '../../../src/engine/signal';
 import {expect} from 'chai';
 
 interface SignalData {

@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 
-import {Core} from '../../../src/engine/core/binaries/editorCore';
-import {BitmapExporter} from '../../../src/engine/core/bitmapExporter';
+import {Core} from '../../../../src/engine/core/binaries/editorCore';
+import {BitmapExporter} from '../../../../src/engine/core/bitmapExporter';
 
 type Module = Core.NativeModule;
 

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {TimerHandle, TimerFactory} from '../../../src/engine/core/timerFactory';
+import {TimerHandle, TimerFactory} from '../../../../src/engine/core/timerFactory';
 
 type TimerCallback = () => {};
 

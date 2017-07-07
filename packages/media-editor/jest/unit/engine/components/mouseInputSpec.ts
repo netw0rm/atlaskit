@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {createMouseEvent} from '@atlaskit/media-test-helpers';
-import {DefaultMouseInput} from '../../../src/engine/components/mouseInput';
+import {DefaultMouseInput} from '../../../../src/engine/components/mouseInput';
 
 describe('MediaEditor DefaultMouseInput', () => {
   let element: HTMLDivElement;

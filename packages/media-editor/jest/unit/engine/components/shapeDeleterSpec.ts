@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 
-import {DefaultShapeDeleter} from '../../../src/engine/components/shapeDeleter';
+import {DefaultShapeDeleter} from '../../../../src/engine/components/shapeDeleter';
 
 describe('MediaEditor DefaultShapeDeleter', () => {
   let textArea: HTMLTextAreaElement;

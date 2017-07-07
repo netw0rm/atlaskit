@@ -1,9 +1,10 @@
-import { storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
 import Editor from './../src/editor';
 import ToolsDrawer from './ToolsDrawer';
 import { name } from '../package.json';
+const SAVE_ACTION = () => action('Save')();
 
 storiesOf(name, module)
   .add('Tray Editor', () =>
@@ -12,9 +13,13 @@ storiesOf(name, module)
       renderEditor={({mentionProvider, emojiProvider, onChange}) =>
         <Editor
           appearance="tray"
+
+          allowTextFormatting={true}
+          saveOnEnter={true}
+
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           onChange={onChange}
-          allowTextFormatting={true}
+          onSave={SAVE_ACTION}
         />}
     />);

@@ -20,9 +20,9 @@ const emojiPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 200, plugin: (schema, providerFactory) => createPlugin(providerFactory) },
-      { rank: 210, plugin: schema => inputRulePlugin(schema) },
-      { rank: 220, plugin: schema => keymap(schema) }
+      { rank: 400, plugin: (schema, props, providerFactory) => createPlugin(providerFactory) },
+      { rank: 410, plugin: schema => inputRulePlugin(schema) },
+      { rank: 420, plugin: schema => keymap(schema) }
     ];
   },
 

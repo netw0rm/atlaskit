@@ -1,26 +1,15 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import panelPlugins, { PanelState } from '../../../../src/plugins/panel';
-import { doc, panel, panelNote, p, makeEditor, fixtures, createEvent, sendKeyToPm, blockquote } from '../../../../src/test-helper';
+import { doc, panel, panelNote, p, makeEditor, createEvent, sendKeyToPm, blockquote } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
-
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<PanelState>({
-      doc,
-      plugins: panelPlugins(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
   const event = createEvent('event');
+  const editor = (doc: any) => makeEditor<PanelState>({
+    doc,
+    plugins: panelPlugins(defaultSchema),
+  });
 
   describe('API', () => {
     it('should allow a change handler to be registered', () => {

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import {
-  sendKeyToPm, insertText, fixtures, doc, code, textColor, p,
+  sendKeyToPm, insertText, doc, code, textColor, p,
   chaiPlugin, makeEditor, a, strong
 } from '../../../../src/test-helper';
 import textColorPlugins, { TextColorState } from '../../../../src/plugins/text-color';
@@ -11,20 +11,10 @@ import defaultSchema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('text-color', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<TextColorState>({
-      doc,
-      plugins: textColorPlugins(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor<TextColorState>({
+    doc,
+    plugins: textColorPlugins(defaultSchema),
+  });
 
   const testColor1 = '#97a0af';
   const testColor2 = '#0747a6';

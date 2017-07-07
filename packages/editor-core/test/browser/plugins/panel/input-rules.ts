@@ -2,27 +2,16 @@ import { expect } from 'chai';
 import panelPlugins from '../../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../../src/plugins/panel/input-rules';
 import {
-  insertText, doc, p, makeEditor, fixtures, panel, code_block, ul, li
+  insertText, doc, p, makeEditor, panel, code_block, ul, li
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
-const fixture = fixtures();
-
-const editor = (doc: any) => {
-  const ed = makeEditor({
+describe('panel input rules', () => {
+  const editor = (doc: any) => makeEditor({
     doc,
     plugins: panelPlugins(defaultSchema),
-    place: fixture()
   });
 
-  afterEach(() => {
-    ed.editorView.destroy();
-  });
-
-  return ed;
-};
-
-describe('panel input rules', () => {
   it('should create plain ParagraphNodeType for a random text input', () => {
     const { editorView, sel } = editor(doc(p('{<>}')));
     insertText(editorView, 'testing', sel, sel);

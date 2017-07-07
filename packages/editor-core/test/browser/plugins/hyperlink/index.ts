@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
-  chaiPlugin, createEvent, doc, fixtures, insert, insertText, a as link, code_block,
+  chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block,
   makeEditor, p as paragraph, sendKeyToPm, setTextSelection, dispatchPasteEvent
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -11,20 +11,10 @@ import defaultSchema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('hyperlink', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<HyperlinkState>({
-      doc,
-      plugins: hyperlinkPlugins(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor<HyperlinkState>({
+    doc,
+    plugins: hyperlinkPlugins(defaultSchema),
+  });
 
   const event = createEvent('event');
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import {
-  fixtures, makeEditor,
+  makeEditor,
   doc,
   // Node
   blockquote, ul, ol, li, code_block, emoji, br, h1, h2, h3, h4, h5, h6,
@@ -16,23 +16,12 @@ const serializer = new JSONSerializer();
 const toJSON = node => serializer.serializeFragment(node.content);
 
 describe('JSONSerializer', () => {
-  const fixture = fixtures();
-  const editor = (doc: any, schema: any = defaultSchema) => {
-    const ed = makeEditor({
-      doc,
-      schema: defaultSchema,
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any, schema: any = defaultSchema) => makeEditor({
+    doc,
+    schema: defaultSchema,
+  });
 
   describe('serializeFragment', () => {
-
     it('should serialize common nodes/marks as ProseMirror does', () => {
       const { editorView } = editor(
         doc(

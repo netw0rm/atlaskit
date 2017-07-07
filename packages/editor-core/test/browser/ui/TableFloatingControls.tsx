@@ -20,26 +20,15 @@ import {
 } from '../../../src/ui/TableFloatingControls/RowControls/styles';
 
 import {
-  createEvent, doc, p, fixtures, makeEditor, table, tr, tdEmpty, tdCursor
+  createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
 } from '../../../src/test-helper';
 
 describe('TableFloatingControls', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<TableState>({
-      doc,
-      plugins: tablePlugins(),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
-
   const event = createEvent('event');
+  const editor = (doc: any) => makeEditor<TableState>({
+    doc,
+    plugins: tablePlugins(),
+  });
 
   context('when pluginState.tableElement is undefined', () => {
     it('should not render table header', () => {

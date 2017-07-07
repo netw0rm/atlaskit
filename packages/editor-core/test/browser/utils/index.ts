@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import {
-  fixtures, doc, code_block, code, p, strong, makeEditor
+  doc, code_block, code, p, strong, makeEditor
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import * as commands from '../../../src/commands';
@@ -8,20 +8,10 @@ import * as commands from '../../../src/commands';
 import { isMarkTypeAllowedAtCurrentPosition } from '../../../src/utils';
 
 describe('@atlaskit/editore-core/utils', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor({
-      doc,
-      schema: defaultSchema,
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor({
+    doc,
+    schema: defaultSchema
+  });
 
   describe('isMarkTypeAllowedAtCurrentPosition', () => {
     context('when the current node supports the given mark type', () => {

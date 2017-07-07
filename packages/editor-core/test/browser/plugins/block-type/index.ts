@@ -7,7 +7,6 @@ import {
   setTextSelection,
   setNodeSelection,
   sendKeyToPm,
-  fixtures,
   blockquote,
   br,
   chaiPlugin,
@@ -40,20 +39,10 @@ import blockTypePlugins, { BlockTypeState } from '../../../../src/plugins/block-
 chai.use(chaiPlugin);
 
 describe('block-type', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<BlockTypeState>({
-      doc,
-      plugins: blockTypePlugins(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor<BlockTypeState>({
+    doc,
+    plugins: blockTypePlugins(defaultSchema),
+  });
 
   it('should be able to change to normal', () => {
     const { editorView, pluginState } = editor(doc(h1('te{<>}xt')));
@@ -450,13 +439,12 @@ describe('block-type', () => {
               ]
             });
             delete schema.nodes.panel;
-            const edit = (doc: any) => makeEditor({
+            const editor = (doc: any) => makeEditor({
               doc,
               plugins: blockTypePlugins(schema),
-              place: fixture(),
               schema,
             });
-            const { editorView } = edit(doc(p('text')));
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-9');
             expect(editorView.state.doc).to.deep.equal(doc(p('text')));
           });
@@ -471,13 +459,12 @@ describe('block-type', () => {
                 'text',
               ]
             });
-            const edit = (doc: any) => makeEditor({
+            const editor = (doc: any) => makeEditor({
               doc,
               plugins: blockTypePlugins(schema),
-              place: fixture(),
               schema,
             });
-            const { editorView } = edit(doc(p('text')));
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');
             expect(editorView.state.doc).to.deep.equal(doc(p('text')));
           });

@@ -25,7 +25,6 @@ import {
   makeEditor,
   mediaGroup,
   media,
-  fixtures,
   p,
   a,
   storyMediaProviderFactory,
@@ -44,39 +43,26 @@ const getFreshResolvedProvider = () => {
 };
 
 describe('Media plugin', () => {
-  const fixture = fixtures();
   const resolvedProvider = getFreshResolvedProvider();
   const temporaryFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();
   providerFactory.setProvider('mediaProvider', resolvedProvider);
 
-  const editor = (doc: any, uploadErrorHandler?: () => void) => {
-    const plugins = [
+  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
+    doc,
+    plugins: [
       ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
       history(),
-    ];
-
-    const editor = makeEditor<MediaPluginState>({
-      doc,
-      plugins,
-      schema: defaultSchema,
-      nodeViews: {
-        mediaGroup: nodeViewFactory(providerFactory, {
-          mediaGroup: ReactMediaGroupNode,
-          media: ReactMediaNode,
-        }, true),
-      },
-      place: fixture(),
-    });
-
-    afterEach(() => {
-      editor.pluginState.destroy();
-      editor.editorView.destroy();
-    });
-
-    return editor;
-  };
+    ],
+    schema: defaultSchema,
+    nodeViews: {
+      mediaGroup: nodeViewFactory(providerFactory, {
+        mediaGroup: ReactMediaGroupNode,
+        media: ReactMediaNode,
+      }, true),
+    },
+  });
 
   const getNodePos = (pluginState: MediaPluginState, id: string) => {
     const mediaNodeWithPos = pluginState.findMediaNode(id);

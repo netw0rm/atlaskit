@@ -7,28 +7,18 @@ import textFormattingPlugins from '../../../src/plugins/text-formatting';
 import clearFormattingPlugins from '../../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../../src/ui/ToolbarAdvancedTextFormatting';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
-import { doc, p, strike, makeEditor, fixtures } from '../../../src/test-helper';
+import { doc, p, strike, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 const noop = () => {};
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
-    const fixture = fixtures();
     const textFormattingPluginSet = textFormattingPlugins(defaultSchema);
     const clearformattingPluginSet = clearFormattingPlugins(defaultSchema);
-    const editor = (doc: any) => {
-      const ed = makeEditor({
-        doc,
-        plugins: [...textFormattingPluginSet, ...clearformattingPluginSet],
-        place: fixture()
-      });
-
-      afterEach(() => {
-        ed.editorView.destroy();
-      });
-
-      return ed;
-    };
+    const editor = (doc: any) => makeEditor({
+      doc,
+      plugins: [...textFormattingPluginSet, ...clearformattingPluginSet],
+    });
 
     it('should render disabled ToolbarButton if both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
         const { editorView } = editor(doc(p('text')));

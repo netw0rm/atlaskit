@@ -4,26 +4,16 @@ import * as sinon from 'sinon';
 import { browser } from '../../../../src';
 import { TextSelection } from '../../../../src/prosemirror';
 import listsPlugins, { ListsState } from '../../../../src/plugins/lists';
-import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, panel, blockquote, code_block } from '../../../../src/test-helper';
+import { chaiPlugin, makeEditor, sendKeyToPm, doc, h1, ol, ul, li, p, panel, blockquote, code_block } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('lists', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<ListsState>({
-      doc,
-      plugins: listsPlugins(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor<ListsState>({
+    doc,
+    plugins: listsPlugins(defaultSchema),
+  });
 
   describe('keymap', () => {
     context('when hit enter', () => {

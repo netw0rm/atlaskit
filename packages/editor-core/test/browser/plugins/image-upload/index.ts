@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import imageUploadPlugins, { ImageUploadState } from '../../../../src/plugins/image-upload';
 import {
-  chaiPlugin, makeEditor, img, fixtures, doc, p, code_block,
+  chaiPlugin, makeEditor, img, doc, p, code_block,
   setNodeSelection, setTextSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -13,20 +13,10 @@ chai.use(chaiPlugin);
 describe('image-upload', () => {
   const testImgSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
   const testImg = () => img({ src: testImgSrc });
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<ImageUploadState>({
-      doc,
-      plugins: imageUploadPlugins(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor<ImageUploadState>({
+    doc,
+    plugins: imageUploadPlugins(defaultSchema),
+  });
 
   it('allows change handler to be registered', () => {
     const { pluginState } = editor(doc(p('')));

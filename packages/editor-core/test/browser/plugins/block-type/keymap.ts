@@ -3,27 +3,17 @@ import { expect } from 'chai';
 import blockTypePlugin from '../../../../src/plugins/block-type';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, p, sendKeyToPm, insertText, h1
+  chaiPlugin, doc, makeEditor, p, sendKeyToPm, insertText, h1
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('codeBlock - keymaps', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor({
-      doc,
-      plugins: blockTypePlugin(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins: blockTypePlugin(defaultSchema),
+  });
 
   describe('Cmd-z keypress', () => {
     it('should undo last autoformatting', () => {

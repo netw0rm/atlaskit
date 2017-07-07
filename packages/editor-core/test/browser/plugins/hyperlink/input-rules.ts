@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
-  insertText, chaiPlugin, fixtures, makeEditor, doc, br, p, a as link,
+  insertText, chaiPlugin, makeEditor, doc, br, p, a as link,
   strong, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -10,20 +10,10 @@ import defaultSchema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('hyperlink', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor({
-      doc,
-      plugins: hyperlinkPlugins(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins: hyperlinkPlugins(defaultSchema),
+  });
 
   describe('input rules', () => {
     it('should convert "www.atlassian.com" to hyperlink', () => {

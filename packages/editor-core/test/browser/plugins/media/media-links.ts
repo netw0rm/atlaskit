@@ -22,12 +22,10 @@ chai.use(chaiPlugin);
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
 describe('media-links', () => {
-  const editor = (doc: any, uploadErrorHandler?: () => void) => {
-    return makeEditor<MediaPluginState>({
-      doc,
-      schema: defaultSchema,
-    });
-  };
+  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
+    doc,
+    schema: defaultSchema,
+  });
 
   describe('detectLinkRangesInSteps', () => {
     context('when includes replace step with links', () => {

@@ -3,27 +3,17 @@ import { expect } from 'chai';
 import codeBlockPlugin from '../../../../src/plugins/code-block';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, p, sendKeyToPm, code_block
+  chaiPlugin, doc, makeEditor, p, sendKeyToPm, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('codeBlock - keymaps', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor({
-      doc,
-      plugins: codeBlockPlugin(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins: codeBlockPlugin(defaultSchema),
+  });
 
   describe('Enter keypress', () => {
     context('when enter key is pressed 2 times', () => {

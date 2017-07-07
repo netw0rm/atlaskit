@@ -10,18 +10,10 @@ import schema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
-  const editor = (doc: any) => {
-    const ed = makeEditor({
-      doc,
-      plugin: listsInputRulesPlugin(schema)
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: listsInputRulesPlugin(schema)
+  });
 
   describe('bullet list rule', () => {
     it('should convert "* " to a bullet list item', () => {

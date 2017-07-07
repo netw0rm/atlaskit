@@ -5,26 +5,15 @@ import panelPlugins, { PanelState } from '../../../src/plugins/panel';
 import PanelEdit from '../../../src/ui/PanelEdit';
 import { ToolbarButton } from '../../../src/ui/PanelEdit/styles';
 
-import { doc, panel, p, makeEditor, fixtures, createEvent } from '../../../src/test-helper';
+import { doc, panel, p, makeEditor, createEvent } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelEdit', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<PanelState>({
-      doc,
-      plugins: panelPlugins(defaultSchema),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
-
   const event = createEvent('event');
+  const editor = (doc: any) => makeEditor<PanelState>({
+    doc,
+    plugins: panelPlugins(defaultSchema),
+  });
 
   it('should return null if state variable toolbarVisible is false', () => {
     const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));

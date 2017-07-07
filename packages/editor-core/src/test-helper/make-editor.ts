@@ -22,6 +22,7 @@ import { reactNodeViewPlugins } from '../plugins';
 export default <T> (options: Options): EditorInstance<T> => {
   const plugins: Plugin[] = [];
   const schema = options.schema || defaultSchema;
+  const fixture = document.body.appendChild(document.createElement('div'));
 
   if (options.plugin) {
     plugins.push(options.plugin);
@@ -42,7 +43,7 @@ export default <T> (options: Options): EditorInstance<T> => {
     schema: schema,
   }) as ProseMirrorWithRefs;
 
-  const editorView = new EditorView(options.place || document.body, {
+  const editorView = new EditorView(fixture, {
     state: editorState,
     nodeViews: options.nodeViews || {},
   });
@@ -65,6 +66,14 @@ export default <T> (options: Options): EditorInstance<T> => {
 
   const pluginStates = plugins.map((plugin) => plugin.getState(editorState));
 
+  afterEach(() => {
+    editorView.destroy();
+    plugins.forEach((plugin: any) => plugin.destroy! && plugin.destroy());
+    if (fixture && fixture.parentNode === document.body) {
+      document.body.removeChild(fixture);
+    }
+  });
+
   return {
     editorView,
     plugins,
@@ -85,7 +94,6 @@ export interface Options {
   plugin?: Plugin;
   plugins?: Plugin[];
   nodeViews?: { [key: string]: any };
-  place?: HTMLElement;
   schema?: Schema<any, any>;
 }
 

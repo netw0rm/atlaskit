@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import asciiEmojiPlugins from '../../../../src/plugins/emojis/ascii-input-rules';
 import {
   chaiPlugin,
-  fixtures,
   insertText,
   makeEditor,
   doc,
@@ -23,20 +22,10 @@ const plugins = asciiEmojiPlugins(defaultSchema, emojiProvider);
 chai.use(chaiPlugin);
 
 describe('ascii emojis - input rules', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor({
-      doc,
-      plugins,
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins,
+  });
 
   const smileyEmoji = emojiNode({
     id: '1f603',

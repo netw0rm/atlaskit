@@ -4,7 +4,7 @@ import tablePlugins, { TableState } from '../../../../src/plugins/table';
 import { getColumnPos, getRowPos, getTablePos } from '../../../../src/plugins/table/utils';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
-  createEvent, setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, thEmpty, table, tr, td,
+  createEvent, setTextSelection, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td,
   tdEmpty, tdCursor, code_block, code
 } from '../../../../src/test-helper';
 
@@ -12,20 +12,10 @@ chai.use(chaiPlugin);
 
 describe('table plugin', () => {
   const event = createEvent('event');
-  const fixture = fixtures();
-  const editor = (doc: any) => {
-    const ed = makeEditor<TableState>({
-      doc,
-      plugins: tablePlugins(),
-      place: fixture()
-    });
-
-    afterEach(() => {
-      ed.editorView.destroy();
-    });
-
-    return ed;
-  };
+  const editor = (doc: any) => makeEditor<TableState>({
+    doc,
+    plugins: tablePlugins(),
+  });
 
   describe('subscribe', () => {
     it('calls subscriber with plugin', () => {

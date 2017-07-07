@@ -133,7 +133,7 @@ export const Content = styled.div`
   }
   .ProseMirror table {
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 20px 8px;
     width: auto;
     border: 1px solid ${akEditorTableBorder};
 

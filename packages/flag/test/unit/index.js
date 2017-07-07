@@ -99,12 +99,16 @@ describe(name, () => {
             flag = mount(generateFlag({ appearance: 'normal' }));
           });
 
-          it('should not render dismiss icon if isDismissAllowed is false', () => {
+          it('should not render dismiss icon if isDismissAllowed is false or if no onDismissed callback is provided', () => {
+            expect(flag.find(CrossIcon).exists()).to.equal(false);
+            flag.setProps({ isDismissAllowed: true, onDismissed: null });
+            expect(flag.find(CrossIcon).exists()).to.equal(false);
+            flag.setProps({ isDismissAllowed: false, onDismissed: () => {} });
             expect(flag.find(CrossIcon).exists()).to.equal(false);
           });
 
-          it('should render dismiss icon if isDismissAllowed', () => {
-            flag.setProps({ isDismissAllowed: true });
+          it('should render dismiss icon if isDismissAllowed and onDismissed callback is provided', () => {
+            flag.setProps({ isDismissAllowed: true, onDismissed: () => {} });
             expect(flag.find(CrossIcon).exists()).to.equal(true);
           });
         });
@@ -201,38 +205,6 @@ describe(name, () => {
         wrapper.find(DismissButton).simulate('click');
         expect(spy.callCount).to.equal(1);
         expect(spy.calledWith('a')).to.equal(true);
-      });
-
-      describe('shouldDismiss prop', () => {
-        let flag;
-
-        beforeEach(() => {
-          flag = mount(generateFlag());
-        });
-
-        it('should default to false', () => {
-          expect(flag.prop('shouldDismiss')).to.equal(false);
-        });
-
-        it('should not cause flag to be dismissed when set to false', () => {
-          const spy = sinon.spy();
-          flag.setProps({
-            isDismissAllowed: true,
-            onDismissed: spy,
-            shouldDismiss: false,
-          });
-          expect(spy.callCount).to.equal(0);
-        });
-
-        it('should cause flag to be dismissed when changed to true', () => {
-          const spy = sinon.spy();
-          flag.setProps({
-            isDismissAllowed: true,
-            onDismissed: spy,
-          });
-          flag.setProps({ shouldDismiss: true });
-          expect(spy.callCount).to.equal(1);
-        });
       });
 
       it('Dismiss button should not be rendered if isDismissAllowed is omitted', () => {

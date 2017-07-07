@@ -17,20 +17,20 @@ export interface Attributes {
   textUrl?: string;
   link?: {
     /**
-     * @pattern "/^https:\/\/|^data:image\//"
+     * @pattern "^https:\/\/|^data:image\/"
      */
     url: string;
   };
   background?: {
     /**
-     * @pattern "/^https:\/\/|^data:image\//"
+     * @pattern "^https:\/\/|^data:image\/"
      */
     url: string;
   };
   collapsible?: boolean;
   preview?: {
     /**
-     * @pattern "/^https:\/\/|^data:image\//"
+     * @pattern "^https:\/\/|^data:image\/"
      */
     url: string;
   };
@@ -67,7 +67,7 @@ export interface User {
 
 export interface Icon {
   /**
-   * @pattern "/^https:\/\/|^data:image\//"
+   * @pattern "^https:\/\/|^data:image\/"
    */
   url: string;
   label: string;

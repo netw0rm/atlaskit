@@ -5,49 +5,57 @@ import Wrapper from '../styled/Wrapper';
 export default class FlagAnimationWrapper extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    flagId: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
-    isEntering: PropTypes.bool,
-    isExiting: PropTypes.bool,
-    isMovingToPrimary: PropTypes.bool,
-    onAnimationFinished: PropTypes.func,
-  };
-
-  static defaultProps = {
-    isEntering: false,
-    isExiting: false,
-    isMovingToPrimary: false,
-    onAnimationFinished: () => {},
-  };
-
-  state = {
-    hasAnimatedIn: false,
   }
 
-  componentDidUpdate() {
-    if (this.state.hasAnimatedIn === false) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ hasAnimatedIn: true });
+  state = {
+    isEntering: false,
+    isLeaving: false,
+  }
+
+  componentWillEnter(callback) {
+    this.setState({ isEntering: true });
+    this.runAfterAnimation(callback);
+  }
+
+  componentDidEnter() {
+    this.setState({ isEntering: false });
+  }
+
+  componentWillLeave(callback) {
+    this.setState({ isLeaving: true });
+    this.runAfterAnimation(callback);
+  }
+
+  componentDidLeave() {
+    this.setState({ isLeaving: false });
+  }
+
+  parentNode = null
+
+  /**
+   * componentWillEnter and componentWillLeave provide a callback function which we need to call
+   * when our enter/leave animations are complete. This function listens for an animationend event
+   * then runs the callback.
+   */
+  runAfterAnimation = (callback: () => void) => {
+    const { parentNode } = this;
+
+    function executeCallback() {
+      callback();
+      return parentNode && parentNode.removeEventListener('animationend', executeCallback);
     }
+
+    return parentNode && parentNode.addEventListener('animationend', executeCallback);
   }
 
   render() {
-    const { hasAnimatedIn } = this.state;
-    const {
-      children, flagId, isEntering, isExiting, isMovingToPrimary, onAnimationFinished,
-    } = this.props;
-    const isEnteringQualified = !hasAnimatedIn && !isExiting && isEntering;
-
     return (
       <Wrapper
-        isEntering={isEnteringQualified}
-        isExiting={isExiting}
-        isMovingToPrimary={isMovingToPrimary}
-        onAnimationEnd={() => isExiting && onAnimationFinished(flagId)}
+        innerRef={(node) => { this.parentNode = node ? node.parentElement : null; }}
+        isEntering={this.state.isEntering}
+        isLeaving={this.state.isLeaving}
       >
-        {children}
+        {this.props.children}
       </Wrapper>
     );
   }

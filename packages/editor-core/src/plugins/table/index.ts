@@ -54,7 +54,22 @@ export class TableState {
   }
 
   goToNextCell(direction: number): Command {
-    return tableBaseCommands.goToNextCell(direction);
+    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+      if (!this.tableNode) {
+        return false;
+      }
+      const offset = this.tableStartPos();
+      if (!offset) {
+        return false;
+      }
+      const map = TableMap.get(this.tableNode);
+      const lastCellPos =  map.positionAt(map.height - 1, map.width - 1, this.tableNode) + offset + 1;
+      if (lastCellPos ===  this.getCurrentCellStartPos() && direction === 1) {
+        this.insertRow(map.height);
+        return true;
+      }
+      return tableBaseCommands.goToNextCell(direction)(state, dispatch);
+    };
   }
 
   createTable (): Command {
@@ -353,6 +368,17 @@ export class TableState {
         if(node.type === table_cell || node.type === table_header) {
           return $from.start(i);
         }
+      }
+    }
+  }
+
+  private getCurrentCellStartPos(): number | undefined {
+    const { $from } = this.view.state.selection;
+    const { table_cell, table_header } = this.view.state.schema.nodes;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === table_cell || node.type === table_header) {
+        return $from.start(i);
       }
     }
   }

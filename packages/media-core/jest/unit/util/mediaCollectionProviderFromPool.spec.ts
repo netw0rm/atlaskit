@@ -1,9 +1,9 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import {Observable} from 'rxjs/Observable';
-import {Pool} from '../../src/providers/util/pool';
-import {MediaCollectionProvider} from '../../src/providers/mediaCollectionProvider';
-import {mediaCollectionProviderFromPool} from '../../src/providers/util/mediaCollectionProviderFromPool';
+import {Pool} from '../../../src/providers/util/pool';
+import {MediaCollectionProvider} from '../../../src/providers/mediaCollectionProvider';
+import {mediaCollectionProviderFromPool} from '../../../src/providers/util/mediaCollectionProviderFromPool';
 
 const assert = chai.assert;
 

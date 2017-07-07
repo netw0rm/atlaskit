@@ -1,8 +1,8 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import {LinkItem} from '../src';
-import {LinkProvider} from '../src/providers/linkProvider';
+import {LinkItem} from '../../src';
+import {LinkProvider} from '../../src/providers/linkProvider';
 
 const assert = chai.assert;
 

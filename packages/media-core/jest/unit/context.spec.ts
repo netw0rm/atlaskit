@@ -3,8 +3,8 @@ import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import {MediaItem, MediaItemProvider} from '../src';
-import {ContextFactory} from '../src/context/context';
+import {MediaItem, MediaItemProvider} from '../../src';
+import {ContextFactory} from '../../src/context/context';
 
 let sandbox;
 

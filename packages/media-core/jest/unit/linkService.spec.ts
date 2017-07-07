@@ -1,9 +1,9 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import {MediaLinkService} from '../src/services/linkService';
-import {JwtTokenProvider} from '../src';
-import {UrlPreview} from '../src/item';
+import {MediaLinkService} from '../../src/services/linkService';
+import {JwtTokenProvider} from '../../src';
+import {UrlPreview} from '../../src/item';
 
 const serviceHost = 'some-host';
 const token = 'some-token';

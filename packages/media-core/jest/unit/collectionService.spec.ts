@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { useFakeXMLHttpRequest, SinonFakeXMLHttpRequest } from 'sinon';
-import { MediaCollectionService, DEFAULT_COLLECTION_PAGE_SIZE } from '../src/services/collectionService';
-import { MediaApiConfig } from '../src/config';
+import { MediaCollectionService, DEFAULT_COLLECTION_PAGE_SIZE } from '../../src/services/collectionService';
+import { MediaApiConfig } from '../../src/config';
 
 const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';

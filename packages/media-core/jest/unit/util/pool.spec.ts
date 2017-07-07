@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import {Pool} from '../../src/providers/util/pool';
+import {Pool} from '../../../src/providers/util/pool';
 
 const expect = chai.expect;
 const assert = chai.assert;

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import createRequest from '../src/services/util/createRequest';
+import createRequest from '../../src/services/util/createRequest';
 
 let fakeXhr;
 let myFakeResponses;

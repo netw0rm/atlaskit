@@ -1,13 +1,13 @@
 import * as sinon from 'sinon';
 
-import { numbers } from '../util/numbers';
-import { MediaCollectionFileItem } from '../../src/collection';
+import { numbers } from '../_numbers';
+import { MediaCollectionFileItem } from '../../../src/collection';
 import {
   CollectionService,
   SortDirection,
   DetailsType,
   RemoteCollectionItemsResponse
-} from '../../src/services/collectionService';
+} from '../../../src/services/collectionService';
 
 export class CollectionServiceStub {
   static from(

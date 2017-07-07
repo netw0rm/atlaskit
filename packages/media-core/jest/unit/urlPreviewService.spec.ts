@@ -1,8 +1,8 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import {MediaUrlPreviewService} from '../src/services/urlPreviewService';
-import {JwtTokenProvider} from '../src';
+import {MediaUrlPreviewService} from '../../src/services/urlPreviewService';
+import {JwtTokenProvider} from '../../src';
 
 const serviceHost = 'some-host';
 const token = 'some-token';

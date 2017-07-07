@@ -1,10 +1,10 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import {MediaFileService} from '../src/services/fileService';
-import {JwtTokenProvider, MediaItem} from '../src';
+import {MediaFileService} from '../../src/services/fileService';
+import {JwtTokenProvider, MediaItem} from '../../src';
 import {LRUCache} from 'lru-fast';
-import {FileDetails} from '../src/item';
+import {FileDetails} from '../../src/item';
 
 const serviceHost = 'some-host';
 const token = 'some-token';

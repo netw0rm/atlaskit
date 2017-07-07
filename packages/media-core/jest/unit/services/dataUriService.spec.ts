@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { spy } from 'sinon';
-import { MediaDataUriService } from '../../src/services/dataUriService';
+import { MediaDataUriService } from '../../../src/services/dataUriService';
 
 const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';

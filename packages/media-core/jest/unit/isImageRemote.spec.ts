@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import {isImageRemote} from '../src';
+import {isImageRemote} from '../../src';
 const expect = chai.expect;
 
 describe('isImageRemote', () => {

@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import {Pool} from '../../src/providers/util/pool';
-import {observableFromObservablePool} from '../../src/providers/util/observableFromObservablePool';
+import {Pool} from '../../../src/providers/util/pool';
+import {observableFromObservablePool} from '../../../src/providers/util/observableFromObservablePool';
 import {Observable} from 'rxjs/Observable';
 
 const assert = chai.assert;

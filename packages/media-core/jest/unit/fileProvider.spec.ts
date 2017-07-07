@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import {FileProvider} from '../src/providers/fileProvider';
+import {FileProvider} from '../../src/providers/fileProvider';
 
 const expect = chai.expect;
 const assert = chai.assert;

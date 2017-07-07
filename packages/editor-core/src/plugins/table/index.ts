@@ -305,6 +305,23 @@ export class TableState {
     }
   }
 
+  cut (): void {
+    this.closeFloatingToolbar();
+  }
+
+  copy (): void {
+    this.closeFloatingToolbar();
+  }
+
+  paste (): void {
+    this.closeFloatingToolbar();
+  }
+
+  private closeFloatingToolbar (): void {
+    this.clearSelection();
+    this.triggerOnChange();
+  }
+
   private createHoverSelection (from: number, to: number): void {
     if (!this.tableNode) {
       return;
@@ -422,17 +439,21 @@ export class TableState {
         this.cellSelection = selection;
         dirty = true;
       }
-
       // drop selection if editor looses focus
       if (!this.editorFocused) {
-        const { state } = this.view;
-        this.view.dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
+        this.clearSelection();
       }
     } else if (this.cellSelection) {
       this.cellSelection = undefined;
       dirty = true;
     }
     return dirty;
+  }
+
+  private clearSelection () {
+    const { state } = this.view;
+    this.cellElement = undefined;
+    this.view.dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
   }
 
   private createTableNode (rows: number, columns: number): Node {

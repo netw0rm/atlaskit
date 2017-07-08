@@ -9,12 +9,13 @@ import {
   akColorR50,
   akColorR500,
   akColorN0,
+  akColorB50,
   akColorB500,
 } from '@atlaskit/util-shared-styles';
 
 const backgroundColor = {
   added: akColorG50,
-  darkTheme: akColorN0,
+  darkTheme: akColorB50,
   default: akColorN30,
   important: akColorR300,
   primary: akColorB400,

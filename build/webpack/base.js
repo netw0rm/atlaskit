@@ -97,6 +97,13 @@ const standardConfig = {
           loader: 'url-loader',
         },
         //
+        // Images (for storybook)
+        //
+        {
+          test: [/\.svg$/],
+          loader: 'babel-loader!svg-to-jsx-loader',
+        },
+        //
         // JAVASCRIPT (React components)
         //
         {

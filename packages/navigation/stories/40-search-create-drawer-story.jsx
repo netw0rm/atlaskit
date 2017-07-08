@@ -8,7 +8,6 @@ import EmojiObjectsIcon from '@atlaskit/icon/glyph/emoji/objects';
 import EmojiNatureIcon from '@atlaskit/icon/glyph/emoji/nature';
 import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
-import searchStencil from 'url-loader!./stencils/search.svg';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -153,9 +152,4 @@ storiesOf(name, module)
         openDrawer="search"
       />
     </HtmlPage>
-  ))
-  .addStencilStory('with a stencil when the search drawer is open', () => (
-    <HtmlPage>
-      <BasicNavigation openDrawer="search" />
-    </HtmlPage>
-  ), { image: searchStencil });
+  ));

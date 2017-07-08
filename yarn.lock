@@ -832,6 +832,12 @@ babel-explode-module@^1.4.0:
   dependencies:
     babel-types "^6.24.1"
 
+babel-explode-module@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/babel-explode-module/-/babel-explode-module-2.0.0.tgz#d635653b44b1bdf1d5ceafacafb891611876ce3b"
+  dependencies:
+    babel-types "^6.24.1"
+
 babel-file-loader@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/babel-file-loader/-/babel-file-loader-1.0.1.tgz#3bf60520c2fa52cafb4cbd37921eacf582345390"
@@ -851,6 +857,13 @@ babel-file@^1.0.2:
   dependencies:
     babel-core "^6.24.1"
     babel-errors "^1.0.1"
+
+babel-flow-identifiers@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/babel-flow-identifiers/-/babel-flow-identifiers-1.1.2.tgz#b129ea59c2bccdb210be0853e483f5835e1c10c1"
+  dependencies:
+    babel-flow-scope "^1.2.0"
+    babel-identifiers "^1.0.0"
 
 babel-flow-scope@^1.2.0:
   version "1.2.0"
@@ -1041,6 +1054,10 @@ babel-helpers@^6.24.1:
     babel-runtime "^6.22.0"
     babel-template "^6.24.1"
 
+babel-identifiers@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-identifiers/-/babel-identifiers-1.0.0.tgz#71aeb1ae97190ec3c4edb3ab11609f3bd1135ab8"
+
 babel-jest@^20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/babel-jest/-/babel-jest-20.0.3.tgz#e4a03b13dc10389e140fc645d09ffc4ced301671"
@@ -1160,13 +1177,14 @@ babel-plugin-react-docgen@^1.4.1:
     lodash "4.x.x"
     react-docgen "^2.12.1"
 
-babel-plugin-react-flow-props-to-prop-types@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.8.1.tgz#978a82b709822225dddcd680fdbb2e295849a9c1"
+babel-plugin-react-flow-props-to-prop-types@0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.14.0.tgz#163a0e21be80f59cf5edb299db81a62b970716ff"
   dependencies:
     babel-errors "^1.1.0"
-    babel-explode-module "^1.4.0"
+    babel-explode-module "^2.0.0"
     babel-file-loader "^1.0.1"
+    babel-flow-identifiers "^1.1.2"
     babel-flow-scope "^1.2.0"
     babel-helper-simplify-module "^2.2.0"
     babel-log "^1.0.3"
@@ -4647,6 +4665,10 @@ har-validator@~2.0.6:
     is-my-json-valid "^2.12.4"
     pinkie-promise "^2.0.0"
 
+harmony-reflect@^1.4.6:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/harmony-reflect/-/harmony-reflect-1.5.1.tgz#b54ca617b00cc8aef559bbb17b3d85431dc7e329"
+
 has-ansi@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
@@ -4830,6 +4852,12 @@ iconv-lite@0.4.13, iconv-lite@^0.4.13, iconv-lite@^0.4.5, iconv-lite@~0.4.13:
 icss-replace-symbols@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/icss-replace-symbols/-/icss-replace-symbols-1.0.2.tgz#cb0b6054eb3af6edc9ab1d62d01933e2d4c8bfa5"
+
+identity-obj-proxy@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/identity-obj-proxy/-/identity-obj-proxy-3.0.0.tgz#94d2bda96084453ef36fbc5aaec37e0f79f1fc14"
+  dependencies:
+    harmony-reflect "^1.4.6"
 
 ieee754@^1.1.4:
   version "1.1.8"

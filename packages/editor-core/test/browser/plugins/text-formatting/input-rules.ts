@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 
 import {
-  fixtures, mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p, code_block
+  mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p, code_block
 } from '../../../../src/test-helper';
 
 import textFormattingPlugins from '../../../../src/plugins/text-formatting';
@@ -11,11 +11,9 @@ import defaultSchema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('text-formatting input rules', () => {
-  const fixture = fixtures();
   const editor = (doc: any, schema: any = defaultSchema) => makeEditor({
     doc,
     plugins: textFormattingPlugins(schema),
-    place: fixture()
   });
 
   describe('strong rule', () => {

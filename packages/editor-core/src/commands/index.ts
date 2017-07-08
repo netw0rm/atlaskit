@@ -156,12 +156,6 @@ export function wrapInList(nodeType): Command {
   );
 }
 
-export function splitListItem(): Command {
-  return function (state, dispatch) {
-    return baseListCommand.splitListItem(state.schema.nodes.listItem)(state, dispatch);
-  };
-}
-
 export function liftListItems(): Command {
   return function (state, dispatch) {
     const { tr } = state;
@@ -417,7 +411,7 @@ function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): vo
     if (nodeType === state.schema.nodes.listItem) {
       pos = pos - 1;
     }
-    if (nodeType === state.schema.nodes.table_cell || nodeType === state.schema.nodes.table_header) {
+    if (nodeType === state.schema.nodes.tableCell || nodeType === state.schema.nodes.tableHeader) {
       pos = pos - 2;
     }
   } else {
@@ -431,7 +425,7 @@ function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): vo
       pos = pos + 1;
     }
     // table has 4 level depth
-    if (nodeType === state.schema.nodes.table_cell || nodeType === state.schema.nodes.table_header) {
+    if (nodeType === state.schema.nodes.tableCell || nodeType === state.schema.nodes.tableHeader) {
       pos = pos + 2;
     }
   }

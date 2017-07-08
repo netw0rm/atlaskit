@@ -15,12 +15,20 @@ chai.use(chaiPlugin);
 
 describe('Keymaps', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    schema,
-    plugins: textFormattingPlugins(schema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor({
+      doc,
+      schema,
+      plugins: textFormattingPlugins(schema),
+      place: fixture()
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('subscript', () => {
     it('should be able to toggle subscript on a character', () => {

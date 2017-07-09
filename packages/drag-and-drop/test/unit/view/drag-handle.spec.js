@@ -195,33 +195,68 @@ describe('drag handle', () => {
       });
 
       describe('cancelled before moved enough', () => {
-        beforeEach(() => {
-          mouseDown(wrapper, 0, 0, auxiliaryButton);
-          // not moved enough yet
-          windowMouseMove(0, sloppyClickThreshold - 1);
-          windowEscape();
+        describe('cancelled with escape', () => {
+          beforeEach(() => {
+            mouseDown(wrapper, 0, 0, auxiliaryButton);
+            // not moved enough yet
+            windowMouseMove(0, sloppyClickThreshold - 1);
+            windowEscape();
 
-          // should normally start a drag
-          windowMouseMove(0, sloppyClickThreshold);
+            // should normally start a drag
+            windowMouseMove(0, sloppyClickThreshold);
 
-          // should normally end a drag
-          windowMouseUp();
+            // should normally end a drag
+            windowMouseUp();
+          });
+
+          it('should not call execute any callbacks', () => {
+            expect(callbacksCalled(callbacks)({
+              onLift: 0,
+              onCancel: 0,
+              onDrop: 0,
+            })).to.equal(true);
+          });
+
+          it('should not prevent subsequent click actions if a pending drag is cancelled', () => {
+            const stub = sinon.stub();
+
+            click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+
+            expect(stub.called).to.equal(false);
+          });
         });
 
-        it('should end any pending drag if the user presses Escape without calling onCancel', () => {
-          expect(callbacksCalled(callbacks)({
-            onLift: 0,
-            onCancel: 0,
-            onDrop: 0,
-          })).to.equal(true);
-        });
+        describe('cancelled with a window resize', () => {
+          beforeEach(() => {
+            mouseDown(wrapper, 0, 0);
+            // not moved enough yet
+            windowMouseMove(0, sloppyClickThreshold - 1);
 
-        it('should not prevent subsequent click actions if a pending drag is cancelled', () => {
-          const stub = sinon.stub();
+            // trigger resize
+            window.dispatchEvent(new Event('resize'));
 
-          click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+            // should normally start a drag
+            windowMouseMove(0, sloppyClickThreshold);
 
-          expect(stub.called).to.equal(false);
+            // should normally end a drag
+            windowMouseUp();
+          });
+
+          it('should not call execute any callbacks', () => {
+            expect(callbacksCalled(callbacks)({
+              onLift: 0,
+              onCancel: 0,
+              onDrop: 0,
+            })).to.equal(true);
+          });
+
+          it('should not prevent subsequent click actions if a pending drag is cancelled', () => {
+            const stub = sinon.stub();
+
+            click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+
+            expect(stub.called).to.equal(false);
+          });
         });
       });
     });
@@ -378,6 +413,20 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onMove: 1,
+          onCancel: 1,
+        })).to.equal(true);
+      });
+
+      it('should cancel when the window is resized', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        // resize event
+        window.dispatchEvent(new Event('resize'));
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 0,
           onCancel: 1,
         })).to.equal(true);
       });
@@ -677,6 +726,18 @@ describe('drag handle', () => {
             onCancel: index + 1,
           })).to.equal(true);
         });
+      });
+
+      it('should cancel when the window is resized', () => {
+        // lift
+        pressSpacebar(wrapper);
+        // resize event
+        window.dispatchEvent(new Event('resize'));
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).to.equal(true);
       });
 
       it('should not do anything if there is nothing dragging', () => {

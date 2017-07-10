@@ -75,7 +75,7 @@ describe(name, () => {
       expect(emptyView.length).toBe(0);
       expect(body.length).toBe(0);
     });
-    it('should not render 0 in table when rows is empty array', () => {
+    it('should not render any text in the table when rows prop is an empty array', () => {
       const wrapper = mount(
         <DynamicTableStateless
           rows={[]}

@@ -67,7 +67,7 @@ export default class DynamicTable extends Component {
     } = this.props;
     const totalPages = rows ? Math.ceil(rows.length / rowsPerPage) : 0;
     const bodyProps = { rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize };
-    const rowsExist = (rows && rows.length);
+    const rowsExist = (rows && rows.length > 0);
     const emptyBody = (emptyView && <EmptyBody>
       {emptyView}
     </EmptyBody>);
@@ -82,7 +82,7 @@ export default class DynamicTable extends Component {
             sortKey={sortKey}
             sortOrder={sortOrder}
           />}
-          {!!rowsExist && <Body {...bodyProps} />}
+          {rowsExist && <Body {...bodyProps} />}
         </Table>
         {!totalPages ? null : (
           <Pagination

@@ -6,73 +6,83 @@ import {
   undo,
   redo,
   Node,
-  NodeView,
   EditorView,
   Fragment,
 } from '../../../prosemirror';
-import { CodeBlockState, codeBlockStateKey } from '../../../plugins';
+import { CodeBlockState } from '../../../plugins';
 import { DEFAULT_LANGUAGES } from '../../../ui/LanguagePicker/languageList';
 import './styles';
 
 const MOD = browser.mac ? 'Cmd' : 'Ctrl';
 interface CMSelection { head: number; anchor: number; }
 
-class CodeBlock implements NodeView  {
+export default class CodeBlockPlugin  {
   private node: Node;
   private view: EditorView;
   private getPos: Function;
   private value: string;
   private selection: CMSelection | undefined;
-  private cm: any;
   private domRef: HTMLDivElement | undefined;
-  private uniqueId: string;
   private updating: boolean = false;
   private pluginState: CodeBlockState;
+  public cm: any;
 
-  constructor(node: Node, view: EditorView, getPos: () => number) {
+  constructor(node: Node, view: EditorView, getPos: () => number, pluginState: CodeBlockState) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.value = node.textContent;
-    this.pluginState = codeBlockStateKey.getState(this.view.state);
+    this.pluginState = pluginState;
     this.addCodeMirrorInstance();
-  }
-
-  get dom() {
-    return this.domRef;
   }
 
   private addCodeMirrorInstance = () => {
     const div = document.createElement('div');
-    this.cm = CodeMirror(div, {
-      value: this.value,
-      lineNumbers: true,
-      lineWrapping: true,
-      tabSize: 2,
-      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-      extraKeys: this.prepareExtraKeyMap(),
-    });
-
-    // This line of code is inspired from Marijn's code example here:
+    this.cm = CodeMirror(div, this.getCodeMirrorConfig());
+    this.domRef = div;
+    // The following line of code is inspired from Marijn's code example here:
     // https://github.com/ProseMirror/website/blob/master/pages/examples/codemirror/example.js#L43
     setTimeout(() => this.cm.refresh(), 20);
-    this.setMode(this.node.attrs['language']);
     this.updating = false;
-    this.cm.on('changes', () => {
-      if (!this.updating) {
-        this.valueChanged();
-        this.pluginState.update(this.view.state, this.view.docView, false);
-      }
-    });
+    this.cm.on('changes', this.cmChanged);
     this.cm.on('focus', this.cmFocused);
     this.cm.on('mousedown', this.cmMousedown);
     this.cm.on('blur', this.cmBlur);
-    this.uniqueId = this.node.attrs['uniqueId'] || generateId();
-    this.node.attrs['uniqueId'] = this.uniqueId;
-    this.node.attrs['isCodeMirror'] = true;
-    this.pluginState.subscribe(this.updateLanguage);
-    this.pluginState.subscribeFocusHandlers(this.focusCodeEditor);
-    this.domRef = div;
+    this.setMode(this.node.attrs['language']);
+  }
+
+  getCodeMirrorConfig = () => ({
+    value: this.value,
+    lineNumbers: true,
+    lineWrapping: true,
+    tabSize: 2,
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+    extraKeys: this.prepareExtraKeyMap(),
+  })
+
+  private prepareExtraKeyMap(): any {
+    const keymap = {
+      Up: () => this.maybeEscape('line', -1),
+      Left: () => this.maybeEscape('char', -1),
+      Down: () => this.maybeEscape('line', 1),
+      Right: () => this.maybeEscape('char', 1),
+      [`${MOD}-A`]: this.selectAllEditorContent,
+      [`${MOD}-Z`]: () => undo(this.view.state, this.view.dispatch),
+      'Enter': this.handleEnter,
+    };
+    if (browser.mac) {
+      keymap[`Shift-${MOD}-Z`] = () => redo(this.view.state, this.view.dispatch);
+    } else {
+      keymap[`${MOD}-Y`] = () => redo(this.view.state, this.view.dispatch);
+    }
+    return CodeMirror['normalizeKeyMap'](keymap);
+  }
+
+  private cmChanged = () => {
+    if (!this.updating) {
+      this.valueChanged();
+      this.pluginState.update(this.view.state, this.view.docView, false);
+    }
   }
 
   private cmFocused = (cm: CodeMirror.Editor) => {
@@ -94,30 +104,13 @@ class CodeBlock implements NodeView  {
     this.pluginState.update(this.view.state, this.view.docView, true);
   }
 
-  private prepareExtraKeyMap(): any {
-    const keymap = {
-      Up: () => this.maybeEscape('line', -1),
-      Left: () => this.maybeEscape('char', -1),
-      Down: () => this.maybeEscape('line', 1),
-      Right: () => this.maybeEscape('char', 1),
-      [`${MOD}-A`]: this.selectAllEditorContent,
-      [`${MOD}-Z`]: () => undo(this.view.state, this.view.dispatch),
-      'Enter': this.handleEnter,
-    };
-    if (browser.mac) {
-      keymap[`Shift-${MOD}-Z`] = () => redo(this.view.state, this.view.dispatch);
-    } else {
-      keymap[`${MOD}-Y`] = () => redo(this.view.state, this.view.dispatch);
-    }
-    return CodeMirror['normalizeKeyMap'](keymap);
-  }
-
   private selectAllEditorContent = (): void => {
     this.view.focus();
     const { dispatch, state } = this.view;
     dispatch(state.tr.setSelection(
-      new TextSelection(state.doc.resolve(0), state.doc.resolve(state.doc.content['size']))
-    ));
+      new TextSelection(state.doc.resolve(0),
+      state.doc.resolve(state.doc.content['size'])
+    )));
   }
 
   private handleEnter = (): any => {
@@ -162,19 +155,6 @@ class CodeBlock implements NodeView  {
       ).scrollIntoView()
     );
     this.view.focus();
-  }
-
-  private updateLanguage = (state: CodeBlockState) => {
-    const { language, uniqueId } = state;
-    if (language && this.cm.getMode().name !== language && uniqueId === this.uniqueId) {
-      this.setMode(language);
-    }
-  }
-
-  private focusCodeEditor = (uniqueId: string) => {
-    if (uniqueId === this.uniqueId) {
-      this.cm.focus();
-    }
   }
 
   private setMode(language: string): void {
@@ -241,12 +221,30 @@ class CodeBlock implements NodeView  {
     };
   }
 
-  update(node: Node): boolean {
-    if (!this.node || node.type !== this.node.type) {
-      return false;
+  private removeSelection(): void {
+    if (this.cm) {
+      this.cm.setSelection(
+        this.cm.posFromIndex(0),
+        this.cm.posFromIndex(0)
+      );
     }
-    this.node = node;
-    const value = node.textContent;
+  }
+
+  updateLanguage = (language: string) => {
+    if (language && this.cm.getMode().name !== language) {
+      this.setMode(language);
+    }
+  }
+
+  focusCodeEditor = () => {
+    this.cm.focus();
+  }
+
+  get dom() {
+    return this.domRef;
+  }
+
+  update(value: string): void {
     if (value !== this.value) {
       const change = computeChange(this.value, value);
       this.value = value;
@@ -258,16 +256,6 @@ class CodeBlock implements NodeView  {
         'docUpdate'
       );
       this.updating = false;
-    }
-    return true;
-  }
-
-  removeSelection(): void {
-    if (this.cm) {
-      this.cm.setSelection(
-        this.cm.posFromIndex(0),
-        this.cm.posFromIndex(0)
-      );
     }
   }
 
@@ -285,23 +273,15 @@ class CodeBlock implements NodeView  {
     this.cm.focus();
   }
 
-  stopEvent(): boolean {
-    return true;
-  }
-
   destroy() {
     this.domRef = undefined;
     this.cm.off('focus', this.cmFocused);
     this.cm.off('mousedown', this.cmMousedown);
     this.cm.off('blur', this.cmBlur);
-    this.node.attrs['uniqueId'] = undefined;
-    this.node.attrs['isCodeMirror'] = undefined;
-    this.pluginState.unsubscribe(this.updateLanguage);
-    this.pluginState.unsubscribeFocusHandlers(this.focusCodeEditor);
   }
 }
 
-function computeChange(oldVal: string, newVal: string): any {
+export function computeChange(oldVal: string, newVal: string): any {
   let start: number = 0;
   let oldEnd: number = oldVal.length;
   let newEnd: number = newVal.length;
@@ -318,20 +298,7 @@ function computeChange(oldVal: string, newVal: string): any {
   return { from: start, to: oldEnd, text: newVal.slice(start, newEnd) };
 }
 
-export default (node: any, view: any, getPos: () => number): NodeView => {
-  return new CodeBlock(node, view, getPos);
-};
-
-function generateId(): string {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for(let i = 0; i < 5; i++ ) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
-function findMode(mode: string) {
+export function findMode(mode: string) {
   const matches = DEFAULT_LANGUAGES.filter(language => language.alias.indexOf(mode.toLowerCase()) !== -1);
   if (!matches.length) {
     return false;

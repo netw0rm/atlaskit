@@ -8,7 +8,6 @@ const getMargin = ({ spacing }) => (spacing === 'none' ? '0' : `0 ${akGridSizeUn
 const ButtonContent = styled.span`
   align-items: ${getAlignment};
   align-self: ${getAlignment};
-  flex-shrink: 0;
   margin: ${getMargin};
   max-width: 100%;
   overflow: hidden;

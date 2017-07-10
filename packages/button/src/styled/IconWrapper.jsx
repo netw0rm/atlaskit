@@ -14,6 +14,7 @@ const getMargin = ({ isOnlyChild, spacing }) => {
 const IconWrapper = styled.span`
   align-self: center;
   display: flex;
+  flex-shrink: 0;
   line-height: 0;
   font-size: 0;
   margin: ${getMargin};

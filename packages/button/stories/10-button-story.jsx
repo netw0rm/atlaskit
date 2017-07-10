@@ -257,6 +257,13 @@ const buildStory = props => (
           <span>truncated</span>
         </div>
 
+        <div className="sample" >
+          <Button {...props} className="truncated" iconBefore={<Page label="page icon" />} iconAfter={<Calendar label="calendar icon" />}>
+            Truncated text but the icons should not reduce in size
+          </Button>
+          <span>truncated with icons</span>
+        </div>
+
         <div className="sample">
           <Button {...props} isSelected>
             Selected

@@ -82,7 +82,7 @@ export default class DynamicTable extends Component {
             sortKey={sortKey}
             sortOrder={sortOrder}
           />}
-          {rowsExist && <Body {...bodyProps} />}
+          {!!rowsExist && <Body {...bodyProps} />}
         </Table>
         {!totalPages ? null : (
           <Pagination

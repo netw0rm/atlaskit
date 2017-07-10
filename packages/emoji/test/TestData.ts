@@ -82,14 +82,14 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
   ascii: undefined,
 };
 
-export const loadedMediaEmoji = {
-  ...mediaEmoji,
-  representation: {
-    imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)
-    width: 24,
-    height: 24,
-  }
-};
+// export const loadedMediaEmoji = {
+//   ...mediaEmoji,
+//   representation: {
+//     imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)
+//     width: 24,
+//     height: 24,
+//   }
+// };
 
 const missingMediaId = 'some-new-emoji';
 
@@ -109,15 +109,15 @@ export const missingMediaEmoji: EmojiDescription = {
   ...missingMediaEmojiId,
 };
 
-export const loadedMissingMediaEmoji: EmojiDescription = {
-  ...mediaEmoji,
-  ...missingMediaEmojiId,
-  representation: {
-    imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)
-    width: 24,
-    height: 24,
-  }
-};
+// export const loadedMissingMediaEmoji: EmojiDescription = {
+//   ...mediaEmoji,
+//   ...missingMediaEmojiId,
+//   representation: {
+//     imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)
+//     width: 24,
+//     height: 24,
+//   }
+// };
 
 export const fetchSiteEmojiUrl = (emojiId: EmojiId): string => `${siteUrl}/../${emojiId.id}`;
 

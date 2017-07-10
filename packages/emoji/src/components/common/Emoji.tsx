@@ -1,11 +1,11 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { MouseEvent } from 'react';
+import { MouseEvent, SyntheticEvent } from 'react';
 import TooltipWrapper from './TooltipWrapper';
 
 import * as styles from './styles';
-import { isSpriteRepresentation, toEmojiId } from '../../type-helpers';
-import { EmojiDescription, ImageRepresentation, OnEmojiEvent, SpriteRepresentation } from '../../types';
+import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
+import { EmojiDescription, OnEmojiEvent, SpriteRepresentation } from '../../types';
 import { leftClick } from '../../util/mouse';
 
 export interface Props {
@@ -38,6 +38,11 @@ export interface Props {
   onMouseMove?: OnEmojiEvent;
 
   /**
+   * Callback for if an emoji image fails to load.
+   */
+  onLoadError?: OnEmojiEvent<HTMLImageElement>;
+
+  /**
    * Additional css classes, if required.
    */
   className?: string;
@@ -46,6 +51,12 @@ export interface Props {
    * Show a tooltip on mouse hover.
    */
   showTooltip?: boolean;
+
+  // FS-1156
+  // /**
+  //  * Fits emoji to height in pixels, keeping aspect ratio
+  //  */
+  // fitToHeight?: number;
 }
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
@@ -60,6 +71,18 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
   const { emoji, onMouseMove } = props;
   if (onMouseMove) {
     onMouseMove(toEmojiId(emoji), emoji, event);
+  }
+};
+
+const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>) => {
+  const { emoji, onLoadError } = props;
+
+  // Hide error state (but keep space for it)
+  const target = event.target as HTMLElement;
+  target.style.visibility = 'hidden';
+
+  if (onLoadError) {
+    onLoadError(toEmojiId(emoji), emoji, event);
   }
 };
 
@@ -79,12 +102,22 @@ const renderAsSprite = (props: Props) => {
     classes[className] = true;
   }
 
+  let sizing = {};
+  // FIXME once FS-1155 is fixed, this can be reintroduced as part of FS-1156
+  // if (fitToHeight) {
+  //   sizing = {
+  //     width: `${fitToHeight}px`,
+  //     height: `${fitToHeight}px`,
+  //   };
+  // }
+
   const xPositionInPercent = (100 / (sprite.column - 1)) * (representation.xIndex - 0);
   const yPositionInPercent = (100 / (sprite.row - 1)) * (representation.yIndex - 0);
   const style = {
     backgroundImage: `url(${sprite.url})`,
     backgroundPosition: `${xPositionInPercent}% ${yPositionInPercent}%`,
     backgroundSize: `${sprite.column * 100}% ${sprite.row * 100}%`,
+    ...sizing,
   };
   const emojiNode = (
     <span
@@ -124,11 +157,42 @@ const renderAsImage = (props: Props) => {
     classes[className] = true;
   }
 
-  const representation = emoji.representation as ImageRepresentation;
+  // FIXME once FS-1155 is fixed, this can be reintroduced as part of FS-1156
+  // let width;
+  // let height;
+  let src;
+  const representation = emoji.representation;
+  if (isImageRepresentation(representation)) {
+    src = representation.imagePath;
+  //   width = representation.width;
+  //   height = representation.height;
+  } else if (isMediaRepresentation(representation)) {
+    src = representation.mediaPath;
+  //   width = representation.width;
+  //   height = representation.height;
+  }
+
+  let sizing = {};
+  // if (fitToHeight && width && height) {
+  //   // Presize image, to prevent reflow due to size changes after loading
+  //   const scaledHeight = Math.min(fitToHeight, height);
+  //   sizing = {
+  //     width: scaledHeight / height * width,
+  //     height: scaledHeight,
+  //   };
+  // }
+
+  const onError = (event) => {
+    handleImageError(props, event);
+  };
+
   const emojiNode = (
     <img
-      src={representation.imagePath}
+      src={src}
       alt={emoji.shortName}
+      style={{ visibility: 'visible' }}
+      onError={onError}
+      {...sizing}
     />
   );
   return (

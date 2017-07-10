@@ -12,12 +12,10 @@ import {
 export const isSpriteServiceRepresentation = (rep): rep is SpriteServiceRepresentation => !!(rep && (<SpriteServiceRepresentation> rep).spriteRef);
 export const isSpriteRepresentation = (rep): rep is SpriteRepresentation => !!(rep && (<SpriteRepresentation> rep).sprite);
 export const isImageRepresentation = (rep): rep is ImageRepresentation => !!(rep && (<ImageRepresentation> rep).imagePath);
-export const isMediaApiRepresentation = (rep): rep is MediaApiRepresentation => !!(rep && (<MediaApiRepresentation> rep).mediaPath);
+export const isMediaRepresentation = (rep): rep is MediaApiRepresentation => !!(rep && (<MediaApiRepresentation> rep).mediaPath);
+export const isPromise = (p): p is Promise<any> => !!(p && (<Promise<any>> p).then);
 
-/**
- * Determines if an emoji description is in a loading form (i.e. not suitable for rendering, e.g. a media emoji).
- */
-export const isEmojiLoaded = (emoji: EmojiDescription) => !isMediaApiRepresentation(emoji.representation);
+export const isMediaEmoji = (emoji: EmojiDescription) => isMediaRepresentation(emoji.representation);
 
 export const isEmojiDescriptionWithVariations = (emoji): emoji is EmojiDescriptionWithVariations =>
   !!(emoji && (<EmojiDescriptionWithVariations> emoji).skinVariations);
@@ -50,4 +48,19 @@ export const containsEmojiId = (emojis: EmojiDescription[], emojiId: EmojiId | u
     }
   }
   return false;
+};
+
+export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?: string): EmojiDescription => {
+  const mediaRepresentation = emoji.representation;
+  if (!isMediaRepresentation(mediaRepresentation)) {
+    return emoji;
+  }
+  const representation = {
+    ...emoji.representation,
+    imagePath: newImagePath || mediaRepresentation.mediaPath,
+  };
+  return {
+    ...emoji,
+    representation
+  };
 };

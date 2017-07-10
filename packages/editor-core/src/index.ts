@@ -17,7 +17,7 @@ export {
   PresenceResource,
 } from '@atlaskit/mention';
 
-import ProviderFactory from './providerFactory';
+import ProviderFactory, { WithProviders } from './providerFactory';
 export { version, name } from './version';
 export * from './config';
 export * from './plugins';
@@ -26,7 +26,7 @@ export * from './ui';
 export * from './analytics';
 export * from './nodeviews';
 export * from './renderer';
-export { ProviderFactory };
+export { ProviderFactory, WithProviders };
 export {
   dom,
   NodeSpec,

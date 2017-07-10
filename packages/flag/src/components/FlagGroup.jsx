@@ -7,52 +7,27 @@ export default class FlagGroup extends PureComponent {
   static propTypes = {
     /** Flag elements to be displayed. */
     children: PropTypes.node,
-    /**
-      * Handler to be called once a Flag is dismissed and its animation has finished.
+    /** Handler which will be called when a Flag's dismiss button is clicked.
       * Receives the id of the dismissed Flag as a parameter.
       */
     onDismissed: PropTypes.func,
   };
 
-  static defaultProps = {
-    onDismissed: () => {},
-  }
-
-  state = {
-    isAnimatingOut: false,
-  }
-
-  onFlagDismissRequested = () => {
-    this.setState({ isAnimatingOut: true });
-  }
-
-  onFlagDismissFinished = (dismissedFlagId) => {
-    this.setState({ isAnimatingOut: false });
-    this.props.onDismissed(dismissedFlagId);
-  }
-
-  renderFlag = (childFlag, flagIndex) => (
-    <FlagAnimationWrapper
-      flagId={childFlag.props.id}
-      isEntering={flagIndex === 0}
-      isExiting={flagIndex === 0 && this.state.isAnimatingOut}
-      isMovingToPrimary={flagIndex === 1 && this.state.isAnimatingOut}
-      key={childFlag.props.id}
-      onAnimationFinished={this.onFlagDismissFinished}
-    >
+  renderChildren = () => Children.map(this.props.children, (childFlag, flagIndex) => (
+    <FlagAnimationWrapper key={childFlag.props.id || childFlag.props.key}>
       {cloneElement(childFlag, {
-        onDismissed: this.onFlagDismissRequested,
+        onDismissed: this.props.onDismissed,
         isDismissAllowed: flagIndex === 0,
       })}
     </FlagAnimationWrapper>
-  )
+  ))
 
   render() {
     return (
       <Group>
         <SROnly>Flag notifications</SROnly>
-        <Inner>
-          {Children.map(this.props.children, this.renderFlag)}
+        <Inner component="div">
+          {this.renderChildren()}
         </Inner>
       </Group>
     );

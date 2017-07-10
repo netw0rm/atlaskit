@@ -9,6 +9,7 @@ import Spinner from '../src';
 import StatefulSpinner from './StatefulSpinner';
 import statefulSpinnerRaw from '!raw!./StatefulSpinner';
 /* eslint-enable import/no-duplicates, import/first */
+import SpinnerButton from './SpinnerButton';
 
 const defaultImports = { imports: [['Spinner', '@atlaskit/spinner']] };
 
@@ -76,4 +77,9 @@ storiesOf(name, module)
       <StatefulSpinner />
     </div>
   ), { scripts: [statefulSpinnerRaw] })
+  .add('Spinner in a button', () => (
+    <div style={{ padding: '10px' }}>
+      <SpinnerButton />
+    </div>
+  ))
   ;

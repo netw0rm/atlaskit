@@ -31,6 +31,9 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
    */
   private wrapped: ReactComponentConstructor = wrapComponentWithClickArea(ReactProsemirrorNode);
 
+  // Stores prosemirror offset of nodes with `attrs.id`
+  private childIdToOffset: Map<string | number, number> = new Map();
+
   render() {
     const { components, node, providerFactory, view } = this.props;
     const nodeTypeName = node.type.name;
@@ -48,15 +51,18 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
     node.forEach((childNode: PMNode, offset: number, index: number) => {
       children.push(
         <RichNodeWithClickArea
-          key={`richnode-${offset}-${index}`}
+          key={childNode.attrs.id ? `richnode-${childNode.attrs.id}` : `richnode-${offset}-${index}`}
           components={components}
           node={childNode}
-          getPos={this.handleGetPos(offset)}
+          getPos={this.handleGetPos(childNode.attrs.id || offset)}
           view={view}
           pluginState={pluginState}
           providerFactory={providerFactory}
         />
       );
+      if (childNode.attrs.id) {
+        this.childIdToOffset.set(childNode.attrs.id, offset);
+      }
     });
 
     // tslint:disable-next-line:variable-name
@@ -69,10 +75,13 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
    * because each node has its own position
    * i.e. different nodes can't have the same position
    */
-  private handleGetPos = (offset) => {
-    return () => {
-      const { getPos } = this.props;
-      return getPos() + offset + 1;
-    };
+  private handleGetPos = (id) => () => {
+    let offset = 0;
+    if (this.childIdToOffset.has(id)) {
+      offset = this.childIdToOffset.get(id)!;
+    } else if (!isNaN(id)) {
+      offset = +id;
+    }
+    return this.props.getPos() + offset + 1;
   }
 }

@@ -245,6 +245,11 @@ export const emojiItem = style({
           maxWidth: '24px',
           display: 'block',
         },
+        // Scale sprite to fit regardless of default emoji size
+        '&>.emoji-sprite': {
+          height: '24px',
+          width: '24px',
+        }
       }
     }
   },

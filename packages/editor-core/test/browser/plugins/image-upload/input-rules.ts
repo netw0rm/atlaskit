@@ -1,19 +1,17 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import ImageUploadPlugin from '../../../../src/plugins/image-upload';
+import imageUploadPlugins from '../../../../src/plugins/image-upload';
 import {
-  chaiPlugin, doc, fixtures, insertText, makeEditor, p, img, code_block
+  chaiPlugin, doc, insertText, makeEditor, p, img, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: ImageUploadPlugin(defaultSchema),
-    place: fixture()
+    plugins: imageUploadPlugins(defaultSchema),
   });
 
   describe('image rule', () => {

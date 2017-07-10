@@ -15,7 +15,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
 
 function ignoreLinksInSteps(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
   const mediaPluginState = stateKey.getState(state) as MediaPluginState;
-  mediaPluginState.ignoreLinksInSteps();
+  mediaPluginState.ignoreLinks = true;
   return false;
 }
 

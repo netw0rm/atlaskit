@@ -1,6 +1,6 @@
 import {Search, UnorderedSearchIndex, ITokenizer} from 'js-search';
 import {MentionsResult} from '../api/MentionResource';
-import {HighlightDetail, MentionDescription} from '../types';
+import {HighlightDetail, MentionDescription, isSpecialMention} from '../types';
 import * as XRegExp from 'xregexp/src/xregexp'; // Not using 'xregexp' directly to only include what we use
 import * as XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
 import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
@@ -97,6 +97,12 @@ export class SearchIndex {
           mentionName: Highlighter.find(mention.mentionName, query),
           nickname: Highlighter.find(mention.nickname, query)
         }};
+      }).filter(mention => {
+        if (isSpecialMention(mention) && mention.highlight.nickname.length === 0) {
+          return false;
+        }
+
+        return true;
       });
 
       localResults.sort((a, b) => a.weight - b.weight || 0);
@@ -128,7 +134,8 @@ export class SearchIndex {
       this.index.addIndex('nickname');
     }
 
-    this.index.addDocuments(mentions.map((mention, index) => {
+    this.index.addDocuments(mentions
+    .map((mention, index) => {
       if (mention.weight !== undefined) {
         return mention;
       }

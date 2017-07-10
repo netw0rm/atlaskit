@@ -5,14 +5,12 @@ import tablePlugins, { TableState } from '../../../src/plugins/table';
 import ToolbarTable from '../../../src/ui/ToolbarTable';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
-import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
+import { doc, p, makeEditor } from '../../../src/test-helper';
 
 describe('@atlaskit/editor-core/ui/ToolbarTable', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: [...tablePlugins()],
-    place: fixture()
   });
 
   it('should render disabled ToolbarButton if disabled property is true', () => {

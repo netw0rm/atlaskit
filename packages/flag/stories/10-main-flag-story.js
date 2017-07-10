@@ -29,7 +29,7 @@ storiesOf(name, module)
         This is the Flag component. It is a dumb component as it does not maintain any state, and
         all animations are managed by the parent FlagGroup component.
       </p>
-      <p>
+      <div>
         <Flag
           actions={[
             { content: 'Show me', onClick: action('Show me clicked') },
@@ -41,7 +41,7 @@ storiesOf(name, module)
           key="1"
           title="Welcome to the jungle"
         />
-      </p>
+      </div>
     </StoryPadding>
   ))
   .add('Bold flag - success', () => (

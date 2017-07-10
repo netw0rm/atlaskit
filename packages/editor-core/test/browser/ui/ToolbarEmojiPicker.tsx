@@ -4,7 +4,7 @@ import * as React from 'react';
 import emojiPlugins, { EmojiState } from '../../../src/plugins/emojis';
 import ToolbarEmojiPicker from '../../../src/ui/ToolbarEmojiPicker';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import { doc, p, makeEditor, fixtures, emoji } from '../../../src/test-helper';
+import { doc, p, makeEditor, emoji } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
@@ -19,11 +19,9 @@ const grinEmojiId = {
 };
 
 describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
-    place: fixture()
   });
 
   it('should have state variable isOpen set to true when toolbar emoji button is clicked', () => {

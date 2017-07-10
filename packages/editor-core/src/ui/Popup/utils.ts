@@ -83,7 +83,12 @@ export function calculatePosition({ placement, target, popup, offset }: Calculat
     return position;
   }
 
-  const popupOffsetParent = popup.offsetParent;
+  const popupOffsetParent = popup.offsetParent as HTMLElement;
+  const offsetParentStyle = popupOffsetParent.style;
+  let borderBottomWidth = 0;
+  if (offsetParentStyle && offsetParentStyle.borderBottomWidth) {
+    borderBottomWidth = parseInt(offsetParentStyle.borderBottomWidth, 10);
+  }
   const [verticalPlacement, horizontalPlacement] = placement;
 
   const {
@@ -104,11 +109,13 @@ export function calculatePosition({ placement, target, popup, offset }: Calculat
     position.bottom = Math.ceil(popupOffsetParentHeight
       - (targetTop - popupOffsetParentTop)
       - (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollTop)
+      - borderBottomWidth
       + offset[1]);
   } else {
     position.top = Math.ceil((targetTop - popupOffsetParentTop)
       + targetHeight
       + (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollTop)
+      - borderBottomWidth
       + offset[1]);
   }
 

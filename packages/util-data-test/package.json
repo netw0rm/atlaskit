@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/util-data-test",
   "description": "Shared test and story data",
-  "version": "4.7.0",
+  "version": "4.9.0",
   "config": {
     "access": "public"
   },
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@atlaskit/emoji": "^18.0.0",
-    "@atlaskit/mention": "^7.0.0",
+    "@atlaskit/mention": "^7.2.0",
     "akutil-common-test": "*"
   },
   "keywords": [

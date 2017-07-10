@@ -12,11 +12,16 @@ export interface JIRACustomEncoders {
   mention?: (userId: string) => string;
 }
 
-export interface MediaContextInfo {
+export interface ContextInfo {
   clientId: string;
   serviceHost: string;
   token: string;
   collection: string;
+}
+
+export interface MediaContextInfo {
+  viewContext?: ContextInfo;
+  uploadContext?: ContextInfo;
 }
 
 export default function encode(
@@ -322,6 +327,11 @@ export default function encode(
     domNode.dataset.mediaServicesId = id;
   }
 
+  function buildURLWithContextInfo(fileId: string, contextInfo: ContextInfo) {
+    const { clientId, serviceHost, token, collection } = contextInfo;
+    return `${serviceHost}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
+  }
+
   function encodeMedia(node: PMNode) {
     // span.image-wrap > a > jira-attachment-thumbnail > img[data-media-*] > content
     // span.no-br > a[data-media] > content
@@ -337,9 +347,11 @@ export default function encode(
 
       const img = doc.createElement('img');
       img.setAttribute('alt', node.attrs.__fileName);
-      if (mediaContextInfo) {
-        const { clientId, serviceHost, token, collection } = mediaContextInfo;
-        img.setAttribute('src', `${serviceHost}/file/${node.attrs.id}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`);
+      // Newly uploaded items have collection
+      if (node.attrs.collection && mediaContextInfo && mediaContextInfo.uploadContext) {
+        img.setAttribute('src', buildURLWithContextInfo(node.attrs.id, mediaContextInfo.uploadContext));
+      } else if (mediaContextInfo && mediaContextInfo.viewContext) {
+        img.setAttribute('src', buildURLWithContextInfo(node.attrs.id, mediaContextInfo.viewContext));
       }
       addDataToNode(img, node);
 

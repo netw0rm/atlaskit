@@ -3,18 +3,16 @@ import { expect } from 'chai';
 import codeBlockPlugin from '../../../../src/plugins/code-block';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, p, sendKeyToPm, code_block
+  chaiPlugin, doc, makeEditor, p, sendKeyToPm, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('codeBlock - keymaps', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
     plugins: codeBlockPlugin(defaultSchema),
-    place: fixture()
   });
 
   describe('Enter keypress', () => {

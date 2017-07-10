@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 
+// This was originally used in Nav storybooks but has been removed now as they were not kept up
+// to date. Leaving here as we might choose to come back to these later.
 const StencilStory = props => (
   <div>
     <img

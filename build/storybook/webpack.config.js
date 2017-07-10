@@ -1,5 +1,6 @@
 const webpackConfig = require('../webpack/development.js');
 const webpack = require('webpack');
+const Analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line no-unused-vars
   // configType has a value of 'DEVELOPMENT' or 'PRODUCTION'
@@ -10,6 +11,10 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
   storybookBaseConfig.plugins = storybookBaseConfig.plugins.concat(webpackConfig.plugins);
   storybookBaseConfig.module.loaders = webpackConfig.module.loaders;
   storybookBaseConfig.postcss = webpackConfig.postcss;
+  storybookBaseConfig.plugins.push(new Analyzer({
+    analyzerMode: 'static',
+    generateStatsFile: true,
+  }));
 
   storybookBaseConfig.resolve = Object.assign(
     storybookBaseConfig.resolve || {},
@@ -21,7 +26,7 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
     // building very large sets of stories.
     storybookBaseConfig.plugins.forEach((plugin) => {
       if (plugin instanceof webpack.optimize.UglifyJsPlugin) {
-        plugin.options.sourceMap = false;
+        plugin.options.sourceMap = true;
       }
     });
   }

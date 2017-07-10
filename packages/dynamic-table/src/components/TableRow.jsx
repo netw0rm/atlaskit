@@ -3,11 +3,11 @@ import React from 'react';
 import { TableBodyRow, TableBodyCell } from '../styled/TableRow';
 import props from '../internal/props';
 
-const Row = ({ row, rowIndex, head, isFixedSize }) => {
+const Row = ({ row, head, isFixedSize }) => {
   const { cells, ...restRowProps } = row;
 
   return (
-    <TableBodyRow key={rowIndex} {...restRowProps}>
+    <TableBodyRow {...restRowProps}>
       {
         cells.map((cell, cellIndex) => {
           const { content, ...restCellProps } = cell;
@@ -32,7 +32,6 @@ const Row = ({ row, rowIndex, head, isFixedSize }) => {
 
 Row.propTypes = {
   row: props.row,
-  rowIndex: PropTypes.number,
   head: props.head,
   isFixedSize: PropTypes.bool,
 };

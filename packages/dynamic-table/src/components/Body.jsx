@@ -33,6 +33,7 @@ const Body = ({ rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize }
       {sortedRows
         .slice((page - 1) * rowsPerPage, page * rowsPerPage)
         .map((row, rowIndex) => <TableRow
+          key={rowIndex}
           row={row}
           rowIndex={rowIndex}
           head={head}

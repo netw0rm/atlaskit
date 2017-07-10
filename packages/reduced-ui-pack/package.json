@@ -8,7 +8,8 @@
   "main": "dist/bundle.css",
   "scripts": {
     "prepublish": "lessc src/index.less dist/bundle.css && npm run sprite",
-    "sprite": "node ./bin/buildSprite.js"
+    "sprite": "node ./bin/buildSprite.js",
+    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
   },
   "files": [
     "dist"

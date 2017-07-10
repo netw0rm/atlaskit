@@ -1,9 +1,7 @@
 import * as sinon from 'sinon';
-import { expect } from 'chai';
 import fetchMock from 'fetch-mock';
 
-import AkProfileClient, { modifyResponse } from '../src/api/profile-client';
-import profileData from '../stories/profile-data';
+import AkProfileClient, { modifyResponse } from '../../src/api/profile-client';
 
 const clientUrl = 'https://foo/';
 const clientCacheSize = 10;
@@ -16,8 +14,8 @@ describe('Profilecard', () => {
         url: clientUrl,
       });
 
-      expect(client.config.url).to.equal(clientUrl);
-      expect(client.cache).to.equal(null);
+      expect(client.config.url).toBe(clientUrl);
+      expect(client.cache).toBe(null);
     });
 
     it('cache is available when cacheMaxAge is set on instantiation', () => {
@@ -27,10 +25,10 @@ describe('Profilecard', () => {
         cacheMaxAge: clientCacheMaxAge,
       });
 
-      expect(client.config.url).to.equal(clientUrl);
-      expect(client.cache).to.not.equal(null);
-      expect(client.cache.limit).to.equal(clientCacheSize);
-      expect(client.cacheMaxAge).to.equal(clientCacheMaxAge);
+      expect(client.config.url).toBe(clientUrl);
+      expect(client.cache).not.toBe(null);
+      expect(client.cache.limit).toBe(clientCacheSize);
+      expect(client.cacheMaxAge).toBe(clientCacheMaxAge);
     });
 
     describe('LRU Cache', () => {
@@ -47,7 +45,7 @@ describe('Profilecard', () => {
         clock = sinon.useFakeTimers();
         fetchMock.post(
           '*',
-          { data: profileData[0] }
+          { data: 'foo' }
         );
       });
 
@@ -63,7 +61,7 @@ describe('Profilecard', () => {
             clock.tick(clientCacheMaxAge);
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).to.equal(data);
+            expect(cache).toBe(data);
             done();
           })
           .catch((err) => {
@@ -77,7 +75,7 @@ describe('Profilecard', () => {
             clock.tick(clientCacheMaxAge + 1);
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).to.equal(null);
+            expect(cache).toBe(null);
             done();
           })
           .catch((err) => {
@@ -91,12 +89,12 @@ describe('Profilecard', () => {
             clock.tick(clientCacheMaxAge);
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).to.equal(data);
+            expect(cache).toBe(data);
 
             clock.tick(clientCacheMaxAge);
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).to.equal(data);
+            expect(cache).toBe(data);
             done();
           })
           .catch((err) => {
@@ -111,12 +109,12 @@ describe('Profilecard', () => {
           .then((data) => {
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).to.equal(data);
+            expect(cache).toBe(data);
 
             client.flushCache();
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).to.equal(null);
+            expect(cache).toBe(null);
             done();
           })
           .catch((err) => {
@@ -139,10 +137,10 @@ describe('Profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.remoteWeekdayIndex).to.equal(undefined);
-        expect(result.remoteWeekdayString).to.equal(undefined);
-        expect(result.remoteTimeString).to.equal(undefined);
-        expect(result.id).to.equal(undefined);
+        expect(result.remoteWeekdayIndex).toBe(undefined);
+        expect(result.remoteWeekdayString).toBe(undefined);
+        expect(result.remoteTimeString).toBe(undefined);
+        expect(result.id).toBe(undefined);
       });
 
       it('should rename "remoteTimeString" property to "timestring"', () => {
@@ -154,7 +152,7 @@ describe('Profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.timestring).to.equal('10:23am');
+        expect(result.timestring).toBe('10:23am');
       });
 
       it('should not modify "timestring" property if remote and local date share the same weekday index', () => {
@@ -168,7 +166,7 @@ describe('Profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.timestring).to.equal('0:00pm');
+        expect(result.timestring).toBe('0:00pm');
       });
 
       it('should prefix "timestring" property with weekday if local dates weekday index is different', () => {
@@ -182,7 +180,7 @@ describe('Profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.timestring).to.equal('Mon 0:00pm');
+        expect(result.timestring).toBe('Mon 0:00pm');
       });
     });
   });

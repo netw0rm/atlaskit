@@ -48,4 +48,14 @@ storiesOf('StartTrialConfirm')
         confirmButtonDisabled
       />
     )
+  )
+  .add('Show Confirm Trial dialog with error state for confirm', () =>
+    setupStorybookAnalytics(
+      <ConfirmTrialBase
+        {...defaultProps}
+        analyticsId="growth.happy"
+        onComplete={() => Promise.reject(true)}
+        onCancel={() => Promise.resolve(true)}
+      />
+    )
   );

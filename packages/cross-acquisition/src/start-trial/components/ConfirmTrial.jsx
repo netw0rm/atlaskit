@@ -34,6 +34,7 @@ export class ConfirmTrialBase extends Component {
   state = {
     spinnerActive: this.props.spinnerActive,
     confirmButtonDisabled: this.props.confirmButtonDisabled,
+    confluenceFailedToStart: false,
   };
 
   handleConfirmClick = () => {
@@ -42,7 +43,12 @@ export class ConfirmTrialBase extends Component {
       spinnerActive: true,
       confirmButtonDisabled: true,
     });
-    Promise.resolve(startProductTrial()).then(onComplete);
+    Promise.resolve(startProductTrial()).then(onComplete).catch(() => {
+      setTimeout(() => {
+        this.setState({ confluenceFailedToStart: true });
+        console.error('Promise rejected!', `Confluence failed to start - ${this.state.confluenceFailedToStart}`);
+      }, 1500);
+    });
   };
 
   handleCancelClick = () => {
@@ -52,7 +58,6 @@ export class ConfirmTrialBase extends Component {
 
   render() {
     const { productLogo, heading, message, confirmButtonText, cancelButtonText } = this.props;
-
     return (
       <ModalDialog
         isOpen

@@ -5,6 +5,10 @@ const ButtonWrapper = styled.span`
   display: inline-flex;
   flex-wrap: nowrap;
   max-width: 100%;
+  ${props => (props.fit && `
+    width: 100%;
+    justify-content: center;
+  `)}
 `;
 
 ButtonWrapper.displayName = 'ButtonWrapper';

@@ -27,4 +27,3 @@ export default class AppBase extends Component {
     );
   }
 }
-

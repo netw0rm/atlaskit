@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import { name } from '../package.json';
-import * as bundle from '../src';
-import { size } from '../src/components/Icon';
+import { name } from '../../package.json';
+import * as bundle from '../../src';
+import { size } from '../../src/components/Icon';
 
-import components from '../docs/icons';
+import components from '../../docs/icons';
 
 describe(name, () => {
   describe('exports', () => {
     it('are properly defined for atomic ones', () => {
       const arrayCompare = (actual, expected) => {
-        expect(actual.length).to.equal(expected.length);
+        expect(actual.length).toBe(expected.length);
 
         for (let i = 0; i < actual.length; i++) {
           if (actual[i] !== expected[i]) {
@@ -341,7 +341,7 @@ describe(name, () => {
       const actual = Object.keys(components);
 
       const errorMsg = arrayCompare(actual, expected);
-      expect(errorMsg).to.equal('');
+      expect(errorMsg).toBe('');
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.
         // As the sole purpose of this component is providing icons:
@@ -356,11 +356,11 @@ describe(name, () => {
     });
 
     describe('bundle', () => {
-      it('has size export', () => bundle.size.should.be.deep.equal(size));
+      it('has size export', () => expect(bundle.size).toEqual(size));
 
       it('exports the Icon component', () => {
         const { default: Icon } = bundle;
-        expect(new Icon({ label: 'My icon' })).to.be.instanceOf(Component);
+        expect(new Icon({ label: 'My icon' })).toBeInstanceOf(Component);
       });
     });
   });
@@ -369,15 +369,15 @@ describe(name, () => {
     it('should have role="img"', () => {
       const AtlassianIcon = components.atlassian.component;
       const wrapper = mount(<AtlassianIcon label="My label" />);
-      expect(wrapper.find('svg').is('[role="img"]')).to.equal(true);
+      expect(wrapper.find('svg').is('[role="img"]')).toBe(true);
     });
 
     it('should be possible to create the components', () => {
       Object.values(components).forEach((iconData) => {
         const Icon = iconData.component;
         const wrapper = shallow(<Icon label="My icon" />);
-        expect(wrapper).not.to.equal(undefined);
-        expect(Icon).to.be.a('function');
+        expect(wrapper).not.toBe(undefined);
+        expect(Icon).toBeInstanceOf(Function);
       });
     });
   });
@@ -390,17 +390,17 @@ describe(name, () => {
         const wrapper = mount(<AtlassianIcon label={label} />);
         const svgWrapper = wrapper.find('svg').first();
 
-        expect(svgWrapper.is('[aria-labelledby]')).to.equal(true);
+        expect(svgWrapper.is('[aria-labelledby]')).toBe(true);
 
         const svg = svgWrapper.get(0);
         const labelledBy = svg.getAttribute('aria-labelledby');
         const ids = labelledBy.split(/\s+/);
-        expect(ids.length).to.be.at.least(1, 'The labelled-by attribute must reference some node');
+        expect(ids.length).toBeGreaterThanOrEqual(1, 'The labelled-by attribute must reference some node');
 
         // The SVG should contain the provided label
         expect(svgWrapper.containsAnyMatchingElements(
           ids.map(id => <title id={id}>{label}</title>)
-        )).to.equal(true);
+        )).toBe(true);
       });
     });
   });

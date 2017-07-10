@@ -138,8 +138,8 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     const content = this.getContentToRender();
 
     return (
-      <A linkUrl={linkUrl}>
-        <Wrapper style={cardStyle} className={appearance} onClick={onClick} onMouseEnter={onMouseEnter}>
+      <A linkUrl={linkUrl} onClick={onClick} onMouseEnter={onMouseEnter}>
+        <Wrapper style={cardStyle} className={appearance}>
           {content}
         </Wrapper>
       </A>

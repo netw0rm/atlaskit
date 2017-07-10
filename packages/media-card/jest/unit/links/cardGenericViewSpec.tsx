@@ -6,13 +6,16 @@ import { shallow, mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../../src/links';
 import { Details } from '../../../src/links/styled';
-import { Title, Link, ErrorContainer, ErrorHeader } from '../../../src/links/cardGenericView/styled';
+import { Title, Link, ErrorContainer, ErrorHeader, A } from '../../../src/links/cardGenericView/styled';
 
-describe('LinkCardViewGeneric', () => {
+describe('LinkCardGenericView', () => {
+  const title = 'Hello world';
+  const linkUrl = 'http://localhost:9001/';
+  const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
+  const iconUrl = 'http://localhost:9001/some/icon';
+  const event = 'some-random-event';
+
   it('should only render the title and linkUrl when not supplied with optional props', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl}/>);
 
     expect(card.find(Title).text()).to.eql(title);
@@ -21,28 +24,16 @@ describe('LinkCardViewGeneric', () => {
   });
 
   it('should render in horizontal display mode by default', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-    const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
-
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
     expect(card.find('.media-card')).to.have.length(1);
   });
 
   it('should render in square display mode when specified', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-    const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
-
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} appearance="square" />);
     expect(card.find('.media-card')).to.have.length(1);
   });
 
   it('should render a thumnail when supplied', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-    const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
-
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />) as any;
 
     expect(card.find('.media-card')).to.have.length(1);
@@ -50,10 +41,6 @@ describe('LinkCardViewGeneric', () => {
   });
 
   it.skip('should NOT render a thumnail when supplied thumbnail url errors', (done) => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-    const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
-
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
 
     // TODO: test fails on pipeline, find way of wait until img is loaded properly
@@ -65,10 +52,6 @@ describe('LinkCardViewGeneric', () => {
   });
 
   it('should render an icon when supplied', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-    const iconUrl = 'http://localhost:9001/some/icon';
-
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} iconUrl={iconUrl} />);
 
     expect(card.find('.media-card')).to.have.length(0);
@@ -76,10 +59,6 @@ describe('LinkCardViewGeneric', () => {
   });
 
   it('should NOT render an icon when supplied icon url errors', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-    const iconUrl = 'http://localhost:9001/some/icon';
-
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} iconUrl={iconUrl} />);
     card.find(`img[src='${iconUrl}']`).simulate('error');
 
@@ -88,19 +67,13 @@ describe('LinkCardViewGeneric', () => {
   });
 
   it('should render the site name instead of link url inside of they <a> tag when it is supplied as a prop', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
     const site = 'Hello world';
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} site={site}/>);
-    expect(card.find('a.underline').props().href).to.eql(linkUrl);
-    expect(card.find('a.underline').text()).to.eql(site);
+    expect(card.find(Link).text()).to.eql(site);
   });
 
   it('currently ignores the loading prop', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl}/>);
 
     expect(card.find(Title).text()).to.eql(title);
@@ -109,8 +82,6 @@ describe('LinkCardViewGeneric', () => {
   });
 
   it('displays error when error prop is passed in', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
     const error = 'Some random error occured';
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} error={error}/>);
 
@@ -121,10 +92,6 @@ describe('LinkCardViewGeneric', () => {
   });
 
   it('should fire onClick when component is clicked', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-
-    const event = 'some-random-event';
     const handler = sinon.spy();
     const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} onClick={handler} />);
 
@@ -135,10 +102,6 @@ describe('LinkCardViewGeneric', () => {
   });
 
   it('should fire onMouseEnter when component is hovered', () => {
-    const title = 'Hello world';
-    const linkUrl = 'http://localhost:9001/';
-
-    const event = 'some-random-event';
     const handler = sinon.spy();
     const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} onMouseEnter={handler} />);
 
@@ -146,5 +109,11 @@ describe('LinkCardViewGeneric', () => {
     expect(handler.calledOnce).to.be.true;
     expect(handler.calledOnce).to.be.true;
     expect(handler.firstCall.args[0]).to.deep.equal(event);
+  });
+
+  it('should wrap the component into an A element', () => {
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl}/>);
+
+    expect(card.getDOMNode()).to.be.instanceOf(HTMLAnchorElement);
   });
 });

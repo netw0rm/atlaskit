@@ -132,10 +132,10 @@ describe('CardView', () => {
     expect(hoverHandlerArg.mediaItemDetails).to.deep.equal(file);
   });
 
-  it('should fire onClick and onMouseEnter events when file details are passed in', () => {
+  it('should fire onClick and onMouseEnter events when link details are passed in', () => {
     const clickHandler = sinon.spy();
     const hoverHandler = sinon.spy();
-    const card = mount(<CardView status="loading" metadata={link} onClick={clickHandler} onMouseEnter={hoverHandler} />);
+    const card = shallow(<CardView status="loading" metadata={link} onClick={clickHandler} onMouseEnter={hoverHandler} />);
 
     card.simulate('click');
     card.simulate('mouseEnter');

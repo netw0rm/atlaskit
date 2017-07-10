@@ -72,15 +72,15 @@ export const ErrorHeader = styled.div`
   ${ellipsis('calc(100% - 24px)')}
 `;
 
-export const A = styled(Href)`
+export const A = styled(Href as any)`
   color: initial;
 
   &:hover {
-    ${Title} {
+    ${Title as any} {
       color: ${akColorB400};
     }
 
-    ${Details} {
+    ${Details as any} {
       background-color: #e7e9ed;
     }
   }

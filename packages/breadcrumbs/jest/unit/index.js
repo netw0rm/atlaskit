@@ -11,12 +11,12 @@ import EllipsisItem from '../../src/components/EllipsisItem';
 describe('Breadcrumbs', () => {
   describe('exports', () => {
     it('the smart React component, Breadcrumbs component, and the Item component', () => {
-      expect(Breadcrumbs).not.to.equal(undefined);
-      expect(BreadcrumbsStateless).not.to.equal(undefined);
-      expect(Item).not.to.equal(undefined);
-      expect(new Breadcrumbs()).to.be.instanceOf(Component);
-      expect(new BreadcrumbsStateless()).to.be.instanceOf(Component);
-      expect(new Item()).to.be.instanceOf(Component);
+      expect(Breadcrumbs).not.toBe(undefined);
+      expect(BreadcrumbsStateless).not.toBe(undefined);
+      expect(Item).not.toBe(undefined);
+      expect(new Breadcrumbs()).toBeInstanceOf(Component);
+      expect(new BreadcrumbsStateless()).toBeInstanceOf(Component);
+      expect(new Item()).toBeInstanceOf(Component);
     });
   });
 
@@ -42,13 +42,13 @@ describe('Breadcrumbs', () => {
     });
 
     it('updates the expanded state when the ellipsis is clicked', () => {
-      expect(wrapper.state().isExpanded).to.equal(false);
-      expect(wrapper.find(BreadcrumbsStateless).props().isExpanded).to.equal(false);
+      expect(wrapper.state().isExpanded).toBe(false);
+      expect(wrapper.find(BreadcrumbsStateless).props().isExpanded).toBe(false);
 
       const ellipsisItem = wrapper.find(EllipsisItem);
       ellipsisItem.find(Button).simulate('click');
-      expect(wrapper.state().isExpanded).to.equal(true);
-      expect(wrapper.find(BreadcrumbsStateless).props().isExpanded).to.equal(true);
+      expect(wrapper.state().isExpanded).toBe(true);
+      expect(wrapper.find(BreadcrumbsStateless).props().isExpanded).toBe(true);
     });
   });
 });

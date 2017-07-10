@@ -18,9 +18,9 @@ function describeValue(value) {
 
 describe(name, () => {
   it('named exports', () => {
-    expect(exports.enumeration).to.be.a('function', 'enumeration');
-    expect(exports.keyCode).to.be.an('function', 'keyCode');
-    expect(exports.KeyPressHandler).to.be.a('function', 'KeyPressHandler');
+    expect(exports.enumeration).toBeInstanceOf(Function);
+    expect(exports.keyCode).toBeInstanceOf(Function);
+    expect(exports.KeyPressHandler).toBeInstanceOf(Function);
   });
 
   describe('aui/internal/attributes', () => {
@@ -37,13 +37,13 @@ describe(name, () => {
 
     describe('computeBooleanValue', () => {
       it('returns false for null', () => {
-        expect(computeBooleanValue(null)).to.equal(false);
+        expect(computeBooleanValue(null)).toBe(false);
       });
 
       it('returns true for non-null falsy values', () => {
         const nonNullFalsyValues = FALSY_VALUES.filter(value => value !== null);
         nonNullFalsyValues.forEach((value) => {
-          expect(computeBooleanValue(value)).to.equal(true, describeValue(value));
+          expect(computeBooleanValue(value)).toBe(true, describeValue(value));
         });
       });
     });
@@ -52,7 +52,7 @@ describe(name, () => {
       it('matches hasAttribute', () => {
         expect(
           computeBooleanValue(el.getAttribute(ATTRIBUTE))
-        ).to.equal(el.hasAttribute(ATTRIBUTE));
+        ).toBe(el.hasAttribute(ATTRIBUTE));
       });
     });
 
@@ -67,7 +67,7 @@ describe(name, () => {
 
         it(`matches hasAttribute (${describeValue(value)})`, () => {
           expect(computeBooleanValue(el.getAttribute(ATTRIBUTE)))
-            .to.equal(el.hasAttribute(ATTRIBUTE));
+            .toBe(el.hasAttribute(ATTRIBUTE));
         });
       });
     });
@@ -76,8 +76,8 @@ describe(name, () => {
       FALSY_VALUES.forEach((value) => {
         it(`removes the attr for falsy values (${describeValue(value)})`, () => {
           setBooleanAttribute(el, ATTRIBUTE, value);
-          expect(el.hasAttribute(ATTRIBUTE)).to.equal(false, 'hasAttribute');
-          expect(removeAttributeSpy.callCount).to.equal(1, 'removeAttribute');
+          expect(el.hasAttribute(ATTRIBUTE)).toBe(false, 'hasAttribute');
+          expect(removeAttributeSpy.callCount).toBe(1, 'removeAttribute');
         });
       });
     }
@@ -86,8 +86,8 @@ describe(name, () => {
       TRUTHY_VALUES.forEach((value) => {
         it(`adds the attr for truthy values (${describeValue(value)})`, () => {
           setBooleanAttribute(el, ATTRIBUTE, value);
-          expect(el.getAttribute(ATTRIBUTE)).to.equal('', 'getAttribute');
-          expect(setAttributeSpy.callCount).to.equal(1, 'removeAttribute');
+          expect(el.getAttribute(ATTRIBUTE)).toBe('', 'getAttribute');
+          expect(setAttributeSpy.callCount).toBe(1, 'removeAttribute');
         });
       });
     }
@@ -118,7 +118,7 @@ describe(name, () => {
       TRUTHY_VALUES.forEach((value) => {
         it(`normalizes the attr for truthy values (${describeValue(value)})`, () => {
           setBooleanAttribute(el, ATTRIBUTE, value);
-          expect(el.getAttribute(ATTRIBUTE)).to.equal('', 'getAttribute');
+          expect(el.getAttribute(ATTRIBUTE)).toBe('', 'getAttribute');
         });
       });
     });
@@ -127,7 +127,7 @@ describe(name, () => {
       it('matches values case-insensitive', () => {
         enumOptions.values.forEach((value) => {
           const computedValue = computeEnumValue(enumOptions, value.toUpperCase());
-          expect(computedValue).to.equal(value, describeValue(value));
+          expect(computedValue).toBe(value, describeValue(value));
         });
       });
     }
@@ -141,14 +141,14 @@ describe(name, () => {
       computeEnumValueMatchesValuesCaseInsensitive(ENUM_OPTIONS);
 
       it('computeEnumValue returns null when missing', () => {
-        expect(computeEnumValue(ENUM_OPTIONS, null)).to.equal(null);
+        expect(computeEnumValue(ENUM_OPTIONS, null)).toBe(null);
       });
 
       it('setEnumAttribute sets the value as-is, even if there is a case-insensitive match', () => {
         ENUM_OPTIONS.values.forEach((value) => {
           const upperCasedValue = value.toUpperCase();
           setEnumAttribute(el, ENUM_OPTIONS, upperCasedValue);
-          expect(el.getAttribute(ENUM_OPTIONS.attribute)).to.equal(upperCasedValue,
+          expect(el.getAttribute(ENUM_OPTIONS.attribute)).toBe(upperCasedValue,
             describeValue(upperCasedValue));
         });
       });
@@ -158,8 +158,8 @@ describe(name, () => {
         setAttributeSpy.reset();
 
         setEnumAttribute(el, ENUM_OPTIONS, 'foo');
-        expect(el.getAttribute(ENUM_OPTIONS.attribute)).to.equal('foo', 'getAttribute');
-        expect(setAttributeSpy.callCount).to.equal(1, 'setAttribute');
+        expect(el.getAttribute(ENUM_OPTIONS.attribute)).toBe('foo', 'getAttribute');
+        expect(setAttributeSpy.callCount).toBe(1, 'setAttribute');
       });
 
       it('setEnumAttribute passes the new value verbatim to setAttribute', () => {
@@ -167,8 +167,8 @@ describe(name, () => {
           setAttributeSpy.reset();
 
           setEnumAttribute(el, ENUM_OPTIONS, value);
-          expect(setAttributeSpy.callCount).to.equal(1, `setAttribute (${describeValue(value)})`);
-          expect(setAttributeSpy.calledWithExactly(ENUM_OPTIONS.attribute, value)).to.equal(true,
+          expect(setAttributeSpy.callCount).toBe(1, `setAttribute (${describeValue(value)})`);
+          expect(setAttributeSpy.calledWithExactly(ENUM_OPTIONS.attribute, value)).toBe(true,
             `calledWith (${describeValue(value)}`);
         });
       });
@@ -178,7 +178,7 @@ describe(name, () => {
         setAttributeSpy.reset();
 
         setEnumAttribute(el, ENUM_OPTIONS, null);
-        expect(removeAttributeSpy.callCount).to.equal(0);
+        expect(removeAttributeSpy.callCount).toBe(0);
       });
     });
 
@@ -192,11 +192,11 @@ describe(name, () => {
       computeEnumValueMatchesValuesCaseInsensitive(ENUM_OPTIONS);
 
       it('computeEnumValue returns the missing default when missing', () => {
-        expect(computeEnumValue(ENUM_OPTIONS, null)).to.equal(ENUM_OPTIONS.missingDefault);
+        expect(computeEnumValue(ENUM_OPTIONS, null)).toBe(ENUM_OPTIONS.missingDefault);
       });
 
       it('computeEnumValue returns the missing default when invalid', () => {
-        expect(computeEnumValue(ENUM_OPTIONS, 'invalid')).to.equal(ENUM_OPTIONS.missingDefault);
+        expect(computeEnumValue(ENUM_OPTIONS, 'invalid')).toBe(ENUM_OPTIONS.missingDefault);
       });
     });
 
@@ -211,16 +211,16 @@ describe(name, () => {
       computeEnumValueMatchesValuesCaseInsensitive(ENUM_OPTIONS);
 
       it('computeEnumValue returns the missing default when missing', () => {
-        expect(computeEnumValue(ENUM_OPTIONS, null)).to.equal(ENUM_OPTIONS.missingDefault);
+        expect(computeEnumValue(ENUM_OPTIONS, null)).toBe(ENUM_OPTIONS.missingDefault);
       });
 
       it('computeEnumValue returns the invalid default when invalid', () => {
-        expect(computeEnumValue(ENUM_OPTIONS, 'invalid')).to.equal(ENUM_OPTIONS.invalidDefault);
+        expect(computeEnumValue(ENUM_OPTIONS, 'invalid')).toBe(ENUM_OPTIONS.invalidDefault);
       });
 
       it('computeEnumValue does not match against the missing default', () => {
         const computedValue = computeEnumValue(ENUM_OPTIONS, ENUM_OPTIONS.missingDefault);
-        expect(computedValue).to.equal(ENUM_OPTIONS.invalidDefault);
+        expect(computedValue).toBe(ENUM_OPTIONS.invalidDefault);
       });
     });
   });

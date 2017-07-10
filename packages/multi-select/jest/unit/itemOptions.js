@@ -11,8 +11,8 @@ describe(`${name} - shared functions`, () => {
       { content: 'test2', value: 'test2' },
     ];
     const wrapper = mount(<MultiSelectStateless items={items} />);
-    expect(wrapper.state().groupedItems.length).to.equal(1);
-    expect(wrapper.state().groupedItems[0].items).to.equal(items);
+    expect(wrapper.state().groupedItems.length).toBe(1);
+    expect(wrapper.state().groupedItems[0].items).toBe(items);
   });
   it('should render an array of groups', () => {
     const groups = [
@@ -25,7 +25,7 @@ describe(`${name} - shared functions`, () => {
     ];
 
     const wrapper = mount(<MultiSelectStateless items={groups} />);
-    expect(wrapper.state().groupedItems.length).to.equal(1);
-    expect(wrapper.state().groupedItems[0]).to.equal(groups[0]);
+    expect(wrapper.state().groupedItems.length).toBe(1);
+    expect(wrapper.state().groupedItems[0]).toBe(groups[0]);
   });
 });

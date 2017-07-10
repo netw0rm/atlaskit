@@ -67,6 +67,7 @@
     "glob": "^7.1.1",
     "glob-loader": "^0.3.0",
     "hipchat-msg": "^0.1.0",
+    "identity-obj-proxy": "^3.0.0",
     "imports-loader": "^0.6.5",
     "in-publish": "^2.0.0",
     "jest": "^20.0.4",

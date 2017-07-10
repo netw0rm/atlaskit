@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import {
-  fixtures, doc, code_block, code, p, strong, makeEditor
+  doc, code_block, code, p, strong, makeEditor
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import * as commands from '../../../src/commands';
@@ -8,11 +8,9 @@ import * as commands from '../../../src/commands';
 import { isMarkTypeAllowedAtCurrentPosition } from '../../../src/utils';
 
 describe('@atlaskit/editore-core/utils', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
-    schema: defaultSchema,
     doc,
-    place: fixture()
+    schema: defaultSchema
   });
 
   describe('isMarkTypeAllowedAtCurrentPosition', () => {

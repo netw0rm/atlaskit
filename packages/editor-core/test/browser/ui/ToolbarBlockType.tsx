@@ -4,18 +4,16 @@ import * as React from 'react';
 import blockTypePlugins from '../../../src/plugins/block-type';
 import ToolbarBlockType from '../../../src/ui/ToolbarBlockType';
 import AkButton from '@atlaskit/button';
-import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
+import { doc, p, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 const noop = () => {};
 
 describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
-    const fixture = fixtures();
     const blockTypePluginsSet = blockTypePlugins(defaultSchema);
     const editor = (doc: any) => makeEditor({
-        doc,
-        plugins: [...blockTypePluginsSet],
-        place: fixture()
+      doc,
+      plugins: [...blockTypePluginsSet],
     });
 
     it('should render disabled ToolbarButton if isDisabled property is true', () => {

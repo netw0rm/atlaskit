@@ -1,20 +1,18 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import tablePlugin, { TableState } from '../../../../src/plugins/table';
+import tablePlugins, { TableState } from '../../../../src/plugins/table';
 import { TableMap } from '../../../../src/prosemirror';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
+  chaiPlugin, doc, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
-const fixture = fixtures();
 
 describe('table keymap', () => {
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
-    plugins: tablePlugin(),
-    place: fixture()
+    plugins: tablePlugins(),
   });
 
   describe('Tab keypress', () => {

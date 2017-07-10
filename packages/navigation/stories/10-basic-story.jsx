@@ -5,7 +5,6 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import { AtlassianLogo } from '@atlaskit/logo';
-import navigationStencil from 'url-loader!./stencils/navigation.svg';
 import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle, presetThemes } from '../src/index';
 import NavigationWithDropdown from './components/NavigationWithDropdown';
 import HtmlPage from './components/HtmlPage';
@@ -134,11 +133,6 @@ storiesOf(name, module)
       </BasicNavigation>
     </HtmlPage>
   ))
-  .addStencilStory('with a stencil in the open state', () => (
-    <HtmlPage>
-      <BasicNavigation />
-    </HtmlPage>
-  ), { image: navigationStencil })
   .add('with multiple groups', () => (
     <HtmlPage>
       <BasicNavigation

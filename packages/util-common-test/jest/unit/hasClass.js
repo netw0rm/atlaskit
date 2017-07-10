@@ -1,8 +1,7 @@
-
-import { hasClass } from '../src';
+import { hasClass } from '../../src';
 
 // eslint-disable-next-line mocha/no-skipped-tests
-describe.skip('hasClass', () => {
+describe('hasClass', () => {
   let component;
   beforeEach(() => {
     component = document.createElement('div');
@@ -13,25 +12,25 @@ describe.skip('hasClass', () => {
   });
 
   it('should return false with no arguments at all', () => {
-    expect(hasClass()).to.equal(false);
-    expect(hasClass(false)).to.equal(false);
-    expect(hasClass(null)).to.equal(false);
+    expect(hasClass()).toBe(false);
+    expect(hasClass(false)).toBe(false);
+    expect(hasClass(null)).toBe(false);
   });
 
   it('should return false if first argument is not a DOM Element', () => {
-    expect(hasClass({})).to.equal(false);
-    expect(hasClass([])).to.equal(false);
-    expect(hasClass('')).to.equal(false);
-    expect(hasClass(1)).to.equal(false);
+    expect(hasClass({})).toBe(false);
+    expect(hasClass([])).toBe(false);
+    expect(hasClass('')).toBe(false);
+    expect(hasClass(1)).toBe(false);
   });
 
   describe('when component has no class', () => {
     it('should return true if no class provided', () =>
-      expect(hasClass(component)).to.equal(true)
+      expect(hasClass(component)).toBe(true)
     );
 
     it('should return false for any class provided', () =>
-      expect(hasClass(component, 'foo')).to.equal(false)
+      expect(hasClass(component, 'foo')).toBe(false)
     );
   });
 
@@ -39,15 +38,15 @@ describe.skip('hasClass', () => {
     beforeEach(() => component.classList.add('foo'));
 
     it('should return true if no class provided', () =>
-      expect(hasClass(component)).to.equal(true)
+      expect(hasClass(component)).toBe(true)
     );
 
     it('should return true for a known class', () =>
-      expect(hasClass(component, 'foo')).to.equal(true)
+      expect(hasClass(component, 'foo')).toBe(true)
     );
 
     it('should return false for an unknown class', () =>
-      expect(hasClass(component, 'test')).to.equal(false)
+      expect(hasClass(component, 'test')).toBe(false)
     );
   });
 
@@ -59,15 +58,15 @@ describe.skip('hasClass', () => {
     );
 
     it('should return true for known class', () =>
-      expect(hasClass(component, 'bar')).to.equal(true)
+      expect(hasClass(component, 'bar')).toBe(true)
     );
 
     it('should return true for multiple known classes', () =>
-      expect(hasClass(component, 'bar', 'foo', 'zee')).to.equal(true)
+      expect(hasClass(component, 'bar', 'foo', 'zee')).toBe(true)
     );
 
     it('should return false for unknown classes', () =>
-      expect(hasClass(component, 'bar', 'foo', 'wat')).to.equal(false)
+      expect(hasClass(component, 'bar', 'foo', 'wat')).toBe(false)
     );
   });
 });

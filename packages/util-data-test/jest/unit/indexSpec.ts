@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import defaultExported from '../src';
-import { name } from '../package.json';
+import defaultExported from '../../src';
+import { name } from '../../package.json';
 
 describe(name, () => {
   describe('exports', () => {

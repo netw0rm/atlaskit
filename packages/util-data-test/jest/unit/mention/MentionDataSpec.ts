@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import mentionData, { mentionDataSize } from '../../src/mention/mention-data';
+import mentionData, { mentionDataSize } from '../../../src/mention/mention-data';
 
 describe('#mention data', () => {
   it('expected mention data', () => {

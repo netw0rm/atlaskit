@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { atlassianEmojis, emojiRepository, grinEmoji, evilburnsEmoji, standardEmojis } from '../../src/emoji/test-data';
+import { atlassianEmojis, emojiRepository, grinEmoji, evilburnsEmoji, standardEmojis } from '../../../src/emoji/test-data';
 
 describe('#test data', () => {
   it('expected standard emojis', () => {

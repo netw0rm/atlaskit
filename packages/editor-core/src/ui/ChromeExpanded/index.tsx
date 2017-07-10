@@ -363,18 +363,22 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   }
 
   @analytics('atlassian.editor.stop.cancel')
-  private handleCancel = () => {
+  private handleCancel = (): boolean => {
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel();
+      return true;
     }
+    return false;
   }
 
   @analytics('atlassian.editor.stop.save')
-  private handleSave = () => {
+  private handleSave = (): boolean => {
     const { onSave } = this.props;
     if (onSave) {
       onSave();
+      return true;
     }
+    return false;
   }
 }

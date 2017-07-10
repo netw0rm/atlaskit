@@ -56,10 +56,10 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
   }
 
   @analytics('atlassian.editor.feedback.button')
-  private openFeedbackPopup = () => {
+  private openFeedbackPopup = (): boolean => {
     if (typeof this.showJiraCollectorDialogCallback === 'function') {
       this.showJiraCollectorDialogCallback();
-      return;
+      return false;
     }
 
     this.setState({ jiraIssueCollectorScriptLoading: true });
@@ -89,6 +89,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
     };
 
     this.loadJiraIssueCollectorScript();
+    return true;
   }
 
   private loadJiraIssueCollectorScript = (): void => {

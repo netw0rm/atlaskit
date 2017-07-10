@@ -4,7 +4,7 @@ import tablePlugins, { TableState } from '../../../../src/plugins/table';
 import { TableMap } from '../../../../src/prosemirror';
 
 import {
-  chaiPlugin, doc, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
+  chaiPlugin, doc, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, th, thEmpty, p
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -96,4 +96,105 @@ describe('table keymap', () => {
       });
     });
   });
+
+  describe('Alt-ArrowDown keypress', () => {
+    context('when the cursor is in the last row', () => {
+      it('it should append a new empty row', () => {
+        const { editorView } = editor(doc(
+          table(
+            tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
+            tr(td({})(p('4')), td({})(p('5{<>}')), td({})(p('6')) )
+          )
+        ));
+        sendKeyToPm(editorView, 'Alt-ArrowDown');
+        expect(editorView.state.doc).to.deep.equal(doc(
+          table(
+            tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
+            tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) ),
+            tr(tdEmpty, tdEmpty, tdEmpty )
+          )
+        ));
+      });
+    });
+
+    context('when the cursor is in the first row', () => {
+      it('it should create a new second row', () => {
+        const { editorView } = editor(doc(
+          table(
+            tr(td({})(p('1')), td({})(p('2{<>}')), td({})(p('3')) ),
+            tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
+          )
+        ));
+        sendKeyToPm(editorView, 'Alt-ArrowDown');
+        expect(editorView.state.doc).to.deep.equal(doc(
+          table(
+            tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
+            tr(tdEmpty, tdEmpty, tdEmpty ),
+            tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
+          )
+        ));
+      });
+    });
+  });
+
+  describe('Alt-ArrowUp keypress', () => {
+    context('when the cursor is in the last row', () => {
+      it('it should create a new row in the middle', () => {
+        const { editorView } = editor(doc(
+          table(
+            tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
+            tr(td({})(p('4')), td({})(p('5{<>}')), td({})(p('6')) )
+          )
+        ));
+        sendKeyToPm(editorView, 'Alt-ArrowUp');
+        expect(editorView.state.doc).to.deep.equal(doc(
+          table(
+            tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
+            tr(tdEmpty, tdEmpty, tdEmpty ),
+            tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
+          )
+        ));
+      });
+    });
+
+    context('when the cursor is in the first row', () => {
+      it('it should create a new first row', () => {
+        const { editorView } = editor(doc(
+          table(
+            tr(td({})(p('1')), td({})(p('2{<>}')), td({})(p('3')) ),
+            tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
+          )
+        ));
+        sendKeyToPm(editorView, 'Alt-ArrowUp');
+        expect(editorView.state.doc).to.deep.equal(doc(
+          table(
+            tr(tdEmpty, tdEmpty, tdEmpty ),
+            tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
+            tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
+          )
+        ));
+      });
+    });
+
+    context('when the cursor is in the first row', () => {
+      context('when the first row is a header row', () => {
+        it('it should not create a new row', () => {
+          const { editorView } = editor(doc(
+            table(
+              tr(th({})(p('1')), th({})(p('2{<>}')), th({})(p('3')) ),
+              tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
+            )
+          ));
+          sendKeyToPm(editorView, 'Alt-ArrowUp');
+          expect(editorView.state.doc).to.deep.equal(doc(
+            table(
+              tr(th({})(p('1')), th({})(p('2{<>}')), th({})(p('3')) ),
+              tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
+            )
+          ));
+        });
+      });
+    });
+  });
+
 });

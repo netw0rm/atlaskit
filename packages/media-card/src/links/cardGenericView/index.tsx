@@ -9,7 +9,6 @@ import {Ellipsify} from '../../utils/ellipsify';
 import {Menu} from '../../utils/menu';
 import {MediaImage} from '../../utils/mediaImage';
 import {CardLoading} from '../../utils/cardLoading';
-import {Href} from '../../utils/href';
 import {getCSSUnitValue} from '../../utils/getCSSUnitValue';
 import {Details, Wrapper} from '../styled';
 import {
@@ -18,7 +17,8 @@ import {
   Footer,
   Link,
   ErrorContainer,
-  ErrorHeader
+  ErrorHeader,
+  A
 } from './styled';
 
 export interface LinkCardGenericViewProps {
@@ -133,14 +133,16 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {appearance, onClick, onMouseEnter} = this.props;
+    const {appearance, onClick, onMouseEnter, linkUrl} = this.props;
     const cardStyle = {height: this.height, width: this.width};
     const content = this.getContentToRender();
 
     return (
-      <Wrapper style={cardStyle} className={appearance} onClick={onClick} onMouseEnter={onMouseEnter}>
-        {content}
-      </Wrapper>
+      <A linkUrl={linkUrl}>
+        <Wrapper style={cardStyle} className={appearance} onClick={onClick} onMouseEnter={onMouseEnter}>
+          {content}
+        </Wrapper>
+      </A>
     );
   }
 
@@ -176,9 +178,9 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
         <Footer>
           <Link>
             {icon}
-            <Href linkUrl={linkUrl} underline={true}>
+            <span>
               {site || linkUrl}
-            </Href>
+            </span>
           </Link>
           <Menu actions={actions} />
         </Footer>

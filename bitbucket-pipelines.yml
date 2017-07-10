@@ -31,9 +31,9 @@ pipelines:
             - yarn run test/unit
             - ./node_modules/.bin/jest -c ./build/jest.config.js
             - run-p -ln "test" "test/base"
-            # - yarn run browserstack/tunnel/start
-            # - yarn run test/browserstack
-            # - yarn run browserstack/tunnel/stop
+            - yarn run browserstack/tunnel/start
+            - yarn run test/browserstack
+            - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
@@ -64,9 +64,9 @@ pipelines:
           - yarn run test/unit
           - ./node_modules/.bin/jest -c ./build/jest.config.js
           - run-p -ln "test" "test/base"
-          # - yarn run browserstack/tunnel/start
-          # - yarn run test/browserstack
-          # - yarn run browserstack/tunnel/stop
+          - yarn run browserstack/tunnel/start
+          - yarn run test/browserstack
+          - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"
         caches:
           - node

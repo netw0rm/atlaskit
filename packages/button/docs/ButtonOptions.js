@@ -20,6 +20,9 @@ const ButtonOptions = () => (
     <Button spacing="none">
       No Spacing
     </Button>
+    <Button shouldFitContainer>
+      Full Container Width
+    </Button>
   </div>
 );
 

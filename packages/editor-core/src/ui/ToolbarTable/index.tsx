@@ -5,7 +5,6 @@ import { toggleTable, tooltip } from '../../keymaps';
 import { TableState } from '../../plugins/table';
 import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror';
-import * as tableCommands from '../../plugins/table/commands';
 
 export interface Props {
   editorView: EditorView;
@@ -58,7 +57,7 @@ export default class ToolbarTable extends PureComponent<Props, State> {
   private handleClick = () => {
     if (!this.state.tableDisabled) {
       const { editorView } = this.props;
-      tableCommands.createTable()(editorView.state, editorView.dispatch);
+      this.props.pluginState.createTable()(editorView.state, editorView.dispatch);
     }
   }
 }

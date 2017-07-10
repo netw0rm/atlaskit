@@ -33,7 +33,7 @@ export const examples = [
     src: exampleSrc,
   },
   {
-    title: 'Basic Usage',
+    title: 'Stateless Usage',
     Component: StatelessExample,
     src: statelessExampleSrc,
   },

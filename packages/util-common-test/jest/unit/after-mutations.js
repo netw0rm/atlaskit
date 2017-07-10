@@ -1,5 +1,5 @@
 
-import { afterMutations } from '../src';
+import { afterMutations } from '../../src';
 
 // eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('afterMutations', () => {
@@ -10,7 +10,7 @@ describe.skip('afterMutations', () => {
       spy,
       spy,
       () => {
-        expect(spy.callCount).to.equal(3);
+        expect(spy.callCount).toBe(3);
         done();
       });
   });

@@ -1,6 +1,6 @@
 import keyCode from 'keycode';
-
-import { keydown, keyup, keypress } from '../src';
+import sinon from 'sinon';
+import { keydown, keyup, keypress } from '../../src';
 
 describe('Keyboard interaction', () => {
   const utils = { keydown, keyup, keypress };
@@ -19,7 +19,7 @@ describe('Keyboard interaction', () => {
 
       it(`can fire ${type} events`, () => {
         key('[');
-        expect(spy.callCount).to.equal(1);
+        expect(spy.callCount).toBe(1);
       });
       it('meta keys can be specified', () => {
         key('[', {
@@ -27,7 +27,7 @@ describe('Keyboard interaction', () => {
             shiftKey: true,
           },
         });
-        expect(spy.getCall(0).args[0].shiftKey).to.equal(true);
+        expect(spy.getCall(0).args[0].shiftKey).toBe(true);
       });
       it('key takes precedence over keycode event property', () => {
         key('A', {
@@ -35,15 +35,15 @@ describe('Keyboard interaction', () => {
             keyCode: keyCode('Z'),
           },
         });
-        expect(spy.getCall(0).args[0].keyCode).to.equal(keyCode('A'));
+        expect(spy.getCall(0).args[0].keyCode).toBe(keyCode('A'));
       });
 
       it('meta keys are initially off', () => {
         key('[');
-        expect(!!spy.getCall(0).args[0].shiftKey).to.equal(false);
-        expect(!!spy.getCall(0).args[0].metaKey).to.equal(false);
-        expect(!!spy.getCall(0).args[0].altKey).to.equal(false);
-        expect(!!spy.getCall(0).args[0].ctrlKey).to.equal(false);
+        expect(!!spy.getCall(0).args[0].shiftKey).toBe(false);
+        expect(!!spy.getCall(0).args[0].metaKey).toBe(false);
+        expect(!!spy.getCall(0).args[0].altKey).toBe(false);
+        expect(!!spy.getCall(0).args[0].ctrlKey).toBe(false);
       });
 
       describe('with a div in the DOM', () => {
@@ -61,7 +61,7 @@ describe('Keyboard interaction', () => {
           key('[', {
             target: div,
           });
-          expect(spy.getCall(0).args[0].target).to.equal(div);
+          expect(spy.getCall(0).args[0].target).toBe(div);
         });
       });
     });

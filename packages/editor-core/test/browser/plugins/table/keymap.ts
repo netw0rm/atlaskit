@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import tablePlugins, { TableState } from '../../../../src/plugins/table';
-import { TableMap } from '../../../../src/prosemirror';
+import { TableMap, browser } from '../../../../src/prosemirror';
 
 import {
   chaiPlugin, doc, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, th, thEmpty, p
@@ -98,6 +98,8 @@ describe('table keymap', () => {
   });
 
   describe('Alt-ArrowDown keypress', () => {
+    const shortcut = browser.mac ? 'Alt-ArrowDown' : 'Shift-Alt-ArrowDown';
+
     context('when the cursor is in the last row', () => {
       it('it should append a new empty row', () => {
         const { editorView } = editor(doc(
@@ -106,7 +108,7 @@ describe('table keymap', () => {
             tr(td({})(p('4')), td({})(p('5{<>}')), td({})(p('6')) )
           )
         ));
-        sendKeyToPm(editorView, 'Alt-ArrowDown');
+        sendKeyToPm(editorView, shortcut);
         expect(editorView.state.doc).to.deep.equal(doc(
           table(
             tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
@@ -125,7 +127,7 @@ describe('table keymap', () => {
             tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
           )
         ));
-        sendKeyToPm(editorView, 'Alt-ArrowDown');
+        sendKeyToPm(editorView, shortcut);
         expect(editorView.state.doc).to.deep.equal(doc(
           table(
             tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
@@ -138,6 +140,8 @@ describe('table keymap', () => {
   });
 
   describe('Alt-ArrowUp keypress', () => {
+    const shortcut = browser.mac ? 'Alt-ArrowUp' : 'Shift-Alt-ArrowUp';
+
     context('when the cursor is in the last row', () => {
       it('it should create a new row in the middle', () => {
         const { editorView } = editor(doc(
@@ -146,7 +150,7 @@ describe('table keymap', () => {
             tr(td({})(p('4')), td({})(p('5{<>}')), td({})(p('6')) )
           )
         ));
-        sendKeyToPm(editorView, 'Alt-ArrowUp');
+        sendKeyToPm(editorView, shortcut);
         expect(editorView.state.doc).to.deep.equal(doc(
           table(
             tr(td({})(p('1')), td({})(p('2')), td({})(p('3')) ),
@@ -165,7 +169,7 @@ describe('table keymap', () => {
             tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
           )
         ));
-        sendKeyToPm(editorView, 'Alt-ArrowUp');
+        sendKeyToPm(editorView, shortcut);
         expect(editorView.state.doc).to.deep.equal(doc(
           table(
             tr(tdEmpty, tdEmpty, tdEmpty ),
@@ -185,7 +189,7 @@ describe('table keymap', () => {
               tr(td({})(p('4')), td({})(p('5')), td({})(p('6')) )
             )
           ));
-          sendKeyToPm(editorView, 'Alt-ArrowUp');
+          sendKeyToPm(editorView, shortcut);
           expect(editorView.state.doc).to.deep.equal(doc(
             table(
               tr(th({})(p('1')), th({})(p('2{<>}')), th({})(p('3')) ),

@@ -41,8 +41,8 @@ export const toggleTable = makeKeyMapWithCommon('Table', 'Shift-Alt-t');
 export const cut = makeKeyMapWithCommon('Cut', 'Mod-x');
 export const copy = makeKeyMapWithCommon('Copy', 'Mod-c');
 export const paste = makeKeyMapWithCommon('Paste', 'Mod-v');
-export const addRowAfter = makeKeyMapWithCommon('Add row after', 'Alt-ArrowDown');
-export const addRowBefore = makeKeyMapWithCommon('Add row before', 'Alt-ArrowUp');
+export const addRowAfter = makeKeymap('Add row after', 'Shift-Alt-ArrowDown', 'Alt-ArrowDown');
+export const addRowBefore = makeKeymap('Add row before', 'Shift-Alt-ArrowUp', 'Alt-ArrowUp');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {

@@ -21,7 +21,7 @@ import {CardView} from '../../src/root/cardView';
 import {CardAppearance, CardStatus, CardDimensions} from '../../src';
 import {openAction, closeAction, deleteAction, actions} from './chapters/utils';
 import {EditableCardOptions, EditableCardContent, SliderWrapper, OptionsWrapper, CardDimensionsWrapper} from './styled';
-import {Slider} from '@atlaskit/media-avatar-picker';
+import Slider from '@atlaskit/field-range';
 
 const appearanceOptions = [
   { value: 'auto', label: 'Auto', defaultSelected: true },

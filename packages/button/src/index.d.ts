@@ -2,6 +2,7 @@ import { Component, ReactElement } from 'react';
 
 interface Props {
   appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link';
+  shouldFitContainer?: boolean;
   type?: 'button' | 'submit';
   href?: string;
   target?: string;

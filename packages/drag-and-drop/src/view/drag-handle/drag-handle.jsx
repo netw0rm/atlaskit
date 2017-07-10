@@ -1,5 +1,5 @@
 // @flow
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import invariant from 'invariant';
 import memoizeOne from 'memoize-one';
 import getScrollPosition from '../get-scroll-position';
@@ -21,7 +21,7 @@ type State = {
   pending: ?Position,
 };
 
-export default class DragHandle extends PureComponent {
+export default class DragHandle extends Component {
 
   /* eslint-disable react/sort-comp */
   props: Props

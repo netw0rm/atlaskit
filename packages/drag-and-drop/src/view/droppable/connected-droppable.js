@@ -84,6 +84,9 @@ const makeMapStateToProps = () => {
   return (state: State, props: OwnProps) => selector(state, props);
 };
 
+// Leaning heavily on the default shallow equality checking
+// that `connect` provides.
+// It avoids needing to do it own within `Droppable`
 export default connect(
   makeMapStateToProps(),
   null,

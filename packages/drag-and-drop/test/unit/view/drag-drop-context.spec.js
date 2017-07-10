@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
@@ -8,7 +8,7 @@ import TestUtils from 'react-addons-test-utils';
 import { DragDropContext } from '../../../src/';
 import storeKey from '../../../src/state/get-store-key';
 
-class App extends PureComponent {
+class App extends Component {
   // Part of react's api is to use flow types for this.
   // Sadly cannot use flow
   static contextTypes = {

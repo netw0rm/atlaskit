@@ -80,7 +80,7 @@ export type MapProps = {|
 
 export type OwnProps = {|
   draggableId: DraggableId,
-  children: (Provided, StateSnapshot) => void,
+  children: (Provided, StateSnapshot) => ?ReactElement,
   type: HasDefaultProp<TypeId>,
   isDragDisabled: HasDefaultProp<boolean>,
 |}

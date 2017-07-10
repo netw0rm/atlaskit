@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Motion, spring } from 'react-motion';
 import * as physics from '../physics';
 import type { Position } from '../../types';
@@ -34,7 +34,7 @@ const getStyle = (isNotMoving: boolean, x: number, y: number): ?Style => {
   return style;
 };
 
-export default class Movable extends PureComponent {
+export default class Movable extends Component {
   /* eslint-disable react/sort-comp */
   props: Props
 

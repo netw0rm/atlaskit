@@ -1,13 +1,16 @@
+import fs from 'fs';
+import path from 'path';
 import cheerio from 'cheerio'; // eslint-disable-line import/no-extraneous-dependencies
-import icons from '!raw!../dist/icons-sprite.svg';
-import { name } from '../package.json';
-import expectedSvgIds from '../src/internal/iconIds';
+import { name } from '../../package.json';
+import expectedSvgIds from '../../src/internal/iconIds';
+
+const icons = fs.readFileSync(path.join(__dirname, '../../dist/icons-sprite.svg'), { encoding: 'utf-8' });
 
 describe(name, () => {
   // it.skip('default export less file', () => {});
   it('icon export should contain expected SVG symbol ids', () => {
     const arrayCompare = (actual, expected) => {
-      expect(actual.length).to.equal(expected.length);
+      expect(actual.length).toBe(expected.length);
 
       for (let i = 0; i < actual.length; i++) {
         if (actual[i] !== expected[i]) {
@@ -44,7 +47,7 @@ describe(name, () => {
     const actual = symbolIds.sort();
     const expected = expectedSvgIds.sort();
     const failedMatches = arrayCompare(actual, expected);
-    expect(failedMatches).to.equal('');
+    expect(failedMatches).toBe('');
 
     // If you find yourself here and wonder why this list is not auto-generated, then bear in
     // mind that tests are supposed to tell you when a piece of software breaks.
@@ -58,5 +61,4 @@ describe(name, () => {
     // If we were to auto-generate this list, then renaming, adding or removing would NOT
     // break any tests and thus not hint the developer at what kind of change he/she is making
   });
-})
-;
+});

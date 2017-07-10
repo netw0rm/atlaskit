@@ -6,16 +6,14 @@ import hyperlinkPlugins, { HyperlinkState } from '../../../src/plugins/hyperlink
 import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../../src/ui/PanelTextInput';
 import {
-  createEvent, fixtures, doc, p as paragraph, a as link, makeEditor, setTextSelection
+  createEvent, doc, p as paragraph, a as link, makeEditor, setTextSelection
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<HyperlinkState>({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),
-    place: fixture()
   });
   const blurEvent = createEvent('blur');
   const focusEvent = createEvent('focus');

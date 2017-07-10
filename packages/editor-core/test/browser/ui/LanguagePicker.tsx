@@ -6,19 +6,15 @@ import { FloatingToolbar } from '../../../src/ui/LanguagePicker/styles';
 import Select from '@atlaskit/single-select';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import LanguagePicker from '../../../src/ui/LanguagePicker';
-import { code_block, doc, p, makeEditor, fixtures, createEvent } from '../../../src/test-helper';
+import { code_block, doc, p, makeEditor, createEvent } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 describe('LanguagePicker', () => {
-
-  const fixture = fixtures();
+  const event = createEvent('event');
   const editor = (doc: any) => makeEditor<CodeBlockState>({
     doc,
     plugins: codeBlockPlugins(defaultSchema),
-    place: fixture()
   });
-
-  const event = createEvent('event');
 
   context('when toolbarVisible is false', () => {
     it('does not render toolbar', () => {

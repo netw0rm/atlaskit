@@ -38,28 +38,10 @@ export class EmojiState {
   private state: EditorState<any>;
   private view: EditorView;
 
-  private providerChangeHandlers: ProviderChangeHandler[] = [];
-
   constructor(state: EditorState<any>, providerFactory: ProviderFactory) {
     this.changeHandlers = [];
     this.state = state;
     providerFactory.subscribe('emojiProvider', this.handleProvider);
-  }
-
-  subscribeToProviderUpdates(cb: ProviderChangeHandler) {
-    this.providerChangeHandlers.push(cb);
-
-    if (this.emojiProvider) {
-      cb(this.emojiProvider);
-    }
-  }
-
-  unsubscribeFromProviderUpdates(cb: ProviderChangeHandler) {
-    this.providerChangeHandlers = this.providerChangeHandlers.filter(ch => ch !== cb);
-  }
-
-  private notifyProviderSubscribers() {
-    this.providerChangeHandlers.forEach(cb => cb(this.emojiProvider));
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -202,10 +184,8 @@ export class EmojiState {
       case 'emojiProvider':
         provider.then((emojiProvider: EmojiProvider) => {
           this.emojiProvider = emojiProvider;
-          this.notifyProviderSubscribers();
         }).catch(() => {
           this.emojiProvider = undefined;
-          this.notifyProviderSubscribers();
         });
         break;
     }

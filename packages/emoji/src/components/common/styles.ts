@@ -6,6 +6,7 @@ import {
   akColorR500,
 } from '@atlaskit/util-shared-styles';
 
+import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
 import { style } from 'typestyle';
 
@@ -30,7 +31,7 @@ export const emoji = style({
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
     'img': {
-      maxHeight: '24px',
+      maxHeight: `${defaultEmojiHeight}px`,
       display: 'block',
     }
   },
@@ -50,8 +51,8 @@ export const emojiContainer = style({
     [`.${emojiSprite}`]: {
       background: 'transparent no-repeat',
       display: 'block',
-      height: '24px',
-      width: '24px',
+      height: `${defaultEmojiHeight}px`,
+      width: `${defaultEmojiHeight}px`,
     },
   },
 });

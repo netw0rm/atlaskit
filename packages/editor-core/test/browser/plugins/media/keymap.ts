@@ -19,17 +19,13 @@ chai.use(chaiPlugin);
 describe('media - keymaps', () => {
   const providerFactory = new ProviderFactory();
 
-  const editor = (doc: any, uploadErrorHandler?: () => void) => {
-    const plugins = [
+  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
+    doc,
+    plugins: [
       ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
-    ];
-
-    return makeEditor<MediaPluginState>({
-      doc,
-      plugins,
-      schema: defaultSchema
-    });
-  };
+    ],
+    schema: defaultSchema
+  });
 
   after(() => {
     providerFactory.destroy();

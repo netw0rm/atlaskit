@@ -4,18 +4,16 @@ import { expect } from 'chai';
 import { browser } from '../../../../src/prosemirror';
 import rulePlugins from '../../../../src/plugins/rule';
 import {
-  chaiPlugin, doc, fixtures, hr, makeEditor, p, sendKeyToPm
+  chaiPlugin, doc, hr, makeEditor, p, sendKeyToPm
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('rule', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
     plugins: rulePlugins(defaultSchema),
-    place: fixture()
   });
 
   describe('keymap', () => {

@@ -3,7 +3,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { browser } from '../../../../src';
 import {
-  sendKeyToPm, insertText, fixtures, doc, strike, plain, strong, em, underline, code, p,
+  sendKeyToPm, insertText, doc, strike, plain, strong, em, underline, code, p,
   subsup, chaiPlugin, makeEditor, mention
 } from '../../../../src/test-helper';
 import textFormattingPlugins, { TextFormattingState } from '../../../../src/plugins/text-formatting';
@@ -12,11 +12,9 @@ import defaultSchema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('text-formatting', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<TextFormattingState>({
     doc,
     plugins: textFormattingPlugins(defaultSchema),
-    place: fixture()
   });
 
   describe('keymap', () => {

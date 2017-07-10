@@ -31,7 +31,7 @@ export default class Flag extends PureComponent {
       onClick: PropTypes.func,
     })),
     /** Makes the flag appearance bold. Setting this to anything other than 'normal' hides the
-      * dismiss button, you can dismiss the flag programatically using the `shouldDismiss` prop.
+      * dismiss button.
       */
     appearance: PropTypes.oneOf(appearanceEnumValues),
     /** The secondary content shown below the flag title */
@@ -50,8 +50,6 @@ export default class Flag extends PureComponent {
     isDismissAllowed: PropTypes.bool,
     /** Private, do not use. Use the FlagGroup onDismissed handler. */
     onDismissed: PropTypes.func,
-    /** Set to `true` to programatically dismiss the flag. */
-    shouldDismiss: PropTypes.bool,
     /** The bold text shown at the top of the flag. */
     title: PropTypes.string.isRequired,
   };
@@ -60,18 +58,10 @@ export default class Flag extends PureComponent {
     appearance: appearanceEnumDefault,
     actions: [],
     isDismissAllowed: false,
-    onDismissed: () => {},
-    shouldDismiss: false,
   }
 
   state = {
     isExpanded: false,
-  }
-
-  componentWillUpdate(nextProps) {
-    if (this.props.shouldDismiss === false && nextProps.shouldDismiss === true) {
-      this.dismissFlag();
-    }
   }
 
   getButtonFocusRingColor = () => (
@@ -79,7 +69,7 @@ export default class Flag extends PureComponent {
   )
 
   dismissFlag = () => {
-    if (this.props.isDismissAllowed) {
+    if (this.props.isDismissAllowed && this.props.onDismissed) {
       this.props.onDismissed(this.props.id);
     }
   }
@@ -91,8 +81,10 @@ export default class Flag extends PureComponent {
   }
 
   renderToggleOrDismissButton = () => {
-    const { appearance, isDismissAllowed } = this.props;
-    if (!isDismissAllowed) return null;
+    const { appearance, isDismissAllowed, onDismissed } = this.props;
+    if (!isDismissAllowed || (!this.isBold() && !onDismissed)) {
+      return null;
+    }
 
     const ChevronIcon = this.state.isExpanded ? ChevronUpIcon : ChevronDownIcon;
     const ButtonIcon = this.isBold() ? ChevronIcon : CrossIcon;

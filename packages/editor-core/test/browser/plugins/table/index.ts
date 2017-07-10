@@ -1,25 +1,22 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import tablePlugin, { TableState } from '../../../../src/plugins/table';
+import tablePlugins, { TableState } from '../../../../src/plugins/table';
 import { getColumnPos, getRowPos, getTablePos } from '../../../../src/plugins/table/utils';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
-  createEvent, setTextSelection, chaiPlugin, doc, p, fixtures, makeEditor, thEmpty, table, tr, td,
+  createEvent, setTextSelection, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td,
   tdEmpty, tdCursor, code_block, code
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
-const fixture = fixtures();
-
-const editor = (doc: any) => makeEditor<TableState>({
-  doc,
-  plugins: tablePlugin(),
-  place: fixture()
-});
-
-const event = createEvent('event');
 
 describe('table plugin', () => {
+  const event = createEvent('event');
+  const editor = (doc: any) => makeEditor<TableState>({
+    doc,
+    plugins: tablePlugins(),
+  });
+
   describe('subscribe', () => {
     it('calls subscriber with plugin', () => {
       const { pluginState } = editor(doc(p('paragraph')));
@@ -235,7 +232,7 @@ describe('table plugin', () => {
             const head = map.colCount(selection.$headCell.pos - start);
             expect(anchor).to.equal(column);
             expect(head).to.equal(column);
-            expect(selection.isRowSelection()).to.equal(true);
+            expect(selection.isColSelection()).to.equal(true);
           });
         });
       });
@@ -255,7 +252,7 @@ describe('table plugin', () => {
             const head = selection.$headCell.index(-1);
             expect(anchor).to.equal(row);
             expect(head).to.equal(row);
-            expect(selection.isColSelection()).to.equal(true);
+            expect(selection.isRowSelection()).to.equal(true);
           });
         });
       });

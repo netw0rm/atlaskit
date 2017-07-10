@@ -12,13 +12,13 @@ export interface Props {
   reversePosition?: boolean;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  emojiProvider: Promise<EmojiProvider>;
 }
 
 export interface State {
   query?: string;
   anchorElement?: HTMLElement;
   queryActive?: boolean;
-  emojiProvider?: EmojiProvider;
 }
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
@@ -32,18 +32,6 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     this.pluginState = props.editorView && props.pluginKey.getState(props.editorView.state);
   }
 
-  private refreshProvider = (emojiProvider: EmojiProvider) => {
-    if (emojiProvider) {
-      this.setState({ emojiProvider });
-    } else {
-      this.setState({ emojiProvider: undefined });
-    }
-  }
-
-  componentWillMount() {
-    this.pluginState.subscribeToProviderUpdates(this.refreshProvider);
-  }
-
   componentDidMount() {
     const pluginState = this.pluginState;
     pluginState.subscribe(this.handlePluginStateChange);
@@ -55,7 +43,6 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
 
   componentWillUmount() {
     this.pluginState.unsubscribe(this.handlePluginStateChange);
-    this.pluginState.unsubscribeFromProviderUpdates(this.refreshProvider);
   }
 
   private handlePluginStateChange = (state: EmojiState) => {
@@ -68,8 +55,8 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   render() {
-    const { emojiProvider, anchorElement, query, queryActive } = this.state;
-    const { popupsBoundariesElement, popupsMountPoint } = this.props;
+    const { anchorElement, query, queryActive } = this.state;
+    const { popupsBoundariesElement, popupsMountPoint, emojiProvider } = this.props;
 
     if (!anchorElement || !queryActive || !emojiProvider) {
       return null;
@@ -85,7 +72,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         offset={[0, 3]}
       >
         <AkEmojiTypeAhead
-          emojiProvider={Promise.resolve(this.state.emojiProvider)}
+          emojiProvider={emojiProvider}
           onSelection={this.handleSelectedEmoji}
           query={query}
           ref={this.handleEmojiTypeAheadRef}

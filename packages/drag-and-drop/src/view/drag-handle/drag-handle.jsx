@@ -63,6 +63,15 @@ export default class DragHandle extends PureComponent {
     }
   }
 
+  onWindowResize = () => {
+    if (this.state.pending) {
+      this.stopPendingMouseDrag();
+      return;
+    }
+
+    this.stopDragging(() => this.props.callbacks.onCancel());
+  }
+
   onWindowMouseMove = (event: MouseEvent) => {
     const { draggingWith, pending } = this.state;
     if (draggingWith === 'KEYBOARD') {
@@ -322,6 +331,7 @@ export default class DragHandle extends PureComponent {
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
     window.removeEventListener('keydown', this.onWindowKeydown);
+    window.removeEventListener('resize', this.onWindowResize);
   }
 
   bindWindowEvents = () => {
@@ -329,6 +339,7 @@ export default class DragHandle extends PureComponent {
     window.addEventListener('mouseup', this.onWindowMouseUp);
     window.addEventListener('mousedown', this.onWindowMouseDown);
     window.addEventListener('keydown', this.onWindowKeydown);
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   getProvided = memoizeOne((isEnabled: boolean, isDragging: boolean): ?Provided => {

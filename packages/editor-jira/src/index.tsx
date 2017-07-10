@@ -235,16 +235,25 @@ export default class Editor extends PureComponent<Props, State> {
         await mediaPluginState.waitForPendingTasks();
       }
 
-      let mediaContextInfo: MediaContextInfo | undefined;
+      let mediaContextInfo: MediaContextInfo = {};
       if (this.props.mediaProvider) {
         const mediaProvider = await this.props.mediaProvider;
+        if (mediaProvider.viewContext) {
+          const viewContext: any = await mediaProvider.viewContext;
+          if (viewContext) {
+            const collection = '';
+            const { clientId, serviceHost, tokenProvider } = viewContext.config || viewContext;
+            const token = await tokenProvider();
+            mediaContextInfo.viewContext = { clientId, serviceHost, token, collection };
+          }
+        }
         if (mediaProvider.uploadParams && mediaProvider.uploadParams.collection) {
           const uploadContext = await mediaProvider.uploadContext;
           if (uploadContext) {
             const { clientId, serviceHost } = uploadContext;
             const { collection } = mediaProvider.uploadParams;
             const token  = await uploadContext.tokenProvider(collection);
-            mediaContextInfo = { clientId, serviceHost, token, collection };
+            mediaContextInfo.uploadContext = { clientId, serviceHost, token, collection };
           }
         }
       }

@@ -35,7 +35,6 @@ const Body = ({ rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize }
         .map((row, rowIndex) => <TableRow
           key={rowIndex}
           row={row}
-          rowIndex={rowIndex}
           head={head}
           isFixedSize={isFixedSize}
         />)}

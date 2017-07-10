@@ -12,7 +12,22 @@ export interface JIRACustomEncoders {
   mention?: (userId: string) => string;
 }
 
-export default function encode(node: PMNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
+export interface ContextInfo {
+  clientId: string;
+  serviceHost: string;
+  token: string;
+  collection: string;
+}
+
+export interface MediaContextInfo {
+  viewContext?: ContextInfo;
+  uploadContext?: ContextInfo;
+}
+
+export default function encode(
+  node: PMNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {},
+  mediaContextInfo?: MediaContextInfo
+) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -27,7 +42,8 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
     .replace(/<br><\/br>/g, '<br />')
     .replace(/<br>/g, '<br />')
     .replace(/<hr><\/hr>/g, '<hr />')
-    .replace(/<hr>/g, '<hr />');
+    .replace(/<hr>/g, '<hr />')
+    .replace(/&amp;/g, '&');
 
   function encodeNode(node: PMNode): DocumentFragment | Text | HTMLElement {
     const {
@@ -311,6 +327,11 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
     domNode.dataset.mediaServicesId = id;
   }
 
+  function buildURLWithContextInfo(fileId: string, contextInfo: ContextInfo) {
+    const { clientId, serviceHost, token, collection } = contextInfo;
+    return `${serviceHost}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
+  }
+
   function encodeMedia(node: PMNode) {
     // span.image-wrap > a > jira-attachment-thumbnail > img[data-media-*] > content
     // span.no-br > a[data-media] > content
@@ -326,6 +347,12 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
 
       const img = doc.createElement('img');
       img.setAttribute('alt', node.attrs.__fileName);
+      // Newly uploaded items have collection
+      if (node.attrs.collection && mediaContextInfo && mediaContextInfo.uploadContext) {
+        img.setAttribute('src', buildURLWithContextInfo(node.attrs.id, mediaContextInfo.uploadContext));
+      } else if (mediaContextInfo && mediaContextInfo.viewContext) {
+        img.setAttribute('src', buildURLWithContextInfo(node.attrs.id, mediaContextInfo.viewContext));
+      }
       addDataToNode(img, node);
 
       const jiraThumb = doc.createElement('jira-attachment-thumbnail');

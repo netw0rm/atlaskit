@@ -86,6 +86,7 @@ const standardConfig = {
             'ts-loader': {
               logLevel: 'warn',
               instance: name,
+              transpileOnly: true,
             },
           }),
         })),
@@ -95,6 +96,13 @@ const standardConfig = {
         {
           test: [/\.png$/],
           loader: 'url-loader',
+        },
+        //
+        // Images (for storybook)
+        //
+        {
+          test: [/\.svg$/],
+          loader: 'babel-loader!svg-to-jsx-loader',
         },
         //
         // JAVASCRIPT (React components)

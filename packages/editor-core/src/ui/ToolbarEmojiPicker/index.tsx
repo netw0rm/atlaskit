@@ -141,10 +141,12 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   @analytics('atlassian.editor.emoji.button')
-  private handleSelectedEmoji = (emojiId: any, emoji: any) => {
+  private handleSelectedEmoji = (emojiId: any, emoji: any): boolean => {
     if (this.state.isOpen) {
       this.props.pluginState.insertEmoji(emojiId);
       this.close();
+      return true;
     }
+    return false;
   }
 }

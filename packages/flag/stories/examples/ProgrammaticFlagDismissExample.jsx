@@ -5,16 +5,17 @@ import Button from '@atlaskit/button';
 
 export default class ProgrammaticFlagDismissExample extends PureComponent {
   state = {
-    isFlagVisible: true,
-    shouldDismiss: false,
+    flags: [
+      <Flag
+        id="flag1"
+        title="Can I leave yet?"
+        description="Dismiss me by clicking the button on the page"
+      />,
+    ],
   };
 
   dismissFlag = () => {
-    this.setState({ shouldDismiss: true });
-  }
-
-  flagDismissed = () => {
-    this.setState({ isFlagVisible: false });
+    this.setState({ flags: [] });
   }
 
   render() {
@@ -26,17 +27,8 @@ export default class ProgrammaticFlagDismissExample extends PureComponent {
             onClick={this.dismissFlag}
           >Dismiss the Flag</Button>
         </p>
-        <FlagGroup onDismissed={this.flagDismissed}>
-          {
-            this.state.isFlagVisible ? (
-              <Flag
-                id="1"
-                title="Can I leave yet?"
-                description="Dismiss me by clicking the button on the page"
-                shouldDismiss={this.state.shouldDismiss}
-              />
-            ) : null
-          }
+        <FlagGroup>
+          {this.state.flags}
         </FlagGroup>
       </div>
     );

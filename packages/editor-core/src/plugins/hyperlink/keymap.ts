@@ -1,7 +1,7 @@
-import { Schema, keymap, Plugin, EditorState, EditorView, Transaction } from '../../prosemirror';
+import { Schema, keymap, Plugin, EditorState, Transaction } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
-import { trackAndInvoke } from '../../analytics';
+import { analyticsService, trackAndInvoke } from '../../analytics';
 import { URL_REGEX } from './regex';
 import { normalizeUrl } from './utils';
 
@@ -18,20 +18,12 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   );
 
   keymaps.bindKeymapWithCommand(
-    keymaps.enter.common!,
-    trackAndInvoke(
-      'atlassian.editor.format.hyperlink.autoformatting',
-      mayConvertLastWordToHyperlink
-    ),
+    keymaps.enter.common!, mayConvertLastWordToHyperlink,
     list
   );
 
   keymaps.bindKeymapWithCommand(
-    keymaps.insertNewLine.common!,
-    trackAndInvoke(
-      'atlassian.editor.format.hyperlink.autoformatting',
-      mayConvertLastWordToHyperlink
-    ),
+    keymaps.insertNewLine.common!, mayConvertLastWordToHyperlink,
     list
   );
 
@@ -39,7 +31,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
 }
 
 
-function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean | undefined {
+function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
   const nodeBefore = state.selection.$from.nodeBefore;
   if (!nodeBefore || !nodeBefore.isText) {
     return false;
@@ -61,12 +53,15 @@ function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: T
     const url = normalizeUrl(hyperlinkedText);
     const markType = state.schema.mark('link', { href: url, });
 
+    analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');
+
     dispatch(state.tr.addMark(
       start,
       end,
       markType
     ));
   }
+  return false;
 }
 
 export default keymapPlugin;

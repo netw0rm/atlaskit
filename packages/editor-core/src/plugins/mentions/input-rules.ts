@@ -1,7 +1,7 @@
 import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
 import { MentionsState } from './';
 import pluginKey from './plugin-key';
-import { createInputRule } from '../utils';
+import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import { analyticsService } from '../../analytics';
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
@@ -9,7 +9,8 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.mention && schema.marks.mentionQuery) {
-    const mentionQueryRule = createInputRule(/(^|[^\w\`])@$/, (state, match, start, end): Transaction | undefined => {
+    const regex = new RegExp(`(^|[\\s${leafNodeReplacementCharacter}])@$`);
+    const mentionQueryRule = createInputRule(regex, (state, match, start, end): Transaction | undefined => {
       const mentionsState = pluginKey.getState(state) as MentionsState;
 
       if (!mentionsState.mentionProvider) {

@@ -2,27 +2,13 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 
-import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
+import { CommentAction, CommentAuthor } from '../src';
+import CommentWithRelativeTime from './examples/RelativeTimeExample';
 import { name } from '../package.json';
 import { clickHandler, sampleText } from './_constants';
 import sampleAvatarImg from './sample-avatar.png';
 
 const sampleAvatar = <Avatar src={sampleAvatarImg} label="User avatar" />;
-
-const CommentWithRelativeTime = ({ timestamp }) => (
-  <Comment
-    author={<CommentAuthor>John Smith</CommentAuthor>}
-    avatar={sampleAvatar}
-    time={<CommentTime timestamp={timestamp} />}
-    content={<div><p>{sampleText}</p></div>}
-    actions={[
-      <CommentAction onClick={clickHandler}>Reply</CommentAction>,
-      <CommentAction onClick={clickHandler}>Edit</CommentAction>,
-      <CommentAction onClick={clickHandler}>Delete</CommentAction>,
-      <CommentAction onClick={clickHandler}>Like</CommentAction>,
-    ]}
-  />
-);
 
 const now = Date.now();
 const oneSecond = 1000;
@@ -44,7 +30,19 @@ storiesOf(name, module)
   .add('comments with relative time', () => (
     <div style={{ width: 500 }}>
       {timestamps.map(timestamp => (
-        <CommentWithRelativeTime key={timestamp} timestamp={timestamp} />
+        <CommentWithRelativeTime
+          actions={[
+            <CommentAction onClick={clickHandler}>Reply</CommentAction>,
+            <CommentAction onClick={clickHandler}>Edit</CommentAction>,
+            <CommentAction onClick={clickHandler}>Delete</CommentAction>,
+            <CommentAction onClick={clickHandler}>Like</CommentAction>,
+          ]}
+          author={<CommentAuthor>John Smith</CommentAuthor>}
+          avatar={sampleAvatar}
+          content={<div><p>{sampleText}</p></div>}
+          key={timestamp}
+          timestamp={timestamp}
+        />
       ))}
     </div>
 ));

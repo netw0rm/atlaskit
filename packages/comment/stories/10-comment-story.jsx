@@ -1,9 +1,9 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
-import AkToolTip from '@atlaskit/tooltip';
 
-import Comment, { CommentAction, CommentEdited, CommentAuthor, CommentTime } from '../src';
+import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
+import CommentWithRelativeEditedTime from './examples/EditedRelativeTimeExample';
 import { name } from '../package.json';
 import { clickHandler, sampleText, nonSpacedSampleText } from './_constants';
 import sampleAvatarImg from './sample-avatar.png';
@@ -27,12 +27,12 @@ storiesOf(name, module)
     />
   ))
   .add('simple comment with edited flag', () => (
-    <Comment
+    <CommentWithRelativeEditedTime
       author={<CommentAuthor>John Smith</CommentAuthor>}
       avatar={sampleAvatar}
-      time={<CommentTime>30, August 2016</CommentTime>}
+      createdTimestamp={Date.now() - (24 * 60 * 60 * 1000)}
+      editedTimestamp={Date.now() - (30 * 60 * 1000)}
       type="Author"
-      edited={<AkToolTip description="6 Dec 2016 3:19PM by Maggie Tighe"><CommentEdited>Edited</CommentEdited></AkToolTip>}
       content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
       actions={[
         <CommentAction onClick={clickHandler}>Reply</CommentAction>,
@@ -131,13 +131,13 @@ storiesOf(name, module)
     />
   ))
   .add('comment with restricted property and edited flag', () => (
-    <Comment
+    <CommentWithRelativeEditedTime
       author={<CommentAuthor>John Smith</CommentAuthor>}
       avatar={sampleAvatar}
-      time={<CommentTime>30, August 2016</CommentTime>}
+      createdTimestamp={Date.now() - (24 * 60 * 60 * 1000)}
+      editedTimestamp={Date.now() - (30 * 60 * 1000)}
       type="Author"
       content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
-      edited={<AkToolTip description="6 Dec 2016 3:19PM by Maggie Tighe"><CommentEdited>Edited</CommentEdited></AkToolTip>}
       restrictedTo="developers"
       actions={[
         <CommentAction onClick={clickHandler}>Like</CommentAction>,

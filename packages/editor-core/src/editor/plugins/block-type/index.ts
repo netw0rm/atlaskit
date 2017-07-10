@@ -19,8 +19,8 @@ const blockType: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 400, plugin: () => plugin },
-      { rank: 410, plugin: schema => inputRulePlugin(schema) }
+      { rank: 500, plugin: () => plugin },
+      { rank: 510, plugin: schema => inputRulePlugin(schema) }
     ];
   }
 };

@@ -1,18 +1,16 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import textFormattingPlugin from '../../../src/plugins/text-formatting';
+import textFormattingPlugin, { TextFormattingState } from '../../../src/plugins/text-formatting';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import ToolbarTextFormatting from '../../../src/ui/ToolbarTextFormatting';
-import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
+import { doc, p, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 describe('ToolbarTextFormatting', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<TextFormattingState>({
     doc,
     plugins: textFormattingPlugin(defaultSchema),
-    place: fixture()
   });
 
   it('should render disabled ToolbarButtons if disabled property is true', () => {

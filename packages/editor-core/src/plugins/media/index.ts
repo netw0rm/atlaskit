@@ -15,24 +15,22 @@ import {
   Plugin,
   PluginKey,
   Node as PMNode,
-  NodeSelection,
   Schema,
   Transaction,
 } from '../../prosemirror';
-import { URL_REGEX } from '../hyperlink/regex';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
-import { analyticsService } from '../../analytics';
 import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
-import inputRulePlugin from './input-rule';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
+import keymapPlugin from './keymap';
+import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
+import { insertFile } from './media-files';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
-const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -44,8 +42,11 @@ export interface MediaNodeWithPosHandler {
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
-  public allowsPastingLinks: boolean = false;
+  public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
+  public pickers: PickerFacade[] = [];
+  public binaryPicker?: PickerFacade;
+  public ignoreLinks: boolean = false;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -55,9 +56,8 @@ export class MediaPluginState {
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
 
-  private pickers: PickerFacade[] = [];
   private popupPicker?: PickerFacade;
-  private binaryPicker?: PickerFacade;
+  private linkRanges: RangeWithUrls[];
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
@@ -89,7 +89,7 @@ export class MediaPluginState {
     if (!mediaProvider) {
       this.destroyPickers();
 
-      this.allowsPastingLinks = false;
+      this.allowsLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
@@ -114,7 +114,7 @@ export class MediaPluginState {
 
       this.destroyPickers();
 
-      this.allowsPastingLinks = false;
+      this.allowsLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
@@ -136,7 +136,7 @@ export class MediaPluginState {
       this.stateManager = stateManager;
     }
 
-    this.allowsPastingLinks = !!resolvedMediaProvider.linkCreateContext;
+    this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
 
     if (this.allowsUploads) {
@@ -154,56 +154,24 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   }
 
-  insertLinkFromUrl = (url: string) => {
-    const state = this.view.state;
-
-    return state.tr.insert(
-      this.findInsertPosition(),
-      state.schema.nodes.media.create({ url, type: 'link' })
-    );
-  }
-
-  insertFile = (mediaState: MediaState, collection: string): [ PMNode, Transaction ] => {
-    const { view } = this;
-    const { state } = view;
-    const { id } = mediaState;
+  insertFile = (mediaState: MediaState): void => {
+    const collection = this.collectionFromProvider();
+    if (!collection) {
+      return;
+    }
 
     this.stateManager.subscribe(mediaState.id, this.handleMediaState);
 
-    const node = state.schema.nodes.media!.create({
-      id,
-      type: 'file',
-      collection
-    });
+    insertFile(this.view, mediaState, collection);
 
-    ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
-      if (mediaState[key]) {
-        node.attrs[`__${key}`] = mediaState[key];
-      }
-    });
-
-    let transaction;
-
-    if (this.isInsideEmptyParagraph()) {
-      const { $from } = state.selection;
-
-      // empty paragraph always exists inside the document
-      if (state.doc.childCount === 1) {
-        // add media group before this empty paragraph
-        transaction = state.tr.insert($from.start($from.depth) - 1, node);
-      } else {
-        // replace this empty paragraph with media group
-        transaction = state.tr.replaceWith(
-          $from.start($from.depth) - 1,
-          $from.end($from.depth) + 1,
-          node
-        );
-      }
-    } else {
-      transaction = state.tr.insert(this.findInsertPosition(), node);
+    const { view } = this;
+    if (!view.hasFocus()) {
+      view.focus();
     }
+  }
 
-    return [ node, transaction ];
+  insertLinks = (): void => {
+    insertLinks(this.view, this.linkRanges, this.collectionFromProvider());
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -344,6 +312,21 @@ export class MediaPluginState {
     }, null);
   }
 
+  detectLinkRangesInSteps = (tr: Transaction) => {
+    const { link } = this.view.state.schema.marks;
+    this.linkRanges = [];
+
+    if (this.ignoreLinks) {
+      this.ignoreLinks = false;
+      return this.linkRanges;
+    }
+    if (!link || !this.allowsLinks) {
+      return this.linkRanges;
+    }
+
+    this.linkRanges = detectLinkRangesInSteps(tr, link);
+  }
+
   private destroyPickers = () => {
     const { pickers } = this;
 
@@ -352,53 +335,6 @@ export class MediaPluginState {
 
     this.popupPicker = undefined;
     this.binaryPicker = undefined;
-  }
-
-  /**
-   * Determine whether the cursor is inside empty paragraph
-   */
-  private isInsideEmptyParagraph = () => {
-    const { state } = this.view;
-    const { $from, empty } = state.selection;
-
-    if (!empty) {
-      return false;
-    }
-
-    return (
-      $from.parent.type === state.schema.nodes.paragraph &&
-      !$from.parent.content.childCount
-    );
-  }
-
-  /**
-   * Determine best PM document position to insert a new media item at.
-   */
-  private findInsertPosition = () => {
-    const state = this.view.state;
-    const $from = state.selection.$from;
-
-    // Check if we're already in a media group and prepend the element inside the group
-    if ($from.parent.type === state.schema.nodes.mediaGroup) {
-      return $from.start($from.depth);
-    }
-
-    // Resolve node adjacent to parent
-    const adjacentPos = $from.end($from.depth) + 1;
-    const adjacentNode = state.doc.nodeAt(adjacentPos);
-
-    // There's nothing below, so insert a new media item wrapped in a group there.
-    if (!adjacentNode) {
-      return adjacentPos;
-    }
-
-    // The adjacent node is a media group, so let's append there...
-    if (adjacentNode.type === state.schema.nodes.mediaGroup) {
-      return adjacentPos + 1;
-    }
-
-    // Prepend the item, wrapped in a new group, adjacent to parent
-    return adjacentPos;
   }
 
   private initPickers(uploadParams: UploadParams, context: ContextConfig) {
@@ -419,28 +355,15 @@ export class MediaPluginState {
       pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
       pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
-      pickers.forEach(picker => picker.onNewMedia(this.handleNewMediaPicked));
+      pickers.forEach(picker => picker.onNewMedia(this.insertFile));
     }
 
     // set new upload params for the pickers
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
   }
 
-  private handleNewMediaPicked = (state: MediaState) => {
-    if (!this.mediaProvider.uploadParams) {
-      return;
-    }
-
-    const [ node, transaction ] = this.insertFile(state, this.mediaProvider.uploadParams.collection);
-    const { view } = this;
-
-    view.dispatch(transaction);
-
-    if (!view.hasFocus()) {
-      view.focus();
-    }
-
-    this.selectInsertedMediaNode(node);
+  private collectionFromProvider(): string | undefined {
+    return this.mediaProvider && this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
   }
 
   private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
@@ -550,22 +473,6 @@ export class MediaPluginState {
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
-  private selectInsertedMediaNode = (node: PMNode) => {
-    // by this time node has already been mounted
-    const mediaNodeWithPos = this.findMediaNode(node.attrs.id);
-    if (!mediaNodeWithPos) {
-      return;
-    }
-
-    const { view } = this;
-    const { doc, tr } = view.state;
-    const { getPos } = mediaNodeWithPos;
-    const pos = doc.resolve(getPos());
-    const selection = new NodeSelection(pos);
-
-    view.dispatch(tr.setSelection(selection));
-  }
-
   /**
    * Since we replace nodes with public id when node is finalized
    * stateManager contains no information for public ids
@@ -580,13 +487,15 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-function mediaPluginFactory(options: MediaPluginOptions) {
-  return new Plugin({
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  const plugin = new Plugin({
     state: {
       init(config, state) {
         return new MediaPluginState(state, options);
       },
-      apply(tr, pluginState, oldState, newState) {
+      apply(tr, pluginState: MediaPluginState, oldState, newState) {
+        pluginState.detectLinkRangesInSteps(tr);
+
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
         //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch()
         //       transformations from within the plugin state (i.e. when adding a new file).
@@ -595,10 +504,14 @@ function mediaPluginFactory(options: MediaPluginOptions) {
     },
     key: stateKey,
     view: (view: EditorView) => {
-      const pluginState = stateKey.getState(view.state);
+      const pluginState: MediaPluginState = stateKey.getState(view.state);
       pluginState.setView(view);
 
-      return {};
+      return {
+        update: (view: EditorView, prevState: EditorState<any>) => {
+          pluginState.insertLinks();
+        }
+      };
     },
     props: {
       nodeViews: {
@@ -606,41 +519,11 @@ function mediaPluginFactory(options: MediaPluginOptions) {
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
-      },
-      handleDOMEvents: {
-        paste(view: EditorView, event: ClipboardEvent) {
-          const pluginState: MediaPluginState = stateKey.getState(view.state);
-
-          if (!pluginState.allowsPastingLinks) {
-            return false;
-          }
-
-          const text = event.clipboardData.getData('text/plain');
-
-          if (!text) {
-            return false;
-          }
-
-          const url = extractFirstURLFromString(text);
-          if (!url) {
-            return false;
-          }
-
-          view.state.apply(pluginState.insertLinkFromUrl(url));
-          analyticsService.trackEvent('atlassian.editor.media.link.paste');
-
-          // The URL is inserted as a Media Link item, however we do not return true
-          // so we're not preventing a text link (mark) to be added as well.
-          return false;
-        }
       }
     }
   });
-}
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  const plugin = mediaPluginFactory(options);
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;
@@ -648,13 +531,4 @@ export default plugins;
 export interface MediaData {
   id: string;
   type?: MediaType;
-}
-
-function extractFirstURLFromString(string: string) {
-  const search = urlRegex.exec(string);
-  if (!search) {
-    return;
-  }
-
-  return search ? search[0] : null;
 }

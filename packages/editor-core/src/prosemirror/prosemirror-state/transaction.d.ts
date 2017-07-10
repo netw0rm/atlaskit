@@ -1,4 +1,4 @@
-import { Mark, MarkType, Node, Selection, Slice, Transform } from '../';
+import { Mark, MarkType, Node, Selection, Slice, Transform, CellSelection } from '../';
 import { PluginKey } from './';
 
 export class Transaction extends Transform {
@@ -6,7 +6,7 @@ export class Transaction extends Transform {
   storedMarks?: Mark[];
   docChanged: boolean;
   selection: Selection;
-  setSelection(selection: Selection): Transaction;
+  setSelection(selection: Selection | CellSelection): Transaction;
   selectionSet: boolean;
   setStoredMarks(marks?: Mark[]): Transaction;
   storedMarksSet: boolean;

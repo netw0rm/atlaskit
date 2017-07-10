@@ -26,9 +26,9 @@ export default createSchema({
     'mediaGroup',
     'plain',
     'table',
-    'table_cell',
-    'table_header',
-    'table_row',
+    'tableCell',
+    'tableHeader',
+    'tableRow',
   ],
   marks: [
     'em',

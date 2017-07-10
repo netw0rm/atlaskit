@@ -27,6 +27,7 @@ const buttonPropDescriptions = {
   ariaExpanded: 'Standard HTML5 aria-expanded attribute',
   ariaControls: 'Standard HTML5 aria-controls attribute',
   id: 'Standard HTML5 id attribute',
+  shouldFitContainer: 'Option to fit button width to its parent width',
 };
 
 storiesOf(name, module)

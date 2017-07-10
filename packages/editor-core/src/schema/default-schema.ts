@@ -3,6 +3,7 @@ import { Schema } from '../prosemirror';
 
 export const defaultSchema: Schema<any, any> = createSchema({
   nodes: [
+    'applicationCard',
     'doc',
     'paragraph',
     'text',
@@ -21,9 +22,9 @@ export const defaultSchema: Schema<any, any> = createSchema({
     'hardBreak',
     'emoji',
     'table',
-    'table_cell',
-    'table_header',
-    'table_row',
+    'tableCell',
+    'tableHeader',
+    'tableRow',
     'unknownBlock',
   ],
   marks: [

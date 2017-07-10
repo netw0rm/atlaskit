@@ -38,6 +38,9 @@ import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
+import TableFloatingControls from '../TableFloatingControls';
+import ToolbarTable from '../ToolbarTable';
+import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
   Content,
@@ -87,6 +90,7 @@ export interface State {
 export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
   private editorContent: HTMLElement;
+  private maxHeightContainer: HTMLElement;
   state: State = {};
 
   static defaultProps = {
@@ -100,6 +104,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         maxHeightStyle: {
           maxHeight: `${maxHeight}px`,
           overflow: 'auto',
+          position: 'relative'
         }
       });
     }
@@ -154,6 +159,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       pluginStatePanel,
       pluginStateTextColor,
       pluginStateTextFormatting,
+      pluginStateTable,
       saveDisabled,
       popupsMountPoint,
       popupsBoundariesElement,
@@ -225,6 +231,13 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
+          {pluginStateTable ?
+            <ToolbarTable
+              disabled={disabled}
+              pluginState={pluginStateTable}
+              editorView={editorView}
+            /> : null
+          }
           {pluginStateLists ?
             <ToolbarLists
               disabled={disabled}
@@ -237,12 +250,12 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         </Toolbar>
         <Content
           innerRef={this.setEditorContent}
-          style={maxHeightStyle}
           onPaste={this.addBorderBottom}
           onKeyDown={this.addBorderBottom}
         >
-          {this.props.children}
-
+          <div style={maxHeightStyle} ref={this.handleMaxHeightContainer}>
+            {this.props.children}
+          </div>
           {pluginStateHyperlink && !disabled ?
             <HyperlinkEdit
               pluginState={pluginStateHyperlink}
@@ -259,12 +272,29 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null}
 
+          {pluginStateTable && !disabled &&
+            <TableFloatingControls
+              pluginState={pluginStateTable}
+              editorView={editorView}
+              popupsMountPoint={this.maxHeightContainer}
+              popupsBoundariesElement={this.maxHeightContainer}
+            /> }
+
+          {pluginStateTable && !disabled &&
+            <TableFloatingToolbar
+              pluginState={pluginStateTable}
+              editorView={editorView}
+              popupsMountPoint={this.maxHeightContainer}
+              popupsBoundariesElement={this.maxHeightContainer}
+            /> }
+
           {pluginStateMentions && mentionProvider && !disabled ?
             <MentionPicker
               editorView={editorView}
               pluginKey={mentionPluginKey}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsMountPoint={popupsMountPoint}
+              mentionProvider={mentionProvider}
             /> : null}
 
           {pluginStateEmojis && emojiProvider && !disabled ?
@@ -273,6 +303,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsMountPoint={popupsMountPoint}
+              emojiProvider={emojiProvider}
             /> : null}
 
           {pluginStatePanel ? <PanelEdit pluginState={pluginStatePanel} editorView={editorView} /> : null}
@@ -327,19 +358,27 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     this.editorContainer = ref;
   }
 
+  private handleMaxHeightContainer = (ref) => {
+    this.maxHeightContainer = ref;
+  }
+
   @analytics('atlassian.editor.stop.cancel')
-  private handleCancel = () => {
+  private handleCancel = (): boolean => {
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel();
+      return true;
     }
+    return false;
   }
 
   @analytics('atlassian.editor.stop.save')
-  private handleSave = () => {
+  private handleSave = (): boolean => {
     const { onSave } = this.props;
     if (onSave) {
       onSave();
+      return true;
     }
+    return false;
   }
 }

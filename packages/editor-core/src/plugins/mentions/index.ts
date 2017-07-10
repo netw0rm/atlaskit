@@ -43,8 +43,6 @@ export class MentionsState {
   private dirty;
   private queryResult?: MentionDescription[];
 
-  private providerChangeHandlers: ProviderChangeHandler[] = [];
-
   constructor(state: EditorState<any>, providerFactory: ProviderFactory) {
     this.changeHandlers = [];
     this.state = state;
@@ -59,17 +57,6 @@ export class MentionsState {
 
   unsubscribe(cb: MentionsStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
-  }
-
-  subscribeToProviderUpdates(cb: ProviderChangeHandler) {
-    this.providerChangeHandlers.push(cb);
-    if (this.mentionProvider) {
-      cb(this.mentionProvider);
-    }
-  }
-
-  unsubscribeFromProviderUpdates(cb: ProviderChangeHandler) {
-    this.providerChangeHandlers = this.providerChangeHandlers.filter(ch => ch !== cb);
   }
 
   apply(tr: Transaction, state: EditorState<any>) {
@@ -132,10 +119,6 @@ export class MentionsState {
     if (this.dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
-  }
-
-  private notifyProviderSubscribers() {
-    this.providerChangeHandlers.forEach(cb => cb(this.mentionProvider));
   }
 
   private rangeHasNodeMatchingQuery(doc, from, to, query: (node: Node)=> boolean) {
@@ -314,17 +297,13 @@ export class MentionsState {
 
             // Improve first mentions performance by establishing a connection and populating local search
             this.mentionProvider.filter('');
-
-            this.notifyProviderSubscribers();
             resolve(mentionProvider);
           })
           .catch((e) => {
             this.mentionProvider = undefined;
-            this.notifyProviderSubscribers();
           });
       } else {
         this.mentionProvider = undefined;
-        this.notifyProviderSubscribers();
       }
     });
   }
@@ -363,7 +342,7 @@ export class MentionsState {
     return false;
   }
 
-  private onMentionResult = (mentions: MentionDescription[], query: string) => {
+  onMentionResult = (mentions: MentionDescription[], query: string) => {
     this.updateQueryResult(mentions, query);
     this.resolveInactiveQuery(mentions, query);
   }

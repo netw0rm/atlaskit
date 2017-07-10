@@ -4,13 +4,13 @@ import {
   akBorderRadius,
   akGridSizeUnitless,
   akColorG50,
-  akColorG500,
+  akColorG400,
   akColorP50,
-  akColorP500,
-  akColorT50,
-  akColorT500,
+  akColorP400,
+  akColorB400,
   akColorY50,
-  akColorY500
+  akColorB50,
+  akColorY400
 } from '@atlaskit/util-shared-styles';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
@@ -27,23 +27,23 @@ export interface Props {
 const config = {
   info: {
     icon: InfoIcon,
-    background: akColorT50,
-    iconColor: akColorT500,
+    background: akColorB50,
+    iconColor: akColorB400,
   },
   note: {
     icon: NoteIcon,
     background: akColorP50,
-    iconColor: akColorP500,
+    iconColor: akColorP400,
   },
   tip: {
     icon: TipIcon,
     background: akColorG50,
-    iconColor: akColorG500,
+    iconColor: akColorG400,
   },
   warning: {
     icon: WarningIcon,
     background: akColorY50,
-    iconColor: akColorY500,
+    iconColor: akColorY400,
   },
 };
 
@@ -51,7 +51,7 @@ const config = {
 const PanelWrapper = styled.div`
   border-radius: ${akBorderRadius};
   margin: ${akGridSizeUnitless / 2}px 0;
-  padding: ${akGridSizeUnitless / 2}px;
+  padding: ${akGridSizeUnitless}px;
   background: ${({ panelType }: Props) => config[panelType].background}
 `;
 
@@ -65,7 +65,7 @@ const IconWrapper = styled.span`
 
 // tslint:disable-next-line:variable-name
 const ContentWrapper = styled.div`
-  margin: 1px 0 1px 30px
+  margin: 1px 0 1px ${akGridSizeUnitless * 4}px
 `;
 
 export default class Panel extends PureComponent<Props, {}> {

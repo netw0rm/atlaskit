@@ -2,20 +2,18 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 
-import hyperlinkPlugins from '../../../src/plugins/hyperlink';
+import hyperlinkPlugins, { HyperlinkState } from '../../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../../src/ui/PanelTextInput';
 import {
-  createEvent, fixtures, doc, p as paragraph, a as link, makeEditor, setTextSelection
+  createEvent, doc, p as paragraph, a as link, makeEditor, setTextSelection
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<HyperlinkState>({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),
-    place: fixture()
   });
   const blurEvent = createEvent('blur');
   const focusEvent = createEvent('focus');
@@ -79,7 +77,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   });
 
   it('should clear data of previous link', () => {
-    const { editorView, pluginState  } = editor(doc(paragraph(
+    const { editorView, pluginState } = editor(doc(paragraph(
       'before',
       link({ href: 'http://www.atlassian.com' })('http://www.at{<>}lassian.com'),
       'between',

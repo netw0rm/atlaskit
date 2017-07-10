@@ -137,7 +137,7 @@ export const global: Provided = ((): Provided => {
       secondary: style.akColorB500,
       tertiary: style.akColorB500,
     },
-    text: style.akColorN0,
+    text: style.akColorB50,
     subText: style.akColorB75,
     keyline: style.akColorN80A,
     item,

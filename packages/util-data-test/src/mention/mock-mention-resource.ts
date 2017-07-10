@@ -38,6 +38,8 @@ class MentionResource extends AbstractMentionResource {
         this.lastReturnedSearch = searchTime;
         this._notifyListeners({mentions, query});
       }
+
+      this._notifyAllResultsListeners({mentions, query});
     };
 
     const notifyErrors = (error, query) => {

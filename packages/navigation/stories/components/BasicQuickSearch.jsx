@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
-import { AkQuickSearch } from '../../src/index';
+import PropTypes from 'prop-types';
+import { AkQuickSearch, AkQuickSearchWithKeyboardControls } from '../../src/index';
+import { action } from '@kadira/storybook';
 
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
@@ -187,8 +189,14 @@ function searchData(query) {
 // a little fake store for holding the query after a component unmounts
 const store = {};
 
+const onClickAction = (item) => { action(`onResultClick: ${item.name}`)(item); };
+
 export default class BasicQuickSearch extends PureComponent {
-  static defaultProp = {
+  static propTypes = {
+    fakeNetworkLatency: PropTypes.number,
+  }
+
+  static defaultProps = {
     fakeNetworkLatency: 0,
   }
 
@@ -220,12 +228,16 @@ export default class BasicQuickSearch extends PureComponent {
   }
 
   render() {
+    const QuickSearchComp = this.props.withKeyboardControls
+      ? AkQuickSearchWithKeyboardControls
+      : AkQuickSearch;
     return (
-      <AkQuickSearch
+      <QuickSearchComp
         isLoading={this.state.isLoading}
-        onChange={({ target }) => { this.search(target.value); }}
-        onSearchClear={() => { this.search(''); }}
+        onSearchChange={({ target }) => { this.search(target.value); }}
         value={this.state.query}
+
+        onResultClick={onClickAction}
         results={this.state.results}
       />
     );

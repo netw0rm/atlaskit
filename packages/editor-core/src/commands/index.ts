@@ -4,7 +4,7 @@ import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
+import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection, canMoveDown, canMoveUp } from '../utils';
 import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
@@ -154,12 +154,6 @@ export function wrapInList(nodeType): Command {
     baseListCommand.wrapInList(nodeType),
     (before, after) => before.type === after.type && before.type === nodeType
   );
-}
-
-export function splitListItem(): Command {
-  return function (state, dispatch) {
-    return baseListCommand.splitListItem(state.schema.nodes.listItem)(state, dispatch);
-  };
 }
 
 export function liftListItems(): Command {
@@ -370,28 +364,6 @@ export function createNewParagraphBelow(view: EditorView): Command {
   };
 }
 
-function canMoveUp(state: EditorState<any>): boolean {
-  const { selection } = state;
-  if (selection instanceof TextSelection) {
-    if (!selection.empty) {
-      return true;
-    }
-  }
-
-  return selection.$from.pos !== selection.$from.depth;
-}
-
-function canMoveDown(state: EditorState<any>): boolean {
-  const { selection, doc } = state;
-  if (selection instanceof TextSelection) {
-    if (!selection.empty) {
-      return true;
-    }
-  }
-
-  return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
-}
-
 function canCreateParagraphNear(state: EditorState<any>): boolean {
   const { selection: { $from } } = state;
   const node = $from.node($from.depth);
@@ -429,14 +401,18 @@ function createParagraphNear(view: EditorView, append: boolean = true): void {
 function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): void {
   const { $from, $to } = state.selection;
   let pos;
+  const nodeType = $to.node($to.depth - 1).type;
 
   if (!append) {
     pos = $from.start($from.depth) - 1;
     pos = $from.depth > 1 ? pos - 1 : pos;
 
     // Same theory as comment below.
-    if ($to.node($to.depth - 1).type === state.schema.nodes.listItem) {
+    if (nodeType === state.schema.nodes.listItem) {
       pos = pos - 1;
+    }
+    if (nodeType === state.schema.nodes.tableCell || nodeType === state.schema.nodes.tableHeader) {
+      pos = pos - 2;
     }
   } else {
     pos = $to.end($to.depth) + 1;
@@ -445,8 +421,12 @@ function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): vo
     // List is a special case. Because from user point of view, the whole list is a unit,
     // which has 3 level deep (ul, li, p), all the other block types has maxium two levels as a unit.
     // eg. block type (bq, p/other), code block (cb) and panel (panel, p/other).
-    if ($to.node($to.depth - 1).type === state.schema.nodes.listItem) {
+    if (nodeType === state.schema.nodes.listItem) {
       pos = pos + 1;
+    }
+    // table has 4 level depth
+    if (nodeType === state.schema.nodes.tableCell || nodeType === state.schema.nodes.tableHeader) {
+      pos = pos + 2;
     }
   }
 

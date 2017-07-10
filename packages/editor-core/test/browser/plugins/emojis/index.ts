@@ -3,10 +3,9 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { emoji as emojiNode } from '../../../../src';
-import emojiPlugins from '../../../../src/plugins/emojis';
+import emojiPlugins, { EmojiState } from '../../../../src/plugins/emojis';
 import {
   chaiPlugin,
-  fixtures,
   makeEditor,
   sendKeyToPm,
   blockquote,
@@ -42,11 +41,9 @@ chai.use(chaiPlugin);
 
 describe('emojis', () => {
   const providerFactory = new ProviderFactory();
-  const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, providerFactory),
-    place: fixture()
   });
 
   providerFactory.setProvider('emojiProvider', emojiProvider);
@@ -68,36 +65,25 @@ describe('emojis', () => {
         expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should be ignored if there is no active query', (done) => {
+      it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
         const spy = sinon.spy(pluginState, 'onSelectPrevious');
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-          sendKeyToPm(editorView, 'ArrowUp');
-          expect(spy.called, 'was not called').to.equal(false);
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'ArrowUp');
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should call "onSelectPrevious" which should return false by default', (done) => {
+      it('should call "onSelectPrevious" which should return false by default', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
         const spy = sinon.spy(pluginState, 'onSelectPrevious');
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-          sendKeyToPm(editorView, 'ArrowUp');
-          expect(spy.called, 'was called').to.equal(true);
-          expect(spy.returned(false), 'return value').to.equal(true);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'ArrowUp');
+        expect(spy.called, 'was called').to.equal(true);
+        expect(spy.returned(false), 'return value').to.equal(true);
       });
     });
 
@@ -111,39 +97,25 @@ describe('emojis', () => {
         expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should be ignored if there is no active query', (done) => {
+      it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
         const spy = sinon.spy(pluginState, 'onSelectNext');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
-
-          sendKeyToPm(editorView, 'ArrowDown');
-          expect(spy.called, 'was not called').to.equal(false);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'ArrowDown');
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should call "onSelectNext" which should return false by default', (done) => {
+      it('should call "onSelectNext" which should return false by default', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
         const spy = sinon.spy(pluginState, 'onSelectNext');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
-
-          sendKeyToPm(editorView, 'ArrowDown');
-          expect(spy.called, 'was called').to.equal(true);
-          expect(spy.returned(false), 'return vale').to.equal(true);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'ArrowDown');
+        expect(spy.called, 'was called').to.equal(true);
+        expect(spy.returned(false), 'return vale').to.equal(true);
       });
     });
 
@@ -157,39 +129,25 @@ describe('emojis', () => {
         expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should be ignored if there is no active query', (done) => {
+      it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
         const spy = sinon.spy(pluginState, 'onSelectCurrent');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
-
-          sendKeyToPm(editorView, 'Enter');
-          expect(spy.called, 'was not called').to.equal(false);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'Enter');
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should call "onSelectCurrent" which should return false by default', (done) => {
+      it('should call "onSelectCurrent" which should return false by default', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
         const spy = sinon.spy(pluginState, 'onSelectCurrent');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
-
-          sendKeyToPm(editorView, 'Enter');
-          expect(spy.called, 'was called').to.equal(true);
-          expect(spy.returned(false), 'return value').to.equal(true);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'Enter');
+        expect(spy.called, 'was called').to.equal(true);
+        expect(spy.returned(false), 'return value').to.equal(true);
       });
     });
 
@@ -203,39 +161,25 @@ describe('emojis', () => {
         expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should be ignored if there is no active query', (done) => {
+      it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
         const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
-
-          sendKeyToPm(editorView, 'Space');
-          expect(spy.called, 'was not called').to.equal(false);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'Space');
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should call "onTrySelectCurrent" which should return false by default', (done) => {
+      it('should call "onTrySelectCurrent" which should return false by default', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
         const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
-
-          sendKeyToPm(editorView, 'Space');
-          expect(spy.called, 'was called').to.equal(true);
-          expect(spy.returned(false), 'return value').to.equal(true);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'Space');
+        expect(spy.called, 'was called').to.equal(true);
+        expect(spy.returned(false), 'return value').to.equal(true);
       });
     });
 
@@ -249,39 +193,25 @@ describe('emojis', () => {
         expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should be ignored if there is no active query', (done) => {
+      it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
         const spy = sinon.spy(pluginState, 'dismiss');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
-
-          sendKeyToPm(editorView, 'Esc');
-          expect(spy.called, 'was not called').to.equal(false);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'Esc');
+        expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should call "dismiss" which should return true by default', (done) => {
+      it('should call "dismiss" which should return true by default', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
         const spy = sinon.spy(pluginState, 'dismiss');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
 
-        const providerChangeHandler = () => {
-          forceUpdate(editorView); // Force update to ensure active query.
-
-          sendKeyToPm(editorView, 'Esc');
-          expect(spy.called, 'was called').to.equal(true);
-          expect(spy.returned(true), 'return value').to.equal(true);
-
-          pluginState.unsubscribeFromProviderUpdates(providerChangeHandler);
-          done();
-        };
-
-        pluginState.subscribeToProviderUpdates(providerChangeHandler);
+        sendKeyToPm(editorView, 'Esc');
+        expect(spy.called, 'was called').to.equal(true);
+        expect(spy.returned(true), 'return value').to.equal(true);
       });
     });
 
@@ -293,8 +223,8 @@ describe('emojis', () => {
       const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin'))));
 
       pluginState.insertEmoji({
-        name: 'Oscar Wallhult',
-        emojiName: 'oscar',
+        fallback: 'Oscar Wallhult',
+        shortName: 'oscar',
         id: '1234'
       });
 
@@ -417,12 +347,12 @@ describe('emojis', () => {
 
   describe('isEnabled', () => {
     it('returns true when the emoji mark can be applied', () => {
-      const {pluginState} = editor(doc(p('te{<>}xt')));
+      const { pluginState } = editor(doc(p('te{<>}xt')));
       expect(pluginState.isEnabled()).to.equal(true);
     });
 
     it('returns false when the emoji mark cannot be applied', () => {
-      const {pluginState} = editor(doc(p(code('te{<>}xt'))));
+      const { pluginState } = editor(doc(p(code('te{<>}xt'))));
       expect(pluginState.isEnabled()).to.equal(false);
     });
   });

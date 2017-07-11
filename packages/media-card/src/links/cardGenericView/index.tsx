@@ -168,7 +168,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     return [
       thumbnail,
       <Details key="details" className="details">
-        <Title>
+        <Title className="card-title">
           {title}
         </Title>
         <Description>

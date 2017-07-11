@@ -6,7 +6,7 @@ import { shallow, mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../../src/links';
 import { Details } from '../../../src/links/styled';
-import { Title, Link, ErrorContainer, ErrorHeader, A } from '../../../src/links/cardGenericView/styled';
+import { Title, Link, ErrorContainer, ErrorHeader } from '../../../src/links/cardGenericView/styled';
 
 describe('LinkCardGenericView', () => {
   const title = 'Hello world';

@@ -2,9 +2,7 @@
 import styled from 'styled-components';
 import { akColorN20, akColorN800, akColorB400, akColorN70, akColorN300 } from '@atlaskit/util-shared-styles';
 import { size, ellipsis, antialiased } from '../../styles';
-import { Details } from '../styled';
-
-import {Href} from '../../utils/href';
+import { Href, HrefProps } from '../../utils/href';
 
 export const Title = styled.div`
   ${ellipsis('100%')}
@@ -72,15 +70,16 @@ export const ErrorHeader = styled.div`
   ${ellipsis('calc(100% - 24px)')}
 `;
 
-export const A = styled(Href as any)`
+export const A = styled(Href)`
   color: initial;
-
+  // We need to do this to make TS happy
+  ${(props: HrefProps) => ''}
   &:hover {
-    ${Title as any} {
+    .card-title {
       color: ${akColorB400};
     }
 
-    ${Details as any} {
+    .details {
       background-color: #e7e9ed;
     }
   }

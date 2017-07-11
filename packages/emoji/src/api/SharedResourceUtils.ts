@@ -1,6 +1,6 @@
 import * as URL from 'url';
-
 import debug from '../util/logger';
+import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 
 export interface KeyValues {
   [index: string]: any;

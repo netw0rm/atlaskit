@@ -59,8 +59,8 @@ export class BlockTypeState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  toggleBlockType(name: string, view: EditorView): void {
-    commands.toggleBlockType(view, name);
+  toggleBlockType(name: string, view: EditorView): boolean {
+    return commands.toggleBlockType(view, name);
   }
 
   update(newEditorState, dirty = false) {

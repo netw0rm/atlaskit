@@ -1,5 +1,6 @@
+import sinon from 'sinon';
 
-import { waitUntil } from '../src';
+import { waitUntil } from '../../src';
 
 describe('waitUntil', () => {
   it('should call .then after condition is met', (done) => {
@@ -8,7 +9,7 @@ describe('waitUntil', () => {
     setTimeout(() => (val += 1), 10);
     // now wait until val = 1;
     waitUntil(() => val === 1).then(() => {
-      expect(val).to.equal(1);
+      expect(val).toBe(1);
       done();
     });
   });
@@ -26,7 +27,7 @@ describe('waitUntil', () => {
     setTimeout(() => (val += 1), 10);
     // now wait until val = 1;
     waitUntil(spy).then(() => {
-      expect(spy.called).to.equal(true);
+      expect(spy.called).toBe(true);
       done();
     });
   });
@@ -38,14 +39,14 @@ describe('waitUntil', () => {
 
     waitUntil(() => (val === 1))
       .then(() => {
-        expect(val).to.equal(1);
+        expect(val).toBe(1);
 
         setTimeout(() => (val += 1));
 
         return waitUntil(() => (val === 2));
       })
       .then(() => {
-        expect(val).to.equal(2);
+        expect(val).toBe(2);
         done();
       });
   });
@@ -56,7 +57,7 @@ describe('waitUntil', () => {
     setTimeout(() => (val += 1), 10);
     // now wait until val = 1, which will never happen;
     waitUntil(() => (val === 1), 100, 10).then(() => {}, (e) => {
-      expect(e).to.equal('timeout');
+      expect(e).toBe('timeout');
       done();
     });
   });

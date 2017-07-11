@@ -59,12 +59,14 @@ export default function analytics(name: string) {
  */
 function trackFunction(analyticsEventName: string, trackedFn: Function) {
   return (...args: any[]) => {
-    try {
-      analyticsService.trackEvent(analyticsEventName);
-    } catch (e) {
-      console.error('An exception has been thrown when trying to track analytics event:', e);
+    const result = trackedFn(...args);
+    if (result) {
+      try {
+        analyticsService.trackEvent(analyticsEventName);
+      } catch (e) {
+        console.error('An exception has been thrown when trying to track analytics event:', e);
+      }
     }
-
-    return trackedFn(...args);
+    return result;
   };
 }

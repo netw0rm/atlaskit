@@ -1,24 +1,39 @@
+// @flow
 import { css } from 'styled-components';
 import { akColorB200, akColorN70A, akColorN200A } from '@atlaskit/util-shared-styles';
 import { AVATAR_RADIUS, AVATAR_SIZES, BORDER_WIDTH, TRANSITION_DURATION } from './constants';
+import type { AppearanceType, SizeType } from '../types';
 
 // "square" avatars are explicit
-export const getBorderRadius = ({ appearance, size }, config = { includeBorderWidth: false }) => (appearance === 'circle'
-  ? '50%'
-  : `${AVATAR_RADIUS[size] + (config.includeBorderWidth ? BORDER_WIDTH[size] : 0)}px`
-);
+export function getBorderRadius(
+  props: { appearance: AppearanceType, size: SizeType },
+  config: { includeBorderWidth: boolean } = { includeBorderWidth: false }
+) {
+  const borderWidth: number = config.includeBorderWidth ? BORDER_WIDTH[props.size] : 0;
+  return (props.appearance === 'circle'
+    ? '50%'
+    : `${AVATAR_RADIUS[props.size] + borderWidth}px`
+  );
+}
 
-export const getSize = ({ size }) => AVATAR_SIZES[size]; // for testing
-export const getAvatarDimensions = ({ size }, config = { includeBorderWidth: false }) => `
-  height: ${AVATAR_SIZES[size] + (config.includeBorderWidth ? (BORDER_WIDTH[size] * 2) : 0)}px;
-  width: ${AVATAR_SIZES[size] + (config.includeBorderWidth ? (BORDER_WIDTH[size] * 2) : 0)}px;
-`;
+export const getSize = (props: { size: SizeType }) => AVATAR_SIZES[props.size]; // for testing
+export function getAvatarDimensions(
+  props: { size: SizeType },
+  config: { includeBorderWidth: boolean } = { includeBorderWidth: false }
+) {
+  const borderWidth: number = config.includeBorderWidth ? (BORDER_WIDTH[props.size] * 2) : 0;
+  const size: number = AVATAR_SIZES[props.size] + borderWidth;
+  return `
+    height: ${size}px;
+    width: ${size}px;
+  `;
+}
 
 // expose here for use with multiple element types
-export function getInnerStyles(props) {
-  const boxSizing = 'content-box';
-  const borderWidth = `${BORDER_WIDTH[props.size]}px`;
-  const isInteractive = props.href || props.onClick;
+export function getInnerStyles(props: any) {
+  const boxSizing: string = 'content-box';
+  const borderWidth: string = `${BORDER_WIDTH[props.size]}px`;
+  const isInteractive: boolean = props.href || props.onClick;
 
   let backgroundColor = props.borderColor;
   let cursor = 'default';

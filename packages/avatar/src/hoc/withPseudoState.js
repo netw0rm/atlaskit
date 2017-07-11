@@ -1,14 +1,28 @@
 // @flow
 import React, { Component } from 'react';
 import { omit, getDisplayName } from '../utils';
+import type { ComponentType, ElementType, FunctionType } from '../types';
 
+/* eslint-disable react/no-unused-prop-types */
 type Props = {
   href?: string,
-  isInteractive?: bool,
-  onClick?: Function,
+  isActive?: boolean,
+  isFocus?: boolean,
+  isHover?: boolean,
+  isInteractive?: boolean,
+  onBlur?: FunctionType,
+  onClick?: FunctionType,
+  onFocus?: FunctionType,
+  onKeyDown?: FunctionType,
+  onKeyUp?: FunctionType,
+  onMouseDown?: FunctionType,
+  onMouseEnter?: FunctionType,
+  onMouseLeave?: FunctionType,
+  onMouseUp?: FunctionType,
 };
+/* eslint-enable react/no-unused-prop-types */
 
-const handlers = [
+const INTERNAL_HANDLERS = [
   'onBlur',
   'onFocus',
   'onKeyDown',
@@ -19,8 +33,14 @@ const handlers = [
   'onMouseUp',
 ];
 
-function getInitialState(props) {
-  const { href, isActive, isFocus, isHover, isInteractive, onClick } = props;
+function getInitialState({ href, isActive, isFocus, isHover, isInteractive, onClick }: {
+  href?: string,
+  isActive?: boolean,
+  isFocus?: boolean,
+  isHover?: boolean,
+  isInteractive?: boolean,
+  onClick?: FunctionType,
+}) {
   return {
     isActive,
     isFocus,
@@ -29,10 +49,11 @@ function getInitialState(props) {
   };
 }
 
-export default function withPseudoState(WrappedComponent) {
+export default function withPseudoState(WrappedComponent: ComponentType) {
   return class ComponentWithPseudoState extends Component {
-    static displayName = getDisplayName('withPseudoState', WrappedComponent);
-
+    static displayName = getDisplayName('withPseudoState', WrappedComponent)
+    component: { blur?: FunctionType, focus?: FunctionType };
+    actionKeys: Array<string>;
     componentWillMount() {
       const { href, isInteractive, onClick } = this.props;
 
@@ -42,25 +63,29 @@ export default function withPseudoState(WrappedComponent) {
     }
 
     props: Props;
-    state = getInitialState(this.props)
+    state = getInitialState(this.props);
 
     // expose blur/focus to consumers via ref
-    blur = () => this.component.blur()
-    focus = () => this.component.focus()
+    blur = (e: FocusEvent) => {
+      if (this.component.blur) this.component.blur(e);
+    }
+    focus = (e: FocusEvent) => {
+      if (this.component.focus) this.component.focus(e);
+    }
 
-    onBlur = () => this.setState({ isActive: false, isFocus: false });
+    onBlur = () => this.setState({ isActive: false, isFocus: false })
     onFocus = () => this.setState({ isFocus: true })
-    onMouseLeave = () => this.setState({ isActive: false, isHover: false });
-    onMouseEnter = () => this.setState({ isHover: true });
-    onMouseUp = () => this.setState({ isActive: false });
-    onMouseDown = () => this.setState({ isActive: true });
+    onMouseLeave = () => this.setState({ isActive: false, isHover: false })
+    onMouseEnter = () => this.setState({ isHover: true })
+    onMouseUp = () => this.setState({ isActive: false })
+    onMouseDown = () => this.setState({ isActive: true })
 
-    onKeyDown = (event) => {
+    onKeyDown = (event: KeyboardEvent) => {
       if (this.actionKeys.includes(event.key)) {
         this.setState({ isActive: true });
       }
     }
-    onKeyUp = (event) => {
+    onKeyUp = (event: KeyboardEvent) => {
       if (this.actionKeys.includes(event.key)) {
         this.setState({ isActive: false });
       }
@@ -71,10 +96,10 @@ export default function withPseudoState(WrappedComponent) {
 
       // strip the consumer's handlers off props, then merge with our handlers
       // if the element is interactive
-      const props = omit(this.props, ...handlers);
+      const props: {} = omit(this.props, ...INTERNAL_HANDLERS);
 
       if (isInteractive) {
-        handlers.forEach((handler) => {
+        INTERNAL_HANDLERS.forEach((handler: string) => {
           if (this.props[handler]) {
             props[handler] = (...args) => {
               this[handler](...args);
@@ -90,11 +115,11 @@ export default function withPseudoState(WrappedComponent) {
     }
 
     render() {
-      const props = this.getProps();
+      const props: {} = this.getProps();
 
       return (
         <WrappedComponent
-          ref={r => (this.component = r)}
+          ref={(r: ElementType) => (this.component = r)}
           {...props}
           {...this.state}
         />

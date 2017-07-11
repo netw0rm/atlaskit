@@ -4,7 +4,7 @@ import { getBorderRadius } from './utils';
 
 // if image is loading, we hide the image so it doesn't obscure the gray loading
 // block until the source image is loaded.
-const getBackgroundColor = props => (props.isLoading ? akColorN40 : 'transparent');
+const getBackgroundColor = (props: { isLoading: boolean }) => (props.isLoading ? akColorN40 : 'transparent');
 
 export const Span = styled.span`
   background-color: ${getBackgroundColor};

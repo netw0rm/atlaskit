@@ -3,22 +3,7 @@ import React, { PureComponent } from 'react';
 import { DEFAULT_BORDER_COLOR } from '../styled/constants';
 import { Outer } from '../styled/Icon';
 import getStatusSVG from '../helpers/getStatusSVG';
-import type { StatusType, Size } from '../types';
-
-// =============================================================
-// NOTE: Duplicated in Avatar until docgen can follow imports.
-// -------------------------------------------------------------
-// DO NOT update values here without updating the other.
-// =============================================================
-
-export const SIZE = {
-  values: ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
-  defaultValue: 'medium',
-};
-
-export const STATUS_TYPE = {
-  values: ['approved', 'declined', 'locked'],
-};
+import type { ChildrenType, StatusType, SizeType } from '../types';
 
 type Props = {
   /** Used to override the default border color of the status indicator.
@@ -26,12 +11,12 @@ type Props = {
   borderColor?: string,
   /** Content to use as a custom status indicator (usually not required if
   consuming Status separate to Avatar). */
-  children?: Object,
+  children?: ChildrenType,
   /** Content to use as a custom status indicator (usually not required if
   consuming Status separate to Avatar). */
   status?: StatusType,
   /** Defines the size of the status. */
-  size?: Size,
+  size?: SizeType,
 };
 
 export default class Status extends PureComponent {

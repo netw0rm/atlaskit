@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Outer, Inner } from '../styled/MoreIndicator';
 import { withPseudoState } from '../hoc';
 import { getProps } from '../helpers';
-import type { Size } from '../types';
+import type { SizeType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -17,7 +17,7 @@ type Props = {
   /** Handle user interaction */
   onClick?: () => mixed,
   /** Defines the size of the indicator */
-  size?: Size,
+  size?: SizeType,
 };
 /* eslint-enable react/no-unused-prop-types */
 

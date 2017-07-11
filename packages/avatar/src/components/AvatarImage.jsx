@@ -5,11 +5,11 @@ import { HiddenImage, Span, Svg } from '../styled/AvatarImage';
 
 export function DefaultImage(
   { appearance, size, title }:
-  { appearance: string, size: string, title: string }
+  { appearance: string, size: string, title?: string }
 ) {
   const rectBounds = 128;
-  const background = akColorN50;
-  const foreground = akColorPrimary3;
+  const background: string = akColorN50;
+  const foreground: string = akColorPrimary3;
 
   return (
     <Svg appearance={appearance} size={size} viewBox={`0 0 ${rectBounds} ${rectBounds}`} version="1.1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={title}>
@@ -36,7 +36,9 @@ export function DefaultImage(
 
 type Props = {
   alt?: string,
+  appearance: string,
   src?: string,
+  size: string,
 };
 
 export default class AvatarImage extends PureComponent {
@@ -45,6 +47,7 @@ export default class AvatarImage extends PureComponent {
     hasError: false,
     isLoading: !!this.props.src,
   };
+  _isMounted: boolean;
 
   componentDidMount() {
     this._isMounted = true;
@@ -58,7 +61,7 @@ export default class AvatarImage extends PureComponent {
   componentWillUnmount() {
     this._isMounted = false;
   }
-  handleLoad = (hasError) => {
+  handleLoad = (hasError: boolean) => {
     if (this._isMounted) {
       this.setState({ hasError, isLoading: false });
     }
@@ -82,7 +85,7 @@ export default class AvatarImage extends PureComponent {
         aria-label={alt}
         isLoading={isLoading}
         role="img"
-        style={{ backgroundImage: `url(${src})` }}
+        style={src ? { backgroundImage: `url(${src})` } : null}
         title={alt}
         {...props}
       >

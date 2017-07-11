@@ -5,7 +5,7 @@ import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
 import { DEFAULT_BORDER_COLOR } from '../styled/constants';
 import MoreIndicator from '../components/MoreIndicator';
-import type { Size } from '../types';
+import type { ComponentType, FunctionType, SizeType } from '../types';
 
 const GROUP_COMPONENT = {
   grid: Grid,
@@ -16,7 +16,7 @@ const MAX_COUNT = {
   stack: 5,
 };
 
-type AvatarsArray = [{
+type DataType = [{
   href?: string,
   name?: string,
   src?: string,
@@ -27,21 +27,21 @@ type Props = {
   can be used for 'container' objects. */
   appearance: 'grid' | 'stack',
   /** Component used to render each avatar */
-  avatar?: Function,
+  avatar?: ComponentType,
   /** Typically the background color that the avatar is presented on.
   Accepts any color argument that the CSS border-color property accepts. */
   borderColor?: string,
   /** The array of avatar data used fed to the `avatar` component */
-  data: AvatarsArray,
+  data: DataType,
   /** The maximum number of avatars allowed in the grid */
   maxCount?: number,
   /** Handle the click event on the avatar item */
-  onAvatarClick?: ({ event: Object, item: Object }) => mixed,
+  onAvatarClick?: ({ event: {}, item: {} }) => mixed,
   /** Take control of the click event on the more indicator. This will cancel
   the default dropdown behaviour. */
-  onMoreClick?: () => mixed,
+  onMoreClick?: FunctionType,
   /** Defines the size of the avatar */
-  size?: Size,
+  size?: SizeType,
 };
 
 export default class AvatarGroup extends Component {
@@ -54,7 +54,7 @@ export default class AvatarGroup extends Component {
     size: 'medium',
   }
 
-  renderMoreDropdown(max, total) {
+  renderMoreDropdown(max: number, total: number) {
     const { appearance, data, borderColor, onMoreClick, onAvatarClick, size } = this.props;
 
     // bail if there's not enough items
@@ -65,8 +65,8 @@ export default class AvatarGroup extends Component {
       <MoreIndicator
         borderColor={borderColor || DEFAULT_BORDER_COLOR}
         count={total - max}
+        isInteractive
         isStack={appearance === 'stack'}
-        onClick={() => {}} // force "interactive" styles
         size={size}
         {...props}
       />
@@ -109,7 +109,7 @@ export default class AvatarGroup extends Component {
         borderColor={borderColor}
         groupAppearance={appearance}
         index={idx}
-        onClick={onAvatarClick || avatar.onClick}
+        onClick={avatar.onClick || onAvatarClick}
         size={size}
         stackIndex={max - idx}
       />

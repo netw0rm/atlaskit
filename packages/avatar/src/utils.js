@@ -1,22 +1,15 @@
-export function omit(obj, ...keysToOmit) {
-  return Object.keys(obj).reduce((acc, key) => {
+// @flow
+import type { ComponentType } from './types';
+
+export function omit(obj: {}, ...keysToOmit: Array<string>) {
+  return Object.keys(obj).reduce((acc, key: string) => {
     if (keysToOmit.indexOf(key) === -1) acc[key] = obj[key];
     return acc;
   }, {});
 }
 
-export function limit(min, max, value) {
-  if (value < min) {
-    return min;
-  }
-  if (value > max) {
-    return max;
-  }
-  return value;
-}
-
-export function getDisplayName(prefix, Component) {
-  const componentName = Component.displayName || Component.name;
+export function getDisplayName(prefix: string, Component: ComponentType) {
+  const componentName: string = Component.displayName || Component.name;
 
   return componentName ? `${prefix}(${componentName})` : prefix;
 }

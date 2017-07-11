@@ -69,7 +69,8 @@ const AvatarShowcase = ({ children, description, title }) => (
   </div>
 );
 const AllAvatarSizes = (props) => {
-  const modifiedProps = omit(props, 'icon', 'presence', 'status');
+  // avoid warnings from invalid sizes
+  const modifiedProps = omit(props, 'presence', 'status');
   return (
     <AvatarRow>
       <DefaultAvatar size="xxlarge" {...modifiedProps} />
@@ -470,25 +471,25 @@ storiesOf(name, module)
     <Wrapper>
       <h2>Custom Presence</h2>
       <Note size="large">
-        Replace presence with the <code>icon</code> property
+        Provide a react element to the <code>presence</code> property
       </Note>
       <h5>Image</h5>
-      <Note>Using an image as the icon</Note>
+      <Note>Using an image as the presence</Note>
       <AllAvatarSizes
-        icon={<img role="presentation" src={tickUrl} style={{ height: '100%', width: '100%' }} />}
+        presence={<img role="presentation" src={tickUrl} style={{ height: '100%', width: '100%' }} />}
       />
       <HR />
       <h5>Div on Circle</h5>
       <Note>This example shows using a styled div as a presence.</Note>
       <AllAvatarSizes
-        icon={<DivPresence>1</DivPresence>}
+        presence={<DivPresence>1</DivPresence>}
       />
       <HR />
       <h5>Div on Square</h5>
       <Note>This example shows using a styled div as a presence on a square avatar.</Note>
       <AllAvatarSizes
         appearance="square"
-        icon={<DivPresence>1</DivPresence>}
+        presence={<DivPresence>1</DivPresence>}
       />
     </Wrapper>
   ));

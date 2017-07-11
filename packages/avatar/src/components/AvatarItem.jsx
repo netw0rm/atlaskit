@@ -1,16 +1,18 @@
 // @flow
 import React, { cloneElement, Component } from 'react';
 
+import { propsOmittedFromClickData } from './constants';
 import { omit } from '../utils';
 import { bgActiveColor, bgHoverColor, getStyles, Content, SecondaryText, PrimaryText } from '../styled/AvatarItem';
 import { getProps, getStyledComponent } from '../helpers';
 import { withPseudoState } from '../hoc';
+import type { ComponentType, ElementType, FunctionType, StyledComponentType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  avatar: Object,
+  avatar: ElementType,
   /** A custom component to use instead of the default span. */
-  component?: Function | string,
+  component?: ComponentType,
   /** Provides a url for avatars being used as a link. */
   href?: string,
   /** Change the style to indicate the item is active. */
@@ -24,7 +26,7 @@ type Props = {
   /** Change the style to indicate the item is selected. */
   isSelected?: boolean,
   /** Handler to be called on click. */
-  onClick?: ({ event: Object, info: Object }) => void,
+  onClick?: ({ event: KeyboardEvent | MouseEvent, item: {} }) => mixed,
   /** PrimaryText text */
   primaryText?: string,
   /** SecondaryText text */
@@ -37,11 +39,17 @@ type Props = {
 
 class AvatarItem extends Component {
   props: Props; // eslint-disable-line react/sort-comp
-  cache = {}
+  node: { blur?: FunctionType, focus?: FunctionType };
+  cache: {
+    button?: ElementType,
+    custom?: ComponentType,
+    link?: ElementType,
+    span?: ElementType,
+  } = {};
 
   static defaultProps = { enableTextTruncate: true }
 
-  getCachedComponent(type) {
+  getCachedComponent(type: StyledComponentType) {
     if (!this.cache[type]) {
       this.cache[type] = getStyledComponent[type](getStyles);
     }
@@ -60,7 +68,7 @@ class AvatarItem extends Component {
   getBorderColor = () => {
     const { href, isActive, isHover, isSelected, onClick } = this.props;
     const isInteractive = href || onClick;
-    let borderColor;
+    let borderColor: string;
 
     if (isInteractive && (isHover || isSelected)) borderColor = bgHoverColor;
     if (isInteractive && isActive) borderColor = bgActiveColor;
@@ -68,27 +76,21 @@ class AvatarItem extends Component {
     return borderColor;
   }
 
-  // expose blur/focus to consumers via inner ref
-  blur = () => this.node.blur()
-  focus = () => this.node.focus()
+  // expose blur/focus to consumers via ref
+  blur = (e: FocusEvent) => {
+    if (this.node.blur) this.node.blur(e);
+  }
+  focus = (e: FocusEvent) => {
+    if (this.node.focus) this.node.focus(e);
+  }
 
   // disallow click on disabled avatars
-  guardedClick = (event) => {
+  guardedClick = (event: KeyboardEvent | MouseEvent) => {
     const { isDisabled, onClick } = this.props;
 
-    if (isDisabled) return;
+    if (isDisabled || (typeof onClick !== 'function')) return;
 
-    const item = omit(this.props,
-      'onBlur',
-      'onClick',
-      'onFocus',
-      'onKeyDown',
-      'onKeyUp',
-      'onMouseDown',
-      'onMouseEnter',
-      'onMouseLeave',
-      'onMouseUp',
-    );
+    const item: {} = omit(this.props, ...propsOmittedFromClickData);
 
     onClick({ item, event });
   }

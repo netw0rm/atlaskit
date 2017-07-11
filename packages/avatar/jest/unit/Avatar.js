@@ -1,15 +1,19 @@
+// @flow
 /* eslint-disable  mocha/no-skipped-tests */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import Avatar, { SIZE, ICON_TYPE } from '../../src/components/Avatar';
+import Avatar from '../../src/components/Avatar';
 import AvatarImage from '../../src/components/AvatarImage';
 import Presence from '../../src/components/Presence';
 
 import { getSize } from '../../src/styled/utils';
 import { AVATAR_SIZES } from '../../src/styled/constants';
 
-const [online, offline, busy] = ICON_TYPE.values;
+const busy = 'busy';
+const offline = 'offline';
+const online = 'offline';
+const SIZES = ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge'];
 
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
@@ -21,7 +25,7 @@ describe('Avatar', () => {
   });
 
   describe('size property', () => {
-    SIZE.values.forEach((size) => {
+    SIZES.forEach((size) => {
       describe(`when is set to ${size}`, () =>
         it('should have the correct dimensions', () => {
           const result = getSize({ size });
@@ -79,23 +83,23 @@ describe('Avatar', () => {
     });
   });
 
-  describe('icon property', () => {
-    it('should render the icon', () => {
+  describe('react element as the presence property', () => {
+    it('should render the presence', () => {
       const MyIcon = <div className="my-icon" />;
-      const wrapper = mount(<Avatar icon={MyIcon} />);
+      const wrapper = mount(<Avatar presence={MyIcon} />);
       expect(wrapper.find('.my-icon')).toHaveLength(1);
     });
 
-    it('should pass presence to Presence', () => {
+    it('should pass presence value to Presence', () => {
       const wrapper = mount(<Avatar presence={online} />);
       const presence = wrapper.find(Presence);
       expect(presence.exists()).toBe(true);
       expect(presence.prop('presence')).toBe(online);
     });
 
-    it('should pass icon props to Presence', () => {
+    it('should pass presence element to Presence', () => {
       const MyIcon = <div className="my-icon" />;
-      const wrapper = mount(<Avatar icon={MyIcon} />);
+      const wrapper = mount(<Avatar presence={MyIcon} />);
       const presence = wrapper.find(Presence);
 
       expect(presence.exists()).toBe(true);

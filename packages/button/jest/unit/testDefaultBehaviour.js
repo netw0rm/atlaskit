@@ -65,6 +65,16 @@ describe('ak-button/default-behaviour', () => {
     expect(wrapper.text()).toBe('buttonicon');
   });
 
+  it('should render button with full container width', () => {
+    const wrapper = mount(<Button shouldFitContainer />);
+    expect(wrapper.find('StyledButton').prop('fit')).toBe(true);
+  });
+
+  it('should render button without full container width', () => {
+    const wrapper = mount(<Button />);
+    expect(wrapper.find('StyledButton').prop('fit')).toBe(false);
+  });
+
   it('should be able to render both of the icons', () => {
     const Icon1 = <div id="icon">icon1</div>;
     const Icon2 = <div id="icon">icon2</div>;

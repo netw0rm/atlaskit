@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import InteractiveWrapper from './InteractiveWrapper';
@@ -13,32 +13,55 @@ import NavigationItemInner from '../styled/NavigationItemInner';
 import NavigationItemMainText from '../styled/NavigationItemMainText';
 import NavigationItemOuter from '../styled/NavigationItemOuter';
 import NavigationItemSubText from '../styled/NavigationItemSubText';
+import type { ReactElement } from '../../types';
+
+type Props = {|
+  action?: ReactElement,
+  /** Text to appear to the right of the text. It has a lower font-weight. */
+  caption?: string,
+  /** Location to link out to on click. This is passed down to the custom link
+  component if one is provided. */
+  href?: string,
+  /** React element to appear to the left of the text. This should be an
+  @atlaskit/icon component. */
+  icon?: ReactElement,
+  /** Element displayed to the right of the item. The dropIcon should generally be
+  an appropriate @atlaskit icon, such as the ExpandIcon. */
+  dropIcon?: ReactElement,
+  /** Set whether the icon should be highlighted as selected. Selected items have
+  a different background color. */
+  isSelected?: boolean,
+  /** Set whether the item should be used to trigger a dropdown. If this is strue,
+  The href property will be disabled. */
+  isDropdownTrigger?: boolean,
+  /** Component to be used as link, if default link component does not suit, such
+  as if you are using a different router. Component is passed a href prop, and the content
+  of the title as children. This will be wrapped in a component to style it. */
+  linkComponent?: () => mixed,
+  /** Function to be called on click. This is passed down to a custom link component,
+  if one is provided.  */
+  onClick?: (e: MouseEvent) => void,
+  /** Text to be displayed beneath the main text. */
+  subText?: string,
+  /** Main text to be displayed as the item. Accepts a react component but in most
+  cases this should just be a string. */
+  text: ReactElement,
+  /** React component to be placed to the right of the main text. */
+  textAfter?: ReactElement,
+|}
 
 export default class NavigationItem extends PureComponent {
-  static propTypes = {
-    action: PropTypes.node,
-    caption: PropTypes.string,
-    href: PropTypes.string,
-    icon: PropTypes.node,
-    dropIcon: PropTypes.node,
-    isSelected: PropTypes.bool,
-    isDropdownTrigger: PropTypes.bool,
-    linkComponent: PropTypes.func,
-    onClick: PropTypes.func,
-    subText: PropTypes.string,
-    text: PropTypes.node,
-    textAfter: PropTypes.node,
-  }
-
   static defaultProps = {
     isSelected: false,
     linkComponent: DefaultLinkComponent,
     isDropdownTrigger: false,
   }
 
-  onMouseDown = (e) => {
+  onMouseDown = (e: MouseEvent) => {
     e.preventDefault();
   }
+
+  props: Props
 
   render() {
     const icon = this.props.icon

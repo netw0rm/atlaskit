@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "15.2.1",
+  "version": "15.3.0",
   "config": {
     "access": "public"
   },
@@ -9,10 +9,12 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Navigation"
+    "name": "Navigation",
+    "pattern": true
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/navigation; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/navigation; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
   },
   "files": [
     "dist"

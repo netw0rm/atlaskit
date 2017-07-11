@@ -17,6 +17,19 @@ import {
   akGridSize,
 } from '@atlaskit/util-shared-styles';
 
+const formatSrc = src => Prism.highlight(src, Prism.languages.jsx);
+
+export const ExampleSource = ({ isSourceClosing = false, handleAnimationEnd = () => {}, src }) => (
+  <Code
+    closing={isSourceClosing}
+    onAnimationEnd={handleAnimationEnd}
+  >
+    <pre>
+      <code dangerouslySetInnerHTML={{ __html: formatSrc(src) }} />
+    </pre>
+  </Code>
+);
+
 export default class Example extends PureComponent {
   state = {
     isSourceClosing: false,
@@ -53,8 +66,6 @@ export default class Example extends PureComponent {
       ? 'Hide Code Snippet'
       : 'Show Code Snippet';
 
-    const m = Prism.highlight(src, Prism.languages.jsx);
-
     return (
       <Wrapper hover={isHover} open={isSourceVisible}>
         <Toggle
@@ -68,15 +79,11 @@ export default class Example extends PureComponent {
           <ToggleIcon label={toggleLabel} />
         </Toggle>
 
-        {isSourceVisible ? (
-          <Code
-            closing={isSourceClosing}
-            onAnimationEnd={this.handleAnimationEnd}
-          >
-            <pre>
-              <code dangerouslySetInnerHTML={{ __html: m }} />
-            </pre>
-          </Code>) : null}
+        {isSourceVisible ? <ExampleSource
+          src={src}
+          handleAnimationEnd={this.handleAnimationEnd}
+          isSourceClosing={isSourceClosing}
+        /> : null}
         <Showcase>
           <Component />
         </Showcase>

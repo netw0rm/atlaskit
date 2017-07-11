@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import Droppable from '../../src/view/droppable/connected-droppable';
 import { borderRadius, grid } from './constants';
@@ -17,7 +17,7 @@ const Container = styled.div`
   width: 250px;
 `;
 
-export default class List extends PureComponent {
+export default class List extends Component {
   props: {|
     listId: string,
     children?: any,

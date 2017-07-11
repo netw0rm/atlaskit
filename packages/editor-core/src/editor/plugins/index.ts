@@ -5,3 +5,4 @@ export { default as mentionsPlugin } from './mentions';
 export { default as emojiPlugin } from './emoji';
 export { default as saveOnEnterPlugin } from './save-on-enter';
 export { default as onChangePlugin } from './on-change';
+export { default as mediaPlugin } from './media';

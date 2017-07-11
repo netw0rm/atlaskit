@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { describe, it, afterEach } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
@@ -11,7 +11,7 @@ import type { Id, Dimension, HTMLElement } from '../../../src/types';
 
 const itemId: Id = 'item-1';
 
-class Item extends PureComponent {
+class Item extends Component {
   /* eslint-disable react/sort-comp */
   props: {
     publish: (dimension: Dimension) => void,

@@ -11,7 +11,8 @@ import {
 /**
 * NOTE: changing the width of the Navigation is considered a breaking change
 */
-export const gridSize = akGridSizeUnitless;
+
+export const gridSize: number = akGridSizeUnitless;
 
 export const layout = {
   padding: {

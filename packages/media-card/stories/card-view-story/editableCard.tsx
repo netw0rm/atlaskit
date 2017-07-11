@@ -17,11 +17,11 @@ import {
 } from '@atlaskit/media-test-helpers';
 import {MediaItemDetails, ImageResizeMode} from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
+import Slider from '@atlaskit/field-range';
 import {CardView} from '../../src/root/cardView';
 import {CardAppearance, CardStatus, CardDimensions} from '../../src';
 import {openAction, closeAction, deleteAction, actions} from './chapters/utils';
 import {EditableCardOptions, EditableCardContent, SliderWrapper, OptionsWrapper, CardDimensionsWrapper} from './styled';
-import {Slider} from '@atlaskit/media-avatar-picker';
 import {defaultImageCardDimensions} from '../../src/utils/cardDimensions';
 
 const appearanceOptions = [

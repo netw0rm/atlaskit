@@ -30,6 +30,7 @@ import {
   storyMediaProviderFactory,
   randomId,
   sleep,
+  setNodeSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -502,6 +503,28 @@ describe('Media plugin', () => {
       ));
 
       collectionFromProviderSpy.restore();
+    });
+  });
+
+  describe('splitMediaGroup', () => {
+    it('splits media group', () => {
+      const { editorView, pluginState } = editor(doc(
+        mediaGroup(
+          media({ id: 'media1', type: 'file', collection: testCollectionName }),
+          media({ id: 'media2', type: 'file', collection: testCollectionName }),
+        ),
+      ));
+      const positionOfFirstMediaNode = 2;
+      setNodeSelection(editorView, positionOfFirstMediaNode);
+
+      pluginState.splitMediaGroup();
+
+      expect(editorView.state.doc).to.equal(doc(
+        mediaGroup(
+          media({ id: 'media2', type: 'file', collection: testCollectionName }),
+        ),
+        p(),
+      ));
     });
   });
 });

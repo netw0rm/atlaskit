@@ -1,34 +1,29 @@
 import {
-  EditorState, Transaction,
-  EditorView, keydownHandler,
+  Schema, keymap, Plugin,
+  EditorState, Transaction
 } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
-import * as commands from '../../commands';
 import { MediaPluginState, stateKey } from './';
 
-export function keymapHandler(view: EditorView, pluginState: MediaPluginState): Function {
+export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(keymaps.undo.common!, ignoreLinksInSteps(pluginState), list);
-  keymaps.bindKeymapWithCommand(keymaps.enter.common!, splitMediaGroup(view), list);
-  return keydownHandler(list);
+  keymaps.bindKeymapWithCommand(keymaps.undo.common!, ignoreLinksInSteps, list);
+  keymaps.bindKeymapWithCommand(keymaps.enter.common!, splitMediaGroup, list);
+  keymaps.bindKeymapWithCommand(keymaps.insertNewLine.common!, splitMediaGroup, list);
+
+  return keymap(list);
 }
 
-function ignoreLinksInSteps(pluginState: MediaPluginState) {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-    const mediaPluginState = stateKey.getState(state) as MediaPluginState;
-    mediaPluginState.ignoreLinks = true;
-    return false;
-  };
+function ignoreLinksInSteps(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  const mediaPluginState = stateKey.getState(state) as MediaPluginState;
+  mediaPluginState.ignoreLinks = true;
+  return false;
 }
 
-function splitMediaGroup(view: EditorView) {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-    commands.deleteSelection(view.state, view.dispatch);
-    commands.splitBlock(view.state, view.dispatch);
-    commands.createParagraphNear(view, false);
-    return true;
-  };
+function splitMediaGroup(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  const mediaPluginState = stateKey.getState(state) as MediaPluginState;
+  return mediaPluginState.splitMediaGroup();
 }
 
-export default keymapHandler;
+export default keymapPlugin;

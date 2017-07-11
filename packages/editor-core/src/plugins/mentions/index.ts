@@ -243,7 +243,7 @@ export class MentionsState {
         transaction = transaction.removeMark(end, activeMentionQueryMark.end, mentionMark);
       }
 
-    transaction = transaction.replaceWith(start, end, nodes);
+      transaction = transaction.replaceWith(start, end, nodes);
 
       return transaction;
     } else {
@@ -311,6 +311,7 @@ export class MentionsState {
       return true;
     }
 
+    // No results for the current query OR no results expected because previous subquery didn't return anything
     if ((!queryInFlight && mentionsCount === 0) || this.previousQueryResultCount === 0) {
       analyticsService.trackEvent('atlassian.editor.mention.try.insert.previous');
       this.tryInsertingPreviousMention();
@@ -355,9 +356,13 @@ export class MentionsState {
       this.queryResults.set(query, match);
     }
 
-    if (this.query && this.query.indexOf(query) === 0 && !this.mentionProvider!.isFiltering(query)) {
+    if (this.isSubQueryOfCurrentQuery(query)) {
       this.previousQueryResultCount = mentions.length;
     }
+  }
+
+  private isSubQueryOfCurrentQuery(query: string) {
+    return this.query && this.query.indexOf(query) === 0 && !this.mentionProvider!.isFiltering(query);
   }
 
   private findExactMatch(query: string, mentions: MentionDescription[]): MentionDescription | null {

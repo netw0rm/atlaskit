@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { describe, it, afterEach, beforeEach } from 'mocha';
+
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 // eslint-disable-next-line no-duplicate-imports
@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 // eslint-disable-next-line no-duplicate-imports
 import type { Callbacks, Provided } from '../../../src/view/drag-handle/drag-handle-types';
-import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent, withKeyboard } from '../user-input-util';
+import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent, withKeyboard } from '../../utils/user-input-util';
 import type { Position } from '../../../src/types';
 
 const primaryButton: number = 0;

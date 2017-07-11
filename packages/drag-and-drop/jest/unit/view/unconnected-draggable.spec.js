@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-import { describe, it, beforeEach, afterEach, before } from 'mocha';
+
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
@@ -24,9 +24,9 @@ import type {
   DraggableId,
   TypeId,
 } from '../../../src/types';
-import getDimension from '../get-dimension-util';
-import withContextOptions from '../with-context-options';
-import { dispatchWindowMouseEvent, mouseEvent } from '../user-input-util';
+import getDimension from '../../utils/get-dimension-util';
+import withContextOptions from '../../utils/with-context-options';
+import { dispatchWindowMouseEvent, mouseEvent } from '../../utils/user-input-util';
 
 class Item extends Component {
   props: {
@@ -203,7 +203,8 @@ const getStubber = stub =>
 };
 
 describe('Draggable - unconnected', () => {
-  before(() => {
+  beforeAll(() => { // eslint-disable-line no-undef
+    requestAnimationFrame.reset();
     requestAnimationFrame.reset();
   });
 

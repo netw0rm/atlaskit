@@ -1,8 +1,8 @@
 // @flow
-import { describe, it } from 'mocha';
+
 import { expect } from 'chai';
 import getDiffToJumpToNextIndex from '../../../src/state/get-diff-to-jump-to-next-index';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import type {
   Dimension,
   DimensionMap,

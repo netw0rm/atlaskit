@@ -21,7 +21,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.4.0",
     "axios": "^0.15.3",
     "rxjs": "^5.4.0",
     "sinon": "^2.2.0",

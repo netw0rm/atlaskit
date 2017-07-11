@@ -15,7 +15,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^2.1.1"
+    "@atlaskit/util-shared-styles": "^2.4.0"
   },
   "peerDependencies": {
     "@atlaskit/css-reset": "^1.0.0"
@@ -28,7 +28,7 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/field-text": "^2.0.5",
+    "@atlaskit/field-text": "^3.0.0",
     "@atlaskit/util-readme": "^1.0.0",
     "cheerio": "^0.22.0",
     "glob": "^7.1.1",

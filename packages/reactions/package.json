@@ -21,12 +21,12 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/button": "^1.1.2",
+    "@atlaskit/button": "^3.1.0",
     "@atlaskit/emoji": "^15.0.0",
     "@atlaskit/icon": "^2.3.0",
     "@atlaskit/layer": "^2.1.4",
     "@atlaskit/tooltip": "^1.2.0",
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.4.0",
     "classnames": "^2.2.5",
     "es6-promise": "^4.0.5",
     "react-transition-group": "^1.1.3",

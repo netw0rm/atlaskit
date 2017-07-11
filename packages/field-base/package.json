@@ -23,7 +23,7 @@
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/inline-dialog": "^3.0.0",
     "@atlaskit/spinner": "^2.2.1",
-    "@atlaskit/util-shared-styles": "^2.0.1",
+    "@atlaskit/util-shared-styles": "^2.4.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
-    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button": "^3.1.0",
     "@atlaskit/field-base": "*",
     "@atlaskit/input": "^1.0.0",
     "@atlaskit/util-readme": "^3.1.0",

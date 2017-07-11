@@ -8,11 +8,12 @@ import InitializingScreen from './InitializingScreen';
 import { withAnalytics } from './Analytics';
 import RequestTrial from '../../request-trial/components/RequestTrial';
 import StartTrial from '../../start-trial/components/StartTrial';
+import AlreadyStarted from '../../start-trial/components/AlreadyStarted';
 
 const Screens = {
   INITIALIZING: 'INITIALIZING',
   CANNOT_ADD: 'CANNOT_ADD',
-  ALREADY_ADDED: 'ALREADY_ADDED',
+  ALREADY_STARTED: 'ALREADY_STARTED',
   REQUEST_TRIAL: 'REQUEST_TRIAL',
   START_TRIAL: 'START_TRIAL',
 };
@@ -33,20 +34,22 @@ class RequestOrStartTrial extends Component {
     error: null,
   };
 
-  componentDidMount() {
-    this.props
-      .canCurrentUserAddProduct()
-      .then((canAdd) => {
-        if (canAdd) {
-          this.setState({ screen: Screens.START_TRIAL });
-        } else {
-          this.setState({ screen: Screens.REQUEST_TRIAL });
-        }
-      })
-      .catch((e) => {
-        // TODO: Handle this appropriately.
-        console.error(e);
-      });
+  async componentWillMount() {
+    try {
+      const alreadyStarted = await this.props.isProductInstalledOrActivating();
+      const canAdd = alreadyStarted ? false : await this.props.canCurrentUserAddProduct();
+
+      if (alreadyStarted) {
+        this.setState({ screen: Screens.ALREADY_STARTED });
+      } else if (canAdd) {
+        this.setState({ screen: Screens.START_TRIAL });
+      } else {
+        this.setState({ screen: Screens.REQUEST_TRIAL });
+      }
+    } catch (e) {
+      // TODO: Handle this appropriately.
+      console.error(e);
+    }
   }
 
   render() {
@@ -59,6 +62,9 @@ class RequestOrStartTrial extends Component {
             }
             case Screens.START_TRIAL: {
               return <StartTrial />;
+            }
+            case Screens.ALREADY_STARTED: {
+              return <AlreadyStarted />;
             }
             case Screens.REQUEST_TRIAL: {
               return <RequestTrial />;
@@ -75,7 +81,8 @@ class RequestOrStartTrial extends Component {
 
 export default withCrossSellProvider(
   withAnalytics(RequestOrStartTrial),
-  ({ crossSell: { canCurrentUserAddProduct } }) => ({
+  ({ crossSell: { canCurrentUserAddProduct, isProductInstalledOrActivating } }) => ({
     canCurrentUserAddProduct,
+    isProductInstalledOrActivating,
   })
 );

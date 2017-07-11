@@ -19,7 +19,6 @@ export class AlreadyStartedBase extends Component {
     getStartedButtonText: PropTypes.string,
     spinnerActive: PropTypes.bool,
     getStartedButtonDisabled: PropTypes.bool,
-    onComplete: PropTypes.func.isRequired,
     goToProduct: PropTypes.func,
   };
 
@@ -34,12 +33,12 @@ export class AlreadyStartedBase extends Component {
   };
 
   handleGetStartedClick = () => {
-    const { goToProduct, onComplete } = this.props;
+    const { goToProduct } = this.props;
     this.setState({
       spinnerActive: true,
       getStartedButtonDisabled: true,
     });
-    Promise.resolve(goToProduct()).then(onComplete);
+    goToProduct();
   };
 
   render() {

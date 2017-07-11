@@ -273,6 +273,7 @@ export default class Editor extends PureComponent<Props, State> {
         packageName={name}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
         popupsMountPoint={this.props.popupsMountPoint}
+        maxHeight={480}
       />
     );
   }

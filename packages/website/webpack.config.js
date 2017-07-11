@@ -23,7 +23,9 @@ module.exports = {
 
   devServer: {
     contentBase: resolve(__dirname, 'dist'),
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
     overlay: true,
     port: 8080,
     publicPath: '/',

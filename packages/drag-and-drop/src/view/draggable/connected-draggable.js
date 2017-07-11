@@ -177,6 +177,9 @@ const mapDispatchToProps: DispatchProps = {
   cancel: cancelAction,
 };
 
+// Leaning heavily on the default shallow equality checking
+// that `connect` provides.
+// It avoids needing to do it own within `Draggable`
 export default connect(
   makeMapStateToProps(),
   mapDispatchToProps,

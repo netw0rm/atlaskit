@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Draggable from '../../src/view/draggable/connected-draggable';
 import { borderRadius, colors, grid } from './constants';
@@ -85,7 +85,7 @@ type Props = {|
   quote: Quote
 |}
 
-export default class QuoteItem extends Component {
+export default class QuoteItem extends PureComponent {
   props: Props
 
   render() {

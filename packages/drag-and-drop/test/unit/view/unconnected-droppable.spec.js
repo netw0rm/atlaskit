@@ -1,6 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
@@ -8,13 +7,12 @@ import sinon from 'sinon';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
 import Droppable from '../../../src/view/droppable/droppable';
-import storeKey from '../../../src/state/get-store-key';
-import createStore from '../../../src/state/create-store';
+import withContextOptions from '../with-context-options';
 import type { DroppableId } from '../../../src/types';
 import type { MapProps, OwnProps, Provided, StateSnapshot } from '../../../src/view/droppable/droppable-types';
 
 const getStubber = (stub?: Function = sinon.stub()) =>
-  class Stubber extends PureComponent {
+  class Stubber extends Component {
     props: {|
       provided: Provided,
       snapshot: StateSnapshot,
@@ -44,43 +42,25 @@ const defaultOwnProps: OwnProps = {
 };
 
 type MountArgs = {|
-  Component: any,
+  WrappedComponent: any,
   ownProps?: OwnProps,
   mapProps?: MapProps,
 |}
 
 const mountDroppable = ({
-  Component,
+  WrappedComponent,
   ownProps = defaultOwnProps,
   mapProps = notDraggingOverMapProps,
-}: MountArgs = {}): ReactWrapper => {
-  // Not using this store - just putting it on the context
-  // for any connected components that need it (eg DimensionPublisher)
-  const store = createStore({ onDragEnd: () => { } });
-  const options = {
-    context: {
-      [storeKey]: store,
-    },
-    childContextTypes: {
-      [storeKey]: PropTypes.shape({
-        dispatch: PropTypes.func.isRequired,
-        subscribe: PropTypes.func.isRequired,
-        getState: PropTypes.func.isRequired,
-      }).isRequired,
-    },
-  };
-
-  return mount(
-    <Droppable
-      {...ownProps}
-      {...mapProps}
-    >
-      {(provided: Provided, snapshot: StateSnapshot) => (
-        <Component provided={provided} snapshot={snapshot} />
+}: MountArgs = {}): ReactWrapper => mount(
+  <Droppable
+    {...ownProps}
+    {...mapProps}
+  >
+    {(provided: Provided, snapshot: StateSnapshot) => (
+      <WrappedComponent provided={provided} snapshot={snapshot} />
       )}
-    </Droppable>
-    , options);
-};
+  </Droppable>
+, withContextOptions);
 
 describe('Droppable - unconnected', () => {
   it('should provide the props to its children', () => {
@@ -93,7 +73,7 @@ describe('Droppable - unconnected', () => {
 
       mountDroppable({
         mapProps,
-        Component: getStubber(stub),
+        WrappedComponent: getStubber(stub),
       });
 
       const provided: Provided = stub.args[0][0].provided;

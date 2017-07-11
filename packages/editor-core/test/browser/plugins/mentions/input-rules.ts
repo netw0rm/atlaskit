@@ -4,7 +4,6 @@ import mentionsPlugins, { MentionsState } from '../../../../src/plugins/mentions
 import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
-  fixtures,
   insertText,
   makeEditor,
   doc,
@@ -21,11 +20,9 @@ import defaultSchema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('mentions - input rules', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<MentionsState>({
     doc,
     plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-    place: fixture()
   });
 
   const assert = (what: string, expected: boolean, docContents?: any) => {

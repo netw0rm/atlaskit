@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
-  chaiPlugin, createEvent, doc, fixtures, insert, insertText, a as link, code_block,
+  chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block,
   makeEditor, p as paragraph, sendKeyToPm, setTextSelection, dispatchPasteEvent
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -11,11 +11,9 @@ import defaultSchema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('hyperlink', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<HyperlinkState>({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),
-    place: fixture(),
   });
 
   const event = createEvent('event');
@@ -592,6 +590,36 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com'), ' test')));
+      });
+    });
+
+    context('a string which is valid email is present in url', () => {
+      it('should not create separate mail link for email', function () {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com/test@atlassian.com' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(
+          link({
+            href: 'http://www.atlassian.com/test@atlassian.com'
+          })('http://www.atlassian.com/test@atlassian.com'),
+        )));
+      });
+    });
+
+    context('a string which is valid url is present in another url', () => {
+      it('should not create separate mail link for email', function () {
+        const { editorView } = editor(doc(paragraph('{<>}')));
+        if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com/www.temp.com' })) {
+          // This environment does not allow mocking paste events
+          return this.skip();
+        }
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(
+          link({
+            href: 'http://www.atlassian.com/www.temp.com'
+          })('http://www.atlassian.com/www.temp.com'),
+        )));
       });
     });
 

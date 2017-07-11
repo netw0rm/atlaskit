@@ -20,18 +20,15 @@ import {
 } from '../../../src/ui/TableFloatingControls/RowControls/styles';
 
 import {
-  createEvent, doc, p, fixtures, makeEditor, table, tr, tdEmpty, tdCursor
+  createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
 } from '../../../src/test-helper';
 
 describe('TableFloatingControls', () => {
-  const fixture = fixtures();
+  const event = createEvent('event');
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
-    place: fixture()
   });
-
-  const event = createEvent('event');
 
   context('when pluginState.tableElement is undefined', () => {
     it('should not render table header', () => {

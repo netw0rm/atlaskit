@@ -19,6 +19,8 @@ const CustomComponentProxy = (props) => {
     isHover,
     isSelected,
     theme,
+    shouldFitContainer,
+    fit,
     ...proxiedProps
   } = props;
   const ProxiedComponent = component;

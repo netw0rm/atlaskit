@@ -19,14 +19,14 @@ const nodes = tableNodes({
   }
 });
 
-const table: NodeSpec = nodes.table;
-const table_cell: NodeSpec = nodes.table_cell;
-const table_header: NodeSpec = nodes.table_header;
-const table_row: NodeSpec = nodes.table_row;
+const table: NodeSpec = {...nodes.table, content: 'tableRow+'};
+const tableCell: NodeSpec = nodes.table_cell;
+const tableHeader: NodeSpec = nodes.table_header;
+const tableRow: NodeSpec = {...nodes.table_row, content: '(tableCell | tableHeader)*'};
 
 export {
   table,
-  table_cell,
-  table_header,
-  table_row
+  tableCell,
+  tableHeader,
+  tableRow
 };

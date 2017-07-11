@@ -369,6 +369,20 @@ const buildStory = props => (
           <span>compact + selected</span>
         </div>
 
+        <div className="sample">
+          <Button {...props} shouldFitContainer>
+            Create Issue
+          </Button>
+          <span>shouldFitContainer</span>
+        </div>
+
+        <div className="sample">
+          <Button {...props} iconBefore={<Page label="page icon" />} shouldFitContainer>
+            Comment
+          </Button>
+          <span>shouldFitContainer with page icon</span>
+        </div>
+
       </div>
     </div>
   )

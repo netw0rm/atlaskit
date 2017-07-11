@@ -55,6 +55,7 @@ export default function getButtonStyles(props) {
   let transitionDuration = '0.1s, 0.15s';
   let transition = 'background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)';
   let verticalAlign = 'middle';
+  let width = 'auto';
 
   // Spacing: Compact
   if (props.spacing === 'compact') {
@@ -93,6 +94,11 @@ export default function getButtonStyles(props) {
     cursor = 'not-allowed';
   }
 
+  // Fit to parent width
+  if (props.fit) {
+    width = '100%';
+  }
+
   /**
    * Appearance + Theme styles
    */
@@ -106,6 +112,7 @@ export default function getButtonStyles(props) {
     box-sizing: border-box;
     border-radius: ${akBorderRadius};
     border-width: 0;
+    width: ${width};
     color: ${color};
     cursor: ${cursor};
     display: inline-flex;

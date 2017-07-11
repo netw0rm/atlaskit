@@ -4,19 +4,16 @@ import * as React from 'react';
 import textColorPlugin, { TextColorState } from '../../../src/plugins/text-color';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import ToolbarTextColor from '../../../src/ui/ToolbarTextColor';
-import { doc, code_block, p, makeEditor, fixtures } from '../../../src/test-helper';
+import { doc, code_block, p, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 const noop = () => { };
 
 describe('ToolbarTextColor', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor<TextColorState>({
     doc,
     plugins: textColorPlugin(defaultSchema),
-    place: fixture()
   });
-
 
   context('when plugin is enabled', () => {
     it('sets disabled to false', () => {

@@ -26,7 +26,7 @@ describe('analytics decorator', () => {
   it('tracks events after class method is called', () => {
     class AnnotatedTestClass {
       @analytics('test.event')
-      foo() { }
+      foo() { return true; }
     }
 
     const instance = new AnnotatedTestClass();
@@ -44,10 +44,10 @@ describe('analytics decorator', () => {
   it('tracks events after bound method (instance property) is called', () => {
     class AnnotatedTestClass2 {
       @analytics('test.event.foo')
-      foo = () => { }
+      foo = () => true
 
       @analytics('test.event.bar')
-      bar = () => { }
+      bar = () => true
     }
 
     const instance = new AnnotatedTestClass2();
@@ -65,7 +65,7 @@ describe('analytics decorator', () => {
   it('returns unique decorated bound method (property) per instance', () => {
     class AnnotatedTestClassWithBoundMethod {
       @analytics('test.event.foo')
-      foo = () => { }
+      foo = () => true
     }
 
     const instance1 = new AnnotatedTestClassWithBoundMethod();
@@ -94,10 +94,11 @@ describe('analytics decorator', () => {
       @analytics('test.event.foo')
       foo = () => {
         this.bar();
+        return true;
       }
 
       @analytics('test.event.bar')
-      private bar = () => { }
+      private bar = () => true
     }
 
     const instance = new AnnotatedTestClass3();
@@ -107,5 +108,18 @@ describe('analytics decorator', () => {
     expect(spy.callCount).to.equal(2);
     expect(spy.calledWith('test.event.foo')).to.equal(true);
     expect(spy.calledWith('test.event.bar')).to.equal(true);
+  });
+
+  it('should not track event if it returns false', () => {
+    class AnnotatedTestClass {
+      @analytics('test.event.foo')
+      foo = () => false
+    }
+
+    const instance = new AnnotatedTestClass();
+    expect(spy.called).to.equal(false);
+
+    instance.foo();
+    expect(spy.called).to.equal(false);
   });
 });

@@ -29,6 +29,7 @@ pipelines:
             - run-p -ln "validate/package.json" "validate/typescript"
             - run-p -ln "validate/tslint" "validate/eslint"
             - yarn run test/unit
+            - ./node_modules/.bin/jest -c ./build/jest.config.js
             - run-p -ln "test" "test/base"
             - yarn run browserstack/tunnel/start
             - yarn run test/browserstack
@@ -61,7 +62,7 @@ pipelines:
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
           - yarn run test/unit
-          - yarn run test/jest
+          - ./node_modules/.bin/jest -c ./build/jest.config.js
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
           - yarn run test/browserstack
@@ -69,4 +70,4 @@ pipelines:
           - yarn run "pr/storybook"
         caches:
           - node
-            
+

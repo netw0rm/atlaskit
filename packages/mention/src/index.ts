@@ -10,21 +10,25 @@ import { MentionDescription, isSpecialMention } from './types';
 import { SearchIndex } from './util/searchIndex';
 
 export {
+  // Classes
   MentionResource,
   PresenceResource,
   AbstractMentionResource,
   AbstractPresenceResource,
+  SearchIndex,
+  // Interfaces
   MentionProvider,
   PresenceProvider,
+  MentionDescription,
+  // Components
   MentionItem,
   MentionList,
   ResourcedMentionList,
   MentionPicker,
   Mention,
   ResourcedMention,
-  MentionDescription,
-  isSpecialMention,
-  SearchIndex
+  // Functions
+  isSpecialMention
 };
 
 export default MentionPicker;

@@ -6,7 +6,6 @@ import { default as UIMedia } from '../../../ui/Media';
 import { MediaType } from '../../../schema';
 import { CardDimensions } from '@atlaskit/media-card';
 
-
 export interface MediaProps {
   id: string;
   providers?: ProviderFactory;
@@ -33,7 +32,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
         type={type}
         collection={collection}
         providers={providers}
-        eventHandlers={eventHandlers}
+        onClick={eventHandlers && eventHandlers.media && eventHandlers.media.onClick}
         cardDimensions={cardDimensions}
       />
     );

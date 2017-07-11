@@ -3,18 +3,16 @@ import { expect } from 'chai';
 import blockTypePlugin from '../../../../src/plugins/block-type';
 
 import {
-  chaiPlugin, doc, fixtures, makeEditor, p, sendKeyToPm, insertText, h1
+  chaiPlugin, doc, makeEditor, p, sendKeyToPm, insertText, h1
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('codeBlock - keymaps', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
     plugins: blockTypePlugin(defaultSchema),
-    place: fixture()
   });
 
   describe('Cmd-z keypress', () => {

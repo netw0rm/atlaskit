@@ -1,24 +1,30 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import MediaComponent from './MediaComponent';
-import { EventHandlers } from '../Renderer';
+import { CardEventClickHandler } from '../Renderer';
 import { MediaType } from '../../schema';
 import { CardDimensions } from '@atlaskit/media-card';
+import {
+  CardEventHandler,
+  ImageResizeMode,
+} from '@atlaskit/media-core';
 import {
   default as ProviderFactory,
   WithProviders
 } from '../../providerFactory';
+import { EditorView } from '../../prosemirror';
 
 export interface MediaProps {
   id: string;
+  editorView?: EditorView;
   providers?: ProviderFactory;
-  eventHandlers?: EventHandlers;
   type: MediaType;
   collection: string;
   cardDimensions?: CardDimensions;
+  resizeMode?: ImageResizeMode;
+  onClick?: CardEventClickHandler;
+  onDelete?: CardEventHandler;
 }
-
-const noop = () => {};
 
 export default class Media extends PureComponent<MediaProps, {}> {
   private providerFactory: ProviderFactory;
@@ -37,14 +43,15 @@ export default class Media extends PureComponent<MediaProps, {}> {
   }
 
   private renderWithProvider = (providers) => {
-    const { eventHandlers, id, type, collection, cardDimensions } = this.props;
-    const actionHandlers = {};
-
-    if (eventHandlers) {
-      ['onClick', 'onDelete'].forEach(handler => {
-        actionHandlers[handler] = eventHandlers[handler] || noop;
-      });
-    }
+    const {
+      id,
+      type,
+      collection,
+      cardDimensions,
+      onClick,
+      onDelete,
+      resizeMode,
+    } = this.props;
 
     return (
       <MediaComponent
@@ -53,8 +60,9 @@ export default class Media extends PureComponent<MediaProps, {}> {
         type={type}
         collection={collection}
         cardDimensions={cardDimensions}
-        onDelete={actionHandlers['onDelete']}
-        onClick={actionHandlers['onClick']}
+        resizeMode={resizeMode}
+        onDelete={onDelete}
+        onClick={onClick}
       />
     );
   }

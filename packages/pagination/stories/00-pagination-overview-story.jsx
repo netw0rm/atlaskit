@@ -64,6 +64,34 @@ storiesOf(name, module)
       />
     </Chrome>
   ))
+  .add('Pagination (stateless): with lots of pages', () => (
+    <Chrome title="Pagination: with lots of pages">
+      <Description>
+        <p>Shows ellipsis at the end when the current page is close to the first page</p>
+      </Description>
+      <PaginationStateless
+        current={4}
+        total={100}
+        onSetPage={page => console.log(page)}
+      />
+      <Description>
+        <p>Shows ellipsis on either side when the current page is in the middle</p>
+      </Description>
+      <PaginationStateless
+        current={50}
+        total={100}
+        onSetPage={page => console.log(page)}
+      />
+      <Description>
+        <p>Shows ellipsis at the start when the current page is close to the last page</p>
+      </Description>
+      <PaginationStateless
+        current={97}
+        total={100}
+        onSetPage={page => console.log(page)}
+      />
+    </Chrome>
+  ))
   .add('Pagination (stateful): overview', () => (
     <Chrome title="Pagination (stateful): overview">
       <Description>
@@ -78,6 +106,11 @@ storiesOf(name, module)
         descriptions={statefulPropDescriptions}
         types={statefulPropTypes}
       />
+    </Chrome>
+  ))
+  .add('Pagination (stateful): with lots of pages', () => (
+    <Chrome title="Pagination (stateful): with lots of pages">
+      <Pagination defaultCurrent={1} total={100} onSetPage={page => console.log(page)} />
     </Chrome>
   ))
   .add('Pagination: custom labels', () => (

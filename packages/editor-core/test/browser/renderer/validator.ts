@@ -439,9 +439,9 @@ describe('Renderer - Validator', () => {
           'mediaGroup',
           'media',
           'table',
-          'table_cell',
-          'table_header',
-          'table_row',
+          'tableCell',
+          'tableHeader',
+          'tableRow',
         ],
         marks: [
           'em',
@@ -712,6 +712,15 @@ describe('Renderer - Validator', () => {
           type: 'link',
           attrs: {
             href: 'https://www.atlassian.com'
+          },
+        });
+      });
+
+      it('should add protocol to a url if it doesn`t exist', () => {
+        expect(getValidMark({ type: 'link', attrs: { href: 'www.atlassian.com' } })).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: 'http://www.atlassian.com'
           },
         });
       });

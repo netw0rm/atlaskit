@@ -1,3 +1,28 @@
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+
+const toEmojiAttrs = (emoji) => {
+  const { shortName, id, fallback } = emoji;
+  return {
+    shortName,
+    id,
+    text: fallback || shortName,
+  };
+};
+
+const toEmojiId = (emoji) => {
+   const { shortName, id, fallback } = emoji;
+   return { shortName, id, fallback };
+};
+
+const { emojiTestData, emojiStoryData } = emojiData;
+export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
+export const evilburnsEmojiAttrs = toEmojiAttrs(emojiTestData.evilburnsEmoji);
+
+export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
+export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+
+export const lorem = emojiStoryData.lorem;
+
 export const document = {
   type: 'doc',
   version: 1,
@@ -79,6 +104,50 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'My favourite emoji are '
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...grinEmojiAttrs,
+          }
+        },
+        {
+          type: 'text',
+          text: ' ',
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...evilburnsEmojiAttrs,
+          }
+        },
+        {
+          type: 'text',
+          text: ' ',
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            shortName: ':not-an-emoji:',
+          }
+        },
+        {
+          type: 'text',
+          text: '. What are yours?',
+          marks: [
+            {
+              type: 'unkown mark'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'My name is '
         },
         {
@@ -123,6 +192,23 @@ export const document = {
             textxtx: '@mention',
             id: 'mention'
           }
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Mention with restricted access'
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'ABCDE-ABCDE-ABCDE-FGHI',
+            accessLevel: 'APPLICATION'
+          },
+          text: '@oscar'
         }
       ]
     },
@@ -210,6 +296,24 @@ export const document = {
             }
           ]
         },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'some inline code: '
+        },
+        {
+          type: 'text',
+          text: 'const foo = bar();',
+          marks: [
+            {
+              type: 'code'
+            }
+          ]
+        }
       ]
     },
     {

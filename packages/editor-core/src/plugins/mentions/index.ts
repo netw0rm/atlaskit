@@ -25,6 +25,12 @@ export type MentionsStateSubscriber = (state: MentionsState) => any;
 export type StateChangeHandler = (state: MentionsState) => any;
 export type ProviderChangeHandler = (provider?: MentionProvider) => any;
 
+interface QueryMark {
+  start: number;
+  end: number;
+  query: string;
+}
+
 export class MentionsState {
   // public state
   query?: string;
@@ -41,12 +47,19 @@ export class MentionsState {
   private state: EditorState<any>;
   private view: EditorView;
   private dirty;
-  private queryResult?: MentionDescription[];
+  private currentQueryResult?: MentionDescription[];
+  private queryResults: Map<string, MentionDescription>;
+  private tokens: Map<string, QueryMark>;
+  private previousQueryResultCount: number;
 
   constructor(state: EditorState<any>, providerFactory: ProviderFactory) {
     this.changeHandlers = [];
     this.state = state;
     this.dirty = false;
+    this.queryResults = new Map();
+    this.tokens = new Map();
+    this.previousQueryResultCount = -1;
+
     providerFactory.subscribe('mentionProvider', this.handleProvider);
   }
 
@@ -94,11 +107,12 @@ export class MentionsState {
         this.dirty = true;
         this.query = newQuery;
         if (newQuery.length === 0) {
-          this.queryResult = undefined;
+          this.currentQueryResult = undefined;
         }
       }
     } else if (this.queryActive) {
       this.dirty = true;
+      this.dismiss();
       return;
     }
   }
@@ -132,43 +146,6 @@ export class MentionsState {
     return found;
   }
 
-  disableActiveQuery(): boolean {
-    this.queryActive = false;
-    this.query = undefined;
-
-    const { state, view } = this;
-
-    if (state) {
-      const { schema } = state;
-      const { tr } = state;
-      const markType = schema.mark('mentionQuery');
-      const { start, end } = this.findActiveMentionQueryMark();
-
-      let inactiveMarkEnd = end;
-      const lastCharacterIsSpace = this.isNextCharacterSpace(end - 1, state.doc);
-      if (lastCharacterIsSpace) {
-        inactiveMarkEnd = end - 1;
-      }
-
-      const disableMark = schema.mark('mentionQuery', { active: false });
-      let transaction = tr
-        .removeMark(start, end, markType)
-        .removeStoredMark(markType)
-        .addMark(start, inactiveMarkEnd, disableMark)
-        .removeStoredMark(disableMark);
-
-      if (!lastCharacterIsSpace) {
-        transaction = transaction.insertText(' ', end);
-      }
-
-      view.dispatch(
-        transaction
-      );
-    }
-
-    return true;
-  }
-
   dismiss(): boolean {
     const transaction = this.generateDismissTransaction();
     if (transaction) {
@@ -180,8 +157,7 @@ export class MentionsState {
   }
 
   generateDismissTransaction(tr?: Transaction): Transaction {
-    this.queryActive = false;
-    this.query = undefined;
+    this.clearState();
 
     const { state } = this;
 
@@ -241,26 +217,35 @@ export class MentionsState {
     return activeMentionQueryMarks[0];
   }
 
-  insertMention(mentionData?: MentionDescription, inactiveQueryMark?: { start, end }) {
+  insertMention(mentionData?: MentionDescription, queryMark?: { start, end }) {
     const { view } = this;
-    view.dispatch(this.generateInsertMentionTransaction(mentionData, inactiveQueryMark));
+    view.dispatch(this.generateInsertMentionTransaction(mentionData, queryMark));
   }
 
-  generateInsertMentionTransaction(mentionData?: MentionDescription, inactiveQueryMark?: { start, end }, tr?: Transaction): Transaction {
+  generateInsertMentionTransaction(mentionData?: MentionDescription, queryMark?: { start, end }, tr?: Transaction): Transaction {
     const { state } = this;
     const { mention } = state.schema.nodes;
     const currentTransaction = tr ? tr : state.tr;
 
     if (mention && mentionData) {
-      const { start, end } = inactiveQueryMark ? inactiveQueryMark : this.findActiveMentionQueryMark();
+      const activeMentionQueryMark = this.findActiveMentionQueryMark();
+      const { start, end } = queryMark ? queryMark : activeMentionQueryMark;
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
       const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id, accessLevel: mentionData.accessLevel })];
       if (!this.isNextCharacterSpace(end, currentTransaction.doc)) {
         nodes.push(state.schema.text(' '));
       }
-      this.queryActive = false;
-      this.query = undefined;
-      return currentTransaction.replaceWith(start, end, nodes);
+      this.clearState();
+
+      let transaction = currentTransaction;
+      if (activeMentionQueryMark.end !== end) {
+        const mentionMark = state.schema.mark('mentionQuery', {active: true});
+        transaction = transaction.removeMark(end, activeMentionQueryMark.end, mentionMark);
+      }
+
+      transaction = transaction.replaceWith(start, end, nodes);
+
+      return transaction;
     } else {
       return this.generateDismissTransaction(currentTransaction);
     }
@@ -289,11 +274,11 @@ export class MentionsState {
       .then(mentionProvider => {
         if (this.mentionProvider ) {
           this. mentionProvider.unsubscribe('editor-mentionpicker');
-          this.queryResult = undefined;
+          this.currentQueryResult = undefined;
         }
 
         this.mentionProvider = mentionProvider;
-        this.mentionProvider.subscribe('editor-mentionpicker', this.onMentionResult, this.onMentionError);
+        this.mentionProvider.subscribe('editor-mentionpicker', undefined, undefined, undefined, this.onMentionResult);
 
             // Improve first mentions performance by establishing a connection and populating local search
             this.mentionProvider.filter('');
@@ -310,14 +295,9 @@ export class MentionsState {
 
   trySelectCurrent() {
     const currentQuery = this.query ? this.query.trim() : '';
-    const mentions: MentionDescription[] = this.queryResult ? this.queryResult : [];
+    const mentions: MentionDescription[] = this.currentQueryResult ? this.currentQueryResult : [];
     const mentionsCount = mentions.length;
-
-    let exactMatch = this.findExactMatch(currentQuery, mentions);
-    if (exactMatch !== null) {
-      this.insertMention(exactMatch);
-      return true;
-    }
+    this.tokens.set(currentQuery, this.findActiveMentionQueryMark());
 
     if (!this.mentionProvider) {
       return false;
@@ -326,90 +306,63 @@ export class MentionsState {
     const queryInFlight = this.mentionProvider.isFiltering(currentQuery);
 
     if (!queryInFlight && mentionsCount === 1) {
+      analyticsService.trackEvent('atlassian.editor.mention.try.select.current');
       this.onSelectCurrent();
       return true;
     }
 
-    if (queryInFlight && mentionsCount === 0) {
-      this.disableActiveQuery();
-      return true;
+    // No results for the current query OR no results expected because previous subquery didn't return anything
+    if ((!queryInFlight && mentionsCount === 0) || this.previousQueryResultCount === 0) {
+      analyticsService.trackEvent('atlassian.editor.mention.try.insert.previous');
+      this.tryInsertingPreviousMention();
     }
 
-    if (!this.query || (!queryInFlight && mentionsCount === 0)) {
+    if (!this.query) {
       this.dismiss();
     }
 
     return false;
   }
 
+  tryInsertingPreviousMention() {
+    let mentionInserted = false;
+    this.tokens.forEach((value, key) => {
+      const match = this.queryResults.get(key);
+      if (match) {
+        analyticsService.trackEvent('atlassian.editor.mention.insert.previous.match.success');
+        this.insertMention(match, value);
+        this.tokens.delete(key);
+        mentionInserted = true;
+      }
+    });
+
+    if (!mentionInserted) {
+      analyticsService.trackEvent('atlassian.editor.mention.insert.previous.match.no.match');
+      this.dismiss();
+    }
+  }
+
   onMentionResult = (mentions: MentionDescription[], query: string) => {
-    this.updateQueryResult(mentions, query);
-    this.resolveInactiveQuery(mentions, query);
-  }
-
-  private updateQueryResult = (mentions: MentionDescription[], query?: string) => {
-    if (query && query.length > 0 && query === this.query) {
-      this.queryResult = mentions;
-    }
-  }
-
-  private resolveInactiveQuery = (mentions: MentionDescription[], resultQuery: string) => {
-    const { state, view } = this;
-    const inactiveQueryMarks = this.findMentionQueryMarks(false);
-    if (inactiveQueryMarks.length === 0) {
+    if (!query) {
       return;
     }
 
-    let tr = state.tr;
-    inactiveQueryMarks.forEach(inactiveQueryMark => {
-      const { start, end, query } = inactiveQueryMark;
-      if (resultQuery !== query) {
-        return;
-      }
-
-      const match = this.findExactMatch(query, mentions);
-      if (match !== null) {
-        analyticsService.trackEvent('atlassian.editor.mention.resolve.inactive.mention.success');
-
-        tr = this.generateInsertMentionTransaction(match, {
-          start: tr.mapping.map(start),
-          end: tr.mapping.map(end),
-        }, tr);
-      } else {
-        analyticsService.trackEvent('atlassian.editor.mention.resolve.inactive.mention.no.match');
-
-        const markType = state.schema.mark('mentionQuery', {active: false});
-        tr = tr.removeMark(start, end, markType)
-          .removeStoredMark(markType)
-          .setMeta('addToHistory', false);
-      }
-    });
-    view.dispatch(tr);
-  }
-
-  private onMentionError = (error, errorQuery) => {
-    const { state, view } = this;
-
-    const inactiveQueryMarks = this.findMentionQueryMarks(false);
-    if (inactiveQueryMarks.length === 0) {
-      return;
+    if (query.length > 0 && query === this.query) {
+      this.currentQueryResult = mentions;
     }
 
-    let tr = state.tr;
-    inactiveQueryMarks.forEach(inactiveQueryMark => {
-      const { start, end, query } = inactiveQueryMark;
-      if (errorQuery !== query) {
-        return;
-      }
+    const match = this.findExactMatch(query, mentions);
+    if (match) {
+      this.queryResults.set(query, match);
+    }
 
-      analyticsService.trackEvent('atlassian.editor.mention.resolve.inactive.mention.error');
+    if (this.isSubQueryOfCurrentQuery(query)) {
+      this.previousQueryResultCount = mentions.length;
+    }
+  }
 
-      const markType = state.schema.mark('mentionQuery', {active: false});
-      tr = tr.removeMark(start, end, markType)
-        .removeStoredMark(markType)
-        .setMeta('addToHistory', false);
-      view.dispatch(tr);
-    });
+  private isSubQueryOfCurrentQuery(query: string) {
+    return this.query && this.query.indexOf(query) === 0 && !this.mentionProvider!.isFiltering(query);
   }
 
   private findExactMatch(query: string, mentions: MentionDescription[]): MentionDescription | null {
@@ -424,6 +377,13 @@ export class MentionsState {
     }
 
     return filteredMentions.length === 1 ? filteredMentions[0] : null;
+  }
+
+  private clearState() {
+    this.queryActive = false;
+    this.query = undefined;
+    this.tokens.clear();
+    this.previousQueryResultCount = -1;
   }
 
   setView(view: EditorView) {

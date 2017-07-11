@@ -3,8 +3,7 @@
 ## Unreleased
 
 
-* feature; write static changelog on npm commit command ([c296860](https://bitbucket.org/atlassian/atlaskit/commits/c296860))
-* feature; add release script and generation script for new changelogs ([1a2b7d7](https://bitbucket.org/atlassian/atlaskit/commits/1a2b7d7))
+* feature; write static changelog on npm commit command ([49fab52](https://bitbucket.org/atlassian/atlaskit/commits/49fab52))
 
 ## 1.1.7 (2017-04-27)
 
@@ -36,7 +35,7 @@
 
 * empty commit to make components release themselves ([5511fbe](https://bitbucket.org/atlassian/atlaskit/commits/5511fbe))
 
-# 1.1.0 (2017-02-27)
+## 1.1.0 (2017-02-27)
 
 
 * feature; update to new version of cz-lerna-changelog ([831fd31](https://bitbucket.org/atlassian/atlaskit/commits/831fd31))

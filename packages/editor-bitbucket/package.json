@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^33.1.0",
+    "@atlaskit/editor-core": "^37.3.2",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {

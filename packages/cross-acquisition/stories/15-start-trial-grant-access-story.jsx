@@ -98,4 +98,15 @@ storiesOf('GrantAccess')
     setupStorybookAnalytics(
       <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={100} />
     )
+  )
+  .add('Show Grant Access dialog with change users open and error state if failing to grant access', () =>
+    setupStorybookAnalytics(
+      <GrantAccessBase
+        {...defaultProps}
+        analyticsId="growth.happy"
+        changeUsers
+        defaultSelectedRadio="everyone"
+        onComplete={() => Promise.reject(true)}
+      />
+    )
   );

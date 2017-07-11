@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Avatar from '@atlaskit/avatar';
 import Button from '@atlaskit/button';
+import InlineMessage from '@atlaskit/inline-message';
 import Select from '@atlaskit/multi-select';
 import Spinner from '@atlaskit/spinner';
 import ModalDialog from '@atlaskit/modal-dialog';
@@ -12,6 +13,7 @@ import { withCrossSellProvider } from '../../common/components/CrossSellProvider
 
 import ProgressBar from './ProgressBar';
 
+import ErrorTextDiv from '../styled/ErrorTextDiv';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
@@ -66,6 +68,7 @@ export class GrantAccessBase extends Component {
     userSelectNoMatchesMessage: 'No matches found',
     spinnerActive: this.props.spinnerActive,
     continueButtonDisabled: this.props.continueButtonDisabled,
+    failedToGrantAccess: false,
   };
 
   handleContinueClick = () => {
@@ -79,10 +82,22 @@ export class GrantAccessBase extends Component {
       });
       return;
     }
-    this.setState({ spinnerActive: true, continueButtonDisabled: true });
+    this.setState({
+      spinnerActive: true,
+      continueButtonDisabled: true,
+      failedToGrantAccess: false,
+    });
 
     // TODO: Pass list of users from dropdown to grantAccessToUsers callback
-    Promise.resolve(grantAccessToUsers(this.state.selectedRadio)).then(onComplete);
+    Promise.resolve(grantAccessToUsers(this.state.selectedRadio)).then(onComplete).catch(() => {
+      setTimeout(() => {
+        this.setState({
+          continueButtonDisabled: false,
+          spinnerActive: false,
+          failedToGrantAccess: true,
+        });
+      }, 1500);
+    });
   };
 
   handleLearnMoreClick = () => {
@@ -188,7 +203,15 @@ export class GrantAccessBase extends Component {
             >
               Continue
             </Button>
-
+            {this.state.failedToGrantAccess &&
+              <InlineMessage
+                title="Something went wrong"
+                type="error"
+              >
+                <ErrorTextDiv>
+                  There was an issue granting access to the selected users. Please try again.
+                </ErrorTextDiv>
+              </InlineMessage>}
           </StartTrialFooter>
         }
       >

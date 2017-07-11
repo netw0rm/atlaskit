@@ -20,6 +20,7 @@
     "@atlaskit/button": "^3.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/icon": "^7.0.0",
+    "@atlaskit/inline-message": "^2.1.1",
     "@atlaskit/logo": "^3.1.0",
     "@atlaskit/modal-dialog": "^2.1.1",
     "@atlaskit/multi-select": "^6.2.0",

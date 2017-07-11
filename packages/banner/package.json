@@ -36,9 +36,9 @@
   "devDependencies": {
     "@atlaskit/banner": "*",
     "@atlaskit/button": "^3.1.0",
-    "@atlaskit/util-readme": "^3.0.0",
+    "@atlaskit/util-readme": "^3.2.1",
     "ak-icon": "^12.2.0",
-    "@atlaskit/icon": "^1.0.0"
+    "@atlaskit/icon": "^7.0.1"
 
   },
   "repository": {

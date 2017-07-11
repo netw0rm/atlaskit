@@ -22,20 +22,20 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^3.1.0",
-    "@atlaskit/icon": "^7.0.0",
-    "@atlaskit/lozenge": "^3.0.0",
+    "@atlaskit/icon": "^7.0.1",
+    "@atlaskit/lozenge": "^3.0.2",
     "@atlaskit/util-shared-styles": "^2.4.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^2.0.0",
+    "@atlaskit/avatar": "^4.0.6",
     "@atlaskit/comment": "*",
-    "@atlaskit/editor-bitbucket": "^1.0.0",
-    "@atlaskit/flag": "^2.2.0",
+    "@atlaskit/editor-bitbucket": "^2.3.3",
+    "@atlaskit/flag": "^3.0.0",
     "@atlaskit/modal-dialog": "^2.1.2",
-    "@atlaskit/tooltip": "^1.1.0",
-    "@atlaskit/util-readme": "^3.1.0"
+    "@atlaskit/tooltip": "^1.2.0",
+    "@atlaskit/util-readme": "^3.2.1"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

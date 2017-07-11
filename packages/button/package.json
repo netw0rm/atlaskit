@@ -39,8 +39,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/button": "*",
-    "@atlaskit/icon": "^1.0.0",
-    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/icon": "^7.0.1",
+    "@atlaskit/util-readme": "^3.2.1",
     "react-router-dom": "^4.0.0",
     "uid": "^0.0.2"
   },

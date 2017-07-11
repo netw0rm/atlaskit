@@ -27,7 +27,7 @@
   "devDependencies": {
     "@atlaskit/button": "^3.1.0",
     "@atlaskit/logo": "*",
-    "@atlaskit/util-readme": "^3.1.0",
+    "@atlaskit/util-readme": "^3.2.1",
     "@atlaskit/util-shared-styles": "^2.4.0"
   },
   "peerDependencies": {

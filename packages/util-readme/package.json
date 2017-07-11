@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@atlaskit/util-readme": "*",
-    "@atlaskit/util-common-test": "^1.0.0"
+    "@atlaskit/util-common-test": "^2.0.1"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

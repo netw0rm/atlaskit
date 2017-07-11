@@ -40,8 +40,8 @@
   "devDependencies": {
     "@atlaskit/button": "^3.1.0",
     "@atlaskit/spinner": "*",
-    "@atlaskit/util-common-test": "^1.0.0",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-common-test": "^2.0.1",
+    "@atlaskit/util-readme": "^3.2.1"
   },
   "repository": {
     "type": "git",

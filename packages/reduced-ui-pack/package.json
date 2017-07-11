@@ -18,7 +18,7 @@
     "@atlaskit/util-shared-styles": "^2.4.0"
   },
   "peerDependencies": {
-    "@atlaskit/css-reset": "^1.0.0"
+    "@atlaskit/css-reset": "^1.1.4"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -29,7 +29,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/field-text": "^3.0.0",
-    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/util-readme": "^3.2.1",
     "cheerio": "^0.22.0",
     "glob": "^7.1.1",
     "less": "^2.7.1",

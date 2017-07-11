@@ -55,6 +55,6 @@
     "lru-fast": "^0.2.2"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^1.0.0"
+    "@atlaskit/media-test-helpers": "^6.2.0"
   }
 }

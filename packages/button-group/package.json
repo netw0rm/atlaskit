@@ -37,9 +37,9 @@
   "devDependencies": {
     "@atlaskit/button": "^3.1.0",
     "@atlaskit/button-group": "*",
-    "@atlaskit/dropdown-menu": "^1.0.0",
-    "@atlaskit/icon": "^6.5.0",
-    "@atlaskit/util-readme": "^3.0.0"
+    "@atlaskit/dropdown-menu": "^3.0.1",
+    "@atlaskit/icon": "^7.0.1",
+    "@atlaskit/util-readme": "^3.2.1"
   },
   "peerDependencies": {
     "react": "^15.3.2"

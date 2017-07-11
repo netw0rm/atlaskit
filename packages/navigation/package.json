@@ -20,11 +20,11 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^4.0.5",
+    "@atlaskit/avatar": "^4.0.6",
     "@atlaskit/blanket": "^2.0.4",
     "@atlaskit/field-base": "^7.0.1",
-    "@atlaskit/icon": "^7.0.0",
-    "@atlaskit/util-common": "^1.0.0",
+    "@atlaskit/icon": "^7.0.1",
+    "@atlaskit/util-common": "^1.1.4",
     "@atlaskit/util-shared-styles": "^2.4.0",
     "babel-runtime": "^6.11.6",
     "chromatism": "^2.5.8",
@@ -48,7 +48,7 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/badge": "^4.0.5",
+    "@atlaskit/badge": "^4.1.0",
     "@atlaskit/button": "^3.1.0",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/logo": "^3.1.0",
@@ -56,7 +56,7 @@
     "@atlaskit/page": "^4.0.1",
     "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-common-test": "*",
-    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/util-readme": "^3.2.1",
     "karma-sinon-chai": "^1.2.4",
     "lodash.debounce": "^4.0.8",
     "react-lorem-component": "0.11.0",

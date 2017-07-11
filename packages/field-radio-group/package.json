@@ -36,7 +36,7 @@
   "devDependencies": {
     "@atlaskit/button": "^3.1.0",
     "@atlaskit/field-radio-group": "*",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^3.2.1"
   },
   "peerDependencies": {
     "react": "^15.3.2"

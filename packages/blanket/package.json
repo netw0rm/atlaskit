@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@atlaskit/blanket": "*",
-    "@atlaskit/util-readme": "^3.0.0",
+    "@atlaskit/util-readme": "^3.2.1",
     "@atlaskit/button": "^3.1.0"
   },
   "author": "Atlassian Pty Ltd",

@@ -27,8 +27,8 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/tooltip": "^1.0.0",
-    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/tooltip": "^1.2.0",
+    "@atlaskit/util-readme": "^3.2.1",
     "@atlaskit/util-shared-styles": "*",
     "camelcase": "^3.0.0",
     "classnames": "^2.2.5",

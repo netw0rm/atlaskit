@@ -17,11 +17,12 @@ import {
 } from '@atlaskit/media-test-helpers';
 import {MediaItemDetails, ImageResizeMode} from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
+import Slider from '@atlaskit/field-range';
 import {CardView} from '../../src/root/cardView';
 import {CardAppearance, CardStatus, CardDimensions} from '../../src';
 import {openAction, closeAction, deleteAction, actions} from './chapters/utils';
 import {EditableCardOptions, EditableCardContent, SliderWrapper, OptionsWrapper, CardDimensionsWrapper} from './styled';
-import Slider from '@atlaskit/field-range';
+import {defaultImageCardDimensions} from '../../src/utils/cardDimensions';
 
 const appearanceOptions = [
   { value: 'auto', label: 'Auto', defaultSelected: true },
@@ -90,8 +91,8 @@ export const generateStoriesForEditableCards = () => {
         metadata: imageFileDetails,
         dataURI: gifDataUri,
         dimensions: {
-          width: 156,
-          height: 104
+          width: defaultImageCardDimensions.width,
+          height: defaultImageCardDimensions.height
         },
         progress: 0,
         menuActions: actions,

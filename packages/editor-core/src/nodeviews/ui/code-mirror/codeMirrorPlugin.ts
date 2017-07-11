@@ -192,7 +192,7 @@ export default class CodeBlockPlugin  {
           this.selection = selection;
         }
       }
-      this.view.dispatch(tr.scrollIntoView());
+      this.view.dispatch(tr);
     }
   }
 

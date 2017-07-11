@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^35.0.0",
+    "@atlaskit/editor-core": "^37.3.2",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },

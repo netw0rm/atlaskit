@@ -1,6 +1,6 @@
 import rgba from 'rgba-convert';
 
-import * as allExports from '../src';
+import * as allExports from '../../src';
 import Prism from './_Prism';
 
 const tintBase = 'akColorN900';
@@ -18,7 +18,7 @@ describe('exports', () => {
     //
     // If we were to auto-generate this list, then renaming, adding or removing would NOT
     // break any tests and thus not hint the developer at what kind of change he/she is making
-    Object.keys(allExports).sort().should.deep.equal([
+    expect(Object.keys(allExports).sort()).toEqual([
       'akAnimationMixins',
       'akBorderRadius',
       'akCodeFontFamily',
@@ -127,7 +127,7 @@ describe('exports', () => {
   });
 
   it('akTypographyMixins should have well-defined exports', () => {
-    Object.keys(allExports.akTypographyMixins).sort().should.deep.equal([
+    expect(Object.keys(allExports.akTypographyMixins).sort()).toEqual([
       'h100',
       'h200',
       'h300',
@@ -148,7 +148,7 @@ describe('exports', () => {
       .entries(colors)
       .filter(([colorName]) => Prism.isTint(colorName))
       .forEach(([colorName, colorValue]) => {
-        rgba(colorValue).splice(0, 3).should.deep.equal(
+        expect(rgba(colorValue).splice(0, 3)).toEqual(
           neutralBase,
           `${colorName} is not a tint of ${tintBase}`
         );
@@ -156,13 +156,13 @@ describe('exports', () => {
   });
 
   it('should have some exports as numbers', () => {
-    expect(typeof allExports.akGridSizeUnitless).to.equal('number');
-    expect(typeof allExports.akZIndexNavigation).to.equal('number');
-    expect(typeof allExports.akZIndexLayer).to.equal('number');
-    expect(typeof allExports.akZIndexBlanket).to.equal('number');
-    expect(typeof allExports.akZIndexFlag).to.equal('number');
-    expect(typeof allExports.akZIndexCard).to.equal('number');
-    expect(typeof allExports.akZIndexDialog).to.equal('number');
-    expect(typeof allExports.akZIndexModal).to.equal('number');
+    expect(typeof allExports.akGridSizeUnitless).toBe('number');
+    expect(typeof allExports.akZIndexNavigation).toBe('number');
+    expect(typeof allExports.akZIndexLayer).toBe('number');
+    expect(typeof allExports.akZIndexBlanket).toBe('number');
+    expect(typeof allExports.akZIndexFlag).toBe('number');
+    expect(typeof allExports.akZIndexCard).toBe('number');
+    expect(typeof allExports.akZIndexDialog).toBe('number');
+    expect(typeof allExports.akZIndexModal).toBe('number');
   });
 });

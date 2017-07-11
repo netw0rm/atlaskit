@@ -6,7 +6,7 @@ import { omit } from '../utils';
 import { bgActiveColor, bgHoverColor, getStyles, Content, SecondaryText, PrimaryText } from '../styled/AvatarItem';
 import { getProps, getStyledComponent } from '../helpers';
 import { withPseudoState } from '../hoc';
-import type { ComponentType, ElementType, FunctionType, StyledComponentType } from '../types';
+import type { AvatarClickType, ComponentType, ElementType, FunctionType, StyledComponentType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -26,7 +26,7 @@ type Props = {
   /** Change the style to indicate the item is selected. */
   isSelected?: boolean,
   /** Handler to be called on click. */
-  onClick?: ({ event: KeyboardEvent | MouseEvent, item: {} }) => mixed,
+  onClick?: AvatarClickType,
   /** PrimaryText text */
   primaryText?: string,
   /** SecondaryText text */

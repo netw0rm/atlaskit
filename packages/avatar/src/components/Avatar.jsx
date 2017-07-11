@@ -132,7 +132,7 @@ class Avatar extends Component {
     const { appearance, enableTooltip, isHover, onClick, name, size, src, stackIndex } = this.props;
 
     // distill props from context, props, and state
-    const props: {} = getProps(this);
+    const props: AvatarPropTypes = getProps(this);
 
     // provide element type based on props
     const Inner = this.getStyledComponent();
@@ -159,7 +159,17 @@ class Avatar extends Component {
   }
 }
 
+/**
+*  1. Higher order components seem to ignore default properties. Mapping
+*     `appearance` explicity here circumvents the issue.
+*  2. The withPseudoState HOC should remain generic so rather than pass on
+*     `enableTooltip` we map it to `isInteractive`.
+*  3. Handle keyboard/mouse events and pass props to the wrapped component:
+*     - isActive
+*     - isFocus
+*     - isHover
+*/
 export default mapProps({
-  appearance: props => props.appearance || Avatar.defaultProps.appearance, // fix for tests
-  isInteractive: props => props.enableTooltip || Avatar.defaultProps.enableTooltip,
-})(withPseudoState(Avatar));
+  appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
+  isInteractive: props => props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
+})(withPseudoState(Avatar)); // 3

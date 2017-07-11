@@ -12,16 +12,15 @@ import { AVATAR_SIZES } from '../../src/styled/constants';
 
 const busy = 'busy';
 const offline = 'offline';
-const online = 'offline';
+const online = 'online';
 const SIZES = ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge'];
 
-const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+const src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
 describe('Avatar', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Avatar />);
     expect(wrapper).not.toBe(undefined);
-    expect(wrapper.find(AvatarImage).exists()).toBe(true);
   });
 
   describe('size property', () => {
@@ -38,7 +37,7 @@ describe('Avatar', () => {
   describe('name property', () => {
     it('should set the title of the internal span', () => {
       const name = 'John Smith';
-      const wrapper = mount(<Avatar name={name} src={oneByOnePixel} />);
+      const wrapper = mount(<Avatar name={name} src={src} />);
       expect(wrapper.find(AvatarImage).getDOMNode().title).toBe(name);
     });
   });

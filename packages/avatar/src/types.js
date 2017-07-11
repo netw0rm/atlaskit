@@ -13,6 +13,9 @@ export type SizeType = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxl
 export type StatusType = 'approved' | 'declined' | 'locked';
 export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
 
+export type AvatarClickType = ({ event: KeyboardEvent | MouseEvent, item: {} }) => void;
+
+/* eslint-disable react/no-unused-prop-types */
 export type AvatarPropTypes = {
   /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
   can be used for 'container' objects. */
@@ -40,7 +43,7 @@ export type AvatarPropTypes = {
   content if the image fails to load. */
   name?: string,
   /** Handler to be called on click. */
-  onClick?: ({ event: MouseEvent, info: {} }) => void,
+  onClick?: AvatarClickType,
   /** Indicates a user's online status by showing a small icon on the avatar.
   Refer to presence values on the Presence component.
   Alternatively accepts any React element. For best results, it is recommended to
@@ -60,3 +63,4 @@ export type AvatarPropTypes = {
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self',
 };
+/* eslint-enable react/no-unused-prop-types */

@@ -5,7 +5,7 @@ import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
 import { DEFAULT_BORDER_COLOR } from '../styled/constants';
 import MoreIndicator from '../components/MoreIndicator';
-import type { ComponentType, FunctionType, SizeType } from '../types';
+import type { AvatarClickType, AvatarPropTypes, ComponentType, FunctionType, SizeType } from '../types';
 
 const GROUP_COMPONENT = {
   grid: Grid,
@@ -16,12 +16,6 @@ const MAX_COUNT = {
   stack: 5,
 };
 
-type DataType = [{
-  href?: string,
-  name?: string,
-  src?: string,
-  target?: '_blank' | '_self',
-}];
 type Props = {
   /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
   can be used for 'container' objects. */
@@ -31,12 +25,12 @@ type Props = {
   /** Typically the background color that the avatar is presented on.
   Accepts any color argument that the CSS border-color property accepts. */
   borderColor?: string,
-  /** The array of avatar data used fed to the `avatar` component */
-  data: DataType,
+  /** Array of avatar data passed to each `avatar` component */
+  data: Array<AvatarPropTypes>,
   /** The maximum number of avatars allowed in the grid */
   maxCount?: number,
   /** Handle the click event on the avatar item */
-  onAvatarClick?: ({ event: {}, item: {} }) => mixed,
+  onAvatarClick?: AvatarClickType,
   /** Take control of the click event on the more indicator. This will cancel
   the default dropdown behaviour. */
   onMoreClick?: FunctionType,

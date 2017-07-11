@@ -4,18 +4,14 @@ import AvatarImage, { DefaultImage } from '../../src/components/AvatarImage';
 
 const src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 const imgSpan = '[role="img"]';
-const gimg = global.Image;
 
 describe('Avatar', () =>
   describe('Image', () => {
-    before(() => (global.Image = class Image {}));
-    after(() => (global.Image = gimg));
-
-    it('should render an img when the src is set"', () => {
+    it('should render an image span when the src is set"', () => {
       const wrapper = mount(<AvatarImage src={src} />);
       expect(wrapper.find(imgSpan).exists()).toBe(true);
     });
-    it('should not render an img when the src is not set"', () =>
+    it('should not render an image span when the src is not set"', () =>
       expect(shallow(<AvatarImage />).find(imgSpan).exists()).toBe(false)
     );
 
@@ -59,56 +55,58 @@ describe('Avatar', () =>
         let wrapper;
         beforeEach(() => (wrapper = mount(<AvatarImage src={src} />)));
 
-        it('should set the src property on the internal img', () => {
-          expect(wrapper.prop('src')).to.equal(src);
-          expect(wrapper.find(imgSpan).node.style.backgroundImage).to.equal(`url(${src})`);
+        it('should set the background image on the internal span to src', () => {
+          expect(wrapper.prop('src')).toBe(src);
+          wrapper.find('img').simulate('load');
+          const span = wrapper.find(imgSpan).getDOMNode();
+          expect(span.style.backgroundImage).toBe(`url(${src})`);
         });
 
-        it('should render an img tag when src is set', () =>
-          expect(wrapper.find(imgSpan).length).to.be.above(0)
+        it('should render an image span when src is set', () =>
+          expect(wrapper.find(imgSpan).exists()).toBe(true)
         );
 
         it('should set isLoading=false when a same src is provided as the src already loaded', () => {
-          expect(wrapper.state('isLoading')).to.equal(true);
+          expect(wrapper.state('isLoading')).toBe(true);
           wrapper.find('img').simulate('load');
-          expect(wrapper.state('isLoading')).to.equal(false);
+          expect(wrapper.state('isLoading')).toBe(false);
           wrapper.setProps({ src });
-          expect(wrapper.state('isLoading')).to.equal(false);
-          expect(wrapper.state('hasError')).to.equal(false);
+          expect(wrapper.state('isLoading')).toBe(false);
+          expect(wrapper.state('hasError')).toBe(false);
         });
 
         it('should set isLoading=true when a new src is provided', () => {
           wrapper.setProps({ src });
-          expect(wrapper.state('isLoading')).to.equal(true);
-          expect(wrapper.state('hasError')).to.equal(false);
+          expect(wrapper.state('isLoading')).toBe(true);
+          expect(wrapper.state('hasError')).toBe(false);
         });
 
         it('should set isLoading=false & hasError=false when src is loaded without errors', () => {
           wrapper.find('img').simulate('load');
-          expect(wrapper.state('isLoading')).to.equal(false);
-          expect(wrapper.state('hasError')).to.equal(false);
+          expect(wrapper.state('isLoading')).toBe(false);
+          expect(wrapper.state('hasError')).toBe(false);
         });
 
         it('should set isLoading=false & hasError=true when a new invalid src is provided', () => {
           wrapper.find('img').simulate('error');
-          expect(wrapper.state('isLoading')).to.equal(false);
-          expect(wrapper.state('hasError')).to.equal(true);
+          expect(wrapper.state('isLoading')).toBe(false);
+          expect(wrapper.state('hasError')).toBe(true);
         });
 
         it('should NOT render an img tag when src is NOT set', () => {
           wrapper = mount(<AvatarImage />);
-          expect(wrapper.find('img').exists()).to.equal(false);
+          expect(wrapper.find('img').exists()).toBe(false);
         });
       });
 
       describe('set after mount time', () => {
         it('should load image successfully when src set', () => {
           const wrapper = mount(<AvatarImage />);
-          expect(wrapper.state('isLoading')).to.equal(false);
+          expect(wrapper.state('isLoading')).toBe(false);
           wrapper.setProps({ src });
-          expect(wrapper.state('isLoading')).to.equal(true);
+          expect(wrapper.state('isLoading')).toBe(true);
           wrapper.find('img').simulate('load');
-          expect(wrapper.state('isLoading')).to.equal(false);
+          expect(wrapper.state('isLoading')).toBe(false);
         });
       });
     });

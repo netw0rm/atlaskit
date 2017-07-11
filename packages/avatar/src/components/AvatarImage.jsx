@@ -73,6 +73,7 @@ export default class AvatarImage extends PureComponent {
     const { alt, src, ...props } = this.props;
     const { hasError, isLoading } = this.state;
     const showDefault = !isLoading && (!src || hasError);
+    const spanStyle = src && !isLoading ? { backgroundImage: `url(${src})` } : null;
 
     return showDefault ? (
       <DefaultImage
@@ -85,7 +86,7 @@ export default class AvatarImage extends PureComponent {
         aria-label={alt}
         isLoading={isLoading}
         role="img"
-        style={src ? { backgroundImage: `url(${src})` } : null}
+        style={spanStyle}
         title={alt}
         {...props}
       >

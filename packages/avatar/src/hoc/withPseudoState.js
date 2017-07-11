@@ -120,8 +120,8 @@ export default function withPseudoState(WrappedComponent: ComponentType) {
       return (
         <WrappedComponent
           ref={(r: ElementType) => (this.component = r)}
-          {...props}
           {...this.state}
+          {...props}
         />
       );
     }

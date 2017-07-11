@@ -16,7 +16,7 @@ import { AvatarCol, AvatarRow, DivPresence, Note, Wrapper } from './styled';
 import { AVATAR_SIZES } from '../src/styled/constants';
 
 const avatarSource = 'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';
-const tickUrl = require('url-loader!./tick.svg');
+const { default: TickSvg } = require('./tick.svg');
 
 const devs = [
   { title: 'Alexander Reardon', subtitle: 'ace ace ace ace ace ace ace ace ace ace ace', src: 'https://avatar-cdn.atlassian.com/ceb2ee0a81dc0bb0b6f2892c66181b51?by=hash' },
@@ -476,7 +476,7 @@ storiesOf(name, module)
       <h5>Image</h5>
       <Note>Using an image as the presence</Note>
       <AllAvatarSizes
-        presence={<img role="presentation" src={tickUrl} style={{ height: '100%', width: '100%' }} />}
+        presence={<TickSvg role="presentation" style={{ height: '100%', width: '100%' }} />}
       />
       <HR />
       <h5>Div on Circle</h5>

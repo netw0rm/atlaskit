@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { gridSize } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
 const NavigationItemAction = styled.div`
@@ -7,9 +6,7 @@ const NavigationItemAction = styled.div`
   display: flex;
   height: 100%;
   justify-content: center;
-  position: absolute;
-  right: ${gridSize}px;
-  top: 0;
+  flex-shrink: 0;
 
   ${whenCollapsed`
     opacity: 0;

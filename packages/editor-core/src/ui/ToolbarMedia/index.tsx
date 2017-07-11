@@ -1,11 +1,13 @@
-import ImageIcon from '@atlaskit/icon/glyph/editor/image';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import ImageIcon from '@atlaskit/icon/glyph/editor/image';
+import { EditorView, PluginKey } from '../../prosemirror';
 import { MediaPluginState } from '../../plugins/media';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
-  pluginState: MediaPluginState;
+  editorView: EditorView;
+  pluginKey: PluginKey;
 }
 
 export interface State {
@@ -14,13 +16,21 @@ export interface State {
 
 export default class ToolbarMedia extends PureComponent<Props, State> {
   state: State = {disabled: false};
+  pluginState: MediaPluginState;
+
+  constructor(props) {
+    super(props);
+
+    const { editorView, pluginKey } = this.props;
+    this.pluginState = pluginKey.getState(editorView.state);
+  }
 
   componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
+    this.pluginState.subscribe(this.handlePluginStateChange);
   }
 
   componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+    this.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
   render() {
@@ -44,6 +54,6 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
   }
 
   private handleClickMediaButton = () => {
-    this.props.pluginState.showMediaPicker();
+    this.pluginState.showMediaPicker();
   }
 }

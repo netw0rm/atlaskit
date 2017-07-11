@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import styled from 'styled-components';
 import ProviderFactory from '../../../providerFactory';
+
+// tslint:disable-next-line:variable-name
+const PluginsComponentsWrapper = styled.div`
+  display: flex;
+`;
 
 export interface Props {
   editorView?: any;
@@ -16,8 +22,8 @@ export default class PluginSlot extends PureComponent<Props, any> {
     }
 
     return (
-      <div>{items.map((component, key) =>
-        React.cloneElement(component(editorView, providerFactory), { key }))}</div>
+      <PluginsComponentsWrapper>{items.map((component, key) =>
+        React.cloneElement(component(editorView, providerFactory), { key }))}</PluginsComponentsWrapper>
     );
   }
 }

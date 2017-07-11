@@ -25,6 +25,7 @@ module.exports = {
 
   testRegex: '\\/jest\\/unit\\/[^_].*\\.(j|t)sx?$',
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  setupFiles: [`${testSetupDir}/jestSetup.js`],
 
   transform: {
     '^.+\\.jsx?$': 'babel-jest',

@@ -120,11 +120,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
         </DropdownMenu>
       );
     } else {
-      // span is a flex element
       return (
-        <span>
-          <div>{toolbarButtonFactory(true)}</div>
-        </span>
+        <div>{toolbarButtonFactory(true)}</div>
       );
     }
   }

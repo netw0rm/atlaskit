@@ -300,7 +300,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { emojiProvider, mentionSource, imageUploadHandler } = this.props;
+      const { imageUploadHandler } = this.props;
       const bitbucketKeymap = {
         'Mod-Enter': this.handleSave,
         'Esc'() { } // Disable Esc handler
@@ -310,8 +310,8 @@ export default class Editor extends PureComponent<Props, State> {
           schema,
           doc: parseHtml(this.props.defaultValue || ''),
           plugins: [
-            ...mentionsPlugins(schema), // mentions and emoji needs to be first
-            ...emojisPlugins(schema),
+            ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
+            ...emojisPlugins(schema, this.providerFactory),
             ...asciiEmojiPlugins(schema, this.props.emojiProvider),
             ...clearFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
@@ -361,14 +361,6 @@ export default class Editor extends PureComponent<Props, State> {
           return transformHtml(html).innerHTML;
         }
       });
-
-      if (mentionSource) {
-        mentionsStateKey.getState(editorState).subscribeToFactory(this.providerFactory);
-      }
-
-      if (emojiProvider) {
-        emojisStateKey.getState(editorState).subscribeToFactory(this.providerFactory);
-      }
 
       this.setState({ editorView });
 

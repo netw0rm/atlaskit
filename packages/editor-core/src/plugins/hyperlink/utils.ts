@@ -1,5 +1,5 @@
 import { EMAIL_REGEX, URL_REGEX_G, EMAIL_REGEX_G } from './regex';
-import { Slice, Fragment, Node } from '../../prosemirror';
+import { Slice, Fragment, Node, Schema } from '../../prosemirror';
 
 export function isEmail(url: string): boolean {
   return EMAIL_REGEX.test(url);
@@ -30,7 +30,7 @@ export function normalizeUrl(url: string) {
   return `http://${url}`;
 }
 
-export function linkifyText(schema, text: string): Slice|undefined {
+export function linkifyText(schema: Schema<any, any>, text: string): Slice|undefined {
   const matches: any[] = findLinkMatches(text);
   if (matches.length === 0) {
     return undefined;
@@ -52,13 +52,20 @@ export function linkifyText(schema, text: string): Slice|undefined {
   return new Slice(combinedFragment, 0, 0);
 }
 
-export function linkifyContent(slice: Slice): Slice {
-  return new Slice(linkinfyFragment(slice.content), slice.openStart, slice.openEnd);
+export function linkifyContent(schema: Schema<any, any>, slice: Slice): Slice | undefined {
+  const fragment = linkinfyFragment(schema, slice.content);
+  if (fragment) {
+    return new Slice(fragment, slice.openStart, slice.openEnd);
+  }
 }
 
-function linkinfyFragment(fragment: Fragment): Fragment {
+function linkinfyFragment(schema: Schema<any, any>, fragment: Fragment): Fragment | undefined {
   const linkified: Node[] = [];
-  fragment.forEach((child: Node) => {
+  for (let i = 0, len = fragment.childCount; i < len; i++) {
+    const child: Node = fragment.child(i);
+    if (child.type === schema.nodes.table) {
+      return;
+    }
     if (child.isText) {
       const text = child.textContent as string;
       const link = child.type.schema.marks['link'];
@@ -77,9 +84,9 @@ function linkinfyFragment(fragment: Fragment): Fragment {
         linkified.push(child.cut(pos));
       }
     } else {
-      linkified.push(child.copy(linkinfyFragment(child.content)));
+      linkified.push(child.copy(linkinfyFragment(schema, child.content)));
     }
-  });
+  }
   return Fragment.fromArray(linkified);
 }
 

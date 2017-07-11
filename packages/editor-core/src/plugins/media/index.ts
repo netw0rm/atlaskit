@@ -492,8 +492,8 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  const plugin = new Plugin({
+export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  return new Plugin({
     state: {
       init(config, state) {
         return new MediaPluginState(state, options);
@@ -532,8 +532,10 @@ const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
       }
     }
   });
+};
 
-  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  return [createPlugin(schema, options), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

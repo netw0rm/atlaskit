@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { describe, it, afterEach, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
@@ -54,7 +54,7 @@ const callbacksCalled = (callbacks: Callbacks) => ({
 const whereAnyCallbacksCalled = (callbacks: Callbacks) =>
   !callbacksCalled(callbacks)();
 
-class Child extends PureComponent {
+class Child extends Component {
   props: {
     dragHandleProps?: Provided,
   }

@@ -75,6 +75,18 @@ describe(name, () => {
       expect(emptyView.length).toBe(0);
       expect(body.length).toBe(0);
     });
+    it('should not render any text in the table when rows prop is an empty array', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          rows={[]}
+          head={head}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const table = wrapper.find('table');
+      expect(table.nodes[0].childNodes.length).toBe(1);
+      expect(header.length).toBe(1);
+    });
     it('should render TableHead when items length is 0 and render EmptyBody if emptyView prop is provided', () => {
       const wrapper = mount(
         <DynamicTableStateless

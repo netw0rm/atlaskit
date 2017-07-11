@@ -9,7 +9,9 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Comment"
+    "name": "Comment",
+    "pattern": true
+
   },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/comment; } || ../../node_modules/.bin/not-in-publish",

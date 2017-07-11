@@ -48,7 +48,6 @@ export class MediaPluginState {
   public pickers: PickerFacade[] = [];
   public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
-  public keymapHandler: Function;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;

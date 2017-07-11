@@ -92,23 +92,26 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
   }
 
   @analytics('atlassian.editor.format.strong.button')
-  private handleBoldClick = () => {
+  private handleBoldClick = (): boolean => {
     if (!this.state.boldDisabled) {
-      this.props.pluginState.toggleStrong(this.props.editorView);
+      return this.props.pluginState.toggleStrong(this.props.editorView);
     }
+    return false;
   }
 
   @analytics('atlassian.editor.format.em.button')
-  private handleItalicClick = () => {
+  private handleItalicClick = (): boolean => {
     if (!this.state.italicDisabled) {
-      this.props.pluginState.toggleEm(this.props.editorView);
+      return this.props.pluginState.toggleEm(this.props.editorView);
     }
+    return false;
   }
 
   @analytics('atlassian.editor.format.underline.button')
-  private handleUnderlineClick = () => {
+  private handleUnderlineClick = (): boolean => {
     if (!this.state.underlineDisabled) {
-      this.props.pluginState.toggleUnderline(this.props.editorView);
+      return this.props.pluginState.toggleUnderline(this.props.editorView);
     }
+    return false;
   }
 }

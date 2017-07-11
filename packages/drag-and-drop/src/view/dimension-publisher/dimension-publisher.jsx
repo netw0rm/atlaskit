@@ -1,5 +1,5 @@
 // @flow
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import invariant from 'invariant';
 import getScrollPosition from '../get-scroll-position';
 import getDimension from '../../state/get-dimension';
@@ -8,7 +8,7 @@ import type { Margin } from '../../state/get-dimension';
 import type { Dimension } from '../../types';
 import type { Props } from './dimension-publisher-types';
 
-export default class DimensionPublisher extends PureComponent {
+export default class DimensionPublisher extends Component {
   /* eslint-disable react/sort-comp */
   props: Props
   /* eslint-enable */

@@ -10,7 +10,6 @@ export default class QuickSearch extends PureComponent {
     /* Search pass-through props */
     isLoading: PropTypes.bool,
     onSearchChange: PropTypes.func.isRequired,
-    onSearchClear: PropTypes.func,
     onSearchKeyDown: PropTypes.func,
     placeholder: PropTypes.string,
     value: PropTypes.string,
@@ -23,7 +22,6 @@ export default class QuickSearch extends PureComponent {
 
   static defaultProps = {
     isLoading: false,
-    onSearchClear: noOp,
     onSearchKeyDown: noOp,
     placeholder: 'Search',
     results: [],
@@ -36,7 +34,6 @@ export default class QuickSearch extends PureComponent {
         isLoading={this.props.isLoading}
         onChange={this.props.onSearchChange}
         onKeyDown={this.props.onSearchKeyDown}
-        onSearchClear={this.props.onSearchClear}
         placeholder={this.props.placeholder}
         value={this.props.value}
       >

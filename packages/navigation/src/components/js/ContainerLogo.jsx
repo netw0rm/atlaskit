@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
 import ContainerLogoStyled from '../styled/ContainerLogo';
+import type { ReactElement } from '../../types';
 
 export default class ContainerLogo extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-  }
+  props: {|
+    /** Elements to be wrapped with the Logo styling. */
+    children: ReactElement,
+  |}
 
   render() {
     return (
@@ -15,4 +17,3 @@ export default class ContainerLogo extends PureComponent {
     );
   }
 }
-

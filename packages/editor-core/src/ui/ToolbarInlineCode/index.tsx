@@ -40,10 +40,11 @@ export default class ToolbarInlineCode extends PureComponent<Props, State> {
   }
 
   @analytics('atlassian.editor.format.code.toggle')
-  private handleOnClick = () => {
+  private handleOnClick = (): boolean => {
     if (!this.state.isDisabled) {
-      this.props.pluginState.toggleCode(this.props.editorView);
+      return this.props.pluginState.toggleCode(this.props.editorView);
     }
+    return false;
   }
 
   render() {

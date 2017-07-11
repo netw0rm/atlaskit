@@ -353,7 +353,7 @@ export default class Editor extends PureComponent<Props, State> {
         doc: parse(this.props.defaultValue || '', schema),
         plugins: [
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
-          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
+          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>, this.providerFactory) : []),
           ...clearFormattingPlugins(schema as Schema<any, any>),
           ...rulePlugins(schema as Schema<any, any>),
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
@@ -398,10 +398,6 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       analyticsService.trackEvent('atlassian.editor.start');
-
-      if (isSchemaWithMentions(schema)) {
-        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      }
 
       this.setState({ editorView }, this.focus);
     } else {

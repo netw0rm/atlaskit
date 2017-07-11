@@ -10,7 +10,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default (hooks: Hooks) => createStore(
       reducer,
-      // TODO: disable in production
       composeEnhancers(
         applyMiddleware(
           thunk,

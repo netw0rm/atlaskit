@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import {CONTAINER_SIZE, ImageNavigator} from '../../../src/image-navigator';
 import {ImageUploader} from '../../../src/image-navigator/styled';
 import {ImageCropper} from '../../../src/image-cropper';
-import {Slider} from '../../../src/slider';
+import Slider from '@atlaskit/field-range';
 import {createMouseEvent, smallImage} from '@atlaskit/media-test-helpers';
 
 describe('Image navigator', () => {

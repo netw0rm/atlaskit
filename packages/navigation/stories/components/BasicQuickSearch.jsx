@@ -235,7 +235,6 @@ export default class BasicQuickSearch extends PureComponent {
       <QuickSearchComp
         isLoading={this.state.isLoading}
         onSearchChange={({ target }) => { this.search(target.value); }}
-        onSearchClear={() => { this.search(''); }}
         value={this.state.query}
 
         onResultClick={onClickAction}

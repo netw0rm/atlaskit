@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
 import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
 import NavigationItemGroupInner from '../styled/NavigationItemGroupInner';
@@ -6,20 +6,29 @@ import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator
 import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
 import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
 import { WithGroupTheme } from '../../theme/util';
+import type { ReactElement } from '../../types';
+
+type Props = {|
+  /** React element to be displayed to the right of the group header. */
+  action?: ReactElement,
+  /** React Elements to be displayed within the group. This should generally be
+  a collection of NavigationItems. */
+  children: ReactElement,
+  /** Set whether the text should be compacted. */
+  isCompact?: boolean,
+  /** Set whether a separator should appear above the group. */
+  hasSeparator?: boolean,
+  /** Text to appear as heading above group. Will be auto-capitalised. */
+  title?: string,
+|};
 
 export default class NavigationItemGroup extends PureComponent {
-  static propTypes = {
-    action: PropTypes.node,
-    children: PropTypes.node,
-    isCompact: PropTypes.bool,
-    hasSeparator: PropTypes.bool,
-    title: PropTypes.string,
-  }
-
   static defaultProps = {
     isCompact: false,
     hasSeparator: false,
   }
+
+  props: Props
 
   render() {
     const {
@@ -27,6 +36,7 @@ export default class NavigationItemGroup extends PureComponent {
       action,
       isCompact,
       hasSeparator,
+      children,
     } = this.props;
 
     const wrappedTitle = title ?
@@ -35,7 +45,7 @@ export default class NavigationItemGroup extends PureComponent {
 
     const wrappedAction = action ?
       (<NavigationItemGroupAction>
-        {this.props.action}
+        {action}
       </NavigationItemGroupAction>)
       : null;
 
@@ -58,7 +68,7 @@ export default class NavigationItemGroup extends PureComponent {
           <NavigationItemGroupInner hasHeaderContent={(separator || header)}>
             {separator}
             {header}
-            {this.props.children}
+            {children}
           </NavigationItemGroupInner>
         </div>
       </WithGroupTheme>

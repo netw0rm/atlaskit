@@ -1,41 +1,41 @@
+// @flow
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { PersonResult, RoomResult } from './results';
 import { AkNavigationItemGroup } from '../../../src';
 
 /**
  * Enumerate the result types available to SearchResults
  */
+
 const availableResultTypes = {
   person: PersonResult,
   room: RoomResult,
 };
 
-/**
- * From the perspective of SearchResults, result items consist only of a unique id and result type
- */
-const resultPropType = {
-  id: PropTypes.string,
-  type: PropTypes.oneOf(Object.keys(availableResultTypes)),
-};
+type ResultShape = {|
+  id: string,
+  type: 'person' | 'room',
+|}
 
-export const resultGroupPropType = {
-  items: PropTypes.arrayOf(PropTypes.shape(resultPropType)),
-  title: PropTypes.string,
-};
+type ResultGroup = {|
+  items: Array<ResultShape>,
+  title: string,
+|}
+
+type Props = {|
+  results: Array<ResultGroup>,
+  selectedItemId: number,
+  onClick: () => null,
+|}
 
 export default class SearchResults extends PureComponent {
-  static propTypes = {
-    onClick: PropTypes.func,
-    results: PropTypes.arrayOf(PropTypes.shape(resultGroupPropType)),
-    selectedItemId: PropTypes.string,
-  }
-
   static defaultProps = {
     onClick: () => {},
     results: [],
     selectedItemId: null,
   }
+
+  props: Props
 
   renderResultItem = (props) => {
     const Result = availableResultTypes[props.type];

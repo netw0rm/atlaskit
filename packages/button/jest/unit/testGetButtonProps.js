@@ -34,6 +34,7 @@ describe('getButtonProps', () => {
       'isSelected',
       'spacing',
       'theme',
+      'fit',
     ]));
   });
 

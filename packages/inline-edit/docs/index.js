@@ -65,5 +65,4 @@ export const examples = [
     Component: StatelessExample,
     src: statelessExampleSrc,
   },
-
 ];

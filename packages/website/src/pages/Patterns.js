@@ -17,10 +17,10 @@ import Message from '@atlaskit/inline-message';
 import Table from '@atlaskit/dynamic-table';
 
 import { Heading, Intro, Section } from '../components/Type';
-import components from '../data';
+import packages from '../data';
 import { MOBILE_QUERY } from '../../constants';
 
-const componentKeys = Object.keys(components);
+const packageKeys = Object.keys(packages);
 
 const head = {
   cells: [
@@ -56,7 +56,7 @@ const head = {
 
 export default class Components extends PureComponent {
   static propTypes = {
-    components: PropTypes.arrayOf(PropTypes.object),
+    packages: PropTypes.arrayOf(PropTypes.object),
     header: PropTypes.node,
   }
 
@@ -122,19 +122,22 @@ export default class Components extends PureComponent {
     <TableWrapper>
       <Table
         head={head}
-        rows={componentKeys.map(key => this.renderRow(components[key]))}
+        rows={
+          packageKeys.filter(key => packages[key].isPattern)
+          .map(key => this.renderRow(packages[key]))
+        }
         isFixedSize
       />
     </TableWrapper>
   );
 
   renderMobile = () => (
-    <div>{componentKeys.map((key) => {
-      const component = components[key];
+    <div>{packageKeys.map((key) => {
+      const component = packages[key];
       const { description, name, version } = component;
 
       return (
-        <RowButton to={`/components/${key}`} key={key}>
+        <RowButton to={`/patterns/${key}`} key={key}>
           <RowButtonHeader>
             <RowButtonTitle>{name}</RowButtonTitle>
             <div>{version}</div>
@@ -154,11 +157,11 @@ export default class Components extends PureComponent {
 
     return (
       <Wrapper>
-        <Helmet title="Components" />
-        <Heading>Components</Heading>
+        <Helmet title="Patterns" />
+        <Heading>Patterns</Heading>
         <Intro>
-          These React components will help you
-          build Atlassian cloud applications and add-ons.
+          These packages are designed for complex use-cases, exporting multiple
+          composable components.
         </Intro>
         <Section>
           <Header />

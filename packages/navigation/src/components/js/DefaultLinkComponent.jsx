@@ -1,14 +1,17 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
+import type { ReactElement } from '../../types';
+
+type Props = {|
+  children: ReactElement,
+  className?: string,
+  href: string,
+  onClick?: () => mixed,
+  onMouseDown?: () => mixed,
+|}
 
 export default class DefaultLinkComponent extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    href: PropTypes.string,
-    onClick: PropTypes.func,
-    onMouseDown: PropTypes.func,
-  }
+  props: Props
 
   render() {
     const {

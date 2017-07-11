@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import Drawer from '../Drawer';
 import { searchIconOffset } from '../../../shared-variables';

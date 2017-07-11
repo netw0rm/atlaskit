@@ -16,11 +16,18 @@ const components = {${components.map(component => `
     name: '${component.name}',
     packageName: '${component.pkg.name}',
     maintainers: ${JSON.stringify(component.pkg.maintainers || [])},
-    isPublished: '$component.isPublished',
+    isPublished: '${component.isPublished}',
     publishedDate: '${component.lastPublishedOn}',
     version: '${component.pkg.version}',
     versions: [${component.versions.map(v => `'${v}'`).join(', ')}],
     storybooks: [${component.storybooks.map(v => `'${v}'`).join(', ')}],
+    isPattern: ${!!component.isPattern},
+    ${component.nestedDocs
+      ? `components: {
+        ${component.props.map(({ name }) => `${name}: require('../../${component.key}/docs/components/${name}')`)}
+      },`
+      : ''
+    }
   },
 `).join('')}};
 

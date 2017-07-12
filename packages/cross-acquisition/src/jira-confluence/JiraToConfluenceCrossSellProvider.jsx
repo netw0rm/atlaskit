@@ -3,8 +3,8 @@ import { ConfluenceLogo } from '@atlaskit/logo';
 import { CrossSellProvider } from '../common/components/CrossSellProvider';
 
 import isUserTrusted from './isUserTrusted';
-import isProductInstalledOrActivating from './isProductInstalledOrActivating';
-import hasProductBeenEvaluated from './hasProductBeenEvaluated';
+import isConfluenceInstalledOrActivating from './isConfluenceInstalledOrActivating';
+import hasConfluenceBeenEvaluated from './hasConfluenceBeenEvaluated';
 import requestTrialAccess from './requestTrialAccess';
 import requestTrialAccessWithNote from './requestTrialAccessWithNote';
 import requestTrialAccessWithoutNote from './requestTrialAccessWithoutNote';
@@ -78,8 +78,8 @@ export default class MockConfluenceCrossSellProvider extends Component {
       },
       canCurrentUserAddProduct: isUserTrusted,
       canCurrentUserGrantAccessToProducts: isUserTrusted,
-      isProductInstalledOrActivating,
-      hasProductBeenEvaluated,
+      isProductInstalledOrActivating: isConfluenceInstalledOrActivating,
+      hasProductBeenEvaluated: hasConfluenceBeenEvaluated,
 
       requestTrialAccess,
       requestTrialAccessWithNote,

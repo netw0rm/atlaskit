@@ -42,8 +42,8 @@ pipelines:
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce
             - ./build/bin/release.restart.last.stopped.pipeline.js
-          caches:
-            - node
+          # caches:
+            # - node
     invalidate-atlaskit-cache:
       - step:
           script:
@@ -72,6 +72,6 @@ pipelines:
           - yarn run test/browserstack
           - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"
-        caches:
-          - node
+        # caches:
+          # - node
 

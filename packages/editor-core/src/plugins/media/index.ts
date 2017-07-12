@@ -30,6 +30,7 @@ import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
+import { handleMediaNodeRemoval } from './media-common';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -250,7 +251,16 @@ export class MediaPluginState {
    */
   handleMediaNodeRemove = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
     this.setNodeSelection(getPos());
-    this.handleMediaNodeRemoval(node, getPos, true);
+    const { id } = node.attrs;
+    const status = this.getMediaNodeStateStatus(id);
+
+    switch (status) {
+      case 'uploading':
+      case 'processing':
+        this.pickers.forEach(picker => picker.cancel(id));
+    }
+
+    handleMediaNodeRemoval(this.view, node, getPos, true);
   }
 
   private setNodeSelection = (pos: number) => {
@@ -272,9 +282,16 @@ export class MediaPluginState {
     if (!mediaNodeWithPos) {
       return;
     }
+    const status = this.getMediaNodeStateStatus(id);
+
+    switch (status) {
+      case 'uploading':
+      case 'processing':
+        this.pickers.forEach(picker => picker.cancel(id));
+    }
 
     const { node, getPos } = mediaNodeWithPos;
-    this.handleMediaNodeRemoval(node, getPos, false);
+    handleMediaNodeRemoval(this.view, node, getPos, false);
   }
 
   /**
@@ -377,44 +394,14 @@ export class MediaPluginState {
     return this.mediaProvider && this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
   }
 
-  private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
-    const { id } = node.attrs;
-    const status = this.getMediaNodeStateStatus(id);
-    const nodePos = getPos() || this.findMediaNode(id)!.getPos();
-
-    switch (status) {
-      case 'uploading':
-      case 'processing':
-        this.pickers.forEach(picker => picker.cancel(id));
-    }
-
-    if (!activeUserAction) {
-      return;
-    }
-
-    this.removeMediaNodeById(id);
-
-    this.setSelectionAfterRemoval(nodePos);
-  }
-
-  private setSelectionAfterRemoval(currentPos: number): void {
-    const { state } = this.view;
-    const { doc } = state;
-    const $previousMediaNodePos = doc.resolve(currentPos - 1);
-    const previousMediaNode = $previousMediaNodePos.nodeAfter;
-
-    // Only set selection to previous media node if there is one
-    // otherwise, let prosemirror handle with default behaviour.
-    if (previousMediaNode) {
-      this.setNodeSelection($previousMediaNodePos.pos);
-    }
-  }
-
   private handleMediaState = (state: MediaState) => {
     switch (state.status) {
       case 'error':
         // TODO: we would like better error handling and retry support here.
-        this.removeMediaNodeById(state.id);
+        const mediaNodeWithPos = this.findMediaNode(state.id);
+        if (mediaNodeWithPos) {
+          handleMediaNodeRemoval(this.view, mediaNodeWithPos.node, mediaNodeWithPos.getPos, true);
+        }
 
         const { uploadErrorHandler } = this.options;
 
@@ -476,37 +463,6 @@ export class MediaPluginState {
   private isMediaNodeSelection() {
     const { selection, schema } = this.view.state;
     return selection instanceof NodeSelection && selection.node.type === schema.nodes.media;
-  }
-
-  /**
-   * Called when:
-   * 1) user wants to delete the node when is hasn't been finalized (not ready) from UI
-   * 2) when upload process finished with "error" status
-   * In both cases we just delete the PM node from the document
-   */
-  private removeMediaNodeById = (id: string) => {
-    const { view } = this;
-    if (!view) {
-      return;
-    }
-
-    const mediaNodeWithPos = this.findMediaNode(id);
-    if (!mediaNodeWithPos) {
-      return;
-    }
-
-    const { node, getPos } = mediaNodeWithPos;
-    const nodePos = getPos();
-    const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
-
-    if (this.isTemporaryFile(id)) {
-      tr.setMeta('addToHistory', false);
-    }
-    view.dispatch(tr);
-  }
-
-  private isTemporaryFile = (id: string): boolean => {
-    return id.indexOf('temporary:') === 0;
   }
 
   /**

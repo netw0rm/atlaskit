@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import getDimension from '../../../src/state/get-dimension';
 // eslint-disable-next-line no-duplicate-imports

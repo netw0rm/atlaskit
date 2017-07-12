@@ -1,7 +1,6 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
@@ -25,7 +24,7 @@ import type {
   TypeId,
 } from '../../../src/types';
 import getDimension from '../../utils/get-dimension-util';
-import withContextOptions from '../../utils/with-context-options';
+import getContextOptions from '../../utils/get-context-options';
 import { dispatchWindowMouseEvent, mouseEvent } from '../../utils/user-input-util';
 
 class Item extends Component {
@@ -140,7 +139,7 @@ const mountDraggable = ({
       <WrappedComponent provided={provided} snapshot={snapshot} />
       )}
   </Draggable>
-, withContextOptions);
+, getContextOptions());
 
 const mouseDown = mouseEvent.bind(null, 'mousedown');
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');

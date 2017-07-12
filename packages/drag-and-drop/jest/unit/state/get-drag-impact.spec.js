@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import getDimension from '../../utils/get-dimension-util';
 import getDragImpact from '../../../src/state/get-drag-impact';

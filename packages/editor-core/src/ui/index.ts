@@ -14,4 +14,3 @@ export { default as ToolbarHyperlink } from './ToolbarHyperlink';
 export { default as ToolbarLists } from './ToolbarLists';
 export { default as ToolbarTextFormatting } from './ToolbarTextFormatting';
 export { default as ToolbarMedia } from './ToolbarMedia';
-export { default as Renderer } from './Renderer';

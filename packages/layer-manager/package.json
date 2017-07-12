@@ -8,6 +8,9 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
+  "ak:component": {
+    "name": "Layer Manager"
+  },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/layer-manager; } || ../../node_modules/.bin/not-in-publish"
   },

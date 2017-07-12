@@ -35,21 +35,21 @@ export const FilmStripList = styled.ul`
   transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
   white-space: nowrap;
   display: inline-block;
+`;
 
-  li {
-    list-style-type: none;
-    margin: 0;
-    padding-left: 4px;
-    padding-right: 4px;
-    display: inline-block;
+export const FilmStripListItem = styled.li`
+  list-style-type: none;
+  margin: 0;
+  padding: 0 4px;
+  display: inline-block;
+  vertical-align: middle;
 
-    &:first-child {
-      padding-left: 10px;
-    }
+  &:first-child {
+    padding-left: 10px;
+  }
 
-    &:last-child {
-      padding-right: 10px;
-    }
+  &:last-child {
+    padding-right: 10px;
   }
 `;
 

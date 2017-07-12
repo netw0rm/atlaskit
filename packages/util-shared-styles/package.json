@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "2.4.0",
+  "version": "2.6.0",
   "config": {
     "access": "public"
   },
@@ -9,8 +9,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "postinstall": "node ./bin/generateJSVarsFromLess",
-    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/util-shared-styles",
+    "prepublish": "node ./bin/generateJSVarsFromLess && cd ../.. && npm run prepublish/single @atlaskit/util-shared-styles",
     "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
   },
   "files": [

@@ -51,12 +51,12 @@ export class ListsState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  toggleBulletList(view: EditorView) {
-    toggleList(view.state, view.dispatch, view, 'bulletList');
+  toggleBulletList(view: EditorView): boolean {
+    return toggleList(view.state, view.dispatch, view, 'bulletList');
   }
 
-  toggleOrderedList(view: EditorView) {
-    toggleList(view.state, view.dispatch, view, 'orderedList');
+  toggleOrderedList(view: EditorView): boolean {
+    return toggleList(view.state, view.dispatch, view, 'orderedList');
   }
 
   update(newEditorState) {

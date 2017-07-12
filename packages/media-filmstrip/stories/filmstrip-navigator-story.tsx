@@ -9,6 +9,7 @@ import {
   Spacer,
   LazyWrapper
 } from './styled';
+import filmstripNavigatorWithDifferentCardStatuses from './filmstripNavigatorWithDifferentCardStatuses';
 
 const context = createStorybookContext();
 
@@ -79,4 +80,5 @@ storiesOf('FilmStripNavigator', {})
         </OverflowContainer>
       </div>
     );
-  });
+  })
+  .add('Different Card statuses', filmstripNavigatorWithDifferentCardStatuses);

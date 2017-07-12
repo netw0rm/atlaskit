@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import type { Dimension, Position } from '../../../src/types';
 import isInsideDimension from '../../../src/state/is-inside-dimension';

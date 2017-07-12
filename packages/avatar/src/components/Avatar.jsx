@@ -1,121 +1,175 @@
 // @flow
-import React, { PureComponent } from 'react';
-import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
+import React, { Component } from 'react';
 
-import Container, { ImageWrapper, PresenceWrapper } from '../styled/Avatar';
+import { validIconSizes, propsOmittedFromClickData } from './constants';
 import Presence from './Presence';
-import Image from './Image';
-import type { PresenceType, Size } from '../types';
+import Image from './AvatarImage';
+import Status from './Status';
 
-type Element = Object;
+import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
+import { DEFAULT_BORDER_COLOR } from '../styled/constants';
+import { getInnerStyles } from '../styled/utils';
+import Tooltip from '../styled/Tooltip';
 
-// =============================================================
-// NOTE: Duplicated in Presence unitl docgen can follow imports.
-// -------------------------------------------------------------
-// DO NOT update values here without updating the other.
-// =============================================================
+import { omit } from '../utils';
+import { getProps, getStyledComponent } from '../helpers';
+import { mapProps, withPseudoState } from '../hoc';
 
-export const SIZE = {
-  values: ['xsmall', 'small', 'medium', 'large', 'xlarge'],
-  defaultValue: 'medium',
-};
+import type {
+  AvatarPropTypes,
+  ComponentType,
+  ElementType,
+  FunctionType,
+  StyledComponentType,
+} from '../types';
 
-export const APPEARANCE_TYPE = {
-  values: ['circle', 'square'],
-  defaultValue: 'circle',
-};
-
-export const PRESENCE_TYPE = {
-  values: ['none', 'online', 'busy', 'offline'],
-  defaultValue: 'none',
-};
-
-type Props = {
-  /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
-  can be used for 'container' objects. */
-  appearance?: 'circle' | 'square',
-  /** Content to use as a custom presence indicator. Accepts any React element.
-  For best results, it is recommended to use square content with height and
-  width of 100%. */
-  icon?: Element,
-  /** Defines the label for the Avatar used by screen readers as fallback
-  content if the image fails to load. */
-  label?: string,
-  /** Used to override the default border color of the presence indicator.
-  Accepts any color argument that the border-color CSS property accepts. */
-  presenceBorderColor?: string,
-  /** Indicates a user's online status by showing a small icon on the avatar.
-  Refer to presence values on the Presence component. */
-  presence?: PresenceType,
-  /** Defines the size of the avatar */
-  size?: Size,
-  /** A url to load an image from (this can also be a base64 encoded image). */
-  src?: string,
-};
-
-export default class Avatar extends PureComponent {
-  props: Props; // eslint-disable-line react/sort-comp
+class Avatar extends Component {
+  props: AvatarPropTypes; // eslint-disable-line react/sort-comp
+  node: { blur?: FunctionType, focus?: FunctionType };
+  cache: {
+    button?: ElementType,
+    custom?: ComponentType,
+    link?: ElementType,
+    span?: ElementType,
+  } = {};
 
   static defaultProps = {
-    appearance: APPEARANCE_TYPE.defaultValue,
-    presenceBorderColor: akColorPrimary3, // white
-    presence: PRESENCE_TYPE.defaultValue,
-    size: SIZE.defaultValue,
+    appearance: 'circle',
+    borderColor: DEFAULT_BORDER_COLOR,
+    enableTooltip: true,
+    size: 'medium',
   }
 
-  // We set isLoading conditionally here in the event that the src prop is applied at mount.
-  state = {
-    hasError: false,
-    isLoading: !!this.props.src,
-  };
-
-  // We set isLoading conditionally here in the event that the src prop is updated after mount.
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.src && this.props.src !== nextProps.src) {
-      this.setState({ isLoading: true });
+  getCachedComponent(type: StyledComponentType) {
+    if (!this.cache[type]) {
+      this.cache[type] = getStyledComponent[type](getInnerStyles);
     }
+    return this.cache[type];
+  }
+  getStyledComponent() {
+    const { component, href, onClick } = this.props;
+    let node: StyledComponentType = 'span';
+
+    if (component) node = 'custom';
+    else if (href) node = 'link';
+    else if (onClick) node = 'button';
+
+    return this.getCachedComponent(node);
   }
 
-  imageLoadedHandler = () => {
-    this.setState({
-      hasError: false,
-      isLoading: false,
-    });
+  // expose blur/focus to consumers via ref
+  blur = (e: FocusEvent) => {
+    if (this.node.blur) this.node.blur(e);
+  }
+  focus = (e: FocusEvent) => {
+    if (this.node.focus) this.node.focus(e);
   }
 
-  imageErrorHandler = () => {
-    this.setState({
-      hasError: true,
-      isLoading: false,
-    });
+  // disallow click on disabled avatars
+  // only return avatar data properties
+  guardedClick = (event: {}) => {
+    const { isDisabled, onClick } = this.props;
+
+    if (isDisabled || (typeof onClick !== 'function')) return;
+
+    const item: {} = omit(this.props, ...propsOmittedFromClickData);
+
+    onClick({ item, event });
   }
+
+  // enforce status / presence rules
+  /* eslint-disable no-console */
+  renderIcon = () => {
+    const { appearance, borderColor, presence, size, status } = this.props;
+    const showPresence = !!presence;
+    const showStatus = !!status;
+
+    // add warnings for various invalid states
+    if (!validIconSizes.includes(size) && (showPresence || showStatus)) {
+      console.warn(`Avatar size "${size}" does NOT support ${showPresence ? 'presence' : 'status'}`);
+      return null;
+    }
+    if (showPresence && showStatus) {
+      console.warn('Avatar supports `presence` OR `status` properties, not both.');
+      return null;
+    }
+
+    let indicator;
+
+    if (showPresence) {
+      const customPresenceNode = typeof presence === 'object'
+        ? presence
+        : null;
+
+      indicator = (
+        <PresenceWrapper appearance={appearance} size={size}>
+          <Presence
+            borderColor={borderColor}
+            presence={!customPresenceNode && presence}
+            size={size}
+          >
+            {customPresenceNode}
+          </Presence>
+        </PresenceWrapper>
+      );
+    } else if (showStatus) {
+      indicator = (
+        <StatusWrapper appearance={appearance} size={size}>
+          <Status
+            status={status}
+            borderColor={borderColor}
+            size={size}
+          />
+        </StatusWrapper>
+      );
+    }
+
+    return indicator;
+  }
+  /* eslint-enable no-console */
 
   render() {
-    const { appearance, icon, label, presence, presenceBorderColor, size, src } = this.props;
-    const { hasError, isLoading } = this.state;
-    const showPresence = presence !== 'none' || icon;
+    const { appearance, enableTooltip, isHover, onClick, name, size, src, stackIndex } = this.props;
+
+    // distill props from context, props, and state
+    const props: AvatarPropTypes = getProps(this);
+
+    // provide element type based on props
+    const Inner = this.getStyledComponent();
+
+    // augment the onClick handler
+    props.onClick = onClick && this.guardedClick;
 
     return (
-      <Container size={size}>
-        <ImageWrapper appearance={appearance} size={size} isLoading={isLoading} aria-label={label}>
+      <Outer size={size} stackIndex={stackIndex}>
+        <Inner innerRef={r => (this.node = r)} {...props}>
           <Image
-            alt={label}
-            isLoading={isLoading}
+            alt={name}
+            appearance={appearance}
+            size={size}
             src={src}
-            onLoad={this.imageLoadedHandler}
-            onError={this.imageErrorHandler}
-            hasError={hasError}
           />
-        </ImageWrapper>
-
-        {showPresence ? (
-          <PresenceWrapper appearance={appearance} size={size}>
-            <Presence presence={presence} borderColor={presenceBorderColor} size={size}>
-              {icon}
-            </Presence>
-          </PresenceWrapper>
+        </Inner>
+        {(enableTooltip && isHover && name) ? (
+          <Tooltip>{name}</Tooltip>
         ) : null}
-      </Container>
+        {this.renderIcon()}
+      </Outer>
     );
   }
 }
+
+/**
+*  1. Higher order components seem to ignore default properties. Mapping
+*     `appearance` explicity here circumvents the issue.
+*  2. The withPseudoState HOC should remain generic so rather than pass on
+*     `enableTooltip` we map it to `isInteractive`.
+*  3. Handle keyboard/mouse events and pass props to the wrapped component:
+*     - isActive
+*     - isFocus
+*     - isHover
+*/
+export default mapProps({
+  appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
+  isInteractive: props => props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
+})(withPseudoState(Avatar)); // 3

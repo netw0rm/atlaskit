@@ -3,6 +3,8 @@ import React, { PureComponent } from 'react';
 import { PersonResult, RoomResult } from './results';
 import { AkNavigationItemGroup } from '../../../src';
 
+const noOp = () => {};
+
 /**
  * Enumerate the result types available to SearchResults
  */
@@ -13,7 +15,7 @@ const availableResultTypes = {
 };
 
 type ResultShape = {|
-  id: string,
+  resultId: string,
   type: 'person' | 'room',
 |}
 
@@ -23,29 +25,43 @@ type ResultGroup = {|
 |}
 
 type Props = {|
-  results: Array<ResultGroup>,
-  selectedItemId: number,
-  onClick: () => null,
+  isResultHoverStylesDisabled?: boolean,
+  isTabbingDisabled?: boolean,
+  onClick?: () => null,
+  onResultMouseEnter?: () => null,
+  onResultMouseLeave?: () => null,
+  results?: Array<ResultGroup>,
+  selectedItemId?: number | string,
 |}
 
 export default class SearchResults extends PureComponent {
   static defaultProps = {
-    onClick: () => {},
+    isResultHoverStylesDisabled: false,
+    isTabbingDisabled: false,
+    onClick: noOp,
+    onResultMouseEnter: noOp,
+    onResultMouseLeave: noOp,
     results: [],
-    selectedItemId: null,
   }
 
   props: Props
 
   renderResultItem = (props) => {
     const Result = availableResultTypes[props.type];
-    const isSelected = props.id === this.props.selectedItemId;
+    const isSelected = props.resultId === this.props.selectedItemId;
     return Result ? (
       <Result
-        {...props}
-        key={props.id}
+        // SearchResult-provided props
+        isHoverStylesDisabled={this.props.isResultHoverStylesDisabled}
         isSelected={isSelected}
+        key={props.resultId}
         onClick={this.props.onClick}
+        onMouseEnter={this.props.onResultMouseEnter}
+        onMouseLeave={this.props.onResultMouseLeave}
+        isTabbingDisabled={this.props.isTabbingDisabled}
+
+        // Individual props take precedence over SearchResult-provided presets
+        {...props}
       />
      ) : null;
   }

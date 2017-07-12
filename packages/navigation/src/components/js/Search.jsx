@@ -14,6 +14,8 @@ type Props = {|
   children?: ReactElement,
   /** Set whether the loading state should be shown. */
   isLoading?: boolean,
+  /** Function to be called when the search input loses focus. */
+  onBlur: () => mixed,
   /** Function to be called when a change action occurs. */
   onChange: () => mixed,
   /** Function to be called when the user hits the escape key.  */
@@ -27,6 +29,7 @@ type Props = {|
 export default class Search extends PureComponent {
   static defaultProps = {
     isLoading: false,
+    onBlur: () => {},
     placeholder: 'Search',
   }
 
@@ -50,6 +53,7 @@ export default class Search extends PureComponent {
     const {
       children,
       value,
+      onBlur,
       onChange,
       placeholder,
     } = this.props;
@@ -69,6 +73,7 @@ export default class Search extends PureComponent {
               <SearchInput
                 autoFocus
                 innerRef={this.setInputRef}
+                onBlur={onBlur}
                 onChange={onChange}
                 placeholder={placeholder}
                 spellCheck={false}

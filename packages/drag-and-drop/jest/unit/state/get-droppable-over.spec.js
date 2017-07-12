@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import getDroppableOver from '../../../src/state/get-droppable-over';
 import getDimension from '../../utils/get-dimension-util';

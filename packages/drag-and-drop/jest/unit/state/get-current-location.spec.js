@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import getCurrentLocation from '../../../src/state/get-current-location';
 import getDimension from '../../utils/get-dimension-util';

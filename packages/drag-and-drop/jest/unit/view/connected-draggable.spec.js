@@ -1,14 +1,14 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-import { describe, it, beforeEach, afterEach } from 'mocha';
+
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import Draggable, { makeSelector } from '../../../src/view/draggable/connected-draggable';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import noImpact from '../../../src/state/no-impact';
-import withContextOptions from '../with-context-options';
+import withContextOptions from '../../utils/with-context-options';
 import type {
   CurrentDrag,
   Phase,

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { InlineEdit } from '@atlaskit/inline-edit';
+import { InlineEditStateless } from '@atlaskit/inline-edit';
 import SingleLineTextInput from '@atlaskit/input';
 
 export default class InlineEditorExamples extends PureComponent {
@@ -11,7 +11,7 @@ export default class InlineEditorExamples extends PureComponent {
   render() {
     return (
       <div>
-        <InlineEdit
+        <InlineEditStateless
           label="Inline Edit"
           isEditing={this.state.isEditing}
           onEditRequested={() => this.setState({ isEditing: true })}

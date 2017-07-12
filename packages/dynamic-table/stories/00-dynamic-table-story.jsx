@@ -11,6 +11,8 @@ import OverviewStatelessExample from './examples/overview-stateless';
 import OverviewStatelessExampleRaw from '!raw!./examples/overview-stateless';
 import OverviewStatefulExample from './examples/overview-stateful';
 import OverviewStatefulExampleRaw from '!raw!./examples/overview-stateful';
+import LotsOfPagesExample from './examples/with-lots-of-pages';
+import LotsOfPagesExampleRaw from '!raw!./examples/with-lots-of-pages';
 import HeadlessExample from './examples/headless';
 import HeadlessExampleRaw from '!raw!./examples/headless';
 import FixedSizeExample from './examples/fixed-size';
@@ -108,6 +110,14 @@ storiesOf(name, module)
         descriptions={propDescriptionsStateless}
         types={propTypesStateless}
       />
+    </Chrome>
+  ))
+  .add('With a lot of pages', () => (
+    <Chrome title="DynamicTable with a lot of pages">
+      <LotsOfPagesExample />
+      <Code>
+        {LotsOfPagesExampleRaw}
+      </Code>
     </Chrome>
   ))
   .add('Fixed size table with truncated cells', () => (

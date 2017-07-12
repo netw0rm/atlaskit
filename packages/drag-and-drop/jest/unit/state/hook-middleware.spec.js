@@ -1,10 +1,10 @@
 // @flow
-import { describe, it, beforeEach, afterEach } from 'mocha';
+
 import { expect } from 'chai';
 import sinon from 'sinon';
 import middleware from '../../../src/state/hook-middleware';
 import { cancel } from '../../../src/state/action-creators';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import noImpact from '../../../src/state/no-impact';
 import type {
   Dimension,

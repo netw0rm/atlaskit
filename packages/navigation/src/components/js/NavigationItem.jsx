@@ -129,9 +129,9 @@ export default class NavigationItem extends PureComponent {
             </NavigationItemText>
             {after}
             {dropIcon}
+            {action}
           </NavigationItemInner>
         </InteractiveWrapper>
-        {action}
       </NavigationItemOuter>
     );
   }

@@ -35,8 +35,6 @@ export type PlacementStyle = {|
   zIndex: ZIndex,
   width: number,
   height: number,
-  top: number,
-  left: number,
 |}
 
 export type ZIndexOptions = {|

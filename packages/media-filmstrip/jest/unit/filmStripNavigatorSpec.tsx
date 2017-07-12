@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import * as sinon from 'sinon';
 
 import { FilmStripNavigator } from '../../src';
-import { FilmStripViewWrapper } from '../../src/styled';
+import { FilmStripViewWrapper, FilmStripListItem } from '../../src/styled';
 
 describe('FilmStripNavigator', () => {
   let clock;
@@ -21,15 +21,15 @@ describe('FilmStripNavigator', () => {
     const children = [1, 2, 3];
     const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
 
-    expect(filmstripNavigator.find('li').first().text()).to.equal(`${children[0]}`);
-    expect(filmstripNavigator.find('li').last().text()).to.equal(`${children[2]}`);
+    expect(filmstripNavigator.find(FilmStripListItem).first().children().text()).to.equal(`${children[0]}`);
+    expect(filmstripNavigator.find(FilmStripListItem).last().children().text()).to.equal(`${children[2]}`);
   });
 
   it('Renders correct number of children', () => {
     const children = [<div key="1">1</div>, <div key="2">2</div>, <div key="3">3</div>];
     const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
 
-    expect(filmstripNavigator.find('li').length).to.equal(children.length);
+    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(children.length);
   });
 
   it('Navigator items gets re-rendered when children are modified', () => {
@@ -38,9 +38,9 @@ describe('FilmStripNavigator', () => {
         {[1, 2]}
       </FilmStripNavigator>
     );
-    expect(filmstripNavigator.find('li').length).to.equal(2);
+    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(2);
     filmstripNavigator.setProps({children: [1, 2, 3]});
-    expect(filmstripNavigator.find('li').length).to.equal(3);
+    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(3);
   });
 
   it('passes width "undefined" to FilmStripViewWrapper when width prop is falsey', () => {

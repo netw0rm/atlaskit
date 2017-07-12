@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import getNewHomeOffset from '../../../src/state/get-new-home-offset';
 import noImpact from '../../../src/state/no-impact';

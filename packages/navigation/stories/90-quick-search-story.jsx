@@ -109,7 +109,7 @@ storiesOf(`${name}/QuickSearch`, module)
           title: 'Obi Wan\'s Conversations',
           items: [
             {
-              id: '1',
+              resultId: '1',
               type: 'person',
               avatarUrl: getPersonAvatarUrl('qgjinn'),
               mentionName: 'MasterQ',
@@ -118,7 +118,7 @@ storiesOf(`${name}/QuickSearch`, module)
               presenceState: 'offline',
             },
             {
-              id: '2',
+              resultId: '2',
               type: 'person',
               avatarUrl: getPersonAvatarUrl('lskywalker'),
               mentionName: 'lskywalker',
@@ -126,14 +126,14 @@ storiesOf(`${name}/QuickSearch`, module)
               presenceState: 'online',
             },
             {
-              id: '3',
+              resultId: '3',
               type: 'room',
               avatarUrl: getRoomAvatarUrl(5),
               name: 'Jedi Council [archived]',
               privacy: 'private',
             },
             {
-              id: '4',
+              resultId: '4',
               type: 'room',
               avatarUrl: getRoomAvatarUrl(6),
               name: 'Jawa Movie Night',

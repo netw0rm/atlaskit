@@ -1,8 +1,8 @@
 // @flow
-import { describe, it } from 'mocha';
+
 import { expect } from 'chai';
 import getDraggablesInsideDroppable from '../../../src/state/get-draggables-inside-droppable';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import type { Dimension, DimensionMap } from '../../../src/types';
 
 describe('get draggables inside a droppable', () => {

@@ -1,7 +1,7 @@
 // @flow
-import { describe, it } from 'mocha';
+
 import { expect } from 'chai';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import getDragImpact from '../../../src/state/get-drag-impact';
 import noImpact from '../../../src/state/no-impact';
 

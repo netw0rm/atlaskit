@@ -1,8 +1,8 @@
 // @flow
-import { describe, it } from 'mocha';
+
 import { expect } from 'chai';
 import getDroppableOver from '../../../src/state/get-droppable-over';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import type { Dimension, DimensionMap, DroppableId, Position } from '../../../src/types';
 
 const droppable1: Dimension = getDimension({

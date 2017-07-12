@@ -1,9 +1,9 @@
 // @flow
-import { describe, it } from 'mocha';
+
 import { expect } from 'chai';
 import getNewHomeOffset from '../../../src/state/get-new-home-offset';
 import noImpact from '../../../src/state/no-impact';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import type { DragMovement, Position, Dimension, DimensionMap } from '../../../src/types';
 
 const origin: Position = {

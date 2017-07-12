@@ -26,7 +26,7 @@ describe('Media PickerFacade', () => {
   const dropzoneContainer = document.createElement('div');
   const uploadParams = {
     collection: 'mock',
-    dropzoneContainer: dropzoneContainer
+    dropzoneContainer
   };
   const tokenProvider = (collectionName?: string) => Promise.resolve('mock-token');
   const contextConfig = {
@@ -55,9 +55,10 @@ describe('Media PickerFacade', () => {
   beforeEach(() => {
     mockPicker = new MockMediaPicker();
     stateManager = new DefaultMediaStateManager();
-    mockPickerFactory = (pickerType: string, pickerConfig: any) => {
+    mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => {
       mockPicker.pickerType = pickerType;
       mockPicker.pickerConfig = pickerConfig;
+      mockPicker.extraConfig = extraConfig;
 
       return mockPicker;
     };
@@ -105,7 +106,6 @@ describe('Media PickerFacade', () => {
       expect(mockPicker.pickerConfig).to.have.property('uploadParams', uploadParams);
       expect(mockPicker.pickerConfig).to.have.property('apiUrl', contextConfig.serviceHost);
       expect(mockPicker.pickerConfig).to.have.property('apiClientId', contextConfig.clientId);
-      expect(mockPicker.pickerConfig).to.have.property('container', dropzoneContainer);
       expect(mockPicker.pickerConfig).to.have.property('tokenSource')
         .which.has.property('getter')
           .which.is.a('function');
@@ -118,8 +118,8 @@ describe('Media PickerFacade', () => {
       getter(() => {}, () => done());
     });
 
-    it('respects dropzone container', () => {
-      expect(mockPicker.pickerConfig).to.have.property('tokenSource');
+    it('respects dropzone container config', () => {
+      expect(mockPicker.extraConfig).to.have.property('container',  dropzoneContainer);
     });
   });
 

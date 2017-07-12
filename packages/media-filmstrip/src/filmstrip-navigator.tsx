@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Component, DragEvent as ReactDragEvent, DragEventHandler, WheelEvent} from 'react';
-import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
+import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight, FilmStripListItem} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 
@@ -106,9 +106,9 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     const transitionDuration = `${stateTransistionDuration}s`;
 
     const items = children ? children.map((item, k) => (
-      <li key={item.key || k}>
+      <FilmStripListItem key={item.key || k}>
         {item}
-      </li>
+      </FilmStripListItem>
     )) : null;
 
     return (

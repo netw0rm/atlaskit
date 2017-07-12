@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 // I am disabling eslint in the line below because we have an unexplained, unreproducible issue in
-// CI sometimes where popper is not always resolvable. See AK-2971
+// CI sometimes where popper is not always resolvable. See AK-2971.
 import Popper from 'popper.js'; // eslint-disable-line  import/no-unresolved, import/extensions
 import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 

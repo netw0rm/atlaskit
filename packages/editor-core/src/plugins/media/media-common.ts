@@ -22,19 +22,15 @@ import {
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
-import { ErrorReporter } from '../../utils';
+import { ErrorReporter, setNodeSelection } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 
-export const handleMediaNodeRemoval = (view: EditorView, node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
+export const handleMediaNodeRemoval = (view: EditorView, node: PMNode, getPos: ProsemirrorGetPosHandler) => {
   const { id } = node.attrs;
-
-  if (!activeUserAction) {
-    return;
-  }
 
   const nodePos = getPos();
   const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
@@ -61,13 +57,4 @@ const setSelectionAfterRemoval = (view: EditorView, currentPos: number): void =>
 
 const isTemporaryFile = (id: string): boolean => {
   return id.indexOf('temporary:') === 0;
-};
-
-const setNodeSelection = (view: EditorView, pos: number) => {
-  const { state, dispatch } = view;
-  const { doc, tr } = state;
-  const $pos = doc.resolve(pos);
-  const selection = new NodeSelection($pos);
-
-  dispatch(tr.setSelection(selection));
 };

@@ -21,7 +21,7 @@ import {
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
-import { ErrorReporter } from '../../utils';
+import { ErrorReporter, setNodeSelection } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
@@ -250,34 +250,14 @@ export class MediaPluginState {
    * inside of it
    */
   handleMediaNodeRemove = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
-    this.setNodeSelection(getPos());
-    const { id } = node.attrs;
-    const status = this.getMediaNodeStateStatus(id);
-
-    switch (status) {
-      case 'uploading':
-      case 'processing':
-        this.pickers.forEach(picker => picker.cancel(id));
-    }
-
-    handleMediaNodeRemoval(this.view, node, getPos, true);
-  }
-
-  private setNodeSelection = (pos: number) => {
-    const { state, dispatch } = this.view;
-    const { doc, tr } = state;
-    const $pos = doc.resolve(pos);
-    const selection = new NodeSelection($pos);
-
-    dispatch(tr.setSelection(selection));
+    setNodeSelection(this.view, getPos());
+    handleMediaNodeRemoval(this.view, node, getPos);
   }
 
   /**
-   * Nodes can be removed not only by user action but also from PM transform.
-   * For example when some plugin or even user manually calls "state.tr.deleteRange(...)"
-   * This function is called in this case
+   * This is called when media node is removed from media group node view
    */
-  handleMediaNodeOutsideRemove = (id: string) => {
+  cancelInFlightUpload(id: string) {
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
@@ -289,9 +269,6 @@ export class MediaPluginState {
       case 'processing':
         this.pickers.forEach(picker => picker.cancel(id));
     }
-
-    const { node, getPos } = mediaNodeWithPos;
-    handleMediaNodeRemoval(this.view, node, getPos, false);
   }
 
   /**
@@ -400,7 +377,7 @@ export class MediaPluginState {
         // TODO: we would like better error handling and retry support here.
         const mediaNodeWithPos = this.findMediaNode(state.id);
         if (mediaNodeWithPos) {
-          handleMediaNodeRemoval(this.view, mediaNodeWithPos.node, mediaNodeWithPos.getPos, true);
+          handleMediaNodeRemoval(this.view, mediaNodeWithPos.node, mediaNodeWithPos.getPos);
         }
 
         const { uploadErrorHandler } = this.options;

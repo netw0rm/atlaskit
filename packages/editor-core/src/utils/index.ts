@@ -135,6 +135,12 @@ export function canJoinDown(selection: Selection, doc: any, nodeType: NodeType):
   return res.nodeAfter && res.nodeAfter.type === nodeType;
 }
 
+export const setNodeSelection = (view: EditorView, pos: number) => {
+  const { state, dispatch } = view;
+  const tr = state.tr.setSelection(NodeSelection.create(state.doc, pos));
+  dispatch(tr);
+};
+
 /**
  * Determines if content inside a selection can be joined with the previous block.
  * We need this check since the built-in method for "joinUp" will join a orderedList with bulletList.

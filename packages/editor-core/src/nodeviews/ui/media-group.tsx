@@ -45,7 +45,7 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
     const removedNodesIds = this.mediaNodesIds.filter(id => newMediaNodesIds.indexOf(id) === -1);
 
     removedNodesIds.forEach(mediaNodeId => {
-      this.mediaPluginState.handleMediaNodeOutsideRemove(mediaNodeId);
+      this.mediaPluginState.cancelInFlightUpload(mediaNodeId);
     });
 
     this.mediaNodesIds = newMediaNodesIds;

@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';

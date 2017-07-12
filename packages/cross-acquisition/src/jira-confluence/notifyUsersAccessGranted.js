@@ -1,27 +1,45 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-const JIRA_ANALYTICS_ENDPOINT = '/rest/analytics/1.0/publish/bulk';
-export default (adminName, usernames) => {
-  const events = [{
-    name: 'grow9999.event',
-    properties: {},
-    usernames,
-  }];
+export const GLOBAL_ANALYTICS_ENDPOINT = 'https://mgas.prod.public.atl-paas.net/v1/events';
+const NOTIFY_EVENT_NAME = 'grow4785.confluence.access.granted';
+const JIRA_PRODUCT = 'jira';
 
-  return fetch(JIRA_ANALYTICS_ENDPOINT, {
+export const createPayload = (adminDisplayName, instanceName, userId, usernames) => {
+  const now = Date.now();
+  const events = usernames.map(username => ({
+    name: NOTIFY_EVENT_NAME,
+    server: instanceName,
+    product: JIRA_PRODUCT,
+    user: userId,
+    serverTime: now,
+    properties: {
+      granted_to_user: username,
+      send_notification: true,
+      adminDisplayName,
+    },
+  }));
+  return { events };
+};
+
+export default (adminDisplayName, instanceName, userId, usernames) => {
+  if (usernames.length === 0) {
+    return Promise.resolve(null);
+  }
+
+  return fetch(GLOBAL_ANALYTICS_ENDPOINT, {
     credentials: 'same-origin',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(events),
-  })
-    .then((response) => {
-      if (response.status !== 200) {
-        throw new Error(
-          `Unable to determine if the user was a site administrator. Status: ${response.status}`
-        );
-      }
-    });
+    body: JSON.stringify(createPayload(adminDisplayName, instanceName, userId, usernames)),
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw new Error(
+        `Unable to notify users that they were granted access. Status: ${response.status}`
+      );
+    }
+    return null;
+  });
 };

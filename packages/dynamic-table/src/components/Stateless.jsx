@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Pagination } from '@atlaskit/pagination';
+import { PaginationStateless } from '@atlaskit/pagination';
 
 import { ASC, DESC } from '../internal/constants';
 import props from '../internal/props';
@@ -85,7 +85,7 @@ export default class DynamicTable extends Component {
           {rowsExist && <Body {...bodyProps} />}
         </Table>
         {!totalPages ? null : (
-          <Pagination
+          <PaginationStateless
             current={page}
             onSetPage={this.onSetPage}
             total={totalPages}

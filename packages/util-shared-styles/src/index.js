@@ -1,4 +1,5 @@
-const req = require.context('!less-vars-loader?camelCase&resolveVariables!./', false, /\.less$/);
+// We disable es-lint below because jsVars wont exist in the repo (it it .gitignore and generated)
+const lessVarsAsJS = require('../build/jsVars'); // eslint-disable-line  import/no-unresolved
 
 export { default as akAnimationMixins } from './mixins/animation';
 export { default as akElevationMixins } from './mixins/elevation';
@@ -16,16 +17,13 @@ const intVariableNames = [
   'akZIndexModal',
 ];
 
-export default req.keys().reduce((prev, file) => {
-  const vars = req(file);
-  Object.assign(prev, vars);
-  Object.keys(vars).forEach((varName) => {
-    if (intVariableNames.indexOf(varName) > -1) {
-      module.exports[varName] = parseInt(vars[varName], 10);
-    } else {
-      module.exports[varName] = vars[varName];
-    }
-  });
+Object.keys(lessVarsAsJS).forEach((varName) => {
+  if (intVariableNames.indexOf(varName) > -1) {
+    module.exports[varName] = parseInt(lessVarsAsJS[varName], 10);
+  } else {
+    module.exports[varName] = lessVarsAsJS[varName];
+  }
+});
 
-  return prev;
-}, {});
+export default lessVarsAsJS;
+

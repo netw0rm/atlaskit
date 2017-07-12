@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import TrackerEntry from './tracker-entry';
 import { grid } from './constants';
@@ -13,7 +13,7 @@ const Title = styled.h4`
   margin-bottom: ${grid}px;
 `;
 
-export default class QuoteTracker extends PureComponent {
+export default class QuoteTracker extends Component {
   props: {|
     current: ?DropResult,
     history: DropResult[],

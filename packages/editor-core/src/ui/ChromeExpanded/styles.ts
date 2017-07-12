@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {
+  akEditorBlockquoteBorderColor,
   akEditorSubtleAccent,
   akEditorMentionSelected,
   akEditorTableCellSelected,
@@ -64,10 +65,27 @@ export const Content = styled.div`
   }
 
   .ProseMirror blockquote {
-    padding-left: 1em;
-    border-left: 3px solid #eee;
-    margin-left: 0;
+    padding-left: ${akGridSizeUnitless * 2}px;
+    border-left: 2px solid ${akEditorBlockquoteBorderColor};
+    margin: ${akGridSizeUnitless * 1.5}px 0 0 0;
     margin-right: 0;
+
+    [dir="rtl"] & {
+      padding-left: 0;
+      padding-right: ${akGridSizeUnitless * 2}px;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &::before {
+      content: "";
+    }
+
+    &::after {
+      content: "";
+    }
   }
 
   .ProseMirror pre {

@@ -87,13 +87,13 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
   private toggleTextColor = (color) => {
     const { pluginState, editorView } = this.props;
     if (!this.state.disabled) {
-      if (color === pluginState.defaultColor) {
-        pluginState.removeTextColor(editorView.state, editorView.dispatch);
-      } else {
-        pluginState.toggleTextColor(editorView.state, editorView.dispatch, color);
-      }
       this.toggleOpen();
+      if (color === pluginState.defaultColor) {
+        return pluginState.removeTextColor(editorView.state, editorView.dispatch);
+      }
+      return pluginState.toggleTextColor(editorView.state, editorView.dispatch, color);
     }
+    return false;
   }
 
   private toggleOpen = () => {

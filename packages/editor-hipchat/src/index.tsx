@@ -29,6 +29,9 @@ import {
   toJSON,
   version as coreVersion,
 
+  // Components
+  WithProviders,
+
   // nodeviews
   nodeViewFactory,
   ReactEmojiNode,
@@ -298,18 +301,34 @@ export default class Editor extends PureComponent<Props, State> {
       <div className={classNames} id={this.props.id}>
         <div ref={this.handleRef}>
           {!emojisState ? null :
-            <EmojiTypeAhead
-              pluginKey={emojisStateKey}
-              editorView={editorView}
-              reversePosition={props.reverseMentionPicker}
+            <WithProviders
+              providerFactory={this.providerFactory}
+              providers={['emojiProvider']}
+              // tslint:disable-next-line:jsx-no-lambda
+              renderNode={(providers) =>
+                <EmojiTypeAhead
+                  pluginKey={emojisStateKey}
+                  editorView={editorView}
+                  emojiProvider={providers.emojiProvider}
+                  reversePosition={props.reverseMentionPicker}
+                />
+              }
             />
           }
           {!mentionsState ? null :
-            <MentionPicker
-              editorView={editorView}
-              pluginKey={mentionsStateKey}
-              presenceProvider={props.presenceProvider}
-              reversePosition={props.reverseMentionPicker}
+            <WithProviders
+              providerFactory={this.providerFactory}
+              providers={['mentionProvider']}
+              // tslint:disable-next-line:jsx-no-lambda
+              renderNode={(providers) =>
+                <MentionPicker
+                  editorView={editorView}
+                  pluginKey={mentionsStateKey}
+                  mentionProvider={providers.mentionProvider}
+                  presenceProvider={props.presenceProvider}
+                  reversePosition={props.reverseMentionPicker}
+                />
+              }
             />
           }
         </div>

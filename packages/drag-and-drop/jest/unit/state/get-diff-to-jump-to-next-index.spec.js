@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import getDiffToJumpToNextIndex from '../../../src/state/get-diff-to-jump-to-next-index';
 import getDimension from '../../utils/get-dimension-util';

@@ -1,14 +1,13 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import Droppable, { makeSelector } from '../../../src/view/droppable/connected-droppable';
 import noImpact from '../../../src/state/no-impact';
 import getDimension from '../../utils/get-dimension-util';
-import withContextOptions from '../../utils/with-context-options';
+import getContextOptions from '../../utils/get-context-options';
 import type {
   Phase,
   DragState,
@@ -465,7 +464,7 @@ describe('Droppable - connected', () => {
     });
 
     it('should render the child function when the parent renders', () => {
-      const wrapper = mount(<App currentUser="Jake" />, withContextOptions);
+      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
 
       // initial render causes two renders due to setting child ref
       expect(Person.prototype.render.callCount).to.equal(2);
@@ -473,7 +472,7 @@ describe('Droppable - connected', () => {
     });
 
     it('should render the child function when the parent re-renders', () => {
-      const wrapper = mount(<App currentUser="Jake" />, withContextOptions);
+      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
 
       wrapper.update();
 
@@ -483,7 +482,7 @@ describe('Droppable - connected', () => {
     });
 
     it('should render the child function when the parents props changes that cause a re-render', () => {
-      const wrapper = mount(<App currentUser="Jake" />, withContextOptions);
+      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
 
       wrapper.setProps({
         currentUser: 'Finn',

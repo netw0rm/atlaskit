@@ -191,8 +191,10 @@ export default class Draggable extends Component {
       // its standard positioning logic
       width: initial.dimension.withoutMargin.width,
       height: initial.dimension.withoutMargin.height,
-      top: initial.dimension.withoutMargin.top,
-      left: initial.dimension.withoutMargin.left,
+      // Not applying any 'left' or 'top' value as we
+      // want the element to sit in the place that it started.
+      // If we use 'left' or 'top' then it would be relative
+      // to any parent that has a position:relative on it.
     };
   });
 

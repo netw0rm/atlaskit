@@ -1,7 +1,6 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-import { describe, it, beforeEach, afterEach, before } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
@@ -15,6 +14,7 @@ import type {
   OwnProps,
   MapProps,
   DispatchProps,
+  PlacementStyle,
   Provided,
   StateSnapshot,
 } from '../../../src/view/draggable/draggable-types';
@@ -24,9 +24,9 @@ import type {
   DraggableId,
   TypeId,
 } from '../../../src/types';
-import getDimension from '../get-dimension-util';
-import withContextOptions from '../with-context-options';
-import { dispatchWindowMouseEvent, mouseEvent } from '../user-input-util';
+import getDimension from '../../utils/get-dimension-util';
+import getContextOptions from '../../utils/get-context-options';
+import { dispatchWindowMouseEvent, mouseEvent } from '../../utils/user-input-util';
 
 class Item extends Component {
   props: {
@@ -140,7 +140,7 @@ const mountDraggable = ({
       <WrappedComponent provided={provided} snapshot={snapshot} />
       )}
   </Draggable>
-, withContextOptions);
+, getContextOptions());
 
 const mouseDown = mouseEvent.bind(null, 'mousedown');
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
@@ -203,7 +203,8 @@ const getStubber = stub =>
 };
 
 describe('Draggable - unconnected', () => {
-  before(() => {
+  beforeAll(() => { // eslint-disable-line no-undef
+    requestAnimationFrame.reset();
     requestAnimationFrame.reset();
   });
 
@@ -860,16 +861,16 @@ describe('Draggable - unconnected', () => {
           throw new Error('invalid data');
         }
         const dimension = draggingMapProps.initial.dimension;
-        const provided: Provided = stub.lastCall.args[0].provided;
-        expect(provided.draggableStyle).to.deep.equal({
+        const expected: PlacementStyle = {
           position: 'absolute',
           zIndex: zIndexOptions.dragging,
           boxSizing: 'border-box',
           width: dimension.withMargin.width,
           height: dimension.withMargin.height,
-          top: dimension.withMargin.top,
-          left: dimension.withMargin.left,
-        });
+        };
+
+        const provided: Provided = stub.lastCall.args[0].provided;
+        expect(provided.draggableStyle).to.deep.equal(expected);
       });
 
       it('should move quickly if it should animate', () => {
@@ -956,6 +957,13 @@ describe('Draggable - unconnected', () => {
         const stub = sinon.stub();
         // $ExpectError - initial is nullable
         const dimension = returningHomeMapProps.initial.dimension;
+        const expected: PlacementStyle = {
+          position: 'absolute',
+          boxSizing: 'border-box',
+          zIndex: zIndexOptions.dropAnimating,
+          width: dimension.withMargin.width,
+          height: dimension.withMargin.height,
+        };
 
         mountDraggable({
           mapProps: returningHomeMapProps,
@@ -963,16 +971,7 @@ describe('Draggable - unconnected', () => {
         });
 
         const provided: Provided = stub.lastCall.args[0].provided;
-
-        expect(provided.draggableStyle).to.deep.equal({
-          position: 'absolute',
-          boxSizing: 'border-box',
-          zIndex: zIndexOptions.dropAnimating,
-          width: dimension.withMargin.width,
-          height: dimension.withMargin.height,
-          top: dimension.withMargin.top,
-          left: dimension.withMargin.left,
-        });
+        expect(provided.draggableStyle).to.deep.equal(expected);
       });
 
       it('should let consumers know that the item is no longer dragging', () => {

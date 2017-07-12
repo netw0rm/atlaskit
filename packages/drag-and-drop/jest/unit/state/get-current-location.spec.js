@@ -1,8 +1,7 @@
 // @flow
-import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import getCurrentLocation from '../../../src/state/get-current-location';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import type { Dimension, DimensionMap, DraggableLocation } from '../../../src/types';
 
 const droppable: Dimension = getDimension({

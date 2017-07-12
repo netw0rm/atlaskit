@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import { beforeEach, afterEach, describe, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { DragDropContext, Draggable, Droppable } from '../../../src/';
 import { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
-import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent } from '../user-input-util';
+import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent } from '../../utils/user-input-util';
 import type {
   Hooks,
   DraggableLocation,

@@ -1,5 +1,4 @@
 // @flow
-import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { makeSelector } from '../../../src/view/dimension-publisher/make-connected-dimension-publisher';
 import type { MapProps } from '../../../src/view/dimension-publisher/dimension-publisher-types';

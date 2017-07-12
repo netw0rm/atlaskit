@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "4.0.6",
+  "version": "5.0.0",
   "config": {
     "access": "public"
   },
@@ -12,7 +12,8 @@
     "name": "Avatar"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/avatar; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/avatar; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
   },
   "files": [
     "dist"
@@ -28,7 +29,9 @@
     "react": "^15.3.2"
   },
   "dependencies": {
+    "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/util-shared-styles": "^2.1.0",
+    "babel-plugin-react-flow-props-to-prop-types": "0.14.0",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"

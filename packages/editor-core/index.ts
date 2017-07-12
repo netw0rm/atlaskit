@@ -9,5 +9,3 @@
 // falls through to the `types` and `main` `package.json` fields.
 //
 export * from './src';
-
-// REMOVE ME: I'm just forcing a build of editor-core storybook

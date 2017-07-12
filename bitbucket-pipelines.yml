@@ -31,7 +31,7 @@ pipelines:
             # This was an optimization, running a single instance of jest across the repo.
             # Currently its causing OOM errors though, so we are reverting back to lerna jest
             # - ./node_modules/.bin/jest -c ./build/jest.config.js
-            - yarn run jest
+            - yarn run test/jest
             - run-p -ln "test" "test/base"
             - yarn run browserstack/tunnel/start
             - yarn run test/browserstack
@@ -66,7 +66,7 @@ pipelines:
           # This was an optimization, running a single instance of jest across the repo.
           # Currently its causing OOM errors though, so we are reverting back to lerna jest
           # - ./node_modules/.bin/jest -c ./build/jest.config.js
-          - yarn run jest
+          - yarn run test/jest
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
           - yarn run test/browserstack

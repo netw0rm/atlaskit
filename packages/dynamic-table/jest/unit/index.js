@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
-import { Pagination } from '@atlaskit/pagination';
+import { PaginationStateless } from '@atlaskit/pagination';
 import TableHead from '../../src/components/TableHead';
 import EmptyBody from '../../src/components/EmptyBody';
 import Body from '../../src/components/Body';
@@ -252,7 +252,7 @@ describe(name, () => {
       });
 
       it('onSetPage', () => {
-        wrapper.find(Pagination).find('button').at(1).simulate('click');
+        wrapper.find(PaginationStateless).find('button').at(1).simulate('click');
         expect(onSetPage.calledOnce).toBe(true);
         expect(onSetPage.calledWith(1)).toBe(true);
       });
@@ -270,7 +270,7 @@ describe(name, () => {
         />
       );
 
-      wrapper.find(Pagination).find('button').at(0).simulate('click');
+      wrapper.find(PaginationStateless).find('button').at(0).simulate('click');
 
       const bodyRows = wrapper.find('tbody tr');
       expect(bodyRows.length).toBe(2);

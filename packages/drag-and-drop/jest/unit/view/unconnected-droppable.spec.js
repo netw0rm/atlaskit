@@ -1,13 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
 import Droppable from '../../../src/view/droppable/droppable';
-import withContextOptions from '../with-context-options';
+import getContextOptions from '../../utils/get-context-options';
 import type { DroppableId } from '../../../src/types';
 import type { MapProps, OwnProps, Provided, StateSnapshot } from '../../../src/view/droppable/droppable-types';
 
@@ -60,7 +59,7 @@ const mountDroppable = ({
       <WrappedComponent provided={provided} snapshot={snapshot} />
       )}
   </Droppable>
-, withContextOptions);
+, getContextOptions());
 
 describe('Droppable - unconnected', () => {
   it('should provide the props to its children', () => {

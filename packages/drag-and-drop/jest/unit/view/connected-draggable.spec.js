@@ -1,14 +1,13 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import Draggable, { makeSelector } from '../../../src/view/draggable/connected-draggable';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import noImpact from '../../../src/state/no-impact';
-import withContextOptions from '../with-context-options';
+import getContextOptions from '../../utils/get-context-options';
 import type {
   CurrentDrag,
   Phase,
@@ -498,7 +497,7 @@ describe('Draggable - connected', () => {
     });
 
     it('should render the child function when the parent renders', () => {
-      const wrapper = mount(<App currentUser="Jake" />, withContextOptions);
+      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
 
       // initial render causes two renders due to setting child ref
       expect(Person.prototype.render.callCount).to.equal(2);
@@ -506,7 +505,7 @@ describe('Draggable - connected', () => {
     });
 
     it('should render the child function when the parent re-renders', () => {
-      const wrapper = mount(<App currentUser="Jake" />, withContextOptions);
+      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
 
       wrapper.update();
 
@@ -516,7 +515,7 @@ describe('Draggable - connected', () => {
     });
 
     it('should render the child function when the parents props changes that cause a re-render', () => {
-      const wrapper = mount(<App currentUser="Jake" />, withContextOptions);
+      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
 
       wrapper.setProps({
         currentUser: 'Finn',

@@ -55,8 +55,9 @@ export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?:
   if (!isMediaRepresentation(mediaRepresentation)) {
     return emoji;
   }
+  const { mediaPath, ...otherRep } = mediaRepresentation;
   const representation = {
-    ...emoji.representation,
+    ...otherRep,
     imagePath: newImagePath || mediaRepresentation.mediaPath,
   };
   return {

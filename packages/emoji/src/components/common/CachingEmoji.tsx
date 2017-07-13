@@ -87,7 +87,8 @@ export class CachingMediaEmoji extends PureComponent<EmojiProps,State> {
       loadedEmoji.then(cachedEmoji => {
         if (this.mounted) {
           this.setState({
-            cachedEmoji
+            cachedEmoji,
+            invalidImage: !cachedEmoji
           });
         }
       }).catch(err => {

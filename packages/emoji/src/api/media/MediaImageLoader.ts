@@ -31,7 +31,6 @@ export default class MediaImageLoader {
     this.tokenManager = tokenManager;
   }
 
-
   loadMediaImage(url: string): Promise<DataURL> {
     return new Promise((resolve, reject) => {
       this.mediaImageQueue.push({
@@ -41,6 +40,14 @@ export default class MediaImageLoader {
       });
       this.processFromQueue();
     });
+  }
+
+  getQueueSize() {
+    return this.mediaImageQueue.length;
+  }
+
+  getActiveDownloads() {
+    return this.activeProcessing;
   }
 
   private processFromQueue() {

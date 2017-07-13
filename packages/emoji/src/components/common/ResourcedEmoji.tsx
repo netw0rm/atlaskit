@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 import { EmojiContext } from './internal-types';
 import CachingEmoji from './CachingEmoji';
 import EmojiPlaceholder from './EmojiPlaceholder';
-import LoadingEmojiCompoent, { Props as LoadingProps } from './LoadingEmojiCompoent';
+import LoadingEmojiCompoent, { Props as LoadingProps, State as LoadingState } from './LoadingEmojiCompoent';
 import { EmojiId, OptionalEmojiDescription } from '../../types';
 import { isPromise } from '../../type-helpers';
 import EmojiProvider from '../../api/EmojiResource';
@@ -17,14 +17,13 @@ export interface BaseResourcedEmojiProps {
 }
 
 export interface Props extends BaseResourcedEmojiProps, LoadingProps {
-  emojiProvider: Promise<EmojiProvider>;
 }
 
 interface ComponentProps extends BaseResourcedEmojiProps {
   emojiProvider: EmojiProvider;
 }
 
-export interface State {
+export interface State extends LoadingState {
   emoji: OptionalEmojiDescription;
   loaded: boolean;
 }

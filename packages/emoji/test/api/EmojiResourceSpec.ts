@@ -7,7 +7,6 @@ import * as sinon from 'sinon';
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
-// import { customCategory } from '../../src/constants';
 import { EmojiDescription, EmojiServiceResponse, MediaApiRepresentation } from '../../src/types';
 import { SecurityOptions, ServiceConfig } from '../../src/api/SharedResourceUtils';
 import { OnProviderChange } from '../../src/api/SharedResources';
@@ -28,8 +27,6 @@ import {
     evilburnsEmoji,
     fetchSiteEmojiUrl,
     grinEmoji,
-    // loadedMediaEmoji,
-    // loadedMissingMediaEmoji,
     mediaEmoji,
     mediaEmojiImagePath,
     missingMediaEmoji,
@@ -51,7 +48,6 @@ global.URLSearchParams = URLSearchParams;
 const baseUrl = 'https://bogus/';
 const p1Url = 'https://p1/';
 const p2Url = 'https://p2/';
-// const p3Url = 'https://p3/';
 
 const defaultSecurityHeader = 'X-Bogus';
 
@@ -71,10 +67,6 @@ const provider1: ServiceConfig = {
 const provider2: ServiceConfig = {
   url: p2Url,
 };
-
-// const provider3: ServiceConfig = {
-//   url: p3Url,
-// };
 
 const defaultApiConfig: EmojiResourceConfig = {
   recordConfig: {
@@ -105,8 +97,6 @@ const checkEmoji = (expected: EmojiDescription, actual: EmojiDescription | undef
     expect(actual.shortName, `emoji #${idx}`).to.equal(expected.shortName);
   }
 };
-
-// const customEmoji = (emoji: EmojiDescription) => emoji.category === customCategory;
 
 class MockOnProviderChange implements OnProviderChange<EmojiSearchResult, any, undefined> {
   resultCalls: EmojiSearchResult[] = [];

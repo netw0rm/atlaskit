@@ -6,7 +6,7 @@ import TokenManager from './TokenManager';
 
 import { LRUCache } from 'lru-fast';
 
-interface EmojiCacheStrategy {
+export interface EmojiCacheStrategy {
   loadEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
   optimisticRendering(): boolean;
 }
@@ -15,7 +15,7 @@ interface EmojiCacheStrategy {
  * For browsers that support caching for resources
  * regardless of originally supplied headers (basically everything but Firefox).
  */
-class BrowserCacheStrategy implements EmojiCacheStrategy {
+export class BrowserCacheStrategy implements EmojiCacheStrategy {
   private cachedImageUrls: Map<string,EmojiDescription> = new Map<string,EmojiDescription>();
   private invalidImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
@@ -43,10 +43,10 @@ class BrowserCacheStrategy implements EmojiCacheStrategy {
       return undefined;
     }
 
-    return this.mediaImageLoader.loadMediaImage(mediaPath).then(dataURL => {
-      const loadedEmoji = convertMediaToImageEmoji(emoji, dataURL);
-      this.cachedImageUrls.set(mediaPath, loadedEmoji);
-      return loadedEmoji;
+    return this.mediaImageLoader.loadMediaImage(mediaPath).then(() => {
+      // Media is loaded, can use original URL now, so just return original emoji
+      this.cachedImageUrls.set(mediaPath, emoji);
+      return emoji;
     }).catch(err => {
       this.invalidImageUrls.add(mediaPath);
       return undefined;
@@ -61,7 +61,7 @@ class BrowserCacheStrategy implements EmojiCacheStrategy {
     return mediaImageLoader.loadMediaImage(mediaPath).then(dataURL =>
       // Image should be cached in browser, if supported it should be accessible from the cache by an <img/>
       // Try to load without via image to confirm this support (this fails in Firefox)
-      new Promise((resolve, reject) => {
+      new Promise<boolean>((resolve, reject) => {
         const img = new Image();
 
         img.addEventListener('load', () => {
@@ -90,7 +90,7 @@ const maxImageSize = 10000;
  * Images are still cached by the browser, but loading in asynchronous with
  * small delay noticable to the end user.
  */
-class MemoryCacheStrategy implements EmojiCacheStrategy {
+export class MemoryCacheStrategy implements EmojiCacheStrategy {
   private dataURLCache: LRUCache<string,EmojiDescription>;
   private invalidImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
@@ -122,12 +122,7 @@ class MemoryCacheStrategy implements EmojiCacheStrategy {
 
     // Not cached, load
     return this.mediaImageLoader.loadMediaImage(mediaPath).then(dataURL => {
-      if (!dataURL) {
-        this.invalidImageUrls.add(mediaPath);
-        return undefined;
-      }
       const loadedEmoji = convertMediaToImageEmoji(emoji, dataURL);
-
       if (dataURL.length <= maxImageSize) {
         // Only cache if not large than max size
         this.dataURLCache.put(mediaPath, loadedEmoji);
@@ -135,6 +130,9 @@ class MemoryCacheStrategy implements EmojiCacheStrategy {
         debug('No caching as image is too large', dataURL.length, dataURL.slice(0,15), emoji.shortName);
       }
       return loadedEmoji;
+    }).catch(err => {
+        this.invalidImageUrls.add(mediaPath);
+        return undefined;
     });
   }
 
@@ -151,9 +149,9 @@ class MemoryCacheStrategy implements EmojiCacheStrategy {
  * Otherwise, they are loaded and returned via a promise.
  */
 export default class MediaEmojiCache {
+  protected cache: EmojiCacheStrategy;
+  protected waitingInitUrls: string[] = [];
   private cacheLoading: Promise<EmojiCacheStrategy> | undefined;
-  private waitingInitUrls: string[] = [];
-  private cache: EmojiCacheStrategy;
   private mediaImageLoader: MediaImageLoader;
 
   constructor(tokenManager: TokenManager) {
@@ -193,15 +191,19 @@ export default class MediaEmojiCache {
     return emojiCache.optimisticRendering();
   }
 
-  private getCache(url: string): EmojiCacheStrategy | Promise<EmojiCacheStrategy> {
+  protected getCache(url: string): EmojiCacheStrategy | Promise<EmojiCacheStrategy> {
     if (this.cache) {
       return this.cache;
     }
     this.waitingInitUrls.push(url);
     if (!this.cacheLoading) {
-      this.cacheLoading = this.initCache();
-      this.cacheLoading.then(cache => {
+      this.cacheLoading = this.initCache().then(cache => {
         this.cache = cache;
+        this.cacheLoading = undefined;
+        return cache;
+      }).catch(err => {
+        this.cacheLoading = undefined;
+        throw err;
       });
     }
     return this.cacheLoading;
@@ -209,27 +211,19 @@ export default class MediaEmojiCache {
 
   private initCache(): Promise<EmojiCacheStrategy> {
     const url = this.waitingInitUrls.pop();
-    return new Promise((resolve, reject) => {
-      if (!url) {
-        reject('Unable to initialise cache based on provider url(s)');
-        return;
-      }
-      BrowserCacheStrategy.supported(url, this.mediaImageLoader)
-        .then(supported => {
-          this.waitingInitUrls = []; // clear
-          this.cacheLoading = undefined;
-          if (supported) {
-            resolve(new BrowserCacheStrategy(this.mediaImageLoader));
-          }
-          resolve(new MemoryCacheStrategy(this.mediaImageLoader));
-        }).catch(err => {
-          // Bad url, try next, if not reject
-          this.initCache().then(result => {
-            resolve(result);
-          }).catch(err => {
-            reject(err);
-          });
-        });
-    });
+    if (!url) {
+      return Promise.reject('Unable to initialise cache based on provided url(s)');
+    }
+    return BrowserCacheStrategy.supported(url, this.mediaImageLoader)
+      .then(supported => {
+        this.waitingInitUrls = []; // clear
+        this.cacheLoading = undefined;
+        if (supported) {
+          return new BrowserCacheStrategy(this.mediaImageLoader);
+        }
+        return new MemoryCacheStrategy(this.mediaImageLoader);
+      }).catch(err => {
+        return this.initCache();
+      });
   }
 }

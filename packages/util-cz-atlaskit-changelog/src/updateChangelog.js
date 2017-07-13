@@ -12,7 +12,7 @@ const fs = require('fs');
 const gitAddChangelogs = (pathNames) => {
   // we add all the changelogs in one `git add` command to prevent running multiple git operations
   // at once (very bad idea).
-  console.log(`Adding changelogs to current commit by running \`git add ${pathNames.join(' ')}\``);
+  console.log(`Adding changelogs to current commit by running \n\`git add ${pathNames.join(' ')}\``);
 
   return new Promise((resolve, reject) => {
     const spawned = spawn('git', ['add', ...pathNames]);
@@ -86,6 +86,8 @@ const splitText = (commitMessage) => {
   // We know that the array will need at least three items, so we escape if this
   // expectation is not met. The third line is always the affected packages.
   if (!parts[2]) return null;
+  // Breaking changes are denoted by a line of "BREAKING CHANGE:" then the actual change on the next
+  // lines.
   const breakingIndex = parts.indexOf('BREAKING CHANGE:');
 
   const issuesClosed = parts.find(e => e.includes('ISSUES CLOSED: '))
@@ -93,8 +95,8 @@ const splitText = (commitMessage) => {
     : '';
 
   // The information about a breaking change is provided on the next line
-  const breakingChange = breakingIndex >= 0 ? `* ${changeType}; ${parts[breakingIndex + 1]}${issuesClosed}\n` : '';
-  const change = `* ${changeType}; ${parts[0].split(/.*: /).join('')}${issuesClosed}\n`;
+  const breakingChange = breakingIndex >= 0 ? `* ${changeType}; ${parts[breakingIndex + 1]}\n` : '';
+  const change = `* ${changeType}; ${parts[0].replace(/^.*?: /, '')}${issuesClosed}\n`;
   const dirPaths = createPaths(parts[2]);
   return {
     dirPaths,

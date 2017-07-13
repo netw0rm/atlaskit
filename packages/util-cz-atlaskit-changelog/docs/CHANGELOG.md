@@ -3,7 +3,7 @@
 ## 1.2.0 (2017-07-13)
 
 
-## Unreleased
+## 1.2.1 (2017-07-13)
 
 * bug fix; fixes edge case when committing to more than one package at once
 * feature; write static changelog on npm commit command ([49fab52](https://bitbucket.org/atlassian/atlaskit/commits/49fab52))

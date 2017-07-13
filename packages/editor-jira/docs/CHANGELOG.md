@@ -3,7 +3,7 @@
 ## 18.2.3 (2017-07-13)
 
 
-## Unreleased
+## 18.2.3 (2017-07-13)
 
 * bug fix; re-releasing packages that failed previous release
 * fix; bump editor-core in all editor-* packages ([9814e09](https://bitbucket.org/atlassian/atlaskit/commits/9814e09))

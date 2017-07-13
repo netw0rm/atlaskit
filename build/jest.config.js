@@ -23,7 +23,7 @@ const { rootDir, tsConfigFile, testSetupDir } = (() => {
 module.exports = {
   rootDir,
 
-  testRegex: '\\/jest\\/unit\\/[^_].*\\.(j|t)sx?$',
+  testRegex: '\\/test\\/unit\\/[^_].*\\.(j|t)sx?$',
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   setupFiles: [`${testSetupDir}/jestSetup.js`],
 

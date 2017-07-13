@@ -1,6 +1,6 @@
 # @atlaskit/editor-hipchat
 
-## Unreleased
+## 4.14.1 (2017-07-13)
 
 
 * fix; bump editor-core in all editor-* packages ([9814e09](https://bitbucket.org/atlassian/atlaskit/commits/9814e09))

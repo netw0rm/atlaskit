@@ -1,6 +1,6 @@
 # @atlaskit/lozenge
 
-## Unreleased
+## 3.0.3 (2017-07-13)
 
 
 * fix; add prop-types as a dependency to avoid React 15.x warnings ([92598eb](https://bitbucket.org/atlassian/atlaskit/commits/92598eb))

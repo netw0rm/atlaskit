@@ -1,6 +1,6 @@
 # @atlaskit/eslint-config-tests
 
-## Unreleased
+## 2.1.4 (2017-07-13)
 
 
 * fix; update eslint config to use javascript, .eslintrc is deprecated ([ce7a5c5](https://bitbucket.org/atlassian/atlaskit/commits/ce7a5c5))

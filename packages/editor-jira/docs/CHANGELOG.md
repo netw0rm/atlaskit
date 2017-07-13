@@ -1,6 +1,6 @@
 # @atlaskit/editor-jira
 
-## Unreleased
+## 18.2.3 (2017-07-13)
 
 
 * fix; bump editor-core in all editor-* packages ([9814e09](https://bitbucket.org/atlassian/atlaskit/commits/9814e09))

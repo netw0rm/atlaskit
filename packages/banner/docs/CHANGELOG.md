@@ -1,6 +1,6 @@
 # @atlaskit/banner
 
-## Unreleased
+## 2.0.5 (2017-07-13)
 
 
 * fix; testing releasing more than 5 packages at a time ([e69b832](https://bitbucket.org/atlassian/atlaskit/commits/e69b832))

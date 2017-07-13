@@ -5,6 +5,7 @@
 
 ## Unreleased
 
+* bug fix; fixes bug where colons in messages cause changelog messages to get truncated (issues closed: ak-2989)
 * bug fix; fixes edge case when committing to more than one package at once
 * feature; write static changelog on npm commit command ([49fab52](https://bitbucket.org/atlassian/atlaskit/commits/49fab52))
 

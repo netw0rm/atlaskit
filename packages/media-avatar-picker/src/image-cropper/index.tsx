@@ -1,8 +1,9 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import {Component} from 'react';
-import {CircularMask, Container, DragOverlay, RectMask, Image} from './styled';
 import {isImageRemote} from '@atlaskit/media-core';
+import {CircularMask, Container, DragOverlay, RectMask, Image} from './styled';
+import {Dimensions} from '../image-navigator';
 
 export interface LoadParameters {
   export: () => string;
@@ -13,7 +14,7 @@ export type OnLoadHandler = (params: LoadParameters) => void;
 export interface ImageCropperProp {
   imageSource: string;
   scale?: number; // Value from 0 to 1
-  containerSize?: number;
+  containerDimensions?: Dimensions;
   isCircularMask?: boolean;
   top: number;
   left: number;
@@ -29,7 +30,6 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   private imageElement: HTMLImageElement;
 
   static defaultProps = {
-    containerSize: 200,
     isCircleMask: false,
     scale: defaultScale,
     onDragStarted: () => {},
@@ -56,15 +56,14 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   render() {
     const {
       isCircularMask,
-      containerSize,
       top,
       left,
       imageSource
     } = this.props;
-
+    const {containerDimensions} = this;
     const containerStyle = {
-      width: `${containerSize}px`,
-      height: `${containerSize}px`
+      width: `${containerDimensions.width}px`,
+      height: `${containerDimensions.height}px`
     };
 
     const width = this.width ? `${this.width}px` : 'auto';
@@ -90,12 +89,22 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
     return imageWidth ? imageWidth * (scale || defaultScale) : 0;
   }
 
+  private get containerDimensions() {
+    const {containerDimensions} = this.props;
+
+    return {
+      width: containerDimensions ? containerDimensions.width : 200,
+      height: containerDimensions ? containerDimensions.height : 200
+    };
+  }
+
   export = () : string => {
     let imageData = '';
     const containerPadding = 20;
     const canvas = document.createElement('canvas');
-    const {top, left, scale, containerSize} = this.props;
-    const size = containerSize || 0;
+    const {top, left, scale} = this.props;
+    const {containerDimensions} = this;
+    const size = containerDimensions.width || 0;
     const scaleWithDefault = scale || 1;
     const destinationSize = Math.max(size - containerPadding * 2, 0);
 

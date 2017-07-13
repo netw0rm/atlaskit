@@ -12,6 +12,10 @@ const imageSource = smallImage;
 const top = 10;
 const left = 20;
 const containerSize = 400;
+const containerDimensions = {
+  width: containerSize,
+  height: containerSize
+};
 const scale = 0.8;
 
 describe('Image cropper', () => {
@@ -28,7 +32,7 @@ describe('Image cropper', () => {
     const allProps: ImageCropperProp = {
       imageSource,
       scale,
-      containerSize,
+      containerDimensions,
       top,
       left,
       onDragStarted: onDragStartedSpy,

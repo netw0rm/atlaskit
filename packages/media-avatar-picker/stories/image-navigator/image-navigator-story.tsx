@@ -1,8 +1,9 @@
 /* tslint:disable:variable-name */
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import {tallImage, remoteImage} from '@atlaskit/media-test-helpers';
+import {tallImage, wideImage, remoteImage} from '@atlaskit/media-test-helpers';
 import {ImageNavigator} from '../../src';
+import {CoverWrapper, Image} from './styled';
 
 let onLoadParams;
 let imageElement;
@@ -10,35 +11,45 @@ let imageElement;
 const onLoad = (params) => {
   onLoadParams = params;
 };
+
 const exportImage = () => {
   const imageData = onLoadParams.export();
 
   imageElement.src = imageData;
 };
 
-function handleImgRef(img) {
+const handleImgRef = (img) => {
   imageElement = img;
-}
+};
 
 storiesOf('Image navigator', {})
-  .add('Local image', () => {
-    return <div>
-            <ImageNavigator imageSource={tallImage} onLoad={onLoad} />
-            <button onClick={exportImage}>Export</button>
-            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
-           </div>;
-  })
-  .add('Remote image', () => {
-    return <div>
-            <ImageNavigator imageSource={remoteImage} onLoad={onLoad} />
-            <button onClick={exportImage}>Export</button>
-            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
-           </div>;
-  })
-  .add('Uploader', () => {
-    return <div>
-            <ImageNavigator onLoad={onLoad} />
-            <button onClick={exportImage}>Export</button>
-            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
-           </div>;
-  });
+  .add('Local image', () => (
+    <div>
+      <ImageNavigator imageSource={tallImage} onLoad={onLoad} />
+      <button onClick={exportImage}>Export</button>
+      <Image src="" alt="" ref={handleImgRef} />
+    </div>
+  ))
+  .add('Auto width => cover image use case', () => (
+    <div>
+      <CoverWrapper>
+        <ImageNavigator imageSource={wideImage} containerWidth="auto" onLoad={onLoad} />
+      </CoverWrapper>
+      <button onClick={exportImage}>Export</button>
+      <Image src="" alt="" ref={handleImgRef} />
+    </div>
+  ))
+  .add('Remote image', () => (
+    <div>
+      <ImageNavigator imageSource={remoteImage} onLoad={onLoad} />
+      <button onClick={exportImage}>Export</button>
+      <Image src="" alt="" ref={handleImgRef} />
+    </div>
+  ))
+  .add('Uploader', () => (
+    <div>
+      <ImageNavigator onLoad={onLoad} />
+      <button onClick={exportImage}>Export</button>
+      <Image src="" alt="" ref={handleImgRef} />
+    </div>
+  ));

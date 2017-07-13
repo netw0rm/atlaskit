@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {Component} from 'react';
 import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
@@ -15,6 +16,12 @@ export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 export interface Props {
   imageSource?: string;
   onLoad?: OnLoadHandler;
+  containerWidth?: number | 'auto';
+}
+
+export interface Dimensions {
+  width: number;
+  height: number;
 }
 
 export interface Position {
@@ -33,6 +40,7 @@ export interface State {
   minScale?: number;
   fileImageSource?: string;
   isDroppingFile: boolean;
+  containerDimensions: Dimensions;
 }
 
 export class ImageNavigator extends Component<Props, State> {
@@ -46,7 +54,11 @@ export class ImageNavigator extends Component<Props, State> {
       isDragging: false,
       imageInitPos: {x: 0, y: 0},
       fileImageSource: '',
-      isDroppingFile: false
+      isDroppingFile: false,
+      containerDimensions: {
+        width: CONTAINER_SIZE,
+        height: CONTAINER_SIZE
+      }
     };
   }
 
@@ -58,6 +70,21 @@ export class ImageNavigator extends Component<Props, State> {
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
+  }
+
+  componentDidMount() {
+    const {containerWidth} = this.props;
+    const parent = ReactDOM.findDOMNode(this).parentElement;
+
+    if (containerWidth !== 'auto' || !parent) { return; }
+
+    const width = parent.getBoundingClientRect().width;
+    this.setState({
+      containerDimensions: {
+        width,
+        height: CONTAINER_SIZE
+      }
+    });
   }
 
   onMouseMove = (e) => {
@@ -94,12 +121,12 @@ export class ImageNavigator extends Component<Props, State> {
    * @param scale New scale in 0-100 format.
    */
   onScaleChange = (scale) => {
+    const {scale: oldScale, containerDimensions, imagePos} = this.state;
     const newScale = scale / 100;
-    const oldScale = this.state.scale;
     const scaleRelation = newScale / oldScale;
     const oldCenterPixel: Position = {
-      x: CONTAINER_SIZE / 2 - this.state.imagePos.x,
-      y: CONTAINER_SIZE / 2 - this.state.imagePos.y,
+      x: containerDimensions.width / 2 - imagePos.x,
+      y: containerDimensions.height / 2 - imagePos.y,
     };
     const newCenterPixel: Position = {
       x: scaleRelation * oldCenterPixel.x,
@@ -109,28 +136,31 @@ export class ImageNavigator extends Component<Props, State> {
     this.setState({
       scale: newScale,
       imagePos: {
-        x: CONTAINER_SIZE / 2 - newCenterPixel.x,
-        y: CONTAINER_SIZE / 2 - newCenterPixel.y,
+        x: containerDimensions.width / 2 - newCenterPixel.x,
+        y: containerDimensions.height / 2 - newCenterPixel.y,
       }
     });
   }
 
   onImageSize = (width, height) => {
+    const {containerDimensions} = this.state;
+
     this.setState({
       imageWidth: width,
       imageHeight: height,
       scale: this.calculateInitialScale(width, height),
-      minScale: (CONTAINER_SIZE / 2) / Math.max(width, height) * 100,
+      minScale: (containerDimensions.width / 2) / Math.max(width, height) * 100,
     });
   }
 
   calculateInitialScale(width: number, height: number): number {
-    if (width < CONTAINER_SIZE && height < CONTAINER_SIZE) {
+    const {containerDimensions} = this.state;
+    if (width < containerDimensions.width && height < containerDimensions.height) {
       return 1;
     } else if (width > height) {
-      return CONTAINER_SIZE / height;
+      return containerDimensions.height / height;
     } else {
-      return CONTAINER_SIZE / width;
+      return containerDimensions.width / width;
     }
   }
 
@@ -214,7 +244,8 @@ export class ImageNavigator extends Component<Props, State> {
       imageWidth,
       imagePos,
       scale,
-      minScale
+      minScale,
+      containerDimensions
     } = this.state;
 
     return (
@@ -223,7 +254,7 @@ export class ImageNavigator extends Component<Props, State> {
           scale={scale}
           imageSource={dataURI}
           imageWidth={imageWidth}
-          containerSize={CONTAINER_SIZE}
+          containerDimensions={containerDimensions}
           isCircularMask={false}
           top={imagePos.y}
           left={imagePos.x}

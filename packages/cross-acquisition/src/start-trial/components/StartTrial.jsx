@@ -16,14 +16,14 @@ export class StartTrialBase extends Component {
     this.startCheckingSite();
   }
 
+  componentWillUnmount() {
+    this.siteChecker.stop();
+  }
+
   startCheckingSite() {
     this.siteChecker.start((progress) => {
       this.setState({ progress });
     });
-  }
-
-  componentWillUnmount() {
-    this.siteChecker.stop();
   }
 
   render() {

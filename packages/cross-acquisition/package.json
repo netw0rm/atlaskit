@@ -11,16 +11,13 @@
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": ["dist", "src"],
   "dependencies": {
     "@atlaskit/avatar": "^4.0.5",
     "@atlaskit/button": "^3.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",
+    "@atlaskit/flag": "^3.0.0",
     "@atlaskit/icon": "^7.0.0",
-    "@atlaskit/inline-message": "^2.1.1",
     "@atlaskit/logo": "^3.1.0",
     "@atlaskit/modal-dialog": "^2.1.1",
     "@atlaskit/multi-select": "^6.2.0",
@@ -65,8 +62,5 @@
     "chai-as-promised": "^7.1.1",
     "fetch-mock": "^5.12.1"
   },
-  "keywords": [
-    "media",
-    "ui"
-  ]
+  "keywords": ["media", "ui"]
 }

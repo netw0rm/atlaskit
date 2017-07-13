@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Avatar from '@atlaskit/avatar';
 import Button from '@atlaskit/button';
-import InlineMessage from '@atlaskit/inline-message';
 import Select from '@atlaskit/multi-select';
 import Spinner from '@atlaskit/spinner';
 import ModalDialog from '@atlaskit/modal-dialog';
@@ -12,8 +11,8 @@ import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 
 import ProgressBar from './ProgressBar';
+import ErrorFlag from './ErrorFlag';
 
-import ErrorTextDiv from '../styled/ErrorTextDiv';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
@@ -197,15 +196,6 @@ export class GrantAccessBase extends Component {
             >
               Continue
             </Button>
-            {this.state.failedToGrantAccess &&
-              <InlineMessage
-                title="Something went wrong"
-                type="error"
-              >
-                <ErrorTextDiv>
-                  There was an issue granting access to the selected users. Please try again.
-                </ErrorTextDiv>
-              </InlineMessage>}
           </StartTrialFooter>
         }
       >
@@ -257,13 +247,15 @@ export class GrantAccessBase extends Component {
             : <GrantAccessDefaultAccessDiv>
               <GrantAccessTextDiv>
                 {React.isValidElement(defaultAccess)
-                  ? defaultAccess
-                  : <p>
-                    {defaultAccess}
-                  </p>}
+                    ? defaultAccess
+                    : <p>
+                      {defaultAccess}
+                    </p>}
               </GrantAccessTextDiv>
               <ChangeButton>
-                <Button onClick={this.handleChangeClick} appearance="link">Change...</Button>
+                <Button onClick={this.handleChangeClick} appearance="link">
+                    Change...
+                  </Button>
               </ChangeButton>
             </GrantAccessDefaultAccessDiv>}
 
@@ -280,6 +272,12 @@ export class GrantAccessBase extends Component {
             </InputLabel>
           </StartTrialProgressDiv>
         </StartTrialDialog>
+        <ErrorFlag
+          title="Oops... Something went wrong"
+          description="Let's try again."
+          showFlag={this.state.failedToGrantAccess}
+          onDismissed={() => this.setState({ failedToGrantAccess: false })}
+        />
       </ModalDialog>
     );
   }

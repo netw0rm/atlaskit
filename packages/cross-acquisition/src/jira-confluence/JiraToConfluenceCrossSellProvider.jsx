@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import { CrossSellProvider } from '../common/components/CrossSellProvider';
 
-import isUserTrusted from './isUserTrusted';
+import { isUserTrusted } from './tenantContext';
 import isConfluenceInstalledOrActivating from './isConfluenceInstalledOrActivating';
 import hasConfluenceBeenEvaluated from './hasConfluenceBeenEvaluated';
 import requestTrialAccess from './requestTrialAccess';
@@ -12,6 +12,7 @@ import cancelRequestTrialAccess from './cancelRequestTrialAccess';
 import startProductTrial from './startProductTrial';
 import cancelStartProductTrial from './cancelStartProductTrial';
 import grantAccessToUsers from './grantAccessToUsers';
+import retrieveJiraUsers from './retrieveJiraUsers';
 import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
 
@@ -89,6 +90,7 @@ export default class MockConfluenceCrossSellProvider extends Component {
       startProductTrial,
       cancelStartProductTrial,
       grantAccessToUsers,
+      retrieveJiraUsers,
       goToProduct,
       closeLoadingDialog,
     };

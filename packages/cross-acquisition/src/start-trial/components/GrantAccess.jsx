@@ -54,9 +54,11 @@ export class GrantAccessBase extends Component {
     continueButtonDisabled: PropTypes.bool,
     onComplete: PropTypes.func.isRequired,
     grantAccessToUsers: PropTypes.func,
+    retrieveJiraUsers: PropTypes.func,
   };
 
   static defaultProps = {
+    retrieveJiraUsers: () => Promise.resolve([{ items: [] }]),
     grantAccessToUsers: () => Promise.resolve(),
   };
 
@@ -69,6 +71,11 @@ export class GrantAccessBase extends Component {
     spinnerActive: this.props.spinnerActive,
     continueButtonDisabled: this.props.continueButtonDisabled,
     failedToGrantAccess: false,
+    selectItems: [{ items: [] }],
+  };
+
+  componentDidMount = () => {
+    this.props.retrieveJiraUsers().then(jiraUsers => this.setState({ selectItems: jiraUsers }));
   };
 
   handleContinueClick = () => {
@@ -156,19 +163,6 @@ export class GrantAccessBase extends Component {
   });
 
   render() {
-    // TODO: Populate with real users
-    const selectItems = [
-      {
-        items: [
-          this.createUserItem(1, 'online'),
-          this.createUserItem(2, 'online'),
-          this.createUserItem(3, 'busy', true),
-          this.createUserItem(4, 'offline'),
-          this.createUserItem(5, 'busy'),
-        ],
-      },
-    ];
-
     const {
       productLogo,
       heading,
@@ -241,7 +235,7 @@ export class GrantAccessBase extends Component {
                     this.userSelect = userSelect;
                   }}
                   id="userSelect"
-                  items={selectItems}
+                  items={this.state.selectItems}
                   placeholder={userSelectPlaceholder}
                   name="test"
                   onOpenChange={this.handleUserSelectOpen}
@@ -293,18 +287,22 @@ export class GrantAccessBase extends Component {
 
 export default withCrossSellProvider(
   GrantAccessBase,
-  ({ crossSell: { config: { productLogo, startTrial }, grantAccessToUsers } }) => ({
-    productLogo,
-    heading: startTrial.grantHeader,
-    defaultAccess: startTrial.grantDefaultAccess,
-    learnMoreLinkText: startTrial.grantLearnMoreLinkText,
-    notifyUsers: startTrial.grantNotifyUsers,
-    optionItems: startTrial.grantOptionItems,
-    userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,
-    usersOption: startTrial.grantUsersOption,
-    chooseOption: startTrial.grantChooseOption,
-    affectBill: startTrial.grantAffectBill,
-    defaultSelectedRadio: startTrial.grantDefaultSelectedRadio,
+  ({ crossSell: {
+    config: { productLogo, startTrial },
     grantAccessToUsers,
-  })
+    retrieveJiraUsers } }) => ({
+      productLogo,
+      heading: startTrial.grantHeader,
+      defaultAccess: startTrial.grantDefaultAccess,
+      learnMoreLinkText: startTrial.grantLearnMoreLinkText,
+      notifyUsers: startTrial.grantNotifyUsers,
+      optionItems: startTrial.grantOptionItems,
+      userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,
+      usersOption: startTrial.grantUsersOption,
+      chooseOption: startTrial.grantChooseOption,
+      affectBill: startTrial.grantAffectBill,
+      defaultSelectedRadio: startTrial.grantDefaultSelectedRadio,
+      grantAccessToUsers,
+      retrieveJiraUsers,
+    })
 );

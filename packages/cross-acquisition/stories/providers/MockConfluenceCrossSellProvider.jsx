@@ -80,6 +80,7 @@ export default class MockConfluenceCrossSellProvider extends Component {
       startProductTrial: notImplemented,
       cancelStartProductTrial: notImplemented,
       grantAccessToUsers: notImplemented,
+      retrieveJiraUsers: notImplemented,
       goToProduct: notImplemented,
       closeLoadingDialog: notImplemented,
     };

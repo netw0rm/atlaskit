@@ -51,6 +51,7 @@ export const crossSellShape = PropTypes.shape({
   startProductTrial: PropTypes.func,
   cancelStartProductTrial: PropTypes.func,
   grantAccessToUsers: PropTypes.func,
+  retrieveJiraUsers: PropTypes.func,
   goToProduct: PropTypes.func,
   closeLoadingDialog: PropTypes.func,
 });

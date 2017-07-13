@@ -39,6 +39,12 @@ const defaultProps = {
   affectBill: 'How will this affect my bill?',
   spinnerActive: false,
   continueButtonDisabled: false,
+  retrieveJiraUsers: () => Promise.resolve([{
+    items: [
+      { value: 'test2', content: 'test 2', description: 'test@example.com' },
+      { value: 'mtruong', content: 'michael truong', description: 'mtruong@example.com' },
+    ],
+  }]),
 };
 
 storiesOf('GrantAccess')

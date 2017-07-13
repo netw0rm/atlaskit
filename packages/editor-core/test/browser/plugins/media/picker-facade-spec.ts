@@ -119,6 +119,8 @@ describe('Media PickerFacade', () => {
     });
 
     it('respects dropzone container config', () => {
+      const dropzoneFacade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager!, errorReporter, mockPickerFactory);
+      expect(dropzoneFacade).to.be.an('object');
       expect(mockPicker.extraConfig).to.have.property('container',  dropzoneContainer);
     });
   });

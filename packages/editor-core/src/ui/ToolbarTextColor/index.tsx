@@ -101,10 +101,18 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
   }
 
   private handleOpenChange = ({isOpen}) => {
-    if (!isOpen) {
-      this.props.focusEditor();
+   if (!isOpen) {
+      const { $from } = this.props.editorView.state.selection;
+      const node = $from.node($from.depth);
+      if (!(node && node.attrs['isCodeMirror'])) {
+        this.props.focusEditor();
+      }
     } else {
-      this.props.softBlurEditor();
+      const { $from } = this.props.editorView.state.selection;
+      const node = $from.node($from.depth);
+      if (!(node && node.attrs['isCodeMirror'])) {
+        this.props.softBlurEditor();
+      }
     }
 
     this.setState({ isOpen });

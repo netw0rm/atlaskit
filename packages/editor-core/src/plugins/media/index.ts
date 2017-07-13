@@ -250,7 +250,6 @@ export class MediaPluginState {
    * inside of it
    */
   handleMediaNodeRemove = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
-    setNodeSelection(this.view, getPos());
     handleMediaNodeRemoval(this.view, node, getPos);
   }
 
@@ -429,9 +428,10 @@ export class MediaPluginState {
   }
 
   removeMediaNode = (): boolean => {
-    const { $from, node } = this.view.state.selection as NodeSelection;
+    const {view} = this;
+    const { from, node } = view.state.selection as NodeSelection;
     if (this.isMediaNodeSelection()) {
-      this.handleMediaNodeRemove(node, () => $from.pos);
+      handleMediaNodeRemoval(view, node, () => from);
       return true;
     }
     return false;

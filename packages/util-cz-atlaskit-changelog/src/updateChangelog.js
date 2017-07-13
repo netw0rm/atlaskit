@@ -9,9 +9,13 @@ const fs = require('fs');
 // `BREAKING CHANGE` line following will have the details
 // ISSUES CLOSED: We could link the related issue but I'm voting now
 
-const gitAddChangelog = pathName => (
-  new Promise((resolve, reject) => {
-    const spawned = spawn('git', ['add', pathName]);
+const gitAddChangelogs = (pathNames) => {
+  // we add all the changelogs in one `git add` command to prevent running multiple git operations
+  // at once (very bad idea).
+  console.log(`Adding changelogs to current commit by running \`git add ${pathNames.join(' ')}\``);
+
+  return new Promise((resolve, reject) => {
+    const spawned = spawn('git', ['add', ...pathNames]);
     spawned.on('exit', (code) => {
       if (code === 0) {
         resolve();
@@ -19,10 +23,8 @@ const gitAddChangelog = pathName => (
         reject(code);
       }
     });
-  })
-);
-
-const gitAddChangelogs = pathNames => Promise.all(pathNames.map(gitAddChangelog));
+  });
+};
 
 const updateChangelog = (pathName, text, dirPath, packageName) => {
   let currentChangelog;

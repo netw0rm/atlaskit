@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import getDraggablesInsideDroppable from '../../../src/state/get-draggables-inside-droppable';
 import getDimension from '../../utils/get-dimension-util';

@@ -1,5 +1,4 @@
 // @flow
-
 import { expect } from 'chai';
 import sinon from 'sinon';
 import middleware from '../../../src/state/hook-middleware';

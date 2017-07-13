@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { expect } from 'chai';
 // $ExpectError - not matching module
 import TestUtils from 'react-addons-test-utils';

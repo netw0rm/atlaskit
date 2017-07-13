@@ -6,8 +6,9 @@ import createStore from '../../src/state/create-store';
 
 // Not using this store - just putting it on the context
 // For any connected components that need it (eg DimensionPublisher)
-export default {
+export default () => ({
   context: {
+    // Each consumer will get their own store
     [storeKey]: createStore({ onDragEnd: () => { } }),
   },
   childContextTypes: {
@@ -17,4 +18,4 @@ export default {
       getState: PropTypes.func.isRequired,
     }).isRequired,
   },
-};
+});

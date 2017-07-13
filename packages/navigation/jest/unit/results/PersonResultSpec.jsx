@@ -4,48 +4,54 @@ import { PersonResult } from '../../../src/components/js/results';
 import { mountWithRootTheme } from '../_theme-util';
 
 describe('Person Result', () => {
+  let personResultWrapper;
+  beforeEach(() => {
+    personResultWrapper = mountWithRootTheme(
+      <PersonResult resultId="testPerson" type="person" name="test" />
+    );
+  });
+
   it('should render an avatar', () => {
-    expect(mountWithRootTheme(<PersonResult />)
-      .find(Avatar)).toHaveLength(1);
+    expect(personResultWrapper.find(Avatar)).toHaveLength(1);
   });
 
   it('should render name prop', () => {
     const name = 'Charlie Atlas';
-    expect(mountWithRootTheme(<PersonResult name={name} />)
-      .text()).toEqual(expect.stringContaining(name));
+    personResultWrapper.setProps({ name });
+    expect(personResultWrapper.text()).toEqual(expect.stringContaining(name));
   });
 
   it('should render mentionName prop prepended with an \'@\' (w/ default mentionPrefix)', () => {
-    const name = 'atlassian';
-    expect(mountWithRootTheme(<PersonResult mentionName={name} />)
-      .text()).toEqual(expect.stringContaining(`@${name}`));
+    const mentionName = 'atlassian';
+    personResultWrapper.setProps({ mentionName });
+    expect(personResultWrapper.text()).toEqual(expect.stringContaining(`@${mentionName}`));
   });
 
   it('should render mentionPrefix prepended to mentionName', () => {
-    const name = 'atlassian';
-    const prefix = '[at]';
-    expect(mountWithRootTheme(<PersonResult mentionPrefix={prefix} mentionName={name} />)
-      .text()).toEqual(expect.stringContaining(`${prefix}${name}`));
+    const mentionName = 'atlassian';
+    const mentionPrefix = '[at]';
+    personResultWrapper.setProps({ mentionName, mentionPrefix });
+    expect(personResultWrapper.text()).toEqual(expect.stringContaining(`${mentionPrefix}${mentionName}`));
   });
 
   it('should not render mentionPrefix if mentionName is not provided', () => {
-    const prefix = '[at]';
-    expect(mountWithRootTheme(<PersonResult mentionPrefix={prefix} />)
-      .text()).not.toEqual(expect.stringContaining(prefix));
+    const mentionPrefix = '[at]';
+    personResultWrapper.setProps({ mentionPrefix });
+    expect(personResultWrapper.text()).not.toEqual(expect.stringContaining(mentionPrefix));
   });
 
   it('should render presenceMessage if provided', () => {
-    const msg = 'Gone fishin\'';
-    expect(mountWithRootTheme(<PersonResult presenceMessage={msg} />)
-      .text()).toEqual(expect.stringContaining(msg));
+    const presenceMessage = 'Gone fishin\'';
+    personResultWrapper.setProps({ presenceMessage });
+    expect(personResultWrapper.text()).toEqual(expect.stringContaining(presenceMessage));
   });
 
   it('known presence states are still valid', () => {
-    expect(mountWithRootTheme(<PersonResult presenceState="online" />)
-      .find('Presence').find('svg')).toHaveLength(1);
-    expect(mountWithRootTheme(<PersonResult presenceState="offline" />)
-      .find('Presence').find('svg')).toHaveLength(1);
-    expect(mountWithRootTheme(<PersonResult presenceState="busy" />)
-      .find('Presence').find('svg')).toHaveLength(1);
+    personResultWrapper.setProps({ presenceState: 'online' });
+    expect(personResultWrapper.find('Presence').find('svg')).toHaveLength(1);
+    personResultWrapper.setProps({ presenceState: 'offline' });
+    expect(personResultWrapper.find('Presence').find('svg')).toHaveLength(1);
+    personResultWrapper.setProps({ presenceState: 'busy' });
+    expect(personResultWrapper.find('Presence').find('svg')).toHaveLength(1);
   });
 });

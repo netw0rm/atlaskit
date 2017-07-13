@@ -81,6 +81,7 @@ describe('hooks integration', () => {
   };
 
   beforeEach(() => {
+    requestAnimationFrame.reset();
     clock = sinon.useFakeTimers();
     hooks = {
       onDragStart: sinon.stub(),
@@ -91,6 +92,7 @@ describe('hooks integration', () => {
 
   afterEach(() => {
     clock.restore();
+    requestAnimationFrame.reset();
 
     // clean up any loose events
     wrapper.unmount();
@@ -134,7 +136,11 @@ describe('hooks integration', () => {
       clock.tick(10);
     };
 
-    const move = () => windowMouseMove(dragMove.x, dragMove.y + sloppyClickThreshold + 1);
+    const move = () => {
+      windowMouseMove(dragMove.x, dragMove.y + sloppyClickThreshold + 1);
+      // movements are scheduled with requestAnimationFrame
+      requestAnimationFrame.step();
+    };
 
     const stop = () => {
       windowMouseUp();

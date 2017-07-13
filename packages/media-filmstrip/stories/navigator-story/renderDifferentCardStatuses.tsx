@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Card, CardView} from '@atlaskit/media-card';
 import {createStorybookContext, genericLinkId} from '@atlaskit/media-test-helpers';
-import {FilmStripNavigator} from '../src';
+import {FilmStripNavigator} from '../../src';
 
 const context = createStorybookContext();
 

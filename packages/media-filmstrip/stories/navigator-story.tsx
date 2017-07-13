@@ -9,7 +9,8 @@ import {
   Spacer,
   LazyWrapper
 } from './styled';
-import filmstripNavigatorWithDifferentCardStatuses from './filmstripNavigatorWithDifferentCardStatuses';
+import renderEditableStory from './navigator-story/renderEditableStory';
+import renderDifferentCardStatuses from './navigator-story/renderDifferentCardStatuses';
 
 const context = createStorybookContext();
 
@@ -51,6 +52,7 @@ const onlyCards = (key?) => (
 );
 
 storiesOf('FilmStripNavigator', {})
+  .add('🍽 Make your own', renderEditableStory)
   .add('With a Card and CardView', () => getDefaultNavigator(false))
   .add('Only with Cards', () => onlyCards())
   .add('Lazy loading - No Overflow', () => {
@@ -81,4 +83,4 @@ storiesOf('FilmStripNavigator', {})
       </div>
     );
   })
-  .add('Different Card statuses', filmstripNavigatorWithDifferentCardStatuses);
+  .add('Different Card statuses', renderDifferentCardStatuses);

@@ -29,4 +29,14 @@ storiesOf('StartTrialLoading')
     setupStorybookAnalytics(
       <LoadingTimeBase {...defaultProps} analyticsId="growth.happy" progress={100} />
     )
+  )
+  .add('Show Loading dialog when timed out', () =>
+    setupStorybookAnalytics(
+      <LoadingTimeBase
+        {...defaultProps}
+        analyticsId="growth.happy"
+        progress={0}
+        confluenceTimedOut
+      />
+    )
   );

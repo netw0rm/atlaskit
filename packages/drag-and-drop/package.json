@@ -7,9 +7,10 @@
   "description": "Drag and drop building blocks - designed for lists",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/drag-and-drop; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/drag-and-drop",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

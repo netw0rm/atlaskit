@@ -7,12 +7,13 @@
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Tooltip"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tooltip; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/tooltip",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "types": "src/index.d.ts",

@@ -7,13 +7,14 @@
   "description": "A React component that is used to trigger events.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Button"
   },
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/button; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/button",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

@@ -190,7 +190,7 @@
     "storybook/single": "chalk -t '{yellow `yarn run storybook/single` is deprecated, use `yarn run storybook` instead}' && ./build/bin/storybook.single.sh",
     "storybook/static": "node --max_old_space_size=4096 ./node_modules/.bin/build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",
-    "test/base": "mocha --colors",
+    "test/base": "jest --testRegex=\"^$(pwd)/test/.*.js\"",
     "test/wc": "./build/bin/test.sh",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/wc/single": "./build/bin/test.single.sh",

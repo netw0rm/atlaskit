@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* bug fix; fixed strike mark for BB (issues closed: ed-2102)
 ## 39.1.1 (2017-07-12)
 
 ## 39.1.0 (2017-07-12)

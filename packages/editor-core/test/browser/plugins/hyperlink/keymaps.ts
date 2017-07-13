@@ -1,10 +1,12 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
   chaiPlugin, makeEditor, doc, p, a as link, sendKeyToPm, em,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -18,12 +20,15 @@ describe('hyperink - keymaps', () => {
     context('when possible link text is at the end', () => {
       context('when it does not contain a link', () => {
         it('converts possible link text to hyperlink', () => {
+          const trackEvent = sinon.spy();
+          analyticsService.trackEvent = trackEvent;
           const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')));
 
           sendKeyToPm(editorView, 'Enter');
 
           const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
           expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a), p()));
+          expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
         });
 
         it('preserves other mark', () => {
@@ -61,12 +66,15 @@ describe('hyperink - keymaps', () => {
 
   describe('Shift-Enter keypress', () => {
     it('converts possible link text to hyperlink', () => {
+      const trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
       const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')));
 
       sendKeyToPm(editorView, 'Shift-Enter');
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
       expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a)));
+      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
     });
   });
 });

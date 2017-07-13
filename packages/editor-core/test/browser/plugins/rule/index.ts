@@ -1,4 +1,5 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 
 import { browser } from '../../../../src/prosemirror';
@@ -7,6 +8,7 @@ import {
   chaiPlugin, doc, hr, makeEditor, p, sendKeyToPm
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -22,11 +24,14 @@ describe('rule', () => {
       // Need to unskip after ED-2305
       context.skip('when hits Shift-Cmd--', () => {
         it('calls splitCodeBlock', () => {
+          const trackEvent = sinon.spy();
+          analyticsService.trackEvent = trackEvent;
           const { editorView } = editor(doc(p('text{<>}')));
 
           sendKeyToPm(editorView, 'Shift-Cmd--');
 
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr));
+          expect(trackEvent.calledWith('atlassian.editor.format.horizontalrule.keyboard')).to.equal(true);
         });
       });
       context('when hits Escape', () => {

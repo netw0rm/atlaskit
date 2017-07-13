@@ -1,10 +1,12 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { default as blockTypePlugins, BlockTypeState } from '../../../../src/plugins/block-type';
 import {
   sendKeyToPm, blockquote, br, code_block, chaiPlugin, doc, h1, h2, h3, insertText, li, makeEditor, p, ul
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -13,6 +15,11 @@ describe('inputrules', () => {
     doc,
     plugins: blockTypePlugins(defaultSchema),
   });
+  let trackEvent;
+  beforeEach(() => {
+    trackEvent = sinon.spy();
+    analyticsService.trackEvent = trackEvent;
+  });
 
   describe('heading rule', () => {
     it('should convert "# " to heading 1', () => {
@@ -20,6 +27,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '# ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(h1()));
+      expect(trackEvent.calledWith('atlassian.editor.format.heading1.autoformatting')).to.equal(true);
     });
 
     it('should convert "# " to heading 1 inside list', () => {
@@ -41,6 +49,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '## ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(h2()));
+      expect(trackEvent.calledWith('atlassian.editor.format.heading2.autoformatting')).to.equal(true);
     });
 
     it('should not convert "## " to heading 1 when inside a code_block', () => {
@@ -55,9 +64,10 @@ describe('inputrules', () => {
 
       insertText(editorView, '### ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(h3()));
+      expect(trackEvent.calledWith('atlassian.editor.format.heading3.autoformatting')).to.equal(true);
     });
 
-    it('should not convert "### " to heading 1 when inside a code_block', () => {
+    it('should not convert "### " to heading 3 when inside a code_block', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '### ', sel);
@@ -71,6 +81,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '> ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
+      expect(trackEvent.calledWith('atlassian.editor.format.blockquote.autoformatting')).to.equal(true);
     });
 
     it('should convert "> " to a blockquote inside list', () => {
@@ -103,6 +114,7 @@ describe('inputrules', () => {
 
           insertText(editorView, '```', sel);
           expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello\nworld')));
+          expect(trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')).to.equal(true);
         });
       });
 

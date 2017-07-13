@@ -61,6 +61,7 @@ import {
   isSchemaWithTextColor,
   makeSchema,
 } from './schema';
+
 import { version, name } from './version';
 
 export { version };

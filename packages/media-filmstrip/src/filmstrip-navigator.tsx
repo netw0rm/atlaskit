@@ -1,6 +1,5 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import {Component, DragEvent as ReactDragEvent, DragEventHandler, WheelEvent} from 'react';
 import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight, FilmStripListItem} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
@@ -55,7 +54,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   private listWidth: number;
   private listElement: HTMLElement;
   private unmounted: boolean;
-  private childrenWidths: Array<number>;
+  childrenWidths: Array<number>;
 
   constructor(props) {
     super(props);
@@ -152,7 +151,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   private onWindowResize = (event) => {
-    const parent = ReactDOM.findDOMNode(this).parentElement;
+    const parent = this.listElement.parentElement;
     if (!parent || !this.allowNavigation) { return; }
 
     this.wrapperWidth = parent.getBoundingClientRect().width;
@@ -188,7 +187,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     return this.childrenWidths.length;
   }
 
-  private saveChildrenWidths(children: Array<HTMLElement>) {
+  saveChildrenWidths(children: Array<HTMLElement>) {
     this.childrenWidths = children.map((child, index) => {
       const width = child.clientWidth || 0;
       let padding: number = 2 * elementPadding;

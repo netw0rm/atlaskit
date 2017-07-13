@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import {
   MediaPluginState,
   mediaPluginFactory,
@@ -38,6 +39,17 @@ describe('media - keymaps', () => {
       sendKeyToPm(editorView, 'Mod-z');
 
       expect(pluginState.ignoreLinks).to.equal(true);
+    });
+  });
+
+  describe('Backspace keypress', () => {
+    it('calls media plugin state to remove media node', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')));
+      const removeMediaNodeSpy = sinon.spy(pluginState, 'removeMediaNode');
+
+      sendKeyToPm(editorView, 'Backspace');
+
+      expect(removeMediaNodeSpy.calledOnce).to.equal(true);
     });
   });
 });

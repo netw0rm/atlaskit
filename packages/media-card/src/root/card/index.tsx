@@ -93,7 +93,7 @@ export class Card extends Component<CardProps, {}> {
   }
 
   render() {
-    const {context, isLazy, appearance, resizeMode, ...otherProps} = this.props;
+    const {context, isLazy, appearance, resizeMode, identifier, ...otherProps} = this.props;
     const card = (
       <MediaCard
         {...otherProps}

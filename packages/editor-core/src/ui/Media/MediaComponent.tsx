@@ -1,11 +1,9 @@
 import * as React from 'react';
 import {
   Card,
-  CardEvent,
   CardStatus,
   CardView,
   CardDimensions,
-  MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
 
@@ -14,30 +12,32 @@ import {
   ContextFactory,
   Context,
   CardDelete,
-  CardClick,
   CardEventHandler,
   FileDetails,
   MediaProvider,
   MediaStateManager,
   MediaState,
-  UrlPreview
+  ImageResizeMode
 } from '@atlaskit/media-core';
 
 import { MediaAttributes } from '../../schema';
 import { EditorView, mediaStateKey } from '../../index';
 import { MediaPluginState } from '../../plugins/media';
+import { CardEventClickHandler } from '../Renderer';
 
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
   cardDimensions?: CardDimensions;
-  onClick?: CardEventHandler;
+  onClick?: CardEventClickHandler;
   onDelete?: CardEventHandler;
+  resizeMode?: ImageResizeMode;
 }
 
 export interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
+  linkCreateContext?: Context;
 }
 
 /**
@@ -131,51 +131,37 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleLinkCardViewClick(result: CardEvent) {
-    result.event.preventDefault();
-  }
-
   private renderLink() {
-    const { mediaProvider, viewContext } = this.state;
+    const { mediaProvider, linkCreateContext } = this.state;
     const { id, collection, cardDimensions, onDelete } = this.props;
-    const url = this.getLinkUrlFromId(id);
+    const url = id;
+    const otherProps: any = {};
 
-    if ( !mediaProvider || !viewContext ) {
-      const previewDetails = {
-        type: '',
-        url: '',
-        title: ' ... loading'
-      } as UrlPreview;
-
-      return <CardView
-        // CardViewProps
-        status="loading"
-        mediaItemType="link"
-        metadata={previewDetails}
-        dimensions={cardDimensions}
-
-        // SharedCardProps
-        onClick={this.handleLinkCardViewClick}
-      />;
+    if (!mediaProvider || !linkCreateContext) {
+      return null;
     }
 
-    const mediaIdentifier = {
-      mediaItemType: 'link',
-      id: id || '',
-      collectionName: collection || ''
-    } as MediaIdentifier;
+    linkCreateContext.getUrlPreviewProvider(url).observable().subscribe(
+      metadata => linkCreateContext.addLinkItem(url, collection, metadata)
+    );
 
-    const urlPreviewIdentifier = {
+    const identifier: UrlPreviewIdentifier = {
       mediaItemType: 'link',
-      url: url!
-    } as UrlPreviewIdentifier;
+      url
+    };
+
+    if (onDelete) {
+      otherProps.actions = [ CardDelete(onDelete) ];
+    }
 
     return (
       <Card
-        context={viewContext}
+        context={linkCreateContext}
         dimensions={cardDimensions}
-        identifier={id ? mediaIdentifier : urlPreviewIdentifier}
-        actions={[ CardDelete(onDelete!) ]}
+        identifier={identifier}
+        appearance="image"
+        resizeMode={this.resizeMode}
+        {...otherProps}
       />
     );
   }
@@ -184,7 +170,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { mediaProvider, viewContext } = this.state;
     const { id, cardDimensions } = this.props;
 
-    if ( !mediaProvider || !viewContext ) {
+    if (!mediaProvider || !viewContext) {
       return <CardView
         status="loading"
         mediaItemType="file"
@@ -202,6 +188,15 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   private renderPublicFile() {
     const { viewContext } = this.state;
     const { cardDimensions, collection, id, onDelete, onClick } = this.props;
+    const otherProps: any = {};
+
+    if (onDelete) {
+      otherProps.actions = [ CardDelete(onDelete) ];
+    }
+
+    if (onClick) {
+      otherProps.onClick = onClick;
+    }
 
     return (
       <Card
@@ -212,8 +207,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
           mediaItemType: 'file',
           collectionName: collection
         }}
-        actions={[ CardDelete(onDelete!), CardClick(onClick!) ]}
         selectable={false}
+        resizeMode={this.resizeMode}
+        {...otherProps}
       />
     );
   }
@@ -248,6 +244,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       mediaType: (thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')
     } as FileDetails;
 
+    const otherProps: any = {};
+    if (onDelete) {
+      otherProps.actions = [ CardDelete(onDelete) ];
+    }
+
     return <CardView
       // CardViewProps
       status={mapMediaStatusIntoCardStatus(state)}
@@ -259,7 +260,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       progress={progress}
 
       // SharedCardProps
-      actions={[ CardDelete(onDelete!) ]}
+      {...otherProps}
     />;
   }
 
@@ -296,7 +297,12 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       this.setState({ ...mediaState });
     }
 
-    let context = await mediaProvider.viewContext;
+    await this.setContext('viewContext', mediaProvider);
+    await this.setContext('linkCreateContext', mediaProvider);
+  }
+
+  private setContext = async (contextName: string, mediaProvider: MediaProvider) =>  {
+    let context = await mediaProvider[contextName];
     if ('clientId' in (context as ContextConfig)) {
       context = ContextFactory.create(context as ContextConfig);
     }
@@ -305,7 +311,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return;
     }
 
-    this.setState({ viewContext: context as Context });
+    this.setState({ [contextName as any]: context as Context });
   }
 
   getStateManagerFromEditorPlugin(editorView): MediaStateManager | undefined {
@@ -323,7 +329,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     return pluginState.stateManager;
   }
 
-  private getLinkUrlFromId(id: string) {
-    return id.split(/^temporary:(.*?)/)[2];
+  private get resizeMode(): ImageResizeMode {
+    const {resizeMode} = this.props;
+
+    return resizeMode || 'full-fit';
   }
 }

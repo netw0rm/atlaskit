@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import AkButton from '@atlaskit/button';
-import { fixtures, doc, p, makeEditor } from '../../../src/test-helper';
+import { doc, p, makeEditor } from '../../../src/test-helper';
 import ChromeExpanded from '../../../src/ui/ChromeExpanded';
 import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
 import LanguagePicker from '../../../src/ui/LanguagePicker';
@@ -20,10 +20,8 @@ const noop = () => {};
 describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
   describe('props', () => {
-    const fixture = fixtures();
     const editor = (doc: any) => makeEditor({
       doc,
-      place: fixture()
     });
 
     it('should render enabled save button by default', () => {
@@ -46,9 +44,9 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       const { editorView } = editor(doc(p()));
       const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} maxHeight={75} />);
 
-      const content = chrome.find(Content);
-      expect(!!content).to.equal(true);
-      const props = content.props();
+      const wrapper = chrome.find(Content).find('div').at(1);
+      expect(!!wrapper).to.equal(true);
+      const props = wrapper.props();
       expect(!!props['style']).to.equal(true);
       expect(props['style']!.maxHeight).to.equal('75px');
     });

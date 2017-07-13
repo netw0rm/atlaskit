@@ -1,6 +1,6 @@
 import { MediaAttributes } from '@atlaskit/editor-core/';
 import { nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import { checkParse, checkParseEncodeRoundTrips } from '../../test-helpers';
+import { checkParse, checkEncode, checkParseEncodeRoundTrips } from '../../test-helpers';
 import { name } from '../../package.json';
 import { JIRASchema, makeSchema } from '../../src/schema';
 
@@ -71,15 +71,19 @@ const fragment2 = `
 
 describe(name, () => {
   describe('media', () => {
-    checkParseEncodeRoundTrips('thumbnail type',
+    checkParseEncodeRoundTrips('thumbnail type (viewContext)',
       schema,
-      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
+      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
       doc(mediaGroup([
         media({
           id: '42', type: 'file', collection: '',
           __fileName: 'foo.png', __displayType: 'thumbnail'
         })
-      ]))
+      ])),
+      {},
+      {
+        viewContext: { serviceHost: 'HOST', clientId: 'CLIENT_ID', token: 'TOKEN', collection: '' }
+      }
     );
 
     checkParseEncodeRoundTrips('file type',
@@ -130,5 +134,30 @@ describe(name, () => {
       ]))
     );
 
+    checkParse('thumbnail type (uploadContext)',
+      schema,
+      ['<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=MediaServicesSample&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>'],
+      doc(mediaGroup([
+        media({
+          id: '42', type: 'file', collection: '',
+          __fileName: 'foo.png', __displayType: 'thumbnail'
+        })
+      ])),
+    );
+
+    checkEncode('thumbnail type (uploadContext)',
+      schema,
+      doc(mediaGroup([
+        media({
+          id: '42', type: 'file', collection: 'MediaServicesSample',
+          __fileName: 'foo.png', __displayType: 'thumbnail'
+        })
+      ])),
+      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=MediaServicesSample&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
+      {},
+      {
+        uploadContext: { serviceHost: 'HOST', clientId: 'CLIENT_ID', token: 'TOKEN', collection: 'MediaServicesSample' },
+      },
+    );
   });
 });

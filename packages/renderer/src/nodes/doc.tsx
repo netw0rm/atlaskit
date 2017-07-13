@@ -1,11 +1,6 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
+import { akColorN800 } from '@atlaskit/util-shared-styles';
+import styled from 'styled-components';
 
-export default class Doc extends PureComponent<{}, {}> {
-  render() {
-    const { props } = this;
-    return (
-      <div>{props.children}</div>
-    );
-  }
-}
+export default styled.div`
+  color: ${akColorN800};
+`;

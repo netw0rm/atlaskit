@@ -19,9 +19,10 @@ import { reactNodeViewPlugins } from '../plugins';
  * - `<>` -- a collapsed text selection
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
-export default (options: Options): EditorInstance => {
+export default <T> (options: Options): EditorInstance<T> => {
   const plugins: Plugin[] = [];
   const schema = options.schema || defaultSchema;
+  const fixture = document.body.appendChild(document.createElement('div'));
 
   if (options.plugin) {
     plugins.push(options.plugin);
@@ -42,7 +43,7 @@ export default (options: Options): EditorInstance => {
     schema: schema,
   }) as ProseMirrorWithRefs;
 
-  const editorView = new EditorView(options.place || document.body, {
+  const editorView = new EditorView(fixture, {
     state: editorState,
     nodeViews: options.nodeViews || {},
   });
@@ -65,13 +66,21 @@ export default (options: Options): EditorInstance => {
 
   const pluginStates = plugins.map((plugin) => plugin.getState(editorState));
 
+  afterEach(() => {
+    editorView.destroy();
+    plugins.forEach((plugin: any) => plugin.destroy! && plugin.destroy());
+    if (fixture && fixture.parentNode === document.body) {
+      document.body.removeChild(fixture);
+    }
+  });
+
   return {
     editorView,
     plugins,
     pluginStates: pluginStates,
     refs,
     plugin: plugins[0],
-    pluginState: plugins[0].getState(editorState),
+    pluginState: plugins[0].getState(editorState) as T,
     sel: refs['<>']
   };
 };
@@ -85,13 +94,12 @@ export interface Options {
   plugin?: Plugin;
   plugins?: Plugin[];
   nodeViews?: { [key: string]: any };
-  place?: HTMLElement;
   schema?: Schema<any, any>;
 }
 
-export interface EditorInstance {
+export interface EditorInstance<T> {
   editorView: EditorView;
-  pluginState: any;
+  pluginState: T;
   pluginStates: any[];
   plugin: Plugin;
   plugins: Plugin[];

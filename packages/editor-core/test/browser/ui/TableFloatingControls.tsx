@@ -2,14 +2,14 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
-import tablePlugins from '../../../src/plugins/table';
+import tablePlugins, { TableState } from '../../../src/plugins/table';
 import TableFloatingControls from '../../../src/ui/TableFloatingControls';
 import CornerControls from '../../../src/ui/TableFloatingControls/CornerControls';
 import ColumnControls from '../../../src/ui/TableFloatingControls/ColumnControls';
 import RowControls from '../../../src/ui/TableFloatingControls/RowControls';
 import InsertColumnButton from '../../../src/ui/TableFloatingControls/ColumnControls/InsertColumnButton';
 import InsertRowButton from '../../../src/ui/TableFloatingControls/RowControls/InsertRowButton';
-import ToolbarButton from '../../../src/ui/ToolbarButton';
+import AkButton from '@atlaskit/button';
 import {
   ColumnControlsButtonWrap,
   HeaderButton as ColumnControlsButton
@@ -20,18 +20,15 @@ import {
 } from '../../../src/ui/TableFloatingControls/RowControls/styles';
 
 import {
-  createEvent, doc, p, fixtures, makeEditor, table, tr, tdEmpty, tdCursor
+  createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
 } from '../../../src/test-helper';
 
 describe('TableFloatingControls', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const event = createEvent('event');
+  const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
-    place: fixture()
   });
-
-  const event = createEvent('event');
 
   context('when pluginState.tableElement is undefined', () => {
     it('should not render table header', () => {
@@ -80,7 +77,7 @@ describe('TableFloatingControls', () => {
       plugin.props.onFocus!(editorView, event);
       pluginState.updateToolbarFocused = sinon.spy();
       floatingControls.find(CornerControls).parent().simulate('mousedown');
-      expect(pluginState.updateToolbarFocused.calledOnce).to.equal(true);
+      expect((pluginState.updateToolbarFocused as any).calledOnce).to.equal(true);
       floatingControls.unmount();
     });
   });
@@ -94,7 +91,7 @@ describe('TableFloatingControls', () => {
       plugin.props.onFocus!(editorView, event);
       pluginState.updateToolbarFocused = sinon.spy();
       floatingControls.find(CornerControls).parent().simulate('blur');
-      expect(pluginState.updateToolbarFocused.calledOnce).to.equal(true);
+      expect((pluginState.updateToolbarFocused as any).calledOnce).to.equal(true);
       floatingControls.unmount();
     });
   });
@@ -143,8 +140,8 @@ describe('TableFloatingControls', () => {
           );
           plugin.props.onFocus!(editorView, event);
           floatingControls.find(ColumnControlsButton).at(column).find('button').first().simulate('click');
-          expect(pluginState.selectColumn.calledOnce).to.equal(true);
-          const { args } = pluginState.selectColumn.getCalls()[0];
+          expect((pluginState.selectColumn as any).calledOnce).to.equal(true);
+          const { args } = (pluginState.selectColumn as any).getCalls()[0];
           expect(args[0]).to.equal(column);
           floatingControls.unmount();
         });
@@ -181,8 +178,8 @@ describe('TableFloatingControls', () => {
           );
           plugin.props.onFocus!(editorView, event);
           floatingControls.find(RowControlsButton).at(row).find('button').first().simulate('click');
-          expect(pluginState.selectRow.calledOnce).to.equal(true);
-          const { args } = pluginState.selectRow.getCalls()[0];
+          expect((pluginState.selectRow as any).calledOnce).to.equal(true);
+          const { args } = (pluginState.selectRow as any).getCalls()[0];
           expect(args[0]).to.equal(row);
           floatingControls.unmount();
         });
@@ -195,14 +192,14 @@ describe('TableFloatingControls', () => {
       context(`when InsertColumnButton with index ${index} is clicked`, () => {
         it(`should call pluginState.insertColumn(${index})`, () => {
           const { pluginState } = editor(doc(p('text')));
-          pluginState.insertColumn = sinon.spy();
+          const insertColumnSpy = sinon.spy(pluginState, 'insertColumn');
           const wrapper = mount(
-            <InsertColumnButton index={index} insertColumn={pluginState.insertColumn} />
+            <InsertColumnButton index={index} insertColumn={insertColumnSpy} />
           );
           wrapper.setState({ hovered: true });
-          wrapper.find(ToolbarButton).simulate('click');
-          expect(pluginState.insertColumn.calledOnce).to.equal(true);
-          const { args } = pluginState.insertColumn.getCalls()[0];
+          wrapper.find(AkButton).simulate('click');
+          expect(insertColumnSpy.calledOnce).to.equal(true);
+          const { args } = (insertColumnSpy as any).getCalls()[0];
           expect(args[0]).to.equal(index);
           wrapper.unmount();
         });
@@ -215,14 +212,14 @@ describe('TableFloatingControls', () => {
       context(`when InsertRowButton with index ${index} is clicked`, () => {
         it(`should call pluginState.insertRow(${index})`, () => {
           const { pluginState } = editor(doc(p('text')));
-          pluginState.insertRow = sinon.spy();
+          const insertRowSpy = sinon.spy(pluginState, 'insertRow');
           const wrapper = mount(
-            <InsertRowButton index={index} insertRow={pluginState.insertRow} />
+            <InsertRowButton index={index} insertRow={insertRowSpy} />
           );
           wrapper.setState({ hovered: true });
-          wrapper.find(ToolbarButton).simulate('click');
-          expect(pluginState.insertRow.calledOnce).to.equal(true);
-          const { args } = pluginState.insertRow.getCalls()[0];
+          wrapper.find(AkButton).simulate('click');
+          expect(insertRowSpy.calledOnce).to.equal(true);
+          const { args } = (pluginState.insertRow as any).getCalls()[0];
           expect(args[0]).to.equal(index);
           wrapper.unmount();
         });

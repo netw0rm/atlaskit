@@ -38,6 +38,9 @@ export const escape = makeKeyMapWithCommon('Escape', 'Escape');
 export const nextCell = makeKeyMapWithCommon('Next cell', 'Tab');
 export const previousCell = makeKeyMapWithCommon('Previous cell', 'Shift-Tab');
 export const toggleTable = makeKeyMapWithCommon('Table', 'Shift-Alt-t');
+export const cut = makeKeyMapWithCommon('Cut', 'Mod-x');
+export const copy = makeKeyMapWithCommon('Copy', 'Mod-c');
+export const paste = makeKeyMapWithCommon('Paste', 'Mod-v');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import Spinner from '../src/index';
+
 /**
  * @description Spinner component with event handlers and state for use in storybook
  * It's state can either be spinning, completing or completed
@@ -46,14 +47,12 @@ export default class StatefulSpinner extends PureComponent {
     };
     return (
       <div>
-        <div style={containerStyles}>
-          <div onClick={this.handleSpinnerClick}>
-            <Spinner
-              isCompleting={!this.state.active}
-              onComplete={this.handleOnComplete}
-              delay={this.state.delay}
-            />
-          </div>
+        <div style={containerStyles} onClick={this.handleSpinnerClick}>
+          <Spinner
+            delay={this.state.delay}
+            isCompleting={!this.state.active}
+            onComplete={this.handleOnComplete}
+          />
           <label htmlFor="delayInput" style={labelStyles} >
             Delay
           </label>

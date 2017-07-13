@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-avatar-picker",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "config": {
     "access": "public"
   },
@@ -14,7 +14,8 @@
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
-    "validate/typescript": "../../build/bin/validate.typescript.sh"
+    "validate/typescript": "../../build/bin/validate.typescript.sh",
+    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
   },
   "files": [
     "dist",
@@ -26,6 +27,7 @@
     "@atlaskit/media-card": "^8.0.0",
     "@atlaskit/modal-dialog": "^1.2.15",
     "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/field-range": "^2.0.0",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },

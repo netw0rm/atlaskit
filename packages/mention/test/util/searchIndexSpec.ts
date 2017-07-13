@@ -85,6 +85,28 @@ describe('SearchIndex', () => {
       done();
     });
   });
+
+  it('should not search special mention on name', (done) => {
+    searchIndex.indexResults([
+      { id: 'all', name: 'All room members', mentionName: 'all', nickname: 'all', userType: 'SPECIAL' },
+    ]);
+
+    searchIndex.search('m').then(result => {
+      expect(result.mentions).to.have.lengthOf(0);
+      done();
+    });
+  });
+
+  it('should search special mention on nickname', (done) => {
+    searchIndex.indexResults([
+      { id: 'all', name: 'All room members', mentionName: 'all', nickname: 'all', userType: 'SPECIAL' },
+    ]);
+
+    searchIndex.search('a').then(result => {
+      expect(result.mentions).to.have.lengthOf(1);
+      done();
+    });
+  });
 });
 
 describe('Highlighter', () => {

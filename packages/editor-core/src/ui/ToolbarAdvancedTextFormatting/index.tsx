@@ -64,9 +64,17 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private onOpenChange = (attrs: any) => {
     // Hack for IE needed to prevent caret blinking above the opened dropdown.
     if (attrs.isOpen) {
-      this.props.softBlurEditor();
+      const { $from } = this.props.editorView.state.selection;
+      const node = $from.node($from.depth);
+      if (!(node && node.attrs['isCodeMirror'])) {
+        this.props.softBlurEditor();
+      }
     } else {
-      this.props.focusEditor();
+      const { $from } = this.props.editorView.state.selection;
+      const node = $from.node($from.depth);
+      if (!(node && node.attrs['isCodeMirror'])) {
+        this.props.focusEditor();
+      }
     }
 
     this.setState({
@@ -120,11 +128,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
         </DropdownMenu>
       );
     } else {
-      // span is a flex element
       return (
-        <span>
-          <div>{toolbarButtonFactory(true)}</div>
-        </span>
+        <div>{toolbarButtonFactory(true)}</div>
       );
     }
   }

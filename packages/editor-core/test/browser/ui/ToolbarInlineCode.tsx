@@ -2,19 +2,16 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
-import textFormattingPlugins from '../../../src/plugins/text-formatting';
+import textFormattingPlugins, { TextFormattingState } from '../../../src/plugins/text-formatting';
 import ToolbarInlineCode from '../../../src/ui/ToolbarInlineCode';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
-import { doc, p, makeEditor, fixtures } from '../../../src/test-helper';
+import { doc, p, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
-
-  const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<TextFormattingState>({
     doc,
     plugins: textFormattingPlugins(defaultSchema),
-    place: fixture()
   });
 
   it('should render disabled ToolbarButton if disabled property is true', () => {

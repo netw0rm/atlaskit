@@ -8,6 +8,7 @@ import { Chrome } from '../../';
 import blockTypePlugins, { stateKey as blockTypeStateKey } from '../../src/plugins/block-type';
 import clearFormattingPlugins, { stateKey as clearFormattingStateKey } from '../../src/plugins/clear-formatting';
 import codeBlockPlugins, { stateKey as codeBlockStateKey } from '../../src/plugins/code-block';
+import codeMirrorPlugins from '../../src/plugins/code-mirror';
 import panelPlugins, { stateKey as panelStateKey } from '../../src/plugins/panel';
 import textFormattingPlugins, { stateKey as textFormattingStateKey } from '../../src/plugins/text-formatting';
 import hyperlinkPlugins, { stateKey as hyperlinkStateKey } from '../../src/plugins/hyperlink';
@@ -234,6 +235,7 @@ export default class Editor extends PureComponent<Props, State> {
         emojiProvider={emojiProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
+        maxHeight={200}
       />
     );
   }
@@ -283,17 +285,20 @@ export default class Editor extends PureComponent<Props, State> {
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
           ...textColorPlugins(schema),
+          ...mediaPlugins,
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
-          // if converting is possible
+          // if converting is possible.
+          // it also needs to be after media plugin because of mod + z
+          // because it needs to ignore links detection if transaction is triggered by mod + z
           ...blockTypePlugins(schema),
           // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins -> panelPlugins
           // this is needed to ensure that all block types are supported inside lists
           // this is needed until we implement keymap proirity :(
           ...listsPlugins(schema),
           ...codeBlockPlugins(schema),
+          ...codeMirrorPlugins(schema),
           ...panelPlugins(schema),
-          ...mediaPlugins,
           ...tablePlugins(),
           ...reactNodeViewPlugins(schema),
           history(),

@@ -9,7 +9,7 @@ export const defaultSmallCardDimensions = {
 
 export const defaultImageCardDimensions = {
   width: 156,
-  height: 104
+  height: 116
 };
 
 export const defaultHorizontalCardDimensions = {

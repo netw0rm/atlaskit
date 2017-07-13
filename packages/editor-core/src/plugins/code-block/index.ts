@@ -12,6 +12,7 @@ import {
 import * as commands from '../../commands';
 import keymapPlugin from './keymaps';
 
+export type CodeMirrorFocusSubscriber = (uniqueId: string | undefined) => any;
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
 export type StateChangeHandler = (state: CodeBlockState) => any;
 
@@ -22,14 +23,16 @@ export class CodeBlockState {
   toolbarVisible: boolean = false;
   domEvent: boolean = false;
   uniqueId: string | undefined = undefined;
+  activeCodeBlock?: Node;
+  editorFocused: boolean = false;
 
   private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
-  private activeCodeBlock?: Node;
-  private editorFocused: boolean = false;
+  private focusHandlers: CodeMirrorFocusSubscriber[] = [];
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
+    this.focusHandlers = [];
     this.state = state;
   }
 
@@ -42,9 +45,22 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
+  subscribeFocusHandlers(cb: CodeMirrorFocusSubscriber) {
+    this.focusHandlers.push(cb);
+  }
+
+  unsubscribeFocusHandlers(cb: CodeMirrorFocusSubscriber) {
+    this.focusHandlers = this.focusHandlers.filter(ch => ch !== cb);
+  }
+
   updateLanguage(language: string | undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
       commands.setBlockType(view.state.schema.nodes.codeBlock, { language, uniqueId: this.uniqueId })(view.state, view.dispatch);
+      if (this.focusHandlers.length > 0) {
+        this.triggerFocus();
+      } else {
+        view.focus();
+      }
     }
   }
 
@@ -53,6 +69,7 @@ export class CodeBlockState {
     const { $from, $to } = state.selection;
     const range = $from.blockRange($to);
     dispatch(state.tr.delete(range!.start, range!.end));
+    view.focus();
   }
 
 
@@ -82,6 +99,10 @@ export class CodeBlockState {
 
   private triggerOnChange() {
     this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  private triggerFocus() {
+    this.focusHandlers.forEach(cb => cb(this.uniqueId));
   }
 
   private activeCodeBlockElement(docView: NodeViewDesc): HTMLElement {

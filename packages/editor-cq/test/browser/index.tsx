@@ -4,7 +4,6 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import {
   chaiPlugin,
-  fixtures,
   fromHTML,
   makeEditor,
   sendKeyToPm,
@@ -104,12 +103,18 @@ describe('@atlaskit/editor-cq', () => {
   });
 
   describe('ED-1410', () => {
-    const fixture = fixtures();
-    const editor = (doc: any) => makeEditor({
-      doc,
-      schema,
-      place: fixture()
-    });
+    const editor = (doc: any) => {
+      const ed = makeEditor({
+        doc,
+        schema
+      });
+
+      afterEach(() => {
+        ed.editorView.destroy();
+      });
+
+      return ed;
+    };
 
     it('should split heading when Enter is pressed', () => {
       const { editorView } = editor(doc(h1('text{<>}')));

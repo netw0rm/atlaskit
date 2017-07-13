@@ -83,6 +83,8 @@ export default class Button extends Component {
     theme: PropTypes.oneOf(['dark', 'default']),
     /** Set whether it is a button or a form submission. */
     type: PropTypes.oneOf(['button', 'submit']),
+    /** Option to fit button width to its parent width */
+    shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -93,6 +95,7 @@ export default class Button extends Component {
     tabIndex: null,
     theme: 'default',
     type: 'button',
+    shouldFitContainer: false,
   }
 
   state = {
@@ -152,6 +155,7 @@ export default class Button extends Component {
       children,
       iconBefore,
       iconAfter,
+      shouldFitContainer,
     } = this.props;
 
     const buttonProps = getButtonProps(this);
@@ -162,7 +166,7 @@ export default class Button extends Component {
 
     return (
       <StyledComponent {...buttonProps}>
-        <ButtonWrapper>
+        <ButtonWrapper fit={shouldFitContainer}>
           {iconBefore ? (
             <IconWrapper spacing={buttonProps.spacing} isOnlyChild={iconIsOnlyChild}>
               {iconBefore}

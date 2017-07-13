@@ -1,6 +1,6 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
-import { sortByRank, fixExcludes } from '../../../../src/editor/create-editor/create-editor';
+import { sortByRank, fixExcludes, createPMPlugins } from '../../../../src/editor/create-editor/create-editor';
 
 describe(name, () => {
   describe('create-editor', () => {
@@ -50,6 +50,18 @@ describe(name, () => {
         };
 
         expect(fixExcludes(marks)).to.deep.eq(result);
+      });
+    });
+
+    describe('#createPMPlugins', () => {
+      it('should not add plugin if its factory returns falsy value', () => {
+        const editorConfig = {
+          pmPlugins: [
+            { rank: 0, plugin: () => false },
+            { rank: 100, plugin: () => true }
+          ]
+        };
+        expect(createPMPlugins(editorConfig as any, {} as any, {} as any, {} as any, {} as any).length).to.eq(1);
       });
     });
   });

@@ -25,13 +25,13 @@ export const availablePanelType = [
 
 export class PanelState {
   private state: EditorState<any>;
-  private editorFocused: boolean = false;
   private activeNode: Node | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
 
   element?: HTMLElement | undefined;
   activePanelType?: string | undefined;
   toolbarVisible?: boolean | undefined;
+  editorFocused: boolean = false;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];

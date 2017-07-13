@@ -5,15 +5,15 @@ import { EditorView} from '../prosemirror';
 
 import ProviderFactory from '../providerFactory';
 
-import { EditorProps } from './types';
+import { EditorProps, UIComponentFactory } from './types';
 export * from './types';
 
 export interface State {
   editor?: {
     editorView?: EditorView;
-    contentComponents?: (() => React.ReactElement<any>)[];
-    primaryToolbarComponents?: (() => React.ReactElement<any>)[];
-    secondaryToolbarComponents?: (() => React.ReactElement<any>)[];
+    contentComponents?: UIComponentFactory[];
+    primaryToolbarComponents?: UIComponentFactory[];
+    secondaryToolbarComponents?: UIComponentFactory[];
   };
   component?: React.ComponentClass<any>;
 }
@@ -75,7 +75,10 @@ export default class Editor extends PureComponent<EditorProps, State> {
     return (
       <Component
         onUiReady={this.initEditor}
+
         editorView={editorView}
+        providerFactory={this.providerFactory}
+
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
         secondaryToolbarComponents={secondaryToolbarComponents}

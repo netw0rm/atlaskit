@@ -12,7 +12,7 @@ import {
 * NOTE: changing the width of the Navigation is considered a breaking change
 */
 
-export const gridSize = akGridSizeUnitless;
+export const gridSize: number = akGridSizeUnitless;
 
 export const layout = {
   padding: {
@@ -26,11 +26,12 @@ export const layout = {
 };
 
 export const globalItemSizes = {
-  small: 4 * akGridSizeUnitless,
-  medium: 5 * akGridSizeUnitless,
-  large: 6 * akGridSizeUnitless,
+  small: gridSize * 4,
+  medium: gridSize * 5,
+  large: gridSize * 6,
 };
 
+export const drawerOffset = gridSize * 2;
 export const globalOpenWidth = layout.width.closed;
 export const containerClosedWidth = globalOpenWidth;
 export const containerOpenWidth = 240;

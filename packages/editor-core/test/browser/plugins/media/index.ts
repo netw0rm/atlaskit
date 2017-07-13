@@ -11,24 +11,17 @@ import {
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
-
-  // nodeviews
-  nodeViewFactory,
-  ReactMediaGroupNode,
-  ReactMediaNode,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
-  blockquote,
   chaiPlugin,
-  code_block,
   doc,
   h1,
   makeEditor,
   mediaGroup,
   media,
-  fixtures,
   p,
+  a,
   storyMediaProviderFactory,
   randomId,
   sleep,
@@ -45,39 +38,20 @@ const getFreshResolvedProvider = () => {
 };
 
 describe('Media plugin', () => {
-  const fixture = fixtures();
   const resolvedProvider = getFreshResolvedProvider();
-  const testFileId = `temporary:${randomId()}`;
+  const temporaryFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();
   providerFactory.setProvider('mediaProvider', resolvedProvider);
 
-  const editor = (doc: any, uploadErrorHandler?: () => void) => {
-    const plugins = [
+  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
+    doc,
+    plugins: [
       ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
       history(),
-    ];
-
-    return makeEditor({
-      doc,
-      plugins,
-      schema: defaultSchema,
-      nodeViews: {
-        mediaGroup: nodeViewFactory(providerFactory, {
-          mediaGroup: ReactMediaGroupNode,
-          media: ReactMediaNode,
-        }, true),
-      },
-      place: fixture(),
-    });
-  };
-
-  const insertFile = (editorView: any, pluginState: MediaPluginState, id = testFileId) => {
-    const [node, transaction] = pluginState.insertFile({ id, status: 'uploading' }, testCollectionName);
-    editorView.dispatch(transaction);
-
-    return node;
-  };
+    ],
+    schema: defaultSchema
+  });
 
   const getNodePos = (pluginState: MediaPluginState, id: string) => {
     const mediaNodeWithPos = pluginState.findMediaNode(id);
@@ -90,139 +64,9 @@ describe('Media plugin', () => {
     providerFactory.destroy();
   });
 
-  it('allows change handler to be registered', () => {
-    const pluginState = editor(doc(p(''))).pluginState as MediaPluginState;
-    pluginState.subscribe(sinon.spy());
-  });
-
-  it(`should insert media node into the document after current paragraph node`, () => {
-    const { editorView, pluginState } = editor(doc(p('text{<>}')));
-
-    insertFile(editorView, pluginState);
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        p('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
-  });
-
-  it(`should insert media node into the document after current heading node`, () => {
-    const { editorView, pluginState } = editor(doc(h1('text{<>}')));
-
-    insertFile(editorView, pluginState);
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        h1('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
-  });
-
-  it(`should insert media node into the document after current blockquote node`, () => {
-    const { editorView, pluginState } = editor(doc(blockquote(p('text{<>}'))));
-
-    insertFile(editorView, pluginState);
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(blockquote(
-        p('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName }))
-      ))
-    );
-  });
-
-  it(`should insert media node into the document after current codeblock node`, () => {
-    const { editorView, pluginState } = editor(doc(code_block()('text{<>}')));
-
-    insertFile(editorView, pluginState);
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        code_block()('text'),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })
-      )
-    ));
-  });
-
-  it('should prepend media node to existing media group', () => {
-    const { editorView, pluginState } = editor(doc(
-      p('text{<>}'),
-      mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
-    ));
-
-    insertFile(editorView, pluginState, 'mock2');
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        p('text{<>}'),
-        mediaGroup(
-          media({ id: 'mock2', type: 'file', collection: testCollectionName }),
-          media({ id: testFileId, type: 'file', collection: testCollectionName }),
-        )
-      )
-    );
-  });
-
-  it('should prepend media group to empty paragraph in an empty document', () => {
-    const { editorView, pluginState } = editor(doc(p('{<>}')));
-
-    insertFile(editorView, pluginState);
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
-        p(),
-      )
-    );
-  });
-
-  it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
-    const { editorView, pluginState } = editor(doc(p('{<>}'), p()));
-
-    insertFile(editorView, pluginState);
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
-        p()
-      )
-    );
-  });
-
-  it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
-    const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
-
-    insertFile(editorView, pluginState);
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(
-        p(),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
-      )
-    );
-  });
-
-  it('should insert all media nodes on the same line', async () => {
-    const { editorView, pluginState } = editor(doc(p('{<>}')));
-
-    await resolvedProvider;
-    pluginState.handleNewMediaPicked({ id: 'mock2' });
-    pluginState.handleNewMediaPicked({ id: 'mock1' });
-
-    expect(editorView.state.doc).to.deep.equal(doc(
-      mediaGroup(
-        media({ id: 'mock1', type: 'file', collection: testCollectionName }),
-        media({ id: 'mock2', type: 'file', collection: testCollectionName }),
-      ),
-      p(),
-    ));
-  });
-
   it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
     const provider = await resolvedProvider;
     await provider.uploadContext;
 
@@ -235,19 +79,21 @@ describe('Media plugin', () => {
       'test.gif'
     );
 
-    expect(pluginState.binaryPicker!.upload.calledOnce).to.equal(true);
+    expect((pluginState.binaryPicker!.upload as any).calledOnce).to.equal(true);
+    collectionFromProvider.restore(); pluginState.destroy();
   });
 
   it('should call uploadErrorHandler on upload error', async () => {
     const handler = sinon.spy();
-    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
+    const { pluginState } = editor(doc(p(), p('{<>}')), handler);
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
     await resolvedProvider;
 
-    insertFile(editorView, pluginState);
+    pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
 
-    stateManager.updateState(testFileId, {
-      id: testFileId,
+    stateManager.updateState(temporaryFileId, {
+      id: temporaryFileId,
       status: 'error',
       error: {
         name: 'some-error',
@@ -257,46 +103,52 @@ describe('Media plugin', () => {
 
     expect(handler.calledOnce).to.eq(true, 'uploadErrorHandler should be called once per failed upload');
     expect(handler.calledWithExactly({
-      id: testFileId,
+      id: temporaryFileId,
       status: 'error',
       error: {
         name: 'some-error',
         description: 'something went wrong'
       }
     })).to.eq(true, 'uploadErrorHandler should be called with MediaState containing \'error\' status');
+    collectionFromProvider.restore(); pluginState.destroy();
   });
 
   it('should remove failed uploads from the document', async () => {
     const handler = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
     const provider = await resolvedProvider;
     await provider.uploadContext;
 
-    insertFile(editorView, pluginState);
+    pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
         p(),
-        mediaGroup(media({ id: testFileId, type: 'file', collection: testCollectionName })),
+        mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
+        p(),
       )
     );
 
-    stateManager.updateState(testFileId, {
-      id: testFileId,
+    stateManager.updateState(temporaryFileId, {
+      id: temporaryFileId,
       status: 'error'
     });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
+        p(),
         p()
       )
     );
+    collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
   });
 
   it('should cancel in-flight uploads after media item is removed from document', async () => {
     const spy = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), spy);
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
     const firstTemporaryFileId = `temporary:first`;
     const secondTemporaryFileId = `temporary:second`;
     const thirdTemporaryFileId = `temporary:third`;
@@ -306,9 +158,9 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    insertFile(editorView, pluginState, firstTemporaryFileId);
-    insertFile(editorView, pluginState, secondTemporaryFileId);
-    insertFile(editorView, pluginState, thirdTemporaryFileId);
+    pluginState.insertFile({ id: firstTemporaryFileId, status: 'uploading' });
+    pluginState.insertFile({ id: secondTemporaryFileId, status: 'uploading' });
+    pluginState.insertFile({ id: thirdTemporaryFileId, status: 'uploading' });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -318,6 +170,7 @@ describe('Media plugin', () => {
           media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
+        p(),
       )
     );
 
@@ -353,6 +206,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
+        p(),
       )
     );
 
@@ -367,10 +221,12 @@ describe('Media plugin', () => {
       id: secondTemporaryFileId,
       status: 'cancelled'
     })).to.eq(true, 'State Manager should emit "cancelled" status');
+    collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
   });
 
   it('should not revert to temporary media nodes after upload finished and we undo', async () => {
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
     const tempFileId = `temporary:${randomId()}`;
     const publicFileId = `${randomId()}`;
 
@@ -379,7 +235,7 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    insertFile(editorView, pluginState, tempFileId);
+    pluginState.insertFile({ id: tempFileId, status: 'uploading' });
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -387,6 +243,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({ id: tempFileId, type: 'file', collection: testCollectionName }),
         ),
+        p(),
       )
     );
 
@@ -408,6 +265,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({ id: publicFileId, type: 'file', collection: testCollectionName }),
         ),
+        p(),
       )
     );
 
@@ -421,6 +279,7 @@ describe('Media plugin', () => {
         p(),
       )
     );
+    collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
   });
 
   it('should set new pickers exactly when new media provider is set', async () => {
@@ -428,9 +287,9 @@ describe('Media plugin', () => {
     expect(pluginState.pickers).to.have.length(0);
 
     const mediaProvider1 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    pluginState.setMediaProvider(mediaProvider1);
     const mediaProvider2 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    pluginState.setMediaProvider(mediaProvider2);
 
     const resolvedMediaProvider1 = await mediaProvider1;
     const resolvedMediaProvider2 = await mediaProvider2;
@@ -445,14 +304,14 @@ describe('Media plugin', () => {
     expect(pluginState.pickers).to.have.length(0);
 
     const mediaProvider1 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
     const pickersAfterMediaProvider1 = pluginState.pickers;
     expect(pickersAfterMediaProvider1).to.have.length(4);
 
     const mediaProvider2 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
     const pickersAfterMediaProvider2 = pluginState.pickers;
@@ -468,7 +327,7 @@ describe('Media plugin', () => {
     expect(pluginState.pickers).to.have.length(0);
 
     const mediaProvider1 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider1);
+    pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
@@ -477,12 +336,12 @@ describe('Media plugin', () => {
     });
 
     const mediaProvider2 = getFreshResolvedProvider();
-    (pluginState as MediaPluginState).setMediaProvider(mediaProvider2);
+    pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
 
     pluginState.pickers.forEach(picker => {
-      expect(picker.setUploadParams.calledOnce).to.equal(true);
+      expect((picker.setUploadParams as any).calledOnce).to.equal(true);
     });
   });
 
@@ -510,13 +369,13 @@ describe('Media plugin', () => {
       });
 
       const pos = getNodePos(pluginState, 'foo');
-      (pluginState as MediaPluginState).handleMediaNodeRemove(mediaNode, () => pos);
+      pluginState.handleMediaNodeRemove(mediaNode, () => pos);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
-        )
-      ));
+          )
+        ));
     });
   });
 
@@ -524,10 +383,10 @@ describe('Media plugin', () => {
     const { editorView, pluginState } = editor(doc(p('')));
     await resolvedProvider;
 
-    pluginState.handleNewMediaPicked({ id: 'foo' });
+    pluginState.insertFile({ id: 'foo' });
     expect(editorView.hasFocus()).to.be.equal(true);
 
-    pluginState.handleNewMediaPicked({ id: 'bar' });
+    pluginState.insertFile({ id: 'bar' });
     expect(editorView.state.doc).to.deep.equal(
       doc(
         mediaGroup(
@@ -541,14 +400,97 @@ describe('Media plugin', () => {
 
   it(`should copy optional attributes from MediaState to Node attrs`, () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
+    const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-    const [node, transaction] = pluginState.insertFile({
-      id: testFileId, status: 'uploading', fileName: 'foo.png', fileSize: 1234, fileMimeType: 'image/png'
-    }, testCollectionName);
-    editorView.dispatch(transaction);
+    pluginState.insertFile({
+      id: temporaryFileId, status: 'uploading', fileName: 'foo.png', fileSize: 1234, fileMimeType: 'image/png'
+    });
 
-    expect(node.attrs.__fileName).to.equal('foo.png');
-    expect(node.attrs.__fileSize).to.equal(1234);
-    expect(node.attrs.__fileMimeType).to.equal('image/png');
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        mediaGroup(
+          media({
+            id: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+            __fileName: 'foo.png',
+            __fileSize: 1234,
+            __fileMimeType: 'image/png'
+          }),
+        ),
+        p(),
+      ),
+    );
+    collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
+  });
+
+
+  describe('detectLinkRangesInSteps', () => {
+    const link1 = a({ href: 'www.google.com' })('google');
+    const link2 = a({ href: 'www.baidu.com' })('baidu');
+
+    context('when ignore links flag is set to true', () => {
+      it('does not detect any links', () => {
+        const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+        const { state } = editorView;
+        const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+        pluginState.ignoreLinks = true;
+        pluginState.allowsLinks = true;
+
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
+
+        expect(linksRanges).to.deep.equal([]);
+      });
+
+      it('resets ignore links flag to false', () => {
+        const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+        const { state } = editorView;
+        const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+        pluginState.ignoreLinks = true;
+        pluginState.allowsLinks = true;
+
+        pluginState.detectLinkRangesInSteps(tr);
+
+        expect(pluginState.ignoreLinks).to.equal(false);
+      });
+    });
+
+    context('when ignore links flag is set to false', () => {
+      it('sets ranges with links', () => {
+        const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+        const { state } = editorView;
+        const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+        pluginState.ignoreLinks = false;
+        pluginState.allowsLinks = true;
+
+        pluginState.detectLinkRangesInSteps(tr);
+
+        expect((pluginState as any).linkRanges).to.deep.equal([
+          { start: sel, end: sel, urls: ['www.google.com', 'www.baidu.com'] }
+        ]);
+      });
+    });
+  });
+
+  describe('insertLinks', () => {
+    it('creates a link card below where is the link created', () => {
+      const link = 'www.google.com';
+      const { editorView, pluginState, sel } = editor(doc(p(`${link} {<>}`)));
+      const collectionFromProviderSpy = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
+
+      // way to stub private member
+      (pluginState as any).linkRanges = [{ start: sel - link.length - 1, end: sel, urls: [link] }];
+
+      // -1 for space, simulate the scenario of autoformatting link
+      pluginState.insertLinks();
+
+      expect(editorView.state.doc).to.deep.equal(doc(
+        p(`${link} `),
+        mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
+        p(),
+      ));
+
+      collectionFromProviderSpy.restore();
+    });
   });
 });

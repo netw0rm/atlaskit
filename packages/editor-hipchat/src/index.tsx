@@ -445,5 +445,4 @@ export default class Editor extends PureComponent<Props, State> {
       debounced = setTimeout(() => { onChange(); }, 200);
     }
   }
-
 }

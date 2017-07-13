@@ -109,7 +109,7 @@ export default class Collab extends PureComponent<Props, State> {
      .sort(userId => userId === clientID ? 1 : -1)
      .map(userId => {
       const user = users[userId];
-      const isInactive = user.lastActive < now - 5 * 60 * 1000;
+      const isInactive = !user.isActive || user.lastActive < now - 5 * 60 * 1000;
 
       if (isInactive) {
         inactiveCount++;

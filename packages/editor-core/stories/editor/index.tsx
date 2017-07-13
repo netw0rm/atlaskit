@@ -304,12 +304,13 @@ export default class Editor extends PureComponent<Props, State> {
           history(),
           keymap(baseKeymap) // should be last :(
         ]
-      }, !!this.props.collaborative).then(editorState => {
+      }, !!this.props.collaborative).then(({ editorState, onDispatch }) => {
         const editorView = new EditorView(place, {
           state: editorState,
           dispatchTransaction: tr => {
-            const newState = editorView.state.apply(tr);
-            editorView.updateState(newState);
+            onDispatch(tr, editorView);
+            // const newState = editorView.state.apply(tr);
+            // editorView.updateState(newState);
             this.handleChange();
           }
         });

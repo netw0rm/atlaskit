@@ -22,16 +22,16 @@ export default function sendKeyToPm(editorView: EditorView, keys: string, keyCod
   const event = new CustomEvent('keydown', {
     bubbles: true,
     cancelable: true,
-  });
+  }) as any;
 
-  (event as any).key = key.replace(/Space/g, ' ');
-  (event as any).shiftKey = shiftKey;
-  (event as any).altKey = altKey;
-  (event as any).ctrlKey = ctrlKey || (!browser.mac && modKey);
-  (event as any).metaKey = cmdKey || (browser.mac && modKey);
-  (event as any).keyCode = code;
-  (event as any).which = code;
-  (event as any).view = window;
+  event.shiftKey = shiftKey;
+  event.altKey = altKey;
+  event.ctrlKey = ctrlKey || (!browser.mac && modKey);
+  event.metaKey = cmdKey || (browser.mac && modKey);
+  event.keyCode = code;
+  event.charCode = 0;
+  event.which = code;
+  event.view = window;
 
   (editorView as TestingEditorView).dispatchEvent(event);
 }

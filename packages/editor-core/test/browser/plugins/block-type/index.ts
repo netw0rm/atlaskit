@@ -362,7 +362,7 @@ describe('block-type', () => {
   describe('keymap', () => {
     if (browser.mac) {
       context('when on a Mac', () => {
-        context('when hits Cmd-Alt-º', () => {
+        context('when hits Cmd-Alt-0', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(h1('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-º', 48);
@@ -370,7 +370,7 @@ describe('block-type', () => {
           });
         });
 
-        context('when hits Cmd-Alt-¡', () => {
+        context('when hits Cmd-Alt-1', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-¡', 49);
@@ -378,7 +378,7 @@ describe('block-type', () => {
           });
         });
 
-        context('when hits Cmd-Alt-™', () => {
+        context('when hits Cmd-Alt-2', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-™', 50);
@@ -386,7 +386,7 @@ describe('block-type', () => {
           });
         });
 
-        context('when hits Cmd-Alt-£', () => {
+        context('when hits Cmd-Alt-3', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-£', 51);
@@ -394,7 +394,7 @@ describe('block-type', () => {
           });
         });
 
-        context('when hits Cmd-Alt-¢', () => {
+        context('when hits Cmd-Alt-4', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-¢', 52);
@@ -402,7 +402,7 @@ describe('block-type', () => {
           });
         });
 
-        context('when hits Cmd-Alt-∞', () => {
+        context('when hits Cmd-Alt-5', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-∞', 53);
@@ -410,7 +410,7 @@ describe('block-type', () => {
           });
         });
 
-        context('when hits Cmd-Alt-¶', () => {
+        context('when hits Cmd-Alt-7', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-¶', 55);
@@ -419,7 +419,7 @@ describe('block-type', () => {
           });
         });
 
-        context('when hits Cmd-Alt-•', () => {
+        context('when hits Cmd-Alt-8', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             const code = code_block({ language: null });
@@ -429,7 +429,7 @@ describe('block-type', () => {
           });
         });
 
-        context('when hits Cmd-Alt-ª', () => {
+        context('when hits Cmd-Alt-9', () => {
           it('toggles panel', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-ª', 57);

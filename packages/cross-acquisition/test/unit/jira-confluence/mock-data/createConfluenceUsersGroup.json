@@ -1,0 +1,18 @@
+{
+  "name": "confluence-users",
+  "description": "",
+  "type": "GROUP",
+  "active": true,
+  "isUnmodifiable": false,
+  "isLastAdminGroup": false,
+  "link": {
+    "href": "https://atl-grow-mtruong-devdeploy.jira-dev.com/rest/um/1/group?groupname=confluence-users",
+    "rel": "self"
+  },
+  "lozenges": [],
+  "unmodifiable": false,
+  "lastAdminGroup": false,
+  "isDefaultGroup": false,
+  "isClosedTeam": false,
+  "isOpenTeam": false
+}

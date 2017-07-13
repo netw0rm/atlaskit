@@ -15,7 +15,7 @@ import {
   wideImage,
   wideTransparentImage
 } from '@atlaskit/media-test-helpers';
-import {MediaItemDetails, ImageResizeMode} from '@atlaskit/media-core';
+import {MediaItemDetails, ImageResizeMode, MediaItemType} from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
 import Slider from '@atlaskit/field-range';
 import {CardView} from '../../src/root/cardView';
@@ -38,6 +38,10 @@ const metadataOptions = [
   { value: 'fileDoc', label: 'File doc' },
   { value: 'fileUnknown', label: 'File unknown' },
   { value: 'genericLink', label: 'Link generic' }
+];
+const mediaItemTypeOptions = [
+  { value: 'file', label: 'File', defaultSelected: true },
+  { value: 'link', label: 'Link' },
 ];
 const dataURIOptions = [
   { value: gifDataUri, label: 'Gif', defaultSelected: true },
@@ -77,6 +81,7 @@ export const generateStoriesForEditableCards = () => {
     selectable: boolean;
     selected: boolean;
     resizeMode: ImageResizeMode;
+    mediaItemType: MediaItemType;
   }
 
   class EditableCard extends Component<EditableCardProps, EditableCardState> {
@@ -98,12 +103,13 @@ export const generateStoriesForEditableCards = () => {
         menuActions: actions,
         selectable: false,
         selected: false,
-        resizeMode: 'crop'
+        resizeMode: 'crop',
+        mediaItemType: 'file'
       };
     }
 
     render() {
-      const {appearance, status, dataURI, dimensions, metadata, menuActions, progress, selectable, selected, resizeMode} = this.state;
+      const {appearance, status, dataURI, dimensions, metadata, menuActions, progress, selectable, selected, resizeMode, mediaItemType} = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
 
@@ -162,6 +168,11 @@ export const generateStoriesForEditableCards = () => {
                 onRadioChange={this.onMetadataChange}
               />
               <FieldRadioGroup
+                label="MediaItemType"
+                items={mediaItemTypeOptions}
+                onRadioChange={this.onMediaItemTypeChange}
+              />
+              <FieldRadioGroup
                 label="URI"
                 items={dataURIOptions}
                 onRadioChange={this.onDataURIChange}
@@ -186,6 +197,7 @@ export const generateStoriesForEditableCards = () => {
               appearance={appearance}
               status={status}
               metadata={metadata}
+              mediaItemType={mediaItemType}
               dataURI={dataURI}
               dimensions={dimensions}
               actions={menuActions}
@@ -225,6 +237,11 @@ export const generateStoriesForEditableCards = () => {
     onAppearanceChange = (e) => {
       const appearance = e.target.value;
       this.setState({appearance});
+    }
+
+    onMediaItemTypeChange = (e) => {
+      const mediaItemType = e.target.value;
+      this.setState({mediaItemType});
     }
 
     onMetadataChange = (e) => {

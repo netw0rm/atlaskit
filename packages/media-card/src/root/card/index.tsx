@@ -81,21 +81,26 @@ export class Card extends Component<CardProps, {}> {
 
   get placeholder(): JSX.Element {
     const {appearance, dimensions} = this.props;
+
     return (
-      <CardView status="loading" appearance={appearance} dimensions={dimensions}/>
+      <CardView
+        status="loading"
+        appearance={appearance}
+        dimensions={dimensions}
+        mediaItemType={this.mediaItemType}
+      />
     );
   }
 
   render() {
-    const {context, identifier, isLazy, appearance, resizeMode, ...otherProps} = this.props;
-    const {mediaItemType} = identifier;
+    const {context, isLazy, appearance, resizeMode, ...otherProps} = this.props;
     const card = (
       <MediaCard
         {...otherProps}
 
         resizeMode={resizeMode}
         appearance={appearance}
-        mediaItemType={mediaItemType}
+        mediaItemType={this.mediaItemType}
         provider={this.provider}
         dataURIService={this.dataURIService}
       />
@@ -106,6 +111,12 @@ export class Card extends Component<CardProps, {}> {
         {card}
       </LazyContent>
     ) : card;
+  }
+
+  private get mediaItemType(): MediaItemType {
+    const {mediaItemType} = this.props.identifier;
+
+    return mediaItemType;
   }
 }
 

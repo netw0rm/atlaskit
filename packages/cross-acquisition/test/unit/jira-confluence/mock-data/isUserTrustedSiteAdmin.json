@@ -16,12 +16,10 @@
   "locale": "en_US",
   "groups": {
     "size": 1,
-    "items": [
-      {
-        "name": "site-admins",
-        "self": "https://acme.atlassian.net/rest/api/2/group?groupname=site-admins"
-      }
-    ]
+    "items": [{
+      "name": "site-admins",
+      "self": "https://acme.atlassian.net/rest/api/2/group?groupname=site-admins"
+    }]
   },
   "applicationRoles": {
     "size": 1,

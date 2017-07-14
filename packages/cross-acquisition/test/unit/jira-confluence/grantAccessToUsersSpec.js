@@ -17,7 +17,7 @@ import createConfluenceUsersGroupResponse from './mock-data/createConfluenceUser
 import addUsersToGroupResponse from './mock-data/addUsersToGroupResponse';
 
 // import selectedUsers from './mock-data/selectedUsers.json';
-import allUsers from './mock-data/allUsers.json';
+import jiraUsers from './mock-data/jiraUsers.json';
 
 chai.use(chaiAsPromised);
 
@@ -30,7 +30,7 @@ const mockAddUsersEndpointWithSuccessStatus = () => {
 };
 
 const mockGetAllUsersEndpointWithSuccessStatus = () => {
-  fetchMock.mock(GET_ALL_USERS_URL, allUsers, { method: 'GET' });
+  fetchMock.mock(GET_ALL_USERS_URL, jiraUsers, { method: 'GET' });
 };
 
 const mockCreateGroupEndpointWithFailureStatus = (status) => {
@@ -56,7 +56,7 @@ describe('grantAccessToUsers', () => {
     mockAddUsersEndpointWithSuccessStatus();
 
     const result = grantAccessToUsers('everyone');
-    return assert.eventually.deepEqual(result, allUsers);
+    return assert.eventually.deepEqual(result, jiraUsers);
   });
 
   xit('will return true if Confluence is activated', () => {

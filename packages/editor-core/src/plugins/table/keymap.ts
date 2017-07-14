@@ -10,6 +10,8 @@ export function keymapHandler(pluginState: TableState): Function {
   keymaps.bindKeymapWithCommand(keymaps.toggleTable.common!, pluginState.createTable(), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.addRowAfter)!, pluginState.addRowAfter(), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.addRowBefore)!, pluginState.addRowBefore(), list);
+  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.addColumnAfter)!, pluginState.addColumnAfter(), list);
+  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.addColumnBefore)!, pluginState.addColumnBefore(), list);
 
   return keydownHandler(list);
 }

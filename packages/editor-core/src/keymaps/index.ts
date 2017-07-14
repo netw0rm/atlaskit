@@ -37,12 +37,14 @@ export const space = makeKeyMapWithCommon('Space', 'Space');
 export const escape = makeKeyMapWithCommon('Escape', 'Escape');
 export const nextCell = makeKeyMapWithCommon('Next cell', 'Tab');
 export const previousCell = makeKeyMapWithCommon('Previous cell', 'Shift-Tab');
-export const toggleTable = makeKeyMapWithCommon('Table', 'Shift-Alt-t');
+export const toggleTable = makeKeyMapWithCommon('Table', 'Shift-Alt-i');
 export const cut = makeKeyMapWithCommon('Cut', 'Mod-x');
 export const copy = makeKeyMapWithCommon('Copy', 'Mod-c');
 export const paste = makeKeyMapWithCommon('Paste', 'Mod-v');
-export const addRowAfter = makeKeymap('Add row after', 'Shift-Alt-ArrowDown', 'Alt-ArrowDown');
-export const addRowBefore = makeKeymap('Add row before', 'Shift-Alt-ArrowUp', 'Alt-ArrowUp');
+export const addRowAfter = makeKeymap('Add row after', 'Shift-Alt-ArrowDown', 'Ctrl-Alt-ArrowDown');
+export const addRowBefore = makeKeymap('Add row before', 'Shift-Alt-ArrowUp', 'Ctrl-Alt-ArrowUp');
+export const addColumnAfter = makeKeymap('Add column after', 'Shift-Alt-ArrowRight', 'Ctrl-Alt-ArrowRight');
+export const addColumnBefore = makeKeymap('Add column before', 'Shift-Alt-ArrowLeft', 'Ctrl-Alt-ArrowLeft');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {

@@ -77,11 +77,7 @@ export function addRowAfter (): Command {
     if (!pluginState.tableNode) {
       return false;
     }
-    const currentRow = pluginState.getRowNumber();
-    if (typeof currentRow !== 'number') {
-      return false;
-    }
-    pluginState.insertRow(currentRow + 1);
+    pluginState.insertRow(pluginState.getRowNumber() + 1);
     return true;
   };
 }
@@ -92,16 +88,32 @@ export function addRowBefore (): Command {
     if (!pluginState.tableNode) {
       return false;
     }
-    const currentRow = pluginState.getRowNumber();
-    if (typeof currentRow !== 'number') {
+    const cell = pluginState.getCurrentCellNode();
+    if (cell.type !== state.schema.nodes.tableHeader) {
+      pluginState.insertRow(pluginState.getRowNumber());
+    }
+    return true;
+  };
+}
+
+export function addColumnAfter (): Command {
+  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+    const pluginState = stateKey.getState(state);
+    if (!pluginState.tableNode) {
       return false;
     }
-    const cell = pluginState.getCurrentCellNode();
-    if (cell.type === state.schema.nodes.tableHeader) {
-      // cancel default weird shortcut
-      return true;
+    pluginState.insertColumn(pluginState.getColumnNumber() + 1);
+    return true;
+  };
+}
+
+export function addColumnBefore (): Command {
+  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+    const pluginState = stateKey.getState(state);
+    if (!pluginState.tableNode) {
+      return false;
     }
-    pluginState.insertRow(currentRow);
+    pluginState.insertColumn(pluginState.getColumnNumber());
     return true;
   };
 }

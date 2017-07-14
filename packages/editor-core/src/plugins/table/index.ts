@@ -64,6 +64,10 @@ export class TableState {
 
   addRowAfter  = (): Command => tableCommands.addRowAfter();
 
+  addColumnBefore  = (): Command => tableCommands.addColumnBefore();
+
+  addColumnAfter  = (): Command => tableCommands.addColumnAfter();
+
   insertColumn = (column: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
@@ -313,13 +317,18 @@ export class TableState {
   // returns row number of the row where the cursor is, starts from 0
   getRowNumber(): number | undefined {
     const offset = this.tableStartPos();
-    if (!offset) {
-      return;
-    }
-    const cellPos = this.getCurrentCellStartPos()! - offset - 1;
+    const cellPos = this.getCurrentCellStartPos()! - offset! - 1;
     const map = TableMap.get(this.tableNode!);
     const index = map.map.indexOf(cellPos) + 1;
     return Math.ceil(index / map.width) - 1;
+  }
+
+  getColumnNumber(): number | undefined {
+    const offset = this.tableStartPos();
+    const cellPos = this.getCurrentCellStartPos()! - offset! - 1;
+    const map = TableMap.get(this.tableNode!);
+    const index = map.map.indexOf(cellPos) + 1;
+    return Math.ceil(index / map.height) - 1;
   }
 
   private createHoverSelection (from: number, to: number): void {

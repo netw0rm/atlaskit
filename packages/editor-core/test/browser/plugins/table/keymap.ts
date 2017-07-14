@@ -83,7 +83,7 @@ describe('table keymap', () => {
       });
     });
 
-    context('Shift-Alt-t keypress', () => {
+    context('Shift-Alt-i keypress', () => {
       it('it should insert 3x3 table', () => {
         const tableNode = table(
           tr(thEmpty, thEmpty, thEmpty ),
@@ -91,14 +91,14 @@ describe('table keymap', () => {
           tr(tdEmpty, tdEmpty, tdEmpty )
         );
         const { editorView } = editor(doc(p('{<>}')));
-        sendKeyToPm(editorView, 'Shift-Alt-t');
+        sendKeyToPm(editorView, 'Shift-Alt-i');
         expect(editorView.state.doc).to.deep.equal(doc(tableNode));
       });
     });
   });
 
-  describe('Alt-ArrowDown keypress', () => {
-    const shortcut = browser.mac ? 'Alt-ArrowDown' : 'Shift-Alt-ArrowDown';
+  describe('Ctrl-Alt-ArrowDown keypress', () => {
+    const shortcut = browser.mac ? 'Ctrl-Alt-ArrowDown' : 'Shift-Alt-ArrowDown';
 
     context('when the cursor is in the last row', () => {
       it('it should append a new empty row', () => {
@@ -139,8 +139,8 @@ describe('table keymap', () => {
     });
   });
 
-  describe('Alt-ArrowUp keypress', () => {
-    const shortcut = browser.mac ? 'Alt-ArrowUp' : 'Shift-Alt-ArrowUp';
+  describe('Ctrl-Alt-ArrowUp keypress', () => {
+    const shortcut = browser.mac ? 'Ctrl-Alt-ArrowUp' : 'Shift-Alt-ArrowUp';
 
     context('when the cursor is in the last row', () => {
       it('it should create a new row in the middle', () => {

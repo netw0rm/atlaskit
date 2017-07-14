@@ -45,7 +45,7 @@ describe('media - keymaps', () => {
   describe('Backspace keypress', () => {
     it('calls media plugin state to remove media node', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));
-      const removeMediaNodeSpy = sinon.spy(pluginState, 'removeMediaNode');
+      const removeMediaNodeSpy = sinon.spy(pluginState, 'removeSelectedMediaNode');
 
       sendKeyToPm(editorView, 'Backspace');
 

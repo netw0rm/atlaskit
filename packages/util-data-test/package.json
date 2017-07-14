@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/util-data-test",
   "description": "Shared test and story data",
-  "version": "4.9.1",
+  "version": "4.10.0",
   "config": {
     "access": "public"
   },
@@ -15,13 +15,14 @@
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015 && cp src/emoji/*.json dist/es2015/emoji && cp src/mention/*.json dist/es2015/mention",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh",
-    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist",
     "src"
   ],
   "dependencies": {
+    "lodash.sample": "^4.2.1",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",

@@ -106,6 +106,7 @@ storiesOf(name, module)
   .add('Editor with InlineEdit', () => {
     const fabricEditor = (
       <Editor
+        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
         onChange={handleChange}
         isExpandedByDefault={true}
         allowLists={true}

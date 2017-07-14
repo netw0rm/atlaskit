@@ -5,7 +5,7 @@ import Tooltip from '../../src';
 describe('Tooltip (smart)', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Tooltip><div>foo</div></Tooltip>);
-    expect(wrapper).not.to.equal(undefined);
+    expect(wrapper).not.toBe(undefined);
   });
 
   describe('isVisible state', () => {
@@ -21,10 +21,10 @@ describe('Tooltip (smart)', () => {
     it('should be set to true when mouse enters', () => {
       const wrapper = shallow(<Tooltip><div>foo</div></Tooltip>);
 
-      expect((wrapper).state('isVisible')).to.equal(false);
+      expect((wrapper).state('isVisible')).toBe(false);
 
       wrapper.simulate('mouseOver');
-      expect((wrapper).state('isVisible')).to.equal(true);
+      expect((wrapper).state('isVisible')).toBe(true);
     });
 
     it('should be set to false when mouse leaves', () => {
@@ -32,10 +32,10 @@ describe('Tooltip (smart)', () => {
 
       // set up the negative case first
       wrapper.simulate('mouseOver');
-      expect((wrapper).state('isVisible')).to.equal(true);
+      expect((wrapper).state('isVisible')).toBe(true);
 
       wrapper.simulate('mouseOut');
-      expect((wrapper).state('isVisible')).to.equal(false);
+      expect((wrapper).state('isVisible')).toBe(false);
     });
   });
 });

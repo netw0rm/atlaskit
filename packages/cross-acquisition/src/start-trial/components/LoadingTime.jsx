@@ -12,6 +12,9 @@ import StartTrialFooter from '../styled/StartTrialFooter';
 import ErrorProgressBarDiv from '../styled/ErrorProgressBarDiv';
 import ProgressBarDiv from '../styled/ProgressBarDiv';
 import CenterProgressBarDiv from '../styled/CenterProgressBarDiv';
+import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
+import WhereToFindConfluenceDiv from '../styled/WhereToFindConfluenceDiv';
+import WhereToFindConfluenceText from '../styled/WhereToFindConfluenceText';
 
 import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 
@@ -98,6 +101,15 @@ export class LoadingTimeBase extends Component {
           <StartTrialHeader>
             {this.showHeading()}
           </StartTrialHeader>
+          <LoadingTimeTextDiv>
+            <div>SVG</div>
+            <WhereToFindConfluenceDiv>
+              <h5>Where to find Confluence</h5>
+              <WhereToFindConfluenceText>
+                Hit the menu icon near your profile image to switch between products.
+              </WhereToFindConfluenceText>
+            </WhereToFindConfluenceDiv>
+          </LoadingTimeTextDiv>
         </StartTrialDialog>
       </ModalDialog>
     );

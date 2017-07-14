@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* bug fix; show URL on link hover (issues closed: ed-2220)
 ## 39.1.1 (2017-07-12)
 
 ## 39.1.0 (2017-07-12)

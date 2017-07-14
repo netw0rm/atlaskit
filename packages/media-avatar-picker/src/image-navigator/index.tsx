@@ -6,8 +6,8 @@ import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
 import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
 import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
-import {ImageCropper, OnLoadHandler, MaskType} from '../image-cropper';
 import Slider from '@atlaskit/field-range';
+import {ImageCropper, OnLoadHandler, MaskType} from '../image-cropper';
 import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText} from './styled';
 import {uploadPlaceholder} from './images';
 
@@ -20,6 +20,7 @@ export interface Props {
   mask?: MaskType;
   preserveWidth?: boolean;
   canNavigateVertically?: boolean;
+  allowZooming?: boolean;
 }
 
 export interface Dimensions {
@@ -247,10 +248,9 @@ export class ImageNavigator extends Component<Props, State> {
       imageWidth,
       imagePos,
       scale,
-      minScale,
       containerDimensions
     } = this.state;
-    const {mask} = this.props;
+    const {mask, allowZooming} = this.props;
 
     return (
       <div>
@@ -266,17 +266,25 @@ export class ImageNavigator extends Component<Props, State> {
           onImageSize={this.onImageSize}
           onLoad={this.props.onLoad}
         />
-        <SliderContainer>
-          <ScaleSmallIcon label="scale-small-icon" />
-          <Slider
-            value={100 * scale}
-            min={minScale}
-            max={100}
-            onChange={this.onScaleChange}
-          />
-          <ScaleLargeIcon label="scale-large-icon" />
-        </SliderContainer>
+        {allowZooming ? this.renderSlider(scale) : undefined}
       </div>
+    );
+  }
+
+  private renderSlider = (scale) => {
+    const {minScale} = this.state;
+
+    return (
+      <SliderContainer>
+        <ScaleSmallIcon label="scale-small-icon" />
+        <Slider
+          value={100 * scale}
+          min={minScale}
+          max={100}
+          onChange={this.onScaleChange}
+        />
+        <ScaleLargeIcon label="scale-large-icon" />
+      </SliderContainer>
     );
   }
 

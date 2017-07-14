@@ -7,6 +7,7 @@ export const CoverWrapper = styled.div`
 `;
 
 export const Image = styled.img`
+  border: 2px solid blue;
   position: absolute;
   top: 0;
   right: 0;

@@ -35,7 +35,7 @@ storiesOf('Image navigator', {})
   .add('Auto width => cover image use case', () => (
     <div>
       <CoverWrapper>
-        <ImageNavigator mask="none" imageSource={imageUrl} containerWidth="auto" onLoad={onLoad} />
+        <ImageNavigator allowZooming={false} mask="none" imageSource={imageUrl} containerWidth="auto" onLoad={onLoad} />
       </CoverWrapper>
       <button onClick={exportImage}>Export</button>
       <Image src="" alt="" innerRef={handleImgRef} />

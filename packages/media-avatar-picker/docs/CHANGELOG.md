@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* feature; allow integrators to disable zooming in ImageNavigator
 * feature; allow consumers to disable mask in ImageNavigator
 * feature; allow auto dimensions in ImageNavigator component
 ## 2.2.0 (2017-07-10)

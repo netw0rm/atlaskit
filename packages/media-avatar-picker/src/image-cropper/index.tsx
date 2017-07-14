@@ -105,29 +105,31 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   }
 
   export = () : string => {
-    let imageData = '';
-    const containerPadding = 20;
-    const canvas = document.createElement('canvas');
-    const {top, left, scale} = this.props;
+    const {top, left, scale, mask} = this.props;
     const {containerDimensions} = this;
-    const size = containerDimensions.width || 0;
+    let imageData = '';
+    const containerPadding = mask === 'none' ? 0 : 20;
+    const canvas = document.createElement('canvas');
+    const width = containerDimensions.width || 0;
+    const height = containerDimensions.height || 0;
     const scaleWithDefault = scale || 1;
-    const destinationSize = Math.max(size - containerPadding * 2, 0);
+    const destinationWidth = Math.max(width - containerPadding * 2, 0);
+    const destinationHeight = Math.max(height - containerPadding * 2, 0);
 
-    canvas.width = destinationSize;
-    canvas.height = destinationSize;
+    canvas.width = destinationWidth;
+    canvas.height = destinationHeight;
 
     const context = canvas.getContext('2d');
 
     if (context) {
       const sourceLeft = (-left + containerPadding) / scaleWithDefault;
       const sourceTop = (-top + containerPadding) / scaleWithDefault;
-      const sourceWidth = destinationSize / scaleWithDefault;
-      const sourceHeight = destinationSize / scaleWithDefault;
+      const sourceWidth = destinationWidth / scaleWithDefault;
+      const sourceHeight = destinationHeight / scaleWithDefault;
 
       context.drawImage(this.imageElement,
         sourceLeft, sourceTop, sourceWidth, sourceHeight,
-        0, 0, destinationSize, destinationSize);
+        0, 0, destinationWidth, destinationHeight);
       imageData = canvas.toDataURL();
     }
 

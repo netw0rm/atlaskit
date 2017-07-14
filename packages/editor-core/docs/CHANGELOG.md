@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* bug fix; added codeblock styles back
 * bug fix; disable code-mirror plugin (issues closed: ed-2238)
 ## 39.1.1 (2017-07-12)
 

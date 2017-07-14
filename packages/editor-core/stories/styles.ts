@@ -1,11 +1,11 @@
-// import {
-//   akEditorCodeBackground,
-//   akEditorCodeBlockPadding,
-//   akEditorCodeFontFamily,
-// } from '../src/styles';
+import {
+  akEditorCodeBackground,
+  akEditorCodeBlockPadding,
+  akEditorCodeFontFamily,
+} from '../src/styles';
 
 import {
-  // akBorderRadius,
+  akBorderRadius,
   akColorN40,
   akColorN300,
   akColorN800,
@@ -30,6 +30,12 @@ export const Content = styled.div`
       & > *:last-child {
         display: block;
       }
+    }
+    & pre {
+      font-family: ${akEditorCodeFontFamily};
+      background: ${akEditorCodeBackground};
+      padding: ${akEditorCodeBlockPadding};
+      border-radius: ${akBorderRadius};
     }
   }
 
@@ -57,10 +63,3 @@ export const Content = styled.div`
     margin: 8px 0;
   }
 `;
-
-    // & pre {
-    //   font-family: ${akEditorCodeFontFamily};
-    //   background: ${akEditorCodeBackground};
-    //   padding: ${akEditorCodeBlockPadding};
-    //   border-radius: ${akBorderRadius};
-    // }

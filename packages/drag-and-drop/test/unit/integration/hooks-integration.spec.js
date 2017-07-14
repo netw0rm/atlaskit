@@ -16,11 +16,12 @@ import type {
 } from '../../../src/types';
 import type { Provided as DraggableProvided } from '../../../src/view/draggable/draggable-types';
 import type { Provided as DroppableProvided } from '../../../src/view/droppable/droppable-types';
+import * as keyCodes from '../../../src/view/key-codes';
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const mouseDown = mouseEvent.bind(null, 'mousedown');
-const cancelWithKeyboard = dispatchWindowKeyDownEvent.bind(null, 'Escape');
+const cancelWithKeyboard = dispatchWindowKeyDownEvent.bind(null, keyCodes.escape);
 
 describe('hooks integration', () => {
   let clock;

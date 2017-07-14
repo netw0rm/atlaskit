@@ -21,12 +21,12 @@ export const dispatchWindowMouseEvent = (
 };
 
 export const dispatchWindowKeyDownEvent = (
-  key: string,
+  keyCode: number,
 ): KeyboardEvent => {
   const event = new window.KeyboardEvent('keydown', {
     bubbles: true,
     cancelable: true,
-    key,
+    keyCode,
   });
   window.dispatchEvent(event);
   return event;
@@ -50,6 +50,6 @@ export const liftWithMouse = (
 ): void =>
   wrapper.simulate('mousedown', { button, clientX, clientY, ...options });
 
-export const withKeyboard = (key: string): Function =>
+export const withKeyboard = (keyCode: number): Function =>
   (wrapper: ReactWrapper<any>, options?: Object = {}) =>
-    wrapper.simulate('keydown', { key, ...options });
+    wrapper.simulate('keydown', { keyCode, ...options });

@@ -1,5 +1,9 @@
 # @atlaskit/util-cz-atlaskit-changelog
 
+## Unreleased
+
+* bug fix; fixes bug in changelog generation to didnt create unreleased sections
+
 ## 1.2.0 (2017-07-13)
 
 

@@ -2,8 +2,7 @@
 
 ## Unreleased
 
-* fix; fixed bug that selected media node cannot type or enter
-* feature; hit enter in the middle media node should split media group
+* fix; dismiss and cancel emoji typeahead when query is empty (issues closed: fs-1149)
 
 ## 39.1.3 (2017-07-14)
 

@@ -1,18 +1,5 @@
 import React from 'react';
 
-/* eslint-disable import/no-duplicates, import/first */
-import Example from './Example';
-import exampleSrc from '!raw-loader!./Example';
-import SimplestExample from './SimplestExample';
-import simplestExampleSrc from '!raw-loader!./SimplestExample';
-import ThemedNav from './ThemedNav';
-import themedNavSrc from '!raw-loader!./ThemedNav';
-import SimpleCollapse from './SimpleCollapse';
-import simpleCollapseSrc from '!raw-loader!./SimpleCollapse';
-import MaximumComplexity from './MaximumComplexity';
-import maximumComplexitySrc from '!raw-loader!./MaximumComplexity';
-/* eslint-enable import/no-duplicates, import/first */
-
 export const description = (
   <div>
     <h2>Concepts</h2>
@@ -107,30 +94,4 @@ export const description = (
   </div>
 );
 
-export const examples = [
-  {
-    title: 'Basic Navigation',
-    Component: SimplestExample,
-    src: simplestExampleSrc,
-  },
-  {
-    title: 'Custom Theming',
-    Component: ThemedNav,
-    src: themedNavSrc,
-  },
-  {
-    title: 'Using All Options',
-    Component: MaximumComplexity,
-    src: maximumComplexitySrc,
-  },
-  {
-    title: 'Collapsible Navigation',
-    Component: SimpleCollapse,
-    src: simpleCollapseSrc,
-  },
-  {
-    title: 'Using Search Drawer',
-    Component: Example,
-    src: exampleSrc,
-  },
-];
+export const examples = [];

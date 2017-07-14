@@ -10,8 +10,7 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Calendar",
-    "pattern": true
+    "name": "Calendar"
   },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/calendar; } || ../../node_modules/.bin/not-in-publish",

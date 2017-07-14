@@ -4,7 +4,11 @@ import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection, canMoveDown, canMoveUp } from '../utils';
+import {
+  isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection,
+  canMoveDown, canMoveUp,
+  setTextSelection,
+} from '../utils';
 import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
@@ -393,9 +397,7 @@ function createParagraphNear(view: EditorView, append: boolean = true): void {
 
   dispatch(state.tr.insert(insertPos, paragraph.create()));
 
-  const newState = view.state;
-  const next = new TextSelection(newState.doc.resolve(insertPos + 1));
-  dispatch(newState.tr.setSelection(next));
+  setTextSelection(view, insertPos + 1);
 }
 
 function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): void {

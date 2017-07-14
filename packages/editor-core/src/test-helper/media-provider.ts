@@ -13,6 +13,7 @@ export function storyMediaProviderFactory (
   collection?: string,
   stateManager?: MediaStateManager,
   includeUploadContext = true,
+  dropzoneContainer?: HTMLElement
 ) {
   const {
     defaultClientId,
@@ -27,6 +28,7 @@ export function storyMediaProviderFactory (
     stateManager,
     uploadParams: {
       collection: collectionName,
+      dropzoneContainer,
     },
     viewContext: Promise.resolve<MediaContextConfig>({
       clientId: defaultClientId,

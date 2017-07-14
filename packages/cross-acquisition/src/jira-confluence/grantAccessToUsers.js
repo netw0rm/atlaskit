@@ -1,3 +1,5 @@
+import retreiveJiraUsers from './retrieveJiraUsers';
+
 export const CREATE_GROUP_URL = '/admin/rest/um/1/group';
 export const ADD_USERS_URL = '/admin/rest/um/1/group/user/direct?groupname=confluence-users';
 export const GET_ALL_USERS_URL = '/admin/rest/get/all/users'; // TODO Replace this with the real URL
@@ -23,9 +25,8 @@ async function createConfluenceUsersGroup() {
 }
 
 async function getAllJiraUsers() {
-  const response = await fetch(GET_ALL_USERS_URL);
-  const data = await response.json();
-  return data;
+  const users = await retreiveJiraUsers();
+  return users.map(user => ({ name: user.name }));
 }
 
 async function addUsersToConfluenceUsersGroup(users) {

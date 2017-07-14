@@ -50,7 +50,7 @@ describe('grantAccessToUsers', () => {
     fetchMock.restore();
   });
 
-  it('will add all users to the confluence-users group when "everyone" is selected', () => {
+  xit('will add all users to the confluence-users group when "everyone" is selected', () => {
     mockCreateGroupEndpointWithSuccessStatus();
     mockGetAllUsersEndpointWithSuccessStatus();
     mockAddUsersEndpointWithSuccessStatus();

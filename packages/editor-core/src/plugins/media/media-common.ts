@@ -1,4 +1,3 @@
-
 import {
   EditorView,
   NodeSelection,

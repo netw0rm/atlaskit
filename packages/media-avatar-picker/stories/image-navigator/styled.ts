@@ -9,5 +9,5 @@ export const CoverWrapper = styled.div`
 export const Image = styled.img`
   position: absolute;
   top: 0;
-  left: 300px;
+  right: 0;
 `;

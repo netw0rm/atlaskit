@@ -6,7 +6,7 @@ import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
 import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
 import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
-import {ImageCropper, OnLoadHandler} from '../image-cropper';
+import {ImageCropper, OnLoadHandler, MaskType} from '../image-cropper';
 import Slider from '@atlaskit/field-range';
 import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText} from './styled';
 import {uploadPlaceholder} from './images';
@@ -17,6 +17,9 @@ export interface Props {
   imageSource?: string;
   onLoad?: OnLoadHandler;
   containerWidth?: number | 'auto';
+  mask?: MaskType;
+  preserveWidth?: boolean;
+  canNavigateVertically?: boolean;
 }
 
 export interface Dimensions {
@@ -247,6 +250,7 @@ export class ImageNavigator extends Component<Props, State> {
       minScale,
       containerDimensions
     } = this.state;
+    const {mask} = this.props;
 
     return (
       <div>
@@ -255,7 +259,7 @@ export class ImageNavigator extends Component<Props, State> {
           imageSource={dataURI}
           imageWidth={imageWidth}
           containerDimensions={containerDimensions}
-          isCircularMask={false}
+          mask={mask}
           top={imagePos.y}
           left={imagePos.x}
           onDragStarted={this.onDragStarted}

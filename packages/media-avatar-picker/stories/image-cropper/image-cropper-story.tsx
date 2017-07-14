@@ -17,5 +17,5 @@ storiesOf('Stateless image cropper', {})
     <ImageCropper imageSource={tallImage} imageWidth={naturalWidth} scale={0.14} top={-50} left={-115} containerDimensions={{width: 400, height: 400}} />
   ))
   .add('with circular mask', () => (
-    <ImageCropper imageSource={tallImage} imageWidth={naturalWidth} scale={0.08} top={-70} left={-90} isCircularMask={true} />
+    <ImageCropper imageSource={tallImage} imageWidth={naturalWidth} scale={0.08} top={-70} left={-90} mask="circular" />
   ));

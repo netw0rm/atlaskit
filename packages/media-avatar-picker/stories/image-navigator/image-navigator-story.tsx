@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import {tallImage, wideImage, remoteImage} from '@atlaskit/media-test-helpers';
+import {tallImage, remoteImage} from '@atlaskit/media-test-helpers';
 import {ImageNavigator} from '../../src';
 import {CoverWrapper, Image} from './styled';
 
@@ -22,34 +22,36 @@ const handleImgRef = (img) => {
   imageElement = img;
 };
 
+const imageUrl = 'http://pic.templetons.com/brad/pano/midpano/center-wide.jpg';
+
 storiesOf('Image navigator', {})
   .add('Local image', () => (
     <div>
       <ImageNavigator imageSource={tallImage} onLoad={onLoad} />
       <button onClick={exportImage}>Export</button>
-      <Image src="" alt="" ref={handleImgRef} />
+      <Image src="" alt="" innerRef={handleImgRef} />
     </div>
   ))
   .add('Auto width => cover image use case', () => (
     <div>
       <CoverWrapper>
-        <ImageNavigator imageSource={wideImage} containerWidth="auto" onLoad={onLoad} />
+        <ImageNavigator mask="none" imageSource={imageUrl} containerWidth="auto" onLoad={onLoad} />
       </CoverWrapper>
       <button onClick={exportImage}>Export</button>
-      <Image src="" alt="" ref={handleImgRef} />
+      <Image src="" alt="" innerRef={handleImgRef} />
     </div>
   ))
   .add('Remote image', () => (
     <div>
       <ImageNavigator imageSource={remoteImage} onLoad={onLoad} />
       <button onClick={exportImage}>Export</button>
-      <Image src="" alt="" ref={handleImgRef} />
+      <Image src="" alt="" innerRef={handleImgRef} />
     </div>
   ))
   .add('Uploader', () => (
     <div>
       <ImageNavigator onLoad={onLoad} />
       <button onClick={exportImage}>Export</button>
-      <Image src="" alt="" ref={handleImgRef} />
+      <Image src="" alt="" innerRef={handleImgRef} />
     </div>
   ));

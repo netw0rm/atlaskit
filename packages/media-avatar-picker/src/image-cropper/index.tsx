@@ -10,12 +10,12 @@ export interface LoadParameters {
 }
 
 export type OnLoadHandler = (params: LoadParameters) => void;
-
+export type MaskType = 'rect' | 'circular' | 'none';
 export interface ImageCropperProp {
   imageSource: string;
   scale?: number; // Value from 0 to 1
   containerDimensions?: Dimensions;
-  isCircularMask?: boolean;
+  mask?: MaskType;
   top: number;
   left: number;
   imageWidth?: number;
@@ -30,7 +30,6 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   private imageElement: HTMLImageElement;
 
   static defaultProps = {
-    isCircleMask: false,
     scale: defaultScale,
     onDragStarted: () => {},
     onImageSize: () => {},
@@ -55,12 +54,11 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
 
   render() {
     const {
-      isCircularMask,
       top,
       left,
       imageSource
     } = this.props;
-    const {containerDimensions} = this;
+    const {containerDimensions, renderMask} = this;
     const containerStyle = {
       width: `${containerDimensions.width}px`,
       height: `${containerDimensions.height}px`
@@ -78,9 +76,17 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
 
     return <Container style={containerStyle}>
       <Image crossOrigin={crossOrigin} src={imageSource} style={imageStyle} onLoad={this.onImageLoaded} />
-      {isCircularMask ? <CircularMask /> : <RectMask />}
+      {renderMask()}
       <DragOverlay onMouseDown={this.onDragStarted} />
     </Container>;
+  }
+
+  private renderMask = () => {
+    const {mask} = this.props;
+
+    if (mask === 'none') { return; }
+    if (mask === 'circular') { return <CircularMask />; }
+    return <RectMask />;
   }
 
   private get width() {

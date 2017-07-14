@@ -8,7 +8,7 @@ import type { Position, ReactElement } from '../../types';
 export type Speed = 'INSTANT' | 'STANDARD' | 'FAST';
 
 export type Style = {|
-  transform: string,
+  transform: ?string,
 |}
 
 export type Props = {|

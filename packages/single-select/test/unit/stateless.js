@@ -97,7 +97,7 @@ describe(name, () => {
       expect(droplistProps.isKeyboardInteractionDisabled).toBe(true);
       expect(droplistProps.isTriggerDisabled).toBe(true);
       expect(droplistProps.shouldFlip).toBe(false);
-      expect(droplistProps.maxHeight, 'maxHeight').toBe(300);
+      expect(droplistProps.maxHeight).toBe(300);
     });
 
     it('should pass props to fieldBase', () => {

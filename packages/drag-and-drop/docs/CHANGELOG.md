@@ -5,7 +5,7 @@
 ## 3.0.0 (2017-07-12)
 
 
-## Unreleased
+## 4.0.0 (2017-07-14)
 
 * breaking; Minor changes to Draggable > Provided > DraggableStyle. In most cases upgrading will involve no
 * breaking; using css transitions rather than physics for minor movements to greatly increase p

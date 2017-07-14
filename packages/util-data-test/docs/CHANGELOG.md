@@ -1,6 +1,6 @@
 # @atlaskit/util-data-test
 
-## Unreleased
+## 4.10.0 (2017-07-14)
 
 * feature; move profilecard stories helpers into util-data-test (issues closed: ed-1867)
 ## 4.9.1 (2017-07-11)

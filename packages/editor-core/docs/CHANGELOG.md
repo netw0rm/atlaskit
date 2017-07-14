@@ -1,6 +1,6 @@
 # @atlaskit/editor-core
 
-## Unreleased
+## 39.1.2 (2017-07-14)
 
 * bug fix; show URL on link hover (issues closed: ed-2220)
 ## 39.1.1 (2017-07-12)

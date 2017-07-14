@@ -3,6 +3,8 @@
 ## Unreleased
 
 * fix; dropzone configuration in picker facade.
+* fix; fixed bug that selected media node cannot type or enter
+* feature; hit enter in the middle media node should split media group
 
 ## 39.1.2 (2017-07-14)
 

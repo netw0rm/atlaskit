@@ -18,7 +18,7 @@ const NavigationNav = ({ pathname, backIcon, router }) => (
   <div>
     <NavItem
       icon={backIcon}
-      onClick={() => router.history.push('/patterns')}
+      onClick={() => router.history.push('/components')}
       text="Back"
     />
     <NavItemGroup>

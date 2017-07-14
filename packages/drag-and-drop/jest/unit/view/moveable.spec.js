@@ -116,4 +116,11 @@ describe('Moveable', () => {
       expect(hasMoved(position)).to.equal(true);
     });
   });
+
+  it('should return no movement if the item is at the origin', () => {
+    moveTo({ x: 0, y: 0 });
+    expect(childFn.calledWith({
+      transform: null,
+    })).to.equal(true);
+  });
 });

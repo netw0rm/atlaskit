@@ -10,7 +10,6 @@ import ProviderFactory from '../../providerFactory';
 import {
   EditorView,
   Node as PMNode,
-  NodeSelection,
 } from '../../prosemirror';
 import { setNodeSelection } from '../../utils';
 

@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 5.0.0 (2017-07-12)
+## 6.0.0 (2017-07-12)
 
 
 * feature; added the xxlarge size to Avatar ([5cfbfb5](https://bitbucket.org/atlassian/atlaskit/commits/5cfbfb5))

@@ -1,4 +1,4 @@
-/* eslint-disable no-console, no-multi-spaces */
+/* eslint-disable no-console, no-multi-spaces, no-unused-vars */
 const spawn = require('child_process').spawn;
 const path = require('path');
 const fs = require('fs');
@@ -104,7 +104,12 @@ const splitText = (commitMessage) => {
   };
 };
 
-const updateChangelogs = (commitMessage, commit) => {
+/*
+  We have decided to disable this for now until we can stress test it further
+ */
+
+const updateChangelogs = (commitMessage, commit) => commit(commitMessage)
+  /*
   const readmeInfo = splitText(commitMessage);
   if (!readmeInfo) {
     console.log('No Changelog was generated for this commit.');
@@ -117,9 +122,10 @@ const updateChangelogs = (commitMessage, commit) => {
     .then(() => gitAddChangelogs(readmeInfo.readmePaths))
     .then(() => commit(commitMessage))
     .catch((e) => {
-      console.log('failed to write changelog. Change description will need to be manually added.', e);
+      console.log('failed to write changelog. Change description will need to be manually added.',
+      e);
       return commit(commitMessage);
-    });
-};
+    }); */
+;
 
 module.exports = updateChangelogs;

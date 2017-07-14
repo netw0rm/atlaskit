@@ -11,8 +11,6 @@ export default class FourWayTooltip extends PureComponent {
   render() {
     const { tooltipIsVisible } = this.state;
 
-    console.log('tooltipIsVisible', tooltipIsVisible);
-
     return (
       <ButtonGroup>
         <Tooltip

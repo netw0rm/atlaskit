@@ -34,8 +34,7 @@ export interface Position {
 }
 
 export interface State {
-  imageWidth?: number;
-  imageHeight?: number;
+  imageElement: HTMLImageElement;
   imagePos: Position;
   imageInitPos: Position;
   cursorInitPos?: Position;
@@ -48,11 +47,17 @@ export interface State {
 }
 
 export class ImageNavigator extends Component<Props, State> {
+  static defaultProps = {
+    preserveWidth: false,
+    canNavigateVertically: true,
+    allowZooming: true
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
-      imageWidth: undefined,
+      imageElement: new Image(),
       imagePos: {x: 0, y: 0},
       scale: 1,
       isDragging: false,
@@ -91,19 +96,24 @@ export class ImageNavigator extends Component<Props, State> {
     });
   }
 
-  onMouseMove = (e) => {
-    if (this.state.isDragging) {
-      const {screenX: x, screenY: y} = e;
-      const cursorInitPos = this.state.cursorInitPos || {x, y};
+  onMouseMove = (e: MouseEvent) => {
+    if (!this.state.isDragging) { return; }
 
-      this.setState({
-        cursorInitPos,
-        imagePos: {
-          x: this.state.imageInitPos.x + (x - cursorInitPos.x),
-          y: this.state.imageInitPos.y + (y - cursorInitPos.y),
-        }
-      });
-    }
+    const {canNavigateVertically} = this.props;
+    const {imageInitPos, imagePos, containerDimensions, imageElement} = this.state;
+    const {screenX: x, screenY: y} = e;
+    const cursorInitPos = this.state.cursorInitPos || {x, y};
+    const newX = imageInitPos.x + (x - cursorInitPos.x);
+    const newY = canNavigateVertically ? imageInitPos.y + (y - cursorInitPos.y) : imagePos.y;
+    const isScrollXValid = newX + (imageElement.width || 0) >= containerDimensions.width;
+
+    this.setState({
+      cursorInitPos,
+      imagePos: {
+        x: isScrollXValid ? Math.min(newX, 0) : imagePos.x,
+        y: newY
+      }
+    });
   }
 
   onMouseUp = () => {
@@ -146,14 +156,15 @@ export class ImageNavigator extends Component<Props, State> {
     });
   }
 
-  onImageSize = (width, height) => {
+  onImageSize = (image: HTMLImageElement) => {
     const {containerDimensions} = this.state;
+    const naturalWidth = image.naturalWidth;
+    const naturalHeight = image.naturalHeight;
 
     this.setState({
-      imageWidth: width,
-      imageHeight: height,
-      scale: this.calculateInitialScale(width, height),
-      minScale: (containerDimensions.width / 2) / Math.max(width, height) * 100,
+      imageElement: image,
+      scale: this.calculateInitialScale(naturalWidth, naturalHeight),
+      minScale: (containerDimensions.width / 2) / Math.max(naturalWidth, naturalHeight) * 100,
     });
   }
 
@@ -245,7 +256,7 @@ export class ImageNavigator extends Component<Props, State> {
 
   renderImageCropper(dataURI: string) {
     const {
-      imageWidth,
+      imageElement,
       imagePos,
       scale,
       containerDimensions
@@ -257,7 +268,7 @@ export class ImageNavigator extends Component<Props, State> {
         <ImageCropper
           scale={scale}
           imageSource={dataURI}
-          imageWidth={imageWidth}
+          imageWidth={imageElement.naturalWidth}
           containerDimensions={containerDimensions}
           mask={mask}
           top={imagePos.y}

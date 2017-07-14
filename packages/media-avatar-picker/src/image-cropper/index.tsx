@@ -20,7 +20,7 @@ export interface ImageCropperProp {
   left: number;
   imageWidth?: number;
   onDragStarted?: () => void;
-  onImageSize?: (width: number, height: number) => void;
+  onImageSize?: (image: HTMLImageElement) => void;
   onLoad?: OnLoadHandler;
 }
 
@@ -46,10 +46,11 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   onDragStarted = () => this.props.onDragStarted && this.props.onDragStarted();
 
   onImageLoaded = (e) => {
+    const imageElement = e.target;
     if (this.props.onImageSize) {
-      this.props.onImageSize(e.target.naturalWidth, e.target.naturalHeight);
+      this.props.onImageSize(imageElement);
     }
-    this.imageElement = e.target;
+    this.imageElement = imageElement;
   }
 
   render() {

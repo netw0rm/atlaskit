@@ -12,3 +12,8 @@ export const Image = styled.img`
   top: 0;
   right: 0;
 `;
+
+export const FieldTextWrapper = styled.div`
+  width: 500px;
+  margin: 10px;
+`;

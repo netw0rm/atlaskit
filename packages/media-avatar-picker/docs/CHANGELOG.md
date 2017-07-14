@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* feature; dont allow user to navigate image outside boundaries
 * feature; allow integrators to disable zooming in ImageNavigator
 * feature; allow consumers to disable mask in ImageNavigator
 * feature; allow auto dimensions in ImageNavigator component

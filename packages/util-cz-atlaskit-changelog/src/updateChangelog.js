@@ -127,5 +127,4 @@ const updateChangelogs = (commitMessage, commit) => commit(commitMessage);
       return commit(commitMessage);
     }); */
 
-
 module.exports = updateChangelogs;

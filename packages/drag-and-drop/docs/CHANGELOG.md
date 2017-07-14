@@ -7,6 +7,9 @@
 
 ## 4.0.0 (2017-07-14)
 
+## Unreleased
+
+* bug fix; resorting to using keyCodes for event key matching for improved browser support (issues closed: ak-2993)
 * breaking; Minor changes to Draggable > Provided > DraggableStyle. In most cases upgrading will involve no
 * breaking; using css transitions rather than physics for minor movements to greatly increase p
 * feature; draggables will now be positioned correctly with parents that have position:relativ ([6fe9d5a](https://bitbucket.org/atlassian/atlaskit/commits/6fe9d5a))

@@ -71,6 +71,9 @@ export default class EmojiPicker extends PureComponent<Props, State> {
         }
         if (!this.props.hideToneSelector) {
           getToneEmoji(provider).then(toneEmoji => this.setState({ toneEmoji: toneEmoji }));
+          this.setState({
+            selectedTone: provider.getSelectedTone(),
+          });
         }
       });
     }
@@ -213,6 +216,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     this.setState({
       selectedTone: toneValue,
     } as State);
+    this.props.emojiProvider.then(provider => provider.setSelectedTone(toneValue));
     this.updateEmojis();
   }
 

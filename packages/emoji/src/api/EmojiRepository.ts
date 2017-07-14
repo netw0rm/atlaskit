@@ -9,7 +9,6 @@ import { customCategory } from '../constants';
 import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
-import CategorySelector from '../components/picker/CategorySelector';
 
 XRegExpUnicodeBase(XRegExp);
 XRegExpUnicodeScripts(XRegExp);
@@ -145,15 +144,10 @@ export default class EmojiRepository {
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
   private asciiMap: Map<string, EmojiDescription>;
-  private categoryOrder: Map<string, number>;
   private static readonly defaultEmojiWeight: number = 1000000;
 
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
-    this.categoryOrder = new Map();
-    CategorySelector.defaultProps.categories.forEach((category, index) => {
-      this.categoryOrder.set(category.id, index + 1);
-    });
 
     this.initMaps();
     this.fullSearch = new Search('id');

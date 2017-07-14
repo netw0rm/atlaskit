@@ -1,5 +1,5 @@
 import { customCategory } from '../constants';
-import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../types';
+import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
 import { isMediaApiRepresentation } from '../type-helpers';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
@@ -83,6 +83,10 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    * Optional.
    */
   recordSelection?(id: EmojiId): Promise<any>;
+
+  getSelectedTone(): ToneSelection;
+
+  setSelectedTone(tone: ToneSelection);
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -149,6 +153,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected activeLoaders: number = 0;
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected mediaEmojiResource?: MediaEmojiResource;
+  protected selectedTone: ToneSelection;
 
   constructor(config: EmojiResourceConfig) {
     super();
@@ -369,6 +374,14 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       return requestService(recordConfig, { queryParams, requestInit });
     }
     return Promise.reject('Resource does not support recordSelection');
+  }
+
+  getSelectedTone(): ToneSelection {
+    return this.selectedTone;
+  }
+
+  setSelectedTone(tone: ToneSelection) {
+    this.selectedTone = tone;
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {

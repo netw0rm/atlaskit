@@ -22,6 +22,7 @@
     "src"
   ],
   "dependencies": {
+    "lodash.sample": "^4.2.1",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",

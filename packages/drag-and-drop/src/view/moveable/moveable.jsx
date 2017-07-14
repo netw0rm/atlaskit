@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { Motion, spring } from 'react-motion';
-import * as physics from '../physics';
+import { physics } from '../animation';
 import type { Position } from '../../types';
 import type { Props, DefaultProps, Style } from './moveable-types';
 
@@ -15,18 +15,22 @@ const origin: Position = {
   y: 0,
 };
 
+const noMovement: Style = {
+  transform: null,
+};
+
 const isAtOrigin = (point: PositionLike): boolean =>
   point.x === origin.x && point.y === origin.y;
 
-const getStyle = (isNotMoving: boolean, x: number, y: number): ?Style => {
+const getStyle = (isNotMoving: boolean, x: number, y: number): Style => {
   if (isNotMoving) {
-    return null;
+    return noMovement;
   }
 
   const point: Position = { x, y };
   // not applying any transforms when not moving
   if (isAtOrigin(point)) {
-    return null;
+    return noMovement;
   }
   const style: Style = {
     transform: `translate(${point.x}px, ${point.y}px)`,

@@ -25,24 +25,27 @@ import {
 import type {
   Provided as DragHandleProvided,
 } from '../drag-handle/drag-handle-types';
-import type {
-  Style as MovementStyle,
-} from '../moveable/moveable-types';
 
-export type PlacementStyle = {|
+export type DraggingStyle = {|
   position: 'absolute',
   boxSizing: 'border-box',
   zIndex: ZIndex,
   width: number,
   height: number,
+  transform: ?string,
 |}
+
+export type NotDraggingStyle = {|
+  transition: ?string,
+  transform: ?string,
+|}
+
+export type DraggableStyle = DraggingStyle | NotDraggingStyle;
 
 export type ZIndexOptions = {|
   dragging: number,
   dropAnimating: number,
 |}
-
-export type DraggableStyle = MovementStyle | (PlacementStyle & MovementStyle);
 
 export type Provided = {|
   innerRef: (HTMLElement) => void,

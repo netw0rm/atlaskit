@@ -5,7 +5,7 @@ import { PureComponent } from 'react';
 import * as styles from './styles';
 import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
-import { EmojiDescription, OnEmojiEvent, RelativePosition } from '../../types';
+import { EmojiDescription, OnEmojiEvent, RelativePosition, ToneSelection } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
 import Popup from '../common/Popup';
 import debug from '../../util/logger';
@@ -38,6 +38,7 @@ export interface State {
   visible: boolean;
   emojis: EmojiDescription[];
   loading: boolean;
+  selectedTone?: ToneSelection;
 }
 
 const isFullShortName = (query?: string) => query && query.length > 1 && query.charAt(0) === ':' && query.charAt(query.length-1) === ':';
@@ -88,6 +89,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
       this.props.emojiProvider.then(provider => {
         provider.subscribe(this.onProviderChange);
         this.onSearch(this.props.query);
+        this.setState({ selectedTone: provider.getSelectedTone() });
       });
     }
   }
@@ -148,6 +150,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
       const { listLimit } = this.props;
       provider.filter(query, {
         limit: listLimit || defaultListLimit,
+        skinTone: this.state.selectedTone,
       });
     });
   }

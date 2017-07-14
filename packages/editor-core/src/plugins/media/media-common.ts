@@ -6,7 +6,7 @@ import { moveLeft, atTheBeginningOfDoc } from '../../utils';
 
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
-export const handleMediaNodeRemoval = (view: EditorView, node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+export const removeMediaNode = (view: EditorView, node: PMNode, getPos: ProsemirrorGetPosHandler) => {
   const { id } = node.attrs;
   const { state } = view;
   const { tr, selection, doc } = state;

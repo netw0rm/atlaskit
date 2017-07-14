@@ -75,7 +75,7 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
 
   private handleRemove = (item?: any, event?: Event) => {
     const { getPos, node } = this.props;
-    this.pluginState.handleMediaNodeRemove(node, getPos);
+    this.pluginState.handleMediaNodeRemoval(node, getPos);
 
     if (event) {
       event.stopPropagation();

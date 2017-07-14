@@ -369,7 +369,7 @@ describe('Media plugin', () => {
       );
 
       const pos = getNodePos(pluginState, deletingMediaNodeId);
-      pluginState.handleMediaNodeRemove(deletingMediaNode, () => pos);
+      pluginState.handleMediaNodeRemoval(deletingMediaNode, () => pos);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -379,14 +379,14 @@ describe('Media plugin', () => {
     });
   });
 
-  describe('removeMediaNode', () => {
+  describe('removeSelectedMediaNode', () => {
     context('when selection is a media node', () => {
       it('removes node', () => {
         const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
         const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
         setNodeSelection(editorView, 1);
 
-        pluginState.removeMediaNode();
+        pluginState.removeSelectedMediaNode();
 
         expect(editorView.state.doc).to.deep.equal(doc(p()));
       });
@@ -396,7 +396,7 @@ describe('Media plugin', () => {
         const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
         setNodeSelection(editorView, 1);
 
-        expect(pluginState.removeMediaNode()).to.equal(true);
+        expect(pluginState.removeSelectedMediaNode()).to.equal(true);
       });
     });
 
@@ -406,7 +406,7 @@ describe('Media plugin', () => {
         const { editorView, pluginState } = editor(doc(hr, mediaGroup(deletingMediaNode)));
         setNodeSelection(editorView, 1);
 
-        pluginState.removeMediaNode();
+        pluginState.removeSelectedMediaNode();
 
         expect(editorView.state.doc).to.deep.equal(doc(hr, mediaGroup(deletingMediaNode)));
       });
@@ -416,7 +416,7 @@ describe('Media plugin', () => {
         const { editorView, pluginState } = editor(doc(hr, mediaGroup(deletingMediaNode)));
         setNodeSelection(editorView, 1);
 
-        expect(pluginState.removeMediaNode()).to.equal(false);
+        expect(pluginState.removeSelectedMediaNode()).to.equal(false);
       });
     });
 
@@ -425,7 +425,7 @@ describe('Media plugin', () => {
         const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
         const { editorView, pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
 
-        pluginState.removeMediaNode();
+        pluginState.removeSelectedMediaNode();
 
         expect(editorView.state.doc).to.deep.equal(doc('hello', mediaGroup(deletingMediaNode)));
       });
@@ -434,7 +434,7 @@ describe('Media plugin', () => {
         const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
         const { pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
 
-        expect(pluginState.removeMediaNode()).to.equal(false);
+        expect(pluginState.removeSelectedMediaNode()).to.equal(false);
       });
     });
   });

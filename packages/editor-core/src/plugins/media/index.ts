@@ -21,7 +21,7 @@ import {
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
 import { ContextConfig } from '@atlaskit/media-core';
-import { ErrorReporter, setNodeSelection } from '../../utils';
+import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
@@ -30,7 +30,7 @@ import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
-import { handleMediaNodeRemoval } from './media-common';
+import { removeMediaNode } from './media-common';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -249,8 +249,8 @@ export class MediaPluginState {
    * Called from React UI Component when user clicks on "Delete" icon
    * inside of it
    */
-  handleMediaNodeRemove = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
-    handleMediaNodeRemoval(this.view, node, getPos);
+  handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+    removeMediaNode(this.view, node, getPos);
   }
 
   /**
@@ -376,7 +376,7 @@ export class MediaPluginState {
         // TODO: we would like better error handling and retry support here.
         const mediaNodeWithPos = this.findMediaNode(state.id);
         if (mediaNodeWithPos) {
-          handleMediaNodeRemoval(this.view, mediaNodeWithPos.node, mediaNodeWithPos.getPos);
+          removeMediaNode(this.view, mediaNodeWithPos.node, mediaNodeWithPos.getPos);
         }
 
         const { uploadErrorHandler } = this.options;
@@ -427,11 +427,11 @@ export class MediaPluginState {
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
-  removeMediaNode = (): boolean => {
-    const {view} = this;
-    const { from, node } = view.state.selection as NodeSelection;
+  removeSelectedMediaNode = (): boolean => {
+    const { view } = this;
     if (this.isMediaNodeSelection()) {
-      handleMediaNodeRemoval(view, node, () => from);
+      const { from, node } = view.state.selection as NodeSelection;
+      removeMediaNode(view, node, () => from);
       return true;
     }
     return false;

@@ -20,7 +20,7 @@ import {
   NodeSelection,
   TextSelection,
 } from '../../../../src/prosemirror';
-import { handleMediaNodeRemoval } from '../../../../src/plugins/media/media-common';
+import { removeMediaNode } from '../../../../src/plugins/media/media-common';
 
 chai.use(chaiPlugin);
 
@@ -35,7 +35,7 @@ describe('media-common', () => {
     schema: defaultSchema,
   });
 
-  describe('handleMediaNodeRemoval', () => {
+  describe('removeMediaNode', () => {
     context('media node is selected', () => {
       const temporaryFileId = `temporary:${randomId()}`;
 
@@ -56,7 +56,7 @@ describe('media-common', () => {
           const positionOfDeletingNode = sel + 3;
           setNodeSelection(editorView, positionOfDeletingNode);
 
-          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+          removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -80,7 +80,7 @@ describe('media-common', () => {
           const positionOfDeletingNode = sel + 3;
           setNodeSelection(editorView, positionOfDeletingNode);
 
-          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+          removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
           undo(editorView.state, editorView.dispatch);
 
@@ -110,7 +110,7 @@ describe('media-common', () => {
           const positionOfDeletingNode = sel + 3;
           setNodeSelection(editorView, positionOfDeletingNode);
 
-          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+          removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -134,7 +134,7 @@ describe('media-common', () => {
           const positionOfDeletingNode = sel + 3;
           setNodeSelection(editorView, positionOfDeletingNode);
 
-          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+          removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
           undo(editorView.state, editorView.dispatch);
 
@@ -164,7 +164,7 @@ describe('media-common', () => {
             const positionOfDeletingNode = sel + 2;
             setNodeSelection(editorView, positionOfDeletingNode);
 
-            handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+            removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
             expect(editorView.state.selection.from).to.equal(sel);
           });
@@ -184,7 +184,7 @@ describe('media-common', () => {
             const positionOfDeletingNode = 1;
             setNodeSelection(editorView, positionOfDeletingNode);
 
-            handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+            removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
             const selectedNode = (editorView.state.selection as NodeSelection).node;
             expect(selectedNode && selectedNode.attrs.id).to.equal('media2');
@@ -205,7 +205,7 @@ describe('media-common', () => {
           const positionOfDeletingNode = 2;
           setNodeSelection(editorView, positionOfDeletingNode);
 
-          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+          removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
           const selectedNode = (editorView.state.selection as NodeSelection).node;
 
@@ -227,7 +227,7 @@ describe('media-common', () => {
           const positionOfDeletingNode = 2;
           setNodeSelection(editorView, positionOfDeletingNode + 1);
 
-          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+          removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
           const selectedNode = (editorView.state.selection as NodeSelection).node;
 
@@ -246,7 +246,7 @@ describe('media-common', () => {
           const positionOfDeletingNode = 2;
           setNodeSelection(editorView, positionOfDeletingNode + 1);
 
-          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+          removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
           expect(editorView.state.doc).to.deep.equal(doc(
             mediaGroup(
@@ -270,7 +270,7 @@ describe('media-common', () => {
           const positionOfDeletingNode = 3;
           setNodeSelection(editorView, positionOfDeletingNode);
 
-          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+          removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
           const selectedNode = (editorView.state.selection as NodeSelection).node;
 
@@ -293,7 +293,7 @@ describe('media-common', () => {
             const positionOfDeletingNode = p('hello').nodeSize + 1;
             setNodeSelection(editorView, positionOfDeletingNode);
 
-            handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+            removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
             expect(editorView.state.selection instanceof TextSelection).to.equal(true);
             expect(editorView.state.selection.from).to.equal(positionOfDeletingNode);
@@ -313,7 +313,7 @@ describe('media-common', () => {
             const positionOfDeletingNode = 1;
             setNodeSelection(editorView, positionOfDeletingNode);
 
-            handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+            removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
             expect(editorView.state.selection instanceof TextSelection).to.equal(true);
             expect(editorView.state.selection.from).to.equal(positionOfDeletingNode);

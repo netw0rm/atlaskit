@@ -8,15 +8,15 @@ import { MediaPluginState, stateKey } from './';
 export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(keymaps.backspace.common!, selectPreviousMedia, list);
+  keymaps.bindKeymapWithCommand(keymaps.backspace.common!, removeMediaNode, list);
   keymaps.bindKeymapWithCommand(keymaps.undo.common!, ignoreLinksInSteps, list);
 
   return keymap(list);
 }
 
-function selectPreviousMedia(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+function removeMediaNode(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
   const mediaPluginState = stateKey.getState(state) as MediaPluginState;
-  return mediaPluginState.removeMediaNode();
+  return mediaPluginState.removeSelectedMediaNode();
 }
 
 function ignoreLinksInSteps(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {

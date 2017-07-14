@@ -10,6 +10,7 @@ import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/
 import type { Callbacks, Provided } from '../../../src/view/drag-handle/drag-handle-types';
 import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent, withKeyboard } from '../../utils/user-input-util';
 import type { Position } from '../../../src/types';
+import * as keyCodes from '../../../src/view/key-codes';
 
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
@@ -80,13 +81,13 @@ const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const mouseDown = mouseEvent.bind(null, 'mousedown');
 const click = mouseEvent.bind(null, 'click');
-const pressSpacebar = withKeyboard(' ');
-const windowSpacebar = dispatchWindowKeyDownEvent.bind(null, ' ');
-const windowEscape = dispatchWindowKeyDownEvent.bind(null, 'Escape');
-const windowArrowUp = dispatchWindowKeyDownEvent.bind(null, 'ArrowUp');
-const windowArrowDown = dispatchWindowKeyDownEvent.bind(null, 'ArrowDown');
-const windowTab = dispatchWindowKeyDownEvent.bind(null, 'Tab');
-const windowEnter = dispatchWindowKeyDownEvent.bind(null, 'Enter');
+const pressSpacebar = withKeyboard(keyCodes.space);
+const windowSpacebar = dispatchWindowKeyDownEvent.bind(null, keyCodes.space);
+const windowEscape = dispatchWindowKeyDownEvent.bind(null, keyCodes.escape);
+const windowArrowUp = dispatchWindowKeyDownEvent.bind(null, keyCodes.arrowUp);
+const windowArrowDown = dispatchWindowKeyDownEvent.bind(null, keyCodes.arrowDown);
+const windowTab = dispatchWindowKeyDownEvent.bind(null, keyCodes.tab);
+const windowEnter = dispatchWindowKeyDownEvent.bind(null, keyCodes.enter);
 
 // lame
 const { beforeAll, afterAll } = global;

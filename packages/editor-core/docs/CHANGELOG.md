@@ -1,6 +1,7 @@
 # @atlaskit/editor-core
 
 ## Unreleased
+
 * fix; dropzone configuration in picker facade.
 
 ## 39.1.1 (2017-07-12)

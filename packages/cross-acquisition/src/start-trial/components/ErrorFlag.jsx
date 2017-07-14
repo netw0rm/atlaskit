@@ -11,6 +11,8 @@ export default class ErrorFlag extends Component {
     description: PropTypes.string,
     showFlag: PropTypes.bool,
     onDismissed: PropTypes.func,
+    flagRetry: PropTypes.bool,
+    flagActions: PropTypes.arrayOf(PropTypes.object),
   };
 
   render() {
@@ -19,6 +21,7 @@ export default class ErrorFlag extends Component {
         {this.props.showFlag
           ? <Flag
             icon={Icon}
+            actions={this.props.flagRetry && this.props.flagActions}
             id="ErrorFlag"
             key="ErrorFlag"
             title={this.props.title}

@@ -9,6 +9,7 @@ import { withAnalytics } from './Analytics';
 import RequestTrial from '../../request-trial/components/RequestTrial';
 import StartTrial from '../../start-trial/components/StartTrial';
 import AlreadyStarted from '../../start-trial/components/AlreadyStarted';
+import ErrorFlag from '../../start-trial/components/ErrorFlag';
 
 const Screens = {
   INITIALIZING: 'INITIALIZING',
@@ -32,9 +33,14 @@ class RequestOrStartTrial extends Component {
   state = {
     screen: Screens.INITIALIZING,
     error: null,
+    initializingCheckFailed: false,
   };
 
   async componentWillMount() {
+    return this.resetRequestOrStartTrial();
+  }
+
+  resetRequestOrStartTrial = async () => {
     try {
       const alreadyStarted = await this.props.isProductInstalledOrActivating();
       const canAdd = alreadyStarted ? false : await this.props.canCurrentUserAddProduct();
@@ -47,10 +53,19 @@ class RequestOrStartTrial extends Component {
         this.setState({ screen: Screens.REQUEST_TRIAL });
       }
     } catch (e) {
-      // TODO: Handle this appropriately.
-      console.error(e);
+      this.setState({ initializingCheckFailed: true });
     }
-  }
+  };
+
+  flagActions = [
+    {
+      content: 'Retry',
+      onClick: () => {
+        this.setState({ initializingCheckFailed: false });
+        return this.resetRequestOrStartTrial();
+      },
+    },
+  ];
 
   render() {
     return (
@@ -58,7 +73,19 @@ class RequestOrStartTrial extends Component {
         {(() => {
           switch (this.state.screen) {
             case Screens.INITIALIZING: {
-              return <InitializingScreen />;
+              return (
+                <div>
+                  <InitializingScreen isOpen={!this.state.initializingCheckFailed} />
+                  <ErrorFlag
+                    flagRetry
+                    flagActions={this.flagActions}
+                    title="Oops... Something went wrong"
+                    description="Let's try again."
+                    showFlag={this.state.initializingCheckFailed}
+                    onDismissed={() => this.setState({ initializingCheckFailed: false })}
+                  />
+                </div>
+              );
             }
             case Screens.START_TRIAL: {
               return <StartTrial />;

@@ -46,11 +46,21 @@ storiesOf('RequestOrStartTrial')
       </MockConfluenceCrossSell>
     )
   )
-  .add('if there was an error, show the error dialog', () =>
+  .add(
+    'before we know the status of previous confluence use or the user permissions, show the initializing dialog',
+    () =>
+      setupStorybookAnalytics(
+        <MockConfluenceCrossSell isProductInstalledOrActivating={() => new Promise(() => {})}>
+          <RequestOrStartTrial analyticsId="growth.happy" />
+        </MockConfluenceCrossSell>
+      )
+  )
+  .add('if there was an error, show the error flag', () =>
     setupStorybookAnalytics(
       <MockConfluenceCrossSell
         isProductInstalledOrActivating={() => Promise.resolve(false)}
-        canCurrentUserAddProduct={() => Promise.reject(new Error('Misc'))}
+        canCurrentUserAddProduct={() =>
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 1500))}
         requestTrialAccess={() => Promise.resolve(true)}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />

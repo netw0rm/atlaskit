@@ -3,6 +3,12 @@
 ## Unreleased
 
 * bug fix; fixed strike mark for BB (issues closed: ed-2102)
+* fix; dropzone configuration in picker facade.
+
+## 39.1.2 (2017-07-14)
+
+* fix; show URL on link hover (issues closed: ed-2220)
+
 ## 39.1.1 (2017-07-12)
 
 ## 39.1.0 (2017-07-12)

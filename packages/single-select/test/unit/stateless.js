@@ -89,23 +89,23 @@ describe(name, () => {
         shouldFlip={false}
       />);
       const droplistProps = select.find(Droplist).props();
-      expect(droplistProps.position, 'position').toBe('top right');
-      expect(droplistProps.isOpen, 'isOpen').toBe(true);
-      expect(droplistProps.isTriggerNotTabbable, 'isTriggerNotTabbable').toBe(true);
-      expect(droplistProps.shouldFitContainer, 'shouldFitContainer').toBe(false);
-      expect(droplistProps.isKeyboardInteractionDisabled, 'isKeyboardInteractionDisabled').toBe(true);
-      expect(droplistProps.isTriggerDisabled, 'isTriggerDisabled').toBe(true);
-      expect(droplistProps.shouldFlip, 'shouldFlip').toBe(false);
+      expect(droplistProps.position).toBe('top right');
+      expect(droplistProps.isOpen).toBe(true);
+      expect(droplistProps.isTriggerNotTabbable).toBe(true);
+      expect(droplistProps.shouldFitContainer).toBe(false);
+      expect(droplistProps.isKeyboardInteractionDisabled).toBe(true);
+      expect(droplistProps.isTriggerDisabled).toBe(true);
+      expect(droplistProps.shouldFlip).toBe(false);
     });
 
     it('should pass props to fieldBase', () => {
       const select = mount(<StatelessSelect isDisabled isInvalid isOpen invalidMessage="foobar" />);
       const fieldbaseProps = select.find(FieldBase).props();
-      expect(fieldbaseProps.isDisabled, 'isDisabled').toBe(true);
-      expect(fieldbaseProps.isInvalid, 'isInvalid').toBe(true);
-      expect(fieldbaseProps.isPaddingDisabled, 'isPaddingDisabled').toBe(true);
-      expect(fieldbaseProps.isFitContainerWidthEnabled, 'isFitContainerWidthEnabled').toBe(true);
-      expect(fieldbaseProps.invalidMessage, 'invalidMessage').toBe('foobar');
+      expect(fieldbaseProps.isDisabled).toBe(true);
+      expect(fieldbaseProps.isInvalid).toBe(true);
+      expect(fieldbaseProps.isPaddingDisabled).toBe(true);
+      expect(fieldbaseProps.isFitContainerWidthEnabled).toBe(true);
+      expect(fieldbaseProps.invalidMessage).toBe('foobar');
     });
 
     it('should pass props to Item', () => {
@@ -132,11 +132,11 @@ describe(name, () => {
         items={selectItems}
       />);
       const itemProps = select.find(Item).props();
-      expect(itemProps.description, 'description').toBe('Descr');
-      expect(itemProps.isDisabled, 'isDisabled').toBe(true);
-      expect(itemProps.elemBefore, 'elemBefore').toBe('1');
-      expect(itemProps.elemAfter, 'elemAfter').toBe('2');
-      expect(itemProps.tooltipDescription, 'tooltipDescription').toBe('first');
+      expect(itemProps.description).toBe('Descr');
+      expect(itemProps.isDisabled).toBe(true);
+      expect(itemProps.elemBefore).toBe('1');
+      expect(itemProps.elemAfter).toBe('2');
+      expect(itemProps.tooltipDescription).toBe('first');
     });
   });
 

@@ -257,10 +257,10 @@ describe(`${name} - stateless`, () => {
         items={selectItems}
       />);
       const itemProps = select.find(Item).props();
-      expect(itemProps.description, 'description').toBe('Descr');
-      expect(itemProps.isDisabled, 'isDisabled').toBe(true);
-      expect(itemProps.elemBefore, 'elemBefore').toBe('1');
-      expect(itemProps.elemAfter, 'elemAfter').toBe('2');
+      expect(itemProps.description).toBe('Descr');
+      expect(itemProps.isDisabled).toBe(true);
+      expect(itemProps.elemBefore).toBe('1');
+      expect(itemProps.elemAfter).toBe('2');
     });
   });
 

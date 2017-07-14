@@ -1,7 +1,7 @@
-
+import sinon from 'sinon';
 import { afterMutations } from '../../src';
 
-// eslint-disable-next-line mocha/no-skipped-tests
+// eslint-disable-next-line jest/no-disabled-tests
 describe.skip('afterMutations', () => {
   it('should respond to prop changes', (done) => {
     const spy = sinon.spy();

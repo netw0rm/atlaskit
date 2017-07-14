@@ -14,7 +14,9 @@ describe('Avatar', () => {
       describe(`when presence is ${presence}`, () =>
         it('should render content', () => {
           // eslint-disable-next-line chai-expect/missing-assertion
-          expect(shallow(<Presence presence={presence} />).type(getPresenceSVG(presence)));
+          expect(
+            shallow(<Presence presence={presence} />).type(getPresenceSVG(presence))
+          ).toBeTruthy();
         })
       )
     );
@@ -37,7 +39,7 @@ describe('Avatar', () => {
       });
 
       // TODO: come back to this
-      it.skip('should reflect the prop as a CSS style property', () => {
+      it.skip('should reflect the prop as a CSS style property', () => { // eslint-disable-line jest/no-disabled-tests
         const wrapper = mount(<Presence presence="online" borderColor="#FF0000" />);
         const bgColor = wrapper.getDOMNode().style.backgroundColor;
         expect(bgColor).toBe('#FF0000');

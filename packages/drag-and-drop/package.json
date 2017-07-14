@@ -10,7 +10,7 @@
   "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/drag-and-drop; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"
@@ -28,7 +28,8 @@
     "reselect": "2.5.4"
   },
   "devDependencies": {
-    "styled-components": "2.1.0"
+    "styled-components": "2.1.0",
+    "eslint-plugin-chai-expect": "^1.1.1"
   },
   "peerDependencies": {
     "react": "15.6.1"

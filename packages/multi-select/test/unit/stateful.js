@@ -48,21 +48,21 @@ describe(`${name} - smart`, () => {
         shouldFitContainer
       />);
       const statelessProps = wrapper.find(MultiSelectStateless).props();
-      expect(statelessProps.appearance, 'appearance').toBe('subtle');
-      expect(statelessProps.id, 'id').toBe('id');
-      expect(statelessProps.isDisabled, 'isDisabled').toBe(true);
-      expect(statelessProps.isInvalid, 'isInvalid').toBe(true);
-      expect(statelessProps.invalidMessage, 'invalidMessage').toBe('invalid message');
-      expect(statelessProps.isOpen, 'isOpen').toBe(true);
-      expect(statelessProps.isRequired, 'isRequired').toBe(true);
-      expect(statelessProps.items, 'items').toBe(items);
-      expect(statelessProps.label, 'label').toBe('label');
-      expect(statelessProps.name, 'name').toBe('name');
-      expect(statelessProps.noMatchesFound, 'noMatchesFound').toBe('no matches');
-      expect(statelessProps.position, 'position').toBe('top left');
-      expect(statelessProps.selectedItems, 'selectedItems').toEqual([items[0].items[0]]);
-      expect(statelessProps.shouldFitContainer, 'shouldFitContainer').toBe(true);
-      expect(statelessProps.shouldFocus, 'shouldFocus').toBe(true);
+      expect(statelessProps.appearance).toBe('subtle');
+      expect(statelessProps.id).toBe('id');
+      expect(statelessProps.isDisabled).toBe(true);
+      expect(statelessProps.isInvalid).toBe(true);
+      expect(statelessProps.invalidMessage).toBe('invalid message');
+      expect(statelessProps.isOpen).toBe(true);
+      expect(statelessProps.isRequired).toBe(true);
+      expect(statelessProps.items).toBe(items);
+      expect(statelessProps.label).toBe('label');
+      expect(statelessProps.name).toBe('name');
+      expect(statelessProps.noMatchesFound).toBe('no matches');
+      expect(statelessProps.position).toBe('top left');
+      expect(statelessProps.selectedItems).toEqual([items[0].items[0]]);
+      expect(statelessProps.shouldFitContainer).toBe(true);
+      expect(statelessProps.shouldFocus).toBe(true);
     });
   });
 

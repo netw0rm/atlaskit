@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { AkQuickSearch, AkQuickSearchWithKeyboardControls } from '../../src/index';
 import { action } from '@kadira/storybook';
+import { AkQuickSearch, AkQuickSearchWithKeyboardControls } from '../../src/index';
 
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
@@ -11,27 +11,27 @@ const data = [
     title: 'Jedi',
     items: [
       {
-        id: '1',
+        resultId: '1',
         type: 'room',
         avatarUrl: getRoomAvatarUrl(1),
         name: 'Jedi Council [archived]',
         privacy: 'private',
       }, {
-        id: '2',
+        resultId: '2',
         type: 'room',
         avatarUrl: getRoomAvatarUrl(2),
         name: 'Lightsaber colour discussion',
         topic: 'Please keep it civil. Strictly no red saber talk',
         privacy: 'public',
       }, {
-        id: '3',
+        resultId: '3',
         type: 'room',
         avatarUrl: getRoomAvatarUrl(3),
         name: 'Force tricks',
         topic: 'Impress your friends',
         privacy: 'private',
       }, {
-        id: 'qgjinn',
+        resultId: 'qgjinn',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('qgjinn'),
         mentionName: 'MasterQ',
@@ -39,7 +39,7 @@ const data = [
         presenceMessage: 'On-call',
         presenceState: 'offline',
       }, {
-        id: 'askywalker',
+        resultId: 'askywalker',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('askywalker'),
         mentionName: 'askywalker',
@@ -47,7 +47,7 @@ const data = [
         presenceMessage: 'Trying out the dark side',
         presenceState: 'offline',
       }, {
-        id: 'owkenobi',
+        resultId: 'owkenobi',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('owkenobi'),
         mentionName: 'BenKen',
@@ -55,7 +55,7 @@ const data = [
         presenceMessage: 'In exile',
         presenceState: 'busy',
       }, {
-        id: 'yoda',
+        resultId: 'yoda',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('yoda'),
         mentionName: 'yoda',
@@ -63,14 +63,14 @@ const data = [
         presenceMessage: 'Chillin`',
         presenceState: 'online',
       }, {
-        id: 'mwindu',
+        resultId: 'mwindu',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('mwindu'),
         mentionName: 'mwindu',
         name: 'Mace Windu',
         presenceState: 'offline',
       }, {
-        id: 'lskywalker',
+        resultId: 'lskywalker',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('lskywalker'),
         mentionName: 'lskywalker',
@@ -84,85 +84,85 @@ const data = [
     title: 'CSI',
     items: [
       {
-        id: 'Forensics Lab',
+        resultId: 'Forensics Lab',
         type: 'room',
         name: 'Forensics Lab',
         topic: 'Science!',
         avatarUrl: getRoomAvatarUrl(4),
       }, {
-        id: 'Ballistics Lab',
+        resultId: 'Ballistics Lab',
         type: 'room',
         name: 'Ballistics Lab',
         topic: 'Pew pew pew',
         avatarUrl: getRoomAvatarUrl(5),
       }, {
-        id: 'Cotton swab enthusiasts',
+        resultId: 'Cotton swab enthusiasts',
         type: 'room',
         name: 'Cotton swab enthusiasts',
         topic: 'So many applications',
         avatarUrl: getRoomAvatarUrl(6),
       }, {
-        id: 'David Caruso',
+        resultId: 'David Caruso',
         type: 'person',
         name: 'David Caruso',
         mentionName: 'Horatio Caine',
         avatarUrl: getPersonAvatarUrl('hcaine'),
       }, {
-        id: 'Kim Delaney',
+        resultId: 'Kim Delaney',
         type: 'person',
         name: 'Kim Delaney',
         mentionName: 'Megan Donner',
         avatarUrl: getPersonAvatarUrl('mdonner'),
       }, {
-        id: 'Emily Procter',
+        resultId: 'Emily Procter',
         type: 'person',
         name: 'Emily Procter',
         mentionName: 'Calleigh Duquesne',
         avatarUrl: getPersonAvatarUrl('cduqesne'),
       }, {
-        id: 'Adam Rodriguez',
+        resultId: 'Adam Rodriguez',
         type: 'person',
         name: 'Adam Rodriguez',
         mentionName: 'Delko',
         avatarUrl: getPersonAvatarUrl('delko'),
       }, {
-        id: 'Khandi Alexander',
+        resultId: 'Khandi Alexander',
         type: 'person',
         name: 'Khandi Alexander',
         mentionName: 'Alexx Woods',
         avatarUrl: getPersonAvatarUrl('awoods'),
       }, {
-        id: 'Rory Cochrane',
+        resultId: 'Rory Cochrane',
         type: 'person',
         name: 'Rory Cochrane',
         mentionName: 'Tim Speedle',
         avatarUrl: getPersonAvatarUrl('tspeedle'),
       }, {
-        id: 'Rex Linn',
+        resultId: 'Rex Linn',
         type: 'person',
         name: 'Rex Linn',
         mentionName: 'Frank Tripp',
         avatarUrl: getPersonAvatarUrl('ftripp'),
       }, {
-        id: 'Eva LaRue',
+        resultId: 'Eva LaRue',
         type: 'person',
         name: 'Eva LaRue',
         mentionName: 'Natalia Boa Vista',
         avatarUrl: getPersonAvatarUrl('`nboavista`'),
       }, {
-        id: 'Megalyn Echikunwoke',
+        resultId: 'Megalyn Echikunwoke',
         type: 'person',
         name: 'Megalyn Echikunwoke',
         mentionName: 'Tara Price',
         avatarUrl: getPersonAvatarUrl('tprice'),
       }, {
-        id: 'Eddie Cibrian',
+        resultId: 'Eddie Cibrian',
         type: 'person',
         name: 'Eddie Cibrian',
         mentionName: 'Jesse Cardoza',
         avatarUrl: getPersonAvatarUrl('jcardoza'),
       }, {
-        id: 'Omar Benson Miller',
+        resultId: 'Omar Benson Miller',
         type: 'person',
         name: 'Omar Benson Miller',
         mentionName: 'Walter Simmons',
@@ -189,7 +189,7 @@ function searchData(query) {
 // a little fake store for holding the query after a component unmounts
 const store = {};
 
-const onClickAction = (item) => { action(`onResultClick: ${item.name}`)(item); };
+const onClickAction = (item) => { action('onResultClick')(`resultId: ${item.resultId}`); };
 
 export default class BasicQuickSearch extends PureComponent {
   static propTypes = {
@@ -233,11 +233,12 @@ export default class BasicQuickSearch extends PureComponent {
       : AkQuickSearch;
     return (
       <QuickSearchComp
+        /* Search props */
         isLoading={this.state.isLoading}
         onSearchChange={({ target }) => { this.search(target.value); }}
-        onSearchClear={() => { this.search(''); }}
         value={this.state.query}
 
+        /* SearchResults props */
         onResultClick={onClickAction}
         results={this.state.results}
       />

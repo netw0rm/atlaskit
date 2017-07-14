@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
 import type { Position, ZIndex, InitialDrag, HTMLElement } from '../../types';
@@ -31,7 +31,7 @@ type PlacementInfo = {|
 |}
 
 type State = {|
-  childRef: ?HTMLElement,
+  ref: ?HTMLElement,
 |}
 
 export const zIndexOptions: ZIndexOptions = {
@@ -39,14 +39,14 @@ export const zIndexOptions: ZIndexOptions = {
   dropAnimating: 50,
 };
 
-export default class Draggable extends PureComponent {
+export default class Draggable extends Component {
   /* eslint-disable react/sort-comp */
   props: Props
   state: State
   callbacks: DragHandleCallbacks
 
   state: State = {
-    childRef: null,
+    ref: null,
   }
 
   static defaultProps: DefaultProps = {
@@ -72,8 +72,8 @@ export default class Draggable extends PureComponent {
   // This should already be handled gracefully in DragHandle.
   // Just being extra clear here
   throwIfCannotDrag() {
-    invariant(this.state.childRef,
-      'Draggable: cannot drag if not attached child node'
+    invariant(this.state.ref,
+      'Draggable: cannot drag as no DOM node has been provided'
     );
     invariant(!this.props.isDragDisabled,
       'Draggable: cannot drag as dragging is not enabled'
@@ -92,7 +92,7 @@ export default class Draggable extends PureComponent {
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
 
-    const center: Position = getCenterPosition(this.state.childRef);
+    const center: Position = getCenterPosition(this.state.ref);
 
     lift(draggableId, type, center, selection);
   }
@@ -101,7 +101,7 @@ export default class Draggable extends PureComponent {
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
 
-    const center: Position = getCenterPosition(this.state.childRef);
+    const center: Position = getCenterPosition(this.state.ref);
 
     // using center position as selection
     lift(draggableId, type, center, center);
@@ -150,11 +150,23 @@ export default class Draggable extends PureComponent {
     this.props.cancel(this.props.draggableId);
   }
 
-  setChildRef = (el: ?HTMLElement) => {
+  // React calls ref callback twice for every render
+  // https://github.com/facebook/react/pull/8333/files
+  setRef = ((ref: ?HTMLElement) => {
+    // TODO: need to clear this.state.ref on unmount
+    if (ref === null) {
+      return;
+    }
+
+    if (ref === this.state.ref) {
+      return;
+    }
+
+    // need to trigger a child render when ref changes
     this.setState({
-      childRef: el,
+      ref,
     });
-  }
+  })
 
   getPlaceholder() {
     invariant(this.props.initial, 'cannot get a drag placeholder when not dragging');
@@ -179,8 +191,10 @@ export default class Draggable extends PureComponent {
       // its standard positioning logic
       width: initial.dimension.withoutMargin.width,
       height: initial.dimension.withoutMargin.height,
-      top: initial.dimension.withoutMargin.top,
-      left: initial.dimension.withoutMargin.left,
+      // Not applying any 'left' or 'top' value as we
+      // want the element to sit in the place that it started.
+      // If we use 'left' or 'top' then it would be relative
+      // to any parent that has a position:relative on it.
     };
   });
 
@@ -239,7 +253,7 @@ export default class Draggable extends PureComponent {
       })();
 
       const provided: Provided = {
-        innerRef: this.setChildRef,
+        innerRef: this.setRef,
         placeholder: showPlaceholder ? this.getPlaceholder() : null,
         dragHandleProps,
         draggableStyle,
@@ -252,11 +266,6 @@ export default class Draggable extends PureComponent {
     isDragging,
   }))
 
-  memoizedChildrenFn = memoizeOne(
-    (provided: Provided, snapshot: StateSnapshot) =>
-      this.props.children(provided, snapshot)
-  );
-
   render() {
     const info: PlacementInfo = this.getPlacementInfo();
 
@@ -264,7 +273,7 @@ export default class Draggable extends PureComponent {
       <DraggableDimensionPublisher
         itemId={this.props.draggableId}
         type={this.props.type}
-        targetRef={this.state.childRef}
+        targetRef={this.state.ref}
       >
         <Moveable
           speed={info.speed}
@@ -277,7 +286,7 @@ export default class Draggable extends PureComponent {
               callbacks={this.callbacks}
             >
               {(dragHandleProps: ?DragHandleProvided) =>
-                this.memoizedChildrenFn(
+                this.props.children(
                   this.getProvided(
                     info.showPlaceholder,
                     dragHandleProps,

@@ -297,7 +297,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
-          ...mentionsPlugins(schema),
+          ...mentionsPlugins(schema, this.providerFactory),
           ...clearFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
@@ -360,10 +360,6 @@ export default class Editor extends PureComponent<Props, State> {
           return false;
         },
       });
-
-      if (this.mentionProvider) {
-        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      }
 
       analyticsService.trackEvent('atlassian.editor.start');
 

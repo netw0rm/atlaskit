@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "5.4.1",
+  "version": "5.4.2",
   "config": {
     "access": "public"
   },
@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@atlaskit/code": "^2.1.2",
-    "@atlaskit/emoji": "^18.2.1",
+    "@atlaskit/emoji": "^18.4.2",
     "@atlaskit/icon": "^6.5.4",
     "@atlaskit/media-card": "^17.7.0",
     "@atlaskit/media-core": "^8.2.0",

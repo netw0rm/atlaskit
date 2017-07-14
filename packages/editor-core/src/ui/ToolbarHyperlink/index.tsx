@@ -52,6 +52,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
   private toggleLinkPanel = () => {
     const { pluginState, editorView } = this.props;
     pluginState.showLinkPanel(editorView);
+    return true;
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {

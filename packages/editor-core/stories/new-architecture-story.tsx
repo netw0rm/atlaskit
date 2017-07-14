@@ -10,7 +10,7 @@ storiesOf(name, module)
   .add('Tray Editor', () =>
     <ToolsDrawer
       // tslint:disable-next-line:jsx-no-lambda
-      renderEditor={({mentionProvider, emojiProvider, onChange}) =>
+      renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
         <Editor
           appearance="tray"
 
@@ -19,6 +19,7 @@ storiesOf(name, module)
 
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
+          mediaProvider={mediaProvider}
           onChange={onChange}
           onSave={SAVE_ACTION}
         />}

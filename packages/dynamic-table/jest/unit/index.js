@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
-import { Pagination } from '@atlaskit/pagination';
+import { PaginationStateless } from '@atlaskit/pagination';
 import TableHead from '../../src/components/TableHead';
 import EmptyBody from '../../src/components/EmptyBody';
 import Body from '../../src/components/Body';
@@ -74,6 +74,18 @@ describe(name, () => {
       expect(header.length).toBe(1);
       expect(emptyView.length).toBe(0);
       expect(body.length).toBe(0);
+    });
+    it('should not render any text in the table when rows prop is an empty array', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          rows={[]}
+          head={head}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const table = wrapper.find('table');
+      expect(table.nodes[0].childNodes.length).toBe(1);
+      expect(header.length).toBe(1);
     });
     it('should render TableHead when items length is 0 and render EmptyBody if emptyView prop is provided', () => {
       const wrapper = mount(
@@ -240,7 +252,7 @@ describe(name, () => {
       });
 
       it('onSetPage', () => {
-        wrapper.find(Pagination).find('button').at(1).simulate('click');
+        wrapper.find(PaginationStateless).find('button').at(1).simulate('click');
         expect(onSetPage.calledOnce).toBe(true);
         expect(onSetPage.calledWith(1)).toBe(true);
       });
@@ -258,7 +270,7 @@ describe(name, () => {
         />
       );
 
-      wrapper.find(Pagination).find('button').at(0).simulate('click');
+      wrapper.find(PaginationStateless).find('button').at(0).simulate('click');
 
       const bodyRows = wrapper.find('tbody tr');
       expect(bodyRows.length).toBe(2);

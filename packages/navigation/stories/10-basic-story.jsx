@@ -63,6 +63,13 @@ storiesOf(name, module)
           text="A really, really, quite long, actually super long container name"
           href="#4"
         />
+        <AkNavigationItem
+          icon={<img src={nucleusLogo} alt="icon" />}
+          text="A really, really, quite long, actually super long container name with action"
+          subText="Another line of text, which could possibly be long"
+          action={<span>text</span>}
+          href="#5"
+        />
       </BasicNavigation>
     </HtmlPage>
   ))

@@ -11,11 +11,6 @@ import {
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
-
-  // nodeviews
-  nodeViewFactory,
-  ReactMediaGroupNode,
-  ReactMediaNode,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
@@ -55,13 +50,7 @@ describe('Media plugin', () => {
       ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
       history(),
     ],
-    schema: defaultSchema,
-    nodeViews: {
-      mediaGroup: nodeViewFactory(providerFactory, {
-        mediaGroup: ReactMediaGroupNode,
-        media: ReactMediaNode,
-      }, true),
-    },
+    schema: defaultSchema
   });
 
   const getNodePos = (pluginState: MediaPluginState, id: string) => {

@@ -35,8 +35,6 @@ export type PlacementStyle = {|
   zIndex: ZIndex,
   width: number,
   height: number,
-  top: number,
-  left: number,
 |}
 
 export type ZIndexOptions = {|
@@ -80,7 +78,7 @@ export type MapProps = {|
 
 export type OwnProps = {|
   draggableId: DraggableId,
-  children: (Provided, StateSnapshot) => void,
+  children: (Provided, StateSnapshot) => ?ReactElement,
   type: HasDefaultProp<TypeId>,
   isDragDisabled: HasDefaultProp<boolean>,
 |}

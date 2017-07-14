@@ -1,7 +1,8 @@
 // @flow
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import invariant from 'invariant';
 import memoizeOne from 'memoize-one';
+import rafScheduler from 'raf-schd';
 import getScrollPosition from '../get-scroll-position';
 import type { Position } from '../../types';
 import type { Props, DragTypes, Provided } from './drag-handle-types';
@@ -21,7 +22,7 @@ type State = {
   pending: ?Position,
 };
 
-export default class DragHandle extends PureComponent {
+export default class DragHandle extends Component {
 
   /* eslint-disable react/sort-comp */
   props: Props
@@ -32,7 +33,27 @@ export default class DragHandle extends PureComponent {
     pending: null,
   };
 
-  preventClick: boolean
+  preventClick: boolean;
+
+  ifDragging = (fn: Function) => {
+    if (this.state.draggingWith) {
+      fn();
+    }
+  }
+
+  // scheduled functions
+  scheduleMove = rafScheduler((point: Position) => {
+    this.ifDragging(() => this.props.callbacks.onMove(point));
+  });
+
+  scheduleMoveForward = rafScheduler(() => {
+    this.ifDragging(this.props.callbacks.onMoveForward);
+  })
+
+  scheduleMoveBackward = rafScheduler(() => {
+    this.ifDragging(this.props.callbacks.onMoveBackward);
+  });
+
   /* eslint-enable react/sort-comp */
 
   componentWillUnmount() {
@@ -93,7 +114,7 @@ export default class DragHandle extends PureComponent {
     };
 
     if (!pending) {
-      this.props.callbacks.onMove(point);
+      this.scheduleMove(point);
       return;
     }
 
@@ -217,12 +238,12 @@ export default class DragHandle extends PureComponent {
     // keyboard dragging only
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      this.props.callbacks.onMoveForward();
+      this.scheduleMoveForward();
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      this.props.callbacks.onMoveBackward();
+      this.scheduleMoveBackward();
     }
   }
 

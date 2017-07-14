@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
@@ -7,6 +7,7 @@ import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigat
 import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
+import type { ReactElement, Provided } from '../../types';
 import Spacer from './Spacer';
 import {
   containerClosedWidth,
@@ -51,29 +52,66 @@ const getSnappedWidth = (width) => {
   return width;
 };
 
-export default class Navigation extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    containerHeaderComponent: PropTypes.func,
-    drawers: PropTypes.arrayOf(PropTypes.node),
-    globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    globalCreateIcon: PropTypes.node,
-    globalPrimaryIcon: PropTypes.node,
-    globalPrimaryItemHref: PropTypes.string,
-    globalSearchIcon: PropTypes.node,
-    globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
-    isCollapsible: PropTypes.bool,
-    isOpen: PropTypes.bool,
-    isResizeable: PropTypes.bool,
-    linkComponent: PropTypes.func,
-    onCreateDrawerOpen: PropTypes.func,
-    onResize: PropTypes.func,
-    onResizeStart: PropTypes.func,
-    onSearchDrawerOpen: PropTypes.func,
-    width: PropTypes.number,
-  };
+type resizeObj = {|
+  width: number,
+  isOpen: boolean
+|}
 
+type Props = {|
+  /** Elements to be displayed in the ContainerNavigationComponent */
+  children?: ReactElement,
+  /** Theme object to be used to color the navigation container. */
+  containerTheme?: Provided,
+  /** Component to be rendered as the header of the container.  */
+  containerHeaderComponent?: () => ReactElement,
+  /** Location to pass in an array of AkSearchDrawers to be rendered. There is no
+  decoration done to the components passed in here. */
+  drawers?: ReactElement[],
+  /** Theme object to be used to color the global container. */
+  globalTheme?: Provided,
+  /** Icon to be used as the 'create' icon. onCreateDrawerOpen is called when it
+  is clicked. */
+  globalCreateIcon?: ReactElement,
+  /** Icon to be displayed at the top of the GlobalNavigation. This is wrapped in
+  the linkComponent. */
+  globalPrimaryIcon?: ReactElement,
+  /** Link to be passed to the linkComponent that wraps the globalCreateIcon. */
+  globalPrimaryItemHref?: string,
+  /** Icon to be used as the 'create' icon. onSearchDrawerOpen is called when it
+  is clicked. */
+  globalSearchIcon?: ReactElement,
+  /** An array of elements to be displayed at the bottom of the global component.
+  These should be icons or other small elements. There should be no more than four.
+  Secondary Actions will not be visible when nav is collapsed. */
+  globalSecondaryActions?: ReactElement[],
+  /** Set whether collapse should be allowed. If false, the nav cannot be dragged
+  to be smaller. */
+  isCollapsible?: boolean,
+  /** Set whether the nav is collapsed or not. Note that this is never controlled
+  internally as state, so if it is collapsible, you need to manually listen to onResize
+  to determine when to change this if you are letting users manually collapse the
+  nav. */
+  isOpen?: boolean,
+  /** Sets whether to disable all resize prompts. */
+  isResizeable?: boolean,
+  /** A component to be used as a link. By Default this is an anchor. when a href
+  is passed to it, and otherwise is a button. */
+  linkComponent?: () => mixed,
+  /** Function called at the end of a resize event. It is called with an object
+  containing a width and an isOpen. These can be used to update the props of Navigation. */
+  onResize?: (obj: resizeObj) => mixed,
+  /** Function to be called when a resize event starts. */
+  onResizeStart?: () => mixed,
+  /** Function called when the globalCreateIcon is clicked. */
+  onCreateDrawerOpen?: () => mixed,
+  /** Function called when the globalSearchIcon is clicked. */
+  onSearchDrawerOpen?: () => mixed,
+  /** Width of the navigation. Width cannot be reduced below the minimum, and the
+  collapsed with will be respected above the provided width. */
+  width?: number,
+|}
+
+export default class Navigation extends PureComponent {
   static defaultProps = {
     containerTheme: presets.container,
     drawers: [],
@@ -104,7 +142,7 @@ export default class Navigation extends PureComponent {
     warnIfCollapsedPropsAreInvalid(props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     this.setState({
       isTogglingIsOpen: this.props.isOpen !== nextProps.isOpen,
     });
@@ -137,13 +175,16 @@ export default class Navigation extends PureComponent {
   }
 
   getRenderedWidth = () => {
-    const baselineWidth = this.props.isOpen ? this.props.width : containerClosedWidth;
-    const minWidth = this.props.isCollapsible ? containerClosedWidth : standardOpenWidth;
+    const { isOpen, width, isCollapsible } = this.props;
+    const baselineWidth = isOpen ? width : containerClosedWidth;
+    const minWidth = isCollapsible ? containerClosedWidth : standardOpenWidth;
     return Math.max(
       minWidth,
       baselineWidth + this.state.resizeDelta
     );
   }
+
+  props: Props
 
   triggerResizeButtonHandler = (resizeState) => {
     this.props.onResize(resizeState);

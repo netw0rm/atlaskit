@@ -21,7 +21,7 @@ export type OwnProps = {|
   droppableId: DroppableId,
   isDropDisabled: HasDefaultProp<boolean>,
   type: HasDefaultProp<TypeId>,
-  children: (Provided, StateSnapshot) => ReactElement
+  children: (Provided, StateSnapshot) => ?ReactElement
 |};
 
 export type DefaultProps = {|

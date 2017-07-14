@@ -22,6 +22,7 @@ export const akEditorFocus = akColorB100;
 export const akEditorSubtleAccent = akColorN40;
 export const akEditorActiveBackground = akColorN500;
 export const akEditorActiveForeground = akColorN0;
+export const akEditorBlockquoteBorderColor = akColorN40;
 export const akEditorDropdownActiveBackground = akColorN900;
 export const akEditorPopupBackground = akColorN700;
 export const akEditorPopupText = akColorB50;

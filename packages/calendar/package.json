@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/calendar",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "config": {
     "access": "public"
   },
@@ -9,7 +9,8 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Calendar"
+    "name": "Calendar",
+    "pattern": true
   },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/calendar; } || ../../node_modules/.bin/not-in-publish",

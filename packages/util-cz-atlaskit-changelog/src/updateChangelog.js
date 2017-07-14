@@ -26,7 +26,7 @@ const gitAddChangelogs = (pathNames) => {
   });
 };
 
-const updateChangelog = (pathName, text, dirPath, packageName) => {
+const updateChangelog = (pathName, changeLogEntry, dirPath, packageName) => {
   let currentChangelog;
   try {
     currentChangelog = fs.readFileSync(pathName).toString();
@@ -38,21 +38,19 @@ const updateChangelog = (pathName, text, dirPath, packageName) => {
     }
     currentChangelog = `# ${packageName}\n\n## Unreleased\n\n`;
   }
-  // find whether it has an unreleased section
-  let splitOn = '\n*';
-  let addBack = '\n## Unreleased\n\n';
-  let post = '*';
-  if (currentChangelog.indexOf('## Unreleased\n') > -1) {
-    splitOn = '## Unreleased\n\n';
-    addBack = '## Unreleased\n\n';
-    post = '';
+  const unreleasedSectionMarker = /(## Unreleased\n\n)/;
+  const readmeTitleMarker = /^(# .+?\n\n)/;
+  if (unreleasedSectionMarker.test(currentChangelog)) {
+    currentChangelog = currentChangelog.replace(unreleasedSectionMarker, `$1${changeLogEntry}`);
+  } else if (readmeTitleMarker.test(currentChangelog)) {
+    // we need to add an unreleased section
+    currentChangelog = currentChangelog.replace(readmeTitleMarker, `$1## Unreleased\n\n${changeLogEntry}\n`);
+  } else {
+    return Promise.reject(`Unable to find an unreleased section or Header in changelog ${pathName}`);
   }
 
-  const newText = `${addBack}${text}${post}`;
-  const splitReadme = currentChangelog.replace(splitOn, newText);
-
   return new Promise((resolve, reject) => {
-    fs.writeFile(pathName, splitReadme, (err) => {
+    fs.writeFile(pathName, currentChangelog, (err) => {
       if (err) return reject(err);
       return resolve();
     });

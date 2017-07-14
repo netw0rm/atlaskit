@@ -1,7 +1,7 @@
 /*
 cleanProps removes props added by the withAnalytics HOC from an object
 */
-function cleanProps(props) {
+function cleanProps(props: Object) {
   /* eslint-disable no-unused-vars */
   const {
     analyticsId,

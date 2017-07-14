@@ -1,3 +1,5 @@
+/* eslint-disable react/sort-comp */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,10 +10,10 @@ The Listener component is responsible for calling its `onEvent` handler when a
 child component fires an analytics event, and passing the event up the hierarchy
 */
 class AnalyticsListener extends Component {
-  static propTypes = {
-    onEvent: PropTypes.func.isRequired,
-    match: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-    matchPrivate: PropTypes.bool,
+  props: {
+    onEvent: (eventName: string, eventData: Object) => any,
+    match?: string | ((name: string) => boolean),
+    matchPrivate?: boolean,
   };
   static defaultProps = {
     match: '*',
@@ -28,7 +30,7 @@ class AnalyticsListener extends Component {
       onAnalyticsEvent: this.onAnalyticsEvent,
     };
   }
-  onAnalyticsEvent = (name, data, isPrivate) => {
+  onAnalyticsEvent = (name: string, data: Object, isPrivate: boolean) => {
     // Call this component's onEvent method if it's a match
     const { onEvent, match, matchPrivate } = this.props;
     if (

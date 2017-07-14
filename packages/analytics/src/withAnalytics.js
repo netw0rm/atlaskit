@@ -14,16 +14,16 @@ const withAnalytics = (WrappedComponent, map = {}) =>
     static displayName = `WithAnalytics(${WrappedComponent.displayName ||
       WrappedComponent.name})`;
     static contextTypes = { onAnalyticsEvent: PropTypes.func };
-    static propTypes = {
-      analyticsId: PropTypes.string,
-      analyticsData: PropTypes.any, // eslint-disable-line react/forbid-prop-types
-      analyticsDelay: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    props: {
+      analyticsId?: string,
+      analyticsData?: Object,
+      analyticsDelay?: number | boolean,
     };
     componentWillMount() {
       this.evaluatedMap =
         typeof map === 'function' ? map(this.fireAnalyticsEvent) : map;
     }
-    fireAnalyticsEvent = (name, data) => {
+    fireAnalyticsEvent = (name: string, data: Object) => {
       const { analyticsId, analyticsDelay } = this.props;
       const { onAnalyticsEvent } = this.context;
       if (!analyticsId || !onAnalyticsEvent) return;
@@ -38,7 +38,7 @@ const withAnalytics = (WrappedComponent, map = {}) =>
         fireEvent();
       }
     };
-    privateAnalyticsEvent = (name, data) => {
+    privateAnalyticsEvent = (name: string, data: Object) => {
       const { onAnalyticsEvent } = this.context;
       if (!onAnalyticsEvent) return;
       onAnalyticsEvent(`${name}`, data, true);

@@ -1,3 +1,5 @@
+/* eslint-disable react/sort-comp */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,11 +10,11 @@ The Decorator component extends analytics event data for any events fired by
 its descendents, then passes the event up the hierarchy
 */
 class AnalyticsDecorator extends Component {
-  static propTypes = {
-    data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    getData: PropTypes.func,
-    match: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-    matchPrivate: PropTypes.bool,
+  props: {
+    data?: Object,
+    getData?: (name: string, decoratedData: Object) => Object,
+    match?: string | ((name: string) => boolean),
+    matchPrivate?: boolean,
   };
   static defaultProps = {
     match: '*',

@@ -5,7 +5,7 @@ import * as uid from 'uid';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
 import { customCategory } from '../../constants';
-import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent } from '../../types';
+import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent, ToneSelection } from '../../types';
 import { sizes } from './EmojiPickerSizes';
 import {
   CategoryHeadingItem,
@@ -34,7 +34,7 @@ export interface Props {
   onCategoryActivated?: OnCategory;
   onOpenUpload?: () => void;
   selectedCategory?: string;
-  selectedTone?: number;
+  selectedTone?: ToneSelection;
   onSearch?: OnSearch;
   loading?: boolean;
   query?: string;

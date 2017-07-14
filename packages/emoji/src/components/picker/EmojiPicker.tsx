@@ -5,9 +5,10 @@ import * as classNames from 'classnames';
 import * as styles from './styles';
 
 import { customCategory } from '../../constants';
-import { AvailableCategories, EmojiDescription, EmojiId, EmojiUpload, OnEmojiEvent } from '../../types';
+import { AvailableCategories, EmojiDescription, EmojiDescriptionWithVariations, EmojiId, EmojiUpload, OnEmojiEvent, ToneSelection } from '../../types';
 import { containsEmojiId, isEmojiIdEqual, isEmojiLoaded } from '../../type-helpers';
 import debug from '../../util/logger';
+import { getToneEmoji } from '../../util/filters';
 import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
@@ -22,6 +23,7 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
+  hideToneSelector?: boolean;
 }
 
 export interface State {
@@ -29,9 +31,10 @@ export interface State {
   selectedEmoji?: EmojiDescription;
   activeCategory?: string;
   selectedCategory?: string;
-  selectedTone?: number;
+  selectedTone?: ToneSelection;
   availableCategories?: AvailableCategories;
   query: string;
+  toneEmoji?: EmojiDescriptionWithVariations;
   uploadErrorMessage?: string;
   uploadSupported: boolean;
   uploading: boolean;
@@ -65,6 +68,9 @@ export default class EmojiPicker extends PureComponent<Props, State> {
         this.onSearch(this.state.query);
         if (supportsUploadFeature(provider)) {
           provider.isUploadSupported().then(this.onUploadSupported);
+        }
+        if (!this.props.hideToneSelector) {
+          getToneEmoji(provider).then(toneEmoji => this.setState({ toneEmoji: toneEmoji }));
         }
       });
     }
@@ -167,11 +173,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     this.setState({
       query
     });
-    this.props.emojiProvider.then(provider => {
-      provider.filter(query, {
-        skinTone: this.state.selectedTone,
-      });
-    });
+    this.updateEmojis(query);
   }
 
   private onSearchResult = (searchResults: EmojiSearchResult): void => {
@@ -207,10 +209,19 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     result: this.onSearchResult,
   };
 
-  private onToneSelected = (toneValue?: number) => {
+  private onToneSelected = (toneValue: ToneSelection) => {
     this.setState({
       selectedTone: toneValue,
     } as State);
+    this.updateEmojis();
+  }
+
+  private updateEmojis = (query?: string) => {
+    this.props.emojiProvider.then(provider => {
+      provider.filter(query, {
+        skinTone: this.state.selectedTone,
+      });
+    });
   }
 
   private onOpenUpload = () => {
@@ -288,6 +299,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
       selectedCategory,
       selectedEmoji,
       selectedTone,
+      toneEmoji,
       uploading,
       uploadErrorMessage,
       uploadSupported,
@@ -321,6 +333,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
           selectedEmoji={selectedEmoji}
           selectedTone={selectedTone}
           onToneSelected={this.onToneSelected}
+          toneEmoji={toneEmoji}
           uploading={uploading}
           uploadErrorMessage={uploadErrorMessage}
           onUploadEmoji={this.onUploadEmoji}

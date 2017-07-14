@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* feature; emojis with skin variations in the picker (issues closed: fs-1126)
 ## 18.4.2 (2017-07-10)
 
 

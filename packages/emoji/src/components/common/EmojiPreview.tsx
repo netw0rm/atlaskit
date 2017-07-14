@@ -7,13 +7,13 @@ import AkButton from '@atlaskit/button';
 import Emoji from '../../components/common/Emoji';
 import EmojiPlaceholder from '../../components/common/EmojiPlaceholder';
 import ToneSelector from './ToneSelector';
-import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected, ToneSelection } from '../../types';
 import { isEmojiLoaded } from '../../type-helpers';
 
 export interface Props {
   emoji?: EmojiDescription;
   toneEmoji?: EmojiDescriptionWithVariations;
-  selectedTone?: number;
+  selectedTone?: ToneSelection;
   onToneSelected?: OnToneSelected;
 }
 
@@ -87,7 +87,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   renderEmojiPreview() {
     const emoji = this.props.emoji;
 
-    if (!emoji) {
+    if (!emoji || this.state.selectingTone) {
       return null;
     }
 

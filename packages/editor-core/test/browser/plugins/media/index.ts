@@ -30,9 +30,9 @@ import {
   storyMediaProviderFactory,
   randomId,
   sleep,
-  setNodeSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setNodeSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 

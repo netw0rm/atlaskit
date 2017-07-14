@@ -142,6 +142,13 @@ export const setNodeSelection = (view: EditorView, pos: number) => {
   dispatch(tr);
 };
 
+export function setTextSelection(view: EditorView, anchor: number, head?: number) {
+  const { state } = view;
+  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor, head));
+  view.dispatch(tr);
+}
+
+
 /**
  * Determines if content inside a selection can be joined with the previous block.
  * We need this check since the built-in method for "joinUp" will join a orderedList with bulletList.

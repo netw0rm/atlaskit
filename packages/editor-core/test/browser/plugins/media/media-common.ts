@@ -11,7 +11,6 @@ import {
   media,
   p,
   randomId,
-  setNodeSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import {
@@ -21,6 +20,7 @@ import {
   TextSelection,
 } from '../../../../src/prosemirror';
 import { removeMediaNode } from '../../../../src/plugins/media/media-common';
+import { setNodeSelection} from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 

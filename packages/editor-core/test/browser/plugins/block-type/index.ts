@@ -4,8 +4,6 @@ import * as sinon from 'sinon';
 
 import { browser } from '../../../../src/prosemirror';
 import {
-  setTextSelection,
-  setNodeSelection,
   sendKeyToPm,
   blockquote,
   br,
@@ -33,6 +31,7 @@ import {
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { createSchema } from '../../../../src/schema';
+import { setNodeSelection, setTextSelection } from '../../../../src/utils';
 
 import blockTypePlugins, { BlockTypeState } from '../../../../src/plugins/block-type';
 

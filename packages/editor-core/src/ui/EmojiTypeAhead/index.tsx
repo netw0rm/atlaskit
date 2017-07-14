@@ -38,7 +38,6 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     pluginState.onSelectPrevious = this.handleSelectPrevious;
     pluginState.onSelectNext = this.handleSelectNext;
     pluginState.onSelectCurrent = this.handleSelectCurrent;
-    pluginState.onTrySelectCurrent = this.handleTrySelectCurrent;
   }
 
   componentWillUmount() {
@@ -109,19 +108,6 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     }
 
     return true;
-  }
-
-  private handleTrySelectCurrent = (): boolean => {
-    const emojisCount = this.getEmojisCount();
-    const { query } = this.state;
-    if (emojisCount === 1) {
-      (this.typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
-      return true;
-    } else if (emojisCount === 0 || !query) {
-      this.pluginState.dismiss();
-    }
-
-    return false;
   }
 
   private getEmojisCount(): number {

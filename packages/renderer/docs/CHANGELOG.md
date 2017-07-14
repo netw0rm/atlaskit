@@ -1,7 +1,8 @@
 # @atlaskit/renderer
 
-## Unreleased
+## 5.4.3 (2017-07-14)
 
+* bug fix; show URL on link hover (issues closed: ed-2220)
 ## 5.4.2 (2017-07-11)
 
 

@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+* fix; dismiss and cancel emoji typeahead when query is empty (issues closed: fs-1149)
+
+## 39.1.3 (2017-07-14)
+
+* fix; dropzone configuration in picker facade.
+
+## 39.1.2 (2017-07-14)
+
+* fix; show URL on link hover (issues closed: ed-2220)
+
 ## 39.1.1 (2017-07-12)
 
 ## 39.1.0 (2017-07-12)

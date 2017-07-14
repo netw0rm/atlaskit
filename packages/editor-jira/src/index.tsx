@@ -159,6 +159,19 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    const { editorView } = this.state;
+
+    if (editorView) {
+      if (editorView.state) {
+        const mediaState = mediaStateKey.getState(editorView.state);
+        if (mediaState) {
+          mediaState.destroy();
+        }
+      }
+
+      editorView.destroy();
+    }
+
     this.providerFactory.destroy();
   }
 

@@ -32,8 +32,8 @@ const Header = () => (
 );
 
 const getIndex = (pathname: string): number => {
+  if (/^\/components\/navigation/.test(pathname)) return 2;
   if (/^\/components/.test(pathname)) return 1;
-  if (/^\/patterns\/navigation/.test(pathname)) return 2;
   if (/^\/patterns/.test(pathname)) return 1;
   return 0;
 };
@@ -105,7 +105,7 @@ class StandardNav extends Component {
 const Nav = ({ isSearchDrawerOpen, onSearchDrawerToggle }) => (
   <Switch>
     <Route
-      path="/patterns/navigation/examples/:exampleName"
+      path="/components/navigation/examples/:exampleName"
       render={({ match }) => {
         const example = matchNavExample(match.params.exampleName);
         if (example) {

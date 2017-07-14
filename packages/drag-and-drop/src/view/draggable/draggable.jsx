@@ -2,10 +2,11 @@
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
-import type { Position, ZIndex, InitialDrag, HTMLElement } from '../../types';
+import type { Position, InitialDrag, HTMLElement } from '../../types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import DragHandle from '../drag-handle';
+import { css } from '../animation';
 // eslint-disable-next-line no-duplicate-imports
 import type {
   Callbacks as DragHandleCallbacks,
@@ -18,25 +19,20 @@ import type {
   Provided,
   StateSnapshot,
   DefaultProps,
-  PlacementStyle,
+  DraggingStyle,
+  NotDraggingStyle,
   DraggableStyle,
   ZIndexOptions,
 } from './draggable-types';
 import type { Speed, Style as MovementStyle } from '../moveable/moveable-types';
-
-type PlacementInfo = {|
-  showPlaceholder: boolean,
-  speed: Speed,
-  style?: PlacementStyle
-|}
 
 type State = {|
   ref: ?HTMLElement,
 |}
 
 export const zIndexOptions: ZIndexOptions = {
-  dragging: 100,
-  dropAnimating: 50,
+  dragging: 5000,
+  dropAnimating: 4500,
 };
 
 export default class Draggable extends Component {
@@ -180,81 +176,54 @@ export default class Draggable extends Component {
     );
   }
 
-  getMovingStyle = memoizeOne((initial: ?InitialDrag, zIndex: ZIndex): PlacementStyle => {
-    invariant(initial, 'initial dimension required to drag');
-    return {
-      zIndex,
-      position: 'absolute',
-      boxSizing: 'border-box',
-      // when we use position absolute we need to
-      // force the height and width because it looses
-      // its standard positioning logic
-      width: initial.dimension.withoutMargin.width,
-      height: initial.dimension.withoutMargin.height,
-      // Not applying any 'left' or 'top' value as we
-      // want the element to sit in the place that it started.
-      // If we use 'left' or 'top' then it would be relative
-      // to any parent that has a position:relative on it.
-    };
-  });
-
-  getPlacementInfo(): PlacementInfo {
-    const { isDragging, canAnimate, initial, isDropAnimating } = this.props;
-
-    if (isDropAnimating) {
-      return {
-        showPlaceholder: true,
-        speed: 'STANDARD',
-        style: this.getMovingStyle(initial, zIndexOptions.dropAnimating),
+  getDraggingStyle = memoizeOne(
+    (width: number,
+      height: number,
+      isDropAnimating: boolean,
+      movementStyle: MovementStyle): DraggingStyle => {
+      const style: DraggingStyle = {
+        position: 'absolute',
+        boxSizing: 'border-box',
+        zIndex: isDropAnimating ? zIndexOptions.dropAnimating : zIndexOptions.dragging,
+        width,
+        height,
+        transform: movementStyle.transform,
       };
+      return style;
     }
+  )
 
-    if (isDragging) {
-      return {
-        showPlaceholder: true,
-        speed: canAnimate ? 'FAST' : 'INSTANT',
-        style: this.getMovingStyle(initial, zIndexOptions.dragging),
+  getNotDraggingStyle = memoizeOne(
+    (canAnimate: boolean, movementStyle: MovementStyle): NotDraggingStyle => {
+      const style: NotDraggingStyle = {
+        transition: canAnimate ? css.outOfTheWay : null,
+        transform: movementStyle.transform,
       };
+      return style;
     }
-
-    if (!canAnimate) {
-      return {
-        showPlaceholder: false,
-        speed: 'INSTANT',
-      };
-    }
-
-    // Default: can move quickly.
-    // Can move out of the way when other draggables are dragging
-    return {
-      showPlaceholder: false,
-      speed: 'FAST',
-    };
-  }
+  )
 
   getProvided = memoizeOne(
-    (showPlaceholder: boolean,
+    (isDragging: boolean,
+      isDropAnimating: boolean,
+      canAnimate: boolean,
+      initial: ?InitialDrag,
       dragHandleProps: ?DragHandleProvided,
-      movementStyle: ?MovementStyle,
-      placementStyle: ?PlacementStyle,
+      movementStyle: MovementStyle,
     ): Provided => {
-      const draggableStyle: ?DraggableStyle = (() => {
-        if (!placementStyle && !movementStyle) {
-          return null;
+      const draggableStyle: DraggableStyle = (() => {
+        if (!isDragging) {
+          return this.getNotDraggingStyle(canAnimate, movementStyle);
         }
+        invariant(initial, 'initial dimension required for dragging');
 
-        // $ExpectError - using spread
-        const style: DraggableStyle = {
-          ...placementStyle,
-          ...movementStyle,
-        };
-
-        return style;
+        const { width, height } = initial.dimension.withoutMargin;
+        return this.getDraggingStyle(width, height, isDropAnimating, movementStyle);
       })();
 
       const provided: Provided = {
         innerRef: this.setRef,
-        placeholder: showPlaceholder ? this.getPlaceholder() : null,
+        placeholder: (isDragging || isDropAnimating) ? this.getPlaceholder() : null,
         dragHandleProps,
         draggableStyle,
       };
@@ -266,34 +235,69 @@ export default class Draggable extends Component {
     isDragging,
   }))
 
+  getSpeed = memoizeOne(
+    (isDragging: boolean, isDropAnimating: boolean, canAnimate: boolean): Speed => {
+      if (!canAnimate) {
+        return 'INSTANT';
+      }
+
+      if (isDropAnimating) {
+        return 'STANDARD';
+      }
+
+      // if dragging and can animate - then move quickly
+      if (isDragging) {
+        return 'FAST';
+      }
+
+      // Moving out of the way.
+      // Animation taken care of by css
+      return 'INSTANT';
+    })
+
   render() {
-    const info: PlacementInfo = this.getPlacementInfo();
+    const {
+      draggableId,
+      type,
+      offset,
+      isDragging,
+      isDropAnimating,
+      canAnimate,
+      isDragDisabled,
+      initial,
+      children,
+    } = this.props;
+
+    const speed = this.getSpeed(isDragging, isDropAnimating, canAnimate);
 
     return (
       <DraggableDimensionPublisher
-        itemId={this.props.draggableId}
-        type={this.props.type}
+        itemId={draggableId}
+        type={type}
         targetRef={this.state.ref}
       >
         <Moveable
-          speed={info.speed}
-          destination={this.props.offset}
+          speed={speed}
+          destination={offset}
           onMoveEnd={this.onMoveEnd}
         >
-          {(movementStyle: ?MovementStyle) => (
+          {(movementStyle: MovementStyle) => (
             <DragHandle
-              isEnabled={!this.props.isDragDisabled}
+              isEnabled={!isDragDisabled}
               callbacks={this.callbacks}
+              draggableRef={this.state.ref}
             >
               {(dragHandleProps: ?DragHandleProvided) =>
-                this.props.children(
+                children(
                   this.getProvided(
-                    info.showPlaceholder,
+                    isDragging,
+                    isDropAnimating,
+                    canAnimate,
+                    initial,
                     dragHandleProps,
                     movementStyle,
-                    info.style,
                   ),
-                  this.getSnapshot(this.props.isDragging)
+                  this.getSnapshot(isDragging)
                 )
               }
             </DragHandle>

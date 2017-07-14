@@ -119,6 +119,10 @@ const execute = (selector: Function) =>
 
 describe('Draggable - connected', () => {
   describe('selector', () => {
+    global.beforeAll(() => {
+      requestAnimationFrame.reset();
+    });
+
     beforeEach(() => {
       sinon.stub(console, 'error');
     });

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "39.0.0",
+  "version": "39.1.2",
   "config": {
     "access": "public"
   },
@@ -57,8 +57,10 @@
     "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-shared-styles": "^2.1.0",
     "@types/orderedmap": "^1.0.0",
+    "@types/codemirror": "^0.0.40",
     "mediapicker": "^5.0.4",
     "orderedmap": "^1.0.0",
+    "codemirror": "^5.26.0",
     "prosemirror-commands": "^0.22.0",
     "prosemirror-history": "^0.22.0",
     "prosemirror-inputrules": "^0.22.0",

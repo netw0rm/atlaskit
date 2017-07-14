@@ -180,9 +180,10 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     const current: CurrentDrag = {
       id: previous.id,
       type: previous.type,
-      shouldAnimate: previous.shouldAnimate,
       center,
       offset,
+      // not animating small movements
+      shouldAnimate: false,
     };
 
     const impact: DragImpact = getDragImpact(
@@ -250,6 +251,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       type: existing.current.type,
       offset,
       center,
+      // animating movement
       shouldAnimate: true,
     };
 

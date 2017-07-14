@@ -45,7 +45,7 @@ const NavigationItemOuter = styled.div`
     }
 
     &:hover {
-      background-color: ${props => getItemOrDropdown(props).hover.background};
+      background-color: ${props => props.isHoverStylesEnabled && getItemOrDropdown(props).hover.background};
     }
 
     &:active {

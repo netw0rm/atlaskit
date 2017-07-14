@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/lozenge",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "config": {
     "access": "public"
   },
@@ -14,7 +14,7 @@
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/lozenge; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"

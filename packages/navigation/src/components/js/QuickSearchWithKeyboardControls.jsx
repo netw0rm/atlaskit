@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
-import { AkQuickSearch, AkSearchResults } from '../../../src';
+import { AkQuickSearch } from '../../../src';
+
+const noOp = () => {};
 
 const flattenResults = results => (
   results.reduce((flatArray, group) => (
@@ -10,16 +11,16 @@ const flattenResults = results => (
 );
 
 /**
- * Get the ID of an item by its index in the flatResults array
- * Returns null for a failed index or if id is empty|undefined
+ * Get the result ID of an item by its index in the flatResults array
+ * Returns null for a failed index or if resultId is empty|undefined
  */
-const getItemIdByIndex = (array, index) => (array && array[index] && array[index].id) || null;
+const getItemIdByIndex = (array, index) => (array && array[index] && array[index].resultId) || null;
 
 /**
  * Find an item in the flatResults array by its ID
  * Returns the item object or null
  */
-const getItemById = (array, id) => (array && array.find(item => item.id === id)) || null;
+const getItemById = (array, id) => (array && array.find(item => item.resultId === id)) || null;
 
 /**
  * Get an item's index in the flatResults array by its ID
@@ -60,25 +61,34 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
 export const withKeyboardControls = QuickSearchComp => (
   class WithKeyboardControls extends Component {
     static propTypes = {
-      results: AkSearchResults.propTypes.results,
-      onResultClick: PropTypes.func.isRequired,
+      onResultClick: AkQuickSearch.propTypes.onResultClick,
+      onResultMouseEnter: AkQuickSearch.propTypes.onResultMouseEnter,
+      onResultMouseLeave: AkQuickSearch.propTypes.onResultMouseLeave,
+      onSearchBlur: AkQuickSearch.propTypes.onSearchBlur,
+      onSearchKeyDown: AkQuickSearch.propTypes.onSearchKeyDown,
+      results: AkQuickSearch.propTypes.results,
+      selectedItemId: AkQuickSearch.propTypes.selectedItemId,
     }
 
     static defaultProps = {
+      onResultMouseEnter: noOp,
+      onResultMouseLeave: noOp,
+      onSearchBlur: noOp,
+      onSearchKeyDown: noOp,
       results: [],
     }
 
     flatResults = flattenResults(this.props.results);
 
     state = {
-      selectedItemId: getItemIdByIndex(this.flatResults, 0),
+      selectedItemId: this.props.selectedItemId || getItemIdByIndex(this.flatResults, 0),
     }
 
     componentWillReceiveProps(nextProps) {
       if (nextProps.results) {
         this.flatResults = flattenResults(nextProps.results);
         this.setState({
-          selectedItemId: getItemIdByIndex(this.flatResults, 0),
+          selectedItemId: nextProps.selectedItemId || getItemIdByIndex(this.flatResults, 0),
         });
       }
     }
@@ -104,7 +114,23 @@ export const withKeyboardControls = QuickSearchComp => (
 
     selectPrevious = () => { this.adjustSelectedItemIndex(-1); };
 
+    handleResultMouseEnter = (itemData) => {
+      this.props.onResultMouseEnter();
+      this.setState({ selectedItemId: itemData && itemData.resultId });
+    }
+
+    handleResultMouseLeave = () => {
+      this.props.onResultMouseLeave();
+      this.setState({ selectedItemId: null });
+    }
+
+    handleSearchBlur = () => {
+      this.props.onSearchBlur();
+      this.setState({ selectedItemId: null });
+    }
+
     handleSearchKeyDown = (event) => {
+      this.props.onSearchKeyDown();
       if (event.key === 'ArrowUp') {
         event.preventDefault(); // Don't move cursor around in search input field
         this.selectPrevious();
@@ -113,14 +139,26 @@ export const withKeyboardControls = QuickSearchComp => (
         this.selectNext();
       } else if (event.key === 'Enter' && this.state.selectedItemId) {
         event.preventDefault(); // Don't fire submit event from input
-        this.props.onResultClick(getItemById(this.flatResults, this.state.selectedItemId));
+        const itemData = getItemById(this.flatResults, this.state.selectedItemId);
+        this.props.onResultClick({
+          resultId: itemData.resultId,
+          type: itemData.type,
+        });
       }
     };
 
     render() {
       return (
         <QuickSearchComp
+          // Default settings, overridable by this.props
+          isResultHoverStylesDisabled
+
           {...this.props}
+
+          // Augmented props and hard settings, not to be overridden by this.props
+          onResultMouseEnter={this.handleResultMouseEnter}
+          onResultMouseLeave={this.handleResultMouseLeave}
+          onSearchBlur={this.handleSearchBlur}
           onSearchKeyDown={this.handleSearchKeyDown}
           selectedItemId={this.state.selectedItemId}
         />

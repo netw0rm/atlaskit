@@ -28,10 +28,9 @@ pipelines:
             - ./build/bin/release.stop.pipeline.if.other.master.running.js
             - run-p -ln "validate/package.json" "validate/typescript"
             - run-p -ln "validate/tslint" "validate/eslint"
-            # This was an optimization, running a single instance of jest across the repo.
-            # Currently its causing OOM errors though, so we are reverting back to lerna jest
-            - ./node_modules/.bin/jest -i -c ./build/jest.config.js
-            # - yarn run test/jest
+            # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
+            # --bail is used to make jest fail fast when it finds a test failure
+            - ./node_modules/.bin/jest --runInBand --bail -c ./build/config/jest.config.js
             - run-p -ln "test" "test/base"
             - yarn run browserstack/tunnel/start
             - yarn run test/browserstack
@@ -42,8 +41,8 @@ pipelines:
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce
             - ./build/bin/release.restart.last.stopped.pipeline.js
-          caches:
-            - node
+          # caches:
+            # - node
     invalidate-atlaskit-cache:
       - step:
           script:
@@ -63,15 +62,14 @@ pipelines:
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
-          # This was an optimization, running a single instance of jest across the repo.
-          # Currently its causing OOM errors though, so we are reverting back to lerna jest
-          - ./node_modules/.bin/jest -i -c ./build/jest.config.js
-          # - yarn run test/jest
+          # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
+          # --bail is used to make jest fail fast when it finds a test failure
+          - ./node_modules/.bin/jest --runInBand --bail -c ./build/config/jest.config.js
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
           - yarn run test/browserstack
           - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"
-        caches:
-          - node
+        # caches:
+          # - node
 

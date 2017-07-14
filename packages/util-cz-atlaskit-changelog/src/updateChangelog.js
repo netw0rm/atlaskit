@@ -108,7 +108,7 @@ const splitText = (commitMessage) => {
   We have decided to disable this for now until we can stress test it further
  */
 
-const updateChangelogs = (commitMessage, commit) => commit(commitMessage)
+const updateChangelogs = (commitMessage, commit) => commit(commitMessage);
   /*
   const readmeInfo = splitText(commitMessage);
   if (!readmeInfo) {
@@ -126,6 +126,6 @@ const updateChangelogs = (commitMessage, commit) => commit(commitMessage)
       e);
       return commit(commitMessage);
     }); */
-;
+
 
 module.exports = updateChangelogs;

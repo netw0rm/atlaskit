@@ -3,7 +3,7 @@ import { doc, code_block } from '../../../../src/test-helper/schema-builder';
 import { makeEditor, chaiPlugin, sendKeyToPm } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { codeBlockPlugins } from '../../../../src/plugins';
-import { codeMirrorNodeView } from '../../../../src/nodeviews';
+import codeMirrorNodeView from '../../../../src/nodeviews/ui/code-mirror';
 import { computeChange, findMode } from '../../../../src/nodeviews/ui/code-mirror/codeMirrorPlugin';
 
 chai.use(chaiPlugin);

@@ -3,8 +3,9 @@ import * as sinon from 'sinon';
 import { doc, code_block } from '../../../../src/test-helper/schema-builder';
 import { makeEditor, chaiPlugin } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { CodeBlockState, codeBlockPlugins, codeMirrorPlugins } from '../../../../src/plugins';
-import { codeMirrorNodeView } from '../../../../src/nodeviews';
+import { CodeBlockState, codeBlockPlugins } from '../../../../src/plugins';
+import codeMirrorPlugins from '../../../../src/plugins/code-mirror';
+import codeMirrorNodeView from '../../../../src/nodeviews/ui/code-mirror';
 
 chai.use(chaiPlugin);
 

@@ -14,8 +14,8 @@ const H3 = styled.h3`
   font-weight: normal;
 `;
 const Heading = (
-  { children, level }:
-  { children: string, level: number }
+  { children, level, packageName }:
+  { children: Array<mixed>, level: number, packageName: string }
 ) => {
   if (level !== 2) return children;
   const childrenArray = Children.toArray(children);
@@ -29,7 +29,7 @@ const Heading = (
   const versionNumber = version[1];
   const versionDate = version[2];
 
-  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2Fflag%40${versionNumber}`;
+  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${packageName}%40${versionNumber}`;
   const anchorProps = { href, rel: 'noopener noreferrer', style: { fontWeight: 500 }, target: '_blank' };
 
   return (
@@ -67,12 +67,13 @@ type Logs = Array<{ md: string, version: string }>;
 type Props = {
   changelog: Logs,
   range: string,
+  packageName: string,
 };
 
 export default class Changelog extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
   render() {
-    const { changelog, range } = this.props;
+    const { changelog, packageName, range } = this.props;
     const logs = range
       ? changelog.filter(e => semver.satisfies(e.version, range))
       : changelog;
@@ -95,7 +96,9 @@ export default class Changelog extends PureComponent {
               <ReactMarkdown
                 escapeHtml
                 source={v.md}
-                renderers={{ Heading }}
+                renderers={{
+                  Heading: props => <Heading packageName={packageName} {...props} />,
+                }}
               />
             </LogItem>
           );

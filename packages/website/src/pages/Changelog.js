@@ -71,6 +71,7 @@ export default class ChangelogExplorer extends PureComponent {
             <Changelog
               changelog={pkg.changelog}
               range={range}
+              packageName={pkg.key}
             />
           </LogWrapper>
         )}

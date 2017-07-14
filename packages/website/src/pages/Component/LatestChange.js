@@ -18,6 +18,7 @@ const LatestChange = (
     <Changelog
       changelog={changelog}
       range={changelog[0].version}
+      packageName={componentKey}
     />
     <Button component={Link} to={`/changelog/${componentKey}`}>
       Changelog

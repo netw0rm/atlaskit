@@ -15,7 +15,7 @@ const template = require('./data.template');
 const getChangelog = (src) => {
   let changelog;
   try {
-    changelog = fs.readFileSync(src).toString();
+    changelog = fs.readFileSync(src, 'utf8').toString();
   } catch (e) {
     console.log(`DID NOT GET CHANGELOG FOR ${src}`, e);
     changelog = '';

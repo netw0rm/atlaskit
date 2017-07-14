@@ -5,13 +5,9 @@ import { name } from '../package.json';
 import { AkProfilecardTrigger } from '../src';
 
 import TriggerInteractive from './interactive-trigger-position';
+import { getMockProfileClient } from './util';
 
-import MockProfileClient from './story-data';
-
-const mockClient = new MockProfileClient({
-  cacheSize: 10,
-  cacheMaxAge: 0,
-});
+const mockClient = getMockProfileClient(10, 0);
 
 // have some more space around the profilecard
 const canvasStyle = { padding: '30px' };
@@ -38,7 +34,21 @@ storiesOf(`${name}-trigger`, module)
         </AkProfilecardTrigger> laboris nisi ut aliquip ex ea commodo
         consequat. Duis aute irure dolor in reprehenderit in voluptate velit
         esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+        cupidatat non proident, <AkProfilecardTrigger
+          cloudId="DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048"
+          userId="1"
+          position="bottom right"
+          resourceClient={mockClient}
+          trigger="click"
+          actions={[
+            {
+              label: 'View profile',
+              callback: () => {},
+            },
+          ]}
+        >
+          <strong>Click Me!</strong>
+        </AkProfilecardTrigger> sunt in culpa qui officia deserunt mollit anim
         id est laborum.
       </div>
     </div>

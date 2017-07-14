@@ -270,23 +270,23 @@ export class MentionsState {
 
   setMentionProvider(provider?: Promise<MentionProvider>): Promise<MentionProvider> {
     return new Promise<MentionProvider>((resolve, reject) => {
-      if (provider && provider.then) {provider
-      .then(mentionProvider => {
-        if (this.mentionProvider ) {
-          this. mentionProvider.unsubscribe('editor-mentionpicker');
-          this.currentQueryResult = undefined;
-        }
+      if (provider && provider.then) {
+        provider.then(mentionProvider => {
+          if (this.mentionProvider ) {
+            this. mentionProvider.unsubscribe('editor-mentionpicker');
+            this.currentQueryResult = undefined;
+          }
 
-        this.mentionProvider = mentionProvider;
-        this.mentionProvider.subscribe('editor-mentionpicker', undefined, undefined, undefined, this.onMentionResult);
+          this.mentionProvider = mentionProvider;
+          this.mentionProvider.subscribe('editor-mentionpicker', undefined, undefined, undefined, this.onMentionResult);
 
-            // Improve first mentions performance by establishing a connection and populating local search
-            this.mentionProvider.filter('');
-            resolve(mentionProvider);
-          })
-          .catch((e) => {
-            this.mentionProvider = undefined;
-          });
+          // Improve first mentions performance by establishing a connection and populating local search
+          this.mentionProvider.filter('');
+          resolve(mentionProvider);
+        })
+        .catch(() => {
+          this.mentionProvider = undefined;
+        });
       } else {
         this.mentionProvider = undefined;
       }

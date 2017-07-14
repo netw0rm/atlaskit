@@ -11,8 +11,8 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
   const list = {};
 
   keymaps.bindKeymapWithCommand(keymaps.insertNewLine.common!, trackAndInvoke('atlassian.editor.newline.keyboard', commands.insertNewLine()), list);
-  keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove(view)), list);
-  keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow(view)), list);
+  keymaps.bindKeymapWithCommand(keymaps.arrowUp.common!, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove(view)), list);
+  keymaps.bindKeymapWithCommand(keymaps.arrowDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow(view)), list);
   keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('codeblock', 'autoformatting'), commands.createCodeBlockFromFenceFormat()), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.undo.keyboard', redo), list);
   keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', cmdUndo), list);

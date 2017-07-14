@@ -2,35 +2,32 @@ import {
   EditorView,
   Node as PMNode,
 } from '../../prosemirror';
-import { setNodeSelection } from '../../utils';
+import { moveLeft, atTheBeginningOfDoc } from '../../utils';
 
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
 export const handleMediaNodeRemoval = (view: EditorView, node: PMNode, getPos: ProsemirrorGetPosHandler) => {
   const { id } = node.attrs;
-  const { tr } = view.state;
+  const { state } = view;
+  const { tr, selection, doc } = state;
 
-  const nodePos = getPos();
-  tr.deleteRange(nodePos, nodePos + node.nodeSize);
+  const currentMediaNodePos = getPos();
+  tr.deleteRange(currentMediaNodePos, currentMediaNodePos + node.nodeSize);
 
   if (isTemporaryFile(id)) {
     tr.setMeta('addToHistory', false);
   }
+
   view.dispatch(tr);
 
-  setSelectionAfterRemoval(view, nodePos);
-};
+  const $currentMediaNodePos = doc.resolve(currentMediaNodePos);
+  const isLastMediaNode = $currentMediaNodePos.index() === $currentMediaNodePos.parent.childCount - 1;
 
-const setSelectionAfterRemoval = (view: EditorView, currentPos: number): void => {
-  const { doc, schema } = view.state;
-  const $previousMediaNodePos = doc.resolve(currentPos - 1);
-  const previousMediaNode = $previousMediaNodePos.nodeAfter;
-
-  if (previousMediaNode) {
-    // Only set selection to previous media node if there is one
-    if (previousMediaNode.type === schema.nodes.media) {
-      setNodeSelection(view, $previousMediaNodePos.pos);
-    }
+  // If deleting a selected media node, we need to tell where the cursor to go next.
+  // Prosemirror didn't gave us the behaviour of moving left if the media node is not the last one.
+  // So we handle it ourselves.
+  if (selection.from === currentMediaNodePos && !isLastMediaNode && !atTheBeginningOfDoc(state)) {
+    moveLeft(view);
   }
 };
 

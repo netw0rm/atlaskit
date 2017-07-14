@@ -1,4 +1,4 @@
-import { browser, EditorState, Transaction } from '../prosemirror';
+import { browser, EditorState, Transaction, EditorView } from '../prosemirror';
 
 export const toggleOrderedList = makeKeyMapWithCommon('Numbered list', 'Mod-Shift-l');
 export const toggleBulletList = makeKeyMapWithCommon('Bullet list', 'Mod-Shift-b');
@@ -24,8 +24,8 @@ export const splitListItem = makeKeyMapWithCommon('Split list item', 'Enter');
 export const insertRule = makeKeyMapWithCommon('Insert horizontal rule', 'Mod-Shift--');
 export const undo = makeKeyMapWithCommon('Undo', 'Mod-z');
 export const createCodeBlock = makeKeyMapWithCommon('Create code block', 'Enter');
-export const moveUp = makeKeyMapWithCommon('Move up', 'ArrowUp');
-export const moveDown = makeKeyMapWithCommon('Move down', 'ArrowDown');
+export const arrowUp = makeKeyMapWithCommon('Move up', 'ArrowUp');
+export const arrowDown = makeKeyMapWithCommon('Move down', 'ArrowDown');
 export const indentList = makeKeyMapWithCommon('Indent List', 'Tab');
 export const outdentList = makeKeyMapWithCommon('Outdent List', 'Shift-Tab');
 export const redo = makeKeymap('Redo', 'Ctrl-y', 'Cmd-Shift-z');
@@ -134,3 +134,8 @@ export const keyCodes: { [key: string]: number } = {
   'PrintScrn': 44, 'Insert': 63302, 'Delete': 63272, ';': 186, '=': 187, 'Mod': 93, '*': 106, '-': 189, '.': 190, '/': 191, ',': 188,
   '`': 192, '[': 219, '\\': 220, ']': 221, '\'': 222
 };
+
+export const LEFT = 37;
+export const RIGHT = 39;
+export const UP = 38;
+export const DOWN = 40;

@@ -1,4 +1,3 @@
-import * as assert from 'assert';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import {
@@ -11,13 +10,16 @@ import {
   mediaGroup,
   media,
   p,
-  hr,
-  mention,
   randomId,
   setNodeSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { undo, history, NodeSelection } from '../../../../src/prosemirror';
+import {
+  undo,
+  history,
+  NodeSelection,
+  TextSelection,
+} from '../../../../src/prosemirror';
 import { handleMediaNodeRemoval } from '../../../../src/plugins/media/media-common';
 
 chai.use(chaiPlugin);
@@ -34,169 +36,290 @@ describe('media-common', () => {
   });
 
   describe('handleMediaNodeRemoval', () => {
-    const temporaryFileId = `temporary:${randomId()}`;
+    context('media node is selected', () => {
+      const temporaryFileId = `temporary:${randomId()}`;
 
-    context('when it is a temporary file', () => {
-      const deletingMediaNodeId = temporaryFileId;
-      const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+      context('when it is a temporary file', () => {
+        const deletingMediaNodeId = temporaryFileId;
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
 
-      it('removes the media node', () => {
-        const { editorView, sel } = editor(
-          doc(
-            p('hello{<>}'),
-            mediaGroup(
-              media({ id: 'media1', type: 'file', collection: testCollectionName }),
-              deletingMediaNode,
+        it('removes the media node', () => {
+          const { editorView, sel } = editor(
+            doc(
+              p('hello{<>}'),
+              mediaGroup(
+                media({ id: 'media1', type: 'file', collection: testCollectionName }),
+                deletingMediaNode,
+              ),
             ),
-          ),
-        );
+          );
+          const positionOfDeletingNode = sel + 3;
+          setNodeSelection(editorView, positionOfDeletingNode);
 
-        handleMediaNodeRemoval(editorView, deletingMediaNode, () => sel + 3);
+          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('hello'),
+              mediaGroup(
+                media({ id: 'media1', type: 'file', collection: testCollectionName }),
+              ),
+            ));
+        });
+
+        it('is not able to undo', () => {
+          const { editorView, sel } = editor(
+            doc(
+              p('hello{<>}'),
+              mediaGroup(
+                media({ id: 'media1', type: 'file', collection: testCollectionName }),
+                deletingMediaNode,
+              ),
+            ),
+          );
+          const positionOfDeletingNode = sel + 3;
+          setNodeSelection(editorView, positionOfDeletingNode);
+
+          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+
+          undo(editorView.state, editorView.dispatch);
+
+          expect(editorView.state.doc).to.deep.equal(doc(
             p('hello'),
             mediaGroup(
               media({ id: 'media1', type: 'file', collection: testCollectionName }),
             ),
           ));
+        });
       });
 
-      it('is not able to undo', () => {
-        const { editorView, sel } = editor(
-          doc(
-            p('hello{<>}'),
-            mediaGroup(
-              media({ id: 'media1', type: 'file', collection: testCollectionName }),
-              deletingMediaNode,
+      context('when it is uploaded', () => {
+        const deletingMediaNodeId = 'media2';
+        const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
+
+        it('removes the media node', () => {
+          const { editorView, sel } = editor(
+            doc(
+              p('hello{<>}'),
+              mediaGroup(
+                media({ id: 'media1', type: 'file', collection: testCollectionName }),
+                deletingMediaNode,
+              ),
             ),
-          ),
-        );
+          );
+          const positionOfDeletingNode = sel + 3;
+          setNodeSelection(editorView, positionOfDeletingNode);
 
-        handleMediaNodeRemoval(editorView, deletingMediaNode, () => sel + 3);
+          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
-        undo(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('hello'),
+              mediaGroup(
+                media({ id: 'media1', type: 'file', collection: testCollectionName }),
+              )
+            ));
+        });
 
-        expect(editorView.state.doc).to.deep.equal(doc(
-          p('hello'),
-          mediaGroup(
-            media({ id: 'media1', type: 'file', collection: testCollectionName }),
-          ),
-        ));
-      });
-    });
-
-    context('when it is uploaded', () => {
-      const deletingMediaNodeId = 'media2';
-      const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
-
-      it('removes the media node', () => {
-        const { editorView, sel } = editor(
-          doc(
-            p('hello{<>}'),
-            mediaGroup(
-              media({ id: 'media1', type: 'file', collection: testCollectionName }),
-              deletingMediaNode,
+        it('is able to undo', () => {
+          const { editorView, sel } = editor(
+            doc(
+              p('hello{<>}'),
+              mediaGroup(
+                media({ id: 'media1', type: 'file', collection: testCollectionName }),
+                deletingMediaNode,
+              ),
             ),
-          ),
-        );
+          );
+          const positionOfDeletingNode = sel + 3;
+          setNodeSelection(editorView, positionOfDeletingNode);
 
-        handleMediaNodeRemoval(editorView, deletingMediaNode, () => sel + 3);
+          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
+          undo(editorView.state, editorView.dispatch);
+
+          expect(editorView.state.doc).to.deep.equal(doc(
             p('hello'),
             mediaGroup(
               media({ id: 'media1', type: 'file', collection: testCollectionName }),
+              deletingMediaNode,
+            ),
+          ));
+        });
+      });
+
+      context('when selected node is the first media node', () => {
+        context('when it is not at the beginning of the document', () => {
+          it('selects the media node to the back', () => {
+            const deletingMediaNode = media({ id: 'media1', type: 'file', collection: testCollectionName });
+            const { editorView, sel } = editor(doc(
+              p('hello{<>}'),
+              mediaGroup(
+                deletingMediaNode,
+                media({ id: 'media2', type: 'file', collection: testCollectionName }),
+                media({ id: 'media3', type: 'file', collection: testCollectionName }),
+              ),
+              p('world')
+            ));
+            const positionOfDeletingNode = sel + 2;
+            setNodeSelection(editorView, positionOfDeletingNode);
+
+            handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+
+            expect(editorView.state.selection.from).to.equal(sel);
+          });
+        });
+
+        context('when it is at the beginning of the document', () => {
+          it('selects the media node to the back', () => {
+            const deletingMediaNode = media({ id: 'media1', type: 'file', collection: testCollectionName });
+            const { editorView } = editor(doc(
+              mediaGroup(
+                deletingMediaNode,
+                media({ id: 'media2', type: 'file', collection: testCollectionName }),
+                media({ id: 'media3', type: 'file', collection: testCollectionName }),
+              ),
+              p('hello')
+            ));
+            const positionOfDeletingNode = 1;
+            setNodeSelection(editorView, positionOfDeletingNode);
+
+            handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+
+            const selectedNode = (editorView.state.selection as NodeSelection).node;
+            expect(selectedNode && selectedNode.attrs.id).to.equal('media2');
+          });
+        });
+      });
+
+      context('when selected node is the middle media node', () => {
+        it('selects the media node in the front', () => {
+          const deletingMediaNode = media({ id: 'media2', type: 'file', collection: testCollectionName });
+          const { editorView } = editor(doc(
+            mediaGroup(
+              media({ id: 'media1', type: 'file', collection: testCollectionName }),
+              deletingMediaNode,
+              media({ id: 'media3', type: 'file', collection: testCollectionName }),
             )
           ));
+          const positionOfDeletingNode = 2;
+          setNodeSelection(editorView, positionOfDeletingNode);
+
+          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+
+          const selectedNode = (editorView.state.selection as NodeSelection).node;
+
+          expect(selectedNode && selectedNode.attrs.id).to.equal('media1');
+        });
       });
 
-      it('is able to undo', () => {
-        const { editorView, sel } = editor(
-          doc(
-            p('hello{<>}'),
+
+      context('when selected node and deleting node is not the same node', () => {
+        it('does not change selection', () => {
+          const deletingMediaNode = media({ id: 'media2', type: 'file', collection: testCollectionName });
+          const { editorView } = editor(doc(
             mediaGroup(
               media({ id: 'media1', type: 'file', collection: testCollectionName }),
               deletingMediaNode,
-            ),
-          ),
-        );
+              media({ id: 'media3', type: 'file', collection: testCollectionName }),
+            )
+          ));
+          const positionOfDeletingNode = 2;
+          setNodeSelection(editorView, positionOfDeletingNode + 1);
 
-        handleMediaNodeRemoval(editorView, deletingMediaNode, () => sel + 3);
+          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
-        undo(editorView.state, editorView.dispatch);
+          const selectedNode = (editorView.state.selection as NodeSelection).node;
 
-        expect(editorView.state.doc).to.deep.equal(doc(
-          p('hello'),
-          mediaGroup(
-            media({ id: 'media1', type: 'file', collection: testCollectionName }),
-            deletingMediaNode,
-          ),
-        ));
+          expect(selectedNode && selectedNode.attrs.id).to.equal('media3');
+        });
+
+        it('removes the node', () => {
+          const deletingMediaNode = media({ id: 'media2', type: 'file', collection: testCollectionName });
+          const { editorView } = editor(doc(
+            mediaGroup(
+              media({ id: 'media1', type: 'file', collection: testCollectionName }),
+              deletingMediaNode,
+              media({ id: 'media3', type: 'file', collection: testCollectionName }),
+            )
+          ));
+          const positionOfDeletingNode = 2;
+          setNodeSelection(editorView, positionOfDeletingNode + 1);
+
+          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+
+          expect(editorView.state.doc).to.deep.equal(doc(
+            mediaGroup(
+              media({ id: 'media1', type: 'file', collection: testCollectionName }),
+              media({ id: 'media3', type: 'file', collection: testCollectionName }),
+            )
+          ));
+        });
       });
-    });
 
-    context('when selected node is the first media node', () => {
-      context('when it is not at the beginning of the document', () => {
+      context('when selected node is the last media node', () => {
+        it('selects the media node in the front', () => {
+          const deletingMediaNode = media({ id: 'media3', type: 'file', collection: testCollectionName });
+          const { editorView } = editor(doc(
+            mediaGroup(
+              media({ id: 'media1', type: 'file', collection: testCollectionName }),
+              media({ id: 'media2', type: 'file', collection: testCollectionName }),
+              deletingMediaNode,
+            )
+          ));
+          const positionOfDeletingNode = 3;
+          setNodeSelection(editorView, positionOfDeletingNode);
 
+          handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+
+          const selectedNode = (editorView.state.selection as NodeSelection).node;
+
+          expect(selectedNode && selectedNode.attrs.id).to.equal('media2');
+        });
       });
 
-      context('when it is at the beginning of the document', () => {
+      context('when selected node is the only media node', () => {
+        context('when it is not at the beginning of the document', () => {
+          it('puts cursor to the beginging of the paragraph that replaced the media group', () => {
+            const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+            const { editorView } = editor(doc(
+              p('hello'),
+              mediaGroup(
+                deletingMediaNode,
+              ),
+              p('world')
+            ));
+
+            const positionOfDeletingNode = p('hello').nodeSize + 1;
+            setNodeSelection(editorView, positionOfDeletingNode);
+
+            handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+
+            expect(editorView.state.selection instanceof TextSelection).to.equal(true);
+            expect(editorView.state.selection.from).to.equal(positionOfDeletingNode);
+          });
+        });
+
+        context('when it is at the beginning of the document', () => {
+          it('puts cursor to the beginging of the document', () => {
+            const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+            const { editorView } = editor(doc(
+              mediaGroup(
+                deletingMediaNode,
+              ),
+              p('hello')
+            ));
+
+            const positionOfDeletingNode = 1;
+            setNodeSelection(editorView, positionOfDeletingNode);
+
+            handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfDeletingNode);
+
+            expect(editorView.state.selection instanceof TextSelection).to.equal(true);
+            expect(editorView.state.selection.from).to.equal(positionOfDeletingNode);
+          });
+        });
       });
-    });
-
-    context('when selected node is the middle media node', () => {
-      it('selects the media node in the front', () => {
-        const deletingMediaNode = media({ id: 'media2', type: 'file', collection: testCollectionName });
-        const { editorView } = editor(doc(
-          mediaGroup(
-            media({ id: 'media1', type: 'file', collection: testCollectionName }),
-            deletingMediaNode,
-            media({ id: 'media3', type: 'file', collection: testCollectionName }),
-          )
-        ));
-
-        const positionOfMiddleMediaNode = 2;
-        setNodeSelection(editorView, positionOfMiddleMediaNode);
-
-        handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfMiddleMediaNode);
-
-        const selectedNode = (editorView.state.selection as NodeSelection).node;
-
-        expect(selectedNode && selectedNode.attrs.id).to.equal('media1');
-      });
-    });
-
-    context('when selected node is the last media node', () => {
-      it('selects the media node in the front', () => {
-        const deletingMediaNode = media({ id: 'media3', type: 'file', collection: testCollectionName });
-        const { editorView } = editor(doc(
-          mediaGroup(
-            media({ id: 'media1', type: 'file', collection: testCollectionName }),
-            media({ id: 'media2', type: 'file', collection: testCollectionName }),
-            deletingMediaNode,
-          )
-        ));
-
-        const positionOfMiddleMediaNode = 3;
-        setNodeSelection(editorView, positionOfMiddleMediaNode);
-
-        handleMediaNodeRemoval(editorView, deletingMediaNode, () => positionOfMiddleMediaNode);
-
-        const selectedNode = (editorView.state.selection as NodeSelection).node;
-
-        expect(selectedNode && selectedNode.attrs.id).to.equal('media2');
-      });
-    });
-  });
-
-  context('when selected node is the only media node', () => {
-    context('when it is not at the beginning of the document', () => {
-
-    });
-
-    context('when it is at the beginning of the document', () => {
     });
   });
 });

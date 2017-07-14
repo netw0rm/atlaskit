@@ -5,7 +5,7 @@ import { EmojiState, stateKey } from './';
 export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, (state: any, dispatch) => {
+  keymaps.bindKeymapWithCommand(keymaps.arrowUp.common!, (state: any, dispatch) => {
     const emojisPlugin = stateKey.getState(state) as EmojiState;
     if (!emojisPlugin.queryActive) {
       return false;
@@ -14,7 +14,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
     return emojisPlugin.onSelectPrevious();
   }, list);
 
-  keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, (state: any, dispatch) => {
+  keymaps.bindKeymapWithCommand(keymaps.arrowDown.common!, (state: any, dispatch) => {
     const emojisPlugin = stateKey.getState(state) as EmojiState;
     if (!emojisPlugin.queryActive) {
       return false;

@@ -1,6 +1,6 @@
 # @atlaskit/editor-core
 
-## Unreleased
+## 39.1.3 (2017-07-14)
 
 * bug fix; fixed strike mark for BB (issues closed: ed-2102)
 * fix; dropzone configuration in picker facade.

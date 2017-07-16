@@ -4,6 +4,7 @@ import { WithProviders } from '../../../providerFactory/withProviders';
 import { createPlugin } from '../../../plugins/emojis';
 import inputRulePlugin from '../../../plugins/emojis/input-rules';
 import keymap from '../../../plugins/emojis/keymap';
+import { inputRulePlugin as asciiInputRulePlugin } from '../../../plugins/emojis/ascii-input-rules';
 import { emoji } from '../../../schema/nodes/emoji';
 import { emojiQuery } from '../../../schema/marks/emoji-query';
 import pluginKey from '../../../plugins/emojis/plugin-key';
@@ -22,7 +23,8 @@ const emojiPlugin: EditorPlugin = {
     return [
       { rank: 400, plugin: (schema, props, providerFactory) => createPlugin(providerFactory) },
       { rank: 410, plugin: schema => inputRulePlugin(schema) },
-      { rank: 420, plugin: schema => keymap(schema) }
+      { rank: 420, plugin: schema => keymap(schema) },
+      { rank: 430, plugin: (schema, props, providerFactory) => asciiInputRulePlugin(schema, providerFactory) }
     ];
   },
 

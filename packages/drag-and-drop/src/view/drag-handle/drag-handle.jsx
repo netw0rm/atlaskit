@@ -3,6 +3,9 @@ import { Component } from 'react';
 import invariant from 'invariant';
 import memoizeOne from 'memoize-one';
 import rafScheduler from 'raf-schd';
+// Using keyCode's for consistent event pattern matching between
+// React synthetic events as well as raw browser events.
+import * as keyCodes from '../key-codes';
 import getScrollPosition from '../get-scroll-position';
 import type { Position } from '../../types';
 import type { Props, DragTypes, Provided } from './drag-handle-types';
@@ -191,7 +194,7 @@ export default class DragHandle extends Component {
     const isMouseDragPending: boolean = Boolean(this.state.pending);
 
     if (isMouseDragPending) {
-      if (event.key === 'Escape') {
+      if (event.keyCode === keyCodes.escape) {
         event.preventDefault();
         this.stopPendingMouseDrag();
       }
@@ -206,23 +209,23 @@ export default class DragHandle extends Component {
     // Dragging with either a keyboard or mouse
 
     // Blocking standard submission action
-    if (event.key === 'Enter') {
+    if (event.keyCode === keyCodes.enter) {
       event.preventDefault();
     }
 
     // Preventing tabbing or submitting
-    if (event.key === 'Tab') {
+    if (event.keyCode === keyCodes.tab) {
       event.preventDefault();
     }
 
-    if (event.key === 'Escape') {
+    if (event.keyCode === keyCodes.escape) {
       event.preventDefault();
       this.stopDragging(() => this.props.callbacks.onCancel());
     }
 
     if (this.state.draggingWith === 'MOUSE') {
       // Want to block scrolling the page with the space bar
-      if (event.key === ' ') {
+      if (event.keyCode === keyCodes.space) {
         event.preventDefault();
       }
       return;
@@ -230,18 +233,18 @@ export default class DragHandle extends Component {
 
     // Only keyboard dragging
 
-    if (event.key === ' ') {
+    if (event.keyCode === keyCodes.space) {
       event.preventDefault();
       this.stopDragging(() => this.props.callbacks.onDrop());
     }
 
     // keyboard dragging only
-    if (event.key === 'ArrowDown') {
+    if (event.keyCode === keyCodes.arrowDown) {
       event.preventDefault();
       this.scheduleMoveForward();
     }
 
-    if (event.key === 'ArrowUp') {
+    if (event.keyCode === keyCodes.arrowUp) {
       event.preventDefault();
       this.scheduleMoveBackward();
     }
@@ -253,7 +256,7 @@ export default class DragHandle extends Component {
       return;
     }
 
-    if (event.key === ' ') {
+    if (event.keyCode === keyCodes.space) {
       event.preventDefault();
       // stopping the event from bubbling up to the window event handler
       event.stopPropagation();

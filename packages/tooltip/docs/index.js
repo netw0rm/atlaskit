@@ -22,7 +22,7 @@ export const description = (
       named export.
     </p>
     <Usage>
-      {"import StatefulToolTip, { Tooltip } from '@atlaskit/tooltip'"}
+      {"import ToolTip, { TooltipStateless } from '@atlaskit/tooltip'"}
     </Usage>
     <p>
       The stateful component displays the tooltip automatically on mouseover.

@@ -57,7 +57,7 @@ export const ProgressWrapper = styled.div`
 
 `;
 
-export const CancelButtonWrapper = styled.div`
+export const ActionsWrapper = styled.div`
   margin-left: 4px;
   /*
     button must appear above overlay

@@ -236,6 +236,10 @@
   version "2.5.38"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.38.tgz#a4379124c4921d4e21de54ec74669c9e9b356717"
 
+"@types/jest@^20.0.2":
+  version "20.0.2"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-20.0.2.tgz#86c751121fb53dbd39bb1a08c45083da13f2dc67"
+
 "@types/lodash@0.0.28":
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-0.0.28.tgz#56f8dec67d275e83be1bd0359fa8de28a95dee29"

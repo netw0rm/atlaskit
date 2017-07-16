@@ -1,9 +1,16 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import styled from 'styled-components';
-import {storiesOf, action} from '@kadira/storybook';
-import {AppCardView} from '../src/app';
-import {AppCardModel, AppCardDetails, AppCardBadge, AppCardLozenge, AppCardContext, AppCardAction, AppCardUser} from '../src/app/model';
+import {action} from '@kadira/storybook';
+import {CardAction, AppCardView} from '../../src/app';
+import {
+  AppCardModel,
+  AppCardDetails,
+  AppCardBadge,
+  AppCardLozenge,
+  AppCardContext,
+  AppCardUser
+} from '../../src/app/model';
 
 const shortTitle = 'Sascha Reuter commented on a file: Desktop sidebar states.png';
 
@@ -166,25 +173,6 @@ const modelWithLinkInContext: AppCardModel = {
   }
 };
 
-const primaryAction: AppCardAction = {
-  title: 'View'
-};
-const detailsWithPrimaryAction: AppCardModel = {
-  ...modelWithShortTitle,
-  actions: [primaryAction]
-};
-
-const metaActions: AppCardAction[] = [
-  primaryAction,
-  {title: 'Open'},
-  {title: 'Join'},
-  {title: 'Reply'}
-];
-const detailsWithSecondaryActions: AppCardModel = {
-  ...modelWithShortTitle,
-  actions: metaActions
-};
-
 const background = {url: 'https://image.ibb.co/grZX8F/aabf3aedb97e60bf38525db46a87ac98323eb68d.png'};
 const modelWithBackground: AppCardModel = {
   ...modelWithShortTitle,
@@ -201,8 +189,7 @@ const modelWithMostOfTheThings: AppCardModel = {
     ...minimalContext,
     icon: {url: contextIcon, label: 'foobar'},
     link: contextLink
-  },
-  actions: metaActions
+  }
 };
 
 const mostOfTheThingsWithPreview: AppCardModel = {
@@ -227,12 +214,13 @@ const confluenceActivityModel: AppCardModel = {
   context: {
     icon: {url: contextIcon, label: 'Confluence'},
     text: 'Design Home / … / Media Cards Design'
-  },
-  actions: [
-    {title: 'Reply'},
-    {title: 'Other'}
-  ]
+  }
 };
+
+const confluenceActions: CardAction[] = [
+  {type: 'primary', content: 'Reply', handler: action('Reply')},
+  {content: 'Other', handler: action('Other')},
+];
 
 const jiraIssueModel: AppCardModel = {
   title: {text: 'Document specifications for smart cards'},
@@ -243,12 +231,13 @@ const jiraIssueModel: AppCardModel = {
   context: {
     icon: {url: contextIcon, label: 'Jira'},
     text: 'DPM - 560'
-  },
-  actions: [
-    {title: 'View'},
-    {title: 'Other'}
-  ]
+  }
 };
+
+const jiraActions: CardAction[] = [
+  {type: 'primary', content: 'View', handler: action('View')},
+  {content: 'Other', handler: action('Other')},
+];
 
 const dropboxFileModel: AppCardModel = {
   title: {text: 'media_cards_v2.0_final.sketch'},
@@ -259,12 +248,13 @@ const dropboxFileModel: AppCardModel = {
   context: {
     icon: {url: 'https://cfl.dropboxstatic.com/static/images/brand/glyph-vflK-Wlfk.png', label: 'Dropbox'},
     text: 'Dropbox'
-  },
-  actions: [
-    {title: 'Download'},
-    {title: 'Other'}
-  ]
+  }
 };
+
+const dropboxActions: CardAction[] = [
+  {type: 'primary', content: 'Download', handler: action('Download')},
+  {content: 'Other', handler: action('Other')},
+];
 
 const trelloBoardModel: AppCardModel = {
   background: {url: 'https://dl.dropbox.com/s/8js2m5azvvfzpq2/background.jpg'},
@@ -278,12 +268,13 @@ const trelloBoardModel: AppCardModel = {
   context: {
     icon: {url: 'https://dl.dropbox.com/s/yrdlsc6usuwegym/icon.png', label: 'Trello'},
     text: 'Trello - Board'
-  },
-  actions: [
-    {title: 'Join'},
-    {title: 'Other'}
-  ]
+  }
 };
+
+const trelloBoardActions: CardAction[] = [
+  {type: 'primary', content: 'Join', handler: action('Join')},
+  {content: 'Other', handler: action('Other')},
+];
 
 const trelloCardModel: AppCardModel = {
   title: {text: 'Media viewer - Inline comment dialog concept'},
@@ -304,15 +295,22 @@ const trelloCardModel: AppCardModel = {
   context: {
     icon: {url: 'https://dl.dropbox.com/s/yrdlsc6usuwegym/icon.png', label: 'Trello'},
     text: 'Trello - Card in list Concepts'
-  },
-  actions: [
-    {title: 'Open'},
-    {title: 'Other'}
-  ]
+  }
 };
 
-const handleClick = () => action('clicked on the card')();
-const handleActionClick = (a: AppCardAction) => action('clicked on the action')(a.title, a);
+const trelloCardActions: CardAction[] = [
+  {type: 'primary', content: 'Open', handler: action('Open')},
+  {content: 'Other', handler: action('Other')},
+];
+
+const onClick = action('clicked on the card');
+
+const singleAction: CardAction = {type: 'primary', content: 'View', handler: action('View')};
+const multipleActions: CardAction[] = [
+  singleAction,
+  {content: 'Reply', handler: action('Reply')},
+  {content: 'Share', handler: action('Share')}
+];
 
 const FixedWidthContainer = styled.div`
   width: 450px
@@ -342,120 +340,116 @@ const Section = ({title, children}: {title?: string, children?: any}) => {
   );
 };
 
-storiesOf('AppCardView', {})
-  .add('Pieces', () => (
-    <div>
+export default () => (
+  <div>
 
-      <Section>
-        <AppCardView model={modelWithShortTitle}/>
-      </Section>
+    <h1>Pieces</h1>
 
-      <Section title="With header">
-        <AppCardView model={modelWithShortTitle}/>
-        <AppCardView model={modelWithLoooongTitle}/>
-        <AppCardView model={modelWithUserInTitle}/>
-        <AppCardView model={modelWithCollapseToggle}/>
-      </Section>
+    <Section>
+      <AppCardView model={modelWithShortTitle}/>
+    </Section>
 
-      <Section title="With preview">
-        <AppCardView model={modelWithPreview}/>
-        <AppCardView model={mostOfTheThingsWithPreview}/>
-      </Section>
+    <Section title="With header">
+      <AppCardView model={modelWithShortTitle}/>
+      <AppCardView model={modelWithLoooongTitle}/>
+      <AppCardView model={modelWithUserInTitle}/>
+      <AppCardView model={modelWithCollapseToggle}/>
+    </Section>
 
-      <Section title="With description">
-        <AppCardView model={modelWithDescription}/>
-        <AppCardView model={modelWithTitleInDescription}/>
-      </Section>
+    <Section title="With preview">
+      <AppCardView model={modelWithPreview}/>
+      <AppCardView model={mostOfTheThingsWithPreview}/>
+    </Section>
 
-      <Section title="With details">
-        <AppCardView model={modelWithTitleAndTextInDetails}/>
-        <AppCardView model={modelWithIconInDetails}/>
-        <AppCardView model={modelWithBadgeInDetails}/>
-        <AppCardView model={modelWithLozengeInDetails}/>
-        <AppCardView model={modelWithUserInDetails}/>
-        <AppCardView model={modelWithUsersInDetails}/>
+    <Section title="With description">
+      <AppCardView model={modelWithDescription}/>
+      <AppCardView model={modelWithTitleInDescription}/>
+    </Section>
+
+    <Section title="With details">
+      <AppCardView model={modelWithTitleAndTextInDetails}/>
+      <AppCardView model={modelWithIconInDetails}/>
+      <AppCardView model={modelWithBadgeInDetails}/>
+      <AppCardView model={modelWithLozengeInDetails}/>
+      <AppCardView model={modelWithUserInDetails}/>
+      <AppCardView model={modelWithUsersInDetails}/>
+      <AppCardView model={modelWithLotsOfDetails}/>
+    </Section>
+
+    <Section title="With context">
+      <AppCardView model={modelWithContext}/>
+      <AppCardView model={modelWithIconInContext}/>
+      <AppCardView model={modelWithLinkInContext}/>
+    </Section>
+
+    <Section title="With actions">
+      <AppCardView model={modelWithShortTitle}/>
+      <AppCardView model={modelWithShortTitle} actions={multipleActions}/>
+    </Section>
+
+    <Section title="With background">
+      <AppCardView model={modelWithBackground}/>
+      <AppCardView model={modelWithMostOfTheThingsAndWithBackground}/>
+    </Section>
+
+    <Section title="With event handlers">
+        <AppCardView
+          model={modelWithShortTitle}
+          onClick={onClick}
+          actions={[singleAction]}
+        />
+        <AppCardView
+          model={modelWithMostOfTheThings}
+          onClick={onClick}
+          actions={multipleActions}
+        />
+    </Section>
+
+    <FixedWidthContainer>
+      <Section title="In a container">
+
+        <AppCardView model={{title: {text: 'Short title'}}}/>
+        <AppCardView model={{title: {text: 'Just long enough to wrap inside the container: blah blah blah'}}}/>
+        <AppCardView model={{title: {text: `Super long title, longer than the card max-width: ${loremIpsum}`}}}/>
+
+        <AppCardView model={{title: {text: 'Short description'}, description: {text: 'hi'}}}/>
+        <AppCardView
+          model={{
+            title: {
+              text: 'Just long enough to wrap inside the container description'
+            },
+            description: {
+              text: 'blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah'
+            }
+          }}
+        />
+        <AppCardView model={{title: {text: `Super long description`}, description: {text: loremIpsum}}}/>
+
         <AppCardView model={modelWithLotsOfDetails}/>
+        <AppCardView model={{preview, ...modelWithLotsOfDetails}}/>
+
       </Section>
+    </FixedWidthContainer>
 
-      <Section title="With context">
-        <AppCardView model={modelWithContext}/>
-        <AppCardView model={modelWithIconInContext}/>
-        <AppCardView model={modelWithLinkInContext}/>
-      </Section>
+    <h1>Examples</h1>
 
-      <Section title="With actions">
-        <AppCardView model={detailsWithPrimaryAction}/>
-        <AppCardView model={detailsWithSecondaryActions}/>
-      </Section>
+    <Section title="Confluence">
+      <AppCardView model={confluenceActivityModel} actions={confluenceActions}/>
+    </Section>
 
-      <Section title="With background">
-        <AppCardView model={modelWithBackground}/>
-        <AppCardView model={modelWithMostOfTheThingsAndWithBackground}/>
-      </Section>
+    <Section title="Jira">
+      <AppCardView model={jiraIssueModel} actions={jiraActions}/>
+    </Section>
 
-      <Section title="With event handlers">
-          <AppCardView
-            model={modelWithShortTitle}
-            onClick={handleClick}
-            onActionClick={handleActionClick}
-          />
-          <AppCardView
-            model={modelWithMostOfTheThings}
-            onClick={handleClick}
-            onActionClick={handleActionClick}
-          />
-      </Section>
+    <Section title="Dropbox">
+      <AppCardView model={dropboxFileModel} actions={dropboxActions}/>
+    </Section>
 
-      <FixedWidthContainer>
-        <Section title="In a container">
+    <Section title="Trello">
+      <AppCardView model={trelloBoardModel} actions={trelloBoardActions}/>
+      <AppCardView model={trelloCardModel} actions={trelloCardActions}/>
+    </Section>
 
-          <AppCardView model={{title: {text: 'Short title'}}}/>
-          <AppCardView model={{title: {text: 'Just long enough to wrap inside the container: blah blah blah'}}}/>
-          <AppCardView model={{title: {text: `Super long title, longer than the card max-width: ${loremIpsum}`}}}/>
+  </div>
+);
 
-          <AppCardView model={{title: {text: 'Short description'}, description: {text: 'hi'}}}/>
-          <AppCardView
-            model={{
-              title: {
-                text: 'Just long enough to wrap inside the container description'
-              },
-              description: {
-                text: 'blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah'
-              }
-            }}
-          />
-          <AppCardView model={{title: {text: `Super long description`}, description: {text: loremIpsum}}}/>
-
-          <AppCardView model={modelWithLotsOfDetails}/>
-          <AppCardView model={{preview, ...modelWithLotsOfDetails}}/>
-
-        </Section>
-      </FixedWidthContainer>
-
-    </div>
-  ))
-  .add('Examples', () => (
-    <div>
-
-      <Section title="Confluence">
-        <AppCardView model={confluenceActivityModel}/>
-        <AppCardView model={confluenceActivityModel}/>
-      </Section>
-
-
-      <Section title="Jira">
-        <AppCardView model={jiraIssueModel}/>
-      </Section>
-
-      <Section title="Dropbox">
-        <AppCardView model={dropboxFileModel}/>
-      </Section>
-
-      <Section title="Trello">
-        <AppCardView model={trelloBoardModel}/>
-        <AppCardView model={trelloCardModel}/>
-      </Section>
-
-    </div>
-  ))
-;

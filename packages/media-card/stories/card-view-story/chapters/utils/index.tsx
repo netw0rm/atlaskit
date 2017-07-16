@@ -1,11 +1,11 @@
-import {CardActionType} from '@atlaskit/media-core';
 import {action} from '@kadira/storybook';
+import {CardAction} from '../../../../src';
 
-export const openAction = {label: 'Open', type: undefined, handler: () => { action('open')(); }};
-export const closeAction = {label: 'Close', type: undefined, handler: () => { action('close')(); }};
-export const deleteAction = {label: 'Delete', type: CardActionType.delete, handler: () => { action('delete')(); }};
+export const openAction: CardAction = {content: 'Open', handler: action('open')};
+export const closeAction: CardAction = {content: 'Close', handler: action('close')};
+export const deleteAction: CardAction = {type: 'delete', content: 'Delete', handler: action('delete')};
 
-export const actions = [
+export const actions: CardAction[] = [
   openAction,
   closeAction,
   deleteAction

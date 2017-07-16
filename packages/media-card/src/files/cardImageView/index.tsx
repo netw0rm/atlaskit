@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {CardAction, MediaType, ImageResizeMode} from '@atlaskit/media-core';
+import {MediaType, ImageResizeMode} from '@atlaskit/media-core';
 
 import {CardDimensions, CardStatus} from '../../index';
+import {CardAction} from '../../utils/cardActions';
 import {CardImageView} from '../../utils/cardImageView';
 import {toHumanReadableMediaSize} from '../../utils';
 

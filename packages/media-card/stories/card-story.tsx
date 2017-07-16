@@ -363,17 +363,17 @@ storiesOf('Card', {})
     ];
 
     // menu
-    const menuActions = [
-      {label: 'Open', handler: () => { action('open')(); }},
-      {label: 'Close', handler: () => { action('close')(); }}
+    const actions = [
+      {content: 'Open', handler: action('open')},
+      {content: 'Close', handler: action('close')}
     ];
     const menuCards = [
       {
         title: 'Small',
-        content: <Card identifier={successIdentifier} context={context} appearance="small" actions={menuActions} />
+        content: <Card identifier={successIdentifier} context={context} appearance="small" actions={actions} />
       }, {
         title: 'Image',
-        content: <Card identifier={successIdentifier} context={context} appearance="image" actions={menuActions} />
+        content: <Card identifier={successIdentifier} context={context} appearance="image" actions={actions} />
       }
     ];
 

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {storiesOf} from '@kadira/storybook';
-import {CardActionType} from '@atlaskit/media-core';
 import {
   StoryList,
 
@@ -26,7 +25,7 @@ import {createApiCards} from './chapters/api';
 import {createMenuActionCards} from './chapters/menu';
 import {createErrorAndLoadingCards} from './chapters/error-and-loading';
 import {createSelectableCards, createSelectableCardsWithMenu} from './chapters/selectable';
-import {actions} from './chapters/utils';
+import {deleteAction} from './chapters/utils';
 import {generateStoriesForEditableCards} from './editableCard';
 
 const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
@@ -46,7 +45,7 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
     {title: '50%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.5} />},
     {title: '90%', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} dataURI={gifDataUri} progress={0.9} />},
     {title: 'No dataURI', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} />},
-    {title: 'Delete action', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} actions={actions.filter(a => a.type === CardActionType.delete)} />}
+    {title: 'Delete action', content: <CardView status="uploading" appearance={appearance} metadata={genericFileDetails} progress={0.6} actions={[deleteAction]} />}
   ];
 
   // selectable

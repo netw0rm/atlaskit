@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {MediaItemDetails, CardActionType} from '@atlaskit/media-core';
+import {MediaItemDetails} from '@atlaskit/media-core';
 
 import {CardView, CardAppearance} from '../../../src';
-import {actions} from './utils';
+import {deleteAction, actions} from './utils';
 
 export const createMenuActionCards = (appearance: CardAppearance, metadata: MediaItemDetails) => {
   return [
@@ -16,7 +16,7 @@ export const createMenuActionCards = (appearance: CardAppearance, metadata: Medi
     },
     {
       title: 'Delete action',
-      content: <CardView appearance={appearance} status="complete" metadata={metadata} actions={actions.filter(a => a.type === CardActionType.delete)} />
+      content: <CardView appearance={appearance} status="complete" metadata={metadata} actions={[deleteAction]} />
     }
   ];
 };

@@ -73,7 +73,7 @@ export const generateStoriesForEditableCards = () => {
     metadata: MediaItemDetails;
     dataURI: string;
     progress: number;
-    menuActions: any;
+    actions: any;
     selectable: boolean;
     selected: boolean;
     resizeMode: ImageResizeMode;
@@ -95,7 +95,7 @@ export const generateStoriesForEditableCards = () => {
           height: defaultImageCardDimensions.height
         },
         progress: 0,
-        menuActions: actions,
+        actions,
         selectable: false,
         selected: false,
         resizeMode: 'crop'
@@ -103,7 +103,7 @@ export const generateStoriesForEditableCards = () => {
     }
 
     render() {
-      const {appearance, status, dataURI, dimensions, metadata, menuActions, progress, selectable, selected, resizeMode} = this.state;
+      const {appearance, status, dataURI, dimensions, metadata, actions, progress, selectable, selected, resizeMode} = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
 
@@ -188,7 +188,7 @@ export const generateStoriesForEditableCards = () => {
               metadata={metadata}
               dataURI={dataURI}
               dimensions={dimensions}
-              actions={menuActions}
+              actions={actions}
               progress={progress}
               selectable={selectable}
               selected={selected}
@@ -207,19 +207,19 @@ export const generateStoriesForEditableCards = () => {
       this.setState({selectable: !this.state.selectable});
     }
 
-    isActionChecked = action => this.state.menuActions.includes(action);
+    isActionChecked = action => this.state.actions.includes(action);
 
     onActionsChange = (action) => (e) => {
       const {checked} = e.target;
-      const {menuActions} = this.state;
+      const {actions} = this.state;
 
       if (checked) {
-        menuActions.push(action);
+        actions.push(action);
       } else {
-        menuActions.splice(menuActions.indexOf(action), 1);
+        actions.splice(actions.indexOf(action), 1);
       }
 
-      this.setState({menuActions});
+      this.setState({actions});
     }
 
     onAppearanceChange = (e) => {

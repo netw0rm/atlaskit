@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {CardAction} from '@atlaskit/media-core';
 
 import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
 import {Href} from '../../utils/href';
 import {CardDimensions} from '../..';
+import {CardAction} from '../../utils/cardActions';
 
 export interface LinkCardViewSmallProps {
   dimensions?: CardDimensions;

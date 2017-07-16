@@ -16,7 +16,7 @@ const wrongClientId = 'wrong-client-id';
 
 const anotherAction = {
   type: -2,
-  label: 'Some other action',
+  content: 'Some other action',
   handler: (item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
     action('Some other action')(item, collection);
   }
@@ -24,7 +24,7 @@ const anotherAction = {
 
 const annotateAction = {
   type: -1,
-  label: 'Annotate',
+  content: 'Annotate',
   handler: (item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
     action('annotate')(item, collection);
   }

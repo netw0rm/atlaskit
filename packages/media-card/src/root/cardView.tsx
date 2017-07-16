@@ -6,6 +6,7 @@ import {SharedCardProps, CardStatus, CardEvent, OnSelectChangeFuncResult} from '
 import {LinkCard} from '../links';
 import {FileCard} from '../files';
 import {isLinkDetails} from '../utils/isLinkDetails';
+import {CardAction} from '..';
 
 export interface CardViewProps extends SharedCardProps {
   readonly status: CardStatus;
@@ -43,6 +44,16 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
     }
   }
 
+  /** wrap the actions to return the metadata */
+  private get actions(): CardAction[] {
+    const {actions = [], metadata} = this.props;
+    return actions.map(({type, content, handler}) => ({
+      type,
+      content,
+      handler: () => handler(metadata)
+    }));
+  }
+
   render() {
     const {mediaItemType} = this.props;
 
@@ -66,46 +77,47 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
   }
 
   private renderLink = () => {
-    const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
+    const {mediaItemType, status, metadata, actions, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
 
     return (
       <LinkCard
         {...otherProps}
         status={status}
         details={metadata as LinkDetails | UrlPreview}
-
-        onClick={this.onClick}
-        onMouseEnter={this.onMouseEnter}
+        actions={this.actions}
+        onClick={this.handleClick}
+        onMouseEnter={this.handleMouseEnter}
       />
     );
   }
 
   private renderFile = () => {
-    const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
+    const {mediaItemType, status, metadata, actions, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
 
     return (
       <FileCard
         {...otherProps}
         status={status}
         details={metadata}
-
-        onClick={this.onClick}
-        onMouseEnter={this.onMouseEnter}
+        actions={this.actions}
+        onClick={this.handleClick}
+        onMouseEnter={this.handleMouseEnter}
       />
     );
   }
 
-  private onClick = (event: MouseEvent<HTMLDivElement>) => {
+  private handleClick = (event: MouseEvent<HTMLDivElement>) => {
     const {onClick, metadata: mediaItemDetails} = this.props;
     if (onClick) {
       onClick({event, mediaItemDetails});
     }
   }
 
-  private onMouseEnter = (event: MouseEvent<HTMLDivElement>) => {
+  private handleMouseEnter = (event: MouseEvent<HTMLDivElement>) => {
     const {onMouseEnter, metadata: mediaItemDetails} = this.props;
     if (onMouseEnter) {
       onMouseEnter({event, mediaItemDetails});
     }
   }
+
 }

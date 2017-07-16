@@ -4,7 +4,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
 import {MouseEvent} from 'react';
-import {CardAction, MediaItemDetails, MediaCollectionItem} from '@atlaskit/media-core';
+import {MediaItemDetails, MediaCollectionItem} from '@atlaskit/media-core';
+import {CardAction as CardActionsAction} from './utils/cardActions';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';
@@ -18,6 +19,10 @@ export type CardStatus = 'uploading' | 'loading' | 'processing' | 'complete' | '
 export type CardAppearance = 'auto' | 'small' | 'image' | 'square' | 'horizontal';
 
 export type CardDimensionValue = number | string;
+
+export interface CardAction extends CardActionsAction {
+  handler: (details?: MediaItemDetails) => void;
+}
 
 export interface CardDimensions {
   width?: CardDimensionValue;

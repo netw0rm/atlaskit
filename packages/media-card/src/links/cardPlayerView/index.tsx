@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import * as cx from 'classnames';
-import {CardAction} from '@atlaskit/media-core';
+import {CardAction} from '../../utils/cardActions';
 
 import PlayButton from './play-button';
 import {LinkCardGenericView} from '../cardGenericView';

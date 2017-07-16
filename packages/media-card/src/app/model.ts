@@ -4,7 +4,6 @@ export interface AppCardModel {
   description?: AppCardDescription;
   details?: AppCardDetails[];
   context?: AppCardContext;
-  actions?: AppCardAction[];
   preview?: {url: string}; // an image URL
   background?: {url: string}; // an image URL
 }
@@ -54,8 +53,4 @@ export interface AppCardDetails {
 export interface AppCardContext {
   text: string;
   icon?: AppCardIcon;
-}
-
-export interface AppCardAction {
-  title: string;
 }

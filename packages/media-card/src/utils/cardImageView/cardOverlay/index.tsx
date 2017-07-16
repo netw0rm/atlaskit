@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {MouseEvent, Component} from 'react';
 import * as cx from 'classnames';
-import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
+import {MediaType} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
 // We dont require things directly from "utils" to avoid circular dependencies
 import {FileIcon} from '../../fileIcon';
 import {ErrorIcon} from '../../errorIcon';
 import {Ellipsify} from '../../ellipsify';
-import {Menu} from '../../menu';
+import {CardAction, CardActions} from '../../cardActions';
 
 import {
   TickBox,
@@ -50,27 +50,23 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     mediaName: ''
   };
 
-  constructor(props: CardOverlayProps) {
-    super(props);
-
-    this.state = {
-      isMenuExpanded: false
-    };
-  }
+  state: CardOverlayState = {
+    isMenuExpanded: false
+  };
 
   private get wrapperClassNames() {
     const {error, selectable, selected, mediaType, persistent} = this.props;
     const {isMenuExpanded} = this.state;
 
     return error
-      ? cx('overlay', {error, active: isMenuExpanded})
+      ? cx('overlay', {error})
       : cx('overlay', mediaType, {active: isMenuExpanded, selectable, selected, persistent: !persistent});
   }
 
   render() {
     const {error, mediaName, persistent, actions} = this.props;
     const titleText = error || !mediaName ? '' : mediaName;
-    const menuTriggerColor = !persistent ? 'white' : undefined;
+    const theme = !persistent ? 'light' : 'dark';
 
     return (
       <Overlay className={this.wrapperClassNames}>
@@ -86,7 +82,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
             {this.bottomLeftColumn()}
           </LeftColumn>
           <RightColumn>
-            <Menu actions={actions} onToggle={this.onMenuToggle} triggerColor={menuTriggerColor} />
+            <CardActions theme={theme} canShowPrimaryButton={false} actions={actions} onToggleMenu={this.handleMenuToggle}/>
           </RightColumn>
         </BottomRow>
       </Overlay>
@@ -118,12 +114,12 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         return <ErrorIcon />;
       }
 
-      const retryMessage = onRetry.label || 'Try again';
+      const retryMessage = onRetry.content || 'Try again';
       const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
         // We need to prevent the card's onClick to be invoked
         event.stopPropagation();
         event.preventDefault();
-        onRetry.handler(undefined, event.nativeEvent);
+        onRetry.handler();
       };
 
       return (
@@ -157,15 +153,8 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     }
   }
 
-  onMenuToggle = (attrs: {isOpen: boolean}) => {
-    this.setState({isMenuExpanded: attrs.isOpen});
+  handleMenuToggle = () => {
+    this.setState(state => ({isMenuExpanded: !state.isMenuExpanded}));
   }
 
-  removeBtnClick(handler: CardEventHandler) {
-    return (e: MouseEvent<HTMLDivElement>) => {
-      e.preventDefault();
-      e.stopPropagation();
-      handler();
-    };
-  }
 }

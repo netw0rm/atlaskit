@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import * as cx from 'classnames';
-import {CardAction, MediaType} from '@atlaskit/media-core';
+import { MediaType} from '@atlaskit/media-core';
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
 import {getCSSUnitValue} from '../getCSSUnitValue';
-import {Menu, ErrorIcon, defaultSmallCardDimensions} from '../../utils';
+import {ErrorIcon, defaultSmallCardDimensions} from '../../utils';
+import {CardAction, CardActions} from '../../utils/cardActions';
 import {CardDimensions, CardDimensionValue} from '../..';
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
@@ -94,14 +95,14 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
 
   renderError() {
     const {error, onRetry} = this.props;
-    const retryMessage = (onRetry) ? (onRetry.label || 'Try again') : '';
+    const retryMessage = (onRetry) ? (onRetry.content || 'Try again') : '';
     const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
-      // We need to prevent the card's onClick being called
-      event.stopPropagation();
+      // we don't want the `click` event to bubble up to the card `click` handler
       event.preventDefault();
+      event.stopPropagation();
 
       if (onRetry) {
-        onRetry.handler(undefined, event.nativeEvent);
+        onRetry.handler();
       }
     };
 
@@ -133,7 +134,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
         <InfoWrapper className="info-wrapper">
           {right}
         </InfoWrapper>
-        <Menu actions={actions} />
+        <CardActions canShowPrimaryButton={false} actions={actions}/>
       </SmallCard>
     );
   }

@@ -4,10 +4,11 @@
  */
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {MediaType, MediaItemType, CardAction, CardActionType, ImageResizeMode} from '@atlaskit/media-core';
+import {MediaType, MediaItemType, ImageResizeMode} from '@atlaskit/media-core';
 
 import {getCSSUnitValue} from '../getCSSUnitValue';
 import {CardDimensions, CardDimensionValue, CardStatus} from '../../index';
+import {CardAction} from '../../utils/cardActions';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';
@@ -119,7 +120,6 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       <div key={0} className="wrapper" />,
       <CardOverlay
         key={1}
-
         persistent={true}
         mediaName={mediaName}
         mediaType={mediaType}
@@ -133,9 +133,8 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   private getUploadingContents = (): JSX.Element => {
-    const {actions, mediaName, progress, dataURI, selectable} = this.props;
+    const {mediaName, progress, dataURI, selectable, actions} = this.props;
 
-    const deleteAction = this.getFirstDeleteAction(actions);
     const overlay = selectable ? this.createUploadingCardOverlay() : null;
 
     return (
@@ -145,7 +144,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
             title={mediaName}
             progress={progress || 0}
             dataURI={dataURI}
-            deleteAction={deleteAction}
+            actions={actions}
           />
         </div>
         {overlay}
@@ -164,15 +163,6 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
         selected={selected}
       />
     );
-  }
-
-  private getFirstDeleteAction = (actions: Array<CardAction> | undefined): CardAction | undefined => {
-    if (!actions) {
-      return;
-    }
-
-    const deleteActions = actions.filter(a => a.type === CardActionType.delete);
-    return deleteActions[0];
   }
 
   private getSuccessCardContents = (): JSX.Element => {

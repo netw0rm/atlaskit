@@ -1,14 +1,12 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import {
-  MediaItem,
   MediaCollection,
   MediaCollectionItem,
   Context,
-  CollectionAction,
   DataUriService
 } from '@atlaskit/media-core';
 import { CSSTransitionGroup } from 'react-transition-group';
@@ -19,6 +17,11 @@ import { Provider, MediaCard, CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
 import { LazyContent } from '../utils';
+
+export interface ListAction {
+  content: ReactNode;
+  handler: (collectionItem: MediaCollectionItem, collection: MediaCollection) => void;
+}
 
 export interface CardListProps {
   context: Context;
@@ -31,7 +34,7 @@ export interface CardListProps {
   cardAppearance?: 'small' | 'image';
 
   onCardClick?: (result: CardListEvent) => void;
-  actions?: Array<CollectionAction>;
+  actions?: Array<ListAction>;
 
   /**
    * Infinite scrolling is only enabled when height has also been specified.
@@ -211,23 +214,19 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderList(): JSX.Element {
-    const { collection, shouldAnimate } = this.state;
+    const {collection, shouldAnimate} = this.state;
     const {cardWidth, dimensions, providersByMediaItemId, dataURIService, handleCardClick, placeholder} = this;
     const {cardAppearance, shouldLazyLoadCards} = this.props;
     const actions = this.props.actions || [];
-    const cardActions = (collectionItem: MediaCollectionItem) => actions
-      .map(action => {
-        return {
-          label: action.label,
-          type: action.type,
-          handler: (item: MediaItem, event: Event) => {
-            if (collection) {
-              action.handler(collectionItem, collection, event);
-            }
-          }
-        };
-      })
-    ;
+
+    const cardActions = (collectionItem: MediaCollectionItem) => actions.map(action => ({
+      content: action.content,
+      handler: () => {
+        if (collection) {
+          action.handler(collectionItem, collection);
+        }
+      }
+    }));
 
     const cards = collection ? collection.items
       .map((mediaItem: MediaCollectionItem) => {

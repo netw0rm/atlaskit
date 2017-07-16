@@ -102,7 +102,6 @@ export class LinkCard extends Component<LinkCardProps, {}> {
       appearance={appearance}
       loading={this.isLoading}
       actions={actions}
-
       onClick={onClick}
       onMouseEnter={onMouseEnter}
     />;

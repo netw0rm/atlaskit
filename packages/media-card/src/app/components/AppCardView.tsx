@@ -1,25 +1,23 @@
 import * as React from 'react';
-import {AppCardModel, AppCardAction} from '../model';
+import {AppCardModel} from '../model';
 import {HeaderView} from './HeaderView';
 import {DescriptionView} from './DescriptionView';
 import {DetailsView} from './DetailsView';
 import {ContextView} from './ContextView';
-import {ActionsView} from './ActionsView';
+import {CardAction, CardActions} from '../../utils/cardActions';
 import {Card, Preview, CardContent, Footer} from '../styled/AppCardView';
 
 const maxCardWidth = 744;
 const previewWidth = 116;
 
+export {CardAction};
 export interface AppCardViewProps {
   model: AppCardModel;
   onClick?: () => void;
-  onActionClick?: (action: AppCardAction) => void;
+  actions?: CardAction[];
 }
 
 export class AppCardView extends React.Component<AppCardViewProps, {}> {
-
-  static defaultProps = {
-  };
 
   get isDarkAppearance() {
     const {model: {background}} = this.props;
@@ -40,7 +38,7 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderHeader() {
-    const {model: {title: {text, user}, background, description, details, context, actions}} = this.props;
+    const {model: {title: {text, user}, background, description, details, context}, actions} = this.props;
     return (
       <HeaderView
         title={text}
@@ -84,17 +82,27 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderActions() {
-    const {model: {actions}, onActionClick} = this.props;
+    const {actions} = this.props;
 
     if (!actions) {
       return null;
     }
 
-    return <ActionsView actions={actions} isInversed={this.isDarkAppearance} onActionClick={onActionClick}/>;
+    // buttons are backwards because its text
+    const theme = this.isDarkAppearance ? 'light' : 'dark';
+
+    return (
+      <CardActions
+        theme={theme}
+        canShowDeleteButton={false}
+        canShowPrimaryButton={true}
+        actions={actions}
+      />
+    );
   }
 
   renderBody() {
-    const {model: {description, details, context, actions}} = this.props;
+    const {model: {description, details, context}, actions} = this.props;
 
     if (!description && !details && !context && !actions) {
       return null;

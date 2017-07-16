@@ -1,12 +1,11 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../index';
 // We are being verbose requiring utilities "utils" to avoid circular dependencies
 import {ErrorIcon} from '../../utils/errorIcon';
 import {Ellipsify} from '../../utils/ellipsify';
-import {Menu} from '../../utils/menu';
+import {CardAction, CardActions} from '../../utils/cardActions';
 import {MediaImage} from '../../utils/mediaImage';
 import {CardLoading} from '../../utils/cardLoading';
 import {getCSSUnitValue} from '../../utils/getCSSUnitValue';
@@ -182,7 +181,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
               {site || linkUrl}
             </span>
           </Link>
-          <Menu actions={actions} />
+          <CardActions canShowPrimaryButton={false} actions={actions}/>
         </Footer>
       </Details>
     ];

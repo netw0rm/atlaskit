@@ -50,7 +50,7 @@ describe('FileCardViewSmall', () => {
     const cardView = mount<FileCardViewSmallProps, {}>(
       <FileCardViewSmall
         error={'some-error'}
-        onRetry={{handler: errorActionMock}}
+        onRetry={{content: 'Retry', handler: errorActionMock}}
         onClick={onClickMock}
       />);
 

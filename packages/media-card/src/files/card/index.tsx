@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {CardAction, FileDetails, ImageResizeMode} from '@atlaskit/media-core';
+import {FileDetails, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardStatus} from '../..';
 import {FileCardImageView} from '../cardImageView';
@@ -27,7 +27,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {status, dimensions, selectable, selected, details, dataURI, progress, onClick, onMouseEnter, resizeMode} = this.props;
+    const {status, dimensions, selectable, selected, details, dataURI, progress, onClick, onMouseEnter, resizeMode, actions} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
@@ -43,7 +43,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           mediaSize={size}
           loading={this.isLoading}
 
-          actions={this._getActions()}
+          actions={actions}
           onClick={onClick}
           onMouseEnter={onMouseEnter}
         />
@@ -61,32 +61,13 @@ export class FileCard extends Component<FileCardProps, {}> {
           progress={progress}
           resizeMode={resizeMode}
 
-          actions={this._getActions()}
+          actions={actions}
           onClick={onClick}
           onMouseEnter={onMouseEnter}
         />
       );
 
     return card;
-  }
-
-  private _getActions(): Array <CardAction> {
-    const {details} = this.props;
-    // redundant 'or' guarding to satisfy compiler
-    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
-    const actions = this.props.actions || [];
-
-    return actions
-      .map((action: CardAction) => {
-        return {
-          label: action.label,
-          type: action.type,
-          handler: () => {
-            // TODO remove || guarding and update action signature to be correct
-            action.handler({type: 'file', details: details || {}});
-          }
-        };
-      });
   }
 
   private _isSmall(): boolean {

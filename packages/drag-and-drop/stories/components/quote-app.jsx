@@ -41,6 +41,7 @@ type State = {|
   dragging: ?DropResult,
   quotes: Quote[],
   history: DropResult[],
+  showDetails: boolean,
 |}
 
 export default class QuoteApp extends Component {
@@ -50,6 +51,7 @@ export default class QuoteApp extends Component {
     dragging: null,
     quotes: data,
     history: [],
+    showDetails: false,
   }
 
   onDragStart = (id: DraggableId, location: DraggableLocation) => {
@@ -108,7 +110,7 @@ export default class QuoteApp extends Component {
   }
 
   render() {
-    const { dragging, history, quotes } = this.state;
+    const { dragging, history, quotes, showDetails } = this.state;
     return (
       <DragDropContext
         onDragStart={this.onDragStart}
@@ -123,14 +125,16 @@ export default class QuoteApp extends Component {
               />
           ))}
           </QuoteList>
-          <Details>
-            <QuoteDescription />
-            <Divider />
-            <QuoteTracker
-              current={dragging}
-              history={history}
-            />
-          </Details>
+          {showDetails ? (
+            <Details>
+              <QuoteDescription />
+              <Divider />
+              <QuoteTracker
+                current={dragging}
+                history={history}
+              />
+            </Details>
+          ) : null}
         </Root>
       </DragDropContext>
     );

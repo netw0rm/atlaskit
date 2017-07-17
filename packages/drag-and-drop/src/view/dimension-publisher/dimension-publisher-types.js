@@ -18,6 +18,7 @@ export type DispatchProps = {|
 export type OwnProps = {|
   itemId: Id,
   type: TypeId,
+  isScrollAware: boolean,
   targetRef: ?HTMLElement,
   parentId?: Id,
   children?: ReactElement,

@@ -14,6 +14,7 @@ import type { TypeId,
   DraggableLocation,
   Position,
 } from '../types';
+import { add, subtract } from './position';
 import getDragImpact from './get-drag-impact';
 import getDiffToJumpToNextIndex from './get-diff-to-jump-to-next-index';
 
@@ -120,7 +121,8 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return state;
     }
 
-    const { id, type, center, selection } = action.payload;
+    const { id, type, center, page, parentScroll } = action.payload;
+    const dimension: Dimension = state.dimension.draggable[id];
 
     const impact: DragImpact = getDragImpact(
       center,
@@ -138,15 +140,19 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const initial: InitialDrag = {
       source,
+      page,
       center,
-      selection,
-      dimension: state.dimension.draggable[id],
+      parentScroll,
+      // TODO: is this needed?
+      dimension,
     };
 
     const current: CurrentDrag = {
       id,
       type,
-      offset: { x: 0, y: 0 },
+      // When position: absolute is applied it looses the current
+      // scroll parent offset
+      offset: parentScroll,
       center,
       shouldAnimate: false,
     };
@@ -173,9 +179,20 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return clean();
     }
 
-    const { offset, center } = action.payload;
+    const { page } = action.payload;
+
+    // Need to consider changes to:
+    // 1. viewport
+    // 2. window scroll
+    // 3. parent scroll?
+
     const previous: CurrentDrag = state.drag.current;
     const initial: InitialDrag = state.drag.initial;
+
+    const diff: Position = subtract(page, initial.page);
+
+    const offset: Position = add(initial.parentScroll, diff);
+    const center: Position = add(initial.center, offset);
 
     const current: CurrentDrag = {
       id: previous.id,

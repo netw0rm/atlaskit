@@ -2,11 +2,13 @@
 import React, { Component, PropTypes } from 'react';
 import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
+import getScrollParent from 'scrollparent';
 import type { Position, InitialDrag, HTMLElement } from '../../types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import DragHandle from '../drag-handle';
 import { css } from '../animation';
+import getWindowScrollPosition from '../get-window-scroll-position';
 // eslint-disable-next-line no-duplicate-imports
 import type {
   Callbacks as DragHandleCallbacks,
@@ -15,6 +17,7 @@ import type {
 import getCenterPosition from '../get-center-position';
 import Placeholder from './placeholder';
 import { droppableIdKey } from '../context-keys';
+import { add } from '../../state/position';
 import type {
   Props,
   Provided,
@@ -83,6 +86,17 @@ export default class Draggable extends Component {
     );
   }
 
+  getParentScroll = (): Position => {
+    const { ref } = this.state;
+    invariant(ref, 'cannot get parent of unmounted element');
+    const parent: HTMLElement = getScrollParent(ref);
+
+    return {
+      x: -parent.scrollLeft,
+      y: -parent.scrollTop,
+    };
+  }
+
   onMoveEnd = () => {
     if (!this.props.isDropAnimating) {
       return;
@@ -91,13 +105,17 @@ export default class Draggable extends Component {
     this.props.dropAnimationFinished(this.props.draggableId);
   }
 
-  onLift = (selection: Position) => {
+  onLift = (point: Position) => {
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
+    const { ref } = this.state;
 
-    const center: Position = getCenterPosition(this.state.ref);
+    const windowScroll: Position = getWindowScrollPosition();
+    const page: Position = add(point, windowScroll);
+    const center: Position = add(getCenterPosition(ref), windowScroll);
+    const parentScroll: Position = this.getParentScroll();
 
-    lift(draggableId, type, center, selection);
+    lift(draggableId, type, page, center, parentScroll);
   }
 
   onKeyLift = () => {
@@ -120,16 +138,10 @@ export default class Draggable extends Component {
       return;
     }
 
-    const offset: Position = {
-      x: point.x - initial.selection.x,
-      y: point.y - initial.selection.y,
-    };
-    const center: Position = {
-      x: initial.center.x + offset.x,
-      y: initial.center.y + offset.y,
-    };
+    const windowScroll: Position = getWindowScrollPosition();
+    const page: Position = add(point, windowScroll);
 
-    move(draggableId, offset, center);
+    move(draggableId, page);
   }
 
   onMoveForward = () => {

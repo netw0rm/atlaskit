@@ -23,6 +23,7 @@ export default (
   clientRect: ClientRect,
   margin: Margin,
   scroll: Position,
+  scrollOffset: ?Position,
 ): Dimension => {
   const { top, right, bottom, left, width, height } = clientRect;
 
@@ -60,6 +61,7 @@ export default (
     parentId,
     withoutMargin,
     withMargin,
+    scrollOffset,
     // Not considering margins when calculating the center position
     center: {
       x: (withScroll.left + withScroll.right) / 2,

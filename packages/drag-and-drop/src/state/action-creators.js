@@ -34,21 +34,25 @@ export type CompleteLiftAction = {|
   payload: {|
     id: DraggableId,
     type: TypeId,
+    page: Position,
     center: Position,
-    selection: Position,
+    parentScroll: Position,
   |}
 |}
 
 const completeLift = (id: DraggableId,
   type: TypeId,
+  page: Position,
   center: Position,
-  selection: Position): CompleteLiftAction => ({
+  parentScroll: Position,
+  ): CompleteLiftAction => ({
     type: 'COMPLETE_LIFT',
     payload: {
       id,
       type,
+      page,
       center,
-      selection,
+      parentScroll,
     },
   });
 
@@ -78,17 +82,15 @@ export type MoveAction = {|
   type: 'MOVE',
   payload: {|
     id: DraggableId,
-    offset: Position,
-    center: Position
+    page: Position,
   |}
 |}
 
-export const move = (id: DraggableId, offset: Position, center: Position): MoveAction => ({
+export const move = (id: DraggableId, page: Position): MoveAction => ({
   type: 'MOVE',
   payload: {
     id,
-    offset,
-    center,
+    page,
   },
 });
 
@@ -223,15 +225,16 @@ export type LiftAction = {|
     id: DraggableId,
     type: TypeId,
     center: Position,
-    selection: Position,
+    page: Position,
   |}
 |}
 
 // using redux-thunk
 export const lift = (id: DraggableId,
   type: TypeId,
+  page: Position,
   center: Position,
-  selection: Position,
+  parentScroll: Position,
 ) => (dispatch: Dispatch, getState: Function) => {
   (() => {
     const state: State = getState();
@@ -270,7 +273,7 @@ export const lift = (id: DraggableId,
       if (newState.phase !== 'COLLECTING_DIMENSIONS') {
         return;
       }
-      dispatch(completeLift(id, type, center, selection));
+      dispatch(completeLift(id, type, page, center, parentScroll));
     });
   });
 };

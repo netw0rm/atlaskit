@@ -24,10 +24,13 @@ export type DimensionFragment = {|
 
 export type Dimension = {|
   id: Id,
-  parentId: ?Id,
   withMargin: DimensionFragment,
   withoutMargin: DimensionFragment,
   center: Position,
+  // static for draggables - live for droppables
+  scrollOffset: Position,
+  // only required for draggables
+  parentId: ?Id,
 |}
 
 export type DraggableLocation = {|
@@ -50,8 +53,12 @@ export type DragImpact = {|
 
 export type InitialDrag = {|
   source: DraggableLocation,
+  // client + window scroll
+  page: Position,
+  // takes into account window scroll
   center: Position,
-  selection: Position,
+  parentScroll: Position,
+  // TODO: is this needed?
   dimension: Dimension,
 |}
 

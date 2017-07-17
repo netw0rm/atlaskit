@@ -6,7 +6,6 @@ import rafScheduler from 'raf-schd';
 // Using keyCode's for consistent event pattern matching between
 // React synthetic events as well as raw browser events.
 import * as keyCodes from '../key-codes';
-import getScrollPosition from '../get-scroll-position';
 import type { Position } from '../../types';
 import type { Props, DragTypes, Provided } from './drag-handle-types';
 
@@ -109,11 +108,9 @@ export default class DragHandle extends Component {
       return;
     }
 
-    // Ideally would just use event.pageX - but playing it safe
-    const scroll: Position = getScrollPosition();
     const point: Position = {
-      x: clientX + scroll.x,
-      y: clientY + scroll.y,
+      x: clientX,
+      y: clientY,
     };
 
     if (!pending) {
@@ -178,11 +175,9 @@ export default class DragHandle extends Component {
     event.stopPropagation();
     event.preventDefault();
 
-    // Ideally would just use event.pageX - but playing it safe
-    const scroll: Position = getScrollPosition();
     const point: Position = {
-      x: clientX + scroll.x,
-      y: clientY + scroll.y,
+      x: clientX,
+      y: clientY,
     };
 
     this.startPendingMouseDrag(point);

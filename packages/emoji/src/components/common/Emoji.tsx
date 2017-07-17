@@ -51,6 +51,11 @@ export interface Props {
    * Show a tooltip on mouse hover.
    */
   showTooltip?: boolean;
+
+  /**
+   * Fits emoji to height in pixels, keeping aspect ratio
+   */
+  fitToHeight?: number;
 }
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
@@ -83,7 +88,7 @@ const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>)
 // Pure functional components are used in favour of class based components, due to the performance!
 // When rendering 1500+ emoji using class based components had a significant impact.
 const renderAsSprite = (props: Props) => {
-  const { emoji, selected, selectOnHover, className, showTooltip } = props;
+  const { emoji, fitToHeight, selected, selectOnHover, className, showTooltip } = props;
   const representation = emoji.representation as SpriteRepresentation;
   const sprite = representation.sprite;
   const classes = {
@@ -97,6 +102,12 @@ const renderAsSprite = (props: Props) => {
   }
 
   let sizing = {};
+  if (fitToHeight) {
+    sizing = {
+      width: `${fitToHeight}px`,
+      height: `${fitToHeight}px`,
+    };
+  }
 
   const xPositionInPercent = (100 / (sprite.column - 1)) * (representation.xIndex - 0);
   const yPositionInPercent = (100 / (sprite.row - 1)) * (representation.yIndex - 0);
@@ -132,7 +143,7 @@ const renderAsSprite = (props: Props) => {
 
 // Keep as pure functional component, see renderAsSprite.
 const renderAsImage = (props: Props) => {
-  const { emoji, selected, selectOnHover, className, showTooltip } = props;
+  const { emoji, fitToHeight, selected, selectOnHover, className, showTooltip } = props;
 
   const classes = {
     [styles.emoji]: true,
@@ -144,15 +155,29 @@ const renderAsImage = (props: Props) => {
     classes[className] = true;
   }
 
+  let width;
+  let height;
   let src;
   const representation = emoji.representation;
   if (isImageRepresentation(representation)) {
     src = representation.imagePath;
+    width = representation.width;
+    height = representation.height;
   } else if (isMediaRepresentation(representation)) {
     src = representation.mediaPath;
+    width = representation.width;
+    height = representation.height;
   }
 
   let sizing = {};
+  if (fitToHeight && width && height) {
+    // Presize image, to prevent reflow due to size changes after loading
+    // const scaledHeight = Math.min(fitToHeight, height);
+    sizing = {
+      width: fitToHeight / height * width,
+      height: fitToHeight,
+    };
+  }
 
   const onError = (event) => {
     handleImageError(props, event);

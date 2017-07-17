@@ -6,11 +6,14 @@ const notImplemented = () => {
   throw new Error('Not implemented.');
 };
 
+import languagePacks from '../../src/jira-confluence/language-packs.json';
+
 export default class MockConfluenceCrossSellProvider extends Component {
   render() {
     const defaultProps = {
       config: {
         productLogo: <ConfluenceLogo />,
+        languagePacks,
         requestTrial: {
           accessBanner: 'https://placehold.it/352x214',
           accessHeading: 'Ask your admin for access',
@@ -20,19 +23,11 @@ export default class MockConfluenceCrossSellProvider extends Component {
           notePlaceholder: 'I would like to try Confluence because…',
         },
         startTrial: {
-          confirmHeading: 'Start your 30 day trial',
-          confirmMessage: (
-            <p>
-              Once your trial finishes, billing will start.<br />
-              Easily cancel at anytime in <strong>Manage Application</strong>.<br />
-              We will email your billing contact 3 days in advance.
-            </p>
-          ),
-          confirmButtonText: 'Confirm',
-          confirmCancelButtonText: 'Cancel',
           grantHeader: 'Who should have access?',
           grantDefaultAccess: (
-            <p><strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.</p>
+            <p>
+              <strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.
+            </p>
           ),
           grantLearnMoreLinkText: 'Learn more',
           grantNotifyUsers: 'Notify these users',

@@ -1,0 +1,11 @@
+{
+  "fr_FR": {
+    "test": "Demande d'essai"
+  },
+  "en_US": {
+    "cross-flow.confirm-trial.heading": "Start your 30 day trial",
+    "cross-flow.confirm-trial.message": "Once your trial finishes, billing with start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance.",
+    "cross-flow.confirm-trial.confirm-button": "Confirm",
+    "cross-flow.confirm-trial.cancel-button": "Cancel"
+  }
+}

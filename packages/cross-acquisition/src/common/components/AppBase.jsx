@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import addSupportedLocaleData from '../addSupportedLocaleData';
-import languagePacks from '../../language-packs.json';
+import { withCrossSellProvider } from './CrossSellProvider';
 
 addSupportedLocaleData();
 
-const getLanguageFromLocale = locale => (
-  locale ? locale.substring(0, locale.indexOf('_')) : ''
-);
+const getLanguageFromLocale = locale => (locale ? locale.substring(0, locale.indexOf('_')) : '');
 
-export default class AppBase extends Component {
+export class AppBase extends Component {
   static propTypes = {
     locale: PropTypes.string.isRequired,
     children: PropTypes.node,
-  }
+    languagePacks: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  };
 
   render() {
+    const { languagePacks } = this.props;
     return (
       <IntlProvider
         messages={languagePacks[this.props.locale]}
@@ -27,3 +27,7 @@ export default class AppBase extends Component {
     );
   }
 }
+
+export default withCrossSellProvider(AppBase, ({ crossSell: { config: { languagePacks } } }) => ({
+  languagePacks,
+}));

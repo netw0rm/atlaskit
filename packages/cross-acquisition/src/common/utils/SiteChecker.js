@@ -27,7 +27,7 @@ class SiteChecker {
   checkProgress() {
     // TODO: poll site and update progresss
     this.progress = (this.progress + 1) % 100;
-    console.log('polling', this.progress);
+    // console.log('polling', this.progress);
   }
 }
 

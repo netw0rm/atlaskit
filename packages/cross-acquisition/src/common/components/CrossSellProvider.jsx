@@ -6,6 +6,7 @@ export const crossSellShape = PropTypes.shape({
   state: PropTypes.object,
   config: PropTypes.shape({
     productLogo: PropTypes.element,
+    languagePacks: PropTypes.object.isRequired,
     requestTrial: PropTypes.shape({
       accessBanner: PropTypes.string,
       accessHeading: PropTypes.string,
@@ -14,8 +15,6 @@ export const crossSellShape = PropTypes.shape({
       notePlaceholder: PropTypes.string,
     }),
     startTrial: PropTypes.shape({
-      confirmHeading: PropTypes.string,
-      confirmMessage: PropTypes.node,
       grantHeading: PropTypes.string,
       grantDefaultAccess: PropTypes.node,
       grantLearnMoreLinkText: PropTypes.string,

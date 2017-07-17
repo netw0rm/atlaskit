@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
+import { FormattedMessage } from 'react-intl';
 import ErrorFlag from './ErrorFlag';
 
 import SpinnerDiv from '../styled/SpinnerDiv';
@@ -11,14 +12,13 @@ import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import i18nId from '../../common/i18nId';
+
+const i18n = i18nId('confirm-trial');
 
 export class ConfirmTrialBase extends Component {
   static propTypes = {
     productLogo: PropTypes.node.isRequired,
-    heading: PropTypes.string.isRequired,
-    message: PropTypes.node.isRequired,
-    confirmButtonText: PropTypes.string.isRequired,
-    cancelButtonText: PropTypes.string.isRequired,
     spinnerActive: PropTypes.bool,
     confirmButtonDisabled: PropTypes.bool,
     onComplete: PropTypes.func.isRequired,
@@ -63,7 +63,7 @@ export class ConfirmTrialBase extends Component {
   };
 
   render() {
-    const { productLogo, heading, message, confirmButtonText, cancelButtonText } = this.props;
+    const { productLogo } = this.props;
     return (
       <ModalDialog
         isOpen
@@ -79,23 +79,21 @@ export class ConfirmTrialBase extends Component {
               appearance="primary"
               isDisabled={this.state.confirmButtonDisabled}
             >
-              {confirmButtonText}
+              <FormattedMessage id={i18n`confirm-button`} />
             </Button>
             <Button onClick={this.handleCancelClick} appearance="subtle-link">
-              {cancelButtonText}
+              <FormattedMessage id={i18n`cancel-button`} />
             </Button>
           </StartTrialFooter>
         }
       >
         <StartTrialDialog>
           <StartTrialHeader>
-            {heading}
+            <FormattedMessage id={i18n`heading`} />
           </StartTrialHeader>
-          {React.isValidElement(message)
-            ? message
-            : <p>
-              {message}
-            </p>}
+          <p>
+            <FormattedMessage id={i18n`message`} values={{ br: <br /> }} />
+          </p>
         </StartTrialDialog>
         <ErrorFlag
           title="Oops... Something went wrong"
@@ -110,14 +108,8 @@ export class ConfirmTrialBase extends Component {
 
 export default withCrossSellProvider(
   ConfirmTrialBase,
-  ({
-    crossSell: { config: { productLogo, startTrial }, startProductTrial, cancelStartProductTrial },
-  }) => ({
+  ({ crossSell: { config: { productLogo }, startProductTrial, cancelStartProductTrial } }) => ({
     productLogo,
-    heading: startTrial.confirmHeading,
-    message: startTrial.confirmMessage,
-    confirmButtonText: startTrial.confirmButtonText,
-    cancelButtonText: startTrial.confirmCancelButtonText,
     startProductTrial,
     cancelStartProductTrial,
   })

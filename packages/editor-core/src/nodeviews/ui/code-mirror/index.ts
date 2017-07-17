@@ -1,6 +1,7 @@
 import { Node, NodeView, EditorView } from '../../../prosemirror';
 import { CodeBlockState, codeBlockStateKey } from '../../../plugins';
 import codeMirrorPlugin from './codeMirrorPlugin';
+import { detectLanguage } from './utils';
 import './styles';
 
 class CodeBlock implements NodeView  {
@@ -21,6 +22,7 @@ class CodeBlock implements NodeView  {
     this.node.attrs['isCodeMirror'] = true;
     this.pluginState.subscribe(this.updateLanguage);
     this.pluginState.subscribeFocusHandlers(this.focusCodeEditor);
+    this.detectBlockLanguage();
   }
 
   get dom() {
@@ -40,12 +42,22 @@ class CodeBlock implements NodeView  {
     }
   }
 
+  private detectBlockLanguage = (): void => {
+    if (this.node && !this.node.attrs['language']) {
+      const language = detectLanguage(this.node.textContent);
+      if (language) {
+        this.pluginState.updateLanguage(language, this.view);
+      }
+    }
+  }
+
   update(node: Node): boolean {
     if (!this.node || node.type !== this.node.type) {
       return false;
     }
     this.node = node;
     this.codeMirrorPlugin.update(node.textContent);
+    this.detectBlockLanguage();
     return true;
   }
 

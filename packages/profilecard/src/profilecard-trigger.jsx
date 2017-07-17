@@ -5,6 +5,7 @@ import AkLayer from '@atlaskit/layer';
 
 import { getAnimationClass } from './internal/helpers';
 import PositionWrapper from './components/PositionWrapper';
+import withOuterListeners from './components/withOuterListeners';
 import AkProfilecardResourced from './profilecard-resourced';
 
 const allowedPositions = [
@@ -17,6 +18,8 @@ const allowedPositions = [
   'left bottom',
   'left top',
 ];
+
+const AkLayerWithOuterListeners = withOuterListeners(AkLayer);
 
 export default class ProfilecardTrigger extends PureComponent {
   static propTypes = {
@@ -33,12 +36,14 @@ export default class ProfilecardTrigger extends PureComponent {
       getCachedProfile: PropTypes.func,
       makeRequest: PropTypes.func,
     }).isRequired,
+    trigger: PropTypes.oneOf(['click', 'hover']),
     analytics: PropTypes.func,
   }
 
   static defaultProps = {
     position: 'top left',
     actions: [],
+    trigger: 'hover',
   }
 
   constructor(props) {
@@ -98,22 +103,39 @@ export default class ProfilecardTrigger extends PureComponent {
   }
 
   render() {
+    const {
+      children,
+      position,
+      trigger,
+    } = this.props;
+
+    const Layer = trigger === 'hover' ? AkLayer : AkLayerWithOuterListeners;
+    const containerListeners = {};
+    const layerListeners = {};
+
+    if (trigger === 'hover') {
+      containerListeners.onMouseEnter = this.showProfilecard;
+      containerListeners.onMouseLeave = this.hideProfilecard;
+    } else {
+      containerListeners.onClick = this.showProfilecard;
+
+      layerListeners.handleClickOutside = this.hideProfilecard;
+      layerListeners.handleEscapeKeydown = this.hideProfilecard;
+    }
+
     return (
-      <div
-        style={{ display: 'inline-block' }}
-        onMouseEnter={this.showProfilecard}
-        onMouseLeave={this.hideProfilecard}
-      >
+      <div style={{ display: 'inline-block' }} {...containerListeners}>
         {
-          this.state.visible ? <AkLayer
+          this.state.visible ? <Layer
             autoFlip
             content={this.renderProfilecard()}
             offset="0 4"
             onFlippedChange={this.handleLayerFlipChange}
-            position={this.props.position}
+            position={position}
+            {...layerListeners}
           >
-            {this.props.children}
-          </AkLayer> : this.props.children
+            {children}
+          </Layer> : children
         }
       </div>
     );

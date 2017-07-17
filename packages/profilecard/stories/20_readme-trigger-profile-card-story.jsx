@@ -22,6 +22,7 @@ const profilecardPropTypes = {
   userId: 'string',
   cloudId: 'string',
   position: 'string',
+  trigger: 'string ("hover" or "click")',
   actions: `arrayOf(React.PropTypes.shape({
     callback: React.PropTypes.function,
     label: React.PropTypes.string

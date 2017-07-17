@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* feature; add trigger property to AkProfilecardTrigger (possible values: click, hover (defaul (issues closed: ed-1867)
 ## 3.0.2 (2017-07-12)
 
 

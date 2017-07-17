@@ -4,7 +4,7 @@ import {
   PluginKey,
 } from '../../prosemirror';
 import keymapPlugin from './keymaps';
-import { codeMirrorNodeView } from '../../nodeviews';
+import codeMirrorNodeView from '../../nodeviews/ui/code-mirror';
 
 export const stateKey = new PluginKey('codeMirrorPlugin');
 

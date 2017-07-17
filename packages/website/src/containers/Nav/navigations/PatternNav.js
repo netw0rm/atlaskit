@@ -8,40 +8,34 @@ import {
   AkNavigationItemGroup,
 } from '@atlaskit/navigation';
 
-import ComponentIcon from '@atlaskit/icon/glyph/component';
+import MediaServicesZipIcon from '@atlaskit/icon/glyph/media-services/zip';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-import packages from '../../../data';
-import PatternNav from './PatternNav';
+import patterns from '../../../../patterns';
 
-const componentKeys = Object.keys(packages);
-
-const ComponentAkNavigationItem = withRouter(({ componentKey, location, destination }) => {
-  const component = packages[componentKey];
-  const url = `${destination}/${componentKey}`;
-  // We are matching against endswith so changelogs also show item as selected
-  const isSelected = location.pathname.endsWith(`/${componentKey}`);
+const ComponentAkNavigationItem = withRouter(({ pattern, location }) => {
+  const url = `/patterns/${encodeURI(pattern.title)}`;
+  const isSelected = location.pathname === url;
 
   return (
-    <Link to={url} key={componentKey}>
+    <Link to={url} key={pattern.title}>
       <AkNavigationItem
-        icon={<PackageIcon size="small" label={`${component.name} icon`} />}
-        text={component.name}
+        icon={<PackageIcon size="small" label={`${pattern.title} icon`} />}
+        text={pattern.title}
         isSelected={isSelected}
       />
     </Link>
   );
 });
 
-const NavList = ({ title, destination }) => (
+const NavList = ({ title }) => (
   <AkNavigationItemGroup title={title}>
-    {componentKeys
-      .map(key => (
+    {patterns
+      .map(pattern => (
         <ComponentAkNavigationItem
-          componentKey={key}
-          key={key}
-          destination={destination}
+          pattern={pattern}
+          key={pattern.title}
         />
     ))}
   </AkNavigationItemGroup>
@@ -73,24 +67,15 @@ const PackagesNav = ({
 );
 
 const ComponentNav = ({ backIcon, router, pathname }) => {
-  const componentVariables = {
-    icon: <ComponentIcon label="Components icon" />,
-    destination: '/components',
-    title: 'Components',
-    navItemText: 'All components',
+  const patternVariables = {
+    icon: <MediaServicesZipIcon label="Patterns icon" />,
+    destination: '/patterns',
+    title: 'Patterns',
+    navItemText: 'All patterns',
+
   };
+  const variables = patternVariables;
 
-  const variables = componentVariables;
-
-  if (pathname.includes('/patterns')) {
-    return (
-      <PatternNav
-        backIcon={backIcon}
-        router={router}
-        pathname={pathname}
-      />
-    );
-  }
   return PackagesNav({ backIcon, router, pathname, ...variables });
 };
 

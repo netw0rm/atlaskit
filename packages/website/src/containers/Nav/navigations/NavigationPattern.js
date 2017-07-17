@@ -4,8 +4,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  AkContainerItem as NavItem,
-  AkContainerItemGroup as NavItemGroup,
+  AkNavigationItem,
+  AkNavigationItemGroup,
 } from '@atlaskit/navigation';
 
 import PageFilledIcon from '@atlaskit/icon/glyph/page-filled';
@@ -16,38 +16,38 @@ import packages from '../../../data';
 
 const NavigationNav = ({ pathname, backIcon, router }) => (
   <div>
-    <NavItem
+    <AkNavigationItem
       icon={backIcon}
       onClick={() => router.history.push('/components')}
       text="Back"
     />
-    <NavItemGroup>
-      <Link to="/patterns/navigation">
-        <NavItem
+    <AkNavigationItemGroup>
+      <Link to="/components/navigation">
+        <AkNavigationItem
           icon={<PageFilledIcon label="Welcome icon" />}
           text="Usage"
-          isSelected={pathname === '/patterns/navigation'}
+          isSelected={pathname === '/components/navigation'}
         />
       </Link>
-      <Link to="/patterns/navigation/examples">
-        <NavItem
+      <Link to="/components/navigation/examples">
+        <AkNavigationItem
           icon={<DetailViewIcon label="Welcome icon" />}
           text="Examples"
-          isSelected={pathname === '/patterns/navigation/examples'}
+          isSelected={pathname === '/components/navigation/examples'}
         />
       </Link>
-    </NavItemGroup>
-    <NavItemGroup title="components">
+    </AkNavigationItemGroup>
+    <AkNavigationItemGroup title="components">
       {packages.navigation.props.map(component => (
-        <Link to={`/patterns/navigation/components/${component.name}`} key={component.name}>
-          <NavItem
+        <Link to={`/components/navigation/components/${component.name}`} key={component.name}>
+          <AkNavigationItem
             icon={<PackageIcon size="small" label={`${component.name} icon`} />}
             text={component.name}
-            isSelected={pathname === `/patterns/navigation/components/${component.name}`}
+            isSelected={pathname === `/components/navigation/components/${component.name}`}
           />
         </Link>
       ))}
-    </NavItemGroup>
+    </AkNavigationItemGroup>
   </div>
 );
 

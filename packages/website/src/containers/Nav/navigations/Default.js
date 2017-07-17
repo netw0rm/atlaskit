@@ -3,8 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  AkContainerItem as NavItem,
-  AkContainerItemGroup as NavItemGroup,
+  AkNavigationItem,
+  AkNavigationItemGroup,
 } from '@atlaskit/navigation';
 
 import ComponentIcon from '@atlaskit/icon/glyph/component';
@@ -22,23 +22,23 @@ const externalLinks = [
 
 const DefaultNav = ({ pathname, router, goToNext = () => {} }) => (
   <div>
-    <NavItemGroup>
+    <AkNavigationItemGroup>
       <Link to="/">
-        <NavItem
+        <AkNavigationItem
           icon={<HomeFilledIcon label="Welcome icon" />}
           text="Welcome"
           isSelected={pathname === '/'}
         />
       </Link>
-    </NavItemGroup>
-    <NavItemGroup title="Get Started">
+    </AkNavigationItemGroup>
+    <AkNavigationItemGroup title="Get Started">
       <Link to="./install">
-        <NavItem
+        <AkNavigationItem
           icon={<OverviewIcon label="Install icon" />}
           text="Install guide"
         />
       </Link>
-      <NavItem
+      <AkNavigationItem
         icon={<ComponentIcon label="Components icon" />}
         onClick={() => {
           router.history.push('/components');
@@ -46,7 +46,7 @@ const DefaultNav = ({ pathname, router, goToNext = () => {} }) => (
         }}
         text="Components"
       />
-      <NavItem
+      <AkNavigationItem
         icon={<MediaServicesZipIcon label="Pattern icon" />}
         onClick={() => {
           router.history.push('/patterns');
@@ -55,23 +55,23 @@ const DefaultNav = ({ pathname, router, goToNext = () => {} }) => (
         text="Patterns"
       />
       <Link to="http://go.atlassian.com/reduced-ui-pack" target="_new">
-        <NavItem
+        <AkNavigationItem
           icon={<PageIcon label="More icon" />}
           text="Reduced UI pack"
         />
       </Link>
-    </NavItemGroup>
-    <NavItemGroup title="Resources">
+    </AkNavigationItemGroup>
+    <AkNavigationItemGroup title="Resources">
       {externalLinks.map(([url, title, Icon]) => (
         <a key={url} href={url} target="_new">
-          <NavItem
+          <AkNavigationItem
             icon={<Icon label={title} />}
             text={title}
             isSelected={pathname === url}
           />
         </a>
       ), this)}
-    </NavItemGroup>
+    </AkNavigationItemGroup>
   </div>
 );
 

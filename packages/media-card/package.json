@@ -66,7 +66,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/droplist": "^3.6.0",
+    "@atlaskit/droplist": "^4.0.0",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-test-helpers": "^6.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",

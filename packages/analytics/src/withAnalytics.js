@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+type EventMap = {
+  [eventName: string]: string | Function,
+};
+
+type EventMapOrFunction =
+  | EventMap
+  | ((
+      fireAnalyticsEvent: (eventName: string, eventData?: Object) => void
+    ) => EventMap);
+
 /*
 The withAnalytics HOC wraps a component and provides the `fireAnalyticsEvent`
 and `firePrivateAnalyticsEvent` methods to it as props. It contains the logic
@@ -9,7 +19,7 @@ props. The `map` argument may be an object or a function that returns an object.
 The properties of the `map` object/result can be strings (the name of the event
 that will be fired) or functions (which are responsible for firing the event)
 */
-const withAnalytics = (WrappedComponent, map = {}) =>
+const withAnalytics = (WrappedComponent, map: EventMapOrFunction = {}) =>
   class WithAnalytics extends Component {
     static displayName = `WithAnalytics(${WrappedComponent.displayName ||
       WrappedComponent.name})`;

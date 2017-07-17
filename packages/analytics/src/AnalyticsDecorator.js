@@ -31,7 +31,7 @@ class AnalyticsDecorator extends Component {
       onAnalyticsEvent: this.onAnalyticsEvent,
     };
   }
-  onAnalyticsEvent = (name, srcData, isPrivate) => {
+  onAnalyticsEvent = (name: string, srcData: Object, isPrivate: boolean) => {
     // Check there is a listener to pass the event to, otherwise there's no need
     // to do any of this work
     const { onAnalyticsEvent } = this.context;

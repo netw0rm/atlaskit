@@ -5,7 +5,7 @@ import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   const rules: InputRule[] = [];
 
-  const { decisionList, decisionItem } = schema.nodes;
+  const { decisionList, decisionItem, paragraph, hardBreak } = schema.nodes;
   if (decisionList && decisionItem) {
     const regex = new RegExp(`(^|${leafNodeReplacementCharacter})\\<\\>\\s$`);
     const decisionInputRule = createInputRule(
@@ -18,6 +18,12 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
         const { tr } = state;
 
         const { $from } = state.selection;
+
+        // Only allow creating decisionList from top-level paragraphs
+        if ($from.node(1).type !== paragraph) {
+          return;
+        }
+
         const where = $from.before($from.depth);
 
         analyticsService.trackEvent('atlassian.editor.decisionlist.autoformatting');
@@ -25,7 +31,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
         let shouldBreakNode = false;
 
         content.forEach((node, offset) => {
-          if (node.type.name === 'hardBreak' && offset < start) {
+          if (node.type === hardBreak && offset < start) {
             shouldBreakNode = true;
           }
         });

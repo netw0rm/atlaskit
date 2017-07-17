@@ -7,7 +7,7 @@ import inputRulePlugin from './input-rules';
 import keymapsPlugin from './keymaps';
 import { decisionItemNodeView } from '../../nodeviews';
 
-export const stateKey = new PluginKey('panelPlugin');
+export const stateKey = new PluginKey('tasksAndDecisionsPlugin');
 
 export function createPlugin(){
   return new Plugin({

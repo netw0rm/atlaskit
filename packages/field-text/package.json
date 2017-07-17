@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text",
-  "version": "3.2.0",
+  "version": "3.4.0",
   "config": {
     "access": "public"
   },
@@ -14,7 +14,7 @@
   },
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/field-text",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/field-text; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

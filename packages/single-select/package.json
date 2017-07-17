@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "1.14.0",
+  "version": "1.16.0",
   "config": {
     "access": "public"
   },
@@ -13,7 +13,7 @@
     "name": "Select (Single)"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/single-select",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/single-select; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

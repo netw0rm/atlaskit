@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag-group",
-  "version": "3.2.0",
+  "version": "3.4.0",
   "config": {
     "access": "public"
   },
@@ -13,7 +13,7 @@
     "name": "Tag Group"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/tag-group",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/tag-group; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

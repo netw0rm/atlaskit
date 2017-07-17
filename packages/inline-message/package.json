@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-message",
-  "version": "2.3.0",
+  "version": "2.5.0",
   "config": {
     "access": "public"
   },
@@ -13,7 +13,7 @@
     "name": "Inline Message"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/inline-message",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/inline-message; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

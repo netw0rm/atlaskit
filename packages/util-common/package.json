@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-common",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "config": {
     "access": "public"
   },
@@ -10,7 +10,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/util-common",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/util-common; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

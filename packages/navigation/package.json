@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "15.6.0",
+  "version": "15.8.0",
   "config": {
     "access": "public"
   },
@@ -14,7 +14,7 @@
     "pattern": true
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/navigation",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/navigation; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

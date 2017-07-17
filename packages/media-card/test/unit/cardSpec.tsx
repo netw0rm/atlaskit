@@ -180,12 +180,17 @@ describe('Card', () => {
 
   it('should create a card placeholder with the right props', () => {
     const context = fakeContext() as any;
-    const card = shallow(<Card context={context} identifier={fileIdentifier} appearance="small" dimensions={{width: 100, height: 50}}/>);
-    const placeholder = (card.instance() as Card).placeholder;
+    const fileCard = shallow(<Card context={context} identifier={fileIdentifier} appearance="small" dimensions={{width: 100, height: 50}}/>);
+    const linkCard = shallow(<Card context={context} identifier={linkIdentifier}/>);
+    const filePlaceholder = (fileCard.instance() as Card).placeholder;
+    const linkPlaceholder = (linkCard.instance() as Card).placeholder;
+    const {status, appearance, mediaItemType, dimensions} = filePlaceholder.props;
 
-    expect(placeholder.props.status).to.equal('loading');
-    expect(placeholder.props.appearance).to.equal('small');
-    expect(placeholder.props.dimensions).to.deep.equal({width: 100, height: 50});
+    expect(status).to.equal('loading');
+    expect(appearance).to.equal('small');
+    expect(mediaItemType).to.equal('file');
+    expect(dimensions).to.deep.equal({width: 100, height: 50});
+    expect(linkPlaceholder.props.mediaItemType).to.equal('link');
   });
 
   it('should use "crop" as default resizeMode', () => {

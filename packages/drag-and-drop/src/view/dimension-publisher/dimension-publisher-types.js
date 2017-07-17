@@ -19,6 +19,7 @@ export type OwnProps = {|
   itemId: Id,
   type: TypeId,
   targetRef: ?HTMLElement,
+  parentId?: Id,
   children?: ReactElement,
 |}
 

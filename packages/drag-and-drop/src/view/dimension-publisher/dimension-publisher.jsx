@@ -13,7 +13,7 @@ export default class DimensionPublisher extends Component {
   props: Props
   /* eslint-enable */
   getDimension = (): Dimension => {
-    const { itemId, targetRef } = this.props;
+    const { itemId, targetRef, parentId } = this.props;
     invariant(targetRef, 'DimensionPublisher cannot calculate a dimension when not attached to the DOM');
 
     const style = window.getComputedStyle(targetRef);
@@ -27,6 +27,7 @@ export default class DimensionPublisher extends Component {
 
     return getDimension(
       itemId,
+      parentId,
       targetRef.getBoundingClientRect(),
       margin,
       getScrollPosition(),

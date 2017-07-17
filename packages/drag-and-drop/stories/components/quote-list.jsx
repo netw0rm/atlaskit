@@ -15,6 +15,10 @@ const Container = styled.div`
   user-select: none;
   transition: background-color 0.1s ease;
   width: 250px;
+
+  /* temp */
+  max-height: 600px;
+  overflow-y: scroll;
 `;
 
 export default class List extends Component {

@@ -19,6 +19,7 @@ export type Margin = {|
 
 export default (
   id: Id,
+  parentId: ?Id,
   clientRect: ClientRect,
   margin: Margin,
   scroll: Position,
@@ -56,6 +57,7 @@ export default (
 
   const dimension: Dimension = {
     id,
+    parentId,
     withoutMargin,
     withMargin,
     // Not considering margins when calculating the center position

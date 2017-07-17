@@ -19,7 +19,8 @@ export default class DragDropContext extends Component {
   props: Props
   store: Store
 
-  // [Need to declare childContextTypes without flow](https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22)
+  // Need to declare childContextTypes without flow
+  // https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22
   static childContextTypes = {
     [storeKey]: PropTypes.shape({
       dispatch: PropTypes.func.isRequired,

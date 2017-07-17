@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
 import type { Position, InitialDrag, HTMLElement } from '../../types';
@@ -14,6 +14,7 @@ import type {
 } from '../drag-handle/drag-handle-types';
 import getCenterPosition from '../get-center-position';
 import Placeholder from './placeholder';
+import { droppableIdKey } from '../context-keys';
 import type {
   Props,
   Provided,
@@ -48,6 +49,12 @@ export default class Draggable extends Component {
   static defaultProps: DefaultProps = {
     isDragDisabled: false,
     type: 'DEFAULT',
+  }
+
+  // Need to declare contextTypes without flow
+  // https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22
+  static contextTypes = {
+    [droppableIdKey]: PropTypes.string.isRequired,
   }
   /* eslint-enable */
 
@@ -273,6 +280,7 @@ export default class Draggable extends Component {
     return (
       <DraggableDimensionPublisher
         itemId={draggableId}
+        parentId={this.context[droppableIdKey]}
         type={type}
         targetRef={this.state.ref}
       >

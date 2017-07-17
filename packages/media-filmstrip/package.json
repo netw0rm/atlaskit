@@ -53,6 +53,8 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
+    "@atlaskit/field-radio-group": "^1.2.1",
+    "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-test-helpers": "^6.0.0",
     "akutil-common-test": "*"

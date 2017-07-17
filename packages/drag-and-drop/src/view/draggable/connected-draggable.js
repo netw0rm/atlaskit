@@ -33,7 +33,7 @@ import type {
   DispatchProps,
 } from './draggable-types';
 
-const origin = { x: 0, y: 0 };
+const origin: Position = { x: 0, y: 0 };
 const defaultMapProps: MapProps = {
   isDropAnimating: false,
   isDragging: false,
@@ -106,8 +106,8 @@ export const makeSelector = () => {
         }
 
         // this item is dragging
-        const offset = current.offset;
-        const canAnimate = current.shouldAnimate;
+        const offset: Position = current.offset;
+        const canAnimate: boolean = current.shouldAnimate;
 
         // not memoizing result as it should not move without an update
         return {

@@ -367,18 +367,20 @@ One of the styles of `provided.draggableStyle` is `position:absolute`. This inte
 **Type information**
 
 ```js
-type DraggableStyle = MovementStyle | (PlacementStyle & MovementStyle);
+type DraggableStyle = DraggingStyle | NotDraggingStyle;
 
-type PlacementStyle = {|
+export type DraggingStyle = {|
   position: 'absolute',
   boxSizing: 'border-box',
   zIndex: ZIndex,
   width: number,
   height: number,
+  transform: ?string,
 |}
 
-type MovementStyle = {|
-  transform: string,
+export type NotDraggingStyle = {|
+  transition: ?string,
+  transform: ?string,
 |}
 ```
 

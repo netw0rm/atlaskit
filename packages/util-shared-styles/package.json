@@ -1,16 +1,17 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "config": {
     "access": "public"
   },
   "description": "Shared styles for AtlasKit components",
   "main": "dist/bundle.js",
+  "jsnext:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "node ./bin/generateJSVarsFromLess && cd ../.. && npm run prepublish/single @atlaskit/util-shared-styles",
-    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
+    "prepublish": "node ./bin/generateJSVarsFromLess && cd ../.. && npm run prepublish-with-babel/single @atlaskit/util-shared-styles",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist",

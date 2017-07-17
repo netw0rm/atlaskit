@@ -1,16 +1,17 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "3.0.2",
+  "version": "3.2.0",
   "config": {
     "access": "public"
   },
   "description": "A React component to display a card with user information.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/profilecard; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/profilecard",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"
@@ -32,15 +33,16 @@
     "whatwg-fetch": "^1.0.0"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "devDependencies": {
     "@atlaskit/profilecard": "*",
     "@atlaskit/util-common-test": "*",
+    "@atlaskit/util-data-test": "^4.10.0",
     "@atlaskit/util-readme": "^1.0.3",
     "fetch-mock": "^5.9.4",
     "loader-utils": "^0.2.16",
-    "lodash.sample": "^4.2.1",
     "sinon": "^2.2.0",
     "uid": "^0.0.2"
   },

@@ -1,19 +1,20 @@
 {
   "name": "@atlaskit/flag",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "config": {
     "access": "public"
   },
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Flag"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/flag; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/flag",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"

@@ -10,7 +10,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { node ./bin/generateJSVarsFromLess && cd ../.. && npm run prepublish-with-babel/single @atlaskit/util-shared-styles; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "node ./bin/generateJSVarsFromLess && ../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/util-shared-styles; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

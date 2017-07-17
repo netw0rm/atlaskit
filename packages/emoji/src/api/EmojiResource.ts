@@ -212,8 +212,8 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     if (!this.mediaEmojiResource && emojiResponse.mediaApiToken) {
       const mediaEmojiResource = new MediaEmojiResource(provider, emojiResponse.mediaApiToken);
 
-      // Prime cache type + optimistic rendering by check one emoji
-      // if this is fails it won't be primed until a good emoji is hit
+      // Prime cache type + optimistic rendering by checking first Emoji.
+      // If this is fails, it won't be primed until a good emoji is loaded later.
       const { emojis } = emojiResponse;
       if (emojis.length) {
         const done = mediaEmojiResource.optimisticRendering(emojis[0]);
@@ -266,13 +266,13 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     return !this.activeLoaders;
   }
 
-  protected retryIfLoading<T>(retry: Retry<T>, defaultResponse?: T): Promise<T | undefined> {
+  protected retryIfLoading<T>(retry: Retry<T>, defaultResponse: T): Promise<T> {
     if (!this.isLoaded()) {
       return new Promise<T>((resolve, reject) => {
         this.retries.set(retry, { resolve, reject });
       });
     }
-    return Promise.resolve<T | undefined>(defaultResponse);
+    return Promise.resolve<T>(defaultResponse);
   }
 
   protected notifyResult(result: EmojiSearchResult): void {
@@ -440,6 +440,6 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
     if (this.mediaEmojiResource) {
       this.mediaEmojiResource.prepareForUpload();
     }
-    return this.retryIfLoading(() => this.prepareForUpload());
+    return this.retryIfLoading(() => this.prepareForUpload(), undefined);
   }
 }

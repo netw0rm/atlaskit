@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { RelativePosition } from '../../types';
 import { EmojiProvider } from '../../api/EmojiResource';
-import LoadingEmojiComponent, { Props as LoadingProps, State as LoadingState } from '../common/LoadingEmojiCompoent';
+import LoadingEmojiComponent, { Props as LoadingProps, State as LoadingState } from '../common/LoadingEmojiComponent';
 import EmojiTypeAheadComponent, { EmojiTypeAheadBaseProps } from './EmojiTypeAheadComponent';
 import Popup from '../common/Popup';
 import debug from '../../util/logger';

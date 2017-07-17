@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 import { EmojiContext } from './internal-types';
 import CachingEmoji from './CachingEmoji';
 import EmojiPlaceholder from './EmojiPlaceholder';
-import LoadingEmojiCompoent, { Props as LoadingProps, State as LoadingState } from './LoadingEmojiCompoent';
+import LoadingEmojiCompoent, { Props as LoadingProps, State as LoadingState } from './LoadingEmojiComponent';
 import { EmojiId, OptionalEmojiDescription } from '../../types';
 import { isPromise } from '../../type-helpers';
 import EmojiProvider from '../../api/EmojiResource';

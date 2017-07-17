@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 
 import { EmojiProvider } from '../../../src/api/EmojiResource';
-import LoadingEmojiComponent, { Props, State } from '../../../src/components/common/LoadingEmojiCompoent';
+import LoadingEmojiComponent, { Props, State } from '../../../src/components/common/LoadingEmojiComponent';
 
 class TestLoadingComponent extends LoadingEmojiComponent<Props, State> {
   private loadedEmojiProvider: EmojiProvider;

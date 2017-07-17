@@ -31,7 +31,6 @@ export const emoji = style({
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
     'img': {
-      maxHeight: `${defaultEmojiHeight}px`,
       display: 'block',
     }
   },

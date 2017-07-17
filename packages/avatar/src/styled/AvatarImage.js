@@ -2,9 +2,13 @@ import styled from 'styled-components';
 import { akColorN40 } from '@atlaskit/util-shared-styles';
 import { getBorderRadius } from './utils';
 
+const ThemeColor = { backgroundLoading: akColorN40 };
+
 // if image is loading, we hide the image so it doesn't obscure the gray loading
 // block until the source image is loaded.
-const getBackgroundColor = (props: { isLoading: boolean }) => (props.isLoading ? akColorN40 : 'transparent');
+const getBackgroundColor = (props: { isLoading: boolean }) => (
+  props.isLoading ? ThemeColor.backgroundLoading : 'transparent'
+);
 
 export const Span = styled.span`
   background-color: ${getBackgroundColor};

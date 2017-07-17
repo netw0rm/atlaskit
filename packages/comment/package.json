@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "config": {
     "access": "public"
   },
@@ -12,7 +12,6 @@
   "ak:component": {
     "name": "Comment",
     "pattern": true
-
   },
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/comment",

@@ -4,22 +4,28 @@ import {createStorybookContext, genericLinkId} from '@atlaskit/media-test-helper
 import {FilmStripNavigator} from '../src';
 
 const context = createStorybookContext();
+const linkCard = <Card context={context} identifier={genericLinkId}/>;
 
 export default () => (
   <div>
-    <FilmStripNavigator>
+    <FilmStripNavigator width={700}>
+      {linkCard}
+      {linkCard}
       <CardView status="complete" />
       <CardView status="loading" />
       <CardView status="error" />
+      {linkCard}
       <CardView status="loading" />
       <CardView status="loading" />
       <CardView status="complete" />
     </FilmStripNavigator>
-    <FilmStripNavigator width={700}>
+    <FilmStripNavigator width={500}>
       <CardView status="complete" />
-      <Card context={context} identifier={genericLinkId}/>
+      {linkCard}
+      {linkCard}
       <CardView status="loading" />
       <CardView status="processing" />
+      {linkCard}
       <CardView status="error" />
     </FilmStripNavigator>
   </div>

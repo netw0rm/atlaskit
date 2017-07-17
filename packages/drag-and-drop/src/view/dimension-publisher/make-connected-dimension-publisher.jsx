@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import memoizeOne from 'memoize-one';
 import type { Dimension, State, TypeId, ReactClass } from '../../types';
 import type { DispatchProps, MapProps, OwnProps } from './dimension-publisher-types';
-import storeKey from '../../state/get-store-key';
+import { storeKey } from '../context-keys';
 import DimensionPublisher from './dimension-publisher';
 
 const requestDimensionSelector =

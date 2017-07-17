@@ -1,7 +1,7 @@
 
 // @flow
 import PropTypes from 'prop-types';
-import storeKey from '../../src/state/get-store-key';
+import { storeKey } from '../../src/view/context-keys';
 import createStore from '../../src/state/create-store';
 
 // Not using this store - just putting it on the context

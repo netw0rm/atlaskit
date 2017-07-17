@@ -8,7 +8,7 @@ import {
   phaseSelector,
 } from '../../state/selectors';
 import Draggable from './draggable';
-import storeKey from '../../state/get-store-key';
+import { storeKey } from '../context-keys';
 import {
   lift as liftAction,
   move as moveAction,

@@ -24,6 +24,7 @@ export type DimensionFragment = {|
 
 export type Dimension = {|
   id: Id,
+  parentId: ?Id,
   withMargin: DimensionFragment,
   withoutMargin: DimensionFragment,
   center: Position,

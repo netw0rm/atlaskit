@@ -5,7 +5,7 @@ import { expect } from 'chai';
 // $ExpectError - not matching module
 import TestUtils from 'react-addons-test-utils';
 import { DragDropContext } from '../../../src/';
-import storeKey from '../../../src/state/get-store-key';
+import { storeKey } from '../../../src/view/context-keys';
 
 class App extends Component {
   // Part of react's api is to use flow types for this.

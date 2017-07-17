@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import createStore from '../../state/create-store';
 // eslint-disable-next-line no-duplicate-imports
 import type { Store, Hooks, ReactElement } from '../../types';
-import storeKey from '../../state/get-store-key';
+import { storeKey } from '../context-keys';
 
 type Props = Hooks & {|
   children?: ReactElement,

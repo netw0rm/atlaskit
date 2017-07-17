@@ -3,13 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import LayoutFork from 'react-media';
 import {
-  akBorderRadius,
-  akColorB50,
-  akColorB500,
-  akColorN600,
-  akColorN80,
   akGridSize,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
@@ -17,39 +11,22 @@ import Message from '@atlaskit/inline-message';
 import Table from '@atlaskit/dynamic-table';
 
 import { Heading, Intro, Section } from '../components/Type';
-import packages from '../data';
-import { MOBILE_QUERY } from '../../constants';
-
-const packageKeys = Object.keys(packages);
+import patterns from '../../patterns';
 
 const head = {
   cells: [
     {
-      key: 'name',
-      content: 'Name',
+      key: 'pattern',
+      content: 'Pattern',
       isSortable: false,
       width: 15,
     },
     {
-      key: 'description',
-      content: 'Description',
+      key: 'mainComponent',
+      content: 'Main Component',
       shouldTruncate: true,
       isSortable: false,
       width: 45,
-    },
-    {
-      key: 'publishTime',
-      content: 'Latest',
-      shouldTruncate: true,
-      isSortable: false,
-      width: 20,
-    },
-    {
-      key: 'maintainers',
-      content: 'Maintainers',
-      shouldTruncate: true,
-      isSortable: false,
-      width: 20,
     },
   ],
 };
@@ -66,51 +43,31 @@ export default class Components extends PureComponent {
     return Header ? <Header {...rest} /> : <span />;
   }
 
-  renderRow = (component) => {
+  renderRow = (pattern) => {
     const {
-      description, packageName, key, maintainers, name, lastPublishedOn, version,
-    } = component;
-
-    const publishTime = new Date(lastPublishedOn);
+      title, mainComponent,
+    } = pattern;
 
     return {
       cells: [
         {
-          key: 'name',
+          key: 'pattern',
           content: (
             <RowCell>
-              <Link to={`/components/${key}`}>
-                {name}
+              <Link to={`/patterns/${encodeURI(title)}`}>
+                {title}
               </Link>
             </RowCell>
           ),
         },
         {
-          key: 'description',
+          key: 'mainComponent',
           shouldTruncate: true,
           content: (
-            <RowCell>{description}</RowCell>
-          ),
-        },
-        {
-          key: 'publishTime',
-          content: (
             <RowCell>
-              <a href={`https://www.npmjs.com/package/${packageName}`} target="_new">
-                {version}
-              </a>
-              {publishTime ? (
-                <Time dateTime={component.publishedDate}>
-                  {' '}({component.publishedDate && new Date(component.publishedDate).toLocaleDateString()})
-                </Time>
-              ) : null}
-            </RowCell>
-          ),
-        },
-        {
-          content: (
-            <RowCell>
-              {maintainers.map(val => val.name).join(', ')}
+              <Link to={`/components/${mainComponent}`}>
+                {mainComponent}
+              </Link>
             </RowCell>
           ),
         },
@@ -123,37 +80,16 @@ export default class Components extends PureComponent {
       <Table
         head={head}
         rows={
-          packageKeys.filter(key => packages[key].isPattern)
-          .map(key => this.renderRow(packages[key]))
+          patterns.map(pattern => this.renderRow(pattern))
         }
         isFixedSize
       />
     </TableWrapper>
   );
 
-  renderMobile = () => (
-    <div>{packageKeys.map((key) => {
-      const component = packages[key];
-      const { description, name, version } = component;
-
-      return (
-        <RowButton to={`/patterns/${key}`} key={key}>
-          <RowButtonHeader>
-            <RowButtonTitle>{name}</RowButtonTitle>
-            <div>{version}</div>
-          </RowButtonHeader>
-          <RowButtonDescription>
-            {description}
-          </RowButtonDescription>
-        </RowButton>
-      );
-    })}</div>
-  );
-
   render() {
     const Header = this.renderHeader;
     const DesktopContent = this.renderDesktop;
-    const MobileContent = this.renderMobile;
 
     return (
       <Wrapper>
@@ -165,9 +101,7 @@ export default class Components extends PureComponent {
         </Intro>
         <Section>
           <Header />
-          <LayoutFork query={MOBILE_QUERY}>
-            {matches => (matches ? <MobileContent /> : <DesktopContent />)}
-          </LayoutFork>
+          <DesktopContent />
         </Section>
         <Section style={{ marginLeft: `-${akGridSize}` }}>
           <Message title="Atlassians">
@@ -204,38 +138,4 @@ const TableWrapper = styled.div`
 const RowCell = styled.div`
   padding-bottom: ${akGridSize};
   padding-top: ${akGridSize};
-`;
-const Time = styled.time`
-  color: ${akColorN80};
-`;
-
-// Mobile content
-const RowButton = styled(Link)`
-  border-radius: ${akBorderRadius};
-  color: ${akColorN80};
-  display: block;
-  padding: 0.5em 1em;
-  margin-bottom: 0.5em;
-  margin-left: -1em;
-  margin-right: -1em;
-  text-decoration: none !important;
-
-  &:active, &:focus {
-    background-color: ${akColorB50};
-    text-decoration: none;
-  }
-`;
-const RowButtonHeader = styled.div`
-  align-items: baseline;
-  display: flex;
-`;
-const RowButtonTitle = styled.div`
-  color: ${akColorB500};
-  font-weight: 500;
-  margin-right: 0.5em;
-`;
-const RowButtonDescription = styled.div`
-  color: ${akColorN600};
-  line-height: 1.4;
-  font-size: 0.85em;
 `;

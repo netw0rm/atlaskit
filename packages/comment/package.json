@@ -10,12 +10,7 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-<<<<<<< HEAD
-    "name": "Comment",
-    "pattern": true
-=======
     "name": "Comment"
->>>>>>> docs(docs): moving patterns to be what we actually want
   },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/comment; } || ../../node_modules/.bin/not-in-publish",

@@ -160,7 +160,9 @@ export default class CodeBlockPlugin  {
   private setMode(language: string): void {
     if (language) {
       const modeInfo = findMode(language.toLowerCase());
-      this.cm.setOption('mode', modeInfo ? modeInfo.mode : 'javascript');
+      if (modeInfo) {
+        this.cm.setOption('mode', modeInfo.mode);
+      }
     }
   }
 

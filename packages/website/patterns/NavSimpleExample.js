@@ -2,7 +2,7 @@ import React from 'react';
 import Navigation, { AkNavigationItemGroup, AkNavigationItem, AkContainerTitle } from '@atlaskit/navigation';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
-class ExampleNavNav extends React.PureComponent {
+class SimpleExample extends React.PureComponent {
 
   render() {
     return (
@@ -22,4 +22,4 @@ class ExampleNavNav extends React.PureComponent {
   }
 }
 
-export default ExampleNavNav;
+export default SimpleExample;

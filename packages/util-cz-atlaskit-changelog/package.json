@@ -10,7 +10,8 @@
   "maintainers": [],
   "license": "Apache-2.0",
   "scripts": {
-    "prepublish": ""
+    "prepublish": "",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",

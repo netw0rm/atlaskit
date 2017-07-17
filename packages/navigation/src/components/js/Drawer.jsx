@@ -15,6 +15,8 @@ import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
 import { WithRootTheme } from '../../theme/util';
 import { container } from '../../theme/presets';
 
+const escKeyCode = 27;
+
 export default class Drawer extends PureComponent {
   static propTypes = {
     backIcon: PropTypes.node,
@@ -43,8 +45,8 @@ export default class Drawer extends PureComponent {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown = (event) => {
-    if (event.key === 'Escape') {
+  handleKeyDown = (event: KeyboardEvent) => {
+    if (event.keyCode === escKeyCode) {
       event.stopPropagation(); // Don't propagate lest one esc keystroke causes many views to close
       this.props.onBackButton(event);
     }

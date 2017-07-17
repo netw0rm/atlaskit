@@ -15,6 +15,7 @@ storiesOf(name, module)
           appearance="tray"
 
           allowTextFormatting={true}
+          allowTasksAndDecisions={true}
           saveOnEnter={true}
 
           mentionProvider={mentionProvider}

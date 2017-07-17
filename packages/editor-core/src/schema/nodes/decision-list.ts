@@ -18,6 +18,6 @@ export const decisionList: NodeSpec = {
   content: 'decisionItem+',
   parseDOM: [{ tag: 'ol' }],
   toDOM() {
-    return ['ol', 0];
+    return ['ol', { 'style': 'list-style: none; padding-left: 0;' },  0];
   }
 };

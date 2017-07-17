@@ -7,6 +7,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 import Navigation, {
   AkContainerTitle as NavTitle,
   AkSearchDrawer,
+  AkContainerNavigationNested,
 } from '@atlaskit/navigation';
 
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
@@ -15,12 +16,13 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 
 import atlasKitLogo from '../../images/atlaskit-logo.png';
 import SearchDrawer from './SearchDrawer';
-import Groups from './Groups';
 
-import { matchNavExample } from '../../pages/Navigation/utils';
 import DefaultNav from './navigations/Default';
 import ComponentNav from './navigations/Component';
 import NavigationNav from './navigations/NavigationPattern';
+import patterns from '../../../patterns';
+
+const backIcon = <ArrowLeft label="Back icon" />;
 
 const Header = () => (
   <Link to="/">
@@ -31,11 +33,26 @@ const Header = () => (
   </Link>
 );
 
-const getIndex = (pathname: string): number => {
-  if (/^\/components\/navigation/.test(pathname)) return 2;
-  if (/^\/components/.test(pathname)) return 1;
-  if (/^\/patterns/.test(pathname)) return 1;
-  return 0;
+const getCurrentStack = (pathname: string, router): Array<Element> => {
+  let currentStack = [<DefaultNav
+    pathname={pathname}
+    router={router}
+  />];
+  if (/^\/components/.test(pathname) || /^\/patterns/.test(pathname)) {
+    currentStack = currentStack.concat(<ComponentNav
+      backIcon={backIcon}
+      router={router}
+      pathname={pathname}
+    />);
+  }
+  if (/^\/components\/navigation/.test(pathname)) {
+    currentStack = currentStack.concat(<NavigationNav
+      pathname={pathname}
+      backIcon={backIcon}
+      router={router}
+    />);
+  }
+  return currentStack;
 };
 
 class StandardNav extends Component {
@@ -46,12 +63,10 @@ class StandardNav extends Component {
   render() {
     const { router } = this.context;
     const { pathname } = router.route.location;
-    const backIcon = <ArrowLeft label="Back icon" />;
     const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
     return (
       <Navigation
         containerHeaderComponent={Header}
-        drawerBackIcon={<ArrowLeft label="Back icon" size="medium" />}
         drawers={[(
           <AkSearchDrawer
             backIcon={backIcon}
@@ -77,26 +92,9 @@ class StandardNav extends Component {
           }
         }}
       >
-        <Groups
-          ref={r => (this.nest = r)}
-          selectedIndex={getIndex(pathname)}
-        >
-          <DefaultNav
-            pathname={pathname}
-            router={router}
-            goToNext={this.nest && this.nest.goToNext}
-          />
-          <ComponentNav
-            backIcon={backIcon}
-            router={router}
-            pathname={pathname}
-          />
-          <NavigationNav
-            pathname={pathname}
-            backIcon={backIcon}
-            router={router}
-          />
-        </Groups>
+        <AkContainerNavigationNested
+          stack={getCurrentStack(pathname, router, backIcon)}
+        />
       </Navigation>
     );
   }
@@ -105,10 +103,10 @@ class StandardNav extends Component {
 const Nav = ({ isSearchDrawerOpen, onSearchDrawerToggle }) => (
   <Switch>
     <Route
-      path="/components/navigation/examples/:exampleName"
+      path="/patterns/:exampleName"
       render={({ match }) => {
-        const example = matchNavExample(match.params.exampleName);
-        if (example) {
+        const example = patterns.filter(pattern => pattern.title === match.params.exampleName)[0];
+        if (example && example.type === 'navTakeover') {
           const Comp = example.Component;
           return (
             <Comp />

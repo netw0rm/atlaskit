@@ -51,12 +51,6 @@ export interface Props {
    * Show a tooltip on mouse hover.
    */
   showTooltip?: boolean;
-
-  // FS-1156
-  // /**
-  //  * Fits emoji to height in pixels, keeping aspect ratio
-  //  */
-  // fitToHeight?: number;
 }
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
@@ -103,13 +97,6 @@ const renderAsSprite = (props: Props) => {
   }
 
   let sizing = {};
-  // FIXME once FS-1155 is fixed, this can be reintroduced as part of FS-1156
-  // if (fitToHeight) {
-  //   sizing = {
-  //     width: `${fitToHeight}px`,
-  //     height: `${fitToHeight}px`,
-  //   };
-  // }
 
   const xPositionInPercent = (100 / (sprite.column - 1)) * (representation.xIndex - 0);
   const yPositionInPercent = (100 / (sprite.row - 1)) * (representation.yIndex - 0);
@@ -157,30 +144,15 @@ const renderAsImage = (props: Props) => {
     classes[className] = true;
   }
 
-  // FIXME once FS-1155 is fixed, this can be reintroduced as part of FS-1156
-  // let width;
-  // let height;
   let src;
   const representation = emoji.representation;
   if (isImageRepresentation(representation)) {
     src = representation.imagePath;
-  //   width = representation.width;
-  //   height = representation.height;
   } else if (isMediaRepresentation(representation)) {
     src = representation.mediaPath;
-  //   width = representation.width;
-  //   height = representation.height;
   }
 
   let sizing = {};
-  // if (fitToHeight && width && height) {
-  //   // Presize image, to prevent reflow due to size changes after loading
-  //   const scaledHeight = Math.min(fitToHeight, height);
-  //   sizing = {
-  //     width: scaledHeight / height * width,
-  //     height: scaledHeight,
-  //   };
-  // }
 
   const onError = (event) => {
     handleImageError(props, event);

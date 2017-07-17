@@ -12,8 +12,6 @@ import EmojiProvider from '../../api/EmojiResource';
 export interface BaseResourcedEmojiProps {
   emojiId: EmojiId;
   showTooltip?: boolean;
-  // FS-1156
-  // fitToHeight?: number;
 }
 
 export interface Props extends BaseResourcedEmojiProps, LoadingProps {
@@ -111,10 +109,9 @@ class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
   }
 
   render() {
-    const { emojiId, /* FS-1156 fitToHeight = defaultEmojiHeight, */ showTooltip } = this.props;
+    const { emojiId, showTooltip } = this.props;
     const { emoji, loaded } = this.state;
     if (emoji) {
-      // FS-1156  fitToHeight={fitToHeight}
       return (
         <CachingEmoji
           emoji={emoji}

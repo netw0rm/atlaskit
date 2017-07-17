@@ -3,29 +3,32 @@ import PropTypes from 'prop-types';
 
 import Button from '@atlaskit/button';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
+import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import { FormattedMessage } from 'react-intl';
 
 import ModalDialog from '@atlaskit/modal-dialog';
 import ProgressBar from './ProgressBar';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
-import ErrorProgressBarDiv from '../styled/ErrorProgressBarDiv';
+import ProgressBarWithIconDiv from '../styled/ProgressBarWithIconDiv';
 import ProgressBarDiv from '../styled/ProgressBarDiv';
 import CenterProgressBarDiv from '../styled/CenterProgressBarDiv';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
 import WhereToFindConfluenceDiv from '../styled/WhereToFindConfluenceDiv';
+import WhereToFindConfluenceSVGDiv from '../styled/WhereToFindConfluenceSVGDiv';
 import WhereToFindConfluenceText from '../styled/WhereToFindConfluenceText';
 
 import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import i18nId from '../../common/i18nId';
+
+const i18n = i18nId('loading-product-trial');
 
 export class LoadingTimeBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number,
     productLogo: PropTypes.node,
-    heading: PropTypes.string,
-    completeHeading: PropTypes.string,
-    errorHeading: PropTypes.string,
     goToProduct: PropTypes.func,
     closeLoadingDialog: PropTypes.func,
     confluenceTimedOut: PropTypes.bool,
@@ -34,7 +37,6 @@ export class LoadingTimeBase extends Component {
   static defaultProps = {
     goToProduct: () => Promise.resolve(),
     closeLoadingDialog: () => Promise.resolve(),
-    errorHeading: 'Something happened...',
     confluenceTimedOut: false,
   };
 
@@ -55,11 +57,38 @@ export class LoadingTimeBase extends Component {
 
   showHeading = () => {
     if (this.state.confluenceTimedOut) {
-      return this.props.errorHeading;
+      return <FormattedMessage id={i18n`error-heading`} />;
     } else if (this.props.progress === 100) {
-      return this.props.completeHeading;
+      return <FormattedMessage id={i18n`complete-heading`} />;
     }
-    return this.props.heading;
+    return <FormattedMessage id={i18n`loading-heading`} />;
+  };
+
+  showProgressBar = () => {
+    if (this.props.progress === 100) {
+      return (
+        <ProgressBarWithIconDiv>
+          <CenterProgressBarDiv>
+            <ProgressBar progress={this.props.progress} />
+          </CenterProgressBarDiv>
+          <CheckCircleIcon label="errorIcon" primaryColor="#35b37e" />
+        </ProgressBarWithIconDiv>
+      );
+    } else if (this.state.confluenceTimedOut) {
+      return (
+        <ProgressBarWithIconDiv>
+          <CenterProgressBarDiv>
+            <ProgressBar progress={this.props.progress} />
+          </CenterProgressBarDiv>
+          <CrossCircleIcon label="errorIcon" primaryColor="#ff7451" />
+        </ProgressBarWithIconDiv>
+      );
+    }
+    return (
+      <ProgressBarDiv>
+        <ProgressBar progress={this.props.progress} />
+      </ProgressBarDiv>
+    );
   };
 
   render() {
@@ -79,34 +108,33 @@ export class LoadingTimeBase extends Component {
               onClick={this.handleGoToProductClick}
               appearance="primary"
             >
-              Go to Confluence
+              <FormattedMessage id={i18n`go-to-product-button`} />
             </Button>
             <Button onClick={this.handleCloseClick} appearance="subtle-link">
-              Close
+              <FormattedMessage id={i18n`close-button`} />
             </Button>
           </StartTrialFooter>
         }
       >
         <StartTrialDialog>
-          {this.state.confluenceTimedOut
-            ? <ErrorProgressBarDiv>
-              <CenterProgressBarDiv>
-                <ProgressBar progress={progress} />
-              </CenterProgressBarDiv>
-              <CrossCircleIcon label="errorIcon" primaryColor="#ff7451" />
-            </ErrorProgressBarDiv>
-            : <ProgressBarDiv>
-              <ProgressBar progress={progress} />
-            </ProgressBarDiv>}
+          {this.showProgressBar()}
           <StartTrialHeader>
             {this.showHeading()}
           </StartTrialHeader>
           <LoadingTimeTextDiv>
-            <div>SVG</div>
+            <WhereToFindConfluenceSVGDiv>
+              <img
+                // TODO replace with proper way of serving SVGs for AtlasKit
+                src="https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/lmp9uitENIE2uALwP2L-0RptjRxiiDMe0atv8gRXyCs/loading_img.svg"
+                alt="app-switcher"
+              />
+            </WhereToFindConfluenceSVGDiv>
             <WhereToFindConfluenceDiv>
-              <h5>Where to find Confluence</h5>
+              <h5>
+                <FormattedMessage id={i18n`info-heading`} />
+              </h5>
               <WhereToFindConfluenceText>
-                Hit the menu icon near your profile image to switch between products.
+                <FormattedMessage id={i18n`info-text`} />
               </WhereToFindConfluenceText>
             </WhereToFindConfluenceDiv>
           </LoadingTimeTextDiv>
@@ -119,16 +147,9 @@ export class LoadingTimeBase extends Component {
 export default withCrossSellProvider(
   LoadingTimeBase,
   ({
-    crossSell: {
-      config: { productLogo, startTrial },
-      state: { progress },
-      goToProduct,
-      closeLoadingDialog,
-    },
+    crossSell: { config: { productLogo }, state: { progress }, goToProduct, closeLoadingDialog },
   }) => ({
     productLogo,
-    heading: startTrial.loadingHeading,
-    completeHeading: startTrial.loadingCompleteHeading,
     progress,
     goToProduct,
     closeLoadingDialog,

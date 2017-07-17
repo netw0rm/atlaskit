@@ -6,6 +6,13 @@
     "cross-flow.confirm-trial.heading": "Start your 30 day trial",
     "cross-flow.confirm-trial.message": "Once your trial finishes, billing with start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance.",
     "cross-flow.confirm-trial.confirm-button": "Confirm",
-    "cross-flow.confirm-trial.cancel-button": "Cancel"
+    "cross-flow.confirm-trial.cancel-button": "Cancel",
+    "cross-flow.loading-product-trial.info-heading": "Where to find Confluence",
+    "cross-flow.loading-product-trial.info-text": "Hit the menu icon near your profile image to switch between products.",
+    "cross-flow.loading-product-trial.go-to-product-button": "Go to Confluence",
+    "cross-flow.loading-product-trial.close-button": "Close",
+    "cross-flow.loading-product-trial.error-heading": "Uh oh. That didn't work...",
+    "cross-flow.loading-product-trial.loading-heading": "We're turning some cogs...",
+    "cross-flow.loading-product-trial.complete-heading": "You're good to go!"
   }
 }

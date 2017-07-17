@@ -59,8 +59,6 @@ export default class MockConfluenceCrossSellProvider extends Component {
           grantUsersOption: 'specificUsers',
           grantChooseOption: 'Choose an option',
           grantAffectBill: 'How will this affect my bill?',
-          loadingHeading: "You're almost there...",
-          loadingCompleteHeading: 'Confluence is ready my friend!',
           alreadyStartedHeading: 'You already have Confluence',
           alreadyStartedMessage: (
             <div>

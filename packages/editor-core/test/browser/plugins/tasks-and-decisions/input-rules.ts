@@ -8,6 +8,8 @@ import {
   p,
   decisionList,
   decisionItem,
+  hardBreak,
+  text,
 } from '../../../../src/test-helper';
 import tasksAndDecisionsPlugins from '../../../../src/plugins/tasks-and-decisions';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -43,6 +45,20 @@ describe('tasks and decisions - input rules', () => {
         doc(
           decisionList(
             decisionItem('Hello World')
+          )
+        )
+      );
+    });
+
+    it('should split on hardBreak and preserve content when converting', () => {
+      const { editorView, sel } = editor(doc(p(text('Hello', defaultSchema), hardBreak(), text('{<>}World', defaultSchema))));
+      insertText(editorView, '<> ', sel);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p('Hello'),
+          decisionList(
+            decisionItem('World')
           )
         )
       );

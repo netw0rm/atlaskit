@@ -1,14 +1,15 @@
-import { Schema, inputRules, InputRule, Plugin, EditorState } from '../../prosemirror';
+import { NodeSelection, Schema, inputRules, InputRule, Plugin, EditorState } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
-import { createInputRule } from '../utils';
+import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   const rules: InputRule[] = [];
 
   const { decisionList, decisionItem } = schema.nodes;
   if (decisionList && decisionItem) {
+    const regex = new RegExp(`(^|${leafNodeReplacementCharacter})\\<\\>\\s$`);
     const decisionInputRule = createInputRule(
-      /^\<\>\s$/, (
+      regex, (
         state: EditorState<any>,
         match: Object | undefined,
         start: number,
@@ -21,11 +22,29 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
 
         analyticsService.trackEvent('atlassian.editor.decisionlist.autoformatting');
         const content = $from.node($from.depth).content;
-        tr
-          .delete(where, $from.end($from.depth))
-          .replaceSelectionWith(decisionList.create({}, [decisionItem.create({}, content)]))
-          .delete(start + 1, end + 1)
+        let shouldBreakNode = false;
+
+        content.forEach((node, offset) => {
+          if (node.type.name === 'hardBreak' && offset < start) {
+            shouldBreakNode = true;
+          }
+        });
+
+        if (!shouldBreakNode) {
+          tr
+            .delete(where, $from.end($from.depth))
+            .replaceSelectionWith(decisionList.create({}, [decisionItem.create({}, content)]))
+            .delete(start + 1, end + 1)
           ;
+        } else {
+          tr
+            .split($from.pos)
+            .setSelection(new NodeSelection(tr.doc.resolve($from.pos + 1)))
+            .replaceSelectionWith(decisionList.create({}, [decisionItem.create({}, tr.doc.nodeAt($from.pos + 1)!.content)]))
+            .delete(start, end + 1)
+          ;
+        }
+
         return tr;
       }
     );

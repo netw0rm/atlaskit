@@ -13,7 +13,7 @@
     "name": "Flag"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/flag",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/flag; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

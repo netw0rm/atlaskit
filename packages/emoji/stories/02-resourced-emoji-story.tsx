@@ -10,11 +10,12 @@ import TriggeredEmojiResource from './TriggeredEmojiResource';
 
 interface SampleEmojiProps {
   emojiProvider?: Promise<EmojiProvider>;
+  fitToHeight?: number;
 }
 
-const lineStyle = {
-  lineHeight: '24px',
-};
+const lineStyle = (height: number = 24) => ({
+  lineHeight: `${height}px`,
+});
 
 // tslint:disable-next-line:variable-name
 const SampleEmojis = (props: SampleEmojiProps) => (
@@ -23,41 +24,49 @@ const SampleEmojis = (props: SampleEmojiProps) => (
       emojiId={{ shortName: ':grimacing:', id: '1f62c' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
       showTooltip={true}
+      fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':awthanks:', id: 'atlassian-awthanks' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
       showTooltip={true}
+      fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':shrug:', id: 'atlassian-shrug' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
       showTooltip={true}
+      fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':disappear:', id: 'atlassian-disappear' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
       showTooltip={true}
+      fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':badpokerface:', id: 'atlassian-badpokerface' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
       showTooltip={true}
+      fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':freddie:', id: 'atlassian-freddie' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
       showTooltip={true}
+      fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':not-an-emoji:', id: 'not-an-emoji' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
       showTooltip={true}
+      fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
       emojiId={{ shortName: ':loading:', id: 'loading' }}
       emojiProvider={new Promise(() => {})}
       showTooltip={true}
+      fitToHeight={props.fitToHeight}
     />
   </span>
 );
@@ -65,12 +74,20 @@ const SampleEmojis = (props: SampleEmojiProps) => (
 
 storiesOf(`${name}/ResourcedEmoji`, module)
   .add('resourced emoji', () => (
-    <p style={lineStyle}>
-      <SampleEmojis />
-    </p>
+    <div>
+      <p style={lineStyle()}>
+        <SampleEmojis />
+      </p>
+      <p style={lineStyle(32)}>
+        <SampleEmojis fitToHeight={32} />
+      </p>
+      <p style={lineStyle(48)}>
+        <SampleEmojis fitToHeight={48} />
+      </p>
+    </div>
   ))
   .add('skin tones', () => (
-    <p style={lineStyle}>
+    <p style={lineStyle()}>
       <span>
         <ResourcedEmoji
           emojiId={{ shortName: ':thumbsup:', id: '1f44d' }}
@@ -118,9 +135,9 @@ storiesOf(`${name}/ResourcedEmoji`, module)
       <h4>Heading 4 <SampleEmojis /></h4>
       <h5>Heading 5 <SampleEmojis /></h5>
       <h6>Heading 6 <SampleEmojis /></h6>
-      <p style={lineStyle}>Paragraph <SampleEmojis /></p>
-      <code style={lineStyle}>Code <SampleEmojis /></code>
-      <p style={lineStyle}>{lorem} <SampleEmojis /> {lorem} <SampleEmojis /> {lorem} <SampleEmojis /> {lorem}</p>
+      <p style={lineStyle()}>Paragraph <SampleEmojis /></p>
+      <code style={lineStyle()}>Code <SampleEmojis /></code>
+      <p style={lineStyle()}>{lorem} <SampleEmojis /> {lorem} <SampleEmojis /> {lorem} <SampleEmojis /> {lorem}</p>
     </div>
   ))
   .add('slow loading emoji', () => {
@@ -146,7 +163,7 @@ storiesOf(`${name}/ResourcedEmoji`, module)
     const handleAtlassianRef = (ref) => { loadAtlassianRef = ref; };
 
     return (
-      <div style={lineStyle}>
+      <div style={lineStyle()}>
         <SampleEmojis emojiProvider={Promise.resolve(emojiResource)} />
         <div>
           <button onClick={loadStandard} ref={handleStandardRef}>Load Standard Emojis</button>

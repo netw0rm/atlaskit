@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer",
-  "version": "2.1.5",
+  "version": "2.2.0",
   "config": {
     "access": "public"
   },

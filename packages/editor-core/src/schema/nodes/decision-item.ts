@@ -25,6 +25,11 @@ export const decisionItem: NodeSpec = {
   },
   parseDOM: [{
     tag: 'li[data-decision-local-id]',
+
+    // Default priority is 50. We normaly don't change this but since this node type is
+    // also used by list-item we need to make sure that we run this parser first.
+    priority: 100,
+
     getAttrs: (dom: Element) => ({
       id: dom.getAttribute('data-decision-local-id')!,
       state: dom.getAttribute('data-decision-state')!,
@@ -33,7 +38,7 @@ export const decisionItem: NodeSpec = {
   toDOM(node: Node): [string, any, number] {
     const { id, state } = node.attrs;
     const attrs = {
-      'data-decision-local-id': id,
+      'data-decision-local-id': id || 'local-decision',
       'data-decision-state': state,
     };
     return ['li', attrs, 0];

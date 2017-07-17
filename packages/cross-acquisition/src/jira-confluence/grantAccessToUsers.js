@@ -1,8 +1,9 @@
+import 'es6-promise/auto';
+import 'whatwg-fetch';
 import retreiveJiraUsers from './retrieveJiraUsers';
 
 export const CREATE_GROUP_URL = '/admin/rest/um/1/group';
 export const ADD_USERS_URL = '/admin/rest/um/1/group/user/direct?groupname=confluence-users';
-export const GET_ALL_USERS_URL = '/admin/rest/get/all/users'; // TODO Replace this with the real URL
 
 async function createConfluenceUsersGroup() {
   // attempt to create confluence-users
@@ -19,14 +20,9 @@ async function createConfluenceUsersGroup() {
     },
   });
 
-  if (!(Math.floor(response.status / 100) === 2 || response.status === 400)) {
+  if (!((response.status >= 200 && response.status < 300) || response.status === 400)) {
     throw new Error(`Unable to create confluence-users group. Status: ${response.status}`);
   }
-}
-
-async function getAllJiraUsers() {
-  const users = await retreiveJiraUsers();
-  return users.map(user => ({ name: user.name }));
 }
 
 async function addUsersToConfluenceUsersGroup(users) {
@@ -48,13 +44,16 @@ async function addUsersToConfluenceUsersGroup(users) {
   return await response.json();
 }
 
-export default async (group, usernames = []) => {
-  let users = usernames;
+export default async (group, usernames, fetchFn) => {
   let data;
+  let users = usernames;
+  let fetchedUsers;
 
   switch (group) {
     case 'everyone':
-      users = await getAllJiraUsers();
+      fetchedUsers = await (fetchFn || retreiveJiraUsers)();
+      users = fetchedUsers.map(user => ({ name: user.name }));
+
     /* falls through */
     case 'specificUsers':
       await createConfluenceUsersGroup();

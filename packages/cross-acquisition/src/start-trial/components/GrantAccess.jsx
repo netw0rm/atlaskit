@@ -52,11 +52,11 @@ export class GrantAccessBase extends Component {
     continueButtonDisabled: PropTypes.bool,
     onComplete: PropTypes.func.isRequired,
     grantAccessToUsers: PropTypes.func,
-    retrieveJiraUsers: PropTypes.func,
+    retrieveUsers: PropTypes.func,
   };
 
   static defaultProps = {
-    retrieveJiraUsers: () => Promise.resolve([{ items: [] }]),
+    retrieveUsers: () => Promise.resolve([{ items: [] }]),
     grantAccessToUsers: () => Promise.resolve(),
   };
 
@@ -72,8 +72,18 @@ export class GrantAccessBase extends Component {
     selectItems: [{ items: [] }],
   };
 
-  componentDidMount = () => {
-    this.props.retrieveJiraUsers().then(jiraUsers => this.setState({ selectItems: jiraUsers }));
+  componentDidMount = async () => {
+    this.setState({
+      selectItems: [
+        {
+          items: (await this.props.retrieveUsers()).map(user => ({
+            value: user.name,
+            content: user.displayName,
+            description: user.email,
+          })),
+        },
+      ],
+    });
   };
 
   handleContinueClick = () => {
@@ -270,9 +280,7 @@ export class GrantAccessBase extends Component {
 
 export default withCrossSellProvider(
   GrantAccessBase,
-  ({
-    crossSell: { config: { productLogo, startTrial }, grantAccessToUsers, retrieveJiraUsers },
-  }) => ({
+  ({ crossSell: { config: { productLogo, startTrial }, grantAccessToUsers, retrieveUsers } }) => ({
     productLogo,
     optionItems: startTrial.grantOptionItems,
     userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,
@@ -280,6 +288,6 @@ export default withCrossSellProvider(
     chooseOption: startTrial.grantChooseOption,
     defaultSelectedRadio: startTrial.grantDefaultSelectedRadio,
     grantAccessToUsers,
-    retrieveJiraUsers,
+    retrieveUsers,
   })
 );

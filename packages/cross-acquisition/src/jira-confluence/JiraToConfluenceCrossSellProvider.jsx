@@ -9,7 +9,7 @@ import requestTrialAccess from './requestTrialAccess';
 import requestTrialAccessWithNote from './requestTrialAccessWithNote';
 import requestTrialAccessWithoutNote from './requestTrialAccessWithoutNote';
 import cancelRequestTrialAccess from './cancelRequestTrialAccess';
-import startProductTrial from './startProductTrial';
+import startConfluenceTrial from './startConfluenceTrial';
 import cancelStartProductTrial from './cancelStartProductTrial';
 import grantAccessToUsers from './grantAccessToUsers';
 import retrieveJiraUsers from './retrieveJiraUsers';
@@ -70,10 +70,10 @@ export default class MockConfluenceCrossSellProvider extends Component {
       requestTrialAccessWithoutNote,
       cancelRequestTrialAccess,
 
-      startProductTrial,
+      startProductTrial: startConfluenceTrial,
       cancelStartProductTrial,
       grantAccessToUsers,
-      retrieveJiraUsers,
+      retrieveUsers: retrieveJiraUsers,
       goToProduct,
       closeLoadingDialog,
     };

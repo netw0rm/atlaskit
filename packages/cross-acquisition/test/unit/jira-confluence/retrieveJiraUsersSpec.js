@@ -66,6 +66,8 @@ describe('retrieveJiraUsers', () => {
    * test scenario where there are some JIRA software users and some JIRA service desk users
    */
   it('should emit array with compiled jira software and jira servicedesk users', () => {
+    // The first 5 users of the set of JSW and JSD users are non-overlapping. This ensures
+    // that there are no duplicates in the expected output.
     fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), jiraSoftwareUsersResponse.slice(0, 5), {
       method: 'GET',
     });

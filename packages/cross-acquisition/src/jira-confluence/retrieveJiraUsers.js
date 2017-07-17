@@ -1,15 +1,8 @@
+// This aligns with User Management's pagination value
 const PAGINGATION = 30;
 const JIRA_SOFTWARE_GROUP = 'jira-software-users';
 const JIRA_CORE_GROUP = 'jira-core-users';
 const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';
-
-// TODO: Move this mapping function into where this userlist is being consumed for the user
-// select dropdown
-// const createUserItem = user => ({
-//   content: user.displayName,
-//   value: user.name,
-//   description: user.email,
-// });
 
 const usernamesEndpoint = (groupName, startIndex) =>
   `/admin/rest/um/1/group/user/direct?groupname=${groupName}` +

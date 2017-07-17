@@ -39,19 +39,20 @@ const defaultProps = {
   affectBill: 'How will this affect my bill?',
   spinnerActive: false,
   continueButtonDisabled: false,
-  retrieveJiraUsers: () => Promise.resolve([{
-    items: [
-      { value: 'test2', content: 'test 2', description: 'test@example.com' },
-      { value: 'mtruong', content: 'michael truong', description: 'mtruong@example.com' },
-    ],
-  }]),
+  retrieveUsers: () =>
+    Promise.resolve([
+      { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },
+      { name: 'awakeling', displayName: 'Andrew Wakeling', email: 'awakeling@example.com' },
+      { name: 'ahammond', displayName: 'Andrew Hammond', email: 'ahammond@example.com' },
+      { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
+      { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
+    ]),
+  onComplete: () => {},
 };
 
 storiesOf('GrantAccess')
   .add('Show Grant Access dialog', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" />
-    )
+    setupStorybookAnalytics(<GrantAccessBase {...defaultProps} analyticsId="growth.happy" />)
   )
   .add('Show Grant Access dialog with change users open', () =>
     setupStorybookAnalytics(
@@ -105,14 +106,16 @@ storiesOf('GrantAccess')
       <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={100} />
     )
   )
-  .add('Show Grant Access dialog with change users open and error state if failing to grant access', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase
-        {...defaultProps}
-        analyticsId="growth.happy"
-        changeUsers
-        defaultSelectedRadio="everyone"
-        onComplete={() => Promise.reject(true)}
-      />
-    )
+  .add(
+    'Show Grant Access dialog with change users open and error state if failing to grant access',
+    () =>
+      setupStorybookAnalytics(
+        <GrantAccessBase
+          {...defaultProps}
+          analyticsId="growth.happy"
+          changeUsers
+          defaultSelectedRadio="everyone"
+          onComplete={() => Promise.reject(true)}
+        />
+      )
   );

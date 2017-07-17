@@ -5,13 +5,11 @@ import fetchMock from 'fetch-mock';
 import chai, { assert } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import startProductTrial, {
-  START_TRIAL_ENDPOINT,
-} from '../../../src/jira-confluence/startProductTrial';
+import startProductTrial, { START_TRIAL_ENDPOINT } from '../../../src/jira-confluence/startConfluenceTrial';
 
 chai.use(chaiAsPromised);
 
-describe('startProductTrial', () => {
+describe('startConfluenceTrial', () => {
   beforeEach(() => {
     fetchMock.restore();
   });

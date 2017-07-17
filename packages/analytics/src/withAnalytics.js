@@ -27,26 +27,17 @@ const withAnalytics = (WrappedComponent, map: EventMapOrFunction = {}) =>
     props: {
       analyticsId?: string,
       analyticsData?: Object,
-      analyticsDelay?: number | boolean,
     };
     componentWillMount() {
       this.evaluatedMap =
         typeof map === 'function' ? map(this.fireAnalyticsEvent) : map;
     }
     fireAnalyticsEvent = (name: string, data: Object) => {
-      const { analyticsId, analyticsDelay } = this.props;
+      const { analyticsData, analyticsId } = this.props;
       const { onAnalyticsEvent } = this.context;
       if (!analyticsId || !onAnalyticsEvent) return;
-      const fireEvent = () => {
-        const { analyticsData } = this.props;
-        const eventData = { ...analyticsData, ...data };
-        onAnalyticsEvent(`${analyticsId}.${name}`, eventData, false);
-      };
-      if (analyticsDelay) {
-        setTimeout(fireEvent, analyticsDelay === true ? 0 : analyticsDelay);
-      } else {
-        fireEvent();
-      }
+      const eventData = { ...analyticsData, ...data };
+      onAnalyticsEvent(`${analyticsId}.${name}`, eventData, false);
     };
     privateAnalyticsEvent = (name: string, data: Object) => {
       const { onAnalyticsEvent } = this.context;
@@ -58,7 +49,6 @@ const withAnalytics = (WrappedComponent, map: EventMapOrFunction = {}) =>
       const {
         analyticsId,
         analyticsData,
-        analyticsDelay,
         ...componentProps
       } = this.props;
       /* eslint-enable no-unused-vars */

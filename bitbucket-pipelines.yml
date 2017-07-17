@@ -57,6 +57,7 @@ pipelines:
           - ./build/bin/prep_for_release.sh
           - yarn
           - npm run prepublish-with-babel/single @atlaskit/avatar
+          - ls packages/avatar/dist
           - (cd packages/website; yarn run build-data)
           # we have to run this after `yarn` to have access to child-process-promise
           - ./build/bin/generate.changed.packages.file.pr.sh

@@ -1,19 +1,20 @@
 {
   "name": "@atlaskit/calendar",
-  "version": "2.0.14",
+  "version": "2.2.0",
   "config": {
     "access": "public"
   },
   "description": "A React component that is a generic calendar.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Calendar",
     "pattern": true
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/calendar; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/calendar",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

@@ -1,18 +1,19 @@
 {
   "name": "@atlaskit/dynamic-table",
-  "version": "4.1.0",
+  "version": "4.3.0",
   "config": {
     "access": "public"
   },
   "description": "Table component with pagination and sorting functionality",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.js",
   "ak:component": {
     "name": "Dynamic Table"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/dynamic-table; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/dynamic-table",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

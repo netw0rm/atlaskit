@@ -181,6 +181,7 @@
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "prepublish/all": "lerna run prepublish",
     "prepublish/single": "./build/bin/prepublish.single.sh",
+    "prepublish-with-babel/single": "./build/bin/prepublish-with-babel.single.sh",
     "release": "./build/bin/release.process.bash",
     "release/announce": "./build/bin/release.announce.js",
     "release/check/can-ff": "git pull --ff-only --no-edit origin || (chalk --no-stdin -t \"{blue We are not the leading build - nothing to do here!}\"; exit 1)",

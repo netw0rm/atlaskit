@@ -6,10 +6,11 @@
   },
   "description": "A template for creating AtlasKit components",
   "main": "dist/bundle.js",
+  "jsnext:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-component-template; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/util-component-template",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

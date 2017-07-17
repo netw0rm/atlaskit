@@ -7,6 +7,7 @@
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Comment",
@@ -14,7 +15,7 @@
 
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/comment; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/comment",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

@@ -32,9 +32,9 @@ pipelines:
             # --bail is used to make jest fail fast when it finds a test failure
             - ./node_modules/.bin/jest --runInBand --bail -c ./build/config/jest.config.js
             - run-p -ln "test" "test/base"
-            - yarn run browserstack/tunnel/start
-            - yarn run test/browserstack
-            - yarn run browserstack/tunnel/stop
+            # - yarn run browserstack/tunnel/start
+            # - yarn run test/browserstack
+            # - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
@@ -66,9 +66,9 @@ pipelines:
           # --bail is used to make jest fail fast when it finds a test failure
           - ./node_modules/.bin/jest --runInBand --bail -c ./build/config/jest.config.js
           - run-p -ln "test" "test/base"
-          - yarn run browserstack/tunnel/start
-          - yarn run test/browserstack
-          - yarn run browserstack/tunnel/stop
+          # - yarn run browserstack/tunnel/start
+          # - yarn run test/browserstack
+          # - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"
         # caches:
           # - node

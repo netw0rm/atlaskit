@@ -1,18 +1,19 @@
 {
   "name": "@atlaskit/inline-dialog",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "config": {
     "access": "public"
   },
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Inline Dialog"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/inline-dialog; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/inline-dialog",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

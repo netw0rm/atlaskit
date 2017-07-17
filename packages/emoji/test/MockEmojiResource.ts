@@ -1,7 +1,7 @@
 import * as uid from 'uid';
 
 import { customCategory, customType } from '../src/constants';
-import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../src/types';
+import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../src/types';
 import { addCustomCategoryToResult, UploadingEmojiProvider } from '../src/api/EmojiResource';
 import EmojiRepository, { EmojiSearchResult } from '../src/api/EmojiRepository';
 import { AbstractResource } from '../src/api/SharedResources';
@@ -39,6 +39,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   protected emojiRepository: EmojiRepository;
   protected promiseBuilder: PromiseBuilder<any>;
   protected lastQuery: string = '';
+  protected selectedTone: ToneSelection;
 
   recordedSelections: EmojiId[] = [];
 
@@ -97,6 +98,14 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   recordSelection?(id: EmojiId): Promise<any> {
     this.recordedSelections.push(id);
     return this.promiseBuilder(undefined);
+  }
+
+  getSelectedTone(): ToneSelection {
+    return this.selectedTone;
+  }
+
+  setSelectedTone(tone: ToneSelection) {
+    this.selectedTone = tone;
   }
 }
 

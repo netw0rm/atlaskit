@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
 import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
-import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
+import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById, getSelectedEmojiTypeAheadItem } from '../../emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../../../src/components/typeahead/EmojiTypeAheadItem';
@@ -17,7 +17,7 @@ import { Props as TypeAheadProps, State as TypeAheadState } from '../../../src/c
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   return mount(
     <EmojiTypeAhead
-      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+      emojiProvider={props && props.emojiProvider ? props.emojiProvider : getEmojiResourcePromise() as Promise<EmojiProvider>}
       query=""
       {...props}
     />
@@ -337,6 +337,33 @@ describe('EmojiTypeAhead', () => {
 
     return waitUntil(() => doneLoading(component)).then(() => {
       expect(onSelection.callCount, 'selected 1').to.equal(1);
+    });
+  });
+
+  it('should display emojis without skin tone variations by default', () => {
+    const component = setupPicker({
+      query: 'raised_hand',
+    } as Props);
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(itemsVisibleCount(component) === 1, 'One emoji visible').to.equal(true);
+      const typeaheadItemTokens = getSelectedEmojiTypeAheadItem(component).text().split(':');
+      expect(typeaheadItemTokens[typeaheadItemTokens.length-2]).to.equal('raised_hand');
+    });
+  });
+
+  it('should display emojis using the skin tone preference provided by the EmojiResource', () => {
+    const emojiProvider = getEmojiResourcePromise();
+    emojiProvider.then(provider => provider.setSelectedTone(1));
+    const component = setupPicker({
+      emojiProvider: emojiProvider,
+      query: 'raised_hand',
+    } as Props);
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(itemsVisibleCount(component) === 1, 'One emoji visible').to.equal(true);
+      const typeaheadItemTokens = getSelectedEmojiTypeAheadItem(component).text().split(':');
+      expect(typeaheadItemTokens[typeaheadItemTokens.length-2]).to.equal('skin-tone-2');
     });
   });
 });

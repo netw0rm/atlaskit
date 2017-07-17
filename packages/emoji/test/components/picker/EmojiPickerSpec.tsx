@@ -27,6 +27,13 @@ import { UploadPromptMessage } from '../../../src/components/picker/EmojiPickerU
 
 import { OptionalEmojiDescription } from '../../../src/types';
 
+function setupPickerWithoutToneSelector(): ReactWrapper<any, any> {
+  return setupPicker({
+    emojiProvider: getEmojiResourcePromise(),
+    hideToneSelector: true,
+  });
+}
+
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   const pickerProps = {
     ...props
@@ -117,6 +124,17 @@ const showCategory = (category: string, component): Promise<any> => {
   });
 };
 
+const findHandEmoji = (emojis): number => {
+  let offset = -1;
+  emojis.forEach((emoji, index) => {
+    if (emoji.html().indexOf(':raised_hand:') !== -1) {
+      offset = index;
+      return;
+    }
+  });
+  return offset;
+};
+
 const findSearchInput = (component) => component.find(EmojiPickerListSearch).findWhere(component => component.name() === 'input');
 const searchInputVisible = (component) => findSearchInput(component).length > 0;
 
@@ -177,7 +195,7 @@ describe('<EmojiPicker />', () => {
   describe('hover', () => {
     it('should update preview on hover', () => {
       const hoverOffset = 5;
-      const component = setupPicker();
+      const component = setupPickerWithoutToneSelector();
       const footer = component.find(EmojiPickerFooter);
       const list = component.find(EmojiPickerList);
 
@@ -361,7 +379,7 @@ describe('<EmojiPicker />', () => {
 
     it('Upload main flow interaction', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
-      const component = setupPicker({ emojiProvider });
+      const component = setupPicker({ emojiProvider, hideToneSelector: true });
       return emojiProvider.then(provider => {
         return showCategory(customCategory, component)
         .then(() => waitUntil(() => startEmojiUploadVisible(component))
@@ -456,7 +474,7 @@ describe('<EmojiPicker />', () => {
 
     it('Upload after searching', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
-      const component = setupPicker({ emojiProvider });
+      const component = setupPicker({ emojiProvider, hideToneSelector: true });
       return emojiProvider.then(provider => {
         return waitUntil(() => searchInputVisible(component))
         .then(() => {
@@ -558,7 +576,7 @@ describe('<EmojiPicker />', () => {
 
     it('Upload cancel interaction', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
-      const component = setupPicker({ emojiProvider });
+      const component = setupPicker({ emojiProvider, hideToneSelector: true });
       return emojiProvider.then(provider => {
         return showCategory(customCategory, component)
         .then(() => waitUntil(() => startEmojiUploadVisible(component)))
@@ -625,7 +643,7 @@ describe('<EmojiPicker />', () => {
 
     it('Upload error interaction', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true, uploadError: 'bad times' });
-      const component = setupPicker({ emojiProvider });
+      const component = setupPicker({ emojiProvider, hideToneSelector: true });
       return emojiProvider.then(provider => {
         return showCategory(customCategory, component)
         .then(() => waitUntil(() => startEmojiUploadVisible(component)))
@@ -702,6 +720,66 @@ describe('<EmojiPicker />', () => {
           const uploads = provider.getUploads();
           expect(uploads.length, 'No uploads occurred').to.equal(0);
         });
+      });
+    });
+  });
+
+  describe('skin tone selection', () => {
+    it('should display the tone emoji by default', () => {
+      const hoverOffset = 5;
+      const component = setupPicker();
+      const footer = component.find(EmojiPickerFooter);
+      const list = component.find(EmojiPickerList);
+
+      return waitUntil(() => emojisVisible(list)).then(() => {
+        const hoverButton = list.find(Emoji).at(hoverOffset);
+        hoverButton.simulate('mousemove');
+        const toneEmoji = footer.find(AkButton);
+        expect(toneEmoji.length, 'Tone emoji displayed').to.equal(1);
+      });
+    });
+
+    it('should not display the tone emoji if hideToneSelector is set to true', () => {
+      const hoverOffset = 5;
+      const component = setupPickerWithoutToneSelector();
+      const footer = component.find(EmojiPickerFooter);
+      const list = component.find(EmojiPickerList);
+
+      return waitUntil(() => emojisVisible(list)).then(() => {
+        const hoverButton = findEmoji(list).at(hoverOffset);
+        hoverButton.simulate('mousemove');
+        const toneEmoji = footer.find(AkButton);
+        expect(toneEmoji.length, 'Tone emoji not displayed').to.equal(0);
+      });
+    });
+
+    it('should display emojis without skin tone variations by default', () => {
+      const component = setupPicker();
+      const list = component.find(EmojiPickerList);
+
+      return waitUntil(() => emojisVisible(list)).then(() => {
+        const emojis = findEmoji(list);
+        const hoverOffset = findHandEmoji(emojis);
+        expect(hoverOffset).to.not.equal(-1);
+        const handEmoji = findEmoji(list).at(hoverOffset).html();
+        // Extra quotation marks to avoid false positive
+        expect(handEmoji.indexOf('":raised_hand:"'), handEmoji).to.not.equal(-1);
+      });
+    });
+
+    it('should display emojis using the skin tone preference provided by the EmojiResource', () => {
+      const emojiProvider = getEmojiResourcePromise();
+      emojiProvider.then(provider => provider.setSelectedTone(1));
+
+      const component = setupPicker({ emojiProvider });
+      const list = component.find(EmojiPickerList);
+
+      return waitUntil(() => emojisVisible(list)).then(() => {
+        const emojis = findEmoji(list);
+        const hoverOffset = findHandEmoji(emojis);
+        expect(hoverOffset).to.not.equal(-1);
+        const handEmoji = findEmoji(list).at(hoverOffset).html();
+        expect(handEmoji.indexOf('":raised_hand::skin-tone-2:"'), handEmoji).to.not.equal(-1);
       });
     });
   });

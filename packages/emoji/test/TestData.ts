@@ -26,6 +26,7 @@ export const spriteEmoji: EmojiDescription = {
     height: 72,
     width: 72,
   },
+  searchable: true,
   ascii: undefined,
 };
 
@@ -42,6 +43,7 @@ export const imageEmoji: EmojiDescription = {
     height: 24,
   },
   ascii: undefined,
+  searchable: true,
 };
 
 export const siteUrl = 'https://emoji.example.com/emoji/site/blah';
@@ -63,6 +65,7 @@ export const mediaServiceEmoji: EmojiServiceDescription = {
     height: 24,
   },
   ascii: undefined,
+  searchable: true,
 };
 
 export const mediaEmoji: EmojiDescriptionWithVariations = {
@@ -80,6 +83,7 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
   },
   skinVariations: [],
   ascii: undefined,
+  searchable: true,
 };
 
 export const loadedMediaEmoji = {
@@ -104,12 +108,12 @@ export const missingMediaServiceEmoji: EmojiServiceDescription = {
   ...missingMediaEmojiId,
 };
 
-export const missingMediaEmoji: EmojiDescription = {
+export const missingMediaEmoji: EmojiDescriptionWithVariations = {
   ...mediaEmoji,
   ...missingMediaEmojiId,
 };
 
-export const loadedMissingMediaEmoji: EmojiDescription = {
+export const loadedMissingMediaEmoji: EmojiDescriptionWithVariations = {
   ...mediaEmoji,
   ...missingMediaEmojiId,
   representation: {
@@ -152,10 +156,15 @@ export const siteServiceEmojis = (): EmojiServiceResponse => ({
   },
 });
 
+export const filterToSearchable = (emojis: EmojiDescription[]): EmojiDescription[] => {
+  return emojis.filter(emoji => emoji.searchable);
+};
+
 export const standardEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(standardServiceEmojis).emojis;
 export const atlassianEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(atlassianServiceEmojis).emojis;
 export const siteEmojis: EmojiDescription[] = [ mediaEmoji ];
 export const emojis: EmojiDescription[] = [ ...standardEmojis, ...atlassianEmojis, ...siteEmojis ];
+export const searchableEmojis: EmojiDescription[] = filterToSearchable(emojis);
 
 export const newEmojiRepository = () => new EmojiRepository(emojis);
 
@@ -189,6 +198,7 @@ export const generateSkinVariation = (base: EmojiDescription, idx: number): Emoj
       width: 24,
       height: 24,
     },
+    searchable: false,
   };
 };
 

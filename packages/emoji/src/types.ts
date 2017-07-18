@@ -71,6 +71,7 @@ export interface EmojiDescription extends EmojiId {
   category: string;
   ascii?: string[];
   representation: EmojiRepresentation;
+  searchable: boolean;
 }
 
 export interface EmojiDescriptionWithVariations extends EmojiDescription {
@@ -92,6 +93,7 @@ export interface EmojiServiceDescription {
   type: string;
   category: string;
   representation: EmojiServiceRepresentation;
+  searchable: boolean;
 }
 
 export interface EmojiServiceDescriptionWithVariations extends EmojiServiceDescription {

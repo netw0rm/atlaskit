@@ -31,7 +31,8 @@ export const emojiFromUpload = (upload: EmojiUpload) => {
       width,
       height,
       imagePath: dataURL,
-    }
+    },
+    searchable: true
   };
 };
 

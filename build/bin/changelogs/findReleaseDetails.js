@@ -2,6 +2,7 @@
 const { default: io } = require('lerna-semantic-release-io');
 const srRegistry = require('semantic-release/src/lib/get-registry');
 const npmconf = require('npmconf');
+// const analyzeCommits = require('./analyzeCommits');
 
 const getNextRelease = (pkg, sharedConfig, npmConfig, location) => {
   // eslint-disable-next-line
@@ -27,7 +28,7 @@ const getNextRelease = (pkg, sharedConfig, npmConfig, location) => {
       err ? rej(err) : res({ nextRelease, pkg, location })
     ));
   }).catch((e) => {
-    if (e.code === 'ENOCHANGE') return null;
+    if (e.code === 'ENOCHANGE' || e.code === 'ENOTINHISTORY') return null;
     console.log('ERROR ERROR ERROR', e);
     throw e;
   });
@@ -41,9 +42,12 @@ function findNextReleaseInfoForAk() {
   });
 
   return npmConfPromise.then((npmConfig) => {
+    const plugins = io.semanticRelease.plugins;
+    // plugins.analyzeCommits = analyzeCommits;
+
     const sharedConfig = {
       env: process.env,
-      plugins: io.semanticRelease.plugins,
+      plugins,
       npm: {
         auth: {
           token: process.env.NPM_TOKEN,
@@ -62,5 +66,7 @@ function findNextReleaseInfoForAk() {
     return releaseInfo;
   });
 }
+findNextReleaseInfoForAk()
+  .then(releaseInfo => console.log('RELEASE INFO', releaseInfo.map(info => info.nextRelease)));
 
 module.exports = findNextReleaseInfoForAk;

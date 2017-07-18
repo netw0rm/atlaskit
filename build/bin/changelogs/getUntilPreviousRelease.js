@@ -1,3 +1,0 @@
-const getUntilPreviousRelease = (pkgName, currentVerions) => {
-  
-};

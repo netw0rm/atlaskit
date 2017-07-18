@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { DEFAULT_BORDER_COLOR } from '../styled/constants';
+import { ThemeColor } from '../styled/constants';
 import { Outer } from '../styled/Icon';
 import getStatusSVG from '../helpers/getStatusSVG';
 import type { ChildrenType, StatusType, SizeType } from '../types';
@@ -23,7 +23,7 @@ export default class Status extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
-    borderColor: DEFAULT_BORDER_COLOR,
+    borderColor: ThemeColor.border,
   }
 
   render() {

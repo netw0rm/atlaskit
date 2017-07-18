@@ -1,80 +1,17 @@
-/* eslint-disable */
-var commitAnalyzer = require('@semantic-release/commit-analyzer');
-var log = require('lerna-semantic-release-utils').log;
-var affectsDelimiter = 'affects:';
+const commitAnalyzer = require('@semantic-release/commit-analyzer');
+const helpers = require('lerna-semantic-release-analyze-commits');
 
-module.exports = {
-  analyze: function (_ref, cb) {
-    var pkg = _ref.pkg;
-    var commits = _ref.commits;
+const analyze = (_ref, cb) => {
+  const pkg = _ref.pkg;
+  const commits = _ref.commits;
 
-    var relevantCommits = commits.filter(function (commit) {
-      return module.exports.isRelevant(module.exports.findAffectsLine(commit), pkg.name);
-    });
+  const relevantCommits = commits.filter(commit => (
+    helpers.isRelevant(helpers.findAffectsLine(commit), pkg.name)
+  ));
 
-    commitAnalyzer({}, Object.assign(_ref, {commits: relevantCommits}), function (err, type) {
-      log.info('Anaylzed', relevantCommits.length, '/', commits.length, 'commits to determine type', type, 'for', pkg.name);
-      relevantCommits.length && log.info('Relevant commits:\n* ', relevantCommits.map(function (commit) {
-        return commit.hash;
-      }).join('\n* '));
-      cb(err, { type, commits: relevantCommits });
-    });
-  },
-  isRelevant: function (affectsLine, packageName) {
-    var affectedPackages = module.exports.getAffectedPackages(affectsLine);
-    return (affectedPackages.some(function (thisPackage) {
-      if (thisPackage.indexOf('@') === -1 || thisPackage.lastIndexOf('@') === 0) {
-        return thisPackage === packageName;
-      }
-      return thisPackage.substring(0, thisPackage.lastIndexOf('@')) === packageName;
-    }));
-  },
-  getAffectedPackages: function (affectsLine) {
-    if (!affectsLine || affectsLine.indexOf(affectsDelimiter) !== 0) {
-      return [];
-    }
-    var trimmedPackages = affectsLine.split(affectsDelimiter)[1].trim();
-    if (trimmedPackages.length === 0) {
-      return [];
-    }
-    return trimmedPackages.split(', ');
-  },
-  findAffectsLine: function (commit) {
-    if (
-      !commit ||
-      !commit.message ||
-      !commit.message.length ||
-      !commit.message.match(affectsDelimiter)
-    ) {
-      return;
-    }
-
-    function reducer(affects, currentMessageLine) {
-      if (affects.done || currentMessageLine.length === 0) {
-        return affects;
-      }
-
-      if (
-        affects.message.length > 0 || currentMessageLine.indexOf(affectsDelimiter) === 0
-      ) {
-        if (currentMessageLine[currentMessageLine.length - 1] !== ',') {
-          affects.done = true;
-        }
-
-        affects.message += currentMessageLine + ' ';
-        return affects;
-      }
-
-      return affects;
-    }
-
-    var affectsLine = commit
-      .message
-      .split('\n')
-      .reduce(reducer, { message: '', done: false })
-      .message
-      .trim();
-
-    return affectsLine;
-  },
+  commitAnalyzer({}, Object.assign(_ref, { commits: relevantCommits }), (err, type) => {
+    cb(err, { type, commits: relevantCommits });
+  });
 };
+
+module.exports = analyze;

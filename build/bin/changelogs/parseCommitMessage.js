@@ -1,13 +1,3 @@
-const path = require('path');
-
-const getPackageNames = string => string.split(', ')
-.map(t => t.split('@atlaskit/').filter(a => (a && a !== 'affects: ')))
-.reduce((a, b) => a.concat(b), []);
-
-const createPaths = packageName => getPackageNames(packageName)
-// We can assume that we are in the correct directory when running this script.
-.map(t => path.join(process.cwd(), `./packages/${t}/docs/`));
-
 const getChangeType = (text) => {
   if (text.includes('BREAKING CHANGE:')) return 'breaking';
   if (text.includes('feat(')) return 'feature';
@@ -16,7 +6,7 @@ const getChangeType = (text) => {
 };
 
 // All the splitting text we are doing is busywork from setup
-const splitCommitMessage = (commitMessage) => {
+const parseCommitMessage = (commitMessage) => {
   // Only changes that cause releases will be added to changelog
   const changeType = getChangeType(commitMessage);
   if (!changeType) return null;
@@ -34,15 +24,9 @@ const splitCommitMessage = (commitMessage) => {
     : '';
 
   // The information about a breaking change is provided on the next line
-  const breakingChange = breakingIndex >= 0 ? `* ${changeType}; ${parts[breakingIndex + 1]}\n` : '';
-  const change = `* ${changeType}; ${parts[0].replace(/^.*?: /, '')}${issuesClosed}\n`;
-  const dirPaths = createPaths(parts[2]);
-  return {
-    dirPaths,
-    packageNames: getPackageNames(parts[2]),
-    readmePaths: dirPaths.map(p => `${p}CHANGELOG.md`),
-    text: breakingChange + change,
-  };
+  const breakingChange = breakingIndex >= 0 ? `* ${changeType}; ${parts[breakingIndex + 1]}` : '';
+  const change = `* ${changeType}; ${parts[0].replace(/^.*?: /, '')}${issuesClosed}`;
+  return breakingChange + change;
 };
 
-module.exports = splitCommitMessage;
+module.exports = parseCommitMessage;

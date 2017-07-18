@@ -2,8 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
-import getScrollParent from 'scrollparent';
-import type { Position, InitialDrag, HTMLElement } from '../../types';
+import type { Position, InitialDrag, HTMLElement, DraggableDimension } from '../../types';
 import DraggableDimensionPublisher from '../draggable-dimension-publisher/';
 import Moveable from '../moveable/';
 import DragHandle from '../drag-handle';
@@ -86,17 +85,6 @@ export default class Draggable extends Component {
     );
   }
 
-  getParentScroll = (): Position => {
-    const { ref } = this.state;
-    invariant(ref, 'cannot get parent of unmounted element');
-    const parent: HTMLElement = getScrollParent(ref);
-
-    return {
-      x: -parent.scrollLeft,
-      y: -parent.scrollTop,
-    };
-  }
-
   onMoveEnd = () => {
     if (!this.props.isDropAnimating) {
       return;
@@ -113,9 +101,8 @@ export default class Draggable extends Component {
     const windowScroll: Position = getWindowScrollPosition();
     const page: Position = add(point, windowScroll);
     const center: Position = add(getCenterPosition(ref), windowScroll);
-    const parentScroll: Position = this.getParentScroll();
 
-    lift(draggableId, type, page, center, parentScroll);
+    lift(draggableId, type, page, center, /*parentScroll*/);
   }
 
   onKeyLift = () => {
@@ -185,12 +172,12 @@ export default class Draggable extends Component {
 
   getPlaceholder() {
     invariant(this.props.initial, 'cannot get a drag placeholder when not dragging');
-    const dimension = this.props.initial.dimension;
+    const dimension: DraggableDimension = this.props.initial.dimension;
 
     return (
       <Placeholder
-        height={dimension.withMargin.height}
-        width={dimension.withMargin.width}
+        height={dimension.withoutDroppableScroll.withMargin.height}
+        width={dimension.withoutDroppableScroll.withMargin.width}
       />
     );
   }
@@ -236,7 +223,7 @@ export default class Draggable extends Component {
         }
         invariant(initial, 'initial dimension required for dragging');
 
-        const { width, height } = initial.dimension.withoutMargin;
+        const { width, height } = initial.dimension.withoutDroppableScroll.withoutMargin;
         return this.getDraggingStyle(width, height, isDropAnimating, movementStyle);
       })();
 

@@ -106,7 +106,7 @@ export const makeSelector = () => {
         }
 
         // this item is dragging
-        const offset: Position = current.offset;
+        const offset: Position = current.withDroppableScroll.offset;
         const canAnimate: boolean = current.shouldAnimate;
 
         // not memoizing result as it should not move without an update

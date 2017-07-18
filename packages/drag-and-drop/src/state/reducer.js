@@ -9,13 +9,15 @@ import type { TypeId,
   DragState,
   DropResult,
   CurrentDrag,
+  CurrentDragComponent,
   InitialDrag,
+  InitialDragComponent,
   PendingDrop,
   Phase,
   DraggableLocation,
   Position,
 } from '../types';
-import { add, subtract } from './position';
+import { add, subtract, negate } from './position';
 import getDragImpact from './get-drag-impact';
 import getDiffToJumpToNextIndex from './get-diff-to-jump-to-next-index';
 
@@ -103,8 +105,6 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return state;
     }
 
-    // TODO: need to recalc impact
-
     return {
       ...state,
       dimension: {
@@ -124,15 +124,23 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return state;
     }
 
-    const { id, type, page, parentScroll } = action.payload;
-    const dimension: DraggableDimension = state.dimension.draggable[id];
+    const { id, type, center, page } = action.payload;
+    const draggable: DraggableDimension = state.dimension.draggable[id];
+    const droppable: DroppableDimension = state.dimension.droppable[draggable.droppableId];
 
-    // WIP
-    const offset: Position = parentScroll;
-    const center: Position = add(action.payload.center, offset);
+    const initialWithoutScroll: InitialDragComponent = {
+      page,
+      center,
+    };
+
+    const initialWithScroll: InitialDragComponent = {
+      page: add(page, droppable.scroll.initial),
+      center: add(center, droppable.scroll.initial),
+    };
 
     const impact: DragImpact = getDragImpact(
-      center,
+      // TODO: is this correct?
+      initialWithoutScroll.page,
       id,
       state.dimension.draggable,
       state.dimension.droppable,
@@ -147,20 +155,25 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const initial: InitialDrag = {
       source,
-      page,
+      withoutDroppableScroll: initialWithoutScroll,
+      withDroppableScroll: initialWithScroll,
+      dimension: draggable,
+    };
+
+    const currentWithoutScroll: CurrentDragComponent = {
+      offset: { x: 0, y: 0 },
       center,
-      parentScroll,
-      // TODO: is this needed?
-      dimension,
+    };
+    const currentWithScroll: CurrentDragComponent = {
+      offset: negate(droppable.scroll.initial),
+      center: add(center, negate(droppable.scroll.initial)),
     };
 
     const current: CurrentDrag = {
       id,
       type,
-      // When position: absolute is applied it looses the current
-      // scroll parent offset
-      offset,
-      center,
+      withoutDroppableScroll: currentWithoutScroll,
+      withDroppableScroll: currentWithScroll,
       shouldAnimate: false,
     };
 
@@ -189,12 +202,16 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       console.error('cannot update a droppable that is not inside of the state', id);
       return clean();
     }
-
     // $ExpectError - flow does not like spread
     const dimension: DroppableDimension = {
       ...target,
-      scroll: offset,
+      scroll: {
+        initial: target.scroll.initial,
+        current: offset,
+      },
     };
+
+    console.log('updating scroll of dimension to', offset);
 
     return {
       ...state,
@@ -222,30 +239,39 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const { page } = action.payload;
 
-    // Need to consider changes to:
-    // 1. viewport
-    // 2. window scroll
-    // 3. parent scroll?
-
     const previous: CurrentDrag = state.drag.current;
     const initial: InitialDrag = state.drag.initial;
+    const droppable: DroppableDimension = state.dimension.droppable[initial.source.droppableId];
 
-    const diff: Position = subtract(page, initial.page);
+    const offset: Position = subtract(page, initial.withoutDroppableScroll.page);
+    const center: Position = add(offset, initial.withoutDroppableScroll.center);
 
-    const offset: Position = add(initial.parentScroll, diff);
-    const center: Position = add(initial.center, offset);
+    const withoutDroppableScroll: CurrentDragComponent = {
+      offset,
+      center,
+    };
+
+    const scroll: Position = negate(droppable.scroll.current);
+
+    const withDroppableScroll: CurrentDragComponent = {
+      offset: add(offset, scroll),
+      center: add(center, scroll),
+    };
 
     const current: CurrentDrag = {
       id: previous.id,
       type: previous.type,
-      center,
-      offset,
+      withoutDroppableScroll,
+      withDroppableScroll,
       // not animating small movements
       shouldAnimate: false,
     };
 
+    const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
+    const point: Position = add(withoutDroppableScroll.center, negate(scrollDiff));
+
     const impact: DragImpact = getDragImpact(
-      current.center,
+      point,
       current.id,
       state.dimension.draggable,
       state.dimension.droppable,

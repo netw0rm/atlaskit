@@ -27,27 +27,27 @@ export type Margin = {|
 
 const origin: Position = { x: 0, y: 0 };
 
-const getWithWindowScroll = (clientRect: ClientRect, windowScroll: Position): ClientRect => {
+const getWithPosition = (clientRect: ClientRect, point: Position): ClientRect => {
   const { top, right, bottom, left, width, height } = clientRect;
   return {
-    top: top + windowScroll.y,
-    left: left + windowScroll.x,
-    bottom: bottom + windowScroll.y,
-    right: right + windowScroll.x,
+    top: top + point.y,
+    left: left + point.x,
+    bottom: bottom + point.y,
+    right: right + point.x,
     height,
     width,
   };
 };
 
 const getWithMargin = (clientRect: ClientRect, margin: Margin): ClientRect => {
-  const { top, right, bottom, left } = clientRect;
+  const { top, right, bottom, left, height, width } = clientRect;
   return {
     top: top + margin.top,
     left: left + margin.left,
     bottom: bottom + margin.bottom,
     right: right + margin.right,
-    height: ((bottom + margin.bottom) - (top + margin.top)) / 2,
-    width: ((right + margin.right) - (left + margin.left)) / 2,
+    height: height + margin.top + margin.bottom,
+    width: width + margin.left + margin.right,
   };
 };
 
@@ -62,8 +62,8 @@ const getFragment = (
   width: initial.width,
   height: initial.height,
   center: {
-    x: ((initial.left + point.x) + (initial.right + point.x)) / 2,
-    y: ((initial.top + point.y) + (initial.bottom + point.y)) / 2,
+    x: ((initial.right + point.x) + (initial.left + point.x)) / 2,
+    y: ((initial.bottom + point.y) + (initial.top + point.y)) / 2,
   },
 });
 
@@ -75,7 +75,7 @@ export const getDraggableDimension = (
   windowScroll: Position,
   droppableScroll: Position,
 ): DraggableDimension => {
-  const withScroll = getWithWindowScroll(clientRect, windowScroll);
+  const withScroll = getWithPosition(clientRect, windowScroll);
   const withScrollAndMargin = getWithMargin(withScroll, margin);
 
   const withoutDroppableScroll: DraggableDimensionFragment = {
@@ -104,12 +104,15 @@ export const getDroppableDimension = (
   windowScroll: Position,
   scroll: Position,
 ): DroppableDimension => {
-  const withScroll = getWithWindowScroll(clientRect, windowScroll);
+  const withScroll = getWithPosition(clientRect, windowScroll);
   const withScrollAndMargin = getWithMargin(withScroll, margin);
 
   const dimension: DroppableDimension = {
     id,
-    scroll,
+    scroll: {
+      initial: scroll,
+      current: scroll,
+    },
     withoutMargin: getFragment(withScroll),
     withMargin: getFragment(withScrollAndMargin),
   };

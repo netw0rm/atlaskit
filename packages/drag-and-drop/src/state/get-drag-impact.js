@@ -7,15 +7,14 @@ import type { DraggableId,
   DraggableDimensionMap,
   DroppableDimensionMap,
   DragImpact,
+  DimensionFragment,
   Position } from '../types';
 import getDroppableOver from './get-droppable-over';
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 import noImpact from './no-impact';
 
-// It is the responsiblity of this function to return
-// the impact of a drag
-
-const origin: Position = { x: 0, y: 0 };
+// It is the responsibility of this function
+// to return the impact of a drag
 
 export default (
   newCenter: Position,
@@ -34,22 +33,23 @@ export default (
 
   const draggingDimension: DraggableDimension = draggableDimensions[draggableId];
   const droppableDimension: DroppableDimension = droppableDimensions[droppableId];
-  const scrollOffset: Position = droppableDimension.scroll;
+
+  const insideDroppable: DraggableDimension[] = getDraggablesInsideDroppable(
+    droppableDimension,
+    draggableDimensions
+  );
 
   // TEMP
-  return noImpact;
+  const draggableCenter: Position = draggingDimension.withoutDroppableScroll.withoutMargin.center;
+  const isMovingForward: boolean = newCenter.y - draggableCenter.y > 0;
 
-  const isMovingForward: boolean = newCenter.y + (Math.abs(scrollOffset.y)) - draggingDimension.center.y > 0;
+  // console.log('is moving forward?', isMovingForward);
   // console.log('is moving forward', isMovingForward, 'scrollOffset', scrollOffset);
 
   // TODO: if not in the same home dimensions then can only move forward
 
   // get all draggables inside the draggable
   // TODO: now breaking memoization because of scrollTop :()
-  const insideDroppable: DraggableDimension[] = getDraggablesInsideDroppable(
-    droppableDimension,
-    draggableDimensions
-  );
 
   const moved: DraggableId[] = insideDroppable
     .filter((dimension: DraggableDimension): boolean => {
@@ -58,23 +58,25 @@ export default (
         return false;
       }
 
+      const fragment: DimensionFragment = dimension.withoutDroppableScroll.withoutMargin;
+
       if (isMovingForward) {
         // 1. item needs to start ahead of the moving item
         // 2. the dragging item has moved over it
-        if (dimension.center.y < draggingDimension.center.y) {
+        if (fragment.center.y < draggableCenter.y) {
           return false;
         }
 
-        return newCenter.y > dimension.withMargin.top;
+        return newCenter.y > fragment.top;
       }
       // moving backwards
       // 1. item needs to start behind the moving item
       // 2. the dragging item has moved over it
-      if (draggingDimension.center.y < dimension.center.y) {
+      if (draggableCenter.y < fragment.center.y) {
         return false;
       }
 
-      return newCenter.y < dimension.withMargin.bottom;
+      return newCenter.y < fragment.bottom;
     })
     .map((dimension: DraggableDimension): DroppableId => dimension.id);
 
@@ -91,7 +93,10 @@ export default (
     return startIndex - moved.length;
   })();
 
-  const amount = index !== startIndex ? draggingDimension.withMargin.height : 0;
+  const amount = index !== startIndex ?
+    draggingDimension.withoutDroppableScroll.withMargin.height :
+    0;
+
   const movement: DragMovement = {
     amount,
     draggables: moved,

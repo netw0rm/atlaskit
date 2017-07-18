@@ -37,7 +37,10 @@ export type DraggableDimension = {|
 
 export type DroppableDimension = {|
   id: DroppableId,
-  scroll: Position,
+  scroll: {|
+    initial: Position,
+    current: Position,
+  |},
   withMargin: DimensionFragment,
   withoutMargin: DimensionFragment,
 |}
@@ -60,22 +63,33 @@ export type DragImpact = {|
   destination: ?DraggableLocation
 |}
 
+export type InitialDragComponent = {|
+  page: Position,
+  center: Position,
+|}
+
 export type InitialDrag = {|
   source: DraggableLocation,
   // client + window scroll
-  page: Position,
-  // takes into account window scroll
-  center: Position,
-  parentScroll: Position,
-  // TODO: is this needed?
+  withoutDroppableScroll: InitialDragComponent,
+  withDroppableScroll: InitialDragComponent,
+  // droppableScroll: Position,
+  // required for placeholder positioning
   dimension: DraggableDimension,
+|}
+
+export type CurrentDragComponent = {|
+  // the center position of the current item
+  center: Position,
+  // how far the element has moved from its original selection (page).
+  offset: Position,
 |}
 
 export type CurrentDrag = {|
   id: DraggableId,
   type: TypeId,
-  offset: Position,
-  center: Position,
+  withoutDroppableScroll: CurrentDragComponent,
+  withDroppableScroll: CurrentDragComponent,
   shouldAnimate: boolean,
 |}
 

@@ -36,6 +36,7 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
+    "@atlaskit/avatar": "*",
     "@atlaskit/button": "^1.1.2",
     "@atlaskit/editor-hipchat": "*",
     "@atlaskit/media-core": "^8.0.0",

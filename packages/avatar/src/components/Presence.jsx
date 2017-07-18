@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Inner, Outer } from '../styled/Icon';
-import { DEFAULT_BORDER_COLOR } from '../styled/constants';
+import { ThemeColor } from '../styled/constants';
 import getPresenceSVG from '../helpers/getPresenceSVG';
 import type { ChildrenType, PresenceType, SizeType } from '../types';
 
@@ -23,7 +23,7 @@ export default class Presence extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
-    borderColor: DEFAULT_BORDER_COLOR,
+    borderColor: ThemeColor.border,
   }
 
   render() {

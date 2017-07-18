@@ -79,4 +79,29 @@ describe('FilmStripNavigator', () => {
     clock.tick(10);
     expect(scrollSpy.called).to.equal(true);
   });
+
+  it('should save the right width for all child elements', () => {
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator width={10}>
+        {[1, 2, 3, 4]}
+      </FilmStripNavigator>
+    );
+    const children = [{
+      clientWidth: 10
+    }, {
+      clientWidth: 50
+    }, {
+      clientWidth: 20
+    }, {
+      clientWidth: 30
+    }] as Array<HTMLElement>;
+    const instance = filmstripNavigator.instance() as FilmStripNavigator;
+
+    instance.saveChildrenWidths(children);
+
+    expect(instance.childrenWidths[0]).to.be.equal(0);
+    expect(instance.childrenWidths[1]).to.be.equal(42);
+    expect(instance.childrenWidths[2]).to.be.equal(12);
+    expect(instance.childrenWidths[3]).to.be.equal(16);
+  });
 });

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* feature; added an editable story for FilmStripNavigator
 ## 4.2.1 (2017-07-12)
 
 

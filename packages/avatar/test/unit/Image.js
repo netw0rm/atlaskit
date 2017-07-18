@@ -1,9 +1,14 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
+import { AvatarDefaultProps } from '../../src/components/Avatar';
 import AvatarImage, { DefaultImage } from '../../src/components/AvatarImage';
 
 const src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 const imgSpan = '[role="img"]';
+
+// mock default props, as they'd be inherited from Avatar
+const { appearance, size } = AvatarDefaultProps;
+AvatarImage.defaultProps = { appearance, size };
 
 describe('Avatar', () =>
   describe('Image', () => {

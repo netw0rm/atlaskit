@@ -24,6 +24,8 @@ export default createSchema({
     'tableCell',
     'tableHeader',
     'tableRow',
+    'decisionList',
+    'decisionItem',
   ],
   marks: [
     'em',

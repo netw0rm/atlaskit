@@ -25,12 +25,17 @@ const fadeOut = {
   deltas: [{ from: 0, to: 1 }],
 };
 
+const ThemeColor = {
+  background: akColorN900,
+  text: akColorPrimary3,
+};
+
 const Tooltip = styled.div`
   animation: ${keyframes`${createBold([slideDown, fadeOut])}`} 0.6s 0.1s backwards;
-  background-color: ${akColorN900};
+  background-color: ${ThemeColor.background};
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
-  color: ${akColorPrimary3};
+  color: ${ThemeColor.text};
   font-size: ${fontSize}px;
   left: 50%;
   line-height: ${lineHeight};

@@ -8,6 +8,7 @@ import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 export interface FilmstripNavigatorProps {
   children?: any;
   width?: number;
+  index?: number;
 
   onDrop?: (event: DragEvent) => void;
   onDragEnter?: (event: DragEvent) => void;
@@ -66,6 +67,11 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       showTransition: false,
       transitionDuration: 0
     };
+
+    if (props.index) {
+      this.center(props.index);
+    }
+
   }
 
   componentDidMount() {
@@ -121,6 +127,38 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
         {showRight ? rightArrow : undefined}
       </FilmStripViewWrapper>
     );
+  }
+
+  center(index: number) {
+    const {childrenWidths} = this;
+    const {showTransition} = this.state;
+
+    if (index < 0 || index >= childrenWidths.length) {
+      throw new RangeError(`Cannot center index "${index}".`);
+    }
+
+    const minPos = 0;
+    const maxPos = this.listWidth - this.wrapperWidth;
+
+    let childX = 0;
+    for (let i = 0; i < index; ++i) {
+      childX += childrenWidths[i];
+    }
+    const childWidth = childrenWidths[index];
+    const childCenter = childX + (childWidth / 2);
+    const childPos = childCenter - (this.wrapperWidth / 2);
+
+    this.setNewPosition(Math.min(Math.max(minPos, childPos), maxPos), showTransition);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const {index: currentIndex} = this.props;
+    const {index: nextIndex} = nextProps;
+
+    if (currentIndex !== nextIndex) {
+      this.center(nextIndex);
+    }
+
   }
 
   componentDidUpdate() {

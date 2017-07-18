@@ -2,9 +2,10 @@
 import * as React from 'react';
 import {action} from '@kadira/storybook';
 import styled from 'styled-components';
-import {Card} from '@atlaskit/media-card';
 import RadioGroup from '@atlaskit/field-radio-group';
 import Slider from '@atlaskit/field-range';
+import Button from '@atlaskit/button';
+import {Card} from '@atlaskit/media-card';
 import {createStorybookContext, genericUrlPreviewId, genericLinkId, genericFileId} from '@atlaskit/media-test-helpers';
 import {FilmStripNavigator} from '../../src';
 
@@ -39,18 +40,32 @@ export interface NavigatorStoryProps {
 }
 
 export interface NavigatorStoryState {
+  index: number;
   widthType: 'auto' | 'number';
   width: number;
-  cardCount: number;
+  children: JSX.Element[];
 }
 
 export class NavigatorStory extends React.Component<NavigatorStoryProps, NavigatorStoryState> {
 
   state: NavigatorStoryState = {
+    index: 0,
     widthType: 'auto',
     width: 300,
-    cardCount: 3
+    children: cards
   };
+
+  handleGoToFirst = () => {
+    this.setState({index: 0});
+  }
+
+  handleGoToMiddle = () => {
+    this.setState(({children}) => ({index: Math.floor(children.length / 2)}));
+  }
+
+  handleGoToLast = () => {
+    this.setState(({children}) => ({index: children.length - 1}));
+  }
 
   handleChangeWidthType = event => {
     this.setState({widthType: event.target.value});
@@ -61,20 +76,18 @@ export class NavigatorStory extends React.Component<NavigatorStoryProps, Navigat
   }
 
   handleChangeCardCount = cardCount => {
-    this.setState({cardCount});
-  }
-
-  renderFilmstrip() {
-    const {widthType, width, cardCount = 0} = this.state;
-
     const children: JSX.Element[] = [];
     for (let i = 0; i < cardCount; ++i) {
       children.push(React.cloneElement(cards[Math.floor((Math.random()) * cards.length)], {key: i}));
     }
+    this.setState({children});
+  }
 
+  renderFilmstrip() {
+    const {index, widthType, width, children} = this.state;
     return (
       <div>
-        <FilmStripNavigator width={widthType === 'auto' ? undefined : width}>
+        <FilmStripNavigator index={index} width={widthType === 'auto' ? undefined : width}>
           {children}
         </FilmStripNavigator>
       </div>
@@ -82,9 +95,14 @@ export class NavigatorStory extends React.Component<NavigatorStoryProps, Navigat
   }
 
   renderControls() {
-    const {widthType, width, cardCount} = this.state;
+    const {widthType, width, children} = this.state;
     return (
       <div>
+
+        <ControlLabel>Go to: </ControlLabel>
+        <Button onClick={this.handleGoToFirst}>First</Button>
+        <Button onClick={this.handleGoToMiddle}>Middle</Button>
+        <Button onClick={this.handleGoToLast}>Last</Button>
 
         <RadioGroup
           label="Width"
@@ -98,7 +116,7 @@ export class NavigatorStory extends React.Component<NavigatorStoryProps, Navigat
         {widthType === 'number' && <Slider value={width} min={0} max={1000} step={1} onChange={this.handleChangeWidth} />}
 
         <ControlLabel htmlFor="cardCount">Card count: </ControlLabel>
-        <Slider id="cardCount" value={cardCount} min={0} max={25} step={1} onChange={this.handleChangeCardCount} />
+        <Slider id="cardCount" value={children.length} min={0} max={25} step={1} onChange={this.handleChangeCardCount} />
 
       </div>
     );

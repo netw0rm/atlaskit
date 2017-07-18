@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import { CardActionType } from '@atlaskit/media-core';
 import DropdownMenu from '@atlaskit/dropdown-menu';
-import { Item } from '@atlaskit/droplist';
+// import { Item } from '@atlaskit/droplist';
 
 import { Menu } from '../../../src/utils/menu/index';
 import { MeatBallsWrapper, DeleteBtn } from '../../../src/utils/menu/styled';

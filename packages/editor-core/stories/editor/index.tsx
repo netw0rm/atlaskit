@@ -17,7 +17,7 @@ import mentionsPlugins, { stateKey as mentionsStateKey } from '../../src/plugins
 import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emojis';
 import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
-import { reactNodeViewPlugins } from '../../src/plugins';
+import { reactNodeViewPlugins, tasksAndDecisionsPlugin } from '../../src/plugins';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
 import {
@@ -299,6 +299,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...panelPlugins(schema),
           ...tablePlugins(),
           ...reactNodeViewPlugins(schema),
+          ...tasksAndDecisionsPlugin(schema),
           history(),
           keymap(baseKeymap) // should be last :(
         ]

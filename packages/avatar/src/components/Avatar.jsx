@@ -7,7 +7,7 @@ import Image from './AvatarImage';
 import Status from './Status';
 
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
-import { DEFAULT_BORDER_COLOR } from '../styled/constants';
+import { ThemeColor } from '../styled/constants';
 import { getInnerStyles } from '../styled/utils';
 import Tooltip from '../styled/Tooltip';
 
@@ -23,6 +23,13 @@ import type {
   StyledComponentType,
 } from '../types';
 
+export const AvatarDefaultProps = {
+  appearance: 'circle',
+  borderColor: ThemeColor.border,
+  enableTooltip: true,
+  size: 'medium',
+};
+
 class Avatar extends Component {
   props: AvatarPropTypes; // eslint-disable-line react/sort-comp
   node: { blur?: FunctionType, focus?: FunctionType };
@@ -33,12 +40,7 @@ class Avatar extends Component {
     span?: ElementType,
   } = {};
 
-  static defaultProps = {
-    appearance: 'circle',
-    borderColor: DEFAULT_BORDER_COLOR,
-    enableTooltip: true,
-    size: 'medium',
-  }
+  static defaultProps = AvatarDefaultProps;
 
   getCachedComponent(type: StyledComponentType) {
     if (!this.cache[type]) {

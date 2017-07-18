@@ -26,12 +26,14 @@ export default class BasicNavigation extends PureComponent {
     searchDrawerContent: PropTypes.node,
     createDrawerContent: PropTypes.node,
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
+    drawers: PropTypes.arrayOf(PropTypes.node),
     onResizeCallback: PropTypes.func,
     globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
+    drawers: [],
     onResizeCallback: () => {},
     children: (<div>
       <AkNavigationItem
@@ -199,7 +201,18 @@ export default class BasicNavigation extends PureComponent {
             <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
           </Tooltip>}
         globalSecondaryActions={this.props.globalSecondaryActions}
+        isOpen={this.state.isOpen}
+        onCreateDrawerOpen={() => { this.openDrawer('create'); }}
+        onResize={this.resize}
+        onResizeStart={action('resizeStart')}
+        onSearchDrawerOpen={() => { this.openDrawer('search'); }}
+        openDrawer={this.state.openDrawer}
+        position="right bottom"
+        resizeHandler={action('resize')}
+        width={this.state.width}
+        {...this.props}
         drawers={[
+          ...this.props.drawers,
           (<AkSearchDrawer
             backIcon={backIcon}
             isOpen={this.state.openDrawer === 'search'}
@@ -224,16 +237,6 @@ export default class BasicNavigation extends PureComponent {
             {this.props.createDrawerContent}
           </AkCreateDrawer>),
         ]}
-        isOpen={this.state.isOpen}
-        onCreateDrawerOpen={() => { this.openDrawer('create'); }}
-        onResize={this.resize}
-        onResizeStart={action('resizeStart')}
-        onSearchDrawerOpen={() => { this.openDrawer('search'); }}
-        openDrawer={this.state.openDrawer}
-        position="right bottom"
-        resizeHandler={action('resize')}
-        width={this.state.width}
-        {...this.props}
       >
         {this.props.children}
       </Navigation>

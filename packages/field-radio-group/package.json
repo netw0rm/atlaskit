@@ -1,19 +1,21 @@
 {
   "name": "@atlaskit/field-radio-group",
-  "version": "1.2.1",
+  "version": "1.6.0",
   "config": {
     "access": "public"
   },
   "description": "A radio group React component used for selecting discrete values in a form",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Radio Group"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/field-radio-group",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/field-radio-group; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
     "dist"

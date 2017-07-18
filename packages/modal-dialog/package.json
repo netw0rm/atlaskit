@@ -1,20 +1,22 @@
 {
   "name": "@atlaskit/modal-dialog",
-  "version": "2.1.2",
+  "version": "2.5.0",
   "config": {
     "access": "public"
   },
   "description": "A React component that displays content in a layer blocking the interaction with the page.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Modal Dialog"
   },
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/modal-dialog; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/modal-dialog; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
     "dist"

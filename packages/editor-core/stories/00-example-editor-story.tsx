@@ -3,9 +3,8 @@ import * as React from 'react';
 
 import Editor from './editor';
 import ToolsDrawer from './ToolsDrawer';
-import { name, version } from '../package.json';
+import { name } from '../package.json';
 import * as v1schema from '../dist/json-schema/v1/full.json';
-import { storyDecorator } from '../src/test-helper';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
@@ -29,19 +28,18 @@ class DemoEditor extends React.PureComponent<any, any> {
   }
 
   render() {
-    const {mediaProvider, mentionProvider, emojiProvider} = this.props;
+    const {mentionProvider, emojiProvider} = this.props;
     return (
       <Editor
         analyticsHandler={analyticsHandler}
         onCancel={CANCEL_ACTION}
         onSave={SAVE_ACTION}
         onChange={this.onChange}
-        mediaProvider={mediaProvider}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
         isExpandedByDefault={true}
         ref={this.handleEditorRef}
-        devTools={true}
+        devTools={false}
       />
     );
   }

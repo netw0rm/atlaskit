@@ -1,18 +1,19 @@
 {
   "name": "@atlaskit/tag",
-  "version": "2.1.4",
+  "version": "2.5.0",
   "config": {
     "access": "public"
   },
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index",
   "ak:component": {
     "name": "Tag"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tag; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/tag; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

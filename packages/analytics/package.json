@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "config": {
     "access": "public"
   },
@@ -15,7 +15,9 @@
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/analytics; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {},
   "dependencies": {
     "prop-types": "^15.5.10"
@@ -34,5 +36,11 @@
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
-  "keywords": ["atlaskit", "ui", "analytics", "react", "component"]
+  "keywords": [
+    "atlaskit",
+    "ui",
+    "analytics",
+    "react",
+    "component"
+  ]
 }

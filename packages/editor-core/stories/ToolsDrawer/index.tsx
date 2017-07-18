@@ -3,8 +3,6 @@ import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-
 import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
 
 import { Content } from './../styles';
 
@@ -70,15 +68,6 @@ export default class ToolsDrawer extends React.Component<any, State> {
     };
   }
 
-  private switchProvider = (providerType, providerName) => {
-    this.setState({ [providerType]: providerName });
-  }
-
-  private reloadEditor = () => {
-    this.setState({ editorEnabled: false }, () => {
-      this.setState({ editorEnabled: true });
-    });
-  }
 
   private onChange = editorView => {
     this.setState({
@@ -87,79 +76,21 @@ export default class ToolsDrawer extends React.Component<any, State> {
   }
 
   render() {
-    const { mentionProvider, emojiProvider, mediaProvider, jsonDocument, editorEnabled } = this.state;
+    const { mentionProvider, emojiProvider, mediaProvider, editorEnabled } = this.state;
     return (
       <Content>
-        <div style={{ padding: '5px 0'}}>
-          ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
+        <div>
+          {
+            editorEnabled ?
+            (this.props.renderEditor({
+              mediaProvider: providers.mediaProvider[mediaProvider],
+              mentionProvider: providers.mentionProvider[mentionProvider],
+              emojiProvider: providers.emojiProvider[emojiProvider],
+              onChange: this.onChange
+            })) :
+            ''
+          }
         </div>
-        {
-          editorEnabled ?
-          (this.props.renderEditor({
-            mediaProvider: providers.mediaProvider[mediaProvider],
-            mentionProvider: providers.mentionProvider[mentionProvider],
-            emojiProvider: providers.emojiProvider[emojiProvider],
-            onChange: this.onChange
-          })) :
-          ''
-        }
-        <div className="toolsDrawer">
-          <div>
-            <ButtonGroup>
-              <label>Mention provider: </label>
-              {Object.keys(providers.mentionProvider).map((providerName) => (
-                <Button
-                  key={`mentionProvider-${providerName}`}
-                  onClick={this.switchProvider.bind(this, 'mentionProvider', providerName)}
-                  appearance={providerName === mentionProvider ? 'primary' : 'default'}
-                  theme="dark"
-                  spacing="compact"
-                >
-                  {providerName}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </div>
-          <div>
-            <ButtonGroup>
-              <label>Media provider: </label>
-              {Object.keys(providers.mediaProvider).map((providerName) => (
-                <Button
-                  key={`mediaProvider-${providerName}`}
-                  onClick={this.switchProvider.bind(this, 'mediaProvider', providerName)}
-                  appearance={providerName === mediaProvider ? 'primary' : 'default'}
-                  theme="dark"
-                  spacing="compact"
-                >
-                  {providerName}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </div>
-          <div>
-            <ButtonGroup>
-              <label>Emoji provider: </label>
-              {Object.keys(providers.emojiProvider).map((providerName) => (
-                <Button
-                  key={`emojiProvider-${providerName}`}
-                  onClick={this.switchProvider.bind(this, 'emojiProvider', providerName)}
-                  appearance={providerName === emojiProvider ? 'primary' : 'default'}
-                  theme="dark"
-                  spacing="compact"
-                >
-                  {providerName}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </div>
-          <div>
-            <Button onClick={this.reloadEditor} theme="dark" spacing="compact">
-              Reload Editor
-            </Button>
-          </div>
-        </div>
-        <legend>JSON output:</legend>
-        <pre>{jsonDocument}</pre>
       </Content>
     );
   }

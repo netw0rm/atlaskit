@@ -48,7 +48,6 @@ class DemoEditor extends React.PureComponent<any, any> {
 }
 
 storiesOf(name, module)
-  .addDecorator(storyDecorator(version))
   .add('Example editor', () => (
     <ToolsDrawer
       // tslint:disable-next-line:jsx-no-lambda

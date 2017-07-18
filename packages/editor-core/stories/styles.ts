@@ -15,6 +15,19 @@ import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
 export const Content = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  & > div {
+    height: auto;
+    width: 80%;
+    max-width: 700px;
+  }
+
   & .ProseMirror {
     outline: none;
     white-space: pre-wrap;

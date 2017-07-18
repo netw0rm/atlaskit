@@ -15,30 +15,39 @@ export type Position = {|
 
 export type DimensionFragment = {|
   top: number,
-  right: number,
-  bottom: number,
   left: number,
+  bottom: number,
+  right: number,
   width: number,
   height: number,
+  center: Position,
 |}
 
-export type Dimension = {|
-  id: Id,
+export type DraggableDimensionFragment = {|
   withMargin: DimensionFragment,
   withoutMargin: DimensionFragment,
-  center: Position,
-  // static for draggables - live for droppables
-  scrollOffset: Position,
-  // only required for draggables
-  parentId: ?Id,
 |}
 
+export type DraggableDimension = {|
+  id: DraggableId,
+  droppableId: DroppableId,
+  withDroppableScroll: DraggableDimensionFragment,
+  withoutDroppableScroll: DraggableDimensionFragment,
+|}
+
+export type DroppableDimension = {|
+  id: DroppableId,
+  scroll: Position,
+  withMargin: DimensionFragment,
+  withoutMargin: DimensionFragment,
+|}
 export type DraggableLocation = {|
   droppableId: DroppableId,
   index: number
 |};
 
-export type DimensionMap = { [key: Id]: Dimension };
+export type DraggableDimensionMap = { [key: DraggableId]: DraggableDimension };
+export type DroppableDimensionMap = { [key: DroppableId]: DroppableDimension };
 
 export type DragMovement = {|
   draggables: DraggableId[],
@@ -59,7 +68,7 @@ export type InitialDrag = {|
   center: Position,
   parentScroll: Position,
   // TODO: is this needed?
-  dimension: Dimension,
+  dimension: DraggableDimension,
 |}
 
 export type CurrentDrag = {|
@@ -95,8 +104,8 @@ export type Phase = 'IDLE' | 'COLLECTING_DIMENSIONS' | 'DRAGGING' | 'DROP_ANIMAT
 
 export type DimensionState = {|
   request: ?TypeId,
-  draggable: DimensionMap,
-  droppable: DimensionMap,
+  draggable: DraggableDimensionMap,
+  droppable: DroppableDimensionMap,
 |};
 
 export type DropState = {|

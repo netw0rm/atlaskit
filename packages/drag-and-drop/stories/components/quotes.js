@@ -75,4 +75,4 @@ const quotes: Quote[] = [
   },
 ];
 
-export default quotes;
+export default getQuotes(20);

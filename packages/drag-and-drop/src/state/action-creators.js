@@ -1,9 +1,11 @@
 // @flow
 import type {
   DraggableId,
+  DroppableId,
   DropResult,
   TypeId,
-  Dimension,
+  DraggableDimension,
+  DroppableDimension,
   Position,
   Dispatch,
   State,
@@ -58,24 +60,41 @@ const completeLift = (id: DraggableId,
 
 export type PublishDraggableDimensionAction = {|
   type: 'PUBLISH_DRAGGABLE_DIMENSION',
-  payload: Dimension
+  payload: DraggableDimension
 |}
 
 export const publishDraggableDimension =
-  (dimension: Dimension): PublishDraggableDimensionAction => ({
+  (dimension: DraggableDimension): PublishDraggableDimensionAction => ({
     type: 'PUBLISH_DRAGGABLE_DIMENSION',
     payload: dimension,
   });
 
 export type PublishDroppableDimensionAction = {|
   type: 'PUBLISH_DROPPABLE_DIMENSION',
-  payload: Dimension
+  payload: DroppableDimension
 |}
 
 export const publishDroppableDimension =
-  (dimension: Dimension): PublishDroppableDimensionAction => ({
+  (dimension: DroppableDimension): PublishDroppableDimensionAction => ({
     type: 'PUBLISH_DROPPABLE_DIMENSION',
     payload: dimension,
+  });
+
+export type UpdateDroppableDimensionScrollAction = {|
+  type: 'UPDATE_DROPPABLE_DIMENSION_SCROLL',
+  payload: {
+    id: DroppableId,
+    offset: Position,
+  }
+|}
+
+export const updateDroppableDimensionScroll =
+  (id: DroppableId, offset: Position): UpdateDroppableDimensionScrollAction => ({
+    type: 'UPDATE_DROPPABLE_DIMENSION_SCROLL',
+    payload: {
+      id,
+      offset,
+    },
   });
 
 export type MoveAction = {|

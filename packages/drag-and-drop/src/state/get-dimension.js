@@ -23,7 +23,7 @@ export default (
   clientRect: ClientRect,
   margin: Margin,
   scroll: Position,
-  scrollOffset: ?Position,
+  scrollOffset: ?Position
 ): Dimension => {
   const { top, right, bottom, left, width, height } = clientRect;
 
@@ -33,16 +33,16 @@ export default (
   // https://stackoverflow.com/a/27129257/1374236
   const withScroll = {
     top: top + scroll.y,
-    right: right + scroll.x,
     left: left + scroll.x,
     bottom: bottom + scroll.y,
+    right: right + scroll.x,
   };
 
   const withoutMargin: DimensionFragment = {
     top: withScroll.top,
-    right: withScroll.right,
     left: withScroll.left,
     bottom: withScroll.bottom,
+    right: withScroll.right,
     width,
     height,
   };

@@ -2,10 +2,14 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import memoizeOne from 'memoize-one';
-import type { Dimension, State, TypeId, ReactClass } from '../../types';
-import type { DispatchProps, MapProps, OwnProps } from './dimension-publisher-types';
+import type { State, TypeId } from '../../types';
+import type { DispatchProps, MapProps, OwnProps } from './droppable-dimension-publisher-types';
 import { storeKey } from '../context-keys';
-import DimensionPublisher from './dimension-publisher';
+import DroppableDimensionPublisher from './droppable-dimension-publisher';
+import {
+  publishDroppableDimension,
+  updateDroppableDimensionScroll,
+} from '../../state/action-creators';
 
 const requestDimensionSelector =
   (state: State): ?TypeId => state.dimension.request;
@@ -21,13 +25,9 @@ export const makeSelector = () => {
 
   return createSelector(
     [getOwnType, requestDimensionSelector],
-    (ownType: TypeId, requested: ?TypeId): MapProps => {
-      if (!requested) {
-        return getMapProps(false);
-      }
+    (ownType: TypeId, requested: ?TypeId): MapProps =>
+      getMapProps(ownType === requested)
 
-      return getMapProps(ownType === requested);
-    }
   );
 };
 
@@ -36,15 +36,14 @@ const makeMapStateToProps = () => {
   return (state: State, props: OwnProps) => selector(state, props);
 };
 
-export default (publish: (dimension: Dimension) => void): ReactClass => {
-  const mapDispatchToProps: DispatchProps = {
-    publish,
-  };
-
-  return connect(
-    makeMapStateToProps,
-    mapDispatchToProps,
-    null,
-    { storeKey }
-  )(DimensionPublisher);
+const mapDispatchToProps: DispatchProps = {
+  publish: publishDroppableDimension,
+  updateScroll: updateDroppableDimensionScroll,
 };
+
+export default connect(
+  makeMapStateToProps,
+  mapDispatchToProps,
+  null,
+  { storeKey }
+)(DroppableDimensionPublisher);

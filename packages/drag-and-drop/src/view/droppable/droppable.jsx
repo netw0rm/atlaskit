@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import type { Props, Provided, StateSnapshot, DefaultProps } from './droppable-types';
 import type { DroppableId, HTMLElement } from '../../types';
-import { DroppableDimensionPublisher } from '../dimension-publisher/';
+import DroppableDimensionPublisher from '../droppable-dimension-publisher/';
 import { droppableIdKey } from '../context-keys';
 
 type State = {|
@@ -68,7 +68,7 @@ export default class Droppable extends Component {
 
     return (
       <DroppableDimensionPublisher
-        itemId={this.props.droppableId}
+        droppableId={this.props.droppableId}
         type={this.props.type}
         targetRef={this.state.ref}
       >

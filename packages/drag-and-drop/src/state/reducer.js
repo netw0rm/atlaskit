@@ -3,7 +3,8 @@ import memoizeOne from 'memoize-one';
 import type { TypeId,
   Action,
   State,
-  Dimension,
+  DraggableDimension,
+  DroppableDimension,
   DragImpact,
   DragState,
   DropResult,
@@ -64,7 +65,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
   }
 
   if (action.type === 'PUBLISH_DRAGGABLE_DIMENSION') {
-    const dimension: Dimension = action.payload;
+    const dimension: DraggableDimension = action.payload;
 
     if (state.phase !== 'COLLECTING_DIMENSIONS') {
       console.warn('dimension rejected as no longer requesting dimensions', dimension);
@@ -90,7 +91,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
   }
 
   if (action.type === 'PUBLISH_DROPPABLE_DIMENSION') {
-    const dimension: Dimension = action.payload;
+    const dimension: DroppableDimension = action.payload;
 
     if (state.phase !== 'COLLECTING_DIMENSIONS') {
       console.warn('dimension rejected as no longer requesting dimensions', dimension);
@@ -101,6 +102,8 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       console.error(`dimension already exists for ${dimension.id}`);
       return state;
     }
+
+    // TODO: need to recalc impact
 
     return {
       ...state,
@@ -121,8 +124,12 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return state;
     }
 
-    const { id, type, center, page, parentScroll } = action.payload;
-    const dimension: Dimension = state.dimension.draggable[id];
+    const { id, type, page, parentScroll } = action.payload;
+    const dimension: DraggableDimension = state.dimension.draggable[id];
+
+    // WIP
+    const offset: Position = parentScroll;
+    const center: Position = add(action.payload.center, offset);
 
     const impact: DragImpact = getDragImpact(
       center,
@@ -152,7 +159,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       type,
       // When position: absolute is applied it looses the current
       // scroll parent offset
-      offset: parentScroll,
+      offset,
       center,
       shouldAnimate: false,
     };
@@ -164,6 +171,40 @@ export default (state: State = clean('IDLE'), action: Action): State => {
         initial,
         current,
         impact,
+      },
+    };
+  }
+
+  if (action.type === 'UPDATE_DROPPABLE_DIMENSION_SCROLL') {
+    if (state.phase !== 'DRAGGING') {
+      console.error('cannot update a droppable dimensions scroll when not dragging');
+      return clean();
+    }
+
+    const { id, offset } = action.payload;
+
+    const target: ?DroppableDimension = state.dimension.droppable[id];
+
+    if (!target) {
+      console.error('cannot update a droppable that is not inside of the state', id);
+      return clean();
+    }
+
+    // $ExpectError - flow does not like spread
+    const dimension: DroppableDimension = {
+      ...target,
+      scroll: offset,
+    };
+
+    return {
+      ...state,
+      dimension: {
+        request: state.dimension.request,
+        draggable: state.dimension.draggable,
+        droppable: {
+          ...state.dimension.droppable,
+          [id]: dimension,
+        },
       },
     };
   }

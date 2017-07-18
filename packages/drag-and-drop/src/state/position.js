@@ -13,3 +13,8 @@ export const subtract = (point1: Position, point2: Position): Position => ({
 
 export const isEqual = (point1: Position, point2: Position): boolean =>
   point1.x === point2.x && point1.y === point2.y;
+
+export const center = (point1: Position, point2: Position): Position => ({
+  x: (point1.x + point2.x) / 2,
+  y: (point1.y + point2.y) / 2,
+});

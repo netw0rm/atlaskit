@@ -4,7 +4,7 @@ import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
 import getScrollParent from 'scrollparent';
 import type { Position, InitialDrag, HTMLElement } from '../../types';
-import { DraggableDimensionPublisher } from '../dimension-publisher/';
+import DraggableDimensionPublisher from '../draggable-dimension-publisher/';
 import Moveable from '../moveable/';
 import DragHandle from '../drag-handle';
 import { css } from '../animation';
@@ -291,8 +291,8 @@ export default class Draggable extends Component {
 
     return (
       <DraggableDimensionPublisher
-        itemId={draggableId}
-        parentId={this.context[droppableIdKey]}
+        draggableId={draggableId}
+        droppableId={this.context[droppableIdKey]}
         type={type}
         targetRef={this.state.ref}
       >

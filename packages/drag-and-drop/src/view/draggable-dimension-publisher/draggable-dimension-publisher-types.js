@@ -1,26 +1,30 @@
 // @flow
+
 import type {
-  Dimension,
-  Id,
+  DraggableDimension,
+  DraggableId,
+  DroppableId,
   TypeId,
   ReactElement,
   HTMLElement,
+  Position,
 } from '../../types';
 
 export type MapProps = {|
   shouldPublish: boolean,
+  // null when not dragging
+  droppableScroll: ?Position,
 |}
 
 export type DispatchProps = {|
-  publish: (dimension: Dimension) => void,
+  publish: (dimension: DraggableDimension) => mixed,
 |}
 
 export type OwnProps = {|
-  itemId: Id,
+  draggableId: DraggableId,
+  droppableId: DroppableId,
   type: TypeId,
-  isScrollAware: boolean,
   targetRef: ?HTMLElement,
-  parentId?: Id,
   children?: ReactElement,
 |}
 

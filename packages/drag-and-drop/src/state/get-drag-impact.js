@@ -2,8 +2,10 @@
 import type { DraggableId,
   DroppableId,
   DragMovement,
-  Dimension,
-  DimensionMap,
+  DraggableDimension,
+  DroppableDimension,
+  DraggableDimensionMap,
+  DroppableDimensionMap,
   DragImpact,
   Position } from '../types';
 import getDroppableOver from './get-droppable-over';
@@ -13,11 +15,13 @@ import noImpact from './no-impact';
 // It is the responsiblity of this function to return
 // the impact of a drag
 
+const origin: Position = { x: 0, y: 0 };
+
 export default (
   newCenter: Position,
   draggableId: DraggableId,
-  draggableDimensions: DimensionMap,
-  droppableDimensions: DimensionMap
+  draggableDimensions: DraggableDimensionMap,
+  droppableDimensions: DroppableDimensionMap
 ): DragImpact => {
   const droppableId: ?DroppableId = getDroppableOver(
     newCenter, droppableDimensions
@@ -28,21 +32,27 @@ export default (
     return noImpact;
   }
 
-  const draggingDimension: Dimension = draggableDimensions[draggableId];
-  const droppableDimension: Dimension = droppableDimensions[droppableId];
+  const draggingDimension: DraggableDimension = draggableDimensions[draggableId];
+  const droppableDimension: DroppableDimension = droppableDimensions[droppableId];
+  const scrollOffset: Position = droppableDimension.scroll;
 
-  const isMovingForward: boolean = newCenter.y - draggingDimension.center.y > 0;
+  // TEMP
+  return noImpact;
+
+  const isMovingForward: boolean = newCenter.y + (Math.abs(scrollOffset.y)) - draggingDimension.center.y > 0;
+  // console.log('is moving forward', isMovingForward, 'scrollOffset', scrollOffset);
 
   // TODO: if not in the same home dimensions then can only move forward
 
   // get all draggables inside the draggable
-  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(
+  // TODO: now breaking memoization because of scrollTop :()
+  const insideDroppable: DraggableDimension[] = getDraggablesInsideDroppable(
     droppableDimension,
     draggableDimensions
   );
 
   const moved: DraggableId[] = insideDroppable
-    .filter((dimension: Dimension): boolean => {
+    .filter((dimension: DraggableDimension): boolean => {
       // do not want to move the item that is dragging
       if (dimension === draggingDimension) {
         return false;
@@ -66,7 +76,7 @@ export default (
 
       return newCenter.y < dimension.withMargin.bottom;
     })
-    .map((dimension: Dimension): DroppableId => dimension.id);
+    .map((dimension: DraggableDimension): DroppableId => dimension.id);
 
   const startIndex = insideDroppable.indexOf(draggingDimension);
   const index: number = (() => {

@@ -23,14 +23,6 @@ export default class MockConfluenceCrossSellProvider extends Component {
           notePlaceholder: 'I would like to try Confluence because…',
         },
         startTrial: {
-          grantHeader: 'Who should have access?',
-          grantDefaultAccess: (
-            <p>
-              <strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.
-            </p>
-          ),
-          grantLearnMoreLinkText: 'Learn more',
-          grantNotifyUsers: 'Notify these users',
           grantOptionItems: [
             {
               value: 'everyone',
@@ -49,7 +41,6 @@ export default class MockConfluenceCrossSellProvider extends Component {
           grantUserSelectPlaceholder: 'Start typing a username',
           grantUsersOption: 'specificUsers',
           grantChooseOption: 'Choose an option',
-          grantAffectBill: 'How will this affect my bill?',
           alreadyStartedHeading: 'You already have Confluence',
           alreadyStartedMessage: (
             <div>

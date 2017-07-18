@@ -6,7 +6,11 @@ import mockMessageProxy from './mockMessageProxy';
 
 const setupStorybookAnalytics = children =>
   <IntlProvider locale="en" messages={mockMessageProxy}>
-    <AnalyticsListener onEvent={action('AnalyticsListener::onEvent')} match="growth">
+    <AnalyticsListener
+      onEvent={action('AnalyticsListener::onEvent')}
+      match="cross-flow"
+      matchPrivate
+    >
       <div>
         {children}
       </div>

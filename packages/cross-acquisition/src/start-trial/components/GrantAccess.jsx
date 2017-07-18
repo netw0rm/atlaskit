@@ -7,8 +7,7 @@ import Select from '@atlaskit/multi-select';
 import Spinner from '@atlaskit/spinner';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
-
-import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import { FormattedMessage } from 'react-intl';
 
 import ProgressBar from './ProgressBar';
 import ErrorFlag from './ErrorFlag';
@@ -27,6 +26,11 @@ import AffectMyBillText from '../styled/AffectMyBillText';
 import ChangeButton from '../styled/ChangeButton';
 import SpinnerDiv from '../styled/SpinnerDiv';
 
+import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import i18nId from '../../common/i18nId';
+
+const i18n = i18nId('grant-access');
+
 export class GrantAccessBase extends Component {
   static propTypes = {
     progress: PropTypes.number,
@@ -35,10 +39,6 @@ export class GrantAccessBase extends Component {
     userSelectIsInvalid: PropTypes.bool,
     changeUsers: PropTypes.bool,
     defaultSelectedRadio: PropTypes.string,
-    heading: PropTypes.string,
-    defaultAccess: PropTypes.node,
-    learnMoreLinkText: PropTypes.string,
-    notifyUsers: PropTypes.string,
     optionItems: PropTypes.arrayOf(
       PropTypes.shape({
         value: PropTypes.string,
@@ -48,7 +48,6 @@ export class GrantAccessBase extends Component {
     userSelectPlaceholder: PropTypes.string,
     usersOption: PropTypes.string,
     chooseOption: PropTypes.string,
-    affectBill: PropTypes.string,
     spinnerActive: PropTypes.bool,
     continueButtonDisabled: PropTypes.bool,
     onComplete: PropTypes.func.isRequired,
@@ -131,8 +130,8 @@ export class GrantAccessBase extends Component {
       this.setState({
         selectedRadio: usersOption,
         userSelectNoMatchesMessage: this.userSelect.state.items.length
-          ? 'No matches found'
-          : 'There was an issue retrieving your users',
+          ? <FormattedMessage id={i18n`no-matches`} />
+          : <FormattedMessage id={i18n`user-select-error`} />,
       });
     }
   };
@@ -162,17 +161,7 @@ export class GrantAccessBase extends Component {
   });
 
   render() {
-    const {
-      productLogo,
-      heading,
-      defaultAccess,
-      learnMoreLinkText,
-      notifyUsers,
-      optionItems,
-      userSelectPlaceholder,
-      chooseOption,
-      affectBill,
-    } = this.props;
+    const { productLogo, optionItems, userSelectPlaceholder, chooseOption } = this.props;
 
     return (
       <ModalDialog
@@ -194,14 +183,14 @@ export class GrantAccessBase extends Component {
               appearance="primary"
               isDisabled={this.state.continueButtonDisabled}
             >
-              Continue
+              <FormattedMessage id={i18n`continue-button`} />
             </Button>
           </StartTrialFooter>
         }
       >
         <StartTrialDialog>
           <StartTrialHeader>
-            {heading}
+            <FormattedMessage id={i18n`heading`} />
           </StartTrialHeader>
 
           {this.state.changeUsers
@@ -238,24 +227,20 @@ export class GrantAccessBase extends Component {
               </UserSelectDiv>
 
               <AffectMyBillText>
-                {affectBill}
+                <FormattedMessage id={i18n`affect-bill`} />
                 <Button onClick={this.handleLearnMoreClick} appearance="link">
-                  {learnMoreLinkText}
+                  <FormattedMessage id={i18n`learn-more`} />
                 </Button>
               </AffectMyBillText>
             </GrantAccessChangeUsersDiv>
             : <GrantAccessDefaultAccessDiv>
               <GrantAccessTextDiv>
-                {React.isValidElement(defaultAccess)
-                    ? defaultAccess
-                    : <p>
-                      {defaultAccess}
-                    </p>}
+                <FormattedMessage id={i18n`default-access`} />
               </GrantAccessTextDiv>
               <ChangeButton>
                 <Button onClick={this.handleChangeClick} appearance="link">
-                    Change...
-                  </Button>
+                  <FormattedMessage id={i18n`change`} />
+                </Button>
               </ChangeButton>
             </GrantAccessDefaultAccessDiv>}
 
@@ -268,7 +253,7 @@ export class GrantAccessBase extends Component {
               defaultChecked
             />
             <InputLabel htmlFor="notifyUsers">
-              {notifyUsers}
+              <FormattedMessage id={i18n`notify-users`} />
             </InputLabel>
           </StartTrialProgressDiv>
         </StartTrialDialog>
@@ -285,22 +270,16 @@ export class GrantAccessBase extends Component {
 
 export default withCrossSellProvider(
   GrantAccessBase,
-  ({ crossSell: {
-    config: { productLogo, startTrial },
+  ({
+    crossSell: { config: { productLogo, startTrial }, grantAccessToUsers, retrieveJiraUsers },
+  }) => ({
+    productLogo,
+    optionItems: startTrial.grantOptionItems,
+    userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,
+    usersOption: startTrial.grantUsersOption,
+    chooseOption: startTrial.grantChooseOption,
+    defaultSelectedRadio: startTrial.grantDefaultSelectedRadio,
     grantAccessToUsers,
-    retrieveJiraUsers } }) => ({
-      productLogo,
-      heading: startTrial.grantHeader,
-      defaultAccess: startTrial.grantDefaultAccess,
-      learnMoreLinkText: startTrial.grantLearnMoreLinkText,
-      notifyUsers: startTrial.grantNotifyUsers,
-      optionItems: startTrial.grantOptionItems,
-      userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,
-      usersOption: startTrial.grantUsersOption,
-      chooseOption: startTrial.grantChooseOption,
-      affectBill: startTrial.grantAffectBill,
-      defaultSelectedRadio: startTrial.grantDefaultSelectedRadio,
-      grantAccessToUsers,
-      retrieveJiraUsers,
-    })
+    retrieveJiraUsers,
+  })
 );

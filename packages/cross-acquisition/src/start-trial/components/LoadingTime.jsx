@@ -10,17 +10,20 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import ProgressBar from './ProgressBar';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
+import StartTrialHeaderDiv from '../styled/StartTrialHeaderDiv';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import ProgressBarWithIconDiv from '../styled/ProgressBarWithIconDiv';
 import ProgressBarDiv from '../styled/ProgressBarDiv';
 import CenterProgressBarDiv from '../styled/CenterProgressBarDiv';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
 import WhereToFindConfluenceDiv from '../styled/WhereToFindConfluenceDiv';
+import WhereToFindConfluenceImg from '../styled/WhereToFindConfluenceImg';
 import WhereToFindConfluenceSVGDiv from '../styled/WhereToFindConfluenceSVGDiv';
 import WhereToFindConfluenceText from '../styled/WhereToFindConfluenceText';
 
 import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
 import i18nId from '../../common/i18nId';
+import { withAnalytics } from '../../common/components/Analytics';
 
 const i18n = i18nId('loading-product-trial');
 
@@ -32,6 +35,7 @@ export class LoadingTimeBase extends Component {
     goToProduct: PropTypes.func,
     closeLoadingDialog: PropTypes.func,
     confluenceTimedOut: PropTypes.bool,
+    firePrivateAnalyticsEvent: PropTypes.func,
   };
 
   static defaultProps = {
@@ -46,19 +50,23 @@ export class LoadingTimeBase extends Component {
   };
 
   handleGoToProductClick = () => {
+    this.props.firePrivateAnalyticsEvent('cross-flow.loading.screen.go.to.product');
     const { goToProduct, onComplete } = this.props;
     Promise.resolve(goToProduct()).then(onComplete);
   };
 
   handleCloseClick = () => {
+    this.props.firePrivateAnalyticsEvent('cross-flow.loading.screen.close');
     const { closeLoadingDialog, onComplete } = this.props;
     Promise.resolve(closeLoadingDialog()).then(onComplete);
   };
 
   showHeading = () => {
     if (this.state.confluenceTimedOut) {
+      this.props.firePrivateAnalyticsEvent('cross-flow.loading.screen.timed.out');
       return <FormattedMessage id={i18n`error-heading`} />;
     } else if (this.props.progress === 100) {
+      this.props.firePrivateAnalyticsEvent('cross-flow.loading.screen.loading.finished');
       return <FormattedMessage id={i18n`complete-heading`} />;
     }
     return <FormattedMessage id={i18n`loading-heading`} />;
@@ -100,7 +108,12 @@ export class LoadingTimeBase extends Component {
       <ModalDialog
         isOpen
         width="small"
-        header={productLogo}
+        header={
+          <StartTrialHeaderDiv>
+            {productLogo}
+            {this.showProgressBar()}
+          </StartTrialHeaderDiv>
+        }
         footer={
           <StartTrialFooter>
             <Button
@@ -117,13 +130,12 @@ export class LoadingTimeBase extends Component {
         }
       >
         <StartTrialDialog>
-          {this.showProgressBar()}
           <StartTrialHeader>
             {this.showHeading()}
           </StartTrialHeader>
           <LoadingTimeTextDiv>
             <WhereToFindConfluenceSVGDiv>
-              <img
+              <WhereToFindConfluenceImg
                 // TODO replace with proper way of serving SVGs for AtlasKit
                 src="https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/lmp9uitENIE2uALwP2L-0RptjRxiiDMe0atv8gRXyCs/loading_img.svg"
                 alt="app-switcher"
@@ -144,14 +156,16 @@ export class LoadingTimeBase extends Component {
   }
 }
 
-export default withCrossSellProvider(
-  LoadingTimeBase,
-  ({
-    crossSell: { config: { productLogo }, state: { progress }, goToProduct, closeLoadingDialog },
-  }) => ({
-    productLogo,
-    progress,
-    goToProduct,
-    closeLoadingDialog,
-  })
+export default withAnalytics(
+  withCrossSellProvider(
+    LoadingTimeBase,
+    ({
+      crossSell: { config: { productLogo }, state: { progress }, goToProduct, closeLoadingDialog },
+    }) => ({
+      productLogo,
+      progress,
+      goToProduct,
+      closeLoadingDialog,
+    })
+  )
 );

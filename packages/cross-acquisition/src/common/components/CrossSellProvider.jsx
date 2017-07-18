@@ -15,10 +15,6 @@ export const crossSellShape = PropTypes.shape({
       notePlaceholder: PropTypes.string,
     }),
     startTrial: PropTypes.shape({
-      grantHeading: PropTypes.string,
-      grantDefaultAccess: PropTypes.node,
-      grantLearnMoreLinkText: PropTypes.string,
-      grantNotifyUsers: PropTypes.string,
       grantOptionItems: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,
@@ -29,8 +25,6 @@ export const crossSellShape = PropTypes.shape({
       grantUserSelectPlaceholder: PropTypes.string,
       grantUsersOption: PropTypes.string,
       grantChooseOption: PropTypes.string,
-      grantAffectBill: PropTypes.string,
-
       alreadyStartedHeading: PropTypes.string,
       alreadyStartedMessage: PropTypes.node,
       alreadyStartedGetStartedButtonText: PropTypes.string,

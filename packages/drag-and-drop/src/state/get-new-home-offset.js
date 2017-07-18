@@ -2,8 +2,8 @@
 import type {
   DragMovement,
   Position,
-  Dimension,
-  DimensionMap,
+  DraggableDimension,
+  DraggableDimensionMap,
   DraggableId,
 } from '../types';
 
@@ -17,7 +17,7 @@ const origin: Position = {
 export default (
   movement: DragMovement,
   currentOffset: Position,
-  draggableDimensions: DimensionMap,
+  draggableDimensions: DraggableDimensionMap,
 ): Position => {
   // Just animate back to where it started
   if (!movement.draggables.length) {
@@ -26,7 +26,7 @@ export default (
 
   const distance: number = movement.draggables.reduce(
     (previous: number, draggableId: DraggableId): number => {
-      const dimension: Dimension = draggableDimensions[draggableId];
+      const dimension: DraggableDimension = draggableDimensions[draggableId];
       return previous + dimension.withMargin.height;
     }, 0);
 

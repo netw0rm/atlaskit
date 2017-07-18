@@ -176,8 +176,8 @@ export default class Draggable extends Component {
 
     return (
       <Placeholder
-        height={dimension.withoutDroppableScroll.withMargin.height}
-        width={dimension.withoutDroppableScroll.withMargin.width}
+        height={dimension.withMargin.height}
+        width={dimension.withMargin.width}
       />
     );
   }
@@ -223,7 +223,7 @@ export default class Draggable extends Component {
         }
         invariant(initial, 'initial dimension required for dragging');
 
-        const { width, height } = initial.dimension.withoutDroppableScroll.withoutMargin;
+        const { width, height } = initial.dimension.withoutMargin;
         return this.getDraggingStyle(width, height, isDropAnimating, movementStyle);
       })();
 

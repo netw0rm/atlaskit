@@ -4,7 +4,7 @@ import invariant from 'invariant';
 import getWindowScrollPosition from '../get-window-scroll-position';
 import { getDraggableDimension } from '../../state/dimension';
 // eslint-disable-next-line no-duplicate-imports
-import type { Margin } from '../../state/get-dimension';
+import type { Margin } from '../../state/dimension';
 import type { DraggableDimension } from '../../types';
 import type { Props } from './draggable-dimension-publisher-types';
 
@@ -18,9 +18,8 @@ export default class DraggableDimensionPublisher extends Component {
       droppableId,
       targetRef,
     } = this.props;
-    const { droppableScroll } = this.context;
 
-    invariant(targetRef, 'DimensionPublisher cannot calculate a dimension when not attached to the DOM');
+    invariant(targetRef, 'DraggableDimensionPublisher cannot calculate a dimension when not attached to the DOM');
 
     const style = window.getComputedStyle(targetRef);
 
@@ -37,7 +36,6 @@ export default class DraggableDimensionPublisher extends Component {
       targetRef.getBoundingClientRect(),
       margin,
       getWindowScrollPosition(),
-      droppableScroll,
     );
 
     return dimension;

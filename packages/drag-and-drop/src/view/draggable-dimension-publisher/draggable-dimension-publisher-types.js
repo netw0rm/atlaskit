@@ -1,5 +1,4 @@
 // @flow
-
 import type {
   DraggableDimension,
   DraggableId,
@@ -7,13 +6,10 @@ import type {
   TypeId,
   ReactElement,
   HTMLElement,
-  Position,
 } from '../../types';
 
 export type MapProps = {|
   shouldPublish: boolean,
-  // null when not dragging
-  droppableScroll: ?Position,
 |}
 
 export type DispatchProps = {|

@@ -17,13 +17,16 @@ import noImpact from './no-impact';
 // to return the impact of a drag
 
 export default (
+  // used to lookup which droppable you are over
+  page: Position,
+  // used for comparison with other dimensions
   newCenter: Position,
   draggableId: DraggableId,
   draggableDimensions: DraggableDimensionMap,
   droppableDimensions: DroppableDimensionMap
 ): DragImpact => {
   const droppableId: ?DroppableId = getDroppableOver(
-    newCenter, droppableDimensions
+    page, droppableDimensions
   );
 
   // not dragging over anything
@@ -40,7 +43,7 @@ export default (
   );
 
   // TEMP
-  const draggableCenter: Position = draggingDimension.withoutDroppableScroll.withoutMargin.center;
+  const draggableCenter: Position = draggingDimension.withoutMargin.center;
   const isMovingForward: boolean = newCenter.y - draggableCenter.y > 0;
 
   // console.log('is moving forward?', isMovingForward);
@@ -58,7 +61,7 @@ export default (
         return false;
       }
 
-      const fragment: DimensionFragment = dimension.withoutDroppableScroll.withoutMargin;
+      const fragment: DimensionFragment = dimension.withoutMargin;
 
       if (isMovingForward) {
         // 1. item needs to start ahead of the moving item
@@ -94,7 +97,7 @@ export default (
   })();
 
   const amount = index !== startIndex ?
-    draggingDimension.withoutDroppableScroll.withMargin.height :
+    draggingDimension.withMargin.height :
     0;
 
   const movement: DragMovement = {

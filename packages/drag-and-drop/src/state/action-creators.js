@@ -204,13 +204,18 @@ export const drop = (id: DraggableId) =>
     };
 
     const newHomeOffset: Position = getNewHomeOffset(
-      impact.movement, current.offset, state.dimension.draggable
+      impact.movement,
+      current.withoutDroppableScroll.offset,
+      state.dimension.draggable
     );
 
     // Do not animate if you do not need to.
     // This will be the case if either you are dragging with a
     // keyboard or if you manage to nail it just with a mouse.
-    const isAnimationRequired = !isPositionEqual(current.offset, newHomeOffset);
+    const isAnimationRequired = !isPositionEqual(
+      current.withoutDroppableScroll.offset,
+      newHomeOffset
+    );
 
     if (isAnimationRequired) {
       dispatch(animateDrop(newHomeOffset, result));

@@ -139,7 +139,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     };
 
     const impact: DragImpact = getDragImpact(
-      // TODO: is this correct?
+      initialWithoutScroll.page,
       initialWithoutScroll.page,
       id,
       state.dimension.draggable,
@@ -251,7 +251,8 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       center,
     };
 
-    const scroll: Position = negate(droppable.scroll.current);
+    const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
+    const scroll: Position = add(negate(droppable.scroll.current), negate(scrollDiff));
 
     const withDroppableScroll: CurrentDragComponent = {
       offset: add(offset, scroll),
@@ -267,10 +268,10 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       shouldAnimate: false,
     };
 
-    const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
     const point: Position = add(withoutDroppableScroll.center, negate(scrollDiff));
 
     const impact: DragImpact = getDragImpact(
+      page,
       point,
       current.id,
       state.dimension.draggable,

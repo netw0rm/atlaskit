@@ -17,7 +17,7 @@ const Container = styled.div`
   width: 250px;
 
   /* temp */
-  max-height: 100vh;
+  max-height: 120vh;
   overflow-y: scroll;
 `;
 

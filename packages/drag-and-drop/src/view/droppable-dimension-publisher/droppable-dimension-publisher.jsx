@@ -70,10 +70,10 @@ export default class DroppableDimensionPublisher extends Component {
   }
 
   scheduleScrollUpdate = rafScheduler((offset: Position) => {
-    console.log('watching scroll?', this.isWatchingScroll);
-    // if (this.isWatchingScroll) {
-    this.props.updateScroll(this.props.droppableId, offset);
-    // }
+    // might no longer be listening for scroll changes by the time a frame comes back
+    if (this.isWatchingScroll) {
+      this.props.updateScroll(this.props.droppableId, offset);
+    }
   });
 
   onClosestScroll = () => {
@@ -81,21 +81,18 @@ export default class DroppableDimensionPublisher extends Component {
   }
 
   watchScroll = () => {
+    // Do not bother listening to the scroll if there is nothing to listen to
+    if (!this.closestScrollable) {
+      return;
+    }
+
     if (this.isWatchingScroll) {
       console.warn('already watching the scroll');
       return;
     }
 
-    // Do not bother listening to the scroll if there is nothing to list to
-    if (!this.closestScrollable) {
-      return;
-    }
-
-    console.log('adding scroll listener to', this.closestScrollable);
     this.isWatchingScroll = true;
-    console.log('isWatching?', this.isWatchingScroll);
-    // this.closestScrollable.addEventListener('scroll', this.onClosestScroll, { passive: true });
-    this.closestScrollable.addEventListener('scroll', () => this.onClosestScroll(), { passive: true });
+    this.closestScrollable.addEventListener('scroll', this.onClosestScroll, { passive: true });
   }
 
   unwatchScroll = () => {
@@ -121,8 +118,13 @@ export default class DroppableDimensionPublisher extends Component {
     // not change. We need to ensure that it does not publish when it should not.
     const shouldPublish = !this.props.shouldPublish && nextProps.shouldPublish;
 
-    if (!shouldPublish) {
+    // should no longer watch for scrolling
+    if (!nextProps.shouldPublish) {
       this.unwatchScroll();
+      return;
+    }
+
+    if (!shouldPublish) {
       return;
     }
 

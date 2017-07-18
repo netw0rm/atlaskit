@@ -73,27 +73,17 @@ export const getDraggableDimension = (
   clientRect: ClientRect,
   margin: Margin,
   windowScroll: Position,
-  droppableScroll: Position,
 ): DraggableDimension => {
   const withScroll = getWithPosition(clientRect, windowScroll);
   const withScrollAndMargin = getWithMargin(withScroll, margin);
 
-  const withoutDroppableScroll: DraggableDimensionFragment = {
+  const dimension: DraggableDimension = {
+    id,
+    droppableId,
     withoutMargin: getFragment(withScroll),
     withMargin: getFragment(withScrollAndMargin),
   };
 
-  const withDroppableScroll: DraggableDimensionFragment = {
-    withoutMargin: getFragment(withoutDroppableScroll.withoutMargin, droppableScroll),
-    withMargin: getFragment(withoutDroppableScroll.withMargin, droppableScroll),
-  };
-
-  const dimension: DraggableDimension = {
-    id,
-    droppableId,
-    withoutDroppableScroll,
-    withDroppableScroll,
-  };
   return dimension;
 };
 

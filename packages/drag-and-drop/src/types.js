@@ -23,16 +23,11 @@ export type DimensionFragment = {|
   center: Position,
 |}
 
-export type DraggableDimensionFragment = {|
-  withMargin: DimensionFragment,
-  withoutMargin: DimensionFragment,
-|}
-
 export type DraggableDimension = {|
   id: DraggableId,
   droppableId: DroppableId,
-  withDroppableScroll: DraggableDimensionFragment,
-  withoutDroppableScroll: DraggableDimensionFragment,
+  withMargin: DimensionFragment,
+  withoutMargin: DimensionFragment,
 |}
 
 export type DroppableDimension = {|

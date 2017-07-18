@@ -28,7 +28,9 @@
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [],
+  "maintainers": [
+    "Craig P"
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

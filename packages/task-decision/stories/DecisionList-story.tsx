@@ -34,4 +34,7 @@ storiesOf('<DecisionList/>', module)
         Hello <b>world</b>.
       </DecisionItem>
     </DecisionList>
+  ))
+  .add('Empty DecisionList', () => (
+    <DecisionList/>
   ));

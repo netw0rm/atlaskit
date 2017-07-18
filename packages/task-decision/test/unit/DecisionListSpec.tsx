@@ -24,4 +24,12 @@ describe('<DecisionList/>', () => {
     expect(component.find('li').length).to.equal(1);
     expect(component.find(DecisionItem).length).to.equal(1);
   });
+  it('shouldn\'t render list when no items', () => {
+    const component = mount(
+      <DecisionList/>
+    );
+    expect(component.find('ul').length).to.equal(0);
+    expect(component.find('li').length).to.equal(0);
+    expect(component.find(DecisionItem).length).to.equal(0);
+  });
 });

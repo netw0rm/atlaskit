@@ -66,7 +66,7 @@ describe('tasks and decisions - input rules', () => {
     });
 
     it('should not create decisionList inside nested blocks', () => {
-      const { editorView, sel } = editor(doc(blockquote(p('Hello World{<>}'));
+      const { editorView, sel } = editor(doc(blockquote(p('Hello World{<>}'))));
       insertText(editorView, '<> ', sel);
 
       expect(editorView.state.doc).to.deep.equal(

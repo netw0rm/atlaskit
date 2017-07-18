@@ -270,3 +270,5 @@ export const thEmpty = th({})(p(''));
 export const tdCursor = td({})(p('{<>}'));
 export const td11 = createCell(1, 1);
 export const th11 = createHeaderCell(1, 1);
+export const decisionList = nodeFactory(sampleSchema.nodes.decisionList, {});
+export const decisionItem = nodeFactory(sampleSchema.nodes.decisionItem, {});

@@ -35,6 +35,8 @@ export {
 export { mediaGroup } from './nodes/media-group';
 export { table, tableCell, tableHeader, tableRow } from './nodes/tableNodes';
 export { applicationCard } from './nodes/applicationCard';
+export { decisionList } from './nodes/decision-list';
+export { decisionItem } from './nodes/decision-item';
 
 export { createSchema } from './create-schema';
 export { bitbucketSchema } from './bitbucket-schema';

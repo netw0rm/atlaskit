@@ -8,6 +8,7 @@ import {
   textFormattingPlugin,
   mentionsPlugin,
   emojiPlugin,
+  tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
   onChangePlugin,
   mediaPlugin
@@ -44,6 +45,10 @@ export function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.emojiProvider) {
     plugins.push(emojiPlugin);
+  }
+
+  if (props.allowTasksAndDecisions) {
+    plugins.push(tasksAndDecisionsPlugin);
   }
 
   if (props.saveOnEnter) {

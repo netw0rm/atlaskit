@@ -1,18 +1,19 @@
 {
   "name": "@atlaskit/field-range",
-  "version": "2.0.0",
+  "version": "2.4.0",
   "config": {
     "access": "public"
   },
   "description": "Component which renders a beautiful slider and allows to subscribe to value changes. Substitute of the native input[range] element",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Field Range"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/field-range; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/field-range; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

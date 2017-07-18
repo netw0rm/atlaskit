@@ -1,18 +1,19 @@
 {
   "name": "@atlaskit/page",
-  "version": "4.0.1",
+  "version": "4.4.0",
   "config": {
     "access": "public"
   },
   "description": "A component for building page layouts. Also includes the Grid and GridColumn components.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Page"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/page; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/page; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

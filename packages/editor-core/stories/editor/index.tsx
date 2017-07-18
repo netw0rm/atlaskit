@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
-import applyDevTools from 'prosemirror-dev-tools';
 
 import { Chrome } from '../../';
 import blockTypePlugins, { stateKey as blockTypeStateKey } from '../../src/plugins/block-type';
@@ -312,10 +311,6 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         }
       });
-
-      if (this.props.devTools) {
-        applyDevTools(editorView);
-      }
 
       editorView.focus();
 

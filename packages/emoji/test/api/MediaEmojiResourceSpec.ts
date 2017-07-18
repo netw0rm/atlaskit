@@ -268,7 +268,8 @@ describe('MediaEmojiResource', () => {
             imagePath: 'http://media/123.png',
             width: 20,
             height: 30,
-          }
+          },
+          searchable: true
         }
       ]
     };

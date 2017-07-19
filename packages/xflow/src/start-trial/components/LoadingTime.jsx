@@ -50,23 +50,23 @@ export class LoadingTimeBase extends Component {
   };
 
   handleGoToProductClick = () => {
-    this.props.firePrivateAnalyticsEvent('cross-flow.loading.screen.go.to.product');
+    this.props.firePrivateAnalyticsEvent('xflow.loading.screen.go.to.product');
     const { goToProduct, onComplete } = this.props;
     Promise.resolve(goToProduct()).then(onComplete);
   };
 
   handleCloseClick = () => {
-    this.props.firePrivateAnalyticsEvent('cross-flow.loading.screen.close');
+    this.props.firePrivateAnalyticsEvent('xflow.loading.screen.close');
     const { closeLoadingDialog, onComplete } = this.props;
     Promise.resolve(closeLoadingDialog()).then(onComplete);
   };
 
   showHeading = () => {
     if (this.state.confluenceTimedOut) {
-      this.props.firePrivateAnalyticsEvent('cross-flow.loading.screen.timed.out');
+      this.props.firePrivateAnalyticsEvent('xflow.loading.screen.timed.out');
       return <FormattedMessage id={i18n`error-heading`} />;
     } else if (this.props.progress === 100) {
-      this.props.firePrivateAnalyticsEvent('cross-flow.loading.screen.loading.finished');
+      this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
       return <FormattedMessage id={i18n`complete-heading`} />;
     }
     return <FormattedMessage id={i18n`loading-heading`} />;

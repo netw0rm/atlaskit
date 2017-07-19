@@ -1,5 +1,5 @@
 import React from 'react';
-import { RequestTrial, CrossSellProvider } from '@atlaskit/cross-acquisition';
+import { RequestTrial, CrossSellProvider } from '@atlaskit/xflow';
 import { AtlassianLogo } from '@atlaskit/logo';
 
 export default (

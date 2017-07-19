@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { OptOut } from '@atlaskit/cross-acquisition';
+import { OptOut } from '@atlaskit/xflow';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import MockConfluenceCrossSell from './providers/MockConfluenceCrossSellProvider';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
-import { CrossSellProvider } from '@atlaskit/cross-acquisition';
+import { CrossSellProvider } from '@atlaskit/xflow';
 
 const notImplemented = () => {
   throw new Error('Not implemented.');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConfluenceStartTrialProgress } from '@atlaskit/cross-acquisition';
+import { ConfluenceStartTrialProgress } from '@atlaskit/xflow';
 
 export default (
   <ConfluenceStartTrialProgress />

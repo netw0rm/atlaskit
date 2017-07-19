@@ -1,5 +1,5 @@
 {
-  "name": "@atlaskit/cross-acquisition",
+  "name": "@atlaskit/xflow",
   "version": "2.0.0",
   "config": {
     "access": "public"
@@ -57,7 +57,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/cross-acquisition": "*",
+    "@atlaskit/xflow": "*",
     "akutil-common-test": "*",
     "chai-as-promised": "^7.1.1",
     "fetch-mock": "^5.12.1"

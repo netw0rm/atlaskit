@@ -1,0 +1,27 @@
+{
+  "fr_FR": {
+    "test": "Demande d'essai"
+  },
+  "en_US": {
+    "xflow.confirm-trial.heading": "Start your 30 day trial",
+    "xflow.confirm-trial.message": "Once your trial finishes, billing with start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance.",
+    "xflow.confirm-trial.confirm-button": "Confirm",
+    "xflow.confirm-trial.cancel-button": "Cancel",
+    "xflow.grant-access.no-matches": "No matches found",
+    "xflow.grant-access.user-select-error": "There was an issue retrieving your users",
+    "xflow.grant-access.heading": "Who should have access?",
+    "xflow.grant-access.affect-bill": "How will this affect my bill?",
+    "xflow.grant-access.learn-more": "Learn more",
+    "xflow.grant-access.default-access": "Everyone in JIRA Software will have access to Confluence.",
+    "xflow.grant-access.change": "Change...",
+    "xflow.grant-access.notify-users": "Notify these users",
+    "xflow.grant-access.continue-button": "Continue",
+    "xflow.loading-product-trial.info-heading": "Where to find Confluence",
+    "xflow.loading-product-trial.info-text": "Hit the menu icon near your profile image to switch between products.",
+    "xflow.loading-product-trial.go-to-product-button": "Go to Confluence",
+    "xflow.loading-product-trial.close-button": "Close",
+    "xflow.loading-product-trial.error-heading": "Uh oh. That didn't work...",
+    "xflow.loading-product-trial.loading-heading": "We're turning some cogs...",
+    "xflow.loading-product-trial.complete-heading": "You're good to go!"
+  }
+}

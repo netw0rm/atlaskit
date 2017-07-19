@@ -8,7 +8,7 @@ const setupStorybookAnalytics = children =>
   <IntlProvider locale="en" messages={mockMessageProxy}>
     <AnalyticsListener
       onEvent={action('AnalyticsListener::onEvent')}
-      match="cross-flow"
+      match="xflow"
       matchPrivate
     >
       <div>

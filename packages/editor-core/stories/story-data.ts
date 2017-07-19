@@ -153,7 +153,7 @@ export const document = {
         {
           type: 'mention',
           attrs: {
-            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+            id: '1',
             text: '@Oscar Wallhult'
           }
         },
@@ -179,7 +179,7 @@ export const document = {
           type: 'mention',
           attrs: {
             text: '@mention',
-            id: 'mention'
+            id: '2'
           }
         },
         {
@@ -205,10 +205,35 @@ export const document = {
         {
           type: 'mention',
           attrs: {
-            id: 'ABCDE-ABCDE-ABCDE-FGHI',
+            id: '1',
             accessLevel: 'APPLICATION'
           },
           text: '@oscar'
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Mentions with generic ids'
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'here',
+            accessLevel: 'CONTAINER'
+          },
+          text: '@here'
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'all',
+            accessLevel: 'CONTAINER'
+          },
+          text: '@all'
         }
       ]
     },

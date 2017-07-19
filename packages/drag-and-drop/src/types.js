@@ -58,33 +58,37 @@ export type DragImpact = {|
   destination: ?DraggableLocation
 |}
 
-export type InitialDragComponent = {|
-  page: Position,
-  center: Position,
-|}
-
 export type InitialDrag = {|
   source: DraggableLocation,
-  // client + window scroll
-  withoutDroppableScroll: InitialDragComponent,
-  withDroppableScroll: InitialDragComponent,
+  // client + window scroll (page)
+  withoutDroppableScroll: {|
+    page: Position,
+    center: Position,
+  |},
+  // client + window scroll + droppable scroll
+  withDroppableScroll: {|
+    center: Position,
+  |},
   // droppableScroll: Position,
   // required for placeholder positioning
   dimension: DraggableDimension,
 |}
 
-export type CurrentDragComponent = {|
-  // the center position of the current item
-  center: Position,
-  // how far the element has moved from its original selection (page).
-  offset: Position,
-|}
-
 export type CurrentDrag = {|
   id: DraggableId,
   type: TypeId,
-  withoutDroppableScroll: CurrentDragComponent,
-  withDroppableScroll: CurrentDragComponent,
+  withoutDroppableScroll: {|
+    // the current mouse position of the dragging item
+    page: Position,
+    // the center position of the current item
+    center: Position,
+    // how far the element has moved from its original selection (page).
+    offset: Position,
+  |},
+  withDroppableScroll: {|
+    center: Position,
+    offset: Position,
+  |},
   shouldAnimate: boolean,
 |}
 

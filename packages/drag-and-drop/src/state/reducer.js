@@ -10,9 +10,7 @@ import type { TypeId,
   DragState,
   DropResult,
   CurrentDrag,
-  CurrentDragComponent,
   InitialDrag,
-  InitialDragComponent,
   PendingDrop,
   Phase,
   DraggableLocation,
@@ -39,6 +37,68 @@ const clean = memoizeOne((phase: ?Phase): State => {
 
   return state;
 });
+
+// TODO: move into function
+const move = (state: State, page: Position): State => {
+  if (state.phase !== 'DRAGGING') {
+    console.error('cannot move while not dragging');
+    return clean();
+  }
+
+  if (state.drag == null) {
+    console.error('cannot move if there is no drag information');
+    return clean();
+  }
+
+  const previous: CurrentDrag = state.drag.current;
+  const initial: InitialDrag = state.drag.initial;
+  const droppable: DroppableDimension = state.dimension.droppable[initial.source.droppableId];
+
+  const offset: Position = subtract(page, initial.withoutDroppableScroll.page);
+  const center: Position = add(offset, initial.withoutDroppableScroll.center);
+
+  const withoutDroppableScroll = {
+    page,
+    offset,
+    center,
+  };
+
+  const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
+  const scroll: Position = add(negate(droppable.scroll.current), negate(scrollDiff));
+
+  const withDroppableScroll = {
+    offset: add(offset, scroll),
+    center: add(center, scroll),
+  };
+
+  const current: CurrentDrag = {
+    id: previous.id,
+    type: previous.type,
+    withoutDroppableScroll,
+    withDroppableScroll,
+      // not animating small movements
+    shouldAnimate: false,
+  };
+
+  const point: Position = add(withoutDroppableScroll.center, negate(scrollDiff));
+
+  const impact: DragImpact = getDragImpact(
+      withoutDroppableScroll.center,
+      point,
+      current.id,
+      state.dimension.draggable,
+      state.dimension.droppable,
+    );
+
+  const drag: DragState = {
+    initial, impact, current,
+  };
+
+  return {
+    ...state,
+    drag,
+  };
+};
 
 export default (state: State = clean('IDLE'), action: Action): State => {
   if (action.type === 'BEGIN_LIFT') {
@@ -131,19 +191,19 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     const draggable: DraggableDimension = state.dimension.draggable[id];
     const droppable: DroppableDimension = state.dimension.droppable[draggable.droppableId];
 
-    const initialWithoutScroll: InitialDragComponent = {
+    const initialWithoutScroll = {
       page,
       center,
     };
 
-    const initialWithScroll: InitialDragComponent = {
-      page: add(page, droppable.scroll.initial),
+    const initialWithScroll = {
       center: add(center, droppable.scroll.initial),
     };
 
     const impact: DragImpact = getDragImpact(
-      initialWithoutScroll.page,
-      initialWithoutScroll.page,
+      // TODO: verify these values
+      initialWithoutScroll.center,
+      initialWithScroll.center,
       id,
       state.dimension.draggable,
       state.dimension.droppable,
@@ -163,11 +223,12 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       dimension: draggable,
     };
 
-    const currentWithoutScroll: CurrentDragComponent = {
+    const currentWithoutScroll = {
+      page,
       offset: { x: 0, y: 0 },
       center,
     };
-    const currentWithScroll: CurrentDragComponent = {
+    const currentWithScroll = {
       offset: negate(droppable.scroll.initial),
       center: add(center, negate(droppable.scroll.initial)),
     };
@@ -197,6 +258,11 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return clean();
     }
 
+    if (!state.drag) {
+      console.error('invalid store state');
+      return clean();
+    }
+
     const { id, offset } = action.payload;
 
     const target: ?DroppableDimension = state.dimension.droppable[id];
@@ -214,9 +280,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       },
     };
 
-    console.log('updating scroll of dimension to', offset);
-
-    return {
+    const newState: State = {
       ...state,
       dimension: {
         request: state.dimension.request,
@@ -227,6 +291,8 @@ export default (state: State = clean('IDLE'), action: Action): State => {
         },
       },
     };
+
+    return move(newState, state.drag.current.withoutDroppableScroll.page);
   }
 
   if (action.type === 'MOVE') {
@@ -242,53 +308,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const { page } = action.payload;
 
-    const previous: CurrentDrag = state.drag.current;
-    const initial: InitialDrag = state.drag.initial;
-    const droppable: DroppableDimension = state.dimension.droppable[initial.source.droppableId];
-
-    const offset: Position = subtract(page, initial.withoutDroppableScroll.page);
-    const center: Position = add(offset, initial.withoutDroppableScroll.center);
-
-    const withoutDroppableScroll: CurrentDragComponent = {
-      offset,
-      center,
-    };
-
-    const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
-    const scroll: Position = add(negate(droppable.scroll.current), negate(scrollDiff));
-
-    const withDroppableScroll: CurrentDragComponent = {
-      offset: add(offset, scroll),
-      center: add(center, scroll),
-    };
-
-    const current: CurrentDrag = {
-      id: previous.id,
-      type: previous.type,
-      withoutDroppableScroll,
-      withDroppableScroll,
-      // not animating small movements
-      shouldAnimate: false,
-    };
-
-    const point: Position = add(withoutDroppableScroll.center, negate(scrollDiff));
-
-    const impact: DragImpact = getDragImpact(
-      page,
-      point,
-      current.id,
-      state.dimension.draggable,
-      state.dimension.droppable,
-    );
-
-    const drag: DragState = {
-      initial, impact, current,
-    };
-
-    return {
-      ...state,
-      drag,
-    };
+    return move(state, page);
   }
 
   if (action.type === 'MOVE_FORWARD' || action.type === 'MOVE_BACKWARD') {

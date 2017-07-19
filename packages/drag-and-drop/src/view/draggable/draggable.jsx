@@ -190,6 +190,7 @@ export default class Draggable extends Component {
       const style: DraggingStyle = {
         position: 'absolute',
         boxSizing: 'border-box',
+        pointerEvents: 'none',
         zIndex: isDropAnimating ? zIndexOptions.dropAnimating : zIndexOptions.dragging,
         width,
         height,

@@ -15,16 +15,13 @@ const Container = styled.div`
   user-select: none;
   transition: background-color 0.1s ease;
   width: 250px;
-
-  /* temp */
-  max-height: 120vh;
-  overflow-y: scroll;
 `;
 
 export default class List extends Component {
   props: {|
     listId: string,
-    children?: any,
+    children ?: any,
+    style?: Object,
   |}
 
   render() {
@@ -34,6 +31,7 @@ export default class List extends Component {
           <Container
             isDraggingOver={snapshot.isDraggingOver}
             innerRef={provided.innerRef}
+            style={this.props.style}
           >
             {this.props.children}
           </Container>

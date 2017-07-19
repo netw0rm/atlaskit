@@ -259,7 +259,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         break;
       }
       case 'codeBlock': {
-        if (attrs && attrs.language) {
+        if (attrs && attrs.language !== undefined) {
           return {
             type,
             attrs,

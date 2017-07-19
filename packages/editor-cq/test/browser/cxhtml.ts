@@ -1,7 +1,4 @@
-import {
-  MediaNode,
-  Node as PMNode,
-} from '@atlaskit/editor-core';
+import { Node as PMNode } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
@@ -653,7 +650,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
 
     it('should encode/parse media nodes with own attributes', () => {
       const cxhtml = '<p><fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/></p>';
-      const mediaNode: MediaNode = media({
+      const mediaNode = media({
         id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
         type: 'file',
         collection: 'de7ae355-dcf3-4988-9785-bccb835830c4',
@@ -685,7 +682,7 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         fileName: '2017-04-12 07.15.57.jpg',
         fileSize: 95316,
         fileMimeType: 'image/jpeg'
-      }) as MediaNode;
+      });
       const docNode = doc(mediaGroup(mediaNode));
 
       // check that parsing/encoding is working as expected

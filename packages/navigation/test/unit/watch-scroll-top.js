@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import sinon from 'sinon';
 import subscribe from '../../src/watch-scroll-top';
 
@@ -17,7 +16,7 @@ describe('watch scroll top', () => {
     unsubscribeManaged = subscribe(el, fn);
   };
 
-  before(() => {
+  beforeAll(() => { // eslint-disable-line no-undef
     requestAnimationFrame.reset();
   });
 
@@ -36,7 +35,7 @@ describe('watch scroll top', () => {
 
     startManagedSubscription(el, callback);
 
-    expect(callback.calledWith(500)).to.equal(true);
+    expect(callback.calledWith(500)).toBe(true);
   });
 
   it('should execute the callback when the user scrolls', () => {
@@ -47,7 +46,7 @@ describe('watch scroll top', () => {
     triggerScroll(el, 200);
     requestAnimationFrame.step();
 
-    expect(callback.calledWith(200)).to.equal(true);
+    expect(callback.calledWith(200)).toBe(true);
   });
 
   it('should execute the callback if the scroll changes', () => {
@@ -59,12 +58,12 @@ describe('watch scroll top', () => {
     triggerScroll(el, 200);
     requestAnimationFrame.step();
 
-    expect(callback.secondCall.calledWith(200)).to.equal(true);
+    expect(callback.secondCall.calledWith(200)).toBe(true);
 
     triggerScroll(el, 500);
     requestAnimationFrame.step();
 
-    expect(callback.thirdCall.calledWith(500)).to.equal(true);
+    expect(callback.thirdCall.calledWith(500)).toBe(true);
   });
 
   it('should not execute the callback if the scroll has not changed', () => {
@@ -76,12 +75,12 @@ describe('watch scroll top', () => {
     triggerScroll(el, 200);
     requestAnimationFrame.step();
 
-    expect(callback.callCount).to.equal(2);
+    expect(callback.callCount).toBe(2);
 
     triggerScroll(el, 200);
     requestAnimationFrame.step();
 
-    expect(callback.callCount).to.equal(2);
+    expect(callback.callCount).toBe(2);
   });
 
   it('should wait for an animation frame before triggering the returning the scrollTop', () => {
@@ -96,8 +95,8 @@ describe('watch scroll top', () => {
     triggerScroll(el, 400);
     requestAnimationFrame.step();
 
-    expect(callback.firstCall.calledWith(0)).to.equal(true);
-    expect(callback.secondCall.calledWith(400)).to.equal(true);
+    expect(callback.firstCall.calledWith(0)).toBe(true);
+    expect(callback.secondCall.calledWith(400)).toBe(true);
   });
 
   it('should return a function that cancels the subscription', () => {
@@ -106,7 +105,7 @@ describe('watch scroll top', () => {
 
     const unsubscribe = subscribe(el, callback);
 
-    expect(callback.callCount).to.equal(1);
+    expect(callback.callCount).toBe(1);
 
     unsubscribe();
 
@@ -114,7 +113,7 @@ describe('watch scroll top', () => {
     triggerScroll(el, 400);
     requestAnimationFrame.step();
 
-    expect(callback.callCount).to.equal(1);
+    expect(callback.callCount).toBe(1);
   });
 
   it('should cancel any pending animation frames on unsubscribe', () => {
@@ -123,7 +122,7 @@ describe('watch scroll top', () => {
 
     const unsubscribe = subscribe(el, callback);
 
-    expect(callback.callCount).to.equal(1);
+    expect(callback.callCount).toBe(1);
 
     // will create an animation frame
     triggerScroll(el, 400);
@@ -132,6 +131,6 @@ describe('watch scroll top', () => {
     // tick any frames
     requestAnimationFrame.step();
 
-    expect(callback.callCount).to.equal(1);
+    expect(callback.callCount).toBe(1);
   });
 });

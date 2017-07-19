@@ -1,4 +1,3 @@
-import { MediaNode } from '@atlaskit/editor-core';
 import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import schema from '../../src/schema';
 
@@ -39,7 +38,7 @@ export const media = (attrs: {
   fileMimeType?: string;
   publicId?: string;
 }) => {
-  const node = schema.nodes.media.create(attrs) as MediaNode;
+  const node = schema.nodes.media.create(attrs);
 
   if (attrs.fileName) {
     node.fileName = attrs.fileName;

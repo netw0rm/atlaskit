@@ -1,8 +1,6 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { describe, it, beforeEach, afterEach, before } from 'mocha';
+import React, { Component } from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
@@ -12,9 +10,12 @@ import Draggable, { zIndexOptions } from '../../../src/view/draggable/draggable'
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 import Moveable from '../../../src/view/moveable/';
 import Placeholder from '../../../src/view/draggable/placeholder';
+import { css } from '../../../src/view/animation';
 import type {
   OwnProps,
   MapProps,
+  DraggingStyle,
+  NotDraggingStyle,
   DispatchProps,
   Provided,
   StateSnapshot,
@@ -25,12 +26,11 @@ import type {
   DraggableId,
   TypeId,
 } from '../../../src/types';
-import getDimension from '../get-dimension-util';
-import { dispatchWindowMouseEvent, mouseEvent } from '../user-input-util';
-import storeKey from '../../../src/state/get-store-key';
-import createStore from '../../../src/state/create-store';
+import getDimension from '../../utils/get-dimension-util';
+import getContextOptions from '../../utils/get-context-options';
+import { dispatchWindowMouseEvent, mouseEvent } from '../../utils/user-input-util';
 
-class Item extends PureComponent {
+class Item extends Component {
   props: {
     provided: Provided
   }
@@ -111,56 +111,46 @@ const draggingMapProps: MapProps = {
   offset: { x: 75, y: 75 },
 };
 
-const returningHomeMapProps: MapProps = {
+const dropAnimatingMapProps: MapProps = {
   isDropAnimating: true,
-  isDragging: false,
+  isDragging: true,
   canAnimate: true,
   initial: mockInitial,
   offset: { x: 75, y: 75 },
 };
 
-type MountConnected = {
+const dropCompleteMapProps: MapProps = {
+  offset: origin,
+  isDropAnimating: false,
+  isDragging: false,
+  canAnimate: false,
+  initial: null,
+};
+
+type MountConnected = {|
   ownProps?: OwnProps,
   mapProps?: MapProps,
   dispatchProps?: DispatchProps,
-  Component?: any,
-};
+  WrappedComponent?: any,
+|};
 
 const mountDraggable = ({
   ownProps = defaultOwnProps,
   mapProps = notDraggingMapProps,
   dispatchProps = getDispatchPropsStub(),
-  Component = Item,
-}: MountConnected = {}): ReactWrapper => {
-  // Not using this store - just putting it on the context
-  // for any connected components that need it (eg DimensionPublisher)
-  const store = createStore({ onDragEnd: () => { } });
-  const options = {
-    context: {
-      [storeKey]: store,
-    },
-    childContextTypes: {
-      [storeKey]: PropTypes.shape({
-        dispatch: PropTypes.func.isRequired,
-        subscribe: PropTypes.func.isRequired,
-        getState: PropTypes.func.isRequired,
-      }).isRequired,
-    },
-  };
-
-  return mount(
+  WrappedComponent = Item,
+}: MountConnected = {}): ReactWrapper => mount(
     // $ExpectError - using spread for props
-    <Draggable
-      {...ownProps}
-      {...mapProps}
-      {...dispatchProps}
-    >
-      {(provided: Provided, snapshot: StateSnapshot) => (
-        <Component provided={provided} snapshot={snapshot} />
+  <Draggable
+    {...ownProps}
+    {...mapProps}
+    {...dispatchProps}
+  >
+    {(provided: Provided, snapshot: StateSnapshot) => (
+      <WrappedComponent provided={provided} snapshot={snapshot} />
       )}
-    </Draggable>
-    , options);
-};
+  </Draggable>
+, getContextOptions());
 
 const mouseDown = mouseEvent.bind(null, 'mousedown');
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
@@ -207,7 +197,7 @@ const getFromLift = (dispatchProps) => {
 };
 
 const getStubber = stub =>
-  class Stubber extends PureComponent {
+  class Stubber extends Component {
     props: {|
       provided: Provided,
       snapshot: StateSnapshot,
@@ -223,7 +213,7 @@ const getStubber = stub =>
 };
 
 describe('Draggable - unconnected', () => {
-  before(() => {
+  beforeAll(() => { // eslint-disable-line no-undef
     requestAnimationFrame.reset();
   });
 
@@ -231,6 +221,10 @@ describe('Draggable - unconnected', () => {
     if (Element.prototype.getBoundingClientRect.restore) {
       Element.prototype.getBoundingClientRect.restore();
     }
+    requestAnimationFrame.reset();
+  });
+
+  global.afterAll(() => {
     requestAnimationFrame.reset();
   });
 
@@ -260,7 +254,7 @@ describe('Draggable - unconnected', () => {
         ownProps: defaultOwnProps,
         mapProps: notDraggingMapProps,
         dispatchProps,
-        Component: Item,
+        WrappedComponent: Item,
       });
 
       startDragWithHandle(wrapper.find(Item))();
@@ -269,7 +263,7 @@ describe('Draggable - unconnected', () => {
     });
 
     describe('non standard drag handle', () => {
-      class WithNestedHandle extends PureComponent {
+      class WithNestedHandle extends Component {
         props: {|
           provided: Provided,
         |}
@@ -297,7 +291,7 @@ describe('Draggable - unconnected', () => {
           ownProps: defaultOwnProps,
           mapProps: notDraggingMapProps,
           dispatchProps,
-          Component: WithNestedHandle,
+          WrappedComponent: WithNestedHandle,
         });
 
         startDragWithHandle(wrapper.find(WithNestedHandle).find('.can-drag'))();
@@ -311,7 +305,7 @@ describe('Draggable - unconnected', () => {
           ownProps: defaultOwnProps,
           mapProps: notDraggingMapProps,
           dispatchProps,
-          Component: WithNestedHandle,
+          WrappedComponent: WithNestedHandle,
         });
 
         startDragWithHandle(wrapper.find(WithNestedHandle))();
@@ -325,7 +319,7 @@ describe('Draggable - unconnected', () => {
           ownProps: defaultOwnProps,
           mapProps: notDraggingMapProps,
           dispatchProps,
-          Component: WithNestedHandle,
+          WrappedComponent: WithNestedHandle,
         });
 
         startDragWithHandle(wrapper.find(WithNestedHandle).find('.cannot-drag'))();
@@ -691,35 +685,31 @@ describe('Draggable - unconnected', () => {
 
       mountDraggable({
         mapProps: draggingMapProps,
-        Component: Stubber,
+        WrappedComponent: Stubber,
       });
       // finish moving to the initial position
       requestAnimationFrame.flush();
 
       // first call is for the setRef
       const provided: Provided = stub.lastCall.args[0].provided;
+      const style: DraggingStyle = (provided.draggableStyle : any);
 
-      if (!provided.draggableStyle || !provided.draggableStyle.transform) {
-        expect.fail();
-        return;
-      }
-
-      expect(provided.draggableStyle.transform).to.equal(expected);
+      expect(style.transform).to.equal(expected);
     });
 
     it('should move by the provided offset on update', () => {
       const stub = sinon.stub();
       const Stubber = getStubber(stub);
       const offsets: Array<Position> = [
-          { x: 12, y: 3 },
-          { x: 20, y: 100 },
-          { x: -100, y: 20 },
+        { x: 12, y: 3 },
+        { x: 20, y: 100 },
+        { x: -100, y: 20 },
       ];
 
       // initial render
       const wrapper = mountDraggable({
         mapProps: draggingMapProps,
-        Component: Stubber,
+        WrappedComponent: Stubber,
       });
       // flush initial movement
       requestAnimationFrame.flush();
@@ -740,11 +730,8 @@ describe('Draggable - unconnected', () => {
         requestAnimationFrame.step();
 
         const provided: Provided = stub.lastCall.args[0].provided;
-        if (!provided.draggableStyle || !provided.draggableStyle.transform) {
-          expect.fail();
-          return;
-        }
-        expect(provided.draggableStyle.transform).to.equal(expected);
+        const style: DraggingStyle = (provided.draggableStyle: any);
+        expect(style.transform).to.equal(expected);
       });
     });
 
@@ -754,7 +741,7 @@ describe('Draggable - unconnected', () => {
 
       mountDraggable({
         mapProps: draggingMapProps,
-        Component: Stubber,
+        WrappedComponent: Stubber,
       });
       // finish moving to the initial position
       requestAnimationFrame.flush();
@@ -767,49 +754,138 @@ describe('Draggable - unconnected', () => {
     });
 
     describe('is not dragging', () => {
-      let wrapper: ReactWrapper;
-      let provided: Provided;
-      let snapshot: StateSnapshot;
+      describe('not moving out of the way', () => {
+        let wrapper: ReactWrapper;
+        let provided: Provided;
+        let snapshot: StateSnapshot;
 
-      beforeEach(() => {
-        const stub = sinon.stub();
-        wrapper = mountDraggable({
-          mapProps: notDraggingMapProps,
-          Component: getStubber(stub),
+        beforeEach(() => {
+          const stub = sinon.stub();
+          wrapper = mountDraggable({
+            mapProps: notDraggingMapProps,
+            WrappedComponent: getStubber(stub),
+          });
+          provided = stub.lastCall.args[0].provided;
+          snapshot = stub.lastCall.args[0].snapshot;
         });
-        provided = stub.lastCall.args[0].provided;
-        snapshot = stub.lastCall.args[0].snapshot;
-      });
 
-      it('should not render a placeholder', () => {
-        expect(provided.placeholder).to.equal(null);
-      });
+        it('should not render a placeholder', () => {
+          expect(provided.placeholder).to.equal(null);
+        });
 
-      it('should return no draggable style', () => {
-        expect(provided.draggableStyle).to.equal(null);
-      });
+        it('should return animate out of the way with css', () => {
+          const expected: NotDraggingStyle = {
+            transition: css.outOfTheWay,
+            transform: null,
+          };
+          expect(provided.draggableStyle).to.deep.equal(expected);
+        });
 
-      it('should move quickly out of the way if needed', () => {
-        expect(wrapper.find(Moveable).props().speed).to.equal('FAST');
-      });
+        it('should move out of the way without physics', () => {
+          expect(wrapper.find(Moveable).props().speed).to.equal('INSTANT');
+        });
 
-      it('should instantly move out of the way if animation is disabled', () => {
+        it('should instantly move out of the way without css if animation is disabled', () => {
+          const stub = sinon.stub();
+          const CustomStubber = getStubber(stub);
         // $ExpectError - using spread
+          const mapProps: MapProps = {
+            ...notDraggingMapProps,
+            canAnimate: false,
+          };
+          const expected: NotDraggingStyle = {
+            transition: null,
+            transform: null,
+          };
+
+          const customWrapper = mountDraggable({
+            ownProps: disabledOwnProps,
+            mapProps,
+            WrappedComponent: CustomStubber,
+          });
+
+          const customProvided = stub.lastCall.args[0].provided;
+          expect(customWrapper.find(Moveable).props().speed).to.equal('INSTANT');
+          expect(customProvided.draggableStyle).to.deep.equal(expected);
+        });
+
+        it('should let consumers know that the item is not dragging', () => {
+          expect(snapshot.isDragging).to.equal(false);
+        });
+      });
+
+      describe('moving out of the way of a dragging item', () => {
+        let wrapper: ReactWrapper;
+        let provided: Provided;
+        let snapshot: StateSnapshot;
+
+        const offset: Position = { x: 0, y: 200 };
+
+        // $ExpectError - spread
         const mapProps: MapProps = {
           ...notDraggingMapProps,
-          canAnimate: false,
+          offset,
         };
 
-        const customWrapper = mountDraggable({
-          ownProps: disabledOwnProps,
-          mapProps,
+        beforeEach(() => {
+          const stub = sinon.stub();
+          wrapper = mountDraggable({
+            mapProps,
+            WrappedComponent: getStubber(stub),
+          });
+          // let react-motion tick over
+          requestAnimationFrame.step();
+
+          provided = stub.lastCall.args[0].provided;
+          snapshot = stub.lastCall.args[0].snapshot;
         });
 
-        expect(customWrapper.find(Moveable).props().speed).to.equal('INSTANT');
-      });
+        it('should not render a placeholder', () => {
+          expect(provided.placeholder).to.equal(null);
+        });
 
-      it('should let consumers know that the item is not dragging', () => {
-        expect(snapshot.isDragging).to.equal(false);
+        it('should animate out of the way with css', () => {
+          const expected: NotDraggingStyle = {
+            transition: css.outOfTheWay,
+            transform: `translate(${offset.x}px, ${offset.y}px)`,
+          };
+
+          expect(provided.draggableStyle).to.deep.equal(expected);
+        });
+
+        it('should move out of the way without physics', () => {
+          expect(wrapper.find(Moveable).props().speed).to.equal('INSTANT');
+        });
+
+        it('should instantly move out of the way without css if animation is disabled', () => {
+          const stub = sinon.stub();
+          const CustomStubber = getStubber(stub);
+          // $ExpectError - using spread
+          const customProps: MapProps = {
+            ...mapProps,
+            canAnimate: false,
+          };
+          const expected: NotDraggingStyle = {
+            transition: null,
+            transform: `translate(${offset.x}px, ${offset.y}px)`,
+          };
+
+          const customWrapper = mountDraggable({
+            ownProps: disabledOwnProps,
+            mapProps: customProps,
+            WrappedComponent: CustomStubber,
+          });
+          // flush react motion
+          requestAnimationFrame.flush();
+
+          const customProvided = stub.lastCall.args[0].provided;
+          expect(customWrapper.find(Moveable).props().speed).to.equal('INSTANT');
+          expect(customProvided.draggableStyle).to.deep.equal(expected);
+        });
+
+        it('should let consumers know that the item is not dragging', () => {
+          expect(snapshot.isDragging).to.equal(false);
+        });
       });
     });
 
@@ -819,7 +895,7 @@ describe('Draggable - unconnected', () => {
 
         mountDraggable({
           mapProps: draggingMapProps,
-          Component: getStubber(stub),
+          WrappedComponent: getStubber(stub),
         });
 
         const provided: Provided = stub.lastCall.args[0].provided;
@@ -827,39 +903,42 @@ describe('Draggable - unconnected', () => {
         expect(provided.placeholder.type).to.equal(Placeholder);
       });
 
-      it('should be above of draggables that are not dragging', () => {
+      it('should be above Draggables that are not dragging', () => {
+        // dragging item
         const draggingStub = sinon.stub();
         mountDraggable({
           mapProps: draggingMapProps,
-          Component: getStubber(draggingStub),
+          WrappedComponent: getStubber(draggingStub),
         });
         const draggingProvided: Provided = draggingStub.lastCall.args[0].provided;
+        const draggingStyle: DraggingStyle = (draggingProvided.draggableStyle : any);
+        // not dragging item
         const notDraggingStub = sinon.stub();
         mountDraggable({
           mapProps: notDraggingMapProps,
-          Component: getStubber(notDraggingStub),
+          WrappedComponent: getStubber(notDraggingStub),
         });
-
         const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0].provided;
-        if (!draggingProvided.draggableStyle || !draggingProvided.draggableStyle.zIndex) {
-          expect.fail();
-          return;
-        }
-        expect(draggingProvided.draggableStyle.zIndex).to.equal(zIndexOptions.dragging);
-        expect(notDraggingProvided.draggableStyle).to.equal(null);
+        const notDraggingStyle: NotDraggingStyle = (notDraggingProvided.draggableStyle : any);
+
+        expect(draggingStyle.zIndex).to.equal(zIndexOptions.dragging);
+        expect(notDraggingStyle).to.deep.equal({
+          transform: null,
+          transition: css.outOfTheWay,
+        });
       });
 
-      it('should be above Draggables returning to home', () => {
+      it('should be above Draggables that are drop animating', () => {
         const draggingStub = sinon.stub();
         mountDraggable({
           mapProps: draggingMapProps,
-          Component: getStubber(draggingStub),
+          WrappedComponent: getStubber(draggingStub),
         });
         const draggingProvided: Provided = draggingStub.lastCall.args[0].provided;
         const returningHomeStub = sinon.stub();
         mountDraggable({
-          mapProps: returningHomeMapProps,
-          Component: getStubber(returningHomeStub),
+          mapProps: dropAnimatingMapProps,
+          WrappedComponent: getStubber(returningHomeStub),
         });
         const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
 
@@ -873,26 +952,60 @@ describe('Draggable - unconnected', () => {
         const stub = sinon.stub();
         mountDraggable({
           mapProps: draggingMapProps,
-          Component: getStubber(stub),
+          WrappedComponent: getStubber(stub),
         });
         // appeasing flow
         if (!draggingMapProps.initial) {
           throw new Error('invalid data');
         }
         const dimension = draggingMapProps.initial.dimension;
-        const provided: Provided = stub.lastCall.args[0].provided;
-        expect(provided.draggableStyle).to.deep.equal({
+        const expected: DraggingStyle = {
           position: 'absolute',
           zIndex: zIndexOptions.dragging,
           boxSizing: 'border-box',
           width: dimension.withMargin.width,
           height: dimension.withMargin.height,
-          top: dimension.withMargin.top,
-          left: dimension.withMargin.left,
-        });
+          transform: null,
+        };
+
+        const provided: Provided = stub.lastCall.args[0].provided;
+        expect(provided.draggableStyle).to.deep.equal(expected);
       });
 
-      it('should move quickly if it should animate', () => {
+      it('should be positioned in the correct offset while dragging', () => {
+        const stub = sinon.stub();
+        const offset: Position = { x: 10, y: 20 };
+        // $ExpectError - using spread
+        const mapProps: MapProps = {
+          ...draggingMapProps,
+          offset,
+        };
+        mountDraggable({
+          mapProps,
+          WrappedComponent: getStubber(stub),
+        });
+        // release frame for animation
+        requestAnimationFrame.step();
+
+        // appeasing flow
+        if (!draggingMapProps.initial) {
+          throw new Error('invalid data');
+        }
+        const dimension = draggingMapProps.initial.dimension;
+        const expected: DraggingStyle = {
+          position: 'absolute',
+          zIndex: zIndexOptions.dragging,
+          boxSizing: 'border-box',
+          width: dimension.withMargin.width,
+          height: dimension.withMargin.height,
+          transform: `translate(${offset.x}px, ${offset.y}px)`,
+        };
+
+        const provided: Provided = stub.lastCall.args[0].provided;
+        global.expect(provided.draggableStyle).toEqual(expected);
+      });
+
+      it('should move quickly if it can animate', () => {
           // $ExpectError - spread operator on exact type
         const mapProps: MapProps = {
           ...draggingMapProps,
@@ -907,11 +1020,18 @@ describe('Draggable - unconnected', () => {
       });
 
       it('should move instantly if it should not animate', () => {
+        const stub = sinon.stub();
         const wrapper = mountDraggable({
           mapProps: draggingMapProps,
+          WrappedComponent: getStubber(stub),
         });
 
+        const provided: Provided = stub.lastCall.args[0].provided;
+        const style: DraggingStyle = (provided.draggableStyle: any);
         expect(wrapper.find(Moveable).props().speed).to.equal('INSTANT');
+        // this is protected by types -
+        // but being super sure that no css transition is applied by mistake
+        expect(style).to.not.have.property('transition');
       });
 
       it('should let consumers know that the item is dragging', () => {
@@ -919,7 +1039,7 @@ describe('Draggable - unconnected', () => {
 
         mountDraggable({
           mapProps: draggingMapProps,
-          Component: getStubber(stub),
+          WrappedComponent: getStubber(stub),
         });
 
         const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
@@ -927,13 +1047,13 @@ describe('Draggable - unconnected', () => {
       });
     });
 
-    describe('returning to home after drop', () => {
+    describe('drop animating', () => {
       it('should render a placeholder', () => {
         const stub = sinon.stub();
 
         mountDraggable({
-          mapProps: returningHomeMapProps,
-          Component: getStubber(stub),
+          mapProps: dropAnimatingMapProps,
+          WrappedComponent: getStubber(stub),
         });
 
         const provided: Provided = stub.lastCall.args[0].provided;
@@ -946,106 +1066,81 @@ describe('Draggable - unconnected', () => {
         const stub = sinon.stub();
 
         const wrapper = mountDraggable({
-          mapProps: returningHomeMapProps,
-          Component: getStubber(stub),
+          mapProps: dropAnimatingMapProps,
+          WrappedComponent: getStubber(stub),
         });
 
         expect(wrapper.find(Moveable).props().speed).to.equal('STANDARD');
       });
 
       it('should be on top of draggables that are not being dragged', () => {
+        // not dragging
         const notDraggingStub = sinon.stub();
         mountDraggable({
           mapProps: notDraggingMapProps,
-          Component: getStubber(notDraggingStub),
+          WrappedComponent: getStubber(notDraggingStub),
         });
         const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0].provided;
-        const returningHomeStub = sinon.stub();
+        const notDraggingStyle: NotDraggingStyle = (notDraggingProvided.draggableStyle : any);
+        // returning home
+        const dropAnimatingStub = sinon.stub();
         mountDraggable({
-          mapProps: returningHomeMapProps,
-          Component: getStubber(returningHomeStub),
+          mapProps: dropAnimatingMapProps,
+          WrappedComponent: getStubber(dropAnimatingStub),
         });
-        const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
+        const droppingProvided: Provided = dropAnimatingStub.lastCall.args[0].provided;
+        const droppingStyle: DraggingStyle = (droppingProvided.draggableStyle : any);
 
-        // $ExpectError - not checking draggableStyle
-        expect(returningHomeProvided.draggableStyle.zIndex).to.equal(zIndexOptions.dropAnimating);
-        expect(notDraggingProvided.draggableStyle).to.equal(null);
+        expect(droppingStyle.zIndex).to.equal(zIndexOptions.dropAnimating);
+        expect(notDraggingStyle).to.deep.equal({
+          transition: css.outOfTheWay,
+          transform: null,
+        });
       });
 
       it('should be positioned absolutely in the same spot as before', () => {
         const stub = sinon.stub();
         // $ExpectError - initial is nullable
-        const dimension = returningHomeMapProps.initial.dimension;
-
-        mountDraggable({
-          mapProps: returningHomeMapProps,
-          Component: getStubber(stub),
-        });
-
-        const provided: Provided = stub.lastCall.args[0].provided;
-
-        expect(provided.draggableStyle).to.deep.equal({
+        const dimension = dropAnimatingMapProps.initial.dimension;
+        const offset = dropAnimatingMapProps.offset;
+        const expected: DraggingStyle = {
           position: 'absolute',
           boxSizing: 'border-box',
           zIndex: zIndexOptions.dropAnimating,
           width: dimension.withMargin.width,
           height: dimension.withMargin.height,
-          top: dimension.withMargin.top,
-          left: dimension.withMargin.left,
+          transform: `translate(${offset.x}px, ${offset.y}px)`,
+        };
+
+        mountDraggable({
+          mapProps: dropAnimatingMapProps,
+          WrappedComponent: getStubber(stub),
         });
+        // finish the animation
+        requestAnimationFrame.flush();
+
+        const provided: Provided = stub.lastCall.args[0].provided;
+        global.expect(provided.draggableStyle).toEqual(expected);
       });
 
-      it('should let consumers know that the item is no longer dragging', () => {
+      it('should let consumers know that the item is still dragging', () => {
         const stub = sinon.stub();
 
         mountDraggable({
-          mapProps: returningHomeMapProps,
-          Component: getStubber(stub),
+          mapProps: dropAnimatingMapProps,
+          WrappedComponent: getStubber(stub),
         });
 
         const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
-        expect(snapshot.isDragging).to.equal(false);
+        expect(snapshot.isDragging).to.equal(true);
       });
     });
 
-    describe('dropped and return to home animation is finished', () => {
-      // $ExpectError - spead operator and exact type
-      const mapProps: MapProps = {
-        ...returningHomeMapProps,
-        isDropAnimating: false,
-      };
+    describe('drop complete', () => {
       const stub = sinon.stub();
       mountDraggable({
-        mapProps,
-        Component: getStubber(stub),
-      });
-      const provided: Provided = stub.lastCall.args[0].provided;
-      const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
-
-      it('should not return a placeholder', () => {
-        expect(provided.placeholder).to.equal(null);
-      });
-
-      it('should not be moved from its original position', () => {
-        expect(provided.draggableStyle).to.equal(null);
-      });
-
-      it('should let consumers know that the item is not dragging', () => {
-        expect(snapshot.isDragging).to.equal(false);
-      });
-    });
-
-    describe('dropped but no return to home animation is needed', () => {
-      const stub = sinon.stub();
-      // $ExpectError - spread operator and exact type
-      const mapProps: MapProps = {
-        ...returningHomeMapProps,
-        canAnimate: false,
-        isDropAnimating: false,
-      };
-      mountDraggable({
-        mapProps,
-        Component: getStubber(stub),
+        mapProps: dropCompleteMapProps,
+        WrappedComponent: getStubber(stub),
       });
       const provided: Provided = stub.lastCall.args[0].provided;
       const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
@@ -1055,61 +1150,15 @@ describe('Draggable - unconnected', () => {
       });
 
       it('should not be moved from its original position', () => {
-        expect(provided.draggableStyle).to.equal(null);
+        expect(provided.draggableStyle).to.deep.equal({
+          transform: null,
+          transition: null,
+        });
       });
 
       it('should let consumers know that the item is not dragging', () => {
         expect(snapshot.isDragging).to.equal(false);
       });
-    });
-  });
-
-  describe('rendering performance', () => {
-    it('should not call the children function if continuing to not drag', () => {
-      const stub = sinon.stub();
-      const wrapper = mountDraggable({
-        ownProps: defaultOwnProps,
-        mapProps: notDraggingMapProps,
-        Component: getStubber(stub),
-      });
-      expect(stub.callCount).to.equal(1);
-
-      // try a force update
-      wrapper.update();
-      expect(stub.callCount).to.equal(1);
-
-      // try a resetting of props
-      wrapper.setProps({
-        ...defaultOwnProps,
-        ...notDraggingMapProps,
-      });
-      expect(stub.callCount).to.equal(1);
-    });
-
-    it('should not call the children function if continuing to drag', () => {
-      const stub = sinon.stub();
-      const wrapper = mountDraggable({
-        ownProps: defaultOwnProps,
-        mapProps: draggingMapProps,
-        Component: getStubber(stub),
-      });
-      // flushing the original movement
-      requestAnimationFrame.flush();
-
-      // Count will be two because of the setting
-      // of the child ref into state
-      expect(stub.callCount).to.equal(2);
-
-      // try a force update
-      wrapper.update();
-      expect(stub.callCount).to.equal(2);
-
-      // try a resetting of props
-      wrapper.setProps({
-        ...defaultOwnProps,
-        ...draggingMapProps,
-      });
-      expect(stub.callCount).to.equal(2);
     });
   });
 });

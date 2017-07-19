@@ -1,17 +1,16 @@
 // @flow
-import React, { PureComponent } from 'react';
-import { describe, it, afterEach } from 'mocha';
+import React, { Component } from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import DimensionPublisher from '../../../src/view/dimension-publisher/dimension-publisher';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 import type { Margin } from '../../../src/state/get-dimension';
 import type { Id, Dimension, HTMLElement } from '../../../src/types';
 
 const itemId: Id = 'item-1';
 
-class Item extends PureComponent {
+class Item extends Component {
   /* eslint-disable react/sort-comp */
   props: {
     publish: (dimension: Dimension) => void,

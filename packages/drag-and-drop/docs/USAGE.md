@@ -319,6 +319,12 @@ innerRef: (HTMLElement) => void
 
 - `provided.draggableStyle (?DraggableStyle)`: This is an `Object` or `null` that contains an a number of styles that needs to be applied to the `Draggable`. This needs to be applied to the same node that you apply `provided.innerRef` to. The controls the movement of the draggable when it is dragging and not dragging. You are welcome to add your own styles to this object - but please do not remove or replace any of the properties.
 
+**Be careful with position:absolute**
+
+*LTDR*: do not apply any `top`, `left`, `bottom`, `right` styles to the dragging element.
+
+One of the styles of `provided.draggableStyle` is `position:absolute`. This intended position of the element is the original position. No `top`, `left`, `bottom`, `right` values are applied to enable this. Be careful that you are not applying one of these styles (`top`, `left`, `bottom`, `right`) to the element or its positioning will be broken. This is especially true if one of your parents has `position:relative` on it.
+
 ```js
 <Draggable draggableId="draggable-1">
   {(provided, snapshot) => (
@@ -361,20 +367,20 @@ innerRef: (HTMLElement) => void
 **Type information**
 
 ```js
-type DraggableStyle = MovementStyle | (PlacementStyle & MovementStyle);
+type DraggableStyle = DraggingStyle | NotDraggingStyle;
 
-type PlacementStyle = {|
+export type DraggingStyle = {|
   position: 'absolute',
   boxSizing: 'border-box',
   zIndex: ZIndex,
   width: number,
   height: number,
-  top: number,
-  left: number,
+  transform: ?string,
 |}
 
-type MovementStyle = {|
-  transform: string,
+export type NotDraggingStyle = {|
+  transition: ?string,
+  transform: ?string,
 |}
 ```
 
@@ -472,8 +478,10 @@ const myOnClick = (event) => console.log('clicked on', event.target);
       // creating a new onClick function that calls my onClick
       // event as well as the provided one.
       return (event) => {
-        myOnClick(event);
         provided.dragHandleProps.onClick(event);
+        // You may want to check if event.defaultPrevented
+        // is true and optionally fire your handler
+        myOnClick(event);
       }
     })();
 

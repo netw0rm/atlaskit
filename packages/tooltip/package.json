@@ -1,19 +1,21 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "1.2.0",
+  "version": "3.4.0",
   "config": {
     "access": "public"
   },
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Tooltip"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tooltip; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/tooltip; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "types": "src/index.d.ts",
   "files": [
@@ -26,7 +28,7 @@
   },
   "dependencies": {
     "@atlaskit/layer": "^2.1.3",
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.2.1",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"

@@ -54,11 +54,11 @@ export type DrawerProps = {
   /** The drawer contents */
   children: ReactElement,
   /** The header for this Drawer – often the ContainerTitle for a given Container */
-  header: ReactElement,
+  header?: ReactElement,
   /** Set whether the drawer is visible. */
   isOpen: boolean,
   /** Whether the Drawer is full width – used for focus tasks */
-  isFullWidth: boolean,
+  isFullWidth?: boolean,
   /** A function to call when the backIcon button is clicked, or when the blanket
   behind the Drawer is clicked */
   onBackButton: () => mixed,

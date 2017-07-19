@@ -1,8 +1,7 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import {Component, DragEvent as ReactDragEvent, DragEventHandler, WheelEvent} from 'react';
-import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
+import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight, FilmStripListItem} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 
@@ -47,19 +46,19 @@ export type NavigationDirection = 'left' | 'right';
 const minDuration = 0.5;
 const baseAnimationDuration = 0.5;
 const maxAnimationDuration = 1.0;
-const cardPadding = 4;
+const elementPadding = 4;
 const initialPadding = 10;
 
 export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmStripNavigatorState> {
   private wrapperWidth: number;
   private listWidth: number;
-  private numOfCards: number;
-  private cardWidth: number;
   private listElement: HTMLElement;
   private unmounted: boolean;
+  childrenWidths: Array<number>;
 
   constructor(props) {
     super(props);
+    this.childrenWidths = [];
     this.state = {
       showLeft: false,
       showRight: false,
@@ -106,9 +105,9 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     const transitionDuration = `${stateTransistionDuration}s`;
 
     const items = children ? children.map((item, k) => (
-      <li key={item.key || k}>
+      <FilmStripListItem key={item.key || k}>
         {item}
-      </li>
+      </FilmStripListItem>
     )) : null;
 
     return (
@@ -152,7 +151,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   private onWindowResize = (event) => {
-    const parent = ReactDOM.findDOMNode(this).parentElement;
+    const parent = this.listElement.parentElement;
     if (!parent || !this.allowNavigation) { return; }
 
     this.wrapperWidth = parent.getBoundingClientRect().width;
@@ -160,7 +159,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   private get allowNavigation() {
-    return this.numOfCards > 1;
+    return this.childrenLength > 1;
   }
 
   private getDimensions = (el?: HTMLElement) => {
@@ -173,21 +172,32 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     this.listElement = element;
     this.wrapperWidth = element.parentElement.getBoundingClientRect().width;
     this.listWidth = element.getBoundingClientRect().width;
-    this.numOfCards = element.children.length;
 
-    if (!this.allowNavigation) { return; }
+    // We can't use [...element.children] because TS transpile it to children.slice which is not supported
+    const children = Array.prototype.slice.call(element.children);
 
-    if (this.numOfCards !== 0) {
-      const card = element.firstChild as HTMLElement;
-      const totalWidth = card.clientWidth || 0;
-      this.cardWidth = Math.max(totalWidth - (cardPadding + initialPadding), 0);
-    } else {
-      this.cardWidth = 0;
-    }
+    this.saveChildrenWidths(children);
 
-    if (!this.unmounted) {
+    if (!this.unmounted && this.allowNavigation) {
       this.setNewPosition(0, this.state.showTransition);
     }
+  }
+
+  private get childrenLength() {
+    return this.childrenWidths.length;
+  }
+
+  saveChildrenWidths(children: Array<HTMLElement>) {
+    this.childrenWidths = children.map((child, index) => {
+      const width = child.clientWidth || 0;
+      let padding: number = 2 * elementPadding;
+
+      if (index === 0 || index === children.length - 1) {
+        padding = initialPadding + elementPadding;
+      }
+
+      return Math.max(width - padding, 0);
+    });
   }
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {
@@ -258,10 +268,10 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     let minDist = Math.abs(position - start);
     let result = start;
 
-    // Positions between cards
+    // Positions between elements
     let x = accumulator;
-    for (let i = 0; i < this.numOfCards - 1; ++i) {
-      x += (this.cardWidth + 2 * cardPadding);
+    for (let i = 0; i < this.childrenLength - 1; ++i) {
+      x += (this.childrenWidths[i] + 2 * elementPadding);
 
       const dist = Math.abs(position - x);
       if (dist < minDist) {
@@ -280,7 +290,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   private getClosestForLeft(leftPosition: number): number {
-    return this.getClosest(leftPosition, 0, initialPadding - 2 * cardPadding, this.listWidth - initialPadding);
+    return this.getClosest(leftPosition, 0, initialPadding - 2 * elementPadding, this.listWidth - initialPadding);
   }
 
   private getClosestForRight(rightPosition: number): number {

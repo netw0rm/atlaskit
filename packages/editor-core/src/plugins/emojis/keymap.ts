@@ -56,7 +56,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
       return false;
     }
 
-    return emojisPlugin.onTrySelectCurrent();
+    return emojisPlugin.trySelectCurrent();
   }, list);
 
   return keymap(list);

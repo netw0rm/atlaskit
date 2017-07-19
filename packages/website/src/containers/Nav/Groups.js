@@ -43,8 +43,8 @@ export default class Groups extends PureComponent {
   }
 
   render() {
-    const { children } = this.props;
-    const { animationDirection, selectedIndex } = this.state;
+    const { children, selectedIndex } = this.props;
+    const { animationDirection } = this.state;
 
     return (
       <NestedNav animationDirection={animationDirection}>

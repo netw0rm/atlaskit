@@ -1,4 +1,6 @@
+import { MediaState } from '@atlaskit/media-core';
 import { EditorView } from '../../prosemirror';
+import { ErrorReportingHandler } from '../../utils/error-reporter';
 
 export type EditorAppearance = 'tray' | 'mini' | 'midi' | 'maxi';
 
@@ -7,7 +9,11 @@ export interface EditorProps {
 
   allowTextFormatting?: boolean;
   allowMentions?: boolean;
+  allowTasksAndDecisions?: boolean;
   saveOnEnter?: boolean;
+
+  errorReporterHandler?: ErrorReportingHandler;
+  uploadErrorHandler?: (state: MediaState) => void;
 
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;

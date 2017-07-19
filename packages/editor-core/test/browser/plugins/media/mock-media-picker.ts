@@ -3,6 +3,7 @@ import { PickerEvent } from '../../../../src/plugins/media/picker-facade';
 export default class MockMediaPicker {
   public pickerType: string;
   public pickerConfig: any;
+  public extraConfig?: any;
   public activated = false;
   public shown = false;
   public torndown = false;

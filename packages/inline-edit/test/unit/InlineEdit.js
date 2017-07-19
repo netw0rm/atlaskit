@@ -32,17 +32,17 @@ describe('@atlaskit/inline-edit', () => {
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
     const wrapper = mount(<InlineEditStateless {...defaultProps} readView={readView} />);
-    expect(wrapper.find(FieldBase).length).to.equal(1);
+    expect(wrapper.find(FieldBase).length).toBe(1);
     const fieldBase = wrapper.find(FieldBase);
-    expect(fieldBase.contains(readView)).to.equal(true);
+    expect(fieldBase.contains(readView)).toBe(true);
   });
 
   it('should render edit view inside FieldBase when in editing mode', () => {
     const editView = <span>edit</span>;
     const wrapper = mount(<InlineEditStateless {...defaultProps} isEditing editView={editView} />);
-    expect(wrapper.find(FieldBase).length).to.equal(1);
+    expect(wrapper.find(FieldBase).length).toBe(1);
     const fieldBase = wrapper.find(FieldBase);
-    expect(fieldBase.contains(editView)).to.equal(true);
+    expect(fieldBase.contains(editView)).toBe(true);
   });
 
   describe('read-only mode', () => {
@@ -56,7 +56,7 @@ describe('@atlaskit/inline-edit', () => {
           editView={false}
         />
       );
-      expect(wrapper.contains(readView)).to.equal(true);
+      expect(wrapper.contains(readView)).toBe(true);
     });
 
     it('should render the read view when "null" is supplied as the edit view', () => {
@@ -69,7 +69,7 @@ describe('@atlaskit/inline-edit', () => {
           editView={null}
         />
       );
-      expect(wrapper.contains(readView)).to.equal(true);
+      expect(wrapper.contains(readView)).toBe(true);
     });
 
     it('should render the read view when "undefined" is supplied as the edit view', () => {
@@ -82,7 +82,7 @@ describe('@atlaskit/inline-edit', () => {
           editView={undefined}
         />
       );
-      expect(wrapper.contains(readView)).to.equal(true);
+      expect(wrapper.contains(readView)).toBe(true);
     });
   });
 
@@ -96,7 +96,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       wrapper.find(FieldBase).simulate('click');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
 
     it('should not be called when the edit view is clicked', () => {
@@ -109,7 +109,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       wrapper.find(FieldBase).simulate('click');
-      expect(spy.called).to.equal(false);
+      expect(spy.called).toBe(false);
     });
   });
 
@@ -124,7 +124,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       wrapper.find(ConfirmIcon).simulate('click');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     })
   );
 
@@ -139,21 +139,21 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       wrapper.find(CancelIcon).simulate('click');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     })
   );
 
   describe('label', () => {
     it('should set parameter into FieldBase', () => {
       expect(shallow(<InlineEditStateless {...defaultProps} label="test" />).find(Label).prop('label'))
-        .to.equal('test');
+        .toBe('test');
     });
 
     it('should set both isLabelHidden and label parameter into FieldBase', () => {
       const wrapper = shallow(<InlineEditStateless {...defaultProps} label="test" isLabelHidden />);
       const fieldBase = wrapper.find(Label);
-      expect(fieldBase.prop('label')).to.equal('test');
-      expect(fieldBase.prop('isLabelHidden')).to.equal(true);
+      expect(fieldBase.prop('label')).toBe('test');
+      expect(fieldBase.prop('isLabelHidden')).toBe(true);
     });
 
     it('it should not call onClick if is read only', () => {
@@ -178,7 +178,7 @@ describe('@atlaskit/inline-edit', () => {
        **/
       const onClickNode = label.findWhere(n => n.prop('onClick') && !n.find(Label).exists()).at(0);
       onClickNode.simulate('click');
-      expect(spy.called).to.equal(false);
+      expect(spy.called).toBe(false);
     });
   });
 
@@ -187,7 +187,7 @@ describe('@atlaskit/inline-edit', () => {
       it('should set shouldReset property on FieldBase', () => {
         const wrapper = shallow(<InlineEditStateless {...defaultProps} isEditing />);
         wrapper.setProps({ isEditing: false });
-        expect(wrapper.find(FieldBase).prop('shouldReset')).to.equal(true);
+        expect(wrapper.find(FieldBase).prop('shouldReset')).toBe(true);
       })
     );
 
@@ -195,7 +195,7 @@ describe('@atlaskit/inline-edit', () => {
       it('should not set shouldReset property on FieldBase', () => {
         const wrapper = shallow(<InlineEditStateless {...defaultProps} />);
         wrapper.setProps({ isEditing: true });
-        expect(wrapper.find(FieldBase).prop('shouldReset')).to.equal(false);
+        expect(wrapper.find(FieldBase).prop('shouldReset')).toBe(false);
       })
     );
   });
@@ -204,7 +204,7 @@ describe('@atlaskit/inline-edit', () => {
     describe('when isEditing is false', () =>
       it('FieldBase should not have isLoading prop', () => {
         const wrapper = mount(<InlineEditStateless {...defaultProps} isWaiting />);
-        expect(wrapper.find(FieldBase).prop('isLoading')).to.equal(false);
+        expect(wrapper.find(FieldBase).prop('isLoading')).toBe(false);
       })
     );
 
@@ -216,11 +216,11 @@ describe('@atlaskit/inline-edit', () => {
       ));
 
       it('FieldBase should have prop isLoading', () =>
-        expect(wrapper.find(FieldBase).prop('isLoading')).to.equal(true)
+        expect(wrapper.find(FieldBase).prop('isLoading')).toBe(true)
       );
 
       it('should disable field base', () =>
-        expect(wrapper.find(FieldBase).prop('isDisabled', true)).to.not.equal(undefined)
+        expect(wrapper.find(FieldBase).prop('isDisabled', true)).not.toBe(undefined)
       );
     });
   });
@@ -235,7 +235,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
 
-      expect(wrapper.find(FieldBase).length).to.equal(0);
+      expect(wrapper.find(FieldBase).length).toBe(0);
     });
 
     it('should wrap editView in a FieldBase when set to false', () => {
@@ -247,7 +247,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
 
-      expect(wrapper.find(FieldBase).length).to.equal(1);
+      expect(wrapper.find(FieldBase).length).toBe(1);
     });
 
     it('should default to false', () => {
@@ -258,21 +258,21 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
 
-      expect(wrapper.prop('disableEditViewFieldBase')).to.equal(false);
+      expect(wrapper.prop('disableEditViewFieldBase')).toBe(false);
     });
   });
 
   describe('invalidMessage prop', () => {
     it('should be reflected to the FieldBase', () => {
       expect(shallow(<InlineEditStateless {...defaultProps} invalidMessage="test" />)
-        .find(FieldBase).props().invalidMessage).to.equal('test');
+        .find(FieldBase).props().invalidMessage).toBe('test');
     });
   });
 
   describe('isInvalid prop', () => {
     it('should be reflected to the FieldBase', () => {
       expect(shallow(<InlineEditStateless {...defaultProps} isInvalid />)
-        .find(FieldBase).props().isInvalid).to.equal(true);
+        .find(FieldBase).props().isInvalid).toBe(true);
     });
   });
 });

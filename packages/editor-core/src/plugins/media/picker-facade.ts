@@ -52,7 +52,7 @@ export default class PickerFacade {
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
     errorReporter: ErrorReportingHandler,
-    mediaPickerFactory?: (pickerType: string, pickerConfig: any) => any
+    mediaPickerFactory?: (pickerType: string, pickerConfig: any, extraConfig?: any) => any
   ) {
     this.errorReporter = errorReporter;
     this.uploadParams = uploadParams;
@@ -63,7 +63,8 @@ export default class PickerFacade {
 
     const picker = this.picker = mediaPickerFactory(
       pickerType,
-      this.buildPickerConfigFromContext(contextConfig)
+      this.buildPickerConfigFromContext(contextConfig),
+      pickerType === 'dropzone' ? { container: this.getDropzoneContainer() } : undefined
     );
 
     picker.on('upload-start', this.handleUploadStart);
@@ -153,7 +154,6 @@ export default class PickerFacade {
       uploadParams: this.uploadParams,
       apiUrl: context.serviceHost,
       apiClientId: context.clientId,
-      container: this.getDropzoneContainer(),
       tokenSource: { getter: (reject, resolve) => {
         context.tokenProvider(this.uploadParams.collection).then(resolve, reject);
       }},
@@ -184,10 +184,12 @@ export default class PickerFacade {
   private handleUploadStatusUpdate = (event: PickerEvent) => {
     const { file, progress } = event;
     const tempId = `temporary:${file.id}`;
+    const currentState = this.stateManager.getState(tempId);
+    const currentStatus = currentState && currentState.status ? currentState.status : 'unknown';
 
     this.stateManager.updateState(tempId, {
       id: tempId,
-      status: 'uploading',
+      status: currentStatus === 'unknown' ? 'uploading' : currentStatus,
       progress: progress ? progress.portion : undefined,
       fileName: file.name as string,
       fileSize: file.size as number,

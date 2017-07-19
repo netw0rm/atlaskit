@@ -11,36 +11,36 @@ describe('inline-dialog', () => {
     it('should have the expected default props', () => {
       const wrapper = mount(<InlineDialog />);
 
-      expect(wrapper.prop('position')).to.equal('bottom center');
-      expect(wrapper.prop('isOpen')).to.equal(false);
-      expect(wrapper.prop('content')).to.equal(undefined);
-      expect(wrapper.prop('shouldFlip')).to.equal(false);
+      expect(wrapper.prop('position')).toBe('bottom center');
+      expect(wrapper.prop('isOpen')).toBe(false);
+      expect(wrapper.prop('content')).toBe(undefined);
+      expect(wrapper.prop('shouldFlip')).toBe(false);
     });
 
     it('should pass the expected default props to Layer', () => {
       const wrapper = mount(<InlineDialog />);
       const layer = wrapper.find(Layer);
-      expect(layer.prop('autoFlip')).to.equal(false);
-      expect(layer.prop('content')).to.equal(null);
-      expect(layer.prop('position')).to.equal('bottom center');
-      expect(layer.prop('offset')).to.equal('0 8');
+      expect(layer.prop('autoFlip')).toBe(false);
+      expect(layer.prop('content')).toBe(null);
+      expect(layer.prop('position')).toBe('bottom center');
+      expect(layer.prop('offset')).toBe('0 8');
     });
 
     it('should render any children passed to it', () => {
       const wrapper = shallow(<InlineDialog><div id="children" /></InlineDialog>);
-      expect(wrapper.find('#children').exists()).to.equal(true);
+      expect(wrapper.find('#children').exists()).toBe(true);
     });
   });
 
   describe('isOpen prop', () => {
     it('should render the content container if isOpen is set', () => {
       const wrapper = mount(<InlineDialog isOpen />);
-      expect(wrapper.find(Container).exists()).to.equal(true);
+      expect(wrapper.find(Container).exists()).toBe(true);
     });
 
     it('should not render the content container if isOpen is not set', () => {
       const wrapper = mount(<InlineDialog />);
-      expect(wrapper.find(Container).exists()).to.equal(false);
+      expect(wrapper.find(Container).exists()).toBe(false);
     });
   });
 
@@ -49,19 +49,19 @@ describe('inline-dialog', () => {
 
     it('should render content if isOpen is set', () => {
       const wrapper = mount(<InlineDialog content={content} isOpen />);
-      expect(wrapper.find('#someContent').exists()).to.equal(true);
+      expect(wrapper.find('#someContent').exists()).toBe(true);
     });
 
     it('should not render content if isOpen is not set', () => {
       const wrapper = mount(<InlineDialog content={content} />);
-      expect(wrapper.find('#content').exists()).to.equal(false);
+      expect(wrapper.find('#content').exists()).toBe(false);
     });
 
     it('should reflect content prop onto Layer if isOpen is set', () => {
       const wrapper = shallow(<InlineDialog content={content} isOpen />);
       const layer = wrapper.find(Layer);
       const foo = shallow(layer.prop('content'));
-      expect(foo.find('#someContent')).to.have.length.above(0);
+      expect(foo.find('#someContent').length).toBeGreaterThan(0);
     });
   });
 
@@ -69,8 +69,8 @@ describe('inline-dialog', () => {
     it('should be reflected onto the Layer component', () => {
       const wrapper = shallow(<InlineDialog position="right middle" />);
       const layer = wrapper.find(Layer);
-      expect(layer).to.have.length.above(0);
-      expect(layer.prop('position')).to.equal('right middle');
+      expect(layer.length).toBeGreaterThan(0);
+      expect(layer.prop('position')).toBe('right middle');
     });
   });
 
@@ -79,16 +79,16 @@ describe('inline-dialog', () => {
       it('for a boolean value', () => {
         const wrapper = mount(<InlineDialog shouldFlip />);
         const layer = wrapper.find(Layer);
-        expect(layer).to.have.length.above(0);
-        expect(layer.prop('autoFlip')).to.equal(true);
+        expect(layer.length).toBeGreaterThan(0);
+        expect(layer.prop('autoFlip')).toBe(true);
       });
 
       it('for an array of strings', () => {
         const shouldFlipValue = ['top', 'bottom'];
         const wrapper = mount(<InlineDialog shouldFlip={shouldFlipValue} />);
         const layer = wrapper.find(Layer);
-        expect(layer).to.have.length.above(0);
-        expect(layer.prop('autoFlip')).to.equal(shouldFlipValue);
+        expect(layer.length).toBeGreaterThan(0);
+        expect(layer.prop('autoFlip')).toBe(shouldFlipValue);
       });
     });
   });
@@ -102,7 +102,7 @@ describe('inline-dialog', () => {
       const content = mount(wrapper.find(Layer).props().content);
 
       content.simulate('click');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
   });
 
@@ -114,7 +114,7 @@ describe('inline-dialog', () => {
       const content = mount(wrapper.find(Layer).props().content);
 
       content.find('#link').simulate('focus');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
   });
 
@@ -126,7 +126,7 @@ describe('inline-dialog', () => {
       const content = mount(wrapper.find(Layer).props().content);
 
       content.find('#link').simulate('blur');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
   });
 
@@ -140,8 +140,8 @@ describe('inline-dialog', () => {
 
       wrapper.instance().handleClickOutside(event);
 
-      expect(spy.callCount).to.equal(1);
-      expect(spy.getCall(0).args[0].isOpen).to.equal(false);
+      expect(spy.callCount).toBe(1);
+      expect(spy.getCall(0).args[0].isOpen).toBe(false);
     });
 
     it('should NOT trigger the onClose prop when isOpen is false', () => {
@@ -153,7 +153,7 @@ describe('inline-dialog', () => {
 
       wrapper.instance().handleClickOutside(event);
 
-      expect(spy.callCount).to.equal(0);
+      expect(spy.callCount).toBe(0);
     });
   });
 });

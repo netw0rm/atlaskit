@@ -7,6 +7,6 @@ import { name } from '../../package.json';
 describe(name, () => {
   it('page should accept navigation as a property', () => {
     const Navigation = () => <span>Navigation</span>;
-    expect(shallow(<Page navigation={<Navigation />} />).find(Navigation).length).to.equal(1);
+    expect(shallow(<Page navigation={<Navigation />} />).find(Navigation).length).toBe(1);
   });
 });

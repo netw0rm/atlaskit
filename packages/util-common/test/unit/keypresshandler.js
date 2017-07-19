@@ -26,7 +26,7 @@ describe(name, () => {
     it('should create an event listener when created', (done) => {
       document.dispatchEvent(keyPressEvent);
       afterMutations(
-        () => expect(keyPressCallback).to.be.called,
+        () => expect(keyPressCallback.called).toBe(true),
         done
       );
     });
@@ -37,7 +37,7 @@ describe(name, () => {
       document.dispatchEvent(keyPressEvent);
 
       afterMutations(
-        () => expect(keyPressCallback).to.be.called,
+        () => expect(keyPressCallback.called).toBe(true),
         done
       );
     });
@@ -50,8 +50,8 @@ describe(name, () => {
 
       afterMutations(
         () => {
-          expect(keyPressCallback.called).to.equal(false);
-          expect(newCallback.called).to.equal(true);
+          expect(keyPressCallback.called).toBe(false);
+          expect(newCallback.called).toBe(true);
         },
         done
       );
@@ -61,8 +61,8 @@ describe(name, () => {
       document.dispatchEvent(keyPressEvent);
       afterMutations(
         () => {
-          expect(keyPressCallback.called).to.equal(true);
-          expect(keyPressCallback.calledWith(keyPressEvent)).to.equal(true);
+          expect(keyPressCallback.called).toBe(true);
+          expect(keyPressCallback.calledWith(keyPressEvent)).toBe(true);
         },
         done
       );
@@ -73,7 +73,7 @@ describe(name, () => {
 
       document.dispatchEvent(keyPressEvent);
       afterMutations(
-        () => expect(keyPressCallback).not.to.be.called,
+        () => expect(keyPressCallback.called).toBe(false),
         done
       );
     });
@@ -88,8 +88,8 @@ describe(name, () => {
 
       afterMutations(
         () => {
-          expect(keyPressCallback.called).to.equal(false);
-          expect(newCallback.called).to.equal(false);
+          expect(keyPressCallback.called).toBe(false);
+          expect(newCallback.called).toBe(false);
         },
         done
       );
@@ -97,13 +97,13 @@ describe(name, () => {
 
     describe('error cases', () => {
       it('should throw if the given key is invalid', () => {
-        expect(() => new KeyPressHandler('FOOBAR', () => null)).to.throw(KeyInvalidError);
-        expect(() => keyPressObj.add('FOOBAR', () => null)).to.throw(KeyInvalidError);
+        expect(() => new KeyPressHandler('FOOBAR', () => null)).toThrow(KeyInvalidError);
+        expect(() => keyPressObj.add('FOOBAR', () => null)).toThrow(KeyInvalidError);
       });
 
       it('should throw if the given callback is invalid', () => {
-        expect(() => new KeyPressHandler('ESCAPE', null)).to.throw(CallbackInvalidError);
-        expect(() => keyPressObj.add('ESCAPE', null)).to.throw(CallbackInvalidError);
+        expect(() => new KeyPressHandler('ESCAPE', null)).toThrow(CallbackInvalidError);
+        expect(() => keyPressObj.add('ESCAPE', null)).toThrow(CallbackInvalidError);
       });
     });
   });

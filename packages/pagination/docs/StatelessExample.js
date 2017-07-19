@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Pagination } from '@atlaskit/pagination';
+import { PaginationStateless } from '@atlaskit/pagination';
 
 export default class PaginationExample extends PureComponent {
   state = {
@@ -11,7 +11,7 @@ export default class PaginationExample extends PureComponent {
   render() {
     return (
       <div>
-        <Pagination
+        <PaginationStateless
           current={this.state.currentPage}
           total={3}
           onSetPage={e => this.setCurrentPage(e)}

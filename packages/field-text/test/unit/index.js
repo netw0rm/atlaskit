@@ -19,14 +19,14 @@ describe('FieldTextStateless', () => {
 
   it('defaults', () => {
     const wrapper = shallow(<FieldTextStateless />);
-    expect(wrapper.find(Base).length).to.equal(1);
-    expect(wrapper.find(Input).length).to.equal(1);
+    expect(wrapper.find(Base).length).toBe(1);
+    expect(wrapper.find(Input).length).toBe(1);
   });
 
   describe('properties', () => {
     describe('compact prop', () => {
       it('should reflect its value to the FieldBase', () => {
-        expect(shallow(<FieldTextStateless compact />).find(Base).props().isCompact).to.equal(true);
+        expect(shallow(<FieldTextStateless compact />).find(Base).props().isCompact).toBe(true);
       });
     });
 
@@ -34,28 +34,28 @@ describe('FieldTextStateless', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
           shallow(<FieldTextStateless disabled />).find(Base).props().isDisabled
-        ).to.equal(true);
+        ).toBe(true);
       });
     });
 
     describe('isReadOnly prop', () => {
       describe('set to true', () => {
         it('should sets its value on the input', () => {
-          expect(mount(<FieldText isReadOnly />).find('input').props().readOnly).to.equal(true);
+          expect(mount(<FieldText isReadOnly />).find('input').props().readOnly).toBe(true);
         });
 
         it('should reflect its value to the FieldBase', () => {
-          expect(mount(<FieldText isReadOnly />).find(Base).props().isReadOnly).to.equal(true);
+          expect(mount(<FieldText isReadOnly />).find(Base).props().isReadOnly).toBe(true);
         });
       });
 
       describe('set to false', () => {
         it('should sets its value on the input', () => {
-          expect(mount(<FieldText />).find('input').props().readOnly).to.equal(false);
+          expect(mount(<FieldText />).find('input').props().readOnly).toBe(false);
         });
 
         it('should reflect its value to the FieldBase', () => {
-          expect(mount(<FieldText />).find(Base).props().isReadOnly).to.equal(false);
+          expect(mount(<FieldText />).find(Base).props().isReadOnly).toBe(false);
         });
       });
     });
@@ -64,7 +64,7 @@ describe('FieldTextStateless', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
           shallow(<FieldTextStateless required />).find(Base).props().isRequired
-        ).to.equal(true);
+        ).toBe(true);
       });
     });
 
@@ -72,20 +72,20 @@ describe('FieldTextStateless', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
           shallow(<FieldTextStateless isInvalid />).find(Base).props().isInvalid
-        ).to.equal(true);
+        ).toBe(true);
       });
     });
 
     describe('spellCheck prop', () => {
       it('should render an input with a spellCheck prop', () => {
         expect(shallow(<FieldTextStateless isSpellCheckEnabled />)
-          .find(Input).props().spellCheck).to.equal(true);
+          .find(Input).props().spellCheck).toBe(true);
       });
     });
 
     describe('invalidMessage prop', () => {
       it('should reflect its value to the FieldBase', () => {
-        expect(shallow(<FieldTextStateless invalidMessage="test" />).find(Base).props().invalidMessage).to.equal('test');
+        expect(shallow(<FieldTextStateless invalidMessage="test" />).find(Base).props().invalidMessage).toBe('test');
       });
     });
 
@@ -101,21 +101,21 @@ describe('FieldTextStateless', () => {
         it('Input should have attribute defined', () => {
           const key = Object.keys(prop)[0];
           const value = prop[key];
-          expect(shallow(<FieldTextStateless {...prop} />).find(Input).prop(key)).to.equal(value);
+          expect(shallow(<FieldTextStateless {...prop} />).find(Input).prop(key)).toBe(value);
         })
       )
     );
 
     it('Input should have value="something"', () =>
       expect(shallow(<FieldTextStateless value="something" />).find(Input).prop('value'))
-        .to.equal('something')
+        .toBe('something')
     );
 
     it('onChange should be called when input value changes', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldTextStateless onChange={spy} />);
       wrapper.find(Input).simulate('change');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
   });
 
@@ -124,7 +124,7 @@ describe('FieldTextStateless', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldText onChange={spy} />);
       wrapper.find(Input).simulate('change');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
   });
 
@@ -137,7 +137,7 @@ describe('FieldTextStateless', () => {
       }, true);
       wrapper.instance().focus();
 
-      expect(hasFocus).to.equal(1);
+      expect(hasFocus).toBe(1);
     });
   });
 });

@@ -1,11 +1,12 @@
 import { storiesOf, action } from '@kadira/storybook';
+import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 import React, { PureComponent } from 'react';
 
 import { name } from '../package.json';
 import { AkProfilecard } from '../src/';
 import interActiveCard from './profile-interactive';
-import profiles from './profile-data';
 
+const { profiles } = profilecardUtils;
 const InteractiveCard = interActiveCard({ React, AkProfilecard });
 
 const handleActionClick = title => action(`${title} button clicked`);

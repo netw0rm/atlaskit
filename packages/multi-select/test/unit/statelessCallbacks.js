@@ -36,7 +36,7 @@ describe(`${name} - stateless`, () => {
         selectedItems={[selectItems[0].items[0]]}
       />);
       select.find(Tag).first().props().onAfterRemoveAction();
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
   });
 });

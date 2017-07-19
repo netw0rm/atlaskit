@@ -1,6 +1,18 @@
-import { akEditorSubtleAccent, akEditorMentionSelected } from '../../styles';
-import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import {
+  akEditorBlockquoteBorderColor,
+  akEditorSubtleAccent,
+  akEditorMentionSelected,
+  akEditorTableCellSelected,
+  akEditorTableBorder,
+  akEditorTableBorderSelected,
+  akEditorTableFloatingControls,
+} from '../../styles';
+import {
+  akBorderRadius,
+  akGridSize,
+  akGridSizeUnitless,
+} from '@atlaskit/util-shared-styles';
 
 export const createNestedListStyles = (): any => {
   const styles = {};
@@ -53,10 +65,27 @@ export const Content = styled.div`
   }
 
   .ProseMirror blockquote {
-    padding-left: 1em;
-    border-left: 3px solid #eee;
-    margin-left: 0;
+    padding-left: ${akGridSizeUnitless * 2}px;
+    border-left: 2px solid ${akEditorBlockquoteBorderColor};
+    margin: ${akGridSizeUnitless * 1.5}px 0 0 0;
     margin-right: 0;
+
+    [dir="rtl"] & {
+      padding-left: 0;
+      padding-right: ${akGridSizeUnitless * 2}px;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &::before {
+      content: "";
+    }
+
+    &::after {
+      content: "";
+    }
   }
 
   .ProseMirror pre {
@@ -116,35 +145,63 @@ export const Content = styled.div`
     pointer-events: none;
   }
 
+  .ProseMirror blockquote table,
+  .ProseMirror blockquote table:last-child {
+    display: inline-table;
+  }
   .ProseMirror table {
     border-collapse: collapse;
-    margin: 1em 0;
+    margin: 20px 8px;
     width: auto;
-  }
-  .ProseMirror tbody {
-    border-bottom: none;
-  }
-  .ProseMirror th, .ProseMirror td {
-    min-width: 1em;
-    vertical-align: top;
-    border: 1px solid #ddd;
-    padding: 3px 5px;
-  }
-  .ProseMirror th {
-    font-weight: bold;
-    text-align: left;
-  }
-  /* Give selected cells a blue overlay */
-  .ProseMirror .selectedCell {
-    position: relative;
-  }
-  .ProseMirror .selectedCell:after {
-     z-index: 2;
-     position: absolute;
-     content: "";
-     left: 0; right: 0; top: 0; bottom: 0;
-     background: rgba(200, 200, 255, 0.4);
-     pointer-events: none;
+    border: 1px solid ${akEditorTableBorder};
+
+    & {
+      * {
+        box-sizing: border-box;
+      }
+
+      tbody {
+        border-bottom: none;
+      }
+      th td {
+        background-color: white;
+        font-weight: normal;
+      }
+      th, td {
+        min-width: 3em;
+        vertical-align: top;
+        border: 1px solid ${akEditorTableBorder};
+        border-right-width: 0;
+        border-bottom-width: 0;
+        padding: 6px 10px;
+        /* https://stackoverflow.com/questions/7517127/borders-not-shown-in-firefox-with-border-collapse-on-table-position-relative-o */
+        background-clip: padding-box;
+
+        & p {
+          margin: 0;
+        }
+      }
+      th {
+        background-color: ${akEditorTableFloatingControls};
+        font-weight: bold;
+        text-align: left;
+      }
+      .selectedCell, .hoveredCell {
+        position: relative;
+        border-color: ${akEditorTableBorderSelected};
+        border-width: 1px;
+      }
+      /* Give selected cells a blue overlay */
+      .selectedCell:after {
+        z-index: 2;
+        position: absolute;
+        content: "";
+        left: 0; right: 0; top: 0; bottom: 0;
+        background: ${akEditorTableCellSelected};
+        opacity: 0.3;
+        pointer-events: none;
+      }
+    }
   }
 `;
 
@@ -177,28 +234,28 @@ export const IconButton = styled.div`
 
 // tslint:disable-next-line:variable-name
 export const Toolbar = styled.div`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   height: 40px;
-  padding-left: ${akGridSize};
-  padding-right: ${akGridSize};
+  padding: ${akGridSize} ${akGridSize} 0;
   position: relative;
 
   & > * {
     align-items: center;
     display: flex;
-    margin-left: 10px;
+    margin-left: ${akGridSizeUnitless/2}px;
     /* Firefox|IE toolbar icons fix: https://product-fabric.atlassian.net/browse/ED-1787 */
     min-width: 0;
 
     &:first-child {
       margin-left: 0;
+      margin-right: ${akGridSize};
     }
   }
 `;
 
 // tslint:disable-next-line:variable-name
 export const SecondaryToolbar = styled.div`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
 `;

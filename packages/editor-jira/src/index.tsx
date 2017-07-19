@@ -51,7 +51,7 @@ import {
 import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { encode, parse } from './html';
+import { encode, parse, MediaContextInfo } from './html';
 import {
   JIRASchema,
   isSchemaWithCodeBlock,
@@ -61,6 +61,7 @@ import {
   isSchemaWithTextColor,
   makeSchema,
 } from './schema';
+
 import { version, name } from './version';
 
 export { version };
@@ -158,6 +159,19 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    const { editorView } = this.state;
+
+    if (editorView) {
+      if (editorView.state) {
+        const mediaState = mediaStateKey.getState(editorView.state);
+        if (mediaState) {
+          mediaState.destroy();
+        }
+      }
+
+      editorView.destroy();
+    }
+
     this.providerFactory.destroy();
   }
 
@@ -228,15 +242,38 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get value(): Promise<string | undefined> {
     const { editorView, schema } = this.state;
-    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    const mediaPluginState = editorView && mediaStateKey.getState(editorView.state) as MediaPluginState;
 
     return (async () => {
       if (mediaPluginState) {
         await mediaPluginState.waitForPendingTasks();
       }
 
+      let mediaContextInfo: MediaContextInfo = {};
+      if (this.props.mediaProvider) {
+        const mediaProvider = await this.props.mediaProvider;
+        if (mediaProvider.viewContext) {
+          const viewContext: any = await mediaProvider.viewContext;
+          if (viewContext) {
+            const collection = '';
+            const { clientId, serviceHost, tokenProvider } = viewContext.config || viewContext;
+            const token = await tokenProvider();
+            mediaContextInfo.viewContext = { clientId, serviceHost, token, collection };
+          }
+        }
+        if (mediaProvider.uploadParams && mediaProvider.uploadParams.collection) {
+          const uploadContext = await mediaProvider.uploadContext;
+          if (uploadContext) {
+            const { clientId, serviceHost } = uploadContext;
+            const { collection } = mediaProvider.uploadParams;
+            const token  = await uploadContext.tokenProvider(collection);
+            mediaContextInfo.uploadContext = { clientId, serviceHost, token, collection };
+          }
+        }
+      }
+
       return editorView && editorView.state.doc
-        ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder })
+        ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder }, mediaContextInfo)
         : this.props.defaultValue;
     })();
   }
@@ -330,7 +367,7 @@ export default class Editor extends PureComponent<Props, State> {
         doc: parse(this.props.defaultValue || '', schema),
         plugins: [
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
-          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
+          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>, this.providerFactory) : []),
           ...clearFormattingPlugins(schema as Schema<any, any>),
           ...rulePlugins(schema as Schema<any, any>),
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
@@ -375,10 +412,6 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       analyticsService.trackEvent('atlassian.editor.start');
-
-      if (isSchemaWithMentions(schema)) {
-        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      }
 
       this.setState({ editorView }, this.focus);
     } else {

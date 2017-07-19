@@ -1,8 +1,10 @@
 import { expect } from 'chai';
 
-import { atlassianEmojis, emojiRepository, grinEmoji, evilburnsEmoji, standardEmojis } from './TestData';
+import { atlassianEmojis, newEmojiRepository, grinEmoji, evilburnsEmoji, standardEmojis } from './TestData';
 
 describe('#test data', () => {
+  const emojiRepository = newEmojiRepository();
+
   it('expected standard emojis', () => {
     expect(standardEmojis.length, '80 Standard Emoji').to.equal(80);
   });

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import chai from 'chai';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
@@ -8,32 +7,30 @@ import { name } from '../../package.json';
 import { sampleTabs } from './_constants';
 import { TabLabels, TabLabel } from '../../src/styled/TabsNav';
 
-const { expect } = chai;
-
 describe(name, () => {
   describe('TabsNav', () => {
     const kbNav = () => {};
 
     describe('exports', () => {
       it('the TabsNav component', () => {
-        expect(TabsNav).not.to.equal(undefined);
-        expect(new TabsNav()).to.be.instanceOf(Component);
+        expect(TabsNav).not.toBe(undefined);
+        expect(new TabsNav()).toBeInstanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<TabsNav onKeyboardNav={kbNav} />);
-        expect(wrapper).not.to.equal(undefined);
-        expect(wrapper.instance()).to.be.instanceOf(Component);
+        expect(wrapper).not.toBe(undefined);
+        expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       it('should render a list container', () => {
         const wrapper = shallow(<TabsNav />);
-        expect(wrapper.type()).to.equal('div');
+        expect(wrapper.type()).toBe('div');
         const tabLabel = wrapper.find(TabLabels);
-        expect(tabLabel.length).to.equal(1);
-        expect(tabLabel.props().role).to.equal('tablist');
+        expect(tabLabel.length).toBe(1);
+        expect(tabLabel.props().role).toBe('tablist');
       });
     });
 
@@ -42,17 +39,17 @@ describe(name, () => {
         it('should render a matching list item for each tab', () => {
           const wrapper = shallow(<TabsNav tabs={sampleTabs} onKeyboardNav={kbNav} />);
           const items = wrapper.find(TabLabel);
-          expect(items).to.have.length(sampleTabs.length);
+          expect(items).toHaveLength(sampleTabs.length);
 
           items.forEach((item, i) => {
-            expect(item.props()['aria-posinset']).to.equal(i + 1);
-            expect(item.props()['aria-setsize']).to.equal(sampleTabs.length);
-            expect(item.props().role).to.equal('tab');
-            expect(item.props().tabIndex).to.equal(sampleTabs[i].isSelected ? 0 : -1);
-            expect(item.props().children).to.equal(sampleTabs[i].label);
+            expect(item.props()['aria-posinset']).toBe(i + 1);
+            expect(item.props()['aria-setsize']).toBe(sampleTabs.length);
+            expect(item.props().role).toBe('tab');
+            expect(item.props().tabIndex).toBe(sampleTabs[i].isSelected ? 0 : -1);
+            expect(item.props().children).toBe(sampleTabs[i].label);
             if (sampleTabs[i].isSelected) {
-              expect(item.props()['aria-selected']).to.equal(sampleTabs[i].isSelected);
-              expect(item.props().isSelected).to.equal(true);
+              expect(item.props()['aria-selected']).toBe(sampleTabs[i].isSelected);
+              expect(item.props().isSelected).toBe(true);
             }
           });
         });
@@ -70,8 +67,8 @@ describe(name, () => {
               tabs={sampleTabs}
             />);
             wrapper.find(TabLabel).at(1).simulate('keyDown', { key });
-            expect(spy.calledOnce).to.equal(true);
-            expect(spy.args[0][0]).to.equal(key);
+            expect(spy.calledOnce).toBe(true);
+            expect(spy.args[0][0]).toBe(key);
           });
         });
       });

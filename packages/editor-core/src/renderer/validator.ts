@@ -1,4 +1,9 @@
-import { Mark as PMMark } from '../prosemirror';
+import {
+  Mark as PMMark,
+  MarkSpec,
+  NodeSpec,
+  Schema
+} from '../prosemirror';
 
 export interface Doc {
   version: 1;
@@ -26,6 +31,8 @@ export interface MarkSimple {
   attrs?: any;
 }
 
+import { defaultSchema } from '../schema';
+
 /*
  * It's important that this order follows the marks rank defined here:
  * https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Rank
@@ -43,7 +50,7 @@ export const markOrder = [
 const whitelistedURLPatterns = [
   /^https?:\/\//im,
   /^ftps?:\/\//im,
-  /^\/\//im,
+  /^\//im,
   /^mailto:/im,
   /^skype:/im,
   /^callto:/im,
@@ -102,8 +109,9 @@ export const isSameMark = (mark: PMMark | null, otherMark: PMMark | null) => {
   return mark.eq(otherMark);
 };
 
-export const getValidDocument = (doc: Doc): Doc | null => {
-  const node = getValidNode(doc as Node);
+export const getValidDocument = (doc: Doc, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Doc | null => {
+
+  const node = getValidNode(doc as Node, schema);
 
   if (node.type === 'doc') {
     return node as Doc;
@@ -112,8 +120,78 @@ export const getValidDocument = (doc: Doc): Doc | null => {
   return null;
 };
 
-export const getValidContent = (content: Node[]): Node[] => {
-  return content.map(node => getValidNode(node));
+export const getValidContent = (content: Node[], schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node[] => {
+  return content.map(node => getValidNode(node, schema));
+};
+
+const flattenUnknownBlockTree = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node[] => {
+  const output: Node[] = [];
+  let isPrevLeafNode = false;
+
+  for (let i = 0; i < node.content!.length; i++) {
+    const childNode = node.content![i];
+    const isLeafNode = !(childNode.content && childNode.content.length);
+
+    if (i > 0) {
+      if (isPrevLeafNode) {
+        output.push({ type: 'text', text: ' ' } as Node);
+      } else {
+        output.push({ type: 'hardBreak' } as Node);
+      }
+    }
+
+    if (isLeafNode) {
+      output.push(getValidNode(childNode, schema));
+    } else {
+      output.push(...flattenUnknownBlockTree(childNode, schema));
+    }
+
+    isPrevLeafNode = isLeafNode;
+  }
+
+  return output;
+};
+
+/**
+ * Sanitize unknown node tree
+ *
+ * @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-ImplementationdetailsforHCNGwebrenderer
+ */
+export const getValidUnknownNode = (node: Node): Node => {
+  const {
+    attrs = {},
+    content,
+    text,
+    type,
+  } = node;
+
+  if (!content || !content.length) {
+    const unknownInlineNode: Node = {
+      type: 'text',
+      text: text || attrs.text || `[${type}]`,
+    };
+
+    if (attrs.textUrl) {
+      unknownInlineNode.marks = [{
+        type: 'link',
+        attrs: {
+          href: attrs.textUrl,
+        },
+      } as Mark];
+    }
+
+    return unknownInlineNode;
+  }
+
+  /*
+   * Find leaf nodes and join them. If leaf nodes' parent node is the same node
+   * join with a blank space, otherwise they are children of different branches, i.e.
+   * we need to join them with a hardBreak node
+   */
+  return {
+    type: 'unknownBlock',
+    content: flattenUnknownBlockTree(node),
+  };
 };
 
 /*
@@ -125,21 +203,66 @@ export const getValidContent = (content: Node[]): Node[] => {
  * If a node is not recognized or is missing required attributes, we should return 'unknown'
  *
  */
-export const getValidNode = (node: Node): Node => {
+export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
   const { attrs, text, type } = node;
   let { content } = node;
 
   if (content) {
-    content = getValidContent(content);
+    content = getValidContent(content, schema);
+  }
+
+  // If node type doesn't exist in schema, make it an unknow node
+  if (!schema.nodes[type]) {
+    return getValidUnknownNode(node);
   }
 
   if (type) {
     switch (type) {
+      case 'applicationCard': {
+        if (!attrs) { break; }
+        const { text, link, background, preview, title, description, details } = attrs;
+        if (!text || !title || !title.text) { break; }
+        if (
+          (link && !link.url) ||
+          (background && !background.url) ||
+          (preview && !preview.url) ||
+          (description && !description.text)) { break; }
+        if (details && !Array.isArray(details)) { break; }
+
+        if (details && details.some(meta => {
+          const { badge, lozenge, users } = meta;
+          if (badge && !badge.value) { return true; }
+          if (lozenge && !lozenge.text) { return true; }
+          if (users && !Array.isArray(users)) { return true; }
+
+          if (users && users.some(user => {
+            if (!user.icon) {
+              return true;
+            }
+          })) { return true; }
+        })) { break; }
+
+        return {
+          type,
+          text,
+          attrs
+        };
+      }
       case 'doc': {
         const { version } = node as Doc;
         if (version && content && content.length) {
           return {
             type,
+            content
+          };
+        }
+        break;
+      }
+      case 'codeBlock': {
+        if (attrs && attrs.language !== undefined) {
+          return {
+            type,
+            attrs,
             content
           };
         }
@@ -324,12 +447,7 @@ export const getValidNode = (node: Node): Node => {
     }
   }
 
-  return {
-    type: 'unknown',
-    text: text || undefined,
-    attrs: attrs || undefined,
-    content: content || undefined
-  };
+  return getValidUnknownNode(node);
 };
 
 /*
@@ -362,7 +480,7 @@ export const getValidMark = (mark: Mark): Mark | null => {
           let linkHref = href || url;
 
           if (linkHref.indexOf(':') === -1) {
-            linkHref = `//${linkHref}`;
+            linkHref = `http://${linkHref}`;
           }
 
           if (linkHref && isSafeUrl(linkHref)) {

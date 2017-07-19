@@ -19,7 +19,10 @@ ${icons.map(({ fileKey, displayName }) => (
 
 export default {
   ${icons.map(({ fileKey, displayName }) => {
-    const keywords = (synonyms[fileKey] ? [fileKey, ...synonyms[fileKey]] : [fileKey])
+    const componentName = displayName.toLowerCase().replace(/icon$/, '');
+    const packageNames = fileKey !== componentName ? [fileKey, componentName] : [fileKey];
+    const packageSynonyms = synonyms[fileKey] || [];
+    const keywords = [...packageNames, ...packageSynonyms]
       .map(keyword => `'${keyword}'`);
     return `
       '${fileKey}': {

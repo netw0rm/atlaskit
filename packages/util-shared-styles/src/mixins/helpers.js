@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { akColorB100 } from '!less-vars-loader?camelCase&resolveVariables!../colors.less';
+import { akColorB100 } from '../index';
 
 // focus ring
 const createFocusRing = (color = akColorB100, width = '2px') => css`

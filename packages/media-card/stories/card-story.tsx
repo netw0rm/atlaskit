@@ -25,6 +25,9 @@ import {
   imageFileId,
   docFileId,
   unknownFileId,
+  smallImageFileId,
+  wideImageFileId,
+  largeImageFileId,
   errorFileId
 } from '@atlaskit/media-test-helpers';
 
@@ -280,6 +283,61 @@ storiesOf('Card', {})
       </div>
     );
   })
+  .add('Resizing modes', () => {
+    const defaultCards = [{
+      title: 'Small',
+      content: <Card identifier={smallImageFileId} context={context} />
+    }, {
+      title: 'Wide',
+      content: <Card identifier={wideImageFileId} context={context} />
+    }, {
+      title: 'Large',
+      content: <Card identifier={largeImageFileId} context={context} />
+    }];
+    const croppedCards = [{
+      title: 'Small',
+      content: <Card identifier={smallImageFileId} context={context} resizeMode="crop" />
+    }, {
+      title: 'Wide',
+      content: <Card identifier={wideImageFileId} context={context} resizeMode="crop" />
+    }, {
+      title: 'Large',
+      content: <Card identifier={largeImageFileId} context={context} resizeMode="crop" />
+    }];
+    const fitCards = [{
+      title: 'Small',
+      content: <Card identifier={smallImageFileId} context={context} resizeMode="fit" />
+    }, {
+      title: 'Wide',
+      content: <Card identifier={wideImageFileId} context={context} resizeMode="fit" />
+    }, {
+      title: 'Large',
+      content: <Card identifier={largeImageFileId} context={context} resizeMode="fit" />
+    }];
+    const fullFitCards = [{
+      title: 'Small',
+      content: <Card identifier={smallImageFileId} context={context} resizeMode="full-fit" />
+    }, {
+      title: 'Wide',
+      content: <Card identifier={wideImageFileId} context={context} resizeMode="full-fit" />
+    }, {
+      title: 'Large',
+      content: <Card identifier={largeImageFileId} context={context} resizeMode="full-fit" />
+    }];
+
+    return (
+      <div>
+        <h3>Default</h3>
+        <StoryList>{defaultCards}</StoryList>
+        <h3>Crop</h3>
+        <StoryList>{croppedCards}</StoryList>
+        <h3>Fit</h3>
+        <StoryList>{fitCards}</StoryList>
+        <h3>Full Fit</h3>
+        <StoryList>{fullFitCards}</StoryList>
+      </div>
+    );
+  })
   .add('Files', () => {
     // standard
     const successIdentifier: MediaIdentifier = imageFileId;
@@ -419,7 +477,7 @@ storiesOf('Card', {})
       }
     ];
 
-    const trelloCards = [
+    const smartCards = [
       {
         title: 'Public board',
         content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} />
@@ -445,8 +503,9 @@ storiesOf('Card', {})
           <h3>Player cards</h3>
           <StoryList>{playerCards}</StoryList>
 
-          <h3>Trello cards</h3>
-          <StoryList>{trelloCards}</StoryList>
+          <h3>Smart cards</h3>
+          <StoryList>{smartCards}</StoryList>
+
         </div>
       </div>
     );

@@ -1,24 +1,22 @@
-import { AbstractMentionResource } from '@atlaskit/mention';
-import { Search } from 'js-search';
+import { AbstractMentionResource, MentionDescription, SearchIndex } from '@atlaskit/mention';
 import mentionData from './mention-data';
 
-const search = new Search('id');
-search.addIndex('name');
-search.addIndex('mentionName');
-search.addIndex('nickname');
+const search = new SearchIndex();
 
-search.addDocuments(mentionData.mentions);
+search.indexResults(mentionData.mentions);
 
 class MentionResource extends AbstractMentionResource {
 
   private config: { minWait: number, maxWait: number, shouldHighlightMention?: (mention: any) => boolean };
   private lastReturnedSearch: number;
+  private activeSearches: {};
 
   constructor(config) {
     super();
 
     this.config = config;
     this.lastReturnedSearch = 0;
+    this.activeSearches = {};
   }
 
   shouldHighlightMention(mention: any) {
@@ -31,37 +29,53 @@ class MentionResource extends AbstractMentionResource {
 
   filter(query: string) {
     const searchTime = Date.now();
-    const notify = (mentions) => {
+    if (query) {
+      this.activeSearches[query] = true;
+    }
+
+    const notify = (mentions, query) => {
       if (searchTime >= this.lastReturnedSearch) {
         this.lastReturnedSearch = searchTime;
-        this._notifyListeners(mentions);
+        this._notifyListeners({mentions, query});
       }
+
+      this._notifyAllResultsListeners({mentions, query});
     };
 
-    const notifyErrors = (error) => {
+    const notifyErrors = (error, query) => {
       this._notifyErrorListeners(error);
+      delete this.activeSearches[query];
     };
 
     const minWait = this.config.minWait || 0;
     const randomTime = (this.config.maxWait || 0) - minWait;
     const waitTime = (Math.random() * randomTime) + minWait;
     setTimeout(() => {
-      let mentions;
+      let mentions: MentionDescription[] | undefined;
       if (query === 'error') {
-        notifyErrors('mock-error');
+        notifyErrors('mock-error', query);
         return;
       } else if (query) {
-        mentions = search.search(query);
+        search.search(query).then(data => {
+          notify(data.mentions, data.query);
+          delete this.activeSearches[query];
+        });
       } else {
         mentions = mentionData.mentions;
       }
-      notify({
-        mentions,
-      });
+
+      if (mentions) {
+        notify(mentions, query);
+      }
+
     }, waitTime + 1);
   }
 
   recordMentionSelection(mention: any) {
+  }
+
+  isFiltering(query: string) {
+    return !!this.activeSearches[query];
   }
 }
 

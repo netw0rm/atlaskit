@@ -1,11 +1,5 @@
-import {
-  chaiPlugin,
-  fixtures,
-  makeEditor,
-} from '@atlaskit/editor-core/dist/es5/test-helper';
-import {
-  textFormattingPlugins,
-} from '@atlaskit/editor-core';
+import { chaiPlugin, makeEditor } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { textFormattingPlugins } from '@atlaskit/editor-core';
 import { doc, p, sub, sup, } from './_schema-builder';
 import * as chai from 'chai';
 import { expect } from 'chai';
@@ -14,13 +8,19 @@ import schema from '../../src/schema';
 chai.use(chaiPlugin);
 
 describe('Keymaps', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    schema,
-    plugins: textFormattingPlugins(schema),
-    place: fixture()
-  });
+  const editor = (doc: any) => {
+    const ed = makeEditor<any>({
+      doc,
+      schema,
+      plugins: textFormattingPlugins(schema)
+    });
+
+    afterEach(() => {
+      ed.editorView.destroy();
+    });
+
+    return ed;
+  };
 
   describe('subscript', () => {
     it('should be able to toggle subscript on a character', () => {

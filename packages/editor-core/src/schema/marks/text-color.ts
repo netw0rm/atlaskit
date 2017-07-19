@@ -5,10 +5,27 @@ import {
 } from '@atlaskit/util-shared-styles';
 import { COLOR } from '../groups';
 
+export interface Attributes {
+  /**
+   * @pattern "^#[0-9a-f]{6}$"
+   */
+  color: string;
+}
+
+/**
+ * @name textColor_mark
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'textColor';
+  /**
+   * @additionalProperties false
+   */
+  attrs: Attributes;
+}
+
 export interface TextColorMark extends Mark {
-  attrs: {
-    color: string;
-  };
+  attrs: Attributes;
 }
 
 const rgbToHex = (value: string): string | undefined => {

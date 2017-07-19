@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import AkButton from '@atlaskit/button';
-import { fixtures, doc, p, makeEditor } from '../../../src/test-helper';
+import { doc, p, makeEditor } from '../../../src/test-helper';
 import ChromeExpanded from '../../../src/ui/ChromeExpanded';
 import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
 import LanguagePicker from '../../../src/ui/LanguagePicker';
@@ -13,16 +13,15 @@ import ToolbarMention from '../../../src/ui/ToolbarMention';
 import ToolbarImage from '../../../src/ui/ToolbarImage';
 import ToolbarMedia from '../../../src/ui/ToolbarMedia';
 import { createNestedListStyles } from '../../../src/ui/ChromeExpanded/styles';
+import { Content } from '../../../src/ui/ChromeExpanded/styles';
 
 const noop = () => {};
 
 describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
   describe('props', () => {
-    const fixture = fixtures();
     const editor = (doc: any) => makeEditor({
       doc,
-      place: fixture()
     });
 
     it('should render enabled save button by default', () => {
@@ -39,6 +38,17 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
       const button = chrome.find(AkButton);
       expect(button.prop('isDisabled')).to.equal(false);
+    });
+
+    it('should add maxHeight to content section if it\'s passed', () => {
+      const { editorView } = editor(doc(p()));
+      const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} maxHeight={75} />);
+
+      const wrapper = chrome.find(Content).find('div').at(1);
+      expect(!!wrapper).to.equal(true);
+      const props = wrapper.props();
+      expect(!!props['style']).to.equal(true);
+      expect(props['style']!.maxHeight).to.equal('75px');
     });
 
     it('should render disabled save button if saveDisabled=true', () => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import * as deepEqual from 'deep-equal';
-import {Context, MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriService} from '@atlaskit/media-core';
+import {Context, MediaItemType, MediaItemProvider, UrlPreviewProvider, DataUriService, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardEventProps} from '../..';
 import {MediaCard} from '../mediaCard';
@@ -26,12 +26,14 @@ export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
   readonly identifier: Identifier;
   isLazy?: boolean;
+  resizeMode?: ImageResizeMode;
 }
 
 export class Card extends Component<CardProps, {}> {
   static defaultProps = {
     appearance: 'auto',
-    isLazy: true
+    isLazy: true,
+    resizeMode: 'crop'
   };
 
   private provider: Provider;
@@ -79,19 +81,26 @@ export class Card extends Component<CardProps, {}> {
 
   get placeholder(): JSX.Element {
     const {appearance, dimensions} = this.props;
+
     return (
-      <CardView status="loading" appearance={appearance} dimensions={dimensions}/>
+      <CardView
+        status="loading"
+        appearance={appearance}
+        dimensions={dimensions}
+        mediaItemType={this.mediaItemType}
+      />
     );
   }
 
   render() {
-    const {context, identifier, isLazy, appearance, ...otherProps} = this.props;
-    const {mediaItemType} = identifier;
+    const {context, isLazy, appearance, resizeMode, identifier, ...otherProps} = this.props;
     const card = (
       <MediaCard
         {...otherProps}
+
+        resizeMode={resizeMode}
         appearance={appearance}
-        mediaItemType={mediaItemType}
+        mediaItemType={this.mediaItemType}
         provider={this.provider}
         dataURIService={this.dataURIService}
       />
@@ -102,6 +111,12 @@ export class Card extends Component<CardProps, {}> {
         {card}
       </LazyContent>
     ) : card;
+  }
+
+  private get mediaItemType(): MediaItemType {
+    const {mediaItemType} = this.props.identifier;
+
+    return mediaItemType;
   }
 }
 

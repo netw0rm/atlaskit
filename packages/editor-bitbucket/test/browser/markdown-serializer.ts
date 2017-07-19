@@ -835,6 +835,13 @@ describe('Bitbucket markdown serializer: ', () => {
           link('foo'),
         )))).to.eq('[foo](/url with space "title")');
       });
+
+      it('with special characters, characters should not be escaped', () => {
+        const link = a({ href: 'hr~ef' });
+        expect(markdownSerializer.serialize(doc(p(
+          link('foo'),
+        )))).to.eq('[foo](hr~ef)');
+      });
     });
 
     describe('emphasis -', () => {

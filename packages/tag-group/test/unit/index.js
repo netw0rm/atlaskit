@@ -6,7 +6,7 @@ import Container from '../../src/styled/Container';
 
 describe('Tag-group', () => {
   it('should export a base component', () => {
-    expect(shallow(<TagGroup><Tag text="test" /></TagGroup>)).to.be.an.instanceof(Object);
+    expect(shallow(<TagGroup><Tag text="test" /></TagGroup>)).toBeInstanceOf(Object);
   });
 
   it('should render supplied tags', () => {
@@ -18,16 +18,16 @@ describe('Tag-group', () => {
       </TagGroup>
     );
 
-    expect(wrapper.text()).to.equal(tags.join(''));
+    expect(wrapper.text()).toBe(tags.join(''));
   });
 
   it('should justify to the start when alignment not set', () => {
     const wrapper = mount(<TagGroup><Tag text="test" /></TagGroup>);
-    expect(wrapper.find(Container).prop('justify')).to.equal('start');
+    expect(wrapper.find(Container).prop('justify')).toBe('start');
   });
 
   it('should justify to the end when alignment is set to end', () => {
     const wrapper = mount(<TagGroup alignment="end"><Tag text="test" /></TagGroup>);
-    expect(wrapper.find(Container).prop('justify')).to.equal('end');
+    expect(wrapper.find(Container).prop('justify')).toBe('end');
   });
 });

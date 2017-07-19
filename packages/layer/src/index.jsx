@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import Popper from 'popper.js';
+// I am disabling eslint in the line below because we have an unexplained, unreproducible issue in
+// CI sometimes where popper is not always resolvable. See AK-2971.
+import Popper from 'popper.js'; // eslint-disable-line  import/no-unresolved, import/extensions
 import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 
 import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition } from './internal/helpers';
@@ -38,6 +40,14 @@ export default class Layer extends PureComponent {
       transform: null,
       flipped: false,
       actualPosition: null,
+      // We set these default offsets to prevent a flash of popper content in the wrong position
+      // which can cause incorrect height calculations. Popper will calculate these values
+      offsets: {
+        popper: {
+          left: -9999,
+          top: -9999,
+        },
+      },
       originalPosition: null,
       // fix Safari parent width: https://product-fabric.atlassian.net/browse/ED-1784
       cssPosition: 'absolute',

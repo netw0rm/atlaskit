@@ -1,4 +1,14 @@
 import { NodeSpec } from '../../prosemirror';
+import { TopLevel } from './doc';
+
+/**
+ * @name blockQuote_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'blockQuote';
+  content: TopLevel;
+}
 
 export const blockquote: NodeSpec = {
   content: 'block+',

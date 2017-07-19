@@ -144,7 +144,6 @@ export default class BasicSearch extends PureComponent {
       <AkSearch
         clearIcon={<CrossIcon label="clear" size="medium" />}
         onChange={({ target }) => { this.search(target.value); }}
-        onSearchClear={() => { this.search(''); }}
         value={this.state.query}
         isLoading={this.state.isLoading}
       >

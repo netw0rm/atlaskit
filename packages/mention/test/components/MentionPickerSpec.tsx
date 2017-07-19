@@ -93,7 +93,26 @@ describe('MentionPicker', () => {
           let errorMention = component.find(MentionListError);
           let err = errorMention.prop('error') as HttpError;
           expect(err.statusCode).to.equal(401);
-          expect(errorMention.text()).to.contain('logging in');
+          expect(errorMention.text()).to.contain('logging out');
+        });
+      });
+  });
+
+  it('should display particular message for 403 HTTP response', () => {
+    const component = setupPicker();
+
+    return waitUntil(createDefaultMentionItemsShowTest(component))
+      .then(() => {
+        component.setProps({ query: 'nothing' });
+        return waitUntil(createNoMentionItemsShownTest(component));
+      })
+      .then(() => {
+        component.setProps({ query: '403' });
+        return waitUntil(createMentionErrorShownTest(component)).then(() => {
+          let errorMention = component.find(MentionListError);
+          let err = errorMention.prop('error') as HttpError;
+          expect(err.statusCode).to.equal(403);
+          expect(errorMention.text()).to.contain('different text');
         });
       });
   });
@@ -239,6 +258,23 @@ describe('MentionPicker', () => {
       .then(() => {
         expect(onOpen.callCount, 'opened 2').to.equal(1);
         expect(onClose.callCount, 'closed 2').to.equal(1);
+      });
+  });
+
+  it('should fire onOpen when error to display', () => {
+    const onOpen = sinon.spy();
+    const onClose = sinon.spy();
+
+    const component = setupPicker({
+      query: 'error',
+      onOpen: onOpen as OnOpen,
+      onClose: onClose as OnClose,
+    } as Props);
+
+    return waitUntil(createMentionErrorShownTest(component))
+      .then(() => {
+        expect(onOpen.callCount, 'opened').to.equal(1);
+        expect(onClose.callCount, 'closed').to.equal(0);
       });
   });
 

@@ -1,4 +1,4 @@
-import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
+import { EmojiId, EmojiProvider, EmojiSearchResult, EmojiDescription } from '@atlaskit/emoji';
 import {
   EditorState,
   EditorView,
@@ -32,34 +32,16 @@ export class EmojiState {
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
   onSelectCurrent = (): boolean => false;
-  onTrySelectCurrent = (): boolean => false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;
   private view: EditorView;
-
-  private providerChangeHandlers: ProviderChangeHandler[] = [];
+  private queryResult: EmojiDescription[] = [];
 
   constructor(state: EditorState<any>, providerFactory: ProviderFactory) {
     this.changeHandlers = [];
     this.state = state;
     providerFactory.subscribe('emojiProvider', this.handleProvider);
-  }
-
-  subscribeToProviderUpdates(cb: ProviderChangeHandler) {
-    this.providerChangeHandlers.push(cb);
-
-    if (this.emojiProvider) {
-      cb(this.emojiProvider);
-    }
-  }
-
-  unsubscribeFromProviderUpdates(cb: ProviderChangeHandler) {
-    this.providerChangeHandlers = this.providerChangeHandlers.filter(ch => ch !== cb);
-  }
-
-  private notifyProviderSubscribers() {
-    this.providerChangeHandlers.forEach(cb => cb(this.emojiProvider));
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -192,6 +174,8 @@ export class EmojiState {
         state.tr.replaceWith(start, end, [node, textNode])
       );
       view.focus();
+      this.queryActive = false;
+      this.query = undefined;
     } else {
       this.dismiss();
     }
@@ -202,14 +186,46 @@ export class EmojiState {
       case 'emojiProvider':
         provider.then((emojiProvider: EmojiProvider) => {
           this.emojiProvider = emojiProvider;
-          this.notifyProviderSubscribers();
+          if (this.emojiProvider) {
+            this.emojiProvider.subscribe(this.onProviderChange);
+          }
         }).catch(() => {
+          if (this.emojiProvider) {
+            this.emojiProvider.unsubscribe(this.onProviderChange);
+          }
           this.emojiProvider = undefined;
-          this.notifyProviderSubscribers();
         });
         break;
     }
   }
+
+  trySelectCurrent = (): boolean => {
+    const emojisCount = this.getEmojisCount();
+    if (emojisCount === 1) {
+      this.insertEmoji(this.queryResult[0]);
+      return true;
+    } else if (emojisCount === 0 || this.isEmptyQuery()) {
+      this.dismiss();
+    }
+
+    return false;
+  }
+
+  private getEmojisCount = (): number => {
+    return (this.queryResult && this.queryResult.length) || 0;
+  }
+
+  private isEmptyQuery = (): boolean => {
+    return !this.query || this.query === ':';
+  }
+
+  onSearchResult = (searchResults: EmojiSearchResult): void => {
+    this.queryResult = searchResults.emojis;
+  }
+
+  private onProviderChange = {
+    result: this.onSearchResult,
+  };
 
   setView(view: EditorView) {
     this.view = view;

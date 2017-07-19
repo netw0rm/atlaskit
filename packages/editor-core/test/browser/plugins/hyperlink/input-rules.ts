@@ -1,8 +1,8 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import HyperlinkPlugin from '../../../../src/plugins/hyperlink';
+import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
-  insertText, chaiPlugin, fixtures, makeEditor, doc, br, p, a as link,
+  insertText, chaiPlugin, makeEditor, doc, br, p, a as link,
   strong, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -10,11 +10,9 @@ import defaultSchema from '../../../../src/test-helper/schema';
 chai.use(chaiPlugin);
 
 describe('hyperlink', () => {
-  const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: HyperlinkPlugin(defaultSchema),
-    place: fixture(),
+    plugins: hyperlinkPlugins(defaultSchema),
   });
 
   describe('input rules', () => {
@@ -88,19 +86,19 @@ describe('hyperlink', () => {
     it('should not convert mention like string to a mailto link', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '@example ', sel, sel);
-      expect(editorView.state.doc).to.not.deep.equal(doc(p(link({ href: 'mailto:@example' })('@example'), ' ')));
+      expect(editorView.state.doc).to.deep.equal(doc(p('@example ')));
     });
 
     it('should not convert invalid emails like to a mailto link (no @ simbol)', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'Abc.example.com ', sel, sel);
-      expect(editorView.state.doc).to.not.deep.equal(doc(p(link({ href: 'mailto:Abc.example.com' })('Abc.example.com'), ' ')));
+      expect(editorView.state.doc).to.deep.equal(doc(p('Abc.example.com ')));
     });
 
     it('should not convert invalid emails like to a mailto link (double dot)', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'john.doe@example..com ', sel, sel);
-      expect(editorView.state.doc).to.not.deep.equal(doc(p(link({ href: 'mailto:john.doe@example..com' })('john.doe@example..com'), ' ')));
+      expect(editorView.state.doc).to.deep.equal(doc(p('john.doe@example..com ')));
     });
 
     it('should convert "[text](http://foo)" to hyperlink', () => {

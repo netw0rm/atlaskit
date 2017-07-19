@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
@@ -8,28 +7,26 @@ import { sampleTabs, sampleTabsNoSelection, sampleTabsDefaultSelected } from './
 import { name } from '../../package.json';
 import { TabLabel } from '../../src/styled/TabsNav';
 
-const { expect } = chai;
-
 describe(name, () => {
   describe('Tabs', () => {
     describe('exports', () => {
       it('the Tabs component', () => {
-        expect(Tabs).not.to.equal(undefined);
-        expect(new Tabs()).to.be.instanceOf(Component);
+        expect(Tabs).not.toBe(undefined);
+        expect(new Tabs()).toBeInstanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Tabs />);
-        expect(wrapper).not.to.equal(undefined);
-        expect(wrapper.instance()).to.be.instanceOf(Component);
+        expect(wrapper).not.toBe(undefined);
+        expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       it('should render the TabsStateless', () => {
         const wrapper = shallow(<Tabs tabs={sampleTabsDefaultSelected} />);
         const statelessTabs = wrapper.find(TabsStateless);
-        expect(statelessTabs).to.have.lengthOf(1);
+        expect(statelessTabs).toHaveLength(1);
       });
     });
 
@@ -38,28 +35,28 @@ describe(name, () => {
         it('is reflected to the TabsStateless with no selection when no defaultSelected tab is specified', () => {
           const wrapper = shallow(<Tabs tabs={sampleTabsNoSelection} />);
           expect(wrapper.find(TabsStateless).prop('tabs').filter(tab => tab.isSelected).length)
-            .to.equal(0);
+            .toBe(0);
         });
 
         it('is reflected to the TabsStateless with no selection when isSelected tab is specified', () => {
           const wrapper = shallow(<Tabs tabs={sampleTabs} />);
           expect(wrapper.find(TabsStateless).prop('tabs').filter(tab => tab.isSelected).length)
-            .to.equal(0);
+            .toBe(0);
         });
 
         it('is reflected to the TabsStateless with selection when defaultSelected is specified', () => {
           const wrapper = shallow(<Tabs tabs={sampleTabsDefaultSelected} />);
           expect(wrapper.find(TabsStateless).prop('tabs').filter(tab => tab.isSelected).length)
-            .to.equal(1);
-          expect(wrapper.find(TabsStateless).prop('tabs')[1].isSelected).to.equal(true);
+            .toBe(1);
+          expect(wrapper.find(TabsStateless).prop('tabs')[1].isSelected).toBe(true);
         });
 
         it('is reflected to the TabsStateless with selection when defaultSelected is specified and the first tab is selected', () => {
           const wrapper = shallow(<Tabs tabs={sampleTabsDefaultSelected} />);
           wrapper.setState({ selectedTab: 0 });
           expect(wrapper.find(TabsStateless).prop('tabs').filter(tab => tab.isSelected).length)
-            .to.equal(1);
-          expect(wrapper.find(TabsStateless).prop('tabs')[0].isSelected).to.equal(true);
+            .toBe(1);
+          expect(wrapper.find(TabsStateless).prop('tabs')[0].isSelected).toBe(true);
         });
       });
 
@@ -72,7 +69,7 @@ describe(name, () => {
               tabs={sampleTabsDefaultSelected}
             />
           );
-          expect(spy.called).to.equal(false);
+          expect(spy.called).toBe(false);
         });
         it('is fired with selected tab index when new tab selected by click', () => {
           const spy = sinon.spy();
@@ -85,8 +82,8 @@ describe(name, () => {
 
           // Clicks on the tab at index 2, then checks that the spy is called with 2 as argument
           wrapper.find(TabLabel).at(2).simulate('click');
-          expect(spy.calledOnce).to.equal(true);
-          expect(spy.calledWith(2)).to.equal(true);
+          expect(spy.calledOnce).toBe(true);
+          expect(spy.calledWith(2)).toBe(true);
         });
         it('is fired with selected tab index when new tab selected by keyboard', () => {
           const spy = sinon.spy();
@@ -102,8 +99,8 @@ describe(name, () => {
           wrapper.find(TabLabel).at(1).simulate('keyDown', {
             key: 'ArrowRight',
           });
-          expect(spy.calledOnce).to.equal(true);
-          expect(spy.calledWith(2)).to.equal(true);
+          expect(spy.calledOnce).toBe(true);
+          expect(spy.calledWith(2)).toBe(true);
         });
       });
     });
@@ -121,29 +118,29 @@ describe(name, () => {
           });
 
           it('pressing LEFT arrow selects the first tab', () => {
-            expect(wrapper.state().selectedTab).to.equal(1);
+            expect(wrapper.state().selectedTab).toBe(1);
             simulateKeyboardNav('ArrowLeft');
-            expect(wrapper.state().selectedTab).to.equal(0);
+            expect(wrapper.state().selectedTab).toBe(0);
           });
 
           it('pressing the RIGHT arrow selects the last tab', () => {
-            expect(wrapper.state().selectedTab).to.equal(1);
+            expect(wrapper.state().selectedTab).toBe(1);
             simulateKeyboardNav('ArrowRight');
-            expect(wrapper.state().selectedTab).to.equal(2);
+            expect(wrapper.state().selectedTab).toBe(2);
           });
 
           it('pressing the LEFT arrow twice leaves selection on the first tab', () => {
-            expect(wrapper.state().selectedTab).to.equal(1);
+            expect(wrapper.state().selectedTab).toBe(1);
             simulateKeyboardNav('ArrowLeft');
             simulateKeyboardNav('ArrowLeft');
-            expect(wrapper.state().selectedTab).to.equal(0);
+            expect(wrapper.state().selectedTab).toBe(0);
           });
 
           it('pressing the RIGHT arrow twice leaves selection on the last tab', () => {
-            expect(wrapper.state().selectedTab).to.equal(1);
+            expect(wrapper.state().selectedTab).toBe(1);
             simulateKeyboardNav('ArrowRight');
             simulateKeyboardNav('ArrowRight');
-            expect(wrapper.state().selectedTab).to.equal(2);
+            expect(wrapper.state().selectedTab).toBe(2);
           });
         });
       });

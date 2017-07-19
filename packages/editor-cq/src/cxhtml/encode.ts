@@ -1,7 +1,6 @@
 import {
   Fragment,
-  Node as PMNode,
-  MediaNode
+  Node as PMNode
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
@@ -46,7 +45,7 @@ export default function encode(node: PMNode) {
     } else if (node.type === schema.nodes.mediaGroup) {
       return encodeMediaGroup(node);
     } else if (node.type === schema.nodes.media) {
-      return encodeMedia(node as MediaNode);
+      return encodeMedia(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -87,7 +86,7 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  function encodeMedia(node: MediaNode) {
+  function encodeMedia(node: any): Element {
     const elem = doc.createElementNS(FAB_XMLNS, 'fab:media');
     elem.setAttribute('media-id', node.attrs.id);
     elem.setAttribute('media-type', node.attrs.type);

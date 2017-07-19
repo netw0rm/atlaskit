@@ -32,11 +32,11 @@ export interface RefreshSecurityProvider {
 }
 
 export interface ResultCallback<T> {
-  (result: T): void;
+  (result: T, query?: string): void;
 }
 
 export interface ErrorCallback {
-  (error: Error): void;
+  (error: Error, query?: string): void;
 }
 
 export interface InfoCallback {
@@ -45,6 +45,7 @@ export interface InfoCallback {
 
 export interface MentionsResult {
   mentions: MentionDescription[];
+  query: string;
 }
 
 export interface MentionResourceConfig {
@@ -58,7 +59,25 @@ export interface MentionResourceConfig {
 }
 
 export interface ResourceProvider<Result> {
-  subscribe(key: string, callback?: ResultCallback<Result>, errCallback?: ErrorCallback, infoCallback?: InfoCallback): void;
+  /**
+   * Subscribe to ResourceProvider results
+   *
+   * @param {string} key subscriber key used to unsubscribe
+   * @param {ResultCallback<Result>} callback This callback only receives latest results
+   * @param {ErrorCallback} errCallback This callback will errors
+   * @param {InfoCallback} infoCallback This callback will info
+   * @param {ResultCallback<Result>} allResultsCallback This callback will receive all results
+   */
+  subscribe(key: string,
+            callback?: ResultCallback<Result>,
+            errCallback?: ErrorCallback,
+            infoCallback?: InfoCallback,
+            allResultsCallback?: ResultCallback<Result>): void;
+
+  /**
+   * Unsubscribe to this resource provider results
+   * @param {string} key key used when subscribing
+   */
   unsubscribe(key: string): void;
 }
 
@@ -66,6 +85,7 @@ export interface MentionProvider extends ResourceProvider<MentionDescription[]> 
   filter(query?: string): void;
   recordMentionSelection(mention: MentionDescription): void;
   shouldHighlightMention(mention: MentionDescription): boolean;
+  isFiltering(query: string): boolean;
 }
 
 const emptySecurityProvider = () => {
@@ -156,14 +176,20 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
   protected changeListeners: Map<string, ResultCallback<Result>>;
   protected errListeners: Map<string, ErrorCallback>;
   protected infoListeners: Map<string, InfoCallback>;
+  protected allResultsListeners: Map<string, ResultCallback<Result>>;
 
   constructor() {
     this.changeListeners = new Map<string, ResultCallback<Result>>();
+    this.allResultsListeners = new Map<string, ResultCallback<Result>>();
     this.errListeners = new Map<string, ErrorCallback>();
     this.infoListeners = new Map<string, InfoCallback>();
   }
 
-  subscribe(key: string, callback?: ResultCallback<Result>, errCallback?: ErrorCallback, infoCallback?: InfoCallback): void {
+  subscribe(key: string,
+            callback?: ResultCallback<Result>,
+            errCallback?: ErrorCallback,
+            infoCallback?: InfoCallback,
+            allResultsCallback?: ResultCallback<Result>): void {
     if (callback) {
       this.changeListeners.set(key, callback);
     }
@@ -173,12 +199,16 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
     if (infoCallback) {
       this.infoListeners.set(key, infoCallback);
     }
+    if (allResultsCallback) {
+      this.allResultsListeners.set(key, allResultsCallback);
+    }
   }
 
   unsubscribe(key: string): void {
     this.changeListeners.delete(key);
     this.errListeners.delete(key);
     this.infoListeners.delete(key);
+    this.allResultsListeners.delete(key);
   }
 }
 
@@ -198,6 +228,10 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
     // Do nothing
   }
 
+  isFiltering(query: string): boolean {
+    return false;
+  }
+
   protected _notifyListeners(mentionsResult: MentionsResult): void {
     debug('ak-mention-resource._notifyListeners',
       mentionsResult && mentionsResult.mentions && mentionsResult.mentions.length,
@@ -205,7 +239,7 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
 
     this.changeListeners.forEach((listener, key) => {
       try {
-        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS));
+        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), mentionsResult.query);
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -213,10 +247,25 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
     });
   }
 
-  protected _notifyErrorListeners(error: Error): void {
+  protected _notifyAllResultsListeners(mentionsResult: MentionsResult): void {
+    debug('ak-mention-resource._notifyAllResultsListeners',
+      mentionsResult && mentionsResult.mentions && mentionsResult.mentions.length,
+      this.changeListeners);
+
+    this.allResultsListeners.forEach((listener, key) => {
+      try {
+        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), mentionsResult.query);
+      } catch (e) {
+        // ignore error from listener
+        debug(`error from listener '${key}', ignoring`, e);
+      }
+    });
+  }
+
+  protected _notifyErrorListeners(error: Error, query?: string): void {
     this.errListeners.forEach((listener, key) => {
       try {
-        listener(error);
+        listener(error, query);
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -244,6 +293,7 @@ class MentionResource extends AbstractMentionResource {
   private config: MentionResourceConfig;
   private lastReturnedSearch: number;
   private searchIndex: SearchIndex;
+  private activeSearches: Set<string>;
 
   constructor(config: MentionResourceConfig) {
     super();
@@ -255,6 +305,7 @@ class MentionResource extends AbstractMentionResource {
     this.config = config;
     this.lastReturnedSearch = 0;
     this.searchIndex = new SearchIndex();
+    this.activeSearches = new Set();
   }
 
   shouldHighlightMention(mention: MentionDescription) {
@@ -273,21 +324,35 @@ class MentionResource extends AbstractMentionResource {
       const date = new Date(searchTime).toISOString().substr(17, 6);
       debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
     }
+
+    this._notifyAllResultsListeners(mentionResult);
+  }
+
+  notifyError(error: Error, query?: string) {
+    this._notifyErrorListeners(error, query);
+    if (query) {
+      this.activeSearches.delete(query);
+    }
   }
 
   filter(query?: string): void {
     const searchTime = Date.now();
 
     if (!query) {
-      this.initialState().then((results) => this.notify(searchTime, results, query), error => this._notifyErrorListeners(error));
+      this.initialState().then((results) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
     } else {
-      this.search(query).then((results) => this.notify(searchTime, results, query), error => this._notifyErrorListeners(error));
+      this.activeSearches.add(query);
+      this.search(query).then((results) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
     }
   }
 
   recordMentionSelection(mention: MentionDescription): Promise<void> {
     return this.recordSelection(mention).then(() => {
     }, error => debug(`error recording mention selection: ${error}`, error));
+  }
+
+  isFiltering(query: string): boolean {
+    return this.activeSearches.has(query);
   }
 
   /**
@@ -321,11 +386,15 @@ class MentionResource extends AbstractMentionResource {
 
   private search(query: string): Promise<MentionsResult> {
     if (this.searchIndex.hasDocuments()) {
-      return this.searchIndex.search(query).then((result) => {
+      return this.searchIndex.search(query).then(result => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-        this.remoteSearch(query).then((result) => {
+        this.remoteSearch(query).then(result => {
+          this.activeSearches.delete(query);
           this.notify(searchTime, result, query);
           this.searchIndex.indexResults(result.mentions);
+        },
+        err => {
+          this._notifyErrorListeners(err);
         });
 
         return result;
@@ -334,7 +403,6 @@ class MentionResource extends AbstractMentionResource {
 
     return this.remoteSearch(query).then(result => {
       this.searchIndex.indexResults(result.mentions);
-
       return result;
     });
   }
@@ -380,11 +448,13 @@ export class HttpError implements Error {
   name: string;
   message: string;
   statusCode: number;
+  stack?: string;
 
   constructor(statusCode: number, statusMessage: string) {
     this.statusCode = statusCode;
     this.message = statusMessage;
     this.name = 'HttpError';
+    this.stack = (new Error()).stack;
   }
 }
 

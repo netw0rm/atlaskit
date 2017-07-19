@@ -30,18 +30,18 @@ describe(name, () => {
   describe('Flag', () => {
     it('should instantiate', () => {
       const wrapper = shallow(generateFlag());
-      expect(wrapper.exists()).to.equal(true);
+      expect(wrapper.exists()).toBe(true);
     });
 
     describe('props', () => {
       it('icon prop element should be rendered to correct location', () => {
         const wrapper = shallow(generateFlag({ icon: <span id="test-icon" /> }));
-        expect(wrapper.find('#test-icon').exists()).to.equal(true);
+        expect(wrapper.find('#test-icon').exists()).toBe(true);
       });
 
       it('title prop text should be rendered to correct location', () => {
         const wrapper = shallow(generateFlag({ title: 'Oh hi!' }));
-        expect(wrapper.find(Title).childAt(0).text()).to.equal('Oh hi!');
+        expect(wrapper.find(Title).childAt(0).text()).toBe('Oh hi!');
       });
 
       describe('description prop', () => {
@@ -53,24 +53,24 @@ describe(name, () => {
 
         it('description element should not be rendered if description prop is empty', () => {
           flag.setProps({ description: '' });
-          expect(flag.find(Description).exists()).to.equal(false);
+          expect(flag.find(Description).exists()).toBe(false);
         });
 
         it('description element should not be rendered if description prop not passed', () => {
-          expect(flag.find(Description).exists()).to.equal(false);
+          expect(flag.find(Description).exists()).toBe(false);
         });
 
         it('description prop text should be rendered to correct location', () => {
           flag.setProps({ description: 'Oh hi!' });
-          expect(flag.find(Description).exists()).to.equal(true);
-          expect(flag.find(Description).text()).to.equal('Oh hi!');
+          expect(flag.find(Description).exists()).toBe(true);
+          expect(flag.find(Description).text()).toBe('Oh hi!');
         });
 
         it('should accept JSX in description', () => {
           flag.setProps({
             description: <span>Check this <a href="https://google.com">link</a> out</span>,
           });
-          expect(flag.find(Description).find('> span > a').exists()).to.equal(true);
+          expect(flag.find(Description).find('> span > a').exists()).toBe(true);
         });
       });
 
@@ -83,12 +83,12 @@ describe(name, () => {
           });
 
           it('should default to normal appearance', () => {
-            expect(flag.prop('appearance')).to.equal('normal');
+            expect(flag.prop('appearance')).toBe('normal');
           });
 
           it('should apply supplied appearance to root element', () => {
             flag.setProps({ appearance: 'warning' });
-            expect(flag.find(Container).prop('appearance')).to.equal('warning');
+            expect(flag.find(Container).prop('appearance')).toBe('warning');
           });
         });
 
@@ -99,13 +99,17 @@ describe(name, () => {
             flag = mount(generateFlag({ appearance: 'normal' }));
           });
 
-          it('should not render dismiss icon if isDismissAllowed is false', () => {
-            expect(flag.find(CrossIcon).exists()).to.equal(false);
+          it('should not render dismiss icon if isDismissAllowed is false or if no onDismissed callback is provided', () => {
+            expect(flag.find(CrossIcon).exists()).toBe(false);
+            flag.setProps({ isDismissAllowed: true, onDismissed: null });
+            expect(flag.find(CrossIcon).exists()).toBe(false);
+            flag.setProps({ isDismissAllowed: false, onDismissed: () => {} });
+            expect(flag.find(CrossIcon).exists()).toBe(false);
           });
 
           it('should render dismiss icon if isDismissAllowed', () => {
-            flag.setProps({ isDismissAllowed: true });
-            expect(flag.find(CrossIcon).exists()).to.equal(true);
+            flag.setProps({ isDismissAllowed: true, onDismissed: () => {} });
+            expect(flag.find(CrossIcon).exists()).toBe(true);
           });
         });
 
@@ -117,32 +121,32 @@ describe(name, () => {
           });
 
           it('should default to being not expanded', () => {
-            expect(flag.state('isExpanded')).to.equal(false);
+            expect(flag.state('isExpanded')).toBe(false);
           });
 
           it('should set isExpanded to true when icon clicked', () => {
             flag.find(DismissButton).simulate('click');
-            expect(flag.state('isExpanded')).to.equal(true);
+            expect(flag.state('isExpanded')).toBe(true);
           });
 
           it('should render a chevron-down icon if not expanded', () => {
-            expect(flag.state('isExpanded')).to.equal(false);
-            expect(flag.find(ChevronDownIcon).exists()).to.equal(true);
+            expect(flag.state('isExpanded')).toBe(false);
+            expect(flag.find(ChevronDownIcon).exists()).toBe(true);
           });
 
           it('should render a chevron-up icon if expanded', () => {
             flag.setState({ isExpanded: true });
-            expect(flag.find(ChevronUpIcon).exists()).to.equal(true);
+            expect(flag.find(ChevronUpIcon).exists()).toBe(true);
           });
 
           it('should set aria-hidden true on content when isExpanded is false', () => {
-            expect(flag.state('isExpanded')).to.equal(false);
-            expect(flag.find(ExpanderInternal).prop('aria-hidden')).to.equal(true);
+            expect(flag.state('isExpanded')).toBe(false);
+            expect(flag.find(ExpanderInternal).prop('aria-hidden')).toBe(true);
           });
 
           it('should set aria-hidden false on content when isExpanded is true', () => {
             flag.setState({ isExpanded: true });
-            expect(flag.find(ExpanderInternal).prop('aria-hidden')).to.equal(false);
+            expect(flag.find(ExpanderInternal).prop('aria-hidden')).toBe(false);
           });
 
           it('should pass appearance value on to styled sub-components', () => {
@@ -152,10 +156,10 @@ describe(name, () => {
               description: 'Hi there',
             });
 
-            expect(flag.find(Title).prop('appearance')).to.equal('info');
-            expect(flag.find(DismissButton).prop('appearance')).to.equal('info');
-            expect(flag.find(Description).prop('appearance')).to.equal('info');
-            expect(flag.find(Actions).prop('appearance')).to.equal('info');
+            expect(flag.find(Title).prop('appearance')).toBe('info');
+            expect(flag.find(DismissButton).prop('appearance')).toBe('info');
+            expect(flag.find(Description).prop('appearance')).toBe('info');
+            expect(flag.find(Actions).prop('appearance')).toBe('info');
           });
         });
       });
@@ -178,14 +182,14 @@ describe(name, () => {
 
         it('actions should be rendered', () => {
           const actionItems = flag.find(Action);
-          expect(actionItems.length).to.equal(2);
-          expect(actionItems.at(0).text()).to.equal('Hello!');
-          expect(actionItems.at(1).text()).to.equal('Goodbye!');
+          expect(actionItems.length).toBe(2);
+          expect(actionItems.at(0).text()).toBe('Hello!');
+          expect(actionItems.at(1).text()).toBe('Goodbye!');
         });
 
         it('action onClick should be triggered on click', () => {
           flag.find('button').first().simulate('click');
-          expect(actionSpy.callCount).to.equal(1);
+          expect(actionSpy.callCount).toBe(1);
         });
       });
 
@@ -199,40 +203,8 @@ describe(name, () => {
           })
         );
         wrapper.find(DismissButton).simulate('click');
-        expect(spy.callCount).to.equal(1);
-        expect(spy.calledWith('a')).to.equal(true);
-      });
-
-      describe('shouldDismiss prop', () => {
-        let flag;
-
-        beforeEach(() => {
-          flag = mount(generateFlag());
-        });
-
-        it('should default to false', () => {
-          expect(flag.prop('shouldDismiss')).to.equal(false);
-        });
-
-        it('should not cause flag to be dismissed when set to false', () => {
-          const spy = sinon.spy();
-          flag.setProps({
-            isDismissAllowed: true,
-            onDismissed: spy,
-            shouldDismiss: false,
-          });
-          expect(spy.callCount).to.equal(0);
-        });
-
-        it('should cause flag to be dismissed when changed to true', () => {
-          const spy = sinon.spy();
-          flag.setProps({
-            isDismissAllowed: true,
-            onDismissed: spy,
-          });
-          flag.setProps({ shouldDismiss: true });
-          expect(spy.callCount).to.equal(1);
-        });
+        expect(spy.callCount).toBe(1);
+        expect(spy.calledWith('a')).toBe(true);
       });
 
       it('Dismiss button should not be rendered if isDismissAllowed is omitted', () => {
@@ -243,8 +215,8 @@ describe(name, () => {
             onDismissed: spy,
           })
         );
-        expect(wrapper.find(DismissButton).exists()).to.equal(false);
-        expect(spy.callCount).to.equal(0);
+        expect(wrapper.find(DismissButton).exists()).toBe(false);
+        expect(spy.callCount).toBe(0);
       });
     });
 
@@ -259,19 +231,19 @@ describe(name, () => {
         );
 
         // Check that default collapsed state doesn't render children
-        expect(flag.find(Description).length).to.equal(0);
+        expect(flag.find(Description).length).toBe(0);
 
         // Trigger expand
         flag.find(DismissButton).simulate('click');
-        expect(flag.find(Description).length).to.equal(1);
+        expect(flag.find(Description).length).toBe(1);
 
         // Trigger collapse
         flag.find(DismissButton).simulate('click');
-        expect(flag.find(Description).length).to.equal(1);
+        expect(flag.find(Description).length).toBe(1);
 
         // ..once collapse animation finishes, children not rendered
         flag.find(ExpanderInternal).simulate('transitionEnd');
-        expect(flag.find(Description).length).to.equal(0);
+        expect(flag.find(Description).length).toBe(0);
       });
     });
   });
@@ -285,7 +257,7 @@ describe(name, () => {
           {generateFlag()}
         </FlagGroup>
         );
-      expect(wrapper.find(Container).length).to.equal(3);
+      expect(wrapper.find(Container).length).toBe(3);
     }
     );
 
@@ -305,8 +277,8 @@ describe(name, () => {
       );
       wrapper.find(DismissButton).simulate('click');
       wrapper.find(Container).first().simulate('animationEnd');
-      expect(spy.callCount).to.equal(1);
-      expect(spy.calledWith('a')).to.equal(true);
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith('a')).toBe(true);
     });
   });
 });

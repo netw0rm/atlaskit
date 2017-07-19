@@ -87,13 +87,13 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
   private toggleTextColor = (color) => {
     const { pluginState, editorView } = this.props;
     if (!this.state.disabled) {
-      if (color === pluginState.defaultColor) {
-        pluginState.removeTextColor(editorView.state, editorView.dispatch);
-      } else {
-        pluginState.toggleTextColor(editorView.state, editorView.dispatch, color);
-      }
       this.toggleOpen();
+      if (color === pluginState.defaultColor) {
+        return pluginState.removeTextColor(editorView.state, editorView.dispatch);
+      }
+      return pluginState.toggleTextColor(editorView.state, editorView.dispatch, color);
     }
+    return false;
   }
 
   private toggleOpen = () => {
@@ -102,9 +102,17 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
 
   private handleOpenChange = ({isOpen}) => {
    if (!isOpen) {
-     this.props.softBlurEditor();
+      const { $from } = this.props.editorView.state.selection;
+      const node = $from.node($from.depth);
+      if (!(node && node.attrs['isCodeMirror'])) {
+        this.props.focusEditor();
+      }
     } else {
-      this.props.focusEditor();
+      const { $from } = this.props.editorView.state.selection;
+      const node = $from.node($from.depth);
+      if (!(node && node.attrs['isCodeMirror'])) {
+        this.props.softBlurEditor();
+      }
     }
 
     this.setState({ isOpen });

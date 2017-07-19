@@ -1,10 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import chai from 'chai';
 
 import DynamicProps from '../../src/DynamicProps';
-
-const expect = chai.expect;
 
 describe('DynamicProps', () => {
   it('renders a placeholder when there are no proptypes', () => {
@@ -14,7 +11,7 @@ export default class MyComponent extends React.Component {
     return '';
   }
 }`;
-    expect(mount(<DynamicProps componentSrc={componentSrc} />).text()).to.contain('There are no props for this component');
+    expect(mount(<DynamicProps componentSrc={componentSrc} />).text()).toEqual(expect.stringContaining('There are no props for this component'));
   });
 
   it('does not render the placeholder when there are proptypes', () => {
@@ -28,8 +25,8 @@ export default class MyComponent extends React.Component {
   }
 }`;
     const wrapper = mount(<DynamicProps componentSrc={componentSrc} />);
-    expect(wrapper.text()).to.not.contain('There are no props for this component');
-    expect(wrapper.find('h3').text()).to.contain('foo');
+    expect(wrapper.text()).not.toEqual(expect.stringContaining('There are no props for this component'));
+    expect(wrapper.find('h3').text()).toEqual(expect.stringContaining('foo'));
   });
 
   it('renders a custom name when provided', () => {
@@ -40,6 +37,6 @@ export default class MyComponent extends React.Component {
   }
 }`;
     const wrapper = mount(<DynamicProps componentName="Custom" componentSrc={componentSrc} />);
-    expect(wrapper.find('h2').text()).to.contain('Custom Props');
+    expect(wrapper.find('h2').text()).toEqual(expect.stringContaining('Custom Props'));
   });
 });

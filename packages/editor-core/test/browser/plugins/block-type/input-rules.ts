@@ -1,19 +1,17 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import blockTypePlugins from '../../../../src/plugins/block-type';
+import { default as blockTypePlugins, BlockTypeState } from '../../../../src/plugins/block-type';
 import {
-  sendKeyToPm, blockquote, br, code_block, chaiPlugin, doc, fixtures, h1, h2, h3, insertText, li, makeEditor, p, ul
+  sendKeyToPm, blockquote, br, code_block, chaiPlugin, doc, h1, h2, h3, insertText, li, makeEditor, p, ul
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<BlockTypeState>({
     doc,
     plugins: blockTypePlugins(defaultSchema),
-    place: fixture()
   });
 
   describe('heading rule', () => {

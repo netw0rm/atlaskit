@@ -26,7 +26,7 @@ describe('Media PickerFacade', () => {
   const dropzoneContainer = document.createElement('div');
   const uploadParams = {
     collection: 'mock',
-    dropzoneContainer: dropzoneContainer
+    dropzoneContainer
   };
   const tokenProvider = (collectionName?: string) => Promise.resolve('mock-token');
   const contextConfig = {
@@ -55,9 +55,10 @@ describe('Media PickerFacade', () => {
   beforeEach(() => {
     mockPicker = new MockMediaPicker();
     stateManager = new DefaultMediaStateManager();
-    mockPickerFactory = (pickerType: string, pickerConfig: any) => {
+    mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => {
       mockPicker.pickerType = pickerType;
       mockPicker.pickerConfig = pickerConfig;
+      mockPicker.extraConfig = extraConfig;
 
       return mockPicker;
     };
@@ -105,7 +106,6 @@ describe('Media PickerFacade', () => {
       expect(mockPicker.pickerConfig).to.have.property('uploadParams', uploadParams);
       expect(mockPicker.pickerConfig).to.have.property('apiUrl', contextConfig.serviceHost);
       expect(mockPicker.pickerConfig).to.have.property('apiClientId', contextConfig.clientId);
-      expect(mockPicker.pickerConfig).to.have.property('container', dropzoneContainer);
       expect(mockPicker.pickerConfig).to.have.property('tokenSource')
         .which.has.property('getter')
           .which.is.a('function');
@@ -118,8 +118,10 @@ describe('Media PickerFacade', () => {
       getter(() => {}, () => done());
     });
 
-    it('respects dropzone container', () => {
-      expect(mockPicker.pickerConfig).to.have.property('tokenSource');
+    it('respects dropzone container config', () => {
+      const dropzoneFacade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager!, errorReporter, mockPickerFactory);
+      expect(dropzoneFacade).to.be.an('object');
+      expect(mockPicker.extraConfig).to.have.property('container',  dropzoneContainer);
     });
   });
 
@@ -278,4 +280,56 @@ describe('Media PickerFacade', () => {
       })).to.eq(true);
     });
   });
+
+  it('After upload has transitioned from "uploading", subsequent "status update" events must not downgrade status (ED-2062)', () => {
+    const finalizeCb = () => {};
+    stateManager!.updateState(testTemporaryFileId, {
+      id: testTemporaryFileId,
+      status: 'uploading'
+    });
+
+    mockPicker.__triggerEvent('upload-finalize-ready', {
+      file: { ...testFileData, publicId: testFilePublicId },
+      finalize: finalizeCb
+    });
+
+    mockPicker.__triggerEvent('upload-status-update', {
+      file: testFileData,
+      progress: testFileProgress,
+    });
+
+    expect(stateManager!.getState(testTemporaryFileId)).to.deep.eq({
+      id: testTemporaryFileId,
+      publicId: testFilePublicId,
+      status: 'unfinalized',
+      progress: testFileProgress.portion,
+      fileName: testFileData.name,
+      fileSize: testFileData.size,
+      fileMimeType: testFileData.type,
+      finalizeCb: finalizeCb
+    });
+
+    mockPicker.__triggerEvent('upload-processing', {
+      file: { ...testFileData, publicId: testFilePublicId },
+    });
+
+    mockPicker.__triggerEvent('upload-status-update', {
+      file: testFileData,
+      progress: testFileProgress,
+    });
+
+    expect(stateManager!.getState(testTemporaryFileId)!.status).to.eq('processing');
+
+    mockPicker.__triggerEvent('upload-end', {
+      file: { ...testFileData, publicId: testFilePublicId },
+    });
+
+    mockPicker.__triggerEvent('upload-status-update', {
+      file: testFileData,
+      progress: testFileProgress,
+    });
+
+    expect(stateManager!.getState(testTemporaryFileId)!.status).to.eq('ready');
+  });
+
 });

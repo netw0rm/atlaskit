@@ -9,6 +9,7 @@ import {
   MediaProvider,
   MediaState,
   UrlPreview,
+  ImageResizeMode
 } from '@atlaskit/media-core';
 import {
   Card,
@@ -37,6 +38,7 @@ export interface MediaProps {
   onClick?: CardEventClickHandler;
   cardDimensions?: CardDimensions;
   item: MediaNode;
+  resizeMode?: ImageResizeMode;
 }
 
 export interface State extends MediaState {
@@ -67,8 +69,6 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
       return 'error';
   }
 }
-
-const noop = () => {};
 
 export default class Media extends PureComponent<MediaProps, State> {
   private destroyed = false;
@@ -216,7 +216,8 @@ export default class Media extends PureComponent<MediaProps, State> {
         context={viewContext}
         dimensions={cardDimensions}
         identifier={id ? mediaIdentifier : urlPreviewIdentifier}
-        onClick={onClick || noop}
+        onClick={onClick}
+        resizeMode={this.resizeMode}
       />
     );
   }
@@ -256,7 +257,8 @@ export default class Media extends PureComponent<MediaProps, State> {
           collectionName: collection
         }}
         selectable={false}
-        onClick={onClick || noop}
+        onClick={onClick}
+        resizeMode={this.resizeMode}
       />
     );
   }
@@ -300,5 +302,11 @@ export default class Media extends PureComponent<MediaProps, State> {
       dataURI={dataURI}
       progress={progress}
     />;
+  }
+
+  private get resizeMode(): ImageResizeMode {
+    const {resizeMode} = this.props;
+
+    return resizeMode || 'full-fit';
   }
 }

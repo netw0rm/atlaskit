@@ -16,7 +16,7 @@ describe(`${name} - smart`, () => {
 
   describe('render', () => {
     it('should render stateless single select', () => {
-      expect(mount(<SmartSelect />).find(StatelessSelect).length).to.equal(1);
+      expect(mount(<SmartSelect />).find(StatelessSelect).length).toBe(1);
     });
   });
 
@@ -39,19 +39,19 @@ describe(`${name} - smart`, () => {
     describe('when select is closed', () => {
       it('should select first matching item when a key is pressed', () => {
         wrapper.simulate('keyDown', { key: 't' });
-        expect(wrapper.state('selectedItem')).to.equal(items[2]);
+        expect(wrapper.state('selectedItem')).toBe(items[2]);
       });
 
       it('should select next matching item if the same key was pressed after an interval', (done) => {
         wrapper.simulate('keyDown', { key: 't' });
-        expect(wrapper.state('selectedItem')).to.equal(items[2]);
+        expect(wrapper.state('selectedItem')).toBe(items[2]);
         setTimeout(() => {
           wrapper.simulate('keyDown', { key: 't' });
-          expect(wrapper.state('selectedItem')).to.equal(items[3]);
+          expect(wrapper.state('selectedItem')).toBe(items[3]);
 
           setTimeout(() => {
             wrapper.simulate('keyDown', { key: 't' });
-            expect(wrapper.state('selectedItem')).to.equal(items[4]);
+            expect(wrapper.state('selectedItem')).toBe(items[4]);
             done();
           }, 210);
         }, 210);
@@ -60,17 +60,17 @@ describe(`${name} - smart`, () => {
       it('should select first matching item after the selected item', () => {
         wrapper.setState({ selectedItem: items[3] });
         wrapper.simulate('keyDown', { key: 't' });
-        expect(wrapper.state('selectedItem')).to.equal(items[4]);
+        expect(wrapper.state('selectedItem')).toBe(items[4]);
       });
 
       it('should return to the first matching item when the last one was selected', (done) => {
         wrapper.setState({ selectedItem: items[3] });
         wrapper.simulate('keyDown', { key: 't' });
-        expect(wrapper.state('selectedItem')).to.equal(items[4]);
+        expect(wrapper.state('selectedItem')).toBe(items[4]);
 
         setTimeout(() => {
           wrapper.simulate('keyDown', { key: 't' });
-          expect(wrapper.state('selectedItem')).to.equal(items[2]);
+          expect(wrapper.state('selectedItem')).toBe(items[2]);
           done();
         }, 210);
       });
@@ -78,11 +78,11 @@ describe(`${name} - smart`, () => {
 
     it('should "append" values if keys are pressed quickly', () => {
       wrapper.simulate('keyDown', { key: 'a' });
-      expect(wrapper.state('selectedItem')).to.equal(items[1]);
+      expect(wrapper.state('selectedItem')).toBe(items[1]);
       wrapper.simulate('keyDown', { key: 'g' });
-      expect(wrapper.state('selectedItem')).to.equal(items[5]);
+      expect(wrapper.state('selectedItem')).toBe(items[5]);
       wrapper.simulate('keyDown', { key: 'r' });
-      expect(wrapper.state('selectedItem')).to.equal(items[6]);
+      expect(wrapper.state('selectedItem')).toBe(items[6]);
     });
   });
 });

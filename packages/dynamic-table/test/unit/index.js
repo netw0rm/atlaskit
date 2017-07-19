@@ -1,7 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
-import { Pagination } from '@atlaskit/pagination';
+import { PaginationStateless } from '@atlaskit/pagination';
+import TableHead from '../../src/components/TableHead';
+import EmptyBody from '../../src/components/EmptyBody';
+import Body from '../../src/components/Body';
+import { Caption } from '../../src/styled/DynamicTable';
 import DynamicTable, { DynamicTableStateless } from '../../src';
 
 import { name } from '../../package.json';
@@ -58,10 +62,75 @@ const rows = [
 
 describe(name, () => {
   describe('stateless', () => {
-    it('should display empty view when items length is 0', () => {
-      const EmptyView = <div>empty view</div>;
-      const wrapper = mount(<DynamicTableStateless emptyView={EmptyView} />);
-      expect(wrapper.html()).to.equal(mount(EmptyView).html());
+    it('should render TableHead when items length is 0 and not render EmptyBody if emptyView prop is ommitted', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          head={head}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
+      const body = wrapper.find(Body);
+      expect(header.length).toBe(1);
+      expect(emptyView.length).toBe(0);
+      expect(body.length).toBe(0);
+    });
+    it('should not render any text in the table when rows prop is an empty array', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          rows={[]}
+          head={head}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const table = wrapper.find('table');
+      expect(table.nodes[0].childNodes.length).toBe(1);
+      expect(header.length).toBe(1);
+    });
+    it('should render TableHead when items length is 0 and render EmptyBody if emptyView prop is provided', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          head={head}
+          emptyView={<h2>No items present in table</h2>}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
+      const body = wrapper.find(Body);
+      expect(header.length).toBe(1);
+      expect(emptyView.length).toBe(1);
+      expect(body.length).toBe(0);
+    });
+    it('should not render TableHead if head prop is not provided and should render EmptyBody if emptyView prop is provided', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          emptyView={<h2>No items present in table</h2>}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
+      const body = wrapper.find(Body);
+      expect(header.length).toBe(0);
+      expect(body.length).toBe(0);
+      expect(emptyView.length).toBe(1);
+    });
+
+    it('should render head, emptyView and caption if provided', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          head={head}
+          emptyView={<h2>No items present in table</h2>}
+          caption={<h2>This is a table caption</h2>}
+        />
+      );
+      const header = wrapper.find(TableHead);
+      const emptyView = wrapper.find(EmptyBody);
+      const caption = wrapper.find(Caption);
+      const body = wrapper.find(Body);
+      expect(header.length).toBe(1);
+      expect(emptyView.length).toBe(1);
+      expect(caption.length).toBe(1);
+      expect(body.length).toBe(0);
     });
 
     it('should display paginated data', () => {
@@ -74,9 +143,9 @@ describe(name, () => {
         />
       );
       const bodyRows = wrapper.find('tbody tr');
-      expect(bodyRows.length).to.equal(1);
-      expect(bodyRows.at(0).find('td').at(0).text()).to.equal('Hillary');
-      expect(bodyRows.at(0).find('td').at(1).text()).to.equal('Clinton');
+      expect(bodyRows.length).toBe(1);
+      expect(bodyRows.at(0).find('td').at(0).text()).toBe('Hillary');
+      expect(bodyRows.at(0).find('td').at(1).text()).toBe('Clinton');
     });
 
     it('should display sorted data', () => {
@@ -93,12 +162,12 @@ describe(name, () => {
         />
         );
       const bodyRows = wrapper.find('tbody tr');
-      expect(bodyRows.at(0).find('td').at(0).text()).to.equal('Barak');
-      expect(bodyRows.at(0).find('td').at(1).text()).to.equal('Obama');
-      expect(bodyRows.at(1).find('td').at(0).text()).to.equal('Donald');
-      expect(bodyRows.at(1).find('td').at(1).text()).to.equal('Trump');
-      expect(bodyRows.at(2).find('td').at(0).text()).to.equal('Hillary');
-      expect(bodyRows.at(2).find('td').at(1).text()).to.equal('Clinton');
+      expect(bodyRows.at(0).find('td').at(0).text()).toBe('Barak');
+      expect(bodyRows.at(0).find('td').at(1).text()).toBe('Obama');
+      expect(bodyRows.at(1).find('td').at(0).text()).toBe('Donald');
+      expect(bodyRows.at(1).find('td').at(1).text()).toBe('Trump');
+      expect(bodyRows.at(2).find('td').at(0).text()).toBe('Hillary');
+      expect(bodyRows.at(2).find('td').at(1).text()).toBe('Clinton');
     });
 
     it('should pass down extra props', () => {
@@ -131,15 +200,15 @@ describe(name, () => {
           rows={newRows}
         />
         );
-      expect(wrapper.find('thead').prop('onClick')).to.equal(theadOnClick);
+      expect(wrapper.find('thead').prop('onClick')).toBe(theadOnClick);
       wrapper.find('th').forEach((headCell) => {
-        expect(headCell.prop('onClick')).to.equal(thOnClick);
+        expect(headCell.prop('onClick')).toBe(thOnClick);
       });
       wrapper.find('tbody tr').forEach((bodyRow) => {
-        expect(bodyRow.prop('onClick')).to.equal(trOnClick);
+        expect(bodyRow.prop('onClick')).toBe(trOnClick);
       });
       wrapper.find('td').forEach((bodyCell) => {
-        expect(bodyCell.prop('onClick')).to.equal(tdOnClick);
+        expect(bodyCell.prop('onClick')).toBe(tdOnClick);
       });
     });
 
@@ -166,9 +235,9 @@ describe(name, () => {
       it('onSort & onSetPage', () => {
         const headCells = wrapper.find('th');
         headCells.at(0).simulate('click');
-        expect(onSort.calledOnce).to.equal(true);
+        expect(onSort.calledOnce).toBe(true);
         headCells.at(1).simulate('click');
-        expect(onSort.calledOnce).to.equal(true);
+        expect(onSort.calledOnce).toBe(true);
         expect(onSort.calledWith({
           key: 'first_name',
           sortOrder: 'ASC',
@@ -177,15 +246,15 @@ describe(name, () => {
             content: 'First name',
             isSortable: true,
           },
-        })).to.equal(true);
-        expect(onSetPage.calledWith(1)).to.equal(true);
-        expect(onSetPage.calledOnce).to.equal(true);
+        })).toBe(true);
+        expect(onSetPage.calledWith(1)).toBe(true);
+        expect(onSetPage.calledOnce).toBe(true);
       });
 
       it('onSetPage', () => {
-        wrapper.find(Pagination).find('button').at(1).simulate('click');
-        expect(onSetPage.calledOnce).to.equal(true);
-        expect(onSetPage.calledWith(1)).to.equal(true);
+        wrapper.find(PaginationStateless).find('button').at(1).simulate('click');
+        expect(onSetPage.calledOnce).toBe(true);
+        expect(onSetPage.calledWith(1)).toBe(true);
       });
     });
   });
@@ -201,14 +270,14 @@ describe(name, () => {
         />
       );
 
-      wrapper.find(Pagination).find('button').at(0).simulate('click');
+      wrapper.find(PaginationStateless).find('button').at(0).simulate('click');
 
       const bodyRows = wrapper.find('tbody tr');
-      expect(bodyRows.length).to.equal(2);
-      expect(bodyRows.at(0).find('td').at(0).text()).to.equal('Barak');
-      expect(bodyRows.at(0).find('td').at(1).text()).to.equal('Obama');
-      expect(bodyRows.at(1).find('td').at(0).text()).to.equal('Donald');
-      expect(bodyRows.at(1).find('td').at(1).text()).to.equal('Trump');
+      expect(bodyRows.length).toBe(2);
+      expect(bodyRows.at(0).find('td').at(0).text()).toBe('Barak');
+      expect(bodyRows.at(0).find('td').at(1).text()).toBe('Obama');
+      expect(bodyRows.at(1).find('td').at(0).text()).toBe('Donald');
+      expect(bodyRows.at(1).find('td').at(1).text()).toBe('Trump');
     });
 
     it('should sort data', () => {
@@ -221,12 +290,12 @@ describe(name, () => {
       wrapper.find('th').at(0).simulate('click');
       wrapper.update();
       const bodyRows = wrapper.find('tbody tr');
-      expect(bodyRows.at(0).find('td').at(0).text()).to.equal('Barak');
-      expect(bodyRows.at(0).find('td').at(1).text()).to.equal('Obama');
-      expect(bodyRows.at(1).find('td').at(0).text()).to.equal('Donald');
-      expect(bodyRows.at(1).find('td').at(1).text()).to.equal('Trump');
-      expect(bodyRows.at(2).find('td').at(0).text()).to.equal('Hillary');
-      expect(bodyRows.at(2).find('td').at(1).text()).to.equal('Clinton');
+      expect(bodyRows.at(0).find('td').at(0).text()).toBe('Barak');
+      expect(bodyRows.at(0).find('td').at(1).text()).toBe('Obama');
+      expect(bodyRows.at(1).find('td').at(0).text()).toBe('Donald');
+      expect(bodyRows.at(1).find('td').at(1).text()).toBe('Trump');
+      expect(bodyRows.at(2).find('td').at(0).text()).toBe('Hillary');
+      expect(bodyRows.at(2).find('td').at(1).text()).toBe('Clinton');
     });
   });
 });

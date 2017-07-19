@@ -9,16 +9,16 @@ describe(name, () => {
   describe('CommentField', () => {
     describe('exports', () => {
       it('the CommentField component', () => {
-        expect(CommentField).not.to.equal(undefined);
-        expect(new CommentField()).to.be.instanceOf(Component);
+        expect(CommentField).not.toBe(undefined);
+        expect(new CommentField()).toBeInstanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<CommentField />);
-        expect(wrapper).not.to.equal(undefined);
-        expect(wrapper.instance()).to.be.instanceOf(Component);
+        expect(wrapper).not.toBe(undefined);
+        expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       describe('if href provided', () => {
@@ -27,14 +27,14 @@ describe(name, () => {
           const href = '/test-href';
           const wrapper = mount(<CommentField href={href}>{children}</CommentField>);
 
-          expect(wrapper.find(Anchor).length).to.equal(1);
-          expect(wrapper.find(Anchor).contains(children)).to.equal(true);
-          expect(wrapper.find(Anchor).prop('href')).to.equal(href);
+          expect(wrapper.find(Anchor).length).toBe(1);
+          expect(wrapper.find(Anchor).contains(children)).toBe(true);
+          expect(wrapper.find(Anchor).prop('href')).toBe(href);
         });
 
         it('should render link with extra styles', () => {
           const wrapper = mount(<CommentField href="#" hasAuthor />);
-          expect(wrapper.find(Anchor).prop('hasAuthor')).to.equal(true);
+          expect(wrapper.find(Anchor).prop('hasAuthor')).toBe(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the link element', () => {
@@ -45,7 +45,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField href="#" {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(Anchor).prop(propName)).to.equal(props[propName]);
+            expect(wrapper.find(Anchor).prop(propName)).toBe(props[propName]);
           });
         });
       });
@@ -55,13 +55,13 @@ describe(name, () => {
           const children = <span>children</span>;
           const wrapper = mount(<CommentField>{children}</CommentField>);
 
-          expect(wrapper.find(Span).length).to.equal(1);
-          expect(wrapper.find(Span).contains(children)).to.equal(true);
+          expect(wrapper.find(Span).length).toBe(1);
+          expect(wrapper.find(Span).contains(children)).toBe(true);
         });
 
         it('should render span with author styles', () => {
           const wrapper = mount(<CommentField hasAuthor />);
-          expect((wrapper.find(Span)).prop('hasAuthor')).to.equal(true);
+          expect((wrapper.find(Span)).prop('hasAuthor')).toBe(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the span', () => {
@@ -72,7 +72,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(Span).prop(propName)).to.equal(props[propName]);
+            expect(wrapper.find(Span).prop(propName)).toBe(props[propName]);
           });
         });
       });

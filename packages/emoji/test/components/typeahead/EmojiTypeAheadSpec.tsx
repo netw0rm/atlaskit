@@ -4,13 +4,13 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
+import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../../../src/components/typeahead/EmojiTypeAheadItem';
 import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
-import { OptionalEmojiDescription, EmojiId } from '../../../src/types';
+import { OptionalEmojiDescription, EmojiId, OnEmojiEvent } from '../../../src/types';
 import { EmojiProvider } from '../../../src/api/EmojiResource';
 import { Props as TypeAheadProps, State as TypeAheadState } from '../../../src/components/typeahead/EmojiTypeAhead';
 
@@ -24,7 +24,7 @@ function setupPicker(props?: Props): ReactWrapper<any, any> {
   );
 }
 
-const allEmojis = emojiRepository.all().emojis;
+const allEmojis = newEmojiRepository().all().emojis;
 
 const leftClick = {
   button: 0,
@@ -282,6 +282,61 @@ describe('EmojiTypeAhead', () => {
     return waitUntil(() => doneLoading(component)).then(() => {
       expect(itemsVisibleCount(component) > 1, 'Items visible').to.equal(true);
       expect(isEmojiTypeAheadItemSelected(component, openMouthEmoji.id), 'Open mouth emoji should be selected').to.equal(true);
+    });
+  });
+
+  it('should fire onSelection if a query ends in a colon and has an exact match with one emoji shortName', () => {
+    const onSelection = sinon.spy();
+
+    const component = setupPicker({
+      onSelection: onSelection as OnEmojiEvent,
+      query: ':grin:',
+    } as Props);
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(onSelection.callCount, 'selected 1').to.equal(1);
+    });
+  });
+
+  it('should not fire onSelection if a query ends in a colon and more than one emoji has an exact shortName match', () => {
+    const onSelection = sinon.spy();
+
+    const component = setupPicker({
+      onSelection: onSelection as OnEmojiEvent,
+      query: ':boom:',
+    } as Props);
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(itemsVisibleCount(component) > 1, 'Multiple items match').to.equal(true);
+      expect(onSelection.callCount, 'selected 0').to.equal(0);
+    });
+  });
+
+  it('should not fire onSelection if a query ends in a colon and no emojis have an exact shortName match', () => {
+    const onSelection = sinon.spy();
+
+    const component = setupPicker({
+      onSelection: onSelection as OnEmojiEvent,
+      query: ':blah:',
+    } as Props);
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      const noEmojiShown = () => findEmojiItems(component).length === 0;
+      expect(noEmojiShown()).to.equal(true);
+      expect(onSelection.callCount, 'selected 0').to.equal(0);
+    });
+  });
+
+  it('should perform case insensitive exact shortName matching', () => {
+    const onSelection = sinon.spy();
+
+    const component = setupPicker({
+      onSelection: onSelection as OnEmojiEvent,
+      query: ':GRIN:',
+    } as Props);
+
+    return waitUntil(() => doneLoading(component)).then(() => {
+      expect(onSelection.callCount, 'selected 1').to.equal(1);
     });
   });
 });

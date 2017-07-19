@@ -6,10 +6,12 @@ import {
   akColorR500,
 } from '@atlaskit/util-shared-styles';
 
+import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
 import { style } from 'typestyle';
 
 export const selected = 'selected';
+export const selectOnHover = 'selectOnHover';
 export const emojiSprite = 'emoji-sprite';
 
 const checkerBoard = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABlBMVEXY3OHs7vHTc6akAAAAE0lEQVR4AWNg4P9PEv7/gYEUDAC8yyPd+MDI9AAAAABJRU5ErkJggg==';
@@ -25,11 +27,11 @@ export const emoji = style({
   margin: '-1px 0',
 
   $nest: {
-    [`&.${selected}`]: {
+    [`&.${selected},&.${selectOnHover}:hover`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
     'img': {
-      maxHeight: '24px',
+      maxHeight: `${defaultEmojiHeight}px`,
       display: 'block',
     }
   },
@@ -42,15 +44,15 @@ export const emojiContainer = style({
   margin: '-1px 0',
 
   $nest: {
-    [`&.${selected}`]: {
+    [`&.${selected},&.${selectOnHover}:hover`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
 
     [`.${emojiSprite}`]: {
       background: 'transparent no-repeat',
       display: 'block',
-      height: '24px',
-      width: '24px',
+      height: `${defaultEmojiHeight}px`,
+      width: `${defaultEmojiHeight}px`,
     },
   },
 });

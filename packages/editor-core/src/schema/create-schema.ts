@@ -23,10 +23,13 @@ import {
   hardBreak,
   emoji,
   table,
-  table_cell,
-  table_header,
-  table_row,
+  tableCell,
+  tableHeader,
+  tableRow,
   applicationCard,
+  decisionList,
+  decisionItem,
+  unknownBlock,
 
   // Marks
   link,
@@ -116,13 +119,16 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
   { name: 'table', spec: table },
-  { name: 'table_cell', spec: table_cell },
-  { name: 'table_row', spec: table_row },
-  { name: 'table_header', spec: table_header },
+  { name: 'tableCell', spec: tableCell },
+  { name: 'tableRow', spec: tableRow },
+  { name: 'tableHeader', spec: tableHeader },
   { name: 'confluenceJiraIssue', spec: confluenceJiraIssue },
   { name: 'confluenceUnsupportedInline', spec: confluenceUnsupportedInline },
   { name: 'confluenceUnsupportedBlock', spec: confluenceUnsupportedBlock },
   { name: 'applicationCard', spec: applicationCard },
+  { name: 'decisionList', spec: decisionList },
+  { name: 'decisionItem', spec: decisionItem },
+  { name: 'unknownBlock', spec: unknownBlock },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [

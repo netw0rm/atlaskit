@@ -71,7 +71,7 @@ export default class PanelEdit extends PureComponent<Props, State> {
           })}
           <RemoveButtonWrapper>
             <ToolbarButton
-              onClick={this.handleRemovePanelType}
+              onClick={this.handleRemovePanel}
               iconBefore={<RemoveIcon label="Remove panel type" />}
             />
           </RemoveButtonWrapper>
@@ -96,8 +96,8 @@ export default class PanelEdit extends PureComponent<Props, State> {
     this.props.pluginState.changePanelType(editorView, panelType);
   }
 
-  private handleRemovePanelType = () => {
+  private handleRemovePanel = () => {
     const { editorView } = this.props;
-    this.props.pluginState.removePanelType(editorView);
+    this.props.pluginState.removePanel(editorView);
   }
 }

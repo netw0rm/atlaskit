@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Component, MouseEvent } from 'react';
-import { TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
+import { TrelloBoardLinkApp, UrlPreview, ImageResizeMode } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus } from '../..';
+import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
@@ -12,6 +13,7 @@ import { LinkCardImageView } from '../cardImageView';
 export interface LinkCardProps extends SharedCardProps {
   readonly status: CardStatus;
   readonly details?: UrlPreview;
+  readonly resizeMode?: ImageResizeMode;
 
   readonly onClick?: (event: MouseEvent<HTMLElement>) => void;
   readonly onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
@@ -21,6 +23,10 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
     const {appearance} = this.props;
     const {resources} = this;
+
+    if (resources.smartCard) {
+      return this.renderApplicationCard();
+    }
 
     // If appearance is passed we prioritize that instead of the better looking one
     if (appearance === 'small') {
@@ -42,6 +48,18 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     }
 
     return this.renderGenericLink();
+  }
+
+  private renderApplicationCard(): JSX.Element | null {
+    const {resources} = this;
+
+    if (!resources.smartCard) {
+      return null;
+    }
+
+    return (
+      <AppCardView model={resources.smartCard}/>
+    );
   }
 
   private renderApplicationLink(): JSX.Element {
@@ -131,7 +149,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private renderLinkCardImage(): JSX.Element {
     const { url, title, site } = this.urlPreview;
-    const { status, dimensions, actions, appearance, onClick, onMouseEnter } = this.props;
+    const { status, dimensions, actions, appearance, onClick, onMouseEnter, resizeMode } = this.props;
     const errorMessage = this.isError ? 'Loading failed' : undefined;
 
     return (
@@ -146,6 +164,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         status={status}
         actions={actions}
         iconUrl={this.iconUrl}
+        resizeMode={resizeMode}
 
         onClick={onClick}
         onMouseEnter={onMouseEnter}

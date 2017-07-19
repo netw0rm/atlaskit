@@ -1,15 +1,13 @@
 // @flow
 import React from 'react';
-import { describe, it } from 'mocha';
 import styled, { ThemeProvider } from 'styled-components';
 import sinon from 'sinon';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
 import chromatism from 'chromatism';
 import * as presets from '../../src/theme/presets';
 import { prefix, getProvided, WithGroupTheme, WithRootTheme, whenCollapsed } from '../../src/theme/util';
 import { createGlobalTheme } from '../../src/theme/create-provided-theme';
-import { getRootTheme, getGroupTheme } from '../theme-util';
+import { getRootTheme, getGroupTheme } from './_theme-util';
 
 describe('theme', () => {
   describe('WithRootTheme', () => {
@@ -29,7 +27,7 @@ describe('theme', () => {
 
       expect(stub.calledWith({
         theme: getRootTheme(presets.container),
-      })).to.equal(true);
+      })).toBe(true);
     });
 
     it('should publish updates to children', () => {
@@ -51,10 +49,10 @@ describe('theme', () => {
 
       expect(stub.getCall(0).calledWith({
         theme: getRootTheme(presets.container),
-      })).to.equal(true);
+      })).toBe(true);
       expect(stub.getCall(1).calledWith({
         theme: getRootTheme(presets.settings),
-      })).to.equal(true);
+      })).toBe(true);
     });
 
     it('should preserve parent styled-component theme values', () => {
@@ -79,7 +77,7 @@ describe('theme', () => {
 
       const arg = stub.args[0][0];
 
-      expect(arg).to.deep.equal({
+      expect(arg).toEqual({
         theme: {
           ...getRootTheme(presets.container),
           myCustomRule: 'hello',
@@ -109,7 +107,7 @@ describe('theme', () => {
 
       expect(stub.calledWithExactly({
         theme: getRootTheme(presets.container),
-      })).to.equal(true);
+      })).toBe(true);
     });
   });
 
@@ -136,7 +134,7 @@ describe('theme', () => {
 
       expect(stub.calledWith({
         theme: getGroupTheme(isCompact),
-      })).to.equal(true);
+      })).toBe(true);
     });
 
     it('should publish updates to children', () => {
@@ -158,10 +156,10 @@ describe('theme', () => {
 
       expect(stub.getCall(0).calledWith({
         theme: getGroupTheme(true),
-      })).to.equal(true);
+      })).toBe(true);
       expect(stub.getCall(1).calledWith({
         theme: getGroupTheme(false),
-      })).to.equal(true);
+      })).toBe(true);
     });
 
     it('should preserve parent styled-component theme values', () => {
@@ -187,7 +185,7 @@ describe('theme', () => {
 
       const arg = stub.args[0][0];
 
-      expect(arg).to.deep.equal({
+      expect(arg).toEqual({
         theme: {
           ...getGroupTheme(isCompact),
           myCustomRule: 'hello',
@@ -218,7 +216,7 @@ describe('theme', () => {
 
       expect(stub.calledWithExactly({
         theme: getGroupTheme(isCompact),
-      })).to.equal(true);
+      })).toBe(true);
     });
   });
 
@@ -250,7 +248,7 @@ describe('theme', () => {
           ...getRootTheme(presets.settings),
           ...getGroupTheme(isCompact),
         },
-      })).to.equal(true);
+      })).toBe(true);
     });
   });
 
@@ -268,15 +266,15 @@ describe('theme', () => {
       });
 
       it('text color', () => {
-        expect(generatedTheme.text).to.equal(textColor);
+        expect(generatedTheme.text).toBe(textColor);
       });
 
       it('subText color', () => {
-        expect(generatedTheme.subText).to.equal(chromatism.brightness(20, textColor).hex);
+        expect(generatedTheme.subText).toBe(chromatism.brightness(20, textColor).hex);
       });
 
       it('global item focus outline color', () => {
-        expect(generatedTheme.item.focus.outline).to.equal(textColor);
+        expect(generatedTheme.item.focus.outline).toBe(textColor);
       });
     });
 
@@ -289,31 +287,31 @@ describe('theme', () => {
       });
 
       it('background primary color', () => {
-        expect(generatedTheme.background.primary).to.equal(backgroundColor);
-        expect(generatedTheme.background.secondary).to.equal(backgroundColor);
+        expect(generatedTheme.background.primary).toBe(backgroundColor);
+        expect(generatedTheme.background.secondary).toBe(backgroundColor);
       });
 
       describe('global item', () => {
         it('hover color (background color 10% less bright)', () => {
-          expect(generatedTheme.item.hover.background).to.equal(
+          expect(generatedTheme.item.hover.background).toBe(
             chromatism.brightness(-10, backgroundColor).hex
           );
         });
 
         it('active color (background color 10% brighter)', () => {
-          expect(generatedTheme.item.active.background).to.equal(
+          expect(generatedTheme.item.active.background).toBe(
             chromatism.brightness(10, backgroundColor).hex
           );
         });
 
         it('selected color (background color 20% less bright)', () => {
-          expect(generatedTheme.item.selected.background).to.equal(
+          expect(generatedTheme.item.selected.background).toBe(
             chromatism.brightness(-20, backgroundColor).hex
           );
         });
 
         it('default background color should always be transparent', () => {
-          expect(generatedTheme.item.default.background).to.equal('transparent');
+          expect(generatedTheme.item.default.background).toBe('transparent');
         });
       });
     });
@@ -337,7 +335,7 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.called).to.equal(true);
+      expect(stub.called).toBe(true);
     });
 
     it('should not return the provided rules when not collapsed', () => {
@@ -357,7 +355,7 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.called).to.equal(false);
+      expect(stub.called).toBe(false);
     });
 
     it('should allow access to props within the rules', () => {
@@ -377,7 +375,7 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith('Alex')).to.equal(true);
+      expect(stub.calledWith('Alex')).toBe(true);
     });
 
     it('should allow access to the theme within the rules', () => {
@@ -397,17 +395,17 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith(presets.settings)).to.equal(true);
+      expect(stub.calledWith(presets.settings)).toBe(true);
     });
   });
 
   describe('getProvided() should fall back to container theme', () => {
     it('when no theme provided', () => {
-      expect(getProvided()).to.equal(presets.container);
+      expect(getProvided()).toBe(presets.container);
     });
 
     it('when theme provided that does not contain private root theme key', () => {
-      expect(getProvided({})).to.equal(presets.container);
+      expect(getProvided({})).toBe(presets.container);
     });
   });
 });

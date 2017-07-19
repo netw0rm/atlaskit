@@ -2,6 +2,7 @@ import { createSchema } from '../src/schema';
 
 export default createSchema({
   nodes: [
+    'applicationCard',
     'doc',
     'paragraph',
     'text',
@@ -20,9 +21,11 @@ export default createSchema({
     'mediaGroup',
     'media',
     'table',
-    'table_cell',
-    'table_header',
-    'table_row',
+    'tableCell',
+    'tableHeader',
+    'tableRow',
+    'decisionList',
+    'decisionItem',
   ],
   marks: [
     'em',

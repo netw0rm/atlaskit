@@ -1,10 +1,8 @@
 import { css } from 'styled-components';
-import colors from '!less-vars-loader?camelCase&resolveVariables!../colors.less';
-import fonts from '!less-vars-loader?camelCase&resolveVariables!../fonts.less';
-import grid from '!less-vars-loader?camelCase&resolveVariables!../grid.less';
+import { akColorN300, akFontSizeDefault, akGridSizeUnitless } from '../index';
 
-const fontSizeDefault = parseInt(fonts.akFontSizeDefault, 10);
-const gridSize = parseInt(grid.akGridSizeUnitless, 10);
+const fontSizeDefault = parseInt(akFontSizeDefault, 10);
+const gridSize = parseInt(akGridSizeUnitless, 10);
 
 const baseHeading = (fontSize, lineHeight) => css`
   font-size: ${fontSize / fontSizeDefault}em;
@@ -56,7 +54,7 @@ const h400 = css`
 
 const h300 = css`
   ${baseHeading(12, 16)}
-  color: ${colors.akColorN300};
+  color: ${akColorN300};
   font-weight: 600;
   margin-top: ${gridSize * 2.5}px;
   text-transform: uppercase;
@@ -64,14 +62,14 @@ const h300 = css`
 
 const h200 = css`
   ${baseHeading(12, 16)}
-  color: ${colors.akColorN300};
+  color: ${akColorN300};
   font-weight: 600;
   margin-top: ${gridSize * 2}px;
 `;
 
 const h100 = css`
   ${baseHeading(12, 16)}
-  color: ${colors.akColorN300};
+  color: ${akColorN300};
   font-weight: normal;
   margin-top: ${gridSize * 2}px;
 `;

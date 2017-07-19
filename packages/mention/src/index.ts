@@ -6,22 +6,29 @@ import ResourcedMentionList from './components/ResourcedMentionList';
 import MentionPicker from './components/MentionPicker';
 import Mention from './components/Mention';
 import ResourcedMention from './components/Mention/ResourcedMention';
-import { MentionDescription } from './types';
+import { MentionDescription, isSpecialMention } from './types';
+import { SearchIndex } from './util/searchIndex';
 
 export {
+  // Classes
   MentionResource,
   PresenceResource,
   AbstractMentionResource,
   AbstractPresenceResource,
+  SearchIndex,
+  // Interfaces
   MentionProvider,
   PresenceProvider,
+  MentionDescription,
+  // Components
   MentionItem,
   MentionList,
   ResourcedMentionList,
   MentionPicker,
   Mention,
   ResourcedMention,
-  MentionDescription,
+  // Functions
+  isSpecialMention
 };
 
 export default MentionPicker;

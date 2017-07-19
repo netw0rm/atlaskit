@@ -7,7 +7,7 @@ describe(name, () => {
     const props = {};
     const result = getMaxWidth(props);
 
-    expect(result).to.equal('100%');
+    expect(result).toBe('100%');
   });
 
   it('grid should have a max-width if fixed', () => {
@@ -19,7 +19,7 @@ describe(name, () => {
     };
     const result = getMaxWidth(props);
 
-    expect(result).to.equal('960px');
+    expect(result).toBe('960px');
   });
 
   it('grid should have a narrower max-width if there are less columns', () => {
@@ -31,7 +31,7 @@ describe(name, () => {
     };
     const result = getMaxWidth(props);
 
-    expect(result).to.equal('800px');
+    expect(result).toBe('800px');
   });
 
   it('grid margin should be auto by default', () => {
@@ -42,7 +42,7 @@ describe(name, () => {
     };
     const result = getMargin(props);
 
-    expect(result).to.equal('auto');
+    expect(result).toBe('auto');
   });
 
   it('grid margin should be negative if it is nested', () => {
@@ -54,7 +54,7 @@ describe(name, () => {
     };
     const result = getMargin(props);
 
-    expect(result).to.equal('-16px');
+    expect(result).toBe('-16px');
   });
 
   it('grid spacing should affect padding', () => {
@@ -65,6 +65,6 @@ describe(name, () => {
     };
     const result = getPadding(props);
 
-    expect(result).to.equal('8px');
+    expect(result).toBe('8px');
   });
 });

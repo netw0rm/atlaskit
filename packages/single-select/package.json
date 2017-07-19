@@ -1,18 +1,21 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "1.11.0",
+  "version": "1.16.0",
   "config": {
     "access": "public"
   },
   "description": "React component which allows selection of a single item from a dropdown list. Substitute for the native select element",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Select (Single)"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/single-select; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/single-select; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
     "dist"
@@ -34,6 +37,7 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/single-select": "*",
+    "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",

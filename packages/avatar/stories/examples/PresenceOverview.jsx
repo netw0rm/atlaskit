@@ -17,7 +17,7 @@ const presenceWrapperStyles = {
 export default (
   <div>
     <div style={containerStyles}>
-      <div style={presenceWrapperStyles}><Presence presence="none" /></div>
+      <div style={presenceWrapperStyles}><Presence /></div>
       <div style={presenceWrapperStyles}><Presence presence="online" /></div>
       <div style={presenceWrapperStyles}><Presence presence="busy" /></div>
       <div style={presenceWrapperStyles}><Presence presence="offline" /></div>

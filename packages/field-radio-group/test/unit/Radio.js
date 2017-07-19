@@ -9,30 +9,30 @@ describe(name, () => {
   describe('Radio', () => {
     describe('exports', () => {
       it('the Radio component', () => {
-        expect(Radio).not.to.equal(undefined);
-        expect(new Radio()).to.be.instanceOf(Component);
+        expect(Radio).not.toBe(undefined);
+        expect(new Radio()).toBeInstanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Radio />);
-        expect(wrapper).not.to.equal(undefined);
-        expect(wrapper.instance()).to.be.instanceOf(Component);
+        expect(wrapper).not.toBe(undefined);
+        expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       it('should render an input and the content', () => {
         const content = 'content';
         const wrapper = mount(<Radio>{content}</Radio>);
-        expect(wrapper.find('input').length).to.equal(1);
-        expect(wrapper.text()).to.equal(content);
+        expect(wrapper.find('input').length).toBe(1);
+        expect(wrapper.text()).toBe(content);
       });
 
       it('should render content with markup correctly', () => {
         const content = (<div>content</div>);
         const wrapper = mount(<Radio>{content}</Radio>);
-        expect(wrapper.find('input').length).to.equal(1);
-        expect(wrapper.contains(content)).to.equal(true);
+        expect(wrapper.find('input').length).toBe(1);
+        expect(wrapper.contains(content)).toBe(true);
       });
     });
 
@@ -41,7 +41,7 @@ describe(name, () => {
         it('should be reflected to the input', () => {
           const props = { [prop]: val };
           const wrapper = mount(<Radio {...props} />);
-          expect(wrapper.find('input').prop(inputProp)).to.equal(val);
+          expect(wrapper.find('input').prop(inputProp)).toBe(val);
         });
       }
 
@@ -72,7 +72,7 @@ describe(name, () => {
           const spy = sinon.spy();
           const wrapper = mount(<Radio onChange={spy} />);
           wrapper.find('input').simulate('change');
-          expect(spy.calledOnce).to.equal(true);
+          expect(spy.calledOnce).toBe(true);
         });
       });
 

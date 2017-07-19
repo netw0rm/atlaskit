@@ -1,8 +1,10 @@
 import { Node } from '../../../prosemirror';
 import { ReactComponentConstructor } from '../';
 
+import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
 import BulletList from './bulletList';
+import CodeBlock from './codeBlock';
 import Doc from './doc';
 import Emoji from './emoji';
 import HardBreak from './hardBreak';
@@ -15,10 +17,13 @@ import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
 import Rule from './rule';
+import UnknownBlock from './unknownBlock';
 
 export const nodeToReact = {
+  'applicationCard': ApplicationCard,
   'blockquote': Blockquote,
   'bulletList': BulletList,
+  'codeBlock': CodeBlock,
   'doc': Doc,
   'emoji': Emoji,
   'hardBreak': HardBreak,
@@ -31,6 +36,7 @@ export const nodeToReact = {
   'panel': Panel,
   'paragraph': Paragraph,
   'rule': Rule,
+  'unknownBlock': UnknownBlock,
 };
 
 export const toReact = (node: Node): ReactComponentConstructor => {
@@ -49,6 +55,7 @@ export interface NodeSimple {
     name: string;
   };
   attrs?: any;
+  text?: string;
 }
 
 /*
@@ -125,8 +132,11 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
 };
 
 export {
+  AppCardViewProps,
+  ApplicationCard,
   Blockquote,
   BulletList,
+  CodeBlock,
   Doc,
   Emoji,
   HardBreak,
@@ -139,4 +149,5 @@ export {
   Panel,
   Paragraph,
   Rule,
+  UnknownBlock,
 };

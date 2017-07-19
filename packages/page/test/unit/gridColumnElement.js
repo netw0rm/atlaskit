@@ -7,7 +7,7 @@ describe(name, () => {
     const props = {};
     const result = getColumnWidth(props);
 
-    expect(result).to.equal('auto');
+    expect(result).toBe('auto');
   });
 
   it('gridColumns should have a calculated flex-basis if medium < columns', () => {
@@ -20,7 +20,7 @@ describe(name, () => {
     };
     const result = getColumnWidth(props);
 
-    expect(result).to.equal('calc(99.9999% / 12 * 8 - 16px)');
+    expect(result).toBe('calc(99.9999% / 12 * 8 - 16px)');
   });
 
   it('gridColumns should have a 100% calculated flex-basis if medium === columns', () => {
@@ -33,6 +33,6 @@ describe(name, () => {
     };
     const result = getColumnWidth(props);
 
-    expect(result).to.equal('calc(100% - 16px)');
+    expect(result).toBe('calc(100% - 16px)');
   });
 });

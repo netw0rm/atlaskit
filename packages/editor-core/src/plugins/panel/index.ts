@@ -25,13 +25,13 @@ export const availablePanelType = [
 
 export class PanelState {
   private state: EditorState<any>;
-  private editorFocused: boolean = false;
   private activeNode: Node | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
 
   element?: HTMLElement | undefined;
   activePanelType?: string | undefined;
   toolbarVisible?: boolean | undefined;
+  editorFocused: boolean = false;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
@@ -60,14 +60,21 @@ export class PanelState {
     dispatch(tr);
   }
 
-  removePanelType(view: EditorView) {
+  removePanel(view: EditorView) {
     const { dispatch, state } = view;
-    const { tr } = state;
-    const { $from, $to } = state.selection;
-    const newFrom = tr.doc.resolve($from.start($from.depth - 1));
-    const newTo = tr.doc.resolve($to.end($to.depth - 1));
-    const range = newFrom.blockRange(newTo)!;
-    dispatch(tr.lift(range, $from.depth - 2));
+    let { tr } = state;
+    let { $from, $to } = state.selection;
+    let newFrom = tr.doc.resolve($from.start($from.depth - 1));
+    let newTo = tr.doc.resolve($to.end($to.depth - 1));
+    let range = newFrom.blockRange(newTo)!;
+    tr = tr.delete(range!.start, range!.end);
+    $from = tr.selection.$from;
+    $to = tr.selection.$to;
+    newFrom = tr.doc.resolve($from.start($from.depth));
+    newTo = tr.doc.resolve($to.end($to.depth));
+    range = newFrom.blockRange(newTo)!;
+    tr = tr.lift(range, newFrom.depth - 2);
+    dispatch(tr);
   }
 
   subscribe(cb: PanelStateSubscriber) {

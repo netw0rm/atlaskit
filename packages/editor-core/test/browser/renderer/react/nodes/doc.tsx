@@ -11,6 +11,6 @@ describe('Renderer - React/Nodes/Doc', () => {
   });
 
   it('should output correct html', () => {
-    expect(paragraph.html()).to.equal('<div>This is an empty document</div>');
+    expect(paragraph.text()).to.equal('This is an empty document');
   });
 });

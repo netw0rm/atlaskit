@@ -12,11 +12,12 @@ export type JSONNode = {
 
 export type JSONDocNode = {
   version: number,
-  type: string,
+  type: 'doc',
   content: Array<JSONNode>,
 };
 
 const isMediaNode = (node: PMNode) => node.type.name === 'media';
+const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
 
 const toJSON = (node: PMNode) : JSONNode => {
   const obj: JSONNode = { type: node.type.name };
@@ -34,6 +35,11 @@ const toJSON = (node: PMNode) : JSONNode => {
       obj.content = obj.content || [];
       obj.content.push(toJSON(child));
     });
+  }
+
+  if (isParagraph(node)) {
+    // Paragraph shall always has a content
+    obj.content = obj.content || [];
   }
 
   if (node.marks.length) {

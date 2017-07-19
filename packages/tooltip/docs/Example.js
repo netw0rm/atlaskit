@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import StatefulToolTip from '@atlaskit/tooltip';
+import Tooltip from '@atlaskit/tooltip';
 import Button from '@atlaskit/button';
 
 const positions = ['bottom', 'left', 'top', 'right'];
@@ -19,12 +19,12 @@ export default class FourWayTooltip extends PureComponent {
     const position = positions[this.state.position];
 
     return (
-      <StatefulToolTip
+      <Tooltip
         description={position}
         position={position}
       >
         <Button onClick={this.changeDirection}>Click to toggle position</Button>
-      </StatefulToolTip>
+      </Tooltip>
     );
   }
 }

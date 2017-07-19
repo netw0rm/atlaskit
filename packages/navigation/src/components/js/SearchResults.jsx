@@ -1,46 +1,74 @@
+// @flow
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { PersonResult, RoomResult } from './results';
 import { AkNavigationItemGroup } from '../../../src';
+
+const noOp = () => {};
 
 /**
  * Enumerate the result types available to SearchResults
  */
+
 const availableResultTypes = {
   person: PersonResult,
   room: RoomResult,
 };
 
-/**
- * From the perspective of SearchResults, result items consist only of a unique id and result type
- */
-const resultPropType = {
-  id: PropTypes.string,
-  type: PropTypes.oneOf(Object.keys(availableResultTypes)),
-};
+type ResultShape = {|
+  resultId: string,
+  type: 'person' | 'room',
+|}
 
-const resultGroupPropType = {
-  items: PropTypes.arrayOf(PropTypes.shape(resultPropType)),
-  title: PropTypes.string.isRequired,
-};
+type ResultGroup = {|
+  items: Array<ResultShape>,
+  title: string,
+|}
+
+type Props = {|
+  isResultHoverStylesDisabled?: boolean,
+  isTabbingDisabled?: boolean,
+  onClick?: () => null,
+  onResultMouseEnter?: () => null,
+  onResultMouseLeave?: () => null,
+  results?: Array<ResultGroup>,
+  selectedItemId?: number | string,
+|}
 
 export default class SearchResults extends PureComponent {
-  static propTypes = {
-    results: PropTypes.arrayOf(PropTypes.shape(resultGroupPropType)),
-  }
-
   static defaultProps = {
+    isResultHoverStylesDisabled: false,
+    isTabbingDisabled: false,
+    onClick: noOp,
+    onResultMouseEnter: noOp,
+    onResultMouseLeave: noOp,
     results: [],
   }
 
-  renderResultItem = ({ type, id, ...props }) => {
-    const Result = availableResultTypes[type];
-    return Result ? <Result key={id} {...props} /> : null;
+  props: Props
+
+  renderResultItem = (props) => {
+    const Result = availableResultTypes[props.type];
+    const isSelected = props.resultId === this.props.selectedItemId;
+    return Result ? (
+      <Result
+        // SearchResult-provided props
+        isHoverStylesDisabled={this.props.isResultHoverStylesDisabled}
+        isSelected={isSelected}
+        key={props.resultId}
+        onClick={this.props.onClick}
+        onMouseEnter={this.props.onResultMouseEnter}
+        onMouseLeave={this.props.onResultMouseLeave}
+        isTabbingDisabled={this.props.isTabbingDisabled}
+
+        // Individual props take precedence over SearchResult-provided presets
+        {...props}
+      />
+     ) : null;
   }
 
-  renderResultGroup = group => (
+  renderResultGroup = (group, index) => (
     group.items && group.items.length > 0 ? (
-      <AkNavigationItemGroup key={group.title} title={group.title}>
+      <AkNavigationItemGroup key={group.title || index} title={group.title}>
         {group.items.map(this.renderResultItem)}
       </AkNavigationItemGroup>
     ) : null

@@ -5,8 +5,8 @@ import {
   ProsemirrorGetPosHandler,
   ReactNodeProps,
 } from './';
-import MediaComponent from '../../ui/Media/MediaComponent';
-import ProviderFactory, { WithProviders } from '../../providerFactory';
+import UIMedia from '../../ui/Media';
+import ProviderFactory from '../../providerFactory';
 import { mediaStateKey, MediaPluginState } from '../../plugins';
 import {
   EditorView,
@@ -24,7 +24,6 @@ const Wrapper = styled.div`
 `;
 
 export interface MediaNodeProps extends ReactNodeProps {
-  children?: React.ReactNode;
   getPos: ProsemirrorGetPosHandler;
   view: EditorView;
   node: PMNode;
@@ -45,20 +44,14 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
     this.handleNewNode(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { node } = this.props;
-
-    // if media node is prepended to existing one, existing React component
-    // will get new props instead of unmounting/creating a new one
-    if (nextProps.node.attrs.id !== node.attrs.id) {
-      this.pluginState.handleMediaNodeUnmount(node);
-      this.handleNewNode(nextProps);
-    }
-  }
-
   componentWillUnmount() {
     const { node } = this.props;
     this.pluginState.handleMediaNodeUnmount(node);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const getId = (props: MediaNodeProps) => props.node.attrs.id;
+    return getId(nextProps) !== getId(this.props) || nextProps.selected !== this.props.selected;
   }
 
   render() {
@@ -67,23 +60,14 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
 
     return (
       <Wrapper selected={selected}>
-        <WithProviders
-          providers={['mediaProvider']}
-          providerFactory={providerFactory}
-          // tslint:disable-next-line:jsx-no-lambda
-          renderNode={providers => {
-            return (
-              <MediaComponent
-                key={`medianode-${id}`}
-                mediaProvider={providers['mediaProvider']}
-                editorView={view}
-                id={id!}
-                type={type!}
-                collection={collection!}
-                onDelete={this.handleRemove}
-              />
-            );
-          }}
+        <UIMedia
+          key={`medianode-${id}`}
+          editorView={view}
+          id={id!}
+          type={type!}
+          collection={collection!}
+          providers={providerFactory}
+          onDelete={this.handleRemove}
         />
       </Wrapper>
     );

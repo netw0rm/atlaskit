@@ -7,6 +7,7 @@ import Popup from '../Popup';
 
 export interface Props {
   editorView?: EditorView;
+  mentionProvider: Promise<MentionProvider>;
   pluginKey: PluginKey;
   presenceProvider?: any;
   reversePosition?: boolean;
@@ -18,30 +19,18 @@ export interface Props {
 export interface State {
   query?: string;
   anchorElement?: HTMLElement;
-  mentionsProvider?: MentionProvider;
+  mentionProvider?: MentionProvider;
 }
 
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
-
-  private pluginState?: any;
+  content?: HTMLElement;
+  private pluginState: MentionsState;
   private picker?: AkMentionPicker;
 
   constructor(props: Props) {
     super(props);
     this.pluginState = props.editorView && props.pluginKey.getState(props.editorView.state);
-  }
-
-  private refreshProvider = mentionsProvider => {
-    if (mentionsProvider) {
-      this.setState({ mentionsProvider });
-    } else {
-      this.setState({ mentionsProvider: undefined });
-    }
-  }
-
-  componentWillMount() {
-    this.pluginState.subscribeToProviderUpdates(this.refreshProvider);
   }
 
   componentDidMount() {
@@ -50,12 +39,27 @@ export default class MentionPicker extends PureComponent<Props, State> {
     pluginState.onSelectPrevious = this.handleSelectPrevious;
     pluginState.onSelectNext = this.handleSelectNext;
     pluginState.onSelectCurrent = this.handleSelectCurrent;
-    pluginState.onTrySelectCurrent = this.handleTrySelectCurrent;
+    this.resolveResourceProvider(this.props.mentionProvider);
   }
 
   componentWillUmount() {
     this.pluginState.unsubscribe(this.handlePluginStateChange);
-    this.pluginState.unsubscribeFromProviderUpdates(this.refreshProvider);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.mentionProvider !== this.props.mentionProvider) {
+      this.resolveResourceProvider(nextProps.mentionProvider);
+    }
+  }
+
+  private resolveResourceProvider(resourceProvider): void {
+    if (resourceProvider) {
+      resourceProvider.then((mentionProvider: MentionProvider) => {
+        this.setState({ mentionProvider });
+      });
+    } else {
+      this.setState({ mentionProvider: undefined });
+    }
   }
 
   private handlePluginStateChange = (state: MentionsState) => {
@@ -64,10 +68,10 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { anchorElement, query, mentionsProvider } = this.state;
+    const { anchorElement, query, mentionProvider } = this.state;
     const { popupsBoundariesElement, popupsMountPoint, presenceProvider } = this.props;
 
-    if (!anchorElement || query === undefined || !mentionsProvider) {
+    if (!anchorElement || query === undefined || !mentionProvider) {
       return null;
     }
 
@@ -81,7 +85,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         offset={[0, 3]}
       >
         <AkMentionPicker
-          resourceProvider={mentionsProvider}
+          resourceProvider={mentionProvider}
           presenceProvider={presenceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
@@ -123,20 +127,6 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
 
     return true;
-  }
-
-  private handleTrySelectCurrent = (): boolean => {
-    const mentionsCount = this.getMentionsCount();
-    const { query } = this.state;
-
-    if (mentionsCount === 1 && this.picker) {
-      (this.picker as AkMentionPicker).chooseCurrentSelection();
-      return true;
-    } else if (mentionsCount === 0 || !query) {
-      this.pluginState.dismiss();
-    }
-
-    return false;
   }
 
   private getMentionsCount(): number {

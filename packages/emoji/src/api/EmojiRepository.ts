@@ -17,7 +17,7 @@ XRegExpUnicodeCategories(XRegExp);
 
 // \p{Han} => each chinese character is a separate token
 // \p{L}+[\p{Mn}|']*\p{L} => consecutive letters, including non spacing mark and apostrophe are a single token
-const tokenizerRegex = XRegExp.cache('\\p{Han}|\\p{L}+[\\p{Mn}|\']*\\p{L}*', 'gi');
+const tokenizerRegex = XRegExp.cache('\\p{Han}|[\\p{L}|\\p{N}]+[\\p{Mn}|\']*\\p{L}*', 'gi');
 
 type Token = {
   token: string;
@@ -301,7 +301,7 @@ export default class EmojiRepository {
       const short2 = e2.shortName.indexOf(query);
 
       // Order used for matching on same index and shorter queries with default value assigned on initialisation
-      if (query.length < 3 || short1 !== -1 && short1 === short2) {
+      if (short1 !== -1 && short1 === short2) {
         return e1.order! - e2.order!;
       } else if (short1 !== -1 && short2 !== -1) {
         return short1 - short2;

@@ -4,12 +4,14 @@ import {
   isSubSupType,
   getValidNode,
   getValidMark,
+  getValidUnknownNode,
   getMarksByOrder,
   isSameMark,
   markOrder,
 } from '../../../src/renderer/validator';
 
 import schema from '../../../stories/schema';
+import { createSchema } from '../../../src/schema';
 
 describe('Renderer - Validator', () => {
 
@@ -61,34 +63,176 @@ describe('Renderer - Validator', () => {
 
   describe('getValidNode', () => {
 
-    describe('unknown', () => {
-      it('should return "unkown" if type is unkown', () => {
-        expect(getValidNode({ type: 'banana' }).type).to.equal('unknown');
+    describe('applicationCard', () => {
+      it('should return "text" if attrs is missing', () => {
+        expect(getValidNode({ type: 'applicationCard' }).type).to.equal('text');
       });
 
-      it('should pass through attrs, content and text', () => {
-        expect(getValidNode({ type: 'banana', text: 'a banana', attrs: { color: 'yellow' }, content: [] })).to.deep.equal({
-          type: 'unknown',
-          text: 'a banana',
+      it('should return "text" if attrs.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {}
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
           attrs: {
-            color: 'yellow'
-          },
-          content: []
-        });
+            text: 'applicationCard'
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.link.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            link: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.background.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            background: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.preview.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            preview: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.description.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            description: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details is not an array', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: { yes: 'no' }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details[].badge.value is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: [
+              {
+                badge: {}
+              }
+            ]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details[].lozenge.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: [
+              {
+                lozenge: {}
+              }
+            ]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details[].users is not an array', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: [
+              {
+                users: { yes: 'no'}
+              }
+            ]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.details[].users[].icon is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            details: [
+              {
+                users: [ { id: 'id'} ]
+              }
+            ]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
       });
     });
 
     describe('doc', () => {
-      it('should return "unkown" if version-field is missing', () => {
-        expect(getValidNode({ type: 'doc' }).type).to.equal('unknown');
+      it('should return "text" if version-field is missing', () => {
+        expect(getValidNode({ type: 'doc' }).type).to.equal('text');
       });
 
-      it('should return "unknown" if content-field is missing', () => {
-        expect(getValidNode({ type: 'doc', version: 1 } as any).type).to.equal('unknown');
+      it('should return "text" if content-field is missing', () => {
+        expect(getValidNode({ type: 'doc', version: 1 } as any).type).to.equal('text');
       });
 
-      it('should return "unkown" if content-field is empty-array', () => {
-        expect(getValidNode({ type: 'doc', version: 1, content: [] } as any).type).to.equal('unknown');
+      it('should return "text" if content-field is empty-array', () => {
+        expect(getValidNode({ type: 'doc', version: 1, content: [] } as any).type).to.equal('text');
       });
 
       it('should return "doc" with content field and without version', () => {
@@ -96,12 +240,10 @@ describe('Renderer - Validator', () => {
           type: 'doc',
           content: [
             {
-              type: 'unknown',
-              attrs: undefined,
-              content: undefined,
-              text: undefined,
-            }
-          ]
+              type: 'text',
+              text: '[unknown]',
+            },
+          ],
         });
       });
     });
@@ -123,9 +265,8 @@ describe('Renderer - Validator', () => {
 
       it('should reject emoji without shortName', () => {
         const emojiId = { id: '123', fallback: 'cheese' };
-        const { type, attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
-        expect(type).to.equal('unknown');
-        expect(attrs).to.deep.equal(emojiId);
+        const { type } = getValidNode({ type: 'emoji', attrs: emojiId });
+        expect(type).to.equal('text');
       });
     });
 
@@ -141,7 +282,7 @@ describe('Renderer - Validator', () => {
 
     describe('mention', () => {
       it('should return "unknown" if it can not find an ID ', () => {
-        expect(getValidNode({ type: 'mention', attrs: { text: '@Oscar' } }).type).to.deep.equal('unknown');
+        expect(getValidNode({ type: 'mention', attrs: { text: '@Oscar' } }).type).to.deep.equal('text');
       });
 
       it('should use attrs.text if present', () => {
@@ -187,8 +328,8 @@ describe('Renderer - Validator', () => {
     });
 
     describe('paragraph', () => {
-      it('should return "unknown" if content-field is missing', () => {
-        expect(getValidNode({ type: 'paragraph' }).type).to.equal('unknown');
+      it('should return "text" if content-field is missing', () => {
+        expect(getValidNode({ type: 'paragraph' }).type).to.equal('text');
       });
 
       it('should return "paragraph" if content-field is empty array', () => {
@@ -209,10 +350,6 @@ describe('Renderer - Validator', () => {
     });
 
     describe('text', () => {
-      it('should return "unknown" if text-field is missing', () => {
-        expect(getValidNode({ type: 'text' }).type).to.equal('unknown');
-      });
-
       it('should return "text" with text', () => {
         expect(getValidNode({ type: 'text', text: 'Hello World' })).to.deep.equal({
           type: 'text',
@@ -281,6 +418,272 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    it('should overwrite the default schema if it gets a docSchema parameter', () => {
+      // rule is taken out in following schema
+      const schema = createSchema({
+        nodes: [
+          'doc',
+          'paragraph',
+          'text',
+          'bulletList',
+          'orderedList',
+          'listItem',
+          'heading',
+          'blockquote',
+          'codeBlock',
+          'panel',
+          'image',
+          'mention',
+          'hardBreak',
+          'emoji',
+          'mediaGroup',
+          'media',
+          'table',
+          'tableCell',
+          'tableHeader',
+          'tableRow',
+        ],
+        marks: [
+          'em',
+          'strong',
+          'code',
+          'strike',
+          'underline',
+          'link',
+          'mentionQuery',
+          'emojiQuery',
+          'textColor',
+          'subsup',
+        ]
+      });
+
+      const doc = {
+        type: 'doc' as 'doc',
+        version: 1 as 1,
+        content: [
+          {
+            type: 'rule',
+          }
+        ]
+      };
+      const result = getValidNode(doc, schema);
+
+      expect(result.content![0].type).to.equal('text');
+      expect(result.content![0].text).to.equal('[rule]');
+    });
+
+  });
+
+  describe('getValidUnknownNode', () => {
+
+    describe('unknown inline nodes', () => {
+      it('should return "text" node if content is absent', () => {
+        const unknownInlineNode = getValidUnknownNode({ type: 'foobar' });
+        expect(unknownInlineNode.type).to.equal('text');
+      });
+
+      it('should return "text" node if content is empty', () => {
+        const unknownInlineNode = getValidUnknownNode({ type: 'foobar', content: [] });
+        expect(unknownInlineNode.type).to.equal('text');
+      });
+
+      it('should store textUrl attribute in "href" attribute', () => {
+        const unknownInlineNode = getValidUnknownNode({ type: 'foobar', attrs: { textUrl: 'https://www.atlassian.com' } });
+        expect(unknownInlineNode.marks).to.have.length(1);
+        expect(unknownInlineNode.marks![0].attrs.href).to.equal('https://www.atlassian.com');
+      });
+
+      it('should use default text', () => {
+        const unknownInlineNode = getValidUnknownNode({ type: 'foobar', text: 'some text', attrs: { text: 'some text from attrs' } });
+        expect(unknownInlineNode.text).to.equal('some text');
+      });
+
+      it('should use node.attrs.text if text is missing', () => {
+        const unknownInlineNode = getValidUnknownNode({ type: 'foobar', attrs: { text: 'some text from attrs' } });
+        expect(unknownInlineNode.text).to.equal('some text from attrs');
+      });
+
+      it('should use original type in square brackets if neither text nor attrs.text is missing', () => {
+        const unknownInlineNode = getValidUnknownNode({ type: 'foobar' });
+        expect(unknownInlineNode.text).to.equal('[foobar]');
+      });
+    });
+
+    describe('unknown block nodes', () => {
+      it('should build flattened tree from unknown block node #1', () => {
+        const node = {
+          type: 'foobar',
+          content: [
+            {
+              type: 'text',
+              text: 'hello'
+            },
+            {
+              type: 'world-node-type',
+              text: 'world'
+            },
+          ],
+        };
+
+        const unknownBlockNode = getValidUnknownNode(node);
+        expect(unknownBlockNode).to.deep.equal({
+          type: 'unknownBlock',
+          content: [
+            {
+              type: 'text',
+              text: 'hello'
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'world',
+            },
+          ],
+        });
+      });
+
+      it('should build flattened tree from unknown block node #2', () => {
+        const node = {
+          type: 'foobar-table',
+          content: [
+            {
+              type: 'foobar-row',
+              content: [
+                {
+                  type: 'text',
+                  text: 'hello mate'
+                },
+              ]
+            },
+            {
+              type: 'foobar-row',
+              content: [
+                {
+                  type: 'foobar-cell',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'this is'
+                    },
+                    {
+                      type: 'special-sydney-node-type',
+                      text: 'Sydney!'
+                    }
+                  ]
+                }
+              ]
+            },
+          ],
+        };
+
+        const unknownBlockNode = getValidUnknownNode(node);
+        expect(unknownBlockNode).to.deep.equal({
+          type: 'unknownBlock',
+          content: [
+            {
+              type: 'text',
+              text: 'hello mate'
+            },
+            {
+              type: 'hardBreak',
+            },
+            {
+              type: 'text',
+              text: 'this is'
+            },
+            {
+              type: 'text',
+              text: ' ',
+            },
+            {
+              type: 'text',
+              text: 'Sydney!'
+            }
+          ],
+        });
+      });
+
+      it('should build flattened tree from unknown block node #3', () => {
+        const node = {
+          type: 'foobar-table',
+          content: [
+            {
+              type: 'foobar-row',
+              content: [
+                {
+                  type: 'text',
+                  text: 'hello mate'
+                },
+              ],
+            },
+            {
+              type: 'foobar-row',
+              content: [
+                {
+                  type: 'foobar-row',
+                  content: [
+                    {
+                      type: 'foobar-cell',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'this is'
+                        },
+                        {
+                          type: 'special-sydney-node-type',
+                          attrs: {
+                            textUrl: 'http://www.sydney.com.au/'
+                          },
+                          text: 'Sydney!',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        };
+
+        const unknownBlockNode = getValidUnknownNode(node);
+        expect(unknownBlockNode).to.deep.equal({
+          type: 'unknownBlock',
+          content: [
+            {
+              type: 'text',
+              text: 'hello mate'
+            },
+            {
+              type: 'hardBreak',
+            },
+            {
+              type: 'text',
+              text: 'this is'
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              marks: [
+                {
+                  type: 'link',
+                  attrs: {
+                    href: 'http://www.sydney.com.au/',
+                  },
+                },
+              ],
+              text: 'Sydney!'
+            },
+          ],
+        });
+      });
+    });
+
   });
 
   describe('getValidMark', () => {
@@ -309,6 +712,15 @@ describe('Renderer - Validator', () => {
           type: 'link',
           attrs: {
             href: 'https://www.atlassian.com'
+          },
+        });
+      });
+
+      it('should add protocol to a url if it doesn`t exist', () => {
+        expect(getValidMark({ type: 'link', attrs: { href: 'www.atlassian.com' } })).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: 'http://www.atlassian.com'
           },
         });
       });

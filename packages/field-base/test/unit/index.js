@@ -30,48 +30,48 @@ describe('ak-field-base', () => {
     describe('by default', () =>
       it('should render a content', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} />)
-          .find(Content).length).to.be.above(0)
+          .find(Content).length).toBeGreaterThan(0)
       )
     );
 
     describe('isReadOnly prop = true', () =>
       it('should render with the readOnly prop', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} isReadOnly />)
-          .find(Content).prop('readOnly')).to.equal(true)
+          .find(Content).prop('readOnly')).toBe(true)
       )
     );
 
     describe('isFocused prop = true', () => {
       it('should render the content with the focused prop', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} isFocused />)
-          .find(Content).prop('focused')).to.equal(true)
+          .find(Content).prop('focused')).toBe(true)
       );
     });
 
     describe('is{p}addingDisabled prop = true', () => {
       it('should render the content with the paddingDisabled prop', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} isPaddingDisabled />)
-          .find(Content).prop('paddingDisabled')).to.equal(true)
+          .find(Content).prop('paddingDisabled')).toBe(true)
       );
     });
 
     describe('isInvalid prop = true', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const Invalid = mount(<FieldBaseStateless {...defaultProps} isInvalid />);
-        expect(Invalid.find(Content).prop('invalid')).to.equal(true);
-        expect(Invalid.find(WarningIconComponent).length).to.be.above(0);
+        expect(Invalid.find(Content).prop('invalid')).toBe(true);
+        expect(Invalid.find(WarningIconComponent).length).toBeGreaterThan(0);
       });
 
       it('should render the warning icon', () =>
         expect(mount(<FieldBaseStateless {...defaultProps} isInvalid />)
-          .find(WarningIconComponent).length).to.be.above(0)
+          .find(WarningIconComponent).length).toBeGreaterThan(0)
       );
     });
 
     describe('isDisabled prop = true AND isInvalid prop = true', () => {
       it('should not render the warning icon', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} isDisabled isInvalid />)
-          .find(WarningIconComponent).length).to.equal(0)
+          .find(WarningIconComponent).length).toBe(0)
       );
     });
 
@@ -79,41 +79,41 @@ describe('ak-field-base', () => {
       it('should be reflected to the inline dialog content', () => {
         const stringContent = 'invalid msg content';
         expect(shallow(<FieldBaseStateless {...defaultProps} invalidMessage={stringContent} />)
-          .find(InlineDialog).props().content).to.equal(stringContent);
+          .find(InlineDialog).props().content).toBe(stringContent);
       });
     });
 
     describe('isFocused prop = true AND isInvalid prop = true', () =>
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const wrapper = shallow(<FieldBaseStateless {...defaultProps} isFocused isInvalid />);
-        expect(wrapper.find(Content).prop('focused')).to.equal(true);
-        expect(wrapper.find(Content).prop('invalid')).to.equal(false);
+        expect(wrapper.find(Content).prop('focused')).toBe(true);
+        expect(wrapper.find(Content).prop('invalid')).toBe(false);
       })
     );
 
     describe('isCompact prop = true', () => {
       it('should render the content with the compact prop', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} isCompact />)
-          .find(Content).prop('compact')).to.equal(true)
+          .find(Content).prop('compact')).toBe(true)
       );
     });
 
     describe('isDialogOpen prop', () => {
       it('reflects value to InlineDialog isOpen if invalidMessage prop is provided', () => {
         const wrapper = shallow(<FieldBaseStateless {...defaultProps} isDialogOpen invalidMessage="test" />);
-        expect(wrapper.find(InlineDialog).props().isOpen).to.equal(true);
+        expect(wrapper.find(InlineDialog).props().isOpen).toBe(true);
       });
 
       it('reflects value to InlineDialog isOpen if invalidMessage prop is not provided', () => {
         const wrapper = shallow(<FieldBaseStateless {...defaultProps} isDialogOpen />);
-        expect(wrapper.find(InlineDialog).props().isOpen).to.equal(false);
+        expect(wrapper.find(InlineDialog).props().isOpen).toBe(false);
       });
     });
 
     describe('appearance', () => {
       it('should render the content with the subtle attribute', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} appearance="subtle" />)
-        .find(Content).prop('subtle')).to.be.equal(true)
+        .find(Content).prop('subtle')).toBe(true)
       );
     });
 
@@ -122,22 +122,22 @@ describe('ak-field-base', () => {
         const spy = sinon.spy();
         const wrapper = mount(<FieldBaseStateless {...defaultProps} onBlur={spy} />);
         wrapper.setProps({ shouldReset: true });
-        expect(spy.called).to.equal(true);
+        expect(spy.called).toBe(true);
       })
     );
 
     describe('isLoading', () => {
       it('should render Spinner', () => {
         const wrapper = mount(<FieldBaseStateless {...defaultProps} isLoading />);
-        expect(wrapper.find(Spinner).length).to.equal(1);
+        expect(wrapper.find(Spinner).length).toBe(1);
         wrapper.setProps({ isLoading: false });
-        expect(wrapper.find(Spinner).length).to.equal(0);
+        expect(wrapper.find(Spinner).length).toBe(0);
       });
 
       describe('and isInvalid', () =>
         it('should not render Spinner', () => {
           const wrapper = mount(<FieldBaseStateless {...defaultProps} isLoading isInvalid />);
-          expect(wrapper.find(Spinner).length).to.equal(0);
+          expect(wrapper.find(Spinner).length).toBe(0);
         })
       );
     });
@@ -155,14 +155,14 @@ describe('ak-field-base', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBaseStateless {...defaultProps} onFocus={spy} />);
       wrapper.find(Content).simulate('focus');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
 
     it('should call onBlur', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBaseStateless {...defaultProps} onBlur={spy} />);
       wrapper.find(Content).simulate('blur');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
   });
 
@@ -179,23 +179,23 @@ describe('ak-field-base', () => {
     const isDialogOpened = wrapper => wrapper.find(InlineDialog).prop('isOpen');
 
     const openDialog = (wrapper) => {
-      expect(isDialogOpened(wrapper)).to.equal(false);
+      expect(isDialogOpened(wrapper)).toBe(false);
       wrapper.find(Content).simulate('focus'); // open the dialog
-      expect(isDialogOpened(wrapper)).to.equal(true);
+      expect(isDialogOpened(wrapper)).toBe(true);
     };
 
     it('should call onFocus handler', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldBase onFocus={spy} />);
       wrapper.find(Content).simulate('focus');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
 
     it('should call onBlur handler', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldBase onBlur={spy} />);
       wrapper.find(Content).simulate('blur');
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).toBe(1);
     });
     it('should close the dialog when focus goes away from both the element and the dialog', () => {
       const invalidMessage = <snap className="errorMessage">foo</snap>;
@@ -209,7 +209,7 @@ describe('ak-field-base', () => {
 
       clock.tick(10);
 
-      expect(isDialogOpened(wrapper)).to.equal(false);
+      expect(isDialogOpened(wrapper)).toBe(false);
     });
 
     it('should retain focus when blur and focus happen one by one', () => {
@@ -222,7 +222,7 @@ describe('ak-field-base', () => {
 
       clock.tick(10);
 
-      expect(wrapper.state('isFocused')).to.equal(true);
+      expect(wrapper.state('isFocused')).toBe(true);
     });
   });
 });

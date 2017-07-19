@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 
-import { Label } from '@atlaskit/field-base';
+import { Label } from '../../src/';
 import {
   RequiredIndicator,
   LabelInner,
@@ -17,7 +17,7 @@ describe('ak-field-base', () =>
   describe('Label', () => {
     describe('by default', () =>
       it('should render a label element', () => {
-        expect(shallow(<Label {...defaultProps} />).find(LabelInner).length).to.be.above(0);
+        expect(shallow(<Label {...defaultProps} />).find(LabelInner).length).toBeGreaterThan(0);
       })
     );
 
@@ -25,7 +25,7 @@ describe('ak-field-base', () =>
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
         const wrapper = mount(<Label label={label} />);
-        expect(wrapper.find(LabelInner).childAt(0).text()).to.equal(label);
+        expect(wrapper.find(LabelInner).childAt(0).text()).toBe(label);
       });
     });
 
@@ -33,37 +33,37 @@ describe('ak-field-base', () =>
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
         const wrapper = mount(<Label label={label} isLabelHidden />);
-        expect(wrapper.find(LabelInner).prop('isHidden')).to.equal(true);
+        expect(wrapper.find(LabelInner).prop('isHidden')).toBe(true);
       });
     });
 
     describe('required prop', () => {
       it('should append an asterisk to the content', () =>
         expect(shallow(<Label {...defaultProps} isRequired />)
-          .find(RequiredIndicator).length).to.be.above(0)
+          .find(RequiredIndicator).length).toBeGreaterThan(0)
       );
 
       it('should not append an asterisk to the content if required is not set', () => {
-        expect(shallow(<Label {...defaultProps} />).find(RequiredIndicator).length).to.equal(0);
-        expect(shallow(<Label {...defaultProps} />).find('span').text()).to.equal('test');
+        expect(shallow(<Label {...defaultProps} />).find(RequiredIndicator).length).toBe(0);
+        expect(shallow(<Label {...defaultProps} />).find('span').text()).toBe('test');
       });
     });
 
     describe('appearance prop', () => {
       it('should be "default" appearance by default', () => {
-        expect(mount(<Label label="required prop label" />).prop('appearance')).to.equal('default');
+        expect(mount(<Label label="required prop label" />).prop('appearance')).toBe('default');
       });
 
       it('should set prop for it', () => {
-        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('inlineEdit')).to.equal(false);
-        expect(mount(<Label label="required prop label" appearance="inline-edit" />).find(LabelInner).prop('inlineEdit')).to.equal(true);
+        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('inlineEdit')).toBe(false);
+        expect(mount(<Label label="required prop label" appearance="inline-edit" />).find(LabelInner).prop('inlineEdit')).toBe(true);
       });
     });
 
     describe('isFirstChild prop', () => {
       it('should set prop for it', () => {
-        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('firstChild')).to.equal(undefined);
-        expect(mount(<Label label="required prop label" isFirstChild />).find(LabelInner).prop('firstChild')).to.equal(true);
+        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('firstChild')).toBe(undefined);
+        expect(mount(<Label label="required prop label" isFirstChild />).find(LabelInner).prop('firstChild')).toBe(true);
       });
     });
 
@@ -72,7 +72,7 @@ describe('ak-field-base', () =>
         const handler = sinon.spy();
         const wrapper = shallow(<Label {...defaultProps} onClick={handler} />);
         wrapper.find('span').simulate('click');
-        expect(handler.callCount).to.equal(1);
+        expect(handler.callCount).toBe(1);
       })
     );
 
@@ -83,7 +83,7 @@ describe('ak-field-base', () =>
             <div className="foo">Here is some child content!</div>
           </Label>
         );
-        expect(wrapper.find('div.foo')).to.not.equal(undefined);
+        expect(wrapper.find('div.foo')).not.toBe(undefined);
       })
     );
   })

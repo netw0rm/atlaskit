@@ -14,17 +14,17 @@ describe('getButtonProps', () => {
     component.props.component = () => {};
     component.props.customProp = 1;
 
-    expect(getButtonProps(component).customProp).to.equal(1);
+    expect(getButtonProps(component).customProp).toBe(1);
   });
 
   it('should not pass through all props to an inbuilt component', () => {
     component.customProp = 1;
 
-    expect(getButtonProps(component).customProp).to.be.an('undefined');
+    expect(getButtonProps(component).customProp).toBeUndefined();
   });
 
   it('should add appearance props', () => {
-    expect(getButtonProps(component)).to.contain.all.keys([
+    expect(Object.keys(getButtonProps(component))).toEqual(expect.arrayContaining([
       'appearance',
       'className',
       'disabled',
@@ -34,7 +34,8 @@ describe('getButtonProps', () => {
       'isSelected',
       'spacing',
       'theme',
-    ]);
+      'fit',
+    ]));
   });
 
   it('should pass interaction state props from the component\'s state', () => {
@@ -42,20 +43,20 @@ describe('getButtonProps', () => {
     component.state.isFocus = 2;
     component.state.isHover = 3;
 
-    expect(getButtonProps(component).isActive).to.equal(1);
-    expect(getButtonProps(component).isFocus).to.equal(2);
-    expect(getButtonProps(component).isHover).to.equal(3);
+    expect(getButtonProps(component).isActive).toBe(1);
+    expect(getButtonProps(component).isFocus).toBe(2);
+    expect(getButtonProps(component).isHover).toBe(3);
   });
 
   it('should add interaction handler props', () => {
-    expect(getButtonProps(component)).to.contain.all.keys([
+    expect(Object.keys(getButtonProps(component))).toEqual(expect.arrayContaining([
       'onBlur',
       'onFocus',
       'onMouseDown',
       'onMouseEnter',
       'onMouseLeave',
       'onMouseUp',
-    ]);
+    ]));
   });
 
   it('should pass interaction handler functions directly from the component', () => {
@@ -66,56 +67,56 @@ describe('getButtonProps', () => {
     component.onMouseLeave = 5;
     component.onMouseUp = 6;
 
-    expect(getButtonProps(component).onBlur).to.equal(1);
-    expect(getButtonProps(component).onFocus).to.equal(2);
-    expect(getButtonProps(component).onMouseDown).to.equal(3);
-    expect(getButtonProps(component).onMouseEnter).to.equal(4);
-    expect(getButtonProps(component).onMouseLeave).to.equal(5);
-    expect(getButtonProps(component).onMouseUp).to.equal(6);
+    expect(getButtonProps(component).onBlur).toBe(1);
+    expect(getButtonProps(component).onFocus).toBe(2);
+    expect(getButtonProps(component).onMouseDown).toBe(3);
+    expect(getButtonProps(component).onMouseEnter).toBe(4);
+    expect(getButtonProps(component).onMouseLeave).toBe(5);
+    expect(getButtonProps(component).onMouseUp).toBe(6);
   });
 
   it('should pass the onClick handler from props', () => {
     component.onClick = 1;
     component.props.onClick = 2;
 
-    expect(getButtonProps(component).onClick).to.equal(2);
+    expect(getButtonProps(component).onClick).toBe(2);
   });
 
   it('should add aria, form, id and type props to a button', () => {
-    expect(getButtonProps(component)).to.contain.all.keys([
+    expect(Object.keys(getButtonProps(component))).toEqual(expect.arrayContaining([
       'aria-haspopup',
       'aria-expanded',
       'aria-controls',
       'form',
       'id',
       'type',
-    ]);
+    ]));
 
     component.props.href = '#';
 
-    expect(getButtonProps(component)).to.not.contain.any.keys([
+    expect(Object.keys(getButtonProps(component))).not.toEqual(expect.arrayContaining([
       'aria-haspopup',
       'aria-expanded',
       'aria-controls',
       'form',
       'id',
       'type',
-    ]);
+    ]));
   });
 
   it('should add href and target props to a link', () => {
     component.props.href = '#';
 
-    expect(getButtonProps(component)).to.contain.all.keys([
+    expect(Object.keys(getButtonProps(component))).toEqual(expect.arrayContaining([
       'href',
       'target',
-    ]);
+    ]));
 
     component.props.isDisabled = true;
 
-    expect(getButtonProps(component)).to.not.contain.any.keys([
+    expect(Object.keys(getButtonProps(component))).not.toEqual(expect.arrayContaining([
       'href',
       'target',
-    ]);
+    ]));
   });
 });

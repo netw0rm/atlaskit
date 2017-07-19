@@ -14,7 +14,7 @@ const itemsList = (<Group heading="test1">
 
 describe(`${name} - core`, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Droplist>test</Droplist>)).not.to.equal(undefined);
+    expect(shallow(<Droplist>test</Droplist>)).not.toBe(undefined);
   });
 
   describe('render', () => {
@@ -27,47 +27,47 @@ describe(`${name} - core`, () => {
     it('should render Layer component', () => {
       const layer = wrapper.find(Layer);
       const layerNode = layer.node;
-      expect(layerNode instanceof Layer).to.equal(true);
+      expect(layerNode instanceof Layer).toBe(true);
       // Check that layer received our content
-      expect(layer.find(Group).length).to.equal(1);
-      expect(layer.find(Trigger).length).to.equal(1);
+      expect(layer.find(Group).length).toBe(1);
+      expect(layer.find(Trigger).length).toBe(1);
     });
 
     it('should pass required properties to Layer', () => {
       const layer = wrapper.find(Layer);
-      expect(layer.prop('offset')).to.equal('0 8px');
-      expect(layer.prop('position')).to.equal('bottom left');
-      expect(layer.prop('autoFlip')).to.equal(wrapper.props().shouldFlip);
-      expect(layer.prop('content')).to.not.equal(undefined);
+      expect(layer.prop('offset')).toBe('0 8px');
+      expect(layer.prop('position')).toBe('bottom left');
+      expect(layer.prop('autoFlip')).toBe(wrapper.props().shouldFlip);
+      expect(layer.prop('content')).not.toBe(undefined);
     });
 
     it('should render droplist content', () => {
       // We passed a group as content so we should be able to find one
-      expect(wrapper.find(Group).length).to.equal(1);
+      expect(wrapper.find(Group).length).toBe(1);
     });
 
     it('should render trigger', () => {
       const triggerWrapper = wrapper.find(Trigger);
-      expect(triggerWrapper.text()).to.equal('text');
+      expect(triggerWrapper.text()).toBe('text');
     });
   });
 
   describe('onOpenChange', () => {
     it('should be open when the isOpen property set to true', () => {
-      expect(mount(<Droplist trigger="text">{itemsList}</Droplist>).find(Group).length).to.equal(0);
-      expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>).find(Group).length).to.equal(1);
+      expect(mount(<Droplist trigger="text">{itemsList}</Droplist>).find(Group).length).toBe(0);
+      expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>).find(Group).length).toBe(1);
     });
   });
 
   describe('loading', () => {
     it('should show a Spinner (and no Groups) when it is loading and open', () => {
       const mounted = mount(<Droplist isLoading isOpen>{itemsList}</Droplist>);
-      expect(mounted.find(Spinner).length).to.equal(1);
-      expect(mounted.find(Group).length).to.equal(0);
+      expect(mounted.find(Spinner).length).toBe(1);
+      expect(mounted.find(Group).length).toBe(0);
     });
 
     it('should not show a Spinner when it is loading but not open', () => {
-      expect(mount(<Droplist isLoading>{itemsList}</Droplist>).find(Spinner).length).to.equal(0);
+      expect(mount(<Droplist isLoading>{itemsList}</Droplist>).find(Spinner).length).toBe(0);
     });
   });
 });

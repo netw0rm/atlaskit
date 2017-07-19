@@ -162,7 +162,7 @@ const marks = {
     open: '[',
     close(state: MarkdownSerializerState, mark: any) {
       // Note: the 'title' is not escaped in this flavor of markdown.
-      return '](' + state.esc(mark.attrs['href']) + (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') + ')';
+      return '](' + mark.attrs['href'] + (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') + ')';
     }
   },
   code: { open: '`', close: '`' },

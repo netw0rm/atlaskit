@@ -142,6 +142,22 @@ describe('MentionResource', () => {
       }, 10);
     });
 
+    it('all results callback should receive all results', (done) => {
+      const resource = new MentionResource(apiConfig);
+      const results: MentionDescription[][] = [];
+      const expected = [resultCraig, resultC];
+      resource.subscribe('test1', undefined, undefined, undefined, (mentions) => {
+        results.push(mentions);
+
+        if (results.length === 2) {
+          checkOrder(expected, results);
+          done();
+        }
+      });
+      resource.filter('delay');
+      resource.filter('craig');
+    });
+
     // Temporarily disabled due to failing on Mobile Safari 9.0.0.
     it.skip('out of order responses', (done) => { // eslint-disable-line
       const resource = new MentionResource(apiConfig);
@@ -254,6 +270,35 @@ describe('MentionResource', () => {
         }
       });
       resource.filter('test');
+    });
+
+    it('401 for search when documents from previous search are already indexed', (done) => {
+      fetchMock.mock(/\/mentions\/search\?.*query=cz(&|$)/, 401);
+
+      const resource = new MentionResource(apiConfig);
+      let count = 0;
+      resource.subscribe('test1', (mentions) => {
+        count++;
+        if (count === 1) {
+          // the first call is for a remote search for 'c' and should return mentions.
+          expect(mentions.length).to.equal(resultC.length);
+        } else if (count === 2) {
+          // the second call is from a search against the local index for 'cz' and should return no matches
+          expect(mentions.length).to.equal(0);
+        } else if (count > 2) {
+          done(new Error('Result callback was called more than expected. Error callback was expected.'));
+        }
+      },
+      (err) => {
+        expect(err).to.be.instanceof(HttpError);
+        expect((<HttpError>err).statusCode, 'response code').to.be.equal(401);
+        done();
+      });
+
+      resource.filter('c');  // this call should succeed and return mentions which get indexed locally
+      setTimeout(() => {
+        resource.filter('cz'); // this is the call that will result in a 401
+      }, 10);
     });
   });
 

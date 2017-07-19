@@ -14,15 +14,15 @@ const nowYear = now.getFullYear();
 describe(name, () => {
   it('should render the component', () => {
     const wrapper = shallow(<AkCalendar />);
-    expect(wrapper.length).to.be.above(0);
-    expect(wrapper.find(Announcer)).to.have.lengthOf(1);
-    expect(wrapper.find(DateComponent).length).to.be.above(0);
+    expect(wrapper.length).toBeGreaterThan(0);
+    expect(wrapper.find(Announcer)).toHaveLength(1);
+    expect(wrapper.find(DateComponent).length).toBeGreaterThan(0);
   });
 
   it('should highlight current date', () => {
     const wrapper = mount(<AkCalendar />);
     expect(wrapper.find(MonthAndYear).at(0).text().includes(`${getMonthName(nowMonth)} ${nowYear}`))
-      .to.equal(true);
+      .toBe(true);
   });
 
   it('should call onSelect', (done) => {
@@ -30,10 +30,10 @@ describe(name, () => {
       month={1}
       year={2016}
       onSelect={({ day, month, year, iso }) => {
-        expect(day).to.equal(1);
-        expect(month).to.equal(1);
-        expect(year).to.equal(2016);
-        expect(iso).to.equal('2016-01-01');
+        expect(day).toBe(1);
+        expect(month).toBe(1);
+        expect(year).toBe(2016);
+        expect(iso).toBe('2016-01-01');
         done();
       }}
     />);
@@ -57,11 +57,11 @@ describe(name, () => {
     expect(wrapper.find({
       children: 1,
       selected: true,
-    })).to.have.lengthOf(1);
+    })).toHaveLength(1);
 
     expect(wrapper.find({
       children: 2,
       selected: true,
-    })).to.have.lengthOf(1);
+    })).toHaveLength(1);
   });
 });

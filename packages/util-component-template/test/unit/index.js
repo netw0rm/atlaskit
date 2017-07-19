@@ -12,12 +12,12 @@ describe(name, () => {
   describe('stateless', () => {
     it('should print out when it is active', () => {
       const wrapper = mount(<Toggle isActive />);
-      expect(wrapper.find('button').text()).to.equal('active');
+      expect(wrapper.find('button').text()).toBe('active');
     });
 
     it('should print out when it is not active', () => {
       const wrapper = mount(<Toggle />);
-      expect(wrapper.find('button').text()).to.equal('not active');
+      expect(wrapper.find('button').text()).toBe('not active');
     });
 
     it('should prefix its active state with a label', () => {
@@ -27,7 +27,7 @@ describe(name, () => {
           label="My toggle"
         />
       );
-      expect(wrapper.find('button').text()).to.equal('My toggle: active');
+      expect(wrapper.find('button').text()).toBe('My toggle: active');
     });
 
     it('should fire onToggle when the button is clicked', () => {
@@ -40,16 +40,16 @@ describe(name, () => {
 
       wrapper.find('button').simulate('click');
 
-      expect(stub.callCount).to.equal(1);
+      expect(stub.callCount).toBe(1);
     });
 
     // [Current patterns for testing dynamic styles](https://extranet.atlassian.com/display/AtlasKit/Moving+from+Less+to+Styled+Components)
     it('should have a green background when active', () => {
-      expect(getContainerBackgroundColor({ isActive: true })).to.equal(akColorG75);
+      expect(getContainerBackgroundColor({ isActive: true })).toBe(akColorG75);
     });
 
     it('should have a red background when not active', () => {
-      expect(getContainerBackgroundColor({ isActive: false })).to.equal(akColorR400);
+      expect(getContainerBackgroundColor({ isActive: false })).toBe(akColorR400);
     });
   });
 
@@ -58,11 +58,11 @@ describe(name, () => {
       const wrapper = mount(<AkToggle label="hello" />);
       const stateless = wrapper.find(Toggle);
 
-      expect(stateless.props().isActive).to.equal(false);
+      expect(stateless.props().isActive).toBe(false);
 
       stateless.props().onToggle();
 
-      expect(stateless.props().isActive).to.equal(true);
+      expect(stateless.props().isActive).toBe(true);
     });
   });
 });

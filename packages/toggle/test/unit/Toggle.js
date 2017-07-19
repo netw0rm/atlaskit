@@ -16,52 +16,52 @@ describe('Toggle', () => {
     const label = wrapper.find(Label);
     const iconWrapper = wrapper.find(IconWrapper);
 
-    expect(input.exists()).to.equal(true);
+    expect(input.exists()).toBe(true);
 
-    expect(label.exists()).to.equal(true);
-    expect(label.prop('size')).to.equal('regular');
+    expect(label.exists()).toBe(true);
+    expect(label.prop('size')).toBe('regular');
 
-    expect(iconWrapper.exists()).to.equal(true);
-    expect(iconWrapper.find(CloseIcon).exists()).to.equal(true);
+    expect(iconWrapper.exists()).toBe(true);
+    expect(iconWrapper.find(CloseIcon).exists()).toBe(true);
   });
 
   describe('properties', () => {
     it('isChecked=true', () => {
       const wrapper = shallow(<Toggle isChecked />);
-      expect(wrapper.find(Input).prop('checked')).to.equal(true);
-      expect(wrapper.find(ConfirmIcon).exists()).to.be.equal(true);
-      expect(wrapper.find(CloseIcon).exists()).to.equal(false);
+      expect(wrapper.find(Input).prop('checked')).toBe(true);
+      expect(wrapper.find(ConfirmIcon).exists()).toBe(true);
+      expect(wrapper.find(CloseIcon).exists()).toBe(false);
     });
     it('isChecked=false', () => {
       const wrapper = shallow(<Toggle />);
-      expect(wrapper.find(Input).prop('checked')).to.equal(false);
-      expect(wrapper.find(ConfirmIcon).exists()).to.be.equal(false);
-      expect(wrapper.find(CloseIcon).exists()).to.equal(true);
+      expect(wrapper.find(Input).prop('checked')).toBe(false);
+      expect(wrapper.find(ConfirmIcon).exists()).toBe(false);
+      expect(wrapper.find(CloseIcon).exists()).toBe(true);
     });
     it('isDisabled=true', () => {
       const wrapper = shallow(<Toggle isDisabled />);
-      expect(wrapper.find(Input).prop('disabled')).to.equal(true);
+      expect(wrapper.find(Input).prop('disabled')).toBe(true);
     });
     it('isDisabled=false', () => {
       const wrapper = shallow(<Toggle />);
-      expect(wrapper.find(Input).prop('disabled')).to.equal(false);
+      expect(wrapper.find(Input).prop('disabled')).toBe(false);
     });
 
     it('name', () =>
-      expect(shallow(<Toggle name="test" />).find(Input).prop('name')).to.equal('test')
+      expect(shallow(<Toggle name="test" />).find(Input).prop('name')).toBe('test')
     );
     it('value', () =>
-      expect(shallow(<Toggle value="test" />).find(Input).prop('value')).to.equal('test')
+      expect(shallow(<Toggle value="test" />).find(Input).prop('value')).toBe('test')
     );
     it('size', () =>
-      expect(shallow(<Toggle size="large" />).find(Label).prop('size')).to.equal('large')
+      expect(shallow(<Toggle size="large" />).find(Label).prop('size')).toBe('large')
     );
 
     it('label', () => {
       expect(shallow(<Toggle isChecked label="test" />).find(ConfirmIcon).prop('label'))
-        .to.equal('test');
+        .toBe('test');
       expect(shallow(<Toggle label="test" />).find(CloseIcon).prop('label'))
-        .to.equal('test');
+        .toBe('test');
     });
 
     describe('input events handlers', () =>
@@ -71,7 +71,7 @@ describe('Toggle', () => {
           const props = { [`on${capitalize(eventName)}`]: spy };
           const wrapper = mount(<Toggle {...props} />);
           wrapper.find(Input).simulate(eventName);
-          expect(spy.called).to.equal(true);
+          expect(spy.called).toBe(true);
         })
       )
     );

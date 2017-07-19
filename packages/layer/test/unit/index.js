@@ -14,14 +14,14 @@ import Layer from '../../src';
 describe('Layer', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
-    expect(wrapper).not.to.equal(undefined);
+    expect(wrapper).not.toBe(undefined);
   });
 
   describe('children', () => {
     const wrapper = shallow(<Layer><div id="target">Target</div></Layer>);
 
     it('should be rendered by Layer', () => {
-      expect(wrapper.find('#target').length).to.equal(1);
+      expect(wrapper.find('#target').length).toBe(1);
     });
   });
 
@@ -30,7 +30,7 @@ describe('Layer', () => {
 
     it('should be rendered by Layer', () => {
       const wrapper = shallow(<Layer content={content} />);
-      expect(wrapper.find('#content').length).to.equal(1);
+      expect(wrapper.find('#content').length).toBe(1);
     });
   });
 
@@ -46,8 +46,8 @@ describe('Layer', () => {
 
       const contentParent = wrapper.find('#content').parent();
 
-      expect(contentParent.prop('style').position).to.equal('fixed');
-      expect(contentParent.prop('style').transform).to.equal('translate3d(13px, 13px, 0px)');
+      expect(contentParent.prop('style').position).toBe('fixed');
+      expect(contentParent.prop('style').transform).toBe('translate3d(13px, 13px, 0px)');
     });
 
     it('flipped should cause onFlippedChange callback to be called', () => {
@@ -55,11 +55,11 @@ describe('Layer', () => {
       const wrapper = mount(<Layer onFlippedChange={spy} content={content}><div>Foo</div></Layer>);
       const state = { flipped: true, actualPosition: 'top left', originalPosition: 'bottom left' };
 
-      expect(wrapper.state('flipped')).to.equal(false);
+      expect(wrapper.state('flipped')).toBe(false);
       wrapper.setState(state);
 
-      expect(spy.callCount).to.equal(1);
-      expect(spy.calledWith(state)).to.equal(true);
+      expect(spy.callCount).toBe(1);
+      expect(spy.calledWith(state)).toBe(true);
     });
   });
 });

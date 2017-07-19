@@ -8,7 +8,7 @@ describe('Layer', () => {
           position: 'right',
           autoFlip: true,
         };
-        expect(getFlipBehavior(props)).to.equal(null);
+        expect(getFlipBehavior(props)).toBe(null);
       });
 
       it('with autoFlip = false, returns null', () => {
@@ -16,7 +16,7 @@ describe('Layer', () => {
           position: 'right',
           autoFlip: false,
         };
-        expect(getFlipBehavior(props)).to.equal(null);
+        expect(getFlipBehavior(props)).toBe(null);
       });
 
       it('with single value in array', () => {
@@ -24,7 +24,7 @@ describe('Layer', () => {
           position: 'left',
           autoFlip: ['right'],
         };
-        expect(getFlipBehavior(props)).to.deep.equal(['left', 'right']);
+        expect(getFlipBehavior(props)).toEqual(['left', 'right']);
       });
 
       it('with multiple values in array', () => {
@@ -32,7 +32,7 @@ describe('Layer', () => {
           position: 'right',
           autoFlip: ['top', 'left', 'bottom'],
         };
-        expect(getFlipBehavior(props)).to.deep.equal(['right', 'top', 'left', 'bottom']);
+        expect(getFlipBehavior(props)).toEqual(['right', 'top', 'left', 'bottom']);
       });
     });
   });

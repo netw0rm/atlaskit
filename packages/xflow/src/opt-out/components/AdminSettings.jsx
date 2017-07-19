@@ -9,25 +9,25 @@ export default class AdminSettings extends Component {
   static propTypes = {
     header: PropTypes.string.isRequired,
     children: PropTypes.node,
-  }
+  };
 
   static defaultProps = {
     header: 'Request settings',
-  }
+  };
 
   state = {
     isOpen: true,
-  }
+  };
 
   handleCancelClick = () => {
     this.setState({
       isOpen: false,
     });
-  }
+  };
 
-  handleButtonClick = (evt) => {
-    console.log(`The ${`${evt.target.textContent}`.toLowerCase()} button got clicked!`);
-  }
+  handleButtonClick = () => {
+    // console.log(`The ${`${evt.target.textContent}`.toLowerCase()} button got clicked!`);
+  };
 
   render() {
     return (
@@ -35,12 +35,18 @@ export default class AdminSettings extends Component {
         isOpen={this.state.isOpen}
         width="small"
         header={
-          <OptOutHeader>{this.props.header}</OptOutHeader>
+          <OptOutHeader>
+            {this.props.header}
+          </OptOutHeader>
         }
         footer={
           <OptOutFooter>
-            <Button onClick={this.handleButtonClick} appearance="primary">Continue</Button>
-            <Button onClick={this.handleCancelClick} appearance="subtle-link" >Cancel</Button>
+            <Button onClick={this.handleButtonClick} appearance="primary">
+              Continue
+            </Button>
+            <Button onClick={this.handleCancelClick} appearance="subtle-link">
+              Cancel
+            </Button>
           </OptOutFooter>
         }
       >
@@ -49,4 +55,3 @@ export default class AdminSettings extends Component {
     );
   }
 }
-

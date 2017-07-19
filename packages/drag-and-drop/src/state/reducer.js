@@ -5,6 +5,7 @@ import type { TypeId,
   State,
   DraggableDimension,
   DroppableDimension,
+  DimensionState,
   DragImpact,
   DragState,
   DropResult,
@@ -21,17 +22,19 @@ import { add, subtract, negate } from './position';
 import getDragImpact from './get-drag-impact';
 import getDiffToJumpToNextIndex from './get-diff-to-jump-to-next-index';
 
+const noDimensions: DimensionState = {
+  request: null,
+  draggable: {},
+  droppable: {},
+};
+
 const clean = memoizeOne((phase: ?Phase): State => {
   const state: State = {
     // flow was not good with having a default arg on an optional type
     phase: phase || 'IDLE',
     drag: null,
     drop: null,
-    dimension: {
-      request: null,
-      draggable: {},
-      droppable: {},
-    },
+    dimension: noDimensions,
   };
 
   return state;
@@ -383,11 +386,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
         pending,
         result: null,
       },
-      dimension: {
-        request: null,
-        draggable: {},
-        droppable: {},
-      },
+      dimension: state.dimension,
     };
   }
 
@@ -401,11 +400,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
         pending: null,
         result,
       },
-      dimension: {
-        request: null,
-        draggable: {},
-        droppable: {},
-      },
+      dimension: noDimensions,
     };
   }
 

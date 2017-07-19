@@ -12,6 +12,7 @@ import type {
 } from '../types';
 import getNewHomeOffset from './get-new-home-offset';
 import isPositionEqual from './is-position-equal';
+import { add, subtract } from './position';
 
 export type RequestDimensionsAction = {|
   type: 'REQUEST_DIMENSIONS',
@@ -196,6 +197,7 @@ export const drop = (id: DraggableId) =>
     }
 
     const { impact, initial, current } = state.drag;
+    const droppable: DroppableDimension = state.dimension.droppable[initial.source.droppableId];
 
     const result: DropResult = {
       draggableId: current.id,
@@ -203,9 +205,19 @@ export const drop = (id: DraggableId) =>
       destination: impact.destination,
     };
 
+    const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
+    const origin: Position = add(
+      subtract(
+        current.withDroppableScroll.offset,
+        current.withoutDroppableScroll.offset
+      ),
+      scrollDiff
+    );
+
     const newHomeOffset: Position = getNewHomeOffset(
       impact.movement,
       current.withoutDroppableScroll.offset,
+      origin,
       state.dimension.draggable
     );
 
@@ -213,7 +225,8 @@ export const drop = (id: DraggableId) =>
     // This will be the case if either you are dragging with a
     // keyboard or if you manage to nail it just with a mouse.
     const isAnimationRequired = !isPositionEqual(
-      current.withoutDroppableScroll.offset,
+      // TODO: not sure which to use here
+      current.withDroppableScroll.offset,
       newHomeOffset
     );
 

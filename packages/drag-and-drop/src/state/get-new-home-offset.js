@@ -7,16 +7,12 @@ import type {
   DraggableId,
 } from '../types';
 
-const origin: Position = {
-  x: 0,
-  y: 0,
-};
-
 // Returns the offset required to move an item from its
 // original position to its final reseting position
 export default (
   movement: DragMovement,
   currentOffset: Position,
+  origin: Position,
   draggableDimensions: DraggableDimensionMap,
 ): Position => {
   // Just animate back to where it started
@@ -30,7 +26,7 @@ export default (
       return previous + dimension.withMargin.height;
     }, 0);
 
-  const amount: number = movement.isMovingForward ? distance : -distance;
+  const amount: number = origin.y + (movement.isMovingForward ? distance : -distance);
 
   // Currently not considering horizontal movement
   const verticalChange: Position = {

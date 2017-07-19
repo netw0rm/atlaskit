@@ -12,7 +12,6 @@ import {
 } from '../serializer';
 
 import {
-  Doc,
   mergeTextNodes,
   isTextWrapper,
   TextWrapper,
@@ -42,16 +41,16 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.eventHandlers = eventHandlers;
   }
 
-  serializeFragment(fragment: Fragment, props: any = {}, target: ReactComponentConstructor = Doc, key: string = 'root-0'): JSX.Element | null {
-    const content = ReactSerializer.getChildNodes(fragment).map((node, index) => {
-      if (isTextWrapper(node.type.name)) {
-        return this.serializeTextWrapper((node as TextWrapper).content);
+  serializeNode(node: Node, index: number = 0): JSX.Element | null {
+    const content = ReactSerializer.getChildNodes(node.content).map((childNode, index) => {
+      if (isTextWrapper(childNode.type.name)) {
+        return this.serializeTextWrapper((childNode as TextWrapper).content);
       }
 
-      return this.serializeFragment((node as Node).content, this.getProps(node as Node), toReact(node as Node), `${node.type.name}-${index}`);
+      return this.serializeNode(childNode as Node, index);
     });
 
-    return this.renderNode(target, props, key, content);
+    return this.renderNode(node, `${node.type.name}-${index}`, content);
   }
 
   private serializeTextWrapper(content: Node[]) {
@@ -69,12 +68,29 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return this.renderMark(markToReact(mark), this.getMarkProps(mark), `${mark.type.name}-${index}`, content);
   }
 
-  // tslint:disable-next-line:variable-name
-  private renderNode(Node: ReactComponentConstructor, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)): JSX.Element {
+  private getDOMDataAttributes(node: Node) {
+    const attrs = node.type.spec.toDOM ? node.type.spec.toDOM(node) : null;
+    if (!attrs || !attrs[1]) {
+      return null;
+    }
+    const dataAttrs = attrs[1];
+    return Object.keys(dataAttrs).reduce((accu, key) => {
+      if (key.match(/^data-/)) {
+        accu[key] = dataAttrs[key];
+      }
+      return accu;
+    }, {});
+  }
+
+  private renderNode(node: Node, key: string, content: (string | JSX.Element | any[] | null | undefined)): JSX.Element {
+    // tslint:disable-next-line:variable-name
+    const Component = toReact(node);
+    const props = this.getProps(node);
+    const dataAttrs = this.getDOMDataAttributes(node);
     return (
-      <Node key={key} {...props}>
+      <Component key={key} {...props} dataAttrs={dataAttrs}>
         {content}
-      </Node>
+      </Component>
     );
   }
 

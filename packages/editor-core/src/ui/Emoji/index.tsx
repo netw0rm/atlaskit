@@ -9,6 +9,9 @@ import ProviderFactory, { WithProviders } from '../../providerFactory';
 export interface EmojiProps extends EmojiId {
   allowTextFallback?: boolean;
   providers?: ProviderFactory;
+  shortName: string;
+  id?: string;
+  fallback?: string;
 }
 
 export default class EmojiNode extends PureComponent<EmojiProps, {}> {

@@ -204,6 +204,17 @@ export class MarkdownSerializer extends PMMarkdownSerializer implements Serializ
     return output;
   }
 
+  serializeNode(node: Node): string {
+    const self = this;
+    let output = '';
+
+    node.content.forEach(node => {
+      output += self.serialize(node);
+    });
+
+    return output;
+  }
+
   static fromSchema(schema: Schema<any, any>): MarkdownSerializer {
     return new MarkdownSerializer(nodes, marks);
   }

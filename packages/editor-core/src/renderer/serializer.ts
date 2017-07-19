@@ -1,5 +1,5 @@
-import { Fragment } from '../prosemirror';
+import { Node } from '../prosemirror';
 
 export interface Serializer<T> {
-  serializeFragment(fragment: Fragment): T | null;
+  serializeNode(node: Node): T | null;
 }

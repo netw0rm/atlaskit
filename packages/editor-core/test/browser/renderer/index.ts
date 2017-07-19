@@ -45,7 +45,7 @@ const doc = {
 };
 
 class MockSerializer implements Serializer<string> {
-  serializeFragment(fragment: any) {
+  serializeNode(node: any) {
     return 'dummy';
   }
 }
@@ -69,8 +69,8 @@ describe('Renderer', () => {
     });
 
 
-    it('should call serializer.serializeFragment', () => {
-      const spy = sinon.spy(serializer, 'serializeFragment');
+    it('should call serializer.serializeNode', () => {
+      const spy = sinon.spy(serializer, 'serializeNode');
       renderDocument(doc, serializer, schema);
       expect(spy.called).to.equal(true);
     });

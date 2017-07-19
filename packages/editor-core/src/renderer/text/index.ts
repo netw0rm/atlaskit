@@ -1,6 +1,7 @@
 import {
   Fragment,
   Schema,
+  Node,
 } from '../../prosemirror';
 
 import { Serializer } from '../serializer';
@@ -44,6 +45,10 @@ const serializeFragment = (fragment: Fragment): string => {
 export default class TextSerializer implements Serializer<string> {
   serializeFragment(fragment: Fragment): string {
     return serializeFragment(fragment);
+  }
+
+  serializeNode(node: Node): string {
+    return serializeFragment(node.content);
   }
 
   static fromSchema(schema: Schema<any, any>): TextSerializer {

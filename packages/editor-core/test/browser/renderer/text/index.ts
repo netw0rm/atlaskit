@@ -10,7 +10,7 @@ describe('Renderer - TextSerializer', () => {
 
   it('should render document', () => {
     const serializer = TextSerializer.fromSchema(schema);
-    const text = serializer.serializeFragment(docFromSchema.content);
+    const text = serializer.serializeNode(docFromSchema);
 
     expect(text).to.equal(expectedText);
   });

@@ -10,6 +10,7 @@ export interface MentionProps {
   eventHandlers?: EventHandlers;
   text: string;
   accessLevel?: string;
+  dataAttrs?: { [key: string]: string };
 }
 
 export default class MentionItem extends PureComponent<MentionProps, {}> {
@@ -20,7 +21,24 @@ export default class MentionItem extends PureComponent<MentionProps, {}> {
       providers,
       text,
       accessLevel,
+      dataAttrs,
     } = this.props;
+
+    if (dataAttrs) {
+      return (
+        <span
+          {...dataAttrs}
+        >
+          <Mention
+            id={id}
+            text={text}
+            accessLevel={accessLevel}
+            providers={providers}
+            eventHandlers={eventHandlers && eventHandlers.mention}
+          />
+        </span>
+      );
+    }
 
     return (
       <Mention

@@ -59,6 +59,16 @@ export default class JSONSerializer implements Serializer<JSONDocNode> {
     };
   }
 
+  serializeNode(node: PMNode): JSONDocNode {
+    const content: Array<JSONNode> = [];
+    node.content.forEach(child => content.push(toJSON(child)));
+    return {
+      version: 1,
+      type: 'doc',
+      content,
+    };
+  }
+
   static fromSchema(schema: Schema<any, any>): JSONSerializer {
     return new JSONSerializer();
   }

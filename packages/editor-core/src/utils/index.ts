@@ -351,7 +351,7 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
 }
 
 export function toJSON(node: Node): JSONDocNode {
-  return new JSONSerializer().serializeFragment(node.content);
+  return new JSONSerializer().serializeNode(node);
 }
 
 export function splitCodeBlockAtSelection(state: EditorState<any>) {

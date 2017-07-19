@@ -14,7 +14,7 @@ describe('@atlaskit/editor-core/schema mention node', () => {
   });
 
   it('should extract the correct values of mention id and display name', () => {
-    const doc = fromHTML('<span mention-id=\'@user-1\'>foo bar</span>');
+    const doc = fromHTML('<span data-mention-id=\'@user-1\'>foo bar</span>');
     const mention = doc.firstChild!.firstChild!;
 
     expect(mention.type.name).to.equal('mention');

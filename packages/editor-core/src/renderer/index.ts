@@ -25,7 +25,7 @@ export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: S
   }
 
   const node = schema.nodeFromJSON(validDoc);
-  return serializer.serializeFragment(node.content);
+  return serializer.serializeNode(node);
 };
 
 export { Serializer };

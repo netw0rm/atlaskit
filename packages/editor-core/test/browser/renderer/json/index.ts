@@ -21,7 +21,7 @@ describe('JSONSerializer', () => {
     schema: defaultSchema,
   });
 
-  describe('serializeFragment', () => {
+  describe('serializeNode', () => {
     it('should serialize common nodes/marks as ProseMirror does', () => {
       const { editorView } = editor(
         doc(

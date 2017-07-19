@@ -47,11 +47,11 @@ const docFromSchema = schema.nodeFromJSON(doc);
 
 describe('Renderer - ReactSerializer', () => {
 
-  describe('serializeFragment', () => {
+  describe('serializeNode', () => {
 
     it('should render document', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema);
-      const reactDoc = mount(reactSerializer.serializeFragment(docFromSchema.content) as any);
+      const reactDoc = mount(reactSerializer.serializeNode(docFromSchema) as any);
 
       const root = reactDoc.find('div');
       const paragraph = root.find('p');

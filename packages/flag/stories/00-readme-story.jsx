@@ -4,7 +4,9 @@ import Readme from '@atlaskit/util-readme';
 
 import { name } from '../package.json';
 
-const description = 'Toggles are a quick way to view and switch between enabled or disabled states. Use toggles when your main intent is to turn something on or off';
+const description = `Use flags for messages containing confirmations, alerts, and
+acknowledgments that require minimal user interaction. These event-driven messages
+appear at the bottom left of the screen and overlay any content.`;
 
 /* eslint-disable import/no-duplicates, import/first */
 import flagComponent from '../src/components/Flag';

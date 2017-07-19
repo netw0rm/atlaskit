@@ -4,9 +4,7 @@ import { PureComponent } from 'react';
 
 import * as styles from './styles';
 import { EmojiDescription, OnEmojiEvent } from '../../types';
-import { isEmojiLoaded } from '../../type-helpers';
-import Emoji from '../common/Emoji';
-import EmojiPlaceholder from '../common/EmojiPlaceholder';
+import CachingEmoji from '../common/CachingEmoji';
 import { UploadPromptButton } from './EmojiPickerUploadPrompts';
 
 export interface Props {
@@ -18,7 +16,6 @@ export interface Props {
 }
 
 export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
-
   private renderUploadPrompt() {
     const { onOpenUpload, showUploadButton } = this.props;
 
@@ -37,29 +34,18 @@ export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
         {emojis.map((emoji) => {
           const { shortName, category, id } = emoji;
           const key = id || `${shortName}-${category}`;
-          let emojiComponent;
-
-          if (isEmojiLoaded(emoji)) {
-            emojiComponent = (
-              <Emoji
-                emoji={emoji}
-                selectOnHover={true}
-                onSelected={onSelected}
-                onMouseMove={onMouseMove}
-              />
-            );
-          } else {
-            emojiComponent = (
-              <EmojiPlaceholder shortName={shortName} />
-            );
-          }
 
           return (
             <span
               className={styles.emojiItem}
               key={key}
             >
-              {emojiComponent}
+              <CachingEmoji
+                emoji={emoji}
+                selectOnHover={true}
+                onSelected={onSelected}
+                onMouseMove={onMouseMove}
+              />
             </span>
           );
         })}

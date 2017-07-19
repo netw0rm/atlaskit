@@ -14,6 +14,7 @@ const NavigationItemOuter = styled.div`
   box-sizing: border-box;
   height: ${({ theme }) => (isInCompactGroup(theme) ? itemStyles.width.compact : itemStyles.width.standard)}px;
   position: relative;
+  flex: 1 0 auto;
 
   /* AK-2548: rather than targeting like this - the styles should be applied on the InteractionWrapper */
   button, a {

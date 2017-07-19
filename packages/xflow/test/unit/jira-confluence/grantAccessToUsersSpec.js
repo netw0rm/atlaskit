@@ -1,5 +1,3 @@
-/* eslint-disable mocha/no-skipped-tests */
-
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
@@ -16,7 +14,14 @@ import grantAccessToUsers, {
 } from '../../../src/jira-confluence/grantAccessToUsers';
 
 import createConfluenceUsersGroupResponse from './mock-data/createConfluenceUsersGroup.json';
-import addUsersToGroupResponse from './mock-data/addUsersToGroupResponse';
+
+const addUsersToGroupResponse = (url, options) => {
+  const { users } = JSON.parse(options.body);
+  return {
+    expand: 'user',
+    users,
+  };
+};
 
 const mockRetrieveJiraUsers = () => Promise.resolve(jiraUsers);
 const mapUsers = users => users.map(user => ({ name: user.name }));

@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
+
 import * as React from 'react';
 import RendererDemo from './renderer-demo';
 import { name } from '../package.json';
@@ -35,12 +36,12 @@ import { EmojiProps } from '../src/renderer/react/nodes/emoji';
 import ProviderFactory from '../src/providerFactory';
 
 storiesOf(name, module)
-  .add('renderer', () => (
-    <RendererDemo withProviders={true}/>
-  ))
-  .add('renderer without providers', () => (
-    <RendererDemo withProviders={false}/>
-  ))
+  .add('renderer', () => {
+    return <RendererDemo withProviders={true}/>;
+  })
+  .add('renderer without providers', () => {
+    return <RendererDemo withProviders={false}/>;
+  })
   .add('renderer/marks/em', () => (
     <Em>This is italic</Em>
   ))

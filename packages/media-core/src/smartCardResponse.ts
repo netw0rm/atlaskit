@@ -1,11 +1,16 @@
 
 export interface SmartCardResponse {
+  link?: SmartCardLink;
   title: SmartCardTitle;
   description?: SmartCardDescription;
   details?: SmartCardDetails[];
   context?: SmartCardContext;
   preview?: {url: string}; // an image URL
   background?: {url: string}; // an image URL
+}
+
+export interface SmartCardLink {
+  url: string;
 }
 
 export interface SmartCardTitle {

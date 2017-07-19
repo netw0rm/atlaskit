@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import {expect} from 'chai';
 import {TimerHandle, TimerFactory} from '../../../../src/engine/core/timerFactory';
 

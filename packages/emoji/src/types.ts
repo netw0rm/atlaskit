@@ -150,8 +150,8 @@ export interface OnToneSelected {
   (variation: number): void;
 }
 
-export interface OnEmojiEvent {
-  (emojiId: EmojiId, emoji: OptionalEmojiDescription, event?: SyntheticEvent<any>): void;
+export interface OnEmojiEvent<T = any> {
+  (emojiId: EmojiId, emoji: OptionalEmojiDescription, event?: SyntheticEvent<T>): void;
 }
 
 export interface OnCategory {

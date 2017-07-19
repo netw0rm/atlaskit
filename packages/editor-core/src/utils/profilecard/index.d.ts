@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, SyntheticEvent } from 'react';
 
 export class AkProfileClient {
   constructor(config: AkProfileClientConfig);
@@ -12,7 +12,7 @@ export class AkProfileClient {
 }
 
 export interface AkProfilecardTriggerActions {
-  callback?: () => void;
+  callback?: (evt: SyntheticEvent<any>) => void;
   label?: string;
 }
 

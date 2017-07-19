@@ -26,7 +26,7 @@
     "@atlaskit/avatar": "^4.0.5",
     "@atlaskit/badge": "^4.0.3",
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/dropdown-menu": "^1.10.0",
+    "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/field-text": "^2.6.1",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/lozenge": "^3.0.2",
@@ -67,7 +67,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/droplist": "^3.6.0",
+    "@atlaskit/droplist": "^4.0.0",
     "@atlaskit/media-core": "^8.0.0",
     "@atlaskit/media-test-helpers": "^6.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",

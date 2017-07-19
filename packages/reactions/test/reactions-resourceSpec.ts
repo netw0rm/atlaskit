@@ -221,7 +221,8 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       const reactionsProvider = new ReactionsResource({baseUrl});
       populateCache(reactionsProvider);
 
-      const optimisticSpy = sinon.spy(reactionsProvider, 'optimisticAddReaction');
+      // cast to <any> because Sinon doesn't see the protected optmisticAddReaction method
+      const optimisticSpy = sinon.spy(<any>reactionsProvider, 'optimisticAddReaction');
       const addSpy = sinon.spy(reactionsProvider, 'addReaction');
 
       reactionsProvider.toggleReaction(containerAri, ari, smileyId.id!);
@@ -233,7 +234,8 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       const reactionsProvider = new ReactionsResource({baseUrl});
       populateCache(reactionsProvider);
 
-      const optimisticSpy = sinon.spy(reactionsProvider, 'optimisticDeleteReaction');
+      // cast to <any> because Sinon doesn't see the protected optmisticDeleteReaction method
+      const optimisticSpy = sinon.spy(<any>reactionsProvider, 'optimisticDeleteReaction');
       const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
 
       reactionsProvider.toggleReaction(containerAri, ari, grinningId.id!);

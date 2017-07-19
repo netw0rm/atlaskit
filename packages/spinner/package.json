@@ -1,19 +1,21 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "3.0.0",
+  "version": "3.4.0",
   "config": {
     "access": "public"
   },
   "description": "A React component that displays a spinning icon to show a loading state",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Spinner"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/spinner",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/spinner; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "types": "src/index.d.ts",
   "files": [

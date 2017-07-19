@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
-import { DEFAULT_BORDER_COLOR } from '../styled/constants';
+import { ThemeColor } from '../styled/constants';
 import MoreIndicator from '../components/MoreIndicator';
 import type { AvatarClickType, AvatarPropTypes, ComponentType, FunctionType, SizeType } from '../types';
 
@@ -57,7 +57,7 @@ export default class AvatarGroup extends Component {
     // prepare the button -- we'll use it twice
     const MoreButton = props => (
       <MoreIndicator
-        borderColor={borderColor || DEFAULT_BORDER_COLOR}
+        borderColor={borderColor || ThemeColor.border}
         count={total - max}
         isInteractive
         isStack={appearance === 'stack'}

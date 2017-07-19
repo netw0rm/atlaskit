@@ -9,6 +9,7 @@ export interface EditorProps {
 
   allowTextFormatting?: boolean;
   allowMentions?: boolean;
+  allowTasksAndDecisions?: boolean;
   saveOnEnter?: boolean;
 
   errorReporterHandler?: ErrorReportingHandler;

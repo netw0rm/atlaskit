@@ -47,14 +47,14 @@ export default class Profilecard extends PureComponent {
     this._timeOpen = null;
 
     this.clientFetchProfile = (...args) => {
-      this.props.analytics('profileCard.reload', {});
+      this.props.analytics('profile-card.reload', {});
       this.props.clientFetchProfile(...args);
     };
   }
 
   componentDidMount() {
     this._timeOpen = Date.now();
-    this.props.analytics('profileCard.view', {});
+    this.props.analytics('profile-card.view', {});
   }
 
   _durationSince = (from) => {
@@ -75,7 +75,7 @@ export default class Profilecard extends PureComponent {
             compact
             key={action.label}
             onClick={(...args) => {
-              this.props.analytics('profileCard.click', {
+              this.props.analytics('profile-card.click', {
                 id: action.id || null,
                 duration: this._durationSince(this._timeOpen),
               });
@@ -99,7 +99,7 @@ export default class Profilecard extends PureComponent {
       { [styles.noDetailsMeta]: !this.props.meta },
     ]);
 
-    this.props.analytics('profileCard.loaded', {
+    this.props.analytics('profile-card.loaded', {
       duration: this._durationSince(this._timeOpen),
     });
 
@@ -130,7 +130,7 @@ export default class Profilecard extends PureComponent {
     let cardContent = null;
 
     if (this.props.hasError) {
-      this.props.analytics('profileCard.error', {});
+      this.props.analytics('profile-card.error', {});
 
       cardContent = this.renderErrorMessage();
     } else if (this.props.isLoading) {

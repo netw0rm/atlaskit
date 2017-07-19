@@ -4,6 +4,14 @@ import { akColorB200, akColorN70A, akColorN200A } from '@atlaskit/util-shared-st
 import { AVATAR_RADIUS, AVATAR_SIZES, BORDER_WIDTH, TRANSITION_DURATION } from './constants';
 import type { AppearanceType, SizeType } from '../types';
 
+const ThemeColor = {
+  backgroundFocus: akColorB200,
+  overlayDefault: 'transparent',
+  overlayHover: akColorN70A,
+  overlaySelected: akColorN200A,
+  overlayDisabled: 'rgba(255, 255, 255, 0.7)',
+};
+
 // "square" avatars are explicit
 export function getBorderRadius(
   props: { appearance: AppearanceType, size: SizeType },
@@ -38,7 +46,7 @@ export function getInnerStyles(props: any) {
   let backgroundColor = props.borderColor;
   let cursor = 'default';
   let outline = 'none';
-  let overlayShade = 'transparent';
+  let overlayShade = ThemeColor.overlayDefault;
   let overlayOpacity = 0;
   let pointerEvents = 'auto';
   let position = 'static';
@@ -47,7 +55,7 @@ export function getInnerStyles(props: any) {
 
   // Interaction: Hover
   if (isInteractive && (props.isActive || props.isHover)) {
-    overlayShade = akColorN70A;
+    overlayShade = ThemeColor.overlayHover;
     overlayOpacity = 1;
   }
 
@@ -59,14 +67,14 @@ export function getInnerStyles(props: any) {
   // Interaction: Focus
   if (isInteractive && props.isFocus && !props.isActive) {
     outline = 'none';
-    backgroundColor = akColorB200;
+    backgroundColor = ThemeColor.backgroundFocus;
     transitionDuration = TRANSITION_DURATION;
   }
 
   // Disabled
   if (props.isDisabled) {
     cursor = 'not-allowed';
-    overlayShade = 'rgba(255, 255, 255, 0.7)';
+    overlayShade = ThemeColor.overlayDisabled;
     overlayOpacity = 1;
     pointerEvents = 'none';
   }
@@ -78,7 +86,7 @@ export function getInnerStyles(props: any) {
 
   // Loading
   if (props.isSelected) {
-    overlayShade = akColorN200A;
+    overlayShade = ThemeColor.overlaySelected;
     overlayOpacity = 1;
   }
 

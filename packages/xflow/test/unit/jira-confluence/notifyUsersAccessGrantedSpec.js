@@ -28,15 +28,16 @@ describe('notifyUsersAccessGranted', () => {
     fetchMock.restore();
   });
 
-  it('should return a resolved promise with no value', () => {
-    after('and it should never contact the endpoint', () => {
-      assert.isFalse(fetchMock.done(NEVER_CALL_NAME));
-    });
+  it('should return a resolved promise with no value and it should never contact the endpoint', async () => {
     shouldNeverContactEndpoint();
-    assert.eventually.equal(
-      notifyUsersAccessGranted(TEST_ADMIN_DISPLAY_NAME, TEST_INSTANCE_NAME, TEST_USERNAME, []),
-      null
+    const result = await notifyUsersAccessGranted(
+      TEST_ADMIN_DISPLAY_NAME,
+      TEST_INSTANCE_NAME,
+      TEST_USERNAME,
+      []
     );
+    assert.equal(result, null);
+    assert.isFalse(fetchMock.done(NEVER_CALL_NAME));
   });
 
   it('should create a payload which has as many events as usernames defined', () => {

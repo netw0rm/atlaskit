@@ -21,7 +21,7 @@ import WhereToFindConfluenceImg from '../styled/WhereToFindConfluenceImg';
 import WhereToFindConfluenceSVGDiv from '../styled/WhereToFindConfluenceSVGDiv';
 import WhereToFindConfluenceText from '../styled/WhereToFindConfluenceText';
 
-import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import i18nId from '../../common/i18nId';
 import { withAnalytics } from '../../common/components/Analytics';
 
@@ -157,10 +157,10 @@ export class LoadingTimeBase extends Component {
 }
 
 export default withAnalytics(
-  withCrossSellProvider(
+  withXFlowProvider(
     LoadingTimeBase,
     ({
-      crossSell: { config: { productLogo }, state: { progress }, goToProduct, closeLoadingDialog },
+      xFlow: { config: { productLogo }, state: { progress }, goToProduct, closeLoadingDialog },
     }) => ({
       productLogo,
       progress,

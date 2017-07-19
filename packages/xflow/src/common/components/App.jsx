@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import addSupportedLocaleData from '../addSupportedLocaleData';
-import { withCrossSellProvider } from './CrossSellProvider';
+import { withXFlowProvider } from './XFlowProvider';
 
 addSupportedLocaleData();
 
@@ -28,6 +28,6 @@ export class AppBase extends Component {
   }
 }
 
-export default withCrossSellProvider(AppBase, ({ crossSell: { config: { languagePacks } } }) => ({
+export default withXFlowProvider(AppBase, ({ xFlow: { config: { languagePacks } } }) => ({
   languagePacks,
 }));

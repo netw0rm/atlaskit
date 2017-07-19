@@ -26,7 +26,7 @@ import AffectMyBillText from '../styled/AffectMyBillText';
 import ChangeButton from '../styled/ChangeButton';
 import SpinnerDiv from '../styled/SpinnerDiv';
 
-import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import i18nId from '../../common/i18nId';
 
 const i18n = i18nId('grant-access');
@@ -278,9 +278,9 @@ export class GrantAccessBase extends Component {
   }
 }
 
-export default withCrossSellProvider(
+export default withXFlowProvider(
   GrantAccessBase,
-  ({ crossSell: { config: { productLogo, startTrial }, grantAccessToUsers, retrieveUsers } }) => ({
+  ({ xFlow: { config: { productLogo, startTrial }, grantAccessToUsers, retrieveUsers } }) => ({
     productLogo,
     optionItems: startTrial.grantOptionItems,
     userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,

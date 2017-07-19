@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import AppBase from './AppBase';
-import { withCrossSellProvider } from './CrossSellProvider';
+import App from './App';
+import { withXFlowProvider } from './XFlowProvider';
 import InitializingScreen from './InitializingScreen';
 import { withAnalytics } from './Analytics';
 import RequestTrial from '../../request-trial/components/RequestTrial';
@@ -69,7 +69,7 @@ class RequestOrStartTrial extends Component {
 
   render() {
     return (
-      <AppBase locale={this.props.locale}>
+      <App locale={this.props.locale}>
         {(() => {
           switch (this.state.screen) {
             case Screens.INITIALIZING: {
@@ -101,14 +101,14 @@ class RequestOrStartTrial extends Component {
             }
           }
         })()}
-      </AppBase>
+      </App>
     );
   }
 }
 
-export default withCrossSellProvider(
+export default withXFlowProvider(
   withAnalytics(RequestOrStartTrial),
-  ({ crossSell: { canCurrentUserAddProduct, isProductInstalledOrActivating } }) => ({
+  ({ xFlow: { canCurrentUserAddProduct, isProductInstalledOrActivating } }) => ({
     canCurrentUserAddProduct,
     isProductInstalledOrActivating,
   })

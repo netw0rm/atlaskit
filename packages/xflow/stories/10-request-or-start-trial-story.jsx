@@ -3,12 +3,12 @@ import React from 'react';
 import { RequestOrStartTrial } from '@atlaskit/xflow';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import MockConfluenceCrossSell from './providers/MockConfluenceCrossSellProvider';
+import MockConfluenceXFlow from './providers/MockConfluenceXFlowProvider';
 
 storiesOf('RequestOrStartTrial')
   .add('if a user can add a product, show Start Trial', () =>
     setupStorybookAnalytics(
-      <MockConfluenceCrossSell
+      <MockConfluenceXFlow
         isProductInstalledOrActivating={() => Promise.resolve(false)}
         canCurrentUserAddProduct={() => Promise.resolve(true)}
         startProductTrial={() => new Promise(resolve => setTimeout(resolve, 1000))}
@@ -18,23 +18,23 @@ storiesOf('RequestOrStartTrial')
         closeLoadingDialog={() => Promise.resolve()}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />
-      </MockConfluenceCrossSell>
+      </MockConfluenceXFlow>
     )
   )
   .add('if the product is already installed or activating, show Already Started', () =>
     setupStorybookAnalytics(
-      <MockConfluenceCrossSell
+      <MockConfluenceXFlow
         isProductInstalledOrActivating={() => Promise.resolve(true)}
         canCurrentUserAddProduct={() => Promise.resolve(true)}
         goToProduct={() => Promise.resolve()}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />
-      </MockConfluenceCrossSell>
+      </MockConfluenceXFlow>
     )
   )
   .add('if a user can not add a product, show Request Trial', () =>
     setupStorybookAnalytics(
-      <MockConfluenceCrossSell
+      <MockConfluenceXFlow
         isProductInstalledOrActivating={() => Promise.resolve(false)}
         canCurrentUserAddProduct={() => Promise.resolve(false)}
         requestTrialAccess={() => new Promise(resolve => setTimeout(resolve, 1000))}
@@ -43,27 +43,27 @@ storiesOf('RequestOrStartTrial')
         cancelRequestTrialAccess={() => Promise.resolve(true)}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />
-      </MockConfluenceCrossSell>
+      </MockConfluenceXFlow>
     )
   )
   .add(
     'before we know the status of previous confluence use or the user permissions, show the initializing dialog',
     () =>
       setupStorybookAnalytics(
-        <MockConfluenceCrossSell isProductInstalledOrActivating={() => new Promise(() => {})}>
+        <MockConfluenceXFlow isProductInstalledOrActivating={() => new Promise(() => {})}>
           <RequestOrStartTrial analyticsId="growth.happy" />
-        </MockConfluenceCrossSell>
+        </MockConfluenceXFlow>
       )
   )
   .add('if there was an error, show the error flag', () =>
     setupStorybookAnalytics(
-      <MockConfluenceCrossSell
+      <MockConfluenceXFlow
         isProductInstalledOrActivating={() => Promise.resolve(false)}
         canCurrentUserAddProduct={() =>
           new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 1500))}
         requestTrialAccess={() => Promise.resolve(true)}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />
-      </MockConfluenceCrossSell>
+      </MockConfluenceXFlow>
     )
   );

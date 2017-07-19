@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
-import { CrossSellProvider } from '@atlaskit/xflow';
+import { XFlowProvider } from '@atlaskit/xflow';
 
 const notImplemented = () => {
   throw new Error('Not implemented.');
@@ -8,7 +8,7 @@ const notImplemented = () => {
 
 import languagePacks from '../../src/jira-confluence/language-packs.json';
 
-export default class MockConfluenceCrossSellProvider extends Component {
+export default class MockConfluenceXFlowProvider extends Component {
   render() {
     const defaultProps = {
       config: {
@@ -74,6 +74,6 @@ export default class MockConfluenceCrossSellProvider extends Component {
       ...this.props,
     };
 
-    return <CrossSellProvider {...props} />;
+    return <XFlowProvider {...props} />;
   }
 }

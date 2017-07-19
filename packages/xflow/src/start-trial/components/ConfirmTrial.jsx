@@ -11,7 +11,7 @@ import SpinnerDiv from '../styled/SpinnerDiv';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
-import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import i18nId from '../../common/i18nId';
 
 const i18n = i18nId('confirm-trial');
@@ -106,9 +106,9 @@ export class ConfirmTrialBase extends Component {
   }
 }
 
-export default withCrossSellProvider(
+export default withXFlowProvider(
   ConfirmTrialBase,
-  ({ crossSell: { config: { productLogo }, startProductTrial, cancelStartProductTrial } }) => ({
+  ({ xFlow: { config: { productLogo }, startProductTrial, cancelStartProductTrial } }) => ({
     productLogo,
     startProductTrial,
     cancelStartProductTrial,

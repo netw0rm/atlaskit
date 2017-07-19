@@ -3,13 +3,13 @@ import React from 'react';
 import { OptOut } from '@atlaskit/xflow';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import MockConfluenceCrossSell from './providers/MockConfluenceCrossSellProvider';
+import MockConfluenceXFlow from './providers/MockConfluenceXFlowProvider';
 
 storiesOf('OptOut')
   .add('show the dialog', () => setupStorybookAnalytics(
-    <MockConfluenceCrossSell>
+    <MockConfluenceXFlow>
       <OptOut />
-    </MockConfluenceCrossSell>
+    </MockConfluenceXFlow>
     )
   );
 

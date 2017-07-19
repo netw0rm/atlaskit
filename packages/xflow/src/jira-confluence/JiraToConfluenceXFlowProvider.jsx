@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
-import { CrossSellProvider } from '../common/components/CrossSellProvider';
+import { XFlowProvider } from '../common/components/XFlowProvider';
 
 import { isUserTrusted } from './tenantContext';
 import isConfluenceInstalledOrActivating from './isConfluenceInstalledOrActivating';
@@ -16,7 +16,7 @@ import retrieveJiraUsers from './retrieveJiraUsers';
 import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
 
-export default class MockConfluenceCrossSellProvider extends Component {
+export default class MockConfluenceXFlowProvider extends Component {
   render() {
     const defaultProps = {
       config: {
@@ -83,6 +83,6 @@ export default class MockConfluenceCrossSellProvider extends Component {
       ...this.props,
     };
 
-    return <CrossSellProvider {...props} />;
+    return <XFlowProvider {...props} />;
   }
 }

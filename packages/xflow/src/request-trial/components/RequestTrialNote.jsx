@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
-import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 import NoteText from '../styled/NoteText';
 
@@ -57,10 +57,10 @@ export class RequestTrialNoteBase extends Component {
   }
 }
 
-export default withCrossSellProvider(
+export default withXFlowProvider(
   RequestTrialNoteBase,
   ({
-    crossSell: {
+    xFlow: {
       config: { productLogo, requestTrial },
       requestTrialAccessWithNote,
       requestTrialAccessWithoutNote,

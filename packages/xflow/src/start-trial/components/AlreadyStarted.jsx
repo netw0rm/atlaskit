@@ -9,7 +9,7 @@ import SpinnerDiv from '../styled/SpinnerDiv';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
-import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 export class AlreadyStartedBase extends Component {
   static propTypes = {
@@ -75,9 +75,9 @@ export class AlreadyStartedBase extends Component {
   }
 }
 
-export default withCrossSellProvider(
+export default withXFlowProvider(
   AlreadyStartedBase,
-  ({ crossSell: { config: { productLogo, startTrial }, goToProduct } }) => ({
+  ({ xFlow: { config: { productLogo, startTrial }, goToProduct } }) => ({
     productLogo,
     heading: startTrial.alreadyStartedHeading,
     message: startTrial.alreadyStartedMessage,

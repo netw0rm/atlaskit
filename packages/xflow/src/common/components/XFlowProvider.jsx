@@ -2,7 +2,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 
-export const crossSellShape = PropTypes.shape({
+export const xFlowShape = PropTypes.shape({
   state: PropTypes.object,
   config: PropTypes.shape({
     productLogo: PropTypes.element,
@@ -49,13 +49,13 @@ export const crossSellShape = PropTypes.shape({
   closeLoadingDialog: PropTypes.func,
 });
 
-export class CrossSellProvider extends Component {
+export class XFlowProvider extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
   };
 
   static childContextTypes = {
-    crossSell: crossSellShape,
+    xFlow: xFlowShape,
   };
 
   state = {
@@ -64,7 +64,7 @@ export class CrossSellProvider extends Component {
 
   getChildContext() {
     return {
-      crossSell: {
+      xFlow: {
         ...this.props,
         state: this.state,
       },
@@ -76,11 +76,11 @@ export class CrossSellProvider extends Component {
   }
 }
 
-export const withCrossSellProvider = (WrappedComponent, mapContextToProps = () => {}) =>
-  class WithCrossSellProvider extends Component {
-    static displayName = `WithCrossSellProvider(${Component.displayName || Component.name})`;
+export const withXFlowProvider = (WrappedComponent, mapContextToProps = () => {}) =>
+  class WithXFlowProvider extends Component {
+    static displayName = `WithXFlowProvider(${Component.displayName || Component.name})`;
     static contextTypes = {
-      crossSell: crossSellShape,
+      xFlow: xFlowShape,
     };
     render() {
       const { props } = this;

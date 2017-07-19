@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 import { MultiStep, Step } from '../../multi-step';
 
@@ -21,4 +21,4 @@ export class RequestTrialBase extends Component {
   }
 }
 
-export default withCrossSellProvider(RequestTrialBase);
+export default withXFlowProvider(RequestTrialBase);

@@ -1,9 +1,9 @@
 import React from 'react';
-import { RequestTrial, CrossSellProvider } from '@atlaskit/xflow';
+import { RequestTrial, XFlowProvider } from '@atlaskit/xflow';
 import { AtlassianLogo } from '@atlaskit/logo';
 
 export default (
-  <CrossSellProvider
+  <XFlowProvider
     productLogo={<AtlassianLogo />}
     requestTrial={{
       accessBanner: 'https://placehold.it/352x214',
@@ -14,5 +14,5 @@ export default (
     }}
   >
     <RequestTrial />
-  </CrossSellProvider>
+  </XFlowProvider>
 );

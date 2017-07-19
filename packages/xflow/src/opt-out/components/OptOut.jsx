@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { crossSellShape } from '../../common/components/CrossSellProvider';
-import AppBase from '../../common/components/AppBase';
+import { xFlowShape } from '../../common/components/XFlowProvider';
+import App from '../../common/components/App';
 
 import AdminSettings from './AdminSettings';
 
 export default class OptOut extends Component {
   static contextTypes = {
-    crossSell: crossSellShape,
+    xFlow: xFlowShape,
   };
 
   static propTypes = {
@@ -21,9 +21,9 @@ export default class OptOut extends Component {
 
   render() {
     return (
-      <AppBase locale={this.props.locale}>
+      <App locale={this.props.locale}>
         <AdminSettings />
-      </AppBase>
+      </App>
     );
   }
 }

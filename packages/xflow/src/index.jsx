@@ -1,7 +1,7 @@
 export { default as OptOut } from './opt-out/components/OptOut';
 export {
-  withCrossSellProvider,
-  CrossSellProvider,
-  crossSellShape,
-} from './common/components/CrossSellProvider';
+  withXFlowProvider,
+  XFlowProvider,
+  xFlowShape,
+} from './common/components/XFlowProvider';
 export { default as RequestOrStartTrial } from './common/components/RequestOrStartTrial';

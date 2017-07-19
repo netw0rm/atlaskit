@@ -5,7 +5,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
 
-import { withCrossSellProvider } from '../../common/components/CrossSellProvider';
+import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 
 export class RequestTrialAccessBase extends Component {
@@ -66,10 +66,10 @@ export class RequestTrialAccessBase extends Component {
   }
 }
 
-export default withCrossSellProvider(
+export default withXFlowProvider(
   RequestTrialAccessBase,
   ({
-    crossSell: {
+    xFlow: {
       config: { productLogo, requestTrial },
       requestTrialAccess,
       cancelRequestTrialAccess,

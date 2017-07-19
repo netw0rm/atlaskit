@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* feature; adds maxHeight prop to droplist
 ## 4.1.0 (2017-06-21)
 
 

@@ -21,6 +21,8 @@ import {
   BulletList,
   Blockquote,
   CodeBlock,
+  DecisionItem,
+  DecisionList,
   Emoji,
   HardBreak,
   Heading,
@@ -488,6 +490,16 @@ storiesOf(name, module)
       <Panel panelType="tip">This is a tip panel</Panel>
       <Panel panelType="warning">This is a warning panel</Panel>
     </div>
+  ))
+  .add('nodes/decisionList', () => (
+    <DecisionList>
+      <DecisionItem>
+        Hello <b>world</b>.
+      </DecisionItem>
+      <DecisionItem>
+        This is another decision.
+      </DecisionItem>
+    </DecisionList>
   ))
   .add('nodes/rule', () => (
     <Rule />

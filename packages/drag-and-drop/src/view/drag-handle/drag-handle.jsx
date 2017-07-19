@@ -47,9 +47,11 @@ export default class DragHandle extends Component {
     }
   }
 
+  memoizedMove = memoizeOne((point: Position) => this.props.callbacks.onMove(point));
+
   // scheduled functions
   scheduleMove = rafScheduler((point: Position) => {
-    this.ifDragging(() => this.props.callbacks.onMove(point));
+    this.ifDragging(() => this.memoizedMove(point));
   });
 
   scheduleMoveForward = rafScheduler(() => {

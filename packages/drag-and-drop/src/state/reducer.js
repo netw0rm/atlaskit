@@ -200,10 +200,10 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       center: add(center, droppable.scroll.initial),
     };
 
+    // TODO: verify
     const impact: DragImpact = getDragImpact(
-      // TODO: verify these values
       initialWithoutScroll.center,
-      initialWithScroll.center,
+      initialWithoutScroll.center,
       id,
       state.dimension.draggable,
       state.dimension.droppable,

@@ -112,6 +112,7 @@ export default class DroppableDimensionPublisher extends Component {
         this.unwatchScroll();
       }
       this.closestScrollable = getClosestScrollable(nextProps.targetRef);
+      console.log('closest scrollable', this.closestScrollable);
     }
 
     // Because the dimension publisher wraps children - it might render even when its props do

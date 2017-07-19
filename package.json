@@ -217,7 +217,7 @@
     "validate/lint-changed/fix": "run-p -l validate/eslint/changed/fix validate/tslint/changed/fix",
     "validate/lint/fix": "run-p -l validate/eslint/fix validate/tslint/fix",
     "validate/package.json": "pjv -q && lerna exec -- pjv -q",
-    "validate/tslint": "lerna run lint",
+    "validate/tslint": "tslint --project . 'packages/*/*.{ts,tsx,d.ts}' 'packages/*/{src,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/tslint/changed": "./build/bin/lint.tslint.changed.sh",
     "validate/tslint/changed/fix": "./build/bin/lint.tslint.changed.sh --fix",
     "validate/tslint/fix": "lerna run -- lint -- --fix",

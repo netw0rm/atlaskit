@@ -3,7 +3,6 @@ const { default: io } = require('lerna-semantic-release-io');
 const srRegistry = require('semantic-release/src/lib/get-registry');
 const npmconf = require('npmconf');
 const analyzeCommits = require('./analyzeCommits');
-const updateChangelog = require('./updateChangelog');
 
 const getNextRelease = (pkg, sharedConfig, npmConfig, location) => {
   // eslint-disable-next-line
@@ -67,12 +66,5 @@ function findNextReleaseInfoForAk() {
     return releaseInfo;
   });
 }
-findNextReleaseInfoForAk()
-  .then(releaseInfo => releaseInfo.filter(info => info.nextRelease.type.type))
-  // .then(releaseInfo => releaseInfo.filter(info => info.nextRelease.type.type
-  // || info.nextRelease.type === 'initial'))
-  // .then(releaseInfo => releaseInfo.map(info => info.nextRelease.type))
-  .then(releases => releases.map(updateChangelog))
-  .then(whatever => console.log(whatever));
 
 module.exports = findNextReleaseInfoForAk;

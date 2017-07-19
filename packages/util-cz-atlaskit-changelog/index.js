@@ -3,7 +3,6 @@ const spawn = require('child_process').spawn;
 const czLernaChangelog = require('cz-lerna-changelog');
 
 const stdin = process.openStdin();
-// const updateChangelogs = require('./src/updateChangelogs');
 
 function check(script, shouldShowStderr, cb, cbErr) {
   const spawned = spawn('npm', ['run', script, '--silent'], { stdio: 'inherit' });

@@ -5,13 +5,15 @@ const getChangeType = (text) => {
   return null;
 };
 
+// This should absolutely append the commit has btw
+
 // All the splitting text we are doing is busywork from setup
-const parseCommitMessage = (commitMessage) => {
+const parseCommitMessage = (commit) => {
   // Only changes that cause releases will be added to changelog
-  const changeType = getChangeType(commitMessage);
+  const changeType = getChangeType(commit.message);
   if (!changeType) return null;
 
-  const parts = commitMessage.split(/\n/);
+  const parts = commit.message.split(/\n/);
   // We know that the array will need at least three items, so we escape if this
   // expectation is not met. The third line is always the affected packages.
   if (!parts[2]) return null;
@@ -23,10 +25,13 @@ const parseCommitMessage = (commitMessage) => {
     ? ` (${parts.find(e => e.includes('ISSUES CLOSED: ')).toLowerCase()})`
     : '';
 
+  const shortHash = commit.hash.substring(0, 7);
+  const link = `([${shortHash}](https://bitbucket.org/atlassian/atlaskit/commits/${shortHash}))`;
+
   // The information about a breaking change is provided on the next line
-  const breakingChange = breakingIndex >= 0 ? `* ${changeType}; ${parts[breakingIndex + 1]}` : '';
-  const change = `* ${changeType}; ${parts[0].replace(/^.*?: /, '')}${issuesClosed}`;
-  return breakingChange + change;
+  const breakingChange = breakingIndex >= 0 ? `* ${changeType}; ${parts[breakingIndex + 1]} ${link}` : '';
+  const change = `* ${changeType}; ${parts[0].replace(/^.*?: /, '')}${issuesClosed} ${link}`;
+  return breakingChange ? `${breakingChange}\n${change}` : change;
 };
 
 module.exports = parseCommitMessage;

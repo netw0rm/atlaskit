@@ -31,9 +31,14 @@ export default class EmojiPickerFooter extends PureComponent<Props, undefined> {
       uploading,
     } = this.props;
 
+    const previewFooterClassnames = classNames([
+      styles.emojiPickerFooter,
+      styles.emojiPickerFooterWithTopShadow,
+    ]);
+
     if (uploading) {
       return (
-        <div className={styles.emojiPickerFooter}>
+        <div className={previewFooterClassnames}>
           <EmojiUploadPicker
             onUploadCancelled={onUploadCancelled}
             onUploadEmoji={onUploadEmoji}
@@ -43,11 +48,6 @@ export default class EmojiPickerFooter extends PureComponent<Props, undefined> {
         </div>
       );
     }
-
-    const previewFooterClassnames = classNames([
-      styles.emojiPickerFooter,
-      styles.emojiPickerFooterWithTopShadow,
-    ]);
 
     return (
       <div className={previewFooterClassnames}>

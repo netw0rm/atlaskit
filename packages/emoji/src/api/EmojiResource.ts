@@ -1,11 +1,12 @@
 import { customCategory } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../types';
-import { isMediaApiRepresentation } from '../type-helpers';
+import { isMediaEmoji, isPromise } from '../type-helpers';
+import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
 import { requestService, ServiceConfig } from './SharedResourceUtils';
 import { AbstractResource, OnProviderChange, Provider } from './SharedResources';
-import MediaEmojiResource from './MediaEmojiResource';
+import MediaEmojiResource from './media/MediaEmojiResource';
 
 export interface EmojiResourceConfig {
   /**
@@ -34,7 +35,7 @@ export interface EmojiResourceConfig {
 export interface OnEmojiProviderChange extends OnProviderChange<EmojiSearchResult, any, void> {}
 
 export interface Retry<T> {
-  (): Promise<T>;
+  (): Promise<T> | T;
 }
 
 export interface ResolveReject<T> {
@@ -48,7 +49,7 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    *
    * Will load media api images before returning.
    */
-  findByShortName(shortName: string): Promise<OptionalEmojiDescription>;
+  findByShortName(shortName: string): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
 
   /**
    * Returns the first matching emoji matching the emojiId.id.
@@ -57,13 +58,13 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    *
    * Will load media api images before returning.
    */
-  findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription>;
+  findByEmojiId(emojiId: EmojiId): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
 
   /**
    * Return the emoji that matches the supplied id or undefined. As with findByEmojiId, this call should load
    * the media api images before returning.
    */
-  findById(id: string): Promise<OptionalEmojiDescription>;
+  findById(id: string): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
 
   /**
    * Finds emojis belonging to specified category.
@@ -83,6 +84,27 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    * Optional.
    */
   recordSelection?(id: EmojiId): Promise<any>;
+
+  /**
+   * Load media emoji that may require authentication to download, producing
+   * a new EmojiDescription to be used for rendering, if necessary.
+   *
+   * Future results may be returned from a cache.
+   *
+   * Acts as a no-op if not a media emoji.
+   *
+   * @return an OptionalEmojiDescription or a promise for one, may be the same as the input,
+   *   or updated with a new url to cached image data. Will return the original EmojiDescription
+   *   if not a custom emoji.
+   */
+  loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
+
+  /**
+   * Indicates if media emoji should be rendered optimistically,
+   * i.e. assume the url can be rendered directly from the URL, and
+   * only explicitly loaded via loadEmojiImageData if it fails to load.
+   */
+  optimisticMediaRendering(emoji: EmojiDescription): boolean;
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -124,9 +146,6 @@ export interface LastQuery {
   options?: SearchOptions;
 }
 
-// Batch size === 1 row in the emoji picker
-const mediaEmojiBatchSize = 8;
-
 export const addCustomCategoryToResult = (includeCustom: boolean, searchResult: EmojiSearchResult): EmojiSearchResult => {
   if (searchResult.categories[customCategory] || !includeCustom) {
     return searchResult;
@@ -166,9 +185,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
         this.activeLoaders--;
         emojiResponses[index] = emojiResponse;
         this.initEmojiRepository(emojiResponses);
-        this.initMediaEmojiResource(emojiResponse, provider);
-        this.performRetries();
-        this.refreshLastFilter();
+        this.initMediaEmojiResource(emojiResponse, provider).then(() => {
+          this.performRetries();
+          this.refreshLastFilter();
+        });
       }).catch((reason) => {
         this.activeLoaders--;
         this.notifyError(reason);
@@ -188,22 +208,50 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     this.emojiRepository = new EmojiRepository(emojis);
   }
 
-  protected initMediaEmojiResource(emojiResponse: EmojiResponse, provider: ServiceConfig): void {
+  protected initMediaEmojiResource(emojiResponse: EmojiResponse, provider: ServiceConfig): Promise<void>  {
     if (!this.mediaEmojiResource && emojiResponse.mediaApiToken) {
-      this.mediaEmojiResource = new MediaEmojiResource(provider, emojiResponse.mediaApiToken);
+      const mediaEmojiResource = new MediaEmojiResource(provider, emojiResponse.mediaApiToken);
+
+      // Prime cache type + optimistic rendering by checking first Emoji.
+      // If this is fails, it won't be primed until a good emoji is loaded later.
+      const { emojis } = emojiResponse;
+      if (emojis.length) {
+        const done = mediaEmojiResource.optimisticRendering(emojis[0]);
+        if (isPromise(done)) {
+          return done.then(() => {
+            debug('Primed mediaEmojiResource');
+            this.mediaEmojiResource = mediaEmojiResource;
+          }).catch(err => {
+            debug('Failed to prime mediaEmojiResource');
+            this.mediaEmojiResource = mediaEmojiResource;
+          });
+        } else {
+          debug('Already primed mediaEmojiResource');
+          this.mediaEmojiResource = mediaEmojiResource;
+        }
+      } else {
+        debug('No emoji to prime mediaEmojiResource with');
+        this.mediaEmojiResource = mediaEmojiResource;
+      }
     }
+    return Promise.resolve();
   }
 
   private performRetries(): void {
     const currentRetries = this.retries;
     this.retries = new Map();
     currentRetries.forEach((resolveReject, retry) => {
-      retry().then(response => {
-        resolveReject.resolve(response);
-      })
-      .catch(reason => {
-        resolveReject.reject(reason);
-      });
+      const result = retry();
+      if (isPromise(result)) {
+        result.then(response => {
+          resolveReject.resolve(response);
+        })
+        .catch(reason => {
+          resolveReject.reject(reason);
+        });
+      } else {
+        resolveReject.resolve(result);
+      }
     });
   }
 
@@ -218,57 +266,44 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     return !this.activeLoaders;
   }
 
-  protected retryIfLoading<T>(retry: Retry<T>, defaultResponse?: T): Promise<T | undefined> {
+  protected retryIfLoading<T>(retry: Retry<T>, defaultResponse: T): Promise<T> {
     if (!this.isLoaded()) {
       return new Promise<T>((resolve, reject) => {
         this.retries.set(retry, { resolve, reject });
       });
     }
-    return Promise.resolve<T | undefined>(defaultResponse);
+    return Promise.resolve<T>(defaultResponse);
   }
 
   protected notifyResult(result: EmojiSearchResult): void {
     if (result.query === this.lastQuery.query) {
       super.notifyResult(result);
-      this.loadMediaEmoji(result);
     }
   }
 
-  private loadMediaEmoji(result: EmojiSearchResult) {
-    const { emojis, ...other } = result;
-    const mediaEmojis = emojis.filter(emoji => isMediaApiRepresentation(emoji.representation));
-    // only load a batch of media emoji at a time (next notifyResult will load the next batch)
-    const mediaEmojiResource = this.mediaEmojiResource;
-    if (mediaEmojiResource && mediaEmojis.length) {
-      const activeLoadersAtStart = this.activeLoaders;
-      const mediaImageLoaders: Promise<EmojiDescription>[] =
-        mediaEmojis.slice(0, mediaEmojiBatchSize).map(mediaEmoji =>
-          mediaEmojiResource.getMediaEmojiAsImageEmoji(mediaEmoji)
-        );
-      Promise.all(mediaImageLoaders).then(loadedEmojis => {
-        if (result.query === this.lastQuery.query && activeLoadersAtStart === this.activeLoaders) {
-          // these loaded emojis are still relevant...
-          const newEmojis: EmojiDescription[] = [];
-          emojis.forEach(emoji => {
-            if (loadedEmojis.length && isMediaApiRepresentation(emoji.representation)) {
-              const loadedEmoji = loadedEmojis.shift() as EmojiDescription;
-              const representation = loadedEmoji.representation;
-              if (!isMediaApiRepresentation(representation)) {
-                // loaded, keep, if not loaded, drop as it's not going to load
-                newEmojis.push(loadedEmoji);
-              }
-            } else {
-              newEmojis.push(emoji);
-            }
-          });
-
-          this.notifyResult({
-            ...other,
-            emojis: newEmojis,
-          });
-        }
-      });
+  loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
+    if (!this.mediaEmojiResource || !isMediaEmoji(emoji)) {
+      return emoji;
     }
+    return this.mediaEmojiResource.loadMediaEmoji(emoji);
+  }
+
+  optimisticMediaRendering(emoji: EmojiDescription): boolean {
+    if (!isMediaEmoji(emoji)) {
+      return true;
+    }
+    if (!this.mediaEmojiResource) {
+      // Shouldn't have a media emoji without a mediaEmojiResouce, but anyway ;)
+      return false;
+    }
+    const optimistic = this.mediaEmojiResource.optimisticRendering(emoji);
+
+    if (isPromise(optimistic)) {
+      // Not sure yet, so lets say no for now (this should normally be primed in most/all cases)
+      return false;
+    }
+
+    return optimistic;
   }
 
   filter(query?: string, options?: SearchOptions): void {
@@ -285,25 +320,21 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     }
   }
 
-  findByShortName(shortName: string): Promise<OptionalEmojiDescription> {
+  findByShortName(shortName: string): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
     if (this.isLoaded()) {
       // Wait for all emoji to load before looking by shortName (to ensure correct priority)
-      const emoji = this.emojiRepository.findByShortName(shortName);
-      if (!emoji) {
-        return Promise.resolve(emoji);
-      }
-      return this.loadIfMediaEmoji(emoji);
+      return this.emojiRepository.findByShortName(shortName);
     }
-    return this.retryIfLoading(() => this.findByShortName(shortName), undefined);
+    return this.retryIfLoading<any>(() => this.findByShortName(shortName), undefined);
   }
 
-  findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
+  findByEmojiId(emojiId: EmojiId): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
     const { id, shortName } = emojiId;
     if (this.emojiRepository) {
       if (id) {
         const emoji = this.emojiRepository.findById(id);
         if (emoji) {
-          return this.loadIfMediaEmoji(emoji);
+          return emoji;
         }
         if (this.isLoaded()) {
           // all loaded but not found by id, try server to see if
@@ -316,7 +347,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
                 return this.findByShortName(shortName);
               }
               this.addCustomEmoji(emoji);
-              return this.loadIfMediaEmoji(emoji);
+              return emoji;
             });
           }
 
@@ -332,12 +363,9 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     return this.retryIfLoading(() => this.findByEmojiId(emojiId), undefined);
   }
 
-  findById(id: string): Promise<OptionalEmojiDescription> {
+  findById(id: string): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
     if (this.emojiRepository) {
-      const emoji = this.emojiRepository.findById(id);
-      if (emoji) {
-        return this.loadIfMediaEmoji(emoji);
-      }
+      return this.emojiRepository.findById(id);
     }
 
     return this.retryIfLoading(() => this.findById(id), undefined);
@@ -373,24 +401,6 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 
   protected addCustomEmoji(emoji: EmojiDescription) {
     this.emojiRepository.addCustomEmoji(emoji);
-  }
-
-  /**
-   * Loads the media image data for the image and returns
-   * as an it as an Image representation.
-   *
-   * If it is not a media emoji, the original emoji is returned.
-   *
-   * If for some reason there is not media tokens available the
-   * original emoji is returned.
-   *
-   * Optional if not using Atlassian media api for custom emoji storage.
-   */
-  private loadIfMediaEmoji(emoji: EmojiDescription): Promise<EmojiDescription> {
-    if (!this.mediaEmojiResource) {
-      return Promise.resolve(emoji);
-    }
-    return this.mediaEmojiResource.getMediaEmojiAsImageEmoji(emoji);
   }
 }
 
@@ -430,6 +440,6 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
     if (this.mediaEmojiResource) {
       this.mediaEmojiResource.prepareForUpload();
     }
-    return this.retryIfLoading(() => this.prepareForUpload());
+    return this.retryIfLoading(() => this.prepareForUpload(), undefined);
   }
 }

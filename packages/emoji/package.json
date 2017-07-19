@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "18.4.2",
+  "version": "19.0.0",
   "config": {
     "access": "public"
   },
@@ -33,6 +33,7 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "js-search": "^1.4.2",
+    "lru-fast": "^0.2.2",
     "mediapicker": "^5.0.4",
     "react-virtualized": "^9.8.0",
     "tslib": "^1.2.0",

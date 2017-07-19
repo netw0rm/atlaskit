@@ -3078,6 +3078,14 @@ cross-spawn@^5.0.1:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
+cross-spawn@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
+  dependencies:
+    lru-cache "^4.0.1"
+    shebang-command "^1.2.0"
+    which "^1.2.9"
+
 cryptiles@2.x.x:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/cryptiles/-/cryptiles-2.0.5.tgz#3bdfecdc608147c1c67202fa291e7dca59eaa3b8"
@@ -7909,6 +7917,12 @@ process@^0.11.0, process@~0.11.0:
 progress@^1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
+
+projector-spawn@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/projector-spawn/-/projector-spawn-1.0.1.tgz#0849a9a54d5a76a9293d8240b4374417653312cb"
+  dependencies:
+    cross-spawn "^5.1.0"
 
 promise-polyfill@^6.0.1:
   version "6.0.2"

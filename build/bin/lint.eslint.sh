@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
 export PATH="`yarn bin`:$PATH"
-NODE_MODULES=`npm root`
+ROOT=$(git rev-parse --show-toplevel)
+NODE_MODULES=$ROOT/node_modules
 
-chalk --no-stdin -t "{blue ESLinting files…}"
-eslint --color --format "$NODE_MODULES/eslint-friendly-formatter" . --ext .js --ext .jsx $@
+$NODE_MODULES/.bin/chalk --no-stdin -t "{blue ESLinting files…}"
+$NODE_MODULES/.bin/eslint --color --format "$NODE_MODULES/eslint-friendly-formatter" . --ext .js --ext .jsx $@

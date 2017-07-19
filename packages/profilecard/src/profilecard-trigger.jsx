@@ -62,20 +62,20 @@ export default class ProfilecardTrigger extends PureComponent {
     this.setState({ isFlipped: flipped });
   }
 
-  hideProfilecard = () => {
+  hideProfilecard = (delay) => {
     clearTimeout(this.showTimer);
 
     this.hideTimer = setTimeout(() => {
       this.setState({ visible: false });
-    }, this.hideDelay);
+    }, delay || this.hideDelay);
   }
 
-  showProfilecard = () => {
+  showProfilecard = (delay) => {
     clearTimeout(this.hideTimer);
 
     this.showTimer = setTimeout(() => {
       this.setState({ visible: true });
-    }, this.showDelay);
+    }, delay || this.showDelay);
   }
 
   renderProfilecard() {

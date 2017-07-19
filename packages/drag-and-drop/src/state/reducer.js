@@ -265,6 +265,8 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const { id, offset } = action.payload;
 
+    console.log('UPDATING SCROLL OFFSET', offset);
+
     const target: ?DroppableDimension = state.dimension.droppable[id];
 
     if (!target) {
@@ -296,17 +298,21 @@ export default (state: State = clean('IDLE'), action: Action): State => {
   }
 
   if (action.type === 'MOVE') {
-    if (state.phase !== 'DRAGGING') {
-      console.error('cannot move while not dragging', action);
-      return clean();
-    }
-
-    if (state.drag == null) {
-      console.error('cannot move if there is no drag information');
-      return clean();
-    }
-
     const { page } = action.payload;
+    return move(state, page);
+  }
+
+  if (action.type === 'MOVE_BY_WINDOW_SCROLL') {
+    const { diff } = action.payload;
+    console.log('diff', diff);
+    console.log('moving with window scrolling!');
+
+    if (!state.drag) {
+      console.error('cannot move with window scrolling if no current drag');
+      return clean();
+    }
+
+    const page = add(state.drag.current.withoutDroppableScroll.page, diff);
 
     return move(state, page);
   }

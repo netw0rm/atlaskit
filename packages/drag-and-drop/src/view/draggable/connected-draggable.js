@@ -17,6 +17,7 @@ import {
   drop as dropAction,
   cancel as cancelAction,
   dropAnimationFinished as dropAnimationFinishedAction,
+  moveByWindowScroll as moveByWindowScrollAction,
 } from '../../state/action-creators';
 import type {
   State,
@@ -37,6 +38,7 @@ const origin: Position = { x: 0, y: 0 };
 const defaultMapProps: MapProps = {
   isDropAnimating: false,
   isDragging: false,
+  isSomethingElseDragging: false,
   canAnimate: true,
   offset: origin,
   initial: null,
@@ -55,6 +57,7 @@ export const makeSelector = () => {
     (offset: Position): MapProps => ({
       isDropAnimating: false,
       isDragging: false,
+      isSomethingElseDragging: true,
       canAnimate: true,
       offset,
       initial: null,
@@ -66,7 +69,7 @@ export const makeSelector = () => {
       const needsToMove = movement.draggables.indexOf(draggableId) !== -1;
 
       if (!needsToMove) {
-        return defaultMapProps;
+        return getWithMovement(origin);
       }
 
       const amount = movement.isMovingForward ? -movement.amount : movement.amount;
@@ -112,6 +115,7 @@ export const makeSelector = () => {
         // not memoizing result as it should not move without an update
         return {
           isDragging: true,
+          isSomethingElseDragging: false,
           isDropAnimating: false,
           canAnimate,
           offset,
@@ -138,6 +142,7 @@ export const makeSelector = () => {
           // while dropping.
           isDragging: true,
           isDropAnimating: true,
+          isSomethingElseDragging: false,
           canAnimate: true,
           offset: pending.newHomeOffset,
           initial: pending.last.initial,
@@ -150,6 +155,7 @@ export const makeSelector = () => {
         return {
           offset: origin,
           isDropAnimating: false,
+          isSomethingElseDragging: false,
           isDragging: false,
           canAnimate: false,
           initial: null,
@@ -172,6 +178,7 @@ const mapDispatchToProps: DispatchProps = {
   move: moveAction,
   moveBackward: moveBackwardAction,
   moveForward: moveForwardAction,
+  moveByWindowScroll: moveByWindowScrollAction,
   drop: dropAction,
   dropAnimationFinished: dropAnimationFinishedAction,
   cancel: cancelAction,

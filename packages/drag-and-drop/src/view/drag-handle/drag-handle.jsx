@@ -7,7 +7,9 @@ import rafScheduler from 'raf-schd';
 // React synthetic events as well as raw browser events.
 import * as keyCodes from '../key-codes';
 import type { Position } from '../../types';
+import { subtract } from '../../state/position';
 import type { Props, DragTypes, Provided } from './drag-handle-types';
+import getWindowScrollPosition from '../get-window-scroll-position';
 
 const noop = (): void => { };
 const getFalse: () => boolean = () => false;
@@ -29,6 +31,8 @@ export default class DragHandle extends Component {
   /* eslint-disable react/sort-comp */
   props: Props
   state: State
+
+  previousScroll: ?Position = null;
 
   state: State = {
     draggingWith: null,
@@ -54,6 +58,22 @@ export default class DragHandle extends Component {
 
   scheduleMoveBackward = rafScheduler(() => {
     this.ifDragging(this.props.callbacks.onMoveBackward);
+  });
+
+  scheduleScrollMove = rafScheduler(() => {
+    this.ifDragging(() => {
+      const current: Position = getWindowScrollPosition();
+
+      if (!this.previousScroll) {
+        this.previousScroll = current;
+        return;
+      }
+
+      const diff = subtract(current, this.previousScroll);
+      this.previousScroll = current;
+
+      this.props.callbacks.onWindowScroll(diff);
+    });
   });
 
   /* eslint-enable react/sort-comp */
@@ -93,6 +113,15 @@ export default class DragHandle extends Component {
     }
 
     this.stopDragging(() => this.props.callbacks.onCancel());
+  }
+
+  onWindowScroll = () => {
+    // At this stage only applies to mouse dragging
+    if (this.state.draggingWith !== 'MOUSE') {
+      return;
+    }
+
+    this.scheduleScrollMove();
   }
 
   onWindowMouseMove = (event: MouseEvent) => {
@@ -338,6 +367,9 @@ export default class DragHandle extends Component {
       this.preventClick = true;
     }
 
+    // clear any previous scrolls
+    this.previousScroll = null;
+
     const state: State = {
       draggingWith: null,
       pending: null,
@@ -350,7 +382,7 @@ export default class DragHandle extends Component {
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
     window.removeEventListener('keydown', this.onWindowKeydown);
-    window.removeEventListener('resize', this.onWindowResize);
+    window.removeEventListener('scroll', this.onWindowScroll);
   }
 
   bindWindowEvents = () => {
@@ -359,6 +391,7 @@ export default class DragHandle extends Component {
     window.addEventListener('mousedown', this.onWindowMouseDown);
     window.addEventListener('keydown', this.onWindowKeydown);
     window.addEventListener('resize', this.onWindowResize);
+    window.addEventListener('scroll', this.onWindowScroll);
   }
 
   getProvided = memoizeOne((isEnabled: boolean, isDragging: boolean): ?Provided => {

@@ -16,6 +16,7 @@ import type {
 import {
   lift,
   move,
+  moveByWindowScroll,
   moveForward,
   moveBackward,
   drop,
@@ -40,6 +41,7 @@ export type DraggingStyle = {|
 export type NotDraggingStyle = {|
   transition: ?string,
   transform: ?string,
+  pointerEvents: 'none' | 'auto',
 |}
 
 export type DraggableStyle = DraggingStyle | NotDraggingStyle;
@@ -66,6 +68,7 @@ export type StateSnapshot = {|
 export type DispatchProps = {
   lift: PropType<typeof lift, Function>,
   move: PropType<typeof move, Function>,
+  moveByWindowScroll: PropType<typeof moveByWindowScroll, Function>,
   moveForward: PropType<typeof moveForward, Function>,
   moveBackward: PropType<typeof moveBackward, Function>,
   drop: PropType<typeof drop, Function>,
@@ -75,6 +78,7 @@ export type DispatchProps = {
 
 export type MapProps = {|
   isDragging: boolean,
+  isSomethingElseDragging: boolean,
   isDropAnimating: boolean,
   canAnimate: boolean,
   offset: Position,

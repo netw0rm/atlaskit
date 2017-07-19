@@ -71,6 +71,7 @@ export default class Draggable extends Component {
       onKeyLift: this.onKeyLift,
       onMoveBackward: this.onMoveBackward,
       onMoveForward: this.onMoveForward,
+      onWindowScroll: this.onWindowScroll,
     };
   }
 
@@ -141,6 +142,11 @@ export default class Draggable extends Component {
     this.props.moveBackward(this.props.draggableId);
   }
 
+  onWindowScroll = (diff: Position) => {
+    this.throwIfCannotDrag();
+    this.props.moveByWindowScroll(this.props.draggableId, diff);
+  }
+
   onDrop = () => {
     this.throwIfCannotDrag();
     this.props.drop(this.props.draggableId);
@@ -195,16 +201,22 @@ export default class Draggable extends Component {
         width,
         height,
         transform: movementStyle.transform,
+        // TEMP: make little movements a bit smoother
       };
       return style;
     }
   )
 
   getNotDraggingStyle = memoizeOne(
-    (canAnimate: boolean, movementStyle: MovementStyle): NotDraggingStyle => {
+    (
+      canAnimate: boolean,
+      movementStyle: MovementStyle,
+      isSomethingElseDragging: boolean,
+    ): NotDraggingStyle => {
       const style: NotDraggingStyle = {
         transition: canAnimate ? css.outOfTheWay : null,
         transform: movementStyle.transform,
+        pointerEvents: isSomethingElseDragging ? 'none' : 'auto',
       };
       return style;
     }
@@ -214,13 +226,19 @@ export default class Draggable extends Component {
     (isDragging: boolean,
       isDropAnimating: boolean,
       canAnimate: boolean,
+      isSomethingElseDragging: boolean,
       initial: ?InitialDrag,
       dragHandleProps: ?DragHandleProvided,
       movementStyle: MovementStyle,
     ): Provided => {
+      console.log('isSomethingElseDragging', isSomethingElseDragging);
       const draggableStyle: DraggableStyle = (() => {
         if (!isDragging) {
-          return this.getNotDraggingStyle(canAnimate, movementStyle);
+          return this.getNotDraggingStyle(
+            canAnimate,
+            movementStyle,
+            isSomethingElseDragging,
+          );
         }
         invariant(initial, 'initial dimension required for dragging');
 
@@ -271,6 +289,7 @@ export default class Draggable extends Component {
       isDropAnimating,
       canAnimate,
       isDragDisabled,
+      isSomethingElseDragging,
       initial,
       children,
     } = this.props;
@@ -301,6 +320,7 @@ export default class Draggable extends Component {
                     isDragging,
                     isDropAnimating,
                     canAnimate,
+                    isSomethingElseDragging,
                     initial,
                     dragHandleProps,
                     movementStyle,

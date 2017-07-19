@@ -3,12 +3,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { DragDropContext } from '../../src/';
 import QuoteItem from './quote-item';
-import QuoteDescription from './quote-description';
 import QuoteList from './quote-list';
-import QuoteTracker from './quote-tracker';
-import { colors, grid, borderRadius } from './constants';
+import { colors, grid } from './constants';
 import type { Quote } from './types';
-import type { DropResult, DraggableLocation, DraggableId } from '../../src/types';
+import type { DropResult, DraggableLocation } from '../../src/types';
 
 const Root = styled.div`
   background-color: ${colors.blue};
@@ -19,20 +17,6 @@ const Root = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-`;
-
-const Details = styled.div`
-  background-color: white;
-  border-radius: ${borderRadius}px;
-  padding: ${grid}px;
-  margin-left: ${grid * 2}px;
-  width: 400px;
-`;
-
-const Divider = styled.hr`
-  color: lightgrey;
-  margin-top: ${grid * 2}px;
-  margin-bottom: ${grid * 2}px;
 `;
 
 type Props = {|

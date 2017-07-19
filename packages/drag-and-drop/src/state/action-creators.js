@@ -114,6 +114,23 @@ export const move = (id: DraggableId, page: Position): MoveAction => ({
   },
 });
 
+export type MoveByWindowScrollAction = {|
+  type: 'MOVE_BY_WINDOW_SCROLL',
+  payload: {|
+    id: DraggableId,
+    diff: Position,
+  |}
+|}
+
+export const moveByWindowScroll =
+  (id: DraggableId, diff: Position): MoveByWindowScrollAction => ({
+    type: 'MOVE_BY_WINDOW_SCROLL',
+    payload: {
+      id,
+      diff,
+    },
+  });
+
 export type MoveBackwardAction = {|
   type: 'MOVE_BACKWARD',
   payload: DraggableId

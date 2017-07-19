@@ -1,15 +1,13 @@
 import styled from 'styled-components';
-import { layout } from '../../shared-variables';
-import { isCollapsed } from '../../theme/util';
+import { gridSize, layout } from '../../shared-variables';
 
 const ContainerNavigationChildren = styled.div`
-  padding: 0 ${({ theme }) => (isCollapsed(theme) ? 0 : layout.padding.side)}px;
-
-  /* Fill the entire height */
-  flex-grow: 1;
+  justify-content: flex-start;
   display: flex;
-  flex-shrink: 0;
+  flex: 1 1 auto;
   flex-direction: column;
+  overflow-y: auto;
+  padding: ${gridSize / 2}px ${layout.padding.side}px;
 `;
 
 ContainerNavigationChildren.displayName = 'ContainerNavigationChildren';

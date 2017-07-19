@@ -11,7 +11,6 @@ import Reveal from './Reveal';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
 import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
-import subscribe from '../../watch-scroll-top';
 import {
   globalPrimaryActions,
   globalSecondaryActions as globalSecondaryActionsSizes,
@@ -71,7 +70,6 @@ export default class ContainerNavigation extends PureComponent {
     super(props, context);
 
     this.state = {
-      isScrolling: false,
       isInitiallyRendered: false,
     };
 
@@ -90,38 +88,6 @@ export default class ContainerNavigation extends PureComponent {
         isInitiallyRendered: true,
       });
     }
-  }
-
-  componentWillUnmount() {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-  }
-
-  onScrollTopChange = (number: number) => {
-    const isScrolling = number > 0;
-
-    if (isScrolling === this.state.isScrolling) {
-      return;
-    }
-
-    this.setState({
-      isScrolling,
-    });
-  }
-
-  onRefChange = (el) => {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-
-    // If headerComponent doesn't exist we don't need to track scroll position,
-    // because it's only used by ContainerHeader component
-    if (!el || !this.props.headerComponent) {
-      return;
-    }
-
-    this.unsubscribe = subscribe(el, this.onScrollTopChange);
   }
 
   props: Props
@@ -145,12 +111,10 @@ export default class ContainerNavigation extends PureComponent {
 
     // Only animating the revealing of GlobalPrimaryActions and GlobalSecondaryActions
     // after the first render. Before that it is rendered without animation.
-    const { isInitiallyRendered, isScrolling } = this.state;
+    const { isInitiallyRendered } = this.state;
 
     const header = headerComponent ? (
-      <ContainerHeader
-        isContentScrolled={isScrolling}
-      >
+      <ContainerHeader>
         {headerComponent({ isCollapsed })}
       </ContainerHeader>) : <ContainerNoHeader />;
 
@@ -161,9 +125,7 @@ export default class ContainerNavigation extends PureComponent {
       >
         {/* This div is needed for legacy reasons.
         All children should use isCollapsed on the theme */}
-        <ContainerNavigationInner
-          innerRef={this.onRefChange}
-        >
+        <ContainerNavigationInner>
           <Reveal
             shouldAnimate={isInitiallyRendered}
             isOpen={showGlobalActions}

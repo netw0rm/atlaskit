@@ -10,6 +10,7 @@ import { customCategory } from '../../../src/constants';
 import * as commonStyles from '../../../src/components/common/styles';
 
 import Emoji from '../../../src/components/common/Emoji';
+import EmojiButton from '../../../src/components/common/EmojiButton';
 import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import EmojiPreview from '../../../src/components/common/EmojiPreview';
 import FileChooser from '../../../src/components/common/FileChooser';
@@ -734,7 +735,7 @@ describe('<EmojiPicker />', () => {
       return waitUntil(() => emojisVisible(list)).then(() => {
         const hoverButton = list.find(Emoji).at(hoverOffset);
         hoverButton.simulate('mousemove');
-        const toneEmoji = footer.find(AkButton);
+        const toneEmoji = footer.find(EmojiButton);
         expect(toneEmoji.length, 'Tone emoji displayed').to.equal(1);
       });
     });
@@ -748,7 +749,7 @@ describe('<EmojiPicker />', () => {
       return waitUntil(() => emojisVisible(list)).then(() => {
         const hoverButton = findEmoji(list).at(hoverOffset);
         hoverButton.simulate('mousemove');
-        const toneEmoji = footer.find(AkButton);
+        const toneEmoji = footer.find(EmojiButton);
         expect(toneEmoji.length, 'Tone emoji not displayed').to.equal(0);
       });
     });

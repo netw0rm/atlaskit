@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
+import Tooltip from '@atlaskit/tooltip';
 
 import { EmojiDescription } from '../../../src/types';
 import Emoji from '../../../src/components/common/Emoji';
@@ -37,7 +38,7 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find('AKTooltip')).to.have.length(0);
+      expect(component.find(Tooltip)).to.have.length(0);
     });
   });
 
@@ -50,7 +51,7 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find('AKTooltip')).to.have.length(1);
+      expect(component.find(Tooltip).prop('description')).to.equal(':grin:');
     });
   });
 
@@ -149,7 +150,7 @@ describe('<ResourcedEmoji />', () => {
       resolver();
       return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
         component.simulate('mouseenter');
-        expect(component.find('AKTooltip')).to.have.length(1);
+        expect(component.find(Tooltip).prop('description')).to.equal('doesnotexist');
       });
     });
   });

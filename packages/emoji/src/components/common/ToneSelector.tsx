@@ -30,6 +30,7 @@ export default class ToneSelector extends PureComponent<Props, undefined> {
               // tslint:disable-next-line:jsx-no-lambda
               onSelected={() => onToneSelected(i)}
               emoji={tone}
+              selectOnHover={true}
             />
           ))
         }

@@ -2,7 +2,13 @@
 import React, { Component, PropTypes } from 'react';
 import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
-import type { Position, InitialDrag, HTMLElement, DraggableDimension } from '../../types';
+import type {
+  Position,
+  InitialDrag,
+  HTMLElement,
+  DraggableDimension,
+  InitialDragLocation,
+} from '../../types';
 import DraggableDimensionPublisher from '../draggable-dimension-publisher/';
 import Moveable from '../moveable/';
 import DragHandle from '../drag-handle';
@@ -100,10 +106,18 @@ export default class Draggable extends Component {
     const { ref } = this.state;
 
     const windowScroll: Position = getWindowScrollPosition();
-    const page: Position = add(point, windowScroll);
-    const center: Position = add(getCenterPosition(ref), windowScroll);
 
-    lift(draggableId, type, page, center);
+    const client: InitialDragLocation = {
+      selection: point,
+      center: getCenterPosition(ref),
+    };
+
+    const page: InitialDragLocation = {
+      selection: add(client.selection, windowScroll),
+      center: add(client.center, windowScroll),
+    };
+
+    lift(draggableId, type, client, page);
   }
 
   onKeyLift = () => {
@@ -111,14 +125,24 @@ export default class Draggable extends Component {
     const { lift, draggableId, type } = this.props;
     const { ref } = this.state;
 
-    const windowScroll: Position = getWindowScrollPosition();
-    const center: Position = add(getCenterPosition(ref), windowScroll);
-
     // using center position as selection
-    lift(draggableId, type, center, center);
+    const center: Position = getCenterPosition(ref);
+
+    const client: InitialDragLocation = {
+      selection: center,
+      center,
+    };
+
+    const windowScroll: Position = getWindowScrollPosition();
+    const page: InitialDragLocation = {
+      selection: add(center, windowScroll),
+      center: add(center, windowScroll),
+    };
+
+    lift(draggableId, type, client, page);
   }
 
-  onMove = (point: Position) => {
+  onMove = (client: Position) => {
     this.throwIfCannotDrag();
 
     const { draggableId, initial, move } = this.props;
@@ -129,9 +153,9 @@ export default class Draggable extends Component {
     }
 
     const windowScroll: Position = getWindowScrollPosition();
-    const page: Position = add(point, windowScroll);
+    const page: Position = add(client, windowScroll);
 
-    move(draggableId, page);
+    move(draggableId, client, page);
   }
 
   onMoveForward = () => {
@@ -184,8 +208,8 @@ export default class Draggable extends Component {
 
     return (
       <Placeholder
-        height={dimension.withMargin.height}
-        width={dimension.withMargin.width}
+        height={dimension.page.withMargin.height}
+        width={dimension.page.withMargin.width}
       />
     );
   }
@@ -193,15 +217,19 @@ export default class Draggable extends Component {
   getDraggingStyle = memoizeOne(
     (width: number,
       height: number,
+      top: number,
+      left: number,
       isDropAnimating: boolean,
       movementStyle: MovementStyle): DraggingStyle => {
       const style: DraggingStyle = {
-        position: 'absolute',
+        position: 'fixed',
         boxSizing: 'border-box',
         pointerEvents: 'none',
         zIndex: isDropAnimating ? zIndexOptions.dropAnimating : zIndexOptions.dragging,
         width,
         height,
+        top,
+        left,
         transform: movementStyle.transform ? `${movementStyle.transform}` : null,
         // TEMP: make little movements a bit smoother
       };
@@ -243,8 +271,8 @@ export default class Draggable extends Component {
         }
         invariant(initial, 'initial dimension required for dragging');
 
-        const { width, height } = initial.dimension.withoutMargin;
-        return this.getDraggingStyle(width, height, isDropAnimating, movementStyle);
+        const { width, height, top, left } = initial.dimension.client.withoutMargin;
+        return this.getDraggingStyle(width, height, top, left, isDropAnimating, movementStyle);
       })();
 
       const provided: Provided = {

@@ -28,13 +28,15 @@ import type {
 } from '../drag-handle/drag-handle-types';
 
 export type DraggingStyle = {|
-  position: 'absolute',
+  position: 'fixed',
   boxSizing: 'border-box',
   // allow scrolling of the element behind the dragging element
   pointerEvents: 'none',
   zIndex: ZIndex,
   width: number,
   height: number,
+  top: number,
+  left: number,
   transform: ?string,
 |}
 

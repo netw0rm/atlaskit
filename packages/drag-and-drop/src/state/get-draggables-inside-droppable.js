@@ -14,7 +14,7 @@ export default memoizeOne(
       // Dimensions are not guarenteed to be ordered in the same order as keys
       // So we need to sort them so they are in the correct order
       .sort((a: DraggableDimension, b: DraggableDimension): number =>
-        a.withoutMargin.center.y -
-        b.withoutMargin.center.y
+        a.page.withoutMargin.center.y -
+        b.page.withoutMargin.center.y
       )
   );

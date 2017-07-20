@@ -26,8 +26,14 @@ export type DimensionFragment = {|
 export type DraggableDimension = {|
   id: DraggableId,
   droppableId: DroppableId,
-  withMargin: DimensionFragment,
-  withoutMargin: DimensionFragment,
+  page: {|
+    withMargin: DimensionFragment,
+    withoutMargin: DimensionFragment,
+  |},
+  client: {|
+    withMargin: DimensionFragment,
+    withoutMargin: DimensionFragment,
+  |}
 |}
 
 export type DroppableDimension = {|
@@ -58,37 +64,44 @@ export type DragImpact = {|
   destination: ?DraggableLocation
 |}
 
+export type InitialDragLocation = {|
+  selection: Position,
+  center: Position,
+|}
+
+export type WithinDroppable = {|
+  center: Position,
+|}
+
 export type InitialDrag = {|
   source: DraggableLocation,
-  // client + window scroll (page)
-  withoutDroppableScroll: {|
-    page: Position,
-    center: Position,
-  |},
-  // client + window scroll + droppable scroll
-  withDroppableScroll: {|
-    center: Position,
-  |},
+  // viewport
+  client: InitialDragLocation,
+  // viewport + window scroll
+  page: InitialDragLocation,
+  // viewport + window scroll + droppable scroll
+  withinDroppable: WithinDroppable,
   // droppableScroll: Position,
   // required for placeholder positioning
+  // TODO: just look up from store
   dimension: DraggableDimension,
+|}
+
+export type CurrentDragLocation = {|
+  selection: Position,
+  center: Position,
+  offset: Position,
 |}
 
 export type CurrentDrag = {|
   id: DraggableId,
   type: TypeId,
-  withoutDroppableScroll: {|
-    // the current mouse position of the dragging item
-    page: Position,
-    // the center position of the current item
-    center: Position,
-    // how far the element has moved from its original selection (page).
-    offset: Position,
-  |},
-  withDroppableScroll: {|
-    center: Position,
-    offset: Position,
-  |},
+  // viewport
+  client: CurrentDragLocation,
+  // viewport + scroll
+  page: CurrentDragLocation,
+  // viewport + scroll + droppable scroll
+  withinDroppable: WithinDroppable,
   shouldAnimate: boolean,
 |}
 

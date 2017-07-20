@@ -15,13 +15,13 @@ import type { TypeId,
   PendingDrop,
   Phase,
   DraggableLocation,
+  CurrentDragLocation,
   Position,
+  WithinDroppable,
 } from '../types';
-import { isContainerScrollIgnored } from '../feature-detection';
 import { add, subtract, negate } from './position';
 import getDragImpact from './get-drag-impact';
 import getDiffToJumpToNextIndex from './get-diff-to-jump-to-next-index';
-import isInsideDroppable from './is-inside-droppable';
 import getDroppableOver from './get-droppable-over';
 
 const noDimensions: DimensionState = {
@@ -45,7 +45,11 @@ const clean = memoizeOne((phase: ?Phase): State => {
 });
 
 // TODO: move into function
-const move = (state: State, page: Position, shouldAnimate?: boolean = false): State => {
+const move = (state: State,
+  clientSelection: Position,
+  pageSelection: Position,
+  shouldAnimate?: boolean = false
+): State => {
   if (state.phase !== 'DRAGGING') {
     console.error('cannot move while not dragging');
     return clean();
@@ -60,40 +64,53 @@ const move = (state: State, page: Position, shouldAnimate?: boolean = false): St
   const initial: InitialDrag = state.drag.initial;
   const droppable: DroppableDimension = state.dimension.droppable[initial.source.droppableId];
 
-  const offset: Position = subtract(page, initial.withoutDroppableScroll.page);
-  const center: Position = add(offset, initial.withoutDroppableScroll.center);
+  const client: CurrentDragLocation = (() => {
+    const offset: Position = subtract(clientSelection, initial.client.selection);
+    const center: Position = add(offset, initial.client.center);
 
-  const withoutDroppableScroll = {
-    page,
-    offset,
-    center,
-  };
+    const result: CurrentDragLocation = {
+      selection: clientSelection,
+      offset,
+      center,
+    };
+    return result;
+  })();
+
+  const page: CurrentDragLocation = (() => {
+    const offset: Position = subtract(pageSelection, initial.page.selection);
+    const center: Position = add(offset, initial.page.center);
+
+    const result: CurrentDragLocation = {
+      selection: pageSelection,
+      offset,
+      center,
+    };
+    return result;
+  })();
 
   const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
   const scroll: Position = add(negate(droppable.scroll.current), negate(scrollDiff));
 
-  const withDroppableScroll = {
-    offset: isContainerScrollIgnored ? add(offset, scroll) : offset,
-    center: isContainerScrollIgnored ? add(center, scroll) : center,
+  const withinDroppable: WithinDroppable = {
+    center: add(page.center, scroll),
   };
 
   const current: CurrentDrag = {
     id: previous.id,
     type: previous.type,
-    withoutDroppableScroll,
-    withDroppableScroll,
+    client,
+    page,
+    withinDroppable,
     shouldAnimate,
   };
 
-  const point: Position = add(withoutDroppableScroll.center, negate(scrollDiff));
-
-  const impact: DragImpact = getDragImpact(
-    withoutDroppableScroll.center,
-    point,
-    current.id,
-    state.dimension.draggable,
-    state.dimension.droppable,
-  );
+  const impact: DragImpact = getDragImpact({
+    page: page.center,
+    withinDroppable,
+    draggableId: current.id,
+    draggables: state.dimension.draggable,
+    droppables: state.dimension.droppable,
+  });
 
   const drag: DragState = {
     initial,
@@ -194,26 +211,21 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return state;
     }
 
-    const { id, type, center, page } = action.payload;
+    const { id, type, client, page } = action.payload;
     const draggable: DraggableDimension = state.dimension.draggable[id];
     const droppable: DroppableDimension = state.dimension.droppable[draggable.droppableId];
 
-    const initialWithoutScroll = {
-      page,
-      center,
+    const withinDroppable: WithinDroppable = {
+      center: add(page.center, negate(droppable.scroll.initial)),
     };
 
-    const initialWithScroll = {
-      center: add(center, droppable.scroll.initial),
-    };
-
-    const impact: DragImpact = getDragImpact(
-      initialWithoutScroll.center,
-      initialWithoutScroll.center,
-      id,
-      state.dimension.draggable,
-      state.dimension.droppable,
-    );
+    const impact: DragImpact = getDragImpact({
+      page: page.center,
+      withinDroppable,
+      draggableId: id,
+      draggables: state.dimension.draggable,
+      droppables: state.dimension.droppable,
+    });
 
     const source: ?DraggableLocation = impact.destination;
 
@@ -224,26 +236,26 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const initial: InitialDrag = {
       source,
-      withoutDroppableScroll: initialWithoutScroll,
-      withDroppableScroll: initialWithScroll,
-      dimension: draggable,
-    };
-
-    const currentWithoutScroll = {
+      client,
       page,
-      offset: origin,
-      center,
-    };
-    const currentWithScroll = {
-      offset: isContainerScrollIgnored ? negate(droppable.scroll.initial) : origin,
-      center: isContainerScrollIgnored ? add(center, negate(droppable.scroll.initial)) : center,
+      withinDroppable,
+      dimension: draggable,
     };
 
     const current: CurrentDrag = {
       id,
       type,
-      withoutDroppableScroll: currentWithoutScroll,
-      withDroppableScroll: currentWithScroll,
+      client: {
+        selection: client.selection,
+        center: client.center,
+        offset: origin,
+      },
+      page: {
+        selection: page.selection,
+        center: page.center,
+        offset: origin,
+      },
+      withinDroppable,
       shouldAnimate: false,
     };
 
@@ -305,8 +317,8 @@ export default (state: State = clean('IDLE'), action: Action): State => {
   }
 
   if (action.type === 'MOVE') {
-    const { page } = action.payload;
-    return move(state, page);
+    const { client, page } = action.payload;
+    return move(state, client, page);
   }
 
   if (action.type === 'MOVE_BY_WINDOW_SCROLL') {
@@ -317,9 +329,10 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return clean();
     }
 
-    const page = add(state.drag.current.withoutDroppableScroll.page, diff);
+    const client = state.drag.current.client.selection;
+    const page = add(state.drag.current.page.selection, diff);
 
-    return move(state, page);
+    return move(state, client, page);
   }
 
   if (action.type === 'MOVE_FORWARD' || action.type === 'MOVE_BACKWARD') {
@@ -342,20 +355,21 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const isMovingForward: boolean = action.type === 'MOVE_FORWARD';
 
-    const diff: ?Position = getDiffToJumpToNextIndex(
+    const diff: ?Position = getDiffToJumpToNextIndex({
       isMovingForward,
-      existing.current.id,
-      existing.impact.destination,
-      state.dimension.draggable,
-      state.dimension.droppable,
-    );
+      draggableId: existing.current.id,
+      location: existing.impact.destination,
+      draggables: state.dimension.draggable,
+      droppables: state.dimension.droppable,
+    });
 
     // cannot move anyway (at the beginning or end of a list)
     if (!diff) {
       return state;
     }
 
-    const page: Position = add(existing.current.withoutDroppableScroll.page, diff);
+    const page: Position = add(existing.current.page.selection, diff);
+    const client: Position = add(existing.current.client.selection, diff);
 
     // current limitation: cannot go beyond visible border of list
     const droppableId: ?DroppableId = getDroppableOver(
@@ -368,7 +382,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       return state;
     }
 
-    return move(state, page, true);
+    return move(state, client, page, true);
   }
 
   if (action.type === 'DROP_ANIMATE') {

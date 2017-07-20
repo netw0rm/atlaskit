@@ -8,6 +8,7 @@ import type { DraggableId,
   DroppableDimensionMap,
   DragImpact,
   DimensionFragment,
+  WithinDroppable,
   Position } from '../types';
 import getDroppableOver from './get-droppable-over';
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
@@ -16,17 +17,25 @@ import noImpact from './no-impact';
 // It is the responsibility of this function
 // to return the impact of a drag
 
-export default (
+type ImpactArgs = {|
   // used to lookup which droppable you are over
   page: Position,
   // used for comparison with other dimensions
-  newCenter: Position,
+  withinDroppable: WithinDroppable,
   draggableId: DraggableId,
-  draggableDimensions: DraggableDimensionMap,
-  droppableDimensions: DroppableDimensionMap
-): DragImpact => {
+  draggables: DraggableDimensionMap,
+  droppables: DroppableDimensionMap
+|}
+
+export default ({
+  page,
+  withinDroppable,
+  draggableId,
+  draggables,
+  droppables,
+}: ImpactArgs): DragImpact => {
   const droppableId: ?DroppableId = getDroppableOver(
-    page, droppableDimensions
+    page, droppables
   );
 
   // not dragging over anything
@@ -34,16 +43,17 @@ export default (
     return noImpact;
   }
 
-  const draggingDimension: DraggableDimension = draggableDimensions[draggableId];
-  const droppableDimension: DroppableDimension = droppableDimensions[droppableId];
+  const newCenter = withinDroppable.center;
+  const draggingDimension: DraggableDimension = draggables[draggableId];
+  const droppableDimension: DroppableDimension = droppables[droppableId];
 
   const insideDroppable: DraggableDimension[] = getDraggablesInsideDroppable(
     droppableDimension,
-    draggableDimensions
+    draggables
   );
 
   // TEMP
-  const draggableCenter: Position = draggingDimension.withoutMargin.center;
+  const draggableCenter: Position = draggingDimension.page.withoutMargin.center;
   const isMovingForward: boolean = newCenter.y - draggableCenter.y > 0;
 
   // console.log('is moving forward?', isMovingForward);
@@ -61,7 +71,7 @@ export default (
         return false;
       }
 
-      const fragment: DimensionFragment = dimension.withoutMargin;
+      const fragment: DimensionFragment = dimension.page.withoutMargin;
 
       if (isMovingForward) {
         // 1. item needs to start ahead of the moving item
@@ -97,7 +107,7 @@ export default (
   })();
 
   const amount = index !== startIndex ?
-    draggingDimension.withMargin.height :
+    draggingDimension.page.withMargin.height :
     0;
 
   const movement: DragMovement = {

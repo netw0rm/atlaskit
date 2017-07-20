@@ -6,6 +6,7 @@ import type {
   TypeId,
   DraggableDimension,
   DroppableDimension,
+  InitialDragLocation,
   Position,
   Dispatch,
   State,
@@ -37,22 +38,22 @@ export type CompleteLiftAction = {|
   payload: {|
     id: DraggableId,
     type: TypeId,
-    page: Position,
-    center: Position,
+    client: InitialDragLocation,
+    page: InitialDragLocation,
   |}
 |}
 
 const completeLift = (id: DraggableId,
   type: TypeId,
-  page: Position,
-  center: Position,
+  client: InitialDragLocation,
+  page: InitialDragLocation,
   ): CompleteLiftAction => ({
     type: 'COMPLETE_LIFT',
     payload: {
       id,
       type,
+      client,
       page,
-      center,
     },
   });
 
@@ -99,14 +100,16 @@ export type MoveAction = {|
   type: 'MOVE',
   payload: {|
     id: DraggableId,
+    client: Position,
     page: Position,
   |}
 |}
 
-export const move = (id: DraggableId, page: Position): MoveAction => ({
+export const move = (id: DraggableId, client: Position, page: Position): MoveAction => ({
   type: 'MOVE',
   payload: {
     id,
+    client,
     page,
   },
 });
@@ -220,18 +223,18 @@ export const drop = (id: DraggableId) =>
     };
 
     const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
-    const origin: Position = add(
-      subtract(
-        current.withDroppableScroll.offset,
-        current.withoutDroppableScroll.offset
-      ),
-      scrollDiff
-    );
+    // const origin: Position = add(
+    //   subtract(
+    //     current.withDroppableScroll.offset,
+    //     current.withoutDroppableScroll.offset
+    //   ),
+    //   scrollDiff
+    // );
 
     const newHomeOffset: Position = getNewHomeOffset(
       impact.movement,
-      current.withoutDroppableScroll.offset,
-      origin,
+      current.client.offset,
+      // origin,
       state.dimension.draggable
     );
 
@@ -240,7 +243,7 @@ export const drop = (id: DraggableId) =>
     // keyboard or if you manage to nail it just with a mouse.
     const isAnimationRequired = !isPositionEqual(
       // TODO: not sure which to use here
-      current.withDroppableScroll.offset,
+      current.client.offset,
       newHomeOffset
     );
 
@@ -275,16 +278,16 @@ export type LiftAction = {|
   payload: {|
     id: DraggableId,
     type: TypeId,
-    center: Position,
-    page: Position,
+    client: InitialDragLocation,
+    page: InitialDragLocation,
   |}
 |}
 
 // using redux-thunk
 export const lift = (id: DraggableId,
   type: TypeId,
-  page: Position,
-  center: Position,
+  client: InitialDragLocation,
+  page: InitialDragLocation,
 ) => (dispatch: Dispatch, getState: Function) => {
   (() => {
     const state: State = getState();
@@ -323,7 +326,7 @@ export const lift = (id: DraggableId,
       if (newState.phase !== 'COLLECTING_DIMENSIONS') {
         return;
       }
-      dispatch(completeLift(id, type, page, center));
+      dispatch(completeLift(id, type, client, page));
     });
   });
 };

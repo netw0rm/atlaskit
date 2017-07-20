@@ -20,12 +20,6 @@ const ScrollContainer = styled.div`
   position: relative;
 `;
 
-const FixedScrollContainer = ScrollContainer.extend`
-  /* fixed full size layout */
-  height: 100vh;
-  position: fixed;
-`;
-
 const ScrollContainerTitle = styled.h4`
   text-align: center;
   margin-bottom: 8px;
@@ -59,22 +53,10 @@ storiesOf('scroll', module)
   ))
   .add('droppable within a larger scroll container', () => (
     <ScrollContainer>
-      <div style={{ padding: 100 }}>
-        <div style={{ position: 'relative' }}>
-          <ScrollContainerTitle>List is within a larger scroll container</ScrollContainerTitle>
-          <QuoteApp
-            initial={bigData}
-          />
-        </div>
-      </div>
-    </ScrollContainer>
-  ))
-  .add('droppable within a larger *fixed* scroll container', () => (
-    <FixedScrollContainer>
-      <ScrollContainerTitle>List is within a larger fixed scroll container</ScrollContainerTitle>
+      <ScrollContainerTitle>List is within a larger scroll container</ScrollContainerTitle>
       <QuoteApp
         initial={bigData}
       />
-    </FixedScrollContainer>
+    </ScrollContainer>
   ));
 

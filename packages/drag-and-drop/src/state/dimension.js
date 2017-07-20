@@ -6,7 +6,6 @@ import type {
   DraggableDimension,
   DroppableDimension,
   DimensionFragment,
-  DraggableDimensionFragment,
 } from '../types';
 
 export type ClientRect = {|
@@ -80,8 +79,16 @@ export const getDraggableDimension = (
   const dimension: DraggableDimension = {
     id,
     droppableId,
-    withoutMargin: getFragment(withScroll),
-    withMargin: getFragment(withScrollAndMargin),
+    // with scroll
+    page: {
+      withoutMargin: getFragment(withScroll),
+      withMargin: getFragment(withScrollAndMargin),
+    },
+    // on the viewport
+    client: {
+      withoutMargin: getFragment(clientRect),
+      withMargin: getWithMargin(clientRect, margin),
+    },
   };
 
   return dimension;

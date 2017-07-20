@@ -6,4 +6,4 @@
 const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
 
 // eslint-disable-next-line import/prefer-default-export
-export const isContainerScrollIgnored = !isFirefox;
+export const isContainerScrollIgnored = false;

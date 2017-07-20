@@ -357,6 +357,17 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const page: Position = add(existing.current.withoutDroppableScroll.page, diff);
 
+    // current limitation: cannot go beyond visible border of list
+    const droppableId: ?DroppableId = getDroppableOver(
+      page, state.dimension.droppable,
+    );
+
+    if (!droppableId) {
+      // eslint-disable-next-line no-console
+      console.info('currently not supporting moving a draggable outside the visibility bounds of a droppable');
+      return state;
+    }
+
     return move(state, page, true);
   }
 

@@ -43,6 +43,12 @@ describe(`${name} - stateless`, () => {
       expect(mount(<MultiSelectStateless />).find(Droplist).length).toBe(1);
     });
 
+    it('should pass shouldFlip to Droplist', () => {
+      expect(
+        mount(<MultiSelectStateless shouldFlip />).find(Droplist).props().shouldFlip
+      ).toBe(true);
+    });
+
     it('should render Fieldbase inside Droplist', () => {
       expect(mount(<MultiSelectStateless />).find(FieldBase).length).toBe(1);
       expect(mount(<MultiSelectStateless />).find(Droplist).find(FieldBase).length).toBe(1);

@@ -52,4 +52,26 @@ describe('media - keymaps', () => {
       expect(removeMediaNodeSpy.calledOnce).to.equal(true);
     });
   });
+
+  describe('Enter keypress', () => {
+    it('splits media group', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')));
+      const splitMediaGroupSpy = sinon.spy(pluginState, 'splitMediaGroup');
+
+      sendKeyToPm(editorView, 'Enter');
+
+      expect(splitMediaGroupSpy.calledOnce).to.equal(true);
+    });
+  });
+
+  describe('Shift-Enter keypress', () => {
+    it('splits media group', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')));
+      const splitMediaGroupSpy = sinon.spy(pluginState, 'splitMediaGroup');
+
+      sendKeyToPm(editorView, 'Shift-Enter');
+
+      expect(splitMediaGroupSpy.calledOnce).to.equal(true);
+    });
+  });
 });

@@ -8,6 +8,9 @@ type Props = {|
   href: string,
   onClick?: () => mixed,
   onMouseDown?: () => mixed,
+  onMouseEnter?: () => mixed,
+  onMouseLeave?: () => mixed,
+  tabIndex?: number,
 |}
 
 export default class DefaultLinkComponent extends PureComponent {
@@ -20,6 +23,9 @@ export default class DefaultLinkComponent extends PureComponent {
       href,
       onClick,
       onMouseDown,
+      onMouseEnter,
+      onMouseLeave,
+      tabIndex,
     } = this.props;
     return (href ? (
       <a
@@ -27,6 +33,9 @@ export default class DefaultLinkComponent extends PureComponent {
         href={href}
         onClick={onClick}
         onMouseDown={onMouseDown}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        tabIndex={tabIndex}
       >{children}</a>
     ) : children);
   }

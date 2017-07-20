@@ -24,7 +24,7 @@ export class DetailsView extends React.Component<MetaViewProps, {}> {
     }
 
     if (icon) {
-      attrs.push(<IconImage key="icon" src={icon.url} alt={icon.label}/>);
+      attrs.push(<IconImage key="icon" src={icon.url} alt={icon.label} title={icon.label}/>);
     }
 
     if (users) {

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { EventHandlers } from '../../../ui/Renderer';
+
 import Mention from '../../../ui/Mention';
+import { EventHandlers } from '../../../ui/Renderer';
 import ProviderFactory from '../../../providerFactory';
 
-export interface MentionProps {
+export interface Props {
   id: string;
   providers?: ProviderFactory;
   eventHandlers?: EventHandlers;
@@ -12,7 +13,7 @@ export interface MentionProps {
   accessLevel?: string;
 }
 
-export default class MentionItem extends PureComponent<MentionProps, {}> {
+export default class MentionItem extends PureComponent<Props, {}> {
   render() {
     const {
       eventHandlers,

@@ -1,9 +1,10 @@
 import {
   EditorView,
   Node as PMNode,
+  NodeSelection,
 } from '../../prosemirror';
 import { moveLeft, atTheBeginningOfDoc } from '../../utils';
-
+import * as commands from '../../commands';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
 export const removeMediaNode = (view: EditorView, node: PMNode, getPos: ProsemirrorGetPosHandler) => {
@@ -33,4 +34,23 @@ export const removeMediaNode = (view: EditorView, node: PMNode, getPos: Prosemir
 
 const isTemporaryFile = (id: string): boolean => {
   return id.indexOf('temporary:') === 0;
+};
+
+export const splitMediaGroup = (view: EditorView): boolean => {
+  const { selection } = view.state;
+
+  // if selection is not a media node, do nothing.
+  if (!(selection instanceof NodeSelection) || selection.node.type !== view.state.schema.nodes.media) {
+    return false;
+  }
+
+  commands.deleteSelection(view.state, view.dispatch);
+
+  // if selected media node is the last one, no need to insert a new p or split the block, prosemirror handled it.
+  if (selection.$to.nodeAfter) {
+    commands.splitBlock(view.state, view.dispatch);
+    commands.createParagraphNear(view, false);
+  }
+
+  return true;
 };

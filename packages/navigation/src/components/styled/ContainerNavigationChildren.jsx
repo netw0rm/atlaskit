@@ -7,7 +7,7 @@ const ContainerNavigationChildren = styled.div`
   flex: 1 1 auto;
   flex-direction: column;
   overflow-y: auto;
-  padding: ${gridSize / 2}px ${layout.padding.side}px;
+  padding: ${gridSize}px ${layout.padding.side}px;
 `;
 
 ContainerNavigationChildren.displayName = 'ContainerNavigationChildren';

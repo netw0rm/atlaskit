@@ -6,7 +6,7 @@ const paddingOpen = (() => {
   const paddingTop = gridSize;
   const paddingLeft = layout.padding.side + (gridSize * 1.75);
   const paddingRight = layout.padding.side + (gridSize * 1.5);
-  const paddingBottom = (gridSize * 1.5);
+  const paddingBottom = gridSize;
 
   return `${paddingTop}px ${paddingLeft}px ${paddingBottom}px ${paddingRight}px`;
 })();

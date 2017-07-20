@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import memoizeOne from 'memoize-one';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
-import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
@@ -116,7 +115,7 @@ export default class ContainerNavigation extends PureComponent {
     const header = headerComponent ? (
       <ContainerHeader>
         {headerComponent({ isCollapsed })}
-      </ContainerHeader>) : <ContainerNoHeader />;
+      </ContainerHeader>) : null;
 
     return (
       <WithRootTheme

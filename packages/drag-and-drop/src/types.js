@@ -79,7 +79,7 @@ export type InitialDrag = {|
   client: InitialDragLocation,
   // viewport + window scroll
   page: InitialDragLocation,
-  // viewport + window scroll + droppable scroll
+  // viewport + window scroll + droppable scroll diff (this will be the same as)
   withinDroppable: WithinDroppable,
   // droppableScroll: Position,
   // required for placeholder positioning

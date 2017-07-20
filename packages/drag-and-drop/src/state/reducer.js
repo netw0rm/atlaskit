@@ -89,10 +89,9 @@ const move = (state: State,
   })();
 
   const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
-  const scroll: Position = add(negate(droppable.scroll.current), negate(scrollDiff));
 
   const withinDroppable: WithinDroppable = {
-    center: add(page.center, scroll),
+    center: add(page.center, negate(scrollDiff)),
   };
 
   const current: CurrentDrag = {
@@ -213,10 +212,10 @@ export default (state: State = clean('IDLE'), action: Action): State => {
 
     const { id, type, client, page } = action.payload;
     const draggable: DraggableDimension = state.dimension.draggable[id];
-    const droppable: DroppableDimension = state.dimension.droppable[draggable.droppableId];
 
+    // no scroll diff yet so withinDroppable is just the center position
     const withinDroppable: WithinDroppable = {
-      center: add(page.center, negate(droppable.scroll.initial)),
+      center: page.center,
     };
 
     const impact: DragImpact = getDragImpact({
@@ -313,7 +312,9 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       },
     };
 
-    return move(withUpdatedDimension, state.drag.current.withoutDroppableScroll.page);
+    const { client, page } = state.drag.current;
+
+    return move(withUpdatedDimension, client.selection, page.selection);
   }
 
   if (action.type === 'MOVE') {

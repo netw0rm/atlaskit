@@ -56,14 +56,6 @@ export default ({
   const draggableCenter: Position = draggingDimension.page.withoutMargin.center;
   const isMovingForward: boolean = newCenter.y - draggableCenter.y > 0;
 
-  // console.log('is moving forward?', isMovingForward);
-  // console.log('is moving forward', isMovingForward, 'scrollOffset', scrollOffset);
-
-  // TODO: if not in the same home dimensions then can only move forward
-
-  // get all draggables inside the draggable
-  // TODO: now breaking memoization because of scrollTop :()
-
   const moved: DraggableId[] = insideDroppable
     .filter((dimension: DraggableDimension): boolean => {
       // do not want to move the item that is dragging

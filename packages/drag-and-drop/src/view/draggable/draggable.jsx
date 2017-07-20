@@ -152,6 +152,8 @@ export default class Draggable extends Component {
       return;
     }
 
+    // return;
+
     const windowScroll: Position = getWindowScrollPosition();
     const page: Position = add(client, windowScroll);
 

@@ -2,5 +2,8 @@
   "extends": "../../build/types/tsconfig.base",
   "include": [
     "**/*"
+  ],
+  "types": [
+    "jest"
   ]
 }

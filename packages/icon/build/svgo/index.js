@@ -7,6 +7,7 @@ const callbackOnDefinedFill = require('./plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('./plugins/callbackOnStyleElement');
 const addAriaLabels = require('./plugins/addAriaLabels');
 const convertAttributesToCamelcase = require('./plugins/convertAttributesToCamelcase');
+const replaceSketchHexColors = require('./plugins/replaceSketchHexColors');
 
 module.exports = (config) => {
   const initialiseDefaultSVGO = () => new SVGO({
@@ -39,6 +40,7 @@ module.exports = (config) => {
         { convertAttributesToCamelcase },
         { addAttributesToSVGElement: { attributes: ['{...svgProps}'] } },
         { addPresentationAttribute },
+        { replaceSketchHexColors },
         { callbackOnDefinedFillPlugin },
         { callbackOnStyleElement },
         { removeStyleElement: true },

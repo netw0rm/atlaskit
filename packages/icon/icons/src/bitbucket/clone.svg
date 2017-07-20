@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
     <title>bitbucket/clone</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Bitbucket" stroke="none" stroke-width="1" fill-rule="evenodd">
-        <g id="bitbucket/clone" fill="currentColor">
-            <g id="clone">
-                <path d="M8,4 L4.99508929,4 C3.8926228,4 3,4.8992496 3,6.0085302 L3,13.9914698 C3,15.0980496 3.8932319,16 4.99508929,16 L19.0049107,16 C20.1073772,16 21,15.1007504 21,13.9914698 L21,6.0085302 C21,4.90195036 20.1067681,4 19.0049107,4 L16,4 L16,6 L19,6 L19,14 L5,14 L5,6 L8,6 L8,4 Z" id="Combined-Shape" fill-rule="nonzero"></path>
-                <rect id="Rectangle-11-Copy" x="10" y="17" width="4" height="3"></rect>
-                <path d="M9,20 C9,19.4477153 9.45097518,19 9.99077797,19 L14.009222,19 C14.5564136,19 15,19.4438648 15,20 L15,21 L9,21 L9,20 Z" id="Rectangle-11-Copy-2"></path>
-                <path d="M11.28875,8.298 L9.29175,10.294 C8.90275,10.684 8.90275,11.318 9.29175,11.709 C9.68275,12.099 10.31675,12.099 10.70675,11.709 L11.99975,10.415 L13.29275,11.709 C13.68375,12.099 14.31575,12.099 14.70675,11.709 C15.09775,11.318 15.09775,10.684 14.70675,10.294 L12.71175,8.298 C12.51175,8.099 12.25575,8 12.00075,8 C11.74275,8 11.48575,8.101 11.28875,8.298 Z" id="Clip-2" transform="translate(12.000000, 10.000750) scale(1, -1) translate(-12.000000, -10.000750) "></path>
-                <rect id="Rectangle-8" x="11" y="3" width="2" height="7" rx="1"></rect>
-            </g>
+    <g id="Bitbucket" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="bitbucket/clone" fill="#42526E">
+            <path d="M8,3.9985 L4.99508929,3.9985 C3.8926228,3.9985 3,4.8977496 3,6.0070302 L3,13.9899698 C3,15.0965496 3.8932319,15.9985 4.99508929,15.9985 L19.0049107,15.9985 C20.1073772,15.9985 21,15.0992504 21,13.9899698 L21,6.0070302 C21,4.90045036 20.1067681,3.9985 19.0049107,3.9985 L16,3.9985 L16,5.9985 L19,5.9985 L19,13.9985 L5,13.9985 L5,5.9985 L8,5.9985 L8,3.9985 Z" id="Combined-Shape-Copy" fill-rule="nonzero"></path>
+            <rect id="Rectangle-11-Copy-3" x="10" y="16.9985" width="4" height="3"></rect>
+            <path d="M9,19.9985 C9,19.4462153 9.45097518,18.9985 9.99077797,18.9985 L14.009222,18.9985 C14.5564136,18.9985 15,19.4423648 15,19.9985 L15,20.9985 L9,20.9985 L9,19.9985 Z" id="Rectangle-11-Copy-4"></path>
+            <path d="M9.292,8.291 C8.903,8.682 8.903,9.316 9.292,9.706 L11.289,11.702 C11.486,11.899 11.742,12 12.001,12 C12.255,12 12.512,11.901 12.712,11.702 L14.707,9.706 C15.098,9.316 15.098,8.682 14.707,8.291 C14.511,8.096 14.255,7.999 13.999,7.999 C13.744,7.999 13.488,8.096 13.293,8.291 L12,9.585 L10.706,8.291 C10.512,8.096 10.256,7.998 10,7.998 C9.744,7.998 9.487,8.096 9.292,8.291 Z" id="Clip-2"></path>
+            <rect id="Rectangle-8-Copy" x="11" y="2.9985" width="2" height="7" rx="1"></rect>
         </g>
     </g>
 </svg>

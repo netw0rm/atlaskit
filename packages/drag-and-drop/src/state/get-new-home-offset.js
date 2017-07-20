@@ -6,47 +6,49 @@ import type {
   DraggableDimensionMap,
   DraggableId,
 } from '../types';
+import { add, subtract } from './position';
 
 const origin: Position = { x: 0, y: 0 };
 
+type NewHomeArgs = {|
+  movement: DragMovement,
+  clientOffset: Position,
+  pageOffset: Position,
+  scrollDiff: Position,
+  draggables: DraggableDimensionMap,
+|}
+
 // Returns the offset required to move an item from its
 // original position to its final reseting position
-export default (
-  movement: DragMovement,
-  currentOffset: Position,
-  draggableDimensions: DraggableDimensionMap,
-): Position => {
+export default ({
+  movement,
+  clientOffset,
+  pageOffset,
+  scrollDiff,
+  draggables,
+}: NewHomeArgs): Position => {
   // Just animate back to where it started
   if (!movement.draggables.length) {
-    return origin;
+    return scrollDiff;
   }
 
+  // Currently not considering horizontal movement
   const distance: number = movement.draggables.reduce(
     (previous: number, draggableId: DraggableId): number => {
-      const dimension: DraggableDimension = draggableDimensions[draggableId];
+      const dimension: DraggableDimension = draggables[draggableId];
       return previous + dimension.page.withMargin.height;
     }, 0);
 
-  const amount: number = origin.y + (movement.isMovingForward ? distance : -distance);
+  console.log('distance', distance);
 
-  // Currently not considering horizontal movement
+  const amount: number = movement.isMovingForward ? distance : -distance;
+
+  // result = total change - pageOffset + clientOffset
+
   const verticalChange: Position = {
     x: 0,
     y: amount,
   };
 
-  // Difference between the pure vertical change
-  // and where we are now (currentOffset)
-  const diff: Position = {
-    x: 0,
-    y: currentOffset.y - verticalChange.y,
-  };
-
-  // Final offset is
-  const newHomeOffset: Position = {
-    x: 0,
-    y: currentOffset.y - diff.y,
-  };
-
-  return newHomeOffset;
+  return add(add(subtract(verticalChange, pageOffset), clientOffset), scrollDiff);
 };

@@ -80,7 +80,7 @@ export type DispatchProps = {
 
 export type MapProps = {|
   isDragging: boolean,
-  isSomethingElseDragging: boolean,
+  blockPointerEvents: boolean,
   isDropAnimating: boolean,
   canAnimate: boolean,
   offset: Position,

@@ -118,12 +118,17 @@ export default class DragHandle extends Component {
   }
 
   onWindowScroll = () => {
-    // At this stage only applies to mouse dragging
-    if (this.state.draggingWith !== 'MOUSE') {
+    const { draggingWith } = this.state;
+
+    if (draggingWith === 'MOUSE') {
+      this.scheduleScrollMove();
       return;
     }
 
-    this.scheduleScrollMove();
+    if (draggingWith === 'KEYBOARD') {
+      // currently not supporting window scrolling with a keyboard
+      this.stopDragging(() => this.props.callbacks.onCancel());
+    }
   }
 
   onWindowMouseMove = (event: MouseEvent) => {

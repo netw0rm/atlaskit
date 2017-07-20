@@ -41,11 +41,13 @@ export default class QuoteApp extends Component {
   };
 
   onDragStart = () => {
+    // $ExpectError - body could be null?
     document.body.classList.add(isDraggingClassName);
   }
 
   onDragEnd = (result: DropResult) => {
     // remove drag styles
+    // $ExpectError - body could be null?
     document.body.classList.remove(isDraggingClassName);
 
     const source: DraggableLocation = result.source;

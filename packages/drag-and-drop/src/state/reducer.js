@@ -104,7 +104,7 @@ const move = (state: State,
   };
 
   const impact: DragImpact = getDragImpact({
-    page: page.center,
+    page: page.selection,
     withinDroppable,
     draggableId: current.id,
     draggables: state.dimension.draggable,
@@ -219,7 +219,7 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     };
 
     const impact: DragImpact = getDragImpact({
-      page: page.center,
+      page: page.selection,
       withinDroppable,
       draggableId: id,
       draggables: state.dimension.draggable,

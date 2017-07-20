@@ -223,20 +223,14 @@ export const drop = (id: DraggableId) =>
     };
 
     const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
-    // const origin: Position = add(
-    //   subtract(
-    //     current.withDroppableScroll.offset,
-    //     current.withoutDroppableScroll.offset
-    //   ),
-    //   scrollDiff
-    // );
 
-    const newHomeOffset: Position = getNewHomeOffset(
-      impact.movement,
-      current.client.offset,
-      // origin,
-      state.dimension.draggable
-    );
+    const newHomeOffset: Position = getNewHomeOffset({
+      movement: impact.movement,
+      clientOffset: current.client.offset,
+      pageOffset: current.page.offset,
+      scrollDiff,
+      draggables: state.dimension.draggable,
+    });
 
     // Do not animate if you do not need to.
     // This will be the case if either you are dragging with a

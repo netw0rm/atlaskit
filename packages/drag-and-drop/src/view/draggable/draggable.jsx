@@ -243,12 +243,12 @@ export default class Draggable extends Component {
     (
       canAnimate: boolean,
       movementStyle: MovementStyle,
-      isSomethingElseDragging: boolean,
+      blockPointerEvents: boolean,
     ): NotDraggingStyle => {
       const style: NotDraggingStyle = {
         transition: canAnimate ? css.outOfTheWay : null,
         transform: movementStyle.transform,
-        pointerEvents: isSomethingElseDragging ? 'none' : 'auto',
+        pointerEvents: blockPointerEvents ? 'none' : 'auto',
       };
       return style;
     }
@@ -258,7 +258,7 @@ export default class Draggable extends Component {
     (isDragging: boolean,
       isDropAnimating: boolean,
       canAnimate: boolean,
-      isSomethingElseDragging: boolean,
+      blockPointerEvents: boolean,
       initial: ?InitialDrag,
       dragHandleProps: ?DragHandleProvided,
       movementStyle: MovementStyle,
@@ -268,7 +268,7 @@ export default class Draggable extends Component {
           return this.getNotDraggingStyle(
             canAnimate,
             movementStyle,
-            isSomethingElseDragging,
+            blockPointerEvents,
           );
         }
         invariant(initial, 'initial dimension required for dragging');
@@ -320,7 +320,7 @@ export default class Draggable extends Component {
       isDropAnimating,
       canAnimate,
       isDragDisabled,
-      isSomethingElseDragging,
+      blockPointerEvents,
       initial,
       children,
     } = this.props;
@@ -351,7 +351,7 @@ export default class Draggable extends Component {
                     isDragging,
                     isDropAnimating,
                     canAnimate,
-                    isSomethingElseDragging,
+                    blockPointerEvents,
                     initial,
                     dragHandleProps,
                     movementStyle,

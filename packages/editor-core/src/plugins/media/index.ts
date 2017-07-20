@@ -29,6 +29,7 @@ import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
+import { splitMediaGroup } from './media-common';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -172,6 +173,10 @@ export class MediaPluginState {
 
   insertLinks = (): void => {
     insertLinks(this.view, this.linkRanges, this.collectionFromProvider());
+  }
+
+  splitMediaGroup = (): boolean => {
+    return splitMediaGroup(this.view);
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -519,6 +524,11 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
+      },
+      handleTextInput(view: EditorView, from: number, to: number, text: string): boolean {
+        const pluginState: MediaPluginState = stateKey.getState(view.state);
+        pluginState.splitMediaGroup();
+        return false;
       }
     }
   });

@@ -15,12 +15,14 @@ import grantAccessToUsers from './grantAccessToUsers';
 import retrieveJiraUsers from './retrieveJiraUsers';
 import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
+import languagePacks from './language-packs.json';
 
 export default class MockConfluenceXFlowProvider extends Component {
   render() {
     const defaultProps = {
       config: {
         productLogo: <ConfluenceLogo />,
+        languagePacks,
         requestTrial: {
           accessBanner: 'https://placehold.it/352x214',
           accessHeading: 'Ask your admin for access',

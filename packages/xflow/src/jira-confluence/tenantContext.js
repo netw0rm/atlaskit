@@ -4,13 +4,15 @@ import getMeta from './getMeta';
 
 const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
+export const getCurrentUsername = () => getMeta('ajs-remote-user') || getMeta('remote-username');
+
 /**
  * Query the user endpoint and retrieve information relating to the specified username.
  *
  * Returns a promise with data. If a problem occurs, reject the promise.
  */
 const queryUsername = username =>
-  fetch(`/rest/api/latest/user?expand=groups&username=${encodeURIComponent(username)}`, {
+  fetch(`/rest/api/latest/user?expand=groups&username=${encodeURIComponent(username || getCurrentUsername())}`, {
     credentials: 'same-origin',
   }).then((response) => {
     if (response.status !== 200) {
@@ -23,7 +25,7 @@ const queryUsername = username =>
   });
 
 export const isUserTrusted = username =>
-  queryUsername(username).then((data) => {
+  queryUsername(username || getCurrentUsername()).then((data) => {
     let isSiteAdmin;
     try {
       isSiteAdmin = data.groups.items.some(group => group.name === SITE_ADMINS_GROUP_NAME);
@@ -34,8 +36,6 @@ export const isUserTrusted = username =>
   });
 
 export const getUserDisplayName = username =>
-  queryUsername(username).then(data => data.displayName || '');
-
-export const getCurrentUsername = () => getMeta('ajs-remote-user') || getMeta('remote-username');
+  queryUsername(username || getCurrentUsername()).then(data => data.displayName || '');
 
 export const getInstanceName = () => window.location.hostname;

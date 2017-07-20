@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import {expect} from 'chai';
 import {UrlPreview, LinkDetails, FileDetails} from '@atlaskit/media-core';
 import {isLinkDetails} from '../../../src/utils/isLinkDetails';

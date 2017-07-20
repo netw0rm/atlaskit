@@ -14,6 +14,15 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
     expect(resourcedMention.prop('text')).to.equal('@Oscar Wallhult');
   });
 
+  it('should not render ResourcedMentionWithProfilecard if profilecardProvider is not set', () => {
+    const providerFactory = new ProviderFactory();
+    const mentionProvider = Promise.resolve({});
+    providerFactory.setProvider('mentionProvider', mentionProvider);
+
+    const mention = mount(<Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" providers={providerFactory}/>);
+    expect(mention.find('WithProfilecardMention')).to.have.length(0);
+  });
+
   it('should pass provider into resourced mention', () => {
     const providerFactory = new ProviderFactory();
     const mentionProvider = Promise.resolve({});
@@ -38,5 +47,43 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
     const resourcedMention = mention.find(ResourcedMention);
 
     expect(resourcedMention.prop('onClick')).to.equal(onClick);
+  });
+
+  it('should render ResourcedMentionWithProfilecard if profilecardProvider is set', async () => {
+    const providerFactory = new ProviderFactory();
+    const profilecardProvider = Promise.resolve({});
+    providerFactory.setProvider('profilecardProvider', profilecardProvider);
+
+    const mention = mount(<Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" providers={providerFactory}/>);
+    await profilecardProvider;
+
+    expect(mention.find('WithProfilecardMention')).to.have.length(1);
+  });
+
+  it('should not render ResourcedMentionWithProfilecard if profilecardProvider promise is rejected', async () => {
+    const providerFactory = new ProviderFactory();
+    const profilecardProvider = Promise.reject(new Error());
+    providerFactory.setProvider('profilecardProvider', profilecardProvider);
+
+    const mention = mount(<Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" providers={providerFactory}/>);
+
+    try {
+      await profilecardProvider;
+    } catch (err) {
+      expect(mention.find('WithProfilecardMention')).to.have.length(0);
+    }
+  });
+
+  ['HipChat', 'all', 'here'].forEach(genericUserId => {
+    it(`should not render ResourcedMentionWithProfilecard if id is generic (${genericUserId})`, async () => {
+      const providerFactory = new ProviderFactory();
+      const profilecardProvider = Promise.resolve({});
+      providerFactory.setProvider('profilecardProvider', profilecardProvider);
+
+      const mention = mount(<Mention id={genericUserId} text="@Oscar Wallhult" providers={providerFactory}/>);
+      await profilecardProvider;
+
+      expect(mention.find('WithProfilecardMention')).to.have.length(0);
+    });
   });
 });

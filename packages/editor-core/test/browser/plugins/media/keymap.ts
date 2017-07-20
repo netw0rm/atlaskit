@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import {
   MediaPluginState,
   mediaPluginFactory,
@@ -38,6 +39,28 @@ describe('media - keymaps', () => {
       sendKeyToPm(editorView, 'Mod-z');
 
       expect(pluginState.ignoreLinks).to.equal(true);
+    });
+  });
+
+  describe('Enter keypress', () => {
+    it('splits media group', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')));
+      const splitMediaGroupSpy = sinon.spy(pluginState, 'splitMediaGroup');
+
+      sendKeyToPm(editorView, 'Enter');
+
+      expect(splitMediaGroupSpy.calledOnce).to.equal(true);
+    });
+  });
+
+  describe('Shift-Enter keypress', () => {
+    it('splits media group', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')));
+      const splitMediaGroupSpy = sinon.spy(pluginState, 'splitMediaGroup');
+
+      sendKeyToPm(editorView, 'Shift-Enter');
+
+      expect(splitMediaGroupSpy.calledOnce).to.equal(true);
     });
   });
 });

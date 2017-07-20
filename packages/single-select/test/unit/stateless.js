@@ -87,6 +87,7 @@ describe(name, () => {
         onOpenChange={func}
         droplistShouldFitContainer={false}
         shouldFlip={false}
+        maxHeight={300}
       />);
       const droplistProps = select.find(Droplist).props();
       expect(droplistProps.position).toBe('top right');
@@ -96,6 +97,7 @@ describe(name, () => {
       expect(droplistProps.isKeyboardInteractionDisabled).toBe(true);
       expect(droplistProps.isTriggerDisabled).toBe(true);
       expect(droplistProps.shouldFlip).toBe(false);
+      expect(droplistProps.maxHeight).toBe(300);
     });
 
     it('should pass props to fieldBase', () => {

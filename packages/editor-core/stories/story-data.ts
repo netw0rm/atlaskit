@@ -153,7 +153,7 @@ export const document = {
         {
           type: 'mention',
           attrs: {
-            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+            id: '1',
             text: '@Oscar Wallhult'
           }
         },
@@ -179,7 +179,7 @@ export const document = {
           type: 'mention',
           attrs: {
             text: '@mention',
-            id: 'mention'
+            id: '2'
           }
         },
         {
@@ -205,10 +205,35 @@ export const document = {
         {
           type: 'mention',
           attrs: {
-            id: 'ABCDE-ABCDE-ABCDE-FGHI',
+            id: '1',
             accessLevel: 'APPLICATION'
           },
           text: '@oscar'
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Mentions with generic ids'
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'here',
+            accessLevel: 'CONTAINER'
+          },
+          text: '@here'
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'all',
+            accessLevel: 'CONTAINER'
+          },
+          text: '@all'
         }
       ]
     },
@@ -1025,6 +1050,97 @@ System.out.println("There are " + count + " values >= 5");`
           }
         }
       }
+    },
+    {
+      type: 'decisionList',
+      content: [
+        {
+          type: 'decisionItem',
+          attrs: {
+            localId: '',
+            state: 'DECIDED'
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'Hello world'
+            },
+            {
+              type: 'hardBreak'
+            },
+            {
+              type: 'text',
+              text: 'This is a decision '
+            },
+            {
+              type: 'emoji',
+              attrs: {
+                shortName: ':wink:',
+                id: '1f609',
+                text: '😉'
+              }
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'mention',
+              attrs: {
+                id: '0',
+                text: '@Carolyn',
+                accessLevel: 'CONTAINER'
+              }
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'was',
+              marks: [
+                {
+                  type: 'strong'
+                }
+              ]
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'here',
+              marks: [
+                {
+                  type: 'em'
+                },
+                {
+                  type: 'underline'
+                }
+              ]
+            },
+            {
+              type: 'text',
+              text: '.'
+            }
+          ]
+        },
+        {
+          type: 'decisionItem',
+          attrs: {
+            localId: '',
+            state: 'DECIDED'
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'decision 2'
+            }
+          ]
+        }
+      ]
     }
   ]
 };

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { groupHeadingColor, spacing } from './constants';
+import Theme from './theme';
+
+const { spacing } = Theme.$;
 
 export default styled.div`
   box-sizing: border-box;
@@ -13,7 +15,7 @@ export default styled.div`
 
 export const Heading = styled.div`
   align-items: baseline;
-  color: ${groupHeadingColor};
+  color: ${Theme.Group.heading.text};
   display: flex;
   flex: 1 1 auto;
   font-weight: normal;

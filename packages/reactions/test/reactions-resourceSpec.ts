@@ -353,4 +353,3 @@ describe('@atlaskit/reactions/reactions-provider', () => {
 
   });
 });
-

@@ -5,8 +5,6 @@ import memoizeOne from 'memoize-one';
 import type {
   State,
   TypeId,
-  Position,
-  DroppableDimension,
 } from '../../types';
 import type { DispatchProps, MapProps, OwnProps } from './draggable-dimension-publisher-types';
 import { storeKey } from '../context-keys';
@@ -18,34 +16,17 @@ const requestDimensionSelector =
 
 const getOwnType = (state: State, props: OwnProps): TypeId => props.type;
 
-const droppableScrollSelector = (state: State, props: OwnProps): ?Position => {
-  const dimension: ?DroppableDimension = state.dimension.droppable[props.droppableId];
-  if (!dimension) {
-    return null;
-  }
-  return dimension.scroll;
-};
-
 export const makeSelector = () => {
   const getMapProps = memoizeOne(
-    (shouldPublish: boolean, droppableScroll: ?Position): MapProps => {
-      if (!shouldPublish || !droppableScroll) {
-        return {
-          shouldPublish: false,
-          droppableScroll: null,
-        };
-      }
-      return {
-        shouldPublish: true,
-        droppableScroll,
-      };
-    }
+    (shouldPublish: boolean): MapProps => ({
+      shouldPublish,
+    })
   );
 
   return createSelector(
-    [getOwnType, requestDimensionSelector, droppableScrollSelector],
-    (ownType: TypeId, requestId: ?TypeId, droppableScroll: ?Position): MapProps =>
-      getMapProps(ownType === requestId, droppableScroll)
+    [getOwnType, requestDimensionSelector],
+    (ownType: TypeId, requestId: ?TypeId): MapProps =>
+      getMapProps(ownType === requestId)
   );
 };
 

@@ -30,13 +30,13 @@ export default class DraggableDimensionPublisher extends Component {
       left: parseInt(style.marginLeft, 10),
     };
 
-    const dimension: DraggableDimension = getDraggableDimension(
-      draggableId,
+    const dimension: DraggableDimension = getDraggableDimension({
+      id: draggableId,
       droppableId,
-      targetRef.getBoundingClientRect(),
+      clientRect: targetRef.getBoundingClientRect(),
       margin,
-      getWindowScrollPosition(),
-    );
+      windowScroll: getWindowScrollPosition(),
+    });
 
     return dimension;
   }

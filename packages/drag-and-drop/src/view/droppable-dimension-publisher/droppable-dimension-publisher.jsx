@@ -58,13 +58,13 @@ export default class DroppableDimensionPublisher extends Component {
       left: parseInt(style.marginLeft, 10),
     };
 
-    const dimension: DroppableDimension = getDroppableDimension(
-      droppableId,
-      targetRef.getBoundingClientRect(),
+    const dimension: DroppableDimension = getDroppableDimension({
+      id: droppableId,
+      clientRect: targetRef.getBoundingClientRect(),
       margin,
-      getWindowScrollPosition(),
-      this.getScrollOffset(),
-    );
+      windowScroll: getWindowScrollPosition(),
+      scroll: this.getScrollOffset(),
+    });
 
     return dimension;
   }

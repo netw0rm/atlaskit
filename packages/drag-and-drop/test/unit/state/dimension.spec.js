@@ -25,7 +25,7 @@ const noMargin: Margin = {
   left: 0,
 };
 
-describe('Get dimension', () => {
+describe('dimension', () => {
   it('should return a dimension without margins', () => {
     const withoutMargin: DimensionFragment = {
       top: clientRect.top,

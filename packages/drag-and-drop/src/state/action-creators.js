@@ -12,8 +12,7 @@ import type {
   State,
 } from '../types';
 import getNewHomeOffset from './get-new-home-offset';
-import isPositionEqual from './is-position-equal';
-import { add, subtract } from './position';
+import { subtract, isEqual } from './position';
 
 export type RequestDimensionsAction = {|
   type: 'REQUEST_DIMENSIONS',
@@ -235,7 +234,7 @@ export const drop = (id: DraggableId) =>
     // Do not animate if you do not need to.
     // This will be the case if either you are dragging with a
     // keyboard or if you manage to nail it just with a mouse.
-    const isAnimationRequired = !isPositionEqual(
+    const isAnimationRequired = !isEqual(
       // TODO: not sure which to use here
       current.client.offset,
       newHomeOffset

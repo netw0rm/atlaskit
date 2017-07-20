@@ -66,13 +66,21 @@ const getFragment = (
   },
 });
 
-export const getDraggableDimension = (
+type GetDraggableArgs = {|
   id: DraggableId,
   droppableId: DroppableId,
   clientRect: ClientRect,
   margin: Margin,
   windowScroll: Position,
-): DraggableDimension => {
+|};
+
+export const getDraggableDimension = ({
+  id,
+  droppableId,
+  clientRect,
+  margin,
+  windowScroll,
+}: GetDraggableArgs): DraggableDimension => {
   const withScroll = getWithPosition(clientRect, windowScroll);
   const withScrollAndMargin = getWithMargin(withScroll, margin);
 
@@ -94,13 +102,21 @@ export const getDraggableDimension = (
   return dimension;
 };
 
-export const getDroppableDimension = (
+type GetDroppableArgs = {|
   id: DroppableId,
   clientRect: ClientRect,
   margin: Margin,
   windowScroll: Position,
   scroll: Position,
-): DroppableDimension => {
+|}
+
+export const getDroppableDimension = ({
+  id,
+  clientRect,
+  margin,
+  windowScroll,
+  scroll,
+}: GetDroppableArgs): DroppableDimension => {
   const withScroll = getWithPosition(clientRect, windowScroll);
   const withScrollAndMargin = getWithMargin(withScroll, margin);
 

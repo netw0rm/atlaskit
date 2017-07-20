@@ -26,6 +26,7 @@ const emoji = {
     width: 30,
   },
   hasSkinVariations: false,
+  searchable: true
 };
 
 const emojis = getEmojis();

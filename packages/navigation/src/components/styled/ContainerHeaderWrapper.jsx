@@ -4,11 +4,11 @@ import { whenCollapsed } from '../../theme/util';
 
 const paddingOpen = (() => {
   const paddingTop = gridSize;
-  const paddingLeft = layout.padding.side + (gridSize * 1.75);
-  const paddingRight = layout.padding.side + (gridSize * 1.5);
+  const paddingLeft = layout.padding.side + (gridSize * 1.5);
+  const paddingRight = layout.padding.side + (gridSize * 1.75);
   const paddingBottom = gridSize;
 
-  return `${paddingTop}px ${paddingLeft}px ${paddingBottom}px ${paddingRight}px`;
+  return `${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px`;
 })();
 
 const paddingClosed = (() => {
@@ -17,7 +17,7 @@ const paddingClosed = (() => {
   const paddingRight = layout.padding.side + (gridSize / 2);
   const paddingBottom = gridSize;
 
-  return `${paddingTop}px ${paddingLeft}px ${paddingBottom}px ${paddingRight}px`;
+  return `${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px`;
 })();
 
 const ContainerHeaderWrapper = styled.div`
